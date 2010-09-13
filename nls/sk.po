@@ -1,0 +1,195 @@
+# NLS support for the sysstat package.
+# Copyright (C) 1999 Free Software Foundation, Inc.
+# Sébastien GODARD <sysstat [at] orange.fr>, 1999.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sysstat 4.1.3\n"
+"Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
+"POT-Creation-Date: 2007-12-19 14:02+0100\n"
+"PO-Revision-Date: 2003-05-17 19:30\n"
+"Last-Translator: Miroslav David <md20128@decef.elf.stuba.sk>\n"
+"Language-Team: Slovak\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: common.c:57
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat verzia %s\n"
+
+#: common.c:160 common.c:385 ioconf.c:459 mpstat.c:265 sa_common.c:601
+#: sadc.c:476 sadc.c:485 sadc.c:530 sadc.c:620
+#, c-format
+msgid "Cannot open %s: %s\n"
+msgstr "Nie je mo¾né otvori» %s: %s\n"
+
+#: common.c:199
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Nie je mo¾né obslú¾i» toµko procesorov!\n"
+
+#: iostat.c:74
+#, c-format
+msgid ""
+"Usage: %s [ options... ] [ <interval> [ <count> ] ]\n"
+"Options are:\n"
+"[ -c ] [ -d ] [ -N ] [ -n ] [ -k | -m ] [ -t ] [ -V ] [ -x ]\n"
+"[ <device> [ ... ] | ALL ] [ -p [ <device> | ALL ] ]\n"
+msgstr ""
+"Pou¾itie: %s [ voµby... ] [ <interval> [ <poèet> ] ]\n"
+"Mo¾né voµby:\n"
+"[ -c ] [ -d ] [ -N ] [ -n ] [ -k | -m ] [ -t ] [ -V ] [ -x ]\n"
+"[ <zariadenie> [ ... ] | ALL ] [ -p [ <zariadenie> | ALL ] ]\n"
+
+#: iostat.c:1119
+#, c-format
+msgid "Time: %s\n"
+msgstr "Èas: %s\n"
+
+#: iostat.c:1435
+#, c-format
+msgid "-x and -p options are mutually exclusive\n"
+msgstr "Voµby -x a -p sa navzájom vyluèujú\n"
+
+#: mpstat.c:66
+#, c-format
+msgid ""
+"Usage: %s [ options... ] [ <interval> [ <count> ] ]\n"
+"Options are:\n"
+"[ -P { <cpu> | ALL } ] [ -V ]\n"
+msgstr ""
+"Pou¾itie: %s [ voµby... ] [ <interval> [ <poèet> ] ]\n"
+"Mo¾né voµby:\n"
+"[ -P { <cpu> | ALL } ] [ -V ]\n"
+
+# sar.c:
+#: mpstat.c:226 pidstat.c:1148 sar.c:740
+msgid "Average:"
+msgstr "Priemer:"
+
+#: mpstat.c:563 sar.c:157
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Nie a¾ tak veµa procesorov!\n"
+
+#: pidstat.c:72
+#, c-format
+msgid ""
+"Usage: %s [ options... ] [ <interval> [ <count> ] ]\n"
+"Options are:\n"
+"[ -C <comm> ] [ -d ] [ -I ] [ -r ] [ -t ] [ -u ] [ -V ] [ -w ]\n"
+"[ -p { <pid> | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+msgstr ""
+"Pou¾itie: %s [ voµby... ] [ <interval> [ <poèet> ] ]\n"
+"Mo¾né voµby:\n"
+"[ -C <comm> ] [ -d ] [ -I ] [ -r ] [ -t ] [ -u ] [ -V ] [ -w ]\n"
+"[ -p { <pid> | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+
+#: pidstat.c:166 sar.c:1419
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "®iadané ¹tatistiky nie sú dostupné\n"
+
+#: sa_common.c:572
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Chyba poèas èítania súboru aktivity systému: %s\n"
+
+#: sa_common.c:581
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Neoèakávaný koniec súboru aktivity systému\n"
+
+#: sa_common.c:608 sadc.c:549
+#, c-format
+msgid "Invalid system activity file: %s (%#x)\n"
+msgstr "Nesprávny súbor aktivity systému: %s (%#x)\n"
+
+#: sa_common.c:632
+#, c-format
+msgid "Requested activities not available in file\n"
+msgstr "®iadané ¹tatistiky nie sú dostupné v súbore\n"
+
+#: sadc.c:83
+#, c-format
+msgid ""
+"Usage: %s [ options... ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
+"Options are:\n"
+"[ -C <comment> ] [ -d ] [ -F ] [ -I ] [ -V ]\n"
+msgstr ""
+"Pou¾itie: %s [ voµby... ] [ <interval> [ <poèet> ] ] [ <výstupný_súbor> ]\n"
+"Mo¾né voµby:\n"
+"[ -C <comment> ] [ -d ] [ -F ] [ -I ] [ -V ]\n"
+
+#: sadc.c:110
+#, c-format
+msgid "Cannot write data to system activity file: %s\n"
+msgstr "Nie je mo¾né zapísa» údaje do súboru aktivity systému: %s\n"
+
+#: sadc.c:361
+#, c-format
+msgid "Cannot write system activity file header: %s\n"
+msgstr "Nie je mo¾né zapísa» hlavièku súboru aktivity systému: %s\n"
+
+#: sadc.c:568
+#, c-format
+msgid "Cannot append data to that file\n"
+msgstr "Nie je mo¾né dopísa» údaje do toho súboru\n"
+
+#: sadf.c:78
+#, c-format
+msgid ""
+"Usage: %s [ options... ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
+"Options are:\n"
+"[ -d | -D | -H | -p | -x ] [ -t ] [ -V ]\n"
+"[ -P { <cpu> | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -- <sar_options...> ]\n"
+msgstr ""
+"Pou¾itie: %s [ voµby... ] [ <interval> [ <poèet> ] ] [ <súbor> ]\n"
+"Mo¾né voµby:\n"
+"[ -d | -D | -H | -p | -x ] [ -t ] [ -V ]\n"
+"[ -P { <cpu> | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -- <sar_voµby...> ]\n"
+
+#: sar.c:76
+#, c-format
+msgid ""
+"Usage: %s [ options... ] [ <interval> [ <count> ] ]\n"
+"Options are:\n"
+"[ -A ] [ -b ] [ -B ] [ -c ] [ -C ] [ -d ] [ -i <interval> ] [ -p ] [ -q ]\n"
+"[ -r ] [ -R ] [ -t ] [ -u ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
+"[ -I { <irq> | SUM | ALL | XALL } ] [ -P { <cpu> | ALL } ]\n"
+"[ -n { DEV | EDEV | NFS | NFSD | SOCK | ALL } ]\n"
+"[ -o [ <filename> ] | -f [ <filename> ] ]\n"
+"[ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+msgstr ""
+"Pou¾itie: %s [ voµby... ] [ <interval> [ <poèet> ] ]\n"
+"Mo¾né voµby:\n"
+"[ -A ] [ -b ] [ -B ] [ -c ] [ -C ] [ -d ] [ -i <interval> ] [ -p ] [ -q ]\n"
+"[ -r ] [ -R ] [ -t ] [ -u ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
+"[ -I { <irq> | SUM | ALL | XALL } ] [ -P { <cpu> | ALL } ]\n"
+"[ -n { DEV | EDEV | NFS | NFSD | SOCK | ALL } ]\n"
+"[ -o [ <súbor> ] | -f [ <súbor> ] ]\n"
+"[ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+
+#: sar.c:149
+#, c-format
+msgid "Not an SMP machine...\n"
+msgstr "Poèítaè nie je multiprocesorový...\n"
+
+#: sar.c:1261
+#, c-format
+msgid "Invalid data format\n"
+msgstr "Nesprávny formát údajov\n"
+
+#: sar.c:1633
+#, c-format
+msgid "-f and -o options are mutually exclusive\n"
+msgstr "Voµby -f a -o sa navzájom vyluèujú\n"
+
+#: sar.c:1639
+#, c-format
+msgid "Not reading from a system activity file (use -f option)\n"
+msgstr "Nie je èítané zo súboru aktivity systému (pou¾i voµbu -f)\n"
