@@ -1,5 +1,8 @@
 Changes:
 
+xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* Made sysstat git aware.
+
 2010/09/12: Version 9.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added voltage inputs statistics to sar and sadc.
 	* Added %temp field to device temperature statistics (sar -m TEMP).

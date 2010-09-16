@@ -1,0 +1,35 @@
+# Lines starting with '#' are considered comments.
+# Ignore Makefile
+Makefile
+# Ignore objects and archives.
+*.[oa]
+# Ignore files created by sysstat
+sa1
+sa2
+sysstat
+crontab
+version.h
+sysconfig.h
+sysstat.sysconfig
+sysstat.crond
+sysstat.cron.daily
+sysstat.cron.hourly
+sysstat.crond.sample
+sysstat.crond.sample.in
+contrib/isag/isag
+man/sa1.8
+man/sa2.8
+man/sadc.8
+man/sadf.1
+man/sar.1
+man/iostat.1
+*.log
+config.status
+autom4te.cache/
+*.save
+*.old
+.*.swp
+data
+*~
+man/*~
+build/*~
