@@ -14,6 +14,6 @@
 #define S_O_DBD_OPTION		5
 
 /* DTD version for XML output */
-#define XML_DTD_VERSION	"2.8"
+#define XML_DTD_VERSION	"2.9"
 
 #endif  /* _SADF_H */

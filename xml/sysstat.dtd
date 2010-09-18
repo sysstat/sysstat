@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.8 for sysstat. See sadf.h -->
+<!--DTD v2.9 for sysstat. See sadf.h -->
 <!ELEMENT boot EMPTY>
 <!ATTLIST boot
 	date CDATA #REQUIRED
@@ -98,7 +98,7 @@
 	pty-nr CDATA #REQUIRED
 >
 <!ELEMENT memfree (#PCDATA)>
-<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
+<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, hugfree, hugused, hugused-percent, frmpg, bufpg, campg)>
 <!ATTLIST memory
 	per CDATA #REQUIRED
 	unit CDATA #REQUIRED
@@ -350,6 +350,9 @@
 <!ELEMENT swpfree (#PCDATA)>
 <!ELEMENT swpused (#PCDATA)>
 <!ELEMENT swpused-percent (#PCDATA)>
+<!ELEMENT hugfree (#PCDATA)>
+<!ELEMENT hugused (#PCDATA)>
+<!ELEMENT hugused-percent (#PCDATA)>
 <!ELEMENT sysdata-version (#PCDATA)>
 <!ELEMENT sysname (#PCDATA)>
 <!ELEMENT machine (#PCDATA)>

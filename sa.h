@@ -94,14 +94,16 @@
 #define DISPLAY_HORIZONTALLY(m)	(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
 #define DISPLAY_COMMENT(m)	(((m) & S_F_COMMENT)      == S_F_COMMENT)
 
-/* Output flags for options -R / -r / -S */
+/* Output flags for options -R / -r / -S / -H */
 #define AO_F_MEM_DIA		0x00000001
 #define AO_F_MEM_AMT		0x00000002
 #define AO_F_MEM_SWAP		0x00000004
+#define AO_F_MEM_HUGE		0x00000008
 
 #define DISPLAY_MEMORY(m)	(((m) & AO_F_MEM_DIA)     == AO_F_MEM_DIA)
 #define DISPLAY_MEM_AMT(m)	(((m) & AO_F_MEM_AMT)     == AO_F_MEM_AMT)
 #define DISPLAY_SWAP(m)		(((m) & AO_F_MEM_SWAP)    == AO_F_MEM_SWAP)
+#define DISPLAY_HUGE(m)		(((m) & AO_F_MEM_HUGE)    == AO_F_MEM_HUGE)
 
 /* Output flags for option -u [ ALL ] */
 #define AO_F_CPU_DEF		0x00000001

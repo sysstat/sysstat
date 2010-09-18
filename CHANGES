@@ -1,6 +1,9 @@
 Changes:
 
 xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* Added hugepages utilization statistics to sar.
+	* sar manual page updated.
+	* DTD and XSD documents updated.
 	* Made sysstat git aware.
 
 2010/09/12: Version 9.1.5 - Sebastien Godard (sysstat <at> orange.fr)

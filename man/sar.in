@@ -1,8 +1,8 @@
-.TH SAR 1 "AUGUST 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "SEPTEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
-.B sar [ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -i
+.B sar [ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -H ] [ -i
 .I interval
 .B ] [ -p ] [ -q ] [ -r ] [ -R ] [ -S ] [ -t ] [ -u [ ALL ] ]
 [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]
@@ -139,7 +139,7 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdqrRSuvwWy -I SUM -I XALL -n ALL -u ALL -P ALL".
+.BR "-bBdHqrRSuvwWy -I SUM -I XALL -n ALL -u ALL -P ALL".
 .IP -b
 Report I/O and transfer rate statistics.
 The following values are displayed:
@@ -325,6 +325,26 @@ parameter is the current daily data file, the
 file. The -f option is exclusive of the -o option.
 .IP -h
 Display a short help message then exit.
+.IP -H
+Report hugepages utilization statistics.
+The following values are displayed:
+
+.B kbhugfree
+.RS
+.RS
+Amount of hugepages memory in kilobytes that is not yet allocated.
+.RE
+
+.B kbhugused
+.RS
+Amount of hugepages memory in kilobytes that has been allocated.
+.RE
+
+.B %hugused
+.RS
+Percentage of total hugepages memory that has been allocated.
+.RE
+.RE
 .IP "-i interval"
 Select data records at seconds as close as possible to the number specified
 by the

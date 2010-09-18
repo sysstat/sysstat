@@ -616,7 +616,7 @@ __print_funct_t render_io_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display memory and swap statistics in selected format.
+ * Display memory, swap and huge pages statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -715,6 +715,23 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       "-\t%%swpcad", NULL, NULL, NOVAL,
 		       (smc->tlskb - smc->frskb) ?
 		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
+		       0.0);
+	}
+
+	if (DISPLAY_HUGE(a->opt_flags)) {
+
+		render(isdb, pre, PT_USEINT,
+		       "-\tkbhugfree", NULL, NULL,
+		       smc->frhkb, DNOVAL);
+
+		render(isdb, pre, PT_USEINT,
+		       "-\tkbhugused", NULL, NULL,
+		       smc->tlhkb - smc->frhkb, DNOVAL);
+
+		render(isdb, pre, pt_newlin,
+		       "-\t%%hugused", NULL, NULL, NOVAL,
+		       smc->tlhkb ?
+		       SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 		       0.0);
 	}
 }
@@ -2833,7 +2850,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
 			0.0);
 	}
-		
+
 	if (DISPLAY_SWAP(a->opt_flags)) {
 
 		xprintf(++tab, "<swpfree>%lu</swpfree>",
@@ -2853,6 +2870,20 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xprintf(tab--, "<swpcad-percent>%.2f</swpcad-percent>",
 			(smc->tlskb - smc->frskb) ?
 			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
+			0.0);
+	}
+
+	if (DISPLAY_HUGE(a->opt_flags)) {
+
+		xprintf(++tab, "<hugfree>%lu</hugfree>",
+			smc->frhkb);
+
+		xprintf(tab, "<hugused>%lu</hugused>",
+			smc->tlhkb - smc->frhkb);
+
+		xprintf(tab, "<hugused-percent>%.2f</hugused-percent>",
+			smc->tlhkb ?
+			SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 			0.0);
 	}
 

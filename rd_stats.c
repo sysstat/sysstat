@@ -293,6 +293,7 @@ void read_meminfo(struct stats_memory *st_memory)
 {
 	FILE *fp;
 	char line[128];
+	unsigned long szhkb = 0;
 	
 	if ((fp = fopen(MEMINFO, "r")) == NULL)
 		return;
@@ -331,9 +332,25 @@ void read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of commited memory in kB */
 			sscanf(line + 13, "%lu", &st_memory->comkb);
 		}
+		else if (!strncmp(line, "HugePages_Total:", 16)) {
+			/* Read the total number of huge pages */
+			sscanf(line + 16, "%lu", &st_memory->tlhkb);
+		}
+		else if (!strncmp(line, "HugePages_Free:", 15)) {
+			/* Read the number of free huge pages */
+			sscanf(line + 15, "%lu", &st_memory->frhkb);
+		}
+		else if (!strncmp(line, "Hugepagesize:", 13)) {
+			/* Read the default size of a huge page in kB */
+			sscanf(line + 13, "%lu", &szhkb);
+		}
 	}
 
 	fclose(fp);
+
+	/* We want huge pages stats in kB and not expressed in a number of pages */
+	st_memory->tlhkb *= szhkb;
+	st_memory->frhkb *= szhkb;
 }
 
 /*

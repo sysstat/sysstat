@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
-<xs:annotation><xs:appinfo>-- XML Schema v2.8 for sysstat. See sadf.h --</xs:appinfo></xs:annotation>
+<xs:annotation><xs:appinfo>-- XML Schema v2.9 for sysstat. See sadf.h --</xs:appinfo></xs:annotation>
 
     <xs:element name="queue" type="queue-type"></xs:element>
 
@@ -46,6 +46,9 @@
     		<xs:element name="swpused-percent" type="hundredth-type"></xs:element>
     		<xs:element name="swpcad" type="xs:nonNegativeInteger"></xs:element>
     		<xs:element name="swpcad-percent" type="hundredth-type"></xs:element>
+    		<xs:element name="hugfree" type="xs:nonNegativeInteger"></xs:element>
+		<xs:element name="hugused" type="xs:nonNegativeInteger"></xs:element>
+		<xs:element name="hugused-percent" type="hundredth-type"></xs:element>
     		<xs:element name="frmpg" type="hundredth-type"></xs:element>
     		<xs:element name="bufpg" type="hundredth-type"></xs:element>
     		<xs:element name="campg" type="hundredth-type"></xs:element>

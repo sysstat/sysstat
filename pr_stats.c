@@ -369,8 +369,8 @@ __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display memory and swap statistics. This function is used to display
- * instantaneous and average statistics.
+ * Display memory, swap and huge pages statistics. This function is used to
+ * display instantaneous and average statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -395,6 +395,9 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		avg_frskb = 0,
 		avg_tlskb = 0,
 		avg_caskb = 0;
+	static unsigned long long
+		avg_frhkb = 0,
+		avg_tlhkb = 0;
 	
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 		if (dis) {
@@ -509,6 +512,43 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			
 			/* Reset average counters */
 			avg_frskb = avg_tlskb = avg_caskb = 0;
+		}
+	}
+
+	if (DISPLAY_HUGE(a->opt_flags)) {
+		if (dis) {
+			printf("\n%-11s kbhugfree kbhugused  %%hugused\n",
+			       timestamp[!curr]);
+		}
+
+		if (!dispavg) {
+			/* Display instantaneous values */
+			printf("%-11s %9lu %9lu    %6.2f\n",
+			       timestamp[curr],
+			       smc->frhkb,
+			       smc->tlhkb - smc->frhkb,
+			       smc->tlhkb ?
+			       SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0);
+
+			/* Will be used to compute the average */
+			avg_frhkb += smc->frhkb;
+			avg_tlhkb += smc->tlhkb;
+		}
+		else {
+			/* Display average values */
+			printf("%-11s %9.0f %9.0f    %6.2f\n",
+			       timestamp[curr],
+			       (double) avg_frhkb / avg_count,
+			       ((double) avg_tlhkb / avg_count) -
+			       ((double) avg_frhkb / avg_count),
+			       ((double) (avg_tlhkb / avg_count)) ?
+			       SP_VALUE((double) (avg_frhkb / avg_count),
+					(double) (avg_tlhkb / avg_count),
+					(double) (avg_tlhkb / avg_count)) :
+			       0.0);
+
+			/* Reset average counters */
+			avg_frhkb = avg_tlhkb = 0;
 		}
 	}
 }
