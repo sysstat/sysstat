@@ -33,3 +33,14 @@ data
 *~
 man/*~
 build/*~
+sadc
+sar
+sadf
+iostat
+mpstat
+pidstat
+nfsiostat
+cifsiostat
+core
+TAGS
+nls/*.gmo
