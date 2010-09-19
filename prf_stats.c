@@ -2881,7 +2881,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xprintf(tab, "<hugused>%lu</hugused>",
 			smc->tlhkb - smc->frhkb);
 
-		xprintf(tab, "<hugused-percent>%.2f</hugused-percent>",
+		xprintf(tab--, "<hugused-percent>%.2f</hugused-percent>",
 			smc->tlhkb ?
 			SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 			0.0);
