@@ -639,7 +639,6 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 DFLAGS
 WITH_DEBUG
-AuxMandir
 INSTALL_DOC
 REM_CHOWN
 QUOTE
@@ -7737,11 +7736,6 @@ $as_echo "$AUX_DOC" >&6; }
 
 
 # Set directory for installing manual pages (see comment in Makefile)
-if test $mandir != "\${datarootdir}/man"; then
-	AuxMandir=$mandir
-else
-	AuxMandir=$AuxPrefix/man
-fi
 
 
 # Check whether --debuginfo options should be allowed
@@ -8942,7 +8936,7 @@ echo "
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}
    Configuration directory:	${SYSCONFIG_DIR}
-   Man pages directory:		$AuxMandir
+   Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS
 "

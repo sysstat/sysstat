@@ -2,6 +2,8 @@ Changes:
 
 xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added hugepages utilization statistics to sar.
+	* [Ivana Varekova]: Moved manual pages to $prefix/share/man
+	  instead of $prefix/man.
 	* sar manual page updated.
 	* DTD and XSD documents updated.
 	* Made sysstat git aware.

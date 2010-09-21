@@ -46,9 +46,8 @@ BIN_DIR = @bindir@
 
 ifndef MAN_DIR
 # With recent versions of autoconf, mandir defaults to ${datarootdir}/man
-# (i.e. $prefix/share/man) which is not necessarily in man path!
-# MAN_DIR = @mandir@
-MAN_DIR = @AuxMandir@
+# (i.e. $prefix/share/man)
+MAN_DIR = @mandir@
 endif
 MAN1_DIR = $(MAN_DIR)/man1
 MAN8_DIR = $(MAN_DIR)/man8

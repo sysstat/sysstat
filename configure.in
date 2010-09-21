@@ -475,12 +475,7 @@ AC_MSG_RESULT($AUX_DOC)
 AC_SUBST(INSTALL_DOC)
 
 # Set directory for installing manual pages (see comment in Makefile)
-if test $mandir != "\${datarootdir}/man"; then
-	AuxMandir=$mandir
-else
-	AuxMandir=$AuxPrefix/man
-fi
-AC_SUBST(AuxMandir)
+AC_SUBST(mandir)
 
 # Check whether --debuginfo options should be allowed
 AC_ARG_ENABLE(debuginfo, 
@@ -521,7 +516,7 @@ echo "
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}
    Configuration directory:	${SYSCONFIG_DIR}
-   Man pages directory:		$AuxMandir
+   Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS
 "
