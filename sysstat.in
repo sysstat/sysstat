@@ -17,16 +17,13 @@
 #@(#)	 This indicates that the counters have restarted from 0.
 
 RETVAL=0
-SYSCONFIG_DIR=@SYSCONFIG_DIR@
-#SADC_OPTIONS="-S DISK"
-SADC_OPTIONS=""
 
 # See how we were called.
 case "$1" in
   start)
 	exitCodeIndicator="$(mktemp /tmp/sysstat-XXXXXX)" || exit 1
 	echo -n "Calling the system activity data collector (sadc): "
-	@SU_C_OWNER@ @QUOTE@ @SA_LIB_DIR@/sa1 --boot ${SADC_OPTIONS} || rm -f ${exitCodeIndicator} @QUOTE@
+	@SU_C_OWNER@ @QUOTE@ @SA_LIB_DIR@/sa1 --boot || rm -f ${exitCodeIndicator} @QUOTE@
 
 	# Try to guess if sadc was successfully launched. The difficulty
 	# here is that the exit code is lost when the above command is

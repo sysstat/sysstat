@@ -20,6 +20,7 @@ contrib/isag/isag
 man/sa1.8
 man/sa2.8
 man/sadc.8
+man/sysstat.5
 man/sadf.1
 man/sar.1
 man/iostat.1

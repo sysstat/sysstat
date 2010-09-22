@@ -50,6 +50,7 @@ ifndef MAN_DIR
 MAN_DIR = @mandir@
 endif
 MAN1_DIR = $(MAN_DIR)/man1
+MAN5_DIR = $(MAN_DIR)/man5
 MAN8_DIR = $(MAN_DIR)/man8
 
 ifndef DOC_DIR
@@ -223,9 +224,10 @@ nls/sysstat.pot: $(wildcard *.c)
 .PHONY: clean distclean install install_base install_all uninstall \
 	uninstall_base uninstall_all dist bdist
 
-install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8
+install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
 ifeq ($(INSTALL_DOC),y)
 	mkdir -p $(DESTDIR)$(MAN1_DIR)
+	mkdir -p $(DESTDIR)$(MAN5_DIR)
 	mkdir -p $(DESTDIR)$(MAN8_DIR)
 	rm -f $(DESTDIR)$(MAN8_DIR)/sa1.8*
 	$(INSTALL_DATA) $(MANGRPARG) man/sa1.8 $(DESTDIR)$(MAN8_DIR)
@@ -237,6 +239,8 @@ ifeq ($(INSTALL_DOC),y)
 	$(INSTALL_DATA) $(MANGRPARG) man/sar.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/sadf.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/sadf.1 $(DESTDIR)$(MAN1_DIR)
+	rm -f $(DESTDIR)$(MAN5_DIR)/sysstat.5*
+	$(INSTALL_DATA) $(MANGRPARG) man/sysstat.5 $(DESTDIR)$(MAN5_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/iostat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/iostat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/mpstat.1*
@@ -256,6 +260,7 @@ ifeq ($(COMPRESS_MANPG),y)
 	$(ZIP) $(DESTDIR)$(MAN8_DIR)/sadc.8
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/sar.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/sadf.1
+	$(ZIP) $(DESTDIR)$(MAN5_DIR)/sysstat.5
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/iostat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/mpstat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/pidstat.1
@@ -405,6 +410,7 @@ ifeq ($(INSTALL_DOC),y)
 	rm -f $(DESTDIR)$(MAN8_DIR)/sa2.8*
 	rm -f $(DESTDIR)$(MAN1_DIR)/sar.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/sadf.1*
+	rm -f $(DESTDIR)$(MAN5_DIR)/sysstat.5*
 	rm -f $(DESTDIR)$(MAN1_DIR)/iostat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/mpstat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/pidstat.1*
@@ -575,7 +581,7 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f sysstat.sysconfig sysstat.crond sysstat.cron.daily
 	rm -f sysstat.cron.hourly sysstat.crond.sample sysstat.crond.sample.in
 	rm -f contrib/isag/isag
-	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1
+	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
 	rm -f *.log config.status
 	rm -rf autom4te.cache
 	rm -f *.save *.old .*.swp data

@@ -1,4 +1,4 @@
-.TH SA1 8 "AUGUST 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA1 8 "SEPTEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
 .SH SYNOPSIS
@@ -63,6 +63,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sar (1),
 .BR sadc (8),
 .BR sa2 (8),
-.BR sadf (1)
+.BR sadf (1),
+.BR sysstat (5)
 
 .I http://pagesperso-orange.fr/sebastien.godard/

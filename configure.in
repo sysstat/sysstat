@@ -506,6 +506,7 @@ AC_CONFIG_FILES([man/sa2.8:man/sa2.in])		# File must be renamed
 AC_CONFIG_FILES([man/sadc.8:man/sadc.in])	# File must be renamed
 AC_CONFIG_FILES([man/sadf.1:man/sadf.in])	# File must be renamed
 AC_CONFIG_FILES([man/sar.1:man/sar.in])		# File must be renamed
+AC_CONFIG_FILES([man/sysstat.5:man/sysstat.in])	# File must be renamed
 AC_CONFIG_FILES([man/iostat.1:man/iostat.in])	# File must be renamed
 AC_CONFIG_FILES([contrib/isag/isag], [chmod +x contrib/isag/isag]) # Permissions must be changed
 

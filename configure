@@ -7786,6 +7786,8 @@ ac_config_files="$ac_config_files man/sadf.1:man/sadf.in"
 	# File must be renamed
 ac_config_files="$ac_config_files man/sar.1:man/sar.in"
 		# File must be renamed
+ac_config_files="$ac_config_files man/sysstat.5:man/sysstat.in"
+	# File must be renamed
 ac_config_files="$ac_config_files man/iostat.1:man/iostat.in"
 	# File must be renamed
 ac_config_files="$ac_config_files contrib/isag/isag"
@@ -8417,6 +8419,7 @@ do
     "man/sadc.8") CONFIG_FILES="$CONFIG_FILES man/sadc.8:man/sadc.in" ;;
     "man/sadf.1") CONFIG_FILES="$CONFIG_FILES man/sadf.1:man/sadf.in" ;;
     "man/sar.1") CONFIG_FILES="$CONFIG_FILES man/sar.1:man/sar.in" ;;
+    "man/sysstat.5") CONFIG_FILES="$CONFIG_FILES man/sysstat.5:man/sysstat.in" ;;
     "man/iostat.1") CONFIG_FILES="$CONFIG_FILES man/iostat.1:man/iostat.in" ;;
     "contrib/isag/isag") CONFIG_FILES="$CONFIG_FILES contrib/isag/isag" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
