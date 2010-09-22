@@ -7558,14 +7558,15 @@ $as_echo_n "checking whether man_group variable should be ignored... " >&6; }
 if test "${enable_man_group+set}" = set; then
   enableval=$enable_man_group; AUX_IMG=$enableval
 else
-  AUX_IMG=no
+  AUX_IMG=yes
 fi
 
-if test $AUX_IMG != "yes"; then
+if test $AUX_IMG != "no"; then
    IGNORE_MAN_GROUP=n
    AUX_IMG=no
 else
    IGNORE_MAN_GROUP=y
+   AUX_IMG=yes
 fi
 { $as_echo "$as_me:$LINENO: result: $AUX_IMG" >&5
 $as_echo "$AUX_IMG" >&6; }
