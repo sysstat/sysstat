@@ -109,6 +109,8 @@ extern __print_funct_t render_pwr_temp_stats
 	(struct activity *, int, char *, int, unsigned long long);
 extern __print_funct_t render_pwr_in_stats
 	(struct activity *, int, char *, int, unsigned long long);
+extern __print_funct_t render_huge_stats
+	(struct activity *, int, char *, int, unsigned long long);
 
 /* Functions used to display statistics in XML */
 extern void xprintf
@@ -178,6 +180,8 @@ extern __print_funct_t xml_print_pwr_fan_stats
 extern __print_funct_t xml_print_pwr_temp_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t xml_print_pwr_in_stats
+	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t xml_print_huge_stats
 	(struct activity *, int, int, unsigned long long);
 
 #endif /* _PRF_STATS_H */

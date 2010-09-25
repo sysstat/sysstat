@@ -237,8 +237,7 @@ struct activity memory_act = {
 	.f_xml_print	= xml_print_memory_stats,
 	.hdr_line	= "frmpg/s;bufpg/s;campg/s|"
 		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit|"
-		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad|"
-		          "kbhugfree;kbhugused;%hugused",
+		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 	.name		= "A_MEMORY",
 #endif
 	.nr		= 1,
@@ -934,6 +933,31 @@ struct activity pwr_in_act = {
 	.bitmap		= NULL
 };
 
+/* Hugepages activity */
+struct activity huge_act = {
+	.id		= A_HUGE,
+	.options	= AO_COLLECTED,
+#ifdef SOURCE_SADC
+	.f_count	= NULL,
+	.f_read		= wrap_read_meminfo_huge,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_huge_stats,
+	.f_print_avg	= print_avg_huge_stats,
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_huge_stats,
+	.f_xml_print	= xml_print_huge_stats,
+	.hdr_line	= "kbhugfree;kbhugused;%hugused",
+	.name		= "A_HUGE",
+#endif
+	.nr		= 1,
+	.fsize		= STATS_HUGE_SIZE,
+	.msize		= STATS_HUGE_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
 
 /*
  * Array of activities.
@@ -971,5 +995,6 @@ struct activity *act[NR_ACT] = {
 	&pwr_cpufreq_act,
 	&pwr_fan_act,
 	&pwr_temp_act,
-	&pwr_in_act
+	&pwr_in_act,
+	&huge_act
 };

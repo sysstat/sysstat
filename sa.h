@@ -17,7 +17,7 @@
  */
 
 /* Number of activities */
-#define NR_ACT	33
+#define NR_ACT	34
 
 /* Activities */
 #define A_CPU		1
@@ -53,6 +53,7 @@
 #define A_PWR_FAN	31
 #define A_PWR_TEMP	32
 #define A_PWR_IN	33
+#define A_HUGE		34
 
 
 /* Macro used to flag an activity that should be collected */
@@ -94,16 +95,14 @@
 #define DISPLAY_HORIZONTALLY(m)	(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
 #define DISPLAY_COMMENT(m)	(((m) & S_F_COMMENT)      == S_F_COMMENT)
 
-/* Output flags for options -R / -r / -S / -H */
+/* Output flags for options -R / -r / -S */
 #define AO_F_MEM_DIA		0x00000001
 #define AO_F_MEM_AMT		0x00000002
 #define AO_F_MEM_SWAP		0x00000004
-#define AO_F_MEM_HUGE		0x00000008
 
 #define DISPLAY_MEMORY(m)	(((m) & AO_F_MEM_DIA)     == AO_F_MEM_DIA)
 #define DISPLAY_MEM_AMT(m)	(((m) & AO_F_MEM_AMT)     == AO_F_MEM_AMT)
 #define DISPLAY_SWAP(m)		(((m) & AO_F_MEM_SWAP)    == AO_F_MEM_SWAP)
-#define DISPLAY_HUGE(m)		(((m) & AO_F_MEM_HUGE)    == AO_F_MEM_HUGE)
 
 /* Output flags for option -u [ ALL ] */
 #define AO_F_CPU_DEF		0x00000001
@@ -683,6 +682,8 @@ extern __read_funct_t
 	wrap_read_temp(struct activity *);
 extern __read_funct_t
 	wrap_read_in(struct activity *);
+extern __read_funct_t
+	wrap_read_meminfo_huge(struct activity *);
 
 /* Other functions */
 extern void

@@ -616,7 +616,7 @@ __print_funct_t render_io_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display memory, swap and huge pages statistics in selected format.
+ * Display memory and swap statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -715,23 +715,6 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       "-\t%%swpcad", NULL, NULL, NOVAL,
 		       (smc->tlskb - smc->frskb) ?
 		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
-		       0.0);
-	}
-
-	if (DISPLAY_HUGE(a->opt_flags)) {
-
-		render(isdb, pre, PT_USEINT,
-		       "-\tkbhugfree", NULL, NULL,
-		       smc->frhkb, DNOVAL);
-
-		render(isdb, pre, PT_USEINT,
-		       "-\tkbhugused", NULL, NULL,
-		       smc->tlhkb - smc->frhkb, DNOVAL);
-
-		render(isdb, pre, pt_newlin,
-		       "-\t%%hugused", NULL, NULL, NOVAL,
-		       smc->tlhkb ?
-		       SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 		       0.0);
 	}
 }
@@ -2380,6 +2363,41 @@ __print_funct_t render_pwr_in_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
+ * Display huge pages statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_huge_stats(struct activity *a, int isdb, char *pre,
+				  int curr, unsigned long long itv)
+{
+	struct stats_huge
+		*smc = (struct stats_huge *) a->buf[curr];
+	int pt_newlin
+		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+
+	render(isdb, pre, PT_USEINT,
+	       "-\tkbhugfree", NULL, NULL,
+	       smc->frhkb, DNOVAL);
+
+	render(isdb, pre, PT_USEINT,
+	       "-\tkbhugused", NULL, NULL,
+	       smc->tlhkb - smc->frhkb, DNOVAL);
+
+	render(isdb, pre, pt_newlin,
+	       "-\t%%hugused", NULL, NULL, NOVAL,
+	       smc->tlhkb ?
+	       SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
+	       0.0);
+}
+
+/*
+ ***************************************************************************
  * Print tabulations
  *
  * IN:
@@ -2870,20 +2888,6 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xprintf(tab--, "<swpcad-percent>%.2f</swpcad-percent>",
 			(smc->tlskb - smc->frskb) ?
 			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
-			0.0);
-	}
-
-	if (DISPLAY_HUGE(a->opt_flags)) {
-
-		xprintf(++tab, "<hugfree>%lu</hugfree>",
-			smc->frhkb);
-
-		xprintf(tab, "<hugused>%lu</hugused>",
-			smc->tlhkb - smc->frhkb);
-
-		xprintf(tab--, "<hugused-percent>%.2f</hugused-percent>",
-			smc->tlhkb ?
-			SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 			0.0);
 	}
 
@@ -4192,4 +4196,37 @@ close_xml_markup:
 	if (CLOSE_MARKUP(a->options)) {
 		xml_markup_power_management(tab, CLOSE_XML_MARKUP);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Display huge pages statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_huge_stats(struct activity *a, int curr, int tab,
+				     unsigned long long itv)
+{
+	struct stats_huge
+		*smc = (struct stats_huge *) a->buf[curr];
+
+	xprintf(tab, "<hugepages unit=\"kB\">");
+
+	xprintf(++tab, "<hugfree>%lu</hugfree>",
+		smc->frhkb);
+
+	xprintf(tab, "<hugused>%lu</hugused>",
+		smc->tlhkb - smc->frhkb);
+
+	xprintf(tab--, "<hugused-percent>%.2f</hugused-percent>",
+		smc->tlhkb ?
+		SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
+		0.0);
+
+	xprintf(tab, "</hugepages>");
 }

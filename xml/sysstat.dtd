@@ -98,13 +98,17 @@
 	pty-nr CDATA #REQUIRED
 >
 <!ELEMENT memfree (#PCDATA)>
-<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, hugfree, hugused, hugused-percent, frmpg, bufpg, campg)>
+<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
 <!ATTLIST memory
 	per CDATA #REQUIRED
 	unit CDATA #REQUIRED
 >
 <!ELEMENT memused (#PCDATA)>
 <!ELEMENT memused-percent (#PCDATA)>
+<!ELEMENT hugepages (hugfree, hugused, hugused-percent)>
+<!ATTLIST hugepages
+	unit CDATA #REQUIRED
+>
 <!ELEMENT network (net-dev+, net-edev+, net-nfs, net-nfsd, net-sock, net-ip, net-eip, net-icmp, net-eicmp, net-tcp, net-etcp, net-udp, net-sock6, net-ip6, net-eip6, net-icmp6, net-eicmp6, net-udp6)>
 <!ATTLIST network
 	per CDATA #REQUIRED
@@ -359,7 +363,7 @@
 <!ELEMENT number-of-cpus (#PCDATA)>
 <!ELEMENT file-date (#PCDATA)>
 <!ELEMENT sysstat (sysdata-version, host)>
-<!ELEMENT timestamp (cpu-load, cpu-load-all, process-and-context-switch, interrupts, swap-pages, paging, io, memory, kernel, queue, serial, disk, network, power-management)>
+<!ELEMENT timestamp (cpu-load, cpu-load-all, process-and-context-switch, interrupts, swap-pages, paging, io, memory, kernel, queue, serial, disk, network, power-management, hugepages)>
 <!ATTLIST timestamp
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED

@@ -875,6 +875,28 @@ __read_funct_t wrap_read_temp(struct activity *a)
 
 /*
  ***************************************************************************
+ * Read hugepages statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_meminfo_huge(struct activity *a)
+{
+	struct stats_huge *st_huge
+		= (struct stats_huge *) a->_buf0;
+
+	/* Read hugepages stats */
+	read_meminfo_huge(st_huge);
+
+	return;
+}
+
+/*
+ ***************************************************************************
  * Get number of voltage input structures to allocate.
  *
  * IN:

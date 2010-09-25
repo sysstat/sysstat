@@ -1173,7 +1173,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 
 			p = get_activity_position(act, A_MEMORY);
 			act[p]->opt_flags |= AO_F_MEM_AMT + AO_F_MEM_DIA +
-					     AO_F_MEM_SWAP + AO_F_MEM_HUGE;
+					     AO_F_MEM_SWAP;
 
 			p = get_activity_position(act, A_IRQ);
 			set_bitmap(act[p]->bitmap->b_array, ~0,
@@ -1202,9 +1202,8 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'H':
-			p = get_activity_position(act, A_MEMORY);
+			p = get_activity_position(act, A_HUGE);
 			act[p]->options   |= AO_SELECTED;
-			act[p]->opt_flags |= AO_F_MEM_HUGE;
 			break;
 			
 		case 'p':

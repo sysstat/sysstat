@@ -293,7 +293,6 @@ void read_meminfo(struct stats_memory *st_memory)
 {
 	FILE *fp;
 	char line[128];
-	unsigned long szhkb = 0;
 	
 	if ((fp = fopen(MEMINFO, "r")) == NULL)
 		return;
@@ -332,25 +331,9 @@ void read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of commited memory in kB */
 			sscanf(line + 13, "%lu", &st_memory->comkb);
 		}
-		else if (!strncmp(line, "HugePages_Total:", 16)) {
-			/* Read the total number of huge pages */
-			sscanf(line + 16, "%lu", &st_memory->tlhkb);
-		}
-		else if (!strncmp(line, "HugePages_Free:", 15)) {
-			/* Read the number of free huge pages */
-			sscanf(line + 15, "%lu", &st_memory->frhkb);
-		}
-		else if (!strncmp(line, "Hugepagesize:", 13)) {
-			/* Read the default size of a huge page in kB */
-			sscanf(line + 13, "%lu", &szhkb);
-		}
 	}
 
 	fclose(fp);
-
-	/* We want huge pages stats in kB and not expressed in a number of pages */
-	st_memory->tlhkb *= szhkb;
-	st_memory->frhkb *= szhkb;
 }
 
 /*
@@ -2251,4 +2234,47 @@ void read_in(struct stats_pwr_in *st_pwr_in, int nbr)
 		}
 	}
 #endif /* HAVE_SENSORS */
+}
+
+/*
+ ***************************************************************************
+ * Read hugepages statistics from /proc/meminfo.
+ *
+ * IN:
+ * @st_huge	Structure where stats will be saved.
+ *
+ * OUT:
+ * @st_huge	Structure with statistics.
+ ***************************************************************************
+ */
+void read_meminfo_huge(struct stats_huge *st_huge)
+{
+	FILE *fp;
+	char line[128];
+	unsigned long szhkb = 0;
+
+	if ((fp = fopen(MEMINFO, "r")) == NULL)
+		return;
+
+	while (fgets(line, 128, fp) != NULL) {
+
+		if (!strncmp(line, "HugePages_Total:", 16)) {
+			/* Read the total number of huge pages */
+			sscanf(line + 16, "%lu", &st_huge->tlhkb);
+		}
+		else if (!strncmp(line, "HugePages_Free:", 15)) {
+			/* Read the number of free huge pages */
+			sscanf(line + 15, "%lu", &st_huge->frhkb);
+		}
+		else if (!strncmp(line, "Hugepagesize:", 13)) {
+			/* Read the default size of a huge page in kB */
+			sscanf(line + 13, "%lu", &szhkb);
+		}
+	}
+
+	fclose(fp);
+
+	/* We want huge pages stats in kB and not expressed in a number of pages */
+	st_huge->tlhkb *= szhkb;
+	st_huge->frhkb *= szhkb;
 }

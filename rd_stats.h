@@ -152,8 +152,6 @@ struct stats_memory {
 	unsigned long tlskb	__attribute__ ((aligned (8)));
 	unsigned long caskb	__attribute__ ((aligned (8)));
 	unsigned long comkb	__attribute__ ((aligned (8)));
-	unsigned long frhkb	__attribute__ ((aligned (8)));
-	unsigned long tlhkb	__attribute__ ((aligned (8)));
 };
 
 #define STATS_MEMORY_SIZE	(sizeof(struct stats_memory))
@@ -516,7 +514,15 @@ struct stats_pwr_in {
 	char    device[MAX_SENSORS_DEV_LEN]	__attribute__ ((aligned (8)));
 };
 
-#define STATS_PWR_IN_SIZE    (sizeof(struct stats_pwr_in))
+#define STATS_PWR_IN_SIZE	(sizeof(struct stats_pwr_in))
+
+/* Structure for hugepages statistics */
+struct stats_huge {
+	unsigned long frhkb			__attribute__ ((aligned (8)));
+	unsigned long tlhkb			__attribute__ ((aligned (8)));
+};
+
+#define STATS_HUGE_SIZE	(sizeof(struct stats_memory))
 
 /*
  ***************************************************************************
@@ -593,6 +599,8 @@ extern void
 	read_temp(struct stats_pwr_temp *, int);
 extern void
 	read_in(struct stats_pwr_in *, int);
+extern void
+	read_meminfo_huge(struct stats_huge *);
 
 /*
  ***************************************************************************
