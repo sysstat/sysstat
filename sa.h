@@ -251,7 +251,6 @@
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 
-
 /* Type for all functions counting items */
 #define __nr_t		int
 /* Type for all functions reading statistics */
@@ -287,7 +286,7 @@ struct activity {
 	unsigned int options;
 	/*
 	 * The f_count() function is used to count the number of
-	 * items (serial lines, network interfaces, etc.).
+	 * items (serial lines, network interfaces, etc.) -> @nr
 	 * Such a function should _always_ return a value greater than
 	 * or equal to 0.
 	 *
@@ -298,6 +297,16 @@ struct activity {
 	 * sure that all items have been calculated (including #CPU, etc.)
 	 */
 	__nr_t (*f_count) (struct activity *);
+	/*
+	 * The f_count2() function is used to count the number of
+	 * sub-items -> @nr2
+	 * Such a function should _always_ return a value greater than
+	 * or equal to 0.
+	 *
+	 * A NULL value for this function pointer indicates that the number of items
+	 * is a constant (and @nr2 is set to this value).
+	 */
+	__nr_t (*f_count2) (struct activity *);
 	/*
 	 * This function reads the relevant file and fill the buffer
 	 * with statistics corresponding to given activity.
@@ -335,8 +344,25 @@ struct activity {
 	 * has still not been calculated by the f_count() function.
 	 * A value of 0 means that this number has been calculated, but no items have
 	 * been found.
+	 * A positive value (>0) has either been calculated or is a constant.
 	 */
 	__nr_t nr;
+	/*
+	 * Number of sub-items on the system.
+	 * @nr2 is in fact the second dimension of a matrix of items, the first
+	 * one being @nr. @nr is the number of lines, and @nr2 the number of columns.
+	 * A negative value (-1) is the default value and indicates that this number
+	 * has still not been calculated by the f_count2() function.
+	 * A value of 0 means that this number has been calculated, but no sub-items have
+	 * been found.
+	 * A positive value (>0) has either been calculated or is a constant.
+	 * Rules:
+	 * 1) IF @nr2 = 0 THEN @nr = 0
+	 *    Note: If @nr = 0, then @nr2 is undetermined (may be -1, 0 or >0).
+	 * 2) IF @nr > 0 THEN @nr2 > 0.
+	 *    Note: If @nr2 > 0 then @nr is undetermined (may be -1, 0 or >0).
+	 */
+	__nr_t nr2;
 	/*
 	 * Size of an item.
 	 * This is the size of the corresponding structure, as read from or written
@@ -368,7 +394,6 @@ struct activity {
 	 */
 	struct act_bitmap *bitmap;
 };
-
 
 /*
  ***************************************************************************
@@ -414,7 +439,7 @@ struct activity {
  * Modified to indicate that the format of the file is
  * no longer compatible with that of previous sysstat versions.
  */
-#define FORMAT_MAGIC	0x2170
+#define FORMAT_MAGIC	0x2171
 
 /* Structure for file magic header data */
 struct file_magic {
@@ -492,6 +517,10 @@ struct file_activity {
 	 * Number of items for this activity.
 	 */
 	__nr_t nr		__attribute__ ((packed));
+	/*
+	 * Number of sub-items for this activity.
+	 */
+	__nr_t nr2		__attribute__ ((packed));
 	/*
 	 * Size of an item structure.
 	 */

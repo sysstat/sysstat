@@ -630,7 +630,11 @@ void display_file_header(char *dfile, struct file_magic *file_magic,
 		if ((p = get_activity_position(act, id_seq[i])) < 0) {
 			PANIC(id_seq[i]);
 		}
-		printf("%02d: %s\t(x%d)\n", act[p]->id,	act[p]->name, act[p]->nr);
+		printf("%02d: %s\t(x%d)", act[p]->id, act[p]->name, act[p]->nr);
+		if (act[p]->f_count2 || (act[p]->nr2 > 1)) {
+			printf(" (x%d)", act[p]->nr2);
+		}
+		printf("\n");
 	}
 
 	exit(0);

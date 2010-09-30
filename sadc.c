@@ -223,7 +223,7 @@ void reset_stats(void)
 
 	for (i = 0; i < NR_ACT; i++) {
 		if ((act[i]->nr > 0) && act[i]->_buf0) {
-			memset(act[i]->_buf0, 0, act[i]->msize * act[i]->nr);
+			memset(act[i]->_buf0, 0, act[i]->msize * act[i]->nr * act[i]->nr2);
 		}
 	}
 }
@@ -245,8 +245,18 @@ void sa_sys_init(void)
 		}
 
 		if (act[i]->nr > 0) {
+			if (act[i]->f_count2) {
+				act[i]->nr2 = (*act[i]->f_count2)(act[i]);
+			}
+			/* else act[i]->nr2 is a constant and doesn't need to be calculated */
+			if (!act[i]->nr2) {
+				act[i]->nr = 0;
+			}
+		}
+
+		if (act[i]->nr > 0) {
 			/* Allocate structures for current activity */
-			SREALLOC(act[i]->_buf0, void, act[i]->msize * act[i]->nr);
+			SREALLOC(act[i]->_buf0, void, act[i]->msize * act[i]->nr * act[i]->nr2);
 		}
 		else {
 			/* No items found: Invalidate current activity */
@@ -465,6 +475,7 @@ void setup_file_hdr(int fd)
 		if (IS_COLLECTED(act[p]->options)) {
 			file_act.id   = act[p]->id;
 			file_act.nr   = act[p]->nr;
+			file_act.nr2  = act[p]->nr2;
 			file_act.size = act[p]->fsize;
 
 			if ((n = write_all(fd, &file_act, FILE_ACTIVITY_SIZE))
@@ -567,8 +578,8 @@ void write_stats(int ofd)
 			continue;
 
 		if (IS_COLLECTED(act[p]->options)) {
-			if ((n = write_all(ofd, act[p]->_buf0, act[p]->fsize * act[p]->nr)) !=
-			    (act[p]->fsize * act[p]->nr)) {
+			if ((n = write_all(ofd, act[p]->_buf0, act[p]->fsize * act[p]->nr * act[p]->nr2)) !=
+			    (act[p]->fsize * act[p]->nr * act[p]->nr2)) {
 				p_write_error();
 			}
 		}
@@ -720,20 +731,21 @@ void open_ofile(int *ofd, char ofile[])
 					/* Unknown activity in list or item size has changed */
 					goto append_error;
 
-				if (act[p]->nr != file_act.nr) {
-					if (IS_REMANENT(act[p]->options) || !file_act.nr)
+				if ((act[p]->nr != file_act.nr) || (act[p]->nr2 != file_act.nr2)) {
+					if (IS_REMANENT(act[p]->options) || !file_act.nr || !file_act.nr2)
 						/*
 						 * Remanent structures cannot have a different number of items.
-						 * Also number of items should never be null.
+						 * Also number of items and subitems should never be null.
 						 */
 						goto append_error;
 					else {
 						/*
 						 * Force number of items (serial lines, network interfaces...)
-						 * to that of the file, and reallocate structures.
+						 * and sub-items to that of the file, and reallocate structures.
 						 */
-						act[p]->nr = file_act.nr;
-						SREALLOC(act[p]->_buf0, void, act[p]->msize * act[p]->nr);
+						act[p]->nr  = file_act.nr;
+						act[p]->nr2 = file_act.nr2;
+						SREALLOC(act[p]->_buf0, void, act[p]->msize * act[p]->nr * act[p]->nr2);
 					}
 				}
 				/* Save activity sequence */

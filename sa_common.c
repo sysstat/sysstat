@@ -81,7 +81,7 @@ void allocate_structures(struct activity *act[])
 	for (i = 0; i < NR_ACT; i++) {
 		if (act[i]->nr > 0) {
 			for (j = 0; j < 3; j++) {
-				SREALLOC(act[i]->buf[j], void, act[i]->msize * act[i]->nr);
+				SREALLOC(act[i]->buf[j], void, act[i]->msize * act[i]->nr * act[i]->nr2);
 			}
 		}
 	}
@@ -962,12 +962,11 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 			continue;
 
 		if (((p = get_activity_position(act, id_seq[i])) < 0) ||
-		    (act[p]->nr < 1)) {
+		    (act[p]->nr < 1) || (act[p]->nr2 < 1)) {
 			PANIC(1);
 		}
-
-		memcpy(act[p]->buf[dest], act[p]->buf[src], act[p]->msize * act[p]->nr);
-
+		
+		memcpy(act[p]->buf[dest], act[p]->buf[src], act[p]->msize * act[p]->nr * act[p]->nr2);
 	}
 }
 
@@ -986,7 +985,7 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			  struct file_activity *file_actlst)
 {
-	int i, j, p;
+	int i, j, k, p;
 	struct file_activity *fal = file_actlst;
 
 	for (i = 0; i < act_nr; i++, fal++) {
@@ -996,20 +995,25 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 * Ignore current activity in file, which is unknown to
 			 * current sysstat version.
 			 */
-			if (lseek(ifd, fal->size * fal->nr, SEEK_CUR) < (fal->size * fal->nr)) {
+			if (lseek(ifd, fal->size * fal->nr * fal->nr2, SEEK_CUR) < (fal->size * fal->nr * fal->nr2)) {
 				close(ifd);
 				perror("lseek");
 				exit(2);
 			}
 		}
-		else if ((act[p]->nr > 1) && (act[p]->msize > act[p]->fsize)) {
+		else if ((act[p]->nr > 0) &&
+			 ((act[p]->nr > 1) || (act[p]->nr2 > 1)) &&
+			 (act[p]->msize > act[p]->fsize)) {
 			for (j = 0; j < act[p]->nr; j++) {
-				sa_fread(ifd, (char *) act[p]->buf[curr] + j * act[p]->msize,
-					 act[p]->fsize, HARD_SIZE);
+				for (k = 0; k < act[p]->nr2; k++) {
+					sa_fread(ifd,
+						 (char *) act[p]->buf[curr] + (j * act[p]->nr2 + k) * act[p]->msize,
+						 act[p]->fsize, HARD_SIZE);
+				}
 			}
 		}
 		else if (act[p]->nr > 0) {
-			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * act[p]->nr, HARD_SIZE);
+			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2, HARD_SIZE);
 		}
 		else {
 			PANIC(act[p]->nr);
@@ -1083,10 +1087,10 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 		sa_fread(*ifd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
 
-		if (fal->nr < 1) {
+		if ((fal->nr < 1) || (fal->nr2 < 1)) {
 			/*
 			 * Every activity, known or unknown,
-			 * should have at least one item.
+			 * should have at least one item and sub-item.
 			 */
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
@@ -1101,6 +1105,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			}
 			act[p]->fsize = fal->size;
 			act[p]->nr    = fal->nr;
+			act[p]->nr2   = fal->nr2;
 			id_seq[j++]   = fal->id;
 		}
 	}

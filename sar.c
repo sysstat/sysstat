@@ -218,7 +218,7 @@ void print_read_error(void)
  ***************************************************************************
  * Check that every selected activity actually belongs to the sequence list.
  * If not, then the activity should be unselected since it will not be sent
- * by sadc. An activity can be unsent if its number of items is null.
+ * by sadc. An activity can be not sent if its number of items is null.
  *
  * IN:
  * @act_nr	Size of sequence list.
@@ -509,8 +509,9 @@ void write_stats_startup(int curr)
 	record_hdr[!curr].ust_time    = record_hdr[curr].ust_time;
 
 	for (i = 0; i < NR_ACT; i++) {
-		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))
-			memset(act[i]->buf[!curr], 0, act[i]->msize * act[i]->nr);
+		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
+			memset(act[i]->buf[!curr], 0, act[i]->msize * act[i]->nr * act[i]->nr2);
+		}
 	}
 	
 	flags |= S_F_SINCE_BOOT;
@@ -618,7 +619,7 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int
 void read_sadc_stat_bunch(int curr)
 {
 	int i, p;
-	
+
 	/* Read record header (type is always R_STATS since it is read from sadc) */
 	if (sa_read(&record_hdr[curr], RECORD_HEADER_SIZE)) {
 		print_read_error();
@@ -631,8 +632,8 @@ void read_sadc_stat_bunch(int curr)
 		if ((p = get_activity_position(act, id_seq[i])) < 0) {
 			PANIC(1);
 		}
-		
-		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr)) {
+
+		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2)) {
 			print_read_error();
 		}
 	}
@@ -801,13 +802,16 @@ void read_header_data(void)
 
 		p = get_activity_position(act, file_act.id);
 
-		if ((p < 0) || (act[p]->fsize != file_act.size) || !file_act.nr) {
+		if ((p < 0) || (act[p]->fsize != file_act.size)
+			    || !file_act.nr
+			    || !file_act.nr2) {
 			fprintf(stderr, _("Inconsistent input data\n"));
 			exit(3);
 		}
 
 		id_seq[i]   = file_act.id;	/* We necessarily have "i < NR_ACT" */
 		act[p]->nr  = file_act.nr;
+		act[p]->nr2 = file_act.nr2;
 	}
 
 	while (i < NR_ACT) {
