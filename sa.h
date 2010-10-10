@@ -285,6 +285,12 @@ struct activity {
 	 */
 	unsigned int options;
 	/*
+	 * Activity magical number. This number changes when activity format in file
+	 * is no longer compatible with the format of that same activity from
+	 * previous versions.
+	 */
+	unsigned int magic;
+	/*
 	 * The f_count() function is used to count the number of
 	 * items (serial lines, network interfaces, etc.) -> @nr
 	 * Such a function should _always_ return a value greater than
@@ -507,12 +513,26 @@ struct file_header {
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
 
 
+/*
+ * Base magical number for activities.
+ */
+#define ACTIVITY_MAGIC_BASE	0x8a
+/*
+ * Magical value used for activities with
+ * unknown format (used for sadf -H only).
+ */
+#define ACTIVITY_MAGIC_UNKNOWN	0x89
+
 /* List of activities saved in file */
 struct file_activity {
 	/*
 	 * Identification value of activity.
 	 */
 	unsigned int id		__attribute__ ((aligned (4)));
+	/*
+	 * Activity magical number.
+	 */
+	unsigned int magic	__attribute__ ((packed));
 	/*
 	 * Number of items for this activity.
 	 */

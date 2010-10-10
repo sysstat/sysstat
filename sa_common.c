@@ -990,10 +990,11 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 	for (i = 0; i < act_nr; i++, fal++) {
 
-		if ((p = get_activity_position(act, fal->id)) < 0) {
+		if (((p = get_activity_position(act, fal->id)) < 0) ||
+		    (act[p]->magic != fal->magic)) {
 			/*
 			 * Ignore current activity in file, which is unknown to
-			 * current sysstat version.
+			 * current sysstat version or has an unknown format.
 			 */
 			if (lseek(ifd, fal->size * fal->nr * fal->nr2, SEEK_CUR) < (fal->size * fal->nr * fal->nr2)) {
 				close(ifd);
@@ -1095,23 +1096,46 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 
+		if ((p = get_activity_position(act, fal->id)) < 0)
+			/* Unknown activity */
+			continue;
+		
+		if (act[p]->magic != fal->magic) {
+			/* Bad magical number */
+			if (ignore) {
+				/*
+				 * This is how sadf -H knows that this
+				 * activity has an unknown format.
+				 */
+				act[p]->magic = ACTIVITY_MAGIC_UNKNOWN;
+			}
+			else
+				continue;
+		}
+
 		if (fal->id == A_CPU) {
 			a_cpu = TRUE;
 		}
 
-		if ((p = get_activity_position(act, fal->id)) >= 0) {
-			if (fal->size > act[p]->msize) {
-				act[p]->msize = fal->size;
-			}
-			act[p]->fsize = fal->size;
-			act[p]->nr    = fal->nr;
-			act[p]->nr2   = fal->nr2;
-			id_seq[j++]   = fal->id;
+		if (fal->size > act[p]->msize) {
+			act[p]->msize = fal->size;
 		}
+		act[p]->fsize = fal->size;
+		act[p]->nr    = fal->nr;
+		act[p]->nr2   = fal->nr2;
+		/*
+		 * This is a known activity with a known format
+		 * (magical number). Only such activities will be displayed.
+		 * (Well, this may also be an unknown format if we have entered sadf -H.)
+		 */
+		id_seq[j++] = fal->id;
 	}
 
 	if (!a_cpu) {
-		/* CPU activity should always be in file */
+		/*
+		 * CPU activity should always be in file
+		 * and have a known format (expected magical number).
+		 */
 		handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 	}
 

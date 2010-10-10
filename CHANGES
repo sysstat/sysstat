@@ -3,6 +3,9 @@ Changes:
 xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  WARNING: Daily data files format has changed, and is *not*
 	  compatible with the previous one! [0x2171]
+	* Added a new magical value for each activity in file.
+	  A format change can now hit only one activity instead of
+	  the whole file.
 	* Added hugepages utilization statistics to sar.
 	* [Ivana Varekova]: Moved manual pages to $prefix/share/man
 	  instead of $prefix/man.

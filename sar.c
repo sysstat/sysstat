@@ -804,7 +804,9 @@ void read_header_data(void)
 
 		if ((p < 0) || (act[p]->fsize != file_act.size)
 			    || !file_act.nr
-			    || !file_act.nr2) {
+			    || !file_act.nr2
+			    || (act[p]->magic != file_act.magic)) {
+			/* Remember that we are reading data from sadc and not from a file... */
 			fprintf(stderr, _("Inconsistent input data\n"));
 			exit(3);
 		}
@@ -894,7 +896,10 @@ void read_stats_from_file(char from_file[])
 			exit(2);
 		}
 
-		/* Read and write stats located between two possible Linux restarts */
+		/*
+		 * Read and write stats located between two possible Linux restarts.
+		 * Activities that should be displayed are saved in id_seq[] array.
+		 */
 		for (i = 0; i < NR_ACT; i++) {
 
 			if (!id_seq[i])

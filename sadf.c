@@ -591,9 +591,9 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
  * Display data file header.
  *
  * IN:
- * @dfile	Name of system activity data file
- * @file_magic	System activity file magic header
- * @file_hdr	System activity file standard header
+ * @dfile	Name of system activity data file.
+ * @file_magic	System activity file magic header.
+ * @file_hdr	System activity file standard header.
  ***************************************************************************
  */
 void display_file_header(char *dfile, struct file_magic *file_magic,
@@ -601,7 +601,7 @@ void display_file_header(char *dfile, struct file_magic *file_magic,
 {
 	int i, p;
 	static __nr_t cpu_nr = -1;
-	
+
 	if (cpu_nr < 0) {
 		cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
 	}
@@ -632,7 +632,10 @@ void display_file_header(char *dfile, struct file_magic *file_magic,
 		}
 		printf("%02d: %s\t(x%d)", act[p]->id, act[p]->name, act[p]->nr);
 		if (act[p]->f_count2 || (act[p]->nr2 > 1)) {
-			printf(" (x%d)", act[p]->nr2);
+			printf("\t(x%d)", act[p]->nr2);
+		}
+		if (act[p]->magic == ACTIVITY_MAGIC_UNKNOWN) {
+			printf(_("\t[Unknown activity format]"));
 		}
 		printf("\n");
 	}

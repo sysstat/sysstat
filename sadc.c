@@ -249,6 +249,7 @@ void sa_sys_init(void)
 				act[i]->nr2 = (*act[i]->f_count2)(act[i]);
 			}
 			/* else act[i]->nr2 is a constant and doesn't need to be calculated */
+			
 			if (!act[i]->nr2) {
 				act[i]->nr = 0;
 			}
@@ -415,7 +416,7 @@ void fill_magic_header(struct file_magic *file_magic)
  * Fill system activity file header, then write it (or print it if stdout).
  *
  * IN:
- * @fd			Output file descriptor. May be stdout.
+ * @fd	Output file descriptor. May be stdout.
  ***************************************************************************
  */
 void setup_file_hdr(int fd)
@@ -473,10 +474,11 @@ void setup_file_hdr(int fd)
 			continue;
 
 		if (IS_COLLECTED(act[p]->options)) {
-			file_act.id   = act[p]->id;
-			file_act.nr   = act[p]->nr;
-			file_act.nr2  = act[p]->nr2;
-			file_act.size = act[p]->fsize;
+			file_act.id    = act[p]->id;
+			file_act.magic = act[p]->magic;
+			file_act.nr    = act[p]->nr;
+			file_act.nr2   = act[p]->nr2;
+			file_act.size  = act[p]->fsize;
 
 			if ((n = write_all(fd, &file_act, FILE_ACTIVITY_SIZE))
 			    != FILE_ACTIVITY_SIZE)
@@ -502,8 +504,8 @@ write_error:
  * before the cron daemon is started to avoid conflict with sa1/sa2 scripts.
  *
  * IN:
- * @ofd			Output file descriptor.
- * @rtype		Record type to write (dummy or comment).
+ * @ofd		Output file descriptor.
+ * @rtype	Record type to write (dummy or comment).
  ***************************************************************************
  */
 void write_special_record(int ofd, int rtype)
@@ -547,7 +549,7 @@ void write_special_record(int ofd, int rtype)
  * Write stats (or print them if stdout).
  *
  * IN:
- * @ofd			Output file descriptor. May be stdout.
+ * @ofd		Output file descriptor. May be stdout.
  ***************************************************************************
  */
 void write_stats(int ofd)
@@ -591,10 +593,10 @@ void write_stats(int ofd)
  * Create a system activity daily data file.
  *
  * IN:
- * @ofile		Name of output file.
+ * @ofile	Name of output file.
  *
  * OUT:
- * @ofd			Output file descriptor.
+ * @ofd		Output file descriptor.
  ***************************************************************************
  */
 void create_sa_file(int *ofd, char *ofile)
@@ -623,11 +625,11 @@ void create_sa_file(int *ofd, char *ofile)
  * Get descriptor for stdout.
  *
  * IN:
- * @stdfd		A value >= 0 indicates that stats data should also
- *			be written to stdout.
+ * @stdfd	A value >= 0 indicates that stats data should also
+ *		be written to stdout.
  *
  * OUT:
- * @stdfd		Stdout file descriptor.
+ * @stdfd	Stdout file descriptor.
  ***************************************************************************
  */
 void open_stdout(int *stdfd)
@@ -648,10 +650,10 @@ void open_stdout(int *stdfd)
  * We may enter this function several times (when we rotate a file).
  *
  * IN:
- * @ofile		Name of output file.
+ * @ofile	Name of output file.
  *
  * OUT:
- * @ofd			Output file descriptor.
+ * @ofd		Output file descriptor.
  ***************************************************************************
  */
 void open_ofile(int *ofd, char ofile[])
@@ -727,8 +729,12 @@ void open_ofile(int *ofd, char ofile[])
 
 				p = get_activity_position(act, file_act.id);
 
-				if ((p < 0) || (act[p]->fsize != file_act.size))
-					/* Unknown activity in list or item size has changed */
+				if ((p < 0) || (act[p]->fsize != file_act.size) ||
+				    (act[p]->magic != file_act.magic))
+					/*
+					 * Unknown activity in list or item size has changed or
+					 * unknown activity format.
+					 */
 					goto append_error;
 
 				if ((act[p]->nr != file_act.nr) || (act[p]->nr2 != file_act.nr2)) {
