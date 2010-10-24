@@ -140,6 +140,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 			COLLECT_ACTIVITY(A_PWR_CPUFREQ);
 			COLLECT_ACTIVITY(A_PWR_FAN);
 			COLLECT_ACTIVITY(A_PWR_TEMP);
+			COLLECT_ACTIVITY(A_PWR_WGHFREQ);
 		}
 		else if (!strcmp(p, K_ALL) || !strcmp(p, K_XALL)) {
 			/* Select all activities */

@@ -133,8 +133,9 @@ void display_help(char *progname)
 	fprintf(stderr, _("\t-m { <keyword> [,...] | ALL }\n"
 			  "\t\tPower management statistics\n"
 			  "\t\tKeywords are:\n"
-			  "\t\tCPU\tCPU clock frequency\n"
+			  "\t\tCPU\tCPU instantaneous clock frequency\n"
 			  "\t\tFAN\tFans speed\n"
+			  "\t\tFREQ\tCPU average clock frequency\n"
 			  "\t\tIN\tVoltage inputs\n"
 			  "\t\tTEMP\tDevices temperature\n"));
 	fprintf(stderr, _("\t-n { <keyword> [,...] | ALL }\n"

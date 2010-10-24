@@ -17,7 +17,7 @@
  */
 
 /* Number of activities */
-#define NR_ACT	34
+#define NR_ACT	35
 
 /* Activities */
 #define A_CPU		1
@@ -54,6 +54,7 @@
 #define A_PWR_TEMP	32
 #define A_PWR_IN	33
 #define A_HUGE		34
+#define A_PWR_WGHFREQ	35
 
 
 /* Macro used to flag an activity that should be collected */
@@ -153,6 +154,7 @@
 #define K_FAN		"FAN"
 #define K_TEMP		"TEMP"
 #define K_IN		"IN"
+#define K_FREQ		"FREQ"
 
 /* sadc program */
 #define SADC		"sadc"
@@ -172,6 +174,7 @@
 #define NR_IFACE_PREALLOC	2
 #define NR_SERIAL_PREALLOC	2
 #define NR_DISK_PREALLOC	3
+#define NR_FREQ_PREALLOC	0
 
 #define UTSNAME_LEN		65
 #define TIMESTAMP_LEN		16
@@ -663,6 +666,8 @@ extern __nr_t
 	wrap_get_temp_nr(struct activity *);
 extern __nr_t
 	wrap_get_in_nr(struct activity *);
+extern __nr_t
+	wrap_get_freq_nr(struct activity *);
 
 /* Functions used to read activities statistics */
 extern __read_funct_t
@@ -733,6 +738,8 @@ extern __read_funct_t
 	wrap_read_in(struct activity *);
 extern __read_funct_t
 	wrap_read_meminfo_huge(struct activity *);
+extern __read_funct_t
+	wrap_read_time_in_state(struct activity *);
 
 /* Other functions */
 extern void

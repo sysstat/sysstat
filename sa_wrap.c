@@ -27,118 +27,6 @@ extern struct record_header record_hdr;
 
 /*
  ***************************************************************************
- * Count number of interrupts that are in /proc/stat file.
- * Truncate the number of different individual interrupts to NR_IRQS.
- *
- * IN:
- * @a	Activity structure.
- *
- * RETURNS:
- * Number of interrupts, including total number of interrupts.
- * Value in [0, NR_IRQS + 1].
- ***************************************************************************
- */
-__nr_t wrap_get_irq_nr(struct activity *a)
-{
-	__nr_t n;
-
-	if ((n = get_irq_nr()) > (a->bitmap->b_size + 1)) {
-		n = a->bitmap->b_size + 1;
-	}
-	
-	return n;
-}
-
-/*
- ***************************************************************************
- * Find number of serial lines that support tx/rx accounting
- * in /proc/tty/driver/serial file.
- *
- * IN:
- * @a	Activity structure.
- *
- * RETURNS:
- * Number of serial lines supporting tx/rx accouting + a pre-allocation
- * constant.
- ***************************************************************************
- */
-__nr_t wrap_get_serial_nr(struct activity *a)
-{
-	__nr_t n = 0;
-	
-	if ((n = get_serial_nr()) > 0)
-		return n + NR_SERIAL_PREALLOC;
-	
-	return 0;
-}
-
-/*
- ***************************************************************************
- * Find number of interfaces (network devices) that are in /proc/net/dev
- * file.
- *
- * IN:
- * @a	Activity structure.
- *
- * RETURNS:
- * Number of network interfaces + a pre-allocation constant.
- ***************************************************************************
- */
-__nr_t wrap_get_iface_nr(struct activity *a)
-{
-	__nr_t n = 0;
-	
-	if ((n = get_iface_nr()) > 0)
-		return n + NR_IFACE_PREALLOC;
-	
-	return 0;
-}
-
-/*
- ***************************************************************************
- * Compute number of CPU structures to allocate.
- *
- * IN:
- * @a	Activity structure.
- *
- * RETURNS:
- * Number of structures (value in [1, NR_CPUS + 1]).
- * 1 means that there is only one proc and non SMP kernel.
- * 2 means one proc and SMP kernel.
- * Etc.
- ***************************************************************************
- */
-__nr_t wrap_get_cpu_nr(struct activity *a)
-{
-	return (get_cpu_nr(a->bitmap->b_size) + 1);
-}
-
-/*
- ***************************************************************************
- * Get number of devices in /proc/diskstats.
- * Always done, since disk stats must be read at least for sar -b
- * if not for sar -d.
- *
- * IN:
- * @a	Activity structure.
- *
- * RETURNS:
- * Number of devices + a pre-allocation constant.
- ***************************************************************************
- */
-__nr_t wrap_get_disk_nr(struct activity *a)
-{
-	__nr_t n = 0;
-	unsigned int f = COLLECT_PARTITIONS(a->opt_flags);
-	
-	if ((n = get_disk_nr(f)) > 0)
-		return n + NR_DISK_PREALLOC;
-	
-	return 0;
-}
-
-/*
- ***************************************************************************
  * Read CPU statistics.
  *
  * IN:
@@ -799,22 +687,6 @@ __read_funct_t wrap_read_cpuinfo(struct activity *a)
 
 /*
  ***************************************************************************
- * Get number of fan structures to allocate.
- *
- * IN:
- * @a  Activity structure.
- *
- * RETURNS:
- * Number of structures.
- ***************************************************************************
- */
-__nr_t wrap_get_fan_nr(struct activity *a)
-{
-	return (get_fan_nr());
-}
-
-/*
- ***************************************************************************
  * Read fan statistics.
  *
  * IN:
@@ -837,22 +709,6 @@ __read_funct_t wrap_read_fan(struct activity *a)
 
 /*
  ***************************************************************************
- * Get number of temp structures to allocate.
- *
- * IN:
- * @a  Activity structure.
- *
- * RETURNS:
- * Number of structures.
- ***************************************************************************
- */
-__nr_t wrap_get_temp_nr(struct activity *a)
-{
-	return (get_temp_nr());
-}
-
-/*
- ***************************************************************************
  * Read temperature statistics.
  *
  * IN:
@@ -869,6 +725,28 @@ __read_funct_t wrap_read_temp(struct activity *a)
 
 	/* Read temperature stats */
 	read_temp(st_pwr_temp, a->nr);
+
+	return;
+}
+
+/*
+ ***************************************************************************
+ * Read voltage input statistics.
+ *
+ * IN:
+ * @a  Activity structure.
+ *
+ * OUT:
+ * @a  Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_in(struct activity *a)
+{
+	struct stats_pwr_in *st_pwr_in
+		= (struct stats_pwr_in *) a->_buf0;
+
+	/* Read voltage input stats */
+	read_in(st_pwr_in, a->nr);
 
 	return;
 }
@@ -897,6 +775,201 @@ __read_funct_t wrap_read_meminfo_huge(struct activity *a)
 
 /*
  ***************************************************************************
+ * Read weighted CPU frequency statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_time_in_state(struct activity *a)
+{
+	__nr_t	cpu = 0;
+	int j;
+	struct stats_pwr_wghfreq *st_pwr_wghfreq
+		= (struct stats_pwr_wghfreq *) a->_buf0;
+	struct stats_pwr_wghfreq *st_pwr_wghfreq_i, *st_pwr_wghfreq_j, *st_pwr_wghfreq_all_j;
+
+	while (cpu < (a->nr - 1)) {
+		/* Read current CPU time-in-state data */
+		st_pwr_wghfreq_i = st_pwr_wghfreq + (cpu + 1) * a->nr2;
+		read_time_in_state(st_pwr_wghfreq_i, cpu, a->nr2);
+
+		/* Also save data for CPU 'all' */
+		for (j = 0; j < a->nr2; j++) {
+			st_pwr_wghfreq_j     = st_pwr_wghfreq_i + j;	/* CPU #cpu, state #j */
+			st_pwr_wghfreq_all_j = st_pwr_wghfreq   + j;	/* CPU #all, state #j */
+			if (!cpu) {
+				/* Assume that possible frequencies are the same for all CPUs */
+				st_pwr_wghfreq_all_j->freq = st_pwr_wghfreq_j->freq;
+			}
+			st_pwr_wghfreq_all_j->time_in_state += st_pwr_wghfreq_j->time_in_state;
+		}
+		cpu++;
+	}
+
+	/* Special processing for non SMP kernels: Only CPU 'all' is available */
+	if (a->nr == 1) {
+		read_time_in_state(st_pwr_wghfreq, 0, a->nr2);
+	}
+	else {
+		for (j = 0; j < a->nr2; j++) {
+			st_pwr_wghfreq_all_j = st_pwr_wghfreq + j;	/* CPU #all, state #j */
+			st_pwr_wghfreq_all_j->time_in_state /= (a->nr - 1);
+		}
+	}
+
+	return;
+}
+
+/*
+ ***************************************************************************
+ * Count number of interrupts that are in /proc/stat file.
+ * Truncate the number of different individual interrupts to NR_IRQS.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of interrupts, including total number of interrupts.
+ * Value in [0, NR_IRQS + 1].
+ ***************************************************************************
+ */
+__nr_t wrap_get_irq_nr(struct activity *a)
+{
+	__nr_t n;
+
+	if ((n = get_irq_nr()) > (a->bitmap->b_size + 1)) {
+		n = a->bitmap->b_size + 1;
+	}
+
+	return n;
+}
+
+/*
+ ***************************************************************************
+ * Find number of serial lines that support tx/rx accounting
+ * in /proc/tty/driver/serial file.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of serial lines supporting tx/rx accouting + a pre-allocation
+ * constant.
+ ***************************************************************************
+ */
+__nr_t wrap_get_serial_nr(struct activity *a)
+{
+	__nr_t n = 0;
+
+	if ((n = get_serial_nr()) > 0)
+		return n + NR_SERIAL_PREALLOC;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Find number of interfaces (network devices) that are in /proc/net/dev
+ * file.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of network interfaces + a pre-allocation constant.
+ ***************************************************************************
+ */
+__nr_t wrap_get_iface_nr(struct activity *a)
+{
+	__nr_t n = 0;
+
+	if ((n = get_iface_nr()) > 0)
+		return n + NR_IFACE_PREALLOC;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Compute number of CPU structures to allocate.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of structures (value in [1, NR_CPUS + 1]).
+ * 1 means that there is only one proc and non SMP kernel.
+ * 2 means one proc and SMP kernel.
+ * Etc.
+ ***************************************************************************
+ */
+__nr_t wrap_get_cpu_nr(struct activity *a)
+{
+	return (get_cpu_nr(a->bitmap->b_size) + 1);
+}
+
+/*
+ ***************************************************************************
+ * Get number of devices in /proc/diskstats.
+ * Always done, since disk stats must be read at least for sar -b
+ * if not for sar -d.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of devices + a pre-allocation constant.
+ ***************************************************************************
+ */
+__nr_t wrap_get_disk_nr(struct activity *a)
+{
+	__nr_t n = 0;
+	unsigned int f = COLLECT_PARTITIONS(a->opt_flags);
+
+	if ((n = get_disk_nr(f)) > 0)
+		return n + NR_DISK_PREALLOC;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Get number of fan structures to allocate.
+ *
+ * IN:
+ * @a  Activity structure.
+ *
+ * RETURNS:
+ * Number of structures.
+ ***************************************************************************
+ */
+__nr_t wrap_get_fan_nr(struct activity *a)
+{
+	return (get_fan_nr());
+}
+
+/*
+ ***************************************************************************
+ * Get number of temp structures to allocate.
+ *
+ * IN:
+ * @a  Activity structure.
+ *
+ * RETURNS:
+ * Number of structures.
+ ***************************************************************************
+ */
+__nr_t wrap_get_temp_nr(struct activity *a)
+{
+	return (get_temp_nr());
+}
+
+/*
+ ***************************************************************************
  * Get number of voltage input structures to allocate.
  *
  * IN:
@@ -913,22 +986,21 @@ __nr_t wrap_get_in_nr(struct activity *a)
 
 /*
  ***************************************************************************
- * Read voltage input statistics.
+ * Count number of possible frequencies for CPU#0.
  *
  * IN:
- * @a  Activity structure.
+ * @a	Activity structure.
  *
- * OUT:
- * @a  Activity structure with statistics.
+ * RETURNS:
+ * Number of CPU frequencies + a pre-allocation constant.
  ***************************************************************************
  */
-__read_funct_t wrap_read_in(struct activity *a)
+__nr_t wrap_get_freq_nr(struct activity *a)
 {
-	struct stats_pwr_in *st_pwr_in
-		= (struct stats_pwr_in *) a->_buf0;
+	__nr_t n = 0;
 
-	/* Read voltage input stats */
-	read_in(st_pwr_in, a->nr);
+	if ((n = get_freq_nr()) > 0)
+		return n + NR_FREQ_PREALLOC;
 
-	return;
+	return 0;
 }

@@ -1006,7 +1006,7 @@ struct activity pwr_temp_act = {
 /* Voltage inputs */
 struct activity pwr_in_act = {
 	.id		= A_PWR_IN,
-	.options	= AO_CLOSE_MARKUP,
+	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_in_nr,
@@ -1061,6 +1061,36 @@ struct activity huge_act = {
 	.bitmap		= NULL
 };
 
+/* CPU weighted frequency */
+struct activity pwr_wghfreq_act = {
+	.id		= A_PWR_WGHFREQ,
+	.options	= AO_CLOSE_MARKUP,
+	.magic		= ACTIVITY_MAGIC_BASE,
+#ifdef SOURCE_SADC
+	.f_count	= wrap_get_cpu_nr,
+	.f_count2	= wrap_get_freq_nr,
+	.f_read		= wrap_read_time_in_state,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_pwr_wghfreq_stats,
+	.f_print_avg	= print_pwr_wghfreq_stats,
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_pwr_wghfreq_stats,
+	.f_xml_print	= xml_print_pwr_wghfreq_stats,
+	.hdr_line	= "CPU;wghMHz",
+	.name		= "A_PWR_WGHFREQ",
+#endif
+	.nr		= -1,
+	.nr2		= 1,
+	.fsize		= STATS_PWR_WGHFREQ_SIZE,
+	.msize		= STATS_PWR_WGHFREQ_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= &cpu_bitmap
+};
+
+
 /*
  * Array of activities.
  */
@@ -1098,5 +1128,6 @@ struct activity *act[NR_ACT] = {
 	&pwr_fan_act,
 	&pwr_temp_act,
 	&pwr_in_act,
-	&huge_act
+	&huge_act,
+	&pwr_wghfreq_act
 };

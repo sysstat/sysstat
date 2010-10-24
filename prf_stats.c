@@ -2398,6 +2398,70 @@ __print_funct_t render_huge_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
+ * Display weighted CPU frequency statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_pwr_wghfreq_stats(struct activity *a, int isdb, char *pre,
+					 int curr, unsigned long long itv)
+{
+	int i, k;
+	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
+	unsigned long long tis, tisfreq;
+	int pt_newlin
+		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
+		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			/* Yes... */
+			tisfreq = 0;
+			tis = 0;
+
+			for (k = 0; k < a->nr2; k++) {
+
+				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+				if (!spc_k->freq)
+					break;
+				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+
+				tisfreq += (spc_k->freq / 1000) *
+				           (spc_k->time_in_state - spp_k->time_in_state);
+				tis     += (spc_k->time_in_state - spp_k->time_in_state);
+			}
+			
+			if (!i) {
+				/* This is CPU "all" */
+				render(isdb, pre, pt_newlin,
+				       "all\twghMHz",
+				       "-1", NULL,
+				       NOVAL,
+				       tis ? ((double) tisfreq) / tis : 0.0);
+			}
+			else {
+				render(isdb, pre, pt_newlin,
+				       "cpu%d\twghMHz",
+				       "%d", cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       tis ? ((double) tisfreq) / tis : 0.0);
+			}
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Print tabulations
  *
  * IN:
@@ -4229,4 +4293,79 @@ __print_funct_t xml_print_huge_stats(struct activity *a, int curr, int tab,
 		0.0);
 
 	xprintf(tab, "</hugepages>");
+}
+
+/*
+ ***************************************************************************
+ * Display weighted CPU frequency statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_pwr_wghfreq_stats(struct activity *a, int curr, int tab,
+					    unsigned long long itv)
+{
+	int i, k;
+	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
+	unsigned long long tis, tisfreq;
+	char cpuno[8];
+
+	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+		goto close_xml_markup;
+
+	xml_markup_power_management(tab, OPEN_XML_MARKUP);
+	tab++;
+
+	xprintf(tab++, "<cpu-weighted-frequency unit=\"MHz\">");
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
+		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			/* Yes... */
+			tisfreq = 0;
+			tis = 0;
+
+			for (k = 0; k < a->nr2; k++) {
+
+				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+				if (!spc_k->freq)
+					break;
+				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+
+				tisfreq += (spc_k->freq / 1000) *
+				           (spc_k->time_in_state - spp_k->time_in_state);
+				tis     += (spc_k->time_in_state - spp_k->time_in_state);
+			}
+
+			if (!i) {
+				/* This is CPU "all" */
+				strcpy(cpuno, "all");
+			}
+			else {
+				sprintf(cpuno, "%d", i - 1);
+			}
+
+			xprintf(tab, "<cpuwfreq number=\"%s\" "
+				"weighted-frequency=\"%.2f\"/>",
+				cpuno,
+				tis ? ((double) tisfreq) / tis : 0.0);
+		}
+	}
+
+	xprintf(--tab, "</cpu-weighted-frequency>");
+	tab--;
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_power_management(tab, CLOSE_XML_MARKUP);
+	}
 }

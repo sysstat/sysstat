@@ -2217,3 +2217,81 @@ __print_funct_t print_avg_huge_stats(struct activity *a, int prev, int curr,
 {
 	stub_print_huge_stats(a, prev, curr, itv, TRUE);
 }
+
+/*
+ ***************************************************************************
+ * Display CPU weighted frequency statistics. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	True if displaying average statistics.
+ ***************************************************************************
+ */
+void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
+			     unsigned long long itv)
+{
+	int i, k;
+	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
+	unsigned long long tis, tisfreq;
+
+	if (dis) {
+		printf("\n%-11s     CPU    wghMHz\n",
+		       timestamp[!curr]);
+	}
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * The size of a->buf[...] CPU structure may be different from the default
+		 * sizeof(struct stats_pwr_wghfreq) value if data have been read from a file!
+		 * That's why we don't use a syntax like:
+		 * spc = (struct stats_pwr_wghfreq *) a->buf[...] + i;
+		 */
+		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr] + i * a->msize * a->nr2);
+		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[prev] + i * a->msize * a->nr2);
+
+		/*
+		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
+		 * Anyway, NR_CPUS may vary between the version of sysstat
+		 * used by sadc to create a file, and the version of sysstat
+		 * used by sar to read it...
+		 */
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			/* Yes: Display it */
+			printf("%-11s", timestamp[curr]);
+
+			if (!i) {
+				/* This is CPU "all" */
+				printf("     all");
+			}
+			else {
+				printf("     %3d", i - 1);
+			}
+
+			tisfreq = 0;
+			tis = 0;
+
+			for (k = 0; k < a->nr2; k++) {
+
+				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+				if (!spc_k->freq)
+					break;
+				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+
+				tisfreq += (spc_k->freq / 1000) *
+				           (spc_k->time_in_state - spp_k->time_in_state);
+				tis     += (spc_k->time_in_state - spp_k->time_in_state);
+			}
+
+			/* Display weighted frequency for current CPU */
+			printf(" %9.2f\n", tis ? ((double) tisfreq) / tis : 0.0);
+		}
+	}
+}

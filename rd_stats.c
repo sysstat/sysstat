@@ -1573,6 +1573,319 @@ void read_net_udp6(struct stats_net_udp6 *st_net_udp6)
 
 /*
  ***************************************************************************
+ * Read CPU frequency statistics.
+ *
+ * IN:
+ * @st_pwr_cpufreq	Structure where stats will be saved.
+ * @nbr			Total number of CPU (including cpu "all").
+ *
+ * OUT:
+ * @st_pwr_cpufreq	Structure with statistics.
+ ***************************************************************************
+ */
+void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
+{
+	FILE *fp;
+	struct stats_pwr_cpufreq *st_pwr_cpufreq_i;
+	char line[1024];
+	int proc_nb = 0, nr = 0;
+	unsigned int ifreq, dfreq;
+	
+	if ((fp = fopen(CPUINFO, "r")) == NULL)
+		return;
+	
+	st_pwr_cpufreq->cpufreq = 0;
+	
+	while (fgets(line, 1024, fp) != NULL) {
+		
+		if (!strncmp(line, "processor\t", 10)) {
+			sscanf(strchr(line, ':') + 1, "%d", &proc_nb);
+		}
+		
+		else if (!strncmp(line, "cpu MHz\t", 8)) {
+			sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
+			
+			if (proc_nb < (nbr - 1)) {			/* FIXME: quelle reaction pour un kernel non SMP 1 proc? */
+				/* Save current CPU frequency */
+				st_pwr_cpufreq_i = st_pwr_cpufreq + proc_nb + 1;
+				st_pwr_cpufreq_i->cpufreq = ifreq * 100 + dfreq / 10;
+				
+				/* Also save it to compute an average CPU frequency */
+				st_pwr_cpufreq->cpufreq += st_pwr_cpufreq_i->cpufreq;
+				nr++;
+			}
+		}
+	}
+	
+	fclose(fp);
+	
+	if (nr) {
+		/* Compute average CPU frequency for this machine */
+		st_pwr_cpufreq->cpufreq /= nr;
+	}
+}
+
+/*
+ ***************************************************************************
+ * Read fan statistics.
+ *
+ * IN:
+ * @st_pwr_fan	Structure where stats will be saved.
+ * @nbr		Total number of fans.
+ *
+ * OUT:
+ * @st_pwr_fan Structure with statistics.
+ ***************************************************************************
+ */
+void read_fan(struct stats_pwr_fan *st_pwr_fan, int nbr)
+{
+#ifdef HAVE_SENSORS
+	int count = 0;
+	const sensors_chip_name *chip;
+	const sensors_feature *feature;
+	const sensors_subfeature *sub;
+	struct stats_pwr_fan *st_pwr_fan_i;
+	int chip_nr = 0;
+	int i, j;
+
+	memset(st_pwr_fan, 0, STATS_PWR_FAN_SIZE);
+	int err = 0;
+
+	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+		i = 0;
+		while ((feature = sensors_get_features(chip, &i))) {
+			if ((feature->type == SENSORS_FEATURE_FAN) && (count < nbr)) {
+				j = 0;
+				st_pwr_fan_i = st_pwr_fan + count;
+				sensors_snprintf_chip_name(st_pwr_fan_i->device, MAX_SENSORS_DEV_LEN, chip);
+				
+				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
+					if ((sub->type == SENSORS_SUBFEATURE_FAN_INPUT) &&
+					    (sub->flags & SENSORS_MODE_R)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm))) {
+							st_pwr_fan_i->rpm = 0;
+						}
+					}
+					else if ((sub->type == SENSORS_SUBFEATURE_FAN_MIN)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm_min))) {
+							st_pwr_fan_i->rpm_min = 0;
+						}
+					}
+				}
+				count++;
+			}
+		}
+	}
+#endif /* HAVE_SENSORS */
+}
+
+/*
+ ***************************************************************************
+ * Read device temperature statistics.
+ *
+ * IN:
+ * @st_pwr_temp	Structure where stats will be saved.
+ * @nbr		Total number of fans.
+ *
+ * OUT:
+ * @st_pwr_temp	Structure with statistics.
+ ***************************************************************************
+ */
+void read_temp(struct stats_pwr_temp *st_pwr_temp, int nbr)
+{
+#ifdef HAVE_SENSORS
+	int count = 0;
+	const sensors_chip_name *chip;
+	const sensors_feature *feature;
+	const sensors_subfeature *sub;
+	struct stats_pwr_temp *st_pwr_temp_i;
+	int chip_nr = 0;
+	int i, j;
+
+	memset(st_pwr_temp, 0, STATS_PWR_TEMP_SIZE);
+	int err = 0;
+
+	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+		i = 0;
+		while ((feature = sensors_get_features(chip, &i))) {
+			if ((feature->type == SENSORS_FEATURE_TEMP) && (count < nbr)) {
+				j = 0;
+				st_pwr_temp_i = st_pwr_temp + count;
+				sensors_snprintf_chip_name(st_pwr_temp_i->device, MAX_SENSORS_DEV_LEN, chip);
+				
+				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
+					if ((sub->type == SENSORS_SUBFEATURE_TEMP_INPUT) &&
+						(sub->flags & SENSORS_MODE_R)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp))) {
+							st_pwr_temp_i->temp = 0;
+						}
+					}
+					else if ((sub->type == SENSORS_SUBFEATURE_TEMP_MIN)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_min))) {
+							st_pwr_temp_i->temp_min = 0;
+						}
+					}
+					else if ((sub->type == SENSORS_SUBFEATURE_TEMP_MAX)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_max))) {
+							st_pwr_temp_i->temp_max = 0;
+						}
+					}
+				}
+				count++;
+			}
+		}
+	}
+#endif /* HAVE_SENSORS */
+}
+
+/*
+ ***************************************************************************
+ * Read voltage inputs statistics.
+ *
+ * IN:
+ * @st_pwr_in	Structure where stats will be saved.
+ * @nbr		Total number of voltage inputs.
+ *
+ * OUT:
+ * @st_pwr_in	Structure with statistics.
+ ***************************************************************************
+ */
+void read_in(struct stats_pwr_in *st_pwr_in, int nbr)
+{
+#ifdef HAVE_SENSORS
+	int count = 0;
+	const sensors_chip_name *chip;
+	const sensors_feature *feature;
+	const sensors_subfeature *sub;
+	struct stats_pwr_in *st_pwr_in_i;
+	int chip_nr = 0;
+	int i, j;
+
+	memset(st_pwr_in, 0, STATS_PWR_IN_SIZE);
+	int err = 0;
+
+	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+		i = 0;
+		while ((feature = sensors_get_features(chip, &i))) {
+			if ((feature->type == SENSORS_FEATURE_IN) && (count < nbr)) {
+				j = 0;
+				st_pwr_in_i = st_pwr_in + count;
+				sensors_snprintf_chip_name(st_pwr_in_i->device, MAX_SENSORS_DEV_LEN, chip);
+
+				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
+					if ((sub->type == SENSORS_SUBFEATURE_IN_INPUT) &&
+						(sub->flags & SENSORS_MODE_R)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in))) {
+							st_pwr_in_i->in = 0;
+						}
+					}
+					else if ((sub->type == SENSORS_SUBFEATURE_IN_MIN)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in_min))) {
+							st_pwr_in_i->in_min = 0;
+						}
+					}
+					else if ((sub->type == SENSORS_SUBFEATURE_IN_MAX)) {
+						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in_max))) {
+							st_pwr_in_i->in_max = 0;
+						}
+					}
+				}
+				count++;
+			}
+		}
+	}
+#endif /* HAVE_SENSORS */
+}
+
+/*
+ ***************************************************************************
+ * Read hugepages statistics from /proc/meminfo.
+ *
+ * IN:
+ * @st_huge	Structure where stats will be saved.
+ *
+ * OUT:
+ * @st_huge	Structure with statistics.
+ ***************************************************************************
+ */
+void read_meminfo_huge(struct stats_huge *st_huge)
+{
+	FILE *fp;
+	char line[128];
+	unsigned long szhkb = 0;
+
+	if ((fp = fopen(MEMINFO, "r")) == NULL)
+		return;
+
+	while (fgets(line, 128, fp) != NULL) {
+
+		if (!strncmp(line, "HugePages_Total:", 16)) {
+			/* Read the total number of huge pages */
+			sscanf(line + 16, "%lu", &st_huge->tlhkb);
+		}
+		else if (!strncmp(line, "HugePages_Free:", 15)) {
+			/* Read the number of free huge pages */
+			sscanf(line + 15, "%lu", &st_huge->frhkb);
+		}
+		else if (!strncmp(line, "Hugepagesize:", 13)) {
+			/* Read the default size of a huge page in kB */
+			sscanf(line + 13, "%lu", &szhkb);
+		}
+	}
+
+	fclose(fp);
+
+	/* We want huge pages stats in kB and not expressed in a number of pages */
+	st_huge->tlhkb *= szhkb;
+	st_huge->frhkb *= szhkb;
+}
+
+/*
+ ***************************************************************************
+ * Read CPU average frequencies statistics.
+ *
+ * IN:
+ * @st_pwr_wghfreq	Structure where stats will be saved.
+ * @cpu_nr		CPU number for which time_in_state date will be read.
+ * @nbr			Total number of states (frequencies).
+ *
+ * OUT:
+ * @st_pwr_wghfreq	Structure with statistics.
+ ***************************************************************************
+ */
+void read_time_in_state(struct stats_pwr_wghfreq *st_pwr_wghfreq, int cpu_nr, int nbr)
+{
+	FILE *fp;
+	struct stats_pwr_wghfreq *st_pwr_wghfreq_j;
+	char filename[MAX_PF_NAME];
+	char line[128];
+	int j = 0;
+	unsigned long freq;
+	unsigned long long time_in_state;
+
+	snprintf(filename, MAX_PF_NAME, "%s/cpu%d/%s",
+		 SYSFS_DEVCPU, cpu_nr, SYSFS_TIME_IN_STATE);
+	if ((fp = fopen(filename, "r")) == NULL)
+		return;
+
+	while (fgets(line, 128, fp) != NULL) {
+
+		sscanf(line, "%lu %llu", &freq, &time_in_state);
+
+		if (j < nbr) {
+			/* Save current frequency and time */
+			st_pwr_wghfreq_j = st_pwr_wghfreq + j;
+			st_pwr_wghfreq_j->freq = freq;
+			st_pwr_wghfreq_j->time_in_state = time_in_state;
+			j++;
+		}
+	}
+
+	fclose(fp);
+}
+
+/*
+ ***************************************************************************
  * Read machine uptime, independently of the number of processors.
  *
  * OUT:
@@ -1592,7 +1905,8 @@ void read_uptime(unsigned long long *uptime)
 		return;
 
 	sscanf(line, "%lu.%lu", &up_sec, &up_cent);
-	*uptime = (unsigned long long) up_sec * HZ + (unsigned long long) up_cent * HZ / 100;
+	*uptime = (unsigned long long) up_sec * HZ +
+	          (unsigned long long) up_cent * HZ / 100;
 
 	fclose(fp);
 
@@ -1615,11 +1929,11 @@ int get_irq_nr(void)
 
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return 0;
-	
+
 	while (fgets(line, 8192, fp) != NULL) {
 
 		if (!strncmp(line, "intr ", 5)) {
-			
+
 			while (pos < strlen(line)) {
 				in++;
 				pos += strcspn(line + pos + 1, " ") + 1;
@@ -1628,7 +1942,7 @@ int get_irq_nr(void)
 	}
 
 	fclose(fp);
-	
+
 	return in;
 }
 
@@ -1758,7 +2072,7 @@ int get_diskstats_dev_nr(int count_part, int only_used_dev)
 int get_disk_nr(unsigned int f)
 {
 	int disk_nr;
-	
+
 	/*
 	 * Partitions are taken into account by sar -d only with
 	 * kernels 2.6.25 and later.
@@ -1917,66 +2231,12 @@ int get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 	}
 
 	fclose(fp);
-	
+
 	if (line) {
 		free(line);
 	}
 
 	return irq;
-}
-
-/*
- ***************************************************************************
- * Read CPU frequency statistics.
- *
- * IN:
- * @st_pwr_cpufreq	Structure where stats will be saved.
- * @nbr			Total number of CPU (including cpu "all").
- *
- * OUT:
- * @st_pwr_cpufreq	Structure with statistics.
- ***************************************************************************
- */
-void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
-{
-	FILE *fp;
-	struct stats_pwr_cpufreq *st_pwr_cpufreq_i;
-	char line[1024];
-	int proc_nb = 0, nr = 0;
-	unsigned int ifreq, dfreq;
-	
-	if ((fp = fopen(CPUINFO, "r")) == NULL)
-		return;
-	
-	st_pwr_cpufreq->cpufreq = 0;
-	
-	while (fgets(line, 1024, fp) != NULL) {
-		
-		if (!strncmp(line, "processor\t", 10)) {
-			sscanf(strchr(line, ':') + 1, "%d", &proc_nb);
-		}
-		
-		else if (!strncmp(line, "cpu MHz\t", 8)) {
-			sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
-			
-			if (proc_nb < (nbr - 1)) {
-				/* Save current CPU frequency */
-				st_pwr_cpufreq_i = st_pwr_cpufreq + proc_nb + 1;
-				st_pwr_cpufreq_i->cpufreq = ifreq * 100 + dfreq / 10;
-				
-				/* Also save it to compute an average CPU frequency */
-				st_pwr_cpufreq->cpufreq += st_pwr_cpufreq_i->cpufreq;
-				nr++;
-			}
-		}
-	}
-	
-	fclose(fp);
-	
-	if (nr) {
-		/* Compute average CPU frequency for this machine */
-		st_pwr_cpufreq->cpufreq /= nr;
-	}
 }
 
 #ifdef HAVE_SENSORS
@@ -2030,60 +2290,6 @@ int get_fan_nr(void)
 
 /*
  ***************************************************************************
- * Read fan statistics.
- *
- * IN:
- * @st_pwr_fan	Structure where stats will be saved.
- * @nbr		Total number of fans.
- *
- * OUT:
- * @st_pwr_fan Structure with statistics.
- ***************************************************************************
- */
-void read_fan(struct stats_pwr_fan *st_pwr_fan, int nbr)
-{
-#ifdef HAVE_SENSORS
-	int count = 0;
-	const sensors_chip_name *chip;
-	const sensors_feature *feature;
-	const sensors_subfeature *sub;
-	struct stats_pwr_fan *st_pwr_fan_i;
-	int chip_nr = 0;
-	int i, j;
-
-	memset(st_pwr_fan, 0, STATS_PWR_FAN_SIZE);
-	int err = 0;
-
-	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
-		i = 0;
-		while ((feature = sensors_get_features(chip, &i))) {
-			if ((feature->type == SENSORS_FEATURE_FAN) && (count < nbr)) {
-				j = 0;
-				st_pwr_fan_i = st_pwr_fan + count;
-				sensors_snprintf_chip_name(st_pwr_fan_i->device, MAX_SENSORS_DEV_LEN, chip);
-				
-				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
-					if ((sub->type == SENSORS_SUBFEATURE_FAN_INPUT) &&
-					    (sub->flags & SENSORS_MODE_R)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm))) {
-							st_pwr_fan_i->rpm = 0;
-						}
-					}
-					else if ((sub->type == SENSORS_SUBFEATURE_FAN_MIN)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm_min))) {
-							st_pwr_fan_i->rpm_min = 0;
-						}
-					}
-				}
-				count++;
-			}
-		}
-	}
-#endif /* HAVE_SENSORS */
-}
-
-/*
- ***************************************************************************
  * Count the number of temperature sensors on the machine.
  *
  * RETURNS:
@@ -2098,65 +2304,6 @@ int get_temp_nr(void)
 	return 0;
 #endif /* HAVE_SENSORS */
 
-}
-
-/*
- ***************************************************************************
- * Read device temperature statistics.
- *
- * IN:
- * @st_pwr_temp	Structure where stats will be saved.
- * @nbr		Total number of fans.
- *
- * OUT:
- * @st_pwr_temp	Structure with statistics.
- ***************************************************************************
- */
-void read_temp(struct stats_pwr_temp *st_pwr_temp, int nbr)
-{
-#ifdef HAVE_SENSORS
-	int count = 0;
-	const sensors_chip_name *chip;
-	const sensors_feature *feature;
-	const sensors_subfeature *sub;
-	struct stats_pwr_temp *st_pwr_temp_i;
-	int chip_nr = 0;
-	int i, j;
-
-	memset(st_pwr_temp, 0, STATS_PWR_TEMP_SIZE);
-	int err = 0;
-
-	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
-		i = 0;
-		while ((feature = sensors_get_features(chip, &i))) {
-			if ((feature->type == SENSORS_FEATURE_TEMP) && (count < nbr)) {
-				j = 0;
-				st_pwr_temp_i = st_pwr_temp + count;
-				sensors_snprintf_chip_name(st_pwr_temp_i->device, MAX_SENSORS_DEV_LEN, chip);
-				
-				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
-					if ((sub->type == SENSORS_SUBFEATURE_TEMP_INPUT) &&
-						(sub->flags & SENSORS_MODE_R)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp))) {
-							st_pwr_temp_i->temp = 0;
-						}
-					}
-					else if ((sub->type == SENSORS_SUBFEATURE_TEMP_MIN)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_min))) {
-							st_pwr_temp_i->temp_min = 0;
-						}
-					}
-					else if ((sub->type == SENSORS_SUBFEATURE_TEMP_MAX)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_max))) {
-							st_pwr_temp_i->temp_max = 0;
-						}
-					}
-				}
-				count++;
-			}
-		}
-	}
-#endif /* HAVE_SENSORS */
 }
 
 /*
@@ -2179,102 +2326,29 @@ int get_in_nr(void)
 
 /*
  ***************************************************************************
- * Read voltage inputs statistics.
+ * Count number of possible frequencies for CPU#0.
  *
- * IN:
- * @st_pwr_in	Structure where stats will be saved.
- * @nbr		Total number of voltage inputs.
- *
- * OUT:
- * @st_pwr_in	Structure with statistics.
+ * RETURNS:
+ * Number of frequencies.
  ***************************************************************************
  */
-void read_in(struct stats_pwr_in *st_pwr_in, int nbr)
-{
-#ifdef HAVE_SENSORS
-	int count = 0;
-	const sensors_chip_name *chip;
-	const sensors_feature *feature;
-	const sensors_subfeature *sub;
-	struct stats_pwr_in *st_pwr_in_i;
-	int chip_nr = 0;
-	int i, j;
-
-	memset(st_pwr_in, 0, STATS_PWR_IN_SIZE);
-	int err = 0;
-
-	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
-		i = 0;
-		while ((feature = sensors_get_features(chip, &i))) {
-			if ((feature->type == SENSORS_FEATURE_IN) && (count < nbr)) {
-				j = 0;
-				st_pwr_in_i = st_pwr_in + count;
-				sensors_snprintf_chip_name(st_pwr_in_i->device, MAX_SENSORS_DEV_LEN, chip);
-
-				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
-					if ((sub->type == SENSORS_SUBFEATURE_IN_INPUT) &&
-						(sub->flags & SENSORS_MODE_R)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in))) {
-							st_pwr_in_i->in = 0;
-						}
-					}
-					else if ((sub->type == SENSORS_SUBFEATURE_IN_MIN)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in_min))) {
-							st_pwr_in_i->in_min = 0;
-						}
-					}
-					else if ((sub->type == SENSORS_SUBFEATURE_IN_MAX)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in_max))) {
-							st_pwr_in_i->in_max = 0;
-						}
-					}
-				}
-				count++;
-			}
-		}
-	}
-#endif /* HAVE_SENSORS */
-}
-
-/*
- ***************************************************************************
- * Read hugepages statistics from /proc/meminfo.
- *
- * IN:
- * @st_huge	Structure where stats will be saved.
- *
- * OUT:
- * @st_huge	Structure with statistics.
- ***************************************************************************
- */
-void read_meminfo_huge(struct stats_huge *st_huge)
+int get_freq_nr(void)
 {
 	FILE *fp;
+	char filename[MAX_PF_NAME];
 	char line[128];
-	unsigned long szhkb = 0;
+	int freq = 0;
 
-	if ((fp = fopen(MEMINFO, "r")) == NULL)
-		return;
+	snprintf(filename, MAX_PF_NAME, "%s/cpu0/%s",
+		 SYSFS_DEVCPU, SYSFS_TIME_IN_STATE);
+	if ((fp = fopen(filename, "r")) == NULL)
+		return 0;	/* No time_in_state file for CPU#0 */
 
 	while (fgets(line, 128, fp) != NULL) {
-
-		if (!strncmp(line, "HugePages_Total:", 16)) {
-			/* Read the total number of huge pages */
-			sscanf(line + 16, "%lu", &st_huge->tlhkb);
-		}
-		else if (!strncmp(line, "HugePages_Free:", 15)) {
-			/* Read the number of free huge pages */
-			sscanf(line + 15, "%lu", &st_huge->frhkb);
-		}
-		else if (!strncmp(line, "Hugepagesize:", 13)) {
-			/* Read the default size of a huge page in kB */
-			sscanf(line + 13, "%lu", &szhkb);
-		}
+		freq++;
 	}
 
 	fclose(fp);
 
-	/* We want huge pages stats in kB and not expressed in a number of pages */
-	st_huge->tlhkb *= szhkb;
-	st_huge->frhkb *= szhkb;
+	return freq;
 }

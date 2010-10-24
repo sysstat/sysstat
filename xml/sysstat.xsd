@@ -465,6 +465,15 @@
     	</xs:restriction>
     </xs:simpleType>
 
+    <xs:element name="cpu-weighted-frequency" type="cpu-weighted-frequency-type"></xs:element>
+
+    <xs:complexType name="cpu-weighted-frequency-type">
+    	<xs:sequence>
+		<xs:element name="cpuwfreq" type="cpuwfreq-type" minOccurs="1"></xs:element>
+    	</xs:sequence>
+	<xs:attribute name="unit" type="frequnit-type"></xs:attribute>
+    </xs:complexType>
+
     <xs:element name="fan-speed" type="fan-speed-type"></xs:element>
 
     <xs:complexType name="fan-speed-type">
@@ -522,6 +531,13 @@
     <xs:complexType name="cpufreq-type">
 	<xs:attribute name="number" type="xs:string"></xs:attribute>
     	<xs:attribute name="frequency" type="hundredth-type"></xs:attribute>
+    </xs:complexType>
+
+    <xs:element name="cpuwfreq" type="cpuwfreq-type"></xs:element>
+
+    <xs:complexType name="cpuwfreq-type">
+	<xs:attribute name="number" type="xs:string"></xs:attribute>
+	<xs:attribute name="weighted-frequency" type="hundredth-type"></xs:attribute>
     </xs:complexType>
 
     <xs:element name="fan" type="fan-type"></xs:element>
@@ -649,6 +665,7 @@
     		<xs:element name="fan-speed" type="fan-speed-type"></xs:element>
     		<xs:element name="temperature" type="temperature-type"></xs:element>
     		<xs:element name="voltage-input" type="voltage-input-type"></xs:element>
+    		<xs:element name="cpu-weighted-frequency" type="cpu-weighted-frequency-type"></xs:element>
     	</xs:sequence>
     </xs:complexType>
 

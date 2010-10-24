@@ -1,4 +1,4 @@
-.TH SAR 1 "SEPTEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "OCTOBER 2010" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -374,19 +374,20 @@ Note that these statistics depend on sadc option "-S POWER" to be collected.
 Possible keywords are
 .BR CPU ,
 .BR FAN ,
+.BR FREQ ,
 .BR IN
 and
 .BR TEMP .
 
 With the
 .B CPU
-keyword, statistics about CPU clock frequency are reported.
+keyword, statistics about CPU are reported.
 The following value is displayed:
 
 .B MHz
 .RS
 .RS
-CPU clock frequency in MHz.
+Instantaneous CPU clock frequency in MHz.
 .RE
 
 With the
@@ -408,6 +409,18 @@ and its low limit (fan_min).
 .B DEVICE
 .RS
 Sensor device name.
+.RE
+
+With the
+.B FREQ
+keyword, statistics about CPU clock frequency are reported.
+The following value is displayed:
+
+.B wghMHz
+.RS
+Weighted average CPU clock frequency in MHz.
+Note that the cpufreq-stats driver must be compiled in the
+kernel for this option to work.
 .RE
 
 With the

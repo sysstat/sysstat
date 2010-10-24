@@ -393,7 +393,7 @@
 	brk CDATA #REQUIRED
 	ovrun CDATA #REQUIRED
 >
-<!ELEMENT power-management (cpu-frequency, fan-speed, temperature, voltage-input)>
+<!ELEMENT power-management (cpu-frequency, fan-speed, temperature, voltage-input, cpu-weighted-frequency,)>
 <!ELEMENT cpu-frequency (cpufreq+)>
 <!ATTLIST cpu-frequency
 	unit CDATA #REQUIRED
@@ -402,6 +402,15 @@
 <!ATTLIST cpufreq
 	number CDATA #REQUIRED
 	frequency CDATA #REQUIRED
+>
+<!ELEMENT cpu-weighted-frequency (cpuwfreq+)>
+<!ATTLIST cpu-weighted-frequency
+	unit CDATA #REQUIRED
+>
+<!ELEMENT cpuwfreq EMPTY>
+<!ATTLIST cpuwfreq
+	number CDATA #REQUIRED
+	weighted-frequency CDATA #REQUIRED
 >
 <!ELEMENT fan-speed (fanspd+)>
 <!ATTLIST fan-speed

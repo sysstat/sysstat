@@ -6,7 +6,8 @@ xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added a new magical value for each activity in file.
 	  A format change can now hit only one activity instead of
 	  the whole file.
-	* Added hugepages utilization statistics to sar.
+	* Added CPU average clock frequency statistics to sar and sadc.
+	* Added hugepages utilization statistics to sar and sadc.
 	* [Ivana Varekova]: Moved manual pages to $prefix/share/man
 	  instead of $prefix/man.
 	* [Ivana Varekova]: Fixed configure's --disable-man-group option.
@@ -15,6 +16,7 @@ xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar manual page updated.
 	* DTD and XSD documents updated.
 	* Made sysstat git aware.
+	* CREDITS file updated.
 
 2010/09/12: Version 9.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added voltage inputs statistics to sar and sadc.

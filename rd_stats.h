@@ -525,6 +525,18 @@ struct stats_huge {
 #define STATS_HUGE_SIZE	(sizeof(struct stats_memory))
 
 /*
+ * Structure for weighted CPU frequency statistics.
+ * In activity buffer: First structure is for global CPU utilisation ("all").
+ * Following structures are for each individual CPU (0, 1, etc.)
+ */
+struct stats_pwr_wghfreq {
+	unsigned long long 	time_in_state	__attribute__ ((aligned (16)));
+	unsigned long 		freq		__attribute__ ((aligned (16)));
+};
+
+#define STATS_PWR_WGHFREQ_SIZE	(sizeof(struct stats_pwr_wghfreq))
+
+/*
  ***************************************************************************
  * Prototypes for functions used to read system statistics
  ***************************************************************************
@@ -601,6 +613,8 @@ extern void
 	read_in(struct stats_pwr_in *, int);
 extern void
 	read_meminfo_huge(struct stats_huge *);
+extern void
+	read_time_in_state(struct stats_pwr_wghfreq *, int, int);
 
 /*
  ***************************************************************************
@@ -628,5 +642,7 @@ extern int
 	get_temp_nr(void);
 extern int
 	get_in_nr(void);
+extern int
+	get_freq_nr(void);
 
 #endif /* _RD_STATS_H */
