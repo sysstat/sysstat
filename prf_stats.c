@@ -4110,7 +4110,7 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 				sprintf(cpuno, "%d", i - 1);
 			}
 			
-			xprintf(tab, "<cpu number=\"%s\" "
+			xprintf(tab, "<cpufreq number=\"%s\" "
 				"frequency=\"%.2f\"/>",
 				cpuno,
 				((double) spc->cpufreq) / 100);

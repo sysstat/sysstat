@@ -412,12 +412,12 @@
 	number CDATA #REQUIRED
 	weighted-frequency CDATA #REQUIRED
 >
-<!ELEMENT fan-speed (fanspd+)>
+<!ELEMENT fan-speed (fan+)>
 <!ATTLIST fan-speed
 	unit CDATA #REQUIRED
 >
-<!ELEMENT fanspd EMPTY>
-<!ATTLIST fanspd
+<!ELEMENT fan EMPTY>
+<!ATTLIST fan
 	number CDATA #REQUIRED
 	rpm CDATA #REQUIRED
 	drpm CDATA #REQUIRED
