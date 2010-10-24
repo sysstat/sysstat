@@ -10,6 +10,8 @@ xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added hugepages utilization statistics to sar and sadc.
 	* Fixed some differences between XML output (as displayed by
 	  sadf -x) and DTD document.
+	* sadc -S POWER didn't include voltage inputs statistics.
+	  This is now fixed.
 	* [Ivana Varekova]: Moved manual pages to $prefix/share/man
 	  instead of $prefix/man.
 	* [Ivana Varekova]: Fixed configure's --disable-man-group option.

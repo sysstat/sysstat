@@ -139,6 +139,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 			/* Select activities related to power management */
 			COLLECT_ACTIVITY(A_PWR_CPUFREQ);
 			COLLECT_ACTIVITY(A_PWR_FAN);
+			COLLECT_ACTIVITY(A_PWR_IN);
 			COLLECT_ACTIVITY(A_PWR_TEMP);
 			COLLECT_ACTIVITY(A_PWR_WGHFREQ);
 		}
