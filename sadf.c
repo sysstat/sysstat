@@ -32,7 +32,8 @@
 #include "sa.h"
 #include "common.h"
 #include "ioconf.h"
-#include "prf_stats.h"
+#include "rndr_stats.h"
+#include "xml_stats.h"
 
 #ifdef USE_NLS
 # include <locale.h>

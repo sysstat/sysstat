@@ -1,5 +1,5 @@
 # Makefile to build sysstat commands
-# # (C) 1999-2009 Sebastien GODARD (sysstat <at> orange.fr)
+# # (C) 1999-2010 Sebastien GODARD (sysstat <at> orange.fr)
 
 # Version and package name
 VERSION = @PACKAGE_VERSION@
@@ -161,14 +161,16 @@ act_sadc.o: activity.c sa.h rd_stats.h
 act_sar.o: activity.c sa.h pr_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-act_sadf.o: activity.c sa.h prf_stats.h
+act_sadf.o: activity.c sa.h rndr_stats.h xml_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
 rd_stats.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
 
 pr_stats.o: pr_stats.c sa.h ioconf.h sysconfig.h pr_stats.h
 
-prf_stats.o: prf_stats.c sa.h ioconf.h sysconfig.h prf_stats.h
+rndr_stats.o: rndr_stats.c sa.h ioconf.h sysconfig.h rndr_stats.h
+
+xml_stats.o: xml_stats.c sa.h ioconf.h sysconfig.h xml_stats.h
 
 sa_wrap.o: sa_wrap.c sa.h rd_stats.h
 
@@ -187,9 +189,9 @@ sar.o: sar.c sa.h version.h common.h ioconf.h pr_stats.h sysconfig.h
 
 sar: sar.o act_sar.o sa_common.o pr_stats.o libsyscom.a
 
-sadf.o: sadf.c sadf.h version.h sa.h common.h ioconf.h sysconfig.h prf_stats.h
+sadf.o: sadf.c sadf.h version.h sa.h common.h ioconf.h sysconfig.h rndr_stats.h xml_stats.h
 
-sadf: sadf.o act_sadf.o prf_stats.o sa_common.o libsyscom.a
+sadf: sadf.o act_sadf.o rndr_stats.o xml_stats.o sa_common.o libsyscom.a
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h
 

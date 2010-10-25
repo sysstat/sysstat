@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2010-10-23 15:32+0200\n"
+"POT-Creation-Date: 2010-10-24 21:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,8 +34,8 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: ioconf.c:490 rd_stats.c:72 rd_stats.c:2145 sa_common.c:1057 sadc.c:607
-#: sadc.c:616 sadc.c:676
+#: ioconf.c:490 rd_stats.c:72 rd_stats.c:2145 sa_common.c:1057 sadc.c:608
+#: sadc.c:617 sadc.c:677
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -141,17 +141,17 @@ msgid ""
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
 
-#: sadc.c:207
+#: sadc.c:208
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
-#: sadc.c:494
+#: sadc.c:495
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:775
+#: sadc.c:776
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""

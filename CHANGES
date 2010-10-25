@@ -19,6 +19,7 @@ xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Ivana Varekova]: Added sysstat(5) manual page.
 	* sar manual page updated.
 	* DTD and XSD documents updated.
+	* Split up prf_stats.c file into rndr_stats.c and xml_stats.c
 	* Made sysstat git aware.
 	* CREDITS file updated.
 

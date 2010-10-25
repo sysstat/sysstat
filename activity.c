@@ -30,7 +30,8 @@
 #endif
 
 #ifdef SOURCE_SADF
-#include "prf_stats.h"
+#include "rndr_stats.h"
+#include "xml_stats.h"
 #endif
 
 /*
