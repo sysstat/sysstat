@@ -96,6 +96,8 @@
 #define DISPLAY_HORIZONTALLY(m)	(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
 #define DISPLAY_COMMENT(m)	(((m) & S_F_COMMENT)      == S_F_COMMENT)
 
+#define AO_F_NULL		0x00000000
+
 /* Output flags for options -R / -r / -S */
 #define AO_F_MEM_DIA		0x00000001
 #define AO_F_MEM_AMT		0x00000002
@@ -138,23 +140,32 @@
 #define K_TCP		"TCP"
 #define K_ETCP		"ETCP"
 #define K_UDP		"UDP"
-#define K_DISK		"DISK"
-#define K_INT		"INT"
-#define K_SNMP		"SNMP"
 #define K_SOCK6		"SOCK6"
 #define K_IP6		"IP6"
 #define K_EIP6		"EIP6"
 #define K_ICMP6		"ICMP6"
 #define K_EICMP6	"EICMP6"
 #define K_UDP6		"UDP6"
-#define K_IPV6		"IPV6"
-#define K_POWER		"POWER"
-#define K_XDISK		"XDISK"
 #define K_CPU		"CPU"
 #define K_FAN		"FAN"
 #define K_TEMP		"TEMP"
 #define K_IN		"IN"
 #define K_FREQ		"FREQ"
+
+#define K_INT		"INT"
+#define K_DISK		"DISK"
+#define K_XDISK		"XDISK"
+#define K_SNMP		"SNMP"
+#define K_IPV6		"IPV6"
+#define K_POWER		"POWER"
+
+/* Groups of activities */
+#define G_DEFAULT	0x00
+#define G_INT		0x01
+#define G_DISK		0x02
+#define G_SNMP		0x04
+#define G_IPV6		0x08
+#define G_POWER		0x10
 
 /* sadc program */
 #define SADC		"sadc"
@@ -277,7 +288,10 @@ struct act_bitmap {
 	int b_size;
 };
 
-/* Structure used to define an activity */
+/*
+ * Structure used to define an activity.
+ * Note; This structure can be modified without changing the format of data files.
+ */
 struct activity {
 	/*
 	 * This variable contains the identification value (A_...) for this activity.
@@ -293,6 +307,11 @@ struct activity {
 	 * previous versions.
 	 */
 	unsigned int magic;
+	/*
+	 * an activity belongs to a group (and only one).
+	 * Groups are those selected with option -S of sadc.
+	 */
+	unsigned int group;
 	/*
 	 * The f_count() function is used to count the number of
 	 * items (serial lines, network interfaces, etc.) -> @nr

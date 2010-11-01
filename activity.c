@@ -68,6 +68,7 @@ struct activity cpu_act = {
 	.id		= A_CPU,
 	.options	= AO_COLLECTED + AO_REMANENT + AO_GLOBAL_ITV + AO_MULTIPLE_OUTPUTS,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_cpu_nr,
 	.f_count2	= NULL,
@@ -98,6 +99,7 @@ struct activity pcsw_act = {
 	.id		= A_PCSW,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -127,6 +129,7 @@ struct activity irq_act = {
 	.id		= A_IRQ,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_INT,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_irq_nr,
 	.f_count2	= NULL,
@@ -156,6 +159,7 @@ struct activity swap_act = {
 	.id		= A_SWAP,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -185,6 +189,7 @@ struct activity paging_act = {
 	.id		= A_PAGE,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -215,6 +220,7 @@ struct activity io_act = {
 	.id		= A_IO,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -244,6 +250,7 @@ struct activity memory_act = {
 	.id		= A_MEMORY,
 	.options	= AO_COLLECTED + AO_MULTIPLE_OUTPUTS,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -275,6 +282,7 @@ struct activity ktables_act = {
 	.id		= A_KTABLES,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -304,6 +312,7 @@ struct activity queue_act = {
 	.id		= A_QUEUE,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -333,6 +342,7 @@ struct activity serial_act = {
 	.id		= A_SERIAL,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_serial_nr,
 	.f_count2	= NULL,
@@ -362,6 +372,7 @@ struct activity disk_act = {
 	.id		= A_DISK,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DISK,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_disk_nr,
 	.f_count2	= NULL,
@@ -391,6 +402,7 @@ struct activity net_dev_act = {
 	.id		= A_NET_DEV,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_iface_nr,
 	.f_count2	= NULL,
@@ -420,6 +432,7 @@ struct activity net_edev_act = {
 	.id		= A_NET_EDEV,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_iface_nr,
 	.f_count2	= NULL,
@@ -450,6 +463,7 @@ struct activity net_nfs_act = {
 	.id		= A_NET_NFS,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -479,6 +493,7 @@ struct activity net_nfsd_act = {
 	.id		= A_NET_NFSD,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -509,6 +524,7 @@ struct activity net_sock_act = {
 	.id		= A_NET_SOCK,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -538,6 +554,7 @@ struct activity net_ip_act = {
 	.id		= A_NET_IP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -567,6 +584,7 @@ struct activity net_eip_act = {
 	.id		= A_NET_EIP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -596,6 +614,7 @@ struct activity net_icmp_act = {
 	.id		= A_NET_ICMP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -626,6 +645,7 @@ struct activity net_eicmp_act = {
 	.id		= A_NET_EICMP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -656,6 +676,7 @@ struct activity net_tcp_act = {
 	.id		= A_NET_TCP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -685,6 +706,7 @@ struct activity net_etcp_act = {
 	.id		= A_NET_ETCP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -714,6 +736,7 @@ struct activity net_udp_act = {
 	.id		= A_NET_UDP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -743,6 +766,7 @@ struct activity net_sock6_act = {
 	.id		= A_NET_SOCK6,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -772,6 +796,7 @@ struct activity net_ip6_act = {
 	.id		= A_NET_IP6,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -802,6 +827,7 @@ struct activity net_eip6_act = {
 	.id		= A_NET_EIP6,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -832,6 +858,7 @@ struct activity net_icmp6_act = {
 	.id		= A_NET_ICMP6,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -863,6 +890,7 @@ struct activity net_eicmp6_act = {
 	.id		= A_NET_EICMP6,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -893,6 +921,7 @@ struct activity net_udp6_act = {
 	.id		= A_NET_UDP6,
 	.options	= AO_CLOSE_MARKUP,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -922,6 +951,7 @@ struct activity pwr_cpufreq_act = {
 	.id		= A_PWR_CPUFREQ,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_cpu_nr,
 	.f_count2	= NULL,
@@ -951,6 +981,7 @@ struct activity pwr_fan_act = {
 	.id		= A_PWR_FAN,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_fan_nr,
 	.f_count2	= NULL,
@@ -980,6 +1011,7 @@ struct activity pwr_temp_act = {
 	.id		= A_PWR_TEMP,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_temp_nr,
 	.f_count2	= NULL,
@@ -1009,6 +1041,7 @@ struct activity pwr_in_act = {
 	.id		= A_PWR_IN,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_in_nr,
 	.f_count2	= NULL,
@@ -1038,6 +1071,7 @@ struct activity huge_act = {
 	.id		= A_HUGE,
 	.options	= AO_COLLECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
 	.f_count2	= NULL,
@@ -1067,6 +1101,7 @@ struct activity pwr_wghfreq_act = {
 	.id		= A_PWR_WGHFREQ,
 	.options	= AO_CLOSE_MARKUP,
 	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_cpu_nr,
 	.f_count2	= wrap_get_freq_nr,

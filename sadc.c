@@ -89,6 +89,29 @@ void usage(char *progname)
 
 /*
  ***************************************************************************
+ * Collect all activities belonging to a group.
+ *
+ * IN:
+ * @group_id	Group identification number.
+ * @opt_f	Optionnal flag to set.
+ ***************************************************************************
+ */
+void collect_group_activities(unsigned int group_id, unsigned int opt_f)
+{
+	int i;
+
+	for (i = 0; i < NR_ACT; i++) {
+		if (act[i]->group & group_id) {
+			act[i]->options |= AO_COLLECTED;
+			if (opt_f) {
+				act[i]->opt_flags |= opt_f;
+			}
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Parse option -S, indicating which activities are to be collected.
  *
  * IN:
@@ -103,45 +126,28 @@ void parse_sadc_S_option(char *argv[], int opt)
 
 	for (p = strtok(argv[opt], ","); p; p = strtok(NULL, ",")) {
 		if (!strcmp(p, K_INT)) {
-			/* Select interrupt activity */
-			COLLECT_ACTIVITY(A_IRQ);
+			/* Select group of interrupt activities */
+			collect_group_activities(G_INT, AO_F_NULL);
 		}
 		else if (!strcmp(p, K_DISK)) {
-			/* Select disk activity */
-			COLLECT_ACTIVITY(A_DISK);
+			/* Select group of disk activities */
+			collect_group_activities(G_DISK, AO_F_NULL);
 		}
 		else if (!strcmp(p, K_XDISK)) {
-			/* Select disk and partition activity */
-			i = get_activity_position(act, A_DISK);
-			act[i]->options   |= AO_COLLECTED;
-			act[i]->opt_flags |= AO_F_DISK_PART;
+			/* Select group of disk and partition activities */
+			collect_group_activities(G_DISK, AO_F_DISK_PART);
 		}
 		else if (!strcmp(p, K_SNMP)) {
-			/* Select SNMP activities */
-			COLLECT_ACTIVITY(A_NET_IP);
-			COLLECT_ACTIVITY(A_NET_EIP);
-			COLLECT_ACTIVITY(A_NET_ICMP);
-			COLLECT_ACTIVITY(A_NET_EICMP);
-			COLLECT_ACTIVITY(A_NET_TCP);
-			COLLECT_ACTIVITY(A_NET_ETCP);
-			COLLECT_ACTIVITY(A_NET_UDP);
+			/* Select group of SNMP activities */
+			collect_group_activities(G_SNMP, AO_F_NULL);
 		}
 		else if (!strcmp(p, K_IPV6)) {
-			/* Select IPv6 activities */
-			COLLECT_ACTIVITY(A_NET_IP6);
-			COLLECT_ACTIVITY(A_NET_EIP6);
-			COLLECT_ACTIVITY(A_NET_ICMP6);
-			COLLECT_ACTIVITY(A_NET_EICMP6);
-			COLLECT_ACTIVITY(A_NET_UDP6);
-			COLLECT_ACTIVITY(A_NET_SOCK6);
+			/* Select group of IPv6 activities */
+			collect_group_activities(G_IPV6, AO_F_NULL);
 		}
 		else if (!strcmp(p, K_POWER)) {
-			/* Select activities related to power management */
-			COLLECT_ACTIVITY(A_PWR_CPUFREQ);
-			COLLECT_ACTIVITY(A_PWR_FAN);
-			COLLECT_ACTIVITY(A_PWR_IN);
-			COLLECT_ACTIVITY(A_PWR_TEMP);
-			COLLECT_ACTIVITY(A_PWR_WGHFREQ);
+			/* Select group of activities related to power management */
+			collect_group_activities(G_POWER, AO_F_NULL);
 		}
 		else if (!strcmp(p, K_ALL) || !strcmp(p, K_XALL)) {
 			/* Select all activities */
@@ -150,8 +156,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 			}
 			if (!strcmp(p, K_XALL)) {
 				/* Tell sadc to also collect partition statistics */
-				i = get_activity_position(act, A_DISK);
-				act[i]->opt_flags |= AO_F_DISK_PART;
+				collect_group_activities(G_DISK, AO_F_DISK_PART);
 			}
 		}
 		else if (strspn(argv[opt], DIGITS) == strlen(argv[opt])) {

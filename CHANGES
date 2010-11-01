@@ -12,6 +12,8 @@ xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  sadf -x) and DTD document.
 	* sadc -S POWER didn't include voltage inputs statistics.
 	  This is now fixed.
+	* Define groups of activities: Each activity has now a new
+	  attribute specifying the group it belongs to (POWER, IPV6, etc.)
 	* [Ivana Varekova]: Moved manual pages to $prefix/share/man
 	  instead of $prefix/man.
 	* [Ivana Varekova]: Fixed configure's --disable-man-group option.

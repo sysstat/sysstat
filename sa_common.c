@@ -796,6 +796,9 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
  *
  * IN:
  * @act		Array of activities.
+ * 
+ * OUT:
+ * @act		Array of activities, all of the being selected.
  ***************************************************************************
  */
 void select_all_activities(struct activity *act[])
@@ -813,10 +816,10 @@ void select_all_activities(struct activity *act[])
  * Also select CPU "all" if no other CPU has been selected.
  *
  * IN:
- * @act	Array of activities.
+ * @act		Array of activities.
  *
  * OUT:
- * @act	Array of activities with CPU activity selected if needed.
+ * @act		Array of activities with CPU activity selected if needed.
  ***************************************************************************
  */
 void select_default_activity(struct activity *act[])
