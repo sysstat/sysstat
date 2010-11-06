@@ -1605,7 +1605,7 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 		else if (!strncmp(line, "cpu MHz\t", 8)) {
 			sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
 			
-			if (proc_nb < (nbr - 1)) {			/* FIXME: quelle reaction pour un kernel non SMP 1 proc? */
+			if (proc_nb < (nbr - 1)) {
 				/* Save current CPU frequency */
 				st_pwr_cpufreq_i = st_pwr_cpufreq + proc_nb + 1;
 				st_pwr_cpufreq_i->cpufreq = ifreq * 100 + dfreq / 10;
@@ -1613,6 +1613,16 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 				/* Also save it to compute an average CPU frequency */
 				st_pwr_cpufreq->cpufreq += st_pwr_cpufreq_i->cpufreq;
 				nr++;
+			}
+			else if (!proc_nb && (nbr == 1)) {
+				/*
+				 * We are reading freq for "Processor 0" and we have a machine
+				 * with only one processor and not an SMP kernel, with /sys not mounted
+				 * (the nr of proc has been counted using /proc/stat and there was
+				 * only one line with global CPU stats here).
+				 * This is a very specific case, I must admit...
+				 */
+				st_pwr_cpufreq->cpufreq = ifreq * 100 + dfreq / 10;
 			}
 		}
 	}
@@ -2089,7 +2099,7 @@ int get_disk_nr(unsigned int f)
  * RETURNS:
  * Number of processors (online and offline).
  * A value of 0 means that /sys was not mounted.
- * A value of N (!=0) means N processor(s) (0 .. N-1).
+ * A value of N (!=0) means N processor(s) (cpu0 .. cpu(N-1)).
  ***************************************************************************
  */
 int get_sys_cpu_nr(void)

@@ -1,9 +1,7 @@
 # Lines starting with '#' are considered comments.
-# Ignore Makefile
+# List of files to ignore:
 Makefile
-# Ignore objects and archives.
 *.[oa]
-# Ignore files created by sysstat
 sa1
 sa2
 sysstat
