@@ -368,19 +368,19 @@ ifeq ($(INSTALL_DOC),y)
 	$(INSTALL_DATA) *.lsm $(DESTDIR)$(DOC_DIR)
 endif
 
-install_all: install_base crontab sysstat \
-	sysstat.crond sysstat.cron.daily sysstat.cron.hourly
+install_all: install_base cron/crontab sysstat \
+	cron/sysstat.crond cron/sysstat.cron.daily cron/sysstat.cron.hourly
 	$(CHOWN) $(CRON_OWNER) $(DESTDIR)$(SA_DIR)
 	if [ -d $(DESTDIR)/etc/cron.d ]; then \
-	   $(INSTALL_DATA) sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \
+	   $(INSTALL_DATA) cron/sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \
 	elif [ -d $(DESTDIR)/etc/cron.hourly -a -d $(DESTDIR)/etc/cron.daily ]; then \
-	   $(INSTALL_BIN) sysstat.cron.hourly $(DESTDIR)/etc/cron.hourly/sysstat; \
-	   $(INSTALL_BIN) sysstat.cron.daily $(DESTDIR)/etc/cron.daily/sysstat; \
+	   $(INSTALL_BIN) cron/sysstat.cron.hourly $(DESTDIR)/etc/cron.hourly/sysstat; \
+	   $(INSTALL_BIN) cron/sysstat.cron.daily $(DESTDIR)/etc/cron.daily/sysstat; \
 	else \
 	   su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).save"; \
 	   $(CP) -a /tmp/crontab-$(CRON_OWNER).save ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.save; \
 	   echo "USER'S PREVIOUS CRONTAB SAVED IN CURRENT DIRECTORY (USING .save SUFFIX)."; \
-	   su $(CRON_OWNER) -c "crontab crontab"; \
+	   su $(CRON_OWNER) -c "crontab cron/crontab"; \
 	fi
 	if [ -d $(DESTDIR)$(INIT_DIR) ]; then \
 	   $(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
@@ -579,9 +579,9 @@ clean:
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot
-	rm -f sa1 sa2 sysstat crontab version.h sysconfig.h
-	rm -f sysstat.sysconfig sysstat.crond sysstat.cron.daily
-	rm -f sysstat.cron.hourly sysstat.crond.sample sysstat.crond.sample.in
+	rm -f sa1 sa2 sysstat cron/crontab version.h sysconfig.h
+	rm -f sysstat.sysconfig cron/sysstat.crond cron/sysstat.cron.daily
+	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
 	rm -f contrib/isag/isag
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
 	rm -f *.log config.status

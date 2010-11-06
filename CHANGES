@@ -22,6 +22,7 @@ xxxx/xx/xx: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar manual page updated.
 	* DTD and XSD documents updated.
 	* Split up prf_stats.c file into rndr_stats.c and xml_stats.c
+	* Moved cron files in a separate cron subdirectory.
 	* Made sysstat git aware.
 	* CREDITS file updated.
 

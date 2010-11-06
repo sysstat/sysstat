@@ -7758,7 +7758,7 @@ ac_config_files="$ac_config_files sa1"
   	# Permissions must be changed
 ac_config_files="$ac_config_files sa2"
 		# Permissions must be changed
-ac_config_files="$ac_config_files crontab:crontab.sample"
+ac_config_files="$ac_config_files cron/crontab:cron/crontab.sample"
 	# File must be renamed
 ac_config_files="$ac_config_files sysstat.sysconfig"
 
@@ -7766,13 +7766,13 @@ ac_config_files="$ac_config_files version.h:version.in"
 		# File must be renamed
 ac_config_files="$ac_config_files sysconfig.h:sysconfig.in"
 	# File must be renamed
-ac_config_files="$ac_config_files sysstat.cron.daily"
+ac_config_files="$ac_config_files cron/sysstat.cron.daily"
 
-ac_config_files="$ac_config_files sysstat.cron.hourly"
+ac_config_files="$ac_config_files cron/sysstat.cron.hourly"
 
-ac_config_files="$ac_config_files sysstat.crond"
+ac_config_files="$ac_config_files cron/sysstat.crond"
 
-ac_config_files="$ac_config_files sysstat.crond.sample.in:sysstat.crond.in"
+ac_config_files="$ac_config_files cron/sysstat.crond.sample.in:cron/sysstat.crond.in"
 
 ac_config_files="$ac_config_files sysstat"
 	# Permissions must be changed
@@ -8405,14 +8405,14 @@ do
   case $ac_config_target in
     "sa1") CONFIG_FILES="$CONFIG_FILES sa1" ;;
     "sa2") CONFIG_FILES="$CONFIG_FILES sa2" ;;
-    "crontab") CONFIG_FILES="$CONFIG_FILES crontab:crontab.sample" ;;
+    "cron/crontab") CONFIG_FILES="$CONFIG_FILES cron/crontab:cron/crontab.sample" ;;
     "sysstat.sysconfig") CONFIG_FILES="$CONFIG_FILES sysstat.sysconfig" ;;
     "version.h") CONFIG_FILES="$CONFIG_FILES version.h:version.in" ;;
     "sysconfig.h") CONFIG_FILES="$CONFIG_FILES sysconfig.h:sysconfig.in" ;;
-    "sysstat.cron.daily") CONFIG_FILES="$CONFIG_FILES sysstat.cron.daily" ;;
-    "sysstat.cron.hourly") CONFIG_FILES="$CONFIG_FILES sysstat.cron.hourly" ;;
-    "sysstat.crond") CONFIG_FILES="$CONFIG_FILES sysstat.crond" ;;
-    "sysstat.crond.sample.in") CONFIG_FILES="$CONFIG_FILES sysstat.crond.sample.in:sysstat.crond.in" ;;
+    "cron/sysstat.cron.daily") CONFIG_FILES="$CONFIG_FILES cron/sysstat.cron.daily" ;;
+    "cron/sysstat.cron.hourly") CONFIG_FILES="$CONFIG_FILES cron/sysstat.cron.hourly" ;;
+    "cron/sysstat.crond") CONFIG_FILES="$CONFIG_FILES cron/sysstat.crond" ;;
+    "cron/sysstat.crond.sample.in") CONFIG_FILES="$CONFIG_FILES cron/sysstat.crond.sample.in:cron/sysstat.crond.in" ;;
     "sysstat") CONFIG_FILES="$CONFIG_FILES sysstat" ;;
     "man/sa1.8") CONFIG_FILES="$CONFIG_FILES man/sa1.8:man/sa1.in" ;;
     "man/sa2.8") CONFIG_FILES="$CONFIG_FILES man/sa2.8:man/sa2.in" ;;
@@ -8889,7 +8889,7 @@ $as_echo "$as_me: error: could not create $ac_file" >&2;}
   case $ac_file$ac_mode in
     "sa1":F) chmod +x sa1 ;;
     "sa2":F) chmod +x sa2 ;;
-    "sysstat.crond.sample.in":F) sed s/^/#/ sysstat.crond.sample.in > sysstat.crond.sample ;;
+    "cron/sysstat.crond.sample.in":F) sed s/^/#/ cron/sysstat.crond.sample.in > cron/sysstat.crond.sample ;;
     "sysstat":F) chmod +x sysstat ;;
     "contrib/isag/isag":F) chmod +x contrib/isag/isag ;;
 

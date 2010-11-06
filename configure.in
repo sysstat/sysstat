@@ -492,14 +492,14 @@ echo Now create files:
 echo .
 AC_CONFIG_FILES([sa1], [chmod +x sa1])  	# Permissions must be changed
 AC_CONFIG_FILES([sa2], [chmod +x sa2])		# Permissions must be changed
-AC_CONFIG_FILES([crontab:crontab.sample])	# File must be renamed
+AC_CONFIG_FILES([cron/crontab:cron/crontab.sample])	# File must be renamed
 AC_CONFIG_FILES([sysstat.sysconfig])
 AC_CONFIG_FILES([version.h:version.in])		# File must be renamed
 AC_CONFIG_FILES([sysconfig.h:sysconfig.in])	# File must be renamed
-AC_CONFIG_FILES([sysstat.cron.daily])
-AC_CONFIG_FILES([sysstat.cron.hourly])
-AC_CONFIG_FILES([sysstat.crond])
-AC_CONFIG_FILES([sysstat.crond.sample.in:sysstat.crond.in], [sed s/^/#/ sysstat.crond.sample.in > sysstat.crond.sample])
+AC_CONFIG_FILES([cron/sysstat.cron.daily])
+AC_CONFIG_FILES([cron/sysstat.cron.hourly])
+AC_CONFIG_FILES([cron/sysstat.crond])
+AC_CONFIG_FILES([cron/sysstat.crond.sample.in:cron/sysstat.crond.in], [sed s/^/#/ cron/sysstat.crond.sample.in > cron/sysstat.crond.sample])
 AC_CONFIG_FILES([sysstat], [chmod +x sysstat])	# Permissions must be changed
 AC_CONFIG_FILES([man/sa1.8:man/sa1.in])		# File must be renamed
 AC_CONFIG_FILES([man/sa2.8:man/sa2.in])		# File must be renamed
