@@ -5,10 +5,10 @@
 # Vincenzo Campanella <vinz65@gmail.com>, 2008, 2009, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-9.1.4\n"
+"Project-Id-Version: sysstat-9.1.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2010-07-24 10:55+0200\n"
-"PO-Revision-Date: 2010-07-31 11:53+0200\n"
+"POT-Creation-Date: 2010-09-04 08:21+0200\n"
+"PO-Revision-Date: 2010-09-13 08:47+0200\n"
 "Last-Translator: Vincenzo Campanella <vinz65@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr ""
 "Le opzioni sono:\n"
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | ALL } ] [ -V ]\n"
 
-#: mpstat.c:530 pidstat.c:1806 sar.c:359
+#: mpstat.c:530 pidstat.c:1806 sar.c:360
 msgid "Average:"
 msgstr "Media:"
 
@@ -99,7 +99,7 @@ msgstr ""
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: pidstat.c:199 sar.c:977
+#: pidstat.c:199 sar.c:978
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Le statistiche richieste non sono disponibili\n"
@@ -264,6 +264,7 @@ msgid ""
 "\t\tKeywords are:\n"
 "\t\tCPU\tCPU clock frequency\n"
 "\t\tFAN\tFans speed\n"
+"\t\tIN\tVoltage inputs\n"
 "\t\tTEMP\tDevices temperature\n"
 msgstr ""
 "\t-m { <parola chiave> [,...] | ALL }\n"
@@ -271,9 +272,10 @@ msgstr ""
 "\t\tLe parole chiave sono:\n"
 "\t\tCPU\tfrequenza del clock della CPU\n"
 "\t\tFAN\tVelocità delle ventole\n"
+"\t\tIN\tInput di voltaggio\n"
 "\t\tTEMP\tTemperatura dei dispositivi\n"
 
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -320,27 +322,27 @@ msgstr ""
 "\t\tEICMP6\tTraffico ICMP\t(v6) (errori)\n"
 "\t\tUDP6\tTraffico UDP\t(v6)\n"
 
-#: sar.c:159
+#: sar.c:160
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tStatistiche sulla media della lunghezza della coda e del carico\n"
 
-#: sar.c:160
+#: sar.c:161
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tStatistiche sull'uso della memoria\n"
 
-#: sar.c:161
+#: sar.c:162
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tStatistiche sulla memoria\n"
 
-#: sar.c:162
+#: sar.c:163
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistiche sull'uso dello spazio di swap\n"
 
-#: sar.c:163
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -349,57 +351,57 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistiche sull'uso della CPU\n"
 
-#: sar.c:165
+#: sar.c:166
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tStatistiche sulla tabella del kernel\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tStatistiche sulla creazione di attività e sui cambiamenti del sistema\n"
 
-#: sar.c:167
+#: sar.c:168
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tStatistiche sullo swap\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tStatistiche sui device TTY\n"
 
-#: sar.c:211
+#: sar.c:212
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Fine inattesa della raccolta dei dati\n"
 
-#: sar.c:779
+#: sar.c:780
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Formato dei dati non valido\n"
 
-#: sar.c:783
+#: sar.c:784
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Utilizzo di un collettore di dati errato da una versione differente di sysstat\n"
 
-#: sar.c:803
+#: sar.c:804
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Dati in ingresso inconsistenti\n"
 
-#: sar.c:1224
+#: sar.c:1225
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Le opzioni -f e -o si escludono a vicenda\n"
 
-#: sar.c:1230
+#: sar.c:1231
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "La lettura non avviene da un file delle statistiche del sistema (usare l'opzione -f)\n"
 
-#: sar.c:1331
+#: sar.c:1332
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Impossibile trovare il collettore dei dati (%s)\n"

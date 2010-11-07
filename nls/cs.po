@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 9.1.4\n"
+"Project-Id-Version: sysstat 9.1.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2010-07-24 10:55+0200\n"
-"PO-Revision-Date: 2010-08-23 22:41+0200\n"
+"POT-Creation-Date: 2010-09-04 08:21+0200\n"
+"PO-Revision-Date: 2010-10-11 05:06+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,7 @@ msgstr ""
 "Přepínače jsou:\n"
 "[-A] [-I {SUM|CPU|SCPU|ALL}] [-u] [-P {<procesor>[,…]|ALL}] [-V]\n"
 
-#: mpstat.c:530 pidstat.c:1806 sar.c:359
+#: mpstat.c:530 pidstat.c:1806 sar.c:360
 msgid "Average:"
 msgstr "Průměr:"
 
@@ -102,7 +102,7 @@ msgstr ""
 "[-t] [-u] [-V] [-w]\n"
 "[-p {<pid>[,…]|SELF|ALL}] [-T {TASK|CHILD|ALL}]\n"
 
-#: pidstat.c:199 sar.c:977
+#: pidstat.c:199 sar.c:978
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Požadované aktivity nejsou dostupné\n"
@@ -267,6 +267,7 @@ msgid ""
 "\t\tKeywords are:\n"
 "\t\tCPU\tCPU clock frequency\n"
 "\t\tFAN\tFans speed\n"
+"\t\tIN\tVoltage inputs\n"
 "\t\tTEMP\tDevices temperature\n"
 msgstr ""
 "\t-m {<klíčové_slovo>[,…]|ALL}\n"
@@ -274,9 +275,10 @@ msgstr ""
 "\t\tKlíčová slova jsou:\n"
 "\t\tCPU\tFrekvence procesoru\n"
 "\t\tFAN\tRychlost ventilátoru\n"
+"\t\tIN\tVstupní napětí\n"
 "\t\tTEMP\tTeplota zařízení\n"
 
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -323,27 +325,27 @@ msgstr ""
 "\t\tEICMP6\tProvoz ICMP\t(v6) (chyby)\n"
 "\t\tUDP6\tProvoz UDP\t(v6)\n"
 
-#: sar.c:159
+#: sar.c:160
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tStatistiky délky fronty a průměrného vytížení\n"
 
-#: sar.c:160
+#: sar.c:161
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tStatistiky využití paměti\n"
 
-#: sar.c:161
+#: sar.c:162
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tStatistiky paměti\n"
 
-#: sar.c:162
+#: sar.c:163
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistiky využití odkládacího prostoru\n"
 
-#: sar.c:163
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -352,57 +354,57 @@ msgstr ""
 "\t-u [ALL]\n"
 "\t\tStatistiky využití procesoru\n"
 
-#: sar.c:165
+#: sar.c:166
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tStatistiky tabulky jádra\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tStatistiky vytváření úloh a systémového přepínání\n"
 
-#: sar.c:167
+#: sar.c:168
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tStatistiky odkládání na disk\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tStatistiky zařízení TTY\n"
 
-#: sar.c:211
+#: sar.c:212
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Neočekávaný konec sbírání dat\n"
 
-#: sar.c:779
+#: sar.c:780
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Neplatný formát dat\n"
 
-#: sar.c:783
+#: sar.c:784
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Používání nesprávného sběrače dat z jiné verze sysstat\n"
 
-#: sar.c:803
+#: sar.c:804
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekonzistentní vstupní data\n"
 
-#: sar.c:1224
+#: sar.c:1225
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Přepínače -f a -o se navzájem vylučují\n"
 
-#: sar.c:1230
+#: sar.c:1231
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Nečte se ze souboru se systémovými aktivitami (použijte přepínač -f)\n"
 
-#: sar.c:1331
+#: sar.c:1332
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nelze najít sběrač dat (%s)\n"

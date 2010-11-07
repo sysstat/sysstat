@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2010-10-24 21:41+0200\n"
+"POT-Creation-Date: 2010-11-06 15:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,8 +34,8 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: ioconf.c:490 rd_stats.c:72 rd_stats.c:2145 sa_common.c:1057 sadc.c:608
-#: sadc.c:617 sadc.c:677
+#: ioconf.c:490 rd_stats.c:72 rd_stats.c:2155 sa_common.c:1060 sadc.c:613
+#: sadc.c:622 sadc.c:682
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -92,38 +92,38 @@ msgstr ""
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: rd_stats.c:2191
+#: rd_stats.c:2201
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: sa_common.c:866
+#: sa_common.c:869
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:876
+#: sa_common.c:879
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:894
+#: sa_common.c:897
 #, c-format
 msgid "File created using sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:925
+#: sa_common.c:928
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:932
+#: sa_common.c:935
 #, c-format
 msgid ""
 "Current sysstat version can no longer read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1164
+#: sa_common.c:1167
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
@@ -141,27 +141,27 @@ msgid ""
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
 
-#: sadc.c:208
+#: sadc.c:213
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
-#: sadc.c:495
+#: sadc.c:500
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:776
+#: sadc.c:781
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
 
-#: sadf.c:85
+#: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
 msgstr ""
 
-#: sadf.c:88
+#: sadf.c:89
 #, c-format
 msgid ""
 "Options are:\n"
@@ -170,27 +170,27 @@ msgid ""
 "[ -- <sar_options> ]\n"
 msgstr ""
 
-#: sadf.c:609
+#: sadf.c:610
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf.c:618
+#: sadf.c:619
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf.c:624
+#: sadf.c:625
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf.c:626
+#: sadf.c:627
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf.c:638
+#: sadf.c:639
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr ""

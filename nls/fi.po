@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 9.1.4\n"
+"Project-Id-Version: sysstat 9.1.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2010-07-24 10:55+0200\n"
-"PO-Revision-Date: 2010-07-30 14:43+0200\n"
+"POT-Creation-Date: 2010-09-04 08:21+0200\n"
+"PO-Revision-Date: 2010-09-13 16:25+0200\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,7 @@ msgstr ""
 "Valitsimet ovat:\n"
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <suoritin> [,...] | ALL } ] [ -V ]\n"
 
-#: mpstat.c:530 pidstat.c:1806 sar.c:359
+#: mpstat.c:530 pidstat.c:1806 sar.c:360
 msgid "Average:"
 msgstr "Keskiarvo:"
 
@@ -103,7 +103,7 @@ msgstr ""
 "[ -p { <prosessitunniste> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
 #  Pyydetyt voi olla tilanteesta riippuen halutut, tiedustellut, kyseiset, haetut tms.
-#: pidstat.c:199 sar.c:977
+#: pidstat.c:199 sar.c:978
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Pyydetyt toiminnot eivät ole käytettävissä\n"
@@ -269,16 +269,18 @@ msgid ""
 "\t\tKeywords are:\n"
 "\t\tCPU\tCPU clock frequency\n"
 "\t\tFAN\tFans speed\n"
+"\t\tIN\tVoltage inputs\n"
 "\t\tTEMP\tDevices temperature\n"
 msgstr ""
 "\t-m { <avainsana> [,...] | ALL }\n"
-"\t\tTehonhallntatilastot\n"
+"\t\tTehonhallintatilastot\n"
 "\t\tAvainsanoja ovat:\n"
 "\t\tCPU\tProsessorin kellotaajuus\n"
 "\t\tFAN\tTuulettimen nopeus\n"
+"\t\tIN\tJännitesyötteet\n"
 "\t\tTEMP\tLaitteen lämpötila\n"
 
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -325,27 +327,27 @@ msgstr ""
 "\t\tEICMP6\tICMP-liikenne\t(v6) (virheet)\n"
 "\t\tUDP6\tUDP-liikenne\t(v6)\n"
 
-#: sar.c:159
+#: sar.c:160
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tJonopituus- ja latauskeskiarvotilastot\n"
 
-#: sar.c:160
+#: sar.c:161
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tMuistin käyttöastetilastot\n"
 
-#: sar.c:161
+#: sar.c:162
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tMuistitilastot\n"
 
-#: sar.c:162
+#: sar.c:163
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tNäennäismuistitilan käyttöastetilastot\n"
 
-#: sar.c:163
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -354,57 +356,57 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tSuorittimen käyttöastetilastot\n"
 
-#: sar.c:165
+#: sar.c:166
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tKäyttöjärjestelmäytimen taulutilastot\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tTehtävän luonti- ja järjestelmänvaihtotilastot\n"
 
-#: sar.c:167
+#: sar.c:168
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tNäennäismuisti vaihtamistilastot\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tTTY-laitetilastot\n"
 
-#: sar.c:211
+#: sar.c:212
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Tiedonkeräyksen loppu odottamaton\n"
 
-#: sar.c:779
+#: sar.c:780
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Virheellinen datamuoto\n"
 
-#: sar.c:783
+#: sar.c:784
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Käytetään väärää datakerääjää eri sysstat-versiosta\n"
 
-#: sar.c:803
+#: sar.c:804
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Epäjohdonmukainen syötedata\n"
 
-#: sar.c:1224
+#: sar.c:1225
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "valitsimet ”-f” ja ”-o” ovat vastavuoroisesti poissulkevia\n"
 
-#: sar.c:1230
+#: sar.c:1231
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Ei lueta järjestelmätoimintojen lokitiedostosta (käytä valitsinta ”-f”)\n"
 
-#: sar.c:1331
+#: sar.c:1332
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Datakerääjää (%s) ei löydy\n"
