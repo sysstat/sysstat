@@ -519,7 +519,7 @@ void read_diskstats_disk(struct stats_disk *st_disk, int nbr, int read_part)
 			   &tot_ticks, &rq_ticks) == 11) {
 			
 			if (!rd_ios && !wr_ios)
-				/* Unused device: ignore it */
+				/* Unused device: Ignore it */
 				continue;
 			if (read_part || is_device(dev_name)) {
 				st_disk_i = st_disk + dsk++;

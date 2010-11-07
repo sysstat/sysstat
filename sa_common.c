@@ -796,7 +796,7 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
  *
  * IN:
  * @act		Array of activities.
- * 
+ *
  * OUT:
  * @act		Array of activities, all of the being selected.
  ***************************************************************************

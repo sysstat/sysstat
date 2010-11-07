@@ -1,6 +1,6 @@
 Summary: 	SAR, SADF, MPSTAT, IOSTAT, NFSIOSTAT, CIFSIOSTAT and PIDSTAT for Linux
 Name: 		sysstat
-Version: 	9.1.5
+Version: 	9.1.6
 Release: 	1
 License: 	GPL
 Group: 		Applications/System
@@ -50,7 +50,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/sysconfig
 install -m 644 sysstat.sysconfig $RPM_BUILD_ROOT/etc/sysconfig/sysstat
 install -m 644 sysstat.ioconf $RPM_BUILD_ROOT/etc/sysconfig/sysstat.ioconf
 mkdir -p $RPM_BUILD_ROOT/etc/cron.d
-install -m 644 sysstat.crond.sample $RPM_BUILD_ROOT/etc/cron.d/sysstat
+install -m 644 cron/sysstat.crond.sample $RPM_BUILD_ROOT/etc/cron.d/sysstat
 mkdir -p $RPM_BUILD_ROOT/etc/rc2.d
 cd $RPM_BUILD_ROOT/etc/rc2.d && ln -sf ../init.d/sysstat S01sysstat
 mkdir -p $RPM_BUILD_ROOT/etc/rc3.d
