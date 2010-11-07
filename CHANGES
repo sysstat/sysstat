@@ -1,5 +1,7 @@
 Changes:
 
+xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+
 2010/11/10: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  WARNING: Daily data files format has changed, and is *not*
 	  compatible with the previous one! [0x2171]
