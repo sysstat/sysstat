@@ -1,4 +1,4 @@
-.TH SAR 1 "OCTOBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "NOVEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -92,8 +92,7 @@ You can select information about specific system activities using
 flags. Not specifying any flags selects only CPU activity.
 Specifying the
 .B -A
-flag is equivalent to specifying
-.BR "-bBdqrRSvwWy -I SUM -I XALL -n ALL -u ALL -P ALL".
+flag selects all possible activities.
 
 The default version of the
 .B sar
