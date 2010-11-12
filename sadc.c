@@ -164,14 +164,24 @@ void parse_sadc_S_option(char *argv[], int opt)
 			 * Although undocumented, option -S followed by a numerical value
 			 * enables the user to select each activity that should be
 			 * collected. "-S 0" unselects all activities but CPU.
+			 * A value greater than 255 enables the user to select groups
+			 * of activities.
 			 */
 			int act_id;
 
 			act_id = atoi(argv[opt]);
-			if ((act_id < 0) || (act_id > NR_ACT)) {
+			if (act_id > 255) {
+				act_id >>= 8;
+				for (i = 0; i < NR_ACT; i++) {
+					if (act[i]->group & act_id) {
+						act[i]->options |= AO_COLLECTED;
+					}
+				}
+			}
+			else if ((act_id < 0) || (act_id > NR_ACT)) {
 				usage(argv[0]);
 			}
-			if (!act_id) {
+			else if (!act_id) {
 				/* Unselect all activities but CPU */
 				for (i = 0; i < NR_ACT; i++) {
 					act[i]->options &= ~AO_COLLECTED;

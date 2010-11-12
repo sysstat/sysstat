@@ -1,6 +1,8 @@
 Changes:
 
 xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar now tells sadc to read only the necessary groups of
+	  activities.
 	* sar manual page updated.
 
 2010/11/10: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)

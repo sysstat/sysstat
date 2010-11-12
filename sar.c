@@ -1057,7 +1057,7 @@ void read_stats(void)
  */
 int main(int argc, char **argv)
 {
-	int opt = 1, args_idx = 2;
+	int i, opt = 1, args_idx = 2;
 	int fd[2];
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
 	char ltemp[20];
@@ -1322,12 +1322,34 @@ int main(int argc, char **argv)
 
 		/* Flags to be passed to sadc */
 		salloc(args_idx++, "-z");
-		salloc(args_idx++, "-S");
-		salloc(args_idx++, K_ALL);
-
-		/* Outfile arg */
+		
+		/* Writing data to a file (option -o) */
 		if (to_file[0]) {
+			/* Collect all possible activities (option -S ALL for sadc) */
+			salloc(args_idx++, "-S");
+			salloc(args_idx++, K_ALL);
+			/* Outfile arg */
 			salloc(args_idx++, to_file);
+		}
+		else {
+			/*
+			 * If option -o hasn't been used, then tell sadc
+			 * to collect only activities that will be displayed.
+			 */
+			int act_id = 0;
+			
+			for (i = 0; i < NR_ACT; i++) {
+				if (IS_SELECTED(act[i]->options)) {
+					act_id |= act[i]->group;
+				}
+			}
+			if (act_id) {
+				act_id <<= 8;
+				snprintf(ltemp, 19, "%d", act_id);
+				ltemp[19] = '\0';
+				salloc(args_idx++, "-S");
+				salloc(args_idx++, ltemp);
+			}
 		}
 
 		/* Last arg is NULL */
