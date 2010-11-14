@@ -382,8 +382,9 @@ void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
 		mktime(rectime);
 	}
 	else {
-		loc_t = localtime((const time_t *) &file_hdr->sa_ust_time);
-		*rectime = *loc_t;
+		if ((loc_t = localtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
+			*rectime = *loc_t;
+		}
 	}
 }
 

@@ -125,8 +125,9 @@ void sadf_get_record_timestamp_struct(int curr)
 {
 	struct tm *ltm;
 
-	ltm = localtime((const time_t *) &record_hdr[curr].ust_time);
-	loctime = *ltm;
+	if ((ltm = localtime((const time_t *) &record_hdr[curr].ust_time)) != NULL) {
+		loctime = *ltm;
+	}
 
 	if (!PRINT_TRUE_TIME(flags) ||
 	    ((format != S_O_DB_OPTION) && (format != S_O_XML_OPTION))) {
@@ -134,7 +135,9 @@ void sadf_get_record_timestamp_struct(int curr)
 		ltm = gmtime((const time_t *) &record_hdr[curr].ust_time);
 	}
 
-	rectime = *ltm;
+	if (ltm) {
+		rectime = *ltm;
+	}
 }
 
 /*

@@ -285,7 +285,10 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 	char *e;
 	int rc = 0;
 
-	if (((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO)) {
+	if (rectime == NULL) {
+		strcpy(cur_date, "?/?/?");
+	}
+	else if (((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO)) {
 		strftime(cur_date, sizeof(cur_date), "%Y-%m-%d", rectime);
 		rc = 1;
 	}

@@ -245,17 +245,20 @@ void reverse_check_act(unsigned int act_nr)
 
 /*
  ***************************************************************************
- * Fill the rectime structure with current record's time, based on current
- * record's time data saved in file.
+ * Fill the (struct tm) rectime structure with current record's time,
+ * based on current record's time data saved in file.
  * The resulting timestamp is expressed in the locale of the file creator
  * or in the user's own locale depending on whether option -t has been used
  * or not.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * 1 if an error was detected, or 0 otherwise.
  ***************************************************************************
 */
-void sar_get_record_timestamp_struct(int curr)
+int sar_get_record_timestamp_struct(int curr)
 {
 	struct tm *ltm;
 
@@ -267,9 +270,17 @@ void sar_get_record_timestamp_struct(int curr)
 		rectime.tm_sec  = record_hdr[curr].second;
 	}
 	else {
-		ltm = localtime((const time_t *) &record_hdr[curr].ust_time);
+		if ((ltm = localtime((const time_t *) &record_hdr[curr].ust_time)) == NULL)
+			/*
+			 * An error was detected.
+			 * The rectime structure has NOT been updated.
+			 */
+			return 1;
+		
 		rectime = *ltm;
 	}
+	
+	return 0;
 }
 
 /*
@@ -318,15 +329,22 @@ int check_line_hdr(void)
  *
  * OUT:
  * @cur_time	Timestamp string.
+ *
+ * RETURNS:
+ * 1 if an error was detected, or 0 otherwise.
  ***************************************************************************
 */
-void set_record_timestamp_string(int curr, char *cur_time, int len)
+int set_record_timestamp_string(int curr, char *cur_time, int len)
 {
 	/* Fill timestamp structure */
-	sar_get_record_timestamp_struct(curr);
+	if (sar_get_record_timestamp_struct(curr))
+		/* Error detected */
+		return 1;
 
 	/* Set cur_time date value */
 	strftime(cur_time, len, "%X", &rectime);
+
+	return 0;
 }
 
 /*
@@ -408,7 +426,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
  * @cnt			Number of remaining lines to display.
  *
  * RETURNS:
- * 1 if stats have been successfully displayed.
+ * 1 if stats have been successfully displayed, and 0 otherwise.
  ***************************************************************************
  */
 int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
@@ -431,9 +449,11 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	}
 
 	/* Set previous timestamp */
-	set_record_timestamp_string(!curr, timestamp[!curr], 16);
+	if (set_record_timestamp_string(!curr, timestamp[!curr], 16))
+		return 0;
 	/* Set current timestamp */
-	set_record_timestamp_string(curr,  timestamp[curr],  16);
+	if (set_record_timestamp_string(curr,  timestamp[curr],  16))
+		return 0;
 
 	/* Check if we are beginning a new day */
 	if (use_tm_start && record_hdr[!curr].ust_time &&
@@ -571,7 +591,7 @@ int sa_read(void *buffer, int size)
  * @ifd			Input file descriptor.
  *
  * RETURNS:
- * 1 if the record has been successfully displayed.
+ * 1 if the record has been successfully displayed, and 0 otherwise.
  ***************************************************************************
  */
 int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int ifd)
@@ -579,7 +599,8 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int
 	char cur_time[26];
 	int dp = 1;
 
-	set_record_timestamp_string(curr, cur_time, 26);
+	if (set_record_timestamp_string(curr, cur_time, 26))
+		return 0;
 
 	/* The record must be in the interval specified by -s/-e options */
 	if ((use_tm_start && (datecmp(&rectime, &tm_start) < 0)) ||
@@ -879,7 +900,12 @@ void read_stats_from_file(char from_file[])
 				 */
 				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
 						     file_actlst);
-				sar_get_record_timestamp_struct(0);
+				if (sar_get_record_timestamp_struct(0))
+					/*
+					 * An error was detected.
+					 * The timestamp hasn't been updated.
+					 */
+					continue;
 			}
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
