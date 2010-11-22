@@ -4,6 +4,9 @@ xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar now tells sadc to read only the necessary groups of
 	  activities.
 	* [Ivana Varekova]: Fix segfaults on bogus localtime input.
+	* Fixed bogus CPU statistics output, which happened when
+	  CPU user value from /proc/stat wasn't incremented whereas
+	  CPU guest value was.
 	* sar manual page updated.
 
 2010/11/10: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)

@@ -190,6 +190,8 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 					render(isdb, pre, PT_NOFLAG,
 					       "all\t%%usr", "-1", NULL,
 					       NOVAL,
+					       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+					       0.0 :
 					       ll_sp_value(scp->cpu_user - scp->cpu_guest,
 							   scc->cpu_user - scc->cpu_guest,
 							   g_itv));
@@ -291,7 +293,8 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 					render(isdb, pre, PT_NOFLAG,
 					       "cpu%d\t%%usr", "%d", cons(iv, i - 1, NOVAL),
 					       NOVAL,
-					       !g_itv ?
+					       (!g_itv ||
+					       ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest))) ?
 					       0.0 :			/* CPU is offline or tickless */
 					       ll_sp_value(scp->cpu_user - scp->cpu_guest,
 							   scc->cpu_user - scc->cpu_guest, g_itv));

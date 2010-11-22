@@ -1134,6 +1134,8 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_CPU(actflag)) {
 			printf(" %7.2f %7.2f %7.2f %7.2f",
+			       (psti->utime - psti->gtime) < (pstj->utime - pstj->gtime) ?
+			       0.0 :
 			       SP_VALUE(pstj->utime - pstj->gtime,
 					psti->utime - psti->gtime, itv),
 			       SP_VALUE(pstj->stime,  psti->stime, itv),
@@ -1238,6 +1240,9 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_CPU(actflag)) {
 			printf(" %9.0f %9.0f %9.0f",
+			       (psti->utime + psti->cutime - psti->gtime - psti->cgtime) <
+			       (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime) ?
+			       0.0 :
 			       (double) ((psti->utime + psti->cutime - psti->gtime - psti->cgtime) -
 					 (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime)) /
 			       HZ * 1000,
@@ -1307,6 +1312,8 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 	
 		print_line_id(curr_string, psti);
 		printf(" %7.2f %7.2f %7.2f %7.2f",
+		       (psti->utime - psti->gtime) < (pstj->utime - pstj->gtime) ?
+		       0.0 :
 		       SP_VALUE(pstj->utime - pstj->gtime,
 				psti->utime - psti->gtime, itv),
 		       SP_VALUE(pstj->stime,  psti->stime, itv),
@@ -1383,6 +1390,9 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		print_line_id(curr_string, psti);
 		if (disp_avg) {
 			printf(" %9.0f %9.0f %9.0f",
+			       (psti->utime + psti->cutime - psti->gtime - psti->cgtime) <
+			       (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime) ?
+			       0.0 :
 			       (double) ((psti->utime + psti->cutime - psti->gtime - psti->cgtime) -
 					 (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime)) /
 			       (HZ * psti->uc_asum_count) * 1000,
@@ -1395,6 +1405,9 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		else {
 			printf(" %9.0f %9.0f %9.0f",
+			       (psti->utime + psti->cutime - psti->gtime - psti->cgtime) <
+			       (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime) ?
+			       0.0 :
 			       (double) ((psti->utime + psti->cutime - psti->gtime - psti->cgtime) -
 					 (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime)) /
 			       HZ * 1000,

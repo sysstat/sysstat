@@ -350,6 +350,9 @@ void write_stats_core(int prev, int curr, int dis,
 			printf("%-11s  all", curr_string);
 
 			printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f\n",
+			       (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
+			       (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
+			       0.0 :
 			       ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
 					   st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
 					   g_itv),
@@ -375,7 +378,7 @@ void write_stats_core(int prev, int curr, int dis,
 					   st_cpu[curr]->cpu_guest,
 					   g_itv),
 			       (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
-			       0.0 :	/* Handle buggy kernels */
+			       0.0 :
 			       ll_sp_value(st_cpu[prev]->cpu_idle,
 					   st_cpu[curr]->cpu_idle,
 					   g_itv));
@@ -429,6 +432,8 @@ void write_stats_core(int prev, int curr, int dis,
 			else {
 				printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
 				       "  %6.2f  %6.2f  %6.2f\n",
+				       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				       0.0 :
 				       ll_sp_value(scp->cpu_user - scp->cpu_guest,
 						   scc->cpu_user - scc->cpu_guest,
 						   pc_itv),

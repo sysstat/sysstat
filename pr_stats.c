@@ -171,6 +171,8 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				printf("    %6.2f    %6.2f    %6.2f    %6.2f    %6.2f    %6.2f"
 				       "    %6.2f    %6.2f    %6.2f\n",
+				       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				       0.0 :
 				       ll_sp_value(scp->cpu_user - scp->cpu_guest,
 						   scc->cpu_user - scc->cpu_guest,     g_itv),
 				       ll_sp_value(scp->cpu_nice,    scc->cpu_nice,    g_itv),

@@ -263,6 +263,8 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 					"guest=\"%.2f\" "
 					"idle=\"%.2f\"/>",
 					cpuno,
+					(scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+					0.0 :
 					ll_sp_value(scp->cpu_user - scp->cpu_guest,
 						    scc->cpu_user - scc->cpu_guest,     g_itv),
 					ll_sp_value(scp->cpu_nice,    scc->cpu_nice,    g_itv),
