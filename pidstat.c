@@ -747,7 +747,7 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
 	DIR *dir;
 	struct dirent *drp;
 	char filename[128];
-	struct pid_stats *psti;
+	struct pid_stats *pst;
 	unsigned int thr_nr;
 
 	/* Open /proc/#/task directory */
@@ -763,10 +763,10 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
 		}
 
 		if (drp) {
-			psti = st_pid_list[curr] + (*index)++;
-			if (read_pid_stats(atoi(drp->d_name), psti, &thr_nr, pid)) {
+			pst = st_pid_list[curr] + (*index)++;
+			if (read_pid_stats(atoi(drp->d_name), pst, &thr_nr, pid)) {
 				/* Thread no longer exists */
-				psti->pid = 0;
+				pst->pid = 0;
 			}
 		}
 		else
@@ -788,7 +788,7 @@ void read_stats(int curr)
 	DIR *dir;
 	struct dirent *drp;
 	unsigned int p = 0, q, pid, thr_nr;
-	struct pid_stats *psti;
+	struct pid_stats *pst;
 	struct stats_cpu *st_cpu;
 
 	/*
@@ -819,12 +819,12 @@ void read_stats(int curr)
 					break;
 			}
 			if (drp) {
-				psti = st_pid_list[curr] + p++;
+				pst = st_pid_list[curr] + p++;
 				pid = atoi(drp->d_name);
 	
-				if (read_pid_stats(pid, psti, &thr_nr, 0)) {
+				if (read_pid_stats(pid, pst, &thr_nr, 0)) {
 					/* Process has terminated */
-					psti->pid = 0;
+					pst->pid = 0;
 				}
 	
 				else if (DISPLAY_TID(pidflag)) {
@@ -834,8 +834,8 @@ void read_stats(int curr)
 			}
 			else {
 				for (q = p; q < pid_nr; q++) {
-					psti = st_pid_list[curr] + q;
-					psti->pid = 0;
+					pst = st_pid_list[curr] + q;
+					pst->pid = 0;
 				}
 				break;
 			}
@@ -853,13 +853,13 @@ void read_stats(int curr)
 
 			if (p >= pid_nr)
 				break;
-			psti = st_pid_list[curr] + p++;
+			pst = st_pid_list[curr] + p++;
 	
 			if (pid_array[op]) {
 				/* PID should still exist. So read its stats */
-				if (read_pid_stats(pid_array[op], psti, &thr_nr, 0)) {
+				if (read_pid_stats(pid_array[op], pst, &thr_nr, 0)) {
 					/* PID has terminated */
-					psti->pid = 0;
+					pst->pid = 0;
 					pid_array[op] = 0;
 				}
 				else if (DISPLAY_TID(pidflag)) {
@@ -869,8 +869,8 @@ void read_stats(int curr)
 		}
 		/* Reset remaining structures */
 		for (q = p; q < pid_nr; q++) {
-			psti = st_pid_list[curr] + q;
-			psti->pid = 0;
+			pst = st_pid_list[curr] + q;
+			pst->pid = 0;
 		}
 		
 	}
@@ -894,8 +894,8 @@ void read_stats(int curr)
  * 		individual tasks or for all their children.
  *
  * OUT:
- * @psti	Structure with PID statistics for current sample.
- * @pstj	Structure with PID statistics for previous sample.
+ * @pstc	Structure with PID statistics for current sample.
+ * @pstp	Structure with PID statistics for previous sample.
  *
  * RETURNS:
  *  0 if PID no longer exists.
@@ -905,14 +905,14 @@ void read_stats(int curr)
  */
 int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 		       unsigned int pflag,
-		       struct pid_stats **psti, struct pid_stats **pstj)
+		       struct pid_stats **pstc, struct pid_stats **pstp)
 {
 	int q, rc;
 	regex_t regex;
 
-	*psti = st_pid_list[curr] + p;
+	*pstc = st_pid_list[curr] + p;
 
-	if (!(*psti)->pid)
+	if (!(*pstc)->pid)
 		/* PID no longer exists */
 		return 0;
 
@@ -922,9 +922,9 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 		q = p;
 	
 		do {
-			*pstj = st_pid_list[prev] + q;
-			if (((*pstj)->pid == (*psti)->pid) &&
-			    ((*pstj)->tgid == (*psti)->tgid))
+			*pstp = st_pid_list[prev] + q;
+			if (((*pstp)->pid == (*pstc)->pid) &&
+			    ((*pstp)->tgid == (*pstc)->tgid))
 				break;
 			q++;
 			if (q >= pid_nr) {
@@ -933,10 +933,10 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 		}
 		while (q != p);
 
-		if (((*pstj)->pid != (*psti)->pid) ||
-		    ((*pstj)->tgid != (*psti)->tgid)) {
+		if (((*pstp)->pid != (*pstc)->pid) ||
+		    ((*pstp)->tgid != (*pstc)->tgid)) {
 			/* PID not found (no data previously read) */
-			*pstj = &st_pid_null;
+			*pstp = &st_pid_null;
 		}
 
 		if (DISPLAY_ACTIVE_PID(pidflag)) {
@@ -945,8 +945,8 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			/* Check that it's an "active" process */
 			if (DISPLAY_CPU(activity)) {
 				/* User time already includes guest time */
-				if (((*psti)->utime != (*pstj)->utime) ||
-				    ((*psti)->stime != (*pstj)->stime)) {
+				if (((*pstc)->utime != (*pstp)->utime) ||
+				    ((*pstc)->stime != (*pstp)->stime)) {
 					isActive = TRUE;
 				}
 				else {
@@ -956,8 +956,8 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 					 */
 					if (DISPLAY_CHILD_STATS(pflag)) {
 						/* User time already includes guest time */
-						if (((*psti)->cutime != (*pstj)->cutime) ||
-						    ((*psti)->cstime != (*pstj)->cstime)) {
+						if (((*pstc)->cutime != (*pstp)->cutime) ||
+						    ((*pstc)->cstime != (*pstp)->cstime)) {
 							isActive = TRUE;
 						}
 					}
@@ -965,20 +965,20 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			}
 			
 			if (DISPLAY_MEM(activity) && (!isActive)) {
-				if (((*psti)->minflt != (*pstj)->minflt) ||
-				    ((*psti)->majflt != (*pstj)->majflt)) {
+				if (((*pstc)->minflt != (*pstp)->minflt) ||
+				    ((*pstc)->majflt != (*pstp)->majflt)) {
 					isActive = TRUE;
 				}
 				else {
 					if (DISPLAY_TASK_STATS(pflag)) {
-						if (((*psti)->vsz != (*pstj)->vsz) ||
-						    ((*psti)->rss != (*pstj)->rss)) {
+						if (((*pstc)->vsz != (*pstp)->vsz) ||
+						    ((*pstc)->rss != (*pstp)->rss)) {
 							isActive = TRUE;
 						}
 					}
 					else if (DISPLAY_CHILD_STATS(pflag)) {
-						if (((*psti)->cminflt != (*pstj)->cminflt) ||
-						    ((*psti)->cmajflt != (*pstj)->cmajflt)) {
+						if (((*pstc)->cminflt != (*pstp)->cminflt) ||
+						    ((*pstc)->cmajflt != (*pstp)->cmajflt)) {
 							isActive = TRUE;
 						}
 					}
@@ -987,18 +987,18 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 			if (DISPLAY_IO(activity) && (!isActive) &&
 				 /* /proc/#/io file should exist to check I/O stats */
-				 !(NO_PID_IO((*psti)->flags))) {
-				if (((*psti)->read_bytes  != (*pstj)->read_bytes)  ||
-				    ((*psti)->write_bytes != (*pstj)->write_bytes) ||
-				    ((*psti)->cancelled_write_bytes !=
-				     (*pstj)->cancelled_write_bytes)) {
+				 !(NO_PID_IO((*pstc)->flags))) {
+				if (((*pstc)->read_bytes  != (*pstp)->read_bytes)  ||
+				    ((*pstc)->write_bytes != (*pstp)->write_bytes) ||
+				    ((*pstc)->cancelled_write_bytes !=
+				     (*pstp)->cancelled_write_bytes)) {
 					isActive = TRUE;
 				}
 			}
 			
 			if (DISPLAY_CTXSW(activity) && (!isActive)) {
-				if (((*psti)->nvcsw  != (*pstj)->nvcsw) ||
-				    ((*psti)->nivcsw != (*pstj)->nivcsw)) {
+				if (((*pstc)->nvcsw  != (*pstp)->nvcsw) ||
+				    ((*pstc)->nivcsw != (*pstp)->nivcsw)) {
 					isActive = TRUE;
 				}
 			}
@@ -1011,7 +1011,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	
 	else if (DISPLAY_PID(pidflag)) {
 
-		*pstj = st_pid_list[prev] + p;
+		*pstp = st_pid_list[prev] + p;
 	}
 
 	if (COMMAND_STRING(pidflag)) {
@@ -1020,7 +1020,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			/* Error in preparing regex structure */
 			return -1;
 		
-		rc = regexec(&regex, (*psti)->comm, 0, NULL, 0);
+		rc = regexec(&regex, (*pstc)->comm, 0, NULL, 0);
 		regfree(&regex);
 
 		if (rc)
@@ -1099,7 +1099,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			     unsigned long long itv,
 			     unsigned long long g_itv)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int again = 0;
 
@@ -1126,54 +1126,54 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 	for (p = 0; p < pid_nr; p++) {
 
 		if (get_pid_to_display(prev, curr, p, actflag, P_TASK,
-				       &psti, &pstj) <= 0)
+				       &pstc, &pstp) <= 0)
 			continue;
 
 		printf("%11ld", (long) time(NULL));
-		__print_line_id(psti, '0');
+		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
 			printf(" %7.2f %7.2f %7.2f %7.2f",
-			       (psti->utime - psti->gtime) < (pstj->utime - pstj->gtime) ?
+			       (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			       0.0 :
-			       SP_VALUE(pstj->utime - pstj->gtime,
-					psti->utime - psti->gtime, itv),
-			       SP_VALUE(pstj->stime,  psti->stime, itv),
-			       SP_VALUE(pstj->gtime,  psti->gtime, itv),
+			       SP_VALUE(pstp->utime - pstp->gtime,
+					pstc->utime - pstc->gtime, itv),
+			       SP_VALUE(pstp->stime,  pstc->stime, itv),
+			       SP_VALUE(pstp->gtime,  pstc->gtime, itv),
 			       /* User time already includes guest time */
 			       IRIX_MODE_OFF(pidflag) ?
-			       SP_VALUE(pstj->utime + pstj->stime,
-					psti->utime + psti->stime, g_itv) :
-			       SP_VALUE(pstj->utime + pstj->stime,
-					psti->utime + psti->stime, itv));
+			       SP_VALUE(pstp->utime + pstp->stime,
+					pstc->utime + pstc->stime, g_itv) :
+			       SP_VALUE(pstp->utime + pstp->stime,
+					pstc->utime + pstc->stime, itv));
 
-			printf("   %3d", psti->processor);
+			printf("   %3d", pstc->processor);
 		}
 
 
 		if (DISPLAY_MEM(actflag)) {
 			printf(" %9.2f %9.2f %7lu %6lu %6.2f",
-			       S_VALUE(pstj->minflt, psti->minflt, itv),
-			       S_VALUE(pstj->majflt, psti->majflt, itv),
-			       psti->vsz,
-			       psti->rss,
-			       tlmkb ? SP_VALUE(0, psti->rss, tlmkb) : 0.0);
+			       S_VALUE(pstp->minflt, pstc->minflt, itv),
+			       S_VALUE(pstp->majflt, pstc->majflt, itv),
+			       pstc->vsz,
+			       pstc->rss,
+			       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 
 		if (DISPLAY_STACK(actflag)) {
 			printf("  %6lu  %6lu",
-			       psti->stack_size,
-			       psti->stack_ref);
+			       pstc->stack_size,
+			       pstc->stack_ref);
 		}
 
 		if (DISPLAY_IO(actflag)) {
-			if (!NO_PID_IO(psti->flags))
+			if (!NO_PID_IO(pstc->flags))
 			{
 				printf(" %9.2f %9.2f %9.2f",
-				       S_VALUE(pstj->read_bytes,  psti->read_bytes, itv)  / 1024,
-				       S_VALUE(pstj->write_bytes, psti->write_bytes, itv) / 1024,
-				       S_VALUE(pstj->cancelled_write_bytes,
-					       psti->cancelled_write_bytes, itv) / 1024);
+				       S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv)  / 1024,
+				       S_VALUE(pstp->write_bytes, pstc->write_bytes, itv) / 1024,
+				       S_VALUE(pstp->cancelled_write_bytes,
+					       pstc->cancelled_write_bytes, itv) / 1024);
 			}
 			else {
 				/*
@@ -1186,11 +1186,11 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_CTXSW(actflag)) {
 			printf(" %9.2f %9.2f",
-			       S_VALUE(pstj->nvcsw, psti->nvcsw, itv),
-			       S_VALUE(pstj->nivcsw, psti->nivcsw, itv));
+			       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
+			       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 		}
 		
-		print_comm(psti);
+		print_comm(pstc);
 		again = 1;
 	}
 
@@ -1216,7 +1216,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 			     unsigned long long itv)
 			
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int again = 0;
 
@@ -1232,34 +1232,34 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 	for (p = 0; p < pid_nr; p++) {
 
 		if (get_pid_to_display(prev, curr, p, actflag, P_CHILD,
-				       &psti, &pstj) <= 0)
+				       &pstc, &pstp) <= 0)
 			continue;
 
 		printf("%11ld", (long) time(NULL));
-		__print_line_id(psti, '0');
+		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
 			printf(" %9.0f %9.0f %9.0f",
-			       (psti->utime + psti->cutime - psti->gtime - psti->cgtime) <
-			       (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime) ?
+			       (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
+			       (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 			       0.0 :
-			       (double) ((psti->utime + psti->cutime - psti->gtime - psti->cgtime) -
-					 (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime)) /
+			       (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
+					 (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
 			       HZ * 1000,
-			       (double) ((psti->stime + psti->cstime) -
-					 (pstj->stime + pstj->cstime)) / HZ * 1000,
-			       (double) ((psti->gtime + psti->cgtime) -
-					 (pstj->gtime + pstj->cgtime)) / HZ * 1000);
+			       (double) ((pstc->stime + pstc->cstime) -
+					 (pstp->stime + pstp->cstime)) / HZ * 1000,
+			       (double) ((pstc->gtime + pstc->cgtime) -
+					 (pstp->gtime + pstp->cgtime)) / HZ * 1000);
 		}
 
 
 		if (DISPLAY_MEM(actflag)) {
 			printf(" %9lu %9lu",
-			       (psti->minflt + psti->cminflt) - (pstj->minflt + pstj->cminflt),
-			       (psti->majflt + psti->cmajflt) - (pstj->majflt + pstj->cmajflt));
+			       (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
+			       (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
 
-		print_comm(psti);
+		print_comm(pstc);
 		again = 1;
 	}
 
@@ -1295,7 +1295,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			     unsigned long long itv,
 			     unsigned long long g_itv)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int again = 0;
 
@@ -1307,31 +1307,31 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 	for (p = 0; p < pid_nr; p++) {
 	
 		if (get_pid_to_display(prev, curr, p, P_A_CPU, P_TASK,
-				       &psti, &pstj) <= 0)
+				       &pstc, &pstp) <= 0)
 			continue;
 	
-		print_line_id(curr_string, psti);
+		print_line_id(curr_string, pstc);
 		printf(" %7.2f %7.2f %7.2f %7.2f",
-		       (psti->utime - psti->gtime) < (pstj->utime - pstj->gtime) ?
+		       (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 		       0.0 :
-		       SP_VALUE(pstj->utime - pstj->gtime,
-				psti->utime - psti->gtime, itv),
-		       SP_VALUE(pstj->stime,  psti->stime, itv),
-		       SP_VALUE(pstj->gtime,  psti->gtime, itv),
+		       SP_VALUE(pstp->utime - pstp->gtime,
+				pstc->utime - pstc->gtime, itv),
+		       SP_VALUE(pstp->stime,  pstc->stime, itv),
+		       SP_VALUE(pstp->gtime,  pstc->gtime, itv),
 		       /* User time already includes guest time */
 		       IRIX_MODE_OFF(pidflag) ?
-		       SP_VALUE(pstj->utime + pstj->stime,
-				psti->utime + psti->stime, g_itv) :
-		       SP_VALUE(pstj->utime + pstj->stime,
-				psti->utime + psti->stime, itv));
+		       SP_VALUE(pstp->utime + pstp->stime,
+				pstc->utime + pstc->stime, g_itv) :
+		       SP_VALUE(pstp->utime + pstp->stime,
+				pstc->utime + pstc->stime, itv));
 
 		if (!disp_avg) {
-			printf("   %3d", psti->processor);
+			printf("   %3d", pstc->processor);
 		}
 		else {
 			printf("     -");
 		}
-		print_comm(psti);
+		print_comm(pstc);
 		again = 1;
 	}
 
@@ -1362,7 +1362,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			      char *prev_string, char *curr_string)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int rc, again = 0;
 
@@ -1374,49 +1374,49 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 	for (p = 0; p < pid_nr; p++) {
 	
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_CPU, P_CHILD,
-					     &psti, &pstj)) == 0)
+					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
 	
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			psti->uc_asum_count = pstj->uc_asum_count + 1;
+			pstc->uc_asum_count = pstp->uc_asum_count + 1;
 		}
 	
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, psti);
+		print_line_id(curr_string, pstc);
 		if (disp_avg) {
 			printf(" %9.0f %9.0f %9.0f",
-			       (psti->utime + psti->cutime - psti->gtime - psti->cgtime) <
-			       (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime) ?
+			       (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
+			       (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 			       0.0 :
-			       (double) ((psti->utime + psti->cutime - psti->gtime - psti->cgtime) -
-					 (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime)) /
-			       (HZ * psti->uc_asum_count) * 1000,
-			       (double) ((psti->stime + psti->cstime) -
-					 (pstj->stime + pstj->cstime)) /
-			       (HZ * psti->uc_asum_count) * 1000,
-			       (double) ((psti->gtime + psti->cgtime) -
-					 (pstj->gtime + pstj->cgtime)) /
-			       (HZ * psti->uc_asum_count) * 1000);
+			       (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
+					 (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
+			       (HZ * pstc->uc_asum_count) * 1000,
+			       (double) ((pstc->stime + pstc->cstime) -
+					 (pstp->stime + pstp->cstime)) /
+			       (HZ * pstc->uc_asum_count) * 1000,
+			       (double) ((pstc->gtime + pstc->cgtime) -
+					 (pstp->gtime + pstp->cgtime)) /
+			       (HZ * pstc->uc_asum_count) * 1000);
 		}
 		else {
 			printf(" %9.0f %9.0f %9.0f",
-			       (psti->utime + psti->cutime - psti->gtime - psti->cgtime) <
-			       (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime) ?
+			       (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
+			       (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 			       0.0 :
-			       (double) ((psti->utime + psti->cutime - psti->gtime - psti->cgtime) -
-					 (pstj->utime + pstj->cutime - pstj->gtime - pstj->cgtime)) /
+			       (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
+					 (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
 			       HZ * 1000,
-			       (double) ((psti->stime + psti->cstime) -
-					 (pstj->stime + pstj->cstime)) / HZ * 1000,
-			       (double) ((psti->gtime + psti->cgtime) -
-					 (pstj->gtime + pstj->cgtime)) / HZ * 1000);
+			       (double) ((pstc->stime + pstc->cstime) -
+					 (pstp->stime + pstp->cstime)) / HZ * 1000,
+			       (double) ((pstc->gtime + pstc->cgtime) -
+					 (pstp->gtime + pstp->cgtime)) / HZ * 1000);
 		}
-		print_comm(psti);
+		print_comm(pstc);
 		again = 1;
 	}
 	
@@ -1449,7 +1449,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				char *prev_string, char *curr_string,
 				unsigned long long itv)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int rc, again = 0;
 
@@ -1467,64 +1467,64 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 	for (p = 0; p < pid_nr; p++) {
 	
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_MEM, P_TASK,
-					     &psti, &pstj)) == 0)
+					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
 	
 		/* This will be used to compute average */
 		if (!disp_avg) {
 			if (DISPLAY_MEM(actflag)) {
-				psti->total_vsz = pstj->total_vsz + psti->vsz;
-				psti->total_rss = pstj->total_rss + psti->rss;
+				pstc->total_vsz = pstp->total_vsz + pstc->vsz;
+				pstc->total_rss = pstp->total_rss + pstc->rss;
 			}
 			if (DISPLAY_STACK(actflag)) {
-				psti->total_stack_size = pstj->total_stack_size + psti->stack_size;
-				psti->total_stack_ref  = pstj->total_stack_ref  + psti->stack_ref;
+				pstc->total_stack_size = pstp->total_stack_size + pstc->stack_size;
+				pstc->total_stack_ref  = pstp->total_stack_ref  + pstc->stack_ref;
 			}
-			psti->rt_asum_count = pstj->rt_asum_count + 1;
+			pstc->rt_asum_count = pstp->rt_asum_count + 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, psti);
+		print_line_id(curr_string, pstc);
 		
 		if (DISPLAY_MEM(actflag)) {
 			printf(" %9.2f %9.2f ",
-			       S_VALUE(pstj->minflt, psti->minflt, itv),
-			       S_VALUE(pstj->majflt, psti->majflt, itv));
+			       S_VALUE(pstp->minflt, pstc->minflt, itv),
+			       S_VALUE(pstp->majflt, pstc->majflt, itv));
 
 			if (disp_avg) {
 				printf("%7.0f %6.0f %6.2f",
-				       (double) psti->total_vsz / psti->rt_asum_count,
-				       (double) psti->total_rss / psti->rt_asum_count,
+				       (double) pstc->total_vsz / pstc->rt_asum_count,
+				       (double) pstc->total_rss / pstc->rt_asum_count,
 				       tlmkb ?
-				       SP_VALUE(0, psti->total_rss / psti->rt_asum_count, tlmkb)
+				       SP_VALUE(0, pstc->total_rss / pstc->rt_asum_count, tlmkb)
 				       : 0.0);
 			}
 			else {
 				printf("%7lu %6lu %6.2f",
-				       psti->vsz,
-				       psti->rss,
-				       tlmkb ? SP_VALUE(0, psti->rss, tlmkb) : 0.0);
+				       pstc->vsz,
+				       pstc->rss,
+				       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 			}
 		}
 		
 		if (DISPLAY_STACK(actflag)) {
 			if (disp_avg) {
 				printf("%7.0f %7.0f",
-				       (double) psti->total_stack_size / psti->rt_asum_count,
-				       (double) psti->total_stack_ref  / psti->rt_asum_count);
+				       (double) pstc->total_stack_size / pstc->rt_asum_count,
+				       (double) pstc->total_stack_ref  / pstc->rt_asum_count);
 			}
 			else {
 				printf("%7lu %7lu",
-				       psti->stack_size,
-				       psti->stack_ref);
+				       pstc->stack_size,
+				       pstc->stack_ref);
 			}
 		}
 
-		print_comm(psti);
+		print_comm(pstc);
 		again = 1;
 	}
 
@@ -1555,7 +1555,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 				 char *prev_string, char *curr_string)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int rc, again = 0;
 
@@ -1567,33 +1567,33 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 	for (p = 0; p < pid_nr; p++) {
 	
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_MEM, P_CHILD,
-					     &psti, &pstj)) == 0)
+					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
 
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			psti->rc_asum_count = pstj->rc_asum_count + 1;
+			pstc->rc_asum_count = pstp->rc_asum_count + 1;
 		}
 	
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, psti);
+		print_line_id(curr_string, pstc);
 		if (disp_avg) {
 			printf(" %9.0f %9.0f",
-			       (double) ((psti->minflt + psti->cminflt) -
-					 (pstj->minflt + pstj->cminflt)) / psti->rc_asum_count,
-			       (double) ((psti->majflt + psti->cmajflt) -
-					 (pstj->majflt + pstj->cmajflt)) / psti->rc_asum_count);
+			       (double) ((pstc->minflt + pstc->cminflt) -
+					 (pstp->minflt + pstp->cminflt)) / pstc->rc_asum_count,
+			       (double) ((pstc->majflt + pstc->cmajflt) -
+					 (pstp->majflt + pstp->cmajflt)) / pstc->rc_asum_count);
 		}
 		else {
 			printf(" %9lu %9lu",
-			       (psti->minflt + psti->cminflt) - (pstj->minflt + pstj->cminflt),
-			       (psti->majflt + psti->cmajflt) - (pstj->majflt + pstj->cmajflt));
+			       (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
+			       (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
-		print_comm(psti);
+		print_comm(pstc);
 		again = 1;
 	}
 
@@ -1625,7 +1625,7 @@ int write_pid_io_stats(int prev, int curr, int dis,
 		       char *prev_string, char *curr_string,
 		       unsigned long long itv)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int again = 0;
 
@@ -1637,16 +1637,16 @@ int write_pid_io_stats(int prev, int curr, int dis,
 	for (p = 0; p < pid_nr; p++) {
 
 		if (get_pid_to_display(prev, curr, p, P_A_IO, P_NULL,
-				       &psti, &pstj) <= 0)
+				       &pstc, &pstp) <= 0)
 			continue;
 	
-		print_line_id(curr_string, psti);
+		print_line_id(curr_string, pstc);
 		printf(" %9.2f %9.2f %9.2f",
-		       S_VALUE(pstj->read_bytes,  psti->read_bytes, itv)  / 1024,
-		       S_VALUE(pstj->write_bytes, psti->write_bytes, itv) / 1024,
-		       S_VALUE(pstj->cancelled_write_bytes,
-			       psti->cancelled_write_bytes, itv) / 1024);
-		print_comm(psti);
+		       S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv)  / 1024,
+		       S_VALUE(pstp->write_bytes, pstc->write_bytes, itv) / 1024,
+		       S_VALUE(pstp->cancelled_write_bytes,
+			       pstc->cancelled_write_bytes, itv) / 1024);
+		print_comm(pstc);
 		again = 1;
 	}
 
@@ -1678,7 +1678,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 			      char *prev_string, char *curr_string,
 			      unsigned long long itv)
 {
-	struct pid_stats *psti, *pstj;
+	struct pid_stats *pstc, *pstp;
 	unsigned int p;
 	int again = 0;
 
@@ -1690,14 +1690,14 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 	for (p = 0; p < pid_nr; p++) {
 	
 		if (get_pid_to_display(prev, curr, p, P_A_CTXSW, P_NULL,
-				       &psti, &pstj) <= 0)
+				       &pstc, &pstp) <= 0)
 			continue;
 	
-		print_line_id(curr_string, psti);
+		print_line_id(curr_string, pstc);
 		printf(" %9.2f %9.2f",
-		       S_VALUE(pstj->nvcsw, psti->nvcsw, itv),
-		       S_VALUE(pstj->nivcsw, psti->nivcsw, itv));
-		print_comm(psti);
+		       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
+		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+		print_comm(pstc);
 		again = 1;
 	}
 

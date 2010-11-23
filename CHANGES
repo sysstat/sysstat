@@ -8,6 +8,7 @@ xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  CPU user value from /proc/stat wasn't incremented whereas
 	  CPU guest value was.
 	* sar manual page updated.
+	* Code cleaned.
 
 2010/11/10: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  WARNING: Daily data files format has changed, and is *not*
