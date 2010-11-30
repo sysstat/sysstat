@@ -881,8 +881,8 @@ void read_stats(int curr)
  ***************************************************************************
  * Get current PID to display.
  * First, check that PID exists. *Then* check that it's an active process
- * and/or that the string (entered on the command line with options -C or
- * -X) is found in command name.
+ * and/or that the string (entered on the command line with option -C)
+ * is found in command name.
  *
  * IN:
  * @prev	Index in array where stats used as reference are.
@@ -1199,7 +1199,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 
 /*
  ***************************************************************************
- * Display all statistics for tasks' children in one line format
+ * Display all statistics for tasks' children in one line format.
  *
  * IN:
  * @prev	Index in array where stats used as reference are.
