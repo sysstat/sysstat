@@ -1,4 +1,4 @@
-.TH NFSIOSTAT 1 "JULY 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH NFSIOSTAT 1 "DECEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 nfsiostat \- Report input/output statistics for network filesystems (NFS).
 .SH SYNOPSIS
@@ -41,6 +41,8 @@ command generates reports continuously.
 
 .SH REPORT
 The Network Filesystem (NFS) report provides statistics for each mounted network filesystem.
+Transfer rates are shown in 1K blocks by default, unless the environment
+variable POSIXLY_CORRECT is set, in which case 512-byte blocks are used.
 The report shows the following fields:
 
 .B Filesystem:
@@ -131,6 +133,10 @@ header. The
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
 The timestamp displayed with option -t will also be compliant with ISO 8601
 format.
+
+.IP POSIXLY_CORRECT
+When this variable is set, transfer rates are shown in 512-byte blocks instead
+of the default 1K blocks.
 
 .SH BUG
 .I /proc

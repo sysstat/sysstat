@@ -75,6 +75,27 @@ void usage(char *progname)
 
 /*
  ***************************************************************************
+ * Set output unit. Unit will be kB/s unless POSIXLY_CORRECT
+ * environment variable has been set, in which case the output will be
+ * expressed in blocks/s.
+ ***************************************************************************
+ */
+void set_output_unit(void)
+{
+	char *e;
+
+	if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags))
+		return;
+
+	/* Check POSIXLY_CORRECT environment variable */
+	if ((e = getenv(ENV_POSIXLY_CORRECT)) == NULL) {
+		/* Variable not set: Unit is kB/s and not blocks/s */
+		flags |= I_D_KILOBYTES;
+	}
+}
+
+/*
+ ***************************************************************************
  * SIGALRM signal handler.
  *
  * IN:
@@ -626,6 +647,9 @@ int main(int argc, char **argv)
 	if (!interval) {
 		count = 1;
 	}
+
+	/* Select output unit (kB/s or blocks/s) */
+	set_output_unit();
 
 	/* Init structures according to machine architecture */
 	io_sys_init();

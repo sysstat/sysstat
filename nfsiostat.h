@@ -24,6 +24,9 @@
 #define DISPLAY_ISO(m)		(((m) & I_D_ISO)           == I_D_ISO)
 #define DISPLAY_HUMAN_READ(m)	(((m) & I_D_HUMAN_READ)    == I_D_HUMAN_READ)
 
+/* Environment variable */
+#define ENV_POSIXLY_CORRECT	"POSIXLY_CORRECT"
+
 /* Preallocation constats */
 #define NR_NFS_PREALLOC	2
 
