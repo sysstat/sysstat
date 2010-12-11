@@ -11,6 +11,7 @@ xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  variable. nfsiostat default output is expressed in kB/s,
 	  unless this variable is set (in which case the output is
 	  expressed in blocks/s).
+	* [Kenichi Okuyama]: Small change to sar manual page.
 	* sar manual page updated.
 	* Code cleaned.
 

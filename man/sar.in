@@ -715,7 +715,7 @@ Number of RAW sockets currently in use.
 
 .B ip-frag
 .RS
-Number of IP fragments currently in use.
+Number of IP fragments currently in queue.
 .RE
 
 .B tcp-tw
