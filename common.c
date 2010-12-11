@@ -264,6 +264,38 @@ int get_sysfs_dev_nr(int display_partitions)
 
 /*
  ***************************************************************************
+ * Read /proc/devices file and get device-mapper major number.
+ * If device-mapper entry is not found in file, use DEFAULT_DEMAP_MAJOR
+ * number.
+ *
+ * RETURNS:
+ * Device-mapper major number.
+ ***************************************************************************
+ */
+unsigned int get_devmap_major(void)
+{
+	FILE *fp;
+	char line[128];
+	unsigned int dm_major = DEFAULT_DEVMAP_MAJOR;
+
+	if ((fp = fopen(DEVICES, "r")) == NULL)
+		return dm_major;
+
+	while (fgets(line, 128, fp) != NULL) {
+
+		if (strstr(line, "device-mapper")) {
+			/* Read device-mapper major number */
+			sscanf(line, "%u", &dm_major);
+		}
+	}
+
+	fclose(fp);
+
+	return dm_major;
+}
+
+/*
+ ***************************************************************************
  * Print banner.
  *
  * IN:

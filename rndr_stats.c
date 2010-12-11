@@ -38,6 +38,7 @@
 static char *seps[] =  {"\t", ";"};
 
 extern unsigned int flags;
+extern unsigned int dm_major;
 
 /*
  ***************************************************************************
@@ -909,7 +910,7 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 
 		dev_name = NULL;
 
-		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == DEVMAP_MAJOR)) {
+		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
 			dev_name = transform_devmapname(sdc->major, sdc->minor);
 		}
 

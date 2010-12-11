@@ -49,6 +49,7 @@ char *sccsid(void) { return (SCCSID); }
 long interval = -1, count = 0;
 
 unsigned int flags = 0;
+unsigned int dm_major;		/* Device-mapper major number */
 unsigned int format = 0;	/* Output format */
 
 /* File header */
@@ -1362,6 +1363,10 @@ int main(int argc, char **argv)
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
 		tm_end.tm_hour += 24;
+	}
+
+	if (USE_PRETTY_OPTION(flags)) {
+		dm_major = get_devmap_major();
 	}
 
 	/*

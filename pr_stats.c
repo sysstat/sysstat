@@ -37,6 +37,7 @@
 #endif
 
 extern unsigned int flags;
+extern unsigned int dm_major;
 extern int  dis;
 extern char timestamp[][TIMESTAMP_LEN];
 extern unsigned long avg_count;
@@ -823,7 +824,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		
 		dev_name = NULL;
 
-		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == DEVMAP_MAJOR)) {
+		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
 			dev_name = transform_devmapname(sdc->major, sdc->minor);
 		}
 

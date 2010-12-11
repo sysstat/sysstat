@@ -61,6 +61,7 @@ int iodev_nr = 0;	/* Nb of devices and partitions found */
 int cpu_nr = 0;		/* Nb of processors on the machine */
 int dlist_idx = 0;	/* Nb of devices entered on the command line */
 int flags = 0;		/* Flag for common options and system state */
+unsigned int dm_major;	/* Device-mapper major number */
 
 long interval = 0;
 char timestamp[64];
@@ -678,7 +679,7 @@ void read_diskstats_stat(int curr)
 			}
 		}
 
-		if ((DISPLAY_DEVMAP_NAME(flags)) && (major == DEVMAP_MAJOR)) {
+		if ((DISPLAY_DEVMAP_NAME(flags)) && (major == dm_major)) {
 			/*
 			 * If the device is a device mapper device, try to get its
 			 * assigned name of its logical device.
@@ -1296,6 +1297,10 @@ int main(int argc, char **argv)
 	/* Ignore device list if '-p ALL' entered on the command line */
 	if (DISPLAY_PART_ALL(flags)) {
 		dlist_idx = 0;
+	}
+
+	if (DISPLAY_DEVMAP_NAME(flags)) {
+		dm_major = get_devmap_major();
 	}
 
 	/* Init structures according to machine architecture */

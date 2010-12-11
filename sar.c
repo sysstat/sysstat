@@ -50,6 +50,8 @@ long interval = -1, count = 0;
 int dis = TRUE;
 
 unsigned int flags = 0;
+unsigned int dm_major;	/* Device-mapper major number */
+
 char timestamp[2][TIMESTAMP_LEN];
 
 unsigned long avg_count = 0;
@@ -1273,6 +1275,10 @@ int main(int argc, char **argv)
 		usage(argv[0]);
 	}
 
+	if (USE_PRETTY_OPTION(flags)) {
+		dm_major = get_devmap_major();
+	}
+	
 	if (!count) {
 		/*
 		 * count parameter not set: Display all the contents of the file

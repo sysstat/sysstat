@@ -55,19 +55,20 @@
 #define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
 #define S_STAT			"stat"
 #define DEVMAP_DIR		"/dev/mapper"
+#define DEVICES			"/proc/devices"
 
-#define MAX_FILE_LEN	256
-#define MAX_PF_NAME	1024
-#define DEVMAP_MAJOR	253
-#define MAX_NAME_LEN	72
+#define MAX_FILE_LEN		256
+#define MAX_PF_NAME		1024
+#define DEFAULT_DEVMAP_MAJOR	253
+#define MAX_NAME_LEN		72
 
-#define NR_DISKS	4
+#define NR_DISKS		4
 
 /* Environment variables */
-#define ENV_TIME_FMT	"S_TIME_FORMAT"
-#define ENV_TIME_DEFTM	"S_TIME_DEF_TIME"
+#define ENV_TIME_FMT		"S_TIME_FORMAT"
+#define ENV_TIME_DEFTM		"S_TIME_DEF_TIME"
 
-#define DIGITS		"0123456789"
+#define DIGITS			"0123456789"
 
 
 /*
@@ -163,6 +164,8 @@ extern char *
 	device_name(char *);
 extern void
 	get_HZ(void);
+extern unsigned int
+	get_devmap_major(void);
 extern unsigned long long
 	get_interval(unsigned long long, unsigned long long);
 extern void
