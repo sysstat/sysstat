@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
-<xs:annotation><xs:appinfo>-- XML Schema v2.9 for sysstat. See sadf.h --</xs:appinfo></xs:annotation>
+<xs:annotation><xs:appinfo>-- XML Schema v2.10 for sysstat. See sadf.h --</xs:appinfo></xs:annotation>
 
     <xs:element name="queue" type="queue-type"></xs:element>
 
@@ -11,6 +11,7 @@
     	<xs:attribute name="ldavg-1" type="hundredth-type"></xs:attribute>
     	<xs:attribute name="ldavg-5" type="hundredth-type"></xs:attribute>
     	<xs:attribute name="ldavg-15" type="hundredth-type"></xs:attribute>
+    	<xs:attribute name="blocked" type="xs:nonNegativeInteger"></xs:attribute>
     </xs:complexType>
 
     <xs:element name="kernel" type="kernel-type"></xs:element>

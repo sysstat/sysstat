@@ -169,6 +169,7 @@ struct stats_ktables {
 /* Structure for queue and load statistics */
 struct stats_queue {
 	unsigned long nr_running	__attribute__ ((aligned (8)));
+	unsigned long procs_blocked	__attribute__ ((aligned (8)));
 	unsigned int  load_avg_1	__attribute__ ((aligned (8)));
 	unsigned int  load_avg_5	__attribute__ ((packed));
 	unsigned int  load_avg_15	__attribute__ ((packed));

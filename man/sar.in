@@ -1,4 +1,4 @@
-.TH SAR 1 "NOVEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "DECEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -1640,6 +1640,11 @@ System load average for the past 5 minutes.
 .B ldavg-15
 .RS
 System load average for the past 15 minutes.
+.RE
+
+.B blocked
+.RS
+Number of tasks currently blocked, waiting for I/O to complete.
 .RE
 .RE
 .IP -r

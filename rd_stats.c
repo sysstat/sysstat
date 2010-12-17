@@ -164,8 +164,8 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 
 /*
  ***************************************************************************
- * Read processes (tasks) creation and context switches statistics from
- * /proc/stat
+ * Read processes (tasks) creation and context switches statistics
+ * from /proc/stat.
  *
  * IN:
  * @st_pcsw	Structure where stats will be saved.
@@ -241,7 +241,7 @@ void read_stat_irq(struct stats_irq *st_irq, int nbr)
 
 /*
  ***************************************************************************
- * Read queue and load statistics from /proc/loadavg.
+ * Read queue and load statistics from /proc/loadavg and /proc/stat.
  *
  * IN:
  * @st_queue	Structure where stats will be saved.
@@ -253,6 +253,7 @@ void read_stat_irq(struct stats_irq *st_irq, int nbr)
 void read_loadavg(struct stats_queue *st_queue)
 {
 	FILE *fp;
+	char line[8192];
 	int load_tmp[3];
 
 	if ((fp = fopen(LOADAVG, "r")) == NULL)
@@ -276,6 +277,21 @@ void read_loadavg(struct stats_queue *st_queue)
 		/* Do not take current process into account */
 		st_queue->nr_running--;
 	}
+
+	/* Read nr of tasks blocked from /proc/stat */
+	if ((fp = fopen(STAT, "r")) == NULL)
+		return;
+
+	while (fgets(line, 8192, fp) != NULL) {
+
+		if (!strncmp(line, "procs_blocked ", 14)) {
+			/* Read number of processes blocked */
+			sscanf(line + 14, "%lu", &st_queue->procs_blocked);
+			break;
+		}
+	}
+
+	fclose(fp);
 }
 
 /*

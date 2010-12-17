@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.9 for sysstat. See sadf.h -->
+<!--DTD v2.10 for sysstat. See sadf.h -->
 <!ELEMENT boot EMPTY>
 <!ATTLIST boot
 	date CDATA #REQUIRED
@@ -140,6 +140,7 @@
 	ldavg-1 CDATA #REQUIRED
 	ldavg-5 CDATA #REQUIRED
 	ldavg-15 CDATA #REQUIRED
+	blocked CDATA #REQUIRED
 >
 <!ELEMENT restarts (boot+)>
 <!ELEMENT comments (comment+)>

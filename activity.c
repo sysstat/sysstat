@@ -311,7 +311,7 @@ struct activity ktables_act = {
 struct activity queue_act = {
 	.id		= A_QUEUE,
 	.options	= AO_COLLECTED,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
@@ -325,7 +325,7 @@ struct activity queue_act = {
 #ifdef SOURCE_SADF
 	.f_render	= render_queue_stats,
 	.f_xml_print	= xml_print_queue_stats,
-	.hdr_line	= "runq-sz;plist-sz;ldavg-1;ldavg-5;ldavg-15",
+	.hdr_line	= "runq-sz;plist-sz;ldavg-1;ldavg-5;ldavg-15;blocked",
 	.name		= "A_QUEUE",
 #endif
 	.nr		= 1,

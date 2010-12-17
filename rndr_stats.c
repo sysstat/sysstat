@@ -798,10 +798,14 @@ __print_funct_t render_queue_stats(struct activity *a, int isdb, char *pre,
 	       NOVAL,
 	       (double) sqc->load_avg_5 / 100);
 
-	render(isdb, pre, pt_newlin,
+	render(isdb, pre, PT_NOFLAG,
 	       "-\tldavg-15", NULL, NULL,
 	       NOVAL,
 	       (double) sqc->load_avg_15 / 100);
+	       
+	render(isdb, pre, PT_USEINT | pt_newlin,
+	       "-\tblocked", NULL, NULL,
+	       sqc->procs_blocked, DNOVAL);
 }
 
 /*

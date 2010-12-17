@@ -660,45 +660,50 @@ void stub_print_queue_stats(struct activity *a, int prev, int curr, int dispavg)
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
 	static unsigned long long
-		avg_nr_running  = 0,
-		avg_nr_threads  = 0,
-		avg_load_avg_1  = 0,
-		avg_load_avg_5  = 0,
-		avg_load_avg_15 = 0;
+		avg_nr_running    = 0,
+		avg_nr_threads    = 0,
+		avg_load_avg_1    = 0,
+		avg_load_avg_5    = 0,
+		avg_load_avg_15   = 0,
+		avg_procs_blocked = 0;
 	
 	if (dis) {
-		printf("\n%-11s   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15\n",
+		printf("\n%-11s   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked\n",
 		       timestamp[!curr]);
 	}
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s %9lu %9u %9.2f %9.2f %9.2f\n", timestamp[curr],
+		printf("%-11s %9lu %9u %9.2f %9.2f %9.2f %9lu\n", timestamp[curr],
 		       sqc->nr_running,
 		       sqc->nr_threads,
 		       (double) sqc->load_avg_1  / 100,
 		       (double) sqc->load_avg_5  / 100,
-		       (double) sqc->load_avg_15 / 100);
+		       (double) sqc->load_avg_15 / 100,
+		       sqc->procs_blocked);
 
 		/* Will be used to compute the average */
-		avg_nr_running  += sqc->nr_running;
-		avg_nr_threads  += sqc->nr_threads;
-		avg_load_avg_1  += sqc->load_avg_1;
-		avg_load_avg_5  += sqc->load_avg_5;
-		avg_load_avg_15 += sqc->load_avg_15;
+		avg_nr_running    += sqc->nr_running;
+		avg_nr_threads    += sqc->nr_threads;
+		avg_load_avg_1    += sqc->load_avg_1;
+		avg_load_avg_5    += sqc->load_avg_5;
+		avg_load_avg_15   += sqc->load_avg_15;
+		avg_procs_blocked += sqc->procs_blocked;
 	}
 	else {
 		/* Display average values */
-		printf("%-11s %9.0f %9.0f %9.2f %9.2f %9.2f\n", timestamp[curr],
-		       (double) avg_nr_running  / avg_count,
-		       (double) avg_nr_threads  / avg_count,
-		       (double) avg_load_avg_1  / (avg_count * 100),
-		       (double) avg_load_avg_5  / (avg_count * 100),
-		       (double) avg_load_avg_15 / (avg_count * 100));
+		printf("%-11s %9.0f %9.0f %9.2f %9.2f %9.2f %9.0f\n", timestamp[curr],
+		       (double) avg_nr_running    / avg_count,
+		       (double) avg_nr_threads    / avg_count,
+		       (double) avg_load_avg_1    / (avg_count * 100),
+		       (double) avg_load_avg_5    / (avg_count * 100),
+		       (double) avg_load_avg_15   / (avg_count * 100),
+		       (double) avg_procs_blocked / avg_count);
 
 		/* Reset average counters */
 		avg_nr_running = avg_nr_threads = 0;
 		avg_load_avg_1 = avg_load_avg_5 = avg_load_avg_15 = 0;
+		avg_procs_blocked = 0;
 	}
 }
 

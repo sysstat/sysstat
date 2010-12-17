@@ -603,12 +603,14 @@ __print_funct_t xml_print_queue_stats(struct activity *a, int curr, int tab,
 		"plist-sz=\"%u\" "
 		"ldavg-1=\"%.2f\" "
 		"ldavg-5=\"%.2f\" "
-		"ldavg-15=\"%.2f\"/>",
+		"ldavg-15=\"%.2f\" "
+		"blocked=\"%lu\"/>",
 		sqc->nr_running,
 		sqc->nr_threads,
 		(double) sqc->load_avg_1 / 100,
 		(double) sqc->load_avg_5 / 100,
-		(double) sqc->load_avg_15 / 100);
+		(double) sqc->load_avg_15 / 100,
+		sqc->procs_blocked);
 }
 
 /*

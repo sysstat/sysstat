@@ -1,8 +1,12 @@
 Changes:
 
 xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+	  INFO: stats_queue structure format has changed and is *not*
+	  compatible with the previous one [+1]
 	* sar now tells sadc to read only the necessary groups of
 	  activities.
+	* Added a new metric (number of tasks waiting for I/O) to
+	  sar -q.
 	* [Ivana Varekova]: Fix segfaults on bogus localtime input.
 	* Fixed bogus CPU statistics output, which happened when
 	  CPU user value from /proc/stat wasn't incremented whereas
@@ -13,6 +17,7 @@ xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  expressed in blocks/s).
 	* No longer assume that device-mapper major number is 253.
 	  Get the real number from /proc/devices file.
+	* DTD and XSD documents updated.
 	* [Kenichi Okuyama]: Small change to sar manual page.
 	* sar manual page updated.
 	* Code cleaned.
