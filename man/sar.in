@@ -1688,7 +1688,18 @@ RAM/swap is needed to guarantee that there never is out of memory.
 .RS
 Percentage of memory needed for current workload in relation to the total amount of memory (RAM+swap).
 This number may be greater than 100% because the kernel usually overcommits memory.
+.RE
 
+.B kbactive
+.RS
+Amount of active memory in kilobytes (memory that has been used more recently
+and usually not reclaimed unless absolutely necessary).
+.RE
+
+.B kbinact
+.RS
+Amount of inactive memory in kilobytes (memory which has been less recently
+used. It is more eligible to be reclaimed for other purposes).
 .RE
 .RE
 .IP -R

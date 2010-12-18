@@ -390,10 +390,12 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		*smc = (struct stats_memory *) a->buf[curr],
 		*smp = (struct stats_memory *) a->buf[prev];
 	static unsigned long long
-		avg_frmkb = 0,
-		avg_bufkb = 0,
-		avg_camkb = 0,
-		avg_comkb = 0;
+		avg_frmkb    = 0,
+		avg_bufkb    = 0,
+		avg_camkb    = 0,
+		avg_comkb    = 0,
+		avg_activekb = 0,
+		avg_inactkb  = 0;
 	static unsigned long long
 		avg_frskb = 0,
 		avg_tlskb = 0,
@@ -414,12 +416,12 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 	if (DISPLAY_MEM_AMT(a->opt_flags)) {
 		if (dis) {
 			printf("\n%-11s kbmemfree kbmemused  %%memused kbbuffers  kbcached"
-			       "  kbcommit   %%commit\n", timestamp[!curr]);
+			       "  kbcommit   %%commit  kbactive   kbinact\n", timestamp[!curr]);
 		}
 
 		if (!dispavg) {
 			/* Display instantaneous values */
-			printf("%-11s %9lu %9lu    %6.2f %9lu %9lu %9lu   %7.2f\n",
+			printf("%-11s %9lu %9lu    %6.2f %9lu %9lu %9lu   %7.2f %9lu %9lu\n",
 			       timestamp[curr],
 			       smc->frmkb,
 			       smc->tlmkb - smc->frmkb,
@@ -429,21 +431,25 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			       smc->camkb,
 			       smc->comkb,
 			       (smc->tlmkb + smc->tlskb) ?
-			       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0);
+			       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0,
+			       smc->activekb,
+			       smc->inactkb);
 
 			/*
 			 * Will be used to compute the average.
 			 * We assume that the total amount of memory installed can not vary
 			 * during the interval given on the command line.
 			 */
-			avg_frmkb += smc->frmkb;
-			avg_bufkb += smc->bufkb;
-			avg_camkb += smc->camkb;
-			avg_comkb += smc->comkb;
+			avg_frmkb    += smc->frmkb;
+			avg_bufkb    += smc->bufkb;
+			avg_camkb    += smc->camkb;
+			avg_comkb    += smc->comkb;
+			avg_activekb += smc->activekb;
+			avg_inactkb  += smc->inactkb;
 		}
 		else {
 			/* Display average values */
-			printf("%-11s %9.0f %9.0f    %6.2f %9.0f %9.0f %9.0f   %7.2f\n",
+			printf("%-11s %9.0f %9.0f    %6.2f %9.0f %9.0f %9.0f   %7.2f %9.0f %9.0f\n",
 			       timestamp[curr],
 			       (double) avg_frmkb / avg_count,
 			       (double) smc->tlmkb - ((double) avg_frmkb / avg_count),
@@ -456,11 +462,13 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			       (double) avg_comkb / avg_count,
 			       (smc->tlmkb + smc->tlskb) ?
 			       SP_VALUE(0.0, (double) (avg_comkb / avg_count),
-					smc->tlmkb + smc->tlskb) :
-			       0.0);
+					smc->tlmkb + smc->tlskb) : 0.0,
+			       (double) avg_activekb / avg_count,
+			       (double) avg_inactkb / avg_count);
 			
 			/* Reset average counters */
 			avg_frmkb = avg_bufkb = avg_camkb = avg_comkb = 0;
+			avg_activekb = avg_inactkb = 0;
 		}
 	}
 	

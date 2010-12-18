@@ -335,6 +335,14 @@ void read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of cached swap in kB */
 			sscanf(line + 11, "%lu", &st_memory->caskb);
 		}
+		else if (!strncmp(line, "Active:", 7)) {
+			/* Read the amount of active memory in kB */
+			sscanf(line + 7, "%lu", &st_memory->activekb);
+		}
+		else if (!strncmp(line, "Inactive:", 9)) {
+			/* Read the amount of inactive memory in kB */
+			sscanf(line + 9, "%lu", &st_memory->inactkb);
+		}
 		else if (!strncmp(line, "SwapTotal:", 10)) {
 			/* Read the total amount of swap memory in kB */
 			sscanf(line + 10, "%lu", &st_memory->tlskb);

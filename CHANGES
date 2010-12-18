@@ -7,6 +7,8 @@ xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  activities.
 	* Added a new metric (number of tasks waiting for I/O) to
 	  sar -q.
+	* Added two new metrics (amount of active and inactive
+	  memory) to sar -r.
 	* [Ivana Varekova]: Fix segfaults on bogus localtime input.
 	* Fixed bogus CPU statistics output, which happened when
 	  CPU user value from /proc/stat wasn't incremented whereas

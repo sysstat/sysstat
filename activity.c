@@ -264,7 +264,7 @@ struct activity memory_act = {
 	.f_render	= render_memory_stats,
 	.f_xml_print	= xml_print_memory_stats,
 	.hdr_line	= "frmpg/s;bufpg/s;campg/s|"
-		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit|"
+		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact|"
 		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 	.name		= "A_MEMORY",
 #endif

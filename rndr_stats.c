@@ -688,11 +688,19 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       "-\tkbcommit", NULL, NULL,
 		       smc->comkb, DNOVAL);
 
-		render(isdb, pre, pt_newlin,
+		render(isdb, pre, PT_NOFLAG,
 		       "-\t%%commit", NULL, NULL, NOVAL,
 		       (smc->tlmkb + smc->tlskb) ?
 		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
 		       0.0);
+
+		render(isdb, pre, PT_USEINT,
+		       "-\tkbactive", NULL, NULL,
+		       smc->activekb, DNOVAL);
+
+		render(isdb, pre, PT_USEINT | pt_newlin,
+		       "-\tkbinact", NULL, NULL,
+		       smc->inactkb, DNOVAL);
 	}
 	
 	if (DISPLAY_SWAP(a->opt_flags)) {

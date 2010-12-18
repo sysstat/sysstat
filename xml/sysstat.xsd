@@ -42,6 +42,8 @@
     		<xs:element name="cached" type="xs:nonNegativeInteger"></xs:element>
     		<xs:element name="commit" type="xs:nonNegativeInteger"></xs:element>
     		<xs:element name="commit-percent" type="hundredth-type"></xs:element>
+    		<xs:element name="active" type="xs:nonNegativeInteger"></xs:element>
+    		<xs:element name="inactive" type="xs:nonNegativeInteger"></xs:element>
     		<xs:element name="swpfree" type="xs:nonNegativeInteger"></xs:element>
     		<xs:element name="swpused" type="xs:nonNegativeInteger"></xs:element>
     		<xs:element name="swpused-percent" type="hundredth-type"></xs:element>

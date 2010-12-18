@@ -17,6 +17,8 @@
 <!ELEMENT campg (#PCDATA)>
 <!ELEMENT commit (#PCDATA)>
 <!ELEMENT commit-percent (#PCDATA)>
+<!ELEMENT active (#PCDATA)>
+<!ELEMENT inactive (#PCDATA)>
 <!ELEMENT cpu EMPTY>
 <!ATTLIST cpu
 	number CDATA #REQUIRED
@@ -98,7 +100,7 @@
 	pty-nr CDATA #REQUIRED
 >
 <!ELEMENT memfree (#PCDATA)>
-<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
+<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, active, inactive, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
 <!ATTLIST memory
 	per CDATA #REQUIRED
 	unit CDATA #REQUIRED

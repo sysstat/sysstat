@@ -507,10 +507,16 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xprintf(tab, "<commit>%lu</commit>",
 			smc->comkb);
 
-		xprintf(tab--, "<commit-percent>%.2f</commit-percent>",
+		xprintf(tab, "<commit-percent>%.2f</commit-percent>",
 			(smc->tlmkb + smc->tlskb) ?
 			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
 			0.0);
+
+		xprintf(tab, "<active>%lu</active>",
+			smc->activekb);
+			
+		xprintf(tab--, "<inactive>%lu</inactive>",
+			smc->inactkb);
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
