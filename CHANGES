@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+2010/12/26: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  INFO: stats_queue structure format has changed and is *not*
 	  compatible with the previous one [+1]
 	* sar now tells sadc to read only the necessary groups of
