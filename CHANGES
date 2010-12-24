@@ -22,6 +22,7 @@ xxxx/xx/xx: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* DTD and XSD documents updated.
 	* [Kenichi Okuyama]: Small change to sar manual page.
 	* sar manual page updated.
+	* NLS updated.
 	* Code cleaned.
 
 2010/11/10: Version 9.1.6 - Sebastien Godard (sysstat <at> orange.fr)
