@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* NLS updated. Ukrainian translation added.
 
 2010/12/26: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  INFO: stats_queue structure format has changed and is *not*
