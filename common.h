@@ -1,6 +1,6 @@
 /*
  * sysstat: System performance tools for Linux
- * (C) 1999-2010 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2011 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _COMMON_H

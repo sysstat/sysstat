@@ -2,7 +2,7 @@
 #
 # chkconfig: 12345 01 99
 # @INIT_DIR@/sysstat
-# (C) 2000-2010 Sebastien Godard (sysstat <at> orange.fr)
+# (C) 2000-2011 Sebastien Godard (sysstat <at> orange.fr)
 #
 ### BEGIN INIT INFO
 # Provides:		sysstat
