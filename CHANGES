@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* sysstat_panic function is now defined only in DEBUG mode.
 	* NLS updated. Ukrainian translation added.
 
 2010/12/26: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)

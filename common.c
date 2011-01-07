@@ -564,12 +564,14 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
  * @error_code	Error code.
  ***************************************************************************
  */
+#ifdef DEBUG
 void sysstat_panic(const char *function, int error_code)
 {
 	fprintf(stderr, "sysstat: %s[%d]: Last chance handler...\n",
 		function, error_code);
 	exit(1);
 }
+#endif
 
 /*
  ***************************************************************************

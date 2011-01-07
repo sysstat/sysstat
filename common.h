@@ -115,8 +115,11 @@
 
 #define MINIMUM(a,b)	((a) < (b) ? (a) : (b))
 
+#ifdef DEBUG
 #define PANIC(m)	sysstat_panic(__FUNCTION__, m)
-
+#else
+#define PANIC(m)
+#endif
 
 /* Number of ticks per second */
 #define HZ		hz
@@ -192,7 +195,9 @@ extern int
 	print_gal_header(struct tm *, char *, char *, char *, char *, int);
 extern void
 	print_version(void);
+#ifdef DEBUG
 extern void
 	sysstat_panic(const char *, int);
+#endif
 
 #endif  /* _COMMON_H */
