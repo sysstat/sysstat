@@ -69,8 +69,13 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 
+#ifdef DEBUG
+	fprintf(stderr, _("Options are:\n"
+			  "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
+#else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
+#endif
 	exit(1);
 }
 
@@ -406,6 +411,11 @@ void write_stats(int curr, struct tm *rectime)
 			strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
 		}
 		printf("%s\n", timestamp);
+#ifdef DEBUG
+		if (DISPLAY_DEBUG(flags)) {
+			fprintf(stderr, "%s\n", timestamp);
+		}
+#endif
 	}
 
 	/* Interval is multiplied by the number of processors */
@@ -425,6 +435,19 @@ void write_stats(int curr, struct tm *rectime)
 		if (shi->used) {
 			ioni = st_cifs[curr]  + i;
 			ionj = st_cifs[!curr] + i;
+#ifdef DEBUG
+			if (DISPLAY_DEBUG(flags)) {
+				/* Debug output */
+				fprintf(stderr, "name=%s itv=%llu fctr=%d ioni{ rd_bytes=%llu "
+						"wr_bytes=%llu rd_ops=%llu wr_ops=%llu fopens=%llu "
+						"fcloses=%llu fdeletes=%llu}\n",
+					shi->name, itv, fctr,
+					ioni->rd_bytes, ioni->wr_bytes,
+					ioni->rd_ops,   ioni->wr_ops,
+					ioni->fopens,   ioni->fcloses,
+					ioni->fdeletes);
+			}
+#endif
 			write_cifs_stat(curr, itv, fctr, shi, ioni, ionj);
 		}
 	}
@@ -503,6 +526,12 @@ int main(int argc, char **argv)
 	/* Process args... */
 	while (opt < argc) {
 
+#ifdef DEBUG
+		if (!strcmp(argv[opt], "--debuginfo")) {
+			flags |= I_D_DEBUG;
+			opt++;
+		} else
+#endif
 		if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {
 

@@ -508,6 +508,8 @@ AC_CONFIG_FILES([man/sadf.1:man/sadf.in])	# File must be renamed
 AC_CONFIG_FILES([man/sar.1:man/sar.in])		# File must be renamed
 AC_CONFIG_FILES([man/sysstat.5:man/sysstat.in])	# File must be renamed
 AC_CONFIG_FILES([man/iostat.1:man/iostat.in])	# File must be renamed
+AC_CONFIG_FILES([man/cifsiostat.1:man/cifsiostat.in])	# File must be renamed
+AC_CONFIG_FILES([man/nfsiostat.1:man/nfsiostat.in])	# File must be renamed
 AC_CONFIG_FILES([contrib/isag/isag], [chmod +x contrib/isag/isag]) # Permissions must be changed
 
 AC_OUTPUT(Makefile)

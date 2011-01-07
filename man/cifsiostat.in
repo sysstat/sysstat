@@ -1,12 +1,21 @@
-.TH CIFSIOSTAT 1 "JULY 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "JANUARY 2011" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
+.ie 'yes'@WITH_DEBUG@' \{
+.B cifsiostat [ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [
+.I interval
+.B [
+.I count
+.B ] ]
+.\}
+.el \{
 .B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [
 .I interval
 .B [
 .I count
 .B ] ]
+.\}
 .SH DESCRIPTION
 The
 .B cifsiostat
@@ -86,6 +95,10 @@ Indicate the number of deleted files per second.
 .RE
 .RE
 .SH OPTIONS
+.if 'yes'@WITH_DEBUG@' \{
+.IP --debuginfo
+Print debug output to stderr.
+.\}
 .IP -h
 Make the CIFS report easier to read by a human.
 .IP -k

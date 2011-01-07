@@ -1,6 +1,9 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Jan Kaluza]: Added --debuginfo option to cifsiostat.
+	* [Jan Kaluza]: Added --debuginfo option to nfsiostat.
+	* cifsiostat and nfsiostat manual pages updated.
 	* sysstat_panic function is now defined only in DEBUG mode.
 	* NLS updated. Ukrainian translation added.
 

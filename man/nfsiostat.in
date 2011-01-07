@@ -1,12 +1,21 @@
-.TH NFSIOSTAT 1 "DECEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH NFSIOSTAT 1 "JANUARY 2011" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 nfsiostat \- Report input/output statistics for network filesystems (NFS).
 .SH SYNOPSIS
+.ie 'yes'@WITH_DEBUG@' \{
+.B nfsiostat [ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [
+.I interval
+.B [
+.I count
+.B ] ]
+.\}
+.el \{
 .B nfsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [
 .I interval
 .B [
 .I count
 .B ] ]
+.\}
 .SH DESCRIPTION
 The
 .B nfsiostat
@@ -107,6 +116,10 @@ per second.
 .RE
 .RE
 .SH OPTIONS
+.if 'yes'@WITH_DEBUG@' \{
+.IP --debuginfo
+Print debug output to stderr.
+.\}
 .IP -h
 Make the NFS report easier to read by a human.
 .IP -k
