@@ -198,7 +198,10 @@ void io_sys_init(void)
 	if ((ionfs_nr = get_nfs_mount_nr()) > 0) {
 		ionfs_nr += NR_NFS_PREALLOC;
 	}
-	st_hdr_ionfs = (struct io_hdr_stats *) calloc(ionfs_nr, IO_HDR_STATS_SIZE);
+	if ((st_hdr_ionfs = (struct io_hdr_stats *) calloc(ionfs_nr, IO_HDR_STATS_SIZE)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
 	
 	/* Allocate structures for number of NFS directories found */
 	for (i = 0; i < 2; i++) {

@@ -174,7 +174,10 @@ void io_sys_init(void)
 	if ((cifs_nr = get_cifs_nr()) > 0) {
 		cifs_nr += NR_CIFS_PREALLOC;
 	}
-	st_hdr_cifs = (struct io_hdr_stats *) calloc(cifs_nr, IO_HDR_STATS_SIZE);
+	if ((st_hdr_cifs = (struct io_hdr_stats *) calloc(cifs_nr, IO_HDR_STATS_SIZE)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
 	
 	/* Allocate structures for number of CIFS directories found */
 	for (i = 0; i < 2; i++) {
