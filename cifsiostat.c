@@ -287,13 +287,13 @@ void read_cifs_stat(int curr)
 	if ((fp = fopen(CIFSSTATS, "r")) == NULL)
 		return;
 
-	sprintf(aux, "%%%ds %%10s %%10s",
-		MAX_NAME_LEN < 200 ? MAX_NAME_LEN : 200);
+	sprintf(aux, "%%*d) %%%ds",
+		MAX_NAME_LEN < 200 ? MAX_NAME_LEN - 1 : 200);
 
 	while (fgets(line, 256, fp) != NULL) {
 
 		/* Read CIFS directory name */
-		if (isdigit((unsigned char) line[0]) && sscanf(line, "%*d) %s", name_tmp) == 1) {
+		if (isdigit((unsigned char) line[0]) && sscanf(line, aux , name_tmp) == 1) {
 			if (start) {
 				save_stats(cifs_name, curr, &scifs);
 			}

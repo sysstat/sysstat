@@ -1,6 +1,8 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Ivana Varekova]: Fix a problem with long NFS and CIFS share
+	  names in cifsiostat and nfsiostat.
 	* [Ivana Varekova]: Check calloc() return value in cifsiostat
 	  and nfsiostat.
 	* [Jan Kaluza]: Added --debuginfo option to cifsiostat and

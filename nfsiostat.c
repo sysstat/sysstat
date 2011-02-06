@@ -307,6 +307,7 @@ void read_nfs_stat(int curr)
 	int sw = 0;
 	char line[256];
 	char *xprt_line;
+	char *mount_part;
 	char nfs_name[MAX_NAME_LEN];
 	char mount[10], on[10], prefix[10], aux[32];
 	char operation[16];
@@ -319,7 +320,7 @@ void read_nfs_stat(int curr)
 	if ((fp = fopen(NFSMOUNTSTATS, "r")) == NULL)
 		return;
 
-	sprintf(aux, "%%%ds %%10s %%10s",
+	sprintf(aux, "%%%ds",
 		MAX_NAME_LEN < 200 ? MAX_NAME_LEN : 200);
 
 	while (fgets(line, 256, fp) != NULL) {
@@ -327,9 +328,13 @@ void read_nfs_stat(int curr)
 		/* Read NFS directory name */
 		if (!strncmp(line, "device", 6)) {
 			sw = 0;
-			sscanf(line + 6, aux, nfs_name, mount, on);
-			if ((!strncmp(mount, "mounted", 7)) && (!strncmp(on, "on", 2))) {
-				sw = 1;
+			sscanf(line + 6, aux, nfs_name);
+			mount_part = strchr(line + 7, ' ');
+			if (mount_part != NULL) {
+				sscanf(mount_part, "%10s %10s", mount, on);
+				if ((!strncmp(mount, "mounted", 7)) && (!strncmp(on, "on", 2))) {
+					sw = 1;
+				}
 			}
 		}
 
