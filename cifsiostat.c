@@ -223,7 +223,7 @@ void io_sys_free(void)
  */
 void save_stats(char *name, int curr, struct cifs_stats *st_io)
 {
-	int i;
+	int i, j;
 	struct io_hdr_stats *st_hdr_cifs_i;
 	struct cifs_stats *st_cifs_i;
 
@@ -249,6 +249,39 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 				memset(st_cifs_i, 0, CIFS_STATS_SIZE);
 				break;
 			}
+		}
+		if (i == cifs_nr) {
+			/* All entries are used: The number has to be increased */
+			cifs_nr = cifs_nr + 5;
+
+			/* Increase the size of st_hdr_ionfs buffer */
+			if ((st_hdr_cifs = (struct io_hdr_stats *)
+				realloc(st_hdr_cifs, cifs_nr * IO_HDR_STATS_SIZE)) == NULL) {
+				perror("malloc");
+				exit(4);
+			}
+
+			/* Set the new entries inactive */
+			for (j = 0; j < 5; j++) {
+				st_hdr_cifs_i = st_hdr_cifs + j;
+				st_hdr_cifs_i->used = FALSE;
+			}
+
+			/* Increase the size of st_hdr_ionfs buffer */
+			for (j = 0; j < 2; j++) {
+				if ((st_cifs[j] = (struct cifs_stats *)
+					realloc(st_cifs[j], cifs_nr * CIFS_STATS_SIZE)) == NULL) {
+					perror("malloc");
+					exit(4);
+				}
+			}
+
+			/* Now i shows the first unused entry of the new block */
+			st_hdr_cifs_i = st_hdr_cifs + i;
+			st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
+			strcpy(st_hdr_cifs_i->name, name);
+			st_cifs_i = st_cifs[!curr] + i;
+			memset(st_cifs_i, 0, CIFS_STATS_SIZE);
 		}
 	}
 	if (i < cifs_nr) {

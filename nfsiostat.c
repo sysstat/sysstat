@@ -253,7 +253,7 @@ void io_sys_free(void)
 void save_stats(char *name, int curr, void *st_io, int ionfs_nr,
 		struct io_hdr_stats *st_hdr_ionfs)
 {
-	int i;
+	int i, j;
 	struct io_hdr_stats *st_hdr_ionfs_i;
 	struct io_nfs_stats *st_ionfs_i;
 
@@ -279,6 +279,39 @@ void save_stats(char *name, int curr, void *st_io, int ionfs_nr,
 				memset(st_ionfs_i, 0, IO_NFS_STATS_SIZE);
 				break;
 			}
+		}
+		if (i == ionfs_nr) {
+			/* All entries are used: The number has to be increased */
+			ionfs_nr = ionfs_nr + 5;
+
+			/* Increase the size of st_hdr_ionfs buffer */
+			if ((st_hdr_ionfs = (struct io_hdr_stats *)
+				realloc(st_hdr_ionfs, ionfs_nr * IO_HDR_STATS_SIZE)) == NULL) {
+				perror("malloc");
+				exit(4);
+			}
+
+			/* Set the new entries inactive */
+			for (j = 0; j < 5; j++) {
+				st_hdr_ionfs_i = st_hdr_ionfs + j;
+				st_hdr_ionfs_i->used = FALSE;
+			}
+
+			/* Increase the size of st_hdr_ionfs buffer */
+			for (j = 0; j < 2; j++) {
+				if ((st_ionfs[j] = (struct io_nfs_stats *)
+					realloc(st_ionfs[j], ionfs_nr * IO_NFS_STATS_SIZE)) == NULL) {
+					perror("malloc");
+					exit(4);
+				}
+			}
+
+			/* Now i shows the first unused entry of the new block */
+			st_hdr_ionfs_i = st_hdr_ionfs + i;
+			st_hdr_ionfs_i->used = TRUE; /* Indicate it is now used */
+			strcpy(st_hdr_ionfs_i->name, name);
+			st_ionfs_i = st_ionfs[!curr] + i;
+			memset(st_ionfs_i, 0, IO_NFS_STATS_SIZE);
 		}
 	}
 	if (i < ionfs_nr) {
