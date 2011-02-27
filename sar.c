@@ -85,9 +85,9 @@ extern struct activity *act[];
  * @progname	Name of sysstat command
  ***************************************************************************
  */
-void print_usage_title(char *progname)
+void print_usage_title(FILE *fp, char *progname)
 {
-	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
+	fprintf(fp, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 }
 
@@ -101,8 +101,7 @@ void print_usage_title(char *progname)
  */
 void usage(char *progname)
 {
-
-	print_usage_title(progname);
+	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -H ] [ -p ] [ -q ] [ -r ]\n"
 			  "[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
@@ -123,55 +122,54 @@ void usage(char *progname)
  */
 void display_help(char *progname)
 {
-
-	print_usage_title(progname);
-	fprintf(stderr, _("Main options and reports:\n"));
-	fprintf(stderr, _("\t-b\tI/O and transfer rate statistics\n"));
-	fprintf(stderr, _("\t-B\tPaging statistics\n"));
-	fprintf(stderr, _("\t-d\tBlock device statistics\n"));
-	fprintf(stderr, _("\t-H\tHugepages utilization statistics\n"));
-	fprintf(stderr, _("\t-I { <int> | SUM | ALL | XALL }\n"
-			  "\t\tInterrupts statistics\n"));
-	fprintf(stderr, _("\t-m { <keyword> [,...] | ALL }\n"
-			  "\t\tPower management statistics\n"
-			  "\t\tKeywords are:\n"
-			  "\t\tCPU\tCPU instantaneous clock frequency\n"
-			  "\t\tFAN\tFans speed\n"
-			  "\t\tFREQ\tCPU average clock frequency\n"
-			  "\t\tIN\tVoltage inputs\n"
-			  "\t\tTEMP\tDevices temperature\n"));
-	fprintf(stderr, _("\t-n { <keyword> [,...] | ALL }\n"
-			  "\t\tNetwork statistics\n"
-			  "\t\tKeywords are:\n"
-			  "\t\tDEV\tNetwork interfaces\n"
-			  "\t\tEDEV\tNetwork interfaces (errors)\n"
-			  "\t\tNFS\tNFS client\n"
-			  "\t\tNFSD\tNFS server\n"
-			  "\t\tSOCK\tSockets\t(v4)\n"
-			  "\t\tIP\tIP traffic\t(v4)\n"
-			  "\t\tEIP\tIP traffic\t(v4) (errors)\n"
-			  "\t\tICMP\tICMP traffic\t(v4)\n"
-			  "\t\tEICMP\tICMP traffic\t(v4) (errors)\n"
-			  "\t\tTCP\tTCP traffic\t(v4)\n"
-			  "\t\tETCP\tTCP traffic\t(v4) (errors)\n"
-			  "\t\tUDP\tUDP traffic\t(v4)\n"
-			  "\t\tSOCK6\tSockets\t(v6)\n"
-			  "\t\tIP6\tIP traffic\t(v6)\n"
-			  "\t\tEIP6\tIP traffic\t(v6) (errors)\n"
-			  "\t\tICMP6\tICMP traffic\t(v6)\n"
-			  "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
-			  "\t\tUDP6\tUDP traffic\t(v6)\n"));
-	fprintf(stderr, _("\t-q\tQueue length and load average statistics\n"));
-	fprintf(stderr, _("\t-r\tMemory utilization statistics\n"));
-	fprintf(stderr, _("\t-R\tMemory statistics\n"));
-	fprintf(stderr, _("\t-S\tSwap space utilization statistics\n"));
-	fprintf(stderr, _("\t-u [ ALL ]\n"
-			  "\t\tCPU utilization statistics\n"));
-	fprintf(stderr, _("\t-v\tKernel table statistics\n"));
-	fprintf(stderr, _("\t-w\tTask creation and system switching statistics\n"));
-	fprintf(stderr, _("\t-W\tSwapping statistics\n"));
-	fprintf(stderr, _("\t-y\tTTY device statistics\n"));
-	exit(1);
+	print_usage_title(stdout, progname);
+	printf(_("Main options and reports:\n"));
+	printf(_("\t-b\tI/O and transfer rate statistics\n"));
+	printf(_("\t-B\tPaging statistics\n"));
+	printf(_("\t-d\tBlock device statistics\n"));
+	printf(_("\t-H\tHugepages utilization statistics\n"));
+	printf(_("\t-I { <int> | SUM | ALL | XALL }\n"
+		 "\t\tInterrupts statistics\n"));
+	printf(_("\t-m { <keyword> [,...] | ALL }\n"
+		 "\t\tPower management statistics\n"
+		 "\t\tKeywords are:\n"
+		 "\t\tCPU\tCPU instantaneous clock frequency\n"
+		 "\t\tFAN\tFans speed\n"
+		 "\t\tFREQ\tCPU average clock frequency\n"
+		 "\t\tIN\tVoltage inputs\n"
+		 "\t\tTEMP\tDevices temperature\n"));
+	printf(_("\t-n { <keyword> [,...] | ALL }\n"
+		 "\t\tNetwork statistics\n"
+		 "\t\tKeywords are:\n"
+		 "\t\tDEV\tNetwork interfaces\n"
+		 "\t\tEDEV\tNetwork interfaces (errors)\n"
+		 "\t\tNFS\tNFS client\n"
+		 "\t\tNFSD\tNFS server\n"
+		 "\t\tSOCK\tSockets\t(v4)\n"
+		 "\t\tIP\tIP traffic\t(v4)\n"
+		 "\t\tEIP\tIP traffic\t(v4) (errors)\n"
+		 "\t\tICMP\tICMP traffic\t(v4)\n"
+		 "\t\tEICMP\tICMP traffic\t(v4) (errors)\n"
+		 "\t\tTCP\tTCP traffic\t(v4)\n"
+		 "\t\tETCP\tTCP traffic\t(v4) (errors)\n"
+		 "\t\tUDP\tUDP traffic\t(v4)\n"
+		 "\t\tSOCK6\tSockets\t(v6)\n"
+		 "\t\tIP6\tIP traffic\t(v6)\n"
+		 "\t\tEIP6\tIP traffic\t(v6) (errors)\n"
+		 "\t\tICMP6\tICMP traffic\t(v6)\n"
+		 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
+		 "\t\tUDP6\tUDP traffic\t(v6)\n"));
+	printf(_("\t-q\tQueue length and load average statistics\n"));
+	printf(_("\t-r\tMemory utilization statistics\n"));
+	printf(_("\t-R\tMemory statistics\n"));
+	printf(_("\t-S\tSwap space utilization statistics\n"));
+	printf(_("\t-u [ ALL ]\n"
+		 "\t\tCPU utilization statistics\n"));
+	printf(_("\t-v\tKernel table statistics\n"));
+	printf(_("\t-w\tTask creation and system switching statistics\n"));
+	printf(_("\t-W\tSwapping statistics\n"));
+	printf(_("\t-y\tTTY device statistics\n"));
+	exit(0);
 }
 
 /*

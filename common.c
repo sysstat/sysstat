@@ -54,9 +54,9 @@ unsigned int kb_shift;
  */
 void print_version(void)
 {
-	fprintf(stderr, _("sysstat version %s\n"), VERSION);
-	fprintf(stderr, "(C) Sebastien Godard (sysstat <at> orange.fr)\n");
-	exit(1);
+	printf(_("sysstat version %s\n"), VERSION);
+	printf("(C) Sebastien Godard (sysstat <at> orange.fr)\n");
+	exit(0);
 }
 
 /*

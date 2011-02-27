@@ -10,8 +10,11 @@ xxxx/xx/xx: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Jan Kaluza]: Added --debuginfo option to cifsiostat and
 	  nfsiostat.
 	* cifsiostat and nfsiostat manual pages updated.
+	* Sysstat's commands option -V now displays the version number
+	  on stdout and returns 0 for the exit code.
 	* sysstat_panic function is now defined only in DEBUG mode.
 	* NLS updated. Ukrainian translation added.
+	* CREDITS file updated.
 
 2010/12/26: Version 9.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	  INFO: stats_queue structure format has changed and is *not*
