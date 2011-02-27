@@ -500,8 +500,8 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 		if (stat(filen, &aux) == 0) {
 			/* Get its minor and major numbers */
 
-			dm_major = ((aux.st_rdev >> 8) & 0xff);
-			dm_minor = (aux.st_rdev & 0xff);
+			dm_major = major(aux.st_rdev);
+			dm_minor = minor(aux.st_rdev);
 	
 			if ((dm_minor == minor) && (dm_major == major)) {
 				dm_name = dp->d_name;
