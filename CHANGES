@@ -10,6 +10,8 @@ xxxx/xx/xx: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Jan Kaluza]: Added --debuginfo option to cifsiostat and
 	  nfsiostat.
 	* cifsiostat and nfsiostat manual pages updated.
+	* Don't link sysstat's commands with sensors library if not
+	  needed [DEBIAN Bug#612571].
 	* [Adam Heath]: iostat incorrectly mapped device-mapper IDs
 	  greater than 256. This is now fixed [DEBIAN Bug#614397].
 	* Sysstat's commands option -V now displays the version number

@@ -484,41 +484,6 @@ struct stats_pwr_cpufreq {
 
 #define STATS_PWR_CPUFREQ_SIZE	(sizeof(struct stats_pwr_cpufreq))
 
-/*
- * Structure for fan statistics.
- */
-struct stats_pwr_fan {
-	double  rpm				__attribute__ ((aligned (8)));
-	double  rpm_min				__attribute__ ((aligned (8)));
-	char    device[MAX_SENSORS_DEV_LEN]	__attribute__ ((aligned (8)));
-};
-
-#define STATS_PWR_FAN_SIZE     (sizeof(struct stats_pwr_fan))
-
-/*
- * Structure for device temperature statistics.
- */
-struct stats_pwr_temp {
-	double  temp				__attribute__ ((aligned (8)));
-	double  temp_min			__attribute__ ((aligned (8)));
-	double  temp_max			__attribute__ ((aligned (8)));
-	char    device[MAX_SENSORS_DEV_LEN]	__attribute__ ((aligned (8)));
-};
-
-#define STATS_PWR_TEMP_SIZE    (sizeof(struct stats_pwr_temp))
-
-/*
- * Structure for voltage inputs statistics.
- */
-struct stats_pwr_in {
-	double  in				__attribute__ ((aligned (8)));
-	double  in_min				__attribute__ ((aligned (8)));
-	double  in_max				__attribute__ ((aligned (8)));
-	char    device[MAX_SENSORS_DEV_LEN]	__attribute__ ((aligned (8)));
-};
-
-#define STATS_PWR_IN_SIZE	(sizeof(struct stats_pwr_in))
-
 /* Structure for hugepages statistics */
 struct stats_huge {
 	unsigned long frhkb			__attribute__ ((aligned (8)));
@@ -609,12 +574,6 @@ extern void
 extern void
 	read_cpuinfo(struct stats_pwr_cpufreq *, int);
 extern void
-	read_fan(struct stats_pwr_fan *, int);
-extern void
-	read_temp(struct stats_pwr_temp *, int);
-extern void
-	read_in(struct stats_pwr_in *, int);
-extern void
 	read_meminfo_huge(struct stats_huge *);
 extern void
 	read_time_in_state(struct stats_pwr_wghfreq *, int, int);
@@ -639,12 +598,6 @@ extern int
 	get_cpu_nr(unsigned int);
 extern int
 	get_irqcpu_nr(char *, int, int);
-extern int
-	get_fan_nr(void);
-extern int
-	get_temp_nr(void);
-extern int
-	get_in_nr(void);
 extern int
 	get_freq_nr(void);
 

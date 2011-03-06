@@ -672,6 +672,8 @@ INITD_DIR
 INIT_DIR
 RC_DIR
 rcdir
+DFSENSORS
+LFSENSORS
 HAVE_SENSORS
 PATH_CHKCONFIG
 PATH_CP
@@ -3676,6 +3678,8 @@ else
 $as_echo "no, using $LN_S" >&6; }
 fi
 
+
+DFLAGS=""
 
 # Extract the first word of "chmod", so it can be a program name with args.
 set dummy chmod; ac_word=$2
@@ -6812,18 +6816,17 @@ else
 fi
 
 if test $SENSORS != "yes"; then
-   CFSENSORS=""
-   DFSENSORS=""
+   HAVE_SENSORS="n"
 else
-   CFSENSORS="-lsensors"
-   DFSENSORS="-DHAVE_SENSORS"
+   HAVE_SENSORS="y"
 fi
 { $as_echo "$as_me:$LINENO: result: $SENSORS" >&5
 $as_echo "$SENSORS" >&6; }
 
 # Check for lm_sensors
-HAVE_SENSORS=no
-DFLAGS=""
+SENSORS=no
+LFSENSORS=""
+DFSENSORS=""
 { $as_echo "$as_me:$LINENO: checking for sensors_get_detected_chips in -lsensors" >&5
 $as_echo_n "checking for sensors_get_detected_chips in -lsensors... " >&6; }
 if test "${ac_cv_lib_sensors_sensors_get_detected_chips+set}" = set; then
@@ -6890,7 +6893,9 @@ fi
 { $as_echo "$as_me:$LINENO: result: $ac_cv_lib_sensors_sensors_get_detected_chips" >&5
 $as_echo "$ac_cv_lib_sensors_sensors_get_detected_chips" >&6; }
 if test "x$ac_cv_lib_sensors_sensors_get_detected_chips" = x""yes; then
-  CFLAGS="${CFLAGS} ${CFSENSORS}"
+  LFSENSORS="-lsensors"
+else
+  HAVE_SENSORS="n"
 fi
 
 { $as_echo "$as_me:$LINENO: checking for sensors lib" >&5
@@ -6930,17 +6935,19 @@ $as_echo "$ac_try_echo") >&5
 	 test -z "$ac_c_werror_flag" ||
 	 test ! -s conftest.err
        } && test -s conftest.$ac_objext; then
-  HAVE_SENSORS=yes; DFLAGS="${DFLAGS} ${DFSENSORS}"
+  SENSORS=yes; DFSENSORS="-DHAVE_SENSORS"
 else
   $as_echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	HAVE_SENSORS=no
+	HAVE_SENSORS="n"; SENSORS=no
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-{ $as_echo "$as_me:$LINENO: result: $HAVE_SENSORS" >&5
-$as_echo "$HAVE_SENSORS" >&6; }
+{ $as_echo "$as_me:$LINENO: result: $SENSORS" >&5
+$as_echo "$SENSORS" >&6; }
+
+
 
 
 echo .

@@ -21,6 +21,8 @@ AC_PROG_CC
 AC_GNU_SOURCE
 AC_PROG_LN_S
 
+DFLAGS=""
+
 AC_CHECK_PROG(CHMOD, chmod, chmod)
 AC_CHECK_PROG(CHOWN, chown, chown)
 AC_CHECK_PROG(AR, ar, ar)
@@ -81,24 +83,25 @@ AC_ARG_ENABLE(sensors,
 			     [disable sensors support]),
 			     SENSORS=$enableval,SENSORS=yes)
 if test $SENSORS != "yes"; then
-   CFSENSORS=""
-   DFSENSORS=""
+   HAVE_SENSORS="n"
 else
-   CFSENSORS="-lsensors"
-   DFSENSORS="-DHAVE_SENSORS"
+   HAVE_SENSORS="y"
 fi
 AC_MSG_RESULT($SENSORS)
 
 # Check for lm_sensors
-HAVE_SENSORS=no
-DFLAGS=""
-AC_CHECK_LIB(sensors, sensors_get_detected_chips, CFLAGS="${CFLAGS} ${CFSENSORS}")
+SENSORS=no
+LFSENSORS=""
+DFSENSORS=""
+AC_CHECK_LIB(sensors, sensors_get_detected_chips, LFSENSORS="-lsensors", HAVE_SENSORS="n")
 AC_MSG_CHECKING(for sensors lib)
 AC_TRY_COMPILE(#include <sensors/sensors.h>
 #include <sensors/error.h>
-		, sensors_cleanup();,HAVE_SENSORS=yes; DFLAGS="${DFLAGS} ${DFSENSORS}", HAVE_SENSORS=no)
-AC_MSG_RESULT($HAVE_SENSORS)
+		, sensors_cleanup();,SENSORS=yes; DFSENSORS="-DHAVE_SENSORS", HAVE_SENSORS="n"; SENSORS=no)
+AC_MSG_RESULT($SENSORS)
 AC_SUBST(HAVE_SENSORS)
+AC_SUBST(LFSENSORS)
+AC_SUBST(DFSENSORS)
 
 echo .
 echo Check system services:
