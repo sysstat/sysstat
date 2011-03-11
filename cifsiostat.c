@@ -230,11 +230,12 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 	/* Look for CIFS directory in data table */
 	for (i = 0; i < cifs_nr; i++) {
 		st_hdr_cifs_i = st_hdr_cifs + i;
-		if (!strcmp(st_hdr_cifs_i->name, name)) {
+		if ((st_hdr_cifs_i->used == TRUE) &&
+		    (!strcmp(st_hdr_cifs_i->name, name))) {
 			break;
 		}
 	}
-	
+
 	if (i == cifs_nr) {
 		/*
 		 * This is a new filesystem: Look for an unused entry to store it.
@@ -244,13 +245,19 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 			if (!st_hdr_cifs_i->used) {
 				/* Unused entry found... */
 				st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
+				st_hdr_cifs_i->active = TRUE;
 				strcpy(st_hdr_cifs_i->name, name);
-				st_cifs_i = st_cifs[!curr] + i;
-				memset(st_cifs_i, 0, CIFS_STATS_SIZE);
+				st_cifs_i = st_cifs[curr] + i;
+				*st_cifs_i = *((struct cifs_stats *) st_io);
 				break;
 			}
 		}
 		if (i == cifs_nr) {
+			/*
+			 * It is a new CIFS directory
+			 * but there is no free structure to store it.
+			 */
+
 			/* All entries are used: The number has to be increased */
 			cifs_nr = cifs_nr + 5;
 
@@ -263,8 +270,9 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 
 			/* Set the new entries inactive */
 			for (j = 0; j < 5; j++) {
-				st_hdr_cifs_i = st_hdr_cifs + j;
+				st_hdr_cifs_i = st_hdr_cifs + i + j;
 				st_hdr_cifs_i->used = FALSE;
+				st_hdr_cifs_i->active = FALSE;
 			}
 
 			/* Increase the size of st_hdr_ionfs buffer */
@@ -274,19 +282,20 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 					perror("malloc");
 					exit(4);
 				}
+				memset(st_cifs[j] + i, 0, 5 * CIFS_STATS_SIZE);
 			}
-
 			/* Now i shows the first unused entry of the new block */
 			st_hdr_cifs_i = st_hdr_cifs + i;
 			st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
+			st_hdr_cifs_i->active = TRUE;
 			strcpy(st_hdr_cifs_i->name, name);
-			st_cifs_i = st_cifs[!curr] + i;
-			memset(st_cifs_i, 0, CIFS_STATS_SIZE);
+			st_cifs_i = st_cifs[curr] + i;
+			*st_cifs_i = *st_io;
 		}
-	}
-	if (i < cifs_nr) {
+	} else {
 		st_hdr_cifs_i = st_hdr_cifs + i;
 		st_hdr_cifs_i->active = TRUE;
+		st_hdr_cifs_i->used = TRUE;
 		st_cifs_i = st_cifs[curr] + i;
 		*st_cifs_i = *st_io;
 	}
@@ -408,6 +417,7 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 	else {
 		printf("%-22s ", shi->name);
 	}
+
 	/*       rB/s   wB/s   fo/s   fc/s   fd/s*/
 	printf("%12.2f %12.2f %9.2f %9.2f %12.2f %12.2f %12.2f \n",
 	       S_VALUE(ionj->rd_bytes, ioni->rd_bytes, itv) / fctr,
@@ -529,6 +539,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		if (count > 0) {
 			count--;
 		}
+
 		if (count) {
 			curr ^= 1;
 			pause();
