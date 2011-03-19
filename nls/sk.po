@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 9.1.7\n"
+"Project-Id-Version: sysstat 10.0.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2010-12-24 15:16+0100\n"
-"PO-Revision-Date: 2011-02-17 09:51\n"
+"POT-Creation-Date: 2011-03-13 20:39+0100\n"
+"PO-Revision-Date: 2011-03-16 07:58+0100\n"
 "Last-Translator: Marián Čavojský <preklad@cavo.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "Language: sk\n"
@@ -22,7 +22,16 @@ msgstr ""
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Použitie: %s [ voľby... ] [ <interval> [ <počet> ] ]\n"
 
-#: cifsiostat.c:72 nfsiostat.c:71
+#: cifsiostat.c:73 nfsiostat.c:72
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+"Možné voľby:\n"
+"[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
+#: cifsiostat.c:76 nfsiostat.c:75
 #, c-format
 msgid ""
 "Options are:\n"
@@ -36,7 +45,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr "sysstat verzia %s\n"
 
-#: ioconf.c:490 rd_stats.c:72 rd_stats.c:2179 sa_common.c:1061 sadc.c:623
+#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2003 sa_common.c:1061 sadc.c:623
 #: sadc.c:632 sadc.c:692
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -79,7 +88,7 @@ msgstr ""
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | ALL } ] [ -V ]\n"
 
 # sar.c:
-#: mpstat.c:535 pidstat.c:1819 sar.c:382
+#: mpstat.c:535 pidstat.c:1819 sar.c:380
 msgid "Average:"
 msgstr "Priemer:"
 
@@ -101,12 +110,12 @@ msgstr ""
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: pidstat.c:199 sar.c:1017
+#: pidstat.c:199 sar.c:1015
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Žiadané štatistiky nie sú dostupné\n"
 
-#: rd_stats.c:2225
+#: rd_stats.c:2049
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Nie je možné obslúžiť toľko procesorov!\n"
@@ -215,7 +224,7 @@ msgstr "Zoznam aktivít:\n"
 msgid "\t[Unknown activity format]"
 msgstr "\t[Neznámy formát aktivít]"
 
-#: sar.c:106
+#: sar.c:105
 #, c-format
 msgid ""
 "Options are:\n"
@@ -234,32 +243,32 @@ msgstr ""
 "[ -o [ <súbor> ] | -f [ <súbor> ] ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 
-#: sar.c:128
+#: sar.c:126
 #, c-format
 msgid "Main options and reports:\n"
 msgstr "Hlavné voľby a reporty:\n"
 
-#: sar.c:129
+#: sar.c:127
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr "\t-b\tŠtatistika V/V a prenosovej rýchlosti\n"
 
-#: sar.c:130
+#: sar.c:128
 #, c-format
 msgid "\t-B\tPaging statistics\n"
 msgstr "\t-B\tŠtatistika stránkovania\n"
 
-#: sar.c:131
+#: sar.c:129
 #, c-format
 msgid "\t-d\tBlock device statistics\n"
 msgstr "\t-d\tŠtatistika blokového zariadenia\n"
 
-#: sar.c:132
+#: sar.c:130
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-H\tŠtatiskika využitia veľkých stránok\n"
 
-#: sar.c:133
+#: sar.c:131
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -268,7 +277,7 @@ msgstr ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
 "\t\tŠtatistika prerušení\n"
 
-#: sar.c:135
+#: sar.c:133
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -289,7 +298,7 @@ msgstr ""
 "\t\tIN\tVstupné napätia\n"
 "\t\tTEMP\tTeplota zariadení\n"
 
-#: sar.c:143
+#: sar.c:141
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -336,27 +345,27 @@ msgstr ""
 "\t\tEICMP6\tICMP prevádzka\t(v6) (chyby)\n"
 "\t\tUDP6\tUDP prevádzka\t(v6)\n"
 
-#: sar.c:164
+#: sar.c:162
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tŠtatistika dĺžky fronty a priemerného zaťaženia\n"
 
-#: sar.c:165
+#: sar.c:163
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tŠtatistika využitia pamäte\n"
 
-#: sar.c:166
+#: sar.c:164
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tŠtatistika pamäte\n"
 
-#: sar.c:167
+#: sar.c:165
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tŠtatistika využitia odkladacieho priestoru\n"
 
-#: sar.c:168
+#: sar.c:166
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -365,57 +374,57 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tŠtatistika využitia CPU\n"
 
-#: sar.c:170
+#: sar.c:168
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tŠtatistika tabuliek jadra\n"
 
-#: sar.c:171
+#: sar.c:169
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tŠtatistika vytvárania a prepínania úloh systémom\n"
 
-#: sar.c:172
+#: sar.c:170
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tŠtatistika odkladania\n"
 
-#: sar.c:173
+#: sar.c:171
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tŠtatistika TTY zariadenia\n"
 
-#: sar.c:216
+#: sar.c:214
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Neočakávaný koniec zberu údajov\n"
 
-#: sar.c:806
+#: sar.c:804
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Nesprávny formát údajov\n"
 
-#: sar.c:810
+#: sar.c:808
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Použitie nesprávneho zberača údajov z rozdialnej verzie sysstat\n"
 
-#: sar.c:834
+#: sar.c:832
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekonzistentné vstupné údaje\n"
 
-#: sar.c:1264
+#: sar.c:1262
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "voľby -f a -o sa navzájom vylučujú\n"
 
-#: sar.c:1270
+#: sar.c:1268
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Nečíta sa zo súboru aktivity systému (použi voľbu -f)\n"
 
-#: sar.c:1397
+#: sar.c:1395
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nemožno nájsť zberač údajov (%s)\n"
