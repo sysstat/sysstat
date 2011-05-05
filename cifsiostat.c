@@ -319,6 +319,8 @@ void read_cifs_stat(int curr)
 	char line[256];
 	char aux[32];
 	int start = 0;
+	long long unsigned aux_open;
+	long long unsigned all_open = 0;
 	char cifs_name[MAX_NAME_LEN];
 	char name_tmp[MAX_NAME_LEN];
 	struct cifs_stats scifs;
@@ -337,7 +339,9 @@ void read_cifs_stat(int curr)
 		/* Read CIFS directory name */
 		if (isdigit((unsigned char) line[0]) && sscanf(line, aux , name_tmp) == 1) {
 			if (start) {
+				scifs.fopens = all_open;
 				save_stats(cifs_name, curr, &scifs);
+				all_open = 0;
 			}
 			else {
 				start = 1;
@@ -353,12 +357,18 @@ void read_cifs_stat(int curr)
 			}
 			if (!strncmp(line, "Opens:", 6)) {
 				sscanf(line, "Opens: %llu Closes:%llu Deletes: %llu",
-				       &scifs.fopens, &scifs.fcloses, &scifs.fdeletes);
+				       &aux_open, &scifs.fcloses, &scifs.fdeletes);
+				all_open += aux_open;
+			}
+			if (!strncmp(line, "Posix Opens:", 12)) {
+				sscanf(line, "Posix Opens: %llu", &aux_open);
+				all_open += aux_open;
 			}
 		}
 	}
 	
 	if (start) {
+		scifs.fopens = all_open;
 		save_stats(cifs_name, curr, &scifs);
 	}
 

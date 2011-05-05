@@ -1,12 +1,15 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Ivana Varekova]: cifsiostat didn't count open files from the
+	  "Posix Open" column in /proc/fs/cifs/Stats file. This is now
+	  fixed.
 	* [Ivana Varekova]: Close file descriptor in read_uptime()
 	  function (file rd_stats.c).
 	* NLS updated. Esperanto translation added.
 
 2011/03/15: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
-	* [Ivana Varekova]: Fix a problem with long NFS and CIFS share
+	* [Ivana Varekova]: Fixed a problem with long NFS and CIFS share
 	  names in cifsiostat and nfsiostat.
 	* [Ivana Varekova]: Added the possibility to extend the number
 	  of slots for NFS and CIFS mount points on the fly.
