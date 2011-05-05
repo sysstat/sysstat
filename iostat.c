@@ -81,11 +81,11 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 			  "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 			  "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"));
 #endif
 	exit(1);
@@ -827,9 +827,16 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 		  (ioi->wr_ticks - ioj->wr_ticks) /
 		  ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
 
-	/*      DEV   rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
-	printf("%-13s %8.2f %8.2f %7.2f %7.2f %8.2f %8.2f %8.2f %8.2f %7.2f %7.2f %7.2f %6.2f %6.2f\n",
-	       shi->name,
+	/* Print device name */
+	if (DISPLAY_HUMAN_READ(flags)) {
+		printf("%s\n%13s", shi->name, "");
+	}
+	else {
+		printf("%-13s", shi->name);
+	}
+
+	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
+	printf(" %8.2f %8.2f %7.2f %7.2f %8.2f %8.2f %8.2f %8.2f %7.2f %7.2f %7.2f %6.2f %6.2f\n",
 	       S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 	       S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
 	       S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
@@ -866,7 +873,13 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 {
 	unsigned long long rd_sec, wr_sec;
 
-	printf("%-13s", shi->name);
+	/* Print device name */
+	if (DISPLAY_HUMAN_READ(flags)) {
+		printf("%s\n%13s", shi->name, "");
+	}
+	else {
+		printf("%-13s", shi->name);
+	}
 
 	/* Print stats coming from /sys or /proc/diskstats */
 	rd_sec = ioi->rd_sectors - ioj->rd_sectors;
@@ -1192,6 +1205,14 @@ int main(int argc, char **argv)
 					/* Display disk utilization */
 					flags |= I_D_DISK;
 					report_set = TRUE;
+					break;
+				
+				case 'h':
+					/*
+					 * Display device utilization report
+					 * in a human readable format.
+					 */
+					flags |= I_D_HUMAN_READ;
 					break;
 
 				case 'k':

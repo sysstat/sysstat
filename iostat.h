@@ -21,7 +21,7 @@
 #define I_D_MEGABYTES		0x00200
 #define I_D_PARTITIONS		0x00400
 #define I_F_HAS_DISKSTATS	0x00800
-/* Unused			0x01000 */
+#define I_D_HUMAN_READ		0x01000
 /* Unused			0x02000 */
 /* Unused			0x04000 */
 /* Unused			0x08000 */
@@ -42,6 +42,7 @@
 #define DISPLAY_UNFILTERED(m)	(((m) & I_D_UNFILTERED)    == I_D_UNFILTERED)
 #define DISPLAY_PARTITIONS(m)	(((m) & I_D_PARTITIONS)    == I_D_PARTITIONS)
 #define HAS_DISKSTATS(m)	(((m) & I_F_HAS_DISKSTATS) == I_F_HAS_DISKSTATS)
+#define DISPLAY_HUMAN_READ(m)	(((m) & I_D_HUMAN_READ)    == I_D_HUMAN_READ)
 #define DISPLAY_DEVMAP_NAME(m)	(((m) & I_D_DEVMAP_NAME)   == I_D_DEVMAP_NAME)
 #define DISPLAY_ISO(m)		(((m) & I_D_ISO)           == I_D_ISO)
 #define DISPLAY_ZERO_OMIT(m)	(((m) & I_D_ZERO_OMIT)     == I_D_ZERO_OMIT)

@@ -1,10 +1,10 @@
-.TH IOSTAT 1 "JUNE 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "MAY 2011" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B iostat [ -c ] [ -d ] [ --debuginfo ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ] [
+.B iostat [ -c ] [ -d ] [ --debuginfo ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ] [
 .I device
 .B [...] | ALL ] [ -p [
 .I device
@@ -15,7 +15,7 @@ statistics for devices and partitions.
 .B ] ]
 .\}
 .el \{
-.B iostat [ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ] [
+.B iostat [ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ] [
 .I device
 .B [...] | ALL ] [ -p [
 .I device
@@ -265,6 +265,8 @@ Display the device utilization report.
 .IP --debuginfo
 Print debug output to stderr.
 .\}
+.IP -h
+Make the Device Utilization Report easier to read by a human.
 .IP -k
 Display statistics in kilobytes per second.
 .IP -m

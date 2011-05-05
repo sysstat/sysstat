@@ -1,6 +1,9 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Ivana Varekova]: Added option -h to iostat. This option makes
+	  the device utilization report easier to read with long device
+	  names.
 	* [Ivana Varekova]: cifsiostat didn't count open files from the
 	  "Posix Open" column in /proc/fs/cifs/Stats file. This is now
 	  fixed.
