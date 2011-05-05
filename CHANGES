@@ -1,6 +1,8 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Ivana Varekova]: Close file descriptor in read_uptime()
+	  function (file rd_stats.c).
 	* NLS updated. Esperanto translation added.
 
 2011/03/15: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
@@ -379,7 +381,7 @@ xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	  done in one place (common function used by iostat, sar, sadf).
 	* All sysstat commands are made consistent with how parameters
 	  are interpreted: "COMMAND <interval>" now generates a report
-	  continusouly, "COMMAND <interval> 0" causes an error,
+	  continuously, "COMMAND <interval> 0" causes an error,
 	  "COMMAND 0" displays a report since system startup
 	  [DEBIAN bug#475707].
 	* Changed XML output for processes and context switches displayed

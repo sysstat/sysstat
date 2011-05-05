@@ -1759,8 +1759,10 @@ void read_uptime(unsigned long long *uptime)
 	if ((fp = fopen(UPTIME, "r")) == NULL)
 		return;
 
-	if (fgets(line, 128, fp) == NULL)
+	if (fgets(line, 128, fp) == NULL) {
+		fclose(fp);
 		return;
+	}
 
 	sscanf(line, "%lu.%lu", &up_sec, &up_cent);
 	*uptime = (unsigned long long) up_sec * HZ +
