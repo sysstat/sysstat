@@ -378,7 +378,8 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 	else
 		itv = g_itv;
 
-	strcpy(timestamp[curr], _("Average:"));
+	strncpy(timestamp[curr], _("Average:"), TIMESTAMP_LEN);
+	timestamp[curr][TIMESTAMP_LEN - 1] = '\0';
 	strcpy(timestamp[!curr], timestamp[curr]);
 	
 	/* Test stdout */

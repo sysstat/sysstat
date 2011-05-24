@@ -1816,7 +1816,8 @@ void write_stats_avg(int curr, int dis)
 {
 	char string[16];
 
-	strcpy(string, _("Average:"));
+	strncpy(string, _("Average:"), 16);
+	string[15] = '\0';
 	write_stats_core(2, curr, dis, TRUE, string, string);
 }
 
