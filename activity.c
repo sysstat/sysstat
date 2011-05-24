@@ -995,7 +995,7 @@ struct activity pwr_fan_act = {
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_fan_stats,
 	.f_xml_print	= xml_print_pwr_fan_stats,
-	.hdr_line	= "device;FAN;rpm;drpm",
+	.hdr_line	= "FAN;DEVICE;rpm;drpm",
 	.name		= "A_PWR_FAN",
 #endif
 	.nr		= -1,
@@ -1025,7 +1025,7 @@ struct activity pwr_temp_act = {
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_temp_stats,
 	.f_xml_print	= xml_print_pwr_temp_stats,
-	.hdr_line	= "device;TEMP;degC;%temp",
+	.hdr_line	= "TEMP;DEVICE;degC;%temp",
 	.name		= "A_PWR_TEMP",
 #endif
 	.nr		= -1,
@@ -1055,7 +1055,7 @@ struct activity pwr_in_act = {
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_in_stats,
 	.f_xml_print	= xml_print_pwr_in_stats,
-	.hdr_line	= "device;IN;inV;%in",
+	.hdr_line	= "IN;DEVICE;inV;%in",
 	.name		= "A_PWR_IN",
 #endif
 	.nr		= -1,
