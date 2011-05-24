@@ -1817,7 +1817,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int prev, int curr, int dispav
 	}
 
 	if (dis) {
-		printf("\n%-11s     FAN       rpm      drpm     %*s\n",
+		printf("\n%-11s     FAN       rpm      drpm %*s\n",
 		       timestamp[!curr], MAX_SENSORS_DEV_LEN, "DEVICE");
 	}
 
@@ -1841,7 +1841,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int prev, int curr, int dispav
 			avg_fan_min[i] += spc->rpm_min;
 		}
 
-		printf("     %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
+		printf(" %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
 	}
 
 	if (dispavg) {
@@ -1933,7 +1933,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int prev, int curr, int dispa
 	}
 
 	if (dis) {
-		printf("\n%-11s    TEMP      degC     %%temp     %*s\n",
+		printf("\n%-11s    TEMP      degC     %%temp %*s\n",
 		       timestamp[!curr], MAX_SENSORS_DEV_LEN, "DEVICE");
 	}
 
@@ -1963,7 +1963,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int prev, int curr, int dispa
 			avg_temp_max[i] = spc->temp_max;
 		}
 		
-		printf("     %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
+		printf(" %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
 	}
 
 	if (dispavg) {
@@ -2059,7 +2059,7 @@ void stub_print_pwr_in_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 
 	if (dis) {
-		printf("\n%-11s      IN       inV       %%in     %*s\n",
+		printf("\n%-11s      IN       inV       %%in %*s\n",
 		       timestamp[!curr], MAX_SENSORS_DEV_LEN, "DEVICE");
 	}
 
@@ -2089,7 +2089,7 @@ void stub_print_pwr_in_stats(struct activity *a, int prev, int curr, int dispavg
 			avg_in_max[i] = spc->in_max;
 		}
 
-		printf("     %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
+		printf(" %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
 	}
 
 	if (dispavg) {

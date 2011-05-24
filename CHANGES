@@ -3,6 +3,8 @@ Changes:
 xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf -p now displays the sensor device name for temperature,
 	  voltage inputs and fans statistics.
+	* sar: Decrease column width for sensor device name (temperature,
+	  voltage inputs and fans statistics).
 	* [Ivana Varekova]: Added option -h to iostat. This option makes
 	  the device utilization report easier to read with long device
 	  names.
