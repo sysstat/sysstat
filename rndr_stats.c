@@ -55,7 +55,7 @@ extern unsigned int dm_major;
  * does:    load a static Cons with values using the t parameter to
  *	    guide pulling values from the arglist
  *
- * return:  the address of it's static Cons.  If you need to keep
+ * return:  the address of its static Cons.  If you need to keep
  *	    the contents of this Cons, copy it somewhere before calling
  *	    cons() against to avoid overwrite.
  *	    ie. don't do this:  f( cons( iv, i, j ), cons( iv, a, b ) );
@@ -2298,7 +2298,6 @@ __print_funct_t render_pwr_temp_stats(struct activity *a, int isdb, char *pre,
 			       (spc->temp_max - spc->temp_min) ?
 			       (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100 :
 			       0.0);
-
 		}
 		else {
 			render(isdb, pre, PT_NOFLAG,
@@ -2358,7 +2357,6 @@ __print_funct_t render_pwr_in_stats(struct activity *a, int isdb, char *pre,
 			       (spc->in_max - spc->in_min) ?
 			       (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100 :
 			       0.0);
-
 		}
 		else {
 			render(isdb, pre, PT_NOFLAG,
@@ -2474,4 +2472,24 @@ __print_funct_t render_pwr_wghfreq_stats(struct activity *a, int isdb, char *pre
 			}
 		}
 	}
+}
+
+/*
+ ***************************************************************************
+ * Display USB devices statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_pwr_usb_stats(struct activity *a, int isdb, char *pre,
+				     int curr, unsigned long long itv)
+{
+/*
+FIXME
+*/
 }

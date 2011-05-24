@@ -1744,6 +1744,121 @@ void read_time_in_state(struct stats_pwr_wghfreq *st_pwr_wghfreq, int cpu_nr, in
 
 /*
  ***************************************************************************
+ * Read current USB device data.
+ *
+ * IN:
+ * @st_pwr_usb		Structure where stats will be saved.
+ * @usb_device		File name for current USB device.
+ *
+ * OUT:
+ * @st_pwr_usb		Structure with statistics.
+ ***************************************************************************
+ */
+void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
+{
+	int l;
+	FILE *fp;
+	char filename[MAX_PF_NAME];
+
+	/* Get USB device bus number */
+	sscanf(usb_device, "%u", &st_pwr_usb->bus_nr);
+
+	/* Read USB device vendor ID */
+	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+		 SYSFS_USBDEV, usb_device, SYSFS_IDVENDOR);
+	if ((fp = fopen(filename, "r")) != NULL) {
+		fscanf(fp, "%x",
+		       &st_pwr_usb->vendor_id);
+		fclose(fp);
+	}
+
+	/* Read USB device product ID */
+	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+		 SYSFS_USBDEV, usb_device, SYSFS_IDPRODUCT);
+	if ((fp = fopen(filename, "r")) != NULL) {
+		fscanf(fp, "%x",
+		       &st_pwr_usb->product_id);
+		fclose(fp);
+	}
+	
+	/* Read USB device max power consumption */
+	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+		 SYSFS_USBDEV, usb_device, SYSFS_BMAXPOWER);
+	if ((fp = fopen(filename, "r")) != NULL) {
+		fscanf(fp, "%u",
+		       &st_pwr_usb->bmaxpower);
+		fclose(fp);
+	}
+
+	/* Read USB device manufacturer */
+	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+		 SYSFS_USBDEV, usb_device, SYSFS_MANUFACTURER);
+	if ((fp = fopen(filename, "r")) != NULL) {
+		fgets(st_pwr_usb->manufacturer, MAX_MANUF_LEN - 1, fp);
+		fclose(fp);
+		if ((l = strlen(st_pwr_usb->manufacturer)) > 0) {
+			/* Remove trailing CR */
+			st_pwr_usb->manufacturer[l - 1] = '\0';
+		}
+	}
+
+	/* Read USB device product */
+	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+		 SYSFS_USBDEV, usb_device, SYSFS_PRODUCT);
+	if ((fp = fopen(filename, "r")) != NULL) {
+		fgets(st_pwr_usb->product, MAX_PROD_LEN - 1, fp);
+		fclose(fp);
+		if ((l = strlen(st_pwr_usb->product)) > 0) {
+			/* Remove trailing CR */
+			st_pwr_usb->product[l - 1] = '\0';
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Read USB devices statistics.
+ *
+ * IN:
+ * @st_pwr_usb		Structure where stats will be saved.
+ * @nbr			Total number of USB devices.
+ *
+ * OUT:
+ * @st_pwr_usb		Structure with statistics.
+ ***************************************************************************
+ */
+void read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, int nbr)
+{
+	DIR *dir;
+	struct dirent *drd;
+	struct stats_pwr_usb *st_pwr_usb_j;
+	int j = 0;
+
+	/* Open relevant /sys directory */
+	if ((dir = opendir(SYSFS_USBDEV)) == NULL)
+		return;
+
+	/* Get current file entry */
+	while ((drd = readdir(dir)) != NULL) {
+
+		if (isdigit(drd->d_name[0]) && !strchr(drd->d_name, ':')) {
+			if (j < nbr) {
+				/* Read current USB device data */
+				st_pwr_usb_j = st_pwr_usb + j;
+				read_usb_stats(st_pwr_usb_j, drd->d_name);
+				j++;
+			}
+			else
+				break;
+		}
+	}
+
+	/* Close directory */
+	closedir(dir);
+}
+
+/*
+ ***************************************************************************
  * Read machine uptime, independently of the number of processors.
  *
  * OUT:
@@ -2126,4 +2241,38 @@ int get_freq_nr(void)
 	fclose(fp);
 
 	return freq;
+}
+
+/*
+ ***************************************************************************
+ * Count number of USB devices in /sys/bus/usb/devices.
+ *
+ * RETURNS:
+ * Number of USB devices plugged into the system.
+ * Don't count USB root hubs.
+ * Return -1 if directory doesn't exist in sysfs.
+ ***************************************************************************
+ */
+int get_usb_nr(void)
+{
+	DIR *dir;
+	struct dirent *drd;
+	int usb = 0;
+
+	/* Open relevant /sys directory */
+	if ((dir = opendir(SYSFS_USBDEV)) == NULL)
+		return -1;
+
+	/* Get current file entry */
+	while ((drd = readdir(dir)) != NULL) {
+
+		if (isdigit(drd->d_name[0]) && !strchr(drd->d_name, ':')) {
+			usb++;
+		}
+	}
+
+	/* Close directory */
+	closedir(dir);
+
+	return usb;
 }

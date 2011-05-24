@@ -23,6 +23,10 @@
 
 /* Maximum length of network interface name */
 #define MAX_IFACE_LEN	IFNAMSIZ
+/* Maximum length of USB manufacturer string */
+#define MAX_MANUF_LEN	24
+/* Maximum length of USB product string */
+#define MAX_PROD_LEN	48
 
 #define CNT_DEV		0
 #define CNT_PART	1
@@ -505,6 +509,20 @@ struct stats_pwr_wghfreq {
 #define STATS_PWR_WGHFREQ_SIZE	(sizeof(struct stats_pwr_wghfreq))
 
 /*
+ * Structure for USB devices plugged into the system.
+ */
+struct stats_pwr_usb {
+	unsigned int  bus_nr				__attribute__ ((aligned (4)));
+	unsigned int  vendor_id				__attribute__ ((packed));
+	unsigned int  product_id			__attribute__ ((packed));
+	unsigned int  bmaxpower				__attribute__ ((packed));
+	char	      manufacturer[MAX_MANUF_LEN];
+	char	      product[MAX_PROD_LEN];
+};
+
+#define STATS_PWR_USB_SIZE	(sizeof(struct stats_pwr_usb))
+
+/*
  ***************************************************************************
  * Prototypes for functions used to read system statistics
  ***************************************************************************
@@ -577,6 +595,8 @@ extern void
 	read_meminfo_huge(struct stats_huge *);
 extern void
 	read_time_in_state(struct stats_pwr_wghfreq *, int, int);
+extern void
+	read_bus_usb_dev(struct stats_pwr_usb *, int);
 
 /*
  ***************************************************************************
@@ -600,5 +620,7 @@ extern int
 	get_irqcpu_nr(char *, int, int);
 extern int
 	get_freq_nr(void);
+extern int
+	get_usb_nr(void);
 
 #endif /* _RD_STATS_H */

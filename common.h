@@ -56,6 +56,12 @@
 #define S_STAT			"stat"
 #define DEVMAP_DIR		"/dev/mapper"
 #define DEVICES			"/proc/devices"
+#define SYSFS_USBDEV		"/sys/bus/usb/devices"
+#define SYSFS_IDVENDOR		"idVendor"
+#define SYSFS_IDPRODUCT		"idProduct"
+#define SYSFS_BMAXPOWER		"bMaxPower"
+#define SYSFS_MANUFACTURER	"manufacturer"
+#define SYSFS_PRODUCT		"product"
 
 #define MAX_FILE_LEN		256
 #define MAX_PF_NAME		1024

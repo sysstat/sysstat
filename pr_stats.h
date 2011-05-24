@@ -86,6 +86,8 @@ extern __print_funct_t print_huge_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_pwr_wghfreq_stats
 	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t print_pwr_usb_stats
+	(struct activity *, int, int, unsigned long long);
 
 /* Functions used to display average statistics */
 extern __print_funct_t print_avg_memory_stats
@@ -107,6 +109,8 @@ extern __print_funct_t print_avg_pwr_temp_stats
 extern __print_funct_t print_avg_pwr_in_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_avg_huge_stats
+	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t print_avg_pwr_usb_stats
 	(struct activity *, int, int, unsigned long long);
 
 #endif /* _PR_STATS_H */

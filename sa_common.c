@@ -1348,12 +1348,16 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 		else if (!strcmp(t, K_FREQ)) {
 			SELECT_ACTIVITY(A_PWR_WGHFREQ);
 		}
+		else if (!strcmp(t, K_USB)) {
+			SELECT_ACTIVITY(A_PWR_USB);
+		}
 		else if (!strcmp(t, K_ALL)) {
 			SELECT_ACTIVITY(A_PWR_CPUFREQ);
 			SELECT_ACTIVITY(A_PWR_FAN);
 			SELECT_ACTIVITY(A_PWR_IN);
 			SELECT_ACTIVITY(A_PWR_TEMP);
 			SELECT_ACTIVITY(A_PWR_WGHFREQ);
+			SELECT_ACTIVITY(A_PWR_USB);
 		}
 		else
 			return 1;

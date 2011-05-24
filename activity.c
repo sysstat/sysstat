@@ -1127,6 +1127,36 @@ struct activity pwr_wghfreq_act = {
 	.bitmap		= &cpu_bitmap
 };
 
+/* USB devices plugged into the system */
+struct activity pwr_usb_act = {
+	.id		= A_PWR_USB,
+	.options	= AO_NULL,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
+#ifdef SOURCE_SADC
+	.f_count	= wrap_get_usb_nr,
+	.f_count2	= NULL,
+	.f_read		= wrap_read_bus_usb_dev,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_pwr_usb_stats,
+	.f_print_avg	= print_avg_pwr_usb_stats,
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_pwr_usb_stats,
+	.f_xml_print	= xml_print_pwr_usb_stats,
+	.hdr_line	= "manufact;product;BUS;idvendor;idprod;maxpower",
+	.name		= "A_PWR_USB",
+#endif
+	.nr		= -1,
+	.nr2		= 1,
+	.fsize		= STATS_PWR_USB_SIZE,
+	.msize		= STATS_PWR_USB_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
 
 /*
  * Array of activities.
@@ -1166,5 +1196,6 @@ struct activity *act[NR_ACT] = {
 	&pwr_temp_act,
 	&pwr_in_act,
 	&huge_act,
-	&pwr_wghfreq_act
+	&pwr_wghfreq_act,
+	&pwr_usb_act
 };

@@ -827,6 +827,28 @@ __read_funct_t wrap_read_time_in_state(struct activity *a)
 
 /*
  ***************************************************************************
+ * Read USB devices statistics.
+ *
+ * IN:
+ * @a  Activity structure.
+ *
+ * OUT:
+ * @a  Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_bus_usb_dev(struct activity *a)
+{
+	struct stats_pwr_usb *st_pwr_usb
+		= (struct stats_pwr_usb *) a->_buf0;
+
+	/* Read USB devices stats */
+	read_bus_usb_dev(st_pwr_usb, a->nr);
+
+	return;
+}
+
+/*
+ ***************************************************************************
  * Count number of interrupts that are in /proc/stat file.
  * Truncate the number of different individual interrupts to NR_IRQS.
  *
@@ -990,7 +1012,7 @@ __nr_t wrap_get_in_nr(struct activity *a)
  * Count number of possible frequencies for CPU#0.
  *
  * IN:
- * @a	Activity structure.
+ * @a   Activity structure.
  *
  * RETURNS:
  * Number of CPU frequencies + a pre-allocation constant.
@@ -1003,5 +1025,27 @@ __nr_t wrap_get_freq_nr(struct activity *a)
 	if ((n = get_freq_nr()) > 0)
 		return n + NR_FREQ_PREALLOC;
 
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Count number of USB devices plugged into the system.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of USB devices + a pre-allocation constant.
+ ***************************************************************************
+ */
+__nr_t wrap_get_usb_nr(struct activity *a)
+{
+	__nr_t n = 0;
+
+	if ((n = get_usb_nr()) >= 0)
+		/* Return a positive number even if no USB devices have been found */
+		return (n + NR_USB_PREALLOC);
+	
 	return 0;
 }

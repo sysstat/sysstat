@@ -137,7 +137,8 @@ void display_help(char *progname)
 		 "\t\tFAN\tFans speed\n"
 		 "\t\tFREQ\tCPU average clock frequency\n"
 		 "\t\tIN\tVoltage inputs\n"
-		 "\t\tTEMP\tDevices temperature\n"));
+		 "\t\tTEMP\tDevices temperature\n"
+		 "\t\tUSB\tUSB devices plugged into the system\n"));
 	printf(_("\t-n { <keyword> [,...] | ALL }\n"
 		 "\t\tNetwork statistics\n"
 		 "\t\tKeywords are:\n"

@@ -114,5 +114,7 @@ extern __print_funct_t render_huge_stats
 	(struct activity *, int, char *, int, unsigned long long);
 extern __print_funct_t render_pwr_wghfreq_stats
 	(struct activity *, int, char *, int, unsigned long long);
+extern __print_funct_t render_pwr_usb_stats
+	(struct activity *, int, char *, int, unsigned long long);
 
 #endif /* _RNDR_STATS_H */
