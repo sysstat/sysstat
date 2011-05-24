@@ -565,12 +565,11 @@ __print_funct_t print_avg_memory_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	True if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_ktables_stats(struct activity *a, int prev, int curr, int dispavg)
+void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
@@ -631,7 +630,7 @@ void stub_print_ktables_stats(struct activity *a, int prev, int curr, int dispav
 __print_funct_t print_ktables_stats(struct activity *a, int prev, int curr,
 				    unsigned long long itv)
 {
-	stub_print_ktables_stats(a, prev, curr, FALSE);
+	stub_print_ktables_stats(a, curr, FALSE);
 }
 
 /*
@@ -648,7 +647,7 @@ __print_funct_t print_ktables_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_ktables_stats(struct activity *a, int prev, int curr,
 					unsigned long long itv)
 {
-	stub_print_ktables_stats(a, prev, curr, TRUE);
+	stub_print_ktables_stats(a, curr, TRUE);
 }
 
 /*
@@ -658,12 +657,11 @@ __print_funct_t print_avg_ktables_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_queue_stats(struct activity *a, int prev, int curr, int dispavg)
+void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
@@ -729,7 +727,7 @@ void stub_print_queue_stats(struct activity *a, int prev, int curr, int dispavg)
 __print_funct_t print_queue_stats(struct activity *a, int prev, int curr,
 				  unsigned long long itv)
 {
-	stub_print_queue_stats(a, prev, curr, FALSE);
+	stub_print_queue_stats(a, curr, FALSE);
 }
 
 /*
@@ -746,7 +744,7 @@ __print_funct_t print_queue_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_queue_stats(struct activity *a, int prev, int curr,
 				      unsigned long long itv)
 {
-	stub_print_queue_stats(a, prev, curr, TRUE);
+	stub_print_queue_stats(a, curr, TRUE);
 }
 
 /*
@@ -1033,14 +1031,11 @@ __print_funct_t print_net_nfsd_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_net_sock_stats(struct activity *a, int prev, int curr,
-			       unsigned long long itv, int dispavg)
+void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_net_sock
 		*snsc = (struct stats_net_sock *) a->buf[curr];
@@ -1105,7 +1100,7 @@ void stub_print_net_sock_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_net_sock_stats(struct activity *a, int prev, int curr,
 				     unsigned long long itv)
 {
-	stub_print_net_sock_stats(a, prev, curr, itv, FALSE);
+	stub_print_net_sock_stats(a, curr, FALSE);
 }
 
 /*
@@ -1122,7 +1117,7 @@ __print_funct_t print_net_sock_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_net_sock_stats(struct activity *a, int prev, int curr,
 					 unsigned long long itv)
 {
-	stub_print_net_sock_stats(a, prev, curr, itv, TRUE);
+	stub_print_net_sock_stats(a, curr, TRUE);
 }
 
 /*
@@ -1378,14 +1373,11 @@ __print_funct_t print_net_udp_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_net_sock6_stats(struct activity *a, int prev, int curr,
-				unsigned long long itv, int dispavg)
+void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_net_sock6
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
@@ -1441,7 +1433,7 @@ void stub_print_net_sock6_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_net_sock6_stats(struct activity *a, int prev, int curr,
 				      unsigned long long itv)
 {
-	stub_print_net_sock6_stats(a, prev, curr, itv, FALSE);
+	stub_print_net_sock6_stats(a, curr, FALSE);
 }
 
 /*
@@ -1458,7 +1450,7 @@ __print_funct_t print_net_sock6_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_net_sock6_stats(struct activity *a, int prev, int curr,
 					  unsigned long long itv)
 {
-	stub_print_net_sock6_stats(a, prev, curr, itv, TRUE);
+	stub_print_net_sock6_stats(a, curr, TRUE);
 }
 
 /*
@@ -1661,12 +1653,11 @@ __print_funct_t print_net_udp6_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	True if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_pwr_cpufreq_stats(struct activity *a, int prev, int curr, int dispavg)
+void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_cpufreq *spc;
@@ -1761,7 +1752,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int prev, int curr, int di
 __print_funct_t print_pwr_cpufreq_stats(struct activity *a, int prev, int curr,
 					unsigned long long itv)
 {
-	stub_print_pwr_cpufreq_stats(a, prev, curr, FALSE);
+	stub_print_pwr_cpufreq_stats(a, curr, FALSE);
 }
 
 /*
@@ -1778,7 +1769,7 @@ __print_funct_t print_pwr_cpufreq_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_pwr_cpufreq_stats(struct activity *a, int prev, int curr,
 					    unsigned long long itv)
 {
-	stub_print_pwr_cpufreq_stats(a, prev, curr, TRUE);
+	stub_print_pwr_cpufreq_stats(a, curr, TRUE);
 }
 
 /*
@@ -1788,12 +1779,11 @@ __print_funct_t print_avg_pwr_cpufreq_stats(struct activity *a, int prev, int cu
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	True if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_pwr_fan_stats(struct activity *a, int prev, int curr, int dispavg)
+void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_fan *spc;
@@ -1870,7 +1860,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int prev, int curr, int dispav
 __print_funct_t print_pwr_fan_stats(struct activity *a, int prev, int curr,
 				    unsigned long long itv)
 {
-	stub_print_pwr_fan_stats(a, prev, curr, FALSE);
+	stub_print_pwr_fan_stats(a, curr, FALSE);
 }
 
 /*
@@ -1887,7 +1877,7 @@ __print_funct_t print_pwr_fan_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_pwr_fan_stats(struct activity *a, int prev, int curr,
 					unsigned long long itv)
 {
-	stub_print_pwr_fan_stats(a, prev, curr, TRUE);
+	stub_print_pwr_fan_stats(a, curr, TRUE);
 }
 
 /*
@@ -1897,12 +1887,11 @@ __print_funct_t print_avg_pwr_fan_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	True if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_pwr_temp_stats(struct activity *a, int prev, int curr, int dispavg)
+void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_temp *spc;
@@ -1996,7 +1985,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int prev, int curr, int dispa
 __print_funct_t print_pwr_temp_stats(struct activity *a, int prev, int curr,
 				     unsigned long long itv)
 {
-	stub_print_pwr_temp_stats(a, prev, curr, FALSE);
+	stub_print_pwr_temp_stats(a, curr, FALSE);
 }
 
 /*
@@ -2013,7 +2002,7 @@ __print_funct_t print_pwr_temp_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_pwr_temp_stats(struct activity *a, int prev, int curr,
 					 unsigned long long itv)
 {
-	stub_print_pwr_temp_stats(a, prev, curr, TRUE);
+	stub_print_pwr_temp_stats(a, curr, TRUE);
 }
 
 /*
@@ -2023,12 +2012,11 @@ __print_funct_t print_avg_pwr_temp_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	True if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_pwr_in_stats(struct activity *a, int prev, int curr, int dispavg)
+void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_in *spc;
@@ -2122,7 +2110,7 @@ void stub_print_pwr_in_stats(struct activity *a, int prev, int curr, int dispavg
 __print_funct_t print_pwr_in_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	stub_print_pwr_in_stats(a, prev, curr, FALSE);
+	stub_print_pwr_in_stats(a, curr, FALSE);
 }
 
 /*
@@ -2139,7 +2127,7 @@ __print_funct_t print_pwr_in_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_pwr_in_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_pwr_in_stats(a, prev, curr, TRUE);
+	stub_print_pwr_in_stats(a, curr, TRUE);
 }
 
 /*
@@ -2149,14 +2137,11 @@ __print_funct_t print_avg_pwr_in_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_huge_stats(struct activity *a, int prev, int curr,
-			   unsigned long long itv, int dispavg)
+void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
@@ -2214,7 +2199,7 @@ void stub_print_huge_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_huge_stats(struct activity *a, int prev, int curr,
 				 unsigned long long itv)
 {
-	stub_print_huge_stats(a, prev, curr, itv, FALSE);
+	stub_print_huge_stats(a, curr, FALSE);
 }
 
 /*
@@ -2231,7 +2216,7 @@ __print_funct_t print_huge_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_huge_stats(struct activity *a, int prev, int curr,
 				     unsigned long long itv)
 {
-	stub_print_huge_stats(a, prev, curr, itv, TRUE);
+	stub_print_huge_stats(a, curr, TRUE);
 }
 
 /*
@@ -2243,7 +2228,7 @@ __print_funct_t print_avg_huge_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @dispavg	True if displaying average statistics.
+ * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
 void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,

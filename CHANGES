@@ -5,6 +5,7 @@ xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	  voltage inputs and fans statistics.
 	* sar: Decrease column width for sensor device name (temperature,
 	  voltage inputs and fans statistics).
+	* Remove unnecessary arguments from functions in pr_stats.c.
 	* [Ivana Varekova]: Added option -h to iostat. This option makes
 	  the device utilization report easier to read with long device
 	  names.
