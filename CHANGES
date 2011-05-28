@@ -1,11 +1,11 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* Added USB devices statistics to sar and sadc. The option
+	  "-m USB" can now be used with sar to take a snapshot of all
+	  the USB devices currently plugged into the system.
 	* sadf -p now displays the sensor device name for temperature,
 	  voltage inputs and fans statistics.
-	* sar: Decrease column width for sensor device name (temperature,
-	  voltage inputs and fans statistics).
-	* Remove unnecessary arguments from functions in pr_stats.c.
 	* sar and pidstat: Check that _("Average") string doesn't exceed
 	  the size of the timestamp buffer.
 	* [Ivana Varekova]: Added option -h to iostat. This option makes
@@ -17,7 +17,11 @@ xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Ivana Varekova]: Close file descriptor in read_uptime()
 	  function (rd_stats.c file).
 	* Fixed XML output displayed by sadf (hugepages statistics were
-	  included in power management ones).
+	  included in <power-management> section).
+	* sar: Decrease column width for sensor device name (temperature,
+	  voltage inputs and fans statistics).
+	* Remove unnecessary arguments from functions in pr_stats.c.
+	* sar manual page updated.
 	* DTD and XSD documents updated and cleaned.
 	* NLS updated. Esperanto translation added.
 

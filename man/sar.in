@@ -1,4 +1,4 @@
-.TH SAR 1 "DECEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MAY 2011" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -374,9 +374,10 @@ Possible keywords are
 .BR CPU ,
 .BR FAN ,
 .BR FREQ ,
-.BR IN
+.BR IN ,
+.BR TEMP
 and
-.BR TEMP .
+.BR USB .
 
 With the
 .B CPU
@@ -463,6 +464,46 @@ temperature has reached its high limit (temp_max).
 .B DEVICE
 .RS
 Sensor device name.
+.RE
+
+With the
+.B USB
+keyword, the
+.B sar
+command takes a snapshot of all the USB devices currently plugged into
+the system. At the end of the report,
+.B sar
+will display a summary of all those USB devices.
+The following values are displayed:
+
+.B BUS
+.RS
+Root hub number of the USB device.
+.RE
+
+.B idvendor
+.RS
+Vendor ID number (assigned by USB organization).
+.RE
+
+.B idprod
+.RS
+Product ID number (assigned by Manufacturer).
+.RE
+
+.B maxpower
+.RS
+Maximum power consumption of the device (expressed in mA).
+.RE
+
+.B manufact
+.RS
+Manufacturer name.
+.RE
+
+.B product
+.RS
+Product name.
 .RE
 .RE
 .IP "-n { keyword [,...] | ALL }"
