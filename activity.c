@@ -1169,6 +1169,7 @@ struct activity *act[NR_ACT] = {
 	&paging_act,
 	&io_act,
 	&memory_act,
+	&huge_act,
 	&ktables_act,
 	&queue_act,
 	&serial_act,
@@ -1195,7 +1196,6 @@ struct activity *act[NR_ACT] = {
 	&pwr_fan_act,
 	&pwr_temp_act,
 	&pwr_in_act,
-	&huge_act,
 	&pwr_wghfreq_act,
 	&pwr_usb_act
 };
