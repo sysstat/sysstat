@@ -15,7 +15,10 @@ xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	  "Posix Open" column in /proc/fs/cifs/Stats file. This is now
 	  fixed.
 	* [Ivana Varekova]: Close file descriptor in read_uptime()
-	  function (file rd_stats.c).
+	  function (rd_stats.c file).
+	* Fixed XML output displayed by sadf (hugepages statistics were
+	  included in power management ones).
+	* DTD and XSD documents updated and cleaned.
 	* NLS updated. Esperanto translation added.
 
 2011/03/15: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)

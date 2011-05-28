@@ -1972,5 +1972,39 @@ close_xml_markup:
 __print_funct_t xml_print_pwr_usb_stats(struct activity *a, int curr, int tab,
 					unsigned long long itv)
 {
-	/* FIXME */
+	int i;
+	struct stats_pwr_usb *suc;
+
+	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+		goto close_xml_markup;
+
+	xml_markup_power_management(tab, OPEN_XML_MARKUP);
+	tab++;
+
+	xprintf(tab++, "<usb-devices>");
+
+	for (i = 0; i < a->nr; i++) {
+		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr]  + i * a->msize);
+
+		if (!suc->bus_nr)
+			/* Bus#0 doesn't exist: We are at the end of the list */
+			break;
+
+		xprintf(tab, "<usb bus_number=\"%d\" idvendor=\"%x\" idprod=\"%x\" "
+			     "maxpower=\"%u\" manufact=\"%s\" product=\"%s\"/>",
+			suc->bus_nr,
+			suc->vendor_id,
+			suc->product_id,
+			suc->bmaxpower << 1,
+			suc->manufacturer,
+			suc->product);
+	}
+
+	xprintf(--tab, "</usb-devices>");
+	tab--;
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_power_management(tab, CLOSE_XML_MARKUP);
+	}
 }
