@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+2011/06/03: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added USB devices statistics to sar and sadc. The option
 	  "-m USB" can now be used with sar to take a snapshot of all
 	  the USB devices currently plugged into the system.
@@ -24,6 +24,7 @@ xxxx/xx/xx: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar manual page updated.
 	* DTD and XSD documents updated and cleaned.
 	* NLS updated. Esperanto translation added.
+	* CREDITS file updated.
 
 2011/03/15: Version 10.0.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Ivana Varekova]: Fixed a problem with long NFS and CIFS share

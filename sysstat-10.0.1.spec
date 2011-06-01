@@ -1,12 +1,12 @@
 Summary: 	SAR, SADF, MPSTAT, IOSTAT, NFSIOSTAT, CIFSIOSTAT and PIDSTAT for Linux
 Name: 		sysstat
-Version: 	10.0.0
+Version: 	10.0.1
 Release: 	1
 License: 	GPL
 Group: 		Applications/System
 Source0: 	%{name}-%{version}.tar.gz
 URL:		http://pagesperso-orange.fr/sebastien.godard/
-Packager:	Damien Faure <damien-jn.faure@bull.net>
+Packager:	Sebastien Godard <sysstat _at_ orange.fr>
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root-%(id -u -n)
 Requires:	gettext
 

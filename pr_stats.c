@@ -2373,7 +2373,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 			}
 		}
 	}
-}	       
+}	
 
 /*
  ***************************************************************************

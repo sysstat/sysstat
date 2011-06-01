@@ -39,6 +39,7 @@
  ***************************************************************************
  * Definitions of system activities.
  * See sa.h file for activity structure definition.
+ * Activity structure doesn't matter for daily data files.
  ***************************************************************************
  */
 
@@ -1160,6 +1161,7 @@ struct activity pwr_usb_act = {
 
 /*
  * Array of activities.
+ * (Order of activities doesn't matter for daily data files).
  */
 struct activity *act[NR_ACT] = {
 	&cpu_act,
@@ -1174,6 +1176,7 @@ struct activity *act[NR_ACT] = {
 	&queue_act,
 	&serial_act,
 	&disk_act,
+	/* <network> */
 	&net_dev_act,
 	&net_edev_act,
 	&net_nfs_act,
@@ -1191,11 +1194,14 @@ struct activity *act[NR_ACT] = {
 	&net_eip6_act,
 	&net_icmp6_act,
 	&net_eicmp6_act,
-	&net_udp6_act,
+	&net_udp6_act,		/* AO_CLOSE_MARKUP */
+	/* </network> */
+	/* <power-management> */
 	&pwr_cpufreq_act,
 	&pwr_fan_act,
 	&pwr_temp_act,
 	&pwr_in_act,
 	&pwr_wghfreq_act,
-	&pwr_usb_act
+	&pwr_usb_act		/* AO_CLOSE_MARKUP */
+	/* </power-management> */
 };
