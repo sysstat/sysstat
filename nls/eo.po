@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: sysstat 10.0.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2011-03-13 20:39+0100\n"
-"PO-Revision-Date: 2011-03-17 20:08-0300\n"
+"PO-Revision-Date: 2011-03-24 20:08-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -94,7 +94,7 @@ msgstr "Meznombro:"
 #: mpstat.c:878
 #, c-format
 msgid "Not that many processors!\n"
-msgstr "Ne tiomege da proceziloj!\n"
+msgstr "Ne ekzistas tiom da proceziloj!\n"
 
 #: pidstat.c:81
 #, c-format
@@ -117,7 +117,7 @@ msgstr "Petitaj aktivaĵoj ne disponeblas\n"
 #: rd_stats.c:2049
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr "Ni ne povas trakti tiomegon da proceziloj!\n"
+msgstr "Ni ne povas trakti tiom da proceziloj!\n"
 
 #: sa_common.c:870
 #, c-format
@@ -127,7 +127,7 @@ msgstr "Eraro dum legado de sistem-aktivaĵa dosiero: %s\n"
 #: sa_common.c:880
 #, c-format
 msgid "End of system activity file unexpected\n"
-msgstr "Fino de sistem-aktivaĵa dosiero ne atendite\n"
+msgstr "Ne atendita fino de sistem-aktivaĵa dosiero\n"
 
 #: sa_common.c:898
 #, c-format
@@ -142,7 +142,7 @@ msgstr "Malvalida sistem-aktivaĵa dosiero: %s\n"
 #: sa_common.c:936
 #, c-format
 msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
-msgstr "La nuna versio de sysstat ne povas plu legi la formon de tiu ĉi dosiero(%#x)\n"
+msgstr "La nuna versio de sysstat ne plu povas legi la formon de tiu ĉi dosiero(%#x)\n"
 
 #: sa_common.c:1168
 #, c-format
@@ -206,7 +206,7 @@ msgstr "Sistem-aktivaĵa datumara dosiero: %s (%#x)\n"
 #: sadf.c:623
 #, c-format
 msgid "Host: "
-msgstr "Gastigo: "
+msgstr "Gastiganto: "
 
 #: sadf.c:629
 #, c-format
@@ -260,7 +260,7 @@ msgstr "\t-B\tStatistikoj pri paĝigo\n"
 #: sar.c:129
 #, c-format
 msgid "\t-d\tBlock device statistics\n"
-msgstr "\t-d\tStatistikoj pri blok-aparato\n"
+msgstr "\t-d\tStatistikoj pri blok-aparatoj\n"
 
 #: sar.c:130
 #, c-format
@@ -396,7 +396,7 @@ msgstr "\t-y\tStatistikoj pri TTY-aparato\n"
 #: sar.c:214
 #, c-format
 msgid "End of data collecting unexpected\n"
-msgstr "Fino de datumar-kolektado ne atendite\n"
+msgstr "Ne atendita fino de datumar-kolektado\n"
 
 #: sar.c:804
 #, c-format
