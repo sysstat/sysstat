@@ -1,5 +1,7 @@
 Changes:
 
+xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
+
 2011/06/03: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added USB devices statistics to sar and sadc. The option
 	  "-m USB" can now be used with sar to take a snapshot of all
