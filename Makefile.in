@@ -290,64 +290,14 @@ endif
 
 install_nls: locales
 ifdef REQUIRE_NLS
-	mkdir -p $(DESTDIR)$(NLS_DIR)/af/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/cs/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/da/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/de/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/eo/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/es/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/eu/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/fi/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/fr/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/id/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/it/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/ja/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/ky/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/lv/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/mt/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/nb/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/nl/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/nn/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/pl/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/pt/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/pt_BR/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/ro/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/ru/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/sk/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/sv/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/uk/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/vi/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/zh_CN/LC_MESSAGES
-	mkdir -p $(DESTDIR)$(NLS_DIR)/zh_TW/LC_MESSAGES
-	$(INSTALL_DATA) nls/af.gmo $(DESTDIR)$(NLS_DIR)/af/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/cs.gmo $(DESTDIR)$(NLS_DIR)/cs/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/da.gmo $(DESTDIR)$(NLS_DIR)/da/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/de.gmo $(DESTDIR)$(NLS_DIR)/de/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/eo.gmo $(DESTDIR)$(NLS_DIR)/eo/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/es.gmo $(DESTDIR)$(NLS_DIR)/es/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/eu.gmo $(DESTDIR)$(NLS_DIR)/eu/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/fi.gmo $(DESTDIR)$(NLS_DIR)/fi/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/fr.gmo $(DESTDIR)$(NLS_DIR)/fr/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/id.gmo $(DESTDIR)$(NLS_DIR)/id/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/it.gmo $(DESTDIR)$(NLS_DIR)/it/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/ja.gmo $(DESTDIR)$(NLS_DIR)/ja/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/ky.gmo $(DESTDIR)$(NLS_DIR)/ky/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/lv.gmo $(DESTDIR)$(NLS_DIR)/lv/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/mt.gmo $(DESTDIR)$(NLS_DIR)/mt/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/nb.gmo $(DESTDIR)$(NLS_DIR)/nb/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/nl.gmo $(DESTDIR)$(NLS_DIR)/nl/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/nn.gmo $(DESTDIR)$(NLS_DIR)/nn/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/pl.gmo $(DESTDIR)$(NLS_DIR)/pl/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/pt.gmo $(DESTDIR)$(NLS_DIR)/pt/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/pt_BR.gmo $(DESTDIR)$(NLS_DIR)/pt_BR/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/ro.gmo $(DESTDIR)$(NLS_DIR)/ro/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/ru.gmo $(DESTDIR)$(NLS_DIR)/ru/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/sk.gmo $(DESTDIR)$(NLS_DIR)/sk/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/sv.gmo $(DESTDIR)$(NLS_DIR)/sv/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/uk.gmo $(DESTDIR)$(NLS_DIR)/uk/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/vi.gmo $(DESTDIR)$(NLS_DIR)/vi/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/zh_CN.gmo $(DESTDIR)$(NLS_DIR)/zh_CN/LC_MESSAGES/$(PACKAGE).mo
-	$(INSTALL_DATA) nls/zh_TW.gmo $(DESTDIR)$(NLS_DIR)/zh_TW/LC_MESSAGES/$(PACKAGE).mo
+	catalogs='$(NLSGMO)'; \
+	for c in $$catalogs; do \
+		c=`basename $$c`; \
+		c=`echo $$c | sed 's/\.gmo$$//'`; \
+		mkdir -p $(DESTDIR)$(NLS_DIR)/$$c/LC_MESSAGES; \
+		echo "NLS: Installing $$c file..." ; \
+		$(INSTALL_DATA) nls/$$c.gmo $(DESTDIR)$(NLS_DIR)/$$c/LC_MESSAGES/$(PACKAGE).mo; \
+	done
 endif
 
 install_base: all sa1 sa2 sysstat.sysconfig install_man install_nls \
@@ -443,93 +393,14 @@ endif
 
 uninstall_nls:
 ifdef REQUIRE_NLS
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/af/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/cs/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/da/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/de/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/eo/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/es/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/eu/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/fi/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/fr/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/id/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/it/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/ja/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/ky/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/lv/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/mt/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/nb/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/nl/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/nn/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/pl/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/pt/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/pt_BR/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/ro/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/ru/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/sk/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/sv/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/uk/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/vi/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/zh_CN/LC_MESSAGES/$(PACKAGE).mo
-	rm -f $(DESTDIR)$(PREFIX)/share/locale/zh_TW/LC_MESSAGES/$(PACKAGE).mo
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/af/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/cs/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/da/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/de/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/eo/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/es/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/eu/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/fi/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/fr/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/id/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/it/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ja/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ky/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/lv/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/mt/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/nb/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/nl/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/nn/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/pl/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/pt/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/pt_BR/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ro/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ru/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/sk/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/sv/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/uk/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/vi/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/zh_CN/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/zh_TW/LC_MESSAGES
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/af
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/cs
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/da
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/de
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/eo
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/es
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/eu
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/fi
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/fr
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/id
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/it
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ja
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ky
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/lv
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/mt
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/nb
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/nl
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/nn
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/pl
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/pt
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/pt_BR
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ro
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/ru
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/sk
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/sv
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/uk
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/vi
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/zh_CN
-	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/zh_TW
+	-catalogs='$(NLSGMO)'; \
+	for c in $$catalogs; do \
+		c=`basename $$c`; \
+		c=`echo $$c | sed 's/\.gmo$$//'`; \
+		rm -f $(DESTDIR)$(PREFIX)/share/locale/$$c/LC_MESSAGES/$(PACKAGE).mo; \
+		rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/$$c/LC_MESSAGES 2>/dev/null; \
+		rmdir --ignore-fail-on-non-empty $(DESTDIR)$(PREFIX)/share/locale/$$c 2>/dev/null; \
+	done
 endif
 
 uninstall_base: uninstall_man uninstall_nls

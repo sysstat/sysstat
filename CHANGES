@@ -1,6 +1,9 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Jeroen Roovers]: Automate translation files handling in
+	  Makefile.in.
+	* CREDITS file updated.
 
 2011/06/03: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added USB devices statistics to sar and sadc. The option
