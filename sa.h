@@ -264,7 +264,7 @@
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
 #define IS_REMANENT(m)		(((m) & AO_REMANENT)         == AO_REMANENT)
-#define NEEDS_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
+#define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 

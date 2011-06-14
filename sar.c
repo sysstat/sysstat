@@ -392,10 +392,8 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 		
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			/* Display current average activity statistics */
-			if (NEEDS_GLOBAL_ITV(act[i]->options))
-				(*act[i]->f_print_avg)(act[i], 2, curr, g_itv);
-			else
-				(*act[i]->f_print_avg)(act[i], 2, curr, itv);
+			(*act[i]->f_print_avg)(act[i], 2, curr,
+					       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
 		}
 	}
 
@@ -501,10 +499,8 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			/* Display current activity statistics */
-			if (NEEDS_GLOBAL_ITV(act[i]->options))
-				(*act[i]->f_print)(act[i], !curr, curr, g_itv);
-			else
-				(*act[i]->f_print)(act[i], !curr, curr, itv);
+			(*act[i]->f_print)(act[i], !curr, curr,
+					   NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
 		}
 	}
 

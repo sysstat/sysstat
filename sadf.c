@@ -261,13 +261,8 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
 			continue;
 		
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
-			
-			if (NEEDS_GLOBAL_ITV(act[i]->options)) {
-				(*act[i]->f_render)(act[i], isdb, pre, curr, g_itv);
-			}
-			else {
-				(*act[i]->f_render)(act[i], isdb, pre, curr, itv);
-			}
+			(*act[i]->f_render)(act[i], isdb, pre, curr,
+					    NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
 		}
 	}
 
@@ -459,13 +454,8 @@ int write_xml_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		
 		if (CLOSE_MARKUP(act[i]->options) ||
 		    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
-			
-			if (NEEDS_GLOBAL_ITV(act[i]->options)) {
-				(*act[i]->f_xml_print)(act[i], curr, tab, g_itv);
-			}
-			else {
-				(*act[i]->f_xml_print)(act[i], curr, tab, itv);
-			}
+			(*act[i]->f_xml_print)(act[i], curr, tab,
+					       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
 		}
 	}
 
