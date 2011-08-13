@@ -78,8 +78,8 @@
 #define S_F_INTERVAL_SET	0x00000010
 #define S_F_TRUE_TIME		0x00000020
 #define S_F_LOCK_FILE		0x00000040
-/* Unused			0x00000080 */
-/* Unused			0x00000100 */
+#define S_F_SEC_EPOCH		0x00000080
+#define S_F_HDR_ONLY		0x00000100
 #define S_F_FILE_LOCKED		0x00000200
 #define S_F_PER_PROC		0x00000400
 #define S_F_HORIZONTALLY	0x00000800
@@ -92,6 +92,8 @@
 #define INTERVAL_SET(m)		(((m) & S_F_INTERVAL_SET) == S_F_INTERVAL_SET)
 #define PRINT_TRUE_TIME(m)	(((m) & S_F_TRUE_TIME)    == S_F_TRUE_TIME)
 #define LOCK_FILE(m)		(((m) & S_F_LOCK_FILE)    == S_F_LOCK_FILE)
+#define PRINT_SEC_EPOCH(m)	(((m) & S_F_SEC_EPOCH)    == S_F_SEC_EPOCH)
+#define DISPLAY_HDR_ONLY(m)	(((m) & S_F_HDR_ONLY)     == S_F_HDR_ONLY)
 #define FILE_LOCKED(m)		(((m) & S_F_FILE_LOCKED)  == S_F_FILE_LOCKED)
 #define WANT_PER_PROC(m)	(((m) & S_F_PER_PROC)     == S_F_PER_PROC)
 #define DISPLAY_HORIZONTALLY(m)	(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
@@ -192,7 +194,6 @@
 
 #define UTSNAME_LEN		65
 #define TIMESTAMP_LEN		16
-#define XML_TIMESTAMP_LEN	64
 #define HEADER_LINE_LEN		512
 
 /* Maximum number of args that can be passed to sadc */
@@ -301,7 +302,7 @@ struct activity {
 	 */
 	unsigned int id;
 	/*
-	 * Activity options (AO_SELECTED, ...)
+	 * Activity options (AO_...)
 	 */
 	unsigned int options;
 	/*
@@ -311,7 +312,7 @@ struct activity {
 	 */
 	unsigned int magic;
 	/*
-	 * an activity belongs to a group (and only one).
+	 * An activity belongs to a group (and only one).
 	 * Groups are those selected with option -S of sadc.
 	 */
 	unsigned int group;

@@ -1,6 +1,8 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf modified to make it easier to add new output formats.
+	  Its design is still not generic anyway.
 	* [Jeroen Roovers]: Automate translation files handling in
 	  Makefile.in.
 	* Various cosmetic changes (sar.c, sadf.c).

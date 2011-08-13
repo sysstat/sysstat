@@ -15,8 +15,6 @@
  */
 
 /* Functions used to display statistics in XML */
-extern void xprintf
-	(int, const char *, ...);
 extern __print_funct_t xml_print_cpu_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t xml_print_pcsw_stats

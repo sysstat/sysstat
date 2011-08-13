@@ -24,6 +24,7 @@
 #include <stdarg.h>
 
 #include "sa.h"
+#include "sadf.h"
 #include "ioconf.h"
 #include "xml_stats.h"
 
@@ -37,45 +38,6 @@
 
 extern unsigned int flags;
 extern unsigned int dm_major;
-
-/*
- ***************************************************************************
- * Print tabulations
- *
- * IN:
- * @nr_tab      Number of tabs to print.
- ***************************************************************************
- */
-void prtab(int nr_tab)
-{
-	int i;
-
-	for (i = 0; i < nr_tab; i++) {
-		printf("\t");
-	}
-}
-
-/*
- ***************************************************************************
- * printf() function modified for XML display
- *
- * IN:
- * @nr_tab      Number of tabs to print.
- * @fmt         printf() format.
- ***************************************************************************
- */
-void xprintf(int nr_tab, const char *fmt, ...)
-{
-	static char buf[1024];
-	va_list args;
-
-	va_start(args, fmt);
-	vsnprintf(buf, sizeof(buf), fmt, args);
-	va_end(args);
-
-	prtab(nr_tab);
-	printf("%s\n", buf);
-}
 
 /*
  ***************************************************************************

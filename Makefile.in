@@ -181,9 +181,13 @@ pr_stats.o: pr_stats.c sa.h ioconf.h sysconfig.h pr_stats.h
 
 rndr_stats.o: rndr_stats.c sa.h ioconf.h sysconfig.h rndr_stats.h
 
-xml_stats.o: xml_stats.c sa.h ioconf.h sysconfig.h xml_stats.h
+xml_stats.o: xml_stats.c sa.h sadf.h ioconf.h sysconfig.h xml_stats.h
 
 sa_wrap.o: sa_wrap.c sa.h rd_stats.h rd_sensors.h
+
+format.o: format.c sadf.h
+
+sadf_misc.o: sadf_misc.c sadf.h sa.h
 
 # Explicit rules needed to prevent possible file corruption
 # when using parallel execution.
@@ -205,7 +209,7 @@ sar: sar.o act_sar.o sa_common.o pr_stats.o libsyscom.a
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h ioconf.h sysconfig.h rndr_stats.h xml_stats.h
 
-sadf: sadf.o act_sadf.o rndr_stats.o xml_stats.o sa_common.o libsyscom.a
+sadf: sadf.o act_sadf.o format.o sadf_misc.o rndr_stats.o xml_stats.o sa_common.o libsyscom.a
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h
 
