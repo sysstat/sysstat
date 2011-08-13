@@ -129,7 +129,7 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
 	}
 	if (action & F_MAIN) {
 		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" utc=\"%d\"/>",
-			cur_date, cur_time, utc ? 1 : 0);		/* FIXME: Nouvelle balise a prevoir dans DTD/XSD */
+			cur_date, cur_time, utc ? 1 : 0);
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</restarts>");
@@ -238,7 +238,7 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date,
 		xprintf((*tab)++, "<comments>");
 	}
 	if (action & F_MAIN) {
-		xprintf(*tab, "<comment date=\"%s\" time=\"%s\" utc=\"%d\" com=\"%s\"/>",	/* FIXME: modification du DTD/XSD */
+		xprintf(*tab, "<comment date=\"%s\" time=\"%s\" utc=\"%d\" com=\"%s\"/>",
 			cur_date, cur_time, utc ? 1 : 0, comment);
 	}
 	if (action & F_END) {
@@ -288,7 +288,7 @@ __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
 				     char *cur_time, int utc, unsigned long long itv)
 {
 	if (action & F_BEGIN) {
-		xprintf(*tab, "<timestamp date=\"%s\" time=\"%s\" utc=\"%d\" interval=\"%llu\"/>",	/* FIXME: modification du DTD/XSD */
+		xprintf(*tab, "<timestamp date=\"%s\" time=\"%s\" utc=\"%d\" interval=\"%llu\"/>",
 			cur_date, cur_time, utc ? 1 : 0, itv);
 	}
 	if (action & F_END) {

@@ -8,6 +8,9 @@
 
 #include "sa.h"
 
+/* DTD version for XML output */
+#define XML_DTD_VERSION	"2.12"
+
 /* Possible actions for functions used to display reports */
 #define F_BEGIN	0x01
 #define F_MAIN	0x02
@@ -166,9 +169,6 @@ struct report_format {
 	 */
 	__printf_funct_t (*f_comment) (int *, int, char *, char *, int, char *, struct file_header *);
 };
-
-/* DTD version for XML output */
-#define XML_DTD_VERSION	"2.11"
 
 /*
  ***************************************************************************

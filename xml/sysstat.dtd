@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.11 for sysstat. See sadf.h -->
+<!--DTD v2.12 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
@@ -26,6 +26,7 @@
 <!ATTLIST timestamp
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
+	utc CDATA #REQUIRED
 	interval CDATA #REQUIRED
 >
 
@@ -35,6 +36,7 @@
 <!ATTLIST boot
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
+	utc CDATA #REQUIRED
 >
 
 <!ELEMENT comments (comment+)>
@@ -43,6 +45,7 @@
 <!ATTLIST comment
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
+	utc CDATA #REQUIRED
 	com CDATA #REQUIRED
 >
 

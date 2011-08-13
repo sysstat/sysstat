@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v2.11 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v2.12 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -74,9 +74,9 @@
 
 <xs:element name="comments" type="comments-type"></xs:element>
 <xs:complexType name="comments-type">
-	<xs:attribute name="date" type="xs:date"></xs:attribute>
-	<xs:attribute name="time" type="xs:time"></xs:attribute>
-	<xs:attribute name="comment" type="xs:string"></xs:attribute>
+	<xs:sequence>
+		<xs:element name="comment" type="comment-type"></xs:element>
+	</xs:sequence>
 </xs:complexType>
 
 <xs:element name="timestamp" type="timestamp-type"></xs:element>
@@ -100,6 +100,7 @@
 	</xs:sequence>
 	<xs:attribute name="date" type="xs:date"></xs:attribute>
 	<xs:attribute name="time" type="xs:time"></xs:attribute>
+	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
 	<xs:attribute name="interval" type="xs:nonNegativeInteger"></xs:attribute>
 </xs:complexType>
 
@@ -107,6 +108,15 @@
 <xs:complexType name="boot-type">
 	<xs:attribute name="date" type="xs:date"></xs:attribute>
 	<xs:attribute name="time" type="xs:time"></xs:attribute>
+	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="comment" type="comment-type"></xs:element>
+<xs:complexType name="comment-type">
+	<xs:attribute name="date" type="xs:date"></xs:attribute>
+	<xs:attribute name="time" type="xs:time"></xs:attribute>
+	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="com" type="xs:string"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="cpu-load" type="cpu-load-type"></xs:element>

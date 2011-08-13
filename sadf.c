@@ -275,7 +275,7 @@ void prtab(int nr_tab)
 
 /*
  ***************************************************************************
- * printf() function modified for XML display
+ * printf() function modified for textual (XML-like) display.
  *
  * IN:
  * @nr_tab	Number of tabs to print.
@@ -317,8 +317,8 @@ void xprintf(int nr_tab, const char *fmtf, ...)
  *			been saved.
  ***************************************************************************
  */
-void write_xml_restarts(int curr, int use_tm_start, int use_tm_end, int tab,	/* FIXME: revoir nom proc */
-			struct tm *rectime, struct tm *loctime)
+void write_textual_restarts(int curr, int use_tm_start, int use_tm_end, int tab,
+			    struct tm *rectime, struct tm *loctime)
 {
 	char cur_date[32], cur_time[32];
 
@@ -340,7 +340,7 @@ void write_xml_restarts(int curr, int use_tm_start, int use_tm_end, int tab,	/* 
 
 /*
  ***************************************************************************
- * Display XML COMMENT records for textual (XML-like) reports.
+ * Display COMMENT records for textual (XML-like) reports.
  *
  * IN:
  * @curr		Index in array for current sample statistics.
@@ -361,8 +361,8 @@ void write_xml_restarts(int curr, int use_tm_start, int use_tm_end, int tab,	/* 
  *			been saved.
  ***************************************************************************
  */
-void write_xml_comments(int curr, int use_tm_start, int use_tm_end, int tab, int ifd,	/* FIXME: revoir nom proc */
-			struct tm *rectime, struct tm *loctime)
+void write_textual_comments(int curr, int use_tm_start, int use_tm_end, int tab, int ifd,
+			    struct tm *rectime, struct tm *loctime)
 {
 	char cur_date[32], cur_time[32];
 	char file_comment[MAX_COMMENT_LEN];
@@ -612,9 +612,9 @@ int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
  * 1 if stats have been successfully displayed.
  ***************************************************************************
  */
-int write_xml_stats(int curr, int use_tm_start, int use_tm_end, int reset,
-		    long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
-		    struct tm *loctime)
+int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
+			long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
+			struct tm *loctime)
 {
 	int i;
 	unsigned long long dt, itv, g_itv;
@@ -683,11 +683,10 @@ int write_xml_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	}
 	tab++;
 
-	/* Display XML statistics */
+	/* Display textual statistics */
 	for (i = 0; i < NR_ACT; i++) {
 
-		/* FIXME: PB: le nom de la fonction a appeler va dependre du format d'affichage choisi (ex.: f_xml_print si on est en XML) */
-		
+		/* This code is not generic at all...! */
 		if (CLOSE_MARKUP(act[i]->options) ||
 		    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
 			(*act[i]->f_xml_print)(act[i], curr, tab,
@@ -874,9 +873,9 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
  *		saved for current record.
  ***************************************************************************
  */
-void xml_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
-		      struct file_magic *file_magic, __nr_t cpu_nr,
-		      struct tm *rectime, struct tm *loctime)
+void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
+			  struct file_magic *file_magic, __nr_t cpu_nr,
+			  struct tm *rectime, struct tm *loctime)
 {
 	int curr, tab = 0, rtype;
 	int eosaf = TRUE, next, reset = FALSE;
@@ -953,8 +952,8 @@ void xml_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
 							     file_actlst);
 
 					/* next is set to 1 when we were close enough to desired interval */
-					next = write_xml_stats(curr, tm_start.use, tm_end.use, reset,
-							       &cnt, tab, cpu_nr, rectime, loctime);
+					next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
+								   &cnt, tab, cpu_nr, rectime, loctime);
 
 					if (next) {
 						curr ^= 1;
@@ -1024,8 +1023,8 @@ void xml_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
 						     file_actlst);
 			}
 			if (rtype == R_RESTART) {
-				write_xml_restarts(0, tm_start.use, tm_end.use, tab,
-						   rectime, loctime);
+				write_textual_restarts(0, tm_start.use, tm_end.use, tab,
+						       rectime, loctime);
 			}
 			else if (rtype == R_COMMENT) {
 				/* Ignore COMMENT record */
@@ -1063,8 +1062,8 @@ void xml_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
 							     file_actlst);
 				}
 				if (rtype == R_COMMENT) {
-					write_xml_comments(0, tm_start.use, tm_end.use,
-							   tab, ifd, rectime, loctime);
+					write_textual_comments(0, tm_start.use, tm_end.use,
+							       tab, ifd, rectime, loctime);
 				}
 			}
 		}
@@ -1264,12 +1263,11 @@ void read_stats_from_file(char dfile[])
 
 	if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
 		main_display_loop(ifd, file_actlst, cpu_nr,
-				  &rectime, &loctime);			/* FIXME: revoir nom */
+				  &rectime, &loctime);
 	}
 	else {
-		xml_display_loop(ifd, file_actlst,
-				 dfile, &file_magic, cpu_nr,
-				 &rectime, &loctime);			/* FIXME: revoir nom */
+		textual_display_loop(ifd, file_actlst, dfile,
+				     &file_magic, cpu_nr, &rectime, &loctime);
 	}
 
 	close(ifd);
