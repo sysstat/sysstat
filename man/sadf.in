@@ -1,8 +1,8 @@
-.TH SADF 1 "AUGUST 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "AUGUST 2011" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -d | -D | -H | -p | -x ] [ -C ] [ -h ] [ -t ] [ -V ] [ -P {
+.B sadf [ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
 .I hh:mm:ss
@@ -73,9 +73,6 @@ Not specifying any flags selects only CPU activity.
 Tell
 .B sadf
 to display comments present in file.
-.IP -D
-This option is equivalent to option -d below, except that the timestamp
-is always expressed in seconds since the epoch (00:00:00 UTC 01/01/1970).
 .IP -d
 Print the contents of the data file in a format that can easily
 be ingested by a relational database system. The output consists
@@ -86,18 +83,16 @@ most databases, and additional semicolon separated data fields as specified
 by
 .I sar_options
 command line options.
-Note that the timestamp is displayed in UTC (Coordinated Universal Time)
-unless option -t is used. In this latter case, the timestamp is displayed
-in local time.
+Note that timestamp output can be controlled by options -T and -t.
 .IP "-e [ hh:mm:ss ]"
 Set the ending time of the report, given in local time. The default ending
 time is 18:00:00. Hours must be given in 24-hour format.
-This option is ignored when option -x is used.
-.IP -h
-When used in conjunction with option -d or -D, all activities
-will be displayed horizontally on a single line.
 .IP -H
-Display the header of the data file.
+Display only the header of the report (when applicable). If no format has
+been specified, then the header of the data file is displayed.
+.IP -h
+When used in conjunction with option -d, all activities
+will be displayed horizontally on a single line.
 .IP "-P { cpu [,...] | ALL }"
 Tell
 .B sadf
@@ -111,27 +106,27 @@ Print the contents of the data file in a format that can
 easily be handled by pattern processing commands like awk.
 The output consists of fields separated by a tab. Each record contains the
 hostname of the host where the file was created, the interval value
-(or -1 if not applicable), the timestamp (UTC value - Coordinated Universal
-Time) in seconds from the epoch, the device name (or - if not applicable),
+(or -1 if not applicable), the timestamp,
+the device name (or - if not applicable),
 the field name and its value.
+Note that timestamp output can be controlled by options -T and -t.
 .IP "-s [ hh:mm:ss ]"
 Set the starting time of the data (given in local time), causing the
 .B sadf
 command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
-Hours must be given in 24-hour format. This option is ignored when
-option -x is used.
+Hours must be given in 24-hour format.
+.IP -T
+Display timestamp (UTC - Coordinated Universal Time) in seconds from
+the epoch.
 .IP -t
-When this option is used together with options -d or -x, the timestamp
-is displayed in local time instead of UTC (Coordinated Universal Time).
-This option is ignored when options -p or -D are used.
+Display timestamp in local time instead of UTC (Coordinated Universal Time).
 .IP -V
 Print version number then exit.
 .IP -x
 Print the contents of the data file in XML format.
-Timestamps are displayed in UTC (Coordinated Universal Time)
-unless option -t is used, in which case they are displayed
-in local time. The corresponding
+Timestamps can be controlled by option -t.
+The corresponding
 DTD (Document Type Definition) and XML Schema are included in the sysstat
 source package. They are also available at
 .I http://pagesperso-orange.fr/sebastien.godard/download.html
