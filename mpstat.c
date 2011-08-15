@@ -87,7 +87,8 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | ALL } ] [ -V ]\n"));
+			  "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
+			  "[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"));
 	exit(1);
 }
 
@@ -211,6 +212,7 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			unsigned long long itv, int prev, int curr,
 			char *prev_string, char *curr_string)
 {
+	struct stats_cpu *scc, *scp;
 	int j = 0, offset, cpu;
 	struct stats_irqcpu *p, *q, *p0, *q0;
 
@@ -248,13 +250,26 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
 
+		scc = st_cpu[curr] + cpu;
+		scp = st_cpu[prev] + cpu;
+
 		/*
-		* Check if we want stats about this CPU.
+		 * Check if we want stats about this CPU.
 		 * CPU must have been explicitly selected using option -P,
 		 * else we display every CPU.
 		 */
 		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_P_OPTION(flags))
 			continue;
+
+		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+
+			/* Offline CPU found */
+
+			if (DISPLAY_ONLINE_CPU(flags))
+				continue;
+		}
 
 		printf("%-11s  %3d", curr_string, cpu - 1);
 
@@ -299,7 +314,7 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 /*
  ***************************************************************************
- * Core function used to display statistics
+ * Core function used to display statistics.
  *
  * IN:
  * @prev	Position in array where statistics used	as reference are.
@@ -393,8 +408,6 @@ void write_stats_core(int prev, int curr, int dis,
 			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
 				continue;
 			
-			printf("%-11s %4d", curr_string, cpu - 1);
-
 			/*
 			 * If the CPU is offline then it is omited from /proc/stat
 			 * and the sum of all values is zero.
@@ -403,18 +416,18 @@ void write_stats_core(int prev, int curr, int dis,
 			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
 			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
 			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-				/*
-				 * Set current struct fields (which have been set to zero)
-				 * to values from previous iteration. Hence their values won't
-				 * jump from zero when the CPU comes back online.
-				 */
-				*scc = *scp;
 
-				printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-				       "  %6.2f  %6.2f  %6.2f\n",
-				       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+				if (!DISPLAY_ONLINE_CPU(flags)) {
+					printf("%-11s %4d"
+					       "  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
+					       "  %6.2f  %6.2f  %6.2f\n",
+					       curr_string, cpu - 1,
+					       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+				}
 				continue;
 			}
+
+			printf("%-11s %4d", curr_string, cpu - 1);
 
 			/* Recalculate itv for current proc */
 			pc_itv = get_per_cpu_interval(scc, scp);
@@ -492,13 +505,28 @@ void write_stats_core(int prev, int curr, int dis,
 			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
 				continue;
 
+			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+
+				/* This is an offline CPU */
+				
+				if (!DISPLAY_ONLINE_CPU(flags)) {
+					printf("%-11s %4d"
+					       "  %9.2f\n",
+					       curr_string, cpu - 1,
+					       0.0);
+				}
+				continue;
+			}
+
 			printf("%-11s %4d", curr_string, cpu - 1);
 
 			/* Recalculate itv for current proc */
 			pc_itv = get_per_cpu_interval(scc, scp);
 
 			if (!pc_itv) {
-				/* Current CPU is offline */
+				/* This is a tickless CPU */
 				printf(" %9.2f\n", 0.0);
 			}
 			else {
@@ -517,11 +545,30 @@ void write_stats_core(int prev, int curr, int dis,
 		write_irqcpu_stats(st_softirqcpu, softirqcpu_nr, dis, itv, prev, curr,
 				   prev_string, curr_string);
 	}
+
+	/* Fix CPU counter values for every offline CPU */
+	for (cpu = 1; cpu <= cpu_nr; cpu++) {
+
+		scc = st_cpu[curr] + cpu;
+		scp = st_cpu[prev] + cpu;
+
+		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+			/*
+			 * Offline CPU found.
+			 * Set current struct fields (which have been set to zero)
+			 * to values from previous iteration. Hence their values won't
+			 * jump from zero when the CPU comes back online.
+			 */
+			*scc = *scp;
+		}
+	}
 }
 
 /*
  ***************************************************************************
- * Print statistics average
+ * Print statistics average.
  *
  * IN:
  * @curr	Position in array where statistics for current sample are.
@@ -539,7 +586,7 @@ void write_stats_avg(int curr, int dis)
 
 /*
  ***************************************************************************
- * Print statistics
+ * Print statistics.
  *
  * IN:
  * @curr	Position in array where statistics for current sample are.
@@ -859,7 +906,7 @@ int main(int argc, char **argv)
 				dis_hdr++;
 				
 				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
-					if (!strcmp(t, K_ALL)) {
+					if (!strcmp(t, K_ALL) || !strcmp(t, K_ON)) {
 						if (cpu_nr) {
 							dis_hdr = 9;
 						}
@@ -868,6 +915,10 @@ int main(int argc, char **argv)
 						 * Also indicate to display stats for CPU 'all'.
 						 */
 						memset(cpu_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
+						if (!strcmp(t, K_ON)) {
+							/* Display stats only for online CPU */
+							flags |= F_P_ON;
+						}
 					}
 					else {
 						if (strspn(t, DIGITS) != strlen(t)) {

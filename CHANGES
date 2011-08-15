@@ -5,10 +5,12 @@ xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
 	  Its design is still not generic anyway.
 	* Option -T added to sadf: This option tells sadf to display
 	  timestamps in seconds since the epoch (when applicable).
+	* Option "-P ON" added to mpstat. This option tells mpstat
+	  to display stats only for online CPU.
 	* [Jeroen Roovers]: Automate translation files handling in
 	  Makefile.in.
 	* DTD and XSD documents updated.
-	* sadf manual page updated.
+	* sadf and mpstat manual pages updated.
 	* pidstat manual page updated: Added description of field %MEM
 	  displayed by pidstat -r.
 	* Various cosmetic changes (sar.c, sadf.c).
