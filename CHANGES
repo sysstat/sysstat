@@ -7,6 +7,8 @@ xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
 	  timestamps in seconds since the epoch (when applicable).
 	* Option "-P ON" added to mpstat. This option tells mpstat
 	  to display stats only for online CPU.
+	* [Kei Ishida]: pidstat displayed stats for processes that
+	  had terminated while pidstat was running. This is now fixed.
 	* [Jeroen Roovers]: Automate translation files handling in
 	  Makefile.in.
 	* DTD and XSD documents updated.

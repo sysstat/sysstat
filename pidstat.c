@@ -1012,6 +1012,10 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	else if (DISPLAY_PID(pidflag)) {
 
 		*pstp = st_pid_list[prev] + p;
+
+		if (!(*pstp)->pid)
+			/* PID no longer exists */
+			return 0;
 	}
 
 	if (COMMAND_STRING(pidflag)) {
