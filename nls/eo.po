@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.0\n"
+"Project-Id-Version: sysstat 10.0.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-03-13 20:39+0100\n"
-"PO-Revision-Date: 2011-03-24 20:08-0300\n"
+"POT-Creation-Date: 2011-06-01 15:08+0200\n"
+"PO-Revision-Date: 2011-06-24 20:22-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr "sysstat versio %s\n"
 
-#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2003 sa_common.c:1061 sadc.c:623
+#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
 #: sadc.c:632 sadc.c:692
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -55,22 +55,22 @@ msgstr "Ni ne povas malfermi %s: %s\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Elektiloj estas:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <aparato> [...] | ALL ] [ -p [ <aparato> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
 msgstr ""
 "Elektiloj estas:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <aparato> [...] | ALL ] [ -p [ <aparato> [,...] | ALL ] ]\n"
 
 #: iostat.c:313
@@ -87,7 +87,7 @@ msgstr ""
 "Elektiloj estas:\n"
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | ALL } ] [ -V ]\n"
 
-#: mpstat.c:535 pidstat.c:1819 sar.c:380
+#: mpstat.c:535 pidstat.c:1819 sar.c:381
 msgid "Average:"
 msgstr "Meznombro:"
 
@@ -109,12 +109,20 @@ msgstr ""
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: pidstat.c:199 sar.c:1015
+#: pidstat.c:199 sar.c:1017
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Petitaj aktivaĵoj ne disponeblas\n"
 
-#: rd_stats.c:2049
+#: pr_stats.c:2319 pr_stats.c:2332
+msgid "Summary"
+msgstr "Resumo"
+
+#: pr_stats.c:2370
+msgid "Other devices not listed here"
+msgstr "Aliaj aparatoj ne listataj ĉi tie"
+
+#: rd_stats.c:2166
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Ni ne povas trakti tiom da proceziloj!\n"
@@ -287,6 +295,7 @@ msgid ""
 "\t\tFREQ\tCPU average clock frequency\n"
 "\t\tIN\tVoltage inputs\n"
 "\t\tTEMP\tDevices temperature\n"
+"\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
 "\t-m { <ŝlosilvorto> [,...] | ALL }\n"
 "\t\tStatistikoj pri energi-administrado\n"
@@ -296,8 +305,9 @@ msgstr ""
 "\t\tFREQ\tMeznombra horloĝ-frekvenco de CPU\n"
 "\t\tIN\tTensiaj enigoj\n"
 "\t\tTEMP\tTemperaturo de aparatoj\n"
+"\t\tUSB\tAparatoj USB konektitaj al la sistemo\n"
 
-#: sar.c:141
+#: sar.c:142
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -344,27 +354,27 @@ msgstr ""
 "\t\tEICMP6\tICMP-trafiko\t(v6) (eraroj)\n"
 "\t\tUDP6\tUDP-trafiko\t(v6)\n"
 
-#: sar.c:162
+#: sar.c:163
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tStatistikoj pri longeco de vico kaj pri meznombra ŝarĝado\n"
 
-#: sar.c:163
+#: sar.c:164
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tStatistikoj pri memor-uzado\n"
 
-#: sar.c:164
+#: sar.c:165
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tStatistikoj pri memoro\n"
 
-#: sar.c:165
+#: sar.c:166
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistikoj pri uzado de permuto-spaco\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -373,57 +383,57 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistikoj pri uzado de CPU\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tStatistikoj pri kerno-tabelo\n"
 
-#: sar.c:169
+#: sar.c:170
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tStatistikoj pri tasko-kreado kaj pri sistem-ŝaltado\n"
 
-#: sar.c:170
+#: sar.c:171
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tStatistikoj pri permutado\n"
 
-#: sar.c:171
+#: sar.c:172
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tStatistikoj pri TTY-aparato\n"
 
-#: sar.c:214
+#: sar.c:215
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Ne atendita fino de datumar-kolektado\n"
 
-#: sar.c:804
+#: sar.c:806
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Malvalida datumar-formo\n"
 
-#: sar.c:808
+#: sar.c:810
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Uzo de malĝusta datumar-kolektilo el alia versio de sysstat\n"
 
-#: sar.c:832
+#: sar.c:834
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekongrua enig-datumaro\n"
 
-#: sar.c:1262
+#: sar.c:1264
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Elektiloj -f kaj -o ne povas aperi kune\n"
 
-#: sar.c:1268
+#: sar.c:1270
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Ni ne legas el sistem-aktivaĵa dosiero (uzu elektilon -f)\n"
 
-#: sar.c:1395
+#: sar.c:1397
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Ni ne povas trovi la datumar-kolektilon (%s)\n"

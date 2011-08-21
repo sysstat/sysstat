@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-06-01 15:08+0200\n"
+"POT-Creation-Date: 2011-08-16 14:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,15 +72,15 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | "
-"ALL } ] [ -V ]\n"
+"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
 msgstr ""
 
-#: mpstat.c:535 pidstat.c:1819 sar.c:381
+#: mpstat.c:582 pidstat.c:1823 sar.c:381
 msgid "Average:"
 msgstr ""
 
-#: mpstat.c:878
+#: mpstat.c:929
 #, c-format
 msgid "Not that many processors!\n"
 msgstr ""
@@ -94,7 +94,7 @@ msgid ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: pidstat.c:199 sar.c:1017
+#: pidstat.c:199 sar.c:1013
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
@@ -171,41 +171,41 @@ msgstr ""
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
 
-#: sadf.c:87
+#: sadf.c:88
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
 msgstr ""
 
-#: sadf.c:90
+#: sadf.c:91
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d | -D | -H | -p | -x ] [ -C ] [ -h ] [ -t ] [ -V ]\n"
+"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 
-#: sadf.c:614
+#: sadf_misc.c:379
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf.c:623
+#: sadf_misc.c:388
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf.c:629
+#: sadf_misc.c:394
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf.c:631
+#: sadf_misc.c:396
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf.c:643
+#: sadf_misc.c:409
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr ""
@@ -346,32 +346,32 @@ msgstr ""
 msgid "End of data collecting unexpected\n"
 msgstr ""
 
-#: sar.c:806
+#: sar.c:802
 #, c-format
 msgid "Invalid data format\n"
 msgstr ""
 
-#: sar.c:810
+#: sar.c:806
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:834
+#: sar.c:830
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:1264
+#: sar.c:1260
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1270
+#: sar.c:1266
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1397
+#: sar.c:1393
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""

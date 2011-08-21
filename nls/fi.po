@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.0\n"
+"Project-Id-Version: sysstat 10.0.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-03-13 20:39+0100\n"
-"PO-Revision-Date: 2011-03-15 21:56+0200\n"
+"POT-Creation-Date: 2011-06-01 15:08+0200\n"
+"PO-Revision-Date: 2011-06-04 18:38+0200\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr "sysstat-versio %s\n"
 
-#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2003 sa_common.c:1061 sadc.c:623
+#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
 #: sadc.c:632 sadc.c:692
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -58,22 +58,22 @@ msgstr "Ei voida avata %s: %s\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Valitsimet ovat:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <laite> [...] | ALL ] [ -p [ <laite> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
 msgstr ""
 "Valitsimet ovat:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <laite> [...] | ALL ] [ -p [ <laite> [,...] | ALL ] ]\n"
 
 #: iostat.c:313
@@ -90,7 +90,7 @@ msgstr ""
 "Valitsimet ovat:\n"
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <suoritin> [,...] | ALL } ] [ -V ]\n"
 
-#: mpstat.c:535 pidstat.c:1819 sar.c:380
+#: mpstat.c:535 pidstat.c:1819 sar.c:381
 msgid "Average:"
 msgstr "Keskiarvo:"
 
@@ -113,12 +113,20 @@ msgstr ""
 "[ -p { <prosessitunniste> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
 #  Pyydetyt voi olla tilanteesta riippuen halutut, tiedustellut, kyseiset, haetut tms.
-#: pidstat.c:199 sar.c:1015
+#: pidstat.c:199 sar.c:1017
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Pyydetyt toiminnot eivät ole käytettävissä\n"
 
-#: rd_stats.c:2049
+#: pr_stats.c:2319 pr_stats.c:2332
+msgid "Summary"
+msgstr "Yhteenveto"
+
+#: pr_stats.c:2370
+msgid "Other devices not listed here"
+msgstr "Muut laitteet, joita ei ole luetteloitu tässä"
+
+#: rd_stats.c:2166
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Ei voida käsitellä niin montaa suoritinta!\n"
@@ -292,6 +300,7 @@ msgid ""
 "\t\tFREQ\tCPU average clock frequency\n"
 "\t\tIN\tVoltage inputs\n"
 "\t\tTEMP\tDevices temperature\n"
+"\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
 "\t-m { <avainsana> [,...] | ALL }\n"
 "\t\tTehonhallintatilastot\n"
@@ -300,9 +309,10 @@ msgstr ""
 "\t\tFAN\tTuulettimen nopeus\n"
 "\t\tFREQ\tProsessorin keskimääräinen kellotaajuus\n"
 "\t\tIN\tJännitesyötteet\n"
-"\t\tTEMP\tLaiteiden lämpötila\n"
+"\t\tTEMP\tLaitteiden lämpötila\n"
+"\t\tUSB\tJärjestelmään liitetyt USB-laitteet\n"
 
-#: sar.c:141
+#: sar.c:142
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -349,27 +359,27 @@ msgstr ""
 "\t\tEICMP6\tICMP-liikenne\t(v6) (virheet)\n"
 "\t\tUDP6\tUDP-liikenne\t(v6)\n"
 
-#: sar.c:162
+#: sar.c:163
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tJonopituus- ja latauskeskiarvotilastot\n"
 
-#: sar.c:163
+#: sar.c:164
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tMuistin käyttöastetilastot\n"
 
-#: sar.c:164
+#: sar.c:165
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tMuistitilastot\n"
 
-#: sar.c:165
+#: sar.c:166
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tNäennäismuistitilan käyttöastetilastot\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -378,57 +388,57 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tSuorittimen käyttöastetilastot\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tKäyttöjärjestelmäytimen taulutilastot\n"
 
-#: sar.c:169
+#: sar.c:170
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tTehtävän luonti- ja järjestelmänvaihtotilastot\n"
 
-#: sar.c:170
+#: sar.c:171
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tNäennäismuisti vaihtamistilastot\n"
 
-#: sar.c:171
+#: sar.c:172
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tTTY-laitetilastot\n"
 
-#: sar.c:214
+#: sar.c:215
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Tiedonkeräyksen loppu odottamaton\n"
 
-#: sar.c:804
+#: sar.c:806
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Virheellinen datamuoto\n"
 
-#: sar.c:808
+#: sar.c:810
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Käytetään väärää datakerääjää eri sysstat-versiosta\n"
 
-#: sar.c:832
+#: sar.c:834
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Epäjohdonmukainen syötedata\n"
 
-#: sar.c:1262
+#: sar.c:1264
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "valitsimet ”-f” ja ”-o” ovat vastavuoroisesti poissulkevia\n"
 
-#: sar.c:1268
+#: sar.c:1270
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Ei lueta järjestelmätoimintojen lokitiedostosta (käytä valitsinta ”-f”)\n"
 
-#: sar.c:1395
+#: sar.c:1397
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Datakerääjää (%s) ei löydy\n"

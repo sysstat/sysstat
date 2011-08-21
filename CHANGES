@@ -16,6 +16,7 @@ xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* pidstat manual page updated: Added description of field %MEM
 	  displayed by pidstat -r.
 	* Various cosmetic changes (sar.c, sadf.c).
+	* NLS updated.
 	* CREDITS file updated.
 
 2011/06/03: Version 10.0.1 - Sebastien Godard (sysstat <at> orange.fr)

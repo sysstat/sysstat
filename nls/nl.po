@@ -1,17 +1,15 @@
 # Dutch translations for sysstat.
 # This file is distributed under the same license as the sysstat package.
 #
-# Eén heel jaar van vuur en getrappel!
-#
 # Benno Schulenberg <benno@vertaalt.nl>, 2008, 2010, 2011.
 # Erwin Poeze <erwin.poeze@gmail.com>, 2009, 2010.
 # Bram Schoenmakers <bramschoenmakers@kde.nl>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.0.0\n"
+"Project-Id-Version: sysstat-10.0.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-03-13 20:39+0100\n"
-"PO-Revision-Date: 2011-03-15 21:07+0100\n"
+"POT-Creation-Date: 2011-06-01 15:08+0200\n"
+"PO-Revision-Date: 2011-06-05 21:27+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -50,7 +48,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr "sysstat — versie %s\n"
 
-#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2003 sa_common.c:1061 sadc.c:623
+#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
 #: sadc.c:632 sadc.c:692
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -60,22 +58,22 @@ msgstr "Kan %s niet openen: %s\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Mogelijke opties zijn:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <apparaat> [...] | ALL ] [ -p [ <apparaat>[,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
 msgstr ""
 "Mogelijke opties zijn:\n"
-"[ -c ] [ -d ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <apparaat> [...] | ALL ] [ -p [ <apparaat>[,...] | ALL ] ]\n"
 
 #: iostat.c:313
@@ -93,7 +91,7 @@ msgstr ""
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu>[,...] | ALL } ] [ -V ]\n"
 
 # sar.c:
-#: mpstat.c:535 pidstat.c:1819 sar.c:380
+#: mpstat.c:535 pidstat.c:1819 sar.c:381
 msgid "Average:"
 msgstr "Gemiddeld:"
 
@@ -115,12 +113,20 @@ msgstr ""
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
 "[ -p { <pid>[,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: pidstat.c:199 sar.c:1015
+#: pidstat.c:199 sar.c:1017
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "De gevraagde activiteiten zijn niet beschikbaar\n"
 
-#: rd_stats.c:2049
+#: pr_stats.c:2319 pr_stats.c:2332
+msgid "Summary"
+msgstr "Samenvatting"
+
+#: pr_stats.c:2370
+msgid "Other devices not listed here"
+msgstr "Andere hier niet getoonde apparaten"
+
+#: rd_stats.c:2166
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Kan niet zoveel processoren bijhouden!\n"
@@ -294,6 +300,7 @@ msgid ""
 "\t\tFREQ\tCPU average clock frequency\n"
 "\t\tIN\tVoltage inputs\n"
 "\t\tTEMP\tDevices temperature\n"
+"\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
 "\t-m { <sleutelwoord> [,...] | ALL }\n"
 "\t\tEnergiebeheerstatistieken\n"
@@ -303,8 +310,9 @@ msgstr ""
 "\t\tFREQ\tgemiddelde processorklokfrequentie\n"
 "\t\tIN\tvoedingsspanningen\n"
 "\t\tTEMP\tapparaattemperaturen\n"
+"\t\tUSB\taangesloten USB-apparaten\n"
 
-#: sar.c:141
+#: sar.c:142
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -351,27 +359,27 @@ msgstr ""
 "\t\tEICMP6\tICMP-verkeer\t(v6) (fouten)\n"
 "\t\tUDP6\tUDP-verkeer\t(v6)\n"
 
-#: sar.c:162
+#: sar.c:163
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tStatistieken van wachtrijlengte en gemiddelde belasting\n"
 
-#: sar.c:163
+#: sar.c:164
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tGeheugenbenuttingsstatistieken\n"
 
-#: sar.c:164
+#: sar.c:165
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tGeheugenstatistieken\n"
 
-#: sar.c:165
+#: sar.c:166
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistieken van swap-ruimtebenutting\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -380,57 +388,57 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistieken van processorbenutting\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-v\tKernel table statistics\n"
 msgstr "\t-v\tStatistieken van kerneltabel\n"
 
-#: sar.c:169
+#: sar.c:170
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tStatistieken van taakcreatie en systeemschakeling\n"
 
-#: sar.c:170
+#: sar.c:171
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tSwapping-statistieken\n"
 
-#: sar.c:171
+#: sar.c:172
 #, c-format
 msgid "\t-y\tTTY device statistics\n"
 msgstr "\t-y\tStatistieken van TTY-apparaat\n"
 
-#: sar.c:214
+#: sar.c:215
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Onverwacht einde van verzamelen van gegevens\n"
 
-#: sar.c:804
+#: sar.c:806
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Ongeldige gegevensindeling\n"
 
-#: sar.c:808
+#: sar.c:810
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Een verkeerde gegevensverzamelaar van een andere sysstat-versie wordt gebruikt\n"
 
-#: sar.c:832
+#: sar.c:834
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Inconsistente gegevens gelezen\n"
 
-#: sar.c:1262
+#: sar.c:1264
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Opties '-f' en '-o' gaan niet samen.\n"
 
-#: sar.c:1268
+#: sar.c:1270
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Er wordt geen activiteitsbestand gelezen (gebruik optie '-f')\n"
 
-#: sar.c:1395
+#: sar.c:1397
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan de gegevensverzamelaar niet vinden (%s)\n"
