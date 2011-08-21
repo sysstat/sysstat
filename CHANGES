@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
+2011/08/28: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf modified to make it easier to add new output formats.
 	  Its design is still not generic anyway.
 	* Option -T added to sadf: This option tells sadf to display
