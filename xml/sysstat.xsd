@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v2.12 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v2.13 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -43,7 +43,7 @@
 	<xs:restriction base="xs:string"></xs:restriction>
 </xs:simpleType>
 
-<xs:element name=machine"" type="machine-type"></xs:element>
+<xs:element name="machine" type="machine-type"></xs:element>
 <xs:simpleType name="machine-type">
 	<xs:restriction base="xs:string"></xs:restriction>
 </xs:simpleType>
@@ -287,11 +287,10 @@
 
 <xs:element name="kernel" type="kernel-type"></xs:element>
 <xs:complexType name="kernel-type">
-	<xs:attribute name="dentunusd" type="xs:nonNegativeInteger">
-	<xs:attribute name="file-nr" type="xs:nonNegativeInteger">
-	<xs:attribute name="inode-nr" type="xs:nonNegativeInteger">
-	<xs:attribute name="pty-nr" type="xs:nonNegativeInteger">
-	</xs:attribute>
+	<xs:attribute name="dentunusd" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="file-nr" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="inode-nr" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="pty-nr" type="xs:nonNegativeInteger"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="queue" type="queue-type"></xs:element>

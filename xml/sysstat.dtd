@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.12 for sysstat. See sadf.h -->
+<!--DTD v2.13 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
 <!ELEMENT sysdata-version (#PCDATA)>
 
-<!ELEMENT host (sysname, release, machine, number-of-cpus, file-date, statistics, restarts, comments)>
+<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|cpu-load-all|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management">
+<!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|statistics|restarts|comments">
+
+<!ELEMENT host (%HOST_ELEMENTS;)+>
 <!ATTLIST host
 	nodename CDATA #REQUIRED
 >
@@ -22,7 +25,7 @@
 
 <!ELEMENT statistics (timestamp+)>
 
-<!ELEMENT timestamp (cpu-load, cpu-load-all, process-and-context-switch, interrupts, swap-pages, paging, io, memory, hugepages, kernel, queue, serial, disk, network, power-management)>
+<!ELEMENT timestamp (%TIMESTAMP_ELEMENTS;)+>
 <!ATTLIST timestamp
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED

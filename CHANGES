@@ -1,6 +1,10 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Jürgen Heinemann]: Fixed a bug in sadf XML output.
+	* [Jürgen Heinemann]: Fixed several bugs in DTD and XSD
+	  documents.
+	* CREDITS file updated.
 
 2011/08/28: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf modified to make it easier to add new output formats.
