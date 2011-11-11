@@ -120,13 +120,13 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 	}
 
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
-		
+
 		scc = (struct stats_cpu *) ((char *) a->buf[curr]  + i * a->msize);
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
-			
+
 			/* Yes: Display it */
 			if (!i) {
 				/* This is CPU "all" */
@@ -161,7 +161,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 					g_itv = get_per_cpu_interval(scc, scp);
 					cpu_offline = FALSE;
 				}
-				
+
 				if (!g_itv) {
 					/* Current CPU is offline or tickless */
 					if (DISPLAY_CPU_DEF(a->opt_flags)) {
@@ -295,7 +295,7 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_irq *sic, *sip;
 	char irqno[8];
-	
+
 	xprintf(tab++, "<interrupts>");
 	xprintf(tab++, "<int-global per=\"second\">");
 
@@ -306,7 +306,7 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 		
 		/* Should current interrupt (including int "sum") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
-			
+
 			/* Yes: Display it */
 			if (!i) {
 				/* This is interrupt "sum" */
@@ -378,19 +378,19 @@ __print_funct_t xml_print_paging_stats(struct activity *a, int curr, int tab,
 		"pgscand=\"%.2f\" "
 		"pgsteal=\"%.2f\" "
 		"vmeff-percent=\"%.2f\"/>",
-	       S_VALUE(spp->pgpgin,        spc->pgpgin,        itv),
-	       S_VALUE(spp->pgpgout,       spc->pgpgout,       itv),
-	       S_VALUE(spp->pgfault,       spc->pgfault,       itv),
-	       S_VALUE(spp->pgmajfault,    spc->pgmajfault,    itv),
-	       S_VALUE(spp->pgfree,        spc->pgfree,        itv),
-	       S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
-	       S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
-	       S_VALUE(spp->pgsteal,       spc->pgsteal,       itv),
-	       (spc->pgscan_kswapd + spc->pgscan_direct -
-		spp->pgscan_kswapd - spp->pgscan_direct) ?
-	       SP_VALUE(spp->pgsteal, spc->pgsteal,
-			spc->pgscan_kswapd + spc->pgscan_direct -
-			spp->pgscan_kswapd - spp->pgscan_direct) : 0.0);
+		S_VALUE(spp->pgpgin,        spc->pgpgin,        itv),
+		S_VALUE(spp->pgpgout,       spc->pgpgout,       itv),
+		S_VALUE(spp->pgfault,       spc->pgfault,       itv),
+		S_VALUE(spp->pgmajfault,    spc->pgmajfault,    itv),
+		S_VALUE(spp->pgfree,        spc->pgfree,        itv),
+		S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
+		S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
+		S_VALUE(spp->pgsteal,       spc->pgsteal,       itv),
+		(spc->pgscan_kswapd + spc->pgscan_direct -
+		 spp->pgscan_kswapd - spp->pgscan_direct) ?
+		SP_VALUE(spp->pgsteal, spc->pgsteal,
+			 spc->pgscan_kswapd + spc->pgscan_direct -
+			 spp->pgscan_kswapd - spp->pgscan_direct) : 0.0);
 }
 
 /*
@@ -415,15 +415,15 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
 
 	xprintf(++tab, "<tps>%.2f</tps>",
 		S_VALUE(sip->dk_drive, sic->dk_drive, itv));
-	
+
 	xprintf(tab, "<io-reads rtps=\"%.2f\" bread=\"%.2f\"/>",
 		S_VALUE(sip->dk_drive_rio,  sic->dk_drive_rio,  itv),
 		S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv));
-	
+
 	xprintf(tab, "<io-writes wtps=\"%.2f\" bwrtn=\"%.2f\"/>",
 		S_VALUE(sip->dk_drive_wio,  sic->dk_drive_wio,  itv),
 		S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv));
-	
+
 	xprintf(--tab, "</io>");
 }
 
@@ -446,12 +446,12 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		*smp = (struct stats_memory *) a->buf[!curr];
 
 	xprintf(tab, "<memory per=\"second\" unit=\"kB\">");
-	
+
 	if (DISPLAY_MEM_AMT(a->opt_flags)) {
 
 		xprintf(++tab, "<memfree>%lu</memfree>",
 			smc->frmkb);
-	
+
 		xprintf(tab, "<memused>%lu</memused>",
 			smc->tlmkb - smc->frmkb);
 
@@ -459,10 +459,10 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			smc->tlmkb ?
 			SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
 			0.0);
-	
+
 		xprintf(tab, "<buffers>%lu</buffers>",
 			smc->bufkb);
-	
+
 		xprintf(tab, "<cached>%lu</cached>",
 			smc->camkb);
 
@@ -476,7 +476,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 
 		xprintf(tab, "<active>%lu</active>",
 			smc->activekb);
-			
+
 		xprintf(tab--, "<inactive>%lu</inactive>",
 			smc->inactkb);
 	}
@@ -485,10 +485,10 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 
 		xprintf(++tab, "<swpfree>%lu</swpfree>",
 			smc->frskb);
-	
+
 		xprintf(tab, "<swpused>%lu</swpused>",
 			smc->tlskb - smc->frskb);
-	
+
 		xprintf(tab, "<swpused-percent>%.2f</swpused-percent>",
 			smc->tlskb ?
 			SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) :
@@ -508,11 +508,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xprintf(++tab, "<frmpg>%.2f</frmpg>",
 			S_VALUE((double) KB_TO_PG(smp->frmkb),
 				(double) KB_TO_PG(smc->frmkb), itv));
-	
+
 		xprintf(tab, "<bufpg>%.2f</bufpg>",
 			S_VALUE((double) KB_TO_PG(smp->bufkb),
 				(double) KB_TO_PG(smc->bufkb), itv));
-	
+
 		xprintf(tab--, "<campg>%.2f</campg>",
 			S_VALUE((double) KB_TO_PG(smp->camkb),
 				(double) KB_TO_PG(smc->camkb), itv));
@@ -665,7 +665,7 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 
 		/* Compute extended statistics values */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
-		
+
 		dev_name = NULL;
 
 		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
@@ -731,7 +731,7 @@ __print_funct_t xml_print_net_dev_stats(struct activity *a, int curr, int tab,
 
 		if (!strcmp(sndc->interface, ""))
 			continue;
-		
+
 		j = check_net_dev_reg(a, curr, !curr, i);
 		sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
 
@@ -789,7 +789,7 @@ __print_funct_t xml_print_net_edev_stats(struct activity *a, int curr, int tab,
 
 		if (!strcmp(snedc->interface, ""))
 			continue;
-		
+
 		j = check_net_edev_reg(a, curr, !curr, i);
 		snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
 
@@ -839,7 +839,7 @@ __print_funct_t xml_print_net_nfs_stats(struct activity *a, int curr, int tab,
 	struct stats_net_nfs
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -938,7 +938,7 @@ __print_funct_t xml_print_net_sock_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_net_sock
 		*snsc = (struct stats_net_sock *) a->buf[curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -983,7 +983,7 @@ __print_funct_t xml_print_net_ip_stats(struct activity *a, int curr, int tab,
 	struct stats_net_ip
 		*snic = (struct stats_net_ip *) a->buf[curr],
 		*snip = (struct stats_net_ip *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1032,7 +1032,7 @@ __print_funct_t xml_print_net_eip_stats(struct activity *a, int curr, int tab,
 	struct stats_net_eip
 		*sneic = (struct stats_net_eip *) a->buf[curr],
 		*sneip = (struct stats_net_eip *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1081,7 +1081,7 @@ __print_funct_t xml_print_net_icmp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_icmp
 		*snic = (struct stats_net_icmp *) a->buf[curr],
 		*snip = (struct stats_net_icmp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1142,7 +1142,7 @@ __print_funct_t xml_print_net_eicmp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_eicmp
 		*sneic = (struct stats_net_eicmp *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1199,7 +1199,7 @@ __print_funct_t xml_print_net_tcp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_tcp
 		*sntc = (struct stats_net_tcp *) a->buf[curr],
 		*sntp = (struct stats_net_tcp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1335,10 +1335,10 @@ __print_funct_t xml_print_net_sock6_stats(struct activity *a, int curr, int tab,
 		"udp6sck=\"%u\" "
 		"raw6sck=\"%u\" "
 		"ip6-frag=\"%u\"/>",
-	       	snsc->tcp6_inuse,
-	       	snsc->udp6_inuse,
-       		snsc->raw6_inuse,
-	       	snsc->frag6_inuse);
+		snsc->tcp6_inuse,
+		snsc->udp6_inuse,
+		snsc->raw6_inuse,
+		snsc->frag6_inuse);
 	tab--;
 
 close_xml_markup:
@@ -1364,7 +1364,7 @@ __print_funct_t xml_print_net_ip6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_ip6
 		*snic = (struct stats_net_ip6 *) a->buf[curr],
 		*snip = (struct stats_net_ip6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1417,7 +1417,7 @@ __print_funct_t xml_print_net_eip6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_eip6
 		*sneic = (struct stats_net_eip6 *) a->buf[curr],
 		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1472,7 +1472,7 @@ __print_funct_t xml_print_net_icmp6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_icmp6
 		*snic = (struct stats_net_icmp6 *) a->buf[curr],
 		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1539,7 +1539,7 @@ __print_funct_t xml_print_net_eicmp6_stats(struct activity *a, int curr, int tab
 	struct stats_net_eicmp6
 		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1594,7 +1594,7 @@ __print_funct_t xml_print_net_udp6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_udp6
 		*snuc = (struct stats_net_udp6 *) a->buf[curr],
 		*snup = (struct stats_net_udp6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1645,9 +1645,9 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 	xprintf(tab++, "<cpu-frequency unit=\"MHz\">");
 	
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
-		
+
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
-	
+
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 
@@ -1659,14 +1659,14 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 			else {
 				sprintf(cpuno, "%d", i - 1);
 			}
-			
+
 			xprintf(tab, "<cpufreq number=\"%s\" "
 				"frequency=\"%.2f\"/>",
 				cpuno,
 				((double) spc->cpufreq) / 100);
 		}
 	}
-	
+
 	xprintf(--tab, "</cpu-frequency>");
 	tab--;
 
@@ -1732,7 +1732,7 @@ close_xml_markup:
  ***************************************************************************
  */
 __print_funct_t xml_print_pwr_temp_stats(struct activity *a, int curr, int tab,
-                                           unsigned long long itv)
+					 unsigned long long itv)
 {
 	int i;
 	struct stats_pwr_temp *spc;

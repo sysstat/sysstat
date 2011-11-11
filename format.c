@@ -82,11 +82,25 @@ struct report_format xml_fmt = {
 };
 
 /*
+ * JSON output.
+ */
+struct report_format json_fmt = {
+	.id		= F_JSON_OUTPUT,
+	.options	= FO_HEADER_ONLY + FO_TRUE_TIME,
+	.f_header	= print_json_header,
+	.f_statistics	= print_json_statistics,
+	.f_timestamp	= print_json_timestamp,
+	.f_restart	= print_json_restart,
+	.f_comment	= print_json_comment
+};
+
+/*
  * Array of output formats.
  */
 struct report_format *fmt[NR_FMT] = {
 	&hdr_fmt,
 	&db_fmt,
 	&ppc_fmt,
-	&xml_fmt
+	&xml_fmt,
+	&json_fmt
 };

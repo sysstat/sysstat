@@ -217,6 +217,9 @@
 #define CLOSE_XML_MARKUP	0
 #define OPEN_XML_MARKUP		1
 
+#define CLOSE_JSON_MARKUP	0
+#define OPEN_JSON_MARKUP	1
+
 #define COUNT_ACTIVITIES	0
 #define COUNT_OUTPUTS		1
 
@@ -362,6 +365,10 @@ struct activity {
 	 * This function is used by sadf to display activity statistics in XML.
 	 */
 	__print_funct_t (*f_xml_print) (struct activity *, int, int, unsigned long long);
+	/*
+	 * This function is used by sadf to display activity statistics in JSON.
+	 */
+	__print_funct_t (*f_json_print) (struct activity *, int, int, unsigned long long);
 	/*
 	 * Header string displayed by sadf -d/-D.
 	 */

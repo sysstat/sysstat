@@ -138,6 +138,50 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
 
 /*
  ***************************************************************************
+ * Display restart messages (JSON format).
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current restart message.
+ * @cur_time	Time string of current restart message.
+ * @utc		True if @cur_time is expressed in UTC.
+ * @file_hdr	System activity file standard header (unused here).
+ *
+ * OUT:
+ * @tab		Number of tabulations.
+ ***************************************************************************
+ */
+__printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
+				    char *cur_time, int utc, struct file_header *file_hdr)
+{
+	static int sep = FALSE;
+	
+	if (action & F_BEGIN) {
+		printf(",\n");
+		xprintf((*tab)++, "\"restarts\": [");
+	}
+	if (action & F_MAIN) {
+		if (sep) {
+			printf(",\n");
+		}
+		xprintf((*tab)++, "{");
+		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"utc\": %d}",
+			cur_date, cur_time, utc ? 1 : 0);
+		xprintf0(--(*tab), "}");
+		sep = TRUE;
+	}
+	if (action & F_END) {
+		if (sep) {
+			printf("\n");
+			sep = FALSE;
+		}
+		xprintf0(--(*tab), "]");
+	}
+}
+
+/*
+ ***************************************************************************
  * Display comments (database and ppc formats).
  *
  * IN:
@@ -248,6 +292,54 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date,
 
 /*
  ***************************************************************************
+ * Display comments (JSON format).
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current comment.
+ * @cur_time	Time string of current comment.
+ * @utc		True if @cur_time is expressed in UTC.
+ * @comment	Comment to display.
+ * @file_hdr	System activity file standard header (unused here).
+ *
+ * OUT:
+ * @tab		Number of tabulations.
+ ***************************************************************************
+ */
+__printf_funct_t print_json_comment(int *tab, int action, char *cur_date,
+				    char *cur_time, int utc, char *comment,
+				    struct file_header *file_hdr)
+{
+	static int sep = FALSE;
+	
+	if (action & F_BEGIN) {
+		printf(",\n");
+		xprintf((*tab)++, "\"comments\": [");
+	}
+	if (action & F_MAIN) {
+		if (sep) {
+			printf(",\n");
+		}
+		xprintf((*tab)++, "{");
+		xprintf(*tab,
+			"\"comment\": {\"date\": \"%s\", \"time\": \"%s\", "
+			"\"utc\": %d, \"com\": \"%s\"}",
+			cur_date, cur_time, utc ? 1 : 0, comment);
+		xprintf0(--(*tab), "}");
+		sep = TRUE;
+	}
+	if (action & F_END) {
+		if (sep) {
+			printf("\n");
+			sep = FALSE;
+		}
+		xprintf0(--(*tab), "]");
+	}
+}
+
+/*
+ ***************************************************************************
  * Display the "statistics" part of the report (XML format).
  *
  * IN:
@@ -265,6 +357,42 @@ __printf_funct_t print_xml_statistics(int *tab, int action)
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</statistics>");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display the "statistics" part of the report (JSON format).
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Action expected from current function.
+ *
+ * OUT:
+ * @tab		Number of tabulations.
+ ***************************************************************************
+ */
+__printf_funct_t print_json_statistics(int *tab, int action)
+{
+	static int sep = FALSE;
+	
+	if (action & F_BEGIN) {
+		printf(",\n");
+		xprintf((*tab)++, "\"statistics\": [");
+	}
+	if (action & F_MAIN) {
+		if (sep) {
+			xprintf(--(*tab), "},");
+		}
+		xprintf((*tab)++, "{");
+		sep = TRUE;
+	}
+	if (action & F_END) {
+		if (sep) {
+			xprintf(--(*tab), "}");
+			sep = FALSE;
+		}
+		xprintf0(--(*tab), "]");
 	}
 }
 
@@ -293,6 +421,39 @@ __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</timestamp>");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display the "timestamp" part of the report (JSON format).
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current comment.
+ * @cur_time	Time string of current comment.
+ * @utc		True if @cur_time is expressed in UTC.
+ * @itv		Interval of time with preceding record.
+ *
+ * OUT:
+ * @tab		Number of tabulations.
+ ***************************************************************************
+ */
+__printf_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
+				      char *cur_time, int utc, unsigned long long itv)
+{
+	if (action & F_BEGIN) {
+		xprintf0(*tab,
+			 "\"timestamp\": {\"date\": \"%s\", \"time\": \"%s\", "
+			 "\"utc\": %d, \"interval\": %llu}",
+			 cur_date, cur_time, utc ? 1 : 0, itv);
+	}
+	if (action & F_MAIN) {
+		printf("\n");
+	}
+	if (action & F_END) {
+		printf("\n");
 	}
 }
 
@@ -349,6 +510,61 @@ __printf_funct_t print_xml_header(int *tab, int action, char *dfile,
 	if (action & F_END) {
 		xprintf(--(*tab), "</host>");
 		xprintf(--(*tab), "</sysstat>");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display the header of the report (JSON format).
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Action expected from current function.
+ * @dfile	Name of system activity data file.
+ * @file_magic	System activity file magic header.
+ * @file_hdr	System activity file standard header.
+ * @cpu_nr	Number of processors for current daily data file.
+ * @act		Array of activities (unused here).
+ * @id_seq	Activity sequence (unused here).
+ *
+ * OUT:
+ * @tab		Number of tabulations.
+ ***************************************************************************
+ */
+__printf_funct_t print_json_header(int *tab, int action, char *dfile,
+				   struct file_magic *file_magic,
+				   struct file_header *file_hdr, __nr_t cpu_nr,
+				   struct activity *act[], unsigned int id_seq[])
+{
+	struct tm rectime;
+	char cur_time[32];
+
+	if (action & F_BEGIN) {
+		xprintf(*tab, "{\"sysstat\": {");
+
+		xprintf(++(*tab), "\"sysdata-version\": %s,",
+			XML_DTD_VERSION);
+
+		xprintf(*tab, "\"hosts\": [");
+		xprintf(++(*tab), "{");
+		xprintf(++(*tab), "\"nodename\": \"%s\",", file_hdr->sa_nodename);
+		xprintf(*tab, "\"sysname\": \"%s\",", file_hdr->sa_sysname);
+		xprintf(*tab, "\"release\": \"%s\",", file_hdr->sa_release);
+
+		xprintf(*tab, "\"machine\": \"%s\",", file_hdr->sa_machine);
+		xprintf(*tab, "\"number-of-cpus\": %d,",
+			cpu_nr > 1 ? cpu_nr - 1 : 1);
+
+		/* Fill file timestmap structure (rectime) */
+		get_file_timestamp_struct(flags, &rectime, file_hdr);
+		strftime(cur_time, 32, "%Y-%m-%d", &rectime);
+		xprintf0(*tab, "\"file-date\": \"%s\"", cur_time);
+	}
+	if (action & F_END) {
+		printf("\n");
+		xprintf(--(*tab), "}");
+		xprintf(--(*tab), "]");
+		xprintf(--(*tab), "}}");
 	}
 }
 

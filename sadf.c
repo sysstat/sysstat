@@ -32,8 +32,6 @@
 #include "sa.h"
 #include "common.h"
 #include "ioconf.h"
-#include "rndr_stats.h"
-#include "xml_stats.h"
 
 #ifdef USE_NLS
 # include <locale.h>
@@ -89,7 +87,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+			  "[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 			  "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
@@ -275,7 +273,31 @@ void prtab(int nr_tab)
 
 /*
  ***************************************************************************
- * printf() function modified for textual (XML-like) display.
+ * printf() function modified for textual (XML-like) display. Don't print a
+ * CR at the end of the line.
+ *
+ * IN:
+ * @nr_tab	Number of tabs to print.
+ * @fmtf	printf() format.
+ ***************************************************************************
+ */
+void xprintf0(int nr_tab, const char *fmtf, ...)
+{
+	static char buf[1024];
+	va_list args;
+
+	va_start(args, fmtf);
+	vsnprintf(buf, sizeof(buf), fmtf, args);
+	va_end(args);
+
+	prtab(nr_tab);
+	printf("%s", buf);
+}
+
+/*
+ ***************************************************************************
+ * printf() function modified for textual (XML-like) display. Print a CR
+ * at the end of the line.
  *
  * IN:
  * @nr_tab	Number of tabs to print.
@@ -681,16 +703,38 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		(*fmt[f_position]->f_timestamp)(&tab, F_BEGIN, cur_date, cur_time,
 						!PRINT_TRUE_TIME(flags), dt);
 	}
-	tab++;
+	if (format == F_XML_OUTPUT) {
+		tab++;
+	}
 
 	/* Display textual statistics */
 	for (i = 0; i < NR_ACT; i++) {
 
 		/* This code is not generic at all...! */
-		if (CLOSE_MARKUP(act[i]->options) ||
-		    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
-			(*act[i]->f_xml_print)(act[i], curr, tab,
-					       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
+		if (format == F_JSON_OUTPUT) {
+			/* JSON output */
+			if (CLOSE_MARKUP(act[i]->options) ||
+			    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
+				
+				if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
+					printf(",");
+
+					if (*fmt[f_position]->f_timestamp) {
+						(*fmt[f_position]->f_timestamp)(&tab, F_MAIN, cur_date, cur_time,
+										!PRINT_TRUE_TIME(flags), dt);
+					}
+				}
+				(*act[i]->f_json_print)(act[i], curr, tab, NEED_GLOBAL_ITV(act[i]->options) ?
+							g_itv : itv);
+			}
+		}
+		else {
+			/* XML output */
+			if (CLOSE_MARKUP(act[i]->options) ||
+			    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
+				(*act[i]->f_xml_print)(act[i], curr, tab, NEED_GLOBAL_ITV(act[i]->options) ?
+						       g_itv : itv);
+			}
 		}
 	}
 
@@ -858,7 +902,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 /*
  ***************************************************************************
- * Display activities for for textual (XML-like) formats.
+ * Display activities for textual (XML-like) formats.
  *
  * IN:
  * @ifd		File descriptor of input file.
@@ -950,6 +994,10 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 					/* Read the extra fields since it's not a special record */
 					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
 							     file_actlst);
+
+					if (*fmt[f_position]->f_statistics) {
+						(*fmt[f_position]->f_statistics)(&tab, F_MAIN);
+					}
 
 					/* next is set to 1 when we were close enough to desired interval */
 					next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
@@ -1390,7 +1438,7 @@ int main(int argc, char **argv)
 					case 'C':
 						flags |= S_F_COMMENT;
 						break;
-							
+
 					case 'd':
 						if (format) {
 							usage(argv[0]);
@@ -1404,6 +1452,13 @@ int main(int argc, char **argv)
 
 					case 'H':
 						flags |= S_F_HDR_ONLY;
+						break;
+
+					case 'j':
+						if (format) {
+							usage(argv[0]);
+						}
+						format = F_JSON_OUTPUT;
 						break;
 
 					case 'p':
