@@ -1,8 +1,8 @@
-.TH SADF 1 "AUGUST 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "NOVEMBER 2011" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ] [ -P {
+.B sadf [ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
 .I hh:mm:ss
@@ -93,6 +93,9 @@ been specified, then the header of the data file is displayed.
 .IP -h
 When used in conjunction with option -d, all activities
 will be displayed horizontally on a single line.
+.IP -j
+Print the contents of the data file in JSON (JavaScript Object Notation)
+format. Timestamps can be controlled by option -t.
 .IP "-P { cpu [,...] | ALL }"
 Tell
 .B sadf
