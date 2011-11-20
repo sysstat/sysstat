@@ -9,6 +9,7 @@ xxxx/xx/xx: Version 10.0.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Petr Uzel]: Fixed random crash with iostat when called with
 	  option -N [NOVELL Bug#729130].
 	* sadf manual page updated.
+	* NLS updated.
 	* CREDITS file updated.
 
 2011/08/28: Version 10.0.2 - Sebastien Godard (sysstat <at> orange.fr)

@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.1\n"
+"Project-Id-Version: sysstat 10.0.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-06-01 15:08+0200\n"
-"PO-Revision-Date: 2011-06-24 20:22-0300\n"
+"POT-Creation-Date: 2011-08-16 14:17+0200\n"
+"PO-Revision-Date: 2011-08-31 21:49-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Uzado: %s [ elektiloj ] [ <intervalo> [ <nombro> ] ]\n"
+msgstr "Uzado: %s [ elektebloj ] [ <intervalo> [ <nombro> ] ]\n"
 
 #: cifsiostat.c:73 nfsiostat.c:72
 #, c-format
@@ -28,7 +28,7 @@ msgid ""
 "Options are:\n"
 "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #: cifsiostat.c:76 nfsiostat.c:75
@@ -37,7 +37,7 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #: common.c:57
@@ -58,7 +58,7 @@ msgid ""
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <aparato> [...] | ALL ] [ -p [ <aparato> [,...] | ALL ] ] [ --debuginfo ]\n"
 
@@ -69,7 +69,7 @@ msgid ""
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ <aparato> [...] | ALL ] [ -p [ <aparato> [,...] | ALL ] ]\n"
 
@@ -82,19 +82,21 @@ msgstr "Ni ne povas trovi disk-datumaron\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | ALL } ] [ -V ]\n"
+"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
 msgstr ""
-"Elektiloj estas:\n"
-"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P { <cpu> [,...] | ALL } ] [ -V ]\n"
+"Elektebloj estas:\n"
+"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
 
-#: mpstat.c:535 pidstat.c:1819 sar.c:381
+#: mpstat.c:582 pidstat.c:1823 sar.c:381
 msgid "Average:"
 msgstr "Meznombro:"
 
-#: mpstat.c:878
+#: mpstat.c:929
 #, c-format
 msgid "Not that many processors!\n"
-msgstr "Ne ekzistas tiom da proceziloj!\n"
+msgstr "Ne ekzistas tiom da procesoroj!\n"
 
 #: pidstat.c:81
 #, c-format
@@ -104,12 +106,12 @@ msgid ""
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ -C <komando> ] [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ]\n"
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: pidstat.c:199 sar.c:1017
+#: pidstat.c:199 sar.c:1013
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Petitaj aktivaĵoj ne disponeblas\n"
@@ -125,7 +127,7 @@ msgstr "Aliaj aparatoj ne listataj ĉi tie"
 #: rd_stats.c:2166
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr "Ni ne povas trakti tiom da proceziloj!\n"
+msgstr "Ni ne povas trakti tiom da procesoroj!\n"
 
 #: sa_common.c:870
 #, c-format
@@ -135,7 +137,7 @@ msgstr "Eraro dum legado de sistem-aktivaĵa dosiero: %s\n"
 #: sa_common.c:880
 #, c-format
 msgid "End of system activity file unexpected\n"
-msgstr "Ne atendita fino de sistem-aktivaĵa dosiero\n"
+msgstr "Ne atendata fino de sistem-aktivaĵa dosiero\n"
 
 #: sa_common.c:898
 #, c-format
@@ -160,7 +162,7 @@ msgstr "Petitaj aktivaĵoj ne disponeblas en la dosiero %s\n"
 #: sadc.c:81
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr "Uzado: %s [ elektiloj ] [ <intervalo> [ <nombro> ] ] [ <eligdosiero> ]\n"
+msgstr "Uzado: %s [ elektebloj ] [ <intervalo> [ <nombro> ] ] [ <eligdosiero> ]\n"
 
 #: sadc.c:84
 #, c-format
@@ -169,7 +171,7 @@ msgid ""
 "[ -C <comment> ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ -C <komento> ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
@@ -188,45 +190,45 @@ msgstr "Ni ne povas skribi kapon de sistem-aktivaĵa dosiero: %s\n"
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Ni ne povas postaldoni datumaron al tiu dosiero (%s)\n"
 
-#: sadf.c:87
+#: sadf.c:88
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
-msgstr "Uzado: %s [ elektiloj ] [ <intervalo> [ <nombro> ] ] [ <datumdosiero> ]\n"
+msgstr "Uzado: %s [ elektebloj ] [ <intervalo> [ <nombro> ] ] [ <datumdosiero> ]\n"
 
-#: sadf.c:90
+#: sadf.c:91
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d | -D | -H | -p | -x ] [ -C ] [ -h ] [ -t ] [ -V ]\n"
+"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
-"Elektiloj estas:\n"
-"[ -d | -D | -H | -p | -x ] [ -C ] [ -h ] [ -t ] [ -V ]\n"
+"Elektebloj estas:\n"
+"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
-"[ -- <sar_elektiloj> ]\n"
+"[ -- <elektebloj_sar> ]\n"
 
-#: sadf.c:614
+#: sadf_misc.c:379
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Sistem-aktivaĵa datumara dosiero: %s (%#x)\n"
 
-#: sadf.c:623
+#: sadf_misc.c:388
 #, c-format
 msgid "Host: "
 msgstr "Gastiganto: "
 
-#: sadf.c:629
+#: sadf_misc.c:394
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Grando de long int: %d\n"
 
-#: sadf.c:631
+#: sadf_misc.c:396
 #, c-format
 msgid "List of activities:\n"
 msgstr "Listo de aktivaĵoj:\n"
 
-#: sadf.c:643
+#: sadf_misc.c:409
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Nekonata aktivaĵ-formo]"
@@ -242,7 +244,7 @@ msgid ""
 "[ -o [ <filename> ] | -f [ <filename> ] ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
-"Elektiloj estas:\n"
+"Elektebloj estas:\n"
 "[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -H ] [ -p ] [ -q ] [ -r ]\n"
 "[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
@@ -305,7 +307,7 @@ msgstr ""
 "\t\tFREQ\tMeznombra horloĝ-frekvenco de CPU\n"
 "\t\tIN\tTensiaj enigoj\n"
 "\t\tTEMP\tTemperaturo de aparatoj\n"
-"\t\tUSB\tAparatoj USB konektitaj al la sistemo\n"
+"\t\tUSB\tAparatoj USB konektataj al la sistemo\n"
 
 #: sar.c:142
 #, c-format
@@ -408,32 +410,32 @@ msgstr "\t-y\tStatistikoj pri TTY-aparato\n"
 msgid "End of data collecting unexpected\n"
 msgstr "Ne atendita fino de datumar-kolektado\n"
 
-#: sar.c:806
+#: sar.c:802
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Malvalida datumar-formo\n"
 
-#: sar.c:810
+#: sar.c:806
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Uzo de malĝusta datumar-kolektilo el alia versio de sysstat\n"
 
-#: sar.c:834
+#: sar.c:830
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekongrua enig-datumaro\n"
 
-#: sar.c:1264
+#: sar.c:1260
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
-msgstr "Elektiloj -f kaj -o ne povas aperi kune\n"
+msgstr "Elektebloj -f kaj -o ne povas aperi kune\n"
 
-#: sar.c:1270
+#: sar.c:1266
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "Ni ne legas el sistem-aktivaĵa dosiero (uzu elektilon -f)\n"
+msgstr "Ni ne legas el sistem-aktivaĵa dosiero (uzu elekteblon -f)\n"
 
-#: sar.c:1397
+#: sar.c:1393
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Ni ne povas trovi la datumar-kolektilon (%s)\n"
