@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-11-11 16:21+0100\n"
+"POT-Creation-Date: 2011-11-20 16:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
+#: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
 #: sadc.c:632 sadc.c:692
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -76,7 +76,7 @@ msgid ""
 "[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
 msgstr ""
 
-#: mpstat.c:582 pidstat.c:1823 sar.c:381
+#: mpstat.c:582 pidstat.c:1822 sar.c:381
 msgid "Average:"
 msgstr ""
 

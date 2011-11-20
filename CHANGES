@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 10.0.3 - Sebastien Godard (sysstat <at> orange.fr)
+2011/11/27: Version 10.0.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: New output format added: JSON (JavaScript Object
 	  Notation). This format can be displayed with sadf's option -j.
 	* [Jürgen Heinemann]: Fixed a bug in sadf XML output.
