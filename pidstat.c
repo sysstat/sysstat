@@ -1217,8 +1217,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  ***************************************************************************
  */
 int write_pid_child_all_stats(int prev, int curr, int dis,
-			     unsigned long long itv)
-			
+			      unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;

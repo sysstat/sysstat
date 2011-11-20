@@ -686,7 +686,7 @@ void read_diskstats_stat(int curr)
 			 */
 			dm_name = transform_devmapname(major, minor);
 			if (dm_name) {
-				strcpy(dev_name, dm_name);
+				strncpy(dev_name, dm_name, MAX_NAME_LEN);
 			}
 		}
 

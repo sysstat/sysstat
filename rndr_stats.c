@@ -2473,7 +2473,7 @@ __print_funct_t render_pwr_fan_stats(struct activity *a, int isdb, char *pre,
  ***************************************************************************
  */
 __print_funct_t render_pwr_temp_stats(struct activity *a, int isdb, char *pre,
-                                        int curr, unsigned long long itv)
+				      int curr, unsigned long long itv)
 {
 	int i;
 	struct stats_pwr_temp *spc;

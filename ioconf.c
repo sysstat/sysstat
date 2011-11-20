@@ -483,6 +483,7 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 	struct dirent *dp;
 	char filen[MAX_FILE_LEN];
 	char *dm_name = NULL;
+	static char name[MAX_NAME_LEN];
 	struct stat aux;
 	unsigned int dm_major, dm_minor;
 
@@ -502,9 +503,11 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 
 			dm_major = major(aux.st_rdev);
 			dm_minor = minor(aux.st_rdev);
-	
+
 			if ((dm_minor == minor) && (dm_major == major)) {
-				dm_name = dp->d_name;
+				strncpy(name, dp->d_name, MAX_NAME_LEN);
+				name[MAX_NAME_LEN - 1] = '\0';
+				dm_name = name;
 				break;
 			}
 		}

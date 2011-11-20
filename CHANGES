@@ -6,6 +6,8 @@ xxxx/xx/xx: Version 10.0.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Jürgen Heinemann]: Fixed a bug in sadf XML output.
 	* [Jürgen Heinemann]: Fixed several bugs in DTD and XSD
 	  documents.
+	* [Petr Uzel]: Fixed random crash with iostat when called with
+	  option -N [NOVELL Bug#729130].
 	* sadf manual page updated.
 	* CREDITS file updated.
 
