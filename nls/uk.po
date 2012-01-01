@@ -5,10 +5,10 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.2\n"
+"Project-Id-Version: sysstat 10.0.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-08-16 14:17+0200\n"
-"PO-Revision-Date: 2011-08-29 13:17+0300\n"
+"POT-Creation-Date: 2011-11-20 16:55+0100\n"
+"PO-Revision-Date: 2011-11-30 07:48+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
 "Language: uk\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr "sysstat, версія %s\n"
 
-#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
+#: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
 #: sadc.c:632 sadc.c:692
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -91,7 +91,7 @@ msgstr ""
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
 "[ -P { <процесор> [,...] | ON | ALL } ] [ -V ]\n"
 
-#: mpstat.c:582 pidstat.c:1823 sar.c:381
+#: mpstat.c:582 pidstat.c:1822 sar.c:381
 msgid "Average:"
 msgstr "Середнє:"
 
@@ -192,45 +192,45 @@ msgstr "Не вдалося записати заголовок файла по�
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не вдалося додати дані до файла (%s)\n"
 
-#: sadf.c:88
+#: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
 msgstr "Використання: %s [ параметри ] [ <інтервал> [ <лічильник> ] ] [ <файл_даних> ]\n"
 
-#: sadf.c:91
+#: sadf.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+"[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Параметри:\n"
-"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+"[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <процесор> [,...] | ALL } ] [ -s [ <гг:хх:сс> ] ] [ -e [ <гг:хх:сс> ] ]\n"
 "[ -- <параметри_sar> ]\n"
 
-#: sadf_misc.c:379
+#: sadf_misc.c:595
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Файл даних щодо показників системи: %s (%#x)\n"
 
-#: sadf_misc.c:388
+#: sadf_misc.c:604
 #, c-format
 msgid "Host: "
 msgstr "Вузол: "
 
-#: sadf_misc.c:394
+#: sadf_misc.c:610
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Розмір long int: %d\n"
 
-#: sadf_misc.c:396
+#: sadf_misc.c:612
 #, c-format
 msgid "List of activities:\n"
 msgstr "Список показників:\n"
 
-#: sadf_misc.c:409
+#: sadf_misc.c:625
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Невідомий формат показника]"

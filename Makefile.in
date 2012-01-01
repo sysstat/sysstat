@@ -1,5 +1,5 @@
 # Makefile to build sysstat commands
-# # (C) 1999-2011 Sebastien GODARD (sysstat <at> orange.fr)
+# # (C) 1999-2012 Sebastien GODARD (sysstat <at> orange.fr)
 
 # Version and package name
 VERSION = @PACKAGE_VERSION@
