@@ -1,0 +1,6 @@
+
+Answer y if you don't want binaries to be stripped.
+This will result in commands being slightly bigger but may be
+necessary for debugging purposes.
+Default answer is n here (binaries will be stripped).
+

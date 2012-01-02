@@ -637,6 +637,7 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+STRIP
 DFLAGS
 WITH_DEBUG
 INSTALL_DOC
@@ -749,6 +750,7 @@ enable_clean_sa_dir
 enable_install_cron
 enable_documentation
 enable_debuginfo
+enable_stripping
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1400,6 +1402,7 @@ Optional Features:
   --enable-install-cron   install a crontab to start sar
   --disable-documentation do not install documentation
   --enable-debuginfo      enable debug output (--debuginfo option)
+  --disable-stripping     do not strip object files
 
 Some influential environment variables:
   CC          C compiler command
@@ -7329,6 +7332,7 @@ echo .
 #  --enable-debuginfo      enable debug output (--debuginfo option)
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors	   do not link against libsensors even if available
+#  --disable-stripping     do not strip object files
 #
 # Some influential environment variables:
 #  rcdir	 directory where startup scripts are installed
@@ -7756,6 +7760,42 @@ fi
 
 
 
+
+# Check whether object files should be stripped
+{ $as_echo "$as_me:$LINENO: checking whether object files should be stripped" >&5
+$as_echo_n "checking whether object files should be stripped... " >&6; }
+# Check whether --enable-stripping was given.
+if test "${enable_stripping+set}" = set; then
+  enableval=$enable_stripping; AUX_STRIP=$enableval
+else
+  AUX_STRIP=yes
+fi
+
+if test $AUX_STRIP != "no"; then
+   AUX_STRIP="yes"
+   STRIP="-s"
+else
+   AUX_STRIP="no"
+   STRIP=
+fi
+{ $as_echo "$as_me:$LINENO: result: $AUX_STRIP" >&5
+$as_echo "$AUX_STRIP" >&6; }
+
+# National Language Support
+#AC_MSG_CHECKING(National Language Support)
+#AC_ARG_ENABLE(nls,
+#	      AC_HELP_STRING([--disable-nls],
+#			     [disable National Language Support]),
+#			     AUX_NLS=$enableval,AUX_NLS=yes)
+#if test $AUX_NLS != "no" && test $HAVE_LIBINTL_H && test $HAVE_LOCALE_H; then
+#   AUX_NLS="yes"
+#   NLS="y"
+#else
+#   AUX_NLS="no"
+#   NLS="n"
+#fi
+#AC_MSG_RESULT($AUX_NLS)
+#AC_SUBST(NLS)
 
 # Create files
 echo .

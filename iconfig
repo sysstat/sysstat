@@ -1,6 +1,6 @@
 #!/bin/sh
 #@(#) Configuration script for sysstat
-# (C) 2000-2010 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 2000-2012 Sebastien GODARD (sysstat <at> orange.fr)
 
 ASK="sh build/Ask.sh"
 
@@ -173,13 +173,22 @@ else
 	echo "Parameter --enable-install-isag is NOT set"
 fi
 
+# Strip object files
+STRIP=`${ASK} 'Do not strip object files? (y/n)' "--disable-stripping" "stripping"`
+if [ "${STRIP}" = "y" ]; then
+	STRIP="--disable-stripping "
+else
+	STRIP=""
+	echo "Parameter --disable-stripping is NOT set"
+fi
+
 echo
 echo "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${YESTERDAY}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
-${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}"
+${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${YESTERDAY}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
-${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}
+${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}
 

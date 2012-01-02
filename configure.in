@@ -127,6 +127,7 @@ echo .
 #  --enable-debuginfo      enable debug output (--debuginfo option)
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors	   do not link against libsensors even if available
+#  --disable-stripping     do not strip object files
 #
 # Some influential environment variables:
 #  rcdir	 directory where startup scripts are installed
@@ -488,6 +489,37 @@ AC_ARG_ENABLE(debuginfo,
 			     WITH_DEBUG=yes ; DFLAGS="$DFLAGS -DDEBUG" , WITH_DEBUG=no)
 AC_SUBST(WITH_DEBUG)
 AC_SUBST(DFLAGS)
+
+# Check whether object files should be stripped
+AC_MSG_CHECKING(whether object files should be stripped)
+AC_ARG_ENABLE(stripping,
+	      AC_HELP_STRING([--disable-stripping],
+			     [do not strip object files]),
+			     AUX_STRIP=$enableval,AUX_STRIP=yes)
+if test $AUX_STRIP != "no"; then
+   AUX_STRIP="yes"
+   STRIP="-s"
+else
+   AUX_STRIP="no"
+   STRIP=
+fi
+AC_MSG_RESULT($AUX_STRIP)
+AC_SUBST(STRIP)
+# National Language Support
+#AC_MSG_CHECKING(National Language Support)
+#AC_ARG_ENABLE(nls,
+#	      AC_HELP_STRING([--disable-nls],
+#			     [disable National Language Support]),
+#			     AUX_NLS=$enableval,AUX_NLS=yes)
+#if test $AUX_NLS != "no" && test $HAVE_LIBINTL_H && test $HAVE_LOCALE_H; then
+#   AUX_NLS="yes"
+#   NLS="y"
+#else
+#   AUX_NLS="no"
+#   NLS="n"
+#fi
+#AC_MSG_RESULT($AUX_NLS)
+#AC_SUBST(NLS)
 
 # Create files
 echo .

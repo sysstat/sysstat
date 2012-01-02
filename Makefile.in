@@ -71,7 +71,7 @@ SYSCONFIG_DIR = @SYSCONFIG_DIR@
 # Compiler flags
 CFLAGS = @CFLAGS@ -Wall -Wstrict-prototypes -pipe -O2
 DFLAGS = @DFLAGS@
-LFLAGS =  -s
+LFLAGS = @STRIP@
 DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
 DFLAGS += $(DFSENSORS)
 
