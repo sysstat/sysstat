@@ -5,6 +5,7 @@ xxxx/xx/xx: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	  sar -b results.
 	* configure script updated: Added --disable-stripping option.
 	  Using this option tells configure to NOT strip object files.
+	* FAQ updated.
 	* NLS updated. Serbian translation added.
 
 2011/11/27: Version 10.0.3 - Sebastien Godard (sysstat <at> orange.fr)

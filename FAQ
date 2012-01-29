@@ -53,6 +53,7 @@ Also tell me what version your kernel is).
 2.21. The sar command displays some weird output values...
 2.22. What happened to sar's options -h, -H, -x and -X?
 2.23. What is the exact meaning of the <count> parameter for sar and sadc?
+2.24. Why doesn't sar deal with sub-second sampling/monitoring?
 
 3. QUESTIONS RELATING TO IOSTAT
 
@@ -72,6 +73,8 @@ Also tell me what version your kernel is).
 4.2. The pidstat command complains with the following message:
       "Requested activities not available".
 4.3. pidstat doesn't display statistics for process (task) xyz...
+4.4. I noticed that the total CPU utilization for threads running on
+     an individual CPU can exceed 100%...
 
 
 1. GENERAL QUESTIONS
@@ -532,6 +535,26 @@ same output as sar -f <file> 1 5. Note that it all depends on the number
 of data samples pre-existing in the data file. If the file is empty
 when first running sadc then the above is true.
 
+~~
+
+2.24. Why doesn't sar deal with sub-second sampling/monitoring?
+
+There are two reasons for sar to not handle sub-second intervals:
+
+1) This is not sar's purpose. sar has been created to give the
+sys admin a global overview of its machine daily utilization so
+that when a problem happens, he has a benchmark and can compare
+the statistics gathered by sar with those saved before. For that
+reason an interval of 10 minutes (which is the default for sar) is
+quite appropriate.
+
+2) Because this is just a dumb idea to try to gather a huge amount
+of data on a sub-second interval basis (and sar really collects
+a lot of data). This can be resource-consuming and you are all the
+more prone to have an influence on the data you are retrieving as
+the interval of time is small.
+
+
 3. QUESTIONS RELATING TO IOSTAT
 ###############################
 
@@ -657,6 +680,17 @@ will display only tasks with non-zero statistics. For example, "pidstat -u"
 will display only tasks that have actually used some CPU resources since
 system startup. You should enter "pidstat -u -p ALL" to make sure that all
 the processes are listed in the report.
+
+~~~
+
+4.4. I noticed that the total CPU utilization for threads running on
+     an individual CPU can exceed 100%...
+
+The CPU number displayed by pidstat is the CPU to which the task is attached
+when the statistics are actually displayed. This doesn't mean that the task
+has spent its whole interval of time attached to it. Hence the CPU ressource
+used by a thread on an interval of time as displayed by pidstat may have
+concerned several processors.
 
 --	
 Sebastien Godard (sysstat <at> orange.fr) is the author and the current
