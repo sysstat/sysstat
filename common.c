@@ -403,13 +403,16 @@ char *device_name(char *name)
  * ioconf.c which should be used only with kernels that don't have sysfs.
  *
  * IN:
- * @name	Device or partition name.
+ * @name		Device or partition name.
+ * @allow_virtual	TRUE if virtual devices are also accepted.
+ *			The device is assumed to be virtual if no
+ *			/sys/block/<device>/device link exists.
  *
  * RETURNS:
- * TRUE if @name is a (whole) device.
+ * TRUE if @name is not a partition.
  ***************************************************************************
  */
-int is_device(char *name)
+int is_device(char *name, int allow_virtual)
 {
 	char syspath[PATH_MAX];
 	char *slash;
@@ -418,7 +421,8 @@ int is_device(char *name)
 	while ((slash = strchr(name, '/'))) {
 		*slash = '!';
 	}
-	snprintf(syspath, sizeof(syspath), "%s/%s", SYSFS_BLOCK, name);
+	snprintf(syspath, sizeof(syspath), "%s/%s%s", SYSFS_BLOCK, name,
+		 allow_virtual ? "" : "/device");
 	
 	return !(access(syspath, F_OK));
 }

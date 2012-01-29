@@ -484,9 +484,9 @@ void read_diskstats_io(struct stats_io *st_io)
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec, &wr_ios, &wr_sec) == 7) {
 			
-			if (is_device(dev_name)) {
+			if (is_device(dev_name, IGNORE_VIRTUAL_DEVICES)) {
 				/*
-				 * OK: It's a device and not a partition.
+				 * OK: It's a (real) device and not a partition.
 				 * Note: Structure should have been initialized first!
 				 */
 				st_io->dk_drive      += rd_ios + wr_ios;
@@ -541,7 +541,7 @@ void read_diskstats_disk(struct stats_disk *st_disk, int nbr, int read_part)
 			if (!rd_ios && !wr_ios)
 				/* Unused device: Ignore it */
 				continue;
-			if (read_part || is_device(dev_name)) {
+			if (read_part || is_device(dev_name, ACCEPT_VIRTUAL_DEVICES)) {
 				st_disk_i = st_disk + dsk++;
 				st_disk_i->major     = major;
 				st_disk_i->minor     = minor;
@@ -2017,7 +2017,7 @@ int get_diskstats_dev_nr(int count_part, int only_used_dev)
 		if (!count_part) {
 			i = sscanf(line, "%*d %*d %s %lu %*u %*u %*u %lu",
 				   dev_name, &rd_ios, &wr_ios);
-			if ((i == 2) || !is_device(dev_name))
+			if ((i == 2) || !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
 				/* It was a partition and not a device */
 				continue;
 			if (only_used_dev && !rd_ios && !wr_ios)

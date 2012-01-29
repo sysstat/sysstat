@@ -639,7 +639,8 @@ void read_diskstats_stat(int curr)
 
 		if (i == 14) {
 			/* Device or partition */
-			if (!dlist_idx && !DISPLAY_PARTITIONS(flags) && !is_device(dev_name))
+			if (!dlist_idx && !DISPLAY_PARTITIONS(flags) &&
+			    !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
 				continue;
 			sdev.rd_ios     = rd_ios;
 			sdev.rd_merges  = rd_merges_or_rd_sec;

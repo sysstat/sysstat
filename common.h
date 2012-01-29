@@ -70,6 +70,9 @@
 
 #define NR_DISKS		4
 
+#define IGNORE_VIRTUAL_DEVICES	FALSE
+#define ACCEPT_VIRTUAL_DEVICES	TRUE
+
 /* Environment variables */
 #define ENV_TIME_FMT		"S_TIME_FORMAT"
 #define ENV_TIME_DEFTM		"S_TIME_DEF_TIME"
@@ -192,7 +195,7 @@ extern int
 extern void
 	init_nls(void);
 extern int
-	is_device(char *);
+	is_device(char *, int);
 extern double
 	ll_s_value(unsigned long long, unsigned long long, unsigned long long);
 extern double

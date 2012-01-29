@@ -1,6 +1,8 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Andrey Borzenkov]: Don't take virtual devices into account in
+	  sar -b results.
 	* configure script updated: Added --disable-stripping option.
 	  Using this option tells configure to NOT strip object files.
 	* NLS updated. Serbian translation added.
