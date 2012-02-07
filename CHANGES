@@ -3,6 +3,9 @@ Changes:
 xxxx/xx/xx: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Andrey Borzenkov]: Don't take virtual devices into account in
 	  sar -b results.
+	* [Peter Schiffer]: iostat didn't display target device
+	  information when a symbolic link was specified as a parameter.
+	  This is now fixed.
 	* configure script updated: Added --disable-stripping option.
 	  Using this option tells configure to NOT strip object files.
 	* FAQ updated.

@@ -1,6 +1,6 @@
 /*
  * sar, sadc, sadf, mpstat and iostat common routines.
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -379,10 +379,10 @@ int get_win_height(void)
 
 /*
  ***************************************************************************
- * Remove /dev from path name.
+ * Canonicalize and remove /dev from path name.
  *
  * IN:
- * @name	Device name (may begins with "/dev/")
+ * @name	Device name (may begin with "/dev/" or can be a symlink).
  *
  * RETURNS:
  * Device basename.
@@ -390,10 +390,27 @@ int get_win_height(void)
  */
 char *device_name(char *name)
 {
-	if (!strncmp(name, "/dev/", 5))
-		return name + 5;
+	static char out[MAX_FILE_LEN];
+	char *resolved_name;
+	int i = 0;
 
-	return name;
+	/* realpath() creates new string, so we need to free it later */
+	resolved_name = realpath(name, NULL);
+
+	/* If path doesn't exist, just return input */
+	if (!resolved_name) {
+		return name;
+	}
+
+	if (!strncmp(resolved_name, "/dev/", 5)) {
+		i = 5;
+	}
+	strncpy(out, resolved_name + i, MAX_FILE_LEN);
+	out[MAX_FILE_LEN - 1] = '\0';
+
+	free(resolved_name);
+		
+	return out;
 }
 
 /*
