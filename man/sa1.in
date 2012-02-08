@@ -1,4 +1,4 @@
-.TH SA1 8 "SEPTEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA1 8 "FEBRUARY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
 .SH SYNOPSIS
@@ -44,12 +44,11 @@ and
 parameters in order to insert a dummy record, marking the time when the counters
 restarts from 0.
 
-.SH EXAMPLES
-To create a daily record of
-.B sar
-activities, place the following entry in your root or adm crontab file:
+.SH EXAMPLE
+To collect data (including those from disks) every 10 minutes,
+place the following entry in your root crontab file:
 
-.B 0 8-18 * * 1-5 @SA_LIB_DIR@/sa1 1200 3 &
+.B 0,10,20,30,40,50 * * * * @SA_LIB_DIR@/sa1 1 1 -S DISK
 
 .SH FILES
 .IR @SA_DIR@/sa dd
