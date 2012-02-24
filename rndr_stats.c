@@ -1,6 +1,6 @@
 /*
  * rndr_stats.c: Funtions used by sadf to display statistics in selected format.
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -312,7 +312,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 					       NOVAL,
 					       (!g_itv ||
 					       ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest))) ?
-					       0.0 :			/* CPU is offline or tickless */
+					       0.0 :
 					       ll_sp_value(scp->cpu_user - scp->cpu_guest,
 							   scc->cpu_user - scc->cpu_guest, g_itv),
 					       NULL);

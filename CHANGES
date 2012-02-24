@@ -6,6 +6,10 @@ xxxx/xx/xx: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: iostat didn't display target device
 	  information when a symbolic link was specified as a parameter.
 	  This is now fixed.
+	* The number of jiffies spent by a CPU in guest mode given by the
+	  corresponding counter in /proc/stat may be slightly different
+	  from that included in the user counter. Take this into account
+	  when calculating current time interval value.
 	* configure script updated: Added --disable-stripping option.
 	  Using this option tells configure to NOT strip object files.
 	* FAQ updated.	
