@@ -1,5 +1,7 @@
 Changes:
 
+xxxx/xx/xx: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
+
 2012/03/07: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Andrey Borzenkov]: Don't take virtual devices into account in
 	  sar -b results.
