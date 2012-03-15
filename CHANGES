@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Peter Schiffer]: Set exit code to 0 for sa2 shell script.
 
 2012/03/07: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Andrey Borzenkov]: Don't take virtual devices into account in
