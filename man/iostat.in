@@ -1,12 +1,15 @@
-.TH IOSTAT 1 "MAY 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "MAY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B iostat [ -c ] [ -d ] [ --debuginfo ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ] [
+.B iostat [ -c ] [ -d ] [ --debuginfo ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]
+.B [ [ [ -T ] -g
+.I group_name
+.B ] {
 .I device
-.B [...] | ALL ] [ -p [
+.B [...] | ALL } ] [ -p [
 .I device
 .B [,...] | ALL ] ] [
 .I interval
@@ -15,9 +18,12 @@ statistics for devices and partitions.
 .B ] ]
 .\}
 .el \{
-.B iostat [ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ] [
+.B iostat [ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]
+.B [ [ [ -T ] -g
+.I group_name
+.B ] {
 .I device
-.B [...] | ALL ] [ -p [
+.B [...] | ALL } ] [ -p [
 .I device
 .B [,...] | ALL ] ] [
 .I interval
@@ -265,6 +271,17 @@ Display the device utilization report.
 .IP --debuginfo
 Print debug output to stderr.
 .\}
+.IP "-g group_name { device [...] | ALL }
+Display statistics for a group of devices.
+The
+.B iostat
+command reports statistics for each individual device in the list
+then a line of global statistics for the group displayed as
+.B group_name
+and made up of all the devices in the list. The
+.B ALL
+keyword means that all the block devices defined by the system shall be
+included in the group.
 .IP -h
 Make the Device Utilization Report easier to read by a human.
 .IP -k
@@ -283,6 +300,10 @@ and all its partitions are displayed. Last, the
 keyword indicates that statistics have to be displayed for all the block
 devices and partitions defined by the system, including those that have
 never been used.
+.IP -T
+This option must be used with option -g and indicates that only global
+statistics for the group are to be displayed, and not statistics for
+individual devices in the group.
 .IP -t
 Print the time for each report displayed. The timestamp format may depend
 on the value of the S_TIME_FORMAT environment variable (see below).

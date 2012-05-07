@@ -1,7 +1,11 @@
 Changes:
 
 xxxx/xx/xx: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Alain Chereau]: Options -g and -T added to iostat. These
+	  options enable the user to display statistics for groups of
+	  devices.
 	* [Peter Schiffer]: Set exit code to 0 for sa2 shell script.
+	* CREDITS file updated.
 
 2012/03/07: Version 10.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Andrey Borzenkov]: Don't take virtual devices into account in

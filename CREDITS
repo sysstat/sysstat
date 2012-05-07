@@ -129,6 +129,9 @@ The following people have contributed to 'sysstat' in one way or another:
 	to sysstat. Among them, he added some more power management
 	statistics to sar.
 
+	Alain Chéreau <cheralain [at] googlemail.com> added support for
+	disk groups statistics to iostat.
+
 I would also thank the following people for their hints or bug reports
 (in alphabetical order):
 

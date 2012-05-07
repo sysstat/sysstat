@@ -338,7 +338,7 @@ int ioc_init(void)
 	/*
 	 * These will become leaks if we ever 'continue'
 	 * after IOC_ALLOC( blkp->desc ... ).
-	 * Right Now, we don't.
+	 * Right now, we don't.
 	 */
 	if (blkp != NULL)
 		free(blkp);

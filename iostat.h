@@ -1,6 +1,6 @@
 /*
  * iostat: report CPU and I/O statistics
- * (C) 1999-2011 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _IOSTAT_H
@@ -27,29 +27,29 @@
 /* Unused			0x08000 */
 #define I_D_DEVMAP_NAME		0x10000
 #define I_D_ISO			0x20000
-/* Unused			0x40000 */
+#define I_D_GROUP_TOTAL_ONLY	0x40000
 #define I_D_ZERO_OMIT		0x80000
 
-#define DISPLAY_CPU(m)		(((m) & I_D_CPU)           == I_D_CPU)
-#define DISPLAY_DISK(m)		(((m) & I_D_DISK)          == I_D_DISK)
-#define DISPLAY_TIMESTAMP(m)	(((m) & I_D_TIMESTAMP)     == I_D_TIMESTAMP)
-#define DISPLAY_EXTENDED(m)	(((m) & I_D_EXTENDED)      == I_D_EXTENDED)
-#define DISPLAY_PART_ALL(m)	(((m) & I_D_PART_ALL)      == I_D_PART_ALL)
-#define DISPLAY_KILOBYTES(m)	(((m) & I_D_KILOBYTES)     == I_D_KILOBYTES)
-#define DISPLAY_MEGABYTES(m)	(((m) & I_D_MEGABYTES)     == I_D_MEGABYTES)
-#define HAS_SYSFS(m)		(((m) & I_F_HAS_SYSFS)     == I_F_HAS_SYSFS)
-#define DISPLAY_DEBUG(m)	(((m) & I_D_DEBUG)         == I_D_DEBUG)
-#define DISPLAY_UNFILTERED(m)	(((m) & I_D_UNFILTERED)    == I_D_UNFILTERED)
-#define DISPLAY_PARTITIONS(m)	(((m) & I_D_PARTITIONS)    == I_D_PARTITIONS)
-#define HAS_DISKSTATS(m)	(((m) & I_F_HAS_DISKSTATS) == I_F_HAS_DISKSTATS)
-#define DISPLAY_HUMAN_READ(m)	(((m) & I_D_HUMAN_READ)    == I_D_HUMAN_READ)
-#define DISPLAY_DEVMAP_NAME(m)	(((m) & I_D_DEVMAP_NAME)   == I_D_DEVMAP_NAME)
-#define DISPLAY_ISO(m)		(((m) & I_D_ISO)           == I_D_ISO)
-#define DISPLAY_ZERO_OMIT(m)	(((m) & I_D_ZERO_OMIT)     == I_D_ZERO_OMIT)
+#define DISPLAY_CPU(m)			(((m) & I_D_CPU)              == I_D_CPU)
+#define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
+#define DISPLAY_TIMESTAMP(m)		(((m) & I_D_TIMESTAMP)        == I_D_TIMESTAMP)
+#define DISPLAY_EXTENDED(m)		(((m) & I_D_EXTENDED)         == I_D_EXTENDED)
+#define DISPLAY_PART_ALL(m)		(((m) & I_D_PART_ALL)         == I_D_PART_ALL)
+#define DISPLAY_KILOBYTES(m)		(((m) & I_D_KILOBYTES)        == I_D_KILOBYTES)
+#define DISPLAY_MEGABYTES(m)		(((m) & I_D_MEGABYTES)        == I_D_MEGABYTES)
+#define HAS_SYSFS(m)			(((m) & I_F_HAS_SYSFS)        == I_F_HAS_SYSFS)
+#define DISPLAY_DEBUG(m)		(((m) & I_D_DEBUG)            == I_D_DEBUG)
+#define DISPLAY_UNFILTERED(m)		(((m) & I_D_UNFILTERED)       == I_D_UNFILTERED)
+#define DISPLAY_PARTITIONS(m)		(((m) & I_D_PARTITIONS)       == I_D_PARTITIONS)
+#define HAS_DISKSTATS(m)		(((m) & I_F_HAS_DISKSTATS)    == I_F_HAS_DISKSTATS)
+#define DISPLAY_HUMAN_READ(m)		(((m) & I_D_HUMAN_READ)       == I_D_HUMAN_READ)
+#define DISPLAY_DEVMAP_NAME(m)		(((m) & I_D_DEVMAP_NAME)      == I_D_DEVMAP_NAME)
+#define DISPLAY_ISO(m)			(((m) & I_D_ISO)              == I_D_ISO)
+#define DISPLAY_GROUP_TOTAL_ONLY(m)	(((m) & I_D_GROUP_TOTAL_ONLY) == I_D_GROUP_TOTAL_ONLY)
+#define DISPLAY_ZERO_OMIT(m)		(((m) & I_D_ZERO_OMIT)        == I_D_ZERO_OMIT)
 
-/* Preallocation constats */
+/* Preallocation constants */
 #define NR_DEV_PREALLOC		4
-#define NR_DISK_PREALLOC	3
 
 /* Environment variable */
 #define ENV_POSIXLY_CORRECT	"POSIXLY_CORRECT"
@@ -101,8 +101,18 @@ struct io_stats {
 
 #define IO_STATS_SIZE	(sizeof(struct io_stats))
 
+/* Possible values for field "status" in io_hdr_stats structure */
+#define DISK_UNREGISTERED	0
+#define DISK_REGISTERED		1
+#define DISK_GROUP		2
+
+/*
+ * Each io_stats structure has an associated io_hdr_stats structure.
+ * An io_hdr_stats structure tells if the corresponding device has been
+ * unregistered or not (status field) and also indicates the device name.
+ */
 struct io_hdr_stats {
-	unsigned int active		__attribute__ ((aligned (4)));
+	unsigned int status		__attribute__ ((aligned (4)));
 	unsigned int used		__attribute__ ((packed));
 	char name[MAX_NAME_LEN];
 };
