@@ -1,4 +1,4 @@
-.TH SADC 8 "SEPTEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "MAY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS
@@ -25,6 +25,9 @@ is set to -, then
 uses the standard system activity daily data file, the
 .IR @SA_DIR@/sa dd
 file, where the dd parameter indicates the current day.
+In this case,
+.B sadc
+will overwrite the file if it is from a previous month.
 By default
 .B sadc
 collects all the data available from the kernel.

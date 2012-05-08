@@ -677,6 +677,7 @@ void open_ofile(int *ofd, char ofile[])
 {
 	struct file_magic file_magic;
 	struct file_activity file_act;
+	struct tm rectime;
 	ssize_t sz;
 	int i, p;
 
@@ -718,6 +719,21 @@ void open_ofile(int *ofd, char ofile[])
 			if (read(*ofd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE) {
 				/* Display error message and exit */
 				handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
+			}
+
+			/*
+			 * If we are using the standard daily data file (file specified
+			 * as "-" on the command line) and it is from a past month,
+			 * then overwrite (truncate) it.
+			 */
+			get_time(&rectime);
+			
+			if (((file_hdr.sa_month != rectime.tm_mon) ||
+			    (file_hdr.sa_year != rectime.tm_year)) &&
+			    WANT_SA_ROTAT(flags)) {
+				close(*ofd);
+				create_sa_file(ofd, ofile);
+				return;
 			}
 
 			/*
