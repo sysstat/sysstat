@@ -250,7 +250,7 @@ void set_record_timestamp_string(int curr, char *cur_date, char *cur_time, int l
 		 * cur_time is expressed in local time. Else it is expressed in UTC.
 		 */
 		strftime(cur_date, len, "%Y-%m-%d", rectime);
-		strftime(cur_time, len, "%H-%M-%S", rectime);
+		strftime(cur_time, len, "%H:%M:%S", rectime);
 	}
 }
 

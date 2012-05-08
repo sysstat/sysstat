@@ -4,6 +4,8 @@ xxxx/xx/xx: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Alain Chereau]: Options -g and -T added to iostat. These
 	  options enable the user to display statistics for groups of
 	  devices.
+	* sadf: Change time format from HH-MM-SS to HH:MM:SS in the
+	  various reports displayed by sadf.
 	* XSD document updated: Added a maxOccurs indicator for the
 	  timestamp element.
 	* [Peter Schiffer]: Set exit code to 0 for sa2 shell script.
