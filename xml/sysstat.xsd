@@ -61,7 +61,7 @@
 <xs:element name="statistics" type="statistics-type"></xs:element>
 <xs:complexType name="statistics-type">
 	<xs:sequence>
-		<xs:element name="timestamp" type="timestamp-type"></xs:element>
+		<xs:element name="timestamp" type="timestamp-type" maxOccurs="unbounded"></xs:element>
 	</xs:sequence>
 </xs:complexType>
 
