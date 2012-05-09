@@ -208,7 +208,7 @@ Please read the sar(1) manual page! Daily data files are created in the
 /var/log/sa directory using the data collector (sadc) or using option
 -o with sar. Once they are created, sar can display statistics saved
 in those files.
-But sar can also display statistics collected "on the fly": just enter
+But sar can also display statistics collected "on the fly": Just enter
 the proper option on the command line to indicate which statistics are
 to be displayed, and also specify an <interval> and <count> number.
 E.g.:
@@ -255,6 +255,8 @@ if you use the Interactive Configuration script (iconfig).
 Indeed, we found that 2.2.x kernels (with x <= 15) have an SMP race
 condition, which the sar command may trigger when it reads the
 /proc/tty/driver/serial file.
+Note: Option "--enable-smp-race" was removed in sysstat version 9.1.4.
+Anyway you don't run a kernel 2.2.x any more, do you?
 
 ~~~
 
@@ -381,10 +383,10 @@ data for midnight at the end of each daily data file:
 
 Another possible crontab would be:
 
-*/10 1-22 * * * /usr/lib/sa/sa1 -d 1 1
-0,10,20,30,40 23 * * * /usr/lib/sa/sa1 -d 1 1
-50 23 * * * /usr/lib/sa/sa1 -d 600 2
-10,20,30,40,50 0 * * * /usr/lib/sa/sa1 -d 1 1
+*/10 1-22 * * * /usr/lib/sa/sa1 1 1
+0,10,20,30,40 23 * * * /usr/lib/sa/sa1 1 1
+50 23 * * * /usr/lib/sa/sa1 600 2
+10,20,30,40,50 0 * * * /usr/lib/sa/sa1 1 1
 
 ~~~
 
