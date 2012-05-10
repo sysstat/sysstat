@@ -10,5 +10,5 @@ COMPRESSAFTER=@COMPRESSAFTER@
 
 # Parameters for the system activity data collector (see sadc manual page)
 # which are used for the generation of log files.
-SADC_OPTIONS=""
+SADC_OPTIONS="@COLLECT_ALL@"
 

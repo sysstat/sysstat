@@ -641,6 +641,7 @@ STRIP
 DFLAGS
 WITH_DEBUG
 INSTALL_DOC
+COLLECT_ALL
 REM_CHOWN
 QUOTE
 CRON_COUNT
@@ -748,6 +749,7 @@ enable_compress_manpg
 enable_install_isag
 enable_clean_sa_dir
 enable_install_cron
+enable_collect_all
 enable_documentation
 enable_debuginfo
 enable_stripping
@@ -1400,6 +1402,7 @@ Optional Features:
   --enable-install-isag   install isag script
   --enable-clean-sa-dir   clean system activity directory
   --enable-install-cron   install a crontab to start sar
+  --enable-collect-all    collect all possible activities
   --disable-documentation do not install documentation
   --enable-debuginfo      enable debug output (--debuginfo option)
   --disable-stripping     do not strip object files
@@ -7326,6 +7329,7 @@ echo .
 #  --enable-yesterday      tell sa2 to use "yesterday" data files
 #  --disable-man-group     ignore man_group variable value
 #  --enable-install-cron   tell sysstat to install cron scripts
+#  --collect-all           tell sadc to collect all possible data
 #  --enable-clean-sa-dir   clean system activity directory
 #  --enable-compress-manpg compress manual pages
 #  --enable-install-isag   install isag script
@@ -7643,7 +7647,7 @@ fi
 $as_echo "$AUX_CSD" >&6; }
 
 
-# Crontab
+# Start crontab
 { $as_echo "$as_me:$LINENO: checking whether cron should start sar automatically" >&5
 $as_echo_n "checking whether cron should start sar automatically... " >&6; }
 # Check whether --enable-install-cron was given.
@@ -7664,6 +7668,7 @@ fi
 $as_echo "$AUX_CRON" >&6; }
 
 
+# Crontab owner
 CUSR="root"
 if test $INSTALL_CRON = "y"; then
    { $as_echo "$as_me:$LINENO: checking crontab owner" >&5
@@ -7697,6 +7702,7 @@ $as_echo "$CRON_OWNER" >&6; }
       REM_CHOWN=$CHOWN
    fi
 
+# Crontab interval
    { $as_echo "$as_me:$LINENO: checking crontab interval" >&5
 $as_echo_n "checking crontab interval... " >&6; }
 
@@ -7709,6 +7715,27 @@ $as_echo_n "checking crontab interval... " >&6; }
 $as_echo "$CRON_INTERVAL" >&6; }
    CRON_INTERVAL_SEC=`expr ${CRON_INTERVAL} \* 60`
    CRON_COUNT=`expr 60 / ${CRON_INTERVAL}`
+
+# Check whether sadc should collect all possible activities
+   { $as_echo "$as_me:$LINENO: checking whether sadc should collect all possible activities" >&5
+$as_echo_n "checking whether sadc should collect all possible activities... " >&6; }
+   # Check whether --enable-collect-all was given.
+if test "${enable_collect_all+set}" = set; then
+  enableval=$enable_collect_all; COLLECT_ALL=$enableval
+else
+  COLLECT_ALL=n=n
+fi
+
+   if test $COLLECT_ALL != "yes"; then
+      COLLECT_ALL=""
+      AUX_COLL=no
+   else
+      COLLECT_ALL="-S XALL"
+      AUX_COLL=yes
+   fi
+   { $as_echo "$as_me:$LINENO: result: $AUX_COLL" >&5
+$as_echo "$AUX_COLL" >&6; }
+
 else
    CRON_OWNER="root"
    SU_C_OWNER=""
@@ -7717,7 +7744,9 @@ else
    CRON_INTERVAL=10
    CRON_INTERVAL_SEC=600
    CRON_COUNT=6
+   COLLECT_ALL=""
 fi
+
 
 
 

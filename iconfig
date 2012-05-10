@@ -130,6 +130,16 @@ fi
 
 if [ "${CRON}" != "" ];
 then
+	COLL_ALL=`${ASK} 'Should sadc collect optional activities? (y/n)' "--enable-collect-all" "collect-all"`
+	if [ "${COLL_ALL}" = "y" ]; then
+		CRON="${CRON}--enable-collect-all "
+	else
+		echo "Parameter --enable-collect-all is NOT set"
+	fi
+fi
+
+if [ "${CRON}" != "" ];
+then
 	# rc directory
 	RCDIR=`${ASK} 'rc directory:' "rcdir" "rcdir"`
 	if [ "${RCDIR}" != "" ]; then

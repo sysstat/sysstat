@@ -10,6 +10,9 @@ xxxx/xx/xx: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
 	  various reports displayed by sadf.
 	* XSD document updated: Added a maxOccurs indicator for the
 	  timestamp element.
+	* Added option --enable-collect-all to configure script.
+	  This option tells sadc to collect all possible activities,
+	  including optional ones.
 	* [Peter Schiffer]: Set exit code to 0 for sa2 shell script.
 	* iostat and sadc manual pages updated.
 	* FAQ updated.

@@ -1,0 +1,8 @@
+
+Answer y if you want sadc to collect all possible activities. This is
+equivalent to passing option "-S XALL" to sadc, and as a consequence
+all optional activities are collected (read sadc(8) manual page to
+knwow which activities are optional).
+Default answer is n: Optional activities are NOT collected to prevent
+data files from growing too large.
+
