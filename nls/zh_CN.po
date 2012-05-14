@@ -5,10 +5,10 @@
 # Ji ZhengYu <zhengyuji@gmail.com>, 2008, 2009, 2010, 2011, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.3\n"
+"Project-Id-Version: sysstat 10.0.4\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-11-20 16:55+0100\n"
-"PO-Revision-Date: 2012-02-14 20:28+0800\n"
+"POT-Creation-Date: 2012-03-08 20:20+0100\n"
+"PO-Revision-Date: 2012-03-14 18:13+0800\n"
 "Last-Translator: Ji ZhengYu <zhengyuji@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
