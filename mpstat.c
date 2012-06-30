@@ -212,7 +212,7 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			unsigned long long itv, int prev, int curr,
 			char *prev_string, char *curr_string)
 {
-	struct stats_cpu *scc, *scp;
+	struct stats_cpu *scc;
 	int j = 0, offset, cpu;
 	struct stats_irqcpu *p, *q, *p0, *q0;
 
@@ -251,7 +251,6 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
 
 		scc = st_cpu[curr] + cpu;
-		scp = st_cpu[prev] + cpu;
 
 		/*
 		 * Check if we want stats about this CPU.
