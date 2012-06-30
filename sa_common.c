@@ -301,14 +301,17 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
  ***************************************************************************
  * Set current daily data file name.
  *
+ * IN:
+ * @d_off	Day offset (number of days to go back in the past).
+ * 
  * OUT:
  * @rectime	Current date and time.
  * @datafile	Name of daily data file.
  ***************************************************************************
  */
-void set_default_file(struct tm *rectime, char *datafile)
+void set_default_file(struct tm *rectime, char *datafile, int d_off)
 {
-	get_time(rectime);
+	get_time(rectime, d_off);
 	snprintf(datafile, MAX_FILE_LEN,
 		 "%s/sa%02d", SA_DIR, rectime->tm_mday);
 	datafile[MAX_FILE_LEN - 1] = '\0';
@@ -369,7 +372,7 @@ void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
 
 	if (PRINT_TRUE_TIME(flags)) {
 		/* Get local time. This is just to fill HH:MM:SS fields */
-		get_time(rectime);
+		get_time(rectime, 0);
 
 		rectime->tm_mday = file_hdr->sa_day;
 		rectime->tm_mon  = file_hdr->sa_month;

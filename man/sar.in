@@ -1,4 +1,4 @@
-.TH SAR 1 "MAY 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JUNE 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -20,7 +20,7 @@ sar \- Collect, report, or save system activity information.
 .I filename
 .B ] | -f [
 .I filename
-.B ] ] [ -s [
+.B ] | -[0-9]+ ] [ -s [
 .I hh:mm:ss
 .B ] ] [ -e [
 .I hh:mm:ss
@@ -69,6 +69,10 @@ command extracts and writes to standard output records previously
 saved in a file. This file can be either the one specified by the
 .B -f
 flag or, by default, the standard system activity daily data file.
+It is also possible to enter -1, -2 etc. as an argument to sar to
+display data
+of that days ago. For example, -1 will point at the standard system
+activity file of yesterday.
 
 Without the
 .B -P

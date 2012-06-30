@@ -841,7 +841,7 @@ extern void
 extern void
 	set_bitmap(unsigned char [], unsigned char, unsigned int);
 extern void
-	set_default_file(struct tm *, char *);
+	set_default_file(struct tm *, char *, int);
 extern void
 	set_hdr_rectime(unsigned int, struct tm *, struct file_header *);
 

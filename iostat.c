@@ -1245,7 +1245,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		}
 
 		/* Get time */
-		get_localtime(rectime);
+		get_localtime(rectime, 0);
 
 		/* Print results */
 		write_stats(curr, rectime);
@@ -1511,7 +1511,7 @@ int main(int argc, char **argv)
 		presave_device_list();
 	}
 
-	get_localtime(&rectime);
+	get_localtime(&rectime, 0);
 
 	/* Get system name, release number and hostname */
 	uname(&header);

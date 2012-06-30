@@ -787,7 +787,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		}
 
 		/* Get time */
-		get_localtime(&(mp_tstamp[curr]));
+		get_localtime(&(mp_tstamp[curr]), 0);
 
 		/* Read stats */
 		if (cpu_nr > 1) {
@@ -1022,7 +1022,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Get time */
-	get_localtime(&(mp_tstamp[0]));
+	get_localtime(&(mp_tstamp[0]), 0);
 
 	/* Get system name, release number and hostname */
 	uname(&header);

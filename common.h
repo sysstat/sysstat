@@ -25,6 +25,9 @@
 
 #define DISP_HDR	1
 
+/* Number of seconds per day */
+#define SEC_PER_DAY	3600 * 24
+
 /* Maximum number of CPUs */
 #ifdef __CPU_SETSIZE
 #define NR_CPUS		__CPU_SETSIZE
@@ -183,9 +186,9 @@ extern unsigned long long
 extern void
 	get_kb_shift(void);
 extern time_t
-	get_localtime(struct tm *);
+	get_localtime(struct tm *, int);
 extern time_t
-	get_time(struct tm *);
+	get_time(struct tm *, int);
 unsigned long long
 	get_per_cpu_interval(struct stats_cpu *, struct stats_cpu *);
 extern int

@@ -63,6 +63,9 @@ void print_version(void)
  ***************************************************************************
  * Get local date and time.
  *
+ * IN:
+ * @d_off	Day offset (number of days to go back in the past).
+ * 
  * OUT:
  * @rectime	Current local date and time.
  *
@@ -70,12 +73,13 @@ void print_version(void)
  * Value of time in seconds since the Epoch.
  ***************************************************************************
  */
-time_t get_localtime(struct tm *rectime)
+time_t get_localtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
 	struct tm *ltm;
 
 	time(&timer);
+	timer -= SEC_PER_DAY * d_off;
 	ltm = localtime(&timer);
 
 	*rectime = *ltm;
@@ -86,6 +90,9 @@ time_t get_localtime(struct tm *rectime)
  ***************************************************************************
  * Get date and time expressed in UTC.
  *
+ * IN:
+ * @d_off	Day offset (number of days to go back in the past).
+ * 
  * OUT:
  * @rectime	Current date and time expressed in UTC.
  *
@@ -93,12 +100,13 @@ time_t get_localtime(struct tm *rectime)
  * Value of time in seconds since the Epoch.
  ***************************************************************************
  */
-time_t get_gmtime(struct tm *rectime)
+time_t get_gmtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
 	struct tm *ltm;
 
 	time(&timer);
+	timer -= SEC_PER_DAY * d_off;
 	ltm = gmtime(&timer);
 
 	*rectime = *ltm;
@@ -109,6 +117,9 @@ time_t get_gmtime(struct tm *rectime)
  ***************************************************************************
  * Get date and time and take into account <ENV_TIME_DEFTM> variable.
  *
+ * IN:
+ * @d_off	Day offset (number of days to go back in the past).
+ * 
  * OUT:
  * @rectime	Current date and time.
  *
@@ -116,7 +127,7 @@ time_t get_gmtime(struct tm *rectime)
  * Value of time in seconds since the Epoch.
  ***************************************************************************
  */
-time_t get_time(struct tm *rectime)
+time_t get_time(struct tm *rectime, int d_off)
 {
 	static int utc = 0;
 	char *e;
@@ -130,9 +141,9 @@ time_t get_time(struct tm *rectime)
 	}
 	
 	if (utc == 2)
-		return get_gmtime(rectime);
+		return get_gmtime(rectime, d_off);
 	else
-		return get_localtime(rectime);
+		return get_localtime(rectime, d_off);
 }
 
 /*

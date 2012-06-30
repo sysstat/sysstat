@@ -608,7 +608,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		read_nfs_stat(curr);
 
 		/* Get time */
-		get_localtime(rectime);
+		get_localtime(rectime, 0);
 
 		/* Print results */
 		write_stats(curr, rectime);
@@ -729,7 +729,7 @@ int main(int argc, char **argv)
 	/* Init structures according to machine architecture */
 	io_sys_init();
 
-	get_localtime(&rectime);
+	get_localtime(&rectime, 0);
 
 	/* Get system name, release number and hostname */
 	uname(&header);

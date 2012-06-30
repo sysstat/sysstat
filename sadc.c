@@ -454,7 +454,7 @@ void setup_file_hdr(int fd)
 	memset(&file_hdr, 0, FILE_HEADER_SIZE);
 
 	/* Then get current date */
-	file_hdr.sa_ust_time = get_time(&rectime);
+	file_hdr.sa_ust_time = get_time(&rectime, 0);
 
 	/* OK, now fill the header */
 	file_hdr.sa_nr_act      = get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES);
@@ -542,7 +542,7 @@ void write_special_record(int ofd, int rtype)
 	record_hdr.record_type = rtype;
 
 	/* Save time */
-	record_hdr.ust_time = get_time(&rectime);
+	record_hdr.ust_time = get_time(&rectime, 0);
 
 	record_hdr.hour   = rectime.tm_hour;
 	record_hdr.minute = rectime.tm_min;
@@ -726,7 +726,7 @@ void open_ofile(int *ofd, char ofile[])
 			 * as "-" on the command line) and it is from a past month,
 			 * then overwrite (truncate) it.
 			 */
-			get_time(&rectime);
+			get_time(&rectime, 0);
 			
 			if (((file_hdr.sa_month != rectime.tm_mon) ||
 			    (file_hdr.sa_year != rectime.tm_year)) &&
@@ -882,7 +882,7 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 		reset_stats();
 
 		/* Save time */
-		record_hdr.ust_time = get_time(rectime);
+		record_hdr.ust_time = get_time(rectime, 0);
 		record_hdr.hour     = rectime->tm_hour;
 		record_hdr.minute   = rectime->tm_min;
 		record_hdr.second   = rectime->tm_sec;
@@ -963,7 +963,7 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 		/* Rotate activity file if necessary */
 		if (WANT_SA_ROTAT(flags)) {
 			/* The user specified '-' as the filename to use */
-			set_default_file(rectime, new_ofile);
+			set_default_file(rectime, new_ofile, 0);
 
 			if (strcmp(ofile, new_ofile)) {
 				do_sa_rotat = TRUE;
@@ -1057,7 +1057,7 @@ int main(int argc, char **argv)
 				stdfd = -1;	/* Don't write to STDOUT */
 				if (!strcmp(argv[opt], "-")) {
 					/* File name set to '-' */
-					set_default_file(&rectime, ofile);
+					set_default_file(&rectime, ofile, 0);
 					flags |= S_F_SA_ROTAT;
 				}
 				else if (!strncmp(argv[opt], "-", 1)) {

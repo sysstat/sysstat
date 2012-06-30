@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* Added option -[0-9]* to sar to show data of that days ago.
 
 2012/05/16: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Alain Chereau]: Options -g and -T added to iostat. These

@@ -1906,7 +1906,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	do {
 		/* Get time */
-		get_localtime(&ps_tstamp[curr]);
+		get_localtime(&ps_tstamp[curr], 0);
 
 		if (cpu_nr > 1) {
 			/*
@@ -2175,7 +2175,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Get time */
-	get_localtime(&(ps_tstamp[0]));
+	get_localtime(&(ps_tstamp[0]), 0);
 
 	/* Get system name, release number and hostname */
 	uname(&header);

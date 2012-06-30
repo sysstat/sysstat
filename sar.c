@@ -107,7 +107,7 @@ void usage(char *progname)
 			  "[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
-			  "[ -o [ <filename> ] | -f [ <filename> ] ]\n"
+			  "[ -o [ <filename> ] | -f [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"));
 	exit(1);
 }
@@ -1083,6 +1083,7 @@ int main(int argc, char **argv)
 {
 	int i, opt = 1, args_idx = 2;
 	int fd[2];
+	int day_offset = 0;
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
 	char ltemp[20];
 
@@ -1148,7 +1149,7 @@ int main(int argc, char **argv)
 				from_file[MAX_FILE_LEN - 1] = '\0';
 			}
 			else {
-				set_default_file(&rectime, from_file);
+				set_default_file(&rectime, from_file, day_offset);
 			}
 		}
 
@@ -1205,6 +1206,13 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 		}
+		
+		else if ((strlen(argv[opt]) > 1) &&
+			 (strlen(argv[opt]) < 4) &&
+			 !strncmp(argv[opt], "-", 1) &&
+			 (strspn(argv[opt] + 1, DIGITS) == (strlen(argv[opt]) - 1))) {
+			day_offset = atoi(argv[opt++] + 1);
+		}
 
 		else if (!strncmp(argv[opt], "-", 1)) {
 			/* Other options not previously tested */
@@ -1245,7 +1253,7 @@ int main(int argc, char **argv)
 	/* 'sar' is equivalent to 'sar -f' */
 	if ((argc == 1) ||
 	    ((interval < 0) && !from_file[0] && !to_file[0])) {
-		set_default_file(&rectime, from_file);
+		set_default_file(&rectime, from_file, day_offset);
 	}
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
@@ -1268,6 +1276,11 @@ int main(int argc, char **argv)
 	}
 	/* Don't print stats since boot time if -o or -f options are used */
 	if (!interval && (from_file[0] || to_file[0])) {
+		usage(argv[0]);
+	}
+	
+	/* Cannot enter a day shift with -o option */
+	if (to_file[0] && day_offset) {
 		usage(argv[0]);
 	}
 
