@@ -54,6 +54,7 @@
 #define INTERRUPTS		"/proc/interrupts"
 #define MEMINFO			"/proc/meminfo"
 #define SYSFS_BLOCK		"/sys/block"
+#define SYSFS_DEV_BLOCK		"/sys/dev/block"
 #define SYSFS_DEVCPU		"/sys/devices/system/cpu"
 #define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
 #define S_STAT			"stat"

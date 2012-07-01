@@ -1,6 +1,6 @@
 /*
  * sar and sadf common routines.
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -27,6 +27,7 @@
 #include <unistd.h>	/* For STDOUT_FILENO, among others */
 #include <dirent.h>
 #include <fcntl.h>
+#include <libgen.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
 
@@ -112,6 +113,44 @@ void free_structures(struct activity *act[])
 }
 
 /*
+  ***************************************************************************
+  * Try to get device real name from sysfs tree.
+  * 
+  * IN:
+  * @major	Major number of the device.
+  * @minor	Minor number of the device.
+  *
+  * RETURNS:
+  * The name of the device, which may be the real name (as it appears in /dev)
+  * or NULL.
+  ***************************************************************************
+  */
+char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
+{
+	static char link[32], target[PATH_MAX];
+	char *devname;
+	ssize_t r;
+
+	snprintf(link, 32, "%s/%d:%d", SYSFS_DEV_BLOCK, major, minor);
+
+	/* Get full path to device knowing its major and minor numbers */
+	r = readlink(link, target, PATH_MAX);
+	if (r <= 0 || r >= PATH_MAX) {
+		return (NULL);
+	}
+
+	target[r] = '\0';
+
+	/* Get device name */
+	devname = basename(target);
+	if (!devname || strnlen(devname, FILENAME_MAX) == 0) {
+		return (NULL);
+	}
+
+	return (devname);
+}
+
+/*
  ***************************************************************************
  * Get device real name if possible.
  * Warning: This routine may return a bad name on 2.4 kernels where
@@ -138,11 +177,15 @@ char *get_devname(unsigned int major, unsigned int minor, int pretty)
 	if (!pretty)
 		return (buf);
 
+	name = get_devname_from_sysfs(major, minor);
+	if (name != NULL)
+		return (name);
+	
 	name = ioc_name(major, minor);
-	if ((name == NULL) || !strcmp(name, K_NODEV))
-		return (buf);
+	if ((name != NULL) && strcmp(name, K_NODEV))
+		return (name);
 
-	return (name);
+	return (buf);
 }
 
 /*
