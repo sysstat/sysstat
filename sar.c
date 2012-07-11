@@ -1,6 +1,6 @@
 /*
  * sar: report system activity
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -107,6 +107,7 @@ void usage(char *progname)
 			  "[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ -o [ <filename> ] | -f [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"));
 	exit(1);
@@ -1081,7 +1082,7 @@ void read_stats(void)
  */
 int main(int argc, char **argv)
 {
-	int i, opt = 1, args_idx = 2;
+	int i, rc, opt = 1, args_idx = 2;
 	int fd[2];
 	int day_offset = 0;
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
@@ -1216,8 +1217,11 @@ int main(int argc, char **argv)
 
 		else if (!strncmp(argv[opt], "-", 1)) {
 			/* Other options not previously tested */
-			if (parse_sar_opt(argv, &opt, act, &flags, C_SAR)) {
-				usage(argv[0]);
+			if ((rc = parse_sar_opt(argv, &opt, act, &flags, C_SAR)) != 0) {
+				if (rc == 1) {
+					usage(argv[0]);
+				}
+				exit(1);
 			}
 			opt++;
 		}

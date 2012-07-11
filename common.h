@@ -1,6 +1,6 @@
 /*
  * sysstat: System performance tools for Linux
- * (C) 1999-2011 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _COMMON_H
@@ -12,7 +12,6 @@
 #include <time.h>
 #include <sched.h>	/* For __CPU_SETSIZE */
 #include "rd_stats.h"
-
 
 /*
  ***************************************************************************
@@ -61,6 +60,7 @@
 #define DEVMAP_DIR		"/dev/mapper"
 #define DEVICES			"/proc/devices"
 #define SYSFS_USBDEV		"/sys/bus/usb/devices"
+#define DEV_DISK_BY		"/dev/disk/by"
 #define SYSFS_IDVENDOR		"idVendor"
 #define SYSFS_IDPRODUCT		"idProduct"
 #define SYSFS_BMAXPOWER		"bMaxPower"
@@ -82,7 +82,6 @@
 #define ENV_TIME_DEFTM		"S_TIME_DEF_TIME"
 
 #define DIGITS			"0123456789"
-
 
 /*
  ***************************************************************************
@@ -116,7 +115,7 @@
 
 /*
  * Under very special circumstances, STDOUT may become unavailable.
- * This is what we try to guess here
+ * This is what we try to guess here.
  */
 #define TEST_STDOUT(_fd_)	do {					\
 					if (write(_fd_, "", 0) == -1) {	\
@@ -124,7 +123,6 @@
 				       		exit(6);		\
 				 	}				\
 				} while (0)
-
 
 #define MINIMUM(a,b)	((a) < (b) ? (a) : (b))
 
@@ -148,6 +146,9 @@ extern unsigned int kb_shift;
 #define KB_TO_PG(k)	((k) >> kb_shift)
 #define PG_TO_KB(k)	((k) << kb_shift)
 
+/* Type of persistent device names used in sar and iostat */
+extern char persistent_name_type[MAX_FILE_LEN];
+
 /*
  ***************************************************************************
  * Structures definitions
@@ -161,7 +162,6 @@ struct ext_disk_stats {
 	double svctm;
 	double arqsz;
 };
-
 
 /*
  ***************************************************************************
@@ -192,6 +192,12 @@ extern time_t
 	get_time(struct tm *, int);
 unsigned long long
 	get_per_cpu_interval(struct stats_cpu *, struct stats_cpu *);
+extern char *
+	get_persistent_name_from_pretty(char *);
+extern char *
+	get_persistent_type_dir(char *);
+extern char *
+	get_pretty_name_from_persistent(char *);
 extern int
 	get_sysfs_dev_nr(int);
 extern int
@@ -208,6 +214,8 @@ extern int
 	print_gal_header(struct tm *, char *, char *, char *, char *, int);
 extern void
 	print_version(void);
+extern char *
+	strtolower(char *);
 #ifdef DEBUG
 extern void
 	sysstat_panic(const char *, int);

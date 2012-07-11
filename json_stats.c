@@ -1,6 +1,6 @@
 /*
  * json_stats.c: Funtions used by sadf to display statistics in JSON format.
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -665,7 +665,7 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 	struct stats_disk *sdc,	*sdp;
 	struct ext_disk_stats xds;
 	int sep = FALSE;
-	char *dev_name;
+	char *dev_name, *persist_dev_name;
 
 	xprintf(tab++, "\"disk\": [");
 
@@ -683,16 +683,26 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
 		
 		dev_name = NULL;
+		persist_dev_name = NULL;
 
-		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
-			dev_name = transform_devmapname(sdc->major, sdc->minor);
+		if (DISPLAY_PERSIST_NAME_S(flags)) {
+			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
 		}
-
-		if (!dev_name) {
-			dev_name = get_devname(sdc->major, sdc->minor,
-					       USE_PRETTY_OPTION(flags));
+		
+		if (persist_dev_name) {
+			dev_name = persist_dev_name;
 		}
+		else {
+			if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
+				dev_name = transform_devmapname(sdc->major, sdc->minor);
+			}
 
+			if (!dev_name) {
+				dev_name = get_devname(sdc->major, sdc->minor,
+						       USE_PRETTY_OPTION(flags));
+			}
+		}
+		
 		if (sep) {
 			printf(",\n");
 		}

@@ -84,20 +84,22 @@
 #define S_F_PER_PROC		0x00000400
 #define S_F_HORIZONTALLY	0x00000800
 #define S_F_COMMENT		0x00001000
+#define S_F_PERSIST_NAME	0x00002000
 
-#define WANT_SINCE_BOOT(m)	(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
-#define WANT_SA_ROTAT(m)	(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
-#define USE_PRETTY_OPTION(m)	(((m) & S_F_DEV_PRETTY)   == S_F_DEV_PRETTY)
-#define FORCE_FILE(m)		(((m) & S_F_FORCE_FILE)   == S_F_FORCE_FILE)
-#define INTERVAL_SET(m)		(((m) & S_F_INTERVAL_SET) == S_F_INTERVAL_SET)
-#define PRINT_TRUE_TIME(m)	(((m) & S_F_TRUE_TIME)    == S_F_TRUE_TIME)
-#define LOCK_FILE(m)		(((m) & S_F_LOCK_FILE)    == S_F_LOCK_FILE)
-#define PRINT_SEC_EPOCH(m)	(((m) & S_F_SEC_EPOCH)    == S_F_SEC_EPOCH)
-#define DISPLAY_HDR_ONLY(m)	(((m) & S_F_HDR_ONLY)     == S_F_HDR_ONLY)
-#define FILE_LOCKED(m)		(((m) & S_F_FILE_LOCKED)  == S_F_FILE_LOCKED)
-#define WANT_PER_PROC(m)	(((m) & S_F_PER_PROC)     == S_F_PER_PROC)
-#define DISPLAY_HORIZONTALLY(m)	(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
-#define DISPLAY_COMMENT(m)	(((m) & S_F_COMMENT)      == S_F_COMMENT)
+#define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
+#define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
+#define USE_PRETTY_OPTION(m)		(((m) & S_F_DEV_PRETTY)   == S_F_DEV_PRETTY)
+#define FORCE_FILE(m)			(((m) & S_F_FORCE_FILE)   == S_F_FORCE_FILE)
+#define INTERVAL_SET(m)			(((m) & S_F_INTERVAL_SET) == S_F_INTERVAL_SET)
+#define PRINT_TRUE_TIME(m)		(((m) & S_F_TRUE_TIME)    == S_F_TRUE_TIME)
+#define LOCK_FILE(m)			(((m) & S_F_LOCK_FILE)    == S_F_LOCK_FILE)
+#define PRINT_SEC_EPOCH(m)		(((m) & S_F_SEC_EPOCH)    == S_F_SEC_EPOCH)
+#define DISPLAY_HDR_ONLY(m)		(((m) & S_F_HDR_ONLY)     == S_F_HDR_ONLY)
+#define FILE_LOCKED(m)			(((m) & S_F_FILE_LOCKED)  == S_F_FILE_LOCKED)
+#define WANT_PER_PROC(m)		(((m) & S_F_PER_PROC)     == S_F_PER_PROC)
+#define DISPLAY_HORIZONTALLY(m)		(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
+#define DISPLAY_COMMENT(m)		(((m) & S_F_COMMENT)      == S_F_COMMENT)
+#define DISPLAY_PERSIST_NAME_S(m)	(((m) & S_F_PERSIST_NAME) == S_F_PERSIST_NAME)
 
 #define AO_F_NULL		0x00000000
 

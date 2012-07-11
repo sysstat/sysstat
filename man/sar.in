@@ -1,4 +1,4 @@
-.TH SAR 1 "JUNE 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -6,6 +6,7 @@ sar \- Collect, report, or save system activity information.
 .I interval
 .B ] [ -p ] [ -q ] [ -r ] [ -R ] [ -S ] [ -t ] [ -u [ ALL ] ]
 [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]
+.B [ -j { ID | LABEL | PATH | UUID | ... } ]
 .B [ -m {
 .I keyword
 .B [,...] | ALL } ]
@@ -254,7 +255,8 @@ is the major number of the device and
 .B n
 its minor number.
 Device names may also be pretty-printed if option -p
-is used (see below).
+is used or persistent device names can be printed if option -j is used
+(see below).
 Note that disk activity depends on sadc options "-S DISK" and "-S XDISK"
 to be collected. The following values are displayed:
 
@@ -370,6 +372,16 @@ the first 16 interrupts are to be reported, whereas the
 keyword indicates that statistics from all interrupts, including potential
 APIC interrupt sources, are to be reported.
 Note that interrupt statistics depend on sadc option "-S INT" to be collected.
+.IP "-j { ID | LABEL | PATH | UUID | ... }"
+Display persistent device names. Use this option in conjunction with option -d.
+Options
+.BR ID ,
+.BR LABEL ,
+etc. specify the type of the persistent name. These options are not limited,
+only prerequisite is that directory with required persistent names is present in
+.IR /dev/disk .
+If persistent name is not found for the device, the device name
+is pretty-printed (see option -p below).
 .IP "-m { keyword [,...] | ALL }"
 Report power management statistics.
 Note that these statistics depend on sadc option "-S POWER" to be collected.

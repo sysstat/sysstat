@@ -1,9 +1,12 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
-	* Added option -[0-9]* to sar to show data of that days ago.
+	* [Peter Schiffer]: Persistent device names support added to
+	  sar and iostat (option -j).
+	* Added option -[0-9]+ to sar to show data of that days ago.
 	* [Peter Schiffer]: sar: Use /sys/dev/block/major:minor links
 	  to determine devices real name.
+	* sar and iostat manual pages updated.
 
 2012/05/16: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Alain Chereau]: Options -g and -T added to iostat. These

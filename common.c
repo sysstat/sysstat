@@ -28,6 +28,8 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <ctype.h>
+#include <libgen.h>
 
 #include "version.h"
 #include "common.h"
@@ -46,6 +48,9 @@
 unsigned int hz;
 /* Number of bit shifts to convert pages to kB */
 unsigned int kb_shift;
+
+/* Type of persistent device names used in sar and iostat */
+char persistent_name_type[MAX_FILE_LEN];
 
 /*
  ***************************************************************************
@@ -679,4 +684,242 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
 	xds->arqsz = (sdc->nr_ios - sdp->nr_ios) ?
 		((sdc->rd_sect - sdp->rd_sect) + (sdc->wr_sect - sdp->wr_sect)) /
 		((double) (sdc->nr_ios - sdp->nr_ios)) : 0.0;
+}
+
+/*
+ ***************************************************************************
+ * Convert in-place input string to lowercase.
+ *
+ * IN:
+ * @str		String to be converted.
+ *
+ * OUT:
+ * @str		String in lowercase.
+ *
+ * RETURNS:
+ * String in lowercase.
+ ***************************************************************************
+*/
+char *strtolower(char *str)
+{
+	char *cp = str;
+
+	while (*cp) {
+		*cp = tolower(*cp);
+		cp++;
+	}
+
+	return(str);
+}
+
+/*
+ ***************************************************************************
+ * Get persistent type name directory from type.
+ *
+ * IN:
+ * @type	Persistent type name (UUID, LABEL, etc.)
+ *
+ * RETURNS:
+ * Path to the persistent type name directory, or NULL if access is denied.
+ ***************************************************************************
+*/
+char *get_persistent_type_dir(char *type)
+{
+	static char dir[32];
+
+	snprintf(dir, 32, "%s-%s", DEV_DISK_BY, type);
+
+	if (access(dir, R_OK)) {
+		return (NULL);
+	}
+
+	return (dir);
+}
+
+/*
+ ***************************************************************************
+ * Get persistent name absolute path.
+ *
+ * IN:
+ * @name	Persistent name.
+ *
+ * RETURNS:
+ * Path to the persistent name, or NULL if file doesn't exist.
+ ***************************************************************************
+*/
+char *get_persistent_name_path(char *name)
+{
+	static char path[PATH_MAX];
+
+	snprintf(path, PATH_MAX, "%s/%s",
+		 get_persistent_type_dir(persistent_name_type), name);
+
+	if (access(path, F_OK)) {
+		return (NULL);
+	}
+
+	return (path);
+}
+
+/*
+ ***************************************************************************
+ * Get files from persistent type name directory.
+ *
+ * RETURNS:
+ * List of files in the persistent type name directory in alphabetical order.
+ ***************************************************************************
+*/
+char **get_persistent_names(void)
+{
+	int n, i, k = 0;
+	char *dir;
+	char **files = NULL;
+	struct dirent **namelist;
+
+	/* Get directory name for selected persistent type */
+	dir = get_persistent_type_dir(persistent_name_type);
+	if (!dir)
+		return (NULL);
+
+	n = scandir(dir, &namelist, NULL, alphasort);
+	if (n < 0)
+		return (NULL);
+
+	/* If directory is empty, it contains 2 entries: "." and ".." */
+	if (n <= 2)
+		/* Free list and return NULL */
+		goto free_list;
+
+	/* Ignore the "." and "..", but keep place for one last NULL. */
+	files = (char **) calloc(n - 1, sizeof(char *));
+	if (!files)
+		goto free_list;
+	
+	/*
+	 * i is for traversing namelist, k is for files.
+	 * i != k because we are ignoring "." and ".." entries.
+	 */
+	for (i = 0; i < n; i++) {
+		/* Ignore "." and "..". */
+		if (!strcmp(".", namelist[i]->d_name) ||
+		    !strcmp("..", namelist[i]->d_name))
+			continue;
+
+		files[k] = (char *) calloc(strlen(namelist[i]->d_name) + 1, sizeof(char));
+		if (!files[k])
+			continue;
+
+		strcpy(files[k++], namelist[i]->d_name);
+	}
+	files[k] = NULL;
+
+free_list:
+	
+	for (i = 0; i < n; i++) {
+		free(namelist[i]);
+	}
+	free(namelist);
+
+	return (files);
+}
+
+/*
+ ***************************************************************************
+ * Get persistent name from pretty name.
+ *
+ * IN:
+ * @pretty	Pretty name (e.g. sda, sda1, ..).
+ *
+ * RETURNS:
+ * Persistent name.
+ ***************************************************************************
+*/
+char *get_persistent_name_from_pretty(char *pretty)
+{
+	int i = -1;
+	ssize_t r;
+	char *link, *name;
+	char **persist_names;
+	char target[PATH_MAX];
+	static char persist_name[FILENAME_MAX];
+
+	persist_name[0] = '\0';
+
+	/* Get list of files from persistent type name directory */
+	persist_names = get_persistent_names();
+	if (!persist_names)
+		return (NULL);
+
+	while (persist_names[++i]) {
+		/* Get absolute path for current persistent name */
+		link = get_persistent_name_path(persist_names[i]);
+		if (!link)
+			continue;
+
+		/* Persistent name is usually a symlink: Read it... */
+		r = readlink(link, target, PATH_MAX);
+		if ((r <= 0) || (r >= PATH_MAX))
+			continue;
+
+		target[r] = '\0';
+
+		/* ... and get device pretty name it points at */
+		name = basename(target);
+		if (!name || (name[0] == '\0'))
+			continue;
+
+		if (!strncmp(name, pretty, FILENAME_MAX)) {
+			/* We have found pretty name for current persistent one */
+			strncpy(persist_name, persist_names[i], FILENAME_MAX);
+			persist_name[FILENAME_MAX - 1] = '\0';
+			break;
+		}
+	}
+
+	i = -1;
+	while (persist_names[++i]) {
+		free (persist_names[i]);
+	}
+	free (persist_names);
+
+	if (strlen(persist_name) <= 0)
+		return (NULL);
+
+	return persist_name;
+}
+
+/*
+ ***************************************************************************
+ * Get pretty name (sda, sda1...) from persistent name.
+ *
+ * IN:
+ * @persistent	Persistent name.
+ *
+ * RETURNS:
+ * Pretty name.
+ ***************************************************************************
+*/
+char *get_pretty_name_from_persistent(char *persistent)
+{
+	ssize_t r;
+	char *link, *pretty, target[PATH_MAX];
+
+	/* Get absolute path for persistent name */
+	link = get_persistent_name_path(persistent);
+	if (!link)
+		return (NULL);
+
+	/* Persistent name is usually a symlink: Read it... */
+	r = readlink(link, target, PATH_MAX);
+	if ((r <= 0) || (r >= PATH_MAX))
+		return (NULL);
+
+	target[r] = '\0';
+
+	/* ... and get device pretty name it points at */
+	pretty = basename(target);
+	if (!pretty || (pretty[0] == '\0'))
+		return (NULL);
+
+	return pretty;
 }

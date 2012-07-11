@@ -1232,7 +1232,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
  * @flags	Common flags and system state.
  *
  * RETURNS:
- * 0 on success, 1 otherwise.
+ * 0 on success.
  ***************************************************************************
  */
 int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
@@ -1283,6 +1283,31 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 		case 'H':
 			p = get_activity_position(act, A_HUGE);
 			act[p]->options   |= AO_SELECTED;
+			break;
+			
+		case 'j':
+			if (argv[*opt + 1]) {
+				(*opt)++;
+				if (strnlen(argv[*opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1)
+					return 1;
+
+				strncpy(persistent_name_type, argv[*opt], MAX_FILE_LEN - 1);
+				persistent_name_type[MAX_FILE_LEN - 1] = '\0';
+				strtolower(persistent_name_type);
+				if (!get_persistent_type_dir(persistent_name_type)) {
+					fprintf(stderr, _("Invalid type of persistent device name\n"));
+					return 2;
+				}
+				/*
+				 * If persistent device name doesn't exist for device, use
+				 * its pretty name.
+				 */
+				*flags |= S_F_PERSIST_NAME + S_F_DEV_PRETTY;
+				return 0;
+			}
+			else {
+				return 1;
+			}
 			break;
 			
 		case 'p':

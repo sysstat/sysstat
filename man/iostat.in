@@ -1,10 +1,13 @@
-.TH IOSTAT 1 "MAY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
 .B iostat [ -c ] [ -d ] [ --debuginfo ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]
+.B [ -j { ID | LABEL | PATH | UUID | ... } [
+.I device
+.B [...] | ALL ] ]
 .B [ [ [ -T ] -g
 .I group_name
 .B ] {
@@ -19,6 +22,9 @@ statistics for devices and partitions.
 .\}
 .el \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]
+.B [ -j { ID | LABEL | PATH | UUID | ... } [
+.I device
+.B [...] | ALL ] ]
 .B [ [ [ -T ] -g
 .I group_name
 .B ] {
@@ -284,6 +290,17 @@ keyword means that all the block devices defined by the system shall be
 included in the group.
 .IP -h
 Make the Device Utilization Report easier to read by a human.
+.IP "-j { ID | LABEL | PATH | UUID | ... } [ device [...] | ALL ]"
+Display persistent device names. Options
+.BR ID ,
+.BR LABEL ,
+etc. specify the type of the persistent name. These options are not limited,
+only prerequisite is that directory with required persistent names is present in
+.IR /dev/disk .
+Optionally, multiple devices can be specified in the chosen persistent name type.
+Because persistent device names are usually long, option
+.B -h
+is enabled implicitly with this option.
 .IP -k
 Display statistics in kilobytes per second.
 .IP -m
@@ -299,7 +316,10 @@ and all its partitions are displayed. Last, the
 .B ALL
 keyword indicates that statistics have to be displayed for all the block
 devices and partitions defined by the system, including those that have
-never been used.
+never been used. If option
+.B -j
+is defined before this option, devices entered on the command line can be
+specified with the chosen persistent name type.
 .IP -T
 This option must be used with option -g and indicates that only global
 statistics for the group are to be displayed, and not statistics for
@@ -387,6 +407,9 @@ contains statistics for block devices.
 
 .I /proc/self/mountstats
 contains statistics for network filesystems.
+
+.I /dev/disk
+contains persistent device names.
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
 .SH SEE ALSO

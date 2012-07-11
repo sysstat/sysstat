@@ -1,6 +1,6 @@
 /*
  * pr_stats.c: Functions used by sar to display statistics
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -812,7 +812,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 	int i, j;
 	struct stats_disk *sdc,	*sdp;
 	struct ext_disk_stats xds;
-	char *dev_name;
+	char *dev_name, *persist_dev_name;
 
 	if (dis) {
 		printf("\n%-11s       DEV       tps  rd_sec/s  wr_sec/s  avgrq-sz"
@@ -834,14 +834,24 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
 		
 		dev_name = NULL;
+		persist_dev_name = NULL;
 
-		if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
-			dev_name = transform_devmapname(sdc->major, sdc->minor);
+		if (DISPLAY_PERSIST_NAME_S(flags)) {
+			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
 		}
+		
+		if (persist_dev_name) {
+			dev_name = persist_dev_name;
+		}
+		else {
+			if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
+				dev_name = transform_devmapname(sdc->major, sdc->minor);
+			}
 
-		if (!dev_name) {
-			dev_name = get_devname(sdc->major, sdc->minor,
-					       USE_PRETTY_OPTION(flags));
+			if (!dev_name) {
+				dev_name = get_devname(sdc->major, sdc->minor,
+						       USE_PRETTY_OPTION(flags));
+			}
 		}
 		
 		printf("%-11s %9s %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f\n",

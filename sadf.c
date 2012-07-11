@@ -1,6 +1,6 @@
 /*
  * sadf: system activity data formatter
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -1334,7 +1334,7 @@ void read_stats_from_file(char dfile[])
 int main(int argc, char **argv)
 {
 	int opt = 1, sar_options = 0;
-	int i;
+	int i, rc;
 	char dfile[MAX_FILE_LEN];
 	struct tm rectime;
 
@@ -1425,8 +1425,11 @@ int main(int argc, char **argv)
 		else if (!strncmp(argv[opt], "-", 1)) {
 			/* Other options not previously tested */
 			if (sar_options) {
-				if (parse_sar_opt(argv, &opt, act, &flags, C_SADF)) {
-					usage(argv[0]);
+				if ((rc = parse_sar_opt(argv, &opt, act, &flags, C_SADF)) != 0) {
+					if (rc == 1) {
+						usage(argv[0]);
+					}
+					exit(1);
 				}
 			}
 			else {

@@ -86,11 +86,13 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } [ <device> [...] | ALL ] ]\n"
 			  "[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
 			  "[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } [ <device> [...] | ALL ] ]\n"
 			  "[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
 			  "[ -p [ <device> [,...] | ALL ] ]\n"));
 #endif
@@ -909,13 +911,14 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 		    struct io_hdr_stats *shi, struct io_stats *ioi,
 		    struct io_stats *ioj)
 {
+	char *devname = NULL;
 	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
 	double r_await, w_await;
 	
 	/*
 	 * Counters overflows are possible, but don't need to be handled in
-	 * a special way: the difference is still properly calculated if the
+	 * a special way: The difference is still properly calculated if the
 	 * result is of the same type as the two values.
 	 * Exception is field rq_ticks which is incremented by the number of
 	 * I/O in progress times the number of milliseconds spent doing I/O.
@@ -948,11 +951,17 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 		  ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
 
 	/* Print device name */
+	if (DISPLAY_PERSIST_NAME_I(flags)) {
+		devname = get_persistent_name_from_pretty(shi->name);
+	}
+	if (!devname) {
+		devname = shi->name;
+	}
 	if (DISPLAY_HUMAN_READ(flags)) {
-		printf("%s\n%13s", shi->name, "");
+		printf("%s\n%13s", devname, "");
 	}
 	else {
-		printf("%-13s", shi->name);
+		printf("%-13s", devname);
 	}
 
 	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
@@ -972,8 +981,8 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	       xds.svctm,
 	       /*
 	        * Again: Ticks in milliseconds.
-		* In the case of a device group, shi->used is the nr of devices in the group.
-		* Else shi->used equals 1.
+		* In the case of a device group (option -g), shi->used is the number of
+		* devices in the group. Else shi->used equals 1.
 		*/
 	       shi->used ? xds.util / 10.0 / (double) shi->used
 	                 : xds.util / 10.0);	/* shi->used should never be null here */
@@ -996,14 +1005,21 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 		      struct io_hdr_stats *shi, struct io_stats *ioi,
 		      struct io_stats *ioj)
 {
+	char *devname = NULL;
 	unsigned long long rd_sec, wr_sec;
 
 	/* Print device name */
+	if (DISPLAY_PERSIST_NAME_I(flags)) {
+		devname = get_persistent_name_from_pretty(shi->name);
+	}
+	if (!devname) {
+		devname = shi->name;
+	}
 	if (DISPLAY_HUMAN_READ(flags)) {
-		printf("%s\n%13s", shi->name, "");
+		printf("%s\n%13s", devname, "");
 	}
 	else {
-		printf("%-13s", shi->name);
+		printf("%-13s", devname);
 	}
 
 	/* Print stats coming from /sys or /proc/diskstats */
@@ -1275,7 +1291,7 @@ int main(int argc, char **argv)
 	struct utsname header;
 	struct io_dlist *st_dev_list_i;
 	struct tm rectime;
-	char *t;
+	char *t, *persist_devname, *devname;
 
 #ifdef USE_NLS
 	/* Init National Language Support */
@@ -1305,8 +1321,16 @@ int main(int argc, char **argv)
 						flags |= I_D_PART_ALL;
 					}
 					else {
+						devname = device_name(t);
+						if (DISPLAY_PERSIST_NAME_I(flags)) {
+							/* Get device persistent name */
+							persist_devname = get_pretty_name_from_persistent(devname);
+							if (persist_devname != NULL) {
+								devname = persist_devname;
+							}
+						}
 						/* Store device name */
-						i = update_dev_list(&dlist_idx, device_name(t));
+						i = update_dev_list(&dlist_idx, devname);
 						st_dev_list_i = st_dev_list + i;
 						st_dev_list_i->disp_part = TRUE;
 					}
@@ -1342,6 +1366,31 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			group_nr++;
+		}
+		
+		else if (!strcmp(argv[opt], "-j")) {
+			if (argv[++opt]) {
+				if (strnlen(argv[opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1) {
+					usage(argv[0]);
+				}
+				strncpy(persistent_name_type, argv[opt], MAX_FILE_LEN - 1);
+				persistent_name_type[MAX_FILE_LEN - 1] = '\0';
+				strtolower(persistent_name_type);
+				/* Check that this is a valid type of persistent device name */
+				if (!get_persistent_type_dir(persistent_name_type)) {
+					fprintf(stderr, _("Invalid type of persistent device name\n"));
+					exit(1);
+				}
+				/*
+				 * Persistent names are usually long: Display
+				 * them as human readable by default.
+				 */
+				flags |= I_D_PERSIST_NAME + I_D_HUMAN_READ;
+				opt++;
+			}
+			else {
+				usage(argv[0]);
+			}
 		}
 
 #ifdef DEBUG
@@ -1438,8 +1487,15 @@ int main(int argc, char **argv)
 			flags |= I_D_UNFILTERED;
 			
 			if (strcmp(argv[opt], K_ALL)) {
-				/* Store device name */
-				update_dev_list(&dlist_idx, device_name(argv[opt++]));
+				/* Store device name entered on the command line */
+				devname = device_name(argv[opt++]);
+				if (DISPLAY_PERSIST_NAME_I(flags)) {
+					persist_devname = get_pretty_name_from_persistent(devname);
+					if (persist_devname != NULL) {
+						devname = persist_devname;
+					}
+				}
+				update_dev_list(&dlist_idx, devname);
 			}
 			else {
 				opt++;
