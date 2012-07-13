@@ -1,6 +1,6 @@
 /*
  * mpstat: per-processor statistics
- * (C) 2000-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2000-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -87,8 +87,8 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
-			  "[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"));
+			  "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+			  "[ -P { <cpu> [,...] | ON | ALL } ]\n"));
 	exit(1);
 }
 

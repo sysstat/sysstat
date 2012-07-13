@@ -1,6 +1,6 @@
 /*
  * pidstat: Report statistics for Linux tasks
- * (C) 2007-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2007-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -79,9 +79,9 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C <command> ] [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ]\n"
-			  "[ -t ] [ -u ] [ -V ] [ -w ]\n"
-			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"));
+			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
+			  "[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+			  "[ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
 }
 

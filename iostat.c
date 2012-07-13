@@ -85,16 +85,16 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } [ <device> [...] | ALL ] ]\n"
-			  "[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
-			  "[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"));
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } [ <device> [...] | ALL ] ]\n"
-			  "[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
-			  "[ -p [ <device> [,...] | ALL ] ]\n"));
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+			  "[ <device> [...] | ALL ]\n"));
 #endif
 	exit(1);
 }

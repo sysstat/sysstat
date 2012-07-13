@@ -1,12 +1,13 @@
-.TH PIDSTAT 1 "AUGUST 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
-.B pidstat [ -C
+.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]
+.B [ -w ] [ -C
 .I comm
-.B ] [ -d ] [ -h ] [ -I ] [ -l ] [ -p {
+.B ] [ -p {
 .I pid
-.B [,...] | SELF | ALL } ] [ -r ] [ -s ] [ -t ] [ -T { TASK | CHILD | ALL } ] [ -u ] [ -V ] [ -w ] [
+.B [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
 .I interval
 .B [
 .I count
@@ -215,22 +216,6 @@ The amount of memory in kilobytes used as stack, referenced by the task.
 The command name of the task.
 .RE
 .RE
-.IP -t
-Also display statistics for threads associated with selected tasks.
-
-This option adds the following values to the reports:
-
-.B TGID
-.RS
-.RS
-The identification number of the thread group leader.
-.RE
-
-.B TID
-.RS
-The identification number of the thread being monitored.
-.RE
-.RE
 .IP "-T { TASK | CHILD | ALL }"
 This option specifies what has to be monitored by the
 .B pidstat
@@ -252,6 +237,22 @@ for all options of
 Also these statistics are not necessarily relevant to current time interval:
 The statistics of a child process are collected only when it finishes or
 it is killed.
+.IP -t
+Also display statistics for threads associated with selected tasks.
+
+This option adds the following values to the reports:
+
+.B TGID
+.RS
+.RS
+The identification number of the thread group leader.
+.RE
+
+.B TID
+.RS
+The identification number of the thread being monitored.
+.RE
+.RE
 .IP -u
 Report CPU utilization.
 

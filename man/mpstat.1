@@ -1,10 +1,10 @@
-.TH MPSTAT 1 "AUGUST 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
-.B mpstat [ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ] [ -P {
+.B mpstat [ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ] [ -P {
 .I cpu
-.B [,...] | ON | ALL } ] [ -V ] [
+.B [,...] | ON | ALL } ] [
 .I interval
 .B [
 .I count
@@ -45,7 +45,7 @@ command generates reports continuously.
 .SH OPTIONS
 .IP -A
 This option is equivalent to specifying
-.BR "-I ALL -u -P ALL"
+.BR "-u -I ALL -P ALL"
 .IP "-I { SUM | CPU | SCPU | ALL }"
 Report interrupts statistics.
 

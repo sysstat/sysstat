@@ -1,9 +1,9 @@
-.TH CIFSIOSTAT 1 "JANUARY 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [
+.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [
 .I interval
 .B [
 .I count

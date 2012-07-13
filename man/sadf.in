@@ -1,8 +1,8 @@
-.TH SADF 1 "NOVEMBER 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ] [ -P {
+.B sadf [ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
 .I hh:mm:ss

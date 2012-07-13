@@ -1,10 +1,10 @@
-.TH SADC 8 "MAY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.B ] [ -S { INT | DISK | SNMP | IPV6 | POWER | XDISK | ALL | XALL } ] [ -F ] [ -L ] [ -V ] [
+.B ] [ -F ] [ -L ] [ -V ] [ -S { INT | DISK | SNMP | IPV6 | POWER | XDISK | ALL | XALL } ] [
 .I interval
 .B [
 .I count

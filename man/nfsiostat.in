@@ -1,9 +1,9 @@
-.TH NFSIOSTAT 1 "JANUARY 2011" Linux "Linux User's Manual" -*- nroff -*-
+.TH NFSIOSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 nfsiostat \- Report input/output statistics for network filesystems (NFS).
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B nfsiostat [ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [
+.B nfsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [
 .I interval
 .B [
 .I count
