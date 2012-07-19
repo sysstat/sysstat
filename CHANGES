@@ -1,9 +1,13 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* Added option -[0-9]+ to sar to show data of that days ago.
 	* [Peter Schiffer]: Persistent device names support added to
 	  sar and iostat (option -j).
-	* Added option -[0-9]+ to sar to show data of that days ago.
+	* [Peter Schiffer]: Make sysstat disk counters consistent
+	  with those from latest kernel (3.5). Warning: This breaks
+	  compatibility with older sar data files format for disk
+	  activity.
 	* [Peter Schiffer]: sar: Use /sys/dev/block/major:minor links
 	  to determine devices real name.
 	* [Peter Schiffer]: Various cosmetic changes in manual pages

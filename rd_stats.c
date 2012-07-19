@@ -1,6 +1,6 @@
 /*
  * rd_stats.c: Read system statistics
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -472,15 +472,14 @@ void read_diskstats_io(struct stats_io *st_io)
 	char line[256];
 	char dev_name[MAX_NAME_LEN];
 	unsigned int major, minor;
-	unsigned long rd_ios, wr_ios;
-	unsigned long long rd_sec, wr_sec;
+	unsigned long rd_ios, wr_ios, rd_sec, wr_sec;
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
 	while (fgets(line, 256, fp) != NULL) {
 
-		if (sscanf(line, "%u %u %s %lu %*u %llu %*u %lu %*u %llu",
+		if (sscanf(line, "%u %u %s %lu %*u %lu %*u %lu %*u %lu",
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec, &wr_ios, &wr_sec) == 7) {
 			
@@ -491,9 +490,9 @@ void read_diskstats_io(struct stats_io *st_io)
 				 */
 				st_io->dk_drive      += rd_ios + wr_ios;
 				st_io->dk_drive_rio  += rd_ios;
-				st_io->dk_drive_rblk += (unsigned int) rd_sec;
+				st_io->dk_drive_rblk += rd_sec;
 				st_io->dk_drive_wio  += wr_ios;
-				st_io->dk_drive_wblk += (unsigned int) wr_sec;
+				st_io->dk_drive_wblk += wr_sec;
 			}
 		}
 	}
@@ -522,18 +521,16 @@ void read_diskstats_disk(struct stats_disk *st_disk, int nbr, int read_part)
 	char dev_name[MAX_NAME_LEN];
 	int dsk = 0;
 	struct stats_disk *st_disk_i;
-	unsigned int major, minor;
-	unsigned long rd_ios, wr_ios, rd_ticks, wr_ticks;
-	unsigned long tot_ticks, rq_ticks;
-	unsigned long long rd_sec, wr_sec;
+	unsigned int major, minor, rd_ticks, wr_ticks, tot_ticks, rq_ticks;
+	unsigned long rd_ios, wr_ios, rd_sec, wr_sec;
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
 	while ((fgets(line, 256, fp) != NULL) && (dsk < nbr)) {
 
-		if (sscanf(line, "%u %u %s %lu %*u %llu %lu %lu %*u %llu"
-			   " %lu %*u %lu %lu",
+		if (sscanf(line, "%u %u %s %lu %*u %lu %u %lu %*u %lu"
+			   " %u %*u %u %u",
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec, &rd_ticks, &wr_ios, &wr_sec, &wr_ticks,
 			   &tot_ticks, &rq_ticks) == 11) {

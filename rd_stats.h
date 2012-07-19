@@ -1,6 +1,6 @@
 /*
  * rd_stats.h: Include file used to read system statistics
- * (C) 1999-2011 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _RD_STATS_H
@@ -137,11 +137,11 @@ struct stats_paging {
 
 /* Structure for I/O and transfer rate statistics */
 struct stats_io {
-	unsigned int  dk_drive			__attribute__ ((aligned (4)));
-	unsigned int  dk_drive_rio		__attribute__ ((packed));
-	unsigned int  dk_drive_wio		__attribute__ ((packed));
-	unsigned int  dk_drive_rblk		__attribute__ ((packed));
-	unsigned int  dk_drive_wblk		__attribute__ ((packed));
+	unsigned long long dk_drive		__attribute__ ((aligned (16)));
+	unsigned long long dk_drive_rio		__attribute__ ((packed));
+	unsigned long long dk_drive_wio		__attribute__ ((packed));
+	unsigned long long dk_drive_rblk	__attribute__ ((packed));
+	unsigned long long dk_drive_wblk	__attribute__ ((packed));
 };
 
 #define STATS_IO_SIZE	(sizeof(struct stats_io))
@@ -203,15 +203,15 @@ struct stats_serial {
 
 /* Structure for block devices statistics */
 struct stats_disk {
-	unsigned long long rd_sect	__attribute__ ((aligned (16)));
-	unsigned long long wr_sect	__attribute__ ((aligned (16)));
-	unsigned long rd_ticks		__attribute__ ((aligned (16)));
-	unsigned long wr_ticks		__attribute__ ((aligned (8)));
-	unsigned long tot_ticks		__attribute__ ((aligned (8)));
-	unsigned long rq_ticks		__attribute__ ((aligned (8)));
-	unsigned long nr_ios		__attribute__ ((aligned (8)));
-	unsigned int  major		__attribute__ ((aligned (8)));
-	unsigned int  minor		__attribute__ ((packed));
+	unsigned long long nr_ios	__attribute__ ((aligned (16)));
+	unsigned long rd_sect		__attribute__ ((aligned (16)));
+	unsigned long wr_sect		__attribute__ ((aligned (8)));
+	unsigned int rd_ticks		__attribute__ ((aligned (8)));
+	unsigned int wr_ticks		__attribute__ ((packed));
+	unsigned int tot_ticks		__attribute__ ((packed));
+	unsigned int rq_ticks		__attribute__ ((packed));
+	unsigned int major		__attribute__ ((packed));
+	unsigned int minor		__attribute__ ((packed));
 };
 
 #define STATS_DISK_SIZE	(sizeof(struct stats_disk))

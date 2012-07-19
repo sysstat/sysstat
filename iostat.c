@@ -497,15 +497,15 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
 	FILE *fp;
 	struct io_stats sdev;
 	int i;
-	unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
-	unsigned long ios_pgr, tot_ticks, rq_ticks, wr_merges, wr_ticks;
-	unsigned long long rd_sec_or_wr_ios, wr_sec;
+	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
+	unsigned long rd_ios, rd_merges_or_rd_sec, wr_ios, wr_merges;
+	unsigned long rd_sec_or_wr_ios, wr_sec, rd_ticks_or_wr_sec;
 
 	/* Try to read given stat file */
 	if ((fp = fopen(filename, "r")) == NULL)
 		return 0;
 	
-	i = fscanf(fp, "%lu %lu %llu %lu %lu %lu %llu %lu %lu %lu %lu",
+	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u",
 		   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
 		   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks);
 
@@ -514,7 +514,7 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
 		sdev.rd_ios     = rd_ios;
 		sdev.rd_merges  = rd_merges_or_rd_sec;
 		sdev.rd_sectors = rd_sec_or_wr_ios;
-		sdev.rd_ticks   = rd_ticks_or_wr_sec;
+		sdev.rd_ticks   = (unsigned int) rd_ticks_or_wr_sec;
 		sdev.wr_ios     = wr_ios;
 		sdev.wr_merges  = wr_merges;
 		sdev.wr_sectors = wr_sec;
@@ -689,9 +689,9 @@ void read_diskstats_stat(int curr)
 	char *dm_name;
 	struct io_stats sdev;
 	int i;
+	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
 	unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
-	unsigned long ios_pgr, tot_ticks, rq_ticks, wr_merges, wr_ticks;
-	unsigned long long rd_sec_or_wr_ios, wr_sec;
+	unsigned long wr_merges, rd_sec_or_wr_ios, wr_sec;
 	char *ioc_dname;
 	unsigned int major, minor;
 
@@ -704,7 +704,7 @@ void read_diskstats_stat(int curr)
 	while (fgets(line, 256, fp) != NULL) {
 
 		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq */
-		i = sscanf(line, "%u %u %s %lu %lu %llu %lu %lu %lu %llu %lu %lu %lu %lu",
+		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u",
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
 			   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks);
@@ -717,7 +717,7 @@ void read_diskstats_stat(int curr)
 			sdev.rd_ios     = rd_ios;
 			sdev.rd_merges  = rd_merges_or_rd_sec;
 			sdev.rd_sectors = rd_sec_or_wr_ios;
-			sdev.rd_ticks   = rd_ticks_or_wr_sec;
+			sdev.rd_ticks   = (unsigned int) rd_ticks_or_wr_sec;
 			sdev.wr_ios     = wr_ios;
 			sdev.wr_merges  = wr_merges;
 			sdev.wr_sectors = wr_sec;
@@ -1158,10 +1158,10 @@ void write_stats(int curr, struct tm *rectime)
 #ifdef DEBUG
 				if (DISPLAY_DEBUG(flags)) {
 					/* Debug output */
-					fprintf(stderr, "name=%s itv=%llu fctr=%d ioi{ rd_sectors=%llu "
-							"wr_sectors=%llu rd_ios=%lu rd_merges=%lu rd_ticks=%lu "
-							"wr_ios=%lu wr_merges=%lu wr_ticks=%lu ios_pgr=%lu tot_ticks=%lu "
-							"rq_ticks=%lu dk_drive=%lu dk_drive_rblk=%lu dk_drive_wblk=%lu }\n",
+					fprintf(stderr, "name=%s itv=%llu fctr=%d ioi{ rd_sectors=%lu "
+							"wr_sectors=%lu rd_ios=%lu rd_merges=%lu rd_ticks=%u "
+							"wr_ios=%lu wr_merges=%lu wr_ticks=%u ios_pgr=%u tot_ticks=%u "
+							"rq_ticks=%u }\n",
 						shi->name,
 						itv,
 						fctr,
@@ -1175,10 +1175,7 @@ void write_stats(int curr, struct tm *rectime)
 						ioi->wr_ticks,
 						ioi->ios_pgr,
 						ioi->tot_ticks,
-						ioi->rq_ticks,
-						ioi->dk_drive,
-						ioi->dk_drive_rblk,
-						ioi->dk_drive_wblk
+						ioi->rq_ticks
 						);
 				}
 #endif
