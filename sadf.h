@@ -1,6 +1,6 @@
 /*
  * sadf: System activity data formatter
- * (C) 1999-2011 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _SADF_H
@@ -71,7 +71,7 @@
 
 /*
  * Indicate that timestamp can be displayed in local time instead of UTC
- * if option -t has been used.
+ * if option -T has been used.
  */
 #define FO_TRUE_TIME		0x08
 
@@ -83,7 +83,7 @@
 
 /*
  * Indicate that the timestamp can be displayed in seconds since the epoch
- * if option -T has been used.
+ * if option -U has been used.
  */
 #define FO_SEC_EPOCH		0x20
 

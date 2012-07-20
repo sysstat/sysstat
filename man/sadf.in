@@ -2,7 +2,7 @@
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ] [ -P {
+.B sadf [ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T ] [ -U ] [ -V ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
 .I hh:mm:ss
@@ -120,10 +120,10 @@ command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
 Hours must be given in 24-hour format.
 .IP -T
+Display timestamp in local time instead of UTC (Coordinated Universal Time).
+.IP -U
 Display timestamp (UTC - Coordinated Universal Time) in seconds from
 the epoch.
-.IP -t
-Display timestamp in local time instead of UTC (Coordinated Universal Time).
 .IP -V
 Print version number then exit.
 .IP -x

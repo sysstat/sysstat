@@ -12,6 +12,8 @@ xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	  to determine devices real name.
 	* Part of 'sadf -H' output was written to stderr instead of
 	  stdout. This is now fixed.
+	* Warning: sadf: Option '-T' has been renamed into '-U', and
+	  optin '-t' has been renamed into '-T'.
 	* [Peter Schiffer]: Various cosmetic changes in manual pages
 	  and usage messages displayed by sysstat commands.
 	* sar and iostat manual pages updated.
