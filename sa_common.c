@@ -936,20 +936,21 @@ int sa_fread(int ifd, void *buffer, int size, int mode)
  * Display sysstat version used to create system activity data file.
  *
  * IN:
- * @file_magic	File magic header
+ * @st		Output stream (stderr or stdout).
+ * @file_magic	File magic header.
  ***************************************************************************
  */
-void display_sa_file_version(struct file_magic *file_magic)
+void display_sa_file_version(FILE *st, struct file_magic *file_magic)
 {
-	fprintf(stderr, _("File created using sar/sadc from sysstat version %d.%d.%d"),
+	fprintf(st, _("File created using sar/sadc from sysstat version %d.%d.%d"),
 		file_magic->sysstat_version,
 		file_magic->sysstat_patchlevel,
 		file_magic->sysstat_sublevel);
 
 	if (file_magic->sysstat_extraversion) {
-		fprintf(stderr, ".%d", file_magic->sysstat_extraversion);
+		fprintf(st, ".%d", file_magic->sysstat_extraversion);
 	}
-	fprintf(stderr, "\n");
+	fprintf(st, "\n");
 }
 
 /*
@@ -976,7 +977,7 @@ void handle_invalid_sa_file(int *fd, struct file_magic *file_magic, char *file,
 
 	if ((n == FILE_MAGIC_SIZE) && (file_magic->sysstat_magic == SYSSTAT_MAGIC)) {
 		/* This is a sysstat file, but this file has an old format */
-		display_sa_file_version(file_magic);
+		display_sa_file_version(stderr, file_magic);
 
 		fprintf(stderr,
 			_("Current sysstat version can no longer read the format of this file (%#x)\n"),

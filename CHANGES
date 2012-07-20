@@ -10,6 +10,8 @@ xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	  activity.
 	* [Peter Schiffer]: sar: Use /sys/dev/block/major:minor links
 	  to determine devices real name.
+	* Part of 'sadf -H' output was written to stderr instead of
+	  stdout. This is now fixed.
 	* [Peter Schiffer]: Various cosmetic changes in manual pages
 	  and usage messages displayed by sysstat commands.
 	* sar and iostat manual pages updated.
