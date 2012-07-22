@@ -32,8 +32,8 @@ Also tell me what version your kernel is).
 2.7. The "Average:" results from the sar command are just rubbish...
 2.8. My database (e.g. MySQL) doesn't appear to understand the time zone
      displayed by 'sadf -d'...
-2.9. I tried to use the -p option of the sadf command, together with the
-     options -s and -e. Unfortunately, I have nothing displayed at all.
+2.9. I tried to use options -s and -e with sadf. Unfortunately, I have
+     nothing displayed at all.
 2.10. I cannot see all my disks when I use the sar -d command...
 2.11. Do you know a tool which can graphically plot the data collected by sar?
 2.12. When I launch sadc, I get the error message:
@@ -309,17 +309,15 @@ to strip the "UTC" characters from the data being loaded into the database.
 
 ~~~
 
-2.9. I tried to use the -p option of the sadf command, together with the
-options -s and -e. Unfortunately, I have nothing displayed at all.
+2.9. I tried to use options -s and -e with sadf. Unfortunately, I have
+nothing displayed at all.
 
 This is because no data belong to the specified time interval!
-With versions older than 7.0.1, the time specified by options -s or -e
-may be considered as given in UTC (Coordinated Universal Time) or local
-time depending on whether sadf displays its output in UTC or local time.
-Option -p makes sadf display its timestamp in UTC, as indicated in the
-manual page. The UTC value may be different from the value that sar
-(or sadf without option -p) displays. The same remark applies to the
-use of -d option.
+The time specified with options -s and -e is now always considered as
+being given in local time to be consistent with sar default output.
+Remember that timestamps are displayed by sadf in UTC (Coordinated
+Universal Time) by default. Use option -T to tell sadf to display them
+in local time.
 
 ~~~
 

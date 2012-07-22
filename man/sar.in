@@ -1832,7 +1832,7 @@ used only when data are read from a file (option
 .IP -t
 When reading data from a daily data file, indicate that
 .B sar
-should display the timestamps in the original locale time of
+should display the timestamps in the original local time of
 the data file creator. Without this option, the
 .B sar
 command displays the timestamps in the user's locale time.

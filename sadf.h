@@ -71,9 +71,9 @@
 
 /*
  * Indicate that timestamp can be displayed in local time instead of UTC
- * if option -T has been used.
+ * if option -T or -t has been used.
  */
-#define FO_TRUE_TIME		0x08
+#define FO_LOCAL_TIME		0x08
 
 /*
  * Indicate that all activities will be displayed horizontally
@@ -96,7 +96,7 @@
 #define DISPLAY_GROUPED_STATS(m)	(((m) & FO_GROUPED_STATS)	== FO_GROUPED_STATS)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
-#define ACCEPT_TRUE_TIME(m)		(((m) & FO_TRUE_TIME)		== FO_TRUE_TIME)
+#define ACCEPT_LOCAL_TIME(m)		(((m) & FO_LOCAL_TIME)		== FO_LOCAL_TIME)
 #define ACCEPT_HORIZONTALLY(m)		(((m) & FO_HORIZONTALLY)	== FO_HORIZONTALLY)
 #define ACCEPT_SEC_EPOCH(m)		(((m) & FO_SEC_EPOCH)		== FO_SEC_EPOCH)
 #define DISPLAY_FIELD_LIST(m)		(((m) & FO_FIELD_LIST)		== FO_FIELD_LIST)

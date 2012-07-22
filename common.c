@@ -315,7 +315,7 @@ unsigned int get_devmap_major(void)
  * Print banner.
  *
  * IN:
- * @rectime	Date and time to display.
+ * @rectime	Date to display (don't use time fields).
  * @sysname	System name to display.
  * @release	System release number to display.
  * @nodename	Hostname to display.

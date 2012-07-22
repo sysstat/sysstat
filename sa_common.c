@@ -405,7 +405,8 @@ void get_itv_value(struct record_header *record_hdr_curr,
  * @file_hdr	System activity file standard header.
  *
  * OUT:
- * @rectime	Date and time from file header.
+ * @rectime	Date (and possibly time) from file header. Only the date,
+ * 		not the time, should be used by the caller.
  ***************************************************************************
  */
 void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
@@ -414,7 +415,7 @@ void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
 	struct tm *loc_t;
 
 	if (PRINT_TRUE_TIME(flags)) {
-		/* Get local time. This is just to fill HH:MM:SS fields */
+		/* Get local time. This is just to fill fields with a default value. */
 		get_time(rectime, 0);
 
 		rectime->tm_mday = file_hdr->sa_day;
@@ -1338,6 +1339,12 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 't':
+			/*
+			 * Check sar option -t here (as it can be combined
+			 * with other ones, eg. "sar -rtu ..."
+			 * But sadf option -t is check in sadf.c as it won't
+			 * be entered as a sar option after "--".
+			 */
 			if (caller == C_SAR) {
 				*flags |= S_F_TRUE_TIME;
 			}
