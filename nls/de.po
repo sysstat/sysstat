@@ -2,14 +2,14 @@
 # Copyright (C) 1999 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
 # Sébastien GODARD <sysstat [at] orange.fr>, 1999.
-# Roland Illig <roland.illig@gmx.de>, 2009, 2010, 2011.
+# Roland Illig <roland.illig@gmx.de>, 2009, 2010, 2011, 2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.3\n"
+"Project-Id-Version: sysstat 10.0.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-11-20 16:55+0100\n"
-"PO-Revision-Date: 2011-12-03 11:34+0100\n"
+"POT-Creation-Date: 2012-05-08 21:39+0200\n"
+"PO-Revision-Date: 2012-05-18 21:57+0100\n"
 "Last-Translator: Roland Illig <roland.illig@gmx.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "Language: de\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 
-#: cifsiostat.c:69 iostat.c:80 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
+#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -48,34 +48,38 @@ msgid "sysstat version %s\n"
 msgstr "sysstat version %s\n"
 
 #: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:692
+#: sadc.c:632 sadc.c:693
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Kann nicht öffnen %s: %s\n"
-
-#: iostat.c:83
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Optionen sind:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <Ferät> [...] | ALL ] [ -p [ <gerät> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Optionen sind:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <Gerät> [...] | ALL ] [ -p [ <gerät> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <Gruppenname> ] { <Gerät> [...] | ALL } ]\n"
+"[ -p [ <Gerät> [,...] | ALL ] [ --debuginfo ]\n"
 
-#: iostat.c:313
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ]\n"
+msgstr ""
+"Optionen sind:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <Gruppenname> ] { <Gerät> [...] | ALL } ]\n"
+"[ -p [ <Gerät> [,...] | ALL ] ]\n"
+
+#: iostat.c:327
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Kann die Plattendaten nicht finden\n"
@@ -188,7 +192,7 @@ msgstr "Kann keine Daten in die Systemaktivitätendatei schreiben: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Kann den Kopf der Systemaktivitätendatei nicht schreiben: %s\n"
 
-#: sadc.c:791
+#: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "An die Datei \"%s\" können keine Daten angehängt werden\n"

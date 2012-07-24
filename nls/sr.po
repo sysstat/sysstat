@@ -1,13 +1,13 @@
-# Serbian translation of 
+# Serbian translation of
 # Copyright (C) 2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.0.3\n"
+"Project-Id-Version: sysstat-10.0.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-11-20 16:55+0100\n"
-"PO-Revision-Date: 2011-12-23 23:48+0200\n"
+"POT-Creation-Date: 2012-05-08 21:39+0200\n"
+"PO-Revision-Date: 2012-05-24 22:53+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnu@prevod.org>\n"
 "Language: sr\n"
@@ -15,9 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.7.0\n"
 
-#: cifsiostat.c:69 iostat.c:80 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
+#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -47,34 +46,38 @@ msgid "sysstat version %s\n"
 msgstr "издање стања система %s\n"
 
 #: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:692
+#: sadc.c:632 sadc.c:693
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Не могу да отворим %s: %s\n"
-
-#: iostat.c:83
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Опције су:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <уређај> [...] | ALL ] [ -p [ <уређај> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Опције су:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <уређај> [...] | ALL ] [ -p [ <уређај> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <назив_групе> ] { <уређај> [...] | СВЕ } ]\n"
+"[ -p [ <уређај> [,...] | СВЕ ] ] [ --debuginfo ]\n"
 
-#: iostat.c:313
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ]\n"
+msgstr ""
+"Опције су:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <назив_групе> ] { <уређај> [...] | СВЕ } ]\n"
+"[ -p [ <уређај> [,...] | СВЕ ] ]\n"
+
+#: iostat.c:327
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Не могу да пронађем податке о диску\n"
@@ -186,7 +189,7 @@ msgstr "Не могу да запишем податке у датотеку р�
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Не могу да запишем заглавље датотеке рада система: %s\n"
 
-#: sadc.c:791
+#: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не могу да прикачим податке тој датотеци (%s)\n"

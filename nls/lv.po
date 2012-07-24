@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the sysstat package.
 #
 # Rihards Prieditis <rprieditis@gmail.com>, 2009, 2010,2011.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.0.2\n"
+"Project-Id-Version: sysstat-10.0.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-08-16 14:17+0200\n"
-"PO-Revision-Date: 2011-09-02 11:06-0000\n"
-"Last-Translator: Rihards Priedītis <rprieditis@gmail.com>\n"
+"POT-Creation-Date: 2012-05-08 21:39+0200\n"
+"PO-Revision-Date: 2012-05-23 10:49+0300\n"
+"Last-Translator: Rūdolfs Mazurs <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +20,7 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: cifsiostat.c:69 iostat.c:80 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
+#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -47,35 +49,39 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr "sysstat versija %s\n"
 
-#: ioconf.c:490 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:692
+#: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
+#: sadc.c:632 sadc.c:693
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Nevar atvērt %s: %s\n"
-
-#: iostat.c:83
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Izvēles ir:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <ierīce> [...] | ALL ] [ -p [ <ierīce> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Izvēles ir:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <ierīce> [...] | ALL ] [ -p [ <ierīce> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <grupas_nosaukums> ] { <ierīce> [...] | ALL } ]\n"
+"[ -p [ <ierīce> [,...] | ALL ] ] [ --debuginfo ]\n"
 
-#: iostat.c:313
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ]\n"
+msgstr ""
+"Izvēles ir:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <grupas_nosaukums> ] { <ierīce> [...] | ALL } ]\n"
+"[ -p [ <ierīce> [,...] | ALL ] ]\n"
+
+#: iostat.c:327
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Nevar atrast diska datus\n"
@@ -91,7 +97,7 @@ msgstr ""
 "[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
 "[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
 
-#: mpstat.c:582 pidstat.c:1823 sar.c:381
+#: mpstat.c:582 pidstat.c:1822 sar.c:381
 msgid "Average:"
 msgstr "Vidēji:"
 
@@ -187,50 +193,51 @@ msgstr "Nevar ierakstīt datus sistēmas aktivitātes failā: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Nevar ierakstīt virsrakstu sistēmas aktivitātes failā: %s\n"
 
-#: sadc.c:791
+#: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Nevar apvienot datus sistēmas aktivitātes failā: %s\n"
 
-#: sadf.c:88
+#: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
 msgstr "Lietošana: %s [ Izvēles ] [ <intervāls> [ <skaits> ] ] [ <datufails> ]\n"
 
-#: sadf.c:91
+#: sadf.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+"[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Izvēles ir:\n"
-"[ -d | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+"[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_iespējas> ]\n"
+"\n"
 
-#: sadf_misc.c:379
+#: sadf_misc.c:595
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Sistēmas aktivitātes datu fails: %s (%#x)\n"
 
-#: sadf_misc.c:388
+#: sadf_misc.c:604
 #, c-format
 msgid "Host: "
 msgstr "Resursdators:"
 
-#: sadf_misc.c:394
+#: sadf_misc.c:610
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Izmērs lielajam int: %d\n"
 
-#: sadf_misc.c:396
+#: sadf_misc.c:612
 #, c-format
 msgid "List of activities:\n"
 msgstr "Darbību saraksts:\n"
 
-#: sadf_misc.c:409
+#: sadf_misc.c:625
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Nezināms aktivitātes formāts]"

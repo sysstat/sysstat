@@ -20,6 +20,7 @@ xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: Various cosmetic changes in manual pages
 	  and usage messages displayed by sysstat commands.
 	* FAQ updated.
+	* NLS updated.
 	* sar, sadf and iostat manual pages updated.
 
 2012/05/16: Version 10.0.5 - Sebastien Godard (sysstat <at> orange.fr)

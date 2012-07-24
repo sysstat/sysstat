@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.4\n"
+"Project-Id-Version: sysstat 10.0.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-03-08 20:20+0100\n"
-"PO-Revision-Date: 2012-04-10 17:59+0200\n"
+"POT-Creation-Date: 2012-05-08 21:39+0200\n"
+"PO-Revision-Date: 2012-05-25 16:15+0200\n"
 "Last-Translator: Tomislav Krznar <tomislav.krznar@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: cifsiostat.c:69 iostat.c:80 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
+#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -47,34 +47,38 @@ msgid "sysstat version %s\n"
 msgstr "sysstat inačica %s\n"
 
 #: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:692
+#: sadc.c:632 sadc.c:693
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Ne mogu otvoriti %s: %s\n"
-
-#: iostat.c:83
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Opcije su:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <uređaj> [...] | ALL ] [ -p [ <uređaj> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
-"Opcije su:\n"
+"Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <uređaj> [...] | ALL ] [ -p [ <uređaj> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <ime_grupe> ] { <uređaj> [...] | ALL } ]\n"
+"[ -p [ <uređaj> [,...] | ALL ] ] [ --debuginfo ]\n"
 
-#: iostat.c:313
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ]\n"
+msgstr ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <ime_grupe> ] { <uređaj> [...] | ALL } ]\n"
+"[ -p [ <uređaj> [,...] | ALL ] ]\n"
+
+#: iostat.c:327
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Ne mogu pronaći podatke o disku\n"
@@ -186,7 +190,7 @@ msgstr "Ne mogu zapisati podatke u datoteku aktivnosti sustava: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Ne mogu zapisati zaglavlje datoteke aktivnosti sustava: %s\n"
 
-#: sadc.c:791
+#: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Ne mogu dodati podatke u tu datoteku (%s)\n"

@@ -5,24 +5,24 @@
 #
 # SИbastien GODARD <sysstat [at] orange.fr>, 1999.
 # Dennis Selsky <selsky@densky.pp.ru>, 2002.
-# Yuri Kozlov <yuray@komyakino.ru>, 2009, 2010, 2011.
+# Yuri Kozlov <yuray@komyakino.ru>, 2009, 2010, 2011, 2012.
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.3\n"
+"Project-Id-Version: sysstat 10.0.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-11-20 16:55+0100\n"
-"PO-Revision-Date: 2011-11-30 21:24+0400\n"
+"POT-Creation-Date: 2012-05-08 21:39+0200\n"
+"PO-Revision-Date: 2012-05-19 15:58+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@mx.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: cifsiostat.c:69 iostat.c:80 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
+#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -52,34 +52,38 @@ msgid "sysstat version %s\n"
 msgstr "sysstat, версия %s\n"
 
 #: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:692
+#: sadc.c:632 sadc.c:693
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Не удалось открыть %s: %s\n"
-
-#: iostat.c:83
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Параметры:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <устройство> [...] | ALL ] [ -p [ <устройство> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Параметры:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <устройство> [...] | ALL ] [ -p [ <устройство> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <имя_группы> ] { <устройство> […] | ALL } ]\n"
+"[ -p [ <устройство> [,…] | ALL ] ] [ --debuginfo ]\n"
 
-#: iostat.c:313
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ]\n"
+msgstr ""
+"Параметры:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <имя_группы> ] { <устройство> […] | ALL } ]\n"
+"[ -p [ <устройство> [,…] | ALL ] ]\n"
+
+#: iostat.c:327
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Не удалось найти данные диска\n"
@@ -116,7 +120,7 @@ msgstr ""
 "Параметры:\n"
 "[ -C <команда> ] [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ]\n"
 "[ -t ] [ -u ] [ -V ] [ -w ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ -p { <pid> [,…] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
 #: pidstat.c:199 sar.c:1013
 #, c-format
@@ -192,7 +196,7 @@ msgstr "Не удалось записать данные в файл систе
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Не удалось записать заголовок в файл системных показателей: %s\n"
 
-#: sadc.c:791
+#: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не удалось добавить данные в этот файл (%s)\n"
@@ -254,8 +258,8 @@ msgstr ""
 "Параметры:\n"
 "[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -H ] [ -p ] [ -q ] [ -r ]\n"
 "[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
-"[ -I { <целое> [,...] | SUM | ALL | XALL } ] [ -P { <ЦП> [,...] | ALL } ]\n"
-"[ -m { <ключ_слово> [,...] | ALL } ] [ -n { <ключ_слово> [,...] | ALL } ]\n"
+"[ -I { <целое> [,…] | SUM | ALL | XALL } ] [ -P { <ЦП> [,…] | ALL } ]\n"
+"[ -m { <ключ_слово> [,…] | ALL } ] [ -n { <ключ_слово> [,…] | ALL } ]\n"
 "[ -o [ <имя_файла> ] | -f [ <имя_файла> ] ]\n"
 "[ -i <интервал> ] [ -s [ <чч:мм:сс> ] ] [ -e [ <чч:мм:сс> ] ]\n"
 
@@ -306,7 +310,7 @@ msgid ""
 "\t\tTEMP\tDevices temperature\n"
 "\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
-"\t-m { <ключ_слово> [,...] | ALL }\n"
+"\t-m { <ключ_слово> [,…] | ALL }\n"
 "\t\tСтатистика управления питанием\n"
 "\t\tКлючевые слова:\n"
 "\t\tCPU\tтекущая частота работы ЦП\n"
@@ -341,7 +345,7 @@ msgid ""
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
 msgstr ""
-"\t-n { <ключ_слово> [,...] | ALL }\n"
+"\t-n { <ключ_слово> [,…] | ALL }\n"
 "\t\tСетевая статистика\n"
 "\t\tКлючевые слова:\n"
 "\t\tDEV\tСетевые интерфейсы\n"

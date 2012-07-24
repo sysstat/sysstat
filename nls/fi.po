@@ -1,15 +1,15 @@
 # Finnish messages for sysstat.
-# Copyright © 2010, 2011 Free Software Foundation, Inc.
+# Copyright © 2010, 2011, 2012 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
 # Jorma Karvonen <karvjorm@users.sf.net>, 2008.
-# Jorma Karvonen <karvonen.jorma@gmail.com>, 2010-2011.
+# Jorma Karvonen <karvonen.jorma@gmail.com>, 2010-2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.0.3\n"
+"Project-Id-Version: sysstat 10.0.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2011-11-20 16:55+0100\n"
-"PO-Revision-Date: 2011-11-30 02:00+0300\n"
+"POT-Creation-Date: 2012-05-08 21:39+0200\n"
+"PO-Revision-Date: 2012-05-18 15:06+0300\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: cifsiostat.c:69 iostat.c:80 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
+#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
 #: sar.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -49,34 +49,38 @@ msgid "sysstat version %s\n"
 msgstr "sysstat-versio %s\n"
 
 #: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:692
+#: sadc.c:632 sadc.c:693
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Ei voida avata %s: %s\n"
-
-#: iostat.c:83
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Valitsimet ovat:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <laite> [...] | ALL ] [ -p [ <laite> [,...] | ALL ] ] [ --debuginfo ]\n"
 
 #: iostat.c:87
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <device> [...] | ALL ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
 msgstr ""
 "Valitsimet ovat:\n"
 "[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ <laite> [...] | ALL ] [ -p [ <laite> [,...] | ALL ] ]\n"
+"[ [ [ -T ] -g <ryhmänimi> ] { <laite> [...] | ALL } ]\n"
+"[ -p [ <laite> [,...] | ALL ] ] [ --debuginfo ]\n"
 
-#: iostat.c:313
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
+"[ -p [ <device> [,...] | ALL ] ]\n"
+msgstr ""
+"Valitsimet ovat:\n"
+"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+"[ [ [ -T ] -g <ryhmänimi> ] { <laite> [...] | ALL } ]\n"
+"[ -p [ <laite> [,...] | ALL ] ]\n"
+
+#: iostat.c:327
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Levydataa ei löydy\n"
@@ -190,7 +194,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Ei voida kirjoittaa järjestelmätoimintojen lokitiedoston otsaketta: %s\n"
 
 #  Tässä haluttuun sana voidaan korvata tilanteessa osuvammalla sanalla,  esim. pyydettyyn, toivottuun, valittuun, kyseiseen tms.
-#: sadc.c:791
+#: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Tietoja ei voida liittää haluttuun tiedostoon (%s)\n"
