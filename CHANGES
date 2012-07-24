@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
+2012/07/29: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added option -[0-9]+ to sar to show data of that days ago.
 	* [Peter Schiffer]: Persistent device names support added to
 	  sar and iostat (option -j).

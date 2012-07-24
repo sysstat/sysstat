@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-21 21:46+0200\n"
+"POT-Creation-Date: 2012-07-24 21:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,32 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr ""
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr ""
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr ""
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr ""
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr ""
-
-#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 pidstat.c:78 sar.c:90
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
 #: nfsiostat.c:68
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -131,6 +106,48 @@ msgid ""
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 
+#: mpstat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+
+#: mpstat.c:581 sar.c:382 pidstat.c:1822
+msgid "Average:"
+msgstr ""
+
+#: mpstat.c:928
+#, c-format
+msgid "Not that many processors!\n"
+msgstr ""
+
+#: sadf_misc.c:595
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr ""
+
+#: sadf_misc.c:604
+#, c-format
+msgid "Host: "
+msgstr ""
+
+#: sadf_misc.c:610
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr ""
+
+#: sadf_misc.c:612
+#, c-format
+msgid "List of activities:\n"
+msgstr ""
+
+#: sadf_misc.c:625
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr ""
+
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
@@ -143,81 +160,6 @@ msgid ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
-msgstr ""
-
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-
-#: mpstat.c:581 pidstat.c:1822 sar.c:382
-msgid "Average:"
-msgstr ""
-
-#: mpstat.c:928
-#, c-format
-msgid "Not that many processors!\n"
-msgstr ""
-
-#: rd_stats.c:2163
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr ""
-
-#: pr_stats.c:2329 pr_stats.c:2342
-msgid "Summary"
-msgstr ""
-
-#: pr_stats.c:2380
-msgid "Other devices not listed here"
-msgstr ""
-
-#: sa_common.c:917
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr ""
-
-#: sa_common.c:927
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr ""
-
-#: sa_common.c:946
-#, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr ""
-
-#: sa_common.c:977
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr ""
-
-#: sa_common.c:984
-#, c-format
-msgid ""
-"Current sysstat version can no longer read the format of this file (%#x)\n"
-msgstr ""
-
-#: sa_common.c:1216
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr ""
-
-#: pidstat.c:81
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
-"[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -T { TASK | CHILD | ALL } ]\n"
-msgstr ""
-
-#: pidstat.c:199 sar.c:1014
-#, c-format
-msgid "Requested activities not available\n"
 msgstr ""
 
 #: sar.c:105
@@ -372,6 +314,11 @@ msgstr ""
 msgid "Inconsistent input data\n"
 msgstr ""
 
+#: sar.c:1014 pidstat.c:199
+#, c-format
+msgid "Requested activities not available\n"
+msgstr ""
+
 #: sar.c:1272
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
@@ -385,4 +332,57 @@ msgstr ""
 #: sar.c:1410
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
+msgstr ""
+
+#: rd_stats.c:2163
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr ""
+
+#: sa_common.c:917
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr ""
+
+#: sa_common.c:927
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr ""
+
+#: sa_common.c:946
+#, c-format
+msgid "File created using sar/sadc from sysstat version %d.%d.%d"
+msgstr ""
+
+#: sa_common.c:977
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr ""
+
+#: sa_common.c:984
+#, c-format
+msgid ""
+"Current sysstat version can no longer read the format of this file (%#x)\n"
+msgstr ""
+
+#: sa_common.c:1216
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr ""
+
+#: pidstat.c:81
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
+"[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -T { TASK | CHILD | ALL } ]\n"
+msgstr ""
+
+#: pr_stats.c:2329 pr_stats.c:2342
+msgid "Summary"
+msgstr ""
+
+#: pr_stats.c:2380
+msgid "Other devices not listed here"
 msgstr ""

@@ -115,7 +115,7 @@ void free_structures(struct activity *act[])
 /*
   ***************************************************************************
   * Try to get device real name from sysfs tree.
-  * 
+  *
   * IN:
   * @major	Major number of the device.
   * @minor	Minor number of the device.
@@ -346,7 +346,7 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
  *
  * IN:
  * @d_off	Day offset (number of days to go back in the past).
- * 
+ *
  * OUT:
  * @rectime	Current date and time.
  * @datafile	Name of daily data file.

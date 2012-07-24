@@ -70,7 +70,7 @@ void print_version(void)
  *
  * IN:
  * @d_off	Day offset (number of days to go back in the past).
- * 
+ *
  * OUT:
  * @rectime	Current local date and time.
  *
@@ -97,7 +97,7 @@ time_t get_localtime(struct tm *rectime, int d_off)
  *
  * IN:
  * @d_off	Day offset (number of days to go back in the past).
- * 
+ *
  * OUT:
  * @rectime	Current date and time expressed in UTC.
  *
@@ -124,7 +124,7 @@ time_t get_gmtime(struct tm *rectime, int d_off)
  *
  * IN:
  * @d_off	Day offset (number of days to go back in the past).
- * 
+ *
  * OUT:
  * @rectime	Current date and time.
  *
