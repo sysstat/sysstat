@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar and sadf manual pages updated.
 
 2012/07/29: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added option -[0-9]+ to sar to show data of that days ago.
@@ -16,7 +17,7 @@ xxxx/xx/xx: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)
 	  stdout. This is now fixed.
 	* WARNING: sadf: Option '-T' has been renamed into '-U', and
 	  option '-t' has been renamed into '-T'.
-	* sadf: New option -t added. This option tells sadc to display
+	* sadf: New option -t added. This option tells sadf to display
 	  the timestamps in the local time of the data file creator
 	  instead of UTC. The same option exists for sar.
 	* [Peter Schiffer]: Various cosmetic changes in manual pages

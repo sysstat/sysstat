@@ -83,7 +83,7 @@ most databases, and additional semicolon separated data fields as specified
 by
 .I sar_options
 command line options.
-Note that timestamp output can be controlled by options -T and -U.
+Note that timestamp output can be controlled by options -T, -t and -U.
 .IP "-e [ hh:mm:ss ]"
 Set the ending time of the report, given in local time. The default ending
 time is 18:00:00. Hours must be given in 24-hour format.
@@ -95,7 +95,7 @@ When used in conjunction with option -d, all activities
 will be displayed horizontally on a single line.
 .IP -j
 Print the contents of the data file in JSON (JavaScript Object Notation)
-format. Timestamps can be controlled by option -T.
+format. Timestamps can be controlled by options -T and -t.
 .IP "-P { cpu [,...] | ALL }"
 Tell
 .B sadf
@@ -112,7 +112,7 @@ hostname of the host where the file was created, the interval value
 (or -1 if not applicable), the timestamp,
 the device name (or - if not applicable),
 the field name and its value.
-Note that timestamp output can be controlled by options -T and -U.
+Note that timestamp output can be controlled by options -T, -t and -U.
 .IP "-s [ hh:mm:ss ]"
 Set the starting time of the data (given in local time), causing the
 .B sadf
@@ -131,7 +131,7 @@ the epoch.
 Print version number then exit.
 .IP -x
 Print the contents of the data file in XML format.
-Timestamps can be controlled by option -T.
+Timestamps can be controlled by options -T and -t.
 The corresponding
 DTD (Document Type Definition) and XML Schema are included in the sysstat
 source package. They are also available at

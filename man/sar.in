@@ -330,8 +330,6 @@ flag). The default value of the
 parameter is the current daily data file, the
 .IR @SA_DIR@/sa dd
 file. The -f option is exclusive of the -o option.
-.IP -h
-Display a short help message then exit.
 .IP -H
 Report hugepages utilization statistics.
 The following values are displayed:
