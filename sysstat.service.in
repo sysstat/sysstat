@@ -1,0 +1,19 @@
+# @SYSTEMD_UNIT_DIR@/sysstat.service
+# (C) 2012 Peter Schiffer (pschiffe <at> redhat.com)
+#
+# @PACKAGE_NAME@-@PACKAGE_VERSION@ systemd unit file:
+#	 Insert a dummy record in current daily data file.
+#	 This indicates that the counters have restarted from 0.
+
+[Unit]
+Description=Resets System Activity Logs
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=@CRON_OWNER@
+ExecStart=@SA_LIB_DIR@/sa1 --boot
+
+[Install]
+WantedBy=multi-user.target
+

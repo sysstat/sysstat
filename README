@@ -1,6 +1,6 @@
 sysstat: System performance tools for the Linux operating system...
 --
-(C) 1999-2011 Sebastien Godard (sysstat <at> orange.fr)
+(C) 1999-2012 Sebastien GODARD (sysstat <at> orange.fr)
 
 The latest version of sysstat can always be found on my web site at:
 
@@ -88,6 +88,7 @@ ${PREFIX}/share/locale/*/LC_MESSAGES/sysstat.mo
 ${PREFIX}/share/doc/sysstat-x.y.z/*
 /var/log/sa
 ${INIT_DIR}/sysstat
+/lib/systemd/system/sysstat.service		if OS uses systemd
 /etc/sysconfig/sysstat
 /etc/sysconfig/sysstat.ioconf
 /etc/cron.d/sysstat
@@ -127,5 +128,5 @@ Anyway you are welcome if you want to make other translations available ;-)
 Please read the README-nls file in the nls directory before.
 
 --
-Sebastien Godard (sysstat <at> orange.fr)
+Sebastien GODARD (sysstat <at> orange.fr)
 
