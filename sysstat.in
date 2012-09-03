@@ -1,6 +1,8 @@
 #!/bin/sh
 #
 # chkconfig: 12345 01 99
+# description: Reset the system activity logs
+#
 # @INIT_DIR@/sysstat
 # (C) 2000-2011 Sebastien Godard (sysstat <at> orange.fr)
 #
@@ -8,7 +10,8 @@
 # Provides:		sysstat
 # Required-Start:
 # Required-Stop:
-# Default-Stop:
+# Default-Start: 1 2 3 4 5
+# Default-Stop: 0 6
 # Description: Reset the system activity logs
 # Short-Description: Reset the system activity logs
 ### END INIT INFO
@@ -17,29 +20,35 @@
 #@(#)	 This indicates that the counters have restarted from 0.
 
 RETVAL=0
+PIDFILE=/var/run/sysstat.pid
 
 # See how we were called.
 case "$1" in
   start)
-	exitCodeIndicator="$(mktemp /tmp/sysstat-XXXXXX)" || exit 1
-	echo -n "Calling the system activity data collector (sadc): "
-	@SU_C_OWNER@ @QUOTE@ @SA_LIB_DIR@/sa1 --boot || rm -f ${exitCodeIndicator} @QUOTE@
-
-	# Try to guess if sadc was successfully launched. The difficulty
-	# here is that the exit code is lost when the above command is
-	# run via "su foo -c ..."
-	if [ -f "${exitCodeIndicator}" ]; then
-		rm -f ${exitCodeIndicator}
-	else
-		RETVAL=2
-	fi
+	[ $UID -eq 0 ] || exit 4
+	echo $$ > $PIDFILE || exit 1
+	echo -n "Calling the system activity data collector (sadc)... "
+	@SU_C_OWNER@ @QUOTE@ @SA_LIB_DIR@/sa1 --boot @QUOTE@
+	[ $? -eq 0 ] || RETVAL=1
+	rm -f $PIDFILE
 	echo
 	;;
-  stop|status|restart|reload|force-reload|condrestart|try-restart)
+
+  status)
+	[ -f $PIDFILE ] || RETVAL=3
 	;;
+
+  stop)
+	[ $UID -eq 0 ] || exit 4
+	;;
+
+  restart|reload|force-reload|condrestart|try-restart)
+	;;
+
   *)
 	echo "Usage: sysstat {start|stop|status|restart|reload|force-reload|condrestart|try-restart}"
-	exit 2
+	RETVAL=2
 esac
+
 exit ${RETVAL}
 
