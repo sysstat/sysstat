@@ -5,6 +5,7 @@ xxxx/xx/xx: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: Sysstat init script updated to make it
 	  more conforming to LSB.
 	* sar and sadf manual pages updated.
+	* Cosmetic change in sadf -H output.
 
 2012/07/29: Version 10.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added option -[0-9]+ to sar to show data of that days ago.
