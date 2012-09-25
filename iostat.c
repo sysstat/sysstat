@@ -1084,7 +1084,8 @@ void write_stats(int curr, struct tm *rectime)
 			/* Debug output */
 			fprintf(stderr, "itv=%llu st_cpu[curr]{ cpu_user=%llu cpu_nice=%llu "
 					"cpu_sys=%llu cpu_idle=%llu cpu_iowait=%llu cpu_steal=%llu "
-					"cpu_hardirq=%llu cpu_softirq=%llu cpu_guest=%llu }\n",
+					"cpu_hardirq=%llu cpu_softirq=%llu cpu_guest=%llu "
+					"cpu_guest_nice=%llu }\n",
 				itv,
 				st_cpu[curr]->cpu_user,
 				st_cpu[curr]->cpu_nice,
@@ -1094,8 +1095,8 @@ void write_stats(int curr, struct tm *rectime)
 				st_cpu[curr]->cpu_steal,
 				st_cpu[curr]->cpu_hardirq,
 				st_cpu[curr]->cpu_softirq,
-				st_cpu[curr]->cpu_guest
-				);
+				st_cpu[curr]->cpu_guest,
+				st_cpu[curr]->cpu_guest_nice);
 		}
 #endif
 

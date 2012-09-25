@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.13 for sysstat. See sadf.h -->
+<!--DTD v2.14 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
@@ -78,6 +78,7 @@
 	irq CDATA #REQUIRED
 	soft CDATA #REQUIRED
 	guest CDATA #REQUIRED
+	gnice CDATA #REQUIRED
 	idle CDATA #REQUIRED
 >
 

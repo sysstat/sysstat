@@ -84,7 +84,7 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 			 * (user, nice, etc.) among all proc. CPU usage is not reduced
 			 * to one processor to avoid rounding problems.
 			 */
-			sscanf(line + 5, "%llu %llu %llu %llu %llu %llu %llu %llu %llu",
+			sscanf(line + 5, "%llu %llu %llu %llu %llu %llu %llu %llu %llu %llu",
 			       &st_cpu->cpu_user,
 			       &st_cpu->cpu_nice,
 			       &st_cpu->cpu_sys,
@@ -93,14 +93,16 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 			       &st_cpu->cpu_hardirq,
 			       &st_cpu->cpu_softirq,
 			       &st_cpu->cpu_steal,
-			       &st_cpu->cpu_guest);
+			       &st_cpu->cpu_guest,
+			       &st_cpu->cpu_guest_nice);
 
 			/*
 			 * Compute the uptime of the system in jiffies (1/100ths of a second
 			 * if HZ=100).
 			 * Machine uptime is multiplied by the number of processors here.
 			 *
-			 * NB: Don't add cpu_guest because cpu_user already includes it.
+			 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+			 * already include them.
 			 */
 			*uptime = st_cpu->cpu_user + st_cpu->cpu_nice    +
 				st_cpu->cpu_sys    + st_cpu->cpu_idle    +
@@ -117,7 +119,7 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 				 * (user, nice, etc) for current proc.
 				 * This is done only on SMP machines.
 				 */
-				sscanf(line + 3, "%d %llu %llu %llu %llu %llu %llu %llu %llu %llu",
+				sscanf(line + 3, "%d %llu %llu %llu %llu %llu %llu %llu %llu %llu %llu",
 				       &proc_nb,
 				       &sc.cpu_user,
 				       &sc.cpu_nice,
@@ -127,7 +129,8 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 				       &sc.cpu_hardirq,
 				       &sc.cpu_softirq,
 				       &sc.cpu_steal,
-				       &sc.cpu_guest);
+				       &sc.cpu_guest,
+				       &sc.cpu_guest_nice);
 
 				if (proc_nb < (nbr - 1)) {
 					st_cpu_i = st_cpu + proc_nb + 1;
@@ -143,8 +146,8 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 					 * Compute uptime reduced to one proc using proc#0.
 					 * Done if /proc/uptime was unavailable.
 					 *
-					 * NB: Don't add cpu_guest because cpu_user already
-					 * includes it.
+					 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+					 * already include them.
 					 */
 					*uptime0 = sc.cpu_user + sc.cpu_nice  +
 						sc.cpu_sys     + sc.cpu_idle  +

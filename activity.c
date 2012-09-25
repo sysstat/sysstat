@@ -86,7 +86,7 @@ struct activity cpu_act = {
 	.f_xml_print	= xml_print_cpu_stats,
 	.f_json_print	= json_print_cpu_stats,
 	.hdr_line	= "CPU;%user;%nice;%system;%iowait;%steal;%idle|"
-		          "CPU;%usr;%nice;%sys;%iowait;%steal;%irq;%soft;%guest;%idle",
+		          "CPU;%usr;%nice;%sys;%iowait;%steal;%irq;%soft;%guest;%gnice;%idle",
 	.name		= "A_CPU",
 #endif
 	.nr		= -1,

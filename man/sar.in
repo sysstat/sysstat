@@ -1,4 +1,4 @@
-.TH SAR 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "SEPTEMBER 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -1900,6 +1900,11 @@ Percentage of time spent by the CPU or CPUs to service software interrupts.
 .B %guest
 .RS
 Percentage of time spent by the CPU or CPUs to run a virtual processor.
+.RE
+
+.B %gnice
+.RS
+Percentage of time spent by the CPU or CPUs to run a niced guest.
 .RE
 
 .B %idle

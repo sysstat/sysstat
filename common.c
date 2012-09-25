@@ -585,15 +585,25 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 	
 	if ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest)) {
 		/*
-		* Sometimes the nr of jiffies spent in guest mode given by the guest
-		* counter in /proc/stat is slightly higher than that included in
-		* the user counter. Update the interval value accordingly.
-		*/
-		ishift = (scp->cpu_user - scp->cpu_guest) -
-		         (scc->cpu_user - scc->cpu_guest);
+		 * Sometimes the nr of jiffies spent in guest mode given by the guest
+		 * counter in /proc/stat is slightly higher than that included in
+		 * the user counter. Update the interval value accordingly.
+		 */
+		ishift += (scp->cpu_user - scp->cpu_guest) -
+		          (scc->cpu_user - scc->cpu_guest);
+	}
+	if ((scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice)) {
+		/*
+		 * Idem for nr of jiffies spent in guest_nice mode.
+		 */
+		ishift += (scp->cpu_nice - scp->cpu_guest_nice) -
+		          (scc->cpu_nice - scc->cpu_guest_nice);
 	}
 	
-	/* Don't take cpu_guest into account because cpu_user already includes it */
+	/*
+	 * Don't take cpu_guest and cpu_guest_nice into account
+	 * because cpu_user and cpu_nice already include them.
+	 */
 	return ((scc->cpu_user    + scc->cpu_nice   +
 		 scc->cpu_sys     + scc->cpu_iowait +
 		 scc->cpu_idle    + scc->cpu_steal  +

@@ -74,15 +74,16 @@
  * Following structures are for each individual CPU (0, 1, etc.)
  */
 struct stats_cpu {
-	unsigned long long cpu_user	__attribute__ ((aligned (16)));
-	unsigned long long cpu_nice	__attribute__ ((aligned (16)));
-	unsigned long long cpu_sys	__attribute__ ((aligned (16)));
-	unsigned long long cpu_idle	__attribute__ ((aligned (16)));
-	unsigned long long cpu_iowait	__attribute__ ((aligned (16)));
-	unsigned long long cpu_steal	__attribute__ ((aligned (16)));
-	unsigned long long cpu_hardirq	__attribute__ ((aligned (16)));
-	unsigned long long cpu_softirq	__attribute__ ((aligned (16)));
-	unsigned long long cpu_guest	__attribute__ ((aligned (16)));
+	unsigned long long cpu_user		__attribute__ ((aligned (16)));
+	unsigned long long cpu_nice		__attribute__ ((aligned (16)));
+	unsigned long long cpu_sys		__attribute__ ((aligned (16)));
+	unsigned long long cpu_idle		__attribute__ ((aligned (16)));
+	unsigned long long cpu_iowait		__attribute__ ((aligned (16)));
+	unsigned long long cpu_steal		__attribute__ ((aligned (16)));
+	unsigned long long cpu_hardirq		__attribute__ ((aligned (16)));
+	unsigned long long cpu_softirq		__attribute__ ((aligned (16)));
+	unsigned long long cpu_guest		__attribute__ ((aligned (16)));
+	unsigned long long cpu_guest_nice	__attribute__ ((aligned (16)));
 };
 
 #define STATS_CPU_SIZE	(sizeof(struct stats_cpu))
