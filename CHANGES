@@ -1,12 +1,12 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)
-	* New field added to sar -u: %gnice (time spent running a niced
-	  guest).
+	* New field added to sar -u and mpstat: %gnice (time spent
+	  running a niced guest).
 	* [Peter Schiffer]: systemd support added.
 	* [Peter Schiffer]: Sysstat init script updated to make it
 	  more conforming to LSB.
-	* sar and sadf manual pages updated.
+	* sar, sadf and mpstat manual pages updated.
 	* DTD and XSD documents updated.
 	* Cosmetic change in sadf -H output.
 

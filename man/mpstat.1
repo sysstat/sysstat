@@ -1,4 +1,4 @@
-.TH MPSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "SEPTEMBER 2012" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
@@ -157,6 +157,12 @@ or CPUs while the hypervisor was servicing another virtual processor.
 .RS
 Show the percentage of time spent by the CPU or CPUs to run a virtual
 processor.
+.RE
+
+.B %gnice
+.RS
+Show the percentage of time spent by the CPU or CPUs to run a niced
+guest.
 .RE
 
 .B %idle

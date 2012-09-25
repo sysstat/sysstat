@@ -354,7 +354,7 @@ void write_stats_core(int prev, int curr, int dis,
 	if (DISPLAY_CPU(actflags)) {
 		if (dis) {
 			printf("\n%-11s  CPU    %%usr   %%nice    %%sys %%iowait    %%irq   "
-			       "%%soft  %%steal  %%guest   %%idle\n",
+			       "%%soft  %%steal  %%guest  %%gnice   %%idle\n",
 			       prev_string);
 		}
 
@@ -363,15 +363,18 @@ void write_stats_core(int prev, int curr, int dis,
 
 			printf("%-11s  all", curr_string);
 
-			printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f\n",
+			printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f\n",
 			       (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
 			       (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
 			       0.0 :
 			       ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
 					   st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
 					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_nice,
-					   st_cpu[curr]->cpu_nice,
+			       (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
+			       (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
+			       0.0 :
+			       ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
+					   st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
 					   g_itv),
 			       ll_sp_value(st_cpu[prev]->cpu_sys,
 					   st_cpu[curr]->cpu_sys,
@@ -390,6 +393,9 @@ void write_stats_core(int prev, int curr, int dis,
 					   g_itv),
 			       ll_sp_value(st_cpu[prev]->cpu_guest,
 					   st_cpu[curr]->cpu_guest,
+					   g_itv),
+			       ll_sp_value(st_cpu[prev]->cpu_guest_nice,
+					   st_cpu[curr]->cpu_guest_nice,
 					   g_itv),
 			       (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
 			       0.0 :
@@ -410,7 +416,8 @@ void write_stats_core(int prev, int curr, int dis,
 			/*
 			 * If the CPU is offline then it is omited from /proc/stat
 			 * and the sum of all values is zero.
-			 * (Remember that guest time is already included in user mode.)
+			 * (Remember that guest/guest_nice times are already included in
+			 * user/nice modes.)
 			 */
 			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
 			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
@@ -419,9 +426,9 @@ void write_stats_core(int prev, int curr, int dis,
 				if (!DISPLAY_ONLINE_CPU(flags)) {
 					printf("%-11s %4d"
 					       "  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-					       "  %6.2f  %6.2f  %6.2f\n",
+					       "  %6.2f  %6.2f  %6.2f  %6.2f\n",
 					       curr_string, cpu - 1,
-					       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+					       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 				}
 				continue;
 			}
@@ -437,20 +444,22 @@ void write_stats_core(int prev, int curr, int dis,
 				 * but the sum of values is not zero.
 				 */
 				printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-				       "  %6.2f  %6.2f  %6.2f\n",
-				       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
+				       "  %6.2f  %6.2f  %6.2f  %6.2f\n",
+				       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 			}
 
 			else {
 				printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-				       "  %6.2f  %6.2f  %6.2f\n",
+				       "  %6.2f  %6.2f  %6.2f  %6.2f\n",
 				       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 				       0.0 :
 				       ll_sp_value(scp->cpu_user - scp->cpu_guest,
 						   scc->cpu_user - scc->cpu_guest,
 						   pc_itv),
-				       ll_sp_value(scp->cpu_nice,
-						   scc->cpu_nice,
+				       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+						   scc->cpu_nice - scc->cpu_guest_nice,
 						   pc_itv),
 				       ll_sp_value(scp->cpu_sys,
 						   scc->cpu_sys,
@@ -469,6 +478,9 @@ void write_stats_core(int prev, int curr, int dis,
 						   pc_itv),
 				       ll_sp_value(scp->cpu_guest,
 						   scc->cpu_guest,
+						   pc_itv),
+				       ll_sp_value(scp->cpu_guest_nice,
+						   scc->cpu_guest_nice,
 						   pc_itv),
 				       (scc->cpu_idle < scp->cpu_idle) ?
 				       0.0 :
