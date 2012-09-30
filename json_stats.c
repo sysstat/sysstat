@@ -479,7 +479,8 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		       "\"commit\": %lu, "
 		       "\"commit-percent\": %.2f, "
 		       "\"active\": %lu, "
-		       "\"inactive\": %lu",
+		       "\"inactive\": %lu, "
+		       "\"dirty\": %lu",
 		       smc->frmkb,
 		       smc->tlmkb - smc->frmkb,
 		       smc->tlmkb ?
@@ -492,7 +493,8 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
 		       0.0,
 		       smc->activekb,
-		       smc->inactkb);
+		       smc->inactkb,
+		       smc->dirtykb);
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {

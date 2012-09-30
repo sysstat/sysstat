@@ -484,8 +484,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xprintf(tab, "<active>%lu</active>",
 			smc->activekb);
 
-		xprintf(tab--, "<inactive>%lu</inactive>",
+		xprintf(tab, "<inactive>%lu</inactive>",
 			smc->inactkb);
+		
+		xprintf(tab--, "<dirty>%lu</dirty>",
+			smc->dirtykb);
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {

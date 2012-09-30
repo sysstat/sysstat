@@ -789,9 +789,13 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       "-\tkbactive", NULL, NULL,
 		       smc->activekb, DNOVAL, NULL);
 
-		render(isdb, pre, PT_USEINT | pt_newlin,
+		render(isdb, pre, PT_USEINT,
 		       "-\tkbinact", NULL, NULL,
 		       smc->inactkb, DNOVAL, NULL);
+
+		render(isdb, pre, PT_USEINT | pt_newlin,
+		       "-\tkbdirty", NULL, NULL,
+		       smc->dirtykb, DNOVAL, NULL);
 	}
 	
 	if (DISPLAY_SWAP(a->opt_flags)) {

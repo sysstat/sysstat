@@ -159,6 +159,7 @@ struct stats_memory {
 	unsigned long comkb	__attribute__ ((aligned (8)));
 	unsigned long activekb	__attribute__ ((aligned (8)));
 	unsigned long inactkb	__attribute__ ((aligned (8)));
+	unsigned long dirtykb	__attribute__ ((aligned (8)));
 };
 
 #define STATS_MEMORY_SIZE	(sizeof(struct stats_memory))

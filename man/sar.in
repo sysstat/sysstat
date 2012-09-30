@@ -1783,6 +1783,11 @@ and usually not reclaimed unless absolutely necessary).
 Amount of inactive memory in kilobytes (memory which has been less recently
 used. It is more eligible to be reclaimed for other purposes).
 .RE
+
+.B kbdirty
+.RS
+Amount of memory in kilobytes waiting to get written back to the disk.
+.RE
 .RE
 .IP -S
 Report swap space utilization statistics.

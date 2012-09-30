@@ -350,6 +350,10 @@ void read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of free swap memory in kB */
 			sscanf(line + 9, "%lu", &st_memory->frskb);
 		}
+		else if (!strncmp(line, "Dirty:", 6)) {
+			/* Read the amount of dirty memory in kB */
+			sscanf(line + 6, "%lu", &st_memory->dirtykb);
+		}
 		else if (!strncmp(line, "Committed_AS:", 13)) {
 			/* Read the amount of commited memory in kB */
 			sscanf(line + 13, "%lu", &st_memory->comkb);

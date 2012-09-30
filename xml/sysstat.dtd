@@ -142,7 +142,7 @@
 	bwrtn CDATA #REQUIRED
 >
 
-<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, active, inactive, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
+<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, active, inactive, dirty, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
 <!ATTLIST memory
 	per CDATA #REQUIRED
 	unit CDATA #REQUIRED
@@ -165,6 +165,8 @@
 <!ELEMENT active (#PCDATA)>
 
 <!ELEMENT inactive (#PCDATA)>
+
+<!ELEMENT dirty (#PCDATA)>
 
 <!ELEMENT swpfree (#PCDATA)>
 
