@@ -487,7 +487,8 @@ __printf_funct_t print_xml_header(int *tab, int action, char *dfile,
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		printf("<!DOCTYPE sysstat PUBLIC \"DTD v%s sysstat //EN\"\n",
 		       XML_DTD_VERSION);
-		printf("\"http://pagesperso-orange.fr/sebastien.godard/sysstat.dtd\">\n");
+		printf("\"http://pagesperso-orange.fr/sebastien.godard/sysstat-%s.dtd\">\n",
+		       XML_DTD_VERSION);
 		
 		xprintf(*tab, "<sysstat>");
 
