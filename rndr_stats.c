@@ -133,7 +133,11 @@ static void render(int isdb, char *pre, int rflags, const char *pptxt,
 			}
 		}
 		else {
-			printf(txt[isdb]);	/* No args */
+			/*
+			 * Additional NULL parameter below works around
+			 * fatal error when compiled with -Werror=format-security.
+			 */
+			printf(txt[isdb], NULL);	/* No args */
 		}
 	}
 

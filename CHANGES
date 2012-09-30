@@ -9,6 +9,7 @@ xxxx/xx/xx: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: Sysstat init script updated to make it
 	  more conforming to LSB.
 	* XML DTD document name is now tagged with a version number.
+	* Fixed a fatal error when compiled with -Werror=format-security.
 	* sar, sadf and mpstat manual pages updated.
 	* DTD and XSD documents updated.
 	* Cosmetic change in sadf -H output.
