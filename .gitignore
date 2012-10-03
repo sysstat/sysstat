@@ -9,6 +9,7 @@ crontab
 version.h
 sysconfig.h
 sysstat.sysconfig
+sysstat.service
 sysstat.crond
 sysstat.cron.daily
 sysstat.cron.hourly
