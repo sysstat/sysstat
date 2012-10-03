@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-09-30 16:15+0200\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,32 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sadf_misc.c:596
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr ""
-
-#: sadf_misc.c:605
-#, c-format
-msgid "Host: "
-msgstr ""
-
-#: sadf_misc.c:611
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr ""
-
-#: sadf_misc.c:613
-#, c-format
-msgid "List of activities:\n"
-msgstr ""
-
-#: sadf_misc.c:626
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr ""
-
-#: iostat.c:84 cifsiostat.c:69 pidstat.c:78 mpstat.c:86 sar.c:90
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
 #: nfsiostat.c:68
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -76,6 +51,31 @@ msgstr ""
 #: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
+msgstr ""
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr ""
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr ""
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr ""
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr ""
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
 msgstr ""
 
 #: sadc.c:81
@@ -131,22 +131,21 @@ msgid ""
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 
-#: pidstat.c:81
+#: mpstat.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
-"[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -T { TASK | CHILD | ALL } ]\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 
-#: pidstat.c:199 sar.c:1014
-#, c-format
-msgid "Requested activities not available\n"
-msgstr ""
-
-#: pidstat.c:1822 mpstat.c:593 sar.c:382
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
+msgstr ""
+
+#: mpstat.c:940
+#, c-format
+msgid "Not that many processors!\n"
 msgstr ""
 
 #: sadf.c:86
@@ -161,19 +160,6 @@ msgid ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
-msgstr ""
-
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-
-#: mpstat.c:940
-#, c-format
-msgid "Not that many processors!\n"
 msgstr ""
 
 #: sar.c:105
@@ -328,6 +314,11 @@ msgstr ""
 msgid "Inconsistent input data\n"
 msgstr ""
 
+#: sar.c:1014 pidstat.c:199
+#, c-format
+msgid "Requested activities not available\n"
+msgstr ""
+
 #: sar.c:1272
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
@@ -346,14 +337,6 @@ msgstr ""
 #: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr ""
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr ""
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
 msgstr ""
 
 #: sa_common.c:917
@@ -385,4 +368,21 @@ msgstr ""
 #: sa_common.c:1216
 #, c-format
 msgid "Requested activities not available in file %s\n"
+msgstr ""
+
+#: pidstat.c:81
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
+"[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -T { TASK | CHILD | ALL } ]\n"
+msgstr ""
+
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
+msgstr ""
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
 msgstr ""
