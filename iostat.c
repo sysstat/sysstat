@@ -85,13 +85,13 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
@@ -1205,6 +1205,12 @@ void write_stats(int curr, struct tm *rectime)
 void rw_io_stat_loop(long int count, struct tm *rectime)
 {
 	int curr = 1;
+	int skip = 0;
+	
+	/* Should we skip first report? */
+	if (DISPLAY_OMIT_SINCE_BOOT(flags) && interval > 0) {
+		skip = 1;
+	}
 
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
@@ -1261,12 +1267,19 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		/* Get time */
 		get_localtime(rectime, 0);
 
-		/* Print results */
-		write_stats(curr, rectime);
-
-		if (count > 0) {
-			count--;
+		/* Check whether we should skip first report */
+		if (!skip) {
+			/* Print results */
+			write_stats(curr, rectime);
+			
+			if (count > 0) {
+				count--;
+			}
 		}
+		else {
+			skip = 0;
+		}
+
 		if (count) {
 			curr ^= 1;
 			pause();
@@ -1457,6 +1470,11 @@ int main(int argc, char **argv)
 				case 'x':
 					/* Display extended stats */
 					flags |= I_D_EXTENDED;
+					break;
+
+				case 'y':
+					/* Don't display stats since system restart */
+					flags |= I_D_OMIT_SINCE_BOOT;
 					break;
 					
 				case 'z':

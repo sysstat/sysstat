@@ -23,7 +23,7 @@
 #define I_F_HAS_DISKSTATS	0x00800
 #define I_D_HUMAN_READ		0x01000
 #define I_D_PERSIST_NAME	0x02000
-/* Unused			0x04000 */
+#define I_D_OMIT_SINCE_BOOT	0x04000
 /* Unused			0x08000 */
 #define I_D_DEVMAP_NAME		0x10000
 #define I_D_ISO			0x20000
@@ -44,6 +44,7 @@
 #define HAS_DISKSTATS(m)		(((m) & I_F_HAS_DISKSTATS)    == I_F_HAS_DISKSTATS)
 #define DISPLAY_HUMAN_READ(m)		(((m) & I_D_HUMAN_READ)       == I_D_HUMAN_READ)
 #define DISPLAY_PERSIST_NAME_I(m)	(((m) & I_D_PERSIST_NAME)     == I_D_PERSIST_NAME)
+#define DISPLAY_OMIT_SINCE_BOOT(m)	(((m) & I_D_OMIT_SINCE_BOOT)  == I_D_OMIT_SINCE_BOOT)
 #define DISPLAY_DEVMAP_NAME(m)		(((m) & I_D_DEVMAP_NAME)      == I_D_DEVMAP_NAME)
 #define DISPLAY_ISO(m)			(((m) & I_D_ISO)              == I_D_ISO)
 #define DISPLAY_GROUP_TOTAL_ONLY(m)	(((m) & I_D_GROUP_TOTAL_ONLY) == I_D_GROUP_TOTAL_ONLY)
