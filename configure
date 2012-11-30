@@ -4864,12 +4864,12 @@ else
    AuxPrefix=/usr/local
 fi
 
-if test -d $AuxPrefix/lib; then
-   SADC_DIR=$AuxPrefix/lib
-elif test -d $AuxPrefix/lib64; then
-   SADC_DIR=$AuxPrefix/lib64
-else
-   SADC_DIR=$AuxPrefix/lib
+SADC_DIR=$AuxPrefix/lib
+if test -d $AuxPrefix/lib64; then
+   grep " lm " /proc/cpuinfo >/dev/null 2>&1
+   if test $? = 0; then
+      SADC_DIR=$AuxPrefix/lib64
+   fi
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking sadc directory" >&5
