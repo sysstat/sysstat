@@ -1,6 +1,6 @@
 /*
  * sadc: system activity data collector
- * (C) 1999-2011 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -676,7 +676,7 @@ void open_stdout(int *stdfd)
 void open_ofile(int *ofd, char ofile[])
 {
 	struct file_magic file_magic;
-	struct file_activity file_act;
+	struct file_activity file_act[NR_ACT];
 	struct tm rectime;
 	ssize_t sz;
 	int i, p;
@@ -736,16 +736,7 @@ void open_ofile(int *ofd, char ofile[])
 				return;
 			}
 
-			/*
-			 * OK: It's a true system activity file.
-			 * List of activities from the file prevails over that of the user.
-			 * So unselect all of them. And reset activity sequence.
-			 */
-			for (i = 0; i < NR_ACT; i++) {
-				act[i]->options &= ~AO_COLLECTED;
-				id_seq[i] = 0;
-			}
-
+			/* OK: It's a true system activity file */
 			if (!file_hdr.sa_nr_act || (file_hdr.sa_nr_act > NR_ACT))
 				/*
 				 * No activities at all or at least one unknown activity:
@@ -756,39 +747,56 @@ void open_ofile(int *ofd, char ofile[])
 			for (i = 0; i < file_hdr.sa_nr_act; i++) {
 
 				/* Read current activity in list */
-				if (read(*ofd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
+				if (read(*ofd, &file_act[i], FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
 					handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
 				}
 
-				p = get_activity_position(act, file_act.id);
+				p = get_activity_position(act, file_act[i].id);
 
-				if ((p < 0) || (act[p]->fsize != file_act.size) ||
-				    (act[p]->magic != file_act.magic))
+				if ((p < 0) || (act[p]->fsize != file_act[i].size) ||
+				    (act[p]->magic != file_act[i].magic))
 					/*
 					 * Unknown activity in list or item size has changed or
 					 * unknown activity format.
 					 */
 					goto append_error;
 
-				if ((act[p]->nr != file_act.nr) || (act[p]->nr2 != file_act.nr2)) {
-					if (IS_REMANENT(act[p]->options) || !file_act.nr || !file_act.nr2)
+				if ((act[p]->nr != file_act[i].nr) || (act[p]->nr2 != file_act[i].nr2)) {
+					if (IS_REMANENT(act[p]->options) || !file_act[i].nr || !file_act[i].nr2)
 						/*
 						 * Remanent structures cannot have a different number of items.
 						 * Also number of items and subitems should never be null.
 						 */
 						goto append_error;
-					else {
-						/*
-						 * Force number of items (serial lines, network interfaces...)
-						 * and sub-items to that of the file, and reallocate structures.
-						 */
-						act[p]->nr  = file_act.nr;
-						act[p]->nr2 = file_act.nr2;
-						SREALLOC(act[p]->_buf0, void, act[p]->msize * act[p]->nr * act[p]->nr2);
-					}
 				}
+			}
+			
+			/*
+			 * OK: All tests successfully passed.
+			 * List of activities from the file prevails over that of the user.
+			 * So unselect all of them. And reset activity sequence.
+			 */
+			for (i = 0; i < NR_ACT; i++) {
+				act[i]->options &= ~AO_COLLECTED;
+				id_seq[i] = 0;
+			}
+			
+			for (i = 0; i < file_hdr.sa_nr_act; i++) {
+				
+				p = get_activity_position(act, file_act[i].id);
+				
+				if ((act[p]->nr != file_act[i].nr) || (act[p]->nr2 != file_act[i].nr2)) {
+					/*
+					 * Force number of items (serial lines, network interfaces...)
+					 * and sub-items to that of the file, and reallocate structures.
+					 */
+					act[p]->nr  = file_act[i].nr;
+					act[p]->nr2 = file_act[i].nr2;
+					SREALLOC(act[p]->_buf0, void, act[p]->msize * act[p]->nr * act[p]->nr2);
+				}
+				
 				/* Save activity sequence */
-				id_seq[i] = file_act.id;
+				id_seq[i] = file_act[i].id;
 				act[p]->options |= AO_COLLECTED;
 			}
 		}

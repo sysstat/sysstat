@@ -4,6 +4,9 @@ xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: Added option -y to iostat. This option
 	  prevents iostat from displaying its first report with
 	  statistics since system boot.
+	* [John Lau]: sadc didn't collect all its activities when
+	  it had to overwrite an old sysstat data file with some
+	  unknown activity formats. This is now fixed.
 	* Fixed DTD document: If computer has run all day without
 	  restart, XML output file from sadf -x has no boot elements.
 	* iostat manual page updated.
