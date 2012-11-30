@@ -4866,6 +4866,7 @@ fi
 
 SADC_DIR=$AuxPrefix/lib
 if test -d $AuxPrefix/lib64; then
+   # Look for lm (long mode) flag to know if CPU is 64 bit
    grep " lm " /proc/cpuinfo >/dev/null 2>&1
    if test $? = 0; then
       SADC_DIR=$AuxPrefix/lib64
@@ -4997,7 +4998,8 @@ $as_echo "$COMPRESSAFTER" >&6; }
 
 
 # Manual page group
-if `grep ^man: /etc/group >/dev/null 2>&1`; then
+grep ^man: /etc/group >/dev/null 2>&1
+if test $? = 0; then
    GRP=man
 else
    GRP=root
@@ -5011,7 +5013,8 @@ if test x$man_group = x""; then
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAN_GROUP" >&5
 $as_echo "$MAN_GROUP" >&6; }
 else
-   if !(`grep ^$man_group: /etc/group >/dev/null 2>&1`); then
+   grep ^$man_group: /etc/group >/dev/null 2>&1
+   if test $? = 1; then
       MAN_GROUP=$GRP
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAN_GROUP" >&5
 $as_echo "$MAN_GROUP" >&6; }
@@ -5137,7 +5140,8 @@ $as_echo_n "checking crontab owner... " >&6; }
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CRON_OWNER" >&5
 $as_echo "$CRON_OWNER" >&6; }
    else
-      if !(`grep ^$cron_owner: /etc/passwd >/dev/null 2>&1`); then
+      grep ^$cron_owner: /etc/passwd >/dev/null 2>&1
+      if test $? = 1; then
          CRON_OWNER=$CUSR;
          { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CRON_OWNER" >&5
 $as_echo "$CRON_OWNER" >&6; }

@@ -319,7 +319,8 @@ AC_MSG_RESULT($COMPRESSAFTER)
 AC_SUBST(COMPRESSAFTER)
 
 # Manual page group
-if `grep ^man: /etc/group >/dev/null 2>&1`; then
+grep ^man: /etc/group >/dev/null 2>&1
+if test $? = 0; then
    GRP=man
 else
    GRP=root
@@ -331,7 +332,8 @@ if test x$man_group = x""; then
    MAN_GROUP=$GRP
    AC_MSG_RESULT($MAN_GROUP)
 else
-   if !(`grep ^$man_group: /etc/group >/dev/null 2>&1`); then 
+   grep ^$man_group: /etc/group >/dev/null 2>&1
+   if test $? = 1; then 
       MAN_GROUP=$GRP
       AC_MSG_RESULT($MAN_GROUP) 
       echo "WARNING: Group ${man_group} not found: Using ${GRP} instead"
@@ -428,7 +430,8 @@ if test $INSTALL_CRON = "y"; then
       CRON_OWNER=$CUSR
       AC_MSG_RESULT($CRON_OWNER)
    else
-      if !(`grep ^$cron_owner: /etc/passwd >/dev/null 2>&1`); then
+      grep ^$cron_owner: /etc/passwd >/dev/null 2>&1
+      if test $? = 1; then
          CRON_OWNER=$CUSR;
          AC_MSG_RESULT($CRON_OWNER)
          echo "WARNING: User ${cron_owner} not found: Using ${CUSR} instead."
