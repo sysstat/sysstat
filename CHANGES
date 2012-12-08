@@ -11,6 +11,8 @@ xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	  even if $prefix/lib directory also exists.
 	* Fixed DTD document: If computer has run all day without
 	  restart, XML output file from sadf -x has no boot elements.
+	* Remove heading spaces in softirq names displayed by mpstat
+	  for easier reading.
 	* Cosmetic fixes in configure script.
 	* iostat manual page updated.
 

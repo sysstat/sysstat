@@ -635,7 +635,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 	FILE *fp;
 	struct stats_irq *st_irq_i;
 	struct stats_irqcpu *p;
-	char *line = NULL;
+	char *line = NULL, *li;
 	unsigned long irq = 0;
 	unsigned int cpu;
 	int cpu_index[cpu_nr], index = 0, dgt, len;
@@ -669,17 +669,28 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 
 			/* Skip over "<irq>:" */
 			if ((cp = strchr(line, ':')) == NULL)
+				/* Chr ':' not found */
 				continue;
 			cp++;
 
 			p = st_ic[curr] + irq;
-			len = strcspn(line, ":");
+			
+			li = line;
+			while (*li == ' ')
+				li++;
+			
+			len = strcspn(li, ":");
 			if (len >= MAX_IRQ_LEN) {
 				len = MAX_IRQ_LEN - 1;
 			}
-			strncpy(p->irq_name, line, len);
+			strncpy(p->irq_name, li, len);
 			p->irq_name[len] = '\0';
-			dgt = isdigit(line[len - 1]);
+			if (len > 0) {
+				dgt = isdigit(li[len - 1]);
+			}
+			else {
+				dgt = FALSE;
+			}
 
 			for (cpu = 0; cpu < index; cpu++) {
 				p = st_ic[curr] + cpu_index[cpu] * ic_nr + irq;
