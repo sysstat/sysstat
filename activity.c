@@ -822,7 +822,7 @@ struct activity net_sock6_act = {
 struct activity net_ip6_act = {
 	.id		= A_NET_IP6,
 	.options	= AO_NULL,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,
@@ -854,7 +854,7 @@ struct activity net_ip6_act = {
 struct activity net_eip6_act = {
 	.id		= A_NET_EIP6,
 	.options	= AO_NULL,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count	= NULL,

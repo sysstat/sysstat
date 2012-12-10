@@ -9,6 +9,10 @@ xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	  unsigned long long to keep in sync with current kernels.
 	  WARNING: This breaks compatibility with older sar data
 	  files format for IPv4 statistics.
+	* Changed IPv6 counters (used by sar -n { IP6 | EIP6}) to
+          unsigned long long to keep in sync with current kernels.
+          WARNING: This breaks compatibility with older sar data
+          files format for IPv6 statistics.
 	* [Peter Schiffer]: Added option -y to iostat. This option
 	  prevents iostat from displaying its first report with
 	  statistics since system boot.

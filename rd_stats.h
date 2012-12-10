@@ -388,33 +388,33 @@ struct stats_net_udp {
 
 /* Structure for IPv6 statistics */
 struct stats_net_ip6 {
-	unsigned long InReceives6	__attribute__ ((aligned (8)));
-	unsigned long OutForwDatagrams6	__attribute__ ((aligned (8)));
-	unsigned long InDelivers6	__attribute__ ((aligned (8)));
-	unsigned long OutRequests6	__attribute__ ((aligned (8)));
-	unsigned long ReasmReqds6	__attribute__ ((aligned (8)));
-	unsigned long ReasmOKs6		__attribute__ ((aligned (8)));
-	unsigned long InMcastPkts6	__attribute__ ((aligned (8)));
-	unsigned long OutMcastPkts6	__attribute__ ((aligned (8)));
-	unsigned long FragOKs6		__attribute__ ((aligned (8)));
-	unsigned long FragCreates6	__attribute__ ((aligned (8)));
+	unsigned long long InReceives6		__attribute__ ((aligned (16)));
+	unsigned long long OutForwDatagrams6	__attribute__ ((aligned (16)));
+	unsigned long long InDelivers6		__attribute__ ((aligned (16)));
+	unsigned long long OutRequests6		__attribute__ ((aligned (16)));
+	unsigned long long ReasmReqds6		__attribute__ ((aligned (16)));
+	unsigned long long ReasmOKs6		__attribute__ ((aligned (16)));
+	unsigned long long InMcastPkts6		__attribute__ ((aligned (16)));
+	unsigned long long OutMcastPkts6	__attribute__ ((aligned (16)));
+	unsigned long long FragOKs6		__attribute__ ((aligned (16)));
+	unsigned long long FragCreates6		__attribute__ ((aligned (16)));
 };
 
 #define STATS_NET_IP6_SIZE	(sizeof(struct stats_net_ip6))
 
 /* Structure for IPv6 errors statistics */
 struct stats_net_eip6 {
-	unsigned long InHdrErrors6	__attribute__ ((aligned (8)));
-	unsigned long InAddrErrors6	__attribute__ ((aligned (8)));
-	unsigned long InUnknownProtos6	__attribute__ ((aligned (8)));
-	unsigned long InTooBigErrors6	__attribute__ ((aligned (8)));
-	unsigned long InDiscards6	__attribute__ ((aligned (8)));
-	unsigned long OutDiscards6	__attribute__ ((aligned (8)));
-	unsigned long InNoRoutes6	__attribute__ ((aligned (8)));
-	unsigned long OutNoRoutes6	__attribute__ ((aligned (8)));
-	unsigned long ReasmFails6	__attribute__ ((aligned (8)));
-	unsigned long FragFails6	__attribute__ ((aligned (8)));
-	unsigned long InTruncatedPkts6	__attribute__ ((aligned (8)));
+	unsigned long long InHdrErrors6		__attribute__ ((aligned (16)));
+	unsigned long long InAddrErrors6	__attribute__ ((aligned (16)));
+	unsigned long long InUnknownProtos6	__attribute__ ((aligned (16)));
+	unsigned long long InTooBigErrors6	__attribute__ ((aligned (16)));
+	unsigned long long InDiscards6		__attribute__ ((aligned (16)));
+	unsigned long long OutDiscards6		__attribute__ ((aligned (16)));
+	unsigned long long InNoRoutes6		__attribute__ ((aligned (16)));
+	unsigned long long OutNoRoutes6		__attribute__ ((aligned (16)));
+	unsigned long long ReasmFails6		__attribute__ ((aligned (16)));
+	unsigned long long FragFails6		__attribute__ ((aligned (16)));
+	unsigned long long InTruncatedPkts6	__attribute__ ((aligned (16)));
 };
 
 #define STATS_NET_EIP6_SIZE	(sizeof(struct stats_net_eip6))

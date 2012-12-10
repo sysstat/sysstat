@@ -1328,34 +1328,34 @@ void read_net_ip6(struct stats_net_ip6 *st_net_ip6)
 	while (fgets(line, 128, fp) != NULL) {
 
 		if (!strncmp(line, "Ip6InReceives ", 14)) {
-			sscanf(line + 14, "%lu", &st_net_ip6->InReceives6);
+			sscanf(line + 14, "%llu", &st_net_ip6->InReceives6);
 		}
 		else if (!strncmp(line, "Ip6OutForwDatagrams ", 20)) {
-			sscanf(line + 20, "%lu", &st_net_ip6->OutForwDatagrams6);
+			sscanf(line + 20, "%llu", &st_net_ip6->OutForwDatagrams6);
 		}
 		else if (!strncmp(line, "Ip6InDelivers ", 14)) {
-			sscanf(line + 14, "%lu", &st_net_ip6->InDelivers6);
+			sscanf(line + 14, "%llu", &st_net_ip6->InDelivers6);
 		}
 		else if (!strncmp(line, "Ip6OutRequests ", 15)) {
-			sscanf(line + 15, "%lu", &st_net_ip6->OutRequests6);
+			sscanf(line + 15, "%llu", &st_net_ip6->OutRequests6);
 		}
 		else if (!strncmp(line, "Ip6ReasmReqds ", 14)) {
-			sscanf(line + 14, "%lu", &st_net_ip6->ReasmReqds6);
+			sscanf(line + 14, "%llu", &st_net_ip6->ReasmReqds6);
 		}
 		else if (!strncmp(line, "Ip6ReasmOKs ", 12)) {
-			sscanf(line + 12, "%lu", &st_net_ip6->ReasmOKs6);
+			sscanf(line + 12, "%llu", &st_net_ip6->ReasmOKs6);
 		}
 		else if (!strncmp(line, "Ip6InMcastPkts ", 15)) {
-			sscanf(line + 15, "%lu", &st_net_ip6->InMcastPkts6);
+			sscanf(line + 15, "%llu", &st_net_ip6->InMcastPkts6);
 		}
 		else if (!strncmp(line, "Ip6OutMcastPkts ", 16)) {
-			sscanf(line + 16, "%lu", &st_net_ip6->OutMcastPkts6);
+			sscanf(line + 16, "%llu", &st_net_ip6->OutMcastPkts6);
 		}
 		else if (!strncmp(line, "Ip6FragOKs ", 11)) {
-			sscanf(line + 11, "%lu", &st_net_ip6->FragOKs6);
+			sscanf(line + 11, "%llu", &st_net_ip6->FragOKs6);
 		}
 		else if (!strncmp(line, "Ip6FragCreates ", 15)) {
-			sscanf(line + 15, "%lu", &st_net_ip6->FragCreates6);
+			sscanf(line + 15, "%llu", &st_net_ip6->FragCreates6);
 		}
 	}
 	
@@ -1384,37 +1384,37 @@ void read_net_eip6(struct stats_net_eip6 *st_net_eip6)
 	while (fgets(line, 128, fp) != NULL) {
 
 		if (!strncmp(line, "Ip6InHdrErrors ", 15)) {
-			sscanf(line + 15, "%lu", &st_net_eip6->InHdrErrors6);
+			sscanf(line + 15, "%llu", &st_net_eip6->InHdrErrors6);
 		}
 		else if (!strncmp(line, "Ip6InAddrErrors ", 16)) {
-			sscanf(line + 16, "%lu", &st_net_eip6->InAddrErrors6);
+			sscanf(line + 16, "%llu", &st_net_eip6->InAddrErrors6);
 		}
 		else if (!strncmp(line, "Ip6InUnknownProtos ", 19)) {
-			sscanf(line + 19, "%lu", &st_net_eip6->InUnknownProtos6);
+			sscanf(line + 19, "%llu", &st_net_eip6->InUnknownProtos6);
 		}
 		else if (!strncmp(line, "Ip6InTooBigErrors ", 18)) {
-			sscanf(line + 18, "%lu", &st_net_eip6->InTooBigErrors6);
+			sscanf(line + 18, "%llu", &st_net_eip6->InTooBigErrors6);
 		}
 		else if (!strncmp(line, "Ip6InDiscards ", 14)) {
-			sscanf(line + 14, "%lu", &st_net_eip6->InDiscards6);
+			sscanf(line + 14, "%llu", &st_net_eip6->InDiscards6);
 		}
 		else if (!strncmp(line, "Ip6OutDiscards ", 15)) {
-			sscanf(line + 15, "%lu", &st_net_eip6->OutDiscards6);
+			sscanf(line + 15, "%llu", &st_net_eip6->OutDiscards6);
 		}
 		else if (!strncmp(line, "Ip6InNoRoutes ", 14)) {
-			sscanf(line + 14, "%lu", &st_net_eip6->InNoRoutes6);
+			sscanf(line + 14, "%llu", &st_net_eip6->InNoRoutes6);
 		}
 		else if (!strncmp(line, "Ip6OutNoRoutes ", 15)) {
-			sscanf(line + 15, "%lu", &st_net_eip6->OutNoRoutes6);
+			sscanf(line + 15, "%llu", &st_net_eip6->OutNoRoutes6);
 		}
 		else if (!strncmp(line, "Ip6ReasmFails ", 14)) {
-			sscanf(line + 14, "%lu", &st_net_eip6->ReasmFails6);
+			sscanf(line + 14, "%llu", &st_net_eip6->ReasmFails6);
 		}
 		else if (!strncmp(line, "Ip6FragFails ", 13)) {
-			sscanf(line + 13, "%lu", &st_net_eip6->FragFails6);
+			sscanf(line + 13, "%llu", &st_net_eip6->FragFails6);
 		}
 		else if (!strncmp(line, "Ip6InTruncatedPkts ", 19)) {
-			sscanf(line + 19, "%lu", &st_net_eip6->InTruncatedPkts6);
+			sscanf(line + 19, "%llu", &st_net_eip6->InTruncatedPkts6);
 		}
 	}
 	
