@@ -220,30 +220,30 @@ struct stats_disk {
 
 /* Structure for network interfaces statistics */
 struct stats_net_dev {
-	unsigned long rx_packets		__attribute__ ((aligned (8)));
-	unsigned long tx_packets		__attribute__ ((aligned (8)));
-	unsigned long rx_bytes			__attribute__ ((aligned (8)));
-	unsigned long tx_bytes			__attribute__ ((aligned (8)));
-	unsigned long rx_compressed		__attribute__ ((aligned (8)));
-	unsigned long tx_compressed		__attribute__ ((aligned (8)));
-	unsigned long multicast			__attribute__ ((aligned (8)));
-	char	      interface[MAX_IFACE_LEN]	__attribute__ ((aligned (8)));
+	unsigned long long rx_packets		__attribute__ ((aligned (16)));
+	unsigned long long tx_packets		__attribute__ ((aligned (16)));
+	unsigned long long rx_bytes		__attribute__ ((aligned (16)));
+	unsigned long long tx_bytes		__attribute__ ((aligned (16)));
+	unsigned long long rx_compressed	__attribute__ ((aligned (16)));
+	unsigned long long tx_compressed	__attribute__ ((aligned (16)));
+	unsigned long long multicast		__attribute__ ((aligned (16)));
+	char	      interface[MAX_IFACE_LEN]	__attribute__ ((aligned (16)));
 };
 
 #define STATS_NET_DEV_SIZE	(sizeof(struct stats_net_dev))
 
 /* Structure for network interface errors statistics */
 struct stats_net_edev {
-	unsigned long collisions		__attribute__ ((aligned (8)));
-	unsigned long rx_errors			__attribute__ ((aligned (8)));
-	unsigned long tx_errors			__attribute__ ((aligned (8)));
-	unsigned long rx_dropped		__attribute__ ((aligned (8)));
-	unsigned long tx_dropped		__attribute__ ((aligned (8)));
-	unsigned long rx_fifo_errors		__attribute__ ((aligned (8)));
-	unsigned long tx_fifo_errors		__attribute__ ((aligned (8)));
-	unsigned long rx_frame_errors		__attribute__ ((aligned (8)));
-	unsigned long tx_carrier_errors		__attribute__ ((aligned (8)));
-	char	      interface[MAX_IFACE_LEN]	__attribute__ ((aligned (8)));
+	unsigned long long collisions		__attribute__ ((aligned (16)));
+	unsigned long long rx_errors		__attribute__ ((aligned (16)));
+	unsigned long long tx_errors		__attribute__ ((aligned (16)));
+	unsigned long long rx_dropped		__attribute__ ((aligned (16)));
+	unsigned long long tx_dropped		__attribute__ ((aligned (16)));
+	unsigned long long rx_fifo_errors	__attribute__ ((aligned (16)));
+	unsigned long long tx_fifo_errors	__attribute__ ((aligned (16)));
+	unsigned long long rx_frame_errors	__attribute__ ((aligned (16)));
+	unsigned long long tx_carrier_errors	__attribute__ ((aligned (16)));
+	char	      interface[MAX_IFACE_LEN]	__attribute__ ((aligned (16)));
 };
 
 #define STATS_NET_EDEV_SIZE	(sizeof(struct stats_net_edev))

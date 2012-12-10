@@ -711,8 +711,8 @@ void read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 			strncpy(iface, line, MINIMUM(pos, MAX_IFACE_LEN - 1));
 			iface[MINIMUM(pos, MAX_IFACE_LEN - 1)] = '\0';
 			sscanf(iface, "%s", st_net_dev_i->interface); /* Skip heading spaces */
-			sscanf(line + pos + 1, "%lu %lu %*u %*u %*u %*u %lu %lu %lu %lu "
-			       "%*u %*u %*u %*u %*u %lu",
+			sscanf(line + pos + 1, "%llu %llu %*u %*u %*u %*u %llu %llu %llu %llu "
+			       "%*u %*u %*u %*u %*u %llu",
 			       &st_net_dev_i->rx_bytes,
 			       &st_net_dev_i->rx_packets,
 			       &st_net_dev_i->rx_compressed,
@@ -759,8 +759,8 @@ void read_net_edev(struct stats_net_edev *st_net_edev, int nbr)
 			strncpy(iface, line, MINIMUM(pos, MAX_IFACE_LEN - 1));
 			iface[MINIMUM(pos, MAX_IFACE_LEN - 1)] = '\0';
 			sscanf(iface, "%s", st_net_edev_i->interface); /* Skip heading spaces */
-			sscanf(line + pos + 1, "%*u %*u %lu %lu %lu %lu %*u %*u %*u %*u "
-			       "%lu %lu %lu %lu %lu",
+			sscanf(line + pos + 1, "%*u %*u %llu %llu %llu %llu %*u %*u %*u %*u "
+			       "%llu %llu %llu %llu %llu",
 			       &st_net_edev_i->rx_errors,
 			       &st_net_edev_i->rx_dropped,
 			       &st_net_edev_i->rx_fifo_errors,
