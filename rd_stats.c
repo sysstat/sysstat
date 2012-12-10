@@ -967,8 +967,8 @@ void read_net_ip(struct stats_net_ip *st_net_ip)
 
 		if (!strncmp(line, "Ip:", 3)) {
 			if (sw) {
-				sscanf(line + 3, "%*u %*u %lu %*u %*u %lu %*u %*u "
-				       "%lu %lu %*u %*u %*u %lu %lu %*u %lu %*u %lu",
+				sscanf(line + 3, "%*u %*u %llu %*u %*u %llu %*u %*u "
+				       "%llu %llu %*u %*u %*u %llu %llu %*u %llu %*u %llu",
 				       &st_net_ip->InReceives,
 				       &st_net_ip->ForwDatagrams,
 				       &st_net_ip->InDelivers,
@@ -1013,8 +1013,8 @@ void read_net_eip(struct stats_net_eip *st_net_eip)
 
 		if (!strncmp(line, "Ip:", 3)) {
 			if (sw) {
-				sscanf(line + 3, "%*u %*u %*u %lu %lu %*u %lu %lu "
-				       "%*u %*u %lu %lu %*u %*u %*u %lu %*u %lu",
+				sscanf(line + 3, "%*u %*u %*u %llu %llu %*u %llu %llu "
+				       "%*u %*u %llu %llu %*u %*u %*u %llu %*u %llu",
 				       &st_net_eip->InHdrErrors,
 				       &st_net_eip->InAddrErrors,
 				       &st_net_eip->InUnknownProtos,

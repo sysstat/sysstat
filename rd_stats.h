@@ -291,28 +291,28 @@ struct stats_net_sock {
 
 /* Structure for IP statistics */
 struct stats_net_ip {
-	unsigned long InReceives	__attribute__ ((aligned (8)));
-	unsigned long ForwDatagrams	__attribute__ ((aligned (8)));
-	unsigned long InDelivers	__attribute__ ((aligned (8)));
-	unsigned long OutRequests	__attribute__ ((aligned (8)));
-	unsigned long ReasmReqds	__attribute__ ((aligned (8)));
-	unsigned long ReasmOKs		__attribute__ ((aligned (8)));
-	unsigned long FragOKs		__attribute__ ((aligned (8)));
-	unsigned long FragCreates	__attribute__ ((aligned (8)));
+	unsigned long long InReceives		__attribute__ ((aligned (16)));
+	unsigned long long ForwDatagrams	__attribute__ ((aligned (16)));
+	unsigned long long InDelivers		__attribute__ ((aligned (16)));
+	unsigned long long OutRequests		__attribute__ ((aligned (16)));
+	unsigned long long ReasmReqds		__attribute__ ((aligned (16)));
+	unsigned long long ReasmOKs		__attribute__ ((aligned (16)));
+	unsigned long long FragOKs		__attribute__ ((aligned (16)));
+	unsigned long long FragCreates		__attribute__ ((aligned (16)));
 };
 
 #define STATS_NET_IP_SIZE	(sizeof(struct stats_net_ip))
 
 /* Structure for IP errors statistics */
 struct stats_net_eip {
-	unsigned long InHdrErrors	__attribute__ ((aligned (8)));
-	unsigned long InAddrErrors	__attribute__ ((aligned (8)));
-	unsigned long InUnknownProtos	__attribute__ ((aligned (8)));
-	unsigned long InDiscards	__attribute__ ((aligned (8)));
-	unsigned long OutDiscards	__attribute__ ((aligned (8)));
-	unsigned long OutNoRoutes	__attribute__ ((aligned (8)));
-	unsigned long ReasmFails	__attribute__ ((aligned (8)));
-	unsigned long FragFails		__attribute__ ((aligned (8)));
+	unsigned long long InHdrErrors		__attribute__ ((aligned (16)));
+	unsigned long long InAddrErrors		__attribute__ ((aligned (16)));
+	unsigned long long InUnknownProtos	__attribute__ ((aligned (16)));
+	unsigned long long InDiscards		__attribute__ ((aligned (16)));
+	unsigned long long OutDiscards		__attribute__ ((aligned (16)));
+	unsigned long long OutNoRoutes		__attribute__ ((aligned (16)));
+	unsigned long long ReasmFails		__attribute__ ((aligned (16)));
+	unsigned long long FragFails		__attribute__ ((aligned (16)));
 };
 
 #define STATS_NET_EIP_SIZE	(sizeof(struct stats_net_eip))
