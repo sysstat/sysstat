@@ -16,6 +16,7 @@ xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: Added option -y to iostat. This option
 	  prevents iostat from displaying its first report with
 	  statistics since system boot.
+	* [Peter Schiffer]: Increase NR_CPUS and NR_IRQS values.
 	* [John Lau]: sadc didn't collect all its activities when
 	  it had to overwrite an old sysstat data file with some
 	  unknown activity formats. This is now fixed.
@@ -27,6 +28,7 @@ xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	  for easier reading.
 	* Fixed wrong command execution syntax in configure script.
 	* iostat manual page updated.
+	* CREDITS file updated.
 
 2012/10/06: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* New field added to sar -u and mpstat: %gnice (time spent

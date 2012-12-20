@@ -28,14 +28,14 @@
 #define SEC_PER_DAY	3600 * 24
 
 /* Maximum number of CPUs */
-#ifdef __CPU_SETSIZE
+#if defined(__CPU_SETSIZE) && __CPU_SETSIZE > 2048
 #define NR_CPUS		__CPU_SETSIZE
 #else
-#define NR_CPUS		1024
+#define NR_CPUS		2048
 #endif
 
 /* Maximum number of interrupts */
-#define NR_IRQS			256
+#define NR_IRQS			1024
 
 /* Size of /proc/interrupts line, CPU data excluded */
 #define INTERRUPTS_LINE	128
