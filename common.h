@@ -48,7 +48,6 @@
 /* Files */
 #define STAT			"/proc/stat"
 #define UPTIME			"/proc/uptime"
-#define PPARTITIONS		"/proc/partitions"
 #define DISKSTATS		"/proc/diskstats"
 #define INTERRUPTS		"/proc/interrupts"
 #define MEMINFO			"/proc/meminfo"
@@ -71,8 +70,6 @@
 #define MAX_PF_NAME		1024
 #define DEFAULT_DEVMAP_MAJOR	253
 #define MAX_NAME_LEN		72
-
-#define NR_DISKS		4
 
 #define IGNORE_VIRTUAL_DEVICES	FALSE
 #define ACCEPT_VIRTUAL_DEVICES	TRUE

@@ -33,10 +33,6 @@
 #define CNT_ALL_DEV	0
 #define CNT_USED_DEV	1
 
-#define READ_PROC_STAT		0
-#define READ_DISKSTATS		1
-#define READ_PPARTITIONS	2
-
 /*
  ***************************************************************************
  * System files containing statistics
