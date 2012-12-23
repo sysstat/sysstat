@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.1\n"
+"Project-Id-Version: sysstat 10.1.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-24 21:50+0200\n"
-"PO-Revision-Date: 2012-08-02 22:32+0200\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
+"PO-Revision-Date: 2012-10-08 20:07+0200\n"
 "Last-Translator: Marián Čavojský <preklad@cavo.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "Language: sk\n"
@@ -57,10 +57,35 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Nemožno nájsť údaje diskov\n"
 
-#: iostat.c:1378 sa_common.c:1300
+#: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Chybný typ názvu trvalého zariadenia\n"
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Dátový súbor aktivity systému: %s (%#x)\n"
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr "Hostiteľ: "
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Veľkosť long int: %d\n"
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr "Zoznam aktivít:\n"
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Neznámy formát aktivít]"
 
 #: sadc.c:81
 #, c-format
@@ -88,7 +113,7 @@ msgstr "Nie je možné zapísať údaje do súboru aktivity systému: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Nie je možné zapísať hlavičku súboru aktivity systému: %s\n"
 
-#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2117
+#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
 #: sa_common.c:1109
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -134,39 +159,14 @@ msgstr ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:581 sar.c:382 pidstat.c:1822
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
 msgstr "Priemer:"
 
-#: mpstat.c:928
+#: mpstat.c:940
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Nie až tak veľa procesorov!\n"
-
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Dátový súbor aktivity systému: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Hostiteľ: "
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Veľkosť long int: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Zoznam aktivít:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Neznámy formát aktivít]"
 
 #: sadf.c:86
 #, c-format
@@ -400,7 +400,7 @@ msgstr "Nečíta sa zo súboru aktivity systému (použi voľbu -f)\n"
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nemožno nájsť zberač údajov (%s)\n"
 
-#: rd_stats.c:2163
+#: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Nie je možné obslúžiť toľko procesorov!\n"
@@ -417,8 +417,8 @@ msgstr "Neočakávaný koniec súboru aktivity systému\n"
 
 #: sa_common.c:946
 #, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr "Súbor bol vytvorený použitím sar/sadc zo sysstat verzie %d.%d.%d"
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Súbor bol vytvorený pomocou sar/sadc zo sysstat verzie %d.%d.%d"
 
 #: sa_common.c:977
 #, c-format
@@ -448,35 +448,10 @@ msgstr ""
 "[ -w ] [ -C <príkaz> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
-#: pr_stats.c:2329 pr_stats.c:2342
+#: pr_stats.c:2348 pr_stats.c:2361
 msgid "Summary"
 msgstr "Súhrn"
 
-#: pr_stats.c:2380
+#: pr_stats.c:2399
 msgid "Other devices not listed here"
 msgstr "Ďalšie zariadenia mimo tohoto zoznamu"
-
-#~ msgid ""
-#~ "Options are:\n"
-#~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-#~ msgstr ""
-#~ "Možné voľby:\n"
-#~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-
-#~ msgid "Time: %s\n"
-#~ msgstr "Čas: %s\n"
-
-#~ msgid "-x and -p options are mutually exclusive\n"
-#~ msgstr "Voľby -x a -p sa navzájom vylučujú\n"
-
-#~ msgid ""
-#~ "Usage: %s [ options... ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-#~ "Options are:\n"
-#~ "[ -C <comment> ] [ -d ] [ -F ] [ -I ] [ -V ]\n"
-#~ msgstr ""
-#~ "Použitie: %s [ voľby... ] [ <interval> [ <počet> ] ] [ <výstupný_súbor> ]\n"
-#~ "Možné voľby:\n"
-#~ "[ -C <comment> ] [ -d ] [ -F ] [ -I ] [ -V ]\n"
-
-#~ msgid "Not an SMP machine...\n"
-#~ msgstr "Počítač nie je multiprocesorový...\n"

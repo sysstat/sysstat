@@ -5,10 +5,10 @@
 # Tomislav Krznar <tomislav.krznar@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.1\n"
+"Project-Id-Version: sysstat 10.1.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-24 21:50+0200\n"
-"PO-Revision-Date: 2012-08-13 23:40+0200\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
+"PO-Revision-Date: 2012-10-16 22:51+0200\n"
 "Last-Translator: Tomislav Krznar <tomislav.krznar@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -59,10 +59,35 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Ne mogu pronaći podatke o disku\n"
 
-#: iostat.c:1378 sa_common.c:1300
+#: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Neispravna vrsta imena trajnog uređaja\n"
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Datoteka podataka aktivnosti sustava: %s (%#x)\n"
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr "Računalo: "
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Veličina long int: %d\n"
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr "Popis aktivnosti:\n"
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Nepoznat oblik aktivnosti]"
 
 #: sadc.c:81
 #, c-format
@@ -90,7 +115,7 @@ msgstr "Ne mogu zapisati podatke u datoteku aktivnosti sustava: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Ne mogu zapisati zaglavlje datoteke aktivnosti sustava: %s\n"
 
-#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2117
+#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
 #: sa_common.c:1109
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -135,39 +160,14 @@ msgstr ""
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 
-#: mpstat.c:581 sar.c:382 pidstat.c:1822
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
 msgstr "Prosječno:"
 
-#: mpstat.c:928
+#: mpstat.c:940
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Nema toliko procesora!\n"
-
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Datoteka podataka aktivnosti sustava: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Računalo: "
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Veličina long int: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Popis aktivnosti:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Nepoznat oblik aktivnosti]"
 
 #: sadf.c:86
 #, c-format
@@ -401,7 +401,7 @@ msgstr "Ne čitam iz datoteke aktivnosti sustava (koristite opciju -f)\n"
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Ne mogu pronaći sakupljač podataka (%s)\n"
 
-#: rd_stats.c:2163
+#: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Ne mogu upravljati s toliko procesora!\n"
@@ -418,8 +418,8 @@ msgstr "Neočekivan završetak datoteke aktivnosti sustava\n"
 
 #: sa_common.c:946
 #, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr "Datoteka stvorena korištenjem sar/sadc iz sysstat inačice %d.%d.%d"
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Datoteku je napravio sar/sadc iz sysstat inačice %d.%d.%d"
 
 #: sa_common.c:977
 #, c-format
@@ -449,11 +449,11 @@ msgstr ""
 "[ -w ] [ -C <naredba> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
-#: pr_stats.c:2329 pr_stats.c:2342
+#: pr_stats.c:2348 pr_stats.c:2361
 msgid "Summary"
 msgstr "Sažetak"
 
-#: pr_stats.c:2380
+#: pr_stats.c:2399
 msgid "Other devices not listed here"
 msgstr "Ostali uređaji koji nisu na ovom popisu"
 

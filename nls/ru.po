@@ -9,10 +9,10 @@
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.1\n"
+"Project-Id-Version: sysstat 10.1.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-24 21:50+0200\n"
-"PO-Revision-Date: 2012-08-02 21:20+0400\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
+"PO-Revision-Date: 2012-10-09 20:37+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@mx.ru>\n"
 "Language: ru\n"
@@ -63,10 +63,35 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Не удалось найти данные диска\n"
 
-#: iostat.c:1378 sa_common.c:1300
+#: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Некорректный тип постоянного имени устройства\n"
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Недопустимый файл системных показателей: %s (%#x)\n"
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr "Узел: "
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Размер long int: %d\n"
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr "Список показателей:\n"
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Неизвестный формат показателя]"
 
 #: sadc.c:81
 #, c-format
@@ -94,7 +119,7 @@ msgstr "Не удалось записать данные в файл систе
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Не удалось записать заголовок в файл системных показателей: %s\n"
 
-#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2117
+#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
 #: sa_common.c:1109
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -140,39 +165,14 @@ msgstr ""
 "[ -P { <ЦП> [,…] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:581 sar.c:382 pidstat.c:1822
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
 msgstr "Среднее:"
 
-#: mpstat.c:928
+#: mpstat.c:940
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Нет такого количества процессоров в системе!\n"
-
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Недопустимый файл системных показателей: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Узел: "
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Размер long int: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Список показателей:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Неизвестный формат показателя]"
 
 #: sadf.c:86
 #, c-format
@@ -406,7 +406,7 @@ msgstr "Не выполняется чтение из файла системн�
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Не удалось найти средство сбора данных (%s)\n"
 
-#: rd_stats.c:2163
+#: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Не удаётся обработать так много процессоров!\n"
@@ -423,7 +423,7 @@ msgstr "Неожиданный конец файла системных пока
 
 #: sa_common.c:946
 #, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Файл создан с помощью sar/sadc из sysstat версии %d.%d.%d"
 
 #: sa_common.c:977
@@ -454,11 +454,11 @@ msgstr ""
 "[ -w ] [ -C <команда> ] [ -p { <pid> [,…] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
-#: pr_stats.c:2329 pr_stats.c:2342
+#: pr_stats.c:2348 pr_stats.c:2361
 msgid "Summary"
 msgstr "Сводка"
 
-#: pr_stats.c:2380
+#: pr_stats.c:2399
 msgid "Other devices not listed here"
 msgstr "Другие устройства здесь не перечислены"
 

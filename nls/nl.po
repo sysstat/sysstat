@@ -1,17 +1,17 @@
 # Dutch translations for sysstat.
 # This file is distributed under the same license as the sysstat package.
 #
-# Donnerwetter!
+# Für die die wunderbar ist.
 #
 # Benno Schulenberg <benno@vertaalt.nl>, 2008, 2010, 2011, 2012.
 # Erwin Poeze <erwin.poeze@gmail.com>, 2009, 2010.
 # Bram Schoenmakers <bramschoenmakers@kde.nl>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.1.1\n"
+"Project-Id-Version: sysstat-10.1.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-24 21:50+0200\n"
-"PO-Revision-Date: 2012-08-04 21:33+0200\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
+"PO-Revision-Date: 2012-10-09 12:01+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -62,10 +62,35 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Kan de schijfgegevens niet vinden\n"
 
-#: iostat.c:1378 sa_common.c:1300
+#: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ongeldig soort persistente apparaatnaam\n"
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Systeemactiviteitsbestand: %s (%#x)\n"
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr "Host: "
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Lengte van lange integer: %d\n"
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr "Lijst van activiteiten:\n"
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Onbekende activiteitsopmaak]"
 
 #: sadc.c:81
 #, c-format
@@ -93,7 +118,7 @@ msgstr "Kan geen gegevens schrijven naar het activiteitsbestand: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Kan geen kopregels schrijven naar het activiteitsbestand: %s\n"
 
-#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2117
+#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
 #: sa_common.c:1109
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -139,39 +164,14 @@ msgstr ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:581 sar.c:382 pidstat.c:1822
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
 msgstr "Gemiddeld:"
 
-#: mpstat.c:928
+#: mpstat.c:940
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Er zijn niet zoveel processoren!\n"
-
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Systeemactiviteitsbestand: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Host: "
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Lengte van lange integer: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Lijst van activiteiten:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Onbekende activiteitsopmaak]"
 
 #: sadf.c:86
 #, c-format
@@ -407,7 +407,7 @@ msgstr "Er wordt geen activiteitsbestand gelezen (gebruik optie '-f')\n"
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan de gegevensverzamelaar niet vinden (%s)\n"
 
-#: rd_stats.c:2163
+#: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Kan niet zoveel processoren bijhouden!\n"
@@ -424,8 +424,8 @@ msgstr "Onverwacht einde van activiteitsbestand\n"
 
 #: sa_common.c:946
 #, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr "Bestand is aangemaakt met 'sar/sadc' door sysstat-versie %d.%d.%d."
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Bestand is aangemaakt door 'sar/sadc' uit sysstat-versie %d.%d.%d."
 
 #: sa_common.c:977
 #, c-format
@@ -455,11 +455,11 @@ msgstr ""
 "[ -w ] [ -C <commando> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
-#: pr_stats.c:2329 pr_stats.c:2342
+#: pr_stats.c:2348 pr_stats.c:2361
 msgid "Summary"
 msgstr "Samenvatting"
 
-#: pr_stats.c:2380
+#: pr_stats.c:2399
 msgid "Other devices not listed here"
 msgstr "Andere hier niet getoonde apparaten"
 

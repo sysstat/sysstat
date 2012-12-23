@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
+2012/12/23: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* Changed network counters (used by sar -n {DEV | EDEV }) to
 	  unsigned long long to keep in sync with current kernels.
 	  WARNING: This breaks compatibility with older sar data
@@ -29,6 +29,7 @@ xxxx/xx/xx: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* Fixed wrong command execution syntax in configure script.
 	* Removed several unused definitions in some header files.
 	* iostat manual page updated.
+	* NLS updated.
 	* CREDITS file updated.
 
 2012/10/06: Version 10.1.2 - Sebastien Godard (sysstat <at> orange.fr)

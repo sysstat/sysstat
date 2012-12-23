@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.1\n"
+"Project-Id-Version: sysstat 10.1.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-24 21:50+0200\n"
-"PO-Revision-Date: 2012-08-03 10:00-0300\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
+"PO-Revision-Date: 2012-10-09 10:00-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: nfsiostat.c:68
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Uzado: %s [ elektebloj ] [ <intervalo> [ <nombro> ] ]\n"
+msgstr "Uzado: %s [ modifiloj ] [ <intervalo> [ <nombro> ] ]\n"
 
 #: iostat.c:87
 #, c-format
@@ -31,7 +31,7 @@ msgid ""
 "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ [ [ -T ] -g <grup_nomo> ] { <aparato> [,...] | ALL } ]\n"
@@ -46,7 +46,7 @@ msgid ""
 "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ [ -T ] -g <grup_nomo> ] [ -p [ <aparato> [,...] | ALL ] ]\n"
@@ -57,15 +57,40 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Ne eblas trovi disk-datumaron\n"
 
-#: iostat.c:1378 sa_common.c:1300
+#: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Nevalida tipo de persista aparat-nomo\n"
 
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Sistem-aktivaĵa datumara dosiero: %s (%#x)\n"
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr "Gastiganto: "
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Grando de long int: %d\n"
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr "Listo de aktivaĵoj:\n"
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Nekonata aktivaĵ-formo]"
+
 #: sadc.c:81
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr "Uzado: %s [ elektebloj ] [ <intervalo> [ <nombro> ] ] [ <eligdosiero> ]\n"
+msgstr "Uzado: %s [ modifiloj ] [ <intervalo> [ <nombro> ] ] [ <eligdosiero> ]\n"
 
 #: sadc.c:84
 #, c-format
@@ -74,7 +99,7 @@ msgid ""
 "[ -C <comment> ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -C <komento> ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
@@ -88,7 +113,7 @@ msgstr "Ne eblas skribi datumaron al sistem-aktivaĵa dosiero: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Ne eblas skribi kapon de sistem-aktivaĵa dosiero: %s\n"
 
-#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2117
+#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
 #: sa_common.c:1109
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -110,7 +135,7 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
 #: cifsiostat.c:76 nfsiostat.c:75
@@ -119,7 +144,7 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #: mpstat.c:89
@@ -129,48 +154,23 @@ msgid ""
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 
-#: mpstat.c:581 sar.c:382 pidstat.c:1822
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
 msgstr "Meznombro:"
 
-#: mpstat.c:928
+#: mpstat.c:940
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Ne ekzistas tiom da procesoroj!\n"
 
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Sistem-aktivaĵa datumara dosiero: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Gastiganto: "
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Grando de long int: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Listo de aktivaĵoj:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Nekonata aktivaĵ-formo]"
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
-msgstr "Uzado: %s [ elektebloj ] [ <intervalo> [ <nombro> ] ] [ <datumdosiero> ]\n"
+msgstr "Uzado: %s [ modifiloj ] [ <intervalo> [ <nombro> ] ] [ <datumdosiero> ]\n"
 
 #: sadf.c:89
 #, c-format
@@ -180,10 +180,10 @@ msgid ""
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
-"[ -- <elektebloj_sar> ]\n"
+"[ -- <modifiloj_sar> ]\n"
 
 #: sar.c:105
 #, c-format
@@ -197,7 +197,7 @@ msgid ""
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
 "[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
@@ -209,7 +209,7 @@ msgstr ""
 #: sar.c:127
 #, c-format
 msgid "Main options and reports:\n"
-msgstr "Ĉefaj elektebloj kaj raportoj:\n"
+msgstr "Ĉefaj modifiloj kaj raportoj:\n"
 
 #: sar.c:128
 #, c-format
@@ -387,19 +387,19 @@ msgstr "Petitaj aktivaĵoj ne disponeblas\n"
 #: sar.c:1272
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
-msgstr "Elektebloj -f kaj -o ne povas aperi kune\n"
+msgstr "Modifiloj -f kaj -o ne povas aperi kune\n"
 
 #: sar.c:1278
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "Ni ne legas el sistem-aktivaĵa dosiero (uzu elekteblon -f)\n"
+msgstr "Ni ne legas el sistem-aktivaĵa dosiero (uzu la modifilon -f)\n"
 
 #: sar.c:1410
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Ne eblas trovi la datumar-kolektilon (%s)\n"
 
-#: rd_stats.c:2163
+#: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Ne eblas trakti tiom da procesoroj!\n"
@@ -416,8 +416,8 @@ msgstr "Ne atendata fino de sistem-aktivaĵa dosiero\n"
 
 #: sa_common.c:946
 #, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr "Dosiero kreita uzante sar/sadc el sysstat versio %d.%d.%d"
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Dosiero kreita de sar/sadc el sysstat versio %d.%d.%d"
 
 #: sa_common.c:977
 #, c-format
@@ -442,16 +442,16 @@ msgid ""
 "[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
-"Elektebloj estas:\n"
+"Modifiloj estas:\n"
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
 "[ -w ] [ -C <komando> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
-#: pr_stats.c:2329 pr_stats.c:2342
+#: pr_stats.c:2348 pr_stats.c:2361
 msgid "Summary"
 msgstr "Resumo"
 
-#: pr_stats.c:2380
+#: pr_stats.c:2399
 msgid "Other devices not listed here"
 msgstr "Aliaj aparatoj ne listataj ĉi tie"
 
@@ -459,5 +459,5 @@ msgstr "Aliaj aparatoj ne listataj ĉi tie"
 #~ "Options are:\n"
 #~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 #~ msgstr ""
-#~ "Elektebloj estas:\n"
+#~ "Modifiloj estas:\n"
 #~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"

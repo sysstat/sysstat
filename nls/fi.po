@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.1\n"
+"Project-Id-Version: sysstat 10.1.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-07-24 21:50+0200\n"
-"PO-Revision-Date: 2012-08-02 20:54+0300\n"
+"POT-Creation-Date: 2012-10-03 21:18+0200\n"
+"PO-Revision-Date: 2012-11-08 16:50+0200\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -60,10 +60,35 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Levydataa ei löydy\n"
 
-#: iostat.c:1378 sa_common.c:1300
+#: iostat.c:1379 sa_common.c:1300
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Virheellinen toistuvan laitenimen tyyppi\n"
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Järjestelmätoimintojen lokitiedosto: %s (%#x)\n"
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr "Tietokone: "
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Muuttujatyypin ”long int” koko: %d\n"
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr "Toimintojen luettelo:\n"
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Tuntematon toimintomuoto]"
 
 #: sadc.c:81
 #, c-format
@@ -84,24 +109,24 @@ msgstr ""
 #: sadc.c:223
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
-msgstr "Ei voida kirjoittaa tietoja järjestelmätoimintojen lokitiedostoon: %s\n"
+msgstr "Järjestelmätoimintotietojen kirjoittaminen lokitiedostoon epäonnistui: %s\n"
 
 #: sadc.c:510
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Ei voida kirjoittaa järjestelmätoimintojen lokitiedoston otsaketta: %s\n"
 
-#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2117
+#: sadc.c:623 sadc.c:632 sadc.c:693 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
 #: sa_common.c:1109
 #, c-format
 msgid "Cannot open %s: %s\n"
-msgstr "Ei voida avata %s: %s\n"
+msgstr "Kohteen %s avaaminen epäonnistui: %s\n"
 
 #  Tässä haluttuun sana voidaan korvata tilanteessa osuvammalla sanalla,  esim. pyydettyyn, toivottuun, valittuun, kyseiseen tms.
 #: sadc.c:807
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
-msgstr "Tietoja ei voida liittää haluttuun tiedostoon (%s)\n"
+msgstr "Tietojen liittäminen haluttuun tiedostoon (%s) epäonnistui\n"
 
 #: common.c:62
 #, c-format
@@ -137,39 +162,14 @@ msgstr ""
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -P { <suoritin> [,...] | ON | ALL } ]\n"
 
-#: mpstat.c:581 sar.c:382 pidstat.c:1822
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
 msgid "Average:"
 msgstr "Keskiarvo:"
 
-#: mpstat.c:928
+#: mpstat.c:940
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Ei niin monta suoritinta!\n"
-
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Järjestelmätoimintojen lokitiedosto: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Tietokone: "
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Muuttujatyypin ”long int” koko: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Toimintojen luettelo:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Tuntematon toimintomuoto]"
 
 #: sadf.c:86
 #, c-format
@@ -404,10 +404,10 @@ msgstr "Ei lueta järjestelmätoimintojen lokitiedostosta (käytä valitsinta �
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Datakerääjää (%s) ei löydy\n"
 
-#: rd_stats.c:2163
+#: rd_stats.c:2170
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr "Ei voida käsitellä niin montaa suoritinta!\n"
+msgstr "Niin monen suorittimen käsittely epäonnistui!\n"
 
 #: sa_common.c:917
 #, c-format
@@ -421,8 +421,8 @@ msgstr "Järjestelmätoimintojen lokitiedoston loppu odottamaton\n"
 
 #: sa_common.c:946
 #, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr "Tiedosto luotu käyttäen ”sar”- tai ”sadc”-käskyä sysstat-versiosta %d.%d.%d"
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Käskyllä ”sar” tai ”sadc” sysstat-versiosta %d.%d.%d luotu tiedosto"
 
 #: sa_common.c:977
 #, c-format
@@ -452,11 +452,11 @@ msgstr ""
 "[ -w ] [ -C <komento> ] [ -p { <prosessitunniste> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
-#: pr_stats.c:2329 pr_stats.c:2342
+#: pr_stats.c:2348 pr_stats.c:2361
 msgid "Summary"
 msgstr "Yhteenveto"
 
-#: pr_stats.c:2380
+#: pr_stats.c:2399
 msgid "Other devices not listed here"
 msgstr "Muut laitteet, joita ei ole luetteloitu tässä"
 
