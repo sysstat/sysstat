@@ -1,6 +1,6 @@
 /*
  * pidstat: Report statistics for Linux tasks
- * (C) 2007-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2007-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -63,7 +63,7 @@ long count = 0;
 unsigned int pidflag = 0;	/* General flags */
 unsigned int tskflag = 0;	/* TASK/CHILD stats */
 unsigned int actflag = 0;	/* Activity flag */
-
+int sigint_caught = 0;
 
 /*
  ***************************************************************************
@@ -97,6 +97,19 @@ void alarm_handler(int sig)
 {
 	signal(SIGALRM, alarm_handler);
 	alarm(interval);
+}
+
+/*
+ ***************************************************************************
+ * SIGINT signal handler.
+ * 
+ * IN:
+ * @sig	Signal number.
+ ***************************************************************************
+ */
+void int_handler(int sig)
+{
+	sigint_caught = 1;
 }
 
 /*
@@ -1902,6 +1915,10 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	uptime0[2] = uptime0[0];
 	memcpy(st_pid_list[2], st_pid_list[0], PID_STATS_SIZE * pid_nr);
 
+	/* Set a handler for SIGINT */
+	signal(SIGINT, int_handler);
+
+	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	pause();
 
 	do {
@@ -1940,8 +1957,17 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		}
 
 		if (count) {
-			curr ^= 1;
+			
 			pause();
+			
+			if (sigint_caught) {
+				/* SIGINT signal caught => Display average stats */
+				count = 0;
+				printf("\n");	/* Skip "^C" displayed on screen */
+			}
+			else {
+				curr ^= 1;
+			}
 		}
 	}
 	while (count);
@@ -1975,7 +2001,7 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
-
+	
 	/* Get HZ */
 	get_HZ();
 
