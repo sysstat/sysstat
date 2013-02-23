@@ -3,6 +3,10 @@ Changes:
 xxxx/xx/xx: Version 10.1.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Christophe Cerin]: pidstat now stops and displays its average
 	  stats when it receives SIGINT (crtl/c).
+	* mpstat now stops and displays its average stats when it
+	  receives SIGINT (crtl/c).
+	* sar now stops and displays its average stats when it receives
+	  SIGINT (crtl/c).
 
 2012/12/23: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* Changed network counters (used by sar -n {DEV | EDEV }) to

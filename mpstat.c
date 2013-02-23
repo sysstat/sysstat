@@ -1,6 +1,6 @@
 /*
  * mpstat: per-processor statistics
- * (C) 2000-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2000-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -73,6 +73,8 @@ int irqcpu_nr = 0;
 /* Nb of soft interrupts per processor */
 int softirqcpu_nr = 0;
 
+int sigint_caught = 0;
+
 /*
  ***************************************************************************
  * Print usage and exit
@@ -97,13 +99,26 @@ void usage(char *progname)
  * SIGALRM signal handler
  *
  * IN:
- * @sig	Signal number. Set to 0 for the first time, then to SIGALRM.
+ * @sig	Signal number.
  ***************************************************************************
  */
 void alarm_handler(int sig)
 {
 	signal(SIGALRM, alarm_handler);
 	alarm(interval);
+}
+
+/*
+ ***************************************************************************
+ * SIGINT signal handler.
+ * 
+ * IN:
+ * @sig	Signal number.
+ ***************************************************************************
+ */
+void int_handler(int sig)
+{
+	sigint_caught = 1;
 }
 
 /*
@@ -795,6 +810,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		       STATS_IRQCPU_SIZE * (cpu_nr + 1) * softirqcpu_nr);
 	}
 
+	/* Set a handler for SIGINT */
+	signal(SIGINT, int_handler);
+
 	pause();
 
 	do {
@@ -844,9 +862,19 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		if (count > 0) {
 			count--;
 		}
+		
 		if (count) {
-			curr ^= 1;
+			
 			pause();
+			
+			if (sigint_caught) {
+				/* SIGINT signal caught => Display average stats */
+				count = 0;
+				printf("\n");	/* Skip "^C" displayed on screen */
+			}
+			else {
+				curr ^= 1;
+			}
 		}
 	}
 	while (count);

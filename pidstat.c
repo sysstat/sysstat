@@ -90,7 +90,7 @@ void usage(char *progname)
  * SIGALRM signal handler.
  *
  * IN:
- * @sig	Signal number. Set to 0 for the first time, then to SIGALRM.
+ * @sig	Signal number.
  ***************************************************************************
  */
 void alarm_handler(int sig)
@@ -1959,7 +1959,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		if (count) {
 			
 			pause();
-			
+	
 			if (sigint_caught) {
 				/* SIGINT signal caught => Display average stats */
 				count = 0;

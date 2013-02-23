@@ -1,6 +1,6 @@
 /*
  * sadc: system activity data collector
- * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -59,6 +59,7 @@ long interval = 0;
 unsigned int flags = 0;
 
 int dis;
+int optz = 0;
 char timestamp[2][TIMESTAMP_LEN];
 
 struct file_header file_hdr;
@@ -204,13 +205,38 @@ void parse_sadc_S_option(char *argv[], int opt)
  * SIGALRM signal handler.
  *
  * IN:
- * @sig	Signal number. Set to 0 for the first time, then to SIGALRM.
+ * @sig	Signal number.
  ***************************************************************************
  */
 void alarm_handler(int sig)
 {
 	signal(SIGALRM, alarm_handler);
 	alarm(interval);
+}
+
+/*
+ ***************************************************************************
+ * SIGINT signal handler.
+ * 
+ * IN:
+ * @sig	Signal number.
+ ***************************************************************************
+ */
+void int_handler(int sig)
+{
+	if (!optz) {
+		/* sadc hasn't been called by sar */
+		exit(1);
+	}
+	
+	/*
+	 * When starting sar then pressing ctrl/c, SIGINT is received
+	 * by sadc, not sar. So send SIGINT to sar so that average stats
+	 * can be displayed.
+	 */
+	if (kill(getppid(), SIGINT) < 0) {
+		exit(1);
+	}
 }
 
 /*
@@ -878,6 +904,9 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 	char new_ofile[MAX_FILE_LEN];
 
 	new_ofile[0] = '\0';
+	
+	/* Set a handler for SIGINT */
+	signal(SIGINT, int_handler);
 
 	/* Main loop */
 	do {
@@ -992,7 +1021,7 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
  */
 int main(int argc, char **argv)
 {
-	int opt = 0, optz = 0;
+	int opt = 0;
 	char ofile[MAX_FILE_LEN];
 	struct tm rectime;
 	int stdfd = 0, ofd = -1;

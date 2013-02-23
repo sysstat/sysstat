@@ -1,6 +1,6 @@
 /*
  * sar: report system activity
- * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <errno.h>
+#include <signal.h>
 
 #include "version.h"
 #include "sa.h"
@@ -76,6 +77,8 @@ struct tstamp tm_start, tm_end;
 char *args[MAX_ARGV_NR];
 
 extern struct activity *act[];
+
+int sigint_caught = 0;
 
 /*
  ***************************************************************************
@@ -172,6 +175,21 @@ void display_help(char *progname)
 	printf(_("\t-W\tSwapping statistics\n"));
 	printf(_("\t-y\tTTY device statistics\n"));
 	exit(0);
+}
+
+/*
+ ***************************************************************************
+ * SIGINT signal handler.
+ * 
+ * IN:
+ * @sig	Signal number.
+ ***************************************************************************
+ */
+void int_handler(int sig)
+{
+	sigint_caught = 1;
+	printf("\n");	/* Skip "^C" displayed on screen */
+
 }
 
 /*
@@ -1038,6 +1056,9 @@ void read_stats(void)
 	/* Save the first stats collected. Will be used to compute the average */
 	copy_structures(act, id_seq, record_hdr, 2, 0);
 
+	/* Set a handler for SIGINT */
+	signal(SIGINT, int_handler);
+
 	/* Main loop */
 	do {
 
@@ -1065,7 +1086,13 @@ void read_stats(void)
 			count--;
 		}
 		if (count) {
-			curr ^= 1;
+			if (sigint_caught) {
+				/* SIGINT signal caught => Display average stats */
+				count = 0;
+			}
+			else {
+				curr ^= 1;
+			}
 		}
 	}
 	while (count);
