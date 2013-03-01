@@ -1,6 +1,6 @@
 /*
  * pidstat: Display per-process statistics.
- * (C) 2007-2011 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 2007-2013 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _PIDSTAT_H
@@ -78,7 +78,7 @@
 #define TASK_SMAP	"/proc/%u/task/%u/smaps"
 
 #define PRINT_ID_HDR(_timestamp_, _flag_)	do {						\
-							printf("\n%-11s", _timestamp_);		\
+							printf("\n%-11s   UID", _timestamp_);	\
    							if (DISPLAY_TID(_flag_)) {		\
 								printf("      TGID       TID");	\
 							}					\
@@ -120,6 +120,7 @@ struct pid_stats {
 	unsigned int       uc_asum_count		__attribute__ ((packed));
 	unsigned int       processor			__attribute__ ((packed));
 	unsigned int       flags			__attribute__ ((packed));
+	unsigned int       uid				__attribute__ ((packed));
 	char               comm[MAX_COMM_LEN];
 	char               cmdline[MAX_CMDLINE_LEN];
 };

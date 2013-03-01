@@ -385,7 +385,10 @@ int read_proc_pid_status(unsigned int pid, struct pid_stats *pst,
 
 	while (fgets(line, 256, fp) != NULL) {
 
-		if (!strncmp(line, "voluntary_ctxt_switches:", 24)) {
+		if (!strncmp(line, "Uid:", 4)) {
+			sscanf(line + 5, "%d", &pst->uid);
+		}
+		else if (!strncmp(line, "voluntary_ctxt_switches:", 24)) {
 			sscanf(line + 25, "%lu", &pst->nvcsw);
 		}
 		else if (!strncmp(line, "nonvoluntary_ctxt_switches:", 27)) {
@@ -1090,7 +1093,7 @@ void __print_line_id(struct pid_stats *pst, char c)
  */
 void print_line_id(char *timestamp, struct pid_stats *pst)
 {
-	printf("%-11s", timestamp);
+	printf("%-11s %5d", timestamp, pst->uid);
 	
 	__print_line_id(pst, '-');
 }
@@ -1146,7 +1149,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				       &pstc, &pstp) <= 0)
 			continue;
 
-		printf("%11ld", (long) time(NULL));
+		printf("%11ld %5d", (long) time(NULL), pstc->uid);
 		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
@@ -1251,7 +1254,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 				       &pstc, &pstp) <= 0)
 			continue;
 
-		printf("%11ld", (long) time(NULL));
+		printf("%11ld %5d", (long) time(NULL), pstc->uid);
 		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {

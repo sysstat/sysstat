@@ -1,4 +1,4 @@
-.TH PIDSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "MARCH 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
@@ -66,8 +66,13 @@ This string can be a regular expression.
 Report I/O statistics (kernels 2.6.20 and later only).
 The following values are displayed:
 
-.B PID
+.B UID
 .RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B PID
 .RS
 The identification number of the task being monitored.
 .RE
@@ -124,8 +129,13 @@ Report page faults and memory utilization.
 When reporting statistics for individual tasks,
 the following values are displayed:
 
-.B PID
+.B UID
 .RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B PID
 .RS
 The identification number of the task being monitored.
 .RE
@@ -166,6 +176,12 @@ The command name of the task.
 When reporting global statistics for tasks and all their children,
 the following values are displayed:
 
+.B UID
+.RS
+The real user identification number of the task which is being monitored
+together with its children.
+.RE
+
 .B PID
 .RS
 The identification number of the task which is being monitored
@@ -194,8 +210,13 @@ together with its children.
 Report stack utilization.
 The following values are displayed:
 
-.B PID
+.B UID
 .RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B PID
 .RS
 The identification number of the task being monitored.
 .RE
@@ -259,8 +280,13 @@ Report CPU utilization.
 When reporting statistics for individual tasks,
 the following values are displayed:
 
-.B PID
+.B UID
 .RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B PID
 .RS
 The identification number of the task being monitored.
 .RE
@@ -306,6 +332,12 @@ The command name of the task.
 When reporting global statistics for tasks and all their children,
 the following values are displayed:
 
+.B UID
+.RS
+The real user identification number of the task which is being monitored
+together with its children.
+.RE
+
 .B PID
 .RS
 The identification number of the task which is being monitored
@@ -347,8 +379,13 @@ Print version number then exit.
 Report task switching activity (kernels 2.6.23 and later only).
 The following values are displayed:
 
-.B PID
+.B UID
 .RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B PID
 .RS
 The identification number of the task being monitored.
 .RE
