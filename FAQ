@@ -1,9 +1,7 @@
 This is sysstat's Frequently Asked Questions!
 Be sure to read this carefully before asking for help...
 If you don't find the solution to your problem here then send me an email
-(please remember to include sysstat's version number, a sample output
-showing the bug, and the contents of the /proc/stat file for your system.
-Also tell me what version your kernel is).
+(please remember to include the version numbers of sysstat and of your kernekl).
 
 
 1. GENERAL QUESTIONS
@@ -209,12 +207,12 @@ Please read the sar(1) manual page! Daily data files are created in the
 -o with sar. Once they are created, sar can display statistics saved
 in those files.
 But sar can also display statistics collected "on the fly": Just enter
-the proper option on the command line to indicate which statistics are
-to be displayed, and also specify an <interval> and <count> number.
+the proper options on the command line to indicate which statistics are
+to be displayed, and also specify <interval> and <count> numbers.
 E.g.:
 
 # sar 2 5  --> will report CPU utilization every two seconds, five times.
-# sar -n DEV 3 0  --> will report network device utilization every
+# sar -n DEV 3  --> will report network device utilization every
 3 seconds, in an infinite loop.
 
 ~~~
