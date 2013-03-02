@@ -64,6 +64,8 @@ long count = 0;
 unsigned int pidflag = 0;	/* General flags */
 unsigned int tskflag = 0;	/* TASK/CHILD stats */
 unsigned int actflag = 0;	/* Activity flag */
+
+struct sigaction alrm_act, int_act;
 int sigint_caught = 0;
 
 /*
@@ -88,7 +90,7 @@ void usage(char *progname)
 
 /*
  ***************************************************************************
- * SIGALRM signal handler.
+ * SIGALRM signal handler. No need to resert the handler here.
  *
  * IN:
  * @sig	Signal number.
@@ -96,7 +98,6 @@ void usage(char *progname)
  */
 void alarm_handler(int sig)
 {
-	signal(SIGALRM, alarm_handler);
 	alarm(interval);
 }
 
@@ -1919,7 +1920,10 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	}
 
 	/* Set a handler for SIGALRM */
-	alarm_handler(0);
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = (void *) alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
 
 	/* Save the first stats collected. Will be used to compute the average */
 	ps_tstamp[2] = ps_tstamp[0];
@@ -1928,7 +1932,9 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	memcpy(st_pid_list[2], st_pid_list[0], PID_STATS_SIZE * pid_nr);
 
 	/* Set a handler for SIGINT */
-	signal(SIGINT, int_handler);
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = (void *) int_handler;
+	sigaction(SIGINT, &int_act, NULL);
 
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	pause();

@@ -73,6 +73,7 @@ int irqcpu_nr = 0;
 /* Nb of soft interrupts per processor */
 int softirqcpu_nr = 0;
 
+struct sigaction alrm_act, int_act;
 int sigint_caught = 0;
 
 /*
@@ -96,7 +97,7 @@ void usage(char *progname)
 
 /*
  ***************************************************************************
- * SIGALRM signal handler
+ * SIGALRM signal handler. No need to reset the handler here.
  *
  * IN:
  * @sig	Signal number.
@@ -104,7 +105,6 @@ void usage(char *progname)
  */
 void alarm_handler(int sig)
 {
-	signal(SIGALRM, alarm_handler);
 	alarm(interval);
 }
 
@@ -796,7 +796,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	}
 
 	/* Set a handler for SIGALRM */
-	alarm_handler(0);
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = (void *) alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
 
 	/* Save the first stats collected. Will be used to compute the average */
 	mp_tstamp[2] = mp_tstamp[0];
@@ -811,7 +814,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	}
 
 	/* Set a handler for SIGINT */
-	signal(SIGINT, int_handler);
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = (void *) int_handler;
+	sigaction(SIGINT, &int_act, NULL);
 
 	pause();
 

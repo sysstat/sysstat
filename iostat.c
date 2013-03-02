@@ -1,6 +1,6 @@
 /*
  * iostat: report CPU and I/O statistics
- * (C) 1998-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1998-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -70,6 +70,7 @@ unsigned int dm_major;	/* Device-mapper major number */
 long interval = 0;
 char timestamp[64];
 
+struct sigaction alrm_act;
 
 /*
  ***************************************************************************
@@ -122,15 +123,14 @@ void set_disk_output_unit(void)
 
 /*
  ***************************************************************************
- * SIGALRM signal handler.
+ * SIGALRM signal handler. No need to reset the handler here.
  *
  * IN:
- * @sig	Signal number. Set to 0 for the first time, then to SIGALRM.
+ * @sig	Signal number.
  ***************************************************************************
  */
 void alarm_handler(int sig)
 {
-	signal(SIGALRM, alarm_handler);
 	alarm(interval);
 }
 
@@ -1594,7 +1594,10 @@ int main(int argc, char **argv)
 	printf("\n");
 
 	/* Set a handler for SIGALRM */
-	alarm_handler(0);
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = (void *) alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
 
 	/* Main loop */
 	rw_io_stat_loop(count, &rectime);

@@ -78,6 +78,7 @@ char *args[MAX_ARGV_NR];
 
 extern struct activity *act[];
 
+struct sigaction int_act;
 int sigint_caught = 0;
 
 /*
@@ -1057,7 +1058,10 @@ void read_stats(void)
 	copy_structures(act, id_seq, record_hdr, 2, 0);
 
 	/* Set a handler for SIGINT */
-	signal(SIGINT, int_handler);
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = (void *) int_handler;
+	int_act.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &int_act, NULL);
 
 	/* Main loop */
 	do {

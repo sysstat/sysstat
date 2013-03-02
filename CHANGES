@@ -11,6 +11,8 @@ xxxx/xx/xx: Version 10.1.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* pidstat: -U option added. This option tells pidstat to display
 	  the username of the task instead of its UID.
 	* pidstat manual page updated.
+	* Now use sigaction() instead of signal() for signals handling
+	  to avoid portability problems.
 	* FAQ updated.
 
 2012/12/23: Version 10.1.3 - Sebastien Godard (sysstat <at> orange.fr)

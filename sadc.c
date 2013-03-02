@@ -69,6 +69,8 @@ unsigned int id_seq[NR_ACT];
 
 extern struct activity *act[];
 
+struct sigaction alrm_act, int_act;
+
 /*
  ***************************************************************************
  * Print usage and exit.
@@ -202,7 +204,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 
 /*
  ***************************************************************************
- * SIGALRM signal handler.
+ * SIGALRM signal handler. No need to reset handler here.
  *
  * IN:
  * @sig	Signal number.
@@ -210,7 +212,6 @@ void parse_sadc_S_option(char *argv[], int opt)
  */
 void alarm_handler(int sig)
 {
-	signal(SIGALRM, alarm_handler);
 	alarm(interval);
 }
 
@@ -906,7 +907,9 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 	new_ofile[0] = '\0';
 	
 	/* Set a handler for SIGINT */
-	signal(SIGINT, int_handler);
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = (void *) int_handler;
+	sigaction(SIGINT, &int_act, NULL);
 
 	/* Main loop */
 	do {
@@ -1186,7 +1189,10 @@ int main(int argc, char **argv)
 	}
 
 	/* Set a handler for SIGALRM */
-	alarm_handler(0);
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = (void *) alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
 
 	/* Main loop */
 	rw_sa_stat_loop(count, &rectime, stdfd, ofd, ofile);
