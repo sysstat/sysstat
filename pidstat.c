@@ -27,6 +27,7 @@
 #include <dirent.h>
 #include <ctype.h>
 #include <sys/types.h>
+#include <pwd.h>
 #include <sys/utsname.h>
 #include <regex.h>
 
@@ -79,7 +80,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
+			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U ] [ -u ] [ -V ]\n"
 			  "[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 			  "[ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
@@ -1053,7 +1054,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 /*
  ***************************************************************************
- * Display PID and TID.
+ * Display UID/username, PID and TID.
  *
  * IN:
  * @pst		Current process statistics.
@@ -1063,7 +1064,15 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 void __print_line_id(struct pid_stats *pst, char c)
 {
 	char format[32];
+	struct passwd *pwdent;
 
+	if (DISPLAY_USERNAME(pidflag) && ((pwdent = getpwuid(pst->uid)) != NULL)) {
+		printf(" %8s", pwdent->pw_name);
+	}
+	else {
+		printf(" %5d", pst->uid);
+	}
+	
 	if (DISPLAY_TID(pidflag)) {
 		
 		if (pst->tgid) {
@@ -1093,7 +1102,7 @@ void __print_line_id(struct pid_stats *pst, char c)
  */
 void print_line_id(char *timestamp, struct pid_stats *pst)
 {
-	printf("%-11s %5d", timestamp, pst->uid);
+	printf("%-11s", timestamp);
 	
 	__print_line_id(pst, '-');
 }
@@ -1149,7 +1158,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				       &pstc, &pstp) <= 0)
 			continue;
 
-		printf("%11ld %5d", (long) time(NULL), pstc->uid);
+		printf("%11ld", (long) time(NULL));
 		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
@@ -1254,7 +1263,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 				       &pstc, &pstp) <= 0)
 			continue;
 
-		printf("%11ld %5d", (long) time(NULL), pstc->uid);
+		printf("%11ld", (long) time(NULL));
 		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
@@ -2128,6 +2137,11 @@ int main(int argc, char **argv)
 				case 't':
 					/* Display stats for threads */
 					pidflag |= P_D_TID;
+					break;
+
+				case 'U':
+					/* Display username instead of UID */
+					pidflag |= P_D_USERNAME;
 					break;
 
 				case 'u':

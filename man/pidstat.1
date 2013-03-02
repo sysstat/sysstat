@@ -2,7 +2,7 @@
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
-.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]
+.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U ] [ -u ] [ -V ]
 .B [ -w ] [ -C
 .I comm
 .B ] [ -p {
@@ -64,12 +64,17 @@ Display only tasks whose command name includes the string
 This string can be a regular expression.
 .IP -d
 Report I/O statistics (kernels 2.6.20 and later only).
-The following values are displayed:
+The following values may be displayed:
 
 .B UID
 .RS
 .RS
 The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The real user name of the task being monitored.
 .RE
 
 .B PID
@@ -127,12 +132,17 @@ tasks managed by the system.
 Report page faults and memory utilization.
 
 When reporting statistics for individual tasks,
-the following values are displayed:
+the following values may be displayed:
 
 .B UID
 .RS
 .RS
 The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The real user name of the task being monitored.
 .RE
 
 .B PID
@@ -174,11 +184,17 @@ The command name of the task.
 .RE
 
 When reporting global statistics for tasks and all their children,
-the following values are displayed:
+the following values may be displayed:
 
 .B UID
 .RS
 The real user identification number of the task which is being monitored
+together with its children.
+.RE
+
+.B USER
+.RS
+The real user name of the task which is being monitored
 together with its children.
 .RE
 
@@ -208,12 +224,17 @@ together with its children.
 .RE
 .IP -s
 Report stack utilization.
-The following values are displayed:
+The following values may be displayed:
 
 .B UID
 .RS
 .RS
 The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The real user name of the task being monitored.
 .RE
 
 .B PID
@@ -278,12 +299,17 @@ The identification number of the thread being monitored.
 Report CPU utilization.
 
 When reporting statistics for individual tasks,
-the following values are displayed:
+the following values may be displayed:
 
 .B UID
 .RS
 .RS
 The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The real user name of the task being monitored.
 .RE
 
 .B PID
@@ -330,11 +356,17 @@ The command name of the task.
 .RE
 
 When reporting global statistics for tasks and all their children,
-the following values are displayed:
+the following values may be displayed:
 
 .B UID
 .RS
 The real user identification number of the task which is being monitored
+together with its children.
+.RE
+
+.B USER
+.RS
+The real user name of the task which is being monitored
 together with its children.
 .RE
 
@@ -373,16 +405,23 @@ The command name of the task which is being monitored
 together with its children.
 .RE
 .RE
+.IP -U
+Display the real user name of the tasks being monitored instead of the UID.
 .IP -V
 Print version number then exit.
 .IP -w
 Report task switching activity (kernels 2.6.23 and later only).
-The following values are displayed:
+The following values may be displayed:
 
 .B UID
 .RS
 .RS
 The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The real user name of the task being monitored.
 .RE
 
 .B PID

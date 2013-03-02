@@ -47,6 +47,7 @@
 #define P_D_TID		0x020
 #define P_D_ONELINE	0x040
 #define P_D_CMDLINE	0x080
+#define P_D_USERNAME	0x100
 
 #define DISPLAY_PID(m)		(((m) & P_D_PID) == P_D_PID)
 #define DISPLAY_ALL_PID(m)	(((m) & P_D_ALL_PID) == P_D_ALL_PID)
@@ -56,6 +57,7 @@
 #define DISPLAY_TID(m)		(((m) & P_D_TID) == P_D_TID)
 #define DISPLAY_ONELINE(m)	(((m) & P_D_ONELINE) == P_D_ONELINE)
 #define DISPLAY_CMDLINE(m)	(((m) & P_D_CMDLINE) == P_D_CMDLINE)
+#define DISPLAY_USERNAME(m)	(((m) & P_D_USERNAME) == P_D_USERNAME)
 
 #define F_NO_PID_IO	0x01
 
@@ -78,7 +80,13 @@
 #define TASK_SMAP	"/proc/%u/task/%u/smaps"
 
 #define PRINT_ID_HDR(_timestamp_, _flag_)	do {						\
-							printf("\n%-11s   UID", _timestamp_);	\
+							printf("\n%-11s", _timestamp_);	\
+							if (DISPLAY_USERNAME(_flag_)) {		\
+								printf("     USER");		\
+							}					\
+							else {					\
+								printf("   UID");		\
+							}					\
    							if (DISPLAY_TID(_flag_)) {		\
 								printf("      TGID       TID");	\
 							}					\

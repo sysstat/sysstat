@@ -8,6 +8,8 @@ xxxx/xx/xx: Version 10.1.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar now stops and displays its average stats when it receives
 	  SIGINT (crtl/c).
 	* pidstat now displays task's UID for all tasks.
+	* pidstat: -U option added. This option tells pidstat to display
+	  the username of the task instead of its UID.
 	* pidstat manual page updated.
 	* FAQ updated.
 
