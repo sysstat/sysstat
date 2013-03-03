@@ -2,7 +2,7 @@
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
-.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U ] [ -u ] [ -V ]
+.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ username ] ] [ -u ] [ -V ]
 .B [ -w ] [ -C
 .I comm
 .B ] [ -p {
@@ -295,6 +295,11 @@ The identification number of the thread group leader.
 The identification number of the thread being monitored.
 .RE
 .RE
+.IP "-U [ username ]"
+Display the real user name of the tasks being monitored instead of the UID.
+If
+.I username
+is specified, then only tasks belonging to the specified user are displayed.
 .IP -u
 Report CPU utilization.
 
@@ -405,8 +410,6 @@ The command name of the task which is being monitored
 together with its children.
 .RE
 .RE
-.IP -U
-Display the real user name of the tasks being monitored instead of the UID.
 .IP -V
 Print version number then exit.
 .IP -w

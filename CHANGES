@@ -9,7 +9,9 @@ xxxx/xx/xx: Version 10.1.4 - Sebastien Godard (sysstat <at> orange.fr)
 	  SIGINT (crtl/c).
 	* pidstat now displays task's UID for all tasks.
 	* pidstat: -U option added. This option tells pidstat to display
-	  the username of the task instead of its UID.
+	  the username of the task instead of its UID. When this option is
+	  followed by a user name, then only tasks belonging to the
+	  specified user are displayed by pidstat.
 	* pidstat manual page updated.
 	* Now use sigaction() instead of signal() for signals handling
 	  to avoid portability problems.

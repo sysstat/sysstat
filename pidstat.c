@@ -54,6 +54,7 @@ unsigned int *pid_array = NULL;
 struct pid_stats st_pid_null;
 struct tm ps_tstamp[3];
 char commstr[MAX_COMM_LEN];
+char userstr[MAX_USER_LEN];
 
 unsigned int pid_nr = 0;	/* Nb of PID to display */
 unsigned int pid_array_nr = 0;
@@ -82,8 +83,8 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U ] [ -u ] [ -V ]\n"
-			  "[ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ username ] ] [ -u ]\n"
+			  "[ -V ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 			  "[ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
 }
@@ -927,6 +928,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 {
 	int q, rc;
 	regex_t regex;
+	struct passwd *pwdent;
 
 	*pstc = st_pid_list[curr] + p;
 
@@ -1028,7 +1030,6 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	}
 	
 	else if (DISPLAY_PID(pidflag)) {
-
 		*pstp = st_pid_list[prev] + p;
 
 		if (!(*pstp)->pid)
@@ -1037,7 +1038,6 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	}
 
 	if (COMMAND_STRING(pidflag)) {
-
 		if (regcomp(&regex, commstr, REG_EXTENDED | REG_NOSUB) != 0)
 			/* Error in preparing regex structure */
 			return -1;
@@ -1048,6 +1048,14 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 		if (rc)
 			/* regex pattern not found in command name */
 			return -1;
+	}
+	
+	if (USER_STRING(pidflag)) {
+		if ((pwdent = getpwuid((*pstc)->uid)) != NULL) {
+			if (strcmp(pwdent->pw_name, userstr))
+				/* This PID doesn't belong to user */
+				return -1;
+		}
 	}
 
 	return 1;
@@ -2101,6 +2109,20 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 		}
+		
+		else if (!strcmp(argv[opt], "-U")) {
+			/* Display username instead of UID */
+			pidflag |= P_D_USERNAME;
+			if (argv[++opt] && (argv[opt][0] != '-') &&
+			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
+				strncpy(userstr, argv[opt++], MAX_USER_LEN);
+				userstr[MAX_USER_LEN - 1] = '\0';
+				pidflag |= P_F_USERSTR;
+				if (!strlen(userstr)) {
+					usage(argv[0]);
+				}
+			}
+		}
 
 		else if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {
@@ -2143,11 +2165,6 @@ int main(int argc, char **argv)
 				case 't':
 					/* Display stats for threads */
 					pidflag |= P_D_TID;
-					break;
-
-				case 'U':
-					/* Display username instead of UID */
-					pidflag |= P_D_USERNAME;
 					break;
 
 				case 'u':

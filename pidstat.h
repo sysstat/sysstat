@@ -17,6 +17,7 @@
 
 #define MAX_COMM_LEN	128
 #define MAX_CMDLINE_LEN	128
+#define MAX_USER_LEN	32
 
 /* Activities */
 #define P_A_CPU		0x01
@@ -48,6 +49,7 @@
 #define P_D_ONELINE	0x040
 #define P_D_CMDLINE	0x080
 #define P_D_USERNAME	0x100
+#define P_F_USERSTR	0x200
 
 #define DISPLAY_PID(m)		(((m) & P_D_PID) == P_D_PID)
 #define DISPLAY_ALL_PID(m)	(((m) & P_D_ALL_PID) == P_D_ALL_PID)
@@ -58,6 +60,7 @@
 #define DISPLAY_ONELINE(m)	(((m) & P_D_ONELINE) == P_D_ONELINE)
 #define DISPLAY_CMDLINE(m)	(((m) & P_D_CMDLINE) == P_D_CMDLINE)
 #define DISPLAY_USERNAME(m)	(((m) & P_D_USERNAME) == P_D_USERNAME)
+#define USER_STRING(m)		(((m) & P_F_USERSTR) == P_F_USERSTR)
 
 #define F_NO_PID_IO	0x01
 
