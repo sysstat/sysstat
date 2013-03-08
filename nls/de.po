@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.2\n"
+"Project-Id-Version: sysstat 10.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-10-03 21:18+0200\n"
-"PO-Revision-Date: 2012-10-13 15:36+0100\n"
+"POT-Creation-Date: 2012-12-10 22:07+0100\n"
+"PO-Revision-Date: 2012-12-28 16:15+0100\n"
 "Last-Translator: Roland Illig <roland.illig@gmx.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "Language: de\n"
@@ -17,52 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
-
-#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
-#: nfsiostat.c:68
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Aufruf: %s [ optionen... ] [ <intervall> [ <anzahl> ] ]\n"
-
-#: iostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Optionen sind:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
-"[ [ -T ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
-"[ <Gerät> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Optionen sind:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
-"[ [ -T ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
-"[ <Gerät> [...] | ALL ]\n"
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Kann die Plattendaten nicht finden\n"
-
-#: iostat.c:1379 sa_common.c:1300
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Ungültige Art eines persistenten Gerätenamens\n"
 
 #: sadf_misc.c:596
 #, c-format
@@ -88,6 +42,52 @@ msgstr "Liste der Aktivitäten:\n"
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Unbekanntes Aktivitätsformat]"
+
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
+#: nfsiostat.c:68
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Aufruf: %s [ optionen... ] [ <intervall> [ <anzahl> ] ]\n"
+
+#: iostat.c:87
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Optionen sind:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
+"[ [ -T ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
+"[ <Gerät> [...] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Optionen sind:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
+"[ [ -T ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
+"[ <Gerät> [...] | ALL ]\n"
+
+#: iostat.c:329
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Kann die Plattendaten nicht finden\n"
+
+#: iostat.c:1392 sa_common.c:1300
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Ungültige Art eines persistenten Gerätenamens\n"
 
 #: sadc.c:81
 #, c-format
@@ -121,7 +121,7 @@ msgstr "Kann den Kopf der Systemaktivitätendatei nicht schreiben: %s\n"
 msgid "Cannot open %s: %s\n"
 msgstr "Kann nicht öffnen %s: %s\n"
 
-#: sadc.c:807
+#: sadc.c:815
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "An die Datei \"%s\" können keine Daten angehängt werden\n"
@@ -149,27 +149,6 @@ msgstr ""
 "Optionen sind:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Optionen sind:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-
-# sar.c:
-#: mpstat.c:593 sar.c:382 pidstat.c:1822
-msgid "Average:"
-msgstr "Durchschn.:"
-
-#: mpstat.c:940
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Nicht so viel Prozessoren!\n"
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
@@ -187,6 +166,27 @@ msgstr ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_optionen> ]\n"
+
+#: mpstat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Optionen sind:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+
+# sar.c:
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
+msgid "Average:"
+msgstr "Durchschn.:"
+
+#: mpstat.c:951
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Nicht so viel Prozessoren!\n"
 
 #: sar.c:105
 #, c-format
@@ -407,6 +407,14 @@ msgstr "Kann den Datensammler \"%s\" nicht finden\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Es sind zuviele Prozessoren vorhanden!\n"
 
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
+msgstr "Andere Geräte, die hier nicht aufgelistet sind"
+
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -449,14 +457,6 @@ msgstr ""
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
 "[ -w ] [ -C <Befehl> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr "Zusammenfassung"
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr "Andere Geräte, die hier nicht aufgelistet sind"
 
 #~ msgid ""
 #~ "Options are:\n"

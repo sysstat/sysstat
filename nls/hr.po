@@ -1,68 +1,22 @@
 # Translation of sysstat to Croatian.
-# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright © 2012 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the sysstat package.
+# Tomislav Krznar <tomislav.krznar@gmail.com>, 2012, 2013.
 #
-# Tomislav Krznar <tomislav.krznar@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.2\n"
+"Project-Id-Version: sysstat 10.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-10-03 21:18+0200\n"
-"PO-Revision-Date: 2012-10-16 22:51+0200\n"
+"POT-Creation-Date: 2012-12-10 22:07+0100\n"
+"PO-Revision-Date: 2013-01-11 23:39+0100\n"
 "Last-Translator: Tomislav Krznar <tomislav.krznar@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Lokalize 1.4\n"
-
-#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
-#: nfsiostat.c:68
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Uporaba: %s [ opcije ] [ <interval> [ <broj> ] ]\n"
-
-#: iostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Opcije su:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <ime_grupe> ] [ -p [ <uređaj> [,...] | ALL ] ]\n"
-"[ <uređaj> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Opcije su:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <ime_grupe> ] [ -p [ <uređaj> [,...] | ALL ] ]\n"
-"[ <uređaj> [...] | ALL ]\n"
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Ne mogu pronaći podatke o disku\n"
-
-#: iostat.c:1379 sa_common.c:1300
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Neispravna vrsta imena trajnog uređaja\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: sadf_misc.c:596
 #, c-format
@@ -88,6 +42,52 @@ msgstr "Popis aktivnosti:\n"
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Nepoznat oblik aktivnosti]"
+
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
+#: nfsiostat.c:68
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Uporaba: %s [ opcije ] [ <interval> [ <broj> ] ]\n"
+
+#: iostat.c:87
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Opcije su:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <ime_grupe> ] [ -p [ <uređaj> [,...] | ALL ] ]\n"
+"[ <uređaj> [...] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Opcije su:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <ime_grupe> ] [ -p [ <uređaj> [,...] | ALL ] ]\n"
+"[ <uređaj> [...] | ALL ]\n"
+
+#: iostat.c:329
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Ne mogu pronaći podatke o disku\n"
+
+#: iostat.c:1392 sa_common.c:1300
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Neispravna vrsta imena trajnog uređaja\n"
 
 #: sadc.c:81
 #, c-format
@@ -121,7 +121,7 @@ msgstr "Ne mogu zapisati zaglavlje datoteke aktivnosti sustava: %s\n"
 msgid "Cannot open %s: %s\n"
 msgstr "Ne mogu otvoriti %s: %s\n"
 
-#: sadc.c:807
+#: sadc.c:815
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Ne mogu dodati podatke u tu datoteku (%s)\n"
@@ -149,26 +149,6 @@ msgstr ""
 "Opcije su:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Opcije su:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-
-#: mpstat.c:593 sar.c:382 pidstat.c:1822
-msgid "Average:"
-msgstr "Prosječno:"
-
-#: mpstat.c:940
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Nema toliko procesora!\n"
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
@@ -186,6 +166,26 @@ msgstr ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_opcije> ]\n"
+
+#: mpstat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Opcije su:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
+msgid "Average:"
+msgstr "Prosječno:"
+
+#: mpstat.c:951
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Nema toliko procesora!\n"
 
 #: sar.c:105
 #, c-format
@@ -406,6 +406,14 @@ msgstr "Ne mogu pronaći sakupljač podataka (%s)\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Ne mogu upravljati s toliko procesora!\n"
 
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
+msgstr "Sažetak"
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
+msgstr "Ostali uređaji koji nisu na ovom popisu"
+
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -448,14 +456,6 @@ msgstr ""
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
 "[ -w ] [ -C <naredba> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr "Sažetak"
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr "Ostali uređaji koji nisu na ovom popisu"
 
 #~ msgid ""
 #~ "Options are:\n"

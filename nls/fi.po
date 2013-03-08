@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.2\n"
+"Project-Id-Version: sysstat 10.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-10-03 21:18+0200\n"
-"PO-Revision-Date: 2012-11-08 16:50+0200\n"
+"POT-Creation-Date: 2012-12-10 22:07+0100\n"
+"PO-Revision-Date: 2012-12-25 12:32+0200\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -18,52 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
-
-#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
-#: nfsiostat.c:68
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Käyttö: %s [ valitsimet ] [ <aikaväli> [ <lukumäärä> ] ]\n"
-
-#: iostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Valitsimet ovat:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <ryhmänimi> ] [ -p [ <laite> [,...] | ALL ] ]\n"
-"[ <laite> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Valitsimet ovat:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <ryhmänimi> ] [ -p [ <laite> [,...] | ALL ] ]\n"
-"[ <laite> [...] | ALL ]\n"
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Levydataa ei löydy\n"
-
-#: iostat.c:1379 sa_common.c:1300
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Virheellinen toistuvan laitenimen tyyppi\n"
 
 #: sadf_misc.c:596
 #, c-format
@@ -89,6 +43,52 @@ msgstr "Toimintojen luettelo:\n"
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Tuntematon toimintomuoto]"
+
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
+#: nfsiostat.c:68
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Käyttö: %s [ valitsimet ] [ <aikaväli> [ <lukumäärä> ] ]\n"
+
+#: iostat.c:87
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Valitsimet ovat:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <ryhmänimi> ] [ -p [ <laite> [,...] | ALL ] ]\n"
+"[ <laite> [...] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Valitsimet ovat:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <ryhmänimi> ] [ -p [ <laite> [,...] | ALL ] ]\n"
+"[ <laite> [...] | ALL ]\n"
+
+#: iostat.c:329
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Levydataa ei löydy\n"
+
+#: iostat.c:1392 sa_common.c:1300
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Virheellinen toistuvan laitenimen tyyppi\n"
 
 #: sadc.c:81
 #, c-format
@@ -123,7 +123,7 @@ msgid "Cannot open %s: %s\n"
 msgstr "Kohteen %s avaaminen epäonnistui: %s\n"
 
 #  Tässä haluttuun sana voidaan korvata tilanteessa osuvammalla sanalla,  esim. pyydettyyn, toivottuun, valittuun, kyseiseen tms.
-#: sadc.c:807
+#: sadc.c:815
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Tietojen liittäminen haluttuun tiedostoon (%s) epäonnistui\n"
@@ -151,26 +151,6 @@ msgstr ""
 "Valitsimet ovat:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Valitsimet ovat:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <suoritin> [,...] | ON | ALL } ]\n"
-
-#: mpstat.c:593 sar.c:382 pidstat.c:1822
-msgid "Average:"
-msgstr "Keskiarvo:"
-
-#: mpstat.c:940
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Ei niin monta suoritinta!\n"
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
@@ -188,6 +168,26 @@ msgstr ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <suoritin> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_valitsimet> ]\n"
+
+#: mpstat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Valitsimet ovat:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <suoritin> [,...] | ON | ALL } ]\n"
+
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
+msgid "Average:"
+msgstr "Keskiarvo:"
+
+#: mpstat.c:951
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Ei niin monta suoritinta!\n"
 
 #: sar.c:105
 #, c-format
@@ -409,6 +409,14 @@ msgstr "Datakerääjää (%s) ei löydy\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Niin monen suorittimen käsittely epäonnistui!\n"
 
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
+msgstr "Yhteenveto"
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
+msgstr "Muut laitteet, joita ei ole luetteloitu tässä"
+
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -451,14 +459,6 @@ msgstr ""
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
 "[ -w ] [ -C <komento> ] [ -p { <prosessitunniste> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr "Yhteenveto"
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr "Muut laitteet, joita ei ole luetteloitu tässä"
 
 #~ msgid ""
 #~ "Options are:\n"

@@ -9,10 +9,10 @@
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.2\n"
+"Project-Id-Version: sysstat 10.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-10-03 21:18+0200\n"
-"PO-Revision-Date: 2012-10-09 20:37+0400\n"
+"POT-Creation-Date: 2012-12-10 22:07+0100\n"
+"PO-Revision-Date: 2012-12-29 18:54+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@mx.ru>\n"
 "Language: ru\n"
@@ -21,52 +21,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-
-#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
-#: nfsiostat.c:68
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ]\n"
-
-#: iostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Параметры:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
-" [ [ -T ] -g <имя_группы> ] [ -p[ <устройство> [,…] | ALL ] ]\n"
-"[ <устройство> […] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Параметры:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
-" [ [ -T ] -g <имя_группы> ] [ -p[ <устройство> [,…] | ALL ] ]\n"
-"[ <устройство> […] | ALL ]\n"
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Не удалось найти данные диска\n"
-
-#: iostat.c:1379 sa_common.c:1300
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Некорректный тип постоянного имени устройства\n"
 
 #: sadf_misc.c:596
 #, c-format
@@ -92,6 +46,52 @@ msgstr "Список показателей:\n"
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Неизвестный формат показателя]"
+
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
+#: nfsiostat.c:68
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ]\n"
+
+#: iostat.c:87
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Параметры:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+" [ [ -T ] -g <имя_группы> ] [ -p[ <устройство> [,…] | ALL ] ]\n"
+"[ <устройство> […] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Параметры:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+" [ [ -T ] -g <имя_группы> ] [ -p[ <устройство> [,…] | ALL ] ]\n"
+"[ <устройство> […] | ALL ]\n"
+
+#: iostat.c:329
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Не удалось найти данные диска\n"
+
+#: iostat.c:1392 sa_common.c:1300
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Некорректный тип постоянного имени устройства\n"
 
 #: sadc.c:81
 #, c-format
@@ -125,7 +125,7 @@ msgstr "Не удалось записать заголовок в файл си
 msgid "Cannot open %s: %s\n"
 msgstr "Не удалось открыть %s: %s\n"
 
-#: sadc.c:807
+#: sadc.c:815
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не удалось добавить данные в этот файл (%s)\n"
@@ -153,27 +153,6 @@ msgstr ""
 "Параметры:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Параметры:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <ЦП> [,…] | ON | ALL } ]\n"
-
-# sar.c:
-#: mpstat.c:593 sar.c:382 pidstat.c:1822
-msgid "Average:"
-msgstr "Среднее:"
-
-#: mpstat.c:940
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Нет такого количества процессоров в системе!\n"
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
@@ -191,6 +170,27 @@ msgstr ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <ЦП> [,…] | ALL } ] [ -s [ <чч:мм:сс> ] ] [ -e [ <чч:мм:сс> ] ]\n"
 "[ -- <параметры_sar> ]\n"
+
+#: mpstat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Параметры:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <ЦП> [,…] | ON | ALL } ]\n"
+
+# sar.c:
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
+msgid "Average:"
+msgstr "Среднее:"
+
+#: mpstat.c:951
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Нет такого количества процессоров в системе!\n"
 
 #: sar.c:105
 #, c-format
@@ -411,6 +411,14 @@ msgstr "Не удалось найти средство сбора данных 
 msgid "Cannot handle so many processors!\n"
 msgstr "Не удаётся обработать так много процессоров!\n"
 
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
+msgstr "Сводка"
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
+msgstr "Другие устройства здесь не перечислены"
+
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -453,14 +461,6 @@ msgstr ""
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
 "[ -w ] [ -C <команда> ] [ -p { <pid> [,…] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr "Сводка"
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr "Другие устройства здесь не перечислены"
 
 #~ msgid ""
 #~ "Options are:\n"

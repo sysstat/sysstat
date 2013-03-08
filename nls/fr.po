@@ -7,10 +7,10 @@
 # Frédéric Marchal <fmarchal@perso.be>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.1.2\n"
+"Project-Id-Version: sysstat 10.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-10-03 21:18+0200\n"
-"PO-Revision-Date: 2012-10-10 11:46+0200\n"
+"POT-Creation-Date: 2012-12-10 22:07+0100\n"
+"PO-Revision-Date: 2012-12-25 09:17+0100\n"
 "Last-Translator: Frédéric Marchal <fmarchal@perso.be>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "Language: fr\n"
@@ -19,52 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.0\n"
-
-#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
-#: nfsiostat.c:68
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Utilisation : %s [ options ] [ <intervalle> [ <itérations> ] ]\n"
-
-#: iostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Options possibles :\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <nom_groupe> ] [ -p [ <périph.> [,...] | ALL ] ]\n"
-"[ <périph.> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Options possibles :\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <nom_groupe> ] [ -p [ <périph> [,...] | ALL ] ]\n"
-"[ <périph> [...] | ALL ]\n"
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Impossible de trouver les données du disque\n"
-
-#: iostat.c:1379 sa_common.c:1300
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Type de périphérique persistant invalide\n"
 
 #: sadf_misc.c:596
 #, c-format
@@ -91,10 +45,56 @@ msgstr "Liste des activités :\n"
 msgid "\t[Unknown activity format]"
 msgstr "\t[Format d'activité inconnu]"
 
+#: iostat.c:84 cifsiostat.c:69 mpstat.c:86 sar.c:90 pidstat.c:78
+#: nfsiostat.c:68
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Utilisation : %s [ options ] [ <intervalle> [ <itérations> ] ]\n"
+
+#: iostat.c:87
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Options possibles :\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+"[ [ -T ] -g <nom_groupe> ] [ -p [ <périph.> [,…] | ALL ] ]\n"
+"[ <périph.> […] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Options possibles :\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+"[ [ -T ] -g <nom_groupe> ] [ -p [ <périph> [,…] | ALL ] ]\n"
+"[ <périph> […] | ALL ]\n"
+
+#: iostat.c:329
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Impossible de trouver les données du disque\n"
+
+#: iostat.c:1392 sa_common.c:1300
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Type de périphérique persistant invalide\n"
+
 #: sadc.c:81
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr "Utilisation :%s [ options... ] [ <intervalle> [ <itérations> ] ] [ <fichier_de_sortie> ]\n"
+msgstr "Utilisation :%s [ options ] [ <intervalle> [ <itérations> ] ] [ <fichier_de_sortie> ]\n"
 
 #: sadc.c:84
 #, c-format
@@ -123,7 +123,7 @@ msgstr "Impossible d'écrire l'entête du fichier d'activité système :%s\n"
 msgid "Cannot open %s: %s\n"
 msgstr "Impossible d'ouvrir %s :%s\n"
 
-#: sadc.c:807
+#: sadc.c:815
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Impossible d'ajouter des données à la fin de ce fichier (%s)\n"
@@ -151,31 +151,10 @@ msgstr ""
 "Options possibles :\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Options possibles :\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-
-# sar.c:
-#: mpstat.c:593 sar.c:382 pidstat.c:1822
-msgid "Average:"
-msgstr "Moyenne :"
-
-#: mpstat.c:940
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Pas tant de processeurs !\n"
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
-msgstr "Utilisation :%s [ options... ] [ <intervalle> [ <itérations> ] ] [ <fichier_données> ]\n"
+msgstr "Utilisation :%s [ options ] [ <intervalle> [ <itérations> ] ] [ <fichier_données> ]\n"
 
 #: sadf.c:89
 #, c-format
@@ -187,8 +166,29 @@ msgid ""
 msgstr ""
 "Options possibles :\n"
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
-"[ -- <options_sar...> ]\n"
+"[ -P { <cpu> [,…] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -- <options_sar> ]\n"
+
+#: mpstat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Options possibles :\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,…] | ON | ALL } ]\n"
+
+# sar.c:
+#: mpstat.c:593 sar.c:382 pidstat.c:1822
+msgid "Average:"
+msgstr "Moyenne :"
+
+#: mpstat.c:951
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Pas tant de processeurs !\n"
 
 #: sar.c:105
 #, c-format
@@ -205,9 +205,9 @@ msgstr ""
 "Options possibles :\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [-H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
 "[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
-"[ -I { <entier> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ -m { <mot-clef> [,...] | ALL } ] [ -n { <mot-clef> [,...] | ALL } ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -I { <entier> [,…] | SUM | ALL | XALL } ] [ -P { <cpu> [,…] | ALL } ]\n"
+"[ -m { <mot-clef> [,…] | ALL } ] [ -n { <mot-clef> [,…] | ALL } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
 "[ -f [ <nom_fichier> ] | -o [ <nom_fichier> ] | -[0-9]+ ]\n"
 "[ -i <intervalle> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 
@@ -258,7 +258,7 @@ msgid ""
 "\t\tTEMP\tDevices temperature\n"
 "\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
-"\t-m { <motclef> [,...] | ALL }\n"
+"\t-m { <motclef> [,…] | ALL }\n"
 "\t\tStatistiques de gestion énergie\n"
 "\t\tMots-clefs possibles :\n"
 "\t\tCPU\tFréquence horloge instantanée CPU\n"
@@ -293,7 +293,7 @@ msgid ""
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
 msgstr ""
-"\t-n { <mot_clé> [,...] | ALL }\n"
+"\t-n { <mot_clé> [,…] | ALL }\n"
 "\t\tStatistiques réseau\n"
 "\t\tMots-clés possibles :\n"
 "\t\tDEV\tInterfaces réseau\n"
@@ -409,6 +409,14 @@ msgstr "Impossible de trouver le collecteur de données (%s)\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Impossible de gérer autant de processeurs !\n"
 
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
+msgstr "Résumé"
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
+msgstr "Autres périphériques non listés ici"
+
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -449,16 +457,8 @@ msgid ""
 msgstr ""
 "Options possibles :\n"
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ]\n"
-"[ -w ] [ -C <commande> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -w ] [ -C <commande> ] [ -p { <pid> [,…] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr "Résumé"
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr "Autres périphériques non listés ici"
 
 #~ msgid ""
 #~ "Options are:\n"
