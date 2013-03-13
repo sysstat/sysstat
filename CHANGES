@@ -1,6 +1,9 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Peter Schiffer]: systemd unit file couldn't be installed
+	  because PKG_PROG_PKG_CONFIG macro wasn't expanded in configure
+	  script. This is now fixed.
 	* [Benno Schulenberg]: Fixed a small inconsistency in pidstat
 	  usage message.
 

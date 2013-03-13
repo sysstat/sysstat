@@ -4,7 +4,7 @@
 # Modified by Sebastien Godard (sysstat <at> orange.fr)
 
 # Initialization of $PACKAGE_VERSION and $PACKAGE_NAME variables
-AC_INIT(sysstat, 10.1.4)
+AC_INIT(sysstat, 10.1.5)
 
 # Ensure that a recent enough version of Autoconf is being used
 AC_PREREQ(2.53)
@@ -40,7 +40,7 @@ AC_PATH_PROGS(PATH_CP, cp, cp, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/
 AC_PATH_PROGS(PATH_CHKCONFIG, chkconfig, chkconfig, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
 
 # Check for systemd
-PKG_PROG_PKG_CONFIG
+AC_CHECK_PROG(PKG_CONFIG, pkg-config, pkg-config)
 AC_PATH_PROGS(SYSTEMCTL, systemctl, systemctl, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
 AC_ARG_WITH([systemdsystemunitdir],
     AS_HELP_STRING([--with-systemdsystemunitdir=DIR],[Directory for systemd service files]),
