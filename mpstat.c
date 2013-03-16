@@ -114,7 +114,7 @@ void alarm_handler(int sig)
  * 
  * IN:
  * @sig	Signal number.
- ***************************************************************************
+ **************************************************************************
  */
 void int_handler(int sig)
 {
@@ -653,7 +653,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 	char *line = NULL, *li;
 	unsigned long irq = 0;
 	unsigned int cpu;
-	int cpu_index[cpu_nr], index = 0, dgt, len;
+	int cpu_index[cpu_nr], index = 0, len;
 	char *cp, *next;
 
 	for (cpu = 0; cpu < cpu_nr; cpu++) {
@@ -700,12 +700,6 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 			}
 			strncpy(p->irq_name, li, len);
 			p->irq_name[len] = '\0';
-			if (len > 0) {
-				dgt = isdigit(li[len - 1]);
-			}
-			else {
-				dgt = FALSE;
-			}
 
 			for (cpu = 0; cpu < index; cpu++) {
 				p = st_ic[curr] + cpu_index[cpu] * ic_nr + irq;
@@ -715,10 +709,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 				 * This is the same as st_irqcpu->irq.
 				 */
 				p->interrupt = strtoul(cp, &next, 10);
-				if (dgt) {
-					/* Sum only numerical irq (and not NMI, LOC, etc.) */
-					st_irq_i->irq_nr += p->interrupt;
-				}
+				st_irq_i->irq_nr += p->interrupt;
 				cp = next;
 			}
 			irq++;
