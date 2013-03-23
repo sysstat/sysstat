@@ -9,6 +9,7 @@ xxxx/xx/xx: Version 10.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Benno Schulenberg]: Fixed a small inconsistency in pidstat
 	  usage message.
 	* Cosmetic fixes in pidstat manual page.
+	* NLS updated (de, eo, fi, fr, ja, nb, nl, ru, uk, vi)
 	* CREDITS file updated.
 
 2013/03/08: Version 10.1.4 - Sebastien Godard (sysstat <at> orange.fr)
