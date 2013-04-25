@@ -1,5 +1,8 @@
 Changes:
 
+xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* Yet another cosmetic fix in pidstat manual page.
+
 2013/03/31: Version 10.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* mpstat now takes into account every interrupt per processor
 	  so that their number adds up to the number displayed for CPU "all".
@@ -9,7 +12,7 @@ Changes:
 	* [Benno Schulenberg]: Fixed a small inconsistency in pidstat
 	  usage message.
 	* Cosmetic fixes in pidstat manual page.
-	* NLS updated (de, eo, fi, fr, ja, nb, nl, ru, uk, vi)
+	* NLS updated (de, eo, fi, fr, ja, nb, nl, ru, uk, vi).
 	* CREDITS file updated.
 
 2013/03/08: Version 10.1.4 - Sebastien Godard (sysstat <at> orange.fr)

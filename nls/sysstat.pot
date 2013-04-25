@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2013-03-16 21:12+0100\n"
+"POT-Creation-Date: 2013-03-23 17:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,29 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sadf_misc.c:596
+#: iostat.c:85 cifsiostat.c:70 mpstat.c:89 sar.c:94 pidstat.c:82
+#: nfsiostat.c:69
 #, c-format
-msgid "System activity data file: %s (%#x)\n"
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
 
-#: sadf_misc.c:605
+#: iostat.c:88
 #, c-format
-msgid "Host: "
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 
-#: sadf_misc.c:611
+#: iostat.c:94
 #, c-format
-msgid "Size of a long int: %d\n"
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: sadf_misc.c:613
+#: iostat.c:329
 #, c-format
-msgid "List of activities:\n"
+msgid "Cannot find disk data\n"
 msgstr ""
 
-#: sadf_misc.c:626
+#: iostat.c:1392 sa_common.c:1300
 #, c-format
-msgid "\t[Unknown activity format]"
+msgid "Invalid type of persistent device name\n"
 msgstr ""
 
 #: sadc.c:84
@@ -81,12 +92,6 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: cifsiostat.c:70 mpstat.c:89 sar.c:94 pidstat.c:82 iostat.c:85
-#: nfsiostat.c:69
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr ""
-
 #: cifsiostat.c:74 nfsiostat.c:73
 #, c-format
 msgid ""
@@ -99,20 +104,6 @@ msgstr ""
 msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-msgstr ""
-
-#: sadf.c:86
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
-msgstr ""
-
-#: sadf.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
-"[ -- <sar_options> ]\n"
 msgstr ""
 
 #: mpstat.c:92
@@ -130,6 +121,45 @@ msgstr ""
 #: mpstat.c:975
 #, c-format
 msgid "Not that many processors!\n"
+msgstr ""
+
+#: sadf_misc.c:596
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr ""
+
+#: sadf_misc.c:605
+#, c-format
+msgid "Host: "
+msgstr ""
+
+#: sadf_misc.c:611
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr ""
+
+#: sadf_misc.c:613
+#, c-format
+msgid "List of activities:\n"
+msgstr ""
+
+#: sadf_misc.c:626
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr ""
+
+#: sadf.c:86
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
+msgstr ""
+
+#: sadf.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -- <sar_options> ]\n"
 msgstr ""
 
 #: sar.c:109
@@ -309,14 +339,6 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr ""
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr ""
-
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -348,11 +370,6 @@ msgstr ""
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:1300 iostat.c:1392
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr ""
-
 #: pidstat.c:85
 #, c-format
 msgid ""
@@ -363,27 +380,10 @@ msgid ""
 "[ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: iostat.c:88
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+#: pr_stats.c:2348 pr_stats.c:2361
+msgid "Summary"
 msgstr ""
 
-#: iostat.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
 msgstr ""
