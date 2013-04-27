@@ -1,6 +1,6 @@
 /*
  * sar and sadf common routines.
- * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -1342,7 +1342,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			/*
 			 * Check sar option -t here (as it can be combined
 			 * with other ones, eg. "sar -rtu ..."
-			 * But sadf option -t is check in sadf.c as it won't
+			 * But sadf option -t is checked in sadf.c as it won't
 			 * be entered as a sar option after "--".
 			 */
 			if (caller == C_SAR) {

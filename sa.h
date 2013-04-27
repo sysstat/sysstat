@@ -1,6 +1,6 @@
 /*
  * sar/sadc: Report system activity
- * (C) 1999-2012 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2013 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _SA_H
@@ -650,7 +650,7 @@ struct record_header {
  * Macro functions definitions.
  *
  * Note: Using 'do ... while' makes the macros safer to use
- * (remember that macro use are followed by a semicolon).
+ * (remember that macro use is followed by a semicolon).
  ***************************************************************************
  */
 

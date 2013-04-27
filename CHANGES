@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* Typos fixed. README file updated.
 	* Yet another cosmetic fix in pidstat manual page.
 
 2013/03/31: Version 10.1.5 - Sebastien Godard (sysstat <at> orange.fr)

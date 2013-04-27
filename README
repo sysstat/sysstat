@@ -1,15 +1,10 @@
 sysstat: System performance tools for the Linux operating system...
 --
-(C) 1999-2012 Sebastien GODARD (sysstat <at> orange.fr)
+(C) 1999-2013 Sebastien GODARD (sysstat <at> orange.fr)
 
 The latest version of sysstat can always be found on my web site at:
 
 http://pagesperso-orange.fr/sebastien.godard/
-
-sysstat package is also available at ibiblio's Linux archive
-in the following directory:
-
-ftp://ibiblio.org/pub/Linux/system/status/
 
 See the CHANGES file to know the new features/improvements/bug fixes added
 in this release of sysstat.
@@ -88,24 +83,14 @@ ${PREFIX}/share/locale/*/LC_MESSAGES/sysstat.mo
 ${PREFIX}/share/doc/sysstat-x.y.z/*
 /var/log/sa
 ${INIT_DIR}/sysstat
-/lib/systemd/system/sysstat.service		if OS uses systemd
+/lib/systemd/system/sysstat.service	if OS uses systemd
 /etc/sysconfig/sysstat
 /etc/sysconfig/sysstat.ioconf
 /etc/cron.d/sysstat
-/etc/rc.d/rc.sysstat		for [SLACKWARE]
+/etc/rc.d/rc.sysstat			(depending on your distro)
 ${RC_DIR}/rc2.d/S03sysstat
 ${RC_DIR}/rc3.d/S03sysstat
 ${RC_DIR}/rc5.d/S03sysstat
-
-with:
-
-${INIT_DIR}=/etc/rc.d/init.d/	for [REDHAT] [CALDERA] [MANDRIVA] [TURBOLINUX] [KONDARA]
-${INIT_DIR}=/sbin/init.d/	for [SUSE <= 7.0]
-${INIT_DIR}=/etc/init.d/	for [SUSE >= 7.1] [DEBIAN]
-${RC_DIR}=/etc/rc.d/		for [REDHAT] [CALDERA] [MANDRIVA] [TURBOLINUX] [KONDARA] [SLACKWARE]
-${RC_DIR}=/sbin/init.d/		for [SUSE <= 7.0]
-${RC_DIR}=/etc/init.d/		for [SUSE >= 7.1]
-${RC_DIR}=/etc/			for [DEBIAN]
 
 sysstat may also install some links in ${RC_DIR}/rc[0146].d/ directory
 if chkconfig is used.
