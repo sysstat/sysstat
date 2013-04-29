@@ -2437,3 +2437,56 @@ __print_funct_t print_avg_pwr_usb_stats(struct activity *a, int prev, int curr,
 {
 	stub_print_pwr_usb_stats(a, 2, TRUE);
 }
+
+/*
+ ***************************************************************************
+ * Display filesystems statistics. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+__print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int curr,
+					    unsigned long long itv, int dispavg)
+{
+	/* FIXME */
+}
+
+/*
+ ***************************************************************************
+ * Display filesystems statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
+				       unsigned long long itv)
+{
+	stub_print_filesystem_stats(a, prev, curr, itv, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display average filesystems statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int curr,
+					   unsigned long long itv)
+{
+	stub_print_filesystem_stats(a, prev, curr, itv, TRUE);
+}

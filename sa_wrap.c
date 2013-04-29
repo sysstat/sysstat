@@ -849,6 +849,28 @@ __read_funct_t wrap_read_bus_usb_dev(struct activity *a)
 
 /*
  ***************************************************************************
+ * Read filesystem statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_filesystem(struct activity *a)
+{
+	struct stats_filesystem *st_filesystem
+		= (struct stats_filesystem *) a->_buf0;
+
+	/* Read filesystems from /etc/mtab */
+	/* FIXME */
+
+	return;
+}
+
+/*
+ ***************************************************************************
  * Count number of interrupts that are in /proc/stat file.
  * Truncate the number of different individual interrupts to NR_IRQS.
  *
@@ -1047,5 +1069,26 @@ __nr_t wrap_get_usb_nr(struct activity *a)
 		/* Return a positive number even if no USB devices have been found */
 		return (n + NR_USB_PREALLOC);
 	
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Get number of mounted filesystems from /etc/mtab. Don't take into account
+ * pseudo-filesystems.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of filesystems + a pre-allocation constant.
+ ***************************************************************************
+ */
+__nr_t wrap_get_filesystem_nr(struct activity *a)
+{
+	__nr_t n = 0;
+
+	/* FIXME */
+
 	return 0;
 }

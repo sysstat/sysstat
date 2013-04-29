@@ -107,7 +107,7 @@ void usage(char *progname)
 {
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
+			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
 			  "[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
@@ -132,6 +132,7 @@ void display_help(char *progname)
 	printf(_("\t-b\tI/O and transfer rate statistics\n"));
 	printf(_("\t-B\tPaging statistics\n"));
 	printf(_("\t-d\tBlock device statistics\n"));
+	printf(_("\t-F\tFilesystems statistics\n"));
 	printf(_("\t-H\tHugepages utilization statistics\n"));
 	printf(_("\t-I { <int> | SUM | ALL | XALL }\n"
 		 "\t\tInterrupts statistics\n"));

@@ -2792,3 +2792,21 @@ __print_funct_t render_pwr_usb_stats(struct activity *a, int isdb, char *pre,
 		       suc->product);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display filesystems statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
+					int curr, unsigned long long itv)
+{
+	/* FIXME */
+}

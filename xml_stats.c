@@ -1990,3 +1990,20 @@ close_xml_markup:
 		xml_markup_power_management(tab, CLOSE_XML_MARKUP);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display filesystems statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab,
+					   unsigned long long itv)
+{
+	/* FIXME */
+}

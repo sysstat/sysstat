@@ -19,7 +19,7 @@
  */
 
 /* Number of activities */
-#define NR_ACT	36
+#define NR_ACT	37
 
 /* Activities */
 #define A_CPU		1
@@ -58,6 +58,7 @@
 #define A_HUGE		34
 #define A_PWR_WGHFREQ	35
 #define A_PWR_USB	36
+#define A_FILESYSTEM	37
 
 
 /* Macro used to flag an activity that should be collected */
@@ -197,6 +198,7 @@
 #define NR_DISK_PREALLOC	3
 #define NR_FREQ_PREALLOC	0
 #define NR_USB_PREALLOC		5
+#define NR_FILESYSTEM_PREALLOC	3
 
 #define UTSNAME_LEN		65
 #define TIMESTAMP_LEN		16
@@ -706,6 +708,8 @@ extern __nr_t
 	wrap_get_freq_nr(struct activity *);
 extern __nr_t
 	wrap_get_usb_nr(struct activity *);
+extern __nr_t
+	wrap_get_filesystem_nr(struct activity *);
 	
 /* Functions used to read activities statistics */
 extern __read_funct_t
@@ -780,6 +784,8 @@ extern __read_funct_t
 	wrap_read_time_in_state(struct activity *);
 extern __read_funct_t
 	wrap_read_bus_usb_dev(struct activity *);
+extern __read_funct_t
+	wrap_read_filesystem(struct activity *);
 
 /* Other functions */
 extern void

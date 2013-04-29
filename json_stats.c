@@ -2085,3 +2085,20 @@ close_json_markup:
 		json_markup_power_management(tab, CLOSE_JSON_MARKUP);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display filesystems statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int tab,
+					    unsigned long long itv)
+{
+	/* FIXME */
+}

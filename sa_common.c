@@ -1282,6 +1282,10 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			SELECT_ACTIVITY(A_DISK);
 			break;
 
+		case 'F':
+			SELECT_ACTIVITY(A_FILESYSTEM);
+			break;
+			
 		case 'H':
 			p = get_activity_position(act, A_HUGE);
 			act[p]->options   |= AO_SELECTED;

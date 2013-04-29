@@ -56,6 +56,7 @@
 #define NET_SNMP	"/proc/net/snmp"
 #define NET_SNMP6	"/proc/net/snmp6"
 #define CPUINFO		"/proc/cpuinfo"
+#define MTAB		"/etc/mtab"
 
 
 /*
@@ -519,6 +520,17 @@ struct stats_pwr_usb {
 };
 
 #define STATS_PWR_USB_SIZE	(sizeof(struct stats_pwr_usb))
+
+/* Structure for filesystems statistics */
+struct stats_filesystem {
+	unsigned long long f_blocks	__attribute__ ((aligned (16)));
+	unsigned long long f_bfree	__attribute__ ((aligned (16)));
+	unsigned long long f_bavail	__attribute__ ((aligned (16)));
+	unsigned long long f_files	__attribute__ ((aligned (16)));
+	unsigned long long f_ffree	__attribute__ ((aligned (16)));
+};
+
+#define STATS_FILESYSTEM_SIZE	(sizeof(struct stats_filesystem))
 
 /*
  ***************************************************************************
