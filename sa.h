@@ -84,7 +84,7 @@
 #define S_F_SEC_EPOCH		0x00000080
 #define S_F_HDR_ONLY		0x00000100
 #define S_F_FILE_LOCKED		0x00000200
-#define S_F_PER_PROC		0x00000400
+/* Unused			0x00000400*/
 #define S_F_HORIZONTALLY	0x00000800
 #define S_F_COMMENT		0x00001000
 #define S_F_PERSIST_NAME	0x00002000
@@ -100,7 +100,6 @@
 #define PRINT_SEC_EPOCH(m)		(((m) & S_F_SEC_EPOCH)    == S_F_SEC_EPOCH)
 #define DISPLAY_HDR_ONLY(m)		(((m) & S_F_HDR_ONLY)     == S_F_HDR_ONLY)
 #define FILE_LOCKED(m)			(((m) & S_F_FILE_LOCKED)  == S_F_FILE_LOCKED)
-#define WANT_PER_PROC(m)		(((m) & S_F_PER_PROC)     == S_F_PER_PROC)
 #define DISPLAY_HORIZONTALLY(m)		(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
 #define DISPLAY_COMMENT(m)		(((m) & S_F_COMMENT)      == S_F_COMMENT)
 #define DISPLAY_PERSIST_NAME_S(m)	(((m) & S_F_PERSIST_NAME) == S_F_PERSIST_NAME)

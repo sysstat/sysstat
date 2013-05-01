@@ -1,6 +1,7 @@
 Changes:
 
 xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* Code cleaned: Removed several unused constants from header files.
 	* Sysstat command options can now be 'collapsed' (grouped) when
 	  not followed by an argument. So it's now possible for example
 	  to enter 'iostat -px 2 5' since no device name is given to

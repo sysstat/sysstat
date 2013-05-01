@@ -15,7 +15,6 @@
 #define IOC_DEVLEN	47
 #define IOC_MAXMINOR	2047
 #define IOC_LINESIZ	255
-#define IOC_PARTLEN	7
 #define IOC_FMTLEN	15
 
 #ifndef MAX_BLKDEV

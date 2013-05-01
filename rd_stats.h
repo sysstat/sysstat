@@ -28,7 +28,6 @@
 /* Maximum length of USB product string */
 #define MAX_PROD_LEN	48
 
-#define CNT_DEV		0
 #define CNT_PART	1
 #define CNT_ALL_DEV	0
 #define CNT_USED_DEV	1

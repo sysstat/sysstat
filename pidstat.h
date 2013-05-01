@@ -68,7 +68,6 @@
 
 #define PROC		"/proc"
 
-#define PROC_PID	"/proc/%u"
 #define PID_STAT	"/proc/%u/stat"
 #define PID_STATUS	"/proc/%u/status"
 #define PID_IO		"/proc/%u/io"

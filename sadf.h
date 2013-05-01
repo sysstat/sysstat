@@ -39,7 +39,6 @@
  */
 
 /* Format options */
-#define FO_NULL			0x00
 
 /*
  * Indicate that all statistics data for one activity should be displayed before
