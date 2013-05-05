@@ -1214,7 +1214,7 @@ struct activity filesystem_act = {
 	.f_render	= render_filesystem_stats,
 	.f_xml_print	= xml_print_filesystem_stats,
 	.f_json_print	= json_print_filesystem_stats,
-	.hdr_line	= "Mbfsfree;Mbfsused;%fsused;%ufsused;Ifree;Iused;%Iused;FILESYSTEM",
+	.hdr_line	= "MBfsfree;MBfsused;%fsused;%ufsused;Ifree;Iused;%Iused;FILESYSTEM",
 	.name		= "A_FILESYSTEM",
 #endif
 	.nr		= -1,
