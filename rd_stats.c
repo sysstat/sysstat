@@ -27,6 +27,7 @@
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/vfs.h>
 #include <unistd.h>
 
 #include "common.h"
@@ -1863,6 +1864,51 @@ void read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, int nbr)
 
 /*
  ***************************************************************************
+ * Read filesystems statistics.
+ *
+ * IN:
+ * @st_filesystem	Structure where stats will be saved.
+ * @nbr			Total number of filesystems.
+ *
+ * OUT:
+ * @st_filesystem	Structure with statistics.
+ ***************************************************************************
+ */
+void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
+{
+	FILE *fp;
+	char line[256], fs_name[MAX_FS_LEN], mountp[128];
+	int fs = 0;
+	struct stats_filesystem *st_filesystem_i;
+	struct statfs buf;
+
+	if ((fp = fopen(MTAB, "r")) == NULL)
+		return;
+
+	while ((fgets(line, 256, fp) != NULL) && (fs < nbr)) {
+		if (line[0] == '/') {
+			
+			/* Read current filesystem name and mount point */
+			sscanf(line, "%71s %127s", fs_name, mountp);
+			
+			if ((statfs(mountp, &buf) < 0) || (!buf.f_blocks))
+				continue;
+			
+			st_filesystem_i = st_filesystem + fs++;
+			st_filesystem_i->f_blocks = buf.f_blocks * buf.f_bsize;
+			st_filesystem_i->f_bfree  = buf.f_bfree * buf.f_bsize;
+			st_filesystem_i->f_bavail = buf.f_bavail * buf.f_bsize;
+			st_filesystem_i->f_files  = buf.f_files;
+			st_filesystem_i->f_ffree  = buf.f_ffree;
+			strcpy(st_filesystem_i->fs_name, fs_name);
+		}
+	}
+
+	fclose(fp);
+}
+
+/*
+ ***************************************************************************
  * Read machine uptime, independently of the number of processors.
  *
  * OUT:
@@ -2279,4 +2325,45 @@ int get_usb_nr(void)
 	closedir(dir);
 
 	return usb;
+}
+
+/*
+ ***************************************************************************
+ * Find number of filesystems in /etc/mtab. Pseudo-filesystems are ignored.
+ *
+ * RETURNS:
+ * Number of filesystems.
+ ***************************************************************************
+ */
+int get_filesystem_nr(void)
+{
+	FILE *fp;
+	char line[256], fs_name[MAX_FS_LEN], mountp[128];
+	int fs = 0;
+	struct statfs buf;
+
+	if ((fp = fopen(MTAB, "r")) == NULL)
+		/* File non-existent */
+		return 0;
+
+	/* Get current filesystem */
+	while (fgets(line, 256, fp) != NULL) {
+		if (line[0] == '/') {
+			
+			/* Read filesystem name and mount point */
+			sscanf(line, "%71s %127s", fs_name, mountp);
+			
+			/* Check that total size is not null */
+			if (statfs(mountp, &buf) < 0)
+				continue;
+			
+			if (buf.f_blocks) {
+				fs++;
+			}
+		}
+	}
+
+	fclose(fp);
+
+	return fs;
 }

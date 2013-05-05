@@ -864,7 +864,7 @@ __read_funct_t wrap_read_filesystem(struct activity *a)
 		= (struct stats_filesystem *) a->_buf0;
 
 	/* Read filesystems from /etc/mtab */
-	/* FIXME */
+	read_filesystem(st_filesystem, a->nr);
 
 	return;
 }
@@ -1088,7 +1088,8 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
 {
 	__nr_t n = 0;
 
-	/* FIXME */
+	if ((n = get_filesystem_nr()) > 0)
+		return n + NR_FILESYSTEM_PREALLOC;
 
 	return 0;
 }

@@ -27,6 +27,8 @@
 #define MAX_MANUF_LEN	24
 /* Maximum length of USB product string */
 #define MAX_PROD_LEN	48
+/* Maximum length of filesystem name */
+#define MAX_FS_LEN	72
 
 #define CNT_PART	1
 #define CNT_ALL_DEV	0
@@ -522,11 +524,12 @@ struct stats_pwr_usb {
 
 /* Structure for filesystems statistics */
 struct stats_filesystem {
-	unsigned long long f_blocks	__attribute__ ((aligned (16)));
-	unsigned long long f_bfree	__attribute__ ((aligned (16)));
-	unsigned long long f_bavail	__attribute__ ((aligned (16)));
-	unsigned long long f_files	__attribute__ ((aligned (16)));
-	unsigned long long f_ffree	__attribute__ ((aligned (16)));
+	unsigned long long f_blocks		__attribute__ ((aligned (16)));
+	unsigned long long f_bfree		__attribute__ ((aligned (16)));
+	unsigned long long f_bavail		__attribute__ ((aligned (16)));
+	unsigned long long f_files		__attribute__ ((aligned (16)));
+	unsigned long long f_ffree		__attribute__ ((aligned (16)));
+	char 		   fs_name[MAX_FS_LEN]	__attribute__ ((aligned (16)));
 };
 
 #define STATS_FILESYSTEM_SIZE	(sizeof(struct stats_filesystem))
@@ -606,6 +609,8 @@ extern void
 	read_time_in_state(struct stats_pwr_wghfreq *, int, int);
 extern void
 	read_bus_usb_dev(struct stats_pwr_usb *, int);
+extern void
+	read_filesystem(struct stats_filesystem *, int);
 
 /*
  ***************************************************************************
@@ -631,5 +636,7 @@ extern int
 	get_freq_nr(void);
 extern int
 	get_usb_nr(void);
+extern int
+	get_filesystem_nr(void);
 
 #endif /* _RD_STATS_H */
