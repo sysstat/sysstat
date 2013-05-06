@@ -2454,7 +2454,39 @@ __print_funct_t print_avg_pwr_usb_stats(struct activity *a, int prev, int curr,
 __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int curr,
 					    unsigned long long itv, int dispavg)
 {
-	/* FIXME */
+	int i;
+	struct stats_filesystem *sfc;
+
+	
+	if (dis) {
+		printf("\n%-11s  MBfsfree  MBfsused   %%fsused  %%ufsused"
+		       "     Ifree     Iused    %%Iused FILESYSTEM\n",
+		       (dispavg ? _("Summary") : timestamp[!curr]));
+	}
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+			
+		if (!sfc->f_blocks)
+			/* Size of filesystem is null: We are at the end of the list */
+			break;
+			
+		printf("%-11s %9.0f %9.0f    %6.2f    %6.2f"
+		       " %9llu %9llu    %6.2f %s\n",
+		       (dispavg ? _("Summary") : timestamp[curr]),
+		       (double) sfc->f_bfree / 1024 / 1024,
+		       (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+		       /* f_blocks is not null. But test it anyway ;-) */
+		       sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+				     : 0.0,
+		       sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+				     : 0.0,
+		       sfc->f_ffree,
+		       sfc->f_files - sfc->f_ffree,
+		       sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+				    : 0.0,
+		       sfc->fs_name);
+	}
 }
 
 /*
