@@ -7,7 +7,8 @@ xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  to enter 'iostat -px 2 5' since no device name is given to
 	  option -p. This also concerns pidstat option -U.
 	* Typos fixed. README file updated.
-	* Yet another cosmetic fix in pidstat manual page.
+	* Yet another cosmetic fix in pidstat manual page. Sar manual
+	  page updated.
 
 2013/03/31: Version 10.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* mpstat now takes into account every interrupt per processor

@@ -1067,7 +1067,7 @@ __nr_t wrap_get_usb_nr(struct activity *a)
 
 	if ((n = get_usb_nr()) >= 0)
 		/* Return a positive number even if no USB devices have been found */
-		return (n + NR_USB_PREALLOC);
+		return n + NR_USB_PREALLOC;
 	
 	return 0;
 }

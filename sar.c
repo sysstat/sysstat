@@ -131,7 +131,7 @@ void display_help(char *progname)
 	printf(_("Main options and reports:\n"));
 	printf(_("\t-b\tI/O and transfer rate statistics\n"));
 	printf(_("\t-B\tPaging statistics\n"));
-	printf(_("\t-d\tBlock device statistics\n"));
+	printf(_("\t-d\tBlock devices statistics\n"));
 	printf(_("\t-F\tFilesystems statistics\n"));
 	printf(_("\t-H\tHugepages utilization statistics\n"));
 	printf(_("\t-I { <int> | SUM | ALL | XALL }\n"
@@ -172,10 +172,10 @@ void display_help(char *progname)
 	printf(_("\t-S\tSwap space utilization statistics\n"));
 	printf(_("\t-u [ ALL ]\n"
 		 "\t\tCPU utilization statistics\n"));
-	printf(_("\t-v\tKernel table statistics\n"));
+	printf(_("\t-v\tKernel tables statistics\n"));
 	printf(_("\t-w\tTask creation and system switching statistics\n"));
 	printf(_("\t-W\tSwapping statistics\n"));
-	printf(_("\t-y\tTTY device statistics\n"));
+	printf(_("\t-y\tTTY devices statistics\n"));
 	exit(0);
 }
 

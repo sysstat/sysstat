@@ -1,4 +1,4 @@
-.TH SAR 1 "SEPTEMBER 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MAY 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -1714,7 +1714,7 @@ Report memory statistics. The following values are displayed:
 .RS
 Number of memory pages freed by the system per second.
 A negative value represents a number of pages allocated by the system.
-Note that a page has a size of 4 kB or 8 kB according to the machine architecture.
+Note that a page has a size of 4 kiB or 8 kiB according to the machine architecture.
 .RE
 
 .B bufpg/s
@@ -1977,7 +1977,7 @@ Total number of context switches per second.
 .RE
 .RE
 .IP -y
-Report TTY device activity. The following values are displayed:
+Report TTY devices activity. The following values are displayed:
 
 .B rcvin/s
 .RS
