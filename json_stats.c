@@ -2100,5 +2100,45 @@ close_json_markup:
 __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int tab,
 					    unsigned long long itv)
 {
-	/* FIXME */
+	int i;
+	struct stats_filesystem *sfc;
+	int sep = FALSE;
+
+	xprintf(tab++, "\"filesystems\": [");
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr]  + i * a->msize);
+
+		if (!sfc->f_blocks)
+			/* Size of filesystem is null: We are at the end of the list */
+			break;
+
+		if (sep) {
+			printf(",\n");
+		}
+		sep = TRUE;
+		
+		xprintf0(tab, "{\"filesystem\": \"%s\", "
+			 "\"MBfsfree\": %.0f, "
+			 "\"MBfsused\": %.0f, "
+			 "\"%%fsused\": %.2f, "
+			 "\"%%ufsused\": %.2f, "
+			 "\"Ifree\": %llu, "
+			 "\"Iused\": %llu, "
+			 "\"%%Iused\": %.2f}",
+			 sfc->fs_name,
+			 (double) sfc->f_bfree / 1024 / 1024,
+			 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+			 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+				     : 0.0,
+			 sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+				     : 0.0,
+			 sfc->f_ffree,
+			 sfc->f_files - sfc->f_ffree,
+			 sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+				    : 0.0);
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
 }
