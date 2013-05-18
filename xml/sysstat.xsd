@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v2.15 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v2.16 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -97,6 +97,7 @@
 		<xs:element name="disk" type="disk-type"></xs:element>
 		<xs:element name="network" type="network-type"></xs:element>
 		<xs:element name="power-management" type="power-management-type"></xs:element>
+		<xs:element name="filesystems" type="filesystems-type"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="date" type="xs:date"></xs:attribute>
 	<xs:attribute name="time" type="xs:time"></xs:attribute>
@@ -721,6 +722,25 @@
 	<xs:attribute name="maxpower" type="xs:nonNegativeInteger"></xs:attribute>
 	<xs:attribute name="manufact" type="xs:string"></xs:attribute>
 	<xs:attribute name="product" type="xs:string"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="filesystems" type="filesystems-type"></xs:element>
+<xs:complexType name="filesystems-type">
+	<xs:sequence>
+		<xs:element name="filesystem" type="filesystem-type"></xs:element>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:element name="filesystem" type="filesystem-type"></xs:element>
+<xs:complexType name="filesystem-type">
+	<xs:attribute name="fsname" type="xs:string"></xs:attribute>
+	<xs:attribute name="MBfsfree" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="MBfsused" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="fsused-percent" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="ufsused-percent" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="Ifree" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="Iused" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="Iused-percent" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
 </xs:schema>

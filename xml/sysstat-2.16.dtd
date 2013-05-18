@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.15 for sysstat. See sadf.h -->
+<!--DTD v2.16 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
 <!ELEMENT sysdata-version (#PCDATA)>
 
-<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|cpu-load-all|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management">
+<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|cpu-load-all|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management|filesystems">
 <!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|statistics|restarts|comments">
 
 <!ELEMENT host (%HOST_ELEMENTS;)+>
@@ -550,4 +550,18 @@
 	maxpower CDATA #REQUIRED
 	manufact CDATA #REQUIRED
 	product CDATA #REQUIRED
+>
+
+<!ELEMENT filesystems (filesystem+)>
+
+<!ELEMENT filesystem EMPTY>
+<!ATTLIST filesystem
+	fsname CDATA #REQUIRED
+	MBfsfree CDATA #REQUIRED
+	MBfsused CDATA #REQUIRED
+	fsused-percent CDATA #REQUIRED
+	ufsused-percent CDATA #REQUIRED
+	Ifree CDATA #REQUIRED
+	Iused CDATA #REQUIRED
+	Iused-percent CDATA #REQUIRED
 >

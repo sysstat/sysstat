@@ -2005,5 +2005,41 @@ close_xml_markup:
 __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab,
 					   unsigned long long itv)
 {
-	/* FIXME */
+	int i;
+	struct stats_filesystem *sfc;
+
+	xprintf(tab, "<filesystems>");
+	tab++;
+
+	for (i = 0; i < a->nr; i++) {
+
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (!sfc->f_blocks)
+			/* Size of filesystem is null: We are at the end of the list */
+			break;
+
+		xprintf(tab, "<filesystem fsname=\"%s\" "
+			"MBfsfree=\"%.0f\" "
+			"MBfsused=\"%.0f\" "
+			"fsused-percent=\"%.2f\" "
+			"ufsused-percent=\"%.2f\" "
+			"Ifree=\"%llu\" "
+			"Iused=\"%llu\" "
+			"Iused-percent=\"%.2f\"/>",
+			sfc->fs_name,
+			(double) sfc->f_bfree / 1024 / 1024,
+			(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+			/* f_blocks is not null. But test it anyway ;-) */
+			sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+				      : 0.0,
+			sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+				      : 0.0,
+			sfc->f_ffree,
+			sfc->f_files - sfc->f_ffree,
+			sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+				     : 0.0);
+	}
+
+	xprintf(--tab, "</filesystems>");
 }
