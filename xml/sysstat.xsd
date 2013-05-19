@@ -251,7 +251,7 @@
 <xs:element name="memory" type="memory-type"></xs:element>
 <xs:complexType name="memory-type">
 	<xs:sequence>
-		<xs:element name="memfree" type="xs:negativeInteger"></xs:element>
+		<xs:element name="memfree" type="xs:nonNegativeInteger"></xs:element>
 		<xs:element name="memused" type="xs:nonNegativeInteger"></xs:element>
 		<xs:element name="memused-percent" type="hundredth-type"></xs:element>
 		<xs:element name="buffers" type="xs:nonNegativeInteger"></xs:element>

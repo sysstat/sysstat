@@ -6,6 +6,7 @@ xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  not followed by an argument. So it's now possible for example
 	  to enter 'iostat -px 2 5' since no device name is given to
 	  option -p. This also concerns pidstat option -U.
+	* Fixed type for memfree element in XSD document.
 	* Typos fixed. README file updated.
 	* Yet another cosmetic fix in pidstat manual page. Sar manual
 	  page updated.
