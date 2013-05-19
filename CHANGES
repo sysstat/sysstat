@@ -7,6 +7,8 @@ xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	  to enter 'iostat -px 2 5' since no device name is given to
 	  option -p. This also concerns pidstat option -U.
 	* Fixed type for memfree element in XSD document.
+	* Removed functions used to count number of items from rd_stats.c
+	  and put them in a separate file (count.c).
 	* Typos fixed. README file updated.
 	* Yet another cosmetic fix in pidstat manual page. Sar manual
 	  page updated.

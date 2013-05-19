@@ -38,6 +38,7 @@
 #include "common.h"
 #include "ioconf.h"
 #include "rd_stats.h"
+#include "count.h"
 
 #ifdef USE_NLS
 #include <locale.h>

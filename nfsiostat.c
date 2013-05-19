@@ -29,6 +29,7 @@
 
 #include "version.h"
 #include "nfsiostat.h"
+#include "count.h"
 #include "common.h"
 
 #ifdef USE_NLS

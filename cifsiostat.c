@@ -30,6 +30,7 @@
 
 #include "version.h"
 #include "cifsiostat.h"
+#include "count.h"
 #include "common.h"
 
 #ifdef USE_NLS
