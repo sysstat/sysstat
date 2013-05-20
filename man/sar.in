@@ -2,7 +2,7 @@
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
-.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
+.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
 .B [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]
 .B [ -I {
 .I int
@@ -320,6 +320,49 @@ or written to a file (options
 or
 .B -o
 ).
+.IP -F
+Display statistics for currently mounted filesystems. Pseudo-filesystems are
+ignored. At the end of the report,
+.B sar
+will display a summary of all those filesystems. The following values are
+displayed:
+
+.B MBfsfree
+.RS
+.RS
+Total amount a free space in megabytes (including space available only to privileged user).
+.RE
+
+.B MBfsused
+.RS
+Total amount of space used in megabytes.
+.RE
+
+.B %fsused
+.RS
+Percentage of filesystem space used, as seen by a privileged user.
+.RE
+
+.B %ufsused
+.RS
+Percentage of filesystem space used, as seen by an unprivileged user.
+.RE
+
+.B Ifree
+.RS
+Total number of free file nodes in filesystem.
+.RE
+
+.B Iused
+.RS
+Total number of file nodes used in filesystem.
+.RE
+
+.B %Iused
+.RS
+Percentage of file nodes used in filesystem.
+.RE
+.RE
 .IP "-f [ filename ]"
 Extract records from
 .I filename
