@@ -2406,7 +2406,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 
 /*
  ***************************************************************************
- * Display memory and swap statistics.
+ * Display USB devices statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2423,7 +2423,7 @@ __print_funct_t print_pwr_usb_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display average memory statistics.
+ * Display average USB devices statistics.
  *
  * IN:
  * @a		Activity structure with statistics.

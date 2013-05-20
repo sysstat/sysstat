@@ -1,5 +1,5 @@
 /*
- * count.c: Read system statistics
+ * count.c: Count items for which statistics will be collected.
  * (C) 1999-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************

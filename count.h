@@ -1,5 +1,6 @@
 /*
- * count.h: Include file used to read system statistics
+ * count.h: Include file used to count items for which
+ * statistics will be collected.
  * (C) 1999-2013 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
