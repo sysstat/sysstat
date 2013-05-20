@@ -2445,17 +2445,14 @@ __print_funct_t print_avg_pwr_usb_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-__print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int curr,
-					    unsigned long long itv, int dispavg)
+__print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int dispavg)
 {
-	int i;
-	struct stats_filesystem *sfc;
+	int i, j;
+	struct stats_filesystem *sfc, *sfm;
 
 	
 	if (dis) {
@@ -2486,6 +2483,23 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 		       sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 				    : 0.0,
 		       sfc->fs_name);
+		
+		if (!dispavg) {
+			/* Save current filesystem in summary list */
+			for (j = 0; j < a->nr; j++) {
+				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
+				
+				if (!strcmp(sfm->fs_name, sfc->fs_name) ||
+				    !sfm->f_blocks) {
+					/*
+					 * Filesystem found in list (then save again its stats)
+					 * or free slot (end of list).
+					 */
+					*sfm = *sfc;
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -2503,7 +2517,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 __print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_filesystem_stats(a, prev, curr, itv, FALSE);
+	stub_print_filesystem_stats(a, curr, FALSE);
 }
 
 /*
@@ -2520,5 +2534,5 @@ __print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int curr,
 					   unsigned long long itv)
 {
-	stub_print_filesystem_stats(a, prev, curr, itv, TRUE);
+	stub_print_filesystem_stats(a, 2, TRUE);
 }
