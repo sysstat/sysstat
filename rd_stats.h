@@ -541,6 +541,8 @@ struct stats_filesystem {
  */
 
 extern void
+	oct2chr(char *);
+extern void
 	read_stat_cpu(struct stats_cpu *, int,
 		      unsigned long long *, unsigned long long *);
 extern void

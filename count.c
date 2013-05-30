@@ -458,6 +458,9 @@ int get_filesystem_nr(void)
 			/* Read filesystem name and mount point */
 			sscanf(line, "%71s %127s", fs_name, mountp);
 			
+			/* Replace octal codes */
+			oct2chr(mountp);
+			
 			/* Check that total size is not null */
 			if (statfs(mountp, &buf) < 0)
 				continue;

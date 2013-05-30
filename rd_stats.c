@@ -44,6 +44,42 @@
 
 /*
  ***************************************************************************
+ * Replace octal codes in string with their corresponding characters.
+ *
+ * IN:
+ * str		String to parse.
+ *
+ * OUT:
+ * @str		String with octal codes replaced with characters.
+ ***************************************************************************
+ */
+void oct2chr(char *str)
+{
+	int i = 0;
+	int j, len;
+	
+	len = strlen(str);
+	
+	while (i < len - 3) {
+		if ((str[i] == '\\') &&
+		    (str[i + 1] >= '0') && (str[i + 1] <= '3') &&
+		    (str[i + 2] >= '0') && (str[i + 2] <= '7') &&
+		    (str[i + 3] >= '0') && (str[i + 3] <= '7')) {
+			/* Octal code found */
+			str[i] = (str[i + 1] - 48) * 64 +
+			         (str[i + 2] - 48) * 8  +
+			         (str[i + 3] - 48);
+			for (j = i + 4; j <= len; j++) {
+				str[j - 3] = str[j];
+			}
+			len -= 3;
+		}
+		i++;
+	}
+}
+
+/*
+ ***************************************************************************
  * Read CPU statistics and machine uptime.
  *
  * IN:
@@ -1890,6 +1926,9 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 			
 			/* Read current filesystem name and mount point */
 			sscanf(line, "%71s %127s", fs_name, mountp);
+			
+			/* Replace octal codes */
+			oct2chr(mountp);
 			
 			if ((statfs(mountp, &buf) < 0) || (!buf.f_blocks))
 				continue;
