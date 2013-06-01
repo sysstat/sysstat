@@ -635,7 +635,7 @@ __print_funct_t json_print_serial_stats(struct activity *a, int curr, int tab,
 			}
 			sep = TRUE;
 			
-			xprintf0(tab, "{\"line\": %d, "
+			xprintf0(tab, "{\"line\": \"%d\", "
 				 "\"rcvin\": %.2f, "
 				 "\"xmtin\": %.2f, "
 				 "\"framerr\": %.2f, "
