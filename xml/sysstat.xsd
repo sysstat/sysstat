@@ -196,7 +196,7 @@
 
 <xs:element name="irq" type="irq-type"></xs:element>
 <xs:complexType name="irq-type">
-	<xs:attribute name="intr" type="xs:int"></xs:attribute>
+	<xs:attribute name="intr" type="xs:string"></xs:attribute>
 	<xs:attribute name="value" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
