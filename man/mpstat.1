@@ -1,4 +1,4 @@
-.TH MPSTAT 1 "SEPTEMBER 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
@@ -74,13 +74,15 @@ the CPU or CPUs.
 With the
 .B CPU
 keyword, the number of each individual interrupt received per
-second by the CPU or CPUs is displayed.
+second by the CPU or CPUs is displayed. Interrupts are those listed
+in /proc/interrupts file.
 
 With the
 .B SCPU
 keyword, the number of each individual software interrupt received per
 second by the CPU or CPUs is displayed. This option works only
-with kernels 2.6.31 and later.
+with kernels 2.6.31 and later. Software interrupts are those listed
+in /proc/softirqs file.
 
 The
 .B ALL
