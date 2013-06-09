@@ -1,6 +1,6 @@
 /*
  * rd_sensors.h: Include file used to read sensors statistics
- * (C) 1999-2011 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2013 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _RD_SENSORS_H

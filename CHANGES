@@ -1,6 +1,6 @@
 Changes:
 
-xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+2013/06/09: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Filesystems statistics added to sar/sadc/sadf. These stats can
 	  be displayed with option -F.
 	* DTD and XSD documents updated. 
@@ -12,9 +12,10 @@ xxxx/xx/xx: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Fixed type for "memfree" and "intr" elements in XSD document.
 	* Removed functions used to count number of items from rd_stats.c
 	  and put them in a separate file (count.c).
+	* NLS updated (da, hr, cs). Turkish translation added.
 	* Typos fixed. README file updated.
-	* Yet another cosmetic fix in pidstat manual page. Sar manual
-	  page updated.
+	* Yet another cosmetic fix in pidstat manual page. Sar and
+	  mpstat manual pages updated.
 
 2013/03/31: Version 10.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* mpstat now takes into account every interrupt per processor

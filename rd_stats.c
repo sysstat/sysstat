@@ -1,6 +1,6 @@
 /*
  * rd_stats.c: Read system statistics
- * (C) 1999-2012 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2013 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -47,7 +47,7 @@
  * Replace octal codes in string with their corresponding characters.
  *
  * IN:
- * str		String to parse.
+ * @str		String to parse.
  *
  * OUT:
  * @str		String with octal codes replaced with characters.

@@ -52,9 +52,7 @@ Send them to (sysstat <at> orange.fr).
 FILES THAT ARE INSTALLED
 ------------------------
 
-I _hate_ when packages install files everywhere on my disk and I don't know
-where...
-So here is the list of files installed by sysstat, when you ask for a
+Here is the list of files installed by sysstat, when you ask for a
 complete installation.
 ${PREFIX} is the value of the PREFIX variable defined in the Makefile
 (usually set to /usr/local or /usr).
