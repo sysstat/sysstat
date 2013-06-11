@@ -1,4 +1,4 @@
-.TH SADF 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -154,7 +154,7 @@ directory.
 .SH EXAMPLES
 .B sadf -d @SA_DIR@/sa21 -- -r -n DEV
 .RS
-Extract memory, swap space and network statistics from system activity
+Extract memory and network statistics from system activity
 file 'sa21', and display them in a format that can be ingested by a
 database.
 .RE
