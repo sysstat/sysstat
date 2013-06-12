@@ -137,8 +137,8 @@ void parse_sadc_S_option(char *argv[], int opt)
 			collect_group_activities(G_DISK, AO_F_NULL);
 		}
 		else if (!strcmp(p, K_XDISK)) {
-			/* Select group of disk and partition activities */
-			collect_group_activities(G_DISK, AO_F_DISK_PART);
+			/* Select group of disk and partition/filesystem activities */
+			collect_group_activities(G_DISK + G_XDISK, AO_F_DISK_PART);
 		}
 		else if (!strcmp(p, K_SNMP)) {
 			/* Select group of SNMP activities */
@@ -155,11 +155,19 @@ void parse_sadc_S_option(char *argv[], int opt)
 		else if (!strcmp(p, K_ALL) || !strcmp(p, K_XALL)) {
 			/* Select all activities */
 			for (i = 0; i < NR_ACT; i++) {
+
+				if (!strcmp(p, K_ALL) && (act[i]->group & G_XDISK))
+					/*
+					 * Don't select G_XDISK activities
+					 * when option -S ALL is used.
+					 */
+					continue;
+
 				act[i]->options |= AO_COLLECTED;
 			}
 			if (!strcmp(p, K_XALL)) {
 				/* Tell sadc to also collect partition statistics */
-				collect_group_activities(G_DISK, AO_F_DISK_PART);
+				collect_group_activities(G_DISK + G_XDISK, AO_F_DISK_PART);
 			}
 		}
 		else if (strspn(argv[opt], DIGITS) == strlen(argv[opt])) {

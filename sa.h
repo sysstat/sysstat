@@ -176,6 +176,7 @@
 #define G_SNMP		0x04
 #define G_IPV6		0x08
 #define G_POWER		0x10
+#define G_XDISK		0x20
 
 /* sadc program */
 #define SADC		"sadc"

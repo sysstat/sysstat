@@ -1,4 +1,4 @@
-.TH SADC 8 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS
@@ -138,7 +138,7 @@ The
 .B XDISK
 keyword is an extension to the
 .B DISK
-one and indicates that partition statistics should be collected by
+one and indicates that partitions and filesystems statistics should be collected by
 .B sadc
 in addition to disk statistics. This option works only with kernels 2.6.25
 and later.

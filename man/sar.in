@@ -1,4 +1,4 @@
-.TH SAR 1 "MAY 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -324,8 +324,9 @@ or
 Display statistics for currently mounted filesystems. Pseudo-filesystems are
 ignored. At the end of the report,
 .B sar
-will display a summary of all those filesystems. The following values are
-displayed:
+will display a summary of all those filesystems.
+Note that filesystems statistics depend on sadc option "-S XDISK" to be collected.
+The following values are displayed:
 
 .B MBfsfree
 .RS

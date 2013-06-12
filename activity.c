@@ -1200,7 +1200,7 @@ struct activity filesystem_act = {
 	.id		= A_FILESYSTEM,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
-	.group		= G_DISK,
+	.group		= G_XDISK,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_filesystem_nr,
 	.f_count2	= NULL,
