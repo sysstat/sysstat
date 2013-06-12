@@ -59,7 +59,9 @@ be saved in the file specified by the
 .I filename
 flag, in addition to being displayed onto the screen. If
 .I filename
-is omitted, sar uses the standard system activity daily data file,
+is omitted,
+.B sar
+uses the standard system activity daily data file,
 the
 .IR @SA_DIR@/sa dd
 file, where the dd parameter indicates the current day.
@@ -72,8 +74,9 @@ command extracts and writes to standard output records previously
 saved in a file. This file can be either the one specified by the
 .B -f
 flag or, by default, the standard system activity daily data file.
-It is also possible to enter -1, -2 etc. as an argument to sar to
-display data
+It is also possible to enter -1, -2 etc. as an argument to
+.B sar
+to display data
 of that days ago. For example, -1 will point at the standard system
 activity file of yesterday.
 
@@ -259,7 +262,12 @@ its minor number.
 Device names may also be pretty-printed if option -p
 is used or persistent device names can be printed if option -j is used
 (see below).
-Note that disk activity depends on sadc options "-S DISK" and "-S XDISK"
+Note that disk activity depends on
+.B sadc
+options 
+.B "-S DISK"
+and
+.B "-S XDISK"
 to be collected. The following values are displayed:
 
 .B tps
@@ -325,7 +333,11 @@ Display statistics for currently mounted filesystems. Pseudo-filesystems are
 ignored. At the end of the report,
 .B sar
 will display a summary of all those filesystems.
-Note that filesystems statistics depend on sadc option "-S XDISK" to be collected.
+Note that filesystems statistics depend on
+.B sadc
+option
+.B "-S XDISK"
+to be collected.
 The following values are displayed:
 
 .B MBfsfree
@@ -412,7 +424,11 @@ the first 16 interrupts are to be reported, whereas the
 .B XALL
 keyword indicates that statistics from all interrupts, including potential
 APIC interrupt sources, are to be reported.
-Note that interrupt statistics depend on sadc option "-S INT" to be collected.
+Note that interrupt statistics depend on
+.B sadc
+option
+.B "-S INT"
+to be collected.
 .IP "-i interval"
 Select data records at seconds as close as possible to the number specified
 by the
@@ -430,7 +446,11 @@ If persistent name is not found for the device, the device name
 is pretty-printed (see option -p below).
 .IP "-m { keyword [,...] | ALL }"
 Report power management statistics.
-Note that these statistics depend on sadc option "-S POWER" to be collected.
+Note that these statistics depend on
+.B sadc
+option
+.B "-S POWER"
+to be collected.
 
 Possible keywords are
 .BR CPU ,
@@ -829,8 +849,11 @@ Number of TCP sockets in TIME_WAIT state.
 With the
 .B IP
 keyword, statistics about IPv4 network traffic are reported.
-Note that IPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that IPv4 statistics depend on
+.B sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -887,8 +910,11 @@ generated per second as a result of fragmentation at this entity [ipFragCreates]
 With the
 .B EIP
 keyword, statistics about IPv4 network errors are reported.
-Note that IPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that IPv4 statistics depend on
+.B sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -968,8 +994,11 @@ be, e.g., because their Don't Fragment flag was set [ipFragFails].
 With the
 .B ICMP
 keyword, statistics about ICMPv4 network traffic are reported.
-Note that ICMPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that ICMPv4 statistics depend on
+.B sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1050,8 +1079,11 @@ The number of ICMP Address Mask Reply messages sent per second [icmpOutAddrMaskR
 With the
 .B EICMP
 keyword, statistics about ICMPv4 error messages are reported.
-Note that ICMPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that ICMPv4 statistics depend on
+.B  sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1122,8 +1154,11 @@ The number of ICMP Redirect messages sent per second [icmpOutRedirects].
 With the
 .B TCP
 keyword, statistics about TCPv4 network traffic are reported.
-Note that TCPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that TCPv4 statistics depend on
+.B sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1156,8 +1191,11 @@ retransmitted octets [tcpOutSegs].
 With the
 .B ETCP
 keyword, statistics about TCPv4 network errors are reported.
-Note that TCPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that TCPv4 statistics depend on
+.B sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1198,8 +1236,11 @@ The number of TCP segments sent per second containing the RST flag [tcpOutRsts].
 With the
 .B UDP
 keyword, statistics about UDPv4 network traffic are reported.
-Note that UDPv4 statistics depend on sadc option "-S SNMP" to be
-collected.
+Note that UDPv4 statistics depend on
+.B sadc
+option
+.B "-S SNMP"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1229,8 +1270,11 @@ at the destination port [udpInErrors].
 With the
 .B SOCK6
 keyword, statistics on sockets in use are reported (IPv6).
-Note that IPv6 statistics depend on sadc option "-S IPV6" to be
-collected.
+Note that IPv6 statistics depend on
+.B sadc
+option
+.B "-S IPV6"
+to be collected.
 The following values are displayed:
 
 .B tcp6sck
@@ -1256,8 +1300,11 @@ Number of IPv6 fragments currently in use.
 With the
 .B IP6
 keyword, statistics about IPv6 network traffic are reported.
-Note that IPv6 statistics depend on sadc option "-S IPV6" to be
-collected.
+Note that IPv6 statistics depend on
+.B sadc
+option
+.B "-S IPV6"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1332,8 +1379,11 @@ this output interface [ipv6IfStatsOutFragCreates].
 With the
 .B EIP6
 keyword, statistics about IPv6 network errors are reported.
-Note that IPv6 statistics depend on sadc option "-S IPV6" to be
-collected.
+Note that IPv6 statistics depend on
+.B sadc
+option
+.B "-S IPV6"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1441,8 +1491,11 @@ datagram frame didn't carry enough data
 With the
 .B ICMP6
 keyword, statistics about ICMPv6 network traffic are reported.
-Note that ICMPv6 statistics depend on sadc option "-S IPV6" to be
-collected.
+Note that ICMPv6 statistics depend on
+.B sadc
+option
+.B "-S IPV6"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1564,8 +1617,11 @@ messages sent by the interface per second
 With the
 .B EICMP6
 keyword, statistics about ICMPv6 error messages are reported.
-Note that ICMPv6 statistics depend on sadc option "-S IPV6" to be
-collected.
+Note that ICMPv6 statistics depend on
+.B sadc
+option
+.B "-S IPV6"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1650,8 +1706,11 @@ by the interface per second
 With the
 .B UDP6
 keyword, statistics about UDPv6 network traffic are reported.
-Note that UDPv6 statistics depend on sadc option "-S IPV6" to be
-collected.
+Note that UDPv6 statistics depend on
+.B sadc
+option
+.B "-S IPV6"
+to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1697,7 +1756,11 @@ All the data available from the kernel are saved in the file (in fact,
 .B sar
 calls its data collector
 .B sadc
-with the option "-S ALL". See sadc(8) manual page).
+with the option
+.B "-S ALL" .
+See
+.B sadc(8)
+manual page).
 .IP "-P { cpu [,...] | ALL }"
 Report per-processor statistics for the specified processor or processors.
 Specifying the

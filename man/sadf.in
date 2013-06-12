@@ -22,7 +22,8 @@ The
 .B sadf
 command is used for displaying the contents of data files created by the
 .B sar(1)
-command. But unlike sar,
+command. But unlike
+.B sar,
 .B sadf
 can write its data in many different formats (CSV, XML, etc.)
 The default format is one that can

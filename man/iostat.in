@@ -52,7 +52,9 @@ concerning the time since the system was booted, unless the
 option is used (in this case, this first report is omitted).
 Each subsequent report
 covers the time since the previous report. All statistics are reported
-each time the iostat command is run. The report consists of a
+each time the
+.B iostat
+command is run. The report consists of a
 CPU header row followed by a row of
 CPU statistics. On
 multiprocessor systems, CPU statistics are calculated system-wide
@@ -336,7 +338,9 @@ Display extended statistics.
 Omit first report with statistics since system boot, if displaying
 multiple records at given interval.
 .IP -z
-Tell iostat to omit output for any devices for which there was no activity
+Tell
+.B iostat
+to omit output for any devices for which there was no activity
 during the sample period.
 
 .SH ENVIRONMENT
