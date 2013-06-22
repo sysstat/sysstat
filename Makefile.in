@@ -202,7 +202,9 @@ sadf_misc.o: sadf_misc.c sadf.h sa.h
 libsyscom.a: common.o ioconf.o
 	$(AR) rvs $@ $?
 
-librdstats.a: librdstats.a(rd_stats.o) librdstats.a(count.o)
+# Ditto
+librdstats.a: rd_stats.o count.o
+	$(AR) rvs $@ $?
 
 librdsensors.a: librdsensors.a(rd_sensors.o)
 
