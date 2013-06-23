@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.16 for sysstat. See sadf.h -->
+<!--DTD v2.17 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
@@ -262,6 +262,7 @@
 	rxcmp CDATA #REQUIRED
 	txcmp CDATA #REQUIRED
 	rxmcst CDATA #REQUIRED
+	ifutil-percent CDATA #REQUIRED
 >
 
 <!ELEMENT net-edev EMPTY>

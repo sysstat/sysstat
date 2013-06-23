@@ -1126,6 +1126,7 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 {
 	int i, j;
 	struct stats_net_dev *sndc, *sndp;
+	double rxkb, txkb, ifutil;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
@@ -1153,18 +1154,20 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 		       S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
 		       NULL);
 
+		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxkB/s", NULL,
 		       cons(sv, sndc->interface, NULL),
 		       NOVAL,
-		       S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv) / 1024,
+		       rxkb / 1024,
 		       NULL);
 
+		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxkB/s", NULL,
 		       cons(sv, sndc->interface, NULL),
 		       NOVAL,
-		       S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv) / 1024,
+		       txkb / 1024,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
@@ -1181,11 +1184,19 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 		       S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 		       NULL);
 
-		render(isdb, pre, pt_newlin,
+		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxmcst/s", NULL,
 		       cons(sv, sndc->interface, NULL),
 		       NOVAL,
 		       S_VALUE(sndp->multicast, sndc->multicast, itv),
+		       NULL);
+		
+		ifutil = compute_ifutil(sndc, rxkb, txkb);
+		render(isdb, pre, pt_newlin,
+		       "%s\t%%ifutil", NULL,
+		       cons(sv, sndc->interface, NULL),
+		       NOVAL,
+		       ifutil,
 		       NULL);
 	}
 }

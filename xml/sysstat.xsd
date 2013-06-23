@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v2.16 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v2.17 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -381,6 +381,7 @@
 	<xs:attribute name="rxcmp" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="txcmp" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="rxmcst" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="ifutil-percent" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="net-edev" type="net-edev-type"></xs:element>
