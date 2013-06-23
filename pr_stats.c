@@ -905,10 +905,11 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 {
 	int i, j;
 	struct stats_net_dev *sndc, *sndp;
+	double rxkb, txkb, ifutil;
 
 	if (dis) {
 		printf("\n%-11s     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s"
-		       "   rxcmp/s   txcmp/s  rxmcst/s\n", timestamp[!curr]);
+		       "   rxcmp/s   txcmp/s  rxmcst/s   %%ifutil\n", timestamp[!curr]);
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -923,14 +924,20 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 
 		printf("%-11s %9s", timestamp[curr], sndc->interface);
 
-		printf(" %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f\n",
+		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
+		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
+		
+		printf(" %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f",
 		       S_VALUE(sndp->rx_packets,    sndc->rx_packets,    itv),
 		       S_VALUE(sndp->tx_packets,    sndc->tx_packets,    itv),
-		       S_VALUE(sndp->rx_bytes,      sndc->rx_bytes,      itv) / 1024,
-		       S_VALUE(sndp->tx_bytes,      sndc->tx_bytes,      itv) / 1024,
+		       rxkb / 1024,
+		       txkb / 1024,
 		       S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
 		       S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 		       S_VALUE(sndp->multicast,     sndc->multicast,     itv));
+		
+		ifutil = compute_ifutil(sndc, rxkb, txkb);
+		printf("    %6.2f\n", ifutil);
 	}
 }
 

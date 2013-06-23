@@ -726,9 +726,12 @@ void read_kernel_tables(struct stats_ktables *st_ktables)
  *
  * OUT:
  * @st_net_dev	Structure with statistics.
+ * 
+ * RETURNS:
+ * Number of interfaces for which stats have been read.
  ***************************************************************************
  */
-void read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
+int read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 {
 	FILE *fp;
 	struct stats_net_dev *st_net_dev_i;
@@ -738,7 +741,7 @@ void read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 	int pos;
 
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
-		return;
+		return 0;
 	
 	while ((fgets(line, 256, fp) != NULL) && (dev < nbr)) {
 
@@ -762,7 +765,70 @@ void read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 	}
 
 	fclose(fp);
+	
+	return dev;
 }
+
+/*
+ ***************************************************************************
+ * Read duplex and speed data for network interface cards.
+ *void
+ * IN:
+ * @st_net_dev	Structure where stats will be saved.
+ * @nbr		Real number of network interfaces available.
+ *
+ * OUT:
+ * @st_net_dev	Structure with statistics.
+ ***************************************************************************
+ */
+void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
+{
+	FILE *fp;
+	struct stats_net_dev *st_net_dev_i;
+	char filename[128], duplex[32];
+	int dev, n;
+	
+	for (dev = 0; dev < nbr; dev++) {
+		
+		st_net_dev_i = st_net_dev + dev;
+		
+		/* Read speed info */
+		sprintf(filename, IF_DUPLEX, st_net_dev_i->interface);
+		
+		if ((fp = fopen(filename, "r")) == NULL)
+			/* Cannot read NIC duplex */
+			continue;
+		
+		n = fscanf(fp, "%s", duplex);
+		
+		fclose(fp);
+		
+		if (n != 1)
+			/* Cannot read NIC duplex */
+			continue;
+		
+		if (!strcmp(duplex, K_DUPLEX_FULL)) {
+			st_net_dev_i->duplex = C_DUPLEX_FULL;
+		}
+		else if (!strcmp(duplex, K_DUPLEX_HALF)) {
+			st_net_dev_i->duplex = C_DUPLEX_HALF;
+		}
+		else
+			continue;
+		
+		/* Read speed info */
+		sprintf(filename, IF_SPEED, st_net_dev_i->interface);
+		
+		if ((fp = fopen(filename, "r")) == NULL)
+			/* Cannot read NIC speed */
+			continue;
+		
+		fscanf(fp, "%u", &st_net_dev_i->speed);
+		
+		fclose(fp);
+	}
+}
+
 
 /*
  ***************************************************************************

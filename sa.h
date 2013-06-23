@@ -803,6 +803,8 @@ extern unsigned int
 	check_net_dev_reg(struct activity *, int, int, unsigned int);
 extern unsigned int
 	check_net_edev_reg(struct activity *, int, int, unsigned int);
+extern double
+	compute_ifutil(struct stats_net_dev *, double, double);
 extern void
 	copy_structures(struct activity * [], unsigned int [],
 			struct record_header [], int, int);

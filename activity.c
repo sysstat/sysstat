@@ -415,7 +415,7 @@ struct activity disk_act = {
 struct activity net_dev_act = {
 	.id		= A_NET_DEV,
 	.options	= AO_COLLECTED,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count	= wrap_get_iface_nr,
@@ -430,7 +430,7 @@ struct activity net_dev_act = {
 	.f_render	= render_net_dev_stats,
 	.f_xml_print	= xml_print_net_dev_stats,
 	.f_json_print	= json_print_net_dev_stats,
-	.hdr_line	= "IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s",
+	.hdr_line	= "IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil",
 	.name		= "A_NET_DEV",
 #endif
 	.nr		= -1,

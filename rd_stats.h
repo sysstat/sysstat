@@ -34,6 +34,12 @@
 #define CNT_ALL_DEV	0
 #define CNT_USED_DEV	1
 
+#define K_DUPLEX_HALF	"half"
+#define K_DUPLEX_FULL	"full"
+
+#define C_DUPLEX_HALF	1
+#define C_DUPLEX_FULL	2
+
 /*
  ***************************************************************************
  * System files containing statistics
@@ -58,6 +64,8 @@
 #define NET_SNMP6	"/proc/net/snmp6"
 #define CPUINFO		"/proc/cpuinfo"
 #define MTAB		"/etc/mtab"
+#define IF_DUPLEX	"/sys/class/net/%s/duplex"
+#define IF_SPEED	"/sys/class/net/%s/speed"
 
 
 /*
@@ -225,7 +233,9 @@ struct stats_net_dev {
 	unsigned long long rx_compressed	__attribute__ ((aligned (16)));
 	unsigned long long tx_compressed	__attribute__ ((aligned (16)));
 	unsigned long long multicast		__attribute__ ((aligned (16)));
-	char	      interface[MAX_IFACE_LEN]	__attribute__ ((aligned (16)));
+	unsigned int       speed		__attribute__ ((aligned (16)));
+	char 	 interface[MAX_IFACE_LEN]	__attribute__ ((aligned (4)));
+	char	 duplex;
 };
 
 #define STATS_NET_DEV_SIZE	(sizeof(struct stats_net_dev))
@@ -565,8 +575,10 @@ extern void
 	read_tty_driver_serial(struct stats_serial *, int);
 extern void
 	read_kernel_tables(struct stats_ktables *);
-extern void
+extern int
 	read_net_dev(struct stats_net_dev *, int);
+extern void
+	read_if_info(struct stats_net_dev *, int);
 extern void
 	read_net_edev(struct stats_net_edev *, int);
 extern void

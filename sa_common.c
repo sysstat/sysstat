@@ -1664,3 +1664,42 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 	return 0;
 }
 
+/*
+ ***************************************************************************
+ * Compute network interface utilization.
+ *
+ * IN:
+ * @st_net_dev	Structure with network interface stats.
+ * @rx		Number of bytes received per second.
+ * @tx		Number of bytes transmitted per second.
+ *
+ * RETURNS:
+ * NIC utilization (0-100%).
+ ***************************************************************************
+ */
+double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
+{
+	unsigned long long speed;
+	
+	if (st_net_dev->speed) {
+		
+		speed = st_net_dev->speed * 1000000;
+		
+		if (st_net_dev->duplex == C_DUPLEX_FULL) {
+			/* Full duplex */
+			if (rx > tx) {
+				return (rx * 800 / speed);
+			}
+			else {
+				return (tx * 800 / speed);
+			}
+		}
+		else {
+			/* Half duplex */
+			return ((rx + tx) * 800 / speed);
+		}
+	}
+	
+	return 0;
+}
+

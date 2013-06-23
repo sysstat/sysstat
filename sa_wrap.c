@@ -284,9 +284,16 @@ __read_funct_t wrap_read_net_dev(struct activity *a)
 {
 	struct stats_net_dev *st_net_dev
 		= (struct stats_net_dev *) a->_buf0;
+	int dev;
 
 	/* Read network interfaces stats */
-	read_net_dev(st_net_dev, a->nr);
+	dev = read_net_dev(st_net_dev, a->nr);
+	if (!dev)
+		/* No data read. Exit */
+		return;
+	
+	/* Read duplex and speed info for each interface */
+	read_if_info(st_net_dev, dev);
 	
 	return;
 }
