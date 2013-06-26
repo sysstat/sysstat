@@ -658,6 +658,13 @@ Number of compressed packets transmitted per second.
 Number of multicast packets received per second.
 .RE
 
+.B %ifutil
+.RS
+Utilization percentage of the network interface. For half-duplex interfaces,
+utilization is calculated using the sum of rxkB/s and txkB/s as a percentage
+of the interface speed. For full-duplex, this is the greater of rxkB/S or txkB/s.
+.RE
+
 With the
 .B EDEV
 keyword, statistics on failures (errors) from the network devices are reported.
