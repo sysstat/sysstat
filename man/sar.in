@@ -148,7 +148,7 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdHqrRSuvwWy -I SUM -I XALL -m ALL -n ALL -u ALL -P ALL".
+.BR "-bBdFHqrRSuvwWy -I SUM -I XALL -m ALL -n ALL -u ALL -P ALL".
 .IP -B
 Report paging statistics.
 The following values are displayed:
