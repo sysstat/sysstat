@@ -174,9 +174,7 @@ void sfree_pid(void)
 	int i;
 	
 	for (i = 0; i < 3; i++) {
-		if (st_pid_list[i]) {
-			free(st_pid_list[i]);
-		}
+		free(st_pid_list[i]);
 	}
 }
 
@@ -2259,9 +2257,7 @@ int main(int argc, char **argv)
 	rw_pidstat_loop(dis_hdr, rows);
 	
 	/* Free structures */
-	if (pid_array) {
-		free(pid_array);
-	}
+	free(pid_array);
 	sfree_pid();
 
 	return 0;

@@ -251,9 +251,7 @@ void salloc_dev_list(int list_len)
  */
 void sfree_dev_list(void)
 {
-	if (st_dev_list) {
-		free(st_dev_list);
-	}
+	free(st_dev_list);
 }
 
 /*
@@ -402,21 +400,14 @@ void io_sys_free(void)
 	int i;
 	
 	for (i = 0; i < 2; i++) {
-
 		/* Free CPU structures */
-		if (st_cpu[i]) {
-			free(st_cpu[i]);
-		}
+		free(st_cpu[i]);
 
 		/* Free I/O device structures */
-		if (st_iodev[i]) {
-			free(st_iodev[i]);
-		}
+		free(st_iodev[i]);
 	}
 	
-	if (st_hdr_iodev) {
-		free(st_hdr_iodev);
-	}
+	free(st_hdr_iodev);
 }
 
 /*

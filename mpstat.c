@@ -183,24 +183,13 @@ void sfree_mp_struct(void)
 	int i;
 
 	for (i = 0; i < 3; i++) {
-
-		if (st_cpu[i]) {
-			free(st_cpu[i]);
-		}
-		if (st_irq[i]) {
-			free(st_irq[i]);
-		}
-		if (st_irqcpu[i]) {
-			free(st_irqcpu[i]);
-		}
-		if (st_softirqcpu[i]) {
-			free(st_softirqcpu[i]);
-		}
+		free(st_cpu[i]);
+		free(st_irq[i]);
+		free(st_irqcpu[i]);
+		free(st_softirqcpu[i]);
 	}
 
-	if (cpu_bitmap) {
-		free(cpu_bitmap);
-	}
+	free(cpu_bitmap);
 }
 
 /*
@@ -718,9 +707,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 
 		fclose(fp);
 		
-		if (line) {
-			free(line);
-		}
+		free(line);
 	}
 
 	while (irq < ic_nr) {

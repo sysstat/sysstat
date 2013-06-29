@@ -340,10 +340,8 @@ int ioc_init(void)
 	 * after IOC_ALLOC( blkp->desc ... ).
 	 * Right now, we don't.
 	 */
-	if (blkp != NULL)
-		free(blkp);
-	if (iocp != NULL)
-		free(iocp);
+	free(blkp);
+	free(iocp);
 
 	/* Indicate that ioconf file has been parsed */
 	ioc_parsed = 1;

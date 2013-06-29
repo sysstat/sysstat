@@ -201,15 +201,10 @@ void io_sys_free(void)
 
 	/* Free CIFS directories structures */
 	for (i = 0; i < 2; i++) {
-
-		if (st_cifs[i]) {
-			free(st_cifs[i]);
-		}
+		free(st_cifs[i]);
 	}
 	
-	if (st_hdr_cifs) {
-		free(st_hdr_cifs);
-	}
+	free(st_hdr_cifs);
 }
 
 /*
