@@ -362,9 +362,7 @@ int get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 
 	fclose(fp);
 
-	if (line) {
-		free(line);
-	}
+	free(line);
 
 	return irq;
 }
