@@ -1007,9 +1007,7 @@ void read_stats_from_file(char from_file[])
 
 	close(ifd);
 	
-	if (file_actlst) {
-		free(file_actlst);
-	}
+	free(file_actlst);
 }
 
 /*

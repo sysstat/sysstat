@@ -225,15 +225,10 @@ void io_sys_free(void)
 
 	/* Free I/O NFS directories structures */
 	for (i = 0; i < 2; i++) {
-
-		if (st_ionfs[i]) {
-			free(st_ionfs[i]);
-		}
+		free(st_ionfs[i]);
 	}
 	
-	if (st_hdr_ionfs) {
-		free(st_hdr_ionfs);
-	}
+	free(st_hdr_ionfs);
 }
 
 /*
