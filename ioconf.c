@@ -236,7 +236,7 @@ int ioc_init(void)
 			   desc);
 
 		if (i != 9) {
-			fprintf(stderr, "%s: Malformed %d field record: %s\n",
+			fprintf(stderr, "%s: Malformed %u field record: %s\n",
 				ioconf_name, i, buf);
 			continue;
 		}

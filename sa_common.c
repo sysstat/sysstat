@@ -131,7 +131,7 @@ char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
 	char *devname;
 	ssize_t r;
 
-	snprintf(link, 32, "%s/%d:%d", SYSFS_DEV_BLOCK, major, minor);
+	snprintf(link, 32, "%s/%u:%u", SYSFS_DEV_BLOCK, major, minor);
 
 	/* Get full path to device knowing its major and minor numbers */
 	r = readlink(link, target, PATH_MAX);
@@ -172,7 +172,7 @@ char *get_devname(unsigned int major, unsigned int minor, int pretty)
 	static char buf[32];
 	char *name;
 
-	snprintf(buf, 32, "dev%d-%d", major, minor);
+	snprintf(buf, 32, "dev%u-%u", major, minor);
 
 	if (!pretty)
 		return (buf);
