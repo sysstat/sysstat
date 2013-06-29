@@ -506,9 +506,11 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
 
 	memset(line, 0, MAX_CMDLINE_LEN);
 	
-	if ((len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp)) < 0)
+	if ((len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp)) < 0) {
 		/* Nothing to read doesn't mean that process no longer exists */
+		fclose(fp);
 		return 1;
+	}
 	
 	for (i = 0; i < len; i++) {
 		if (line[i] == '\0') {
