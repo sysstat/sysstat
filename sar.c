@@ -1400,9 +1400,9 @@ int main(int argc, char **argv)
 		
 		/* Writing data to a file (option -o) */
 		if (to_file[0]) {
-			/* Collect all possible activities (option -S ALL for sadc) */
+			/* Collect all possible activities (option -S XALL for sadc) */
 			salloc(args_idx++, "-S");
-			salloc(args_idx++, K_ALL);
+			salloc(args_idx++, K_XALL);
 			/* Outfile arg */
 			salloc(args_idx++, to_file);
 		}
