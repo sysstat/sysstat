@@ -30,11 +30,11 @@ In this case,
 will overwrite the file if it is from a previous month.
 By default
 .B sadc
-collects all the data available from the kernel.
-Exceptions are interrupts and disk data, for which the
+collects most of the data available from the kernel.
+But there are also optional metrics, for which the
 relevant options must be explicitly passed to
 .B sadc
-(see options below).
+to be collected (see option -S below).
 
 When the
 .I count
