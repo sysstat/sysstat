@@ -178,8 +178,16 @@ act_sadf.o: activity.c sa.h rndr_stats.h xml_stats.h json_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
 rd_stats.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+rd_stats_light.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 count.o: count.c common.h rd_stats.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+count_light.o: count.c common.h rd_stats.h
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 rd_sensors.o: rd_sensors.c common.h rd_sensors.h sysconfig.h
 
@@ -206,6 +214,9 @@ libsyscom.a: common.o ioconf.o
 librdstats.a: rd_stats.o count.o
 	$(AR) rvs $@ $?
 
+librdstats_light.a: rd_stats_light.o count_light.o
+	$(AR) rvs $@ $?
+
 librdsensors.a: librdsensors.a(rd_sensors.o)
 
 sadc.o: sadc.c sa.h version.h common.h ioconf.h sysconfig.h rd_stats.h rd_sensors.h
@@ -223,23 +234,23 @@ sadf: sadf.o act_sadf.o format.o sadf_misc.o rndr_stats.o xml_stats.o json_stats
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h count.h
 
-iostat: iostat.o librdstats.a libsyscom.a
+iostat: iostat.o librdstats_light.a libsyscom.a
 
 pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h
 
-pidstat: pidstat.o librdstats.a libsyscom.a
+pidstat: pidstat.o librdstats_light.a libsyscom.a
 
 mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h
 
-mpstat: mpstat.o librdstats.a libsyscom.a
+mpstat: mpstat.o librdstats_light.a libsyscom.a
 
 nfsiostat.o: nfsiostat.c nfsiostat.h count.h version.h common.h
 
-nfsiostat: nfsiostat.o librdstats.a libsyscom.a
+nfsiostat: nfsiostat.o librdstats_light.a libsyscom.a
 
 cifsiostat.o: cifsiostat.c cifsiostat.h count.h version.h common.h
 
-cifsiostat: cifsiostat.o librdstats.a libsyscom.a
+cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
 
 ifdef REQUIRE_NLS
 locales: $(NLSGMO)

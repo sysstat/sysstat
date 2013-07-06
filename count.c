@@ -44,176 +44,6 @@
 
 /*
  ***************************************************************************
- * Count number of interrupts that are in /proc/stat file.
- *
- * RETURNS:
- * Number of interrupts, including total number of interrupts.
- ***************************************************************************
- */
-int get_irq_nr(void)
-{
-	FILE *fp;
-	char line[8192];
-	int in = 0;
-	int pos = 4;
-
-	if ((fp = fopen(STAT, "r")) == NULL)
-		return 0;
-
-	while (fgets(line, 8192, fp) != NULL) {
-
-		if (!strncmp(line, "intr ", 5)) {
-
-			while (pos < strlen(line)) {
-				in++;
-				pos += strcspn(line + pos + 1, " ") + 1;
-			}
-		}
-	}
-
-	fclose(fp);
-
-	return in;
-}
-
-/*
- ***************************************************************************
- * Find number of serial lines that support tx/rx accounting
- * in /proc/tty/driver/serial file.
- *
- * RETURNS:
- * Number of serial lines supporting tx/rx accouting.
- ***************************************************************************
- */
-int get_serial_nr(void)
-{
-	FILE *fp;
-	char line[256];
-	int sl = 0;
-
-	if ((fp = fopen(SERIAL, "r")) == NULL)
-		return 0;	/* No SERIAL file */
-
-	while (fgets(line, 256, fp) != NULL) {
-		/*
-		 * tx/rx statistics are always present,
-		 * except when serial line is unknown.
-		 */
-		if (strstr(line, "tx:") != NULL) {
-			sl++;
-		}
-	}
-
-	fclose(fp);
-
-	return sl;
-}
-
-/*
- ***************************************************************************
- * Find number of interfaces (network devices) that are in /proc/net/dev
- * file.
- *
- * RETURNS:
- * Number of network interfaces.
- ***************************************************************************
- */
-int get_iface_nr(void)
-{
-	FILE *fp;
-	char line[128];
-	int iface = 0;
-
-	if ((fp = fopen(NET_DEV, "r")) == NULL)
-		return 0;	/* No network device file */
-
-	while (fgets(line, 128, fp) != NULL) {
-		if (strchr(line, ':')) {
-			iface++;
-		}
-	}
-
-	fclose(fp);
-
-	return iface;
-}
-
-/*
- ***************************************************************************
- * Find number of devices and partitions available in /proc/diskstats.
- *
- * IN:
- * @count_part		Set to TRUE if devices _and_ partitions are to be
- *			counted.
- * @only_used_dev	When counting devices, set to TRUE if only devices
- *			with non zero stats must be counted.
- *
- * RETURNS:
- * Number of devices (and partitions).
- ***************************************************************************
- */
-int get_diskstats_dev_nr(int count_part, int only_used_dev)
-{
-	FILE *fp;
-	char line[256];
-	char dev_name[MAX_NAME_LEN];
-	int dev = 0, i;
-	unsigned long rd_ios, wr_ios;
-
-	if ((fp = fopen(DISKSTATS, "r")) == NULL)
-		/* File non-existent */
-		return 0;
-
-	/*
-	 * Counting devices and partitions is simply a matter of counting
-	 * the number of lines...
-	 */
-	while (fgets(line, 256, fp) != NULL) {
-		if (!count_part) {
-			i = sscanf(line, "%*d %*d %s %lu %*u %*u %*u %lu",
-				   dev_name, &rd_ios, &wr_ios);
-			if ((i == 2) || !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
-				/* It was a partition and not a device */
-				continue;
-			if (only_used_dev && !rd_ios && !wr_ios)
-				/* Unused device */
-				continue;
-		}
-		dev++;
-	}
-
-	fclose(fp);
-
-	return dev;
-}
-
-/*
- ***************************************************************************
- * Get number of devices in /proc/diskstats.
- *
- * IN:
- * @f	Non zero (true) if disks *and* partitions should be counted, and
- *	zero (false) if only disks must be counted.
- *
- * RETURNS:
- * Number of devices.
- ***************************************************************************
- */
-int get_disk_nr(unsigned int f)
-{
-	int disk_nr;
-
-	/*
-	 * Partitions are taken into account by sar -d only with
-	 * kernels 2.6.25 and later.
-	 */
-	disk_nr = get_diskstats_dev_nr(f, CNT_USED_DEV);
-
-	return disk_nr;
-}
-
-/*
- ***************************************************************************
  * Count number of processors in /sys.
  *
  * RETURNS:
@@ -369,6 +199,179 @@ int get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 
 /*
  ***************************************************************************
+ * Find number of devices and partitions available in /proc/diskstats.
+ *
+ * IN:
+ * @count_part		Set to TRUE if devices _and_ partitions are to be
+ *			counted.
+ * @only_used_dev	When counting devices, set to TRUE if only devices
+ *			with non zero stats must be counted.
+ *
+ * RETURNS:
+ * Number of devices (and partitions).
+ ***************************************************************************
+ */
+int get_diskstats_dev_nr(int count_part, int only_used_dev)
+{
+	FILE *fp;
+	char line[256];
+	char dev_name[MAX_NAME_LEN];
+	int dev = 0, i;
+	unsigned long rd_ios, wr_ios;
+
+	if ((fp = fopen(DISKSTATS, "r")) == NULL)
+		/* File non-existent */
+		return 0;
+
+	/*
+	 * Counting devices and partitions is simply a matter of counting
+	 * the number of lines...
+	 */
+	while (fgets(line, 256, fp) != NULL) {
+		if (!count_part) {
+			i = sscanf(line, "%*d %*d %s %lu %*u %*u %*u %lu",
+				   dev_name, &rd_ios, &wr_ios);
+			if ((i == 2) || !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
+				/* It was a partition and not a device */
+				continue;
+			if (only_used_dev && !rd_ios && !wr_ios)
+				/* Unused device */
+				continue;
+		}
+		dev++;
+	}
+
+	fclose(fp);
+
+	return dev;
+}
+
+#ifdef SOURCE_SADC
+/*---------------- BEGIN: FUNCTIONS USED BY SADC ONLY ---------------------*/
+
+/*
+ ***************************************************************************
+ * Count number of interrupts that are in /proc/stat file.
+ *
+ * RETURNS:
+ * Number of interrupts, including total number of interrupts.
+ ***************************************************************************
+ */
+int get_irq_nr(void)
+{
+	FILE *fp;
+	char line[8192];
+	int in = 0;
+	int pos = 4;
+
+	if ((fp = fopen(STAT, "r")) == NULL)
+		return 0;
+
+	while (fgets(line, 8192, fp) != NULL) {
+
+		if (!strncmp(line, "intr ", 5)) {
+
+			while (pos < strlen(line)) {
+				in++;
+				pos += strcspn(line + pos + 1, " ") + 1;
+			}
+		}
+	}
+
+	fclose(fp);
+
+	return in;
+}
+
+/*
+ ***************************************************************************
+ * Find number of serial lines that support tx/rx accounting
+ * in /proc/tty/driver/serial file.
+ *
+ * RETURNS:
+ * Number of serial lines supporting tx/rx accouting.
+ ***************************************************************************
+ */
+int get_serial_nr(void)
+{
+	FILE *fp;
+	char line[256];
+	int sl = 0;
+
+	if ((fp = fopen(SERIAL, "r")) == NULL)
+		return 0;	/* No SERIAL file */
+
+	while (fgets(line, 256, fp) != NULL) {
+		/*
+		 * tx/rx statistics are always present,
+		 * except when serial line is unknown.
+		 */
+		if (strstr(line, "tx:") != NULL) {
+			sl++;
+		}
+	}
+
+	fclose(fp);
+
+	return sl;
+}
+
+/*
+ ***************************************************************************
+ * Find number of interfaces (network devices) that are in /proc/net/dev
+ * file.
+ *
+ * RETURNS:
+ * Number of network interfaces.
+ ***************************************************************************
+ */
+int get_iface_nr(void)
+{
+	FILE *fp;
+	char line[128];
+	int iface = 0;
+
+	if ((fp = fopen(NET_DEV, "r")) == NULL)
+		return 0;	/* No network device file */
+
+	while (fgets(line, 128, fp) != NULL) {
+		if (strchr(line, ':')) {
+			iface++;
+		}
+	}
+
+	fclose(fp);
+
+	return iface;
+}
+
+/*
+ ***************************************************************************
+ * Get number of devices in /proc/diskstats.
+ *
+ * IN:
+ * @f	Non zero (true) if disks *and* partitions should be counted, and
+ *	zero (false) if only disks must be counted.
+ *
+ * RETURNS:
+ * Number of devices.
+ ***************************************************************************
+ */
+int get_disk_nr(unsigned int f)
+{
+	int disk_nr;
+
+	/*
+	 * Partitions are taken into account by sar -d only with
+	 * kernels 2.6.25 and later.
+	 */
+	disk_nr = get_diskstats_dev_nr(f, CNT_USED_DEV);
+
+	return disk_nr;
+}
+
+/*
+ ***************************************************************************
  * Count number of possible frequencies for CPU#0.
  *
  * RETURNS:
@@ -473,3 +476,6 @@ int get_filesystem_nr(void)
 
 	return fs;
 }
+
+/*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/
+#endif /* SOURCE_SADC */

@@ -551,18 +551,21 @@ struct stats_filesystem {
  */
 
 extern void
-	oct2chr(char *);
-extern void
 	read_stat_cpu(struct stats_cpu *, int,
 		      unsigned long long *, unsigned long long *);
 extern void
-	read_stat_pcsw(struct stats_pcsw *);
-extern void
 	read_stat_irq(struct stats_irq *, int);
 extern void
-	read_loadavg(struct stats_queue *);
-extern void
 	read_meminfo(struct stats_memory *);
+extern void
+	read_uptime(unsigned long long *);
+
+extern void
+	oct2chr(char *);
+extern void
+	read_stat_pcsw(struct stats_pcsw *);
+extern void
+	read_loadavg(struct stats_queue *);
 extern void
 	read_vmstat_swap(struct stats_swap *);
 extern void
@@ -601,8 +604,6 @@ extern void
 	read_net_etcp(struct stats_net_etcp *);
 extern void
 	read_net_udp(struct stats_net_udp *);
-extern void
-	read_uptime(unsigned long long *);
 extern void
 	read_net_sock6(struct stats_net_sock6 *);
 extern void
