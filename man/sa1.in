@@ -1,4 +1,4 @@
-.TH SA1 8 "FEBRUARY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA1 8 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
 .SH SYNOPSIS
@@ -42,7 +42,7 @@ command should be called without specifying the
 and
 .I count
 parameters in order to insert a dummy record, marking the time when the counters
-restarts from 0.
+restart from 0.
 
 .SH EXAMPLE
 To collect data (including those from disks) every 10 minutes,

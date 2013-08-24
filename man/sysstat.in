@@ -1,4 +1,4 @@
-.TH SYSSTAT 5 "SEPTEMBER 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 .SH DESCRIPTION
@@ -17,6 +17,9 @@ should be kept. Data files or reports older than this number of
 days will be removed by the
 .BR sa2 (8)
 shell script.
+Data files and reports are normally saved in the @SA_DIR@ directory,
+but if HISTORY is greater than 28, the scripts use a tree of directories under
+@SA_DIR@.
 
 .TP
 .B COMPRESSAFTER

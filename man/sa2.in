@@ -1,4 +1,4 @@
-.TH SA2 8 "AUGUST 2010" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA2 8 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa2 \- Write a daily report in the @SA_DIR@ directory.
 .SH SYNOPSIS
@@ -10,9 +10,16 @@ command is a shell procedure variant of the
 .B sar
 command which writes a daily report in the
 .IR @SA_DIR@/sar dd
-file, where the dd parameter indicates the current day. The
+file, where the dd parameter indicates the current day.
+It will also remove reports more than one week old by default.
+You can however keep reports for a longer (or a shorter) period by setting
+the HISTORY environment variable. Read the
+.BR sysstat (5)
+manual page for details.
+
+The
 .B sa2
-command handles all of the flags and parameters of the
+command accepts most of the flags and parameters of the
 .B sar
 command.
 
@@ -23,13 +30,12 @@ command is designed to be started automatically by the cron command.
 .SH EXAMPLES
 To run the
 .B sa2
-command daily, place the following entry in your root or adm crontab file:
+command daily, place the following entry in your root crontab file:
 
 .B 5 19 * * 1-5 @SA_LIB_DIR@/sa2 -A &
 
 This will generate a daily report called
-.IR @SA_DIR@/sar dd
-It will also remove reports more than one week old.
+.IR @SA_DIR@/sar dd.
 .SH FILES
 .IR @SA_DIR@/sar dd
 .RS
@@ -42,6 +48,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sar (1),
 .BR sadc (8),
 .BR sa1 (8),
-.BR sadf (1)
+.BR sadf (1),
+.BR sysstat (5)
 
 .I http://pagesperso-orange.fr/sebastien.godard/
