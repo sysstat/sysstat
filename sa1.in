@@ -15,6 +15,7 @@ DATE=`date +%d`
 CURRENTFILE=sa${DATE}
 CURRENTDIR=`date +%Y%m`
 SYSCONFIG_DIR=@SYSCONFIG_DIR@
+umask 0022
 
 [ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
 if [ ${HISTORY} -gt 28 ]
@@ -38,7 +39,7 @@ else
 	# month then delete it so that it is recreated by sadc afresh
 	[ -f ${CURRENTFILE} ] && [ "`date +%Y%m -r ${CURRENTFILE}`" -lt "${CURRENTDIR}" ] && rm -f ${CURRENTFILE}
 fi
-umask 0022
+
 ENDIR=@SA_LIB_DIR@
 cd ${ENDIR}
 [ "$1" = "--boot" ] && shift && BOOT=y || BOOT=n
