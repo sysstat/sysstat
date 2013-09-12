@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.1.4\n"
+"Project-Id-Version: sysstat-10.1.6\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2013-03-03 15:47+0100\n"
-"PO-Revision-Date: 2013-03-13 09:19+0200\n"
+"POT-Creation-Date: 2013-06-08 09:01+0200\n"
+"PO-Revision-Date: 2013-06-15 15:19+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -21,6 +21,52 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: iostat.c:86 cifsiostat.c:71 mpstat.c:90 sar.c:94 pidstat.c:83
+#: nfsiostat.c:70
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Brug: %s [ tilvalg ] [ <interval> [ <count> ] ]\n"
+
+#: iostat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Tilvalg er:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | ETIKET | STI | UUID | ... } ]\n"
+"[ [ -T ] -g <gruppenavn> ] [ -P ] <enhed> [,...] | ALL ] ]\n"
+"[ <enhed> [...] | ALL ] ] [ --debuginfo ]\n"
+
+#: iostat.c:95
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Tilvalg er:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | ETIKET | STI | UUID | ... } ]\n"
+"[ [ -T ] -g <gruppenavn> ] [ -p [ <enhed> [,...] | ALL ] ]\n"
+"[ <enhed> [...] | ALL ] ]\n"
+
+#: iostat.c:330
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Kan ikke lokalisere diskdata\n"
+
+#: iostat.c:1394 sa_common.c:1303
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Ugyldig type vedvarende enhedsnavn\n"
 
 #: sadf_misc.c:596
 #, c-format
@@ -48,52 +94,6 @@ msgstr "Oversigt over aktiviteter:\n"
 msgid "\t[Unknown activity format]"
 msgstr "\t[Ukendt aktivitetsformat]"
 
-#: iostat.c:85 cifsiostat.c:70 mpstat.c:89 pidstat.c:82 sar.c:94
-#: nfsiostat.c:69
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Brug: %s [ tilvalg ] [ <interval> [ <count> ] ]\n"
-
-#: iostat.c:88
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Tilvalg er:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | ETIKET | STI | UUID | ... } ]\n"
-"[ [ -T ] -g <gruppenavn> ] [ -P ] <enhed> [,...] | ALL ] ]\n"
-"[ <enhed> [...] | ALL ] ] [ --debuginfo ]\n"
-
-#: iostat.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Tilvalg er:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | ETIKET | STI | UUID | ... } ]\n"
-"[ [ -T ] -g <gruppenavn> ] [ -p [ <enhed> [,...] | ALL ] ]\n"
-"[ <enhed> [...] | ALL ] ]\n"
-
-#: iostat.c:329
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Kan ikke lokalisere diskdata\n"
-
-#: iostat.c:1392 sa_common.c:1300
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Ugyldig type vedvarende enhedsnavn\n"
-
 #: sadc.c:84
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
@@ -120,8 +120,8 @@ msgstr "Kan ikke skrive data til systemaktivitetsfil: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Kan ikke skrive systemaktivitetsfilhoved: %s\n"
 
-#: sadc.c:650 sadc.c:659 sadc.c:720 ioconf.c:491 rd_stats.c:68 rd_stats.c:2124
-#: sa_common.c:1109
+#: sadc.c:650 sadc.c:659 sadc.c:720 ioconf.c:491 rd_stats.c:105
+#: sa_common.c:1109 count.c:275
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Kan ikke åbne %s: %s\n"
@@ -136,7 +136,7 @@ msgstr "Kan ikke tilføje data til den fil (%s)\n"
 msgid "sysstat version %s\n"
 msgstr "sysstat version %s\n"
 
-#: cifsiostat.c:74 nfsiostat.c:73
+#: cifsiostat.c:75 nfsiostat.c:74
 #, c-format
 msgid ""
 "Options are:\n"
@@ -145,7 +145,7 @@ msgstr ""
 "Tilvalg er:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:77 nfsiostat.c:76
+#: cifsiostat.c:78 nfsiostat.c:77
 #, c-format
 msgid ""
 "Options are:\n"
@@ -153,6 +153,27 @@ msgid ""
 msgstr ""
 "Tilvalg er:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
+#: mpstat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Tilvalg er:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+
+# sar.c:
+#: mpstat.c:609 sar.c:402 pidstat.c:1857
+msgid "Average:"
+msgstr "Middel:"
+
+#: mpstat.c:976
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Der er ikke så mange cpuer!\n"
 
 #: sadf.c:86
 #, c-format
@@ -172,93 +193,11 @@ msgstr ""
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <tt:mm:ss> ] ] [ -e [ <tt:mm:ss> ] ]\n"
 "[ -- <sar_tilvalg> ]\n"
 
-#: mpstat.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Tilvalg er:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-
-# sar.c:
-#: mpstat.c:608 pidstat.c:1856 sar.c:401
-msgid "Average:"
-msgstr "Middel:"
-
-#: mpstat.c:984
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Der er ikke så mange cpuer!\n"
-
-#: rd_stats.c:2170
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Kan ikke håndtere så mange cpuer!\n"
-
-#: pr_stats.c:2348 pr_stats.c:2361
-msgid "Summary"
-msgstr "Resume"
-
-#: pr_stats.c:2399
-msgid "Other devices not listed here"
-msgstr "Andre enheder ikke vist her"
-
-#: sa_common.c:917
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Læsefejl ved indlæsning af aktivitetsfil: %s\n"
-
-#: sa_common.c:927
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Uventet afslutning på systemaktivitetsfil\n"
-
-#: sa_common.c:946
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Fil oprettet af sar/sadc fra sysstat version %d.%d.%d"
-
-#: sa_common.c:977
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Ugyldig systemaktivitetsfil: %s\n"
-
-#: sa_common.c:984
-#, c-format
-msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
-msgstr "Nuværende sysstat version kan ikke længere læse formatet på denne fil (%#x)\n"
-
-#: sa_common.c:1216
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Angivne aktiviteter findes ikke i filen %s\n"
-
-#: pidstat.c:85
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ username ] ] [ -u ]\n"
-"[ -V ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -T { TASK | CHILD | ALL } ]\n"
-msgstr ""
-"Tilvalg er:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ brugernavn ] ] [ -u ]\n"
-"[ -V ] [ -W ] [ -C <kommando> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -T { TASK | CHILD | ALL } ]\n"
-
-#: pidstat.c:215 sar.c:1033
-#, c-format
-msgid "Requested activities not available\n"
-msgstr "Angivne aktiviteter er ikke tilgængelig\n"
-
 #: sar.c:109
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
 "[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
@@ -267,7 +206,7 @@ msgid ""
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
 "Tilvalg:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
 "[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <nøgleord> [,...] | ALL } ] [ -n { <nøgleord> [,...] | ALL } ]\n"
@@ -292,15 +231,20 @@ msgstr "\t-B\tPagingstatistik\n"
 
 #: sar.c:134
 #, c-format
-msgid "\t-d\tBlock device statistics\n"
-msgstr "\t-d\tStatistik for blokenhed\n"
+msgid "\t-d\tBlock devices statistics\n"
+msgstr "\t-d\tStatistik for blokenheder\n"
 
 #: sar.c:135
+#, c-format
+msgid "\t-F\tFilesystems statistics\n"
+msgstr "\t-F\tStatistik for filsystemer\n"
+
+#: sar.c:136
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-H\tForbrugsstatistik for store sider\n"
 
-#: sar.c:136
+#: sar.c:137
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -313,7 +257,7 @@ msgstr ""
 # øjeblikkelig klokfrekvens / "CPU-klokfrevens lige nu:"/"CPUens 
 # klokfrekvens lige nu
 # spændingsinddata eller spændingsindgange.
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -336,7 +280,7 @@ msgstr ""
 "\t\tTEMP\tEnhedens temperatur\n"
 "\t\tUSB\tUSB-enheder tilsluttet systemet\n"
 
-#: sar.c:147
+#: sar.c:148
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -383,27 +327,27 @@ msgstr ""
 "\t\tEICMP6\tICMP-trafik\t(v6) (fejl)\n"
 "\t\tUDP6\tUDP-trafik\t(v6)\n"
 
-#: sar.c:168
+#: sar.c:169
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tStatistik for kølængde og gennemsnitlig belastning\n"
 
-#: sar.c:169
+#: sar.c:170
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tStatistik for hukommelsesforbrug\n"
 
-#: sar.c:170
+#: sar.c:171
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tHukommelsesstatistik\n"
 
-#: sar.c:171
+#: sar.c:172
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistik for swappladsforbrug\n"
 
-#: sar.c:172
+#: sar.c:173
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -412,57 +356,118 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistik for CPU-forbrug\n"
 
-#: sar.c:174
-#, c-format
-msgid "\t-v\tKernel table statistics\n"
-msgstr "\t-v\tStatistik for kernetabel\n"
-
 #: sar.c:175
+#, c-format
+msgid "\t-v\tKernel tables statistics\n"
+msgstr "\t-v\tStatistik for kernetabeller\n"
+
+#: sar.c:176
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tOpgaveoprettelse og statistik for systemskift\n"
 
-#: sar.c:176
+#: sar.c:177
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tStatistik for swapping\n"
 
-#: sar.c:177
+#: sar.c:178
 #, c-format
-msgid "\t-y\tTTY device statistics\n"
-msgstr "\t-y\tTTY enhedsstatistik\n"
+msgid "\t-y\tTTY devices statistics\n"
+msgstr "\t-y\tStatistik for TTY-enheder\n"
 
-#: sar.c:235
+#: sar.c:236
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Uventet afslutning på dataindsamling\n"
 
-#: sar.c:822
+#: sar.c:823
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Ugyldig dataformat\n"
 
-#: sar.c:826
+#: sar.c:827
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Bruger en forkert dataindsamler fra en anden sysstat version\n"
 
-#: sar.c:850
+#: sar.c:851
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Inkonsistent inddata\n"
 
-#: sar.c:1303
+#: sar.c:1034 pidstat.c:216
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "Angivne aktiviteter er ikke tilgængelig\n"
+
+#: sar.c:1304
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "tilvalgene -f og -o udelukker hinanden\n"
 
-#: sar.c:1309
+#: sar.c:1310
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Læsning sker ikke fra en systemaktivitetsfil (brug tilvalget -f)\n"
 
-#: sar.c:1441
+#: sar.c:1442
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan ikke lokalisere dataindsamleren (%s)\n"
+
+#: sa_common.c:917
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Læsefejl ved indlæsning af aktivitetsfil: %s\n"
+
+#: sa_common.c:927
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Uventet afslutning på systemaktivitetsfil\n"
+
+#: sa_common.c:946
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Fil oprettet af sar/sadc fra sysstat version %d.%d.%d"
+
+#: sa_common.c:977
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Ugyldig systemaktivitetsfil: %s\n"
+
+#: sa_common.c:984
+#, c-format
+msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
+msgstr "Nuværende sysstat version kan ikke længere læse formatet på denne fil (%#x)\n"
+
+#: sa_common.c:1216
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Angivne aktiviteter findes ikke i filen %s\n"
+
+#: pidstat.c:86
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -u ]\n"
+"[ -V ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -T { TASK | CHILD | ALL } ]\n"
+msgstr ""
+"Tilvalg er:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <brugernavn> ] ] [ -u ]\n"
+"[ -V ] [ -W ] [ -C <kommando> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -T { TASK | CHILD | ALL } ]\n"
+
+#: count.c:321
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Kan ikke håndtere så mange cpuer!\n"
+
+#: pr_stats.c:2348 pr_stats.c:2361 pr_stats.c:2461 pr_stats.c:2473
+msgid "Summary"
+msgstr "Resume"
+
+#: pr_stats.c:2399
+msgid "Other devices not listed here"
+msgstr "Andre enheder ikke vist her"
