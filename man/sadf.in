@@ -1,4 +1,4 @@
-.TH SADF 1 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -90,7 +90,7 @@ Set the ending time of the report, given in local time. The default ending
 time is 18:00:00. Hours must be given in 24-hour format.
 .IP -H
 Display only the header of the report (when applicable). If no format has
-been specified, then the header of the data file is displayed.
+been specified, then the header data (metadata) of the data file are displayed.
 .IP -h
 When used in conjunction with option -d, all activities
 will be displayed horizontally on a single line.
