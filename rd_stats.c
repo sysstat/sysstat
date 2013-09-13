@@ -759,7 +759,7 @@ void read_kernel_tables(struct stats_ktables *st_ktables)
  *
  * OUT:
  * @st_net_dev	Structure with statistics.
- * 
+ *
  * RETURNS:
  * Number of interfaces for which stats have been read.
  ***************************************************************************
@@ -805,7 +805,7 @@ int read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 /*
  ***************************************************************************
  * Read duplex and speed data for network interface cards.
- *void
+ *
  * IN:
  * @st_net_dev	Structure where stats will be saved.
  * @nbr		Real number of network interfaces available.

@@ -311,7 +311,7 @@ int datecmp(struct tm *rectime, struct tstamp *tse)
 
 /*
  ***************************************************************************
- * Parse a time stamp entered on the command line (hh:mm:ss) and decode it.
+ * Parse a timestamp entered on the command line (hh:mm:ss) and decode it.
  *
  * IN:
  * @argv		Arguments list.

@@ -1,5 +1,34 @@
 Changes:
 
+2013/09/13: Version 10.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* New metric added to sar network devices statistics: %ifutil
+	  now gives the network interface utilization percentage.
+	* Now use a lightweight static library having only the necessary
+	  functions to compile sysstat commands. This results in a
+	  size 25% to almost 45% smaller for some commands.
+	* [Kevin Johnson]: Rewrite rule for librdstats.a in Makefile
+	  to allow parallel execution.
+	* [Peter Schiffer]: Fix wrong permissions for data file created
+	  by sa1 script when HISTORY is greater than 28.
+	* [Muneyuki Noguchi]: Use %u instead of %d for unsigned int
+	  variables.
+	* [Muneyuki Noguchi]: Close file descriptor before exit in
+	  pidstat.c.
+	* [Muneyuki Noguchi]: Remove redundant NULL checks.
+	* [James Fraser]: Replace comma with semi-colon in filesystems
+	  statistics header line.
+	* Fixed sar log file corruption in odd Feb 28th edge-case.
+	* Filesystems statistics (displayed by sar -F) are now collected
+	  by sadc only if option "-S XDISK" is used.
+	* sar now collects all statistics (including partitions ones)
+	  when data are saved into a file with option -o.
+	* [Yan Gao]: Update iostat manual page: Don't say that device
+	  saturation occurs when %util is close to 100% for devices
+	  serving multiple requests simultaneously.
+	* Documentation fixes and updates.
+	* Several manual pages updated (sar, sadc, sadf, sa1, sa2, sysstat).
+	* NLS updated.
+
 2013/06/09: Version 10.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Filesystems statistics added to sar/sadc/sadf. These stats can
 	  be displayed with option -F.
