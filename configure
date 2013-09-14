@@ -642,6 +642,8 @@ COMPRESS_MANPG
 IGNORE_MAN_GROUP
 MAN_GROUP
 man_group
+PREALLOC_FACTOR
+prealloc
 COMPRESSAFTER
 compressafter
 HISTORY
@@ -758,6 +760,7 @@ sa_dir
 conf_dir
 history
 compressafter
+prealloc
 man_group
 cron_owner
 cron_interval'
@@ -1407,6 +1410,8 @@ Some influential environment variables:
   compressafter
               number of days after which data files are compressed (default
               value is 10)
+  prealloc    preallocation factor that will determine data files size
+              (default value is 1)
   man_group   group for manual pages
   cron_owner  crontab owner
   cron_interval
@@ -5053,6 +5058,19 @@ fi
 $as_echo "$COMPRESSAFTER" >&6; }
 
 
+# Preallocation factor
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking preallocation factor value" >&5
+$as_echo_n "checking preallocation factor value... " >&6; }
+
+if test x$prealloc = x""; then
+   PREALLOC_FACTOR=1
+else
+   PREALLOC_FACTOR=$prealloc
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PREALLOC_FACTOR" >&5
+$as_echo "$PREALLOC_FACTOR" >&6; }
+
+
 # Manual page group
 grep ^man: /etc/group >/dev/null 2>&1
 if test $? = 0; then
@@ -5359,6 +5377,8 @@ ac_config_files="$ac_config_files sysstat.sysconfig"
 ac_config_files="$ac_config_files version.h:version.in"
 		# File must be renamed
 ac_config_files="$ac_config_files sysconfig.h:sysconfig.in"
+	# File must be renamed
+ac_config_files="$ac_config_files prealloc.h:prealloc.in"
 	# File must be renamed
 ac_config_files="$ac_config_files cron/sysstat.cron.daily"
 
@@ -6106,6 +6126,7 @@ do
     "sysstat.sysconfig") CONFIG_FILES="$CONFIG_FILES sysstat.sysconfig" ;;
     "version.h") CONFIG_FILES="$CONFIG_FILES version.h:version.in" ;;
     "sysconfig.h") CONFIG_FILES="$CONFIG_FILES sysconfig.h:sysconfig.in" ;;
+    "prealloc.h") CONFIG_FILES="$CONFIG_FILES prealloc.h:prealloc.in" ;;
     "cron/sysstat.cron.daily") CONFIG_FILES="$CONFIG_FILES cron/sysstat.cron.daily" ;;
     "cron/sysstat.cron.hourly") CONFIG_FILES="$CONFIG_FILES cron/sysstat.cron.hourly" ;;
     "cron/sysstat.crond") CONFIG_FILES="$CONFIG_FILES cron/sysstat.crond" ;;

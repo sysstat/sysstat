@@ -88,6 +88,12 @@ if [ "${COMPRESSAFTER}" != "" ]; then
 	COMPRESSAFTER="compressafter=${COMPRESSAFTER} "
 fi
 
+# Preallocation factor
+PREALLOC_ANSWER=`${ASK} 'Preallocation factor value:' "prealloc" "prealloc"`
+if [ "${PREALLOC_ANSWER}" != "" ]; then
+	PREALLOC_ANSWER="prealloc=${PREALLOC_ANSWER} "
+fi
+
 # Manual page group
 MAN=`${ASK} 'Group for manual pages:' "man_group" "man_group"`
 if [ "${MAN}" != "" ]; then
@@ -194,11 +200,11 @@ fi
 
 echo
 echo "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
+${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
 ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
+${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
 ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}
 

@@ -1,0 +1,17 @@
+/*
+ * sysstat: System performance tools for Linux
+ * (C) 1999-2013 by Sebastien Godard (sysstat <at> orange.fr)
+ */
+
+#ifndef _PREALLOC_H
+#define _PREALLOC_H
+
+/* Preallocation constants for sar */
+#define NR_IFACE_PREALLOC	(2 * @PREALLOC_FACTOR@)
+#define NR_SERIAL_PREALLOC	(2 * @PREALLOC_FACTOR@)
+#define NR_DISK_PREALLOC	(3 * @PREALLOC_FACTOR@)
+#define NR_FREQ_PREALLOC	(0 * @PREALLOC_FACTOR@)
+#define NR_USB_PREALLOC		(5 * @PREALLOC_FACTOR@)
+#define NR_FILESYSTEM_PREALLOC	(3 * @PREALLOC_FACTOR@)
+
+#endif  /* _PREALLOC_H */

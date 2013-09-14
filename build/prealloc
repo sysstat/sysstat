@@ -1,0 +1,12 @@
+
+sar (or sadc) allocates empty records in the data files it creates so that
+it can save statistics for devices (disks, network interfaces, etc.) that
+may be added to the system after the file was created. The drawback is that
+data files take more space on disk than actually strictly necessary.
+Answer here a positive integer number telling sar/sadc how much space they
+should allocate for such devices. The default value (1) means that a few
+records will be allocated. A greater value (e.g. 2 or 3) means that many
+more of them will be allocated. A value of 0 doesn't allocate any empty
+records.
+The default value should be OK for most of you.
+

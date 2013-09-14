@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 #include "common.h"
+#include "prealloc.h"
 #include "rd_stats.h"
 #include "rd_sensors.h"
 
@@ -191,14 +192,6 @@
  * (eg. CPU "all" or total number of interrupts). That's why we do "(m) + 1".
  */
 #define BITMAP_SIZE(m)	((((m) + 1) / 8) + 1)
-
-/* Pre-allocation constants */
-#define NR_IFACE_PREALLOC	2
-#define NR_SERIAL_PREALLOC	2
-#define NR_DISK_PREALLOC	3
-#define NR_FREQ_PREALLOC	0
-#define NR_USB_PREALLOC		5
-#define NR_FILESYSTEM_PREALLOC	3
 
 #define UTSNAME_LEN		65
 #define TIMESTAMP_LEN		16

@@ -318,6 +318,17 @@ fi
 AC_MSG_RESULT($COMPRESSAFTER)
 AC_SUBST(COMPRESSAFTER)
 
+# Preallocation factor
+AC_MSG_CHECKING(preallocation factor value)
+AC_ARG_VAR([prealloc],[preallocation factor that will determine data files size (default value is 1)])
+if test x$prealloc = x""; then
+   PREALLOC_FACTOR=1
+else
+   PREALLOC_FACTOR=$prealloc
+fi
+AC_MSG_RESULT($PREALLOC_FACTOR)
+AC_SUBST(PREALLOC_FACTOR)
+
 # Manual page group
 grep ^man: /etc/group >/dev/null 2>&1
 if test $? = 0; then
@@ -566,6 +577,7 @@ AC_CONFIG_FILES([cron/crontab:cron/crontab.sample])	# File must be renamed
 AC_CONFIG_FILES([sysstat.sysconfig])
 AC_CONFIG_FILES([version.h:version.in])		# File must be renamed
 AC_CONFIG_FILES([sysconfig.h:sysconfig.in])	# File must be renamed
+AC_CONFIG_FILES([prealloc.h:prealloc.in])	# File must be renamed
 AC_CONFIG_FILES([cron/sysstat.cron.daily])
 AC_CONFIG_FILES([cron/sysstat.cron.hourly])
 AC_CONFIG_FILES([cron/sysstat.crond])

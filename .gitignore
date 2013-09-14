@@ -8,6 +8,7 @@ sysstat
 crontab
 version.h
 sysconfig.h
+prealloc.h
 sysstat.sysconfig
 sysstat.service
 sysstat.crond
