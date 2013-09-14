@@ -263,7 +263,7 @@ nls/sysstat.pot: $(wildcard *.c)
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall \
-	uninstall_base uninstall_all dist bdist gitdist
+	uninstall_base uninstall_all dist bdist xdist gitdist
 
 install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
 ifeq ($(INSTALL_DOC),y)
@@ -528,6 +528,9 @@ dist: almost-distclean
 
 bdist: almost-distclean
 	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
+
+xdist: almost-distclean
+	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
 
 gitdist: almost-distclean
 	cd .. && (tar --exclude=Makefile -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
