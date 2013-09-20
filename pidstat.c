@@ -1948,6 +1948,10 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	pause();
 
+	if (sigint_caught)
+		/* SIGINT signal caught during first interval: Exit immediately */
+		return;
+	
 	do {
 		/* Get time */
 		get_localtime(&ps_tstamp[curr], 0);

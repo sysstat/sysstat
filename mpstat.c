@@ -798,6 +798,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	sigaction(SIGINT, &int_act, NULL);
 
 	pause();
+	
+	if (sigint_caught)
+		/* SIGINT signal caught during first interval: Exit immediately */
+		return;
 
 	do {
 		/*
