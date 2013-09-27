@@ -1,10 +1,10 @@
-.TH PIDSTAT 1 "MARCH 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "SEPTEMBER 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
 .B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [
 .I username
-.B ] ] [ -u ] [ -V ]
+.B ] ] [ -u ] [ -V ] [ -v ]
 .B [ -w ] [ -C
 .I comm
 .B ] [ -p {
@@ -414,6 +414,40 @@ together with its children.
 .RE
 .IP -V
 Print version number then exit.
+.IP -v
+Report values of some kernel tables. The following values may be displayed:
+
+.B UID
+.RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The name of the real user owning the task being monitored.
+.RE
+
+.B PID
+.RS
+The identification number of the task being monitored.
+.RE
+
+.B threads
+.RS
+Number of threads associated with current task.
+.RE
+
+.B fd-nr
+.RS
+Number of file descriptors associated with current task.
+.RE
+
+.B Command
+.RS
+The command name of the task.
+.RE
+.RE
 .IP -w
 Report task switching activity (kernels 2.6.23 and later only).
 The following values may be displayed:
