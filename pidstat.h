@@ -25,12 +25,14 @@
 #define P_A_IO		0x04
 #define P_A_CTXSW	0x08
 #define P_A_STACK	0x10
+#define P_A_KTAB	0x20
 
 #define DISPLAY_CPU(m)		(((m) & P_A_CPU) == P_A_CPU)
 #define DISPLAY_MEM(m)		(((m) & P_A_MEM) == P_A_MEM)
 #define DISPLAY_IO(m)		(((m) & P_A_IO) == P_A_IO)
 #define DISPLAY_CTXSW(m)	(((m) & P_A_CTXSW) == P_A_CTXSW)
 #define DISPLAY_STACK(m)	(((m) & P_A_STACK) == P_A_STACK)
+#define DISPLAY_KTAB(m)		(((m) & P_A_KTAB) == P_A_KTAB)
 
 /* TASK/CHILD */
 #define P_NULL		0x00
@@ -62,9 +64,13 @@
 #define DISPLAY_USERNAME(m)	(((m) & P_D_USERNAME) == P_D_USERNAME)
 #define USER_STRING(m)		(((m) & P_F_USERSTR) == P_F_USERSTR)
 
+/* Per-process flags */
 #define F_NO_PID_IO	0x01
+#define F_NO_PID_FD	0x02
 
 #define NO_PID_IO(m)		(((m) & F_NO_PID_IO) == F_NO_PID_IO)
+#define NO_PID_FD(m)		(((m) & F_NO_PID_FD) == F_NO_PID_FD)
+
 
 #define PROC		"/proc"
 
@@ -73,6 +79,7 @@
 #define PID_IO		"/proc/%u/io"
 #define PID_CMDLINE	"/proc/%u/cmdline"
 #define PID_SMAP	"/proc/%u/smaps"
+#define PID_FD		"/proc/%u/fd"
 
 #define PROC_TASK	"/proc/%u/task"
 #define TASK_STAT	"/proc/%u/task/%u/stat"
@@ -80,6 +87,7 @@
 #define TASK_IO		"/proc/%u/task/%u/io"
 #define TASK_CMDLINE	"/proc/%u/task/%u/cmdline"
 #define TASK_SMAP	"/proc/%u/task/%u/smaps"
+#define TASK_FD		"/proc/%u/task/%u/fd"
 
 #define PRINT_ID_HDR(_timestamp_, _flag_)	do {						\
 							printf("\n%-11s", _timestamp_);	\
@@ -105,6 +113,8 @@ struct pid_stats {
 	unsigned long long total_rss			__attribute__ ((packed));
 	unsigned long long total_stack_size		__attribute__ ((packed));
 	unsigned long long total_stack_ref		__attribute__ ((packed));
+	unsigned long long total_threads		__attribute__ ((packed));
+	unsigned long long total_fd_nr			__attribute__ ((packed));
 	unsigned long      minflt			__attribute__ ((packed));
 	unsigned long      cminflt			__attribute__ ((packed));
 	unsigned long      majflt			__attribute__ ((packed));
@@ -128,9 +138,12 @@ struct pid_stats {
 	unsigned int       rt_asum_count		__attribute__ ((packed));
 	unsigned int       rc_asum_count		__attribute__ ((packed));
 	unsigned int       uc_asum_count		__attribute__ ((packed));
+	unsigned int       tf_asum_count		__attribute__ ((packed));
 	unsigned int       processor			__attribute__ ((packed));
 	unsigned int       flags			__attribute__ ((packed));
 	unsigned int       uid				__attribute__ ((packed));
+	unsigned int       threads			__attribute__ ((packed));
+	unsigned int       fd_nr			__attribute__ ((packed));
 	char               comm[MAX_COMM_LEN];
 	char               cmdline[MAX_CMDLINE_LEN];
 };
