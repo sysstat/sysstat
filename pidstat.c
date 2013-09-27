@@ -1070,6 +1070,14 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 				}
 			}
 
+
+			if (DISPLAY_STACK(activity) && (!isActive)) {
+				if (((*pstc)->stack_size  != (*pstp)->stack_size) ||
+				    ((*pstc)->stack_ref != (*pstp)->stack_ref)) {
+					isActive = TRUE;
+				}
+			}
+
 			if (DISPLAY_IO(activity) && (!isActive) &&
 				 /* /proc/#/io file should exist to check I/O stats */
 				 !(NO_PID_IO((*pstc)->flags))) {
@@ -1080,7 +1088,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 					isActive = TRUE;
 				}
 			}
-			
+
 			if (DISPLAY_CTXSW(activity) && (!isActive)) {
 				if (((*pstc)->nvcsw  != (*pstp)->nvcsw) ||
 				    ((*pstc)->nivcsw != (*pstp)->nivcsw)) {
@@ -1276,7 +1284,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_STACK(actflag)) {
-			printf("  %6lu  %6lu",
+			printf(" %7lu %7lu",
 			       pstc->stack_size,
 			       pstc->stack_ref);
 		}
@@ -1550,7 +1558,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 
 /*
  ***************************************************************************
- * Display memory and/or stack size statistics for tasks.
+ * Display memory statistics for tasks.
  *
  * IN:
  * @prev	Index in array where stats used as reference are.
@@ -1580,13 +1588,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
-		if (DISPLAY_MEM(actflag)) {
-			printf("  minflt/s  majflt/s     VSZ    RSS   %%MEM");
-		}
-		if (DISPLAY_STACK(actflag)) {
-			printf(" StkSize  StkRef");
-		}
-		printf("  Command\n");
+		printf("  minflt/s  majflt/s     VSZ    RSS   %%MEM  Command\n");
 	}
 	
 	for (p = 0; p < pid_nr; p++) {
@@ -1598,14 +1600,8 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 	
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			if (DISPLAY_MEM(actflag)) {
-				pstc->total_vsz = pstp->total_vsz + pstc->vsz;
-				pstc->total_rss = pstp->total_rss + pstc->rss;
-			}
-			if (DISPLAY_STACK(actflag)) {
-				pstc->total_stack_size = pstp->total_stack_size + pstc->stack_size;
-				pstc->total_stack_ref  = pstp->total_stack_ref  + pstc->stack_ref;
-			}
+			pstc->total_vsz = pstp->total_vsz + pstc->vsz;
+			pstc->total_rss = pstp->total_rss + pstc->rss;
 			pstc->rt_asum_count = pstp->rt_asum_count + 1;
 		}
 
@@ -1615,40 +1611,25 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, pstc);
 		
-		if (DISPLAY_MEM(actflag)) {
-			printf(" %9.2f %9.2f ",
-			       S_VALUE(pstp->minflt, pstc->minflt, itv),
-			       S_VALUE(pstp->majflt, pstc->majflt, itv));
+		printf(" %9.2f %9.2f ",
+		       S_VALUE(pstp->minflt, pstc->minflt, itv),
+		       S_VALUE(pstp->majflt, pstc->majflt, itv));
 
-			if (disp_avg) {
-				printf("%7.0f %6.0f %6.2f",
-				       (double) pstc->total_vsz / pstc->rt_asum_count,
-				       (double) pstc->total_rss / pstc->rt_asum_count,
-				       tlmkb ?
-				       SP_VALUE(0, pstc->total_rss / pstc->rt_asum_count, tlmkb)
-				       : 0.0);
-			}
-			else {
-				printf("%7lu %6lu %6.2f",
-				       pstc->vsz,
-				       pstc->rss,
-				       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
-			}
+		if (disp_avg) {
+			printf("%7.0f %6.0f %6.2f",
+			       (double) pstc->total_vsz / pstc->rt_asum_count,
+			       (double) pstc->total_rss / pstc->rt_asum_count,
+			       tlmkb ?
+			       SP_VALUE(0, pstc->total_rss / pstc->rt_asum_count, tlmkb)
+			       : 0.0);
+		}
+		else {
+			printf("%7lu %6lu %6.2f",
+			       pstc->vsz,
+			       pstc->rss,
+			       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 		
-		if (DISPLAY_STACK(actflag)) {
-			if (disp_avg) {
-				printf("%7.0f %7.0f",
-				       (double) pstc->total_stack_size / pstc->rt_asum_count,
-				       (double) pstc->total_stack_ref  / pstc->rt_asum_count);
-			}
-			else {
-				printf("%7lu %7lu",
-				       pstc->stack_size,
-				       pstc->stack_ref);
-			}
-		}
-
 		print_comm(pstc);
 		again = 1;
 	}
@@ -1718,6 +1699,79 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 			       (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
 			       (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
+		print_comm(pstc);
+		again = 1;
+	}
+
+	return again;
+}
+
+/*
+ ***************************************************************************
+ * Display stack size statistics for tasks.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @itv		Interval of time in jiffies.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
+			  char *prev_string, char *curr_string,
+			  unsigned long long itv)
+{
+	struct pid_stats *pstc, *pstp;
+	unsigned int p;
+	int rc, again = 0;
+
+	if (dis) {
+		PRINT_ID_HDR(prev_string, pidflag);
+		printf(" StkSize  StkRef  Command\n");
+	}
+	
+	for (p = 0; p < pid_nr; p++) {
+	
+		if ((rc = get_pid_to_display(prev, curr, p, P_A_STACK, P_NULL,
+					     &pstc, &pstp)) == 0)
+			/* PID no longer exists */
+			continue;
+	
+		/* This will be used to compute average */
+		if (!disp_avg) {
+			pstc->total_stack_size = pstp->total_stack_size + pstc->stack_size;
+			pstc->total_stack_ref  = pstp->total_stack_ref  + pstc->stack_ref;
+			pstc->sk_asum_count = pstp->sk_asum_count + 1;
+		}
+
+		if (rc < 0)
+			/* PID should not be displayed */
+			continue;
+
+		print_line_id(curr_string, pstc);
+		
+		if (disp_avg) {
+			printf(" %7.0f %7.0f",
+			       (double) pstc->total_stack_size / pstc->sk_asum_count,
+			       (double) pstc->total_stack_ref  / pstc->sk_asum_count);
+		}
+		else {
+			printf(" %7lu %7lu",
+			       pstc->stack_size,
+			       pstc->stack_ref);
+		}
+
 		print_comm(pstc);
 		again = 1;
 	}
@@ -1974,8 +2028,8 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 			}
 		}
 
-		/* Display memory and/or stack stats */
-		if (DISPLAY_MEM(actflag) || DISPLAY_STACK(actflag)) {
+		/* Display memory stats */
+		if (DISPLAY_MEM(actflag)) {
 
 			if (DISPLAY_TASK_STATS(tskflag)) {
 				again += write_pid_task_memory_stats(prev, curr, dis, disp_avg,
@@ -1985,6 +2039,12 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 				again += write_pid_child_memory_stats(prev, curr, dis, disp_avg,
 								      prev_string, curr_string);
 			}
+		}
+
+		/* Display stack stats */
+		if (DISPLAY_STACK(actflag)) {
+			again += write_pid_stack_stats(prev, curr, dis, disp_avg,
+						       prev_string, curr_string, itv);
 		}
 
 		/* Display I/O stats */

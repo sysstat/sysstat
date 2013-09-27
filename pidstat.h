@@ -139,6 +139,7 @@ struct pid_stats {
 	unsigned int       rc_asum_count		__attribute__ ((packed));
 	unsigned int       uc_asum_count		__attribute__ ((packed));
 	unsigned int       tf_asum_count		__attribute__ ((packed));
+	unsigned int       sk_asum_count		__attribute__ ((packed));
 	unsigned int       processor			__attribute__ ((packed));
 	unsigned int       flags			__attribute__ ((packed));
 	unsigned int       uid				__attribute__ ((packed));
