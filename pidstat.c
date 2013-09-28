@@ -1273,7 +1273,6 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			printf("   %3d", pstc->processor);
 		}
 
-
 		if (DISPLAY_MEM(actflag)) {
 			printf(" %9.2f %9.2f %7lu %6lu %6.2f",
 			       S_VALUE(pstp->minflt, pstc->minflt, itv),
@@ -1820,11 +1819,17 @@ int write_pid_io_stats(int prev, int curr, int dis,
 			continue;
 	
 		print_line_id(curr_string, pstc);
-		printf(" %9.2f %9.2f %9.2f",
-		       S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv)  / 1024,
-		       S_VALUE(pstp->write_bytes, pstc->write_bytes, itv) / 1024,
-		       S_VALUE(pstp->cancelled_write_bytes,
-			       pstc->cancelled_write_bytes, itv) / 1024);
+		if (!NO_PID_IO(pstc->flags)) {
+			printf(" %9.2f %9.2f %9.2f",
+			       S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv)  / 1024,
+			       S_VALUE(pstp->write_bytes, pstc->write_bytes, itv) / 1024,
+			       S_VALUE(pstp->cancelled_write_bytes,
+				       pstc->cancelled_write_bytes, itv) / 1024);
+		}
+		else {
+			/* I/O file not readable (permission denied or file non existent) */
+			printf(" %9.2f %9.2f %9.2f", -1.0, -1.0, -1.0);
+		}
 		print_comm(pstc);
 		again = 1;
 	}
