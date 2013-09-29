@@ -129,8 +129,8 @@ void display_help(char *progname)
 {
 	print_usage_title(stdout, progname);
 	printf(_("Main options and reports:\n"));
-	printf(_("\t-b\tI/O and transfer rate statistics\n"));
 	printf(_("\t-B\tPaging statistics\n"));
+	printf(_("\t-b\tI/O and transfer rate statistics\n"));
 	printf(_("\t-d\tBlock devices statistics\n"));
 	printf(_("\t-F\tFilesystems statistics\n"));
 	printf(_("\t-H\tHugepages utilization statistics\n"));
@@ -167,14 +167,14 @@ void display_help(char *progname)
 		 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 		 "\t\tUDP6\tUDP traffic\t(v6)\n"));
 	printf(_("\t-q\tQueue length and load average statistics\n"));
-	printf(_("\t-r\tMemory utilization statistics\n"));
 	printf(_("\t-R\tMemory statistics\n"));
+	printf(_("\t-r\tMemory utilization statistics\n"));
 	printf(_("\t-S\tSwap space utilization statistics\n"));
 	printf(_("\t-u [ ALL ]\n"
 		 "\t\tCPU utilization statistics\n"));
 	printf(_("\t-v\tKernel tables statistics\n"));
-	printf(_("\t-w\tTask creation and system switching statistics\n"));
 	printf(_("\t-W\tSwapping statistics\n"));
+	printf(_("\t-w\tTask creation and system switching statistics\n"));
 	printf(_("\t-y\tTTY devices statistics\n"));
 	exit(0);
 }
