@@ -1113,10 +1113,18 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	
 	else if (DISPLAY_PID(pidflag)) {
 		*pstp = st_pid_list[prev] + p;
-
-		if (!(*pstp)->pid)
-			/* PID no longer exists */
-			return 0;
+		if (!(*pstp)->pid) {
+			if (interval)
+				/* PID no longer exists */
+				return 0;
+			else {
+				/*
+				 * If interval is null, then we are trying to
+				 * display stats for a given process since boot time.
+				 */
+				*pstp = &st_pid_null;
+			}
+		}
 	}
 
 	if (COMMAND_STRING(pidflag)) {
