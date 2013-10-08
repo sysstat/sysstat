@@ -58,7 +58,7 @@ int get_sys_cpu_nr(void)
 	struct dirent *drd;
 	struct stat buf;
 	char line[MAX_PF_NAME];
-	int proc_nr = 0;
+	int num_proc, proc_nr = -1;
 
 	/* Open relevant /sys directory */
 	if ((dir = opendir(SYSFS_DEVCPU)) == NULL)
@@ -66,14 +66,16 @@ int get_sys_cpu_nr(void)
 
 	/* Get current file entry */
 	while ((drd = readdir(dir)) != NULL) {
-
 		if (!strncmp(drd->d_name, "cpu", 3) && isdigit(drd->d_name[3])) {
 			snprintf(line, MAX_PF_NAME, "%s/%s", SYSFS_DEVCPU, drd->d_name);
 			line[MAX_PF_NAME - 1] = '\0';
 			if (stat(line, &buf) < 0)
 				continue;
 			if (S_ISDIR(buf.st_mode)) {
-				proc_nr++;
+				sscanf(&drd->d_name[3], "%d", &num_proc);
+				if (num_proc > proc_nr) {
+					proc_nr = num_proc;
+				}
 			}
 		}
 	}
@@ -81,7 +83,7 @@ int get_sys_cpu_nr(void)
 	/* Close directory */
 	closedir(dir);
 
-	return proc_nr;
+	return (proc_nr + 1);
 }
 
 /*
