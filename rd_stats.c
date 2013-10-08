@@ -70,6 +70,10 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 		exit(2);
 	}
 
+	for (proc_nb = 1; proc_nb < nbr; proc_nb++) {
+		(st_cpu + proc_nb)->online = 0;
+	}
+
 	while (fgets(line, 8192, fp) != NULL) {
 
 		if (!strncmp(line, "cpu ", 4)) {
@@ -115,6 +119,7 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 			if (nbr > 1) {
 				/* All the fields don't necessarily exist */
 				memset(&sc, 0, STATS_CPU_SIZE);
+				sc.online = 1;
 				/*
 				 * Read the number of jiffies spent in the different modes
 				 * (user, nice, etc) for current proc.

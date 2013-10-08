@@ -414,6 +414,9 @@ void write_stats_core(int prev, int curr, int dis,
 			scc = st_cpu[curr] + cpu;
 			scp = st_cpu[prev] + cpu;
 
+			/* Check CPU online */
+			if (!scc->online)
+				continue;
 			/* Check if we want stats about this proc */
 			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
 				continue;
