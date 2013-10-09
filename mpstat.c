@@ -257,6 +257,9 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 		scc = st_cpu[curr] + cpu;
 
+		/* Check CPU presence */
+		if (!scc->present)
+		    continue;
 		/*
 		 * Check if we want stats about this CPU.
 		 * CPU must have been explicitly selected using option -P,
@@ -414,6 +417,9 @@ void write_stats_core(int prev, int curr, int dis,
 			scc = st_cpu[curr] + cpu;
 			scp = st_cpu[prev] + cpu;
 
+			/* Check CPU presence */
+			if (!scc->present)
+				continue;
 			/* Check if we want stats about this proc */
 			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
 				continue;
@@ -517,6 +523,9 @@ void write_stats_core(int prev, int curr, int dis,
 			scc = st_cpu[curr] + cpu;
 			scp = st_cpu[prev] + cpu;
 
+			/* Check CPU presence */
+			if (!scc->present)
+				continue;
 			/* Check if we want stats about this proc */
 			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
 				continue;
@@ -1066,7 +1075,7 @@ int main(int argc, char **argv)
 	/* Get system name, release number and hostname */
 	uname(&header);
 	print_gal_header(&(mp_tstamp[0]), header.sysname, header.release,
-			 header.nodename, header.machine, cpu_nr);
+			 header.nodename, header.machine, get_cpu_total_nr());
 
 	/* Main loop */
 	rw_mpstat_loop(dis_hdr, rows);
