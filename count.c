@@ -44,7 +44,7 @@
 
 /*
  ***************************************************************************
- * Count number of processors in /sys.
+ * Find maximum number of processor in /sys plus one.
  *
  * RETURNS:
  * Number of processors (online and offline).
@@ -88,7 +88,7 @@ int get_sys_cpu_nr(void)
 
 /*
  ***************************************************************************
- * Count number of processors in /proc/stat.
+ * Find maximun number of processor in /proc/stat plus one.
  *
  * RETURNS:
  * Number of processors. The returned value is greater than or equal to the
@@ -125,7 +125,7 @@ int get_proc_cpu_nr(void)
 
 /*
  ***************************************************************************
- * Count the number of processors on the machine.
+ * Find the maximun number of processor on the machine plus one.
  * Try to use /sys for that, or /proc/stat if /sys doesn't exist.
  *
  * IN:
@@ -152,6 +152,107 @@ int get_cpu_nr(unsigned int max_nr_cpus)
 	if (cpu_nr > max_nr_cpus) {
 		fprintf(stderr, _("Cannot handle so many processors!\n"));
 		exit(1);
+	}
+
+	return cpu_nr;
+}
+
+/*
+ ***************************************************************************
+ * Count total number of processors in /sys.
+ *
+ * RETURNS:
+ * Number of processors (online and offline).
+ * A value of 0 means that /sys was not mounted.
+ * A value of N (!=0) means N processor(s) (cpu0 .. cpu(N-1)).
+ ***************************************************************************
+ */
+int get_sys_cpu_total_nr(void)
+{
+	DIR *dir;
+	struct dirent *drd;
+	struct stat buf;
+	char line[MAX_PF_NAME];
+	int proc_nr = 0;
+
+	/* Open relevant /sys directory */
+	if ((dir = opendir(SYSFS_DEVCPU)) == NULL)
+		return 0;
+
+	/* Get current file entry */
+	while ((drd = readdir(dir)) != NULL) {
+		if (!strncmp(drd->d_name, "cpu", 3) && isdigit(drd->d_name[3])) {
+			snprintf(line, MAX_PF_NAME, "%s/%s", SYSFS_DEVCPU, drd->d_name);
+			line[MAX_PF_NAME - 1] = '\0';
+			if (stat(line, &buf) < 0)
+				continue;
+			if (S_ISDIR(buf.st_mode)) {
+				++proc_nr;
+			}
+		}
+	}
+
+	/* Close directory */
+	closedir(dir);
+
+	return proc_nr;
+}
+
+/*
+ ***************************************************************************
+ * Count total number of processors in /proc/stat.
+ *
+ * RETURNS:
+ * Number of processors. The returned value is greater than or equal to the
+ * number of online processors.
+ * A value of 0 means one processor and non SMP kernel.
+ * A value of N (!=0) means N processor(s) (0 .. N-1) with SMP kernel.
+ ***************************************************************************
+ */
+int get_proc_cpu_total_nr(void)
+{
+	FILE *fp;
+	char line[16];
+	int proc_nr = 0;
+
+	if ((fp = fopen(STAT, "r")) == NULL) {
+		fprintf(stderr, _("Cannot open %s: %s\n"), STAT, strerror(errno));
+		exit(1);
+	}
+
+	while (fgets(line, 16, fp) != NULL) {
+
+		if (strncmp(line, "cpu ", 4) && !strncmp(line, "cpu", 3)) {
+                        ++proc_nr;
+		}
+	}
+
+	fclose(fp);
+
+	return proc_nr;
+}
+
+/*
+ ***************************************************************************
+ * Count the total number of processors on the machine.
+ * Try to use /sys for that, or /proc/stat if /sys doesn't exist.
+ *
+ * RETURNS:
+ * Number of processors.
+ * 0: one proc and non SMP kernel.
+ * 1: one proc and SMP kernel (NB: On SMP machines where all the CPUs but
+ *    one have been disabled, we get the total number of proc since we use
+ *    /sys to count them).
+ * 2: two proc...
+ ***************************************************************************
+ */
+int get_cpu_total_nr(void)
+{
+	int cpu_nr;
+
+	if ((cpu_nr = get_sys_cpu_total_nr()) == 0) {
+		/* /sys may be not mounted. Use /proc/stat instead */
+		cpu_nr = get_proc_cpu_total_nr();
 	}
 
 	return cpu_nr;
