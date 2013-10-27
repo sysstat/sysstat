@@ -90,7 +90,6 @@ struct stats_cpu {
 	unsigned long long cpu_softirq		__attribute__ ((aligned (16)));
 	unsigned long long cpu_guest		__attribute__ ((aligned (16)));
 	unsigned long long cpu_guest_nice	__attribute__ ((aligned (16)));
-	char		   present;
 };
 
 #define STATS_CPU_SIZE	(sizeof(struct stats_cpu))
