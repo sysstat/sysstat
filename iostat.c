@@ -303,7 +303,7 @@ void io_sys_init(void)
 	init_stats();
 
 	/* How many processors on this machine? */
-	cpu_nr = get_cpu_nr(~0);
+	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	/* Get number of block devices and partitions in /proc/diskstats */
 	if ((iodev_nr = get_diskstats_dev_nr(CNT_PART, CNT_ALL_DEV)) > 0) {

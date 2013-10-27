@@ -193,7 +193,7 @@ void io_sys_init(void)
 	int i;
 	
 	/* How many processors on this machine? */
-	cpu_nr = get_cpu_nr(~0);
+	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	/* Get number of NFS directories in /proc/self/mountstats */
 	if ((ionfs_nr = get_nfs_mount_nr()) > 0) {

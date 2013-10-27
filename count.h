@@ -16,14 +16,11 @@
  */
 
 extern int
-	get_cpu_nr(unsigned int);
-extern int
-	get_cpu_total_nr(void);
+	get_cpu_nr(unsigned int, int);
 extern int
 	get_irqcpu_nr(char *, int, int);
 extern int
 	get_diskstats_dev_nr(int, int);
-
 extern int
 	get_irq_nr(void);
 extern int

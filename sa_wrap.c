@@ -962,7 +962,7 @@ __nr_t wrap_get_iface_nr(struct activity *a)
  */
 __nr_t wrap_get_cpu_nr(struct activity *a)
 {
-	return (get_cpu_nr(a->bitmap->b_size) + 1);
+	return (get_cpu_nr(a->bitmap->b_size, FALSE) + 1);
 }
 
 /*

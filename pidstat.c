@@ -795,7 +795,7 @@ void pid_sys_init(void)
 	init_stats();
 
 	/* Count nb of proc */
-	cpu_nr = get_cpu_nr(~0);
+	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	if (DISPLAY_ALL_PID(pidflag)) {
 		/* Count PIDs and allocate structures */
