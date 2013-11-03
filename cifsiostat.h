@@ -26,7 +26,7 @@
 #define DISPLAY_HUMAN_READ(m)	(((m) & I_D_HUMAN_READ)    == I_D_HUMAN_READ)
 #define DISPLAY_DEBUG(m)	(((m) & I_D_DEBUG)         == I_D_DEBUG)
 
-/* Preallocation constats */
+/* Preallocation constants */
 #define NR_CIFS_PREALLOC	2
 
 struct cifs_stats {

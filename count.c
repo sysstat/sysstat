@@ -50,7 +50,7 @@
  * @highest	If set to TRUE, then look for the highest processor number.
  * 		This is used when eg. the machine has 4 CPU numbered 0, 1, 4
  *		and 5. In this case, this procedure will return 6.
- * 
+ *
  * RETURNS:
  * Number of processors (online and offline).
  * A value of 0 means that /sys was not mounted.

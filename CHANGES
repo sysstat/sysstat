@@ -1,5 +1,29 @@
 Changes:
 
+2013/11/03: Version 10.2.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* pidstat: Added option -v, enabling the user to display the
+	  number of threads and file descriptors associated with tasks.
+	* Stack stats displayed by "pidstat -s" were sometimes not
+	  displayed for some processes although values had changed.
+	  This is now fixed.
+	* pidstat can now display stats since system startup for a list
+	  of processes given on the command line.
+	* pidstat -d now displays -1 for I/O stats values when the
+	  process I/O file cannot be read (permission denied or file
+	  non existent).
+	* mpstat and pidstat commands now exit immediately when they
+	  get a SIGINT signal during the first interval of time.
+	* [Alexander Troosh]: mpstat: Take into account the highest
+	  processor number in mpstat output.
+	* Rearrange options displayed by sar -h (upper case option
+	  should be displayed before its lower case counterpart).
+	* Added "prealloc" variable to configure script. This variable
+	  will determine the size of data files created by sar/sadc.
+	* Added xz-compressed target to Makefile.
+	* pidstat manual page updated.
+	* NLS updated.
+	* CREDIT updated.
+
 2013/09/13: Version 10.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* New metric added to sar network devices statistics: %ifutil
 	  now gives the network interface utilization percentage.
