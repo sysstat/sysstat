@@ -1,4 +1,4 @@
-.TH PIDSTAT 1 "SEPTEMBER 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "NOVEMBER 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
@@ -102,6 +102,14 @@ Number of kilobytes whose writing to disk has been cancelled by
 the task. This may occur when the task truncates some
 dirty pagecache. In this case, some IO which another task has
 been accounted for will not be happening.
+.RE
+
+.B iodelay
+.RS
+Block I/O delay of the task being monitored,
+measured in clock ticks. This metric includes the delays spent
+waiting for sync block I/O completion and for swapin block I/O
+completion.
 .RE
 
 .B Command
