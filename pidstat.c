@@ -324,13 +324,13 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 	sprintf(format, "%%*d (%%%ds %%*s %%*d %%*d %%*d %%*d %%*d %%*u %%lu %%lu"
 		" %%lu %%lu %%lu %%lu %%lu %%lu %%*d %%*d %%u %%*u %%*d %%lu %%lu"
 		" %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u"
-		" %%*u %%u %%*u %%*u %%*u %%lu %%lu\\n", MAX_COMM_LEN);
+		" %%*u %%u %%*u %%*u %%llu %%lu %%lu\\n", MAX_COMM_LEN);
 
 	fscanf(fp, format, comm,
 	       &pst->minflt, &pst->cminflt, &pst->majflt, &pst->cmajflt,
 	       &pst->utime,  &pst->stime, &pst->cutime, &pst->cstime,
 	       thread_nr, &pst->vsz, &pst->rss, &pst->processor,
-	       &pst->gtime, &pst->cgtime);
+	       &pst->blkio_swapin_delays, &pst->gtime, &pst->cgtime);
 
 	fclose(fp);
 
@@ -1078,14 +1078,19 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 				}
 			}
 
-			if (DISPLAY_IO(activity) && (!isActive) &&
-				 /* /proc/#/io file should exist to check I/O stats */
-				 !(NO_PID_IO((*pstc)->flags))) {
-				if (((*pstc)->read_bytes  != (*pstp)->read_bytes)  ||
-				    ((*pstc)->write_bytes != (*pstp)->write_bytes) ||
-				    ((*pstc)->cancelled_write_bytes !=
-				     (*pstp)->cancelled_write_bytes)) {
+			if (DISPLAY_IO(activity) && (!isActive)) {
+				if ((*pstc)->blkio_swapin_delays !=
+				     (*pstp)->blkio_swapin_delays) {
 					isActive = TRUE;
+				}
+				if (!(NO_PID_IO((*pstc)->flags)) && (!isActive)) {
+					/* /proc/#/io file should exist to check I/O stats */
+					if (((*pstc)->read_bytes  != (*pstp)->read_bytes)  ||
+					    ((*pstc)->write_bytes != (*pstp)->write_bytes) ||
+					    ((*pstc)->cancelled_write_bytes !=
+					     (*pstp)->cancelled_write_bytes)) {
+						isActive = TRUE;
+					}
 				}
 			}
 
@@ -1243,7 +1248,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			printf(" StkSize  StkRef");
 		}
 		if (DISPLAY_IO(actflag)) {
-			printf("   kB_rd/s   kB_wr/s kB_ccwr/s");
+			printf("   kB_rd/s   kB_wr/s kB_ccwr/s iodelay");
 		}
 		if (DISPLAY_CTXSW(actflag)) {
 			printf("   cswch/s nvcswch/s");
@@ -1312,6 +1317,8 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				 */
 				printf(" %9.2f %9.2f %9.2f", -1.0, -1.0, -1.0);
 			}
+			/* I/O delays come from another file (/proc/#/stat) */
+			printf(" %7llu", pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
@@ -1456,8 +1463,8 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		       0.0 :
 		       SP_VALUE(pstp->utime - pstp->gtime,
 				pstc->utime - pstc->gtime, itv),
-		       SP_VALUE(pstp->stime,  pstc->stime, itv),
-		       SP_VALUE(pstp->gtime,  pstc->gtime, itv),
+		       SP_VALUE(pstp->stime, pstc->stime, itv),
+		       SP_VALUE(pstp->gtime, pstc->gtime, itv),
 		       /* User time already includes guest time */
 		       IRIX_MODE_OFF(pidflag) ?
 		       SP_VALUE(pstp->utime + pstp->stime,
@@ -1794,6 +1801,7 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
  * @prev_string	String displayed at the beginning of a header line. This is
  * 		the timestamp of the previous sample, or "Average" when
  * 		displaying average stats.
@@ -1807,23 +1815,33 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_io_stats(int prev, int curr, int dis,
+int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		       char *prev_string, char *curr_string,
 		       unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
-	int again = 0;
+	int rc, again = 0;
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
-		printf("   kB_rd/s   kB_wr/s kB_ccwr/s  Command\n");
+		printf("   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command\n");
 	}
 
 	for (p = 0; p < pid_nr; p++) {
 
-		if (get_pid_to_display(prev, curr, p, P_A_IO, P_NULL,
-				       &pstc, &pstp) <= 0)
+		if ((rc = get_pid_to_display(prev, curr, p, P_A_IO, P_NULL,
+					     &pstc, &pstp)) == 0)
+			/* PID no longer exists */
+			continue;
+		
+		/* This will be used to compute average delays */
+		if (!disp_avg) {
+			pstc->delay_asum_count = pstp->delay_asum_count + 1;
+		}
+		
+		if (rc < 0)
+			/* PID should not be displayed */
 			continue;
 	
 		print_line_id(curr_string, pstc);
@@ -1838,6 +1856,16 @@ int write_pid_io_stats(int prev, int curr, int dis,
 			/* I/O file not readable (permission denied or file non existent) */
 			printf(" %9.2f %9.2f %9.2f", -1.0, -1.0, -1.0);
 		}
+		/* I/O delays come from another file (/proc/#/stat) */
+		if (disp_avg) {
+			printf(" %7.0f",
+			       (double) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays) /
+			       pstc->delay_asum_count);
+		}
+		else {
+			printf(" %7llu", pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
+		}
+		
 		print_comm(pstc);
 		again = 1;
 	}
@@ -2062,7 +2090,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 
 		/* Display I/O stats */
 		if (DISPLAY_IO(actflag)) {
-			again += write_pid_io_stats(prev, curr, dis, prev_string,
+			again += write_pid_io_stats(prev, curr, dis, disp_avg, prev_string,
 						    curr_string, itv);
 		}
 
