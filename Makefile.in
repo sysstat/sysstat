@@ -375,8 +375,8 @@ install_all: install_base cron/crontab sysstat \
 	   echo "USER'S PREVIOUS CRONTAB SAVED IN CURRENT DIRECTORY (USING .save SUFFIX)."; \
 	   su $(CRON_OWNER) -c "crontab cron/crontab"; \
 	fi
-	if [ -x $(SYSTEMCTL) -a -d "$(SYSTEMD_UNIT_DIR)" ]; then \
-	    $(INSTALL_DATA) sysstat.service $(SYSTEMD_UNIT_DIR); \
+	if [ -x $(SYSTEMCTL) -a -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
+	    $(INSTALL_DATA) sysstat.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	    $(SYSTEMCTL) enable sysstat.service; \
 	elif [ -d $(DESTDIR)$(INIT_DIR) ]; then \
 	   $(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
@@ -478,9 +478,9 @@ uninstall_all: uninstall_base
 	-$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old
 	@echo "USER CRONTAB SAVED IN CURRENT DIRECTORY (WITH .old SUFFIX)."
 	-su $(CRON_OWNER) -c "crontab -r"
-	if [ -x $(SYSTEMCTL) -a -d "$(SYSTEMD_UNIT_DIR)" ]; then \
+	if [ -x $(SYSTEMCTL) -a -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	    $(SYSTEMCTL) disable sysstat.service; \
-	    rm -f $(SYSTEMD_UNIT_DIR)/sysstat.service; \
+	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat.service; \
 	fi
 
 ifeq ($(INSTALL_CRON),y)
