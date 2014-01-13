@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v2.17 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v2.18 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -25,6 +25,7 @@
 		<xs:element name="release" type="release-type"></xs:element>
 		<xs:element name="machine" type="machine-type"></xs:element>
 		<xs:element name="file-date" type="file-date-type"></xs:element>
+		<xs:element name="file-utc-time" type="file-utc-time-type"></xs:element>
 		<xs:element name="number-of-cpus" type="number-of-cpus-type"></xs:element>
 		<xs:element name="statistics" type="statistics-type"></xs:element>
 		<xs:element name="restarts" type="restarts-type"></xs:element>
@@ -51,6 +52,11 @@
 <xs:element name="file-date" type="file-date-type"></xs:element>
 <xs:simpleType name="file-date-type">
 	<xs:restriction base="xs:date"></xs:restriction>
+</xs:simpleType>
+
+<xs:element name="file-utc-time" type="file-utc-time-type"></xs:element>
+<xs:simpleType name="file-utc-time-type">
+        <xs:restriction base="xs:time"></xs:restriction>
 </xs:simpleType>
 
 <xs:element name="number-of-cpus" type="number-of-cpus-type"></xs:element>

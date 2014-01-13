@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.17 for sysstat. See sadf.h -->
+<!--DTD v2.18 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
@@ -22,6 +22,8 @@
 <!ELEMENT number-of-cpus (#PCDATA)>
 
 <!ELEMENT file-date (#PCDATA)>
+
+<!ELEMENT file-utc-time (#PCDATA)>
 
 <!ELEMENT statistics (timestamp+)>
 
