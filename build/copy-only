@@ -1,0 +1,15 @@
+
+Answer y to make sure that installing sysstat on your machine
+only results on files being copied to destinations directories
+and nothing else (like activating a service) is done.
+This option is interesting for those creating a sysstat package
+for example. Indeed some distributions want to install files
+into $DESTDIR before actually installing them into the root
+directory. If the distribution uses systemd (a system management
+daemon written for Linux), the sysstat service should not be
+activated in this case before files are actually copied into
+the root directory.
+But for most of you wanting sysstat to be properly installed
+when you enter "make install", just answer n here (this is the
+default answer).
+

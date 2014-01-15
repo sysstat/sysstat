@@ -153,6 +153,18 @@ then
 	fi
 fi
 
+if [ "${CRON}" != "" ];
+then
+	# Only copy files
+	COPY_ONLY=`${ASK} 'Only copy files when installing sysstat? (y/n)' "--enable-copy-only" "copy-only"`
+	if [ "${COPY_ONLY}" = "y" ]; then
+		COPY_ONLY="--enable-copy-only "
+	else
+		COPY_ONLY=""
+		echo "Parameter --enable-copy-only is NOT set"
+	fi
+fi
+
 # Compress manual pages
 COMPRESSMANPG=`${ASK} 'Compress manual pages? (y/n)' "--enable-compress-manpg" "compress-manpg"`
 if [ "${COMPRESSMANPG}" = "y" ]; then
@@ -201,10 +213,10 @@ fi
 echo
 echo "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
-${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}"
+${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
-${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}
+${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}
 

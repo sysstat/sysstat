@@ -633,6 +633,7 @@ CRON_INTERVAL_SEC
 CRON_INTERVAL
 SU_C_OWNER
 CRON_OWNER
+COPY_ONLY
 cron_interval
 cron_owner
 INSTALL_CRON
@@ -741,6 +742,7 @@ enable_install_isag
 enable_clean_sa_dir
 enable_install_cron
 enable_collect_all
+enable_copy_only
 enable_documentation
 enable_debuginfo
 enable_stripping
@@ -1383,6 +1385,7 @@ Optional Features:
   --enable-clean-sa-dir   clean system activity directory
   --enable-install-cron   install a crontab to start sar
   --enable-collect-all    collect all possible activities
+  --enable-copy-only      only copy files when installing
   --disable-documentation do not install documentation
   --enable-debuginfo      enable debug output (--debuginfo option)
   --disable-stripping     do not strip object files
@@ -4856,6 +4859,7 @@ echo .
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors	   do not link against libsensors even if available
 #  --disable-stripping     do not strip object files
+#  --enablle-copy-only     only copy files when installing sysstat
 #
 # Some influential environment variables:
 #  rcdir	 directory where startup scripts are installed
@@ -5271,6 +5275,26 @@ fi
    fi
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AUX_COLL" >&5
 $as_echo "$AUX_COLL" >&6; }
+
+# Check whether files should only be copied
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
+$as_echo_n "checking whether files should only be copied... " >&6; }
+   # Check whether --enable-copy-only was given.
+if test "${enable_copy_only+set}" = set; then :
+  enableval=$enable_copy_only; OCOPY=$enableval
+else
+  OCOPY=no
+fi
+
+   if test $OCOPY != "yes"; then
+      COPY_ONLY=n
+      OCOPY=no
+   else
+      COPY_ONLY=y
+   fi
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OCOPY" >&5
+$as_echo "$OCOPY" >&6; }
+
 
 else
    CRON_OWNER="root"
