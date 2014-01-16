@@ -606,7 +606,7 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 	struct tm *loc_t;
 	char cur_time[32];
 
-	/* Actions F_BEGIN and F_END ignored */
+	/* Actions F_MAIN and F_END ignored */
 	if (action & F_BEGIN) {
 		printf(_("System activity data file: %s (%#x)\n"),
 		       dfile, file_magic->format_magic);

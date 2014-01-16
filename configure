@@ -5263,7 +5263,7 @@ $as_echo_n "checking whether sadc should collect all possible activities... " >&
 if test "${enable_collect_all+set}" = set; then :
   enableval=$enable_collect_all; COLLECT_ALL=$enableval
 else
-  COLLECT_ALL=n=n
+  COLLECT_ALL=n
 fi
 
    if test $COLLECT_ALL != "yes"; then

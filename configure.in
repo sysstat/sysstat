@@ -481,7 +481,7 @@ if test $INSTALL_CRON = "y"; then
    AC_ARG_ENABLE(collect-all, 
 	         AC_HELP_STRING([--enable-collect-all],
 			        [collect all possible activities]),
-			        COLLECT_ALL=$enableval,COLLECT_ALL=n=n)
+			        COLLECT_ALL=$enableval,COLLECT_ALL=n)
    if test $COLLECT_ALL != "yes"; then
       COLLECT_ALL=""
       AUX_COLL=no
