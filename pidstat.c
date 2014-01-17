@@ -385,7 +385,7 @@ int read_proc_pid_status(unsigned int pid, struct pid_stats *pst,
 		/* No such process */
 		return 1;
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Uid:", 4)) {
 			sscanf(line + 5, "%d", &pst->uid);
@@ -566,7 +566,7 @@ int read_proc_pid_io(unsigned int pid, struct pid_stats *pst,
 		return 0;
 	}
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "read_bytes:", 11)) {
 			sscanf(line + 12, "%llu", &pst->read_bytes);
@@ -2150,10 +2150,10 @@ int write_stats(int curr, int dis)
 	char cur_time[2][16];
 
 	/* Get previous timestamp */
-	strftime(cur_time[!curr], 16, "%X", &ps_tstamp[!curr]);
+	strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%X", &ps_tstamp[!curr]);
 
 	/* Get current timestamp */
-	strftime(cur_time[curr], 16, "%X", &ps_tstamp[curr]);
+	strftime(cur_time[curr], sizeof(cur_time[curr]), "%X", &ps_tstamp[curr]);
 
 	return (write_stats_core(!curr, curr, dis, FALSE,
 				 cur_time[!curr], cur_time[curr]));

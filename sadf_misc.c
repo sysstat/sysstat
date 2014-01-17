@@ -505,7 +505,7 @@ __printf_funct_t print_xml_header(int *tab, int action, char *dfile,
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
-		strftime(cur_time, 32, "%Y-%m-%d", &rectime);
+		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf(*tab, "<file-date>%s</file-date>", cur_time);
 
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
@@ -564,7 +564,7 @@ __printf_funct_t print_json_header(int *tab, int action, char *dfile,
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
-		strftime(cur_time, 32, "%Y-%m-%d", &rectime);
+		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf0(*tab, "\"file-date\": \"%s\"", cur_time);
 		
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {

@@ -70,7 +70,7 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 		exit(2);
 	}
 
-	while (fgets(line, 8192, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "cpu ", 4)) {
 
@@ -185,7 +185,7 @@ void read_stat_irq(struct stats_irq *st_irq, int nbr)
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 8192, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "intr ", 5)) {
 			/* Read total number of interrupts received since system boot */
@@ -222,7 +222,7 @@ void read_meminfo(struct stats_memory *st_memory)
 	if ((fp = fopen(MEMINFO, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "MemTotal:", 9)) {
 			/* Read the total amount of memory in kB */
@@ -290,7 +290,7 @@ void read_uptime(unsigned long long *uptime)
 	if ((fp = fopen(UPTIME, "r")) == NULL)
 		return;
 
-	if (fgets(line, 128, fp) == NULL) {
+	if (fgets(line, sizeof(line), fp) == NULL) {
 		fclose(fp);
 		return;
 	}
@@ -362,7 +362,7 @@ void read_stat_pcsw(struct stats_pcsw *st_pcsw)
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return;
 
-	while (fgets(line, 8192, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "ctxt ", 5)) {
 			/* Read number of context switches */
@@ -421,7 +421,7 @@ void read_loadavg(struct stats_queue *st_queue)
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return;
 
-	while (fgets(line, 8192, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "procs_blocked ", 14)) {
 			/* Read number of processes blocked */
@@ -452,7 +452,7 @@ void read_vmstat_swap(struct stats_swap *st_swap)
 	if ((fp = fopen(VMSTAT, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "pswpin ", 7)) {
 			/* Read number of swap pages brought in */
@@ -490,7 +490,7 @@ void read_vmstat_paging(struct stats_paging *st_paging)
 	st_paging->pgsteal = 0;
 	st_paging->pgscan_kswapd = st_paging->pgscan_direct = 0;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "pgpgin ", 7)) {
 			/* Read number of pages the system paged in */
@@ -554,7 +554,7 @@ void read_diskstats_io(struct stats_io *st_io)
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (sscanf(line, "%u %u %s %lu %*u %lu %*u %lu %*u %lu",
 			   &major, &minor, dev_name,
@@ -604,7 +604,7 @@ void read_diskstats_disk(struct stats_disk *st_disk, int nbr, int read_part)
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
-	while ((fgets(line, 256, fp) != NULL) && (dsk < nbr)) {
+	while ((fgets(line, sizeof(line), fp) != NULL) && (dsk < nbr)) {
 
 		if (sscanf(line, "%u %u %s %lu %*u %lu %u %lu %*u %lu"
 			   " %u %*u %u %u",
@@ -656,7 +656,7 @@ void read_tty_driver_serial(struct stats_serial *st_serial, int nbr)
 	if ((fp = fopen(SERIAL, "r")) == NULL)
 		return;
 
-	while ((fgets(line, 256, fp) != NULL) && (sl < nbr)) {
+	while ((fgets(line, sizeof(line), fp) != NULL) && (sl < nbr)) {
 
 		if ((p = strstr(line, "tx:")) != NULL) {
 			st_serial_i = st_serial + sl;
@@ -776,7 +776,7 @@ int read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return 0;
 	
-	while ((fgets(line, 256, fp) != NULL) && (dev < nbr)) {
+	while ((fgets(line, sizeof(line), fp) != NULL) && (dev < nbr)) {
 
 		pos = strcspn(line, ":");
 		if (pos < strlen(line)) {
@@ -887,7 +887,7 @@ void read_net_edev(struct stats_net_edev *st_net_edev, int nbr)
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return;
 
-	while ((fgets(line, 256, fp) != NULL) && (dev < nbr)) {
+	while ((fgets(line, sizeof(line), fp) != NULL) && (dev < nbr)) {
 
 		pos = strcspn(line, ":");
 		if (pos < strlen(line)) {
@@ -935,7 +935,7 @@ void read_net_nfs(struct stats_net_nfs *st_net_nfs)
 
 	memset(st_net_nfs, 0, STATS_NET_NFS_SIZE);
 	
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "rpc ", 4)) {
 			sscanf(line + 4, "%u %u",
@@ -987,7 +987,7 @@ void read_net_nfsd(struct stats_net_nfsd *st_net_nfsd)
 	
 	memset(st_net_nfsd, 0, STATS_NET_NFSD_SIZE);
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "rc ", 3)) {
 			sscanf(line + 3, "%u %u",
@@ -1049,7 +1049,7 @@ void read_net_sock(struct stats_net_sock *st_net_sock)
 	if ((fp = fopen(NET_SOCKSTAT, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 96, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "sockets:", 8)) {
 			/* Sockets */
@@ -1099,7 +1099,7 @@ void read_net_ip(struct stats_net_ip *st_net_ip)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Ip:", 3)) {
 			if (sw) {
@@ -1145,7 +1145,7 @@ void read_net_eip(struct stats_net_eip *st_net_eip)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Ip:", 3)) {
 			if (sw) {
@@ -1191,7 +1191,7 @@ void read_net_icmp(struct stats_net_icmp *st_net_icmp)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Icmp:", 5)) {
 			if (sw) {
@@ -1244,7 +1244,7 @@ void read_net_eicmp(struct stats_net_eicmp *st_net_eicmp)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Icmp:", 5)) {
 			if (sw) {
@@ -1294,7 +1294,7 @@ void read_net_tcp(struct stats_net_tcp *st_net_tcp)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Tcp:", 4)) {
 			if (sw) {
@@ -1336,7 +1336,7 @@ void read_net_etcp(struct stats_net_etcp *st_net_etcp)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Tcp:", 4)) {
 			if (sw) {
@@ -1379,7 +1379,7 @@ void read_net_udp(struct stats_net_udp *st_net_udp)
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Udp:", 4)) {
 			if (sw) {
@@ -1419,7 +1419,7 @@ void read_net_sock6(struct stats_net_sock6 *st_net_sock6)
 	if ((fp = fopen(NET_SOCKSTAT6, "r")) == NULL)
 		return;
 	
-	while (fgets(line, 96, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "TCP6:", 5)) {
 			/* TCPv6 sockets */
@@ -1461,7 +1461,7 @@ void read_net_ip6(struct stats_net_ip6 *st_net_ip6)
 	if ((fp = fopen(NET_SNMP6, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Ip6InReceives ", 14)) {
 			sscanf(line + 14, "%llu", &st_net_ip6->InReceives6);
@@ -1517,7 +1517,7 @@ void read_net_eip6(struct stats_net_eip6 *st_net_eip6)
 	if ((fp = fopen(NET_SNMP6, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Ip6InHdrErrors ", 15)) {
 			sscanf(line + 15, "%llu", &st_net_eip6->InHdrErrors6);
@@ -1576,7 +1576,7 @@ void read_net_icmp6(struct stats_net_icmp6 *st_net_icmp6)
 	if ((fp = fopen(NET_SNMP6, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Icmp6InMsgs ", 12)) {
 			sscanf(line + 12, "%lu", &st_net_icmp6->InMsgs6);
@@ -1653,7 +1653,7 @@ void read_net_eicmp6(struct stats_net_eicmp6 *st_net_eicmp6)
 	if ((fp = fopen(NET_SNMP6, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Icmp6InErrors ", 14)) {
 			sscanf(line + 14, "%lu", &st_net_eicmp6->InErrors6);
@@ -1712,7 +1712,7 @@ void read_net_udp6(struct stats_net_udp6 *st_net_udp6)
 	if ((fp = fopen(NET_SNMP6, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Udp6InDatagrams ", 16)) {
 			sscanf(line + 16, "%lu", &st_net_udp6->InDatagrams6);
@@ -1756,7 +1756,7 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 	
 	st_pwr_cpufreq->cpufreq = 0;
 	
-	while (fgets(line, 1024, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		
 		if (!strncmp(line, "processor\t", 10)) {
 			sscanf(strchr(line, ':') + 1, "%d", &proc_nb);
@@ -1815,7 +1815,7 @@ void read_meminfo_huge(struct stats_huge *st_huge)
 	if ((fp = fopen(MEMINFO, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "HugePages_Total:", 16)) {
 			/* Read the total number of huge pages */
@@ -1866,7 +1866,7 @@ void read_time_in_state(struct stats_pwr_wghfreq *st_pwr_wghfreq, int cpu_nr, in
 	if ((fp = fopen(filename, "r")) == NULL)
 		return;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		sscanf(line, "%lu %llu", &freq, &time_in_state);
 
@@ -2020,7 +2020,7 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 	if ((fp = fopen(MTAB, "r")) == NULL)
 		return;
 
-	while ((fgets(line, 256, fp) != NULL) && (fs < nbr)) {
+	while ((fgets(line, sizeof(line), fp) != NULL) && (fs < nbr)) {
 		if (line[0] == '/') {
 			
 			/* Read current filesystem name and mount point */

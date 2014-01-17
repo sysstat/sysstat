@@ -134,7 +134,7 @@ int get_nfs_mount_nr(void)
 		/* File non-existent */
 		return 0;
 
-	while (fgets(line, 8192, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if ((strstr(line, "mounted")) && (strstr(line, "on")) &&
 		    (strstr(line, "with")) && (strstr(line, "fstype"))) {
@@ -357,7 +357,7 @@ void read_nfs_stat(int curr)
 	sprintf(aux, "%%%ds",
 		MAX_NAME_LEN < 200 ? MAX_NAME_LEN-1 : 200);
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		/* Read NFS directory name */
 		if (!strncmp(line, "device", 6)) {
 			sw = 0;
@@ -417,7 +417,7 @@ void read_nfs_stat(int curr)
 		if ((sw == 3) && (!strncmp(prefix, "per-op", 6))) {
 			sw = 4;
 			while (sw == 4) {
-				fgets(line, 256, fp);
+				fgets(line, sizeof(line), fp);
 				sscanf(line, "%15s %lu", operation, &v1);
 				if (!strncmp(operation, "READ:", 5)) {
 					snfs.nfs_rops = v1;

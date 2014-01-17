@@ -119,7 +119,7 @@ int get_proc_cpu_nr(void)
 		exit(1);
 	}
 
-	while (fgets(line, 16, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (strncmp(line, "cpu ", 4) && !strncmp(line, "cpu", 3)) {
 			sscanf(line + 3, "%d", &num_proc);
@@ -244,7 +244,7 @@ int get_diskstats_dev_nr(int count_part, int only_used_dev)
 	 * Counting devices and partitions is simply a matter of counting
 	 * the number of lines...
 	 */
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		if (!count_part) {
 			i = sscanf(line, "%*d %*d %s %lu %*u %*u %*u %lu",
 				   dev_name, &rd_ios, &wr_ios);
@@ -284,7 +284,7 @@ int get_irq_nr(void)
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return 0;
 
-	while (fgets(line, 8192, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "intr ", 5)) {
 
@@ -318,7 +318,7 @@ int get_serial_nr(void)
 	if ((fp = fopen(SERIAL, "r")) == NULL)
 		return 0;	/* No SERIAL file */
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		/*
 		 * tx/rx statistics are always present,
 		 * except when serial line is unknown.
@@ -351,7 +351,7 @@ int get_iface_nr(void)
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return 0;	/* No network device file */
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		if (strchr(line, ':')) {
 			iface++;
 		}
@@ -407,7 +407,7 @@ int get_freq_nr(void)
 	if ((fp = fopen(filename, "r")) == NULL)
 		return 0;	/* No time_in_state file for CPU#0 */
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		freq++;
 	}
 
@@ -470,7 +470,7 @@ int get_filesystem_nr(void)
 		return 0;
 
 	/* Get current filesystem */
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		if (line[0] == '/') {
 			
 			/* Read filesystem name and mount point */

@@ -113,7 +113,7 @@ int get_cifs_nr(void)
 		/* File non-existent */
 		return 0;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		
 		if (!strncmp(line, "Share (unique mount targets): ", 30)) {
 			sscanf(line + 30, "%d", &cifs);
@@ -330,7 +330,7 @@ void read_cifs_stat(int curr)
 	sprintf(aux, "%%*d) %%%ds",
 		MAX_NAME_LEN < 200 ? MAX_NAME_LEN - 1 : 200);
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		/* Read CIFS directory name */
 		if (isdigit((unsigned char) line[0]) && sscanf(line, aux , name_tmp) == 1) {

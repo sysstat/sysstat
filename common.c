@@ -297,7 +297,7 @@ unsigned int get_devmap_major(void)
 	if ((fp = fopen(DEVICES, "r")) == NULL)
 		return dm_major;
 
-	while (fgets(line, 128, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (strstr(line, "device-mapper")) {
 			/* Read device-mapper major number */

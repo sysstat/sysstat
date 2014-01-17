@@ -693,7 +693,7 @@ void read_diskstats_stat(int curr)
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
-	while (fgets(line, 256, fp) != NULL) {
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq */
 		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u",
