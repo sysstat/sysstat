@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2013-09-13 09:20+0200\n"
+"POT-Creation-Date: 2014-01-15 22:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,63 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: iostat.c:86 cifsiostat.c:71 mpstat.c:90 sar.c:94 pidstat.c:83
-#: nfsiostat.c:70
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr ""
-
-#: iostat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-
-#: iostat.c:95
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-
-#: iostat.c:328
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr ""
-
-#: iostat.c:1385 sa_common.c:1303
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr ""
-
-#: sadf_misc.c:596
+#: sadf_misc.c:611
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf_misc.c:605
+#: sadf_misc.c:620
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf_misc.c:611
+#: sadf_misc.c:627
+#, c-format
+msgid "File time: "
+msgstr ""
+
+#: sadf_misc.c:632
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf_misc.c:613
+#: sadf_misc.c:634
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf_misc.c:626
+#: sadf_misc.c:647
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr ""
@@ -102,7 +71,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
 #: sadc.c:658 sadc.c:667 sadc.c:728 ioconf.c:489 rd_stats.c:69
-#: sa_common.c:1109 count.c:105
+#: sa_common.c:1109 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -115,6 +84,12 @@ msgstr ""
 #: common.c:62
 #, c-format
 msgid "sysstat version %s\n"
+msgstr ""
+
+#: cifsiostat.c:71 mpstat.c:90 sar.c:94 pidstat.c:83 iostat.c:86
+#: nfsiostat.c:70
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
 
 #: cifsiostat.c:75 nfsiostat.c:74
@@ -131,23 +106,6 @@ msgid ""
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 
-#: mpstat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-
-#: mpstat.c:598 sar.c:402 pidstat.c:1857
-msgid "Average:"
-msgstr ""
-
-#: mpstat.c:963
-#, c-format
-msgid "Not that many processors!\n"
-msgstr ""
-
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
@@ -160,6 +118,23 @@ msgid ""
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
+msgstr ""
+
+#: mpstat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+
+#: mpstat.c:598 sar.c:402 pidstat.c:2130
+msgid "Average:"
+msgstr ""
+
+#: mpstat.c:967
+#, c-format
+msgid "Not that many processors!\n"
 msgstr ""
 
 #: sar.c:109
@@ -183,12 +158,12 @@ msgstr ""
 
 #: sar.c:132
 #, c-format
-msgid "\t-b\tI/O and transfer rate statistics\n"
+msgid "\t-B\tPaging statistics\n"
 msgstr ""
 
 #: sar.c:133
 #, c-format
-msgid "\t-B\tPaging statistics\n"
+msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr ""
 
 #: sar.c:134
@@ -260,12 +235,12 @@ msgstr ""
 
 #: sar.c:170
 #, c-format
-msgid "\t-r\tMemory utilization statistics\n"
+msgid "\t-R\tMemory statistics\n"
 msgstr ""
 
 #: sar.c:171
 #, c-format
-msgid "\t-R\tMemory statistics\n"
+msgid "\t-r\tMemory utilization statistics\n"
 msgstr ""
 
 #: sar.c:172
@@ -287,12 +262,12 @@ msgstr ""
 
 #: sar.c:176
 #, c-format
-msgid "\t-w\tTask creation and system switching statistics\n"
+msgid "\t-W\tSwapping statistics\n"
 msgstr ""
 
 #: sar.c:177
 #, c-format
-msgid "\t-W\tSwapping statistics\n"
+msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr ""
 
 #: sar.c:178
@@ -340,6 +315,14 @@ msgstr ""
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
+#: pr_stats.c:2355 pr_stats.c:2368 pr_stats.c:2468 pr_stats.c:2480
+msgid "Summary"
+msgstr ""
+
+#: pr_stats.c:2406
+msgid "Other devices not listed here"
+msgstr ""
+
 #: sa_common.c:917
 #, c-format
 msgid "Error while reading system activity file: %s\n"
@@ -371,25 +354,47 @@ msgstr ""
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
+#: sa_common.c:1303 iostat.c:1385
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr ""
+
 #: pidstat.c:86
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -"
 "u ]\n"
-"[ -V ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -V ] [ -v ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: count.c:151
+#: iostat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+
+#: iostat.c:95
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+
+#: iostat.c:328
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr ""
+
+#: count.c:168
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr ""
-
-#: pr_stats.c:2355 pr_stats.c:2368 pr_stats.c:2468 pr_stats.c:2480
-msgid "Summary"
-msgstr ""
-
-#: pr_stats.c:2406
-msgid "Other devices not listed here"
 msgstr ""

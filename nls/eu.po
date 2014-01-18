@@ -1,174 +1,99 @@
 # Basque translation of sysstat.
-# Copyright (C) 2012 Free Software Foundation, Inc.
+# Copyright (C) 2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
-# Mikel Olasagasti Uranga <mikel@olasagasti.info>, 2009, 2010, 2011, 2012.
+# Mikel Olasagasti Uranga <mikel@olasagasti.info>, 2009, 2010, 2011, 2012, 2013.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.0.5\n"
+"Project-Id-Version: sysstat-10.2.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2012-05-08 21:39+0200\n"
-"PO-Revision-Date: 2012-05-18 20:59+0100\n"
+"POT-Creation-Date: 2013-09-13 09:20+0200\n"
+"PO-Revision-Date: 2013-11-05 19:12+0100\n"
 "Last-Translator: Mikel Olasagasti Uranga <mikel@olasagasti.info>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
 
-#: cifsiostat.c:69 iostat.c:84 mpstat.c:86 nfsiostat.c:68 pidstat.c:78
-#: sar.c:90
+#: iostat.c:86 cifsiostat.c:71 mpstat.c:90 sar.c:94 pidstat.c:83
+#: nfsiostat.c:70
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Erabilera: %s [ aukerak ] [ <tartea> [ <kopurua> ] ]\n"
 
-#: cifsiostat.c:73 nfsiostat.c:72
+#: iostat.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Aukerak:\n"
-"[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <talde izena> ] [ -p [ <gailua> [,...] | ALL ] ]\n"
+"[ <gailua> [...] | ALL ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:76 nfsiostat.c:75
+#: iostat.c:95
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
 msgstr ""
 "Aukerak:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <talde izena> ] [ -p [ <gailua> [,...] | ALL ] ]\n"
+"[ <gailua> [...] | ALL ]\n"
 
-#: common.c:57
-#, c-format
-msgid "sysstat version %s\n"
-msgstr "sysstat %s bertsioa\n"
-
-#: ioconf.c:491 rd_stats.c:68 rd_stats.c:2120 sa_common.c:1061 sadc.c:623
-#: sadc.c:632 sadc.c:693
-#, c-format
-msgid "Cannot open %s: %s\n"
-msgstr "Ezin da %s ireki: %s\n"
-
-#: iostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
-"[ -p [ <device> [,...] | ALL ] ] [ --debuginfo ]\n"
-msgstr ""
-"Aukerak:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-" [ [ -T ] -g <talde_izena> ] { <gailua> [...] | ALL } ]\n"
-"[ -p [ <gailua> [,...] | ALL ] ] [ --debuginfo ]\n"
-
-#: iostat.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ [ [ -T ] -g <group_name> ] { <device> [...] | ALL } ]\n"
-"[ -p [ <device> [,...] | ALL ] ]\n"
-msgstr ""
-"Aukerak:\n"
-"[ -c ] [ -d ] [ -h ] [ -N ] [ -k | -m ] [ -t ] [ -V ] [ -x ] [ -z ]\n"
-"[ [ [ -T ] -g <talde_izena> ] { <gailua> [...] | ALL } ]\n"
-"[ -p [ <gailua> [,...] | ALL ] ]\n"
-
-#: iostat.c:327
+#: iostat.c:328
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Ezin da diska data aurkitu\n"
 
-#: mpstat.c:89
+#: iostat.c:1385 sa_common.c:1303
 #, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
-msgstr ""
-"Aukerak:\n"
-"[ -A ] [ -I { SUM | CPU | SCPU | ALL } ] [ -u ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ] [ -V ]\n"
+msgid "Invalid type of persistent device name\n"
+msgstr "Gailu izen iraunkor mota baliogabea\n"
 
-#: mpstat.c:582 pidstat.c:1822 sar.c:381
-msgid "Average:"
-msgstr "Batezbestekoa:"
-
-#: mpstat.c:929
+#: sadf_misc.c:596
 #, c-format
-msgid "Not that many processors!\n"
-msgstr "Ez daude horrenbeste prozesadore!\n"
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Sistema jarduera datu fitxategia: %s (%#x)\n"
 
-#: pidstat.c:81
+#: sadf_misc.c:605
 #, c-format
-msgid ""
-"Options are:\n"
-"[ -C <command> ] [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ]\n"
-"[ -t ] [ -u ] [ -V ] [ -w ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-msgstr ""
-"Aukerak:\n"
-"[ -C <komandoa> ] [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ]\n"
-"[ -t ] [ -u ] [ -V ] [ -w ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+msgid "Host: "
+msgstr "Ostalaria:"
 
-#: pidstat.c:199 sar.c:1013
+#: sadf_misc.c:611
 #, c-format
-msgid "Requested activities not available\n"
-msgstr "Eskatutako jarduera ez dago eskuragarri\n"
+msgid "Size of a long int: %d\n"
+msgstr "Long int baten tamaina: %d\n"
 
-#: pr_stats.c:2319 pr_stats.c:2332
-msgid "Summary"
-msgstr "Laburpena"
-
-#: pr_stats.c:2370
-msgid "Other devices not listed here"
-msgstr "Hemen zerrendatu gabeko beste gailu batzuk"
-
-#: rd_stats.c:2166
+#: sadf_misc.c:613
 #, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Ezin dira horrenbeste prozesadore kudeatu!\n"
+msgid "List of activities:\n"
+msgstr "Jarduera zerrenda:\n"
 
-#: sa_common.c:870
+#: sadf_misc.c:626
 #, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Arazoren bat gertatu da sistemako jarduera fitxategia irakurtzean: %s\n"
+msgid "\t[Unknown activity format]"
+msgstr "\t[Ekintza formatu ezezaguna]"
 
-#: sa_common.c:880
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Ustekabeko sistema jarduera fitxategi amaiera\n"
-
-#: sa_common.c:898
-#, c-format
-msgid "File created using sar/sadc from sysstat version %d.%d.%d"
-msgstr "sysstat %d.%d.%d bertsioko sar/sadc erabiliaz sortutako fitxategia"
-
-#: sa_common.c:929
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Baliogabeko sistema jarduera fitxategia: %s\n"
-
-#: sa_common.c:936
-#, c-format
-msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
-msgstr "Uneko sysstat bertsioak ez da dagoeneko gai fitxategi honen formatua irakurtzeko (%#x)\n"
-
-#: sa_common.c:1168
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Eskatutako jarduerak ez daude eskuragarri %s fitxategian\n"
-
-#: sadc.c:81
+#: sadc.c:84
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Erabilera: %s [ aukerak ] [ <tartea> [ <kopurua> ] ] [ <irteera fitxategia> ]\n"
 
-#: sadc.c:84
+#: sadc.c:87
 #, c-format
 msgid ""
 "Options are:\n"
@@ -179,20 +104,69 @@ msgstr ""
 "[ -C <iruzkina> ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:223
+#: sadc.c:258
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Ezin da daturik idatzi sistema jarduera fitxategian: %s\n"
 
-#: sadc.c:510
+#: sadc.c:545
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Ezin da sistema jarduera fitxategi goiburua idatzi: %s\n"
 
-#: sadc.c:807
+#: sadc.c:658 sadc.c:667 sadc.c:728 ioconf.c:489 rd_stats.c:69
+#: sa_common.c:1109 count.c:105
+#, c-format
+msgid "Cannot open %s: %s\n"
+msgstr "Ezin da %s ireki: %s\n"
+
+#: sadc.c:850
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Ezin da daturik erantsi fitxategi horri (%s)\n"
+
+#: common.c:62
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat %s bertsioa\n"
+
+#: cifsiostat.c:75 nfsiostat.c:74
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgstr ""
+"Aukerak:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+
+#: cifsiostat.c:78 nfsiostat.c:77
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+"Aukerak:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
+#: mpstat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Aukerak:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+
+#: mpstat.c:598 sar.c:402 pidstat.c:1857
+msgid "Average:"
+msgstr "Batezbestekoa:"
+
+#: mpstat.c:963
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Ez daude horrenbeste prozesadore!\n"
 
 #: sadf.c:86
 #, c-format
@@ -203,85 +177,67 @@ msgstr "Erabilera: %s [ aukerak ] [ <tartea> [ <kopurua> ] ] [ <datu fitxategia>
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+"[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Aukerak:\n"
-"[ -d | -j | -p | -x ] [ -C ] [ -H ] [ -h ] [ -T ] [ -t ] [ -V ]\n"
+"[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
-"[ -- <sar-en_aukerak> ]\n"
+"[ -- <sar-en aukerak> ]\n"
 
-#: sadf_misc.c:595
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Sistema jarduera datu fitxategia: %s (%#x)\n"
-
-#: sadf_misc.c:604
-#, c-format
-msgid "Host: "
-msgstr "Ostalaria:"
-
-#: sadf_misc.c:610
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Long int baten tamaina: %d\n"
-
-#: sadf_misc.c:612
-#, c-format
-msgid "List of activities:\n"
-msgstr "Jarduera zerrenda:\n"
-
-#: sadf_misc.c:625
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Ekintza formatu ezezaguna]"
-
-#: sar.c:105
+#: sar.c:109
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -H ] [ -p ] [ -q ] [ -r ]\n"
-"[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
+"[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
-"[ -o [ <filename> ] | -f [ <filename> ] ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
 "Aukerak:\n"
-"[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -h ] [ -H ] [ -p ] [ -q ] [ -r ]\n"
-"[ -R ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -v ] [ -V ] [ -w ] [ -W ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
+"[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <gakoa> [,...] | ALL } ] [ -n { <gakoa> [,...] | ALL } ]\n"
-"[ -o [ <fitxategia> ] | -f [ <fitxategia> ] ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -f [ <fitxategi-izena> ] | -o [ <fitxategi-izena> ] | -[0-9]+ ]\n"
 "[ -i <tartea> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 
-#: sar.c:126
+#: sar.c:131
 #, c-format
 msgid "Main options and reports:\n"
 msgstr "Aukera eta txosten nagusiak:\n"
 
-#: sar.c:127
+#: sar.c:132
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr "\t-b\tI/O eta transferentzia tasa estatistikak\n"
 
-#: sar.c:128
+#: sar.c:133
 #, c-format
 msgid "\t-B\tPaging statistics\n"
 msgstr "\t-B\tOrrikatze estatistikak\n"
 
-#: sar.c:129
+#: sar.c:134
 #, c-format
-msgid "\t-d\tBlock device statistics\n"
-msgstr "\t-d\tBloke gailu estatistikak\n"
+msgid "\t-d\tBlock devices statistics\n"
+msgstr "\t-d\tBloke gailuen estatistikak\n"
 
-#: sar.c:130
+#: sar.c:135
+#, c-format
+msgid "\t-F\tFilesystems statistics\n"
+msgstr "\t-R\tFitxategi sistemen estatistikak\n"
+
+#: sar.c:136
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-H\tHugepages-en erabilpen estatistikak\n"
 
-#: sar.c:131
+#: sar.c:137
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -290,7 +246,7 @@ msgstr ""
 "\t-I { <tartea> | SUM | ALL | XALL }\n"
 "\t\tEtendura estatistikak\n"
 
-#: sar.c:133
+#: sar.c:139
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -313,7 +269,7 @@ msgstr ""
 "\t\tTEMP\tGailuen tenperaturak\n"
 "\t\tUSB\tSistemari konektatutako USB gailuak\n"
 
-#: sar.c:142
+#: sar.c:148
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -360,27 +316,27 @@ msgstr ""
 "\t\tEICMP6\tICMP trafikoa\t(v6) (erroreak)\n"
 "\t\tUDP6\tUDP trafikoa\t(v6)\n"
 
-#: sar.c:163
+#: sar.c:169
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tIlera luzeera eta karga batezbestekoaren estatistikak\n"
 
-#: sar.c:164
+#: sar.c:170
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
 msgstr "\t-r\tMemoria erabilera estatistikak\n"
 
-#: sar.c:165
+#: sar.c:171
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tMemoria estatistikak\n"
 
-#: sar.c:166
+#: sar.c:172
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tSwap espazio erabileraren estatistikak\n"
 
-#: sar.c:167
+#: sar.c:173
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -389,60 +345,128 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tPUZ erabilera estatistikak\n"
 
-#: sar.c:169
+#: sar.c:175
 #, c-format
-msgid "\t-v\tKernel table statistics\n"
-msgstr "\t-v\tKernel taula estatistikak\n"
+msgid "\t-v\tKernel tables statistics\n"
+msgstr "\t-v\tKernel-eko taulen estatistikak\n"
 
-#: sar.c:170
+#: sar.c:176
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tAtaza sortze eta sistema kommutazio estatistikak\n"
 
-#: sar.c:171
+#: sar.c:177
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tSwapping estatistikak\n"
 
-#: sar.c:172
+#: sar.c:178
 #, c-format
-msgid "\t-y\tTTY device statistics\n"
-msgstr "\t-y\tTTY gailu estatistikak\n"
+msgid "\t-y\tTTY devices statistics\n"
+msgstr "\t-y\tTTY gailuen estatistikak\n"
 
-#: sar.c:215
+#: sar.c:236
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Ustekabeko datu biltze amaiera\n"
 
-#: sar.c:802
+#: sar.c:823
 #, c-format
 msgid "Invalid data format\n"
 msgstr "Baliogabeko datu formatua\n"
 
-#: sar.c:806
+#: sar.c:827
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "sysstat bertsio ezberdin bateko datu biltzaile okerra erabiltzen\n"
 
-#: sar.c:830
+#: sar.c:851
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Kontraesankor datu sarrera\n"
 
-#: sar.c:1260
+#: sar.c:1032 pidstat.c:214
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "Eskatutako jarduera ez dago eskuragarri\n"
+
+#: sar.c:1302
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "-f eta -o aukerak elkar-ukatzaileak dira\n"
 
-#: sar.c:1266
+#: sar.c:1308
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Ez da sistema jarduera fitxategi batetik irakurtzen (erabili -f aukera)\n"
 
-#: sar.c:1393
+#: sar.c:1440
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Ezin da datu biltzailea aurkitu (%s)\n"
+
+#: sa_common.c:917
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Arazoren bat gertatu da sistemako jarduera fitxategia irakurtzean: %s\n"
+
+#: sa_common.c:927
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Ustekabeko sistema jarduera fitxategi amaiera\n"
+
+#: sa_common.c:946
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Fitxategia sysstat-en %d.%d.%d bertsioko sar/sadc erabiliaz sortu da"
+
+#: sa_common.c:977
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Baliogabeko sistema jarduera fitxategia: %s\n"
+
+#: sa_common.c:984
+#, c-format
+msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
+msgstr "Uneko sysstat bertsioak ez da dagoeneko gai fitxategi honen formatua irakurtzeko (%#x)\n"
+
+#: sa_common.c:1216
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Eskatutako jarduerak ez daude eskuragarri %s fitxategian\n"
+
+#: pidstat.c:86
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -u ]\n"
+"[ -V ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -T { TASK | CHILD | ALL } ]\n"
+msgstr ""
+"Aukerak:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <erabiltzailea> ] ] [ -u ]\n"
+"[ -V ] [ -w ] [ -C <komandoa> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
+"[ -T { TASK | CHILD | ALL } ]\n"
+
+#: count.c:151
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Ezin dira horrenbeste prozesadore kudeatu!\n"
+
+#: pr_stats.c:2355 pr_stats.c:2368 pr_stats.c:2468 pr_stats.c:2480
+msgid "Summary"
+msgstr "Laburpena"
+
+#: pr_stats.c:2406
+msgid "Other devices not listed here"
+msgstr "Hemen zerrendatu gabeko beste gailu batzuk"
+
+#~ msgid ""
+#~ "Options are:\n"
+#~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+#~ msgstr ""
+#~ "Aukerak:\n"
+#~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #~ msgid "\t-m\tPower management statistics\n"
 #~ msgstr "\t-m\tEnergia-kudeaketa estatistikak\n"
