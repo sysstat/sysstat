@@ -1,11 +1,11 @@
 /*
- * nfsiostat: Report NFS I/O statistics
+ * nfsiostat-sysstat: Report NFS I/O statistics
  * Copyright (C) 2010 Red Hat, Inc. All Rights Reserved
  * Written by Ivana Varekova <varekova@redhat.com>
  */
 
-#ifndef _NFSIOSTAT_H
-#define _NFSIOSTAT_H
+#ifndef _NFSIOSTAT_SYSSTAT_H
+#define _NFSIOSTAT_SYSSTAT_H
 
 #include "common.h"
 
@@ -54,4 +54,4 @@ struct io_hdr_stats {
 
 #define IO_HDR_STATS_SIZE	(sizeof(struct io_hdr_stats))
 
-#endif  /* _NFSIOSTAT_H */
+#endif  /* _NFSIOSTAT_SYSSTAT_H */

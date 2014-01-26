@@ -1,16 +1,16 @@
-.TH NFSIOSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH NFSIOSTAT-SYSSTAT 1 "JANUARY 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
-nfsiostat \- Report input/output statistics for network filesystems (NFS).
+nfsiostat-sysstat (the nfsiostat command from the sysstat package) \- Report input/output statistics for network filesystems (NFS).
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B nfsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [
+.B nfsiostat-sysstat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [
 .I interval
 .B [
 .I count
 .B ] ]
 .\}
 .el \{
-.B nfsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [
+.B nfsiostat-sysstat [ -h ] [ -k | -m ] [ -t ] [ -V ] [
 .I interval
 .B [
 .I count
@@ -18,7 +18,7 @@ nfsiostat \- Report input/output statistics for network filesystems (NFS).
 .\}
 .SH DESCRIPTION
 The
-.B nfsiostat
+.B nfsiostat-sysstat
 command displays statistics about read and write operations
 on NFS filesystems.
 
@@ -45,7 +45,7 @@ seconds apart. If the
 parameter is specified without the
 .I count
 parameter, the
-.B nfsiostat
+.B nfsiostat-sysstat
 command generates reports continuously.
 
 .SH REPORT
@@ -134,7 +134,7 @@ Print version number then exit.
 
 .SH ENVIRONMENT
 The
-.B nfsiostat
+.B nfsiostat-sysstat
 command takes into account the following environment variables:
 
 .IP S_TIME_FORMAT
@@ -142,7 +142,7 @@ If this variable exists and its value is
 .BR ISO
 then the current locale will be ignored when printing the date in the report
 header. The
-.B nfsiostat
+.B nfsiostat-sysstat
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
 The timestamp displayed with option -t will also be compliant with ISO 8601
 format.
@@ -154,17 +154,28 @@ of the default 1K blocks.
 .SH BUG
 .I /proc
 filesystem must be mounted for
-.B nfsiostat
+.B nfsiostat-sysstat
 to work.
 
 .SH FILE
 .I /proc/self/mountstats
 contains statistics for network filesystems.
-.SH AUTHORS
+
+.SH WARNING
+The nfsiostat
+command from the sysstat package (nfsiostat-sysstat) is now obsolete and is no longer maintained.
+It will be removed in a future sysstat version.
+Please use now the
+.B nfsiostat
+command from the
+.I nfs-utils
+package. 
+
+.SH AUTHOR
 Written by Ivana Varekova (varekova <at> redhat.com)
 
-Maintained by Sebastien Godard (sysstat <at> orange.fr)
 .SH SEE ALSO
+.BR nfsiostat (8),
 .BR sar (1),
 .BR pidstat (1),
 .BR mpstat (1),
@@ -172,4 +183,3 @@ Maintained by Sebastien Godard (sysstat <at> orange.fr)
 .BR iostat (1),
 .BR cifsiostat (1)
 
-.I http://pagesperso-orange.fr/sebastien.godard/

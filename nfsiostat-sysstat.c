@@ -1,5 +1,5 @@
 /*
- * nfsiostat: Report NFS I/O statistics
+ * nfsiostat-sysstat: Report NFS I/O statistics
  * Copyright (C) 2010 Red Hat, Inc. All Rights Reserved
  * Written by Ivana Varekova <varekova@redhat.com>
  *
@@ -28,7 +28,7 @@
 #include <sys/utsname.h>
 
 #include "version.h"
-#include "nfsiostat.h"
+#include "nfsiostat-sysstat.h"
 #include "count.h"
 #include "common.h"
 
@@ -622,7 +622,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 /*
  ***************************************************************************
- * Main entry to the nfsiostat program.
+ * Main entry to the nfsiostat-sysstat program.
  ***************************************************************************
  */
 int main(int argc, char **argv)
