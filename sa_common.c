@@ -1103,6 +1103,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	int i, j, n, p;
 	unsigned int a_cpu = FALSE;
 	struct file_activity *fal;
+	void *buffer = NULL;
 
 	/* Open sa data file */
 	if ((*ifd = open(dfile, O_RDONLY)) < 0) {
@@ -1128,9 +1129,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		}
 	}
 
+	SREALLOC(buffer, char, file_magic->header_size);
+	
 	/* Read sa data file standard header and allocate activity list */
-	sa_fread(*ifd, file_hdr, FILE_HEADER_SIZE, HARD_SIZE);
-
+	sa_fread(*ifd, buffer, file_magic->header_size, HARD_SIZE);
+	memcpy(file_hdr, buffer, MINIMUM(file_magic->header_size, FILE_HEADER_SIZE));
+	free(buffer);
+	
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_nr_act);
 	fal = *file_actlst;
 

@@ -436,6 +436,8 @@ void fill_magic_header(struct file_magic *file_magic)
 
 	memset(file_magic, 0, FILE_MAGIC_SIZE);
 
+	file_magic->header_size = FILE_HEADER_SIZE;
+	
 	file_magic->sysstat_magic = SYSSTAT_MAGIC;
 	file_magic->format_magic  = FORMAT_MAGIC;
 	file_magic->sysstat_extraversion = 0;
@@ -713,7 +715,8 @@ void open_ofile(int *ofd, char ofile[])
 	struct file_magic file_magic;
 	struct file_activity file_act[NR_ACT];
 	struct tm rectime;
-	ssize_t sz;
+	void *buffer = NULL;
+	ssize_t sz, n;
 	int i, p;
 
 	if (ofile[0]) {
@@ -750,8 +753,14 @@ void open_ofile(int *ofd, char ofile[])
 				handle_invalid_sa_file(ofd, &file_magic, ofile, sz);
 			}
 
+			SREALLOC(buffer, char, file_magic.header_size);
+	
 			/* Read file standard header */
-			if (read(*ofd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE) {
+			n = read(*ofd, buffer, file_magic.header_size);
+			memcpy(&file_hdr, buffer, MINIMUM(file_magic.header_size, FILE_HEADER_SIZE));
+			free(buffer);
+			
+			if (n != file_magic.header_size) {
 				/* Display error message and exit */
 				handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
 			}

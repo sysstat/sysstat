@@ -829,7 +829,12 @@ void read_header_data(void)
 		exit(3);
 	}
 
-	/* Read header data */
+	/*
+	 * Read header data.
+	 * No need to take into account file_magic.header_size. We are sure that
+	 * sadc and sar are from the same version (we have checked FORMAT_MAGIC
+	 * but also VERSION above) and thus the size of file_header is FILE_HEADER_SIZE.
+	 */
 	if (sa_read(&file_hdr, FILE_HEADER_SIZE)) {
 		print_read_error();
 	}

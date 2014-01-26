@@ -480,10 +480,14 @@ struct activity {
  * Modified to indicate that the format of the file is
  * no longer compatible with that of previous sysstat versions.
  */
-#define FORMAT_MAGIC	0x2171
+#define FORMAT_MAGIC	0x2172
 
 /* Structure for file magic header data */
 struct file_magic {
+	/*
+	 * Size of file's header (size of file_header structure used by file).
+	 */
+	unsigned int header_size;
 	/*
 	 * This field identifies the file as a file created by sysstat.
 	 */
@@ -510,6 +514,10 @@ struct file_header {
 	 * Timestamp in seconds since the epoch.
 	 */
 	unsigned long sa_ust_time	__attribute__ ((aligned (8)));
+	/*
+	 * Number of CPU items (1 .. CPU_NR + 1) for the last sample in file.
+	 */
+	unsigned int last_cpu_nr;
 	/*
 	 * Number of activities saved in the file
 	 */
