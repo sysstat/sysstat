@@ -851,6 +851,8 @@ extern void
 	print_report_hdr(unsigned int, struct tm *, struct file_header *, int);
 extern void
 	read_file_stat_bunch(struct activity * [], int, int, int, struct file_activity *);
+extern unsigned int
+	read_new_cpu_nr(int, struct activity * []);
 extern int
 	sa_fread(int, void *, int, int);
 extern void

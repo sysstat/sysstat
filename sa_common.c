@@ -1177,9 +1177,18 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		if (fal->size > act[p]->msize) {
 			act[p]->msize = fal->size;
 		}
-		act[p]->fsize = fal->size;
+		/*
+		 * NOTA BENE:
+		 * If current activity is A_CPU, we are setting
+		 * act[p]->nr to fal->nr, which is the number of CPU for the
+		 * statistics located between the start of the data file and the
+		 * first restart mark. Remember that the number of CPU can vary
+		 * in file. In this case, a RESTART record is followed by the
+		 * new number of CPU.
+		 */
 		act[p]->nr    = fal->nr;
 		act[p]->nr2   = fal->nr2;
+		act[p]->fsize = fal->size;
 		/*
 		 * This is a known activity with a known format
 		 * (magical number). Only such activities will be displayed.
@@ -1223,6 +1232,45 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		close(*ifd);
 		exit(1);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Read the new CPU count following a RESTART record. Then set corresponding
+ * number of items for A_CPU activity and reallocate structures.
+ *
+ * IN:
+ * @ifd		Input file descriptor.
+ * @act		Array of activities.
+ * 
+ * RETURNS:
+ * New number of CPU count.
+ ***************************************************************************
+ */
+unsigned int read_new_cpu_nr(int ifd, struct activity *act[])
+{
+	unsigned int new_cpu_nr;
+	int j, p;
+	
+	/* Read new number of CPU following the RESTART record */
+	sa_fread(ifd, &new_cpu_nr, sizeof(unsigned int), HARD_SIZE);
+	
+	if (!new_cpu_nr) {
+		/* CPU number cannot be zero */
+		fprintf(stderr, _("Bad CPU count saved in file\n"));
+		close(ifd);
+		exit(2);
+	}
+	
+	/* Set new CPU count and reallocate structures */
+	p = get_activity_position(act, A_CPU);
+	act[p]->nr = new_cpu_nr;
+
+	for (j = 0; j < 3; j++) {
+		SREALLOC(act[p]->buf[j], void, act[p]->msize * act[p]->nr * act[p]->nr2);
+	}
+	
+	return new_cpu_nr;
 }
 
 /*

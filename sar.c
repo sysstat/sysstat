@@ -617,6 +617,7 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int
 {
 	char cur_time[26];
 	int dp = 1;
+	unsigned int new_cpu_nr;
 
 	if (set_record_timestamp_string(curr, cur_time, 26))
 		return 0;
@@ -628,8 +629,12 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int
 	}
 
 	if (rtype == R_RESTART) {
+		/* Don't forget to read new number of CPU */
+		new_cpu_nr = read_new_cpu_nr(ifd, act);
+		
 		if (dp) {
-			printf("\n%-11s       LINUX RESTART\n", cur_time);
+			printf("\n%-11s       LINUX RESTART\t(%d CPU)\n",
+			       cur_time, new_cpu_nr > 1 ? new_cpu_nr - 1 : 1);
 			return 1;
 		}
 	}
