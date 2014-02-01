@@ -499,6 +499,14 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_month       = rectime.tm_mon;
 	file_hdr.sa_year        = rectime.tm_year;
 	file_hdr.sa_sizeof_long = sizeof(long);
+	
+	/*
+	 * This is a new file (or stdout): Field last_cpu_nr is set to the number
+	 * of CPU items of the machine (1 .. CPU_NR + 1).
+	 * A_CPU activity is always collected, hence its number of items is
+	 * always counted (in sa_sys_init()).
+	 */
+	file_hdr.last_cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
 
 	/* Get system name, release number, hostname and machine architecture */
 	uname(&header);
@@ -590,7 +598,13 @@ void write_special_record(int ofd, int rtype)
 		p_write_error();
 	}
 
-	if (rtype == R_COMMENT) {
+	if (rtype == R_RESTART) {
+		/* Also write current number of CPU */
+		if ((n = write_all(ofd, &file_hdr.last_cpu_nr, sizeof(unsigned int))) != sizeof(unsigned int)) {
+			p_write_error();
+		}
+	}
+	else if (rtype == R_COMMENT) {
 		/* Also write the comment */
 		if ((n = write_all(ofd, comment, MAX_COMMENT_LEN)) != MAX_COMMENT_LEN) {
 			p_write_error();
@@ -639,6 +653,44 @@ void write_stats(int ofd)
 				p_write_error();
 			}
 		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Rewrite file's header. Done when number of CPU has changed.
+ *
+ * IN:
+ * @ofd		Output file descriptor.
+ * @fpos	Position in file where header structure has to be written.
+ * @file_magic	File magic structure.
+ ***************************************************************************
+ */
+void rewrite_file_hdr(int *ofd, off_t fpos, struct file_magic *file_magic)
+{
+	int n;
+	
+	/* Remove O_APPEND status flag */
+	if (fcntl(*ofd, F_SETFL, 0) < 0) {
+		perror("fcntl");
+		exit(2);
+	}
+	
+	/* Now rewrite file's header with its new CPU number value */
+	if (lseek(*ofd, fpos, SEEK_SET) < fpos) {
+		perror("lseek");
+		exit(2);
+	}
+	
+	n = MINIMUM(file_magic->header_size, FILE_HEADER_SIZE);
+	if (write_all(*ofd, &file_hdr, n) != n) {
+		p_write_error();
+	}
+	
+	/* Restore O_APPEND status flag */
+	if (fcntl(*ofd, F_SETFL, O_APPEND) < 0) {
+		perror("fcntl");
+		exit(2);
 	}
 }
 
@@ -704,19 +756,23 @@ void open_stdout(int *stdfd)
  * We may enter this function several times (when we rotate a file).
  *
  * IN:
- * @ofile	Name of output file.
+ * @ofile		Name of output file.
+ * @restart_mark	TRUE if sadc called with interval (and count) not
+ * 			set, and no comment given (so we are going to insert
+ * 			a restart mark into the file.
  *
  * OUT:
- * @ofd		Output file descriptor.
+ * @ofd			Output file descriptor.
  ***************************************************************************
  */
-void open_ofile(int *ofd, char ofile[])
+void open_ofile(int *ofd, char ofile[], int restart_mark)
 {
 	struct file_magic file_magic;
 	struct file_activity file_act[NR_ACT];
 	struct tm rectime;
 	void *buffer = NULL;
 	ssize_t sz, n;
+	off_t fpos;
 	int i, p;
 
 	if (ofile[0]) {
@@ -755,6 +811,12 @@ void open_ofile(int *ofd, char ofile[])
 
 			SREALLOC(buffer, char, file_magic.header_size);
 	
+			/* Save current file position */
+			if ((fpos = lseek(*ofd, 0, SEEK_CUR)) < 0) {
+				perror("lseek");
+				exit(2);
+			}
+			
 			/* Read file standard header */
 			n = read(*ofd, buffer, file_magic.header_size);
 			memcpy(&file_hdr, buffer, MINIMUM(file_magic.header_size, FILE_HEADER_SIZE));
@@ -805,18 +867,14 @@ void open_ofile(int *ofd, char ofile[])
 					 */
 					goto append_error;
 
-				if ((act[p]->nr != file_act[i].nr) || (act[p]->nr2 != file_act[i].nr2)) {
-					if (IS_REMANENT(act[p]->options) || !file_act[i].nr || !file_act[i].nr2)
-						/*
-						 * Remanent structures cannot have a different number of items.
-						 * Also number of items and subitems should never be null.
-						 */
-						goto append_error;
+				if (!file_act[i].nr || !file_act[i].nr2) {
+					/* Number of items and subitems should never be null */
+					goto append_error;
 				}
 			}
 			
 			/*
-			 * OK: All tests successfully passed.
+			 * OK: (Almost) all tests successfully passed.
 			 * List of activities from the file prevails over that of the user.
 			 * So unselect all of them. And reset activity sequence.
 			 */
@@ -829,10 +887,12 @@ void open_ofile(int *ofd, char ofile[])
 				
 				p = get_activity_position(act, file_act[i].id);
 				
-				if ((act[p]->nr != file_act[i].nr) || (act[p]->nr2 != file_act[i].nr2)) {
+				if (((act[p]->nr != file_act[i].nr) || (act[p]->nr2 != file_act[i].nr2)) &&
+				    !IS_REMANENT(act[p]->options)) {
 					/*
 					 * Force number of items (serial lines, network interfaces...)
-					 * and sub-items to that of the file, and reallocate structures.
+					 * and sub-items to that of the file (except for remanent activities),
+					 * and reallocate structures.
 					 */
 					act[p]->nr  = file_act[i].nr;
 					act[p]->nr2 = file_act[i].nr2;
@@ -842,6 +902,32 @@ void open_ofile(int *ofd, char ofile[])
 				/* Save activity sequence */
 				id_seq[i] = file_act[i].id;
 				act[p]->options |= AO_COLLECTED;
+			}
+			
+			p = get_activity_position(act, A_CPU);
+			if (!IS_COLLECTED(act[p]->options)) {
+				/* A_CPU activity should always exist in file */
+				goto append_error;
+			}
+			
+			if (act[p]->nr != file_hdr.last_cpu_nr) {
+				if (!restart_mark) {
+					/*
+					 * Current number of cpu items (for current system) should match
+					 * number of cpu items of the last sample saved in file.
+					 * Yet, this number can be different if we are inserting a restart mark.
+					*/
+					goto append_error;
+				}
+				else {
+					/*
+					 * We are inserting a restart mark, and current machine
+					 * has a different number of CPU than that saved in file,
+					 * so update last_cpu_nr in file's header and rewrite it.
+					 */
+					file_hdr.last_cpu_nr = act[p]->nr;
+					rewrite_file_hdr(ofd, fpos, &file_magic);
+				}
 			}
 		}
 	}
@@ -992,7 +1078,7 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 			 * This is also used to set activity sequence to that of the file
 			 * if the file already exists.
 			 */
-			open_ofile(&ofd, ofile);
+			open_ofile(&ofd, ofile, FALSE);
 
 			/*
 			 * Rewrite header and activity sequence to stdout since
@@ -1045,6 +1131,7 @@ int main(int argc, char **argv)
 	char ofile[MAX_FILE_LEN];
 	struct tm rectime;
 	int stdfd = 0, ofd = -1;
+	int restart_mark;
 	long count = 0;
 
 	/* Get HZ */
@@ -1171,6 +1258,17 @@ int main(int argc, char **argv)
 	/* Init structures according to machine architecture */
 	sa_sys_init();
 
+	if (!interval && !comment[0]) {
+		/*
+		 * Interval (and count) not set, and no comment given
+		 * => We are going to insert a restart mark.
+		 */
+		restart_mark = TRUE;
+	}
+	else {
+		restart_mark = FALSE;
+	}
+	
 	/*
 	 * Open output file then STDOUT. Write header for each of them.
 	 * NB: Output file must be opened first, because we may change
@@ -1178,7 +1276,7 @@ int main(int argc, char **argv)
 	 * of the file, and the activities collected and activity sequence
 	 * written on STDOUT must be consistent to those of the file.
 	 */
-	open_ofile(&ofd, ofile);
+	open_ofile(&ofd, ofile, restart_mark);
 	open_stdout(&stdfd);
 
 	if (!interval) {

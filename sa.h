@@ -242,9 +242,12 @@
  */
 #define AO_SELECTED		0x02
 /*
- * Indicate that, when registered again, activity counters will get back
- * the values they had when they were unregistered (eg. CPUs, which can
- * be disabled/enabled on the fly).
+ * When appending data to a file, the number of items (for every activity)
+ * is forced to that of the file (number of network interfaces, serial lines, etc.)
+ * Except for remanent activities like A_CPU: If current
+ * machine has a different number of CPU than that of the file (but is
+ * equal to last_cpu_nr) then data will be appended with a number of items
+ * equal to that of the machine.
  */
 #define AO_REMANENT		0x04
 /*
@@ -464,7 +467,7 @@ struct activity {
  * 	|--                         --|
  *
  * (*)Note: If it's a special record, we may find a comment instead of
- * statistics (R_COMMENT record type) or even nothing at all (R_RESTART
+ * statistics (R_COMMENT record type) or the number of CPU items (R_RESTART
  * record type).
  ***************************************************************************
  */
