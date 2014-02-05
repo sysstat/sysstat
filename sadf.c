@@ -341,6 +341,7 @@ void xprintf(int nr_tab, const char *fmtf, ...)
  * 			been used or not) can be saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
  *			can be saved for current record.
+ * @new_cpu_nr		CPU count associated with restart mark.
  *
  * OUT:
  * @rectime		Structure where timestamp for current record has
@@ -350,7 +351,8 @@ void xprintf(int nr_tab, const char *fmtf, ...)
  ***************************************************************************
  */
 void write_textual_restarts(int curr, int use_tm_start, int use_tm_end, int tab,
-			    struct tm *rectime, struct tm *loctime)
+			    struct tm *rectime, struct tm *loctime,
+			    unsigned int new_cpu_nr)
 {
 	char cur_date[32], cur_time[32];
 
@@ -367,7 +369,8 @@ void write_textual_restarts(int curr, int use_tm_start, int use_tm_end, int tab,
 	if (*fmt[f_position]->f_restart) {
 		(*fmt[f_position]->f_restart)(&tab, F_MAIN, cur_date, cur_time,
 					      !PRINT_LOCAL_TIME(flags) &&
-					      !PRINT_TRUE_TIME(flags), &file_hdr);
+					      !PRINT_TRUE_TIME(flags), &file_hdr,
+					      new_cpu_nr);
 	}
 }
 
@@ -784,6 +787,7 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
 {
 	char cur_date[32], cur_time[32];
 	int dp = 1;
+	unsigned int new_cpu_nr;
 
 	/* Fill timestamp structure (rectime) for current record */
 	sadf_get_record_timestamp_struct(curr, rectime, loctime);
@@ -798,13 +802,17 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
 	}
 
 	if (rtype == R_RESTART) {
+		/* Don't forget to read new number of CPU */
+		new_cpu_nr = read_new_cpu_nr(ifd, act);
+		
 		if (!dp)
 			return;
 
 		if (*fmt[f_position]->f_restart) {
 			(*fmt[f_position]->f_restart)(NULL, F_MAIN, cur_date, cur_time,
 						      !PRINT_LOCAL_TIME(flags) &&
-						      !PRINT_TRUE_TIME(flags), &file_hdr);
+						      !PRINT_TRUE_TIME(flags), &file_hdr,
+						      new_cpu_nr);
 		}
 	}
 	else if (rtype == R_COMMENT) {
@@ -941,6 +949,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 {
 	int curr, tab = 0, rtype;
 	int eosaf = TRUE, next, reset = FALSE;
+	unsigned int save_cpu_nr, new_cpu_nr;
 	long cnt = 1;
 	off_t fpos;
 
@@ -949,6 +958,8 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 		perror("lseek");
 		exit(2);
 	}
+	/* Save number of CPU items for current file position */
+	save_cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
 
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
@@ -970,24 +981,29 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 			eosaf = sa_fread(ifd, &record_hdr[0], RECORD_HEADER_SIZE, SOFT_SIZE);
 			rtype = record_hdr[0].record_type;
 
-			if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-				/*
-				 * OK: Previous record was not a special one.
-				 * So read now the extra fields.
-				 */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
-						     file_actlst);
-				sadf_get_record_timestamp_struct(0, rectime, loctime);
-			}
-
-			if (!eosaf && (rtype == R_COMMENT)) {
-				/*
-				 * Ignore COMMENT record.
-				 * (Unlike RESTART records, COMMENT records have an additional
-				 * comment field).
-				 */
-				if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-					perror("lseek");
+			if (!eosaf) {
+				if (rtype == R_COMMENT) {
+					/* Ignore COMMENT record */
+					if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
+						perror("lseek");
+					}
+				}
+				else if (rtype == R_RESTART) {
+					/*
+					 * Ignore RESTART record (don't display it)
+					 * but anyway we have to reallocate CPU structures
+					 * according to new CPU count (value saved after RESTART record).
+					 */
+					read_new_cpu_nr(ifd, act);
+				}
+				else {
+					/*
+					 * OK: Previous record was not a special one.
+					 * So read now the extra fields.
+					 */
+					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+							     file_actlst);
+					sadf_get_record_timestamp_struct(0, rectime, loctime);
 				}
 			}
 		}
@@ -1008,32 +1024,41 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 						 SOFT_SIZE);
 				rtype = record_hdr[curr].record_type;
 
-				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-					/* Read the extra fields since it's not a special record */
-					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
-							     file_actlst);
-
-					if (*fmt[f_position]->f_statistics) {
-						(*fmt[f_position]->f_statistics)(&tab, F_MAIN);
-					}
-
-					/* next is set to 1 when we were close enough to desired interval */
-					next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
-								   &cnt, tab, cpu_nr, rectime, loctime);
-
-					if (next) {
-						curr ^= 1;
-						if (cnt > 0) {
-							cnt--;
+				if (!eosaf) {
+					if (rtype == R_COMMENT) {
+						/* Ignore COMMENT record */
+						if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
+							perror("lseek");
 						}
 					}
-					reset = FALSE;
-				}
+					else if (rtype == R_RESTART) {
+						/*
+						 * Ignore RESTART record (don't display it)
+						 * but anyway we have to reallocate CPU structures
+						 * according to new CPU count (value saved after RESTART record.
+						 */
+						read_new_cpu_nr(ifd, act);
+					}
+					else {
+						/* This is not a special record, so read the extra fields */
+						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+								     file_actlst);
 
-				if (!eosaf && (rtype == R_COMMENT)) {
-					/* Ignore COMMENT record */
-					if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-						perror("lseek");
+						if (*fmt[f_position]->f_statistics) {
+							(*fmt[f_position]->f_statistics)(&tab, F_MAIN);
+						}
+
+						/* next is set to 1 when we were close enough to desired interval */
+						next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
+									   &cnt, tab, cpu_nr, rectime, loctime);
+
+						if (next) {
+							curr ^= 1;
+							if (cnt > 0) {
+								cnt--;
+							}
+						}
+						reset = FALSE;
 					}
 				}
 			}
@@ -1045,14 +1070,25 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 					eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
 							 SOFT_SIZE);
 					rtype = record_hdr[curr].record_type;
-					if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
-								     file_actlst);
-					}
-					else if (!eosaf && (rtype == R_COMMENT)) {
-						/* Ignore COMMENT record */
-						if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-							perror("lseek");
+					if (!eosaf) {
+						if (rtype == R_COMMENT) {
+							/* Ignore COMMENT record */
+							if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
+								perror("lseek");
+							}
+						}
+						else if (rtype == R_RESTART) {
+							/*
+							 * Ignore RESTART record (don't display it)
+							 * but anyway we have to reallocate CPU structures
+							 * according to new CPU count (value saved after RESTART record.
+							 */
+							read_new_cpu_nr(ifd, act);
+						}
+						else {
+							/* This is not a special record: Read the extra fields */
+							read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+									     file_actlst);
 						}
 					}
 				}
@@ -1067,16 +1103,18 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 		(*fmt[f_position]->f_statistics)(&tab, F_END);
 	}
 
-	/* Rewind file */
+	/* Rewind file... */
 	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
 		perror("lseek");
 		exit(2);
 	}
+	/* ... and restore number of CPU items for this position in file */
+	allocate_cpu_structures(act, save_cpu_nr);
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
 		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
-					      &file_hdr);
+					      &file_hdr, 0);
 	}
 
 	do {
@@ -1084,13 +1122,13 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				      SOFT_SIZE)) == 0) {
 
 			rtype = record_hdr[0].record_type;
-			if ((rtype != R_RESTART) && (rtype != R_COMMENT)) {
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
-						     file_actlst);
-			}
 			if (rtype == R_RESTART) {
+				/* Read new CPU count */
+				new_cpu_nr = read_new_cpu_nr(ifd, act);
+				
+				/* Display RESTART records */
 				write_textual_restarts(0, tm_start.use, tm_end.use, tab,
-						       rectime, loctime);
+						       rectime, loctime, new_cpu_nr);
 			}
 			else if (rtype == R_COMMENT) {
 				/* Ignore COMMENT record */
@@ -1098,19 +1136,26 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 					perror("lseek");
 				}
 			}
+			else {
+				/* Not a special record: Read the extra fields */
+				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+						     file_actlst);
+			}
 		}
 	}
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr);
+		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr, 0);
 	}
 
-	/* Rewind file */
+	/* Rewind file... */
 	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
 		perror("lseek");
 		exit(2);
 	}
+	/* ... and restore number of CPU items for this position in file */
+	allocate_cpu_structures(act, save_cpu_nr);
 
 	/* Last, process COMMENT entries to display comments */
 	if (DISPLAY_COMMENT(flags)) {
@@ -1123,13 +1168,23 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				              SOFT_SIZE)) == 0) {
 
 				rtype = record_hdr[0].record_type;
-				if ((rtype != R_RESTART) && (rtype != R_COMMENT)) {
-					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
-							     file_actlst);
-				}
 				if (rtype == R_COMMENT) {
+					/* Display R_COMMENT records */
 					write_textual_comments(0, tm_start.use, tm_end.use,
 							       tab, ifd, rectime, loctime);
+				}
+				else if (rtype == R_RESTART) {
+					/*
+					 * Ignore RESTART record (don't display it)
+					 * but anyway we have to reallocate CPU structures
+					 * according to new CPU count (value saved after RESTART record.
+					 */
+					read_new_cpu_nr(ifd, act);
+				}
+				else {
+					/* Not a special record: Read the extra fields */
+					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+							     file_actlst);
 				}
 			}
 		}
@@ -1269,14 +1324,17 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 				eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
 						 SOFT_SIZE);
 				rtype = record_hdr[curr].record_type;
-				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
-							     file_actlst);
-				}
-				else if (!eosaf && (rtype == R_COMMENT)) {
-					/* This was a COMMENT record: print it */
-					sadf_print_special(curr, tm_start.use, tm_end.use,
-							   R_COMMENT, ifd, rectime, loctime);
+				if (!eosaf) {
+					if (rtype == R_COMMENT) {
+						/* This was a COMMENT record: print it */
+						sadf_print_special(curr, tm_start.use, tm_end.use,
+								   R_COMMENT, ifd, rectime, loctime);
+					}
+					else if (rtype != R_RESTART) {
+						/* This is not a RESTART or a COMMENT record */
+						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+								     file_actlst);
+					}
 				}
 			}
 			while (!eosaf && (rtype != R_RESTART));

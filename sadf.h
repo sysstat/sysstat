@@ -163,7 +163,8 @@ struct report_format {
 	/*
 	 * This function displays the restart messages.
 	 */
-	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *);
+	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *,
+				       unsigned int);
 	/*
 	 * This function displays the comments.
 	 */
@@ -185,13 +186,13 @@ extern void
  * Prototypes used to display restart messages
  */
 __printf_funct_t
-	print_db_restart(int *, int, char *, char *, int, struct file_header *);
+	print_db_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
 __printf_funct_t
-	print_ppc_restart(int *, int, char *, char *, int, struct file_header *);
+	print_ppc_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
 __printf_funct_t
-	print_xml_restart(int *, int, char *, char *, int, struct file_header *);
+	print_xml_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
 __printf_funct_t
-	print_json_restart(int *, int, char *, char *, int, struct file_header *);
+	print_json_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display comments

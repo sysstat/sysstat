@@ -796,6 +796,8 @@ extern __read_funct_t
 extern void
 	allocate_bitmaps(struct activity * []);
 extern void
+	allocate_cpu_structures(struct activity * [], unsigned int);
+extern void
 	allocate_structures(struct activity * []);
 extern int
 	check_disk_reg(struct activity *, int, int, int);

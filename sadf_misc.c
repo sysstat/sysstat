@@ -45,10 +45,11 @@ extern unsigned int flags;
  * @utc		True if @cur_time is expressed in UTC.
  * @sep		Character used as separator.
  * @file_hdr	System activity file standard header.
+ * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
-			 struct file_header *file_hdr)
+			 struct file_header *file_hdr, unsigned int cpu_nr)
 {
 	printf("%s%c-1%c", file_hdr->sa_nodename, sep, sep);
 	if (strlen(cur_date)) {
@@ -58,7 +59,8 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
 	if (strlen(cur_date) && utc) {
 		printf(" UTC");
 	}
-	printf("%cLINUX-RESTART\n", sep);
+	printf("%cLINUX-RESTART\t(%d CPU)\n",
+	       sep, cpu_nr > 1 ? cpu_nr - 1 : 1);
 }
 
 /*
@@ -72,14 +74,16 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
-				  char *cur_time, int utc, struct file_header *file_hdr)
+				  char *cur_time, int utc, struct file_header *file_hdr,
+				  unsigned int cpu_nr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
-		print_dbppc_restart(cur_date, cur_time, utc, ';', file_hdr);
+		print_dbppc_restart(cur_date, cur_time, utc, ';', file_hdr, cpu_nr);
 	}
 }
 
@@ -94,14 +98,16 @@ __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr)
+				   char *cur_time, int utc, struct file_header *file_hdr,
+				   unsigned int cpu_nr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
-		print_dbppc_restart(cur_date, cur_time, utc, '\t', file_hdr);
+		print_dbppc_restart(cur_date, cur_time, utc, '\t', file_hdr, cpu_nr);
 	}
 }
 
@@ -116,20 +122,22 @@ __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header (unused here).
+ * @cpu_nr	CPU count associated with restart mark.
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr)
+				   char *cur_time, int utc, struct file_header *file_hdr,
+				   unsigned int cpu_nr)
 {
 	if (action & F_BEGIN) {
 		xprintf((*tab)++, "<restarts>");
 	}
 	if (action & F_MAIN) {
-		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" utc=\"%d\"/>",
-			cur_date, cur_time, utc ? 1 : 0);
+		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" utc=\"%d\" cpu_count=\"%d\"/>",
+			cur_date, cur_time, utc ? 1 : 0, cpu_nr > 1 ? cpu_nr - 1 : 1);
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</restarts>");
@@ -147,13 +155,15 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header (unused here).
+ * @cpu_nr	CPU count associated with restart mark.
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
-				    char *cur_time, int utc, struct file_header *file_hdr)
+				    char *cur_time, int utc, struct file_header *file_hdr,
+				    unsigned int cpu_nr)
 {
 	static int sep = FALSE;
 	
@@ -166,8 +176,8 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
 			printf(",\n");
 		}
 		xprintf((*tab)++, "{");
-		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"utc\": %d}",
-			cur_date, cur_time, utc ? 1 : 0);
+		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"utc\": %d, \"cpu_count\": %d}",
+			cur_date, cur_time, utc ? 1 : 0, cpu_nr > 1 ? cpu_nr - 1 : 1);
 		xprintf0(--(*tab), "}");
 		sep = TRUE;
 	}

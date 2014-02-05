@@ -1236,6 +1236,28 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 /*
  ***************************************************************************
+ * Set number of CPU items and reallocate CPU structures accordingly.
+ *
+ * IN:
+ * @act		Array of activities.
+ * @cpu_nr	Number of CPU items.
+ ***************************************************************************
+ */
+void allocate_cpu_structures(struct activity *act[], unsigned int cpu_nr)
+{
+	int j, p;
+	
+	/* Set new CPU count and reallocate structures */
+	p = get_activity_position(act, A_CPU);
+	act[p]->nr = cpu_nr;
+
+	for (j = 0; j < 3; j++) {
+		SREALLOC(act[p]->buf[j], void, act[p]->msize * act[p]->nr * act[p]->nr2);
+	}
+}
+
+/*
+ ***************************************************************************
  * Read the new CPU count following a RESTART record. Then set corresponding
  * number of items for A_CPU activity and reallocate structures.
  *
@@ -1250,7 +1272,6 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 unsigned int read_new_cpu_nr(int ifd, struct activity *act[])
 {
 	unsigned int new_cpu_nr;
-	int j, p;
 	
 	/* Read new number of CPU following the RESTART record */
 	sa_fread(ifd, &new_cpu_nr, sizeof(unsigned int), HARD_SIZE);
@@ -1263,12 +1284,7 @@ unsigned int read_new_cpu_nr(int ifd, struct activity *act[])
 	}
 	
 	/* Set new CPU count and reallocate structures */
-	p = get_activity_position(act, A_CPU);
-	act[p]->nr = new_cpu_nr;
-
-	for (j = 0; j < 3; j++) {
-		SREALLOC(act[p]->buf[j], void, act[p]->msize * act[p]->nr * act[p]->nr2);
-	}
+	allocate_cpu_structures(act, new_cpu_nr);
 	
 	return new_cpu_nr;
 }
