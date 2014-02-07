@@ -488,10 +488,6 @@ struct activity {
 /* Structure for file magic header data */
 struct file_magic {
 	/*
-	 * Size of file's header (size of file_header structure used by file).
-	 */
-	unsigned int header_size;
-	/*
 	 * This field identifies the file as a file created by sysstat.
 	 */
 	unsigned short sysstat_magic;
@@ -506,6 +502,14 @@ struct file_magic {
 	unsigned char  sysstat_patchlevel;
 	unsigned char  sysstat_sublevel;
 	unsigned char  sysstat_extraversion;
+	/*
+	 * Size of file's header (size of file_header structure used by file).
+	 */
+	unsigned int header_size;
+	/*
+	 * Padding. Reserved for future use while avoiding a format change.
+	 */
+	unsigned char pad[64];
 };
 
 #define FILE_MAGIC_SIZE	(sizeof(struct file_magic))
