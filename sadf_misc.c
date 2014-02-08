@@ -633,6 +633,9 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
 				 cpu_nr > 1 ? cpu_nr - 1 : 1);
 		
+		printf(_("Number of CPU for last samples in file: %u\n"),
+		       file_hdr->last_cpu_nr > 1 ? file_hdr->last_cpu_nr - 1 : 1);
+		
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
 			printf(_("File time: "));
 			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
