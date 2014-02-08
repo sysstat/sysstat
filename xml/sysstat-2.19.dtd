@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.18 for sysstat. See sadf.h -->
+<!--DTD v2.19 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 
@@ -42,6 +42,7 @@
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
 	utc CDATA #REQUIRED
+	cpu_count CDATA #REQUIRED
 >
 
 <!ELEMENT comments (comment+)>
