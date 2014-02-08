@@ -184,6 +184,11 @@ The internal structure of the data file does not allow sar to append
 data to it. The data file may come from another machine, or the components
 of the current box, such as the number of processors, may have changed.
 Use another data file, or delete the current daily data file, and try again.
+With sysstat version 10.1.3 and later, it is now possible to append data
+to a data file even if the number of processors has changed. But first,
+you have to make the data file aware of this change by inserting a restart
+mark (this is typically done when sadc is called at system restart). You
+can then append data to the data file as usual. 
 
 ~~~
 
