@@ -44,6 +44,7 @@
 #define _(string) (string)
 #endif
 
+int default_file_used = FALSE;
 extern struct act_bitmap cpu_bitmap;
 
 /*
@@ -358,6 +359,7 @@ void set_default_file(struct tm *rectime, char *datafile, int d_off)
 	snprintf(datafile, MAX_FILE_LEN,
 		 "%s/sa%02d", SA_DIR, rectime->tm_mday);
 	datafile[MAX_FILE_LEN - 1] = '\0';
+	default_file_used = TRUE;
 }
 
 /*
@@ -1107,7 +1109,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 	/* Open sa data file */
 	if ((*ifd = open(dfile, O_RDONLY)) < 0) {
+		int saved_errno = errno;
+		
 		fprintf(stderr, _("Cannot open %s: %s\n"), dfile, strerror(errno));
+		
+		if ((saved_errno == ENOENT) && default_file_used) {
+			fprintf(stderr, _("Please check if data collecting is enabled\n"));
+		}
 		exit(2);
 	}
 
