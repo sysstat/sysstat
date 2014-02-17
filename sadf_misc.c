@@ -579,7 +579,7 @@ __printf_funct_t print_json_header(int *tab, int action, char *dfile,
 		
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
-			printf("\n");
+			printf(",\n");
 			xprintf0(*tab, "\"file-utc-time\": \"%s\"", cur_time);
 		}
 
