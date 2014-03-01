@@ -5416,6 +5416,14 @@ ac_config_files="$ac_config_files sysstat"
 	# Permissions must be changed
 ac_config_files="$ac_config_files sysstat.service"
 
+ac_config_files="$ac_config_files cron/sysstat-collect.service"
+
+ac_config_files="$ac_config_files cron/sysstat-collect.timer"
+
+ac_config_files="$ac_config_files cron/sysstat-summary.service"
+
+ac_config_files="$ac_config_files cron/sysstat-summary.timer"
+
 ac_config_files="$ac_config_files man/sa1.8:man/sa1.in"
 		# File must be renamed
 ac_config_files="$ac_config_files man/sa2.8:man/sa2.in"
@@ -6157,6 +6165,10 @@ do
     "cron/sysstat.crond.sample.in") CONFIG_FILES="$CONFIG_FILES cron/sysstat.crond.sample.in:cron/sysstat.crond.in" ;;
     "sysstat") CONFIG_FILES="$CONFIG_FILES sysstat" ;;
     "sysstat.service") CONFIG_FILES="$CONFIG_FILES sysstat.service" ;;
+    "cron/sysstat-collect.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-collect.service" ;;
+    "cron/sysstat-collect.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-collect.timer" ;;
+    "cron/sysstat-summary.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.service" ;;
+    "cron/sysstat-summary.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.timer" ;;
     "man/sa1.8") CONFIG_FILES="$CONFIG_FILES man/sa1.8:man/sa1.in" ;;
     "man/sa2.8") CONFIG_FILES="$CONFIG_FILES man/sa2.8:man/sa2.in" ;;
     "man/sadc.8") CONFIG_FILES="$CONFIG_FILES man/sadc.8:man/sadc.in" ;;
