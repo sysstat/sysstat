@@ -600,6 +600,10 @@ AC_CONFIG_FILES([cron/sysstat.crond])
 AC_CONFIG_FILES([cron/sysstat.crond.sample.in:cron/sysstat.crond.in], [sed s/^/#/ cron/sysstat.crond.sample.in > cron/sysstat.crond.sample])
 AC_CONFIG_FILES([sysstat], [chmod +x sysstat])	# Permissions must be changed
 AC_CONFIG_FILES([sysstat.service])
+AC_CONFIG_FILES([cron/sysstat-collect.service])
+AC_CONFIG_FILES([cron/sysstat-collect.timer])
+AC_CONFIG_FILES([cron/sysstat-summary.service])
+AC_CONFIG_FILES([cron/sysstat-summary.timer])
 AC_CONFIG_FILES([man/sa1.8:man/sa1.in])		# File must be renamed
 AC_CONFIG_FILES([man/sa2.8:man/sa2.in])		# File must be renamed
 AC_CONFIG_FILES([man/sadc.8:man/sadc.in])	# File must be renamed

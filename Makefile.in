@@ -380,6 +380,10 @@ install_all: install_base cron/crontab sysstat \
 	fi
 	if [ -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	    $(INSTALL_DATA) sysstat.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+	    $(INSTALL_DATA) cron/sysstat-collect.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+	    $(INSTALL_DATA) cron/sysstat-collect.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+	    $(INSTALL_DATA) cron/sysstat-summary.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+	    $(INSTALL_DATA) cron/sysstat-summary.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	elif [ -d $(DESTDIR)$(INIT_DIR) ]; then \
 	   $(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
 	   if [ -x $(CHKCONFIG) ]; then \
@@ -492,6 +496,10 @@ ifeq ($(COPY_ONLY),n)
 endif
 	if [ -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat.service; \
+	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.service; \
+	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.timer; \
+	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.service; \
+	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.timer; \
 	fi
 
 ifeq ($(INSTALL_CRON),y)
@@ -519,6 +527,7 @@ clean:
 almost-distclean: clean nls/sysstat.pot
 	rm -f sa1 sa2 sysstat cron/crontab version.h sysconfig.h prealloc.h
 	rm -f sysstat.sysconfig cron/sysstat.crond cron/sysstat.cron.daily sysstat.service
+	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer cron/sysstat-summary.service cron/sysstat-summary.timer
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
 	rm -f contrib/isag/isag
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
