@@ -1,0 +1,15 @@
+# @SYSTEMD_UNIT_DIR@/sysstat-summary.timer
+# (C) 2014 Tomasz Torcz <tomek@pipebreaker.pl>
+#
+# @PACKAGE_NAME@-@PACKAGE_VERSION@ systemd unit file:
+#        Triggers daily summary generation.
+#        Activates sysstat-summary.service
+
+[Unit]
+Description=Generate a daily summary of process accounting at 23:53
+
+[Timer]
+OnCalendar=23:53:00
+
+[Install]
+WantedBy=sysstat.service

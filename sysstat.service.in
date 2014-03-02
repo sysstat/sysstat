@@ -16,4 +16,6 @@ ExecStart=@SA_LIB_DIR@/sa1 --boot
 
 [Install]
 WantedBy=multi-user.target
+Also=sysstat-collect.timer
+Also=sysstat-summary.timer
 

@@ -81,7 +81,11 @@ ${PREFIX}/share/locale/*/LC_MESSAGES/sysstat.mo
 ${PREFIX}/share/doc/sysstat-x.y.z/*
 /var/log/sa
 ${INIT_DIR}/sysstat
-/lib/systemd/system/sysstat.service	if OS uses systemd
+/lib/systemd/system/sysstat.service		if OS uses systemd
+/lib/systemd/system/sysstat-collect.service	if OS uses systemd
+/lib/systemd/system/sysstat-collect.timer	if OS uses systemd
+/lib/systemd/system/sysstat-summary.service	if OS uses systemd
+/lib/systemd/system/sysstat-summary.timer	if OS uses systemd
 /etc/sysconfig/sysstat
 /etc/sysconfig/sysstat.ioconf
 /etc/cron.d/sysstat

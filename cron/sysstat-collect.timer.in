@@ -1,0 +1,14 @@
+# @SYSTEMD_UNIT_DIR@/sysstat-collect.timer
+# (C) 2014 Tomasz Torcz <tomek@pipebreaker.pl>
+#
+# @PACKAGE_NAME@-@PACKAGE_VERSION@ systemd unit file:
+#        Activates activity collector every @CRON_INTERVAL@ minutes
+
+[Unit]
+Description=Run system activity accounting tool every @CRON_INTERVAL@ minutes
+
+[Timer]
+OnCalendar=*:00/@CRON_INTERVAL@
+
+[Install]
+WantedBy=sysstat.service
