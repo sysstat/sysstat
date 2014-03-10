@@ -50,7 +50,7 @@ DFILE=${CURRENTDIR}/${CURRENTFILE}
 cd ${ENDIR}
 [ -L ${RPT} ] && rm -f ${RPT}
 ${ENDIR}/sar $* -f ${DFILE} > ${RPT}
-find ${DDIR} \( -name 'sar??' -o -name 'sa??' -o -name 'sar??.gz' -o -name 'sa??.gz' -o -name 'sar??.bz2' -o -name 'sa??.bz2' \) \
+find ${DDIR} \( -name 'sar??' -o -name 'sa??' -o -name 'sar??.xz' -o -name 'sa??.xz' -o -name 'sar??.gz' -o -name 'sa??.gz' -o -name 'sar??.bz2' -o -name 'sa??.bz2' \) \
 	-mtime +"${HISTORY}" -exec rm -f {} \;
 find ${DDIR} \( -name 'sar??' -o -name 'sa??' \) -type f -mtime +"${COMPRESSAFTER}" \
 	-exec ${ZIP} {} \; > /dev/null 2>&1
@@ -61,4 +61,3 @@ done
 cd ${DDIR}
 rmdir [0-9]????? > /dev/null 2>&1
 exit 0
-
