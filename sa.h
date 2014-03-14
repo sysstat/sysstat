@@ -806,8 +806,6 @@ extern __read_funct_t
 extern void
 	allocate_bitmaps(struct activity * []);
 extern void
-	allocate_cpu_structures(struct activity * [], unsigned int);
-extern void
 	allocate_structures(struct activity * []);
 extern int
 	check_disk_reg(struct activity *, int, int, int);
@@ -863,8 +861,11 @@ extern void
 	print_report_hdr(unsigned int, struct tm *, struct file_header *, int);
 extern void
 	read_file_stat_bunch(struct activity * [], int, int, int, struct file_activity *);
-extern unsigned int
-	read_new_cpu_nr(int, struct activity * []);
+extern __nr_t
+	read_vol_act_structures(int, struct activity * [], char *, struct file_magic *,
+			        unsigned int);
+extern int
+	reallocate_vol_act_structures(struct activity * [], unsigned int, unsigned int);
 extern int
 	sa_fread(int, void *, int, int);
 extern void

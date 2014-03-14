@@ -16,6 +16,10 @@
 #define F_MAIN	0x02
 #define F_END	0x04
 
+/* Various constants */
+#define DO_SAVE		0
+#define DO_RESTORE	1
+
 /*
  ***************************************************************************
  * Output format identification values.

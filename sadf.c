@@ -780,10 +780,14 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  * 			been used or not) can be saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
  *			can be saved for current record.
+ * @file		Name of file being read.
+ * @file_magic		file_magic structure filled with file magic header 
+ * 			data.
  ***************************************************************************
  */
 void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int ifd,
-			struct tm *rectime, struct tm *loctime)
+			struct tm *rectime, struct tm *loctime, char *file,
+			struct file_magic *file_magic)
 {
 	char cur_date[32], cur_time[32];
 	int dp = 1;
@@ -802,8 +806,9 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
 	}
 
 	if (rtype == R_RESTART) {
-		/* Don't forget to read new number of CPU */
-		new_cpu_nr = read_new_cpu_nr(ifd, act);
+		/* Don't forget to read the volatile activities structures */
+		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
+						     file_hdr.sa_vol_act_nr);
 		
 		if (!dp)
 			return;
@@ -849,6 +854,8 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
  *
  * OUT:
  * @curr	Index in array for next sample statistics.
@@ -860,7 +867,8 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
  */
 void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 		       unsigned int act_id, int *reset, struct file_activity *file_actlst,
-		        __nr_t cpu_nr, struct tm *rectime, struct tm *loctime)
+		        __nr_t cpu_nr, struct tm *rectime, struct tm *loctime,
+			char *file, struct file_magic *file_magic)
 {
 	unsigned char rtype;
 	int next;
@@ -899,7 +907,8 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 			if (rtype == R_COMMENT) {
 				sadf_print_special(*curr, tm_start.use, tm_end.use,
-						   R_COMMENT, ifd, rectime, loctime);
+						   R_COMMENT, ifd, rectime, loctime,
+						   file, file_magic);
 				continue;
 			}
 
@@ -928,6 +937,43 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 /*
  ***************************************************************************
+ * Save or restore number of items for all known activities.
+ * 
+ * IN:
+ * @save_act_nr	Array containing number of items to restore for each
+ * 		activity.
+ * @action	DO_SAVE to save number of items, or DO_RESTORE to restore.
+ * 
+ * OUT:
+ * @save_act_nr	Array containing number of items saved for each activity.
+ ***************************************************************************
+ */
+void sr_act_nr(__nr_t save_act_nr[], int action)
+{
+	int i;
+	
+	if (action == DO_SAVE) {
+		/* Save number of items for all activities */
+		for (i = 0; i < NR_ACT; i++) {
+			save_act_nr[i] = act[i]->nr;
+		}
+	}
+	else if (action == DO_RESTORE) {
+		/*
+		 * Restore number of items for all activities
+		 * and reallocate structures accordingly.
+		 */
+		for (i = 0; i < NR_ACT; i++) {
+			if (save_act_nr[i] > 0) {
+				reallocate_vol_act_structures(act, save_act_nr[i],
+							      act[i]->id);
+			}
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Display activities for textual (XML-like) formats.
  *
  * IN:
@@ -941,15 +987,17 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
+ * @file	Name of file being read.
  ***************************************************************************
  */
 void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
 			  struct file_magic *file_magic, __nr_t cpu_nr,
-			  struct tm *rectime, struct tm *loctime)
+			  struct tm *rectime, struct tm *loctime, char *file)
 {
 	int curr, tab = 0, rtype;
 	int eosaf = TRUE, next, reset = FALSE;
-	unsigned int save_cpu_nr, new_cpu_nr;
+	__nr_t save_act_nr[NR_ACT];
+	unsigned int new_cpu_nr;
 	long cnt = 1;
 	off_t fpos;
 
@@ -958,8 +1006,8 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 		perror("lseek");
 		exit(2);
 	}
-	/* Save number of CPU items for current file position */
-	save_cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+	/* Save number of activities items for current file position */
+	sr_act_nr(save_act_nr, DO_SAVE);
 
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
@@ -991,10 +1039,11 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				else if (rtype == R_RESTART) {
 					/*
 					 * Ignore RESTART record (don't display it)
-					 * but anyway we have to reallocate CPU structures
-					 * according to new CPU count (value saved after RESTART record).
+					 * but anyway we have to reallocate volatile
+					 * activities structures.
 					 */
-					read_new_cpu_nr(ifd, act);
+					read_vol_act_structures(ifd, act, file, file_magic,
+							        file_hdr.sa_vol_act_nr);
 				}
 				else {
 					/*
@@ -1034,10 +1083,11 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 					else if (rtype == R_RESTART) {
 						/*
 						 * Ignore RESTART record (don't display it)
-						 * but anyway we have to reallocate CPU structures
-						 * according to new CPU count (value saved after RESTART record.
+						 * but anyway we have to reallocate volatile
+						 * activities structures.
 						 */
-						read_new_cpu_nr(ifd, act);
+						read_vol_act_structures(ifd, act, file, file_magic,
+								        file_hdr.sa_vol_act_nr);
 					}
 					else {
 						/* This is not a special record, so read the extra fields */
@@ -1080,10 +1130,11 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 						else if (rtype == R_RESTART) {
 							/*
 							 * Ignore RESTART record (don't display it)
-							 * but anyway we have to reallocate CPU structures
-							 * according to new CPU count (value saved after RESTART record.
+							 * but anyway we have to reallocate volatile
+							 * activities structures.
 							 */
-							read_new_cpu_nr(ifd, act);
+							read_vol_act_structures(ifd, act, file, file_magic,
+										file_hdr.sa_vol_act_nr);
 						}
 						else {
 							/* This is not a special record: Read the extra fields */
@@ -1108,8 +1159,12 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 		perror("lseek");
 		exit(2);
 	}
-	/* ... and restore number of CPU items for this position in file */
-	allocate_cpu_structures(act, save_cpu_nr);
+	/*
+	 * ... and restore number of items for volatile activities
+	 * for this position in file.
+	 */
+	sr_act_nr(save_act_nr, DO_RESTORE);
+	/* allocate_cpu_structures(act, save_cpu_nr);*/ /* FIXME */
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
@@ -1124,7 +1179,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 			rtype = record_hdr[0].record_type;
 			if (rtype == R_RESTART) {
 				/* Read new CPU count */
-				new_cpu_nr = read_new_cpu_nr(ifd, act);
+				new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
+								     file_hdr.sa_vol_act_nr);
+				/* new_cpu_nr = read_new_cpu_nr(ifd, act); */ /* FIXME */
 				
 				/* Display RESTART records */
 				write_textual_restarts(0, tm_start.use, tm_end.use, tab,
@@ -1154,8 +1211,11 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 		perror("lseek");
 		exit(2);
 	}
-	/* ... and restore number of CPU items for this position in file */
-	allocate_cpu_structures(act, save_cpu_nr);
+	/*
+	 * ... and restore number of items for volatile activities
+	 * for this position in file.
+	 */
+	sr_act_nr(save_act_nr, DO_RESTORE);
 
 	/* Last, process COMMENT entries to display comments */
 	if (DISPLAY_COMMENT(flags)) {
@@ -1176,10 +1236,11 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				else if (rtype == R_RESTART) {
 					/*
 					 * Ignore RESTART record (don't display it)
-					 * but anyway we have to reallocate CPU structures
-					 * according to new CPU count (value saved after RESTART record.
+					 * but anyway we have to reallocate volatile
+					 * activities structures.
 					 */
-					read_new_cpu_nr(ifd, act);
+					read_vol_act_structures(ifd, act, file, file_magic,
+								file_hdr.sa_vol_act_nr);
 				}
 				else {
 					/* Not a special record: Read the extra fields */
@@ -1216,10 +1277,13 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
  ***************************************************************************
  */
 void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr,
-		       struct tm *rectime, struct tm *loctime)
+		       struct tm *rectime, struct tm *loctime, char *file,
+		       struct file_magic *file_magic)
 {
 	int i, p;
 	int curr = 1, rtype;
@@ -1241,7 +1305,7 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 			rtype = record_hdr[0].record_type;
 			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
 				sadf_print_special(0, tm_start.use, tm_end.use, rtype, ifd,
-						   rectime, loctime);
+						   rectime, loctime, file, file_magic);
 			}
 			else {
 				/*
@@ -1278,7 +1342,7 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 			 */
 			rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 					  ALL_ACTIVITIES, &reset, file_actlst,
-					  cpu_nr, rectime, loctime);
+					  cpu_nr, rectime, loctime, file, file_magic);
 		}
 		else {
 			/* For each requested activity... */
@@ -1297,7 +1361,8 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 				if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 					rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 							  act[p]->id, &reset, file_actlst,
-							  cpu_nr, rectime, loctime);
+							  cpu_nr, rectime, loctime, file,
+							  file_magic);
 				}
 				else {
 					unsigned int optf, msk;
@@ -1310,7 +1375,8 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 							
 							rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 									  act[p]->id, &reset, file_actlst,
-									  cpu_nr, rectime, loctime);
+									  cpu_nr, rectime, loctime, file,
+									  file_magic);
 							act[p]->opt_flags = optf;
 						}
 					}
@@ -1328,7 +1394,8 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 					if (rtype == R_COMMENT) {
 						/* This was a COMMENT record: print it */
 						sadf_print_special(curr, tm_start.use, tm_end.use,
-								   R_COMMENT, ifd, rectime, loctime);
+								   R_COMMENT, ifd, rectime, loctime,
+								   file, file_magic);
 					}
 					else if (rtype != R_RESTART) {
 						/* This is not a RESTART or a COMMENT record */
@@ -1343,7 +1410,8 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 		/* The last record we read was a RESTART one: Print it */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			sadf_print_special(curr, tm_start.use, tm_end.use,
-					   R_RESTART, ifd, rectime, loctime);
+					   R_RESTART, ifd, rectime, loctime,
+					   file, file_magic);
 		}
 	}
 	while (!eosaf);
@@ -1387,11 +1455,11 @@ void read_stats_from_file(char dfile[])
 
 	if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
 		main_display_loop(ifd, file_actlst, cpu_nr,
-				  &rectime, &loctime);
+				  &rectime, &loctime, dfile, &file_magic);
 	}
 	else {
 		textual_display_loop(ifd, file_actlst, dfile,
-				     &file_magic, cpu_nr, &rectime, &loctime);
+				     &file_magic, cpu_nr, &rectime, &loctime, dfile);
 	}
 
 	close(ifd);
