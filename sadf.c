@@ -899,7 +899,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			/* Read the extra fields since it's not a RESTART record */
-			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_nr_act,
+			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr,
 					     file_actlst);
 		}
 
@@ -1050,7 +1050,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 					 * OK: Previous record was not a special one.
 					 * So read now the extra fields.
 					 */
-					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 							     file_actlst);
 					sadf_get_record_timestamp_struct(0, rectime, loctime);
 				}
@@ -1091,7 +1091,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 					}
 					else {
 						/* This is not a special record, so read the extra fields */
-						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 								     file_actlst);
 
 						if (*fmt[f_position]->f_statistics) {
@@ -1138,7 +1138,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 						}
 						else {
 							/* This is not a special record: Read the extra fields */
-							read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+							read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 									     file_actlst);
 						}
 					}
@@ -1195,7 +1195,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 			}
 			else {
 				/* Not a special record: Read the extra fields */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 						     file_actlst);
 			}
 		}
@@ -1244,7 +1244,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				}
 				else {
 					/* Not a special record: Read the extra fields */
-					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 							     file_actlst);
 				}
 			}
@@ -1312,7 +1312,7 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 				 * OK: Previous record was not a special one.
 				 * So read now the extra fields.
 				 */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 						     file_actlst);
 				sadf_get_record_timestamp_struct(0, rectime, loctime);
 			}
@@ -1399,7 +1399,7 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 					}
 					else if (rtype != R_RESTART) {
 						/* This is not a RESTART or a COMMENT record */
-						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 								     file_actlst);
 					}
 				}

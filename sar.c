@@ -758,7 +758,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			/* Read the extra fields since it's not a special record */
-			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_nr_act, file_actlst);
+			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst);
 		}
 
 		if ((lines >= rows) || !lines) {
@@ -853,7 +853,7 @@ void read_header_data(void)
 	}
 	
 	/* Read activity list */
-	for (i = 0; i < file_hdr.sa_nr_act; i++) {
+	for (i = 0; i < file_hdr.sa_act_nr; i++) {
 		
 		if (sa_read(&file_act, FILE_ACTIVITY_SIZE)) {
 			print_read_error();
@@ -880,7 +880,7 @@ void read_header_data(void)
 	}
 	
 	/* Check that all selected activties are actually sent by sadc */
-	reverse_check_act(file_hdr.sa_nr_act);
+	reverse_check_act(file_hdr.sa_act_nr);
 }
 
 /*
@@ -936,7 +936,7 @@ void read_stats_from_file(char from_file[])
 				 * OK: Previous record was not a special one.
 				 * So read now the extra fields.
 				 */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_nr_act,
+				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 						     file_actlst);
 				if (sar_get_record_timestamp_struct(0))
 					/*
@@ -1008,7 +1008,7 @@ void read_stats_from_file(char from_file[])
 						 SOFT_SIZE);
 				rtype = record_hdr[curr].record_type;
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_nr_act,
+					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 							     file_actlst);
 				}
 				else if (!eosaf && (rtype == R_COMMENT)) {

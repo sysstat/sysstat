@@ -454,7 +454,7 @@ struct activity {
  * 	|
  * 	|--                         --|
  * 	|                             |
- * 	| file_activity structure     | * sa_nr_act
+ * 	| file_activity structure     | * sa_act_nr
  * 	|                             |
  * 	|--                         --|
  * 	|                             |
@@ -527,9 +527,9 @@ struct file_header {
 	 */
 	unsigned int sa_last_cpu_nr	__attribute__ ((aligned (8)));
 	/*
-	 * Number of activities saved in the file
+	 * Number of activities saved in file.
 	 */
-	unsigned int sa_nr_act;
+	unsigned int sa_act_nr;
 	/*
 	 * Number of volatile activities in file. This is the number of
 	 * file_activity structures saved after each restart mark in file.

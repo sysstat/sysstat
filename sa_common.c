@@ -1144,12 +1144,12 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	memcpy(file_hdr, buffer, MINIMUM(file_magic->header_size, FILE_HEADER_SIZE));
 	free(buffer);
 	
-	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_nr_act);
+	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
 	fal = *file_actlst;
 
 	/* Read activity list */
 	j = 0;
-	for (i = 0; i < file_hdr->sa_nr_act; i++, fal++) {
+	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
 		sa_fread(*ifd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
 
@@ -1226,11 +1226,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 		/* Here is a selected activity: Does it exist in file? */
 		fal = *file_actlst;
-		for (j = 0; j < file_hdr->sa_nr_act; j++, fal++) {
+		for (j = 0; j < file_hdr->sa_act_nr; j++, fal++) {
 			if (act[i]->id == fal->id)
 				break;
 		}
-		if (j == file_hdr->sa_nr_act) {
+		if (j == file_hdr->sa_act_nr) {
 			/* No: Unselect it */
 			act[i]->options &= ~AO_SELECTED;
 		}

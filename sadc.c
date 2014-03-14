@@ -497,7 +497,7 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_ust_time = get_time(&rectime, 0);
 
 	/* OK, now fill the header */
-	file_hdr.sa_nr_act      = get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES);
+	file_hdr.sa_act_nr      = get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES);
 	file_hdr.sa_vol_act_nr	= get_activity_nr(act, AO_COLLECTED + AO_VOLATILE,
 						  COUNT_ACTIVITIES);
 	file_hdr.sa_day         = rectime.tm_mday;
@@ -902,14 +902,14 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		}
 
 		/* OK: It's a true system activity file */
-		if (!file_hdr.sa_nr_act || (file_hdr.sa_nr_act > NR_ACT))
+		if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT))
 			/*
 			 * No activities at all or at least one unknown activity:
 			 * Cannot append data to such a file.
 			 */
 			goto append_error;
 
-		for (i = 0; i < file_hdr.sa_nr_act; i++) {
+		for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
 			/* Read current activity in list */
 			if (read(*ofd, &file_act[i], FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
@@ -944,7 +944,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 
 		j = 0;
 
-		for (i = 0; i < file_hdr.sa_nr_act; i++) {
+		for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
 			p = get_activity_position(act, file_act[i].id);
 
