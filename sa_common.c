@@ -1187,12 +1187,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		}
 		/*
 		 * NOTA BENE:
-		 * If current activity is A_CPU, we are setting
-		 * act[p]->nr to fal->nr, which is the number of CPU for the
-		 * statistics located between the start of the data file and the
-		 * first restart mark. Remember that the number of CPU can vary
+		 * If current activity is a volatile one then fal->nr is the
+		 * number of items (CPU at the present time as only CPU related
+		 * activities are volatile today) for the statistics located
+		 * between the start of the data file and the first restart mark.
+		 * Volatile activities have a number of items which can vary
 		 * in file. In this case, a RESTART record is followed by the
-		 * new number of CPU.
+		 * volatile activity structures.
 		 */
 		act[p]->nr    = fal->nr;
 		act[p]->nr2   = fal->nr2;
@@ -1244,57 +1245,85 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 /*
  ***************************************************************************
- * Set number of CPU items and reallocate CPU structures accordingly.
+ * Set number of items for current volatile activity and reallocate its
+ * structures accordingly.
+ * NB: As only activities related to CPU can be volatile, the number of
+ * items corresponds in fact to the number of CPU.
  *
  * IN:
  * @act		Array of activities.
- * @cpu_nr	Number of CPU items.
+ * @act_nr	Number of items for current volatile activity.
+ * @act_id	Activity identification for current volatile activity.
+ * 
+ * RETURN:
+ * -1 if unknown activity and 0 otherwise.
  ***************************************************************************
  */
-void allocate_cpu_structures(struct activity *act[], unsigned int cpu_nr)
+int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
+	                           unsigned int act_id)
 {
 	int j, p;
 	
-	/* Set new CPU count and reallocate structures */
-	p = get_activity_position(act, A_CPU);
-	act[p]->nr = cpu_nr;
+	if ((p = get_activity_position(act, act_id)) < 0)
+		/* Ignore unknown activity */
+		return -1;
+	
+	act[p]->nr = act_nr;
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(act[p]->buf[j], void, act[p]->msize * act[p]->nr * act[p]->nr2);
 	}
+	
+	return 0;
 }
 
 /*
  ***************************************************************************
- * Read the new CPU count following a RESTART record. Then set corresponding
- * number of items for A_CPU activity and reallocate structures.
+ * Read the volatile activities structures following a RESTART record.
+ * Then set number of items for each corresponding activity and reallocate
+ * structures.
  *
  * IN:
  * @ifd		Input file descriptor.
  * @act		Array of activities.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @vol_act_nr	Number of volatile activities structures to read.
  * 
  * RETURNS:
- * New number of CPU count.
+ * New number of items.
+ * 
+ * NB: As only activities related to CPU can be volatile, the new number of
+ * items corresponds in fact to the new number of CPU.
  ***************************************************************************
  */
-unsigned int read_new_cpu_nr(int ifd, struct activity *act[])
+__nr_t read_vol_act_structures(int ifd, struct activity *act[], char *file,
+			       struct file_magic *file_magic,
+			       unsigned int vol_act_nr)
 {
-	unsigned int new_cpu_nr;
+	struct file_activity file_act;
+	int item_nr = 0;
+	int i, rc;
 	
-	/* Read new number of CPU following the RESTART record */
-	sa_fread(ifd, &new_cpu_nr, sizeof(unsigned int), HARD_SIZE);
-	
-	if (!new_cpu_nr) {
-		/* CPU number cannot be zero */
-		fprintf(stderr, _("Bad CPU count saved in file\n"));
-		close(ifd);
-		exit(2);
+	for (i = 0; i < vol_act_nr; i++) {
+		
+		sa_fread(ifd, &file_act, FILE_ACTIVITY_SIZE, HARD_SIZE);
+		
+		if (file_act.id) {
+			rc = reallocate_vol_act_structures(act, file_act.nr, file_act.id);
+			if ((rc == 0) && !item_nr) {
+				item_nr = file_act.nr;
+			}
+		}
+		/* else ignore empty structures that may exist */
 	}
 	
-	/* Set new CPU count and reallocate structures */
-	allocate_cpu_structures(act, new_cpu_nr);
-	
-	return new_cpu_nr;
+	if (!item_nr) {
+		/* All volatile activities structures cannot be empty */
+		handle_invalid_sa_file(&ifd, file_magic, file, 0);
+	}
+
+	return item_nr;
 }
 
 /*

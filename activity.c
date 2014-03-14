@@ -69,7 +69,7 @@ struct act_bitmap irq_bitmap = {
  */
 struct activity cpu_act = {
 	.id		= A_CPU,
-	.options	= AO_COLLECTED + AO_REMANENT + AO_GLOBAL_ITV + AO_MULTIPLE_OUTPUTS,
+	.options	= AO_COLLECTED + AO_VOLATILE + AO_GLOBAL_ITV + AO_MULTIPLE_OUTPUTS,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -981,7 +981,7 @@ struct activity net_udp6_act = {
 /* CPU frequency */
 struct activity pwr_cpufreq_act = {
 	.id		= A_PWR_CPUFREQ,
-	.options	= AO_NULL,
+	.options	= AO_VOLATILE,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1136,7 +1136,7 @@ struct activity huge_act = {
 /* CPU weighted frequency */
 struct activity pwr_wghfreq_act = {
 	.id		= A_PWR_WGHFREQ,
-	.options	= AO_NULL,
+	.options	= AO_VOLATILE,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC

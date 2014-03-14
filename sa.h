@@ -243,13 +243,13 @@
 #define AO_SELECTED		0x02
 /*
  * When appending data to a file, the number of items (for every activity)
- * is forced to that of the file (number of network interfaces, serial lines, etc.)
- * Except for remanent activities like A_CPU: If current
- * machine has a different number of CPU than that of the file (but is
- * equal to last_cpu_nr) then data will be appended with a number of items
- * equal to that of the machine.
+ * is forced to that of the file (number of network interfaces, serial lines,
+ * etc.) Exceptions are volatile activities (like A_CPU) whose number of items
+ * is related to the number of CPUs: If current machine has a different number
+ * of CPU than that of the file (but is equal to sa_last_cpu_nr) then data
+ * will be appended with a number of items equal to that of the machine.
  */
-#define AO_REMANENT		0x04
+#define AO_VOLATILE		0x04
 /*
  * Indicate that the interval of time, given to f_print() function
  * displaying statistics, should be the interval of time in jiffies
@@ -271,7 +271,7 @@
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
-#define IS_REMANENT(m)		(((m) & AO_REMANENT)         == AO_REMANENT)
+#define IS_VOLATILE(m)		(((m) & AO_VOLATILE)         == AO_VOLATILE)
 #define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
@@ -467,8 +467,9 @@ struct activity {
  * 	|--                         --|
  *
  * (*)Note: If it's a special record, we may find a comment instead of
- * statistics (R_COMMENT record type) or the number of CPU items (R_RESTART
- * record type).
+ * statistics (R_COMMENT record type) or, if it's a R_RESTART record type,
+ * <sa_nr_vol_act> structures (of type file_activity) for the volatile
+ * activities.
  ***************************************************************************
  */
 
@@ -483,7 +484,7 @@ struct activity {
  * Modified to indicate that the format of the file is
  * no longer compatible with that of previous sysstat versions.
  */
-#define FORMAT_MAGIC	0x2172
+#define FORMAT_MAGIC	0x2173
 
 /* Structure for file magic header data */
 struct file_magic {
@@ -524,11 +525,16 @@ struct file_header {
 	/*
 	 * Number of CPU items (1 .. CPU_NR + 1) for the last sample in file.
 	 */
-	unsigned int last_cpu_nr;
+	unsigned int sa_last_cpu_nr	__attribute__ ((aligned (8)));
 	/*
 	 * Number of activities saved in the file
 	 */
-	unsigned int sa_nr_act		__attribute__ ((aligned (8)));
+	unsigned int sa_nr_act;
+	/*
+	 * Number of volatile activities in file. This is the number of
+	 * file_activity structures saved after each restart mark in file.
+	 */
+	unsigned int sa_vol_act_nr;
 	/*
 	 * Current day, month and year.
 	 * No need to save DST (Daylight Saving Time) flag, since it is not taken
