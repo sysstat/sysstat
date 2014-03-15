@@ -643,6 +643,10 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 		}
 
 		printf(_("Size of a long int: %d\n"), file_hdr->sa_sizeof_long);
+		
+		/* Number of activities (number of volatile activities) in file */
+		printf("sa_act_nr (sa_vol_act_nr): %u (%u)\n",
+		       file_hdr->sa_act_nr, file_hdr->sa_vol_act_nr);
 
 		printf(_("List of activities:\n"));
 
