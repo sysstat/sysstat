@@ -781,7 +781,7 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  * @loctime		Structure where timestamp (expressed in local time)
  *			can be saved for current record.
  * @file		Name of file being read.
- * @file_magic		file_magic structure filled with file magic header 
+ * @file_magic		file_magic structure filled with file magic header
  * 			data.
  ***************************************************************************
  */
@@ -938,12 +938,12 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 /*
  ***************************************************************************
  * Save or restore number of items for all known activities.
- * 
+ *
  * IN:
  * @save_act_nr	Array containing number of items to restore for each
  * 		activity.
  * @action	DO_SAVE to save number of items, or DO_RESTORE to restore.
- * 
+ *
  * OUT:
  * @save_act_nr	Array containing number of items saved for each activity.
  ***************************************************************************
@@ -1164,7 +1164,6 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 	 * for this position in file.
 	 */
 	sr_act_nr(save_act_nr, DO_RESTORE);
-	/* allocate_cpu_structures(act, save_cpu_nr);*/ /* FIXME */
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
@@ -1181,7 +1180,6 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				/* Read new CPU count */
 				new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
 								     file_hdr.sa_vol_act_nr);
-				/* new_cpu_nr = read_new_cpu_nr(ifd, act); */ /* FIXME */
 				
 				/* Display RESTART records */
 				write_textual_restarts(0, tm_start.use, tm_end.use, tab,

@@ -1254,7 +1254,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
  * @act		Array of activities.
  * @act_nr	Number of items for current volatile activity.
  * @act_id	Activity identification for current volatile activity.
- * 
+ *
  * RETURN:
  * -1 if unknown activity and 0 otherwise.
  ***************************************************************************
@@ -1289,10 +1289,10 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
  * @vol_act_nr	Number of volatile activities structures to read.
- * 
+ *
  * RETURNS:
  * New number of items.
- * 
+ *
  * NB: As only activities related to CPU can be volatile, the new number of
  * items corresponds in fact to the new number of CPU.
  ***************************************************************************

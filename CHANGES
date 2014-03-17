@@ -1,5 +1,27 @@
 Changes:
 
+2014/03/18: Version 10.3.1 - Sebastien Godard (sysstat <at> orange.fr)
+	  WARNING: Daily data files format has changed, and is *not*
+          compatible with the previous one! [0x2173]
+	* sar/sadc/sadf: Now take into account a change of CPU count
+	  in datafiles. The number of CPU is displayed in the RESTART
+	  messages.
+	* DTD and XSD documents updated.
+	* [Tomasz Torcz]: Add systemd timer units replacing cronjobs.
+	* [Mike Kazantsev]: Fix output of sadf -j with file-utc-time present.
+	* [Peter Portante]: sa2 script now also catches 'xz' compressed
+	  files as well.
+	* Rename nfsiostat to nfsiostat-sysstat and indicate it is now
+	  obsolete. An nfsiostat command is already included in the
+	  nfs-utils package.
+	* When attempting to use a non existent daily datafile, sar and
+	  sadf tell the user to check if data collecting is enabled.
+	* sadf -H now displays the number of activities in file.
+	* nfsiostat manual page updated.
+	* FAQ updated.
+	* README file updated.
+	* NLS updated.
+
 2014/01/19: Version 10.2.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added new --enable-copy-only option to configure script.
 	  This option may be useful when creating sysstat package to
