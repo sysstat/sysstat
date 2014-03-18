@@ -310,7 +310,7 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
-		
+
 		/* Should current interrupt (including int "sum") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 
@@ -349,7 +349,7 @@ __print_funct_t xml_print_swap_stats(struct activity *a, int curr, int tab,
 	struct stats_swap
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
-	
+
 	xprintf(tab, "<swap-pages per=\"second\" "
 		"pswpin=\"%.2f\" "
 		"pswpout=\"%.2f\"/>",
@@ -486,7 +486,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 
 		xprintf(tab, "<inactive>%lu</inactive>",
 			smc->inactkb);
-		
+
 		xprintf(tab--, "<dirty>%lu</dirty>",
 			smc->dirtykb);
 	}
@@ -533,6 +533,43 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 
 /*
  ***************************************************************************
+ * Display memory extention 0 statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_memory_ext0_stats(struct activity *a, int curr, int tab,
+				       unsigned long long itv)
+{
+	struct stats_memory_ext0
+		*smc = (struct stats_memory_ext0 *) a->buf[curr];
+
+	xprintf(tab, "<memory-ext0 per=\"second\" unit=\"kB\">");
+
+	xprintf(++tab, "<anonpages>%lu</anonpages>",
+		smc->anonkb);
+
+	xprintf(tab, "<slab>%lu</slab>",
+		smc->slabkb);
+
+	xprintf(tab, "<pagetables>%lu</pagetables>",
+		smc->pagetblkb);
+
+	xprintf(tab, "<vmallocused>%lu</vmallocused>",
+		smc->vmallocusedkb);
+
+	xprintf(tab--, "<kernelstack>%lu</kernelstack>",
+		smc->krnstckkb);
+
+	xprintf(tab, "</memory-ext0>");
+}
+
+/*
+ ***************************************************************************
  * Display kernel tables statistics in XML.
  *
  * IN:
@@ -547,7 +584,7 @@ __print_funct_t xml_print_ktables_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
-	
+
 	xprintf(tab, "<kernel "
 		"dentunusd=\"%u\" "
 		"file-nr=\"%u\" "
@@ -575,7 +612,7 @@ __print_funct_t xml_print_queue_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
-	
+
 	xprintf(tab, "<queue "
 		"runq-sz=\"%lu\" "
 		"plist-sz=\"%u\" "
@@ -682,7 +719,7 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 		if (DISPLAY_PERSIST_NAME_S(flags)) {
 			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
 		}
-		
+
 		if (persist_dev_name) {
 			dev_name = persist_dev_name;
 		}
@@ -1267,7 +1304,7 @@ __print_funct_t xml_print_net_etcp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_etcp
 		*snetc = (struct stats_net_etcp *) a->buf[curr],
 		*snetp = (struct stats_net_etcp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1310,7 +1347,7 @@ __print_funct_t xml_print_net_udp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_udp
 		*snuc = (struct stats_net_udp *) a->buf[curr],
 		*snup = (struct stats_net_udp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1350,7 +1387,7 @@ __print_funct_t xml_print_net_sock6_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_net_sock6
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
@@ -1670,7 +1707,7 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 	tab++;
 
 	xprintf(tab++, "<cpu-frequency unit=\"MHz\">");
-	
+
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);

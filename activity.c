@@ -287,6 +287,37 @@ struct activity memory_act = {
 	.bitmap		= NULL
 };
 
+/* Memory utilization (extended 0) activity */
+struct activity memory_ext0_act = {
+	.id		= A_MEMORYEXT0,
+	.options	= AO_COLLECTED + AO_MULTIPLE_OUTPUTS,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
+#ifdef SOURCE_SADC
+	.f_count	= NULL,
+	.f_count2	= NULL,
+	.f_read		= wrap_read_meminfo_ext0,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_memory_ext0_stats,
+	.f_print_avg	= print_avg_memory_ext0_stats,
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_memory_ext0_stats,
+	.f_xml_print	= xml_print_memory_ext0_stats,
+	.f_json_print	= json_print_memory_ext0_stats,
+	.hdr_line	= "kbanon;kbslab;kbpagetbl;kbvmallocused;kbkrnstck",
+	.name		= "A_MEMORYEXT0",
+#endif
+	.nr		= 1,
+	.nr2		= 1,
+	.fsize		= STATS_MEMORY_EXT0_SIZE,
+	.msize		= STATS_MEMORY_EXT0_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
 /* Kernel tables activity */
 struct activity ktables_act = {
 	.id		= A_KTABLES,
@@ -1239,6 +1270,7 @@ struct activity *act[NR_ACT] = {
 	&paging_act,
 	&io_act,
 	&memory_act,
+    &memory_ext0_act,
 	&huge_act,
 	&ktables_act,
 	&queue_act,
