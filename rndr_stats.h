@@ -60,6 +60,8 @@ extern __print_funct_t render_io_stats
 	(struct activity *, int, char *, int, unsigned long long);
 extern __print_funct_t render_memory_stats
 	(struct activity *, int, char *, int, unsigned long long);
+extern __print_funct_t render_memory_ext0_stats
+	(struct activity *, int, char *, int, unsigned long long);
 extern __print_funct_t render_ktables_stats
 	(struct activity *, int, char *, int, unsigned long long);
 extern __print_funct_t render_queue_stats

@@ -20,7 +20,7 @@
  */
 
 /* Number of activities */
-#define NR_ACT	37
+#define NR_ACT	38
 
 /* Activities */
 #define A_CPU		1
@@ -60,6 +60,7 @@
 #define A_PWR_WGHFREQ	35
 #define A_PWR_USB	36
 #define A_FILESYSTEM	37
+#define A_MEMORYEXT0	38
 
 
 /* Macro used to flag an activity that should be collected */
@@ -725,7 +726,7 @@ extern __nr_t
 	wrap_get_usb_nr(struct activity *);
 extern __nr_t
 	wrap_get_filesystem_nr(struct activity *);
-	
+
 /* Functions used to read activities statistics */
 extern __read_funct_t
 	wrap_read_stat_cpu(struct activity *);
@@ -741,6 +742,8 @@ extern __read_funct_t
 	wrap_read_io(struct activity *);
 extern __read_funct_t
 	wrap_read_meminfo(struct activity *);
+extern __read_funct_t
+	wrap_read_meminfo_ext0(struct activity *);
 extern __read_funct_t
 	wrap_read_kernel_tables(struct activity *);
 extern __read_funct_t

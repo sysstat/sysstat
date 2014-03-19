@@ -29,6 +29,8 @@ extern __print_funct_t json_print_io_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t json_print_memory_stats
 	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t json_print_memory_ext0_stats
+	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t json_print_ktables_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t json_print_queue_stats

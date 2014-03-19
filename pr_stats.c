@@ -73,9 +73,9 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			       timestamp[!curr]);
 		}
 	}
-	
+
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
-		
+
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
 		 * sizeof(struct stats_cpu) value if data have been read from a file!
@@ -92,13 +92,13 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		 * used by sadc to create a file, and the version of sysstat
 		 * used by sar to read it...
 		 */
-		
+
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
-			
+
 			/* Yes: Display it */
 			printf("%-11s", timestamp[curr]);
-			
+
 			if (!i) {
 				/* This is CPU "all" */
 				printf("     all");
@@ -121,12 +121,12 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 					 * jump from zero when the CPU comes back online.
 					 */
 					*scc = *scp;
-					
+
 					/* %user, %nice, %system, %iowait, %steal, ..., %idle */
 					printf("    %6.2f    %6.2f    %6.2f"
 					       "    %6.2f    %6.2f    %6.2f",
 					       0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-					
+
 					if (DISPLAY_CPU_ALL(a->opt_flags)) {
 						/*
 						 * Four additional fields to display:
@@ -138,10 +138,10 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 					printf("\n");
 					continue;
 				}
-				
+
 				/* Recalculate interval for current proc */
 				g_itv = get_per_cpu_interval(scc, scp);
-				
+
 				if (!g_itv) {
 					/*
 					 * If the CPU is tickless then there is no change in CPU values
@@ -166,7 +166,7 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 					continue;
 				}
 			}
-			
+
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				printf("    %6.2f    %6.2f    %6.2f    %6.2f    %6.2f    %6.2f\n",
 				       ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
@@ -223,7 +223,7 @@ __print_funct_t print_pcsw_stats(struct activity *a, int prev, int curr,
 	struct stats_pcsw
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[prev];
-	
+
 	if (dis) {
 		printf("\n%-11s    proc/s   cswch/s\n", timestamp[!curr]);
 	}
@@ -249,16 +249,16 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 {
 	int i;
 	struct stats_irq *sic, *sip;
-	
+
 	if (dis) {
 		printf("\n%-11s      INTR    intr/s\n", timestamp[!curr]);
 	}
-	
+
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[prev] + i * a->msize);
-		
+
 		/*
 		 * Note: a->nr is in [0, NR_IRQS + 1].
 		 * Bitmap size is provided for (NR_IRQS + 1) interrupts.
@@ -266,10 +266,10 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 		 * used by sadc to create a file, and the version of sysstat
 		 * used by sar to read it...
 		 */
-		
+
 		/* Should current interrupt (including int "sum") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
-			
+
 			/* Yes: Display it */
 			printf("%-11s", timestamp[curr]);
 			if (!i) {
@@ -303,7 +303,7 @@ __print_funct_t print_swap_stats(struct activity *a, int prev, int curr,
 	struct stats_swap
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[prev];
-	
+
 	if (dis) {
 		printf("\n%-11s  pswpin/s pswpout/s\n", timestamp[!curr]);
 	}
@@ -416,7 +416,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		avg_frskb = 0,
 		avg_tlskb = 0,
 		avg_caskb = 0;
-	
+
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 		if (dis) {
 			printf("\n%-11s   frmpg/s   bufpg/s   campg/s\n",
@@ -428,7 +428,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		       S_VALUE((double) KB_TO_PG(smp->bufkb), (double) KB_TO_PG(smc->bufkb), itv),
 		       S_VALUE((double) KB_TO_PG(smp->camkb), (double) KB_TO_PG(smc->camkb), itv));
 	}
-	
+
 	if (DISPLAY_MEM_AMT(a->opt_flags)) {
 		if (dis) {
 			printf("\n%-11s kbmemfree kbmemused  %%memused kbbuffers  kbcached"
@@ -484,13 +484,13 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			       (double) avg_activekb / avg_count,
 			       (double) avg_inactkb / avg_count,
 			       (double) avg_dirtykb / avg_count);
-			
+
 			/* Reset average counters */
 			avg_frmkb = avg_bufkb = avg_camkb = avg_comkb = 0;
 			avg_activekb = avg_inactkb = avg_dirtykb = 0;
 		}
 	}
-	
+
 	if (DISPLAY_SWAP(a->opt_flags)) {
 		if (dis) {
 			printf("\n%-11s kbswpfree kbswpused  %%swpused  kbswpcad   %%swpcad\n",
@@ -536,10 +536,77 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 					((double) avg_tlskb / avg_count) -
 					((double) avg_frskb / avg_count)) :
 			       0.0);
-			
+
 			/* Reset average counters */
 			avg_frskb = avg_tlskb = avg_caskb = 0;
 		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display memory extention 0 statistics. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+void stub_print_memory_ext0_stats(struct activity *a, int prev, int curr,
+			     unsigned long long itv, int dispavg)
+{
+	struct stats_memory_ext0
+		*smc = (struct stats_memory_ext0 *) a->buf[curr];
+	static unsigned long long
+		avg_anonkb    = 0,
+		avg_slabkb    = 0,
+		avg_pagetblkb    = 0,
+		avg_vmallocusedkb    = 0,
+		avg_krnstckkb = 0;
+
+	if (dis) {
+		printf("\n%-11s    kbanon    kbslab kbpagetbl kbvmallocused kbkrnstck\n",
+		       timestamp[!curr]);
+	}
+
+	if (!dispavg) {
+		/* Display instantaneous values */
+		printf("%-11s %9lu %9lu %9lu %13lu %9lu\n",
+		       timestamp[curr],
+		       smc->anonkb,
+		       smc->slabkb,
+		       smc->pagetblkb,
+		       smc->vmallocusedkb,
+		       smc->krnstckkb);
+
+		/*
+		 * Will be used to compute the average.
+		 * We assume that the total amount of memory installed can not vary
+		 * during the interval given on the command line.
+		 */
+		avg_anonkb        += smc->anonkb;
+		avg_slabkb        += smc->slabkb;
+        avg_pagetblkb     += smc->pagetblkb;
+        avg_vmallocusedkb += smc->vmallocusedkb;
+		avg_krnstckkb     += smc->krnstckkb;
+	}
+	else {
+		/* Display average values */
+		printf("%-11s %9.0f %9.0f %9.0f %9.0f %9.0f\n",
+		       timestamp[curr],
+		       (double) avg_anonkb / avg_count,
+		       (double) avg_slabkb / avg_count,
+		       (double) avg_pagetblkb / avg_count,
+		       (double) avg_vmallocusedkb / avg_count,
+               (double) avg_krnstckkb / avg_count);
+
+		/* Reset average counters */
+		avg_anonkb = avg_slabkb = avg_pagetblkb = 0;
+		avg_vmallocusedkb = avg_krnstckkb = 0;
 	}
 }
 
@@ -555,6 +622,23 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
  ***************************************************************************
  */
 __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
+				   unsigned long long itv)
+{
+	stub_print_memory_stats(a, prev, curr, itv, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display memory extention 0 statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_memory_ext0_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
 	stub_print_memory_stats(a, prev, curr, itv, FALSE);
@@ -579,6 +663,23 @@ __print_funct_t print_avg_memory_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
+ * Display average memory extention 0 statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_memory_ext0_stats(struct activity *a, int prev, int curr,
+				       unsigned long long itv)
+{
+	stub_print_memory_ext0_stats(a, prev, curr, itv, TRUE);
+}
+
+/*
+ ***************************************************************************
  * Display kernel tables statistics. This function is used to display
  * instantaneous and average statistics.
  *
@@ -597,8 +698,8 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 		avg_file_used   = 0,
 		avg_inode_used  = 0,
 		avg_pty_nr      = 0;
-		
-	
+
+
 	if (dis) {
 		printf("\n%-11s dentunusd   file-nr  inode-nr    pty-nr\n",
 		       timestamp[!curr]);
@@ -691,7 +792,7 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 		avg_load_avg_5    = 0,
 		avg_load_avg_15   = 0,
 		avg_procs_blocked = 0;
-	
+
 	if (dis) {
 		printf("\n%-11s   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked\n",
 		       timestamp[!curr]);
@@ -851,14 +952,14 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 
 		/* Compute service time, etc. */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
-		
+
 		dev_name = NULL;
 		persist_dev_name = NULL;
 
 		if (DISPLAY_PERSIST_NAME_S(flags)) {
 			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
 		}
-		
+
 		if (persist_dev_name) {
 			dev_name = persist_dev_name;
 		}
@@ -872,7 +973,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 						       USE_PRETTY_OPTION(flags));
 			}
 		}
-		
+
 		printf("%-11s %9s %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f\n",
 		       timestamp[curr],
 		       /* Confusion possible here between index and minor numbers */
@@ -918,7 +1019,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 
 		if (!strcmp(sndc->interface, ""))
 			continue;
-		
+
 		j = check_net_dev_reg(a, curr, prev, i);
 		sndp = (struct stats_net_dev *) ((char *) a->buf[prev] + j * a->msize);
 
@@ -926,7 +1027,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 
 		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
-		
+
 		printf(" %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f %9.2f",
 		       S_VALUE(sndp->rx_packets,    sndc->rx_packets,    itv),
 		       S_VALUE(sndp->tx_packets,    sndc->tx_packets,    itv),
@@ -935,7 +1036,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		       S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
 		       S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 		       S_VALUE(sndp->multicast,     sndc->multicast,     itv));
-		
+
 		ifutil = compute_ifutil(sndc, rxkb, txkb);
 		printf("    %6.2f\n", ifutil);
 	}
@@ -970,7 +1071,7 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 
 		if (!strcmp(snedc->interface, ""))
 			continue;
-		
+
 		j = check_net_edev_reg(a, curr, prev, i);
 		snedp = (struct stats_net_edev *) ((char *) a->buf[prev] + j * a->msize);
 
@@ -1006,7 +1107,7 @@ __print_funct_t print_net_nfs_stats(struct activity *a, int prev, int curr,
 	struct stats_net_nfs
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[prev];
-	
+
 	if (dis) {
 		printf("\n%-11s    call/s retrans/s    read/s   write/s  access/s"
 		       "  getatt/s\n", timestamp[!curr]);
@@ -1082,7 +1183,7 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 		avg_raw_inuse  = 0,
 		avg_frag_inuse = 0,
 		avg_tcp_tw     = 0;
-	
+
 	if (dis) {
 		printf("\n%-11s    totsck    tcpsck    udpsck    rawsck   ip-frag    tcp-tw\n",
 		       timestamp[!curr]);
@@ -1422,7 +1523,7 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 		avg_udp6_inuse  = 0,
 		avg_raw6_inuse  = 0,
 		avg_frag6_inuse = 0;
-	
+
 	if (dis) {
 		printf("\n%-11s   tcp6sck   udp6sck   raw6sck  ip6-frag\n",
 		       timestamp[!curr]);
@@ -1699,7 +1800,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 	struct stats_pwr_cpufreq *spc;
 	static unsigned long long
 		*avg_cpufreq = NULL;
-	
+
 	if (!avg_cpufreq) {
 		/* Allocate array of CPU frequency */
 		if ((avg_cpufreq = (unsigned long long *) malloc(sizeof(unsigned long long) * a->nr))
@@ -1709,14 +1810,14 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		}
 		memset(avg_cpufreq, 0, sizeof(unsigned long long) * a->nr);
 	}
-	
+
 	if (dis) {
 		printf("\n%-11s     CPU       MHz\n",
 		       timestamp[!curr]);
 	}
 
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
-		
+
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
 		 * sizeof(struct stats_pwr_cpufreq) value if data have been read from a file!
@@ -1732,13 +1833,13 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		 * used by sadc to create a file, and the version of sysstat
 		 * used by sar to read it...
 		 */
-		
+
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 
 			/* Yes: Display it */
 			printf("%-11s", timestamp[curr]);
-			
+
 			if (!i) {
 				/* This is CPU "all" */
 				printf("     all");
@@ -1746,7 +1847,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 			else {
 				printf("     %3d", i - 1);
 			}
-			
+
 			if (!dispavg) {
 				/* Display instantaneous values */
 				printf(" %9.2f\n",
@@ -1760,11 +1861,11 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 			else {
 				/* Display average values */
 				printf(" %9.2f\n",
-				       (double) avg_cpufreq[i] / (100 * avg_count));				
+				       (double) avg_cpufreq[i] / (100 * avg_count));
 			}
 		}
 	}
-	
+
 	if (dispavg) {
 		/* Array of CPU frequency no longer needed: Free it! */
 		if (avg_cpufreq) {
@@ -1987,7 +2088,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 			avg_temp_min[i] = spc->temp_min;
 			avg_temp_max[i] = spc->temp_max;
 		}
-		
+
 		printf(" %*s\n", MAX_SENSORS_DEV_LEN, spc->device);
 	}
 
@@ -2356,14 +2457,14 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 		printf(" %*s", MAX_MANUF_LEN - 1, "manufact");
 		printf(" %*s\n", MAX_PROD_LEN - 1, "product");
 	}
-	
+
 	for (i = 0; i < a->nr; i++) {
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!suc->bus_nr)
 			/* Bus#0 doesn't exist: We are at the end of the list */
 			break;
-		
+
 		printf("%-11s  %6d %9x %9x %9u",
 		       (dispavg ? _("Summary") : timestamp[curr]),
 		       suc->bus_nr,
@@ -2409,7 +2510,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 			}
 		}
 	}
-}	
+}
 
 /*
  ***************************************************************************
@@ -2461,7 +2562,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 	int i, j;
 	struct stats_filesystem *sfc, *sfm;
 
-	
+
 	if (dis) {
 		printf("\n%-11s  MBfsfree  MBfsused   %%fsused  %%ufsused"
 		       "     Ifree     Iused    %%Iused FILESYSTEM\n",
@@ -2470,11 +2571,11 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 
 	for (i = 0; i < a->nr; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
-			
+
 		if (!sfc->f_blocks)
 			/* Size of filesystem is null: We are at the end of the list */
 			break;
-			
+
 		printf("%-11s %9.0f %9.0f    %6.2f    %6.2f"
 		       " %9llu %9llu    %6.2f %s\n",
 		       (dispavg ? _("Summary") : timestamp[curr]),
@@ -2490,12 +2591,12 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 		       sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 				    : 0.0,
 		       sfc->fs_name);
-		
+
 		if (!dispavg) {
 			/* Save current filesystem in summary list */
 			for (j = 0; j < a->nr; j++) {
 				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
-				
+
 				if (!strcmp(sfm->fs_name, sfc->fs_name) ||
 				    !sfm->f_blocks) {
 					/*

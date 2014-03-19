@@ -30,6 +30,8 @@ extern __print_funct_t print_io_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_memory_stats
 	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t print_memory_ext0_stats
+	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_ktables_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_queue_stats
@@ -93,6 +95,8 @@ extern __print_funct_t print_filesystem_stats
 
 /* Functions used to display average statistics */
 extern __print_funct_t print_avg_memory_stats
+	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t print_avg_memory_ext0_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_avg_ktables_stats
 	(struct activity *, int, int, unsigned long long);

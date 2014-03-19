@@ -184,7 +184,7 @@ void read_stat_irq(struct stats_irq *st_irq, int nbr)
 
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "intr ", 5)) {
@@ -218,7 +218,7 @@ void read_meminfo(struct stats_memory *st_memory)
 {
 	FILE *fp;
 	char line[128];
-	
+
 	if ((fp = fopen(MEMINFO, "r")) == NULL)
 		return;
 
@@ -267,6 +267,72 @@ void read_meminfo(struct stats_memory *st_memory)
 		else if (!strncmp(line, "Committed_AS:", 13)) {
 			/* Read the amount of commited memory in kB */
 			sscanf(line + 13, "%lu", &st_memory->comkb);
+		}
+		else if (!strncmp(line, "AnonPages:", 10)) {
+			/* Read the amount of anonymous memory in kB */
+			sscanf(line + 10, "%lu", &st_memory->anonkb);
+		}
+		else if (!strncmp(line, "Slab:", 5)) {
+			/* Read the amount of slab memory in kB */
+			sscanf(line + 5, "%lu", &st_memory->slabkb);
+		}
+		else if (!strncmp(line, "PageTables:", 11)) {
+			/* Read the amount of page table memory in kB */
+			sscanf(line + 11, "%lu", &st_memory->pagetblkb);
+		}
+		else if (!strncmp(line, "VmallocUsed:", 12)) {
+			/* Read the amount of VM alloc memory used in kB */
+			sscanf(line + 12, "%lu", &st_memory->vmallocusdkb);
+		}
+		else if (!strncmp(line, "KernelStack:", 12)) {
+			/* Read the amount of VM alloc memory used in kB */
+			sscanf(line + 12, "%lu", &st_memory->krnstckkb);
+		}
+	}
+
+	fclose(fp);
+}
+
+/*
+ ***************************************************************************
+ * Read memory extention 0 statistics from /proc/meminfo.
+ *
+ * IN:
+ * @st_memory	Structure where stats will be saved.
+ *
+ * OUT:
+ * @st_memory	Structure with statistics.
+ ***************************************************************************
+ */
+void read_meminfo_ext0(struct stats_memory_ext0 *st_memory)
+{
+	FILE *fp;
+	char line[128];
+
+	if ((fp = fopen(MEMINFO, "r")) == NULL)
+		return;
+
+	while (fgets(line, sizeof(line), fp) != NULL) {
+
+		if (!strncmp(line, "AnonPages:", 10)) {
+			/* Read the amount of anonymous memory in kB */
+			sscanf(line + 10, "%lu", &st_memory->anonkb);
+		}
+		else if (!strncmp(line, "Slab:", 5)) {
+			/* Read the amount of slab memory in kB */
+			sscanf(line + 5, "%lu", &st_memory->slabkb);
+		}
+		else if (!strncmp(line, "PageTables:", 11)) {
+			/* Read the amount of page table memory in kB */
+			sscanf(line + 11, "%lu", &st_memory->pagetblkb);
+		}
+		else if (!strncmp(line, "VmallocUsed:", 12)) {
+			/* Read the amount of VM alloc memory used in kB */
+			sscanf(line + 12, "%lu", &st_memory->vmallocusedkb);
+		}
+		else if (!strncmp(line, "KernelStack:", 12)) {
+			/* Read the amount of VM alloc memory used in kB */
+			sscanf(line + 12, "%lu", &st_memory->krnstckkb);
 		}
 	}
 
@@ -321,9 +387,9 @@ void oct2chr(char *str)
 {
 	int i = 0;
 	int j, len;
-	
+
 	len = strlen(str);
-	
+
 	while (i < len - 3) {
 		if ((str[i] == '\\') &&
 		    (str[i + 1] >= '0') && (str[i + 1] <= '3') &&
@@ -397,7 +463,7 @@ void read_loadavg(struct stats_queue *st_queue)
 
 	if ((fp = fopen(LOADAVG, "r")) == NULL)
 		return;
-	
+
 	/* Read load averages and queue length */
 	fscanf(fp, "%d.%d %d.%d %d.%d %ld/%d %*d\n",
 	       &load_tmp[0], &st_queue->load_avg_1,
@@ -463,7 +529,7 @@ void read_vmstat_swap(struct stats_swap *st_swap)
 			sscanf(line + 8, "%lu", &st_swap->pswpout);
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -528,7 +594,7 @@ void read_vmstat_paging(struct stats_paging *st_paging)
 			st_paging->pgscan_direct += pgtmp;
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -559,7 +625,7 @@ void read_diskstats_io(struct stats_io *st_io)
 		if (sscanf(line, "%u %u %s %lu %*u %lu %*u %lu %*u %lu",
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec, &wr_ios, &wr_sec) == 7) {
-			
+
 			if (is_device(dev_name, IGNORE_VIRTUAL_DEVICES)) {
 				/*
 				 * OK: It's a (real) device and not a partition.
@@ -573,7 +639,7 @@ void read_diskstats_io(struct stats_io *st_io)
 			}
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -611,7 +677,7 @@ void read_diskstats_disk(struct stats_disk *st_disk, int nbr, int read_part)
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec, &rd_ticks, &wr_ios, &wr_sec, &wr_ticks,
 			   &tot_ticks, &rq_ticks) == 11) {
-			
+
 			if (!rd_ios && !wr_ios)
 				/* Unused device: Ignore it */
 				continue;
@@ -686,7 +752,7 @@ void read_tty_driver_serial(struct stats_serial *st_serial, int nbr)
 			if ((p = strstr(line, "oe:")) != NULL) {
 				sscanf(p + 3, "%u", &st_serial_i->overrun);
 			}
-			
+
 			sl++;
 		}
 	}
@@ -709,7 +775,7 @@ void read_kernel_tables(struct stats_ktables *st_ktables)
 {
 	FILE *fp;
 	unsigned int parm;
-	
+
 	/* Open /proc/sys/fs/dentry-state file */
 	if ((fp = fopen(FDENTRY_STATE, "r")) != NULL) {
 		fscanf(fp, "%*d %u",
@@ -775,7 +841,7 @@ int read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return 0;
-	
+
 	while ((fgets(line, sizeof(line), fp) != NULL) && (dev < nbr)) {
 
 		pos = strcspn(line, ":");
@@ -798,7 +864,7 @@ int read_net_dev(struct stats_net_dev *st_net_dev, int nbr)
 	}
 
 	fclose(fp);
-	
+
 	return dev;
 }
 
@@ -820,26 +886,26 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 	struct stats_net_dev *st_net_dev_i;
 	char filename[128], duplex[32];
 	int dev, n;
-	
+
 	for (dev = 0; dev < nbr; dev++) {
-		
+
 		st_net_dev_i = st_net_dev + dev;
-		
+
 		/* Read speed info */
 		sprintf(filename, IF_DUPLEX, st_net_dev_i->interface);
-		
+
 		if ((fp = fopen(filename, "r")) == NULL)
 			/* Cannot read NIC duplex */
 			continue;
-		
+
 		n = fscanf(fp, "%s", duplex);
-		
+
 		fclose(fp);
-		
+
 		if (n != 1)
 			/* Cannot read NIC duplex */
 			continue;
-		
+
 		if (!strcmp(duplex, K_DUPLEX_FULL)) {
 			st_net_dev_i->duplex = C_DUPLEX_FULL;
 		}
@@ -848,16 +914,16 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 		}
 		else
 			continue;
-		
+
 		/* Read speed info */
 		sprintf(filename, IF_SPEED, st_net_dev_i->interface);
-		
+
 		if ((fp = fopen(filename, "r")) == NULL)
 			/* Cannot read NIC speed */
 			continue;
-		
+
 		fscanf(fp, "%u", &st_net_dev_i->speed);
-		
+
 		fclose(fp);
 	}
 }
@@ -934,7 +1000,7 @@ void read_net_nfs(struct stats_net_nfs *st_net_nfs)
 		return;
 
 	memset(st_net_nfs, 0, STATS_NET_NFS_SIZE);
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "rpc ", 4)) {
@@ -944,7 +1010,7 @@ void read_net_nfs(struct stats_net_nfs *st_net_nfs)
 		else if (!strncmp(line, "proc3 ", 6)) {
 			sscanf(line + 6, "%*u %*u %u %*u %*u %u %*u %u %u",
 			       &getattcnt, &accesscnt, &readcnt, &writecnt);
-			
+
 			st_net_nfs->nfs_getattcnt += getattcnt;
 			st_net_nfs->nfs_accesscnt += accesscnt;
 			st_net_nfs->nfs_readcnt   += readcnt;
@@ -954,7 +1020,7 @@ void read_net_nfs(struct stats_net_nfs *st_net_nfs)
 			sscanf(line + 6, "%*u %*u %u %u "
 			       "%*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %u %u",
 			       &readcnt, &writecnt, &accesscnt, &getattcnt);
-			
+
 			st_net_nfs->nfs_getattcnt += getattcnt;
 			st_net_nfs->nfs_accesscnt += accesscnt;
 			st_net_nfs->nfs_readcnt   += readcnt;
@@ -984,7 +1050,7 @@ void read_net_nfsd(struct stats_net_nfsd *st_net_nfsd)
 
 	if ((fp = fopen(NET_RPC_NFSD, "r")) == NULL)
 		return;
-	
+
 	memset(st_net_nfsd, 0, STATS_NET_NFSD_SIZE);
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
@@ -1010,7 +1076,7 @@ void read_net_nfsd(struct stats_net_nfsd *st_net_nfsd)
 			st_net_nfsd->nfsd_accesscnt += accesscnt;
 			st_net_nfsd->nfsd_readcnt   += readcnt;
 			st_net_nfsd->nfsd_writecnt  += writecnt;
-			
+
 		}
 		else if (!strncmp(line, "proc4ops ", 9)) {
 			sscanf(line + 9, "%*u %*u %*u %*u %u "
@@ -1018,7 +1084,7 @@ void read_net_nfsd(struct stats_net_nfsd *st_net_nfsd)
 			       "%*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %u "
 			       "%*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %*u %u",
 			       &accesscnt, &getattcnt, &readcnt, &writecnt);
-			
+
 			st_net_nfsd->nfsd_getattcnt += getattcnt;
 			st_net_nfsd->nfsd_accesscnt += accesscnt;
 			st_net_nfsd->nfsd_readcnt   += readcnt;
@@ -1048,7 +1114,7 @@ void read_net_sock(struct stats_net_sock *st_net_sock)
 
 	if ((fp = fopen(NET_SOCKSTAT, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "sockets:", 8)) {
@@ -1098,7 +1164,7 @@ void read_net_ip(struct stats_net_ip *st_net_ip)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Ip:", 3)) {
@@ -1113,7 +1179,7 @@ void read_net_ip(struct stats_net_ip *st_net_ip)
 				       &st_net_ip->ReasmOKs,
 				       &st_net_ip->FragOKs,
 				       &st_net_ip->FragCreates);
-				
+
 				break;
 			}
 			else {
@@ -1144,7 +1210,7 @@ void read_net_eip(struct stats_net_eip *st_net_eip)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Ip:", 3)) {
@@ -1159,7 +1225,7 @@ void read_net_eip(struct stats_net_eip *st_net_eip)
 				       &st_net_eip->OutNoRoutes,
 				       &st_net_eip->ReasmFails,
 				       &st_net_eip->FragFails);
-				
+
 				break;
 			}
 			else {
@@ -1190,7 +1256,7 @@ void read_net_icmp(struct stats_net_icmp *st_net_icmp)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Icmp:", 5)) {
@@ -1243,7 +1309,7 @@ void read_net_eicmp(struct stats_net_eicmp *st_net_eicmp)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Icmp:", 5)) {
@@ -1293,7 +1359,7 @@ void read_net_tcp(struct stats_net_tcp *st_net_tcp)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Tcp:", 4)) {
@@ -1335,7 +1401,7 @@ void read_net_etcp(struct stats_net_etcp *st_net_etcp)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Tcp:", 4)) {
@@ -1378,7 +1444,7 @@ void read_net_udp(struct stats_net_udp *st_net_udp)
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Udp:", 4)) {
@@ -1418,7 +1484,7 @@ void read_net_sock6(struct stats_net_sock6 *st_net_sock6)
 
 	if ((fp = fopen(NET_SOCKSTAT6, "r")) == NULL)
 		return;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "TCP6:", 5)) {
@@ -1494,7 +1560,7 @@ void read_net_ip6(struct stats_net_ip6 *st_net_ip6)
 			sscanf(line + 15, "%llu", &st_net_ip6->FragCreates6);
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -1553,7 +1619,7 @@ void read_net_eip6(struct stats_net_eip6 *st_net_eip6)
 			sscanf(line + 19, "%llu", &st_net_eip6->InTruncatedPkts6);
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -1630,7 +1696,7 @@ void read_net_icmp6(struct stats_net_icmp6 *st_net_icmp6)
 			sscanf(line + 31, "%lu", &st_net_icmp6->OutNeighborAdvertisements6);
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -1689,7 +1755,7 @@ void read_net_eicmp6(struct stats_net_eicmp6 *st_net_eicmp6)
 			sscanf(line + 19, "%lu", &st_net_eicmp6->OutPktTooBigs6);
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -1727,7 +1793,7 @@ void read_net_udp6(struct stats_net_udp6 *st_net_udp6)
 			sscanf(line + 13, "%lu", &st_net_udp6->InErrors6);
 		}
 	}
-	
+
 	fclose(fp);
 }
 
@@ -1750,26 +1816,26 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 	char line[1024];
 	int proc_nb = 0, nr = 0;
 	unsigned int ifreq, dfreq;
-	
+
 	if ((fp = fopen(CPUINFO, "r")) == NULL)
 		return;
-	
+
 	st_pwr_cpufreq->cpufreq = 0;
-	
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
-		
+
 		if (!strncmp(line, "processor\t", 10)) {
 			sscanf(strchr(line, ':') + 1, "%d", &proc_nb);
 		}
-		
+
 		else if (!strncmp(line, "cpu MHz\t", 8)) {
 			sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
-			
+
 			if (proc_nb < (nbr - 1)) {
 				/* Save current CPU frequency */
 				st_pwr_cpufreq_i = st_pwr_cpufreq + proc_nb + 1;
 				st_pwr_cpufreq_i->cpufreq = ifreq * 100 + dfreq / 10;
-				
+
 				/* Also save it to compute an average CPU frequency */
 				st_pwr_cpufreq->cpufreq += st_pwr_cpufreq_i->cpufreq;
 				nr++;
@@ -1786,9 +1852,9 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 			}
 		}
 	}
-	
+
 	fclose(fp);
-	
+
 	if (nr) {
 		/* Compute average CPU frequency for this machine */
 		st_pwr_cpufreq->cpufreq /= nr;
@@ -1920,7 +1986,7 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 		       &st_pwr_usb->product_id);
 		fclose(fp);
 	}
-	
+
 	/* Read USB device max power consumption */
 	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_BMAXPOWER);
@@ -2022,16 +2088,16 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 
 	while ((fgets(line, sizeof(line), fp) != NULL) && (fs < nbr)) {
 		if (line[0] == '/') {
-			
+
 			/* Read current filesystem name and mount point */
 			sscanf(line, "%71s %127s", fs_name, mountp);
-			
+
 			/* Replace octal codes */
 			oct2chr(mountp);
-			
+
 			if ((statfs(mountp, &buf) < 0) || (!buf.f_blocks))
 				continue;
-			
+
 			st_filesystem_i = st_filesystem + fs++;
 			st_filesystem_i->f_blocks = buf.f_blocks * buf.f_bsize;
 			st_filesystem_i->f_bfree  = buf.f_bfree * buf.f_bsize;

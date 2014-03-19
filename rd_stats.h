@@ -166,9 +166,25 @@ struct stats_memory {
 	unsigned long activekb	__attribute__ ((aligned (8)));
 	unsigned long inactkb	__attribute__ ((aligned (8)));
 	unsigned long dirtykb	__attribute__ ((aligned (8)));
+	unsigned long anonkb	__attribute__ ((aligned (8)));
+	unsigned long slabkb	__attribute__ ((aligned (8)));
+	unsigned long pagetblkb	__attribute__ ((aligned (8)));
+	unsigned long vmallocusdkb	__attribute__ ((aligned (8)));
+	unsigned long krnstckkb	__attribute__ ((aligned (8)));
 };
 
 #define STATS_MEMORY_SIZE	(sizeof(struct stats_memory))
+
+/* Structure for memory and swap space utilization statistics */
+struct stats_memory_ext0 {
+	unsigned long anonkb	__attribute__ ((aligned (8)));
+	unsigned long slabkb	__attribute__ ((aligned (8)));
+	unsigned long pagetblkb	__attribute__ ((aligned (8)));
+	unsigned long vmallocusedkb	__attribute__ ((aligned (8)));
+	unsigned long krnstckkb	__attribute__ ((aligned (8)));
+};
+
+#define STATS_MEMORY_EXT0_SIZE	(sizeof(struct stats_memory_ext0))
 
 /* Structure for kernel tables statistics */
 struct stats_ktables {
@@ -557,6 +573,8 @@ extern void
 	read_stat_irq(struct stats_irq *, int);
 extern void
 	read_meminfo(struct stats_memory *);
+extern void
+	read_meminfo_ext0(struct stats_memory_ext0 *);
 extern void
 	read_uptime(unsigned long long *);
 
