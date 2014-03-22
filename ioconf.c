@@ -159,7 +159,7 @@ int ioc_init(void)
 		strncpy(ioconf_name, IOCONF, 64);
 	}
 	ioconf_name[63] = '\0';
-	
+
 	/* Init ioc_refnr array */
 	memset(ioc_refnr, 0, sizeof(ioc_refnr));
 

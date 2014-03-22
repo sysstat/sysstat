@@ -166,7 +166,7 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
 				    unsigned int cpu_nr)
 {
 	static int sep = FALSE;
-	
+
 	if (action & F_BEGIN) {
 		printf(",\n");
 		xprintf((*tab)++, "\"restarts\": [");
@@ -322,7 +322,7 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date,
 				    struct file_header *file_hdr)
 {
 	static int sep = FALSE;
-	
+
 	if (action & F_BEGIN) {
 		printf(",\n");
 		xprintf((*tab)++, "\"comments\": [");
@@ -385,7 +385,7 @@ __printf_funct_t print_xml_statistics(int *tab, int action)
 __printf_funct_t print_json_statistics(int *tab, int action)
 {
 	static int sep = FALSE;
-	
+
 	if (action & F_BEGIN) {
 		printf(",\n");
 		xprintf((*tab)++, "\"statistics\": [");
@@ -499,7 +499,7 @@ __printf_funct_t print_xml_header(int *tab, int action, char *dfile,
 		       XML_DTD_VERSION);
 		printf("\"http://pagesperso-orange.fr/sebastien.godard/sysstat-%s.dtd\">\n",
 		       XML_DTD_VERSION);
-		
+
 		xprintf(*tab, "<sysstat>");
 
 		xprintf(++(*tab), "<sysdata-version>%s</sysdata-version>",
@@ -576,7 +576,7 @@ __printf_funct_t print_json_header(int *tab, int action, char *dfile,
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf0(*tab, "\"file-date\": \"%s\"", cur_time);
-		
+
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
 			printf(",\n");
@@ -632,10 +632,10 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
 				 cpu_nr > 1 ? cpu_nr - 1 : 1);
-		
+
 		printf(_("Number of CPU for last samples in file: %u\n"),
 		       file_hdr->sa_last_cpu_nr > 1 ? file_hdr->sa_last_cpu_nr - 1 : 1);
-		
+
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
 			printf(_("File time: "));
 			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
@@ -643,7 +643,7 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 		}
 
 		printf(_("Size of a long int: %d\n"), file_hdr->sa_sizeof_long);
-		
+
 		/* Number of activities (number of volatile activities) in file */
 		printf("sa_act_nr (sa_vol_act_nr): %u (%u)\n",
 		       file_hdr->sa_act_nr, file_hdr->sa_vol_act_nr);

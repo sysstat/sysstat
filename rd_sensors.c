@@ -70,7 +70,7 @@ void read_fan(struct stats_pwr_fan *st_pwr_fan, int nbr)
 				j = 0;
 				st_pwr_fan_i = st_pwr_fan + count;
 				sensors_snprintf_chip_name(st_pwr_fan_i->device, MAX_SENSORS_DEV_LEN, chip);
-				
+
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
 					if ((sub->type == SENSORS_SUBFEATURE_FAN_INPUT) &&
 					    (sub->flags & SENSORS_MODE_R)) {
@@ -124,7 +124,7 @@ void read_temp(struct stats_pwr_temp *st_pwr_temp, int nbr)
 				j = 0;
 				st_pwr_temp_i = st_pwr_temp + count;
 				sensors_snprintf_chip_name(st_pwr_temp_i->device, MAX_SENSORS_DEV_LEN, chip);
-				
+
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
 					if ((sub->type == SENSORS_SUBFEATURE_TEMP_INPUT) &&
 						(sub->flags & SENSORS_MODE_R)) {

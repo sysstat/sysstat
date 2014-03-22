@@ -191,7 +191,7 @@ void free_inactive_entries(void)
 void io_sys_init(void)
 {
 	int i;
-	
+
 	/* How many processors on this machine? */
 	cpu_nr = get_cpu_nr(~0, FALSE);
 
@@ -203,7 +203,7 @@ void io_sys_init(void)
 		perror("malloc");
 		exit(4);
 	}
-	
+
 	/* Allocate structures for number of NFS directories found */
 	for (i = 0; i < 2; i++) {
 		if ((st_ionfs[i] =
@@ -227,7 +227,7 @@ void io_sys_free(void)
 	for (i = 0; i < 2; i++) {
 		free(st_ionfs[i]);
 	}
-	
+
 	free(st_hdr_ionfs);
 }
 
@@ -589,7 +589,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
-	
+
 	do {
 		if (cpu_nr > 1) {
 			/*
@@ -660,7 +660,7 @@ int main(int argc, char **argv)
 					/* Display an easy-to-read NFS report */
 					flags |= I_D_HUMAN_READ;
 					break;
-	
+
 				case 'k':
 					if (DISPLAY_MEGABYTES(flags)) {
 						usage(argv[0]);
@@ -686,7 +686,7 @@ int main(int argc, char **argv)
 					/* Print version number and exit */
 					print_version();
 					break;
-	
+
 				default:
 					usage(argv[0]);
 				}

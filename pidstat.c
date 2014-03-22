@@ -172,7 +172,7 @@ void salloc_pid(unsigned int len)
 void sfree_pid(void)
 {
 	int i;
-	
+
 	for (i = 0; i < 3; i++) {
 		free(st_pid_list[i]);
 	}
@@ -261,7 +261,7 @@ int update_pid_array(unsigned int *pid_array_nr, unsigned int pid)
 void print_comm(struct pid_stats *pst)
 {
 	char *p;
-	
+
 	if (DISPLAY_CMDLINE(pidflag) && strlen(pst->cmdline)) {
 		p = pst->cmdline;
 	}
@@ -506,13 +506,13 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
 		return 1;
 
 	memset(line, 0, MAX_CMDLINE_LEN);
-	
+
 	if ((len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp)) < 0) {
 		/* Nothing to read doesn't mean that process no longer exists */
 		fclose(fp);
 		return 1;
 	}
-	
+
 	for (i = 0; i < len; i++) {
 		if (line[i] == '\0') {
 			line[i] = ' ';
@@ -625,7 +625,7 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 		pst->flags |= F_NO_PID_FD;
 		return 0;
 	}
-	
+
 	pst->fd_nr = 0;
 
 	/* Count number of entries if fd directory */
@@ -670,7 +670,7 @@ int read_pid_stats(unsigned int pid, struct pid_stats *pst,
 		if (read_proc_pid_cmdline(pid, pst, tgid))
 			return 1;
 	}
-	
+
 	if (read_proc_pid_status(pid, pst, tgid))
 		return 1;
 
@@ -678,7 +678,7 @@ int read_pid_stats(unsigned int pid, struct pid_stats *pst,
 		if (read_proc_pid_smap(pid, pst, tgid))
 			return 1;
 	}
-	
+
 	if (DISPLAY_KTAB(actflag)) {
 		if (read_proc_pid_fd(pid, pst, tgid))
 			return 1;
@@ -905,12 +905,12 @@ void read_stats(int curr)
 			if (drp) {
 				pst = st_pid_list[curr] + p++;
 				pid = atoi(drp->d_name);
-	
+
 				if (read_pid_stats(pid, pst, &thr_nr, 0)) {
 					/* Process has terminated */
 					pst->pid = 0;
 				}
-	
+
 				else if (DISPLAY_TID(pidflag)) {
 					/* Read stats for threads in task subdirectory */
 					read_task_stats(curr, pid, &p);
@@ -938,7 +938,7 @@ void read_stats(int curr)
 			if (p >= pid_nr)
 				break;
 			pst = st_pid_list[curr] + p++;
-	
+
 			if (pid_array[op]) {
 				/* PID should still exist. So read its stats */
 				if (read_pid_stats(pid_array[op], pst, &thr_nr, 0)) {
@@ -956,7 +956,7 @@ void read_stats(int curr)
 			pst = st_pid_list[curr] + q;
 			pst->pid = 0;
 		}
-		
+
 	}
 	/* else unknown command */
 }
@@ -1005,7 +1005,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 		/* Look for previous stats for same PID */
 		q = p;
-	
+
 		do {
 			*pstp = st_pid_list[prev] + q;
 			if (((*pstp)->pid == (*pstc)->pid) &&
@@ -1026,7 +1026,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 		if (DISPLAY_ACTIVE_PID(pidflag)) {
 			int isActive = FALSE;
-			
+
 			/* Check that it's an "active" process */
 			if (DISPLAY_CPU(activity)) {
 				/* User time already includes guest time */
@@ -1048,7 +1048,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 					}
 				}
 			}
-			
+
 			if (DISPLAY_MEM(activity) && (!isActive)) {
 				if (((*pstc)->minflt != (*pstp)->minflt) ||
 				    ((*pstc)->majflt != (*pstp)->majflt)) {
@@ -1100,7 +1100,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 					isActive = TRUE;
 				}
 			}
-			
+
 			if (DISPLAY_KTAB(activity) && (!isActive) &&
 				/* /proc/#/fd directory should be readable */
 				!(NO_PID_FD((*pstc)->flags))) {
@@ -1109,13 +1109,13 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 					isActive = TRUE;
 				}
 			}
-			
+
 			/* If PID isn't active for any of the activities then return */
 			if (!isActive)
 				return -1;
 		}
 	}
-	
+
 	else if (DISPLAY_PID(pidflag)) {
 		*pstp = st_pid_list[prev] + p;
 		if (!(*pstp)->pid) {
@@ -1136,7 +1136,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 		if (regcomp(&regex, commstr, REG_EXTENDED | REG_NOSUB) != 0)
 			/* Error in preparing regex structure */
 			return -1;
-		
+
 		rc = regexec(&regex, (*pstc)->comm, 0, NULL, 0);
 		regfree(&regex);
 
@@ -1144,7 +1144,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			/* regex pattern not found in command name */
 			return -1;
 	}
-	
+
 	if (USER_STRING(pidflag)) {
 		if ((pwdent = getpwuid((*pstc)->uid)) != NULL) {
 			if (strcmp(pwdent->pw_name, userstr))
@@ -1176,9 +1176,9 @@ void __print_line_id(struct pid_stats *pst, char c)
 	else {
 		printf(" %5d", pst->uid);
 	}
-	
+
 	if (DISPLAY_TID(pidflag)) {
-		
+
 		if (pst->tgid) {
 			/* This is a TID */
 			sprintf(format, "         %c %%9u", c);
@@ -1207,7 +1207,7 @@ void __print_line_id(struct pid_stats *pst, char c)
 void print_line_id(char *timestamp, struct pid_stats *pst)
 {
 	printf("%-11s", timestamp);
-	
+
 	__print_line_id(pst, '-');
 }
 
@@ -1337,7 +1337,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				printf(" %7u", pstc->fd_nr);
 			}
 		}
-		
+
 		print_comm(pstc);
 		again = 1;
 	}
@@ -1452,11 +1452,11 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 	}
 
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if (get_pid_to_display(prev, curr, p, P_A_CPU, P_TASK,
 				       &pstc, &pstp) <= 0)
 			continue;
-	
+
 		print_line_id(curr_string, pstc);
 		printf(" %7.2f %7.2f %7.2f %7.2f",
 		       (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
@@ -1519,17 +1519,17 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 	}
 
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_CPU, P_CHILD,
 					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
-	
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
 			pstc->uc_asum_count = pstp->uc_asum_count + 1;
 		}
-	
+
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
@@ -1566,7 +1566,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		print_comm(pstc);
 		again = 1;
 	}
-	
+
 	return again;
 }
 
@@ -1604,14 +1604,14 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 		PRINT_ID_HDR(prev_string, pidflag);
 		printf("  minflt/s  majflt/s     VSZ    RSS   %%MEM  Command\n");
 	}
-	
+
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_MEM, P_TASK,
 					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
-	
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
 			pstc->total_vsz = pstp->total_vsz + pstc->vsz;
@@ -1624,7 +1624,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		
+
 		printf(" %9.2f %9.2f ",
 		       S_VALUE(pstp->minflt, pstc->minflt, itv),
 		       S_VALUE(pstp->majflt, pstc->majflt, itv));
@@ -1643,7 +1643,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 			       pstc->rss,
 			       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
-		
+
 		print_comm(pstc);
 		again = 1;
 	}
@@ -1683,9 +1683,9 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 		PRINT_ID_HDR(prev_string, pidflag);
 		printf(" minflt-nr majflt-nr  Command\n");
 	}
-	
+
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_MEM, P_CHILD,
 					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
@@ -1695,7 +1695,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 		if (!disp_avg) {
 			pstc->rc_asum_count = pstp->rc_asum_count + 1;
 		}
-	
+
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
@@ -1754,14 +1754,14 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 		PRINT_ID_HDR(prev_string, pidflag);
 		printf(" StkSize  StkRef  Command\n");
 	}
-	
+
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_STACK, P_NULL,
 					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
-	
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
 			pstc->total_stack_size = pstp->total_stack_size + pstc->stack_size;
@@ -1774,7 +1774,7 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		
+
 		if (disp_avg) {
 			printf(" %7.0f %7.0f",
 			       (double) pstc->total_stack_size / pstc->sk_asum_count,
@@ -1834,16 +1834,16 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
-		
+
 		/* This will be used to compute average delays */
 		if (!disp_avg) {
 			pstc->delay_asum_count = pstp->delay_asum_count + 1;
 		}
-		
+
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
-	
+
 		print_line_id(curr_string, pstc);
 		if (!NO_PID_IO(pstc->flags)) {
 			printf(" %9.2f %9.2f %9.2f",
@@ -1865,7 +1865,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		else {
 			printf(" %7llu", pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
 		}
-		
+
 		print_comm(pstc);
 		again = 1;
 	}
@@ -1908,11 +1908,11 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 	}
 
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if (get_pid_to_display(prev, curr, p, P_A_CTXSW, P_NULL,
 				       &pstc, &pstp) <= 0)
 			continue;
-	
+
 		print_line_id(curr_string, pstc);
 		printf(" %9.2f %9.2f",
 		       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
@@ -1959,14 +1959,14 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 		printf(" threads   fd-nr");
 		printf("  Command\n");
 	}
-	
+
 	for (p = 0; p < pid_nr; p++) {
-	
+
 		if ((rc = get_pid_to_display(prev, curr, p, P_A_KTAB, P_NULL,
 					     &pstc, &pstp)) == 0)
 			/* PID no longer exists */
 			continue;
-	
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
 			pstc->total_threads = pstp->total_threads + pstc->threads;
@@ -2176,7 +2176,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
-	
+
 	if (cpu_nr > 1) {
 		/*
 		 * Read system uptime (only for SMP machines).
@@ -2224,7 +2224,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	if (sigint_caught)
 		/* SIGINT signal caught during first interval: Exit immediately */
 		return;
-	
+
 	do {
 		/* Get time */
 		get_localtime(&ps_tstamp[curr], 0);
@@ -2261,9 +2261,9 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		}
 
 		if (count) {
-			
+
 			pause();
-	
+
 			if (sigint_caught) {
 				/* SIGINT signal caught => Display average stats */
 				count = 0;
@@ -2305,13 +2305,13 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
-	
+
 	/* Get HZ */
 	get_HZ();
 
 	/* Compute page shift in kB */
 	get_kb_shift();
-	
+
 	/* Allocate structures for device list */
 	if (argc > 1) {
 		salloc_pid_array((argc / 2) + count_csvalues(argc, argv));
@@ -2387,7 +2387,7 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 		}
-		
+
 		/* Option used individually. See below for grouped option */
 		else if (!strcmp(argv[opt], "-U")) {
 			/* Display username instead of UID */
@@ -2413,7 +2413,7 @@ int main(int argc, char **argv)
 					actflag |= P_A_IO;
 					dis_hdr++;
 					break;
-					
+
 				case 'h':
 					/* Display stats on one line */
 					pidflag |= P_D_ONELINE;
@@ -2423,24 +2423,24 @@ int main(int argc, char **argv)
 					/* IRIX mode off */
 					pidflag |= P_F_IRIX_MODE;
 					break;
-					
+
 				case 'l':
 					/* Display whole command line */
 					pidflag |= P_D_CMDLINE;
 					break;
-	
+
 				case 'r':
 					/* Display memory usage */
 					actflag |= P_A_MEM;
 					dis_hdr++;
 					break;
-					
+
 				case 's':
 					/* Display stack sizes */
 					actflag |= P_A_STACK;
 					dis_hdr++;
 					break;
-	
+
 				case 't':
 					/* Display stats for threads */
 					pidflag |= P_D_TID;
@@ -2450,7 +2450,7 @@ int main(int argc, char **argv)
 					/* When option is grouped, it cannot take an arg */
 					pidflag |= P_D_USERNAME;
 					break;
-					
+
 				case 'u':
 					/* Display CPU usage */
 					actflag |= P_A_CPU;
@@ -2473,7 +2473,7 @@ int main(int argc, char **argv)
 					actflag |= P_A_CTXSW;
 					dis_hdr++;
 					break;
-	
+
 				default:
 					usage(argv[0]);
 				}
@@ -2540,7 +2540,7 @@ int main(int argc, char **argv)
 
 	/* Main loop */
 	rw_pidstat_loop(dis_hdr, rows);
-	
+
 	/* Free structures */
 	free(pid_array);
 	sfree_pid();

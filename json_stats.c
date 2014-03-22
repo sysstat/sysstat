@@ -123,20 +123,20 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 	}
 
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
-		
+
 		scc = (struct stats_cpu *) ((char *) a->buf[curr]  + i * a->msize);
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
-			
+
 			/* Yes: Display current CPU stats */
 
 			if (sep) {
 				printf(",\n");
 			}
 			sep = TRUE;
-			
+
 			if (!i) {
 				/* This is CPU "all" */
 				strcpy(cpuno, "all");
@@ -171,7 +171,7 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 					g_itv = get_per_cpu_interval(scc, scp);
 					cpu_offline = FALSE;
 				}
-				
+
 				if (!g_itv) {
 					/* Current CPU is offline or tickless */
 					if (DISPLAY_CPU_DEF(a->opt_flags)) {
@@ -308,17 +308,17 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 	struct stats_irq *sic, *sip;
 	int sep = FALSE;
 	char irqno[8];
-	
+
 	xprintf(tab++, "\"interrupts\": [");
 
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
-		
+
 		/* Should current interrupt (including int "sum") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
-			
+
 			/* Yes: Display it */
 
 			if (sep) {
@@ -362,7 +362,7 @@ __print_funct_t json_print_swap_stats(struct activity *a, int curr, int tab,
 	struct stats_swap
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
-	
+
 	xprintf0(tab, "\"swap-pages\": {"
 		 "\"pswpin\": %.2f, "
 		 "\"pswpout\": %.2f}",
@@ -466,7 +466,7 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 	int sep = FALSE;
 
 	xprintf0(tab, "\"memory\": {");
-	
+
 	if (DISPLAY_MEM_AMT(a->opt_flags)) {
 
 		sep = TRUE;
@@ -525,7 +525,7 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		if (sep) {
 			printf(", ");
 		}
-		
+
 		printf("\"frmpg\": %.2f, "
 		       "\"bufpg\": %.2f, "
 		       "\"campg\": %.2f",
@@ -556,7 +556,7 @@ __print_funct_t json_print_ktables_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
-	
+
 	xprintf0(tab, "\"kernel\": {"
 		 "\"dentunusd\": %u, "
 		 "\"file-nr\": %u, "
@@ -584,7 +584,7 @@ __print_funct_t json_print_queue_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
-	
+
 	xprintf0(tab, "\"queue\": {"
 		 "\"runq-sz\": %lu, "
 		 "\"plist-sz\": %u, "
@@ -634,7 +634,7 @@ __print_funct_t json_print_serial_stats(struct activity *a, int curr, int tab,
 				printf(",\n");
 			}
 			sep = TRUE;
-			
+
 			xprintf0(tab, "{\"line\": %d, "
 				 "\"rcvin\": %.2f, "
 				 "\"xmtin\": %.2f, "
@@ -690,14 +690,14 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 
 		/* Compute extended statistics values */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
-		
+
 		dev_name = NULL;
 		persist_dev_name = NULL;
 
 		if (DISPLAY_PERSIST_NAME_S(flags)) {
 			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
 		}
-		
+
 		if (persist_dev_name) {
 			dev_name = persist_dev_name;
 		}
@@ -711,12 +711,12 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 						       USE_PRETTY_OPTION(flags));
 			}
 		}
-		
+
 		if (sep) {
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		xprintf0(tab, "{\"disk-device\": \"%s\", "
 			 "\"tps\": %.2f, "
 			 "\"rd_sec\": %.2f, "
@@ -767,7 +767,7 @@ __print_funct_t json_print_net_dev_stats(struct activity *a, int curr, int tab,
 
 	json_markup_network(tab, OPEN_JSON_MARKUP);
 	tab++;
-	
+
 	xprintf(tab++, "\"net-dev\": [");
 
 	for (i = 0; i < a->nr; i++) {
@@ -776,7 +776,7 @@ __print_funct_t json_print_net_dev_stats(struct activity *a, int curr, int tab,
 
 		if (!strcmp(sndc->interface, ""))
 			continue;
-		
+
 		j = check_net_dev_reg(a, curr, !curr, i);
 		sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
 
@@ -784,7 +784,7 @@ __print_funct_t json_print_net_dev_stats(struct activity *a, int curr, int tab,
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 		ifutil = compute_ifutil(sndc, rxkb, txkb);
@@ -843,7 +843,7 @@ __print_funct_t json_print_net_edev_stats(struct activity *a, int curr, int tab,
 
 	json_markup_network(tab, OPEN_JSON_MARKUP);
 	tab++;
-	
+
 	xprintf(tab++, "\"net-edev\": [");
 
 	for (i = 0; i < a->nr; i++) {
@@ -852,10 +852,10 @@ __print_funct_t json_print_net_edev_stats(struct activity *a, int curr, int tab,
 
 		if (!strcmp(snedc->interface, ""))
 			continue;
-		
+
 		j = check_net_edev_reg(a, curr, !curr, i);
 		snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
-		
+
 		if (sep) {
 			printf(",\n");
 		}
@@ -911,7 +911,7 @@ __print_funct_t json_print_net_nfs_stats(struct activity *a, int curr, int tab,
 	struct stats_net_nfs
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1010,7 +1010,7 @@ __print_funct_t json_print_net_sock_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_net_sock
 		*snsc = (struct stats_net_sock *) a->buf[curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1055,7 +1055,7 @@ __print_funct_t json_print_net_ip_stats(struct activity *a, int curr, int tab,
 	struct stats_net_ip
 		*snic = (struct stats_net_ip *) a->buf[curr],
 		*snip = (struct stats_net_ip *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1104,7 +1104,7 @@ __print_funct_t json_print_net_eip_stats(struct activity *a, int curr, int tab,
 	struct stats_net_eip
 		*sneic = (struct stats_net_eip *) a->buf[curr],
 		*sneip = (struct stats_net_eip *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1153,7 +1153,7 @@ __print_funct_t json_print_net_icmp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_icmp
 		*snic = (struct stats_net_icmp *) a->buf[curr],
 		*snip = (struct stats_net_icmp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1214,7 +1214,7 @@ __print_funct_t json_print_net_eicmp_stats(struct activity *a, int curr, int tab
 	struct stats_net_eicmp
 		*sneic = (struct stats_net_eicmp *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1271,7 +1271,7 @@ __print_funct_t json_print_net_tcp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_tcp
 		*sntc = (struct stats_net_tcp *) a->buf[curr],
 		*sntp = (struct stats_net_tcp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1312,7 +1312,7 @@ __print_funct_t json_print_net_etcp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_etcp
 		*snetc = (struct stats_net_etcp *) a->buf[curr],
 		*snetp = (struct stats_net_etcp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1355,7 +1355,7 @@ __print_funct_t json_print_net_udp_stats(struct activity *a, int curr, int tab,
 	struct stats_net_udp
 		*snuc = (struct stats_net_udp *) a->buf[curr],
 		*snup = (struct stats_net_udp *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1395,7 +1395,7 @@ __print_funct_t json_print_net_sock6_stats(struct activity *a, int curr, int tab
 {
 	struct stats_net_sock6
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1436,7 +1436,7 @@ __print_funct_t json_print_net_ip6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_ip6
 		*snic = (struct stats_net_ip6 *) a->buf[curr],
 		*snip = (struct stats_net_ip6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1489,7 +1489,7 @@ __print_funct_t json_print_net_eip6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_eip6
 		*sneic = (struct stats_net_eip6 *) a->buf[curr],
 		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1544,7 +1544,7 @@ __print_funct_t json_print_net_icmp6_stats(struct activity *a, int curr, int tab
 	struct stats_net_icmp6
 		*snic = (struct stats_net_icmp6 *) a->buf[curr],
 		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1611,7 +1611,7 @@ __print_funct_t json_print_net_eicmp6_stats(struct activity *a, int curr, int ta
 	struct stats_net_eicmp6
 		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1666,7 +1666,7 @@ __print_funct_t json_print_net_udp6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_udp6
 		*snuc = (struct stats_net_udp6 *) a->buf[curr],
 		*snup = (struct stats_net_udp6 *) a->buf[!curr];
-	
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
 
@@ -1716,11 +1716,11 @@ __print_funct_t json_print_pwr_cpufreq_stats(struct activity *a, int curr, int t
 	tab++;
 
 	xprintf(tab++, "\"cpu-frequency\": [");
-	
+
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
-		
+
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
-	
+
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 
@@ -1737,14 +1737,14 @@ __print_funct_t json_print_pwr_cpufreq_stats(struct activity *a, int curr, int t
 				printf(",\n");
 			}
 			sep = TRUE;
-			
+
 			xprintf0(tab, "{\"number\": \"%s\", "
 				 "\"frequency\": %.2f}",
 				 cpuno,
 				 ((double) spc->cpufreq) / 100);
 		}
 	}
-	
+
 	printf("\n");
 	xprintf0(--tab, "]");
 	tab--;
@@ -1788,7 +1788,7 @@ __print_funct_t json_print_pwr_fan_stats(struct activity *a, int curr, int tab,
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		xprintf0(tab, "{\"number\": %d, "
 			 "\"rpm\": %llu, "
 			 "\"drpm\": %llu, "
@@ -1842,7 +1842,7 @@ __print_funct_t json_print_pwr_temp_stats(struct activity *a, int curr, int tab,
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		xprintf0(tab, "{\"number\": %d, "
 			 "\"degC\": %.2f, "
 			 "\"percent-temp\": %.2f, "
@@ -1898,7 +1898,7 @@ __print_funct_t json_print_pwr_in_stats(struct activity *a, int curr, int tab,
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		xprintf0(tab, "{\"number\": %d, "
 			 "\"inV\": %.2f, "
 			 "\"percent-in\": %.2f, "
@@ -2068,7 +2068,7 @@ __print_funct_t json_print_pwr_usb_stats(struct activity *a, int curr, int tab,
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		xprintf0(tab, "{\"bus_number\": %d, "
 			 "\"idvendor\": \"%x\", "
 			 "\"idprod\": \"%x\", "
@@ -2124,7 +2124,7 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 			printf(",\n");
 		}
 		sep = TRUE;
-		
+
 		xprintf0(tab, "{\"filesystem\": \"%s\", "
 			 "\"MBfsfree\": %.0f, "
 			 "\"MBfsused\": %.0f, "

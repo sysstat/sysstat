@@ -111,7 +111,7 @@ void usage(char *progname)
 void set_disk_output_unit(void)
 {
 	char *e;
-	
+
 	if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags))
 		return;
 
@@ -143,7 +143,7 @@ void alarm_handler(int sig)
 void init_stats(void)
 {
 	int i;
-	
+
 	/* Allocate structures for CPUs "all" and 0 */
 	for (i = 0; i < 2; i++) {
 		if ((st_cpu[i] = (struct stats_cpu *) malloc(STATS_CPU_SIZE * 2)) == NULL) {
@@ -332,7 +332,7 @@ void io_sys_init(void)
 
 	/* Also allocate stat structures for "group" devices */
 	iodev_nr += group_nr;
-	
+
 	/*
 	 * Allocate structures for number of disks found, but also
 	 * for groups of devices if option -g has been entered on the command line.
@@ -398,7 +398,7 @@ void presave_device_list(void)
 void io_sys_free(void)
 {
 	int i;
-	
+
 	for (i = 0; i < 2; i++) {
 		/* Free CPU structures */
 		free(st_cpu[i]);
@@ -406,7 +406,7 @@ void io_sys_free(void)
 		/* Free I/O device structures */
 		free(st_iodev[i]);
 	}
-	
+
 	free(st_hdr_iodev);
 }
 
@@ -496,7 +496,7 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
 	/* Try to read given stat file */
 	if ((fp = fopen(filename, "r")) == NULL)
 		return 0;
-	
+
 	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u",
 		   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
 		   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks);
@@ -522,7 +522,7 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
 		sdev.wr_ios     = rd_sec_or_wr_ios;
 		sdev.wr_sectors = rd_ticks_or_wr_sec;
 	}
-	
+
 	if ((i == 11) || !DISPLAY_EXTENDED(flags)) {
 		/*
 		 * In fact, we _don't_ save stats if it's a partition without
@@ -645,10 +645,10 @@ void read_sysfs_stat(int curr)
 			snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 				 SYSFS_BLOCK, drd->d_name, S_STAT);
 			filename[MAX_PF_NAME - 1] = '\0';
-	
+
 			/* If current entry is a directory, try to read its stat file */
 			ok = read_sysfs_file_stat(curr, filename, drd->d_name);
-	
+
 			/*
 			 * If '-p ALL' was entered on the command line,
 			 * also try to read stats for its partitions
@@ -907,7 +907,7 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
 	double r_await, w_await;
-	
+
 	/*
 	 * Counters overflows are possible, but don't need to be handled in
 	 * a special way: The difference is still properly calculated if the
@@ -932,9 +932,9 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	sdp.rd_sect   = ioj->rd_sectors;
 	sdc.wr_sect   = ioi->wr_sectors;
 	sdp.wr_sect   = ioj->wr_sectors;
-	
+
 	compute_ext_disk_stats(&sdc, &sdp, itv, &xds);
-	
+
 	r_await = (ioi->rd_ios - ioj->rd_ios) ?
 		  (ioi->rd_ticks - ioj->rd_ticks) /
 		  ((double) (ioi->rd_ios - ioj->rd_ios)) : 0.0;
@@ -1111,7 +1111,7 @@ void write_stats(int curr, struct tm *rectime)
 
 		for (i = 0; i < iodev_nr; i++, shi++) {
 			if (shi->used) {
-	
+
 				if (dlist_idx && !HAS_SYSFS(flags)) {
 					/*
 					 * With /proc/diskstats, stats for every device
@@ -1128,7 +1128,7 @@ void write_stats(int curr, struct tm *rectime)
 						/* Device not found in list: Don't display it */
 						continue;
 				}
-	
+
 				ioi = st_iodev[curr] + i;
 				ioj = st_iodev[!curr] + i;
 
@@ -1136,7 +1136,7 @@ void write_stats(int curr, struct tm *rectime)
 					if (!ioi->rd_ios && !ioi->wr_ios)
 						continue;
 				}
-				
+
 				if (DISPLAY_ZERO_OMIT(flags)) {
 					if ((ioi->rd_ios == ioj->rd_ios) &&
 						(ioi->wr_ios == ioj->wr_ios))
@@ -1198,7 +1198,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 {
 	int curr = 1;
 	int skip = 0;
-	
+
 	/* Should we skip first report? */
 	if (DISPLAY_OMIT_SINCE_BOOT(flags) && interval > 0) {
 		skip = 1;
@@ -1206,7 +1206,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
-	
+
 	do {
 		if (cpu_nr > 1) {
 			/*
@@ -1263,7 +1263,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		if (!skip) {
 			/* Print results */
 			write_stats(curr, rectime);
-			
+
 			if (count > 0) {
 				count--;
 			}
@@ -1319,7 +1319,7 @@ int main(int argc, char **argv)
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt])) &&
 			    (strncmp(argv[opt], "-", 1))) {
 				flags |= I_D_UNFILTERED;
-				
+
 				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
 					if (!strcmp(t, K_ALL)) {
 						flags |= I_D_PART_ALL;
@@ -1371,7 +1371,7 @@ int main(int argc, char **argv)
 			}
 			group_nr++;
 		}
-		
+
 		else if (!strcmp(argv[opt], "-j")) {
 			if (argv[++opt]) {
 				if (strnlen(argv[opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1) {
@@ -1444,7 +1444,7 @@ int main(int argc, char **argv)
 					/* Display stats in MB/s */
 					flags |= I_D_MEGABYTES;
 					break;
-	
+
 				case 'N':
 					/* Display device mapper logical name */
 					flags |= I_D_DEVMAP_NAME;
@@ -1464,7 +1464,7 @@ int main(int argc, char **argv)
 					/* Display timestamp */
 					flags |= I_D_TIMESTAMP;
 					break;
-	
+
 				case 'x':
 					/* Display extended stats */
 					flags |= I_D_EXTENDED;
@@ -1474,7 +1474,7 @@ int main(int argc, char **argv)
 					/* Don't display stats since system restart */
 					flags |= I_D_OMIT_SINCE_BOOT;
 					break;
-					
+
 				case 'z':
 					/* Omit output for devices with no activity */
 					flags |= I_D_ZERO_OMIT;
@@ -1484,7 +1484,7 @@ int main(int argc, char **argv)
 					/* Print version number and exit */
 					print_version();
 					break;
-	
+
 				default:
 					usage(argv[0]);
 				}
@@ -1499,7 +1499,7 @@ int main(int argc, char **argv)
 			 * then don't apply this rule any more.
 			 */
 			flags |= I_D_UNFILTERED;
-			
+
 			if (strcmp(argv[opt], K_ALL)) {
 				/* Store device name entered on the command line */
 				devname = device_name(argv[opt++]);
@@ -1540,7 +1540,7 @@ int main(int argc, char **argv)
 	if (!interval) {
 		count = 1;
 	}
-	
+
 	/* Default: Display CPU and DISK reports */
 	if (!report_set) {
 		flags |= I_D_CPU + I_D_DISK;
@@ -1603,6 +1603,6 @@ int main(int argc, char **argv)
 	/* Free structures */
 	io_sys_free();
 	sfree_dev_list();
-	
+
 	return 0;
 }

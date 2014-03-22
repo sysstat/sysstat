@@ -181,7 +181,7 @@ char *get_devname(unsigned int major, unsigned int minor, int pretty)
 	name = get_devname_from_sysfs(major, minor);
 	if (name != NULL)
 		return (name);
-	
+
 	name = ioc_name(major, minor);
 	if ((name != NULL) && strcmp(name, K_NODEV))
 		return (name);
@@ -1019,7 +1019,7 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 		    (act[p]->nr < 1) || (act[p]->nr2 < 1)) {
 			PANIC(1);
 		}
-		
+
 		memcpy(act[p]->buf[dest], act[p]->buf[src], act[p]->msize * act[p]->nr * act[p]->nr2);
 	}
 }
@@ -1110,9 +1110,9 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	/* Open sa data file */
 	if ((*ifd = open(dfile, O_RDONLY)) < 0) {
 		int saved_errno = errno;
-		
+
 		fprintf(stderr, _("Cannot open %s: %s\n"), dfile, strerror(errno));
-		
+
 		if ((saved_errno == ENOENT) && default_file_used) {
 			fprintf(stderr, _("Please check if data collecting is enabled\n"));
 		}
@@ -1138,12 +1138,12 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	}
 
 	SREALLOC(buffer, char, file_magic->header_size);
-	
+
 	/* Read sa data file standard header and allocate activity list */
 	sa_fread(*ifd, buffer, file_magic->header_size, HARD_SIZE);
 	memcpy(file_hdr, buffer, MINIMUM(file_magic->header_size, FILE_HEADER_SIZE));
 	free(buffer);
-	
+
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
 	fal = *file_actlst;
 
@@ -1164,7 +1164,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		if ((p = get_activity_position(act, fal->id)) < 0)
 			/* Unknown activity */
 			continue;
-		
+
 		if (act[p]->magic != fal->magic) {
 			/* Bad magical number */
 			if (ignore) {
@@ -1263,17 +1263,17 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
 	                           unsigned int act_id)
 {
 	int j, p;
-	
+
 	if ((p = get_activity_position(act, act_id)) < 0)
 		/* Ignore unknown activity */
 		return -1;
-	
+
 	act[p]->nr = act_nr;
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(act[p]->buf[j], void, act[p]->msize * act[p]->nr * act[p]->nr2);
 	}
-	
+
 	return 0;
 }
 
@@ -1304,11 +1304,11 @@ __nr_t read_vol_act_structures(int ifd, struct activity *act[], char *file,
 	struct file_activity file_act;
 	int item_nr = 0;
 	int i, rc;
-	
+
 	for (i = 0; i < vol_act_nr; i++) {
-		
+
 		sa_fread(ifd, &file_act, FILE_ACTIVITY_SIZE, HARD_SIZE);
-		
+
 		if (file_act.id) {
 			rc = reallocate_vol_act_structures(act, file_act.nr, file_act.id);
 			if ((rc == 0) && !item_nr) {
@@ -1317,7 +1317,7 @@ __nr_t read_vol_act_structures(int ifd, struct activity *act[], char *file,
 		}
 		/* else ignore empty structures that may exist */
 	}
-	
+
 	if (!item_nr) {
 		/* All volatile activities structures cannot be empty */
 		handle_invalid_sa_file(&ifd, file_magic, file, 0);
@@ -1390,12 +1390,12 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 		case 'F':
 			SELECT_ACTIVITY(A_FILESYSTEM);
 			break;
-			
+
 		case 'H':
 			p = get_activity_position(act, A_HUGE);
 			act[p]->options   |= AO_SELECTED;
 			break;
-			
+
 		case 'j':
 			if (argv[*opt + 1]) {
 				(*opt)++;
@@ -1420,7 +1420,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				return 1;
 			}
 			break;
-			
+
 		case 'p':
 			*flags |= S_F_DEV_PRETTY;
 			break;
@@ -1786,11 +1786,11 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 {
 	unsigned long long speed;
-	
+
 	if (st_net_dev->speed) {
-		
+
 		speed = st_net_dev->speed * 1000000;
-		
+
 		if (st_net_dev->duplex == C_DUPLEX_FULL) {
 			/* Full duplex */
 			if (rx > tx) {
@@ -1805,7 +1805,7 @@ double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 			return ((rx + tx) * 800 / speed);
 		}
 	}
-	
+
 	return 0;
 }
 

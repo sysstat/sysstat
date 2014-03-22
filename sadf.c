@@ -101,7 +101,7 @@ void usage(char *progname)
 void init_structures(void)
 {
 	int i;
-	
+
 	for (i = 0; i < 3; i++) {
 		memset(&record_hdr[i], 0, RECORD_HEADER_SIZE);
 	}
@@ -156,7 +156,7 @@ void check_format_options(void)
 
 	/* Get format position in array */
 	f_position = get_format_position(fmt, format);
-	
+
 	/* Check options consistency wrt output format */
 	if (!ACCEPT_HEADER_ONLY(fmt[f_position]->options)) {
 		/* Remove option -H */
@@ -216,7 +216,7 @@ void sadf_get_record_timestamp_struct(int curr, struct tm *rectime, struct tm *l
 	if (ltm) {
 		*rectime = *ltm;
 	}
-	
+
 	if (PRINT_TRUE_TIME(flags)) {
 		/* Option -t */
 		rectime->tm_hour = record_hdr[curr].hour;
@@ -438,14 +438,14 @@ void list_fields(unsigned int act_id)
 	unsigned int msk;
 	char *hl;
 	char hline[HEADER_LINE_LEN];
-	
+
 	printf("# hostname;interval;timestamp");
-	
+
 	for (i = 0; i < NR_ACT; i++) {
-		
+
 		if ((act_id != ALL_ACTIVITIES) && (act[i]->id != act_id))
 			continue;
-		
+
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			if (!HAS_MULTIPLE_OUTPUTS(act[i]->options)) {
 				printf(";%s", act[i]->hdr_line);
@@ -494,7 +494,7 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
 	int i;
 	char pre[80], temp[80];	/* Text at beginning of each line */
 	int isdb = (format == F_DB_OUTPUT);
-	
+
 	/* This substring appears on every output line, preformat it here */
 	snprintf(pre, 80, "%s%s%ld%s",
 		 file_hdr.sa_nodename, seps[isdb], dt, seps[isdb]);
@@ -514,10 +514,10 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
 	}
 
 	for (i = 0; i < NR_ACT; i++) {
-		
+
 		if ((act_id != ALL_ACTIVITIES) && (act[i]->id != act_id))
 			continue;
-		
+
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			(*act[i]->f_render)(act[i], isdb, pre, curr,
 					    NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
@@ -732,7 +732,7 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			/* JSON output */
 			if (CLOSE_MARKUP(act[i]->options) ||
 			    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
-				
+
 				if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 					printf(",");
 
@@ -809,7 +809,7 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
 		/* Don't forget to read the volatile activities structures */
 		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
 						     file_hdr.sa_vol_act_nr);
-		
+
 		if (!dp)
 			return;
 
@@ -877,7 +877,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 		perror("lseek");
 		exit(2);
 	}
-	
+
 	if (DISPLAY_FIELD_LIST(fmt[f_position]->options)) {
 		/* Print field list */
 		list_fields(act_id);
@@ -951,7 +951,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 void sr_act_nr(__nr_t save_act_nr[], int action)
 {
 	int i;
-	
+
 	if (action == DO_SAVE) {
 		/* Save number of items for all activities */
 		for (i = 0; i < NR_ACT; i++) {
@@ -1180,7 +1180,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 				/* Read new CPU count */
 				new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
 								     file_hdr.sa_vol_act_nr);
-				
+
 				/* Display RESTART records */
 				write_textual_restarts(0, tm_start.use, tm_end.use, tab,
 						       rectime, loctime, new_cpu_nr);
@@ -1288,7 +1288,7 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 	int eosaf = TRUE, reset = FALSE;
 	long cnt = 1;
 	off_t fpos;
-	
+
 	/* Read system statistics from file */
 	do {
 		/*
@@ -1345,10 +1345,10 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 		else {
 			/* For each requested activity... */
 			for (i = 0; i < NR_ACT; i++) {
-				
+
 				if (!id_seq[i])
 					continue;
-				
+
 				if ((p = get_activity_position(act, id_seq[i])) < 0) {
 					/* Should never happen */
 					PANIC(1);
@@ -1364,13 +1364,13 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 				}
 				else {
 					unsigned int optf, msk;
-					
+
 					optf = act[p]->opt_flags;
-					
+
 					for (msk = 1; msk < 0x10; msk <<= 1) {
 						if (act[p]->opt_flags & msk) {
 							act[p]->opt_flags &= msk;
-							
+
 							rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 									  act[p]->id, &reset, file_actlst,
 									  cpu_nr, rectime, loctime, file,
@@ -1461,7 +1461,7 @@ void read_stats_from_file(char dfile[])
 	}
 
 	close(ifd);
-	
+
 	free(file_actlst);
 	free_structures(act);
 }
@@ -1492,7 +1492,7 @@ int main(int argc, char **argv)
 #endif
 
 	tm_start.use = tm_end.use = FALSE;
-	
+
 	/* Allocate and init activity bitmaps */
 	allocate_bitmaps(act);
 
@@ -1618,7 +1618,7 @@ int main(int argc, char **argv)
 					case 't':
 						flags |= S_F_TRUE_TIME;
 						break;
-					
+
 					case 'U':
 						flags |= S_F_SEC_EPOCH;
 						break;
@@ -1714,7 +1714,7 @@ int main(int argc, char **argv)
 	    PRINT_SEC_EPOCH(flags)) > 1) {
 		usage(argv[0]);
 	}
-	
+
 	/*
 	 * Display all the contents of the daily data file if the count parameter
 	 * was not set on the command line.

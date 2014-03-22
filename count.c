@@ -472,17 +472,17 @@ int get_filesystem_nr(void)
 	/* Get current filesystem */
 	while (fgets(line, sizeof(line), fp) != NULL) {
 		if (line[0] == '/') {
-			
+
 			/* Read filesystem name and mount point */
 			sscanf(line, "%71s %127s", fs_name, mountp);
-			
+
 			/* Replace octal codes */
 			oct2chr(mountp);
-			
+
 			/* Check that total size is not null */
 			if (statfs(mountp, &buf) < 0)
 				continue;
-			
+
 			if (buf.f_blocks) {
 				fs++;
 			}

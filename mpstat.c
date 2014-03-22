@@ -417,7 +417,7 @@ void write_stats_core(int prev, int curr, int dis,
 			/* Check if we want stats about this proc */
 			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
 				continue;
-			
+
 			/*
 			 * If the CPU is offline then it is omited from /proc/stat
 			 * and the sum of all values is zero.
@@ -442,7 +442,7 @@ void write_stats_core(int prev, int curr, int dis,
 
 			/* Recalculate itv for current proc */
 			pc_itv = get_per_cpu_interval(scc, scp);
-			
+
 			if (!pc_itv) {
 				/*
 				 * If the CPU is tickless then there is no change in CPU values
@@ -526,7 +526,7 @@ void write_stats_core(int prev, int curr, int dis,
 			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 
 				/* This is an offline CPU */
-				
+
 				if (!DISPLAY_ONLINE_CPU(flags)) {
 					printf("%-11s %4d"
 					       "  %9.2f\n",
@@ -679,11 +679,11 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 			cp++;
 
 			p = st_ic[curr] + irq;
-			
+
 			li = line;
 			while (*li == ' ')
 				li++;
-			
+
 			len = strcspn(li, ":");
 			if (len >= MAX_IRQ_LEN) {
 				len = MAX_IRQ_LEN - 1;
@@ -706,7 +706,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 		}
 
 		fclose(fp);
-		
+
 		free(line);
 	}
 
@@ -756,7 +756,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		/* Read this file to display int per CPU or total nr of int per CPU */
 		read_interrupts_stat(INTERRUPTS, st_irqcpu, irqcpu_nr, 0);
 	}
-	
+
 	if (DISPLAY_SOFTIRQS(actflags)) {
 		read_interrupts_stat(SOFTIRQS, st_softirqcpu, softirqcpu_nr, 0);
 	}
@@ -798,7 +798,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	sigaction(SIGINT, &int_act, NULL);
 
 	pause();
-	
+
 	if (sigint_caught)
 		/* SIGINT signal caught during first interval: Exit immediately */
 		return;
@@ -850,11 +850,11 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		if (count > 0) {
 			count--;
 		}
-		
+
 		if (count) {
-			
+
 			pause();
-			
+
 			if (sigint_caught) {
 				/* SIGINT signal caught => Display average stats */
 				count = 0;
@@ -894,7 +894,7 @@ int main(int argc, char **argv)
 
 	/* What is the highest processor number on this machine? */
 	cpu_nr = get_cpu_nr(~0, TRUE);
-	
+
 	/* Calculate number of interrupts per processor */
 	irqcpu_nr = get_irqcpu_nr(INTERRUPTS, NR_IRQS, cpu_nr) +
 		    NR_IRQCPU_PREALLOC;
@@ -942,7 +942,7 @@ int main(int argc, char **argv)
 			if (argv[++opt]) {
 				flags |= F_P_OPTION;
 				dis_hdr++;
-				
+
 				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
 					if (!strcmp(t, K_ALL) || !strcmp(t, K_ON)) {
 						if (cpu_nr) {
@@ -989,7 +989,7 @@ int main(int argc, char **argv)
 					flags |= F_P_OPTION;
 					memset(cpu_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
 					break;
-					
+
 				case 'u':
 					/* Display CPU */
 					actflags |= M_D_CPU;
@@ -1043,7 +1043,7 @@ int main(int argc, char **argv)
 	if (count_bits(&actflags, sizeof(unsigned int)) > 1) {
 		dis_hdr = 9;
 	}
-	
+
 	if (!USE_P_OPTION(flags)) {
 		/* Option -P not used: Set bit 0 (global stats among all proc) */
 		*cpu_bitmap = 1;

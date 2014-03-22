@@ -144,7 +144,7 @@ time_t get_time(struct tm *rectime, int d_off)
 		}
 		utc++;
 	}
-	
+
 	if (utc == 2)
 		return get_gmtime(rectime, d_off);
 	else
@@ -169,7 +169,7 @@ int count_csvalues(int arg_c, char **arg_v)
 	int opt = 1;
 	int nr = 0;
 	char *t;
-	
+
 	while (opt < arg_c) {
 		if (strchr(arg_v[opt], ',')) {
 			for (t = arg_v[opt]; t; t = strchr(t + 1, ',')) {
@@ -178,7 +178,7 @@ int count_csvalues(int arg_c, char **arg_v)
 		}
 		opt++;
 	}
-	
+
 	return nr;
 }
 
@@ -220,7 +220,7 @@ int get_dev_part_nr(char *dev_name)
 			part++;
 		}
 	}
-	
+
 	/* Close directory */
 	closedir(dir);
 
@@ -264,7 +264,7 @@ int get_sysfs_dev_nr(int display_partitions)
 		if (!access(line, R_OK)) {
 			/* Yep... */
 			dev++;
-	
+
 			if (display_partitions) {
 				/* We also want the number of partitions for this device */
 				dev += get_dev_part_nr(drd->d_name);
@@ -425,7 +425,7 @@ char *device_name(char *name)
 	out[MAX_FILE_LEN - 1] = '\0';
 
 	free(resolved_name);
-		
+
 	return out;
 }
 
@@ -456,7 +456,7 @@ int is_device(char *name, int allow_virtual)
 	}
 	snprintf(syspath, sizeof(syspath), "%s/%s%s", SYSFS_BLOCK, name,
 		 allow_virtual ? "" : "/device");
-	
+
 	return !(access(syspath, F_OK));
 }
 
@@ -554,7 +554,7 @@ unsigned long long get_interval(unsigned long long prev_uptime,
 
 	/* prev_time=0 when displaying stats since system startup */
 	itv = curr_uptime - prev_uptime;
-	
+
 	if (!itv) {	/* Paranoia checking */
 		itv = 1;
 	}
@@ -582,7 +582,7 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 					struct stats_cpu *scp)
 {
 	unsigned long long ishift = 0LL;
-	
+
 	if ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest)) {
 		/*
 		 * Sometimes the nr of jiffies spent in guest mode given by the guest
@@ -599,7 +599,7 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 		ishift += (scp->cpu_nice - scp->cpu_guest_nice) -
 		          (scc->cpu_nice - scc->cpu_guest_nice);
 	}
-	
+
 	/*
 	 * Don't take cpu_guest and cpu_guest_nice into account
 	 * because cpu_user and cpu_nice already include them.
@@ -681,7 +681,7 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
 {
 	double tput
 		= ((double) (sdc->nr_ios - sdp->nr_ios)) * HZ / itv;
-	
+
 	xds->util  = S_VALUE(sdp->tot_ticks, sdc->tot_ticks, itv);
 	xds->svctm = tput ? xds->util / tput : 0.0;
 	/*
@@ -804,7 +804,7 @@ char **get_persistent_names(void)
 	files = (char **) calloc(n - 1, sizeof(char *));
 	if (!files)
 		goto free_list;
-	
+
 	/*
 	 * i is for traversing namelist, k is for files.
 	 * i != k because we are ignoring "." and ".." entries.
@@ -824,7 +824,7 @@ char **get_persistent_names(void)
 	files[k] = NULL;
 
 free_list:
-	
+
 	for (i = 0; i < n; i++) {
 		free(namelist[i]);
 	}

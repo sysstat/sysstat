@@ -725,7 +725,7 @@ extern __nr_t
 	wrap_get_usb_nr(struct activity *);
 extern __nr_t
 	wrap_get_filesystem_nr(struct activity *);
-	
+
 /* Functions used to read activities statistics */
 extern __read_funct_t
 	wrap_read_stat_cpu(struct activity *);
