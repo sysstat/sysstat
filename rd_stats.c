@@ -832,7 +832,7 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 			/* Cannot read NIC duplex */
 			continue;
 
-		n = fscanf(fp, "%s", duplex);
+		n = fscanf(fp, "%31s", duplex);
 
 		fclose(fp);
 
