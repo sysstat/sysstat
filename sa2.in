@@ -14,15 +14,19 @@ SYSCONFIG_DIR=@SYSCONFIG_DIR@
 HISTORY=@HISTORY@
 COMPRESSAFTER=@COMPRESSAFTER@
 ZIP="@ZIP@"
+# if YESTERDAY="--date=yesterday" then yesterday's summary is generated
 YESTERDAY=@YESTERDAY@
-DATE=`date ${YESTERDAY} +%d`
 
+# Read configuration file, overriding variables set above
 [ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
+
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
 
 if [ ${HISTORY} -gt 28 ]
 then
 	DATE=`date ${YESTERDAY} +%Y%m%d`
+else
+	DATE=`date ${YESTERDAY} +%d`
 fi
 CURRENTFILE=sa${DATE}
 CURRENTRPT=sar${DATE}
