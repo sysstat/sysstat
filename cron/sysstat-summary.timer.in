@@ -6,10 +6,10 @@
 #        Activates sysstat-summary.service
 
 [Unit]
-Description=Generate a daily summary of process accounting at 23:53
+Description=Generate summary of yesterday's process accounting
 
 [Timer]
-OnCalendar=23:53:00
+OnCalendar=00:07:00
 
 [Install]
 WantedBy=sysstat.service
