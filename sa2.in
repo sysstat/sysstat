@@ -35,11 +35,17 @@ ENDIR=@bindir@
 cd ${ENDIR}
 ${ENDIR}/sar $* -f ${DFILE} > ${RPT}
 
-find ${SA_DIR} \( -name 'sar??' -o -name 'sa??' -o -name 'sar??.xz' -o -name 'sa??.xz' -o -name 'sar??.gz' -o -name 'sa??.gz' -o -name 'sar??.bz2' -o -name 'sa??.bz2' \) \
-	-mtime +"${HISTORY}" -exec rm -f {} \;
-find ${SA_DIR} \( -name 'sar????????' -o -name 'sa????????' -o -name 'sar????????.xz' -o -name 'sa????????.xz' -o -name 'sar????????.gz' -o -name 'sa????????.gz' -o -name 'sar????????.bz2' -o -name 'sa????????.bz2' \) \
-	-mtime +"${HISTORY}" -exec rm -f {} \;
-find ${SA_DIR} \( -name 'sar??' -o -name 'sa??' -o -name 'sar????????' -o -name 'sa????????' \) -type f -mtime +"${COMPRESSAFTER}" \
-	-exec ${ZIP} {} \; > /dev/null 2>&1
+SAFILES_REGEX='/sar?[0-9][0-9]+(\.(gz|bz2|xz|lz|lzo))?$'
+
+find "$SA_DIR" -type f -mtime +"$HISTORY" \
+	| egrep "$SAFILES_REGEX" \
+	| xargs   rm -f
+
+UNCOMPRESSED_SAFILES_REGEX='/sar?[0-9][0-9]+$'
+
+find "$SA_DIR" -type f -mtime +"$COMPRESSAFTER" \
+	| egrep "$UNCOMPRESSED_SAFILES_REGEX" \
+	| xargs   $ZIP > /dev/null
+
 exit 0
 
