@@ -19,6 +19,9 @@
 #@(#)	 Insert a dummy record in current daily data file.
 #@(#)	 This indicates that the counters have restarted from 0.
 
+# Source functions library
+[ -r @INIT_DIR@/functions ] && . @INIT_DIR@/functions
+
 RETVAL=0
 PIDFILE=/var/run/sysstat.pid
 
