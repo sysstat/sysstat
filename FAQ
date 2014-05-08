@@ -52,6 +52,9 @@ If you don't find the solution to your problem here then send me an email
 2.22. What happened to sar's options -h, -H, -x and -X?
 2.23. What is the exact meaning of the <count> parameter for sar and sadc?
 2.24. Why doesn't sar deal with sub-second sampling/monitoring?
+2.25. Is it possible to save only some specific activities in my daily
+      data files? It would help to make saXX files take less space on disk...
+
 
 3. QUESTIONS RELATING TO IOSTAT
 
@@ -556,6 +559,31 @@ of data on a sub-second interval basis (and sar really collects
 a lot of data). This can be resource-consuming and you are all the
 more prone to have an influence on the data you are retrieving as
 the interval of time is small.
+
+~~
+
+2.25. Is it possible to save only some specific activities in my
+daily data files? It would help to make saXX files take less space
+on disk...
+
+sadc's option -S followed by a keyword (DISK, SNMP...)  can already
+be used to specify which optional activities are to be collected.
+Without this option, sadc collects a default set of activities (CPU
+activity, memory activity, etc.)
+Yet it is actually possible to specify explicitly which activities
+should be collected by sadc! You have to use sadc's option -S
+followed by a numerical value corresponding to the activity you want
+to collect (the values are those displayed by sadf -H and preceding
+the activity name in the list of activities). The only limitation
+is CPU activity which is always collected for internal purpose.
+Example: To tell sadc to not collect any activities but CPU, enter:
+
+$ sadc -S 0
+
+followed by the other classic options (interval, count, filename...)
+To tell sadc to collect only CPU and network activities, replace
+"-S 0" with "-S 0 -S 12" (the value 12 corresponds to network activity).
+This way you can tell sadc to collect only the desired activities.
 
 
 3. QUESTIONS RELATING TO IOSTAT
