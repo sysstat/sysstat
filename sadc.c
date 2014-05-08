@@ -173,7 +173,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 				collect_group_activities(G_DISK + G_XDISK, AO_F_DISK_PART);
 			}
 		}
-		else if (strspn(argv[opt], DIGITS) == strlen(argv[opt])) {
+		else if (strspn(p, DIGITS) == strlen(p)) {
 			/*
 			 * Although undocumented, option -S followed by a numerical value
 			 * enables the user to select each activity that should be
@@ -183,7 +183,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 			 */
 			int act_id;
 
-			act_id = atoi(argv[opt]);
+			act_id = atoi(p);
 			if (act_id > 255) {
 				act_id >>= 8;
 				for (i = 0; i < NR_ACT; i++) {
