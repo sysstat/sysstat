@@ -20,7 +20,7 @@ HISTORY=@HISTORY@
 COMPRESSAFTER=@COMPRESSAFTER@
 ZIP="@ZIP@"
 [ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
-if [ ${HISTORY} -gt 28 ]
+if [ ${HISTORY} -gt 25 ]
 then
 	CURRENTDIR=`date ${YESTERDAY} +%Y%m`
 	cd ${DDIR} || exit 1
