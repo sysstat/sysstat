@@ -105,6 +105,14 @@
 							}					\
 						} while (0)
 
+#define PRINT_POLICY(p) \
+	(p == SCHED_NORMAL ? "NORMAL" : \
+	(p == SCHED_FIFO   ? "FIFO" : \
+	(p == SCHED_RR     ? "RR" : \
+	(p == SCHED_BATCH  ? "BATCH" : \
+	(p == SCHED_IDLE   ? "IDLE" : \
+	"?")))))
+				
 struct pid_stats {
 	unsigned long long read_bytes			__attribute__ ((aligned (8)));
 	unsigned long long write_bytes			__attribute__ ((packed));
@@ -143,6 +151,8 @@ struct pid_stats {
 	unsigned int       sk_asum_count		__attribute__ ((packed));
 	unsigned int       delay_asum_count		__attribute__ ((packed));
 	unsigned int       processor			__attribute__ ((packed));
+	unsigned int       priority			__attribute__ ((packed));
+	unsigned int       policy			__attribute__ ((packed));
 	unsigned int       flags			__attribute__ ((packed));
 	unsigned int       uid				__attribute__ ((packed));
 	unsigned int       threads			__attribute__ ((packed));

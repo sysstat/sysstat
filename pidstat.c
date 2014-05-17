@@ -30,6 +30,7 @@
 #include <pwd.h>
 #include <sys/utsname.h>
 #include <regex.h>
+#include <linux/sched.h>
 
 #include "version.h"
 #include "pidstat.h"
@@ -324,12 +325,13 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 	sprintf(format, "%%*d (%%%ds %%*s %%*d %%*d %%*d %%*d %%*d %%*u %%lu %%lu"
 		" %%lu %%lu %%lu %%lu %%lu %%lu %%*d %%*d %%u %%*u %%*d %%lu %%lu"
 		" %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u"
-		" %%*u %%u %%*u %%*u %%llu %%lu %%lu\\n", MAX_COMM_LEN);
+		" %%*u %%u %%u %%u %%llu %%lu %%lu\\n", MAX_COMM_LEN);
 
 	fscanf(fp, format, comm,
 	       &pst->minflt, &pst->cminflt, &pst->majflt, &pst->cmajflt,
 	       &pst->utime,  &pst->stime, &pst->cutime, &pst->cstime,
 	       thread_nr, &pst->vsz, &pst->rss, &pst->processor,
+	       &pst->priority, &pst->policy,
 	       &pst->blkio_swapin_delays, &pst->gtime, &pst->cgtime);
 
 	fclose(fp);
@@ -1096,7 +1098,9 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 			if (DISPLAY_CTXSW(activity) && (!isActive)) {
 				if (((*pstc)->nvcsw  != (*pstp)->nvcsw) ||
-				    ((*pstc)->nivcsw != (*pstp)->nivcsw)) {
+				    ((*pstc)->nivcsw != (*pstp)->nivcsw) ||
+				    ((*pstc)->priority != (*pstp)->priority) ||
+				    ((*pstc)->policy != (*pstp)->policy)) {
 					isActive = TRUE;
 				}
 			}
@@ -1251,7 +1255,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			printf("   kB_rd/s   kB_wr/s kB_ccwr/s iodelay");
 		}
 		if (DISPLAY_CTXSW(actflag)) {
-			printf("   cswch/s nvcswch/s");
+			printf("   cswch/s nvcswch/s prio policy");
 		}
 		if (DISPLAY_KTAB(actflag)) {
 			printf(" threads   fd-nr");
@@ -1322,9 +1326,11 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
-			printf(" %9.2f %9.2f",
+			printf(" %9.2f %9.2f %4u %6s",
 			       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
-			       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+			       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv),
+			       pstc->priority,
+			       PRINT_POLICY(pstc->policy));
 		}
 
 		if (DISPLAY_KTAB(actflag)) {
@@ -1904,7 +1910,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
-		printf("   cswch/s nvcswch/s  Command\n");
+		printf("   cswch/s nvcswch/s prio policy  Command\n");
 	}
 
 	for (p = 0; p < pid_nr; p++) {
@@ -1914,9 +1920,11 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		printf(" %9.2f %9.2f",
+		printf(" %9.2f %9.2f %4u %6s",
 		       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
-		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv),
+		       pstc->priority,
+		       PRINT_POLICY(pstc->policy));
 		print_comm(pstc);
 		again = 1;
 	}
