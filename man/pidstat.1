@@ -1,4 +1,4 @@
-.TH PIDSTAT 1 "NOVEMBER 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "MAY 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
@@ -457,7 +457,8 @@ The command name of the task.
 .RE
 .RE
 .IP -w
-Report task switching activity (kernels 2.6.23 and later only).
+Report task switching activity (kernels 2.6.23 and later only),
+realtime priority and scheduling policy information.
 The following values may be displayed:
 
 .B UID
@@ -489,6 +490,16 @@ Total number of non voluntary context switches the task made per second.
 A involuntary context switch takes place when a task executes
 for the duration of its time slice and then is forced to relinquish the
 processor.
+.RE
+
+.B prio
+.RS
+The realtime priority of the task being monitored.
+.RE
+
+.B policy
+.RS
+The scheduling policy of the task being monitored.
 .RE
 
 .B Command
