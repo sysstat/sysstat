@@ -473,7 +473,7 @@ By default sar saves its data in the standard system activity data file,
 the /var/log/sa/sa<DD> file, where <DD> is the current day in the month.
 To prevent sar from overwriting any existing files, just set the variable
 HISTORY in /etc/sysconfig/sysstat to the number of days during which data
-must be kept. When this variable has a value greater than 28, sa1 script
+must be kept. When this variable has a value greater than 25, sa1 script
 uses a month-by-month directory structure; datafiles are named YYYYMM/saDD
 and the script maintains links to these datafiles to mimic the standard
 sar datafile structure.
