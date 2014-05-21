@@ -114,7 +114,7 @@
 	"?")))))
 				
 struct pid_stats {
-	unsigned long long read_bytes			__attribute__ ((aligned (8)));
+	unsigned long long read_bytes			__attribute__ ((aligned (16)));
 	unsigned long long write_bytes			__attribute__ ((packed));
 	unsigned long long cancelled_write_bytes	__attribute__ ((packed));
 	unsigned long long total_vsz			__attribute__ ((packed));
@@ -124,18 +124,18 @@ struct pid_stats {
 	unsigned long long total_threads		__attribute__ ((packed));
 	unsigned long long total_fd_nr			__attribute__ ((packed));
 	unsigned long long blkio_swapin_delays		__attribute__ ((packed));
-	unsigned long      minflt			__attribute__ ((packed));
-	unsigned long      cminflt			__attribute__ ((packed));
-	unsigned long      majflt			__attribute__ ((packed));
-	unsigned long      cmajflt			__attribute__ ((packed));
-	unsigned long      utime			__attribute__ ((packed));
-	unsigned long      cutime			__attribute__ ((packed));
-	unsigned long      stime			__attribute__ ((packed));
-	unsigned long      cstime			__attribute__ ((packed));
-	unsigned long      gtime			__attribute__ ((packed));
-	unsigned long      cgtime			__attribute__ ((packed));
-	unsigned long      vsz				__attribute__ ((packed));
-	unsigned long      rss				__attribute__ ((packed));
+	unsigned long long minflt			__attribute__ ((packed));
+	unsigned long long cminflt			__attribute__ ((packed));
+	unsigned long long majflt			__attribute__ ((packed));
+	unsigned long long cmajflt			__attribute__ ((packed));
+	unsigned long long utime			__attribute__ ((packed));
+	long long          cutime			__attribute__ ((packed));
+	unsigned long long stime			__attribute__ ((packed));
+	long long          cstime			__attribute__ ((packed));
+	unsigned long long gtime			__attribute__ ((packed));
+	long long          cgtime			__attribute__ ((packed));
+	unsigned long long vsz				__attribute__ ((packed));
+	unsigned long long rss				__attribute__ ((packed));
 	unsigned long      nvcsw			__attribute__ ((packed));
 	unsigned long      nivcsw			__attribute__ ((packed));
 	unsigned long      stack_size			__attribute__ ((packed));

@@ -322,10 +322,10 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 		/* No such process */
 		return 1;
 
-	sprintf(format, "%%*d (%%%ds %%*s %%*d %%*d %%*d %%*d %%*d %%*u %%lu %%lu"
-		" %%lu %%lu %%lu %%lu %%lu %%lu %%*d %%*d %%u %%*u %%*d %%lu %%lu"
+	sprintf(format, "%%*d (%%%ds %%*s %%*d %%*d %%*d %%*d %%*d %%*u %%llu %%llu"
+		" %%llu %%llu %%llu %%llu %%lld %%lld %%*d %%*d %%u %%*u %%*d %%llu %%llu"
 		" %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u"
-		" %%*u %%u %%u %%u %%llu %%lu %%lu\\n", MAX_COMM_LEN);
+		" %%*u %%u %%u %%u %%llu %%llu %%lld\\n", MAX_COMM_LEN);
 
 	fscanf(fp, format, comm,
 	       &pst->minflt, &pst->cminflt, &pst->majflt, &pst->cmajflt,
@@ -1291,7 +1291,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			printf(" %9.2f %9.2f %7lu %6lu %6.2f",
+			printf(" %9.2f %9.2f %7llu %6llu %6.2f",
 			       S_VALUE(pstp->minflt, pstc->minflt, itv),
 			       S_VALUE(pstp->majflt, pstc->majflt, itv),
 			       pstc->vsz,
@@ -1407,7 +1407,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 
 
 		if (DISPLAY_MEM(actflag)) {
-			printf(" %9lu %9lu",
+			printf(" %9llu %9llu",
 			       (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
 			       (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
@@ -1644,7 +1644,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 			       : 0.0);
 		}
 		else {
-			printf("%7lu %6lu %6.2f",
+			printf("%7llu %6llu %6.2f",
 			       pstc->vsz,
 			       pstc->rss,
 			       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
@@ -1715,7 +1715,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 					 (pstp->majflt + pstp->cmajflt)) / pstc->rc_asum_count);
 		}
 		else {
-			printf(" %9lu %9lu",
+			printf(" %9llu %9llu",
 			       (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
 			       (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
