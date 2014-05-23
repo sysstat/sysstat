@@ -18,7 +18,7 @@ SYSCONFIG_DIR=@SYSCONFIG_DIR@
 umask 0022
 
 [ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
-if [ ${HISTORY} -gt 25 ]
+if [ ${HISTORY} -gt 28 ]
 then
 	cd ${DDIR} || exit 1
 	[ -d ${CURRENTDIR} ] || mkdir -p ${CURRENTDIR}
