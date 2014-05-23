@@ -52,6 +52,7 @@
 #define P_D_CMDLINE	0x080
 #define P_D_USERNAME	0x100
 #define P_F_USERSTR	0x200
+#define P_F_PROCSTR	0x400
 
 #define DISPLAY_PID(m)		(((m) & P_D_PID) == P_D_PID)
 #define DISPLAY_ALL_PID(m)	(((m) & P_D_ALL_PID) == P_D_ALL_PID)
@@ -63,6 +64,7 @@
 #define DISPLAY_CMDLINE(m)	(((m) & P_D_CMDLINE) == P_D_CMDLINE)
 #define DISPLAY_USERNAME(m)	(((m) & P_D_USERNAME) == P_D_USERNAME)
 #define USER_STRING(m)		(((m) & P_F_USERSTR) == P_F_USERSTR)
+#define PROCESS_STRING(m)	(((m) & P_F_PROCSTR) == P_F_PROCSTR)
 
 /* Per-process flags */
 #define F_NO_PID_IO	0x01

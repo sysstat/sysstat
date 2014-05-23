@@ -57,6 +57,8 @@ struct pid_stats st_pid_null;
 struct tm ps_tstamp[3];
 char commstr[MAX_COMM_LEN];
 char userstr[MAX_USER_LEN];
+char procstr[MAX_COMM_LEN];
+int show_threads = FALSE;
 
 unsigned int pid_nr = 0;	/* Nb of PID to display */
 unsigned int pid_array_nr = 0;
@@ -86,8 +88,8 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -u ]\n"
-			  "[ -V ] [ -v ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-			  "[ -T { TASK | CHILD | ALL } ]\n"));
+			  "[ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
 }
 
@@ -968,7 +970,10 @@ void read_stats(int curr)
  * Get current PID to display.
  * First, check that PID exists. *Then* check that it's an active process
  * and/or that the string (entered on the command line with option -C)
- * is found in command name.
+ * is found in command name, or that the process string (entered on the
+ * command line with option -G) is found either in its command name (in case
+ * PID is a process) or in command name of its thread leader (in case
+ * PID is a thread).
  *
  * IN:
  * @prev	Index in array where stats used as reference are.
@@ -1147,6 +1152,37 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 		if (rc)
 			/* regex pattern not found in command name */
 			return -1;
+	}
+
+	if (PROCESS_STRING(pidflag)) {
+		if (!(*pstc)->tgid) {
+			/* This PID is a process ("thread group leader") */
+			if (regcomp(&regex, procstr, REG_EXTENDED | REG_NOSUB) != 0) {
+				/* Error in preparing regex structure */
+				show_threads = FALSE;
+				return -1;
+			}
+
+			rc = regexec(&regex, (*pstc)->comm, 0, NULL, 0);
+			regfree(&regex);
+
+			if (rc) {
+				/* regex pattern not found in command name */
+				show_threads = FALSE;
+				return -1;
+			}
+
+			/*
+			 * This process and all its threads will be displayed.
+			 * No need to save PID value: For every process read by pidstat,
+			 * pidstat then immediately reads all its threads.
+			 */
+			show_threads = TRUE;
+		}
+		else if (!show_threads) {
+			/* This pid is a thread and is not part of a process to display */
+			return -1;
+		}
 	}
 
 	if (USER_STRING(pidflag)) {
@@ -2053,6 +2089,11 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 		itv = g_itv;
 	}
 
+	if (PROCESS_STRING(pidflag)) {
+		/* Reset "show threads" flag */
+		show_threads = FALSE;
+	}
+
 	if (DISPLAY_ONELINE(pidflag)) {
 		if (DISPLAY_TASK_STATS(tskflag)) {
 			again += write_pid_task_all_stats(prev, curr, dis,
@@ -2363,6 +2404,20 @@ int main(int argc, char **argv)
 				commstr[MAX_COMM_LEN - 1] = '\0';
 				pidflag |= P_F_COMMSTR;
 				if (!strlen(commstr)) {
+					usage(argv[0]);
+				}
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
+
+		else if (!strcmp(argv[opt], "-G")) {
+			if (argv[++opt]) {
+				strncpy(procstr, argv[opt++], MAX_COMM_LEN);
+				procstr[MAX_COMM_LEN - 1] = '\0';
+				pidflag |= P_F_PROCSTR;
+				if (!strlen(procstr)) {
 					usage(argv[0]);
 				}
 			}
