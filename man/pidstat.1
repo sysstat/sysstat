@@ -7,6 +7,8 @@ pidstat \- Report statistics for Linux tasks.
 .B ] ] [ -u ] [ -V ] [ -v ]
 .B [ -w ] [ -C
 .I comm
+.B ] [ -G
+.I process_name
 .B ] [ -p {
 .I pid
 .B [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
@@ -117,6 +119,14 @@ completion.
 The command name of the task.
 .RE
 .RE
+.IP "-G process_name"
+Display only processes whose command name includes the string
+.IR process_name .
+This string can be a regular expression. If option -t is used
+together with option -G then the threads belonging to that
+process are also displayed (even if their command name doesn't
+include the string
+.IR process_name ).
 .IP -h
 Display all activities horizontally on a single line. This is
 intended to make it easier to be parsed by other programs.
