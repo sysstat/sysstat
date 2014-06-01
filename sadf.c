@@ -1476,7 +1476,6 @@ int main(int argc, char **argv)
 	int opt = 1, sar_options = 0;
 	int i, rc;
 	char dfile[MAX_FILE_LEN];
-	struct tm rectime;
 
 	/* Get HZ */
 	get_HZ();
@@ -1644,25 +1643,25 @@ int main(int argc, char **argv)
 
 		/* Get data file name */
 		else if (strspn(argv[opt], DIGITS) != strlen(argv[opt])) {
-			if (!dfile[0]) {
-				if (!strcmp(argv[opt], "-")) {
-					/* File name set to '-' */
-					set_default_file(&rectime, dfile, 0);
-					opt++;
-				}
-				else if (!strncmp(argv[opt], "-", 1)) {
-					/* Bad option */
-					usage(argv[0]);
-				}
-				else {
-					/* Write data to file */
-					strncpy(dfile, argv[opt++], MAX_FILE_LEN);
-					dfile[MAX_FILE_LEN - 1] = '\0';
-				}
-			}
-			else {
+			if (dfile[0]) {
 				/* File already specified */
 				usage(argv[0]);
+			}
+			if (!strcmp(argv[opt], "-")) {
+				/* File name set to '-' */
+				set_default_file(dfile, 0);
+				opt++;
+			}
+			else if (!strncmp(argv[opt], "-", 1)) {
+				/* Bad option */
+				usage(argv[0]);
+			}
+			else {
+				/* Write data to file */
+				strncpy(dfile, argv[opt++], MAX_FILE_LEN);
+				dfile[MAX_FILE_LEN - 1] = '\0';
+				/* Check if this is an alternate directory for sa files */
+				check_alt_sa_dir(dfile, 0);
 			}
 		}
 
@@ -1698,7 +1697,7 @@ int main(int argc, char **argv)
 
 	/* sadf reads current daily data file by default */
 	if (!dfile[0]) {
-		set_default_file(&rectime, dfile, 0);
+		set_default_file(dfile, 0);
 	}
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {

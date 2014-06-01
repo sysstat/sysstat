@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <libgen.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/ioctl.h>
 
 #include "sa.h"
@@ -346,20 +347,64 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
  * Set current daily data file name.
  *
  * IN:
+ * @datafile	If not an empty string then this is the alternate directory
+ *		location where daily data files will be saved.
  * @d_off	Day offset (number of days to go back in the past).
  *
  * OUT:
- * @rectime	Current date and time.
  * @datafile	Name of daily data file.
  ***************************************************************************
  */
-void set_default_file(struct tm *rectime, char *datafile, int d_off)
+void set_default_file(char *datafile, int d_off)
 {
-	get_time(rectime, d_off);
+	char sa_dir[MAX_FILE_LEN];
+	struct tm rectime;
+
+	/* Set directory where daily data files will be saved */
+	if (datafile[0]) {
+		strncpy(sa_dir, datafile, MAX_FILE_LEN);
+	}
+	else {
+		strncpy(sa_dir, SA_DIR, MAX_FILE_LEN);
+	}
+	sa_dir[MAX_FILE_LEN - 1] = '\0';
+
+	get_time(&rectime, d_off);
 	snprintf(datafile, MAX_FILE_LEN,
-		 "%s/sa%02d", SA_DIR, rectime->tm_mday);
+		 "%s/sa%02d", sa_dir, rectime.tm_mday);
 	datafile[MAX_FILE_LEN - 1] = '\0';
 	default_file_used = TRUE;
+}
+
+/*
+ ***************************************************************************
+ * Check data file type. If it is a directory then this is the alternate
+ * location where daily data files will be saved.
+ * 
+ * IN:
+ * @datafile	Name of the daily data file. May be a directory.
+ * @d_off	Day offset (number of days to go back in the past).
+ * 
+ * OUT:
+ * @datafile	Name of the daily data file. This is now a plain file, not
+ * 		a directory.
+ * 
+ * RETURNS:
+ * 1 if @datafile was a directory, and 0 otherwise.
+ ***************************************************************************
+ */
+int check_alt_sa_dir(char *datafile, int d_off)
+{
+	struct stat sb;
+	
+	stat(datafile, &sb);
+		if (S_ISDIR(sb.st_mode)) {
+		/* This is a directory: So append the default file name to it */
+		set_default_file(datafile, d_off);
+		return 1;
+	}
+	
+	return 0;
 }
 
 /*

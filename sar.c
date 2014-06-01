@@ -1184,6 +1184,10 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-o")) {
+			if (to_file[0]) {
+				/* Output file already specified */
+				usage(argv[0]);
+			}
 			/* Save stats to a file */
 			if ((argv[++opt]) && strncmp(argv[opt], "-", 1) &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
@@ -1196,14 +1200,20 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-f")) {
+			if (from_file[0]) {
+				/* Input file already specified */
+				usage(argv[0]);
+			}
 			/* Read stats from a file */
 			if ((argv[++opt]) && strncmp(argv[opt], "-", 1) &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
 				strncpy(from_file, argv[opt++], MAX_FILE_LEN);
 				from_file[MAX_FILE_LEN - 1] = '\0';
+				/* Check if this is an alternate directory for sa files */
+				check_alt_sa_dir(from_file, day_offset);
 			}
 			else {
-				set_default_file(&rectime, from_file, day_offset);
+				set_default_file(from_file, day_offset);
 			}
 		}
 
@@ -1310,7 +1320,7 @@ int main(int argc, char **argv)
 	/* 'sar' is equivalent to 'sar -f' */
 	if ((argc == 1) ||
 	    ((interval < 0) && !from_file[0] && !to_file[0])) {
-		set_default_file(&rectime, from_file, day_offset);
+		set_default_file(from_file, day_offset);
 	}
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {

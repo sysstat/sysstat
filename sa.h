@@ -808,6 +808,8 @@ extern void
 extern void
 	allocate_structures(struct activity * []);
 extern int
+	check_alt_sa_dir(char *, int);
+extern int
 	check_disk_reg(struct activity *, int, int, int);
 extern void
 	check_file_actlst(int *, char *, struct activity * [], struct file_magic *,
@@ -875,7 +877,7 @@ extern void
 extern void
 	set_bitmap(unsigned char [], unsigned char, unsigned int);
 extern void
-	set_default_file(struct tm *, char *, int);
+	set_default_file(char *, int);
 extern void
 	set_hdr_rectime(unsigned int, struct tm *, struct file_header *);
 

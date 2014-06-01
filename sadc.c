@@ -1063,21 +1063,21 @@ void read_stats(void)
  * Main loop: Read stats from the relevant sources and display them.
  *
  * IN:
- * @count		Number of lines of stats to display.
- * @rectime		Current date and time.
- * @stdfd		Stdout file descriptor.
- * @ofd			Output file descriptor.
- * @ofile		Name of output file.
+ * @count	Number of lines of stats to display.
+ * @stdfd	Stdout file descriptor.
+ * @ofd		Output file descriptor.
+ * @ofile	Name of output file.
+ * @sa_dir	If not an empty string, contains the alternate location of
+ * 		daily data files.
  ***************************************************************************
  */
-void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
-		     char ofile[])
+void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
+		     char sa_dir[])
 {
 	int do_sa_rotat = 0;
 	unsigned int save_flags;
 	char new_ofile[MAX_FILE_LEN];
-
-	new_ofile[0] = '\0';
+	struct tm rectime;
 
 	/* Set a handler for SIGINT */
 	memset(&int_act, 0, sizeof(int_act));
@@ -1095,10 +1095,10 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 		reset_stats();
 
 		/* Save time */
-		record_hdr.ust_time = get_time(rectime, 0);
-		record_hdr.hour     = rectime->tm_hour;
-		record_hdr.minute   = rectime->tm_min;
-		record_hdr.second   = rectime->tm_sec;
+		record_hdr.ust_time = get_time(&rectime, 0);
+		record_hdr.hour     = rectime.tm_hour;
+		record_hdr.minute   = rectime.tm_min;
+		record_hdr.second   = rectime.tm_sec;
 
 		/* Set record type */
 		if (do_sa_rotat) {
@@ -1176,7 +1176,8 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 		/* Rotate activity file if necessary */
 		if (WANT_SA_ROTAT(flags)) {
 			/* The user specified '-' as the filename to use */
-			set_default_file(rectime, new_ofile, 0);
+			strcpy(new_ofile, sa_dir);
+			set_default_file(new_ofile, 0);
 
 			if (strcmp(ofile, new_ofile)) {
 				do_sa_rotat = TRUE;
@@ -1198,8 +1199,7 @@ void rw_sa_stat_loop(long count, struct tm *rectime, int stdfd, int ofd,
 int main(int argc, char **argv)
 {
 	int opt = 0;
-	char ofile[MAX_FILE_LEN];
-	struct tm rectime;
+	char ofile[MAX_FILE_LEN], sa_dir[MAX_FILE_LEN];
 	int stdfd = 0, ofd = -1;
 	int restart_mark;
 	long count = 0;
@@ -1210,7 +1210,7 @@ int main(int argc, char **argv)
 	/* Compute page shift in kB */
 	get_kb_shift();
 
-	ofile[0] = comment[0] = '\0';
+	ofile[0] = sa_dir[0] = comment[0] = '\0';
 
 #ifdef HAVE_SENSORS
 	/* Initialize sensors, let it use the default cfg file */
@@ -1267,26 +1267,42 @@ int main(int argc, char **argv)
 		}
 
 		else if (strspn(argv[opt], DIGITS) != strlen(argv[opt])) {
-			if (!ofile[0]) {
-				stdfd = -1;	/* Don't write to STDOUT */
-				if (!strcmp(argv[opt], "-")) {
-					/* File name set to '-' */
-					set_default_file(&rectime, ofile, 0);
-					flags |= S_F_SA_ROTAT;
-				}
-				else if (!strncmp(argv[opt], "-", 1)) {
-					/* Bad option */
-					usage(argv[0]);
-				}
-				else {
-					/* Write data to file */
-					strncpy(ofile, argv[opt], MAX_FILE_LEN);
-					ofile[MAX_FILE_LEN - 1] = '\0';
-				}
-			}
-			else {
+			if (ofile[0]) {
 				/* Outfile already specified */
 				usage(argv[0]);
+			}
+			stdfd = -1;	/* Don't write to STDOUT */
+			if (!strcmp(argv[opt], "-")) {
+				/* File name set to '-' */
+				set_default_file(ofile, 0);
+				flags |= S_F_SA_ROTAT;
+			}
+			else if (!strncmp(argv[opt], "-", 1)) {
+				/* Bad option */
+				usage(argv[0]);
+			}
+			else {
+				/* Write data to file */
+				strncpy(ofile, argv[opt], MAX_FILE_LEN);
+				ofile[MAX_FILE_LEN - 1] = '\0';
+				/*
+				 * Should ofile be a directory, it will be the alternate
+				 * location for sa files. So save it.
+				 */
+				strcpy(sa_dir, ofile);
+				/* Check if this is an alternate directory for sa files */
+				if (check_alt_sa_dir(ofile, 0)) {
+					/*
+					 * Yes, it was a directory.
+					 * ofile now contains the full path to current
+					 * standard daily data file.
+					 */
+					flags |= S_F_SA_ROTAT;
+				}
+				else {
+					/* No: So we can clear sa_dir */
+					sa_dir[0] = '\0';
+				}
 			}
 		}
 
@@ -1380,7 +1396,7 @@ int main(int argc, char **argv)
 	alarm(interval);
 
 	/* Main loop */
-	rw_sa_stat_loop(count, &rectime, stdfd, ofd, ofile);
+	rw_sa_stat_loop(count, stdfd, ofd, ofile, sa_dir);
 
 #ifdef HAVE_SENSORS
 	/* Cleanup sensors */
