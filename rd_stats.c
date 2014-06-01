@@ -1748,8 +1748,8 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 	FILE *fp;
 	struct stats_pwr_cpufreq *st_pwr_cpufreq_i;
 	char line[1024];
-	int proc_nb = 0, nr = 0;
-	unsigned int ifreq, dfreq;
+	int nr = 0;
+	unsigned int proc_nb = 0, ifreq, dfreq;
 
 	if ((fp = fopen(CPUINFO, "r")) == NULL)
 		return;
@@ -1759,7 +1759,7 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "processor\t", 10)) {
-			sscanf(strchr(line, ':') + 1, "%d", &proc_nb);
+			sscanf(strchr(line, ':') + 1, "%u", &proc_nb);
 		}
 
 		else if (!strncmp(line, "cpu MHz\t", 8)) {
