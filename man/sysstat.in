@@ -1,4 +1,4 @@
-.TH SYSSTAT 5 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "MAY 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 .SH DESCRIPTION
@@ -18,8 +18,97 @@ days will be removed by the
 .BR sa2 (8)
 shell script.
 Data files and reports are normally saved in the @SA_DIR@ directory,
-but if HISTORY is greater than 28, the scripts use a tree of directories under
-@SA_DIR@.
+under the name
+.IR saDD
+(for data files) or
+.IR sarDD
+(for reports), where the DD parameter indicates the current day.
+
+The number of files actually kept in the @SA_DIR@ directory may be
+slightly higher than the
+.B HISTORY
+value due to the way the
+.B sa2
+script figures
+out which files are to be removed (see below "How the
+.BR sa2 (8)
+script applies
+.B HISTORY
+value"). Using a value of 28 keeps a whole month's worth of data. If
+you set
+.B HISTORY
+to a value greater than 28 then you should consider using
+.BR sadc 's
+option -D to prevent older data files from being overwritten (see
+.BR sadc (8)
+manual page). In this latter case data files are named
+.IR saYYYYMMDD
+and reports
+.IR sarYYYYMMDD,
+where YYYY stands for the current year, MM for the
+current month and DD for the current day.
+
+How the
+.BR sa2 (8)
+script applies
+.B HISTORY
+value
+
+The
+.B sa2
+script uses the "find" command with the "-mtime" option to figure
+out which files are to be removed. The "find" command interprets this value
+as "N 24 hour periods", ignoring any fractional part. This means that the
+last modified time of a given sa[r]DD data or report file, using a
+.B HISTORY
+of 1, has to have been modified at least two days ago before it will be
+removed. And for a
+.B HISTORY
+of 28 that would mean 29 days ago.
+
+To figure out how a
+.B HISTORY
+of 28 is applied in practice, we need to
+consider that the
+.B sa2
+script that issues the "find" command to remove the
+old files typically runs just before mid-night on a given system, and since
+the first record from
+.B sadc
+can also be written to the previous day's data file
+(thereby moving its modification time up a bit), the
+.B sa2
+script will leave
+30 files untouched. So for a setting of 28, and counting the data file of
+the current day, there will always be 31 files (or 30 files, depending on the
+number of days in a month) in the @SA_DIR@ directory during the majority
+of a given day.  E.g.:
+
+April 30th: 31 files (Apr 30th-1st, Mar 31th)
+.br
+May 1st: 30 files (May 1st, Apr 30th-2nd)
+
+Yet we can note the following exceptions (as inspected at Noon of the given
+day):
+
+February 28th: 31 files (Feb 28th-1st, Jan 31st, 30th & 29th)
+.br
+March 1st: 30 files (Mar 1st, Feb 28th-2nd, Jan 31st & 30th)
+.br
+March 2nd: 29 files (Mar 1st & 2nd, Feb 28th-3rd, Jan. 31st)
+.br
+March 3rd: 28 files (Mar 1st-3rd, Feb 28th-4th)
+.br
+March 4th - March 28th: 28 files
+.br
+March 29th: 29 files
+.br
+March 30th: 30 files
+.br
+March 31st: 31 files
+
+(Determining the number of files in March on a leap year is left as an
+exercise for the reader).
 
 .TP
 .B COMPRESSAFTER
