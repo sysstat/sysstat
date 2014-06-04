@@ -88,7 +88,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C <comment> ] [ -F ] [ -L ] [ -V ]\n"
+			  "[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 			  "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"));
 	exit(1);
 }
@@ -1177,7 +1177,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		if (WANT_SA_ROTAT(flags)) {
 			/* The user specified '-' as the filename to use */
 			strcpy(new_ofile, sa_dir);
-			set_default_file(new_ofile, 0);
+			set_default_file(new_ofile, 0, USE_SA_YYYYMMDD(flags));
 
 			if (strcmp(ofile, new_ofile)) {
 				do_sa_rotat = TRUE;
@@ -1236,6 +1236,10 @@ int main(int argc, char **argv)
 			}
 		}
 
+		else if (!strcmp(argv[opt], "-D")) {
+			flags |= S_F_SA_YYYYMMDD;
+		}
+
 		else if (!strcmp(argv[opt], "-F")) {
 			flags |= S_F_FORCE_FILE;
 		}
@@ -1267,14 +1271,13 @@ int main(int argc, char **argv)
 		}
 
 		else if (strspn(argv[opt], DIGITS) != strlen(argv[opt])) {
-			if (ofile[0]) {
+			if (ofile[0] || WANT_SA_ROTAT(flags)) {
 				/* Outfile already specified */
 				usage(argv[0]);
 			}
 			stdfd = -1;	/* Don't write to STDOUT */
 			if (!strcmp(argv[opt], "-")) {
 				/* File name set to '-' */
-				set_default_file(ofile, 0);
 				flags |= S_F_SA_ROTAT;
 			}
 			else if (!strncmp(argv[opt], "-", 1)) {
@@ -1285,24 +1288,6 @@ int main(int argc, char **argv)
 				/* Write data to file */
 				strncpy(ofile, argv[opt], MAX_FILE_LEN);
 				ofile[MAX_FILE_LEN - 1] = '\0';
-				/*
-				 * Should ofile be a directory, it will be the alternate
-				 * location for sa files. So save it.
-				 */
-				strcpy(sa_dir, ofile);
-				/* Check if this is an alternate directory for sa files */
-				if (check_alt_sa_dir(ofile, 0)) {
-					/*
-					 * Yes, it was a directory.
-					 * ofile now contains the full path to current
-					 * standard daily data file.
-					 */
-					flags |= S_F_SA_ROTAT;
-				}
-				else {
-					/* No: So we can clear sa_dir */
-					sa_dir[0] = '\0';
-				}
 			}
 		}
 
@@ -1328,6 +1313,34 @@ int main(int argc, char **argv)
 		}
 	}
 
+	/* Process file entered on the command line */
+	if (WANT_SA_ROTAT(flags)) {
+		/* File name set to '-' */
+		set_default_file(ofile, 0, USE_SA_YYYYMMDD(flags));
+	}
+	else if (ofile[0]) {
+		/*
+		 * A file (or directory) has been explicitly entered
+		 * on the command line.
+		 * Should ofile be a directory, it will be the alternate
+		 * location for sa files. So save it.
+		 */
+		strcpy(sa_dir, ofile);
+		/* Check if this is an alternate directory for sa files */
+		if (check_alt_sa_dir(ofile, 0, USE_SA_YYYYMMDD(flags))) {
+			/*
+			 * Yes, it was a directory.
+			 * ofile now contains the full path to current
+			 * standard daily data file.
+			 */
+			flags |= S_F_SA_ROTAT;
+		}
+		else {
+			/* No: So we can clear sa_dir */
+			sa_dir[0] = '\0';
+		}
+	}
+	
 	/*
 	 * If option -z used, write to STDOUT even if a filename
 	 * has been entered on the command line.

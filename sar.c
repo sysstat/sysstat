@@ -107,8 +107,8 @@ void usage(char *progname)
 {
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
-			  "[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
+			  "[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -1176,6 +1176,12 @@ int main(int argc, char **argv)
 			}
 		}
 
+		else if (!strcmp(argv[opt], "-D")) {
+			/* Option to tell sar to write to saYYYYMMDD data files */
+			flags |= S_F_SA_YYYYMMDD;
+			opt++;
+		}
+		
 		else if (!strcmp(argv[opt], "-P")) {
 			/* Parse -P option */
 			if (parse_sa_P_opt(argv, &opt, &flags, act)) {
@@ -1210,10 +1216,10 @@ int main(int argc, char **argv)
 				strncpy(from_file, argv[opt++], MAX_FILE_LEN);
 				from_file[MAX_FILE_LEN - 1] = '\0';
 				/* Check if this is an alternate directory for sa files */
-				check_alt_sa_dir(from_file, day_offset);
+				check_alt_sa_dir(from_file, day_offset, -1);
 			}
 			else {
-				set_default_file(from_file, day_offset);
+				set_default_file(from_file, day_offset, -1);
 			}
 		}
 
@@ -1320,7 +1326,7 @@ int main(int argc, char **argv)
 	/* 'sar' is equivalent to 'sar -f' */
 	if ((argc == 1) ||
 	    ((interval < 0) && !from_file[0] && !to_file[0])) {
-		set_default_file(from_file, day_offset);
+		set_default_file(from_file, day_offset, -1);
 	}
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
@@ -1433,6 +1439,10 @@ int main(int argc, char **argv)
 
 		/* Writing data to a file (option -o) */
 		if (to_file[0]) {
+			/* Set option -D if entered */
+			if (USE_SA_YYYYMMDD(flags)) {
+				salloc(args_idx++, "-D");
+			}
 			/* Collect all possible activities (option -S XALL for sadc) */
 			salloc(args_idx++, "-S");
 			salloc(args_idx++, K_XALL);

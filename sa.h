@@ -85,7 +85,7 @@
 #define S_F_SEC_EPOCH		0x00000080
 #define S_F_HDR_ONLY		0x00000100
 #define S_F_FILE_LOCKED		0x00000200
-/* Unused			0x00000400*/
+#define S_F_SA_YYYYMMDD		0x00000400
 #define S_F_HORIZONTALLY	0x00000800
 #define S_F_COMMENT		0x00001000
 #define S_F_PERSIST_NAME	0x00002000
@@ -101,6 +101,7 @@
 #define PRINT_SEC_EPOCH(m)		(((m) & S_F_SEC_EPOCH)    == S_F_SEC_EPOCH)
 #define DISPLAY_HDR_ONLY(m)		(((m) & S_F_HDR_ONLY)     == S_F_HDR_ONLY)
 #define FILE_LOCKED(m)			(((m) & S_F_FILE_LOCKED)  == S_F_FILE_LOCKED)
+#define USE_SA_YYYYMMDD(m)		(((m) & S_F_SA_YYYYMMDD)  == S_F_SA_YYYYMMDD)
 #define DISPLAY_HORIZONTALLY(m)		(((m) & S_F_HORIZONTALLY) == S_F_HORIZONTALLY)
 #define DISPLAY_COMMENT(m)		(((m) & S_F_COMMENT)      == S_F_COMMENT)
 #define DISPLAY_PERSIST_NAME_S(m)	(((m) & S_F_PERSIST_NAME) == S_F_PERSIST_NAME)
@@ -808,7 +809,7 @@ extern void
 extern void
 	allocate_structures(struct activity * []);
 extern int
-	check_alt_sa_dir(char *, int);
+	check_alt_sa_dir(char *, int, int);
 extern int
 	check_disk_reg(struct activity *, int, int, int);
 extern void
@@ -877,7 +878,7 @@ extern void
 extern void
 	set_bitmap(unsigned char [], unsigned char, unsigned int);
 extern void
-	set_default_file(char *, int);
+	set_default_file(char *, int, int);
 extern void
 	set_hdr_rectime(unsigned int, struct tm *, struct file_header *);
 

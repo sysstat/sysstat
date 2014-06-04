@@ -1649,7 +1649,7 @@ int main(int argc, char **argv)
 			}
 			if (!strcmp(argv[opt], "-")) {
 				/* File name set to '-' */
-				set_default_file(dfile, 0);
+				set_default_file(dfile, 0, -1);
 				opt++;
 			}
 			else if (!strncmp(argv[opt], "-", 1)) {
@@ -1661,7 +1661,7 @@ int main(int argc, char **argv)
 				strncpy(dfile, argv[opt++], MAX_FILE_LEN);
 				dfile[MAX_FILE_LEN - 1] = '\0';
 				/* Check if this is an alternate directory for sa files */
-				check_alt_sa_dir(dfile, 0);
+				check_alt_sa_dir(dfile, 0, -1);
 			}
 		}
 
@@ -1697,7 +1697,7 @@ int main(int argc, char **argv)
 
 	/* sadf reads current daily data file by default */
 	if (!dfile[0]) {
-		set_default_file(dfile, 0);
+		set_default_file(dfile, 0, -1);
 	}
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {

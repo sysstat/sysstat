@@ -344,18 +344,76 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 
 /*
  ***************************************************************************
+ * Look for the most recent of saDD and saYYYYMMDD to decide which one to
+ * use. If neither exists then use saDD by default.
+ *
+ * IN:
+ * @sa_dir	Directory where standard daily data files are saved.
+ * @rectime	Structure containing the current date.
+ * 
+ * OUT:
+ * @sa_name	0 to use saDD data files,
+ * 		1 to use saYYYYMMDD data files.
+ ***************************************************************************
+ */
+void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
+{
+	char filename[MAX_FILE_LEN];
+	struct stat sb;
+	time_t sa_mtime;
+	
+	/* Use saDD by default */
+	*sa_name = 0;
+
+	/* Look for saYYYYMMDD */
+	snprintf(filename, MAX_FILE_LEN,
+		 "%s/sa%04d%02d%02d", sa_dir,
+		 rectime->tm_year + 1900,
+		 rectime->tm_mon + 1,
+		 rectime->tm_mday);
+	filename[MAX_FILE_LEN - 1] = '\0';
+
+	if (stat(filename, &sb) < 0)
+		/* Cannot find or access saYYYYMMDD, so use saDD */
+		return;
+	sa_mtime = sb.st_mtime;
+	
+	/* Look for saDD */
+	snprintf(filename, MAX_FILE_LEN,
+		 "%s/sa%02d", sa_dir,
+		 rectime->tm_mday);
+	filename[MAX_FILE_LEN - 1] = '\0';
+	
+	if (stat(filename, &sb) < 0) {
+		/* Cannot find or access saDD, so use saYYYYMMDD */
+		*sa_name = 1;
+		return;
+	}
+
+	if (sa_mtime > sb.st_mtime) {
+		/* saYYYYMMDD is more recent than saDD, so use it */
+		*sa_name = 1;
+	}
+}
+
+/*
+ ***************************************************************************
  * Set current daily data file name.
  *
  * IN:
  * @datafile	If not an empty string then this is the alternate directory
  *		location where daily data files will be saved.
  * @d_off	Day offset (number of days to go back in the past).
+ * @sa_name	0 for saDD data files,
+ * 		1 for saYYYYMMDD data files,
+ * 		-1 if unknown. In this case, will look for the most recent
+ * 		of saDD and saYYYYMMDD and use it.
  *
  * OUT:
  * @datafile	Name of daily data file.
  ***************************************************************************
  */
-void set_default_file(char *datafile, int d_off)
+void set_default_file(char *datafile, int d_off, int sa_name)
 {
 	char sa_dir[MAX_FILE_LEN];
 	struct tm rectime;
@@ -370,8 +428,28 @@ void set_default_file(char *datafile, int d_off)
 	sa_dir[MAX_FILE_LEN - 1] = '\0';
 
 	get_time(&rectime, d_off);
-	snprintf(datafile, MAX_FILE_LEN,
-		 "%s/sa%02d", sa_dir, rectime.tm_mday);
+	if (sa_name < 0) {
+		/*
+		 * Look for the most recent of saDD and saYYYYMMDD
+		 * and use it. If neither exists then use saDD.
+		 * sa_name is set accordingly.
+		 */
+		guess_sa_name(sa_dir, &rectime, &sa_name);
+	}
+	if (sa_name) {
+		/* Using saYYYYMMDD data files */
+		snprintf(datafile, MAX_FILE_LEN,
+			 "%s/sa%04d%02d%02d", sa_dir,
+			 rectime.tm_year + 1900,
+			 rectime.tm_mon + 1,
+			 rectime.tm_mday);
+	}
+	else {
+		/* Using saDD data files */
+		snprintf(datafile, MAX_FILE_LEN,
+			 "%s/sa%02d", sa_dir,
+			 rectime.tm_mday);
+	}
 	datafile[MAX_FILE_LEN - 1] = '\0';
 	default_file_used = TRUE;
 }
@@ -384,6 +462,11 @@ void set_default_file(char *datafile, int d_off)
  * IN:
  * @datafile	Name of the daily data file. May be a directory.
  * @d_off	Day offset (number of days to go back in the past).
+ * @sa_name	0 for saDD data files,
+ * 		1 for saYYYYMMDD data files,
+ * 		-1 if unknown. In this case, will look for the most recent
+ * 		of saDD and saYYYYMMDD and use it.
+ * 		
  * 
  * OUT:
  * @datafile	Name of the daily data file. This is now a plain file, not
@@ -393,15 +476,19 @@ void set_default_file(char *datafile, int d_off)
  * 1 if @datafile was a directory, and 0 otherwise.
  ***************************************************************************
  */
-int check_alt_sa_dir(char *datafile, int d_off)
+int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
 {
 	struct stat sb;
 	
-	stat(datafile, &sb);
+	if (stat(datafile, &sb) == 0) {
 		if (S_ISDIR(sb.st_mode)) {
-		/* This is a directory: So append the default file name to it */
-		set_default_file(datafile, d_off);
-		return 1;
+			/*
+			 * This is a directory: So append
+			 * the default file name to it.
+			 */
+			set_default_file(datafile, d_off, sa_name);
+			return 1;
+		}
 	}
 	
 	return 0;
