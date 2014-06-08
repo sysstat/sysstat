@@ -15,3 +15,6 @@ SADC_OPTIONS="@COLLECT_ALL@"
 # Directory where sa and sar files are saved.
 SA_DIR=@SA_DIR@
 
+# Compression program to use.
+ZIP="@ZIP@"
+
