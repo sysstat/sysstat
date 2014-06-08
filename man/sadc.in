@@ -1,10 +1,10 @@
-.TH SADC 8 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.B ] [ -F ] [ -L ] [ -V ] [ -S { INT | DISK | SNMP | IPV6 | POWER | XDISK | ALL | XALL } ] [
+.B ] [ -D ] [ -F ] [ -L ] [ -V ] [ -S { INT | DISK | SNMP | IPV6 | POWER | XDISK | ALL | XALL } ] [
 .I interval
 .B [
 .I count
@@ -22,12 +22,10 @@ or to standard output. If
 .I outfile
 is set to -, then
 .B sadc
-uses the standard system activity daily data file, the
-.IR @SA_DIR@/sa dd
-file, where the dd parameter indicates the current day.
-In this case,
+uses the standard system activity daily data file (see below).
+In this case, if the file already exists,
 .B sadc
-will overwrite the file if it is from a previous month.
+will overwrite it if it is from a previous month.
 By default
 .B sadc
 collects most of the data available from the kernel.
@@ -35,6 +33,23 @@ But there are also optional metrics, for which the
 relevant options must be explicitly passed to
 .B sadc
 to be collected (see option -S below).
+
+The standard system activity daily data file is named
+.I saDD
+unless option
+.B -D
+is used, in which case its name is
+.IR saYYYYMMDD ,
+where YYYY stands for the current year, MM for the current month
+and DD for the current day.
+By default it is located in the
+.I @SA_DIR@
+directory. Yet it is possible to specify an alternate location for
+it: If
+.I outfile
+is a directory (instead of a plain file) then it will be considered
+as the directory where the standard system activity daily data file
+will be saved.
 
 When the
 .I count
@@ -76,6 +91,12 @@ to write a dummy record containing the specified
 string.
 This comment can then be displayed with option -C of
 .BR sar .
+.IP -D
+Use
+.I saYYYYMMDD
+instead of
+.I saDD
+as the standard system activity daily data file name.
 .IP -F
 The creation of
 .I outfile
@@ -191,15 +212,19 @@ All the statistics are not necessarily available, depending on the kernel versio
 .B sadc
 assumes that you are using at least a 2.6 kernel.
 .SH FILES
-.IR @SA_DIR@/sa dd
+.I @SA_DIR@/saDD
+.br
+.I @SA_DIR@/saYYYYMMDD
 .RS
-Indicate the daily data file, where the
-.B dd
-parameter is a number representing the day of the month.
+The standard system activity daily data files and their default location.
+YYYY stands for the current year, MM for the current month and DD for the
+current day.
 
 .RE
-.IR /proc
-contains various files with system statistics.
+.I /proc
+and
+.I /sys
+contain various files with system statistics.
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
 .SH SEE ALSO

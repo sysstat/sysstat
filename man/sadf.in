@@ -1,4 +1,4 @@
-.TH SADF 1 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -41,9 +41,27 @@ If
 .I datafile
 is omitted,
 .B sadf
-uses the standard system activity file, the
-.IR @SA_DIR@/sa dd
-file, where the dd parameter indicates the current day.
+uses the standard system activity daily data file.
+
+The standard system activity daily data file is named
+.I saDD
+or
+.IR saYYYYMMDD ,
+where YYYY stands for the current year, MM for the current month and
+DD for the current day.
+.B sadf
+will look for the most recent of
+.I saDD
+and
+.IR saYYYYMMDD ,
+and use it. By default it is located in the
+.I @SA_DIR@
+directory. Yet it is possible to specify an alternate location for it:
+If
+.I datafile
+is a directory (instead of a plain file) then it will be considered as
+the directory where the standard system activity daily data file is
+located.
 
 The
 .I interval
@@ -168,11 +186,13 @@ by a pattern processing command.
 .RE
 
 .SH FILES
-.IR @SA_DIR@/sa dd
+.I @SA_DIR@/saDD
+.br
+.I @SA_DIR@/saYYYYMMDD
 .RS
-Indicate the daily data file, where the
-.B dd
-parameter is a number representing the day of the month.
+The standard system activity daily data files and their default location.
+YYYY stands for the current year, MM for the current month and DD for the
+current day.
 
 .RE
 .SH AUTHOR

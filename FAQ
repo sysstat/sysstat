@@ -210,10 +210,10 @@ current directory!
 2.4. I get the following error message when I try to run sar:
 Cannot open /var/log/sa/sa30: No such file or directory
 
-Please read the sar(1) manual page! Daily data files are created in the
-/var/log/sa directory using the data collector (sadc) or using option
--o with sar. Once they are created, sar can display statistics saved
-in those files.
+Please read the sar(1) manual page! Daily data files are created by default
+in the /var/log/sa directory using the data collector (sadc) or using
+option -o with sar. Once they are created, sar can display statistics
+saved in those files.
 But sar can also display statistics collected "on the fly": Just enter
 the proper options on the command line to indicate which statistics are
 to be displayed, and also specify <interval> and <count> numbers.
@@ -470,15 +470,21 @@ another file or create a new one. See also question 2.14 above.
 2.19. How can I keep sar data for more than one month?
 
 By default sar saves its data in the standard system activity data file,
-the /var/log/sa/sa<DD> file, where <DD> is the current day in the month.
+the /var/log/sa/saDD file, where DD is the current day in the month.
 To prevent sar from overwriting any existing files, just set the variable
 HISTORY in /etc/sysconfig/sysstat to the number of days during which data
 must be kept. When this variable has a value greater than 28, sa1 script
 uses a month-by-month directory structure; datafiles are named YYYYMM/saDD
 and the script maintains links to these datafiles to mimic the standard
-sar datafile structure.
-However please note that pre-existing datafiles will be deleted as links
-will be created and replace them.
+sar datafile structure. However please note that pre-existing datafiles
+will be deleted as links will be created and replace them.
+Beginning with sysstat version 11.0.0, this tree of directories is no
+longer created. When HISTORY has a value greater than 28, sa1 now calls
+sadc with option -D set, telling it to use saYYYYMMDD instead of saDD
+as the name for the standard system activity daily data files, where
+YYYY stands for the current year, MM for the current month and DD for
+the current day. All these files are saved in the same directory
+(/var/log/sa by default).
 
 ~~~
 

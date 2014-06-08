@@ -1,4 +1,4 @@
-.TH SYSSTAT 5 "MAY 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 .SH DESCRIPTION
@@ -10,6 +10,11 @@ shell scripts from the sysstat's set of tools.
 It consists of a sequence of shell variable assignments used to
 configure sysstat logging.
 The variables and their meanings are:
+.TP
+.B COMPRESSAFTER
+Number of days after which daily data files are to be compressed,
+either by gzip or bzip2.
+
 .TP
 .B HISTORY
 The number of days during which a daily data file or a report
@@ -44,7 +49,7 @@ option -D to prevent older data files from being overwritten (see
 manual page). In this latter case data files are named
 .IR saYYYYMMDD
 and reports
-.IR sarYYYYMMDD,
+.IR sarYYYYMMDD ,
 where YYYY stands for the current year, MM for the
 current month and DD for the current day.
 
@@ -111,9 +116,10 @@ March 31st: 31 files
 exercise for the reader).
 
 .TP
-.B COMPRESSAFTER
-Number of days after which daily data files are to be compressed,
-either by gzip or bzip2.
+.B SA_DIR
+Directory where the standard system activity daily data and report files
+are saved. Its default value is
+.IR @SA_DIR@ .
 
 .TP
 .B SADC_OPTIONS
@@ -125,6 +131,10 @@ manual page), you can select some additional data which are going to be saved in
 daily data files.
 These options are used only when a new data file is created. They will be
 ignored with an already existing one.
+
+.TP
+.ZIP
+Compression program to use to compress data and report files.
 
 .SH FILES
 .IR @SYSCONFIG_DIR@/sysstat

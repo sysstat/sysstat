@@ -1,4 +1,4 @@
-.TH SA1 8 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA1 8 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
 .SH SYNOPSIS
@@ -13,9 +13,23 @@ command is a shell procedure variant of the
 .B sadc
 command and handles all of the flags and parameters of that command. The
 .B sa1
-command collects and stores binary data in the
-.IR @SA_DIR@/sa dd
-file, where the dd parameter indicates the current day. The
+command collects and stores binary data in the current standard
+system activity daily data file.
+
+The standard system activity daily data file is named
+.I saDD
+unless
+.BR sadc 's
+option
+.B -D
+is used, in which case its name is
+.IR saYYYYMMDD ,
+where YYYY stands for the current year, MM for the current month
+and DD for the current day. By default it is located in the
+.I @SA_DIR@
+directory.
+
+The
 .I interval
 and
 .I count
@@ -51,11 +65,13 @@ place the following entry in your root crontab file:
 .B 0,10,20,30,40,50 * * * * @SA_LIB_DIR@/sa1 1 1 -S DISK
 
 .SH FILES
-.IR @SA_DIR@/sa dd
+.I @SA_DIR@/saDD
+.br
+.I @SA_DIR@/saYYYYMMDD
 .RS
-Indicate the daily data file, where the
-.B dd
-parameter is a number representing the day of the month.
+The standard system activity daily data files and their default location.
+YYYY stands for the current year, MM for the current month and DD for the
+current day.
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
 .SH SEE ALSO

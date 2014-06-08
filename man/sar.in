@@ -1,8 +1,8 @@
-.TH SAR 1 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
-.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
+.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
 .B [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]
 .B [ -I {
 .I int
@@ -61,10 +61,7 @@ flag, in addition to being displayed onto the screen. If
 .I filename
 is omitted,
 .B sar
-uses the standard system activity daily data file,
-the
-.IR @SA_DIR@/sa dd
-file, where the dd parameter indicates the current day.
+uses the standard system activity daily data file (see below).
 By default all the data available from the kernel are saved in the
 data file.
 
@@ -79,6 +76,41 @@ It is also possible to enter -1, -2 etc. as an argument to
 to display data
 of that days ago. For example, -1 will point at the standard system
 activity file of yesterday.
+
+Standard system activity daily data files are named
+.I saDD
+or
+.IR saYYYYMMDD ,
+where YYYY stands for the current year, MM for the current month and
+DD for the current day. They are the default files used by
+.B sar
+only when no filename has been explicitly specified.
+When used to write data to files (with its option
+.BR -o ),
+.B sar
+will use
+.I saYYYYMMDD
+if option
+.B -D
+has also been specified, else it will use
+.IR saDD .
+When used to display the records previously saved in a file,
+.B sar
+will look for the most recent of
+.I saDD
+and
+.IR saYYYYMMDD ,
+and use it.
+
+Standard system activity daily data files are located in the
+.I @SA_DIR@
+directory by default. Yet it is possible to specify an alternate
+location for them: If a directory (instead of a plain file) is used
+with options
+.B -f
+or
+.B -o
+then it will be considered as the directory containing the data files.
 
 Without the
 .B -P
@@ -248,6 +280,15 @@ When reading data from a file, tell
 .B sar
 to display comments that have been inserted by
 .BR sadc .
+.IP -D
+Use
+.I saYYYYMMDD
+instead of
+.I saDD
+as the standard system activity daily data file name. This option
+works only when used in conjunction with option
+.B -o
+to save data to file.
 .IP -d
 Report activity for each block device.
 When data are displayed, the device specification
@@ -382,10 +423,13 @@ Extract records from
 (created by the
 .B -o filename
 flag). The default value of the
-.B filename
-parameter is the current daily data file, the
-.IR @SA_DIR@/sa dd
-file. The -f option is exclusive of the -o option.
+.I filename
+parameter is the current standard system activity daily data file.
+If
+.I filename
+is a directory instead of a plain file then it is considered as the
+directory where the standard system activity daily data files are
+located. The -f option is exclusive of the -o option.
 .IP -H
 Report hugepages utilization statistics.
 The following values are displayed:
@@ -1755,10 +1799,13 @@ activities are reported.
 .IP "-o [ filename ]"
 Save the readings in the file in binary form. Each reading
 is in a separate record. The default value of the
-.B filename
-parameter is the current daily data file, the
-.IR @SA_DIR@/sa dd
-file. The -o option is exclusive of the -f option.
+.I filename
+parameter is the current standard system activity daily data file.
+If
+.I filename
+is a directory instead of a plain file then it is considered as the directory
+where the standard system activity daily data files are located.
+The -o option is exclusive of the -f option.
 All the data available from the kernel are saved in the file (in fact,
 .B sar
 calls its data collector
@@ -2182,15 +2229,19 @@ All the statistics are not necessarily available, depending on the kernel versio
 .B sar
 assumes that you are using at least a 2.6 kernel.
 .SH FILES
-.IR @SA_DIR@/sa dd
+.I @SA_DIR@/saDD
+.br
+.I @SA_DIR@/saYYYYMMDD
 .RS
-Indicate the daily data file, where the
-.B dd
-parameter is a number representing the day of the month.
+The standard system activity daily data files and their default location.
+YYYY stands for the current year, MM for the current month and DD for the
+current day.
 
 .RE
-.IR /proc
-contains various files with system statistics.
+.I /proc
+and
+.I /sys
+contain various files with system statistics.
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
 .SH SEE ALSO

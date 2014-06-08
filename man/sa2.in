@@ -1,6 +1,6 @@
-.TH SA2 8 "AUGUST 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA2 8 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
-sa2 \- Write a daily report in the @SA_DIR@ directory.
+sa2 \- Create a report from the current standard system activity daily data file.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sa2
 .SH DESCRIPTION
@@ -9,9 +9,17 @@ The
 command is a shell procedure variant of the
 .B sar
 command which writes a daily report in the
-.IR @SA_DIR@/sar dd
-file, where the dd parameter indicates the current day.
-It will also remove reports more than one week old by default.
+.I sarDD
+or the
+.I sarYYYYMMDD
+file, where YYYY stands for the current year, MM for the current month
+and DD for the current day.
+By default the report is saved in the
+.I @SA_DIR@
+directory.
+The
+.B sa2
+command will also remove reports more than one week old by default.
 You can however keep reports for a longer (or a shorter) period by setting
 the HISTORY environment variable. Read the
 .BR sysstat (5)
@@ -34,14 +42,20 @@ command daily, place the following entry in your root crontab file:
 
 .B 5 19 * * 1-5 @SA_LIB_DIR@/sa2 -A &
 
-This will generate a daily report called
-.IR @SA_DIR@/sar dd.
+This will generate by default a daily report called
+.I sarDD
+in the
+.I @SA_DIR@
+directory, where the DD parameter is a number representing the day of the
+month.
 .SH FILES
-.IR @SA_DIR@/sar dd
+.I @SA_DIR@/sarDD
+.br
+.I @SA_DIR@/sarYYYYMMDD
 .RS
-Indicate the daily report file, where the
-.B dd
-parameter is a number representing the day of the month.
+The standard system activity daily report files and their default location.
+YYYY stands for the current year, MM for the current month and DD for the
+current day.
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
 .SH SEE ALSO
