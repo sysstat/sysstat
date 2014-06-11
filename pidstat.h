@@ -26,6 +26,7 @@
 #define P_A_CTXSW	0x08
 #define P_A_STACK	0x10
 #define P_A_KTAB	0x20
+#define P_A_RT		0x40
 
 #define DISPLAY_CPU(m)		(((m) & P_A_CPU) == P_A_CPU)
 #define DISPLAY_MEM(m)		(((m) & P_A_MEM) == P_A_MEM)
@@ -33,6 +34,7 @@
 #define DISPLAY_CTXSW(m)	(((m) & P_A_CTXSW) == P_A_CTXSW)
 #define DISPLAY_STACK(m)	(((m) & P_A_STACK) == P_A_STACK)
 #define DISPLAY_KTAB(m)		(((m) & P_A_KTAB) == P_A_KTAB)
+#define DISPLAY_RT(m)		(((m) & P_A_RT) == P_A_RT)
 
 /* TASK/CHILD */
 #define P_NULL		0x00
@@ -107,7 +109,7 @@
 							}					\
 						} while (0)
 
-#define PRINT_POLICY(p) \
+#define GET_POLICY(p) \
 	(p == SCHED_NORMAL ? "NORMAL" : \
 	(p == SCHED_FIFO   ? "FIFO" : \
 	(p == SCHED_RR     ? "RR" : \

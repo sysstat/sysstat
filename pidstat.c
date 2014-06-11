@@ -87,8 +87,8 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -u ]\n"
-			  "[ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
 }
@@ -205,7 +205,8 @@ void check_flags(void)
 
 	/* Check that requested activities are available */
 	if (DISPLAY_TASK_STATS(tskflag)) {
-		act |= P_A_CPU + P_A_MEM + P_A_IO + P_A_CTXSW + P_A_STACK + P_A_KTAB;
+		act |= P_A_CPU + P_A_MEM + P_A_IO + P_A_CTXSW
+		     + P_A_STACK + P_A_KTAB + P_A_RT;
 	}
 	if (DISPLAY_CHILD_STATS(tskflag)) {
 		act |= P_A_CPU + P_A_MEM;
@@ -1103,8 +1104,13 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 			if (DISPLAY_CTXSW(activity) && (!isActive)) {
 				if (((*pstc)->nvcsw  != (*pstp)->nvcsw) ||
-				    ((*pstc)->nivcsw != (*pstp)->nivcsw) ||
-				    ((*pstc)->priority != (*pstp)->priority) ||
+				    ((*pstc)->nivcsw != (*pstp)->nivcsw)) {
+					isActive = TRUE;
+				}
+			}
+			
+			if (DISPLAY_RT(activity) && (!isActive)) {
+				if (((*pstc)->priority != (*pstp)->priority) ||
 				    ((*pstc)->policy != (*pstp)->policy)) {
 					isActive = TRUE;
 				}
@@ -1291,10 +1297,13 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			printf("   kB_rd/s   kB_wr/s kB_ccwr/s iodelay");
 		}
 		if (DISPLAY_CTXSW(actflag)) {
-			printf("   cswch/s nvcswch/s prio policy");
+			printf("   cswch/s nvcswch/s");
 		}
 		if (DISPLAY_KTAB(actflag)) {
 			printf(" threads   fd-nr");
+		}
+		if (DISPLAY_RT(actflag)) {
+			printf(" prio policy");
 		}
 		printf("  Command\n");
 	}
@@ -1362,11 +1371,9 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
-			printf(" %9.2f %9.2f %4u %6s",
+			printf(" %9.2f %9.2f",
 			       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
-			       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv),
-			       pstc->priority,
-			       PRINT_POLICY(pstc->policy));
+			       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 		}
 
 		if (DISPLAY_KTAB(actflag)) {
@@ -1378,6 +1385,12 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			else {
 				printf(" %7u", pstc->fd_nr);
 			}
+		}
+
+		if (DISPLAY_RT(actflag)) {
+			printf(" %4u %6s",
+			       pstc->priority,
+			       GET_POLICY(pstc->policy));
 		}
 
 		print_comm(pstc);
@@ -1946,7 +1959,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
-		printf("   cswch/s nvcswch/s prio policy  Command\n");
+		printf("   cswch/s nvcswch/s  Command\n");
 	}
 
 	for (p = 0; p < pid_nr; p++) {
@@ -1956,11 +1969,60 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		printf(" %9.2f %9.2f %4u %6s",
+		printf(" %9.2f %9.2f",
 		       S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
-		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv),
+		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+		print_comm(pstc);
+		again = 1;
+	}
+
+	return again;
+}
+
+/*
+ ***************************************************************************
+ * Display scheduling priority and policy information.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @itv		Interval of time in jiffies.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_rt_stats(int prev, int curr, int dis,
+		       char *prev_string, char *curr_string,
+		       unsigned long long itv)
+{
+	struct pid_stats *pstc, *pstp;
+	unsigned int p;
+	int again = 0;
+
+	if (dis) {
+		PRINT_ID_HDR(prev_string, pidflag);
+		printf(" prio policy  Command\n");
+	}
+
+	for (p = 0; p < pid_nr; p++) {
+
+		if (get_pid_to_display(prev, curr, p, P_A_RT, P_NULL,
+				       &pstc, &pstp) <= 0)
+			continue;
+
+		print_line_id(curr_string, pstc);
+		printf(" %4u %6s",
 		       pstc->priority,
-		       PRINT_POLICY(pstc->policy));
+		       GET_POLICY(pstc->policy));
 		print_comm(pstc);
 		again = 1;
 	}
@@ -2153,6 +2215,12 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 		if (DISPLAY_KTAB(actflag)) {
 			again += write_pid_ktab_stats(prev, curr, dis, disp_avg,
 						      prev_string, curr_string, itv);
+		}
+
+		/* Display scheduling priority and policy information */
+		if (DISPLAY_RT(actflag)) {
+			again += write_pid_rt_stats(prev, curr, dis, prev_string,
+						    curr_string, itv);
 		}
 	}
 
@@ -2490,6 +2558,12 @@ int main(int argc, char **argv)
 				case 'l':
 					/* Display whole command line */
 					pidflag |= P_D_CMDLINE;
+					break;
+
+				case 'R':
+					/* Display priority and policy info */
+					actflag |= P_A_RT;
+					dis_hdr++;
 					break;
 
 				case 'r':
