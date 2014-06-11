@@ -1,8 +1,8 @@
-.TH PIDSTAT 1 "MAY 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
-.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [
+.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [
 .I username
 .B ] ] [ -u ] [ -V ] [ -v ]
 .B [ -w ] [ -C
@@ -148,6 +148,41 @@ process itself, whereas the
 .B ALL
 keyword indicates that statistics are to be reported for all the
 tasks managed by the system.
+.IP -R
+Report realtime priority and scheduling policy information.
+The following values may be displayed:
+
+.B UID
+.RS
+.RS
+The real user identification number of the task being monitored.
+.RE
+
+.B USER
+.RS
+The name of the real user owning the task being monitored.
+.RE
+
+.B PID
+.RS
+The identification number of the task being monitored.
+.RE
+
+.B prio
+.RS
+The realtime priority of the task being monitored.
+.RE
+
+.B policy
+.RS
+The scheduling policy of the task being monitored.
+.RE
+
+.B Command
+.RS
+The command name of the task.
+.RE
+.RE
 .IP -r
 Report page faults and memory utilization.
 
@@ -467,8 +502,7 @@ The command name of the task.
 .RE
 .RE
 .IP -w
-Report task switching activity (kernels 2.6.23 and later only),
-realtime priority and scheduling policy information.
+Report task switching activity (kernels 2.6.23 and later only).
 The following values may be displayed:
 
 .B UID
@@ -500,16 +534,6 @@ Total number of non voluntary context switches the task made per second.
 A involuntary context switch takes place when a task executes
 for the duration of its time slice and then is forced to relinquish the
 processor.
-.RE
-
-.B prio
-.RS
-The realtime priority of the task being monitored.
-.RE
-
-.B policy
-.RS
-The scheduling policy of the task being monitored.
 .RE
 
 .B Command
