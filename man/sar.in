@@ -54,8 +54,7 @@ parameter is specified without the
 .I count
 parameter, then reports are generated continuously.
 The collected data can also
-be saved in the file specified by the
-.B -o
+be saved in the file specified by the -o
 .I filename
 flag, in addition to being displayed onto the screen. If
 .I filename
@@ -69,8 +68,7 @@ The
 .B sar
 command extracts and writes to standard output records previously
 saved in a file. This file can be either the one specified by the
-.B -f
-flag or, by default, the standard system activity daily data file.
+-f flag or, by default, the standard system activity daily data file.
 It is also possible to enter -1, -2 etc. as an argument to
 .B sar
 to display data
@@ -85,14 +83,11 @@ where YYYY stands for the current year, MM for the current month and
 DD for the current day. They are the default files used by
 .B sar
 only when no filename has been explicitly specified.
-When used to write data to files (with its option
-.BR -o ),
+When used to write data to files (with its option -o),
 .B sar
 will use
 .I saYYYYMMDD
-if option
-.B -D
-has also been specified, else it will use
+if option -D has also been specified, else it will use
 .IR saDD .
 When used to display the records previously saved in a file,
 .B sar
@@ -106,25 +101,18 @@ Standard system activity daily data files are located in the
 .I @SA_DIR@
 directory by default. Yet it is possible to specify an alternate
 location for them: If a directory (instead of a plain file) is used
-with options
-.B -f
-or
-.B -o
+with options -f or -o
 then it will be considered as the directory containing the data files.
 
-Without the
-.B -P
-flag, the
+Without the -P flag, the
 .B sar
 command reports system-wide (global among all processors) statistics,
 which are calculated as averages for values expressed as percentages,
-and as sums otherwise. If the
-.B -P
+and as sums otherwise. If the -P
 flag is given, the
 .B sar
 command reports activity which relates to the specified processor or
-processors. If
-.B -P ALL
+processors. If -P ALL
 is given, the
 .B sar
 command reports statistics for each individual processor and global
@@ -132,8 +120,7 @@ statistics among all processors.
 
 You can select information about specific system activities using
 flags. Not specifying any flags selects only CPU activity.
-Specifying the
-.B -A
+Specifying the -A
 flag selects all possible activities.
 
 The default version of the
@@ -156,8 +143,7 @@ command as a background process. The syntax for this is:
 All data are captured in binary form and saved to a file (datafile).
 The data can then be selectively displayed with the
 .B sar
-command using the
-.B -f
+command using the -f
 option. Set the
 .I interval
 and
@@ -286,19 +272,14 @@ Use
 instead of
 .I saDD
 as the standard system activity daily data file name. This option
-works only when used in conjunction with option
-.B -o
+works only when used in conjunction with option -o
 to save data to file.
 .IP -d
 Report activity for each block device.
 When data are displayed, the device specification
-.I dev m-n
-is generally used (
-.B DEV
-column).
-.B m
-is the major number of the device and
-.B n
+.I devM-n
+is generally used (DEV column).
+M is the major number of the device and n
 its minor number.
 Device names may also be pretty-printed if option -p
 is used or persistent device names can be printed if option -j is used
@@ -364,11 +345,7 @@ value is close to 100%.
 Set the ending time of the report. The default ending time is
 18:00:00. Hours must be given in 24-hour format.
 This option can be used when data are read from
-or written to a file (options
-.B -f
-or
-.B -o
-).
+or written to a file (options -f or -o).
 .IP -F
 Display statistics for currently mounted filesystems. Pseudo-filesystems are
 ignored. At the end of the report,
@@ -420,8 +397,8 @@ Percentage of file nodes used in filesystem.
 .IP "-f [ filename ]"
 Extract records from
 .I filename
-(created by the
-.B -o filename
+(created by the -o
+.I filename
 flag). The default value of the
 .I filename
 parameter is the current standard system activity daily data file.
@@ -454,9 +431,9 @@ Percentage of total hugepages memory that has been allocated.
 Display a short help message then exit.
 .IP "-I { int [,...] | SUM | ALL | XALL }"
 Report statistics for a given interrupt.
-.B int
-is the interrupt number. Specifying multiple
-.B -I int
+.I int
+is the interrupt number. Specifying multiple -I
+.I int
 parameters on the command line will look at multiple independent interrupts.
 The
 .B SUM
@@ -470,8 +447,7 @@ keyword indicates that statistics from all interrupts, including potential
 APIC interrupt sources, are to be reported.
 Note that interrupt statistics depend on
 .B sadc
-option
-.B "-S INT"
+option "-S INT"
 to be collected.
 .IP "-i interval"
 Select data records at seconds as close as possible to the number specified
@@ -491,10 +467,8 @@ is pretty-printed (see option -p below).
 .IP "-m { keyword [,...] | ALL }"
 Report power management statistics.
 Note that these statistics depend on
-.B sadc
-option
-.B "-S POWER"
-to be collected.
+.BR sadc 's
+option "-S POWER" to be collected.
 
 Possible keywords are
 .BR CPU ,
@@ -901,9 +875,8 @@ With the
 .B IP
 keyword, statistics about IPv4 network traffic are reported.
 Note that IPv4 statistics depend on
-.B sadc
-option
-.B "-S SNMP"
+.BR sadc 's
+option "-S SNMP"
 to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
@@ -962,10 +935,8 @@ With the
 .B EIP
 keyword, statistics about IPv4 network errors are reported.
 Note that IPv4 statistics depend on
-.B sadc
-option
-.B "-S SNMP"
-to be collected.
+.BR sadc 's
+option "-S SNMP" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1046,9 +1017,8 @@ With the
 .B ICMP
 keyword, statistics about ICMPv4 network traffic are reported.
 Note that ICMPv4 statistics depend on
-.B sadc
-option
-.B "-S SNMP"
+.BR sadc 's
+option "-S SNMP"
 to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
@@ -1131,10 +1101,8 @@ With the
 .B EICMP
 keyword, statistics about ICMPv4 error messages are reported.
 Note that ICMPv4 statistics depend on
-.B  sadc
-option
-.B "-S SNMP"
-to be collected.
+.BR  sadc 's
+option "-S SNMP" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1206,10 +1174,8 @@ With the
 .B TCP
 keyword, statistics about TCPv4 network traffic are reported.
 Note that TCPv4 statistics depend on
-.B sadc
-option
-.B "-S SNMP"
-to be collected.
+.BR sadc 's
+option "-S SNMP" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1243,10 +1209,8 @@ With the
 .B ETCP
 keyword, statistics about TCPv4 network errors are reported.
 Note that TCPv4 statistics depend on
-.B sadc
-option
-.B "-S SNMP"
-to be collected.
+.BR sadc 's
+option "-S SNMP" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1288,10 +1252,8 @@ With the
 .B UDP
 keyword, statistics about UDPv4 network traffic are reported.
 Note that UDPv4 statistics depend on
-.B sadc
-option
-.B "-S SNMP"
-to be collected.
+.BR sadc's
+option "-S SNMP" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1322,10 +1284,8 @@ With the
 .B SOCK6
 keyword, statistics on sockets in use are reported (IPv6).
 Note that IPv6 statistics depend on
-.B sadc
-option
-.B "-S IPV6"
-to be collected.
+.BR sadc 's
+option "-S IPV6" to be collected.
 The following values are displayed:
 
 .B tcp6sck
@@ -1352,10 +1312,8 @@ With the
 .B IP6
 keyword, statistics about IPv6 network traffic are reported.
 Note that IPv6 statistics depend on
-.B sadc
-option
-.B "-S IPV6"
-to be collected.
+.BR sadc 's
+option "-S IPV6" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1431,10 +1389,8 @@ With the
 .B EIP6
 keyword, statistics about IPv6 network errors are reported.
 Note that IPv6 statistics depend on
-.B sadc
-option
-.B "-S IPV6"
-to be collected.
+.BR sadc 's
+option "-S IPV6" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1543,10 +1499,8 @@ With the
 .B ICMP6
 keyword, statistics about ICMPv6 network traffic are reported.
 Note that ICMPv6 statistics depend on
-.B sadc
-option
-.B "-S IPV6"
-to be collected.
+.BR sadc 's
+option "-S IPV6" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1669,10 +1623,8 @@ With the
 .B EICMP6
 keyword, statistics about ICMPv6 error messages are reported.
 Note that ICMPv6 statistics depend on
-.B sadc
-option
-.B "-S IPV6"
-to be collected.
+.BR sadc 's
+option "-S IPV6" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1758,10 +1710,8 @@ With the
 .B UDP6
 keyword, statistics about UDPv6 network traffic are reported.
 Note that UDPv6 statistics depend on
-.B sadc
-option
-.B "-S IPV6"
-to be collected.
+.BR sadc 's
+option "-S IPV6" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
@@ -1810,10 +1760,9 @@ All the data available from the kernel are saved in the file (in fact,
 .B sar
 calls its data collector
 .B sadc
-with the option
-.B "-S ALL" .
+with the option "-S ALL".
 See
-.B sadc(8)
+.BR sadc (8)
 manual page).
 .IP "-P { cpu [,...] | ALL }"
 Report per-processor statistics for the specified processor or processors.
@@ -1825,11 +1774,11 @@ Note that processor 0 is the first processor.
 .IP -p
 Pretty-print device names. Use this option in conjunction with option -d.
 By default names are printed as
-.B dev m-n
-where m and n are the major and minor numbers for the device.
+.I devM-n
+where M and n are the major and minor numbers for the device.
 Use of this option displays the names of the devices as they (should) appear
 in /dev. Name mappings are controlled by
-.B @SYSCONFIG_DIR@/sysstat.ioconf.
+.IR @SYSCONFIG_DIR@/sysstat.ioconf .
 .IP -q
 Report queue length and load averages. The following values are displayed:
 
@@ -1990,9 +1939,7 @@ Set the starting time of the data, causing the
 command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
 Hours must be given in 24-hour format. This option can be
-used only when data are read from a file (option
-.B -f
-).
+used only when data are read from a file (option -f).
 .IP -t
 When reading data from a daily data file, indicate that
 .B sar
@@ -2180,7 +2127,7 @@ command takes into account the following environment variables:
 
 .IP S_TIME_FORMAT
 If this variable exists and its value is
-.BR ISO
+.B ISO
 then the current locale will be ignored when printing the date in the report header.
 The
 .B sar
@@ -2188,7 +2135,7 @@ command will use the ISO 8601 format (YYYY-MM-DD) instead.
 
 .IP S_TIME_DEF_TIME
 If this variable exists and its value is
-.BR UTC
+.B UTC
 then
 .B sar
 will save its data in UTC time (data will still be displayed in local time).

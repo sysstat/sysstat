@@ -1,4 +1,4 @@
-.TH SA2 8 "JUNE 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA2 8 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa2 \- Create a report from the current standard system activity daily data file.
 .SH SYNOPSIS
@@ -21,7 +21,9 @@ The
 .B sa2
 command will also remove reports more than one week old by default.
 You can however keep reports for a longer (or a shorter) period by setting
-the HISTORY environment variable. Read the
+the
+.B HISTORY
+environment variable. Read the
 .BR sysstat (5)
 manual page for details.
 

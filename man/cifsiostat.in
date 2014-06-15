@@ -121,7 +121,7 @@ If this variable exists and its value is
 .BR ISO
 then the current locale will be ignored when printing the date in the report
 header. The
-.B nfsiostat
+.B cifsiostat
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
 The timestamp displayed with option -t will also be compliant with ISO 8601
 format.
