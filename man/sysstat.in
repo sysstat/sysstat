@@ -12,8 +12,10 @@ configure sysstat logging.
 The variables and their meanings are:
 .TP
 .B COMPRESSAFTER
-Number of days after which daily data files are to be compressed,
-either by gzip or bzip2.
+Number of days after which daily data files are to be compressed.
+The compression program is given in the
+.B ZIP
+variable.
 
 .TP
 .B HISTORY
@@ -133,8 +135,8 @@ These options are used only when a new data file is created. They will be
 ignored with an already existing one.
 
 .TP
-.ZIP
-Compression program to use to compress data and report files.
+.B ZIP
+Program used to compress data and report files.
 
 .SH FILES
 .IR @SYSCONFIG_DIR@/sysstat
