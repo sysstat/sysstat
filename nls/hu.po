@@ -1,60 +1,62 @@
-# Indonesian translations for sysstat package.
-# Copyright (C) 2008 THE sysstat'S COPYRIGHT HOLDER
+# Hungarian translation of sysstat
+# Copyright (C) 2014 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
-# Andhika Padmawan <andhika.padmawan@gmail.com>, 2011-2014.
 #
+# Balázs Úr <urbalazs@gmail.com>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: sysstat 11.0.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2014-06-12 21:34+0200\n"
-"PO-Revision-Date: 2014-06-14 10:56+0700\n"
-"Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
-"Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
-"Language: id\n"
+"PO-Revision-Date: 2014-06-13 01:04+0200\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: sadf_misc.c:621
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
-msgstr "Berkas data aktivitas sistem: %s (%#x)\n"
+msgstr "Rendszertevékenység adatfájl: %s (%#x)\n"
 
 #: sadf_misc.c:630
 #, c-format
 msgid "Host: "
-msgstr "Host: "
+msgstr "Gép: "
 
 #: sadf_misc.c:636
 #, c-format
 msgid "Number of CPU for last samples in file: %u\n"
-msgstr "Jumlah CPU untuk contoh terakhir di berkas: %u\n"
+msgstr "CPU-k száma a legutóbbi mintánál a fájlban: %u\n"
 
 #: sadf_misc.c:640
 #, c-format
 msgid "File time: "
-msgstr "Waktu berkas: "
+msgstr "Fájl ideje: "
 
 #: sadf_misc.c:645
 #, c-format
 msgid "Size of a long int: %d\n"
-msgstr "Ukuran interval panjang: %d\n"
+msgstr "Egy hosszú egész mérete: %d\n"
 
 #: sadf_misc.c:651
 #, c-format
 msgid "List of activities:\n"
-msgstr "Senarai aktivitas:\n"
+msgstr "Tevékenységek listája:\n"
 
 #: sadf_misc.c:664
 #, c-format
 msgid "\t[Unknown activity format]"
-msgstr "\t[Format aktivitas tak diketahui]"
+msgstr "\t[Ismeretlen tevékenység formátum]"
 
 #: sadc.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr "Penggunaan: %s [ opsi... ] [ <interval> [ <hitungan> ] ] [ <berkas keluaran> ]\n"
+msgstr "Használat: %s [ kapcsolók ] [ <időköz> [ <darabszám> ] ] [ <kimenetifájl> ]\n"
 
 #: sadc.c:90
 #, c-format
@@ -63,41 +65,41 @@ msgid ""
 "[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
-"Opsinya adalah:\n"
-"[ -C <komentar> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
+"A kapcsolók értékei:\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
 #: sadc.c:261
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
-msgstr "Tak dapat menulis data ke berkas aktivitas sistem: %s\n"
+msgstr "Nem sikerült az adat írása a rendszertevékenység fájlba: %s\n"
 
 #: sadc.c:565
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
-msgstr "Tak dapat menulis tajuk berkas aktivitas sistem: %s\n"
+msgstr "Nem sikerült a rendszertevékenység fájl fejlécének írása: %s\n"
 
 #: sadc.c:766 sadc.c:775 sadc.c:843 ioconf.c:489 rd_stats.c:69
 #: sa_common.c:1246 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
-msgstr "Tak dapat membuka %s: %s\n"
+msgstr "%s nem nyitható meg: %s\n"
 
 #: sadc.c:1015
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
-msgstr "Tak dapat menambah data ke berkas tersebut (%s)\n"
+msgstr "Nem sikerült az adat hozzáfűzése ahhoz a fájlhoz (%s)\n"
 
 #: common.c:62
 #, c-format
 msgid "sysstat version %s\n"
-msgstr "sysstat versi %s\n"
+msgstr "sysstat verzió: %s\n"
 
 #: cifsiostat.c:71 mpstat.c:90 sar.c:94 nfsiostat-sysstat.c:70 pidstat.c:86
 #: iostat.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Penggunaan: %s [ opsi ] [ <interval> [ <hitungan> ] ]\n"
+msgstr "Használat: %s [ kapcsolók ] [ <időköz> [ <darabszám> ] ]\n"
 
 #: cifsiostat.c:75 nfsiostat-sysstat.c:74
 #, c-format
@@ -105,7 +107,7 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 msgstr ""
-"Opsinya adalah:\n"
+"A kapcsolók értékei:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
 #: cifsiostat.c:78 nfsiostat-sysstat.c:77
@@ -114,13 +116,13 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
-"Opsinya adalah:\n"
+"A kapcsolók értékei:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #: sadf.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
-msgstr "Penggunaan: %s [ opsi ] [ <interval> [ <hitungan> ] ] [ <berkas data> ]\n"
+msgstr "Használat: %s [ kapcsolók ] [ <időköz> [ <darabszám> ] ] [ <adatfájl> ]\n"
 
 #: sadf.c:89
 #, c-format
@@ -130,10 +132,10 @@ msgid ""
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
-"Options are:\n"
+"A kapcsolók értékei:\n"
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <jj:mm:dd> ] ] [ -e [ <jj:mm:dd> ] ]\n"
-"[ -- <opsi_sar> ]\n"
+"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -- <sar_opciók> ]\n"
 
 #: mpstat.c:93
 #, c-format
@@ -142,18 +144,18 @@ msgid ""
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
-"Opsinya adalah:\n"
+"A kapcsolók értékei:\n"
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 
 #: mpstat.c:598 sar.c:402 pidstat.c:2247
 msgid "Average:"
-msgstr "Rata-rata:"
+msgstr "Átlag:"
 
 #: mpstat.c:967
 #, c-format
 msgid "Not that many processors!\n"
-msgstr "Tidak sebanyak itu prosesor!\n"
+msgstr "Ne olyan sok processzort!\n"
 
 #: sar.c:109
 #, c-format
@@ -167,44 +169,44 @@ msgid ""
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
-"Opsinya adalah:\n"
+"A kapcsolók értékei:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
 "[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ -m { <kata kunci> [,...] | ALL } ] [ -n { <kata kunci> [,...] | ALL } ]\n"
+"[ -m { <kulcsszó> [,...] | ALL } ] [ -n { <kulcsszó> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ -f [ <nama berkas> ] | -o [ <nama berkas> ] | -[0-9]+ ]\n"
-"[ -i <interval> ] [ -s [ <jj:mm:dd> ] ] [ -e [ <jj:mm:dd> ] ]\n"
+"[ -f [ <fájlnév> ] | -o [ <fájlnév> ] | -[0-9]+ ]\n"
+"[ -i <időköz> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 
 #: sar.c:131
 #, c-format
 msgid "Main options and reports:\n"
-msgstr "Opsi utama dan laporan:\n"
+msgstr "Fő kapcsolók és jelentések:\n"
 
 #: sar.c:132
 #, c-format
 msgid "\t-B\tPaging statistics\n"
-msgstr "\t-B\tStatistik halaman\n"
+msgstr "\t-B\tLapozási statisztikák\n"
 
 #: sar.c:133
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
-msgstr "\t-b\tI/O dan statistik rasio transfer\n"
+msgstr "\t-b\tI/O és átviteli arány statisztikák\n"
 
 #: sar.c:134
 #, c-format
 msgid "\t-d\tBlock devices statistics\n"
-msgstr "\t-d\tStatistik divais blok\n"
+msgstr "\t-d\tBlokkeszközök statisztikái\n"
 
 #: sar.c:135
 #, c-format
 msgid "\t-F\tFilesystems statistics\n"
-msgstr "\t-R\tStatistik sistem berkas\n"
+msgstr "\t-F\tFájlrendszer statisztikák\n"
 
 #: sar.c:136
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
-msgstr "\t-S\tStatistik utilisasi hugepages\n"
+msgstr "\t-H\tHatalmas lapok felhasználási statisztikái\n"
 
 #: sar.c:137
 #, c-format
@@ -213,7 +215,7 @@ msgid ""
 "\t\tInterrupts statistics\n"
 msgstr ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
-"\t\tInterupsi statistik\n"
+"\t\tMegszakítások statisztikái\n"
 
 #: sar.c:139
 #, c-format
@@ -228,15 +230,15 @@ msgid ""
 "\t\tTEMP\tDevices temperature\n"
 "\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
-"\t-m { <kata kunci> [,...] | ALL }\n"
-"\t\tStatistik manajemen daya\n"
-"\t\tKata kunci adalah:\n"
-"\t\tCPU\tFrekuensi jam instan CPU\n"
-"\t\tFAN\tKecepatan kipas\n"
-"\t\tFREQ\tFrekuensi jam rata-rata CPU\n"
-"\t\tIN\tMasukan voltase\n"
-"\t\tTEMP\tTemperatur divais\n"
-"\t\tUSB\tDivais USB yang dimasukkan ke dalam sistem\n"
+"\t-m { <kulcsszó> [,...] | ALL }\n"
+"\t\tEnergiakezelés statisztika\n"
+"\t\tA kulcsszavak értékei:\n"
+"\t\tCPU\tCPU pillanatnyi órajel frekvenciája\n"
+"\t\tFAN\tVentilátor sebességek\n"
+"\t\tFREQ\tCPU átlagos órajel frekvenciája\n"
+"\t\tIN\tFeszültség bemenetek\n"
+"\t\tTEMP\tEszközök hőmérséklete\n"
+"\t\tUSB\tA rendszerhez csatlakoztatott USB eszközök\n"
 
 #: sar.c:148
 #, c-format
@@ -263,47 +265,47 @@ msgid ""
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
 msgstr ""
-"\t-n { <kata kunci> [,...] | ALL }\n"
-"\t\tStatistik jaringan\n"
-"\t\tKata kunci adalah:\n"
-"\t\tDEV\tAntarmuka jaringan\n"
-"\t\tEDEV\tAntarmuka jaringan (galat)\n"
-"\t\tNFS\tKlien NFS\n"
-"\t\tNFSD\tKlien NFS\n"
-"\t\tSOCK\tSoket\t(v4)\n"
-"\t\tIP\tLalu lintas IP\t(v4)\n"
-"\t\tEIP\tLalu lintas IP\t(v4) (galat)\n"
-"\t\tICMP\tLalu lintas ICMP\t(v4)\n"
-"\t\tEICMP\tLalu lintas ICMP\t(v4) (galat)\n"
-"\t\tTCP\tLalu lintas TCP\t(v4)\n"
-"\t\tETCP\tLalu lintas TCP\t(v4) (galat)\n"
-"\t\tUDP\tLalu lintas UDP\t(v4)\n"
-"\t\tSOCK6\tSoket\t(v6)\n"
-"\t\tIP6\tLalu lintas IP\t(v6)\n"
-"\t\tEIP6\tLalu lintas IP\t(v6) (galat)\n"
-"\t\tICMP6\tLalu lintas ICMP\t(v6)\n"
-"\t\tEICMP6\tLalu lintas ICMP\t(v6) (galat)\n"
-"\t\tUDP6\tLalu lintas UDP\t(v6)\n"
+"\t-n { <kulcsszó> [,...] | ALL }\n"
+"\t\tHálózati statisztikák\n"
+"\t\tA kulcsszavak értékei:\n"
+"\t\tDEV\tHálózati csatolók\n"
+"\t\tEDEV\tHálózati csatolók (hibák)\n"
+"\t\tNFS\tNFS kliens\n"
+"\t\tNFSD\tNFS kiszolgáló\n"
+"\t\tSOCK\tSocketek\t(v4)\n"
+"\t\tIP\tIP forgalom\t(v4)\n"
+"\t\tEIP\tIP forgalom\t(v4) (hibák)\n"
+"\t\tICMP\tICMP forgalom\t(v4)\n"
+"\t\tEICMP\tICMP forgalom\t(v4) (hibák)\n"
+"\t\tTCP\tTCP forgalom\t(v4)\n"
+"\t\tETCP\tTCP forgalom\t(v4) (hibák)\n"
+"\t\tUDP\tUDP forgalom\t(v4)\n"
+"\t\tSOCK6\tSocketek\t(v6)\n"
+"\t\tIP6\tIP forgalom\t(v6)\n"
+"\t\tEIP6\tIP forgalom\t(v6) (hibák)\n"
+"\t\tICMP6\tICMP forgalom\t(v6)\n"
+"\t\tEICMP6\tICMP forgalom\t(v6) (hibák)\n"
+"\t\tUDP6\tUDP forgalom\t(v6)\n"
 
 #: sar.c:169
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
-msgstr "\t-q\tPanjang antrean dan statistik rata-rata muatan\n"
+msgstr "\t-q\tVárakozási sor hossza és átlagos terhelési statisztikák\n"
 
 #: sar.c:170
 #, c-format
 msgid "\t-R\tMemory statistics\n"
-msgstr "\t-R\tStatistik memori\n"
+msgstr "\t-R\tMemória statisztikák\n"
 
 #: sar.c:171
 #, c-format
 msgid "\t-r\tMemory utilization statistics\n"
-msgstr "\t-r\tStatistik utilisasi memori\n"
+msgstr "\t-r\tMemóriahasználati statisztikák\n"
 
 #: sar.c:172
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
-msgstr "\t-S\tStatistik utilisasi ruang swap\n"
+msgstr "\t-S\tCserehely használati statisztikák\n"
 
 #: sar.c:173
 #, c-format
@@ -312,107 +314,107 @@ msgid ""
 "\t\tCPU utilization statistics\n"
 msgstr ""
 "\t-u [ ALL ]\n"
-"\t\tStatistik utilisasi CPU\n"
+"\t\tCPU használati statisztikák\n"
 
 #: sar.c:175
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
-msgstr "\t-v\tStatistik tabel kernel\n"
+msgstr "\t-v\tKernel táblák statisztikái\n"
 
 #: sar.c:176
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
-msgstr "\t-W\tStatistik swap\n"
+msgstr "\t-W\tLapozási statisztikák\n"
 
 #: sar.c:177
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
-msgstr "\t-w\tStatistik penukar sistem dan pembuatan tugas\n"
+msgstr "\t-w\tFeladat létrehozás és rendszerváltások statisztikái\n"
 
 #: sar.c:178
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
-msgstr "\t-y\tStatistik divais TTY\n"
+msgstr "\t-y\tTTY eszközök statisztikái\n"
 
 #: sar.c:236
 #, c-format
 msgid "End of data collecting unexpected\n"
-msgstr "Akhir pengumpulan data tak diharapkan\n"
+msgstr "Adatgyűjtés vége váratlan\n"
 
 #: sar.c:836
 #, c-format
 msgid "Invalid data format\n"
-msgstr "Format data tak sah\n"
+msgstr "Érvénytelen adatformátum\n"
 
 #: sar.c:840
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
-msgstr "Menggunakan pengumpul data yang salah dari versi sysstat yang berbeda\n"
+msgstr "Egy hibás adatgyűjtő használata egy eltérő sysstat verzióból\n"
 
 #: sar.c:869
 #, c-format
 msgid "Inconsistent input data\n"
-msgstr "Data masukan tidak konsisten\n"
+msgstr "Inkonzisztens bemeneti adat\n"
 
 #: sar.c:1055 pidstat.c:218
 #, c-format
 msgid "Requested activities not available\n"
-msgstr "Aktivitas yang diminta tak tersedia\n"
+msgstr "A kért tevékenységek nem érhetők el\n"
 
 #: sar.c:1341
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
-msgstr "opsi -f dan -o secara mutual eksklusif\n"
+msgstr "A -f és a -o kapcsolók kölcsönösen kizárják egymást\n"
 
 #: sar.c:1347
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "Tak membaca dari berkas aktivitas sistem (gunakan opsi -f)\n"
+msgstr "Nincs olvasás egy rendszertevékenység fájlból (használja a -f kapcsolót)\n"
 
 #: sar.c:1483
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
-msgstr "Tak dapat menemukan pengumpul data (%s)\n"
+msgstr "Nem található az adatgyűjtő (%s)\n"
 
 #: sa_common.c:1051
 #, c-format
 msgid "Error while reading system activity file: %s\n"
-msgstr "Galat ketika membaca berkas aktivitas sistem: %s\n"
+msgstr "Hiba a rendszertevékenység fájl olvasásakor: %s\n"
 
 #: sa_common.c:1061
 #, c-format
 msgid "End of system activity file unexpected\n"
-msgstr "Akhir berkas aktivitas sistem tak diharapkan\n"
+msgstr "A rendszertevékenység fájl vége váratlan\n"
 
 #: sa_common.c:1080
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Berkas dibuat menggunakan sar/sadc dari sysstat versi %d.%d.%d"
+msgstr "A sar/sadc által létrehozott fájl a sysstat %d.%d.%d verziójából"
 
 #: sa_common.c:1111
 #, c-format
 msgid "Invalid system activity file: %s\n"
-msgstr "Berkas aktivitas sistem tak sah: %s\n"
+msgstr "Érvénytelen rendszertevékenység fájl: %s\n"
 
 #: sa_common.c:1118
 #, c-format
 msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
-msgstr "Versi sysstat saat ini tak dapat lagi membaca format berkas ini (%#x)\n"
+msgstr "A jelenlegi sysstat verzió többé nem tudja olvasni ennek a fájlnak a formátumát (%#x)\n"
 
 #: sa_common.c:1249
 #, c-format
 msgid "Please check if data collecting is enabled\n"
-msgstr "Silakan cek jika pengambilan data diaktifkan\n"
+msgstr "Kérjük jelölje be, ha az adatgyűjtés engedélyezve van\n"
 
 #: sa_common.c:1371
 #, c-format
 msgid "Requested activities not available in file %s\n"
-msgstr "Aktivitas yang diminta tak tersedia di berkas %s\n"
+msgstr "A kért tevékenységek nem érhetők el ebben a fájlban: %s\n"
 
 #: sa_common.c:1541 iostat.c:1385
 #, c-format
 msgid "Invalid type of persistent device name\n"
-msgstr "Tipe tidak valid pada nama divais kukuh\n"
+msgstr "Az állandó eszköznév típusa érvénytelen\n"
 
 #: pidstat.c:89
 #, c-format
@@ -422,9 +424,9 @@ msgid ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
-"Opsinya adalah:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <nama berkas> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <perintah> ] [ -G <nama_proses> ]\n"
+"A kapcsolók értékei:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <felhasználónév> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <parancs> ] [ -G <folyamat_név> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
 #: iostat.c:89
@@ -436,11 +438,11 @@ msgid ""
 "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
-"Opsinya adalah:\n"
+"A kapcsolók értékei:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <nama_grup> ] [ -p [ <divais> [,...] | ALL ] ]\n"
-"[ <divais> [...] | ALL ] [ --debuginfo ]\n"
+"[ [ -T ] -g <csoport_név> ] [ -p [ <eszköz> [,...] | ALL ] ]\n"
+"[ <eszköz> [...] | ALL ] [ --debuginfo ]\n"
 
 #: iostat.c:95
 #, c-format
@@ -451,51 +453,26 @@ msgid ""
 "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
-"Opsinya adalah:\n"
+"A kapcsolók értékei:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <nama_grup> ] [ -p [ <divais> [,...] | ALL ] ]\n"
-"[ <divais> [...] | ALL ]\n"
+"[ [ -T ] -g <csoport_név> ] [ -p [ <eszköz> [,...] | ALL ] ]\n"
+"[ <eszköz> [...] | ALL ]\n"
 
 #: iostat.c:328
 #, c-format
 msgid "Cannot find disk data\n"
-msgstr "Tak dapat menemukan data cakram\n"
+msgstr "Nem található a lemez adat\n"
 
 #: count.c:168
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr "Tak dapat menangani begitu banyak prosesor!\n"
+msgstr "Nem kezelhető ilyen sok processzor!\n"
 
 #: pr_stats.c:2355 pr_stats.c:2368 pr_stats.c:2468 pr_stats.c:2480
 msgid "Summary"
-msgstr "Ringkasan"
+msgstr "Összegzés"
 
 #: pr_stats.c:2406
 msgid "Other devices not listed here"
-msgstr "Divais lainnya tidak disebutkan di sini"
-
-#~ msgid ""
-#~ "Options are:\n"
-#~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-#~ msgstr ""
-#~ "Opsinya adalah:\n"
-#~ "[ --debuginfo ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-
-#~ msgid "\t-m\tPower management statistics\n"
-#~ msgstr "\t-m\tStatistik manajemen daya\n"
-
-#~ msgid "-x and -p options are mutually exclusive\n"
-#~ msgstr "opsi -x dan -p secara mutual eksklusif\n"
-
-#~ msgid ""
-#~ "\t-n { DEV | EDEV | NFS | NFSD | SOCK |\n"
-#~ "\t     IP | EIP | ICMP | EICMP | TCP | ETCP | UDP | ALL }\n"
-#~ "\t\tNetwork statistics\n"
-#~ msgstr ""
-#~ "\t-n { DEV | EDEV | NFS | NFSD | SOCK |\n"
-#~ "\t     IP | EIP | ICMP | EICMP | TCP | ETCP | UDP | ALL }\n"
-#~ "\t\tStatistik jaringan\n"
-
-#~ msgid "Time: %s\n"
-#~ msgstr "Waktu: %s\n"
+msgstr "Egyéb itt nem listázott eszközök"

@@ -9,17 +9,17 @@
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 10.3.1\n"
+"Project-Id-Version: sysstat 11.0.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2014-03-16 06:40+0100\n"
-"PO-Revision-Date: 2014-03-17 20:54+0400\n"
+"POT-Creation-Date: 2014-06-12 21:34+0200\n"
+"PO-Revision-Date: 2014-06-13 08:58+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@mx.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: sadf_misc.c:621
@@ -66,11 +66,11 @@ msgstr "Использование: %s [ параметры ] [ <интерва�
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C <comment> ] [ -F ] [ -L ] [ -V ]\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
 "Параметры:\n"
-"[ -C <комм.> ] [ -F ] [ -L ] [ -V ]\n"
+"[ -C <комментарий> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
 #: sadc.c:261
@@ -84,7 +84,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Не удалось записать заголовок в файл системных показателей: %s\n"
 
 #: sadc.c:766 sadc.c:775 sadc.c:843 ioconf.c:489 rd_stats.c:69
-#: sa_common.c:1114 count.c:118
+#: sa_common.c:1246 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Не удалось открыть %s: %s\n"
@@ -99,7 +99,7 @@ msgstr "Не удалось добавить данные в этот файл (
 msgid "sysstat version %s\n"
 msgstr "sysstat, версия %s\n"
 
-#: cifsiostat.c:71 mpstat.c:90 sar.c:94 nfsiostat-sysstat.c:70 pidstat.c:83
+#: cifsiostat.c:71 mpstat.c:90 sar.c:94 nfsiostat-sysstat.c:70 pidstat.c:86
 #: iostat.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -153,7 +153,7 @@ msgstr ""
 "[ -P { <ЦП> [,…] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:598 sar.c:402 pidstat.c:2130
+#: mpstat.c:598 sar.c:402 pidstat.c:2247
 msgid "Average:"
 msgstr "Среднее:"
 
@@ -166,8 +166,8 @@ msgstr "Нет такого количества процессоров в си�
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
-"[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
+"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -175,8 +175,8 @@ msgid ""
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
 "Параметры:\n"
-"[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
-"[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -v ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
+"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -v ] [ -y ]\n"
 "[ -I { <целое> [,…] | SUM | ALL | XALL } ] [ -P { <ЦП> [,…] | ALL } ]\n"
 "[ -m { <ключ_слово> [,…] | ALL } ] [ -n { <ключ_слово> [,…] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | … } ]\n"
@@ -361,77 +361,78 @@ msgstr "Используется ошибочное средство сбора 
 msgid "Inconsistent input data\n"
 msgstr "Несогласованные входные данные\n"
 
-#: sar.c:1055 pidstat.c:214
+#: sar.c:1055 pidstat.c:218
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Запрошенный показатель недоступен\n"
 
-#: sar.c:1325
+#: sar.c:1341
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Параметры -f и -o являются взаимоисключающими\n"
 
-#: sar.c:1331
+#: sar.c:1347
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Не выполняется чтение из файла системных показателей (используйте параметр -f)\n"
 
-#: sar.c:1463
+#: sar.c:1483
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Не удалось найти средство сбора данных (%s)\n"
 
-#: sa_common.c:919
+#: sa_common.c:1051
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Ошибка чтения файла системных показателей: %s\n"
 
-#: sa_common.c:929
+#: sa_common.c:1061
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Неожиданный конец файла системных показателей\n"
 
-#: sa_common.c:948
+#: sa_common.c:1080
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Файл создан с помощью sar/sadc из sysstat версии %d.%d.%d"
 
-#: sa_common.c:979
+#: sa_common.c:1111
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Недопустимый файл системных показателей: %s\n"
 
-#: sa_common.c:986
+#: sa_common.c:1118
 #, c-format
 msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
 msgstr "В текущей версии sysstat больше не поддерживается формат этого файла (%#x)\n"
 
-#: sa_common.c:1117
+#: sa_common.c:1249
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Проверьте, включён ли сбор данных\n"
 
-#: sa_common.c:1239
+#: sa_common.c:1371
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Запрашиваемые показатели из файла %s недоступны\n"
 
-#: sa_common.c:1409 iostat.c:1385
+#: sa_common.c:1541 iostat.c:1385
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Некорректный тип постоянного имени устройства\n"
 
-#: pidstat.c:86
+#: pidstat.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -u ]\n"
-"[ -V ] [ -v ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -T { TASK | CHILD | ALL } ]\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 "Параметры:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <имя_пользователя> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <команда> ] [ -p { <pid> [,…] | SELF | ALL } ]\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ]\n"
+"[ -U [ <имя_пользователя> ] ] [ -u ] [ -V ] [ -v ] [ -w ] [ -C <команда> ]\n"
+"[ -G <имя_процесса> ] [ -p { <pid> [,…] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ]\n"
 
 #: iostat.c:89
