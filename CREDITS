@@ -132,6 +132,9 @@ The following people have contributed to 'sysstat' in one way or another:
 	Alain Chéreau <cheralain [at] googlemail.com> added support for
 	disk groups statistics to iostat.
 
+	Cédric Marie <cedric.marie [at] openmailbox.org> sent me
+	several patches to improve pidstat.
+
 I would also thank the following people for their hints or bug reports
 (in alphabetical order):
 
@@ -193,6 +196,7 @@ I would also thank the following people for their hints or bug reports
 	Edouard G. Parmelan <edouard.parmelan@qua[...].fr>
 	Oliver Paukstadt <oliver.paukstadt@mil[...].com>	
 	Plattner(?) <Plattner.external@inf[...].com>
+	Peter Portante <peter.a.portante@gma[...].com>
 	Gerardo Exequiel Pozzi <vmlinuz386@yah[...].ar>
 	ReDragon <redragon@vns[...].net>
 	Amir Rapson <amir.rapson@gma[...].com>

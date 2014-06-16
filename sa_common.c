@@ -350,7 +350,7 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
  * IN:
  * @sa_dir	Directory where standard daily data files are saved.
  * @rectime	Structure containing the current date.
- * 
+ *
  * OUT:
  * @sa_name	0 to use saDD data files,
  * 		1 to use saYYYYMMDD data files.
@@ -361,7 +361,7 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	char filename[MAX_FILE_LEN];
 	struct stat sb;
 	time_t sa_mtime;
-	
+
 	/* Use saDD by default */
 	*sa_name = 0;
 
@@ -377,13 +377,13 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 		/* Cannot find or access saYYYYMMDD, so use saDD */
 		return;
 	sa_mtime = sb.st_mtime;
-	
+
 	/* Look for saDD */
 	snprintf(filename, MAX_FILE_LEN,
 		 "%s/sa%02d", sa_dir,
 		 rectime->tm_mday);
 	filename[MAX_FILE_LEN - 1] = '\0';
-	
+
 	if (stat(filename, &sb) < 0) {
 		/* Cannot find or access saDD, so use saYYYYMMDD */
 		*sa_name = 1;
@@ -458,7 +458,7 @@ void set_default_file(char *datafile, int d_off, int sa_name)
  ***************************************************************************
  * Check data file type. If it is a directory then this is the alternate
  * location where daily data files will be saved.
- * 
+ *
  * IN:
  * @datafile	Name of the daily data file. May be a directory.
  * @d_off	Day offset (number of days to go back in the past).
@@ -466,12 +466,12 @@ void set_default_file(char *datafile, int d_off, int sa_name)
  * 		1 for saYYYYMMDD data files,
  * 		-1 if unknown. In this case, will look for the most recent
  * 		of saDD and saYYYYMMDD and use it.
- * 		
- * 
+ *
+ *
  * OUT:
  * @datafile	Name of the daily data file. This is now a plain file, not
  * 		a directory.
- * 
+ *
  * RETURNS:
  * 1 if @datafile was a directory, and 0 otherwise.
  ***************************************************************************
@@ -479,7 +479,7 @@ void set_default_file(char *datafile, int d_off, int sa_name)
 int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
 {
 	struct stat sb;
-	
+
 	if (stat(datafile, &sb) == 0) {
 		if (S_ISDIR(sb.st_mode)) {
 			/*
@@ -490,7 +490,7 @@ int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
 			return 1;
 		}
 	}
-	
+
 	return 0;
 }
 

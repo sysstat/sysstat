@@ -1,5 +1,34 @@
 Changes:
 
+2014/06/17: Version 11.0.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Cedric Marie]: pidstat now displays task scheduling priority
+	  and policy along with task switching activity (-w option).
+	* [Cedric Marie]: pidstat: Add option -G to filter processes
+	  by name.
+	* pidstat: Update variables type to be consistent with recent
+	  3.x kernels.
+	* sadc/sar/sadf: The standard daily data files may now be
+	  named saYYYYMMDD instead of saDD. Option -D has been added
+	  to sar and sadc to tell them to write to data files under the
+	  name saYYYYMMDD.
+	* sadc/sar/sadf: Take into account alternate locations for
+	  standard daily data files.
+	* sa1 and sa2 scripts updated: Don't create a tree of directories
+	  any more if HISTORY is greater than 28. Use saYYYYMMDD
+	  data files instead.
+	* sa1 and sa2 scripts now take into account two new variables:
+	  SA_DIR (directory where sa and sar files are located) and
+	  ZIP (compression program to use).
+	* Make sysstat init script source the functions library
+	* Fix possible buffer overflow.
+	* Small fix with sadc's option -S: It is now possible to enter
+	  several comma separated values.
+	* Don't install crontabs when using systemd timer units.
+	* Manual pages updated.
+	* FAQ updated.
+	* NLS updated. Galician and Hungarian translations added.
+	* CREDITS file updated.
+
 2014/03/18: Version 10.3.1 - Sebastien Godard (sysstat <at> orange.fr)
 	  WARNING: Daily data files format has changed, and is *not*
           compatible with the previous one! [0x2173]

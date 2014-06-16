@@ -302,7 +302,7 @@ struct act_bitmap {
 
 /*
  * Structure used to define an activity.
- * Note; This structure can be modified without changing the format of data files.
+ * Note: This structure can be modified without changing the format of data files.
  */
 struct activity {
 	/*

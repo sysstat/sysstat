@@ -1181,7 +1181,7 @@ int main(int argc, char **argv)
 			flags |= S_F_SA_YYYYMMDD;
 			opt++;
 		}
-		
+
 		else if (!strcmp(argv[opt], "-P")) {
 			/* Parse -P option */
 			if (parse_sa_P_opt(argv, &opt, &flags, act)) {

@@ -116,7 +116,7 @@
 	(p == SCHED_BATCH  ? "BATCH" : \
 	(p == SCHED_IDLE   ? "IDLE" : \
 	"?")))))
-				
+
 struct pid_stats {
 	unsigned long long read_bytes			__attribute__ ((aligned (16)));
 	unsigned long long write_bytes			__attribute__ ((packed));

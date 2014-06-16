@@ -1340,7 +1340,7 @@ int main(int argc, char **argv)
 			sa_dir[0] = '\0';
 		}
 	}
-	
+
 	/*
 	 * If option -z used, write to STDOUT even if a filename
 	 * has been entered on the command line.

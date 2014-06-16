@@ -1108,7 +1108,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 					isActive = TRUE;
 				}
 			}
-			
+
 			if (DISPLAY_RT(activity) && (!isActive)) {
 				if (((*pstc)->priority != (*pstp)->priority) ||
 				    ((*pstc)->policy != (*pstp)->policy)) {
