@@ -27,7 +27,7 @@
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/vfs.h>
+#include <sys/statvfs.h>
 #include <unistd.h>
 
 #include "common.h"
@@ -2015,7 +2015,7 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 	char line[256], fs_name[MAX_FS_LEN], mountp[128];
 	int fs = 0;
 	struct stats_filesystem *st_filesystem_i;
-	struct statfs buf;
+	struct statvfs buf;
 
 	if ((fp = fopen(MTAB, "r")) == NULL)
 		return;
@@ -2029,13 +2029,13 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 			/* Replace octal codes */
 			oct2chr(mountp);
 
-			if ((statfs(mountp, &buf) < 0) || (!buf.f_blocks))
+			if ((statvfs(mountp, &buf) < 0) || (!buf.f_blocks))
 				continue;
 
 			st_filesystem_i = st_filesystem + fs++;
-			st_filesystem_i->f_blocks = buf.f_blocks * buf.f_bsize;
-			st_filesystem_i->f_bfree  = buf.f_bfree * buf.f_bsize;
-			st_filesystem_i->f_bavail = buf.f_bavail * buf.f_bsize;
+			st_filesystem_i->f_blocks = buf.f_blocks * buf.f_frsize;
+			st_filesystem_i->f_bfree  = buf.f_bfree * buf.f_frsize;
+			st_filesystem_i->f_bavail = buf.f_bavail * buf.f_frsize;
 			st_filesystem_i->f_files  = buf.f_files;
 			st_filesystem_i->f_ffree  = buf.f_ffree;
 			strcpy(st_filesystem_i->fs_name, fs_name);
