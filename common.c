@@ -501,38 +501,16 @@ void get_HZ(void)
 	hz = (unsigned int) ticks;
 }
 
-/*
- ***************************************************************************
- * Handle overflow conditions properly for counters which are read as
- * unsigned long long, but which can be unsigned long long or
- * unsigned long only depending on the kernel version used.
- * @value1 and @value2 being two values successively read for this
- * counter, if @value2 < @value1 and @value1 <= 0xffffffff, then we can
- * assume that the counter's type was unsigned long and has overflown, and
- * so the difference @value2 - @value1 must be casted to this type.
- * NOTE: These functions should no longer be necessary to handle a particular
- * stat counter when we can assume that everybody is using a recent kernel
- * (defining this counter as unsigned long long).
- ***************************************************************************
- */
 double ll_sp_value(unsigned long long value1, unsigned long long value2,
 		   unsigned long long itv)
 {
-	if ((value2 < value1) && (value1 <= 0xffffffff))
-		/* Counter's type was unsigned long and has overflown */
-		return ((double) ((value2 - value1) & 0xffffffff)) / itv * 100;
-	else
-		return SP_VALUE(value1, value2, itv);
+	return SP_VALUE(value1, value2, itv);
 }
 
 double ll_s_value(unsigned long long value1, unsigned long long value2,
 		  unsigned long long itv)
 {
-	if ((value2 < value1) && (value1 <= 0xffffffff))
-		/* Counter's type was unsigned long and has overflown */
-		return ((double) ((value2 - value1) & 0xffffffff)) / itv * HZ;
-	else
-		return S_VALUE(value1, value2, itv);
+	return S_VALUE(value1, value2, itv);
 }
 
 /*
