@@ -548,16 +548,16 @@ maintainer-clean: distclean
 	rm -f configure
 
 dist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | gzip -v9 > sysstat-$(VERSION).tar.gz)
+	cd .. && (tar --exclude=Makefile --exclude=.git --dereference -cvf - sysstat-$(VERSION) | gzip -v9 > sysstat-$(VERSION).tar.gz)
 
 bdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
+	cd .. && (tar --exclude=Makefile --exclude=.git --dereference -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
 
 xdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
+	cd .. && (tar --exclude=Makefile --exclude=.git --dereference -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
 
 gitdist: almost-distclean
-	cd .. && (tar --exclude=Makefile -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
+	cd .. && (tar --exclude=Makefile --dereference -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
 
 tags:
 	etags ./*.[hc]
