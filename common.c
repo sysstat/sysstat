@@ -516,17 +516,6 @@ double ll_sp_value(unsigned long long value1, unsigned long long value2,
 		return SP_VALUE(value1, value2, itv);
 }
 
-double ll_s_value(unsigned long long value1, unsigned long long value2,
-		  unsigned long long itv)
-{
-	/* Workaround: dyn-tick kernel has a race issue and /proc/stat values
-	   could be backward. */
-	if (value2 < value1)
-		return 0;
-	else
-		return S_VALUE(value1, value2, itv);
-}
-
 /*
  ***************************************************************************
  * Compute time interval.

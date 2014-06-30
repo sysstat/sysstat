@@ -230,7 +230,7 @@ __print_funct_t print_pcsw_stats(struct activity *a, int prev, int curr,
 
 	printf("%-11s %9.2f %9.2f\n", timestamp[curr],
 	       S_VALUE   (spp->processes,      spc->processes,      itv),
-	       ll_s_value(spp->context_switch, spc->context_switch, itv));
+	       S_VALUE(spp->context_switch, spc->context_switch, itv));
 }
 
 /*
@@ -281,7 +281,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 			}
 
 			printf(" %9.2f\n",
-			       ll_s_value(sip->irq_nr, sic->irq_nr, itv));
+			       S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 		}
 	}
 }
@@ -878,8 +878,8 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		       /* Confusion possible here between index and minor numbers */
 		       dev_name,
 		       S_VALUE(sdp->nr_ios, sdc->nr_ios,  itv),
-		       ll_s_value(sdp->rd_sect, sdc->rd_sect, itv),
-		       ll_s_value(sdp->wr_sect, sdc->wr_sect, itv),
+		       S_VALUE(sdp->rd_sect, sdc->rd_sect, itv),
+		       S_VALUE(sdp->wr_sect, sdc->wr_sect, itv),
 		       /* See iostat for explanations */
 		       xds.arqsz,
 		       S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,

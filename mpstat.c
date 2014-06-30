@@ -506,7 +506,7 @@ void write_stats_core(int prev, int curr, int dis,
 
 		if (*cpu_bitmap & 1) {
 			printf("%-11s  all %9.2f\n", curr_string,
-			       ll_s_value(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
+			       S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
 		}
 
 		for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -547,7 +547,7 @@ void write_stats_core(int prev, int curr, int dis,
 			}
 			else {
 				printf(" %9.2f\n",
-				       ll_s_value(sip->irq_nr, sic->irq_nr, itv));
+				       S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 			}
 		}
 	}
