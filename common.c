@@ -501,13 +501,17 @@ void get_HZ(void)
 	hz = (unsigned int) ticks;
 }
 
+/*
+ ***************************************************************************
+ * Workaround for CPU counters read from /proc/stat: Dyn-tick kernels
+ * have a race issue that can make those counters go backward.
+ ***************************************************************************
+ */
 double ll_sp_value(unsigned long long value1, unsigned long long value2,
 		   unsigned long long itv)
 {
-	/* Workaround: dyn-tick kernel has a race issue and /proc/stat values
-	   could be backward. */
 	if (value2 < value1)
-		return 0;
+		return (double) 0;
 	else
 		return SP_VALUE(value1, value2, itv);
 }
