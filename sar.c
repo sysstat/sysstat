@@ -1206,7 +1206,7 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-f")) {
-			if (from_file[0]) {
+			if (from_file[0] || day_offset) {
 				/* Input file already specified */
 				usage(argv[0]);
 			}
@@ -1281,6 +1281,10 @@ int main(int argc, char **argv)
 			 (strlen(argv[opt]) < 4) &&
 			 !strncmp(argv[opt], "-", 1) &&
 			 (strspn(argv[opt] + 1, DIGITS) == (strlen(argv[opt]) - 1))) {
+			if (from_file[0] || day_offset) {
+				/* Input file already specified */
+				usage(argv[0]);
+			}
 			day_offset = atoi(argv[opt++] + 1);
 		}
 
