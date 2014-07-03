@@ -1,4 +1,4 @@
-.TH SADF 1 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JULY 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -16,6 +16,8 @@ sadf \- Display data collected by sar in multiple formats.
 .I count
 .B ] ] [
 .I datafile
+|
+.I -[0-9]+
 .B ]
 .SH DESCRIPTION
 The
@@ -42,6 +44,11 @@ If
 is omitted,
 .B sadf
 uses the standard system activity daily data file.
+It is also possible to enter -1, -2 etc. as an argument to
+.B sadf
+to display data of that days ago.
+For example, -1 will point at the standard system
+activity file of yesterday.
 
 The standard system activity daily data file is named
 .I saDD
