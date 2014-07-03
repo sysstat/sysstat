@@ -83,7 +83,7 @@ extern struct report_format *fmt[];
 void usage(char *progname)
 {
 	fprintf(stderr,
-		_("Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"),
+		_("Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"),
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
@@ -1474,6 +1474,7 @@ void read_stats_from_file(char dfile[])
 int main(int argc, char **argv)
 {
 	int opt = 1, sar_options = 0;
+	int day_offset = 0;
 	int i, rc;
 	char dfile[MAX_FILE_LEN];
 
@@ -1530,6 +1531,17 @@ int main(int argc, char **argv)
 			if (parse_timestamp(argv, &opt, &tm_end, DEF_TMEND)) {
 				usage(argv[0]);
 			}
+		}
+
+		else if ((strlen(argv[opt]) > 1) &&
+			 (strlen(argv[opt]) < 4) &&
+			 !strncmp(argv[opt], "-", 1) &&
+			 (strspn(argv[opt] + 1, DIGITS) == (strlen(argv[opt]) - 1))) {
+			if (dfile[0] || day_offset) {
+				/* File already specified */
+				usage(argv[0]);
+			}
+			day_offset = atoi(argv[opt++] + 1);
 		}
 
 		else if (!strcmp(argv[opt], "--")) {
@@ -1643,7 +1655,7 @@ int main(int argc, char **argv)
 
 		/* Get data file name */
 		else if (strspn(argv[opt], DIGITS) != strlen(argv[opt])) {
-			if (dfile[0]) {
+			if (dfile[0] || day_offset) {
 				/* File already specified */
 				usage(argv[0]);
 			}
@@ -1697,7 +1709,7 @@ int main(int argc, char **argv)
 
 	/* sadf reads current daily data file by default */
 	if (!dfile[0]) {
-		set_default_file(dfile, 0, -1);
+		set_default_file(dfile, day_offset, -1);
 	}
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
