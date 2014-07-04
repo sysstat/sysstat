@@ -109,6 +109,24 @@
 							}					\
 						} while (0)
 
+/* Normally defined in <linux/sched.h> */
+#ifndef SCHED_NORMAL
+#define SCHED_NORMAL	0
+#endif
+#ifndef SCHED_FIFO
+#define SCHED_FIFO	1
+#endif
+#ifndef SCHED_RR
+#define SCHED_RR	2
+#endif
+#ifndef SCHED_BATCH
+#define SCHED_BATCH	3
+#endif
+/* SCHED_ISO not yet implemented */
+#ifndef SCHED_IDLE
+#define SCHED_IDLE	5
+#endif
+
 #define GET_POLICY(p) \
 	(p == SCHED_NORMAL ? "NORMAL" : \
 	(p == SCHED_FIFO   ? "FIFO" : \
