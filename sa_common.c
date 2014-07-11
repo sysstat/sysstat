@@ -31,6 +31,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "version.h"
 #include "sa.h"
 #include "common.h"
 #include "ioconf.h"
@@ -1209,37 +1210,30 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 /*
  ***************************************************************************
- * Open a data file, and perform various checks before reading.
+ * Open a sysstat activity data file and read its magic structure.
  *
  * IN:
- * @dfile	Name of system activity data file
- * @act		Array of activities.
+ * @dfile	Name of system activity data file.
  * @ignore	Set to 1 if a true sysstat activity file but with a bad
  * 		format should not yield an error message. Useful with
  * 		sadf -H.
  *
  * OUT:
- * @ifd		System activity data file descriptor
+ * @fd		System activity data file descriptor.
  * @file_magic	file_magic structure containing data read from file magic
- *		header
- * @file_hdr	file_hdr structure containing data read from file standard
- * 		header
- * @file_actlst	Acvtivity list in file.
- * @id_seq	Activity sequence.
+ *		header.
+ *
+ * RETURNS:
+ * -1 if data file is a sysstat file with an old format, 0 otherwise.
  ***************************************************************************
  */
-void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
-		       struct file_magic *file_magic, struct file_header *file_hdr,
-		       struct file_activity **file_actlst, unsigned int id_seq[],
+int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		       int ignore)
 {
-	int i, j, n, p;
-	unsigned int a_cpu = FALSE;
-	struct file_activity *fal;
-	void *buffer = NULL;
+	int n;
 
 	/* Open sa data file */
-	if ((*ifd = open(dfile, O_RDONLY)) < 0) {
+	if ((*fd = open(dfile, O_RDONLY)) < 0) {
 		int saved_errno = errno;
 
 		fprintf(stderr, _("Cannot open %s: %s\n"), dfile, strerror(errno));
@@ -1251,22 +1245,55 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	}
 
 	/* Read file magic data */
-	n = read(*ifd, file_magic, FILE_MAGIC_SIZE);
+	n = read(*fd, file_magic, FILE_MAGIC_SIZE);
 
 	if ((n != FILE_MAGIC_SIZE) ||
 	    (file_magic->sysstat_magic != SYSSTAT_MAGIC) ||
-	    (file_magic->format_magic != FORMAT_MAGIC)) {
-
-		if (ignore &&
-		    (n == FILE_MAGIC_SIZE) &&
-		    (file_magic->sysstat_magic == SYSSTAT_MAGIC))
-			/* Don't display error message. This is for sadf -H */
-			return;
-		else {
-			/* Display error message and exit */
-			handle_invalid_sa_file(ifd, file_magic, dfile, n);
-		}
+	    ((file_magic->format_magic != FORMAT_MAGIC) && !ignore)) {
+		/* Display error message and exit */
+		handle_invalid_sa_file(fd, file_magic, dfile, n);
 	}
+	if (file_magic->format_magic != FORMAT_MAGIC)
+		/* This is an old sa datafile format */
+		return -1;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Open a data file, and perform various checks before reading.
+ *
+ * IN:
+ * @dfile	Name of system activity data file.
+ * @act		Array of activities.
+ * @ignore	Set to 1 if a true sysstat activity file but with a bad
+ * 		format should not yield an error message. Useful with
+ * 		sadf -H.
+ *
+ * OUT:
+ * @ifd		System activity data file descriptor.
+ * @file_magic	file_magic structure containing data read from file magic
+ *		header.
+ * @file_hdr	file_hdr structure containing data read from file standard
+ * 		header.
+ * @file_actlst	Acvtivity list in file.
+ * @id_seq	Activity sequence.
+ ***************************************************************************
+ */
+void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
+		       struct file_magic *file_magic, struct file_header *file_hdr,
+		       struct file_activity **file_actlst, unsigned int id_seq[],
+		       int ignore)
+{
+	int i, j, p;
+	unsigned int a_cpu = FALSE;
+	struct file_activity *fal;
+	void *buffer = NULL;
+
+	/* Open sa data file and read its magic structure */
+	if (sa_open_read_magic(ifd, dfile, file_magic, ignore) < 0)
+		return;
 
 	SREALLOC(buffer, char, file_magic->header_size);
 
@@ -1940,3 +1967,40 @@ double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 	return 0;
 }
 
+/*
+ ***************************************************************************
+ * Fill system activity file magic header.
+ *
+ * IN:
+ * @file_magic	System activity file magic header.
+ ***************************************************************************
+ */
+void enum_version_nr(struct file_magic *fm)
+{
+	char *v;
+	char version[16];
+
+	fm->sysstat_extraversion = 0;
+
+	strcpy(version, VERSION);
+
+	/* Get version number */
+	if ((v = strtok(version, ".")) == NULL)
+		return;
+	fm->sysstat_version = atoi(v) & 0xff;
+
+	/* Get patchlevel number */
+	if ((v = strtok(NULL, ".")) == NULL)
+		return;
+	fm->sysstat_patchlevel = atoi(v) & 0xff;
+
+	/* Get sublevel number */
+	if ((v = strtok(NULL, ".")) == NULL)
+		return;
+	fm->sysstat_sublevel = atoi(v) & 0xff;
+
+	/* Get extraversion number. Don't necessarily exist */
+	if ((v = strtok(NULL, ".")) == NULL)
+		return;
+	fm->sysstat_extraversion = atoi(v) & 0xff;
+}

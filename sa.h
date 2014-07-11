@@ -487,6 +487,9 @@ struct activity {
  */
 #define FORMAT_MAGIC	0x2173
 
+/* Previous datafile format magic number used by older sysstat versions */
+#define PREVIOUS_FORMAT_MAGIC	0x2171
+
 /* Structure for file magic header data */
 struct file_magic {
 	/*
@@ -509,9 +512,16 @@ struct file_magic {
 	 */
 	unsigned int header_size;
 	/*
+	 * Set to non zero if data file has been converted with "sadf -c" from
+	 * an old format (version x.y.z) to a newest format (version X.Y.Z).
+	 * In this case, the value is: Y*16 + Z + 1.
+	 * The FORMAT_MAGIC value of the file can be used to determine X.
+	 */
+	unsigned char upgraded;
+	/*
 	 * Padding. Reserved for future use while avoiding a format change.
 	 */
-	unsigned char pad[64];
+	unsigned char pad[63];
 };
 
 #define FILE_MAGIC_SIZE	(sizeof(struct file_magic))
@@ -830,6 +840,8 @@ extern int
 extern void
 	display_sa_file_version(FILE *, struct file_magic *);
 extern void
+	enum_version_nr(struct file_magic *);
+extern void
 	free_bitmaps(struct activity * []);
 extern void
 	free_structures(struct activity * []);
@@ -871,6 +883,8 @@ extern int
 	reallocate_vol_act_structures(struct activity * [], unsigned int, unsigned int);
 extern int
 	sa_fread(int, void *, int, int);
+extern int
+	sa_open_read_magic(int *, char *, struct file_magic *, int);
 extern void
 	select_all_activities(struct activity * []);
 extern void

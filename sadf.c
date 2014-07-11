@@ -87,7 +87,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+			  "[ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
@@ -1593,6 +1593,13 @@ int main(int argc, char **argv)
 						flags |= S_F_COMMENT;
 						break;
 
+					case 'c':
+						if (format) {
+							usage(argv[0]);
+						}
+						format = F_CONV_OUTPUT;
+						break;
+
 					case 'd':
 						if (format) {
 							usage(argv[0]);
@@ -1744,8 +1751,14 @@ int main(int argc, char **argv)
 		interval = 1;
 	}
 
-	/* Read stats from file */
-	read_stats_from_file(dfile);
+	if (format == F_CONV_OUTPUT) {
+		/* Convert file to current format */
+		convert_file(dfile, act);
+	}
+	else {
+		/* Read stats from file */
+		read_stats_from_file(dfile);
+	}
 
 	/* Free bitmaps */
 	free_bitmaps(act);

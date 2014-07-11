@@ -27,7 +27,7 @@
  */
 
 /* Number of output formats */
-#define NR_FMT	5
+#define NR_FMT	6
 
 /* Output formats */
 #define F_DB_OUTPUT	1
@@ -35,6 +35,7 @@
 #define F_PPC_OUTPUT	3
 #define F_XML_OUTPUT	4
 #define F_JSON_OUTPUT	5
+#define F_CONV_OUTPUT	6
 
 /*
  ***************************************************************************
@@ -181,6 +182,8 @@ struct report_format {
  ***************************************************************************
  */
 
+extern void
+	convert_file(char [], struct activity *[]);
 extern void
 	xprintf(int, const char *, ...);
 extern void

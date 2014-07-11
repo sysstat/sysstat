@@ -208,6 +208,8 @@ format.o: format.c sadf.h
 
 sadf_misc.o: sadf_misc.c sadf.h sa.h
 
+sa_conv.o: sa_conv.c sadf.h sa.h sa_conv.h
+
 # Explicit rules needed to prevent possible file corruption
 # when using parallel execution.
 libsyscom.a: common.o ioconf.o
@@ -233,7 +235,7 @@ sar: sar.o act_sar.o sa_common.o pr_stats.o libsyscom.a
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h ioconf.h sysconfig.h
 
-sadf: sadf.o act_sadf.o format.o sadf_misc.o rndr_stats.o xml_stats.o json_stats.o sa_common.o libsyscom.a
+sadf: sadf.o act_sadf.o format.o sadf_misc.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o sa_common.o libsyscom.a
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h count.h
 

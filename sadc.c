@@ -434,38 +434,14 @@ int ask_for_flock(int fd, int fatal)
  */
 void fill_magic_header(struct file_magic *file_magic)
 {
-	char *v;
-	char version[16];
-
 	memset(file_magic, 0, FILE_MAGIC_SIZE);
 
 	file_magic->header_size = FILE_HEADER_SIZE;
 
 	file_magic->sysstat_magic = SYSSTAT_MAGIC;
 	file_magic->format_magic  = FORMAT_MAGIC;
-	file_magic->sysstat_extraversion = 0;
 
-	strcpy(version, VERSION);
-
-	/* Get version number */
-	if ((v = strtok(version, ".")) == NULL)
-		return;
-	file_magic->sysstat_version = atoi(v) & 0xff;
-
-	/* Get patchlevel number */
-	if ((v = strtok(NULL, ".")) == NULL)
-		return;
-	file_magic->sysstat_patchlevel = atoi(v) & 0xff;
-
-	/* Get sublevel number */
-	if ((v = strtok(NULL, ".")) == NULL)
-		return;
-	file_magic->sysstat_sublevel = atoi(v) & 0xff;
-
-	/* Get extraversion number. Don't necessarily exist */
-	if ((v = strtok(NULL, ".")) == NULL)
-		return;
-	file_magic->sysstat_extraversion = atoi(v) & 0xff;
+	enum_version_nr(file_magic);
 }
 
 /*

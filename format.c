@@ -95,6 +95,19 @@ struct report_format json_fmt = {
 };
 
 /*
+ * Display only datafile header.
+ */
+struct report_format conv_fmt = {
+	.id		= F_CONV_OUTPUT,
+	.options	= FO_BAD_FILE_FORMAT,
+	.f_header	= NULL,
+	.f_statistics	= NULL,
+	.f_timestamp	= NULL,
+	.f_restart	= NULL,
+	.f_comment	= NULL
+};
+
+/*
  * Array of output formats.
  */
 struct report_format *fmt[NR_FMT] = {
@@ -102,5 +115,6 @@ struct report_format *fmt[NR_FMT] = {
 	&db_fmt,
 	&ppc_fmt,
 	&xml_fmt,
-	&json_fmt
+	&json_fmt,
+	&conv_fmt
 };
