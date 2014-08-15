@@ -313,6 +313,7 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 	FILE *fp;
 	char filename[128], format[256], comm[MAX_COMM_LEN + 1];
 	size_t len;
+	int rc;
 
 	if (tgid) {
 		sprintf(filename, TASK_STAT, tgid, pid);
@@ -330,14 +331,17 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 		" %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u %%*u"
 		" %%*u %%u %%u %%u %%llu %%llu %%lld\\n", MAX_COMM_LEN);
 
-	fscanf(fp, format, comm,
-	       &pst->minflt, &pst->cminflt, &pst->majflt, &pst->cmajflt,
-	       &pst->utime,  &pst->stime, &pst->cutime, &pst->cstime,
-	       thread_nr, &pst->vsz, &pst->rss, &pst->processor,
-	       &pst->priority, &pst->policy,
-	       &pst->blkio_swapin_delays, &pst->gtime, &pst->cgtime);
+	rc = fscanf(fp, format, comm,
+		    &pst->minflt, &pst->cminflt, &pst->majflt, &pst->cmajflt,
+		    &pst->utime,  &pst->stime, &pst->cutime, &pst->cstime,
+		    thread_nr, &pst->vsz, &pst->rss, &pst->processor,
+		    &pst->priority, &pst->policy,
+		    &pst->blkio_swapin_delays, &pst->gtime, &pst->cgtime);
 
 	fclose(fp);
+
+	if (rc < 18)
+		return 1;
 
 	/* Convert to kB */
 	pst->vsz >>= 10;
