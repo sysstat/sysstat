@@ -394,19 +394,23 @@ void read_loadavg(struct stats_queue *st_queue)
 	FILE *fp;
 	char line[8192];
 	int load_tmp[3];
+	int rc;
 
 	if ((fp = fopen(LOADAVG, "r")) == NULL)
 		return;
 
 	/* Read load averages and queue length */
-	fscanf(fp, "%d.%d %d.%d %d.%d %ld/%d %*d\n",
-	       &load_tmp[0], &st_queue->load_avg_1,
-	       &load_tmp[1], &st_queue->load_avg_5,
-	       &load_tmp[2], &st_queue->load_avg_15,
-	       &st_queue->nr_running,
-	       &st_queue->nr_threads);
+	rc = fscanf(fp, "%d.%d %d.%d %d.%d %ld/%d %*d\n",
+		    &load_tmp[0], &st_queue->load_avg_1,
+		    &load_tmp[1], &st_queue->load_avg_5,
+		    &load_tmp[2], &st_queue->load_avg_15,
+		    &st_queue->nr_running,
+		    &st_queue->nr_threads);
 
 	fclose(fp);
+
+	if (rc < 8)
+		return;
 
 	st_queue->load_avg_1  += load_tmp[0] * 100;
 	st_queue->load_avg_5  += load_tmp[1] * 100;
@@ -709,43 +713,60 @@ void read_kernel_tables(struct stats_ktables *st_ktables)
 {
 	FILE *fp;
 	unsigned int parm;
+	int rc = 0;
 
 	/* Open /proc/sys/fs/dentry-state file */
 	if ((fp = fopen(FDENTRY_STATE, "r")) != NULL) {
-		fscanf(fp, "%*d %u",
-		       &st_ktables->dentry_stat);
+		rc = fscanf(fp, "%*d %u",
+			    &st_ktables->dentry_stat);
 		fclose(fp);
+		if (rc == 0) {
+			st_ktables->dentry_stat = 0;
+		}
 	}
 
 	/* Open /proc/sys/fs/file-nr file */
 	if ((fp = fopen(FFILE_NR, "r")) != NULL) {
-		fscanf(fp, "%u %u",
-		       &st_ktables->file_used, &parm);
+		rc = fscanf(fp, "%u %u",
+			    &st_ktables->file_used, &parm);
 		fclose(fp);
 		/*
 		 * The number of used handles is the number of allocated ones
 		 * minus the number of free ones.
 		 */
-		st_ktables->file_used -= parm;
+		if (rc == 2) {
+			st_ktables->file_used -= parm;
+		}
+		else {
+			st_ktables->file_used = 0;
+		}
 	}
 
 	/* Open /proc/sys/fs/inode-state file */
 	if ((fp = fopen(FINODE_STATE, "r")) != NULL) {
-		fscanf(fp, "%u %u",
-		       &st_ktables->inode_used, &parm);
+		rc = fscanf(fp, "%u %u",
+			    &st_ktables->inode_used, &parm);
 		fclose(fp);
 		/*
 		 * The number of inuse inodes is the number of allocated ones
 		 * minus the number of free ones.
 		 */
-		st_ktables->inode_used -= parm;
+		if (rc == 2) {
+			st_ktables->inode_used -= parm;
+		}
+		else {
+			st_ktables->inode_used = 0;
+		}
 	}
 
 	/* Open /proc/sys/kernel/pty/nr file */
 	if ((fp = fopen(PTY_NR, "r")) != NULL) {
-		fscanf(fp, "%u",
-		       &st_ktables->pty_nr);
+		rc = fscanf(fp, "%u",
+			    &st_ktables->pty_nr);
 		fclose(fp);
+		if (rc == 0) {
+			st_ktables->pty_nr = 0;
+		}
 	}
 }
 
@@ -856,9 +877,13 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 			/* Cannot read NIC speed */
 			continue;
 
-		fscanf(fp, "%u", &st_net_dev_i->speed);
+		n = fscanf(fp, "%u", &st_net_dev_i->speed);
 
 		fclose(fp);
+
+		if (n != 1) {
+			st_net_dev_i->speed = 0;
+		}
 	}
 }
 
@@ -1896,8 +1921,9 @@ void read_time_in_state(struct stats_pwr_wghfreq *st_pwr_wghfreq, int cpu_nr, in
  */
 void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 {
-	int l;
+	int l, rc;
 	FILE *fp;
+	char * rs;
 	char filename[MAX_PF_NAME];
 
 	/* Get USB device bus number */
@@ -1907,36 +1933,47 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_IDVENDOR);
 	if ((fp = fopen(filename, "r")) != NULL) {
-		fscanf(fp, "%x",
-		       &st_pwr_usb->vendor_id);
+		rc = fscanf(fp, "%x",
+			    &st_pwr_usb->vendor_id);
 		fclose(fp);
+		if (rc == 0) {
+			st_pwr_usb->vendor_id = 0;
+		}
 	}
 
 	/* Read USB device product ID */
 	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_IDPRODUCT);
 	if ((fp = fopen(filename, "r")) != NULL) {
-		fscanf(fp, "%x",
-		       &st_pwr_usb->product_id);
+		rc = fscanf(fp, "%x",
+			    &st_pwr_usb->product_id);
 		fclose(fp);
+		if (rc == 0) {
+			st_pwr_usb->product_id = 0;
+		}
 	}
 
 	/* Read USB device max power consumption */
 	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_BMAXPOWER);
 	if ((fp = fopen(filename, "r")) != NULL) {
-		fscanf(fp, "%u",
-		       &st_pwr_usb->bmaxpower);
+		rc = fscanf(fp, "%u",
+			    &st_pwr_usb->bmaxpower);
 		fclose(fp);
+		if (rc == 0) {
+			st_pwr_usb->bmaxpower = 0;
+		}
 	}
 
 	/* Read USB device manufacturer */
 	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_MANUFACTURER);
 	if ((fp = fopen(filename, "r")) != NULL) {
-		fgets(st_pwr_usb->manufacturer, MAX_MANUF_LEN - 1, fp);
+		rs = fgets(st_pwr_usb->manufacturer,
+			   MAX_MANUF_LEN - 1, fp);
 		fclose(fp);
-		if ((l = strlen(st_pwr_usb->manufacturer)) > 0) {
+		if ((rs != NULL) &&
+		    (l = strlen(st_pwr_usb->manufacturer)) > 0) {
 			/* Remove trailing CR */
 			st_pwr_usb->manufacturer[l - 1] = '\0';
 		}
@@ -1946,9 +1983,11 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_PRODUCT);
 	if ((fp = fopen(filename, "r")) != NULL) {
-		fgets(st_pwr_usb->product, MAX_PROD_LEN - 1, fp);
+		rs = fgets(st_pwr_usb->product,
+			   MAX_PROD_LEN - 1, fp);
 		fclose(fp);
-		if ((l = strlen(st_pwr_usb->product)) > 0) {
+		if ((rs != NULL) &&
+		    (l = strlen(st_pwr_usb->product)) > 0) {
 			/* Remove trailing CR */
 			st_pwr_usb->product[l - 1] = '\0';
 		}

@@ -417,7 +417,8 @@ void read_nfs_stat(int curr)
 		if ((sw == 3) && (!strncmp(prefix, "per-op", 6))) {
 			sw = 4;
 			while (sw == 4) {
-				fgets(line, sizeof(line), fp);
+				if (fgets(line, sizeof(line), fp) == NULL)
+					break;
 				sscanf(line, "%15s %lu", operation, &v1);
 				if (!strncmp(operation, "READ:", 5)) {
 					snfs.nfs_rops = v1;
