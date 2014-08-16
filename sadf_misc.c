@@ -613,7 +613,7 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 				  struct activity *act[], unsigned int id_seq[])
 {
 	int i, p;
-	struct tm *loc_t;
+	struct tm rectime, *loc_t;
 	char cur_time[32];
 
 	/* Actions F_MAIN and F_END ignored */
@@ -627,6 +627,10 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 			return;
 		}
 
+		printf(_("Genuine sa datafile: %s (%x)\n"),
+		       file_magic->upgraded ? _("no") : _("yes"),
+		       file_magic->upgraded);
+
 		printf(_("Host: "));
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
@@ -635,6 +639,11 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 
 		printf(_("Number of CPU for last samples in file: %u\n"),
 		       file_hdr->sa_last_cpu_nr > 1 ? file_hdr->sa_last_cpu_nr - 1 : 1);
+
+		/* Fill file timestmap structure (rectime) */
+		get_file_timestamp_struct(flags, &rectime, file_hdr);
+		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
+		printf(_("File date: %s\n"), cur_time);
 
 		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
 			printf(_("File time: "));
