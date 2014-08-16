@@ -1,8 +1,8 @@
-.TH SADF 1 "JULY 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "AUGUST 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -P {
+.B sadf [ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
 .I hh:mm:ss
@@ -99,6 +99,12 @@ Not specifying any flags selects only CPU activity.
 Tell
 .B sadf
 to display comments present in file.
+.IP -c
+Convert an old system activity binary datafile (version 9.1.6 and later)
+to current up-to-date format. Use the following syntax:
+
+.B sadf -c old_datafile > new_datafile
+
 .IP -d
 Print the contents of the data file in a format that can easily
 be ingested by a relational database system. The output consists
