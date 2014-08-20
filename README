@@ -9,6 +9,14 @@ http://pagesperso-orange.fr/sebastien.godard/
 See the CHANGES file to know the new features/improvements/bug fixes added
 in this release of sysstat.
 
+You can also track sysstat development on GitHub:
+
+https://github.com/sysstat/sysstat
+
+and clone its public repository with:
+
+git clone git://github.com/sysstat/sysstat
+
 
 INSTALLATION
 ------------
