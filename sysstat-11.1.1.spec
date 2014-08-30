@@ -1,6 +1,6 @@
 Summary: 	SAR, SADF, MPSTAT, IOSTAT, NFSIOSTAT-SYSSTAT, CIFSIOSTAT and PIDSTAT for Linux
 Name: 		sysstat
-Version: 	11.0.0
+Version: 	11.1.1
 Release: 	1
 License: 	GPL
 Group: 		Applications/System
@@ -28,8 +28,8 @@ The pidstat command reports statistics for Linux tasks (processes).
 The nfsiostat-sysstat command reports I/O statistics for network filesystems.
 The cifsiostat command reports I/O statistics for CIFS filesystems.
 
-%prep 
-%setup 
+%prep
+%setup
 
 %build
 ./configure --prefix=%{_prefix} \
@@ -61,7 +61,7 @@ cd $RPM_BUILD_ROOT/etc/rc5.d && ln -sf ../init.d/sysstat S01sysstat
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files 
+%files
 %defattr(644,root,root,755)
 %doc %{_datadir}/doc/sysstat-%{version}/*
 %attr(755,root,root) %{_bindir}/*
