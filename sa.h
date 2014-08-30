@@ -426,7 +426,7 @@ struct activity {
 	 */
 	unsigned int opt_flags;
 	/*
-	 * Buffers that will contain the statistics read. Its size is @nr * @size each.
+	 * Buffers that will contain the statistics read. Its size is @nr * @nr2 * @size each.
 	 * [0]: used by sadc.
 	 * [0] and [1]: current/previous statistics values (used by sar).
 	 * [2]: Used by sar to save first collected stats (used later to

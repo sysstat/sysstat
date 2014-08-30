@@ -1,5 +1,17 @@
 Changes:
 
+2014/08/30: Version 11.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* Added option -[0-9]+ to sadf to show data of that days ago.
+	* Use statvfs() system call instead of deprecated statfs() to
+	  get filesystems statistics with sar.
+	* sar: Stricter syntax check.
+        * Remove unneeded include file in sa_common.c.
+	* [Kosaki Motohiro]: Update workaround for 32bit CPU counters.
+	* Define unknown scheduling policies in pidstat.h.
+	* [Ivana Varekova]: Test return value for fgets/fscanf calls.
+	* Makefile updated: Follow symlinks when creating the tarballs.
+	* sadf manual page updated.
+
 2014/06/17: Version 11.0.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Cedric Marie]: pidstat now displays task scheduling priority
 	  and policy along with task switching activity (-w option).
