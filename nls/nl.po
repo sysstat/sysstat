@@ -1,17 +1,18 @@
 # Dutch translations for sysstat.
 # This file is distributed under the same license as the sysstat package.
 #
-# "Gewoon kijken, en je niks van haar blik aantrekken!"
+# » Fehlt dieses Nichtwollen in einem drin bei einer Tätigkeit,
+# dann handelt es sich nicht um Arbeit. «
 #
 # Bram Schoenmakers <bramschoenmakers@kde.nl>, 2007.
 # Erwin Poeze <erwin.poeze@gmail.com>, 2009, 2010.
 # Benno Schulenberg <benno@vertaalt.nl>, 2008, 2010, 2011, 2012, 2013, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-10.3.1\n"
+"Project-Id-Version: sysstat-11.0.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2014-03-16 06:40+0100\n"
-"PO-Revision-Date: 2014-03-20 21:45+0100\n"
+"POT-Creation-Date: 2014-06-12 21:34+0200\n"
+"PO-Revision-Date: 2014-06-25 10:24+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -65,11 +66,11 @@ msgstr "Gebruik:  %s [OPTIE...] [<interval> [<aantal>]] [<uitvoerbestand>]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C <comment> ] [ -F ] [ -L ] [ -V ]\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
 "Mogelijke opties zijn:\n"
-"[ -C <opmerking> ] [ -F ] [ -L ] [ -V ]\n"
+"[ -C <opmerking> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
 #: sadc.c:261
@@ -83,7 +84,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Kan geen kopregels schrijven naar het activiteitsbestand: %s\n"
 
 #: sadc.c:766 sadc.c:775 sadc.c:843 ioconf.c:489 rd_stats.c:69
-#: sa_common.c:1114 count.c:118
+#: sa_common.c:1246 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Kan %s niet openen: %s\n"
@@ -98,7 +99,7 @@ msgstr "Kan geen gegevens toevoegen aan bestand %s\n"
 msgid "sysstat version %s\n"
 msgstr "sysstat — versie %s\n"
 
-#: cifsiostat.c:71 mpstat.c:90 sar.c:94 nfsiostat-sysstat.c:70 pidstat.c:83
+#: cifsiostat.c:71 mpstat.c:90 sar.c:94 nfsiostat-sysstat.c:70 pidstat.c:86
 #: iostat.c:86
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -152,7 +153,7 @@ msgstr ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:598 sar.c:402 pidstat.c:2130
+#: mpstat.c:598 sar.c:402 pidstat.c:2247
 msgid "Average:"
 msgstr "Gemiddeld:"
 
@@ -165,8 +166,8 @@ msgstr "Er zijn niet zoveel processoren!\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
-"[ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
+"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -174,8 +175,8 @@ msgid ""
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
 "Mogelijke opties zijn:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
-"[ -r ] [ -S ] [ -t ] [ -u [ALL] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
+"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ALL] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <geheel_getal>[,...] | SUM | ALL | XALL } ] [ -P { <cpu>[,...] | ALL } ]\n"
 "[ -m { <sleutelwoord>[,...] | ALL } ] [ -n { <sleutelwoord>[,...] | ALL } ]\n"
 "[ -o [ <bestandsnaam> ] | -f [ <bestandsnaam> ] ]\n"
@@ -362,78 +363,78 @@ msgstr "Een verkeerde gegevensverzamelaar van een andere sysstat-versie wordt ge
 msgid "Inconsistent input data\n"
 msgstr "Inconsistente gegevens gelezen\n"
 
-#: sar.c:1055 pidstat.c:214
+#: sar.c:1055 pidstat.c:218
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "De gevraagde activiteiten zijn niet beschikbaar\n"
 
-#: sar.c:1325
+#: sar.c:1341
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Opties '-f' en '-o' gaan niet samen.\n"
 
-#: sar.c:1331
+#: sar.c:1347
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Er wordt geen activiteitsbestand gelezen (gebruik optie '-f')\n"
 
-#: sar.c:1463
+#: sar.c:1483
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan de gegevensverzamelaar niet vinden (%s)\n"
 
-#: sa_common.c:919
+#: sa_common.c:1051
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Er is een fout opgetreden bij het uitlezen van het activiteitsbestand: %s\n"
 
-#: sa_common.c:929
+#: sa_common.c:1061
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Onverwacht einde van activiteitsbestand\n"
 
-#: sa_common.c:948
+#: sa_common.c:1080
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Bestand is aangemaakt door 'sar/sadc' uit sysstat-versie %d.%d.%d."
 
-#: sa_common.c:979
+#: sa_common.c:1111
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Ongeldig systeemactiviteitsbestand: %s\n"
 
-#: sa_common.c:986
+#: sa_common.c:1118
 #, c-format
 msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
 msgstr "Deze versie van sysstat kan de indeling (%#x) van dit bestand niet meer lezen.\n"
 
-#: sa_common.c:1117
+#: sa_common.c:1249
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Controleer of gegevensverzameling ingeschakeld is.\n"
 
-#: sa_common.c:1239
+#: sa_common.c:1371
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "De gevraagde activiteiten zijn niet beschikbaar in bestand %s.\n"
 
-#: sa_common.c:1409 iostat.c:1385
+#: sa_common.c:1541 iostat.c:1385
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ongeldig soort persistente apparaatnaam\n"
 
-#: pidstat.c:86
+#: pidstat.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ] [ -u ]\n"
-"[ -V ] [ -v ] [ -w ] [ -C <command> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -T { TASK | CHILD | ALL } ]\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 "Mogelijke opties zijn:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -r ] [ -s ] [ -t ] [ -U [<gebruikersnaam>] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -C <commando> ] [ -p { <pid> [,...] | SELF | ALL } ]\n"
-"[ -w ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -u ] [ -V ] [ -v ]\n"
+"[ -U [<gebruikersnaam>] ] [ -w ] [ -C <commando> ] [ -G <procesnaam> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
 #: iostat.c:89
 #, c-format
