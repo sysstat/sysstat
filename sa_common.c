@@ -1108,15 +1108,28 @@ void display_sa_file_version(FILE *st, struct file_magic *file_magic)
 void handle_invalid_sa_file(int *fd, struct file_magic *file_magic, char *file,
 			    int n)
 {
+	unsigned short sm;
+
 	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
 
-	if ((n == FILE_MAGIC_SIZE) && (file_magic->sysstat_magic == SYSSTAT_MAGIC)) {
-		/* This is a sysstat file, but this file has an old format */
-		display_sa_file_version(stderr, file_magic);
+	if (n == FILE_MAGIC_SIZE) {
+		sm = (file_magic->sysstat_magic << 8) | (file_magic->sysstat_magic >> 8);
+		if ((file_magic->sysstat_magic == SYSSTAT_MAGIC) || (sm == SYSSTAT_MAGIC)) {
+			/*
+			 * This is a sysstat file, but this file has an old format
+			 * or its internal endian format doesn't match.
+			 */
+			display_sa_file_version(stderr, file_magic);
 
-		fprintf(stderr,
-			_("Current sysstat version can no longer read the format of this file (%#x)\n"),
-			file_magic->format_magic);
+			if (sm == SYSSTAT_MAGIC) {
+				fprintf(stderr, _("Endian format mismatch\n"));
+			}
+			else {
+				fprintf(stderr,
+					_("Current sysstat version cannot read the format of this file (%#x)\n"),
+					file_magic->format_magic);
+			}
+		}
 	}
 
 	close (*fd);
