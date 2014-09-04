@@ -546,6 +546,7 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
  * 			been used or not) can be saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
  *			can be saved for current record.
+ * @reset_cd		TRUE if static cross_day variable should be reset.
  *
  * OUT:
  * @cnt			Set to 0 to indicate that no other lines of stats
@@ -557,11 +558,20 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
  */
 int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
 			 int use_tm_end, unsigned int act_id, __nr_t cpu_nr,
-			 struct tm *rectime, struct tm *loctime)
+			 struct tm *rectime, struct tm *loctime, int reset_cd)
 {
 	unsigned long long dt, itv, g_itv;
 	char cur_date[32], cur_time[32];
 	static int cross_day = FALSE;
+
+	if (reset_cd) {
+		/*
+		 * See note in sar.c.
+		 * NB: Reseting cross_day is not needed in write_textual_stats()
+		 * function (datafile is never rewinded).
+		 */
+		cross_day = 0;
+	}
 
 	/*
 	 * Check time (1).
@@ -871,7 +881,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 			char *file, struct file_magic *file_magic)
 {
 	unsigned char rtype;
-	int next;
+	int next, reset_cd;
 
 	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
 		perror("lseek");
@@ -890,6 +900,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 	copy_structures(act, id_seq, record_hdr, !*curr, 2);
 
 	*cnt  = count;
+	reset_cd = 1;
 
 	do {
 		/* Display <count> lines of stats */
@@ -914,7 +925,8 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 			next = write_parsable_stats(*curr, *reset, cnt,
 						    tm_start.use, tm_end.use, act_id,
-						    cpu_nr, rectime, loctime);
+						    cpu_nr, rectime, loctime, reset_cd);
+			reset_cd = 0;
 
 			if (next) {
 				/*
