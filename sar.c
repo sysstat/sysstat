@@ -442,6 +442,8 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
  * @act_id		Activity that can be displayed or ~0 for all.
  *			Remember that when reading stats from a file, only
  *			one activity can be displayed at a time.
+ * @reset_cd		TRUE if static cross_day variable should be reset
+ * 			(see below).
  *
  * OUT:
  * @cnt			Number of remaining lines to display.
@@ -451,7 +453,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
  ***************************************************************************
  */
 int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
-		int use_tm_end, int reset, unsigned int act_id)
+		int use_tm_end, int reset, unsigned int act_id, int reset_cd)
 {
 	int i;
 	unsigned long long itv, g_itv;
@@ -460,6 +462,20 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 
 	if (cpu_nr < 0)
 		cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+
+	if (reset_cd) {
+		/*
+		 * cross_day is a static variable that is set to 1 when the first
+		 * record of stats from a new day is read from a unique data file
+		 * (in the case where the file contains data from two consecutive
+		 * days). When set to 1, every following records timestamp will
+		 * have its hour value increased by 24.
+		 * Yet when a new activity (being read from the file) is going to
+		 * be displayed, we start reading the file from the beginning
+		 * again, and so cross_day should be reset in this case.
+		 */
+		cross_day = 0;
+	}
 
 	/* Check time (1) */
 	if (read_from_file) {
@@ -557,7 +573,8 @@ void write_stats_startup(int curr)
 	flags |= S_F_SINCE_BOOT;
 	dis = TRUE;
 
-	write_stats(curr, USE_SADC, &count, NO_TM_START, NO_TM_END, NO_RESET, ALL_ACTIVITIES);
+	write_stats(curr, USE_SADC, &count, NO_TM_START, NO_TM_END, NO_RESET,
+		    ALL_ACTIVITIES, TRUE);
 
 	exit(0);
 }
@@ -717,7 +734,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 			   struct file_activity *file_actlst, char *file,
 			   struct file_magic *file_magic)
 {
-	int p;
+	int p, reset_cd;
 	unsigned long lines = 0;
 	unsigned char rtype;
 	int davg = 0, next, inc = -2;
@@ -749,6 +766,8 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		/* Should never happen */
 		PANIC(inc);
 	}
+
+	reset_cd = 1;
 
 	do {
 		/* Display count lines of stats */
@@ -783,7 +802,8 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 
 			/* next is set to 1 when we were close enough to desired interval */
 			next = write_stats(*curr, USE_SA_FILE, cnt, tm_start.use, tm_end.use,
-					   *reset, act_id);
+					   *reset, act_id, reset_cd);
+			reset_cd = 0;
 			if (next && (*cnt > 0)) {
 				(*cnt)--;
 			}
@@ -1100,7 +1120,7 @@ void read_stats(void)
 			lines++;
 		}
 		write_stats(curr, USE_SADC, &count, NO_TM_START, tm_end.use,
-			    NO_RESET, ALL_ACTIVITIES);
+			    NO_RESET, ALL_ACTIVITIES, TRUE);
 
 		if (record_hdr[curr].record_type == R_LAST_STATS) {
 			/* File rotation is happening: Re-read header data sent by sadc */
