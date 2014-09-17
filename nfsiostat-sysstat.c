@@ -43,7 +43,6 @@
 #define SCCSID "@(#)sysstat-" VERSION ": " __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
 
-unsigned long long uptime[2]  = {0, 0};
 unsigned long long uptime0[2] = {0, 0};
 struct io_nfs_stats *st_ionfs[2];
 struct io_hdr_stats *st_hdr_ionfs;
@@ -538,13 +537,8 @@ void write_stats(int curr, struct tm *rectime)
 #endif
 	}
 
-	/* Interval is multiplied by the number of processors */
-	itv = get_interval(uptime[!curr], uptime[curr]);
-
-	if (cpu_nr > 1) {
-		/* On SMP machines, reduce itv to one processor (see note above) */
-		itv = get_interval(uptime0[!curr], uptime0[curr]);
-	}
+	/* Interval of time, reduced to one processor */
+	itv = get_interval(uptime0[!curr], uptime0[curr]);
 
 	shi = st_hdr_ionfs;
 
@@ -592,15 +586,13 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	setbuf(stdout, NULL);
 
 	do {
-		if (cpu_nr > 1) {
-			/*
-			 * Read system uptime (only for SMP machines).
-			 * Init uptime0. So if /proc/uptime cannot fill it,
-			 * this will be done by /proc/stat.
-			 */
-			uptime0[curr] = 0;
-			read_uptime(&(uptime0[curr]));
-		}
+		/* Read system uptime (reduced to one processor) */
+		uptime0[curr] = 0;
+		read_uptime(&(uptime0[curr]));
+		if (!uptime0[curr])
+			/* Cannot read system uptime (/proc/uptime doesn't exist) */
+			exit(2);
+
 		/* Read NFS directories stats */
 		read_nfs_stat(curr);
 
