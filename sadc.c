@@ -71,6 +71,7 @@ unsigned int id_seq[NR_ACT];
 unsigned int vol_id_seq[NR_ACT];
 
 extern struct activity *act[];
+extern __nr_t (*f_count[]) (struct activity *);
 
 struct sigaction alrm_act, int_act;
 
@@ -290,13 +291,27 @@ void reset_stats(void)
  */
 void sa_sys_init(void)
 {
-	int i;
+	int i, idx;
+	__nr_t f_count_results[NR_F_COUNT];
+
+	/* Init array. Means that no items have been counted yet */
+	for (i = 0; i < NR_F_COUNT; i++) {
+		f_count_results[i] = -1;
+	}
 
 	for (i = 0; i < NR_ACT; i++) {
 
-		if (act[i]->f_count) {
+		idx = act[i]->f_count_index;
+
+		if (idx >= 0) {
 			/* Number of items is not a constant and should be calculated */
-			act[i]->nr = (*act[i]->f_count)(act[i]);
+			if (f_count_results[idx] >= 0) {
+				act[i]->nr = f_count_results[idx];
+			}
+			else {
+				act[i]->nr = (f_count[idx])(act[i]);
+				f_count_results[idx] = act[i]->nr;
+			}
 		}
 
 		if (act[i]->nr > 0) {

@@ -22,6 +22,9 @@
 /* Number of activities */
 #define NR_ACT	37
 
+/* Number of functions used to count items */
+#define NR_F_COUNT	10
+
 /* Activities */
 #define A_CPU		1
 #define A_PCSW		2
@@ -325,18 +328,19 @@ struct activity {
 	 */
 	unsigned int group;
 	/*
-	 * The f_count() function is used to count the number of
-	 * items (serial lines, network interfaces, etc.) -> @nr
+	 * Index in f_count[] array to determine function used to count
+	 * the number of items (serial lines, network interfaces, etc.) -> @nr
 	 * Such a function should _always_ return a value greater than
 	 * or equal to 0.
 	 *
-	 * A NULL value for this function pointer indicates that the number of items
+	 * A value of -1 indicates that the number of items
 	 * is a constant (and @nr is set to this value).
 	 *
-	 * This function is called even if activity has not been selected, to make
-	 * sure that all items have been calculated (including #CPU, etc.)
+	 * These functions are called even if corresponding activities have not
+	 * been selected, to make sure that all items have been calculated
+	 * (including #CPU, etc.)
 	 */
-	__nr_t (*f_count) (struct activity *);
+	int f_count_index;
 	/*
 	 * The f_count2() function is used to count the number of
 	 * sub-items -> @nr2
