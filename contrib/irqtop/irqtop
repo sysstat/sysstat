@@ -1,0 +1,411 @@
+#!/usr/bin/perl
+# irqtop
+#
+# by Robert Elliott, HP
+# contributed to the sysstat project
+#
+#########################################################################
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published  by  the
+# Free Software Foundation; either version 2 of the License, or (at  your
+# option) any later version.
+#
+# This program is distributed in the hope that it  will  be  useful,  but
+# WITHOUT ANY WARRANTY; without the implied warranty  of  MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#########################################################################
+#
+# Monitor differences in /proc/interrupts and /proc/softirqs
+# per CPU, along with CPU statistics
+#
+# Usage: irqtop [interval]
+#
+# Displays interrupts that have occurred since this program
+# began, filtering those that have always been zeros.
+#
+# TODO features:
+# * increase column widths automatically
+# * add an all-CPU column
+# * add option to choose between
+#     - online CPUs
+#     - just the all-CPU column
+#     - select CPUs (e.g., ranges like in smp_affinity_list)
+# * automatically determine interrupts to total (e.g.
+#   all mpt3sas or hpsaN interrupts) based on them having
+#   common prefixes in their names or common names
+#
+use strict;
+use Getopt::Long;
+
+my $myname = "irqtop";
+my $myversion = "0.2";
+
+sub print_usage {
+		print "Usage: $myname [interval] [-V | --version] [-h | --help]\n\n";
+		print "  [internal]        time in seconds between updates (default: 1 second)\n";
+		print "  [-V | --version]  display version number\n";
+		print "  [-h | --help]     display usage\n\n";
+		print "Use Control-C to exit\n";
+}
+
+#my $mpstat = "../sysstat/mpstat";
+my $mpstat = "mpstat";
+
+# calculate total interrupt stats for this list
+#my @track_list = ();
+my @track_list = ("eth", "hpsa1", "hpsa2", "mpt3sas");
+
+# exclude these from per-vector display (e.g., eth while studying storage)
+# still included in totals if also in track_list
+#my @exclude_list = ();
+my @exclude_list = ("eth");
+
+my $interval = 1;	# default interval in seconds
+
+# hashes of arrays
+# key is the interrupt number or name (e.g., 95 or TIMER)
+# array is the interrupt counts and the description on the right
+my %current;
+my %delta;	# hold the deltas between collection and printing
+
+# hash of values
+my %ever_changed; 	# indicates if this row ever changed
+my %track_interrupts;	# number of each type
+
+my $online_cpus;	# as seen by process_hardirq, used to filter columns in softirq
+
+# return 1 to exclude, 0 to not
+sub is_excluded {
+	my ($line) = @_;
+
+	foreach (@exclude_list) {
+		return 1 if ($line =~ /$_/);
+	}
+	return 0;
+}
+
+# convert affinity_list bitmask (64-bit binary) into numbered list
+# Example: 5800a000f -> "0-3,17,19,31-32,34"
+# used for parsing /proc/irq/NN/affinity_hint
+sub bitmask_to_list {
+	my ($bitmask) = @_;
+	my $inrange;
+	my $rangelist;
+	my $rangenew;
+	my $lowcpu;
+	my $highcpu;
+
+	for (my $i = 0; $i < 63; $i++) {
+		if (!$inrange && $bitmask & 1) {
+			$inrange = 1;
+			$lowcpu = $i;
+			$highcpu = $i;
+		} elsif ($inrange && $bitmask & 1) {
+			$highcpu = $i;
+		} elsif ($inrange && !($bitmask & 1)) {
+			$inrange = 0;
+			if ($lowcpu == $highcpu) {
+				$rangenew = "$lowcpu";
+			} else {
+				$rangenew = "$lowcpu-$highcpu";
+			}
+
+			if ($rangelist) {
+				$rangelist = "$rangelist,$rangenew";
+			} else {
+				$rangelist = "$rangenew";
+			}
+		}
+
+		$bitmask = $bitmask >> 1;
+	}
+	if ($inrange) {
+		$rangelist = "$rangelist,$lowcpu-$highcpu";
+	}
+	if (!$rangelist) {
+		$rangelist = "none";
+	}
+	return $rangelist;
+}
+
+# process /proc/interrupts
+# argument:
+# 0 do not display - use the first time to not display values since reboot
+# 1 display - use on all subsequent calls
+sub collect_hardirqs {
+	my ($firstpass) = @_;
+
+	open HARDIRQFILE, "/proc/interrupts" or die "Cannot open $_";
+
+	foreach (@track_list) {
+		$track_interrupts{$_} = 0;
+	}
+
+	# /proc/interrupts lists only online cpus
+	# first line contains CPUnn headers for each column
+	#            CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       CPU8       CPU9       CPU10      CPU11
+	$_ = <HARDIRQFILE>;
+	my @cpulist = split;
+	$online_cpus = $#cpulist + 1;	# hardirqs are a source of online_cpus
+
+	# remaining lines contain vector number: per-cpu counts, interrupt type, device
+	# or vector name, per-CPU counts, interrupt type, description
+	while (<HARDIRQFILE>) {
+		my @values = split;
+		my $irqname = $values[0];
+		my $cpu;
+		my $line = $_;
+
+		for ($cpu = 0; $cpu < $online_cpus; $cpu++) {
+			$delta{$irqname}[$cpu] = $values[$cpu + 1] - $current{$irqname}[$cpu];
+			$current{$irqname}[$cpu] = $values[$cpu + 1];
+
+			# if this is not the first pass,
+			# keep track of whether the values have changed
+			if ($delta{$irqname}[$cpu] && !$firstpass && !is_excluded($line)) {
+				$ever_changed{$irqname} = 1;
+			}
+
+			foreach (@track_list) {
+				if ($line =~ /$_/) {
+					$track_interrupts{$_} += $delta{$irqname}[$cpu];
+				}
+			}
+		}
+		# capture the rest of the line (interrupt type, handlers)
+		# these are not really per-cpu values, but continue storing
+		# each word in %current since it's convenient
+		for (; $cpu < $#values + 1; $cpu++ ) {
+			$current{$irqname}[$cpu] = $values[$cpu + 1];
+		}
+	}
+	close HARDIRQFILE;
+
+}
+
+# process /proc/softirqs
+# argument:
+# 0 do not display - use the first time to not display values since reboot
+# 1 display - use on all subsequent calls
+sub collect_softirqs {
+	my ($firstpass) = @_;
+
+	open SOFTIRQFILE, "/proc/softirqs" or die "Cannot open $_";
+
+	# /proc/softirqs includes all possible cpus, not all online cpus
+	# this function ignores all those extra cpus
+	# first line contains CPUnn headers for each column
+	#            CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       CPU8       CPU9       CPU10      CPU11
+	$_ = <SOFTIRQFILE>;
+	my @cpulist = split;	# discard the first line
+
+	# remaining lines contain
+	#    vector number: per-cpu counts, interrupt type, device
+	# or   vector name: per-cpu counts, interrupt type, description
+	while (<SOFTIRQFILE>) {
+		my @values = split;
+		my $irqname = $values[0];
+		my $line = $_;
+
+		# just remember the values for online cpus, not offline cpus
+		for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+			$delta{$irqname}[$cpu] = $values[$cpu + 1] - $current{$irqname}[$cpu];
+			$current{$irqname}[$cpu] = $values[$cpu + 1];
+			if ($delta{$irqname}[$cpu] && !$firstpass && !is_excluded($line)) {
+				$ever_changed{$irqname} = 1;
+			}
+		}
+	}
+	close SOFTIRQFILE;
+}
+
+# print the CPU0 CPU1 CPU2... header line for the online cpus
+sub print_cpulist {
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		my $cpustring;
+		$cpustring = sprintf("CPU%d", $cpu);
+		printf("%6s ", $cpustring);
+	}
+	print "\n";
+}
+
+# print hardirqs and softirqs from %delta that have ever %changed
+sub print_irqs {
+
+	# header line
+	printf("%13s ", "--- IRQs ---");
+	# print_cpulist(); # uncomment if print_mpstat is not used, since that prints the header line
+	print "\n";
+
+	foreach (sort keys %delta) {
+		my $irqname = $_;
+		# if any values have ever changed for an interrupt, print the delta values
+		if ($ever_changed{$irqname}) {
+			# match the width of softirq names 12 characters plus :
+			printf("%13s ", $irqname);
+			my $cpu;
+			for ($cpu = 0; $cpu < $online_cpus; $cpu++) {
+				printf("%6d ", $delta{$irqname}[$cpu]);
+			}
+			# print the rest of the line (interrupt type, handlers)
+			for (; $cpu < @{$current{$irqname}} + 1; $cpu++ ) {
+				print "$current{$irqname}[$cpu] ";
+			}
+
+			# print the irq smp affinity list, if any
+			my $irqname_nocolon = $irqname;
+			$irqname_nocolon =~ s/://;
+
+			if (!($irqname =~ /[A-Z]/)) {
+				my $affinity_hint_file = "/proc/irq/$irqname_nocolon/affinity_hint";
+				if (-e $affinity_hint_file) {
+					open IRQAFF, "<$affinity_hint_file";
+					my $affhint = <IRQAFF>;
+					close IRQAFF;
+					chomp $affhint;
+					my ($affhigh,$afflow) = $affhint =~ /(.*),(.*)/;
+					my $aff = hex $affhigh << 32 | hex $afflow;
+					printf("hint=%s,", bitmask_to_list($aff));
+				} else {
+					print "hint=none,";
+				}
+				my $smp_affinity_list_file = "/proc/irq/$irqname_nocolon/smp_affinity_list";
+				if (-e $smp_affinity_list_file) {
+					open IRQAFF, "<$smp_affinity_list_file";
+					my $afflist = <IRQAFF>;
+					close IRQAFF;
+					chomp $afflist;
+					print "aff=$afflist";
+				} else {
+					print "aff=none";
+				}
+			}
+
+			print "\n";
+		}
+	}
+
+	# print summary of selected sets of interrupts
+	foreach (@track_list) {
+		printf("%12s: total=%-7d, average=%-7d; total/s=%-7d, average/s=%-7d\n",
+			$_,
+			$track_interrupts{$_},
+			$track_interrupts{$_} / $online_cpus,
+			$track_interrupts{$_} / $interval,
+			$track_interrupts{$_} / $interval / $online_cpus);
+	}
+}
+
+# collect interesting CPU statistics from mpstat
+#	%usr, %sys, %iowait, %idle, %irq, %soft
+# mpstat displays:
+# 06:14:48 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+# plain "mpstat" shows averages since boot, which is not useful
+# so, use the interval option based on the first argument to this function,
+# which also causes this function to incur the delay.
+# per-cpu arrays of value strings
+my @usr;
+my @sys;
+my @irq;
+my @soft;
+my @iowait;
+my @idle;
+
+sub collect_mpstat {
+	my ($delay) = @_;
+
+	open MPSTATFILE, "$mpstat -P ON -u $delay 1 |" or sleep($delay);
+	while (<MPSTATFILE>) {
+		if (/CPU/ || /all/ || /^$/ || /Average/) {
+			next;
+		}
+		my ($time, $ampm, $cpu, $usr, $nice, $sys, $iowait, $irq, $soft, $steal, $guest, $idle) = split;
+		$usr[$cpu] = $usr;
+		$sys[$cpu] = $sys;
+		$irq[$cpu] = $irq;
+		$soft[$cpu] = $soft;
+		$iowait[$cpu] = $iowait;
+		$idle[$cpu] = $idle;
+		$online_cpus = $cpu + 1;	# mpstat is a source for # online CPUs
+	}
+	close MPSTATFILE;
+}
+
+# print the interesting CPU statistics from mpstat
+# collected in collect_mpstat()
+sub print_mpstat {
+
+	# header line
+	printf("%13s ", "CPU usage:");
+	print_cpulist();
+
+	printf("%13s ", "\%usr:");
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		printf("%6s ", $usr[$cpu]);
+	}
+	print "\n";
+	printf("%13s ", "\%sys:");
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		printf("%6s ", $sys[$cpu]);
+	}
+	print "\n";
+	printf("%13s ", "\%irq:");
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		printf("%6s ", $irq[$cpu]);
+	}
+	print "\n";
+	printf("%13s ", "\%soft:");
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		printf("%6s ", $soft[$cpu]);
+	}
+	print "\n";
+	printf("%13s ", "\%iowait idle:"); # clarify that iowait is really idle time
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		printf("%6s ", $iowait[$cpu]);
+	}
+	print "\n";
+	printf("%13s ", "\%idle:");
+	for (my $cpu = 0; $cpu < $online_cpus; $cpu++) {
+		printf("%6s ", $idle[$cpu]);
+	}
+	print "\n";
+}
+
+#
+# start of program
+#
+foreach (@ARGV) {
+	if (/--version/ || /-V/) {
+		print "$myname version $myversion\n";
+		exit;
+	} elsif (/--help/ || /-h/) {
+		print_usage();
+		exit;
+	} elsif (!/[a-z]/) {
+		# assume an all-numeric argument is the interval
+		$interval = $_;
+	}
+	print "Collecting CPU and interrupt activity for $interval seconds between updates\n";
+}
+
+# remember the clear screen characters to avoid system() during run time
+my $clearscreen = `clear`;
+collect_hardirqs(1);
+collect_softirqs(1);
+while (1) {
+	collect_hardirqs(0);
+	collect_softirqs(0);
+	collect_mpstat($interval);
+	my $datestring = localtime();
+	print "${clearscreen}$myname $datestring interval: $interval s\n";
+	print_mpstat();
+	print_irqs();
+
+	# if collect_mpstat(), which delays, is commented out, sleep here
+	# sleep($interval);
+}
