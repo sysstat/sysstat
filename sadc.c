@@ -241,6 +241,10 @@ void int_handler(int sig)
 		exit(1);
 	}
 
+	/* Don't send signal to init process!! */
+	if (getppid() == 1)
+		return;
+
 	/*
 	 * When starting sar then pressing ctrl/c, SIGINT is received
 	 * by sadc, not sar. So send SIGINT to sar so that average stats
