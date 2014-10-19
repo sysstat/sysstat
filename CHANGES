@@ -1,5 +1,14 @@
 Changes:
 
+2014/10/19: Version 11.0.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Vasant Hegde]: sadc: Don't send SIGINT signal if parent
+	  process is already dead.
+	* Fixed incomplete sar and sadf output when end time (specified
+	  with option -e) crosses 24 hour boundary.
+	* cifsiostat/nfsiostat: Fix output on single core CPU.
+	* pidstat didn't handle processes with spaces in their name
+	  properly. This is now fixed.
+
 2014/08/30: Version 11.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added option -[0-9]+ to sadf to show data of that days ago.
 	* Use statvfs() system call instead of deprecated statfs() to
