@@ -1,5 +1,27 @@
 Changes:
 
+2014/10/19: Version 11.1.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Robert Elliott]: Added irqtop command. irqtop monitors
+	  differences in /proc/interrupts and /proc/softirqs per CPU,
+	  along with CPU statistics. irqtop is currently in the contrib
+	  directory.
+	* [Lance Shelton]: Added irqstat command, a better way to watch
+	  /proc/interrupts, designed for NUMA systems with many
+	  processors.
+	* [Vasant Hegde]: sadc: Don't send SIGINT signal if parent
+	  process is already dead [11.0.2].
+	* sadc: Make sure that functions used to count items (CPU,
+	  network interfaces, etc.) are called only once.
+	* sar and sadf now tell the user when they cannot read a file
+	  because the endian format doesn't match.
+	* Fixed incomplete sar and sadf output when end time (specified
+	  with option -e) crosses 24 hour boundary [11.0.2].
+	* cifsiostat/nfsiostat: Fix output on single core CPU [11.0.2].
+	* pidstat didn't handle processes with spaces in their name
+	  properly. This is now fixed [11.0.2].
+	* NLS updated.
+	* CREDITS file updated.
+
 2014/08/30: Version 11.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Added option -c to sadf: This option enables the user to
 	  convert an sa datafile with an old format (at least 9.1.6)
