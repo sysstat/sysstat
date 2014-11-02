@@ -237,21 +237,19 @@ void alarm_handler(int sig)
  */
 void int_handler(int sig)
 {
-	if (!optz) {
-		/* sadc hasn't been called by sar */
+	pid_t ppid = getppid();
+
+	if (!optz || (ppid == 1)) {
+		/* sadc hasn't been called by sar or sar process is already dead */
 		exit(1);
 	}
-
-	/* Don't send signal to init process!! */
-	if (getppid() == 1)
-		return;
 
 	/*
 	 * When starting sar then pressing ctrl/c, SIGINT is received
 	 * by sadc, not sar. So send SIGINT to sar so that average stats
 	 * can be displayed.
 	 */
-	if (kill(getppid(), SIGINT) < 0) {
+	if (kill(ppid, SIGINT) < 0) {
 		exit(1);
 	}
 }
