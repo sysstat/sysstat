@@ -1,4 +1,4 @@
-.TH SAR 1 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "NOVEMBER 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -336,9 +336,11 @@ removed in a future sysstat version.
 
 .B %util
 .RS
-Percentage of CPU time during which I/O requests were issued to the device
+Percentage of elapsed time during which I/O requests were issued to the device
 (bandwidth utilization for the device). Device saturation occurs when this
-value is close to 100%.
+value is close to 100% for devices serving requests serially. But for
+devices serving requests in parallel, such as RAID arrays and modern SSDs,
+this number does not reflect their performance limits.
 .RE
 .RE
 .IP "-e [ hh:mm:ss ]"

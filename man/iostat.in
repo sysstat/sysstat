@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "JULY 2013" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "NOVEMBER 2014" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -266,7 +266,7 @@ This field will be removed in a future sysstat version.
 .RE
 .B %util
 .RS
-Percentage of CPU time during which I/O requests were issued to the device
+Percentage of elapsed time during which I/O requests were issued to the device
 (bandwidth utilization for the device). Device saturation occurs when this
 value is close to 100% for devices serving requests serially.
 But for devices serving requests in parallel, such as RAID arrays and
