@@ -489,6 +489,23 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 
 		xprintf(tab--, "<dirty>%lu</dirty>",
 			smc->dirtykb);
+
+		if (DISPLAY_MEM_ALL(a->opt_flags)) {
+			xprintf(++tab, "<anonpg>%lu</anonpg>",
+				smc->anonpgkb);
+
+			xprintf(tab, "<slab>%lu</slab>",
+				smc->slabkb);
+
+			xprintf(tab, "<kstack>%lu</kstack>",
+				smc->kstackkb);
+
+			xprintf(tab, "<pgtbl>%lu</pgtbl>",
+				smc->pgtblkb);
+
+			xprintf(tab--, "<vmused>%lu</vmused>",
+				smc->vmusedkb);
+		}
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {

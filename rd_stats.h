@@ -166,6 +166,11 @@ struct stats_memory {
 	unsigned long activekb	__attribute__ ((aligned (8)));
 	unsigned long inactkb	__attribute__ ((aligned (8)));
 	unsigned long dirtykb	__attribute__ ((aligned (8)));
+	unsigned long anonpgkb	__attribute__ ((aligned (8)));
+	unsigned long slabkb	__attribute__ ((aligned (8)));
+	unsigned long kstackkb	__attribute__ ((aligned (8)));
+	unsigned long pgtblkb	__attribute__ ((aligned (8)));
+	unsigned long vmusedkb	__attribute__ ((aligned (8)));
 };
 
 #define STATS_MEMORY_SIZE	(sizeof(struct stats_memory))

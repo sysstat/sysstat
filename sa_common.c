@@ -957,8 +957,8 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
 		if ((act[i]->options & option) == option) {
 
 			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && count_outputs) {
-				for (msk = 1; msk < 0x10; msk <<= 1) {
-					if (act[i]->opt_flags & msk) {
+				for (msk = 1; msk < 0x100; msk <<= 1) {
+					if ((act[i]->opt_flags & 0xff) & msk) {
 						n++;
 					}
 				}
@@ -1520,17 +1520,21 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 	int i, p;
 
 	for (i = 1; *(argv[*opt] + i); i++) {
+		/*
+		 * Note: argv[*opt] contains something like "-BruW"
+		 *     *(argv[*opt] + i) will contain 'B', 'r', etc.
+		 */
 
 		switch (*(argv[*opt] + i)) {
 
 		case 'A':
 			select_all_activities(act);
 
-			/* Force '-P ALL -I XALL' */
+			/* Force '-P ALL -I XALL -r ALL -u ALL' */
 
 			p = get_activity_position(act, A_MEMORY);
 			act[p]->opt_flags |= AO_F_MEM_AMT + AO_F_MEM_DIA +
-					     AO_F_MEM_SWAP;
+					     AO_F_MEM_SWAP + AO_F_MEM_ALL;
 
 			p = get_activity_position(act, A_IRQ);
 			set_bitmap(act[p]->bitmap->b_array, ~0,
@@ -1604,6 +1608,11 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			p = get_activity_position(act, A_MEMORY);
 			act[p]->options   |= AO_SELECTED;
 			act[p]->opt_flags |= AO_F_MEM_AMT;
+			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], K_ALL)) {
+				(*opt)++;
+				act[p]->opt_flags |= AO_F_MEM_ALL;
+				return 0;
+			}
 			break;
 
 		case 'R':

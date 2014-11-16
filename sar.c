@@ -108,7 +108,8 @@ void usage(char *progname)
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-			  "[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+			  "[ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
+			  "[ -w ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -168,7 +169,8 @@ void display_help(char *progname)
 		 "\t\tUDP6\tUDP traffic\t(v6)\n"));
 	printf(_("\t-q\tQueue length and load average statistics\n"));
 	printf(_("\t-R\tMemory statistics\n"));
-	printf(_("\t-r\tMemory utilization statistics\n"));
+	printf(_("\t-r [ ALL ]\n"
+		 "\tMemory utilization statistics\n"));
 	printf(_("\t-S\tSwap space utilization statistics\n"));
 	printf(_("\t-u [ ALL ]\n"
 		 "\t\tCPU utilization statistics\n"));
@@ -1007,9 +1009,9 @@ void read_stats_from_file(char from_file[])
 
 				optf = act[p]->opt_flags;
 
-				for (msk = 1; msk < 0x10; msk <<= 1) {
-					if (act[p]->opt_flags & msk) {
-						act[p]->opt_flags &= msk;
+				for (msk = 1; msk < 0x100; msk <<= 1) {
+					if ((act[p]->opt_flags & 0xff) & msk) {
+						act[p]->opt_flags &= (0xffffff00 + msk);
 
 						handle_curr_act_stats(ifd, fpos, &curr, &cnt,
 								      &eosaf, rows, act[p]->id,

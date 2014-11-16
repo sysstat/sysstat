@@ -116,10 +116,13 @@
 #define AO_F_MEM_DIA		0x00000001
 #define AO_F_MEM_AMT		0x00000002
 #define AO_F_MEM_SWAP		0x00000004
+/* AO_F_MEM_ALL: See opt_flags in struct activity below */
+#define AO_F_MEM_ALL		(AO_F_MEM_AMT << 8)
 
 #define DISPLAY_MEMORY(m)	(((m) & AO_F_MEM_DIA)     == AO_F_MEM_DIA)
 #define DISPLAY_MEM_AMT(m)	(((m) & AO_F_MEM_AMT)     == AO_F_MEM_AMT)
 #define DISPLAY_SWAP(m)		(((m) & AO_F_MEM_SWAP)    == AO_F_MEM_SWAP)
+#define DISPLAY_MEM_ALL(m)	(((m) & AO_F_MEM_ALL)     == AO_F_MEM_ALL)
 
 /* Output flags for option -u [ ALL ] */
 #define AO_F_CPU_DEF		0x00000001
@@ -380,6 +383,10 @@ struct activity {
 	__print_funct_t (*f_json_print) (struct activity *, int, int, unsigned long long);
 	/*
 	 * Header string displayed by sadf -d/-D.
+	 * Header lines for each output (for activities with multiple outputs) are
+	 * separated with a '|' character.
+	 * For a given output, the first field corresponding to extended statistics
+	 * (eg. -r ALL) begins with a '&' character.
 	 */
 	char *hdr_line;
 	/*
@@ -427,6 +434,10 @@ struct activity {
 	/*
 	 * Optional flags for activity. This is eg. used when AO_MULTIPLE_OUTPUTS
 	 * option is set.
+	 * 0x0001 - 0x0080 : Multiple outputs (eg. AO_F_MEM_AMT, AO_F_MEM_SWAP...)
+	 * 0x0100 - 0x8000 : If bit set then display complete header (hdr_line) for
+	 *                   corresponding output
+	 * 0x010000+       : Optional flags
 	 */
 	unsigned int opt_flags;
 	/*

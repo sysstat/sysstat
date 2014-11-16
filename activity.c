@@ -274,7 +274,7 @@ struct activity memory_act = {
 	.f_xml_print	= xml_print_memory_stats,
 	.f_json_print	= json_print_memory_stats,
 	.hdr_line	= "frmpg/s;bufpg/s;campg/s|"
-		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty|"
+		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty&kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused|"
 		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 	.name		= "A_MEMORY",
 #endif

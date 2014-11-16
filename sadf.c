@@ -434,7 +434,7 @@ void write_textual_comments(int curr, int use_tm_start, int use_tm_end, int tab,
  */
 void list_fields(unsigned int act_id)
 {
-	int i;
+	int i, j;
 	unsigned int msk;
 	char *hl;
 	char hline[HEADER_LINE_LEN];
@@ -457,8 +457,24 @@ void list_fields(unsigned int act_id)
 				msk = 1;
 				strcpy(hline, act[i]->hdr_line);
 				for (hl = strtok(hline, "|"); hl; hl = strtok(NULL, "|"), msk <<= 1) {
-					if ((hl != NULL) && (act[i]->opt_flags & msk)) {
-						printf(";%s", hl);
+					if ((hl != NULL) && ((act[i]->opt_flags & 0xff) & msk)) {
+						if (strchr(hl, '&')) {
+							j = strcspn(hl, "&");
+							if ((act[i]->opt_flags & 0xff00) & (msk << 8)) {
+								/* Display whole header line */
+								*(hl + j) = ';';
+								printf(";%s", hl);
+							}
+							else {
+								/* Display only the first part of the header line */
+								*(hl + j) = '\0';
+								printf(";%s", hl);
+							}
+							*(hl + j) = '&';
+						}
+						else {
+							printf(";%s", hl);
+						}
 						if ((act[i]->nr > 1) && DISPLAY_HORIZONTALLY(flags)) {
 							printf("[...]");
 						}
@@ -1379,9 +1395,9 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 
 					optf = act[p]->opt_flags;
 
-					for (msk = 1; msk < 0x10; msk <<= 1) {
-						if (act[p]->opt_flags & msk) {
-							act[p]->opt_flags &= msk;
+					for (msk = 1; msk < 0x100; msk <<= 1) {
+						if ((act[p]->opt_flags & 0xff) & msk) {
+							act[p]->opt_flags &= (0xffffff00 + msk);
 
 							rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 									  act[p]->id, &reset, file_actlst,

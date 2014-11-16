@@ -268,6 +268,26 @@ void read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of commited memory in kB */
 			sscanf(line + 13, "%lu", &st_memory->comkb);
 		}
+		else if (!strncmp(line, "AnonPages:", 10)) {
+			/* Read the amount of pages mapped into userspace page tables in kB */
+			sscanf(line + 10, "%lu", &st_memory->anonpgkb);
+		}
+		else if (!strncmp(line, "Slab:", 5)) {
+			/* Read the amount of in-kernel data structures cache in kB */
+			sscanf(line + 5, "%lu", &st_memory->slabkb);
+		}
+		else if (!strncmp(line, "KernelStack:", 12)) {
+			/* Read the kernel stack utilization in kB */
+			sscanf(line + 12, "%lu", &st_memory->kstackkb);
+		}
+		else if (!strncmp(line, "PageTables:", 11)) {
+			/* Read the amount of memory dedicated to the lowest level of page tables in kB */
+			sscanf(line + 11, "%lu", &st_memory->pgtblkb);
+		}
+		else if (!strncmp(line, "VmallocUsed:", 12)) {
+			/* Read the amount of vmalloc area which is used in kB */
+			sscanf(line + 12, "%lu", &st_memory->vmusedkb);
+		}
 	}
 
 	fclose(fp);

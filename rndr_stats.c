@@ -733,6 +733,7 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		*smp = (struct stats_memory *) a->buf[!curr];
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+	int ptn;
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
@@ -800,9 +801,32 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       "-\tkbinact", NULL, NULL,
 		       smc->inactkb, DNOVAL, NULL);
 
-		render(isdb, pre, PT_USEINT | pt_newlin,
+		ptn = DISPLAY_MEM_ALL(a->opt_flags) ? 0 : pt_newlin;
+		render(isdb, pre, PT_USEINT | ptn,
 		       "-\tkbdirty", NULL, NULL,
 		       smc->dirtykb, DNOVAL, NULL);
+
+		if (DISPLAY_MEM_ALL(a->opt_flags)) {
+			render(isdb, pre, PT_USEINT,
+			       "-\tkbanonpg", NULL, NULL,
+			       smc->anonpgkb, DNOVAL, NULL);
+
+			render(isdb, pre, PT_USEINT,
+			       "-\tkbslab", NULL, NULL,
+			       smc->slabkb, DNOVAL, NULL);
+
+			render(isdb, pre, PT_USEINT,
+			       "-\tkbkstack", NULL, NULL,
+			       smc->kstackkb, DNOVAL, NULL);
+
+			render(isdb, pre, PT_USEINT,
+			       "-\tkbpgtbl", NULL, NULL,
+			       smc->pgtblkb, DNOVAL, NULL);
+
+			render(isdb, pre, PT_USEINT | pt_newlin,
+			       "-\tkbvmused", NULL, NULL,
+			       smc->vmusedkb, DNOVAL, NULL);
+		}
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {

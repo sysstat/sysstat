@@ -495,6 +495,20 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		       smc->activekb,
 		       smc->inactkb,
 		       smc->dirtykb);
+
+		if (DISPLAY_MEM_ALL(a->opt_flags)) {
+			/* Display extended memory stats */
+			printf(", \"anonpg\": %lu, "
+			       "\"slab\": %lu, "
+			       "\"kstack\": %lu, "
+			       "\"pgtbl\": %lu, "
+			       "\"vmused\": %lu",
+			       smc->anonpgkb,
+			       smc->slabkb,
+			       smc->kstackkb,
+			       smc->pgtblkb,
+			       smc->vmusedkb);
+		}
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
