@@ -88,7 +88,7 @@ int upgrade_magic_section(char dfile[], int *fd, int stdfd,
 
 		/* Fill new structure members */
 		file_magic->header_size = FILE_HEADER_SIZE;
-		memset(file_magic->pad, 0, 64);
+		memset(file_magic->pad, 0, sizeof(file_magic->pad));
 	}
 
 	/* Indicate that file has been upgraded */
