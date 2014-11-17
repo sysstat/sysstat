@@ -3,7 +3,7 @@
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
-.B [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]
 .B [ -I {
 .I int
 .B [,...] | SUM | ALL | XALL } ] [ -P {
@@ -166,7 +166,7 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdFHqrRSuvwWy -I SUM -I XALL -m ALL -n ALL -u ALL -P ALL".
+.BR "-bBdFHqRSuvwWy -I SUM -I XALL -m ALL -n ALL -r ALL -u ALL -P ALL".
 .IP -B
 Report paging statistics.
 The following values are displayed:
@@ -1841,9 +1841,11 @@ Number of additional memory pages cached by the system per second.
 A negative value means fewer pages in the cache.
 .RE
 .RE
-.IP -r
-Report memory utilization statistics.
-The following values are displayed:
+.IP "-r [ ALL ]"
+Report memory utilization statistics. The
+.B ALL
+keyword indicates that all the memory fields should be displayed.
+The following values may be displayed:
 
 .B kbmemfree
 .RS
@@ -1899,6 +1901,31 @@ used. It is more eligible to be reclaimed for other purposes).
 .B kbdirty
 .RS
 Amount of memory in kilobytes waiting to get written back to the disk.
+.RE
+
+.B kbanonpg
+.RS
+Amount of non-file backed pages in kilobytes mapped into userspace page tables.
+.RE
+
+.B kbslab
+.RS
+Amount of memory in kilobytes used by the kernel to cache data structures for its own use.
+.RE
+
+.B kbkstack
+.RS
+Amount of memory in kilobytes used for kernel stack space.
+.RE
+
+.B kbpgtbl
+.RS
+Amount of memory in kilobytes dedicated to the lowest level of page tables.
+.RE
+
+.B kbvmused
+.RS
+Amount of memory in kilobytes of used virtual address space.
 .RE
 .RE
 .IP -S
