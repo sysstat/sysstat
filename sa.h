@@ -200,9 +200,9 @@
  */
 #define BITMAP_SIZE(m)	((((m) + 1) / 8) + 1)
 
-#define UTSNAME_LEN		65
-#define TIMESTAMP_LEN		16
-#define HEADER_LINE_LEN		512
+#define UTSNAME_LEN	65
+#define TIMESTAMP_LEN	16
+#define HEADER_LINE_LEN	512
 
 /* Maximum number of args that can be passed to sadc */
 #define MAX_ARGV_NR	32
@@ -382,7 +382,7 @@ struct activity {
 	 */
 	__print_funct_t (*f_json_print) (struct activity *, int, int, unsigned long long);
 	/*
-	 * Header string displayed by sadf -d/-D.
+	 * Header string displayed by sadf -d.
 	 * Header lines for each output (for activities with multiple outputs) are
 	 * separated with a '|' character.
 	 * For a given output, the first field corresponding to extended statistics
