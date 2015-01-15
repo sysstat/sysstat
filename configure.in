@@ -30,7 +30,7 @@ AC_CHECK_PROG(INSTALL, install, install)
 AC_CHECK_PROG(MSGFMT, msgfmt, msgfmt)
 AC_CHECK_PROG(XGETTEXT, xgettext, xgettext)
 AC_CHECK_PROG(MSGMERGE, msgmerge, msgmerge)
-AC_CHECK_PROGS(ZIP, bzip2 gzip, gzip, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
+AC_CHECK_PROGS(ZIP, xz bzip2 gzip, gzip, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
 INSTALL_DATA="\${INSTALL} -m 644"
 AC_SUBST(INSTALL_DATA)
 INSTALL_BIN="\${INSTALL} -m 755"
