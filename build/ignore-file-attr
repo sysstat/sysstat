@@ -1,0 +1,9 @@
+
+Here again, don't bother too much with that. When set, this parameter prevents
+the installation process from setting the attributes (eg. user, group...) of
+files being installed.
+For example, when this parameter is used, the contents of the man_group variable
+won't be taken into account, the installation process won't try to set the
+user and group attributes of the /var/log/sa directory...
+This parameter is only used by some distros to package sysstat.
+

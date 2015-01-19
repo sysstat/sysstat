@@ -640,7 +640,7 @@ INSTALL_CRON
 CLEAN_SA_DIR
 INSTALL_ISAG
 COMPRESS_MANPG
-IGNORE_MAN_GROUP
+IGNORE_FILE_ATTRIBUTES
 MAN_GROUP
 man_group
 PREALLOC_FACTOR
@@ -736,7 +736,7 @@ enable_sensors
 enable_largefile
 enable_nls
 enable_yesterday
-enable_man_group
+enable_file_attr
 enable_compress_manpg
 enable_install_isag
 enable_clean_sa_dir
@@ -1379,7 +1379,7 @@ Optional Features:
   --disable-largefile     omit support for large files
   --disable-nls           disable National Language Support
   --enable-yesterday      tell sa2 to use data file of the day before
-  --disable-man-group     ignore man_group variable value
+  --disable-file-attr     do not set attributes on files being installed
   --enable-compress-manpg compress sysstat manual pages
   --enable-install-isag   install isag script
   --enable-clean-sa-dir   clean system activity directory
@@ -3787,7 +3787,7 @@ $as_echo "no" >&6; }
 fi
 
 
-for ac_prog in bzip2 gzip
+for ac_prog in xz bzip2 gzip
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
@@ -4849,7 +4849,7 @@ echo .
 #  --disable-largefile     omit support for large files
 #  --disable-nls           disable National Language Support
 #  --enable-yesterday      tell sa2 to use "yesterday" data files
-#  --disable-man-group     ignore man_group variable value
+#  --disable-file-attr     don't set attributes on files being installed
 #  --enable-install-cron   tell sysstat to install cron scripts
 #  --collect-all           tell sadc to collect all possible data
 #  --enable-clean-sa-dir   clean system activity directory
@@ -5105,21 +5105,21 @@ $as_echo "$MAN_GROUP" >&6; }
 fi
 
 
-# Ignore manual pages group?
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether man_group variable should be ignored" >&5
-$as_echo_n "checking whether man_group variable should be ignored... " >&6; }
-# Check whether --enable-man-group was given.
-if test "${enable_man_group+set}" = set; then :
-  enableval=$enable_man_group; AUX_IMG=$enableval
+# Don't set attributes on files being installed?
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether attributes should not be set on files being installed" >&5
+$as_echo_n "checking whether attributes should not be set on files being installed... " >&6; }
+# Check whether --enable-file-attr was given.
+if test "${enable_file_attr+set}" = set; then :
+  enableval=$enable_file_attr; AUX_IMG=$enableval
 else
   AUX_IMG=yes
 fi
 
 if test $AUX_IMG != "no"; then
-   IGNORE_MAN_GROUP=n
+   IGNORE_FILE_ATTRIBUTES=n
    AUX_IMG=no
 else
-   IGNORE_MAN_GROUP=y
+   IGNORE_FILE_ATTRIBUTES=y
    AUX_IMG=yes
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AUX_IMG" >&5

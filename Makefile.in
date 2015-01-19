@@ -101,10 +101,10 @@ INSTALL_CRON = @INSTALL_CRON@
 CRON_OWNER = @CRON_OWNER@
 
 MAN_GROUP = @MAN_GROUP@
-ifndef IGNORE_MAN_GROUP
-IGNORE_MAN_GROUP = @IGNORE_MAN_GROUP@
+ifndef IGNORE_FILE_ATTRIBUTES
+IGNORE_FILE_ATTRIBUTES = @IGNORE_FILE_ATTRIBUTES@
 endif
-ifeq ($(IGNORE_MAN_GROUP),y)
+ifeq ($(IGNORE_FILE_ATTRIBUTES),y)
 MANGRPARG =
 else
 MANGRPARG = -g $(MAN_GROUP)
@@ -368,7 +368,9 @@ endif
 
 install_all: install_base cron/crontab sysstat \
 	cron/sysstat.crond cron/sysstat.cron.daily cron/sysstat.cron.hourly
+ifneq ($(IGNORE_FILE_ATTRIBUTES),y)
 	$(CHOWN) $(CRON_OWNER) $(DESTDIR)$(SA_DIR)
+endif
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	   if [ -d $(DESTDIR)/etc/cron.d ]; then \
 	      $(INSTALL_DATA) cron/sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \

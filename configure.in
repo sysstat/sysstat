@@ -129,7 +129,7 @@ echo .
 #  --disable-largefile     omit support for large files
 #  --disable-nls           disable National Language Support
 #  --enable-yesterday      tell sa2 to use "yesterday" data files
-#  --disable-man-group     ignore man_group variable value
+#  --disable-file-attr     don't set attributes on files being installed
 #  --enable-install-cron   tell sysstat to install cron scripts
 #  --collect-all           tell sadc to collect all possible data    
 #  --enable-clean-sa-dir   clean system activity directory
@@ -356,21 +356,21 @@ else
 fi
 AC_SUBST(MAN_GROUP)
 
-# Ignore manual pages group?
-AC_MSG_CHECKING(whether man_group variable should be ignored)
-AC_ARG_ENABLE(man-group,
-	      AC_HELP_STRING([--disable-man-group],
-			     [ignore man_group variable value]),
+# Don't set attributes on files being installed?
+AC_MSG_CHECKING(whether attributes should not be set on files being installed)
+AC_ARG_ENABLE(file-attr,
+	      AC_HELP_STRING([--disable-file-attr],
+			     [do not set attributes on files being installed]),
 			     AUX_IMG=$enableval,AUX_IMG=yes)
 if test $AUX_IMG != "no"; then
-   IGNORE_MAN_GROUP=n
+   IGNORE_FILE_ATTRIBUTES=n
    AUX_IMG=no
 else
-   IGNORE_MAN_GROUP=y
+   IGNORE_FILE_ATTRIBUTES=y
    AUX_IMG=yes
 fi
 AC_MSG_RESULT($AUX_IMG)
-AC_SUBST(IGNORE_MAN_GROUP)
+AC_SUBST(IGNORE_FILE_ATTRIBUTES)
 
 # Compress manual pages?
 AC_MSG_CHECKING(whether manual pages should be compressed)

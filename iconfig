@@ -100,13 +100,13 @@ if [ "${MAN}" != "" ]; then
 	MAN="man_group=${MAN} "
 fi
 
-# Ignore man_group variable
-IGNORE_MAN=`${ASK} 'Ignore contents of man_group variable? (y/n)' "--disable-man-group" "ignore-man-group"`
-if [ "${IGNORE_MAN}" = "y" ]; then
-	IGNORE_MAN="--disable-man-group "
+# Don't set attributes on files being installed
+IGNORE_FILE_ATTR=`${ASK} 'Do not set attributes on files being installed? (y/n)' "--disable-file-attr" "ignore-file-attr"`
+if [ "${IGNORE_FILE_ATTR}" = "y" ]; then
+	IGNORE_FILE_ATTR="--disable-file-attr "
 else
-	IGNORE_MAN=""
-	echo "Parameter --disable-man-group is NOT set"
+	IGNORE_FILE_ATTR=""
+	echo "Parameter --disable-file-attr is NOT set"
 fi
 
 # Crontab
@@ -212,11 +212,11 @@ fi
 
 echo
 echo "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
+${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
 ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_MAN}${CRON}${RCDIR} \
+${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
 ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}
 
