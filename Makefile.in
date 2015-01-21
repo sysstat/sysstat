@@ -373,13 +373,18 @@ install_all: install_base cron/crontab sysstat \
 	   elif [ -d $(DESTDIR)/etc/cron.hourly -a -d $(DESTDIR)/etc/cron.daily ]; then \
 	      $(INSTALL_BIN) cron/sysstat.cron.hourly $(DESTDIR)/etc/cron.hourly/sysstat; \
 	      $(INSTALL_BIN) cron/sysstat.cron.daily $(DESTDIR)/etc/cron.daily/sysstat; \
-	   else \
+	   fi \
+	fi
+ifeq ($(COPY_ONLY),n)
+	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" -a ! -d $(DESTDIR)/etc/cron.d ]; then \
+	   if [ ! -d $(DESTDIR)/etc/cron.hourly -o ! -d $(DESTDIR)/etc/cron.daily ]; then \
 	      su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).save"; \
 	      $(CP) -a /tmp/crontab-$(CRON_OWNER).save ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.save; \
 	      echo "USER'S PREVIOUS CRONTAB SAVED IN CURRENT DIRECTORY (USING .save SUFFIX)."; \
 	      su $(CRON_OWNER) -c "crontab cron/crontab"; \
 	   fi \
 	fi
+endif
 	if [ -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	    $(INSTALL_DATA) sysstat.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	    $(INSTALL_DATA) cron/sysstat-collect.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
@@ -487,13 +492,13 @@ endif
 	@echo "Please ignore the errors above, if any."
 
 uninstall_all: uninstall_base
+ifeq ($(COPY_ONLY),n)
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	   -su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).old" ; \
 	   -$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old ; \
 	   @echo "USER CRONTAB SAVED IN CURRENT DIRECTORY (WITH .old SUFFIX)." ; \
 	   -su $(CRON_OWNER) -c "crontab -r" ; \
 	fi
-ifeq ($(COPY_ONLY),n)
 	if [ -x $(SYSTEMCTL) ]; then \
 	    $(SYSTEMCTL) disable sysstat.service; \
 	fi
