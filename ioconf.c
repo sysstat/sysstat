@@ -228,7 +228,7 @@ int ioc_init(void)
 
 		/* maybe it's a full record? */
 
-		i = sscanf(buf, "%u:%[^:]:%[^:]:%d:%[^:]:%u:%[^:]:%u:%s",
+		i = sscanf(buf, "%u:%[^:]:%[^:]:%u:%[^:]:%u:%[^:]:%u:%s",
 			   &major, blkp->name,
 			   cfmt, &iocp->ctrlno,
 			   dfmt, &blkp->dcount,
@@ -294,7 +294,8 @@ int ioc_init(void)
 
 		/* basename of device + provided string + controller # */
 		if (*cfmt == '*') {
-			strcpy(blkp->cfmt, blkp->name);
+			strncpy(blkp->cfmt, blkp->name, IOC_FMTLEN);
+			blkp->cfmt[IOC_FMTLEN] = '\0';
 		}
 		else {
 			sprintf(blkp->cfmt, "%s%s%%d", blkp->name, cfmt);

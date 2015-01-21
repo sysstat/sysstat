@@ -241,7 +241,8 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 				/* Unused entry found... */
 				st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
 				st_hdr_cifs_i->active = TRUE;
-				strcpy(st_hdr_cifs_i->name, name);
+				strncpy(st_hdr_cifs_i->name, name, MAX_NAME_LEN - 1);
+				st_hdr_cifs_i->name[MAX_NAME_LEN - 1] = '\0';
 				st_cifs_i = st_cifs[curr] + i;
 				*st_cifs_i = *((struct cifs_stats *) st_io);
 				break;
@@ -283,7 +284,8 @@ void save_stats(char *name, int curr, struct cifs_stats *st_io)
 			st_hdr_cifs_i = st_hdr_cifs + i;
 			st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
 			st_hdr_cifs_i->active = TRUE;
-			strcpy(st_hdr_cifs_i->name, name);
+			strncpy(st_hdr_cifs_i->name, name, MAX_NAME_LEN - 1);
+			st_hdr_cifs_i->name[MAX_NAME_LEN - 1] = '\0';
 			st_cifs_i = st_cifs[curr] + i;
 			*st_cifs_i = *st_io;
 		}
@@ -318,7 +320,7 @@ void read_cifs_stat(int curr)
 	long long unsigned all_open = 0;
 	char cifs_name[MAX_NAME_LEN];
 	char name_tmp[MAX_NAME_LEN];
-	struct cifs_stats scifs;
+	struct cifs_stats scifs = {0, 0, 0, 0, 0, 0, 0};
 
 	/* Every CIFS entry is potentially unregistered */
 	set_entries_inactive();
@@ -659,7 +661,7 @@ int main(int argc, char **argv)
 
 	/* Set a handler for SIGALRM */
 	memset(&alrm_act, 0, sizeof(alrm_act));
-	alrm_act.sa_handler = (void *) alarm_handler;
+	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
 

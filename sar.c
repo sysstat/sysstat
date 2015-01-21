@@ -568,7 +568,8 @@ void write_stats_startup(int curr)
 
 	for (i = 0; i < NR_ACT; i++) {
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
-			memset(act[i]->buf[!curr], 0, act[i]->msize * act[i]->nr * act[i]->nr2);
+			memset(act[i]->buf[!curr], 0,
+					(size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
 		}
 	}
 
@@ -1064,7 +1065,7 @@ void read_stats(void)
 {
 	int curr = 1;
 	unsigned long lines;
-	unsigned int rows = 23;
+	unsigned int rows;
 	int dis_hdr = 0;
 
 	/* Don't buffer data if redirected to a pipe... */
@@ -1103,7 +1104,7 @@ void read_stats(void)
 
 	/* Set a handler for SIGINT */
 	memset(&int_act, 0, sizeof(int_act));
-	int_act.sa_handler = (void *) int_handler;
+	int_act.sa_handler = int_handler;
 	int_act.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &int_act, NULL);
 
