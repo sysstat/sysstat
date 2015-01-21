@@ -496,7 +496,7 @@ ifeq ($(COPY_ONLY),n)
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 	   -su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).old" ; \
 	   -$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old ; \
-	   @echo "USER CRONTAB SAVED IN CURRENT DIRECTORY (WITH .old SUFFIX)." ; \
+	   @echo "USER'S CRONTAB SAVED IN CURRENT DIRECTORY (USING .old SUFFIX)." ; \
 	   -su $(CRON_OWNER) -c "crontab -r" ; \
 	fi
 	if [ -x $(SYSTEMCTL) ]; then \
