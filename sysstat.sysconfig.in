@@ -5,7 +5,7 @@
 # multiple directories, one for each month.
 HISTORY=@HISTORY@
 
-# Compress (using gzip or bzip2) sa and sar files older than (in days):
+# Compress (using xz, gzip or bzip2) sa and sar files older than (in days):
 COMPRESSAFTER=@COMPRESSAFTER@
 
 # Parameters for the system activity data collector (see sadc manual page)
