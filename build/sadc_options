@@ -1,0 +1,10 @@
+
+Options to be passed to sadc. This is typically used to tell sadc
+which optional activities should be collected.
+A possible answer here could be for example "-S DISK,POWER" (without
+the quotation marks) to tell sadc to collect data for block devices
+and power management statistics. Read sadc(8) manual page to know
+all the possible options accepted by sadc.
+You can also skip this question by pressing only the return key. In
+this case, sadc will collect only standard activities.
+

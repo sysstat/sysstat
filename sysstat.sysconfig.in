@@ -10,7 +10,7 @@ COMPRESSAFTER=@COMPRESSAFTER@
 
 # Parameters for the system activity data collector (see sadc manual page)
 # which are used for the generation of log files.
-SADC_OPTIONS="@COLLECT_ALL@"
+SADC_OPTIONS="@COLLECT_ALL@ @SADC_OPT@"
 
 # Directory where sa and sar files are saved.
 SA_DIR=@SA_DIR@

@@ -634,6 +634,8 @@ CRON_INTERVAL
 SU_C_OWNER
 CRON_OWNER
 COPY_ONLY
+SADC_OPT
+sadc_options
 cron_interval
 cron_owner
 INSTALL_CRON
@@ -765,7 +767,8 @@ compressafter
 prealloc
 man_group
 cron_owner
-cron_interval'
+cron_interval
+sadc_options'
 
 
 # Initialize some variables set by options.
@@ -1419,6 +1422,8 @@ Some influential environment variables:
   cron_owner  crontab owner
   cron_interval
               crontab interval
+  sadc_options
+              options to be passed to sadc
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -4871,6 +4876,7 @@ echo .
 #  man_group     group for man pages
 #  cron_owner    crontab owner
 #  cron_interval crontab sampling interval
+#  sadc_options  options to be passed to sadc
 #
 # Fine tuning the installation directories:
 #  --mandir=DIR           man documentation directory [PREFIX/man]
@@ -5275,6 +5281,18 @@ fi
    fi
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AUX_COLL" >&5
 $as_echo "$AUX_COLL" >&6; }
+
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking options to be passed to sadc" >&5
+$as_echo_n "checking options to be passed to sadc... " >&6; }
+
+   if test x"$sadc_options" != x""; then
+	SADC_OPT="$sadc_options"
+   else
+	SADC_OPT=
+   fi
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
+$as_echo "$SADC_OPT" >&6; }
+
 
 # Check whether files should only be copied
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5

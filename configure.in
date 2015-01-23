@@ -151,6 +151,7 @@ echo .
 #  man_group     group for man pages
 #  cron_owner    crontab owner
 #  cron_interval crontab sampling interval
+#  sadc_options  options to be passed to sadc
 #
 # Fine tuning the installation directories:
 #  --mandir=DIR           man documentation directory [PREFIX/man]
@@ -490,6 +491,16 @@ if test $INSTALL_CRON = "y"; then
       AUX_COLL=yes
    fi
    AC_MSG_RESULT($AUX_COLL)
+
+   AC_MSG_CHECKING(options to be passed to sadc)
+   AC_ARG_VAR([sadc_options],[options to be passed to sadc])
+   if test x"$sadc_options" != x""; then
+	SADC_OPT="$sadc_options"
+   else
+	SADC_OPT=
+   fi
+   AC_MSG_RESULT($SADC_OPT)
+   AC_SUBST(SADC_OPT)
 
 # Check whether files should only be copied
    AC_MSG_CHECKING(whether files should only be copied)

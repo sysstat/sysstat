@@ -144,6 +144,14 @@ then
 	fi
 fi
 
+if [ "${CRON}" != "" -a "${COLL_ALL}" != "y" ];
+then
+	# Optional args for sadc
+	SADC_OPT=`${ASK} 'Options to be passed to sadc:' "sadc_options" "sadc_options"`
+else
+	SADC_OPT=
+fi
+
 if [ "${CRON}" != "" ];
 then
 	# rc directory
@@ -211,12 +219,17 @@ else
 fi
 
 echo
-echo "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
-${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}"
+echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
+${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
+if [ "${SADC_OPT}" != "" ];
+then
+	echo -n "sadc_options=\"${SADC_OPT}\""
+fi
+echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
-${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}
+sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS} \
+${STRIP}${COPY_ONLY}
 
