@@ -5248,7 +5248,7 @@ $as_echo "$CRON_OWNER" >&6; }
       REM_CHOWN=$CHOWN
    fi
 
-# Crontab interval
+#  Crontab interval
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking crontab interval" >&5
 $as_echo_n "checking crontab interval... " >&6; }
 
@@ -5262,7 +5262,7 @@ $as_echo "$CRON_INTERVAL" >&6; }
    CRON_INTERVAL_SEC=`expr ${CRON_INTERVAL} \* 60`
    CRON_COUNT=`expr 60 / ${CRON_INTERVAL}`
 
-# Check whether sadc should collect all possible activities
+#  Check whether sadc should collect all possible activities
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether sadc should collect all possible activities" >&5
 $as_echo_n "checking whether sadc should collect all possible activities... " >&6; }
    # Check whether --enable-collect-all was given.
@@ -5294,7 +5294,7 @@ $as_echo_n "checking options to be passed to sadc... " >&6; }
 $as_echo "$SADC_OPT" >&6; }
 
 
-# Check whether files should only be copied
+#  Check whether files should only be copied
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
 $as_echo_n "checking whether files should only be copied... " >&6; }
    # Check whether --enable-copy-only was given.
@@ -5388,21 +5388,6 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AUX_STRIP" >&5
 $as_echo "$AUX_STRIP" >&6; }
 
-# National Language Support
-#AC_MSG_CHECKING(National Language Support)
-#AC_ARG_ENABLE(nls,
-#	      AC_HELP_STRING([--disable-nls],
-#			     [disable National Language Support]),
-#			     AUX_NLS=$enableval,AUX_NLS=yes)
-#if test $AUX_NLS != "no" && test $HAVE_LIBINTL_H && test $HAVE_LOCALE_H; then
-#   AUX_NLS="yes"
-#   NLS="y"
-#else
-#   AUX_NLS="no"
-#   NLS="n"
-#fi
-#AC_MSG_RESULT($AUX_NLS)
-#AC_SUBST(NLS)
 
 # Create files
 echo .
