@@ -282,7 +282,7 @@ void reset_stats(void)
 	for (i = 0; i < NR_ACT; i++) {
 		if ((act[i]->nr > 0) && act[i]->_buf0) {
 			memset(act[i]->_buf0, 0,
-					(size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+			       (size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
 		}
 	}
 }
@@ -331,7 +331,7 @@ void sa_sys_init(void)
 		if (act[i]->nr > 0) {
 			/* Allocate structures for current activity */
 			SREALLOC(act[i]->_buf0, void,
-					(size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+				 (size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
 		}
 		else {
 			/* No items found: Invalidate current activity */
@@ -959,7 +959,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			}
 			act[p]->nr2 = file_act[i].nr2;
 			SREALLOC(act[p]->_buf0, void,
-					(size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
+				 (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
 
 			/* Save activity sequence */
 			id_seq[i] = file_act[i].id;

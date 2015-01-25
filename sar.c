@@ -569,7 +569,7 @@ void write_stats_startup(int curr)
 	for (i = 0; i < NR_ACT; i++) {
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			memset(act[i]->buf[!curr], 0,
-					(size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+			       (size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
 		}
 	}
 

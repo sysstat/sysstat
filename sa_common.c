@@ -1168,7 +1168,7 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 		}
 
 		memcpy(act[p]->buf[dest], act[p]->buf[src],
-				(size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
+		       (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
 	}
 }
 
@@ -1448,7 +1448,7 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(act[p]->buf[j], void,
-				(size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
+			 (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
 	}
 
 	return 0;
