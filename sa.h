@@ -505,6 +505,9 @@ struct activity {
 /* Previous datafile format magic number used by older sysstat versions */
 #define PREVIOUS_FORMAT_MAGIC	0x2171
 
+/* Padding in file_magic structure. See below. */
+#define FILE_MAGIC_PADDING	63
+
 /* Structure for file magic header data */
 struct file_magic {
 	/*
@@ -536,7 +539,7 @@ struct file_magic {
 	/*
 	 * Padding. Reserved for future use while avoiding a format change.
 	 */
-	unsigned char pad[63];
+	unsigned char pad[FILE_MAGIC_PADDING];
 };
 
 #define FILE_MAGIC_SIZE	(sizeof(struct file_magic))

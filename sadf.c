@@ -437,7 +437,7 @@ void list_fields(unsigned int act_id)
 	int i, j;
 	unsigned int msk;
 	char *hl;
-	char hline[HEADER_LINE_LEN];
+	char hline[HEADER_LINE_LEN] = "";
 
 	printf("# hostname;interval;timestamp");
 
@@ -455,7 +455,8 @@ void list_fields(unsigned int act_id)
 			}
 			else {
 				msk = 1;
-				strcpy(hline, act[i]->hdr_line);
+				strncpy(hline, act[i]->hdr_line, HEADER_LINE_LEN - 1);
+				hline[HEADER_LINE_LEN - 1] = '\0';
 				for (hl = strtok(hline, "|"); hl; hl = strtok(NULL, "|"), msk <<= 1) {
 					if ((hl != NULL) && ((act[i]->opt_flags & 0xff) & msk)) {
 						if (strchr(hl, '&')) {
@@ -1023,8 +1024,8 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 			  struct tm *rectime, struct tm *loctime, char *file)
 {
 	int curr, tab = 0, rtype;
-	int eosaf = TRUE, next, reset = FALSE;
-	__nr_t save_act_nr[NR_ACT];
+	int eosaf, next, reset = FALSE;
+	__nr_t save_act_nr[NR_ACT] = {0};
 	unsigned int new_cpu_nr;
 	long cnt = 1;
 	off_t fpos;

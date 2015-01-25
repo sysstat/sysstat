@@ -84,7 +84,8 @@ void allocate_structures(struct activity *act[])
 	for (i = 0; i < NR_ACT; i++) {
 		if (act[i]->nr > 0) {
 			for (j = 0; j < 3; j++) {
-				SREALLOC(act[i]->buf[j], void, act[i]->msize * act[i]->nr * act[i]->nr2);
+				SREALLOC(act[i]->buf[j], void,
+						(size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
 			}
 		}
 	}
@@ -333,11 +334,12 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 	char timestamp[9];
 
 	if ((argv[++(*opt)]) && (strlen(argv[*opt]) == 8)) {
-		strcpy(timestamp, argv[(*opt)++]);
+		strncpy(timestamp, argv[(*opt)++], 8);
 	}
 	else {
-		strcpy(timestamp, def_timestamp);
+		strncpy(timestamp, def_timestamp, 8);
 	}
+	timestamp[8] = '\0';
 
 	return decode_timestamp(timestamp, tse);
 }
@@ -416,7 +418,7 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 void set_default_file(char *datafile, int d_off, int sa_name)
 {
 	char sa_dir[MAX_FILE_LEN];
-	struct tm rectime;
+	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
 
 	/* Set directory where daily data files will be saved */
 	if (datafile[0]) {
@@ -1165,7 +1167,8 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 			PANIC(1);
 		}
 
-		memcpy(act[p]->buf[dest], act[p]->buf[src], act[p]->msize * act[p]->nr * act[p]->nr2);
+		memcpy(act[p]->buf[dest], act[p]->buf[src],
+				(size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
 	}
 }
 
@@ -1186,6 +1189,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 {
 	int i, j, k, p;
 	struct file_activity *fal = file_actlst;
+	off_t offset;
 
 	for (i = 0; i < act_nr; i++, fal++) {
 
@@ -1195,7 +1199,8 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 * Ignore current activity in file, which is unknown to
 			 * current sysstat version or has an unknown format.
 			 */
-			if (lseek(ifd, fal->size * fal->nr * fal->nr2, SEEK_CUR) < (fal->size * fal->nr * fal->nr2)) {
+			offset = (off_t) fal->size * (off_t) fal->nr * (off_t) fal->nr2;
+			if (lseek(ifd, offset, SEEK_CUR) < offset) {
 				close(ifd);
 				perror("lseek");
 				exit(2);
@@ -1442,7 +1447,8 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
 	act[p]->nr = act_nr;
 
 	for (j = 0; j < 3; j++) {
-		SREALLOC(act[p]->buf[j], void, act[p]->msize * act[p]->nr * act[p]->nr2);
+		SREALLOC(act[p]->buf[j], void,
+				(size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
 	}
 
 	return 0;
@@ -1969,7 +1975,7 @@ double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 
 	if (st_net_dev->speed) {
 
-		speed = st_net_dev->speed * 1000000;
+		speed = (unsigned long long) st_net_dev->speed * 1000000;
 
 		if (st_net_dev->duplex == C_DUPLEX_FULL) {
 			/* Full duplex */

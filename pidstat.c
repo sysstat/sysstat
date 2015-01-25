@@ -140,7 +140,7 @@ void init_stats(void)
  */
 void salloc_pid_array(unsigned int len)
 {
-	if ((pid_array = (unsigned int *) malloc(sizeof(int) * len)) == NULL) {
+	if ((pid_array = (unsigned int *) malloc(sizeof(unsigned int) * len)) == NULL) {
 		perror("malloc");
 		exit(4);
 	}
@@ -404,10 +404,10 @@ int read_proc_pid_status(unsigned int pid, struct pid_stats *pst,
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Uid:", 4)) {
-			sscanf(line + 5, "%d", &pst->uid);
+			sscanf(line + 5, "%u", &pst->uid);
 		}
 		else if (!strncmp(line, "Threads:", 8)) {
-			sscanf(line + 9, "%d", &pst->threads);
+			sscanf(line + 9, "%u", &pst->threads);
 		}
 		else if (!strncmp(line, "voluntary_ctxt_switches:", 24)) {
 			sscanf(line + 25, "%lu", &pst->nvcsw);
@@ -523,7 +523,7 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
 
 	memset(line, 0, MAX_CMDLINE_LEN);
 
-	if ((len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp)) < 0) {
+	if ((len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp)) == 0) {
 		/* Nothing to read doesn't mean that process no longer exists */
 		fclose(fp);
 		return 1;
@@ -536,7 +536,8 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
 	}
 
 	fclose(fp);
-	strncpy(pst->cmdline, line, MAX_CMDLINE_LEN);
+	strncpy(pst->cmdline, line, MAX_CMDLINE_LEN - 1);
+	pst->cmdline[MAX_CMDLINE_LEN - 1] = '\0';
 	return 0;
 }
 
@@ -2331,7 +2332,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	/* Set a handler for SIGALRM */
 	memset(&alrm_act, 0, sizeof(alrm_act));
-	alrm_act.sa_handler = (void *) alarm_handler;
+	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
 
@@ -2343,7 +2344,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	/* Set a handler for SIGINT */
 	memset(&int_act, 0, sizeof(int_act));
-	int_act.sa_handler = (void *) int_handler;
+	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
 
 	/* Wait for SIGALRM (or possibly SIGINT) signal */

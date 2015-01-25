@@ -61,7 +61,6 @@ void read_fan(struct stats_pwr_fan *st_pwr_fan, int nbr)
 	int i, j;
 
 	memset(st_pwr_fan, 0, STATS_PWR_FAN_SIZE);
-	int err = 0;
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
 		i = 0;
@@ -74,12 +73,12 @@ void read_fan(struct stats_pwr_fan *st_pwr_fan, int nbr)
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
 					if ((sub->type == SENSORS_SUBFEATURE_FAN_INPUT) &&
 					    (sub->flags & SENSORS_MODE_R)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm)) {
 							st_pwr_fan_i->rpm = 0;
 						}
 					}
 					else if ((sub->type == SENSORS_SUBFEATURE_FAN_MIN)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm_min))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm_min)) {
 							st_pwr_fan_i->rpm_min = 0;
 						}
 					}
@@ -115,7 +114,6 @@ void read_temp(struct stats_pwr_temp *st_pwr_temp, int nbr)
 	int i, j;
 
 	memset(st_pwr_temp, 0, STATS_PWR_TEMP_SIZE);
-	int err = 0;
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
 		i = 0;
@@ -128,17 +126,17 @@ void read_temp(struct stats_pwr_temp *st_pwr_temp, int nbr)
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
 					if ((sub->type == SENSORS_SUBFEATURE_TEMP_INPUT) &&
 						(sub->flags & SENSORS_MODE_R)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp)) {
 							st_pwr_temp_i->temp = 0;
 						}
 					}
 					else if ((sub->type == SENSORS_SUBFEATURE_TEMP_MIN)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_min))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_min)) {
 							st_pwr_temp_i->temp_min = 0;
 						}
 					}
 					else if ((sub->type == SENSORS_SUBFEATURE_TEMP_MAX)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_max))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp_max)) {
 							st_pwr_temp_i->temp_max = 0;
 						}
 					}
@@ -174,7 +172,6 @@ void read_in(struct stats_pwr_in *st_pwr_in, int nbr)
 	int i, j;
 
 	memset(st_pwr_in, 0, STATS_PWR_IN_SIZE);
-	int err = 0;
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
 		i = 0;
@@ -187,17 +184,17 @@ void read_in(struct stats_pwr_in *st_pwr_in, int nbr)
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
 					if ((sub->type == SENSORS_SUBFEATURE_IN_INPUT) &&
 						(sub->flags & SENSORS_MODE_R)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_in_i->in)) {
 							st_pwr_in_i->in = 0;
 						}
 					}
 					else if ((sub->type == SENSORS_SUBFEATURE_IN_MIN)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in_min))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_in_i->in_min)) {
 							st_pwr_in_i->in_min = 0;
 						}
 					}
 					else if ((sub->type == SENSORS_SUBFEATURE_IN_MAX)) {
-						if ((err = sensors_get_value(chip, sub->number, &st_pwr_in_i->in_max))) {
+						if (sensors_get_value(chip, sub->number, &st_pwr_in_i->in_max)) {
 							st_pwr_in_i->in_max = 0;
 						}
 					}

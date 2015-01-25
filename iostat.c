@@ -110,13 +110,11 @@ void usage(char *progname)
  */
 void set_disk_output_unit(void)
 {
-	char *e;
-
 	if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags))
 		return;
 
 	/* Check POSIXLY_CORRECT environment variable */
-	if ((e = getenv(ENV_POSIXLY_CORRECT)) == NULL) {
+	if (getenv(ENV_POSIXLY_CORRECT) == NULL) {
 		/* Variable not set: Unit is kB/s and not blocks/s */
 		flags |= I_D_KILOBYTES;
 	}
@@ -450,7 +448,8 @@ void save_stats(char *name, int curr, void *st_io, int iodev_nr,
 			if (!st_hdr_iodev_i->used) {
 				/* Unused entry found... */
 				st_hdr_iodev_i->used = TRUE; /* Indicate it is now used */
-				strcpy(st_hdr_iodev_i->name, name);
+				strncpy(st_hdr_iodev_i->name, name, MAX_NAME_LEN - 1);
+				st_hdr_iodev_i->name[MAX_NAME_LEN - 1] = '\0';
 				st_iodev_i = st_iodev[!curr] + i;
 				memset(st_iodev_i, 0, IO_STATS_SIZE);
 				break;
@@ -740,7 +739,8 @@ void read_diskstats_stat(int curr)
 				 * (if different from "nodev") works around known issues
 				 * with EMC PowerPath.
 				 */
-				strncpy(dev_name, ioc_dname, MAX_NAME_LEN);
+				strncpy(dev_name, ioc_dname, MAX_NAME_LEN - 1);
+				dev_name[MAX_NAME_LEN - 1] = '\0';
 			}
 		}
 
@@ -751,7 +751,8 @@ void read_diskstats_stat(int curr)
 			 */
 			dm_name = transform_devmapname(major, minor);
 			if (dm_name) {
-				strncpy(dev_name, dm_name, MAX_NAME_LEN);
+				strncpy(dev_name, dm_name, MAX_NAME_LEN - 1);
+				dev_name[MAX_NAME_LEN - 1] = '\0';
 			}
 		}
 
@@ -1364,7 +1365,7 @@ int main(int argc, char **argv)
 				 * MAX_NAME_LEN - 2: one char for the heading space,
 				 * and one for the trailing '\0'.
 				 */
-				sprintf(group_name, " %-.*s", MAX_NAME_LEN - 2, argv[opt++]);
+				snprintf(group_name, MAX_NAME_LEN, " %-.*s", MAX_NAME_LEN - 2, argv[opt++]);
 			}
 			else {
 				usage(argv[0]);
@@ -1593,7 +1594,7 @@ int main(int argc, char **argv)
 
 	/* Set a handler for SIGALRM */
 	memset(&alrm_act, 0, sizeof(alrm_act));
-	alrm_act.sa_handler = (void *) alarm_handler;
+	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
 

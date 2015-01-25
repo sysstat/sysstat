@@ -420,7 +420,7 @@ void read_loadavg(struct stats_queue *st_queue)
 		return;
 
 	/* Read load averages and queue length */
-	rc = fscanf(fp, "%d.%d %d.%d %d.%d %ld/%d %*d\n",
+	rc = fscanf(fp, "%d.%u %d.%u %d.%u %lu/%u %*d\n",
 		    &load_tmp[0], &st_queue->load_avg_1,
 		    &load_tmp[1], &st_queue->load_avg_5,
 		    &load_tmp[2], &st_queue->load_avg_15,
