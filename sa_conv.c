@@ -59,7 +59,6 @@
 int upgrade_magic_section(char dfile[], int *fd, int stdfd,
 			  struct file_magic *file_magic, int *previous_format)
 {
-	int n;
 	struct file_magic fm;
 
 	/* Open and read sa magic structure */
@@ -88,7 +87,7 @@ int upgrade_magic_section(char dfile[], int *fd, int stdfd,
 
 		/* Fill new structure members */
 		file_magic->header_size = FILE_HEADER_SIZE;
-		memset(file_magic->pad, 0, sizeof(file_magic->pad));
+		memset(file_magic->pad, 0, sizeof(unsigned char) * FILE_MAGIC_PADDING);
 	}
 
 	/* Indicate that file has been upgraded */
@@ -97,7 +96,7 @@ int upgrade_magic_section(char dfile[], int *fd, int stdfd,
 			       fm.sysstat_sublevel + 1;
 
 	/* Write file_magic structure */
-	if ((n = write(stdfd, file_magic, FILE_MAGIC_SIZE)) != FILE_MAGIC_SIZE) {
+	if (write(stdfd, file_magic, FILE_MAGIC_SIZE) != FILE_MAGIC_SIZE) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -587,7 +586,7 @@ int upgrade_activity_section(int stdfd, struct activity *act[],
 			     struct file_header *file_hdr,
 			     struct file_activity *file_actlst)
 {
-	int i, n, p;
+	int i, p;
 	struct file_activity file_act;
 	struct file_activity *fal;
 
@@ -609,7 +608,7 @@ int upgrade_activity_section(int stdfd, struct activity *act[],
 		 * Even unknown activities must be written
 		 * (they are counted in sa_act_nr).
 		 */
-		if ((n = write(stdfd, &file_act, FILE_ACTIVITY_SIZE))!= FILE_ACTIVITY_SIZE) {
+		if (write(stdfd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
 			fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 			return -1;
 		}
@@ -636,7 +635,6 @@ int upgrade_activity_section(int stdfd, struct activity *act[],
  */
 int upgrade_comment_record(int fd, int stdfd)
 {
-	int n;
 	char file_comment[MAX_COMMENT_LEN];
 
 	/* Read the COMMENT record */
@@ -644,7 +642,7 @@ int upgrade_comment_record(int fd, int stdfd)
 	file_comment[MAX_COMMENT_LEN - 1] = '\0';
 
 	/* Then write it. No changes at this time */
-	if ((n = write(stdfd, file_comment, MAX_COMMENT_LEN)) != MAX_COMMENT_LEN) {
+	if (write(stdfd, file_comment, MAX_COMMENT_LEN) != MAX_COMMENT_LEN) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -675,7 +673,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 			   struct file_header *file_hdr, int previous_format,
 			   unsigned int vol_id_seq[])
 {
-	int i, n, p;
+	int i, p;
 	struct file_activity file_act;
 
 	/*
@@ -702,7 +700,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 			file_act.nr = act[p]->nr;
 		}
 
-		if ((n = write(stdfd, &file_act, FILE_ACTIVITY_SIZE)) != FILE_ACTIVITY_SIZE) {
+		if (write(stdfd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
 			fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 			return -1;
 		}
@@ -732,9 +730,10 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 			   struct file_header *file_hdr,
 			   struct file_activity *file_actlst)
 {
-	int i, j, k, n, p;
+	int i, j, k, p;
 	struct file_activity *fal;
 	void *buffer = NULL;
+	size_t size;
 
 	/*
 	 * This is not a special record, so read the extra fields,
@@ -745,12 +744,12 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 
 		if ((p = get_activity_position(act, fal->id)) < 0) {
 			/* An unknown activity should still be read and written */
-			SREALLOC(buffer, void, fal->size * fal->nr * fal->nr2);
+			size = (size_t) fal->size * (size_t) fal->nr * (size_t) fal->nr2;
+			SREALLOC(buffer, void, size);
 			sa_fread(fd, buffer, fal->size * fal->nr * fal->nr2, HARD_SIZE);
-			if ((n = write(stdfd, (char *) buffer,
-				       fal->size * fal->nr * fal->nr2)) !=
-				       fal->size * fal->nr * fal->nr2) {
+			if (write(stdfd, (char *) buffer, size) != size) {
 				fprintf(stderr, "\nwrite: %s\n", strerror(errno));
+				free(buffer);
 				return -1;
 			}
 			continue;
@@ -828,11 +827,12 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 
 		for (j = 0; j < act[p]->nr; j++) {
 			for (k = 0; k < act[p]->nr2; k++) {
-				if ((n = write(stdfd,
+				if (write(stdfd,
 					       (char *) act[p]->buf[1] + (j * act[p]->nr2 + k) * act[p]->msize,
-					       act[p]->fsize)) !=
+					       act[p]->fsize) !=
 					       act[p]->fsize) {
 					fprintf(stderr, "\nwrite: %s\n", strerror(errno));
+					free(buffer);
 					return -1;
 				}
 			}
@@ -870,8 +870,8 @@ int upgrade_stat_records(int fd, int stdfd, struct activity *act[],
 			 struct file_header *file_hdr, int previous_format,
 			 struct file_activity *file_actlst, unsigned int vol_id_seq[])
 {
-	int n, rtype;
-	int eosaf = TRUE;
+	int rtype;
+	int eosaf;
 	struct record_header record_hdr;
 
 	fprintf(stderr, _("Statistics: "));
@@ -882,7 +882,7 @@ int upgrade_stat_records(int fd, int stdfd, struct activity *act[],
 
 		if (!eosaf) {
 
-			if ((n = write(stdfd, &record_hdr, RECORD_HEADER_SIZE))
+			if (write(stdfd, &record_hdr, RECORD_HEADER_SIZE)
 				!= RECORD_HEADER_SIZE) {
 				fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 				return -1;
