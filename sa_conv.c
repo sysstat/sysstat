@@ -488,7 +488,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 			return -1;
 		}
 
-		if ((p = get_activity_position(act, fal->id)) >= 0) {
+		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) >= 0) {
 			/* This is a known activity, maybe with an unknown format */
 
 			if (IS_VOLATILE(act[p]->options) && previous_format) {
@@ -597,7 +597,7 @@ int upgrade_activity_section(int stdfd, struct activity *act[],
 	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
 		file_act = *fal;
-		if ((p = get_activity_position(act, fal->id)) >= 0) {
+		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) >= 0) {
 			/* Update activity magic number */
 			file_act.magic = act[p]->magic;
 			/* Also update its size, which may have changed with recent versions */
@@ -693,7 +693,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 			memset(&file_act, 0, FILE_ACTIVITY_SIZE);
 
 			/* Old format: Sequence of volatile activities is in vol_id_seq */
-			p = get_activity_position(act, vol_id_seq[i]);
+			p = get_activity_position(act, vol_id_seq[i], EXIT_IF_NOT_FOUND);
 
 			/* Set only the necessary fields */
 			file_act.id = act[p]->id;
@@ -742,7 +742,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 	fal = file_actlst;
 	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
-		if ((p = get_activity_position(act, fal->id)) < 0) {
+		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) {
 			/* An unknown activity should still be read and written */
 			size = (size_t) fal->size * (size_t) fal->nr * (size_t) fal->nr2;
 			SREALLOC(buffer, void, size);

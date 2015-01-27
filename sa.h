@@ -66,10 +66,10 @@
 
 
 /* Macro used to flag an activity that should be collected */
-#define COLLECT_ACTIVITY(m)	act[get_activity_position(act, m)]->options |= AO_COLLECTED
+#define COLLECT_ACTIVITY(m)	act[get_activity_position(act, m, EXIT_IF_NOT_FOUND)]->options |= AO_COLLECTED
 
 /* Macro used to flag an activity that should be selected */
-#define SELECT_ACTIVITY(m)	act[get_activity_position(act, m)]->options |= AO_SELECTED
+#define SELECT_ACTIVITY(m)	act[get_activity_position(act, m, EXIT_IF_NOT_FOUND)]->options |= AO_SELECTED
 
 
 /*
@@ -208,16 +208,18 @@
 #define MAX_ARGV_NR	32
 
 /* Miscellaneous constants */
-#define USE_SADC	0
-#define USE_SA_FILE	1
-#define NO_TM_START	0
-#define NO_TM_END	0
-#define NO_RESET	0
-#define NON_FATAL	0
-#define FATAL		1
-#define C_SAR		0
-#define C_SADF		1
-#define ALL_ACTIVITIES	~0U
+#define USE_SADC		0
+#define USE_SA_FILE		1
+#define NO_TM_START		0
+#define NO_TM_END		0
+#define NO_RESET		0
+#define NON_FATAL		0
+#define FATAL			1
+#define C_SAR			0
+#define C_SADF			1
+#define ALL_ACTIVITIES		~0U
+#define EXIT_IF_NOT_FOUND	1
+#define RESUME_IF_NOT_FOUND	0
 
 #define SOFT_SIZE	0
 #define HARD_SIZE	1
@@ -866,7 +868,7 @@ extern void
 extern int
 	get_activity_nr(struct activity * [], unsigned int, int);
 extern int
-	get_activity_position(struct activity * [], unsigned int);
+	get_activity_position(struct activity * [], unsigned int, int);
 extern char *
 	get_devname(unsigned int, unsigned int, int);
 extern void

@@ -602,21 +602,19 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 
 /*
  ***************************************************************************
- * Unhandled situation: Panic and exit.
+ * Unhandled situation: Panic and exit. Should never happen.
  *
  * IN:
  * @function	Function name where situation occured.
  * @error_code	Error code.
  ***************************************************************************
  */
-#ifdef DEBUG
 void sysstat_panic(const char *function, int error_code)
 {
-	fprintf(stderr, "sysstat: %s[%d]: Last chance handler...\n",
+	fprintf(stderr, "sysstat: %s[%d]: Internal error...\n",
 		function, error_code);
 	exit(1);
 }
-#endif
 
 /*
  ***************************************************************************

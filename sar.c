@@ -391,7 +391,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 	static __nr_t cpu_nr = -1;
 
 	if (cpu_nr < 0)
-		cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+		cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	/* Interval value in jiffies */
 	g_itv = get_interval(record_hdr[2].uptime, record_hdr[curr].uptime);
@@ -463,7 +463,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	static __nr_t cpu_nr = -1;
 
 	if (cpu_nr < 0)
-		cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+		cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	if (reset_cd) {
 		/*
@@ -700,9 +700,7 @@ void read_sadc_stat_bunch(int curr)
 
 		if (!id_seq[i])
 			continue;
-		if ((p = get_activity_position(act, id_seq[i])) < 0) {
-			PANIC(1);
-		}
+		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 
 		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2)) {
 			print_read_error();
@@ -740,7 +738,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 	int p, reset_cd;
 	unsigned long lines = 0;
 	unsigned char rtype;
-	int davg = 0, next, inc = -2;
+	int davg = 0, next, inc;
 
 	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
 		perror("lseek");
@@ -756,18 +754,13 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 	*cnt  = count;
 
 	/* Assess number of lines printed */
-	if ((p = get_activity_position(act, act_id)) >= 0) {
-		if (act[p]->bitmap) {
-			inc = count_bits(act[p]->bitmap->b_array,
-					 BITMAP_SIZE(act[p]->bitmap->b_size));
-		}
-		else {
-			inc = act[p]->nr;
-		}
+	p = get_activity_position(act, act_id, EXIT_IF_NOT_FOUND);
+	if (act[p]->bitmap) {
+		inc = count_bits(act[p]->bitmap->b_array,
+				 BITMAP_SIZE(act[p]->bitmap->b_size));
 	}
-	if (inc < 0) {
-		/* Should never happen */
-		PANIC(inc);
+	else {
+		inc = act[p]->nr;
 	}
 
 	reset_cd = 1;
@@ -882,7 +875,7 @@ void read_header_data(void)
 			print_read_error();
 		}
 
-		p = get_activity_position(act, file_act.id);
+		p = get_activity_position(act, file_act.id, RESUME_IF_NOT_FOUND);
 
 		if ((p < 0) || (act[p]->fsize != file_act.size)
 			    || !file_act.nr
@@ -936,7 +929,7 @@ void read_stats_from_file(char from_file[])
 
 	/* Print report header */
 	print_report_hdr(flags, &rectime, &file_hdr,
-			 act[get_activity_position(act, A_CPU)]->nr);
+			 act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr);
 
 	/* Read system statistics from file */
 	do {
@@ -993,10 +986,7 @@ void read_stats_from_file(char from_file[])
 			if (!id_seq[i])
 				continue;
 
-			if ((p = get_activity_position(act, id_seq[i])) < 0) {
-				/* Should never happen */
-				PANIC(1);
-			}
+			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 			if (!IS_SELECTED(act[p]->options))
 				continue;
 
@@ -1089,7 +1079,7 @@ void read_stats(void)
 
 	/* Print report header */
 	print_report_hdr(flags, &rectime, &file_hdr,
-			 act[get_activity_position(act, A_CPU)]->nr);
+			 act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr);
 
 	/* Read system statistics sent by the data collector */
 	read_sadc_stat_bunch(0);

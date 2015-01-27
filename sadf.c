@@ -1378,10 +1378,7 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 				if (!id_seq[i])
 					continue;
 
-				if ((p = get_activity_position(act, id_seq[i])) < 0) {
-					/* Should never happen */
-					PANIC(1);
-				}
+				p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 				if (!IS_SELECTED(act[p]->options))
 					continue;
 
@@ -1466,7 +1463,7 @@ void read_stats_from_file(char dfile[])
 			  &file_actlst, id_seq, ignore);
 
 	/* Now pick up number of proc for this file */
-	cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+	cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	if (DISPLAY_HDR_ONLY(flags)) {
 		if (*fmt[f_position]->f_header) {

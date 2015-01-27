@@ -506,7 +506,7 @@ void setup_file_hdr(int fd)
 	 * A_CPU activity is always collected, hence its number of items is
 	 * always counted (in sa_sys_init()).
 	 */
-	file_hdr.sa_last_cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+	file_hdr.sa_last_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	/* Get system name, release number, hostname and machine architecture */
 	uname(&header);
@@ -532,7 +532,7 @@ void setup_file_hdr(int fd)
 		 */
 		if (!id_seq[i])
 			continue;
-		if ((p = get_activity_position(act, id_seq[i])) < 0)
+		if ((p = get_activity_position(act, id_seq[i], RESUME_IF_NOT_FOUND)) < 0)
 			continue;
 
 		if (IS_COLLECTED(act[p]->options)) {
@@ -592,7 +592,7 @@ void write_vol_act_structures(int ofd)
 			file_act.id = file_act.nr = 0;
 		}
 		else {
-			p = get_activity_position(act, vol_id_seq[i]);
+			p = get_activity_position(act, vol_id_seq[i], EXIT_IF_NOT_FOUND);
 
 			/*
 			 * All the fields in file_activity structure are not used.
@@ -692,7 +692,7 @@ void write_stats(int ofd)
 
 		if (!id_seq[i])
 			continue;
-		if ((p = get_activity_position(act, id_seq[i])) < 0)
+		if ((p = get_activity_position(act, id_seq[i], RESUME_IF_NOT_FOUND)) < 0)
 			continue;
 
 		if (IS_COLLECTED(act[p]->options)) {
@@ -910,7 +910,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 				handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
 			}
 
-			p = get_activity_position(act, file_act[i].id);
+			p = get_activity_position(act, file_act[i].id, RESUME_IF_NOT_FOUND);
 
 			if ((p < 0) || (act[p]->fsize != file_act[i].size) ||
 			    (act[p]->magic != file_act[i].magic))
@@ -940,7 +940,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 
 		for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
-			p = get_activity_position(act, file_act[i].id);
+			p = get_activity_position(act, file_act[i].id, EXIT_IF_NOT_FOUND);
 
 			/*
 			 * Force number of items (serial lines, network interfaces...)
@@ -970,7 +970,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			vol_id_seq[j++] = 0;
 		}
 
-		p = get_activity_position(act, A_CPU);
+		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 		if (!IS_COLLECTED(act[p]->options)) {
 			/* A_CPU activity should always exist in file */
 			goto append_error;
@@ -1020,7 +1020,7 @@ append_error:
 void read_stats(void)
 {
 	int i;
-	__nr_t cpu_nr = act[get_activity_position(act, A_CPU)]->nr;
+	__nr_t cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	/*
 	 * Init uptime0. So if /proc/uptime cannot fill it,

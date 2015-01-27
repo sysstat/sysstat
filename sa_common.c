@@ -913,6 +913,7 @@ void free_bitmaps(struct activity *act[])
  * IN:
  * @act		Array of activities.
  * @act_flag	Activity flag to look for.
+ * @stop	TRUE if sysstat should exit when activity is not found.
  *
  * RETURNS:
  * Position of activity in array, or -1 if not found (this may happen when
@@ -920,19 +921,20 @@ void free_bitmaps(struct activity *act[])
  * sysstat).
  ***************************************************************************
  */
-int get_activity_position(struct activity *act[], unsigned int act_flag)
+int get_activity_position(struct activity *act[], unsigned int act_flag, int stop)
 {
 	int i;
 
 	for (i = 0; i < NR_ACT; i++) {
 		if (act[i]->id == act_flag)
-			break;
+			return i;
 	}
 
-	if (i == NR_ACT)
-		return -1;
+	if (stop) {
+		PANIC((int) act_flag);
+	}
 
-	return i;
+	return -1;
 }
 
 /*
@@ -1010,7 +1012,7 @@ void select_default_activity(struct activity *act[])
 {
 	int p;
 
-	p = get_activity_position(act, A_CPU);
+	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 
 	/* Default is CPU activity... */
 	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES)) {
@@ -1162,8 +1164,8 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 		if (!id_seq[i])
 			continue;
 
-		if (((p = get_activity_position(act, id_seq[i])) < 0) ||
-		    (act[p]->nr < 1) || (act[p]->nr2 < 1)) {
+		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+		if ((act[p]->nr < 1) || (act[p]->nr2 < 1)) {
 			PANIC(1);
 		}
 
@@ -1193,7 +1195,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 	for (i = 0; i < act_nr; i++, fal++) {
 
-		if (((p = get_activity_position(act, fal->id)) < 0) ||
+		if (((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) ||
 		    (act[p]->magic != fal->magic)) {
 			/*
 			 * Ignore current activity in file, which is unknown to
@@ -1221,7 +1223,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2, HARD_SIZE);
 		}
 		else {
-			PANIC(act[p]->nr);
+			PANIC(p);
 		}
 	}
 }
@@ -1337,7 +1339,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 
-		if ((p = get_activity_position(act, fal->id)) < 0)
+		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0)
 			/* Unknown activity */
 			continue;
 
@@ -1440,7 +1442,7 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
 {
 	int j, p;
 
-	if ((p = get_activity_position(act, act_id)) < 0)
+	if ((p = get_activity_position(act, act_id, RESUME_IF_NOT_FOUND)) < 0)
 		/* Ignore unknown activity */
 		return -1;
 
@@ -1538,15 +1540,15 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 
 			/* Force '-P ALL -I XALL -r ALL -u ALL' */
 
-			p = get_activity_position(act, A_MEMORY);
+			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->opt_flags |= AO_F_MEM_AMT + AO_F_MEM_DIA +
 					     AO_F_MEM_SWAP + AO_F_MEM_ALL;
 
-			p = get_activity_position(act, A_IRQ);
+			p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
 			set_bitmap(act[p]->bitmap->b_array, ~0,
 				   BITMAP_SIZE(act[p]->bitmap->b_size));
 
-			p = get_activity_position(act, A_CPU);
+			p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 			set_bitmap(act[p]->bitmap->b_array, ~0,
 				   BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->opt_flags = AO_F_CPU_ALL;
@@ -1573,7 +1575,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'H':
-			p = get_activity_position(act, A_HUGE);
+			p = get_activity_position(act, A_HUGE, EXIT_IF_NOT_FOUND);
 			act[p]->options   |= AO_SELECTED;
 			break;
 
@@ -1611,7 +1613,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'r':
-			p = get_activity_position(act, A_MEMORY);
+			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->options   |= AO_SELECTED;
 			act[p]->opt_flags |= AO_F_MEM_AMT;
 			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], K_ALL)) {
@@ -1622,13 +1624,13 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'R':
-			p = get_activity_position(act, A_MEMORY);
+			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->options   |= AO_SELECTED;
 			act[p]->opt_flags |= AO_F_MEM_DIA;
 			break;
 
 		case 'S':
-			p = get_activity_position(act, A_MEMORY);
+			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->options   |= AO_SELECTED;
 			act[p]->opt_flags |= AO_F_MEM_SWAP;
 			break;
@@ -1648,7 +1650,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'u':
-			p = get_activity_position(act, A_CPU);
+			p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 			act[p]->options |= AO_SELECTED;
 			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], K_ALL)) {
 				(*opt)++;
@@ -1866,7 +1868,7 @@ int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
 	char *t;
 
 	/* Select interrupt activity */
-	p = get_activity_position(act, A_IRQ);
+	p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
 	act[p]->options |= AO_SELECTED;
 
 	for (t = strtok(argv[*opt], ","); t; t = strtok(NULL, ",")) {
@@ -1924,7 +1926,7 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 	int i, p;
 	char *t;
 
-	p = get_activity_position(act, A_CPU);
+	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 
 	if (argv[++(*opt)]) {
 
