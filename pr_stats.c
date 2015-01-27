@@ -2391,7 +2391,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 
 	if (dis) {
 		printf("\n%-11s     BUS  idvendor    idprod  maxpower",
-		       (dispavg ? _("Summary") : timestamp[!curr]));
+		       (dispavg ? _("Summary:") : timestamp[!curr]));
 		printf(" %*s", MAX_MANUF_LEN - 1, "manufact");
 		printf(" %*s\n", MAX_PROD_LEN - 1, "product");
 	}
@@ -2404,7 +2404,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 			break;
 
 		printf("%-11s  %6d %9x %9x %9u",
-		       (dispavg ? _("Summary") : timestamp[curr]),
+		       (dispavg ? _("Summary:") : timestamp[curr]),
 		       suc->bus_nr,
 		       suc->vendor_id, suc->product_id,
 		       /* bMaxPower is expressed in 2 mA units */
@@ -2504,7 +2504,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 	if (dis) {
 		printf("\n%-11s  MBfsfree  MBfsused   %%fsused  %%ufsused"
 		       "     Ifree     Iused    %%Iused FILESYSTEM\n",
-		       (dispavg ? _("Summary") : timestamp[!curr]));
+		       (dispavg ? _("Summary:") : timestamp[!curr]));
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -2516,7 +2516,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 
 		printf("%-11s %9.0f %9.0f    %6.2f    %6.2f"
 		       " %9llu %9llu    %6.2f %s\n",
-		       (dispavg ? _("Summary") : timestamp[curr]),
+		       (dispavg ? _("Summary:") : timestamp[curr]),
 		       (double) sfc->f_bfree / 1024 / 1024,
 		       (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
 		       /* f_blocks is not null. But test it anyway ;-) */
