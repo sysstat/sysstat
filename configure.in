@@ -210,9 +210,8 @@ fi
 
 SADC_DIR=$AuxPrefix/lib
 if test -d $AuxPrefix/lib64; then
-   # Look for lm (long mode) flag to know if CPU is 64 bit
-   grep " lm " /proc/cpuinfo >/dev/null 2>&1
-   if test $? = 0; then
+   # Verify that this OS is really 64 bit
+   if test $(getconf LONG_BIT) = 64; then
       SADC_DIR=$AuxPrefix/lib64
    fi
 fi
