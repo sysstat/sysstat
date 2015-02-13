@@ -135,6 +135,10 @@ The following people have contributed to 'sysstat' in one way or another:
 	Cédric Marie <cedric.marie [at] openmailbox.org> sent me
 	several patches to improve pidstat.
 
+	Robert Elliott <Elliott [at] hp.com> contributed the irqtop
+	command, and Lance Shelton <Lance.Shelton [at] sandisk.com>
+	the irqstat command.
+
 I would also thank the following people for their hints or bug reports
 (in alphabetical order):
 
@@ -162,9 +166,11 @@ I would also thank the following people for their hints or bug reports
 	Dr. David Alan Gilbert <dave@tre[...].org>
 	David Gesswein <djg@drs[...].com>
 	Frank Glinka <glinkaf@uni[...].de>
+	John Goodyear <johngood@us[...].com>
 	Gurinder Shergill <gurinder.shergill@hp[...].com>
 	Ladislav Hagara <ladislav.hagara@uno[...].cz>
 	Don Harrop <don@swb[...].com>
+	Vasant Hegde <hegdevasant@lin[...].com>
 	Jürgen Heinemann <heinemann.juergen@hjc[...].de>
 	Kei Ishida <ishida.kei@oss[...].jp>
 	Tatsuo Ito <tito@mir[...].com>

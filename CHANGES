@@ -1,5 +1,32 @@
 Changes:
 
+2015/02/13: Version 11.1.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadc: Added new metrics from /proc/meminfo to memory
+	  statistics.
+	* sadf: Update output formats to take into account new memory
+	  metrics.
+	* [Peter Schiffer]: Fixes from static analysis.
+	* [Peter Schiffer]: Prefer xz compression program when compressing
+	  sa data files [11.0.3].
+	* [Peter Schiffer]: Portable way to detect 64 bit OS in configure
+	  script [11.0.4].
+	* [Vasant Hegde]: sadc: Fix possible race condition in signal
+	  handler code [11.0.3].
+	* Fix description of %util in iostat and sar manual pages [11.0.3].
+	* Fix wrong size used in upgrade_magic_section() function.
+	* Add new sadc_options variable to configure script.
+	* Rename --disable-man-group option to --disable-file-attr. This
+	  configure's option prevents the build process from setting
+	  attributes of files being installed.
+	* Make sure that no crontabs are activated when configure's option
+	  --enable-copy-only is used [11.0.3].
+	* FAQ updated.
+	* RPM spec file updated.
+	* sar manual page updated.
+	* sadc manual page updated [11.0.3].
+	* CREDITS file updated.
+	* Code cleaned [11.0.3].
+
 2014/10/19: Version 11.1.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Robert Elliott]: Added irqtop command. irqtop monitors
 	  differences in /proc/interrupts and /proc/softirqs per CPU,

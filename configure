@@ -4937,11 +4937,19 @@ fi
 
 SADC_DIR=$AuxPrefix/lib
 if test -d $AuxPrefix/lib64; then
-   # Look for lm (long mode) flag to know if CPU is 64 bit
-   grep " lm " /proc/cpuinfo >/dev/null 2>&1
-   if test $? = 0; then
-      SADC_DIR=$AuxPrefix/lib64
-   fi
+    # Verify that this OS is really 64 bit
+    BITS=$(getconf LONG_BIT 2>/dev/null)
+    if test $? = 0; then
+        if test $BITS = 64; then
+            SADC_DIR=$AuxPrefix/lib64
+        fi
+    else
+        # Fallback: look for lm (long mode) flag to know if CPU is 64 bit
+        grep " lm " /proc/cpuinfo >/dev/null 2>&1
+        if test $? = 0; then
+            SADC_DIR=$AuxPrefix/lib64
+        fi
+    fi
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking sadc directory" >&5

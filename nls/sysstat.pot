@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2014-10-19 15:47+0200\n"
+"POT-Creation-Date: 2015-02-13 15:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:94 pidstat.c:87
-#: iostat.c:86
+#: iostat.c:86 nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:94
+#: pidstat.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr ""
+
+#: iostat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+
+#: iostat.c:95
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+
+#: iostat.c:326
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr ""
+
+#: iostat.c:1386 sa_common.c:1592
+#, c-format
+msgid "Invalid type of persistent device name\n"
 msgstr ""
 
 #: nfsiostat-sysstat.c:73 cifsiostat.c:74
@@ -103,7 +133,7 @@ msgid ""
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
 
-#: sadc.c:266
+#: sadc.c:264
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
@@ -113,8 +143,8 @@ msgstr ""
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:761 sadc.c:770 sadc.c:838 ioconf.c:489 rd_stats.c:69
-#: sa_common.c:1252 count.c:118
+#: sadc.c:760 sadc.c:769 sadc.c:837 ioconf.c:490 rd_stats.c:69
+#: sa_common.c:1259 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -137,7 +167,7 @@ msgid ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:598 sar.c:402 pidstat.c:2258
+#: mpstat.c:598 sar.c:404 pidstat.c:2259
 msgid "Average:"
 msgstr ""
 
@@ -167,8 +197,8 @@ msgid ""
 "Options are:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -"
 "q ]\n"
-"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -"
-"y ]\n"
+"[ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
+"[ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -176,44 +206,44 @@ msgid ""
 "[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 msgstr ""
 
-#: sar.c:131
+#: sar.c:132
 #, c-format
 msgid "Main options and reports:\n"
 msgstr ""
 
-#: sar.c:132
+#: sar.c:133
 #, c-format
 msgid "\t-B\tPaging statistics\n"
 msgstr ""
 
-#: sar.c:133
+#: sar.c:134
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr ""
 
-#: sar.c:134
+#: sar.c:135
 #, c-format
 msgid "\t-d\tBlock devices statistics\n"
 msgstr ""
 
-#: sar.c:135
+#: sar.c:136
 #, c-format
 msgid "\t-F\tFilesystems statistics\n"
 msgstr ""
 
-#: sar.c:136
+#: sar.c:137
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr ""
 
-#: sar.c:137
+#: sar.c:138
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
 "\t\tInterrupts statistics\n"
 msgstr ""
 
-#: sar.c:139
+#: sar.c:140
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -227,7 +257,7 @@ msgid ""
 "\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
 
-#: sar.c:148
+#: sar.c:149
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -253,106 +283,108 @@ msgid ""
 "\t\tUDP6\tUDP traffic\t(v6)\n"
 msgstr ""
 
-#: sar.c:169
+#: sar.c:170
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr ""
 
-#: sar.c:170
+#: sar.c:171
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr ""
 
-#: sar.c:171
+#: sar.c:172
 #, c-format
-msgid "\t-r\tMemory utilization statistics\n"
+msgid ""
+"\t-r [ ALL ]\n"
+"\tMemory utilization statistics\n"
 msgstr ""
 
-#: sar.c:172
+#: sar.c:174
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr ""
 
-#: sar.c:173
+#: sar.c:175
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
 "\t\tCPU utilization statistics\n"
 msgstr ""
 
-#: sar.c:175
+#: sar.c:177
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr ""
 
-#: sar.c:176
+#: sar.c:178
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr ""
 
-#: sar.c:177
+#: sar.c:179
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr ""
 
-#: sar.c:178
+#: sar.c:180
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr ""
 
-#: sar.c:236
+#: sar.c:238
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr ""
 
-#: sar.c:856
+#: sar.c:852
 #, c-format
 msgid "Invalid data format\n"
 msgstr ""
 
-#: sar.c:860
+#: sar.c:856
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:889
+#: sar.c:885
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:1075 pidstat.c:219
+#: sar.c:1068 pidstat.c:219
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: sar.c:1365
+#: sar.c:1358
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1371
+#: sar.c:1364
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1507
+#: sar.c:1500
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
-#: sa_conv.c:70
+#: sa_conv.c:69
 #, c-format
 msgid "Cannot convert the format of this file\n"
 msgstr ""
 
-#: sa_conv.c:488
+#: sa_conv.c:487
 #, c-format
 msgid ""
 "\n"
 "Invalid data found. Aborting...\n"
 msgstr ""
 
-#: sa_conv.c:557
+#: sa_conv.c:556
 #, c-format
 msgid ""
 "\n"
@@ -381,72 +413,42 @@ msgid ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: iostat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-
-#: iostat.c:95
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-
-#: iostat.c:328
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr ""
-
-#: iostat.c:1385 sa_common.c:1580
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr ""
-
-#: sa_common.c:1051
+#: sa_common.c:1055
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1061
+#: sa_common.c:1065
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1080
+#: sa_common.c:1084
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:1113
+#: sa_common.c:1117
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1125
+#: sa_common.c:1129
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr ""
 
-#: sa_common.c:1129
+#: sa_common.c:1133
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1255
+#: sa_common.c:1262
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1410
+#: sa_common.c:1417
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
@@ -456,10 +458,10 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: pr_stats.c:2355 pr_stats.c:2368 pr_stats.c:2468 pr_stats.c:2480
-msgid "Summary"
+#: pr_stats.c:2394 pr_stats.c:2407 pr_stats.c:2507 pr_stats.c:2519
+msgid "Summary:"
 msgstr ""
 
-#: pr_stats.c:2406
+#: pr_stats.c:2445
 msgid "Other devices not listed here"
 msgstr ""
