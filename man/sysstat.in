@@ -117,6 +117,14 @@ March 31st: 31 files
 (Determining the number of files in March on a leap year is left as an
 exercise for the reader).
 
+Things are simpler if you use the sa[r]YYYYMMDD name format.
+Apply the same logic as above in this case and you will find that there
+is always
+.B HISTORY
++ 3 files in the
+.IR /var/log/sa
+directory during the majority of a given day.
+
 .TP
 .B SA_DIR
 Directory where the standard system activity daily data and report files
