@@ -175,7 +175,7 @@ If you are using sysstat 11.1.1 and later, you can also use the sadf command
 to convert an old system activity binary datafile (version 9.1.6 and later) to
 current up-to-date format. Use the following syntax:
 
-sadf -c old_datafile > new_datafile
+$ sadf -c old_datafile > new_datafile
 
 Note: Starting with sysstat version 8.1.1 and later, it is possible to
 know which version of sar or sadc has been used to create a data file.
