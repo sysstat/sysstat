@@ -119,7 +119,7 @@ exercise for the reader).
 
 Things are simpler if you use the sa[r]YYYYMMDD name format.
 Apply the same logic as above in this case and you will find that there
-is always
+are always
 .B HISTORY
 + 3 files in the
 .IR /var/log/sa
