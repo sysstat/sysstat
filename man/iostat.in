@@ -208,22 +208,22 @@ The number of write requests merged per second that were queued to the device.
 .RE
 .B r/s
 .RS
-The number (after merges) of read requests completed per second for the device.
+The number (after merges) of read requests completed per second (read IOPS) for the device.
 
 .RE
 .B w/s
 .RS
-The number (after merges) of write requests completed per second for the device.
+The number (after merges) of write requests completed per second (write IOPS) for the device.
 
 .RE
 .B rsec/s (rkB/s, rMB/s)
 .RS
-The number of sectors (kilobytes, megabytes) read from the device per second.
+The number of sectors (kilobytes, megabytes) read from the device per second (read throughput).
 
 .RE
 .B wsec/s (wkB/s, wMB/s)
 .RS
-The number of sectors (kilobytes, megabytes) written to the device per second.
+The number of sectors (kilobytes, megabytes) written to the device per second (write throughput).
 
 .RE
 .B avgrq-sz
