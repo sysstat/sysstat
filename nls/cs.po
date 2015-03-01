@@ -163,12 +163,12 @@ msgstr "Použití: %s [přepínače] [<interval> [<počet>]] [<datový_soubor>]\
 msgid ""
 "Options are:\n"
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Přepínače jsou:\n"
 "[-C] [-d|-j|-p|-x] [-H] [-h] [-T|-t] [-U] [-V]\n"
-"[-P {<procesor>[,…]|ALL}] [-s [<hh:mm:ss>]] [-e [<hh:mm:ss>]]\n"
+"[-P {<procesor>[,…]|ALL}] [-s [<hh:mm[:ss]>]] [-e [<hh:mm[:ss]>]]\n"
 "[-- <přepínače_sar>]\n"
 
 #: mpstat.c:93
@@ -201,7 +201,7 @@ msgid ""
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
-"[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
 "Přepínače jsou:\n"
 "[-A] [-b] [-B] [-C] [-d] [-F] [-H] [-h] [-p] [-q] [-R]\n"
@@ -210,7 +210,7 @@ msgstr ""
 "[-m {<klíčové_slovo>[,…]|ALL}] [-n {<klíčové_slovo>[,…]|ALL}]\n"
 "[-j {ID|LABEL|PATH|UUID|…}]\n"
 "[-f [<název_souboru>]|-o [<název_souboru>]|-[0-9]+]\n"
-"[-i <interval>] [-s [<hh:mm:ss>]] [-e [<hh:mm:ss>]]\n"
+"[-i <interval>] [-s [<hh:mm[:ss]>]] [-e [<hh:mm[:ss]>]]\n"
 
 #: sar.c:131
 #, c-format

@@ -162,12 +162,12 @@ msgstr "用法： %s [ 選項 ] [ <時間間隔> [ <計算> ] ] [ <數據檔> ]\
 msgid ""
 "Options are:\n"
 "[ -d | -D | -H | -p | -x ] [ -h ] [ -t ] [ -V ]\n"
-"[ -P { <cpu> | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -P { <cpu> | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options...> ]\n"
 msgstr ""
 "選項是：\n"
 "[ -d | -D | -H | -p | -x ] [ -h ] [ -t ] [ -V ]\n"
-"[ -P { <cpu> | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss>·] ]\n"
+"[ -P { <cpu> | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]>·] ]\n"
 "[·--·<sar_options...>·]\n"
 
 #: sadf.c:526
@@ -199,7 +199,7 @@ msgid ""
 "[ -I { <int> | SUM | ALL | XALL } ] [ -P { <cpu> | ALL } ]\n"
 "[ -n { DEV | EDEV | NFS | NFSD | SOCK | ALL } ]\n"
 "[ -o [ <filename> ] | -f [ <filename> ] ]\n"
-"[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
 "選項是：\n"
 "[ -A ] [ -b ] [ -B ] [ -C ] [ -d ] [ -p ] [ -q ] [ -r ] [ -R ]\n"
@@ -207,7 +207,7 @@ msgstr ""
 "[ -I { <int> | SUM | ALL | XALL } ] [ -P { <cpu> | ALL } ]\n"
 "[ -n { DEV | EDEV | NFS | NFSD | SOCK | ALL } ]\n"
 "[ -o [ <檔名> ] | -f [ <檔名> ] ]\n"
-"[ -i <時間間隔> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <時間間隔> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 
 #: sar.c:143
 #, c-format
