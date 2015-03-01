@@ -131,12 +131,12 @@ msgstr "Käyttö: %s [ valitsimet ] [ <aikaväli> [ <lukumäärä> ] ] [ <datati
 msgid ""
 "Options are:\n"
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Valitsimet ovat:\n"
 "[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <suoritin> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -P { <suoritin> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_valitsimet> ]\n"
 
 #: mpstat.c:93
@@ -169,7 +169,7 @@ msgid ""
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
-"[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
 "Valitsimet ovat:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]\n"
@@ -178,7 +178,7 @@ msgstr ""
 "[ -m { <avainsana> [,...] | ALL } ] [ -n { <avainsana> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <tiedostonimi> ] | -o [ <tiedostonimi> ] | -[0-9]+ ]\n"
-"[ -i <aikaväli> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <aikaväli> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 
 #: sar.c:131
 #, c-format
@@ -526,7 +526,7 @@ msgstr "Muut laitteet, joita ei ole luetteloitu tässä"
 #~ msgid "datafile"
 #~ msgstr "datatiedosto"
 
-#~ msgid "hh:mm:ss"
+#~ msgid "hh:mm[:ss]"
 #~ msgstr "hh.mm.ss"
 
 #~ msgid "sar_options..."
