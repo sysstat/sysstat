@@ -371,6 +371,20 @@ install_all: install_base cron/crontab sysstat \
 ifneq ($(IGNORE_FILE_ATTRIBUTES),y)
 	$(CHOWN) $(CRON_OWNER) $(DESTDIR)$(SA_DIR)
 endif
+ifdef SYSTEMD_UNIT_DIR
+	mkdir -p $(DESTDIR)$(SYSTEMD_UNIT_DIR)
+else
+	if [ -d /etc/cron.d ]; then \
+		mkdir -p $(DESTDIR)/etc/cron.d; \
+	elif [ -d /etc/cron.hourly -a -d /etc/cron.daily ]; then \
+		mkdir -p $(DESTDIR)/etc/cron.hourly $(DESTDIR)/etc/cron.daily; \
+	fi
+	if [ -d $(INIT_DIR) ]; then \
+		mkdir -p $(DESTDIR)$(INIT_DIR); \
+	elif [ -d $(RC_DIR) ]; then \
+		mkdir -p $(DESTDIR)$(RC_DIR); \
+	fi
+endif
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 		if [ -d $(DESTDIR)/etc/cron.d ]; then \
 			$(INSTALL_DATA) cron/sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \
@@ -400,6 +414,9 @@ endif
 		if [ -x $(CHKCONFIG) ]; then \
 			cd $(DESTDIR)$(INIT_DIR) && $(CHKCONFIG) --add sysstat; \
 		else \
+			[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
+			[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
+			[ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
 			cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
 			cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
 			cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
