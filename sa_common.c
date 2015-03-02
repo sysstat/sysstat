@@ -314,7 +314,7 @@ int datecmp(struct tm *rectime, struct tstamp *tse)
 
 /*
  ***************************************************************************
- * Parse a timestamp entered on the command line (hh:mm:ss) and decode it.
+ * Parse a timestamp entered on the command line (hh:mm[:ss]) and decode it.
  *
  * IN:
  * @argv		Arguments list.
@@ -333,10 +333,23 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 {
 	char timestamp[9];
 
-	if ((argv[++(*opt)]) && (strlen(argv[*opt]) == 8)) {
-		strncpy(timestamp, argv[(*opt)++], 8);
-	}
-	else {
+	if (argv[++(*opt)]) {
+		switch (strlen(argv[*opt])) {
+
+			case 5:
+				strncpy(timestamp, argv[(*opt)++], 5);
+				strcat(timestamp,":00");
+				break;
+
+			case 8:
+				strncpy(timestamp, argv[(*opt)++], 8);
+				break;
+
+			default:
+				strncpy(timestamp, def_timestamp, 8);
+				break;
+		}
+	} else {
 		strncpy(timestamp, def_timestamp, 8);
 	}
 	timestamp[8] = '\0';

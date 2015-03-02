@@ -5,9 +5,9 @@ sadf \- Display data collected by sar in multiple formats.
 .B sadf [ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
-.I hh:mm:ss
+.I hh:mm[:ss]
 .B ] ] [ -e [
-.I hh:mm:ss
+.I hh:mm[:ss]
 .B ] ] [ --
 .I sar_options
 .B ] [
@@ -116,7 +116,7 @@ by
 .I sar_options
 command line options.
 Note that timestamp output can be controlled by options -T, -t and -U.
-.IP "-e [ hh:mm:ss ]"
+.IP "-e [ hh:mm[:ss] ]"
 Set the ending time of the report, given in local time. The default ending
 time is 18:00:00. Hours must be given in 24-hour format.
 .IP -H
@@ -145,7 +145,7 @@ hostname of the host where the file was created, the interval value
 the device name (or - if not applicable),
 the field name and its value.
 Note that timestamp output can be controlled by options -T, -t and -U.
-.IP "-s [ hh:mm:ss ]"
+.IP "-s [ hh:mm[:ss] ]"
 Set the starting time of the data (given in local time), causing the
 .B sadf
 command to extract records time-tagged at, or following, the time

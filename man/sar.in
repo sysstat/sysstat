@@ -24,9 +24,9 @@ sar \- Collect, report, or save system activity information.
 .B [ -i
 .I interval
 .B ] [ -s [
-.I hh:mm:ss
+.I hh:mm[:ss]
 .B ] ] [ -e [
-.I hh:mm:ss
+.I hh:mm[:ss]
 .B ] ] [
 .I interval
 .B [
@@ -343,7 +343,7 @@ devices serving requests in parallel, such as RAID arrays and modern SSDs,
 this number does not reflect their performance limits.
 .RE
 .RE
-.IP "-e [ hh:mm:ss ]"
+.IP "-e [ hh:mm[:ss] ]"
 Set the ending time of the report. The default ending time is
 18:00:00. Hours must be given in 24-hour format.
 This option can be used when data are read from
@@ -1962,7 +1962,7 @@ saves I/O).
 Percentage of cached swap memory in relation to the amount of used swap space.
 .RE
 .RE
-.IP "-s [ hh:mm:ss ]"
+.IP "-s [ hh:mm[:ss] ]"
 Set the starting time of the data, causing the
 .B sar
 command to extract records time-tagged at, or following, the time
