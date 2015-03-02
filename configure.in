@@ -30,18 +30,18 @@ AC_CHECK_PROG(INSTALL, install, install)
 AC_CHECK_PROG(MSGFMT, msgfmt, msgfmt)
 AC_CHECK_PROG(XGETTEXT, xgettext, xgettext)
 AC_CHECK_PROG(MSGMERGE, msgmerge, msgmerge)
-AC_CHECK_PROGS(ZIP, xz bzip2 gzip, gzip, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
+AC_CHECK_PROGS(ZIP, xz bzip2 gzip, gzip)
 INSTALL_DATA="\${INSTALL} -m 644"
 AC_SUBST(INSTALL_DATA)
 INSTALL_BIN="\${INSTALL} -m 755"
 AC_SUBST(INSTALL_BIN)
 
-AC_PATH_PROGS(PATH_CP, cp, cp, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
-AC_PATH_PROGS(PATH_CHKCONFIG, chkconfig, chkconfig, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
+AC_PATH_PROG(PATH_CP, cp)
+AC_PATH_PROG(PATH_CHKCONFIG, chkconfig)
 
 # Check for systemd
 AC_CHECK_PROG(PKG_CONFIG, pkg-config, pkg-config)
-AC_PATH_PROGS(SYSTEMCTL, systemctl, systemctl, /bin /etc /sbin /usr/bin /usr/etc /usr/sbin /usr/ucb /usr/local/bin /usr/local/etc /usr/local/sbin)
+AC_PATH_PROG(SYSTEMCTL, systemctl)
 AC_ARG_WITH([systemdsystemunitdir],
     AS_HELP_STRING([--with-systemdsystemunitdir=DIR],[Directory for systemd service files]),
     [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
