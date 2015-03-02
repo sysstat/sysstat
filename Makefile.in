@@ -95,7 +95,7 @@ ifeq ($(NLS),y)
 REQUIRE_NLS = -DUSE_NLS -DPACKAGE=\"$(PACKAGE)\" -DLOCALEDIR=\"$(NLS_DIR)\"
 endif
 ifdef REQUIRE_NLS
-   DFLAGS += $(REQUIRE_NLS)
+	DFLAGS += $(REQUIRE_NLS)
 endif
 INSTALL_CRON = @INSTALL_CRON@
 CRON_OWNER = @CRON_OWNER@
@@ -372,54 +372,54 @@ ifneq ($(IGNORE_FILE_ATTRIBUTES),y)
 	$(CHOWN) $(CRON_OWNER) $(DESTDIR)$(SA_DIR)
 endif
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
-	   if [ -d $(DESTDIR)/etc/cron.d ]; then \
-	      $(INSTALL_DATA) cron/sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \
-	   elif [ -d $(DESTDIR)/etc/cron.hourly -a -d $(DESTDIR)/etc/cron.daily ]; then \
-	      $(INSTALL_BIN) cron/sysstat.cron.hourly $(DESTDIR)/etc/cron.hourly/sysstat; \
-	      $(INSTALL_BIN) cron/sysstat.cron.daily $(DESTDIR)/etc/cron.daily/sysstat; \
-	   fi \
+		if [ -d $(DESTDIR)/etc/cron.d ]; then \
+			$(INSTALL_DATA) cron/sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \
+		elif [ -d $(DESTDIR)/etc/cron.hourly -a -d $(DESTDIR)/etc/cron.daily ]; then \
+			$(INSTALL_BIN) cron/sysstat.cron.hourly $(DESTDIR)/etc/cron.hourly/sysstat; \
+			$(INSTALL_BIN) cron/sysstat.cron.daily $(DESTDIR)/etc/cron.daily/sysstat; \
+		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" -a ! -d $(DESTDIR)/etc/cron.d ]; then \
-	   if [ ! -d $(DESTDIR)/etc/cron.hourly -o ! -d $(DESTDIR)/etc/cron.daily ]; then \
-	      su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).save"; \
-	      $(CP) -a /tmp/crontab-$(CRON_OWNER).save ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.save; \
-	      echo "USER'S PREVIOUS CRONTAB SAVED IN CURRENT DIRECTORY (USING .save SUFFIX)."; \
-	      su $(CRON_OWNER) -c "crontab cron/crontab"; \
-	   fi \
+		if [ ! -d $(DESTDIR)/etc/cron.hourly -o ! -d $(DESTDIR)/etc/cron.daily ]; then \
+			su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).save"; \
+			$(CP) -a /tmp/crontab-$(CRON_OWNER).save ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.save; \
+			echo "USER'S PREVIOUS CRONTAB SAVED IN CURRENT DIRECTORY (USING .save SUFFIX)."; \
+			su $(CRON_OWNER) -c "crontab cron/crontab"; \
+		fi \
 	fi
 endif
 	if [ -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
-	    $(INSTALL_DATA) sysstat.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
-	    $(INSTALL_DATA) cron/sysstat-collect.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
-	    $(INSTALL_DATA) cron/sysstat-collect.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
-	    $(INSTALL_DATA) cron/sysstat-summary.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
-	    $(INSTALL_DATA) cron/sysstat-summary.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) sysstat.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) cron/sysstat-collect.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) cron/sysstat-collect.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) cron/sysstat-summary.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) cron/sysstat-summary.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	elif [ -d $(DESTDIR)$(INIT_DIR) ]; then \
-	   $(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
-	   if [ -x $(CHKCONFIG) ]; then \
-	      cd $(DESTDIR)$(INIT_DIR) && $(CHKCONFIG) --add sysstat; \
-	   else \
-	      cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
-	      cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
-	      cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
-	   fi \
+		$(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
+		if [ -x $(CHKCONFIG) ]; then \
+			cd $(DESTDIR)$(INIT_DIR) && $(CHKCONFIG) --add sysstat; \
+		else \
+			cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+			cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+			cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+		fi \
 	elif [ -d $(DESTDIR)$(RC_DIR) ]; then \
-	   $(INSTALL_BIN) sysstat $(DESTDIR)$(RC_DIR)/rc.sysstat; \
-	   if [ -x $(CHKCONFIG) ]; then \
-	      cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add sysstat; \
-	   else \
-	      [ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
-	      [ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
-	      [ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
-	      cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
-	      cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
-	      cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
-	   fi \
+		$(INSTALL_BIN) sysstat $(DESTDIR)$(RC_DIR)/rc.sysstat; \
+		if [ -x $(CHKCONFIG) ]; then \
+			cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add sysstat; \
+		else \
+			[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
+			[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
+			[ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
+			cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+			cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+			cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
 	if [ -x $(SYSTEMCTL) ]; then \
-	    $(SYSTEMCTL) enable sysstat.service; \
+		$(SYSTEMCTL) enable sysstat.service; \
 	fi
 endif
 
@@ -470,8 +470,8 @@ endif
 	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(SA_LIB_DIR)
 	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(SA_DIR)/[0-9]?????
 	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(SA_DIR)
-#       No need to keep sysstat scripts, config files and links since
-#       the binaries have been deleted.
+#		No need to keep sysstat scripts, config files and links since
+#		the binaries have been deleted.
 	rm -f $(DESTDIR)$(INIT_DIR)/sysstat
 	rm -f $(DESTDIR)$(RC_DIR)/rc.sysstat
 	rm -f $(DESTDIR)$(SYSCONFIG_DIR)/sysstat
@@ -479,14 +479,14 @@ endif
 	rm -f $(DESTDIR)$(RC2_DIR)/S??sysstat
 	rm -f $(DESTDIR)$(RC3_DIR)/S??sysstat
 	rm -f $(DESTDIR)$(RC5_DIR)/S??sysstat
-#       Delete possible kill entries installed by chkconfig
+#		Delete possible kill entries installed by chkconfig
 	rm -f $(DESTDIR)$(RC0_DIR)/K??sysstat
 	rm -f $(DESTDIR)$(RC1_DIR)/K??sysstat
 	rm -f $(DESTDIR)$(RC4_DIR)/K??sysstat
 	rm -f $(DESTDIR)$(RC6_DIR)/K??sysstat
-#       Vixie cron entries also can be safely deleted here
+#		Vixie cron entries also can be safely deleted here
 	rm -f $(DESTDIR)/etc/cron.d/sysstat
-#       Id. for Slackware cron entries
+#		Id. for Slackware cron entries
 	rm -f $(DESTDIR)/etc/cron.hourly/sysstat
 	rm -f $(DESTDIR)/etc/cron.daily/sysstat
 ifeq ($(INSTALL_DOC),y)
@@ -498,21 +498,21 @@ endif
 uninstall_all: uninstall_base
 ifeq ($(COPY_ONLY),n)
 	if [ ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
-	   -su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).old" ; \
-	   -$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old ; \
-	   @echo "USER'S CRONTAB SAVED IN CURRENT DIRECTORY (USING .old SUFFIX)." ; \
-	   -su $(CRON_OWNER) -c "crontab -r" ; \
+		-su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).old" ; \
+		-$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old ; \
+		@echo "USER'S CRONTAB SAVED IN CURRENT DIRECTORY (USING .old SUFFIX)." ; \
+		-su $(CRON_OWNER) -c "crontab -r" ; \
 	fi
 	if [ -x $(SYSTEMCTL) ]; then \
-	    $(SYSTEMCTL) disable sysstat.service; \
+		$(SYSTEMCTL) disable sysstat.service; \
 	fi
 endif
 	if [ -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
-	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat.service; \
-	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.service; \
-	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.timer; \
-	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.service; \
-	    rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.timer; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat.service; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.service; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.timer; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.service; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.timer; \
 	fi
 
 ifeq ($(INSTALL_CRON),y)
