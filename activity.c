@@ -1226,6 +1226,37 @@ struct activity filesystem_act = {
 	.bitmap		= NULL
 };
 
+/* HBA usage activity */
+struct activity hba_act = {
+	.id		= A_HBA,
+	.options	= AO_NULL,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_XDISK,
+#ifdef SOURCE_SADC
+	.f_count_index	= 10,	/* wrap_get_hba_nr() */
+	.f_count2	= NULL,
+	.f_read		= wrap_read_hba,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_hba_stats,
+	.f_print_avg	= print_avg_hba_stats,
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_hba_stats,
+	.f_xml_print	= xml_print_filesystem_stats,
+	.f_json_print	= json_print_filesystem_stats,
+	.hdr_line	= "HBA;HBAtxwords;HBArxwords",
+	.name		= "A_HBA",
+#endif
+	.nr		= -1,
+	.nr2		= 1,
+	.fsize		= STATS_HBA_SIZE,
+	.msize		= STATS_HBA_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
 #ifdef SOURCE_SADC
 /*
  * Array of functions used to count number of items.
@@ -1240,7 +1271,8 @@ __nr_t (*f_count[NR_F_COUNT]) (struct activity *) = {
 	wrap_get_temp_nr,
 	wrap_get_in_nr,
 	wrap_get_usb_nr,
-	wrap_get_filesystem_nr
+	wrap_get_filesystem_nr,
+	wrap_get_hba_nr
 };
 #endif
 
@@ -1289,5 +1321,6 @@ struct activity *act[NR_ACT] = {
 	&pwr_wghfreq_act,
 	&pwr_usb_act,		/* AO_CLOSE_MARKUP */
 	/* </power-management> */
-	&filesystem_act
+	&filesystem_act,
+	&hba_act
 };

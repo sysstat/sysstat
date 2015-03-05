@@ -2104,5 +2104,59 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 	fclose(fp);
 }
 
+/*
+ ***************************************************************************
+ * Read HBA statistics.
+ *
+ * IN:
+ * @st_hba		Structure where stats will be saved.
+ * @nbr			Total number of HBAs.
+ *
+ * OUT:
+ * @st_hba	Structure with statistics.
+ ***************************************************************************
+ */
+void read_hba(struct stats_hba *st_hba, int nbr)
+{
+	DIR *dir;
+	FILE *fp;
+	struct dirent *drd;
+	struct stats_hba *st_hba_i;
+	int hba = 0;
+	char word_stats[MAX_FS_LEN];
+	char line[256];
+	unsigned int tx_frames;
+	unsigned int rx_frames;
+
+	/* Each HBA will have its own hostX entry within SYSFS_HBA */
+	if ((dir = opendir(SYSFS_HBA)) == NULL)
+		return;
+	
+	while ((drd = readdir(dir)) != NULL) {
+		if(strncmp(drd->d_name,"host",4)==0) {
+			sprintf(word_stats,"%s/%s/statistics/tx_frames",SYSFS_HBA,drd->d_name);
+			if ((fp = fopen(word_stats, "r"))) {
+				if(fgets(line,sizeof(line),fp))	
+					sscanf(line, "%x",&tx_frames);
+				fclose(fp);
+			}
+
+			sprintf(word_stats,"%s/%s/statistics/rx_frames",SYSFS_HBA,drd->d_name);
+			if ((fp = fopen(word_stats, "r"))) {
+				if(fgets(line,sizeof(line),fp))	
+					sscanf(line, "%x",&rx_frames);
+				fclose(fp);
+			}
+
+			st_hba_i = st_hba + hba++;
+			st_hba_i->f_txframes=tx_frames;
+			st_hba_i->f_rxframes=rx_frames;
+			strcpy(st_hba_i->hba_name, drd->d_name);
+		}
+
+	}
+	closedir(dir);
+}
+
 /*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/
 #endif /* SOURCE_SADC */

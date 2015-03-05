@@ -20,10 +20,10 @@
  */
 
 /* Number of activities */
-#define NR_ACT	37
+#define NR_ACT	38
 
 /* Number of functions used to count items */
-#define NR_F_COUNT	10
+#define NR_F_COUNT	11
 
 /* Activities */
 #define A_CPU		1
@@ -63,6 +63,7 @@
 #define A_PWR_WGHFREQ	35
 #define A_PWR_USB	36
 #define A_FILESYSTEM	37
+#define A_HBA		38
 
 
 /* Macro used to flag an activity that should be collected */
@@ -756,6 +757,8 @@ extern __nr_t
 	wrap_get_usb_nr(struct activity *);
 extern __nr_t
 	wrap_get_filesystem_nr(struct activity *);
+extern __nr_t
+	wrap_get_hba_nr(struct activity *);
 
 /* Functions used to read activities statistics */
 extern __read_funct_t
@@ -832,6 +835,8 @@ extern __read_funct_t
 	wrap_read_bus_usb_dev(struct activity *);
 extern __read_funct_t
 	wrap_read_filesystem(struct activity *);
+extern __read_funct_t
+	wrap_read_hba(struct activity *);
 
 /* Other functions */
 extern void

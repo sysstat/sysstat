@@ -2917,3 +2917,20 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		       NULL);
 	}
 }
+/*
+ ***************************************************************************
+ * Display HBA statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_hba_stats(struct activity *a, int isdb, char *pre,
+					int curr, unsigned long long itv)
+{
+	printf("printing filesystem stats1\n");
+}

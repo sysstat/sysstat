@@ -2582,3 +2582,71 @@ __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int cur
 {
 	stub_print_filesystem_stats(a, 2, TRUE);
 }
+/*
+ ***************************************************************************
+ * Display HBA statistics. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+__print_funct_t stub_print_hba_stats(struct activity *a, int curr, int dispavg)
+{
+	int i;
+	struct stats_hba *sfc;
+
+
+	if (dis) {
+		printf("\n%-11s        HBA        txframes        rxframes\n",
+		       (dispavg ? _("Summary:") : timestamp[curr]));
+	}
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_hba *) ((char *) a->buf[curr] + i * a->msize);
+
+		printf("%-11s %10s %15.0f %15.0f\n",
+		       (dispavg ? _("Summary:") : timestamp[curr]),
+		       sfc->hba_name,
+		       (double) sfc->f_txframes,
+		       (double) sfc->f_rxframes);
+	}
+	printf("\n");
+}
+
+
+/*
+ ***************************************************************************
+ * Display HBA statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_hba_stats(struct activity *a, int prev, int curr,
+				       unsigned long long itv)
+{
+	stub_print_hba_stats(a, curr, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display average HBA statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_hba_stats(struct activity *a, int prev, int curr,
+					   unsigned long long itv)
+{
+	stub_print_hba_stats(a, 2, TRUE);
+}

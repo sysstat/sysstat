@@ -1567,6 +1567,10 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			act[p]->opt_flags = AO_F_CPU_ALL;
 			break;
 
+		case 'a':
+			SELECT_ACTIVITY(A_HBA);
+			break;
+
 		case 'B':
 			SELECT_ACTIVITY(A_PAGE);
 			break;
