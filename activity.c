@@ -1243,7 +1243,7 @@ struct activity hba_act = {
 #endif
 #ifdef SOURCE_SADF
 	.f_render	= render_hba_stats,
-	.f_xml_print	= xml_print_filesystem_stats, /* TODO */
+	.f_xml_print	= xml_print_hba_stats,
 	.f_json_print	= json_print_filesystem_stats, /* TODO */
 	.hdr_line	= "HBA;HBAtxframes;HBArxframes",
 	.name		= "A_HBA",
