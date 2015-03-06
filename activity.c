@@ -1231,7 +1231,7 @@ struct activity hba_act = {
 	.id		= A_HBA,
 	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
-	.group		= G_XDISK,
+	.group		= G_DISK,
 #ifdef SOURCE_SADC
 	.f_count_index	= 10,	/* wrap_get_hba_nr() */
 	.f_count2	= NULL,
@@ -1243,8 +1243,8 @@ struct activity hba_act = {
 #endif
 #ifdef SOURCE_SADF
 	.f_render	= render_hba_stats,
-	.f_xml_print	= xml_print_filesystem_stats,
-	.f_json_print	= json_print_filesystem_stats,
+	.f_xml_print	= xml_print_filesystem_stats, /* TODO */
+	.f_json_print	= json_print_filesystem_stats, /* TODO */
 	.hdr_line	= "HBA;HBAtxwords;HBArxwords",
 	.name		= "A_HBA",
 #endif

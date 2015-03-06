@@ -169,7 +169,12 @@ This is equivalent to specifying
 .BR "-abBdFHqRSuvwWy -I SUM -I XALL -m ALL -n ALL -r ALL -u ALL -P ALL".
 
 .IP -a
-Report fibre channel HBA statistics.
+Report fibre channel HBA statistics.  Note that HBA statistics depend on
+.B sadc
+option
+.B "-S DISK"
+to be collected.
+
 The following values are displayed:
 
 .B txframes
