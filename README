@@ -1,3 +1,6 @@
+
+** See wiki at https://github.com/stevekay/sysstat/wiki for example of "sar -a" to display HBA stats. **
+
 sysstat: System performance tools for the Linux operating system...
 --
 (C) 1999-2014 Sebastien GODARD (sysstat <at> orange.fr)
