@@ -2163,3 +2163,43 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 	printf("\n");
 	xprintf0(--tab, "]");
 }
+
+/*
+ ***************************************************************************
+ * Display HBA statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t json_print_hba_stats(struct activity *a, int curr, int tab,
+					    unsigned long long itv)
+{
+	int i;
+	struct stats_hba *sfc;
+	int sep = FALSE;
+
+	xprintf(tab++, "\"hbas\": [");
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_hba *) ((char *) a->buf[curr]  + i * a->msize);
+
+		if (sep) {
+			printf(",\n");
+		}
+		sep = TRUE;
+
+		xprintf0(tab, "{\"hba\": \"%s\", "
+			 "\"txframes\": %.0f, "
+			 "\"rxframes\": %.0f, ",
+			 sfc->hba_name,
+			 (double) sfc->f_txframes,
+			 (double) sfc->f_rxframes);
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+}
