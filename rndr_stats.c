@@ -2932,5 +2932,26 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 __print_funct_t render_hba_stats(struct activity *a, int isdb, char *pre,
 					int curr, unsigned long long itv)
 {
-	printf("printing filesystem stats1\n");
+	int i;
+	struct stats_hba *sfc;
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_hba *) ((char *) a->buf[curr] + i * a->msize);
+
+		render(isdb, pre, PT_USERND ,
+		       "%s\tHBA",
+		       "%s",
+		       cons(sv, sfc->hba_name, NOVAL),
+		       NOVAL,
+		       (unsigned long) sfc->f_txframes,
+			NULL);
+
+		render(isdb, pre, PT_USERND | PT_NEWLIN,
+		       "%s\trxframes",
+		       NULL,
+		       cons(sv, sfc->hba_name, NOVAL),
+		       NOVAL,
+		       (unsigned long) sfc->f_rxframes,
+		       NULL);
+	}
 }
