@@ -2128,11 +2128,9 @@ void read_hba(struct stats_hba *st_hba, int nbr)
 	unsigned int tx_frames;
 	unsigned int rx_frames;
 
-	printf("DEBUG mode: using %s for HBAs\n",SYSFS_HBA);
-
-	/* Each HBA will have its own hostX entry within SYSFS_HBA */
+	/* Each HBA, if present, will have its own hostX entry within SYSFS_HBA */
 	if ((dir = opendir(SYSFS_HBA)) == NULL)
-		return;
+		return; /* No HBAs */
 	
 	while ((drd = readdir(dir)) != NULL) {
 		if(strncmp(drd->d_name,"host",4)==0) {
