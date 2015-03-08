@@ -420,7 +420,7 @@ endif
 	elif [ -d $(DESTDIR)$(RC_DIR) ]; then \
 		$(INSTALL_BIN) sysstat $(DESTDIR)$(RC_DIR)/rc.sysstat; \
 		if [ -x $(CHKCONFIG) ]; then \
-			cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add sysstat; \
+			cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add rc.sysstat; \
 		else \
 			[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
 			[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
@@ -490,13 +490,20 @@ endif
 	rm -f $(DESTDIR)$(SYSCONFIG_DIR)/sysstat
 	rm -f $(DESTDIR)$(SYSCONFIG_DIR)/sysstat.ioconf
 	rm -f $(DESTDIR)$(RC2_DIR)/S??sysstat
+	rm -f $(DESTDIR)$(RC2_DIR)/S??rc.sysstat
 	rm -f $(DESTDIR)$(RC3_DIR)/S??sysstat
+	rm -f $(DESTDIR)$(RC3_DIR)/S??rc.sysstat
 	rm -f $(DESTDIR)$(RC5_DIR)/S??sysstat
+	rm -f $(DESTDIR)$(RC5_DIR)/S??rc.sysstat
 #		Delete possible kill entries installed by chkconfig
 	rm -f $(DESTDIR)$(RC0_DIR)/K??sysstat
+	rm -f $(DESTDIR)$(RC0_DIR)/K??rc.sysstat
 	rm -f $(DESTDIR)$(RC1_DIR)/K??sysstat
+	rm -f $(DESTDIR)$(RC1_DIR)/K??rc.sysstat
 	rm -f $(DESTDIR)$(RC4_DIR)/K??sysstat
+	rm -f $(DESTDIR)$(RC4_DIR)/K??rc.sysstat
 	rm -f $(DESTDIR)$(RC6_DIR)/K??sysstat
+	rm -f $(DESTDIR)$(RC6_DIR)/K??rc.sysstat
 #		Vixie cron entries also can be safely deleted here
 	rm -f $(DESTDIR)/etc/cron.d/sysstat
 #		Id. for Slackware cron entries
