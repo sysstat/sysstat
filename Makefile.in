@@ -390,7 +390,7 @@ endif
 		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
-	if [ ( -z "$(SYSTEMD_UNIT_DIR)" -o ! -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) ) -a ! -d $(DESTDIR)/etc/cron.d ]; then \
+	if [ \( -z "$(SYSTEMD_UNIT_DIR)" -o ! -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) \) -a ! -d $(DESTDIR)/etc/cron.d ]; then \
 		if [ ! -d $(DESTDIR)/etc/cron.hourly -o ! -d $(DESTDIR)/etc/cron.daily ]; then \
 			su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).save"; \
 			$(CP) -a /tmp/crontab-$(CRON_OWNER).save ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.save; \
