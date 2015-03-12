@@ -218,8 +218,9 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc;
-	int j = 0, offset, cpu;
+	int j = 0, offset, cpu, colwidth;
 	struct stats_irqcpu *p, *q, *p0, *q0;
+	char fmtspec[MAX_IRQ_LEN];
 
 	/*
 	* Check if number of interrupts has changed.
@@ -305,7 +306,14 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 				if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
 					p = st_ic[curr] + (cpu - 1) * ic_nr + j;
 					q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
-					printf(" %10.2f",
+					/* Width is IRQ name + 2 for the /s */
+					colwidth=strlen(p0->irq_name)+2;
+					/* normal space for printing a number is 14 chars 
+					 * (space + 10 digits + period + mantissa) */
+					if(colwidth<14)
+						colwidth=10;
+					sprintf(fmtspec," %%%d.2f",colwidth);
+					printf(fmtspec,
 					       S_VALUE(q->interrupt, p->interrupt, itv));
 				}
 				else
