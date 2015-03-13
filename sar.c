@@ -107,9 +107,9 @@ void usage(char *progname)
 {
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-			  "[ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
-			  "[ -w ] [ -y ]\n"
+			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNTS ] ] [ -H ] [ -h ]\n"
+			  "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+			  "[ -v ] [ -W ] [ -w ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -133,7 +133,8 @@ void display_help(char *progname)
 	printf(_("\t-B\tPaging statistics\n"));
 	printf(_("\t-b\tI/O and transfer rate statistics\n"));
 	printf(_("\t-d\tBlock devices statistics\n"));
-	printf(_("\t-F\tFilesystems statistics\n"));
+	printf(_("\t-F [ MOUNTS ]\n"));
+	printf(_("\t\tFilesystems statistics\n"));
 	printf(_("\t-H\tHugepages utilization statistics\n"));
 	printf(_("\t-I { <int> | SUM | ALL | XALL }\n"
 		 "\t\tInterrupts statistics\n"));
@@ -170,7 +171,7 @@ void display_help(char *progname)
 	printf(_("\t-q\tQueue length and load average statistics\n"));
 	printf(_("\t-R\tMemory statistics\n"));
 	printf(_("\t-r [ ALL ]\n"
-		 "\tMemory utilization statistics\n"));
+		 "\t\tMemory utilization statistics\n"));
 	printf(_("\t-S\tSwap space utilization statistics\n"));
 	printf(_("\t-u [ ALL ]\n"
 		 "\t\tCPU utilization statistics\n"));
