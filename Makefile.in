@@ -381,7 +381,7 @@ else
 		mkdir -p $(DESTDIR)$(RC_DIR); \
 	fi
 endif
-	if [ -z "$(SYSTEMD_UNIT_DIR)" -o ! -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) ]; then \
+	if [ -z "$(SYSTEMD_UNIT_DIR)" -o ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 		if [ -d $(DESTDIR)/etc/cron.d ]; then \
 			$(INSTALL_DATA) cron/sysstat.crond $(DESTDIR)/etc/cron.d/sysstat; \
 		elif [ -d $(DESTDIR)/etc/cron.hourly -a -d $(DESTDIR)/etc/cron.daily ]; then \
@@ -390,7 +390,7 @@ endif
 		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
-	if [ \( -z "$(SYSTEMD_UNIT_DIR)" -o ! -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) \) -a ! -d $(DESTDIR)/etc/cron.d ]; then \
+	if [ \( -z "$(SYSTEMD_UNIT_DIR)" -o ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" \) -a ! -d $(DESTDIR)/etc/cron.d ]; then \
 		if [ ! -d $(DESTDIR)/etc/cron.hourly -o ! -d $(DESTDIR)/etc/cron.daily ]; then \
 			su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).save"; \
 			$(CP) -a /tmp/crontab-$(CRON_OWNER).save ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.save; \
@@ -399,7 +399,7 @@ ifeq ($(COPY_ONLY),n)
 		fi \
 	fi
 endif
-	if [ -n "$(SYSTEMD_UNIT_DIR)" -a -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) ]; then \
+	if [ -n "$(SYSTEMD_UNIT_DIR)" -a -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 		$(INSTALL_DATA) sysstat.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 		$(INSTALL_DATA) cron/sysstat-collect.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 		$(INSTALL_DATA) cron/sysstat-collect.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
@@ -431,7 +431,7 @@ endif
 		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
-	if [ -x $(SYSTEMCTL) ]; then \
+	if [ -x "$(SYSTEMCTL)" ]; then \
 		$(SYSTEMCTL) enable sysstat.service; \
 	fi
 endif
