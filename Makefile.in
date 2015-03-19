@@ -407,27 +407,31 @@ endif
 		$(INSTALL_DATA) cron/sysstat-summary.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	elif [ -d $(DESTDIR)$(INIT_DIR) ]; then \
 		$(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
-		if [ -x "$(CHKCONFIG)" ]; then \
-			cd $(DESTDIR)$(INIT_DIR) && $(CHKCONFIG) --add sysstat; \
-		else \
-			[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
-			[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
-			[ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
-			cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
-			cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
-			cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+		if [ "$(COPY_ONLY)" == "n" ]; then \
+			if [ -x "$(CHKCONFIG)" ]; then \
+				cd $(DESTDIR)$(INIT_DIR) && $(CHKCONFIG) --add sysstat; \
+			else \
+				[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
+				[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
+				[ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
+				cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+				cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+				cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../$(INITD_DIR)/sysstat S01sysstat; \
+			fi \
 		fi \
 	elif [ -d $(DESTDIR)$(RC_DIR) ]; then \
 		$(INSTALL_BIN) sysstat $(DESTDIR)$(RC_DIR)/rc.sysstat; \
-		if [ -x "$(CHKCONFIG)" ]; then \
-			cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add rc.sysstat; \
-		else \
-			[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
-			[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
-			[ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
-			cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
-			cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
-			cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+		if [ "$(COPY_ONLY)" == "n" ]; then \
+			if [ -x "$(CHKCONFIG)" ]; then \
+				cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add rc.sysstat; \
+			else \
+				[ -d $(DESTDIR)$(RC2_DIR) ] || mkdir -p $(DESTDIR)$(RC2_DIR); \
+				[ -d $(DESTDIR)$(RC3_DIR) ] || mkdir -p $(DESTDIR)$(RC3_DIR); \
+				[ -d $(DESTDIR)$(RC5_DIR) ] || mkdir -p $(DESTDIR)$(RC5_DIR); \
+				cd $(DESTDIR)$(RC2_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+				cd $(DESTDIR)$(RC3_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+				cd $(DESTDIR)$(RC5_DIR) && $(LN_S) -f ../rc.sysstat S01sysstat; \
+			fi \
 		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
