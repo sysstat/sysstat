@@ -2071,7 +2071,7 @@ void read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, int nbr)
 void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 {
 	FILE *fp;
-	char line[256], fs_name[MAX_FS_LEN], mountp[MAX_FS_LEN];
+	char line[512], fs_name[MAX_FS_LEN], mountp[256];
 	int fs = 0;
 	struct stats_filesystem *st_filesystem_i;
 	struct statvfs buf;
@@ -2082,12 +2082,26 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 	while ((fgets(line, sizeof(line), fp) != NULL) && (fs < nbr)) {
 		if (line[0] == '/') {
 
-			/* Read current filesystem name and mount point */
-			sscanf(line, "%127s %127s", fs_name, mountp);
+			/* Read current filesystem name */
+			sscanf(line, "%127s", fs_name);
+			/*
+			 * And now read the corresponding mount point.
+			 * Read fs name and mount point in two distinct operations.
+			 * Indeed, if fs name length is greater than 127 chars,
+			 * previous scanf() will read only the first 127 chars, and
+			 * mount point name will be read using the remaining chars
+			 * from the fs name. This will result in a bogus name
+			 * and following statvfs() function will always fail.
+			 */
+			sscanf(strchr(line, ' ') + 1, "%255s", mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);
 
+			/*
+			 * It's important to have read the whole mount point name
+			 * for statvfs() to work properly (see above).
+			 */
 			if ((statvfs(mountp, &buf) < 0) || (!buf.f_blocks))
 				continue;
 
