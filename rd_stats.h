@@ -26,7 +26,7 @@
 /* Maximum length of USB product string */
 #define MAX_PROD_LEN	48
 /* Maximum length of filesystem name */
-#define MAX_FS_LEN	72
+#define MAX_FS_LEN	128
 
 #define CNT_PART	1
 #define CNT_ALL_DEV	0

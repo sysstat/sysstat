@@ -2071,7 +2071,7 @@ void read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, int nbr)
 void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 {
 	FILE *fp;
-	char line[256], fs_name[MAX_FS_LEN], mountp[128];
+	char line[256], fs_name[MAX_FS_LEN], mountp[MAX_FS_LEN];
 	int fs = 0;
 	struct stats_filesystem *st_filesystem_i;
 	struct statvfs buf;
@@ -2083,7 +2083,7 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 		if (line[0] == '/') {
 
 			/* Read current filesystem name and mount point */
-			sscanf(line, "%71s %127s", fs_name, mountp);
+			sscanf(line, "%127s %127s", fs_name, mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);
