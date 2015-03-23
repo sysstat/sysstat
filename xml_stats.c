@@ -2067,3 +2067,38 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 
 	xprintf(--tab, "</filesystems>");
 }
+
+/*
+ ***************************************************************************
+ * Display HBA statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_hba_stats(struct activity *a, int curr, int tab,
+					   unsigned long long itv)
+{
+	int i;
+	struct stats_hba *sfc;
+
+	xprintf(tab, "<hbas>");
+	tab++;
+
+	for (i = 0; i < a->nr; i++) {
+
+		sfc = (struct stats_hba *) ((char *) a->buf[curr] + i * a->msize);
+
+		xprintf(tab, "<hba hbaname=\"%s\" "
+			"txframes=\"%.0f\" "
+			"rxframes=\"%.0f\" ",
+			sfc->hba_name,
+			(double) sfc->f_txframes,
+			(double) sfc->f_rxframes);
+	}
+
+	xprintf(--tab, "</hbas>");
+}

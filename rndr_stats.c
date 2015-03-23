@@ -2917,3 +2917,41 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		       NULL);
 	}
 }
+/*
+ ***************************************************************************
+ * Display HBA statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_hba_stats(struct activity *a, int isdb, char *pre,
+					int curr, unsigned long long itv)
+{
+	int i;
+	struct stats_hba *sfc;
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_hba *) ((char *) a->buf[curr] + i * a->msize);
+
+		render(isdb, pre, PT_USERND ,
+		       "%s\tHBA",
+		       "%s",
+		       cons(sv, sfc->hba_name, NOVAL),
+		       NOVAL,
+		       (unsigned long) sfc->f_txframes,
+			NULL);
+
+		render(isdb, pre, PT_USERND | PT_NEWLIN,
+		       "%s\trxframes",
+		       NULL,
+		       cons(sv, sfc->hba_name, NOVAL),
+		       NOVAL,
+		       (unsigned long) sfc->f_rxframes,
+		       NULL);
+	}
+}

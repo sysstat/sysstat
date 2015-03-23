@@ -166,7 +166,39 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdFHqRSuvwWy -I SUM -I XALL -m ALL -n ALL -r ALL -u ALL -P ALL".
+.BR "-abBdFHqRSuvwWy -I SUM -I XALL -m ALL -n ALL -r ALL -u ALL -P ALL".
+
+.IP -a
+Report fibre channel HBA statistics.  Note that HBA statistics depend on
+.B sadc
+option
+.B "-S DISK"
+to be collected.
+
+The following values are displayed:
+
+.B txframes
+.RS
+.RS
+Total number of frames transmitted.
+.RE
+
+.B txframes/s
+.RS
+Total number of frames transmitted per second.
+.RE
+
+.B rxframes
+.RS
+Total number of frames received.
+.RE
+
+.B rxframes/s
+.RS
+Total number of frames received per second.
+.RE
+.RE
+
 .IP -B
 Report paging statistics.
 The following values are displayed:

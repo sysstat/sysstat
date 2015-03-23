@@ -107,8 +107,8 @@ void usage(char *progname)
 {
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-			  "[ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
+			  "[ -A ] [-a ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ]\n"
+			  "[ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
 			  "[ -w ] [ -y ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
@@ -130,6 +130,7 @@ void display_help(char *progname)
 {
 	print_usage_title(stdout, progname);
 	printf(_("Main options and reports:\n"));
+	printf(_("\t-a\tHost bus adapter statistics\n"));
 	printf(_("\t-B\tPaging statistics\n"));
 	printf(_("\t-b\tI/O and transfer rate statistics\n"));
 	printf(_("\t-d\tBlock devices statistics\n"));
