@@ -461,7 +461,7 @@ int get_usb_nr(void)
 int get_filesystem_nr(void)
 {
 	FILE *fp;
-	char line[256], fs_name[MAX_FS_LEN], mountp[128];
+	char line[512], fs_name[MAX_FS_LEN], mountp[256];
 	int fs = 0;
 	struct statvfs buf;
 
@@ -474,7 +474,8 @@ int get_filesystem_nr(void)
 		if (line[0] == '/') {
 
 			/* Read filesystem name and mount point */
-			sscanf(line, "%71s %127s", fs_name, mountp);
+			sscanf(line, "%127s", fs_name);
+			sscanf(strchr(line, ' ') + 1, "%255s", mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);
