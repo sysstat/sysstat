@@ -348,16 +348,21 @@ Set the ending time of the report. The default ending time is
 18:00:00. Hours must be given in 24-hour format.
 This option can be used when data are read from
 or written to a file (options -f or -o).
-.IP -F
+.IP "-F [ MOUNT ]"
 Display statistics for currently mounted filesystems. Pseudo-filesystems are
-ignored. At the end of the report,
-.B sar
+ignored.  At the end of the report, 
+.B sar 
 will display a summary of all those filesystems.
 Note that filesystems statistics depend on
 .B sadc
 option
 .B "-S XDISK"
 to be collected.
+Use of the 
+.B MOUNT
+parameter keyword indicates that mountpoint will be reported instead of 
+filesystem device.
+
 The following values are displayed:
 
 .B MBfsfree

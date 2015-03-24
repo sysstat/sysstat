@@ -2112,6 +2112,7 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 			st_filesystem_i->f_files  = buf.f_files;
 			st_filesystem_i->f_ffree  = buf.f_ffree;
 			strcpy(st_filesystem_i->fs_name, fs_name);
+			strcpy(st_filesystem_i->mountp, mountp);
 		}
 	}
 

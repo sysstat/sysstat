@@ -136,6 +136,11 @@
 
 #define COLLECT_PARTITIONS(m)	(((m) & AO_F_DISK_PART)   == AO_F_DISK_PART)
 
+/* Output flags for option -F */
+#define AO_F_MOUNT		0x00000001
+
+#define DISPLAY_MOUNT(m)	(((m) & AO_F_MOUNT)       == AO_F_MOUNT)
+
 /*
  ***************************************************************************
  * Various keywords and constants.

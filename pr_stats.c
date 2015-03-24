@@ -2500,11 +2500,11 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 	int i, j;
 	struct stats_filesystem *sfc, *sfm;
 
-
 	if (dis) {
 		printf("\n%-11s  MBfsfree  MBfsused   %%fsused  %%ufsused"
-		       "     Ifree     Iused    %%Iused FILESYSTEM\n",
-		       (dispavg ? _("Summary:") : timestamp[!curr]));
+		       "     Ifree     Iused    %%Iused %s\n",
+		       (dispavg ? _("Summary:") : timestamp[!curr]),
+		       DISPLAY_MOUNT(a->opt_flags) ? _("MOUNTPOINT") : _("FILESYSTEM"));
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -2528,7 +2528,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 		       sfc->f_files - sfc->f_ffree,
 		       sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 				    : 0.0,
-		       sfc->fs_name);
+		       DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name);
 
 		if (!dispavg) {
 			/* Save current filesystem in summary list */
