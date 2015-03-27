@@ -543,6 +543,7 @@ struct stats_filesystem {
 	unsigned long long f_files		__attribute__ ((aligned (16)));
 	unsigned long long f_ffree		__attribute__ ((aligned (16)));
 	char 		   fs_name[MAX_FS_LEN]	__attribute__ ((aligned (16)));
+	char 		   mountp[MAX_FS_LEN];
 };
 
 #define STATS_FILESYSTEM_SIZE	(sizeof(struct stats_filesystem))
