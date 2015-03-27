@@ -2125,7 +2125,11 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 	struct stats_filesystem *sfc;
 	int sep = FALSE;
 
-	xprintf(tab++, "\"filesystems\": [");
+	if(DISPLAY_MOUNT(a->opt_flags)) 
+		xprintf(tab++, "\"mountpoints\": [");
+	else
+		xprintf(tab++, "\"filesystems\": [");
+
 
 	for (i = 0; i < a->nr; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr]  + i * a->msize);
@@ -2139,25 +2143,48 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 		}
 		sep = TRUE;
 
-		xprintf0(tab, "{\"filesystem\": \"%s\", "
-			 "\"MBfsfree\": %.0f, "
-			 "\"MBfsused\": %.0f, "
-			 "\"%%fsused\": %.2f, "
-			 "\"%%ufsused\": %.2f, "
-			 "\"Ifree\": %llu, "
-			 "\"Iused\": %llu, "
-			 "\"%%Iused\": %.2f}",
-			 sfc->fs_name,
-			 (double) sfc->f_bfree / 1024 / 1024,
-			 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
-			 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
-				     : 0.0,
-			 sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
-				     : 0.0,
-			 sfc->f_ffree,
-			 sfc->f_files - sfc->f_ffree,
-			 sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
-				    : 0.0);
+		if(DISPLAY_MOUNT(a->opt_flags)) {
+			xprintf0(tab, "{\"mountpoint\": \"%s\", "
+				 "\"MBfsfree\": %.0f, "
+				 "\"MBfsused\": %.0f, "
+				 "\"%%fsused\": %.2f, "
+				 "\"%%ufsused\": %.2f, "
+				 "\"Ifree\": %llu, "
+				 "\"Iused\": %llu, "
+				 "\"%%Iused\": %.2f}",
+				 sfc->mountp,
+				 (double) sfc->f_bfree / 1024 / 1024,
+				 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+				 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+					     : 0.0,
+				 sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+					     : 0.0,
+				 sfc->f_ffree,
+				 sfc->f_files - sfc->f_ffree,
+				 sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+					    : 0.0);
+		} else {
+			xprintf0(tab, "{\"filesystem\": \"%s\", "
+				 "\"MBfsfree\": %.0f, "
+				 "\"MBfsused\": %.0f, "
+				 "\"%%fsused\": %.2f, "
+				 "\"%%ufsused\": %.2f, "
+				 "\"Ifree\": %llu, "
+				 "\"Iused\": %llu, "
+				 "\"%%Iused\": %.2f}",
+				 sfc->fs_name,
+				 (double) sfc->f_bfree / 1024 / 1024,
+				 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+				 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+					     : 0.0,
+				 sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+					     : 0.0,
+				 sfc->f_ffree,
+				 sfc->f_files - sfc->f_ffree,
+				 sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+					    : 0.0);
+
+		}
 	}
 
 	printf("\n");
