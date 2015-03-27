@@ -2125,10 +2125,7 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 	struct stats_filesystem *sfc;
 	int sep = FALSE;
 
-	if(DISPLAY_MOUNT(a->opt_flags)) 
-		xprintf(tab++, "\"mountpoints\": [");
-	else
-		xprintf(tab++, "\"filesystems\": [");
+	xprintf(tab++, "\"filesystems\": [");
 
 
 	for (i = 0; i < a->nr; i++) {
