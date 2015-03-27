@@ -1584,9 +1584,9 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'F':
-			SELECT_ACTIVITY(A_FILESYSTEM);
 			p = get_activity_position(act, A_FILESYSTEM, EXIT_IF_NOT_FOUND);
-			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], "MOUNT")) {
+			act[p]->options |= AO_SELECTED;
+			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], K_MOUNT)) {
 				(*opt)++;
 				act[p]->opt_flags |= AO_F_MOUNT;
 				return 0;

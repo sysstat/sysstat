@@ -173,6 +173,7 @@
 #define K_TEMP		"TEMP"
 #define K_IN		"IN"
 #define K_FREQ		"FREQ"
+#define K_MOUNT		"MOUNT"
 
 #define K_INT		"INT"
 #define K_DISK		"DISK"
