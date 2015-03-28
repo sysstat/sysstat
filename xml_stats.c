@@ -2043,27 +2043,50 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 			/* Size of filesystem is null: We are at the end of the list */
 			break;
 
-		xprintf(tab, "<filesystem fsname=\"%s\" "
-			"MBfsfree=\"%.0f\" "
-			"MBfsused=\"%.0f\" "
-			"fsused-percent=\"%.2f\" "
-			"ufsused-percent=\"%.2f\" "
-			"Ifree=\"%llu\" "
-			"Iused=\"%llu\" "
-			"Iused-percent=\"%.2f\"/>",
-			sfc->fs_name,
-			(double) sfc->f_bfree / 1024 / 1024,
-			(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
-			/* f_blocks is not null. But test it anyway ;-) */
-			sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
-				      : 0.0,
-			sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
-				      : 0.0,
-			sfc->f_ffree,
-			sfc->f_files - sfc->f_ffree,
-			sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
-				     : 0.0);
+		if(DISPLAY_MOUNT(a->opt_flags))
+			xprintf(tab, "<filesystem mountp=\"%s\" "
+				"MBfsfree=\"%.0f\" "
+				"MBfsused=\"%.0f\" "
+				"fsused-percent=\"%.2f\" "
+				"ufsused-percent=\"%.2f\" "
+				"Ifree=\"%llu\" "
+				"Iused=\"%llu\" "
+				"Iused-percent=\"%.2f\"/>",
+				sfc->mountp,
+				(double) sfc->f_bfree / 1024 / 1024,
+				(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+				/* f_blocks is not null. But test it anyway ;-) */
+				sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+					      : 0.0,
+				sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+					      : 0.0,
+				sfc->f_ffree,
+				sfc->f_files - sfc->f_ffree,
+				sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+					     : 0.0);
+		else
+			xprintf(tab, "<filesystem fsname=\"%s\" "
+				"MBfsfree=\"%.0f\" "
+				"MBfsused=\"%.0f\" "
+				"fsused-percent=\"%.2f\" "
+				"ufsused-percent=\"%.2f\" "
+				"Ifree=\"%llu\" "
+				"Iused=\"%llu\" "
+				"Iused-percent=\"%.2f\"/>",
+				sfc->fs_name,
+				(double) sfc->f_bfree / 1024 / 1024,
+				(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+				/* f_blocks is not null. But test it anyway ;-) */
+				sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+					      : 0.0,
+				sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+					      : 0.0,
+				sfc->f_ffree,
+				sfc->f_files - sfc->f_ffree,
+				sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+					     : 0.0);
 	}
+
 
 	xprintf(--tab, "</filesystems>");
 }
