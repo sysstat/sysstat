@@ -2139,7 +2139,7 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 		}
 		sep = TRUE;
 
-		xprintf0(tab, "{\"filesystem\": \"%s\", "
+		xprintf0(tab, "{\"%s\": \"%s\", "
 			 "\"MBfsfree\": %.0f, "
 			 "\"MBfsused\": %.0f, "
 			 "\"%%fsused\": %.2f, "
@@ -2147,7 +2147,8 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 			 "\"Ifree\": %llu, "
 			 "\"Iused\": %llu, "
 			 "\"%%Iused\": %.2f}",
-			 sfc->fs_name,
+			 DISPLAY_MOUNT(a->opt_flags) ? "mountpoint" : "filesystem",
+			 DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name,
 			 (double) sfc->f_bfree / 1024 / 1024,
 			 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
 			 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
