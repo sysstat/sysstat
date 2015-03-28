@@ -2043,7 +2043,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 			/* Size of filesystem is null: We are at the end of the list */
 			break;
 
-		xprintf(tab, "<filesystem fsname=\"%s\" "
+		xprintf(tab, "<filesystem %s=\"%s\" "
 			"MBfsfree=\"%.0f\" "
 			"MBfsused=\"%.0f\" "
 			"fsused-percent=\"%.2f\" "
@@ -2051,7 +2051,8 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 			"Ifree=\"%llu\" "
 			"Iused=\"%llu\" "
 			"Iused-percent=\"%.2f\"/>",
-			sfc->fs_name,
+			DISPLAY_MOUNT(a->opt_flags) ? "mountp" : "fsname",
+			DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name,
 			(double) sfc->f_bfree / 1024 / 1024,
 			(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
 			/* f_blocks is not null. But test it anyway ;-) */
