@@ -9,7 +9,7 @@
 #include "sa.h"
 
 /* DTD version for XML output */
-#define XML_DTD_VERSION	"2.19"
+#define XML_DTD_VERSION	"3.0"
 
 /* Possible actions for functions used to display reports */
 #define F_BEGIN	0x01
