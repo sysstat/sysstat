@@ -2,16 +2,19 @@
 # sargraph - a simple sketch on how to generate graphs from sadf XML output
 # by Lans.Carstensen@dreamworks.com <Lans Carstensen>
 
-# Our dependencies
-ZENITY="/usr/bin/zenity"
-XSLTPROC="/usr/bin/xsltproc"
-SADF="/usr/local/bin/sadf"
-GNUPLOT="/usr/bin/gnuplot"
-MKTEMP="/bin/mktemp"
-FIND="/usr/bin/find"
-SORT="/bin/sort"
-CUT="/bin/cut"
-GZIP="/usr/bin/gzip"
+# Our dependencies - bail out if they are not found
+
+set -e
+ZENITY=`which zenity`
+XSLTPROC=`which xsltproc`
+SADF=`which sadf`
+GNUPLOT=`which gnuplot`
+MKTEMP=`which mktemp`
+FIND=`which find`
+SORT=`which sort`
+CUT=`which cut`
+GZIP=`which gzip`
+set +e
 
 SA_PATH="/var/log/sa"
 SA_FILEMASK='sa[0-9][0-9]*'
