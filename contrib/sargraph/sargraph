@@ -17,7 +17,10 @@ GZIP=`which gzip`
 set +e
 
 SA_PATH="/var/log/sa"
-SA_FILEMASK='sa[0-9][0-9]*'
+
+# With this extended regex we detect all sa files under SA_PATH, like
+# "sa12", "sa20150329" with extension {gz,bz2,xz,lz,lzo} or none.
+SA_REGEX='.*/sa[0-9][0-9][0-9]*(\.[gbxl]z[2o]?)?$'
 
 # sar / sysstat DTD is published here:
 # http://pagesperso-orange.fr/sebastien.godard/sysstat.dtd
@@ -369,8 +372,8 @@ EOF
 }
 
 
-SA_FILES=`$FIND $SA_PATH -name $SA_FILEMASK -printf '%T@,%p\n' \
-    | $SORT -n -r | $CUT -d, -f2`
+SA_FILES=`$FIND $SA_PATH -type f -printf '%T@,%p\n' \
+    | egrep $SA_REGEX | $SORT -n -r | $CUT -d, -f2`
 
 # Main loop
 
