@@ -12,6 +12,7 @@ FIND="/usr/bin/find"
 SORT="/bin/sort"
 CUT="/bin/cut"
 GZIP="/usr/bin/gzip"
+
 SA_PATH="/var/log/sa"
 SA_FILEMASK='sa[0-9][0-9]*'
 
@@ -374,111 +375,111 @@ DONE=no
 while [ $DONE != yes ]
 do
 
-# Prompt for sar file
+    # Prompt for sa file
 
-SARFILE=`$ZENITY --list --text "Select data source" \
-    --column "sar file" $SA_FILES`
+    SA_FILE=`$ZENITY --list --text "Select data source" \
+        --column "sa file" $SA_FILES`
 
-if [ "$SARFILE" == "" ]; then
-    exit
-fi
+    if [ "$SA_FILE" == "" ]
+    then
+        exit
+    fi
 
-if echo $SARFILE | grep '.gz$'
-then
-    UNCOMPRESSED_SARFILE=`mktemp`
-    gzip -dc $SARFILE > $UNCOMPRESSED_SARFILE
-    SARFILE=$UNCOMPRESSED_SARFILE
-fi
+    if echo $SA_FILE | grep '.gz$'
+    then
+        UNCOMPRESSED_SA_FILE=`mktemp`
+        gzip -dc $SA_FILE > $UNCOMPRESSED_SA_FILE
+        SA_FILE=$UNCOMPRESSED_SA_FILE
+    fi
 
 
-# Prompt for graph
+    # Prompt for graph
 
-GRAPH=`$ZENITY --list --text "Select a graph" --column "Graph Type" "CPU" "Run Queue" "Run Queue w/o Process List Size" "IO Transfer Rate" "NFS Client" "Paging Stats" "Memory Utilization" "Memory Utilization (Swap)"`
+    GRAPH=`$ZENITY --list --text "Select a graph" --column "Graph Type" "CPU" "Run Queue" "Run Queue w/o Process List Size" "IO Transfer Rate" "NFS Client" "Paging Stats" "Memory Utilization" "Memory Utilization (Swap)"`
 
-case "$GRAPH" in
+    case "$GRAPH" in
     "CPU")
-	XSLTFILE=`mktemp`
-	cpu_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -u | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	cpu_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        cpu_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -u | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        cpu_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "Run Queue")
-	XSLTFILE=`mktemp`
-	rq_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -q | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	rq_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        rq_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -q | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        rq_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "Run Queue w/o Process List Size")
-	XSLTFILE=`mktemp`
-	rqnoplistsz_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -q | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	rqnoplistsz_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        rqnoplistsz_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -q | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        rqnoplistsz_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "IO Transfer Rate")
-	XSLTFILE=`mktemp`
-	io_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -b | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	io_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        io_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -b | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        io_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "NFS Client")
-	XSLTFILE=`mktemp`
-	nfsclient_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -n NFS | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	nfsclient_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        nfsclient_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -n NFS | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        nfsclient_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "Paging Stats")
-	XSLTFILE=`mktemp`
-	paging_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -B | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	paging_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        paging_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -B | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        paging_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "Memory Utilization")
-	XSLTFILE=`mktemp`
-	memuse_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -r | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	memuse_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        memuse_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -r | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        memuse_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     "Memory Utilization (Swap)")
-	XSLTFILE=`mktemp`
-	swapuse_xslt $XSLTFILE
-	DATAFILE=`mktemp`
-	$SADF -t -x $SARFILE -- -S | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
-	GNUPLOTFILE=`mktemp`
-	swapuse_gnuplot $GNUPLOTFILE $DATAFILE
-	$GNUPLOT $GNUPLOTFILE
-	;;
+        XSLTFILE=`mktemp`
+        swapuse_xslt $XSLTFILE
+        DATAFILE=`mktemp`
+        $SADF -t -x $SA_FILE -- -S | $XSLTPROC --novalid $XSLTFILE - > $DATAFILE
+        GNUPLOTFILE=`mktemp`
+        swapuse_gnuplot $GNUPLOTFILE $DATAFILE
+        $GNUPLOT $GNUPLOTFILE
+        ;;
     *)
-	# If you click "Cancel", you end up here
-	DONE=yes
-	;;
-esac
+        # If you click "Cancel", you end up here
+        DONE=yes
+        ;;
+    esac
 
-[ -f "$UNCOMPRESSED_SARFILE" ] && rm $UNCOMPRESSED_SARFILE
-[ -f "$GNUPLOTFILE" ]          && rm $GNUPLOTFILE
-[ -f "$DATAFILE" ]             && rm $DATAFILE
-[ -f "$XSLTFILE" ]             && rm $XSLTFILE
-
+    [ -f "$UNCOMPRESSED_SA_FILE" ] && rm $UNCOMPRESSED_SA_FILE
+    [ -f "$GNUPLOTFILE" ]          && rm $GNUPLOTFILE
+    [ -f "$DATAFILE" ]             && rm $DATAFILE
+    [ -f "$XSLTFILE" ]             && rm $XSLTFILE
 done
 
 exit
