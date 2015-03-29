@@ -225,7 +225,7 @@
 	<xs:attribute name="pgscank" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="pgscand" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="pgsteal" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="vmeff-precent" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="vmeff-percent" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="io" type="io-type"></xs:element>
@@ -347,7 +347,7 @@
 	<xs:attribute name="rd_sec" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="wr_sec" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="avgrq-sz" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="avrqu-sz" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="avgqu-sz" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="await" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="svctm" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="util-percent" type="hundredth-type"></xs:attribute>
@@ -512,7 +512,7 @@
 	<xs:attribute name="estres" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="retrans" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="isegerr" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="orsts/" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="orsts" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="net-udp" type="net-udp-type"></xs:element>
