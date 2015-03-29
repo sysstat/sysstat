@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v2.19 for sysstat. See sadf.h -->
+<!--DTD v3.0 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
+<!ATTLIST sysstat
+	xmlns CDATA #REQUIRED
+	xmlns:xsi CDATA #REQUIRED
+	xsi:schemaLocation CDATA #REQUIRED
+>
 
 <!ELEMENT sysdata-version (#PCDATA)>
 
-<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|cpu-load-all|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management|filesystems">
-<!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|statistics|restarts|comments">
+<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management|filesystems">
+<!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|file-utc-time|statistics|restarts|comments">
 
 <!ELEMENT host (%HOST_ELEMENTS;)+>
 <!ATTLIST host
@@ -25,7 +30,7 @@
 
 <!ELEMENT file-utc-time (#PCDATA)>
 
-<!ELEMENT statistics (timestamp+)>
+<!ELEMENT statistics (timestamp*)>
 
 <!ELEMENT timestamp (%TIMESTAMP_ELEMENTS;)+>
 <!ATTLIST timestamp
@@ -45,7 +50,7 @@
 	cpu_count CDATA #REQUIRED
 >
 
-<!ELEMENT comments (comment+)>
+<!ELEMENT comments (comment*)>
 
 <!ELEMENT comment EMPTY>
 <!ATTLIST comment
@@ -60,28 +65,17 @@
 <!ELEMENT cpu EMPTY>
 <!ATTLIST cpu
 	number CDATA #REQUIRED
-	user CDATA #REQUIRED
+	user CDATA #IMPLIED
+	usr CDATA #IMPLIED
 	nice CDATA #REQUIRED
-	system CDATA #REQUIRED
+	system CDATA #IMPLIED
+	sys CDATA #IMPLIED
 	iowait CDATA #REQUIRED
 	steal CDATA #REQUIRED
-	idle CDATA #REQUIRED
->
-
-<!ELEMENT cpu-load-all (cpu-all+)>
-
-<!ELEMENT cpu-all EMPTY>
-<!ATTLIST cpu-all
-	number CDATA #REQUIRED
-	usr CDATA #REQUIRED
-	nice CDATA #REQUIRED
-	sys CDATA #REQUIRED
-	iowait CDATA #REQUIRED
-	steal CDATA #REQUIRED
-	irq CDATA #REQUIRED
-	soft CDATA #REQUIRED
-	guest CDATA #REQUIRED
-	gnice CDATA #REQUIRED
+	irq CDATA #IMPLIED
+	soft CDATA #IMPLIED
+	guest CDATA #IMPLIED
+	gnice CDATA #IMPLIED
 	idle CDATA #REQUIRED
 >
 
@@ -145,7 +139,7 @@
 	bwrtn CDATA #REQUIRED
 >
 
-<!ELEMENT memory (memfree, memused, memused-percent, buffers, cached, commit, commit-percent, active, inactive, dirty, swpfree, swpused, swpused-percent, swpcad, swpcad-percent, frmpg, bufpg, campg)>
+<!ELEMENT memory (memfree?, memused?, memused-percent?, buffers?, cached?, commit?, commit-percent?, active?, inactive?, dirty?, anonpg?, slab?, kstack?, pgtbl?, vmused?, swpfree?, swpused?, swpused-percent?, swpcad?, swpcad-percent?, frmpg?, bufpg?, campg?)>
 <!ATTLIST memory
 	per CDATA #REQUIRED
 	unit CDATA #REQUIRED
@@ -170,6 +164,16 @@
 <!ELEMENT inactive (#PCDATA)>
 
 <!ELEMENT dirty (#PCDATA)>
+
+<!ELEMENT anonpg (#PCDATA)>
+
+<!ELEMENT slab (#PCDATA)>
+
+<!ELEMENT kstack (#PCDATA)>
+
+<!ELEMENT pgtbl (#PCDATA)>
+
+<!ELEMENT vmused (#PCDATA)>
 
 <!ELEMENT swpfree (#PCDATA)>
 
@@ -481,7 +485,7 @@
 	idgmer6 CDATA #REQUIRED
 >
 
-<!ELEMENT power-management (cpu-frequency, fan-speed, temperature, voltage-input, cpu-weighted-frequency, usb-devices)>
+<!ELEMENT power-management (cpu-frequency?, fan-speed?, temperature?, voltage-input?, cpu-weighted-frequency?, usb-devices?)>
 
 <!ELEMENT cpu-frequency (cpufreq+)>
 <!ATTLIST cpu-frequency
@@ -560,7 +564,8 @@
 
 <!ELEMENT filesystem EMPTY>
 <!ATTLIST filesystem
-	fsname CDATA #REQUIRED
+	fsname CDATA #IMPLIED
+	mountp CDATA #IMPLIED
 	MBfsfree CDATA #REQUIRED
 	MBfsused CDATA #REQUIRED
 	fsused-percent CDATA #REQUIRED
