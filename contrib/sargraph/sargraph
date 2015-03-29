@@ -11,6 +11,9 @@ MKTEMP="/bin/mktemp"
 FIND="/usr/bin/find"
 SORT="/bin/sort"
 CUT="/bin/cut"
+GZIP="/usr/bin/gzip"
+SA_PATH="/var/log/sa"
+SA_FILEMASK='sa[0-9][0-9]*'
 
 # sar / sysstat DTD is published here:
 # http://pagesperso-orange.fr/sebastien.godard/sysstat.dtd
@@ -361,17 +364,32 @@ pause mouse
 EOF
 }
 
-# Main
 
-while /bin/true; do
+SA_FILES=`$FIND $SA_PATH -name $SA_FILEMASK -printf '%T@,%p\n' \
+    | $SORT -n -r | $CUT -d, -f2`
+
+# Main loop
+
+DONE=no
+while [ $DONE != yes ]
+do
 
 # Prompt for sar file
 
-SARLIST=`$FIND /var/log/sa -name 'sa[0-9][0-9]' -printf '%T@,%p\n'| $SORT -n -r | $CUT -d, -f2`
-SARFILE=`$ZENITY --list --text "Select data source" --column "sar file" $SARLIST`
+SARFILE=`$ZENITY --list --text "Select data source" \
+    --column "sar file" $SA_FILES`
+
 if [ "$SARFILE" == "" ]; then
     exit
 fi
+
+if echo $SARFILE | grep '.gz$'
+then
+    UNCOMPRESSED_SARFILE=`mktemp`
+    gzip -dc $SARFILE > $UNCOMPRESSED_SARFILE
+    SARFILE=$UNCOMPRESSED_SARFILE
+fi
+
 
 # Prompt for graph
 
@@ -386,9 +404,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	cpu_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "Run Queue")
 	XSLTFILE=`mktemp`
@@ -398,9 +413,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	rq_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "Run Queue w/o Process List Size")
 	XSLTFILE=`mktemp`
@@ -410,9 +422,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	rqnoplistsz_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "IO Transfer Rate")
 	XSLTFILE=`mktemp`
@@ -422,9 +431,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	io_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "NFS Client")
 	XSLTFILE=`mktemp`
@@ -434,9 +440,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	nfsclient_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "Paging Stats")
 	XSLTFILE=`mktemp`
@@ -446,9 +449,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	paging_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "Memory Utilization")
 	XSLTFILE=`mktemp`
@@ -458,9 +458,6 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	memuse_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     "Memory Utilization (Swap)")
 	XSLTFILE=`mktemp`
@@ -470,17 +467,18 @@ case "$GRAPH" in
 	GNUPLOTFILE=`mktemp`
 	swapuse_gnuplot $GNUPLOTFILE $DATAFILE
 	$GNUPLOT $GNUPLOTFILE
-	rm $GNUPLOTFILE
-	rm $DATAFILE
-	rm $XSLTFILE
 	;;
     *)
-	# If you click "Cancel", you end up here and exit
-	exit
+	# If you click "Cancel", you end up here
+	DONE=yes
 	;;
 esac
+
+[ -f "$UNCOMPRESSED_SARFILE" ] && rm $UNCOMPRESSED_SARFILE
+[ -f "$GNUPLOTFILE" ]          && rm $GNUPLOTFILE
+[ -f "$DATAFILE" ]             && rm $DATAFILE
+[ -f "$XSLTFILE" ]             && rm $XSLTFILE
 
 done
 
 exit
-
