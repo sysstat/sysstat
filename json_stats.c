@@ -115,12 +115,7 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 	struct stats_cpu *scc, *scp;
 	char cpuno[8];
 
-	if (DISPLAY_CPU_DEF(a->opt_flags)) {
-		xprintf(tab++, "\"cpu-load\": [");
-	}
-	else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-		xprintf(tab++, "\"cpu-load-all\": [");
-	}
+	xprintf(tab++, "\"cpu-load\": [");
 
 	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
 
