@@ -522,3 +522,10 @@ do
 done
 
 exit
+
+# Local Variables:
+# sh-basic-offset: 4
+# indent-tabs-mode: nil
+# sh-indent-for-case-label: 0
+# sh-indent-for-case-alt: +
+# End:
