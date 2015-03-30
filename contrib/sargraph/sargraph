@@ -16,11 +16,44 @@ CUT=`which cut`
 GZIP=`which gzip`
 set +e
 
+# Default for --sa-path
 SA_PATH="/var/log/sa"
 
 # With this extended regex we detect all sa files under SA_PATH, like
 # "sa12", "sa20150329" with extension {gz,bz2,xz,lz,lzo} or none.
 SA_REGEX='.*/sa[0-9][0-9][0-9]*(\.[gbxl]z[2o]?)?$'
+
+
+######### OPTION PARSING ###########
+set -e
+
+parsed_opts=`getopt -o "" -l sa-path: -- "$@"`
+eval set -- "$parsed_opts"
+
+DONE=no
+while [ $DONE != yes ]
+do
+    case $1 in
+    --sa-path)
+        shift
+        SA_PATH="$1"
+        ;;
+    --)
+        # End of options
+        DONE=yes
+        ;;
+    *)
+        echo Unexpected argument: $1
+        exit 1
+        ;;
+    esac
+
+    shift                      # should shift the last arg or '--' if DONE=yes
+done
+
+set +e
+####################################
+
 
 # sar / sysstat DTD is published here:
 # http://pagesperso-orange.fr/sebastien.godard/sysstat.dtd
