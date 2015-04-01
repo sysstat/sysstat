@@ -31,21 +31,21 @@ RPT=${SA_DIR}/${CURRENTRPT}
 DFILE=${SA_DIR}/${CURRENTFILE}
 ENDIR=@bindir@
 
-[ -f "$DFILE" ] || exit 0
+[ -f "${DFILE}" ] || exit 0
 cd ${ENDIR}
 ${ENDIR}/sar $* -f ${DFILE} > ${RPT}
 
 SAFILES_REGEX='/sar?[0-9][0-9]+(\.(gz|bz2|xz|lz|lzo))?$'
 
-find "$SA_DIR" -type f -mtime +"$HISTORY" \
-	| egrep "$SAFILES_REGEX" \
+find "${SA_DIR}" -type f -mtime +${HISTORY} \
+	| egrep "${SAFILES_REGEX}" \
 	| xargs   rm -f
 
 UNCOMPRESSED_SAFILES_REGEX='/sar?[0-9][0-9]+$'
 
-find "$SA_DIR" -type f -mtime +"$COMPRESSAFTER" \
-	| egrep "$UNCOMPRESSED_SAFILES_REGEX" \
-	| xargs   $ZIP > /dev/null
+find "${SA_DIR}" -type f -mtime +${COMPRESSAFTER} \
+	| egrep "${UNCOMPRESSED_SAFILES_REGEX}" \
+	| xargs   "${ZIP}" > /dev/null
 
 exit 0
 
