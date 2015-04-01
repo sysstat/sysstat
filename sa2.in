@@ -35,13 +35,13 @@ ENDIR=@bindir@
 cd ${ENDIR}
 ${ENDIR}/sar $* -f ${DFILE} > ${RPT}
 
-SAFILES_REGEX='/sar?[0-9][0-9]+(\.(gz|bz2|xz|lz|lzo))?$'
+SAFILES_REGEX='/sar?[0-9]{2,8}(\.(Z|gz|bz2|xz|lz|lzo))?$'
 
 find "${SA_DIR}" -type f -mtime +${HISTORY} \
 	| egrep "${SAFILES_REGEX}" \
 	| xargs   rm -f
 
-UNCOMPRESSED_SAFILES_REGEX='/sar?[0-9][0-9]+$'
+UNCOMPRESSED_SAFILES_REGEX='/sar?[0-9]{2,8}$'
 
 find "${SA_DIR}" -type f -mtime +${COMPRESSAFTER} \
 	| egrep "${UNCOMPRESSED_SAFILES_REGEX}" \
