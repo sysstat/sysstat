@@ -11,6 +11,7 @@ sysconfig.h
 prealloc.h
 sysstat.sysconfig
 sysstat.service
+sysstat-sleep.sh
 sysstat.crond
 sysstat.cron.daily
 sysstat.cron.hourly

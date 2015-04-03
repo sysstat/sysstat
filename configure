@@ -666,6 +666,7 @@ rcdir
 DFSENSORS
 LFSENSORS
 HAVE_SENSORS
+SYSTEMD_SLEEP_DIR
 SYSTEMD_UNIT_DIR
 SYSTEMCTL
 PKG_CONFIG
@@ -734,6 +735,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 with_systemdsystemunitdir
+with_systemdsleepdir
 enable_sensors
 enable_largefile
 enable_nls
@@ -1398,6 +1400,8 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-systemdsystemunitdir=DIR
                           Directory for systemd service files
+  --with-systemdsleepdir=DIR
+                          Directory for systemd suspend/resume scripts
 
 Some influential environment variables:
   CC          C compiler command
@@ -4007,8 +4011,20 @@ else
   with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)
 fi
 
+
+# Check whether --with-systemdsleepdir was given.
+if test "${with_systemdsleepdir+set}" = set; then :
+  withval=$with_systemdsleepdir;
+else
+  with_systemdsleepdir=$($PKG_CONFIG --variable=systemdsleepdir systemd)
+fi
+
 if test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ; then
     SYSTEMD_UNIT_DIR=$with_systemdsystemunitdir
+
+fi
+if test -n "$with_systemdsleepdir" -a "x$with_systemdsleepdir" != xno ; then
+    SYSTEMD_SLEEP_DIR=$with_systemdsleepdir
 
 fi
 
@@ -5409,6 +5425,8 @@ ac_config_files="$ac_config_files sysstat"
 	# Permissions must be changed
 ac_config_files="$ac_config_files sysstat.service"
 
+ac_config_files="$ac_config_files sysstat-sleep.sh"
+
 ac_config_files="$ac_config_files cron/sysstat-collect.service"
 
 ac_config_files="$ac_config_files cron/sysstat-collect.timer"
@@ -6158,6 +6176,7 @@ do
     "cron/sysstat.crond.sample.in") CONFIG_FILES="$CONFIG_FILES cron/sysstat.crond.sample.in:cron/sysstat.crond.in" ;;
     "sysstat") CONFIG_FILES="$CONFIG_FILES sysstat" ;;
     "sysstat.service") CONFIG_FILES="$CONFIG_FILES sysstat.service" ;;
+    "sysstat-sleep.sh") CONFIG_FILES="$CONFIG_FILES sysstat-sleep.sh" ;;
     "cron/sysstat-collect.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-collect.service" ;;
     "cron/sysstat-collect.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-collect.timer" ;;
     "cron/sysstat-summary.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.service" ;;
@@ -6638,6 +6657,7 @@ echo "
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}
    Systemd unit dir:		${with_systemdsystemunitdir}
+   Systemd sleep dir:		${with_systemdsleepdir}
    Configuration directory:	${SYSCONFIG_DIR}
    Man pages directory:		$mandir
    Compiler:			$CC

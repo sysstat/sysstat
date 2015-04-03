@@ -45,8 +45,14 @@ AC_PATH_PROG(SYSTEMCTL, systemctl)
 AC_ARG_WITH([systemdsystemunitdir],
     AS_HELP_STRING([--with-systemdsystemunitdir=DIR],[Directory for systemd service files]),
     [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
+AC_ARG_WITH([systemdsleepdir],
+    AS_HELP_STRING([--with-systemdsleepdir=DIR],[Directory for systemd suspend/resume scripts]),
+    [], [with_systemdsleepdir=$($PKG_CONFIG --variable=systemdsleepdir systemd)])
 if test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno ; then
     AC_SUBST([SYSTEMD_UNIT_DIR], [$with_systemdsystemunitdir])
+fi
+if test -n "$with_systemdsleepdir" -a "x$with_systemdsleepdir" != xno ; then
+    AC_SUBST([SYSTEMD_SLEEP_DIR], [$with_systemdsleepdir])
 fi
 
 # Check libraries
@@ -604,6 +610,7 @@ AC_CONFIG_FILES([cron/sysstat.crond])
 AC_CONFIG_FILES([cron/sysstat.crond.sample.in:cron/sysstat.crond.in], [sed s/^/#/ cron/sysstat.crond.sample.in > cron/sysstat.crond.sample])
 AC_CONFIG_FILES([sysstat], [chmod +x sysstat])	# Permissions must be changed
 AC_CONFIG_FILES([sysstat.service])
+AC_CONFIG_FILES([sysstat-sleep.sh])
 AC_CONFIG_FILES([cron/sysstat-collect.service])
 AC_CONFIG_FILES([cron/sysstat-collect.timer])
 AC_CONFIG_FILES([cron/sysstat-summary.service])
@@ -627,6 +634,7 @@ echo "
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}
    Systemd unit dir:		${with_systemdsystemunitdir}
+   Systemd sleep dir:		${with_systemdsleepdir}
    Configuration directory:	${SYSCONFIG_DIR}
    Man pages directory:		$mandir
    Compiler:			$CC
