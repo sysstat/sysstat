@@ -1,0 +1,294 @@
+#!/bin/bash
+
+
+set -e
+
+
+# Our dependencies - bail out if they are not found
+SADF=`which sadf`
+GNUPLOT=`which gnuplot`
+
+
+# Default for --sa-file is today's file
+# (by default sadf will show today's logs)
+SA_FILE=""
+
+# Default for --sa-dir
+SA_DIR="/var/log/sa"
+
+# Default for --type
+GRAPH_TYPE=CPU
+
+
+GNUPLOT_TERMINAL="pngcairo font \"Sans,8\" size 640,320"
+SAFILES_REGEX='/sar?[0-9]{2,8}(\.(Z|gz|bz2|xz|lz|lzo))?$'
+GRAPH_TYPES="cpu,mem,io"
+
+
+print_usage()
+{
+    echo "
+Usage
+	sargraph2 [--type $GRAPH_TYPES] [--sa-file INFILE] [--output OUTFILE]
+
+Examples
+
+To plot CPU for today no arguments are needed:
+	sargraph2
+To plot MEM for 20150330:
+	sargraph2 --type mem --sa-file /var/log/sa/sa20150330.gz
+To plot I/O for 20150330 to a PNG file:
+	sargraph2 --type mem --sa-file /var/log/sa/sa20150330.gz --output io.png
+
+"
+}
+
+
+######### OPTION PARSING ###########
+parsed_opts=`getopt -o "h" \
+    -l help,sa-dir:,sa-file:,output:,type: \
+    -- "$@"`
+eval set -- "$parsed_opts"
+
+DONE=no
+while [ $DONE != yes ]
+do
+    case $1 in
+    -h|--help)
+        print_usage
+        exit
+        shift
+        ;;
+    --sa-dir)
+        shift
+        SA_DIR="$1"
+        ;;
+    --sa-file)
+        shift
+        SA_FILE="$1"
+        ;;
+    --output)
+        shift
+        OUT_FILE="$1"
+        ;;
+    --type)
+        shift
+        GRAPH_TYPE=`echo $1 | tr a-z A-Z`
+        ;;
+    --)
+        # End of options
+        DONE=yes
+        ;;
+    *)
+        echo Unexpected argument: $1
+        exit 1
+        ;;
+    esac
+
+    shift                      # should shift the last arg or '--' if DONE=yes
+done
+####################################
+
+
+# Decompress a file to another, or just copy it if not compressed
+decompress_copy()
+{
+    if [ x$# != x2 ]
+    then
+        echo "Function decompress_copy requires 2 arguments but got $#: $*"
+        return 1
+    fi
+
+    if [ -f "$1" ]
+    then
+        case "$1" in
+
+        *.Z) uncompress -c "$1" > "$2" ;;
+        *.gz)  gzip    -dc "$1" > "$2" ;;
+        *.bz2) bzip2   -dc "$1" > "$2" ;;
+        *.xz)  xz      -dc "$1" > "$2" ;;
+        *.lz)  lzip    -dc "$1" > "$2" ;;
+        *.lzo) lzop    -dc "$1" > "$2" ;;
+
+        *) cp "$1" "$2"        ;;
+
+        esac
+    else
+        echo "$1: file not found" 1>&2
+        return 1
+    fi
+}
+
+
+
+
+# TODO send systemd patch
+#soupermouf;60;2015-04-01 04:24:00;-1;5.77;0.00;2.10;0.63;0.00;91.50
+#soupermouf;26846;2015-04-01 11:51:26;-1;0.00;0.00;0.00;0.00;0.00;0.00
+#soupermouf;60;2015-04-01 11:52:26;-1;7.11;0.01;2.69;68.44;0.00;21.75
+
+cpu_gnuplot()                             # %iowait,%user,%nice,%system,%steal
+{
+    # First make sure that the columns are where we expect them to be
+    HEADER=`head -1 $2 | cut -d ';' -f 5-10`
+    EXPECTED="%user;%nice;%system;%iowait;%steal;%idle"
+    if [ "$HEADER" != "$EXPECTED" ]
+    then
+        echo "Headers not in right order: $HEADER" 1>&2
+        exit 1
+    fi
+
+    cat > $1 <<EOF
+set title "sar -u"
+set xdata time
+set format x "%H:%M"
+set ylabel "Percentage"
+set yrange [0:100]
+set timefmt "%Y-%m-%d %H:%M:%S"
+set datafile separator ";"
+plot \
+    "$2" using 3:(\$9+\$7+\$6+\$5+\$8) title "%iowait" with filledcurves x1 linecolor rgb "light-gray", \
+    "$2" using 3:(\$9+\$7+\$6+\$5)     title "%user"   with filledcurves x1 linecolor rgb "dark-green", \
+    "$2" using 3:(\$9+\$7+\$6)         title "%nice"   with filledcurves x1 linecolor rgb "greenyellow", \
+    "$2" using 3:(\$9+\$7)             title "%system" with filledcurves x1 linecolor rgb "red", \
+    "$2" using 3:(\$9)                 title "%steal"  with filledcurves x1 linecolor rgb "purple"
+EOF
+}
+
+
+mem_gnuplot()                    # free,used,buffers,cached / %commit,%swpused
+{
+    # First make sure that the columns are where we expect them to be
+    HEADER=`head -1 $2 | cut -d ';' -f 4-10`
+    EXPECTED="kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit"
+    if [ "$HEADER" != "$EXPECTED" ]
+    then
+        echo "Headers not in right order: $HEADER" 1>&2
+        exit 1
+    fi
+    HEADER=`head -1 $3 | cut -d ';' -f 4-6`
+    EXPECTED="kbswpfree;kbswpused;%swpused"
+    if [ "$HEADER" != "$EXPECTED" ]
+    then
+        echo "Headers not in right order: $HEADER" 1>&2
+        exit 1
+    fi
+
+    cat > $1 <<EOF
+set title "sar -r"
+set xdata time
+set format x "%H:%M"
+set ylabel "Memory Usage in MB"
+set yrange [0:]
+set y2label "Percentage"
+set y2range [0:]
+set y2tics
+set timefmt "%Y-%m-%d %H:%M:%S"
+set datafile separator ";"
+set key on bottom center opaque
+plot \
+    "$2" using 3:((\$5+\$4)/1024)     title "free"    with filledcurves x1 linecolor rgb "light-gray", \
+    "$2" using 3:((\$5)/1024)         title "cached"  with filledcurves x1 linecolor rgb "dark-green", \
+    "$2" using 3:((\$5-\$8)/1024)     title "buffers" with filledcurves x1 linecolor rgb "greenyellow", \
+    "$2" using 3:((\$5-\$8-\$7)/1024) title "used"    with filledcurves x1 linecolor rgb "red", \
+    \
+    "$2" using 3:(\$10)    title "%commit"  with lines linecolor rgb "blue"   linewidth 2 axes x1y2, \
+    "$3" using 3:(\$6)     title "%swpused" with lines linecolor rgb "dark-magenta" linewidth 2 axes x1y2
+EOF
+}
+
+
+io_gnuplot()                                      # %KBr/s,KBw/s / rIOPS,wIOPS
+{
+    # First make sure that the columns are where we expect them to be
+    HEADER=`head -1 $2 | cut -d ';' -f 4-8`
+    EXPECTED="tps;rtps;wtps;bread/s;bwrtn/s"
+    if [ "$HEADER" != "$EXPECTED" ]
+    then
+        echo "Headers not in right order: $HEADER" 1>&2
+        exit 1
+    fi
+
+    cat > $1 <<EOF
+set title "sar -b"
+set xdata time
+set format x "%H:%M"
+set ylabel "MB/s"
+set yrange [0:]
+set y2label "IOPS"
+set y2range [0:]
+set y2tics
+set timefmt "%Y-%m-%d %H:%M:%S"
+set datafile separator ";"
+plot \
+    "$2" using 3:((\$8+\$7)*2/1024) title "rMB/s" with filledcurves x1 linecolor rgb "dark-green", \
+    "$2" using 3:((\$8)*2/1024)     title "wMB/s" with filledcurves x1 linecolor rgb "dark-red", \
+    \
+    "$2" using 3:(\$4) title "rIOPS"  with lines linecolor rgb "light-green"   linewidth 2 axes x1y2, \
+    "$2" using 3:(\$6) title "wIOPS"  with lines linecolor rgb "light-red" linewidth 2 axes x1y2
+EOF
+}
+
+
+
+
+if [ x"$OUT_FILE" = x ]
+then
+    # no --output passed, INTERACTIVE mode
+    GNUPLOT_OPTS="-persist"
+else
+    GNUPLOT_OPTS="-e 'set terminal $GNUPLOT_TERMINAL; set output \"$OUT_FILE\"'"
+fi
+
+if [ x"$SA_FILE" != x ]
+then
+    # Decompress the SA file if it's compressed
+    PLAIN_SA_FILE=`mktemp`
+    decompress_copy "$SA_FILE" $PLAIN_SA_FILE
+else
+    # If the user passed no parameter
+    PLAIN_SA_FILE=""
+fi
+unset SA_FILE
+
+DATAFILE=`mktemp`
+DATAFILE2=`mktemp`
+GNUPLOTFILE=`mktemp`
+
+case "$GRAPH_TYPE" in
+"CPU")
+    $SADF -t -d -C $PLAIN_SA_FILE -- -u   > $DATAFILE
+    cpu_gnuplot $GNUPLOTFILE $DATAFILE
+    ;;
+"MEM")
+    $SADF -t -d -C $PLAIN_SA_FILE -- -r   > $DATAFILE
+    $SADF -t -d -C $PLAIN_SA_FILE -- -S   > $DATAFILE2
+    mem_gnuplot $GNUPLOTFILE $DATAFILE $DATAFILE2
+    ;;
+"IO")
+    $SADF -t -d -C $PLAIN_SA_FILE -- -b   > $DATAFILE
+    io_gnuplot $GNUPLOTFILE $DATAFILE
+    ;;
+*)
+    echo "Unknown graph type, supported types are: $GRAPH_TYPES" 1>&2
+    exit 1
+esac
+
+eval $GNUPLOT $GNUPLOT_OPTS $GNUPLOTFILE
+
+
+[ -f "$PLAIN_SA_FILE" ]        && rm $PLAIN_SA_FILE
+[ -f "$GNUPLOTFILE" ]          && rm $GNUPLOTFILE
+[ -f "$DATAFILE" ]             && rm $DATAFILE
+[ -f "$DATAFILE2" ]            && rm $DATAFILE2
+
+
+exit
+
+
+# Local Variables:
+# sh-basic-offset: 4
+# indent-tabs-mode: nil
+# sh-indent-for-case-label: 0
+# sh-indent-for-case-alt: +
+# End:
