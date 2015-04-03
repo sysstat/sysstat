@@ -8,6 +8,8 @@
 [Unit]
 Description=system activity accounting tool
 Documentation=man:sa1(8)
+# Stop this unit when stopping sysstat
+PartOf=sysstat.service
 
 [Service]
 Type=oneshot

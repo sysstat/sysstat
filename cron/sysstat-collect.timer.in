@@ -6,9 +6,8 @@
 
 [Unit]
 Description=Run system activity accounting tool every @CRON_INTERVAL@ minutes
+# Stop the timer unit when stopping the service itself
+PartOf=sysstat.service
 
 [Timer]
 OnCalendar=*:00/@CRON_INTERVAL@
-
-[Install]
-WantedBy=sysstat.service
