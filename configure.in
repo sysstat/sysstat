@@ -128,7 +128,6 @@ echo .
 #  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
 #  --disable-largefile     omit support for large files
 #  --disable-nls           disable National Language Support
-#  --enable-yesterday      tell sa2 to use "yesterday" data files
 #  --disable-file-attr     don't set attributes on files being installed
 #  --enable-install-cron   tell sysstat to install cron scripts
 #  --collect-all           tell sadc to collect all possible data    
@@ -290,21 +289,6 @@ fi
 if test $AUX_NLS = "yes" &&  test x$MSGMERGE != x"msgmerge"; then 
    echo "WARNING: msgmerge command not found!"
 fi
-
-# Check whether sa2 should process data file of the day before
-AC_MSG_CHECKING(whether sa2 should process data file of the day before)
-AC_ARG_ENABLE(yesterday,
-	      AC_HELP_STRING([--enable-yesterday],
-			     [tell sa2 to use data file of the day before]),
-			     AUX_YESTERDAY=$enableval,AUX_YESTERDAY=no)
-if test $AUX_YESTERDAY = "yes"; then
-   YESTERDAY="--date=yesterday"
-   AC_MSG_RESULT(yes)
-else
-   YESTERDAY=""
-   AC_MSG_RESULT(no)
-fi
-AC_SUBST(YESTERDAY)
 
 # Data history to keep by sa2
 AC_MSG_CHECKING(number of daily data files to keep)

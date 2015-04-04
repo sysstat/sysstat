@@ -651,7 +651,6 @@ COMPRESSAFTER
 compressafter
 HISTORY
 history
-YESTERDAY
 NLS
 SYSCONFIG_DIR
 conf_dir
@@ -737,7 +736,6 @@ with_systemdsystemunitdir
 enable_sensors
 enable_largefile
 enable_nls
-enable_yesterday
 enable_file_attr
 enable_compress_manpg
 enable_install_isag
@@ -1381,7 +1379,6 @@ Optional Features:
   --disable-sensors       disable sensors support
   --disable-largefile     omit support for large files
   --disable-nls           disable National Language Support
-  --enable-yesterday      tell sa2 to use data file of the day before
   --disable-file-attr     do not set attributes on files being installed
   --enable-compress-manpg compress sysstat manual pages
   --enable-install-isag   install isag script
@@ -4835,7 +4832,6 @@ echo .
 #  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
 #  --disable-largefile     omit support for large files
 #  --disable-nls           disable National Language Support
-#  --enable-yesterday      tell sa2 to use "yesterday" data files
 #  --disable-file-attr     don't set attributes on files being installed
 #  --enable-install-cron   tell sysstat to install cron scripts
 #  --collect-all           tell sadc to collect all possible data
@@ -5010,27 +5006,6 @@ fi
 if test $AUX_NLS = "yes" &&  test x$MSGMERGE != x"msgmerge"; then
    echo "WARNING: msgmerge command not found!"
 fi
-
-# Check whether sa2 should process data file of the day before
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether sa2 should process data file of the day before" >&5
-$as_echo_n "checking whether sa2 should process data file of the day before... " >&6; }
-# Check whether --enable-yesterday was given.
-if test "${enable_yesterday+set}" = set; then :
-  enableval=$enable_yesterday; AUX_YESTERDAY=$enableval
-else
-  AUX_YESTERDAY=no
-fi
-
-if test $AUX_YESTERDAY = "yes"; then
-   YESTERDAY="--date=yesterday"
-   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-else
-   YESTERDAY=""
-   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
 
 # Data history to keep by sa2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking number of daily data files to keep" >&5

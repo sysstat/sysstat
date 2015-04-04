@@ -67,15 +67,6 @@ else
 	echo "Parameter --disable-sensors is NOT set"
 fi
 
-# sa2 processes data file of the day before
-YESTERDAY=`${ASK} 'sa2 uses daily data file of the day before? (y/n)' "--enable-yesterday" "yesterday"`
-if [ "${YESTERDAY}" = "y" ]; then
-	YESTERDAY="--enable-yesterday "
-else
-	YESTERDAY=""
-	echo "Parameter --enable-yesterday is NOT set"
-fi
-
 # Data history to keep by sa2
 HISTORY=`${ASK} 'Number of daily data files to keep:' "history" "history"`
 if [ "${HISTORY}" != "" ]; then
@@ -220,7 +211,7 @@ fi
 
 echo
 echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
+${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -229,7 +220,7 @@ echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${YESTERDAY}${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
+${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS} \
 ${STRIP}${COPY_ONLY}
 

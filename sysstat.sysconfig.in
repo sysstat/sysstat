@@ -18,3 +18,7 @@ SA_DIR=@SA_DIR@
 # Compression program to use.
 ZIP="@ZIP@"
 
+# By default sa2 script generates yesterday's summary, since the cron job
+# usually runs right after midnight. If you want sa2 to generate the summary
+# of the same day (for example when cron job runs at 23:53) set this variable.
+#YESTERDAY=no

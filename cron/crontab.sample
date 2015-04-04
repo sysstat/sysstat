@@ -14,6 +14,6 @@
 # 7pm-8am activity reports every an hour during weekdays.
 # 0 19-7 * * 1-5 @SA_LIB_DIR@/sa1 &
 #
-# Daily summary prepared at 19:05.
-# 5 19 * * 1-5 @SA_LIB_DIR@/sa2 -A &
-5 19 * * * @SA_LIB_DIR@/sa2 -A &
+# Previous day summary prepared at 00:07.
+# 7 0 * * 1-5 @SA_LIB_DIR@/sa2 -A &
+7 0 * * * @SA_LIB_DIR@/sa2 -A &
