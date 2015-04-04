@@ -1,4 +1,4 @@
-.TH SYSSTAT 5 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "APRIL 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 .SH DESCRIPTION
@@ -141,6 +141,16 @@ manual page), you can select some additional data which are going to be saved in
 daily data files.
 These options are used only when a new data file is created. They will be
 ignored with an already existing one.
+
+.TP
+.B YESTERDAY
+By default
+.BR sa2
+script generates yesterday's summary, since the cron job
+usually runs right after midnight. If you want
+.BR sa2
+to generate the summary of the same day (for example when cron
+job runs at 23:53) set this variable to no.
 
 .TP
 .B ZIP
