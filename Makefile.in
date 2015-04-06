@@ -147,6 +147,8 @@ ifndef INITD_DIR
 INITD_DIR = @INITD_DIR@
 endif
 
+SOURCE_CODE= $(wildcard *.c *.h)
+
 NLSPO= $(wildcard nls/*.po)
 NLSGMO= $(NLSPO:.po=.gmo)
 NLSPOT= $(NLSPO:.po=.pot)
@@ -268,7 +270,7 @@ nls/sysstat.pot: $(wildcard *.c)
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall \
-	uninstall_base uninstall_all dist bdist xdist gitdist
+	uninstall_base uninstall_all dist bdist xdist gitdist squeeze
 
 install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
 ifeq ($(INSTALL_DOC),y)
@@ -317,6 +319,14 @@ ifeq ($(INSTALL_ISAG),y)
 endif
 endif
 endif
+
+squeeze:
+	catalogs="$(SOURCE_CODE)"; \
+	for c in $$catalogs; do \
+		echo "Squeezing file: $$c"; \
+		sed 's/[\t ]*$$//g' $$c > squeeze.tmp; \
+		mv squeeze.tmp $$c; \
+	done
 
 install_nls: locales
 ifdef REQUIRE_NLS
