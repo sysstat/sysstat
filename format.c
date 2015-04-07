@@ -1,6 +1,6 @@
 /*
  * format.c: Output format definitions for sadf
- * (C) 2011-2014 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2011-2015 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *

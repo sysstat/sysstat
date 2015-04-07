@@ -1,6 +1,6 @@
 /*
  * pidstat: Report statistics for Linux tasks
- * (C) 2007-2014 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2007-2015 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *

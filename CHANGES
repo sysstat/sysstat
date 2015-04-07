@@ -1,5 +1,24 @@
 Changes:
 
+2015/04/07: Version 11.0.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* Makefile: sysstat init script may sometimes be called rc.sysstat.
+          So use that name when needed.
+	* pidstat: Don't stop if gtime and cgtime fields are unavailable.
+	* Typos fixed in XSD document.
+        * [Peter Schiffer]: Replace spaces with tabs in Makefile.in.
+        * [Peter Schiffer]: Create appropriate directories in DESTDIR if
+          missing.
+        * [Peter Schiffer]: Fixed installation of systemd/cron files on
+          systems w/o systemd.
+        * [Peter Schiffer]: Don't look in weird places for programs during
+          configuration.
+	* [Peter Schiffer]: Portable way to detect 64 bit OS in configure 
+          script.
+	* [Steve Kay]: Fix mpstat SCPU alignment output.
+	* Makefile: Call chkconfig only if $(COPY_ONLY) is set to no.
+	* sysstat(5) manual page updated.
+	* NLS updated.
+
 2015/02/13: Version 11.0.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Vasant Hegde]: sadc: Fix possible race condition in signal
           handler code.
