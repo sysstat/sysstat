@@ -2582,3 +2582,75 @@ __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int cur
 {
 	stub_print_filesystem_stats(a, 2, TRUE);
 }
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t stub_print_fc_stats(struct activity *a, int prev, int curr, int dispavg, unsigned long long itv)
+{
+	int i;
+	struct stats_fc *sfcc,*sfcp;
+
+
+	if (dis) {
+		printf("\n%-11s      FCHBA     hba_rxf/s   hba_txf/s   hba_rxw/s   hba_txw/s\n",
+		       (dispavg ? _("Summary:") : timestamp[curr]));
+	}
+
+	for (i = 0; i < a->nr; i++) {
+		sfcc = (struct stats_fc *) ((char *) a->buf[curr] + i * a->msize);
+		sfcp = (struct stats_fc *) ((char *) a->buf[prev] + i * a->msize);
+
+		printf("%-11s %10s   %11.2f %11.2f %11.2f %11.2f\n",
+		       (dispavg ? _("Average:") : timestamp[curr]),
+		       sfcc->hba_name,
+		       S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
+		       S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
+		       S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
+		       S_VALUE(sfcp->f_txwords,  sfcc->f_txwords,  itv));
+	}
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_fc_stats(struct activity *a, int prev, int curr,
+				       unsigned long long itv)
+{
+	stub_print_fc_stats(a, prev, curr, FALSE, itv);
+}
+
+/*
+ ***************************************************************************
+ * Display average Fibre Channel HBA statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_hba_stats(struct activity *a, int prev, int curr,
+					   unsigned long long itv)
+{
+	stub_print_fc_stats(a, prev, curr, TRUE, itv);
+}
