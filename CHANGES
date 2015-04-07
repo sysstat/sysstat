@@ -1,5 +1,36 @@
 Changes:
 
+2015/04/07: Version 11.1.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* Makefile: sysstat init script may sometimes be called rc.sysstat.
+	  So use that name when needed [11.0.4].
+	* pidstat: Don't stop if gtime and cgtime fields are unavailable
+	  [11.0.4].
+	* sar: Fix output with filesystems having more than MAX_FS_LEN
+	  characters in length.
+	* Updated DTD and XSD documents. XML document, as displayed by
+	  sadf -x, should now be properly validated against them.
+	* [Peter Schiffer]: Replace spaces with tabs in Makefile.in [11.0.4].
+	* [Peter Schiffer]: Create appropriate directories in DESTDIR if
+	  missing [11.0.4].
+	* [Peter Schiffer]: Fixed installation of systemd/cron files on
+	  systems w/o systemd [11.0.4].
+	* [Peter Schiffer]: Don't look in weird places for programs during
+	  configuration [11.0.4].
+	* [Steve Kay]: sar: Added option to display mountpoint names instead
+	  of filesystem names.
+	* [Steve Kay]: sar/sadf: Permit hh:mm:ss as well as hh:mm.
+	* [Steve Kay]: Fix mpstat SCPU alignment output [11.0.4].
+	* [Steve Kay]: Fix unproperly indented line in sar -h output.
+	* Makefile: Call chkconfig only if $(COPY_ONLY) is set to no [11.0.4].
+	* sysstat(5) manual page updated [11.0.4].
+	* [Dimitrios Apostolou]: Updated sargraph tool.
+	* [Dimitrios Apostolou]: Updated sa2 script to support more compression
+	  formats. Simplify logic with regexes.
+	* [Dimitrios Apostolou]: YESTERDAY variable can now be changed in sysstat
+	  config file (/etc/sysconfig/sysstat).
+	* [Dimitrios Apostolou]: By default sa2 now generates yesterday's summary.
+	* CREDITS file updated.
+
 2015/02/13: Version 11.1.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: Added new metrics from /proc/meminfo to memory
 	  statistics.
