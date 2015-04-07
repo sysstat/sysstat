@@ -167,7 +167,8 @@ void display_help(char *progname)
 		 "\t\tEIP6\tIP traffic\t(v6) (errors)\n"
 		 "\t\tICMP6\tICMP traffic\t(v6)\n"
 		 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
-		 "\t\tUDP6\tUDP traffic\t(v6)\n"));
+		 "\t\tUDP6\tUDP traffic\t(v6)\n"
+		 "\t\tFC\tFibre channel HBAs\n"));
 	printf(_("\t-q\tQueue length and load average statistics\n"));
 	printf(_("\t-R\tMemory statistics\n"));
 	printf(_("\t-r [ ALL ]\n"
