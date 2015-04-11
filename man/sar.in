@@ -1,9 +1,9 @@
-.TH SAR 1 "MARCH 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "APRIL 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
-.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]
 .B [ -I {
 .I int
 .B [,...] | SUM | ALL | XALL } ] [ -P {
@@ -1974,6 +1974,11 @@ command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
 Hours must be given in 24-hour format. This option can be
 used only when data are read from a file (option -f).
+.IP "--sadc"
+Indicate which data collector is called by
+.BR sar .
+If the data collector is sought in PATH then enter "which sadc" to
+know where it is located.
 .IP -t
 When reading data from a daily data file, indicate that
 .B sar
