@@ -26,6 +26,7 @@
 #include <time.h>
 #include <errno.h>
 #include <signal.h>
+#include <sys/stat.h>
 
 #include "version.h"
 #include "sa.h"
@@ -109,7 +110,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNTS ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-			  "[ -v ] [ -W ] [ -w ] [ -y ]\n"
+			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -181,6 +182,25 @@ void display_help(char *progname)
 	printf(_("\t-y\tTTY devices statistics\n"));
 	exit(0);
 }
+
+/*
+ ***************************************************************************
+ * Give a hint to the user about where is located the data collector.
+ ***************************************************************************
+ */
+void which_sadc(void)
+{
+	struct stat buf;
+
+	if (stat(SADC_PATH, &buf) < 0) {
+		printf(_("Data collector will be sought in PATH\n"));
+	}
+	else {
+		printf(_("Data collector found: %s\n"), SADC_PATH);
+	}
+	exit(0);
+}
+
 
 /*
  ***************************************************************************
@@ -1178,7 +1198,12 @@ int main(int argc, char **argv)
 	/* Process options */
 	while (opt < argc) {
 
-		if (!strcmp(argv[opt], "-I")) {
+		if (!strcmp(argv[opt], "--sadc")) {
+			/* Locate sadc */
+			which_sadc();
+		}
+
+		else if (!strcmp(argv[opt], "-I")) {
 			if (argv[++opt]) {
 				/* Parse -I option */
 				if (parse_sar_I_opt(argv, &opt, act)) {
