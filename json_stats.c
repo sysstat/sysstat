@@ -2184,6 +2184,10 @@ __print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr]  + i * a->msize);
 		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr]  + i * a->msize);
 
+		if (!sfcc->fchost_name[0])
+			/* We are at the end of the list */
+			break;
+
 		if (sep)
 			printf(",\n");
 

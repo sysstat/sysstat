@@ -2940,6 +2940,10 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
 
+		if (!sfcc->fchost_name[0])
+			/* We are at the end of the list */
+			break;
+
 		render(isdb, pre, PT_NOFLAG ,
 		       "%s\tfch_rxf/s",
 		       "%s",

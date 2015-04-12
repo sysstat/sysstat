@@ -495,5 +495,38 @@ int get_filesystem_nr(void)
 	return fs;
 }
 
+/*
+ ***************************************************************************
+ * Find number of fibre channel hosts in /sys/class/fc_host/.
+ *
+ * RETURNS:
+ * Number of FC hosts.
+ * Return -1 if directory doesn't exist in sysfs.
+ ***************************************************************************
+ */
+int get_fchost_nr(void)
+{
+	DIR *dir;
+	struct dirent *drd;
+	int fc = 0;
+
+	if ((dir = opendir(SYSFS_FCHOST)) == NULL) {
+		/* Directory non-existent */
+		return -1;
+	}
+
+	while ((drd = readdir(dir)) != NULL) {
+
+		if (!strncmp(drd->d_name, "host", 4)) {
+			fc++;
+		}
+	}
+
+	/* Close directory */
+	closedir(dir);
+
+	return fc;
+}
+
 /*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/
 #endif /* SOURCE_SADC */

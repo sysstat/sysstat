@@ -1129,7 +1129,7 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
 
 /*
  ***************************************************************************
- * Get number of FC hosts
+ * Get number of FC hosts.
  *
  * IN:
  * @a	Activity structure.
@@ -1140,19 +1140,11 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
  */
 __nr_t wrap_get_fchost_nr(struct activity *a)
 {
-	DIR *dir;
-	struct dirent *drd;
 	__nr_t n = 0;
 
-	if ((dir = opendir(SYSFS_FCHOST)) == NULL) {
-		return 0;
-	}
+	if ((n = get_fchost_nr()) >= 0)
+		/* Return a positive number even if no FC hosts have been found */
+		return n + NR_FCHOST_PREALLOC;
 
-	while ((drd = readdir(dir)) != NULL)
-		if (strncmp(drd->d_name,"host",4)==0)
-			n++;
-
-	closedir(dir);
-
-	return n;
+	return 0;
 }

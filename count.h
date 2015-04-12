@@ -35,5 +35,7 @@ extern int
 	get_usb_nr(void);
 extern int
 	get_filesystem_nr(void);
+extern int
+	get_fchost_nr(void);
 
 #endif /* _COUNT_H */

@@ -2610,6 +2610,10 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 		sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + i * a->msize);
 
+		if (!sfcc->fchost_name[0])
+			/* We are at the end of the list */
+			break;
+
 		printf("%-11s %9.2f %9.2f %9.2f %9.2f %s\n", timestamp[curr],
 		       S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 		       S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),

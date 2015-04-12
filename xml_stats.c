@@ -2084,6 +2084,10 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
 
+		if (!sfcc->fchost_name[0])
+			/* We are at the end of the list */
+			break;
+
 		xprintf(tab, "<fchost name=\"%s\" "
 			"rxframes=\"%.2f\" "
 			"txframes=\"%.2f\" "
