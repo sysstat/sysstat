@@ -2076,8 +2076,7 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_fchost *sfcc, *sfcp;
 
-	xprintf(tab, "<fchosts>");
-	tab++;
+	xprintf(tab++, "<fchosts per=\"second\">");
 
 	for (i = 0; i < a->nr; i++) {
 
@@ -2089,10 +2088,10 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 			break;
 
 		xprintf(tab, "<fchost name=\"%s\" "
-			"rxframes=\"%.2f\" "
-			"txframes=\"%.2f\" "
-			"rxwords=\"%.2f\" "
-			"txwords=\"%.2f\"/>",
+			"fch_rxf=\"%.2f\" "
+			"fch_txf=\"%.2f\" "
+			"fch_rxw=\"%.2f\" "
+			"fch_txw=\"%.2f\"/>",
 			sfcc->fchost_name,
 			S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 			S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
