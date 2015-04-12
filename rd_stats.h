@@ -27,6 +27,8 @@
 #define MAX_PROD_LEN	48
 /* Maximum length of filesystem name */
 #define MAX_FS_LEN	128
+/* Maximum length of FC host name */
+#define MAX_FCH_LEN	16
 
 #define CNT_PART	1
 #define CNT_ALL_DEV	0
@@ -64,7 +66,10 @@
 #define MTAB		"/etc/mtab"
 #define IF_DUPLEX	"/sys/class/net/%s/duplex"
 #define IF_SPEED	"/sys/class/net/%s/speed"
-
+#define FC_RX_FRAMES	"%s/%s/statistics/rx_frames"
+#define FC_TX_FRAMES	"%s/%s/statistics/tx_frames"
+#define FC_RX_WORDS	"%s/%s/statistics/rx_words"
+#define FC_TX_WORDS	"%s/%s/statistics/tx_words"
 
 /*
  ***************************************************************************
@@ -550,11 +555,11 @@ struct stats_filesystem {
 
 /* Structure for Fibre Channel HBA statistics */
 struct stats_fchost {
-	unsigned long f_rxframes	__attribute__ ((aligned (8)));
-	unsigned long f_txframes	__attribute__ ((aligned (8)));
-	unsigned long f_rxwords		__attribute__ ((aligned (8)));
-	unsigned long f_txwords		__attribute__ ((aligned (8)));
-	char	      fchost_name[16]	__attribute__ ((aligned (8)));
+	unsigned long f_rxframes		__attribute__ ((aligned (8)));
+	unsigned long f_txframes		__attribute__ ((aligned (8)));
+	unsigned long f_rxwords			__attribute__ ((aligned (8)));
+	unsigned long f_txwords			__attribute__ ((aligned (8)));
+	char	      fchost_name[MAX_FCH_LEN]	__attribute__ ((aligned (8)));
 };
 
 #define STATS_FCHOST_SIZE	(sizeof(struct stats_fchost))

@@ -2139,7 +2139,7 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 	struct dirent *drd;
 	struct stats_fchost *st_fc_i;
 	int fch = 0;
-	char fcstat_filename[MAX_FS_LEN];
+	char fcstat_filename[MAX_PF_NAME];
 	char line[256];
 	unsigned long rx_frames, tx_frames, rx_words, tx_words;
 
@@ -2151,39 +2151,40 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 	 * Read each of the counters via sysfs, where they are
 	 * returned as hex values (e.g. 0x72400).
 	 */
-	while ((drd = readdir(dir)) != NULL) {
+	while (((drd = readdir(dir)) != NULL) && (fch < nbr)) {
 		rx_frames = tx_frames = rx_words = tx_words = 0;
 
-		if (strncmp(drd->d_name, "host",4) == 0) {
-			sprintf(fcstat_filename, "%s/%s/statistics/rx_frames",
-					SYSFS_FCHOST, drd->d_name);
+		if (!strncmp(drd->d_name, "host", 4)) {
+
+			sprintf(fcstat_filename, FC_RX_FRAMES, SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line, sizeof(line), fp))
+				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &rx_frames);
+				}
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename, "%s/%s/statistics/tx_frames",
-					SYSFS_FCHOST, drd->d_name);
+			sprintf(fcstat_filename, FC_TX_FRAMES, SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line, sizeof(line), fp))
+				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &tx_frames);
+				}
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename, "%s/%s/statistics/rx_words",
-					SYSFS_FCHOST,drd->d_name);
+			sprintf(fcstat_filename, FC_RX_WORDS, SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line, sizeof(line), fp))
+				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &rx_words);
+				}
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename, "%s/%s/statistics/tx_words",
-					SYSFS_FCHOST, drd->d_name);
+			sprintf(fcstat_filename, FC_TX_WORDS, SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line, sizeof(line), fp))
+				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &tx_words);
+				}
 				fclose(fp);
 			}
 
