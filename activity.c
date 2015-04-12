@@ -1239,7 +1239,7 @@ struct activity fchost_act = {
 #endif
 #ifdef SOURCE_SAR
 	.f_print	= print_fchost_stats,
-	.f_print_avg	= print_avg_fchost_stats,
+	.f_print_avg	= print_fchost_stats,
 #endif
 #ifdef SOURCE_SADF
 	.f_render	= render_fchost_stats,
