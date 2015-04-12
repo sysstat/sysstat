@@ -65,7 +65,7 @@
 #define SYSFS_BMAXPOWER		"bMaxPower"
 #define SYSFS_MANUFACTURER	"manufacturer"
 #define SYSFS_PRODUCT		"product"
-#define SYSFS_FCHBA		"/sys/class/fc_host"
+#define SYSFS_FCHOST		"/sys/class/fc_host"
 
 #define MAX_FILE_LEN		256
 #define MAX_PF_NAME		1024

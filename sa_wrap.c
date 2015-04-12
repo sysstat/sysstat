@@ -891,12 +891,12 @@ __read_funct_t wrap_read_filesystem(struct activity *a)
  * @a	Activity structure with statistics.
  ***************************************************************************
  */
-__read_funct_t wrap_read_hba(struct activity *a)
+__read_funct_t wrap_read_fchost(struct activity *a)
 {
-	struct stats_fc *st_fc
-		= (struct stats_fc *) a->_buf0;
+	struct stats_fchost *st_fc
+		= (struct stats_fchost *) a->_buf0;
 
-	read_hba(st_fc, a->nr);
+	read_fchost(st_fc, a->nr);
 
 	return;
 }
@@ -1129,22 +1129,22 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
 
 /*
  ***************************************************************************
- * Get number of HBAs
+ * Get number of FC hosts
  *
  * IN:
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of HBAs + a pre-allocation constant.
+ * Number of FC hosts + a pre-allocation constant.
  ***************************************************************************
  */
-__nr_t wrap_get_hba_nr(struct activity *a)
+__nr_t wrap_get_fchost_nr(struct activity *a)
 {
 	DIR *dir;
 	struct dirent *drd;
 	__nr_t n = 0;
 
-	if ((dir = opendir(SYSFS_FCHBA)) == NULL) {
+	if ((dir = opendir(SYSFS_FCHOST)) == NULL) {
 		return 0;
 	}
 

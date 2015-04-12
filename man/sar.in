@@ -1756,27 +1756,27 @@ Note that fibre channel statistics depend on
 option "-S DISK" to be collected.
 The following values are displayed:
 
-.B FCHBA
+.B FCHOST
 .RS
 Name of the fibre channel host bus adapter (HBA) interface for which statistics are reported.
 .RE
 
-.B hba_rxf/s
+.B fch_rxf/s
 .RS
 The total number of frames received per second.
 .RE
 
-.B hba_txf/s
+.B fch_txf/s
 .RS
 The total number of frames transmitted per second.
 .RE
 
-.B hba_rxw/s
+.B fch_rxw/s
 .RS
 The total number of words received per second.
 .RE
 
-.B hba_txw/s
+.B fch_txw/s
 .RS
 The total number of words transmitted per second.
 .RE

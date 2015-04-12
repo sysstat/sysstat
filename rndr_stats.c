@@ -2930,39 +2930,39 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
  * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
-__print_funct_t render_hba_stats(struct activity *a, int isdb, char *pre,
-					int curr, unsigned long long itv)
+__print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
+				    int curr, unsigned long long itv)
 {
 	int i;
-	struct stats_fc *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp;
 
 	for (i = 0; i < a->nr; i++) {
-		sfcc = (struct stats_fc *) ((char *) a->buf[curr] + i * a->msize);
-		sfcp = (struct stats_fc *) ((char *) a->buf[!curr] + i * a->msize);
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
 
 		render(isdb, pre, PT_NOFLAG ,
-		       "%s\thba_rxf/s",
+		       "%s\tfch_rxf/s",
 		       "%s",
-		       cons(sv, sfcc->hba_name, NOVAL),
+		       cons(sv, sfcc->fchost_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 	               NULL);
 		render(isdb, pre, PT_NOFLAG,
-		       "%s\thba_txf/s", NULL,
-		       cons(sv, sfcc->hba_name, NULL),
+		       "%s\tfch_txf/s", NULL,
+		       cons(sv, sfcc->fchost_name, NULL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 		       NULL);
 		render(isdb, pre, PT_NOFLAG,
-		       "%s\thba_rxw/s", NULL,
-		       cons(sv, sfcc->hba_name, NULL),
+		       "%s\tfch_rxw/s", NULL,
+		       cons(sv, sfcc->fchost_name, NULL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv),
 		       NULL);
 		render(isdb, pre,
 		       (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN),
-		       "%s\thba_txw/s", NULL,
-		       cons(sv, sfcc->hba_name, NULL),
+		       "%s\tfch_txw/s", NULL,
+		       cons(sv, sfcc->fchost_name, NULL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv),
 		       NULL);

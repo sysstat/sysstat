@@ -2595,24 +2595,25 @@ __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int cur
  * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
-__print_funct_t stub_print_fc_stats(struct activity *a, int prev, int curr, int dispavg, unsigned long long itv)
+__print_funct_t stub_print_fchost_stats(struct activity *a, int prev, int curr,
+					int dispavg, unsigned long long itv)
 {
 	int i;
-	struct stats_fc *sfcc,*sfcp;
+	struct stats_fchost *sfcc,*sfcp;
 
 
 	if (dis) {
-		printf("\n%-11s      FCHBA     hba_rxf/s   hba_txf/s   hba_rxw/s   hba_txw/s\n",
+		printf("\n%-11s     FCHOST     fch_rxf/s   fch_txf/s   fch_rxw/s   fch_txw/s\n",
 		       (dispavg ? _("Summary:") : timestamp[curr]));
 	}
 
 	for (i = 0; i < a->nr; i++) {
-		sfcc = (struct stats_fc *) ((char *) a->buf[curr] + i * a->msize);
-		sfcp = (struct stats_fc *) ((char *) a->buf[prev] + i * a->msize);
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + i * a->msize);
 
 		printf("%-11s %10s   %11.2f %11.2f %11.2f %11.2f\n",
 		       (dispavg ? _("Average:") : timestamp[curr]),
-		       sfcc->hba_name,
+		       sfcc->fchost_name,
 		       S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 		       S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 		       S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
@@ -2632,10 +2633,10 @@ __print_funct_t stub_print_fc_stats(struct activity *a, int prev, int curr, int 
  * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
-__print_funct_t print_fc_stats(struct activity *a, int prev, int curr,
+__print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_fc_stats(a, prev, curr, FALSE, itv);
+	stub_print_fchost_stats(a, prev, curr, FALSE, itv);
 }
 
 /*
@@ -2649,8 +2650,8 @@ __print_funct_t print_fc_stats(struct activity *a, int prev, int curr,
  * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
-__print_funct_t print_avg_hba_stats(struct activity *a, int prev, int curr,
+__print_funct_t print_avg_fchost_stats(struct activity *a, int prev, int curr,
 					   unsigned long long itv)
 {
-	stub_print_fc_stats(a, prev, curr, TRUE, itv);
+	stub_print_fchost_stats(a, prev, curr, TRUE, itv);
 }

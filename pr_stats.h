@@ -90,7 +90,7 @@ extern __print_funct_t print_pwr_usb_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_filesystem_stats
 	(struct activity *, int, int, unsigned long long);
-extern __print_funct_t print_fc_stats
+extern __print_funct_t print_fchost_stats
 	(struct activity *, int, int, unsigned long long);
 
 /* Functions used to display average statistics */
@@ -118,7 +118,7 @@ extern __print_funct_t print_avg_pwr_usb_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t print_avg_filesystem_stats
 	(struct activity *, int, int, unsigned long long);
-extern __print_funct_t print_avg_hba_stats
+extern __print_funct_t print_avg_fchost_stats
 	(struct activity *, int, int, unsigned long long);
 
 #endif /* _PR_STATS_H */

@@ -2171,30 +2171,30 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
  * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
-__print_funct_t json_print_fc_stats(struct activity *a, int curr, int tab,
-				    unsigned long long itv)
+__print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
+					unsigned long long itv)
 {
 	int i;
-	struct stats_fc *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp;
 	int sep = FALSE;
 
-	xprintf(tab++, "\"fc\": [");
+	xprintf(tab++, "\"fchosts\": [");
 
 	for (i = 0; i < a->nr; i++) {
-		sfcc = (struct stats_fc *) ((char *) a->buf[curr]  + i * a->msize);
-		sfcp = (struct stats_fc *) ((char *) a->buf[!curr]  + i * a->msize);
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr]  + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr]  + i * a->msize);
 
 		if (sep)
 			printf(",\n");
 
 		sep = TRUE;
 
-		xprintf0(tab, "{\"hba\": \"%s\", "
-			 "\"hba_rxf\": %.2f, "
-			 "\"hba_txf\": %.2f, "
-			 "\"hba_rxw\": %.2f, "
-			 "\"hba_txw\": %.2f}",
-			 sfcc->hba_name,
+		xprintf0(tab, "{\"fchost\": \"%s\", "
+			 "\"fch_rxf\": %.2f, "
+			 "\"fch_txf\": %.2f, "
+			 "\"fch_rxw\": %.2f, "
+			 "\"fch_txw\": %.2f}",
+			 sfcc->fchost_name,
 			 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 			 S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 			 S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),

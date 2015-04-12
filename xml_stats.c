@@ -2070,31 +2070,31 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
  * @itv		Interval of time in jiffies.
  ***************************************************************************
  */
-__print_funct_t xml_print_fc_stats(struct activity *a, int curr, int tab,
-					   unsigned long long itv)
+__print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
+				       unsigned long long itv)
 {
 	int i;
-	struct stats_fc *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp;
 
-	xprintf(tab, "<fc>");
+	xprintf(tab, "<fchosts>");
 	tab++;
 
 	for (i = 0; i < a->nr; i++) {
 
-		sfcc = (struct stats_fc *) ((char *) a->buf[curr] + i * a->msize);
-		sfcp = (struct stats_fc *) ((char *) a->buf[!curr] + i * a->msize);
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
 
-		xprintf(tab, "<hba name=\"%s\" "
+		xprintf(tab, "<fchost name=\"%s\" "
 			"rxframes=\"%.2f\" "
 			"txframes=\"%.2f\" "
 			"rxwords=\"%.2f\" "
 			"txwords=\"%.2f\"/>",
-			sfcc->hba_name,
+			sfcc->fchost_name,
 			S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 			S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 			S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
 			S_VALUE(sfcp->f_txwords,  sfcc->f_rxwords,  itv));
 	}
 
-	xprintf(--tab, "</fc>");
+	xprintf(--tab, "</fchosts>");
 }

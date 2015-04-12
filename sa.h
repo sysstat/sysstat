@@ -63,7 +63,7 @@
 #define A_PWR_WGHFREQ	35
 #define A_PWR_USB	36
 #define A_FILESYSTEM	37
-#define A_FC		38
+#define A_NET_FC	38
 
 
 /* Macro used to flag an activity that should be collected */
@@ -764,7 +764,7 @@ extern __nr_t
 extern __nr_t
 	wrap_get_filesystem_nr(struct activity *);
 extern __nr_t
-	wrap_get_hba_nr(struct activity *);
+	wrap_get_fchost_nr(struct activity *);
 
 /* Functions used to read activities statistics */
 extern __read_funct_t
@@ -842,7 +842,7 @@ extern __read_funct_t
 extern __read_funct_t
 	wrap_read_filesystem(struct activity *);
 extern __read_funct_t
-	wrap_read_hba(struct activity *);
+	wrap_read_fchost(struct activity *);
 
 /* Other functions */
 extern void

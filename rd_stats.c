@@ -2125,75 +2125,74 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
  * Read Fibre Channel HBA statistics.
  *
  * IN:
- * @st_fc		Structure where stats will be saved.
- * @nbr			Total number of HBAs.
+ * @st_fc	Structure where stats will be saved.
+ * @nbr		Total number of HBAs.
  *
  * OUT:
  * @st_fc	Structure with statistics.
  ***************************************************************************
  */
-void read_hba(struct stats_fc *st_fc, int nbr)
+void read_fchost(struct stats_fchost *st_fc, int nbr)
 {
 	DIR *dir;
 	FILE *fp;
 	struct dirent *drd;
-	struct stats_fc *st_fc_i;
-	int hba = 0;
+	struct stats_fchost *st_fc_i;
+	int fch = 0;
 	char fcstat_filename[MAX_FS_LEN];
 	char line[256];
-	unsigned long rx_frames,
-		      tx_frames,
-		      rx_words,
-		      tx_words;
+	unsigned long rx_frames, tx_frames, rx_words, tx_words;
 
-	/* Each HBA, if present, will have its own hostX entry within SYSFS_FCHBA */
-	if ((dir = opendir(SYSFS_FCHBA)) == NULL)
-		return; /* No HBAs */
+	/* Each host, if present, will have its own hostX entry within SYSFS_FCHOST */
+	if ((dir = opendir(SYSFS_FCHOST)) == NULL)
+		return; /* No FC hosts */
 
-	/* Read each of the counters via sysfs, where they are
-	 * returned as hex values (e.g. 0x72400) */
+	/*
+	 * Read each of the counters via sysfs, where they are
+	 * returned as hex values (e.g. 0x72400).
+	 */
 	while ((drd = readdir(dir)) != NULL) {
 		rx_frames = tx_frames = rx_words = tx_words = 0;
 
-		if (strncmp(drd->d_name,"host",4) == 0) {
-			sprintf(fcstat_filename,"%s/%s/statistics/rx_frames",
-					SYSFS_FCHBA,drd->d_name);
+		if (strncmp(drd->d_name, "host",4) == 0) {
+			sprintf(fcstat_filename, "%s/%s/statistics/rx_frames",
+					SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line,sizeof(line),fp))
-					sscanf(line, "%lx",&rx_frames);
+				if (fgets(line, sizeof(line), fp))
+					sscanf(line, "%lx", &rx_frames);
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename,"%s/%s/statistics/tx_frames",
-					SYSFS_FCHBA,drd->d_name);
+			sprintf(fcstat_filename, "%s/%s/statistics/tx_frames",
+					SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line,sizeof(line),fp))
-					sscanf(line, "%lx",&tx_frames);
+				if (fgets(line, sizeof(line), fp))
+					sscanf(line, "%lx", &tx_frames);
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename,"%s/%s/statistics/rx_words",
-					SYSFS_FCHBA,drd->d_name);
+			sprintf(fcstat_filename, "%s/%s/statistics/rx_words",
+					SYSFS_FCHOST,drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line,sizeof(line),fp))
-					sscanf(line, "%lx",&rx_words);
+				if (fgets(line, sizeof(line), fp))
+					sscanf(line, "%lx", &rx_words);
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename,"%s/%s/statistics/tx_words",
-					SYSFS_FCHBA,drd->d_name);
+			sprintf(fcstat_filename, "%s/%s/statistics/tx_words",
+					SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
-				if (fgets(line,sizeof(line),fp))
-					sscanf(line, "%lx",&tx_words);
+				if (fgets(line, sizeof(line), fp))
+					sscanf(line, "%lx", &tx_words);
 				fclose(fp);
 			}
 
-			st_fc_i = st_fc + hba++;
+			st_fc_i = st_fc + fch++;
 			st_fc_i->f_rxframes = rx_frames;
 			st_fc_i->f_txframes = tx_frames;
 			st_fc_i->f_rxwords  = rx_words;
 			st_fc_i->f_txwords  = tx_words;
-			strcpy(st_fc_i->hba_name, drd->d_name);
+			strcpy(st_fc_i->fchost_name, drd->d_name);
 		}
 
 	}

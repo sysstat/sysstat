@@ -1837,7 +1837,7 @@ int parse_sar_n_opt(char *argv[], int *opt, struct activity *act[])
 			SELECT_ACTIVITY(A_NET_UDP6);
 		}
 		else if (!strcmp(t, "FC")) {
-			SELECT_ACTIVITY(A_FC);
+			SELECT_ACTIVITY(A_NET_FC);
 		}
 		else if (!strcmp(t, K_ALL)) {
 			SELECT_ACTIVITY(A_NET_DEV);
@@ -1858,7 +1858,7 @@ int parse_sar_n_opt(char *argv[], int *opt, struct activity *act[])
 			SELECT_ACTIVITY(A_NET_ICMP6);
 			SELECT_ACTIVITY(A_NET_EICMP6);
 			SELECT_ACTIVITY(A_NET_UDP6);
-			SELECT_ACTIVITY(A_FC);
+			SELECT_ACTIVITY(A_NET_FC);
 		}
 		else
 			return 1;

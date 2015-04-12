@@ -549,15 +549,15 @@ struct stats_filesystem {
 #define STATS_FILESYSTEM_SIZE	(sizeof(struct stats_filesystem))
 
 /* Structure for Fibre Channel HBA statistics */
-struct stats_fc {
-	unsigned long f_rxframes	__attribute__ ((aligned (16)));
-	unsigned long f_txframes	__attribute__ ((aligned (16)));
-	unsigned long f_rxwords		__attribute__ ((aligned (16)));
-	unsigned long f_txwords		__attribute__ ((aligned (16)));
-	char	 hba_name[16]		__attribute__ ((aligned (16)));
+struct stats_fchost {
+	unsigned long f_rxframes	__attribute__ ((aligned (8)));
+	unsigned long f_txframes	__attribute__ ((aligned (8)));
+	unsigned long f_rxwords		__attribute__ ((aligned (8)));
+	unsigned long f_txwords		__attribute__ ((aligned (8)));
+	char	      fchost_name[16]	__attribute__ ((aligned (8)));
 };
 
-#define STATS_FC_SIZE	(sizeof(struct stats_fc))
+#define STATS_FCHOST_SIZE	(sizeof(struct stats_fchost))
 
 /*
  ***************************************************************************
@@ -642,6 +642,6 @@ extern void
 extern void
 	read_filesystem(struct stats_filesystem *, int);
 extern void
-	read_hba(struct stats_fc *, int);
+	read_fchost(struct stats_fchost *, int);
 
 #endif /* _RD_STATS_H */
