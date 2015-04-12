@@ -633,9 +633,10 @@ Possible keywords are
 .BR IP6 ,
 .BR EIP6 ,
 .BR ICMP6 ,
-.BR EICMP6
+.BR EICMP6 ,
+.BR UDP6
 and
-.BR UDP6 .
+.BR FC .
 
 With the
 .B DEV
@@ -1747,6 +1748,40 @@ delivered for reasons other than the lack of an application
 at the destination port [udpInErrors].
 .RE
 
+With the
+.B FC
+keyword, statistics about fibre channel traffic are reported.
+Note that fibre channel statistics depend on
+.BR sadc 's
+option "-S DISK" to be collected.
+The following values are displayed:
+
+.B FCHBA
+.RS
+Name of the fibre channel host bus adapter (HBA) interface for which statistics are reported.
+.RE
+
+.B hba_rxf/s
+.RS
+The total number of frames received per second.
+.RE
+
+.B hba_txf/s
+.RS
+The total number of frames transmitted per second.
+.RE
+
+.B hba_rxw/s
+.RS
+The total number of words received per second.
+.RE
+
+.B hba_txw/s
+.RS
+The total number of words transmitted per second.
+.RE
+
+.RE
 The
 .B ALL
 keyword is equivalent to specifying all the keywords above and therefore all the network

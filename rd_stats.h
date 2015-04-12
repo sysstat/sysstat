@@ -548,6 +548,17 @@ struct stats_filesystem {
 
 #define STATS_FILESYSTEM_SIZE	(sizeof(struct stats_filesystem))
 
+/* Structure for Fibre Channel HBA statistics */
+struct stats_fc {
+	unsigned long f_rxframes	__attribute__ ((aligned (16)));
+	unsigned long f_txframes	__attribute__ ((aligned (16)));
+	unsigned long f_rxwords		__attribute__ ((aligned (16)));
+	unsigned long f_txwords		__attribute__ ((aligned (16)));
+	char	 hba_name[16]		__attribute__ ((aligned (16)));
+};
+
+#define STATS_FC_SIZE	(sizeof(struct stats_fc))
+
 /*
  ***************************************************************************
  * Prototypes for functions used to read system statistics
@@ -630,5 +641,7 @@ extern void
 	read_bus_usb_dev(struct stats_pwr_usb *, int);
 extern void
 	read_filesystem(struct stats_filesystem *, int);
+extern void
+	read_hba(struct stats_fc *, int);
 
 #endif /* _RD_STATS_H */

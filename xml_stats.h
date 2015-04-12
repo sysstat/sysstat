@@ -89,5 +89,7 @@ extern __print_funct_t xml_print_pwr_usb_stats
 	(struct activity *, int, int, unsigned long long);
 extern __print_funct_t xml_print_filesystem_stats
 	(struct activity *, int, int, unsigned long long);
+extern __print_funct_t xml_print_fc_stats
+	(struct activity *, int, int, unsigned long long);
 
 #endif /* _XML_STATS_H */
