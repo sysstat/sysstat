@@ -612,6 +612,12 @@ Manufacturer name.
 .RS
 Product name.
 .RE
+
+The
+.B ALL
+keyword is equivalent to specifying all the keywords above and therefore all the power
+management statistics are reported.
+.RE
 .RE
 .IP "-n { keyword [,...] | ALL }"
 Report network statistics.
@@ -1773,15 +1779,14 @@ The total number of frames transmitted per second.
 
 .B fch_rxw/s
 .RS
-The total number of words received per second.
+The total number of transmission words received per second.
 .RE
 
 .B fch_txw/s
 .RS
-The total number of words transmitted per second.
+The total number of transmission words transmitted per second.
 .RE
 
-.RE
 The
 .B ALL
 keyword is equivalent to specifying all the keywords above and therefore all the network
