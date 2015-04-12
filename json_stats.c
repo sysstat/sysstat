@@ -2159,3 +2159,48 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 	printf("\n");
 	xprintf0(--tab, "]");
 }
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
+					unsigned long long itv)
+{
+	int i;
+	struct stats_fchost *sfcc, *sfcp;
+	int sep = FALSE;
+
+	xprintf(tab++, "\"fchosts\": [");
+
+	for (i = 0; i < a->nr; i++) {
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr]  + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr]  + i * a->msize);
+
+		if (sep)
+			printf(",\n");
+
+		sep = TRUE;
+
+		xprintf0(tab, "{\"fchost\": \"%s\", "
+			 "\"fch_rxf\": %.2f, "
+			 "\"fch_txf\": %.2f, "
+			 "\"fch_rxw\": %.2f, "
+			 "\"fch_txw\": %.2f}",
+			 sfcc->fchost_name,
+			 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
+			 S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
+			 S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
+			 S_VALUE(sfcp->f_txwords,  sfcc->f_txwords,  itv));
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+}

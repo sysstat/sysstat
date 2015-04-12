@@ -1226,6 +1226,37 @@ struct activity filesystem_act = {
 	.bitmap		= NULL
 };
 
+/* Fibre Channel HBA usage activity */
+struct activity fchost_act = {
+	.id		= A_NET_FC,
+	.options	= AO_NULL,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DISK,
+#ifdef SOURCE_SADC
+	.f_count_index	= 10,	/* wrap_get_fchost_nr() */
+	.f_count2	= NULL,
+	.f_read		= wrap_read_fchost,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_fchost_stats,
+	.f_print_avg	= print_avg_fchost_stats,
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_fchost_stats,
+	.f_xml_print	= xml_print_fchost_stats,
+	.f_json_print	= json_print_fchost_stats,
+	.hdr_line	= "FCHOST;fch_rxf/s;fch_txf/s;fch_rxw/s;fch_txw/s",
+	.name		= "A_FCHOST",
+#endif
+	.nr		= -1,
+	.nr2		= 1,
+	.fsize		= STATS_FCHOST_SIZE,
+	.msize		= STATS_FCHOST_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
 #ifdef SOURCE_SADC
 /*
  * Array of functions used to count number of items.
@@ -1240,7 +1271,8 @@ __nr_t (*f_count[NR_F_COUNT]) (struct activity *) = {
 	wrap_get_temp_nr,
 	wrap_get_in_nr,
 	wrap_get_usb_nr,
-	wrap_get_filesystem_nr
+	wrap_get_filesystem_nr,
+	wrap_get_fchost_nr
 };
 #endif
 
@@ -1289,5 +1321,6 @@ struct activity *act[NR_ACT] = {
 	&pwr_wghfreq_act,
 	&pwr_usb_act,		/* AO_CLOSE_MARKUP */
 	/* </power-management> */
-	&filesystem_act
+	&filesystem_act,
+	&fchost_act
 };

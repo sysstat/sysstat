@@ -19,6 +19,9 @@
  ***************************************************************************
  */
 
+#include <dirent.h>
+#include <string.h>
+
 #include "sa.h"
 #include "rd_stats.h"
 #include "count.h"
@@ -879,6 +882,28 @@ __read_funct_t wrap_read_filesystem(struct activity *a)
 
 /*
  ***************************************************************************
+ * Read Fibre Channel HBA statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_fchost(struct activity *a)
+{
+	struct stats_fchost *st_fc
+		= (struct stats_fchost *) a->_buf0;
+
+	read_fchost(st_fc, a->nr);
+
+	return;
+}
+
+
+/*
+ ***************************************************************************
  * Count number of interrupts that are in /proc/stat file.
  * Truncate the number of different individual interrupts to NR_IRQS.
  *
@@ -1100,4 +1125,34 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
 		return n + NR_FILESYSTEM_PREALLOC;
 
 	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Get number of FC hosts
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * Number of FC hosts + a pre-allocation constant.
+ ***************************************************************************
+ */
+__nr_t wrap_get_fchost_nr(struct activity *a)
+{
+	DIR *dir;
+	struct dirent *drd;
+	__nr_t n = 0;
+
+	if ((dir = opendir(SYSFS_FCHOST)) == NULL) {
+		return 0;
+	}
+
+	while ((drd = readdir(dir)) != NULL)
+		if (strncmp(drd->d_name,"host",4)==0)
+			n++;
+
+	closedir(dir);
+
+	return n;
 }

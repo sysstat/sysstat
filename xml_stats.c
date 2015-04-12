@@ -2058,3 +2058,43 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 
 	xprintf(--tab, "</filesystems>");
 }
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
+				       unsigned long long itv)
+{
+	int i;
+	struct stats_fchost *sfcc, *sfcp;
+
+	xprintf(tab, "<fchosts>");
+	tab++;
+
+	for (i = 0; i < a->nr; i++) {
+
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
+
+		xprintf(tab, "<fchost name=\"%s\" "
+			"rxframes=\"%.2f\" "
+			"txframes=\"%.2f\" "
+			"rxwords=\"%.2f\" "
+			"txwords=\"%.2f\"/>",
+			sfcc->fchost_name,
+			S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
+			S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
+			S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
+			S_VALUE(sfcp->f_txwords,  sfcc->f_rxwords,  itv));
+	}
+
+	xprintf(--tab, "</fchosts>");
+}

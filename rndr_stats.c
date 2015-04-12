@@ -2917,3 +2917,54 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		       NULL);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
+				    int curr, unsigned long long itv)
+{
+	int i;
+	struct stats_fchost *sfcc, *sfcp;
+
+	for (i = 0; i < a->nr; i++) {
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
+
+		render(isdb, pre, PT_NOFLAG ,
+		       "%s\tfch_rxf/s",
+		       "%s",
+		       cons(sv, sfcc->fchost_name, NOVAL),
+		       NOVAL,
+		       S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
+	               NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "%s\tfch_txf/s", NULL,
+		       cons(sv, sfcc->fchost_name, NULL),
+		       NOVAL,
+		       S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
+		       NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "%s\tfch_rxw/s", NULL,
+		       cons(sv, sfcc->fchost_name, NULL),
+		       NOVAL,
+		       S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv),
+		       NULL);
+		render(isdb, pre,
+		       (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN),
+		       "%s\tfch_txw/s", NULL,
+		       cons(sv, sfcc->fchost_name, NULL),
+		       NOVAL,
+		       S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv),
+		       NULL);
+	}
+}
