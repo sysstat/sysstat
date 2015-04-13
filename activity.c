@@ -950,7 +950,7 @@ struct activity net_eicmp6_act = {
 /* UDPv6 network traffic activity */
 struct activity net_udp6_act = {
 	.id		= A_NET_UDP6,
-	.options	= AO_CLOSE_MARKUP,
+	.options	= AO_NULL,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_IPV6,
 #ifdef SOURCE_SADC
@@ -1229,7 +1229,7 @@ struct activity filesystem_act = {
 /* Fibre Channel HBA usage activity */
 struct activity fchost_act = {
 	.id		= A_NET_FC,
-	.options	= AO_NULL,
+	.options	= AO_CLOSE_MARKUP,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
@@ -1311,7 +1311,8 @@ struct activity *act[NR_ACT] = {
 	&net_eip6_act,
 	&net_icmp6_act,
 	&net_eicmp6_act,
-	&net_udp6_act,		/* AO_CLOSE_MARKUP */
+	&net_udp6_act,
+	&fchost_act,		/* AO_CLOSE_MARKUP */
 	/* </network> */
 	/* <power-management> */
 	&pwr_cpufreq_act,
@@ -1321,6 +1322,5 @@ struct activity *act[NR_ACT] = {
 	&pwr_wghfreq_act,
 	&pwr_usb_act,		/* AO_CLOSE_MARKUP */
 	/* </power-management> */
-	&filesystem_act,
-	&fchost_act
+	&filesystem_act
 };

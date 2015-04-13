@@ -2076,7 +2076,11 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_fchost *sfcc, *sfcp;
 
-	xprintf(tab++, "<fchosts per=\"second\">");
+	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+		goto close_xml_markup;
+
+	xml_markup_network(tab, OPEN_XML_MARKUP);
+	tab++;
 
 	for (i = 0; i < a->nr; i++) {
 
@@ -2098,6 +2102,10 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 			S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
 			S_VALUE(sfcp->f_txwords,  sfcc->f_rxwords,  itv));
 	}
+	tab--;
 
-	xprintf(--tab, "</fchosts>");
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_network(tab, CLOSE_XML_MARKUP);
+	}
 }
