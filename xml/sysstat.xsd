@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.0 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.1 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -370,6 +370,7 @@
 		<xs:element name="net-icmp6" type="net-icmp6-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="net-eicmp6" type="net-eicmp6-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="net-udp6" type="net-udp6-type" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="fchost" type="fchost-type" minOccurs="0" maxOccurs="unbounded"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="per" type="per-type" use="required"></xs:attribute>
 </xs:complexType>
@@ -598,6 +599,15 @@
 	<xs:attribute name="odgm6" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="noport6" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="idgmer6" type="hundredth-type" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="fchost" type="fchost-type"></xs:element>
+<xs:complexType name="fchost-type">
+	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+	<xs:attribute name="fch_rxf" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="fch_txf" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="fch_rxw" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="fch_txw" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="power-management" type="power-management-type"></xs:element>
