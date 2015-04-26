@@ -615,8 +615,7 @@ __print_funct_t xml_print_serial_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_serial *ssc, *ssp;
 
-	xprintf(tab, "<serial per=\"second\">");
-	tab++;
+	xprintf(tab++, "<serial per=\"second\">");
 
 	for (i = 0; i < a->nr; i++) {
 
@@ -667,8 +666,7 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 	struct ext_disk_stats xds;
 	char *dev_name, *persist_dev_name;
 
-	xprintf(tab, "<disk per=\"second\">");
-	tab++;
+	xprintf(tab++, "<disk per=\"second\">");
 
 	for (i = 0; i < a->nr; i++) {
 
@@ -2022,8 +2020,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 	int i;
 	struct stats_filesystem *sfc;
 
-	xprintf(tab, "<filesystems>");
-	tab++;
+	xprintf(tab++, "<filesystems>");
 
 	for (i = 0; i < a->nr; i++) {
 
