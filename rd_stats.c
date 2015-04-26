@@ -2156,7 +2156,8 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 
 		if (!strncmp(drd->d_name, "host", 4)) {
 
-			sprintf(fcstat_filename, FC_RX_FRAMES, SYSFS_FCHOST, drd->d_name);
+			snprintf(fcstat_filename, MAX_PF_NAME, FC_RX_FRAMES,
+				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &rx_frames);
@@ -2164,7 +2165,8 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename, FC_TX_FRAMES, SYSFS_FCHOST, drd->d_name);
+			snprintf(fcstat_filename, MAX_PF_NAME, FC_TX_FRAMES,
+				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &tx_frames);
@@ -2172,7 +2174,8 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename, FC_RX_WORDS, SYSFS_FCHOST, drd->d_name);
+			snprintf(fcstat_filename, MAX_PF_NAME, FC_RX_WORDS,
+				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &rx_words);
@@ -2180,7 +2183,8 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 				fclose(fp);
 			}
 
-			sprintf(fcstat_filename, FC_TX_WORDS, SYSFS_FCHOST, drd->d_name);
+			snprintf(fcstat_filename, MAX_PF_NAME, FC_TX_WORDS,
+				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
 					sscanf(line, "%lx", &tx_words);
