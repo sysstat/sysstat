@@ -190,9 +190,14 @@ int ioc_init(void)
 				/* conventional usage for unsupported device */
 				continue;
 			}
-			if (indirect >= MAX_BLKDEV) {
+			if (indirect > MAX_BLKDEV) {
 				fprintf(stderr, "%s: Indirect major #%u out of range\n",
 					ioconf_name, indirect);
+				continue;
+			}
+			if (major > MAX_BLKDEV) {
+				fprintf(stderr, "%s: Major #%u out of range\n",
+					ioconf_name, major);
 				continue;
 			}
 			if (ioconf[indirect] == NULL) {
