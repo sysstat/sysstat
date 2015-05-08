@@ -1,6 +1,6 @@
 /*
  * sar/sadc: Report system activity
- * (C) 1999-2014 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2015 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _SA_H
@@ -531,10 +531,10 @@ struct file_magic {
 	/*
 	 * Sysstat version used to create the file.
 	 */
-	unsigned char  sysstat_version;
-	unsigned char  sysstat_patchlevel;
-	unsigned char  sysstat_sublevel;
-	unsigned char  sysstat_extraversion;
+	unsigned char sysstat_version;
+	unsigned char sysstat_patchlevel;
+	unsigned char sysstat_sublevel;
+	unsigned char sysstat_extraversion;
 	/*
 	 * Size of file's header (size of file_header structure used by file).
 	 */

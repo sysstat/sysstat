@@ -586,7 +586,7 @@ void write_vol_act_structures(int ofd)
 		if (!vol_id_seq[i]) {
 			/*
 			 * Write an empty structure when current sysstat
-			 * version know fewer volatile activities than
+			 * version knows fewer volatile activities than
 			 * the number saved in file's header.
 			 */
 			file_act.id = file_act.nr = 0;
@@ -598,8 +598,8 @@ void write_vol_act_structures(int ofd)
 			 * All the fields in file_activity structure are not used.
 			 * In particular, act[p]->nr2 is left unmodified.
 			 */
-			file_act.id  = act[p]->id;
-			file_act.nr  = act[p]->nr;
+			file_act.id = act[p]->id;
+			file_act.nr = act[p]->nr;
 		}
 
 		if (write_all(ofd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
@@ -807,7 +807,7 @@ void open_stdout(int *stdfd)
  * @ofile		Name of output file.
  * @restart_mark	TRUE if sadc called with interval (and count) not
  * 			set, and no comment given (so we are going to insert
- * 			a restart mark into the file.
+ * 			a restart mark into the file).
  *
  * OUT:
  * @ofd			Output file descriptor.
