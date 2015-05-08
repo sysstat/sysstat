@@ -524,7 +524,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			       (double) avg_frskb / avg_count,
 			       ((double) avg_tlskb / avg_count) -
 			       ((double) avg_frskb / avg_count),
-			       (avg_tlskb >= avg_count) ?
+			       avg_tlskb ?
 			       SP_VALUE((double) avg_frskb / avg_count,
 					(double) avg_tlskb / avg_count,
 					(double) avg_tlskb / avg_count) :
@@ -2209,7 +2209,7 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		       (double) avg_frhkb / avg_count,
 		       ((double) avg_tlhkb / avg_count) -
 		       ((double) avg_frhkb / avg_count),
-		       (avg_tlhkb >= avg_count) ?
+		       avg_tlhkb ?
 		       SP_VALUE((double) avg_frhkb / avg_count,
 				(double) avg_tlhkb / avg_count,
 				(double) avg_tlhkb / avg_count) :
