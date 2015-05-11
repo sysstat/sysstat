@@ -853,13 +853,12 @@ void read_header_data(void)
 	    strcmp(version, VERSION)) {
 
 		/* sar and sadc commands are not consistent */
-		fprintf(stderr, _("Invalid data format\n"));
-
 		if (!rc && (file_magic.sysstat_magic == SYSSTAT_MAGIC)) {
 			fprintf(stderr,
 				_("Using a wrong data collector from a different sysstat version\n"));
 		}
-		exit(3);
+
+		goto input_error;
 	}
 
 	/*
@@ -871,6 +870,9 @@ void read_header_data(void)
 	if (sa_read(&file_hdr, FILE_HEADER_SIZE)) {
 		print_read_error();
 	}
+
+	if (file_hdr.sa_act_nr > NR_ACT)
+		goto input_error;
 
 	/* Read activity list */
 	for (i = 0; i < file_hdr.sa_act_nr; i++) {
@@ -884,11 +886,9 @@ void read_header_data(void)
 		if ((p < 0) || (act[p]->fsize != file_act.size)
 			    || !file_act.nr
 			    || !file_act.nr2
-			    || (act[p]->magic != file_act.magic)) {
+			    || (act[p]->magic != file_act.magic))
 			/* Remember that we are reading data from sadc and not from a file... */
-			fprintf(stderr, _("Inconsistent input data\n"));
-			exit(3);
-		}
+			goto input_error;
 
 		id_seq[i]   = file_act.id;	/* We necessarily have "i < NR_ACT" */
 		act[p]->nr  = file_act.nr;
@@ -901,6 +901,15 @@ void read_header_data(void)
 
 	/* Check that all selected activties are actually sent by sadc */
 	reverse_check_act(file_hdr.sa_act_nr);
+
+	return;
+
+input_error:
+
+	/* Strange data sent by sadc...! */
+	fprintf(stderr, _("Inconsistent input data\n"));
+
+	exit(3);
 }
 
 /*
