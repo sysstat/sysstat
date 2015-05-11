@@ -20,7 +20,7 @@ If you don't find the solution to your problem here then send me an email
 2.2. The sar command complains with the following message:
      "Cannot append data to that file (...)".
 2.3. The sar command complains with the following message:
-     "Invalid data format".
+     "Inconsistent input data".
 2.4. I get the following error message when I try to run sar:
      "Cannot open /var/log/sa/sa30: No such file or directory".
 2.5. Are sar daily data files fully compatible with Sun Solaris format
@@ -202,14 +202,15 @@ can then append data to the data file as usual.
 ~~~
 
 2.3. The sar command complains with the following message:
-Invalid data format
+Inconsistent input data
 
 This error message means that sadc (the system activity data collector that
 sar is using) is not consistent with the sar command. In most cases this is
 because the sar and sadc commands do not belong to the same release of the
 sysstat package. Remember that sar may search for sadc in predefined
 directories (/usr/local/lib/sa, /usr/lib/sa, ...) before looking in the
-current directory!
+current directory! With sysstat version 11.1.5 and later, enter "sar --sadc"
+to determine which data collector is called by sar.
 
 ~~~
 
