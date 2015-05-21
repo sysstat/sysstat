@@ -285,8 +285,7 @@ int get_sysfs_dev_nr(int display_partitions)
 /*
  ***************************************************************************
  * Read /proc/devices file and get device-mapper major number.
- * If device-mapper entry is not found in file, use DEFAULT_DEMAP_MAJOR
- * number.
+ * If device-mapper entry is not found in file, assume it's not active.
  *
  * RETURNS:
  * Device-mapper major number.
@@ -296,7 +295,11 @@ unsigned int get_devmap_major(void)
 {
 	FILE *fp;
 	char line[128];
-	unsigned int dm_major = DEFAULT_DEVMAP_MAJOR;
+	/*
+	 * Linux uses 12 bits for the major number,
+	 * so this shouldn't match any real device.
+	 */
+	unsigned int dm_major = ~0U;
 
 	if ((fp = fopen(DEVICES, "r")) == NULL)
 		return dm_major;
