@@ -826,174 +826,172 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	if (!ofile[0])
 		return;
 
-	/* Does file exist? */
-	if (access(ofile, F_OK) < 0) {
-		/* NO: Create it */
-		create_sa_file(ofd, ofile);
-	}
-	else {
-		/* YES: Append data to it if possible */
-		if ((*ofd = open(ofile, O_APPEND | O_RDWR)) < 0) {
-			fprintf(stderr, _("Cannot open %s: %s\n"), ofile, strerror(errno));
-			exit(2);
-		}
-
-		/* Read file magic header */
-		sz = read(*ofd, &file_magic, FILE_MAGIC_SIZE);
-		if (!sz) {
-			close(*ofd);
-			/* This is an empty file: Create it again */
+	/* Try to open file and check that data can be appended to it */
+	if ((*ofd = open(ofile, O_APPEND | O_RDWR)) < 0) {
+		if (errno == ENOENT) {
+			/* File doesn't exist: Create it */
 			create_sa_file(ofd, ofile);
 			return;
 		}
-		if ((sz != FILE_MAGIC_SIZE) ||
-		    (file_magic.sysstat_magic != SYSSTAT_MAGIC) ||
-		    (file_magic.format_magic != FORMAT_MAGIC)) {
-			if (FORCE_FILE(flags)) {
-				close(*ofd);
-				/* -F option used: Truncate file */
-				create_sa_file(ofd, ofile);
-				return;
-			}
-			/* Display error message and exit */
-			handle_invalid_sa_file(ofd, &file_magic, ofile, sz);
+		fprintf(stderr, _("Cannot open %s: %s\n"), ofile, strerror(errno));
+		exit(2);
+	}
+
+	/* Read file magic header */
+	sz = read(*ofd, &file_magic, FILE_MAGIC_SIZE);
+	if (!sz) {
+		close(*ofd);
+		/* This is an empty file: Create it again */
+		create_sa_file(ofd, ofile);
+		return;
+	}
+	if ((sz != FILE_MAGIC_SIZE) ||
+	    (file_magic.sysstat_magic != SYSSTAT_MAGIC) ||
+	    (file_magic.format_magic != FORMAT_MAGIC)) {
+		if (FORCE_FILE(flags)) {
+			close(*ofd);
+			/* -F option used: Truncate file */
+			create_sa_file(ofd, ofile);
+			return;
 		}
+		/* Display error message and exit */
+		handle_invalid_sa_file(ofd, &file_magic, ofile, sz);
+	}
 
-		SREALLOC(buffer, char, file_magic.header_size);
+	SREALLOC(buffer, char, file_magic.header_size);
 
+	/*
+	 * Save current file position.
+	 * Needed later to update sa_last_cpu_nr.
+	 */
+	if ((fpos = lseek(*ofd, 0, SEEK_CUR)) < 0) {
+		perror("lseek");
+		exit(2);
+	}
+
+	/* Read file standard header */
+	n = read(*ofd, buffer, file_magic.header_size);
+	memcpy(&file_hdr, buffer, MINIMUM(file_magic.header_size, FILE_HEADER_SIZE));
+	free(buffer);
+
+	if (n != file_magic.header_size) {
+		/* Display error message and exit */
+		handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
+	}
+
+	/*
+	 * If we are using the standard daily data file (file specified
+	 * as "-" on the command line) and it is from a past month,
+	 * then overwrite (truncate) it.
+	 */
+	get_time(&rectime, 0);
+
+	if (((file_hdr.sa_month != rectime.tm_mon) ||
+	    (file_hdr.sa_year != rectime.tm_year)) &&
+	    WANT_SA_ROTAT(flags)) {
+		close(*ofd);
+		create_sa_file(ofd, ofile);
+		return;
+	}
+
+	/* OK: It's a true system activity file */
+	if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT))
 		/*
-		 * Save current file position.
-		 * Needed later to update sa_last_cpu_nr.
+		 * No activities at all or at least one unknown activity:
+		 * Cannot append data to such a file.
 		 */
-		if ((fpos = lseek(*ofd, 0, SEEK_CUR)) < 0) {
-			perror("lseek");
-			exit(2);
-		}
+		goto append_error;
 
-		/* Read file standard header */
-		n = read(*ofd, buffer, file_magic.header_size);
-		memcpy(&file_hdr, buffer, MINIMUM(file_magic.header_size, FILE_HEADER_SIZE));
-		free(buffer);
+	for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
-		if (n != file_magic.header_size) {
-			/* Display error message and exit */
+		/* Read current activity in list */
+		if (read(*ofd, &file_act[i], FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
 			handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
 		}
 
-		/*
-		 * If we are using the standard daily data file (file specified
-		 * as "-" on the command line) and it is from a past month,
-		 * then overwrite (truncate) it.
-		 */
-		get_time(&rectime, 0);
+		p = get_activity_position(act, file_act[i].id, RESUME_IF_NOT_FOUND);
 
-		if (((file_hdr.sa_month != rectime.tm_mon) ||
-		    (file_hdr.sa_year != rectime.tm_year)) &&
-		    WANT_SA_ROTAT(flags)) {
-			close(*ofd);
-			create_sa_file(ofd, ofile);
-			return;
-		}
-
-		/* OK: It's a true system activity file */
-		if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT))
+		if ((p < 0) || (act[p]->fsize != file_act[i].size) ||
+		    (act[p]->magic != file_act[i].magic))
 			/*
-			 * No activities at all or at least one unknown activity:
-			 * Cannot append data to such a file.
+			 * Unknown activity in list or item size has changed or
+			 * unknown activity format: Cannot append data to such a file.
 			 */
 			goto append_error;
 
-		for (i = 0; i < file_hdr.sa_act_nr; i++) {
-
-			/* Read current activity in list */
-			if (read(*ofd, &file_act[i], FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
-				handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
-			}
-
-			p = get_activity_position(act, file_act[i].id, RESUME_IF_NOT_FOUND);
-
-			if ((p < 0) || (act[p]->fsize != file_act[i].size) ||
-			    (act[p]->magic != file_act[i].magic))
-				/*
-				 * Unknown activity in list or item size has changed or
-				 * unknown activity format: Cannot append data to such a file.
-				 */
-				goto append_error;
-
-			if (!file_act[i].nr || !file_act[i].nr2) {
-				/* Number of items and subitems should never be null */
-				goto append_error;
-			}
-		}
-
-		/*
-		 * OK: (Almost) all tests successfully passed.
-		 * List of activities from the file prevails over that of the user.
-		 * So unselect all of them. And reset activity sequence.
-		 */
-		for (i = 0; i < NR_ACT; i++) {
-			act[i]->options &= ~AO_COLLECTED;
-			id_seq[i] = 0;
-		}
-
-		j = 0;
-
-		for (i = 0; i < file_hdr.sa_act_nr; i++) {
-
-			p = get_activity_position(act, file_act[i].id, EXIT_IF_NOT_FOUND);
-
-			/*
-			 * Force number of items (serial lines, network interfaces...)
-			 * and sub-items to that of the file, and reallocate structures.
-			 * Exceptions are volatile activities, for which number of items
-			 * is kept unmodified unless its value was zero (in this case,
-			 * it is also forced to the value of the file).
-			 * Also keep in mind that the file cannot contain more than
-			 * sa_vol_act_nr volatile activities.
-			 */
-			if (!IS_VOLATILE(act[p]->options) || !act[p]->nr || (j >= file_hdr.sa_vol_act_nr)) {
-				act[p]->nr  = file_act[i].nr;
-			}
-			else {
-				vol_id_seq[j++] = file_act[i].id;
-			}
-			act[p]->nr2 = file_act[i].nr2;
-			SREALLOC(act[p]->_buf0, void,
-				 (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
-
-			/* Save activity sequence */
-			id_seq[i] = file_act[i].id;
-			act[p]->options |= AO_COLLECTED;
-		}
-
-		while (j < file_hdr.sa_vol_act_nr) {
-			vol_id_seq[j++] = 0;
-		}
-
-		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-		if (!IS_COLLECTED(act[p]->options)) {
-			/* A_CPU activity should always exist in file */
+		if (!file_act[i].nr || !file_act[i].nr2) {
+			/* Number of items and subitems should never be null */
 			goto append_error;
 		}
+	}
 
-		if (act[p]->nr != file_hdr.sa_last_cpu_nr) {
-			if (restart_mark) {
-				/*
-				 * We are inserting a restart mark, and current machine
-				 * has a different number of CPU than that saved in file,
-				 * so update sa_last_cpu_nr in file's header and rewrite it.
-				 */
-				file_hdr.sa_last_cpu_nr = act[p]->nr;
-				rewrite_file_hdr(ofd, fpos, &file_magic);
-			}
-			else {
-				/*
-				 * Current number of cpu items (for current system)
-				 * doesn't match number of cpu items of the last sample
-				 * saved in file.
-				 */
-				goto append_error;
-			}
+	/*
+	 * OK: (Almost) all tests successfully passed.
+	 * List of activities from the file prevails over that of the user.
+	 * So unselect all of them. And reset activity sequence.
+	 */
+	for (i = 0; i < NR_ACT; i++) {
+		act[i]->options &= ~AO_COLLECTED;
+		id_seq[i] = 0;
+	}
+
+	j = 0;
+
+	for (i = 0; i < file_hdr.sa_act_nr; i++) {
+
+		p = get_activity_position(act, file_act[i].id, EXIT_IF_NOT_FOUND);
+
+		/*
+		 * Force number of items (serial lines, network interfaces...)
+		 * and sub-items to that of the file, and reallocate structures.
+		 * Exceptions are volatile activities, for which number of items
+		 * is kept unmodified unless its value was zero (in this case,
+		 * it is also forced to the value of the file).
+		 * Also keep in mind that the file cannot contain more than
+		 * sa_vol_act_nr volatile activities.
+		 */
+		if (!IS_VOLATILE(act[p]->options) || !act[p]->nr || (j >= file_hdr.sa_vol_act_nr)) {
+			act[p]->nr  = file_act[i].nr;
+		}
+		else {
+			vol_id_seq[j++] = file_act[i].id;
+		}
+		act[p]->nr2 = file_act[i].nr2;
+		SREALLOC(act[p]->_buf0, void,
+			 (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
+
+		/* Save activity sequence */
+		id_seq[i] = file_act[i].id;
+		act[p]->options |= AO_COLLECTED;
+	}
+
+	while (j < file_hdr.sa_vol_act_nr) {
+		vol_id_seq[j++] = 0;
+	}
+
+	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
+	if (!IS_COLLECTED(act[p]->options)) {
+		/* A_CPU activity should always exist in file */
+		goto append_error;
+	}
+
+	if (act[p]->nr != file_hdr.sa_last_cpu_nr) {
+		if (restart_mark) {
+			/*
+			 * We are inserting a restart mark, and current machine
+			 * has a different number of CPU than that saved in file,
+			 * so update sa_last_cpu_nr in file's header and rewrite it.
+			 */
+			file_hdr.sa_last_cpu_nr = act[p]->nr;
+			rewrite_file_hdr(ofd, fpos, &file_magic);
+		}
+		else {
+			/*
+			 * Current number of cpu items (for current system)
+			 * doesn't match number of cpu items of the last sample
+			 * saved in file.
+			 */
+			goto append_error;
 		}
 	}
 
