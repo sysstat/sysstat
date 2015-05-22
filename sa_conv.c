@@ -470,6 +470,10 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 
 	free(buffer);
 
+	/* Sanity check */
+	if (file_hdr->sa_act_nr > MAX_NR_ACT)
+		goto invalid_header;
+
 	/* Read file activity list */
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
 	fal = *file_actlst;
@@ -479,14 +483,12 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 
 		sa_fread(fd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
 
-		if ((fal->nr < 1) || (fal->nr2 < 1)) {
+		if ((fal->nr < 1) || (fal->nr2 < 1))
 			/*
 			 * Every activity, known or unknown,
 			 * should have at least one item and sub-item.
 			 */
-			fprintf(stderr, _("\nInvalid data found. Aborting...\n"));
-			return -1;
-		}
+			goto invalid_header;
 
 		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) >= 0) {
 			/* This is a known activity, maybe with an unknown format */
@@ -566,6 +568,13 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 	fprintf(stderr, "OK\n");
 
 	return 0;
+
+invalid_header:
+
+	fprintf(stderr, _("\nInvalid data found. Aborting...\n"));
+
+	return -1;
+
 }
 
 /*
