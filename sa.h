@@ -20,7 +20,9 @@
  */
 
 /* Number of activities */
-#define NR_ACT	38
+#define NR_ACT		38
+/* The value below is used for sanity check */
+#define MAX_NR_ACT	256
 
 /* Number of functions used to count items */
 #define NR_F_COUNT	11
@@ -606,6 +608,8 @@ struct file_header {
 };
 
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
+/* The value below is used for sanity check */
+#define MAX_FILE_HEADER_SIZE	8192
 
 
 /*
