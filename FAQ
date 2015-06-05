@@ -350,6 +350,9 @@ You can also find: kSar, sarvant, sar2gp, loadgraph, SysStat Charts, sarplot...
 rrd.cgi (http://haroon.sis.utoronto.ca/rrd/scripts/) is a perl front-end for
 rrdtool and can be used to make some graphs (see a demo at
 http://haroon.sis.utoronto.ca/perl/rrd.cgi/sar_stats/).
+sysstat_mail_report (https://github.com/desbma/sysstat_mail_report) is a script
+that automatically generates and sends an email report every day/week/month
+with graphs generated from sysstat data.
 I've also heard of commercial tools which use sysstat: PerfMan comes to mind,
 among others.
 If you find others which you think are of real interest, please let me know
