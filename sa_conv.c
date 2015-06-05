@@ -525,6 +525,10 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 				a_cpu = TRUE;
 			}
 
+			/* Size of an activity cannot be zero */
+			if (!fal->size)
+				goto invalid_header;
+
 			/* Size of activity in file is larger than up-to-date activity size */
 			if (fal->size > act[p]->msize) {
 				act[p]->msize = fal->size;
@@ -754,6 +758,8 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) {
 			/* An unknown activity should still be read and written */
 			size = (size_t) fal->size * (size_t) fal->nr * (size_t) fal->nr2;
+			if (!size)
+				return -1;
 			SREALLOC(buffer, void, size);
 			sa_fread(fd, buffer, fal->size * fal->nr * fal->nr2, HARD_SIZE);
 			if (write(stdfd, (char *) buffer, size) != size) {
