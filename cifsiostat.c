@@ -174,18 +174,28 @@ void io_sys_init(void)
 	if ((cifs_nr = get_cifs_nr()) > 0) {
 		cifs_nr += NR_CIFS_PREALLOC;
 	}
-	if ((st_hdr_cifs = (struct io_hdr_stats *) calloc(cifs_nr, IO_HDR_STATS_SIZE)) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
 
-	/* Allocate structures for number of CIFS directories found */
-	for (i = 0; i < 2; i++) {
-		if ((st_cifs[i] =
-		    (struct cifs_stats *) calloc(cifs_nr, CIFS_STATS_SIZE)) == NULL) {
+	if (cifs_nr > 0) {
+		if ((st_hdr_cifs = (struct io_hdr_stats *) calloc(cifs_nr, IO_HDR_STATS_SIZE)) == NULL) {
 			perror("malloc");
 			exit(4);
 		}
+
+		/* Allocate structures for number of CIFS directories found */
+		for (i = 0; i < 2; i++) {
+			if ((st_cifs[i] =
+			(struct cifs_stats *) calloc(cifs_nr, CIFS_STATS_SIZE)) == NULL) {
+				perror("malloc");
+				exit(4);
+			}
+		}
+	}
+	else {
+		/*
+		 * cifs_nr value is probably zero, but it can also be negative
+		 * (possible overflow when adding NR_CIFS_PREALLOC above).
+		 */
+		cifs_nr = 0;
 	}
 }
 
