@@ -1197,6 +1197,7 @@ int main(int argc, char **argv)
 	int stdfd = 0, ofd = -1;
 	int restart_mark;
 	long count = 0;
+	int comment_cnt;
 
 	/* Get HZ */
 	get_HZ();
@@ -1255,6 +1256,11 @@ int main(int argc, char **argv)
 			if (argv[++opt]) {
 				strncpy(comment, argv[opt], MAX_COMMENT_LEN);
 				comment[MAX_COMMENT_LEN - 1] = '\0';
+				for (comment_cnt=0;comment_cnt<strlen(comment);comment_cnt++) {
+					if(!isprint(comment[comment_cnt])) {
+						comment[comment_cnt]='.';
+					}
+				}
 				if (!strlen(comment)) {
 					usage(argv[0]);
 				}
