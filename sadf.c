@@ -403,8 +403,7 @@ void write_textual_comments(int curr, int use_tm_start, int use_tm_end, int tab,
 	char cur_date[32], cur_time[32];
 	char file_comment[MAX_COMMENT_LEN];
 
-	sa_fread(ifd, file_comment, MAX_COMMENT_LEN, HARD_SIZE);
-	file_comment[MAX_COMMENT_LEN - 1] = '\0';
+	replace_nonprintable_char(ifd, file_comment);
 
 	/* Fill timestamp structure for current record */
 	sadf_get_record_timestamp_struct(curr, rectime, loctime);
@@ -850,8 +849,7 @@ void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, i
 	else if (rtype == R_COMMENT) {
 		char file_comment[MAX_COMMENT_LEN];
 
-		sa_fread(ifd, file_comment, MAX_COMMENT_LEN, HARD_SIZE);
-		file_comment[MAX_COMMENT_LEN - 1] = '\0';
+		replace_nonprintable_char(ifd, file_comment);
 
 		if (!dp || !DISPLAY_COMMENT(flags))
 			return;
