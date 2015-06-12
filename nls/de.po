@@ -6,17 +6,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.1.3\n"
+"Project-Id-Version: sysstat 11.1.4\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-02-13 15:12+0100\n"
-"PO-Revision-Date: 2015-02-15 22:05+0100\n"
+"POT-Creation-Date: 2015-04-07 22:16+0200\n"
+"PO-Revision-Date: 2015-04-10 20:05+0100\n"
 "Last-Translator: Roland Illig <roland.illig@gmx.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: iostat.c:86 nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:94
 #: pidstat.c:87
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Plattendaten können nicht gefunden werden\n"
 
-#: iostat.c:1386 sa_common.c:1592
+#: iostat.c:1386 sa_common.c:1611
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ungültige Art eines persistenten Gerätenamens\n"
@@ -82,56 +82,56 @@ msgstr ""
 "Optionen sind:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: sadf_misc.c:621
+#: sadf_misc.c:624
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Systemaktivitäts-Datendatei: %s (%#x)\n"
 
 # "sa" means "system activity". This should be mentioned in the source code.
-#: sadf_misc.c:630
+#: sadf_misc.c:633
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Systemaktivitäts-Datendatei: %s (%x)\n"
 
-#: sadf_misc.c:631
+#: sadf_misc.c:634
 msgid "no"
 msgstr "nein"
 
-#: sadf_misc.c:631
+#: sadf_misc.c:634
 msgid "yes"
 msgstr "ja"
 
-#: sadf_misc.c:634
+#: sadf_misc.c:637
 #, c-format
 msgid "Host: "
 msgstr "Rechner: "
 
-#: sadf_misc.c:640
+#: sadf_misc.c:643
 #, c-format
 msgid "Number of CPU for last samples in file: %u\n"
 msgstr "Anzahl der CPUs für letzte Messwerte in Datei: %u\n"
 
-#: sadf_misc.c:646
+#: sadf_misc.c:649
 #, c-format
 msgid "File date: %s\n"
 msgstr "Dateizeit: %s\n"
 
-#: sadf_misc.c:649
+#: sadf_misc.c:652
 #, c-format
 msgid "File time: "
 msgstr "Dateizeit: "
 
-#: sadf_misc.c:654
+#: sadf_misc.c:657
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Größe eines Longint: %d\n"
 
-#: sadf_misc.c:660
+#: sadf_misc.c:663
 #, c-format
 msgid "List of activities:\n"
 msgstr "Liste der Aktivitäten:\n"
 
-#: sadf_misc.c:673
+#: sadf_misc.c:676
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Unbekanntes Aktivitätsformat]"
@@ -163,7 +163,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Kopf der Systemaktivitätendatei kann nicht geschrieben werden: %s\n"
 
 #: sadc.c:760 sadc.c:769 sadc.c:837 ioconf.c:490 rd_stats.c:69
-#: sa_common.c:1259 count.c:118
+#: sa_common.c:1272 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "%s kann nicht geöffnet werden: %s\n"
@@ -190,11 +190,11 @@ msgstr ""
 "[ -P { <CPU> [,...] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:598 sar.c:404 pidstat.c:2259
+#: mpstat.c:616 sar.c:405 pidstat.c:2264
 msgid "Average:"
 msgstr "Durchschn.:"
 
-#: mpstat.c:967
+#: mpstat.c:985
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Nicht so viele Prozessoren!\n"
@@ -209,30 +209,31 @@ msgstr "Aufruf: %s [ Optionen ] [ <Intervall> [ <Anzahl> ] ] [ <Datendatei> | -[
 msgid ""
 "Options are:\n"
 "[ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Optionen sind:\n"
 "[ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <CPU> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -P { <CPU> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm:ss> ] ]\n"
 "[ -- <Sar-Optionen> ]\n"
 
 #: sar.c:109
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-"[ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
-"[ -w ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNTS ] ] [ -H ] [ -h ]\n"
+"[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
-"[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-"[ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ <Einhängepunkte> ] ] [ -H ]\n"
+"[ -h ] [ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ]\n"
 "[ -w ] [ -y ]\n"
 "[ -I { <Zahl> [,...] | SUM | ALL | XALL } ] [ -P { <CPU> [,...] | ALL } ]\n"
 "[ -m { <Schlüsselwort> [,...] | ALL } ] [ -n { <Schlüsselwort> [,...] | ALL } ]\n"
@@ -262,15 +263,20 @@ msgstr "\t-d\tBlockgeräte-Statistik\n"
 
 #: sar.c:136
 #, c-format
-msgid "\t-F\tFilesystems statistics\n"
-msgstr "\t-R\tDateisystem-Statistik\n"
+msgid "\t-F [ MOUNTS ]\n"
+msgstr "\t-F [ <Einhängepunkte> ]\n"
 
 #: sar.c:137
+#, c-format
+msgid "\t\tFilesystems statistics\n"
+msgstr "\t\tDateisystem-Statistik\n"
+
+#: sar.c:138
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-H\tRiesenseiten-Benutzungs-Statistik\n"
 
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -279,7 +285,7 @@ msgstr ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
 "\t\tInterrupt-Statistik\n"
 
-#: sar.c:140
+#: sar.c:141
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -302,7 +308,7 @@ msgstr ""
 "\t\tTEMP\tGerätetemperatur\n"
 "\t\tUSB\tUSB-Geräte, die an das System angeschlossen sind\n"
 
-#: sar.c:149
+#: sar.c:150
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -349,31 +355,31 @@ msgstr ""
 "\t\tEICMP6\tICMP-Verkehr\t(v6) (Fehler)\n"
 "\t\tUDP6\tUDP-Verkehr\t(v6)\n"
 
-#: sar.c:170
+#: sar.c:171
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tWarteschlangen- und Systemauslastungs-Statistik\n"
 
-#: sar.c:171
+#: sar.c:172
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tSpeicher-Statistik\n"
 
-#: sar.c:172
+#: sar.c:173
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
-"\tMemory utilization statistics\n"
+"\t\tMemory utilization statistics\n"
 msgstr ""
 "\t-r [ ALL ]\n"
-"\tSpeicherverbrauchs-Statistik\n"
+"\t\tSpeicherverbrauchs-Statistik\n"
 
-#: sar.c:174
+#: sar.c:175
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tAuslagerungsspeicher-Statistik\n"
 
-#: sar.c:175
+#: sar.c:176
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -382,62 +388,62 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tCPU-Nutzungs-Statistik\n"
 
-#: sar.c:177
+#: sar.c:178
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr "\t-v\tKernel-Tabellen-Statistik\n"
 
-#: sar.c:178
+#: sar.c:179
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tAuslagerungs-Statistik\n"
 
-#: sar.c:179
+#: sar.c:180
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tTask-Erzeugungs- und Systemwechsel-Statistik\n"
 
-#: sar.c:180
+#: sar.c:181
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr "\t-y\tTTY-Geräte-Statistik\n"
 
-#: sar.c:238
+#: sar.c:239
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Unerwartetes Ende der gesammelten Daten\n"
 
-#: sar.c:852
+#: sar.c:853
 #, c-format
 msgid "Invalid data format\n"
 msgstr "ungültiges Datenformat\n"
 
-#: sar.c:856
+#: sar.c:857
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Datensammler von einer anderen sysstat-Version in Benutzung\n"
 
-#: sar.c:885
+#: sar.c:886
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Inkonsistente Eingabedaten\n"
 
-#: sar.c:1068 pidstat.c:219
+#: sar.c:1069 pidstat.c:219
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Die angeforderte Aktion ist nicht verfügbar.\n"
 
-#: sar.c:1358
+#: sar.c:1359
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Die Optionen -f und -o schließen sich gegenseitig aus\n"
 
-#: sar.c:1364
+#: sar.c:1365
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Bitte -f Option zur Angabe der Systemaktivitätendatei verwenden\n"
 
-#: sar.c:1500
+#: sar.c:1501
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Datensammler »%s« kann nicht gefunden werden\n"
@@ -492,42 +498,42 @@ msgstr ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <Befehl> ] [ -G <Prozessname> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: sa_common.c:1055
+#: sa_common.c:1068
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Fehler beim Lesen der Systemaktivitätendatei: %s\n"
 
-#: sa_common.c:1065
+#: sa_common.c:1078
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Unerwartetes Ende der Systemaktivitätendatei\n"
 
-#: sa_common.c:1084
+#: sa_common.c:1097
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Diese Datei wurde erzeugt mit sar/sadc von sysstat Version %d.%d.%d"
 
-#: sa_common.c:1117
+#: sa_common.c:1130
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Ungültige Systemaktivitätendatei: %s\n"
 
-#: sa_common.c:1129
+#: sa_common.c:1142
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "Endian-Format passt nicht zusammen\n"
 
-#: sa_common.c:1133
+#: sa_common.c:1146
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Diese Version von sysstat kann das Format dieser Datei (%#x) nicht mehr lesen\n"
 
-#: sa_common.c:1262
+#: sa_common.c:1275
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Bitte prüfen Sie, ob die Datensammlung aktiviert ist\n"
 
-#: sa_common.c:1417
+#: sa_common.c:1430
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Angeforderte Aktivität ist nicht verfügbar in Datei %s\n"
@@ -537,7 +543,7 @@ msgstr "Angeforderte Aktivität ist nicht verfügbar in Datei %s\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Es sind zu viele Prozessoren vorhanden!\n"
 
-#: pr_stats.c:2394 pr_stats.c:2407 pr_stats.c:2507 pr_stats.c:2519
+#: pr_stats.c:2394 pr_stats.c:2407 pr_stats.c:2506 pr_stats.c:2519
 msgid "Summary:"
 msgstr "Zusammenfassung:"
 
