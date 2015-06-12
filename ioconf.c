@@ -317,6 +317,7 @@ int ioc_init(void)
 
 		case '%':
 			strncpy(blkp->dfmt, dfmt + 1, IOC_FMTLEN);
+			/* fallthrough to next case */
 		case 'd':
 			blkp->cconv = ioc_ito10;
 			strcat(blkp->dfmt, "%s");
