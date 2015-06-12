@@ -1,5 +1,15 @@
 Changes:
 
+2015/06/12: Version 11.0.5 - Sebastien Godard (sysstat <at> orange.fr)
+        * [Peter Schiffer]: Fixed and simplified some math expressions
+          in pr_stats.c.
+        * [Peter Schiffer]: ioconf.c: Check value of variable "major"
+          read from file.
+        * [Peter Schiffer]: ioconf.c: Use strncpy instead of strcpy.
+	* cifsiostat: Fixed possible integer overflowed argument.
+	* sar: Fixed untrusted loop bound.
+	* FAQ updated.
+
 2015/04/07: Version 11.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* Makefile: sysstat init script may sometimes be called rc.sysstat.
           So use that name when needed.
