@@ -1,5 +1,28 @@
 Changes:
 
+2015/06/12: Version 11.1.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Steve Kay]: sar: Added fibre channel HBA statistics.
+	* [Steve Kay]: Replace non printable characters in comments
+	  displayed by sar/sadf.
+	* [Peter Schiffer]: Fixed and simplified some math expressions
+	  in pr_stats.c [11.0.5].
+	* [Peter Schiffer]: ioconf.c: Check value of variable "major"
+	  read from file [11.0.5].
+	* [Peter Schiffer]: ioconf.c: Use strncpy instead of strcpy [11.0.5].
+	* sar: Fixed untrusted loop bound [11.0.5].
+	* sadc: Fixed time-of-check, time-of-use race condition.
+	* [Vitezslav Cizek]: Assume device-mapper is not running when
+	  it is not found in /proc/devices.
+	* sar: Added option --sadc. This option indicates which data
+	  collector will be called by sar.
+	* sadf: Fixed null pointer dereference which could happen with a
+	  malformed system activity datafile.
+	* cifsiostat: Fixed possible integer overflowed argument [11.0.5].
+	* sar manual page updated.
+	* FAQ updated.
+	* DTD and XSD documents updated.
+	* NLS updated.
+
 2015/04/07: Version 11.1.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* Makefile: sysstat init script may sometimes be called rc.sysstat.
 	  So use that name when needed [11.0.4].
