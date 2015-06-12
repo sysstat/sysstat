@@ -30,6 +30,7 @@
 #include <libgen.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 #include "version.h"
 #include "sa.h"
@@ -2068,4 +2069,24 @@ void enum_version_nr(struct file_magic *fm)
 	if ((v = strtok(NULL, ".")) == NULL)
 		return;
 	fm->sysstat_extraversion = atoi(v) & 0xff;
+}
+
+/*
+ ***************************************************************************
+ * Replace unprintable characters in comment with "."
+ *
+ * IN:
+ * @ifd		Input file descriptor.
+ * @comment	Comment.
+ ***************************************************************************
+ */
+void replace_nonprintable_char(int ifd, char *comment)
+{
+	int i;
+	sa_fread(ifd, comment, MAX_COMMENT_LEN, HARD_SIZE);
+	comment[MAX_COMMENT_LEN - 1] = '\0';
+	for (i = 0; i < strlen(comment); i++) {
+		if (!isprint(comment[i]))
+			comment[i]='.';
+	}
 }

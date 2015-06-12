@@ -917,6 +917,8 @@ extern __nr_t
 			        unsigned int);
 extern int
 	reallocate_vol_act_structures(struct activity * [], unsigned int, unsigned int);
+extern void
+	replace_nonprintable_char(int, char *);
 extern int
 	sa_fread(int, void *, int, int);
 extern int

@@ -689,8 +689,7 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype,
 		char file_comment[MAX_COMMENT_LEN];
 
 		/* Don't forget to read comment record even if it won't be displayed... */
-		sa_fread(ifd, file_comment, MAX_COMMENT_LEN, HARD_SIZE);
-		file_comment[MAX_COMMENT_LEN - 1] = '\0';
+		replace_nonprintable_char(ifd, file_comment);
 
 		if (dp && DISPLAY_COMMENT(flags)) {
 			printf("%-11s  COM %s\n", cur_time, file_comment);
