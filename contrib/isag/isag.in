@@ -991,13 +991,10 @@ proc create_gnuplot_file {gp_term ext fn title xlabel ylabel y2label yrange plot
 		puts $fp "set grid"
 	}
 
-	# There is a race condition in sysstat that
-	# sometimes causes it to record events that
-	# happen at 23:59:59 as if they actually happened at 00:00:00 and
-	# they end up in the report for the wrong day.
-	# This shuffle works around the bug by
-	# discarding the current point if
-	# it was recorded before the previous point.
+	# The last event recorded by sysstat may come after 23:59:59 and
+	# make isag think it happened at the beginning of the day.
+	# This shuffle works around the assumption by
+	# discarding each point that seems to travel backwards in time.
 	# Enforcing an ordered domain is a good idea regardless.
 	puts $fp "x2 = x1 = NaN"
 	puts $fp "cache(x) = (x2 = x1, x1 = x)"
