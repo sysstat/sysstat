@@ -990,6 +990,20 @@ proc create_gnuplot_file {gp_term ext fn title xlabel ylabel y2label yrange plot
 	if { 0 != $f_grid } {
 		puts $fp "set grid"
 	}
+
+	# The last event recorded by sysstat may come after 23:59:59 and
+	# make isag think it happened at the beginning of the day.
+	# This shuffle works around the assumption by
+	# discarding each point that seems to travel backwards in time.
+	# Enforcing an ordered domain is a good idea regardless.
+	puts $fp "x2 = x1 = NaN"
+	puts $fp "cache(x) = (x2 = x1, x1 = x)"
+	regsub -all {using ([0-9]+):([0-9]+)} $plot_str {using \1:(cache($\1), $\1 < x2 ? 1 / 0 : $\2)} plot_str
+	# It is worth noting that in gnuplot
+	# both 1 / 0 and NaN produce the same value, but
+	# behave differently depending on context.
+	# The same applies to \1 and ($\1) for no reason.
+
 	puts $fp "plot $plot_str"
 	close $fp
 }
