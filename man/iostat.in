@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "NOVEMBER 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "JULY 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -6,7 +6,7 @@ statistics for devices and partitions.
 .ie 'yes'@WITH_DEBUG@' \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
 .B [ -j { ID | LABEL | PATH | UUID | ... } ]
-.B [ [ -T ] -g
+.B [ [ -H ] -g
 .I group_name
 .B ] [ -p [
 .I device
@@ -21,7 +21,7 @@ statistics for devices and partitions.
 .el \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
 .B [ -j { ID | LABEL | PATH | UUID | ... } ]
-.B [ [ -T ] -g
+.B [ [ -H ] -g
 .I group_name
 .B ] [ -p [
 .I device
@@ -304,6 +304,10 @@ only prerequisite is that directory with required persistent names is present in
 .IR /dev/disk .
 Optionally, multiple devices can be specified in the chosen persistent name type.
 Because persistent device names are usually long, option
+.IP -H
+This option must be used with option -g and indicates that only global
+statistics for the group are to be displayed, and not statistics for
+individual devices in the group.
 .B -h
 is enabled implicitly with this option.
 .IP -k
@@ -325,10 +329,6 @@ never been used. If option
 .B -j
 is defined before this option, devices entered on the command line can be
 specified with the chosen persistent name type.
-.IP -T
-This option must be used with option -g and indicates that only global
-statistics for the group are to be displayed, and not statistics for
-individual devices in the group.
 .IP -t
 Print the time for each report displayed. The timestamp format may depend
 on the value of the S_TIME_FORMAT environment variable (see below).
