@@ -89,13 +89,13 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-			  "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-			  "[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
 #endif
 	exit(1);
@@ -1422,6 +1422,11 @@ int main(int argc, char **argv)
 					report_set = TRUE;
 					break;
 
+                                case 'H':
+					/* Display stats only for the groups */
+					flags |= I_D_GROUP_TOTAL_ONLY;
+					break;
+
 				case 'h':
 					/*
 					 * Display device utilization report
@@ -1454,11 +1459,6 @@ int main(int argc, char **argv)
 				case 'p':
 					/* If option -p is grouped then it cannot take an arg */
 					flags |= I_D_PARTITIONS + I_D_PART_ALL;
-					break;
-
-				case 'T':
-					/* Display stats only for the groups */
-					flags |= I_D_GROUP_TOTAL_ONLY;
 					break;
 
 				case 't':
