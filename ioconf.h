@@ -35,7 +35,7 @@
               if (P == NULL) {			\
                    perror("malloc");		\
                    ioc_free();			\
-                   return 0;			\
+                   goto free_and_return;	\
               }					\
          }					\
      }						\
