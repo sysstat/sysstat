@@ -352,6 +352,18 @@ int ioc_init(void)
 	ioc_parsed = 1;
 
 	return (count);
+
+free_and_return:
+	/* Free pointers and return */
+	fclose(fp);
+	if (blkp) {
+		free(blkp);
+	}
+	if (iocp) {
+		free(iocp);
+	}
+
+	return 0;
 }
 
 /*
