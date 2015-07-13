@@ -758,8 +758,13 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) {
 			/* An unknown activity should still be read and written */
 			size = (size_t) fal->size * (size_t) fal->nr * (size_t) fal->nr2;
-			if (!size)
+			if (!size) {
+				/* Buffer may have been allocated from a previous iteration in the loop */
+				if (buffer) {
+					free (buffer);
+				}
 				return -1;
+			}
 			SREALLOC(buffer, void, size);
 			sa_fread(fd, buffer, fal->size * fal->nr * fal->nr2, HARD_SIZE);
 			if (write(stdfd, (char *) buffer, size) != size) {
