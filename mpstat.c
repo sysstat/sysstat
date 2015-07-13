@@ -261,10 +261,10 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			/* Width is IRQ name + 2 for the trailing "/s" */
 			colwidth[j] = strlen(p0->irq_name) + 2;
 			/*
-			 * Normal space for printing a number is 14 chars
-			 * (space + 10 digits + period + mantissa).
+			 * Normal space for printing a number is 11 chars
+			 * (space + 10 digits including the period).
 			 */
-			if (colwidth[j] < 14) {
+			if (colwidth[j] < 10) {
 				colwidth[j] = 10;
 			}
 		}
