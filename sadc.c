@@ -847,7 +847,8 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	}
 	if ((sz != FILE_MAGIC_SIZE) ||
 	    (file_magic.sysstat_magic != SYSSTAT_MAGIC) ||
-	    (file_magic.format_magic != FORMAT_MAGIC)) {
+	    (file_magic.format_magic != FORMAT_MAGIC) ||
+	    (file_magic.header_size > MAX_FILE_HEADER_SIZE)) {
 		if (FORCE_FILE(flags)) {
 			close(*ofd);
 			/* -F option used: Truncate file */
