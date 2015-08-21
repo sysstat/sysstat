@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "JULY 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "AUGUST 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -64,12 +64,7 @@ followed by a line of statistics for each device that is configured.
 The
 .I interval
 parameter specifies the amount of time in seconds between
-each report. The first report contains statistics for the time since
-system startup (boot), unless the
-.B -y
-option is used (in this case, this report is omitted).
-Each subsequent report contains statistics
-collected during the interval since the previous report. The
+each report. The
 .I count
 parameter can be specified in conjunction with the
 .I interval
