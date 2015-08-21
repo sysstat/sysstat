@@ -1496,7 +1496,7 @@ int main(int argc, char **argv)
 		else if (!isdigit(argv[opt][0])) {
 			/*
 			 * By default iostat doesn't display unused devices.
-			 * If some devices are explictly entered on the command line
+			 * If some devices are explicitly entered on the command line
 			 * then don't apply this rule any more.
 			 */
 			flags |= I_D_UNFILTERED;
