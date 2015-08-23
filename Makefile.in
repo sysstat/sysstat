@@ -165,7 +165,7 @@ NLSPOT= $(NLSPO:.po=.pot)
 % : %.o
 	$(CC) -o $@ $(CFLAGS) $^ $(LFLAGS)
 
-all: sadc sar sadf iostat mpstat pidstat nfsiostat-sysstat cifsiostat locales
+all: sadc sar sadf iostat tapestat mpstat pidstat nfsiostat-sysstat cifsiostat locales
 
 common.o: common.c version.h common.h ioconf.h sysconfig.h
 
@@ -243,6 +243,10 @@ iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h c
 
 iostat: iostat.o librdstats_light.a libsyscom.a
 
+tapestat.o: tapestat.c tapestat.h version.h common.h count.h
+
+tapestat: tapestat.o librdstats_light.a libsyscom.a
+
 pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h
 
 pidstat: pidstat.o librdstats_light.a libsyscom.a
@@ -291,6 +295,8 @@ ifeq ($(INSTALL_DOC),y)
 	$(INSTALL_DATA) $(MANGRPARG) man/sysstat.5 $(DESTDIR)$(MAN5_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/iostat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/iostat.1 $(DESTDIR)$(MAN1_DIR)
+	rm -f $(DESTDIR)$(MAN1_DIR)/tapestat.1*
+	$(INSTALL_DATA) $(MANGRPARG) man/tapestat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/mpstat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/mpstat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/pidstat.1*
@@ -310,6 +316,7 @@ ifeq ($(COMPRESS_MANPG),y)
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/sadf.1
 	$(ZIP) $(DESTDIR)$(MAN5_DIR)/sysstat.5
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/iostat.1
+	$(ZIP) $(DESTDIR)$(MAN1_DIR)/tapestat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/mpstat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/pidstat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/nfsiostat-sysstat.1
@@ -358,6 +365,7 @@ endif
 	$(INSTALL_BIN) sar $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) sadf $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) iostat $(DESTDIR)$(BIN_DIR)
+	$(INSTALL_BIN) tapestat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) mpstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) pidstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) nfsiostat-sysstat $(DESTDIR)$(BIN_DIR)
@@ -463,6 +471,7 @@ ifeq ($(INSTALL_DOC),y)
 	rm -f $(DESTDIR)$(MAN1_DIR)/sadf.1*
 	rm -f $(DESTDIR)$(MAN5_DIR)/sysstat.5*
 	rm -f $(DESTDIR)$(MAN1_DIR)/iostat.1*
+	rm -f $(DESTDIR)$(MAN1_DIR)/tapestat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/mpstat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/pidstat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/nfsiostat-sysstat.1*
@@ -491,6 +500,7 @@ uninstall_base: uninstall_man uninstall_nls
 	rm -f $(DESTDIR)$(BIN_DIR)/sar
 	rm -f $(DESTDIR)$(BIN_DIR)/sadf
 	rm -f $(DESTDIR)$(BIN_DIR)/iostat
+	rm -f $(DESTDIR)$(BIN_DIR)/tapestat
 	rm -f $(DESTDIR)$(BIN_DIR)/mpstat
 	rm -f $(DESTDIR)$(BIN_DIR)/pidstat
 	rm -f $(DESTDIR)$(BIN_DIR)/nfsiostat-sysstat
@@ -572,7 +582,7 @@ po-files:
 endif
 
 clean:
-	rm -f sadc sar sadf iostat mpstat pidstat nfsiostat-sysstat cifsiostat *.o *.a core TAGS
+	rm -f sadc sar sadf iostat tapestat mpstat pidstat nfsiostat-sysstat cifsiostat *.o *.a core TAGS
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot
