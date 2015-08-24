@@ -149,6 +149,32 @@ percent wait times are likely to be higher. For faster tape drives (e.g. LTO) th
 wait times are likely to be lower as program writing to or reading from tape is going
 to be doing a lot more filesystem I/O because of the higher throughput.
 
+Although tape statistics are implemented in the kernel using atomic variables they cannot be
+read atomically as a group. All of the statistics values are read from different files under
+/sys, because of this there may be I/O completions while reading the different files for the
+one tape drive. This may result in a set of statistics for a device that contain some values
+before an I/O completed and some after.
+
+This command uses rounding down as the rounding method when calculating per second statistics.
+If, for example, you are using dd to copy one tape to another and running
+.B tapestat
+with an interval of 5 seconds and over the interval there were 3210 writes and 3209 reads
+then w/s would show 642 and r/s 641 (641.8 rounded down to 641). In such a case if it was
+a tar archive being copied (with a 10k block size) you would also see a difference between
+the kB_read/s and kB_wrtn/s of 2 (one I/O 10k in size divided by the interval period of 5
+seconds). If instead there were 3210 writes and 3211 reads both w/s and r/s would both show
+642 but you would still see a difference between the kB_read/s and kB_wrtn/s values of 2 kB/s.
+
+This command is provided with an interval in seconds. However internally the interval is
+tracked per device and can potentially have an effect on the per second statistics reported.
+The time each set of statistics is captured is kept with those statistics. The difference
+between the current and previous time is converted to milliseconds for use in calculations.
+We can look at how this can impact the statistics reported if we use an example of a tar
+archive being copied between two tape drives using dd. If both devices reported 28900 kilobytes
+transferred and the reading tape drive had an interval of 5001 milliseconds and the writing
+tape drive 5000 milliseconds that would calculate out as 5778 kB_read/s and 5780 kB_wrtn/s.
+
+The impact of some retrieving statistics during an I/O completion, rounding down, and small differences in the interval period on the statistics calculated should be minimal but may be non-zero.
 .SH ENVIRONMENT
 The
 .B tapestat
