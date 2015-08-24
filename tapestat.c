@@ -244,9 +244,11 @@ void tape_gather_initial_stats(void)
 	/* Get number of tapes in the system */
 	new_max_tape_drives = get_max_tape_drives();
 
-	if (new_max_tape_drives == 0)
+	if (new_max_tape_drives == 0) {
 		/* No tapes found */
-		return;
+		fprintf(stderr, _("No tape drives with statistics found\n"));
+		exit(1);
+	}
 	else {
 		/* Allocate structures */
 		if (tape_old_stats == NULL) {
@@ -400,8 +402,6 @@ void tape_calc_one_stats(struct calc_stats *stats, int i)
 	CALC_STAT_PCT(write_time, write_pct_wait)
 	CALC_STAT_PCT(other_time, all_pct_wait)
 	CALC_STAT_CNT(resid_count, resids_per_second)
-
-	return;
 }
 
 /*
@@ -463,13 +463,14 @@ void write_stats(int curr, struct tm *rectime)
 		printf("%s\n", timestamp);
 	}
 
+	/* Print the headings */
+	tape_write_headings();
+
 	/*
 	 * If either new or old is invalid or the I/Os per second is 0 and
-	 * zero omit is true then we print nothing. If there are no tape drives
-	 * we do not print the headings either.
+	 * zero omit is true then we print nothing.
 	 */
 	if (max_tape_drives > 0) {
-		tape_write_headings();
 
 		for (i = 0; i < max_tape_drives; i++) {
 			if ((tape_new_stats[i].valid == TAPE_STATS_VALID) &&
@@ -497,8 +498,8 @@ void write_stats(int curr, struct tm *rectime)
 		tmp = tape_old_stats;
 		tape_old_stats = tape_new_stats;
 		tape_new_stats = tmp;
-		printf("\n");
 	}
+	printf("\n");
 }
 
 /*
