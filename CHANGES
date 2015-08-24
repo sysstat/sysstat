@@ -1,5 +1,21 @@
 Changes:
 
+2015/08/24: Version 11.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Shane Seymour]: Added new "tapestat" command aimed at
+	  displaying statistics for tape drives.
+	* [Shane Seymour]: Added tapestat manual page.
+	* Check /proc/net/snmp format to collect ICMP statistics at
+	  their right positions [11.0.6].
+	* sadc: Fix untrusted value used as argument.
+	* sa_conv.c: Fix ressource leak.
+	* ioconf.c: Fix several ressource leaks [11.0.6].
+	* mpstat: Fix alignment output, really [11.0.6].
+	* [Sampsa Kiiskinen]: Fix bug in isag [11.0.6].
+	* iostat's option -T renamed to -H.
+	* iostat manual page updated.
+	* NLS updated.
+	* CREDITS file updated.
+
 2015/06/12: Version 11.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Steve Kay]: sar: Added fibre channel HBA statistics.
 	* [Steve Kay]: Replace non printable characters in comments

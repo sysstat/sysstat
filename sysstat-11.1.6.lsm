@@ -1,8 +1,8 @@
 Begin4
-Title:		sysstat - the sar, sadf, mpstat, iostat, nfsiostat-sysstat, cifsiostat and pidstat commands for Linux
-Version:	11.1.5
-Entered-date:	2015-06-12
-Description:	The sysstat package contains the sar, sadf, mpstat, iostat,
+Title:		sysstat - the sar, sadf, mpstat, iostat, tapestat, pidstat, nfsiostat-sysstat and cifsiostat commands for Linux
+Version:	11.1.6
+Entered-date:	2015-08-24
+Description:	The sysstat package contains the sar, sadf, mpstat, iostat, tapestat,
 		pidstat, nfsiostat-sysstat, cifsiostat and sa tools for Linux.
 		The sar command collects and reports system activity
 		information.
@@ -14,25 +14,28 @@ Description:	The sysstat package contains the sar, sadf, mpstat, iostat,
 		utilization, kernel activities and TTY statistics, among
 		others. Both UP and SMP machines are fully supported.
 		The iostat command reports CPU utilization
-		and I/O statistics for disks. The mpstat command reports
+		and I/O statistics for disks. The tapestat command reports
+		statistics for tape drives. The mpstat command reports
 		global and per-processor statistics. The sadf command
 		is used to display data collected by sar in various
 		formats (XML, database-friendly, etc.).
+		The tapestat command reports statistics for tape drives connected
+		to the system.
 		The pidstat command reports statistics for Linux tasks (processes).
 		The nfsiostat-sysstat command reports I/O statistics for network filesystems.
 		The cifsiostat command reports I/O statistics for CIFS filesystems.
 		NB: Send bugs, patches, suggestions and/or questions to
 		(sysstat [at] orange.fr).
 		URL: http://pagesperso-orange.fr/sebastien.godard/
-Keywords:	system administration, sar, sadf, iostat, mpstat, pidstat, nfsiostat-sysstat, cifsiostat, system accounting, performance, tuning
+Keywords:	system administration, sar, sadf, iostat, tapestat, mpstat, pidstat, nfsiostat-sysstat, cifsiostat, system accounting, performance, tuning
 Author:		sysstat [at] orange.fr (Sebastien Godard)
 Maintained-by:	sysstat [at] orange.fr (Sebastien Godard)
 Primary-site:	http://pagesperso-orange.fr/sebastien.godard/
-		427kB sysstat-11.1.5.tar.gz
-		347kB sysstat-11.1.5.tar.bz2
-		306kB sysstat-11.1.5.tar.xz
-		431kB sysstat-11.1.5-1.src.rpm
-		279kB sysstat-11.1.5-1.x86_64.rpm
+		437kB sysstat-11.1.6.tar.gz
+		354kB sysstat-11.1.6.tar.bz2
+		312kB sysstat-11.1.6.tar.xz
+		445kB sysstat-11.1.6-1.src.rpm
+		297kB sysstat-11.1.6-1.x86_64.rpm
 Alternate-site:
 Copying-policy:	GPL
 End

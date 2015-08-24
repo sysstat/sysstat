@@ -142,6 +142,8 @@ The following people have contributed to 'sysstat' in one way or another:
 	Dimitrios Apostolou <jimis [at] gmx.net> contributed the
 	sargraph2 plotting tool.
 
+	Shane M. SEYMOUR <shane.seymour [at] hp.com> contributed the
+	tapestat command.
 
 I would also thank the following people for their hints or bug reports
 (in alphabetical order):
@@ -185,6 +187,7 @@ I would also thank the following people for their hints or bug reports
 	Jonathan Kamens <jik@kam[...].us>
 	Ilya Katsnelson <ilya.katsnelson@mot[...].com>
 	Steve Kay <stevekay@gma[...].com>
+	Sampsa Kiiskinen <tuplanolla@gma[...].com>
 	Mike Kobler <mkobler@gma[...].com>
 	John Lau <johnlcf@gma[...].com>
 	Byeong-taek Lee <btlee@psy[...].kr>

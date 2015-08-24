@@ -45,6 +45,7 @@ sadc
 sar
 sadf
 iostat
+tapestat
 mpstat
 pidstat
 nfsiostat
