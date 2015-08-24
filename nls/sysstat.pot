@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-06-12 12:23+0200\n"
+"POT-Creation-Date: 2015-08-23 08:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: iostat.c:86 nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:95
-#: pidstat.c:87
+#: pidstat.c:87 tapestat.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
@@ -29,7 +29,7 @@ msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 
@@ -39,7 +39,7 @@ msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
@@ -143,13 +143,13 @@ msgstr ""
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:760 sadc.c:769 sadc.c:836 ioconf.c:496 rd_stats.c:69
+#: sadc.c:760 sadc.c:769 sadc.c:836 ioconf.c:508 rd_stats.c:69
 #: sa_common.c:1273 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
 
-#: sadc.c:1008
+#: sadc.c:1009
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
@@ -196,7 +196,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNTS ] ] [ -H ] [ -h ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
@@ -228,7 +228,7 @@ msgstr ""
 
 #: sar.c:137
 #, c-format
-msgid "\t-F [ MOUNTS ]\n"
+msgid "\t-F [ MOUNT ]\n"
 msgstr ""
 
 #: sar.c:138
@@ -402,12 +402,12 @@ msgid ""
 "Invalid data found. Aborting...\n"
 msgstr ""
 
-#: sa_conv.c:892
+#: sa_conv.c:897
 #, c-format
 msgid "Statistics: "
 msgstr ""
 
-#: sa_conv.c:1011
+#: sa_conv.c:1016
 #, c-format
 msgid ""
 "\n"
@@ -462,6 +462,13 @@ msgstr ""
 #: sa_common.c:1443
 #, c-format
 msgid "Requested activities not available in file %s\n"
+msgstr ""
+
+#: tapestat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
 
 #: count.c:168

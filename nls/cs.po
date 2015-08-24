@@ -1,14 +1,15 @@
 # Czech translations for sysstat package.
 # Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the sysstat package.
+#
 # Marek Černocký <marek@manet.cz>, 2010, 2011, 2013, 2015.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.1.4\n"
+"Project-Id-Version: sysstat 11.1.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-04-07 22:16+0200\n"
-"PO-Revision-Date: 2015-04-15 18:14+0200\n"
+"POT-Creation-Date: 2015-06-12 12:23+0200\n"
+"PO-Revision-Date: 2015-06-13 15:17+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech  <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -16,9 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
-#: iostat.c:86 nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:94
+#: iostat.c:86 nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:95
 #: pidstat.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -58,7 +59,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Nelze najít data na disku\n"
 
-#: iostat.c:1386 sa_common.c:1611
+#: iostat.c:1386 sa_common.c:1624
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Neplatný typ trvalého názvu zařízení\n"
@@ -160,13 +161,13 @@ msgstr "Nelze zapsat data do souboru se systémovými aktivitami: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Nelze zapsat hlavičku souboru se systémovými aktivitami: %s\n"
 
-#: sadc.c:760 sadc.c:769 sadc.c:837 ioconf.c:490 rd_stats.c:69
-#: sa_common.c:1272 count.c:118
+#: sadc.c:760 sadc.c:769 sadc.c:836 ioconf.c:496 rd_stats.c:69
+#: sa_common.c:1273 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Nelze otevřít %s: %s\n"
 
-#: sadc.c:1010
+#: sadc.c:1008
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Nelze připojit data do tohoto souboru (%s)\n"
@@ -187,7 +188,7 @@ msgstr ""
 "[-A] [-u] [-V] [-I {SUM|CPU|SCPU|ALL}]\n"
 "[-P {<procesor>[,…]|ON|ALL}]\n"
 
-#: mpstat.c:616 sar.c:405 pidstat.c:2264
+#: mpstat.c:616 sar.c:426 pidstat.c:2264
 msgid "Average:"
 msgstr "Průměr:"
 
@@ -214,13 +215,13 @@ msgstr ""
 "[-P {<procesor>[,…]|ALL}] [-s [<hh:mm[:ss]>]] [-e [<hh:mm[:ss]>]]\n"
 "[-- <přepínače_sar>]\n"
 
-#: sar.c:109
+#: sar.c:110
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNTS ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -230,49 +231,49 @@ msgstr ""
 "Přepínače jsou:\n"
 "[-A] [-B] [-b] [-C] [-D] [-d] [-F [MOUNTS]] [-H] [-h]\n"
 "[-p] [-q] [-R] [-r [ALL]] [-S] [-t] [-u [ALL]] [-V]\n"
-"[-v] [-W] [-w] [-y]\n"
+"[-v] [-W] [-w] [-y] [--sadc]\n"
 "[-I {<přerušení>[,…]|SUM|ALL|XALL}] [-P {<procesor>[,…]|ALL}]\n"
 "[-m {<klíčové_slovo>[,…]|ALL}] [-n {<klíčové_slovo>[,…]|ALL}]\n"
 "[-j {ID|LABEL|PATH|UUID|…}]\n"
 "[-f [<název_souboru>]|-o [<název_souboru>]|-[0-9]+]\n"
 "[-i <interval>] [-s [<hh:mm[:ss]>]] [-e [<hh:mm[:ss]>]]\n"
 
-#: sar.c:132
+#: sar.c:133
 #, c-format
 msgid "Main options and reports:\n"
 msgstr "Hlavní přepínače a výstupní sestavy:\n"
 
-#: sar.c:133
+#: sar.c:134
 #, c-format
 msgid "\t-B\tPaging statistics\n"
 msgstr "\t-B\tStatistiky stránkování\n"
 
-#: sar.c:134
+#: sar.c:135
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr "\t-b\tStatistiky přenosové rychlosti V/V\n"
 
-#: sar.c:135
+#: sar.c:136
 #, c-format
 msgid "\t-d\tBlock devices statistics\n"
 msgstr "\t-d\tStatistiky blokových zařízení\n"
 
-#: sar.c:136
+#: sar.c:137
 #, c-format
 msgid "\t-F [ MOUNTS ]\n"
 msgstr "\t-F [MOUNTS]\n"
 
-#: sar.c:137
+#: sar.c:138
 #, c-format
 msgid "\t\tFilesystems statistics\n"
 msgstr "\t\tStatistiky souborových systémů\n"
 
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-H\tStatistiky využití velkých paměťových stránek (hugepages)\n"
 
-#: sar.c:139
+#: sar.c:140
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -281,7 +282,7 @@ msgstr ""
 "\t-I {<přerušení>|SUM|ALL|XALL}\n"
 "\t\tStatistiky přerušení\n"
 
-#: sar.c:141
+#: sar.c:142
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -304,7 +305,7 @@ msgstr ""
 "\t\tTEMP\tTeplota zařízení\n"
 "\t\tUSB\tZařízení USB připojená do systému\n"
 
-#: sar.c:150
+#: sar.c:151
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -328,6 +329,7 @@ msgid ""
 "\t\tICMP6\tICMP traffic\t(v6)\n"
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
+"\t\tFC\tFibre channel HBAs\n"
 msgstr ""
 "\t-n {<klíčové_slovo>[,…]|ALL}\n"
 "\t\tStatistiky sítě\n"
@@ -350,18 +352,19 @@ msgstr ""
 "\t\tICMP6\tProvoz ICMP\t(v6)\n"
 "\t\tEICMP6\tProvoz ICMP\t(v6) (chyby)\n"
 "\t\tUDP6\tProvoz UDP\t(v6)\n"
+"\t\tFC\tHBA optických kanálů\n"
 
-#: sar.c:171
+#: sar.c:173
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tStatistiky délky fronty a průměrného vytížení\n"
 
-#: sar.c:172
+#: sar.c:174
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tStatistiky paměti\n"
 
-#: sar.c:173
+#: sar.c:175
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -370,12 +373,12 @@ msgstr ""
 "\t-r [ALL]\n"
 "\t\tStatistiky využití paměti\n"
 
-#: sar.c:175
+#: sar.c:177
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistiky využití odkládacího prostoru\n"
 
-#: sar.c:176
+#: sar.c:178
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -384,62 +387,67 @@ msgstr ""
 "\t-u [ALL]\n"
 "\t\tStatistiky využití procesoru\n"
 
-#: sar.c:178
+#: sar.c:180
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr "\t-v\tStatistiky tabulek jádra\n"
 
-#: sar.c:179
+#: sar.c:181
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tStatistiky odkládání na disk\n"
 
-#: sar.c:180
+#: sar.c:182
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tStatistiky vytváření úloh a systémového přepínání\n"
 
-#: sar.c:181
+#: sar.c:183
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr "\t-y\tStatistiky zařízení TTY\n"
 
-#: sar.c:239
+#: sar.c:197
+#, c-format
+msgid "Data collector will be sought in PATH\n"
+msgstr "Sběrač dat bude hledán v cestě PATH\n"
+
+#: sar.c:200
+#, c-format
+msgid "Data collector found: %s\n"
+msgstr "Nalezen sběrač dat: %s\n"
+
+#: sar.c:260
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Neočekávaný konec sbírání dat\n"
 
-#: sar.c:853
-#, c-format
-msgid "Invalid data format\n"
-msgstr "Neplatný formát dat\n"
-
-#: sar.c:857
+#: sar.c:875
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Používání nesprávného sběrače dat z jiné verze sysstat\n"
 
-#: sar.c:886
+#: sar.c:927
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekonzistentní vstupní data\n"
 
-#: sar.c:1069 pidstat.c:219
+#: sar.c:1098 pidstat.c:219
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Požadované aktivity nejsou dostupné\n"
 
-#: sar.c:1359
+#: sar.c:1393
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Přepínače -f a -o se navzájem vylučují\n"
 
-#: sar.c:1365
+#: sar.c:1399
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Nečte se ze souboru se systémovými aktivitami (použijte přepínač -f)\n"
 
-#: sar.c:1501
+#: sar.c:1535
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nelze najít sběrač dat (%s)\n"
@@ -449,16 +457,7 @@ msgstr "Nelze najít sběrač dat (%s)\n"
 msgid "Cannot convert the format of this file\n"
 msgstr "Nelze převést formát tohoto souboru\n"
 
-#: sa_conv.c:487
-#, c-format
-msgid ""
-"\n"
-"Invalid data found. Aborting...\n"
-msgstr ""
-"\n"
-"Byla nalezena neplatná data. Končí se…\n"
-
-#: sa_conv.c:556
+#: sa_conv.c:562
 #, c-format
 msgid ""
 "\n"
@@ -467,12 +466,21 @@ msgstr ""
 "\n"
 "V souboru nebyla nalezena aktivita CPU. Končí se…\n"
 
-#: sa_conv.c:877
+#: sa_conv.c:578
+#, c-format
+msgid ""
+"\n"
+"Invalid data found. Aborting...\n"
+msgstr ""
+"\n"
+"Byla nalezena neplatná data. Končí se…\n"
+
+#: sa_conv.c:892
 #, c-format
 msgid "Statistics: "
 msgstr "Statistiky: "
 
-#: sa_conv.c:996
+#: sa_conv.c:1011
 #, c-format
 msgid ""
 "\n"
@@ -494,42 +502,42 @@ msgstr ""
 "[-u] [-V] [-v] [-w] [-C <příkaz>] [-G <název_procesu>]\n"
 "[-p {<id_procesu>[,…]|SELF|ALL}] [-T {TASK|CHILD|ALL}]\n"
 
-#: sa_common.c:1068
+#: sa_common.c:1069
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Chyba při čtení souboru se systémovými aktivitami: %s\n"
 
-#: sa_common.c:1078
+#: sa_common.c:1079
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Neočekávaný konec souboru se systémovými aktivitami\n"
 
-#: sa_common.c:1097
+#: sa_common.c:1098
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Soubor vytvořen pomocí sar/sadc z balíku sysstat verze %d.%d.%d"
 
-#: sa_common.c:1130
+#: sa_common.c:1131
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Neplatný soubor se systémovými aktivitami: %s\n"
 
-#: sa_common.c:1142
+#: sa_common.c:1143
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "Formát endian neodpovídá\n"
 
-#: sa_common.c:1146
+#: sa_common.c:1147
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Současná verze sysstat neumí číst formát tohoto souboru (%#x)\n"
 
-#: sa_common.c:1275
+#: sa_common.c:1276
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Zkontrolujte prosím, zda je povolen sběr dat\n"
 
-#: sa_common.c:1430
+#: sa_common.c:1443
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Požadované aktivity nejsou v souboru %s dostupné\n"
@@ -539,10 +547,13 @@ msgstr "Požadované aktivity nejsou v souboru %s dostupné\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Nelze obsloužit tolik procesorů!\n"
 
-#: pr_stats.c:2394 pr_stats.c:2407 pr_stats.c:2506 pr_stats.c:2519
+#: pr_stats.c:2393 pr_stats.c:2406 pr_stats.c:2505 pr_stats.c:2518
 msgid "Summary:"
 msgstr "Souhrn:"
 
-#: pr_stats.c:2445
+#: pr_stats.c:2444
 msgid "Other devices not listed here"
 msgstr "Ostatní zde neuvedená zařízení"
+
+#~ msgid "Invalid data format\n"
+#~ msgstr "Neplatný formát dat\n"
