@@ -1,5 +1,14 @@
 Changes:
 
+2015/08/24: Version 11.0.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* Check /proc/net/snmp format to collect ICMP statistics at
+          their right positions.
+	* ioconf.c: Fix several ressource leaks.
+	* mpstat: Fix alignment output, really.
+	* [Sampsa Kiiskinen]: Fix bug in isag.
+	* iostat manual page updated.
+	* CREDITS file updated.
+
 2015/06/12: Version 11.0.5 - Sebastien Godard (sysstat <at> orange.fr)
         * [Peter Schiffer]: Fixed and simplified some math expressions
           in pr_stats.c.
