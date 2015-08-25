@@ -23,14 +23,16 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
 #include <dirent.h>
 #define __DO_NOT_DEFINE_COMPILE
-#include <regexp.h>
+#include <regex.h>
 #include <inttypes.h>
 #include <stdint.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
