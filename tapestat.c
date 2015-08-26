@@ -335,6 +335,12 @@ void tape_get_updated_stats(void)
 		TAPE_STAT_FILE_VAL(TAPE_STAT_PATH "write_cnt", write_count)
 		TAPE_STAT_FILE_VAL(TAPE_STAT_PATH "other_cnt", other_count)
 		TAPE_STAT_FILE_VAL(TAPE_STAT_PATH "resid_cnt", resid_count)
+
+		if ((tape_new_stats[i].read_time < tape_old_stats[i].read_time) ||
+		    (tape_new_stats[i].write_time < tape_old_stats[i].write_time) ||
+		    (tape_new_stats[i].other_time < tape_old_stats[i].other_time)) {
+			tape_new_stats[i].valid = TAPE_STATS_INVALID;
+		}
 	}
 }
 
