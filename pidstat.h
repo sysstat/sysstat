@@ -13,7 +13,7 @@
 #define K_P_CHILD	"CHILD"
 #define K_P_ALL		"ALL"
 
-#define NR_PID_PREALLOC	10
+#define NR_PID_PREALLOC	100
 
 #define MAX_COMM_LEN	128
 #define MAX_CMDLINE_LEN	128

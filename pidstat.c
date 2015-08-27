@@ -157,15 +157,35 @@ void salloc_pid_array(unsigned int len)
  */
 void salloc_pid(unsigned int len)
 {
-	int i;
+	short i;
 
 	for (i = 0; i < 3; i++) {
-		if ((st_pid_list[i] = (struct pid_stats *) malloc(PID_STATS_SIZE * len)) == NULL) {
-			perror("malloc");
+		if ((st_pid_list[i] = (struct pid_stats *) calloc(len, PID_STATS_SIZE)) == NULL) {
+			perror("calloc");
 			exit(4);
 		}
-		memset(st_pid_list[i], 0, PID_STATS_SIZE * len);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Reallocate structures for PIDs to read.
+ ***************************************************************************
+ */
+void realloc_pid(void)
+{
+	short i;
+	unsigned int new_size = 2 * pid_nr;
+
+	for (i = 0; i < 3; i++) {
+		if ((st_pid_list[i] = (struct pid_stats *) realloc(st_pid_list[i], PID_STATS_SIZE * new_size)) == NULL) {
+			perror("realloc");
+			exit(4);
+		}
+		memset(st_pid_list[i] + pid_nr, 0, PID_STATS_SIZE * (new_size - pid_nr));
+	}
+
+	pid_nr = new_size;
 }
 
 /*
@@ -917,34 +937,31 @@ void read_stats(int curr)
 			exit(4);
 		}
 
-		while (p < pid_nr) {
-
-			/* Get directory entries */
-			while ((drp = readdir(dir)) != NULL) {
-				if (isdigit(drp->d_name[0]))
-					break;
+		/* Get directory entries */
+		while ((drp = readdir(dir)) != NULL) {
+			if (!isdigit(drp->d_name[0])) {
+				continue;
 			}
-			if (drp) {
-				pst = st_pid_list[curr] + p++;
-				pid = atoi(drp->d_name);
 
-				if (read_pid_stats(pid, pst, &thr_nr, 0)) {
-					/* Process has terminated */
-					pst->pid = 0;
-				}
+			pst = st_pid_list[curr] + p++;
+			pid = atoi(drp->d_name);
 
-				else if (DISPLAY_TID(pidflag)) {
-					/* Read stats for threads in task subdirectory */
-					read_task_stats(curr, pid, &p);
-				}
+			if (read_pid_stats(pid, pst, &thr_nr, 0)) {
+				/* Process has terminated */
+				pst->pid = 0;
+			} else if (DISPLAY_TID(pidflag)) {
+				/* Read stats for threads in task subdirectory */
+				read_task_stats(curr, pid, &p);
 			}
-			else {
-				for (q = p; q < pid_nr; q++) {
-					pst = st_pid_list[curr] + q;
-					pst->pid = 0;
-				}
-				break;
+
+			if (p >= pid_nr) {
+				realloc_pid();
 			}
+		}
+
+		for (q = p; q < pid_nr; q++) {
+			pst = st_pid_list[curr] + q;
+			pst->pid = 0;
 		}
 
 		/* Close /proc directory */
