@@ -31,14 +31,16 @@
 #define SYSFS_CLASS_TAPE_DIR "/sys/class/scsi_tape"
 #define TAPE_STAT_PATH "/sys/class/scsi_tape/st%i/stats/"
 
-#define TAPE_STAT_FILE_VAL(A, B)				\
-	snprintf(filename, MAXPATHLEN, A, i);			\
-	if ((fp = fopen(filename, "r")) != NULL) {		\
-		fscanf(fp, "%"PRId64, &tape_new_stats[i].B);	\
-		fclose(fp);					\
-	} else {						\
-		tape_new_stats[i].valid = TAPE_STATS_INVALID;	\
-		continue;					\
+#define TAPE_STAT_FILE_VAL(A, B)					\
+	snprintf(filename, MAXPATHLEN, A, i);				\
+	if ((fp = fopen(filename, "r")) != NULL) {			\
+		if (fscanf(fp, "%"PRId64, &tape_new_stats[i].B) != 1) {	\
+			tape_new_stats[i].valid = TAPE_STATS_INVALID;	\
+		}							\
+		fclose(fp);						\
+	} else {							\
+		tape_new_stats[i].valid = TAPE_STATS_INVALID;		\
+		continue;						\
 	}
 
 

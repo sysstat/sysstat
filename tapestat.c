@@ -394,7 +394,9 @@ void tape_calc_one_stats(struct calc_stats *stats, int i)
 		if (fp == NULL) {
 			duration = 0;
 		} else {
-			fscanf(fp, "%lf", &temp);
+			if (fscanf(fp, "%lf", &temp) != 1) {
+				temp = 0;
+			}
 			duration = (uint64_t) (temp * 1000);
 			fclose(fp);
 		}
