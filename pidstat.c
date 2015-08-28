@@ -880,23 +880,22 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
 	if ((dir = opendir(filename)) == NULL)
 		return;
 
-	while (*index < pid_nr) {
-
-		while ((drp = readdir(dir)) != NULL) {
-			if (isdigit(drp->d_name[0]))
-				break;
+	while ((drp = readdir(dir)) != NULL) {
+		if (!isdigit(drp->d_name[0])) {
+			continue;
 		}
 
-		if (drp) {
-			pst = st_pid_list[curr] + (*index)++;
-			if (read_pid_stats(atoi(drp->d_name), pst, &thr_nr, pid)) {
-				/* Thread no longer exists */
-				pst->pid = 0;
-			}
+		pst = st_pid_list[curr] + (*index)++;
+		if (read_pid_stats(atoi(drp->d_name), pst, &thr_nr, pid)) {
+			/* Thread no longer exists */
+			pst->pid = 0;
 		}
-		else
-			break;
+
+		if (*index >= pid_nr) {
+			realloc_pid();
+		}
 	}
+
 	closedir(dir);
 }
 
