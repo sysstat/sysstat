@@ -22,3 +22,7 @@ ZIP="@ZIP@"
 # usually runs right after midnight. If you want sa2 to generate the summary
 # of the same day (for example when cron job runs at 23:53) set this variable.
 #YESTERDAY=no
+
+# By default sa2 script generates reports files (the so called sarDD files).
+# Set this variable to false to disable reports generation.
+#REPORTS=false

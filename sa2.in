@@ -43,7 +43,10 @@ ENDIR=@bindir@
 
 [ -f "${DFILE}" ] || exit 0
 cd ${ENDIR}
-${ENDIR}/sar $* -f ${DFILE} > ${RPT}
+if [ x${REPORTS} != xfalse ]
+then
+	${ENDIR}/sar $* -f ${DFILE} > ${RPT}
+fi
 
 SAFILES_REGEX='/sar?[0-9]{2,8}(\.(Z|gz|bz2|xz|lz|lzo))?$'
 
