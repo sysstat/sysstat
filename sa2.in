@@ -30,9 +30,9 @@ fi
 
 if [ ${HISTORY} -gt 28 ]
 then
-	DATE=`date "${DATE_OPTS}" +%Y%m%d`
+	DATE=`date ${DATE_OPTS} +%Y%m%d`
 else
-	DATE=`date "${DATE_OPTS}" +%d`
+	DATE=`date ${DATE_OPTS} +%d`
 fi
 CURRENTFILE=sa${DATE}
 CURRENTRPT=sar${DATE}
