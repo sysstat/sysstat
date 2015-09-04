@@ -126,6 +126,14 @@ are always
 directory during the majority of a given day.
 
 .TP
+.B REPORTS
+Set this variable to false to prevent the
+.B sa2
+script from generating reports (the
+.IR sarDD
+files).
+
+.TP
 .B SA_DIR
 Directory where the standard system activity daily data and report files
 are saved. Its default value is
