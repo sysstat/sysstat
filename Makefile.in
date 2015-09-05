@@ -89,7 +89,11 @@ ifndef ZIP
 ZIP = @ZIP@
 endif
 
-# Settings 
+# Settings
+SYSMACROS = @SYSMACROS@
+ifeq ($(SYSMACROS),y)
+	DFLAGS += -DHAVE_SYS_SYSMACROS_H
+endif
 NLS = @NLS@
 ifeq ($(NLS),y)
 REQUIRE_NLS = -DUSE_NLS -DPACKAGE=\"$(PACKAGE)\" -DLOCALEDIR=\"$(NLS_DIR)\"

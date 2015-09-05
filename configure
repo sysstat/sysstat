@@ -658,6 +658,7 @@ SA_DIR
 sa_dir
 SA_LIB_DIR
 sa_lib_dir
+SYSMACROS
 INITD_DIR
 INIT_DIR
 RC_DIR
@@ -4017,6 +4018,7 @@ echo Check header files:
 echo .
 HAVE_LIBINTL_H=
 HAVE_LOCALE_H=
+HAVE_SYS_SYSMACROS_H=
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ANSI C header files" >&5
 $as_echo_n "checking for ANSI C header files... " >&6; }
 if ${ac_cv_header_stdc+:} false; then :
@@ -4415,6 +4417,18 @@ if test "x$ac_cv_header_sys_stat_h" = xyes; then :
 #define HAVE_SYS_STAT_H 1
 _ACEOF
 
+fi
+
+done
+
+for ac_header in sys/sysmacros.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "sys/sysmacros.h" "ac_cv_header_sys_sysmacros_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_sysmacros_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SYS_SYSMACROS_H 1
+_ACEOF
+ HAVE_SYS_SYSMACROS_H=1
 fi
 
 done
@@ -4904,6 +4918,13 @@ fi
 
 
 
+
+
+if test $HAVE_SYS_SYSMACROS_H; then
+   SYSMACROS="y"
+else
+   SYSMACROS="n"
+fi
 
 
 # Set sadc directory

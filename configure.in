@@ -57,6 +57,7 @@ echo Check header files:
 echo .
 HAVE_LIBINTL_H=
 HAVE_LOCALE_H=
+HAVE_SYS_SYSMACROS_H=
 AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_CHECK_HEADERS(ctype.h)
@@ -70,6 +71,7 @@ AC_CHECK_HEADERS(stdio.h)
 AC_CHECK_HEADERS(sys/file.h)
 AC_CHECK_HEADERS(sys/ioctl.h)
 AC_CHECK_HEADERS(sys/stat.h)
+AC_CHECK_HEADERS(sys/sysmacros.h, HAVE_SYS_SYSMACROS_H=1)
 
 echo .
 echo Check typedefs, structures and compiler characteristics:
@@ -199,6 +201,13 @@ fi
 AC_SUBST(RC_DIR)
 AC_SUBST(INIT_DIR)
 AC_SUBST(INITD_DIR)
+
+if test $HAVE_SYS_SYSMACROS_H; then
+   SYSMACROS="y"
+else
+   SYSMACROS="n"
+fi
+AC_SUBST(SYSMACROS)
 
 # Set sadc directory
 if test $prefix != "NONE"; then
