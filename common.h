@@ -84,6 +84,7 @@
 /* Environment variables */
 #define ENV_TIME_FMT		"S_TIME_FORMAT"
 #define ENV_TIME_DEFTM		"S_TIME_DEF_TIME"
+#define ENV_COLORS		"S_COLORS"
 
 #define DIGITS			"0123456789"
 
@@ -151,6 +152,21 @@ extern char persistent_name_type[MAX_FILE_LEN];
 
 /*
  ***************************************************************************
+ * Colors definitions
+ ***************************************************************************
+ */
+
+#define C_BOLD_RED	"\e[31;1m"
+#define C_BOLD_BLUE	"\e[34;1m"
+#define C_FAINT_YELLOW	"\e[33;2m"
+#define C_BOLD_YELLOW	"\e[33;1m"
+#define C_NORMAL	"\e[0m"
+
+#define PERCENT_LIMIT_HIGH	75.0
+#define PERCENT_LIMIT_LOW	50.0
+
+/*
+ ***************************************************************************
  * Structures definitions
  ***************************************************************************
  */
@@ -176,6 +192,12 @@ extern int
 	count_bits(void *, int);
 extern int
 	count_csvalues(int, char **);
+extern void
+	cprintf_f(int, int, int, ...);
+extern void
+	cprintf_pc(int, int, int, ...);
+extern void
+	cprintf_ull(int, int, ...);
 extern char *
 	device_name(char *);
 extern void
@@ -202,6 +224,8 @@ extern int
 	get_sysfs_dev_nr(int);
 extern int
 	get_win_height(void);
+extern void
+	init_colors(void);
 extern void
 	init_nls(void);
 extern int

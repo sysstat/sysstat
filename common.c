@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>	/* For STDOUT_FILENO, among others */
@@ -48,6 +49,13 @@
 unsigned int hz;
 /* Number of bit shifts to convert pages to kB */
 unsigned int kb_shift;
+
+/* Colors strings */
+char sc_percent_high[] = C_BOLD_RED;
+char sc_percent_low[] = C_BOLD_BLUE;
+char sc_zero_int_stat[] = C_FAINT_YELLOW;
+char sc_int_stat[] = C_BOLD_YELLOW;
+char sc_normal[] = C_NORMAL;
 
 /* Type of persistent device names used in sar and iostat */
 char persistent_name_type[MAX_FILE_LEN];
@@ -918,4 +926,120 @@ char *get_pretty_name_from_persistent(char *persistent)
 		return (NULL);
 
 	return pretty;
+}
+
+/*
+ ***************************************************************************
+ * Init color strings.
+ ***************************************************************************
+ */
+void init_colors(void)
+{
+	/* Read environment variable value */
+	if (getenv(ENV_COLORS) == NULL) {
+		/* Environment variable not set: Unset color strings */
+		strcpy(sc_percent_high, "");
+		strcpy(sc_percent_low, "");
+		strcpy(sc_zero_int_stat, "");
+		strcpy(sc_int_stat, "");
+		strcpy(sc_normal, "");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Print "unsigned long long" statistics values using colors.
+ *
+ * IN:
+ * @num		Number of values to print.
+ * @width	Output width.
+ ***************************************************************************
+*/
+void cprintf_ull(int num, int width, ...)
+{
+	int i;
+	unsigned long long val;
+	va_list args;
+
+	va_start(args, width);
+
+	for (i = 0; i < num; i++) {
+		val = va_arg(args, unsigned long long);
+		if (!val) {
+			printf("%s", sc_zero_int_stat);
+		}
+		else {
+			printf("%s", sc_int_stat);
+		}
+		printf(" %*llu", width, val);
+		printf("%s", sc_normal);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Print "double" statistics values using colors.
+ *
+ * IN:
+ * @num		Number of values to print.
+ * @width	Output width.
+ * @wd		Number of decimal places.
+ ***************************************************************************
+*/
+void cprintf_f(int num, int wi, int wd, ...)
+{
+	int i;
+	double val;
+	va_list args;
+
+	va_start(args, wd);
+
+	for (i = 0; i < num; i++) {
+		val = va_arg(args, double);
+		if (!val) {
+			printf("%s", sc_zero_int_stat);
+		}
+		else {
+			printf("%s", sc_int_stat);
+		}
+		printf(" %*.*f", wi, wd, val);
+		printf("%s", sc_normal);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Print "percent" statistics values using colors.
+ *
+ * IN:
+ * @num		Number of values to print.
+ * @width	Output width.
+ * @wd		Number of decimal places.
+ ***************************************************************************
+*/
+void cprintf_pc(int num, int wi, int wd, ...)
+{
+	int i;
+	double val;
+	va_list args;
+
+	va_start(args, wd);
+
+	for (i = 0; i < num; i++) {
+		val = va_arg(args, double);
+		if (val >= PERCENT_LIMIT_HIGH) {
+			printf("%s", sc_percent_high);
+		}
+		else if (val >= PERCENT_LIMIT_LOW) {
+			printf("%s", sc_percent_low);
+		}
+		else if (!val) {
+			printf("%s", sc_zero_int_stat);
+		}
+		else {
+			printf("%s", sc_int_stat);
+		}
+		printf(" %*.*f", wi, wd, val);
+		printf("%s", sc_normal);
+	}
 }
