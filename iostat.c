@@ -826,22 +826,25 @@ void write_cpu_stat(int curr, unsigned long long itv)
 {
 	printf("avg-cpu:  %%user   %%nice %%system %%iowait  %%steal   %%idle\n");
 
-	printf("         %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f\n\n",
-	       ll_sp_value(st_cpu[!curr]->cpu_user,   st_cpu[curr]->cpu_user,   itv),
-	       ll_sp_value(st_cpu[!curr]->cpu_nice,   st_cpu[curr]->cpu_nice,   itv),
-		/*
-		 * Time spent in system mode also includes time spent servicing
-		 * hard and soft interrupts.
-		 */
-	       ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
-			   st_cpu[!curr]->cpu_hardirq,
-			   st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
-			   st_cpu[curr]->cpu_hardirq, itv),
-	       ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, itv),
-	       ll_sp_value(st_cpu[!curr]->cpu_steal,  st_cpu[curr]->cpu_steal,  itv),
-	       (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
-	       0.0 :
-	       ll_sp_value(st_cpu[!curr]->cpu_idle,   st_cpu[curr]->cpu_idle,   itv));
+	printf("       ");
+	cprintf_pc(6, 7, 2,
+		   ll_sp_value(st_cpu[!curr]->cpu_user,   st_cpu[curr]->cpu_user,   itv),
+		   ll_sp_value(st_cpu[!curr]->cpu_nice,   st_cpu[curr]->cpu_nice,   itv),
+		   /*
+		    * Time spent in system mode also includes time spent servicing
+		    * hard and soft interrupts.
+		    */
+		   ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
+			       st_cpu[!curr]->cpu_hardirq,
+			       st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
+			       st_cpu[curr]->cpu_hardirq, itv),
+		   ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, itv),
+		   ll_sp_value(st_cpu[!curr]->cpu_steal,  st_cpu[curr]->cpu_steal,  itv),
+		   (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
+		   0.0 :
+		   ll_sp_value(st_cpu[!curr]->cpu_idle,   st_cpu[curr]->cpu_idle,   itv));
+
+	printf("\n\n");
 }
 
 /*
@@ -958,27 +961,29 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	}
 
 	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
-	printf(" %8.2f %8.2f %7.2f %7.2f %8.2f %8.2f %8.2f %8.2f %7.2f %7.2f %7.2f %6.2f %6.2f\n",
-	       S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
-	       S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
-	       S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
-	       S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
-	       S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-	       S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
-	       xds.arqsz,
-	       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
-	       xds.await,
-	       r_await,
-	       w_await,
-	       /* The ticks output is biased to output 1000 ticks per second */
-	       xds.svctm,
-	       /*
-	        * Again: Ticks in milliseconds.
-		* In the case of a device group (option -g), shi->used is the number of
-		* devices in the group. Else shi->used equals 1.
-		*/
-	       shi->used ? xds.util / 10.0 / (double) shi->used
-	                 : xds.util / 10.0);	/* shi->used should never be null here */
+	cprintf_f(2, 8, 2,
+		  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+		  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
+	cprintf_f(2, 7, 2,
+		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
+	cprintf_f(4, 8, 2,
+		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+		  xds.arqsz,
+		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+	cprintf_f(3, 7, 2, xds.await, r_await, w_await);
+	/* The ticks output is biased to output 1000 ticks per second */
+	cprintf_f(1, 6, 2, xds.svctm);
+	/*
+	 * Again: Ticks in milliseconds.
+	 * In the case of a device group (option -g), shi->used is the number of
+	 * devices in the group. Else shi->used equals 1.
+	 */
+	cprintf_pc(1, 6, 2,
+		   shi->used ? xds.util / 10.0 / (double) shi->used
+		             : xds.util / 10.0);	/* shi->used should never be null here */
+	printf("\n");
 }
 
 /*
@@ -1025,12 +1030,15 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 		wr_sec &= 0xffffffff;
 	}
 
-	printf(" %8.2f %12.2f %12.2f %10llu %10llu\n",
-	       S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv),
-	       S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-	       S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
-	       (unsigned long long) rd_sec / fctr,
-	       (unsigned long long) wr_sec / fctr);
+	cprintf_f(1, 8, 2,
+		  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
+	cprintf_f(2, 12, 2,
+		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr);
+	cprintf_ull(2, 10,
+		    (unsigned long long) rd_sec / fctr,
+		    (unsigned long long) wr_sec / fctr);
+	printf("\n");
 }
 
 /*
@@ -1301,6 +1309,9 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
+
+	/* Init color strings */
+	init_colors();
 
 	/* Get HZ */
 	get_HZ();
