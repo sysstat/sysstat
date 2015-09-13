@@ -936,8 +936,11 @@ char *get_pretty_name_from_persistent(char *persistent)
 void init_colors(void)
 {
 	/* Read environment variable value */
-	if (getenv(ENV_COLORS) == NULL) {
-		/* Environment variable not set: Unset color strings */
+	if (!getenv(ENV_COLORS) || !isatty(STDOUT_FILENO)) {
+		/*
+		 * Environment variable is not set or stdout is not a terminal:
+		 * Unset color strings.
+		 */
 		strcpy(sc_percent_high, "");
 		strcpy(sc_percent_low, "");
 		strcpy(sc_zero_int_stat, "");
