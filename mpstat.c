@@ -291,7 +291,8 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 				continue;
 		}
 
-		printf("%-11s  %3d", curr_string, cpu - 1);
+		printf("%-11s", curr_string);
+		cprintf_in(IS_INT, "  %3d", "", cpu - 1);
 
 		for (j = 0; j < ic_nr; j++) {
 			p0 = st_ic[curr] + j;	/* irq field set only for proc #0 */
@@ -382,7 +383,8 @@ void write_stats_core(int prev, int curr, int dis,
 		/* Check if we want global stats among all proc */
 		if (*cpu_bitmap & 1) {
 
-			printf("%-11s  all", curr_string);
+			printf("%-11s", curr_string);
+			cprintf_in(IS_STR, " %s", " all", 0);
 
 			cprintf_pc(10, 7, 2,
 				   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
@@ -446,7 +448,8 @@ void write_stats_core(int prev, int curr, int dis,
 			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 
 				if (!DISPLAY_ONLINE_CPU(flags)) {
-					printf("%-11s %4d", curr_string, cpu - 1);
+					printf("%-11s", curr_string);
+					cprintf_in(IS_INT, " %4d", "", cpu - 1);
 					cprintf_pc(10, 7, 2,
 						   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 					printf("\n");
@@ -454,7 +457,8 @@ void write_stats_core(int prev, int curr, int dis,
 				continue;
 			}
 
-			printf("%-11s %4d", curr_string, cpu - 1);
+			printf("%-11s", curr_string);
+			cprintf_in(IS_INT, " %4d", "", cpu - 1);
 
 			/* Recalculate itv for current proc */
 			pc_itv = get_per_cpu_interval(scc, scp);
@@ -521,7 +525,8 @@ void write_stats_core(int prev, int curr, int dis,
 		}
 
 		if (*cpu_bitmap & 1) {
-			printf("%-11s  all", curr_string);
+			printf("%-11s", curr_string);
+			cprintf_in(IS_STR, " %s", " all", 0);
 			cprintf_f(1, 9, 2,
 				  S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
 			printf("\n");
@@ -546,14 +551,16 @@ void write_stats_core(int prev, int curr, int dis,
 				/* This is an offline CPU */
 
 				if (!DISPLAY_ONLINE_CPU(flags)) {
-					printf("%-11s %4d", curr_string, cpu - 1);
+					printf("%-11s", curr_string);
+					cprintf_in(IS_INT, " %4d", "", cpu- 1);
 					cprintf_f(1, 9, 2, 0.0);
 					printf("\n");
 				}
 				continue;
 			}
 
-			printf("%-11s %4d", curr_string, cpu - 1);
+			printf("%-11s", curr_string);
+			cprintf_in(IS_INT, " %4d", "", cpu- 1);
 
 			/* Recalculate itv for current proc */
 			pc_itv = get_per_cpu_interval(scc, scp);

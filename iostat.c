@@ -954,10 +954,11 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 		devname = shi->name;
 	}
 	if (DISPLAY_HUMAN_READ(flags)) {
-		printf("%s\n%13s", devname, "");
+		cprintf_in(IS_STR, "%s\n", devname, 0);
+		printf("%13s", "");
 	}
 	else {
-		printf("%-13s", devname);
+		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
 	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
@@ -1014,10 +1015,11 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 		devname = shi->name;
 	}
 	if (DISPLAY_HUMAN_READ(flags)) {
-		printf("%s\n%13s", devname, "");
+		cprintf_in(IS_STR, "%s\n", devname, 0);
+		printf("%13s", "");
 	}
 	else {
-		printf("%-13s", devname);
+		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
 	/* Print stats coming from /sys or /proc/diskstats */
