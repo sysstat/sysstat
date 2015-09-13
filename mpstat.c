@@ -220,7 +220,6 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 	struct stats_cpu *scc;
 	int j = 0, offset, cpu, colwidth[NR_IRQS];
 	struct stats_irqcpu *p, *q, *p0, *q0;
-	char fmtspec[MAX_IRQ_LEN];
 
 	/*
 	* Check if number of interrupts has changed.
@@ -322,9 +321,8 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 				if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
 					p = st_ic[curr] + (cpu - 1) * ic_nr + j;
 					q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
-					snprintf(fmtspec, sizeof(fmtspec), " %%%d.2f", colwidth[j]);
-					printf(fmtspec,
-					       S_VALUE(q->interrupt, p->interrupt, itv));
+					cprintf_f(1, colwidth[j], 2,
+						  S_VALUE(q->interrupt, p->interrupt, itv));
 				}
 				else
 					printf("        N/A");
@@ -386,45 +384,46 @@ void write_stats_core(int prev, int curr, int dis,
 
 			printf("%-11s  all", curr_string);
 
-			printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f\n",
-			       (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
-			       (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
-			       0.0 :
-			       ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
-					   st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
-					   g_itv),
-			       (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
-			       (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
-			       0.0 :
-			       ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
-					   st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_sys,
-					   st_cpu[curr]->cpu_sys,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_iowait,
-					   st_cpu[curr]->cpu_iowait,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_hardirq,
-					   st_cpu[curr]->cpu_hardirq,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_softirq,
-					   st_cpu[curr]->cpu_softirq,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_steal,
-					   st_cpu[curr]->cpu_steal,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_guest,
-					   st_cpu[curr]->cpu_guest,
-					   g_itv),
-			       ll_sp_value(st_cpu[prev]->cpu_guest_nice,
-					   st_cpu[curr]->cpu_guest_nice,
-					   g_itv),
-			       (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
-			       0.0 :
-			       ll_sp_value(st_cpu[prev]->cpu_idle,
-					   st_cpu[curr]->cpu_idle,
-					   g_itv));
+			cprintf_pc(10, 7, 2,
+				   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
+				   (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
+				   0.0 :
+				   ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
+					       st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
+					       g_itv),
+				   (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
+				   (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
+				   0.0 :
+				   ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
+					       st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_sys,
+					       st_cpu[curr]->cpu_sys,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_iowait,
+					       st_cpu[curr]->cpu_iowait,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_hardirq,
+					       st_cpu[curr]->cpu_hardirq,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_softirq,
+					       st_cpu[curr]->cpu_softirq,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_steal,
+					       st_cpu[curr]->cpu_steal,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_guest,
+					       st_cpu[curr]->cpu_guest,
+					       g_itv),
+				   ll_sp_value(st_cpu[prev]->cpu_guest_nice,
+					       st_cpu[curr]->cpu_guest_nice,
+					       g_itv),
+				   (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
+				   0.0 :
+				   ll_sp_value(st_cpu[prev]->cpu_idle,
+					       st_cpu[curr]->cpu_idle,
+					       g_itv));
+			printf("\n");
 		}
 
 		for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -447,11 +446,10 @@ void write_stats_core(int prev, int curr, int dis,
 			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 
 				if (!DISPLAY_ONLINE_CPU(flags)) {
-					printf("%-11s %4d"
-					       "  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-					       "  %6.2f  %6.2f  %6.2f  %6.2f\n",
-					       curr_string, cpu - 1,
-					       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+					printf("%-11s %4d", curr_string, cpu - 1);
+					cprintf_pc(10, 7, 2,
+						   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+					printf("\n");
 				}
 				continue;
 			}
@@ -466,50 +464,50 @@ void write_stats_core(int prev, int curr, int dis,
 				 * If the CPU is tickless then there is no change in CPU values
 				 * but the sum of values is not zero.
 				 */
-				printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-				       "  %6.2f  %6.2f  %6.2f  %6.2f\n",
-				       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
+				cprintf_pc(10, 7, 2,
+					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
+				printf("\n");
 			}
 
 			else {
-				printf("  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f  %6.2f"
-				       "  %6.2f  %6.2f  %6.2f  %6.2f\n",
-				       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-				       0.0 :
-				       ll_sp_value(scp->cpu_user - scp->cpu_guest,
-						   scc->cpu_user - scc->cpu_guest,
-						   pc_itv),
-				       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-				       0.0 :
-				       ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-						   scc->cpu_nice - scc->cpu_guest_nice,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_sys,
-						   scc->cpu_sys,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_iowait,
-						   scc->cpu_iowait,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_hardirq,
-						   scc->cpu_hardirq,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_softirq,
-						   scc->cpu_softirq,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_steal,
-						   scc->cpu_steal,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_guest,
-						   scc->cpu_guest,
-						   pc_itv),
-				       ll_sp_value(scp->cpu_guest_nice,
-						   scc->cpu_guest_nice,
-						   pc_itv),
-				       (scc->cpu_idle < scp->cpu_idle) ?
-				       0.0 :
-				       ll_sp_value(scp->cpu_idle,
-						   scc->cpu_idle,
-						   pc_itv));
+				cprintf_pc(10, 7, 2,
+					   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+					   0.0 :
+					   ll_sp_value(scp->cpu_user - scp->cpu_guest,
+						       scc->cpu_user - scc->cpu_guest,
+						       pc_itv),
+					   (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+					   0.0 :
+					   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+						       scc->cpu_nice - scc->cpu_guest_nice,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_sys,
+						       scc->cpu_sys,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_iowait,
+						       scc->cpu_iowait,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_hardirq,
+						       scc->cpu_hardirq,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_softirq,
+						       scc->cpu_softirq,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_steal,
+						       scc->cpu_steal,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_guest,
+						       scc->cpu_guest,
+						       pc_itv),
+					   ll_sp_value(scp->cpu_guest_nice,
+						       scc->cpu_guest_nice,
+						       pc_itv),
+					   (scc->cpu_idle < scp->cpu_idle) ?
+					   0.0 :
+					   ll_sp_value(scp->cpu_idle,
+						       scc->cpu_idle,
+						       pc_itv));
+				printf("\n");
 			}
 		}
 	}
@@ -523,8 +521,10 @@ void write_stats_core(int prev, int curr, int dis,
 		}
 
 		if (*cpu_bitmap & 1) {
-			printf("%-11s  all %9.2f\n", curr_string,
-			       S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
+			printf("%-11s  all", curr_string);
+			cprintf_f(1, 9, 2,
+				  S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
+			printf("\n");
 		}
 
 		for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -546,10 +546,9 @@ void write_stats_core(int prev, int curr, int dis,
 				/* This is an offline CPU */
 
 				if (!DISPLAY_ONLINE_CPU(flags)) {
-					printf("%-11s %4d"
-					       "  %9.2f\n",
-					       curr_string, cpu - 1,
-					       0.0);
+					printf("%-11s %4d", curr_string, cpu - 1);
+					cprintf_f(1, 9, 2, 0.0);
+					printf("\n");
 				}
 				continue;
 			}
@@ -561,11 +560,13 @@ void write_stats_core(int prev, int curr, int dis,
 
 			if (!pc_itv) {
 				/* This is a tickless CPU */
-				printf(" %9.2f\n", 0.0);
+				cprintf_f(1, 9, 2, 0.0);
+				printf("\n");
 			}
 			else {
-				printf(" %9.2f\n",
-				       S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+				cprintf_f(1, 9, 2,
+					  S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+				printf("\n");
 			}
 		}
 	}
@@ -906,6 +907,9 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
+
+	/* Init color strings */
+	init_colors();
 
 	/* Get HZ */
 	get_HZ();
