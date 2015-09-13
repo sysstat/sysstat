@@ -157,13 +157,17 @@ extern char persistent_name_type[MAX_FILE_LEN];
  */
 
 #define C_BOLD_RED	"\e[31;1m"
-#define C_BOLD_BLUE	"\e[34;1m"
-#define C_FAINT_YELLOW	"\e[33;2m"
+#define C_LIGHT_GREEN	"\e[32;22m"
+#define C_LIGHT_YELLOW	"\e[33;22m"
 #define C_BOLD_YELLOW	"\e[33;1m"
+#define C_BOLD_BLUE	"\e[34;1m"
 #define C_NORMAL	"\e[0m"
 
 #define PERCENT_LIMIT_HIGH	75.0
 #define PERCENT_LIMIT_LOW	50.0
+
+#define IS_INT	0
+#define IS_STR	1
 
 /*
  ***************************************************************************
@@ -194,6 +198,8 @@ extern int
 	count_csvalues(int, char **);
 extern void
 	cprintf_f(int, int, int, ...);
+extern void
+	cprintf_in(int, char *, char *, int);
 extern void
 	cprintf_pc(int, int, int, ...);
 extern void

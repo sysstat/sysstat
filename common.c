@@ -53,8 +53,9 @@ unsigned int kb_shift;
 /* Colors strings */
 char sc_percent_high[] = C_BOLD_RED;
 char sc_percent_low[] = C_BOLD_BLUE;
-char sc_zero_int_stat[] = C_FAINT_YELLOW;
+char sc_zero_int_stat[] = C_LIGHT_YELLOW;
 char sc_int_stat[] = C_BOLD_YELLOW;
+char sc_item_name[] = C_LIGHT_GREEN;
 char sc_normal[] = C_NORMAL;
 
 /* Type of persistent device names used in sar and iostat */
@@ -945,6 +946,7 @@ void init_colors(void)
 		strcpy(sc_percent_low, "");
 		strcpy(sc_zero_int_stat, "");
 		strcpy(sc_int_stat, "");
+		strcpy(sc_item_name, "");
 		strcpy(sc_normal, "");
 	}
 }
@@ -999,7 +1001,7 @@ void cprintf_f(int num, int wi, int wd, ...)
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, double);
-		if (!val) {
+		if (val < 0.005) {
 			printf("%s", sc_zero_int_stat);
 		}
 		else {
@@ -1036,7 +1038,7 @@ void cprintf_pc(int num, int wi, int wd, ...)
 		else if (val >= PERCENT_LIMIT_LOW) {
 			printf("%s", sc_percent_low);
 		}
-		else if (!val) {
+		else if (val < 0.005) {
 			printf("%s", sc_zero_int_stat);
 		}
 		else {
@@ -1045,4 +1047,28 @@ void cprintf_pc(int num, int wi, int wd, ...)
 		printf(" %*.*f", wi, wd, val);
 		printf("%s", sc_normal);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Print item name using selected color.
+ * Only one name can be displayed. Name can be an integer or a string.
+ *
+ * IN:
+ * @type	0 if name is an int, 1 if name is a string
+ * @format	Output format.
+ * @item_string	Item name (given as a string of characters).
+ * @item_int	Item name (given as an integer value).
+ ***************************************************************************
+*/
+void cprintf_in(int type, char *format, char *item_string, int item_int)
+{
+	printf("%s", sc_item_name);
+	if (type) {
+		printf(format, item_string);
+	}
+	else {
+		printf(format, item_int);
+	}
+	printf("%s", sc_normal);
 }
