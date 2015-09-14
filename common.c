@@ -56,6 +56,8 @@ char sc_percent_low[] = C_BOLD_BLUE;
 char sc_zero_int_stat[] = C_LIGHT_YELLOW;
 char sc_int_stat[] = C_BOLD_YELLOW;
 char sc_item_name[] = C_LIGHT_GREEN;
+char sc_sa_restart[] = C_LIGHT_RED;
+char sc_sa_comment[] = C_LIGHT_CYAN;
 char sc_normal[] = C_NORMAL;
 
 /* Type of persistent device names used in sar and iostat */
@@ -947,6 +949,8 @@ void init_colors(void)
 		strcpy(sc_zero_int_stat, "");
 		strcpy(sc_int_stat, "");
 		strcpy(sc_item_name, "");
+		strcpy(sc_sa_comment, "");
+		strcpy(sc_sa_restart, "");
 		strcpy(sc_normal, "");
 	}
 }
@@ -1070,5 +1074,28 @@ void cprintf_in(int type, char *format, char *item_string, int item_int)
 	else {
 		printf(format, item_int);
 	}
+	printf("%s", sc_normal);
+}
+
+/*
+ ***************************************************************************
+ * Print a string using selected color.
+ *
+ * IN:
+ * @type	Type of string to display.
+ * @format	Output format.
+ * @string	String to display.
+ ***************************************************************************
+*/
+void cprintf_s(int type, char *format, char *string)
+{
+	if (type == IS_RESTART) {
+		printf("%s", sc_sa_restart);
+	}
+	else {
+		/* IS_COMMENT */
+		printf("%s", sc_sa_comment);
+	}
+	printf(format, string);
 	printf("%s", sc_normal);
 }

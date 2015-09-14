@@ -661,7 +661,7 @@ int sa_read(void *buffer, int size)
 int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype,
 		      int ifd, char *file, struct file_magic *file_magic)
 {
-	char cur_time[26];
+	char cur_time[26], restart[64];
 	int dp = 1;
 	unsigned int new_cpu_nr;
 
@@ -680,8 +680,10 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype,
 						     file_hdr.sa_vol_act_nr);
 
 		if (dp) {
-			printf("\n%-11s       LINUX RESTART\t(%d CPU)\n",
-			       cur_time, new_cpu_nr > 1 ? new_cpu_nr - 1 : 1);
+			printf("\n%-11s", cur_time);
+			sprintf(restart, "  LINUX RESTART\t(%d CPU)\n",
+				new_cpu_nr > 1 ? new_cpu_nr - 1 : 1);
+			cprintf_s(IS_RESTART, "%s", restart);
 			return 1;
 		}
 	}
@@ -692,7 +694,8 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype,
 		replace_nonprintable_char(ifd, file_comment);
 
 		if (dp && DISPLAY_COMMENT(flags)) {
-			printf("%-11s  COM %s\n", cur_time, file_comment);
+			printf("%-11s", cur_time);
+			cprintf_s(IS_COMMENT, "  COM %s\n", file_comment);
 			return 1;
 		}
 	}
@@ -1196,6 +1199,9 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
+
+	/* Init color strings */
+	init_colors();
 
 	tm_start.use = tm_end.use = FALSE;
 
