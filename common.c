@@ -1005,7 +1005,8 @@ void cprintf_f(int num, int wi, int wd, ...)
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, double);
-		if (val < 0.005) {
+		if (((val < 0.005) && (val > -0.005)) ||
+		    ((wd == 0) && (val < 0.5))) {
 			printf("%s", sc_zero_int_stat);
 		}
 		else {
