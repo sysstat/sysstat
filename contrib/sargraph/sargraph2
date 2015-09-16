@@ -38,7 +38,7 @@ To plot CPU for today no arguments are needed:
 To plot MEM for 20150330:
 	sargraph2 --type mem --sa-file /var/log/sa/sa20150330.gz
 To plot I/O for 20150330 to a PNG file:
-	sargraph2 --type mem --sa-file /var/log/sa/sa20150330.gz --output io.png
+	sargraph2 --type io --sa-file /var/log/sa/sa20150330.gz --output io.png
 
 "
 }
@@ -221,8 +221,8 @@ set y2tics
 set timefmt "%Y-%m-%d %H:%M:%S"
 set datafile separator ";"
 plot \
-    "$2" using 3:((\$8+\$7)*2/1024) title "rMB/s" with filledcurves x1 linecolor rgb "dark-green", \
-    "$2" using 3:((\$8)*2/1024)     title "wMB/s" with filledcurves x1 linecolor rgb "dark-red", \
+    "$2" using 3:((\$8+\$7)/2/1024) title "rMB/s" with filledcurves x1 linecolor rgb "dark-green", \
+    "$2" using 3:((\$8)/2/1024)     title "wMB/s" with filledcurves x1 linecolor rgb "dark-red", \
     \
     "$2" using 3:(\$4) title "rIOPS"  with lines linecolor rgb "light-green"   linewidth 2 axes x1y2, \
     "$2" using 3:(\$6) title "wIOPS"  with lines linecolor rgb "light-red" linewidth 2 axes x1y2
