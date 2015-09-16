@@ -987,6 +987,31 @@ void cprintf_ull(int num, int width, ...)
 
 /*
  ***************************************************************************
+ * Print hex values using colors.
+ *
+ * IN:
+ * @num		Number of values to print.
+ * @width	Output width.
+ ***************************************************************************
+*/
+void cprintf_x(int num, int width, ...)
+{
+	int i;
+	unsigned int val;
+	va_list args;
+
+	va_start(args, width);
+
+	for (i = 0; i < num; i++) {
+		val = va_arg(args, unsigned int);
+		printf("%s", sc_int_stat);
+		printf(" %*x", width, val);
+		printf("%s", sc_normal);
+	}
+}
+
+/*
+ ***************************************************************************
  * Print "double" statistics values using colors.
  *
  * IN:
@@ -1093,9 +1118,12 @@ void cprintf_s(int type, char *format, char *string)
 	if (type == IS_RESTART) {
 		printf("%s", sc_sa_restart);
 	}
-	else {
-		/* IS_COMMENT */
+	else if (type == IS_COMMENT) {
 		printf("%s", sc_sa_comment);
+	}
+	else {
+		/* IS_STR */
+		printf("%s", sc_int_stat);
 	}
 	printf(format, string);
 	printf("%s", sc_normal);
