@@ -131,7 +131,8 @@ int get_proc_cpu_nr(void)
 
 	fclose(fp);
 
-	return (proc_nr + 1);
+	proc_nr++;
+	return proc_nr;
 }
 
 /*
