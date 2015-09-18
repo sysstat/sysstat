@@ -1,5 +1,12 @@
 Changes:
 
+2015/09/20: Version 11.0.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Peter Schiffer]: Fix problem with pidstat output values > 100%
+	  for %CPU.
+	* [Alexis Solanas]: Fix issue with iostat not showing the full
+	  device name.
+	* CREDITS file updated.
+
 2015/08/24: Version 11.0.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* Check /proc/net/snmp format to collect ICMP statistics at
           their right positions.

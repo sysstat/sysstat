@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-08-24 17:22+0200\n"
+"POT-Creation-Date: 2015-09-18 09:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgid ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:616 pidstat.c:2263 sar.c:402
+#: mpstat.c:616 pidstat.c:2279 sar.c:402
 msgid "Average:"
 msgstr ""
 
@@ -154,7 +154,7 @@ msgid ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: pidstat.c:219 sar.c:1084
+#: pidstat.c:239 sar.c:1084
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
