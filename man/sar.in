@@ -1,4 +1,4 @@
-.TH SAR 1 "APRIL 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "SEPTEMBER 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -2204,13 +2204,8 @@ The
 .B sar
 command takes into account the following environment variables:
 
-.IP S_TIME_FORMAT
-If this variable exists and its value is
-.B ISO
-then the current locale will be ignored when printing the date in the report header.
-The
-.B sar
-command will use the ISO 8601 format (YYYY-MM-DD) instead.
+.IP S_COLORS
+When this variable is set, display statistics in color on the terminal.
 
 .IP S_TIME_DEF_TIME
 If this variable exists and its value is
@@ -2224,6 +2219,14 @@ data file located in the
 .IR @SA_DIR@
 directory. This variable may be useful for servers with users located across
 several timezones.
+
+.IP S_TIME_FORMAT
+If this variable exists and its value is
+.B ISO
+then the current locale will be ignored when printing the date in the report header.
+The
+.B sar
+command will use the ISO 8601 format (YYYY-MM-DD) instead.
 .SH EXAMPLES
 .B sar -u 2 5
 .RS
