@@ -1,5 +1,24 @@
 Changes:
 
+2015/09/20: Version 11.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* Add color support for mpstat, iostat and sar commands.
+	* [Peter Schiffer]: Fix problem with pidstat output values > 100%
+	  for %CPU [11.0.7].
+	* [Shane Seymour]: tapestat: Fix issue when st driver is unloaded
+	  then loaded again.
+	* [Christian Neukirchen]: Fix header files included in tapestat.
+	* Make sysstat build on musl (non-glibc) environment.
+	* tapestat: Check fscanf() return values.
+	* [Alexis Solanas]: Fix issue with iostat not showing the full
+	  device name [11.0.7].
+	* sa2: DATE couldn't be set when DATE_OPTS variable was empty.
+	  Fix this.
+	* Add sa2 option to avoid sarDD report generation.
+	* [Julian Taylor]: sargraph2: Fix MB/s units and help typo.
+	* sysstat(5), iostat, mpstat and sar manual pages updated.
+	* NLS: Sync'd with Translation Project.
+	* CREDITS file updated.
+
 2015/08/24: Version 11.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Shane Seymour]: Added new "tapestat" command aimed at
 	  displaying statistics for tape drives.

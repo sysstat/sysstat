@@ -200,10 +200,10 @@ void tape_check_tapes_and_realloc(void)
 	/* Count again number of tapes */
 	new_max_tape_drives = get_max_tape_drives();
 
-	if ((new_max_tape_drives == 0) && (max_tape_drives == 0)) {
+	if ((new_max_tape_drives == 0) && (max_tape_drives == 0))
 		/* If there are no tape drives don't change anything */
 		return;
-        } else {
+	else {
 		if (new_max_tape_drives > max_tape_drives) {
 			/* New tapes found: Realloc structures */
 			tape_old_stats = (struct tape_stats *)
@@ -211,11 +211,11 @@ void tape_check_tapes_and_realloc(void)
 			tape_new_stats=(struct tape_stats *)
 				realloc(tape_new_stats,	sizeof(struct tape_stats) * new_max_tape_drives);
 			if ((tape_old_stats == NULL) ||	(tape_new_stats == NULL)) {
-                                if (tape_old_stats != NULL) {
+				if (tape_old_stats != NULL) {
 					free(tape_old_stats);
 					tape_old_stats = NULL;
 				}
-                                if (tape_new_stats != NULL) {
+				if (tape_new_stats != NULL) {
 					free(tape_new_stats);
 					tape_new_stats = NULL;
 				}
@@ -437,8 +437,8 @@ void tape_write_stats(struct calc_stats *tape, int i)
 		" %11"PRId64" %3"PRId64" %3"PRId64" %3"PRId64
 		" %7"PRId64" %7"PRId64"\n", buffer,
 		tape->reads_per_second, tape->writes_per_second,
-		tape->kbytes_read_per_second/divisor,
-		tape->kbytes_written_per_second/divisor,
+		tape->kbytes_read_per_second / divisor,
+		tape->kbytes_written_per_second / divisor,
 		tape->read_pct_wait, tape->write_pct_wait,
 		tape->all_pct_wait, tape->resids_per_second,
 		tape->other_per_second);
@@ -514,14 +514,14 @@ void write_stats(int curr, struct tm *rectime)
 
 /*
  ***************************************************************************
- * Main loop: Read I/O stats from the relevant sources and display them.
+ * Main loop: Read tape stats from the relevant sources and display them.
  *
  * IN:
  * @count	Number of lines of stats to print.
  * @rectime	Current date and time.
  ***************************************************************************
  */
-void rw_io_stat_loop(long int count, struct tm *rectime)
+void rw_tape_stat_loop(long int count, struct tm *rectime)
 {
 	struct tape_stats *tmp;
 	int curr = 1;
@@ -686,7 +686,7 @@ int main(int argc, char **argv)
 	alarm(interval);
 
 	/* Main loop */
-	rw_io_stat_loop(count, &rectime);
+	rw_tape_stat_loop(count, &rectime);
 
 	/* Free structures */
 	tape_uninitialise();
