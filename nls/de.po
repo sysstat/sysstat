@@ -6,20 +6,20 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.1.5\n"
+"Project-Id-Version: sysstat 11.1.6\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-06-12 12:23+0200\n"
-"PO-Revision-Date: 2015-06-15 22:30+0100\n"
+"POT-Creation-Date: 2015-08-23 08:34+0200\n"
+"PO-Revision-Date: 2015-09-05 22:23+0200\n"
 "Last-Translator: Roland Illig <roland.illig@gmx.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #: iostat.c:86 nfsiostat-sysstat.c:69 cifsiostat.c:70 mpstat.c:90 sar.c:95
-#: pidstat.c:87
+#: pidstat.c:87 tapestat.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Aufruf: %s [ Optionen … ] [ <Intervall> [ <Anzahl> ] ]\n"
@@ -30,13 +30,13 @@ msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Optionen sind:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
-"[ [ -T ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
+"[ [ -H ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
 "[ <Gerät> [...] | ALL ] [ --debuginfo ]\n"
 
 #: iostat.c:95
@@ -45,13 +45,13 @@ msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Optionen sind:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PFAD | UUID | ... } ]\n"
-"[ [ -T ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
+"[ [ -H ] -g <Gruppenname> ] [ -p [ <Gerät> [,...] | ALL ] ]\n"
 "[ <Gerät> [...] | ALL ]\n"
 
 #: iostat.c:326
@@ -162,13 +162,13 @@ msgstr "Daten können nicht in die Systemaktivitätendatei geschrieben werden: %
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Kopf der Systemaktivitätendatei kann nicht geschrieben werden: %s\n"
 
-#: sadc.c:760 sadc.c:769 sadc.c:836 ioconf.c:496 rd_stats.c:69
+#: sadc.c:760 sadc.c:769 sadc.c:836 ioconf.c:508 rd_stats.c:69
 #: sa_common.c:1273 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "%s kann nicht geöffnet werden: %s\n"
 
-#: sadc.c:1008
+#: sadc.c:1009
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "An die Datei »%s« können keine Daten angehängt werden\n"
@@ -221,7 +221,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNTS ] ] [ -H ] [ -h ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
@@ -231,7 +231,7 @@ msgid ""
 "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
 "Optionen sind:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ <Einhängepunkte> ] ] [ -H ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ <Einhängepunkt> ] ] [ -H ]\n"
 "[ -h ] [ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [[--sadc]\n"
 "[ -I { <Zahl> [,...] | SUM | ALL | XALL } ] [ -P { <CPU> [,...] | ALL } ]\n"
@@ -262,8 +262,8 @@ msgstr "\t-d\tBlockgeräte-Statistik\n"
 
 #: sar.c:137
 #, c-format
-msgid "\t-F [ MOUNTS ]\n"
-msgstr "\t-F [ <Einhängepunkte> ]\n"
+msgid "\t-F [ MOUNT ]\n"
+msgstr "\t-F [ <Einhängepunkt> ]\n"
 
 #: sar.c:138
 #, c-format
@@ -477,12 +477,12 @@ msgstr ""
 "\n"
 "Ungültige Daten gefunden. Abbruch …\n"
 
-#: sa_conv.c:892
+#: sa_conv.c:897
 #, c-format
 msgid "Statistics: "
 msgstr "Statistik: "
 
-#: sa_conv.c:1011
+#: sa_conv.c:1016
 #, c-format
 msgid ""
 "\n"
@@ -543,6 +543,15 @@ msgstr "Bitte prüfen Sie, ob die Datensammlung aktiviert ist\n"
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Angeforderte Aktivität ist nicht verfügbar in Datei %s\n"
+
+#: tapestat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+"Optionen sind:\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
 #: count.c:168
 #, c-format
