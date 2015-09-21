@@ -983,6 +983,8 @@ void cprintf_ull(int num, int width, ...)
 		printf(" %*llu", width, val);
 		printf("%s", sc_normal);
 	}
+
+	va_end(args);
 }
 
 /*
@@ -1008,6 +1010,8 @@ void cprintf_x(int num, int width, ...)
 		printf(" %*x", width, val);
 		printf("%s", sc_normal);
 	}
+
+	va_end(args);
 }
 
 /*
@@ -1040,6 +1044,8 @@ void cprintf_f(int num, int wi, int wd, ...)
 		printf(" %*.*f", wi, wd, val);
 		printf("%s", sc_normal);
 	}
+
+	va_end(args);
 }
 
 /*
@@ -1077,6 +1083,8 @@ void cprintf_pc(int num, int wi, int wd, ...)
 		printf(" %*.*f", wi, wd, val);
 		printf("%s", sc_normal);
 	}
+
+	va_end(args);
 }
 
 /*
