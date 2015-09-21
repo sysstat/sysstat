@@ -1,4 +1,4 @@
-.TH CIFSIOSTAT 1 "JULY 2012" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "SEPTEMBER 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
@@ -145,6 +145,7 @@ Maintained by Sebastien Godard (sysstat <at> orange.fr)
 .BR mpstat (1),
 .BR vmstat (8),
 .BR iostat (1),
+.BR tapestat (1),
 .BR nfsiostat (1)
 
 .I http://pagesperso-orange.fr/sebastien.godard/

@@ -425,6 +425,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR pidstat (1),
 .BR mpstat (1),
 .BR vmstat (8),
+.BR tapestat (1),
 .BR nfsiostat (1),
 .BR cifsiostat (1)
 
