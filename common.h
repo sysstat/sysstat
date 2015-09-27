@@ -86,6 +86,9 @@
 #define ENV_TIME_DEFTM		"S_TIME_DEF_TIME"
 #define ENV_COLORS		"S_COLORS"
 
+#define C_NEVER			"never"
+#define C_ALWAYS		"always"
+
 #define DIGITS			"0123456789"
 
 /*

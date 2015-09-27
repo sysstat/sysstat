@@ -938,21 +938,29 @@ char *get_pretty_name_from_persistent(char *persistent)
  */
 void init_colors(void)
 {
+	char *e;
+
 	/* Read environment variable value */
-	if (!getenv(ENV_COLORS) || !isatty(STDOUT_FILENO)) {
+	if (((e = getenv(ENV_COLORS)) != NULL) && !strcmp(e, C_ALWAYS))
+		/* Variable set to "always" */
+		return;
+
+	if (e && strcmp(e, C_NEVER) && isatty(STDOUT_FILENO))
 		/*
-		 * Environment variable is not set or stdout is not a terminal:
-		 * Unset color strings.
+		 * Variable set to "auto" (or any other value different
+		 * from "never") and stdout is a terminal.
 		 */
-		strcpy(sc_percent_high, "");
-		strcpy(sc_percent_low, "");
-		strcpy(sc_zero_int_stat, "");
-		strcpy(sc_int_stat, "");
-		strcpy(sc_item_name, "");
-		strcpy(sc_sa_comment, "");
-		strcpy(sc_sa_restart, "");
-		strcpy(sc_normal, "");
-	}
+		return;
+
+	/* Other cases: Unset color strings */
+	strcpy(sc_percent_high, "");
+	strcpy(sc_percent_low, "");
+	strcpy(sc_zero_int_stat, "");
+	strcpy(sc_int_stat, "");
+	strcpy(sc_item_name, "");
+	strcpy(sc_sa_comment, "");
+	strcpy(sc_sa_restart, "");
+	strcpy(sc_normal, "");
 }
 
 /*
