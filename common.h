@@ -96,9 +96,15 @@
 				         		exit(4);				 \
 				      		}						 \
 				      		/* If the ptr was null, then it's a malloc() */	 \
-   				      		if (!_p_)					 \
-      				         		memset(S, 0, (SIZE));			 \
+						if (!_p_) {					 \
+							memset(S, 0, (SIZE));			 \
+						}						 \
 				   	}							 \
+					if (!S) {						 \
+						/* Should never happen */			 \
+						fprintf(stderr, "srealloc\n");		 	 \
+						exit(4);					 \
+					}							 \
 				} while (0)
 
 /*
