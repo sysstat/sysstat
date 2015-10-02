@@ -85,6 +85,7 @@
 #define ENV_TIME_FMT		"S_TIME_FORMAT"
 #define ENV_TIME_DEFTM		"S_TIME_DEF_TIME"
 #define ENV_COLORS		"S_COLORS"
+#define ENV_COLORS_SGR		"S_COLORS_SGR"
 
 #define C_NEVER			"never"
 #define C_ALWAYS		"always"
@@ -176,6 +177,8 @@ extern char persistent_name_type[MAX_FILE_LEN];
 
 #define PERCENT_LIMIT_HIGH	75.0
 #define PERCENT_LIMIT_LOW	50.0
+
+#define MAX_SGR_LEN	16
 
 #define IS_INT		0
 #define IS_STR		1

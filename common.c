@@ -51,14 +51,14 @@ unsigned int hz;
 unsigned int kb_shift;
 
 /* Colors strings */
-char sc_percent_high[] = C_BOLD_RED;
-char sc_percent_low[] = C_BOLD_BLUE;
-char sc_zero_int_stat[] = C_LIGHT_YELLOW;
-char sc_int_stat[] = C_BOLD_YELLOW;
-char sc_item_name[] = C_LIGHT_GREEN;
-char sc_sa_restart[] = C_LIGHT_RED;
-char sc_sa_comment[] = C_LIGHT_CYAN;
-char sc_normal[] = C_NORMAL;
+char sc_percent_high[MAX_SGR_LEN] = C_BOLD_RED;
+char sc_percent_low[MAX_SGR_LEN] = C_BOLD_BLUE;
+char sc_zero_int_stat[MAX_SGR_LEN] = C_LIGHT_YELLOW;
+char sc_int_stat[MAX_SGR_LEN] = C_BOLD_YELLOW;
+char sc_item_name[MAX_SGR_LEN] = C_LIGHT_GREEN;
+char sc_sa_restart[MAX_SGR_LEN] = C_LIGHT_RED;
+char sc_sa_comment[MAX_SGR_LEN] = C_LIGHT_CYAN;
+char sc_normal[MAX_SGR_LEN] = C_NORMAL;
 
 /* Type of persistent device names used in sar and iostat */
 char persistent_name_type[MAX_FILE_LEN];
@@ -938,29 +938,67 @@ char *get_pretty_name_from_persistent(char *persistent)
  */
 void init_colors(void)
 {
-	char *e;
+	char *e, *p;
+	int len;
 
-	/* Read environment variable value */
-	if (((e = getenv(ENV_COLORS)) != NULL) && !strcmp(e, C_ALWAYS))
-		/* Variable set to "always" */
-		return;
-
-	if (e && strcmp(e, C_NEVER) && isatty(STDOUT_FILENO))
+	/* Read S_COLORS environment variable */
+	if (((e = getenv(ENV_COLORS)) == NULL) ||
+	    !strcmp(e, C_NEVER) ||
+	    (strcmp(e, C_ALWAYS) && !isatty(STDOUT_FILENO))) {
 		/*
-		 * Variable set to "auto" (or any other value different
-		 * from "never") and stdout is a terminal.
+		 * Environment variable not set, or set to "never",
+		 * or set to "auto" and stdout is not a terminal:
+		 * Unset color strings.
 		 */
+		strcpy(sc_percent_high, "");
+		strcpy(sc_percent_low, "");
+		strcpy(sc_zero_int_stat, "");
+		strcpy(sc_int_stat, "");
+		strcpy(sc_item_name, "");
+		strcpy(sc_sa_comment, "");
+		strcpy(sc_sa_restart, "");
+		strcpy(sc_normal, "");
+
+		return;
+	}
+
+	/* Read S_COLORS_SGR environment variable */
+	if ((e = getenv(ENV_COLORS_SGR)) == NULL)
+		/* Environment variable not set */
 		return;
 
-	/* Other cases: Unset color strings */
-	strcpy(sc_percent_high, "");
-	strcpy(sc_percent_low, "");
-	strcpy(sc_zero_int_stat, "");
-	strcpy(sc_int_stat, "");
-	strcpy(sc_item_name, "");
-	strcpy(sc_sa_comment, "");
-	strcpy(sc_sa_restart, "");
-	strcpy(sc_normal, "");
+	for (p = strtok(e, ":"); p; p =strtok(NULL, ":")) {
+
+		len = strlen(p);
+		if ((len > 7) || (len < 3) || (*(p + 1) != '=') ||
+		    (strspn(p + 2, ";0123456789") != (len - 2)))
+			/* Ignore malformed codes */
+			continue;
+
+		switch (*p) {
+			case 'H':
+				snprintf(sc_percent_high, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'M':
+				snprintf(sc_percent_low, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'Z':
+				snprintf(sc_zero_int_stat, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'N':
+				snprintf(sc_int_stat, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'I':
+				snprintf(sc_item_name, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'C':
+				snprintf(sc_sa_comment, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'R':
+				snprintf(sc_sa_restart, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+		}
+	}
 }
 
 /*
