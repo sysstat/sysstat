@@ -1,4 +1,4 @@
-.TH SAR 1 "SEPTEMBER 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "OCTOBER 2015" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -2212,6 +2212,43 @@ Possible values for this variable are
 or
 .IR auto
 (the latter is the default).
+
+.IP S_COLORS_SGR
+Specify the colors and other attributes used to display statistics on the terminal. 
+Its value is a colon-separated list of capabilities that defaults to
+.BR C=36;22:H=31;1:I=32;22:M=34;1:N=33;1:R=31;22:Z=33;22 .
+Supported capabilities are:
+
+.RS
+.TP
+.B C=
+SGR (Select Graphic Rendition) substring for comments inserted in the binary daily
+data files.
+
+.TP
+.B H=
+SGR substring for percentage values greater than or equal to 75%.
+
+.TP
+.B I=
+SGR substring for item names or values (eg. network interfaces, CPU number...)
+
+.TP
+.B M=
+SGR substring for percentage values in the range from 50% to 75%.
+
+.TP
+.B N=
+SGR substring for non-zero statistics values.
+
+.TP
+.B R=
+SGR substring for restart messages.
+
+.TP
+.B Z=
+SGR substring for zero values.
+.RE
 
 .IP S_TIME_DEF_TIME
 If this variable exists and its value is
