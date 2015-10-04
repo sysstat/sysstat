@@ -1169,15 +1169,18 @@ void cprintf_in(int type, char *format, char *item_string, int item_int)
 */
 void cprintf_s(int type, char *format, char *string)
 {
-	if (type == IS_RESTART) {
+	if (type == IS_STR) {
+		printf("%s", sc_int_stat);
+	}
+	else if (type == IS_ZERO) {
+		printf("%s", sc_zero_int_stat);
+	}
+	else if (type == IS_RESTART) {
 		printf("%s", sc_sa_restart);
 	}
-	else if (type == IS_COMMENT) {
-		printf("%s", sc_sa_comment);
-	}
 	else {
-		/* IS_STR */
-		printf("%s", sc_int_stat);
+		/* IS_COMMENT */
+		printf("%s", sc_sa_comment);
 	}
 	printf(format, string);
 	printf("%s", sc_normal);

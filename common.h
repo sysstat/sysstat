@@ -184,6 +184,7 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define IS_STR		1
 #define IS_RESTART	2
 #define IS_COMMENT	3
+#define IS_ZERO		4
 
 /*
  ***************************************************************************
