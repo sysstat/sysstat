@@ -429,21 +429,25 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 		     struct cifs_stats *ionj)
 {
 	if (DISPLAY_HUMAN_READ(flags)) {
-		printf("%-22s\n%23s", shi->name, "");
+		cprintf_in(IS_STR, "%-22s\n", shi->name, 0);
+		printf("%22s", "");
 	}
 	else {
-		printf("%-22s ", shi->name);
+		cprintf_in(IS_STR, "%-22s", shi->name, 0);
 	}
 
 	/*       rB/s   wB/s   fo/s   fc/s   fd/s*/
-	printf("%12.2f %12.2f %9.2f %9.2f %12.2f %12.2f %12.2f \n",
-	       S_VALUE(ionj->rd_bytes, ioni->rd_bytes, itv) / fctr,
-	       S_VALUE(ionj->wr_bytes, ioni->wr_bytes, itv) / fctr,
-	       S_VALUE(ionj->rd_ops, ioni->rd_ops, itv),
-	       S_VALUE(ionj->wr_ops, ioni->wr_ops, itv),
-	       S_VALUE(ionj->fopens, ioni->fopens, itv),
-	       S_VALUE(ionj->fcloses, ioni->fcloses, itv),
-	       S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
+	cprintf_f(2, 12, 2,
+		  S_VALUE(ionj->rd_bytes, ioni->rd_bytes, itv) / fctr,
+		  S_VALUE(ionj->wr_bytes, ioni->wr_bytes, itv) / fctr);
+	cprintf_f(2, 9, 2,
+		  S_VALUE(ionj->rd_ops, ioni->rd_ops, itv),
+		  S_VALUE(ionj->wr_ops, ioni->wr_ops, itv));
+	cprintf_f(3, 12, 2,
+		  S_VALUE(ionj->fopens, ioni->fopens, itv),
+		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
+		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
+	printf("\n");
 }
 
 /*
@@ -575,6 +579,9 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
+
+	/* Init color strings */
+	init_colors();
 
 	/* Get HZ */
 	get_HZ();
