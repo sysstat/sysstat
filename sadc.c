@@ -904,9 +904,11 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		}
 
 		/* OK: It's a true system activity file */
-		if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT))
+		if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT) ||
+		    (file_hdr.sa_vol_act_nr > NR_ACT))
 			/*
-			 * No activities at all or at least one unknown activity:
+			 * No activities at all or at least one unknown activity,
+			 * or too many volatile activities:
 			 * Cannot append data to such a file.
 			 */
 			goto append_error;
