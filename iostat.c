@@ -1037,7 +1037,7 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 	cprintf_f(2, 12, 2,
 		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
 		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr);
-	cprintf_ull(2, 10,
+	cprintf_u64(2, 10,
 		    (unsigned long long) rd_sec / fctr,
 		    (unsigned long long) wr_sec / fctr);
 	printf("\n");

@@ -222,7 +222,7 @@ extern void
 extern void
 	cprintf_s(int, char *, char *);
 extern void
-	cprintf_ull(int, int, ...);
+	cprintf_u64(int, int, ...);
 extern void
 	cprintf_x(int, int, ...);
 extern char *

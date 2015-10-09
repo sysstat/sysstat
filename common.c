@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <inttypes.h>
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>	/* For STDOUT_FILENO, among others */
@@ -1003,17 +1004,17 @@ void init_colors(void)
 
 /*
  ***************************************************************************
- * Print "unsigned long long" statistics values using colors.
+ * Print 64 bit unsigned values using colors.
  *
  * IN:
  * @num		Number of values to print.
  * @width	Output width.
  ***************************************************************************
 */
-void cprintf_ull(int num, int width, ...)
+void cprintf_u64(int num, int width, ...)
 {
 	int i;
-	unsigned long long val;
+	uint64_t val;
 	va_list args;
 
 	va_start(args, width);
@@ -1026,7 +1027,7 @@ void cprintf_ull(int num, int width, ...)
 		else {
 			printf("%s", sc_int_stat);
 		}
-		printf(" %*llu", width, val);
+		printf(" %*"PRIu64, width, val);
 		printf("%s", sc_normal);
 	}
 

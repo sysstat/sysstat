@@ -1378,7 +1378,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			cprintf_f(2, 9, 2,
 				  S_VALUE(pstp->minflt, pstc->minflt, itv),
 				  S_VALUE(pstp->majflt, pstc->majflt, itv));
-			cprintf_ull(2, 7,
+			cprintf_u64(2, 7,
 				    pstc->vsz,
 				    pstc->rss);
 			cprintf_pc(1, 6, 2,
@@ -1386,7 +1386,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_STACK(actflag)) {
-			cprintf_ull(2, 7,
+			cprintf_u64(2, 7,
 				    pstc->stack_size,
 				    pstc->stack_ref);
 		}
@@ -1409,7 +1409,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				cprintf_s(IS_ZERO, "%s", dstr);
 			}
 			/* I/O delays come from another file (/proc/#/stat) */
-			cprintf_ull(1, 7,
+			cprintf_u64(1, 7,
 				    pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
 		}
 
@@ -1420,19 +1420,19 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_KTAB(actflag)) {
-			cprintf_ull(1, 7,
+			cprintf_u64(1, 7,
 				    pstc->threads);
 			if (NO_PID_FD(pstc->flags)) {
 				/* /proc/#/fd directory not readable */
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
-				cprintf_ull(1, 7, pstc->fd_nr);
+				cprintf_u64(1, 7, pstc->fd_nr);
 			}
 		}
 
 		if (DISPLAY_RT(actflag)) {
-			cprintf_ull(1, 4,
+			cprintf_u64(1, 4,
 				    pstc->priority);
 			cprintf_s(IS_STR, " %6s",
 				  GET_POLICY(pstc->policy));
@@ -1500,7 +1500,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			cprintf_ull(2, 9,
+			cprintf_u64(2, 9,
 				    (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
 				    (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
@@ -1739,7 +1739,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				   : 0.0);
 		}
 		else {
-			cprintf_ull(2, 7,
+			cprintf_u64(2, 7,
 				    pstc->vsz,
 				    pstc->rss);
 
@@ -1812,7 +1812,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 					    (pstp->majflt + pstp->cmajflt)) / pstc->rc_asum_count);
 		}
 		else {
-			cprintf_ull(2, 9,
+			cprintf_u64(2, 9,
 				    (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
 				    (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
 		}
@@ -1884,7 +1884,7 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 				  (double) pstc->total_stack_ref  / pstc->sk_asum_count);
 		}
 		else {
-			cprintf_ull(2, 7,
+			cprintf_u64(2, 7,
 				    pstc->stack_size,
 				    pstc->stack_ref);
 		}
@@ -1968,7 +1968,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 					    pstc->delay_asum_count);
 		}
 		else {
-			cprintf_ull(1, 7,
+			cprintf_u64(1, 7,
 				    pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
 		}
 
@@ -2071,7 +2071,7 @@ int write_pid_rt_stats(int prev, int curr, int dis,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		cprintf_ull(1, 4,
+		cprintf_u64(1, 4,
 			    pstc->priority);
 		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
 		print_comm(pstc);
@@ -2145,13 +2145,13 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 				  (double) pstc->total_fd_nr / pstc->tf_asum_count);
 		}
 		else {
-			cprintf_ull(1, 7,
+			cprintf_u64(1, 7,
 				    pstc->threads);
 			if (NO_PID_FD(pstc->flags)) {
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
-				cprintf_ull(1, 7,
+				cprintf_u64(1, 7,
 					    pstc->fd_nr);
 			}
 		}

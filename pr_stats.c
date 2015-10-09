@@ -459,14 +459,14 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		if (!dispavg) {
 			/* Display instantaneous values */
 			printf("%-11s", timestamp[curr]);
-			cprintf_ull(2, 9,
+			cprintf_u64(2, 9,
 				    smc->frmkb,
 				    smc->tlmkb - smc->frmkb);
 			cprintf_pc(1, 9, 2,
 				   smc->tlmkb ?
 				   SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb)
 				   : 0.0);
-			cprintf_ull(3, 9,
+			cprintf_u64(3, 9,
 				    smc->bufkb,
 				    smc->camkb,
 				    smc->comkb);
@@ -474,14 +474,14 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 				   (smc->tlmkb + smc->tlskb) ?
 				   SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 				   : 0.0);
-			cprintf_ull(3, 9,
+			cprintf_u64(3, 9,
 				    smc->activekb,
 				    smc->inactkb,
 				    smc->dirtykb);
 
 			if (DISPLAY_MEM_ALL(a->opt_flags)) {
 				/* Display extended memory statistics */
-				cprintf_ull(5, 9,
+				cprintf_u64(5, 9,
 					    smc->anonpgkb,
 					    smc->slabkb,
 					    smc->kstackkb,
@@ -560,14 +560,14 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		if (!dispavg) {
 			/* Display instantaneous values */
 			printf("%-11s", timestamp[curr]);
-			cprintf_ull(2, 9,
+			cprintf_u64(2, 9,
 				    smc->frskb,
 				    smc->tlskb - smc->frskb);
 			cprintf_pc(1, 9, 2,
 				   smc->tlskb ?
 				   SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) 
 				   : 0.0);
-			cprintf_ull(1, 9,
+			cprintf_u64(1, 9,
 				    smc->caskb);
 			cprintf_pc(1, 9, 2,
 				   (smc->tlskb - smc->frskb) ?
@@ -677,7 +677,7 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_ull(4, 9,
+		cprintf_u64(4, 9,
 			    skc->dentry_stat,
 			    skc->file_used,
 			    skc->inode_used,
@@ -773,14 +773,14 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_ull(2, 9,
+		cprintf_u64(2, 9,
 			    sqc->nr_running,
 			    sqc->nr_threads);
 		cprintf_f(3, 9, 2,
 			  (double) sqc->load_avg_1  / 100,
 			  (double) sqc->load_avg_5  / 100,
 			  (double) sqc->load_avg_15 / 100);
-		cprintf_ull(1, 9,
+		cprintf_u64(1, 9,
 			    sqc->procs_blocked);
 		printf("\n");
 
@@ -1182,7 +1182,7 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_ull(6, 9,
+		cprintf_u64(6, 9,
 			    snsc->sock_inuse,
 			    snsc->tcp_inuse,
 			    snsc->udp_inuse,
@@ -1533,7 +1533,7 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_ull(4, 9,
+		cprintf_u64(4, 9,
 			    snsc->tcp6_inuse,
 			    snsc->udp6_inuse,
 			    snsc->raw6_inuse,
@@ -2315,7 +2315,7 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_ull(2, 9,
+		cprintf_u64(2, 9,
 			    smc->frhkb,
 			    smc->tlhkb - smc->frhkb);
 		cprintf_pc(1, 9, 2,
@@ -2497,7 +2497,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 		cprintf_x(2, 9,
 			  suc->vendor_id,
 			  suc->product_id);
-		cprintf_ull(1, 9,
+		cprintf_u64(1, 9,
 			    /* bMaxPower is expressed in 2 mA units */
 			    suc->bmaxpower << 1);
 
@@ -2617,7 +2617,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 			   : 0.0,
 			   sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
 			   : 0.0);
-		cprintf_ull(2, 9,
+		cprintf_u64(2, 9,
 			    sfc->f_ffree,
 			    sfc->f_files - sfc->f_ffree);
 		cprintf_pc(1, 9, 2,
