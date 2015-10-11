@@ -91,6 +91,7 @@ struct activity cpu_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_CPUS + 1,
 	.fsize		= STATS_CPU_SIZE,
 	.msize		= STATS_CPU_SIZE,
 	.opt_flags	= AO_F_CPU_DEF,
@@ -122,6 +123,7 @@ struct activity pcsw_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_PCSW_SIZE,
 	.msize		= STATS_PCSW_SIZE,
 	.opt_flags	= 0,
@@ -153,6 +155,7 @@ struct activity irq_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_IRQS + 1,
 	.fsize		= STATS_IRQ_SIZE,
 	.msize		= STATS_IRQ_SIZE,
 	.opt_flags	= 0,
@@ -184,6 +187,7 @@ struct activity swap_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_SWAP_SIZE,
 	.msize		= STATS_SWAP_SIZE,
 	.opt_flags	= 0,
@@ -216,6 +220,7 @@ struct activity paging_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_PAGING_SIZE,
 	.msize		= STATS_PAGING_SIZE,
 	.opt_flags	= 0,
@@ -247,6 +252,7 @@ struct activity io_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_IO_SIZE,
 	.msize		= STATS_IO_SIZE,
 	.opt_flags	= 0,
@@ -280,6 +286,7 @@ struct activity memory_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_MEMORY_SIZE,
 	.msize		= STATS_MEMORY_SIZE,
 	.opt_flags	= 0,
@@ -311,6 +318,7 @@ struct activity ktables_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_KTABLES_SIZE,
 	.msize		= STATS_KTABLES_SIZE,
 	.opt_flags	= 0,
@@ -342,6 +350,7 @@ struct activity queue_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_QUEUE_SIZE,
 	.msize		= STATS_QUEUE_SIZE,
 	.opt_flags	= 0,
@@ -373,6 +382,7 @@ struct activity serial_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_SERIAL_LINES,
 	.fsize		= STATS_SERIAL_SIZE,
 	.msize		= STATS_SERIAL_SIZE,
 	.opt_flags	= 0,
@@ -404,6 +414,7 @@ struct activity disk_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_DISKS,
 	.fsize		= STATS_DISK_SIZE,
 	.msize		= STATS_DISK_SIZE,
 	.opt_flags	= 0,
@@ -435,6 +446,7 @@ struct activity net_dev_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_IFACES,
 	.fsize		= STATS_NET_DEV_SIZE,
 	.msize		= STATS_NET_DEV_SIZE,
 	.opt_flags	= 0,
@@ -467,6 +479,7 @@ struct activity net_edev_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_IFACES,
 	.fsize		= STATS_NET_EDEV_SIZE,
 	.msize		= STATS_NET_EDEV_SIZE,
 	.opt_flags	= 0,
@@ -498,6 +511,7 @@ struct activity net_nfs_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_NFS_SIZE,
 	.msize		= STATS_NET_NFS_SIZE,
 	.opt_flags	= 0,
@@ -530,6 +544,7 @@ struct activity net_nfsd_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_NFSD_SIZE,
 	.msize		= STATS_NET_NFSD_SIZE,
 	.opt_flags	= 0,
@@ -561,6 +576,7 @@ struct activity net_sock_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_SOCK_SIZE,
 	.msize		= STATS_NET_SOCK_SIZE,
 	.opt_flags	= 0,
@@ -592,6 +608,7 @@ struct activity net_ip_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_IP_SIZE,
 	.msize		= STATS_NET_IP_SIZE,
 	.opt_flags	= 0,
@@ -623,6 +640,7 @@ struct activity net_eip_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_EIP_SIZE,
 	.msize		= STATS_NET_EIP_SIZE,
 	.opt_flags	= 0,
@@ -655,6 +673,7 @@ struct activity net_icmp_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_ICMP_SIZE,
 	.msize		= STATS_NET_ICMP_SIZE,
 	.opt_flags	= 0,
@@ -687,6 +706,7 @@ struct activity net_eicmp_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_EICMP_SIZE,
 	.msize		= STATS_NET_EICMP_SIZE,
 	.opt_flags	= 0,
@@ -718,6 +738,7 @@ struct activity net_tcp_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_TCP_SIZE,
 	.msize		= STATS_NET_TCP_SIZE,
 	.opt_flags	= 0,
@@ -749,6 +770,7 @@ struct activity net_etcp_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_ETCP_SIZE,
 	.msize		= STATS_NET_ETCP_SIZE,
 	.opt_flags	= 0,
@@ -780,6 +802,7 @@ struct activity net_udp_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_UDP_SIZE,
 	.msize		= STATS_NET_UDP_SIZE,
 	.opt_flags	= 0,
@@ -811,6 +834,7 @@ struct activity net_sock6_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_SOCK6_SIZE,
 	.msize		= STATS_NET_SOCK6_SIZE,
 	.opt_flags	= 0,
@@ -843,6 +867,7 @@ struct activity net_ip6_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_IP6_SIZE,
 	.msize		= STATS_NET_IP6_SIZE,
 	.opt_flags	= 0,
@@ -875,6 +900,7 @@ struct activity net_eip6_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_EIP6_SIZE,
 	.msize		= STATS_NET_EIP6_SIZE,
 	.opt_flags	= 0,
@@ -908,6 +934,7 @@ struct activity net_icmp6_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_ICMP6_SIZE,
 	.msize		= STATS_NET_ICMP6_SIZE,
 	.opt_flags	= 0,
@@ -940,6 +967,7 @@ struct activity net_eicmp6_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_EICMP6_SIZE,
 	.msize		= STATS_NET_EICMP6_SIZE,
 	.opt_flags	= 0,
@@ -971,6 +999,7 @@ struct activity net_udp6_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_NET_UDP6_SIZE,
 	.msize		= STATS_NET_UDP6_SIZE,
 	.opt_flags	= 0,
@@ -1002,6 +1031,7 @@ struct activity pwr_cpufreq_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_CPUS + 1,
 	.fsize		= STATS_PWR_CPUFREQ_SIZE,
 	.msize		= STATS_PWR_CPUFREQ_SIZE,
 	.opt_flags	= 0,
@@ -1033,6 +1063,7 @@ struct activity pwr_fan_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_FANS,
 	.fsize		= STATS_PWR_FAN_SIZE,
 	.msize		= STATS_PWR_FAN_SIZE,
 	.opt_flags	= 0,
@@ -1064,6 +1095,7 @@ struct activity pwr_temp_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_TEMP_SENSORS,
 	.fsize		= STATS_PWR_TEMP_SIZE,
 	.msize		= STATS_PWR_TEMP_SIZE,
 	.opt_flags	= 0,
@@ -1095,6 +1127,7 @@ struct activity pwr_in_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_IN_SENSORS,
 	.fsize		= STATS_PWR_IN_SIZE,
 	.msize		= STATS_PWR_IN_SIZE,
 	.opt_flags	= 0,
@@ -1126,6 +1159,7 @@ struct activity huge_act = {
 #endif
 	.nr		= 1,
 	.nr2		= 1,
+	.nr_max		= 1,
 	.fsize		= STATS_HUGE_SIZE,
 	.msize		= STATS_HUGE_SIZE,
 	.opt_flags	= 0,
@@ -1157,6 +1191,7 @@ struct activity pwr_wghfreq_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_CPUS + 1,
 	.fsize		= STATS_PWR_WGHFREQ_SIZE,
 	.msize		= STATS_PWR_WGHFREQ_SIZE,
 	.opt_flags	= 0,
@@ -1188,6 +1223,7 @@ struct activity pwr_usb_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_USB,
 	.fsize		= STATS_PWR_USB_SIZE,
 	.msize		= STATS_PWR_USB_SIZE,
 	.opt_flags	= 0,
@@ -1219,6 +1255,7 @@ struct activity filesystem_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_FS,
 	.fsize		= STATS_FILESYSTEM_SIZE,
 	.msize		= STATS_FILESYSTEM_SIZE,
 	.opt_flags	= 0,
@@ -1250,6 +1287,7 @@ struct activity fchost_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
+	.nr_max		= NR_FCHOSTS,
 	.fsize		= STATS_FCHOST_SIZE,
 	.msize		= STATS_FCHOST_SIZE,
 	.opt_flags	= 0,

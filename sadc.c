@@ -922,8 +922,13 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			 */
 			goto append_error;
 
-		if (!file_act[i].nr || !file_act[i].nr2) {
-			/* Number of items and subitems should never be null */
+		if (!file_act[i].nr || !file_act[i].nr2 ||
+		    (file_act[i].nr > act[p]->nr_max) ||
+		    (file_act[i].nr2 > NR2_MAX)) {
+			/*
+			 * Number of items and subitems should never be null,
+			 * or greater than their upper limit.
+			 */
 			goto append_error;
 		}
 	}
