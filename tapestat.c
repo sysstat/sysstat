@@ -351,7 +351,7 @@ void tape_get_updated_stats(void)
  */
 void tape_write_headings(void)
 {
-	printf("Tape:    r/s     w/s   ");
+	printf("Tape:     r/s     w/s   ");
 	if (DISPLAY_MEGABYTES(flags)) {
 		printf("MB_read/s   MB_wrtn/s");
 	} else {
@@ -433,15 +433,21 @@ void tape_write_stats(struct calc_stats *tape, int i)
 
 	sprintf(buffer, "st%i        ", i);
 	buffer[5] = 0;
-	printf("%s%7"PRId64" %7"PRId64" %11"PRId64
-		" %11"PRId64" %3"PRId64" %3"PRId64" %3"PRId64
-		" %7"PRId64" %7"PRId64"\n", buffer,
-		tape->reads_per_second, tape->writes_per_second,
-		tape->kbytes_read_per_second / divisor,
-		tape->kbytes_written_per_second / divisor,
-		tape->read_pct_wait, tape->write_pct_wait,
-		tape->all_pct_wait, tape->resids_per_second,
-		tape->other_per_second);
+	cprintf_in(IS_STR, "%s", buffer, 0);
+	cprintf_u64(2, 7,
+		    tape->reads_per_second,
+		    tape->writes_per_second);
+	cprintf_u64(2, 11,
+		    tape->kbytes_read_per_second / divisor,
+		    tape->kbytes_written_per_second / divisor);
+	cprintf_pc(3, 3, 0,
+		   (double) tape->read_pct_wait,
+		   (double) tape->write_pct_wait,
+		   (double) tape->all_pct_wait);
+	cprintf_u64(2, 7,
+		    tape->resids_per_second,
+		    tape->other_per_second);
+	printf("\n");
 }
 
 /*
@@ -588,6 +594,9 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
+
+	/* Init color strings */
+	init_colors();
 
 	/* Get HZ */
 	get_HZ();
