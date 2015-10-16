@@ -716,6 +716,14 @@ void read_sadc_stat_bunch(int curr)
 
 	/* Read record header (type is always R_STATS since it is read from sadc) */
 	if (sa_read(&record_hdr[curr], RECORD_HEADER_SIZE)) {
+		/*
+		 * SIGINT (sent by sadc) is likely to be received
+		 * while we are stuck in sa_read().
+		 * If this happens then no data have to be read.
+		 */
+		if (sigint_caught)
+			return;
+
 		print_read_error();
 	}
 
@@ -1135,6 +1143,14 @@ void read_stats(void)
 
 		/* Get stats */
 		read_sadc_stat_bunch(curr);
+		if (sigint_caught) {
+			/*
+			 * SIGINT signal caught (it is sent by sadc).
+			 * => Display average stats.
+			 */
+			curr ^= 1; /* No data retrieved from last read */
+			break;
+		}
 
 		/* Print results */
 		if (!dis_hdr) {
@@ -1157,20 +1173,20 @@ void read_stats(void)
 			count--;
 		}
 		if (count) {
-			if (sigint_caught) {
-				/* SIGINT signal caught => Display average stats */
-				count = 0;
-			}
-			else {
-				curr ^= 1;
-			}
+			curr ^= 1;
 		}
 	}
 	while (count);
 
-	/* Print statistics average */
+	/*
+	 * Print statistics average.
+	 * At least one line of stats must have been displayed for this.
+	 * (There may be no lines at all if we press Ctrl/C immediately).
+	 */
 	dis = dis_hdr;
-	write_stats_avg(curr, USE_SADC, ALL_ACTIVITIES);
+	if (avg_count) {
+		write_stats_avg(curr, USE_SADC, ALL_ACTIVITIES);
+	}
 }
 
 /*

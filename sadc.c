@@ -74,6 +74,7 @@ extern struct activity *act[];
 extern __nr_t (*f_count[]) (struct activity *);
 
 struct sigaction alrm_act, int_act;
+int sigint_caught = 0;
 
 /*
  ***************************************************************************
@@ -238,6 +239,8 @@ void alarm_handler(int sig)
 void int_handler(int sig)
 {
 	pid_t ppid = getppid();
+
+	sigint_caught = 1;
 
 	if (!optz || (ppid == 1)) {
 		/* sadc hasn't been called by sar or sar process is already dead */
@@ -1171,8 +1174,13 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		}
 
 		if (count) {
+			/* Wait for a signal (probably SIGALRM or SIGINT) */
 			pause();
 		}
+
+		if (sigint_caught)
+			/* SIGINT caught: Stop now */
+			break;
 
 		/* Rotate activity file if necessary */
 		if (WANT_SA_ROTAT(flags)) {
