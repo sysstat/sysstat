@@ -214,16 +214,21 @@
 #define TIMESTAMP_LEN	16
 #define HEADER_LINE_LEN	512
 
-/* Define upper limit for various items */
-#define NR_SERIAL_LINES	512
-#define NR_DISKS	8192
-#define NR_IFACES	512
-#define NR_FANS		128
-#define NR_TEMP_SENSORS	128
-#define NR_IN_SENSORS	128
-#define NR_USB		1024
-#define NR_FS		8192
-#define NR_FCHOSTS	8192
+/*
+ * Define upper limit for various items.
+ * Made necessary because we have to check the number of
+ * items for each activity when we read a (possibly tainted)
+ * sa data file.
+ */
+#define MAX_NR_SERIAL_LINES	512
+#define MAX_NR_DISKS		8192
+#define MAX_NR_IFACES		512
+#define MAX_NR_FANS		128
+#define MAX_NR_TEMP_SENSORS	128
+#define MAX_NR_IN_SENSORS	128
+#define MAX_NR_USB		1024
+#define MAX_NR_FS		8192
+#define MAX_NR_FCHOSTS		8192
 
 #define NR2_MAX		128
 

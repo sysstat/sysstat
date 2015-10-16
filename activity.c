@@ -382,7 +382,7 @@ struct activity serial_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_SERIAL_LINES,
+	.nr_max		= MAX_NR_SERIAL_LINES,
 	.fsize		= STATS_SERIAL_SIZE,
 	.msize		= STATS_SERIAL_SIZE,
 	.opt_flags	= 0,
@@ -414,7 +414,7 @@ struct activity disk_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_DISKS,
+	.nr_max		= MAX_NR_DISKS,
 	.fsize		= STATS_DISK_SIZE,
 	.msize		= STATS_DISK_SIZE,
 	.opt_flags	= 0,
@@ -446,7 +446,7 @@ struct activity net_dev_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_IFACES,
+	.nr_max		= MAX_NR_IFACES,
 	.fsize		= STATS_NET_DEV_SIZE,
 	.msize		= STATS_NET_DEV_SIZE,
 	.opt_flags	= 0,
@@ -479,7 +479,7 @@ struct activity net_edev_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_IFACES,
+	.nr_max		= MAX_NR_IFACES,
 	.fsize		= STATS_NET_EDEV_SIZE,
 	.msize		= STATS_NET_EDEV_SIZE,
 	.opt_flags	= 0,
@@ -1063,7 +1063,7 @@ struct activity pwr_fan_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_FANS,
+	.nr_max		= MAX_NR_FANS,
 	.fsize		= STATS_PWR_FAN_SIZE,
 	.msize		= STATS_PWR_FAN_SIZE,
 	.opt_flags	= 0,
@@ -1095,7 +1095,7 @@ struct activity pwr_temp_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_TEMP_SENSORS,
+	.nr_max		= MAX_NR_TEMP_SENSORS,
 	.fsize		= STATS_PWR_TEMP_SIZE,
 	.msize		= STATS_PWR_TEMP_SIZE,
 	.opt_flags	= 0,
@@ -1127,7 +1127,7 @@ struct activity pwr_in_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_IN_SENSORS,
+	.nr_max		= MAX_NR_IN_SENSORS,
 	.fsize		= STATS_PWR_IN_SIZE,
 	.msize		= STATS_PWR_IN_SIZE,
 	.opt_flags	= 0,
@@ -1223,7 +1223,7 @@ struct activity pwr_usb_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_USB,
+	.nr_max		= MAX_NR_USB,
 	.fsize		= STATS_PWR_USB_SIZE,
 	.msize		= STATS_PWR_USB_SIZE,
 	.opt_flags	= 0,
@@ -1255,7 +1255,7 @@ struct activity filesystem_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_FS,
+	.nr_max		= MAX_NR_FS,
 	.fsize		= STATS_FILESYSTEM_SIZE,
 	.msize		= STATS_FILESYSTEM_SIZE,
 	.opt_flags	= 0,
@@ -1287,7 +1287,7 @@ struct activity fchost_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_FCHOSTS,
+	.nr_max		= MAX_NR_FCHOSTS,
 	.fsize		= STATS_FCHOST_SIZE,
 	.msize		= STATS_FCHOST_SIZE,
 	.opt_flags	= 0,
