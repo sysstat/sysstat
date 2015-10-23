@@ -1,5 +1,11 @@
 Changes:
 
+2015/10/23: Version 11.0.8 - Sebastien Godard (sysstat <at> orange.fr)
+	* Fix possible NULL pointer dereference in SREALLOC macro (CID
+	  #29706).
+	* sadc: Fix untrusted value used as argument (CID #29720).
+	* Update librdsensors.a target in Makefile.
+
 2015/09/20: Version 11.0.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Peter Schiffer]: Fix problem with pidstat output values > 100%
 	  for %CPU.
