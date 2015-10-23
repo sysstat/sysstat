@@ -42,7 +42,7 @@
 #endif
 
 /* Maximum number of interrupts */
-#define NR_IRQS			1024
+#define NR_IRQS		1024
 
 /* Size of /proc/interrupts line, CPU data excluded */
 #define INTERRUPTS_LINE	128

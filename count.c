@@ -185,7 +185,7 @@ int get_cpu_nr(unsigned int max_nr_cpus, int highest)
  * @cpu_nr		Number of processors.
  *
  * RETURNS:
- * Number of interrupts per processor + a pre-allocation constant.
+ * Number of interrupts per processor.
  ***************************************************************************
  */
 int get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)

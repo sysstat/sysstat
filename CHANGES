@@ -1,5 +1,24 @@
 Changes:
 
+2015/10/23: Version 11.1.8 - Sebastien Godard (sysstat <at> orange.fr)
+	* Add support for color customization.
+	* Add color support for pidstat, tapestat and cifsiostat commands.
+	* Define values "always", "never" and "auto" for S_COLORS
+	  environment variable.
+	* sar: Remove exta line of statistics displayed when SIGINT is
+	  received.
+	* Add missing va_end() statements (CID #113539, #113540, #113541,
+	  #113542).
+	* Fix possible NULL pointer dereference in SREALLOC macro (CID
+	  #29706) [11.0.8].
+	* sadc: Fix untrusted value used as argument (CID #29720) [11.0.8].
+	* sadc: Fix another insecure data handling (CID #29720).
+	* sar/sadc: Set an upper limit for each kind of item that sar/sadc
+	  can handle.
+	* Manual pages updated for iostat, mpstat, sar, pidstat, tapestat
+	  and cifsiostat commands.
+	* Update librdsensors.a target in Makefile [11.0.8].
+
 2015/09/20: Version 11.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* Add color support for mpstat, iostat and sar commands.
 	* [Peter Schiffer]: Fix problem with pidstat output values > 100%
