@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-09-18 09:57+0200\n"
+"POT-Creation-Date: 2015-10-21 21:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,12 +37,12 @@ msgid ""
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 
-#: sadc.c:88
+#: sadc.c:89
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr ""
 
-#: sadc.c:91
+#: sadc.c:92
 #, c-format
 msgid ""
 "Options are:\n"
@@ -50,23 +50,23 @@ msgid ""
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
 
-#: sadc.c:264
+#: sadc.c:267
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
-#: sadc.c:560
+#: sadc.c:563
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:760 sadc.c:769 sadc.c:836 ioconf.c:508 rd_stats.c:69
+#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:508 rd_stats.c:69
 #: sa_common.c:1273 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
 
-#: sadc.c:1009
+#: sadc.c:1019
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
@@ -79,7 +79,7 @@ msgid ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:624 pidstat.c:2280 sar.c:425
+#: mpstat.c:624 pidstat.c:2301 sar.c:425
 msgid "Average:"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgid ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: pidstat.c:239 sar.c:1100
+#: pidstat.c:239 sar.c:1108
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
@@ -247,7 +247,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: common.c:73
+#: common.c:74
 #, c-format
 msgid "sysstat version %s\n"
 msgstr ""
@@ -433,27 +433,27 @@ msgstr ""
 msgid "End of data collecting unexpected\n"
 msgstr ""
 
-#: sar.c:877
+#: sar.c:885
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:929
+#: sar.c:937
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:1398
+#: sar.c:1414
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1404
+#: sar.c:1420
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1540
+#: sar.c:1556
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
