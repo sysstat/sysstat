@@ -1284,7 +1284,8 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	if ((n != FILE_MAGIC_SIZE) ||
 	    (file_magic->sysstat_magic != SYSSTAT_MAGIC) ||
 	    ((file_magic->format_magic != FORMAT_MAGIC) && !ignore) ||
-	    (file_magic->header_size > MAX_FILE_HEADER_SIZE)) {
+	    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
+	    (file_magic->header_size < FILE_HEADER_SIZE)) {
 		/* Display error message and exit */
 		handle_invalid_sa_file(fd, file_magic, dfile, n);
 	}
@@ -1334,7 +1335,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 	/* Read sa data file standard header and allocate activity list */
 	sa_fread(*ifd, buffer, file_magic->header_size, HARD_SIZE);
-	memcpy(file_hdr, buffer, MINIMUM(file_magic->header_size, FILE_HEADER_SIZE));
+	/*
+	 * Data file header size may be greater than FILE_HEADER_SIZE, but
+	 * anyway only the first FILE_HEADER_SIZE bytes can be interpreted.
+	 */
+	memcpy(file_hdr, buffer, FILE_HEADER_SIZE);
 	free(buffer);
 
 	/*
