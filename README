@@ -22,7 +22,7 @@ INSTALLATION
 ------------
 
 The sysstat utilities are a collection of performance monitoring tools for
-Linux. These include mpstat, iostat, tapestat, nfsiostat-sysstat, cifsiostat,
+Linux. These include mpstat, iostat, tapestat, cifsiostat,
 pidstat, sar, sadc, sadf and sa tools. 
 
 The first stage is to configure sysstat for your system:
@@ -74,7 +74,6 @@ ${PREFIX}/bin/iostat
 ${PREFIX}/bin/tapestat
 ${PREFIX}/bin/mpstat
 ${PREFIX}/bin/pidstat
-${PREFIX}/bin/nfsiostat-sysstat
 ${PREFIX}/bin/cifsiostat
 ${PREFIX}(/share)/man/man8/sadc.8
 ${PREFIX}(/share)/man/man8/sa1.8
@@ -85,7 +84,6 @@ ${PREFIX}(/share)/man/man1/iostat.1
 ${PREFIX}(/share)/man/man1/tapestat.1
 ${PREFIX}(/share)/man/man1/mpstat.1
 ${PREFIX}(/share)/man/man1/pidstat.1
-${PREFIX}(/share)/man/man1/nfsiostat-sysstat.1
 ${PREFIX}(/share)/man/man1/cifsiostat.1
 ${PREFIX}/share/locale/*/LC_MESSAGES/sysstat.mo
 ${PREFIX}/share/doc/sysstat-x.y.z/*

@@ -5429,8 +5429,6 @@ ac_config_files="$ac_config_files man/iostat.1:man/iostat.in"
 	# File must be renamed
 ac_config_files="$ac_config_files man/cifsiostat.1:man/cifsiostat.in"
 	# File must be renamed
-ac_config_files="$ac_config_files man/nfsiostat-sysstat.1:man/nfsiostat-sysstat.in"
-	# File must be renamed
 ac_config_files="$ac_config_files contrib/isag/isag"
  # Permissions must be changed
 
@@ -6166,7 +6164,6 @@ do
     "man/sysstat.5") CONFIG_FILES="$CONFIG_FILES man/sysstat.5:man/sysstat.in" ;;
     "man/iostat.1") CONFIG_FILES="$CONFIG_FILES man/iostat.1:man/iostat.in" ;;
     "man/cifsiostat.1") CONFIG_FILES="$CONFIG_FILES man/cifsiostat.1:man/cifsiostat.in" ;;
-    "man/nfsiostat-sysstat.1") CONFIG_FILES="$CONFIG_FILES man/nfsiostat-sysstat.1:man/nfsiostat-sysstat.in" ;;
     "contrib/isag/isag") CONFIG_FILES="$CONFIG_FILES contrib/isag/isag" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
 
