@@ -2087,19 +2087,19 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 
 		if (dispavg) {
 			/* Display average values */
-			cprintf_f(2, 9, 2,
-				  (double) avg_temp[i] / avg_count,
-				  (avg_temp_max[i] - avg_temp_min[i]) ?
-				  ((double) (avg_temp[i] / avg_count) - avg_temp_min[i]) / (avg_temp_max[i] - avg_temp_min[i]) * 100
-				  : 0.0);
+			cprintf_f(1, 9, 2, (double) avg_temp[i] / avg_count);
+			cprintf_pc(1, 9, 2,
+				   (avg_temp_max[i] - avg_temp_min[i]) ?
+				   ((double) (avg_temp[i] / avg_count) - avg_temp_min[i]) / (avg_temp_max[i] - avg_temp_min[i]) * 100
+				   : 0.0);
 		}
 		else {
 			/* Display instantaneous values */
-			cprintf_f(2, 9, 2,
-				  spc->temp,
-				  (spc->temp_max - spc->temp_min) ?
-				  (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100
-				  : 0.0);
+			cprintf_f(1, 9, 2, spc->temp);
+			cprintf_pc(1, 9, 2,
+				   (spc->temp_max - spc->temp_min) ?
+				   (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100
+				   : 0.0);
 			avg_temp[i] += spc->temp;
 			/* Assume that min and max temperatures cannot vary */
 			avg_temp_min[i] = spc->temp_min;
@@ -2215,19 +2215,19 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 
 		if (dispavg) {
 			/* Display average values */
-			cprintf_f(2, 9, 2,
-				  (double) avg_in[i] / avg_count,
-				  (avg_in_max[i] - avg_in_min[i]) ?
-				  ((double) (avg_in[i] / avg_count) - avg_in_min[i]) / (avg_in_max[i] - avg_in_min[i]) * 100
-				  : 0.0);
+			cprintf_f(1, 9, 2, (double) avg_in[i] / avg_count);
+			cprintf_pc(1, 9, 2,
+				   (avg_in_max[i] - avg_in_min[i]) ?
+				   ((double) (avg_in[i] / avg_count) - avg_in_min[i]) / (avg_in_max[i] - avg_in_min[i]) * 100
+				   : 0.0);
 		}
 		else {
 			/* Display instantaneous values */
-			cprintf_f(2, 9, 2,
-				  spc->in,
-				  (spc->in_max - spc->in_min) ?
-				  (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100
-				  : 0.0);
+			cprintf_f(1, 9, 2, spc->in);
+			cprintf_pc(1, 9, 2,
+				   (spc->in_max - spc->in_min) ?
+				   (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100
+				   : 0.0);
 			avg_in[i] += spc->in;
 			/* Assume that min and max voltage inputs cannot vary */
 			avg_in_min[i] = spc->in_min;
