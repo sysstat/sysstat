@@ -60,14 +60,14 @@
  */
 
 /*
- * stats_irqcpu->irq:       IRQ#-A
+ * stats_irqcpu->irq_name:  IRQ#-A
  * stats_irqcpu->interrupt: number of IRQ#-A for proc 0
- * stats_irqcpu->irq:       IRQ#-B
+ * stats_irqcpu->irq_name:  IRQ#-B
  * stats_irqcpu->interrupt: number of IRQ#-B for proc 0
  * ...
- * stats_irqcpu->irq:       (undef'd)
+ * stats_irqcpu->irq_name:  (undef'd)
  * stats_irqcpu->interrupt: number of IRQ#-A for proc 1
- * stats_irqcpu->irq:       (undef'd)
+ * stats_irqcpu->irq_name:  (undef'd)
  * stats_irqcpu->interrupt: number of IRQ#-B for proc 1
  * ...
  */

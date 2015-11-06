@@ -51,9 +51,17 @@ unsigned long long uptime0[3] = {0, 0, 0};
 /* NOTE: Use array of _char_ for bitmaps to avoid endianness problems...*/
 unsigned char *cpu_bitmap;	/* Bit 0: Global; Bit 1: 1st proc; etc. */
 
-/* Structures used to store stats */
+/* Structure used to save CPU stats */
 struct stats_cpu *st_cpu[3];
+/*
+ * Structure used to save total number of interrupts received
+ * among all CPU and for each CPU.
+ */
 struct stats_irq *st_irq[3];
+/*
+ * Structures used to save, for each interrupt, the number
+ * received by each CPU.
+ */
 struct stats_irqcpu *st_irqcpu[3];
 struct stats_irqcpu *st_softirqcpu[3];
 
@@ -194,7 +202,266 @@ void sfree_mp_struct(void)
 
 /*
  ***************************************************************************
- * Display per CPU statistics.
+ * Display CPU statistics.
+ *
+ * IN:
+ * @dis		TRUE if a header line must be printed.
+ * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ ***************************************************************************
+ */
+void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
+		     char *prev_string, char *curr_string)
+{
+	struct stats_cpu *scc, *scp;
+	unsigned long long pc_itv;
+	int cpu;
+
+	if (dis) {
+		printf("\n%-11s  CPU    %%usr   %%nice    %%sys %%iowait    %%irq   "
+		       "%%soft  %%steal  %%guest  %%gnice   %%idle\n",
+		       prev_string);
+	}
+
+	/* Check if we want global stats among all proc */
+	if (*cpu_bitmap & 1) {
+
+		printf("%-11s", curr_string);
+		cprintf_in(IS_STR, " %s", " all", 0);
+
+		cprintf_pc(10, 7, 2,
+			   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
+			   (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
+			   0.0 :
+			   ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
+				       st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
+				       g_itv),
+			   (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
+			   (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
+			   0.0 :
+			   ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
+				       st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_sys,
+				       st_cpu[curr]->cpu_sys,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_iowait,
+				       st_cpu[curr]->cpu_iowait,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_hardirq,
+				       st_cpu[curr]->cpu_hardirq,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_softirq,
+				       st_cpu[curr]->cpu_softirq,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_steal,
+				       st_cpu[curr]->cpu_steal,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_guest,
+				       st_cpu[curr]->cpu_guest,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_guest_nice,
+				       st_cpu[curr]->cpu_guest_nice,
+				       g_itv),
+			   (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
+			   0.0 :
+			   ll_sp_value(st_cpu[prev]->cpu_idle,
+				       st_cpu[curr]->cpu_idle,
+				       g_itv));
+		printf("\n");
+	}
+
+	for (cpu = 1; cpu <= cpu_nr; cpu++) {
+
+		scc = st_cpu[curr] + cpu;
+		scp = st_cpu[prev] + cpu;
+
+		/* Check if we want stats about this proc */
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
+			continue;
+
+		/*
+		 * If the CPU is offline then it is omited from /proc/stat
+		 * and the sum of all values is zero.
+		 * (Remember that guest/guest_nice times are already included in
+		 * user/nice modes.)
+		 */
+		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+
+			if (!DISPLAY_ONLINE_CPU(flags)) {
+				printf("%-11s", curr_string);
+				cprintf_in(IS_INT, " %4d", "", cpu - 1);
+				cprintf_pc(10, 7, 2,
+					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+				printf("\n");
+			}
+			continue;
+		}
+
+		printf("%-11s", curr_string);
+		cprintf_in(IS_INT, " %4d", "", cpu - 1);
+
+		/* Recalculate itv for current proc */
+		pc_itv = get_per_cpu_interval(scc, scp);
+
+		if (!pc_itv) {
+			/*
+			 * If the CPU is tickless then there is no change in CPU values
+			 * but the sum of values is not zero.
+			 */
+			cprintf_pc(10, 7, 2,
+				   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
+			printf("\n");
+		}
+
+		else {
+			cprintf_pc(10, 7, 2,
+				   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_user - scp->cpu_guest,
+					       scc->cpu_user - scc->cpu_guest,
+					       pc_itv),
+				   (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+					       scc->cpu_nice - scc->cpu_guest_nice,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_sys,
+					       scc->cpu_sys,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_iowait,
+					       scc->cpu_iowait,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_hardirq,
+					       scc->cpu_hardirq,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_softirq,
+					       scc->cpu_softirq,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_steal,
+					       scc->cpu_steal,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_guest,
+					       scc->cpu_guest,
+					       pc_itv),
+				   ll_sp_value(scp->cpu_guest_nice,
+					       scc->cpu_guest_nice,
+					       pc_itv),
+				   (scc->cpu_idle < scp->cpu_idle) ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_idle,
+					       scc->cpu_idle,
+					       pc_itv));
+			printf("\n");
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display total number of interrupts per CPU.
+ *
+ * IN:
+ * @dis		TRUE if a header line must be printed.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ ***************************************************************************
+ */
+void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
+		     char *prev_string, char *curr_string)
+{
+	struct stats_cpu *scc, *scp;
+	struct stats_irq *sic, *sip;
+	unsigned long long pc_itv;
+	int cpu;
+
+	if (dis) {
+		printf("\n%-11s  CPU    intr/s\n", prev_string);
+		}
+
+	if (*cpu_bitmap & 1) {
+		printf("%-11s", curr_string);
+		cprintf_in(IS_STR, " %s", " all", 0);
+		/* Print total number of interrupts among all cpu */
+		cprintf_f(1, 9, 2,
+			  S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
+		printf("\n");
+	}
+
+	for (cpu = 1; cpu <= cpu_nr; cpu++) {
+
+		sic = st_irq[curr] + cpu;
+		sip = st_irq[prev] + cpu;
+
+		scc = st_cpu[curr] + cpu;
+		scp = st_cpu[prev] + cpu;
+
+		/* Check if we want stats about this CPU */
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
+			continue;
+
+		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+
+			/* This is an offline CPU */
+
+			if (!DISPLAY_ONLINE_CPU(flags)) {
+				/*
+				 * Display offline CPU if requested by the user.
+				 * Value displayed is 0.00.
+				 */
+				printf("%-11s", curr_string);
+				cprintf_in(IS_INT, " %4d", "", cpu- 1);
+				cprintf_f(1, 9, 2, 0.0);
+				printf("\n");
+			}
+			continue;
+		}
+
+		printf("%-11s", curr_string);
+		cprintf_in(IS_INT, " %4d", "", cpu - 1);
+
+		/* Recalculate itv for current proc */
+		pc_itv = get_per_cpu_interval(scc, scp);
+
+		if (!pc_itv) {
+			/* This is a tickless CPU: Value displayed is 0.00 */
+			cprintf_f(1, 9, 2, 0.0);
+			printf("\n");
+		}
+		else {
+			/* Display total number of interrupts for current CPU */
+			cprintf_f(1, 9, 2,
+				  S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+			printf("\n");
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display interrupts statistics for each CPU.
  *
  * IN:
  * @st_ic	Array for per-CPU statistics.
@@ -218,37 +485,39 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc;
-	int j = 0, offset, cpu, colwidth[NR_IRQS];
+	int j = ic_nr, offset, cpu, colwidth[NR_IRQS];
 	struct stats_irqcpu *p, *q, *p0, *q0;
 
 	/*
-	* Check if number of interrupts has changed.
-	* NB: A null interval value indicates that we are
+	 * Check if number of interrupts has changed.
+	 * If this is the case, the header line will be printed again.
+	 * NB: A zero interval value indicates that we are
 	 * displaying statistics since system startup.
 	 */
 	if (!dis && interval) {
-		do {
+		for (j = 0; j < ic_nr; j++) {
 			p0 = st_ic[curr] + j;
-			if (p0->irq_name[0] != '\0') {
-				q0 = st_ic[prev] + j;
-				if (strcmp(p0->irq_name, q0->irq_name)) {
-					/* These are two different irq */
-					j = -2;
-				}
-			}
-			j++;
+			q0 = st_ic[prev] + j;
+			if (strcmp(p0->irq_name, q0->irq_name))
+				/*
+				 * These are two different interrupts: The header must be displayed
+				 * (maybe an interrupt has disappeared, or a new one has just been registered).
+				 * Note that we compare even empty strings for the case where
+				 * a disappearing interrupt would be the last one in the list.
+				 */
+				break;
 		}
-		while ((j > 0) && (j <= ic_nr));
 	}
 
-	if (dis || (j < 0)) {
+	if (dis || (j < ic_nr)) {
 		/* Print header */
 		printf("\n%-11s  CPU", prev_string);
 		for (j = 0; j < ic_nr; j++) {
 			p0 = st_ic[curr] + j;
-			if (p0->irq_name[0] != '\0') {	/* Nb of irq per proc may have varied... */
-				printf(" %8s/s", p0->irq_name);
-			}
+			if (p0->irq_name[0] == '\0')
+				/* End of the list of interrupts */
+				break;
+			printf(" %8s/s", p0->irq_name);
 		}
 		printf("\n");
 	}
@@ -256,16 +525,18 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 	/* Calculate column widths */
 	for (j = 0; j < ic_nr; j++) {
 		p0 = st_ic[curr] + j;
-		if (p0->irq_name[0] != '\0') {
-			/* Width is IRQ name + 2 for the trailing "/s" */
-			colwidth[j] = strlen(p0->irq_name) + 2;
-			/*
-			 * Normal space for printing a number is 11 chars
-			 * (space + 10 digits including the period).
-			 */
-			if (colwidth[j] < 10) {
-				colwidth[j] = 10;
-			}
+		/*
+		 * Width is IRQ name + 2 for the trailing "/s".
+		 * Width is calculated even for "undefined" interrupts (with
+		 * an empty irq_name string) to quiet code analysis tools.
+		 */
+		colwidth[j] = strlen(p0->irq_name) + 2;
+		/*
+		 * Normal space for printing a number is 11 chars
+		 * (space + 10 digits including the period).
+		 */
+		if (colwidth[j] < 10) {
+			colwidth[j] = 10;
 		}
 	}
 
@@ -295,38 +566,47 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 		cprintf_in(IS_INT, "  %3d", "", cpu - 1);
 
 		for (j = 0; j < ic_nr; j++) {
-			p0 = st_ic[curr] + j;	/* irq field set only for proc #0 */
+			p0 = st_ic[curr] + j;	/* irq_name set only for CPU#0 */
 			/*
-			 * An empty string for irq name means it is a remaining interrupt
+			 * An empty string for irq_name means it is a remaining interrupt
 			 * which is no longer used, for example because the
 			 * number of interrupts has decreased in /proc/interrupts.
 			 */
-			if (p0->irq_name[0] != '\0') {
-				q0 = st_ic[prev] + j;
-				offset = j;
+			if (p0->irq_name[0] == '\0')
+				/* End of the list of interrupts */
+				break;
+			q0 = st_ic[prev] + j;
+			offset = j;
 
+			/*
+			 * If we want stats for the time since system startup,
+			 * we have p0->irq_name != q0->irq_name, since q0 structure
+			 * is completely set to zero.
+			 */
+			if (strcmp(p0->irq_name, q0->irq_name) && interval) {
+				/* Check if interrupt exists elsewhere in list */
+				for (offset = 0; offset < ic_nr; offset++) {
+					q0 = st_ic[prev] + offset;
+					if (!strcmp(p0->irq_name, q0->irq_name))
+						/* Interrupt found at another position */
+						break;
+				}
+			}
+
+			p = st_ic[curr] + (cpu - 1) * ic_nr + j;
+
+			if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
+				q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
+				cprintf_f(1, colwidth[j], 2,
+					  S_VALUE(q->interrupt, p->interrupt, itv));
+			}
+			else {
 				/*
-				 * If we want stats for the time since system startup,
-				 * we have p0->irq != q0->irq, since q0 structure is
-				 * completely set to zero.
+				 * Instead of printing "N/A", assume that previous value
+				 * for this new interrupt was zero.
 				 */
-				if (strcmp(p0->irq_name, q0->irq_name) && interval) {
-					if (j)
-						offset = j - 1;
-					q0 = st_ic[prev] + offset;
-					if (strcmp(p0->irq_name, q0->irq_name) && (j + 1 < ic_nr))
-						offset = j + 1;
-					q0 = st_ic[prev] + offset;
-				}
-
-				if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
-					p = st_ic[curr] + (cpu - 1) * ic_nr + j;
-					q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
-					cprintf_f(1, colwidth[j], 2,
-						  S_VALUE(q->interrupt, p->interrupt, itv));
-				}
-				else
-					printf("        N/A");
+				cprintf_f(1, colwidth[j], 2,
+					  S_VALUE(0, p->interrupt, itv));
 			}
 		}
 		printf("\n");
@@ -355,7 +635,7 @@ void write_stats_core(int prev, int curr, int dis,
 		      char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc, *scp;
-	unsigned long long itv, pc_itv, g_itv;
+	unsigned long long itv, g_itv;
 	int cpu;
 
 	/* Test stdout */
@@ -374,215 +654,19 @@ void write_stats_core(int prev, int curr, int dis,
 
 	/* Print CPU stats */
 	if (DISPLAY_CPU(actflags)) {
-		if (dis) {
-			printf("\n%-11s  CPU    %%usr   %%nice    %%sys %%iowait    %%irq   "
-			       "%%soft  %%steal  %%guest  %%gnice   %%idle\n",
-			       prev_string);
-		}
-
-		/* Check if we want global stats among all proc */
-		if (*cpu_bitmap & 1) {
-
-			printf("%-11s", curr_string);
-			cprintf_in(IS_STR, " %s", " all", 0);
-
-			cprintf_pc(10, 7, 2,
-				   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
-				   (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
-				   0.0 :
-				   ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
-					       st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
-					       g_itv),
-				   (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
-				   (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
-				   0.0 :
-				   ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
-					       st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_sys,
-					       st_cpu[curr]->cpu_sys,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_iowait,
-					       st_cpu[curr]->cpu_iowait,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_hardirq,
-					       st_cpu[curr]->cpu_hardirq,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_softirq,
-					       st_cpu[curr]->cpu_softirq,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_steal,
-					       st_cpu[curr]->cpu_steal,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_guest,
-					       st_cpu[curr]->cpu_guest,
-					       g_itv),
-				   ll_sp_value(st_cpu[prev]->cpu_guest_nice,
-					       st_cpu[curr]->cpu_guest_nice,
-					       g_itv),
-				   (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
-				   0.0 :
-				   ll_sp_value(st_cpu[prev]->cpu_idle,
-					       st_cpu[curr]->cpu_idle,
-					       g_itv));
-			printf("\n");
-		}
-
-		for (cpu = 1; cpu <= cpu_nr; cpu++) {
-
-			scc = st_cpu[curr] + cpu;
-			scp = st_cpu[prev] + cpu;
-
-			/* Check if we want stats about this proc */
-			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
-				continue;
-
-			/*
-			 * If the CPU is offline then it is omited from /proc/stat
-			 * and the sum of all values is zero.
-			 * (Remember that guest/guest_nice times are already included in
-			 * user/nice modes.)
-			 */
-			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-
-				if (!DISPLAY_ONLINE_CPU(flags)) {
-					printf("%-11s", curr_string);
-					cprintf_in(IS_INT, " %4d", "", cpu - 1);
-					cprintf_pc(10, 7, 2,
-						   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-					printf("\n");
-				}
-				continue;
-			}
-
-			printf("%-11s", curr_string);
-			cprintf_in(IS_INT, " %4d", "", cpu - 1);
-
-			/* Recalculate itv for current proc */
-			pc_itv = get_per_cpu_interval(scc, scp);
-
-			if (!pc_itv) {
-				/*
-				 * If the CPU is tickless then there is no change in CPU values
-				 * but the sum of values is not zero.
-				 */
-				cprintf_pc(10, 7, 2,
-					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
-				printf("\n");
-			}
-
-			else {
-				cprintf_pc(10, 7, 2,
-					   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_user - scp->cpu_guest,
-						       scc->cpu_user - scc->cpu_guest,
-						       pc_itv),
-					   (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-						       scc->cpu_nice - scc->cpu_guest_nice,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_sys,
-						       scc->cpu_sys,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_iowait,
-						       scc->cpu_iowait,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_hardirq,
-						       scc->cpu_hardirq,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_softirq,
-						       scc->cpu_softirq,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_steal,
-						       scc->cpu_steal,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_guest,
-						       scc->cpu_guest,
-						       pc_itv),
-					   ll_sp_value(scp->cpu_guest_nice,
-						       scc->cpu_guest_nice,
-						       pc_itv),
-					   (scc->cpu_idle < scp->cpu_idle) ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_idle,
-						       scc->cpu_idle,
-						       pc_itv));
-				printf("\n");
-			}
-		}
+		write_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string);
 	}
 
 	/* Print total number of interrupts per processor */
 	if (DISPLAY_IRQ_SUM(actflags)) {
-		struct stats_irq *sic, *sip;
-
-		if (dis) {
-			printf("\n%-11s  CPU    intr/s\n", prev_string);
-		}
-
-		if (*cpu_bitmap & 1) {
-			printf("%-11s", curr_string);
-			cprintf_in(IS_STR, " %s", " all", 0);
-			cprintf_f(1, 9, 2,
-				  S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
-			printf("\n");
-		}
-
-		for (cpu = 1; cpu <= cpu_nr; cpu++) {
-
-			sic = st_irq[curr] + cpu;
-			sip = st_irq[prev] + cpu;
-
-			scc = st_cpu[curr] + cpu;
-			scp = st_cpu[prev] + cpu;
-
-			/* Check if we want stats about this proc */
-			if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
-				continue;
-
-			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-
-				/* This is an offline CPU */
-
-				if (!DISPLAY_ONLINE_CPU(flags)) {
-					printf("%-11s", curr_string);
-					cprintf_in(IS_INT, " %4d", "", cpu- 1);
-					cprintf_f(1, 9, 2, 0.0);
-					printf("\n");
-				}
-				continue;
-			}
-
-			printf("%-11s", curr_string);
-			cprintf_in(IS_INT, " %4d", "", cpu- 1);
-
-			/* Recalculate itv for current proc */
-			pc_itv = get_per_cpu_interval(scc, scp);
-
-			if (!pc_itv) {
-				/* This is a tickless CPU */
-				cprintf_f(1, 9, 2, 0.0);
-				printf("\n");
-			}
-			else {
-				cprintf_f(1, 9, 2,
-					  S_VALUE(sip->irq_nr, sic->irq_nr, itv));
-				printf("\n");
-			}
-		}
+		write_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string);
 	}
 
+	/* Display each interrupt value for each CPU */
 	if (DISPLAY_IRQ_CPU(actflags)) {
 		write_irqcpu_stats(st_irqcpu, irqcpu_nr, dis, itv, prev, curr,
 				   prev_string, curr_string);
 	}
-
 	if (DISPLAY_SOFTIRQS(actflags)) {
 		write_irqcpu_stats(st_softirqcpu, softirqcpu_nr, dis, itv, prev, curr,
 				   prev_string, curr_string);
@@ -658,7 +742,7 @@ void write_stats(int curr, int dis)
  * @curr	Position in array where current statistics will be saved.
  *
  * OUT:
- * @st_ic	Array for per-CPU statistics.
+ * @st_ic	Array for per-CPU interrupts statistics.
  ***************************************************************************
  */
 void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, int curr)
@@ -672,6 +756,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 	int cpu_index[cpu_nr], index = 0, len;
 	char *cp, *next;
 
+	/* Reset total number of interrupts received by each CPU */
 	for (cpu = 0; cpu < cpu_nr; cpu++) {
 		st_irq_i = st_irq[curr] + cpu + 1;
 		st_irq_i->irq_nr = 0;
@@ -695,6 +780,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 				break;
 		}
 
+		/* Parse each line of interrupts statistics data */
 		while ((fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) &&
 		       (irq < ic_nr)) {
 
@@ -706,6 +792,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 
 			p = st_ic[curr] + irq;
 
+			/* Remove possible heading spaces in interrupt's name... */
 			li = line;
 			while (*li == ' ')
 				li++;
@@ -714,15 +801,19 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 			if (len >= MAX_IRQ_LEN) {
 				len = MAX_IRQ_LEN - 1;
 			}
+			/* ...then save its name */
 			strncpy(p->irq_name, li, len);
 			p->irq_name[len] = '\0';
 
+			/* For each interrupt: Get number received by each CPU */
 			for (cpu = 0; cpu < index; cpu++) {
 				p = st_ic[curr] + cpu_index[cpu] * ic_nr + irq;
 				st_irq_i = st_irq[curr] + cpu_index[cpu] + 1;
 				/*
-				 * No need to set (st_irqcpu + cpu * irqcpu_nr)->irq:
-				 * This is the same as st_irqcpu->irq.
+				 * No need to set (st_irqcpu + cpu * irqcpu_nr)->irq_name:
+				 * This is the same as st_irqcpu->irq_name.
+				 * Now save current interrupt value for current CPU (in stats_irqcpu structure)
+				 * and total number of interrupts received by current CPU (in stats_irq structure).
 				 */
 				p->interrupt = strtoul(cp, &next, 10);
 				st_irq_i->irq_nr += p->interrupt;
@@ -763,7 +854,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	/* Dont buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
 
-	/* Read stats */
+	/* Read uptime and CPU stats */
 	if (cpu_nr > 1) {
 		/*
 		 * Init uptime0. So if /proc/uptime cannot fill it,
@@ -774,15 +865,22 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	}
 	read_stat_cpu(st_cpu[0], cpu_nr + 1, &(uptime[0]), &(uptime0[0]));
 
+	/*
+	 * Read total number of interrupts received among all CPU.
+	 * (this is the first value on the line "intr:" in the /proc/stat file).
+	 */
 	if (DISPLAY_IRQ_SUM(actflags)) {
 		read_stat_irq(st_irq[0], 1);
 	}
 
+	/*
+	 * Read number of interrupts received by each CPU, for each interrupt,
+	 * and compute the total number of interrupts received by each CPU.
+	 */
 	if (DISPLAY_IRQ_SUM(actflags) || DISPLAY_IRQ_CPU(actflags)) {
 		/* Read this file to display int per CPU or total nr of int per CPU */
 		read_interrupts_stat(INTERRUPTS, st_irqcpu, irqcpu_nr, 0);
 	}
-
 	if (DISPLAY_SOFTIRQS(actflags)) {
 		read_interrupts_stat(SOFTIRQS, st_softirqcpu, softirqcpu_nr, 0);
 	}
@@ -844,21 +942,25 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		/* Get time */
 		get_localtime(&(mp_tstamp[curr]), 0);
 
-		/* Read stats */
+		/* Read uptime and CPU stats */
 		if (cpu_nr > 1) {
 			uptime0[curr] = 0;
 			read_uptime(&(uptime0[curr]));
 		}
 		read_stat_cpu(st_cpu[curr], cpu_nr + 1, &(uptime[curr]), &(uptime0[curr]));
 
+		/* Read total number of interrupts received among all CPU */
 		if (DISPLAY_IRQ_SUM(actflags)) {
 			read_stat_irq(st_irq[curr], 1);
 		}
 
+		/*
+		 * Read number of interrupts received by each CPU, for each interrupt,
+		 * and compute the total number of interrupts received by each CPU.
+		 */
 		if (DISPLAY_IRQ_SUM(actflags) || DISPLAY_IRQ_CPU(actflags)) {
 			read_interrupts_stat(INTERRUPTS, st_irqcpu, irqcpu_nr, curr);
 		}
-
 		if (DISPLAY_SOFTIRQS(actflags)) {
 			read_interrupts_stat(SOFTIRQS, st_softirqcpu, softirqcpu_nr, curr);
 		}
