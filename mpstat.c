@@ -1044,23 +1044,26 @@ int main(int argc, char **argv)
 		if (!strcmp(argv[opt], "-I")) {
 			if (argv[++opt]) {
 				actset = TRUE;
-				if (!strcmp(argv[opt], K_SUM)) {
-					/* Display total number of interrupts per CPU */
-					actflags |= M_D_IRQ_SUM;
-				}
-				else if (!strcmp(argv[opt], K_CPU)) {
-					/* Display interrupts per CPU */
-					actflags |= M_D_IRQ_CPU;
-				}
-				else if (!strcmp(argv[opt], K_SCPU)) {
-					/* Display soft interrupts per CPU */
-					actflags |= M_D_SOFTIRQS;
-				}
-				else if (!strcmp(argv[opt], K_ALL)) {
-					actflags |= M_D_IRQ_SUM + M_D_IRQ_CPU + M_D_SOFTIRQS;
-				}
-				else {
-					usage(argv[0]);
+
+				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
+					if (!strcmp(t, K_SUM)) {
+						/* Display total number of interrupts per CPU */
+						actflags |= M_D_IRQ_SUM;
+					}
+					else if (!strcmp(t, K_CPU)) {
+						/* Display interrupts per CPU */
+						actflags |= M_D_IRQ_CPU;
+					}
+					else if (!strcmp(t, K_SCPU)) {
+						/* Display soft interrupts per CPU */
+						actflags |= M_D_SOFTIRQS;
+					}
+					else if (!strcmp(t, K_ALL)) {
+						actflags |= M_D_IRQ_SUM + M_D_IRQ_CPU + M_D_SOFTIRQS;
+					}
+					else {
+						usage(argv[0]);
+					}
 				}
 			}
 			else {
