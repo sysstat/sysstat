@@ -911,8 +911,8 @@ void read_header_data(void)
 		p = get_activity_position(act, file_act.id, RESUME_IF_NOT_FOUND);
 
 		if ((p < 0) || (act[p]->fsize != file_act.size)
-			    || !file_act.nr
-			    || !file_act.nr2
+			    || (file_act.nr <= 0)
+			    || (file_act.nr2 <= 0)
 			    || (act[p]->magic != file_act.magic))
 			/* Remember that we are reading data from sadc and not from a file... */
 			goto input_error;
