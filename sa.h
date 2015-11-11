@@ -446,6 +446,8 @@ struct activity {
 	 *    Note: If @nr = 0, then @nr2 is undetermined (may be -1, 0 or >0).
 	 * 2) IF @nr > 0 THEN @nr2 > 0.
 	 *    Note: If @nr2 > 0 then @nr is undetermined (may be -1, 0 or >0).
+	 * 3) IF @nr <= 0 THEN @nr2 = -1 (this is the default value for @nr2,
+	 * meaning that it has not been calculated).
 	 */
 	__nr_t nr2;
 	/*

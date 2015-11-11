@@ -1190,7 +1190,7 @@ struct activity pwr_wghfreq_act = {
 	.name		= "A_PWR_WGHFREQ",
 #endif
 	.nr		= -1,
-	.nr2		= 1,
+	.nr2		= -1,
 	.nr_max		= NR_CPUS + 1,
 	.fsize		= STATS_PWR_WGHFREQ_SIZE,
 	.msize		= STATS_PWR_WGHFREQ_SIZE,
