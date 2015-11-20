@@ -126,13 +126,17 @@
 #ifndef SCHED_IDLE
 #define SCHED_IDLE	5
 #endif
+#ifndef SCHED_DEADLINE
+#define SCHED_DEADLINE	6
+#endif
 
 #define GET_POLICY(p) \
-	(p == SCHED_NORMAL ? "NORMAL" : \
-	(p == SCHED_FIFO   ? "FIFO" : \
-	(p == SCHED_RR     ? "RR" : \
-	(p == SCHED_BATCH  ? "BATCH" : \
-	(p == SCHED_IDLE   ? "IDLE" : \
+	(p == SCHED_NORMAL   ? "NORMAL" : \
+	(p == SCHED_FIFO     ? "FIFO" : \
+	(p == SCHED_RR       ? "RR" : \
+	(p == SCHED_BATCH    ? "BATCH" : \
+	(p == SCHED_IDLE     ? "IDLE" : \
+	(p == SCHED_DEADLINE ? "DEADLN" : \
 	"?")))))
 
 struct pid_stats {
