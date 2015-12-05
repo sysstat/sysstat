@@ -455,11 +455,10 @@ void tape_write_stats(struct calc_stats *tape, int i)
  * Print everything now (stats and uptime).
  *
  * IN:
- * @curr	Index in array for current sample statistics.
  * @rectime	Current date and time.
  ***************************************************************************
  */
-void write_stats(int curr, struct tm *rectime)
+void write_stats(struct tm *rectime)
 {
 	int i;
 	struct calc_stats tape;
@@ -530,7 +529,6 @@ void write_stats(int curr, struct tm *rectime)
 void rw_tape_stat_loop(long int count, struct tm *rectime)
 {
 	struct tape_stats *tmp;
-	int curr = 1;
 	int skip = 0;
 
 	/* Should we skip first report? */
@@ -555,7 +553,7 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		/* Check whether we should skip first report */
 		if (!skip) {
 			/* Print results */
-			write_stats(curr, rectime);
+			write_stats(rectime);
 
 			if (count > 0) {
 				count--;
@@ -569,7 +567,6 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		}
 
 		if (count) {
-			curr ^= 1;
 			pause();
 		}
 	}
