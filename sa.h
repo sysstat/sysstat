@@ -230,6 +230,8 @@
 #define MAX_NR_FS		8192
 #define MAX_NR_FCHOSTS		8192
 
+/* NR_MAX is the upper limit used for unknown activities */
+#define NR_MAX		65536
 #define NR2_MAX		128
 
 /* Maximum number of args that can be passed to sadc */

@@ -1362,11 +1362,19 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 		sa_fread(*ifd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
 
-		if ((fal->nr < 1) || (fal->nr2 < 1)) {
-			/*
-			 * Every activity, known or unknown,
-			 * should have at least one item and sub-item.
-			 */
+		/*
+		 * Every activity, known or unknown, should have
+		 * at least one item and sub-item.
+		 * Also check that the number of items and sub-items
+		 * doesn't exceed a max value. This is necessary
+		 * because we will use @nr and @nr2 to
+		 * allocate memory to read the file contents. So we
+		 * must make sure the file is not corrupted.
+		 * NB: Another check will be made below for known
+		 * activities which have each a specific max value.
+		 */
+		if ((fal->nr < 1) || (fal->nr2 < 1) ||
+		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX)) {
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 
@@ -1385,6 +1393,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			}
 			else
 				continue;
+		}
+
+		/* Check max value for known activities */
+		if (fal->nr > act[p]->nr_max) {
+			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 
 		if (fal->id == A_CPU) {
