@@ -332,7 +332,7 @@ struct act_bitmap {
 	 */
 	unsigned char *b_array;
 	/*
-	 * Size of the bitmap in bits. In fact, bitmap is sized to bitmap_size + 1
+	 * Size of the bitmap in bits. In fact, bitmap is sized to b_size + 1
 	 * to take into account CPU "all"
 	 */
 	int b_size;
@@ -454,7 +454,7 @@ struct activity {
 	__nr_t nr2;
 	/*
 	 * Maximum number of elements that sar can handle for this item.
-	 * NB: The maximu number of elements that sar can handle for sub-items
+	 * NB: The maximum number of elements that sar can handle for sub-items
 	 * is NR2_MAX.
 	 */
 	__nr_t nr_max;
