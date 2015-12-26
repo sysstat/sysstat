@@ -1,9 +1,9 @@
 Begin4
-Title:		sysstat - the sar, sadf, mpstat, iostat, tapestat, pidstat, nfsiostat-sysstat and cifsiostat commands for Linux
-Version:	11.1.8
-Entered-date:	2015-10-23
+Title:		sysstat - the sar, sadf, mpstat, iostat, tapestat, pidstat and cifsiostat commands for Linux
+Version:	11.2.0
+Entered-date:	2015-12-27
 Description:	The sysstat package contains the sar, sadf, mpstat, iostat, tapestat,
-		pidstat, nfsiostat-sysstat, cifsiostat and sa tools for Linux.
+		pidstat, cifsiostat and sa tools for Linux.
 		The sar command collects and reports system activity
 		information.
 		The information collected by sar can be saved in a file
@@ -22,20 +22,19 @@ Description:	The sysstat package contains the sar, sadf, mpstat, iostat, tapesta
 		The tapestat command reports statistics for tape drives connected
 		to the system.
 		The pidstat command reports statistics for Linux tasks (processes).
-		The nfsiostat-sysstat command reports I/O statistics for network filesystems.
 		The cifsiostat command reports I/O statistics for CIFS filesystems.
 		NB: Send bugs, patches, suggestions and/or questions to
 		(sysstat [at] orange.fr).
 		URL: http://pagesperso-orange.fr/sebastien.godard/
-Keywords:	system administration, sar, sadf, iostat, tapestat, mpstat, pidstat, nfsiostat-sysstat, cifsiostat, system accounting, performance, tuning
+Keywords:	system administration, sar, sadf, iostat, tapestat, mpstat, pidstat, cifsiostat, system accounting, performance, tuning
 Author:		sysstat [at] orange.fr (Sebastien Godard)
 Maintained-by:	sysstat [at] orange.fr (Sebastien Godard)
 Primary-site:	http://pagesperso-orange.fr/sebastien.godard/
-		443kB sysstat-11.1.8.tar.gz
-		360kB sysstat-11.1.8.tar.bz2
-		316kB sysstat-11.1.8.tar.xz
-		451kB sysstat-11.1.8-1.src.rpm
-		306kB sysstat-11.1.8-1.x86_64.rpm
+		439kB sysstat-11.2.0.tar.gz
+		359kB sysstat-11.2.0.tar.bz2
+		316kB sysstat-11.2.0.tar.xz
+		447kB sysstat-11.2.0-1.src.rpm
+		301kB sysstat-11.2.0-1.x86_64.rpm
 Alternate-site:
 Copying-policy:	GPL
 End

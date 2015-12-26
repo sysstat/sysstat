@@ -1,11 +1,29 @@
 Changes:
 
+2015/12/27: Version 11.2.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* mpstat: Code refactoring (better handle some special borderline
+	  cases for per-processor interrupts statistics).
+	* mpstat: Option -I now accepts a list of comma-separated
+	  arguments.
+	* sar: Fix color output for %temp and %in fields.
+	* sadf: Fix bug preventing sadf from converting a data file with
+	  an old format.
+	* sadc: Fix insecure data handling, really (CID #29720).
+	* [Peter Schiffer]: Increase NR_CPUS to match kernel upstream.
+	* sar: Check minimum size of sa data files header (CID #29719).
+	* sadc: Fix default number of frequencies for A_PWR_WGHFREQ
+	  activity.
+	* pidstat: Define new SCHED_DEADLINE scheduling policy.
+	* Remove obsolete nfsiostat-sysstat command.
+	* mpstat manual page updated.
+	* NLS updated.
+
 2015/10/23: Version 11.1.8 - Sebastien Godard (sysstat <at> orange.fr)
 	* Add support for color customization.
 	* Add color support for pidstat, tapestat and cifsiostat commands.
 	* Define values "always", "never" and "auto" for S_COLORS
 	  environment variable.
-	* sar: Remove exta line of statistics displayed when SIGINT is
+	* sar: Remove extra line of statistics displayed when SIGINT is
 	  received.
 	* Add missing va_end() statements (CID #113539, #113540, #113541,
 	  #113542).
