@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-10-21 21:47+0200\n"
+"POT-Creation-Date: 2015-12-21 08:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cifsiostat.c:70 mpstat.c:90 pidstat.c:87 iostat.c:86 tapestat.c:89 sar.c:95
-#: nfsiostat-sysstat.c:69
+#: cifsiostat.c:70 mpstat.c:98 pidstat.c:87 iostat.c:86 tapestat.c:89 sar.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
 
-#: cifsiostat.c:74 nfsiostat-sysstat.c:73
+#: cifsiostat.c:74
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 msgstr ""
 
-#: cifsiostat.c:77 nfsiostat-sysstat.c:76
+#: cifsiostat.c:77
 #, c-format
 msgid ""
 "Options are:\n"
@@ -71,7 +70,7 @@ msgstr ""
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
 
-#: mpstat.c:93
+#: mpstat.c:101
 #, c-format
 msgid ""
 "Options are:\n"
@@ -79,11 +78,11 @@ msgid ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:624 pidstat.c:2301 sar.c:425
+#: mpstat.c:708 pidstat.c:2301 sar.c:425
 msgid "Average:"
 msgstr ""
 
-#: mpstat.c:996
+#: mpstat.c:1101
 #, c-format
 msgid "Not that many processors!\n"
 msgstr ""
@@ -139,12 +138,12 @@ msgstr ""
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1443
+#: sa_common.c:1461
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:1624 iostat.c:1399
+#: sa_common.c:1642 iostat.c:1399
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
