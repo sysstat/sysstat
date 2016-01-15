@@ -951,7 +951,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 				 * In this case, the call to write_parsable_stats() has actually
 				 * displayed a line of stats.
 				 */
-				*curr ^=1;
+				*curr ^= 1;
 				if (*cnt > 0) {
 					(*cnt)--;
 				}
@@ -1008,7 +1008,7 @@ void sr_act_nr(__nr_t save_act_nr[], int action)
  * IN:
  * @ifd		File descriptor of input file.
  * @file_actlst	List of (known or unknown) activities in file.
- * @dfile	System activity data file name.
+ * @file	System activity data file name (name of file being read).
  * @file_magic	System activity file magic header.
  * @cpu_nr	Number of processors for current activity data file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
@@ -1016,12 +1016,11 @@ void sr_act_nr(__nr_t save_act_nr[], int action)
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
- * @file	Name of file being read.
  ***************************************************************************
  */
-void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfile,
+void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 			  struct file_magic *file_magic, __nr_t cpu_nr,
-			  struct tm *rectime, struct tm *loctime, char *file)
+			  struct tm *rectime, struct tm *loctime)
 {
 	int curr, tab = 0, rtype;
 	int eosaf, next, reset = FALSE;
@@ -1040,7 +1039,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_BEGIN, dfile, file_magic,
+		(*fmt[f_position]->f_header)(&tab, F_BEGIN, file, file_magic,
 					     &file_hdr, cpu_nr, act, id_seq);
 	}
 
@@ -1087,7 +1086,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
 			(tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
-			(tm_end.use && (datecmp(loctime, &tm_end) >=0))));
+			(tm_end.use && (datecmp(loctime, &tm_end) >= 0))));
 
 		/* Save the first stats collected. Used for example in next_slice() function */
 		copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1286,7 +1285,7 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *dfil
 
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_END, dfile, file_magic,
+		(*fmt[f_position]->f_header)(&tab, F_END, file, file_magic,
 					     &file_hdr, cpu_nr, act, id_seq);
 	}
 }
@@ -1483,7 +1482,7 @@ void read_stats_from_file(char dfile[])
 	}
 	else {
 		textual_display_loop(ifd, file_actlst, dfile,
-				     &file_magic, cpu_nr, &rectime, &loctime, dfile);
+				     &file_magic, cpu_nr, &rectime, &loctime);
 	}
 
 	close(ifd);
