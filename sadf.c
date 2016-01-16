@@ -628,9 +628,9 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
  * @cpu_nr		Number of processors for current activity data file.
  * @rectime		Structure where timestamp (expressed in local time
  *			or in UTC depending on whether options -T/-t have
- * 			been used or not) can be saved for current record.
+ * 			been used or not) has been saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
- *			can be saved for current record.
+ *			has been saved for current record.
  * @reset_cd		TRUE if static cross_day variable should be reset.
  *
  * OUT:
@@ -669,9 +669,6 @@ int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
 			reset, interval))
 		/* Not close enough to desired interval */
 		return 0;
-
-	/* Fill timestamp structure for current record */
-	sadf_get_record_timestamp_struct(curr, rectime, loctime);
 
 	/* Check if we are beginning a new day */
 	if (use_tm_start && record_hdr[!curr].ust_time &&
@@ -733,9 +730,9 @@ int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
  * @cpu_nr		Number of processors.
  * @rectime		Structure where timestamp (expressed in local time
  *			or in UTC depending on whether options -T/-t have
- * 			been used or not) can be saved for current record.
+ * 			been used or not) has been saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
- *			can be saved for current record.
+ *			has been saved for current record.
  *
  * OUT:
  * @cnt			Set to 0 to indicate that no other lines of stats
@@ -753,9 +750,6 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	unsigned long long dt, itv, g_itv;
 	char cur_date[32], cur_time[32];
 	static int cross_day = FALSE;
-
-	/* Fill timestamp structure (rectime) for current record */
-	sadf_get_record_timestamp_struct(curr, rectime, loctime);
 
 	/*
 	 * Check time (1).
