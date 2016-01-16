@@ -329,98 +329,77 @@ void xprintf(int nr_tab, const char *fmtf, ...)
 
 /*
  ***************************************************************************
- * Display restart records for textual (XML-like) reports.
+ * Print contents of a special (RESTART or COMMENT) record.
  *
  * IN:
  * @curr		Index in array for current sample statistics.
  * @use_tm_start	Set to TRUE if option -s has been used.
  * @use_tm_end		Set to TRUE if option -e has been used.
- * @tab			Number of tabulations to print.
- * @rectime		Structure where timestamp (expressed in local time
- *			or in UTC depending on whether options -T/-t have
- * 			been used or not) can be saved for current record.
- * @loctime		Structure where timestamp (expressed in local time)
- *			can be saved for current record.
- * @new_cpu_nr		CPU count associated with restart mark.
- *
- * OUT:
- * @rectime		Structure where timestamp for current record has
- *			been saved.
- * @loctime		Structure where timestamp for current record has
- *			been saved.
- ***************************************************************************
- */
-void write_textual_restarts(int curr, int use_tm_start, int use_tm_end, int tab,
-			    struct tm *rectime, struct tm *loctime,
-			    unsigned int new_cpu_nr)
-{
-	char cur_date[32], cur_time[32];
-
-	/* Fill timestamp structure for current record */
-	sadf_get_record_timestamp_struct(curr, rectime, loctime);
-
-	/* The record must be in the interval specified by -s/-e options */
-	if ((use_tm_start && (datecmp(loctime, &tm_start) < 0)) ||
-	    (use_tm_end && (datecmp(loctime, &tm_end) > 0)))
-		return;
-
-	set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
-
-	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_MAIN, cur_date, cur_time,
-					      !PRINT_LOCAL_TIME(flags) &&
-					      !PRINT_TRUE_TIME(flags), &file_hdr,
-					      new_cpu_nr);
-	}
-}
-
-/*
- ***************************************************************************
- * Display COMMENT records for textual (XML-like) reports.
- *
- * IN:
- * @curr		Index in array for current sample statistics.
- * @use_tm_start	Set to TRUE if option -s has been used.
- * @use_tm_end		Set to TRUE if option -e has been used.
- * @tab			Number of tabulations to print.
+ * @rtype		Record type (RESTART or COMMENT).
  * @ifd			Input file descriptor.
  * @rectime		Structure where timestamp (expressed in local time
  *			or in UTC depending on whether options -T/-t have
  * 			been used or not) can be saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
  *			can be saved for current record.
- *
- * OUT:
- * @rectime		Structure where timestamp for current record has
- *			been saved.
- * @loctime		Structure where timestamp for current record has
- *			been saved.
+ * @file		Name of file being read.
+ * @tab			Number of tabulations to print.
+ * @file_magic		file_magic structure filled with file magic header
+ * 			data.
  ***************************************************************************
  */
-void write_textual_comments(int curr, int use_tm_start, int use_tm_end, int tab, int ifd,
-			    struct tm *rectime, struct tm *loctime)
+void print_special_record(int curr, int use_tm_start, int use_tm_end, int rtype, int ifd,
+			  struct tm *rectime, struct tm *loctime, char *file, int tab,
+			  struct file_magic *file_magic)
 {
 	char cur_date[32], cur_time[32];
-	char file_comment[MAX_COMMENT_LEN];
+	int dp = 1;
+	unsigned int new_cpu_nr;
 
-	/* Read and replace non printable chars in comment */
-	replace_nonprintable_char(ifd, file_comment);
-
-	/* Fill timestamp structure for current record */
+	/* Fill timestamp structure (rectime) for current record */
 	sadf_get_record_timestamp_struct(curr, rectime, loctime);
 
 	/* The record must be in the interval specified by -s/-e options */
 	if ((use_tm_start && (datecmp(loctime, &tm_start) < 0)) ||
-	    (use_tm_end && (datecmp(loctime, &tm_end) > 0)))
-		return;
+	    (use_tm_end && (datecmp(loctime, &tm_end) > 0))) {
+		/* Will not display the special record */
+		dp = 0;
+	}
+	else {
+		/* Set date and time strings to be displayed for current record */
+		set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
+	}
 
-	set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
+	if (rtype == R_RESTART) {
+		/* Don't forget to read the volatile activities structures */
+		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
+						     file_hdr.sa_vol_act_nr);
 
-	if (*fmt[f_position]->f_comment) {
-		(*fmt[f_position]->f_comment)(&tab, F_MAIN, cur_date, cur_time,
-					      !PRINT_LOCAL_TIME(flags) &&
-					      !PRINT_TRUE_TIME(flags), file_comment,
-					      &file_hdr);
+		if (!dp)
+			return;
+
+		if (*fmt[f_position]->f_restart) {
+			(*fmt[f_position]->f_restart)(&tab, F_MAIN, cur_date, cur_time,
+						      !PRINT_LOCAL_TIME(flags) &&
+						      !PRINT_TRUE_TIME(flags), &file_hdr,
+						      new_cpu_nr);
+		}
+	}
+	else if (rtype == R_COMMENT) {
+		char file_comment[MAX_COMMENT_LEN];
+
+		/* Read and replace non printable chars in comment */
+		replace_nonprintable_char(ifd, file_comment);
+
+		if (!dp || !DISPLAY_COMMENT(flags))
+			return;
+
+		if (*fmt[f_position]->f_comment) {
+			(*fmt[f_position]->f_comment)(&tab, F_MAIN, cur_date, cur_time,
+						      !PRINT_LOCAL_TIME(flags) &&
+						      !PRINT_TRUE_TIME(flags), file_comment,
+						      &file_hdr);
+		}
 	}
 }
 
@@ -794,79 +773,6 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 /*
  ***************************************************************************
- * Print contents of a special (RESTART or COMMENT) record.
- *
- * IN:
- * @curr		Index in array for current sample statistics.
- * @use_tm_start	Set to TRUE if option -s has been used.
- * @use_tm_end		Set to TRUE if option -e has been used.
- * @rtype		Record type (RESTART or COMMENT).
- * @ifd			Input file descriptor.
- * @rectime		Structure where timestamp (expressed in local time
- *			or in UTC depending on whether options -T/-t have
- * 			been used or not) can be saved for current record.
- * @loctime		Structure where timestamp (expressed in local time)
- *			can be saved for current record.
- * @file		Name of file being read.
- * @file_magic		file_magic structure filled with file magic header
- * 			data.
- ***************************************************************************
- */
-void sadf_print_special(int curr, int use_tm_start, int use_tm_end, int rtype, int ifd,
-			struct tm *rectime, struct tm *loctime, char *file,
-			struct file_magic *file_magic)
-{
-	char cur_date[32], cur_time[32];
-	int dp = 1;
-	unsigned int new_cpu_nr;
-
-	/* Fill timestamp structure (rectime) for current record */
-	sadf_get_record_timestamp_struct(curr, rectime, loctime);
-
-	/* Set date and time strings for current record */
-	set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
-
-	/* The record must be in the interval specified by -s/-e options */
-	if ((use_tm_start && (datecmp(loctime, &tm_start) < 0)) ||
-	    (use_tm_end && (datecmp(loctime, &tm_end) > 0))) {
-		dp = 0;
-	}
-
-	if (rtype == R_RESTART) {
-		/* Don't forget to read the volatile activities structures */
-		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
-						     file_hdr.sa_vol_act_nr);
-
-		if (!dp)
-			return;
-
-		if (*fmt[f_position]->f_restart) {
-			(*fmt[f_position]->f_restart)(NULL, F_MAIN, cur_date, cur_time,
-						      !PRINT_LOCAL_TIME(flags) &&
-						      !PRINT_TRUE_TIME(flags), &file_hdr,
-						      new_cpu_nr);
-		}
-	}
-	else if (rtype == R_COMMENT) {
-		char file_comment[MAX_COMMENT_LEN];
-
-		/* Read and replace non printable chars in comment */
-		replace_nonprintable_char(ifd, file_comment);
-
-		if (!dp || !DISPLAY_COMMENT(flags))
-			return;
-
-		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(NULL, F_MAIN, cur_date, cur_time,
-						      !PRINT_LOCAL_TIME(flags) &&
-						      !PRINT_TRUE_TIME(flags), file_comment,
-						      &file_hdr);
-		}
-	}
-}
-
-/*
- ***************************************************************************
  * Read stats for current activity from file and write them.
  *
  * IN:
@@ -934,9 +840,8 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 		if (!*eosaf && (rtype != R_RESTART)) {
 
 			if (rtype == R_COMMENT) {
-				sadf_print_special(*curr, tm_start.use, tm_end.use,
-						   R_COMMENT, ifd, rectime, loctime,
-						   file, file_magic);
+				print_special_record(*curr, tm_start.use, tm_end.use, rtype,
+						     ifd, rectime, loctime, file, 0, file_magic);
 				continue;
 			}
 
@@ -1025,7 +930,6 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 	int curr, tab = 0, rtype;
 	int eosaf, next, reset = FALSE;
 	__nr_t save_act_nr[NR_ACT] = {0};
-	unsigned int new_cpu_nr;
 	long cnt = 1;
 	off_t fpos;
 
@@ -1205,13 +1109,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 
 			rtype = record_hdr[0].record_type;
 			if (rtype == R_RESTART) {
-				/* Read new CPU count */
-				new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
-								     file_hdr.sa_vol_act_nr);
-
 				/* Display RESTART records */
-				write_textual_restarts(0, tm_start.use, tm_end.use, tab,
-						       rectime, loctime, new_cpu_nr);
+				print_special_record(0, tm_start.use, tm_end.use, rtype, ifd,
+						     rectime, loctime, file, tab, file_magic);
 			}
 			else if (rtype == R_COMMENT) {
 				/* Ignore COMMENT record */
@@ -1256,8 +1156,8 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 				rtype = record_hdr[0].record_type;
 				if (rtype == R_COMMENT) {
 					/* Display R_COMMENT records */
-					write_textual_comments(0, tm_start.use, tm_end.use,
-							       tab, ifd, rectime, loctime);
+					print_special_record(0, tm_start.use, tm_end.use, rtype, ifd,
+							     rectime, loctime, file, tab, file_magic);
 				}
 				else if (rtype == R_RESTART) {
 					/*
@@ -1330,8 +1230,8 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 
 			rtype = record_hdr[0].record_type;
 			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
-				sadf_print_special(0, tm_start.use, tm_end.use, rtype, ifd,
-						   rectime, loctime, file, file_magic);
+				print_special_record(0, tm_start.use, tm_end.use, rtype, ifd,
+						     rectime, loctime, file, 0, file_magic);
 			}
 			else {
 				/*
@@ -1416,9 +1316,9 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 				if (!eosaf) {
 					if (rtype == R_COMMENT) {
 						/* This was a COMMENT record: print it */
-						sadf_print_special(curr, tm_start.use, tm_end.use,
-								   R_COMMENT, ifd, rectime, loctime,
-								   file, file_magic);
+						print_special_record(curr, tm_start.use, tm_end.use,
+								     rtype, ifd, rectime, loctime,
+								     file, 0, file_magic);
 					}
 					else if (rtype != R_RESTART) {
 						/* This is not a RESTART or a COMMENT record */
@@ -1432,9 +1332,8 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 
 		/* The last record we read was a RESTART one: Print it */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
-			sadf_print_special(curr, tm_start.use, tm_end.use,
-					   R_RESTART, ifd, rectime, loctime,
-					   file, file_magic);
+			print_special_record(curr, tm_start.use, tm_end.use, R_RESTART,
+					     ifd, rectime, loctime, file, 0, file_magic);
 		}
 	}
 	while (!eosaf);
