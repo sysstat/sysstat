@@ -405,6 +405,95 @@ void print_special_record(int curr, int use_tm_start, int use_tm_end, int rtype,
 
 /*
  ***************************************************************************
+ * Read next sample statistics. If it's a special record (RESTART or COMMENT)
+ * then display it if requested. Also fill timestamps structures.
+ *
+ * IN:
+ * @ifd		File descriptor
+ * @action	Flags indicating if special records should be displayed or not.
+ *
+ * @curr	Index in array for current sample statistics.
+ * @file	System activity data file name (name of file being read).
+ * @rtype	Record type (RESTART, COMMENT, etc.)
+ * @tab		Number of tabulations to print.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @file_magic	System activity file magic header.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) can
+ *		be saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time) can be
+ *		saved for current record.
+ *
+ * OUT:
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) has
+ *		been saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time) has been
+ *		saved for current record.
+ *
+ * RETURNS:
+ * TRUE if end of file has been reached.
+ ***************************************************************************
+ */
+int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int tab,
+		     struct file_magic *file_magic, struct file_activity *file_actlst,
+		     struct tm *rectime, struct tm *loctime)
+{
+	int eosaf;
+
+	/* Read current record */
+	eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE, SOFT_SIZE);
+	*rtype = record_hdr[curr].record_type;
+
+	if (!eosaf) {
+		if (*rtype == R_COMMENT) {
+			if (action & IGNORE_COMMENT) {
+				/* Ignore COMMENT record */
+				if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
+					perror("lseek");
+				}
+			}
+			else {
+				/* Display COMMENT record */
+				print_special_record(curr, tm_start.use, tm_end.use, *rtype, ifd,
+						     rectime, loctime, file, tab, file_magic);
+			}
+		}
+		else if (*rtype == R_RESTART) {
+			if (action & IGNORE_RESTART) {
+				/*
+				 * Ignore RESTART record (don't display it)
+				 * but anyway we have to reallocate volatile
+				 * activities structures (unless we don't want to
+				 * do it now).
+				 */
+				if (!(action & DONT_READ_VOLATILE)) {
+					read_vol_act_structures(ifd, act, file, file_magic,
+								file_hdr.sa_vol_act_nr);
+				}
+			}
+			else {
+				/* Display RESTART record */
+				print_special_record(curr, tm_start.use, tm_end.use, *rtype, ifd,
+						     rectime, loctime, file, tab, file_magic);
+			}
+		}
+		else {
+			/*
+			 * OK: Previous record was not a special one.
+			 * So read now the extra fields.
+			 */
+			read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
+					     file_actlst);
+			sadf_get_record_timestamp_struct(curr, rectime, loctime);
+		}
+	}
+
+	return eosaf;
+}
+
+/*
+ ***************************************************************************
  * Display the field list (used eg. in database format).
  *
  * IN:
@@ -773,7 +862,9 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 /*
  ***************************************************************************
- * Read stats for current activity from file and write them.
+ * Read stats for current activity from file and print them.
+ * Display at most <count> lines of stats (and possibly comments inserted
+ * in file) located between two LINUX RESTART messages.
  *
  * IN:
  * @ifd		File descriptor of input file.
@@ -803,7 +894,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 		        __nr_t cpu_nr, struct tm *rectime, struct tm *loctime,
 			char *file, struct file_magic *file_magic)
 {
-	unsigned char rtype;
+	int rtype;
 	int next, reset_cd;
 
 	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
@@ -827,24 +918,11 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 	do {
 		/* Display <count> lines of stats */
-		*eosaf = sa_fread(ifd, &record_hdr[*curr], RECORD_HEADER_SIZE,
-				  SOFT_SIZE);
-		rtype = record_hdr[*curr].record_type;
+		*eosaf = read_next_sample(ifd, IGNORE_RESTART | DONT_READ_VOLATILE,
+					  *curr, file, &rtype, 0, file_magic,
+					  file_actlst, rectime, loctime);
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-			/* Read the extra fields since it's not a RESTART record */
-			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr,
-					     file_actlst);
-		}
-
-		if (!*eosaf && (rtype != R_RESTART)) {
-
-			if (rtype == R_COMMENT) {
-				print_special_record(*curr, tm_start.use, tm_end.use, rtype,
-						     ifd, rectime, loctime, file, 0, file_magic);
-				continue;
-			}
-
 			next = write_parsable_stats(*curr, *reset, cnt,
 						    tm_start.use, tm_end.use, act_id,
 						    cpu_nr, rectime, loctime, reset_cd);
@@ -958,35 +1036,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 		 * skip it and try to read the next record in file.
 		 */
 		do {
-			eosaf = sa_fread(ifd, &record_hdr[0], RECORD_HEADER_SIZE, SOFT_SIZE);
-			rtype = record_hdr[0].record_type;
-
-			if (!eosaf) {
-				if (rtype == R_COMMENT) {
-					/* Ignore COMMENT record */
-					if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-						perror("lseek");
-					}
-				}
-				else if (rtype == R_RESTART) {
-					/*
-					 * Ignore RESTART record (don't display it)
-					 * but anyway we have to reallocate volatile
-					 * activities structures.
-					 */
-					read_vol_act_structures(ifd, act, file, file_magic,
-							        file_hdr.sa_vol_act_nr);
-				}
-				else {
-					/*
-					 * OK: Previous record was not a special one.
-					 * So read now the extra fields.
-					 */
-					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-							     file_actlst);
-					sadf_get_record_timestamp_struct(0, rectime, loctime);
-				}
-			}
+			eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, 0,
+						 file, &rtype, tab, file_magic, file_actlst,
+						 rectime, loctime);
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
 			(tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
@@ -1001,47 +1053,26 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 
 		if (!eosaf) {
 			do {
-				eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
-						 SOFT_SIZE);
-				rtype = record_hdr[curr].record_type;
+				eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
+							 file, &rtype, tab, file_magic, file_actlst,
+							 rectime, loctime);
 
-				if (!eosaf) {
-					if (rtype == R_COMMENT) {
-						/* Ignore COMMENT record */
-						if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-							perror("lseek");
+				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
+					if (*fmt[f_position]->f_statistics) {
+						(*fmt[f_position]->f_statistics)(&tab, F_MAIN);
+					}
+
+					/* next is set to 1 when we were close enough to desired interval */
+					next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
+								   &cnt, tab, cpu_nr, rectime, loctime);
+
+					if (next) {
+						curr ^= 1;
+						if (cnt > 0) {
+							cnt--;
 						}
 					}
-					else if (rtype == R_RESTART) {
-						/*
-						 * Ignore RESTART record (don't display it)
-						 * but anyway we have to reallocate volatile
-						 * activities structures.
-						 */
-						read_vol_act_structures(ifd, act, file, file_magic,
-								        file_hdr.sa_vol_act_nr);
-					}
-					else {
-						/* This is not a special record, so read the extra fields */
-						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-								     file_actlst);
-
-						if (*fmt[f_position]->f_statistics) {
-							(*fmt[f_position]->f_statistics)(&tab, F_MAIN);
-						}
-
-						/* next is set to 1 when we were close enough to desired interval */
-						next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
-									   &cnt, tab, cpu_nr, rectime, loctime);
-
-						if (next) {
-							curr ^= 1;
-							if (cnt > 0) {
-								cnt--;
-							}
-						}
-						reset = FALSE;
-					}
+					reset = FALSE;
 				}
 			}
 			while (cnt && !eosaf && (rtype != R_RESTART));
@@ -1049,31 +1080,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 			if (!cnt) {
 				/* Go to next Linux restart, if possible */
 				do {
-					eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
-							 SOFT_SIZE);
-					rtype = record_hdr[curr].record_type;
-					if (!eosaf) {
-						if (rtype == R_COMMENT) {
-							/* Ignore COMMENT record */
-							if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-								perror("lseek");
-							}
-						}
-						else if (rtype == R_RESTART) {
-							/*
-							 * Ignore RESTART record (don't display it)
-							 * but anyway we have to reallocate volatile
-							 * activities structures.
-							 */
-							read_vol_act_structures(ifd, act, file, file_magic,
-										file_hdr.sa_vol_act_nr);
-						}
-						else {
-							/* This is not a special record: Read the extra fields */
-							read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-									     file_actlst);
-						}
-					}
+					eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
+								 file, &rtype, tab, file_magic, file_actlst,
+								 rectime, loctime);
 				}
 				while (!eosaf && (rtype != R_RESTART));
 			}
@@ -1104,27 +1113,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 	}
 
 	do {
-		if ((eosaf = sa_fread(ifd, &record_hdr[0], RECORD_HEADER_SIZE,
-				      SOFT_SIZE)) == 0) {
-
-			rtype = record_hdr[0].record_type;
-			if (rtype == R_RESTART) {
-				/* Display RESTART records */
-				print_special_record(0, tm_start.use, tm_end.use, rtype, ifd,
-						     rectime, loctime, file, tab, file_magic);
-			}
-			else if (rtype == R_COMMENT) {
-				/* Ignore COMMENT record */
-				if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-					perror("lseek");
-				}
-			}
-			else {
-				/* Not a special record: Read the extra fields */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-						     file_actlst);
-			}
-		}
+		eosaf = read_next_sample(ifd, IGNORE_COMMENT, 0,
+					 file, &rtype, tab, file_magic, file_actlst,
+					 rectime, loctime);
 	}
 	while (!eosaf);
 
@@ -1150,30 +1141,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 						      &file_hdr);
 		}
 		do {
-			if ((eosaf = sa_fread(ifd, &record_hdr[0], RECORD_HEADER_SIZE,
-				              SOFT_SIZE)) == 0) {
-
-				rtype = record_hdr[0].record_type;
-				if (rtype == R_COMMENT) {
-					/* Display R_COMMENT records */
-					print_special_record(0, tm_start.use, tm_end.use, rtype, ifd,
-							     rectime, loctime, file, tab, file_magic);
-				}
-				else if (rtype == R_RESTART) {
-					/*
-					 * Ignore RESTART record (don't display it)
-					 * but anyway we have to reallocate volatile
-					 * activities structures.
-					 */
-					read_vol_act_structures(ifd, act, file, file_magic,
-								file_hdr.sa_vol_act_nr);
-				}
-				else {
-					/* Not a special record: Read the extra fields */
-					read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-							     file_actlst);
-				}
-			}
+			eosaf = read_next_sample(ifd, IGNORE_RESTART, 0,
+						 file, &rtype, tab, file_magic, file_actlst,
+						 rectime, loctime);
 		}
 		while (!eosaf);
 
@@ -1224,24 +1194,11 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 		 * (try to) get another one.
 		 */
 		do {
-			if (sa_fread(ifd, &record_hdr[0], RECORD_HEADER_SIZE, SOFT_SIZE))
+			if (read_next_sample(ifd, IGNORE_NOTHING, 0,
+					     file, &rtype, 0, file_magic, file_actlst,
+					     rectime, loctime))
 				/* End of sa data file */
 				return;
-
-			rtype = record_hdr[0].record_type;
-			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
-				print_special_record(0, tm_start.use, tm_end.use, rtype, ifd,
-						     rectime, loctime, file, 0, file_magic);
-			}
-			else {
-				/*
-				 * OK: Previous record was not a special one.
-				 * So read now the extra fields.
-				 */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-						     file_actlst);
-				sadf_get_record_timestamp_struct(0, rectime, loctime);
-			}
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
 		       (tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
@@ -1310,27 +1267,18 @@ void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr
 		if (!cnt) {
 			/* Go to next Linux restart, if possible */
 			do {
-				eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
-						 SOFT_SIZE);
-				rtype = record_hdr[curr].record_type;
-				if (!eosaf) {
-					if (rtype == R_COMMENT) {
-						/* This was a COMMENT record: print it */
-						print_special_record(curr, tm_start.use, tm_end.use,
-								     rtype, ifd, rectime, loctime,
-								     file, 0, file_magic);
-					}
-					else if (rtype != R_RESTART) {
-						/* This is not a RESTART or a COMMENT record */
-						read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-								     file_actlst);
-					}
-				}
+				eosaf = read_next_sample(ifd, IGNORE_RESTART | DONT_READ_VOLATILE,
+							 curr, file, &rtype, 0, file_magic,
+							 file_actlst, rectime, loctime);
 			}
 			while (!eosaf && (rtype != R_RESTART));
 		}
 
-		/* The last record we read was a RESTART one: Print it */
+		/*
+		 * The last record we read was a RESTART one: Print it.
+		 * NB: Unlike COMMENTS records (which are displayed for each
+		 * activity), RESTART ones are only displayed once.
+		 */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			print_special_record(curr, tm_start.use, tm_end.use, R_RESTART,
 					     ifd, rectime, loctime, file, 0, file_magic);

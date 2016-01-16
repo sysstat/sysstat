@@ -20,6 +20,11 @@
 #define DO_SAVE		0
 #define DO_RESTORE	1
 
+#define IGNORE_NOTHING		0
+#define IGNORE_RESTART		1
+#define DONT_READ_VOLATILE	2
+#define IGNORE_COMMENT		4
+
 /*
  ***************************************************************************
  * Output format identification values.
