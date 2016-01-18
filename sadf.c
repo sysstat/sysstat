@@ -283,7 +283,7 @@ void prtab(int nr_tab)
 
 /*
  ***************************************************************************
- * printf() function modified for textual (XML-like) display. Don't print a
+ * printf() function modified for logic #1 (XML-like) display. Don't print a
  * CR at the end of the line.
  *
  * IN:
@@ -306,7 +306,7 @@ void xprintf0(int nr_tab, const char *fmtf, ...)
 
 /*
  ***************************************************************************
- * printf() function modified for textual (XML-like) display. Print a CR
+ * printf() function modified for logic #1 (XML-like) display. Print a CR
  * at the end of the line.
  *
  * IN:
@@ -641,9 +641,9 @@ void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
  * 1 if a line of stats has been displayed, and 0 otherwise.
  ***************************************************************************
  */
-int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
-			 int use_tm_end, unsigned int act_id, __nr_t cpu_nr,
-			 struct tm *rectime, struct tm *loctime, int reset_cd)
+int logic2_write_stats(int curr, int reset, long *cnt, int use_tm_start,
+		       int use_tm_end, unsigned int act_id, __nr_t cpu_nr,
+		       struct tm *rectime, struct tm *loctime, int reset_cd)
 {
 	unsigned long long dt, itv, g_itv;
 	char cur_date[32], cur_time[32];
@@ -652,7 +652,7 @@ int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
 	if (reset_cd) {
 		/*
 		 * See note in sar.c.
-		 * NB: Reseting cross_day is not needed in write_textual_stats()
+		 * NB: Reseting cross_day is not needed in logic1_write_stats()
 		 * function (datafile is never rewinded).
 		 */
 		cross_day = 0;
@@ -718,7 +718,7 @@ int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
 
 /*
  ***************************************************************************
- * Display activity records for textual (XML-like) formats.
+ * Display activity records for logic #1 (XML-like) formats.
  *
  * IN:
  * @curr		Index in array for current sample statistics.
@@ -742,9 +742,9 @@ int write_parsable_stats(int curr, int reset, long *cnt, int use_tm_start,
  * 1 if stats have been successfully displayed.
  ***************************************************************************
  */
-int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
-			long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
-			struct tm *loctime)
+int logic1_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
+		       long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
+		       struct tm *loctime)
 {
 	int i;
 	unsigned long long dt, itv, g_itv;
@@ -813,7 +813,7 @@ int write_textual_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		tab++;
 	}
 
-	/* Display textual statistics */
+	/* Display statistics */
 	for (i = 0; i < NR_ACT; i++) {
 
 		/* This code is not generic at all...! */
@@ -917,15 +917,15 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 					  file_actlst, rectime, loctime);
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-			next = write_parsable_stats(*curr, *reset, cnt,
-						    tm_start.use, tm_end.use, act_id,
-						    cpu_nr, rectime, loctime, reset_cd);
+			next = logic2_write_stats(*curr, *reset, cnt,
+						  tm_start.use, tm_end.use, act_id,
+						  cpu_nr, rectime, loctime, reset_cd);
 			reset_cd = 0;
 
 			if (next) {
 				/*
 				 * next is set to 1 when we were close enough to desired interval.
-				 * In this case, the call to write_parsable_stats() has actually
+				 * In this case, the call to logic2_write_stats() has actually
 				 * displayed a line of stats.
 				 */
 				*curr ^= 1;
@@ -980,7 +980,9 @@ void sr_act_nr(__nr_t save_act_nr[], int action)
 
 /*
  ***************************************************************************
- * Display activities for textual (XML-like) formats.
+ * Display file contents in selected format (logic #1).
+ * Logic #1:	Grouped by record type. Sorted by timestamp.
+ * Formats:	XML, JSON
  *
  * IN:
  * @ifd		File descriptor of input file.
@@ -995,9 +997,9 @@ void sr_act_nr(__nr_t save_act_nr[], int action)
  *		saved for current record.
  ***************************************************************************
  */
-void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file,
-			  struct file_magic *file_magic, __nr_t cpu_nr,
-			  struct tm *rectime, struct tm *loctime)
+void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
+			 struct file_magic *file_magic, __nr_t cpu_nr,
+			 struct tm *rectime, struct tm *loctime)
 {
 	int curr, tab = 0, rtype;
 	int eosaf, next, reset = FALSE;
@@ -1057,8 +1059,8 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 					}
 
 					/* next is set to 1 when we were close enough to desired interval */
-					next = write_textual_stats(curr, tm_start.use, tm_end.use, reset,
-								   &cnt, tab, cpu_nr, rectime, loctime);
+					next = logic1_write_stats(curr, tm_start.use, tm_end.use, reset,
+								  &cnt, tab, cpu_nr, rectime, loctime);
 
 					if (next) {
 						curr ^= 1;
@@ -1156,7 +1158,10 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
 
 /*
  ***************************************************************************
- * Display activities for non textual formats.
+ * Display file contents in selected format (logic #2).
+ * Logic #2:	Grouped by activity. Sorted by timestamp. Stop on RESTART
+ * 		records.
+ * Formats:	ppc, CSV
  *
  * IN:
  * @ifd		File descriptor of input file.
@@ -1171,9 +1176,9 @@ void textual_display_loop(int ifd, struct file_activity *file_actlst, char *file
  * @file_magic	file_magic structure filled with file magic header data.
  ***************************************************************************
  */
-void main_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr,
-		       struct tm *rectime, struct tm *loctime, char *file,
-		       struct file_magic *file_magic)
+void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr,
+			 struct tm *rectime, struct tm *loctime, char *file,
+			 struct file_magic *file_magic)
 {
 	int i, p;
 	int curr = 1, rtype;
@@ -1318,12 +1323,12 @@ void read_stats_from_file(char dfile[])
 	allocate_structures(act);
 
 	if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
-		main_display_loop(ifd, file_actlst, cpu_nr,
-				  &rectime, &loctime, dfile, &file_magic);
+		logic2_display_loop(ifd, file_actlst, cpu_nr,
+				    &rectime, &loctime, dfile, &file_magic);
 	}
 	else {
-		textual_display_loop(ifd, file_actlst, dfile,
-				     &file_magic, cpu_nr, &rectime, &loctime);
+		logic1_display_loop(ifd, file_actlst, dfile,
+				    &file_magic, cpu_nr, &rectime, &loctime);
 	}
 
 	close(ifd);
