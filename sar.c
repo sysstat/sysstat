@@ -290,46 +290,6 @@ void reverse_check_act(unsigned int act_nr)
 
 /*
  ***************************************************************************
- * Fill the (struct tm) rectime structure with current record's time,
- * based on current record's time data saved in file.
- * The resulting timestamp is expressed in the locale of the file creator
- * or in the user's own locale depending on whether option -t has been used
- * or not.
- *
- * IN:
- * @curr	Index in array for current sample statistics.
- *
- * RETURNS:
- * 1 if an error was detected, or 0 otherwise.
- ***************************************************************************
-*/
-int sar_get_record_timestamp_struct(int curr)
-{
-	struct tm *ltm;
-
-	/* Check if option -t was specified on the command line */
-	if (PRINT_TRUE_TIME(flags)) {
-		/* -t */
-		rectime.tm_hour = record_hdr[curr].hour;
-		rectime.tm_min  = record_hdr[curr].minute;
-		rectime.tm_sec  = record_hdr[curr].second;
-	}
-	else {
-		if ((ltm = localtime((const time_t *) &record_hdr[curr].ust_time)) == NULL)
-			/*
-			 * An error was detected.
-			 * The rectime structure has NOT been updated.
-			 */
-			return 1;
-
-		rectime = *ltm;
-	}
-
-	return 0;
-}
-
-/*
- ***************************************************************************
  * Determine if a stat header line has to be displayed.
  *
  * RETURNS:
@@ -382,7 +342,8 @@ int check_line_hdr(void)
 int set_record_timestamp_string(int curr, char *cur_time, int len)
 {
 	/* Fill timestamp structure */
-	if (sar_get_record_timestamp_struct(curr))
+	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
+					   &rectime, NULL))
 		/* Error detected */
 		return 1;
 
@@ -994,7 +955,9 @@ void read_stats_from_file(char from_file[])
 				 */
 				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 						     file_actlst);
-				if (sar_get_record_timestamp_struct(0))
+				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
+								   &record_hdr[0],
+								   &rectime, NULL))
 					/*
 					 * An error was detected.
 					 * The timestamp hasn't been updated.

@@ -950,6 +950,9 @@ extern void
 extern int
 	sa_fread(int, void *, int, int);
 extern int
+	sa_get_record_timestamp_struct(unsigned int, struct record_header *,
+				       struct tm *, struct tm *);
+extern int
 	sa_open_read_magic(int *, char *, struct file_magic *, int);
 extern void
 	select_all_activities(struct activity * []);

@@ -2112,3 +2112,82 @@ void replace_nonprintable_char(int ifd, char *comment)
 			comment[i] = '.';
 	}
 }
+
+/*
+ ***************************************************************************
+ * Fill the rectime and loctime structures with current record's date and
+ * time, based on current record's "number of seconds since the epoch" saved
+ * in file.
+ * For loctime (if given): The timestamp is expressed in local time.
+ * For rectime: The timestamp is expressed in UTC, in local time, or in the
+ * time of the file's creator depending on options entered by the user on the
+ * command line.
+ *
+ * IN:
+ * @l_flags	Flags indicating the type of time expected by the user.
+ * 		S_F_LOCAL_TIME means time should be expressed in local time.
+ * 		S_F_TRUE_TIME means time should be expressed in time of
+ * 		file's creator.
+ * 		Default is time expressed in UTC (except for sar, where it
+ * 		is local time).
+ * @record_hdr	Record header containing the number of seconds since the
+ * 		epoch, and the HH:MM:SS of the file's creator.
+ *
+ * OUT:
+ * @rectime	Structure where timestamp for current record has been saved
+ * 		(in local time or in UTC depending on options used).
+ * @loctime	Structure where timestamp for current record has been saved
+ * 		(expressed in local time). This field will be used for time
+ * 		comparison if options -s and/or -e have been used.
+ *
+ * RETURNS:
+ * 1 if an error was detected, or 0 otherwise.
+ ***************************************************************************
+*/
+int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *record_hdr,
+				   struct tm *rectime, struct tm *loctime)
+{
+	struct tm *ltm = NULL;
+	int rc = 0;
+
+	/* Fill localtime structure if given */
+	if (loctime) {
+		if ((ltm = localtime((const time_t *) &(record_hdr->ust_time))) != NULL) {
+			*loctime = *ltm;
+		}
+		else {
+			rc = 1;
+		}
+	}
+
+	/* Fill generic rectime structure */
+	if (PRINT_LOCAL_TIME(l_flags) && !ltm) {
+		/* Get local time if not already done */
+		ltm = localtime((const time_t *) &(record_hdr->ust_time));
+	}
+
+	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
+		/*
+		 * Get time in UTC
+		 * (the user doesn't want local time nor time of file's creator).
+		 */
+		ltm = gmtime((const time_t *) &(record_hdr->ust_time));
+	}
+
+	if (ltm) {
+		/* Done even in true time mode so that we have some default values */
+		*rectime = *ltm;
+	}
+	else {
+		rc = 1;
+	}
+
+	if (PRINT_TRUE_TIME(l_flags)) {
+		/* Time of file's creator */
+		rectime->tm_hour = record_hdr->hour;
+		rectime->tm_min  = record_hdr->minute;
+		rectime->tm_sec  = record_hdr->second;
+	}
+
+	return rc;
+}

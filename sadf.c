@@ -178,55 +178,6 @@ void check_format_options(void)
 
 /*
  ***************************************************************************
- * Fill the rectime and loctime structures with current record's date and
- * time, based on current record's "number of seconds since the epoch" saved
- * in file.
- * The resulting timestamp is expressed in UTC or in local time, depending
- * on whether options -T or -t have been used or not.
- *
- * IN:
- * @curr	Index in array for current sample statistics.
- * @rectime	Structure where timestamp (expressed in local time or in UTC
- *		depending on whether options -T or -t have been used or not)
- *		can be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
- *
- * OUT:
- * @rectime	Structure where timestamp for current record has been saved
- * 		(in local time or in UTC depending on options used).
- * @loctime	Structure where timestamp for current record has been saved
- * 		(expressed in local time). This field will be used for time
- * 		comparison if options -s and/or -e have been used.
- ***************************************************************************
-*/
-void sadf_get_record_timestamp_struct(int curr, struct tm *rectime, struct tm *loctime)
-{
-	struct tm *ltm;
-
-	if ((ltm = localtime((const time_t *) &record_hdr[curr].ust_time)) != NULL) {
-		*loctime = *ltm;
-	}
-
-	if (!PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags)) {
-		/* Options -T and -t not used: Display timestamp in UTC */
-		ltm = gmtime((const time_t *) &record_hdr[curr].ust_time);
-	}
-
-	if (ltm) {
-		*rectime = *ltm;
-	}
-
-	if (PRINT_TRUE_TIME(flags)) {
-		/* Option -t */
-		rectime->tm_hour = record_hdr[curr].hour;
-		rectime->tm_min  = record_hdr[curr].minute;
-		rectime->tm_sec  = record_hdr[curr].second;
-	}
-}
-
-/*
- ***************************************************************************
  * Set current record's timestamp strings (date and time). This timestamp is
  * expressed in UTC or in local time, depending on whether options -T or -t
  * have been used or not.
@@ -357,7 +308,7 @@ void print_special_record(int curr, int use_tm_start, int use_tm_end, int rtype,
 	unsigned int new_cpu_nr;
 
 	/* Fill timestamp structure (rectime) for current record */
-	sadf_get_record_timestamp_struct(curr, rectime, loctime);
+	sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime, loctime);
 
 	/* The record must be in the interval specified by -s/-e options */
 	if ((use_tm_start && (datecmp(loctime, &tm_start) < 0)) ||
@@ -485,7 +436,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			 */
 			read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 					     file_actlst);
-			sadf_get_record_timestamp_struct(curr, rectime, loctime);
+			sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime, loctime);
 		}
 	}
 
