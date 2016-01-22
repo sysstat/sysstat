@@ -408,6 +408,120 @@ __printf_funct_t print_json_statistics(int *tab, int action)
 
 /*
  ***************************************************************************
+ * Display the "timestamp" part of the report (db and ppc format).
+ *
+ * IN:
+ * @fmt		Output format (F_DB_OUTPUT or F_PPC_OUTPUT).
+ * @file_hdr	System activity file standard header.
+ * @cur_date	Date string of current record.
+ * @cur_time	Time string of current record.
+ * @utc		True if @cur_time is expressed in UTC.
+ * @itv		Interval of time with preceding record.
+ *
+ * RETURNS:
+ * Pointer on the "timestamp" string.
+ ***************************************************************************
+ */
+char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_date,
+			    char *cur_time, int utc, unsigned long long itv)
+{
+	int isdb = (fmt == F_DB_OUTPUT);
+	static char pre[80];
+	static char *seps[] =  {"\t", ";"};
+	char temp[80];
+
+	/* This substring appears on every output line, preformat it here */
+	snprintf(pre, 80, "%s%s%lld%s",
+		 file_hdr->sa_nodename, seps[isdb], itv, seps[isdb]);
+	if (strlen(cur_date)) {
+		snprintf(temp, 80, "%s%s ", pre, cur_date);
+	}
+	else {
+		strcpy(temp, pre);
+	}
+	snprintf(pre, 80, "%s%s%s", temp, cur_time,
+		 strlen(cur_date) && utc ? " UTC" : "");
+	pre[79] = '\0';
+
+	if (DISPLAY_HORIZONTALLY(flags)) {
+		printf("%s", pre);
+	}
+
+	return pre;
+}
+
+/*
+ ***************************************************************************
+ * Display the "timestamp" part of the report (ppc format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current record.
+ * @cur_time	Time string of current record.
+ * @itv		Interval of time with preceding record.
+ * @file_hdr	System activity file standard header.
+ * @flags	Flags for common options.
+ *
+ * RETURNS:
+ * Pointer on the "timestamp" string.
+ ***************************************************************************
+ */
+__tm_funct_t print_ppc_timestamp(int *tab, int action, char *cur_date,
+				 char *cur_time, unsigned long long itv,
+				 struct file_header *file_hdr, unsigned int flags)
+{
+	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
+
+	if (action & F_BEGIN) {
+		return print_dbppc_timestamp(F_PPC_OUTPUT, file_hdr, cur_date, cur_time, utc, itv);
+	}
+	if (action & F_END) {
+		if (DISPLAY_HORIZONTALLY(flags)) {
+			printf("\n");
+		}
+	}
+
+	return NULL;
+}
+
+/*
+ ***************************************************************************
+ * Display the "timestamp" part of the report (db format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current record.
+ * @cur_time	Time string of current record.
+ * @itv		Interval of time with preceding record.
+ * @file_hdr	System activity file standard header.
+ * @flags	Flags for common options.
+ *
+ * RETURNS:
+ * Pointer on the "timestamp" string.
+ ***************************************************************************
+ */
+__tm_funct_t print_db_timestamp(int *tab, int action, char *cur_date,
+				char *cur_time, unsigned long long itv,
+				struct file_header *file_hdr, unsigned int flags)
+{
+	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
+
+	if (action & F_BEGIN) {
+		return print_dbppc_timestamp(F_DB_OUTPUT, file_hdr, cur_date, cur_time, utc, itv);
+	}
+	if (action & F_END) {
+		if (DISPLAY_HORIZONTALLY(flags)) {
+			printf("\n");
+		}
+	}
+
+	return NULL;
+}
+
+/*
+ ***************************************************************************
  * Display the "timestamp" part of the report (XML format).
  *
  * IN:
@@ -422,9 +536,12 @@ __printf_funct_t print_json_statistics(int *tab, int action)
  * @tab		Number of tabulations.
  ***************************************************************************
  */
-__printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
-				     char *cur_time, int utc, unsigned long long itv)
+__tm_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
+				 char *cur_time, unsigned long long itv,
+				 struct file_header *file_hdr, unsigned int flags)
 {
+	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
+
 	if (action & F_BEGIN) {
 		xprintf((*tab)++, "<timestamp date=\"%s\" time=\"%s\" utc=\"%d\" interval=\"%llu\">",
 			cur_date, cur_time, utc ? 1 : 0, itv);
@@ -432,6 +549,8 @@ __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
 	if (action & F_END) {
 		xprintf(--(*tab), "</timestamp>");
 	}
+
+	return NULL;
 }
 
 /*
@@ -450,9 +569,12 @@ __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
  * @tab		Number of tabulations.
  ***************************************************************************
  */
-__printf_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
-				      char *cur_time, int utc, unsigned long long itv)
+__tm_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
+				  char *cur_time, unsigned long long itv,
+				  struct file_header *file_hdr, unsigned int flags)
 {
+	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
+
 	if (action & F_BEGIN) {
 		xprintf0(*tab,
 			 "\"timestamp\": {\"date\": \"%s\", \"time\": \"%s\", "
@@ -465,6 +587,8 @@ __printf_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
 	if (action & F_END) {
 		printf("\n");
 	}
+
+	return NULL;
 }
 
 /*

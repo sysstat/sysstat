@@ -54,8 +54,6 @@ unsigned int f_position = 0;	/* Output format position in array */
 /* File header */
 struct file_header file_hdr;
 
-static char *seps[] =  {"\t", ";"};
-
 /*
  * Activity sequence.
  * This array must always be entirely filled (even with trailing zeros).
@@ -395,169 +393,7 @@ void list_fields(unsigned int act_id)
 
 /*
  ***************************************************************************
- * write_mech_stats() -
- * Replace the old write_stats_for_ppc() and write_stats_for_db(),
- * making it easier for them to remain in sync and print the same data.
- *
- * IN:
- * @curr	Index in array for current sample statistics.
- * @dt		Interval of time in seconds.
- * @itv		Interval of time in jiffies.
- * @g_itv	Interval of time in jiffies multiplied by the number of
- * 		processors.
- * @cur_date	Date string for current record.
- * @cur_time	Time string for current record.
- * @act_id	Activity to display, or ~0 for all.
- ***************************************************************************
- */
-void write_mech_stats(int curr, unsigned long dt, unsigned long long itv,
-		      unsigned long long g_itv, char *cur_date, char *cur_time,
-		      unsigned int act_id)
-{
-	int i;
-	char pre[80], temp[80];	/* Text at beginning of each line */
-	int isdb = (format == F_DB_OUTPUT);
-
-	/* This substring appears on every output line, preformat it here */
-	snprintf(pre, 80, "%s%s%ld%s",
-		 file_hdr.sa_nodename, seps[isdb], dt, seps[isdb]);
-	if (strlen(cur_date)) {
-		snprintf(temp, 80, "%s%s ", pre, cur_date);
-	}
-	else {
-		strcpy(temp, pre);
-	}
-	snprintf(pre, 80, "%s%s%s", temp, cur_time,
-		 strlen(cur_date) && !PRINT_LOCAL_TIME(flags) &&
-		 !PRINT_TRUE_TIME(flags) ? " UTC" : "");
-	pre[79] = '\0';
-
-	if (DISPLAY_HORIZONTALLY(flags)) {
-		printf("%s", pre);
-	}
-
-	for (i = 0; i < NR_ACT; i++) {
-
-		if ((act_id != ALL_ACTIVITIES) && (act[i]->id != act_id))
-			continue;
-
-		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
-			(*act[i]->f_render)(act[i], isdb, pre, curr,
-					    NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
-		}
-	}
-
-	if (DISPLAY_HORIZONTALLY(flags)) {
-		printf("\n");
-	}
-}
-
-/*
- ***************************************************************************
- * Write system statistics.
- *
- * IN:
- * @curr		Index in array for current sample statistics.
- * @reset		Set to TRUE if last_uptime variable should be
- * 			reinitialized (used in next_slice() function).
- * @use_tm_start	Set to TRUE if option -s has been used.
- * @use_tm_end		Set to TRUE if option -e has been used.
- * @act_id		Activities to display.
- * @cpu_nr		Number of processors for current activity data file.
- * @rectime		Structure where timestamp (expressed in local time
- *			or in UTC depending on whether options -T/-t have
- * 			been used or not) has been saved for current record.
- * @loctime		Structure where timestamp (expressed in local time)
- *			has been saved for current record.
- * @reset_cd		TRUE if static cross_day variable should be reset.
- *
- * OUT:
- * @cnt			Set to 0 to indicate that no other lines of stats
- * 			should be displayed.
- *
- * RETURNS:
- * 1 if a line of stats has been displayed, and 0 otherwise.
- ***************************************************************************
- */
-int logic2_write_stats(int curr, int reset, long *cnt, int use_tm_start,
-		       int use_tm_end, unsigned int act_id, __nr_t cpu_nr,
-		       struct tm *rectime, struct tm *loctime, int reset_cd)
-{
-	unsigned long long dt, itv, g_itv;
-	char cur_date[32], cur_time[32];
-	static int cross_day = FALSE;
-
-	if (reset_cd) {
-		/*
-		 * See note in sar.c.
-		 * NB: Reseting cross_day is not needed in logic1_write_stats()
-		 * function (datafile is never rewinded).
-		 */
-		cross_day = 0;
-	}
-
-	/*
-	 * Check time (1).
-	 * For this first check, we use the time interval entered on
-	 * the command line. This is equivalent to sar's option -i which
-	 * selects records at seconds as close as possible to the number
-	 * specified by the interval parameter.
-	 */
-	if (!next_slice(record_hdr[2].uptime0, record_hdr[curr].uptime0,
-			reset, interval))
-		/* Not close enough to desired interval */
-		return 0;
-
-	/* Check if we are beginning a new day */
-	if (use_tm_start && record_hdr[!curr].ust_time &&
-	    (record_hdr[curr].ust_time > record_hdr[!curr].ust_time) &&
-	    (record_hdr[curr].hour < record_hdr[!curr].hour)) {
-		cross_day = TRUE;
-	}
-
-	if (cross_day) {
-		/*
-		 * This is necessary if we want to properly handle something like:
-		 * sar -s time_start -e time_end with
-		 * time_start(day D) > time_end(day D+1)
-		 */
-		loctime->tm_hour += 24;
-	}
-
-	/* Check time (2) */
-	if (use_tm_start && (datecmp(loctime, &tm_start) < 0))
-		/* it's too soon... */
-		return 0;
-
-	/* Get interval values */
-	get_itv_value(&record_hdr[curr], &record_hdr[!curr],
-		      cpu_nr, &itv, &g_itv);
-
-	/* Check time (3) */
-	if (use_tm_end && (datecmp(loctime, &tm_end) > 0)) {
-		/* It's too late... */
-		*cnt = 0;
-		return 0;
-	}
-
-	dt = itv / HZ;
-	/* Correct rounding error for dt */
-	if ((itv % HZ) >= (HZ / 2)) {
-		dt++;
-	}
-
-	/* Set current timestamp string */
-	set_record_timestamp_string(flags, &record_hdr[curr],
-				    cur_date, cur_time, 32, rectime);
-
-	write_mech_stats(curr, dt, itv, g_itv, cur_date, cur_time, act_id);
-
-	return 1;
-}
-
-/*
- ***************************************************************************
- * Display activity records for logic #1 (XML-like) formats.
+ * Display activity records for various formats.
  *
  * IN:
  * @curr		Index in array for current sample statistics.
@@ -572,6 +408,10 @@ int logic2_write_stats(int curr, int reset, long *cnt, int use_tm_start,
  * 			been used or not) has been saved for current record.
  * @loctime		Structure where timestamp (expressed in local time)
  *			has been saved for current record.
+ * @reset_cd		TRUE if static cross_day variable should be reset.
+ * @act_id		Activity to display (only for formats where
+ * 			activities are displayed one at a time) or
+ *			ALL_ACTIVITIES for all.
  *
  * OUT:
  * @cnt			Set to 0 to indicate that no other lines of stats
@@ -581,14 +421,23 @@ int logic2_write_stats(int curr, int reset, long *cnt, int use_tm_start,
  * 1 if stats have been successfully displayed.
  ***************************************************************************
  */
-int logic1_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
-		       long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
-		       struct tm *loctime)
+int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
+			long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
+			struct tm *loctime, int reset_cd, unsigned int act_id)
 {
 	int i;
 	unsigned long long dt, itv, g_itv;
-	char cur_date[32], cur_time[32];
+	char cur_date[32], cur_time[32], *pre = NULL;
 	static int cross_day = FALSE;
+
+	if (reset_cd) {
+		/*
+		 * See note in sar.c.
+		 * NB: Reseting cross_day is needed only if datafile
+		 * may be rewinded (eg. in db or ppc output formats).
+		 */
+		cross_day = 0;
+	}
 
 	/*
 	 * Check time (1).
@@ -645,47 +494,50 @@ int logic1_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				    cur_date, cur_time, 32, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
-		(*fmt[f_position]->f_timestamp)(&tab, F_BEGIN, cur_date, cur_time,
-						!PRINT_LOCAL_TIME(flags) &&
-						!PRINT_TRUE_TIME(flags), dt);
+		pre = (char *) (*fmt[f_position]->f_timestamp)(&tab, F_BEGIN, cur_date, cur_time,
+							       dt, &file_hdr, flags);
 	}
 
 	/* Display statistics */
 	for (i = 0; i < NR_ACT; i++) {
 
-		/* This code is not generic at all...! */
-		if (format == F_JSON_OUTPUT) {
-			/* JSON output */
-			if (CLOSE_MARKUP(act[i]->options) ||
-			    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
+		if ((act_id != ALL_ACTIVITIES) && (act[i]->id != act_id))
+			continue;
 
+		if ((TEST_MARKUP(fmt[f_position]->options) && CLOSE_MARKUP(act[i]->options)) ||
+		    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
+
+			if (format == F_JSON_OUTPUT) {
+				/* JSON output */
 				if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 					printf(",");
 
 					if (*fmt[f_position]->f_timestamp) {
 						(*fmt[f_position]->f_timestamp)(&tab, F_MAIN, cur_date, cur_time,
-										!PRINT_LOCAL_TIME(flags) &&
-										!PRINT_TRUE_TIME(flags), dt);
+										dt, &file_hdr, flags);
 					}
 				}
 				(*act[i]->f_json_print)(act[i], curr, tab, NEED_GLOBAL_ITV(act[i]->options) ?
 							g_itv : itv);
 			}
-		}
-		else {
-			/* XML output */
-			if (CLOSE_MARKUP(act[i]->options) ||
-			    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
+
+			else if (format == F_XML_OUTPUT) {
+				/* XML output */
 				(*act[i]->f_xml_print)(act[i], curr, tab, NEED_GLOBAL_ITV(act[i]->options) ?
 						       g_itv : itv);
+			}
+
+			else {
+				/* Other output formats: db, ppc */
+				(*act[i]->f_render)(act[i], (format == F_DB_OUTPUT), pre, curr,
+						    NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
 			}
 		}
 	}
 
 	if (*fmt[f_position]->f_timestamp) {
 		(*fmt[f_position]->f_timestamp)(&tab, F_END, cur_date, cur_time,
-						!PRINT_LOCAL_TIME(flags) &&
-						!PRINT_TRUE_TIME(flags), dt);
+						dt, &file_hdr, flags);
 	}
 
 	return 1;
@@ -754,9 +606,8 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 					  file_actlst, rectime, loctime);
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
-			next = logic2_write_stats(*curr, *reset, cnt,
-						  tm_start.use, tm_end.use, act_id,
-						  cpu_nr, rectime, loctime, reset_cd);
+			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
+						   0, cpu_nr, rectime, loctime, reset_cd, act_id);
 			reset_cd = 0;
 
 			if (next) {
@@ -896,8 +747,9 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 					}
 
 					/* next is set to 1 when we were close enough to desired interval */
-					next = logic1_write_stats(curr, tm_start.use, tm_end.use, reset,
-								  &cnt, tab, cpu_nr, rectime, loctime);
+					next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
+								  &cnt, tab, cpu_nr, rectime, loctime,
+								  FALSE, ALL_ACTIVITIES);
 
 					if (next) {
 						curr ^= 1;

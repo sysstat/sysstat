@@ -743,6 +743,7 @@ struct record_header {
 
 /* Type for all functions used by sadf to display stats in various formats */
 #define __printf_funct_t void
+#define __tm_funct_t char *
 
 /*
  * Structure used to define a report.
@@ -800,7 +801,8 @@ struct report_format {
 	 * This function defines the timestamp part of the report.
 	 * Used only with textual (XML-like) reports.
 	 */
-	__printf_funct_t (*f_timestamp) (int *, int, char *, char *, int, unsigned long long);
+	__tm_funct_t (*f_timestamp) (int *, int, char *, char *, unsigned long long,
+				     struct file_header *, unsigned int);
 	/*
 	 * This function displays the restart messages.
 	 */

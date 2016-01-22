@@ -91,6 +91,12 @@
  */
 #define FO_FIELD_LIST		0x40
 
+/*
+ * Indicate that flag AO_CLOSE_MARKUP (set for activities that need it)
+ * should be taken into account for this output format.
+ */
+#define FO_TEST_MARKUP		0x80
+
 #define DISPLAY_GROUPED_STATS(m)	(((m) & FO_GROUPED_STATS)	== FO_GROUPED_STATS)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
@@ -98,6 +104,7 @@
 #define ACCEPT_HORIZONTALLY(m)		(((m) & FO_HORIZONTALLY)	== FO_HORIZONTALLY)
 #define ACCEPT_SEC_EPOCH(m)		(((m) & FO_SEC_EPOCH)		== FO_SEC_EPOCH)
 #define DISPLAY_FIELD_LIST(m)		(((m) & FO_FIELD_LIST)		== FO_FIELD_LIST)
+#define TEST_MARKUP(m)			(((m) & FO_TEST_MARKUP)		== FO_TEST_MARKUP)
 
 /*
  ***************************************************************************
@@ -151,10 +158,18 @@ __printf_funct_t
 /*
  * Prototypes used to display the timestamp part of the report
  */
-__printf_funct_t
-	print_xml_timestamp(int *, int, char *, char *, int, unsigned long long);
-__printf_funct_t
-	print_json_timestamp(int *, int, char *, char *, int, unsigned long long);
+__tm_funct_t
+	print_db_timestamp(int *, int, char *, char *, unsigned long long,
+			   struct file_header *, unsigned int);
+__tm_funct_t
+	print_ppc_timestamp(int *, int, char *, char *, unsigned long long,
+			    struct file_header *, unsigned int);
+__tm_funct_t
+	print_xml_timestamp(int *, int, char *, char *, unsigned long long,
+			    struct file_header *, unsigned int);
+__tm_funct_t
+	print_json_timestamp(int *, int, char *, char *, unsigned long long,
+			     struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display the report header

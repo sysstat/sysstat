@@ -57,7 +57,7 @@ struct report_format db_fmt = {
 			  FO_SEC_EPOCH + FO_FIELD_LIST,
 	.f_header	= NULL,
 	.f_statistics	= NULL,
-	.f_timestamp	= NULL,
+	.f_timestamp	= print_db_timestamp,
 	.f_restart	= print_db_restart,
 	.f_comment	= print_db_comment
 };
@@ -70,7 +70,7 @@ struct report_format ppc_fmt = {
 	.options	= FO_GROUPED_STATS + FO_LOCAL_TIME + FO_SEC_EPOCH,
 	.f_header	= NULL,
 	.f_statistics	= NULL,
-	.f_timestamp	= NULL,
+	.f_timestamp	= print_ppc_timestamp,
 	.f_restart	= print_ppc_restart,
 	.f_comment	= print_ppc_comment
 };
@@ -80,7 +80,7 @@ struct report_format ppc_fmt = {
  */
 struct report_format xml_fmt = {
 	.id		= F_XML_OUTPUT,
-	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME,
+	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_TEST_MARKUP,
 	.f_header	= print_xml_header,
 	.f_statistics	= print_xml_statistics,
 	.f_timestamp	= print_xml_timestamp,
@@ -93,7 +93,7 @@ struct report_format xml_fmt = {
  */
 struct report_format json_fmt = {
 	.id		= F_JSON_OUTPUT,
-	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME,
+	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_TEST_MARKUP,
 	.f_header	= print_json_header,
 	.f_statistics	= print_json_statistics,
 	.f_timestamp	= print_json_timestamp,
