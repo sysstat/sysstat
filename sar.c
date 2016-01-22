@@ -326,35 +326,6 @@ int check_line_hdr(void)
 
 /*
  ***************************************************************************
- * Set current record's timestamp string.
- *
- * IN:
- * @curr	Index in array for current sample statistics.
- * @len		Maximum length of timestamp string.
- *
- * OUT:
- * @cur_time	Timestamp string.
- *
- * RETURNS:
- * 1 if an error was detected, or 0 otherwise.
- ***************************************************************************
-*/
-int set_record_timestamp_string(int curr, char *cur_time, int len)
-{
-	/* Fill timestamp structure */
-	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
-					   &rectime, NULL))
-		/* Error detected */
-		return 1;
-
-	/* Set cur_time date value */
-	strftime(cur_time, len, "%X", &rectime);
-
-	return 0;
-}
-
-/*
- ***************************************************************************
  * Print statistics average.
  *
  * IN:
@@ -469,12 +440,19 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 			return 0;
 	}
 
-	/* Set previous timestamp */
-	if (set_record_timestamp_string(!curr, timestamp[!curr], 16))
+	/* Get then set previous timestamp */
+	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
+					   &rectime, NULL))
 		return 0;
-	/* Set current timestamp */
-	if (set_record_timestamp_string(curr,  timestamp[curr],  16))
+	set_record_timestamp_string(S_F_PREFD_TIME_OUTPUT, &record_hdr[!curr],
+				    NULL, timestamp[!curr], 16, &rectime);
+
+	/* Get then set current timestamp */
+	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
+					   &rectime, NULL))
 		return 0;
+	set_record_timestamp_string(S_F_PREFD_TIME_OUTPUT, &record_hdr[curr],
+				    NULL, timestamp[curr], 16, &rectime);
 
 	/* Check if we are beginning a new day */
 	if (use_tm_start && record_hdr[!curr].ust_time &&
@@ -625,8 +603,11 @@ int sar_print_special(int curr, int use_tm_start, int use_tm_end, int rtype,
 	int dp = 1;
 	unsigned int new_cpu_nr;
 
-	if (set_record_timestamp_string(curr, cur_time, 26))
+	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
+					   &rectime, NULL))
 		return 0;
+	set_record_timestamp_string(S_F_PREFD_TIME_OUTPUT, &record_hdr[curr],
+				    NULL, cur_time, 26, &rectime);
 
 	/* The record must be in the interval specified by -s/-e options */
 	if ((use_tm_start && (datecmp(&rectime, &tm_start) < 0)) ||

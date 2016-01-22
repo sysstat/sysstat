@@ -178,45 +178,6 @@ void check_format_options(void)
 
 /*
  ***************************************************************************
- * Set current record's timestamp strings (date and time). This timestamp is
- * expressed in UTC or in local time, depending on whether options -T or -t
- * have been used or not.
- *
- * IN:
- * @curr	Index in array for current sample statistics.
- * @cur_date	String where timestamp's date will be saved.
- * @cur_time	String where timestamp's time will be saved.
- * @len		Maximum length of timestamp strings.
- * @rectime	Structure with current timestamp (expressed in local time or
- *		in UTC depending on whether options -T or -t have been used
- * 		or not) that should be broken down in date and time strings.
- *
- * OUT:
- * @cur_date	Timestamp's date string.
- * @cur_time	Timestamp's time string. May contain the number of seconds
- *		since the epoch (01-01-1970) if option -U has been used.
- ***************************************************************************
-*/
-void set_record_timestamp_string(int curr, char *cur_date, char *cur_time, int len,
-				 struct tm *rectime)
-{
-	/* Set cur_time date value */
-	if (PRINT_SEC_EPOCH(flags)) {
-		sprintf(cur_time, "%ld", record_hdr[curr].ust_time);
-		strcpy(cur_date, "");
-	}
-	else {
-		/*
-		 * If options -T or -t have been used then cur_time is
-		 * expressed in local time. Else it is expressed in UTC.
-		 */
-		strftime(cur_date, len, "%Y-%m-%d", rectime);
-		strftime(cur_time, len, "%H:%M:%S", rectime);
-	}
-}
-
-/*
- ***************************************************************************
  * Print tabulations
  *
  * IN:
@@ -318,7 +279,8 @@ void print_special_record(int curr, int use_tm_start, int use_tm_end, int rtype,
 	}
 	else {
 		/* Set date and time strings to be displayed for current record */
-		set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
+		set_record_timestamp_string(flags, &record_hdr[curr],
+					    cur_date, cur_time, 32, rectime);
 	}
 
 	if (rtype == R_RESTART) {
@@ -660,7 +622,8 @@ int logic2_write_stats(int curr, int reset, long *cnt, int use_tm_start,
 	}
 
 	/* Set current timestamp string */
-	set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
+	set_record_timestamp_string(flags, &record_hdr[curr],
+				    cur_date, cur_time, 32, rectime);
 
 	write_mech_stats(curr, dt, itv, g_itv, cur_date, cur_time, act_id);
 
@@ -753,7 +716,8 @@ int logic1_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	}
 
 	/* Set date and time strings for current record */
-	set_record_timestamp_string(curr, cur_date, cur_time, 32, rectime);
+	set_record_timestamp_string(flags, &record_hdr[curr],
+				    cur_date, cur_time, 32, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
 		(*fmt[f_position]->f_timestamp)(&tab, F_BEGIN, cur_date, cur_time,

@@ -96,6 +96,7 @@
 #define S_F_COMMENT		0x00001000
 #define S_F_PERSIST_NAME	0x00002000
 #define S_F_LOCAL_TIME		0x00004000
+#define S_F_PREFD_TIME_OUTPUT	0x00008000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -112,6 +113,7 @@
 #define DISPLAY_COMMENT(m)		(((m) & S_F_COMMENT)      == S_F_COMMENT)
 #define DISPLAY_PERSIST_NAME_S(m)	(((m) & S_F_PERSIST_NAME) == S_F_PERSIST_NAME)
 #define PRINT_LOCAL_TIME(m)		(((m) & S_F_LOCAL_TIME)   == S_F_LOCAL_TIME)
+#define USE_PREFD_TIME_OUTPUT(m)	(((m) & S_F_PREFD_TIME_OUTPUT)   == S_F_PREFD_TIME_OUTPUT)
 
 #define AO_F_NULL		0x00000000
 
@@ -964,5 +966,8 @@ extern void
 	set_default_file(char *, int, int);
 extern void
 	set_hdr_rectime(unsigned int, struct tm *, struct file_header *);
+extern void
+	set_record_timestamp_string(unsigned int, struct record_header *,
+				    char *, char *, int, struct tm *);
 
 #endif  /* _SA_H */
