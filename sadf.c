@@ -649,9 +649,6 @@ int logic1_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 						!PRINT_LOCAL_TIME(flags) &&
 						!PRINT_TRUE_TIME(flags), dt);
 	}
-	if (format == F_XML_OUTPUT) {
-		tab++;
-	}
 
 	/* Display statistics */
 	for (i = 0; i < NR_ACT; i++) {

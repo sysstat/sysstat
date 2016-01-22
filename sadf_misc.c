@@ -426,7 +426,7 @@ __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
 				     char *cur_time, int utc, unsigned long long itv)
 {
 	if (action & F_BEGIN) {
-		xprintf(*tab, "<timestamp date=\"%s\" time=\"%s\" utc=\"%d\" interval=\"%llu\">",
+		xprintf((*tab)++, "<timestamp date=\"%s\" time=\"%s\" utc=\"%d\" interval=\"%llu\">",
 			cur_date, cur_time, utc ? 1 : 0, itv);
 	}
 	if (action & F_END) {
