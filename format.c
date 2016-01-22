@@ -102,7 +102,7 @@ struct report_format json_fmt = {
 };
 
 /*
- * Display only datafile header.
+ * Convert an old datafile to up-to-date format.
  */
 struct report_format conv_fmt = {
 	.id		= F_CONV_OUTPUT,
