@@ -241,83 +241,6 @@ void xprintf(int nr_tab, const char *fmtf, ...)
 
 /*
  ***************************************************************************
- * Print contents of a special (RESTART or COMMENT) record.
- *
- * IN:
- * @curr		Index in array for current sample statistics.
- * @use_tm_start	Set to TRUE if option -s has been used.
- * @use_tm_end		Set to TRUE if option -e has been used.
- * @rtype		Record type (RESTART or COMMENT).
- * @ifd			Input file descriptor.
- * @rectime		Structure where timestamp (expressed in local time
- *			or in UTC depending on whether options -T/-t have
- * 			been used or not) can be saved for current record.
- * @loctime		Structure where timestamp (expressed in local time)
- *			can be saved for current record.
- * @file		Name of file being read.
- * @tab			Number of tabulations to print.
- * @file_magic		file_magic structure filled with file magic header
- * 			data.
- ***************************************************************************
- */
-void print_special_record(int curr, int use_tm_start, int use_tm_end, int rtype, int ifd,
-			  struct tm *rectime, struct tm *loctime, char *file, int tab,
-			  struct file_magic *file_magic)
-{
-	char cur_date[32], cur_time[32];
-	int dp = 1;
-	unsigned int new_cpu_nr;
-
-	/* Fill timestamp structure (rectime) for current record */
-	sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime, loctime);
-
-	/* The record must be in the interval specified by -s/-e options */
-	if ((use_tm_start && (datecmp(loctime, &tm_start) < 0)) ||
-	    (use_tm_end && (datecmp(loctime, &tm_end) > 0))) {
-		/* Will not display the special record */
-		dp = 0;
-	}
-	else {
-		/* Set date and time strings to be displayed for current record */
-		set_record_timestamp_string(flags, &record_hdr[curr],
-					    cur_date, cur_time, 32, rectime);
-	}
-
-	if (rtype == R_RESTART) {
-		/* Don't forget to read the volatile activities structures */
-		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
-						     file_hdr.sa_vol_act_nr);
-
-		if (!dp)
-			return;
-
-		if (*fmt[f_position]->f_restart) {
-			(*fmt[f_position]->f_restart)(&tab, F_MAIN, cur_date, cur_time,
-						      !PRINT_LOCAL_TIME(flags) &&
-						      !PRINT_TRUE_TIME(flags), &file_hdr,
-						      new_cpu_nr);
-		}
-	}
-	else if (rtype == R_COMMENT) {
-		char file_comment[MAX_COMMENT_LEN];
-
-		/* Read and replace non printable chars in comment */
-		replace_nonprintable_char(ifd, file_comment);
-
-		if (!dp || !DISPLAY_COMMENT(flags))
-			return;
-
-		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_MAIN, cur_date, cur_time,
-						      !PRINT_LOCAL_TIME(flags) &&
-						      !PRINT_TRUE_TIME(flags), file_comment,
-						      &file_hdr);
-		}
-	}
-}
-
-/*
- ***************************************************************************
  * Read next sample statistics. If it's a special record (RESTART or COMMENT)
  * then display it if requested. Also fill timestamps structures.
  *
@@ -368,8 +291,9 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			}
 			else {
 				/* Display COMMENT record */
-				print_special_record(curr, tm_start.use, tm_end.use, *rtype, ifd,
-						     rectime, loctime, file, tab, file_magic);
+				print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
+						     *rtype, ifd, rectime, loctime, file, tab,
+						     file_magic, &file_hdr, act, fmt[f_position]);
 			}
 		}
 		else if (*rtype == R_RESTART) {
@@ -387,8 +311,9 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			}
 			else {
 				/* Display RESTART record */
-				print_special_record(curr, tm_start.use, tm_end.use, *rtype, ifd,
-						     rectime, loctime, file, tab, file_magic);
+				print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
+						     *rtype, ifd, rectime, loctime, file, tab,
+						     file_magic, &file_hdr, act, fmt[f_position]);
 			}
 		}
 		else {
@@ -1194,8 +1119,9 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		 * activity), RESTART ones are only displayed once.
 		 */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
-			print_special_record(curr, tm_start.use, tm_end.use, R_RESTART,
-					     ifd, rectime, loctime, file, 0, file_magic);
+			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
+					     R_RESTART, ifd, rectime, loctime, file, 0,
+					     file_magic, &file_hdr, act, fmt[f_position]);
 		}
 	}
 	while (!eosaf);

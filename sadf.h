@@ -11,11 +11,6 @@
 /* DTD version for XML output */
 #define XML_DTD_VERSION	"3.1"
 
-/* Possible actions for functions used to display reports */
-#define F_BEGIN	0x01
-#define F_MAIN	0x02
-#define F_END	0x04
-
 /* Various constants */
 #define DO_SAVE		0
 #define DO_RESTORE	1
@@ -41,12 +36,6 @@
 #define F_XML_OUTPUT	4
 #define F_JSON_OUTPUT	5
 #define F_CONV_OUTPUT	6
-
-/*
- ***************************************************************************
- * Generic description of an output format.
- ***************************************************************************
- */
 
 /* Format options */
 
@@ -110,77 +99,6 @@
 #define ACCEPT_SEC_EPOCH(m)		(((m) & FO_SEC_EPOCH)		== FO_SEC_EPOCH)
 #define DISPLAY_FIELD_LIST(m)		(((m) & FO_FIELD_LIST)		== FO_FIELD_LIST)
 
-/* Type for all functions used by sadf to display stats in various formats */
-#define __printf_funct_t void
-
-/*
- * Structure used to define a report.
- * A XML-like report has the following format:
- *       __
- *      |
- *      | Header block
- *      |  __
- *      | |
- *      | | Statistics block
- *      | |  __
- *      | | |
- *      | | | Timestamp block
- *      | | |  __
- *      | | | |
- *      | | | | Activity #1
- *      | | | |__
- *      | | | |
- *      | | | | ...
- *      | | | |__
- *      | | | |
- *      | | | | Activity #n
- *      | | | |__
- *      | | |__
- *      | |__
- *      | |
- *      | | Restart messages block
- *      | |__
- *      | |
- *      | | Comments block
- *      | |__
- *      |__
- */
-struct report_format {
-	/*
-	 * This variable contains the identification value (F_...) for this report format.
-	 */
-	unsigned int id;
-	/*
-	 * Format options (FO_...).
-	 */
-	unsigned int options;
-	/*
-	 * This function displays the report header
-	 * (data displayed once at the beginning of the report).
-	 */
-	__printf_funct_t (*f_header) (int *, int, char *, struct file_magic *, struct file_header *,
-				      __nr_t, struct activity * [], unsigned int []);
-	/*
-	 * This function defines the statistics part of the report.
-	 * Used only with textual (XML-like) reports.
-	 */
-	__printf_funct_t (*f_statistics) (int *, int);
-	/*
-	 * This function defines the timestamp part of the report.
-	 * Used only with textual (XML-like) reports.
-	 */
-	__printf_funct_t (*f_timestamp) (int *, int, char *, char *, int, unsigned long long);
-	/*
-	 * This function displays the restart messages.
-	 */
-	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *,
-				       unsigned int);
-	/*
-	 * This function displays the comments.
-	 */
-	__printf_funct_t (*f_comment) (int *, int, char *, char *, int, char *, struct file_header *);
-};
-
 /*
  ***************************************************************************
  * Various function prototypes
@@ -205,6 +123,8 @@ __printf_funct_t
 	print_xml_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
 __printf_funct_t
 	print_json_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t
+	print_sar_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display comments
@@ -217,6 +137,8 @@ __printf_funct_t
 	print_xml_comment(int *, int, char *, char *, int, char *, struct file_header *);
 __printf_funct_t
 	print_json_comment(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t
+	print_sar_comment(int *, int, char *, char *, int, char *, struct file_header *);
 
 /*
  * Prototypes used to display the statistics part of the report

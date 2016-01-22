@@ -1,5 +1,5 @@
 /*
- * format.c: Output format definitions for sadf
+ * format.c: Output format definitions for sadf and sar
  * (C) 2011-2015 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
@@ -19,7 +19,13 @@
  ***************************************************************************
  */
 
+#ifdef SOURCE_SADF
 #include "sadf.h"
+#endif
+
+#ifdef SOURCE_SAR
+#include "sa.h"
+#endif
 
 /*
  ***************************************************************************
@@ -28,6 +34,7 @@
  ***************************************************************************
  */
 
+#ifdef SOURCE_SADF
 /*
  * Display only datafile header.
  */
@@ -118,3 +125,21 @@ struct report_format *fmt[NR_FMT] = {
 	&json_fmt,
 	&conv_fmt
 };
+#endif
+
+#ifdef SOURCE_SAR
+/*
+ * Special output format for sar.
+ * Used only for functions to display special
+ * (RESTART and COMMENT) records.
+ */
+struct report_format sar_fmt = {
+	.id		= 0,
+	.options	= 0,
+	.f_header	= NULL,
+	.f_statistics	= NULL,
+	.f_timestamp	= NULL,
+	.f_restart	= print_sar_restart,
+	.f_comment	= print_sar_comment
+};
+#endif

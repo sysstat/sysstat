@@ -737,6 +737,88 @@ struct record_header {
 
 /*
  ***************************************************************************
+ * Generic description of an output format for sadf (and sar).
+ ***************************************************************************
+ */
+
+/* Type for all functions used by sadf to display stats in various formats */
+#define __printf_funct_t void
+
+/*
+ * Structure used to define a report.
+ * A XML-like report has the following format:
+ *       __
+ *      |
+ *      | Header block
+ *      |  __
+ *      | |
+ *      | | Statistics block
+ *      | |  __
+ *      | | |
+ *      | | | Timestamp block
+ *      | | |  __
+ *      | | | |
+ *      | | | | Activity #1
+ *      | | | |__
+ *      | | | |
+ *      | | | | ...
+ *      | | | |__
+ *      | | | |
+ *      | | | | Activity #n
+ *      | | | |__
+ *      | | |__
+ *      | |__
+ *      | |
+ *      | | Restart messages block
+ *      | |__
+ *      | |
+ *      | | Comments block
+ *      | |__
+ *      |__
+ */
+struct report_format {
+	/*
+	 * This variable contains the identification value (F_...) for this report format.
+	 */
+	unsigned int id;
+	/*
+	 * Format options (FO_...).
+	 */
+	unsigned int options;
+	/*
+	 * This function displays the report header
+	 * (data displayed once at the beginning of the report).
+	 */
+	__printf_funct_t (*f_header) (int *, int, char *, struct file_magic *, struct file_header *,
+				      __nr_t, struct activity * [], unsigned int []);
+	/*
+	 * This function defines the statistics part of the report.
+	 * Used only with textual (XML-like) reports.
+	 */
+	__printf_funct_t (*f_statistics) (int *, int);
+	/*
+	 * This function defines the timestamp part of the report.
+	 * Used only with textual (XML-like) reports.
+	 */
+	__printf_funct_t (*f_timestamp) (int *, int, char *, char *, int, unsigned long long);
+	/*
+	 * This function displays the restart messages.
+	 */
+	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *,
+				       unsigned int);
+	/*
+	 * This function displays the comments.
+	 */
+	__printf_funct_t (*f_comment) (int *, int, char *, char *, int, char *, struct file_header *);
+};
+
+/* Possible actions for functions used to display reports */
+#define F_BEGIN	0x01
+#define F_MAIN	0x02
+#define F_END	0x04
+
+/*
+ ***************************************************************************
  * Macro functions definitions.
  *
  * Note: Using 'do ... while' makes the macros safer to use
@@ -940,6 +1022,17 @@ extern int
 	parse_timestamp(char * [], int *, struct tstamp *, const char *);
 extern void
 	print_report_hdr(unsigned int, struct tm *, struct file_header *, int);
+extern void
+	print_sar_comment(int *, int, char *, char *, int, char *, struct file_header *);
+extern void
+	print_sar_restart(int *, int, char *, char *, int, struct file_header *,
+			  unsigned int);
+extern int
+	print_special_record(struct record_header *, unsigned int,
+			     struct tstamp *, struct tstamp *, int, int,
+			     struct tm *, struct tm *, char *, int,
+			     struct file_magic *, struct file_header *,
+			     struct activity * [], struct report_format *);
 extern void
 	read_file_stat_bunch(struct activity * [], int, int, int, struct file_activity *);
 extern __nr_t

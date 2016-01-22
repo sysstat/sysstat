@@ -210,7 +210,11 @@ json_stats.o: json_stats.c sa.h sadf.h ioconf.h sysconfig.h json_stats.h
 
 sa_wrap.o: sa_wrap.c sa.h rd_stats.h count.h rd_sensors.h prealloc.h
 
-format.o: format.c sadf.h
+format_sadf.o: format.c sadf.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
+
+format_sar.o: format.c sa.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
 sadf_misc.o: sadf_misc.c sadf.h sa.h
 
@@ -239,11 +243,11 @@ sadc: sadc.o act_sadc.o sa_wrap.o sa_common.o librdstats.a librdsensors.a libsys
 
 sar.o: sar.c sa.h version.h common.h ioconf.h pr_stats.h sysconfig.h
 
-sar: sar.o act_sar.o sa_common.o pr_stats.o libsyscom.a
+sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o libsyscom.a
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h ioconf.h sysconfig.h
 
-sadf: sadf.o act_sadf.o format.o sadf_misc.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o sa_common.o libsyscom.a
+sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o sa_common.o libsyscom.a
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h count.h
 

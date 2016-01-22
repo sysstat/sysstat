@@ -2242,3 +2242,102 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
 		}
 	}
 }
+
+/*
+ ***************************************************************************
+ * Print contents of a special (RESTART or COMMENT) record.
+ *
+ * IN:
+ * @record_hdr	Current record header.
+ * @l_flags	Flags for common options.
+ * @tm_start	Structure filled when option -s has been used.
+ * @tm_end	Structure filled when option -e has been used.
+ * @rtype	Record type (R_RESTART or R_COMMENT).
+ * @ifd		Input file descriptor.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have	been used or not) can
+ *		be saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time) can be
+ *		saved for current record. May be NULL.
+ * @file	Name of file being read.
+ * @tab		Number of tabulations to print.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @file_hdr	System activity file standard header.
+ * @act		Array of activities.
+ * @ofmt		Pointer on report output format structure.
+ *
+ * OUT:
+ * @rectime		Structure where timestamp (expressed in local time
+ * 			or in UTC) has been saved.
+ * @loctime		Structure where timestamp (expressed in local time)
+ * 			has been saved (if requested).
+ *
+ * RETURNS:
+ * 1 if the record has been successfully displayed, and 0 otherwise.
+ ***************************************************************************
+ */
+int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
+			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
+			 struct tm *rectime, struct tm *loctime, char *file, int tab,
+			 struct file_magic *file_magic, struct file_header *file_hdr,
+			 struct activity *act[], struct report_format *ofmt)
+{
+	char cur_date[32], cur_time[32];
+	int dp = 1;
+	unsigned int new_cpu_nr;
+
+	/* Fill timestamp structure (rectime) for current record */
+	if (sa_get_record_timestamp_struct(l_flags, record_hdr, rectime, loctime))
+		return 0;
+
+	/* If loctime is NULL, then use rectime for comparison */
+	if (!loctime) {
+		loctime = rectime;
+	}
+
+	/* The record must be in the interval specified by -s/-e options */
+	if ((tm_start->use && (datecmp(loctime, tm_start) < 0)) ||
+	    (tm_end->use && (datecmp(loctime, tm_end) > 0))) {
+		/* Will not display the special record */
+		dp = 0;
+	}
+	else {
+		/* Set date and time strings to be displayed for current record */
+		set_record_timestamp_string(l_flags, record_hdr,
+					    cur_date, cur_time, 32, rectime);
+	}
+
+	if (rtype == R_RESTART) {
+		/* Don't forget to read the volatile activities structures */
+		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
+						     file_hdr->sa_vol_act_nr);
+
+		if (!dp)
+			return 0;
+
+		if (*ofmt->f_restart) {
+			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time,
+					   !PRINT_LOCAL_TIME(l_flags) &&
+					   !PRINT_TRUE_TIME(l_flags), file_hdr,
+					   new_cpu_nr);
+		}
+	}
+	else if (rtype == R_COMMENT) {
+		char file_comment[MAX_COMMENT_LEN];
+
+		/* Read and replace non printable chars in comment */
+		replace_nonprintable_char(ifd, file_comment);
+
+		if (!dp || !DISPLAY_COMMENT(l_flags))
+			return 0;
+
+		if (*ofmt->f_comment) {
+			(*ofmt->f_comment)(&tab, F_MAIN, cur_date, cur_time,
+					   !PRINT_LOCAL_TIME(l_flags) &&
+					   !PRINT_TRUE_TIME(l_flags), file_comment,
+					   file_hdr);
+		}
+	}
+
+	return 1;
+}
