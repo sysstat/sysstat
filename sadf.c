@@ -892,7 +892,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		       (tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
 		       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
 
-		/* Save the first stats collected. Will be used to compute the average */
+		/* Save the first stats collected. Used for example in next_slice() function */
 		copy_structures(act, id_seq, record_hdr, 2, 0);
 
 		/* Set flag to reset last_uptime variable. Should be done after a LINUX RESTART record */
