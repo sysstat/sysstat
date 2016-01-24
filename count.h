@@ -15,27 +15,27 @@
  ***************************************************************************
  */
 
-extern int
-	get_cpu_nr(unsigned int, int);
-extern int
-	get_irqcpu_nr(char *, int, int);
-extern int
-	get_diskstats_dev_nr(int, int);
-extern int
-	get_irq_nr(void);
-extern int
-	get_serial_nr(void);
-extern int
-	get_iface_nr(void);
-extern int
-	get_disk_nr(unsigned int);
-extern int
-	get_freq_nr(void);
-extern int
-	get_usb_nr(void);
-extern int
-	get_filesystem_nr(void);
-extern int
-	get_fchost_nr(void);
+int get_cpu_nr
+	(unsigned int, int);
+int get_irqcpu_nr
+	(char *, int, int);
+int get_diskstats_dev_nr
+	(int, int);
+int get_irq_nr
+	(void);
+int get_serial_nr
+	(void);
+int get_iface_nr
+	(void);
+int get_disk_nr
+	(unsigned int);
+int get_freq_nr
+	(void);
+int get_usb_nr
+	(void);
+int get_filesystem_nr
+	(void);
+int get_fchost_nr
+	(void);
 
 #endif /* _COUNT_H */

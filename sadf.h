@@ -112,76 +112,72 @@
  ***************************************************************************
  */
 
-extern void
-	convert_file(char [], struct activity *[]);
-extern void
-	xprintf(int, const char *, ...);
-extern void
-	xprintf0(int, const char *, ...);
+void convert_file
+	(char [], struct activity *[]);
+void xprintf
+	(int, const char *, ...);
+void xprintf0
+	(int, const char *, ...);
 
 /*
  * Prototypes used to display restart messages
  */
-__printf_funct_t
-	print_db_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
-__printf_funct_t
-	print_ppc_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
-__printf_funct_t
-	print_xml_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
-__printf_funct_t
-	print_json_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
-__printf_funct_t
-	print_sar_restart(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_db_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_ppc_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_xml_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_json_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_sar_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display comments
  */
-__printf_funct_t
-	print_db_comment(int *, int, char *, char *, int, char *, struct file_header *);
-__printf_funct_t
-	print_ppc_comment(int *, int, char *, char *, int, char *, struct file_header *);
-__printf_funct_t
-	print_xml_comment(int *, int, char *, char *, int, char *, struct file_header *);
-__printf_funct_t
-	print_json_comment(int *, int, char *, char *, int, char *, struct file_header *);
-__printf_funct_t
-	print_sar_comment(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t print_db_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t print_ppc_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t print_xml_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t print_json_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t print_sar_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
 
 /*
  * Prototypes used to display the statistics part of the report
  */
-__printf_funct_t
-	print_xml_statistics(int *, int);
-__printf_funct_t
-	print_json_statistics(int *, int);
+__printf_funct_t print_xml_statistics
+	(int *, int);
+__printf_funct_t print_json_statistics
+	(int *, int);
 
 /*
  * Prototypes used to display the timestamp part of the report
  */
-__tm_funct_t
-	print_db_timestamp(int *, int, char *, char *, unsigned long long,
-			   struct file_header *, unsigned int);
-__tm_funct_t
-	print_ppc_timestamp(int *, int, char *, char *, unsigned long long,
-			    struct file_header *, unsigned int);
-__tm_funct_t
-	print_xml_timestamp(int *, int, char *, char *, unsigned long long,
-			    struct file_header *, unsigned int);
-__tm_funct_t
-	print_json_timestamp(int *, int, char *, char *, unsigned long long,
-			     struct file_header *, unsigned int);
+__tm_funct_t print_db_timestamp
+	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+__tm_funct_t print_ppc_timestamp
+	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+__tm_funct_t print_xml_timestamp
+	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+__tm_funct_t print_json_timestamp
+	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display the report header
  */
-__printf_funct_t
-	print_xml_header(int *, int, char *, struct file_magic *, struct file_header *,
-			 __nr_t, struct activity * [], unsigned int []);
-__printf_funct_t
-	print_json_header(int *, int, char *, struct file_magic *, struct file_header *,
-			  __nr_t, struct activity * [], unsigned int []);
-__printf_funct_t
-	print_hdr_header(int *, int, char *, struct file_magic *, struct file_header *,
-			 __nr_t, struct activity * [], unsigned int []);
+__printf_funct_t print_xml_header
+	(int *, int, char *, struct file_magic *, struct file_header *,
+	 __nr_t, struct activity * [], unsigned int []);
+__printf_funct_t print_json_header
+	(int *, int, char *, struct file_magic *, struct file_header *,
+	 __nr_t, struct activity * [], unsigned int []);
+__printf_funct_t print_hdr_header
+	(int *, int, char *, struct file_magic *, struct file_header *,
+	 __nr_t, struct activity * [], unsigned int []);
 
 #endif  /* _SADF_H */

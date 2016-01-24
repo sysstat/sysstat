@@ -76,8 +76,11 @@ struct ioc_entry {
 #define IOC_ENTRY_SIZE	(sizeof(struct ioc_entry))
 
 
-extern int   ioc_iswhole(unsigned int, unsigned int);
-extern char *ioc_name(unsigned int, unsigned int);
-extern char *transform_devmapname(unsigned int, unsigned int);
+int ioc_iswhole
+	(unsigned int, unsigned int);
+char *ioc_name
+	(unsigned int, unsigned int);
+char *transform_devmapname
+	(unsigned int, unsigned int);
 
 #endif

@@ -46,81 +46,81 @@ typedef struct {
  */
 
 /* Functions used to display statistics in the format selected by sadf */
-extern __print_funct_t render_pcsw_stats
+__print_funct_t render_pcsw_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_cpu_stats
+__print_funct_t render_cpu_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_irq_stats
+__print_funct_t render_irq_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_swap_stats
+__print_funct_t render_swap_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_paging_stats
+__print_funct_t render_paging_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_io_stats
+__print_funct_t render_io_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_memory_stats
+__print_funct_t render_memory_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_ktables_stats
+__print_funct_t render_ktables_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_queue_stats
+__print_funct_t render_queue_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_serial_stats
+__print_funct_t render_serial_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_disk_stats
+__print_funct_t render_disk_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_dev_stats
+__print_funct_t render_net_dev_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_edev_stats
+__print_funct_t render_net_edev_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_nfs_stats
+__print_funct_t render_net_nfs_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_nfsd_stats
+__print_funct_t render_net_nfsd_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_sock_stats
+__print_funct_t render_net_sock_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_ip_stats
+__print_funct_t render_net_ip_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_eip_stats
+__print_funct_t render_net_eip_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_icmp_stats
+__print_funct_t render_net_icmp_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_eicmp_stats
+__print_funct_t render_net_eicmp_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_tcp_stats
+__print_funct_t render_net_tcp_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_etcp_stats
+__print_funct_t render_net_etcp_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_udp_stats
+__print_funct_t render_net_udp_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_sock6_stats
+__print_funct_t render_net_sock6_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_ip6_stats
+__print_funct_t render_net_ip6_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_eip6_stats
+__print_funct_t render_net_eip6_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_icmp6_stats
+__print_funct_t render_net_icmp6_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_eicmp6_stats
+__print_funct_t render_net_eicmp6_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_net_udp6_stats
+__print_funct_t render_net_udp6_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_pwr_cpufreq_stats
+__print_funct_t render_pwr_cpufreq_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_pwr_fan_stats
+__print_funct_t render_pwr_fan_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_pwr_temp_stats
+__print_funct_t render_pwr_temp_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_pwr_in_stats
+__print_funct_t render_pwr_in_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_huge_stats
+__print_funct_t render_huge_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_pwr_wghfreq_stats
+__print_funct_t render_pwr_wghfreq_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_pwr_usb_stats
+__print_funct_t render_pwr_usb_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_filesystem_stats
+__print_funct_t render_filesystem_stats
 	(struct activity *, int, char *, int, unsigned long long);
-extern __print_funct_t render_fchost_stats
+__print_funct_t render_fchost_stats
 	(struct activity *, int, char *, int, unsigned long long);
 
 #endif /* _RNDR_STATS_H */

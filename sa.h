@@ -860,209 +860,201 @@ struct tstamp {
  */
 
 /* Functions used to count number of items */
-extern __nr_t
-	wrap_get_cpu_nr(struct activity *);
-extern __nr_t
-	wrap_get_irq_nr(struct activity *);
-extern __nr_t
-	wrap_get_serial_nr(struct activity *);
-extern __nr_t
-	wrap_get_disk_nr(struct activity *);
-extern __nr_t
-	wrap_get_iface_nr(struct activity *);
-extern __nr_t
-	wrap_get_fan_nr(struct activity *);
-extern __nr_t
-	wrap_get_temp_nr(struct activity *);
-extern __nr_t
-	wrap_get_in_nr(struct activity *);
-extern __nr_t
-	wrap_get_freq_nr(struct activity *);
-extern __nr_t
-	wrap_get_usb_nr(struct activity *);
-extern __nr_t
-	wrap_get_filesystem_nr(struct activity *);
-extern __nr_t
-	wrap_get_fchost_nr(struct activity *);
+__nr_t wrap_get_cpu_nr
+	(struct activity *);
+__nr_t wrap_get_irq_nr
+	(struct activity *);
+__nr_t wrap_get_serial_nr
+	(struct activity *);
+__nr_t wrap_get_disk_nr
+	(struct activity *);
+__nr_t wrap_get_iface_nr
+	(struct activity *);
+__nr_t wrap_get_fan_nr
+	(struct activity *);
+__nr_t wrap_get_temp_nr
+	(struct activity *);
+__nr_t wrap_get_in_nr
+	(struct activity *);
+__nr_t wrap_get_freq_nr
+	(struct activity *);
+__nr_t wrap_get_usb_nr
+	(struct activity *);
+__nr_t wrap_get_filesystem_nr
+	(struct activity *);
+__nr_t wrap_get_fchost_nr
+	(struct activity *);
 
 /* Functions used to read activities statistics */
-extern __read_funct_t
-	wrap_read_stat_cpu(struct activity *);
-extern __read_funct_t
-	wrap_read_stat_pcsw(struct activity *);
-extern __read_funct_t
-	wrap_read_stat_irq(struct activity *);
-extern __read_funct_t
-	wrap_read_swap(struct activity *);
-extern __read_funct_t
-	wrap_read_paging(struct activity *);
-extern __read_funct_t
-	wrap_read_io(struct activity *);
-extern __read_funct_t
-	wrap_read_meminfo(struct activity *);
-extern __read_funct_t
-	wrap_read_kernel_tables(struct activity *);
-extern __read_funct_t
-	wrap_read_loadavg(struct activity *);
-extern __read_funct_t
-	wrap_read_tty_driver_serial(struct activity *);
-extern __read_funct_t
-	wrap_read_disk(struct activity *);
-extern __read_funct_t
-	wrap_read_net_dev(struct activity *);
-extern __read_funct_t
-	wrap_read_net_edev(struct activity *);
-extern __read_funct_t
-	wrap_read_net_nfs(struct activity *);
-extern __read_funct_t
-	wrap_read_net_nfsd(struct activity *);
-extern __read_funct_t
-	wrap_read_net_sock(struct activity *);
-extern __read_funct_t
-	wrap_read_net_ip(struct activity *);
-extern __read_funct_t
-	wrap_read_net_eip(struct activity *);
-extern __read_funct_t
-	wrap_read_net_icmp(struct activity *);
-extern __read_funct_t
-	wrap_read_net_eicmp(struct activity *);
-extern __read_funct_t
-	wrap_read_net_tcp(struct activity *);
-extern __read_funct_t
-	wrap_read_net_etcp(struct activity *);
-extern __read_funct_t
-	wrap_read_net_udp(struct activity *);
-extern __read_funct_t
-	wrap_read_net_sock6(struct activity *);
-extern __read_funct_t
-	wrap_read_net_ip6(struct activity *);
-extern __read_funct_t
-	wrap_read_net_eip6(struct activity *);
-extern __read_funct_t
-	wrap_read_net_icmp6(struct activity *);
-extern __read_funct_t
-	wrap_read_net_eicmp6(struct activity *);
-extern __read_funct_t
-	wrap_read_net_udp6(struct activity *);
-extern __read_funct_t
-	wrap_read_cpuinfo(struct activity *);
-extern __read_funct_t
-	wrap_read_fan(struct activity *);
-extern __read_funct_t
-	wrap_read_temp(struct activity *);
-extern __read_funct_t
-	wrap_read_in(struct activity *);
-extern __read_funct_t
-	wrap_read_meminfo_huge(struct activity *);
-extern __read_funct_t
-	wrap_read_time_in_state(struct activity *);
-extern __read_funct_t
-	wrap_read_bus_usb_dev(struct activity *);
-extern __read_funct_t
-	wrap_read_filesystem(struct activity *);
-extern __read_funct_t
-	wrap_read_fchost(struct activity *);
+__read_funct_t wrap_read_stat_cpu
+	(struct activity *);
+__read_funct_t wrap_read_stat_pcsw
+	(struct activity *);
+__read_funct_t wrap_read_stat_irq
+	(struct activity *);
+__read_funct_t wrap_read_swap
+	(struct activity *);
+__read_funct_t wrap_read_paging
+	(struct activity *);
+__read_funct_t wrap_read_io
+	(struct activity *);
+__read_funct_t wrap_read_meminfo
+	(struct activity *);
+__read_funct_t wrap_read_kernel_tables
+	(struct activity *);
+__read_funct_t wrap_read_loadavg
+	(struct activity *);
+__read_funct_t wrap_read_tty_driver_serial
+	(struct activity *);
+__read_funct_t wrap_read_disk
+	(struct activity *);
+__read_funct_t wrap_read_net_dev
+	(struct activity *);
+__read_funct_t wrap_read_net_edev
+	(struct activity *);
+__read_funct_t wrap_read_net_nfs
+	(struct activity *);
+__read_funct_t wrap_read_net_nfsd
+	(struct activity *);
+__read_funct_t wrap_read_net_sock
+	(struct activity *);
+__read_funct_t wrap_read_net_ip
+	(struct activity *);
+__read_funct_t wrap_read_net_eip
+	(struct activity *);
+__read_funct_t wrap_read_net_icmp
+	(struct activity *);
+__read_funct_t wrap_read_net_eicmp
+	(struct activity *);
+__read_funct_t wrap_read_net_tcp
+	(struct activity *);
+__read_funct_t wrap_read_net_etcp
+	(struct activity *);
+__read_funct_t wrap_read_net_udp
+	(struct activity *);
+__read_funct_t wrap_read_net_sock6
+	(struct activity *);
+__read_funct_t wrap_read_net_ip6
+	(struct activity *);
+__read_funct_t wrap_read_net_eip6
+	(struct activity *);
+__read_funct_t wrap_read_net_icmp6
+	(struct activity *);
+__read_funct_t wrap_read_net_eicmp6
+	(struct activity *);
+__read_funct_t wrap_read_net_udp6
+	(struct activity *);
+__read_funct_t wrap_read_cpuinfo
+	(struct activity *);
+__read_funct_t wrap_read_fan
+	(struct activity *);
+__read_funct_t wrap_read_temp
+	(struct activity *);
+__read_funct_t wrap_read_in
+	(struct activity *);
+__read_funct_t wrap_read_meminfo_huge
+	(struct activity *);
+__read_funct_t wrap_read_time_in_state
+	(struct activity *);
+__read_funct_t wrap_read_bus_usb_dev
+	(struct activity *);
+__read_funct_t wrap_read_filesystem
+	(struct activity *);
+__read_funct_t wrap_read_fchost
+	(struct activity *);
 
 /* Other functions */
-extern void
-	allocate_bitmaps(struct activity * []);
-extern void
-	allocate_structures(struct activity * []);
-extern int
-	check_alt_sa_dir(char *, int, int);
-extern int
-	check_disk_reg(struct activity *, int, int, int);
-extern void
-	check_file_actlst(int *, char *, struct activity * [], struct file_magic *,
-			  struct file_header *, struct file_activity **,
-			  unsigned int [], int);
-extern unsigned int
-	check_net_dev_reg(struct activity *, int, int, unsigned int);
-extern unsigned int
-	check_net_edev_reg(struct activity *, int, int, unsigned int);
-extern double
-	compute_ifutil(struct stats_net_dev *, double, double);
-extern void
-	copy_structures(struct activity * [], unsigned int [],
-			struct record_header [], int, int);
-extern int
-	datecmp(struct tm *, struct tstamp *);
-extern void
-	display_sa_file_version(FILE *, struct file_magic *);
-extern void
-	enum_version_nr(struct file_magic *);
-extern void
-	free_bitmaps(struct activity * []);
-extern void
-	free_structures(struct activity * []);
-extern int
-	get_activity_nr(struct activity * [], unsigned int, int);
-extern int
-	get_activity_position(struct activity * [], unsigned int, int);
-extern char *
-	get_devname(unsigned int, unsigned int, int);
-extern void
-	get_file_timestamp_struct(unsigned int, struct tm *, struct file_header *);
-extern void
-	get_itv_value(struct record_header *, struct record_header *,
-		      unsigned int, unsigned long long *, unsigned long long *);
-extern void
-	handle_invalid_sa_file(int *, struct file_magic *, char *, int);
-extern int
-	next_slice(unsigned long long, unsigned long long, int, long);
-extern int
-	parse_sar_opt(char * [], int *, struct activity * [], unsigned int *, int);
-extern int
-	parse_sar_I_opt(char * [], int *, struct activity * []);
-extern int
-	parse_sa_P_opt(char * [], int *, unsigned int *, struct activity * []);
-extern int
-	parse_sar_m_opt(char * [], int *, struct activity * []);
-extern int
-	parse_sar_n_opt(char * [], int *, struct activity * []);
-extern int
-	parse_timestamp(char * [], int *, struct tstamp *, const char *);
-extern void
-	print_report_hdr(unsigned int, struct tm *, struct file_header *, int);
-extern void
-	print_sar_comment(int *, int, char *, char *, int, char *, struct file_header *);
-extern void
-	print_sar_restart(int *, int, char *, char *, int, struct file_header *,
-			  unsigned int);
-extern int
-	print_special_record(struct record_header *, unsigned int,
-			     struct tstamp *, struct tstamp *, int, int,
-			     struct tm *, struct tm *, char *, int,
-			     struct file_magic *, struct file_header *,
-			     struct activity * [], struct report_format *);
-extern void
-	read_file_stat_bunch(struct activity * [], int, int, int, struct file_activity *);
-extern __nr_t
-	read_vol_act_structures(int, struct activity * [], char *, struct file_magic *,
-			        unsigned int);
-extern int
-	reallocate_vol_act_structures(struct activity * [], unsigned int, unsigned int);
-extern void
-	replace_nonprintable_char(int, char *);
-extern int
-	sa_fread(int, void *, int, int);
-extern int
-	sa_get_record_timestamp_struct(unsigned int, struct record_header *,
-				       struct tm *, struct tm *);
-extern int
-	sa_open_read_magic(int *, char *, struct file_magic *, int);
-extern void
-	select_all_activities(struct activity * []);
-extern void
-	select_default_activity(struct activity * []);
-extern void
-	set_bitmap(unsigned char [], unsigned char, unsigned int);
-extern void
-	set_default_file(char *, int, int);
-extern void
-	set_hdr_rectime(unsigned int, struct tm *, struct file_header *);
-extern void
-	set_record_timestamp_string(unsigned int, struct record_header *,
-				    char *, char *, int, struct tm *);
+void allocate_bitmaps
+	(struct activity * []);
+void allocate_structures
+	(struct activity * []);
+int check_alt_sa_dir
+	(char *, int, int);
+int check_disk_reg
+	(struct activity *, int, int, int);
+void check_file_actlst
+	(int *, char *, struct activity * [], struct file_magic *, struct file_header *,
+	 struct file_activity **, unsigned int [], int);
+unsigned int check_net_dev_reg
+	(struct activity *, int, int, unsigned int);
+unsigned int check_net_edev_reg
+	(struct activity *, int, int, unsigned int);
+double compute_ifutil
+	(struct stats_net_dev *, double, double);
+void copy_structures
+	(struct activity * [], unsigned int [],	struct record_header [], int, int);
+int datecmp
+	(struct tm *, struct tstamp *);
+void display_sa_file_version
+	(FILE *, struct file_magic *);
+void enum_version_nr
+	(struct file_magic *);
+void free_bitmaps
+	(struct activity * []);
+void free_structures
+	(struct activity * []);
+int get_activity_nr
+	(struct activity * [], unsigned int, int);
+int get_activity_position
+	(struct activity * [], unsigned int, int);
+char *get_devname
+	(unsigned int, unsigned int, int);
+void get_file_timestamp_struct
+	(unsigned int, struct tm *, struct file_header *);
+void get_itv_value
+	(struct record_header *, struct record_header *, unsigned int,
+	 unsigned long long *, unsigned long long *);
+void handle_invalid_sa_file
+	(int *, struct file_magic *, char *, int);
+int next_slice
+	(unsigned long long, unsigned long long, int, long);
+int parse_sar_opt
+	(char * [], int *, struct activity * [], unsigned int *, int);
+int parse_sar_I_opt
+	(char * [], int *, struct activity * []);
+int parse_sa_P_opt
+	(char * [], int *, unsigned int *, struct activity * []);
+int parse_sar_m_opt
+	(char * [], int *, struct activity * []);
+int parse_sar_n_opt
+	(char * [], int *, struct activity * []);
+int parse_timestamp
+	(char * [], int *, struct tstamp *, const char *);
+void print_report_hdr
+	(unsigned int, struct tm *, struct file_header *, int);
+void print_sar_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
+void print_sar_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+int print_special_record
+	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
+	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,
+	 struct file_header *, struct activity * [], struct report_format *);
+void read_file_stat_bunch
+	(struct activity * [], int, int, int, struct file_activity *);
+__nr_t read_vol_act_structures
+	(int, struct activity * [], char *, struct file_magic *, unsigned int);
+int reallocate_vol_act_structures
+	(struct activity * [], unsigned int, unsigned int);
+void replace_nonprintable_char
+	(int, char *);
+int sa_fread
+	(int, void *, int, int);
+int sa_get_record_timestamp_struct
+	(unsigned int, struct record_header *, struct tm *, struct tm *);
+int sa_open_read_magic
+	(int *, char *, struct file_magic *, int);
+void select_all_activities
+	(struct activity * []);
+void select_default_activity
+	(struct activity * []);
+void set_bitmap
+	(unsigned char [], unsigned char, unsigned int);
+void set_default_file
+	(char *, int, int);
+void set_hdr_rectime
+	(unsigned int, struct tm *, struct file_header *);
+void set_record_timestamp_string
+	(unsigned int, struct record_header *, char *, char *, int, struct tm *);
 
 #endif  /* _SA_H */

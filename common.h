@@ -206,66 +206,66 @@ struct ext_disk_stats {
  ***************************************************************************
  */
 
-extern void
-	compute_ext_disk_stats(struct stats_disk *, struct stats_disk *,
-			       unsigned long long, struct ext_disk_stats *);
-extern int
-	count_bits(void *, int);
-extern int
-	count_csvalues(int, char **);
-extern void
-	cprintf_f(int, int, int, ...);
-extern void
-	cprintf_in(int, char *, char *, int);
-extern void
-	cprintf_pc(int, int, int, ...);
-extern void
-	cprintf_s(int, char *, char *);
-extern void
-	cprintf_u64(int, int, ...);
-extern void
-	cprintf_x(int, int, ...);
-extern char *
-	device_name(char *);
-extern void
-	get_HZ(void);
-extern unsigned int
-	get_devmap_major(void);
-extern unsigned long long
-	get_interval(unsigned long long, unsigned long long);
-extern void
-	get_kb_shift(void);
-extern time_t
-	get_localtime(struct tm *, int);
-extern time_t
-	get_time(struct tm *, int);
-unsigned long long
-	get_per_cpu_interval(struct stats_cpu *, struct stats_cpu *);
-extern char *
-	get_persistent_name_from_pretty(char *);
-extern char *
-	get_persistent_type_dir(char *);
-extern char *
-	get_pretty_name_from_persistent(char *);
-extern int
-	get_sysfs_dev_nr(int);
-extern int
-	get_win_height(void);
-extern void
-	init_colors(void);
-extern void
-	init_nls(void);
-extern int
-	is_device(char *, int);
-extern double
-	ll_sp_value(unsigned long long, unsigned long long, unsigned long long);
-extern int
-	print_gal_header(struct tm *, char *, char *, char *, char *, int);
-extern void
-	print_version(void);
-extern char *
-	strtolower(char *);
-extern void
-	sysstat_panic(const char *, int);
+void compute_ext_disk_stats
+	(struct stats_disk *, struct stats_disk *, unsigned long long,
+	 struct ext_disk_stats *);
+int count_bits
+	(void *, int);
+int count_csvalues
+	(int, char **);
+void cprintf_f
+	(int, int, int, ...);
+void cprintf_in
+	(int, char *, char *, int);
+void cprintf_pc
+	(int, int, int, ...);
+void cprintf_s
+	(int, char *, char *);
+void cprintf_u64
+	(int, int, ...);
+void cprintf_x
+	(int, int, ...);
+char *device_name
+	(char *);
+void get_HZ
+	(void);
+unsigned int get_devmap_major
+	(void);
+unsigned long long get_interval
+	(unsigned long long, unsigned long long);
+void get_kb_shift
+	(void);
+time_t get_localtime
+	(struct tm *, int);
+time_t get_time
+	(struct tm *, int);
+unsigned long long get_per_cpu_interval
+	(struct stats_cpu *, struct stats_cpu *);
+char *get_persistent_name_from_pretty
+	(char *);
+char *get_persistent_type_dir
+	(char *);
+char *get_pretty_name_from_persistent
+	(char *);
+int get_sysfs_dev_nr
+	(int);
+int get_win_height
+	(void);
+void init_colors
+	(void);
+void init_nls
+	(void);
+int is_device
+	(char *, int);
+double ll_sp_value
+	(unsigned long long, unsigned long long, unsigned long long);
+int print_gal_header
+	(struct tm *, char *, char *, char *, char *, int);
+void print_version
+	(void);
+char *strtolower
+	(char *);
+void sysstat_panic
+	(const char *, int);
 
 #endif  /* _COMMON_H */
