@@ -510,7 +510,6 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			if (format == F_JSON_OUTPUT) {
 				/* JSON output */
 				if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
-					printf(",");
 
 					if (*fmt[f_position]->f_timestamp) {
 						(*fmt[f_position]->f_timestamp)(&tab, F_MAIN, cur_date, cur_time,

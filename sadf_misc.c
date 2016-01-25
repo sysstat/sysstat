@@ -582,7 +582,7 @@ __tm_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
 			 cur_date, cur_time, utc ? 1 : 0, itv);
 	}
 	if (action & F_MAIN) {
-		printf("\n");
+		printf(",\n");
 	}
 	if (action & F_END) {
 		printf("\n");
