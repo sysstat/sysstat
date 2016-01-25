@@ -35,7 +35,7 @@
 #define _(string) (string)
 #endif
 
-static char *seps[] =  {"\t", ";"};
+char *seps[] =  {"\t", ";"};
 
 extern unsigned int flags;
 extern unsigned int dm_major;

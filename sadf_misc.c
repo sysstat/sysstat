@@ -34,6 +34,7 @@
 #endif
 
 extern unsigned int flags;
+extern char *seps[];
 
 /*
  ***************************************************************************
@@ -427,7 +428,6 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 {
 	int isdb = (fmt == F_DB_OUTPUT);
 	static char pre[80];
-	static char *seps[] =  {"\t", ";"};
 	char temp[80];
 
 	/* This substring appears on every output line, preformat it here */
