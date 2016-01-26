@@ -2178,6 +2178,12 @@ __print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
 	struct stats_fchost *sfcc, *sfcp;
 	int sep = FALSE;
 
+	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+		goto close_json_markup;
+
+	json_markup_network(tab, OPEN_JSON_MARKUP);
+	tab++;
+
 	xprintf(tab++, "\"fchosts\": [");
 
 	for (i = 0; i < a->nr; i++) {
@@ -2207,4 +2213,11 @@ __print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
 
 	printf("\n");
 	xprintf0(--tab, "]");
+
+	tab --;
+
+close_json_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		json_markup_network(tab, CLOSE_JSON_MARKUP);
+	}
 }
