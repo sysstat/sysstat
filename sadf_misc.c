@@ -803,3 +803,38 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
 		}
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display the header of the report (SVG format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @dfile	Name of system activity data file (unused here).
+ * @file_magic	System activity file magic header (unused here).
+ * @file_hdr	System activity file standard header (unused here).
+ * @cpu_nr	Number of processors for current daily data file (unused here).
+ * @act		Array of activities (unused here).
+ * @id_seq	Activity sequence (unused here).
+ ***************************************************************************
+ */
+__printf_funct_t print_svg_header(int *tab, int action, char *dfile,
+				  struct file_magic *file_magic,
+				  struct file_header *file_hdr, __nr_t cpu_nr,
+				  struct activity *act[], unsigned int id_seq[])
+{
+	if (action & F_BEGIN) {
+		printf("<?xml version=\"1.0\"?>\n");
+		printf("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" ");
+		printf("\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+		printf("<svg xmlns=\"http://www.w3.org/2000/svg\"");
+		if (action & F_END) {
+			printf(">\n");
+		}
+	}
+
+	if (action & F_END) {
+		printf("</svg>\n");
+	}
+}
