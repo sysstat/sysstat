@@ -2036,15 +2036,15 @@ double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 		if (st_net_dev->duplex == C_DUPLEX_FULL) {
 			/* Full duplex */
 			if (rx > tx) {
-				return (rx * 800 / speed);
+				return (rx * 8000 / speed);
 			}
 			else {
-				return (tx * 800 / speed);
+				return (tx * 8000 / speed);
 			}
 		}
 		else {
 			/* Half duplex */
-			return ((rx + tx) * 800 / speed);
+			return ((rx + tx) * 8000 / speed);
 		}
 	}
 
