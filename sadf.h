@@ -19,6 +19,7 @@
 #define IGNORE_RESTART		1
 #define DONT_READ_VOLATILE	2
 #define IGNORE_COMMENT		4
+#define SET_TIMESTAMPS		8
 
 /*
  ***************************************************************************
