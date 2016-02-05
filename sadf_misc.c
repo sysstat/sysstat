@@ -809,7 +809,7 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
  * Display the header of the report (SVG format).
  *
  * IN:
- * @tab		Number of tabulations (unused here).
+ * @graph_nr	Total number of graphs to display.
  * @action	Action expected from current function.
  * @dfile	Name of system activity data file (unused here).
  * @file_magic	System activity file magic header (unused here).
@@ -819,7 +819,7 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
  * @id_seq	Activity sequence (unused here).
  ***************************************************************************
  */
-__printf_funct_t print_svg_header(int *tab, int action, char *dfile,
+__printf_funct_t print_svg_header(int *graph_nr, int action, char *dfile,
 				  struct file_magic *file_magic,
 				  struct file_header *file_hdr, __nr_t cpu_nr,
 				  struct activity *act[], unsigned int id_seq[])
@@ -832,6 +832,12 @@ __printf_funct_t print_svg_header(int *tab, int action, char *dfile,
 		if (action & F_END) {
 			printf(">\n");
 		}
+	}
+
+	if (action & F_MAIN) {
+		printf(" width=\"%d\" height=\"%d\""
+		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
+		       SVG_V_XSIZE, SVG_T_YSIZE * (*graph_nr));
 	}
 
 	if (action & F_END) {
