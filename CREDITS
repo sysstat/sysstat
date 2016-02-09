@@ -9,7 +9,7 @@ The following people have contributed to 'sysstat' in one way or another:
 
 	  * Birko Bergt <birko.bergt [at] gmx.de> for his translation into
 	    German,
-	  * Fernando Félix Redondo <fernando.felix [at] rediris.es> for his
+	  * Fernando FÃ©lix Redondo <fernando.felix [at] rediris.es> for his
 	    translation into Spanish (now maintained by Muralito
 	    <muralito [at] montevideo.com.uy>),
 	  * Frederic L. W. Meunier <0 [at] pervalidus.net> for the
@@ -31,7 +31,7 @@ The following people have contributed to 'sysstat' in one way or another:
 	    Japanese.
 	  * Daniel Nylander <po [at] danielnylander.se> for the Swedish
 	    translation.
-	  * John Damm Sørensen <john [at] hovedpuden.dk> for the Danish
+	  * John Damm SÃ¸rensen <john [at] hovedpuden.dk> for the Danish
 	    translation.
 	  * Bram Schoenmakers <bramschoenmakers [at] kde.nl> for the Dutch
 	    translation.
@@ -129,10 +129,10 @@ The following people have contributed to 'sysstat' in one way or another:
 	to sysstat. Among them, he added some more power management
 	statistics to sar.
 
-	Alain Chéreau <cheralain [at] googlemail.com> added support for
+	Alain ChÃ©reau <cheralain [at] googlemail.com> added support for
 	disk groups statistics to iostat.
 
-	Cédric Marie <cedric.marie [at] openmailbox.org> sent me
+	CÃ©dric Marie <cedric.marie [at] openmailbox.org> sent me
 	several patches to improve pidstat.
 
 	Robert Elliott <Elliott [at] hp.com> contributed the irqtop
@@ -178,7 +178,7 @@ I would also thank the following people for their hints or bug reports
 	Don Harrop <don@swb[...].com>
 	Mark Harvey <markh794@gma[...].com>
 	Vasant Hegde <hegdevasant@lin[...].com>
-	Jürgen Heinemann <heinemann.juergen@hjc[...].de>
+	JÃ¼rgen Heinemann <heinemann.juergen@hjc[...].de>
 	Kei Ishida <ishida.kei@oss[...].jp>
 	Tatsuo Ito <tito@mir[...].com>
 	David S. Jackson <dsj@syl[...].net>
@@ -197,7 +197,7 @@ I would also thank the following people for their hints or bug reports
 	Neculai Macarie <macarie.neculai@nex[...].com>
 	Robert Macaulay <Robert_Macaulay@Del[...].com>
 	Pierre Machard <pmachard@deb[...].org>
-	Jérôme Marchand <jmarchan@red[...].com>
+	JÃ©rÃ´me Marchand <jmarchan@red[...].com>
 	Alan Matsuoka <alanm@red[...].com>
 	Rodney J. Mertz <rjm@elv[...].com>
 	Roy Millar <100044.14@com[...].com>
