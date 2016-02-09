@@ -182,8 +182,8 @@ I would also thank the following people for their hints or bug reports
 	Kei Ishida <ishida.kei@oss[...].jp>
 	Tatsuo Ito <tito@mir[...].com>
 	David S. Jackson <dsj@syl[...].net>
-	Erik Jacobson <erikj@sub[...].com>	
-	Jordan <ledzep37@hom[...].com>	
+	Erik Jacobson <erikj@sub[...].com>
+	Jordan <ledzep37@hom[...].com>
 	Jurriaan <thunder7@xs4[...].nl>
 	Jonathan Kamens <jik@kam[...].us>
 	Ilya Katsnelson <ilya.katsnelson@mot[...].com>
@@ -192,7 +192,7 @@ I would also thank the following people for their hints or bug reports
 	Mike Kobler <mkobler@gma[...].com>
 	John Lau <johnlcf@gma[...].com>
 	Byeong-taek Lee <btlee@psy[...].kr>
-	Ivo Letzas <letzas@for[...].nu>	
+	Ivo Letzas <letzas@for[...].nu>
 	Wayne Lin <wlin@mvi[...].com>
 	Neculai Macarie <macarie.neculai@nex[...].com>
 	Robert Macaulay <Robert_Macaulay@Del[...].com>
@@ -210,7 +210,7 @@ I would also thank the following people for their hints or bug reports
 	Muneyuki Noguchi <nogu.dev@gma[...].com>
 	Giulio Orsero <giulioo@pob[...].com>
 	Edouard G. Parmelan <edouard.parmelan@qua[...].fr>
-	Oliver Paukstadt <oliver.paukstadt@mil[...].com>	
+	Oliver Paukstadt <oliver.paukstadt@mil[...].com>
 	Plattner(?) <Plattner.external@inf[...].com>
 	Peter Portante <peter.a.portante@gma[...].com>
 	Gerardo Exequiel Pozzi <vmlinuz386@yah[...].ar>
@@ -232,7 +232,7 @@ I would also thank the following people for their hints or bug reports
 	Benno Schulenberg <bensberg@jus[...].net>
 	Michel Simoni <m_simoni@clu[...].fr>
 	Gabrielle Singleton <gelle@umi[...].edu>
-	Rod Skinner <rod.skinner@int[...].com>	
+	Rod Skinner <rod.skinner@int[...].com>
 	Kevin C. Smallwood <kcs@lin[...].com>
 	Dick Snippe <Dick.Snippe@tec[...].nl>
 	Alexis Solanas <alexis@red[...].com>
@@ -253,7 +253,6 @@ I would also thank the following people for their hints or bug reports
 	Peter Zaitsev <pz@spy[...].ru>
 	Zhen Zhang <furykerry@gma[...].com>
 
---	
+--
 Sebastien Godard (sysstat <at> orange.fr) is the author and the current
 maintainer of this package.
-
