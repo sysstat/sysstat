@@ -85,7 +85,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+			  "[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
@@ -239,16 +239,16 @@ void xprintf(int nr_tab, const char *fmtf, ...)
 
 /*
  ***************************************************************************
- * Read next sample statistics. If it's a special record (RESTART or COMMENT)
- * then display it if requested. Also fill timestamps structures.
+ * Read next sample statistics. If it's a special record (R_RESTART or
+ * R_COMMENT) then display it if requested. Also fill timestamps structures.
  *
  * IN:
  * @ifd		File descriptor
- * @action	Flags indicating if special records should be displayed or not.
+ * @action	Flags indicating if special records should be displayed or
+ * 		not.
  *
  * @curr	Index in array for current sample statistics.
  * @file	System activity data file name (name of file being read).
- * @rtype	Record type (RESTART, COMMENT, etc.)
  * @tab		Number of tabulations to print.
  * @file_actlst	List of (known or unknown) activities in file.
  * @file_magic	System activity file magic header.
@@ -259,11 +259,17 @@ void xprintf(int nr_tab, const char *fmtf, ...)
  *		saved for current record.
  *
  * OUT:
- * @rectime	Structure where timestamp (expressed in local time or in UTC
- *		depending on whether options -T/-t have been used or not) has
- *		been saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) has been
- *		saved for current record.
+ * @rtype       Type of record read (R_RESTART, R_COMMENT, etc.)
+ * @rectime     Structure where timestamp (expressed in local time or in UTC
+ *              depending on options used) has been saved for current record.
+ *              If current record was a special one (RESTART or COMMENT) and
+ *              noted to be ignored, then the timestamp is saved only if
+ *              explicitly told to do so with the SET_TIMESTAMPS action flag.
+ * @loctime     Structure where timestamp (expressed in local time) has been
+ *              saved for current record.
+ *              If current record was a special one (RESTART or COMMENT) and
+ *              noted to be ignored, then the timestamp is saved only if
+ *              explicitly told to do so with the SET_TIMESTAMPS action flag.
  *
  * RETURNS:
  * TRUE if end of file has been reached.
@@ -286,6 +292,10 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 				if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
 					perror("lseek");
 				}
+				if (action & SET_TIMESTAMPS) {
+					sa_get_record_timestamp_struct(flags, &record_hdr[curr],
+								       rectime, loctime);
+				}
 			}
 			else {
 				/* Display COMMENT record */
@@ -305,6 +315,10 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 				if (!(action & DONT_READ_VOLATILE)) {
 					read_vol_act_structures(ifd, act, file, file_magic,
 								file_hdr.sa_vol_act_nr);
+				}
+				if (action & SET_TIMESTAMPS) {
+					sa_get_record_timestamp_struct(flags, &record_hdr[curr],
+								       rectime, loctime);
 				}
 			}
 			else {
@@ -977,7 +991,20 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 
 /*
  ***************************************************************************
- * Read statistics from a system activity data file.
+ * Display file contents in selected format (logic #3).
+ * Logic #3:	Special logic for SVG output format.
+ * Formats:	SVG
+ ***************************************************************************
+ */
+void logic3_display_loop(void)
+{
+}
+
+/*
+ ***************************************************************************
+ * Check system activity datafile contents before displaying stats.
+ * Display file header if option -H has been entered, else call function
+ * corresponding to selected output format.
  *
  * IN:
  * @dfile	System activity data file name.
@@ -1011,7 +1038,11 @@ void read_stats_from_file(char dfile[])
 	/* Perform required allocations */
 	allocate_structures(act);
 
-	if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
+	/* Call function corresponding to selected output format */
+	if (format == F_SVG_OUTPUT) {
+		logic3_display_loop();
+	}
+	else if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
 		logic2_display_loop(ifd, file_actlst, cpu_nr,
 				    &rectime, &loctime, dfile, &file_magic);
 	}
@@ -1165,6 +1196,13 @@ int main(int argc, char **argv)
 							usage(argv[0]);
 						}
 						format = F_DB_OUTPUT;
+						break;
+
+					case 'g':
+						if (format) {
+							usage(argv[0]);
+						}
+						format = F_SVG_OUTPUT;
 						break;
 
 					case 'h':

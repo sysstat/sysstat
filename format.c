@@ -115,6 +115,19 @@ struct report_format conv_fmt = {
 };
 
 /*
+ * SVG output.
+ */
+struct report_format svg_fmt = {
+	.id		= F_SVG_OUTPUT,
+	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME,
+	.f_header	= print_svg_header,
+	.f_statistics	= NULL,
+	.f_timestamp	= NULL,
+	.f_restart	= NULL,
+	.f_comment	= NULL
+};
+
+/*
  * Array of output formats.
  */
 struct report_format *fmt[NR_FMT] = {
@@ -123,7 +136,8 @@ struct report_format *fmt[NR_FMT] = {
 	&ppc_fmt,
 	&xml_fmt,
 	&json_fmt,
-	&conv_fmt
+	&conv_fmt,
+	&svg_fmt
 };
 #endif
 

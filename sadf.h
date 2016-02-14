@@ -19,6 +19,7 @@
 #define IGNORE_RESTART		1
 #define DONT_READ_VOLATILE	2
 #define IGNORE_COMMENT		4
+#define SET_TIMESTAMPS		8
 
 /*
  ***************************************************************************
@@ -27,7 +28,7 @@
  */
 
 /* Number of output formats */
-#define NR_FMT	6
+#define NR_FMT	7
 
 /* Output formats */
 #define F_DB_OUTPUT	1
@@ -36,6 +37,7 @@
 #define F_XML_OUTPUT	4
 #define F_JSON_OUTPUT	5
 #define F_CONV_OUTPUT	6
+#define F_SVG_OUTPUT	7
 
 /* Format options */
 
@@ -108,6 +110,19 @@
 
 /*
  ***************************************************************************
+ * SVG output definitions
+ ***************************************************************************
+ */
+
+#define SVG_G_XSIZE	720
+#define SVG_V_XSIZE	900
+
+#define SVG_G_YSIZE	200
+#define SVG_V_YSIZE	300
+#define SVG_T_YSIZE	350
+
+/*
+ ***************************************************************************
  * Various function prototypes
  ***************************************************************************
  */
@@ -177,6 +192,9 @@ __printf_funct_t print_json_header
 	(int *, int, char *, struct file_magic *, struct file_header *,
 	 __nr_t, struct activity * [], unsigned int []);
 __printf_funct_t print_hdr_header
+	(int *, int, char *, struct file_magic *, struct file_header *,
+	 __nr_t, struct activity * [], unsigned int []);
+__printf_funct_t print_svg_header
 	(int *, int, char *, struct file_magic *, struct file_header *,
 	 __nr_t, struct activity * [], unsigned int []);
 

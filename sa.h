@@ -309,6 +309,11 @@
  * with options -r and -R.
  */
 #define AO_MULTIPLE_OUTPUTS	0x20
+/*
+ * Indicate that one (SVG) graph will be displayed for each
+ * distinct item for this activity (sadf -g).
+ */
+#define AO_GRAPH_PER_ITEM	0x40
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
@@ -316,6 +321,8 @@
 #define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
+#define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
+
 
 /* Type for all functions counting items */
 #define __nr_t		int
@@ -427,6 +434,12 @@ struct activity {
 	 * Name of activity.
 	 */
 	char *name;
+	/*
+	 * Number of SVG graphs for this activity. The total number of graphs for
+	 * the activity can be greater though if flag AO_GRAPH_PER_ITEM is set, in
+	 * which case the total number will  be @g_nr * @nr.
+	 */
+	int g_nr;
 	/*
 	 * Number of items on the system.
 	 * A negative value (-1) is the default value and indicates that this number
