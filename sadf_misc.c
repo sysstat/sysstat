@@ -813,8 +813,8 @@ __printf_funct_t print_hdr_header(int *tab, int action, char *dfile,
  * @action	Action expected from current function.
  * @dfile	Name of system activity data file (unused here).
  * @file_magic	System activity file magic header (unused here).
- * @file_hdr	System activity file standard header (unused here).
- * @cpu_nr	Number of processors for current daily data file (unused here).
+ * @file_hdr	System activity file standard header.
+ * @cpu_nr	Number of processors for current daily data file.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
  ***************************************************************************
@@ -837,7 +837,13 @@ __printf_funct_t print_svg_header(int *graph_nr, int action, char *dfile,
 	if (action & F_MAIN) {
 		printf(" width=\"%d\" height=\"%d\""
 		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
-		       SVG_V_XSIZE, SVG_T_YSIZE * (*graph_nr));
+		       SVG_V_XSIZE, SVG_H_YSIZE + SVG_T_YSIZE * (*graph_nr));
+		printf("<text x= \"0\" y=\"30\" text-anchror=\"start\" stroke=\"brown\">");
+		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
+				 file_hdr->sa_sysname, file_hdr->sa_release,
+				 file_hdr->sa_nodename, file_hdr->sa_machine,
+				 cpu_nr > 1 ? cpu_nr - 1 : 1);
+		printf("</text>\n");
 	}
 
 	if (action & F_END) {
