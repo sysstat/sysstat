@@ -834,6 +834,62 @@ struct report_format {
 
 /*
  ***************************************************************************
+ * SVG output definitions
+ ***************************************************************************
+ */
+
+/*
+ *   ^
+ * 1 | General header
+ *   v
+ *   ^   ^   ^
+ *   |   | 4 | Graph title
+ *   |   |   v
+ *   |   |   ^    |                                Caption
+ *   | 3 |   |    |
+ *   |   |   |  G |Y
+ * 2 |   | 5 |  r |
+ *   |   |   |  a |A
+ *   |   |   |  d |x
+ *   |   |   |  . |i
+ *   |   |   |    |s          X Axis
+ *   |   |   v    |-------------------------------
+ *   |   |              Grad.
+ *   |   v   <---><------------------------------>
+ *   |         6                8
+ *   | Gap
+ *   v<--------------------------------------------------------------->
+ *                                    7
+ */
+
+/* #8 */
+#define SVG_G_XSIZE	720
+/* #6 */
+#define SVG_M_XSIZE	50
+/* #7 */
+#define SVG_V_XSIZE	1000
+
+/* #5 */
+#define SVG_G_YSIZE	200
+/* #1 */
+#define SVG_H_YSIZE	50
+/* #4 */
+#define SVG_M_YSIZE	50
+/* #2 */
+#define SVG_T_YSIZE	310
+/* #3 */
+#define SVG_V_YSIZE	300
+
+/* Grid: Nr of horizontal lines */
+#define SVG_H_GRIDNR	3
+/* Grid: Nr of vertical lines */
+#define SVG_V_GRIDNR	10
+
+/* Block size used to allocate arrays for graphs data */
+#define CHUNKSIZE	4096
+
+/*
+ ***************************************************************************
  * Macro functions definitions.
  *
  * Note: Using 'do ... while' makes the macros safer to use

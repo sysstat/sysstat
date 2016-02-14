@@ -108,18 +108,6 @@
 #define DISPLAY_FIELD_LIST(m)		(((m) & FO_FIELD_LIST)		== FO_FIELD_LIST)
 #define TEST_MARKUP(m)			(((m) & FO_TEST_MARKUP)		== FO_TEST_MARKUP)
 
-/*
- ***************************************************************************
- * SVG output definitions
- ***************************************************************************
- */
-
-#define SVG_G_XSIZE	720
-#define SVG_V_XSIZE	900
-
-#define SVG_G_YSIZE	200
-#define SVG_V_YSIZE	300
-#define SVG_T_YSIZE	350
 
 /*
  ***************************************************************************
