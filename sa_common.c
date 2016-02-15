@@ -2136,9 +2136,9 @@ void replace_nonprintable_char(int ifd, char *comment)
  * OUT:
  * @rectime	Structure where timestamp for current record has been saved
  * 		(in local time or in UTC depending on options used).
- * @loctime	Structure where timestamp for current record has been saved
- * 		(expressed in local time). This field will be used for time
- * 		comparison if options -s and/or -e have been used.
+ * @loctime	If given, structure where timestamp for current record has
+ * 		been saved (expressed in local time). This field will be used
+ * 		for time comparison if options -s and/or -e have been used.
  *
  * RETURNS:
  * 1 if an error was detected, or 0 otherwise.
