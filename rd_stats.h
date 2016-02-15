@@ -77,6 +77,10 @@
  ***************************************************************************
  */
 
+#define ULL_ALIGNMENT_WIDTH 16
+#define UL_ALIGNMENT_WIDTH 8
+#define U_ALIGNMENT_WIDTH 4
+
 /*
  * Structure for CPU statistics.
  * In activity buffer: First structure is for global CPU utilisation ("all").
