@@ -99,6 +99,12 @@
  */
 #define FO_TEST_MARKUP		0x80
 
+/*
+ * Indicate that timestamp cannot be displayed in the original local time
+ * of the data file creator.
+ */
+#define FO_NO_TRUE_TIME		0x100
+
 #define DISPLAY_GROUPED_STATS(m)	(((m) & FO_GROUPED_STATS)	== FO_GROUPED_STATS)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
@@ -107,6 +113,7 @@
 #define ACCEPT_SEC_EPOCH(m)		(((m) & FO_SEC_EPOCH)		== FO_SEC_EPOCH)
 #define DISPLAY_FIELD_LIST(m)		(((m) & FO_FIELD_LIST)		== FO_FIELD_LIST)
 #define TEST_MARKUP(m)			(((m) & FO_TEST_MARKUP)		== FO_TEST_MARKUP)
+#define REJECT_TRUE_TIME(m)		(((m) & FO_NO_TRUE_TIME)	== FO_NO_TRUE_TIME)
 
 
 /*
