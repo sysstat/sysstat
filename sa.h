@@ -803,7 +803,7 @@ struct report_format {
 	 * This function displays the report header
 	 * (data displayed once at the beginning of the report).
 	 */
-	__printf_funct_t (*f_header) (int *, int, char *, struct file_magic *, struct file_header *,
+	__printf_funct_t (*f_header) (void *, int, char *, struct file_magic *, struct file_header *,
 				      __nr_t, struct activity * [], unsigned int []);
 	/*
 	 * This function defines the statistics part of the report.
@@ -814,7 +814,7 @@ struct report_format {
 	 * This function defines the timestamp part of the report.
 	 * Used only with textual (XML-like) reports.
 	 */
-	__tm_funct_t (*f_timestamp) (int *, int, char *, char *, unsigned long long,
+	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, unsigned long long,
 				     struct file_header *, unsigned int);
 	/*
 	 * This function displays the restart messages.

@@ -407,7 +407,10 @@ void list_fields(unsigned int act_id)
 
 /*
  ***************************************************************************
- * Display activity records for various formats.
+ * Display *one* sample of statistics for one or several activities,
+ * checking that all conditions are met before printing (time start, time
+ * end, interval). Current record should be a record of statistics (R_STATS),
+ * not a special one (R_RESTART or R_COMMENT).
  *
  * IN:
  * @curr		Index in array for current sample statistics.
@@ -415,7 +418,8 @@ void list_fields(unsigned int act_id)
  * @use_tm_end		Set to TRUE if option -e has been used.
  * @reset		Set to TRUE if last_uptime should be reinitialized
  *			(used in next_slice() function).
- * @tab			Number of tabulations to print.
+ * @parm		Pointer on parameters depending on output format
+ * 			(eg.: number of tabulations to print).
  * @cpu_nr		Number of processors.
  * @rectime		Structure where timestamp (expressed in local time
  *			or in UTC depending on whether options -T/-t have
@@ -436,7 +440,7 @@ void list_fields(unsigned int act_id)
  ***************************************************************************
  */
 int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
-			long *cnt, int tab, __nr_t cpu_nr, struct tm *rectime,
+			long *cnt, void *parm, __nr_t cpu_nr, struct tm *rectime,
 			struct tm *loctime, int reset_cd, unsigned int act_id)
 {
 	int i;
@@ -508,7 +512,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				    cur_date, cur_time, 32, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
-		pre = (char *) (*fmt[f_position]->f_timestamp)(&tab, F_BEGIN, cur_date, cur_time,
+		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time,
 							       dt, &file_hdr, flags);
 	}
 
@@ -523,20 +527,24 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 			if (format == F_JSON_OUTPUT) {
 				/* JSON output */
+				int *tab = (int *) parm;
+
 				if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 
 					if (*fmt[f_position]->f_timestamp) {
-						(*fmt[f_position]->f_timestamp)(&tab, F_MAIN, cur_date, cur_time,
+						(*fmt[f_position]->f_timestamp)(tab, F_MAIN, cur_date, cur_time,
 										dt, &file_hdr, flags);
 					}
 				}
-				(*act[i]->f_json_print)(act[i], curr, tab, NEED_GLOBAL_ITV(act[i]->options) ?
+				(*act[i]->f_json_print)(act[i], curr, *tab, NEED_GLOBAL_ITV(act[i]->options) ?
 							g_itv : itv);
 			}
 
 			else if (format == F_XML_OUTPUT) {
 				/* XML output */
-				(*act[i]->f_xml_print)(act[i], curr, tab, NEED_GLOBAL_ITV(act[i]->options) ?
+				int *tab = (int *) parm;
+
+				(*act[i]->f_xml_print)(act[i], curr, *tab, NEED_GLOBAL_ITV(act[i]->options) ?
 						       g_itv : itv);
 			}
 
@@ -549,7 +557,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	}
 
 	if (*fmt[f_position]->f_timestamp) {
-		(*fmt[f_position]->f_timestamp)(&tab, F_END, cur_date, cur_time,
+		(*fmt[f_position]->f_timestamp)(parm, F_END, cur_date, cur_time,
 						dt, &file_hdr, flags);
 	}
 
@@ -620,13 +628,13 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
-						   0, cpu_nr, rectime, loctime, reset_cd, act_id);
+						   NULL, cpu_nr, rectime, loctime, reset_cd, act_id);
 			reset_cd = 0;
 
 			if (next) {
 				/*
 				 * next is set to 1 when we were close enough to desired interval.
-				 * In this case, the call to logic2_write_stats() has actually
+				 * In this case, the call to generic_write_stats() has actually
 				 * displayed a line of stats.
 				 */
 				*curr ^= 1;
@@ -761,7 +769,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 
 					/* next is set to 1 when we were close enough to desired interval */
 					next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
-								  &cnt, tab, cpu_nr, rectime, loctime,
+								  &cnt, &tab, cpu_nr, rectime, loctime,
 								  FALSE, ALL_ACTIVITIES);
 
 					if (next) {

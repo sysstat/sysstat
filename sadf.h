@@ -162,28 +162,28 @@ __printf_funct_t print_json_statistics
  * Prototypes used to display the timestamp part of the report
  */
 __tm_funct_t print_db_timestamp
-	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 __tm_funct_t print_ppc_timestamp
-	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 __tm_funct_t print_xml_timestamp
-	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 __tm_funct_t print_json_timestamp
-	(int *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display the report header
  */
 __printf_funct_t print_xml_header
-	(int *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, struct file_magic *, struct file_header *,
 	 __nr_t, struct activity * [], unsigned int []);
 __printf_funct_t print_json_header
-	(int *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, struct file_magic *, struct file_header *,
 	 __nr_t, struct activity * [], unsigned int []);
 __printf_funct_t print_hdr_header
-	(int *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, struct file_magic *, struct file_header *,
 	 __nr_t, struct activity * [], unsigned int []);
 __printf_funct_t print_svg_header
-	(int *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, struct file_magic *, struct file_header *,
 	 __nr_t, struct activity * [], unsigned int []);
 
 #endif  /* _SADF_H */
