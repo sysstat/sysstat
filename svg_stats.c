@@ -401,6 +401,11 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 			       *(spmin + i), *(spmax + i));
 
 			out_p = *(out + i);
+			/* Translate to proper position for current graph within current activity */
+			printf("<g transform=\"translate(%d,%d)\">\n",
+			       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
+
+			/* Grid */
 			if (*(spmax + i) == 0) {
 				/* If all values are zero then set current max value to 1 */
 				lmax = 1.0;
@@ -408,11 +413,6 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 			else {
 				lmax = *(spmax + i);
 			}
-			/* Translate to proper position for current graph within current activity */
-			printf("<g transform=\"translate(%d,%d)\">\n",
-			       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
-			
-			/* Grid */
 			ypos = ygrid(*(spmax + i), &dp);
 			yfactor = (double) -SVG_G_YSIZE / lmax;
 			j = 1;
@@ -422,7 +422,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 				       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
 				j++;
 			}
-			while (ypos * j <= *(spmax + i));
+			while (ypos * j <= lmax);
 			j = 0;
 			do {
 				printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
@@ -430,7 +430,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 				       (long) (ypos * j * yfactor), dp, ypos * j);
 				j++;
 			}
-			while (ypos * j <= *(spmax + i));
+			while (ypos * j <= lmax);
 
 			k = xgrid(svg_p->record_hdr->ust_time, record_hdr->ust_time);
 			xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
