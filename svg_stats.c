@@ -251,17 +251,28 @@ void lnappend(unsigned long timetag, double value, char **out, int *outsize, int
  * IN:
  * @lmax	Max value reached for this graph.
  *
+ * OUT:
+ * @dp		Number of decimal places for Y graduations.
+ *
  * RETURNS:
  * Value between two horizontal lines.
  ***************************************************************************
  */
-long int ygrid(double lmax)
+double ygrid(double lmax, int *dp)
 {
 	char val[32];
 	int l, i, e = 1;
-	long n;
-	
+	long n = 0;
+
+	*dp = 0;
+	if (lmax == 0) {
+		lmax = 1;
+	}
 	n = (long) (lmax / SVG_H_GRIDNR);
+	if (!n) {
+		*dp = 2;
+		return (lmax / SVG_H_GRIDNR);
+	}
 	snprintf(val, 32, "%ld", n);
 	val[31] = '\0';
 	l = strlen(val);
@@ -270,7 +281,7 @@ long int ygrid(double lmax)
 	for (i = 1; i < l; i++) {
 		e = e * 10;
 	}
-	return ((long) ((n / e)) * e);
+	return ((double) (((long) (n / e)) * e));
 }
 
 /*
@@ -320,9 +331,9 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 	static char **out;
 	char *out_p;
 	static int *outsize;
-	int i, j;
+	int i, j, dp;
 	long int k;
-	double lmax, xfactor, yfactor;
+	double lmax, xfactor, yfactor, ypos;
 	char cur_time[32];
 
 	if (action & F_BEGIN) {
@@ -402,18 +413,24 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 			       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
 			
 			/* Grid */
-			k = ygrid(*(spmax + i));
+			ypos = ygrid(*(spmax + i), &dp);
 			yfactor = (double) -SVG_G_YSIZE / lmax;
-			for (j = 1; j <= SVG_H_GRIDNR; j++) {
-				printf("<polyline points=\"0,%ld %d,%ld\" vector-effect=\"non-scaling-stroke\" "
+			j = 1;
+			do {
+				printf("<polyline points=\"0,%.2f %d,%.2f\" vector-effect=\"non-scaling-stroke\" "
 				       "stroke=\"#202020\" transform=\"scale(1,%f)\"/>\n",
-				       k * j, SVG_G_XSIZE, k * j, yfactor);
+				       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
+				j++;
 			}
-			for (j = 0; j <= SVG_H_GRIDNR; j++) {
+			while (ypos * j <= *(spmax + i));
+			j = 0;
+			do {
 				printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
-				       "text-anchor: end\">%ld.</text>\n",
-				       (long) (k * j * yfactor), k * j);
+				       "text-anchor: end\">%.*f.</text>\n",
+				       (long) (ypos * j * yfactor), dp, ypos * j);
+				j++;
 			}
+			while (ypos * j <= *(spmax + i));
 
 			k = xgrid(svg_p->record_hdr->ust_time, record_hdr->ust_time);
 			xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
