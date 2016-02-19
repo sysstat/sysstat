@@ -174,6 +174,10 @@ void check_format_options(void)
 		/* Remove option -U */
 		flags &= ~S_F_SEC_EPOCH;
 	}
+	if (REJECT_TRUE_TIME(fmt[f_position]->options)) {
+		/* Remove option -t */
+		flags &= ~S_F_TRUE_TIME;
+	}
 }
 
 /*
@@ -285,7 +289,6 @@ void sr_act_nr(__nr_t save_act_nr[], int action)
  * @ifd		File descriptor
  * @action	Flags indicating if special records should be displayed or
  * 		not.
- *
  * @curr	Index in array for current sample statistics.
  * @file	System activity data file name (name of file being read).
  * @tab		Number of tabulations to print.
@@ -298,17 +301,17 @@ void sr_act_nr(__nr_t save_act_nr[], int action)
  *		saved for current record.
  *
  * OUT:
- * @rtype       Type of record read (R_RESTART, R_COMMENT, etc.)
- * @rectime     Structure where timestamp (expressed in local time or in UTC
- *              depending on options used) has been saved for current record.
- *              If current record was a special one (RESTART or COMMENT) and
- *              noted to be ignored, then the timestamp is saved only if
- *              explicitly told to do so with the SET_TIMESTAMPS action flag.
- * @loctime     Structure where timestamp (expressed in local time) has been
- *              saved for current record.
- *              If current record was a special one (RESTART or COMMENT) and
- *              noted to be ignored, then the timestamp is saved only if
- *              explicitly told to do so with the SET_TIMESTAMPS action flag.
+ * @rtype	Type of record read (R_RESTART, R_COMMENT, etc.)
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on options used) has been saved for current record.
+ *		If current record was a special one (RESTART or COMMENT) and
+ *		noted to be ignored, then the timestamp is saved only if
+ *		explicitly told to do so with the SET_TIMESTAMPS action flag.
+ * @loctime	Structure where timestamp (expressed in local time) has been
+ *		saved for current record.
+ *		If current record was a special one (RESTART or COMMENT) and
+ *		noted to be ignored, then the timestamp is saved only if
+ *		explicitly told to do so with the SET_TIMESTAMPS action flag.
  *
  * RETURNS:
  * TRUE if end of file has been reached.
@@ -711,6 +714,15 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 						       g_itv : itv);
 			}
 
+			else if (format == F_SVG_OUTPUT) {
+				/* SVG output */
+				struct svg_parm *svg_p = (struct svg_parm *) parm;
+
+				(*act[i]->f_svg_print)(act[i], curr, F_MAIN, svg_p,
+						       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv,
+						       &record_hdr[curr]);
+			}
+
 			else {
 				/* Other output formats: db, ppc */
 				(*act[i]->f_render)(act[i], (format == F_DB_OUTPUT), pre, curr,
@@ -811,6 +823,123 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 	while (*cnt && !*eosaf && (rtype != R_RESTART));
 
 	*reset = TRUE;
+}
+
+/*
+ ***************************************************************************
+ * Read stats for current activity from file and display its SVG graphs.
+ * At most <count> lines of stats are taken into account.
+ *
+ * IN:
+ * @ifd		File descriptor of input file.
+ * @fpos	Position in file where reading must start.
+ * @curr	Index in array for current sample statistics.
+ * @p		Current activity position.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @cpu_nr	Number of processors for current activity data file.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) can
+ *		be saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time) can be
+ *		saved for current record.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @save_act_nr	Array where the number of volatile activities are saved
+ *		for current position in file.
+ * @g_nr	Number of graphs already displayed (for all activities).
+ *
+ * OUT:
+ * @cnt		Number of lines of stats remaining to write.
+ * @eosaf	Set to TRUE if EOF (end of file) has been reached.
+ * @reset	Set to TRUE if last_uptime variable should be
+ *		reinitialized (used in next_slice() function).
+ * @g_nr	Total number of graphs displayed (including current activity).
+ ***************************************************************************
+ */
+void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
+			     int p, int *reset, struct file_activity *file_actlst,
+			     __nr_t cpu_nr, struct tm *rectime, struct tm *loctime,
+			     char *file, struct file_magic *file_magic,
+			     __nr_t save_act_nr[], int *g_nr)
+{
+	struct svg_parm parm;
+	int rtype;
+	int next, reset_cd;
+
+	/* Rewind file... */
+	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
+		perror("lseek");
+		exit(2);
+	}
+	/*
+	 * ... and restore number of items for volatile activities
+	 * for this position in file.
+	 */
+	sr_act_nr(save_act_nr, DO_RESTORE);
+
+	/*
+	 * Restore the first stats collected.
+	 * Used to compute the rate displayed on the first line.
+	 */
+	copy_structures(act, id_seq, record_hdr, !*curr, 2);
+
+	parm.graph_no = *g_nr;
+	parm.record_hdr = &record_hdr[2];
+	parm.restart = TRUE;
+
+	*cnt  = count;
+	reset_cd = 1;
+
+	/* Allocate graphs arrays */
+	(*act[p]->f_svg_print)(act[p], !*curr, F_BEGIN, &parm, 0, &record_hdr[!*curr]);
+
+	do {
+		*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+					  *curr, file, &rtype, 0, file_magic,
+					  file_actlst, rectime, loctime);
+
+		if (!*eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
+
+			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
+						   &parm, cpu_nr, rectime, loctime, reset_cd, act[p]->id);
+			reset_cd = 0;
+			if (next) {
+				/*
+				 * next is set to 1 when we were close enough to desired interval.
+				 * In this case, the call to generic_write_stats() has actually
+				 * displayed a line of stats.
+				 */
+				parm.restart = FALSE;
+				*curr ^= 1;
+				if (*cnt > 0) {
+					(*cnt)--;
+				}
+			}
+			*reset = FALSE;
+		}
+		if (!*eosaf && (rtype == R_RESTART)) {
+			parm.restart = TRUE;
+			*reset = TRUE;
+			/* Go to next statistics record, if possible */
+			do {
+				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+							  *curr, file, &rtype, 0, file_magic,
+							  file_actlst, rectime, loctime);
+			}
+			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
+			*curr ^= 1;
+		}
+		
+	}
+	while (!*eosaf);
+
+	*reset = TRUE;
+
+	/* Actually display graphs for current activity */
+	(*act[p]->f_svg_print)(act[p], *curr, F_END, &parm, 0, &record_hdr[!*curr]);
+
+	/* Update total number of graphs already displayed */
+	*g_nr = parm.graph_no;
 }
 
 /*
@@ -1146,7 +1275,13 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 			 struct tm *rectime, struct tm *loctime, char *file,
 			 struct file_magic *file_magic)
 {
+	int i, p;
+	int curr = 1, rtype, g_nr = 0;
+	int eosaf = TRUE, reset = TRUE;
+	long cnt = 1;
+	off_t fpos;
 	int graph_nr = 0;
+	__nr_t save_act_nr[NR_ACT] = {0};
 
 	/* Calculate the number of graphs to display */
 	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
@@ -1159,6 +1294,66 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&graph_nr, F_BEGIN + F_MAIN, file, file_magic,
 					     &file_hdr, cpu_nr, act, id_seq);
+	}
+
+	/*
+	* If this record is a special (RESTART or COMMENT) one, ignore it and
+	* (try to) get another one.
+	*/
+	do {
+		if (read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT, 0,
+				     file, &rtype, 0, file_magic, file_actlst,
+				     rectime, loctime))
+			/* End of sa data file */
+			return;
+	}
+	while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
+	       (tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
+	       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+
+	/* Save the first stats collected. Used for example in next_slice() function */
+	copy_structures(act, id_seq, record_hdr, 2, 0);
+
+	/* Save current file position */
+	if ((fpos = lseek(ifd, 0, SEEK_CUR)) < 0) {
+		perror("lseek");
+		exit(2);
+	}
+	/* Save number of activities items for current file position */
+	sr_act_nr(save_act_nr, DO_SAVE);
+
+	/* For each requested activity, display graphs */
+	for (i = 0; i < NR_ACT; i++) {
+
+		if (!id_seq[i])
+			continue;
+
+		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+		if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
+			continue;
+
+		if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
+			display_curr_act_graphs(ifd, fpos, &curr, &cnt, &eosaf,
+						p, &reset, file_actlst,
+						cpu_nr, rectime, loctime, file,
+						file_magic, save_act_nr, &g_nr);
+		}
+		else {
+			unsigned int optf, msk;
+
+			optf = act[p]->opt_flags;
+
+			for (msk = 1; msk < 0x100; msk <<= 1) {
+				if ((act[p]->opt_flags & 0xff) & msk) {
+					act[p]->opt_flags &= (0xffffff00 + msk);
+					display_curr_act_graphs(ifd, fpos, &curr, &cnt, &eosaf,
+								p, &reset, file_actlst,
+								cpu_nr, rectime, loctime, file,
+								file_magic, save_act_nr, &g_nr);
+					act[p]->opt_flags = optf;
+				}
+			}
+		}
 	}
 
 	/* Print SVG trailer */

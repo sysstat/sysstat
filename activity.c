@@ -34,6 +34,7 @@
 #include "rndr_stats.h"
 #include "xml_stats.h"
 #include "json_stats.h"
+#include "svg_stats.h"
 #endif
 
 /*
@@ -119,9 +120,10 @@ struct activity pcsw_act = {
 	.f_render	= render_pcsw_stats,
 	.f_xml_print	= xml_print_pcsw_stats,
 	.f_json_print	= json_print_pcsw_stats,
+	.f_svg_print	= svg_print_pcsw_stats,
 	.hdr_line	= "proc/s;cswch/s",
 	.name		= "A_PCSW",
-	.g_nr		= 1,
+	.g_nr		= 2,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

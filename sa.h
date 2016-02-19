@@ -265,65 +265,6 @@
 #define COUNT_ACTIVITIES	0
 #define COUNT_OUTPUTS		1
 
-
-/*
- ***************************************************************************
- * Generic description of an activity.
- ***************************************************************************
- */
-
-/* Activity options */
-#define AO_NULL			0x00
-/*
- * Indicate that corresponding activity should be collected by sadc.
- */
-#define AO_COLLECTED		0x01
-/*
- * Indicate that corresponding activity should be displayed by sar.
- */
-#define AO_SELECTED		0x02
-/*
- * When appending data to a file, the number of items (for every activity)
- * is forced to that of the file (number of network interfaces, serial lines,
- * etc.) Exceptions are volatile activities (like A_CPU) whose number of items
- * is related to the number of CPUs: If current machine has a different number
- * of CPU than that of the file (but is equal to sa_last_cpu_nr) then data
- * will be appended with a number of items equal to that of the machine.
- */
-#define AO_VOLATILE		0x04
-/*
- * Indicate that the interval of time, given to f_print() function
- * displaying statistics, should be the interval of time in jiffies
- * multiplied by the number of processors.
- */
-#define AO_GLOBAL_ITV		0x08
-/*
- * This flag should be set for every activity closing a markup used
- * by several activities. Used by sadf f_xml_print() functions to
- * display XML output.
- */
-#define AO_CLOSE_MARKUP		0x10
-/*
- * Indicate that corresponding activity has multiple different
- * output formats. This is the case for example for memory activity
- * with options -r and -R.
- */
-#define AO_MULTIPLE_OUTPUTS	0x20
-/*
- * Indicate that one (SVG) graph will be displayed for each
- * distinct item for this activity (sadf -g).
- */
-#define AO_GRAPH_PER_ITEM	0x40
-
-#define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
-#define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
-#define IS_VOLATILE(m)		(((m) & AO_VOLATILE)         == AO_VOLATILE)
-#define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
-#define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
-#define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
-#define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
-
-
 /* Type for all functions counting items */
 #define __nr_t		int
 /* Type for all functions reading statistics */
@@ -331,184 +272,13 @@
 /* Type for all functions displaying statistics */
 #define __print_funct_t void
 
-#define _buf0	buf[0]
-
-/* Structure used to define a bitmap needed by an activity */
-struct act_bitmap {
-	/*
-	 * Bitmap for activities that need one. Remember to allocate it
-	 * before use!
-	 */
-	unsigned char *b_array;
-	/*
-	 * Size of the bitmap in bits. In fact, bitmap is sized to b_size + 1
-	 * to take into account CPU "all"
-	 */
-	int b_size;
+/* Structure for SVG specific parameters */
+struct svg_parm {
+	int graph_no;
+	int restart;
+	struct record_header *record_hdr;
 };
 
-/*
- * Structure used to define an activity.
- * Note: This structure can be modified without changing the format of data files.
- */
-struct activity {
-	/*
-	 * This variable contains the identification value (A_...) for this activity.
-	 */
-	unsigned int id;
-	/*
-	 * Activity options (AO_...)
-	 */
-	unsigned int options;
-	/*
-	 * Activity magical number. This number changes when activity format in file
-	 * is no longer compatible with the format of that same activity from
-	 * previous versions.
-	 */
-	unsigned int magic;
-	/*
-	 * An activity belongs to a group (and only one).
-	 * Groups are those selected with option -S of sadc.
-	 */
-	unsigned int group;
-	/*
-	 * Index in f_count[] array to determine function used to count
-	 * the number of items (serial lines, network interfaces, etc.) -> @nr
-	 * Such a function should _always_ return a value greater than
-	 * or equal to 0.
-	 *
-	 * A value of -1 indicates that the number of items
-	 * is a constant (and @nr is set to this value).
-	 *
-	 * These functions are called even if corresponding activities have not
-	 * been selected, to make sure that all items have been calculated
-	 * (including #CPU, etc.)
-	 */
-	int f_count_index;
-	/*
-	 * The f_count2() function is used to count the number of
-	 * sub-items -> @nr2
-	 * Such a function should _always_ return a value greater than
-	 * or equal to 0.
-	 *
-	 * A NULL value for this function pointer indicates that the number of items
-	 * is a constant (and @nr2 is set to this value).
-	 */
-	__nr_t (*f_count2) (struct activity *);
-	/*
-	 * This function reads the relevant file and fill the buffer
-	 * with statistics corresponding to given activity.
-	 */
-	__read_funct_t (*f_read) (struct activity *);
-	/*
-	 * This function displays activity statistics onto the screen.
-	 */
-	__print_funct_t (*f_print) (struct activity *, int, int, unsigned long long);
-	/*
-	 * This function displays average activity statistics onto the screen.
-	 */
-	__print_funct_t (*f_print_avg) (struct activity *, int, int, unsigned long long);
-	/*
-	 * This function is used by sadf to display activity in a format that can
-	 * easily be ingested by a relational database, or a format that can be
-	 * handled by pattern processing commands like "awk".
-	 */
-	__print_funct_t (*f_render) (struct activity *, int, char *, int, unsigned long long);
-	/*
-	 * This function is used by sadf to display activity statistics in XML.
-	 */
-	__print_funct_t (*f_xml_print) (struct activity *, int, int, unsigned long long);
-	/*
-	 * This function is used by sadf to display activity statistics in JSON.
-	 */
-	__print_funct_t (*f_json_print) (struct activity *, int, int, unsigned long long);
-	/*
-	 * Header string displayed by sadf -d.
-	 * Header lines for each output (for activities with multiple outputs) are
-	 * separated with a '|' character.
-	 * For a given output, the first field corresponding to extended statistics
-	 * (eg. -r ALL) begins with a '&' character.
-	 */
-	char *hdr_line;
-	/*
-	 * Name of activity.
-	 */
-	char *name;
-	/*
-	 * Number of SVG graphs for this activity. The total number of graphs for
-	 * the activity can be greater though if flag AO_GRAPH_PER_ITEM is set, in
-	 * which case the total number will  be @g_nr * @nr.
-	 */
-	int g_nr;
-	/*
-	 * Number of items on the system.
-	 * A negative value (-1) is the default value and indicates that this number
-	 * has still not been calculated by the f_count() function.
-	 * A value of 0 means that this number has been calculated, but no items have
-	 * been found.
-	 * A positive value (>0) has either been calculated or is a constant.
-	 */
-	__nr_t nr;
-	/*
-	 * Number of sub-items on the system.
-	 * @nr2 is in fact the second dimension of a matrix of items, the first
-	 * one being @nr. @nr is the number of lines, and @nr2 the number of columns.
-	 * A negative value (-1) is the default value and indicates that this number
-	 * has still not been calculated by the f_count2() function.
-	 * A value of 0 means that this number has been calculated, but no sub-items have
-	 * been found.
-	 * A positive value (>0) has either been calculated or is a constant.
-	 * Rules:
-	 * 1) IF @nr2 = 0 THEN @nr = 0
-	 *    Note: If @nr = 0, then @nr2 is undetermined (may be -1, 0 or >0).
-	 * 2) IF @nr > 0 THEN @nr2 > 0.
-	 *    Note: If @nr2 > 0 then @nr is undetermined (may be -1, 0 or >0).
-	 * 3) IF @nr <= 0 THEN @nr2 = -1 (this is the default value for @nr2,
-	 * meaning that it has not been calculated).
-	 */
-	__nr_t nr2;
-	/*
-	 * Maximum number of elements that sar can handle for this item.
-	 * NB: The maximum number of elements that sar can handle for sub-items
-	 * is NR2_MAX.
-	 */
-	__nr_t nr_max;
-	/*
-	 * Size of an item.
-	 * This is the size of the corresponding structure, as read from or written
-	 * to a file, or read from or written by the data collector.
-	 */
-	int fsize;
-	/*
-	 * Size of an item.
-	 * This is the size of the corresponding structure as mapped into memory.
-	 * @msize can be different from @fsize when data are read from or written to
-	 * a data file from a different sysstat version.
-	 */
-	int msize;
-	/*
-	 * Optional flags for activity. This is eg. used when AO_MULTIPLE_OUTPUTS
-	 * option is set.
-	 * 0x0001 - 0x0080 : Multiple outputs (eg. AO_F_MEM_AMT, AO_F_MEM_SWAP...)
-	 * 0x0100 - 0x8000 : If bit set then display complete header (hdr_line) for
-	 *                   corresponding output
-	 * 0x010000+       : Optional flags
-	 */
-	unsigned int opt_flags;
-	/*
-	 * Buffers that will contain the statistics read. Its size is @nr * @nr2 * @size each.
-	 * [0]: used by sadc.
-	 * [0] and [1]: current/previous statistics values (used by sar).
-	 * [2]: Used by sar to save first collected stats (used later to
-	 * compute average).
-	 */
-	void *buf[3];
-	/*
-	 * Bitmap for activities that need one. Such a bitmap is needed by activity
-	 * if @bitmap is not NULL.
-	 */
-	struct act_bitmap *bitmap;
-};
 
 /*
  ***************************************************************************
@@ -746,6 +516,248 @@ struct record_header {
 };
 
 #define RECORD_HEADER_SIZE	(sizeof(struct record_header))
+
+
+/*
+ ***************************************************************************
+ * Generic description of an activity.
+ ***************************************************************************
+ */
+
+/* Activity options */
+#define AO_NULL			0x00
+/*
+ * Indicate that corresponding activity should be collected by sadc.
+ */
+#define AO_COLLECTED		0x01
+/*
+ * Indicate that corresponding activity should be displayed by sar.
+ */
+#define AO_SELECTED		0x02
+/*
+ * When appending data to a file, the number of items (for every activity)
+ * is forced to that of the file (number of network interfaces, serial lines,
+ * etc.) Exceptions are volatile activities (like A_CPU) whose number of items
+ * is related to the number of CPUs: If current machine has a different number
+ * of CPU than that of the file (but is equal to sa_last_cpu_nr) then data
+ * will be appended with a number of items equal to that of the machine.
+ */
+#define AO_VOLATILE		0x04
+/*
+ * Indicate that the interval of time, given to f_print() function
+ * displaying statistics, should be the interval of time in jiffies
+ * multiplied by the number of processors.
+ */
+#define AO_GLOBAL_ITV		0x08
+/*
+ * This flag should be set for every activity closing a markup used
+ * by several activities. Used by sadf f_xml_print() functions to
+ * display XML output.
+ */
+#define AO_CLOSE_MARKUP		0x10
+/*
+ * Indicate that corresponding activity has multiple different
+ * output formats. This is the case for example for memory activity
+ * with options -r and -R.
+ */
+#define AO_MULTIPLE_OUTPUTS	0x20
+/*
+ * Indicate that one (SVG) graph will be displayed for each
+ * distinct item for this activity (sadf -g).
+ */
+#define AO_GRAPH_PER_ITEM	0x40
+
+#define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
+#define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
+#define IS_VOLATILE(m)		(((m) & AO_VOLATILE)         == AO_VOLATILE)
+#define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
+#define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
+#define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
+#define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
+
+#define _buf0	buf[0]
+
+/* Structure used to define a bitmap needed by an activity */
+struct act_bitmap {
+	/*
+	 * Bitmap for activities that need one. Remember to allocate it
+	 * before use!
+	 */
+	unsigned char *b_array;
+	/*
+	 * Size of the bitmap in bits. In fact, bitmap is sized to b_size + 1
+	 * to take into account CPU "all"
+	 */
+	int b_size;
+};
+
+/*
+ * Structure used to define an activity.
+ * Note: This structure can be modified without changing the format of data files.
+ */
+struct activity {
+	/*
+	 * This variable contains the identification value (A_...) for this activity.
+	 */
+	unsigned int id;
+	/*
+	 * Activity options (AO_...)
+	 */
+	unsigned int options;
+	/*
+	 * Activity magical number. This number changes when activity format in file
+	 * is no longer compatible with the format of that same activity from
+	 * previous versions.
+	 */
+	unsigned int magic;
+	/*
+	 * An activity belongs to a group (and only one).
+	 * Groups are those selected with option -S of sadc.
+	 */
+	unsigned int group;
+	/*
+	 * Index in f_count[] array to determine function used to count
+	 * the number of items (serial lines, network interfaces, etc.) -> @nr
+	 * Such a function should _always_ return a value greater than
+	 * or equal to 0.
+	 *
+	 * A value of -1 indicates that the number of items
+	 * is a constant (and @nr is set to this value).
+	 *
+	 * These functions are called even if corresponding activities have not
+	 * been selected, to make sure that all items have been calculated
+	 * (including #CPU, etc.)
+	 */
+	int f_count_index;
+	/*
+	 * The f_count2() function is used to count the number of
+	 * sub-items -> @nr2
+	 * Such a function should _always_ return a value greater than
+	 * or equal to 0.
+	 *
+	 * A NULL value for this function pointer indicates that the number of items
+	 * is a constant (and @nr2 is set to this value).
+	 */
+	__nr_t (*f_count2) (struct activity *);
+	/*
+	 * This function reads the relevant file and fill the buffer
+	 * with statistics corresponding to given activity.
+	 */
+	__read_funct_t (*f_read) (struct activity *);
+	/*
+	 * This function displays activity statistics onto the screen.
+	 */
+	__print_funct_t (*f_print) (struct activity *, int, int, unsigned long long);
+	/*
+	 * This function displays average activity statistics onto the screen.
+	 */
+	__print_funct_t (*f_print_avg) (struct activity *, int, int, unsigned long long);
+	/*
+	 * This function is used by sadf to display activity in a format that can
+	 * easily be ingested by a relational database, or a format that can be
+	 * handled by pattern processing commands like "awk".
+	 */
+	__print_funct_t (*f_render) (struct activity *, int, char *, int, unsigned long long);
+	/*
+	 * This function is used by sadf to display activity statistics in XML.
+	 */
+	__print_funct_t (*f_xml_print) (struct activity *, int, int, unsigned long long);
+	/*
+	 * This function is used by sadf to display activity statistics in JSON.
+	 */
+	__print_funct_t (*f_json_print) (struct activity *, int, int, unsigned long long);
+	/*
+	 * This function is used by sadf to display activity statistics in SVG.
+	 */
+	__print_funct_t (*f_svg_print) (struct activity *, int, int, struct svg_parm *,
+					unsigned long long, struct record_header *);
+	/*
+	 * Header string displayed by sadf -d.
+	 * Header lines for each output (for activities with multiple outputs) are
+	 * separated with a '|' character.
+	 * For a given output, the first field corresponding to extended statistics
+	 * (eg. -r ALL) begins with a '&' character.
+	 */
+	char *hdr_line;
+	/*
+	 * Name of activity.
+	 */
+	char *name;
+	/*
+	 * Number of SVG graphs for this activity. The total number of graphs for
+	 * the activity can be greater though if flag AO_GRAPH_PER_ITEM is set, in
+	 * which case the total number will  be @g_nr * @nr.
+	 */
+	int g_nr;
+	/*
+	 * Number of items on the system.
+	 * A negative value (-1) is the default value and indicates that this number
+	 * has still not been calculated by the f_count() function.
+	 * A value of 0 means that this number has been calculated, but no items have
+	 * been found.
+	 * A positive value (>0) has either been calculated or is a constant.
+	 */
+	__nr_t nr;
+	/*
+	 * Number of sub-items on the system.
+	 * @nr2 is in fact the second dimension of a matrix of items, the first
+	 * one being @nr. @nr is the number of lines, and @nr2 the number of columns.
+	 * A negative value (-1) is the default value and indicates that this number
+	 * has still not been calculated by the f_count2() function.
+	 * A value of 0 means that this number has been calculated, but no sub-items have
+	 * been found.
+	 * A positive value (>0) has either been calculated or is a constant.
+	 * Rules:
+	 * 1) IF @nr2 = 0 THEN @nr = 0
+	 *    Note: If @nr = 0, then @nr2 is undetermined (may be -1, 0 or >0).
+	 * 2) IF @nr > 0 THEN @nr2 > 0.
+	 *    Note: If @nr2 > 0 then @nr is undetermined (may be -1, 0 or >0).
+	 * 3) IF @nr <= 0 THEN @nr2 = -1 (this is the default value for @nr2,
+	 * meaning that it has not been calculated).
+	 */
+	__nr_t nr2;
+	/*
+	 * Maximum number of elements that sar can handle for this item.
+	 * NB: The maximum number of elements that sar can handle for sub-items
+	 * is NR2_MAX.
+	 */
+	__nr_t nr_max;
+	/*
+	 * Size of an item.
+	 * This is the size of the corresponding structure, as read from or written
+	 * to a file, or read from or written by the data collector.
+	 */
+	int fsize;
+	/*
+	 * Size of an item.
+	 * This is the size of the corresponding structure as mapped into memory.
+	 * @msize can be different from @fsize when data are read from or written to
+	 * a data file from a different sysstat version.
+	 */
+	int msize;
+	/*
+	 * Optional flags for activity. This is eg. used when AO_MULTIPLE_OUTPUTS
+	 * option is set.
+	 * 0x0001 - 0x0080 : Multiple outputs (eg. AO_F_MEM_AMT, AO_F_MEM_SWAP...)
+	 * 0x0100 - 0x8000 : If bit set then display complete header (hdr_line) for
+	 *                   corresponding output
+	 * 0x010000+       : Optional flags
+	 */
+	unsigned int opt_flags;
+	/*
+	 * Buffers that will contain the statistics read. Its size is @nr * @nr2 * @size each.
+	 * [0]: used by sadc.
+	 * [0] and [1]: current/previous statistics values (used by sar).
+	 * [2]: Used by sar to save first collected stats (used later to
+	 * compute average).
+	 */
+	void *buf[3];
+	/*
+	 * Bitmap for activities that need one. Such a bitmap is needed by activity
+	 * if @bitmap is not NULL.
+	 */
+	struct act_bitmap *bitmap;
+};
 
 
 /*
