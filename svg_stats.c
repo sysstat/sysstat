@@ -379,8 +379,12 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 			       5 + SVG_M_XSIZE + SVG_G_XSIZE,
 			       25 + i * SVG_T_YSIZE);
 
-			/* At least two samples are needed */
-			if (record_hdr->ust_time == svg_p->record_hdr->ust_time) {
+			/*
+			 * At least two samples are needed.
+			 * And a min and max value should have been found.
+			 */
+			if ((record_hdr->ust_time == svg_p->record_hdr->ust_time) ||
+			    (*(spmin + i) == DBL_MAX) || (*(spmax + i) == -DBL_MIN)) {
 				/* No data found */
 				printf("<text x=\"0\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
 				       SVG_M_YSIZE + i * SVG_T_YSIZE);
