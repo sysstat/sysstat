@@ -53,6 +53,19 @@ Of course tell me if there are any problems. This is the only way I can improve
 Patches and suggestions for improvements are always welcome!
 Send them to "sysstat (at) orange (dot) fr".
 
+#### Support sysstat!
+
+If you are reading this README file then you are probably about to use the sysstat tools
+to help you monitor your system and maybe troubleshoot some performance issues. Good choice.
+Sysstat is made for you. Moreover sysstat is free software and always will be.
+
+Yet have you ever considered making a donation to sysstat, regardless of how much your
+contribution is? This in turn would encourage me to keep up the work as good as it can be...
+Oh, and it would certainly also help me explain to my wife why I spend so much time in front
+of my computer instead of taking care of the household ;-)
+
+Go to my web page and [click on the Donate button](http://pagesperso-orange.fr/sebastien.godard/) on the left!
+
 
 ### Files that are installed
 
