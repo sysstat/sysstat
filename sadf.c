@@ -59,6 +59,8 @@ struct file_header file_hdr;
  * This array must always be entirely filled (even with trailing zeros).
  */
 unsigned int id_seq[NR_ACT];
+/* Total number of SVG graphs for each activity */
+int id_g_nr[NR_ACT];
 
 /* Current record header */
 struct record_header record_hdr[3];
@@ -239,6 +241,43 @@ void xprintf(int nr_tab, const char *fmtf, ...)
 
 /*
  ***************************************************************************
+ * Save or restore number of items for all known activities.
+ *
+ * IN:
+ * @save_act_nr	Array containing number of items to restore for each
+ * 		activity.
+ * @action	DO_SAVE to save number of items, or DO_RESTORE to restore.
+ *
+ * OUT:
+ * @save_act_nr	Array containing number of items saved for each activity.
+ ***************************************************************************
+ */
+void sr_act_nr(__nr_t save_act_nr[], int action)
+{
+	int i;
+
+	if (action == DO_SAVE) {
+		/* Save number of items for all activities */
+		for (i = 0; i < NR_ACT; i++) {
+			save_act_nr[i] = act[i]->nr;
+		}
+	}
+	else if (action == DO_RESTORE) {
+		/*
+		 * Restore number of items for all activities
+		 * and reallocate structures accordingly.
+		 */
+		for (i = 0; i < NR_ACT; i++) {
+			if (save_act_nr[i] > 0) {
+				reallocate_vol_act_structures(act, save_act_nr[i],
+							      act[i]->id);
+			}
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Read next sample statistics. If it's a special record (R_RESTART or
  * R_COMMENT) then display it if requested. Also fill timestamps structures.
  *
@@ -403,6 +442,130 @@ void list_fields(unsigned int act_id)
 		}
 	}
 	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Compute the number of SVG graphs to display. Each activity selected may
+ * have several graphs. Moreover we have to take into account volatile
+ * activities (eg. CPU) for which the number of graphs will depend on the
+ * highest number of items (eg. maximum number of CPU) saved in the file.
+ * This number may be higher than the real number of graphs that will be
+ * displayed since some items have a preallocation constant.
+ *
+ * IN:
+ * @ifd		File descriptor of input file.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) can
+ *		be saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time) can be
+ *		saved for current record.
+ *
+ * RETURNS:
+ * Total number of graphs to display, taking into account only activities
+ * to be displayed, and selected period of time (options -s/-e).
+ ***************************************************************************
+ */
+int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
+		     struct file_activity *file_actlst, struct tm *rectime,
+		     struct tm *loctime)
+{
+	int i, n, p, eosaf;
+	int rtype, new_tot_g_nr, tot_g_nr = 0;
+	off_t fpos;
+	__nr_t save_act_nr[NR_ACT] = {0};
+
+	/* Save current file position and items number */
+	if ((fpos = lseek(ifd, 0, SEEK_CUR)) < 0) {
+		perror("lseek");
+		exit(2);
+	}
+	sr_act_nr(save_act_nr, DO_SAVE);
+
+	/* Init total number of graphs for each activity */
+	for (i = 0; i < NR_ACT; i++) {
+		id_g_nr[i] = 0;
+	}
+
+	/* Look for the first record that will be displayed */
+	do {
+		eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+					 0, file, &rtype, 0, file_magic, file_actlst,
+					 rectime, loctime);
+		if (eosaf)
+			/* No record to display => no graph too */
+			return 0;
+	}
+	while ((tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
+	       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+
+	do {
+		new_tot_g_nr = 0;
+
+		for (i = 0; i < NR_ACT; i++) {
+			if (!id_seq[i])
+				continue;
+
+			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+			if (!IS_SELECTED(act[p]->options))
+				continue;
+
+			if (ONE_GRAPH_PER_ITEM(act[p]->options)) {
+				 n = act[p]->g_nr * act[p]->nr;
+			}
+			else {
+				n = act[p]->g_nr;
+			}
+
+			if (n > id_g_nr[i]) {
+				 id_g_nr[i] = n;
+			 }
+			new_tot_g_nr += n;
+		}
+
+		if (new_tot_g_nr > tot_g_nr) {
+			tot_g_nr = new_tot_g_nr;
+		}
+
+		do {
+			eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+						 0, file, &rtype, 0, file_magic, file_actlst,
+						 rectime, loctime);
+			if (eosaf ||
+			    (tm_end.use && (datecmp(loctime, &tm_end) >= 0)))
+				/* End of data file or end time exceeded */
+				break;
+		}
+		while (rtype != R_RESTART);
+
+		if (eosaf ||
+		    (tm_end.use && (datecmp(loctime, &tm_end) >= 0)))
+			/*
+			 * End of file, or end time exceeded:
+			 * Current number of graphs is up-to-date.
+			 */
+			break;
+
+	/*
+	 * If we have found a RESTART record then we have also read the list of volatile
+	 * activities following it, reallocated the structures and changed the number of
+	 * items (act[p]->nr) for those volatile activities. So loop again to compute
+	 * the new total number of graphs.
+	 */
+	}
+	while (rtype == R_RESTART);
+
+	/* Rewind file and restore items number */
+	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
+		perror("lseek");
+		exit(2);
+	}
+	sr_act_nr(save_act_nr, DO_RESTORE);
+
+	return tot_g_nr;
 }
 
 /*
@@ -648,43 +811,6 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 	while (*cnt && !*eosaf && (rtype != R_RESTART));
 
 	*reset = TRUE;
-}
-
-/*
- ***************************************************************************
- * Save or restore number of items for all known activities.
- *
- * IN:
- * @save_act_nr	Array containing number of items to restore for each
- * 		activity.
- * @action	DO_SAVE to save number of items, or DO_RESTORE to restore.
- *
- * OUT:
- * @save_act_nr	Array containing number of items saved for each activity.
- ***************************************************************************
- */
-void sr_act_nr(__nr_t save_act_nr[], int action)
-{
-	int i;
-
-	if (action == DO_SAVE) {
-		/* Save number of items for all activities */
-		for (i = 0; i < NR_ACT; i++) {
-			save_act_nr[i] = act[i]->nr;
-		}
-	}
-	else if (action == DO_RESTORE) {
-		/*
-		 * Restore number of items for all activities
-		 * and reallocate structures accordingly.
-		 */
-		for (i = 0; i < NR_ACT; i++) {
-			if (save_act_nr[i] > 0) {
-				reallocate_vol_act_structures(act, save_act_nr[i],
-							      act[i]->id);
-			}
-		}
-	}
 }
 
 /*
@@ -1002,10 +1128,44 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
  * Display file contents in selected format (logic #3).
  * Logic #3:	Special logic for SVG output format.
  * Formats:	SVG
+ *
+ * IN:
+ * @ifd		File descriptor of input file.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @cpu_nr	Number of processors for current activity data file.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) can
+ *		be saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time) can be
+ *		saved for current record.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
  ***************************************************************************
  */
-void logic3_display_loop(void)
+void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr,
+			 struct tm *rectime, struct tm *loctime, char *file,
+			 struct file_magic *file_magic)
 {
+	int graph_nr = 0;
+
+	/* Calculate the number of graphs to display */
+	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
+				    file_actlst, rectime, loctime);
+	if (!graph_nr)
+		/* No graph to display */
+		return;
+
+	/* Print SVG header */
+	if (*fmt[f_position]->f_header) {
+		(*fmt[f_position]->f_header)(&graph_nr, F_BEGIN + F_MAIN, file, file_magic,
+					     &file_hdr, cpu_nr, act, id_seq);
+	}
+
+	/* Print SVG trailer */
+	if (*fmt[f_position]->f_header) {
+		(*fmt[f_position]->f_header)(&graph_nr, F_END, file, file_magic,
+					     &file_hdr, cpu_nr, act, id_seq);
+	}
 }
 
 /*
@@ -1048,7 +1208,8 @@ void read_stats_from_file(char dfile[])
 
 	/* Call function corresponding to selected output format */
 	if (format == F_SVG_OUTPUT) {
-		logic3_display_loop();
+		logic3_display_loop(ifd, file_actlst, cpu_nr,
+				    &rectime, &loctime, dfile, &file_magic);
 	}
 	else if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
 		logic2_display_loop(ifd, file_actlst, cpu_nr,
