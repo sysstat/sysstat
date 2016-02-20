@@ -1,5 +1,20 @@
 Changes:
 
+2016/02/21: Version 11.3.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Add new SVG (Scalable Vector Graphics) output format.
+	  This option enables the user to display fancy graphs in a
+	  web brower using the data collected by sar/sadc!
+	* sar/sadf: Major code refactoring.
+	* sadf: Don't display the JSON fchosts tag when no statistics
+	  data exist for Fibre Channel [11.2.1].
+	* README file converted to Markdown format [11.2.1].
+	* [Peter Schiffer]: Convert CREDITS file to utf-8 [11.2.1].
+	* [Peter Schiffer]: Update license text [11.2.1].
+	* sadf manual page updated.
+	* FAQ updated.
+	* Update README file and copyright messages [11.2.1].
+	* NLS updated [11.2.1].
+
 2015/12/27: Version 11.2.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* mpstat: Code refactoring (better handle some special borderline
 	  cases for per-processor interrupts statistics).
