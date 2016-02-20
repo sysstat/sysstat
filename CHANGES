@@ -1,5 +1,14 @@
 Changes:
 
+2016/02/21: Version 11.2.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* README file converted to Markdown format.
+	* sadf: Don't display the JSON fchosts tag when no statistics
+	  data exist for Fibre Channel.
+        * [Peter Schiffer]: Convert CREDITS file to utf-8.
+        * [Peter Schiffer]: Update license text.
+	* NLS updated.
+	* Update README file and copyright messages.
+
 2015/12/27: Version 11.2.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* mpstat: Code refactoring (better handle some special borderline
 	  cases for per-processor interrupts statistics).

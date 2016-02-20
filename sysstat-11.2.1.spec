@@ -1,6 +1,6 @@
 Summary: 	SAR, SADF, MPSTAT, IOSTAT, TAPESTAT, PIDSTAT and CIFSIOSTAT for Linux
 Name: 		sysstat
-Version: 	11.2.0
+Version: 	11.2.1
 Release: 	1
 License: 	GPL
 Group: 		Applications/System
@@ -26,7 +26,7 @@ The iostat command reports CPU utilization and I/O statistics for disks.
 The tapestat command reports statistics for tapes connected to the system.
 The mpstat command reports global and per-processor statistics.
 The pidstat command reports statistics for Linux tasks (processes).
-The cifsiostat command reports I/O statistics for CIFS file systems.
+The cifsiostat command reports I/O statistics for CIFS filesystems.
 
 %prep
 %setup
