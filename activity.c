@@ -220,10 +220,11 @@ struct activity paging_act = {
 	.f_render	= render_paging_stats,
 	.f_xml_print	= xml_print_paging_stats,
 	.f_json_print	= json_print_paging_stats,
+	.f_svg_print	= svg_print_paging_stats,
 	.hdr_line	= "pgpgin/s;pgpgout/s;fault/s;majflt/s;"
 		          "pgfree/s;pgscank/s;pgscand/s;pgsteal/s;%vmeff",
 	.name		= "A_PAGE",
-	.g_nr		= 0,
+	.g_nr		= 3,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
