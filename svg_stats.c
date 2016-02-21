@@ -130,6 +130,37 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, struct activity *a, int curr,
 
 /*
  ***************************************************************************
+ * Find the min and max values of all the graphs that will be drawn in the
+ * same window. The graphs have their own min and max values in
+ * minv[pos...pos+n-1] and maxv[pos...pos+n-1]. 
+ *
+ * IN:
+ * @pos		Position in array for the first graph extrema value.
+ * @n		Number of graphs to scan.
+ * @minv	Array containing min values for graphs.
+ * @maxv	Array containing max values for graphs.
+ *
+ * OUT:
+ * @minv	minv[pos] is modified and contains the global min value found.
+ * @maxv	maxv[pos] is modified and contains the global max value found.
+ ***************************************************************************
+ */
+void get_global_extrema(int pos, int n, double minv[], double maxv[])
+{
+	int i;
+
+	for (i = 1; i < n; i++) {
+		if (minv[pos + i] < minv[pos]) {
+			minv[pos] = minv[pos + i];
+		}
+		if (maxv[pos + i] > maxv[pos]) {
+			maxv[pos] = maxv[pos + i];
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Allocate arrays used to save graphs data, min and max values.
  * @n arrays of chars are allocated for @n graphs to draw. A pointer on this
  * array is returned. This is equivalent to "char data[][n]" where each
@@ -304,6 +335,167 @@ long int xgrid(unsigned long timestart, unsigned long timeend)
 
 /*
  ***************************************************************************
+ * Display all graphs for current activity.
+ *
+ * IN:
+ * @a		Activity structure containing the number of graphs to draw
+ *		for current activity.
+ * @title	Titles for each set of graphs.
+ * @g_title	Titles for each graph.
+ * @group	Indicate how graphs are grouped together to make sets.
+ * @spmin	Array containing min values for graphs.
+ * @spmax	Array containing max values for graphs.
+ * @out		Pointer on array of chars for each graph definition.
+ * @outsize	Size of array of chars for each graph definition.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no)
+ *		and a pointer on a record header structure (.@record_hdr)
+ *		containing the first stats sample.
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], int group[],
+			  double *spmin, double *spmax, char **out, int *outsize,
+			  struct svg_parm *svg_p, struct record_header *record_hdr)
+{
+	struct record_header stamp;
+	struct tm rectime;
+	char *out_p;
+	int i, j, dp, pos = 0;
+	long int k;
+	double lmax, xfactor, yfactor, ypos;
+	char cur_time[32];
+
+	/* Translate to proper position for current activity */
+	printf("<g id=\"g%d\" transform=\"translate(0,%d)\">\n",
+	       svg_p->graph_no,
+	       SVG_H_YSIZE + svg_p->graph_no * SVG_T_YSIZE);
+
+	/* For each graphs set which are part of current activity */
+	for (i = 0; i < a->g_nr; i++) {
+
+		/* Graph background */
+		printf("<rect x=\"0\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
+		       i * SVG_T_YSIZE,
+		       SVG_V_YSIZE, SVG_V_XSIZE);
+
+		/* Graph title */
+		printf("<text x=\"0\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s\n",
+		       20 + i * SVG_T_YSIZE, title[i]);
+		printf("<tspan x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none; font-size: 12px\">"
+		       "(Min, Max values)</tspan>\n</text>\n",
+		       5 + SVG_M_XSIZE + SVG_G_XSIZE,
+		       25 + i * SVG_T_YSIZE);
+
+		/*
+		 * At least two samples are needed.
+		 * And a min and max value should have been found.
+		 */
+		if ((record_hdr->ust_time == svg_p->record_hdr->ust_time) ||
+		    (*(spmin + i) == DBL_MAX) || (*(spmax + i) == -DBL_MIN)) {
+			/* No data found */
+			printf("<text x=\"0\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
+			       SVG_M_YSIZE + i * SVG_T_YSIZE);
+			continue;
+		}
+
+		/* X and Y axis */
+		printf("<polyline points=\"%d,%d %d,%d %d,%d\" stroke=\"white\" stroke-width=\"2\"/>\n",
+		       SVG_M_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE,
+		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE,
+		       SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
+
+		/* Caption */
+		for (j = 0; j < group[i]; j++) {
+			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
+			       "%s (%.2f, %.2f)</text>\n",
+			       5 + SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE + j * 15,
+			       svg_colors[pos + j], g_title[pos + j],
+		       *(spmin + pos + j), *(spmax + pos + j));
+		}
+
+		/* Get global min and max value for current graphs set */
+		get_global_extrema(pos, group[i], spmin, spmax);
+
+		/* Translate to proper position for current graph within current activity */
+		printf("<g transform=\"translate(%d,%d)\">\n",
+		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
+
+		/* Grid */
+		if (*(spmax + pos) == 0) {
+			/* If all values are zero then set current max value to 1 */
+			lmax = 1.0;
+		}
+		else {
+			lmax = *(spmax + pos);
+		}
+		ypos = ygrid(*(spmax + pos), &dp);
+		yfactor = (double) -SVG_G_YSIZE / lmax;
+		j = 1;
+		do {
+			printf("<polyline points=\"0,%.2f %d,%.2f\" vector-effect=\"non-scaling-stroke\" "
+			       "stroke=\"#202020\" transform=\"scale(1,%f)\"/>\n",
+			       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
+			j++;
+		}
+		while (ypos * j <= lmax);
+		j = 0;
+		do {
+			printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
+			       "text-anchor: end\">%.*f.</text>\n",
+			       (long) (ypos * j * yfactor), dp, ypos * j);
+			j++;
+		}
+		while (ypos * j <= lmax);
+
+		k = xgrid(svg_p->record_hdr->ust_time, record_hdr->ust_time);
+		xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
+		stamp = *svg_p->record_hdr;
+		for (j = 1; j <= SVG_V_GRIDNR; j++) {
+			printf("<polyline points=\"%ld,0 %ld,%d\" vector-effect=\"non-scaling-stroke\" "
+			       "stroke=\"#202020\" transform=\"scale(%f,1)\"/>\n",
+			       k * j, k * j, -SVG_G_YSIZE, xfactor);
+		}
+		for (j = 0; j <= SVG_V_GRIDNR; j++) {
+			sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
+			set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
+			printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
+			       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
+			       (long) (k * j * xfactor), (long) (k * j * xfactor), cur_time);
+			stamp.ust_time += k;
+		}
+		if (!PRINT_LOCAL_TIME(flags)) {
+			printf("<text x=-10 y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
+			       "text-anchor: end\">UTC</text>\n");
+		}
+
+		/* Draw current graphs set */
+		for (j = 0; j < group[i]; j++) {
+			out_p = *(out + pos + j);
+			printf("<path id=\"g%dp%d\" d=\"%s\" vector-effect=\"non-scaling-stroke\" "
+			       "stroke=\"#%06x\" stroke-width=\"1\" fill-opacity=\"0\" "
+			       "transform=\"scale(%f,%f)\"/>\n",
+			       svg_p->graph_no, pos + j, out_p, svg_colors[pos + j],
+			       xfactor,
+			       yfactor);
+			free(out_p);
+		}
+		printf("</g>\n");
+		pos += group[i];
+	}
+	printf("</g>\n");
+
+	/* Next graph */
+	(svg_p->graph_no) += a->g_nr;
+
+	/* Free remaining structures */
+	free(out);
+	free(outsize);
+	free(spmin);
+	free(spmax);
+}
+
+/*
+ ***************************************************************************
  * Display task creation and context switch statistics in SVG
  *
  * IN:
@@ -324,17 +516,12 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 	struct stats_pcsw
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[!curr];
-	struct record_header stamp;
-	struct tm rectime;
-	char *title[] = {"cswch/s", "proc/s"};
+	int group[] = {1, 1};
+	char *title[] = {"Switching activity", "Task creation"};
+	char *g_title[] = {"cswch/s", "proc/s"};
 	static double *spmin, *spmax;
 	static char **out;
-	char *out_p;
 	static int *outsize;
-	int i, j, dp;
-	long int k;
-	double lmax, xfactor, yfactor, ypos;
-	char cur_time[32];
 
 	if (action & F_BEGIN) {
 		/*
@@ -358,125 +545,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 	}
 
 	if (action & F_END) {
-		/* Translate to proper position for current activity */
-		printf("<g id=\"g%d\" transform=\"translate(0,%d)\">\n",
-		       svg_p->graph_no,
-		       SVG_H_YSIZE + svg_p->graph_no * SVG_T_YSIZE);
-
-		/* For each graph which are part of current activity */
-		for (i = 0; i < a->g_nr; i++) {
-
-			/* Graph background */
-			printf("<rect x=\"0\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
-			       i * SVG_T_YSIZE,
-			       SVG_V_YSIZE, SVG_V_XSIZE);
-
-			/* Graph title */
-			printf("<text x=\"0\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s\n",
-			       20 + i * SVG_T_YSIZE, title[i]);
-			printf("<tspan x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none; font-size: 12px\">"
-			       "(Min, Max values)</tspan>\n</text>\n",
-			       5 + SVG_M_XSIZE + SVG_G_XSIZE,
-			       25 + i * SVG_T_YSIZE);
-
-			/*
-			 * At least two samples are needed.
-			 * And a min and max value should have been found.
-			 */
-			if ((record_hdr->ust_time == svg_p->record_hdr->ust_time) ||
-			    (*(spmin + i) == DBL_MAX) || (*(spmax + i) == -DBL_MIN)) {
-				/* No data found */
-				printf("<text x=\"0\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
-				       SVG_M_YSIZE + i * SVG_T_YSIZE);
-				continue;
-			}
-
-			/* X and Y axis */
-			printf("<polyline points=\"%d,%d %d,%d %d,%d\" stroke=\"white\" stroke-width=\"2\"/>\n",
-			       SVG_M_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE,
-			       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE,
-			       SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
-
-			/* Caption */
-			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
-			       "%s (%.2f, %.2f)</text>\n",
-			       5 + SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE,
-			       svg_colors[i], title[i],
-			       *(spmin + i), *(spmax + i));
-
-			out_p = *(out + i);
-			/* Translate to proper position for current graph within current activity */
-			printf("<g transform=\"translate(%d,%d)\">\n",
-			       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
-
-			/* Grid */
-			if (*(spmax + i) == 0) {
-				/* If all values are zero then set current max value to 1 */
-				lmax = 1.0;
-			}
-			else {
-				lmax = *(spmax + i);
-			}
-			ypos = ygrid(*(spmax + i), &dp);
-			yfactor = (double) -SVG_G_YSIZE / lmax;
-			j = 1;
-			do {
-				printf("<polyline points=\"0,%.2f %d,%.2f\" vector-effect=\"non-scaling-stroke\" "
-				       "stroke=\"#202020\" transform=\"scale(1,%f)\"/>\n",
-				       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
-				j++;
-			}
-			while (ypos * j <= lmax);
-			j = 0;
-			do {
-				printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
-				       "text-anchor: end\">%.*f.</text>\n",
-				       (long) (ypos * j * yfactor), dp, ypos * j);
-				j++;
-			}
-			while (ypos * j <= lmax);
-
-			k = xgrid(svg_p->record_hdr->ust_time, record_hdr->ust_time);
-			xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
-			stamp = *svg_p->record_hdr;
-			for (j = 1; j <= SVG_V_GRIDNR; j++) {
-				printf("<polyline points=\"%ld,0 %ld,%d\" vector-effect=\"non-scaling-stroke\" "
-				       "stroke=\"#202020\" transform=\"scale(%f,1)\"/>\n",
-				       k * j, k * j, -SVG_G_YSIZE, xfactor);
-			}
-			for (j = 0; j <= SVG_V_GRIDNR; j++) {
-				sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
-				set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
-				printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
-				       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
-				       (long) (k * j * xfactor), (long) (k * j * xfactor), cur_time);
-				stamp.ust_time += k;
-			}
-			if (!PRINT_LOCAL_TIME(flags)) {
-				printf("<text x=-10 y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
-				       "text-anchor: end\">UTC</text>\n");
-			}
-
-			/* Draw graph */
-			printf("<path id=\"g%dp%d\" d=\"%s\" vector-effect=\"non-scaling-stroke\" "
-			       "stroke=\"#%06x\" stroke-width=\"1\" fill-opacity=\"0\" "
-			       "transform=\"scale(%f,%f)\"/>\n",
-			       svg_p->graph_no, i, out_p, svg_colors[i],
-			       xfactor,
-			       yfactor);
-
-			printf("</g>\n");
-			free(out_p);
-		}
-		printf("</g>\n");
-
-		/* Next graph */
-		(svg_p->graph_no) += a->g_nr;
-
-		/* Free remaining structures */
-		free(out);
-		free(outsize);
-		free(spmin);
-		free(spmax);
+		draw_activity_graphs(a, title, g_title, group, spmin, spmax,
+				     out, outsize, svg_p, record_hdr);
 	}
 }
