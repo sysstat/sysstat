@@ -62,14 +62,14 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * @a		Activity structure containing current statistics sample.
  * @curr	Index in array for current sample statistics.
  * @itv		Interval of time in jiffies.
- * @min		Array containing min values already found for this activity.
- * @max		Array containing max values already found for this activity.
+ * @minv	Array containing min values already found for this activity.
+ * @maxv	Array containing max values already found for this activity.
  *
  * OUT:
- * @min		Array containg the possible new min values for current activity.
- * @max		Array containg the possible new max values for current activity.
+ * @minv	Array containg the possible new min values for current activity.
+ * @maxv	Array containg the possible new max values for current activity.
  *
- * NB: @min and @max arrays contain values in the same order as the fields
+ * NB: @minv and @maxv arrays contain values in the same order as the fields
  * in the statistics structure.
  ***************************************************************************
  */
