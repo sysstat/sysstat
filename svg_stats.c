@@ -45,6 +45,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
 			     0x0000ff, 0xffbf00, 0x00ff00, 0x7030a0,
 			     0xffffbf, 0xffff00, 0xd60093, 0x00bfbf,
 			     0xcc3300, 0xbfbfbf, 0x666635, 0xff3300};
+#define SVG_COLORS_IDX_MASK	0x0f
 
 /*
  ***************************************************************************
@@ -410,7 +411,7 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], in
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
 			       "%s (%.2f, %.2f)</text>\n",
 			       5 + SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE + j * 15,
-			       svg_colors[pos + j], g_title[pos + j],
+			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j],
 		       *(spmin + pos + j), *(spmax + pos + j));
 		}
 
@@ -475,7 +476,8 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], in
 			printf("<path id=\"g%dp%d\" d=\"%s\" vector-effect=\"non-scaling-stroke\" "
 			       "stroke=\"#%06x\" stroke-width=\"1\" fill-opacity=\"0\" "
 			       "transform=\"scale(%f,%f)\"/>\n",
-			       svg_p->graph_no, pos + j, out_p, svg_colors[pos + j],
+			       svg_p->graph_no, pos + j, out_p,
+			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
 			       xfactor,
 			       yfactor);
 			free(out_p);
