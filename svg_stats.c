@@ -223,8 +223,9 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
 			exit(4);
 		}
 		*(out + i) = out_p;
+		*out_p = '\0';			/* Reset string so that it can be safely strncat()'d later */
 		*(*outsize + i) = CHUNKSIZE;	/* Each array of chars has a default size of CHUNKSIZE */
-		*(*spmin + i) = DBL_MAX;
+		*(*spmin + i) = DBL_MAX;	/* Init min and max values */
 		*(*spmax + i) = -DBL_MAX;
 	}
 
