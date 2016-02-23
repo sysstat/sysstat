@@ -331,6 +331,21 @@ unsigned int get_devmap_major(void)
 
 /*
  ***************************************************************************
+ * Returns whether S_TIME_FORMAT is set to ISO.
+ *
+ * RETURNS:
+ * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
+ ***************************************************************************
+ */
+int is_iso_time_fmt(void)
+{
+	char *e;
+
+	return ((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO);
+}
+
+/*
+ ***************************************************************************
  * Print banner.
  *
  * IN:
@@ -349,13 +364,12 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 		     char *nodename, char *machine, int cpu_nr)
 {
 	char cur_date[64];
-	char *e;
 	int rc = 0;
 
 	if (rectime == NULL) {
 		strcpy(cur_date, "?/?/?");
 	}
-	else if (((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO)) {
+	else if (is_iso_time_fmt()) {
 		strftime(cur_date, sizeof(cur_date), "%Y-%m-%d", rectime);
 		rc = 1;
 	}

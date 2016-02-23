@@ -259,6 +259,8 @@ int is_device
 	(char *, int);
 double ll_sp_value
 	(unsigned long long, unsigned long long, unsigned long long);
+int is_iso_time_fmt
+	(void);
 int print_gal_header
 	(struct tm *, char *, char *, char *, char *, int);
 void print_version
