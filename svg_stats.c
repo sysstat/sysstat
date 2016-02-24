@@ -60,8 +60,8 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * @llu_nr	Number of unsigned long long fields composing the structure.
  * @lu_nr	Number of unsigned long fields composing the structure.
  * @u_nr	Number of unsigned int fields composing the structure.
- * @a		Activity structure containing current statistics sample.
- * @curr	Index in array for current sample statistics.
+ * @cs		Pointer on current sample statistics structure.
+ * @ps		Pointer on previous sample statistics structure.
  * @itv		Interval of time in jiffies.
  * @minv	Array containing min values already found for this activity.
  * @maxv	Array containing max values already found for this activity.
@@ -74,7 +74,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * in the statistics structure.
  ***************************************************************************
  */
-void save_extrema(int llu_nr, int lu_nr, int u_nr, struct activity *a, int curr,
+void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 		  unsigned long long itv, double minv[], double maxv[])
 {
 	unsigned long long *lluc, *llup;
@@ -84,8 +84,8 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, struct activity *a, int curr,
 	int i, m = 0;
 
 	/* Compare unsigned long long fields */
-	lluc = (unsigned long long *) a->buf[curr];
-	llup = (unsigned long long *) a->buf[!curr];
+	lluc = (unsigned long long *) cs;
+	llup = (unsigned long long *) ps;
 	for (i = 0; i < llu_nr; i++, m++) {
 		val = S_VALUE(*llup, *lluc, itv);
 		if (val < minv[m]) {
@@ -536,7 +536,8 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(1, 1, 0, a, curr, itv, spmin, spmax);
+		save_extrema(1, 1, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
 		/* cswch/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->context_switch, spc->context_switch, itv),
@@ -593,7 +594,8 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(0, 8, 0, a, curr, itv, spmin, spmax);
+		save_extrema(0, 8, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
 		/* pgpgin/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgpgin, spc->pgpgin, itv),
