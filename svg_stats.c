@@ -337,6 +337,33 @@ long int xgrid(unsigned long timestart, unsigned long timeend)
 
 /*
  ***************************************************************************
+ * Free global graphs structures.
+ *
+ * IN:
+ * @out		Pointer on array of chars for each graph definition.
+ * @outsize	Size of array of chars for each graph definition.
+ * @spmin	Array containing min values for graphs.
+ * @spmax	Array containing max values for graphs.
+ ***************************************************************************
+ */
+void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
+{
+	if (out) {
+		free(out);
+	}
+	if (outsize) {
+		free(outsize);
+	}
+	if (spmin) {
+		free(spmin);
+	}
+	if (spmax) {
+		free(spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display all graphs for current activity.
  *
  * IN:
@@ -494,12 +521,6 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 
 	/* Next graph */
 	(svg_p->graph_no) += a->g_nr;
-
-	/* Free remaining structures */
-	free(out);
-	free(outsize);
-	free(spmin);
-	free(spmax);
 }
 
 /*
@@ -556,6 +577,9 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 	if (action & F_END) {
 		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
 				     out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
 	}
 }
 
@@ -638,5 +662,8 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 	if (action & F_END) {
 		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
 				     out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
 	}
 }
