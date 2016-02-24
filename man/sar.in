@@ -2274,6 +2274,7 @@ then the current locale will be ignored when printing the date in the report hea
 The
 .B sar
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
+The timestamp will also be compliant with ISO 8601 format.
 .SH EXAMPLES
 .B sar -u 2 5
 .RS

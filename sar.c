@@ -441,18 +441,21 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 			return 0;
 	}
 
+	if (!is_iso_time_fmt())
+		flags |= S_F_PREFD_TIME_OUTPUT;
+
 	/* Get then set previous timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
 					   &rectime, NULL))
 		return 0;
-	set_record_timestamp_string(S_F_PREFD_TIME_OUTPUT, &record_hdr[!curr],
+	set_record_timestamp_string(flags, &record_hdr[!curr],
 				    NULL, timestamp[!curr], 16, &rectime);
 
 	/* Get then set current timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
 					   &rectime, NULL))
 		return 0;
-	set_record_timestamp_string(S_F_PREFD_TIME_OUTPUT, &record_hdr[curr],
+	set_record_timestamp_string(flags, &record_hdr[curr],
 				    NULL, timestamp[curr], 16, &rectime);
 
 	/* Check if we are beginning a new day */
