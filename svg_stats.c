@@ -344,6 +344,7 @@ long int xgrid(unsigned long timestart, unsigned long timeend)
  *		for current activity.
  * @title	Titles for each set of graphs.
  * @g_title	Titles for each graph.
+ * @item_name	Item (network interface, etc.) name.
  * @group	Indicate how graphs are grouped together to make sets.
  * @spmin	Array containing min values for graphs.
  * @spmax	Array containing max values for graphs.
@@ -355,8 +356,8 @@ long int xgrid(unsigned long timestart, unsigned long timeend)
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
-void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], int group[],
-			  double *spmin, double *spmax, char **out, int *outsize,
+void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], char *item_name,
+			  int group[], double *spmin, double *spmax, char **out, int *outsize,
 			  struct svg_parm *svg_p, struct record_header *record_hdr)
 {
 	struct record_header stamp;
@@ -381,8 +382,12 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], in
 		       SVG_V_YSIZE, SVG_V_XSIZE);
 
 		/* Graph title */
-		printf("<text x=\"0\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s\n",
+		printf("<text x=\"0\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s",
 		       20 + i * SVG_T_YSIZE, title[i]);
+		if (item_name) {
+			printf(" [%s]", item_name);
+		}
+		printf("\n");
 		printf("<tspan x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none; font-size: 12px\">"
 		       "(Min, Max values)</tspan>\n</text>\n",
 		       5 + SVG_M_XSIZE + SVG_G_XSIZE,
@@ -549,7 +554,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 	}
 
 	if (action & F_END) {
-		draw_activity_graphs(a, title, g_title, group, spmin, spmax,
+		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
 				     out, outsize, svg_p, record_hdr);
 	}
 }
@@ -631,7 +636,7 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_END) {
-		draw_activity_graphs(a, title, g_title, group, spmin, spmax,
+		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
 				     out, outsize, svg_p, record_hdr);
 	}
 }
