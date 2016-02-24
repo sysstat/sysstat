@@ -667,3 +667,112 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display network interfaces statistics in SVG
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_dev *sndc, *sndp;
+	int group[] = {2, 2, 3};
+	char *title[] = {"Network statistics (1)", "Network statistics (2)", "Network statistics (3)"};
+	char *g_title[] = {"rxpck/s", "txpck/s",
+			   "rxkB/s", "txkB/s",
+			   "rxcmp/s", "txcmp/s", "rxmcst/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	int i, j, pos;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(7 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+
+		for (i = 0; i < a->nr; i++) {
+			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+
+			if (!strcmp(sndc->interface, ""))
+				continue;
+
+			j = check_net_dev_reg(a, curr, !curr, i);
+			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+
+			pos = i * 7;
+			/* Check for min/max values */
+			save_extrema(7, 0, 0, (void *) sndc, (void *) sndp,
+				     itv, spmin + pos, spmax + pos);
+
+			/* rxpck/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
+				 out + pos, outsize + pos, svg_p->restart);
+
+			/* txpck/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
+				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+
+			/* rxkB/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv) / 1024,
+				 out + pos + 2, outsize + pos + 2, svg_p->restart);
+
+			/* txkB/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv) / 1024,
+				 out + pos + 3, outsize + pos + 3, svg_p->restart);
+
+			/* rxcmp/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
+				 out + pos + 4, outsize + pos + 4, svg_p->restart);
+
+			/* txcmp/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
+				 out + pos + 5, outsize + pos + 5, svg_p->restart);
+
+			/* rxmcst/s */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 S_VALUE(sndp->multicast, sndc->multicast, itv),
+				 out + pos + 6, outsize + pos + 6, svg_p->restart);
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; i < a->nr; i++) {
+			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+
+			if (!strcmp(sndc->interface, ""))
+				continue;
+
+			pos = i * 7;
+			draw_activity_graphs(a, title, g_title, sndc->interface, group,
+					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
