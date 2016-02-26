@@ -5015,6 +5015,9 @@ else
    AUX_NLS="no"
    NLS="n"
 fi
+if test $NLS = "y" && test x$ac_cv_prog_XGETTEXT = "x"; then
+    as_fn_error $? "NLS enabled but xgettext not available"
+fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $AUX_NLS" >&5
 $as_echo "$AUX_NLS" >&6; }
 
