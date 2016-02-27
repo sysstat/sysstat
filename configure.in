@@ -298,6 +298,10 @@ fi
 if test $AUX_NLS = "yes" &&  test x$MSGMERGE != x"msgmerge"; then 
    echo "WARNING: msgmerge command not found!"
 fi
+if test $NLS = "y" && test x$XGETTEXT = "x"; then
+   echo "WARNING: xgettext command not found: Disabling NLS"
+   NLS="n"
+fi
 
 # Data history to keep by sa2
 AC_MSG_CHECKING(number of daily data files to keep)
