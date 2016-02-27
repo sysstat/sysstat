@@ -289,15 +289,24 @@ else
 fi
 AC_MSG_RESULT($AUX_NLS)
 AC_SUBST(NLS)
+LACKING_GETTEXT="n"
 if test $AUX_NLS = "yes" &&  test x$MSGFMT != x"msgfmt"; then 
    echo "WARNING: msgfmt command not found!"
+   LACKING_GETTEXT="y"
 fi
 if test $AUX_NLS = "yes" &&  test x$XGETTEXT != x"xgettext"; then 
    echo "WARNING: xgettext command not found!"
+   LACKING_GETTEXT="y"
 fi
 if test $AUX_NLS = "yes" &&  test x$MSGMERGE != x"msgmerge"; then 
    echo "WARNING: msgmerge command not found!"
+   LACKING_GETTEXT="y"
 fi
+if test $NLS = "y" && test $LACKING_GETTEXT = "y"; then
+   echo "WARNING: Disabling NLS"
+   NLS="n"
+fi
+    
 
 # Data history to keep by sa2
 AC_MSG_CHECKING(number of daily data files to keep)
