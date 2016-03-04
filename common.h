@@ -260,6 +260,8 @@ extern int
 extern double
 	ll_sp_value(unsigned long long, unsigned long long, unsigned long long);
 extern int
+	is_iso_time_fmt(void);
+extern int
 	print_gal_header(struct tm *, char *, char *, char *, char *, int);
 extern void
 	print_version(void);

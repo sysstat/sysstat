@@ -381,13 +381,23 @@ int check_line_hdr(void)
 */
 int set_record_timestamp_string(int curr, char *cur_time, int len)
 {
+	static int is_iso = -1;
+
 	/* Fill timestamp structure */
 	if (sar_get_record_timestamp_struct(curr))
 		/* Error detected */
 		return 1;
 
+	if (is_iso < 0) {
+		is_iso = is_iso_time_fmt();
+	}
 	/* Set cur_time date value */
-	strftime(cur_time, len, "%X", &rectime);
+	if (!is_iso) {
+		strftime(cur_time, len, "%X", &rectime);
+	}
+	else {
+		strftime(cur_time, len, "%H:%M:%S", &rectime);
+	}
 
 	return 0;
 }
