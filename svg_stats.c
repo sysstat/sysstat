@@ -767,6 +767,11 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 				continue;
 
 			pos = i * 7;
+			/* Recalculate min and max values in kB, not in B */
+			*(spmin + pos + 2) /= 1024;
+			*(spmax + pos + 2) /= 1024;
+			*(spmin + pos + 3) /= 1024;
+			*(spmax + pos + 3) /= 1024;
 			draw_activity_graphs(a, title, g_title, sndc->interface, group,
 					     spmin + pos, spmax + pos, out + pos, outsize + pos,
 					     svg_p, record_hdr);
