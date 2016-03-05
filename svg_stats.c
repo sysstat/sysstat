@@ -498,7 +498,7 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 			stamp.ust_time += k;
 		}
 		if (!PRINT_LOCAL_TIME(flags)) {
-			printf("<text x=-10 y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
+			printf("<text x=\"-10\" y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
 			       "text-anchor: end\">UTC</text>\n");
 		}
 
