@@ -696,28 +696,55 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	int i, j, pos;
+	int i, j, pos, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
-		 * Allocate arrays that will contain the graphs data
+		 * Allocate arrays (#0..6) that will contain the graphs data
 		 * and the min/max values.
+		 * Also allocate one additional array (#7) for each interface:
+		 * out + 7 will contain the interface name,
+		 * outsize + 7 will contain a positive value (TRUE) if the interface
+		 * has either still not been registered, or has been unregistered.
 		 */
-		out = allocate_graph_lines(7 * a->nr, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(8 * a->nr, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
+		restart = svg_p->restart;
 
 		for (i = 0; i < a->nr; i++) {
+			pos = i * 8;
+			unregistered = outsize + pos + 7;
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-			if (!strcmp(sndc->interface, ""))
+			if (!strcmp(sndc->interface, "")) {
+				/*
+				 * Current interface non existent. Maybe this
+				 * interface will be dynamically registered later,
+				 * or it has been unregistered. So mark it as unregistered.
+				 */
+				*unregistered = TRUE;
 				continue;
+			}
 
 			j = check_net_dev_reg(a, curr, !curr, i);
 			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
 
-			pos = i * 7;
+			/*
+			 * Current interface was marked as previously unregistered.
+			 * So set restart variable to TRUE so that the graph will be
+			 * discontinuous, then mark current interface as now registered.
+			 */
+			if (*unregistered == TRUE) {
+				restart = TRUE;
+				*unregistered = FALSE;
+			}
+			if (!**(out + pos + 7)) {
+				/* Save network interface name (if not already done) */
+				strncpy(*(out + pos + 7), sndc->interface, CHUNKSIZE);
+				*(*(out + pos + 7) + CHUNKSIZE - 1) = '\0';
+			}
 			/* Check for min/max values */
 			save_extrema(7, 0, 0, (void *) sndc, (void *) sndp,
 				     itv, spmin + pos, spmax + pos);
@@ -725,37 +752,37 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			/* rxpck/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
-				 out + pos, outsize + pos, svg_p->restart);
+				 out + pos, outsize + pos, restart);
 
 			/* txpck/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
-				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+				 out + pos + 1, outsize + pos + 1, restart);
 
 			/* rxkB/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv) / 1024,
-				 out + pos + 2, outsize + pos + 2, svg_p->restart);
+				 out + pos + 2, outsize + pos + 2, restart);
 
 			/* txkB/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv) / 1024,
-				 out + pos + 3, outsize + pos + 3, svg_p->restart);
+				 out + pos + 3, outsize + pos + 3, restart);
 
 			/* rxcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
-				 out + pos + 4, outsize + pos + 4, svg_p->restart);
+				 out + pos + 4, outsize + pos + 4, restart);
 
 			/* txcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
-				 out + pos + 5, outsize + pos + 5, svg_p->restart);
+				 out + pos + 5, outsize + pos + 5, restart);
 
 			/* rxmcst/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->multicast, sndc->multicast, itv),
-				 out + pos + 6, outsize + pos + 6, svg_p->restart);
+				 out + pos + 6, outsize + pos + 6, restart);
 		}
 	}
 
@@ -763,16 +790,21 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 		for (i = 0; i < a->nr; i++) {
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-			if (!strcmp(sndc->interface, ""))
+			/*
+			 * Check if there is something to display.
+			 * Don't test sndc->interface because maybe the network
+			 * interface has been registered later.
+			 */
+			pos = i * 8;
+			if (!**(out + pos))
 				continue;
 
-			pos = i * 7;
 			/* Recalculate min and max values in kB, not in B */
 			*(spmin + pos + 2) /= 1024;
 			*(spmax + pos + 2) /= 1024;
 			*(spmin + pos + 3) /= 1024;
 			*(spmax + pos + 3) /= 1024;
-			draw_activity_graphs(a, title, g_title, sndc->interface, group,
+			draw_activity_graphs(a, title, g_title, *(out + pos + 7), group,
 					     spmin + pos, spmax + pos, out + pos, outsize + pos,
 					     svg_p, record_hdr);
 		}
