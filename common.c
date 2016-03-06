@@ -339,9 +339,13 @@ unsigned int get_devmap_major(void)
  */
 int is_iso_time_fmt(void)
 {
+	static int is_iso = -1;
 	char *e;
 
-	return ((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO);
+	if (is_iso < 0) {
+		is_iso = (((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO));
+	}
+	return is_iso;
 }
 
 /*
