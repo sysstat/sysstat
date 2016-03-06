@@ -1,4 +1,4 @@
-.TH SADF 1 "February 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "MARCH 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -126,9 +126,9 @@ Use the following syntax:
 
 .B sadf -g your_datafile [ --
 .I sar_options
-.B ] > output.html
+.B ] > output.svg
 
-and open the resulting HTML file in your favorite web browser.
+and open the resulting SVG file in your favorite web browser.
 .IP -H
 Display only the header of the report (when applicable). If no format has
 been specified, then the header data (metadata) of the data file are displayed.
