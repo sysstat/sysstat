@@ -724,10 +724,20 @@ void write_stats(int curr, int dis)
 	char cur_time[2][16];
 
 	/* Get previous timestamp */
-	strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%X", &(mp_tstamp[!curr]));
+	if (is_iso_time_fmt()) {
+		strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%H:%M:%S", &mp_tstamp[!curr]);
+	}
+	else {
+		strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%X", &(mp_tstamp[!curr]));
+	}
 
 	/* Get current timestamp */
-	strftime(cur_time[curr], sizeof(cur_time[curr]), "%X", &(mp_tstamp[curr]));
+	if (is_iso_time_fmt()) {
+		strftime(cur_time[curr], sizeof(cur_time[curr]), "%H:%M:%S", &mp_tstamp[curr]);
+	}
+	else {
+		strftime(cur_time[curr], sizeof(cur_time[curr]), "%X", &(mp_tstamp[curr]));
+	}
 
 	write_stats_core(!curr, curr, dis, cur_time[!curr], cur_time[curr]);
 }
