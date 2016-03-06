@@ -466,8 +466,8 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 		yfactor = (double) -SVG_G_YSIZE / lmax;
 		j = 1;
 		do {
-			printf("<polyline points=\"0,%.2f %d,%.2f\" vector-effect=\"non-scaling-stroke\" "
-			       "stroke=\"#202020\" transform=\"scale(1,%f)\"/>\n",
+			printf("<polyline points=\"0,%.2f %d,%.2f\" style=\"vector-effect: non-scaling-stroke; "
+			       "stroke: #202020\" transform=\"scale(1,%f)\"/>\n",
 			       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
 			j++;
 		}
@@ -485,8 +485,8 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 		xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
 		stamp = *svg_p->record_hdr;
 		for (j = 1; j <= SVG_V_GRIDNR; j++) {
-			printf("<polyline points=\"%ld,0 %ld,%d\" vector-effect=\"non-scaling-stroke\" "
-			       "stroke=\"#202020\" transform=\"scale(%f,1)\"/>\n",
+			printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
+			       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
 			       k * j, k * j, -SVG_G_YSIZE, xfactor);
 		}
 		for (j = 0; j <= SVG_V_GRIDNR; j++) {
@@ -505,8 +505,8 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 		/* Draw current graphs set */
 		for (j = 0; j < group[i]; j++) {
 			out_p = *(out + pos + j);
-			printf("<path id=\"g%dp%d\" d=\"%s\" vector-effect=\"non-scaling-stroke\" "
-			       "stroke=\"#%06x\" stroke-width=\"1\" fill-opacity=\"0\" "
+			printf("<path id=\"g%dp%d\" d=\"%s\" style=\"vector-effect: non-scaling-stroke; "
+			       "stroke: #%06x; stroke-width: 1; fill-opacity: 0\" "
 			       "transform=\"scale(%f,%f)\"/>\n",
 			       svg_p->graph_no, pos + j, out_p,
 			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
