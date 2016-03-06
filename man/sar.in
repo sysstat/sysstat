@@ -1,4 +1,4 @@
-.TH SAR 1 "OCTOBER 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "FEBRUARY 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
