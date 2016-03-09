@@ -125,11 +125,11 @@
  * NB: Define SP_VALUE() to normalize to %;
  * HZ is 1024 on IA64 and % should be normalized to 100.
  * SP_VALUE_100() will not output value bigger than 100; this is needed for some
- *     corner cases, should be used with care.
+ * corner cases, should be used with care.
  */
-#define S_VALUE(m,n,p)	(((double) ((n) - (m))) / (p) * HZ)
-#define SP_VALUE(m,n,p)	(((double) ((n) - (m))) / (p) * 100)
-#define SP_VALUE_100(m,n,p)	MINIMUM((((double) ((n) - (m))) / (p) * 100),100)
+#define S_VALUE(m,n,p)		(((double) ((n) - (m))) / (p) * HZ)
+#define SP_VALUE(m,n,p)		(((double) ((n) - (m))) / (p) * 100)
+#define SP_VALUE_100(m,n,p)	MINIMUM((((double) ((n) - (m))) / (p) * 100), 100.0)
 
 /*
  * Under very special circumstances, STDOUT may become unavailable.
