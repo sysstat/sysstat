@@ -696,6 +696,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
+	char *item_name;
 	int i, j, pos, restart, *unregistered;
 
 	if (action & F_BEGIN) {
@@ -716,6 +717,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 		for (i = 0; i < a->nr; i++) {
 			pos = i * 8;
 			unregistered = outsize + pos + 7;
+			item_name = *(out + pos + 7);
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
 			if (!strcmp(sndc->interface, "")) {
@@ -742,8 +744,8 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			}
 			if (!**(out + pos + 7)) {
 				/* Save network interface name (if not already done) */
-				strncpy(*(out + pos + 7), sndc->interface, CHUNKSIZE);
-				*(*(out + pos + 7) + CHUNKSIZE - 1) = '\0';
+				strncpy(item_name, sndc->interface, CHUNKSIZE);
+				item_name[CHUNKSIZE - 1] = '\0';
 			}
 			/* Check for min/max values */
 			save_extrema(7, 0, 0, (void *) sndc, (void *) sndp,
@@ -788,8 +790,6 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		for (i = 0; i < a->nr; i++) {
-			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-
 			/*
 			 * Check if there is something to display.
 			 * Don't test sndc->interface because maybe the network
@@ -804,7 +804,9 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			*(spmax + pos + 2) /= 1024;
 			*(spmin + pos + 3) /= 1024;
 			*(spmax + pos + 3) /= 1024;
-			draw_activity_graphs(a, title, g_title, *(out + pos + 7), group,
+
+			item_name = *(out + pos + 7);
+			draw_activity_graphs(a, title, g_title, item_name, group,
 					     spmin + pos, spmax + pos, out + pos, outsize + pos,
 					     svg_p, record_hdr);
 		}
