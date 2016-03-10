@@ -605,8 +605,8 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 	struct stats_swap
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
-	int group[] = {1, 1};
-	char *title[] = {"Swap activity (1)", "Swap activity (2)"};
+	int group[] = {2};
+	char *title[] = {"Swap activity"};
 	char *g_title[] = {"pswpin/s", "pswpout/s" };
 	static double *spmin, *spmax;
 	static char **out;
@@ -617,12 +617,12 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
 		 */
-		out = allocate_graph_lines(8, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(2, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(0, 8, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(0, 2, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax);
 		/* pswpin/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,

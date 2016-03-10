@@ -190,7 +190,7 @@ struct activity swap_act = {
 	.f_svg_print	= svg_print_swap_stats,
 	.hdr_line	= "pswpin/s;pswpout/s",
 	.name		= "A_SWAP",
-	.g_nr		= 2,
+	.g_nr		= 1,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
