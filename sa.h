@@ -274,6 +274,7 @@
 
 /* Structure for SVG specific parameters */
 struct svg_parm {
+	unsigned long dt;
 	int graph_no;
 	int restart;
 	struct record_header *record_hdr;
@@ -899,6 +900,9 @@ struct report_format {
 
 /* Block size used to allocate arrays for graphs data */
 #define CHUNKSIZE	4096
+
+#define SVG_LINE_GRAPH	1
+#define SVG_BAR_GRAPH	2
 
 /*
  ***************************************************************************

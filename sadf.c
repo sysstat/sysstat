@@ -718,6 +718,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				/* SVG output */
 				struct svg_parm *svg_p = (struct svg_parm *) parm;
 
+				svg_p->dt = (unsigned long) dt;
 				(*act[i]->f_svg_print)(act[i], curr, F_MAIN, svg_p,
 						       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv,
 						       &record_hdr[curr]);

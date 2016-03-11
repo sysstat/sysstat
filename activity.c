@@ -458,7 +458,7 @@ struct activity net_dev_act = {
 	.f_svg_print	= svg_print_net_dev_stats,
 	.hdr_line	= "IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil",
 	.name		= "A_NET_DEV",
-	.g_nr		= 3,
+	.g_nr		= 4,
 #endif
 	.nr		= -1,
 	.nr2		= 1,

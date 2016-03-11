@@ -245,6 +245,9 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
  * @outsize	Size of array of chars for current graph definition.
  * @restart	Set to TRUE if a RESTART record has been read since the last
  * 		statistics sample.
+ * @dt		Interval of time in seconds between current and previous
+ * 		sample.
+ * @g_type	Graph type: SVG_LINE_GRAPH or SVG_BAR_GRAPH (for %values).
  *
  * OUT:
  * @out		Pointer on array of chars for current graph definition that
@@ -253,14 +256,24 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
  *		element in array of chars.
  ***************************************************************************
  */
-void lnappend(unsigned long timetag, double value, char **out, int *outsize, int restart)
+void lnappend(unsigned long timetag, double value, char **out, int *outsize, int restart,
+	      unsigned long dt, int g_type)
 {
 	char point[128];
 	char *out_p;
 	int len;
 
 	/* Prepare additional graph definition data */
-	snprintf(point, 128, " %c%lu,%.2f", restart ? 'M' : 'L', timetag, value);
+	if (g_type == SVG_LINE_GRAPH) {
+		snprintf(point, 128, " %c%lu,%.2f", restart ? 'M' : 'L', timetag, value);
+	}
+	else {
+		if (value == 0.0)
+			/* Dont draw a flat rectangle! */
+			return;
+		snprintf(point, 128, "<rect x=\"%lu\" y=\"0\" height=\"%.2f\" width=\"%lu\"/>",
+			 timetag - dt, MINIMUM(value, 100.0), dt);
+	}
 	point[127] = '\0';
 	out_p = *out;
 	len = *outsize - strlen(out_p) - 1;
@@ -367,8 +380,8 @@ void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
  * Display all graphs for current activity.
  *
  * IN:
- * @a		Activity structure containing the number of graphs to draw
- *		for current activity.
+ * @g_nr	Number of graphs to display.
+ * @g_type	Type of graph (SVG_LINE_GRAPH, SVG_BAR_GRAPH).
  * @title	Titles for each set of graphs.
  * @g_title	Titles for each graph.
  * @item_name	Item (network interface, etc.) name.
@@ -383,7 +396,7 @@ void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
-void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], char *item_name,
+void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], char *item_name,
 			  int group[], double *spmin, double *spmax, char **out, int *outsize,
 			  struct svg_parm *svg_p, struct record_header *record_hdr)
 {
@@ -400,8 +413,8 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 	       svg_p->graph_no,
 	       SVG_H_YSIZE + svg_p->graph_no * SVG_T_YSIZE);
 
-	/* For each graphs set which are part of current activity */
-	for (i = 0; i < a->g_nr; i++) {
+	/* For each set of graphs which are part of current activity */
+	for (i = 0; i < g_nr; i++) {
 
 		/* Graph background */
 		printf("<rect x=\"0\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
@@ -447,7 +460,7 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 		       *(spmin + pos + j), *(spmax + pos + j));
 		}
 
-		/* Get global min and max value for current graphs set */
+		/* Get global min and max value for current set of graphs */
 		get_global_extrema(pos, group[i], spmin, spmax);
 
 		/* Translate to proper position for current graph within current activity */
@@ -455,14 +468,22 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
 
 		/* Grid */
-		if (*(spmax + pos) == 0) {
-			/* If all values are zero then set current max value to 1 */
-			lmax = 1.0;
+		if (g_type == SVG_LINE_GRAPH) {
+			/* For line graphs */
+			if (*(spmax + pos) == 0) {
+				/* If all values are zero then set current max value to 1 */
+				lmax = 1.0;
+			}
+			else {
+				lmax = *(spmax + pos);
+			}
+			ypos = ygrid(*(spmax + pos), &dp);
 		}
 		else {
-			lmax = *(spmax + pos);
+			/* For bar graphs (used for %values) */
+			lmax = 100.0;	/* Max is always 100% */
+			ypos = 25.0; 	/* Draw lines at 15%, 50%, 75% and 100% */
 		}
-		ypos = ygrid(*(spmax + pos), &dp);
 		yfactor = (double) -SVG_G_YSIZE / lmax;
 		j = 1;
 		do {
@@ -505,13 +526,24 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 		/* Draw current graphs set */
 		for (j = 0; j < group[i]; j++) {
 			out_p = *(out + pos + j);
-			printf("<path id=\"g%dp%d\" d=\"%s\" style=\"vector-effect: non-scaling-stroke; "
-			       "stroke: #%06x; stroke-width: 1; fill-opacity: 0\" "
-			       "transform=\"scale(%f,%f)\"/>\n",
-			       svg_p->graph_no, pos + j, out_p,
-			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
-			       xfactor,
-			       yfactor);
+			if (g_type == SVG_LINE_GRAPH) {
+				/* Line graphs */
+				printf("<path id=\"g%dp%d\" d=\"%s\" "
+				       "style=\"vector-effect: non-scaling-stroke; "
+				       "stroke: #%06x; stroke-width: 1; fill-opacity: 0\" "
+				       "transform=\"scale(%f,%f)\"/>\n",
+				       svg_p->graph_no, pos + j, out_p,
+				       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
+				       xfactor,
+				       yfactor);
+			}
+			else {
+				/* Bar graphs */
+				printf("<g style=\"fill: #%06x; stroke: none\" transform=\"scale(%f,%f)\">\n",
+				       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], xfactor, yfactor);
+				printf("%s\n", out_p);
+				printf("</g>\n");
+			}
 			free(out_p);
 		}
 		printf("</g>\n");
@@ -520,7 +552,7 @@ void draw_activity_graphs(struct activity *a, char *title[], char *g_title[], ch
 	printf("</g>\n");
 
 	/* Next graph */
-	(svg_p->graph_no) += a->g_nr;
+	(svg_p->graph_no) += g_nr;
 }
 
 /*
@@ -567,16 +599,16 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 		/* cswch/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->context_switch, spc->context_switch, itv),
-			 out, outsize, svg_p->restart);
+			 out, outsize, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* proc/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->processes, spc->processes, itv),
-			 out + 1, outsize + 1, svg_p->restart);
+			 out + 1, outsize + 1, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 	}
 
 	if (action & F_END) {
-		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
-				     out, outsize, svg_p, record_hdr);
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
 
 		/* Free remaining structures */
 		free_graphs(out, outsize, spmin, spmax);
@@ -628,40 +660,40 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 		/* pgpgin/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgpgin, spc->pgpgin, itv),
-			 out, outsize, svg_p->restart);
+			 out, outsize, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* pgpgout/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgpgout, spc->pgpgout, itv),
-			 out + 1, outsize + 1, svg_p->restart);
+			 out + 1, outsize + 1, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* fault/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgfault, spc->pgfault, itv),
-			 out + 2, outsize + 2, svg_p->restart);
+			 out + 2, outsize + 2, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* majflt/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgmajfault, spc->pgmajfault, itv),
-			 out + 3, outsize + 3, svg_p->restart);
+			 out + 3, outsize + 3, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* pgfree/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgfree, spc->pgfree, itv),
-			 out + 4, outsize + 4, svg_p->restart);
+			 out + 4, outsize + 4, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* pgscank/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
-			 out + 5, outsize + 5, svg_p->restart);
+			 out + 5, outsize + 5, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* pgscand/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
-			 out + 6, outsize + 6, svg_p->restart);
+			 out + 6, outsize + 6, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* pgsteal/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgsteal, spc->pgsteal, itv),
-			 out + 7, outsize + 7, svg_p->restart);
+			 out + 7, outsize + 7, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 	}
 
 	if (action & F_END) {
-		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
-				     out, outsize, svg_p, record_hdr);
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
 
 		/* Free remaining structures */
 		free_graphs(out, outsize, spmin, spmax);
@@ -688,36 +720,41 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 					unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_net_dev *sndc, *sndp;
-	int group[] = {2, 2, 3};
-	char *title[] = {"Network statistics (1)", "Network statistics (2)", "Network statistics (3)"};
-	char *g_title[] = {"rxpck/s", "txpck/s",
-			   "rxkB/s", "txkB/s",
-			   "rxcmp/s", "txcmp/s", "rxmcst/s"};
+	int group1[] = {2, 2, 3};
+	int group2[] = {1};
+	char *title1[] = {"Network statistics (1)", "Network statistics (2)",
+			  "Network statistics (3)"};
+	char *title2[] = {"Network statistics (4)"};
+	char *g_title1[] = {"rxpck/s", "txpck/s",
+			    "rxkB/s", "txkB/s",
+			    "rxcmp/s", "txcmp/s", "rxmcst/s"};
+	char *g_title2[] = {"%ifutil"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	char *item_name;
+	double rxkb, txkb, ifutil;
 	int i, j, pos, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
-		 * Allocate arrays (#0..6) that will contain the graphs data
+		 * Allocate arrays (#0..7) that will contain the graphs data
 		 * and the min/max values.
-		 * Also allocate one additional array (#7) for each interface:
-		 * out + 7 will contain the interface name,
-		 * outsize + 7 will contain a positive value (TRUE) if the interface
+		 * Also allocate one additional array (#8) for each interface:
+		 * out + 8 will contain the interface name,
+		 * outsize + 8 will contain a positive value (TRUE) if the interface
 		 * has either still not been registered, or has been unregistered.
 		 */
-		out = allocate_graph_lines(8 * a->nr, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(9 * a->nr, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
 		restart = svg_p->restart;
 
 		for (i = 0; i < a->nr; i++) {
-			pos = i * 8;
-			unregistered = outsize + pos + 7;
-			item_name = *(out + pos + 7);
+			pos = i * 9;
+			unregistered = outsize + pos + 8;
+			item_name = *(out + pos + 8);
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
 			if (!strcmp(sndc->interface, "")) {
@@ -751,40 +788,55 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			save_extrema(7, 0, 0, (void *) sndc, (void *) sndp,
 				     itv, spmin + pos, spmax + pos);
 
+			rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
+			txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
+			ifutil = compute_ifutil(sndc, rxkb, txkb);
+			if (ifutil < *(spmin + pos + 7)) {
+				*(spmin + pos + 7) = ifutil;
+			}
+			if (ifutil > *(spmax + pos + 7)) {
+				*(spmax + pos + 7) = ifutil;
+			}
+
 			/* rxpck/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
-				 out + pos, outsize + pos, restart);
+				 out + pos, outsize + pos, restart, svg_p->dt, SVG_LINE_GRAPH);
 
 			/* txpck/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
-				 out + pos + 1, outsize + pos + 1, restart);
+				 out + pos + 1, outsize + pos + 1, restart, svg_p->dt, SVG_LINE_GRAPH);
 
 			/* rxkB/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-				 S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv) / 1024,
-				 out + pos + 2, outsize + pos + 2, restart);
+				 rxkb / 1024,
+				 out + pos + 2, outsize + pos + 2, restart, svg_p->dt, SVG_LINE_GRAPH);
 
 			/* txkB/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-				 S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv) / 1024,
-				 out + pos + 3, outsize + pos + 3, restart);
+				 txkb / 1024,
+				 out + pos + 3, outsize + pos + 3, restart, svg_p->dt, SVG_LINE_GRAPH);
 
 			/* rxcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
-				 out + pos + 4, outsize + pos + 4, restart);
+				 out + pos + 4, outsize + pos + 4, restart, svg_p->dt, SVG_LINE_GRAPH);
 
 			/* txcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
-				 out + pos + 5, outsize + pos + 5, restart);
+				 out + pos + 5, outsize + pos + 5, restart, svg_p->dt, SVG_LINE_GRAPH);
 
 			/* rxmcst/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->multicast, sndc->multicast, itv),
-				 out + pos + 6, outsize + pos + 6, restart);
+				 out + pos + 6, outsize + pos + 6, restart, svg_p->dt, SVG_LINE_GRAPH);
+
+			/* %ifutil */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 ifutil,
+				 out + pos + 7, outsize + pos + 7, restart, svg_p->dt, SVG_BAR_GRAPH);
 		}
 	}
 
@@ -795,7 +847,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			 * Don't test sndc->interface because maybe the network
 			 * interface has been registered later.
 			 */
-			pos = i * 8;
+			pos = i * 9;
 			if (!**(out + pos))
 				continue;
 
@@ -805,9 +857,14 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			*(spmin + pos + 3) /= 1024;
 			*(spmax + pos + 3) /= 1024;
 
-			item_name = *(out + pos + 7);
-			draw_activity_graphs(a, title, g_title, item_name, group,
+			item_name = *(out + pos + 8);
+			draw_activity_graphs(a->g_nr - 1, SVG_LINE_GRAPH,
+					     title1, g_title1, item_name, group1,
 					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+			draw_activity_graphs(1, SVG_BAR_GRAPH,
+					     title2, g_title2, item_name, group2,
+					     spmin + pos + 7, spmax + pos + 7, out + pos + 7, outsize + pos + 7,
 					     svg_p, record_hdr);
 		}
 
