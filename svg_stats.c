@@ -482,7 +482,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		else {
 			/* For bar graphs (used for %values) */
 			lmax = 100.0;	/* Max is always 100% */
-			ypos = 25.0; 	/* Draw lines at 15%, 50%, 75% and 100% */
+			ypos = 25.0; 	/* Draw lines at 25%, 50%, 75% and 100% */
 		}
 		yfactor = (double) -SVG_G_YSIZE / lmax;
 		j = 1;
@@ -579,7 +579,8 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 	int group[] = {1, 1};
 	char *title[] = {"Switching activity", "Task creation"};
-	char *g_title[] = {"cswch/s", "proc/s"};
+	char *g_title[] = {"cswch/s",
+			   "proc/s"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -639,7 +640,8 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 		*spp = (struct stats_paging *) a->buf[!curr];
 	int group[] = {2, 2, 4};
 	char *title[] = {"Paging activity (1)", "Paging activity (2)", "Paging activity (3)"};
-	char *g_title[] = {"pgpgin/s", "pgpgout/s", "fault/s", "majflt/s",
+	char *g_title[] = {"pgpgin/s", "pgpgout/s",
+			   "fault/s", "majflt/s",
 			   "pgfree/s", "pgscank/s", "pgscand/s", "pgsteal/s"};
 	static double *spmin, *spmax;
 	static char **out;
