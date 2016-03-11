@@ -710,11 +710,8 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 	/* Network interface not found: Look for the first free structure */
 	for (index = 0; index < a->nr; index++) {
 		sndp = (struct stats_net_dev *) a->buf[ref] + index;
-		if (!strcmp(sndp->interface, "?")) {
-			memset(sndp, 0, STATS_NET_DEV_SIZE);
-			strcpy(sndp->interface, sndc->interface);
+		if (!strcmp(sndp->interface, ""))
 			break;
-		}
 	}
 	if (index >= a->nr) {
 		/* No free structure: Default is structure of same rank */
@@ -785,11 +782,8 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 	/* Network interface not found: Look for the first free structure */
 	for (index = 0; index < a->nr; index++) {
 		snedp = (struct stats_net_edev *) a->buf[ref] + index;
-		if (!strcmp(snedp->interface, "?")) {
-			memset(snedp, 0, STATS_NET_EDEV_SIZE);
-			strcpy(snedp->interface, snedc->interface);
+		if (!strcmp(snedp->interface, ""))
 			break;
-		}
 	}
 	if (index >= a->nr) {
 		/* No free structure: Default is structure of same rank */
