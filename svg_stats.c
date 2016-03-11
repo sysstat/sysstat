@@ -796,7 +796,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	static int *outsize;
 	char *item_name;
 	double rxkb, txkb, ifutil;
-	int i, j, pos, restart, *unregistered;
+	int i, j, k, pos, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
@@ -812,40 +812,65 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		restart = svg_p->restart;
-
-		for (i = 0; i < a->nr; i++) {
-			pos = i * 9;
-			unregistered = outsize + pos + 8;
-			item_name = *(out + pos + 8);
-			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-
-			if (!strcmp(sndc->interface, "")) {
-				/*
-				 * Current interface non existent. Maybe this
-				 * interface will be dynamically registered later,
-				 * or it has been unregistered. So mark it as unregistered.
-				 */
-				*unregistered = TRUE;
-				continue;
+		/*
+		 * Mark previously registered interfaces as now
+		 * possibly unregistered for all graphs.
+		 */
+		for (k = 0; k < a->nr; k++) {
+			unregistered = outsize + k * 9 + 8;
+			if (*unregistered == FALSE) {
+				*unregistered = MAYBE;
 			}
+		}
+
+		/* For each network interfaces structure */
+		for (i = 0; i < a->nr; i++) {
+			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+			if (!strcmp(sndc->interface, ""))
+				/* Empty structure: Ignore it */
+				continue;
+
+			/* Look for corresponding graph */
+			for (k = 0; k < a->nr; k++) {
+				item_name = *(out + k * 9 + 8);
+				if (!strcmp(sndc->interface, item_name))
+					/* Graph found! */
+					break;
+			}
+			if (k == a->nr) {
+				/* Graph not found: Look for first free entry */
+				for (k = 0; k < a->nr; k++) {
+					item_name = *(out + k * 9 + 8);
+					if (!strcmp(item_name, ""))
+						break;
+				}
+				if (k == a->nr)
+					/* No free graph entry: Graph for this item won't be drawn */
+					continue;
+			}
+
+			pos = k * 9;
+			unregistered = outsize + pos + 8;
 
 			j = check_net_dev_reg(a, curr, !curr, i);
 			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
 
 			/*
-			 * Current interface was marked as previously unregistered.
-			 * So set restart variable to TRUE so that the graph will be
-			 * discontinuous, then mark current interface as now registered.
+			 * If current interface was marked as previously unregistered,
+			 * then set restart variable to TRUE so that the graph will be
+			 * discontinuous, and mark it as now registered.
 			 */
 			if (*unregistered == TRUE) {
 				restart = TRUE;
-				*unregistered = FALSE;
 			}
-			if (!**(out + pos + 7)) {
+			*unregistered = FALSE;
+
+			if (!item_name[0]) {
 				/* Save network interface name (if not already done) */
 				strncpy(item_name, sndc->interface, CHUNKSIZE);
 				item_name[CHUNKSIZE - 1] = '\0';
 			}
+
 			/* Check for min/max values */
 			save_extrema(7, 0, 0, (void *) sndc, (void *) sndp,
 				     itv, spmin + pos, spmax + pos);
@@ -899,6 +924,14 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 ifutil,
 				 out + pos + 7, outsize + pos + 7, restart, svg_p->dt, SVG_BAR_GRAPH);
+		}
+
+		/* Mark interfaces not seen here as now unregistered */
+		for (k = 0; k < a->nr; k++) {
+			unregistered = outsize + k * 9 + 8;
+			if (*unregistered != FALSE) {
+				*unregistered = TRUE;
+			}
 		}
 	}
 

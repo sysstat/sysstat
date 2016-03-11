@@ -904,6 +904,8 @@ struct report_format {
 #define SVG_LINE_GRAPH	1
 #define SVG_BAR_GRAPH	2
 
+#define MAYBE	0x80
+
 /*
  ***************************************************************************
  * Macro functions definitions.
