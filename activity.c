@@ -187,9 +187,10 @@ struct activity swap_act = {
 	.f_render	= render_swap_stats,
 	.f_xml_print	= xml_print_swap_stats,
 	.f_json_print	= json_print_swap_stats,
+	.f_svg_print	= svg_print_swap_stats,
 	.hdr_line	= "pswpin/s;pswpout/s",
 	.name		= "A_SWAP",
-	.g_nr		= 0,
+	.g_nr		= 1,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
