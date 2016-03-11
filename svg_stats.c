@@ -660,22 +660,21 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 		/* pswpin/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(ssp->pswpin, ssc->pswpin, itv),
-			 out, outsize, svg_p->restart);
+			 out, outsize, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 		/* pswpout/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(ssp->pswpout, ssc->pswpout, itv),
-			 out + 1, outsize + 1, svg_p->restart);
+			 out + 1, outsize + 1, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
 	}
 
 	if (action & F_END) {
-		draw_activity_graphs(a, title, g_title, NULL, group, spmin, spmax,
-				     out, outsize, svg_p, record_hdr);
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
 
 		/* Free remaining structures */
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
-
 
 /*
  ***************************************************************************
