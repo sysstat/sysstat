@@ -636,10 +636,10 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 	struct stats_net_dev *sndc, *sndp;
 	unsigned int index = 0;
 
-	sndc = (struct stats_net_dev *) a->buf[curr] + pos;
+	sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + pos * a->msize);
 
 	while (index < a->nr) {
-		sndp = (struct stats_net_dev *) a->buf[ref] + index;
+		sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
 		if (!strcmp(sndc->interface, sndp->interface)) {
 			/*
 			 * Network interface found.
@@ -709,7 +709,7 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 
 	/* Network interface not found: Look for the first free structure */
 	for (index = 0; index < a->nr; index++) {
-		sndp = (struct stats_net_dev *) a->buf[ref] + index;
+		sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
 		if (!strcmp(sndp->interface, ""))
 			break;
 	}
@@ -718,7 +718,7 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 		index = pos;
 	}
 
-	sndp = (struct stats_net_dev *) a->buf[ref] + index;
+	sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
 	/* Since the name is not the same, reset all the structure */
 	memset(sndp, 0, STATS_NET_DEV_SIZE);
 	strcpy(sndp->interface, sndc->interface);
@@ -748,10 +748,10 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 	struct stats_net_edev *snedc, *snedp;
 	unsigned int index = 0;
 
-	snedc = (struct stats_net_edev *) a->buf[curr] + pos;
+	snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + pos * a->msize);
 
 	while (index < a->nr) {
-		snedp = (struct stats_net_edev *) a->buf[ref] + index;
+		snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
 		if (!strcmp(snedc->interface, snedp->interface)) {
 			/*
 			 * Network interface found.
@@ -781,7 +781,7 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 
 	/* Network interface not found: Look for the first free structure */
 	for (index = 0; index < a->nr; index++) {
-		snedp = (struct stats_net_edev *) a->buf[ref] + index;
+		snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
 		if (!strcmp(snedp->interface, ""))
 			break;
 	}
@@ -790,7 +790,7 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 		index = pos;
 	}
 
-	snedp = (struct stats_net_edev *) a->buf[ref] + index;
+	snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
 	/* Since the name is not the same, reset all the structure */
 	memset(snedp, 0, STATS_NET_EDEV_SIZE);
 	strcpy(snedp->interface, snedc->interface);
@@ -818,10 +818,10 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 	struct stats_disk *sdc, *sdp;
 	int index = 0;
 
-	sdc = (struct stats_disk *) a->buf[curr] + pos;
+	sdc = (struct stats_disk *) ((char *) a->buf[curr] + pos * a->msize);
 
 	while (index < a->nr) {
-		sdp = (struct stats_disk *) a->buf[ref] + index;
+		sdp = (struct stats_disk *) ((char *) a->buf[ref] + index * a->msize);
 		if ((sdc->major == sdp->major) &&
 		    (sdc->minor == sdp->minor)) {
 			/*
@@ -846,20 +846,16 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 
 	/* Disk not found: Look for the first free structure */
 	for (index = 0; index < a->nr; index++) {
-		sdp = (struct stats_disk *) a->buf[ref] + index;
-		if (!(sdp->major + sdp->minor)) {
-			memset(sdp, 0, STATS_DISK_SIZE);
-			sdp->major = sdc->major;
-			sdp->minor = sdc->minor;
+		sdp = (struct stats_disk *) ((char *) a->buf[ref] + index * a->msize);
+		if (!(sdp->major + sdp->minor))
 			break;
-		}
 	}
 	if (index >= a->nr) {
 		/* No free structure found: Default is structure of same rank */
 		index = pos;
 	}
 
-	sdp = (struct stats_disk *) a->buf[ref] + index;
+	sdp = (struct stats_disk *) ((char *) a->buf[ref] + index * a->msize);
 	/* Since the device is not the same, reset all the structure */
 	memset(sdp, 0, STATS_DISK_SIZE);
 	sdp->major = sdc->major;
