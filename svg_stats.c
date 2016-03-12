@@ -483,6 +483,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 			/* For bar graphs (used for %values) */
 			lmax = 100.0;	/* Max is always 100% */
 			ypos = 25.0; 	/* Draw lines at 25%, 50%, 75% and 100% */
+			dp = 0;		/* No decimals */
 		}
 		yfactor = (double) -SVG_G_YSIZE / lmax;
 		j = 1;
