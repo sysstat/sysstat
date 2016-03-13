@@ -30,6 +30,13 @@ command. But unlike
 can write its data in many different formats (CSV, XML, etc.)
 The default format is one that can
 easily be handled by pattern processing commands like awk (see option -p).
+The
+.B sadf
+command can also be used to draw graphs for the various activities collected
+by
+.B sar
+and display them as SVG (Scalable Vector Graphics) graphics in your web browser
+(see option -g).
 
 The
 .B sadf
@@ -207,6 +214,12 @@ Extract CPU statistics for processor 1 (the second processor) from current
 daily data file, and display them in a format that can easily be handled
 by a pattern processing command.
 .RE
+
+.SH BUGS
+SVG output (as created by option -g) is fully compliant with SVG 1.1 standard.
+Graphics have been succesfully displayed in various web browsers, including
+Firefox, Chrome and Opera. Yet SVG rendering is broken on Microsoft browsers
+(tested on Internet Explorer 11 and Edge 13.1): So please don't use them.
 
 .SH FILES
 .I @SA_DIR@/saDD
