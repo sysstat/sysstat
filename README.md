@@ -1,6 +1,6 @@
 ## sysstat - System performance tools for the Linux operating system...
 
-(C) 1999-2016 Sebastien GODARD (sysstat <at> orange.fr)
+(C) 1999-2016 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
 The latest version of sysstat can always be found on my web site at:
 

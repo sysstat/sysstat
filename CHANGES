@@ -1,5 +1,27 @@
 Changes:
 
+2016/03/13: Version 11.3.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Add SVG output for paging statistics, network interfaces
+	  and swap statistics.
+	* SVG: Specify charset encoding in SVG header.
+	* SVG: Fix invalid use of attribute vector-effect.
+	* sar: Fix possible confusion between network interfaces that
+	  could happen when a new interface was registered and appeared
+	  in the middle of the list in the /proc/net/dev file [11.2.2].
+	* sar: Fix possible compatibility issues between sysstat versions
+	  [11.2.2.].
+	* [Y. Namiki]: sar: Print time in the ISO format if
+	  S_TIME_FORMAT=ISO [11.2.2].
+	* mpstat/pidstat: Print time in the ISO format if S_TIME_FORMAT=ISO
+	  [11.2.2].
+	* [Steve Kay]: Disable NLS if any gettext components are
+	  unavailable [11.2.2].
+	* [Steve Kay]: sadf: Fix several typos in SVG output.
+	* [Steve Kay]: Fix tapestat manual page typos [11.2.2].
+	* [Peter Schiffer]: Add new SP_VALUE_100() macro which limits
+	  value to 100% for CPU statistics displayed by pidstat [11.2.2].
+	* sar, sadf, pidstat and mpstat manual pages updated.
+
 2016/02/21: Version 11.3.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Add new SVG (Scalable Vector Graphics) output format.
 	  This option enables the user to display fancy graphs in a

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-02-20 16:08+0100\n"
+"POT-Creation-Date: 2016-03-13 11:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: iostat.c:1399 sa_common.c:1642
+#: iostat.c:1399 sa_common.c:1632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -129,7 +129,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:508 rd_stats.c:69
-#: sa_common.c:1273 count.c:118
+#: sa_common.c:1263 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Average:"
 msgstr ""
 
-#: mpstat.c:1101
+#: mpstat.c:1111
 #, c-format
 msgid "Not that many processors!\n"
 msgstr ""
@@ -353,32 +353,32 @@ msgstr ""
 msgid "End of data collecting unexpected\n"
 msgstr ""
 
-#: sar.c:810
+#: sar.c:813
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:862
+#: sar.c:865
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:1041 pidstat.c:239
+#: sar.c:1044 pidstat.c:239
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: sar.c:1347
+#: sar.c:1350
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1353
+#: sar.c:1356
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1489
+#: sar.c:1492
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
@@ -432,42 +432,42 @@ msgid ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: sa_common.c:1069
+#: sa_common.c:1059
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1079
+#: sa_common.c:1069
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1098
+#: sa_common.c:1088
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:1131
+#: sa_common.c:1121
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1143
+#: sa_common.c:1133
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr ""
 
-#: sa_common.c:1147
+#: sa_common.c:1137
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1276
+#: sa_common.c:1266
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1461
+#: sa_common.c:1451
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
