@@ -1,13 +1,13 @@
 # Serbian translation of sysstat.
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2015.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-11.2.0\n"
+"Project-Id-Version: sysstat-11.3.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2015-12-21 08:54+0100\n"
-"PO-Revision-Date: 2015-12-26 23:43+0200\n"
+"POT-Creation-Date: 2016-02-20 16:08+0100\n"
+"PO-Revision-Date: 2016-03-05 10:24+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
@@ -16,28 +16,103 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: cifsiostat.c:70 mpstat.c:98 pidstat.c:87 iostat.c:86 tapestat.c:89 sar.c:95
+#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:89
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Употреба: %s [ опције ] [ <период> [ <број> ] ]\n"
 
-#: cifsiostat.c:74
+#: iostat.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Могућности су:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ИБ | НАТПИС | ПУТАЊА | ЈУИБ | ... } ]\n"
+"[ [ -H ] -g <назив_групе> ] [ -p [ <уређај> [,...] | СВЕ ] ]\n"
+"[ <уређај> [...] | СВЕ ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:77
+#: iostat.c:95
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
 msgstr ""
-"Опције су:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"Могућности су:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ИБ | НАТПИС | ПУТАЊА | ЈУИБ | ... } ]\n"
+"[ [ -H ] -g <назив_групе> ] [ -p [ <уређај> [,...] | СВЕ ] ]\n"
+"[ <уређај> [...] | СВЕ ]\n"
+
+#: iostat.c:326
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Не могу да пронађем податке о диску\n"
+
+#: iostat.c:1399 sa_common.c:1642
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Неисправна врста назива сталног уређаја\n"
+
+#: sadf_misc.c:752
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Датотека података рада система: %s (%#x)\n"
+
+#: sadf_misc.c:761
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Датотека података рада система: %s (%x)\n"
+
+#: sadf_misc.c:762
+msgid "no"
+msgstr "не"
+
+#: sadf_misc.c:762
+msgid "yes"
+msgstr "да"
+
+#: sadf_misc.c:765
+#, c-format
+msgid "Host: "
+msgstr "Домаћин: "
+
+#: sadf_misc.c:771
+#, c-format
+msgid "Number of CPU for last samples in file: %u\n"
+msgstr "Број процесора за последње узорке у датотеци: %u\n"
+
+#: sadf_misc.c:777
+#, c-format
+msgid "File date: %s\n"
+msgstr "Време датотеке: %s\n"
+
+#: sadf_misc.c:780
+#, c-format
+msgid "File time: "
+msgstr "Време датотеке: "
+
+#: sadf_misc.c:785
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Величина дугог периода: %d\n"
+
+#: sadf_misc.c:791
+#, c-format
+msgid "List of activities:\n"
+msgstr "Списак активности:\n"
+
+#: sadf_misc.c:804
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Непознат формат рада]"
 
 #: sadc.c:89
 #, c-format
@@ -76,6 +151,29 @@ msgstr "Не могу да отворим %s: %s\n"
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не могу да прикачим податке тој датотеци (%s)\n"
 
+#: common.c:74
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "издање стања система %s\n"
+
+#: cifsiostat.c:74
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgstr ""
+"Могућности су:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+
+#: cifsiostat.c:77
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+"Опције су:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
 #: mpstat.c:101
 #, c-format
 msgid ""
@@ -87,7 +185,7 @@ msgstr ""
 "[ -A ] [ -u ] [ -V ] [ -I { СУМ | ЦПЈ | СЦПЈ | СВЕ } ]\n"
 "[ -P { <цпј> [,...] | УКЉ | СВЕ } ]\n"
 
-#: mpstat.c:708 pidstat.c:2301 sar.c:425
+#: mpstat.c:708 sar.c:358 pidstat.c:2301
 msgid "Average:"
 msgstr "Просек:"
 
@@ -105,199 +203,16 @@ msgstr "Употреба: %s [ опције ] [ <период> [ <број> ] ] 
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Могућности су:\n"
-"[ -C ] [ -c | -d | -j | -p | -x ] [ -H ] [ -h ] [ -T ] [ -t | -U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T ] [ -t | -U ] [ -V ]\n"
 "[ -P { <цпј> [,...] | СВЕ } ] [ -s [ <чч:мм[:сс]> ] ] [ -e [ <чч:мм[:сс]> ] ]\n"
 "[ -- <сар_могућности> ]\n"
 
-#: sa_common.c:1069
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Грешка приликом читања датотеке рада система: %s\n"
-
-#: sa_common.c:1079
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Крај датотеке рада система није очекиван\n"
-
-#: sa_common.c:1098
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Датотеку је направио сар/садц из сис-стања издање %d.%d.%d"
-
-#: sa_common.c:1131
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Неисправна датотека рада система: %s\n"
-
-#: sa_common.c:1143
-#, c-format
-msgid "Endian format mismatch\n"
-msgstr "Запис крајњости не одговара\n"
-
-#: sa_common.c:1147
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr "Текуће издање сисстања не може да чита формат те датотеке (%#x)\n"
-
-#: sa_common.c:1276
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "Проверите да ли је укључено прикупљање података\n"
-
-#: sa_common.c:1461
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Захтевана активност није доступна у датотеци %s\n"
-
-#: sa_common.c:1642 iostat.c:1399
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Неисправна врста назива сталног уређаја\n"
-
-#: pidstat.c:90
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-msgstr ""
-"Могућности су:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <корисничко_име> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <наредба> ] [ -G <назив_процеса> ]\n"
-"[ -p { <пиб> [,...] | САМ | СВЕ } ] [ -T { ЗАДАТАК | ПОТПРОЦЕС | СВЕ } ]\n"
-
-#: pidstat.c:239 sar.c:1108
-#, c-format
-msgid "Requested activities not available\n"
-msgstr "Захтевана активност није доступна\n"
-
-#: sadf_misc.c:624
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Датотека података рада система: %s (%#x)\n"
-
-#: sadf_misc.c:633
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Датотека података рада система: %s (%x)\n"
-
-#: sadf_misc.c:634
-msgid "no"
-msgstr "не"
-
-#: sadf_misc.c:634
-msgid "yes"
-msgstr "да"
-
-#: sadf_misc.c:637
-#, c-format
-msgid "Host: "
-msgstr "Домаћин: "
-
-#: sadf_misc.c:643
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr "Број процесора за последње узорке у датотеци: %u\n"
-
-#: sadf_misc.c:649
-#, c-format
-msgid "File date: %s\n"
-msgstr "Време датотеке: %s\n"
-
-#: sadf_misc.c:652
-#, c-format
-msgid "File time: "
-msgstr "Време датотеке: "
-
-#: sadf_misc.c:657
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Величина дугог периода: %d\n"
-
-#: sadf_misc.c:663
-#, c-format
-msgid "List of activities:\n"
-msgstr "Списак активности:\n"
-
-#: sadf_misc.c:676
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Непознат формат рада]"
-
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Не могу да рукујем са толико процесора!\n"
-
-#: iostat.c:89
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Могућности су:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ИБ | НАТПИС | ПУТАЊА | ЈУИБ | ... } ]\n"
-"[ [ -H ] -g <назив_групе> ] [ -p [ <уређај> [,...] | СВЕ ] ]\n"
-"[ <уређај> [...] | СВЕ ] [ --debuginfo ]\n"
-
-#: iostat.c:95
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Могућности су:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ИБ | НАТПИС | ПУТАЊА | ЈУИБ | ... } ]\n"
-"[ [ -H ] -g <назив_групе> ] [ -p [ <уређај> [,...] | СВЕ ] ]\n"
-"[ <уређај> [...] | СВЕ ]\n"
-
-#: iostat.c:326
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Не могу да пронађем податке о диску\n"
-
-#: common.c:74
-#, c-format
-msgid "sysstat version %s\n"
-msgstr "издање стања система %s\n"
-
-#: pr_stats.c:2483 pr_stats.c:2495 pr_stats.c:2599 pr_stats.c:2610
-msgid "Summary:"
-msgstr "Сажетак:"
-
-#: pr_stats.c:2538
-msgid "Other devices not listed here"
-msgstr "Остали уређаји који нису наведени овде"
-
-#: tapestat.c:91
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-"Опције су:\n"
-"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-
-#: tapestat.c:251
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr "Нисам нашао касетне уређаје са стањима\n"
-
-#: sar.c:110
+#: sar.c:111
 #, c-format
 msgid ""
 "Options are:\n"
@@ -320,42 +235,42 @@ msgstr ""
 "[ -f [ <назив_датотеке> ] | -o [ <назив_датотеке> ] | -[0-9]+ ]\n"
 "[ -i <период> ] [ -s [ <чч:мм[:сс]> ] ] [ -e [ <чч:мм[:сс]> ] ]\n"
 
-#: sar.c:133
+#: sar.c:134
 #, c-format
 msgid "Main options and reports:\n"
 msgstr "Главне опције и извештаји:\n"
 
-#: sar.c:134
+#: sar.c:135
 #, c-format
 msgid "\t-B\tPaging statistics\n"
 msgstr "\t-B\tСтатистика страничења\n"
 
-#: sar.c:135
+#: sar.c:136
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr "\t-b\tУ/И и статистика протока преноса\n"
 
-#: sar.c:136
+#: sar.c:137
 #, c-format
 msgid "\t-d\tBlock devices statistics\n"
 msgstr "\t-d\tСтатистика блок уређаја\n"
 
-#: sar.c:137
+#: sar.c:138
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ МОНТИРАЊА ]\n"
 
-#: sar.c:138
+#: sar.c:139
 #, c-format
 msgid "\t\tFilesystems statistics\n"
 msgstr "\t\tСтатистика система датотека\n"
 
-#: sar.c:139
+#: sar.c:140
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-H\tСтатистика коришћења великих страница\n"
 
-#: sar.c:140
+#: sar.c:141
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -364,7 +279,7 @@ msgstr ""
 "\t-I { <период> | SUM | ALL | XALL }\n"
 "\t\tСтатистика прекида\n"
 
-#: sar.c:142
+#: sar.c:143
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -387,7 +302,7 @@ msgstr ""
 "\t\tTEMP\tТемпература уређаја\n"
 "\t\tUSB\tУСБ уређаји прикључени на систем\n"
 
-#: sar.c:151
+#: sar.c:152
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -437,17 +352,17 @@ msgstr ""
 "\t\tFC\tОптички канал ХБАс\n"
 "\n"
 
-#: sar.c:173
+#: sar.c:174
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tСтавља у ред статистику трајања и просека учитавања\n"
 
-#: sar.c:174
+#: sar.c:175
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tСтатистика меморије\n"
 
-#: sar.c:175
+#: sar.c:176
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -456,12 +371,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "           \tСтатистика коришћења меморије\n"
 
-#: sar.c:177
+#: sar.c:178
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tСтатистика коришћења простора помоћне меморије\n"
 
-#: sar.c:178
+#: sar.c:179
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -470,65 +385,78 @@ msgstr ""
 "\t-u [ СВЕ ]\n"
 "\t\tСтатистика коришћења ЦПЈ\n"
 
-#: sar.c:180
+#: sar.c:181
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr "\t-v\tСтатистика табеле језгра\n"
 
-#: sar.c:181
+#: sar.c:182
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tСтатистика помоћне меморије\n"
 
-#: sar.c:182
+#: sar.c:183
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tСтатистика стварања задатака и пребацивања система\n"
 
-#: sar.c:183
+#: sar.c:184
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr "\t-y\tСтатистика ТТУ уређаја\n"
 
-#: sar.c:197
+#: sar.c:198
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Скупљач података биће затражен у ПУТАЊИ\n"
 
-#: sar.c:200
+#: sar.c:201
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Пронађох скупљач података: %s\n"
 
-#: sar.c:259
+#: sar.c:260
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Крај прикупљања података није очекиван\n"
 
-#: sar.c:885
+#: sar.c:810
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Користим погрешан сабирник података из различитих издања сисстања\n"
 
-#: sar.c:937
+#: sar.c:862
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Противречни улазни подаци\n"
 
-#: sar.c:1414
+#: sar.c:1041 pidstat.c:239
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "Захтевана активност није доступна\n"
+
+#: sar.c:1347
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "опције -f и -o се међусобно искључују\n"
 
-#: sar.c:1420
+#: sar.c:1353
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Не читам из датотеке рада система (користите -f опцију)\n"
 
-#: sar.c:1556
+#: sar.c:1489
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Не могу да пронађем сабирник података (%s)\n"
+
+#: pr_stats.c:2483 pr_stats.c:2495 pr_stats.c:2599 pr_stats.c:2610
+msgid "Summary:"
+msgstr "Сажетак:"
+
+#: pr_stats.c:2538
+msgid "Other devices not listed here"
+msgstr "Остали уређаји који нису наведени овде"
 
 #: sa_conv.c:69
 #, c-format
@@ -566,6 +494,78 @@ msgid ""
 msgstr ""
 "\n"
 "Датотека је успешно претворена у запис сисстања издања %s\n"
+
+#: pidstat.c:90
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+msgstr ""
+"Могућности су:\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <корисничко_име> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <наредба> ] [ -G <назив_процеса> ]\n"
+"[ -p { <пиб> [,...] | САМ | СВЕ } ] [ -T { ЗАДАТАК | ПОТПРОЦЕС | СВЕ } ]\n"
+
+#: sa_common.c:1069
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Грешка приликом читања датотеке рада система: %s\n"
+
+#: sa_common.c:1079
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Крај датотеке рада система није очекиван\n"
+
+#: sa_common.c:1098
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Датотеку је направио сар/садц из сис-стања издање %d.%d.%d"
+
+#: sa_common.c:1131
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Неисправна датотека рада система: %s\n"
+
+#: sa_common.c:1143
+#, c-format
+msgid "Endian format mismatch\n"
+msgstr "Запис крајњости не одговара\n"
+
+#: sa_common.c:1147
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "Текуће издање сисстања не може да чита формат те датотеке (%#x)\n"
+
+#: sa_common.c:1276
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "Проверите да ли је укључено прикупљање података\n"
+
+#: sa_common.c:1461
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Захтевана активност није доступна у датотеци %s\n"
+
+#: tapestat.c:91
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+"Опције су:\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+
+#: tapestat.c:251
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr "Нисам нашао касетне уређаје са стањима\n"
+
+#: count.c:169
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Не могу да рукујем са толико процесора!\n"
 
 #~ msgid "Invalid data format\n"
 #~ msgstr "Неисправан формат података\n"
