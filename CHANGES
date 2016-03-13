@@ -1,5 +1,21 @@
 Changes:
 
+2016/03/13: Version 11.2.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* Update Makefile to fix installation problem.
+	* sar: Fix possible confusion between network interfaces that
+	  could happen when a new interface was registered and appeared
+	  in the middle of the list in the /proc/net/dev file.
+	* sar: Fix possible compatibility issues between sysstat versions.
+	* [Y. Namiki]: sar: Print time in the ISO format if
+	  S_TIME_FORMAT=ISO.
+	* mpstat/pidstat: Print time in the ISO format if S_TIME_FORMAT=ISO.
+	* [Steve Kay]: Disable NLS if any gettext components are
+	  unavailable.
+	* [Steve Kay]: Fix tapestat manual page typos.
+	* [Peter Schiffer]: Add new SP_VALUE_100() macro which limits
+	  value to 100% for CPU statistics displayed by pidstat.
+	* sar, pidstat and mpstat manual pages updated.
+
 2016/02/21: Version 11.2.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* README file converted to Markdown format.
 	* sadf: Don't display the JSON fchosts tag when no statistics
