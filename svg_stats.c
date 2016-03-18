@@ -285,6 +285,7 @@ void lnappend(unsigned long timetag, double value, char **out, int *outsize, int
 		SREALLOC(out_p, char, *outsize + CHUNKSIZE);
 		*out = out_p;
 		*outsize += CHUNKSIZE;
+		len += CHUNKSIZE;
 	}
 	strncat(out_p, point, len);
 }
