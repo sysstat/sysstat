@@ -14,6 +14,9 @@
  */
 
 /* Functions used to display statistics in SVG */
+__print_funct_t svg_print_cpu_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
 __print_funct_t svg_print_pcsw_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);

@@ -70,7 +70,8 @@ struct act_bitmap irq_bitmap = {
  */
 struct activity cpu_act = {
 	.id		= A_CPU,
-	.options	= AO_COLLECTED + AO_VOLATILE + AO_GLOBAL_ITV + AO_MULTIPLE_OUTPUTS,
+	.options	= AO_COLLECTED + AO_VOLATILE + AO_GLOBAL_ITV + AO_MULTIPLE_OUTPUTS +
+			  AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -86,10 +87,11 @@ struct activity cpu_act = {
 	.f_render	= render_cpu_stats,
 	.f_xml_print	= xml_print_cpu_stats,
 	.f_json_print	= json_print_cpu_stats,
+	.f_svg_print	= svg_print_cpu_stats,
 	.hdr_line	= "CPU;%user;%nice;%system;%iowait;%steal;%idle|"
 		          "CPU;%usr;%nice;%sys;%iowait;%steal;%irq;%soft;%guest;%gnice;%idle",
 	.name		= "A_CPU",
-	.g_nr		= 0,
+	.g_nr		= 1,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
