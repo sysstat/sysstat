@@ -235,7 +235,44 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
 
 /*
  ***************************************************************************
- * Update graph definition by appending current X,Y coordinates.
+ * Save SVG code for current graph.
+ *
+ * IN:
+ * @data	SVG code to append to current graph definition.
+ * @out		Pointer on array of chars for current graph definition.
+ * @outsize	Size of array of chars for current graph definition.
+ *
+ * OUT:
+ * @out		Pointer on array of chars for current graph definition that
+ *		has been updated with the addition of current sample data.
+ * @outsize	Array that containing the (possibly new) sizes of each
+ *		element in array of chars.
+ ***************************************************************************
+ */
+void save_svg_data(char *data, char **out, int *outsize)
+{
+	char *out_p;
+	int len;
+
+	out_p = *out;
+	/* Determine space left in array */
+	len = *outsize - strlen(out_p) - 1;
+	if (strlen(data) >= len) {
+		/*
+		 * If current array of chars doesn't have enough space left
+		 * then reallocate it with CHUNKSIZE more bytes.
+		 */
+		SREALLOC(out_p, char, *outsize + CHUNKSIZE);
+		*out = out_p;
+		*outsize += CHUNKSIZE;
+		len += CHUNKSIZE;
+	}
+	strncat(out_p, data, len);
+}
+
+/*
+ ***************************************************************************
+ * Update line graph definition by appending current X,Y coordinates.
  *
  * IN:
  * @timetag	Timestamp in seconds since the epoch for current sample
@@ -247,7 +284,6 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
  * 		statistics sample.
  * @dt		Interval of time in seconds between current and previous
  * 		sample.
- * @g_type	Graph type: SVG_LINE_GRAPH or SVG_BAR_GRAPH (for %values).
  *
  * OUT:
  * @out		Pointer on array of chars for current graph definition that
@@ -257,37 +293,55 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
  ***************************************************************************
  */
 void lnappend(unsigned long timetag, double value, char **out, int *outsize, int restart,
-	      unsigned long dt, int g_type)
+	      unsigned long dt)
 {
-	char point[128];
-	char *out_p;
-	int len;
+	char data[128];
 
 	/* Prepare additional graph definition data */
-	if (g_type == SVG_LINE_GRAPH) {
-		snprintf(point, 128, " %c%lu,%.2f", restart ? 'M' : 'L', timetag, value);
-	}
-	else {
-		if (value == 0.0)
-			/* Dont draw a flat rectangle! */
-			return;
-		snprintf(point, 128, "<rect x=\"%lu\" y=\"0\" height=\"%.2f\" width=\"%lu\"/>",
-			 timetag - dt, MINIMUM(value, 100.0), dt);
-	}
-	point[127] = '\0';
-	out_p = *out;
-	len = *outsize - strlen(out_p) - 1;
-	if (strlen(point) >= len) {
-		/*
-		 * If current array of chars doesn't have enough space left
-		 * then reallocate it with CHUNKSIZE more bytes.
-		 */
-		SREALLOC(out_p, char, *outsize + CHUNKSIZE);
-		*out = out_p;
-		*outsize += CHUNKSIZE;
-		len += CHUNKSIZE;
-	}
-	strncat(out_p, point, len);
+	snprintf(data, 128, " %c%lu,%.2f", restart ? 'M' : 'L', timetag, value);
+	data[127] = '\0';
+
+	save_svg_data(data, out, outsize);
+}
+
+/*
+ ***************************************************************************
+ * Update bar graph definition by adding a new rectangle.
+ *
+ * IN:
+ * @timetag	Timestamp in seconds since the epoch for current sample
+ *		stats. Will be used as X coordinate.
+ * @value	Value of current sample metric. Will be used as rectangle
+ *		height.
+ * @offset	Offset for Y coordinate.
+ * @out		Pointer on array of chars for current graph definition.
+ * @outsize	Size of array of chars for current graph definition.
+ * @dt		Interval of time in seconds between current and previous
+ * 		sample.
+ *
+ * OUT:
+ * @out		Pointer on array of chars for current graph definition that
+ *		has been updated with the addition of current sample data.
+ * @outsize	Array that containing the (possibly new) sizes of each
+ *		element in array of chars.
+ ***************************************************************************
+ */
+void brappend(unsigned long timetag, double offset, double value, char **out, int *outsize,
+	      unsigned long dt)
+{
+	char data[128];
+
+	/* Prepare additional graph definition data */
+	if (value == 0.0)
+		/* Dont draw a flat rectangle! */
+		return;
+
+	snprintf(data, 128, "<rect x=\"%lu\" y=\"%.2f\" height=\"%.2f\" width=\"%lu\"/>",
+		 timetag - dt, MINIMUM(offset, 100.0), MINIMUM(value, (100.0 - offset)), dt);
+	data[127] = '\0';
+
+	save_svg_data(data, out, outsize);
+
 }
 
 /*
@@ -602,11 +656,11 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 		/* cswch/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->context_switch, spc->context_switch, itv),
-			 out, outsize, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out, outsize, svg_p->restart, svg_p->dt);
 		/* proc/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->processes, spc->processes, itv),
-			 out + 1, outsize + 1, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 1, outsize + 1, svg_p->restart, svg_p->dt);
 	}
 
 	if (action & F_END) {
@@ -662,11 +716,11 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 		/* pswpin/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(ssp->pswpin, ssc->pswpin, itv),
-			 out, outsize, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out, outsize, svg_p->restart, svg_p->dt);
 		/* pswpout/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(ssp->pswpout, ssc->pswpout, itv),
-			 out + 1, outsize + 1, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 1, outsize + 1, svg_p->restart, svg_p->dt);
 	}
 
 	if (action & F_END) {
@@ -724,35 +778,35 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 		/* pgpgin/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgpgin, spc->pgpgin, itv),
-			 out, outsize, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out, outsize, svg_p->restart, svg_p->dt);
 		/* pgpgout/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgpgout, spc->pgpgout, itv),
-			 out + 1, outsize + 1, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 1, outsize + 1, svg_p->restart, svg_p->dt);
 		/* fault/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgfault, spc->pgfault, itv),
-			 out + 2, outsize + 2, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 2, outsize + 2, svg_p->restart, svg_p->dt);
 		/* majflt/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgmajfault, spc->pgmajfault, itv),
-			 out + 3, outsize + 3, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 3, outsize + 3, svg_p->restart, svg_p->dt);
 		/* pgfree/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgfree, spc->pgfree, itv),
-			 out + 4, outsize + 4, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 4, outsize + 4, svg_p->restart, svg_p->dt);
 		/* pgscank/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
-			 out + 5, outsize + 5, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 5, outsize + 5, svg_p->restart, svg_p->dt);
 		/* pgscand/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
-			 out + 6, outsize + 6, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 6, outsize + 6, svg_p->restart, svg_p->dt);
 		/* pgsteal/s */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 			 S_VALUE(spp->pgsteal, spc->pgsteal, itv),
-			 out + 7, outsize + 7, svg_p->restart, svg_p->dt, SVG_LINE_GRAPH);
+			 out + 7, outsize + 7, svg_p->restart, svg_p->dt);
 	}
 
 	if (action & F_END) {
@@ -890,42 +944,42 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			/* rxpck/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
-				 out + pos, outsize + pos, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos, outsize + pos, restart, svg_p->dt);
 
 			/* txpck/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
-				 out + pos + 1, outsize + pos + 1, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos + 1, outsize + pos + 1, restart, svg_p->dt);
 
 			/* rxkB/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 rxkb / 1024,
-				 out + pos + 2, outsize + pos + 2, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos + 2, outsize + pos + 2, restart, svg_p->dt);
 
 			/* txkB/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 txkb / 1024,
-				 out + pos + 3, outsize + pos + 3, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos + 3, outsize + pos + 3, restart, svg_p->dt);
 
 			/* rxcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
-				 out + pos + 4, outsize + pos + 4, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos + 4, outsize + pos + 4, restart, svg_p->dt);
 
 			/* txcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
-				 out + pos + 5, outsize + pos + 5, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos + 5, outsize + pos + 5, restart, svg_p->dt);
 
 			/* rxmcst/s */
 			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
 				 S_VALUE(sndp->multicast, sndc->multicast, itv),
-				 out + pos + 6, outsize + pos + 6, restart, svg_p->dt, SVG_LINE_GRAPH);
+				 out + pos + 6, outsize + pos + 6, restart, svg_p->dt);
 
 			/* %ifutil */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-				 ifutil,
-				 out + pos + 7, outsize + pos + 7, restart, svg_p->dt, SVG_BAR_GRAPH);
+			brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 0.0, ifutil,
+				 out + pos + 7, outsize + pos + 7, svg_p->dt);
 		}
 
 		/* Mark interfaces not seen here as now unregistered */
