@@ -681,8 +681,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	static char **out;
 	static int *outsize;
 	char item_name[8];
-	double offset;
-	int i, j, pos, cpu_offline;
+	double offset, val;
+	int i, j, k, pos, cpu_offline;
 
 	if (action & F_BEGIN) {
 		/*
@@ -705,6 +705,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				continue;
 
 			pos = i * 10;
+			offset = 0.0;
+
 			if (i) {	/* Don't test CPU "all" here */
 				/*
 				 * If the CPU is offline then it is omited from /proc/stat:
@@ -736,32 +738,35 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 				if (!g_itv) {	/* Current CPU is offline or tickless */
 
-					if (cpu_offline)
-						/* Even %idle is 0%. Nothing to draw */
-						continue;
+					val = (cpu_offline ? 0.0	/* Offline CPU: %idle = 0% */
+							   : 100.0);	/* Tickless CPU: %idle = 100% */
 
-					/* Tickless CPU */
 					if (DISPLAY_CPU_DEF(a->opt_flags)) {
-						j  = 5;
+						j  = 5;	/* -u */
 					}
 					else {	/* DISPLAY_CPU_ALL(a->opt_flags) */
-						j = 9;
+						j = 9;	/* -u ALL */
+					}
+
+					/* Check min/max values for %user, etc. */
+					for (k = 0; k < j; k++) {
+						if (0.0 < *(spmin + pos + k)) {
+							*(spmin + pos + k) = 0.0;
+						}
+						if (0.0 > *(spmax + pos + k)) {
+							*(spmax + pos + k) = 0.0;
+						}
 					}
 
 					/* %idle */
-					if (100.0 < *(spmin + pos + j)) {
-						*(spmin + pos + j) = 100.0;
-					}
-					*(spmax + pos + j) = 100.0;
-					brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-						 0.0, 100.0,
-						 out + pos + j, outsize + pos + j, svg_p->dt);
-
+					cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+						  &offset, val,
+						  out + pos + j, outsize + pos + j, svg_p->dt,
+						  spmin + pos + j, spmax + pos + j);
 					continue;
 				}
 			}
 
-			offset = 0.0;
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				/* %user */
 				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
