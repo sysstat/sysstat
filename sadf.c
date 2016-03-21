@@ -33,8 +33,8 @@
 #include "common.h"
 #include "ioconf.h"
 
+# include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS
-# include <locale.h>
 # include <libintl.h>
 # define _(string) gettext(string)
 #else
@@ -1283,6 +1283,9 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 	off_t fpos;
 	int graph_nr = 0;
 	__nr_t save_act_nr[NR_ACT] = {0};
+
+	/* Use a decimal point to make SVG code locale independent */
+	setlocale(LC_NUMERIC, "C");
 
 	/* Calculate the number of graphs to display */
 	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
