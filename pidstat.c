@@ -1387,8 +1387,8 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_STACK(actflag)) {
 			cprintf_u64(2, 7,
-				    pstc->stack_size,
-				    pstc->stack_ref);
+				    (unsigned long long) pstc->stack_size,
+				    (unsigned long long) pstc->stack_ref);
 		}
 
 		if (DISPLAY_IO(actflag)) {
@@ -1410,7 +1410,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			}
 			/* I/O delays come from another file (/proc/#/stat) */
 			cprintf_u64(1, 7,
-				    pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
+				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
@@ -1421,19 +1421,19 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_KTAB(actflag)) {
 			cprintf_u64(1, 7,
-				    pstc->threads);
+				    (unsigned long long) pstc->threads);
 			if (NO_PID_FD(pstc->flags)) {
 				/* /proc/#/fd directory not readable */
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
-				cprintf_u64(1, 7, pstc->fd_nr);
+				cprintf_u64(1, 7, (unsigned long long) pstc->fd_nr);
 			}
 		}
 
 		if (DISPLAY_RT(actflag)) {
 			cprintf_u64(1, 4,
-				    pstc->priority);
+				    (unsigned long long) pstc->priority);
 			cprintf_s(IS_STR, " %6s",
 				  GET_POLICY(pstc->policy));
 		}
@@ -1501,8 +1501,8 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_MEM(actflag)) {
 			cprintf_u64(2, 9,
-				    (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
-				    (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
+				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
+				    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 		}
 
 		print_comm(pstc);
@@ -1813,8 +1813,8 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		else {
 			cprintf_u64(2, 9,
-				    (pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt),
-				    (pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt));
+				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
+                    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 		}
 		print_comm(pstc);
 		again = 1;
@@ -1885,8 +1885,8 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		else {
 			cprintf_u64(2, 7,
-				    pstc->stack_size,
-				    pstc->stack_ref);
+				    (unsigned long long) pstc->stack_size,
+				    (unsigned long long) pstc->stack_ref);
 		}
 
 		print_comm(pstc);
@@ -1969,7 +1969,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		else {
 			cprintf_u64(1, 7,
-				    pstc->blkio_swapin_delays - pstp->blkio_swapin_delays);
+				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
 		}
 
 		print_comm(pstc);
@@ -2072,7 +2072,7 @@ int write_pid_rt_stats(int prev, int curr, int dis,
 
 		print_line_id(curr_string, pstc);
 		cprintf_u64(1, 4,
-			    pstc->priority);
+			    (unsigned long long) pstc->priority);
 		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
 		print_comm(pstc);
 		again = 1;
@@ -2146,13 +2146,13 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		else {
 			cprintf_u64(1, 7,
-				    pstc->threads);
+				    (unsigned long long) pstc->threads);
 			if (NO_PID_FD(pstc->flags)) {
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
 				cprintf_u64(1, 7,
-					    pstc->fd_nr);
+					    (unsigned long long) pstc->fd_nr);
 			}
 		}
 
