@@ -387,6 +387,61 @@ void cpuappend(unsigned long timetag, double *offset, double value, char **out, 
 
 /*
  ***************************************************************************
+ * Update rectangular graph and min/max values.
+ *
+ * IN:
+ * @timetag	Timestamp in seconds since the epoch for current sample
+ *		stats. Will be used as X coordinate.
+ * @p_value	Metric value for previous sample
+ * @value	Metric value for current sample.
+ * @out		Pointer on array of chars for current graph definition.
+ * @outsize	Size of array of chars for current graph definition.
+ * @restart	Set to TRUE if a RESTART record has been read since the last
+ * 		statistics sample.
+ * @dt		Interval of time in seconds between current and previous
+ * 		sample.
+ * @spmin	Min value already found for this metric.
+ * @spmax	Max value already found for this metric.
+ *
+ * OUT:
+ * @out		Pointer on array of chars for current graph definition that
+ *		has been updated with the addition of current sample data.
+ * @outsize	Array that containing the (possibly new) sizes of each
+ *		element in array of chars.
+ * @spmin	Min value for this metric.
+ * @spmax	Max value for this metric.
+ ***************************************************************************
+ */
+void recappend(unsigned long timetag, double p_value, double value, char **out, int *outsize,
+	       int restart, unsigned long dt, double *spmin, double *spmax)
+{
+	char data[128], data1[128], data2[128];
+
+	/* Save min and max values */
+	if (value < *spmin) {
+		*spmin = value;
+	}
+	if (value > *spmax) {
+		*spmax = value;
+	}
+	/* Prepare additional graph definition data */
+	if (restart) {
+		snprintf(data1, 128, " M%lu,%.2f", timetag - dt, p_value);
+		data1[127] = '\0';
+	}
+	if (p_value != value) {
+		snprintf(data2, 128, " L%lu,%.2f", timetag, value);
+		data2[127] = '\0';
+	}
+	snprintf(data, 128, "%s L%lu,%.2f%s", restart ? data1 : "", timetag, p_value,
+		 p_value != value ? data2 : "");
+	data[127] = '\0';
+
+	save_svg_data(data, out, outsize);
+}
+
+/*
+ ***************************************************************************
  * Calculate the value on the Y axis between two horizontal lines that will
  * make the graph background grid.
  *
@@ -1321,6 +1376,91 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			draw_activity_graphs(1, SVG_BAR_GRAPH,
 					     title2, g_title2, item_name, group2,
 					     spmin + pos + 7, spmax + pos + 7, out + pos + 7, outsize + pos + 7,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display CPU frequency statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					    unsigned long long g_itv, struct record_header *record_hdr)
+{
+	struct stats_pwr_cpufreq *spc, *spp;
+	int group[] = {1};
+	char *title[] = {"CPU frequency"};
+	char *g_title[] = {"MHz"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char item_name[8];
+	int i;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each CPU */
+		for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+			spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
+			spp = (struct stats_pwr_cpufreq *) ((char *) a->buf[!curr]  + i * a->msize);
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+				/* No */
+				continue;
+
+			/* MHz */
+			recappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				  ((double) spp->cpufreq) / 100,
+				  ((double) spc->cpufreq) / 100,
+				  out + i, outsize + i, svg_p->restart, svg_p->dt,
+				  spmin + i, spmax + i);
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+				/* No */
+				continue;
+
+			if (!i) {
+				/* This is CPU "all" */
+				strcpy(item_name, "all");
+			}
+			else {
+				sprintf(item_name, "%d", i - 1);
+			}
+
+			draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH,
+					     title, g_title, item_name, group,
+					     spmin + i, spmax + i, out + i, outsize + i,
 					     svg_p, record_hdr);
 		}
 

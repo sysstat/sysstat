@@ -1046,7 +1046,7 @@ struct activity net_udp6_act = {
 /* CPU frequency */
 struct activity pwr_cpufreq_act = {
 	.id		= A_PWR_CPUFREQ,
-	.options	= AO_VOLATILE,
+	.options	= AO_VOLATILE + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1062,9 +1062,10 @@ struct activity pwr_cpufreq_act = {
 	.f_render	= render_pwr_cpufreq_stats,
 	.f_xml_print	= xml_print_pwr_cpufreq_stats,
 	.f_json_print	= json_print_pwr_cpufreq_stats,
+	.f_svg_print	= svg_print_pwr_cpufreq_stats,
 	.hdr_line	= "CPU;MHz",
 	.name		= "A_PWR_CPUFREQ",
-	.g_nr		= 0,
+	.g_nr		= 1,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
