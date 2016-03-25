@@ -573,7 +573,11 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 			else {
 				lmax = *(spmax + pos);
 			}
-			ypos = ygrid(*(spmax + pos), &dp);
+			/* Max value cannot be too small, else Y graduations will be meaningless */
+			if (lmax < SVG_H_GRIDNR * 0.01) {
+				lmax = SVG_H_GRIDNR * 0.01;
+			}
+			ypos = ygrid(lmax, &dp);
 		}
 		else {
 			/* For bar graphs (used for %values) */
