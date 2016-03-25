@@ -460,33 +460,33 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			/* Display instantaneous values */
 			printf("%-11s", timestamp[curr]);
 			cprintf_u64(2, 9,
-				    smc->frmkb,
-				    smc->tlmkb - smc->frmkb);
+				    (unsigned long long) smc->frmkb,
+				    (unsigned long long) (smc->tlmkb - smc->frmkb));
 			cprintf_pc(1, 9, 2,
 				   smc->tlmkb ?
 				   SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb)
 				   : 0.0);
 			cprintf_u64(3, 9,
-				    smc->bufkb,
-				    smc->camkb,
-				    smc->comkb);
+				    (unsigned long long) smc->bufkb,
+				    (unsigned long long) smc->camkb,
+				    (unsigned long long) smc->comkb);
 			cprintf_pc(1, 9, 2,
 				   (smc->tlmkb + smc->tlskb) ?
 				   SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 				   : 0.0);
 			cprintf_u64(3, 9,
-				    smc->activekb,
-				    smc->inactkb,
-				    smc->dirtykb);
+				    (unsigned long long) smc->activekb,
+				    (unsigned long long) smc->inactkb,
+				    (unsigned long long) smc->dirtykb);
 
 			if (DISPLAY_MEM_ALL(a->opt_flags)) {
 				/* Display extended memory statistics */
 				cprintf_u64(5, 9,
-					    smc->anonpgkb,
-					    smc->slabkb,
-					    smc->kstackkb,
-					    smc->pgtblkb,
-					    smc->vmusedkb);
+					    (unsigned long long) smc->anonpgkb,
+					    (unsigned long long) smc->slabkb,
+					    (unsigned long long) smc->kstackkb,
+					    (unsigned long long) smc->pgtblkb,
+					    (unsigned long long) smc->vmusedkb);
 			}
 
 			printf("\n");
@@ -561,17 +561,17 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			/* Display instantaneous values */
 			printf("%-11s", timestamp[curr]);
 			cprintf_u64(2, 9,
-				    smc->frskb,
-				    smc->tlskb - smc->frskb);
+				    (unsigned long long) smc->frskb,
+				    (unsigned long long) (smc->tlskb - smc->frskb));
 			cprintf_pc(1, 9, 2,
 				   smc->tlskb ?
-				   SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) 
+				   SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
 				   : 0.0);
 			cprintf_u64(1, 9,
-				    smc->caskb);
+				    (unsigned long long) smc->caskb);
 			cprintf_pc(1, 9, 2,
 				   (smc->tlskb - smc->frskb) ?
-				   SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) 
+				   SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
 				   : 0.0);
 
 			printf("\n");
@@ -678,10 +678,10 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
 		cprintf_u64(4, 9,
-			    skc->dentry_stat,
-			    skc->file_used,
-			    skc->inode_used,
-			    skc->pty_nr);
+			    (unsigned long long) skc->dentry_stat,
+			    (unsigned long long) skc->file_used,
+			    (unsigned long long) skc->inode_used,
+			    (unsigned long long) skc->pty_nr);
 		printf("\n");
 
 		/*
@@ -774,14 +774,14 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
 		cprintf_u64(2, 9,
-			    sqc->nr_running,
-			    sqc->nr_threads);
+			    (unsigned long long) sqc->nr_running,
+			    (unsigned long long) sqc->nr_threads);
 		cprintf_f(3, 9, 2,
 			  (double) sqc->load_avg_1  / 100,
 			  (double) sqc->load_avg_5  / 100,
 			  (double) sqc->load_avg_15 / 100);
 		cprintf_u64(1, 9,
-			    sqc->procs_blocked);
+			    (unsigned long long) sqc->procs_blocked);
 		printf("\n");
 
 		/* Will be used to compute the average */
@@ -1183,12 +1183,12 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
 		cprintf_u64(6, 9,
-			    snsc->sock_inuse,
-			    snsc->tcp_inuse,
-			    snsc->udp_inuse,
-			    snsc->raw_inuse,
-			    snsc->frag_inuse,
-			    snsc->tcp_tw);
+			    (unsigned long long) snsc->sock_inuse,
+			    (unsigned long long) snsc->tcp_inuse,
+			    (unsigned long long) snsc->udp_inuse,
+			    (unsigned long long) snsc->raw_inuse,
+			    (unsigned long long) snsc->frag_inuse,
+			    (unsigned long long) snsc->tcp_tw);
 		printf("\n");
 
 		/* Will be used to compute the average */
@@ -1534,10 +1534,10 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
 		cprintf_u64(4, 9,
-			    snsc->tcp6_inuse,
-			    snsc->udp6_inuse,
-			    snsc->raw6_inuse,
-			    snsc->frag6_inuse);
+			    (unsigned long long) snsc->tcp6_inuse,
+			    (unsigned long long) snsc->udp6_inuse,
+			    (unsigned long long) snsc->raw6_inuse,
+			    (unsigned long long) snsc->frag6_inuse);
 		printf("\n");
 
 		/* Will be used to compute the average */
@@ -2316,8 +2316,8 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
 		cprintf_u64(2, 9,
-			    smc->frhkb,
-			    smc->tlhkb - smc->frhkb);
+			    (unsigned long long) smc->frhkb,
+			    (unsigned long long) (smc->tlhkb - smc->frhkb));
 		cprintf_pc(1, 9, 2,
 			   smc->tlhkb ?
 			   SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0);
@@ -2499,7 +2499,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 			  suc->product_id);
 		cprintf_u64(1, 9,
 			    /* bMaxPower is expressed in 2 mA units */
-			    suc->bmaxpower << 1);
+			    (unsigned long long) (suc->bmaxpower << 1));
 
 		snprintf(fmt, 16, " %%%ds", MAX_MANUF_LEN - 1);
 		cprintf_s(IS_STR, fmt, suc->manufacturer);
@@ -2618,8 +2618,8 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 			   sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
 			   : 0.0);
 		cprintf_u64(2, 9,
-			    sfc->f_ffree,
-			    sfc->f_files - sfc->f_ffree);
+			    (unsigned long long) sfc->f_ffree,
+			    (unsigned long long) (sfc->f_files - sfc->f_ffree));
 		cprintf_pc(1, 9, 2,
 			   sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 			   : 0.0);
