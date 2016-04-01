@@ -61,7 +61,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * @lu_nr	Number of unsigned long fields composing the structure.
  * @u_nr	Number of unsigned int fields composing the structure.
  * @cs		Pointer on current sample statistics structure.
- * @ps		Pointer on previous sample statistics structure.
+ * @ps		Pointer on previous sample statistics structure (may be NULL).
  * @itv		Interval of time in jiffies.
  * @minv	Array containing min values already found for this activity.
  * @maxv	Array containing max values already found for this activity.
@@ -87,7 +87,16 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 	lluc = (unsigned long long *) cs;
 	llup = (unsigned long long *) ps;
 	for (i = 0; i < llu_nr; i++, m++) {
-		val = S_VALUE(*llup, *lluc, itv);
+		if (ps) {
+			val = S_VALUE(*llup, *lluc, itv);
+		}
+		else {
+			/*
+			 * If no pointer on previous sample has been given
+			 * then the value is not a per-second one.
+			 */
+			val = (double) *lluc;
+		}
 		if (val < minv[m]) {
 			minv[m] = val;
 		}
@@ -95,14 +104,21 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 			maxv[m] = val;
 		}
 		lluc = (unsigned long long *) ((char *) lluc + ULL_ALIGNMENT_WIDTH);
-		llup = (unsigned long long *) ((char *) llup + ULL_ALIGNMENT_WIDTH);
+		if (ps) {
+			llup = (unsigned long long *) ((char *) llup + ULL_ALIGNMENT_WIDTH);
+		}
 	}
 
 	/* Compare unsigned long fields */
 	luc = (unsigned long *) lluc;
 	lup = (unsigned long *) llup;
 	for (i = 0; i < lu_nr; i++, m++) {
-		val = S_VALUE(*lup, *luc, itv);
+		if (ps) {
+			val = S_VALUE(*lup, *luc, itv);
+		}
+		else {
+			val = (double) *luc;
+		}
 		if (val < minv[m]) {
 			minv[m] = val;
 		}
@@ -110,14 +126,21 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 			maxv[m] = val;
 		}
 		luc = (unsigned long *) ((char *) luc + UL_ALIGNMENT_WIDTH);
-		lup = (unsigned long *) ((char *) lup + UL_ALIGNMENT_WIDTH);
+		if (ps) {
+			lup = (unsigned long *) ((char *) lup + UL_ALIGNMENT_WIDTH);
+		}
 	}
 
 	/* Compare unsigned int fields */
 	uc = (unsigned int *) luc;
 	up = (unsigned int *) lup;
 	for (i = 0; i < u_nr; i++, m++) {
-		val = S_VALUE(*up, *uc, itv);
+		if (ps) {
+			val = S_VALUE(*up, *uc, itv);
+		}
+		else {
+			val = (double) *uc;
+		}
 		if (val < minv[m]) {
 			minv[m] = val;
 		}
@@ -125,7 +148,9 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 			maxv[m] = val;
 		}
 		uc = (unsigned int *) ((char *) uc + U_ALIGNMENT_WIDTH);
-		up = (unsigned int *) ((char *) up + U_ALIGNMENT_WIDTH);
+		if (ps) {
+			up = (unsigned int *) ((char *) up + U_ALIGNMENT_WIDTH);
+		}
 	}
 }
 
@@ -296,6 +321,39 @@ void lnappend(unsigned long timetag, double value, char **out, int *outsize, int
 
 	/* Prepare additional graph definition data */
 	snprintf(data, 128, " %c%lu,%.2f", restart ? 'M' : 'L', timetag, value);
+	data[127] = '\0';
+
+	save_svg_data(data, out, outsize);
+}
+
+/*
+ ***************************************************************************
+ * Update line graph definition by appending current X,Y coordinates. Use
+ * (unsigned long) integer values here.
+ *
+ * IN:
+ * @timetag	Timestamp in seconds since the epoch for current sample
+ *		stats. Will be used as X coordinate.
+ * @value	Value of current sample metric. Will be used as Y coordinate.
+ * @out		Pointer on array of chars for current graph definition.
+ * @outsize	Size of array of chars for current graph definition.
+ * @restart	Set to TRUE if a RESTART record has been read since the last
+ * 		statistics sample.
+ *
+ * OUT:
+ * @out		Pointer on array of chars for current graph definition that
+ *		has been updated with the addition of current sample data.
+ * @outsize	Array that containing the (possibly new) sizes of each
+ *		element in array of chars.
+ ***************************************************************************
+ */
+void lniappend(unsigned long timetag, unsigned long value, char **out, int *outsize,
+	       int restart)
+{
+	char data[128];
+
+	/* Prepare additional graph definition data */
+	snprintf(data, 128, " %c%lu,%lu", restart ? 'M' : 'L', timetag, value);
 	data[127] = '\0';
 
 	save_svg_data(data, out, outsize);
