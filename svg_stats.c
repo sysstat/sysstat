@@ -1237,6 +1237,162 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 
 /*
  ***************************************************************************
+ * Display memory statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+				       unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_memory
+		*smc = (struct stats_memory *) a->buf[curr];
+	int group1a[] = {2, 2};
+	int group1b[] = {4, 5};
+	int group2[] = {3};
+	char *title1a[] = {"Memory utilization (1)", "Memory utilization (2)"};
+	char *title1b[] = {"Memory utilization (3)", "Memory utilization (4)"};
+	char *title2[] = {"Swap utilization"};
+	char *g_title1a[] = {"~kbmemfree", "~kbmemused",
+			     "~kbcached", "~kbbuffers"};
+	char *g_title1b[] = {"~kbcommit", "~kbactive", "~kbinact", "~kbdirty",
+			     "~kbanonpg", "~kbslab", "~kbkstack", "~kbpgtbl", "~kbvmused"};
+	char *g_title2[] = {"~kbswpfree", "~kbswpused", "~kbswpcad"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	double tval;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(16, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 16, 0, (void *) a->buf[curr], NULL,
+			     0, spmin, spmax);
+
+		/* kbmemfree */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->frmkb,
+			  out, outsize, svg_p->restart);
+		/* kbmemused */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->tlmkb - smc->frmkb,
+			  out + 1, outsize + 1, svg_p->restart);
+		/* kbcached */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->camkb,
+			  out + 2, outsize + 2, svg_p->restart);
+		/* kbbuffers */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->bufkb,
+			  out + 3, outsize + 3, svg_p->restart);
+		/* kbswpfree */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->frskb,
+			  out + 4, outsize + 4, svg_p->restart);
+		/* kbswpused */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->tlskb - smc->frskb,
+			  out + 5, outsize + 5, svg_p->restart);
+		/* kbswpcad */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->caskb,
+			  out + 6, outsize + 6, svg_p->restart);
+		/* kbcommit */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->comkb,
+			  out + 7, outsize + 7, svg_p->restart);
+		/* kbactive */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->activekb,
+			  out + 8, outsize + 8, svg_p->restart);
+		/* kbinact */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->inactkb,
+			  out + 9, outsize + 9, svg_p->restart);
+		/* kbdirty */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->dirtykb,
+			  out + 10, outsize + 10, svg_p->restart);
+		/* kbanonpg */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->anonpgkb,
+			  out + 11, outsize + 11, svg_p->restart);
+		/* kbslab */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->slabkb,
+			  out + 12, outsize + 12, svg_p->restart);
+		/* kbkstack */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->kstackkb,
+			  out + 13, outsize + 13, svg_p->restart);
+		/* kbpgtbl */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->pgtblkb,
+			  out + 14, outsize + 14, svg_p->restart);
+		/* kbvmused */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  smc->vmusedkb,
+			  out + 15, outsize + 15, svg_p->restart);
+	}
+
+	if (action & F_END) {
+
+		if (DISPLAY_MEM_AMT(a->opt_flags)) {
+			/* frmkb and tlmkb should be together because they will be drawn on the same view */
+			tval = *(spmax + 3); *(spmax + 3) = *(spmax + 1); *(spmax + 1) = tval;
+			tval = *(spmin + 3); *(spmin + 3) = *(spmin + 1); *(spmin + 1) = tval;
+
+			/*
+			 * Set memused max/min values:
+			 * max = tlmkb - min(frmkb)
+			 * min = tlmkb - max(frmkb)
+			 */
+			*(spmax + 1) -= *spmin;
+			*(spmin + 1) -= *spmax;
+
+			draw_activity_graphs(2, SVG_LINE_GRAPH, title1a, g_title1a, NULL, group1a,
+					     spmin, spmax, out, outsize, svg_p, record_hdr);
+			draw_activity_graphs(DISPLAY_MEM_ALL(a->opt_flags) ? 2 : 1,
+					     SVG_LINE_GRAPH, title1b, g_title1b, NULL, group1b,
+					     spmin + 7, spmax + 7, out + 7, outsize + 7, svg_p, record_hdr);
+		}
+
+		if (DISPLAY_SWAP(a->opt_flags)) {
+			/*
+			 * Set swpused max/min values:
+			 * max = tlskb - min(frskb)
+			 * min = tlskb - max(frskb)
+			 */
+			*(spmax + 5) -= *(spmin + 4);
+			*(spmin + 5) -= *(spmax + 4);
+
+			draw_activity_graphs(1, SVG_LINE_GRAPH, title2, g_title2, NULL, group2,
+					     spmin + 4, spmax + 4, out + 4, outsize + 4, svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display network interfaces statistics in SVG
  *
  * IN:

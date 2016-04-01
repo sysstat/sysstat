@@ -291,11 +291,12 @@ struct activity memory_act = {
 	.f_render	= render_memory_stats,
 	.f_xml_print	= xml_print_memory_stats,
 	.f_json_print	= json_print_memory_stats,
+	.f_svg_print	= svg_print_memory_stats,
 	.hdr_line	= "frmpg/s;bufpg/s;campg/s|"
 		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty&kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused|"
 		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 	.name		= "A_MEMORY",
-	.g_nr		= 0,
+	.g_nr		= 5,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
