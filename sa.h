@@ -878,9 +878,9 @@ struct report_format {
 /* #8 */
 #define SVG_G_XSIZE	720
 /* #6 */
-#define SVG_M_XSIZE	50
+#define SVG_M_XSIZE	70
 /* #7 */
-#define SVG_V_XSIZE	1000
+#define SVG_V_XSIZE	1050
 
 /* #5 */
 #define SVG_G_YSIZE	200
