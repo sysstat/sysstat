@@ -1263,15 +1263,16 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	char *title1a[] = {"Memory utilization (1)", "Memory utilization (2)"};
 	char *title1b[] = {"Memory utilization (3)", "Memory utilization (4)"};
 	char *title2[] = {"Swap utilization"};
-	char *g_title1a[] = {"~kbmemfree", "~kbmemused",
-			     "~kbcached", "~kbbuffers"};
-	char *g_title1b[] = {"~kbcommit", "~kbactive", "~kbinact", "~kbdirty",
-			     "~kbanonpg", "~kbslab", "~kbkstack", "~kbpgtbl", "~kbvmused"};
-	char *g_title2[] = {"~kbswpfree", "~kbswpused", "~kbswpcad"};
+	char *g_title1a[] = {"MBmemfree", "MBmemused",
+			     "MBcached", "MBbuffers"};
+	char *g_title1b[] = {"MBcommit", "MBactive", "MBinact", "MBdirty",
+			     "MBanonpg", "MBslab", "MBkstack", "MBpgtbl", "MBvmused"};
+	char *g_title2[] = {"MBswpfree", "MBswpused", "MBswpcad"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	double tval;
+	int i;
 
 	if (action & F_BEGIN) {
 		/*
@@ -1286,73 +1287,79 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		save_extrema(0, 16, 0, (void *) a->buf[curr], NULL,
 			     0, spmin, spmax);
 
-		/* kbmemfree */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->frmkb,
-			  out, outsize, svg_p->restart);
-		/* kbmemused */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->tlmkb - smc->frmkb,
-			  out + 1, outsize + 1, svg_p->restart);
-		/* kbcached */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->camkb,
+		/* MBmemfree */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->frmkb) / 1024,
+			 out, outsize, svg_p->restart);
+		/* MBmemused */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) (smc->tlmkb - smc->frmkb)) / 1024,
+			 out + 1, outsize + 1, svg_p->restart);
+		/* MBcached */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->camkb) / 1024,
 			  out + 2, outsize + 2, svg_p->restart);
-		/* kbbuffers */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->bufkb,
-			  out + 3, outsize + 3, svg_p->restart);
-		/* kbswpfree */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->frskb,
-			  out + 4, outsize + 4, svg_p->restart);
-		/* kbswpused */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->tlskb - smc->frskb,
-			  out + 5, outsize + 5, svg_p->restart);
-		/* kbswpcad */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->caskb,
-			  out + 6, outsize + 6, svg_p->restart);
-		/* kbcommit */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->comkb,
-			  out + 7, outsize + 7, svg_p->restart);
-		/* kbactive */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->activekb,
-			  out + 8, outsize + 8, svg_p->restart);
-		/* kbinact */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->inactkb,
-			  out + 9, outsize + 9, svg_p->restart);
-		/* kbdirty */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->dirtykb,
-			  out + 10, outsize + 10, svg_p->restart);
-		/* kbanonpg */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->anonpgkb,
-			  out + 11, outsize + 11, svg_p->restart);
-		/* kbslab */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->slabkb,
-			  out + 12, outsize + 12, svg_p->restart);
-		/* kbkstack */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->kstackkb,
-			  out + 13, outsize + 13, svg_p->restart);
-		/* kbpgtbl */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->pgtblkb,
-			  out + 14, outsize + 14, svg_p->restart);
-		/* kbvmused */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
-			  smc->vmusedkb,
-			  out + 15, outsize + 15, svg_p->restart);
+		/* MBbuffers */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->bufkb) / 1024,
+			 out + 3, outsize + 3, svg_p->restart);
+		/* MBswpfree */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->frskb) / 1024,
+			 out + 4, outsize + 4, svg_p->restart);
+		/* MBswpused */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) (smc->tlskb - smc->frskb)) / 1024,
+			 out + 5, outsize + 5, svg_p->restart);
+		/* MBswpcad */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->caskb) / 1024,
+			 out + 6, outsize + 6, svg_p->restart);
+		/* MBcommit */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->comkb) / 1024,
+			 out + 7, outsize + 7, svg_p->restart);
+		/* MBactive */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->activekb) / 1024,
+			 out + 8, outsize + 8, svg_p->restart);
+		/* MBinact */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->inactkb) / 1024,
+			 out + 9, outsize + 9, svg_p->restart);
+		/* MBdirty */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->dirtykb) / 1024,
+			 out + 10, outsize + 10, svg_p->restart);
+		/* MBanonpg */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->anonpgkb) / 1024,
+			 out + 11, outsize + 11, svg_p->restart);
+		/* MBslab */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->slabkb) / 1024,
+			 out + 12, outsize + 12, svg_p->restart);
+		/* MBkstack */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->kstackkb) / 1024,
+			 out + 13, outsize + 13, svg_p->restart);
+		/* MBpgtbl */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->pgtblkb) / 1024,
+			 out + 14, outsize + 14, svg_p->restart);
+		/* MBvmused */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 ((double) smc->vmusedkb) / 1024,
+			 out + 15, outsize + 15, svg_p->restart);
 	}
 
 	if (action & F_END) {
+
+		/* Conversion kB -> MB */
+		for (i = 0; i < 16; i++) {
+			*(spmin + i) /= 1024;
+			*(spmax + i) /= 1024;
+		}
 
 		if (DISPLAY_MEM_AMT(a->opt_flags)) {
 			/* frmkb and tlmkb should be together because they will be drawn on the same view */
