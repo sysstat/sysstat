@@ -551,7 +551,10 @@ double ygrid(double lmax, int *dp)
  */
 long int xgrid(unsigned long timestart, unsigned long timeend)
 {
-	return ((timeend - timestart) / SVG_V_GRIDNR);
+	if ((timeend - timestart) <= SVG_V_GRIDNR)
+		return 1;
+	else
+		return ((timeend - timestart) / SVG_V_GRIDNR);
 }
 
 /*
@@ -718,14 +721,12 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		k = xgrid(svg_p->record_hdr->ust_time, record_hdr->ust_time);
 		xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
 		stamp = *svg_p->record_hdr;
-		for (j = 1; j <= SVG_V_GRIDNR; j++) {
+		for (j = 0; (j <= SVG_V_GRIDNR) && (stamp.ust_time <= record_hdr->ust_time); j++) {
+			sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
+			set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
 			printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
 			       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
 			       k * j, k * j, -SVG_G_YSIZE, xfactor);
-		}
-		for (j = 0; j <= SVG_V_GRIDNR; j++) {
-			sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
-			set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
 			printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
 			       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
 			       (long) (k * j * xfactor), (long) (k * j * xfactor), cur_time);
