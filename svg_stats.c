@@ -601,11 +601,13 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 
 		/* Caption */
 		for (j = 0; j < group[i]; j++) {
+			/* Set dp to TRUE (1) if current metric is based on integer values */
+			dp = (g_title[pos + j][0] == '~');
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
-			       "%s (%.2f, %.2f)</text>\n",
+			       "%s (%.*f, %.*f)</text>\n",
 			       5 + SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE + j * 15,
-			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j],
-		       *(spmin + pos + j), *(spmax + pos + j));
+			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
+			       !dp * 2, *(spmin + pos + j), !dp * 2, *(spmax + pos + j));
 		}
 
 		/* Get global min and max value for current set of graphs */
