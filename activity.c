@@ -360,9 +360,10 @@ struct activity queue_act = {
 	.f_render	= render_queue_stats,
 	.f_xml_print	= xml_print_queue_stats,
 	.f_json_print	= json_print_queue_stats,
+	.f_svg_print	= svg_print_queue_stats,
 	.hdr_line	= "runq-sz;plist-sz;ldavg-1;ldavg-5;ldavg-15;blocked",
 	.name		= "A_QUEUE",
-	.g_nr		= 0,
+	.g_nr		= 3,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
