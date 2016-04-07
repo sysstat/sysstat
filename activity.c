@@ -296,7 +296,7 @@ struct activity memory_act = {
 		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty&kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused|"
 		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 	.name		= "A_MEMORY",
-	.g_nr		= 5,
+	.g_nr		= 9,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
