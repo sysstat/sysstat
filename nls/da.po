@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: sysstat-11.3.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2016-02-20 16:08+0100\n"
-"PO-Revision-Date: 2016-02-23 15:19+0200\n"
+"PO-Revision-Date: 2016-03-26 15:19+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -361,7 +361,7 @@ msgstr ""
 "\t\tICMP6\tICMP-trafik\t(v6)\n"
 "\t\tEICMP6\tICMP-trafik\t(v6) (fejl)\n"
 "\t\tUDP6\tUDP-trafik\t(v6)\n"
-"\t\tFC\tFibrekanal HBA'er\n"
+"\t\tFC\tFiberkanal-HBA'er\n"
 
 #: sar.c:174
 #, c-format
@@ -504,7 +504,7 @@ msgid ""
 "File successfully converted to sysstat format version %s\n"
 msgstr ""
 "\n"
-"Fil konverteret med succes til sysstats formatversion %s\n"
+"Fil blev konverteret til sysstats formatversion %s\n"
 
 #: pidstat.c:90
 #, c-format
