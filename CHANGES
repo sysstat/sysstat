@@ -1,5 +1,17 @@
 Changes:
 
+2016/04/09: Version 11.3.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* SVG: Add SVG output for CPU statistics, CPU frequency statistics,
+	  memory and swap statistics, and queue length and load average
+	  statistics.
+	* SVG: Make SVG code independent from the locale used to display
+	  numeric values.
+	* SVG: Fix possibly truncated SVG code.
+	* SVG: Make sure that a minimum interval value is used on X and Y
+	  axis.
+	* [Peter Portante]: Quick fix for cprintf_u64 non-uintv64_t [11.2.3].
+	* NLS translations updated.
+
 2016/03/13: Version 11.3.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Add SVG output for paging statistics, network interfaces
 	  and swap statistics.
