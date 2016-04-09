@@ -1292,13 +1292,64 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
 		 */
-		out = allocate_graph_lines(20, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(22, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(0, 16, 0, (void *) a->buf[curr], NULL,
 			     0, spmin, spmax);
+		/* Compute %memused min/max values */
+		tval = smc->tlmkb ? SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0;
+		if (tval > *(spmax + 16)) {
+			*(spmax + 16) = tval;
+		}
+		if (tval < *(spmin + 16)) {
+			*(spmin + 16) = tval;
+		}
+		/* Compute %commit min/max values */
+		tval = (smc->tlmkb + smc->tlskb) ?
+		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
+		if (tval > *(spmax + 17)) {
+			*(spmax + 17) = tval;
+		}
+		if (tval < *(spmin + 17)) {
+			*(spmin + 17) = tval;
+		}
+		/* Compute %swpused min/max values */
+		tval = smc->tlskb ?
+		       SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
+		if (tval > *(spmax + 18)) {
+			*(spmax + 18) = tval;
+		}
+		if (tval < *(spmin + 18)) {
+			*(spmin + 18) = tval;
+		}
+		/* Compute %swpcad min/max values */
+		tval = (smc->tlskb - smc->frskb) ?
+		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
+		if (tval > *(spmax + 19)) {
+			*(spmax + 19) = tval;
+		}
+		if (tval < *(spmin + 19)) {
+			*(spmin + 19) = tval;
+		}
+		/* Compute memused min/max values in MB */
+		tval = ((double) (smc->tlmkb - smc->frmkb)) / 1024;
+		if (tval > *(spmax + 20)) {
+			*(spmax + 20) = tval;
+		}
+		if (tval < *(spmin + 20)) {
+			*(spmin + 20) = tval;
+		}
+		/* Compute swpused min/max values in MB */
+		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
+		if (tval > *(spmax + 21)) {
+			*(spmax + 21) = tval;
+		}
+		if (tval < *(spmin + 21)) {
+			*(spmin + 21) = tval;
+		}
 
 		/* MBmemfree */
 		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
@@ -1400,26 +1451,11 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 
 		if (DISPLAY_MEM_AMT(a->opt_flags)) {
 			/* frmkb and tlmkb should be together because they will be drawn on the same view */
-			tval = *(spmax + 3); *(spmax + 3) = *(spmax + 1); *(spmax + 1) = tval;
-			tval = *(spmin + 3); *(spmin + 3) = *(spmin + 1); *(spmin + 1) = tval;
-
-			/* Compute %memused min/max values */
-			*(spmax + 16) = *(spmin + 1) ? SP_VALUE(*spmin, *(spmin + 1), *(spmin + 1)) : 0.0;
-			*(spmin + 16) = *(spmax + 1) ? SP_VALUE(*spmax, *(spmax + 1), *(spmax + 1)) : 0.0;
-
-			/* Compute %commit min/max values */
-			*(spmax + 17) = (*(spmin + 1) + *(spmin + 5)) ?
-					SP_VALUE(0, *(spmax + 7), *(spmin + 1) + *(spmin + 5)) : 0.0;
-			*(spmin + 17) = (*(spmax + 1) + *(spmax + 5)) ?
-					SP_VALUE(0, *(spmin + 7), *(spmax + 1) + *(spmax + 5)) : 0.0;
-
-			/*
-			 * Set memused max/min values:
-			 * max = tlmkb - min(frmkb)
-			 * min = tlmkb - max(frmkb)
-			 */
-			*(spmax + 1) -= *spmin;
-			*(spmin + 1) -= *spmax;
+			*(spmax + 3) = *(spmax + 1);
+			*(spmin + 3) = *(spmin + 1);
+			/* Move memused min/max values */
+			*(spmax + 1) = *(spmax + 20);
+			*(spmin + 1) = *(spmin + 20);
 
 			draw_activity_graphs(2, SVG_LINE_GRAPH, title1a, g_title1a, NULL, group1a,
 					     spmin, spmax, out, outsize, svg_p, record_hdr);
@@ -1431,25 +1467,9 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		}
 
 		if (DISPLAY_SWAP(a->opt_flags)) {
-			/* Compute %swpused min/max values */
-			*(spmax + 18) = *(spmin + 5) ?
-					SP_VALUE(*(spmin + 4), *(spmin + 5), *(spmin + 5)) : 0.0;
-			*(spmin + 18) = *(spmax + 5) ?
-					SP_VALUE(*(spmax + 4), *(spmax + 5), *(spmax + 5)) : 0.0;
-
-			/* Compute %swpcad min/max values */
-			*(spmax + 19) = (*(spmin + 5) - *(spmax + 4)) ?
-					SP_VALUE(0, *(spmax + 6), *(spmin + 5) - *(spmax + 4)) : 0.0;
-			*(spmin + 19) = (*(spmax + 5) - *(spmin + 4)) ?
-					SP_VALUE(0, *(spmin + 6), *(spmax + 5) - *(spmin + 4)) : 0.0;
-
-			/*
-			 * Set swpused max/min values:
-			 * max = tlskb - min(frskb)
-			 * min = tlskb - max(frskb)
-			 */
-			*(spmax + 5) -= *(spmin + 4);
-			*(spmin + 5) -= *(spmax + 4);
+			/* Move swpused min/max values */
+			*(spmax + 5) = *(spmax + 21);
+			*(spmin + 5) = *(spmin + 21);
 
 			draw_activity_graphs(1, SVG_LINE_GRAPH, title2a, g_title2a, NULL, group2a,
 					     spmin + 4, spmax + 4, out + 4, outsize + 4, svg_p, record_hdr);
