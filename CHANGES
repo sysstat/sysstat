@@ -1,5 +1,8 @@
 Changes:
 
+2016/04/09: Version 11.2.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Peter Portante]: Quick fix for cprintf_u64 non-uintv64_t.
+
 2016/03/13: Version 11.2.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* Update Makefile to fix installation problem.
 	* sar: Fix possible confusion between network interfaces that
