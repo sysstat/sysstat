@@ -1926,3 +1926,100 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display temperature statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					 unsigned long long g_itv, struct record_header *record_hdr)
+{
+	struct stats_pwr_temp *spc;
+	int group[] = {1};
+	char *title[] = {"Device temperature"};
+	char *g1_title[] = {"~degC"};
+	char *g2_title[] = {"%temp"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char item_name[MAX_SENSORS_DEV_LEN + 8];
+	int i;
+	double tval;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(2 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each temperature  sensor */
+		for (i = 0; i < a->nr; i++) {
+
+			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr]  + i * a->msize);
+
+			/* Look for min/max values */
+			if (spc->temp < *(spmin + 2 * i)) {
+				*(spmin + 2 * i) = spc->temp;
+			}
+			if (spc->temp > *(spmax + 2 * i)) {
+				*(spmax + 2 * i) = spc->temp;
+			}
+			tval = (spc->temp_max - spc->temp_min) ?
+			       (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100 :
+			       0.0;
+			if (tval < *(spmin + 2 * i + 1)) {
+				*(spmin + 2 * i + 1) = tval;
+			}
+			if (tval > *(spmax + 2 * i + 1)) {
+				*(spmax + 2 * i + 1) = tval;
+			}
+
+			/* degC */
+			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 (double) spc->temp,
+				 out + 2 * i, outsize + 2 * i, svg_p->restart);
+			/* %temp */
+			brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				 0.0, tval,
+				 out + 2 * i + 1, outsize + 2 * i + 1, svg_p->dt);
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; i < a->nr; i++) {
+
+			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr]  + i * a->msize);
+
+			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
+			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
+
+			draw_activity_graphs(1, SVG_LINE_GRAPH,
+					     title, g1_title, item_name, group,
+					     spmin + 2 * i, spmax + 2 * i, out + 2 * i, outsize + 2 * i,
+					     svg_p, record_hdr);
+			draw_activity_graphs(1, SVG_BAR_GRAPH,
+					     title, g2_title, item_name, group,
+					     spmin + 2 * i + 1, spmax + 2 * i + 1,
+					     out + 2 * i + 1, outsize + 2 * i + 1,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
