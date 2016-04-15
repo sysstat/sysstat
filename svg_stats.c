@@ -1854,3 +1854,75 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display fan statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					unsigned long long g_itv, struct record_header *record_hdr)
+{
+	struct stats_pwr_fan *spc, *spp;
+	int group[] = {1};
+	char *title[] = {"Fan speed"};
+	char *g_title[] = {"~rpm"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char item_name[MAX_SENSORS_DEV_LEN + 8];
+	int i;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each fan */
+		for (i = 0; i < a->nr; i++) {
+
+			spc = (struct stats_pwr_fan *) ((char *) a->buf[curr]  + i * a->msize);
+			spp = (struct stats_pwr_fan *) ((char *) a->buf[!curr]  + i * a->msize);
+
+			/* rpm */
+			recappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				  (double) spp->rpm,
+				  (double) spc->rpm,
+				  out + i, outsize + i, svg_p->restart, svg_p->dt,
+				  spmin + i, spmax + i);
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; i < a->nr; i++) {
+
+			spc = (struct stats_pwr_fan *) ((char *) a->buf[curr]  + i * a->msize);
+
+			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
+			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
+
+			draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH,
+					     title, g_title, item_name, group,
+					     spmin + i, spmax + i, out + i, outsize + i,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}

@@ -1082,7 +1082,7 @@ struct activity pwr_cpufreq_act = {
 /* Fan */
 struct activity pwr_fan_act = {
 	.id		= A_PWR_FAN,
-	.options	= AO_NULL,
+	.options	= AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1098,9 +1098,10 @@ struct activity pwr_fan_act = {
 	.f_render	= render_pwr_fan_stats,
 	.f_xml_print	= xml_print_pwr_fan_stats,
 	.f_json_print	= json_print_pwr_fan_stats,
+	.f_svg_print	= svg_print_pwr_fan_stats,
 	.hdr_line	= "FAN;DEVICE;rpm;drpm",
 	.name		= "A_PWR_FAN",
-	.g_nr		= 0,
+	.g_nr		= 1,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
