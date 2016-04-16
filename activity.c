@@ -258,9 +258,10 @@ struct activity io_act = {
 	.f_render	= render_io_stats,
 	.f_xml_print	= xml_print_io_stats,
 	.f_json_print	= json_print_io_stats,
+	.f_svg_print	= svg_print_io_stats,
 	.hdr_line	= "tps;rtps;wtps;bread/s;bwrtn/s",
 	.name		= "A_IO",
-	.g_nr		= 0,
+	.g_nr		= 2,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

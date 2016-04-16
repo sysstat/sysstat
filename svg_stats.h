@@ -26,6 +26,9 @@ __print_funct_t svg_print_swap_stats
 __print_funct_t svg_print_paging_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
+__print_funct_t svg_print_io_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
 __print_funct_t svg_print_memory_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
