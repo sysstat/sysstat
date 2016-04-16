@@ -2165,3 +2165,90 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display huge pages statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+				     unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_huge
+		*smc = (struct stats_huge *) a->buf[curr];
+	int group1[] = {2};
+	int group2[] = {1};
+	char *title1[] = {"Huge pages utilization (1)"};
+	char *title2[] = {"Huge pages utilization (2)"};
+	char *g1_title[] = {"~kbhugfree", "~kbhugused"};
+	char *g2_title[] = {"%hugused"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	double tval;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(3, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 1, 0, (void *) a->buf[curr], NULL,
+			     itv, spmin, spmax);
+
+		if (smc->tlhkb - smc->frhkb < *(spmin + 1)) {
+			*(spmin + 1) = smc->tlhkb - smc->frhkb;
+		}
+		if (smc->tlhkb - smc->frhkb > *(spmax + 1)) {
+			*(spmax + 1) = smc->tlhkb - smc->frhkb;
+		}
+		tval = smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0;
+		if (tval < *(spmin + 2)) {
+			*(spmin + 2) = tval;
+		}
+		if (tval > *(spmax + 2)) {
+			*(spmax + 2) = tval;
+		}
+
+		/* kbhugfree */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) smc->frhkb,
+			  out, outsize, svg_p->restart);
+		/* hugused */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) smc->tlhkb - smc->frhkb,
+			  out + 1, outsize + 1, svg_p->restart);
+		/* %hugused */
+		brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 0.0, tval,
+			 out + 2, outsize + 2, svg_p->dt);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(1, SVG_LINE_GRAPH,
+				     title1, g1_title, NULL, group1,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+		draw_activity_graphs(1, SVG_BAR_GRAPH,
+				     title2, g2_title, NULL, group2,
+				     spmin + 2, spmax + 2, out + 2, outsize + 2,
+				     svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}

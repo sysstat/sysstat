@@ -1201,9 +1201,10 @@ struct activity huge_act = {
 	.f_render	= render_huge_stats,
 	.f_xml_print	= xml_print_huge_stats,
 	.f_json_print	= json_print_huge_stats,
+	.f_svg_print	= svg_print_huge_stats,
 	.hdr_line	= "kbhugfree;kbhugused;%hugused",
 	.name		= "A_HUGE",
-	.g_nr		= 0,
+	.g_nr		= 2,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
