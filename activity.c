@@ -631,9 +631,10 @@ struct activity net_ip_act = {
 	.f_render	= render_net_ip_stats,
 	.f_xml_print	= xml_print_net_ip_stats,
 	.f_json_print	= json_print_net_ip_stats,
+	.f_svg_print	= svg_print_net_ip_stats,
 	.hdr_line	= "irec/s;fwddgm/s;idel/s;orq/s;asmrq/s;asmok/s;fragok/s;fragcrt/s",
 	.name		= "A_NET_IP",
-	.g_nr		= 0,
+	.g_nr		= 3,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
