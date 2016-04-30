@@ -864,9 +864,10 @@ struct activity net_sock6_act = {
 	.f_render	= render_net_sock6_stats,
 	.f_xml_print	= xml_print_net_sock6_stats,
 	.f_json_print	= json_print_net_sock6_stats,
+	.f_svg_print	= svg_print_net_sock6_stats,
 	.hdr_line	= "tcp6sck;udp6sck;raw6sck;ip6-frag",
 	.name		= "A_NET_SOCK6",
-	.g_nr		= 0,
+	.g_nr		= 1,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
