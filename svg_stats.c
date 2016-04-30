@@ -2077,6 +2077,76 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 
 /*
  ***************************************************************************
+ * Display TCPv4 network statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_tcp
+		*sntc = (struct stats_net_tcp *) a->buf[curr],
+		*sntp = (struct stats_net_tcp *) a->buf[!curr];
+	int group[] = {2, 2};
+	char *title[] = {"TCPv4 network statistics (1)", "TCPv4 network statistics (2)"};
+	char *g_title[] = {"active/s", "passive/s",
+			   "iseg/s", "oseg/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 4, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* active/s */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 S_VALUE(sntp->ActiveOpens, sntc->ActiveOpens, itv),
+			 out, outsize, svg_p->restart);
+		/* passive/s */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 S_VALUE(sntp->PassiveOpens, sntc->PassiveOpens, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* iseg/s */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 S_VALUE(sntp->InSegs, sntc->InSegs, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* oseg/s */
+		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			 S_VALUE(sntp->OutSegs, sntc->OutSegs, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display IPV6 network socket statistics in SVG.
  *
  * IN:

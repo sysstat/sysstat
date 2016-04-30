@@ -766,9 +766,10 @@ struct activity net_tcp_act = {
 	.f_render	= render_net_tcp_stats,
 	.f_xml_print	= xml_print_net_tcp_stats,
 	.f_json_print	= json_print_net_tcp_stats,
+	.f_svg_print	= svg_print_net_tcp_stats,
 	.hdr_line	= "active/s;passive/s;iseg/s;oseg/s",
 	.name		= "A_NET_TCP",
-	.g_nr		= 0,
+	.g_nr		= 2,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
