@@ -1114,7 +1114,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
  ***************************************************************************
  */
 __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-				       unsigned long long itv, struct record_header *record_hdr)
+				     unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_swap
 		*ssc = (struct stats_swap *) a->buf[curr],
@@ -1558,7 +1558,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 
 /*
  ***************************************************************************
- * Display queue and load statistics in SVG
+ * Display kernel tables statistics in SVG
  *
  * IN:
  * @a		Activity structure with statistics.
