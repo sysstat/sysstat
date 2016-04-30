@@ -597,9 +597,10 @@ struct activity net_sock_act = {
 	.f_render	= render_net_sock_stats,
 	.f_xml_print	= xml_print_net_sock_stats,
 	.f_json_print	= json_print_net_sock_stats,
+	.f_svg_print	= svg_print_net_sock_stats,
 	.hdr_line	= "totsck;tcpsck;udpsck;rawsck;ip-frag;tcp-tw",
 	.name		= "A_NET_SOCK",
-	.g_nr		= 0,
+	.g_nr		= 2,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

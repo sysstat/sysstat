@@ -1914,6 +1914,82 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
+ * Display network socket statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and a pointer on a record header structure
+ * 		(.@record_hdr) containing the first stats sample.
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					 unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_sock
+		*snsc = (struct stats_net_sock *) a->buf[curr];
+	int group[] = {1, 5};
+	char *title[] = {"Network sockets (1)", "Network sockets (2)"};
+	char *g_title[] = {"~totsck",
+			   "~tcpsck", "~tcp-tw", "~udpsck", "~rawsck", "~ip-frag"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(6, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 0, 6, (void *) a->buf[curr], NULL,
+			     itv, spmin, spmax);
+		/* totsck */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) snsc->sock_inuse,
+			  out, outsize, svg_p->restart);
+		/* tcpsck */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) snsc->tcp_inuse,
+			  out + 1, outsize + 1, svg_p->restart);
+		/* tcp-tw */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) snsc->tcp_tw,
+			  out + 2, outsize + 2, svg_p->restart);
+		/* udpsck */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) snsc->udp_inuse,
+			  out + 3, outsize + 3, svg_p->restart);
+		/* rawsck */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) snsc->raw_inuse,
+			  out + 4, outsize + 4, svg_p->restart);
+		/* ip-frag */
+		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			  (unsigned long) snsc->frag_inuse,
+			  out + 5, outsize + 5, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display CPU frequency statistics in SVG.
  *
  * IN:
