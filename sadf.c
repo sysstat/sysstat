@@ -1436,6 +1436,7 @@ int main(int argc, char **argv)
 	int day_offset = 0;
 	int i, rc;
 	char dfile[MAX_FILE_LEN];
+	char *t;
 
 	/* Get HZ */
 	get_HZ();
@@ -1490,6 +1491,22 @@ int main(int argc, char **argv)
 			if (parse_timestamp(argv, &opt, &tm_end, DEF_TMEND)) {
 				usage(argv[0]);
 			}
+		}
+
+		else if (!strcmp(argv[opt], "-O")) {
+			/* Parse SVG options */
+			if (!argv[++opt] || sar_options) {
+				usage(argv[0]);
+			}
+			for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
+				if (!strcmp(t, K_SKIP_EMPTY)) {
+					flags |= S_F_SVG_SKIP;
+				}
+				else {
+					usage(argv[0]);
+				}
+			}
+			opt++;
 		}
 
 		else if ((strlen(argv[opt]) > 1) &&

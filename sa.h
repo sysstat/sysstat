@@ -97,6 +97,7 @@
 #define S_F_PERSIST_NAME	0x00002000
 #define S_F_LOCAL_TIME		0x00004000
 #define S_F_PREFD_TIME_OUTPUT	0x00008000
+#define S_F_SVG_SKIP		0x00010000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -114,6 +115,7 @@
 #define DISPLAY_PERSIST_NAME_S(m)	(((m) & S_F_PERSIST_NAME) == S_F_PERSIST_NAME)
 #define PRINT_LOCAL_TIME(m)		(((m) & S_F_LOCAL_TIME)   == S_F_LOCAL_TIME)
 #define USE_PREFD_TIME_OUTPUT(m)	(((m) & S_F_PREFD_TIME_OUTPUT)   == S_F_PREFD_TIME_OUTPUT)
+#define SKIP_EMPTY_VIEWS(m)		(((m) & S_F_SVG_SKIP)     == S_F_SVG_SKIP)
 
 #define AO_F_NULL		0x00000000
 
@@ -188,6 +190,8 @@
 #define K_IPV6		"IPV6"
 #define K_POWER		"POWER"
 #define K_USB		"USB"
+
+#define K_SKIP_EMPTY	"skipempty"
 
 /* Groups of activities */
 #define G_DEFAULT	0x00

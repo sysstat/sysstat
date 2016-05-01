@@ -157,7 +157,7 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 /*
  ***************************************************************************
  * Find the min and max values of all the graphs that will be drawn in the
- * same window. The graphs have their own min and max values in
+ * same view. The graphs have their own min and max values in
  * minv[pos...pos+n-1] and maxv[pos...pos+n-1]. 
  *
  * IN:
@@ -167,20 +167,23 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
  * @maxv	Array containing max values for graphs.
  *
  * OUT:
- * @minv	minv[pos] is modified and contains the global min value found.
- * @maxv	maxv[pos] is modified and contains the global max value found.
+ * @gmin	Global min value found.
+ * @gmax	Global max value found.
  ***************************************************************************
  */
-void get_global_extrema(int pos, int n, double minv[], double maxv[])
+void get_global_extrema(int pos, int n, double minv[], double maxv[], double *gmin, double *gmax)
 {
 	int i;
 
+	*gmin = minv[pos];
+	*gmax = maxv[pos];
+
 	for (i = 1; i < n; i++) {
-		if (minv[pos + i] < minv[pos]) {
-			minv[pos] = minv[pos + i];
+		if (minv[pos + i] < *gmin) {
+			*gmin = minv[pos + i];
 		}
-		if (maxv[pos + i] > maxv[pos]) {
-			maxv[pos] = maxv[pos + i];
+		if (maxv[pos + i] > *gmax) {
+			*gmax = maxv[pos + i];
 		}
 	}
 }
@@ -589,7 +592,7 @@ void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
  * Display all graphs for current activity.
  *
  * IN:
- * @g_nr	Number of graphs to display.
+ * @g_nr	Number of sets of graphs (views) to display.
  * @g_type	Type of graph (SVG_LINE_GRAPH, SVG_BAR_GRAPH).
  * @title	Titles for each set of graphs.
  * @g_title	Titles for each graph.
@@ -612,9 +615,9 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 	struct record_header stamp;
 	struct tm rectime;
 	char *out_p;
-	int i, j, dp, pos = 0;
+	int i, j, dp, pos = 0, views_nr = 0;
 	long int k;
-	double lmax, xfactor, yfactor, ypos;
+	double lmax, xfactor, yfactor, ypos, gmin, gmax;
 	char cur_time[32];
 
 	/* Translate to proper position for current activity */
@@ -624,6 +627,15 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 
 	/* For each set of graphs which are part of current activity */
 	for (i = 0; i < g_nr; i++) {
+
+		/* Get global min and max value for current set of graphs */
+		get_global_extrema(pos, group[i], spmin, spmax, &gmin, &gmax);
+
+		/* Don't display empty views if requested */
+		if (SKIP_EMPTY_VIEWS(flags) && !gmax)
+			continue;
+		/* Increment number of views actually displayed */
+		views_nr++;
 
 		/* Graph background */
 		printf("<rect x=\"0\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
@@ -671,9 +683,6 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 			       !dp * 2, *(spmin + pos + j), !dp * 2, *(spmax + pos + j));
 		}
 
-		/* Get global min and max value for current set of graphs */
-		get_global_extrema(pos, group[i], spmin, spmax);
-
 		/* Translate to proper position for current graph within current activity */
 		printf("<g transform=\"translate(%d,%d)\">\n",
 		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
@@ -681,12 +690,12 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		/* Grid */
 		if (g_type == SVG_LINE_GRAPH) {
 			/* For line graphs */
-			if (*(spmax + pos) == 0) {
+			if (!gmax) {
 				/* If all values are zero then set current max value to 1 */
 				lmax = 1.0;
 			}
 			else {
-				lmax = *(spmax + pos);
+				lmax = gmax;
 			}
 			/* Max value cannot be too small, else Y graduations will be meaningless */
 			if (lmax < SVG_H_GRIDNR * 0.01) {
@@ -700,8 +709,8 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 			dp = 0;		/* No decimals */
 
 			/* Max should be always 100% except for percentage values greater than 100% */
-			if (*(spmax + pos) > 100.0) {
-				lmax = *(spmax + pos);
+			if (gmax > 100.0) {
+				lmax = gmax;
 			}
 			else {
 				lmax = 100.0;
@@ -773,7 +782,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 	printf("</g>\n");
 
 	/* Next graph */
-	(svg_p->graph_no) += g_nr;
+	(svg_p->graph_no) += views_nr;
 }
 
 /*
