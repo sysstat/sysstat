@@ -1502,6 +1502,9 @@ int main(int argc, char **argv)
 				if (!strcmp(t, K_SKIP_EMPTY)) {
 					flags |= S_F_SVG_SKIP;
 				}
+				else if (!strcmp(t, K_AUTOSCALE)) {
+					flags |= S_F_SVG_AUTOSCALE;
+				}
 				else {
 					usage(argv[0]);
 				}

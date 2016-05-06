@@ -500,6 +500,29 @@ void recappend(unsigned long timetag, double p_value, double value, char **out, 
 
 /*
  ***************************************************************************
+ * Calculate 10 raised to the power of n.
+ *
+ * IN:
+ * @n	Power number to use.
+ *
+ * RETURNS:
+ * 10 raised to the power of n.
+ ***************************************************************************
+ */
+unsigned int pwr10(int n)
+{
+	int i;
+	unsigned int e = 1;
+
+	for (i = 0; i < n; i++) {
+		e = e * 10;
+	}
+
+	return e;
+}
+
+/*
+ ***************************************************************************
  * Calculate the value on the Y axis between two horizontal lines that will
  * make the graph background grid.
  *
@@ -516,7 +539,8 @@ void recappend(unsigned long timetag, double p_value, double value, char **out, 
 double ygrid(double lmax, int *dp)
 {
 	char val[32];
-	int l, i, e = 1;
+	int l;
+	unsigned int e;
 	long n = 0;
 
 	*dp = 0;
@@ -533,9 +557,8 @@ double ygrid(double lmax, int *dp)
 	l = strlen(val);
 	if (l < 2)
 		return n;
-	for (i = 1; i < l; i++) {
-		e = e * 10;
-	}
+	e = pwr10(l - 1);
+
 	return ((double) (((long) (n / e)) * e));
 }
 
@@ -616,9 +639,10 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 	struct tm rectime;
 	char *out_p;
 	int i, j, dp, pos = 0, views_nr = 0;
+	unsigned int asfactor[16];
 	long int k;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
-	char cur_time[32];
+	char cur_time[32], val[32];
 
 	/* Translate to proper position for current activity */
 	printf("<g id=\"g%d\" transform=\"translate(0,%d)\">\n",
@@ -672,15 +696,36 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE,
 		       SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + i * SVG_T_YSIZE);
 
+		for (j = 0; j < 16; j++) {
+			/* Init autoscale factors */
+			asfactor[j] = 1;
+		}
+
+		if (AUTOSCALE_ON(flags) && (group[i] > 1) && gmax && (g_type == SVG_LINE_GRAPH)) {
+			/* Autoscaling... */
+			for (j = 0; (j < group[i]) && (j < 16); j++) {
+				if (!*(spmax + pos + j) || (*(spmax + pos + j) == gmax))
+					continue;
+
+				snprintf(val, 32, "%u", (unsigned int) (gmax / *(spmax + pos + j)));
+				if (strlen(val) > 0) {
+					asfactor[j] = pwr10(strlen(val) - 1);
+				}
+			}
+		}
+
 		/* Caption */
 		for (j = 0; j < group[i]; j++) {
 			/* Set dp to TRUE (1) if current metric is based on integer values */
 			dp = (g_title[pos + j][0] == '~');
+			snprintf(val, 32, "x%u ", asfactor[j]);
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
-			       "%s (%.*f, %.*f)</text>\n",
+			       "%s %s(%.*f, %.*f)</text>\n",
 			       5 + SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + i * SVG_T_YSIZE + j * 15,
 			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
-			       !dp * 2, *(spmin + pos + j), !dp * 2, *(spmax + pos + j));
+			       asfactor[j] == 1 ? "" : val,
+			       !dp * 2, *(spmin + pos + j) * asfactor[j],
+			       !dp * 2, *(spmax + pos + j) * asfactor[j]);
 		}
 
 		/* Translate to proper position for current graph within current activity */
@@ -765,7 +810,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 				       svg_p->graph_no, pos + j, out_p,
 				       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
 				       xfactor,
-				       yfactor);
+				       yfactor * asfactor[j]);
 			}
 			else if (*out_p) {	/* Ignore flat bars */
 				/* Bar graphs */
