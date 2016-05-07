@@ -656,7 +656,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		get_global_extrema(pos, group[i], spmin, spmax, &gmin, &gmax);
 
 		/* Don't display empty views if requested */
-		if (SKIP_EMPTY_VIEWS(flags) && !gmax)
+		if (SKIP_EMPTY_VIEWS(flags) && (gmax < 0.005))
 			continue;
 		/* Increment number of views actually displayed */
 		views_nr++;
