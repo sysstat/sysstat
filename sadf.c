@@ -88,7 +88,8 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-			  "[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+			  "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
 }
