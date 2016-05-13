@@ -446,7 +446,7 @@ struct activity disk_act = {
 /* Network interfaces activity */
 struct activity net_dev_act = {
 	.id		= A_NET_DEV,
-	.options	= AO_COLLECTED | AO_GRAPH_PER_ITEM,
+	.options	= AO_COLLECTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC

@@ -832,7 +832,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 
 /*
  ***************************************************************************
- * Display CPU statistics in SVG
+ * Display CPU statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1092,7 +1092,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 /*
  ***************************************************************************
- * Display task creation and context switch statistics in SVG
+ * Display task creation and context switch statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1153,7 +1153,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 
 /*
  ***************************************************************************
- * Display swap statistics in SVG
+ * Display swap statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1213,7 +1213,7 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 
 /*
  ***************************************************************************
- * Display paging statistics in SVG
+ * Display paging statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1612,7 +1612,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 
 /*
  ***************************************************************************
- * Display kernel tables statistics in SVG
+ * Display kernel tables statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1680,7 +1680,7 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
- * Display queue and load statistics in SVG
+ * Display queue and load statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1762,7 +1762,7 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 
 /*
  ***************************************************************************
- * Display network interfaces statistics in SVG
+ * Display network interfaces statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
