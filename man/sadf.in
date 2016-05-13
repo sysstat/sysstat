@@ -1,8 +1,10 @@
-.TH SADF 1 "MARCH 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "MAY 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -P {
+.B sadf [ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
+.I opts
+.B [,...] ] [ -P {
 .I cpu
 .B [,...] | ALL } ] [ -s [
 .I hh:mm[:ss]
@@ -145,6 +147,31 @@ will be displayed horizontally on a single line.
 .IP -j
 Print the contents of the data file in JSON (JavaScript Object Notation)
 format. Timestamps can be controlled by options -T and -t.
+.IP "-O opts"
+Use the specified options to control SVG output displayed by
+.B sadf -g.
+Possible options are:
+
+.B autoscale
+.RS
+.RS
+Tell
+.B sadf
+to draw all the graphs of a given view as large as possible based on current
+view's scale. To do this, a factor (10, 100, 1000...) is used to
+enlarge the graph drawing.
+This option may be intesting when several graphs are drawn on the same
+view, some with only very small values, and others with high ones,
+the latter making the former hardly visible.
+.RE
+
+.B skipempty
+.RS
+Tell
+.B sadf
+to not display views where all graphs have only zero values.
+.RE
+.RE
 .IP "-P { cpu [,...] | ALL }"
 Tell
 .B sadf
