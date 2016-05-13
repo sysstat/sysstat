@@ -123,135 +123,136 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes: Display current CPU stats */
+		/* Yes: Display current CPU stats */
 
-			if (sep) {
-				printf(",\n");
-			}
-			sep = TRUE;
+		if (sep) {
+			printf(",\n");
+		}
+		sep = TRUE;
 
-			if (!i) {
-				/* This is CPU "all" */
-				strcpy(cpuno, "all");
+		if (!i) {
+			/* This is CPU "all" */
+			strcpy(cpuno, "all");
+		}
+		else {
+			sprintf(cpuno, "%d", i - 1);
+
+			/*
+			 * If the CPU is offline then it is omited from /proc/stat:
+			 * All the fields couldn't have been read and the sum of them is zero.
+			 * (Remember that guest/guest_nice times are already included in
+			 * user/nice modes.)
+			 */
+			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+				/*
+				 * Set current struct fields (which have been set to zero)
+				 * to values from previous iteration. Hence their values won't
+				 * jump from zero when the CPU comes back online.
+				 */
+				*scc = *scp;
+
+				g_itv = 0;
+				cpu_offline = TRUE;
 			}
 			else {
-				sprintf(cpuno, "%d", i - 1);
-
 				/*
-				 * If the CPU is offline then it is omited from /proc/stat:
-				 * All the fields couldn't have been read and the sum of them is zero.
-				 * (Remember that guest/guest_nice times are already included in
-				 * user/nice modes.)
+				 * Recalculate interval for current proc.
+				 * If result is 0 then current CPU is a tickless one.
 				 */
-				if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-				     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-				     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-					/*
-					 * Set current struct fields (which have been set to zero)
-					 * to values from previous iteration. Hence their values won't
-					 * jump from zero when the CPU comes back online.
-					 */
-					*scc = *scp;
-
-					g_itv = 0;
-					cpu_offline = TRUE;
-				}
-				else {
-					/*
-					 * Recalculate interval for current proc.
-					 * If result is 0 then current CPU is a tickless one.
-					 */
-					g_itv = get_per_cpu_interval(scc, scp);
-					cpu_offline = FALSE;
-				}
-
-				if (!g_itv) {
-					/* Current CPU is offline or tickless */
-					if (DISPLAY_CPU_DEF(a->opt_flags)) {
-						xprintf0(tab, "{\"cpu\": \"%d\", "
-							 "\"user\": %.2f, "
-							 "\"nice\": %.2f, "
-							 "\"system\": %.2f, "
-							 "\"iowait\": %.2f, "
-							 "\"steal\": %.2f, "
-							 "\"idle\": %.2f}",
-							 i - 1, 0.0, 0.0, 0.0, 0.0, 0.0,
-							 cpu_offline ? 0.0 : 100.0);
-					}
-					else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-						xprintf0(tab, "{\"cpu\": \"%d\", "
-							 "\"usr\": %.2f, "
-							 "\"nice\": %.2f, "
-							 "\"sys\": %.2f, "
-							 "\"iowait\": %.2f, "
-							 "\"steal\": %.2f, "
-							 "\"irq\": %.2f, "
-							 "\"soft\": %.2f, "
-							 "\"guest\": %.2f, "
-							 "\"gnice\": %.2f, "
-							 "\"idle\": %.2f}",
-							 i - 1, 0.0, 0.0, 0.0, 0.0,
-							 0.0, 0.0, 0.0, 0.0, 0.0,
-							 cpu_offline ? 0.0 : 100.0);
-					}
-					continue;
-				}
+				g_itv = get_per_cpu_interval(scc, scp);
+				cpu_offline = FALSE;
 			}
 
-			if (DISPLAY_CPU_DEF(a->opt_flags)) {
-				xprintf0(tab, "{\"cpu\": \"%s\", "
-					 "\"user\": %.2f, "
-					 "\"nice\": %.2f, "
-					 "\"system\": %.2f, "
-					 "\"iowait\": %.2f, "
-					 "\"steal\": %.2f, "
-					 "\"idle\": %.2f}",
-					 cpuno,
-					 ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
-					 ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
-					 ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-						     scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-						     g_itv),
-					 ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-					 ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
-					 scc->cpu_idle < scp->cpu_idle ?
-					 0.0 :
-					 ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
+			if (!g_itv) {
+				/* Current CPU is offline or tickless */
+				if (DISPLAY_CPU_DEF(a->opt_flags)) {
+					xprintf0(tab, "{\"cpu\": \"%d\", "
+						 "\"user\": %.2f, "
+						 "\"nice\": %.2f, "
+						 "\"system\": %.2f, "
+						 "\"iowait\": %.2f, "
+						 "\"steal\": %.2f, "
+						 "\"idle\": %.2f}",
+						 i - 1, 0.0, 0.0, 0.0, 0.0, 0.0,
+						 cpu_offline ? 0.0 : 100.0);
+				}
+				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+					xprintf0(tab, "{\"cpu\": \"%d\", "
+						 "\"usr\": %.2f, "
+						 "\"nice\": %.2f, "
+						 "\"sys\": %.2f, "
+						 "\"iowait\": %.2f, "
+						 "\"steal\": %.2f, "
+						 "\"irq\": %.2f, "
+						 "\"soft\": %.2f, "
+						 "\"guest\": %.2f, "
+						 "\"gnice\": %.2f, "
+						 "\"idle\": %.2f}",
+						 i - 1, 0.0, 0.0, 0.0, 0.0,
+						 0.0, 0.0, 0.0, 0.0, 0.0,
+						 cpu_offline ? 0.0 : 100.0);
+				}
+				continue;
 			}
-			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-				xprintf0(tab, "{\"cpu\": \"%s\", "
-					 "\"usr\": %.2f, "
-					 "\"nice\": %.2f, "
-					 "\"sys\": %.2f, "
-					 "\"iowait\": %.2f, "
-					 "\"steal\": %.2f, "
-					 "\"irq\": %.2f, "
-					 "\"soft\": %.2f, "
-					 "\"guest\": %.2f, "
-					 "\"gnice\": %.2f, "
-					 "\"idle\": %.2f}",
-					 cpuno,
-					 (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-					 0.0 :
-					 ll_sp_value(scp->cpu_user - scp->cpu_guest,
-						     scc->cpu_user - scc->cpu_guest, g_itv),
-					 (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-					 0.0 :
-					 ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-						     scc->cpu_nice - scc->cpu_guest_nice, g_itv),
-					 ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
-					 ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-					 ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
-					 ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
-					 ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
-					 ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
-					 ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
-					 scc->cpu_idle < scp->cpu_idle ?
-					 0.0 :
-					 ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
-			}
+		}
+
+		if (DISPLAY_CPU_DEF(a->opt_flags)) {
+			xprintf0(tab, "{\"cpu\": \"%s\", "
+				 "\"user\": %.2f, "
+				 "\"nice\": %.2f, "
+				 "\"system\": %.2f, "
+				 "\"iowait\": %.2f, "
+				 "\"steal\": %.2f, "
+				 "\"idle\": %.2f}",
+				 cpuno,
+				 ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
+				 ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
+				 ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+					     scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+					     g_itv),
+				 ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+				 ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+				 scc->cpu_idle < scp->cpu_idle ?
+				 0.0 :
+				 ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
+		}
+		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+			xprintf0(tab, "{\"cpu\": \"%s\", "
+				 "\"usr\": %.2f, "
+				 "\"nice\": %.2f, "
+				 "\"sys\": %.2f, "
+				 "\"iowait\": %.2f, "
+				 "\"steal\": %.2f, "
+				 "\"irq\": %.2f, "
+				 "\"soft\": %.2f, "
+				 "\"guest\": %.2f, "
+				 "\"gnice\": %.2f, "
+				 "\"idle\": %.2f}",
+				 cpuno,
+				 (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				 0.0 :
+				 ll_sp_value(scp->cpu_user - scp->cpu_guest,
+					     scc->cpu_user - scc->cpu_guest, g_itv),
+				 (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+				 0.0 :
+				 ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+					     scc->cpu_nice - scc->cpu_guest_nice, g_itv),
+				 ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
+				 ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+				 ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+				 ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
+				 ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
+				 ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
+				 ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
+				 scc->cpu_idle < scp->cpu_idle ?
+				 0.0 :
+				 ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
 		}
 	}
 
