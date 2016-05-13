@@ -1,4 +1,4 @@
-.TH SAR 1 "FEBRUARY 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MAY 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -2326,6 +2326,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sa1 (8),
 .BR sa2 (8),
 .BR sadf (1),
+.BR sysstat (5),
 .BR pidstat (1),
 .BR mpstat (1),
 .BR iostat (1),
