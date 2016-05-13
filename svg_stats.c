@@ -2514,7 +2514,8 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 {
 	struct stats_pwr_temp *spc;
 	int group[] = {1};
-	char *title[] = {"Device temperature"};
+	char *title1[] = {"Device temperature (1)"};
+	char *title2[] = {"Device temperature (2)"};
 	char *g1_title[] = {"~degC"};
 	char *g2_title[] = {"%temp"};
 	static double *spmin, *spmax;
@@ -2575,11 +2576,11 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
 
 			draw_activity_graphs(1, SVG_LINE_GRAPH,
-					     title, g1_title, item_name, group,
+					     title1, g1_title, item_name, group,
 					     spmin + 2 * i, spmax + 2 * i, out + 2 * i, outsize + 2 * i,
 					     svg_p, record_hdr);
 			draw_activity_graphs(1, SVG_BAR_GRAPH,
-					     title, g2_title, item_name, group,
+					     title2, g2_title, item_name, group,
 					     spmin + 2 * i + 1, spmax + 2 * i + 1,
 					     out + 2 * i + 1, outsize + 2 * i + 1,
 					     svg_p, record_hdr);
