@@ -264,6 +264,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sar (1),
 .BR sadc (8),
 .BR sa1 (8),
-.BR sa2 (8)
+.BR sa2 (8),
+.BR sysstat (5)
 
 .I http://pagesperso-orange.fr/sebastien.godard/
