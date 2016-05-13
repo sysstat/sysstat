@@ -185,276 +185,277 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			if (!i) {
-				/* This is CPU "all" */
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					render(isdb, pre,
-					       PT_NOFLAG,	/* that's zero but you know what it means */
-					       "all\t%%user",	/* all ppctext is used as format, thus '%%' */
-					       "-1",		/* look! dbtext */
-					       NULL,		/* no args */
-					       NOVAL,		/* another 0, named for readability */
-					       ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
-					       NULL);		/* No string arg */
-				}
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%usr", "-1", NULL,
-					       NOVAL,
-					       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_user - scp->cpu_guest,
-							   scc->cpu_user - scc->cpu_guest,
-							   g_itv),
-					       NULL);
-				}
-
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%nice", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
-					       NULL);
-				}
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%nice", NULL, NULL,
-					       NOVAL,
-					       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-							   scc->cpu_nice - scc->cpu_guest_nice,
-							   g_itv),
-					       NULL);
-				}
-
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%system", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-							   scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-							   g_itv),
-					       NULL);
-				}
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%sys", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
-					       NULL);
-				}
-
+		if (!i) {
+			/* This is CPU "all" */
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				render(isdb, pre,
+				       PT_NOFLAG,	/* that's zero but you know what it means */
+				       "all\t%%user",	/* all ppctext is used as format, thus '%%' */
+				       "-1",		/* look! dbtext */
+				       NULL,		/* no args */
+				       NOVAL,		/* another 0, named for readability */
+				       ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
+				       NULL);		/* No string arg */
+			}
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%iowait", NULL, NULL,
+				       "all\t%%usr", "-1", NULL,
 				       NOVAL,
-				       ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+				       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_user - scp->cpu_guest,
+						   scc->cpu_user - scc->cpu_guest,
+						   g_itv),
+				       NULL);
+			}
+
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%nice", NULL, NULL,
+				       NOVAL,
+				       ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
+				       NULL);
+			}
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%nice", NULL, NULL,
+				       NOVAL,
+				       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+						   scc->cpu_nice - scc->cpu_guest_nice,
+						   g_itv),
+				       NULL);
+			}
+
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%system", NULL, NULL,
+				       NOVAL,
+				       ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+						   scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+						   g_itv),
+				       NULL);
+			}
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%sys", NULL, NULL,
+				       NOVAL,
+				       ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
+				       NULL);
+			}
+
+			render(isdb, pre, PT_NOFLAG,
+			       "all\t%%iowait", NULL, NULL,
+			       NOVAL,
+			       ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+			       NULL);
+
+			render(isdb, pre, PT_NOFLAG,
+			       "all\t%%steal", NULL, NULL,
+			       NOVAL,
+			       ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+			       NULL);
+
+			if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%irq", NULL, NULL,
+				       NOVAL,
+				       ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
 				       NULL);
 
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%steal", NULL, NULL,
+				       "all\t%%soft", NULL, NULL,
 				       NOVAL,
-				       ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+				       ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
 				       NULL);
 
-				if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%irq", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
-					       NULL);
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%guest", NULL, NULL,
+				       NOVAL,
+				       ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
+				       NULL);
 
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%soft", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
-					       NULL);
+				render(isdb, pre, PT_NOFLAG,
+				       "all\t%%gnice", NULL, NULL,
+				       NOVAL,
+				       ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
+				       NULL);
+			}
 
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%guest", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
-					       NULL);
+			render(isdb, pre, pt_newlin,
+			       "all\t%%idle", NULL, NULL,
+			       NOVAL,
+			       (scc->cpu_idle < scp->cpu_idle) ?
+			       0.0 :
+			       ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv),
+			       NULL);
+		}
+		else {
+			/*
+			 * If the CPU is offline then it is omited from /proc/stat:
+			 * All the fields couldn't have been read and the sum of them is zero.
+			 * (Remember that guest/guest_nice times are already included in
+			 * user/nice modes.)
+			 */
+			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+				/*
+				 * Set current struct fields (which have been set to zero)
+				 * to values from previous iteration. Hence their values won't
+				 * jump from zero when the CPU comes back online.
+				 */
+				*scc = *scp;
 
-					render(isdb, pre, PT_NOFLAG,
-					       "all\t%%gnice", NULL, NULL,
-					       NOVAL,
-					       ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
-					       NULL);
-				}
+				g_itv = 0;
+				cpu_offline = TRUE;
+			}
+			else {
+				/*
+				 * Recalculate itv for current proc.
+				 * If the result is 0, then current CPU is a tickless one.
+				 */
+				g_itv = get_per_cpu_interval(scc, scp);
+				cpu_offline = FALSE;
+			}
 
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%user",		/* ppc text with formatting */
+				       "%d",			/* db text with format char */
+				       cons(iv, i - 1, NOVAL),	/* how we pass format args  */
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :			/* CPU is offline or tickless */
+				       ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
+				       NULL);
+			}
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%usr", "%d", cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       (!g_itv ||
+				       ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest))) ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_user - scp->cpu_guest,
+						   scc->cpu_user - scc->cpu_guest, g_itv),
+				       NULL);
+			}
+
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%nice", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
+				       NULL);
+			}
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%nice", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       (!g_itv ||
+				       ((scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice))) ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+						   scc->cpu_nice - scc->cpu_guest_nice, g_itv),
+				       NULL);
+			}
+
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%system", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+						   scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+						   g_itv),
+				       NULL);
+			}
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%sys", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
+				       NULL);
+			}
+
+			render(isdb, pre, PT_NOFLAG,
+			       "cpu%d\t%%iowait", NULL, cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       !g_itv ?
+			       0.0 :
+			       ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+			       NULL);
+
+			render(isdb, pre, PT_NOFLAG,
+			       "cpu%d\t%%steal", NULL, cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       !g_itv ?
+			       0.0 :
+			       ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+			       NULL);
+
+			if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%irq", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
+				       NULL);
+
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%soft", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
+				       NULL);
+
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%guest", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
+				       NULL);
+
+				render(isdb, pre, PT_NOFLAG,
+				       "cpu%d\t%%gnice", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       !g_itv ?
+				       0.0 :
+				       ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
+				       NULL);
+			}
+
+			if (!g_itv) {
+				/* CPU is offline or tickless */
 				render(isdb, pre, pt_newlin,
-				       "all\t%%idle", NULL, NULL,
+				       "cpu%d\t%%idle", NULL, cons(iv, i - 1, NOVAL),
+				       NOVAL,
+				       cpu_offline ?
+				       0.0 : 100.0,
+				       NULL);
+			}
+			else {
+				render(isdb, pre, pt_newlin,
+				       "cpu%d\t%%idle", NULL, cons(iv, i - 1, NOVAL),
 				       NOVAL,
 				       (scc->cpu_idle < scp->cpu_idle) ?
 				       0.0 :
 				       ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv),
 				       NULL);
-			}
-			else {
-				/*
-				 * If the CPU is offline then it is omited from /proc/stat:
-				 * All the fields couldn't have been read and the sum of them is zero.
-				 * (Remember that guest/guest_nice times are already included in
-				 * user/nice modes.)
-				 */
-				if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-				     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-				     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-					/*
-					 * Set current struct fields (which have been set to zero)
-					 * to values from previous iteration. Hence their values won't
-					 * jump from zero when the CPU comes back online.
-					 */
-					*scc = *scp;
-
-					g_itv = 0;
-					cpu_offline = TRUE;
-				}
-				else {
-					/*
-					 * Recalculate itv for current proc.
-					 * If the result is 0, then current CPU is a tickless one.
-					 */
-					g_itv = get_per_cpu_interval(scc, scp);
-					cpu_offline = FALSE;
-				}
-
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%user",		/* ppc text with formatting */
-					       "%d",			/* db text with format char */
-					       cons(iv, i - 1, NOVAL),	/* how we pass format args  */
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :			/* CPU is offline or tickless */
-					       ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
-					       NULL);
-				}
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%usr", "%d", cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       (!g_itv ||
-					       ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest))) ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_user - scp->cpu_guest,
-							   scc->cpu_user - scc->cpu_guest, g_itv),
-					       NULL);
-				}
-
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%nice", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
-					       NULL);
-				}
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%nice", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       (!g_itv ||
-					       ((scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice))) ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-							   scc->cpu_nice - scc->cpu_guest_nice, g_itv),
-					       NULL);
-				}
-
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%system", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-							   scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-							   g_itv),
-					       NULL);
-				}
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%sys", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
-					       NULL);
-				}
-
-				render(isdb, pre, PT_NOFLAG,
-				       "cpu%d\t%%iowait", NULL, cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       !g_itv ?
-				       0.0 :
-				       ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-				       NULL);
-
-				render(isdb, pre, PT_NOFLAG,
-				       "cpu%d\t%%steal", NULL, cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       !g_itv ?
-				       0.0 :
-				       ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
-				       NULL);
-
-				if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%irq", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
-					       NULL);
-
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%soft", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
-					       NULL);
-
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%guest", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
-					       NULL);
-
-					render(isdb, pre, PT_NOFLAG,
-					       "cpu%d\t%%gnice", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       !g_itv ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
-					       NULL);
-				}
-
-				if (!g_itv) {
-					/* CPU is offline or tickless */
-					render(isdb, pre, pt_newlin,
-					       "cpu%d\t%%idle", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       cpu_offline ?
-					       0.0 : 100.0,
-					       NULL);
-				}
-				else {
-					render(isdb, pre, pt_newlin,
-					       "cpu%d\t%%idle", NULL, cons(iv, i - 1, NOVAL),
-					       NOVAL,
-					       (scc->cpu_idle < scp->cpu_idle) ?
-					       0.0 :
-					       ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv),
-					       NULL);
-				}
 			}
 		}
 	}
