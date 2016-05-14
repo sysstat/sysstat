@@ -1,11 +1,21 @@
 Changes:
 
+2016/05/14: Version 11.3.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* SVG: Add SVG output for fan speed and temperature sensors
+	  statistics, I/O and transfer rate statistics, kernel tables
+	  statistics, hugepages utilization statistics, IPv4 and IPv6
+	  network sockets statistics, UDPv4, TCPv4 and IPv4 network statistics.
+	* SVG: Add skipempty and autoscale options to control SVG output.
+	* sadf and sar manual pages updated [11.2.4].
+	* NLS translation updated.
+	* Various cosmetic changes in code [11.2.4].
+
 2016/04/09: Version 11.3.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* SVG: Add SVG output for CPU statistics, CPU frequency statistics,
 	  memory and swap statistics, and queue length and load average
 	  statistics.
 	* SVG: Make SVG code independent from the locale used to display
-	  numeric values.
+	  numerical values.
 	* SVG: Fix possibly truncated SVG code.
 	* SVG: Make sure that a minimum interval value is used on X and Y
 	  axis.
