@@ -160,7 +160,7 @@ Tell
 to draw all the graphs of a given view as large as possible based on current
 view's scale. To do this, a factor (10, 100, 1000...) is used to
 enlarge the graph drawing.
-This option may be intesting when several graphs are drawn on the same
+This option may be interesting when several graphs are drawn on the same
 view, some with only very small values, and others with high ones,
 the latter making the former hardly visible.
 .RE
