@@ -282,9 +282,9 @@
 /* Structure for SVG specific parameters */
 struct svg_parm {
 	unsigned long dt;
+	unsigned long ust_time_ref;
 	int graph_no;
 	int restart;
-	struct record_header *record_hdr;
 };
 
 

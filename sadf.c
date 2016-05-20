@@ -886,7 +886,7 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 	copy_structures(act, id_seq, record_hdr, !*curr, 2);
 
 	parm.graph_no = *g_nr;
-	parm.record_hdr = &record_hdr[2];
+	parm.ust_time_ref = record_hdr[2].ust_time;
 	parm.restart = TRUE;
 
 	*cnt  = count;

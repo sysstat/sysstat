@@ -626,8 +626,7 @@ void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
  * @out		Pointer on array of chars for each graph definition.
  * @outsize	Size of array of chars for each graph definition.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no)
- *		and a pointer on a record header structure (.@record_hdr)
- *		containing the first stats sample.
+ *		and time used for the X axis origin (.@ust_time_ref).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -682,7 +681,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		 * At least two samples are needed.
 		 * And a min and max value should have been found.
 		 */
-		if ((record_hdr->ust_time == svg_p->record_hdr->ust_time) ||
+		if ((record_hdr->ust_time == svg_p->ust_time_ref) ||
 		    (*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
 			/* No data found */
 			printf("<text x=\"0\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
@@ -779,9 +778,9 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		}
 		while (ypos * j <= lmax);
 
-		k = xgrid(svg_p->record_hdr->ust_time, record_hdr->ust_time);
-		xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->record_hdr->ust_time);
-		stamp = *svg_p->record_hdr;
+		k = xgrid(svg_p->ust_time_ref, record_hdr->ust_time);
+		xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->ust_time_ref);
+		stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
 		for (j = 0; (j <= SVG_V_GRIDNR) && (stamp.ust_time <= record_hdr->ust_time); j++) {
 			sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
 			set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
@@ -840,8 +839,8 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart), and time used for the X axis origin
+ *		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -937,7 +936,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					}
 
 					/* %idle */
-					cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+					cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 						  &offset, val,
 						  out + pos + j, outsize + pos + j, svg_p->dt,
 						  spmin + pos + j, spmax + pos + j);
@@ -947,14 +946,14 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				/* %user */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
 					  out + pos, outsize + pos, svg_p->dt,
 					  spmin + pos, spmax + pos);
 			}
 			else {
 				/* %usr */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset,
 					  (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 					   0.0 :
@@ -966,14 +965,14 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				/* %nice */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
 					  out + pos + 1, outsize + pos + 1, svg_p->dt,
 					  spmin + pos + 1, spmax + pos + 1);
 			}
 			else {
 				/* %nice */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset,
 					  (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
 					   0.0 :
@@ -985,7 +984,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				/* %system */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset,
 					  ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
 						      scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
@@ -995,45 +994,45 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			}
 			else {
 				/* %sys */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
 					  out + pos + 2, outsize + pos + 2, svg_p->dt,
 					  spmin + pos + 2, spmax + pos + 2);
 			}
 
 			/* %iowait */
-			cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset, ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
 				  out + pos + 3, outsize + pos + 3, svg_p->dt,
 				  spmin + pos + 3, spmax + pos + 3);
 
 			/* %steal */
-			cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset, ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
 				  out + pos + 4, outsize + pos + 4, svg_p->dt,
 				  spmin + pos + 4, spmax + pos + 4);
 
 			if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				/* %irq */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
 					  out + pos + 5, outsize + pos + 5, svg_p->dt,
 					  spmin + pos + 5, spmax + pos + 5);
 
 				/* %soft */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
 					  out + pos + 6, outsize + pos + 6, svg_p->dt,
 					  spmin + pos + 6, spmax + pos + 6);
 
 				/* %guest */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
 					  out + pos + 7, outsize + pos + 7, svg_p->dt,
 					  spmin + pos + 7, spmax + pos + 7);
 
 				/* %gnice */
-				cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
 					  out + pos + 8, outsize + pos + 8, svg_p->dt,
 					  spmin + pos + 8, spmax + pos + 8);
@@ -1045,7 +1044,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			}
 
 			/* %idle */
-			cpuappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset,
 				  (scc->cpu_idle < scp->cpu_idle ? 0.0 :
 				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv)),
@@ -1100,8 +1099,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1133,11 +1132,11 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 		save_extrema(1, 1, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax);
 		/* cswch/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->context_switch, spc->context_switch, itv),
 			 out, outsize, svg_p->restart);
 		/* proc/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->processes, spc->processes, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 	}
@@ -1161,8 +1160,8 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1193,11 +1192,11 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 		save_extrema(0, 2, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax);
 		/* pswpin/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(ssp->pswpin, ssc->pswpin, itv),
 			 out, outsize, svg_p->restart);
 		/* pswpout/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(ssp->pswpout, ssc->pswpout, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 	}
@@ -1221,8 +1220,8 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1255,35 +1254,35 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 		save_extrema(0, 8, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax);
 		/* pgpgin/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgpgin, spc->pgpgin, itv),
 			 out, outsize, svg_p->restart);
 		/* pgpgout/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgpgout, spc->pgpgout, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 		/* fault/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgfault, spc->pgfault, itv),
 			 out + 2, outsize + 2, svg_p->restart);
 		/* majflt/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgmajfault, spc->pgmajfault, itv),
 			 out + 3, outsize + 3, svg_p->restart);
 		/* pgfree/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgfree, spc->pgfree, itv),
 			 out + 4, outsize + 4, svg_p->restart);
 		/* pgscank/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
 			 out + 5, outsize + 5, svg_p->restart);
 		/* pgscand/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
 			 out + 6, outsize + 6, svg_p->restart);
 		/* pgsteal/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgsteal, spc->pgsteal, itv),
 			 out + 7, outsize + 7, svg_p->restart);
 	}
@@ -1307,8 +1306,8 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1341,23 +1340,23 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 			     itv, spmin, spmax);
 
 		/* tps */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sip->dk_drive, sic->dk_drive, itv),
 			 out, outsize, svg_p->restart);
 		/* rtps */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sip->dk_drive_rio,  sic->dk_drive_rio, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 		/* wtps */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sip->dk_drive_wio,  sic->dk_drive_wio, itv),
 			 out + 2, outsize + 2, svg_p->restart);
 		/* bread/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
 			 out + 3, outsize + 3, svg_p->restart);
 		/* bwrtn/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
 			 out + 4, outsize + 4, svg_p->restart);
 	}
@@ -1381,8 +1380,8 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1480,89 +1479,89 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		}
 
 		/* MBmemfree */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->frmkb) / 1024,
 			 out, outsize, svg_p->restart);
 		/* MBmemused */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) (smc->tlmkb - smc->frmkb)) / 1024,
 			 out + 1, outsize + 1, svg_p->restart);
 		/* MBcached */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->camkb) / 1024,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* MBbuffers */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->bufkb) / 1024,
 			 out + 3, outsize + 3, svg_p->restart);
 		/* MBswpfree */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->frskb) / 1024,
 			 out + 4, outsize + 4, svg_p->restart);
 		/* MBswpused */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) (smc->tlskb - smc->frskb)) / 1024,
 			 out + 5, outsize + 5, svg_p->restart);
 		/* MBswpcad */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->caskb) / 1024,
 			 out + 6, outsize + 6, svg_p->restart);
 		/* MBcommit */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->comkb) / 1024,
 			 out + 7, outsize + 7, svg_p->restart);
 		/* MBactive */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->activekb) / 1024,
 			 out + 8, outsize + 8, svg_p->restart);
 		/* MBinact */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->inactkb) / 1024,
 			 out + 9, outsize + 9, svg_p->restart);
 		/* MBdirty */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->dirtykb) / 1024,
 			 out + 10, outsize + 10, svg_p->restart);
 		/* MBanonpg */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->anonpgkb) / 1024,
 			 out + 11, outsize + 11, svg_p->restart);
 		/* MBslab */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->slabkb) / 1024,
 			 out + 12, outsize + 12, svg_p->restart);
 		/* MBkstack */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->kstackkb) / 1024,
 			 out + 13, outsize + 13, svg_p->restart);
 		/* MBpgtbl */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->pgtblkb) / 1024,
 			 out + 14, outsize + 14, svg_p->restart);
 		/* MBvmused */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->vmusedkb) / 1024,
 			 out + 15, outsize + 15, svg_p->restart);
 		/* %memused */
-		brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 smc->tlmkb ?
 			 SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0,
 			 out + 16, outsize + 16, svg_p->dt);
 		/* %commit */
-		brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 (smc->tlmkb + smc->tlskb) ?
 			 SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0,
 			 out + 17, outsize + 17, svg_p->dt);
 		/* %swpused */
-		brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 smc->tlskb ?
 			 SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0,
 			 out + 18, outsize + 18, svg_p->dt);
 		/* %swpcad */
-		brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 (smc->tlskb - smc->frskb) ?
 			 SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0,
@@ -1620,8 +1619,8 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1652,19 +1651,19 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 		save_extrema(0, 0, 4, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax);
 		/* file-nr */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) skc->file_used,
 			  out, outsize, svg_p->restart);
 		/* inode-nr */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) skc->inode_used,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* dentunusd */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) skc->dentry_stat,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* pty-nr */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) skc->pty_nr,
 			  out + 3, outsize + 3, svg_p->restart);
 	}
@@ -1688,8 +1687,8 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1721,27 +1720,27 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 		save_extrema(0, 2, 4, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax);
 		/* runq-sz */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) sqc->nr_running,
 			  out, outsize, svg_p->restart);
 		/* blocked */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) sqc->procs_blocked,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* ldavg-1 */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) sqc->load_avg_1 / 100,
 			 out + 2, outsize + 2, svg_p->restart);
 		/* ldavg-5 */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) sqc->load_avg_5 / 100,
 			 out + 3, outsize + 3, svg_p->restart);
 		/* ldavg-15 */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) sqc->load_avg_15 / 100,
 			 out + 4, outsize + 4, svg_p->restart);
 		/* plist-sz */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) sqc->nr_threads,
 			  out + 5, outsize + 5, svg_p->restart);
 	}
@@ -1770,8 +1769,8 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1884,42 +1883,42 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			}
 
 			/* rxpck/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
 				 out + pos, outsize + pos, restart);
 
 			/* txpck/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
 				 out + pos + 1, outsize + pos + 1, restart);
 
 			/* rxkB/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 rxkb / 1024,
 				 out + pos + 2, outsize + pos + 2, restart);
 
 			/* txkB/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 txkb / 1024,
 				 out + pos + 3, outsize + pos + 3, restart);
 
 			/* rxcmp/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
 				 out + pos + 4, outsize + pos + 4, restart);
 
 			/* txcmp/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 				 out + pos + 5, outsize + pos + 5, restart);
 
 			/* rxmcst/s */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->multicast, sndc->multicast, itv),
 				 out + pos + 6, outsize + pos + 6, restart);
 
 			/* %ifutil */
-			brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0, ifutil,
 				 out + pos + 7, outsize + pos + 7, svg_p->dt);
 		}
@@ -1976,8 +1975,8 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2008,27 +2007,27 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 		save_extrema(0, 0, 6, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax);
 		/* totsck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->sock_inuse,
 			  out, outsize, svg_p->restart);
 		/* tcpsck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->tcp_inuse,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* tcp-tw */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->tcp_tw,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* udpsck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->udp_inuse,
 			  out + 3, outsize + 3, svg_p->restart);
 		/* rawsck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->raw_inuse,
 			  out + 4, outsize + 4, svg_p->restart);
 		/* ip-frag */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->frag_inuse,
 			  out + 5, outsize + 5, svg_p->restart);
 	}
@@ -2052,8 +2051,8 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2087,35 +2086,35 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 			     itv, spmin, spmax);
 
 		/* irec/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->InReceives, snic->InReceives, itv),
 			 out, outsize, svg_p->restart);
 		/* fwddgm/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->ForwDatagrams, snic->ForwDatagrams, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 		/* idel/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->InDelivers, snic->InDelivers, itv),
 			 out + 2, outsize + 2, svg_p->restart);
 		/* orq/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->OutRequests, snic->OutRequests, itv),
 			 out + 3, outsize + 3, svg_p->restart);
 		/* asmrq/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->ReasmReqds, snic->ReasmReqds, itv),
 			 out + 4, outsize + 4, svg_p->restart);
 		/* asmok/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->ReasmOKs, snic->ReasmOKs, itv),
 			 out + 5, outsize + 5, svg_p->restart);
 		/* fragok/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->FragOKs, snic->FragOKs, itv),
 			 out + 6, outsize + 6, svg_p->restart);
 		/* fragcrt/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snip->FragCreates, snic->FragCreates, itv),
 			 out + 7, outsize + 7, svg_p->restart);
 	}
@@ -2139,8 +2138,8 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2173,19 +2172,19 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 			     itv, spmin, spmax);
 
 		/* active/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sntp->ActiveOpens, sntc->ActiveOpens, itv),
 			 out, outsize, svg_p->restart);
 		/* passive/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sntp->PassiveOpens, sntc->PassiveOpens, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 		/* iseg/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sntp->InSegs, sntc->InSegs, itv),
 			 out + 2, outsize + 2, svg_p->restart);
 		/* oseg/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(sntp->OutSegs, sntc->OutSegs, itv),
 			 out + 3, outsize + 3, svg_p->restart);
 	}
@@ -2209,8 +2208,8 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2243,19 +2242,19 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
 			     itv, spmin, spmax);
 
 		/* idgm/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snup->InDatagrams, snuc->InDatagrams, itv),
 			 out, outsize, svg_p->restart);
 		/* odgm/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snup->OutDatagrams, snuc->OutDatagrams, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 		/* noport/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snup->NoPorts, snuc->NoPorts, itv),
 			 out + 2, outsize + 2, svg_p->restart);
 		/* idgmerr/s */
-		lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snup->InErrors, snuc->InErrors, itv),
 			 out + 3, outsize + 3, svg_p->restart);
 	}
@@ -2279,8 +2278,8 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2310,19 +2309,19 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 		save_extrema(0, 0, 4, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax);
 		/* tcp6sck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->tcp6_inuse,
 			  out, outsize, svg_p->restart);
 		/* udp6sck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->udp6_inuse,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* raw6sck */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->raw6_inuse,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* ip6-frag */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->frag6_inuse,
 			  out + 3, outsize + 3, svg_p->restart);
 	}
@@ -2346,8 +2345,8 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2386,7 +2385,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 				continue;
 
 			/* MHz */
-			recappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			recappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  ((double) spp->cpufreq) / 100,
 				  ((double) spc->cpufreq) / 100,
 				  out + i, outsize + i, svg_p->restart, svg_p->dt,
@@ -2431,8 +2430,8 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2466,7 +2465,7 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 			spp = (struct stats_pwr_fan *) ((char *) a->buf[!curr]  + i * a->msize);
 
 			/* rpm */
-			recappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			recappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  (double) spp->rpm,
 				  (double) spc->rpm,
 				  out + i, outsize + i, svg_p->restart, svg_p->dt,
@@ -2503,8 +2502,8 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2557,11 +2556,11 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			}
 
 			/* degC */
-			lnappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 (double) spc->temp,
 				 out + 2 * i, outsize + 2 * i, svg_p->restart);
 			/* %temp */
-			brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0, tval,
 				 out + 2 * i + 1, outsize + 2 * i + 1, svg_p->dt);
 		}
@@ -2601,8 +2600,8 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
  * @action	Action expected from current function.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
- * 		found (.@restart) and a pointer on a record header structure
- * 		(.@record_hdr) containing the first stats sample.
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -2651,15 +2650,15 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 		}
 
 		/* kbhugfree */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) smc->frhkb,
 			  out, outsize, svg_p->restart);
 		/* hugused */
-		lniappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) smc->tlhkb - smc->frhkb,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* %hugused */
-		brappend(record_hdr->ust_time - svg_p->record_hdr->ust_time,
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0, tval,
 			 out + 2, outsize + 2, svg_p->dt);
 	}
