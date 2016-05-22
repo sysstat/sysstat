@@ -99,6 +99,7 @@
 #define S_F_PREFD_TIME_OUTPUT	0x00008000
 #define S_F_SVG_SKIP		0x00010000
 #define S_F_SVG_AUTOSCALE	0x00020000
+#define S_F_SVG_ONE_DAY		0x00040000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -118,6 +119,7 @@
 #define USE_PREFD_TIME_OUTPUT(m)	(((m) & S_F_PREFD_TIME_OUTPUT)   == S_F_PREFD_TIME_OUTPUT)
 #define SKIP_EMPTY_VIEWS(m)		(((m) & S_F_SVG_SKIP)     == S_F_SVG_SKIP)
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
+#define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)   == S_F_SVG_ONE_DAY)
 
 #define AO_F_NULL		0x00000000
 
@@ -195,6 +197,7 @@
 
 #define K_SKIP_EMPTY	"skipempty"
 #define K_AUTOSCALE	"autoscale"
+#define K_ONEDAY	"oneday"
 
 /* Groups of activities */
 #define G_DEFAULT	0x00
@@ -281,10 +284,12 @@
 
 /* Structure for SVG specific parameters */
 struct svg_parm {
-	unsigned long dt;
-	unsigned long ust_time_ref;
-	int graph_no;
-	int restart;
+	unsigned long dt;		/* Interval of time for current sample */
+	unsigned long ust_time_ref;	/* X axis start time in seconds since the epoch */
+	unsigned long ust_time_end;	/* X axis end time in seconds since the epoch */
+	unsigned long ust_time_first;	/* Time (in seconds since the epoch) for first sample */
+	int graph_no;			/* Total number of views already displayed */
+	int restart;			/* TRUE if we have just met a RESTART record */
 };
 
 

@@ -450,6 +450,36 @@ void list_fields(unsigned int act_id)
 
 /*
  ***************************************************************************
+ * Determine the time (expressed in seconds since the epoch) used as the
+ * origin on X axis for SVG graphs. If S_F_SVG_ONE_DAY is set, then origin
+ * will be the beginning of current day (00:00:00) else it will be the time
+ * of the first sample collected.
+ *
+ * RETURNS:
+ * Time origin on X axis (expressed in seconds since the epoch).
+ ***************************************************************************
+ */
+time_t get_time_ref(void)
+{
+	struct tm *ltm;
+	time_t t;
+
+	if (DISPLAY_ONE_DAY(flags)) {
+		ltm = localtime((time_t *) &(record_hdr[2].ust_time));
+
+		/* Move back to midnight */
+		ltm->tm_sec = ltm->tm_min = ltm->tm_hour = 0;
+
+		t = mktime(ltm);
+		if (t != -1)
+			return t;
+	}
+
+	return record_hdr[2].ust_time;
+}
+
+/*
+ ***************************************************************************
  * Compute the number of SVG graphs to display. Each activity selected may
  * have several graphs. Moreover we have to take into account volatile
  * activities (eg. CPU) for which the number of graphs will depend on the
@@ -571,7 +601,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 
 	return tot_g_nr;
 }
-
 /*
  ***************************************************************************
  * Display *one* sample of statistics for one or several activities,
@@ -855,7 +884,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
  * @eosaf	Set to TRUE if EOF (end of file) has been reached.
  * @reset	Set to TRUE if last_uptime variable should be
  *		reinitialized (used in next_slice() function).
- * @g_nr	Total number of graphs displayed (including current activity).
+ * @g_nr	Total number of views displayed (including current activity).
  ***************************************************************************
  */
 void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
@@ -886,7 +915,8 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 	copy_structures(act, id_seq, record_hdr, !*curr, 2);
 
 	parm.graph_no = *g_nr;
-	parm.ust_time_ref = record_hdr[2].ust_time;
+	parm.ust_time_ref = get_time_ref();
+	parm.ust_time_first = record_hdr[2].ust_time;
 	parm.restart = TRUE;
 
 	*cnt  = count;
@@ -936,6 +966,15 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 	while (!*eosaf);
 
 	*reset = TRUE;
+
+	/* Determine X axis end value */
+	if (DISPLAY_ONE_DAY(flags) &&
+	    (parm.ust_time_ref + (3600 * 24) > record_hdr[!*curr].ust_time)) {
+		parm.ust_time_end = parm.ust_time_ref + (3600 * 24);
+	}
+	else {
+		parm.ust_time_end = record_hdr[!*curr].ust_time;
+	}
 
 	/* Actually display graphs for current activity */
 	(*act[p]->f_svg_print)(act[p], *curr, F_END, &parm, 0, &record_hdr[!*curr]);
@@ -1505,6 +1544,9 @@ int main(int argc, char **argv)
 				}
 				else if (!strcmp(t, K_AUTOSCALE)) {
 					flags |= S_F_SVG_AUTOSCALE;
+				}
+				else if (!strcmp(t, K_ONEDAY)) {
+					flags |= S_F_SVG_ONE_DAY;
 				}
 				else {
 					usage(argv[0]);

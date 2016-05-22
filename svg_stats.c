@@ -570,17 +570,20 @@ double ygrid(double lmax, int *dp)
  * IN:
  * @timestart	First data timestamp (X coordinate of the first data point).
  * @timeend	Last data timestamp (X coordinate of the last data point).
+ * @v_gridnr	Number of vertical lines to display. Its value is normally
+ *		SVG_V_GRIDNR, except when option "oneday" is used, in which
+ *		case it is set to 12.
  *
  * RETURNS:
  * Value between two vertical lines.
  ***************************************************************************
  */
-long int xgrid(unsigned long timestart, unsigned long timeend)
+long int xgrid(unsigned long timestart, unsigned long timeend, int v_gridnr)
 {
-	if ((timeend - timestart) <= SVG_V_GRIDNR)
+	if ((timeend - timestart) <= v_gridnr)
 		return 1;
 	else
-		return ((timeend - timestart) / SVG_V_GRIDNR);
+		return ((timeend - timestart) / v_gridnr);
 }
 
 /*
@@ -625,8 +628,10 @@ void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
  * @spmax	Array containing max values for graphs.
  * @out		Pointer on array of chars for each graph definition.
  * @outsize	Size of array of chars for each graph definition.
- * @svg_p	SVG specific parameters: Current graph number (.@graph_no)
- *		and time used for the X axis origin (.@ust_time_ref).
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ *		time for the first sample of stats (.@ust_time_first), and
+ *		times used as start and end values on the X axis
+ *		(.@ust_time_ref and .@ust_time_end).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -638,6 +643,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 	struct tm rectime;
 	char *out_p;
 	int i, j, dp, pos = 0, views_nr = 0;
+	int v_gridnr;
 	unsigned int asfactor[16];
 	long int k;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
@@ -681,7 +687,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		 * At least two samples are needed.
 		 * And a min and max value should have been found.
 		 */
-		if ((record_hdr->ust_time == svg_p->ust_time_ref) ||
+		if ((record_hdr->ust_time == svg_p->ust_time_first) ||
 		    (*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
 			/* No data found */
 			printf("<text x=\"0\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
@@ -778,18 +784,33 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		}
 		while (ypos * j <= lmax);
 
-		k = xgrid(svg_p->ust_time_ref, record_hdr->ust_time);
-		xfactor = (double) SVG_G_XSIZE / (record_hdr->ust_time - svg_p->ust_time_ref);
+		/* Set number of vertical lines to 12 when option "oneday" is used */
+		v_gridnr = DISPLAY_ONE_DAY(flags) ? 12 : SVG_V_GRIDNR;
+
+		k = xgrid(svg_p->ust_time_ref, svg_p->ust_time_end, v_gridnr);
+		xfactor = (double) SVG_G_XSIZE / (svg_p->ust_time_end - svg_p->ust_time_ref);
 		stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
-		for (j = 0; (j <= SVG_V_GRIDNR) && (stamp.ust_time <= record_hdr->ust_time); j++) {
+
+		for (j = 0; (j <= v_gridnr) && (stamp.ust_time <= svg_p->ust_time_end); j++) {
 			sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
 			set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
 			printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
 			       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
 			       k * j, k * j, -SVG_G_YSIZE, xfactor);
-			printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
-			       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
-			       (long) (k * j * xfactor), (long) (k * j * xfactor), cur_time);
+			/*
+			 * NB: We may have tm_min != 0 if we have more than 24H worth of data in one datafile.
+			 * In this case, we should rather display the exact time instead of only the hour.
+			 */
+			if (DISPLAY_ONE_DAY(flags) && (rectime.tm_min == 0)) {
+				printf("<text x=\"%ld\" y=\"15\" style=\"fill: white; stroke: none; font-size: 14px; "
+				       "text-anchor: start\">%2dH</text>\n",
+				       (long) (k * j * xfactor) - 8, rectime.tm_hour);
+			}
+			else {
+				printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
+				       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
+				       (long) (k * j * xfactor), (long) (k * j * xfactor), cur_time);
+			}
 			stamp.ust_time += k;
 		}
 		if (!PRINT_LOCAL_TIME(flags)) {
