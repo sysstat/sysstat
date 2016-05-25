@@ -219,7 +219,8 @@ void tape_check_tapes_and_realloc(void)
 					free(tape_new_stats);
 					tape_new_stats = NULL;
 				}
-				return;
+				perror("realloc");
+				exit(4);
 			}
 
 			for (i = max_tape_drives; i < new_max_tape_drives; i++) {
