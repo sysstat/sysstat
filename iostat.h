@@ -29,6 +29,7 @@
 #define I_D_ISO			0x20000
 #define I_D_GROUP_TOTAL_ONLY	0x40000
 #define I_D_ZERO_OMIT		0x80000
+#define I_D_DISCARD		0x100000
 
 #define DISPLAY_CPU(m)			(((m) & I_D_CPU)              == I_D_CPU)
 #define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
@@ -49,6 +50,8 @@
 #define DISPLAY_ISO(m)			(((m) & I_D_ISO)              == I_D_ISO)
 #define DISPLAY_GROUP_TOTAL_ONLY(m)	(((m) & I_D_GROUP_TOTAL_ONLY) == I_D_GROUP_TOTAL_ONLY)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & I_D_ZERO_OMIT)        == I_D_ZERO_OMIT)
+#define DISPLAY_DISCARD(m)		(((m) & I_D_DISCARD)          == I_D_DISCARD)
+
 
 /* Preallocation constants */
 #define NR_DEV_PREALLOC		4
@@ -72,6 +75,8 @@ struct io_stats {
 	unsigned long rd_sectors	__attribute__ ((aligned (8)));
 	/* # of sectors written */
 	unsigned long wr_sectors	__attribute__ ((packed));
+	/* # of sectors discarded */
+	unsigned long di_sectors	__attribute__ ((packed));
 	/* # of read operations issued to the device */
 	unsigned long rd_ios		__attribute__ ((packed));
 	/* # of read requests merged */
@@ -80,10 +85,16 @@ struct io_stats {
 	unsigned long wr_ios		__attribute__ ((packed));
 	/* # of write requests merged */
 	unsigned long wr_merges		__attribute__ ((packed));
+	/* # of discard operations issued to the device */
+	unsigned long di_ios		__attribute__ ((packed));
+	/* # of discard requests merged */
+	unsigned long di_merges		__attribute__ ((packed));
 	/* Time of read requests in queue */
 	unsigned int  rd_ticks		__attribute__ ((packed));
 	/* Time of write requests in queue */
 	unsigned int  wr_ticks		__attribute__ ((packed));
+	/* Time of discard requests in queue */
+	unsigned int  di_ticks		__attribute__ ((packed));
 	/* # of I/Os in progress */
 	unsigned int  ios_pgr		__attribute__ ((packed));
 	/* # of ticks total (for this device) for I/O */

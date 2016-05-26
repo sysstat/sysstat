@@ -37,7 +37,6 @@
 #include "iostat.h"
 #include "common.h"
 #include "ioconf.h"
-#include "rd_stats.h"
 #include "count.h"
 
 #ifdef USE_NLS
@@ -87,13 +86,13 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -D] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -D] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
@@ -491,16 +490,37 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
 	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
 	unsigned long rd_ios, rd_merges_or_rd_sec, wr_ios, wr_merges;
 	unsigned long rd_sec_or_wr_ios, wr_sec, rd_ticks_or_wr_sec;
+	unsigned long di_ios, di_merges, di_sec, di_ticks;
 
 	/* Try to read given stat file */
 	if ((fp = fopen(filename, "r")) == NULL)
 		return 0;
 
-	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u",
-		   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
-		   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks);
+	memset(&sdev, 0, IO_STATS_SIZE);
 
-	if (i == 11) {
+	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %lu",
+		   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
+		   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks, &di_ios, &di_merges, &di_sec, &di_ticks);
+
+	if (i == 15) {
+		/* Device or partition */
+		sdev.rd_ios     = rd_ios;
+		sdev.rd_merges  = rd_merges_or_rd_sec;
+		sdev.rd_sectors = rd_sec_or_wr_ios;
+		sdev.rd_ticks   = (unsigned int) rd_ticks_or_wr_sec;
+		sdev.wr_ios     = wr_ios;
+		sdev.wr_merges  = wr_merges;
+		sdev.wr_sectors = wr_sec;
+		sdev.wr_ticks   = wr_ticks;
+		sdev.ios_pgr    = ios_pgr;
+		sdev.tot_ticks  = tot_ticks;
+		sdev.rq_ticks   = rq_ticks;
+		sdev.di_ios     = di_ios;
+		sdev.di_merges  = di_merges;
+		sdev.di_sectors = di_sec;
+		sdev.di_ticks   = di_ticks;
+	}
+	else if (i == 11) {
 		/* Device or partition */
 		sdev.rd_ios     = rd_ios;
 		sdev.rd_merges  = rd_merges_or_rd_sec;
@@ -522,7 +542,7 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
 		sdev.wr_sectors = rd_ticks_or_wr_sec;
 	}
 
-	if ((i == 11) || !DISPLAY_EXTENDED(flags)) {
+	if ((i == 15) || (i == 11) || !DISPLAY_EXTENDED(flags)) {
 		/*
 		 * In fact, we _don't_ save stats if it's a partition without
 		 * extended stats and yet we want to display ext stats.
@@ -683,6 +703,7 @@ void read_diskstats_stat(int curr)
 	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
 	unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
 	unsigned long wr_merges, rd_sec_or_wr_ios, wr_sec;
+	unsigned long di_ios, di_merges, di_sec, di_ticks;
 	char *ioc_dname;
 	unsigned int major, minor;
 
@@ -692,15 +713,38 @@ void read_diskstats_stat(int curr)
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
-	while (fgets(line, sizeof(line), fp) != NULL) {
+	memset(&sdev, 0, IO_STATS_SIZE);
 
+	while (fgets(line, sizeof(line), fp) != NULL) {
 		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq */
-		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u",
+		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %lu",
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
-			   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks);
+			   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks,
+			   &di_ios, &di_merges, &di_sec, &di_ticks);
 
-		if (i == 14) {
+		if (i == 18) {
+			/* Device or partition */
+			if (!dlist_idx && !DISPLAY_PARTITIONS(flags) &&
+			    !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
+				continue;
+			sdev.rd_ios     = rd_ios;
+			sdev.rd_merges  = rd_merges_or_rd_sec;
+			sdev.rd_sectors = rd_sec_or_wr_ios;
+			sdev.rd_ticks   = (unsigned int) rd_ticks_or_wr_sec;
+			sdev.wr_ios     = wr_ios;
+			sdev.wr_merges  = wr_merges;
+			sdev.wr_sectors = wr_sec;
+			sdev.wr_ticks   = wr_ticks;
+			sdev.ios_pgr    = ios_pgr;
+			sdev.tot_ticks  = tot_ticks;
+			sdev.rq_ticks   = rq_ticks;
+			sdev.di_ios     = di_ios;
+			sdev.di_merges  = di_merges;
+			sdev.di_sectors = di_sec;
+			sdev.di_ticks   = di_ticks;
+		}
+		else if (i == 14) {
 			/* Device or partition */
 			if (!dlist_idx && !DISPLAY_PARTITIONS(flags) &&
 			    !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
@@ -787,7 +831,7 @@ void compute_device_groups_stats(int curr)
 			ioi = st_iodev[curr] + i;
 
 			if (!DISPLAY_UNFILTERED(flags)) {
-				if (!ioi->rd_ios && !ioi->wr_ios)
+				if (!ioi->rd_ios && !ioi->wr_ios && !ioi->di_ios)
 					continue;
 			}
 
@@ -799,6 +843,10 @@ void compute_device_groups_stats(int curr)
 			gdev.wr_merges  += ioi->wr_merges;
 			gdev.wr_sectors += ioi->wr_sectors;
 			gdev.wr_ticks   += ioi->wr_ticks;
+			gdev.di_ios     += ioi->di_ios;
+			gdev.di_merges  += ioi->di_merges;
+			gdev.di_sectors += ioi->di_sectors;
+			gdev.di_ticks   += ioi->di_ticks;
 			gdev.ios_pgr    += ioi->ios_pgr;
 			gdev.tot_ticks  += ioi->tot_ticks;
 			gdev.rq_ticks   += ioi->rq_ticks;
@@ -857,37 +905,99 @@ void write_cpu_stat(int curr, unsigned long long itv)
  */
 void write_disk_stat_header(int *fctr)
 {
-	if (DISPLAY_EXTENDED(flags)) {
-		/* Extended stats */
-		printf("Device:         rrqm/s   wrqm/s     r/s     w/s");
-		if (DISPLAY_MEGABYTES(flags)) {
-			printf("    rMB/s    wMB/s");
-			*fctr = 2048;
-		}
-		else if (DISPLAY_KILOBYTES(flags)) {
-			printf("    rkB/s    wkB/s");
-			*fctr = 2;
-		}
-		else {
-			printf("   rsec/s   wsec/s");
-		}
-		printf(" avgrq-sz avgqu-sz   await r_await w_await  svctm  %%util\n");
+	char *units, *spc;
+
+	if (DISPLAY_MEGABYTES(flags)) {
+		units = "MB";
+		spc = " ";
+		*fctr = 2048;
+	}
+	else if (DISPLAY_KILOBYTES(flags)) {
+		units = "kB";
+		spc = " ";
+		*fctr = 2;
+	}
+	else if (DISPLAY_EXTENDED(flags)) {
+		units = "sec";
+		spc = "";
 	}
 	else {
-		/* Basic stats */
-		printf("Device:            tps");
-		if (DISPLAY_KILOBYTES(flags)) {
-			printf("    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn\n");
-			*fctr = 2;
-		}
-		else if (DISPLAY_MEGABYTES(flags)) {
-			printf("    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn\n");
-			*fctr = 2048;
+		units = "Blk";
+		spc = "";
+	}
+
+	if (DISPLAY_EXTENDED(flags)) {
+		if (DISPLAY_DISCARD(flags)) {
+			/* Extended stats with discard */
+			printf("Device:         rrqm/s   wrqm/s   drqm/s     r/s     w/s     d/s"
+			       "   %sr%s/s   %sw%s/s   %sd%s/s"
+			       " avgrq-sz avgqu-sz   await r_await w_await d_await  svctm  %%util\n",
+			       spc, units, spc, units, spc, units);
 		}
 		else {
-			printf("   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn\n");
+			/* Extended stats */
+			printf("Device:         rrqm/s   wrqm/s     r/s     w/s"
+			       "   %sr%s/s   %sw%s/s"
+			       " avgrq-sz avgqu-sz   await r_await w_await  svctm  %%util\n",
+			       spc, units, spc, units);
 		}
 	}
+	else {
+		if (DISPLAY_DISCARD(flags)) {
+			/* Basic stats */
+			printf("Device:            tps"
+			       "   %s%s_read/s   %s%s_wrtn/s   %s%s_dscd/s"
+			       "   %s%s_read   %s%s_wrtn   %s%s_dscd\n",
+			       spc, units, spc, units, spc, units,
+			       spc, units, spc, units, spc, units);
+		}
+		else {
+			/* Basic stats */
+			printf("Device:            tps"
+			       "   %s%s_read/s   %s%s_wrtn/s"
+			       "   %s%s_read   %s%s_wrtn\n",
+			       spc, units, spc, units, spc, units, spc, units);
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Compute "extended" io  statistics (service time, etc.).
+ *
+ * IN:
+ * @ioc		Structure with current device statistics.
+ * @iop		Structure with previous device statistics.
+ * @itv		Interval of time in jiffies.
+ *
+ * OUT:
+ * @xds		Structure with extended statistics.
+ ***************************************************************************
+*/
+void compute_ext_io_stats(struct io_stats *ioc, struct io_stats *iop,
+			  unsigned long long itv, struct ext_disk_stats *xds)
+{
+	int nr_ios = (ioc->rd_ios + ioc->wr_ios + ioc->di_ios) -
+		(iop->rd_ios + ioc->wr_ios + ioc->di_ios);
+	double tput
+		= ((double) nr_ios) * HZ / itv;
+
+	xds->util  = S_VALUE(iop->tot_ticks, ioc->tot_ticks, itv);
+	xds->svctm = tput ? xds->util / tput : 0.0;
+	/*
+	 * Kernel gives ticks already in milliseconds for all platforms
+	 * => no need for further scaling.
+	 */
+	xds->await = nr_ios ?
+		((ioc->rd_ticks - iop->rd_ticks) +
+		 (ioc->wr_ticks - iop->wr_ticks) +
+		 (ioc->di_ticks - iop->di_ticks)) /
+		((double) nr_ios) : 0.0;
+	xds->arqsz = nr_ios ?
+		((ioc->rd_sectors - iop->rd_sectors) +
+		 (ioc->wr_sectors - iop->wr_sectors) +
+		 (ioc->di_sectors - iop->di_sectors)) /
+		((double) nr_ios) : 0.0;
 }
 
 /*
@@ -908,9 +1018,8 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 		    struct io_stats *ioj)
 {
 	char *devname = NULL;
-	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
-	double r_await, w_await;
+	double r_await, w_await, d_await;
 
 	/*
 	 * Counters overflows are possible, but don't need to be handled in
@@ -921,23 +1030,7 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	 * But the number of I/O in progress (field ios_pgr) happens to be
 	 * sometimes negative...
 	 */
-	sdc.nr_ios    = ioi->rd_ios + ioi->wr_ios;
-	sdp.nr_ios    = ioj->rd_ios + ioj->wr_ios;
-
-	sdc.tot_ticks = ioi->tot_ticks;
-	sdp.tot_ticks = ioj->tot_ticks;
-
-	sdc.rd_ticks  = ioi->rd_ticks;
-	sdp.rd_ticks  = ioj->rd_ticks;
-	sdc.wr_ticks  = ioi->wr_ticks;
-	sdp.wr_ticks  = ioj->wr_ticks;
-
-	sdc.rd_sect   = ioi->rd_sectors;
-	sdp.rd_sect   = ioj->rd_sectors;
-	sdc.wr_sect   = ioi->wr_sectors;
-	sdp.wr_sect   = ioj->wr_sectors;
-
-	compute_ext_disk_stats(&sdc, &sdp, itv, &xds);
+	compute_ext_io_stats(ioi, ioj, itv, &xds);
 
 	r_await = (ioi->rd_ios - ioj->rd_ios) ?
 		  (ioi->rd_ticks - ioj->rd_ticks) /
@@ -945,6 +1038,9 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	w_await = (ioi->wr_ios - ioj->wr_ios) ?
 		  (ioi->wr_ticks - ioj->wr_ticks) /
 		  ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
+	d_await = (ioi->di_ios - ioj->di_ios) ?
+		  (ioi->di_ticks - ioj->di_ticks) /
+		  ((double) (ioi->di_ios - ioj->di_ios)) : 0.0;
 
 	/* Print device name */
 	if (DISPLAY_PERSIST_NAME_I(flags)) {
@@ -961,19 +1057,39 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
-	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
-	cprintf_f(2, 8, 2,
-		  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
-		  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
-	cprintf_f(2, 7, 2,
-		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
-		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
-	cprintf_f(4, 8, 2,
-		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
-		  xds.arqsz,
-		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
-	cprintf_f(3, 7, 2, xds.await, r_await, w_await);
+	if (DISPLAY_DISCARD(flags)) {
+		/*       rrqm/s wrqm/s drqm/s  r/s   w/s  d/s rsec  wsec  dsec  rqsz  qusz await r_await w_await d_await svctm %util */
+		cprintf_f(3, 8, 2,
+			  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+			  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
+			  S_VALUE(ioj->di_merges, ioi->di_merges, itv));
+		cprintf_f(3, 7, 2,
+			  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+			  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
+			  S_VALUE(ioj->di_ios, ioi->di_ios, itv));
+		cprintf_f(5, 8, 2,
+			  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+			  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+			  S_VALUE(ioj->di_sectors, ioi->di_sectors, itv) / fctr,
+			  xds.arqsz,
+			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+		cprintf_f(4, 7, 2, xds.await, r_await, w_await, d_await);
+	}
+	else {
+		/*       rrqm/s wrqm/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
+		cprintf_f(2, 8, 2,
+			  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+			  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
+		cprintf_f(2, 7, 2,
+			  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+			  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
+		cprintf_f(4, 8, 2,
+			  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+			  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+			  xds.arqsz,
+			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+		cprintf_f(3, 7, 2, xds.await, r_await, w_await);
+	}
 	/* The ticks output is biased to output 1000 ticks per second */
 	cprintf_f(1, 6, 2, xds.svctm);
 	/*
@@ -1005,7 +1121,7 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 		      struct io_stats *ioj)
 {
 	char *devname = NULL;
-	unsigned long long rd_sec, wr_sec;
+	unsigned long long rd_sec, wr_sec, di_sec;
 
 	/* Print device name */
 	if (DISPLAY_PERSIST_NAME_I(flags)) {
@@ -1031,16 +1147,35 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 	if ((ioi->wr_sectors < ioj->wr_sectors) && (ioj->wr_sectors <= 0xffffffff)) {
 		wr_sec &= 0xffffffff;
 	}
+	di_sec = ioi->di_sectors - ioj->di_sectors;
+	if ((ioi->di_sectors < ioj->di_sectors) && (ioj->di_sectors <= 0xffffffff)) {
+		di_sec &= 0xffffffff;
+	}
 
-	cprintf_f(1, 8, 2,
-		  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
-	cprintf_f(2, 12, 2,
-		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr);
-	cprintf_u64(2, 10,
-		    (unsigned long long) rd_sec / fctr,
-		    (unsigned long long) wr_sec / fctr);
-	printf("\n");
+	if (DISPLAY_DISCARD(flags)) {
+		cprintf_f(1, 8, 2,
+			  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->di_ios, ioi->rd_ios + ioi->wr_ios + ioi->di_ios, itv));
+		cprintf_f(3, 12, 2,
+			  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+			  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+			  S_VALUE(ioj->di_sectors, ioi->di_sectors, itv) / fctr);
+		cprintf_u64(3, 10,
+			    (unsigned long long) rd_sec / fctr,
+			    (unsigned long long) wr_sec / fctr,
+			    (unsigned long long) di_sec / fctr);
+		printf("\n");
+	}
+	else {
+		cprintf_f(1, 8, 2,
+			  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->di_ios, ioi->rd_ios + ioi->wr_ios + ioi->di_ios, itv));
+		cprintf_f(2, 12, 2,
+			  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+			  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr);
+		cprintf_u64(2, 10,
+			    (unsigned long long) rd_sec / fctr,
+			    (unsigned long long) wr_sec / fctr);
+		printf("\n");
+	}
 }
 
 /*
@@ -1144,13 +1279,14 @@ void write_stats(int curr, struct tm *rectime)
 				ioj = st_iodev[!curr] + i;
 
 				if (!DISPLAY_UNFILTERED(flags)) {
-					if (!ioi->rd_ios && !ioi->wr_ios)
+					if (!ioi->rd_ios && !ioi->wr_ios && !ioi->di_ios)
 						continue;
 				}
 
 				if (DISPLAY_ZERO_OMIT(flags)) {
 					if ((ioi->rd_ios == ioj->rd_ios) &&
-						(ioi->wr_ios == ioj->wr_ios))
+						(ioi->wr_ios == ioj->wr_ios) &&
+						(ioi->di_ios == ioj->di_ios))
 						/* No activity: Ignore it */
 						continue;
 				}
@@ -1162,21 +1298,27 @@ void write_stats(int curr, struct tm *rectime)
 #ifdef DEBUG
 				if (DISPLAY_DEBUG(flags)) {
 					/* Debug output */
-					fprintf(stderr, "name=%s itv=%llu fctr=%d ioi{ rd_sectors=%lu "
-							"wr_sectors=%lu rd_ios=%lu rd_merges=%lu rd_ticks=%u "
-							"wr_ios=%lu wr_merges=%lu wr_ticks=%u ios_pgr=%u tot_ticks=%u "
-							"rq_ticks=%u }\n",
+					fprintf(stderr, "name=%s itv=%llu fctr=%d ioi{ "
+							"rd_sectors=%lu wr_sectors=%lu di_sectors=%lu "
+							"rd_ios=%lu rd_merges=%lu rd_ticks=%u "
+							"wr_ios=%lu wr_merges=%lu wr_ticks=%u "
+							"di_ios=%lu di_merges=%lu di_ticks=%u "
+							"ios_pgr=%u tot_ticks=%u rq_ticks=%u }\n",
 						shi->name,
 						itv,
 						fctr,
 						ioi->rd_sectors,
 						ioi->wr_sectors,
+						ioi->di_sectors,
 						ioi->rd_ios,
 						ioi->rd_merges,
 						ioi->rd_ticks,
 						ioi->wr_ios,
 						ioi->wr_merges,
 						ioi->wr_ticks,
+						ioi->di_ios,
+						ioi->di_merges,
+						ioi->di_ticks,
 						ioi->ios_pgr,
 						ioi->tot_ticks,
 						ioi->rq_ticks
@@ -1433,6 +1575,14 @@ int main(int argc, char **argv)
 					/* Display disk utilization */
 					flags |= I_D_DISK;
 					report_set = TRUE;
+					break;
+
+				case 'D':
+					/* Display disk utilization */
+					if (DISPLAY_DISCARD(flags)) {
+						usage(argv[0]);
+					}
+					flags |= I_D_DISCARD;
 					break;
 
                                 case 'H':
