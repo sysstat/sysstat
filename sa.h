@@ -636,7 +636,8 @@ struct file_header {
 };
 
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
-/* The value below is used for sanity check */
+/* The values below are used for sanity check */
+#define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
 
 
