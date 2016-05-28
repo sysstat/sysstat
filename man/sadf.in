@@ -147,7 +147,7 @@ will be displayed horizontally on a single line.
 .IP -j
 Print the contents of the data file in JSON (JavaScript Object Notation)
 format. Timestamps can be controlled by options -T and -t.
-.IP "-O opts"
+.IP "-O opts [,...]"
 Use the specified options to control SVG output displayed by
 .B sadf -g.
 Possible options are:
