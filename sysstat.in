@@ -24,6 +24,7 @@
 
 RETVAL=0
 PIDFILE=/var/run/sysstat.pid
+[ -z "$UID" ] && UID=`id -u`
 
 # See how we were called.
 case "$1" in
