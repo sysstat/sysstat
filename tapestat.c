@@ -200,7 +200,7 @@ void tape_check_tapes_and_realloc(void)
 	/* Count again number of tapes */
 	new_max_tape_drives = get_max_tape_drives();
 
-	if (new_max_tape_drives > max_tape_drives) {
+	if (new_max_tape_drives > max_tape_drives && new_max_tape_drives > 0) {
 		/* New tapes found: Realloc structures */
 		struct tape_stats *tape_old_stats_t = (struct tape_stats *)
 			realloc(tape_old_stats,	sizeof(struct tape_stats) * new_max_tape_drives);
