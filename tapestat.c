@@ -224,6 +224,9 @@ void tape_check_tapes_and_realloc(void)
 			exit(4);
 		}
 
+		tape_old_stats = tape_old_stats_t;
+		tape_new_stats = tape_new_stats_t;
+
 		for (i = max_tape_drives; i < new_max_tape_drives; i++) {
 			tape_old_stats[i].valid = TAPE_STATS_INVALID;
 			tape_new_stats[i].valid = TAPE_STATS_INVALID;
