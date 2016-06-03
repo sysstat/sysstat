@@ -200,7 +200,7 @@ void tape_check_tapes_and_realloc(void)
 	/* Count again number of tapes */
 	new_max_tape_drives = get_max_tape_drives();
 
-	if (new_max_tape_drives > max_tape_drives) {
+	if (new_max_tape_drives > max_tape_drives && new_max_tape_drives > 0) {
 		/* New tapes found: Realloc structures */
 		struct tape_stats *tape_old_stats_t = (struct tape_stats *)
 			realloc(tape_old_stats,	sizeof(struct tape_stats) * new_max_tape_drives);
@@ -210,19 +210,24 @@ void tape_check_tapes_and_realloc(void)
 			if (tape_old_stats_t != NULL) {
 				free(tape_old_stats_t);
 				tape_old_stats_t = NULL;
+			} else {
+				free(tape_old_stats);
+				tape_old_stats = NULL;
 			}
 			if (tape_new_stats_t != NULL) {
 				free(tape_new_stats_t);
 				tape_new_stats_t = NULL;
+			} else {
+				free(tape_new_stats);
+				tape_new_stats = NULL;
 			}
-			free(tape_old_stats);
-			tape_old_stats = NULL;
-			free(tape_new_stats);
-			tape_new_stats = NULL;
 
 			perror("realloc");
 			exit(4);
 		}
+
+		tape_old_stats = tape_old_stats_t;
+		tape_new_stats = tape_new_stats_t;
 
 		for (i = max_tape_drives; i < new_max_tape_drives; i++) {
 			tape_old_stats[i].valid = TAPE_STATS_INVALID;
