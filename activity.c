@@ -734,10 +734,11 @@ struct activity net_eicmp_act = {
 	.f_render	= render_net_eicmp_stats,
 	.f_xml_print	= xml_print_net_eicmp_stats,
 	.f_json_print	= json_print_net_eicmp_stats,
+	.f_svg_print	= svg_print_net_eicmp_stats,
 	.hdr_line	= "ierr/s;oerr/s;idstunr/s;odstunr/s;itmex/s;otmex/s;"
 		          "iparmpb/s;oparmpb/s;isrcq/s;osrcq/s;iredir/s;oredir/s",
 	.name		= "A_NET_EICMP",
-	.g_nr		= 0,
+	.g_nr		= 6,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

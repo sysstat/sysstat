@@ -2352,6 +2352,114 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
 
 /*
  ***************************************************************************
+ * Display ICMPv4 network errors statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					  unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_eicmp
+		*sneic = (struct stats_net_eicmp *) a->buf[curr],
+		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
+	int group[] = {2, 2, 2, 2, 2, 2};
+	char *title[] = {"ICMPv4 network errors statistics (1)", "ICMPv4 network errors statistics (2)",
+			 "ICMPv4 network errors statistics (3)", "ICMPv4 network errors statistics (4)",
+			 "ICMPv4 network errors statistics (5)", "ICMPv4 network errors statistics (6)"};
+	char *g_title[] = {"ierr/s", "oerr/s",
+			   "idstunr/s", "odstunr/s",
+			   "itmex/s", "otmex/s",
+			   "iparmpb/s", "oparmpb/s",
+			   "isrcq/s", "osrcq/s",
+			   "iredir/s", "oredir/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(12, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 12, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* ierr/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InErrors, sneic->InErrors, itv),
+			 out, outsize, svg_p->restart);
+		/* oerr/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutErrors, sneic->OutErrors, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* idstunr/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InDestUnreachs, sneic->InDestUnreachs, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* odstunr/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutDestUnreachs, sneic->OutDestUnreachs, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+		/* itmex/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InTimeExcds, sneic->InTimeExcds, itv),
+			 out + 4, outsize + 4, svg_p->restart);
+		/* otmex/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutTimeExcds, sneic->OutTimeExcds, itv),
+			 out + 5, outsize + 5, svg_p->restart);
+		/* iparmpb/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InParmProbs, sneic->InParmProbs, itv),
+			 out + 6, outsize + 6, svg_p->restart);
+		/* oparmpb/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutParmProbs, sneic->OutParmProbs, itv),
+			 out + 7, outsize + 7, svg_p->restart);
+		/* isrcq/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InSrcQuenchs, sneic->InSrcQuenchs, itv),
+			 out + 8, outsize + 8, svg_p->restart);
+		/* osrcq/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutSrcQuenchs, sneic->OutSrcQuenchs, itv),
+			 out + 9, outsize + 9, svg_p->restart);
+		/* iredir/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InRedirects, sneic->InRedirects, itv),
+			 out + 10, outsize + 10, svg_p->restart);
+		/* oredir/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutRedirects, sneic->OutRedirects, itv),
+			 out + 11, outsize + 11, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display TCPv4 network statistics in SVG.
  *
  * IN:

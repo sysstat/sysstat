@@ -53,6 +53,9 @@ __print_funct_t svg_print_net_eip_stats
 __print_funct_t svg_print_net_icmp_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
+__print_funct_t svg_print_net_eicmp_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
 __print_funct_t svg_print_net_tcp_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
