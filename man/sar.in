@@ -1,4 +1,4 @@
-.TH SAR 1 "MAY 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JUNE 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -295,9 +295,10 @@ to be collected. The following values are displayed:
 .B tps
 .RS
 .RS
-Indicate the number of transfers per second that were issued to the device.
-Multiple logical requests can be combined into a single I/O request to the
-device. A transfer is of indeterminate size.
+Total number of transfers per second that were issued to physical devices.
+A transfer is an I/O request to a physical device. Multiple logical
+requests can be combined into a single I/O request to the device.
+A transfer is of indeterminate size.
 .RE
 
 .B rd_sec/s
