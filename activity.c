@@ -665,9 +665,10 @@ struct activity net_eip_act = {
 	.f_render	= render_net_eip_stats,
 	.f_xml_print	= xml_print_net_eip_stats,
 	.f_json_print	= json_print_net_eip_stats,
+	.f_svg_print	= svg_print_net_eip_stats,
 	.hdr_line	= "ihdrerr/s;iadrerr/s;iukwnpr/s;idisc/s;odisc/s;onort/s;asmf/s;fragf/s",
 	.name		= "A_NET_EIP",
-	.g_nr		= 0,
+	.g_nr		= 3,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
