@@ -902,10 +902,11 @@ struct activity net_ip6_act = {
 	.f_render	= render_net_ip6_stats,
 	.f_xml_print	= xml_print_net_ip6_stats,
 	.f_json_print	= json_print_net_ip6_stats,
+	.f_svg_print	= svg_print_net_ip6_stats,
 	.hdr_line	= "irec6/s;fwddgm6/s;idel6/s;orq6/s;asmrq6/s;asmok6/s;"
 			  "imcpck6/s;omcpck6/s;fragok6/s;fragcr6/s",
 	.name		= "A_NET_IP6",
-	.g_nr		= 0,
+	.g_nr		= 4,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

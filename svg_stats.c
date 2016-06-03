@@ -2471,6 +2471,103 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 
 /*
  ***************************************************************************
+ * Display IPv6 network statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_ip6
+		*snic = (struct stats_net_ip6 *) a->buf[curr],
+		*snip = (struct stats_net_ip6 *) a->buf[!curr];
+	int group[] = {4, 2, 2, 2};
+	char *title[] = {"IPv6 network statistics (1)", "IPv6 network statistics (2)",
+			 "IPv4 network statistics (3)", "IPv4 network statistics (4)"};
+	char *g_title[] = {"irec6/s", "fwddgm6/s", "idel6/s", "orq6/s",
+			   "asmrq6/s", "asmok6/s",
+			   "imcpck6/s", "omcpck6/s",
+			   "fragok6/s", "fragcr6/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(10, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(10, 0, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* irec6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->InReceives6, snic->InReceives6, itv),
+			 out, outsize, svg_p->restart);
+		/* fwddgm6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->OutForwDatagrams6, snic->OutForwDatagrams6, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* idel6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->InDelivers6, snic->InDelivers6, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* orq6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->OutRequests6, snic->OutRequests6, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+		/* asmrq6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->ReasmReqds6, snic->ReasmReqds6, itv),
+			 out + 4, outsize + 4, svg_p->restart);
+		/* asmok6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->ReasmOKs6, snic->ReasmOKs6, itv),
+			 out + 5, outsize + 5, svg_p->restart);
+		/* imcpck6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->InMcastPkts6, snic->InMcastPkts6, itv),
+			 out + 6, outsize + 6, svg_p->restart);
+		/* omcpck6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->OutMcastPkts6, snic->OutMcastPkts6, itv),
+			 out + 7, outsize + 7, svg_p->restart);
+		/* fragok6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->FragOKs6, snic->FragOKs6, itv),
+			 out + 8, outsize + 8, svg_p->restart);
+		/* fragcr6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snip->FragCreates6, snic->FragCreates6, itv),
+			 out + 9, outsize + 9, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display CPU frequency statistics in SVG.
  *
  * IN:
