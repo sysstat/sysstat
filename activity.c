@@ -971,11 +971,12 @@ struct activity net_icmp6_act = {
 	.f_render	= render_net_icmp6_stats,
 	.f_xml_print	= xml_print_net_icmp6_stats,
 	.f_json_print	= json_print_net_icmp6_stats,
+	.f_svg_print	= svg_print_net_icmp6_stats,
 	.hdr_line	= "imsg6/s;omsg6/s;iech6/s;iechr6/s;oechr6/s;igmbq6/s;igmbr6/s;ogmbr6/s;"
 			  "igmbrd6/s;ogmbrd6/s;irtsol6/s;ortsol6/s;irtad6/s;inbsol6/s;onbsol6/s;"
 			  "inbad6/s;onbad6/s",
 	.name		= "A_NET_ICMP6",
-	.g_nr		= 0,
+	.g_nr		= 5,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
