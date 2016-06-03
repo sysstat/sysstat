@@ -1041,9 +1041,10 @@ struct activity net_udp6_act = {
 	.f_render	= render_net_udp6_stats,
 	.f_xml_print	= xml_print_net_udp6_stats,
 	.f_json_print	= json_print_net_udp6_stats,
+	.f_svg_print	= svg_print_net_udp6_stats,
 	.hdr_line	= "idgm6/s;odgm6/s;noport6/s;idgmer6/s",
 	.name		= "A_NET_UDP6",
-	.g_nr		= 0,
+	.g_nr		= 2,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

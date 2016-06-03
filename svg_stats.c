@@ -2695,6 +2695,76 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 
 /*
  ***************************************************************************
+ * Display UDPv6 network statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					 unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_udp6
+		*snuc = (struct stats_net_udp6 *) a->buf[curr],
+		*snup = (struct stats_net_udp6 *) a->buf[!curr];
+	int group[] = {2, 2};
+	char *title[] = {"UDPv6 network statistics (1)", "UDPv6 network statistics (2)"};
+	char *g_title[] = {"idgm6/s", "odgm6/s",
+			   "noport6/s", "idgmer6/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 4, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* idgm6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snup->InDatagrams6, snuc->InDatagrams6, itv),
+			 out, outsize, svg_p->restart);
+		/* odgm6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snup->OutDatagrams6, snuc->OutDatagrams6, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* noport6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snup->NoPorts6, snuc->NoPorts6, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* idgmer6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snup->InErrors6, snuc->InErrors6, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display CPU frequency statistics in SVG.
  *
  * IN:
