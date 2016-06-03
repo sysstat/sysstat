@@ -698,10 +698,11 @@ struct activity net_icmp_act = {
 	.f_render	= render_net_icmp_stats,
 	.f_xml_print	= xml_print_net_icmp_stats,
 	.f_json_print	= json_print_net_icmp_stats,
+	.f_svg_print	= svg_print_net_icmp_stats,
 	.hdr_line	= "imsg/s;omsg/s;iech/s;iechr/s;oech/s;oechr/s;itm/s;itmr/s;otm/s;"
 		          "otmr/s;iadrmk/s;iadrmkr/s;oadrmk/s;oadrmkr/s",
 	.name		= "A_NET_ICMP",
-	.g_nr		= 0,
+	.g_nr		= 4,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
