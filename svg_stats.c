@@ -2530,6 +2530,80 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
+ * Display TCPv4 network errors statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					 unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_etcp
+		*snetc = (struct stats_net_etcp *) a->buf[curr],
+		*snetp = (struct stats_net_etcp *) a->buf[!curr];
+	int group[] = {2, 3};
+	char *title[] = {"TCPv4 network errors statistics (1)", "TCPv4 network errors statistics (2)"};
+	char *g_title[] = {"atmptf/s", "estres/s",
+			   "retrans/s", "isegerr/s", "orsts/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(5, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 5, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* atmptf/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snetp->AttemptFails, snetc->AttemptFails, itv),
+			 out, outsize, svg_p->restart);
+		/* estres/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snetp->EstabResets, snetc->EstabResets, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* retrans/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snetp->RetransSegs, snetc->RetransSegs, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* isegerr/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snetp->InErrs, snetc->InErrs, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+		/* orsts/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snetp->OutRsts, snetc->OutRsts, itv),
+			 out + 4, outsize + 4, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display UDPv4 network statistics in SVG.
  *
  * IN:
