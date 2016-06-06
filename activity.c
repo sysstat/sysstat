@@ -940,10 +940,11 @@ struct activity net_eip6_act = {
 	.f_render	= render_net_eip6_stats,
 	.f_xml_print	= xml_print_net_eip6_stats,
 	.f_json_print	= json_print_net_eip6_stats,
+	.f_svg_print	= svg_print_net_eip6_stats,
 	.hdr_line	= "ihdrer6/s;iadrer6/s;iukwnp6/s;i2big6/s;idisc6/s;odisc6/s;"
 			  "inort6/s;onort6/s;asmf6/s;fragf6/s;itrpck6/s",
 	.name		= "A_NET_EIP6",
-	.g_nr		= 0,
+	.g_nr		= 4,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
