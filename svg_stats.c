@@ -2763,7 +2763,7 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
 		*snip = (struct stats_net_ip6 *) a->buf[!curr];
 	int group[] = {4, 2, 2, 2};
 	char *title[] = {"IPv6 network statistics (1)", "IPv6 network statistics (2)",
-			 "IPv4 network statistics (3)", "IPv4 network statistics (4)"};
+			 "IPv6 network statistics (3)", "IPv6 network statistics (4)"};
 	char *g_title[] = {"irec6/s", "fwddgm6/s", "idel6/s", "orq6/s",
 			   "asmrq6/s", "asmok6/s",
 			   "imcpck6/s", "omcpck6/s",
