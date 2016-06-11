@@ -3067,6 +3067,110 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 
 /*
  ***************************************************************************
+ * Display ICMPv6 network errors statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					   unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_eicmp6
+		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
+		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
+	int group[] = {1, 2, 2, 2, 2, 2};
+	char *title[] = {"ICMPv6 network errors statistics (1)", "ICMPv6 network errors statistics (2)",
+			 "ICMPv6 network errors statistics (3)", "ICMPv6 network errors statistics (4)",
+			 "ICMPv6 network errors statistics (5)", "ICMPv6 network errors statistics (6)"};
+	char *g_title[] = {"ierr6/s",
+			   "idtunr6/s", "odtunr6/s",
+			   "itmex6/s", "otmex6/s",
+			   "iprmpb6/s", "oprmpb6/s",
+			   "iredir6/s", "oredir6/s",
+			   "ipck2b6/s", "opck2b6/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(11, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 11, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* ierr6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InErrors6, sneic->InErrors6, itv),
+			 out, outsize, svg_p->restart);
+		/* idtunr6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InDestUnreachs6, sneic->InDestUnreachs6, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* odtunr6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutDestUnreachs6, sneic->OutDestUnreachs6, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* itmex6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InTimeExcds6, sneic->InTimeExcds6, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+		/* otmex6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutTimeExcds6, sneic->OutTimeExcds6, itv),
+			 out + 4, outsize + 4, svg_p->restart);
+		/* iprmpb6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InParmProblems6, sneic->InParmProblems6, itv),
+			 out + 5, outsize + 5, svg_p->restart);
+		/* oprmpb6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutParmProblems6, sneic->OutParmProblems6, itv),
+			 out + 6, outsize + 6, svg_p->restart);
+		/* iredir6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InRedirects6, sneic->InRedirects6, itv),
+			 out + 7, outsize + 7, svg_p->restart);
+		/* oredir6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutRedirects6, sneic->OutRedirects6, itv),
+			 out + 8, outsize + 8, svg_p->restart);
+		/* ipck2b6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->InPktTooBigs6, sneic->InPktTooBigs6, itv),
+			 out + 9, outsize + 9, svg_p->restart);
+		/* opck2b6/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(sneip->OutPktTooBigs6, sneic->OutPktTooBigs6, itv),
+			 out + 10, outsize + 10, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display UDPv6 network statistics in SVG.
  *
  * IN:

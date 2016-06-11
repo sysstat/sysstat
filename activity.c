@@ -1011,10 +1011,11 @@ struct activity net_eicmp6_act = {
 	.f_render	= render_net_eicmp6_stats,
 	.f_xml_print	= xml_print_net_eicmp6_stats,
 	.f_json_print	= json_print_net_eicmp6_stats,
+	.f_svg_print	= svg_print_net_eicmp6_stats,
 	.hdr_line	= "ierr6/s;idtunr6/s;odtunr6/s;itmex6/s;otmex6/s;"
 		          "iprmpb6/s;oprmpb6/s;iredir6/s;oredir6/s;ipck2b6/s;opck2b6/s",
 	.name		= "A_NET_EICMP6",
-	.g_nr		= 0,
+	.g_nr		= 6,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
