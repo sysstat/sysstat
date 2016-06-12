@@ -647,7 +647,7 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 	unsigned int asfactor[16];
 	long int k;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
-	char cur_time[32], val[32];
+	char cur_time[32], val[32], stmp[32];
 
 	/* Translate to proper position for current activity */
 	printf("<g id=\"g%d\" transform=\"translate(0,%d)\">\n",
@@ -777,9 +777,15 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		while (ypos * j <= lmax);
 		j = 0;
 		do {
+			/*
+			 * Use same rounded value for graduation numbers as for grid lines
+			 * to make sure they are properly aligned.
+			 */
+			sprintf(stmp, "%.2f", ypos * j);
+
 			printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
 			       "text-anchor: end\">%.*f.</text>\n",
-			       (long) (ypos * j * yfactor), dp, ypos * j);
+			       (long) (atof(stmp) * yfactor), dp, ypos * j);
 			j++;
 		}
 		while (ypos * j <= lmax);
