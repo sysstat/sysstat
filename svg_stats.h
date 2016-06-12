@@ -92,6 +92,9 @@ __print_funct_t svg_print_pwr_fan_stats
 __print_funct_t svg_print_pwr_temp_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
+__print_funct_t svg_print_pwr_in_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
 __print_funct_t svg_print_huge_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
