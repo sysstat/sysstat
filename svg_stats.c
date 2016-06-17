@@ -1994,6 +1994,208 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
+ * Display network interface errors statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					 unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_edev *snedc, *snedp;
+	int group[] = {2, 2, 2, 3};
+	char *title[] = {"Network statistics (1)", "Network statistics (2)",
+			 "Network statistics (3)", "Network statistics (4)"};
+	char *g_title[] = {"rxerr/s", "txerr/s",
+			    "rxdrop/s", "txdrop/s",
+			    "rxfifo/s", "txfifo/s",
+			    "rxfram/s", "txcarr/s", "coll/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char *item_name;
+	double tmpmin, tmpmax;
+	int i, j, k, pos, restart, *unregistered;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays (#0..8) that will contain the graphs data
+		 * and the min/max values.
+		 * Also allocate one additional array (#9) for each interface:
+		 * out + 9 will contain the interface name,
+		 * outsize + 9 will contain a positive value (TRUE) if the interface
+		 * has either still not been registered, or has been unregistered.
+		 */
+		out = allocate_graph_lines(10 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		restart = svg_p->restart;
+		/*
+		 * Mark previously registered interfaces as now
+		 * possibly unregistered for all graphs.
+		 */
+		for (k = 0; k < a->nr; k++) {
+			unregistered = outsize + k * 10 + 9;
+			if (*unregistered == FALSE) {
+				*unregistered = MAYBE;
+			}
+		}
+
+		/* For each network interfaces structure */
+		for (i = 0; i < a->nr; i++) {
+			snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+			if (!strcmp(snedc->interface, ""))
+				/* Empty structure: Ignore it */
+				continue;
+
+			/* Look for corresponding graph */
+			for (k = 0; k < a->nr; k++) {
+				item_name = *(out + k * 10 + 9);
+				if (!strcmp(snedc->interface, item_name))
+					/* Graph found! */
+					break;
+			}
+			if (k == a->nr) {
+				/* Graph not found: Look for first free entry */
+				for (k = 0; k < a->nr; k++) {
+					item_name = *(out + k * 10 + 9);
+					if (!strcmp(item_name, ""))
+						break;
+				}
+				if (k == a->nr)
+					/* No free graph entry: Graph for this item won't be drawn */
+					continue;
+			}
+
+			pos = k * 10;
+			unregistered = outsize + pos + 9;
+
+			j = check_net_edev_reg(a, curr, !curr, i);
+			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+
+			/*
+			 * If current interface was marked as previously unregistered,
+			 * then set restart variable to TRUE so that the graph will be
+			 * discontinuous, and mark it as now registered.
+			 */
+			if (*unregistered == TRUE) {
+				restart = TRUE;
+			}
+			*unregistered = FALSE;
+
+			if (!item_name[0]) {
+				/* Save network interface name (if not already done) */
+				strncpy(item_name, snedc->interface, CHUNKSIZE);
+				item_name[CHUNKSIZE - 1] = '\0';
+			}
+
+			/* Check for min/max values */
+			save_extrema(9, 0, 0, (void *) snedc, (void *) snedp,
+				     itv, spmin + pos, spmax + pos);
+
+			/* rxerr/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->rx_errors, snedc->rx_errors, itv),
+				 out + pos, outsize + pos, restart);
+
+			/* txerr/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->tx_errors, snedc->tx_errors, itv),
+				 out + pos + 1, outsize + pos + 1, restart);
+
+			/* rxdrop/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->rx_dropped, snedc->rx_dropped, itv),
+				 out + pos + 2, outsize + pos + 2, restart);
+
+			/* txdrop/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->tx_dropped, snedc->tx_dropped, itv),
+				 out + pos + 3, outsize + pos + 3, restart);
+
+			/* rxfifo/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->rx_fifo_errors, snedc->rx_fifo_errors, itv),
+				 out + pos + 4, outsize + pos + 4, restart);
+
+			/* txfifo/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->tx_fifo_errors, snedc->tx_fifo_errors, itv),
+				 out + pos + 5, outsize + pos + 5, restart);
+
+			/* rxfram/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv),
+				 out + pos + 6, outsize + pos + 6, restart);
+
+			/* txcarr/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->tx_carrier_errors, snedc->tx_carrier_errors, itv),
+				 out + pos + 7, outsize + pos + 7, restart);
+
+			/* coll/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(snedp->collisions, snedc->collisions, itv),
+				 out + pos + 8, outsize + pos + 8, restart);
+		}
+
+		/* Mark interfaces not seen here as now unregistered */
+		for (k = 0; k < a->nr; k++) {
+			unregistered = outsize + k * 10 + 9;
+			if (*unregistered != FALSE) {
+				*unregistered = TRUE;
+			}
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; i < a->nr; i++) {
+			/*
+			 * Check if there is something to display.
+			 * Don't test snedc->interface because maybe the network
+			 * interface has been registered later.
+			 */
+			pos = i * 10;
+			if (!**(out + pos))
+				continue;
+
+			/*
+			 * Move coll/s min and max values at the end of the list,
+			 * because coll/s graph will be drawn on the last view.
+			 */
+			tmpmin = *(spmin + pos);
+			tmpmax = *(spmax + pos);
+			for (k = 1; k < 9; k++) {
+				*(spmin + pos + k - 1) = *(spmin + pos + k);
+				*(spmax + pos + k - 1) = *(spmax + pos + k);
+			}
+			*(spmin + pos + 8) = tmpmin;
+			*(spmax + pos + 8) = tmpmax;
+
+			item_name = *(out + pos + 9);
+			draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH,
+					     title, g_title, item_name, group,
+					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display network socket statistics in SVG.
  *
  * IN:

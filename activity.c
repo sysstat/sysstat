@@ -477,10 +477,10 @@ struct activity net_dev_act = {
 	.bitmap		= NULL
 };
 
-/* Network interfaces activity */
+/* Network interfaces (errors) activity */
 struct activity net_edev_act = {
 	.id		= A_NET_EDEV,
-	.options	= AO_COLLECTED,
+	.options	= AO_COLLECTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -496,10 +496,11 @@ struct activity net_edev_act = {
 	.f_render	= render_net_edev_stats,
 	.f_xml_print	= xml_print_net_edev_stats,
 	.f_json_print	= json_print_net_edev_stats,
+	.f_svg_print	= svg_print_net_edev_stats,
 	.hdr_line	= "IFACE;rxerr/s;txerr/s;coll/s;rxdrop/s;txdrop/s;"
 		          "txcarr/s;rxfram/s;rxfifo/s;txfifo/s",
 	.name		= "A_NET_EDEV",
-	.g_nr		= 0,
+	.g_nr		= 4,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
