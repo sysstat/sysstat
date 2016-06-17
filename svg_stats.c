@@ -1788,6 +1788,247 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 
 /*
  ***************************************************************************
+ * Display disk statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+				     unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_disk *sdc, *sdp;
+	struct ext_disk_stats xds;
+	int group1[] = {1, 2, 2, 2};
+	int group2[] = {1};
+	char *title1[] = {"Disk statistics (1)", "Disk statistics (2)",
+			  "Disk statistics (3)", "Disk statistics (4)"};
+	char *title2[] = {"Disk statistics (5)"};
+	char *g_title1[] = {"tps",
+			    "rd_sec/s", "wr_sec/s",
+			    "avgrq-sz", "avgqu-sz",
+			    "await", "svctm"};
+	char *g_title2[] = {"%util"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char *item_name, *persist_dev_name;
+	double aqusz;
+	int i, j, k, pos, restart, *unregistered;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays (#0..7) that will contain the graphs data
+		 * and the min/max values.
+		 * Also allocate one additional array (#8) for each disk device:
+		 * spmax + 8 will contain the device major number,
+		 * spmin + 8 will contain the device minor number,
+		 * outsize + 8 will contain a positive value (TRUE) if the device
+		 * has either still not been registered, or has been unregistered.
+		 */
+		out = allocate_graph_lines(9 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		restart = svg_p->restart;
+		/*
+		 * Mark previously registered devices as now
+		 * possibly unregistered for all graphs.
+		 */
+		for (k = 0; k < a->nr; k++) {
+			unregistered = outsize + k * 9 + 8;
+			if (*unregistered == FALSE) {
+				*unregistered = MAYBE;
+			}
+		}
+
+		/* For each device structure */
+		for (i = 0; i < a->nr; i++) {
+			sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
+			if (!(sdc->major + sdc->minor))
+				/* Empty structure: Ignore it */
+				continue;
+
+			/* Look for corresponding graph */
+			for (k = 0; k < a->nr; k++) {
+				if ((sdc->major == *(spmax + k * 9 + 8)) &&
+				    (sdc->minor == *(spmin + k * 9 + 8)))
+					/* Graph found! */
+					break;
+			}
+			if (k == a->nr) {
+				/* Graph not found: Look for first free entry */
+				for (k = 0; k < a->nr; k++) {
+					if (*(spmax + k * 9 + 8) == -DBL_MAX)
+						break;
+				}
+				if (k == a->nr)
+					/* No free graph entry: Graph for this item won't be drawn */
+					continue;
+			}
+			pos = k * 9;
+			unregistered = outsize + pos + 8;
+
+			j = check_disk_reg(a, curr, !curr, i);
+			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+
+			/*
+			 * If current device was marked as previously unregistered,
+			 * then set restart variable to TRUE so that the graph will be
+			 * discontinuous, and mark it as now registered.
+			 */
+			if (*unregistered == TRUE) {
+				restart = TRUE;
+			}
+			*unregistered = FALSE;
+
+			if (*(spmax + pos + 8) == -DBL_MAX) {
+				/* Save device major and minor numbers (if not already done) */
+				*(spmax + pos + 8) = sdc->major;
+				*(spmin + pos + 8) = sdc->minor;
+			}
+
+			/* Check for min/max values */
+			save_extrema(1, 2, 0, (void *) sdc, (void *) sdp,
+				     itv, spmin + pos, spmax + pos);
+
+			compute_ext_disk_stats(sdc, sdp, itv, &xds);
+			if (xds.arqsz < *(spmin + pos + 3)) {
+				*(spmin + pos + 3) = xds.arqsz;
+			}
+			if (xds.arqsz > *(spmax + pos + 3)) {
+				*(spmax + pos + 3) = xds.arqsz;
+			}
+			aqusz = S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0;
+			if (aqusz < *(spmin + pos + 4)) {
+				*(spmin + pos + 4) = aqusz;
+			}
+			if (aqusz > *(spmax + pos + 4)) {
+				*(spmax + pos + 4) = aqusz;
+			}
+			if (xds.await < *(spmin + pos + 5)) {
+				*(spmin + pos + 5) = xds.await;
+			}
+			if (xds.await > *(spmax + pos + 5)) {
+				*(spmax + pos + 5) = xds.await;
+			}
+			if (xds.svctm < *(spmin + pos + 6)) {
+				*(spmin + pos + 6) = xds.svctm;
+			}
+			if (xds.svctm > *(spmax + pos + 6)) {
+				*(spmax + pos + 6) = xds.svctm;
+			}
+			if ((xds.util / 10.0) < *(spmin + pos + 7)) {
+				*(spmin + pos + 7) = xds.util / 10.0;
+			}
+			if ((xds.util / 10.0) > *(spmax + pos + 7)) {
+				*(spmax + pos + 7) = xds.util / 10.0;
+			}
+
+			/* tps */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sdp->nr_ios, sdc->nr_ios, itv),
+				 out + pos, outsize + pos, restart);
+
+			/* rd_sec/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv),
+				 out + pos + 1, outsize + pos + 1, restart);
+
+			/* wr_sec/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv),
+				 out + pos + 2, outsize + pos + 2, restart);
+
+			/* avgrq-sz */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 xds.arqsz,
+				 out + pos + 3, outsize + pos + 3, restart);
+
+			/* avgqu-sz */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 aqusz,
+				 out + pos + 4, outsize + pos + 4, restart);
+
+			/* await */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 xds.await,
+				 out + pos + 5, outsize + pos + 5, restart);
+
+			/* svctm */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 xds.svctm,
+				 out + pos + 6, outsize + pos + 6, restart);
+
+			/* %util */
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 0.0, xds.util / 10.0,
+				 out + pos + 7, outsize + pos + 7, svg_p->dt);
+		}
+
+		/* Mark devices not seen here as now unregistered */
+		for (k = 0; k < a->nr; k++) {
+			unregistered = outsize + k * 9 + 8;
+			if (*unregistered != FALSE) {
+				*unregistered = TRUE;
+			}
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; i < a->nr; i++) {
+			/* Check if there is something to display */
+			pos = i * 9;
+			if (!**(out + pos))
+				continue;
+
+			item_name = NULL;
+			persist_dev_name = NULL;
+
+			if (DISPLAY_PERSIST_NAME_S(flags)) {
+				persist_dev_name = get_persistent_name_from_pretty(get_devname(*(spmax + pos + 8),
+											       *(spmin + pos + 8),
+											       TRUE));
+			}
+			if (persist_dev_name) {
+				item_name = persist_dev_name;
+			}
+			else {
+				if ((USE_PRETTY_OPTION(flags)) && (*(spmax + pos + 8) == dm_major)) {
+					item_name = transform_devmapname(*(spmax + pos + 8), *(spmin + pos + 8));
+				}
+
+				if (!item_name) {
+					item_name = get_devname(*(spmax + pos + 8), *(spmin + pos + 8),
+								USE_PRETTY_OPTION(flags));
+				}
+			}
+
+			draw_activity_graphs(a->g_nr - 1, SVG_LINE_GRAPH,
+					     title1, g_title1, item_name, group1,
+					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+			draw_activity_graphs(1, SVG_BAR_GRAPH,
+					     title2, g_title2, item_name, group2,
+					     spmin + pos + 7, spmax + pos + 7, out + pos + 7, outsize + pos + 7,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display network interfaces statistics in SVG.
  *
  * IN:

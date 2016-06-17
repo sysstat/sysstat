@@ -413,7 +413,7 @@ struct activity serial_act = {
 /* Block devices activity */
 struct activity disk_act = {
 	.id		= A_DISK,
-	.options	= AO_NULL,
+	.options	= AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
@@ -429,9 +429,10 @@ struct activity disk_act = {
 	.f_render	= render_disk_stats,
 	.f_xml_print	= xml_print_disk_stats,
 	.f_json_print	= json_print_disk_stats,
+	.f_svg_print	= svg_print_disk_stats,
 	.hdr_line	= "DEV;tps;rd_sec/s;wr_sec/s;avgrq-sz;avgqu-sz;await;svctm;%util",
 	.name		= "A_DISK",
-	.g_nr		= 0,
+	.g_nr		= 5,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
