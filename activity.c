@@ -531,9 +531,10 @@ struct activity net_nfs_act = {
 	.f_render	= render_net_nfs_stats,
 	.f_xml_print	= xml_print_net_nfs_stats,
 	.f_json_print	= json_print_net_nfs_stats,
+	.f_svg_print	= svg_print_net_nfs_stats,
 	.hdr_line	= "call/s;retrans/s;read/s;write/s;access/s;getatt/s",
 	.name		= "A_NET_NFS",
-	.g_nr		= 0,
+	.g_nr		= 3,
 #endif
 	.nr		= 1,
 	.nr2		= 1,
