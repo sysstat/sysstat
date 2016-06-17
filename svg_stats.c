@@ -4308,3 +4308,236 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display filesystem statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					   unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_filesystem
+		*sfc = (struct stats_filesystem *) a->buf[curr];
+	int group1a[] = {2};
+	int group1b[] = {2};
+	int group2a[] = {2};
+	int group2b[] = {1};
+	char *title1a[] = {"Filesystem statistics (1)"};
+	char *title1b[] = {"Filesystem statistics (2)"};
+	char *title2a[] = {"Filesystem statistics (3)"};
+	char *title2b[] = {"Filesystem statistics (4)"};
+	char *g_title1a[] = {"~MBfsfree", "~MBfsused"};
+	char *g_title1b[] = {"%ufsused", "%fsused"};
+	char *g_title2a[] = {"Ifree/1000", "Iused/1000"};
+	char *g_title2b[] = {"%Iused"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char *item_name;
+	double tval;
+	int i, k, pos;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays (#0..6) that will contain the graphs data
+		 * and the min/max values.
+		 * Also allocate two additional arrays (#7..8) for each filesystem:
+                 * out + 7 will contain the filesystem name,
+		 * out + 8 will contain the mount point.
+		 */
+		out = allocate_graph_lines(9 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each filesystem structure */
+		for (i = 0; i < a->nr; i++) {
+			sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+
+			if (!sfc->f_blocks)
+				/* Size of filesystem is zero: We are at the end of the list */
+				break;
+
+			/* Look for corresponding graph */
+			for (k = 0; k < a->nr; k++) {
+				item_name = *(out + k * 9 + 7);
+				if (!strcmp(sfc->fs_name, item_name))
+					/* Graph found! */
+					break;
+			}
+
+			if (k == a->nr) {
+				/* Graph not found: Look for first free entry */
+				for (k = 0; k < a->nr; k++) {
+					item_name = *(out + k * 9 + 7);
+					if (!strcmp(item_name, ""))
+						break;
+				}
+				if (k == a->nr)
+					/* No free graph entry: Graph for this item won't be drawn */
+					continue;
+			}
+
+			pos = k * 9;
+
+			if (!item_name[0]) {
+				/* Save filesystem name and mount point (if not already done) */
+				strncpy(item_name, sfc->fs_name, CHUNKSIZE);
+				item_name[CHUNKSIZE - 1] = '\0';
+				item_name = *(out + pos + 8);
+				strncpy(item_name, sfc->mountp, CHUNKSIZE);
+				item_name[CHUNKSIZE - 1] = '\0';
+			}
+
+			/* Check for min/max values */
+
+			/* Compute fsfree min/max values */
+			tval = (double) sfc->f_bfree;
+			if (tval > *(spmax + pos)) {
+				*(spmax + pos) = tval;
+			}
+			if (tval < *(spmin + pos)) {
+				*(spmin + pos) = tval;
+			}
+			/* Compute fsused min/max values */
+			tval = (double) (sfc->f_blocks - sfc->f_bfree);
+			if (tval > *(spmax + pos + 1)) {
+				*(spmax + pos + 1) = tval;
+			}
+			if (tval < *(spmin + pos + 1)) {
+				*(spmin + pos + 1) = tval;
+			}
+			/* Compute %ufsused min/max values */
+			tval = sfc->f_blocks ?
+			       SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0;
+			if (tval > *(spmax + pos + 2)) {
+				*(spmax + pos + 2) = tval;
+			}
+			if (tval < *(spmin + pos + 2)) {
+				*(spmin + pos + 2) = tval;
+			}
+			/* Compute %fsused min/max values */
+			tval = sfc->f_blocks ?
+			       SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0;
+			if (tval > *(spmax + pos + 3)) {
+				*(spmax + pos + 3) = tval;
+			}
+			if (tval < *(spmin + pos + 3)) {
+				*(spmin + pos + 3) = tval;
+			}
+			/* Compute Ifree min/max values */
+			tval = (double) sfc->f_ffree;
+			if (tval > *(spmax + pos + 4)) {
+				*(spmax + pos + 4) = tval;
+			}
+			if (tval < *(spmin + pos + 4)) {
+				*(spmin + pos + 4) = tval;
+			}
+			/* Compute Iused min/max values */
+			tval = (double) (sfc->f_files - sfc->f_ffree);
+			if (tval > *(spmax + pos + 5)) {
+				*(spmax + pos + 5) = tval;
+			}
+			if (tval < *(spmin + pos + 5)) {
+				*(spmin + pos + 5) = tval;
+			}
+			/* Compute %Iused min/max values */
+			tval = sfc->f_files ?
+			       SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0;
+			if (tval > *(spmax + pos + 6)) {
+				*(spmax + pos + 6) = tval;
+			}
+			if (tval < *(spmin + pos + 6)) {
+				*(spmin + pos + 6) = tval;
+			}
+
+			/* MBfsfree */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 (double) sfc->f_bfree / 1024 / 1024,
+				 out + pos, outsize + pos, svg_p->restart);
+			/* MBfsused */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
+				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+			/* %ufsused */
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 0.0,
+				 sfc->f_blocks ?
+				 SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0,
+				 out + pos + 2, outsize + pos + 2, svg_p->dt);
+			/* %fsused */
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 0.0,
+				 sfc->f_blocks ?
+				 SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0,
+				 out + pos + 3, outsize + pos + 3, svg_p->dt);
+			/* Ifree */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 ((double) sfc->f_ffree) / 1000,
+				 out + pos + 4, outsize + pos + 4, svg_p->restart);
+			/* Iused */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 ((double) (sfc->f_files - sfc->f_ffree)) / 1000,
+				 out + pos + 5, outsize + pos + 5, svg_p->restart);
+			/* %Iused */
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 0.0,
+				 sfc->f_files ?
+				 SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0,
+				 out + pos + 6, outsize + pos + 6, svg_p->dt);
+		}
+	}
+
+	if (action & F_END) {
+
+		for (i = 0; i < a->nr; i++) {
+
+			/* Check if there is something to display */
+			pos = i * 9;
+			if (!**(out + pos))
+				continue;
+
+			/* Conversion B -> MB */
+			for (k = 0; k < 2; k++) {
+				*(spmin + pos + k) /= (1024 * 1024);
+				*(spmax + pos + k) /= (1024 * 1024);
+				*(spmin + pos + 4 + k) /= 1000;
+				*(spmax + pos + 4 + k) /= 1000;
+			}
+
+			if (DISPLAY_MOUNT(a->opt_flags)) {
+				item_name = *(out + pos + 8);
+			}
+			else {
+				item_name = *(out + pos + 7);
+			}
+
+			draw_activity_graphs(1, SVG_LINE_GRAPH, title1a, g_title1a, item_name, group1a,
+					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+			draw_activity_graphs(1, SVG_BAR_GRAPH, title1b, g_title1b, item_name, group1b,
+					     spmin + pos + 2, spmax + pos + 2, out + pos + 2, outsize + pos + 2,
+					     svg_p, record_hdr);
+			draw_activity_graphs(1, SVG_LINE_GRAPH, title2a, g_title2a, item_name, group2a,
+					     spmin + pos + 4, spmax + pos + 4, out + pos + 4, outsize + pos + 4,
+					     svg_p, record_hdr);
+			draw_activity_graphs(1, SVG_BAR_GRAPH, title2b, g_title2b, item_name, group2b,
+					     spmin + pos + 6, spmax + pos + 6, out + pos + 6, outsize + pos + 6,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}

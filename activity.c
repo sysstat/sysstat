@@ -1304,7 +1304,7 @@ struct activity pwr_usb_act = {
 /* Filesystem usage activity */
 struct activity filesystem_act = {
 	.id		= A_FILESYSTEM,
-	.options	= AO_NULL,
+	.options	= AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_XDISK,
 #ifdef SOURCE_SADC
@@ -1320,9 +1320,10 @@ struct activity filesystem_act = {
 	.f_render	= render_filesystem_stats,
 	.f_xml_print	= xml_print_filesystem_stats,
 	.f_json_print	= json_print_filesystem_stats,
+	.f_svg_print	= svg_print_filesystem_stats,
 	.hdr_line	= "FILESYSTEM;MBfsfree;MBfsused;%fsused;%ufsused;Ifree;Iused;%Iused",
 	.name		= "A_FILESYSTEM",
-	.g_nr		= 0,
+	.g_nr		= 4,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
