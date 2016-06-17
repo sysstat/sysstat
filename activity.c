@@ -565,10 +565,11 @@ struct activity net_nfsd_act = {
 	.f_render	= render_net_nfsd_stats,
 	.f_xml_print	= xml_print_net_nfsd_stats,
 	.f_json_print	= json_print_net_nfsd_stats,
+	.f_svg_print	= svg_print_net_nfsd_stats,
 	.hdr_line	= "scall/s;badcall/s;packet/s;udp/s;tcp/s;hit/s;miss/s;"
 		          "sread/s;swrite/s;saccess/s;sgetatt/s",
 	.name		= "A_NET_NFSD",
-	.g_nr		= 0,
+	.g_nr		= 5,
 #endif
 	.nr		= 1,
 	.nr2		= 1,

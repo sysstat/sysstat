@@ -2275,6 +2275,108 @@ __print_funct_t svg_print_net_nfs_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
+ * Display NFS server statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+					 unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_net_nfsd
+		*snndc = (struct stats_net_nfsd *) a->buf[curr],
+		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
+	int group[] = {2, 3, 2, 2, 2};
+	char *title[] = {"NFS server statistics (1)", "NFS server statistics (2)", "NFS server statistics (3)",
+			 "NFS server statistics (4)", "NFS server statistics (5)"};
+	char *g_title[] = {"scall/s", "badcall/s",
+			   "packet/s", "udp/s", "tcp/s",
+			   "hit/s", "miss/s",
+			   "sread/s", "swrite/s",
+			   "saccess/s", "sgetatt/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(11, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* Check for min/max values */
+		save_extrema(0, 0, 11, (void *) a->buf[curr], (void *) a->buf[!curr],
+			     itv, spmin, spmax);
+
+		/* scall/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_rpccnt, snndc->nfsd_rpccnt, itv),
+			 out, outsize, svg_p->restart);
+		/* badcall/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_rpcbad, snndc->nfsd_rpcbad, itv),
+			 out + 1, outsize + 1, svg_p->restart);
+		/* packet/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_netcnt, snndc->nfsd_netcnt, itv),
+			 out + 2, outsize + 2, svg_p->restart);
+		/* udp/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_netudpcnt, snndc->nfsd_netudpcnt, itv),
+			 out + 3, outsize + 3, svg_p->restart);
+		/* tcp/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_nettcpcnt, snndc->nfsd_nettcpcnt, itv),
+			 out + 4, outsize + 4, svg_p->restart);
+		/* hit/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_rchits, snndc->nfsd_rchits, itv),
+			 out + 5, outsize + 5, svg_p->restart);
+		/* miss/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_rcmisses, snndc->nfsd_rcmisses, itv),
+			 out + 6, outsize + 6, svg_p->restart);
+		/* sread/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_readcnt, snndc->nfsd_readcnt, itv),
+			 out + 7, outsize + 7, svg_p->restart);
+		/* swrite/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_writecnt, snndc->nfsd_writecnt, itv),
+			 out + 8, outsize + 8, svg_p->restart);
+		/* saccess/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_accesscnt, snndc->nfsd_accesscnt, itv),
+			 out + 9, outsize + 9, svg_p->restart);
+		/* sgetatt/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(snndp->nfsd_getattcnt, snndc->nfsd_getattcnt, itv),
+			 out + 10, outsize + 10, svg_p->restart);
+	}
+
+	if (action & F_END) {
+		draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize, svg_p, record_hdr);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display network socket statistics in SVG.
  *
  * IN:

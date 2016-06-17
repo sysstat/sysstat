@@ -47,6 +47,9 @@ __print_funct_t svg_print_net_edev_stats
 __print_funct_t svg_print_net_nfs_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
+__print_funct_t svg_print_net_nfsd_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
 __print_funct_t svg_print_net_sock_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
