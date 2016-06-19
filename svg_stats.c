@@ -4574,3 +4574,108 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 		free_graphs(out, outsize, spmin, spmax);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+				       unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_fchost *sfcc, *sfcp;
+	int group[] = {2, 2};
+	char *title[] = {"Fibre Channel HBA statistics (1)", "Fibre Channel HBA statistics (2)"};
+	char *g_title[] = {"fch_rxf/s", "fch_txf/s",
+			   "fch_rxw/s", "fch_txw/s"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char *item_name;
+	int i, pos;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays (#0..3) that will contain the graphs data
+		 * and the min/max values.
+		 * Also allocate one additional array (#4) that will contain
+		 * FC HBA name.
+		 */
+		out = allocate_graph_lines(4 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each FC HBA */
+		for (i = 0; i < a->nr; i++) {
+
+			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+			if (!sfcc->fchost_name[0])
+				/* We are at the end of the list */
+				break;
+
+			sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
+			pos = i * 5;
+
+			item_name = *(out + pos + 4);
+			if (!item_name[0]) {
+				/* Save FC HBA name */
+				strncpy(item_name, sfcc->fchost_name, CHUNKSIZE);
+				item_name[CHUNKSIZE - 1] = '\0';
+			}
+
+			/* Look for min/max values */
+			save_extrema(0, 4, 0, (void *) sfcc, (void *) sfcp,
+				itv, spmin + pos, spmax + pos);
+
+			/* fch_rxf/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
+				 out + pos, outsize + pos, svg_p->restart);
+
+			/* fch_txf/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
+				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+
+			/* fch_rxw/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv),
+				 out + pos + 2, outsize + pos + 2, svg_p->restart);
+
+			/* fch_txw/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv),
+				 out + pos + 3, outsize + pos + 3, svg_p->restart);
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; i < a->nr; i++) {
+
+			/* Check if there is something to display */
+			pos = i * 5;
+			if (!**(out + pos))
+				continue;
+
+			item_name = *(out + pos + 4);
+			draw_activity_graphs(a->g_nr, SVG_LINE_GRAPH,
+					     title, g_title, item_name, group,
+					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}

@@ -1338,7 +1338,7 @@ struct activity filesystem_act = {
 /* Fibre Channel HBA usage activity */
 struct activity fchost_act = {
 	.id		= A_NET_FC,
-	.options	= AO_CLOSE_MARKUP,
+	.options	= AO_CLOSE_MARKUP + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
@@ -1354,9 +1354,10 @@ struct activity fchost_act = {
 	.f_render	= render_fchost_stats,
 	.f_xml_print	= xml_print_fchost_stats,
 	.f_json_print	= json_print_fchost_stats,
+	.f_svg_print	= svg_print_fchost_stats,
 	.hdr_line	= "FCHOST;fch_rxf/s;fch_txf/s;fch_rxw/s;fch_txw/s",
 	.name		= "A_FCHOST",
-	.g_nr		= 0,
+	.g_nr		= 2,
 #endif
 	.nr		= -1,
 	.nr2		= 1,
