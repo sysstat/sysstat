@@ -1485,7 +1485,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(0, 16, 0, (void *) a->buf[curr], NULL,
-			     0, spmin, spmax);
+			     itv, spmin, spmax);
 		/* Compute %memused min/max values */
 		tval = smc->tlmkb ? SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0;
 		if (tval > *(spmax + 16)) {
@@ -3914,12 +3914,12 @@ __print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in jiffies (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
 __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-					    unsigned long long g_itv, struct record_header *record_hdr)
+					    unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_pwr_cpufreq *spc, *spp;
 	int group[] = {1};
@@ -3999,12 +3999,12 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in jiffies (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
 __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-					unsigned long long g_itv, struct record_header *record_hdr)
+					unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_pwr_fan *spc, *spp;
 	int group[] = {1};
@@ -4071,12 +4071,12 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in jiffies (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
 __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-					 unsigned long long g_itv, struct record_header *record_hdr)
+					 unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_pwr_temp *spc;
 	int group[] = {1};
@@ -4174,7 +4174,7 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
  ***************************************************************************
  */
 __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-				       unsigned long long g_itv, struct record_header *record_hdr)
+				       unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_pwr_in *spc;
 	int group[] = {1};
@@ -4354,7 +4354,7 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in jiffies (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
