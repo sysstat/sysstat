@@ -4361,8 +4361,7 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 					   unsigned long long itv, struct record_header *record_hdr)
 {
-	struct stats_filesystem
-		*sfc = (struct stats_filesystem *) a->buf[curr];
+	struct stats_filesystem	*sfc, *sfp;
 	int group1a[] = {2};
 	int group1b[] = {2};
 	int group2a[] = {2};
@@ -4380,7 +4379,8 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	static int *outsize;
 	char *item_name;
 	double tval;
-	int i, k, pos;
+	int i, k, pos, restart;
+	unsigned long dt;
 
 	if (action & F_BEGIN) {
 		/*
@@ -4431,6 +4431,27 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				item_name = *(out + pos + 8);
 				strncpy(item_name, sfc->mountp, CHUNKSIZE);
 				item_name[CHUNKSIZE - 1] = '\0';
+			}
+
+			restart = TRUE;
+			for (k = 0; k < a->nr; k++) {
+				sfp = (struct stats_filesystem *) ((char *) a->buf[!curr] + k * a->msize);
+				if (!strcmp(sfc->fs_name, sfp->fs_name)) {
+					/* Filesystem found in previous sample */
+					restart = svg_p->restart;
+				}
+			}
+			if (restart) {
+				/*
+				 * If restart is TRUE then line graphs will be discontinuous.
+				 * And bar graphs should not extend over previous interval because
+				 * here %values are not calculated over a time interval but are
+				 * instantaneous values.
+				 */
+				dt = 0;
+			}
+			else {
+				dt = svg_p->dt;
 			}
 
 			/* Check for min/max values */
@@ -4498,37 +4519,37 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			/* MBfsfree */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 (double) sfc->f_bfree / 1024 / 1024,
-				 out + pos, outsize + pos, svg_p->restart);
+				 out + pos, outsize + pos, restart);
 			/* MBfsused */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
-				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+				 out + pos + 1, outsize + pos + 1, restart);
 			/* %ufsused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0,
 				 sfc->f_blocks ?
 				 SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0,
-				 out + pos + 2, outsize + pos + 2, svg_p->dt);
+				 out + pos + 2, outsize + pos + 2, dt);
 			/* %fsused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0,
 				 sfc->f_blocks ?
 				 SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0,
-				 out + pos + 3, outsize + pos + 3, svg_p->dt);
+				 out + pos + 3, outsize + pos + 3, dt);
 			/* Ifree */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 ((double) sfc->f_ffree) / 1000,
-				 out + pos + 4, outsize + pos + 4, svg_p->restart);
+				 out + pos + 4, outsize + pos + 4, restart);
 			/* Iused */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 ((double) (sfc->f_files - sfc->f_ffree)) / 1000,
-				 out + pos + 5, outsize + pos + 5, svg_p->restart);
+				 out + pos + 5, outsize + pos + 5, restart);
 			/* %Iused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0,
 				 sfc->f_files ?
 				 SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0,
-				 out + pos + 6, outsize + pos + 6, svg_p->dt);
+				 out + pos + 6, outsize + pos + 6, dt);
 		}
 	}
 
@@ -4541,7 +4562,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			if (!**(out + pos))
 				continue;
 
-			/* Conversion B -> MB */
+			/* Conversion B -> MB and inodes/1000 */
 			for (k = 0; k < 2; k++) {
 				*(spmin + pos + k) /= (1024 * 1024);
 				*(spmax + pos + k) /= (1024 * 1024);
