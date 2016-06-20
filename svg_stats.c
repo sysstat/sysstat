@@ -390,7 +390,7 @@ void brappend(unsigned long timetag, double offset, double value, char **out, in
 	char data[128];
 
 	/* Prepare additional graph definition data */
-	if (value == 0.0)
+	if ((value == 0.0) || (dt == 0))
 		/* Dont draw a flat rectangle! */
 		return;
 
