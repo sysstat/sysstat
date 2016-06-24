@@ -795,7 +795,7 @@ close_xml_markup:
 
 /*
  ***************************************************************************
- * Display network interfaces error statistics in XML.
+ * Display network interfaces errors statistics in XML.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1050,7 +1050,7 @@ close_xml_markup:
 
 /*
  ***************************************************************************
- * Display IP network error statistics in XML.
+ * Display IP network errors statistics in XML.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1160,7 +1160,7 @@ close_xml_markup:
 
 /*
  ***************************************************************************
- * Display ICMP error message statistics in XML.
+ * Display ICMP error messages statistics in XML.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1258,7 +1258,7 @@ close_xml_markup:
 
 /*
  ***************************************************************************
- * Display TCP network error statistics in XML.
+ * Display TCP network errors statistics in XML.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1435,7 +1435,7 @@ close_xml_markup:
 
 /*
  ***************************************************************************
- * Display IPv6 network error statistics in XML.
+ * Display IPv6 network errors statistics in XML.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1557,7 +1557,7 @@ close_xml_markup:
 
 /*
  ***************************************************************************
- * Display ICMPv6 error message statistics in XML.
+ * Display ICMPv6 error messages statistics in XML.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2028,7 +2028,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!sfc->f_blocks)
-			/* Size of filesystem is null: We are at the end of the list */
+			/* Size of filesystem is zero: We are at the end of the list */
 			break;
 
 		xprintf(tab, "<filesystem %s=\"%s\" "
@@ -2043,7 +2043,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 			DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name,
 			(double) sfc->f_bfree / 1024 / 1024,
 			(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
-			/* f_blocks is not null. But test it anyway ;-) */
+			/* f_blocks is not zero. But test it anyway ;-) */
 			sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
 				      : 0.0,
 			sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)

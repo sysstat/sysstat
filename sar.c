@@ -265,7 +265,7 @@ void print_read_error(void)
  ***************************************************************************
  * Check that every selected activity actually belongs to the sequence list.
  * If not, then the activity should be unselected since it will not be sent
- * by sadc. An activity can be not sent if its number of items is null.
+ * by sadc. An activity can be not sent if its number of items is zero.
  *
  * IN:
  * @act_nr	Size of sequence list.

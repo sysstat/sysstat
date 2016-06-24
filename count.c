@@ -481,7 +481,7 @@ int get_filesystem_nr(void)
 			/* Replace octal codes */
 			oct2chr(mountp);
 
-			/* Check that total size is not null */
+			/* Check that total size is not zero */
 			if (statvfs(mountp, &buf) < 0)
 				continue;
 

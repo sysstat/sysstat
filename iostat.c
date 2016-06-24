@@ -983,7 +983,7 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 	 */
 	cprintf_pc(1, 6, 2,
 		   shi->used ? xds.util / 10.0 / (double) shi->used
-		             : xds.util / 10.0);	/* shi->used should never be null here */
+		             : xds.util / 10.0);	/* shi->used should never be zero here */
 	printf("\n");
 }
 

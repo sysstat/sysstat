@@ -832,7 +832,7 @@ close_json_markup:
 
 /*
  ***************************************************************************
- * Display network interfaces error statistics in JSON.
+ * Display network interfaces errors statistics in JSON.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1099,7 +1099,7 @@ close_json_markup:
 
 /*
  ***************************************************************************
- * Display IP network error statistics in JSON.
+ * Display IP network errors statistics in JSON.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1209,7 +1209,7 @@ close_json_markup:
 
 /*
  ***************************************************************************
- * Display ICMP error message statistics in JSON.
+ * Display ICMP errors message statistics in JSON.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1307,7 +1307,7 @@ close_json_markup:
 
 /*
  ***************************************************************************
- * Display TCP network error statistics in JSON.
+ * Display TCP network errors statistics in JSON.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1484,7 +1484,7 @@ close_json_markup:
 
 /*
  ***************************************************************************
- * Display IPv6 network error statistics in JSON.
+ * Display IPv6 network errors statistics in JSON.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1606,7 +1606,7 @@ close_json_markup:
 
 /*
  ***************************************************************************
- * Display ICMPv6 error message statistics in JSON.
+ * Display ICMPv6 error messages statistics in JSON.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2127,7 +2127,7 @@ __print_funct_t json_print_filesystem_stats(struct activity *a, int curr, int ta
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr]  + i * a->msize);
 
 		if (!sfc->f_blocks)
-			/* Size of filesystem is null: We are at the end of the list */
+			/* Size of filesystem is zero: We are at the end of the list */
 			break;
 
 		if (sep) {

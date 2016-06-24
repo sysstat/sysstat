@@ -1289,7 +1289,7 @@ __print_funct_t print_net_ip_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display IP network error statistics.
+ * Display IP network errors statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1368,7 +1368,7 @@ __print_funct_t print_net_icmp_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display ICMP network error statistics.
+ * Display ICMP network errors statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1441,7 +1441,7 @@ __print_funct_t print_net_tcp_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display TCP network error statistics.
+ * Display TCP network errors statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1636,7 +1636,7 @@ __print_funct_t print_net_ip6_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display IPv6 network error statistics.
+ * Display IPv6 network errors statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1723,7 +1723,7 @@ __print_funct_t print_net_icmp6_stats(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display ICMPv6 network error statistics.
+ * Display ICMPv6 network errors statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2604,7 +2604,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!sfc->f_blocks)
-			/* Size of filesystem is null: We are at the end of the list */
+			/* Size of filesystem is zero: We are at the end of the list */
 			break;
 
 		printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
@@ -2612,7 +2612,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 			  (double) sfc->f_bfree / 1024 / 1024,
 			  (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024);
 		cprintf_pc(2, 9, 2,
-			   /* f_blocks is not null. But test it anyway ;-) */
+			   /* f_blocks is not zero. But test it anyway ;-) */
 			   sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
 			   : 0.0,
 			   sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)

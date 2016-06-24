@@ -687,7 +687,7 @@ void read_tty_driver_serial(struct stats_serial *st_serial, int nbr)
 			sscanf(line, "%u", &st_serial_i->line);
 			/*
 			 * A value of 0 means an unused structure.
-			 * So increment it to make sure it is not null.
+			 * So increment it to make sure it is not zero.
 			 */
 			(st_serial_i->line)++;
 			/*
@@ -1172,7 +1172,7 @@ void read_net_ip(struct stats_net_ip *st_net_ip)
 
 /*
  ***************************************************************************
- * Read IP network error statistics from /proc/net/snmp.
+ * Read IP network errors statistics from /proc/net/snmp.
  *
  * IN:
  * @st_net_eip	Structure where stats will be saved.
@@ -1290,7 +1290,7 @@ void read_net_icmp(struct stats_net_icmp *st_net_icmp)
 
 /*
  ***************************************************************************
- * Read ICMP network error statistics from /proc/net/snmp.
+ * Read ICMP network errors statistics from /proc/net/snmp.
  *
  * IN:
  * @st_net_eicmp	Structure where stats will be saved.
@@ -1382,7 +1382,7 @@ void read_net_tcp(struct stats_net_tcp *st_net_tcp)
 
 /*
  ***************************************************************************
- * Read TCP network error statistics from /proc/net/snmp.
+ * Read TCP network errors statistics from /proc/net/snmp.
  *
  * IN:
  * @st_net_etcp	Structure where stats will be saved.
@@ -1564,7 +1564,7 @@ void read_net_ip6(struct stats_net_ip6 *st_net_ip6)
 
 /*
  ***************************************************************************
- * Read IPv6 network error statistics from /proc/net/snmp6.
+ * Read IPv6 network errors statistics from /proc/net/snmp6.
  *
  * IN:
  * @st_net_eip6	Structure where stats will be saved.
@@ -1700,7 +1700,7 @@ void read_net_icmp6(struct stats_net_icmp6 *st_net_icmp6)
 
 /*
  ***************************************************************************
- * Read ICMPv6 network error statistics from /proc/net/snmp6.
+ * Read ICMPv6 network errors statistics from /proc/net/snmp6.
  *
  * IN:
  * @st_net_eicmp6	Structure where stats will be saved.

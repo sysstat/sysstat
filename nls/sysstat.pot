@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-05-14 10:33+0200\n"
+"POT-Creation-Date: 2016-06-24 13:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: iostat.c:1399 sa_common.c:1632
+#: iostat.c:1399 sa_common.c:1633
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -467,7 +467,7 @@ msgstr ""
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1451
+#: sa_common.c:1452
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
@@ -479,7 +479,7 @@ msgid ""
 "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
 
-#: tapestat.c:251
+#: tapestat.c:257
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr ""

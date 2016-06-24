@@ -1,5 +1,21 @@
 Changes:
 
+2016/06/24: Version 11.3.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* SVG: Add SVG output for ICMP{v4,v6}, IPv6, UDPv6, voltage inputs,
+	  NFS client, NFS server, disks, filesystems and FC HBA statistics.
+	* SVG: Add SVG output for IPv4, ICMPv4, TCPv4, IPv6 and ICMP
+	  network errors statistics.
+	* SVG: Make sure graduations are properly aligned with grid.
+	* SVG: Add oneday option to control SVG output.
+	* SVG: Fix skipempty option.
+	* [Peter Schiffer]: Stricter check for file_magic->header_size [11.2.5].
+	* [Peter Schiffer]: tapestat: Various fixes [11.2.5].
+	* [Esteban Fallas]: Check for undefined UID variable in sysstat script
+	  [11.2.5].
+	* [Carsten Grohmann]: Unify description of the tps value in the sar
+	  manual page for -b and -d flags [11.2.5].
+	* sadf manual page updated.
+
 2016/05/14: Version 11.3.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* SVG: Add SVG output for fan speed and temperature sensors
 	  statistics, I/O and transfer rate statistics, kernel tables

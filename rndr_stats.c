@@ -1584,7 +1584,7 @@ __print_funct_t render_net_ip_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display IP network error statistics in selected format.
+ * Display IP network errors statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1760,7 +1760,7 @@ __print_funct_t render_net_icmp_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display ICMP error message statistics in selected format.
+ * Display ICMP error messages statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -1900,7 +1900,7 @@ __print_funct_t render_net_tcp_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display TCP network error statistics in selected format.
+ * Display TCP network errors statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2117,7 +2117,7 @@ __print_funct_t render_net_ip6_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display IPv6 network error statistics in selected format.
+ * Display IPv6 network errors statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2329,7 +2329,7 @@ __print_funct_t render_net_icmp6_stats(struct activity *a, int isdb, char *pre,
 
 /*
  ***************************************************************************
- * Display ICMPv6 error message statistics in selected format.
+ * Display ICMPv6 error messages statistics in selected format.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2854,7 +2854,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!sfc->f_blocks)
-			/* Size of filesystem is null: We are at the end of the list */
+			/* Size of filesystem is zero: We are at the end of the list */
 			break;
 
 		render(isdb, pre, PT_USERND,
