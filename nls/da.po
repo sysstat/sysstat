@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat-11.3.1\n"
+"Project-Id-Version: sysstat-11.3.4\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-02-20 16:08+0100\n"
-"PO-Revision-Date: 2016-03-26 15:19+0200\n"
+"POT-Creation-Date: 2016-05-14 10:33+0200\n"
+"PO-Revision-Date: 2016-05-15 15:19+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Kan ikke lokalisere diskdata\n"
 
-#: iostat.c:1399 sa_common.c:1642
+#: iostat.c:1399 sa_common.c:1632
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ugyldig type vedvarende enhedsnavn\n"
@@ -148,7 +148,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Kan ikke skrive systemaktivitetsfilhoved: %s\n"
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:508 rd_stats.c:69
-#: sa_common.c:1273 count.c:118
+#: sa_common.c:1263 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Kan ikke åbne %s: %s\n"
@@ -197,7 +197,7 @@ msgstr ""
 msgid "Average:"
 msgstr "Middel:"
 
-#: mpstat.c:1101
+#: mpstat.c:1111
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Der er ikke så mange cpuer!\n"
@@ -212,13 +212,15 @@ msgstr "Brug: %s [ tilvalg ] [ <interval> [ <antal> ] ] [ <datafil> | -[0-9]+ ]\
 msgid ""
 "Options are:\n"
 "[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Tilvalg er:\n"
 "[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <tt:mm[:ss]> ] ] [ -e [ <tt:mm[:ss]> ] ]\n"
-"[ -- <sar_tilvalg> ]\n"
+"[ -O <tilv.> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -s [ <tt:mm[:ss]> ] ] [ -e [ <tt:mm[:ss]> ] ]\n"
+"[ -- <sar-tilvalg> ]\n"
 
 #: sar.c:111
 #, c-format
@@ -431,32 +433,32 @@ msgstr "Dataindsamler fundet: %s\n"
 msgid "End of data collecting unexpected\n"
 msgstr "Uventet afslutning på dataindsamling\n"
 
-#: sar.c:810
+#: sar.c:813
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Bruger en forkert dataindsamler fra en anden sysstat version\n"
 
-#: sar.c:862
+#: sar.c:865
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Inkonsistent inddata\n"
 
-#: sar.c:1041 pidstat.c:239
+#: sar.c:1044 pidstat.c:239
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Angivne aktiviteter er ikke tilgængelig\n"
 
-#: sar.c:1347
+#: sar.c:1350
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "tilvalgene -f og -o udelukker hinanden\n"
 
-#: sar.c:1353
+#: sar.c:1356
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Læsning sker ikke fra en systemaktivitetsfil (brug tilvalget -f)\n"
 
-#: sar.c:1489
+#: sar.c:1492
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan ikke lokalisere dataindsamleren (%s)\n"
@@ -519,42 +521,42 @@ msgstr ""
 "[ -u ] [ -V ] [ -v ] [ -W ] [ -C <kommando> ] [ -G <procesnavn> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: sa_common.c:1069
+#: sa_common.c:1059
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Læsefejl ved indlæsning af aktivitetsfil: %s\n"
 
-#: sa_common.c:1079
+#: sa_common.c:1069
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Uventet afslutning på systemaktivitetsfil\n"
 
-#: sa_common.c:1098
+#: sa_common.c:1088
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Fil oprettet af sar/sadc fra sysstat version %d.%d.%d"
 
-#: sa_common.c:1131
+#: sa_common.c:1121
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Ugyldig systemaktivitetsfil: %s\n"
 
-#: sa_common.c:1143
+#: sa_common.c:1133
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "Endian-formater er ikke ens\n"
 
-#: sa_common.c:1147
+#: sa_common.c:1137
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Nuværende sysstat-version kan ikke læse formatet på denne fil (%#x)\n"
 
-#: sa_common.c:1276
+#: sa_common.c:1266
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Kontroller venligst om dataindsamling er aktiveret\n"
 
-#: sa_common.c:1461
+#: sa_common.c:1451
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Angivne aktiviteter findes ikke i filen %s\n"
