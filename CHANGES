@@ -1,5 +1,12 @@
 Changes:
 
+2016/06/24: Version 11.2.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Peter Schiffer]: Stricter check for file_magic->header_size.
+	* [Peter Schiffer]: tapestat: Various fixes.
+	* [Esteban Fallas]: Check for undefined UID variable in sysstat script.
+	* [Carsten Grohmann]: Unify description of the tps value in the sar
+	  manual page for -b and -d flags
+
 2016/05/14: Version 11.2.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf and sar manual pages updated.
         * Various cosmetic changes in code.
