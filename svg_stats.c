@@ -564,6 +564,96 @@ void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, int g_type, 
 
 /*
  ***************************************************************************
+ * Display background grid (horizontal lines) and corresponding graduations.
+ *
+ * IN:
+ * @ypos	Gap between two horizontal lines.
+ * @yfactor	Scaling factor on Y axis.
+ * @lmax	Max value for current view.
+ * @dp		Number of decimal places for graduations.
+ ***************************************************************************
+ */
+void display_hgrid(double ypos, double yfactor, double lmax, int dp)
+{
+	int j = 0;
+	char stmp[32];
+
+	do {
+		/* Display horizontal lines (except on X axis) */
+		if (j > 0) {
+			printf("<polyline points=\"0,%.2f %d,%.2f\" style=\"vector-effect: non-scaling-stroke; "
+			       "stroke: #202020\" transform=\"scale(1,%f)\"/>\n",
+			       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
+		}
+
+		/*
+		 * Display graduations.
+		 * Use same rounded value for graduation numbers as for grid lines
+		 * to make sure they are properly aligned.
+		 */
+		sprintf(stmp, "%.2f", ypos * j);
+		printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
+		       "text-anchor: end\">%.*f.</text>\n",
+		       (long) (atof(stmp) * yfactor), dp, ypos * j);
+		j++;
+	}
+	while (ypos * j <= lmax);
+}
+
+/*
+ ***************************************************************************
+ * Display background grid (vertical lines) and corresponding graduations.
+ *
+ * IN:
+ * @xpos	Gap between two vertical lines.
+ * @xfactor	Scaling factor on X axis.
+ * @v_gridnr	Number of vertical lines to display.
+ * @svg_p	SVG specific parameters (see draw_activity_graphs() function).
+ ***************************************************************************
+ */
+void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm *svg_p)
+{
+	struct record_header stamp;
+	struct tm rectime;
+	char cur_time[32];
+	int j;
+
+	stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
+
+	for (j = 0; (j <= v_gridnr) && (stamp.ust_time <= svg_p->ust_time_end); j++) {
+
+		/* Display vertical lines */
+		sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
+		set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
+		printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
+		       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
+		       xpos * j, xpos * j, -SVG_G_YSIZE, xfactor);
+		/*
+		 * Display graduations.
+		 * NB: We may have tm_min != 0 if we have more than 24H worth of data in one datafile.
+		 * In this case, we should rather display the exact time instead of only the hour.
+		 */
+		if (DISPLAY_ONE_DAY(flags) && (rectime.tm_min == 0)) {
+			printf("<text x=\"%ld\" y=\"15\" style=\"fill: white; stroke: none; font-size: 14px; "
+			       "text-anchor: start\">%2dH</text>\n",
+			       (long) (xpos * j * xfactor) - 8, rectime.tm_hour);
+		}
+		else {
+			printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
+			       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
+			       (long) (xpos * j * xfactor), (long) (xpos * j * xfactor), cur_time);
+		}
+		stamp.ust_time += xpos;
+	}
+
+	if (!PRINT_LOCAL_TIME(flags)) {
+		printf("<text x=\"-10\" y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
+		       "text-anchor: end\">UTC</text>\n");
+	}
+}
+
+/*
+ ***************************************************************************
  * Calculate the value on the Y axis between two horizontal lines that will
  * make the graph background grid.
  *
@@ -710,15 +800,13 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 			  int group[], double *spmin, double *spmax, char **out, int *outsize,
 			  struct svg_parm *svg_p, struct record_header *record_hdr)
 {
-	struct record_header stamp;
-	struct tm rectime;
 	char *out_p;
 	int i, j, dp, pos = 0, views_nr = 0;
 	int v_gridnr;
 	unsigned int asfactor[16];
-	long int k;
+	long int xpos;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
-	char cur_time[32], val[32], stmp[32];
+	char val[32];
 
 	/* Translate to proper position for current activity */
 	printf("<g id=\"g%d\" transform=\"translate(0,%d)\">\n",
@@ -826,62 +914,18 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 			}
 		}
 		yfactor = (double) -SVG_G_YSIZE / lmax;
-		j = 1;
-		do {
-			printf("<polyline points=\"0,%.2f %d,%.2f\" style=\"vector-effect: non-scaling-stroke; "
-			       "stroke: #202020\" transform=\"scale(1,%f)\"/>\n",
-			       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
-			j++;
-		}
-		while (ypos * j <= lmax);
-		j = 0;
-		do {
-			/*
-			 * Use same rounded value for graduation numbers as for grid lines
-			 * to make sure they are properly aligned.
-			 */
-			sprintf(stmp, "%.2f", ypos * j);
 
-			printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
-			       "text-anchor: end\">%.*f.</text>\n",
-			       (long) (atof(stmp) * yfactor), dp, ypos * j);
-			j++;
-		}
-		while (ypos * j <= lmax);
+		/* Display horizontal lines and graduations */
+		display_hgrid(ypos, yfactor, lmax, dp);
 
 		/* Set number of vertical lines to 12 when option "oneday" is used */
 		v_gridnr = DISPLAY_ONE_DAY(flags) ? 12 : SVG_V_GRIDNR;
 
-		k = xgrid(svg_p->ust_time_ref, svg_p->ust_time_end, v_gridnr);
+		xpos = xgrid(svg_p->ust_time_ref, svg_p->ust_time_end, v_gridnr);
 		xfactor = (double) SVG_G_XSIZE / (svg_p->ust_time_end - svg_p->ust_time_ref);
-		stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
 
-		for (j = 0; (j <= v_gridnr) && (stamp.ust_time <= svg_p->ust_time_end); j++) {
-			sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
-			set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
-			printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
-			       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
-			       k * j, k * j, -SVG_G_YSIZE, xfactor);
-			/*
-			 * NB: We may have tm_min != 0 if we have more than 24H worth of data in one datafile.
-			 * In this case, we should rather display the exact time instead of only the hour.
-			 */
-			if (DISPLAY_ONE_DAY(flags) && (rectime.tm_min == 0)) {
-				printf("<text x=\"%ld\" y=\"15\" style=\"fill: white; stroke: none; font-size: 14px; "
-				       "text-anchor: start\">%2dH</text>\n",
-				       (long) (k * j * xfactor) - 8, rectime.tm_hour);
-			}
-			else {
-				printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
-				       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
-				       (long) (k * j * xfactor), (long) (k * j * xfactor), cur_time);
-			}
-			stamp.ust_time += k;
-		}
-		if (!PRINT_LOCAL_TIME(flags)) {
-			printf("<text x=\"-10\" y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
-			       "text-anchor: end\">UTC</text>\n");
-		}
+		/* Display vertical lines and graduations */
+		display_vgrid(xpos, xfactor, v_gridnr, svg_p);
 
 		/* Draw current graphs set */
 		for (j = 0; j < group[i]; j++) {
