@@ -523,6 +523,47 @@ unsigned int pwr10(int n)
 
 /*
  ***************************************************************************
+ * Autoscale graphs of a given view.
+ *
+ * IN:
+ * @asf_nr	(Maximum) number of autoscale factors.
+ * @group	Number of graphs in current view.
+ * @g_type	Type of graph (SVG_LINE_GRAPH, SVG_BAR_GRAPH).
+ * @pos		Position in array for the first graph in view.
+ * @gmax	Global max value for all graphs in view.
+ * @spmax	Array containing max values for graphs.
+ *
+ * OUT:
+ * @asfactor	Autoscale factors (one for each graph).
+ ***************************************************************************
+ */
+void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, int g_type, int pos,
+		    double gmax, double *spmax)
+{
+	int j;
+	char val[32];
+
+	for (j = 0; j < asf_nr; j++) {
+		/* Init autoscale factors */
+		asfactor[j] = 1;
+	}
+
+	if (AUTOSCALE_ON(flags) && (group > 1) && gmax && (g_type == SVG_LINE_GRAPH)) {
+		/* Autoscaling... */
+		for (j = 0; (j < group) && (j < asf_nr); j++) {
+			if (!*(spmax + pos + j) || (*(spmax + pos + j) == gmax))
+				continue;
+
+			snprintf(val, 32, "%u", (unsigned int) (gmax / *(spmax + pos + j)));
+			if (strlen(val) > 0) {
+				asfactor[j] = pwr10(strlen(val) - 1);
+			}
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Calculate the value on the Y axis between two horizontal lines that will
  * make the graph background grid.
  *
@@ -734,23 +775,8 @@ void draw_activity_graphs(int g_nr, int g_type, char *title[], char *g_title[], 
 		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + (views_nr - 1) * SVG_T_YSIZE,
 		       SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + (views_nr - 1) * SVG_T_YSIZE);
 
-		for (j = 0; j < 16; j++) {
-			/* Init autoscale factors */
-			asfactor[j] = 1;
-		}
-
-		if (AUTOSCALE_ON(flags) && (group[i] > 1) && gmax && (g_type == SVG_LINE_GRAPH)) {
-			/* Autoscaling... */
-			for (j = 0; (j < group[i]) && (j < 16); j++) {
-				if (!*(spmax + pos + j) || (*(spmax + pos + j) == gmax))
-					continue;
-
-				snprintf(val, 32, "%u", (unsigned int) (gmax / *(spmax + pos + j)));
-				if (strlen(val) > 0) {
-					asfactor[j] = pwr10(strlen(val) - 1);
-				}
-			}
-		}
+		/* Autoscaling graphs if needed */
+		gr_autoscaling(asfactor, 16, group[i], g_type, pos, gmax, spmax);
 
 		/* Caption */
 		for (j = 0; j < group[i]; j++) {
