@@ -683,33 +683,44 @@ __print_funct_t render_io_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
+	/*
+	 * If we get negative values, this is probably because
+	 * one or more devices/filesystems have been unmounted.
+	 * We display 0.0 in this case though we should rather tell
+	 * the user that the value cannot be calculated here.
+	 */
 	render(isdb, pre, PT_NOFLAG,
 	       "-\ttps", NULL, NULL,
 	       NOVAL,
+	       sic->dk_drive < sip->dk_drive ? 0.0 :
 	       S_VALUE(sip->dk_drive, sic->dk_drive, itv),
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\trtps", NULL, NULL,
 	       NOVAL,
+	       sic->dk_drive_rio < sip->dk_drive_rio ? 0.0 :
 	       S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv),
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\twtps", NULL, NULL,
 	       NOVAL,
+	       sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
 	       S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tbread/s", NULL, NULL,
 	       NOVAL,
+	       sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 	       S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
 	       NULL);
 
 	render(isdb, pre, pt_newlin,
 	       "-\tbwrtn/s", NULL, NULL,
 	       NOVAL,
+	       sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 	       S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
 	       NULL);
 }

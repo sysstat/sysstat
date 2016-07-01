@@ -435,10 +435,21 @@ __print_funct_t json_print_io_stats(struct activity *a, int curr, int tab,
 		 "\"io-writes\": {"
 		 "\"wtps\": %.2f, "
 		 "\"bwrtn\": %.2f}}",
+		 /*
+		  * If we get negative values, this is probably because
+		  * one or more devices/filesystems have been unmounted.
+		  * We display 0.0 in this case though we should rather tell
+		  * the user that the value cannot be calculated here.
+		  */
+		 sic->dk_drive < sip->dk_drive ? 0.0 :
 		 S_VALUE(sip->dk_drive, sic->dk_drive, itv),
-		 S_VALUE(sip->dk_drive_rio,  sic->dk_drive_rio,  itv),
+		 sic->dk_drive_rio < sip->dk_drive_rio ? 0.0 :
+		 S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv),
+		 sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 		 S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
-		 S_VALUE(sip->dk_drive_wio,  sic->dk_drive_wio,  itv),
+		 sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
+		 S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
+		 sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 		 S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv));
 }
 
