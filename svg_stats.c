@@ -4380,7 +4380,6 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	char *item_name;
 	double tval;
 	int i, k, pos, restart;
-	unsigned long dt;
 
 	if (action & F_BEGIN) {
 		/*
@@ -4440,18 +4439,6 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 					/* Filesystem found in previous sample */
 					restart = svg_p->restart;
 				}
-			}
-			if (restart) {
-				/*
-				 * If restart is TRUE then line graphs will be discontinuous.
-				 * And bar graphs should not extend over previous interval because
-				 * here %values are not calculated over a time interval but are
-				 * instantaneous values.
-				 */
-				dt = 0;
-			}
-			else {
-				dt = svg_p->dt;
 			}
 
 			/* Check for min/max values */
@@ -4529,13 +4516,13 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				 0.0,
 				 sfc->f_blocks ?
 				 SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0,
-				 out + pos + 2, outsize + pos + 2, dt);
+				 out + pos + 2, outsize + pos + 2, svg_p->dt);
 			/* %fsused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0,
 				 sfc->f_blocks ?
 				 SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0,
-				 out + pos + 3, outsize + pos + 3, dt);
+				 out + pos + 3, outsize + pos + 3, svg_p->dt);
 			/* Ifree */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 ((double) sfc->f_ffree) / 1000,
@@ -4549,7 +4536,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				 0.0,
 				 sfc->f_files ?
 				 SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0,
-				 out + pos + 6, outsize + pos + 6, dt);
+				 out + pos + 6, outsize + pos + 6, svg_p->dt);
 		}
 	}
 
