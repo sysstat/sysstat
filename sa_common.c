@@ -1274,7 +1274,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	if ((n != FILE_MAGIC_SIZE) ||
 	    (file_magic->sysstat_magic != SYSSTAT_MAGIC) ||
 	    ((file_magic->format_magic != FORMAT_MAGIC) && !ignore) ||
-	    (file_magic->header_size < MIN_FILE_HEADER_SIZE) ||
+	    (file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
 	    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
 	    ((file_magic->header_size < FILE_HEADER_SIZE) && !ignore)) {
 		/* Display error message and exit */
