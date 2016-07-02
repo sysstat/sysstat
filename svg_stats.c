@@ -52,6 +52,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * Compare the values of a statistics sample with the max and min values
  * already found in previous samples for this same activity. If some new
  * min or max values are found, then save them.
+ * Assume values cannot be negative.
  * The structure containing the statistics sample is composed of @llu_nr
  * unsigned long long fields, followed by @lu_nr unsigned long fields, then
  * followed by @u_nr unsigned int fields.
@@ -88,7 +89,7 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 	llup = (unsigned long long *) ps;
 	for (i = 0; i < llu_nr; i++, m++) {
 		if (ps) {
-			val = S_VALUE(*llup, *lluc, itv);
+			val = *lluc < *llup ? 0.0 : S_VALUE(*llup, *lluc, itv);
 		}
 		else {
 			/*
@@ -114,7 +115,7 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 	lup = (unsigned long *) llup;
 	for (i = 0; i < lu_nr; i++, m++) {
 		if (ps) {
-			val = S_VALUE(*lup, *luc, itv);
+			val = *luc < *lup ? 0.0 : S_VALUE(*lup, *luc, itv);
 		}
 		else {
 			val = (double) *luc;
@@ -136,7 +137,7 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
 	up = (unsigned int *) lup;
 	for (i = 0; i < u_nr; i++, m++) {
 		if (ps) {
-			val = S_VALUE(*up, *uc, itv);
+			val = *uc < *up ? 0.0 : S_VALUE(*up, *uc, itv);
 		}
 		else {
 			val = (double) *uc;
