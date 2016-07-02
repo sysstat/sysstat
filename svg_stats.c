@@ -1470,24 +1470,36 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 		save_extrema(0, 5, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax);
 
+
+		/*
+		 * If we get negative values, this is probably because
+		 * one or more devices/filesystems have been unmounted.
+		 * We display 0.0 in this case though we should rather tell
+		 * the user that the value cannot be calculated here.
+		 */
 		/* tps */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 sic->dk_drive < sip->dk_drive ? 0.0 :
 			 S_VALUE(sip->dk_drive, sic->dk_drive, itv),
 			 out, outsize, svg_p->restart);
 		/* rtps */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 S_VALUE(sip->dk_drive_rio,  sic->dk_drive_rio, itv),
+			 sic->dk_drive_rio < sip->dk_drive_rio ? 0.0 :
+			 S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 		/* wtps */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 S_VALUE(sip->dk_drive_wio,  sic->dk_drive_wio, itv),
+			 sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
+			 S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
 			 out + 2, outsize + 2, svg_p->restart);
 		/* bread/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 			 S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
 			 out + 3, outsize + 3, svg_p->restart);
 		/* bwrtn/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 			 S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
 			 out + 4, outsize + 4, svg_p->restart);
 	}
