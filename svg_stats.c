@@ -1138,7 +1138,6 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				  &offset, ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
 				  out + pos + 3, outsize + pos + 3, svg_p->dt,
 				  spmin + pos + 3, spmax + pos + 3);
-
 			/* %steal */
 			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset, ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
@@ -1151,19 +1150,16 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					  &offset, ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
 					  out + pos + 5, outsize + pos + 5, svg_p->dt,
 					  spmin + pos + 5, spmax + pos + 5);
-
 				/* %soft */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
 					  out + pos + 6, outsize + pos + 6, svg_p->dt,
 					  spmin + pos + 6, spmax + pos + 6);
-
 				/* %guest */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
 					  out + pos + 7, outsize + pos + 7, svg_p->dt,
 					  spmin + pos + 7, spmax + pos + 7);
-
 				/* %gnice */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
@@ -1479,7 +1475,6 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 		/* Check for min/max values */
 		save_extrema(0, 5, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax, g_fields);
-
 
 		/*
 		 * If we get negative values, this is probably because
@@ -2053,37 +2048,30 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sdp->nr_ios, sdc->nr_ios, itv),
 				 out + pos, outsize + pos, restart);
-
 			/* rd_sec/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv),
 				 out + pos + 1, outsize + pos + 1, restart);
-
 			/* wr_sec/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv),
 				 out + pos + 2, outsize + pos + 2, restart);
-
 			/* avgrq-sz */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 xds.arqsz,
 				 out + pos + 3, outsize + pos + 3, restart);
-
 			/* avgqu-sz */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 aqusz,
 				 out + pos + 4, outsize + pos + 4, restart);
-
 			/* await */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 xds.await,
 				 out + pos + 5, outsize + pos + 5, restart);
-
 			/* svctm */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 xds.svctm,
 				 out + pos + 6, outsize + pos + 6, restart);
-
 			/* %util */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0, xds.util / 10.0,
@@ -2267,37 +2255,30 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
 				 out + pos, outsize + pos, restart);
-
 			/* txpck/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
 				 out + pos + 1, outsize + pos + 1, restart);
-
 			/* rxkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 rxkb / 1024,
 				 out + pos + 2, outsize + pos + 2, restart);
-
 			/* txkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 txkb / 1024,
 				 out + pos + 3, outsize + pos + 3, restart);
-
 			/* rxcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
 				 out + pos + 4, outsize + pos + 4, restart);
-
 			/* txcmp/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 				 out + pos + 5, outsize + pos + 5, restart);
-
 			/* rxmcst/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sndp->multicast, sndc->multicast, itv),
 				 out + pos + 6, outsize + pos + 6, restart);
-
 			/* %ifutil */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0, ifutil,
@@ -2459,42 +2440,34 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->rx_errors, snedc->rx_errors, itv),
 				 out + pos, outsize + pos, restart);
-
 			/* txerr/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->tx_errors, snedc->tx_errors, itv),
 				 out + pos + 1, outsize + pos + 1, restart);
-
 			/* rxdrop/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->rx_dropped, snedc->rx_dropped, itv),
 				 out + pos + 2, outsize + pos + 2, restart);
-
 			/* txdrop/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->tx_dropped, snedc->tx_dropped, itv),
 				 out + pos + 3, outsize + pos + 3, restart);
-
 			/* rxfifo/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->rx_fifo_errors, snedc->rx_fifo_errors, itv),
 				 out + pos + 4, outsize + pos + 4, restart);
-
 			/* txfifo/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->tx_fifo_errors, snedc->tx_fifo_errors, itv),
 				 out + pos + 5, outsize + pos + 5, restart);
-
 			/* coll/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->collisions, snedc->collisions, itv),
 				 out + pos + 6, outsize + pos + 6, restart);
-
 			/* txcarr/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->tx_carrier_errors, snedc->tx_carrier_errors, itv),
 				 out + pos + 7, outsize + pos + 7, restart);
-
 			/* rxfram/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv),
@@ -4735,17 +4708,14 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 				 out + pos, outsize + pos, svg_p->restart);
-
 			/* fch_txf/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 				 out + pos + 1, outsize + pos + 1, svg_p->restart);
-
 			/* fch_rxw/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv),
 				 out + pos + 2, outsize + pos + 2, svg_p->restart);
-
 			/* fch_txw/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv),
