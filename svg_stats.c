@@ -1245,11 +1245,11 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 	int group[] = {1, 1};
-	int g_fields[] = {0, 1};
+	int g_fields[] = {1, 0};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"Switching activity", "Task creation"};
-	char *g_title[] = {"cswch/s",
-			   "proc/s"};
+	char *title[] = {"Task creation", "Switching activity"};
+	char *g_title[] = {"proc/s",
+			   "cswch/s"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1266,13 +1266,13 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 		/* Check for min/max values */
 		save_extrema(1, 1, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax, g_fields);
-		/* cswch/s */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 S_VALUE(spp->context_switch, spc->context_switch, itv),
-			 out, outsize, svg_p->restart);
 		/* proc/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->processes, spc->processes, itv),
+			 out, outsize, svg_p->restart);
+		/* cswch/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(spp->context_switch, spc->context_switch, itv),
 			 out + 1, outsize + 1, svg_p->restart);
 	}
 
@@ -1544,8 +1544,8 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 {
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
-	int group1[] = {2, 2, 1, 1, 4, 5};
-	int g_type1[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_BAR_GRAPH,
+	int group1[] = {2, 1, 3, 1, 3, 5};
+	int g_type1[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH,
 			 SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	int group2[] = {3, 1, 1};
 	int g_type2[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_BAR_GRAPH};
@@ -1554,13 +1554,13 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			  "Memory utilization (5)", "Memory utilization (6)"};
 	char *title2[] = {"Swap utilization (1)", "Swap utilization (2)",
 			  "Swap utilization (3)"};
-	char *g_title1[] = {"MBmemfree", "MBmemused", "MBcached", "MBbuffers",
-			    "%memused", "%commit", "MBcommit", "MBactive", "MBinact",
+	char *g_title1[] = {"MBmemfree", "MBmemused", "%memused", "MBbuffers",
+			    "MBcached", "MBcommit", "%commit", "MBactive", "MBinact",
 			    "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
 			    "MBvmused"};
 	char *g_title2[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
 			    "%swpcad"};
-	int g_fields[] = {0, 3, 2, 20, 15, 21, 17, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+	int g_fields[] = {0, 3, 4, 20, 15, 21, 17, 5, 7, 8, 9, 10, 11, 12, 13, 14};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1581,20 +1581,20 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			     itv, spmin, spmax, g_fields);
 		/* Compute %memused min/max values */
 		tval = smc->tlmkb ? SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0;
-		if (tval > *(spmax + 4)) {
-			*(spmax + 4) = tval;
+		if (tval > *(spmax + 2)) {
+			*(spmax + 2) = tval;
 		}
-		if (tval < *(spmin + 4)) {
-			*(spmin + 4) = tval;
+		if (tval < *(spmin + 2)) {
+			*(spmin + 2) = tval;
 		}
 		/* Compute %commit min/max values */
 		tval = (smc->tlmkb + smc->tlskb) ?
 		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
-		if (tval > *(spmax + 5)) {
-			*(spmax + 5) = tval;
+		if (tval > *(spmax + 6)) {
+			*(spmax + 6) = tval;
 		}
-		if (tval < *(spmin + 5)) {
-			*(spmin + 5) = tval;
+		if (tval < *(spmin + 6)) {
+			*(spmin + 6) = tval;
 		}
 		/* Compute %swpused min/max values */
 		tval = smc->tlskb ?
@@ -1639,14 +1639,14 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) (smc->tlmkb - smc->frmkb)) / 1024,
 			 out + 1, outsize + 1, svg_p->restart);
-		/* MBcached */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) smc->camkb) / 1024,
-			  out + 2, outsize + 2, svg_p->restart);
 		/* MBbuffers */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->bufkb) / 1024,
 			 out + 3, outsize + 3, svg_p->restart);
+		/* MBcached */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 ((double) smc->camkb) / 1024,
+			  out + 4, outsize + 4, svg_p->restart);
 		/* MBswpfree */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->frskb) / 1024,
@@ -1662,7 +1662,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		/* MBcommit */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->comkb) / 1024,
-			 out + 6, outsize + 6, svg_p->restart);
+			 out + 5, outsize + 5, svg_p->restart);
 		/* MBactive */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->activekb) / 1024,
@@ -1700,13 +1700,13 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			 0.0,
 			 smc->tlmkb ?
 			 SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0,
-			 out + 4, outsize + 4, svg_p->dt);
+			 out + 2, outsize + 2, svg_p->dt);
 		/* %commit */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 (smc->tlmkb + smc->tlskb) ?
 			 SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0,
-			 out + 5, outsize + 5, svg_p->dt);
+			 out + 6, outsize + 6, svg_p->dt);
 		/* %swpused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
@@ -1770,9 +1770,9 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 	int group[] = {3, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"Kernel tables (1)", "Kernel tables (2)"};
-	char *g_title[] = {"~file-nr", "~inode-nr", "~dentunusd",
+	char *g_title[] = {"~dentunusd", "~file-nr", "~inode-nr",
 			   "~pty-nr"};
-	int g_fields[] = {0, 1, 2, 3};
+	int g_fields[] = {1, 2, 0, 3};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1789,17 +1789,17 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 		/* Check for min/max values */
 		save_extrema(0, 0, 4, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax, g_fields);
-		/* file-nr */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) skc->file_used,
-			  out, outsize, svg_p->restart);
-		/* inode-nr */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) skc->inode_used,
-			  out + 1, outsize + 1, svg_p->restart);
 		/* dentunusd */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) skc->dentry_stat,
+			  out, outsize, svg_p->restart);
+		/* file-nr */
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			  (unsigned long) skc->file_used,
+			  out + 1, outsize + 1, svg_p->restart);
+		/* inode-nr */
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			  (unsigned long) skc->inode_used,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* pty-nr */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1837,13 +1837,13 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 {
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
-	int group[] = {2, 3, 1};
+	int group[] = {2, 1, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"Queue length", "Load average", "Task list"};
+	char *title[] = {"Queue length", "Task list", "Load average"};
 	char *g_title[] = {"~runq-sz", "~blocked",
-			   "ldavg-1", "ldavg-5", "ldavg-15",
-			   "~plist-sz"};
-	int g_fields[] = {0, 1, 2, 3, 4, 5};
+			   "~plist-sz",
+			   "ldavg-1", "ldavg-5", "ldavg-15"};
+	int g_fields[] = {0, 1, 3, 4, 5, 2};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1868,29 +1868,29 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) sqc->procs_blocked,
 			  out + 1, outsize + 1, svg_p->restart);
-		/* ldavg-1 */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 (double) sqc->load_avg_1 / 100,
-			 out + 2, outsize + 2, svg_p->restart);
-		/* ldavg-5 */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 (double) sqc->load_avg_5 / 100,
-			 out + 3, outsize + 3, svg_p->restart);
-		/* ldavg-15 */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 (double) sqc->load_avg_15 / 100,
-			 out + 4, outsize + 4, svg_p->restart);
 		/* plist-sz */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) sqc->nr_threads,
-			  out + 5, outsize + 5, svg_p->restart);
+			  out + 2, outsize + 2, svg_p->restart);
+		/* ldavg-1 */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 (double) sqc->load_avg_1 / 100,
+			 out + 3, outsize + 3, svg_p->restart);
+		/* ldavg-5 */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 (double) sqc->load_avg_5 / 100,
+			 out + 4, outsize + 4, svg_p->restart);
+		/* ldavg-15 */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 (double) sqc->load_avg_15 / 100,
+			 out + 5, outsize + 5, svg_p->restart);
 	}
 
 	if (action & F_END) {
 		/* Fix min/max values for load average */
-		*(spmin + 2) /= 100; *(spmax + 2) /= 100;
 		*(spmin + 3) /= 100; *(spmax + 3) /= 100;
 		*(spmin + 4) /= 100; *(spmax + 4) /= 100;
+		*(spmin + 5) /= 100; *(spmax + 5) /= 100;
 
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
 				     spmin, spmax, out, outsize, svg_p, record_hdr);
@@ -2370,8 +2370,8 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 	char *g_title[] = {"rxerr/s", "txerr/s",
 			    "rxdrop/s", "txdrop/s",
 			    "rxfifo/s", "txfifo/s",
-			    "rxfram/s", "txcarr/s", "coll/s"};
-	int g_fields[] = {8, 0, 1, 2, 3, 4, 5, 6, 7};
+			    "coll/s", "txcarr/s", "rxfram/s"};
+	int g_fields[] = {6, 0, 1, 2, 3, 4, 5, 8, 7};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -2485,9 +2485,9 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 				 S_VALUE(snedp->tx_fifo_errors, snedc->tx_fifo_errors, itv),
 				 out + pos + 5, outsize + pos + 5, restart);
 
-			/* rxfram/s */
+			/* coll/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv),
+				 S_VALUE(snedp->collisions, snedc->collisions, itv),
 				 out + pos + 6, outsize + pos + 6, restart);
 
 			/* txcarr/s */
@@ -2495,9 +2495,9 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 				 S_VALUE(snedp->tx_carrier_errors, snedc->tx_carrier_errors, itv),
 				 out + pos + 7, outsize + pos + 7, restart);
 
-			/* coll/s */
+			/* rxfram/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(snedp->collisions, snedc->collisions, itv),
+				 S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv),
 				 out + pos + 8, outsize + pos + 8, restart);
 		}
 
@@ -2744,8 +2744,8 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"Network sockets (1)", "Network sockets (2)"};
 	char *g_title[] = {"~totsck",
-			   "~tcpsck", "~tcp-tw", "~udpsck", "~rawsck", "~ip-frag"};
-	int g_fields[] = {0, 1, 2, 3, 4, 5};
+			   "~tcpsck", "~udpsck", "~rawsck", "~ip-frag", "~tcp-tw"};
+	int g_fields[] = {0, 1, 5, 2, 3, 4};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -2770,21 +2770,21 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->tcp_inuse,
 			  out + 1, outsize + 1, svg_p->restart);
-		/* tcp-tw */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->tcp_tw,
-			  out + 2, outsize + 2, svg_p->restart);
 		/* udpsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->udp_inuse,
-			  out + 3, outsize + 3, svg_p->restart);
+			  out + 2, outsize + 2, svg_p->restart);
 		/* rawsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->raw_inuse,
-			  out + 4, outsize + 4, svg_p->restart);
+			  out + 3, outsize + 3, svg_p->restart);
 		/* ip-frag */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long) snsc->frag_inuse,
+			  out + 4, outsize + 4, svg_p->restart);
+		/* tcp-tw */
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			  (unsigned long) snsc->tcp_tw,
 			  out + 5, outsize + 5, svg_p->restart);
 	}
 
