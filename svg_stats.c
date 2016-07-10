@@ -2346,8 +2346,8 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 	int group[] = {2, 2, 2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH};
-	char *title[] = {"Network statistics (1)", "Network statistics (2)",
-			 "Network statistics (3)", "Network statistics (4)"};
+	char *title[] = {"Network errors statistics (1)", "Network errors statistics (2)",
+			 "Network errors statistics (3)", "Network errors statistics (4)"};
 	char *g_title[] = {"rxerr/s", "txerr/s",
 			    "rxdrop/s", "txdrop/s",
 			    "rxfifo/s", "txfifo/s",
@@ -2530,7 +2530,8 @@ __print_funct_t svg_print_net_nfs_stats(struct activity *a, int curr, int action
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
 	int group[] = {2, 2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"NFS client statistics (1)", "NFS client statistics (2)", "NFS client statistics (3)"};
+	char *title[] = {"NFS client statistics (1)", "NFS client statistics (2)",
+			 "NFS client statistics (3)"};
 	char *g_title[] = {"call/s", "retrans/s",
 			   "read/s", "write/s",
 			   "access/s", "getatt/s"};
@@ -2612,8 +2613,9 @@ __print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int actio
 	int group[] = {2, 3, 2, 2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"NFS server statistics (1)", "NFS server statistics (2)", "NFS server statistics (3)",
-			 "NFS server statistics (4)", "NFS server statistics (5)"};
+	char *title[] = {"NFS server statistics (1)", "NFS server statistics (2)",
+			 "NFS server statistics (3)", "NFS server statistics (4)",
+			 "NFS server statistics (5)"};
 	char *g_title[] = {"scall/s", "badcall/s",
 			   "packet/s", "udp/s", "tcp/s",
 			   "hit/s", "miss/s",
@@ -2715,7 +2717,7 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 		*snsc = (struct stats_net_sock *) a->buf[curr];
 	int group[] = {1, 5};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"Network sockets (1)", "Network sockets (2)"};
+	char *title[] = {"IPv4 network sockets (1)", "IPv4 network sockets (2)"};
 	char *g_title[] = {"~totsck",
 			   "~tcpsck", "~udpsck", "~rawsck", "~ip-frag", "~tcp-tw"};
 	int g_fields[] = {0, 1, 5, 2, 3, 4};
