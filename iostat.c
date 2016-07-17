@@ -1201,7 +1201,7 @@ void write_stats(int curr, struct tm *rectime)
  * Main loop: Read I/O stats from the relevant sources and display them.
  *
  * IN:
- * @count	Number of lines of stats to print.
+ * @count	Number of reports to print.
  * @rectime	Current date and time.
  ***************************************************************************
  */
