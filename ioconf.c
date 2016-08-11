@@ -287,7 +287,8 @@ int ioc_init(void)
 			 * exception info
 			 */
 			xblkp->ext_minor = iocp->ctrlno;
-			strcpy(xblkp->ext_name, blkp->name);
+			strncpy(xblkp->ext_name, blkp->name, IOC_NAMELEN + 1);
+			xblkp->ext_name[IOC_NAMELEN] = '\0';
 			xblkp->ext = 1;
 			continue;
 		}
@@ -410,7 +411,8 @@ char *ioc_name(unsigned int major, unsigned int minor)
 
 	/* Is this an extension record? */
 	if (p->blkp->ext && (p->blkp->ext_minor == minor)) {
-		strcpy(name, p->blkp->ext_name);
+		strncpy(name, p->blkp->ext_name, IOC_DEVLEN + 1);
+		name[IOC_DEVLEN] = '\0';
 		return (name);
 	}
 

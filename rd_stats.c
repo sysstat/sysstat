@@ -2090,7 +2090,7 @@ void read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, int nbr)
 void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 {
 	FILE *fp;
-	char line[512], fs_name[MAX_FS_LEN], mountp[256];
+	char line[512], fs_name[128], mountp[256];
 	int fs = 0;
 	struct stats_filesystem *st_filesystem_i;
 	struct statvfs buf;
@@ -2130,7 +2130,8 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 			st_filesystem_i->f_bavail = buf.f_bavail * buf.f_frsize;
 			st_filesystem_i->f_files  = buf.f_files;
 			st_filesystem_i->f_ffree  = buf.f_ffree;
-			strcpy(st_filesystem_i->fs_name, fs_name);
+			strncpy(st_filesystem_i->fs_name, fs_name, MAX_FS_LEN);
+			st_filesystem_i->fs_name[MAX_FS_LEN - 1] = '\0';
 			strncpy(st_filesystem_i->mountp, mountp, MAX_FS_LEN);
 			st_filesystem_i->mountp[MAX_FS_LEN - 1] = '\0';
 		}
@@ -2216,7 +2217,8 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 			st_fc_i->f_txframes = tx_frames;
 			st_fc_i->f_rxwords  = rx_words;
 			st_fc_i->f_txwords  = tx_words;
-			strcpy(st_fc_i->fchost_name, drd->d_name);
+			strncpy(st_fc_i->fchost_name, drd->d_name, MAX_FCH_LEN);
+			st_fc_i->fchost_name[MAX_FCH_LEN - 1] = '\0';
 		}
 
 	}

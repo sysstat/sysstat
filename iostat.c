@@ -363,7 +363,8 @@ void presave_device_list(void)
 
 		/* Now save devices and group names in the io_hdr_stats structures */
 		for (i = 0; (i < dlist_idx) && (i < iodev_nr); i++, shi++, sdli++) {
-			strcpy(shi->name, sdli->dev_name);
+			strncpy(shi->name, sdli->dev_name, MAX_NAME_LEN);
+			shi->name[MAX_NAME_LEN - 1] = '\0';
 			shi->used = TRUE;
 			if (shi->name[0] == ' ') {
 				/* Current device name is in fact the name of a group */
@@ -382,7 +383,8 @@ void presave_device_list(void)
 		 * included in that group.
 		 */
 		shi += iodev_nr - 1;
-		strcpy(shi->name, group_name);
+		strncpy(shi->name, group_name, MAX_NAME_LEN);
+		shi->name[MAX_NAME_LEN - 1] = '\0';
 		shi->used = TRUE;
 		shi->status = DISK_GROUP;
 	}

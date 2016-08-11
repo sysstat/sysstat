@@ -353,7 +353,8 @@ void read_cifs_stat(int curr)
 			else {
 				start = 1;
 			}
-			strcpy(cifs_name, name_tmp);
+			strncpy(cifs_name, name_tmp, MAX_NAME_LEN);
+			cifs_name[MAX_NAME_LEN - 1] = '\0';
 		}
 		else {
 			if (!strncmp(line, "Reads:", 6)) {

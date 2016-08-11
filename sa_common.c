@@ -699,7 +699,7 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 					 * actually unregistered.
 					 */
 					memset(sndp, 0, STATS_NET_DEV_SIZE);
-					strcpy(sndp->interface, sndc->interface);
+					strncpy(sndp->interface, sndc->interface, MAX_IFACE_LEN - 1);
 				}
 			}
 			return index;
@@ -721,7 +721,7 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 	sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
 	/* Since the name is not the same, reset all the structure */
 	memset(sndp, 0, STATS_NET_DEV_SIZE);
-	strcpy(sndp->interface, sndc->interface);
+	strncpy(sndp->interface, sndc->interface, MAX_IFACE_LEN - 1);
 
 	return  index;
 }
@@ -772,7 +772,7 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 				 * actually unregistered.
 				 */
 				memset(snedp, 0, STATS_NET_EDEV_SIZE);
-				strcpy(snedp->interface, snedc->interface);
+				strncpy(snedp->interface, snedc->interface, MAX_IFACE_LEN - 1);
 			}
 			return index;
 		}
@@ -793,7 +793,7 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 	snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
 	/* Since the name is not the same, reset all the structure */
 	memset(snedp, 0, STATS_NET_EDEV_SIZE);
-	strcpy(snedp->interface, snedc->interface);
+	strncpy(snedp->interface, snedc->interface, MAX_IFACE_LEN - 1);
 
 	return  index;
 }
