@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-06-24 13:49+0200\n"
+"POT-Creation-Date: 2016-08-15 12:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,62 +47,9 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: iostat.c:1399 sa_common.c:1633
+#: iostat.c:1401 sa_common.c:1633
 #, c-format
 msgid "Invalid type of persistent device name\n"
-msgstr ""
-
-#: sadf_misc.c:752
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr ""
-
-#: sadf_misc.c:761
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr ""
-
-#: sadf_misc.c:762
-msgid "no"
-msgstr ""
-
-#: sadf_misc.c:762
-msgid "yes"
-msgstr ""
-
-#: sadf_misc.c:765
-#, c-format
-msgid "Host: "
-msgstr ""
-
-#: sadf_misc.c:771
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr ""
-
-#: sadf_misc.c:777
-#, c-format
-msgid "File date: %s\n"
-msgstr ""
-
-#: sadf_misc.c:780
-#, c-format
-msgid "File time: "
-msgstr ""
-
-#: sadf_misc.c:785
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr ""
-
-#: sadf_misc.c:791
-#, c-format
-msgid "List of activities:\n"
-msgstr ""
-
-#: sadf_misc.c:804
-#, c-format
-msgid "\t[Unknown activity format]"
 msgstr ""
 
 #: sadc.c:89
@@ -128,7 +75,7 @@ msgstr ""
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:508 rd_stats.c:69
+#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
 #: sa_common.c:1263 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -383,11 +330,11 @@ msgstr ""
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
-#: pr_stats.c:2483 pr_stats.c:2495 pr_stats.c:2599 pr_stats.c:2610
+#: pr_stats.c:2494 pr_stats.c:2506 pr_stats.c:2610 pr_stats.c:2621
 msgid "Summary:"
 msgstr ""
 
-#: pr_stats.c:2538
+#: pr_stats.c:2549
 msgid "Other devices not listed here"
 msgstr ""
 
@@ -487,4 +434,57 @@ msgstr ""
 #: count.c:169
 #, c-format
 msgid "Cannot handle so many processors!\n"
+msgstr ""
+
+#: sadf_misc.c:752
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr ""
+
+#: sadf_misc.c:761
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr ""
+
+#: sadf_misc.c:762
+msgid "no"
+msgstr ""
+
+#: sadf_misc.c:762
+msgid "yes"
+msgstr ""
+
+#: sadf_misc.c:765
+#, c-format
+msgid "Host: "
+msgstr ""
+
+#: sadf_misc.c:771
+#, c-format
+msgid "Number of CPU for last samples in file: %u\n"
+msgstr ""
+
+#: sadf_misc.c:777
+#, c-format
+msgid "File date: %s\n"
+msgstr ""
+
+#: sadf_misc.c:780
+#, c-format
+msgid "File time: "
+msgstr ""
+
+#: sadf_misc.c:785
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr ""
+
+#: sadf_misc.c:791
+#, c-format
+msgid "List of activities:\n"
+msgstr ""
+
+#: sadf_misc.c:804
+#, c-format
+msgid "\t[Unknown activity format]"
 msgstr ""

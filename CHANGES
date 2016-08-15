@@ -1,5 +1,16 @@
 Changes:
 
+2016/08/15: Version 11.4.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Workaround for I/O and transfer rates statistics which may
+	  be wrongly calculated if a filesystem is unmounted [11.2.6].
+	* SVG: Fix how bar graphs are displayed for filesystems statistics
+	  in order to not loose the first sample.
+	* SVG: Change graphs order to be consistent with the output of sar.
+	* SVG: Change some graphs's title.
+	* Replace strcpy() with strncpy() to avoid buffer overflows [11.2.6].
+	* Fixed unsigned compared against 0 problem (CID#127473) [11.2.6].
+	* NLS updated.
+
 2016/06/24: Version 11.3.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* SVG: Add SVG output for ICMP{v4,v6}, IPv6, UDPv6, voltage inputs,
 	  NFS client, NFS server, disks, filesystems and FC HBA statistics.
