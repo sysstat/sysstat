@@ -1210,7 +1210,8 @@ int main(int argc, char **argv)
 	/* Get system name, release number and hostname */
 	uname(&header);
 	print_gal_header(&(mp_tstamp[0]), header.sysname, header.release,
-			 header.nodename, header.machine, get_cpu_nr(~0, FALSE));
+			 header.nodename, header.machine, get_cpu_nr(~0, FALSE),
+			 PLAIN_OUTPUT);
 
 	/* Main loop */
 	rw_mpstat_loop(dis_hdr, rows);

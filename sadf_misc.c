@@ -766,7 +766,8 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
-				 cpu_nr > 1 ? cpu_nr - 1 : 1);
+				 cpu_nr > 1 ? cpu_nr - 1 : 1,
+				 PLAIN_OUTPUT);
 
 		printf(_("Number of CPU for last samples in file: %u\n"),
 		       file_hdr->sa_last_cpu_nr > 1 ? file_hdr->sa_last_cpu_nr - 1 : 1);
@@ -848,7 +849,8 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
-				 cpu_nr > 1 ? cpu_nr - 1 : 1);
+				 cpu_nr > 1 ? cpu_nr - 1 : 1,
+				 PLAIN_OUTPUT);
 		printf("</text>\n");
 	}
 

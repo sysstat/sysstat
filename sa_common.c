@@ -611,7 +611,8 @@ void print_report_hdr(unsigned int flags, struct tm *rectime,
 	/* Display the header */
 	print_gal_header(rectime, file_hdr->sa_sysname, file_hdr->sa_release,
 			 file_hdr->sa_nodename, file_hdr->sa_machine,
-			 cpu_nr > 1 ? cpu_nr - 1 : 1);
+			 cpu_nr > 1 ? cpu_nr - 1 : 1,
+			 PLAIN_OUTPUT);
 }
 
 /*

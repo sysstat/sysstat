@@ -29,6 +29,8 @@
 #define FALSE	0
 #define TRUE	1
 
+#define PLAIN_OUTPUT	0
+
 #define DISP_HDR	1
 
 /* Number of seconds per day */
@@ -265,7 +267,7 @@ double ll_sp_value
 int is_iso_time_fmt
 	(void);
 int print_gal_header
-	(struct tm *, char *, char *, char *, char *, int);
+	(struct tm *, char *, char *, char *, char *, int, int);
 void print_version
 	(void);
 char *strtolower

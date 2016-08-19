@@ -1613,7 +1613,8 @@ int main(int argc, char **argv)
 	/* Get system name, release number and hostname */
 	uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
-			     header.nodename, header.machine, cpu_nr)) {
+			     header.nodename, header.machine, cpu_nr,
+			     DISPLAY_JSON_OUTPUT(flags))) {
 		flags |= I_D_ISO;
 	}
 	printf("\n");

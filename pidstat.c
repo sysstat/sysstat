@@ -2740,7 +2740,8 @@ int main(int argc, char **argv)
 	/* Get system name, release number and hostname */
 	uname(&header);
 	print_gal_header(&(ps_tstamp[0]), header.sysname, header.release,
-			 header.nodename, header.machine, cpu_nr);
+			 header.nodename, header.machine, cpu_nr,
+			 PLAIN_OUTPUT);
 
 	/* Main loop */
 	rw_pidstat_loop(dis_hdr, rows);

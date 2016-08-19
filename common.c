@@ -422,13 +422,15 @@ void xprintf(int nr_tab, const char *fmtf, ...)
  * @nodename	Hostname to display.
  * @machine	Machine architecture to display.
  * @cpu_nr	Number of CPU.
+ * @format	Set to FALSE for (default) plain output, and to TRUE for
+ * 		JSON format output.
  *
  * RETURNS:
  * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
  ***************************************************************************
  */
 int print_gal_header(struct tm *rectime, char *sysname, char *release,
-		     char *nodename, char *machine, int cpu_nr)
+		     char *nodename, char *machine, int cpu_nr, int format)
 {
 	char cur_date[64];
 	int rc = 0;
@@ -444,8 +446,24 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 		strftime(cur_date, sizeof(cur_date), "%x", rectime);
 	}
 
-	printf("%s %s (%s) \t%s \t_%s_\t(%d CPU)\n", sysname, release, nodename,
-	       cur_date, machine, cpu_nr);
+	if (format == PLAIN_OUTPUT) {
+		/* Plain output */
+		printf("%s %s (%s) \t%s \t_%s_\t(%d CPU)\n", sysname, release, nodename,
+		       cur_date, machine, cpu_nr);
+	}
+	else {
+		/* JSON output */
+		xprintf(0, "{\"sysstat\": {");
+		xprintf(1, "\"hosts\": [");
+		xprintf(2, "{");
+		xprintf(3, "\"nodename\": \"%s\",", nodename);
+		xprintf(3, "\"sysname\": \"%s\",", sysname);
+		xprintf(3, "\"release\": \"%s\",", release);
+		xprintf(3, "\"machine\": \"%s\",", machine);
+		xprintf(3, "\"number-of-cpus\": %d,", cpu_nr);
+		xprintf(3, "\"date\": \"%s\",", cur_date);
+		xprintf(3, "\"statistics\": [");
+	}
 
 	return rc;
 }
