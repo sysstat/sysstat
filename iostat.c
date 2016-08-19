@@ -817,6 +817,31 @@ void compute_device_groups_stats(int curr)
 
 /*
  ***************************************************************************
+ * Write current sample's timestamp, either in plain or JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @rectime	Current date and time.
+ ***************************************************************************
+ */
+void write_sample_timestamp(int tab, struct tm *rectime)
+{
+	if (DISPLAY_ISO(flags)) {
+		strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
+	}
+	else {
+		strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
+	}
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		xprintf(tab, "\"timestamp\": \"%s\",", timestamp);
+	}
+	else {
+		printf("%s\n", timestamp);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display CPU utilization.
  *
  * IN:
@@ -1056,7 +1081,7 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
  */
 void write_stats(int curr, struct tm *rectime)
 {
-	int dev, i, fctr = 1;
+	int dev, i, fctr = 1, tab = 4;
 	unsigned long long itv;
 	struct io_hdr_stats *shi;
 	struct io_dlist *st_dev_list_i;
@@ -1064,15 +1089,13 @@ void write_stats(int curr, struct tm *rectime)
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		xprintf(tab++, "{");
+	}
+
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags)) {
-		if (DISPLAY_ISO(flags)) {
-			strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
-		}
-		else {
-			strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
-		}
-		printf("%s\n", timestamp);
+		write_sample_timestamp(tab, rectime);
 #ifdef DEBUG
 		if (DISPLAY_DEBUG(flags)) {
 			fprintf(stderr, "%s\n", timestamp);
@@ -1617,7 +1640,9 @@ int main(int argc, char **argv)
 			     DISPLAY_JSON_OUTPUT(flags))) {
 		flags |= I_D_ISO;
 	}
-	printf("\n");
+	if (!DISPLAY_JSON_OUTPUT(flags)) {
+		printf("\n");
+	}
 
 	/* Set a handler for SIGALRM */
 	memset(&alrm_act, 0, sizeof(alrm_act));
