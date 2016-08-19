@@ -272,5 +272,9 @@ char *strtolower
 	(char *);
 void sysstat_panic
 	(const char *, int);
+void xprintf
+	(int, const char *, ...);
+void xprintf0
+	(int, const char *, ...);
 
 #endif  /* _COMMON_H */

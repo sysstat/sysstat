@@ -124,10 +124,6 @@
 
 void convert_file
 	(char [], struct activity *[]);
-void xprintf
-	(int, const char *, ...);
-void xprintf0
-	(int, const char *, ...);
 
 /*
  * Prototypes used to display restart messages

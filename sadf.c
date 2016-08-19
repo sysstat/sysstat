@@ -183,69 +183,6 @@ void check_format_options(void)
 
 /*
  ***************************************************************************
- * Print tabulations
- *
- * IN:
- * @nr_tab	Number of tabs to print.
- ***************************************************************************
- */
-void prtab(int nr_tab)
-{
-	int i;
-
-	for (i = 0; i < nr_tab; i++) {
-		printf("\t");
-	}
-}
-
-/*
- ***************************************************************************
- * printf() function modified for logic #1 (XML-like) display. Don't print a
- * CR at the end of the line.
- *
- * IN:
- * @nr_tab	Number of tabs to print.
- * @fmtf	printf() format.
- ***************************************************************************
- */
-void xprintf0(int nr_tab, const char *fmtf, ...)
-{
-	static char buf[1024];
-	va_list args;
-
-	va_start(args, fmtf);
-	vsnprintf(buf, sizeof(buf), fmtf, args);
-	va_end(args);
-
-	prtab(nr_tab);
-	printf("%s", buf);
-}
-
-/*
- ***************************************************************************
- * printf() function modified for logic #1 (XML-like) display. Print a CR
- * at the end of the line.
- *
- * IN:
- * @nr_tab	Number of tabs to print.
- * @fmtf	printf() format.
- ***************************************************************************
- */
-void xprintf(int nr_tab, const char *fmtf, ...)
-{
-	static char buf[1024];
-	va_list args;
-
-	va_start(args, fmtf);
-	vsnprintf(buf, sizeof(buf), fmtf, args);
-	va_end(args);
-
-	prtab(nr_tab);
-	printf("%s\n", buf);
-}
-
-/*
- ***************************************************************************
  * Save or restore number of items for all known activities.
  *
  * IN:
