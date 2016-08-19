@@ -927,14 +927,20 @@ void write_cpu_stat(int curr, unsigned long long itv, int tab)
 
 /*
  ***************************************************************************
- * Display disk stats header.
+ * Display disk stats header in plain or JSON format.
  *
  * OUT:
  * @fctr	Conversion factor.
+ * @tab		Number of tabs to print (JSON format only).
  ***************************************************************************
  */
-void write_disk_stat_header(int *fctr)
+void write_disk_stat_header(int *fctr, int *tab)
 {
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		xprintf((*tab)++, "\"disk\": [");
+		return;
+	}
+
 	if (DISPLAY_EXTENDED(flags)) {
 		/* Extended stats */
 		printf("Device:         rrqm/s   wrqm/s     r/s     w/s");
@@ -973,7 +979,6 @@ void write_disk_stat_header(int *fctr)
  * Display extended stats, read from /proc/{diskstats,partitions} or /sys.
  *
  * IN:
- * @curr	Index in array for current sample statistics.
  * @itv		Interval of time.
  * @fctr	Conversion factor.
  * @shi		Structures describing the devices and partitions.
@@ -981,7 +986,7 @@ void write_disk_stat_header(int *fctr)
  * @ioj		Previous sample statistics.
  ***************************************************************************
  */
-void write_ext_stat(int curr, unsigned long long itv, int fctr,
+void write_ext_stat(unsigned long long itv, int fctr,
 		    struct io_hdr_stats *shi, struct io_stats *ioi,
 		    struct io_stats *ioj)
 {
@@ -1067,31 +1072,24 @@ void write_ext_stat(int curr, unsigned long long itv, int fctr,
 
 /*
  ***************************************************************************
- * Write basic stats, read from /proc/diskstats or from sysfs.
+ * Write basic stats, read from /proc/diskstats or from sysfs, in plain
+ * format.
  *
  * IN:
- * @curr	Index in array for current sample statistics.
  * @itv		Interval of time.
  * @fctr	Conversion factor.
- * @shi		Structures describing the devices and partitions.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
+ * @devname	Current device name.
+ * @rd_sec	Number of sectors read.
+ * @wr_sec	Number of sectors written.
  ***************************************************************************
  */
-void write_basic_stat(int curr, unsigned long long itv, int fctr,
-		      struct io_hdr_stats *shi, struct io_stats *ioi,
-		      struct io_stats *ioj)
+void write_plain_basic_stat(unsigned long long itv, int fctr,
+			    struct io_stats *ioi, struct io_stats *ioj,
+			    char *devname, unsigned long long rd_sec,
+			    unsigned long long wr_sec)
 {
-	char *devname = NULL;
-	unsigned long long rd_sec, wr_sec;
-
-	/* Print device name */
-	if (DISPLAY_PERSIST_NAME_I(flags)) {
-		devname = get_persistent_name_from_pretty(shi->name);
-	}
-	if (!devname) {
-		devname = shi->name;
-	}
 	if (DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%s\n", devname, 0);
 		printf("%13s", "");
@@ -1099,17 +1097,6 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 	else {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
-
-	/* Print stats coming from /sys or /proc/diskstats */
-	rd_sec = ioi->rd_sectors - ioj->rd_sectors;
-	if ((ioi->rd_sectors < ioj->rd_sectors) && (ioj->rd_sectors <= 0xffffffff)) {
-		rd_sec &= 0xffffffff;
-	}
-	wr_sec = ioi->wr_sectors - ioj->wr_sectors;
-	if ((ioi->wr_sectors < ioj->wr_sectors) && (ioj->wr_sectors <= 0xffffffff)) {
-		wr_sec &= 0xffffffff;
-	}
-
 	cprintf_f(1, 8, 2,
 		  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
 	cprintf_f(2, 12, 2,
@@ -1123,6 +1110,88 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
 
 /*
  ***************************************************************************
+ * Write basic stats, read from /proc/diskstats or from sysfs, in JSON
+ * format.
+ *
+ * IN:
+ * @tab		Number of tabs to print (JSON output only).
+ * @itv		Interval of time.
+ * @fctr	Conversion factor.
+ * @ioi		Current sample statistics.
+ * @ioj		Previous sample statistics.
+ * @devname	Current device name.
+ * @rd_sec	Number of sectors read.
+ * @wr_sec	Number of sectors written.
+ ***************************************************************************
+ */
+void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
+			   struct io_stats *ioi, struct io_stats *ioj,
+			   char *devname, unsigned long long rd_sec,
+			   unsigned long long wr_sec)
+{
+	xprintf0(tab,
+		 "{\"disk_device\": \"%s\", \"tps\": %.2f, "
+		 "\"kB_read_per_sec\": %.2f, \"kB_wrtn_per_sec\": %.2f, "
+		 "\"kB_read\": %llu, \"kB_wrtn\": %llu}",
+		 devname,
+		 S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv),
+		 S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+		 S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+		 (unsigned long long) rd_sec / fctr,
+		 (unsigned long long) wr_sec / fctr);
+}
+
+/*
+ ***************************************************************************
+ * Write basic stats, read from /proc/diskstats or from sysfs, in plain or
+ * JSON format.
+ *
+ * IN:
+ * @itv		Interval of time.
+ * @fctr	Conversion factor.
+ * @shi		Structures describing the devices and partitions.
+ * @ioi		Current sample statistics.
+ * @ioj		Previous sample statistics.
+ * @tab		Number of tabs to print (JSON format only).
+ ***************************************************************************
+ */
+void write_basic_stat(unsigned long long itv, int fctr,
+		      struct io_hdr_stats *shi, struct io_stats *ioi,
+		      struct io_stats *ioj, int tab)
+{
+	char *devname = NULL;
+	unsigned long long rd_sec, wr_sec;
+
+	/* Print device name */
+	if (DISPLAY_PERSIST_NAME_I(flags)) {
+		devname = get_persistent_name_from_pretty(shi->name);
+	}
+	if (!devname) {
+		devname = shi->name;
+	}
+
+	/* Print stats coming from /sys or /proc/diskstats */
+	rd_sec = ioi->rd_sectors - ioj->rd_sectors;
+	if ((ioi->rd_sectors < ioj->rd_sectors) && (ioj->rd_sectors <= 0xffffffff)) {
+		rd_sec &= 0xffffffff;
+	}
+	wr_sec = ioi->wr_sectors - ioj->wr_sectors;
+	if ((ioi->wr_sectors < ioj->wr_sectors) && (ioj->wr_sectors <= 0xffffffff)) {
+		wr_sec &= 0xffffffff;
+	}
+
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		write_json_basic_stat(tab, itv, fctr, ioi, ioj, devname,
+				      rd_sec, wr_sec);
+	}
+	else {
+		write_plain_basic_stat(itv, fctr, ioi, ioj, devname,
+				       rd_sec, wr_sec);
+	}
+}
+
+/*
+ ***************************************************************************
  * Print everything now (stats and uptime).
  *
  * IN:
@@ -1132,7 +1201,7 @@ void write_basic_stat(int curr, unsigned long long itv, int fctr,
  */
 void write_stats(int curr, struct tm *rectime)
 {
-	int dev, i, fctr = 1, tab = 4;
+	int dev, i, fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
 	struct io_hdr_stats *shi;
 	struct io_dlist *st_dev_list_i;
@@ -1201,7 +1270,7 @@ void write_stats(int curr, struct tm *rectime)
 		shi = st_hdr_iodev;
 
 		/* Display disk stats header */
-		write_disk_stat_header(&fctr);
+		write_disk_stat_header(&fctr, &tab);
 
 		for (i = 0; i < iodev_nr; i++, shi++) {
 			if (shi->used) {
@@ -1267,13 +1336,21 @@ void write_stats(int curr, struct tm *rectime)
 				}
 #endif
 
+				if (DISPLAY_JSON_OUTPUT(flags) && next) {
+					printf(",\n");
+				}
+				next = TRUE;
+
 				if (DISPLAY_EXTENDED(flags)) {
-					write_ext_stat(curr, itv, fctr, shi, ioi, ioj);
+					write_ext_stat(itv, fctr, shi, ioi, ioj);
 				}
 				else {
-					write_basic_stat(curr, itv, fctr, shi, ioi, ioj);
+					write_basic_stat(itv, fctr, shi, ioi, ioj, tab);
 				}
 			}
+		}
+		if (DISPLAY_JSON_OUTPUT(flags)) {
+			xprintf(--tab, "]");
 		}
 	}
 
