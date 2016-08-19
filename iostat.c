@@ -88,13 +88,13 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
 #endif
@@ -1406,6 +1406,17 @@ int main(int argc, char **argv)
 				 * them as human readable by default.
 				 */
 				flags |= I_D_PERSIST_NAME + I_D_HUMAN_READ;
+				opt++;
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
+
+		else if (!strcmp(argv[opt], "-o")) {
+			/* Select output format */
+			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
+				flags |= I_D_JSON_OUTPUT;
 				opt++;
 			}
 			else {

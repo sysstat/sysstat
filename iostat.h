@@ -8,6 +8,9 @@
 
 #include "common.h"
 
+/* Keywords */
+#define K_JSON	"JSON"
+
 /* I_: iostat - D_: Display - F_: Flag */
 #define I_D_CPU			0x00001
 #define I_D_DISK		0x00002
@@ -24,7 +27,7 @@
 #define I_D_HUMAN_READ		0x01000
 #define I_D_PERSIST_NAME	0x02000
 #define I_D_OMIT_SINCE_BOOT	0x04000
-/* Unused			0x08000 */
+#define I_D_JSON_OUTPUT		0x08000
 #define I_D_DEVMAP_NAME		0x10000
 #define I_D_ISO			0x20000
 #define I_D_GROUP_TOTAL_ONLY	0x40000
@@ -49,6 +52,7 @@
 #define DISPLAY_ISO(m)			(((m) & I_D_ISO)              == I_D_ISO)
 #define DISPLAY_GROUP_TOTAL_ONLY(m)	(((m) & I_D_GROUP_TOTAL_ONLY) == I_D_GROUP_TOTAL_ONLY)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & I_D_ZERO_OMIT)        == I_D_ZERO_OMIT)
+#define DISPLAY_JSON_OUTPUT(m)		(((m) & I_D_JSON_OUTPUT)        == I_D_JSON_OUTPUT)
 
 /* Preallocation constants */
 #define NR_DEV_PREALLOC		4
