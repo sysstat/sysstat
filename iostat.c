@@ -842,14 +842,14 @@ void write_sample_timestamp(int tab, struct tm *rectime)
 
 /*
  ***************************************************************************
- * Display CPU utilization.
+ * Display CPU utilization in plain format.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
  * @itv		Interval of time.
  ***************************************************************************
  */
-void write_cpu_stat(int curr, unsigned long long itv)
+void write_plain_cpu_stat(int curr, unsigned long long itv)
 {
 	printf("avg-cpu:  %%user   %%nice %%system %%iowait  %%steal   %%idle\n");
 
@@ -872,6 +872,57 @@ void write_cpu_stat(int curr, unsigned long long itv)
 		   ll_sp_value(st_cpu[!curr]->cpu_idle,   st_cpu[curr]->cpu_idle,   itv));
 
 	printf("\n\n");
+}
+
+/*
+ ***************************************************************************
+ * Display CPU utilization in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print (JSON format only).
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time.
+ ***************************************************************************
+ */
+void write_json_cpu_stat(int tab, int curr, unsigned long long itv)
+{
+	xprintf0(tab, "\"avg-cpu\":  {\"user\": %.2f, \"nice\": %.2f, \"system\": %.2f,"
+		      " \"iowait\": %.2f, \"steal\": %.2f, \"idle\": %.2f}",
+		 ll_sp_value(st_cpu[!curr]->cpu_user,   st_cpu[curr]->cpu_user,   itv),
+		 ll_sp_value(st_cpu[!curr]->cpu_nice,   st_cpu[curr]->cpu_nice,   itv),
+		 /*
+		  * Time spent in system mode also includes time spent servicing
+		  * hard and soft interrupts.
+		  */
+		 ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
+			     st_cpu[!curr]->cpu_hardirq,
+			     st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
+			     st_cpu[curr]->cpu_hardirq, itv),
+		 ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, itv),
+		 ll_sp_value(st_cpu[!curr]->cpu_steal,  st_cpu[curr]->cpu_steal,  itv),
+		 (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
+		 0.0 :
+		 ll_sp_value(st_cpu[!curr]->cpu_idle,   st_cpu[curr]->cpu_idle,   itv));
+}
+
+/*
+ ***************************************************************************
+ * Display CPU utilization in plain or JSON format.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time.
+ * @tab		Number of tabs to print (JSON format only).
+ ***************************************************************************
+ */
+void write_cpu_stat(int curr, unsigned long long itv, int tab)
+{
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		write_json_cpu_stat(tab, curr, itv);
+	}
+	else {
+		write_plain_cpu_stat(curr, itv);
+	}
 }
 
 /*
@@ -1129,7 +1180,14 @@ void write_stats(int curr, struct tm *rectime)
 #endif
 
 		/* Display CPU utilization */
-		write_cpu_stat(curr, itv);
+		write_cpu_stat(curr, itv, tab);
+
+		if (DISPLAY_JSON_OUTPUT(flags)) {
+			if (DISPLAY_DISK(flags)) {
+				printf(",");
+			}
+			printf("\n");
+		}
 	}
 
 	if (cpu_nr > 1) {
@@ -1217,6 +1275,12 @@ void write_stats(int curr, struct tm *rectime)
 				}
 			}
 		}
+	}
+
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		xprintf0(--tab, "}");
+	}
+	else {
 		printf("\n");
 	}
 }
@@ -1308,12 +1372,22 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			skip = 0;
 		}
 
+		if (DISPLAY_JSON_OUTPUT(flags)) {
+			if (count) {
+			printf(",");
+			}
+			printf("\n");
+		}
 		if (count) {
 			curr ^= 1;
 			pause();
 		}
 	}
 	while (count);
+
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+	}
 }
 
 /*
