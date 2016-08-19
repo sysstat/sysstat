@@ -976,7 +976,8 @@ void write_disk_stat_header(int *fctr, int *tab)
 
 /*
  ***************************************************************************
- * Display extended stats, read from /proc/{diskstats,partitions} or /sys.
+ * Display extended stats, read from /proc/{diskstats,partitions} or /sys,
+ * in plain format.
  *
  * IN:
  * @itv		Interval of time.
@@ -984,11 +985,114 @@ void write_disk_stat_header(int *fctr, int *tab)
  * @shi		Structures describing the devices and partitions.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
+ * @devname	Current device name.
+ * @xds		Extended stats for current device.
+ * @r_await	r_await metric value.
+ * @w_await	w_await metric value.
+ ***************************************************************************
+ */
+void write_plain_ext_stat(unsigned long long itv, int fctr,
+			  struct io_hdr_stats *shi, struct io_stats *ioi,
+			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
+			  double r_await, double w_await)
+{
+	if (DISPLAY_HUMAN_READ(flags)) {
+		cprintf_in(IS_STR, "%s\n", devname, 0);
+		printf("%13s", "");
+	}
+	else {
+		cprintf_in(IS_STR, "%-13s", devname, 0);
+	}
+
+	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
+	cprintf_f(2, 8, 2,
+		  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+		  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
+	cprintf_f(2, 7, 2,
+		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
+	cprintf_f(4, 8, 2,
+		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+		  xds->arqsz,
+		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+	cprintf_f(3, 7, 2, xds->await, r_await, w_await);
+	/* The ticks output is biased to output 1000 ticks per second */
+	cprintf_f(1, 6, 2, xds->svctm);
+	/*
+	 * Again: Ticks in milliseconds.
+	 * In the case of a device group (option -g), shi->used is the number of
+	 * devices in the group. Else shi->used equals 1.
+	 */
+	cprintf_pc(1, 6, 2,
+		   shi->used ? xds->util / 10.0 / (double) shi->used
+		             : xds->util / 10.0);	/* shi->used should never be zero here */
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display extended stats, read from /proc/{diskstats,partitions} or /sys,
+ * in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print (JSON output only).
+ * @itv		Interval of time.
+ * @fctr	Conversion factor.
+ * @shi		Structures describing the devices and partitions.
+ * @ioi		Current sample statistics.
+ * @ioj		Previous sample statistics.
+ * @devname	Current device name.
+ * @xds		Extended stats for current device.
+ * @r_await	r_await metric value.
+ * @w_await	w_await metric value.
+ ***************************************************************************
+ */
+void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
+		    struct io_hdr_stats *shi, struct io_stats *ioi,
+		    struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
+		    double r_await, double w_await)
+{
+	xprintf0(tab,
+		 "{\"disk_device\": \"%s\", \"rrqm\": %.2f, \"wrqm\": %.2f, "
+		 "\"r\": %.2f, \"w\": %.2f, \"rkB\": %.2f, \"wkB\": %.2f, "
+		 "\"avgrq-sz\": %.2f, \"avgqu-sz\": %.2f, "
+		 "\"await\": %.2f, \"r_await\": %.2f, \"w_await\": %.2f, "
+		 "\"svctm\": %.2f, \"util\": %.2f}",
+		 devname,
+		 S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+		 S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
+		 S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+		 S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
+		 S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
+		 S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+		 xds->arqsz,
+		 S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
+		 xds->await,
+		 r_await,
+		 w_await,
+		 xds->svctm,
+		 shi->used ? xds->util / 10.0 / (double) shi->used
+			   : xds->util / 10.0);	/* shi->used should never be zero here */
+}
+
+/*
+ ***************************************************************************
+ * Display extended stats, read from /proc/{diskstats,partitions} or /sys,
+ * in plain or JSON format.
+ *
+ * IN:
+ * @itv		Interval of time.
+ * @fctr	Conversion factor.
+ * @shi		Structures describing the devices and partitions.
+ * @ioi		Current sample statistics.
+ * @ioj		Previous sample statistics.
+ * @tab		Number of tabs to print (JSON output only).
  ***************************************************************************
  */
 void write_ext_stat(unsigned long long itv, int fctr,
 		    struct io_hdr_stats *shi, struct io_stats *ioi,
-		    struct io_stats *ioj)
+		    struct io_stats *ioj, int tab)
 {
 	char *devname = NULL;
 	struct stats_disk sdc, sdp;
@@ -1029,45 +1133,22 @@ void write_ext_stat(unsigned long long itv, int fctr,
 		  (ioi->wr_ticks - ioj->wr_ticks) /
 		  ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
 
-	/* Print device name */
+	/* Get device name */
 	if (DISPLAY_PERSIST_NAME_I(flags)) {
 		devname = get_persistent_name_from_pretty(shi->name);
 	}
 	if (!devname) {
 		devname = shi->name;
 	}
-	if (DISPLAY_HUMAN_READ(flags)) {
-		cprintf_in(IS_STR, "%s\n", devname, 0);
-		printf("%13s", "");
+
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		write_json_ext_stat(tab, itv, fctr, shi, ioi, ioj, devname, &xds,
+				    r_await, w_await);
 	}
 	else {
-		cprintf_in(IS_STR, "%-13s", devname, 0);
+		write_plain_ext_stat(itv, fctr, shi, ioi, ioj, devname, &xds,
+				     r_await, w_await);
 	}
-
-	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
-	cprintf_f(2, 8, 2,
-		  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
-		  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
-	cprintf_f(2, 7, 2,
-		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
-		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
-	cprintf_f(4, 8, 2,
-		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
-		  xds.arqsz,
-		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
-	cprintf_f(3, 7, 2, xds.await, r_await, w_await);
-	/* The ticks output is biased to output 1000 ticks per second */
-	cprintf_f(1, 6, 2, xds.svctm);
-	/*
-	 * Again: Ticks in milliseconds.
-	 * In the case of a device group (option -g), shi->used is the number of
-	 * devices in the group. Else shi->used equals 1.
-	 */
-	cprintf_pc(1, 6, 2,
-		   shi->used ? xds.util / 10.0 / (double) shi->used
-		             : xds.util / 10.0);	/* shi->used should never be zero here */
-	printf("\n");
 }
 
 /*
@@ -1342,7 +1423,7 @@ void write_stats(int curr, struct tm *rectime)
 				next = TRUE;
 
 				if (DISPLAY_EXTENDED(flags)) {
-					write_ext_stat(itv, fctr, shi, ioi, ioj);
+					write_ext_stat(itv, fctr, shi, ioi, ioj, tab);
 				}
 				else {
 					write_basic_stat(itv, fctr, shi, ioi, ioj, tab);
@@ -1350,6 +1431,7 @@ void write_stats(int curr, struct tm *rectime)
 			}
 		}
 		if (DISPLAY_JSON_OUTPUT(flags)) {
+			printf("\n");
 			xprintf(--tab, "]");
 		}
 	}
