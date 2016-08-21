@@ -936,6 +936,13 @@ void write_cpu_stat(int curr, unsigned long long itv, int tab)
  */
 void write_disk_stat_header(int *fctr, int *tab)
 {
+	if (DISPLAY_KILOBYTES(flags)) {
+		*fctr = 2;
+	}
+	else if (DISPLAY_MEGABYTES(flags)) {
+		*fctr = 2048;
+	}
+
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		xprintf((*tab)++, "\"disk\": [");
 		return;
@@ -946,11 +953,9 @@ void write_disk_stat_header(int *fctr, int *tab)
 		printf("Device:         rrqm/s   wrqm/s     r/s     w/s");
 		if (DISPLAY_MEGABYTES(flags)) {
 			printf("    rMB/s    wMB/s");
-			*fctr = 2048;
 		}
 		else if (DISPLAY_KILOBYTES(flags)) {
 			printf("    rkB/s    wkB/s");
-			*fctr = 2;
 		}
 		else {
 			printf("   rsec/s   wsec/s");
@@ -962,11 +967,9 @@ void write_disk_stat_header(int *fctr, int *tab)
 		printf("Device:            tps");
 		if (DISPLAY_KILOBYTES(flags)) {
 			printf("    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn\n");
-			*fctr = 2;
 		}
 		else if (DISPLAY_MEGABYTES(flags)) {
 			printf("    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn\n");
-			*fctr = 2048;
 		}
 		else {
 			printf("   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn\n");
