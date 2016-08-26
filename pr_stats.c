@@ -1946,7 +1946,6 @@ __print_funct_t print_avg_pwr_cpufreq_stats(struct activity *a, int prev, int cu
 void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
-	char fmt[16];
 	struct stats_pwr_fan *spc;
 	static double *avg_fan = NULL;
 	static double *avg_fan_min = NULL;
@@ -1968,8 +1967,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 	}
 
 	if (dis) {
-		printf("\n%-11s     FAN       rpm      drpm %*s\n",
-		       timestamp[!curr], MAX_SENSORS_DEV_LEN, "DEVICE");
+		printf("\n%-11s     FAN       rpm      drpm DEVICE\n", timestamp[!curr]);
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -1993,8 +1991,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 			avg_fan_min[i] += spc->rpm_min;
 		}
 
-		snprintf(fmt, 16, " %%%ds\n", MAX_SENSORS_DEV_LEN);
-		cprintf_in(IS_STR, fmt, spc->device, 0);
+		cprintf_in(IS_STR, " %s\n", spc->device, 0);
 	}
 
 	if (dispavg) {
@@ -2057,7 +2054,6 @@ __print_funct_t print_avg_pwr_fan_stats(struct activity *a, int prev, int curr,
 void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
-	char fmt[16];
 	struct stats_pwr_temp *spc;
 	static double *avg_temp = NULL;
 	static double *avg_temp_min = NULL, *avg_temp_max = NULL;
@@ -2086,8 +2082,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 	}
 
 	if (dis) {
-		printf("\n%-11s    TEMP      degC     %%temp %*s\n",
-		       timestamp[!curr], MAX_SENSORS_DEV_LEN, "DEVICE");
+		printf("\n%-11s    TEMP      degC     %%temp DEVICE\n", timestamp[!curr]);
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -2117,8 +2112,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 			avg_temp_max[i] = spc->temp_max;
 		}
 
-		snprintf(fmt, 16, " %%%ds\n", MAX_SENSORS_DEV_LEN);
-		cprintf_in(IS_STR, fmt, spc->device, 0);
+		cprintf_in(IS_STR, " %s\n", spc->device, 0);
 	}
 
 	if (dispavg) {
@@ -2185,7 +2179,6 @@ __print_funct_t print_avg_pwr_temp_stats(struct activity *a, int prev, int curr,
 void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
-	char fmt[16];
 	struct stats_pwr_in *spc;
 	static double *avg_in = NULL;
 	static double *avg_in_min = NULL, *avg_in_max = NULL;
@@ -2214,8 +2207,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 	}
 
 	if (dis) {
-		printf("\n%-11s      IN       inV       %%in %*s\n",
-		       timestamp[!curr], MAX_SENSORS_DEV_LEN, "DEVICE");
+		printf("\n%-11s      IN       inV       %%in DEVICE\n", timestamp[!curr]);
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -2245,8 +2237,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 			avg_in_max[i] = spc->in_max;
 		}
 
-		snprintf(fmt, 16, " %%%ds\n", MAX_SENSORS_DEV_LEN);
-		cprintf_in(IS_STR, fmt, spc->device, 0);
+		cprintf_in(IS_STR, " %s\n", spc->device, 0);
 	}
 
 	if (dispavg) {
@@ -2492,8 +2483,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 	if (dis) {
 		printf("\n%-11s     BUS  idvendor    idprod  maxpower",
 		       (dispavg ? _("Summary:") : timestamp[!curr]));
-		printf(" %*s", MAX_MANUF_LEN - 1, "manufact");
-		printf(" %*s\n", MAX_PROD_LEN - 1, "product");
+		printf(" %-*s product\n", MAX_MANUF_LEN - 1, "manufact");
 	}
 
 	for (i = 0; i < a->nr; i++) {
@@ -2512,10 +2502,9 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 			    /* bMaxPower is expressed in 2 mA units */
 			    (unsigned long long) (suc->bmaxpower << 1));
 
-		snprintf(fmt, 16, " %%%ds", MAX_MANUF_LEN - 1);
+		snprintf(fmt, 16, " %%-%ds", MAX_MANUF_LEN - 1);
 		cprintf_s(IS_STR, fmt, suc->manufacturer);
-		snprintf(fmt, 16, " %%%ds\n", MAX_PROD_LEN - 1);
-		cprintf_s(IS_STR, fmt, suc->product);
+		cprintf_s(IS_STR, " %s\n", suc->product);
 
 		if (!dispavg) {
 			/* Save current USB device in summary list */
