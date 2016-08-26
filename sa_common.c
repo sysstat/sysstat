@@ -1274,12 +1274,19 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 
 	if ((n != FILE_MAGIC_SIZE) ||
 	    (file_magic->sysstat_magic != SYSSTAT_MAGIC) ||
-	    ((file_magic->format_magic != FORMAT_MAGIC) && !ignore) ||
-	    (file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
-	    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
-	    ((file_magic->header_size < FILE_HEADER_SIZE) && !ignore)) {
+	    ((file_magic->format_magic != FORMAT_MAGIC) && !ignore)) {
 		/* Display error message and exit */
 		handle_invalid_sa_file(fd, file_magic, dfile, n);
+	}
+	if ((file_magic->sysstat_version > 10) ||
+	    ((file_magic->sysstat_version == 10) && (file_magic->sysstat_patchlevel >= 3))) {
+		/* header_size field exists only for sysstat versions 10.3.1 and later */
+		if ((file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
+		    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
+		    ((file_magic->header_size < FILE_HEADER_SIZE) && !ignore)) {
+			/* Display error message and exit */
+			handle_invalid_sa_file(fd, file_magic, dfile, n);
+		}
 	}
 	if (file_magic->format_magic != FORMAT_MAGIC)
 		/* This is an old sa datafile format */
