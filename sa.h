@@ -266,6 +266,10 @@
 #define SOFT_SIZE	0
 #define HARD_SIZE	1
 
+#define FIRST	0
+#define SECOND	1
+#define THIRD	2
+
 #define CLOSE_XML_MARKUP	0
 #define OPEN_XML_MARKUP		1
 
