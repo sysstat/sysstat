@@ -1594,6 +1594,9 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			set_bitmap(act[p]->bitmap->b_array, ~0,
 				   BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->opt_flags = AO_F_CPU_ALL;
+
+			p = get_activity_position(act, A_FILESYSTEM, EXIT_IF_NOT_FOUND);
+			act[p]->opt_flags = AO_F_FILESYSTEM;
 			break;
 
 		case 'B':
@@ -1619,6 +1622,9 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				(*opt)++;
 				act[p]->opt_flags |= AO_F_MOUNT;
 				return 0;
+			}
+			else {
+				act[p]->opt_flags |= AO_F_FILESYSTEM;
 			}
 			break;
 
