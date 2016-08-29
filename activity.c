@@ -1376,7 +1376,7 @@ struct activity pwr_usb_act = {
 /* Filesystem usage activity */
 struct activity filesystem_act = {
 	.id		= A_FILESYSTEM,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_GRAPH_PER_ITEM + AO_MULTIPLE_OUTPUTS,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_XDISK,
 #ifdef SOURCE_SADC

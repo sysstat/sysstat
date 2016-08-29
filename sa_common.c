@@ -1581,8 +1581,11 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 		case 'A':
 			select_all_activities(act);
 
-			/* Force '-P ALL -I XALL -r ALL -u ALL' */
-
+			/*
+			 * Force '-P ALL -I XALL -r ALL -u ALL -F'.
+			 * Setting -F is compulsory because corresponding activity
+			 * has AO_MULTIPLE_OUTPUTS flag set.
+			 */
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->opt_flags |= AO_F_MEM_AMT + AO_F_MEM_DIA +
 					     AO_F_MEM_SWAP + AO_F_MEM_ALL;
@@ -1595,6 +1598,9 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			set_bitmap(act[p]->bitmap->b_array, ~0,
 				   BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->opt_flags = AO_F_CPU_ALL;
+
+			p = get_activity_position(act, A_FILESYSTEM, EXIT_IF_NOT_FOUND);
+			act[p]->opt_flags = AO_F_FILESYSTEM;
 			break;
 
 		case 'B':
@@ -1620,6 +1626,9 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				(*opt)++;
 				act[p]->opt_flags |= AO_F_MOUNT;
 				return 0;
+			}
+			else {
+				act[p]->opt_flags |= AO_F_FILESYSTEM;
 			}
 			break;
 
