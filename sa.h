@@ -140,7 +140,8 @@
 #define COLLECT_PARTITIONS(m)	(((m) & AO_F_DISK_PART)   == AO_F_DISK_PART)
 
 /* Output flags for option -F */
-#define AO_F_MOUNT		0x00000001
+#define AO_F_FILESYSTEM		0x00000001
+#define AO_F_MOUNT		0x00000002
 
 #define DISPLAY_MOUNT(m)	(((m) & AO_F_MOUNT)       == AO_F_MOUNT)
 
@@ -305,6 +306,8 @@
  * Indicate that corresponding activity has multiple different
  * output formats. This is the case for example for memory activity
  * with options -r and -R.
+ * PS: Such an activity should appear in the list of activities that
+ * sar -A is supposed to display.
  */
 #define AO_MULTIPLE_OUTPUTS	0x20
 
