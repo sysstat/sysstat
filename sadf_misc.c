@@ -690,10 +690,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 	if (action & F_BEGIN) {
 		xprintf(*tab, "{\"sysstat\": {");
 
-		xprintf(++(*tab), "\"sysdata-version\": %s,",
-			XML_DTD_VERSION);
-
-		xprintf(*tab, "\"hosts\": [");
+		xprintf(++(*tab), "\"hosts\": [");
 		xprintf(++(*tab), "{");
 		xprintf(++(*tab), "\"nodename\": \"%s\",", file_hdr->sa_nodename);
 		xprintf(*tab, "\"sysname\": \"%s\",", file_hdr->sa_sysname);
