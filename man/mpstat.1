@@ -1,10 +1,10 @@
-.TH MPSTAT 1 "MARCH 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "SEPTEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
 .B mpstat [ -A ] [ -u ] [ -V ] [ -I {
 .I keyword
-.B [,...] | ALL } ] [ -P {
+.B [,...] | ALL } ] [ -o JSON ] [ -P {
 .I cpu
 .B [,...] | ON | ALL } ] [
 .I interval
@@ -98,6 +98,10 @@ keyword is equivalent to specifying all the keywords above and
 therefore all the interrupts statistics are displayed.
 .RE
 .RE
+.IP "-o JSON"
+Display the statistics in JSON (Javascript Object Notation) format.
+JSON output field order is undefined, and new fields may be added
+in the future.
 .IP "-P { cpu [,...] | ON | ALL }"
 Indicate the processor number for which statistics are to be reported.
 .I cpu
