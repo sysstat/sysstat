@@ -879,7 +879,7 @@ void write_plain_cpu_stat(int curr, unsigned long long itv)
  * Display CPU utilization in JSON format.
  *
  * IN:
- * @tab		Number of tabs to print (JSON format only).
+ * @tab		Number of tabs to print.
  * @curr	Index in array for current sample statistics.
  * @itv		Interval of time.
  ***************************************************************************
@@ -1039,7 +1039,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
  * in JSON format.
  *
  * IN:
- * @tab		Number of tabs to print (JSON output only).
+ * @tab		Number of tabs to print.
  * @itv		Interval of time.
  * @fctr	Conversion factor.
  * @shi		Structures describing the devices and partitions.
@@ -1198,7 +1198,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
  * format.
  *
  * IN:
- * @tab		Number of tabs to print (JSON output only).
+ * @tab		Number of tabs to print.
  * @itv		Interval of time.
  * @fctr	Conversion factor.
  * @ioi		Current sample statistics.

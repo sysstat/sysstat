@@ -633,7 +633,7 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 				 * Value displayed is 0.00.
 				 */
 				printf("%-11s", curr_string);
-				cprintf_in(IS_INT, " %4d", "", cpu- 1);
+				cprintf_in(IS_INT, " %4d", "", cpu - 1);
 				cprintf_f(1, 9, 2, 0.0);
 				printf("\n");
 			}
