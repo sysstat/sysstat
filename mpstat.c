@@ -390,8 +390,6 @@ void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr,
 	unsigned long long pc_itv;
 	int cpu, next = FALSE;
 
-
-	xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
 	xprintf(tab++, "\"cpu-load\": [");
 
 	/* Check if we want global stats among all proc */
@@ -552,12 +550,18 @@ void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr,
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
  * @tab		Number of tabs to print (JSON format only).
+ * @next	TRUE is a previous activity has been displayed (JSON format
+ * 		only).
  ***************************************************************************
  */
 void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
-		     char *prev_string, char *curr_string, int tab)
+		     char *prev_string, char *curr_string, int tab, int *next)
 {
 	if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (*next) {
+			printf(",\n");
+		}
+		*next = TRUE;
 		write_json_cpu_stats(tab, g_itv, prev, curr, curr_string);
 	}
 	else {
@@ -567,7 +571,7 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display total number of interrupts per CPU.
+ * Display total number of interrupts per CPU in plain format.
  *
  * IN:
  * @dis		TRUE if a header line must be printed.
@@ -584,8 +588,8 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
  * 		when displaying average stats.
  ***************************************************************************
  */
-void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
-		     char *prev_string, char *curr_string)
+void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
+			       char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc, *scp;
 	struct stats_irq *sic, *sip;
@@ -653,6 +657,129 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
 				  S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 			printf("\n");
 		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display total number of interrupts per CPU in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample.
+ ***************************************************************************
+ */
+void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int curr,
+			      char *curr_string)
+{
+	struct stats_cpu *scc, *scp;
+	struct stats_irq *sic, *sip;
+	unsigned long long pc_itv;
+	int cpu, next = FALSE;
+
+	xprintf(tab++, "\"sum-interrupts\": [");
+
+	if (*cpu_bitmap & 1) {
+
+		next = TRUE;
+		/* Print total number of interrupts among all cpu */
+		xprintf0(tab, "{\"cpu\": \"all\", \"intr\": %.2f}",
+			 S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
+	}
+
+	for (cpu = 1; cpu <= cpu_nr; cpu++) {
+
+		sic = st_irq[curr] + cpu;
+		sip = st_irq[prev] + cpu;
+
+		scc = st_cpu[curr] + cpu;
+		scp = st_cpu[prev] + cpu;
+
+		/* Check if we want stats about this CPU */
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+
+			/* This is an offline CPU */
+
+			if (!DISPLAY_ONLINE_CPU(flags)) {
+				/*
+				 * Display offline CPU if requested by the user.
+				 * Value displayed is 0.00.
+				 */
+				xprintf0(tab, "{\"cpu\": \"%d\", \"intr\": 0.00}",
+					 cpu - 1);
+			}
+			continue;
+		}
+
+		/* Recalculate itv for current proc */
+		pc_itv = get_per_cpu_interval(scc, scp);
+
+		if (!pc_itv) {
+			/* This is a tickless CPU: Value displayed is 0.00 */
+			xprintf0(tab, "{\"cpu\": \"%d\", \"intr\": 0.00}",
+				 cpu - 1);
+		}
+		else {
+			/* Display total number of interrupts for current CPU */
+			xprintf0(tab, "{\"cpu\": \"%d\", \"intr\": %.2f}",
+				 cpu - 1,
+				 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+		}
+	}
+	printf("\n");
+	xprintf0(--tab, "]");
+}
+
+/*
+ ***************************************************************************
+ * Display total number of interrupts per CPU in plain or JSON format.
+ *
+ * IN:
+ * @dis		TRUE if a header line must be printed.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @next	TRUE is a previous activity has been displayed (JSON format
+ * 		only).
+ ***************************************************************************
+ */
+void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
+		     char *prev_string, char *curr_string, int tab, int *next)
+{
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (*next) {
+			printf(",\n");
+		}
+		*next = TRUE;
+		write_json_isumcpu_stats(tab, itv, prev, curr, curr_string);
+	}
+	else {
+		write_plain_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string);
 	}
 }
 
@@ -833,13 +960,14 @@ void write_stats_core(int prev, int curr, int dis,
 {
 	struct stats_cpu *scc, *scp;
 	unsigned long long itv, g_itv;
-	int cpu, tab = 4;
+	int cpu, tab = 4, next = FALSE;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		xprintf(tab++, "{");
+		xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
 	}
 
 	/* Compute time interval */
@@ -855,12 +983,14 @@ void write_stats_core(int prev, int curr, int dis,
 
 	/* Print CPU stats */
 	if (DISPLAY_CPU(actflags)) {
-		write_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string, tab);
+		write_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string,
+				tab, &next);
 	}
 
 	/* Print total number of interrupts per processor */
 	if (DISPLAY_IRQ_SUM(actflags)) {
-		write_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string);
+		write_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string,
+				    tab, &next);
 	}
 
 	/* Display each interrupt value for each CPU */
