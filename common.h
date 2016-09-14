@@ -53,6 +53,7 @@
 #define K_ISO	"ISO"
 #define K_ALL	"ALL"
 #define K_UTC	"UTC"
+#define K_JSON	"JSON"
 
 /* Files */
 #define STAT			"/proc/stat"

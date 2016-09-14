@@ -40,9 +40,12 @@
 #define F_P_OPTION	0x01
 /* Indicate that stats should be displayed on for online CPU ("-P ON") */
 #define F_P_ON		0x02
+/* JSON output */
+#define F_JSON_OUTPUT	0x04
 
 #define USE_P_OPTION(m)		(((m) & F_P_OPTION) == F_P_OPTION)
 #define DISPLAY_ONLINE_CPU(m)	(((m) & F_P_ON) == F_P_ON)
+#define DISPLAY_JSON_OUTPUT(m)	(((m) & F_JSON_OUTPUT) == F_JSON_OUTPUT)
 
 #define K_SUM	"SUM"
 #define K_CPU	"CPU"

@@ -8,9 +8,6 @@
 
 #include "common.h"
 
-/* Keywords */
-#define K_JSON	"JSON"
-
 /* I_: iostat - D_: Display - F_: Flag */
 #define I_D_CPU			0x00001
 #define I_D_DISK		0x00002

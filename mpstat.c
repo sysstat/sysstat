@@ -100,7 +100,7 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-			  "[ -P { <cpu> [,...] | ON | ALL } ]\n"));
+			  "[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"));
 	exit(1);
 }
 
@@ -1075,6 +1075,16 @@ int main(int argc, char **argv)
 						usage(argv[0]);
 					}
 				}
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
+
+		else if (!strcmp(argv[opt], "-o")) {
+			/* Select output format */
+			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
+				flags |= F_JSON_OUTPUT;
 			}
 			else {
 				usage(argv[0]);
