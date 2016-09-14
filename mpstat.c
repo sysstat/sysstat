@@ -785,7 +785,7 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
 
 /*
  ***************************************************************************
- * Display interrupts statistics for each CPU.
+ * Display interrupts statistics for each CPU in plain format.
  *
  * IN:
  * @st_ic	Array for per-CPU statistics.
@@ -804,9 +804,9 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
  * 		when displaying average stats.
  ***************************************************************************
  */
-void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
-			unsigned long long itv, int prev, int curr,
-			char *prev_string, char *curr_string)
+void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
+			      unsigned long long itv, int prev, int curr,
+			      char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc;
 	int j = ic_nr, offset, cpu, colwidth[NR_IRQS];
@@ -939,6 +939,172 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 /*
  ***************************************************************************
+ * Display interrupts statistics for each CPU in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @st_ic	Array for per-CPU statistics.
+ * @ic_nr	Number of interrupts (hard or soft) per CPU.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample.
+ * @type	Activity (M_D_IRQ_CPU or M_D_SOFTIRQS).
+ ***************************************************************************
+ */
+void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
+			     unsigned long long itv, int prev, int curr,
+			     char *curr_string, int type)
+{
+	struct stats_cpu *scc;
+	int j = ic_nr, offset, cpu;
+	struct stats_irqcpu *p, *q, *p0, *q0;
+	int nextcpu = FALSE, nextirq;
+
+	if (type == M_D_IRQ_CPU) {
+		xprintf(tab++, "\"individual-interrupts\": [");
+	}
+	else {
+		xprintf(tab++, "\"soft-interrupts\": [");
+	}
+
+	for (cpu = 1; cpu <= cpu_nr; cpu++) {
+
+		scc = st_cpu[curr] + cpu;
+
+		/*
+		 * Check if we want stats about this CPU.
+		 * CPU must have been explicitly selected using option -P,
+		 * else we display every CPU.
+		 */
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_P_OPTION(flags))
+			continue;
+
+		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+
+			/* Offline CPU found */
+
+			if (DISPLAY_ONLINE_CPU(flags))
+				continue;
+		}
+
+		if (nextcpu) {
+			printf(",\n");
+		}
+		nextcpu = TRUE;
+		nextirq = FALSE;
+		xprintf(tab++, "{\"cpu\": \"%d\", \"intr\": [", cpu - 1);
+
+		for (j = 0; j < ic_nr; j++) {
+
+			p0 = st_ic[curr] + j;	/* irq_name set only for CPU#0 */
+			/*
+			 * An empty string for irq_name means it is a remaining interrupt
+			 * which is no longer used, for example because the
+			 * number of interrupts has decreased in /proc/interrupts.
+			 */
+			if (p0->irq_name[0] == '\0')
+				/* End of the list of interrupts */
+				break;
+			q0 = st_ic[prev] + j;
+			offset = j;
+
+			if (nextirq) {
+				printf(",\n");
+			}
+			nextirq = TRUE;
+
+			/*
+			 * If we want stats for the time since system startup,
+			 * we have p0->irq_name != q0->irq_name, since q0 structure
+			 * is completely set to zero.
+			 */
+			if (strcmp(p0->irq_name, q0->irq_name) && interval) {
+				/* Check if interrupt exists elsewhere in list */
+				for (offset = 0; offset < ic_nr; offset++) {
+					q0 = st_ic[prev] + offset;
+					if (!strcmp(p0->irq_name, q0->irq_name))
+						/* Interrupt found at another position */
+						break;
+				}
+			}
+
+			p = st_ic[curr] + (cpu - 1) * ic_nr + j;
+
+			if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
+				q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
+				xprintf0(tab, "{\"name\": \"%s\", \"value\": %.2f}",
+					 p0->irq_name,
+					 S_VALUE(q->interrupt, p->interrupt, itv));
+			}
+			else {
+				/*
+				 * Instead of printing "N/A", assume that previous value
+				 * for this new interrupt was zero.
+				 */
+				xprintf0(tab, "{\"name\": \"%s\", \"value\": %.2f}",
+					 p0->irq_name,
+					 S_VALUE(0, p->interrupt, itv));
+			}
+		}
+		printf("\n");
+		xprintf0(--tab, "] }");
+	}
+	printf("\n");
+	xprintf0(--tab, "]");
+}
+
+/*
+ ***************************************************************************
+ * Display interrupts statistics for each CPU in plain or JSON format.
+ *
+ * IN:
+ * @st_ic	Array for per-CPU statistics.
+ * @ic_nr	Number of interrupts (hard or soft) per CPU.
+ * @dis		TRUE if a header line must be printed.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @next	TRUE is a previous activity has been displayed (JSON format
+ * 		only).
+ * @type	Activity (M_D_IRQ_CPU or M_D_SOFTIRQS).
+ ***************************************************************************
+ */
+void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
+			unsigned long long itv, int prev, int curr,
+			char *prev_string, char *curr_string, int tab,
+			int *next, int type)
+{
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (*next) {
+			printf(",\n");
+		}
+		*next = TRUE;
+		write_json_irqcpu_stats(tab, st_ic, ic_nr, itv, prev, curr,
+					curr_string, type);
+	}
+	else {
+		write_plain_irqcpu_stats(st_ic, ic_nr, dis, itv, prev, curr,
+					 prev_string, curr_string);
+	}
+}
+
+/*
+ ***************************************************************************
  * Core function used to display statistics.
  *
  * IN:
@@ -996,11 +1162,11 @@ void write_stats_core(int prev, int curr, int dis,
 	/* Display each interrupt value for each CPU */
 	if (DISPLAY_IRQ_CPU(actflags)) {
 		write_irqcpu_stats(st_irqcpu, irqcpu_nr, dis, itv, prev, curr,
-				   prev_string, curr_string);
+				   prev_string, curr_string, tab, &next, M_D_IRQ_CPU);
 	}
 	if (DISPLAY_SOFTIRQS(actflags)) {
 		write_irqcpu_stats(st_softirqcpu, softirqcpu_nr, dis, itv, prev, curr,
-				   prev_string, curr_string);
+				   prev_string, curr_string, tab, &next, M_D_SOFTIRQS);
 	}
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
@@ -1241,6 +1407,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 			memset(st_softirqcpu[1], 0, STATS_IRQCPU_SIZE * (cpu_nr + 1) * softirqcpu_nr);
 		}
 		write_stats(0, DISP_HDR);
+		if (DISPLAY_JSON_OUTPUT(flags)) {
+			printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
+		}
 		exit(0);
 	}
 
