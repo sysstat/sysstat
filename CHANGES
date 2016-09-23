@@ -1,5 +1,19 @@
 Changes:
 
+2016/09/23: Version 11.5.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* iostat: Add JSON output (option "-o JSON").
+	* mpstat: Add JSON output (option "-o JSON").
+	* sadf: Fix broken datafile conversion from old formats
+	  [11.2.7] [11.4.1].
+	* sadf: Fix fields list displayed by sadf -d for filesystem
+	  activity [11.2.7] [11.4.1].
+	* pidstat: Don't omit kernel threads when using -l option [11.2.7]
+	  [11.4.1].
+	* Reuse hdr_line string from struct activity to display activities
+	  title line.
+	* sadf: Remove sysstat-version from JSON output.
+	* iostat and mpstat manual pages updated.
+
 2016/08/15: Version 11.4.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Workaround for I/O and transfer rates statistics which may
 	  be wrongly calculated if a filesystem is unmounted [11.2.6].
