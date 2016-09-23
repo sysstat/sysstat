@@ -1,5 +1,11 @@
 Changes:
 
+2016/09/23: Version 11.4.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Fix broken datafile conversion from old formats.
+	* sadf: Fix fields list displayed by sadf -d for filesystem
+	  activity.
+	* pidstat: Don't omit kernel threads when using -l option.
+
 2016/08/15: Version 11.4.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Workaround for I/O and transfer rates statistics which may
 	  be wrongly calculated if a filesystem is unmounted [11.2.6].
