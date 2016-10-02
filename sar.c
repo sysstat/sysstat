@@ -514,10 +514,10 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	}
 
 	/* Set previous timestamp */
-	if (set_record_timestamp_string(!curr, timestamp[!curr], 16))
+	if (set_record_timestamp_string(!curr, timestamp[!curr], TIMESTAMP_LEN))
 		return 0;
 	/* Set current timestamp */
-	if (set_record_timestamp_string(curr,  timestamp[curr],  16))
+	if (set_record_timestamp_string(curr,  timestamp[curr], TIMESTAMP_LEN))
 		return 0;
 
 	/* Check if we are beginning a new day */
