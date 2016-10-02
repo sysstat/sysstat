@@ -449,14 +449,14 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 					   &rectime, NULL))
 		return 0;
 	set_record_timestamp_string(flags, &record_hdr[!curr],
-				    NULL, timestamp[!curr], 16, &rectime);
+				    NULL, timestamp[!curr], TIMESTAMP_LEN, &rectime);
 
 	/* Get then set current timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
 					   &rectime, NULL))
 		return 0;
 	set_record_timestamp_string(flags, &record_hdr[curr],
-				    NULL, timestamp[curr], 16, &rectime);
+				    NULL, timestamp[curr], TIMESTAMP_LEN, &rectime);
 
 	/* Check if we are beginning a new day */
 	if (use_tm_start && record_hdr[!curr].ust_time &&

@@ -224,7 +224,7 @@
 #define BITMAP_SIZE(m)	((((m) + 1) / 8) + 1)
 
 #define UTSNAME_LEN	65
-#define TIMESTAMP_LEN	16
+#define TIMESTAMP_LEN	64
 #define HEADER_LINE_LEN	512
 
 /*
