@@ -617,7 +617,7 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 {
 	struct record_header stamp;
 	struct tm rectime;
-	char cur_time[32];
+	char cur_time[TIMESTAMP_LEN];
 	int j;
 
 	stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
@@ -626,7 +626,7 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 
 		/* Display vertical lines */
 		sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
-		set_record_timestamp_string(flags, &stamp, NULL, cur_time, 32, &rectime);
+		set_record_timestamp_string(flags, &stamp, NULL, cur_time, TIMESTAMP_LEN, &rectime);
 		printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
 		       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
 		       xpos * j, xpos * j, -SVG_G_YSIZE, xfactor);

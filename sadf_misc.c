@@ -617,7 +617,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 				  struct activity *act[], unsigned int id_seq[])
 {
 	struct tm rectime, *loc_t;
-	char cur_time[32];
+	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
@@ -684,7 +684,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 				   struct activity *act[], unsigned int id_seq[])
 {
 	struct tm rectime, *loc_t;
-	char cur_time[32];
+	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
@@ -745,7 +745,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 {
 	int i, p;
 	struct tm rectime, *loc_t;
-	char cur_time[32];
+	char cur_time[TIMESTAMP_LEN];
 
 	/* Actions F_MAIN and F_END ignored */
 	if (action & F_BEGIN) {

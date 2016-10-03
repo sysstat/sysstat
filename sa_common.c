@@ -2286,7 +2286,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
 			 struct activity *act[], struct report_format *ofmt)
 {
-	char cur_date[32], cur_time[32];
+	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN];
 	int dp = 1;
 	unsigned int new_cpu_nr;
 
@@ -2308,7 +2308,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 	else {
 		/* Set date and time strings to be displayed for current record */
 		set_record_timestamp_string(l_flags, record_hdr,
-					    cur_date, cur_time, 32, rectime);
+					    cur_date, cur_time, TIMESTAMP_LEN, rectime);
 	}
 
 	if (rtype == R_RESTART) {

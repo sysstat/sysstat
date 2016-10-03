@@ -69,7 +69,7 @@ int flags = 0;		/* Flag for common options and system state */
 unsigned int dm_major;	/* Device-mapper major number */
 
 long interval = 0;
-char timestamp[64];
+char timestamp[TIMESTAMP_LEN];
 
 struct sigaction alrm_act;
 

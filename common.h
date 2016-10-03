@@ -31,6 +31,9 @@
 
 #define DISP_HDR	1
 
+/* Timestamp buffer length */
+#define TIMESTAMP_LEN	64
+
 /* Number of seconds per day */
 #define SEC_PER_DAY	3600 * 24
 

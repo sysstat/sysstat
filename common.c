@@ -367,7 +367,7 @@ int is_iso_time_fmt(void)
 int print_gal_header(struct tm *rectime, char *sysname, char *release,
 		     char *nodename, char *machine, int cpu_nr)
 {
-	char cur_date[64];
+	char cur_date[TIMESTAMP_LEN];
 	int rc = 0;
 
 	if (rectime == NULL) {
