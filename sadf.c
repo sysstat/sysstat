@@ -578,7 +578,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 {
 	int i;
 	unsigned long long dt, itv, g_itv;
-	char cur_date[32], cur_time[32], *pre = NULL;
+	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN], *pre = NULL;
 	static int cross_day = FALSE;
 
 	if (reset_cd) {
@@ -642,7 +642,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 	/* Set date and time strings for current record */
 	set_record_timestamp_string(flags, &record_hdr[curr],
-				    cur_date, cur_time, 32, rectime);
+				    cur_date, cur_time, TIMESTAMP_LEN, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
 		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time,

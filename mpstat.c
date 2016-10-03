@@ -1223,7 +1223,7 @@ void write_stats_avg(int curr, int dis)
  */
 void write_stats(int curr, int dis)
 {
-	char cur_time[2][16];
+	char cur_time[2][TIMESTAMP_LEN];
 
 	/* Get previous timestamp */
 	if (is_iso_time_fmt()) {

@@ -53,7 +53,7 @@ int cpu_nr = 0;		/* Nb of processors on the machine */
 int flags = 0;		/* Flag for common options and system state */
 
 long interval = 0;
-char timestamp[64];
+char timestamp[TIMESTAMP_LEN];
 
 struct sigaction alrm_act;
 

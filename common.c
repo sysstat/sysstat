@@ -432,7 +432,7 @@ void xprintf(int nr_tab, const char *fmtf, ...)
 int print_gal_header(struct tm *rectime, char *sysname, char *release,
 		     char *nodename, char *machine, int cpu_nr, int format)
 {
-	char cur_date[64];
+	char cur_date[TIMESTAMP_LEN];
 	int rc = 0;
 
 	if (rectime == NULL) {
