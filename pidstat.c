@@ -277,6 +277,23 @@ int update_pid_array(unsigned int *pid_array_nr, unsigned int pid)
 
 /*
  ***************************************************************************
+ * Get pointer on task's command string.
+ *
+ * IN:
+ * @pst		Pointer on structure with process stats and command line.
+ ***************************************************************************
+ */
+char *get_tcmd(struct pid_stats *pst)
+{
+	if (DISPLAY_CMDLINE(pidflag) && strlen(pst->cmdline))
+		/* Option "-l" used */
+		return pst->cmdline;
+	else
+		return pst->comm;
+}
+
+/*
+ ***************************************************************************
  * Display process command name or command line.
  *
  * IN:
@@ -287,12 +304,8 @@ void print_comm(struct pid_stats *pst)
 {
 	char *p;
 
-	if (DISPLAY_CMDLINE(pidflag) && strlen(pst->cmdline)) {
-		p = pst->cmdline;
-	}
-	else {
-		p = pst->comm;
-	}
+	/* Get pointer on task's command string */
+	p = get_tcmd(pst);
 
 	if (pst->tgid) {
 		cprintf_s(IS_ZERO, "  |__%s\n", p);
@@ -1042,6 +1055,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	int q, rc;
 	regex_t regex;
 	struct passwd *pwdent;
+	char *pc;
 
 	*pstc = st_pid_list[curr] + p;
 
@@ -1192,7 +1206,8 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			/* Error in preparing regex structure */
 			return -1;
 
-		rc = regexec(&regex, (*pstc)->comm, 0, NULL, 0);
+		pc = get_tcmd(*pstc);	/* Get pointer on task's command string */
+		rc = regexec(&regex, pc, 0, NULL, 0);
 		regfree(&regex);
 
 		if (rc)
@@ -1209,7 +1224,8 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 				return -1;
 			}
 
-			rc = regexec(&regex, (*pstc)->comm, 0, NULL, 0);
+			pc = get_tcmd(*pstc);	/* Get pointer on task's command string */
+			rc = regexec(&regex, pc, 0, NULL, 0);
 			regfree(&regex);
 
 			if (rc) {
