@@ -2118,3 +2118,30 @@ close_xml_markup:
 		xml_markup_network(tab, CLOSE_XML_MARKUP);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display softnet statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in jiffies.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
+					unsigned long long itv)
+{
+	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+		goto close_xml_markup;
+
+	xml_markup_network(tab, OPEN_XML_MARKUP);
+
+	/* FIXME */
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_network(tab, CLOSE_XML_MARKUP);
+	}
+}

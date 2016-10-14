@@ -901,6 +901,27 @@ __read_funct_t wrap_read_fchost(struct activity *a)
 	return;
 }
 
+/*
+ ***************************************************************************
+ * Read softnet statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_softnet(struct activity *a)
+{
+	struct stats_softnet *st_softnet
+		= (struct stats_softnet *) a->_buf0;
+
+	/* Read softnet stats */
+	/* FIXME */
+
+	return;
+}
 
 /*
  ***************************************************************************

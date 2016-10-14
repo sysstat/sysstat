@@ -58,6 +58,7 @@
 #define NET_SOCKSTAT6	"/proc/net/sockstat6"
 #define NET_RPC_NFS	"/proc/net/rpc/nfs"
 #define NET_RPC_NFSD	"/proc/net/rpc/nfsd"
+#define NET_SOFTNET	"/proc/net/softnet_stat"
 #define LOADAVG		"/proc/loadavg"
 #define VMSTAT		"/proc/vmstat"
 #define NET_SNMP	"/proc/net/snmp"
@@ -567,6 +568,17 @@ struct stats_fchost {
 };
 
 #define STATS_FCHOST_SIZE	(sizeof(struct stats_fchost))
+
+/* Structure for softnet statistics */
+struct stats_softnet {
+	unsigned long long processed	__attribute__ ((aligned (16)));
+	unsigned long long dropped	__attribute__ ((aligned (16)));
+	unsigned long long time_squeeze	__attribute__ ((aligned (16)));
+	unsigned long long received_rps	__attribute__ ((aligned (16)));
+	unsigned long long flow_limit	__attribute__ ((aligned (16)));
+};
+
+#define STATS_SOFTNET_SIZE	(sizeof(struct stats_softnet))
 
 /*
  ***************************************************************************

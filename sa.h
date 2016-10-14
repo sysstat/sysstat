@@ -20,7 +20,7 @@
  */
 
 /* Number of activities */
-#define NR_ACT		38
+#define NR_ACT		39
 /* The value below is used for sanity check */
 #define MAX_NR_ACT	256
 
@@ -66,6 +66,7 @@
 #define A_PWR_USB	36
 #define A_FILESYSTEM	37
 #define A_NET_FC	38
+#define A_NET_SOFT	39
 
 
 /* Macro used to flag an activity that should be collected */
@@ -187,6 +188,7 @@
 #define K_FREQ		"FREQ"
 #define K_MOUNT		"MOUNT"
 #define K_FC		"FC"
+#define K_SOFT		"SOFT"
 
 #define K_INT		"INT"
 #define K_DISK		"DISK"
@@ -1067,6 +1069,8 @@ __read_funct_t wrap_read_bus_usb_dev
 __read_funct_t wrap_read_filesystem
 	(struct activity *);
 __read_funct_t wrap_read_fchost
+	(struct activity *);
+__read_funct_t wrap_read_softnet
 	(struct activity *);
 
 /* Other functions */

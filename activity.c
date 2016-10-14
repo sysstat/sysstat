@@ -1413,7 +1413,7 @@ struct activity filesystem_act = {
 /* Fibre Channel HBA usage activity */
 struct activity fchost_act = {
 	.id		= A_NET_FC,
-	.options	= AO_CLOSE_MARKUP + AO_GRAPH_PER_ITEM,
+	.options	= AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
@@ -1441,6 +1441,42 @@ struct activity fchost_act = {
 	.nr_max		= MAX_NR_FCHOSTS,
 	.fsize		= STATS_FCHOST_SIZE,
 	.msize		= STATS_FCHOST_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
+/* Softnet activity */
+struct activity softnet_act = {
+	.id		= A_NET_SOFT,
+	.options	= AO_CLOSE_MARKUP + AO_GRAPH_PER_ITEM,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
+#ifdef SOURCE_SADC
+	.f_count_index	= 0,	/* wrap_get_cpu_nr() */
+	.f_count2	= NULL,
+	.f_read		= wrap_read_softnet,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_softnet_stats,
+	.f_print_avg	= print_softnet_stats,
+#endif
+#if defined(SOURCE_SAR) || defined(SOURCE_SADF)
+	.hdr_line	= "CPU;total/s;dropd/s;squeezd/s;rx_rps/s;flw_lim/s",
+#endif
+#ifdef SOURCE_SADF
+	.f_render	= render_softnet_stats,
+	.f_xml_print	= xml_print_softnet_stats,
+	.f_json_print	= json_print_softnet_stats,
+	.f_svg_print	= svg_print_softnet_stats,
+	.name		= "A_NET_SOFT",
+	.g_nr		= 2,
+#endif
+	.nr		= -1,
+	.nr2		= 1,
+	.nr_max		= NR_CPUS,
+	.fsize		= STATS_SOFTNET_SIZE,
+	.msize		= STATS_SOFTNET_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.bitmap		= NULL
@@ -1501,7 +1537,8 @@ struct activity *act[NR_ACT] = {
 	&net_icmp6_act,
 	&net_eicmp6_act,
 	&net_udp6_act,
-	&fchost_act,		/* AO_CLOSE_MARKUP */
+	&fchost_act,
+	&softnet_act,	/* AO_CLOSE_MARKUP */
 	/* </network> */
 	/* <power-management> */
 	&pwr_cpufreq_act,

@@ -92,6 +92,8 @@ __print_funct_t print_filesystem_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t print_fchost_stats
 	(struct activity *, int, int, unsigned long long);
+__print_funct_t print_softnet_stats
+	(struct activity *, int, int, unsigned long long);
 
 /* Functions used to display average statistics */
 __print_funct_t print_avg_memory_stats

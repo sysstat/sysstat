@@ -91,5 +91,7 @@ __print_funct_t json_print_filesystem_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t json_print_fchost_stats
 	(struct activity *, int, int, unsigned long long);
+__print_funct_t json_print_softnet_stats
+	(struct activity *, int, int, unsigned long long);
 
 #endif /* _XML_STATS_H */
