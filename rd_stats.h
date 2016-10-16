@@ -571,11 +571,11 @@ struct stats_fchost {
 
 /* Structure for softnet statistics */
 struct stats_softnet {
-	unsigned long long processed	__attribute__ ((aligned (16)));
-	unsigned long long dropped	__attribute__ ((aligned (16)));
-	unsigned long long time_squeeze	__attribute__ ((aligned (16)));
-	unsigned long long received_rps	__attribute__ ((aligned (16)));
-	unsigned long long flow_limit	__attribute__ ((aligned (16)));
+	unsigned int processed		__attribute__ ((aligned (4)));
+	unsigned int dropped		__attribute__ ((packed));
+	unsigned int time_squeeze	__attribute__ ((packed));
+	unsigned int received_rps	__attribute__ ((packed));
+	unsigned int flow_limit		__attribute__ ((packed));
 };
 
 #define STATS_SOFTNET_SIZE	(sizeof(struct stats_softnet))
@@ -662,5 +662,7 @@ void read_filesystem
 	(struct stats_filesystem *, int);
 void read_fchost
 	(struct stats_fchost *, int);
+void read_softnet
+	(struct stats_softnet *, int);
 
 #endif /* _RD_STATS_H */

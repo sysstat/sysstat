@@ -2225,5 +2225,41 @@ void read_fchost(struct stats_fchost *st_fc, int nbr)
 	closedir(dir);
 }
 
+/*
+ ***************************************************************************
+ * Read softnet statistics.
+ *
+ * IN:
+ * @st_softnet	Structure where stats will be saved.
+ * @nbr		Total number of CPU (including cpu "all").
+ *
+ * OUT:
+ * @st_softnet	Structure with statistics.
+ ***************************************************************************
+ */
+void read_softnet(struct stats_softnet *st_softnet, int nbr)
+{
+	FILE *fp;
+	struct stats_softnet *st_softnet_i;
+	char line[1024];
+	unsigned int proc_nb = 0;
+
+	if ((fp = fopen(NET_SOFTNET, "r")) == NULL)
+		return;
+
+	while ((fgets(line, sizeof(line), fp) != NULL) && (proc_nb < (nbr - 1))) {
+
+		st_softnet_i = st_softnet + proc_nb++;
+		sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x",
+		       &st_softnet_i->processed,
+		       &st_softnet_i->dropped,
+		       &st_softnet_i->time_squeeze,
+		       &st_softnet_i->received_rps,
+		       &st_softnet_i->flow_limit);
+	}
+
+	fclose(fp);
+}
+
 /*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/
 #endif /* SOURCE_SADC */

@@ -1449,7 +1449,7 @@ struct activity fchost_act = {
 /* Softnet activity */
 struct activity softnet_act = {
 	.id		= A_NET_SOFT,
-	.options	= AO_CLOSE_MARKUP + AO_GRAPH_PER_ITEM,
+	.options	= AO_COLLECTED + AO_CLOSE_MARKUP + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -1474,7 +1474,7 @@ struct activity softnet_act = {
 #endif
 	.nr		= -1,
 	.nr2		= 1,
-	.nr_max		= NR_CPUS,
+	.nr_max		= NR_CPUS + 1,
 	.fsize		= STATS_SOFTNET_SIZE,
 	.msize		= STATS_SOFTNET_SIZE,
 	.opt_flags	= 0,

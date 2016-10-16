@@ -918,7 +918,7 @@ __read_funct_t wrap_read_softnet(struct activity *a)
 		= (struct stats_softnet *) a->_buf0;
 
 	/* Read softnet stats */
-	/* FIXME */
+	read_softnet(st_softnet, a->nr);
 
 	return;
 }
