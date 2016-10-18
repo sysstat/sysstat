@@ -3,6 +3,9 @@
  * (C) 2007-2016 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
+#include <sys/param.h>
+#undef HZ
+
 #ifndef _PIDSTAT_H
 #define _PIDSTAT_H
 
@@ -15,9 +18,9 @@
 
 #define NR_PID_PREALLOC	100
 
-#define MAX_COMM_LEN	128
-#define MAX_CMDLINE_LEN	128
-#define MAX_USER_LEN	32
+#define MAX_COMM_LEN    _POSIX_ARG_MAX
+#define MAX_CMDLINE_LEN _POSIX_ARG_MAX
+#define MAX_USER_LEN    LOGIN_NAME_MAX
 
 /* Activities */
 #define P_A_CPU		0x01
