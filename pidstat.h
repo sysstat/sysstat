@@ -2,13 +2,13 @@
  * pidstat: Display per-process statistics.
  * (C) 2007-2016 by Sebastien Godard (sysstat <at> orange.fr)
  */
-
-#include <sys/param.h>
-#undef HZ
-
 #ifndef _PIDSTAT_H
 #define _PIDSTAT_H
 
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#undef HZ
+#endif
 
 #define K_SELF		"SELF"
 
@@ -18,9 +18,19 @@
 
 #define NR_PID_PREALLOC	100
 
+#ifdef _POSIX_ARG_MAX
 #define MAX_COMM_LEN    _POSIX_ARG_MAX
 #define MAX_CMDLINE_LEN _POSIX_ARG_MAX
+#else
+#define MAX_COMM_LEN    128
+#define MAX_CMDLINE_LEN 128
+#endif
+
+#ifdef LOGIN_NAME_MAX
 #define MAX_USER_LEN    LOGIN_NAME_MAX
+#else
+#define MAX_USER_LEN    32
+#endif
 
 /* Activities */
 #define P_A_CPU		0x01

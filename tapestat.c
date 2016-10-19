@@ -36,8 +36,14 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
+
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #undef HZ /* sys/param.h defines HZ but needed for MAXPATHLEN */
+#endif
+#ifndef MAXPATHLEN
+#define MAXPATHLEN 256
+#endif
 
 #include "version.h"
 #include "tapestat.h"
