@@ -1457,6 +1457,11 @@ void read_stats_from_file(char dfile[])
 	int ifd, ignore, tab = 0;
 	__nr_t cpu_nr;
 
+	if (format == F_JSON_OUTPUT) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
+
 	/* Prepare file for reading and read its headers */
 	ignore = ACCEPT_BAD_FILE_FORMAT(fmt[f_position]->options);
 	check_file_actlst(&ifd, dfile, act, &file_magic, &file_hdr,
