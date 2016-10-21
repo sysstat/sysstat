@@ -949,6 +949,11 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	long cnt = 1;
 	off_t fpos;
 
+	if (format == F_JSON_OUTPUT) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
+
 	/* Save current file position */
 	if ((fpos = lseek(ifd, 0, SEEK_CUR)) < 0) {
 		perror("lseek");
