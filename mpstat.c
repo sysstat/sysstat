@@ -1729,6 +1729,11 @@ int main(int argc, char **argv)
 		interval = 0;
 	}
 
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
+
 	/* Get time */
 	get_localtime(&(mp_tstamp[0]), 0);
 

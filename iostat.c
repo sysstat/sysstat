@@ -1857,6 +1857,11 @@ int main(int argc, char **argv)
 		dm_major = get_devmap_major();
 	}
 
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
+
 	/* Init structures according to machine architecture */
 	io_sys_init();
 	if (group_nr > 0) {
