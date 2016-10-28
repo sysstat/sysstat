@@ -541,12 +541,12 @@ void read_vmstat_paging(struct stats_paging *st_paging)
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgsteal += pgtmp;
 		}
-		else if (!strncmp(line, "pgscan_kswapd_", 14)) {
+		else if (!strncmp(line, "pgscan_kswapd", 13)) {
 			/* Read number of pages scanned by the kswapd daemon */
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgscan_kswapd += pgtmp;
 		}
-		else if (!strncmp(line, "pgscan_direct_", 14)) {
+		else if (!strncmp(line, "pgscan_direct", 13)) {
 			/* Read number of pages scanned directly */
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgscan_direct += pgtmp;
