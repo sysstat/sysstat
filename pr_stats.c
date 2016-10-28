@@ -2740,5 +2740,55 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 				    unsigned long long itv)
 {
-	/* FIXME */
+	struct stats_softnet
+		*ssnc = (struct stats_softnet *) a->buf[curr],
+		*ssnp = (struct stats_softnet *) a->buf[prev];
+	int i;
+
+	if (dis) {
+		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9);
+	}
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * The size of a->buf[...] CPU structure may be different from the default
+		 * sizeof(struct stats_pwr_cpufreq) value if data have been read from a file!
+		 * That's why we don't use a syntax like:
+		 * ssnc = (struct stats_softnet *) a->buf[...] + i;
+                 */
+                ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
+                ssnp = (struct stats_softnet *) ((char *) a->buf[prev] + i * a->msize);
+
+		/*
+		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
+		 * Anyway, NR_CPUS may vary between the version of sysstat
+		 * used by sadc to create a file, and the version of sysstat
+		 * used by sar to read it...
+		 */
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			/* Yes: Display it */
+			printf("%-11s", timestamp[curr]);
+
+			if (!i) {
+				/* This is CPU "all" */
+				cprintf_in(IS_STR, " %s", "    all", 0);
+			}
+			else {
+				cprintf_in(IS_INT, " %7d", "", i - 1);
+			}
+
+			cprintf_f(5, 9, 2,
+				  S_VALUE(ssnp->processed,    ssnc->processed,    itv),
+				  S_VALUE(ssnp->dropped,      ssnc->dropped,      itv),
+				  S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
+				  S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
+				  S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
+			printf("\n");
+		}
+	}
 }

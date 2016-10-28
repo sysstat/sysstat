@@ -1479,7 +1479,7 @@ struct activity softnet_act = {
 	.msize		= STATS_SOFTNET_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
-	.bitmap		= NULL
+	.bitmap		= &cpu_bitmap
 };
 
 #ifdef SOURCE_SADC

@@ -2242,12 +2242,20 @@ void read_softnet(struct stats_softnet *st_softnet, int nbr)
 	FILE *fp;
 	struct stats_softnet *st_softnet_i;
 	char line[1024];
-	unsigned int proc_nb = 0;
+	unsigned int proc_nb = 1;
 
+	/* Open /proc/net/softnet_stat file */
 	if ((fp = fopen(NET_SOFTNET, "r")) == NULL)
 		return;
 
-	while ((fgets(line, sizeof(line), fp) != NULL) && (proc_nb < (nbr - 1))) {
+	/*
+	 * Init a structure that will contain the values for CPU "all".
+	 * CPU "all" doesn't exist in /proc/net/softnet_stat file, so
+	 * we compute its values as the sum of the values of each CPU.
+	 */
+	memset(st_softnet, 0, sizeof(struct stats_softnet));
+
+	while ((fgets(line, sizeof(line), fp) != NULL) && (proc_nb < nbr)) {
 
 		st_softnet_i = st_softnet + proc_nb++;
 		sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x",
@@ -2256,6 +2264,12 @@ void read_softnet(struct stats_softnet *st_softnet, int nbr)
 		       &st_softnet_i->time_squeeze,
 		       &st_softnet_i->received_rps,
 		       &st_softnet_i->flow_limit);
+
+		st_softnet->processed += st_softnet_i->processed;
+		st_softnet->dropped += st_softnet_i->dropped;
+		st_softnet->time_squeeze += st_softnet_i->time_squeeze;
+		st_softnet->received_rps += st_softnet_i->received_rps;
+		st_softnet->flow_limit += st_softnet_i->flow_limit;
 	}
 
 	fclose(fp);
