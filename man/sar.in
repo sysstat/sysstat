@@ -1,4 +1,4 @@
-.TH SAR 1 "JUNE 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "OCTOBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -641,9 +641,10 @@ Possible keywords are
 .BR EIP6 ,
 .BR ICMP6 ,
 .BR EICMP6 ,
-.BR UDP6
+.BR UDP6 ,
+.BR FC
 and
-.BR FC .
+.BR SOFT .
 
 With the
 .B DEV
@@ -1786,6 +1787,44 @@ The total number of transmission words received per second.
 .B fch_txw/s
 .RS
 The total number of transmission words transmitted per second.
+.RE
+
+With the
+.B SOFT
+keyword, statistics about software-based network processing are reported.
+The following values are displayed:
+
+.B total/s
+.RS
+The total number of network frames processed per second.
+.RE
+
+.B dropd/s
+.RS
+The total number of network frames dropped per second because there
+was no room on the processing queue.
+.RE
+
+.B squeezd/s
+.RS
+The number of times the softirq handler function terminated per second
+because its budget was consumed or the time limit was reached, but more
+work could have been done.
+.RE
+
+.B rx_rps/s
+.RS
+The number of times the CPU has been woken up per second
+to process packets via an inter-processor interrupt.
+.RE
+
+.B flw_lim/s
+.RS
+The number of times the flow limit has been reached per second.
+Flow limiting is an optional RPS feature that can be used to limit the number of
+packets queued to the backlog for each flow to a certain amount.
+This can help ensure that smaller flows are processed even though
+much larger flows are pushing packets in.
 .RE
 
 The
