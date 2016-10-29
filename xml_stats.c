@@ -2133,12 +2133,49 @@ close_xml_markup:
 __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 					unsigned long long itv)
 {
+	int i;
+	struct stats_softnet *ssnc, *ssnp;
+	char cpuno[8];
+
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
+	tab++;
 
-	/* FIXME */
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
+		ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
+
+		/* Yes: Display it */
+		if (!i) {
+			/* This is CPU "all" */
+			strcpy(cpuno, "all");
+		}
+		else {
+			sprintf(cpuno, "%d", i - 1);
+		}
+
+		xprintf(tab, "<softnet cpu=\"%s\" "
+			"total=\"%.2f\" "
+			"dropd=\"%.2f\" "
+			"squeezd=\"%.2f\" "
+			"rx_rps=\"%.2f\" "
+			"flw_lim=\"%.2f\"/>",
+			 cpuno,
+			 S_VALUE(ssnp->processed,    ssnc->processed,    itv),
+			 S_VALUE(ssnp->dropped,      ssnc->dropped,      itv),
+			 S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
+			 S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
+			 S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
+	}
+	tab--;
 
 close_xml_markup:
 	if (CLOSE_MARKUP(a->options)) {
