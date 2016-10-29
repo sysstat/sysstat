@@ -3001,9 +3001,7 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 				     int curr, unsigned long long itv)
 {
 	int i;
-	struct stats_softnet
-		*ssnc = (struct stats_softnet *) a->buf[curr],
-		*ssnp = (struct stats_softnet *) a->buf[!curr];
+	struct stats_softnet *ssnc, *ssnp;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
