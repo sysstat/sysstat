@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.1 for sysstat. See sadf.h -->
+<!--DTD v3.2 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -254,7 +254,7 @@
 	util-percent CDATA #REQUIRED
 >
 
-<!ELEMENT network (net-dev*, net-edev*, net-nfs?, net-nfsd?, net-sock?, net-ip?, net-eip?, net-icmp?, net-eicmp?, net-tcp?, net-etcp?, net-udp?, net-sock6?, net-ip6?, net-eip6?, net-icmp6?, net-eicmp6?, net-udp6?, fchost*)>
+<!ELEMENT network (net-dev*, net-edev*, net-nfs?, net-nfsd?, net-sock?, net-ip?, net-eip?, net-icmp?, net-eicmp?, net-tcp?, net-etcp?, net-udp?, net-sock6?, net-ip6?, net-eip6?, net-icmp6?, net-eicmp6?, net-udp6?, fchost*, softnet*)>
 <!ATTLIST network
 	per CDATA #REQUIRED
 >
@@ -492,6 +492,16 @@
 	fch_txf CDATA #REQUIRED
 	fch_rxw CDATA #REQUIRED
 	fch_txw CDATA #REQUIRED
+>
+
+<!ELEMENT softnet EMPTY>
+<!ATTLIST softnet
+	cpu CDATA #REQUIRED
+	total CDATA #REQUIRED
+	dropd CDATA #REQUIRED
+	squeezd CDATA #REQUIRED
+	rx_rps CDATA #REQUIRED
+	flw_lim CDATA #REQUIRED
 >
 
 <!ELEMENT power-management (cpu-frequency?, fan-speed?, temperature?, voltage-input?, cpu-weighted-frequency?, usb-devices?)>
