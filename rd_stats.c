@@ -1826,7 +1826,9 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 			sscanf(strchr(line, ':') + 1, "%u", &proc_nb);
 		}
 
-		else if (!strncmp(line, "cpu MHz\t", 8)) {
+		/* Entry in /proc/cpuinfo is different between Intel and Power architectures */
+		else if (!strncmp(line, "cpu MHz\t", 8) ||
+			 !strncmp(line, "clock\t", 6)) {
 			sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
 
 			if (proc_nb < (nbr - 1)) {
