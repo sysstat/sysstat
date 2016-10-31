@@ -1826,8 +1826,14 @@ void read_cpuinfo(struct stats_pwr_cpufreq *st_pwr_cpufreq, int nbr)
 			sscanf(strchr(line, ':') + 1, "%u", &proc_nb);
 		}
 
-		else if (!strncmp(line, "cpu MHz\t", 8)) {
-			sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
+		else if (!strncmp(line, "cpu MHz\t", 8) ||
+			 !strncmp(line, "clock\t", 6)) {
+
+			if (strstr(line, "MHz"))
+				sscanf(strchr(line, ':') + 1, "%u.%uMHz", &ifreq, &dfreq);
+		        else
+				sscanf(strchr(line, ':') + 1, "%u.%u", &ifreq, &dfreq);
+
 
 			if (proc_nb < (nbr - 1)) {
 				/* Save current CPU frequency */
