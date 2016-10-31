@@ -4757,12 +4757,101 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (unused here).
+ * @itv		Interval of time in jiffies (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
 __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 					unsigned long long itv, struct record_header *record_hdr)
 {
-	/* FIXME */
+	struct stats_softnet *ssnc, *ssnp;
+	int group[] = {2, 3};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	char *title[] = {"Software-based network processing statistics (1)",
+			 "Software-based network processing statistics (2)"};
+	char *g_title[] = {"total/s", "dropd/s",
+			   "squeezd/s", "rx_rps/s", "flw_lim/s"};
+	int g_fields[] = {0, 1, 2, 3, 4};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char item_name[8];
+	int i, pos;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(5 * a->nr, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each CPU */
+		for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+			ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
+			ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+				/* No */
+				continue;
+
+			pos = i * 5;
+
+			/* Check for min/max values */
+			save_extrema(0, 0, 5, (void *) ssnc, (void *) ssnp,
+				     itv, spmin + pos, spmax + pos, g_fields);
+
+			/* total/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(ssnp->processed, ssnc->processed, itv),
+				 out + pos, outsize + pos, svg_p->restart);
+			/* dropd/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(ssnp->dropped, ssnc->dropped, itv),
+				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+			/* squeezd/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
+				 out + pos + 2, outsize + pos + 2, svg_p->restart);
+			/* rx_rps/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
+				 out + pos + 3, outsize + pos + 3, svg_p->restart);
+			/* flw_lim/s */
+			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
+				 out + pos + 4, outsize + pos + 4, svg_p->restart);
+		}
+	}
+
+	if (action & F_END) {
+		for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+				/* No */
+				continue;
+
+			pos = i * 5;
+
+			if (!i) {
+				/* This is CPU "all" */
+				strcpy(item_name, "all");
+			}
+			else {
+				sprintf(item_name, "%d", i - 1);
+			}
+
+			draw_activity_graphs(a->g_nr, g_type,
+					     title, g_title, item_name, group,
+					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     svg_p, record_hdr);
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
 }
