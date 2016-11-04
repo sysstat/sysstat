@@ -5,19 +5,19 @@
 # Rafael Fontenelle <rffontenelle@gmail.com>, 2014, 2015, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.3.4\n"
+"Project-Id-Version: sysstat 11.5.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-05-14 10:33+0200\n"
-"PO-Revision-Date: 2016-05-15 17:36-0200\n"
+"POT-Creation-Date: 2016-09-23 15:07+0200\n"
+"PO-Revision-Date: 2016-09-23 16:36-0200\n"
 "Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge.net>\n"
 "Language: pt_BR\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Virtaal 0.7.1\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
 
 #: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:89
 #, c-format
@@ -29,13 +29,13 @@ msgstr "Uso: %s [ opções ] [ <intervalo> [ <contagem> ]\n"
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "As opções são:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 "[ [ -H ] -g <nome-grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
 "[ <dispositivo> [...] | ALL ] [ --debuginfo ]\n"
 
@@ -44,13 +44,13 @@ msgstr ""
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "As opções são:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 "[ [ -H ] -g <nome-grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
 "[ <dispositivo> [...] | ALL ]\n"
 
@@ -59,60 +59,60 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Não é possível dados do disco\n"
 
-#: iostat.c:1399 sa_common.c:1632
+#: iostat.c:1660 sa_common.c:1650
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Tipo inválido de nome do dispositivo persistente\n"
 
-#: sadf_misc.c:752
+#: sadf_misc.c:749
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Arquivo de dados das atividades do sistema: %s (%#x)\n"
 
-#: sadf_misc.c:761
+#: sadf_misc.c:758
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Arquivo de dados sa genuíno: %s (%x)\n"
 
-#: sadf_misc.c:762
+#: sadf_misc.c:759
 msgid "no"
 msgstr "não"
 
-#: sadf_misc.c:762
+#: sadf_misc.c:759
 msgid "yes"
 msgstr "sim"
 
-#: sadf_misc.c:765
+#: sadf_misc.c:762
 #, c-format
 msgid "Host: "
 msgstr "Computador: "
 
-#: sadf_misc.c:771
+#: sadf_misc.c:769
 #, c-format
 msgid "Number of CPU for last samples in file: %u\n"
 msgstr "Número de CPU para as últimas amostras no arquivo: %u\n"
 
-#: sadf_misc.c:777
+#: sadf_misc.c:775
 #, c-format
 msgid "File date: %s\n"
 msgstr "Data do arquivo: %s\n"
 
-#: sadf_misc.c:780
+#: sadf_misc.c:778
 #, c-format
 msgid "File time: "
 msgstr "Tempo do arquivo: "
 
-#: sadf_misc.c:785
+#: sadf_misc.c:783
 #, c-format
 msgid "Size of a long int: %d\n"
-msgstr "Tamanho de um 'long int': %d\n"
+msgstr "Tamanho de um \"long int\": %d\n"
 
-#: sadf_misc.c:791
+#: sadf_misc.c:789
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista de atividades:\n"
 
-#: sadf_misc.c:804
+#: sadf_misc.c:802
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Formato de atividade desconhecida]"
@@ -143,8 +143,8 @@ msgstr "Não é possível escrever dados no arquivo de atividades do sistema: %s
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Não é possível escrever o cabeçalho do arquivo de atividades do sistema: %s\n"
 
-#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:508 rd_stats.c:69
-#: sa_common.c:1263 count.c:118
+#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
+#: sa_common.c:1264 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Não é possível abrir %s: %s\n"
@@ -182,17 +182,17 @@ msgstr ""
 msgid ""
 "Options are:\n"
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+"[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 "As opções são:\n"
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+"[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"
 
-#: mpstat.c:708 sar.c:358 pidstat.c:2301
+#: mpstat.c:1210 sar.c:358 pidstat.c:2303
 msgid "Average:"
 msgstr "Média:"
 
-#: mpstat.c:1111
+#: mpstat.c:1636
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Não esse tanto de processadores!\n"
@@ -300,7 +300,7 @@ msgstr ""
 "\t-m { <palavra-chave> [,...] | ALL }\n"
 "\t\tEstatísticas de gerenciamento de energia\n"
 "\t\tPalavras chaves são:\n"
-"\t\tCPU\tFrequência instantância do relógio do CPU\n"
+"\t\tCPU\tFrequência instância do relógio do CPU\n"
 "\t\tFAN\tVelocidade dos ventiladores\n"
 "\t\tFREQ\tFrequência média do relógio do CPU\n"
 "\t\tIN\tEntradas de voltagem\n"
@@ -392,7 +392,7 @@ msgstr ""
 #: sar.c:181
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
-msgstr "\t-v\tEstatísticas de tabelas do Núcleo (Kernel)\n"
+msgstr "\t-v\tEstatísticas de tabelas do kernel\n"
 
 #: sar.c:182
 #, c-format
@@ -454,11 +454,11 @@ msgstr "Não está sendo lido de um arquivo de atividade do sistema (use a opç�
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Não é possível encontrar o coletor de dados (%s)\n"
 
-#: pr_stats.c:2483 pr_stats.c:2495 pr_stats.c:2599 pr_stats.c:2610
+#: pr_stats.c:2494 pr_stats.c:2505 pr_stats.c:2606 pr_stats.c:2617
 msgid "Summary:"
 msgstr "Sumário:"
 
-#: pr_stats.c:2538
+#: pr_stats.c:2547
 msgid "Other devices not listed here"
 msgstr "Outros dispositivos não estão listados aqui"
 
@@ -512,42 +512,42 @@ msgstr ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <comando> ] [ -G <nome-processo> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: sa_common.c:1059
+#: sa_common.c:1060
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Erro ao ler o arquivo de atividades do sistema: %s\n"
 
-#: sa_common.c:1069
+#: sa_common.c:1070
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Fim inesperado do arquivo de atividades do sistema\n"
 
-#: sa_common.c:1088
+#: sa_common.c:1089
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Arquivo criado por sar/sadc da versão %d.%d.%d do sysstat"
 
-#: sa_common.c:1121
+#: sa_common.c:1122
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Arquivo de atividades do sistema inválido: %s\n"
 
-#: sa_common.c:1133
+#: sa_common.c:1134
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "Formato endian incompatível\n"
 
-#: sa_common.c:1137
+#: sa_common.c:1138
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "A versão atual do sysstat não consegue ler o formato deste arquivo (%#x)\n"
 
-#: sa_common.c:1266
+#: sa_common.c:1267
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Por favor, verifique se a coleta de dados está habilitado\n"
 
-#: sa_common.c:1451
+#: sa_common.c:1460
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Atividades requisitadas não estão disponíveis no arquivo %s\n"
@@ -561,7 +561,7 @@ msgstr ""
 "As opções são:\n"
 "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:251
+#: tapestat.c:257
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Nenhuma unidade de fita com estatísticas encontrada\n"

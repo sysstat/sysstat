@@ -1,22 +1,23 @@
 # Swedish translation of the sysstat package.
 # This file is distributed under the same license as the sysstat package.
 # Copyright © 1999-2016 Free Software Foundation, Inc.
+#
 # Daniel Nylander <po@danielnylander.se>, 2006, 2008.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015, 2016.
-#
+# Göran Uddeborg <goeran@uddeborg.se>, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.3.4\n"
+"Project-Id-Version: sysstat 11.5.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-05-14 10:33+0200\n"
-"PO-Revision-Date: 2016-05-15 11:02+0200\n"
-"Last-Translator: Sebastian Rasmussen <sebras@gmail.com>\n"
+"POT-Creation-Date: 2016-09-23 15:07+0200\n"
+"PO-Revision-Date: 2016-10-15 14:26+0200\n"
+"Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
 #: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:89
@@ -29,13 +30,13 @@ msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ]\n"
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
-"Flaggorna är:\n"
+"Flaggor är:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ] [ -o JSON ]\n"
 "[ [ -H ] -g <gruppnamn> ] [ -p [ <enhet> [,…] | ALL ] ]\n"
 "[ <enhet> […] | ALL ] [ --debuginfo ]\n"
 
@@ -44,13 +45,13 @@ msgstr ""
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
-"Flaggorna är:\n"
+"Flaggor är:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+"[ -j { ID | LABEL | PATH | UUID | … } ] [ -o JSON ]\n"
 "[ [ -H ] -g <gruppnamn> ] [ -p [ <enhet> [,…] | ALL ] ]\n"
 "[ <enhet> […] | ALL ]\n"
 
@@ -59,61 +60,61 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Kan inte hitta diskdata\n"
 
-#: iostat.c:1399 sa_common.c:1632
+#: iostat.c:1660 sa_common.c:1650
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ogiltig typ av persistent enhetsnamn\n"
 
-#: sadf_misc.c:752
+#: sadf_misc.c:749
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Systemaktivitetsfil: %s (%#x)\n"
 
-#: sadf_misc.c:761
+#: sadf_misc.c:758
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Genuin sa-datafil: %s (%x)\n"
 
-#: sadf_misc.c:762
+#: sadf_misc.c:759
 msgid "no"
 msgstr "nej"
 
-#: sadf_misc.c:762
+#: sadf_misc.c:759
 msgid "yes"
 msgstr "ja"
 
-#: sadf_misc.c:765
+#: sadf_misc.c:762
 #, c-format
 msgid "Host: "
 msgstr "Värd: "
 
 # Osäker
-#: sadf_misc.c:771
+#: sadf_misc.c:769
 #, c-format
 msgid "Number of CPU for last samples in file: %u\n"
 msgstr "Antal processorer för det senaste samplet i fil: %u\n"
 
-#: sadf_misc.c:777
+#: sadf_misc.c:775
 #, c-format
 msgid "File date: %s\n"
 msgstr "Fildatum: %s\n"
 
-#: sadf_misc.c:780
+#: sadf_misc.c:778
 #, c-format
 msgid "File time: "
 msgstr "Filtid: "
 
-#: sadf_misc.c:785
+#: sadf_misc.c:783
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Storlek på en lång int: %d\n"
 
-#: sadf_misc.c:791
+#: sadf_misc.c:789
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista över aktiviteter:\n"
 
-#: sadf_misc.c:804
+#: sadf_misc.c:802
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Okänt aktivitetsformat]"
@@ -130,7 +131,7 @@ msgid ""
 "[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -C <kommentar> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
@@ -144,8 +145,8 @@ msgstr "Kan inte skriva data till systemaktivitetsfil: %s\n"
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Kan inte skriva systemaktivitetsfilhuvud: %s\n"
 
-#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:508 rd_stats.c:69
-#: sa_common.c:1263 count.c:118
+#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
+#: sa_common.c:1264 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Kan inte öppna %s: %s\n"
@@ -166,7 +167,7 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
 #: cifsiostat.c:77
@@ -175,7 +176,7 @@ msgid ""
 "Options are:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #: mpstat.c:101
@@ -183,18 +184,18 @@ msgstr ""
 msgid ""
 "Options are:\n"
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
+"[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <processor> [,…] | ON | ALL } ]\n"
+"[ -o JSON ] [ -P { <processor> [,…] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:708 sar.c:358 pidstat.c:2301
+#: mpstat.c:1210 sar.c:358 pidstat.c:2303
 msgid "Average:"
 msgstr "Genomsnitt:"
 
-#: mpstat.c:1111
+#: mpstat.c:1636
 #, c-format
 msgid "Not that many processors!\n"
 msgstr "Inte så många processorer!\n"
@@ -213,7 +214,7 @@ msgid ""
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <flaggor> [,...] ] [ -P { <processor> [,…] | ALL } ]\n"
 "[ -s [ <tt:mm[:ss]> ] ] [ -e [ <tt:mm[:ss]> ] ]\n"
@@ -232,7 +233,7 @@ msgid ""
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
@@ -456,11 +457,11 @@ msgstr "Läser inte från en systemaktivitetsfil (använd flaggan -f)\n"
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan inte hitta datainsamlaren (%s)\n"
 
-#: pr_stats.c:2483 pr_stats.c:2495 pr_stats.c:2599 pr_stats.c:2610
+#: pr_stats.c:2494 pr_stats.c:2505 pr_stats.c:2606 pr_stats.c:2617
 msgid "Summary:"
 msgstr "Sammanfattning:"
 
-#: pr_stats.c:2538
+#: pr_stats.c:2547
 msgid "Other devices not listed here"
 msgstr "Andra enheter som inte listas här"
 
@@ -509,49 +510,49 @@ msgid ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
-"Flaggor:\n"
+"Flaggor är:\n"
 "[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <användarnamn> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <kommando> ] [ -G <processnamn> ]\n"
 "[ -p { <pid> [,…] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: sa_common.c:1059
+#: sa_common.c:1060
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Fel vid inläsning av systemaktivitetsfil: %s\n"
 
-#: sa_common.c:1069
+#: sa_common.c:1070
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Oväntat slut på systemaktivitetsfil\n"
 
-#: sa_common.c:1088
+#: sa_common.c:1089
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Fil skapad av sar/sadc från sysstat version %d.%d.%d"
 
-#: sa_common.c:1121
+#: sa_common.c:1122
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Ogiltig systemaktivitetsfil: %s\n"
 
-#: sa_common.c:1133
+#: sa_common.c:1134
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr ""
 "Endian-format är inkompatibla\n"
 "\n"
 
-#: sa_common.c:1137
+#: sa_common.c:1138
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Aktuell sysstat-version kan inte läsa formatet på denna fil (%#x)\n"
 
-#: sa_common.c:1266
+#: sa_common.c:1267
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Kontrollera om datainsamling är aktiverad\n"
 
-#: sa_common.c:1451
+#: sa_common.c:1460
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Begärda aktiviteter inte tillgängliga i filen %s\n"
@@ -562,10 +563,10 @@ msgid ""
 "Options are:\n"
 "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
-"Flaggorna är:\n"
+"Flaggor är:\n"
 "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:251
+#: tapestat.c:257
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Inga bandenheter med statistik hittades\n"
@@ -574,86 +575,3 @@ msgstr "Inga bandenheter med statistik hittades\n"
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Kan inte hantera så många processorer!\n"
-
-#~ msgid "Usage:"
-#~ msgstr "Användning:"
-
-#~ msgid "options..."
-#~ msgstr "flaggor..."
-
-#~ msgid "interval"
-#~ msgstr "intervall"
-
-#~ msgid "count"
-#~ msgstr "antal"
-
-#~ msgid "device"
-#~ msgstr "enhet"
-
-#~ msgid "-x and -p options are mutually exclusive\n"
-#~ msgstr "flaggorna -x och -p är ömsesidigt uteslutande\n"
-
-#~ msgid "cpu"
-#~ msgstr "processor"
-
-#~ msgid "command"
-#~ msgstr "kommando"
-
-#~ msgid "outfile"
-#~ msgstr "utfil"
-
-#~ msgid "comment"
-#~ msgstr "kommentar"
-
-#~ msgid "datafile"
-#~ msgstr "datafil"
-
-#~ msgid "hh:mm:ss"
-#~ msgstr "hh:mm:ss"
-
-#~ msgid "sar_options..."
-#~ msgstr "sar_flaggor..."
-
-#~ msgid "Activity flag: %#x\n"
-#~ msgstr "Aktivitetsflagga: %#x\n"
-
-#~ msgid "Number of CPU: %u\n"
-#~ msgstr "Antal processorer: %u\n"
-
-#~ msgid "Number of interrupts per CPU: %u\n"
-#~ msgstr "Antal avbrott per processor: %u\n"
-
-#~ msgid "Number of disks: %u\n"
-#~ msgstr "Antal diskar: %u\n"
-
-#~ msgid "Number of network interfaces: %u\n"
-#~ msgstr "Antal nätverksgränssnitt: %u\n"
-
-#~ msgid "int"
-#~ msgstr "int"
-
-#~ msgid "filename"
-#~ msgstr "filnamn"
-
-#~ msgid "Not an SMP machine...\n"
-#~ msgstr "Inte en flerprocessorsmaskin...\n"
-
-#~ msgid ""
-#~ "Usage: %s [ options... ] [ <interval> [ <count> ] ]\n"
-#~ "Options are:\n"
-#~ "[ -c ] [ -d ] [ -N ] [ -n ] [ -k | -m ] [ -t ] [ -V ] [ -x ]\n"
-#~ "[ <device> [ ... ] | ALL ] [ -p [ <device> | ALL ] ]\n"
-#~ msgstr ""
-#~ "Användning: %s [ flaggor... ] [ <intervall> [ <antal> ] ]\n"
-#~ "Flaggor:\n"
-#~ "[ -c ] [ -d ] [ -N ] [ -n ] [ -k | -m ] [ -t ] [ -V ] [ -x ]\n"
-#~ "[ <enhet> [ ... ] | ALL ] [ -p [ <enhet> | ALL ] ]\n"
-
-#~ msgid ""
-#~ "Usage: %s [ options... ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-#~ "Options are:\n"
-#~ "[ -C <comment> ] [ -d ] [ -F ] [ -I ] [ -V ]\n"
-#~ msgstr ""
-#~ "Användning: %s [ flaggor... ] [ <intervall> [ <antal> ] ] [ <utfil> ]\n"
-#~ "Flaggor:\n"
-#~ "[ -C <comment> ] [ -d ] [ -F ] [ -I ] [ -V ]\n"
