@@ -1,5 +1,27 @@
 Changes:
 
+2016/11/04: Version 11.5.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Add software-based network processing (softnet) statistics.
+	* sadc: Add output formats for softnet statistics.
+	* [Michal Sekletar]: sar: Make buffers that hold timestamps
+	  bigger [11.2.8] [11.4.2].
+	* [Shantanu Goel]: sar: /proc/vmstat fix for Linux 4.8 [11.2.8]
+	  [11.4.2].
+	* [Mike Winter]: pidstat: Use system constants for process name
+	  length and username length.
+	* [Breno Leitao]: sar: Improve cpuinfo read for POWER architecture
+	  [11.2.8] [11.4.2].
+	* Make various buffers size holding timestamps consistent.
+	* sadf: Use a decimal point instead of a coma in JSON output
+	  [11.2.8] [11.4.2].
+	* mpstat, iostat: Use a decimal point instead of a coma in JSON
+	  output.
+	* pidstat: Use either the short or the full command line when
+	  looking for a pattern with options -C or -G [11.2.8] [11.4.2].
+	* sar manual page updated.
+	* NLS updated.
+	* CREDITS file updated.
+
 2016/09/23: Version 11.5.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* iostat: Add JSON output (option "-o JSON").
 	* mpstat: Add JSON output (option "-o JSON").
