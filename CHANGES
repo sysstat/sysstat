@@ -1,5 +1,14 @@
 Changes:
 
+2016/11/04: Version 11.4.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Michal Sekletar]: sar: make buffers that hold timestamps
+	  bigger.
+	* [Shantanu Goel]: sar: /proc/vmstat fix for Linux 4.8.
+	* [Breno Leitao]: sar: Improve cpuinfo read for POWER architecture.
+	* sadf: Use a decimal point instead of a coma in JSON output.
+	* pidstat: Use either the short or the full command line when
+	  looking for a pattern with options -C or -G.
+
 2016/09/23: Version 11.4.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Fix broken datafile conversion from old formats.
 	* sadf: Fix fields list displayed by sadf -d for filesystem
