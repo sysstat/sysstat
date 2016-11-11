@@ -232,6 +232,10 @@ void read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of free memory in kB */
 			sscanf(line + 8, "%lu", &st_memory->frmkb);
 		}
+		else if (!strncmp(line, "MemAvailable:", 13)) {
+			/* Read the amount of available memory in kB */
+			sscanf(line + 13, "%lu", &st_memory->availablekb);
+		}
 		else if (!strncmp(line, "Buffers:", 8)) {
 			/* Read the amount of buffered memory in kB */
 			sscanf(line + 8, "%lu", &st_memory->bufkb);

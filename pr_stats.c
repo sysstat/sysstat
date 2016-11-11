@@ -477,18 +477,19 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		*smc = (struct stats_memory *) a->buf[curr],
 		*smp = (struct stats_memory *) a->buf[prev];
 	static unsigned long long
-		avg_frmkb    = 0,
-		avg_bufkb    = 0,
-		avg_camkb    = 0,
-		avg_comkb    = 0,
-		avg_activekb = 0,
-		avg_inactkb  = 0,
-		avg_dirtykb  = 0,
-		avg_anonpgkb = 0,
-		avg_slabkb   = 0,
-		avg_kstackkb = 0,
-		avg_pgtblkb  = 0,
-		avg_vmusedkb = 0;
+		avg_frmkb       = 0,
+		avg_bufkb       = 0,
+		avg_camkb       = 0,
+		avg_comkb       = 0,
+		avg_activekb    = 0,
+		avg_inactkb     = 0,
+		avg_dirtykb     = 0,
+		avg_anonpgkb    = 0,
+		avg_slabkb      = 0,
+		avg_kstackkb    = 0,
+		avg_pgtblkb     = 0,
+		avg_vmusedkb    = 0,
+		avg_availablekb = 0;
 	static unsigned long long
 		avg_frskb = 0,
 		avg_tlskb = 0,
@@ -537,12 +538,13 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 
 			if (DISPLAY_MEM_ALL(a->opt_flags)) {
 				/* Display extended memory statistics */
-				cprintf_u64(5, 9,
+				cprintf_u64(6, 9,
 					    (unsigned long long) smc->anonpgkb,
 					    (unsigned long long) smc->slabkb,
 					    (unsigned long long) smc->kstackkb,
 					    (unsigned long long) smc->pgtblkb,
-					    (unsigned long long) smc->vmusedkb);
+					    (unsigned long long) smc->vmusedkb,
+					    (unsigned long long) smc->availablekb);
 			}
 
 			printf("\n");
@@ -552,18 +554,19 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			 * We assume that the total amount of memory installed can not vary
 			 * during the interval given on the command line.
 			 */
-			avg_frmkb    += smc->frmkb;
-			avg_bufkb    += smc->bufkb;
-			avg_camkb    += smc->camkb;
-			avg_comkb    += smc->comkb;
-			avg_activekb += smc->activekb;
-			avg_inactkb  += smc->inactkb;
-			avg_dirtykb  += smc->dirtykb;
-			avg_anonpgkb += smc->anonpgkb;
-			avg_slabkb   += smc->slabkb;
-			avg_kstackkb += smc->kstackkb;
-			avg_pgtblkb  += smc->pgtblkb;
-			avg_vmusedkb += smc->vmusedkb;
+			avg_frmkb       += smc->frmkb;
+			avg_bufkb       += smc->bufkb;
+			avg_camkb       += smc->camkb;
+			avg_comkb       += smc->comkb;
+			avg_activekb    += smc->activekb;
+			avg_inactkb     += smc->inactkb;
+			avg_dirtykb     += smc->dirtykb;
+			avg_anonpgkb    += smc->anonpgkb;
+			avg_slabkb      += smc->slabkb;
+			avg_kstackkb    += smc->kstackkb;
+			avg_pgtblkb     += smc->pgtblkb;
+			avg_vmusedkb    += smc->vmusedkb;
+			avg_availablekb += smc->availablekb;
 		}
 		else {
 			/* Display average values */
@@ -589,12 +592,13 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 				  (double) avg_dirtykb / avg_count);
 
 			if (DISPLAY_MEM_ALL(a->opt_flags)) {
-				cprintf_f(5, 9, 0,
+				cprintf_f(6, 9, 0,
 					  (double) avg_anonpgkb / avg_count,
 					  (double) avg_slabkb / avg_count,
 					  (double) avg_kstackkb / avg_count,
 					  (double) avg_pgtblkb / avg_count,
-					  (double) avg_vmusedkb / avg_count);
+					  (double) avg_vmusedkb / avg_count,
+					  (double) avg_availablekb / avg_count);
 			}
 
 			printf("\n");
@@ -603,7 +607,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			avg_frmkb = avg_bufkb = avg_camkb = avg_comkb = 0;
 			avg_activekb = avg_inactkb = avg_dirtykb = 0;
 			avg_anonpgkb = avg_slabkb = avg_kstackkb = 0;
-			avg_pgtblkb = avg_vmusedkb = 0;
+			avg_pgtblkb = avg_vmusedkb = avg_availablekb = 0;
 		}
 	}
 

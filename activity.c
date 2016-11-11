@@ -302,7 +302,7 @@ struct activity memory_act = {
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
 	.hdr_line	= "frmpg/s;bufpg/s;campg/s|"
-		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty&kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused|"
+		          "kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty&kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused;kbavail|"
 		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 #endif
 #ifdef SOURCE_SADF
