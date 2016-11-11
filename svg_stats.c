@@ -1539,7 +1539,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 {
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
-	int group1[] = {2, 1, 3, 1, 3, 5};
+	int group1[] = {3, 1, 3, 1, 3, 5};
 	int g_type1[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH,
 			 SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	int group2[] = {3, 1, 1};
@@ -1549,13 +1549,13 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			  "Memory utilization (5)", "Memory utilization (6)"};
 	char *title2[] = {"Swap utilization (1)", "Swap utilization (2)",
 			  "Swap utilization (3)"};
-	char *g_title1[] = {"MBmemfree", "MBmemused", "%memused", "MBbuffers",
+	char *g_title1[] = {"MBmemfree", "MBmemused", "MBavail", "%memused", "MBbuffers",
 			    "MBcached", "MBcommit", "%commit", "MBactive", "MBinact",
 			    "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
 			    "MBvmused"};
 	char *g_title2[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
 			    "%swpcad"};
-	int g_fields[] = {0, 3, 4, 20, 15, 21, 17, 5, 7, 8, 9, 10, 11, 12, 13, 14};
+	int g_fields[] = {0, 4, 5, 21, 16, 22, 18, 6, 8, 9, 10, 11, 12, 13, 14, 15, 2};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1567,47 +1567,47 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
 		 */
-		out = allocate_graph_lines(22, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(23, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(0, 16, 0, (void *) a->buf[curr], NULL,
+		save_extrema(0, 17, 0, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax, g_fields);
 		/* Compute %memused min/max values */
 		tval = smc->tlmkb ? SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0;
-		if (tval > *(spmax + 2)) {
-			*(spmax + 2) = tval;
+		if (tval > *(spmax + 3)) {
+			*(spmax + 3) = tval;
 		}
-		if (tval < *(spmin + 2)) {
-			*(spmin + 2) = tval;
+		if (tval < *(spmin + 3)) {
+			*(spmin + 3) = tval;
 		}
 		/* Compute %commit min/max values */
 		tval = (smc->tlmkb + smc->tlskb) ?
 		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
-		if (tval > *(spmax + 6)) {
-			*(spmax + 6) = tval;
+		if (tval > *(spmax + 7)) {
+			*(spmax + 7) = tval;
 		}
-		if (tval < *(spmin + 6)) {
-			*(spmin + 6) = tval;
+		if (tval < *(spmin + 7)) {
+			*(spmin + 7) = tval;
 		}
 		/* Compute %swpused min/max values */
 		tval = smc->tlskb ?
 		       SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
-		if (tval > *(spmax + 18)) {
-			*(spmax + 18) = tval;
-		}
-		if (tval < *(spmin + 18)) {
-			*(spmin + 18) = tval;
-		}
-		/* Compute %swpcad min/max values */
-		tval = (smc->tlskb - smc->frskb) ?
-		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
 		if (tval > *(spmax + 19)) {
 			*(spmax + 19) = tval;
 		}
 		if (tval < *(spmin + 19)) {
 			*(spmin + 19) = tval;
+		}
+		/* Compute %swpcad min/max values */
+		tval = (smc->tlskb - smc->frskb) ?
+		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
+		if (tval > *(spmax + 20)) {
+			*(spmax + 20) = tval;
+		}
+		if (tval < *(spmin + 20)) {
+			*(spmin + 20) = tval;
 		}
 		/* Compute memused min/max values in MB */
 		tval = ((double) (smc->tlmkb - smc->frmkb)) / 1024;
@@ -1619,11 +1619,11 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		}
 		/* Compute swpused min/max values in MB */
 		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
-		if (tval > *(spmax + 16)) {
-			*(spmax + 16) = tval;
+		if (tval > *(spmax + 17)) {
+			*(spmax + 17) = tval;
 		}
-		if (tval < *(spmin + 16)) {
-			*(spmin + 16) = tval;
+		if (tval < *(spmin + 17)) {
+			*(spmin + 17) = tval;
 		}
 
 		/* MBmemfree */
@@ -1634,92 +1634,96 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) (smc->tlmkb - smc->frmkb)) / 1024,
 			 out + 1, outsize + 1, svg_p->restart);
+		/* MBavail */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 ((double) smc->availablekb) / 1024,
+			 out + 2, outsize + 2, svg_p->restart);
 		/* MBbuffers */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->bufkb) / 1024,
-			 out + 3, outsize + 3, svg_p->restart);
+			 out + 4, outsize + 4, svg_p->restart);
 		/* MBcached */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->camkb) / 1024,
-			  out + 4, outsize + 4, svg_p->restart);
+			  out + 5, outsize + 5, svg_p->restart);
 		/* MBswpfree */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->frskb) / 1024,
-			 out + 15, outsize + 15, svg_p->restart);
+			 out + 16, outsize + 16, svg_p->restart);
 		/* MBswpused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) (smc->tlskb - smc->frskb)) / 1024,
-			 out + 16, outsize + 16, svg_p->restart);
+			 out + 17, outsize + 17, svg_p->restart);
 		/* MBswpcad */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->caskb) / 1024,
-			 out + 17, outsize + 17, svg_p->restart);
+			 out + 18, outsize + 18, svg_p->restart);
 		/* MBcommit */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->comkb) / 1024,
-			 out + 5, outsize + 5, svg_p->restart);
+			 out + 6, outsize + 6, svg_p->restart);
 		/* MBactive */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->activekb) / 1024,
-			 out + 7, outsize + 7, svg_p->restart);
+			 out + 8, outsize + 8, svg_p->restart);
 		/* MBinact */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->inactkb) / 1024,
-			 out + 8, outsize + 8, svg_p->restart);
+			 out + 9, outsize + 9, svg_p->restart);
 		/* MBdirty */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->dirtykb) / 1024,
-			 out + 9, outsize + 9, svg_p->restart);
+			 out + 10, outsize + 10, svg_p->restart);
 		/* MBanonpg */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->anonpgkb) / 1024,
-			 out + 10, outsize + 10, svg_p->restart);
+			 out + 11, outsize + 11, svg_p->restart);
 		/* MBslab */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->slabkb) / 1024,
-			 out + 11, outsize + 11, svg_p->restart);
+			 out + 12, outsize + 12, svg_p->restart);
 		/* MBkstack */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->kstackkb) / 1024,
-			 out + 12, outsize + 12, svg_p->restart);
+			 out + 13, outsize + 13, svg_p->restart);
 		/* MBpgtbl */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->pgtblkb) / 1024,
-			 out + 13, outsize + 13, svg_p->restart);
+			 out + 14, outsize + 14, svg_p->restart);
 		/* MBvmused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->vmusedkb) / 1024,
-			 out + 14, outsize + 14, svg_p->restart);
+			 out + 15, outsize + 15, svg_p->restart);
 		/* %memused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 smc->tlmkb ?
 			 SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0,
-			 out + 2, outsize + 2, svg_p->dt);
+			 out + 3, outsize + 3, svg_p->dt);
 		/* %commit */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 (smc->tlmkb + smc->tlskb) ?
 			 SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0,
-			 out + 6, outsize + 6, svg_p->dt);
+			 out + 7, outsize + 7, svg_p->dt);
 		/* %swpused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 smc->tlskb ?
 			 SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0,
-			 out + 18, outsize + 18, svg_p->dt);
+			 out + 19, outsize + 19, svg_p->dt);
 		/* %swpcad */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 (smc->tlskb - smc->frskb) ?
 			 SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0,
-			 out + 19, outsize + 19, svg_p->dt);
+			 out + 20, outsize + 20, svg_p->dt);
 	}
 
 	if (action & F_END) {
 
 		/* Conversion kB -> MB */
-		for (i = 0; i < 16; i++) {
+		for (i = 0; i < 17; i++) {
 			*(spmin + g_fields[i]) /= 1024;
 			*(spmax + g_fields[i]) /= 1024;
 		}

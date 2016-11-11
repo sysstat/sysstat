@@ -505,8 +505,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			xprintf(tab, "<pgtbl>%lu</pgtbl>",
 				smc->pgtblkb);
 
-			xprintf(tab--, "<vmused>%lu</vmused>",
+			xprintf(tab, "<vmused>%lu</vmused>",
 				smc->vmusedkb);
+
+			xprintf(tab--, "<avail>%lu</avail>",
+				smc->availablekb);
 		}
 	}
 

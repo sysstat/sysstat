@@ -509,12 +509,14 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 			       "\"slab\": %lu, "
 			       "\"kstack\": %lu, "
 			       "\"pgtbl\": %lu, "
-			       "\"vmused\": %lu",
+			       "\"vmused\": %lu, "
+			       "\"avail\": %lu",
 			       smc->anonpgkb,
 			       smc->slabkb,
 			       smc->kstackkb,
 			       smc->pgtblkb,
-			       smc->vmusedkb);
+			       smc->vmusedkb,
+			       smc->availablekb);
 		}
 	}
 
