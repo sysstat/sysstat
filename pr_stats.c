@@ -516,8 +516,9 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		if (!dispavg) {
 			/* Display instantaneous values */
 			printf("%-11s", timestamp[curr]);
-			cprintf_u64(2, 9,
+			cprintf_u64(3, 9,
 				    (unsigned long long) smc->frmkb,
+				    (unsigned long long) smc->availablekb,
 				    (unsigned long long) (smc->tlmkb - smc->frmkb));
 			cprintf_pc(1, 9, 2,
 				   smc->tlmkb ?
@@ -538,13 +539,12 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 
 			if (DISPLAY_MEM_ALL(a->opt_flags)) {
 				/* Display extended memory statistics */
-				cprintf_u64(6, 9,
+				cprintf_u64(5, 9,
 					    (unsigned long long) smc->anonpgkb,
 					    (unsigned long long) smc->slabkb,
 					    (unsigned long long) smc->kstackkb,
 					    (unsigned long long) smc->pgtblkb,
-					    (unsigned long long) smc->vmusedkb,
-					    (unsigned long long) smc->availablekb);
+					    (unsigned long long) smc->vmusedkb);
 			}
 
 			printf("\n");
@@ -571,8 +571,9 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 		else {
 			/* Display average values */
 			printf("%-11s", timestamp[curr]);
-			cprintf_f(2, 9, 0,
+			cprintf_f(3, 9, 0,
 				  (double) avg_frmkb / avg_count,
+				  (double) avg_availablekb / avg_count,
 				  (double) smc->tlmkb - ((double) avg_frmkb / avg_count));
 			cprintf_pc(1, 9, 2,
 				   smc->tlmkb ?
@@ -592,13 +593,12 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 				  (double) avg_dirtykb / avg_count);
 
 			if (DISPLAY_MEM_ALL(a->opt_flags)) {
-				cprintf_f(6, 9, 0,
+				cprintf_f(5, 9, 0,
 					  (double) avg_anonpgkb / avg_count,
 					  (double) avg_slabkb / avg_count,
 					  (double) avg_kstackkb / avg_count,
 					  (double) avg_pgtblkb / avg_count,
-					  (double) avg_vmusedkb / avg_count,
-					  (double) avg_availablekb / avg_count);
+					  (double) avg_vmusedkb / avg_count);
 			}
 
 			printf("\n");

@@ -479,6 +479,7 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		sep = TRUE;
 
 		printf("\"memfree\": %lu, "
+		       "\"avail\": %lu, "
 		       "\"memused\": %lu, "
 		       "\"memused-percent\": %.2f, "
 		       "\"buffers\": %lu, "
@@ -489,6 +490,7 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		       "\"inactive\": %lu, "
 		       "\"dirty\": %lu",
 		       smc->frmkb,
+		       smc->availablekb,
 		       smc->tlmkb - smc->frmkb,
 		       smc->tlmkb ?
 		       SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
@@ -509,14 +511,12 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 			       "\"slab\": %lu, "
 			       "\"kstack\": %lu, "
 			       "\"pgtbl\": %lu, "
-			       "\"vmused\": %lu, "
-			       "\"avail\": %lu",
+			       "\"vmused\": %lu",
 			       smc->anonpgkb,
 			       smc->slabkb,
 			       smc->kstackkb,
 			       smc->pgtblkb,
-			       smc->vmusedkb,
-			       smc->availablekb);
+			       smc->vmusedkb);
 		}
 	}
 

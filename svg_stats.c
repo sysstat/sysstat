@@ -1549,13 +1549,13 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			  "Memory utilization (5)", "Memory utilization (6)"};
 	char *title2[] = {"Swap utilization (1)", "Swap utilization (2)",
 			  "Swap utilization (3)"};
-	char *g_title1[] = {"MBmemfree", "MBmemused", "MBavail", "%memused", "MBbuffers",
+	char *g_title1[] = {"MBmemfree", "MBavail", "MBmemused", "%memused", "MBbuffers",
 			    "MBcached", "MBcommit", "%commit", "MBactive", "MBinact",
 			    "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
 			    "MBvmused"};
 	char *g_title2[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
 			    "%swpcad"};
-	int g_fields[] = {0, 4, 5, 21, 16, 22, 18, 6, 8, 9, 10, 11, 12, 13, 14, 15, 2};
+	int g_fields[] = {0, 4, 5, 21, 16, 22, 18, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1611,11 +1611,11 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		}
 		/* Compute memused min/max values in MB */
 		tval = ((double) (smc->tlmkb - smc->frmkb)) / 1024;
-		if (tval > *(spmax + 1)) {
-			*(spmax + 1) = tval;
+		if (tval > *(spmax + 2)) {
+			*(spmax + 2) = tval;
 		}
-		if (tval < *(spmin + 1)) {
-			*(spmin + 1) = tval;
+		if (tval < *(spmin + 2)) {
+			*(spmin + 2) = tval;
 		}
 		/* Compute swpused min/max values in MB */
 		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
@@ -1633,11 +1633,11 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		/* MBmemused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) (smc->tlmkb - smc->frmkb)) / 1024,
-			 out + 1, outsize + 1, svg_p->restart);
+			 out + 2, outsize + 2, svg_p->restart);
 		/* MBavail */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->availablekb) / 1024,
-			 out + 2, outsize + 2, svg_p->restart);
+			 out + 1, outsize + 1, svg_p->restart);
 		/* MBbuffers */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->bufkb) / 1024,

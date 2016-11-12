@@ -778,6 +778,10 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       smc->frmkb, DNOVAL, NULL);
 
 		render(isdb, pre, PT_USEINT,
+		       "-\tkbavail", NULL, NULL,
+		       smc->availablekb, DNOVAL, NULL);
+
+		render(isdb, pre, PT_USEINT,
 		       "-\tkbmemused", NULL, NULL,
 		       smc->tlmkb - smc->frmkb, DNOVAL, NULL);
 
@@ -835,13 +839,9 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 			       "-\tkbpgtbl", NULL, NULL,
 			       smc->pgtblkb, DNOVAL, NULL);
 
-			render(isdb, pre, PT_USEINT,
+			render(isdb, pre, PT_USEINT | pt_newlin,
 			       "-\tkbvmused", NULL, NULL,
 			       smc->vmusedkb, DNOVAL, NULL);
-
-			render(isdb, pre, PT_USEINT | pt_newlin,
-			       "-\tkbavail", NULL, NULL,
-			       smc->availablekb, DNOVAL, NULL);
 		}
 	}
 
