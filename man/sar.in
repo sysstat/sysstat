@@ -1,4 +1,4 @@
-.TH SAR 1 "OCTOBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -1936,6 +1936,16 @@ The following values may be displayed:
 .RS
 .RS
 Amount of free memory available in kilobytes.
+.RE
+
+.B kbavail
+.RS
+Estimate of how much memory in kilobytes is available for starting new
+applications, without swapping.
+The estimate takes into account that the system needs some page cache to
+function well, and that not all reclaimable slab will be reclaimable,
+due to items being in use. The impact of those factors will vary from
+system to system.
 .RE
 
 .B kbmemused
