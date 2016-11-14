@@ -64,15 +64,16 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * @cs		Pointer on current sample statistics structure.
  * @ps		Pointer on previous sample statistics structure (may be NULL).
  * @itv		Interval of time in jiffies.
- * @minv	Array containing min values already found for this activity.
- * @maxv	Array containing max values already found for this activity.
+ * @spmin	Array containing min values already found for this activity.
+ * @spmax	Array containing max values already found for this activity.
+ * @g_fields	Index in spmin/spmax arrays where extrema values for each
+ *		activity metric will be saved. As a consequence spmin/spmax
+ *		arrays mau contain values in a different order than that of
+ *		the fields in the statistics structure.
  *
  * OUT:
- * @minv	Array containg the possible new min values for current activity.
- * @maxv	Array containg the possible new max values for current activity.
- *
- * NB: @minv and @maxv arrays contain values in the same order as the fields
- * in the statistics structure.
+ * @spmin	Array containg the possible new min values for current activity.
+ * @spmax	Array containg the possible new max values for current activity.
  ***************************************************************************
  */
 void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
@@ -159,13 +160,13 @@ void save_extrema(int llu_nr, int lu_nr, int u_nr, void *cs, void *ps,
  ***************************************************************************
  * Find the min and max values of all the graphs that will be drawn in the
  * same view. The graphs have their own min and max values in
- * minv[pos...pos+n-1] and maxv[pos...pos+n-1]. 
+ * spmin[pos...pos+n-1] and spmax[pos...pos+n-1]. 
  *
  * IN:
  * @pos		Position in array for the first graph extrema value.
  * @n		Number of graphs to scan.
- * @minv	Array containing min values for graphs.
- * @maxv	Array containing max values for graphs.
+ * @spmin	Array containing min values for graphs.
+ * @spmax	Array containing max values for graphs.
  *
  * OUT:
  * @gmin	Global min value found.
