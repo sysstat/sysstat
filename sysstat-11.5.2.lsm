@@ -26,9 +26,9 @@ Description:	The sysstat package contains the sar, sadf, mpstat, iostat, tapesta
 		NB: Send bugs, patches, suggestions and/or questions to
 		(sysstat [at] orange.fr).
 		URL: http://pagesperso-orange.fr/sebastien.godard/
-Keywords:	system administration, sar, sadf, iostat, tapestat, mpstat, pidstat, cifsiostat, system accounting, performance, tuning
-Author:		sysstat [at] orange.fr (Sebastien Godard)
-Maintained-by:	sysstat [at] orange.fr (Sebastien Godard)
+Keywords:	system administration, system monitoring, sar, sadf, iostat, mpstat, tapestat, pidstat, system accounting, performance, tuning
+Author:		sysstat@NOSPAM.orange.fr (Sebastien Godard)
+Maintained-by:	sysstat@NOSPAM.orange.fr (Sebastien Godard)
 Primary-site:	http://pagesperso-orange.fr/sebastien.godard/
 		475kiB sysstat-11.5.2.tar.gz
 		385kiB sysstat-11.5.2.tar.bz2
