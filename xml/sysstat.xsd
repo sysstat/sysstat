@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.2 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.3 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -248,6 +248,7 @@
 <xs:complexType name="memory-type">
 	<xs:sequence>
 		<xs:element name="memfree" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="avail" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="memused" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="memused-percent" type="hundredth-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="buffers" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>

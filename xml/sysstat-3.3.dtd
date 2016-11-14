@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.2 for sysstat. See sadf.h -->
+<!--DTD v3.3 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -139,13 +139,15 @@
 	bwrtn CDATA #REQUIRED
 >
 
-<!ELEMENT memory (memfree?, memused?, memused-percent?, buffers?, cached?, commit?, commit-percent?, active?, inactive?, dirty?, anonpg?, slab?, kstack?, pgtbl?, vmused?, swpfree?, swpused?, swpused-percent?, swpcad?, swpcad-percent?, frmpg?, bufpg?, campg?)>
+<!ELEMENT memory (memfree?, avail?, memused?, memused-percent?, buffers?, cached?, commit?, commit-percent?, active?, inactive?, dirty?, anonpg?, slab?, kstack?, pgtbl?, vmused?, swpfree?, swpused?, swpused-percent?, swpcad?, swpcad-percent?, frmpg?, bufpg?, campg?)>
 <!ATTLIST memory
 	per CDATA #REQUIRED
 	unit CDATA #REQUIRED
 >
 
 <!ELEMENT memfree (#PCDATA)>
+
+<!ELEMENT avail (#PCDATA)>
 
 <!ELEMENT memused (#PCDATA)>
 
