@@ -148,115 +148,116 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes: Display it */
-			printf("%-11s", timestamp[curr]);
+		/* Yes: Display it */
+		printf("%-11s", timestamp[curr]);
 
-			if (!i) {
-				/* This is CPU "all" */
-				cprintf_in(IS_STR, " %s", "    all", 0);
-			}
-			else {
-				cprintf_in(IS_INT, " %7d", "", i - 1);
+		if (!i) {
+			/* This is CPU "all" */
+			cprintf_in(IS_STR, " %s", "    all", 0);
+		}
+		else {
+			cprintf_in(IS_INT, " %7d", "", i - 1);
 
+			/*
+			 * If the CPU is offline then it is omited from /proc/stat:
+			 * All the fields couldn't have been read and the sum of them is zero.
+			 * (Remember that guest/guest_nice times are already included in
+			 * user/nice modes.)
+			 */
+			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
+			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
+			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 				/*
-				 * If the CPU is offline then it is omited from /proc/stat:
-				 * All the fields couldn't have been read and the sum of them is zero.
-				 * (Remember that guest/guest_nice times are already included in
-				 * user/nice modes.)
+				 * Set current struct fields (which have been set to zero)
+				 * to values from previous iteration. Hence their values won't
+				 * jump from zero when the CPU comes back online.
 				 */
-				if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-				     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-				     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-					/*
-					 * Set current struct fields (which have been set to zero)
-					 * to values from previous iteration. Hence their values won't
-					 * jump from zero when the CPU comes back online.
-					 */
-					*scc = *scp;
+				*scc = *scp;
 
-					/* %user, %nice, %system, %iowait, %steal, ..., %idle */
-					cprintf_pc(6, 9, 2,
-						   0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+				/* %user, %nice, %system, %iowait, %steal, ..., %idle */
+				cprintf_pc(6, 9, 2,
+					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
-					if (DISPLAY_CPU_ALL(a->opt_flags)) {
-						/*
-						 * Four additional fields to display:
-						 * %irq, %soft, %guest, %gnice.
-						 */
-						cprintf_pc(4, 9, 2,
-							   0.0, 0.0, 0.0, 0.0);
-					}
-					printf("\n");
-					continue;
-				}
-
-				/* Recalculate interval for current proc */
-				g_itv = get_per_cpu_interval(scc, scp);
-
-				if (!g_itv) {
-					/*
-					 * If the CPU is tickless then there is no change in CPU values
-					 * but the sum of values is not zero.
-					 * %user, %nice, %system, %iowait, %steal, ..., %idle
-					 */
-					cprintf_pc(5, 9, 2,
-						   0.0, 0.0, 0.0, 0.0, 0.0);
-
-					if (DISPLAY_CPU_DEF(a->opt_flags)) {
-						cprintf_pc(1, 9, 2, 100.0);
-						printf("\n");
-					}
+				if (DISPLAY_CPU_ALL(a->opt_flags)) {
 					/*
 					 * Four additional fields to display:
 					 * %irq, %soft, %guest, %gnice.
 					 */
-					else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-						cprintf_pc(4, 9, 2,
-							   0.0, 0.0, 0.0, 100.0);
-						printf("\n");
-					}
-					continue;
+					cprintf_pc(4, 9, 2,
+						   0.0, 0.0, 0.0, 0.0);
 				}
+				printf("\n");
+				continue;
 			}
 
-			if (DISPLAY_CPU_DEF(a->opt_flags)) {
-				cprintf_pc(6, 9, 2,
-					   ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
-					   ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
-					   ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-						       scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-						       g_itv),
-					   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-					   ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
-					   scc->cpu_idle < scp->cpu_idle ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
-				printf("\n");
+			/* Recalculate interval for current proc */
+			g_itv = get_per_cpu_interval(scc, scp);
+
+			if (!g_itv) {
+				/*
+				 * If the CPU is tickless then there is no change in CPU values
+				 * but the sum of values is not zero.
+				 * %user, %nice, %system, %iowait, %steal, ..., %idle
+				 */
+				cprintf_pc(5, 9, 2,
+					   0.0, 0.0, 0.0, 0.0, 0.0);
+
+				if (DISPLAY_CPU_DEF(a->opt_flags)) {
+					cprintf_pc(1, 9, 2, 100.0);
+					printf("\n");
+				}
+				/*
+				 * Four additional fields to display:
+				 * %irq, %soft, %guest, %gnice.
+				 */
+				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+					cprintf_pc(4, 9, 2,
+						   0.0, 0.0, 0.0, 100.0);
+					printf("\n");
+				}
+				continue;
 			}
-			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-				cprintf_pc(10, 9, 2,
-					   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_user - scp->cpu_guest,
-						       scc->cpu_user - scc->cpu_guest, g_itv),
-						       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-						       scc->cpu_nice - scc->cpu_guest_nice, g_itv),
-					   ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
-					   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-					   ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
-					   ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
-					   ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
-					   ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
-					   ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
-					   scc->cpu_idle < scp->cpu_idle ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
-				printf("\n");
-			}
+		}
+
+		if (DISPLAY_CPU_DEF(a->opt_flags)) {
+			cprintf_pc(6, 9, 2,
+				   ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
+				   ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
+				   ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+					       scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+					       g_itv),
+				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+				   scc->cpu_idle < scp->cpu_idle ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
+			printf("\n");
+		}
+		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+			cprintf_pc(10, 9, 2,
+				   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_user - scp->cpu_guest,
+					       scc->cpu_user - scc->cpu_guest, g_itv),
+					       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+					       scc->cpu_nice - scc->cpu_guest_nice, g_itv),
+				   ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
+				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+				   ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
+				   ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
+				   ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
+				   ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
+				   scc->cpu_idle < scp->cpu_idle ?
+				   0.0 :
+				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
+			printf("\n");
 		}
 	}
 }
