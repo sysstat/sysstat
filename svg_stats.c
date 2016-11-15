@@ -1184,6 +1184,12 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	}
 
 	if (action & F_END) {
+		if (DISPLAY_IDLE(flags)) {
+			/* Include additional %idle field */
+			group1[0]++;
+			group2[0]++;
+		}
+
 		for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
 
 			/* Should current CPU (including CPU "all") be displayed? */

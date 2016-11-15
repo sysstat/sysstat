@@ -101,6 +101,7 @@
 #define S_F_SVG_SKIP		0x00010000
 #define S_F_SVG_AUTOSCALE	0x00020000
 #define S_F_SVG_ONE_DAY		0x00040000
+#define S_F_SVG_SHOW_IDLE	0x00080000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -121,6 +122,7 @@
 #define SKIP_EMPTY_VIEWS(m)		(((m) & S_F_SVG_SKIP)     == S_F_SVG_SKIP)
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
 #define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)   == S_F_SVG_ONE_DAY)
+#define DISPLAY_IDLE(m)			(((m) & S_F_SVG_SHOW_IDLE) == S_F_SVG_SHOW_IDLE)
 
 #define AO_F_NULL		0x00000000
 
@@ -201,6 +203,7 @@
 #define K_SKIP_EMPTY	"skipempty"
 #define K_AUTOSCALE	"autoscale"
 #define K_ONEDAY	"oneday"
+#define K_SHOWIDLE	"showidle"
 
 /* Groups of activities */
 #define G_DEFAULT	0x00

@@ -1490,6 +1490,9 @@ int main(int argc, char **argv)
 				else if (!strcmp(t, K_ONEDAY)) {
 					flags |= S_F_SVG_ONE_DAY;
 				}
+				else if (!strcmp(t, K_SHOWIDLE)) {
+					flags |= S_F_SVG_SHOW_IDLE;
+				}
 				else {
 					usage(argv[0]);
 				}
