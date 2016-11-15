@@ -1,4 +1,4 @@
-.TH SADF 1 "MAY 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -168,6 +168,11 @@ the latter making the former hardly visible.
 Display graphs data over a period of 24 hours. Note that hours are still
 printed in UTC by default: You should use option -T to print them in local
 time and get a time window starting from midnight.
+.RE
+
+.B showidle
+.RS
+Also display %idle state in graphs for CPU statistics.
 .RE
 
 .B skipempty
