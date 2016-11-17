@@ -3,7 +3,7 @@
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
-.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]
 .B [ -I {
 .I int
 .B [,...] | SUM | ALL | XALL } ] [ -P {
@@ -437,6 +437,10 @@ Percentage of total hugepages memory that has been allocated.
 .RE
 .IP -h
 Display a short help message then exit.
+.IP --human
+Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
+The units displayed with this option supersede any other default units (e.g.
+kilobytes, sectors...) associated with the metrics.
 .IP "-I { int [,...] | SUM | ALL | XALL }"
 Report statistics for a given interrupt.
 .I int

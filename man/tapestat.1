@@ -1,8 +1,8 @@
-.TH TAPESTAT 1 "MARCH 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH TAPESTAT 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 tapestat \- Report tape statistics.
 .SH SYNOPSIS
-.B tapestat [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ] [
+.B tapestat [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ] [ --human ] [
 .I interval
 .B [
 .I count
@@ -108,6 +108,10 @@ using methods outside of the tape driver (e.g. via sg ioctls).
 .RE
 .RE
 .SH OPTIONS
+.IP --human
+Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
+The units displayed with this option supersede any other default units (e.g.
+kilobytes, sectors...) associated with the metrics.
 .IP -k
 Show the amount of data written or read in kilobytes per second instead of megabytes.
 This option is mutually exclusive with -m.

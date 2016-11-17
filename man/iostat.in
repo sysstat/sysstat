@@ -8,7 +8,7 @@ statistics for devices and partitions.
 .B [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
-.B ] [ -p [
+.B ] [ --human ] [ -p [
 .I device
 .B [,...] | ALL ] ] [
 .I device
@@ -23,7 +23,7 @@ statistics for devices and partitions.
 .B [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
-.B ] [ -p [
+.B ] [ --human ] [ -p [
 .I device
 .B [,...] | ALL ] ] [
 .I device
@@ -294,6 +294,12 @@ statistics for the group are to be displayed, and not statistics for
 individual devices in the group.
 .IP -h
 Make the Device Utilization Report easier to read by a human.
+.B --human
+is enabled implicitly with this option.
+.IP --human
+Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
+The units displayed with this option supersede any other default units (e.g.
+kilobytes, sectors...) associated with the metrics.
 .IP "-j { ID | LABEL | PATH | UUID | ... } [ device [...] | ALL ]"
 Display persistent device names. Options
 .BR ID ,

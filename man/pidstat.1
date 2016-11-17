@@ -1,4 +1,4 @@
-.TH PIDSTAT 1 "MARCH 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
@@ -9,7 +9,7 @@ pidstat \- Report statistics for Linux tasks.
 .I comm
 .B ] [ -G
 .I process_name
-.B ] [ -p {
+.B ] [ --human ] [ -p {
 .I pid
 .B [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
 .I interval
@@ -130,6 +130,10 @@ include the string
 .IP -h
 Display all activities horizontally on a single line. This is
 intended to make it easier to be parsed by other programs.
+.IP --human
+Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
+The units displayed with this option supersede any other default units (e.g.
+kilobytes, sectors...) associated with the metrics.
 .IP -I
 In an SMP environment, indicate that tasks CPU usage
 (as displayed by option
