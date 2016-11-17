@@ -111,7 +111,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
+			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -1168,6 +1168,12 @@ int main(int argc, char **argv)
 		if (!strcmp(argv[opt], "--sadc")) {
 			/* Locate sadc */
 			which_sadc();
+		}
+
+		else if (!strcmp(argv[opt], "--human")) {
+			/* Display sizes in a human readable format */
+			flags |= S_F_UNIT;
+			opt++;
 		}
 
 		else if (!strcmp(argv[opt], "-I")) {
