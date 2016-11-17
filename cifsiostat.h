@@ -18,6 +18,7 @@
 #define I_D_ISO			0x008
 #define I_D_HUMAN_READ		0x010
 #define I_D_DEBUG		0x020
+#define I_D_UNIT		0x040
 
 #define DISPLAY_TIMESTAMP(m)	(((m) & I_D_TIMESTAMP)     == I_D_TIMESTAMP)
 #define DISPLAY_KILOBYTES(m)	(((m) & I_D_KILOBYTES)     == I_D_KILOBYTES)
@@ -25,6 +26,7 @@
 #define DISPLAY_ISO(m)		(((m) & I_D_ISO)           == I_D_ISO)
 #define DISPLAY_HUMAN_READ(m)	(((m) & I_D_HUMAN_READ)    == I_D_HUMAN_READ)
 #define DISPLAY_DEBUG(m)	(((m) & I_D_DEBUG)         == I_D_DEBUG)
+#define DISPLAY_UNIT(m)		(((m) & I_D_UNIT)	   == I_D_UNIT)
 
 /* Preallocation constants */
 #define NR_CIFS_PREALLOC	2
