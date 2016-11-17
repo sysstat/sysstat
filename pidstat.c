@@ -89,7 +89,7 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ] [ --human ]\n"
 			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
 }
@@ -1396,7 +1396,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			cprintf_f(-1, 2, 9, 2,
 				  S_VALUE(pstp->minflt, pstc->minflt, itv),
 				  S_VALUE(pstp->majflt, pstc->majflt, itv));
-			cprintf_u64(-1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
 			cprintf_pc(1, 6, 2,
@@ -1404,7 +1404,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_STACK(actflag)) {
-			cprintf_u64(-1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
 				    (unsigned long long) pstc->stack_size,
 				    (unsigned long long) pstc->stack_ref);
 		}
@@ -1412,11 +1412,19 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		if (DISPLAY_IO(actflag)) {
 			if (!NO_PID_IO(pstc->flags))
 			{
-				cprintf_f(-1, 3, 9, 2,
-					  S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv)  / 1024,
-					  S_VALUE(pstp->write_bytes, pstc->write_bytes, itv) / 1024,
-					  S_VALUE(pstp->cancelled_write_bytes,
-						  pstc->cancelled_write_bytes, itv) / 1024);
+				double rbytes, wbytes, cbytes;
+
+				rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
+				wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
+				cbytes = S_VALUE(pstp->cancelled_write_bytes,
+						 pstc->cancelled_write_bytes, itv);
+				if (!DISPLAY_UNIT(pidflag)) {
+					rbytes /= 1024;
+					wbytes /= 1024;
+					cbytes /= 1024;
+				}
+				cprintf_f(DISPLAY_UNIT(pidflag) ? 1 : -1, 3, 9, 2,
+					  rbytes, wbytes, cbytes);
 			}
 			else {
 				/*
@@ -1747,7 +1755,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 			  S_VALUE(pstp->majflt, pstc->majflt, itv));
 
 		if (disp_avg) {
-			cprintf_f(-1, 2, 7, 0,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7, 0,
 				  (double) pstc->total_vsz / pstc->rt_asum_count,
 				  (double) pstc->total_rss / pstc->rt_asum_count);
 
@@ -1757,7 +1765,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				   : 0.0);
 		}
 		else {
-			cprintf_u64(-1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
 
@@ -1897,12 +1905,12 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 		print_line_id(curr_string, pstc);
 
 		if (disp_avg) {
-			cprintf_f(-1, 2, 7, 0,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7, 0,
 				  (double) pstc->total_stack_size / pstc->sk_asum_count,
 				  (double) pstc->total_stack_ref  / pstc->sk_asum_count);
 		}
 		else {
-			cprintf_u64(-1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
 				    (unsigned long long) pstc->stack_size,
 				    (unsigned long long) pstc->stack_ref);
 		}
@@ -1944,6 +1952,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 	char dstr[32];
 	unsigned int p;
 	int rc, again = 0;
+	double rbytes, wbytes, cbytes;
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
@@ -1968,11 +1977,17 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, pstc);
 		if (!NO_PID_IO(pstc->flags)) {
-			cprintf_f(-1, 3, 9, 2,
-				  S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv)  / 1024,
-				  S_VALUE(pstp->write_bytes, pstc->write_bytes, itv) / 1024,
-				  S_VALUE(pstp->cancelled_write_bytes,
-					  pstc->cancelled_write_bytes, itv) / 1024);
+			rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
+			wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
+			cbytes = S_VALUE(pstp->cancelled_write_bytes,
+					 pstc->cancelled_write_bytes, itv);
+			if (!DISPLAY_UNIT(pidflag)) {
+				rbytes /= 1024;
+				wbytes /= 1024;
+				cbytes /= 1024;
+			}
+			cprintf_f(DISPLAY_UNIT(pidflag) ? 1 : -1, 3, 9, 2,
+				  rbytes, wbytes, cbytes);
 		}
 		else {
 			/* I/O file not readable (permission denied or file non existent) */
@@ -2577,6 +2592,11 @@ int main(int argc, char **argv)
 			else {
 				usage(argv[0]);
 			}
+		}
+
+		else if (!strcmp(argv[opt], "--human")) {
+			pidflag |= P_D_UNIT;
+			opt++;
 		}
 
 		else if (!strcmp(argv[opt], "-T")) {
