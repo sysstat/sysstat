@@ -1178,21 +1178,21 @@ void cprintf_u64(int unit, int num, int wi, ...)
  *
  * IN:
  * @num		Number of values to print.
- * @width	Output width.
+ * @wi		Output width.
  ***************************************************************************
 */
-void cprintf_x(int num, int width, ...)
+void cprintf_x(int num, int wi, ...)
 {
 	int i;
 	unsigned int val;
 	va_list args;
 
-	va_start(args, width);
+	va_start(args, wi);
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, unsigned int);
 		printf("%s", sc_int_stat);
-		printf(" %*x", width, val);
+		printf(" %*x", wi, val);
 		printf("%s", sc_normal);
 	}
 
@@ -1207,7 +1207,7 @@ void cprintf_x(int num, int width, ...)
  * IN:
  * @unit	Default values unit. -1 if no unit should be displayed.
  * @num		Number of values to print.
- * @width	Output width.
+ * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
@@ -1270,7 +1270,7 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
  *
  * IN:
  * @num		Number of values to print.
- * @width	Output width.
+ * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
