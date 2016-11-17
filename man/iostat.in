@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "AUGUST 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -288,6 +288,10 @@ and made up of all the devices in the list. The
 .B ALL
 keyword means that all the block devices defined by the system shall be
 included in the group.
+.IP -H
+This option must be used with option -g and indicates that only global
+statistics for the group are to be displayed, and not statistics for
+individual devices in the group.
 .IP -h
 Make the Device Utilization Report easier to read by a human.
 .IP "-j { ID | LABEL | PATH | UUID | ... } [ device [...] | ALL ]"
@@ -299,12 +303,6 @@ only prerequisite is that directory with required persistent names is present in
 .IR /dev/disk .
 Optionally, multiple devices can be specified in the chosen persistent name type.
 Because persistent device names are usually long, option
-.IP -H
-This option must be used with option -g and indicates that only global
-statistics for the group are to be displayed, and not statistics for
-individual devices in the group.
-.B -h
-is enabled implicitly with this option.
 .IP -k
 Display statistics in kilobytes per second.
 .IP -m
