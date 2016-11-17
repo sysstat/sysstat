@@ -9,26 +9,27 @@
 #include "common.h"
 
 /* I_: iostat - D_: Display - F_: Flag */
-#define I_D_CPU			0x00001
-#define I_D_DISK		0x00002
-#define I_D_TIMESTAMP		0x00004
-#define I_D_EXTENDED		0x00008
-#define I_D_PART_ALL		0x00010
-#define I_D_KILOBYTES		0x00020
-#define I_F_HAS_SYSFS		0x00040
-#define I_D_DEBUG		0x00080
-#define I_D_UNFILTERED		0x00100
-#define I_D_MEGABYTES		0x00200
-#define I_D_PARTITIONS		0x00400
-#define I_F_HAS_DISKSTATS	0x00800
-#define I_D_HUMAN_READ		0x01000
-#define I_D_PERSIST_NAME	0x02000
-#define I_D_OMIT_SINCE_BOOT	0x04000
-#define I_D_JSON_OUTPUT		0x08000
-#define I_D_DEVMAP_NAME		0x10000
-#define I_D_ISO			0x20000
-#define I_D_GROUP_TOTAL_ONLY	0x40000
-#define I_D_ZERO_OMIT		0x80000
+#define I_D_CPU			0x000001
+#define I_D_DISK		0x000002
+#define I_D_TIMESTAMP		0x000004
+#define I_D_EXTENDED		0x000008
+#define I_D_PART_ALL		0x000010
+#define I_D_KILOBYTES		0x000020
+#define I_F_HAS_SYSFS		0x000040
+#define I_D_DEBUG		0x000080
+#define I_D_UNFILTERED		0x000100
+#define I_D_MEGABYTES		0x000200
+#define I_D_PARTITIONS		0x000400
+#define I_F_HAS_DISKSTATS	0x000800
+#define I_D_HUMAN_READ		0x001000
+#define I_D_PERSIST_NAME	0x002000
+#define I_D_OMIT_SINCE_BOOT	0x004000
+#define I_D_JSON_OUTPUT		0x008000
+#define I_D_DEVMAP_NAME		0x010000
+#define I_D_ISO			0x020000
+#define I_D_GROUP_TOTAL_ONLY	0x040000
+#define I_D_ZERO_OMIT		0x080000
+#define I_D_UNIT		0x100000
 
 #define DISPLAY_CPU(m)			(((m) & I_D_CPU)              == I_D_CPU)
 #define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
@@ -49,7 +50,8 @@
 #define DISPLAY_ISO(m)			(((m) & I_D_ISO)              == I_D_ISO)
 #define DISPLAY_GROUP_TOTAL_ONLY(m)	(((m) & I_D_GROUP_TOTAL_ONLY) == I_D_GROUP_TOTAL_ONLY)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & I_D_ZERO_OMIT)        == I_D_ZERO_OMIT)
-#define DISPLAY_JSON_OUTPUT(m)		(((m) & I_D_JSON_OUTPUT)        == I_D_JSON_OUTPUT)
+#define DISPLAY_JSON_OUTPUT(m)		(((m) & I_D_JSON_OUTPUT)      == I_D_JSON_OUTPUT)
+#define DISPLAY_UNIT(m)			(((m) & I_D_UNIT)	      == I_D_UNIT)
 
 /* Preallocation constants */
 #define NR_DEV_PREALLOC		4

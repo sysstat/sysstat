@@ -88,13 +88,13 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
 #endif
@@ -999,6 +999,8 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			  double r_await, double w_await)
 {
+	double rsectors, wsectors;
+
 	if (DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%s\n", devname, 0);
 		printf("%13s", "");
@@ -1014,9 +1016,15 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 	cprintf_f(-1, 2, 7, 2,
 		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
 		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
-	cprintf_f(-1, 4, 8, 2,
-		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+	rsectors = S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
+	wsectors = S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
+	if (!DISPLAY_UNIT(flags)) {
+		rsectors /= fctr;
+		wsectors /= fctr;
+	}
+	cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 2, 8, 2,
+		  rsectors, wsectors);
+	cprintf_f(-1, 2, 8, 2,
 		  xds->arqsz,
 		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	cprintf_f(-1, 3, 7, 2, xds->await, r_await, w_await);
@@ -1174,6 +1182,8 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 			    char *devname, unsigned long long rd_sec,
 			    unsigned long long wr_sec)
 {
+	double rsectors, wsectors;
+
 	if (DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%s\n", devname, 0);
 		printf("%13s", "");
@@ -1183,12 +1193,19 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 	}
 	cprintf_f(-1, 1, 8, 2,
 		  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
-	cprintf_f(-1, 2, 12, 2,
-		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr);
-	cprintf_u64(-1, 2, 10,
-		    (unsigned long long) rd_sec / fctr,
-		    (unsigned long long) wr_sec / fctr);
+	rsectors = S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
+	wsectors = S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
+	if (!DISPLAY_UNIT(flags)) {
+		rsectors /= fctr;
+		wsectors /= fctr;
+	}
+	cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 2, 12, 2,
+		  rsectors, wsectors);
+	cprintf_u64(DISPLAY_UNIT(flags) ? 0 : -1, 2, 10,
+		    DISPLAY_UNIT(flags) ? (unsigned long long) rd_sec
+					: (unsigned long long) rd_sec / fctr,
+		    DISPLAY_UNIT(flags) ? (unsigned long long) wr_sec
+					: (unsigned long long) wr_sec / fctr);
 	printf("\n");
 }
 
@@ -1645,6 +1662,11 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			group_nr++;
+		}
+
+		else if (!strcmp(argv[opt], "--human")) {
+			flags |= I_D_UNIT;
+			opt++;
 		}
 
 		else if (!strcmp(argv[opt], "-j")) {
