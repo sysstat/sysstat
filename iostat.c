@@ -1737,9 +1737,9 @@ int main(int argc, char **argv)
 				case 'h':
 					/*
 					 * Display device utilization report
-					 * in a human readable format.
+					 * in a human readable format. Also imply --human.
 					 */
-					flags |= I_D_HUMAN_READ;
+					flags |= I_D_HUMAN_READ + I_D_UNIT;
 					break;
 
 				case 'k':
