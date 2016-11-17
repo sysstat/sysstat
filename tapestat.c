@@ -446,17 +446,17 @@ void tape_write_stats(struct calc_stats *tape, int i)
 	sprintf(buffer, "st%i        ", i);
 	buffer[5] = 0;
 	cprintf_in(IS_STR, "%s", buffer, 0);
-	cprintf_u64(2, 7,
+	cprintf_u64(-1, 2, 7,
 		    tape->reads_per_second,
 		    tape->writes_per_second);
-	cprintf_u64(2, 11,
+	cprintf_u64(-1, 2, 11,
 		    tape->kbytes_read_per_second / divisor,
 		    tape->kbytes_written_per_second / divisor);
 	cprintf_pc(3, 3, 0,
 		   (double) tape->read_pct_wait,
 		   (double) tape->write_pct_wait,
 		   (double) tape->all_pct_wait);
-	cprintf_u64(2, 7,
+	cprintf_u64(-1, 2, 7,
 		    tape->resids_per_second,
 		    tape->other_per_second);
 	printf("\n");

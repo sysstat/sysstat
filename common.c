@@ -46,6 +46,10 @@
 #define _(string) (string)
 #endif
 
+/* Units (sectors, Bytes, kilobytes, etc.) */
+char units[] = {'s', 'B', 'k', 'M', 'G', 'T', 'P', '?'};
+#define NR_UNITS	8
+
 /* Number of ticks per second */
 unsigned int hz;
 /* Number of bit shifts to convert pages to kB */
@@ -1103,20 +1107,22 @@ void init_colors(void)
 
 /*
  ***************************************************************************
- * Print 64 bit unsigned values using colors.
+ * Print 64 bit unsigned values using colors, possibly followed by a unit.
  *
  * IN:
+ * @unit	Default values unit. -1 if no unit should be displayed.
  * @num		Number of values to print.
- * @width	Output width.
+ * @wi		Output width.
  ***************************************************************************
 */
-void cprintf_u64(int num, int width, ...)
+void cprintf_u64(int unit, int num, int wi, ...)
 {
-	int i;
+	int i, u;
 	uint64_t val;
+	double dval;
 	va_list args;
 
-	va_start(args, width);
+	va_start(args, wi);
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, unsigned long long);
@@ -1126,8 +1132,41 @@ void cprintf_u64(int num, int width, ...)
 		else {
 			printf("%s", sc_int_stat);
 		}
-		printf(" %*"PRIu64, width, val);
+		if (unit < 0) {
+			printf(" %*"PRIu64, wi, val);
+		}
+		else {
+			if (wi < 5) {
+				/* E.g. 1.34M */
+				wi = 5;
+			}
+			u = unit;
+			if (!u) {
+				/* Value is a number of sectors. Convert it to Bytes */
+				val *= 512;
+				u++;
+			}
+			if (val < 1024) {
+				printf(" %*"PRIu64, wi - 1, val);
+			}
+			else {
+				dval = (double) val;
+				while (dval >= 1024) {
+					dval /= 1024;
+					u++;
+				}
+				printf(" %*.*f", wi - 1, 2, dval);
+			}
+		}
 		printf("%s", sc_normal);
+
+		if (unit >= 0) {
+			/* Display unit */
+			if (u >= NR_UNITS) {
+				u = NR_UNITS;
+			}
+			printf("%c", units[u]);
+		}
 	}
 
 	va_end(args);
@@ -1162,17 +1201,19 @@ void cprintf_x(int num, int width, ...)
 
 /*
  ***************************************************************************
- * Print "double" statistics values using colors.
+ * Print "double" statistics values using colors, possibly followed by a
+ * unit.
  *
  * IN:
+ * @unit	Default values unit. -1 if no unit should be displayed.
  * @num		Number of values to print.
  * @width	Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
-void cprintf_f(int num, int wi, int wd, ...)
+void cprintf_f(int unit, int num, int wi, int wd, ...)
 {
-	int i;
+	int i, u;
 	double val;
 	va_list args;
 
@@ -1187,8 +1228,37 @@ void cprintf_f(int num, int wi, int wd, ...)
 		else {
 			printf("%s", sc_int_stat);
 		}
-		printf(" %*.*f", wi, wd, val);
+
+		if (unit < 0) {
+			printf(" %*.*f", wi, wd, val);
+		}
+		else {
+			if (wi < 5) {
+				/* E.g. 1.34M */
+				wi = 5;
+			}
+			u = unit;
+			if (!u) {
+				/* Value is a number of sectors. Convert it to kilobytes */
+				val /= 2;
+				u = 2;
+			}
+			while (val >= 1024) {
+				val /= 1024;
+				u++;
+			}
+			printf(" %*.*f", wi - 1, 2, val);
+		}
+
 		printf("%s", sc_normal);
+
+		if (unit >= 0) {
+			/* Display unit */
+			if (u >= NR_UNITS) {
+				u = NR_UNITS - 1;
+			}
+			printf("%c", units[u]);
+		}
 	}
 
 	va_end(args);

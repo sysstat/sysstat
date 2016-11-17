@@ -604,7 +604,7 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 		printf("%-11s", curr_string);
 		cprintf_in(IS_STR, " %s", " all", 0);
 		/* Print total number of interrupts among all cpu */
-		cprintf_f(1, 9, 2,
+		cprintf_f(-1, 1, 9, 2,
 			  S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
 		printf("\n");
 	}
@@ -634,7 +634,7 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 				 */
 				printf("%-11s", curr_string);
 				cprintf_in(IS_INT, " %4d", "", cpu - 1);
-				cprintf_f(1, 9, 2, 0.0);
+				cprintf_f(-1, 1, 9, 2, 0.0);
 				printf("\n");
 			}
 			continue;
@@ -648,12 +648,12 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 
 		if (!pc_itv) {
 			/* This is a tickless CPU: Value displayed is 0.00 */
-			cprintf_f(1, 9, 2, 0.0);
+			cprintf_f(-1, 1, 9, 2, 0.0);
 			printf("\n");
 		}
 		else {
 			/* Display total number of interrupts for current CPU */
-			cprintf_f(1, 9, 2,
+			cprintf_f(-1, 1, 9, 2,
 				  S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 			printf("\n");
 		}
@@ -921,7 +921,7 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 			if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
 				q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
-				cprintf_f(1, colwidth[j], 2,
+				cprintf_f(-1, 1, colwidth[j], 2,
 					  S_VALUE(q->interrupt, p->interrupt, itv));
 			}
 			else {
@@ -929,7 +929,7 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 				 * Instead of printing "N/A", assume that previous value
 				 * for this new interrupt was zero.
 				 */
-				cprintf_f(1, colwidth[j], 2,
+				cprintf_f(-1, 1, colwidth[j], 2,
 					  S_VALUE(0, p->interrupt, itv));
 			}
 		}

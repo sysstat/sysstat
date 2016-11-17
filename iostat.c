@@ -1008,20 +1008,20 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 	}
 
 	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
-	cprintf_f(2, 8, 2,
+	cprintf_f(-1, 2, 8, 2,
 		  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 		  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
-	cprintf_f(2, 7, 2,
+	cprintf_f(-1, 2, 7, 2,
 		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
 		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
-	cprintf_f(4, 8, 2,
+	cprintf_f(-1, 4, 8, 2,
 		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
 		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
 		  xds->arqsz,
 		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
-	cprintf_f(3, 7, 2, xds->await, r_await, w_await);
+	cprintf_f(-1, 3, 7, 2, xds->await, r_await, w_await);
 	/* The ticks output is biased to output 1000 ticks per second */
-	cprintf_f(1, 6, 2, xds->svctm);
+	cprintf_f(-1, 1, 6, 2, xds->svctm);
 	/*
 	 * Again: Ticks in milliseconds.
 	 * In the case of a device group (option -g), shi->used is the number of
@@ -1181,12 +1181,12 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 	else {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
-	cprintf_f(1, 8, 2,
+	cprintf_f(-1, 1, 8, 2,
 		  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
-	cprintf_f(2, 12, 2,
+	cprintf_f(-1, 2, 12, 2,
 		  S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
 		  S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr);
-	cprintf_u64(2, 10,
+	cprintf_u64(-1, 2, 10,
 		    (unsigned long long) rd_sec / fctr,
 		    (unsigned long long) wr_sec / fctr);
 	printf("\n");

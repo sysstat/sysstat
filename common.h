@@ -223,7 +223,7 @@ int count_bits
 int count_csvalues
 	(int, char **);
 void cprintf_f
-	(int, int, int, ...);
+	(int, int, int, int, ...);
 void cprintf_in
 	(int, char *, char *, int);
 void cprintf_pc
@@ -231,7 +231,7 @@ void cprintf_pc
 void cprintf_s
 	(int, char *, char *);
 void cprintf_u64
-	(int, int, ...);
+	(int, int, int, ...);
 void cprintf_x
 	(int, int, ...);
 char *device_name

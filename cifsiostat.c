@@ -438,13 +438,13 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 	}
 
 	/*       rB/s   wB/s   fo/s   fc/s   fd/s*/
-	cprintf_f(2, 12, 2,
+	cprintf_f(-1, 2, 12, 2,
 		  S_VALUE(ionj->rd_bytes, ioni->rd_bytes, itv) / fctr,
 		  S_VALUE(ionj->wr_bytes, ioni->wr_bytes, itv) / fctr);
-	cprintf_f(2, 9, 2,
+	cprintf_f(-1, 2, 9, 2,
 		  S_VALUE(ionj->rd_ops, ioni->rd_ops, itv),
 		  S_VALUE(ionj->wr_ops, ioni->wr_ops, itv));
-	cprintf_f(3, 12, 2,
+	cprintf_f(-1, 3, 12, 2,
 		  S_VALUE(ionj->fopens, ioni->fopens, itv),
 		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
 		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
