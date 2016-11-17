@@ -16,6 +16,7 @@
 #define T_D_OMIT_SINCE_BOOT	0x00008
 #define T_D_ISO			0x00010
 #define T_D_ZERO_OMIT		0x00020
+#define T_D_UNIT		0x00040
 
 #define DISPLAY_TIMESTAMP(m)		(((m) & T_D_TIMESTAMP)       == T_D_TIMESTAMP)
 #define DISPLAY_KILOBYTES(m)		(((m) & T_D_KILOBYTES)       == T_D_KILOBYTES)
@@ -23,7 +24,7 @@
 #define DISPLAY_OMIT_SINCE_BOOT(m)	(((m) & T_D_OMIT_SINCE_BOOT) == T_D_OMIT_SINCE_BOOT)
 #define DISPLAY_ISO(m)			(((m) & T_D_ISO)             == T_D_ISO)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & T_D_ZERO_OMIT)       == T_D_ZERO_OMIT)
-
+#define DISPLAY_UNIT(m)			(((m) & T_D_UNIT)	     == T_D_UNIT)
 
 #define TAPE_STATS_VALID 1
 #define TAPE_STATS_INVALID 0

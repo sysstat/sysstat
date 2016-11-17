@@ -95,7 +95,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"));
+			  "[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"));
 	exit(1);
 }
 
@@ -449,9 +449,11 @@ void tape_write_stats(struct calc_stats *tape, int i)
 	cprintf_u64(-1, 2, 7,
 		    tape->reads_per_second,
 		    tape->writes_per_second);
-	cprintf_u64(-1, 2, 11,
-		    tape->kbytes_read_per_second / divisor,
-		    tape->kbytes_written_per_second / divisor);
+	cprintf_u64(DISPLAY_UNIT(flags) ? 2 : -1, 2, 11,
+		    DISPLAY_UNIT(flags) ? tape->kbytes_read_per_second
+					: tape->kbytes_read_per_second / divisor,
+		    DISPLAY_UNIT(flags) ? tape->kbytes_written_per_second
+					: tape->kbytes_written_per_second / divisor);
 	cprintf_pc(3, 3, 0,
 		   (double) tape->read_pct_wait,
 		   (double) tape->write_pct_wait,
@@ -612,7 +614,13 @@ int main(int argc, char **argv)
 
 	/* Process args... */
 	while (opt < argc) {
-			if (!strncmp(argv[opt], "-", 1)) {
+
+		if (!strcmp(argv[opt], "--human")) {
+			flags |= T_D_UNIT;
+			opt++;
+		}
+
+		else if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {
 
 				switch (*(argv[opt] + i)) {
