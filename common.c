@@ -1107,6 +1107,42 @@ void init_colors(void)
 
 /*
  ***************************************************************************
+ * Print a value in human readable format. Such a value is a decimal number
+ * followed by a unit (B, k, M, etc.)
+ *
+ * IN:
+ * @unit	Default value unit.
+ * @dval	Value to print.
+ * @wi		Output width.
+ ***************************************************************************
+*/
+void cprintf_unit(int unit, int wi, double dval)
+{
+	if (wi < 4) {
+		/* E.g. 1.3M */
+		wi = 4;
+	}
+	if (!unit) {
+		/* Value is a number of sectors. Convert it to kB */
+		dval /= 2;
+		unit = 2;
+	}
+	while (dval >= 1024) {
+		dval /= 1024;
+		unit++;
+	}
+	printf(" %*.*f", wi - 1, 1, dval);
+	printf("%s", sc_normal);
+
+	/* Display unit */
+	if (unit >= NR_UNITS) {
+		unit = NR_UNITS - 1;
+	}
+	printf("%c", units[unit]);
+}
+
+/*
+ ***************************************************************************
  * Print 64 bit unsigned values using colors, possibly followed by a unit.
  *
  * IN:
@@ -1117,9 +1153,8 @@ void init_colors(void)
 */
 void cprintf_u64(int unit, int num, int wi, ...)
 {
-	int i, u;
+	int i;
 	uint64_t val;
-	double dval;
 	va_list args;
 
 	va_start(args, wi);
@@ -1134,38 +1169,10 @@ void cprintf_u64(int unit, int num, int wi, ...)
 		}
 		if (unit < 0) {
 			printf(" %*"PRIu64, wi, val);
+			printf("%s", sc_normal);
 		}
 		else {
-			if (wi < 5) {
-				/* E.g. 1.34M */
-				wi = 5;
-			}
-			u = unit;
-			if (!u) {
-				/* Value is a number of sectors. Convert it to Bytes */
-				val *= 512;
-				u++;
-			}
-			if (val < 1024) {
-				printf(" %*"PRIu64, wi - 1, val);
-			}
-			else {
-				dval = (double) val;
-				while (dval >= 1024) {
-					dval /= 1024;
-					u++;
-				}
-				printf(" %*.*f", wi - 1, 2, dval);
-			}
-		}
-		printf("%s", sc_normal);
-
-		if (unit >= 0) {
-			/* Display unit */
-			if (u >= NR_UNITS) {
-				u = NR_UNITS;
-			}
-			printf("%c", units[u]);
+			cprintf_unit(unit, wi, (double) val);
 		}
 	}
 
@@ -1213,7 +1220,7 @@ void cprintf_x(int num, int wi, ...)
 */
 void cprintf_f(int unit, int num, int wi, int wd, ...)
 {
-	int i, u;
+	int i;
 	double val;
 	va_list args;
 
@@ -1231,33 +1238,10 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
 
 		if (unit < 0) {
 			printf(" %*.*f", wi, wd, val);
+			printf("%s", sc_normal);
 		}
 		else {
-			if (wi < 5) {
-				/* E.g. 1.34M */
-				wi = 5;
-			}
-			u = unit;
-			if (!u) {
-				/* Value is a number of sectors. Convert it to kilobytes */
-				val /= 2;
-				u = 2;
-			}
-			while (val >= 1024) {
-				val /= 1024;
-				u++;
-			}
-			printf(" %*.*f", wi - 1, 2, val);
-		}
-
-		printf("%s", sc_normal);
-
-		if (unit >= 0) {
-			/* Display unit */
-			if (u >= NR_UNITS) {
-				u = NR_UNITS - 1;
-			}
-			printf("%c", units[u]);
+			cprintf_unit(unit, wi, val);
 		}
 	}
 
