@@ -53,10 +53,11 @@
 #define INTERRUPTS_LINE	128
 
 /* Keywords */
-#define K_ISO	"ISO"
-#define K_ALL	"ALL"
-#define K_UTC	"UTC"
-#define K_JSON	"JSON"
+#define K_ISO		"ISO"
+#define K_ALL		"ALL"
+#define K_LOWERALL	"all"
+#define K_UTC		"UTC"
+#define K_JSON		"JSON"
 
 /* Files */
 #define STAT			"/proc/stat"

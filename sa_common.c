@@ -1972,6 +1972,37 @@ int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
 
 /*
  ***************************************************************************
+ * Parse a CPU string. The string should contain an individual CPU number.
+ *
+ * IN:
+ * @s		CPU string.
+ * @b_size	Size of the CPU bitmap.
+ *
+ * OUT:
+ * @cpu		CPU value, or -1 if the cpu string @s was empty.
+ *
+ * RETURNS:
+ * 0 if the CPU value has been properly read, 1 otherwise.
+ ***************************************************************************
+ */
+int parse_cpu_nr(char *s, int b_size, int *cpu)
+{
+	if (!strlen(s)) {
+		*cpu = -1;
+		return 0;
+	}
+	if (strspn(s, DIGITS) != strlen(s))
+		return 1;
+
+	*cpu = atoi(s);
+	if ((*cpu < 0) || (*cpu >= b_size))
+		return 1;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Parse sar and sadf "-P" option.
  *
  * IN:
@@ -1989,8 +2020,8 @@ int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
  */
 int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity *act[])
 {
-	int i, p;
-	char *t;
+	int i, p, cpu_low, cpu;
+	char *t, *s, *cpustr, range[16];
 
 	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 
@@ -2006,14 +2037,41 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 				set_bitmap(act[p]->bitmap->b_array, ~0,
 					   BITMAP_SIZE(act[p]->bitmap->b_size));
 			}
+			else if (!strcmp(t, K_LOWERALL)) {
+				/* Select CPU "all" (ie. global average CPU) */
+				act[p]->bitmap->b_array[0] |= 1;
+			}
 			else {
-				/* Get cpu number */
-				if (strspn(t, DIGITS) != strlen(t))
+				/* Parse CPU number or range of CPU */
+				strncpy(range, t, 16);
+				range[15] = '\0';
+				cpustr = t;
+				if ((s = index(range, '-')) != NULL) {
+					/* Possible range of CPU */
+					*s = '\0';
+					if (parse_cpu_nr(range, act[p]->bitmap->b_size, &cpu_low) || (cpu_low < 0))
+						return 1;
+					cpustr = s + 1;
+				}
+				if (parse_cpu_nr(cpustr, act[p]->bitmap->b_size, &cpu))
 					return 1;
-				i = atoi(t);
-				if ((i < 0) || (i >= act[p]->bitmap->b_size))
+				if (s && cpu < 0) {
+					/* Range of CPU with no upper limit (e.g. "3-") */
+					cpu = act[p]->bitmap->b_size - 1;
+				}
+				if ((!s && (cpu < 0)) || (s && (cpu < cpu_low)))
+					/*
+					 * Individual CPU: string cannot be empty.
+					 * Range of CPU: n-m: m can be empty (e.g. "3-") but
+					 * cannot be lower than n.
+					 */
 					return 1;
-				act[p]->bitmap->b_array[(i + 1) >> 3] |= 1 << ((i + 1) & 0x07);
+				if (!s) {
+					cpu_low = cpu;
+				}
+				for (i = cpu_low; i <= cpu; i++) {
+					act[p]->bitmap->b_array[(i + 1) >> 3] |= 1 << ((i + 1) & 0x07);
+				}
 			}
 		}
 		(*opt)++;
