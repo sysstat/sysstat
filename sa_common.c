@@ -51,27 +51,6 @@ extern struct act_bitmap cpu_bitmap;
 
 /*
  ***************************************************************************
- * Init a bitmap (CPU, IRQ, etc.).
- *
- * IN:
- * @value	Value used to init bitmap.
- * @sz		Size of the bitmap in bytes.
- *
- * OUT:
- * @bitmap	Bitmap initialized.
- ***************************************************************************
- */
-void set_bitmap(unsigned char bitmap[], unsigned char value, unsigned int sz)
-{
-	register int i;
-
-	for (i = 0; i < sz; i++) {
-		bitmap[i] = value;
-	}
-}
-
-/*
- ***************************************************************************
  * Allocate structures.
  *
  * IN:
@@ -1591,12 +1570,11 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 					     AO_F_MEM_SWAP + AO_F_MEM_ALL;
 
 			p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
-			set_bitmap(act[p]->bitmap->b_array, ~0,
-				   BITMAP_SIZE(act[p]->bitmap->b_size));
-
+			memset(act[p]->bitmap->b_array, ~0,
+			       BITMAP_SIZE(act[p]->bitmap->b_size));
 			p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-			set_bitmap(act[p]->bitmap->b_array, ~0,
-				   BITMAP_SIZE(act[p]->bitmap->b_size));
+			memset(act[p]->bitmap->b_array, ~0,
+			       BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->opt_flags = AO_F_CPU_ALL;
 
 			p = get_activity_position(act, A_FILESYSTEM, EXIT_IF_NOT_FOUND);
@@ -1951,8 +1929,8 @@ int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
 		else if (!strcmp(t, K_XALL)) {
 			/* Set every bit except for total number of interrupts */
 			c = act[p]->bitmap->b_array[0];
-			set_bitmap(act[p]->bitmap->b_array, ~0,
-				   BITMAP_SIZE(act[p]->bitmap->b_size));
+			memset(act[p]->bitmap->b_array, ~0,
+			       BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->bitmap->b_array[0] = 0xfe | c;
 		}
 		else {
@@ -2034,8 +2012,7 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 				 * We still don't know if we are going to read stats
 				 * from a file or not...
 				 */
-				set_bitmap(act[p]->bitmap->b_array, ~0,
-					   BITMAP_SIZE(act[p]->bitmap->b_size));
+				memset(act[p]->bitmap->b_array, ~0, BITMAP_SIZE(act[p]->bitmap->b_size));
 			}
 			else if (!strcmp(t, K_LOWERALL)) {
 				/* Select CPU "all" (ie. global average CPU) */
