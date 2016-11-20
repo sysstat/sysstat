@@ -1615,25 +1615,10 @@ int main(int argc, char **argv)
 				if (!strcmp(argv[opt], K_ON)) {
 					/* Display stats for all online CPU */
 					flags |= F_P_ON;
-					memset(cpu_bitmap, ~0, ((cpu_nr + 1) >> 3) + 1);
+					memset(cpu_bitmap, ~0, BITMAP_SIZE(cpu_nr));
 				}
-				else if (!strcmp(argv[opt], K_ALL)) {
-					/* Set bit for every processor, including CPU "all" */
-					memset(cpu_bitmap, ~0, ((cpu_nr + 1) >> 3) + 1);
-				}
-				else {
-					for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
-						if (strspn(t, DIGITS) != strlen(t)) {
-							usage(argv[0]);
-						}
-						i = atoi(t);	/* Get cpu number */
-						if (i >= cpu_nr) {
-							fprintf(stderr, _("Not that many processors!\n"));
-							exit(1);
-						}
-						i++;
-						*(cpu_bitmap + (i >> 3)) |= 1 << (i & 0x07);
-					}
+				else if (parse_values(argv[opt], cpu_bitmap, cpu_nr, K_LOWERALL)) {
+					usage(argv[0]);
 				}
 			}
 			else {

@@ -1177,13 +1177,8 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-I")) {
-			if (argv[++opt]) {
-				/* Parse -I option */
-				if (parse_sar_I_opt(argv, &opt, act)) {
-					usage(argv[0]);
-				}
-			}
-			else {
+			/* Parse -I option */
+			if (parse_sar_I_opt(argv, &opt, act)) {
 				usage(argv[0]);
 			}
 		}

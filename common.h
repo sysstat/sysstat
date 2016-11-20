@@ -105,6 +105,13 @@
  ***************************************************************************
  */
 
+/*
+ * Macro used to define activity bitmap size.
+ * All those bitmaps have an additional bit used for global activity
+ * (eg. CPU "all" or total number of interrupts). That's why we do "(m) + 1".
+ */
+#define BITMAP_SIZE(m)	((((m) + 1) >> 3) + 1)
+
 /* Allocate and init structure */
 #define SREALLOC(S, TYPE, SIZE)	do {								 \
    					TYPE *_p_;						 \
@@ -271,6 +278,8 @@ double ll_sp_value
 	(unsigned long long, unsigned long long, unsigned long long);
 int is_iso_time_fmt
 	(void);
+int parse_values
+	(char *, unsigned char[], int, const char *);
 int print_gal_header
 	(struct tm *, char *, char *, char *, char *, int, int);
 void print_version

@@ -223,13 +223,6 @@
 #define DEF_TMSTART	"08:00:00"
 #define DEF_TMEND	"18:00:00"
 
-/*
- * Macro used to define activity bitmap size.
- * All those bitmaps have an additional bit used for global activity
- * (eg. CPU "all" or total number of interrupts). That's why we do "(m) + 1".
- */
-#define BITMAP_SIZE(m)	((((m) + 1) / 8) + 1)
-
 #define UTSNAME_LEN	65
 #define HEADER_LINE_LEN	512
 

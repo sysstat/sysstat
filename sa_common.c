@@ -1907,76 +1907,21 @@ int parse_sar_n_opt(char *argv[], int *opt, struct activity *act[])
  */
 int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
 {
-	int i, p;
-	unsigned char c;
-	char *t;
+	int p;
 
 	/* Select interrupt activity */
 	p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
 	act[p]->options |= AO_SELECTED;
 
-	for (t = strtok(argv[*opt], ","); t; t = strtok(NULL, ",")) {
-		if (!strcmp(t, K_SUM)) {
-			/* Select total number of interrupts */
-			act[p]->bitmap->b_array[0] |= 0x01;
-		}
-		else if (!strcmp(t, K_ALL)) {
-			/* Set bit for the first 16 individual interrupts */
-			act[p]->bitmap->b_array[0] |= 0xfe;
-			act[p]->bitmap->b_array[1] |= 0xff;
-			act[p]->bitmap->b_array[2] |= 0x01;
-		}
-		else if (!strcmp(t, K_XALL)) {
-			/* Set every bit except for total number of interrupts */
-			c = act[p]->bitmap->b_array[0];
-			memset(act[p]->bitmap->b_array, ~0,
-			       BITMAP_SIZE(act[p]->bitmap->b_size));
-			act[p]->bitmap->b_array[0] = 0xfe | c;
-		}
-		else {
-			/* Get irq number */
-			if (strspn(t, DIGITS) != strlen(t))
-				return 1;
-			i = atoi(t);
-			if ((i < 0) || (i >= act[p]->bitmap->b_size))
-				return 1;
-			act[p]->bitmap->b_array[(i + 1) >> 3] |= 1 << ((i + 1) & 0x07);
-		}
-	}
-
-	(*opt)++;
-	return 0;
-}
-
-/*
- ***************************************************************************
- * Parse a CPU string. The string should contain an individual CPU number.
- *
- * IN:
- * @s		CPU string.
- * @b_size	Size of the CPU bitmap.
- *
- * OUT:
- * @cpu		CPU value, or -1 if the cpu string @s was empty.
- *
- * RETURNS:
- * 0 if the CPU value has been properly read, 1 otherwise.
- ***************************************************************************
- */
-int parse_cpu_nr(char *s, int b_size, int *cpu)
-{
-	if (!strlen(s)) {
-		*cpu = -1;
+	if (argv[++(*opt)]) {
+		if (parse_values(argv[*opt], act[p]->bitmap->b_array,
+			     act[p]->bitmap->b_size, K_SUM))
+			return 1;
+		(*opt)++;
 		return 0;
 	}
-	if (strspn(s, DIGITS) != strlen(s))
-		return 1;
 
-	*cpu = atoi(s);
-	if ((*cpu < 0) || (*cpu >= b_size))
-		return 1;
-
-	return 0;
+	return 1;
 }
 
 /*
@@ -1998,68 +1943,19 @@ int parse_cpu_nr(char *s, int b_size, int *cpu)
  */
 int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity *act[])
 {
-	int i, p, cpu_low, cpu;
-	char *t, *s, *cpustr, range[16];
+	int p;
 
 	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 
 	if (argv[++(*opt)]) {
-
-		if (!strcmp(argv[*opt], K_ALL)) {
-			/*
-			 * Set bit for every processor.
-			 * We still don't know if we are going to read stats
-			 * from a file or not...
-			 */
-			memset(act[p]->bitmap->b_array, ~0, BITMAP_SIZE(act[p]->bitmap->b_size));
-			(*opt)++;
-			return 0;
-		}
-
-		for (t = strtok(argv[*opt], ","); t; t = strtok(NULL, ",")) {
-			if (!strcmp(t, K_LOWERALL)) {
-				/* Select CPU "all" (ie. global average CPU) */
-				act[p]->bitmap->b_array[0] |= 1;
-			}
-			else {
-				/* Parse CPU number or range of CPU */
-				strncpy(range, t, 16);
-				range[15] = '\0';
-				cpustr = t;
-				if ((s = index(range, '-')) != NULL) {
-					/* Possible range of CPU */
-					*s = '\0';
-					if (parse_cpu_nr(range, act[p]->bitmap->b_size, &cpu_low) || (cpu_low < 0))
-						return 1;
-					cpustr = s + 1;
-				}
-				if (parse_cpu_nr(cpustr, act[p]->bitmap->b_size, &cpu))
-					return 1;
-				if (s && cpu < 0) {
-					/* Range of CPU with no upper limit (e.g. "3-") */
-					cpu = act[p]->bitmap->b_size - 1;
-				}
-				if ((!s && (cpu < 0)) || (s && (cpu < cpu_low)))
-					/*
-					 * Individual CPU: string cannot be empty.
-					 * Range of CPU: n-m: m can be empty (e.g. "3-") but
-					 * cannot be lower than n.
-					 */
-					return 1;
-				if (!s) {
-					cpu_low = cpu;
-				}
-				for (i = cpu_low; i <= cpu; i++) {
-					act[p]->bitmap->b_array[(i + 1) >> 3] |= 1 << ((i + 1) & 0x07);
-				}
-			}
-		}
+		if (parse_values(argv[*opt], act[p]->bitmap->b_array,
+			     act[p]->bitmap->b_size, K_LOWERALL))
+			return 1;
 		(*opt)++;
+		return 0;
 	}
-	else
-		return 1;
 
-	return 0;
+	return 1;
 }
 
 /*
