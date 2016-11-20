@@ -1610,24 +1610,19 @@ int main(int argc, char **argv)
 			/* '-P ALL' can be used on UP machines */
 			if (argv[++opt]) {
 				flags |= F_P_OPTION;
-				dis_hdr++;
+				dis_hdr = 9;
 
-				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
-					if (!strcmp(t, K_ALL) || !strcmp(t, K_ON)) {
-						if (cpu_nr) {
-							dis_hdr = 9;
-						}
-						/*
-						 * Set bit for every processor.
-						 * Also indicate to display stats for CPU 'all'.
-						 */
-						memset(cpu_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
-						if (!strcmp(t, K_ON)) {
-							/* Display stats only for online CPU */
-							flags |= F_P_ON;
-						}
-					}
-					else {
+				if (!strcmp(argv[opt], K_ON)) {
+					/* Display stats for all online CPU */
+					flags |= F_P_ON;
+					memset(cpu_bitmap, ~0, ((cpu_nr + 1) >> 3) + 1);
+				}
+				else if (!strcmp(argv[opt], K_ALL)) {
+					/* Set bit for every processor, including CPU "all" */
+					memset(cpu_bitmap, ~0, ((cpu_nr + 1) >> 3) + 1);
+				}
+				else {
+					for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
 						if (strspn(t, DIGITS) != strlen(t)) {
 							usage(argv[0]);
 						}
