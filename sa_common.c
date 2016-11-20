@@ -2005,16 +2005,19 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 
 	if (argv[++(*opt)]) {
 
+		if (!strcmp(argv[*opt], K_ALL)) {
+			/*
+			 * Set bit for every processor.
+			 * We still don't know if we are going to read stats
+			 * from a file or not...
+			 */
+			memset(act[p]->bitmap->b_array, ~0, BITMAP_SIZE(act[p]->bitmap->b_size));
+			(*opt)++;
+			return 0;
+		}
+
 		for (t = strtok(argv[*opt], ","); t; t = strtok(NULL, ",")) {
-			if (!strcmp(t, K_ALL)) {
-				/*
-				 * Set bit for every processor.
-				 * We still don't know if we are going to read stats
-				 * from a file or not...
-				 */
-				memset(act[p]->bitmap->b_array, ~0, BITMAP_SIZE(act[p]->bitmap->b_size));
-			}
-			else if (!strcmp(t, K_LOWERALL)) {
+			if (!strcmp(t, K_LOWERALL)) {
 				/* Select CPU "all" (ie. global average CPU) */
 				act[p]->bitmap->b_array[0] |= 1;
 			}
