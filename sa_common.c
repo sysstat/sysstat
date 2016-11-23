@@ -1561,7 +1561,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			select_all_activities(act);
 
 			/*
-			 * Force '-P ALL -I XALL -r ALL -u ALL -F'.
+			 * Force '-P ALL -I ALL -r ALL -u ALL -F'.
 			 * Setting -F is compulsory because corresponding activity
 			 * has AO_MULTIPLE_OUTPUTS flag set.
 			 */

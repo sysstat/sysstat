@@ -100,7 +100,7 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-			  "[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"));
+			  "[ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"));
 	exit(1);
 }
 
