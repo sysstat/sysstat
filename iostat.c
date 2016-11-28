@@ -40,8 +40,8 @@
 #include "rd_stats.h"
 #include "count.h"
 
+#include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS
-#include <locale.h>
 #include <libintl.h>
 #define _(string) gettext(string)
 #else
