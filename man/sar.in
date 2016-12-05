@@ -1,4 +1,4 @@
-.TH SAR 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -626,25 +626,25 @@ Report network statistics.
 Possible keywords are
 .BR DEV ,
 .BR EDEV ,
+.BR FC ,
+.BR ICMP ,
+.BR EICMP ,
+.BR ICMP6 ,
+.BR EICMP6 ,
+.BR IP ,
+.BR EIP ,
+.BR IP6 ,
+.BR EIP6 ,
 .BR NFS ,
 .BR NFSD ,
 .BR SOCK ,
-.BR IP ,
-.BR EIP ,
-.BR ICMP ,
-.BR EICMP ,
+.BR SOCK6 ,
+.BR SOFT ,
 .BR TCP ,
 .BR ETCP ,
-.BR UDP ,
-.BR SOCK6 ,
-.BR IP6 ,
-.BR EIP6 ,
-.BR ICMP6 ,
-.BR EICMP6 ,
-.BR UDP6 ,
-.BR FC
+.BR UDP
 and
-.BR SOFT .
+.BR UDP6 .
 
 With the
 .B DEV
@@ -755,278 +755,36 @@ Number of FIFO overrun errors that happened per second on transmitted packets.
 .RE
 
 With the
-.B NFS
-keyword, statistics about NFS client activity are reported.
-The following values are displayed:
-
-.B call/s
-.RS
-Number of RPC requests made per second.
-.RE
-
-.B retrans/s
-.RS
-Number of RPC requests per second, those which needed to be retransmitted (for
-example because of a server timeout).
-.RE
-
-.B read/s
-.RS
-Number of 'read' RPC calls made per second.
-.RE
-
-.B write/s
-.RS
-Number of 'write' RPC calls made per second.
-.RE
-
-.B access/s
-.RS
-Number of 'access' RPC calls made per second.
-.RE
-
-.B getatt/s
-.RS
-Number of 'getattr' RPC calls made per second.
-.RE
-
-With the
-.B NFSD
-keyword, statistics about NFS server activity are reported.
-The following values are displayed:
-
-.B scall/s
-.RS
-Number of RPC requests received per second.
-.RE
-
-.B badcall/s
-.RS
-Number of bad RPC requests received per second, those whose
-processing generated an error.
-.RE
-
-.B packet/s
-.RS
-Number of network packets received per second.
-.RE
-
-.B udp/s
-.RS
-Number of UDP packets received per second.
-.RE
-
-.B tcp/s
-.RS
-Number of TCP packets received per second.
-.RE
-
-.B hit/s
-.RS
-Number of reply cache hits per second.
-.RE
-
-.B miss/s
-.RS
-Number of reply cache misses per second.
-.RE
-
-.B sread/s
-.RS
-Number of 'read' RPC calls received per second.
-.RE
-
-.B swrite/s
-.RS
-Number of 'write' RPC calls received per second.
-.RE
-
-.B saccess/s
-.RS
-Number of 'access' RPC calls received per second.
-.RE
-
-.B sgetatt/s
-.RS
-Number of 'getattr' RPC calls received per second.
-.RE
-
-With the
-.B SOCK
-keyword, statistics on sockets in use are reported
-(IPv4).
-The following values are displayed:
-
-.B totsck
-.RS
-Total number of sockets used by the system.
-.RE
-
-.B tcpsck
-.RS
-Number of TCP sockets currently in use.
-.RE
-
-.B udpsck
-.RS
-Number of UDP sockets currently in use.
-.RE
-
-.B rawsck
-.RS
-Number of RAW sockets currently in use.
-.RE
-
-.B ip-frag
-.RS
-Number of IP fragments currently in queue.
-.RE
-
-.B tcp-tw
-.RS
-Number of TCP sockets in TIME_WAIT state.
-.RE
-
-With the
-.B IP
-keyword, statistics about IPv4 network traffic are reported.
-Note that IPv4 statistics depend on
+.B FC
+keyword, statistics about fibre channel traffic are reported.
+Note that fibre channel statistics depend on
 .BR sadc 's
-option "-S SNMP"
-to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
+option "-S DISK" to be collected.
+The following values are displayed:
 
-.B irec/s
+.B FCHOST
 .RS
-The total number of input datagrams received from interfaces
-per second, including those received in error [ipInReceives].
+Name of the fibre channel host bus adapter (HBA) interface for which statistics are reported.
 .RE
 
-.B fwddgm/s
+.B fch_rxf/s
 .RS
-The number of input datagrams per second, for which this entity was not
-their final IP destination, as a result of which an attempt
-was made to find a route to forward them to that final
-destination [ipForwDatagrams].
+The total number of frames received per second.
 .RE
 
-.B idel/s
+.B fch_txf/s
 .RS
-The total number of input datagrams successfully delivered per second
-to IP user-protocols (including ICMP) [ipInDelivers].
+The total number of frames transmitted per second.
 .RE
 
-.B orq/s
+.B fch_rxw/s
 .RS
-The total number of IP datagrams which local IP user-protocols (including ICMP)
-supplied per second to IP in requests for transmission [ipOutRequests].
-Note that this counter does not include any datagrams counted in fwddgm/s.
+The total number of transmission words received per second.
 .RE
 
-.B asmrq/s
+.B fch_txw/s
 .RS
-The number of IP fragments received per second which needed to be
-reassembled at this entity [ipReasmReqds].
-.RE
-
-.B asmok/s
-.RS
-The number of IP datagrams successfully re-assembled per second [ipReasmOKs].
-.RE
-
-.B fragok/s
-.RS
-The number of IP datagrams that have been successfully
-fragmented at this entity per second [ipFragOKs].
-.RE
-
-.B fragcrt/s
-.RS
-The number of IP datagram fragments that have been
-generated per second as a result of fragmentation at this entity [ipFragCreates].
-.RE
-
-With the
-.B EIP
-keyword, statistics about IPv4 network errors are reported.
-Note that IPv4 statistics depend on
-.BR sadc 's
-option "-S SNMP" to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
-
-.B ihdrerr/s
-.RS
-The number of input datagrams discarded per second due to errors in
-their IP headers, including bad checksums, version number
-mismatch, other format errors, time-to-live exceeded, errors
-discovered in processing their IP options, etc. [ipInHdrErrors]
-.RE
-
-.B iadrerr/s
-.RS
-The number of input datagrams discarded per second because the IP
-address in their IP header's destination field was not a
-valid address to be received at this entity. This count
-includes invalid addresses (e.g., 0.0.0.0) and addresses of
-unsupported Classes (e.g., Class E). For entities which are
-not IP routers and therefore do not forward datagrams, this
-counter includes datagrams discarded because the destination
-address was not a local address [ipInAddrErrors].
-.RE
-
-.B iukwnpr/s
-.RS
-The number of locally-addressed datagrams received
-successfully but discarded per second because of an unknown or
-unsupported protocol [ipInUnknownProtos].
-.RE
-
-.B idisc/s
-.RS
-The number of input IP datagrams per second for which no problems were
-encountered to prevent their continued processing, but which
-were discarded (e.g., for lack of buffer space) [ipInDiscards].
-Note that this counter does not include any datagrams discarded while
-awaiting re-assembly.
-.RE
-
-.B odisc/s
-.RS
-The number of output IP datagrams per second for which no problem was
-encountered to prevent their transmission to their
-destination, but which were discarded (e.g., for lack of
-buffer space) [ipOutDiscards].
-Note that this counter would include
-datagrams counted in fwddgm/s if any such packets met
-this (discretionary) discard criterion.
-.RE
-
-.B onort/s
-.RS
-The number of IP datagrams discarded per second because no route could
-be found to transmit them to their destination [ipOutNoRoutes].
-Note that this counter includes any packets counted in fwddgm/s
-which meet this 'no-route' criterion.
-Note that this includes any datagrams which a host cannot route because all
-of its default routers are down.
-.RE
-
-.B asmf/s
-.RS
-The number of failures detected per second by the IP re-assembly
-algorithm (for whatever reason: timed out, errors, etc) [ipReasmFails].
-Note that this is not necessarily a count of discarded IP
-fragments since some algorithms can lose track of the number of
-fragments by combining them as they are received.
-.RE
-
-.B fragf/s
-.RS
-The number of IP datagrams that have been discarded per second because
-they needed to be fragmented at this entity but could not
-be, e.g., because their Don't Fragment flag was set [ipFragFails].
+The total number of transmission words transmitted per second.
 .RE
 
 With the
@@ -1184,331 +942,6 @@ The number of ICMP Redirect messages received per second [icmpInRedirects].
 .B oredir/s
 .RS
 The number of ICMP Redirect messages sent per second [icmpOutRedirects].
-.RE
-
-With the
-.B TCP
-keyword, statistics about TCPv4 network traffic are reported.
-Note that TCPv4 statistics depend on
-.BR sadc 's
-option "-S SNMP" to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
-
-.B active/s
-.RS
-The number of times TCP connections have made a direct
-transition to the SYN-SENT state from the CLOSED state per second [tcpActiveOpens].
-.RE
-
-.B passive/s
-.RS
-The number of times TCP connections have made a direct
-transition to the SYN-RCVD state from the LISTEN state per second [tcpPassiveOpens].
-.RE
-
-.B iseg/s
-.RS
-The total number of segments received per second, including those
-received in error [tcpInSegs].  This count includes segments received on
-currently established connections.
-.RE
-
-.B oseg/s
-.RS
-The total number of segments sent per second, including those on
-current connections but excluding those containing only
-retransmitted octets [tcpOutSegs].
-.RE
-
-With the
-.B ETCP
-keyword, statistics about TCPv4 network errors are reported.
-Note that TCPv4 statistics depend on
-.BR sadc 's
-option "-S SNMP" to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
-
-.B atmptf/s
-.RS
-The number of times per second TCP connections have made a direct
-transition to the CLOSED state from either the SYN-SENT
-state or the SYN-RCVD state, plus the number of times per second TCP
-connections have made a direct transition to the LISTEN
-state from the SYN-RCVD state [tcpAttemptFails].
-.RE
-
-.B estres/s
-.RS
-The number of times per second TCP connections have made a direct
-transition to the CLOSED state from either the ESTABLISHED
-state or the CLOSE-WAIT state [tcpEstabResets].
-.RE
-
-.B retrans/s
-.RS
-The total number of segments retransmitted per second - that is, the
-number of TCP segments transmitted containing one or more
-previously transmitted octets [tcpRetransSegs].
-.RE
-
-.B isegerr/s
-.RS
-The total number of segments received in error (e.g., bad
-TCP checksums) per second [tcpInErrs].
-.RE
-
-.B orsts/s
-.RS
-The number of TCP segments sent per second containing the RST flag [tcpOutRsts].
-.RE
-
-With the
-.B UDP
-keyword, statistics about UDPv4 network traffic are reported.
-Note that UDPv4 statistics depend on
-.BR sadc's
-option "-S SNMP" to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
-
-.B idgm/s
-.RS
-The total number of UDP datagrams delivered per second to UDP users [udpInDatagrams].
-.RE
-
-.B odgm/s
-.RS
-The total number of UDP datagrams sent per second from this entity [udpOutDatagrams].
-.RE
-
-.B noport/s
-.RS
-The total number of received UDP datagrams per second for which there
-was no application at the destination port [udpNoPorts].
-.RE
-
-.B idgmerr/s
-.RS
-The number of received UDP datagrams per second that could not be
-delivered for reasons other than the lack of an application
-at the destination port [udpInErrors].
-.RE
-
-With the
-.B SOCK6
-keyword, statistics on sockets in use are reported (IPv6).
-Note that IPv6 statistics depend on
-.BR sadc 's
-option "-S IPV6" to be collected.
-The following values are displayed:
-
-.B tcp6sck
-.RS
-Number of TCPv6 sockets currently in use.
-.RE
-
-.B udp6sck
-.RS
-Number of UDPv6 sockets currently in use.
-.RE
-
-.B raw6sck
-.RS
-Number of RAWv6 sockets currently in use.
-.RE
-
-.B ip6-frag
-.RS
-Number of IPv6 fragments currently in use.
-.RE
-
-With the
-.B IP6
-keyword, statistics about IPv6 network traffic are reported.
-Note that IPv6 statistics depend on
-.BR sadc 's
-option "-S IPV6" to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
-
-.B irec6/s
-.RS
-The total number of input datagrams received from
-interfaces per second, including those received in error
-[ipv6IfStatsInReceives].
-.RE
-
-.B fwddgm6/s
-.RS
-The number of output datagrams per second which this
-entity received and forwarded to their final
-destinations [ipv6IfStatsOutForwDatagrams].
-.RE
-
-.B idel6/s
-.RS
-The total number of datagrams successfully
-delivered per second to IPv6 user-protocols (including ICMP)
-[ipv6IfStatsInDelivers].
-.RE
-
-.B orq6/s
-.RS
-The total number of IPv6 datagrams which local IPv6
-user-protocols (including ICMP) supplied per second to IPv6 in
-requests for transmission [ipv6IfStatsOutRequests].
-Note that this counter
-does not include any datagrams counted in fwddgm6/s.
-.RE
-
-.B asmrq6/s
-.RS
-The number of IPv6 fragments received per second which needed
-to be reassembled at this interface [ipv6IfStatsReasmReqds].
-.RE
-
-.B asmok6/s
-.RS
-The number of IPv6 datagrams successfully
-reassembled per second [ipv6IfStatsReasmOKs].
-.RE
-
-.B imcpck6/s
-.RS
-The number of multicast packets received per second
-by the interface [ipv6IfStatsInMcastPkts].
-.RE
-
-.B omcpck6/s
-.RS
-The number of multicast packets transmitted per second
-by the interface [ipv6IfStatsOutMcastPkts].
-.RE
-
-.B fragok6/s
-.RS
-The number of IPv6 datagrams that have been
-successfully fragmented at this output interface per second
-[ipv6IfStatsOutFragOKs].
-.RE
-
-.B fragcr6/s
-.RS
-The number of output datagram fragments that have
-been generated per second as a result of fragmentation at
-this output interface [ipv6IfStatsOutFragCreates].
-.RE
-
-With the
-.B EIP6
-keyword, statistics about IPv6 network errors are reported.
-Note that IPv6 statistics depend on
-.BR sadc 's
-option "-S IPV6" to be collected.
-The following values are displayed (formal SNMP names between
-square brackets):
-
-.B ihdrer6/s
-.RS
-The number of input datagrams discarded per second due to
-errors in their IPv6 headers, including version
-number mismatch, other format errors, hop count
-exceeded, errors discovered in processing their
-IPv6 options, etc. [ipv6IfStatsInHdrErrors]
-.RE
-
-.B iadrer6/s
-.RS
-The number of input datagrams discarded per second because
-the IPv6 address in their IPv6 header's destination
-field was not a valid address to be received at
-this entity. This count includes invalid
-addresses (e.g., ::0) and unsupported addresses
-(e.g., addresses with unallocated prefixes). For
-entities which are not IPv6 routers and therefore
-do not forward datagrams, this counter includes
-datagrams discarded because the destination address
-was not a local address [ipv6IfStatsInAddrErrors].
-.RE
-
-.B iukwnp6/s
-.RS
-The number of locally-addressed datagrams
-received successfully but discarded per second because of an
-unknown or unsupported protocol [ipv6IfStatsInUnknownProtos].
-.RE
-
-.B i2big6/s
-.RS
-The number of input datagrams that could not be
-forwarded per second because their size exceeded the link MTU
-of outgoing interface [ipv6IfStatsInTooBigErrors].
-.RE
-
-.B idisc6/s
-.RS
-The number of input IPv6 datagrams per second for which no
-problems were encountered to prevent their
-continued processing, but which were discarded
-(e.g., for lack of buffer space)
-[ipv6IfStatsInDiscards]. Note that this
-counter does not include any datagrams discarded
-while awaiting re-assembly.
-.RE
-
-.B odisc6/s
-.RS
-The number of output IPv6 datagrams per second for which no
-problem was encountered to prevent their
-transmission to their destination, but which were
-discarded (e.g., for lack of buffer space)
-[ipv6IfStatsOutDiscards]. Note
-that this counter would include datagrams counted
-in fwddgm6/s if any such packets
-met this (discretionary) discard criterion.
-.RE
-
-.B inort6/s
-.RS
-The number of input datagrams discarded per second because no
-route could be found to transmit them to their
-destination [ipv6IfStatsInNoRoutes].
-.RE
-
-.B onort6/s
-.RS
-The number of locally generated IP datagrams discarded per second
-because no route could be found to transmit them to their
-destination [unknown formal SNMP name].
-.RE
-
-.B asmf6/s
-.RS
-The number of failures detected per second by the IPv6
-re-assembly algorithm (for whatever reason: timed
-out, errors, etc.) [ipv6IfStatsReasmFails].
-Note that this is not
-necessarily a count of discarded IPv6 fragments
-since some algorithms
-can lose track of the number of fragments
-by combining them as they are received.
-.RE
-
-.B fragf6/s
-.RS
-The number of IPv6 datagrams that have been
-discarded per second because they needed to be fragmented
-at this output interface but could not be
-[ipv6IfStatsOutFragFails].
-.RE
-
-.B itrpck6/s
-.RS
-The number of input datagrams discarded per second because
-datagram frame didn't carry enough data
-[ipv6IfStatsInTruncatedPkts].
 .RE
 
 With the
@@ -1723,70 +1156,493 @@ by the interface per second
 .RE
 
 With the
-.B UDP6
-keyword, statistics about UDPv6 network traffic are reported.
-Note that UDPv6 statistics depend on
+.B IP
+keyword, statistics about IPv4 network traffic are reported.
+Note that IPv4 statistics depend on
+.BR sadc 's
+option "-S SNMP"
+to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B irec/s
+.RS
+The total number of input datagrams received from interfaces
+per second, including those received in error [ipInReceives].
+.RE
+
+.B fwddgm/s
+.RS
+The number of input datagrams per second, for which this entity was not
+their final IP destination, as a result of which an attempt
+was made to find a route to forward them to that final
+destination [ipForwDatagrams].
+.RE
+
+.B idel/s
+.RS
+The total number of input datagrams successfully delivered per second
+to IP user-protocols (including ICMP) [ipInDelivers].
+.RE
+
+.B orq/s
+.RS
+The total number of IP datagrams which local IP user-protocols (including ICMP)
+supplied per second to IP in requests for transmission [ipOutRequests].
+Note that this counter does not include any datagrams counted in fwddgm/s.
+.RE
+
+.B asmrq/s
+.RS
+The number of IP fragments received per second which needed to be
+reassembled at this entity [ipReasmReqds].
+.RE
+
+.B asmok/s
+.RS
+The number of IP datagrams successfully re-assembled per second [ipReasmOKs].
+.RE
+
+.B fragok/s
+.RS
+The number of IP datagrams that have been successfully
+fragmented at this entity per second [ipFragOKs].
+.RE
+
+.B fragcrt/s
+.RS
+The number of IP datagram fragments that have been
+generated per second as a result of fragmentation at this entity [ipFragCreates].
+.RE
+
+With the
+.B EIP
+keyword, statistics about IPv4 network errors are reported.
+Note that IPv4 statistics depend on
+.BR sadc 's
+option "-S SNMP" to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B ihdrerr/s
+.RS
+The number of input datagrams discarded per second due to errors in
+their IP headers, including bad checksums, version number
+mismatch, other format errors, time-to-live exceeded, errors
+discovered in processing their IP options, etc. [ipInHdrErrors]
+.RE
+
+.B iadrerr/s
+.RS
+The number of input datagrams discarded per second because the IP
+address in their IP header's destination field was not a
+valid address to be received at this entity. This count
+includes invalid addresses (e.g., 0.0.0.0) and addresses of
+unsupported Classes (e.g., Class E). For entities which are
+not IP routers and therefore do not forward datagrams, this
+counter includes datagrams discarded because the destination
+address was not a local address [ipInAddrErrors].
+.RE
+
+.B iukwnpr/s
+.RS
+The number of locally-addressed datagrams received
+successfully but discarded per second because of an unknown or
+unsupported protocol [ipInUnknownProtos].
+.RE
+
+.B idisc/s
+.RS
+The number of input IP datagrams per second for which no problems were
+encountered to prevent their continued processing, but which
+were discarded (e.g., for lack of buffer space) [ipInDiscards].
+Note that this counter does not include any datagrams discarded while
+awaiting re-assembly.
+.RE
+
+.B odisc/s
+.RS
+The number of output IP datagrams per second for which no problem was
+encountered to prevent their transmission to their
+destination, but which were discarded (e.g., for lack of
+buffer space) [ipOutDiscards].
+Note that this counter would include
+datagrams counted in fwddgm/s if any such packets met
+this (discretionary) discard criterion.
+.RE
+
+.B onort/s
+.RS
+The number of IP datagrams discarded per second because no route could
+be found to transmit them to their destination [ipOutNoRoutes].
+Note that this counter includes any packets counted in fwddgm/s
+which meet this 'no-route' criterion.
+Note that this includes any datagrams which a host cannot route because all
+of its default routers are down.
+.RE
+
+.B asmf/s
+.RS
+The number of failures detected per second by the IP re-assembly
+algorithm (for whatever reason: timed out, errors, etc) [ipReasmFails].
+Note that this is not necessarily a count of discarded IP
+fragments since some algorithms can lose track of the number of
+fragments by combining them as they are received.
+.RE
+
+.B fragf/s
+.RS
+The number of IP datagrams that have been discarded per second because
+they needed to be fragmented at this entity but could not
+be, e.g., because their Don't Fragment flag was set [ipFragFails].
+.RE
+
+With the
+.B IP6
+keyword, statistics about IPv6 network traffic are reported.
+Note that IPv6 statistics depend on
 .BR sadc 's
 option "-S IPV6" to be collected.
 The following values are displayed (formal SNMP names between
 square brackets):
 
-.B idgm6/s
+.B irec6/s
 .RS
-The total number of UDP datagrams delivered per second to UDP users
-[udpInDatagrams].
+The total number of input datagrams received from
+interfaces per second, including those received in error
+[ipv6IfStatsInReceives].
 .RE
 
-.B odgm6/s
+.B fwddgm6/s
 .RS
-The total number of UDP datagrams sent per second from this
-entity [udpOutDatagrams].
+The number of output datagrams per second which this
+entity received and forwarded to their final
+destinations [ipv6IfStatsOutForwDatagrams].
 .RE
 
-.B noport6/s
+.B idel6/s
 .RS
-The total number of received UDP datagrams per second for which there
-was no application at the destination port [udpNoPorts].
+The total number of datagrams successfully
+delivered per second to IPv6 user-protocols (including ICMP)
+[ipv6IfStatsInDelivers].
 .RE
 
-.B idgmer6/s
+.B orq6/s
 .RS
-The number of received UDP datagrams per second that could not be
-delivered for reasons other than the lack of an application
-at the destination port [udpInErrors].
+The total number of IPv6 datagrams which local IPv6
+user-protocols (including ICMP) supplied per second to IPv6 in
+requests for transmission [ipv6IfStatsOutRequests].
+Note that this counter
+does not include any datagrams counted in fwddgm6/s.
+.RE
+
+.B asmrq6/s
+.RS
+The number of IPv6 fragments received per second which needed
+to be reassembled at this interface [ipv6IfStatsReasmReqds].
+.RE
+
+.B asmok6/s
+.RS
+The number of IPv6 datagrams successfully
+reassembled per second [ipv6IfStatsReasmOKs].
+.RE
+
+.B imcpck6/s
+.RS
+The number of multicast packets received per second
+by the interface [ipv6IfStatsInMcastPkts].
+.RE
+
+.B omcpck6/s
+.RS
+The number of multicast packets transmitted per second
+by the interface [ipv6IfStatsOutMcastPkts].
+.RE
+
+.B fragok6/s
+.RS
+The number of IPv6 datagrams that have been
+successfully fragmented at this output interface per second
+[ipv6IfStatsOutFragOKs].
+.RE
+
+.B fragcr6/s
+.RS
+The number of output datagram fragments that have
+been generated per second as a result of fragmentation at
+this output interface [ipv6IfStatsOutFragCreates].
 .RE
 
 With the
-.B FC
-keyword, statistics about fibre channel traffic are reported.
-Note that fibre channel statistics depend on
+.B EIP6
+keyword, statistics about IPv6 network errors are reported.
+Note that IPv6 statistics depend on
 .BR sadc 's
-option "-S DISK" to be collected.
+option "-S IPV6" to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B ihdrer6/s
+.RS
+The number of input datagrams discarded per second due to
+errors in their IPv6 headers, including version
+number mismatch, other format errors, hop count
+exceeded, errors discovered in processing their
+IPv6 options, etc. [ipv6IfStatsInHdrErrors]
+.RE
+
+.B iadrer6/s
+.RS
+The number of input datagrams discarded per second because
+the IPv6 address in their IPv6 header's destination
+field was not a valid address to be received at
+this entity. This count includes invalid
+addresses (e.g., ::0) and unsupported addresses
+(e.g., addresses with unallocated prefixes). For
+entities which are not IPv6 routers and therefore
+do not forward datagrams, this counter includes
+datagrams discarded because the destination address
+was not a local address [ipv6IfStatsInAddrErrors].
+.RE
+
+.B iukwnp6/s
+.RS
+The number of locally-addressed datagrams
+received successfully but discarded per second because of an
+unknown or unsupported protocol [ipv6IfStatsInUnknownProtos].
+.RE
+
+.B i2big6/s
+.RS
+The number of input datagrams that could not be
+forwarded per second because their size exceeded the link MTU
+of outgoing interface [ipv6IfStatsInTooBigErrors].
+.RE
+
+.B idisc6/s
+.RS
+The number of input IPv6 datagrams per second for which no
+problems were encountered to prevent their
+continued processing, but which were discarded
+(e.g., for lack of buffer space)
+[ipv6IfStatsInDiscards]. Note that this
+counter does not include any datagrams discarded
+while awaiting re-assembly.
+.RE
+
+.B odisc6/s
+.RS
+The number of output IPv6 datagrams per second for which no
+problem was encountered to prevent their
+transmission to their destination, but which were
+discarded (e.g., for lack of buffer space)
+[ipv6IfStatsOutDiscards]. Note
+that this counter would include datagrams counted
+in fwddgm6/s if any such packets
+met this (discretionary) discard criterion.
+.RE
+
+.B inort6/s
+.RS
+The number of input datagrams discarded per second because no
+route could be found to transmit them to their
+destination [ipv6IfStatsInNoRoutes].
+.RE
+
+.B onort6/s
+.RS
+The number of locally generated IP datagrams discarded per second
+because no route could be found to transmit them to their
+destination [unknown formal SNMP name].
+.RE
+
+.B asmf6/s
+.RS
+The number of failures detected per second by the IPv6
+re-assembly algorithm (for whatever reason: timed
+out, errors, etc.) [ipv6IfStatsReasmFails].
+Note that this is not
+necessarily a count of discarded IPv6 fragments
+since some algorithms
+can lose track of the number of fragments
+by combining them as they are received.
+.RE
+
+.B fragf6/s
+.RS
+The number of IPv6 datagrams that have been
+discarded per second because they needed to be fragmented
+at this output interface but could not be
+[ipv6IfStatsOutFragFails].
+.RE
+
+.B itrpck6/s
+.RS
+The number of input datagrams discarded per second because
+datagram frame didn't carry enough data
+[ipv6IfStatsInTruncatedPkts].
+.RE
+
+With the
+.B NFS
+keyword, statistics about NFS client activity are reported.
 The following values are displayed:
 
-.B FCHOST
+.B call/s
 .RS
-Name of the fibre channel host bus adapter (HBA) interface for which statistics are reported.
+Number of RPC requests made per second.
 .RE
 
-.B fch_rxf/s
+.B retrans/s
 .RS
-The total number of frames received per second.
+Number of RPC requests per second, those which needed to be retransmitted (for
+example because of a server timeout).
 .RE
 
-.B fch_txf/s
+.B read/s
 .RS
-The total number of frames transmitted per second.
+Number of 'read' RPC calls made per second.
 .RE
 
-.B fch_rxw/s
+.B write/s
 .RS
-The total number of transmission words received per second.
+Number of 'write' RPC calls made per second.
 .RE
 
-.B fch_txw/s
+.B access/s
 .RS
-The total number of transmission words transmitted per second.
+Number of 'access' RPC calls made per second.
+.RE
+
+.B getatt/s
+.RS
+Number of 'getattr' RPC calls made per second.
+.RE
+
+With the
+.B NFSD
+keyword, statistics about NFS server activity are reported.
+The following values are displayed:
+
+.B scall/s
+.RS
+Number of RPC requests received per second.
+.RE
+
+.B badcall/s
+.RS
+Number of bad RPC requests received per second, those whose
+processing generated an error.
+.RE
+
+.B packet/s
+.RS
+Number of network packets received per second.
+.RE
+
+.B udp/s
+.RS
+Number of UDP packets received per second.
+.RE
+
+.B tcp/s
+.RS
+Number of TCP packets received per second.
+.RE
+
+.B hit/s
+.RS
+Number of reply cache hits per second.
+.RE
+
+.B miss/s
+.RS
+Number of reply cache misses per second.
+.RE
+
+.B sread/s
+.RS
+Number of 'read' RPC calls received per second.
+.RE
+
+.B swrite/s
+.RS
+Number of 'write' RPC calls received per second.
+.RE
+
+.B saccess/s
+.RS
+Number of 'access' RPC calls received per second.
+.RE
+
+.B sgetatt/s
+.RS
+Number of 'getattr' RPC calls received per second.
+.RE
+
+With the
+.B SOCK
+keyword, statistics on sockets in use are reported
+(IPv4).
+The following values are displayed:
+
+.B totsck
+.RS
+Total number of sockets used by the system.
+.RE
+
+.B tcpsck
+.RS
+Number of TCP sockets currently in use.
+.RE
+
+.B udpsck
+.RS
+Number of UDP sockets currently in use.
+.RE
+
+.B rawsck
+.RS
+Number of RAW sockets currently in use.
+.RE
+
+.B ip-frag
+.RS
+Number of IP fragments currently in queue.
+.RE
+
+.B tcp-tw
+.RS
+Number of TCP sockets in TIME_WAIT state.
+.RE
+
+With the
+.B SOCK6
+keyword, statistics on sockets in use are reported (IPv6).
+Note that IPv6 statistics depend on
+.BR sadc 's
+option "-S IPV6" to be collected.
+The following values are displayed:
+
+.B tcp6sck
+.RS
+Number of TCPv6 sockets currently in use.
+.RE
+
+.B udp6sck
+.RS
+Number of UDPv6 sockets currently in use.
+.RE
+
+.B raw6sck
+.RS
+Number of RAWv6 sockets currently in use.
+.RE
+
+.B ip6-frag
+.RS
+Number of IPv6 fragments currently in use.
 .RE
 
 With the
@@ -1825,6 +1681,150 @@ Flow limiting is an optional RPS feature that can be used to limit the number of
 packets queued to the backlog for each flow to a certain amount.
 This can help ensure that smaller flows are processed even though
 much larger flows are pushing packets in.
+.RE
+
+With the
+.B TCP
+keyword, statistics about TCPv4 network traffic are reported.
+Note that TCPv4 statistics depend on
+.BR sadc 's
+option "-S SNMP" to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B active/s
+.RS
+The number of times TCP connections have made a direct
+transition to the SYN-SENT state from the CLOSED state per second [tcpActiveOpens].
+.RE
+
+.B passive/s
+.RS
+The number of times TCP connections have made a direct
+transition to the SYN-RCVD state from the LISTEN state per second [tcpPassiveOpens].
+.RE
+
+.B iseg/s
+.RS
+The total number of segments received per second, including those
+received in error [tcpInSegs].  This count includes segments received on
+currently established connections.
+.RE
+
+.B oseg/s
+.RS
+The total number of segments sent per second, including those on
+current connections but excluding those containing only
+retransmitted octets [tcpOutSegs].
+.RE
+
+With the
+.B ETCP
+keyword, statistics about TCPv4 network errors are reported.
+Note that TCPv4 statistics depend on
+.BR sadc 's
+option "-S SNMP" to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B atmptf/s
+.RS
+The number of times per second TCP connections have made a direct
+transition to the CLOSED state from either the SYN-SENT
+state or the SYN-RCVD state, plus the number of times per second TCP
+connections have made a direct transition to the LISTEN
+state from the SYN-RCVD state [tcpAttemptFails].
+.RE
+
+.B estres/s
+.RS
+The number of times per second TCP connections have made a direct
+transition to the CLOSED state from either the ESTABLISHED
+state or the CLOSE-WAIT state [tcpEstabResets].
+.RE
+
+.B retrans/s
+.RS
+The total number of segments retransmitted per second - that is, the
+number of TCP segments transmitted containing one or more
+previously transmitted octets [tcpRetransSegs].
+.RE
+
+.B isegerr/s
+.RS
+The total number of segments received in error (e.g., bad
+TCP checksums) per second [tcpInErrs].
+.RE
+
+.B orsts/s
+.RS
+The number of TCP segments sent per second containing the RST flag [tcpOutRsts].
+.RE
+
+With the
+.B UDP
+keyword, statistics about UDPv4 network traffic are reported.
+Note that UDPv4 statistics depend on
+.BR sadc's
+option "-S SNMP" to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B idgm/s
+.RS
+The total number of UDP datagrams delivered per second to UDP users [udpInDatagrams].
+.RE
+
+.B odgm/s
+.RS
+The total number of UDP datagrams sent per second from this entity [udpOutDatagrams].
+.RE
+
+.B noport/s
+.RS
+The total number of received UDP datagrams per second for which there
+was no application at the destination port [udpNoPorts].
+.RE
+
+.B idgmerr/s
+.RS
+The number of received UDP datagrams per second that could not be
+delivered for reasons other than the lack of an application
+at the destination port [udpInErrors].
+.RE
+
+With the
+.B UDP6
+keyword, statistics about UDPv6 network traffic are reported.
+Note that UDPv6 statistics depend on
+.BR sadc 's
+option "-S IPV6" to be collected.
+The following values are displayed (formal SNMP names between
+square brackets):
+
+.B idgm6/s
+.RS
+The total number of UDP datagrams delivered per second to UDP users
+[udpInDatagrams].
+.RE
+
+.B odgm6/s
+.RS
+The total number of UDP datagrams sent per second from this
+entity [udpOutDatagrams].
+.RE
+
+.B noport6/s
+.RS
+The total number of received UDP datagrams per second for which there
+was no application at the destination port [udpNoPorts].
+.RE
+
+.B idgmer6/s
+.RS
+The number of received UDP datagrams per second that could not be
+delivered for reasons other than the lack of an application
+at the destination port [udpInErrors].
 .RE
 
 The
