@@ -1,10 +1,10 @@
-.TH SADC 8 "JANUARY 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.B ] [ -D ] [ -F ] [ -L ] [ -V ] [ -S { INT | DISK | SNMP | IPV6 | POWER | XDISK | ALL | XALL [,...] } ] [
+.B ] [ -D ] [ -F ] [ -L ] [ -V ] [ -S { DISK | INT | IPV6 | POWER | SNMP | XDISK | ALL | XALL [,...] } ] [
 .I interval
 .B [
 .I count
@@ -124,25 +124,23 @@ If the system is under heavy load, an old
 .B sadc
 might still be running when cron starts a new one. Without locking,
 this situation can result in a corrupted system activity file.
-.IP "-S { INT | DISK | SNMP | IPV6 | POWER | XDISK | ALL | XALL [,...] }"
+.IP "-S { DISK | INT | IPV6 | POWER | SNMP | XDISK | ALL | XALL [,...] }"
 Specify which optional activities should be collected by
 .BR sadc .
 Some activities are optional to prevent data files from growing too large.
-The
-.B INT
-keyword indicates that
-.B sadc
-should collect data for system interrupts.
 The
 .B DISK
 keyword indicates that
 .B sadc
 should collect data for block devices.
 The
-.B SNMP
-and
+.B INT
+keyword indicates that
+.B sadc
+should collect data for system interrupts.
+The
 .B IPV6
-keywords indicate respectively that SNMP and IPv6 statistics should be
+keyword indicates that IPv6 statistics should be
 collected by
 .BR sadc .
 The
@@ -150,6 +148,11 @@ The
 keyword indicates that
 .B sadc
 should collect power management statistics.
+The
+.B SNMP
+keyword indicates that SNMP statistics should be
+collected by
+.BR sadc .
 The
 .B ALL
 keyword is equivalent to specifying all the keywords above and therefore
