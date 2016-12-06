@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.1\n"
+"Project-Id-Version: sysstat 11.5.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-09-23 15:07+0200\n"
-"PO-Revision-Date: 2016-09-23 22:47+0200\n"
+"POT-Creation-Date: 2016-11-04 09:48+0100\n"
+"PO-Revision-Date: 2016-11-09 14:50+0100\n"
 "Last-Translator: Marián Čavojský <preklad@cavo.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "Language: sk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:89
+#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Použitie: %s [ voľby... ] [ <interval> [ <počet> ] ]\n"
@@ -187,7 +187,7 @@ msgstr ""
 "[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1210 sar.c:358 pidstat.c:2303
+#: mpstat.c:1210 sar.c:359 pidstat.c:2319
 msgid "Average:"
 msgstr "Priemer:"
 
@@ -331,6 +331,7 @@ msgid ""
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
 "\t\tFC\tFibre channel HBAs\n"
+"\t\tSOFT\tSoftware-based network processing\n"
 msgstr ""
 "\t-n { <kľúčovéslovo> [,...] | ALL }\n"
 "\t\tŠtatistika siete\n"
@@ -354,18 +355,19 @@ msgstr ""
 "\t\tEICMP6\tICMP prevádzka\t(v6) (chyby)\n"
 "\t\tUDP6\tUDP prevádzka\t(v6)\n"
 "\t\tFC\tFibre channel HBAs\n"
+"\t\tSOFT\tSieťové spracovanie na báze softvéru\n"
 
-#: sar.c:174
+#: sar.c:175
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tŠtatistika dĺžky fronty a priemerného zaťaženia\n"
 
-#: sar.c:175
+#: sar.c:176
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tŠtatistika pamäte\n"
 
-#: sar.c:176
+#: sar.c:177
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -374,12 +376,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tŠtatistika využitia pamäte\n"
 
-#: sar.c:178
+#: sar.c:179
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tŠtatistika využitia odkladacieho priestoru\n"
 
-#: sar.c:179
+#: sar.c:180
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -388,67 +390,67 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tŠtatistika využitia CPU\n"
 
-#: sar.c:181
+#: sar.c:182
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr "\t-v\tŠtatistika tabuliek jadra\n"
 
-#: sar.c:182
+#: sar.c:183
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tŠtatistika odkladania\n"
 
-#: sar.c:183
+#: sar.c:184
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tŠtatistika vytvárania a prepínania úloh systémom\n"
 
-#: sar.c:184
+#: sar.c:185
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr "\t-y\tŠtatistika TTY zariadení\n"
 
-#: sar.c:198
+#: sar.c:199
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Zberač údajov bude hľadaný v PATH\n"
 
-#: sar.c:201
+#: sar.c:202
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Zberač údajov bol nájdený: %s\n"
 
-#: sar.c:260
+#: sar.c:261
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Neočakávaný koniec zberu údajov\n"
 
-#: sar.c:813
+#: sar.c:814
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Použitie nesprávneho zberača údajov z rozdielnej verzie sysstat\n"
 
-#: sar.c:865
+#: sar.c:866
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekonzistentné vstupné údaje\n"
 
-#: sar.c:1044 pidstat.c:239
+#: sar.c:1045 pidstat.c:239
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Žiadané štatistiky nie sú dostupné\n"
 
-#: sar.c:1350
+#: sar.c:1351
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "voľby -f a -o sa navzájom vylučujú\n"
 
-#: sar.c:1356
+#: sar.c:1357
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Nečíta sa zo súboru aktivity systému (použi voľbu -f)\n"
 
-#: sar.c:1492
+#: sar.c:1493
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nemožno nájsť zberač údajov (%s)\n"
@@ -551,7 +553,7 @@ msgstr "Prosím, skontrolujte, či je zapnutý zber údajov\n"
 msgid "Requested activities not available in file %s\n"
 msgstr "Požadované štatistiky nie sú dostupné v súbore %s\n"
 
-#: tapestat.c:91
+#: tapestat.c:97
 #, c-format
 msgid ""
 "Options are:\n"
@@ -560,7 +562,7 @@ msgstr ""
 "Možné voľby:\n"
 "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:257
+#: tapestat.c:263
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Nenájdené žiadne páskové zariadenia so štatistikami\n"

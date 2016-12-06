@@ -5,59 +5,123 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.0.0\n"
+"Project-Id-Version: sysstat 11.5.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2014-06-12 21:34+0200\n"
-"PO-Revision-Date: 2014-06-14 10:56+0700\n"
+"POT-Creation-Date: 2016-11-04 09:48+0100\n"
+"PO-Revision-Date: 2016-11-10 21:49+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
 "Language: id\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Poedit 1.8.11\n"
 
-#: sadf_misc.c:621
+#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:95
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Penggunaan: %s [ opsi ] [ <interval> [ <hitungan> ] ]\n"
+
+#: iostat.c:89
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"Opsinya adalah:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
+"[ [ -H ] -g <nama_grup> ] [ -p [ <divais> [,...] | ALL ] ]\n"
+"[ <divais> [...] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:95
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"Opsinya adalah:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]\n"
+"[ [ -H ] -g <nama_grup> ] [ -p [ <divais> [,...] | ALL ] ]\n"
+"[ <divais> [...] | ALL ]\n"
+
+#: iostat.c:326
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Tak dapat menemukan data cakram\n"
+
+#: iostat.c:1660 sa_common.c:1650
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Tipe tidak valid pada nama divais kukuh\n"
+
+#: sadf_misc.c:749
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Berkas data aktivitas sistem: %s (%#x)\n"
 
-#: sadf_misc.c:630
+#: sadf_misc.c:758
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Berkas data sa asli: %s (%x)\n"
+
+#: sadf_misc.c:759
+msgid "no"
+msgstr "tidak"
+
+#: sadf_misc.c:759
+msgid "yes"
+msgstr "ya"
+
+#: sadf_misc.c:762
 #, c-format
 msgid "Host: "
 msgstr "Host: "
 
-#: sadf_misc.c:636
+#: sadf_misc.c:769
 #, c-format
 msgid "Number of CPU for last samples in file: %u\n"
 msgstr "Jumlah CPU untuk contoh terakhir di berkas: %u\n"
 
-#: sadf_misc.c:640
+#: sadf_misc.c:775
+#, c-format
+msgid "File date: %s\n"
+msgstr "Tanggal berkas: %s\n"
+
+#: sadf_misc.c:778
 #, c-format
 msgid "File time: "
 msgstr "Waktu berkas: "
 
-#: sadf_misc.c:645
+#: sadf_misc.c:783
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Ukuran interval panjang: %d\n"
 
-#: sadf_misc.c:651
+#: sadf_misc.c:789
 #, c-format
 msgid "List of activities:\n"
 msgstr "Senarai aktivitas:\n"
 
-#: sadf_misc.c:664
+#: sadf_misc.c:802
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr "\t[Format aktivitas tak diketahui]"
 
-#: sadc.c:87
+#: sadc.c:89
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Penggunaan: %s [ opsi... ] [ <interval> [ <hitungan> ] ] [ <berkas keluaran> ]\n"
 
-#: sadc.c:90
+#: sadc.c:92
 #, c-format
 msgid ""
 "Options are:\n"
@@ -68,39 +132,33 @@ msgstr ""
 "[ -C <komentar> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:261
+#: sadc.c:267
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Tak dapat menulis data ke berkas aktivitas sistem: %s\n"
 
-#: sadc.c:565
+#: sadc.c:563
 #, c-format
 msgid "Cannot write system activity file header: %s\n"
 msgstr "Tak dapat menulis tajuk berkas aktivitas sistem: %s\n"
 
-#: sadc.c:766 sadc.c:775 sadc.c:843 ioconf.c:489 rd_stats.c:69
-#: sa_common.c:1246 count.c:118
+#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
+#: sa_common.c:1264 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Tak dapat membuka %s: %s\n"
 
-#: sadc.c:1015
+#: sadc.c:1019
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Tak dapat menambah data ke berkas tersebut (%s)\n"
 
-#: common.c:62
+#: common.c:74
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat versi %s\n"
 
-#: cifsiostat.c:71 mpstat.c:90 sar.c:94 nfsiostat-sysstat.c:70 pidstat.c:86
-#: iostat.c:86
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Penggunaan: %s [ opsi ] [ <interval> [ <hitungan> ] ]\n"
-
-#: cifsiostat.c:75 nfsiostat-sysstat.c:74
+#: cifsiostat.c:74
 #, c-format
 msgid ""
 "Options are:\n"
@@ -109,7 +167,7 @@ msgstr ""
 "Opsinya adalah:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:78 nfsiostat-sysstat.c:77
+#: cifsiostat.c:77
 #, c-format
 msgid ""
 "Options are:\n"
@@ -117,97 +175,106 @@ msgid ""
 msgstr ""
 "Opsinya adalah:\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
+#: mpstat.c:101
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"
+msgstr ""
+"Opsinya adalah:\n"
+"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -o JSON ] [ -P { <cpu> [,...] | ON | ALL } ]\n"
+
+#: mpstat.c:1210 sar.c:359 pidstat.c:2319
+msgid "Average:"
+msgstr "Rata-rata:"
+
+#: mpstat.c:1636
+#, c-format
+msgid "Not that many processors!\n"
+msgstr "Tidak sebanyak itu prosesor!\n"
 
 #: sadf.c:86
 #, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> ]\n"
-msgstr "Penggunaan: %s [ opsi ] [ <interval> [ <hitungan> ] ] [ <berkas data> ]\n"
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr "Penggunaan: %s [ opsi ] [ <interval> [ <hitungan> ] ] [ <berkas data> | [0-9]+ ]\n"
 
 #: sadf.c:89
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Options are:\n"
-"[ -C ] [ -d | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -P { <cpu> [,...] | ALL } ] [ -s [ <jj:mm:dd> ] ] [ -e [ <jj:mm:dd> ] ]\n"
+"[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -s [ <jj:mm[:dd]> ] ] [ -e [ <jj:mm[:dd]> ] ]\n"
 "[ -- <opsi_sar> ]\n"
 
-#: mpstat.c:93
+#: sar.c:111
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-msgstr ""
-"Opsinya adalah:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -P { <cpu> [,...] | ON | ALL } ]\n"
-
-#: mpstat.c:598 sar.c:402 pidstat.c:2247
-msgid "Average:"
-msgstr "Rata-rata:"
-
-#: mpstat.c:967
-#, c-format
-msgid "Not that many processors!\n"
-msgstr "Tidak sebanyak itu prosesor!\n"
-
-#: sar.c:109
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
+"[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
-"[ -i <interval> ] [ -s [ <hh:mm:ss> ] ] [ -e [ <hh:mm:ss> ] ]\n"
+"[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
 "Opsinya adalah:\n"
-"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F ] [ -H ] [ -h ] [ -p ] [ -q ]\n"
-"[ -R ] [ -r ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ]\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
+"[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ --sadc ]\n"
 "[ -I { <int> [,...] | SUM | ALL | XALL } ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ -m { <kata kunci> [,...] | ALL } ] [ -n { <kata kunci> [,...] | ALL } ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <nama berkas> ] | -o [ <nama berkas> ] | -[0-9]+ ]\n"
-"[ -i <interval> ] [ -s [ <jj:mm:dd> ] ] [ -e [ <jj:mm:dd> ] ]\n"
+"[ -i <interval> ] [ -s [ <jj:mm[:dd]> ] ] [ -e [ <jj:mm[:dd]> ] ]\n"
 
-#: sar.c:131
+#: sar.c:134
 #, c-format
 msgid "Main options and reports:\n"
 msgstr "Opsi utama dan laporan:\n"
 
-#: sar.c:132
+#: sar.c:135
 #, c-format
 msgid "\t-B\tPaging statistics\n"
 msgstr "\t-B\tStatistik halaman\n"
 
-#: sar.c:133
+#: sar.c:136
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics\n"
 msgstr "\t-b\tI/O dan statistik rasio transfer\n"
 
-#: sar.c:134
+#: sar.c:137
 #, c-format
 msgid "\t-d\tBlock devices statistics\n"
 msgstr "\t-d\tStatistik divais blok\n"
 
-#: sar.c:135
+#: sar.c:138
 #, c-format
-msgid "\t-F\tFilesystems statistics\n"
-msgstr "\t-R\tStatistik sistem berkas\n"
+msgid "\t-F [ MOUNT ]\n"
+msgstr "\t-F [ MOUNT ]\n"
 
-#: sar.c:136
+#: sar.c:139
+#, c-format
+msgid "\t\tFilesystems statistics\n"
+msgstr "\t\tStatistik sistem berkas\n"
+
+#: sar.c:140
 #, c-format
 msgid "\t-H\tHugepages utilization statistics\n"
 msgstr "\t-S\tStatistik utilisasi hugepages\n"
 
-#: sar.c:137
+#: sar.c:141
 #, c-format
 msgid ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
@@ -216,7 +283,7 @@ msgstr ""
 "\t-I { <int> | SUM | ALL | XALL }\n"
 "\t\tInterupsi statistik\n"
 
-#: sar.c:139
+#: sar.c:143
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -239,7 +306,7 @@ msgstr ""
 "\t\tTEMP\tTemperatur divais\n"
 "\t\tUSB\tDivais USB yang dimasukkan ke dalam sistem\n"
 
-#: sar.c:148
+#: sar.c:152
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -263,6 +330,8 @@ msgid ""
 "\t\tICMP6\tICMP traffic\t(v6)\n"
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
+"\t\tFC\tFibre channel HBAs\n"
+"\t\tSOFT\tSoftware-based network processing\n"
 msgstr ""
 "\t-n { <kata kunci> [,...] | ALL }\n"
 "\t\tStatistik jaringan\n"
@@ -285,28 +354,34 @@ msgstr ""
 "\t\tICMP6\tLalu lintas ICMP\t(v6)\n"
 "\t\tEICMP6\tLalu lintas ICMP\t(v6) (galat)\n"
 "\t\tUDP6\tLalu lintas UDP\t(v6)\n"
+"\t\tFC\tKanal serat HBAs\n"
+"\t\tSOFT\tPemroses jaringan berbasis peranti lunak\n"
 
-#: sar.c:169
+#: sar.c:175
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tPanjang antrean dan statistik rata-rata muatan\n"
 
-#: sar.c:170
+#: sar.c:176
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tStatistik memori\n"
 
-#: sar.c:171
+#: sar.c:177
 #, c-format
-msgid "\t-r\tMemory utilization statistics\n"
-msgstr "\t-r\tStatistik utilisasi memori\n"
+msgid ""
+"\t-r [ ALL ]\n"
+"\t\tMemory utilization statistics\n"
+msgstr ""
+"\t-r [ ALL ]\n"
+"\t\tStatistik utilisasi memori\n"
 
-#: sar.c:172
+#: sar.c:179
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tStatistik utilisasi ruang swap\n"
 
-#: sar.c:173
+#: sar.c:180
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -315,107 +390,117 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistik utilisasi CPU\n"
 
-#: sar.c:175
+#: sar.c:182
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr "\t-v\tStatistik tabel kernel\n"
 
-#: sar.c:176
+#: sar.c:183
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tStatistik swap\n"
 
-#: sar.c:177
+#: sar.c:184
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tStatistik penukar sistem dan pembuatan tugas\n"
 
-#: sar.c:178
+#: sar.c:185
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr "\t-y\tStatistik divais TTY\n"
 
-#: sar.c:236
+#: sar.c:199
+#, c-format
+msgid "Data collector will be sought in PATH\n"
+msgstr "Pengumpul data akan dicari di PATH\n"
+
+#: sar.c:202
+#, c-format
+msgid "Data collector found: %s\n"
+msgstr "Pengumpul data ditemukan: %s\n"
+
+#: sar.c:261
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Akhir pengumpulan data tak diharapkan\n"
 
-#: sar.c:836
-#, c-format
-msgid "Invalid data format\n"
-msgstr "Format data tak sah\n"
-
-#: sar.c:840
+#: sar.c:814
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Menggunakan pengumpul data yang salah dari versi sysstat yang berbeda\n"
 
-#: sar.c:869
+#: sar.c:866
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Data masukan tidak konsisten\n"
 
-#: sar.c:1055 pidstat.c:218
+#: sar.c:1045 pidstat.c:239
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Aktivitas yang diminta tak tersedia\n"
 
-#: sar.c:1341
+#: sar.c:1351
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "opsi -f dan -o secara mutual eksklusif\n"
 
-#: sar.c:1347
+#: sar.c:1357
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Tak membaca dari berkas aktivitas sistem (gunakan opsi -f)\n"
 
-#: sar.c:1483
+#: sar.c:1493
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Tak dapat menemukan pengumpul data (%s)\n"
 
-#: sa_common.c:1051
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Galat ketika membaca berkas aktivitas sistem: %s\n"
+#: pr_stats.c:2494 pr_stats.c:2505 pr_stats.c:2606 pr_stats.c:2617
+msgid "Summary:"
+msgstr "Ringkasan:"
 
-#: sa_common.c:1061
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Akhir berkas aktivitas sistem tak diharapkan\n"
+#: pr_stats.c:2547
+msgid "Other devices not listed here"
+msgstr "Divais lainnya tidak disebutkan di sini"
 
-#: sa_common.c:1080
+#: sa_conv.c:69
 #, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Berkas dibuat menggunakan sar/sadc dari sysstat versi %d.%d.%d"
+msgid "Cannot convert the format of this file\n"
+msgstr "Tak dapat lagi mengonversikan format berkas ini\n"
 
-#: sa_common.c:1111
+#: sa_conv.c:562
 #, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Berkas aktivitas sistem tak sah: %s\n"
+msgid ""
+"\n"
+"CPU activity not found in file. Aborting...\n"
+msgstr ""
+"\n"
+"Aktivitas CPU tidak ditemukan di berkas. Membatalkan…\n"
 
-#: sa_common.c:1118
+#: sa_conv.c:578
 #, c-format
-msgid "Current sysstat version can no longer read the format of this file (%#x)\n"
-msgstr "Versi sysstat saat ini tak dapat lagi membaca format berkas ini (%#x)\n"
+msgid ""
+"\n"
+"Invalid data found. Aborting...\n"
+msgstr ""
+"\n"
+"Data tak sah ditemukan. Membatalkan…\n"
 
-#: sa_common.c:1249
+#: sa_conv.c:897
 #, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "Silakan cek jika pengambilan data diaktifkan\n"
+msgid "Statistics: "
+msgstr "Statistik: "
 
-#: sa_common.c:1371
+#: sa_conv.c:1016
 #, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Aktivitas yang diminta tak tersedia di berkas %s\n"
+msgid ""
+"\n"
+"File successfully converted to sysstat format version %s\n"
+msgstr ""
+"\n"
+"Berkas berhasil dikonversi ke format sysstat versi %s\n"
 
-#: sa_common.c:1541 iostat.c:1385
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Tipe tidak valid pada nama divais kukuh\n"
-
-#: pidstat.c:89
+#: pidstat.c:90
 #, c-format
 msgid ""
 "Options are:\n"
@@ -428,53 +513,64 @@ msgstr ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <perintah> ] [ -G <nama_proses> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: iostat.c:89
+#: sa_common.c:1060
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Galat ketika membaca berkas aktivitas sistem: %s\n"
+
+#: sa_common.c:1070
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Akhir berkas aktivitas sistem tak diharapkan\n"
+
+#: sa_common.c:1089
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Berkas dibuat menggunakan sar/sadc dari sysstat versi %d.%d.%d"
+
+#: sa_common.c:1122
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Berkas aktivitas sistem tak sah: %s\n"
+
+#: sa_common.c:1134
+#, c-format
+msgid "Endian format mismatch\n"
+msgstr "Format Endian tidak cocok\n"
+
+#: sa_common.c:1138
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "Versi sysstat saat ini tak dapat lagi membaca format berkas ini (%#x)\n"
+
+#: sa_common.c:1267
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "Silakan cek jika pengambilan data diaktifkan\n"
+
+#: sa_common.c:1460
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Aktivitas yang diminta tak tersedia di berkas %s\n"
+
+#: tapestat.c:97
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
 "Opsinya adalah:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <nama_grup> ] [ -p [ <divais> [,...] | ALL ] ]\n"
-"[ <divais> [...] | ALL ] [ --debuginfo ]\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: iostat.c:95
+#: tapestat.c:263
 #, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Opsinya adalah:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -T ] -g <nama_grup> ] [ -p [ <divais> [,...] | ALL ] ]\n"
-"[ <divais> [...] | ALL ]\n"
+msgid "No tape drives with statistics found\n"
+msgstr "Tak ada penggerak tape dengan statistik yang ditemukan\n"
 
-#: iostat.c:328
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Tak dapat menemukan data cakram\n"
-
-#: count.c:168
+#: count.c:169
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Tak dapat menangani begitu banyak prosesor!\n"
-
-#: pr_stats.c:2355 pr_stats.c:2368 pr_stats.c:2468 pr_stats.c:2480
-msgid "Summary"
-msgstr "Ringkasan"
-
-#: pr_stats.c:2406
-msgid "Other devices not listed here"
-msgstr "Divais lainnya tidak disebutkan di sini"
 
 #~ msgid ""
 #~ "Options are:\n"

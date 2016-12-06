@@ -5,10 +5,10 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.1\n"
+"Project-Id-Version: sysstat 11.5.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-09-23 15:07+0200\n"
-"PO-Revision-Date: 2016-09-23 22:27+0300\n"
+"POT-Creation-Date: 2016-11-04 09:48+0100\n"
+"PO-Revision-Date: 2016-11-08 14:57+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
 "Language: uk\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:89
+#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Використання: %s [ параметри ] [ <інтервал> [ <лічильник> ] ]\n"
@@ -188,7 +188,7 @@ msgstr ""
 "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
 "[ -o JSON ] [ -P { <процесор> [,...] | ON | ALL } ]\n"
 
-#: mpstat.c:1210 sar.c:358 pidstat.c:2303
+#: mpstat.c:1210 sar.c:359 pidstat.c:2319
 msgid "Average:"
 msgstr "Середнє:"
 
@@ -332,6 +332,7 @@ msgid ""
 "\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
 "\t\tUDP6\tUDP traffic\t(v6)\n"
 "\t\tFC\tFibre channel HBAs\n"
+"\t\tSOFT\tSoftware-based network processing\n"
 msgstr ""
 "\t-n { <ключове_слово> [,...] | ALL }\n"
 "\t\tСтатистичні дані щодо мережі\n"
@@ -355,18 +356,19 @@ msgstr ""
 "\t\tEICMP6\tICMP-трафік\t(v6) (помилки)\n"
 "\t\tUDP6\tUDP-трафік\t(v6)\n"
 "\t\tFC\tHBA із волоконними каналами\n"
+"\t\tSOFT\tПрограмна обробка мережевих запитів\n"
 
-#: sar.c:174
+#: sar.c:175
 #, c-format
 msgid "\t-q\tQueue length and load average statistics\n"
 msgstr "\t-q\tСтатистичні дані щодо довжини та середнього навантаження у черзі\n"
 
-#: sar.c:175
+#: sar.c:176
 #, c-format
 msgid "\t-R\tMemory statistics\n"
 msgstr "\t-R\tСтатистичні дані щодо пам’яті\n"
 
-#: sar.c:176
+#: sar.c:177
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -375,12 +377,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tСтатистичні дані щодо використання пам’яті\n"
 
-#: sar.c:178
+#: sar.c:179
 #, c-format
 msgid "\t-S\tSwap space utilization statistics\n"
 msgstr "\t-S\tСтатистичні дані щодо використання пам’яті свопінґу\n"
 
-#: sar.c:179
+#: sar.c:180
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -389,67 +391,67 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tСтатистичні дані щодо використання центрального процесора\n"
 
-#: sar.c:181
+#: sar.c:182
 #, c-format
 msgid "\t-v\tKernel tables statistics\n"
 msgstr "\t-v\tСтатистичні дані щодо таблиць ядра\n"
 
-#: sar.c:182
+#: sar.c:183
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
 msgstr "\t-W\tСтатистичні дані щодо свопінґу\n"
 
-#: sar.c:183
+#: sar.c:184
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics\n"
 msgstr "\t-w\tСтатистичні дані щодо створення завдань і перемикання системи\n"
 
-#: sar.c:184
+#: sar.c:185
 #, c-format
 msgid "\t-y\tTTY devices statistics\n"
 msgstr "\t-y\tСтатистичні дані щодо пристроїв TTY\n"
 
-#: sar.c:198
+#: sar.c:199
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Пошук засобу збирання даних буде виконано у PATH\n"
 
-#: sar.c:201
+#: sar.c:202
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Знайдений засіб збирання даних: %s\n"
 
-#: sar.c:260
+#: sar.c:261
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Неочікуване завершення даних, які збиралися\n"
 
-#: sar.c:813
+#: sar.c:814
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Використано помилковий інструмент збирання даних з іншої версії sysstat\n"
 
-#: sar.c:865
+#: sar.c:866
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Неузгоджені вхідні дані\n"
 
-#: sar.c:1044 pidstat.c:239
+#: sar.c:1045 pidstat.c:239
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Потрібний вам показник недоступний\n"
 
-#: sar.c:1350
+#: sar.c:1351
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Не можна одночасно використовувати параметри -f і -o\n"
 
-#: sar.c:1356
+#: sar.c:1357
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Немає читання з файла показників системи (використайте параметр -f)\n"
 
-#: sar.c:1492
+#: sar.c:1493
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Не вдалося виявити інструмента збирання даних (%s)\n"
@@ -552,7 +554,7 @@ msgstr "Будь ласка, переконайтеся, що увімкнено
 msgid "Requested activities not available in file %s\n"
 msgstr "У файлі %s немає потрібних вам показників\n"
 
-#: tapestat.c:91
+#: tapestat.c:97
 #, c-format
 msgid ""
 "Options are:\n"
@@ -561,7 +563,7 @@ msgstr ""
 "Параметри:\n"
 "[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:257
+#: tapestat.c:263
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Не знайдено стрічкових пристроїв зі статистичними даними\n"
