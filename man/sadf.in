@@ -1,12 +1,12 @@
-.TH SADF 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
 .B sadf [ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
 .I opts
 .B [,...] ] [ -P {
-.I cpu
-.B [,...] | ALL } ] [ -s [
+.I cpu_list
+.B | ALL } ] [ -s [
 .I hh:mm[:ss]
 .B ] ] [ -e [
 .I hh:mm[:ss]
@@ -180,14 +180,21 @@ Also display %idle state in graphs for CPU statistics.
 Do not display views where all graphs have only zero values.
 .RE
 .RE
-.IP "-P { cpu [,...] | ALL }"
+.IP "-P { cpu_list | ALL }"
 Tell
 .B sadf
 that processor dependent statistics are to be reported only for the
-specified processor or processors. Specifying the
+specified processor or processors.
+.I cpu_list
+is a list of comma-separated values or range of values (e.g.,
+.BR 0,2,4-7,12- ).
+Note that processor 0 is the first processor, and processor
+.B all
+is the global average among all processors.
+Specifying the
 .B ALL
 keyword reports statistics for each individual processor, and globally for
-all processors. Note that processor 0 is the first processor.
+all processors.
 .IP -p
 Print the contents of the data file in a format that can
 easily be handled by pattern processing commands like awk.
