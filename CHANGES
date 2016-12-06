@@ -1,5 +1,25 @@
 Changes:
 
+2016/12/06: Version 11.5.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Add new metric "available free memory" to memory statistics.
+	* Update DTD and XSD documents to include new metric.
+	* sar/pidstat/iostat/tapestat/cifsiostat: Add new --human option to
+	  display values in human readable format.
+	* SVG: Add new option "showidle" to be used with sadf to display
+	  CPU idle state.
+	* sar/mpstat: Allow selection of a range of CPU or interrupts.
+	* Update mpstat, sar and sadf manual pages.
+	* iostat/mpstat: Fix "'LC_NUMERIC' undeclared" error message when
+	  compiling sysstat.
+	* Sort keywords definition in sar, sadc and mpstat manual pages
+	  [11.2.9] [11.4.3].
+	* SVG: Change some colors to make graphs easier to distinguish
+	  [11.4.3].
+	* Small fix in iostat manual page [11.2.9] [11.4.3].
+	* Cosmetic changes in source code [11.2.9] [11.4.3].
+	* Update lsm file contents.
+	* NLS updated.
+
 2016/11/04: Version 11.5.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Add software-based network processing (softnet) statistics.
 	* sadc: Add output formats for softnet statistics.
