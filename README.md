@@ -1,4 +1,5 @@
 ## sysstat - System performance tools for the Linux operating system...
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
 
 (C) 1999-2016 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
