@@ -1915,7 +1915,7 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 				     unsigned long long itv, struct record_header *record_hdr)
 {
-	struct stats_disk *sdc, *sdp;
+	struct stats_disk *sdc, *sdp, sdpzero;
 	struct ext_disk_stats xds;
 	int group[] = {1, 2, 2, 2, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
@@ -1950,6 +1950,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	}
 
 	if (action & F_MAIN) {
+		memset(&sdpzero, 0, STATS_DISK_SIZE);
 		restart = svg_p->restart;
 		/*
 		 * Mark previously registered devices as now
@@ -1990,7 +1991,13 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			unregistered = outsize + pos + 8;
 
 			j = check_disk_reg(a, curr, !curr, i);
-			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+			if (j < 0) {
+				/* This is a newly registered interface. Previous stats are zero */
+				sdp = &sdpzero;
+			}
+			else {
+				sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+			}
 
 			/*
 			 * If current device was marked as previously unregistered,
@@ -2147,7 +2154,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 					unsigned long long itv, struct record_header *record_hdr)
 {
-	struct stats_net_dev *sndc, *sndp;
+	struct stats_net_dev *sndc, *sndp, sndzero;
 	int group[] = {2, 2, 3, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_BAR_GRAPH};
@@ -2178,6 +2185,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_MAIN) {
+		memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 		restart = svg_p->restart;
 		/*
 		 * Mark previously registered interfaces as now
@@ -2194,8 +2202,8 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 		for (i = 0; i < a->nr; i++) {
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 			if (!strcmp(sndc->interface, ""))
-				/* Empty structure: Ignore it */
-				continue;
+				/* Empty structure: This is the end of the list */
+				break;
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->nr; k++) {
@@ -2220,7 +2228,13 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			unregistered = outsize + pos + 8;
 
 			j = check_net_dev_reg(a, curr, !curr, i);
-			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+			if (j < 0) {
+				/* This is a newly registered interface. Previous stats are zero */
+				sndp = &sndzero;
+			}
+			else {
+				sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+			}
 
 			/*
 			 * If current interface was marked as previously unregistered,
@@ -2343,7 +2357,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 					 unsigned long long itv, struct record_header *record_hdr)
 {
-	struct stats_net_edev *snedc, *snedp;
+	struct stats_net_edev *snedc, *snedp, snedzero;
 	int group[] = {2, 2, 2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH};
@@ -2373,6 +2387,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 	}
 
 	if (action & F_MAIN) {
+		memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 		restart = svg_p->restart;
 		/*
 		 * Mark previously registered interfaces as now
@@ -2389,8 +2404,8 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 		for (i = 0; i < a->nr; i++) {
 			snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 			if (!strcmp(snedc->interface, ""))
-				/* Empty structure: Ignore it */
-				continue;
+				/* Empty structure: This is the end of the list */
+				break;
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->nr; k++) {
@@ -2415,7 +2430,13 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			unregistered = outsize + pos + 9;
 
 			j = check_net_edev_reg(a, curr, !curr, i);
-			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+			if (j < 0) {
+				/* This is a newly registered interface. Previous stats are zero */
+				snedp = &snedzero;
+			}
+			else {
+				snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+			}
 
 			/*
 			 * If current interface was marked as previously unregistered,
