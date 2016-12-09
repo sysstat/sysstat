@@ -694,10 +694,12 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 				      unsigned long long itv)
 {
 	int i, j;
-	struct stats_disk *sdc,	*sdp;
+	struct stats_disk *sdc,	*sdp, sdpzero;
 	struct ext_disk_stats xds;
 	int sep = FALSE;
 	char *dev_name, *persist_dev_name;
+
+	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
 	xprintf(tab++, "\"disk\": [");
 
@@ -709,7 +711,13 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 			continue;
 
 		j = check_disk_reg(a, curr, !curr, i);
-		sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sdp = &sdpzero;
+		}
+		else {
+			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+		}
 
 		/* Compute extended statistics values */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
@@ -781,9 +789,11 @@ __print_funct_t json_print_net_dev_stats(struct activity *a, int curr, int tab,
 					 unsigned long long itv)
 {
 	int i, j;
-	struct stats_net_dev *sndc, *sndp;
+	struct stats_net_dev *sndc, *sndp, sndzero;
 	int sep = FALSE;
 	double rxkb, txkb, ifutil;
+
+	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
@@ -798,10 +808,16 @@ __print_funct_t json_print_net_dev_stats(struct activity *a, int curr, int tab,
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!strcmp(sndc->interface, ""))
-			continue;
+			break;
 
 		j = check_net_dev_reg(a, curr, !curr, i);
-		sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sndp = &sndzero;
+		}
+		else {
+			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
 
 		if (sep) {
 			printf(",\n");
@@ -858,11 +874,13 @@ __print_funct_t json_print_net_edev_stats(struct activity *a, int curr, int tab,
 					  unsigned long long itv)
 {
 	int i, j;
-	struct stats_net_edev *snedc, *snedp;
+	struct stats_net_edev *snedc, *snedp, snedzero;
 	int sep = FALSE;
 
 	if (!IS_SELECTED(a->options) || (a->nr <= 0))
 		goto close_json_markup;
+
+	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
 	json_markup_network(tab, OPEN_JSON_MARKUP);
 	tab++;
@@ -874,10 +892,16 @@ __print_funct_t json_print_net_edev_stats(struct activity *a, int curr, int tab,
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!strcmp(snedc->interface, ""))
-			continue;
+			break;
 
 		j = check_net_edev_reg(a, curr, !curr, i);
-		snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			snedp = &snedzero;
+		}
+		else {
+			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
 
 		if (sep) {
 			printf(",\n");
