@@ -627,14 +627,20 @@ void print_report_hdr(unsigned int flags, struct tm *rectime,
  *
  * RETURNS:
  * Position of current network interface in array of sample statistics used
- * as reference.
+ * as reference, or -1 if it is a new interface (it was not present in array
+ * of stats used as reference).
+ *
+ * Note: A newly registered interface, if it is supernumerary, may make the
+ * last interface in the array going out of the list. Yet an interface going
+ * out of the list still exists in the /proc/net/dev file. Should it go back
+ * in the list (e.g. if some other interfaces have been unregistered) then
+ * its counters will jump as if starting from zero.
  ***************************************************************************
  */
-unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
-			       unsigned int pos)
+int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_dev *sndc, *sndp;
-	unsigned int index = 0;
+	int index = 0;
 
 	sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + pos * a->msize);
 
@@ -707,23 +713,8 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
 		index++;
 	}
 
-	/* Network interface not found: Look for the first free structure */
-	for (index = 0; index < a->nr; index++) {
-		sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
-		if (!strcmp(sndp->interface, ""))
-			break;
-	}
-	if (index >= a->nr) {
-		/* No free structure: Default is structure of same rank */
-		index = pos;
-	}
-
-	sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
-	/* Since the name is not the same, reset all the structure */
-	memset(sndp, 0, STATS_NET_DEV_SIZE);
-	strncpy(sndp->interface, sndc->interface, MAX_IFACE_LEN - 1);
-
-	return  index;
+	/* This is a newly registered interface */
+	return -1;
 }
 
 /*
@@ -739,14 +730,13 @@ unsigned int check_net_dev_reg(struct activity *a, int curr, int ref,
  *
  * RETURNS:
  * Position of current network interface in array of sample statistics used
- * as reference.
+ * as reference, or -1 if it is a newly registered interface.
  ***************************************************************************
  */
-unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
-				unsigned int pos)
+int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_edev *snedc, *snedp;
-	unsigned int index = 0;
+	int index = 0;
 
 	snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + pos * a->msize);
 
@@ -779,23 +769,8 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
 		index++;
 	}
 
-	/* Network interface not found: Look for the first free structure */
-	for (index = 0; index < a->nr; index++) {
-		snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
-		if (!strcmp(snedp->interface, ""))
-			break;
-	}
-	if (index >= a->nr) {
-		/* No free structure: Default is structure of same rank */
-		index = pos;
-	}
-
-	snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
-	/* Since the name is not the same, reset all the structure */
-	memset(snedp, 0, STATS_NET_EDEV_SIZE);
-	strncpy(snedp->interface, snedc->interface, MAX_IFACE_LEN - 1);
-
-	return  index;
+	/* This is a newly registered interface */
+	return -1;
 }
 
 /*
@@ -810,7 +785,8 @@ unsigned int check_net_edev_reg(struct activity *a, int curr, int ref,
  * @pos		Index on current disk.
  *
  * RETURNS:
- * Position of current disk in array of sample statistics used as reference.
+ * Position of current disk in array of sample statistics used as reference
+ * or -1 if it is a newly registered device.
  ***************************************************************************
  */
 int check_disk_reg(struct activity *a, int curr, int ref, int pos)
@@ -844,24 +820,8 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 		index++;
 	}
 
-	/* Disk not found: Look for the first free structure */
-	for (index = 0; index < a->nr; index++) {
-		sdp = (struct stats_disk *) ((char *) a->buf[ref] + index * a->msize);
-		if (!(sdp->major + sdp->minor))
-			break;
-	}
-	if (index >= a->nr) {
-		/* No free structure found: Default is structure of same rank */
-		index = pos;
-	}
-
-	sdp = (struct stats_disk *) ((char *) a->buf[ref] + index * a->msize);
-	/* Since the device is not the same, reset all the structure */
-	memset(sdp, 0, STATS_DISK_SIZE);
-	sdp->major = sdc->major;
-	sdp->minor = sdc->minor;
-
-	return index;
+	/* This is a newly registered device */
+	return -1;
 }
 
 /*

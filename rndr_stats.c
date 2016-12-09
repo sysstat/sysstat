@@ -1047,11 +1047,13 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 				  int curr, unsigned long long itv)
 {
 	int i, j;
-	struct stats_disk *sdc,	*sdp;
+	struct stats_disk *sdc,	*sdp, sdpzero;
 	struct ext_disk_stats xds;
 	char *dev_name, *persist_dev_name;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+
+	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
 	for (i = 0; i < a->nr; i++) {
 
@@ -1061,7 +1063,13 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 			continue;
 
 		j = check_disk_reg(a, curr, !curr, i);
-		sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sdp = &sdpzero;
+		}
+		else {
+			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+		}
 
 		/* Compute extended stats (service time, etc.) */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
@@ -1161,20 +1169,28 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 				     int curr, unsigned long long itv)
 {
 	int i, j;
-	struct stats_net_dev *sndc, *sndp;
+	struct stats_net_dev *sndc, *sndp, sndzero;
 	double rxkb, txkb, ifutil;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+
+	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
 	for (i = 0; i < a->nr; i++) {
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!strcmp(sndc->interface, ""))
-			continue;
+			break;
 
 		j = check_net_dev_reg(a, curr, !curr, i);
-		sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sndp = &sndzero;
+		}
+		else {
+			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxpck/s", "%s",
@@ -1253,19 +1269,27 @@ __print_funct_t render_net_edev_stats(struct activity *a, int isdb, char *pre,
 				      int curr, unsigned long long itv)
 {
 	int i, j;
-	struct stats_net_edev *snedc, *snedp;
+	struct stats_net_edev *snedc, *snedp, snedzero;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+
+	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
 	for (i = 0; i < a->nr; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!strcmp(snedc->interface, ""))
-			continue;
+			break;
 
 		j = check_net_edev_reg(a, curr, !curr, i);
-		snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			snedp = &snedzero;
+		}
+		else {
+			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxerr/s", "%s",
