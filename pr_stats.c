@@ -924,9 +924,11 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 				 unsigned long long itv)
 {
 	int i, j;
-	struct stats_disk *sdc,	*sdp;
+	struct stats_disk *sdc,	*sdp, sdpzero;
 	struct ext_disk_stats xds;
 	char *dev_name, *persist_dev_name;
+
+	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
 	if (dis) {
 		printf("\n%-11s       DEV       tps  rd_sec/s  wr_sec/s  avgrq-sz"
@@ -942,7 +944,13 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 			continue;
 
 		j = check_disk_reg(a, curr, prev, i);
-		sdp = (struct stats_disk *) ((char *) a->buf[prev] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sdp = &sdpzero;
+		}
+		else {
+			sdp = (struct stats_disk *) ((char *) a->buf[prev] + j * a->msize);
+		}
 
 		/* Compute service time, etc. */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
@@ -1001,8 +1009,10 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 				    unsigned long long itv)
 {
 	int i, j;
-	struct stats_net_dev *sndc, *sndp;
+	struct stats_net_dev *sndc, *sndp, sndzero;
 	double rxkb, txkb, ifutil;
+
+	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
 	if (dis) {
 		printf("\n%-11s     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s"
@@ -1014,10 +1024,16 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!strcmp(sndc->interface, ""))
-			continue;
+			break;
 
 		j = check_net_dev_reg(a, curr, prev, i);
-		sndp = (struct stats_net_dev *) ((char *) a->buf[prev] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sndp = &sndzero;
+		}
+		else {
+			sndp = (struct stats_net_dev *) ((char *) a->buf[prev] + j * a->msize);
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_STR, " %9s", sndc->interface, 0);
@@ -1054,7 +1070,9 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 				     unsigned long long itv)
 {
 	int i, j;
-	struct stats_net_edev *snedc, *snedp;
+	struct stats_net_edev *snedc, *snedp, snedzero;
+
+	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
 	if (dis) {
 		printf("\n%-11s     IFACE   rxerr/s   txerr/s    coll/s  rxdrop/s"
@@ -1067,10 +1085,16 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (!strcmp(snedc->interface, ""))
-			continue;
+			break;
 
 		j = check_net_edev_reg(a, curr, prev, i);
-		snedp = (struct stats_net_edev *) ((char *) a->buf[prev] + j * a->msize);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			snedp = &snedzero;
+		}
+		else {
+			snedp = (struct stats_net_edev *) ((char *) a->buf[prev] + j * a->msize);
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_STR, " %9s", snedc->interface, 0);

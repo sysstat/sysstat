@@ -894,10 +894,10 @@ extern void
 	check_file_actlst(int *, char *, struct activity * [], struct file_magic *,
 			  struct file_header *, struct file_activity **,
 			  unsigned int [], int);
-extern unsigned int
-	check_net_dev_reg(struct activity *, int, int, unsigned int);
-extern unsigned int
-	check_net_edev_reg(struct activity *, int, int, unsigned int);
+extern int
+	check_net_dev_reg(struct activity *, int, int, int);
+extern int
+	check_net_edev_reg(struct activity *, int, int, int);
 extern double
 	compute_ifutil(struct stats_net_dev *, double, double);
 extern void
