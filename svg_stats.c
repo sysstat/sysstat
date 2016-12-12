@@ -4466,7 +4466,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name;
+	char *item_name = NULL;
 	double tval;
 	int i, k, pos, restart;
 
