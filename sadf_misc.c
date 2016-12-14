@@ -415,11 +415,9 @@ __printf_funct_t print_json_statistics(int *tab, int action)
  * @action	Action expected from current function.
  * @cur_date	Date string of current comment.
  * @cur_time	Time string of current comment.
- * @utc		True if @cur_time is expressed in UTC.
  * @itv		Interval of time with preceding record.
- *
- * OUT:
- * @tab		Number of tabulations.
+ * @file_hdr	System activity file standard header (unused here).
+ * @flags	Flags for common options.
  ***************************************************************************
  */
 __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
@@ -443,11 +441,9 @@ __printf_funct_t print_xml_timestamp(int *tab, int action, char *cur_date,
  * @action	Action expected from current function.
  * @cur_date	Date string of current comment.
  * @cur_time	Time string of current comment.
- * @utc		True if @cur_time is expressed in UTC.
  * @itv		Interval of time with preceding record.
- *
- * OUT:
- * @tab		Number of tabulations.
+ * @file_hdr	System activity file standard header (unused here).
+ * @flags	Flags for common options.
  ***************************************************************************
  */
 __printf_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
@@ -482,7 +478,7 @@ __printf_funct_t print_json_timestamp(int *tab, int action, char *cur_date,
  * @id_seq	Activity sequence (unused here).
  *
  * OUT:
- * @tab		Number of tabulations.
+ * @parm	Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_xml_header(int *tab, int action, char *dfile,
@@ -548,7 +544,7 @@ __printf_funct_t print_xml_header(int *tab, int action, char *dfile,
  * @id_seq	Activity sequence (unused here).
  *
  * OUT:
- * @tab		Number of tabulations.
+ * @parm	Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_json_header(int *tab, int action, char *dfile,
