@@ -18,5 +18,13 @@ __print_funct_t raw_print_cpu_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_pcsw_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_irq_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_swap_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_paging_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_io_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */

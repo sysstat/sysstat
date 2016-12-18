@@ -166,6 +166,7 @@ struct activity irq_act = {
 	.f_render	= render_irq_stats,
 	.f_xml_print	= xml_print_irq_stats,
 	.f_json_print	= json_print_irq_stats,
+	.f_raw_print	= raw_print_irq_stats,
 	.name		= "A_IRQ",
 	.g_nr		= 0,
 #endif
@@ -202,6 +203,7 @@ struct activity swap_act = {
 	.f_xml_print	= xml_print_swap_stats,
 	.f_json_print	= json_print_swap_stats,
 	.f_svg_print	= svg_print_swap_stats,
+	.f_raw_print	= raw_print_swap_stats,
 	.name		= "A_SWAP",
 	.g_nr		= 1,
 #endif
@@ -239,6 +241,7 @@ struct activity paging_act = {
 	.f_xml_print	= xml_print_paging_stats,
 	.f_json_print	= json_print_paging_stats,
 	.f_svg_print	= svg_print_paging_stats,
+	.f_raw_print	= raw_print_paging_stats,
 	.name		= "A_PAGE",
 	.g_nr		= 3,
 #endif
@@ -275,6 +278,7 @@ struct activity io_act = {
 	.f_xml_print	= xml_print_io_stats,
 	.f_json_print	= json_print_io_stats,
 	.f_svg_print	= svg_print_io_stats,
+	.f_raw_print	= raw_print_io_stats,
 	.name		= "A_IO",
 	.g_nr		= 2,
 #endif

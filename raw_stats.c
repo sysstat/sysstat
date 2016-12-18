@@ -40,6 +40,9 @@ extern unsigned int flags;
  *		metric names. In each subsequent call, must be NULL.
  * @pos		Index in @hdr_line string, 0 being the first one (headers
  * 		are delimited by the '|' character).
+ *
+ * RETURNS:
+ * Pointer on string containing field name.
  ***************************************************************************
  */
 char *pfield(char *hdr_line, int pos)
@@ -218,5 +221,125 @@ __print_funct_t raw_print_pcsw_stats(struct activity *a, char *timestr, int curr
 	pval(spp->processes, spc->processes);
 	printf(" %s:", pfield(NULL, 0));
 	pval(spp->context_switch, spc->context_switch);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display interrupts statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_irq *sic, *sip;
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
+		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
+
+		/* Should current interrupt (including int "sum") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			/* Yes: Display it */
+			printf("%s %s:%d", timestr,
+			       pfield(a->hdr_line, 0), i - 1);
+			printf(" %s:", pfield(NULL, 0));
+			pval(sip->irq_nr, sic->irq_nr);
+			printf("\n");
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display swapping statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_swap_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_swap
+		*ssc = (struct stats_swap *) a->buf[curr],
+		*ssp = (struct stats_swap *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	pval(ssp->pswpin, ssc->pswpin);
+	printf(" %s:", pfield(NULL, 0));
+	pval(ssp->pswpout, ssc->pswpout);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display paging statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_paging_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_paging
+		*spc = (struct stats_paging *) a->buf[curr],
+		*spp = (struct stats_paging *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	pval(spp->pgpgin, spc->pgpgin);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgpgout, spc->pgpgout);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgfault, spc->pgfault);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgmajfault, spc->pgmajfault);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgfree, spc->pgfree);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgscan_kswapd, spc->pgscan_kswapd);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgscan_direct, spc->pgscan_direct);
+	printf(" %s:", pfield(NULL, 0));
+	pval(spp->pgsteal, spc->pgsteal);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display I/O and transfer rate statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_io_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_io
+		*sic = (struct stats_io *) a->buf[curr],
+		*sip = (struct stats_io *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	pval(sip->dk_drive, sic->dk_drive);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sip->dk_drive_rio, sic->dk_drive_rio);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sip->dk_drive_wio, sic->dk_drive_wio);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sip->dk_drive_rblk, sic->dk_drive_rblk);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sip->dk_drive_wblk, sic->dk_drive_wblk);
 	printf("\n");
 }
