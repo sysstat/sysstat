@@ -1450,7 +1450,7 @@ int main(int argc, char **argv)
 	while (opt < argc) {
 
 		if (!strcmp(argv[opt], "-I")) {
-			if (argv[++opt] && sar_options) {
+			if (sar_options) {
 				if (parse_sar_I_opt(argv, &opt, act)) {
 					usage(argv[0]);
 				}
