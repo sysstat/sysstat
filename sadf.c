@@ -691,6 +691,11 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 						       &record_hdr[curr]);
 			}
 
+			else if (format == F_RAW_OUTPUT) {
+				/* Raw output */
+				(*act[i]->f_raw_print)(act[i], pre, curr);
+			}
+
 			else {
 				/* Other output formats: db, ppc */
 				(*act[i]->f_render)(act[i], (format == F_DB_OUTPUT), pre, curr,
@@ -1109,7 +1114,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
  * Display file contents in selected format (logic #2).
  * Logic #2:	Grouped by activity. Sorted by timestamp. Stop on RESTART
  * 		records.
- * Formats:	ppc, CSV
+ * Formats:	ppc, CSV, raw
  *
  * IN:
  * @ifd		File descriptor of input file.
@@ -1476,7 +1481,7 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-O")) {
-			/* Parse SVG options */
+			/* Parse output options */
 			if (!argv[++opt] || sar_options) {
 				usage(argv[0]);
 			}
@@ -1492,6 +1497,9 @@ int main(int argc, char **argv)
 				}
 				else if (!strcmp(t, K_SHOWIDLE)) {
 					flags |= S_F_SVG_SHOW_IDLE;
+				}
+				else if (!strcmp(t, K_SHOWHINTS)) {
+					flags |= S_F_RAW_SHOW_HINTS;
 				}
 				else {
 					usage(argv[0]);
@@ -1601,6 +1609,13 @@ int main(int argc, char **argv)
 							usage(argv[0]);
 						}
 						format = F_PPC_OUTPUT;
+						break;
+
+					case 'r':
+						if (format) {
+							usage(argv[0]);
+						}
+						format = F_RAW_OUTPUT;
 						break;
 
 					case 'T':

@@ -35,6 +35,7 @@
 #include "xml_stats.h"
 #include "json_stats.h"
 #include "svg_stats.h"
+#include "raw_stats.h"
 #endif
 
 /*
@@ -92,6 +93,7 @@ struct activity cpu_act = {
 	.f_xml_print	= xml_print_cpu_stats,
 	.f_json_print	= json_print_cpu_stats,
 	.f_svg_print	= svg_print_cpu_stats,
+	.f_raw_print	= raw_print_cpu_stats,
 	.name		= "A_CPU",
 	.g_nr		= 1,
 #endif
@@ -128,6 +130,7 @@ struct activity pcsw_act = {
 	.f_xml_print	= xml_print_pcsw_stats,
 	.f_json_print	= json_print_pcsw_stats,
 	.f_svg_print	= svg_print_pcsw_stats,
+	.f_raw_print	= raw_print_pcsw_stats,
 	.name		= "A_PCSW",
 	.g_nr		= 2,
 #endif

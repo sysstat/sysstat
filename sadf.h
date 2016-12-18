@@ -28,7 +28,7 @@
  */
 
 /* Number of output formats */
-#define NR_FMT	7
+#define NR_FMT	8
 
 /* Output formats */
 #define F_DB_OUTPUT	1
@@ -38,6 +38,7 @@
 #define F_JSON_OUTPUT	5
 #define F_CONV_OUTPUT	6
 #define F_SVG_OUTPUT	7
+#define F_RAW_OUTPUT	8
 
 /* Format options */
 
@@ -138,6 +139,8 @@ __printf_funct_t print_json_restart
 	(int *, int, char *, char *, int, struct file_header *, unsigned int);
 __printf_funct_t print_sar_restart
 	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_raw_restart
+	(int *, int, char *, char *, int, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display comments
@@ -151,6 +154,8 @@ __printf_funct_t print_xml_comment
 __printf_funct_t print_json_comment
 	(int *, int, char *, char *, int, char *, struct file_header *);
 __printf_funct_t print_sar_comment
+	(int *, int, char *, char *, int, char *, struct file_header *);
+__printf_funct_t print_raw_comment
 	(int *, int, char *, char *, int, char *, struct file_header *);
 
 /*
@@ -171,6 +176,8 @@ __tm_funct_t print_ppc_timestamp
 __tm_funct_t print_xml_timestamp
 	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 __tm_funct_t print_json_timestamp
+	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
+__tm_funct_t print_raw_timestamp
 	(void *, int, char *, char *, unsigned long long, struct file_header *, unsigned int);
 
 /*

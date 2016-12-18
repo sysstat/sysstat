@@ -193,6 +193,34 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
 
 /*
  ***************************************************************************
+ * Display restart messages (raw format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current restart message.
+ * @cur_time	Time string of current restart message.
+ * @utc		True if @cur_time is expressed in UTC.
+ * @file_hdr	System activity file standard header (unused here).
+ * @cpu_nr	CPU count associated with restart mark.
+ ***************************************************************************
+ */
+__printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
+				   char *cur_time, int utc, struct file_header *file_hdr,
+				   unsigned int cpu_nr)
+{
+	/* Actions F_BEGIN and F_END ignored */
+	if (action == F_MAIN) {
+		printf("%s", cur_time);
+		if (strlen(cur_date) && utc) {
+			printf(" UTC");
+		}
+		printf("\tLINUX-RESTART\t(%d CPU)\n", cpu_nr > 1 ? cpu_nr - 1 : 1);
+	}
+}
+
+/*
+ ***************************************************************************
  * Display comments (database and ppc formats).
  *
  * IN:
@@ -346,6 +374,34 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date,
 			sep = FALSE;
 		}
 		xprintf0(--(*tab), "]");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display comments (raw format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current restart message.
+ * @cur_time	Time string of current restart message.
+ * @utc		True if @cur_time is expressed in UTC.
+ * @comment	Comment to display.
+ * @file_hdr	System activity file standard header (unused here).
+ ***************************************************************************
+ */
+__printf_funct_t print_raw_comment(int *tab, int action, char *cur_date,
+				   char *cur_time, int utc, char *comment,
+				   struct file_header *file_hdr)
+{
+	/* Actions F_BEGIN and F_END ignored */
+	if (action & F_MAIN) {
+		printf("%s", cur_time);
+		if (strlen(cur_date) && utc) {
+			printf(" UTC");
+		}
+		printf("\tCOM %s\n", comment);
 	}
 }
 
@@ -584,6 +640,39 @@ __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 	}
 	if (action & F_END) {
 		printf("\n");
+	}
+
+	return NULL;
+}
+
+/*
+ ***************************************************************************
+ * Display the "timestamp" part of the report (raw format).
+ *
+ * IN:
+ * @parm	Pointer on specific parameters (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current record.
+ * @cur_time	Time string of current record.
+ * @itv		Interval of time with preceding record (unused here).
+ * @file_hdr	System activity file standard header (unused here).
+ * @flags	Flags for common options.
+ *
+ * RETURNS:
+ * Pointer on the "timestamp" string.
+ ***************************************************************************
+ */
+__tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
+				char *cur_time, unsigned long long itv,
+				struct file_header *file_hdr, unsigned int flags)
+{
+	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
+	static char pre[80];
+
+	if (action & F_BEGIN) {
+		snprintf(pre, 80, "%s%s", cur_time, strlen(cur_date) && utc ? " UTC" : "");
+		pre[79] = '\0';
+		return pre;
 	}
 
 	return NULL;
