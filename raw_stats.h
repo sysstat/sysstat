@@ -26,5 +26,7 @@ __print_funct_t raw_print_paging_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_io_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_memory_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */

@@ -317,6 +317,7 @@ struct activity memory_act = {
 	.f_xml_print	= xml_print_memory_stats,
 	.f_json_print	= json_print_memory_stats,
 	.f_svg_print	= svg_print_memory_stats,
+	.f_raw_print	= raw_print_memory_stats,
 	.name		= "A_MEMORY",
 	.g_nr		= 9,
 #endif

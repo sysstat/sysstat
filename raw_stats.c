@@ -343,3 +343,52 @@ __print_funct_t raw_print_io_stats(struct activity *a, char *timestr, int curr)
 	pval(sip->dk_drive_wblk, sic->dk_drive_wblk);
 	printf("\n");
 }
+
+/*
+ ***************************************************************************
+ * Display memory statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_memory
+		*smc = (struct stats_memory *) a->buf[curr];
+
+	if (DISPLAY_MEM_AMT(a->opt_flags)) {
+		printf("%s %s:%lu", timestr, pfield(a->hdr_line, SECOND), smc->frmkb);
+		printf(" %s:%lu", pfield(NULL, 0), smc->availablekb);
+		printf(" kbttlmem:%lu", smc->tlmkb);
+		pfield(NULL, 0); /* Skip kbmemused */
+		pfield(NULL, 0); /* Skip %memused */
+		printf(" %s:%lu", pfield(NULL, 0), smc->bufkb);
+		printf(" %s:%lu", pfield(NULL, 0), smc->camkb);
+		printf(" %s:%lu", pfield(NULL, 0), smc->comkb);
+		pfield(NULL, 0); /* Skip %commit */
+		printf(" %s:%lu", pfield(NULL, 0), smc->activekb);
+		printf(" %s:%lu", pfield(NULL, 0), smc->inactkb);
+		printf(" %s:%lu", pfield(NULL, 0), smc->dirtykb);
+
+		if (DISPLAY_MEM_ALL(a->opt_flags)) {
+			printf(" %s:%lu", pfield(NULL, 0), smc->anonpgkb);
+			printf(" %s:%lu", pfield(NULL, 0), smc->slabkb);
+			printf(" %s:%lu", pfield(NULL, 0), smc->kstackkb);
+			printf(" %s:%lu", pfield(NULL, 0), smc->pgtblkb);
+			printf(" %s:%lu", pfield(NULL, 0), smc->vmusedkb);
+		}
+		printf("\n");
+	}
+
+	if (DISPLAY_SWAP(a->opt_flags)) {
+		printf("%s %s:%lu", timestr, pfield(a->hdr_line, THIRD), smc->frskb);
+		printf(" kbttlswp:%lu", smc->tlskb);
+		pfield(NULL, 0); /* Skip kbswpused */
+		pfield(NULL, 0); /* Skip %swpused */
+		printf(" %s:%lu", pfield(NULL, 0), smc->caskb);
+		printf("\n");
+	}
+}
