@@ -176,25 +176,25 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 			pval(scp->cpu_idle, scc->cpu_idle);
 		}
 		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_user - scp->cpu_guest, scc->cpu_user - scc->cpu_guest);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_nice - scp->cpu_guest_nice, scc->cpu_nice - scc->cpu_guest_nice);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_sys, scc->cpu_sys);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_iowait, scc->cpu_iowait);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_steal, scc->cpu_steal);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_hardirq, scc->cpu_hardirq);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_softirq, scc->cpu_softirq);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_guest, scc->cpu_guest);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_guest_nice, scc->cpu_guest_nice);
-			printf(" %s:", pfield(NULL, 1));
+			printf(" %s:", pfield(NULL, 0));
 			pval(scp->cpu_idle, scc->cpu_idle);
 		}
 		printf("\n");
@@ -217,7 +217,7 @@ __print_funct_t raw_print_pcsw_stats(struct activity *a, char *timestr, int curr
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
 	pval(spp->processes, spc->processes);
 	printf(" %s:", pfield(NULL, 0));
 	pval(spp->context_switch, spc->context_switch);
@@ -249,7 +249,7 @@ __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 
 			/* Yes: Display it */
 			printf("%s %s:%d", timestr,
-			       pfield(a->hdr_line, 0), i - 1);
+			       pfield(a->hdr_line, FIRST), i - 1);
 			printf(" %s:", pfield(NULL, 0));
 			pval(sip->irq_nr, sic->irq_nr);
 			printf("\n");
@@ -273,7 +273,7 @@ __print_funct_t raw_print_swap_stats(struct activity *a, char *timestr, int curr
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
 	pval(ssp->pswpin, ssc->pswpin);
 	printf(" %s:", pfield(NULL, 0));
 	pval(ssp->pswpout, ssc->pswpout);
@@ -296,7 +296,7 @@ __print_funct_t raw_print_paging_stats(struct activity *a, char *timestr, int cu
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
 	pval(spp->pgpgin, spc->pgpgin);
 	printf(" %s:", pfield(NULL, 0));
 	pval(spp->pgpgout, spc->pgpgout);
@@ -331,7 +331,7 @@ __print_funct_t raw_print_io_stats(struct activity *a, char *timestr, int curr)
 		*sic = (struct stats_io *) a->buf[curr],
 		*sip = (struct stats_io *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, 0));
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
 	pval(sip->dk_drive, sic->dk_drive);
 	printf(" %s:", pfield(NULL, 0));
 	pval(sip->dk_drive_rio, sic->dk_drive_rio);
