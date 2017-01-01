@@ -40,5 +40,17 @@ __print_funct_t raw_print_net_dev_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_net_edev_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_net_nfs_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_nfsd_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_sock_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_ip_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_eip_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_icmp_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */

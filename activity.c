@@ -576,6 +576,7 @@ struct activity net_nfs_act = {
 	.f_xml_print	= xml_print_net_nfs_stats,
 	.f_json_print	= json_print_net_nfs_stats,
 	.f_svg_print	= svg_print_net_nfs_stats,
+	.f_raw_print	= raw_print_net_nfs_stats,
 	.name		= "A_NET_NFS",
 	.g_nr		= 3,
 #endif
@@ -613,6 +614,7 @@ struct activity net_nfsd_act = {
 	.f_xml_print	= xml_print_net_nfsd_stats,
 	.f_json_print	= json_print_net_nfsd_stats,
 	.f_svg_print	= svg_print_net_nfsd_stats,
+	.f_raw_print	= raw_print_net_nfsd_stats,
 	.name		= "A_NET_NFSD",
 	.g_nr		= 5,
 #endif
@@ -649,6 +651,7 @@ struct activity net_sock_act = {
 	.f_xml_print	= xml_print_net_sock_stats,
 	.f_json_print	= json_print_net_sock_stats,
 	.f_svg_print	= svg_print_net_sock_stats,
+	.f_raw_print	= raw_print_net_sock_stats,
 	.name		= "A_NET_SOCK",
 	.g_nr		= 2,
 #endif
@@ -685,6 +688,7 @@ struct activity net_ip_act = {
 	.f_xml_print	= xml_print_net_ip_stats,
 	.f_json_print	= json_print_net_ip_stats,
 	.f_svg_print	= svg_print_net_ip_stats,
+	.f_raw_print	= raw_print_net_ip_stats,
 	.name		= "A_NET_IP",
 	.g_nr		= 3,
 #endif
@@ -721,6 +725,7 @@ struct activity net_eip_act = {
 	.f_xml_print	= xml_print_net_eip_stats,
 	.f_json_print	= json_print_net_eip_stats,
 	.f_svg_print	= svg_print_net_eip_stats,
+	.f_raw_print	= raw_print_net_eip_stats,
 	.name		= "A_NET_EIP",
 	.g_nr		= 3,
 #endif
@@ -758,6 +763,7 @@ struct activity net_icmp_act = {
 	.f_xml_print	= xml_print_net_icmp_stats,
 	.f_json_print	= json_print_net_icmp_stats,
 	.f_svg_print	= svg_print_net_icmp_stats,
+	.f_raw_print	= raw_print_net_icmp_stats,
 	.name		= "A_NET_ICMP",
 	.g_nr		= 4,
 #endif

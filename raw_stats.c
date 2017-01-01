@@ -688,3 +688,216 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 		printf("\n");
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display NFS client statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_nfs_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_nfs
+		*snnc = (struct stats_net_nfs *) a->buf[curr],
+		*snnp = (struct stats_net_nfs *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval(snnp->nfs_rpccnt, snnc->nfs_rpccnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snnp->nfs_rpcretrans, snnc->nfs_rpcretrans);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snnp->nfs_readcnt, snnc->nfs_readcnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snnp->nfs_writecnt, snnc->nfs_writecnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snnp->nfs_accesscnt, snnc->nfs_accesscnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snnp->nfs_getattcnt, snnc->nfs_getattcnt);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display NFS server statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_nfsd_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_nfsd
+		*snndc = (struct stats_net_nfsd *) a->buf[curr],
+		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval(snndp->nfsd_rpccnt, snndc->nfsd_rpccnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_rpcbad, snndc->nfsd_rpcbad);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_netcnt, snndc->nfsd_netcnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_netudpcnt, snndc->nfsd_netudpcnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_nettcpcnt, snndc->nfsd_nettcpcnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_rchits, snndc->nfsd_rchits);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_rcmisses, snndc->nfsd_rcmisses);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_readcnt, snndc->nfsd_readcnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_writecnt, snndc->nfsd_writecnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_accesscnt, snndc->nfsd_accesscnt);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snndp->nfsd_getattcnt, snndc->nfsd_getattcnt);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display network socket statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_sock_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_sock
+		*snsc = (struct stats_net_sock *) a->buf[curr];
+
+	printf("%s %s:%u", timestr, pfield(a->hdr_line, FIRST), snsc->sock_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->tcp_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->udp_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->raw_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->frag_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->tcp_tw);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display IP network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_ip_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_ip
+		*snic = (struct stats_net_ip *) a->buf[curr],
+		*snip = (struct stats_net_ip *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval(snip->InReceives, snic->InReceives);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->ForwDatagrams, snic->ForwDatagrams);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->InDelivers, snic->InDelivers);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->OutRequests, snic->OutRequests);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->ReasmReqds, snic->ReasmReqds);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->ReasmOKs, snic->ReasmOKs);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->FragOKs, snic->FragOKs);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->FragCreates, snic->FragCreates);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display IP network errors statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_eip_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_eip
+		*sneic = (struct stats_net_eip *) a->buf[curr],
+		*sneip = (struct stats_net_eip *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval(sneip->InHdrErrors, sneic->InHdrErrors);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InAddrErrors, sneic->InAddrErrors);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InUnknownProtos, sneic->InUnknownProtos);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InDiscards, sneic->InDiscards);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->OutDiscards, sneic->OutDiscards);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->OutNoRoutes, sneic->OutNoRoutes);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->ReasmFails, sneic->ReasmFails);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->FragFails, sneic->FragFails);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display ICMP network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_icmp_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_icmp
+		*snic = (struct stats_net_icmp *) a->buf[curr],
+		*snip = (struct stats_net_icmp *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) snip->InMsgs, (unsigned long long) snic->InMsgs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutMsgs, (unsigned long long) snic->OutMsgs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InEchos, (unsigned long long) snic->InEchos);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InEchoReps, (unsigned long long) snic->InEchoReps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutEchos, (unsigned long long) snic->OutEchos);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutEchoReps, (unsigned long long) snic->OutEchoReps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InTimestamps, (unsigned long long) snic->InTimestamps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InTimestampReps, (unsigned long long) snic->InTimestampReps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutTimestamps, (unsigned long long) snic->OutTimestamps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutTimestampReps, (unsigned long long) snic->OutTimestampReps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InAddrMasks, (unsigned long long) snic->InAddrMasks);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InAddrMaskReps, (unsigned long long) snic->InAddrMaskReps);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutAddrMasks, (unsigned long long) snic->OutAddrMasks);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutAddrMaskReps, (unsigned long long) snic->OutAddrMaskReps);
+	printf("\n");
+}
