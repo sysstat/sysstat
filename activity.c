@@ -354,6 +354,7 @@ struct activity ktables_act = {
 	.f_xml_print	= xml_print_ktables_stats,
 	.f_json_print	= json_print_ktables_stats,
 	.f_svg_print	= svg_print_ktables_stats,
+	.f_raw_print	= raw_print_ktables_stats,
 	.name		= "A_KTABLES",
 	.g_nr		= 2,
 #endif
@@ -390,6 +391,7 @@ struct activity queue_act = {
 	.f_xml_print	= xml_print_queue_stats,
 	.f_json_print	= json_print_queue_stats,
 	.f_svg_print	= svg_print_queue_stats,
+	.f_raw_print	= raw_print_queue_stats,
 	.name		= "A_QUEUE",
 	.g_nr		= 3,
 #endif
@@ -425,6 +427,7 @@ struct activity serial_act = {
 	.f_render	= render_serial_stats,
 	.f_xml_print	= xml_print_serial_stats,
 	.f_json_print	= json_print_serial_stats,
+	.f_raw_print	= raw_print_serial_stats,
 	.name		= "A_SERIAL",
 	.g_nr		= 0,
 #endif
@@ -461,6 +464,7 @@ struct activity disk_act = {
 	.f_xml_print	= xml_print_disk_stats,
 	.f_json_print	= json_print_disk_stats,
 	.f_svg_print	= svg_print_disk_stats,
+	.f_raw_print	= raw_print_disk_stats,
 	.name		= "A_DISK",
 	.g_nr		= 5,
 #endif
@@ -497,6 +501,7 @@ struct activity net_dev_act = {
 	.f_xml_print	= xml_print_net_dev_stats,
 	.f_json_print	= json_print_net_dev_stats,
 	.f_svg_print	= svg_print_net_dev_stats,
+	.f_raw_print	= raw_print_net_dev_stats,
 	.name		= "A_NET_DEV",
 	.g_nr		= 4,
 #endif
@@ -534,6 +539,7 @@ struct activity net_edev_act = {
 	.f_xml_print	= xml_print_net_edev_stats,
 	.f_json_print	= json_print_net_edev_stats,
 	.f_svg_print	= svg_print_net_edev_stats,
+	.f_raw_print	= raw_print_net_edev_stats,
 	.name		= "A_NET_EDEV",
 	.g_nr		= 4,
 #endif

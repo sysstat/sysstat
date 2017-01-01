@@ -29,7 +29,7 @@
 #include "raw_stats.h"
 
 extern unsigned int flags;
-
+extern unsigned int dm_major;
 
 /*
  ***************************************************************************
@@ -389,6 +389,302 @@ __print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int cu
 		pfield(NULL, 0); /* Skip kbswpused */
 		pfield(NULL, 0); /* Skip %swpused */
 		printf(" %s:%lu", pfield(NULL, 0), smc->caskb);
+		printf("\n");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display kernel tables statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_ktables_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_ktables
+		*skc = (struct stats_ktables *) a->buf[curr];
+
+	printf("%s %s:%u", timestr, pfield(a->hdr_line, FIRST), skc->dentry_stat);
+	printf(" %s:%u", pfield(NULL, 0), skc->file_used);
+	printf(" %s:%u", pfield(NULL, 0), skc->inode_used);
+	printf(" %s:%u", pfield(NULL, 0), skc->pty_nr);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display queue and load statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_queue_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_queue
+		*sqc = (struct stats_queue *) a->buf[curr];
+
+	printf("%s %s:%lu", timestr, pfield(a->hdr_line, FIRST), sqc->nr_running);
+	printf(" %s:%u", pfield(NULL, 0), sqc->nr_threads);
+	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_1);
+	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_5);
+	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_15);
+	printf(" %s:%lu", pfield(NULL, 0), sqc->procs_blocked);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display serial lines statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_serial *ssc, *ssp;
+
+	for (i = 0; i < a->nr; i++) {
+
+		ssc = (struct stats_serial *) ((char *) a->buf[curr]  + i * a->msize);
+		ssp = (struct stats_serial *) ((char *) a->buf[!curr] + i * a->msize);
+
+		printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+		pval(ssp->line, ssc->line);
+
+		if (ssc->line == 0) {
+			if (DISPLAY_HINTS(flags)) {
+				printf(" [SKP]");
+			}
+			printf("\n");
+			continue;
+		}
+
+		if (ssc->line == ssp->line) {
+			printf(" %s:", pfield(NULL, 0));
+			pval(ssp->rx, ssc->rx);
+			printf(" %s:", pfield(NULL, 0));
+			pval(ssp->tx, ssc->tx);
+			printf(" %s:", pfield(NULL, 0));
+			pval(ssp->frame, ssc->frame);
+			printf(" %s:", pfield(NULL, 0));
+			pval(ssp->parity, ssc->parity);
+			printf(" %s:", pfield(NULL, 0));
+			pval(ssp->brk, ssc->brk);
+			printf(" %s:", pfield(NULL, 0));
+			pval(ssp->overrun, ssc->overrun);
+		}
+		else if (DISPLAY_HINTS(flags)) {
+			printf(" [NEW]");
+		}
+
+		printf("\n");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display disks statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr)
+{
+	int i, j;
+	struct stats_disk *sdc,	*sdp, sdpzero;
+	char *dev_name, *persist_dev_name;
+
+	memset(&sdpzero, 0, STATS_DISK_SIZE);
+
+	for (i = 0; i < a->nr; i++) {
+
+		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
+
+		printf("%s major:%u minor:%u", timestr, sdc->major, sdc->minor);
+
+		if (!(sdc->major + sdc->minor)) {
+			if (DISPLAY_HINTS(flags)) {
+				printf(" [SKP]");
+			}
+			printf("\n");
+			continue;
+		}
+
+		j = check_disk_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sdp = &sdpzero;
+			if (DISPLAY_HINTS(flags)) {
+				printf(" [NEW]");
+			}
+		}
+		else {
+			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+		}
+
+		dev_name = NULL;
+		persist_dev_name = NULL;
+
+		if (DISPLAY_PERSIST_NAME_S(flags)) {
+			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
+		}
+
+		if (persist_dev_name) {
+			dev_name = persist_dev_name;
+		}
+		else {
+			/* Always use pretty option (-p) */
+			if (sdc->major == dm_major) {
+				dev_name = transform_devmapname(sdc->major, sdc->minor);
+			}
+
+			if (!dev_name) {
+				dev_name = get_devname(sdc->major, sdc->minor, TRUE);
+			}
+		}
+
+		printf(" %s:%s", pfield(a->hdr_line, FIRST), dev_name);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sdp->nr_ios, sdc->nr_ios);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sdp->rd_sect, sdc->rd_sect);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sdp->wr_sect, sdc->wr_sect);
+		printf(" tot_ticks:");
+		pval(sdp->tot_ticks, sdc->tot_ticks);
+		pfield(NULL, 0); /* Skip avgrq-sz */
+		printf(" %s:", pfield(NULL, 0));
+		pval(sdp->rq_ticks, sdc->rq_ticks);
+		printf("\n");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display network interfaces statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int curr)
+{
+	int i, j;
+	struct stats_net_dev *sndc, *sndp, sndzero;
+
+	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
+
+	for (i = 0; i < a->nr; i++) {
+
+		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (!strcmp(sndc->interface, ""))
+			break;
+
+		printf("%s %s:%s", timestr, pfield(a->hdr_line, FIRST), sndc->interface);
+
+		j = check_net_dev_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sndp = &sndzero;
+			if (DISPLAY_HINTS(flags)) {
+				printf(" [NEW]");
+			}
+		}
+		else {
+			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
+
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->rx_packets, sndc->rx_packets);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->tx_packets, sndc->tx_packets);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->rx_bytes, sndc->rx_bytes);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->tx_bytes, sndc->tx_bytes);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->rx_compressed, sndc->rx_compressed);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->tx_compressed, sndc->tx_compressed);
+		printf(" %s:", pfield(NULL, 0));
+		pval(sndp->multicast, sndc->multicast);
+		printf(" speed:%u duplex:%u\n", sndc->speed, sndc->duplex);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display network interfaces errors statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int curr)
+{
+	int i, j;
+	struct stats_net_edev *snedc, *snedp, snedzero;
+
+	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
+
+	for (i = 0; i < a->nr; i++) {
+
+		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (!strcmp(snedc->interface, ""))
+			break;
+
+		printf("%s %s:%s", timestr, pfield(a->hdr_line, FIRST), snedc->interface);
+
+		j = check_net_edev_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			snedp = &snedzero;
+			if (DISPLAY_HINTS(flags)) {
+				printf(" [NEW]");
+			}
+		}
+		else {
+			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
+
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->rx_errors, snedc->rx_errors);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->tx_errors, snedc->tx_errors);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->collisions, snedc->collisions);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->rx_dropped, snedc->rx_dropped);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->tx_dropped, snedc->tx_dropped);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->tx_carrier_errors, snedc->tx_carrier_errors);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->rx_frame_errors, snedc->rx_frame_errors);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->rx_fifo_errors, snedc->rx_fifo_errors);
+		printf(" %s:", pfield(NULL, 0));
+		pval(snedp->tx_fifo_errors, snedc->tx_fifo_errors);
 		printf("\n");
 	}
 }

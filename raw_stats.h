@@ -28,5 +28,17 @@ __print_funct_t raw_print_io_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_memory_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_ktables_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_queue_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_serial_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_disk_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_dev_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_edev_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */
