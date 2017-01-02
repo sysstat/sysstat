@@ -1176,6 +1176,7 @@ struct activity pwr_cpufreq_act = {
 	.f_xml_print	= xml_print_pwr_cpufreq_stats,
 	.f_json_print	= json_print_pwr_cpufreq_stats,
 	.f_svg_print	= svg_print_pwr_cpufreq_stats,
+	.f_raw_print	= raw_print_pwr_cpufreq_stats,
 	.name		= "A_PWR_CPUFREQ",
 	.g_nr		= 1,
 #endif
@@ -1212,6 +1213,7 @@ struct activity pwr_fan_act = {
 	.f_xml_print	= xml_print_pwr_fan_stats,
 	.f_json_print	= json_print_pwr_fan_stats,
 	.f_svg_print	= svg_print_pwr_fan_stats,
+	.f_raw_print	= raw_print_pwr_fan_stats,
 	.name		= "A_PWR_FAN",
 	.g_nr		= 1,
 #endif
@@ -1248,6 +1250,7 @@ struct activity pwr_temp_act = {
 	.f_xml_print	= xml_print_pwr_temp_stats,
 	.f_json_print	= json_print_pwr_temp_stats,
 	.f_svg_print	= svg_print_pwr_temp_stats,
+	.f_raw_print	= raw_print_pwr_temp_stats,
 	.name		= "A_PWR_TEMP",
 	.g_nr		= 2,
 #endif
@@ -1284,6 +1287,7 @@ struct activity pwr_in_act = {
 	.f_xml_print	= xml_print_pwr_in_stats,
 	.f_json_print	= json_print_pwr_in_stats,
 	.f_svg_print	= svg_print_pwr_in_stats,
+	.f_raw_print	= raw_print_pwr_in_stats,
 	.name		= "A_PWR_IN",
 	.g_nr		= 2,
 #endif

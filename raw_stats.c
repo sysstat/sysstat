@@ -1267,3 +1267,108 @@ __print_funct_t raw_print_net_udp6_stats(struct activity *a, char *timestr, int 
 	pval((unsigned long long) snup->InErrors6, (unsigned long long) snuc->InErrors6);
 	printf("\n");
 }
+
+/*
+ ***************************************************************************
+ * Display CPU frequency statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_cpufreq_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_pwr_cpufreq *spc;
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+			/* Yes: Display it */
+			printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
+			printf(" %s:%lu\n", pfield(NULL, 0), spc->cpufreq);
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display fan statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_fan_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_pwr_fan *spc;
+
+	for (i = 0; i < a->nr; i++) {
+		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr]  + i * a->msize);
+
+		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i + 1);
+		printf(" %s:%s", pfield(NULL, 0), spc->device);
+		printf(" %s:%f", pfield(NULL, 0), spc->rpm);
+		printf(" rpm_min:%f\n", spc->rpm_min);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display temperature statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_temp_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_pwr_temp *spc;
+
+	for (i = 0; i < a->nr; i++) {
+		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr]  + i * a->msize);
+
+		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i + 1);
+		printf(" %s:%s", pfield(NULL, 0), spc->device);
+		printf(" %s:%f", pfield(NULL, 0), spc->temp);
+		printf(" temp_min:%f", spc->temp_min);
+		printf(" temp_max:%f\n", spc->temp_max);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display voltage inputs statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_in_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_pwr_in *spc;
+
+	for (i = 0; i < a->nr; i++) {
+		spc = (struct stats_pwr_in *) ((char *) a->buf[curr]  + i * a->msize);
+
+		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i);
+		printf(" %s:%s", pfield(NULL, 0), spc->device);
+		printf(" %s:%f", pfield(NULL, 0), spc->in);
+		printf(" in_min:%f", spc->in_min);
+		printf(" in_max:%f\n", spc->in_max);
+	}
+}

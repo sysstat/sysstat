@@ -72,5 +72,13 @@ __print_funct_t raw_print_net_eicmp6_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_net_udp6_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_cpufreq_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_fan_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_temp_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_in_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */
