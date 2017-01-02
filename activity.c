@@ -801,6 +801,7 @@ struct activity net_eicmp_act = {
 	.f_xml_print	= xml_print_net_eicmp_stats,
 	.f_json_print	= json_print_net_eicmp_stats,
 	.f_svg_print	= svg_print_net_eicmp_stats,
+	.f_raw_print	= raw_print_net_eicmp_stats,
 	.name		= "A_NET_EICMP",
 	.g_nr		= 6,
 #endif
@@ -837,6 +838,7 @@ struct activity net_tcp_act = {
 	.f_xml_print	= xml_print_net_tcp_stats,
 	.f_json_print	= json_print_net_tcp_stats,
 	.f_svg_print	= svg_print_net_tcp_stats,
+	.f_raw_print	= raw_print_net_tcp_stats,
 	.name		= "A_NET_TCP",
 	.g_nr		= 2,
 #endif
@@ -873,6 +875,7 @@ struct activity net_etcp_act = {
 	.f_xml_print	= xml_print_net_etcp_stats,
 	.f_json_print	= json_print_net_etcp_stats,
 	.f_svg_print	= svg_print_net_etcp_stats,
+	.f_raw_print	= raw_print_net_etcp_stats,
 	.name		= "A_NET_ETCP",
 	.g_nr		= 2,
 #endif
@@ -909,6 +912,7 @@ struct activity net_udp_act = {
 	.f_xml_print	= xml_print_net_udp_stats,
 	.f_json_print	= json_print_net_udp_stats,
 	.f_svg_print	= svg_print_net_udp_stats,
+	.f_raw_print	= raw_print_net_udp_stats,
 	.name		= "A_NET_UDP",
 	.g_nr		= 2,
 #endif
@@ -945,6 +949,7 @@ struct activity net_sock6_act = {
 	.f_xml_print	= xml_print_net_sock6_stats,
 	.f_json_print	= json_print_net_sock6_stats,
 	.f_svg_print	= svg_print_net_sock6_stats,
+	.f_raw_print	= raw_print_net_sock6_stats,
 	.name		= "A_NET_SOCK6",
 	.g_nr		= 1,
 #endif
@@ -982,6 +987,7 @@ struct activity net_ip6_act = {
 	.f_xml_print	= xml_print_net_ip6_stats,
 	.f_json_print	= json_print_net_ip6_stats,
 	.f_svg_print	= svg_print_net_ip6_stats,
+	.f_raw_print	= raw_print_net_ip6_stats,
 	.name		= "A_NET_IP6",
 	.g_nr		= 4,
 #endif
@@ -1019,6 +1025,7 @@ struct activity net_eip6_act = {
 	.f_xml_print	= xml_print_net_eip6_stats,
 	.f_json_print	= json_print_net_eip6_stats,
 	.f_svg_print	= svg_print_net_eip6_stats,
+	.f_raw_print	= raw_print_net_eip6_stats,
 	.name		= "A_NET_EIP6",
 	.g_nr		= 4,
 #endif
@@ -1057,6 +1064,7 @@ struct activity net_icmp6_act = {
 	.f_xml_print	= xml_print_net_icmp6_stats,
 	.f_json_print	= json_print_net_icmp6_stats,
 	.f_svg_print	= svg_print_net_icmp6_stats,
+	.f_raw_print	= raw_print_net_icmp6_stats,
 	.name		= "A_NET_ICMP6",
 	.g_nr		= 5,
 #endif
@@ -1094,6 +1102,7 @@ struct activity net_eicmp6_act = {
 	.f_xml_print	= xml_print_net_eicmp6_stats,
 	.f_json_print	= json_print_net_eicmp6_stats,
 	.f_svg_print	= svg_print_net_eicmp6_stats,
+	.f_raw_print	= raw_print_net_eicmp6_stats,
 	.name		= "A_NET_EICMP6",
 	.g_nr		= 6,
 #endif
@@ -1130,6 +1139,7 @@ struct activity net_udp6_act = {
 	.f_xml_print	= xml_print_net_udp6_stats,
 	.f_json_print	= json_print_net_udp6_stats,
 	.f_svg_print	= svg_print_net_udp6_stats,
+	.f_raw_print	= raw_print_net_udp6_stats,
 	.name		= "A_NET_UDP6",
 	.g_nr		= 2,
 #endif

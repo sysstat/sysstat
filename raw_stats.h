@@ -52,5 +52,25 @@ __print_funct_t raw_print_net_eip_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_net_icmp_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_net_eicmp_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_tcp_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_etcp_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_udp_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_sock6_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_ip6_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_eip6_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_icmp6_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_eicmp6_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_net_udp6_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */

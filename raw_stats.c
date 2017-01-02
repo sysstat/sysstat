@@ -901,3 +901,369 @@ __print_funct_t raw_print_net_icmp_stats(struct activity *a, char *timestr, int 
 	pval((unsigned long long) snip->OutAddrMaskReps, (unsigned long long) snic->OutAddrMaskReps);
 	printf("\n");
 }
+
+/*
+ ***************************************************************************
+ * Display ICMP errors message statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_eicmp_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_eicmp
+		*sneic = (struct stats_net_eicmp *) a->buf[curr],
+		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) sneip->InErrors, (unsigned long long) sneic->InErrors);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutErrors, (unsigned long long) sneic->OutErrors);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InDestUnreachs, (unsigned long long) sneic->InDestUnreachs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutDestUnreachs, (unsigned long long) sneic->OutDestUnreachs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InTimeExcds, (unsigned long long) sneic->InTimeExcds);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutTimeExcds, (unsigned long long) sneic->OutTimeExcds);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InParmProbs, (unsigned long long) sneic->InParmProbs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutParmProbs, (unsigned long long) sneic->OutParmProbs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InSrcQuenchs, (unsigned long long) sneic->InSrcQuenchs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutSrcQuenchs, (unsigned long long) sneic->OutSrcQuenchs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InRedirects, (unsigned long long) sneic->InRedirects);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutRedirects, (unsigned long long) sneic->OutRedirects);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display TCP network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_tcp_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_tcp
+		*sntc = (struct stats_net_tcp *) a->buf[curr],
+		*sntp = (struct stats_net_tcp *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) sntp->ActiveOpens, (unsigned long long) sntc->ActiveOpens);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sntp->PassiveOpens, (unsigned long long) sntc->PassiveOpens);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sntp->InSegs, (unsigned long long) sntc->InSegs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sntp->OutSegs, (unsigned long long) sntc->OutSegs);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display TCP network errors statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_etcp_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_etcp
+		*snetc = (struct stats_net_etcp *) a->buf[curr],
+		*snetp = (struct stats_net_etcp *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) snetp->AttemptFails, (unsigned long long) snetc->AttemptFails);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snetp->EstabResets, (unsigned long long) snetc->EstabResets);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snetp->RetransSegs, (unsigned long long) snetc->RetransSegs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snetp->InErrs, (unsigned long long) snetc->InErrs);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snetp->OutRsts, (unsigned long long) snetc->OutRsts);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display UDP network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_udp_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_udp
+		*snuc = (struct stats_net_udp *) a->buf[curr],
+		*snup = (struct stats_net_udp *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) snup->InDatagrams, (unsigned long long) snuc->InDatagrams);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snup->OutDatagrams, (unsigned long long) snuc->OutDatagrams);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snup->NoPorts, (unsigned long long) snuc->NoPorts);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snup->InErrors, (unsigned long long) snuc->InErrors);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display IPv6 network socket statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_sock6_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_sock6
+		*snsc = (struct stats_net_sock6 *) a->buf[curr];
+
+	printf("%s %s:%u", timestr, pfield(a->hdr_line, FIRST), snsc->tcp6_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->udp6_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->raw6_inuse);
+	printf(" %s:%u", pfield(NULL, 0), snsc->frag6_inuse);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display IPv6 network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_ip6_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_ip6
+		*snic = (struct stats_net_ip6 *) a->buf[curr],
+		*snip = (struct stats_net_ip6 *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval(snip->InReceives6, snic->InReceives6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->OutForwDatagrams6, snic->OutForwDatagrams6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->InDelivers6, snic->InDelivers6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->OutRequests6, snic->OutRequests6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->ReasmReqds6, snic->ReasmReqds6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->ReasmOKs6, snic->ReasmOKs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->InMcastPkts6, snic->InMcastPkts6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->OutMcastPkts6, snic->OutMcastPkts6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->FragOKs6, snic->FragOKs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(snip->FragCreates6, snic->FragCreates6);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display IPv6 network errors statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_eip6_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_eip6
+		*sneic = (struct stats_net_eip6 *) a->buf[curr],
+		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval(sneip->InHdrErrors6, sneic->InHdrErrors6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InAddrErrors6, sneic->InAddrErrors6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InUnknownProtos6, sneic->InUnknownProtos6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InTooBigErrors6, sneic->InTooBigErrors6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InDiscards6, sneic->InDiscards6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->OutDiscards6, sneic->OutDiscards6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InNoRoutes6, sneic->InNoRoutes6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->OutNoRoutes6, sneic->OutNoRoutes6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->ReasmFails6, sneic->ReasmFails6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->FragFails6, sneic->FragFails6);
+	printf(" %s:", pfield(NULL, 0));
+	pval(sneip->InTruncatedPkts6, sneic->InTruncatedPkts6);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display ICMPv6 network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_icmp6_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_icmp6
+		*snic = (struct stats_net_icmp6 *) a->buf[curr],
+		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) snip->InMsgs6,
+	     (unsigned long long) snic->InMsgs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutMsgs6,
+	     (unsigned long long) snic->OutMsgs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InEchos6,
+	     (unsigned long long) snic->InEchos6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InEchoReplies6,
+	     (unsigned long long) snic->InEchoReplies6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutEchoReplies6,
+	     (unsigned long long) snic->OutEchoReplies6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InGroupMembQueries6,
+	     (unsigned long long) snic->InGroupMembQueries6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InGroupMembResponses6,
+	     (unsigned long long) snic->InGroupMembResponses6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutGroupMembResponses6,
+	     (unsigned long long) snic->OutGroupMembResponses6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InGroupMembReductions6,
+	     (unsigned long long) snic->InGroupMembReductions6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutGroupMembReductions6,
+	     (unsigned long long) snic->OutGroupMembReductions6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InRouterSolicits6,
+	     (unsigned long long) snic->InRouterSolicits6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutRouterSolicits6,
+	     (unsigned long long) snic->OutRouterSolicits6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InRouterAdvertisements6,
+	     (unsigned long long) snic->InRouterAdvertisements6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InNeighborSolicits6,
+	     (unsigned long long) snic->InNeighborSolicits6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutNeighborSolicits6,
+	     (unsigned long long) snic->OutNeighborSolicits6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->InNeighborAdvertisements6,
+	     (unsigned long long) snic->InNeighborAdvertisements6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snip->OutNeighborAdvertisements6,
+	     (unsigned long long) snic->OutNeighborAdvertisements6);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display ICMPv6 error messages statistics in rw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_eicmp6_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_eicmp6
+		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
+		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) sneip->InErrors6, (unsigned long long) sneic->InErrors6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InDestUnreachs6, (unsigned long long) sneic->InDestUnreachs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutDestUnreachs6, (unsigned long long) sneic->OutDestUnreachs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InTimeExcds6, (unsigned long long) sneic->InTimeExcds6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutTimeExcds6, (unsigned long long) sneic->OutTimeExcds6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InParmProblems6, (unsigned long long) sneic->InParmProblems6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutParmProblems6, (unsigned long long) sneic->OutParmProblems6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InRedirects6, (unsigned long long) sneic->InRedirects6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutRedirects6, (unsigned long long) sneic->OutRedirects6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->InPktTooBigs6, (unsigned long long) sneic->InPktTooBigs6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) sneip->OutPktTooBigs6, (unsigned long long) sneic->OutPktTooBigs6);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display UDPv6 network statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_net_udp6_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_net_udp6
+		*snuc = (struct stats_net_udp6 *) a->buf[curr],
+		*snup = (struct stats_net_udp6 *) a->buf[!curr];
+
+	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	pval((unsigned long long) snup->InDatagrams6, (unsigned long long) snuc->InDatagrams6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snup->OutDatagrams6, (unsigned long long) snuc->OutDatagrams6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snup->NoPorts6, (unsigned long long) snuc->NoPorts6);
+	printf(" %s:", pfield(NULL, 0));
+	pval((unsigned long long) snup->InErrors6, (unsigned long long) snuc->InErrors6);
+	printf("\n");
+}
