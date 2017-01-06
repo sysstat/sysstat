@@ -218,7 +218,7 @@ __print_funct_t raw_print_pcsw_stats(struct activity *a, char *timestr, int curr
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 
 	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-	pval(spp->processes, spc->processes);
+	pval((unsigned long long) spp->processes, (unsigned long long) spc->processes);
 	printf(" %s:", pfield(NULL, 0));
 	pval(spp->context_switch, spc->context_switch);
 	printf("\n");
@@ -274,9 +274,9 @@ __print_funct_t raw_print_swap_stats(struct activity *a, char *timestr, int curr
 		*ssp = (struct stats_swap *) a->buf[!curr];
 
 	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-	pval(ssp->pswpin, ssc->pswpin);
+	pval((unsigned long long) ssp->pswpin, (unsigned long long) ssc->pswpin);
 	printf(" %s:", pfield(NULL, 0));
-	pval(ssp->pswpout, ssc->pswpout);
+	pval((unsigned long long) ssp->pswpout, (unsigned long long) ssc->pswpout);
 	printf("\n");
 }
 
@@ -297,21 +297,21 @@ __print_funct_t raw_print_paging_stats(struct activity *a, char *timestr, int cu
 		*spp = (struct stats_paging *) a->buf[!curr];
 
 	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-	pval(spp->pgpgin, spc->pgpgin);
+	pval((unsigned long long) spp->pgpgin, (unsigned long long) spc->pgpgin);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgpgout, spc->pgpgout);
+	pval((unsigned long long) spp->pgpgout, (unsigned long long) spc->pgpgout);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgfault, spc->pgfault);
+	pval((unsigned long long) spp->pgfault, (unsigned long long) spc->pgfault);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgmajfault, spc->pgmajfault);
+	pval((unsigned long long) spp->pgmajfault, (unsigned long long) spc->pgmajfault);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgfree, spc->pgfree);
+	pval((unsigned long long) spp->pgfree, (unsigned long long) spc->pgfree);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgscan_kswapd, spc->pgscan_kswapd);
+	pval((unsigned long long) spp->pgscan_kswapd, (unsigned long long) spc->pgscan_kswapd);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgscan_direct, spc->pgscan_direct);
+	pval((unsigned long long) spp->pgscan_direct, (unsigned long long) spc->pgscan_direct);
 	printf(" %s:", pfield(NULL, 0));
-	pval(spp->pgsteal, spc->pgsteal);
+	pval((unsigned long long) spp->pgsteal, (unsigned long long) spc->pgsteal);
 	printf("\n");
 }
 
@@ -460,7 +460,7 @@ __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int cu
 		ssp = (struct stats_serial *) ((char *) a->buf[!curr] + i * a->msize);
 
 		printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-		pval(ssp->line, ssc->line);
+		pval((unsigned long long) ssp->line, (unsigned long long) ssc->line);
 
 		if (ssc->line == 0) {
 			if (DISPLAY_HINTS(flags)) {
@@ -472,17 +472,17 @@ __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int cu
 
 		if (ssc->line == ssp->line) {
 			printf(" %s:", pfield(NULL, 0));
-			pval(ssp->rx, ssc->rx);
+			pval((unsigned long long) ssp->rx, (unsigned long long)ssc->rx);
 			printf(" %s:", pfield(NULL, 0));
-			pval(ssp->tx, ssc->tx);
+			pval((unsigned long long) ssp->tx, (unsigned long long) ssc->tx);
 			printf(" %s:", pfield(NULL, 0));
-			pval(ssp->frame, ssc->frame);
+			pval((unsigned long long) ssp->frame, (unsigned long long) ssc->frame);
 			printf(" %s:", pfield(NULL, 0));
-			pval(ssp->parity, ssc->parity);
+			pval((unsigned long long) ssp->parity, (unsigned long long) ssc->parity);
 			printf(" %s:", pfield(NULL, 0));
-			pval(ssp->brk, ssc->brk);
+			pval((unsigned long long) ssp->brk, (unsigned long long) ssc->brk);
 			printf(" %s:", pfield(NULL, 0));
-			pval(ssp->overrun, ssc->overrun);
+			pval((unsigned long long) ssp->overrun, (unsigned long long) ssc->overrun);
 		}
 		else if (DISPLAY_HINTS(flags)) {
 			printf(" [NEW]");
@@ -561,14 +561,14 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 		printf(" %s:", pfield(NULL, 0));
 		pval(sdp->nr_ios, sdc->nr_ios);
 		printf(" %s:", pfield(NULL, 0));
-		pval(sdp->rd_sect, sdc->rd_sect);
+		pval((unsigned long long) sdp->rd_sect, (unsigned long long) sdc->rd_sect);
 		printf(" %s:", pfield(NULL, 0));
-		pval(sdp->wr_sect, sdc->wr_sect);
+		pval((unsigned long long) sdp->wr_sect, (unsigned long long) sdc->wr_sect);
 		printf(" tot_ticks:");
-		pval(sdp->tot_ticks, sdc->tot_ticks);
+		pval((unsigned long long) sdp->tot_ticks, (unsigned long long) sdc->tot_ticks);
 		pfield(NULL, 0); /* Skip avgrq-sz */
 		printf(" %s:", pfield(NULL, 0));
-		pval(sdp->rq_ticks, sdc->rq_ticks);
+		pval((unsigned long long) sdp->rq_ticks, (unsigned long long) sdc->rq_ticks);
 		printf("\n");
 	}
 }
@@ -706,17 +706,17 @@ __print_funct_t raw_print_net_nfs_stats(struct activity *a, char *timestr, int c
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
 
 	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-	pval(snnp->nfs_rpccnt, snnc->nfs_rpccnt);
+	pval((unsigned long long) snnp->nfs_rpccnt, (unsigned long long) snnc->nfs_rpccnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snnp->nfs_rpcretrans, snnc->nfs_rpcretrans);
+	pval((unsigned long long) snnp->nfs_rpcretrans, (unsigned long long) snnc->nfs_rpcretrans);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snnp->nfs_readcnt, snnc->nfs_readcnt);
+	pval((unsigned long long) snnp->nfs_readcnt, (unsigned long long) snnc->nfs_readcnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snnp->nfs_writecnt, snnc->nfs_writecnt);
+	pval((unsigned long long) snnp->nfs_writecnt, (unsigned long long) snnc->nfs_writecnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snnp->nfs_accesscnt, snnc->nfs_accesscnt);
+	pval((unsigned long long) snnp->nfs_accesscnt, (unsigned long long) snnc->nfs_accesscnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snnp->nfs_getattcnt, snnc->nfs_getattcnt);
+	pval((unsigned long long) snnp->nfs_getattcnt, (unsigned long long) snnc->nfs_getattcnt);
 	printf("\n");
 }
 
@@ -737,27 +737,27 @@ __print_funct_t raw_print_net_nfsd_stats(struct activity *a, char *timestr, int 
 		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
 
 	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-	pval(snndp->nfsd_rpccnt, snndc->nfsd_rpccnt);
+	pval((unsigned long long) snndp->nfsd_rpccnt, (unsigned long long) snndc->nfsd_rpccnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_rpcbad, snndc->nfsd_rpcbad);
+	pval((unsigned long long) snndp->nfsd_rpcbad, (unsigned long long) snndc->nfsd_rpcbad);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_netcnt, snndc->nfsd_netcnt);
+	pval((unsigned long long) snndp->nfsd_netcnt, (unsigned long long) snndc->nfsd_netcnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_netudpcnt, snndc->nfsd_netudpcnt);
+	pval((unsigned long long) snndp->nfsd_netudpcnt, (unsigned long long) snndc->nfsd_netudpcnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_nettcpcnt, snndc->nfsd_nettcpcnt);
+	pval((unsigned long long) snndp->nfsd_nettcpcnt, (unsigned long long) snndc->nfsd_nettcpcnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_rchits, snndc->nfsd_rchits);
+	pval((unsigned long long) snndp->nfsd_rchits, (unsigned long long) snndc->nfsd_rchits);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_rcmisses, snndc->nfsd_rcmisses);
+	pval((unsigned long long) snndp->nfsd_rcmisses, (unsigned long long) snndc->nfsd_rcmisses);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_readcnt, snndc->nfsd_readcnt);
+	pval((unsigned long long) snndp->nfsd_readcnt, (unsigned long long) snndc->nfsd_readcnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_writecnt, snndc->nfsd_writecnt);
+	pval((unsigned long long) snndp->nfsd_writecnt, (unsigned long long) snndc->nfsd_writecnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_accesscnt, snndc->nfsd_accesscnt);
+	pval((unsigned long long) snndp->nfsd_accesscnt, (unsigned long long) snndc->nfsd_accesscnt);
 	printf(" %s:", pfield(NULL, 0));
-	pval(snndp->nfsd_getattcnt, snndc->nfsd_getattcnt);
+	pval((unsigned long long) snndp->nfsd_getattcnt, (unsigned long long) snndc->nfsd_getattcnt);
 	printf("\n");
 }
 
