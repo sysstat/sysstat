@@ -451,12 +451,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 				       unsigned long long itv)
 {
 	struct stats_memory
-		*smc = (struct stats_memory *) a->buf[curr],
-		*smp = (struct stats_memory *) a->buf[!curr];
+		*smc = (struct stats_memory *) a->buf[curr];
 
 	xprintf(tab, "<memory per=\"second\" unit=\"kB\">");
 
-	if (DISPLAY_MEM_AMT(a->opt_flags)) {
+	if (DISPLAY_MEMORY(a->opt_flags)) {
 
 		xprintf(++tab, "<memfree>%lu</memfree>",
 			smc->frmkb);
@@ -533,21 +532,6 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			(smc->tlskb - smc->frskb) ?
 			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
 			0.0);
-	}
-
-	if (DISPLAY_MEMORY(a->opt_flags)) {
-
-		xprintf(++tab, "<frmpg>%.2f</frmpg>",
-			S_VALUE((double) KB_TO_PG(smp->frmkb),
-				(double) KB_TO_PG(smc->frmkb), itv));
-
-		xprintf(tab, "<bufpg>%.2f</bufpg>",
-			S_VALUE((double) KB_TO_PG(smp->bufkb),
-				(double) KB_TO_PG(smc->bufkb), itv));
-
-		xprintf(tab--, "<campg>%.2f</campg>",
-			S_VALUE((double) KB_TO_PG(smp->camkb),
-				(double) KB_TO_PG(smc->camkb), itv));
 	}
 
 	xprintf(tab, "</memory>");

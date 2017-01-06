@@ -110,7 +110,7 @@ void usage(char *progname)
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
-			  "[ -p ] [ -q ] [ -R ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
@@ -173,7 +173,6 @@ void display_help(char *progname)
 		 "\t\tFC\tFibre channel HBAs\n"
 		 "\t\tSOFT\tSoftware-based network processing\n"));
 	printf(_("\t-q\tQueue length and load average statistics\n"));
-	printf(_("\t-R\tMemory statistics\n"));
 	printf(_("\t-r [ ALL ]\n"
 		 "\t\tMemory utilization statistics\n"));
 	printf(_("\t-S\tSwap space utilization statistics\n"));

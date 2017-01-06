@@ -1735,7 +1735,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			*(spmax + g_fields[i]) /= 1024;
 		}
 
-		if (DISPLAY_MEM_AMT(a->opt_flags)) {
+		if (DISPLAY_MEMORY(a->opt_flags)) {
 			draw_activity_graphs(DISPLAY_MEM_ALL(a->opt_flags) ? 6 : 5,
 					     g_type1, title1, g_title1, NULL, group1,
 					     spmin, spmax, out, outsize, svg_p, record_hdr);

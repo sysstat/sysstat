@@ -359,8 +359,8 @@ __print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int cu
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
 
-	if (DISPLAY_MEM_AMT(a->opt_flags)) {
-		printf("%s %s:%lu", timestr, pfield(a->hdr_line, SECOND), smc->frmkb);
+	if (DISPLAY_MEMORY(a->opt_flags)) {
+		printf("%s %s:%lu", timestr, pfield(a->hdr_line, FIRST), smc->frmkb);
 		printf(" %s:%lu", pfield(NULL, 0), smc->availablekb);
 		printf(" kbttlmem:%lu", smc->tlmkb);
 		pfield(NULL, 0); /* Skip kbmemused */
@@ -384,7 +384,7 @@ __print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int cu
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-		printf("%s %s:%lu", timestr, pfield(a->hdr_line, THIRD), smc->frskb);
+		printf("%s %s:%lu", timestr, pfield(a->hdr_line, SECOND), smc->frskb);
 		printf(" kbttlswp:%lu", smc->tlskb);
 		pfield(NULL, 0); /* Skip kbswpused */
 		pfield(NULL, 0); /* Skip %swpused */

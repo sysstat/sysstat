@@ -131,17 +131,15 @@
 
 #define AO_F_NULL		0x00000000
 
-/* Output flags for options -R / -r / -S */
-#define AO_F_MEM_DIA		0x00000001
-#define AO_F_MEM_AMT		0x00000002
-#define AO_F_MEM_SWAP		0x00000004
+/* Output flags for options -r / -S */
+#define AO_F_MEMORY		0x00000001
+#define AO_F_SWAP		0x00000002
 /* AO_F_MEM_ALL: See opt_flags in struct activity below */
-#define AO_F_MEM_ALL		(AO_F_MEM_AMT << 8)
+#define AO_F_MEM_ALL		(AO_F_MEMORY << 8)
 
-#define DISPLAY_MEMORY(m)	(((m) & AO_F_MEM_DIA)     == AO_F_MEM_DIA)
-#define DISPLAY_MEM_AMT(m)	(((m) & AO_F_MEM_AMT)     == AO_F_MEM_AMT)
-#define DISPLAY_SWAP(m)		(((m) & AO_F_MEM_SWAP)    == AO_F_MEM_SWAP)
-#define DISPLAY_MEM_ALL(m)	(((m) & AO_F_MEM_ALL)     == AO_F_MEM_ALL)
+#define DISPLAY_MEMORY(m)	(((m) & AO_F_MEMORY)	== AO_F_MEMORY)
+#define DISPLAY_SWAP(m)		(((m) & AO_F_SWAP)	== AO_F_SWAP)
+#define DISPLAY_MEM_ALL(m)	(((m) & AO_F_MEM_ALL)	== AO_F_MEM_ALL)
 
 /* Output flags for option -u [ ALL ] */
 #define AO_F_CPU_DEF		0x00000001
@@ -272,7 +270,6 @@
 
 #define FIRST	0
 #define SECOND	1
-#define THIRD	2
 
 #define CLOSE_XML_MARKUP	0
 #define OPEN_XML_MARKUP		1
@@ -766,7 +763,7 @@ struct activity {
 	/*
 	 * Optional flags for activity. This is eg. used when AO_MULTIPLE_OUTPUTS
 	 * option is set.
-	 * 0x0001 - 0x0080 : Multiple outputs (eg. AO_F_MEM_AMT, AO_F_MEM_SWAP...)
+	 * 0x0001 - 0x0080 : Multiple outputs (eg. AO_F_MEMORY, AO_F_SWAP...)
 	 * 0x0100 - 0x8000 : If bit set then display complete header (hdr_line) for
 	 *                   corresponding output
 	 * 0x010000+       : Optional flags

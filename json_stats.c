@@ -468,13 +468,12 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 					unsigned long long itv)
 {
 	struct stats_memory
-		*smc = (struct stats_memory *) a->buf[curr],
-		*smp = (struct stats_memory *) a->buf[!curr];
+		*smc = (struct stats_memory *) a->buf[curr];
 	int sep = FALSE;
 
 	xprintf0(tab, "\"memory\": {");
 
-	if (DISPLAY_MEM_AMT(a->opt_flags)) {
+	if (DISPLAY_MEMORY(a->opt_flags)) {
 
 		sep = TRUE;
 
@@ -541,23 +540,6 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		       (smc->tlskb - smc->frskb) ?
 		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
 		       0.0);
-	}
-
-	if (DISPLAY_MEMORY(a->opt_flags)) {
-
-		if (sep) {
-			printf(", ");
-		}
-
-		printf("\"frmpg\": %.2f, "
-		       "\"bufpg\": %.2f, "
-		       "\"campg\": %.2f",
-		       S_VALUE((double) KB_TO_PG(smp->frmkb),
-			       (double) KB_TO_PG(smc->frmkb), itv),
-		       S_VALUE((double) KB_TO_PG(smp->bufkb),
-			       (double) KB_TO_PG(smc->bufkb), itv),
-		       S_VALUE((double) KB_TO_PG(smp->camkb),
-			       (double) KB_TO_PG(smc->camkb), itv));
 	}
 
 	printf("}");

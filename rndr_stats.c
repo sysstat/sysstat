@@ -741,37 +741,12 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 				    int curr, unsigned long long itv)
 {
 	struct stats_memory
-		*smc = (struct stats_memory *) a->buf[curr],
-		*smp = (struct stats_memory *) a->buf[!curr];
+		*smc = (struct stats_memory *) a->buf[curr];
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 	int ptn;
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-
-		render(isdb, pre, PT_NOFLAG,
-		       "-\tfrmpg/s", NULL, NULL,
-		       NOVAL,
-		       S_VALUE((double) KB_TO_PG(smp->frmkb),
-			       (double) KB_TO_PG(smc->frmkb), itv),
-		       NULL);
-
-		render(isdb, pre, PT_NOFLAG,
-		       "-\tbufpg/s", NULL, NULL,
-		       NOVAL,
-		       S_VALUE((double) KB_TO_PG(smp->bufkb),
-			       (double) KB_TO_PG(smc->bufkb), itv),
-		       NULL);
-
-		render(isdb, pre, pt_newlin,
-		       "-\tcampg/s", NULL, NULL,
-		       NOVAL,
-		       S_VALUE((double) KB_TO_PG(smp->camkb),
-			       (double) KB_TO_PG(smc->camkb), itv),
-		       NULL);
-	}
-
-	if (DISPLAY_MEM_AMT(a->opt_flags)) {
 
 		render(isdb, pre, PT_USEINT,
 		       "-\tkbmemfree", NULL, NULL,

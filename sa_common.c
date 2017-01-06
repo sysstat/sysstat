@@ -1526,8 +1526,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			 * has AO_MULTIPLE_OUTPUTS flag set.
 			 */
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
-			act[p]->opt_flags |= AO_F_MEM_AMT + AO_F_MEM_DIA +
-					     AO_F_MEM_SWAP + AO_F_MEM_ALL;
+			act[p]->opt_flags |= AO_F_MEMORY + AO_F_SWAP + AO_F_MEM_ALL;
 
 			p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
 			memset(act[p]->bitmap->b_array, ~0,
@@ -1611,7 +1610,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 		case 'r':
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->options   |= AO_SELECTED;
-			act[p]->opt_flags |= AO_F_MEM_AMT;
+			act[p]->opt_flags |= AO_F_MEMORY;
 			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], K_ALL)) {
 				(*opt)++;
 				act[p]->opt_flags |= AO_F_MEM_ALL;
@@ -1619,16 +1618,10 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			}
 			break;
 
-		case 'R':
-			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
-			act[p]->options   |= AO_SELECTED;
-			act[p]->opt_flags |= AO_F_MEM_DIA;
-			break;
-
 		case 'S':
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->options   |= AO_SELECTED;
-			act[p]->opt_flags |= AO_F_MEM_SWAP;
+			act[p]->opt_flags |= AO_F_SWAP;
 			break;
 
 		case 't':

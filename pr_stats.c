@@ -475,8 +475,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 			     unsigned long long itv, int dispavg)
 {
 	struct stats_memory
-		*smc = (struct stats_memory *) a->buf[curr],
-		*smp = (struct stats_memory *) a->buf[prev];
+		*smc = (struct stats_memory *) a->buf[curr];
 	static unsigned long long
 		avg_frmkb       = 0,
 		avg_bufkb       = 0,
@@ -505,19 +504,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 		if (dis) {
 			print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
-		}
-
-		printf("%-11s", timestamp[curr]);
-		cprintf_f(-1, 3, 9, 2,
-			  S_VALUE((double) KB_TO_PG(smp->frmkb), (double) KB_TO_PG(smc->frmkb), itv),
-			  S_VALUE((double) KB_TO_PG(smp->bufkb), (double) KB_TO_PG(smc->bufkb), itv),
-			  S_VALUE((double) KB_TO_PG(smp->camkb), (double) KB_TO_PG(smc->camkb), itv));
-		printf("\n");
-	}
-
-	if (DISPLAY_MEM_AMT(a->opt_flags)) {
-		if (dis) {
-			print_hdr_line(timestamp[!curr], a, SECOND, 0, 9);
 		}
 
 		if (!dispavg) {
@@ -620,7 +606,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
 		if (dis) {
-			print_hdr_line(timestamp[!curr], a, THIRD, 0, 9);
+			print_hdr_line(timestamp[!curr], a, SECOND, 0, 9);
 		}
 
 		if (!dispavg) {
