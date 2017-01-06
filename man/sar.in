@@ -1,8 +1,8 @@
-.TH SAR 1 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JANUARY 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
-.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ] [ -R ]
+.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ]
 .B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]
 .B [ -I {
 .I int_list
@@ -166,7 +166,7 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdFHqRSuvwWy -I SUM -I ALL -m ALL -n ALL -r ALL -u ALL -P ALL".
+.BR "-bBdFHqSuvwWy -I SUM -I ALL -m ALL -n ALL -r ALL -u ALL -P ALL".
 .IP -B
 Report paging statistics.
 The following values are displayed:
@@ -1906,29 +1906,6 @@ System load average for the past 15 minutes.
 .B blocked
 .RS
 Number of tasks currently blocked, waiting for I/O to complete.
-.RE
-.RE
-.IP -R
-Report memory statistics. The following values are displayed:
-
-.B frmpg/s
-.RS
-.RS
-Number of memory pages freed by the system per second.
-A negative value represents a number of pages allocated by the system.
-Note that a page has a size of 4 kiB or 8 kiB according to the machine architecture.
-.RE
-
-.B bufpg/s
-.RS
-Number of additional memory pages used as buffers by the system per second.
-A negative value means fewer pages used as buffers by the system.
-.RE
-
-.B campg/s
-.RS
-Number of additional memory pages cached by the system per second.
-A negative value means fewer pages in the cache.
 .RE
 .RE
 .IP "-r [ ALL ]"
