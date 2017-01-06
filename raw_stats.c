@@ -1372,3 +1372,224 @@ __print_funct_t raw_print_pwr_in_stats(struct activity *a, char *timestr, int cu
 		printf(" in_max:%f\n", spc->in_max);
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display huge pages statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_huge_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_huge
+		*smc = (struct stats_huge *) a->buf[curr];
+
+	printf("%s %s:%lu", timestr, pfield(a->hdr_line, FIRST), smc->frhkb);
+	printf(" hugtotal:%lu\n", smc->tlhkb);
+}
+
+/*
+ ***************************************************************************
+ * Display weighted CPU frequency statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_wghfreq_stats(struct activity *a, char *timestr, int curr)
+{
+	int i, k;
+	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
+		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			/* Yes... */
+			printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
+
+			for (k = 0; k < a->nr2; k++) {
+
+				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+				if (!spc_k->freq)
+					break;
+				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+
+				printf(" freq: %lu", spc_k->freq);
+				printf(" tminst:");
+				pval(spp_k->time_in_state, spc_k->time_in_state);
+			}
+			printf("\n");
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display USB devices statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_usb_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_pwr_usb *suc;
+
+	for (i = 0; i < a->nr; i++) {
+		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr]  + i * a->msize);
+
+		if (!suc->bus_nr)
+			/* Bus#0 doesn't exist: We are at the end of the list */
+			break;
+
+		printf("%s %s:\"%s\"", timestr, pfield(a->hdr_line, FIRST), suc->manufacturer);
+		printf(" %s:\"%s\"", pfield(NULL, 0), suc->product);
+		printf(" %s:%d", pfield(NULL, 0), suc->bus_nr);
+		printf(" %s:%x", pfield(NULL, 0), suc->vendor_id);
+		printf(" %s:%x", pfield(NULL, 0), suc->product_id);
+		printf(" %s:%u\n", pfield(NULL, 0), suc->bmaxpower);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display filesystems statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_filesystem *sfc;
+
+
+	for (i = 0; i < a->nr; i++) {
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr]  + i * a->msize);
+
+		if (!sfc->f_blocks)
+			/* Size of filesystem is zero: We are at the end of the list */
+			break;
+
+		printf("%s %s:\"%s\"", timestr, pfield(a->hdr_line, FIRST + DISPLAY_MOUNT(a->opt_flags)),
+		       DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name);
+		printf(" f_bfree:%llu", sfc->f_bfree);
+		printf(" f_blocks:%llu", sfc->f_blocks);
+		printf(" f_bavail:%llu", sfc->f_bavail);
+		pfield(NULL, 0); /* Skip MBfsfree */
+		pfield(NULL, 0); /* Skip MBfsused */
+		pfield(NULL, 0); /* Skip %fsused */
+		pfield(NULL, 0); /* Skip %ufsused */
+		printf(" %s:%llu", pfield(NULL, 0), sfc->f_ffree);
+		printf(" f_files:%llu\n", sfc->f_files);
+
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_fchost *sfcc, *sfcp;
+
+	for (i = 0; i < a->nr; i++) {
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr]  + i * a->msize);
+		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr]  + i * a->msize);
+
+		if (!sfcc->fchost_name[0])
+			/* We are at the end of the list */
+			break;
+
+		printf(" %s:%s", pfield(a->hdr_line, FIRST), sfcc->fchost_name);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) sfcp->f_rxframes, (unsigned long long) sfcc->f_rxframes);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) sfcp->f_txframes, (unsigned long long) sfcc->f_txframes);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) sfcp->f_rxwords, (unsigned long long) sfcc->f_rxwords);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) sfcp->f_txwords, (unsigned long long) sfcc->f_txwords);
+		printf("\n");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display softnet statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_softnet *ssnc, *ssnp;
+
+	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * The size of a->buf[...] CPU structure may be different from the default
+		 * sizeof(struct stats_pwr_cpufreq) value if data have been read from a file!
+		 * That's why we don't use a syntax like:
+		 * ssnc = (struct stats_softnet *) a->buf[...] + i;
+                 */
+                ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
+                ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
+
+		/*
+		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
+		 * Anyway, NR_CPUS may vary between the version of sysstat
+		 * used by sadc to create a file, and the version of sysstat
+		 * used by sar to read it...
+		 */
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
+
+		/* Yes: Display current CPU stats */
+		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssnp->processed, (unsigned long long) ssnc->processed);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssnp->dropped, (unsigned long long) ssnc->dropped);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssnp->time_squeeze, (unsigned long long) ssnc->time_squeeze);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssnp->received_rps, (unsigned long long) ssnc->received_rps);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssnp->flow_limit, (unsigned long long) ssnc->flow_limit);
+		printf("\n");
+	}
+}

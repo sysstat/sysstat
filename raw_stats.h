@@ -80,5 +80,17 @@ __print_funct_t raw_print_pwr_temp_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_pwr_in_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_huge_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_wghfreq_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_usb_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_filesystem_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_fchost_stats
+	(struct activity *, char *, int);
+__print_funct_t raw_print_softnet_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */

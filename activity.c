@@ -1324,6 +1324,7 @@ struct activity huge_act = {
 	.f_xml_print	= xml_print_huge_stats,
 	.f_json_print	= json_print_huge_stats,
 	.f_svg_print	= svg_print_huge_stats,
+	.f_raw_print	= raw_print_huge_stats,
 	.name		= "A_HUGE",
 	.g_nr		= 2,
 #endif
@@ -1359,6 +1360,7 @@ struct activity pwr_wghfreq_act = {
 	.f_render	= render_pwr_wghfreq_stats,
 	.f_xml_print	= xml_print_pwr_wghfreq_stats,
 	.f_json_print	= json_print_pwr_wghfreq_stats,
+	.f_raw_print	= raw_print_pwr_wghfreq_stats,
 	.name		= "A_PWR_WGHFREQ",
 	.g_nr		= 0,
 #endif
@@ -1394,6 +1396,7 @@ struct activity pwr_usb_act = {
 	.f_render	= render_pwr_usb_stats,
 	.f_xml_print	= xml_print_pwr_usb_stats,
 	.f_json_print	= json_print_pwr_usb_stats,
+	.f_raw_print	= raw_print_pwr_usb_stats,
 	.name		= "A_PWR_USB",
 	.g_nr		= 0,
 #endif
@@ -1431,6 +1434,7 @@ struct activity filesystem_act = {
 	.f_xml_print	= xml_print_filesystem_stats,
 	.f_json_print	= json_print_filesystem_stats,
 	.f_svg_print	= svg_print_filesystem_stats,
+	.f_raw_print	= raw_print_filesystem_stats,
 	.name		= "A_FILESYSTEM",
 	.g_nr		= 4,
 #endif
@@ -1467,6 +1471,7 @@ struct activity fchost_act = {
 	.f_xml_print	= xml_print_fchost_stats,
 	.f_json_print	= json_print_fchost_stats,
 	.f_svg_print	= svg_print_fchost_stats,
+	.f_raw_print	= raw_print_fchost_stats,
 	.name		= "A_FCHOST",
 	.g_nr		= 2,
 #endif
@@ -1503,6 +1508,7 @@ struct activity softnet_act = {
 	.f_xml_print	= xml_print_softnet_stats,
 	.f_json_print	= json_print_softnet_stats,
 	.f_svg_print	= svg_print_softnet_stats,
+	.f_raw_print	= raw_print_softnet_stats,
 	.name		= "A_NET_SOFT",
 	.g_nr		= 2,
 #endif
