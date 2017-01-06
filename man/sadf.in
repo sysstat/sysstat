@@ -1,8 +1,8 @@
-.TH SADF 1 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JANUARY 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
+.B sadf [ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
 .I opts
 .B [,...] ] [ -P {
 .I cpu_list
@@ -148,9 +148,10 @@ will be displayed horizontally on a single line.
 Print the contents of the data file in JSON (JavaScript Object Notation)
 format. Timestamps can be controlled by options -T and -t.
 .IP "-O opts [,...]"
-Use the specified options to control SVG output displayed by
-.B sadf -g.
-Possible options are:
+Use the specified options to control the output of
+.BR sadf .
+The following options are used to control SVG output displayed by
+.BR "sadf -g":
 
 .B autoscale
 .RS
@@ -179,6 +180,15 @@ Also display %idle state in graphs for CPU statistics.
 .RS
 Do not display views where all graphs have only zero values.
 .RE
+
+THe following option is used to control raw output displayed by
+.BR "sadf -r":
+
+.B showhints
+.RS
+Display additional noteworthy information, such as e.g., a monotonic
+counter value which has decreased.
+.RE
 .RE
 .IP "-P { cpu_list | ALL }"
 Tell
@@ -204,6 +214,10 @@ hostname of the host where the file was created, the interval value
 the device name (or - if not applicable),
 the field name and its value.
 Note that timestamp output can be controlled by options -T, -t and -U.
+.IP -r
+Print the raw contents of the data file. With this format, the values for
+all the counters are displayed as read from the kernel, which means e.g., that
+no average values are calculated over the elapsed time interval.
 .IP "-s [ hh:mm[:ss] ]"
 Set the starting time of the data (given in local time), causing the
 .B sadf
