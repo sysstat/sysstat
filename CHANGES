@@ -1,5 +1,19 @@
 Changes:
 
+2017/01/11: Version 11.5.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Add new "raw" output format.
+	* sar: Remove memory statistics (option -R).
+	* SVG: Give actual canvas height at the end of SVG output.
+	* Make sar's -I option work again with sadf.
+	* sar: Better handle dynamically registered devices [11.4.3]
+	  [11.2.9].
+	* sar: Fix incorrect gcc warning in svg_stats.c [11.4.3].
+	* SVG: Init f_svg_print() function pointer to NULL [11.4.3].
+	* sadf and sar manual pages updated.
+	* README file updated (added Coverity Badge).
+	* NLS translations updated. Added new Friulian translation.
+	* Cosmetic fixes in source code.
+
 2016/12/06: Version 11.5.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Add new metric "available free memory" to memory statistics.
 	* Update DTD and XSD documents to include new metric.
