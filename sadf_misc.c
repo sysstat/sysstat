@@ -937,6 +937,11 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 	}
 
 	if (action & F_END) {
+		if (!(action & F_BEGIN)) {
+			/* Give actual SVG height */
+			printf("<!-- Actual canvas height: %d -->\n",
+			       SVG_H_YSIZE + SVG_T_YSIZE * (*graph_nr));
+		}
 		printf("</svg>\n");
 	}
 }

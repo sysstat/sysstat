@@ -1347,6 +1347,9 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		}
 	}
 
+	/* Real number of graphs that have been displayed */
+	graph_nr = g_nr;
+
 	/* Print SVG trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&graph_nr, F_END, file, file_magic,
