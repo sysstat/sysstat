@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2016-11-04 09:13+0100\n"
+"POT-Creation-Date: 2017-01-11 13:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1263 count.c:118
+#: sa_common.c:1223 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -68,6 +68,11 @@ msgstr ""
 #: sadc.c:1019
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
+msgstr ""
+
+#: common.c:74
+#, c-format
+msgid "sysstat version %s\n"
 msgstr ""
 
 #: mpstat.c:101
@@ -87,47 +92,47 @@ msgstr ""
 msgid "Not that many processors!\n"
 msgstr ""
 
-#: sa_common.c:1059
+#: sa_common.c:1019
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1069
+#: sa_common.c:1029
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1088
+#: sa_common.c:1048
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:1121
+#: sa_common.c:1081
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1133
+#: sa_common.c:1093
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr ""
 
-#: sa_common.c:1137
+#: sa_common.c:1097
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1266
+#: sa_common.c:1226
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1459
+#: sa_common.c:1419
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:1648 iostat.c:1401
+#: sa_common.c:1608 iostat.c:1401
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -147,55 +152,55 @@ msgstr ""
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: sadf_misc.c:624
+#: sadf_misc.c:620
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf_misc.c:633
+#: sadf_misc.c:629
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr ""
 
-#: sadf_misc.c:634
+#: sadf_misc.c:630
 msgid "no"
 msgstr ""
 
-#: sadf_misc.c:634
+#: sadf_misc.c:630
 msgid "yes"
 msgstr ""
 
-#: sadf_misc.c:637
+#: sadf_misc.c:633
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf_misc.c:643
+#: sadf_misc.c:639
 #, c-format
 msgid "Number of CPU for last samples in file: %u\n"
 msgstr ""
 
-#: sadf_misc.c:649
+#: sadf_misc.c:645
 #, c-format
 msgid "File date: %s\n"
 msgstr ""
 
-#: sadf_misc.c:652
+#: sadf_misc.c:648
 #, c-format
 msgid "File time: "
 msgstr ""
 
-#: sadf_misc.c:657
+#: sadf_misc.c:653
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf_misc.c:663
+#: sadf_misc.c:659
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf_misc.c:676
+#: sadf_misc.c:672
 #, c-format
 msgid "\t[Unknown activity format]"
 msgstr ""
@@ -230,16 +235,11 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: common.c:74
-#, c-format
-msgid "sysstat version %s\n"
-msgstr ""
-
-#: pr_stats.c:2494 pr_stats.c:2506 pr_stats.c:2610 pr_stats.c:2621
+#: pr_stats.c:2519 pr_stats.c:2531 pr_stats.c:2635 pr_stats.c:2646
 msgid "Summary:"
 msgstr ""
 
-#: pr_stats.c:2549
+#: pr_stats.c:2574
 msgid "Other devices not listed here"
 msgstr ""
 

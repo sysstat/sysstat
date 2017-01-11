@@ -1,5 +1,11 @@
 Changes:
 
+2017/01/11: Version 11.2.9 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Better handle dynamically registered devices.
+	* Sort keywords definition in sar, sadc and mpstat manual pages.
+	* Small fix in iostat manual page.
+	* Cosmetic changes in source code.
+
 2016/11/04: Version 11.2.8 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Michal Sekletar]: sar: make buffers that hold timestamps
 	  bigger.
