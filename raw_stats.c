@@ -68,7 +68,7 @@ char *pfield(char *hdr_line, int pos)
 			j = strcspn(hl, "&");
 			*(hl + j) = ';';
 		}
-		strcpy(field, hl);
+		strncpy(field, hl, HEADER_LINE_LEN);
 	}
 
 	/* Display current field */
