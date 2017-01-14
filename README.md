@@ -1,60 +1,164 @@
 ## sysstat - System performance tools for the Linux operating system...
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
 
-(C) 1999-2016 Sebastien GODARD (sysstat (at) orange (dot) fr)
+(C) 1999-2017 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
+### Introduction
+
+The sysstat package contains various utilities, common to many commercial Unixes, to monitor system performance and usage activity:
+
+* **iostat** reports CPU statistics and input/output statistics for devices, partitions and network filesystems.
+* **mpstat** reports individual or combined processor related statistics.
+* **pidstat** reports statistics for Linux tasks (processes) : I/O, CPU, memory, etc.
+* **tapestat** reports statistics for tape drives connected to the system.
+* **cifsiostat** reports CIFS statistics.
+
+Sysstat also contains tools you can schedule via cron or systemd to collect and historize performance and activity data:
+
+* **sar** collects, reports and saves system activity information (see below a list of metrics collected by sar).
+* **sadc** is the system activity data collector, used as a backend for sar.
+* **sa1** collects and stores binary data in the system activity daily data file. It is a front end to sadc designed to be run from cron or systemd.
+* **sa2** writes a summarized daily activity report. It is a front end to sar designed to be run from cron or systemd.
+* **sadf** displays data collected by sar in multiple formats (CSV, XML, JSON, etc.) and can be used for data exchange with other programs. This command can also be used to draw graphs for the various activities collected by sar using SVG (Scalable Vector Graphics) format.
+
+#### System statistics collected by sar:
+- Input / Output and transfer rate statistics (global, per device, per partition and per network filesystem)
+- CPU statistics (global and per CPU), including support for virtualization architectures
+- Memory, hugepages and swap space utilization statistics
+- Virtual memory, paging and fault statistics
+- Process creation activity
+- Interrupt statistics (global, per CPU and per interrupt, including potential APIC interrupt sources, hardware and software interrupts)
+- Extensive network statistics: network interface activity (number of packets and kB received and transmitted per second, etc.) including failures from network devices; network traffic statistics for IP, TCP, ICMP and UDP protocols based on SNMPv2 standards; support for IPv6-related protocols
+- Fibre Channel traffic statistics
+- Software-based network processing (softnet) statistics
+- NFS server and client activity
+- Sockets statistics
+- Run queue and system load statistics
+- Kernel internal tables utilization statistics
+- Swapping statistics
+- TTY devices activity
+- Power management statistics (instantaneous and average CPU clock frequency, fans speed, devices temperature, voltage inputs)
+- USB devices plugged into the system
+- Filesystems utilization (inodes and blocks)
+
+#### Sysstat key features:
+- Display average statistics values at the end of the reports.
+- On-the-fly detection of new devices (disks, network interfaces, etc.) that are created or registered dynamically.
+- Support for UP and SMP machines, including machines with hyperthreaded or multi-core processors.
+- Support for hotplug CPUs (it detects automagically processors that are disabled or enabled on the fly) and tickless CPUs.
+- Works on many different architectures, whether 32- or 64-bit.
+- Needs very little CPU time to run (written in C).
+- System statistics collected by sar/sadc can be saved in a file for future inspection. You can configure the length of data history to keep.
+- System statistics collected by sar/sadc can be exported in various different formats (CSV, XML, JSON, SVG, etc.). DTD and XML Schema documents are included in sysstat package. JSON output format is also available for mpstat and iostat commands.
+- Smart color output for easier statistics reading.
+
+![Smart color output](images/color_output.png)
+- Internationalization support (sysstat has been translated into numerous different languages). Sysstat is now part of the [Translation Project](http://translationproject.org/).
+- Sysstat commands can automatically select the unit used to display sizes for easier reading (see option `--human`).
+- Graphs can be generated (SVG format - Scalable Vector Graphics) and displayed in your favorite web browser. See some sample screenshots below:
+
+![Fancy sysstat graph](images/cpugraph.jpg)
+
+![Fancy sysstat graph](images/tcgraph.png)
+
+
+
+Sysstat is Open Source / Free Software, and is freely available under the GNU General Public License, version 2.
 The latest version of sysstat can always be found on my web site at:
 
 [http://pagesperso-orange.fr/sebastien.godard/](http://pagesperso-orange.fr/sebastien.godard/)
 
 See the CHANGES file to know the new features/improvements/bug fixes added
 in this release of sysstat.
-
-You can also track sysstat development on [GitHub](https://github.com/sysstat/sysstat)
-and clone its public repository with:
-
-    git clone git://github.com/sysstat/sysstat
-
+Sysstat development can be tracked on [GitHub](https://github.com/sysstat/sysstat).
 
 ### Installation
 
+#### Install from RHEL/Fedora/CentOS
 
-The sysstat utilities are a collection of **performance monitoring tools** for
-Linux. These include _mpstat, iostat, tapestat, cifsiostat, pidstat,
-sar, sadc, sadf_ and _sa_ tools.
+Enter:
 
-The first stage is to configure sysstat for your system:
+```
+$ sudo yum install sysstat
+```
 
-	./configure
+CentOS and Fedora systems call the collector process using a cron job in /etc/cron.d and it's enabled by default.
+On recent versions, systemd is used instead of cron. You may need to enable and start the sysstat service:
 
-You can set several variables and parameters on the command line.
-Please enter `./configure --help` to display them.
-There is another way to configure sysstat instead of entering `./configure`:
+```
+$ sudo systemctl enable sysstat
+$ sudo systemctl start sysstat
+```
+
+#### Install from Ubuntu
+
+Enter:
+
+```
+$ sudo apt-get install sysstat
+```
+
+Then enable data collecting:
+
+```
+$ sudo vi /etc/default/sysstat
+change ENABLED="false" to ENABLED="true"
+save the file
+```
+
+Last, restart the sysstat service:
+
+```
+$ sudo service sysstat restart
+```
+
+#### Install from sources
+
+Clone sysstat public repository with:
+
+```
+$ git clone git://github.com/sysstat/sysstat
+```
+
+Then configure sysstat for your system:
+
+```
+$ cd sysstat
+$ ./configure
+```
+
+You can set several variables and parameters on the command line. For example you
+can enter the following option to activate data collecting (either using cron or systemd):
+
+```
+$ ./configure --enable-install-cron
+```
+
+Please enter "./configure --help" to display them.
+There is another way to configure sysstat instead of entering "./configure":
 this is the **Interactive Configuration script** (_iconfig_) which will ask you
 for the value of the main sysstat variables and parameters.
-Enter `./iconfig` then answer the questions or enter Return to accept
+Enter "./iconfig" then answer the questions or enter Return to accept
 the (sane) default values. For yes/no questions, please answer 'y' or 'n'
 (without the quotes): It is case sensitive! You can also enter '?' to get
 a help message that will explain the meaning of each variable or parameter.
 
-The next stage is to build the various binary files. Enter:
+Compile and install:
 
-	make
+```
+$ make
+$ sudo make install
+```
 
-Then log in as root and enter:
-
-	make install
-
-(see next section to know the files that are installed).
-That's all!
+### Feedback welcome!
 
 Of course tell me if there are any problems. This is the only way I can improve
-'sysstat'. Please also remember to read the FAQ included in this package.
+'sysstat'. Please also remember to read the FAQ that comes with sysstat.
 
 Patches and suggestions for improvements are always welcome!
 Send them to "sysstat (at) orange (dot) fr".
 
-#### Support sysstat!
+### Support sysstat!
 
 If you are reading this README file then you are probably about to use the sysstat tools
 to help you monitor your system and maybe troubleshoot some performance issues. Good choice.
@@ -67,69 +171,7 @@ of my computer instead of taking care of the household ;-)
 
 Go to my web page and [click on the Donate button](http://pagesperso-orange.fr/sebastien.godard/) on the left!
 
-
-### Files that are installed
-
-Here is the list of files installed by sysstat, when you ask for a
-complete installation.
-${PREFIX} is the value of the PREFIX variable defined in the Makefile
-(usually set to `/usr/local` or `/usr`).
-
-    ${PREFIX}/lib/sa/sadc
-    ${PREFIX}/lib/sa/sa1
-    ${PREFIX}/lib/sa/sa2
-    ${PREFIX}/bin/sar
-    ${PREFIX}/bin/sadf
-    ${PREFIX}/bin/iostat
-    ${PREFIX}/bin/tapestat
-    ${PREFIX}/bin/mpstat
-    ${PREFIX}/bin/pidstat
-    ${PREFIX}/bin/cifsiostat
-    ${PREFIX}(/share)/man/man8/sadc.8
-    ${PREFIX}(/share)/man/man8/sa1.8
-    ${PREFIX}(/share)/man/man8/sa2.8
-    ${PREFIX}(/share)/man/man1/sar.1
-    ${PREFIX}(/share)/man/man1/sadf.1
-    ${PREFIX}(/share)/man/man1/iostat.1
-    ${PREFIX}(/share)/man/man1/tapestat.1
-    ${PREFIX}(/share)/man/man1/mpstat.1
-    ${PREFIX}(/share)/man/man1/pidstat.1
-    ${PREFIX}(/share)/man/man1/cifsiostat.1
-    ${PREFIX}/share/locale/*/LC_MESSAGES/sysstat.mo
-    ${PREFIX}/share/doc/sysstat-x.y.z/*
-    /var/log/sa
-    ${INIT_DIR}/sysstat
-    /lib/systemd/system/sysstat.service			if OS uses systemd
-    /lib/systemd/system/sysstat-collect.service	if OS uses systemd
-    /lib/systemd/system/sysstat-collect.timer	if OS uses systemd
-    /lib/systemd/system/sysstat-summary.service	if OS uses systemd
-    /lib/systemd/system/sysstat-summary.timer	if OS uses systemd
-    /etc/sysconfig/sysstat
-    /etc/sysconfig/sysstat.ioconf
-    /etc/cron.d/sysstat
-    /etc/rc.d/rc.sysstat			(depending on your distro)
-    ${RC_DIR}/rc2.d/S03sysstat
-    ${RC_DIR}/rc3.d/S03sysstat
-    ${RC_DIR}/rc5.d/S03sysstat
-
-sysstat may also install some links in `${RC_DIR}/rc[0146].d/` directory
-if _chkconfig_ is used.
-
-### Miscellaneous
-
-The sysstat commands are only front-ends to the kernel proc filesystem...
-They cannot display statistics that Linux does not
-provide, nor can they be more accurate than Linux is.
-The sysstat package no longer supports 2.4.x and older kernels.
-Note that all kernels do not necessarily have all the statistics that
-sysstat commands can display, depending on their version or their
-configuration options.
-
-It has been designed with National Language Support (NLS) in mind, using
-the GNU gettext package (available at [http://www.gnu.org](http://www.gnu.org)).
-sysstat has been translated into several languages.
-Anyway you are welcome if you want to make other translations available ;-)
-Please read the README-nls file in the nls directory before.
+Enjoy!
 
 --
 
