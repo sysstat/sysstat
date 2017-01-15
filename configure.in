@@ -137,7 +137,6 @@ echo .
 #  --collect-all           tell sadc to collect all possible data    
 #  --enable-clean-sa-dir   clean system activity directory
 #  --enable-compress-manpg compress manual pages
-#  --enable-install-isag   install isag script
 #  --enable-debuginfo      enable debug output (--debuginfo option)
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors	   do not link against libsensors even if available
@@ -406,21 +405,6 @@ fi
 AC_MSG_RESULT($AUX_MPG)
 AC_SUBST(COMPRESS_MANPG)
 
-# Check whether isag should be installed
-AC_MSG_CHECKING(whether isag script should be installed)
-AC_ARG_ENABLE(install-isag,
-	      AC_HELP_STRING([--enable-install-isag],
-			     [install isag script]),
-			     AUX_IIS=$enableval,AUX_IIS=no)
-if test $AUX_IIS != "yes"; then
-   INSTALL_ISAG=n
-   AUX_IIS=no
-else
-   INSTALL_ISAG=y
-fi
-AC_MSG_RESULT($AUX_IIS)
-AC_SUBST(INSTALL_ISAG)
-
 # Check whether sa directory should be cleaned
 AC_MSG_CHECKING(whether system activity directory should be cleaned)
 AC_ARG_ENABLE(clean-sa-dir,
@@ -626,7 +610,6 @@ AC_CONFIG_FILES([man/sar.1:man/sar.in])		# File must be renamed
 AC_CONFIG_FILES([man/sysstat.5:man/sysstat.in])	# File must be renamed
 AC_CONFIG_FILES([man/iostat.1:man/iostat.in])	# File must be renamed
 AC_CONFIG_FILES([man/cifsiostat.1:man/cifsiostat.in])	# File must be renamed
-AC_CONFIG_FILES([contrib/isag/isag], [chmod +x contrib/isag/isag]) # Permissions must be changed
 
 AC_OUTPUT(Makefile)
 

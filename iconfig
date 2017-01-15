@@ -191,15 +191,6 @@ else
 	echo "Parameter --enable-debuginfo is NOT set"
 fi
 
-# Install isag script
-INSTALL_ISAG=`${ASK} 'Install isag script? (y/n)' "--enable-install-isag" "install-isag"`
-if [ "${INSTALL_ISAG}" = "y" ]; then
-	INSTALL_ISAG="--enable-install-isag "
-else
-	INSTALL_ISAG=""
-	echo "Parameter --enable-install-isag is NOT set"
-fi
-
 # Strip object files
 STRIP=`${ASK} 'Do not strip object files? (y/n)' "--disable-stripping" "stripping"`
 if [ "${STRIP}" = "y" ]; then
@@ -216,11 +207,11 @@ if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
 fi
-echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS}${STRIP}${COPY_ONLY}"
+echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${STRIP}${COPY_ONLY}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
-sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${INSTALL_ISAG}${SENSORS} \
+sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${STRIP}${COPY_ONLY}
 

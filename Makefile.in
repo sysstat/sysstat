@@ -123,9 +123,6 @@ endif
 ifndef COMPRESS_MANPG
 COMPRESS_MANPG = @COMPRESS_MANPG@
 endif
-ifndef INSTALL_ISAG
-INSTALL_ISAG = @INSTALL_ISAG@
-endif
 ifndef INSTALL_DOC
 INSTALL_DOC = @INSTALL_DOC@
 endif
@@ -317,9 +314,6 @@ ifeq ($(INSTALL_DOC),y)
 	$(INSTALL_DATA) $(MANGRPARG) man/pidstat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/cifsiostat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/cifsiostat.1 $(DESTDIR)$(MAN1_DIR)
-ifeq ($(INSTALL_ISAG),y)
-	$(INSTALL_DATA) $(MANGRPARG) contrib/isag/isag.1 $(DESTDIR)$(MAN1_DIR)
-endif
 ifeq ($(COMPRESS_MANPG),y)
 	$(ZIP) $(DESTDIR)$(MAN8_DIR)/sa1.8
 	$(ZIP) $(DESTDIR)$(MAN8_DIR)/sa2.8
@@ -332,9 +326,6 @@ ifeq ($(COMPRESS_MANPG),y)
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/mpstat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/pidstat.1
 	$(ZIP) $(DESTDIR)$(MAN1_DIR)/cifsiostat.1
-ifeq ($(INSTALL_ISAG),y)
-	$(ZIP) $(DESTDIR)$(MAN1_DIR)/isag.1
-endif
 endif
 endif
 
@@ -358,8 +349,7 @@ ifdef REQUIRE_NLS
 	done
 endif
 
-install_base: all sa1 sa2 sysstat.sysconfig install_man install_nls \
-	contrib/isag/isag
+install_base: all sa1 sa2 sysstat.sysconfig install_man install_nls
 	mkdir -p $(DESTDIR)$(SA_LIB_DIR)
 	mkdir -p $(DESTDIR)$(SA_DIR)
 ifeq ($(CLEAN_SA_DIR),y)
@@ -380,9 +370,6 @@ endif
 	$(INSTALL_BIN) mpstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) pidstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) cifsiostat $(DESTDIR)$(BIN_DIR)
-ifeq ($(INSTALL_ISAG),y)
-	$(INSTALL_BIN) contrib/isag/isag $(DESTDIR)$(BIN_DIR)
-endif
 	$(INSTALL_DATA) sysstat.ioconf $(DESTDIR)$(SYSCONFIG_DIR)
 	$(INSTALL_DATA) sysstat.sysconfig $(DESTDIR)$(SYSCONFIG_DIR)/sysstat
 ifeq ($(INSTALL_DOC),y)
@@ -485,9 +472,6 @@ ifeq ($(INSTALL_DOC),y)
 	rm -f $(DESTDIR)$(MAN1_DIR)/mpstat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/pidstat.1*
 	rm -f $(DESTDIR)$(MAN1_DIR)/cifsiostat.1*
-ifeq ($(INSTALL_ISAG),y)
-	rm -f $(DESTDIR)$(MAN1_DIR)/isag.1
-endif
 endif
 
 uninstall_nls:
@@ -513,9 +497,6 @@ uninstall_base: uninstall_man uninstall_nls
 	rm -f $(DESTDIR)$(BIN_DIR)/mpstat
 	rm -f $(DESTDIR)$(BIN_DIR)/pidstat
 	rm -f $(DESTDIR)$(BIN_DIR)/cifsiostat
-ifeq ($(INSTALL_ISAG),y)
-	rm -f $(DESTDIR)$(BIN_DIR)/isag
-endif
 	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(SA_LIB_DIR)
 	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(SA_DIR)/[0-9]?????
 	-rmdir --ignore-fail-on-non-empty $(DESTDIR)$(SA_DIR)
@@ -598,7 +579,6 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f sysstat.sysconfig cron/sysstat.crond cron/sysstat.cron.daily sysstat.service
 	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer cron/sysstat-summary.service cron/sysstat-summary.timer
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
-	rm -f contrib/isag/isag
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
 	rm -f man/cifsiostat.1
 	rm -f *.log config.status

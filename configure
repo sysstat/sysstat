@@ -640,7 +640,6 @@ cron_interval
 cron_owner
 INSTALL_CRON
 CLEAN_SA_DIR
-INSTALL_ISAG
 COMPRESS_MANPG
 IGNORE_FILE_ATTRIBUTES
 MAN_GROUP
@@ -740,7 +739,6 @@ enable_largefile
 enable_nls
 enable_file_attr
 enable_compress_manpg
-enable_install_isag
 enable_clean_sa_dir
 enable_install_cron
 enable_collect_all
@@ -1383,7 +1381,6 @@ Optional Features:
   --disable-nls           disable National Language Support
   --disable-file-attr     do not set attributes on files being installed
   --enable-compress-manpg compress sysstat manual pages
-  --enable-install-isag   install isag script
   --enable-clean-sa-dir   clean system activity directory
   --enable-install-cron   install a crontab to start sar
   --enable-collect-all    collect all possible activities
@@ -4865,7 +4862,6 @@ echo .
 #  --collect-all           tell sadc to collect all possible data
 #  --enable-clean-sa-dir   clean system activity directory
 #  --enable-compress-manpg compress manual pages
-#  --enable-install-isag   install isag script
 #  --enable-debuginfo      enable debug output (--debuginfo option)
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors	   do not link against libsensors even if available
@@ -5167,26 +5163,6 @@ fi
 $as_echo "$AUX_MPG" >&6; }
 
 
-# Check whether isag should be installed
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether isag script should be installed" >&5
-$as_echo_n "checking whether isag script should be installed... " >&6; }
-# Check whether --enable-install-isag was given.
-if test "${enable_install_isag+set}" = set; then :
-  enableval=$enable_install_isag; AUX_IIS=$enableval
-else
-  AUX_IIS=no
-fi
-
-if test $AUX_IIS != "yes"; then
-   INSTALL_ISAG=n
-   AUX_IIS=no
-else
-   INSTALL_ISAG=y
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $AUX_IIS" >&5
-$as_echo "$AUX_IIS" >&6; }
-
-
 # Check whether sa directory should be cleaned
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether system activity directory should be cleaned" >&5
 $as_echo_n "checking whether system activity directory should be cleaned... " >&6; }
@@ -5458,8 +5434,6 @@ ac_config_files="$ac_config_files man/iostat.1:man/iostat.in"
 	# File must be renamed
 ac_config_files="$ac_config_files man/cifsiostat.1:man/cifsiostat.in"
 	# File must be renamed
-ac_config_files="$ac_config_files contrib/isag/isag"
- # Permissions must be changed
 
 ac_config_files="$ac_config_files Makefile"
 
@@ -6193,7 +6167,6 @@ do
     "man/sysstat.5") CONFIG_FILES="$CONFIG_FILES man/sysstat.5:man/sysstat.in" ;;
     "man/iostat.1") CONFIG_FILES="$CONFIG_FILES man/iostat.1:man/iostat.in" ;;
     "man/cifsiostat.1") CONFIG_FILES="$CONFIG_FILES man/cifsiostat.1:man/cifsiostat.in" ;;
-    "contrib/isag/isag") CONFIG_FILES="$CONFIG_FILES contrib/isag/isag" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
@@ -6614,7 +6587,6 @@ which seems to be undefined.  Please make sure it is defined" >&2;}
     "sa2":F) chmod +x sa2 ;;
     "cron/sysstat.crond.sample.in":F) sed s/^/#/ cron/sysstat.crond.sample.in > cron/sysstat.crond.sample ;;
     "sysstat":F) chmod +x sysstat ;;
-    "contrib/isag/isag":F) chmod +x contrib/isag/isag ;;
 
   esac
 done # for ac_tag
