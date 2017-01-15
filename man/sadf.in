@@ -181,7 +181,7 @@ Also display %idle state in graphs for CPU statistics.
 Do not display views where all graphs have only zero values.
 .RE
 
-THe following option is used to control raw output displayed by
+The following option is used to control raw output displayed by
 .BR "sadf -r":
 
 .B showhints
