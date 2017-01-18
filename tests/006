@@ -1,0 +1,1 @@
+./pidstat -V >/dev/null

@@ -570,6 +570,17 @@ else
 po-files:
 endif
 
+TESTDIR="tests"
+TESTRUN="/bin/sh"
+TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
+
+unit:
+	@echo $(X) 2>&1
+	@cat $(TESTDIR)/$(X) | $(TESTRUN)
+
+test: all
+	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit;)
+
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS
 	find nls -name "*.gmo" -exec rm -f {} \;

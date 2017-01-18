@@ -1,0 +1,1 @@
+./mpstat -V >/dev/null

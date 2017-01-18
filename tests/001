@@ -1,0 +1,1 @@
+./sar -V >/dev/null
