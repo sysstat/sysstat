@@ -48,8 +48,6 @@ iostat
 tapestat
 mpstat
 pidstat
-nfsiostat
-nfsiostat-sysstat
 cifsiostat
 core
 TAGS
