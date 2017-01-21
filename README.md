@@ -1,4 +1,4 @@
-## sysstat - System performance tools for the Linux operating system...
+## sysstat - System performance tools for the Linux operating system
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
 [![Build Status](https://travis-ci.org/sysstat/sysstat.svg?branch=master)](https://travis-ci.org/sysstat/sysstat)
 
@@ -21,6 +21,8 @@ Sysstat also contains tools you can schedule via cron or systemd to collect and 
 * **sa1** collects and stores binary data in the system activity daily data file. It is a front end to sadc designed to be run from cron or systemd.
 * **sa2** writes a summarized daily activity report. It is a front end to sar designed to be run from cron or systemd.
 * **sadf** displays data collected by sar in multiple formats (CSV, XML, JSON, etc.) and can be used for data exchange with other programs. This command can also be used to draw graphs for the various activities collected by sar using SVG (Scalable Vector Graphics) format.
+
+Default sampling interval is 10 minutes but this can be changed of course (it can be as small as 1 second).
 
 #### System statistics collected by sar:
 - Input / Output and transfer rate statistics (global, per device, per partition and per network filesystem)
@@ -49,7 +51,7 @@ Sysstat also contains tools you can schedule via cron or systemd to collect and 
 - Support for hotplug CPUs (it detects automagically processors that are disabled or enabled on the fly) and tickless CPUs.
 - Works on many different architectures, whether 32- or 64-bit.
 - Needs very little CPU time to run (written in C).
-- System statistics collected by sar/sadc can be saved in a file for future inspection. You can configure the length of data history to keep.
+- System statistics collected by sar/sadc can be saved in a file for future inspection. You can configure the length of data history to keep. There is no limit for this history length but the available space on your storage device.
 - System statistics collected by sar/sadc can be exported in various different formats (CSV, XML, JSON, SVG, etc.). DTD and XML Schema documents are included in sysstat package. JSON output format is also available for mpstat and iostat commands.
 - Smart color output for easier statistics reading.
 
@@ -135,7 +137,7 @@ can enter the following option to activate data collecting (either using cron or
 $ ./configure --enable-install-cron
 ```
 
-Please enter "./configure --help" to display them.
+Please enter "./configure --help" to display all possible options.
 There is another way to configure sysstat instead of entering "./configure":
 this is the **Interactive Configuration script** (_iconfig_) which will ask you
 for the value of the main sysstat variables and parameters.
