@@ -50,3 +50,4 @@ cifsiostat
 core
 TAGS
 nls/*.gmo
+tests/*.tmp
