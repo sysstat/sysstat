@@ -1,8 +1,8 @@
 # @PACKAGE_NAME@-@PACKAGE_VERSION@ configuration file.
 
 # How long to keep log files (in days).
-# If value is greater than 28, then log files are kept in
-# multiple directories, one for each month.
+# If value is greater than 28, then use sadc's option -D to prevent older
+# data files from being overwritten. See sadc(8) and sysstat(5) manual pages.
 HISTORY=@HISTORY@
 
 # Compress (using xz, gzip or bzip2) sa and sar files older than (in days):
