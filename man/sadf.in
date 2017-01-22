@@ -164,6 +164,12 @@ view, some with only very small values, and others with high ones,
 the latter making the former hardly visible.
 .RE
 
+.BR height= value
+.RS
+Set SVG canvas height to
+.IR value .
+.RE
+
 .B oneday
 .RS
 Display graphs data over a period of 24 hours. Note that hours are still
