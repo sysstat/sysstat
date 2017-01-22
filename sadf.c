@@ -50,6 +50,7 @@ unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */
 unsigned int format = 0;	/* Output format */
 unsigned int f_position = 0;	/* Output format position in array */
+unsigned int canvas_height = 0; /* SVG canvas height value set with option -O */
 
 /* File header */
 struct file_header file_hdr;
@@ -1274,9 +1275,19 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 	/* Use a decimal point to make SVG code locale independent */
 	setlocale(LC_NUMERIC, "C");
 
-	/* Calculate the number of graphs to display */
-	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
-				    file_actlst, rectime, loctime);
+	if (SET_CANVAS_HEIGHT(flags)) {
+		/*
+		 * Option "-O height=..." used: This is not a number
+		 * of graphs but the SVG canvas height set on the command line.
+		 */
+		graph_nr = canvas_height;
+	}
+	else {
+		/* Calculate the number of graphs to display */
+		graph_nr = get_svg_graph_nr(ifd, file, file_magic,
+					    file_actlst, rectime, loctime);
+	}
+
 	if (!graph_nr)
 		/* No graph to display */
 		return;
@@ -1426,7 +1437,7 @@ int main(int argc, char **argv)
 	int day_offset = 0;
 	int i, rc;
 	char dfile[MAX_FILE_LEN];
-	char *t;
+	char *t, *v;
 
 	/* Get HZ */
 	get_HZ();
@@ -1503,6 +1514,14 @@ int main(int argc, char **argv)
 				}
 				else if (!strcmp(t, K_SHOWHINTS)) {
 					flags |= S_F_RAW_SHOW_HINTS;
+				}
+				else if (!strncmp(t, K_HEIGHT, strlen(K_HEIGHT))) {
+					v = t + strlen(K_HEIGHT);
+					if (!strlen(v) || (strspn(v, DIGITS) != strlen(v))) {
+						usage(argv[0]);
+					}
+					canvas_height = atoi(v);
+					flags |= S_F_SVG_HEIGHT;
 				}
 				else {
 					usage(argv[0]);

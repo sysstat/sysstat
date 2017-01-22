@@ -896,7 +896,8 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
  * Display the header of the report (SVG format).
  *
  * IN:
- * @parm	Specific parameter. Here: number of graphs to display.
+ * @parm	Specific parameter. Here: number of graphs to display or
+ *		canvas height entered on the command line.
  * @action	Action expected from current function.
  * @dfile	Name of system activity data file (unused here).
  * @file_magic	System activity file magic header (unused here).
@@ -926,7 +927,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 	if (action & F_MAIN) {
 		printf(" width=\"%d\" height=\"%d\""
 		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
-		       SVG_V_XSIZE, SVG_H_YSIZE + SVG_T_YSIZE * (*graph_nr));
+		       SVG_V_XSIZE,
+		       SET_CANVAS_HEIGHT(flags) ? *graph_nr
+						: SVG_H_YSIZE + SVG_T_YSIZE * (*graph_nr));
 		printf("<text x= \"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
