@@ -1,4 +1,4 @@
-.TH SADF 1 "JANUARY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "FEBRUARY 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -175,6 +175,11 @@ Set SVG canvas height to
 Display graphs data over a period of 24 hours. Note that hours are still
 printed in UTC by default: You should use option -T to print them in local
 time and get a time window starting from midnight.
+.RE
+
+.B packed
+.RS
+Group all views from the same activity (and for the same device) on the same row.
 .RE
 
 .B showidle
