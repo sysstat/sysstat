@@ -1353,8 +1353,11 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		if (read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT, 0,
 				     file, &rtype, 0, file_magic, file_actlst,
 				     rectime, loctime))
-			/* End of sa data file */
-			return;
+		{
+			/* End of sa data file: No views displayed */
+			graph_nr = 0;
+			goto close_svg;
+		}
 	}
 	while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
 	       (tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
@@ -1405,6 +1408,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		}
 	}
 
+close_svg:
 	/* Print SVG trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&graph_nr, F_END, file, file_magic,

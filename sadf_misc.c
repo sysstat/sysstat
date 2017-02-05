@@ -849,6 +849,11 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 	}
 
 	if (action & F_END) {
+		if (!*graph_nr) {
+			/* No views displayed */
+			printf("<text x= \"0\" y=\"60\" text-anchor=\"start\" stroke=\"red\">");
+			printf("No data!</text>\n");
+		}
 		printf("</svg>\n");
 	}
 }
