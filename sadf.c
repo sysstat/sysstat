@@ -418,32 +418,37 @@ time_t get_time_ref(void)
 
 /*
  ***************************************************************************
- * Compute the number of SVG graphs to display. Each activity selected may
- * have several graphs. Moreover we have to take into account volatile
- * activities (eg. CPU) for which the number of graphs will depend on the
- * highest number of items (eg. maximum number of CPU) saved in the file.
- * This number may be higher than the real number of graphs that will be
- * displayed since some items have a preallocation constant.
+ * Compute the number of rows that will contain SVG views. Usually only one
+ * view is displayed on a row, unless the "packed" option has been entered.
+ * Each activity selected may have several views. Moreover we have to take
+ * into account volatile activities (eg. CPU) for which the number of views
+ * will depend on the highest number of items (eg. maximum number of CPU)
+ * saved in the file. This number may be higher than the real number of views
+ * that will be displayed since some items have a preallocation constant.
  *
  * IN:
- * @ifd		File descriptor of input file.
- * @file	Name of file being read.
- * @file_magic	file_magic structure filled with file magic header data.
- * @file_actlst	List of (known or unknown) activities in file.
- * @rectime	Structure where timestamp (expressed in local time or in UTC
- *		depending on whether options -T/-t have been used or not) can
- *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
+ * @ifd			File descriptor of input file.
+ * @file		Name of file being read.
+ * @file_magic		file_magic structure filled with file magic header data.
+ * @file_actlst		List of (known or unknown) activities in file.
+ * @rectime		Structure where timestamp (expressed in local time or
+ *			in UTC depending on whether options -T/-t have been
+ *			used or not) can be saved for current record.
+ * @loctime		Structure where timestamp (expressed in local time)
+ *			can be saved for current record.
+ *
+ * OUT:
+ * @views_per_row	Maximum number of views that will be displayed on a
+ *			single row (useful only if "packed" option entered).
  *
  * RETURNS:
- * Total number of graphs to display, taking into account only activities
+ * Number of rows containing views, taking into account only activities
  * to be displayed, and selected period of time (options -s/-e).
  ***************************************************************************
  */
 int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		     struct file_activity *file_actlst, struct tm *rectime,
-		     struct tm *loctime)
+		     struct tm *loctime, int *views_per_row)
 {
 	int i, n, p, eosaf;
 	int rtype, new_tot_g_nr, tot_g_nr = 0;
@@ -457,7 +462,7 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 	}
 	sr_act_nr(save_act_nr, DO_SAVE);
 
-	/* Init total number of graphs for each activity */
+	/* Init total number of views for each activity */
 	for (i = 0; i < NR_ACT; i++) {
 		id_g_nr[i] = 0;
 	}
@@ -485,11 +490,19 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 			if (!IS_SELECTED(act[p]->options))
 				continue;
 
-			if (ONE_GRAPH_PER_ITEM(act[p]->options)) {
-				 n = act[p]->g_nr * act[p]->nr;
+			if (PACK_VIEWS(flags)) {
+				/* One activity = one row with multiple views */
+				n = 1;
 			}
 			else {
+				/* One activity = multiple rows with only one view */
 				n = act[p]->g_nr;
+			}
+			if (ONE_GRAPH_PER_ITEM(act[p]->options)) {
+				 n = n * act[p]->nr;
+			}
+			if (act[p]->g_nr > *views_per_row) {
+				*views_per_row = act[p]->g_nr;
 			}
 
 			if (n > id_g_nr[i]) {
@@ -536,6 +549,10 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		exit(2);
 	}
 	sr_act_nr(save_act_nr, DO_RESTORE);
+
+	if (*views_per_row > MAX_VIEWS_ON_A_ROW) {
+		*views_per_row = MAX_VIEWS_ON_A_ROW;
+	}
 
 	return tot_g_nr;
 }
@@ -1264,8 +1281,9 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 			 struct tm *rectime, struct tm *loctime, char *file,
 			 struct file_magic *file_magic)
 {
+	struct svg_hdr_parm parm;
 	int i, p;
-	int curr = 1, rtype, g_nr = 0;
+	int curr = 1, rtype, g_nr = 0, views_per_row = 1;
 	int eosaf = TRUE, reset = TRUE;
 	long cnt = 1;
 	off_t fpos;
@@ -1275,6 +1293,10 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 	/* Use a decimal point to make SVG code locale independent */
 	setlocale(LC_NUMERIC, "C");
 
+	/* Calculate the number of rows and the max number of views per row to display */
+	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
+				    file_actlst, rectime, loctime, &views_per_row);
+
 	if (SET_CANVAS_HEIGHT(flags)) {
 		/*
 		 * Option "-O height=..." used: This is not a number
@@ -1282,19 +1304,17 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		 */
 		graph_nr = canvas_height;
 	}
-	else {
-		/* Calculate the number of graphs to display */
-		graph_nr = get_svg_graph_nr(ifd, file, file_magic,
-					    file_actlst, rectime, loctime);
-	}
 
 	if (!graph_nr)
 		/* No graph to display */
 		return;
 
+	parm.graph_nr = graph_nr;
+	parm.views_per_row = PACK_VIEWS(flags) ? views_per_row : 1;
+
 	/* Print SVG header */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&graph_nr, F_BEGIN + F_MAIN, file, file_magic,
+		(*fmt[f_position]->f_header)(&parm, F_BEGIN + F_MAIN, file, file_magic,
 					     &file_hdr, cpu_nr, act, id_seq);
 	}
 
@@ -1522,6 +1542,9 @@ int main(int argc, char **argv)
 					}
 					canvas_height = atoi(v);
 					flags |= S_F_SVG_HEIGHT;
+				}
+				else if (!strcmp(t, K_PACKED)) {
+					flags |= S_F_SVG_PACKED;
 				}
 				else {
 					usage(argv[0]);

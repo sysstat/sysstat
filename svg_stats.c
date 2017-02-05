@@ -782,7 +782,7 @@ void skip_current_view(char **out, int *pos, int group)
  * Display all graphs for current activity.
  *
  * IN:
- * @g_nr	Number of sets of graphs (views) to display.
+ * @g_nr	Number of views to display.
  * @g_type	Type of graph (SVG_LINE_GRAPH, SVG_BAR_GRAPH) for each view.
  * @title	Titles for each set of graphs.
  * @g_title	Titles for each graph.
@@ -792,7 +792,7 @@ void skip_current_view(char **out, int *pos, int group)
  * @spmax	Array containing max values for graphs.
  * @out		Pointer on array of chars for each graph definition.
  * @outsize	Size of array of chars for each graph definition.
- * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * @svg_p	SVG specific parameters: Current views row number (.@graph_no),
  *		time for the first sample of stats (.@ust_time_first), and
  *		times used as start and end values on the X axis
  *		(.@ust_time_ref and .@ust_time_end).
@@ -805,7 +805,7 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 {
 	char *out_p;
 	int i, j, dp, pos = 0, views_nr = 0;
-	int v_gridnr;
+	int v_gridnr, xv, yv;
 	unsigned int asfactor[16];
 	long int xpos;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
@@ -816,10 +816,10 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 	       svg_p->graph_no,
 	       SVG_H_YSIZE + svg_p->graph_no * SVG_T_YSIZE);
 
-	/* For each set of graphs which are part of current activity */
+	/* For each view which is part of current activity */
 	for (i = 0; i < g_nr; i++) {
 
-		/* Get global min and max value for current set of graphs */
+		/* Get global min and max value for current view */
 		get_global_extrema(pos, group[i], spmin, spmax, &gmin, &gmax);
 
 		/* Don't display empty views if requested */
@@ -830,22 +830,30 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 		/* Increment number of views actually displayed */
 		views_nr++;
 
+		/* Compute top left position of view */
+		if (PACK_VIEWS(flags)) {
+			xv = (views_nr - 1) * SVG_T_XSIZE;
+			yv = 0;
+		}
+		else {
+			xv = 0;
+			yv = (views_nr - 1) * SVG_T_YSIZE;
+		}
+
 		/* Graph background */
-		printf("<rect x=\"0\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
-		       (views_nr - 1) * SVG_T_YSIZE,
-		       SVG_V_YSIZE, SVG_V_XSIZE);
+		printf("<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
+		       xv, yv, SVG_V_YSIZE, SVG_V_XSIZE);
 
 		/* Graph title */
-		printf("<text x=\"0\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s",
-		       20 + (views_nr - 1) * SVG_T_YSIZE, title[i]);
+		printf("<text x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s",
+		       xv, 20 + yv, title[i]);
 		if (item_name) {
 			printf(" [%s]", item_name);
 		}
 		printf("\n");
 		printf("<tspan x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none; font-size: 12px\">"
 		       "(Min, Max values)</tspan>\n</text>\n",
-		       5 + SVG_M_XSIZE + SVG_G_XSIZE,
-		       25 + (views_nr - 1) * SVG_T_YSIZE);
+		       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + 25);
 
 		/*
 		 * At least two samples are needed.
@@ -854,17 +862,17 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 		if ((record_hdr->ust_time == svg_p->ust_time_first) ||
 		    (*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
 			/* No data found */
-			printf("<text x=\"0\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
-			       SVG_M_YSIZE + (views_nr - 1) * SVG_T_YSIZE);
+			printf("<text x=\"%d\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
+			       xv, yv + SVG_M_YSIZE);
 			skip_current_view(out, &pos, group[i]);
 			continue;
 		}
 
 		/* X and Y axis */
 		printf("<polyline points=\"%d,%d %d,%d %d,%d\" stroke=\"white\" stroke-width=\"2\"/>\n",
-		       SVG_M_XSIZE, SVG_M_YSIZE + (views_nr - 1) * SVG_T_YSIZE,
-		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + (views_nr - 1) * SVG_T_YSIZE,
-		       SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + (views_nr - 1) * SVG_T_YSIZE);
+		       xv + SVG_M_XSIZE, yv + SVG_M_YSIZE,
+		       xv + SVG_M_XSIZE, yv + SVG_M_YSIZE + SVG_G_YSIZE,
+		       xv + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + SVG_G_YSIZE);
 
 		/* Autoscaling graphs if needed */
 		gr_autoscaling(asfactor, 16, group[i], g_type[i], pos, gmax, spmax);
@@ -876,7 +884,7 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 			snprintf(val, 32, "x%u ", asfactor[j]);
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
 			       "%s %s(%.*f, %.*f)</text>\n",
-			       5 + SVG_M_XSIZE + SVG_G_XSIZE, SVG_M_YSIZE + (views_nr - 1) * SVG_T_YSIZE + j * 15,
+			       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + j * 15,
 			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
 			       asfactor[j] == 1 ? "" : val,
 			       !dp * 2, *(spmin + pos + j) * asfactor[j],
@@ -885,7 +893,7 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 
 		/* Translate to proper position for current graph within current activity */
 		printf("<g transform=\"translate(%d,%d)\">\n",
-		       SVG_M_XSIZE, SVG_M_YSIZE + SVG_G_YSIZE + (views_nr - 1) * SVG_T_YSIZE);
+		       xv + SVG_M_XSIZE, yv + SVG_M_YSIZE + SVG_G_YSIZE);
 
 		/* Grid */
 		if (g_type[i] == SVG_LINE_GRAPH) {
@@ -958,8 +966,8 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 	}
 	printf("</g>\n");
 
-	/* Next graph */
-	(svg_p->graph_no) += views_nr;
+	/* For next row of views */
+	(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
 }
 
 /*

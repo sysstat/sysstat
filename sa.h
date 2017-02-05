@@ -106,6 +106,7 @@
 #define S_F_SVG_SHOW_IDLE	0x00080000
 #define S_F_UNIT		0x00100000
 #define S_F_SVG_HEIGHT		0x00200000
+#define S_F_SVG_PACKED		0x00400000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -130,6 +131,7 @@
 #define DISPLAY_IDLE(m)			(((m) & S_F_SVG_SHOW_IDLE) == S_F_SVG_SHOW_IDLE)
 #define DISPLAY_UNIT(m)			(((m) & S_F_UNIT) == S_F_UNIT)
 #define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT) == S_F_SVG_HEIGHT)
+#define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED) == S_F_SVG_PACKED)
 
 #define AO_F_NULL		0x00000000
 
@@ -211,6 +213,7 @@
 #define K_SHOWIDLE	"showidle"
 #define K_SHOWHINTS	"showhints"
 #define K_HEIGHT	"height="
+#define K_PACKED	"packed"
 
 /* Groups of activities */
 #define G_DEFAULT	0x00
@@ -300,6 +303,11 @@ struct svg_parm {
 	int restart;			/* TRUE if we have just met a RESTART record */
 };
 
+/* Structure used when displaying SVG header */
+struct svg_hdr_parm {
+	int graph_nr;	   /* Number of rows of views to display or canvas height entered on the command line */
+	int views_per_row; /* Maximum number of views on a single row */
+};
 
 /*
  ***************************************************************************
@@ -898,8 +906,10 @@ struct report_format {
  *   |   v   <---><------------------------------>
  *   |         6                8
  *   | Gap
- *   v<--------------------------------------------------------------->
+ *   v<---------------------------------------------------------------> Gap
  *                                    7
+ *    <--------------------------------------------------------------------->
+ *                                      8
  */
 
 /* #8 */
@@ -908,6 +918,8 @@ struct report_format {
 #define SVG_M_XSIZE	70
 /* #7 */
 #define SVG_V_XSIZE	1050
+/* #8 */
+#define SVG_T_XSIZE	1060
 
 /* #5 */
 #define SVG_G_YSIZE	200
@@ -927,6 +939,9 @@ struct report_format {
 
 /* Block size used to allocate arrays for graphs data */
 #define CHUNKSIZE	4096
+
+/* Maximum number of views on a single row */
+#define MAX_VIEWS_ON_A_ROW	6
 
 #define SVG_LINE_GRAPH	1
 #define SVG_BAR_GRAPH	2

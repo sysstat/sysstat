@@ -896,8 +896,9 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
  * Display the header of the report (SVG format).
  *
  * IN:
- * @parm	Specific parameter. Here: number of graphs to display or
- *		canvas height entered on the command line.
+ * @parm	Specific parameters. Here: number of rows of views to display
+ *		or canvas height entered on the command line (@graph_nr), and
+ *		max number of views on a single row (@views_per_row).
  * @action	Action expected from current function.
  * @dfile	Name of system activity data file (unused here).
  * @file_magic	System activity file magic header (unused here).
@@ -912,7 +913,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				  struct file_header *file_hdr, __nr_t cpu_nr,
 				  struct activity *act[], unsigned int id_seq[])
 {
-	int *graph_nr = (int *) parm;
+	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -927,9 +928,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 	if (action & F_MAIN) {
 		printf(" width=\"%d\" height=\"%d\""
 		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
-		       SVG_V_XSIZE,
-		       SET_CANVAS_HEIGHT(flags) ? *graph_nr
-						: SVG_H_YSIZE + SVG_T_YSIZE * (*graph_nr));
+		       SVG_T_XSIZE * (hdr_parm->views_per_row),
+		       SET_CANVAS_HEIGHT(flags) ? hdr_parm->graph_nr
+						: SVG_H_YSIZE + SVG_T_YSIZE * (hdr_parm->graph_nr));
 		printf("<text x= \"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
@@ -943,7 +944,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		if (!(action & F_BEGIN)) {
 			/* Give actual SVG height */
 			printf("<!-- Actual canvas height: %d -->\n",
-			       SVG_H_YSIZE + SVG_T_YSIZE * (*graph_nr));
+			       SVG_H_YSIZE + SVG_T_YSIZE * (hdr_parm->graph_nr));
 		}
 		printf("</svg>\n");
 	}
