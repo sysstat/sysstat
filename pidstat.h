@@ -100,9 +100,11 @@
 #define PID_CMDLINE	"/proc/%u/cmdline"
 #define PID_SMAP	"/proc/%u/smaps"
 #define PID_FD		"/proc/%u/fd"
+#define PID_SCHED	"/proc/%u/schedstat"
 
 #define PROC_TASK	"/proc/%u/task"
 #define TASK_STAT	"/proc/%u/task/%u/stat"
+#define TASK_SCHED	"/proc/%u/task/%u/schedstat"
 #define TASK_STATUS	"/proc/%u/task/%u/status"
 #define TASK_IO		"/proc/%u/task/%u/io"
 #define TASK_CMDLINE	"/proc/%u/task/%u/cmdline"
@@ -176,6 +178,7 @@ struct pid_stats {
 	long long          cstime			__attribute__ ((packed));
 	unsigned long long gtime			__attribute__ ((packed));
 	long long          cgtime			__attribute__ ((packed));
+	unsigned long long wtime			__attribute__ ((packed));
 	unsigned long long vsz				__attribute__ ((packed));
 	unsigned long long rss				__attribute__ ((packed));
 	unsigned long      nvcsw			__attribute__ ((packed));
