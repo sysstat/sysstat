@@ -942,6 +942,7 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 				 * displayed a line of stats.
 				 */
 				parm.restart = FALSE;
+				parm.ust_time_end = record_hdr[*curr].ust_time;
 				*curr ^= 1;
 				if (*cnt > 0) {
 					(*cnt)--;
@@ -959,9 +960,9 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 							  file_actlst, rectime, loctime);
 			}
 			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
+
 			*curr ^= 1;
 		}
-		
 	}
 	while (!*eosaf);
 
@@ -969,11 +970,8 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 
 	/* Determine X axis end value */
 	if (DISPLAY_ONE_DAY(flags) &&
-	    (parm.ust_time_ref + (3600 * 24) > record_hdr[!*curr].ust_time)) {
+	    (parm.ust_time_ref + (3600 * 24) > parm.ust_time_end)) {
 		parm.ust_time_end = parm.ust_time_ref + (3600 * 24);
-	}
-	else {
-		parm.ust_time_end = record_hdr[!*curr].ust_time;
 	}
 
 	/* Actually display graphs for current activity */
