@@ -579,7 +579,7 @@ unit:
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
 test: all
-	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit;)
+	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp
