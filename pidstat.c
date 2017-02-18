@@ -1402,7 +1402,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 	if (dis) {
 		PRINT_ID_HDR("#      Time", pidflag);
 		if (DISPLAY_CPU(actflag)) {
-			printf("    %%usr %%system  %%guest    %%CPU   CPU");
+			printf("    %%usr %%system  %%guest   %%wait    %%CPU   CPU");
 		}
 		if (DISPLAY_MEM(actflag)) {
 			printf("  minflt/s  majflt/s     VSZ     RSS   %%MEM");
@@ -1435,13 +1435,14 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_pc(4, 7, 2,
+			cprintf_pc(5, 7, 2,
 				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 				   0.0 :
 				   SP_VALUE_100(pstp->utime - pstp->gtime,
 					    pstc->utime - pstc->gtime, itv),
 				   SP_VALUE_100(pstp->stime,  pstc->stime, itv),
 				   SP_VALUE_100(pstp->gtime,  pstc->gtime, itv),
+				   SP_VALUE_100(pstp->wtime, pstc->wtime, itv),
 				   /* User time already includes guest time */
 				   IRIX_MODE_OFF(pidflag) ?
 				   SP_VALUE_100(pstp->utime + pstp->stime,
