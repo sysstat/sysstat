@@ -412,6 +412,63 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 }
 
 /*
+ ***************************************************************************
+ * Read stats from /proc/#[/task/##]/schedstat.
+ *
+ * IN:
+ * @pid		Process whose stats are to be read.
+ * @pst		Pointer on structure where stats will be saved.
+ * @tgid	If != 0, thread whose stats are to be read.
+ *
+ * OUT:
+ * @pst		Pointer on structure where stats have been saved.
+ * @thread_nr	Number of threads of the process.
+ *
+ * RETURNS:
+ * 0 if stats have been successfully read, and 1 otherwise.
+ ***************************************************************************
+ */
+int read_proc_pid_sched(unsigned int pid, struct pid_stats *pst,
+		       unsigned int *thread_nr, unsigned int tgid)
+{
+	int fd, sz, rc;
+	char filename[128];
+	static char buffer[1024 + 1];
+	unsigned long long wtime;
+
+	if (tgid) {
+		sprintf(filename, TASK_SCHED, tgid, pid);
+	}
+	else {
+		sprintf(filename, PID_SCHED, pid);
+	}
+
+	if ((fd = open(filename, O_RDONLY)) < 0)
+		/* No such process */
+		return 1;
+
+	sz = read(fd, buffer, 1024);
+	close(fd);
+	if (sz <= 0)
+		return 1;
+	buffer[sz] = '\0';
+
+	rc = sscanf(buffer,
+		    "%*u %llu %*d\n",
+		    &wtime);
+
+	if (rc < 1)
+		return 1;
+
+	/* Convert ns to jiffies */
+	pst->wtime = wtime * HZ / 1000000000;
+
+	pst->pid = pid;
+	pst->tgid = tgid;
+	return 0;
+}
+
+/*
  *****************************************************************************
  * Read stats from /proc/#[/task/##]/status.
  *
@@ -726,6 +783,9 @@ int read_pid_stats(unsigned int pid, struct pid_stats *pst,
 		   unsigned int *thread_nr, unsigned int tgid)
 {
 	if (read_proc_pid_stat(pid, pst, thread_nr, tgid))
+		return 1;
+
+	if (read_proc_pid_sched(pid, pst, thread_nr, tgid))
 		return 1;
 
 	if (DISPLAY_CMDLINE(pidflag)) {
@@ -1573,7 +1633,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
-		printf("    %%usr %%system  %%guest    %%CPU   CPU  Command\n");
+		printf("    %%usr %%system  %%guest   %%wait    %%CPU   CPU  Command\n");
 	}
 
 	for (p = 0; p < pid_nr; p++) {
@@ -1583,13 +1643,14 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		cprintf_pc(4, 7, 2,
+		cprintf_pc(5, 7, 2,
 			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			   0.0 :
 			   SP_VALUE_100(pstp->utime - pstp->gtime,
 				    pstc->utime - pstc->gtime, itv),
 			   SP_VALUE_100(pstp->stime, pstc->stime, itv),
 			   SP_VALUE_100(pstp->gtime, pstc->gtime, itv),
+			   SP_VALUE_100(pstp->wtime, pstc->wtime, itv),
 			   /* User time already includes guest time */
 			   IRIX_MODE_OFF(pidflag) ?
 			   SP_VALUE_100(pstp->utime + pstp->stime,
