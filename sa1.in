@@ -22,15 +22,21 @@ then
 	SADC_OPTIONS="${SADC_OPTIONS} -D"
 fi
 
+set -e
 ENDIR=@SA_LIB_DIR@
 cd ${ENDIR}
+LOCKFILE=/var/run/sysstat/sadc.LOCK
+mkdir -p /var/run/sysstat
+lockfile -r2 -30 "$LOCKFILE" 2>/dev/null
+trap "/bin/rm -f $LOCKFILE" EXIT
+
 [ "$1" = "--boot" ] && shift && BOOT=y || BOOT=n
 if [ $# = 0 ] && [ "${BOOT}" = "n" ]
 then
 # Note: Stats are written at the end of previous file *and* at the
 # beginning of the new one (when there is a file rotation) only if
 # outfile has been specified as '-' on the command line...
-	exec ${ENDIR}/sadc -F -L ${SADC_OPTIONS} 1 1 ${SA_DIR}
+	 ${ENDIR}/sadc -F -L ${SADC_OPTIONS} 1 1 ${SA_DIR}
 else
-	exec ${ENDIR}/sadc -F -L ${SADC_OPTIONS} $* ${SA_DIR}
+	 ${ENDIR}/sadc -F -L ${SADC_OPTIONS} $* ${SA_DIR}
 fi

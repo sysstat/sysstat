@@ -43,6 +43,17 @@ ENDIR=@bindir@
 
 [ -f "${DFILE}" ] || exit 0
 cd ${ENDIR}
+
+LOCKFILE=/var/run/sysstat/sadc.LOCK
+mkdir -p /var/run/sysstat
+if ! lockfile -r6 -600 $LOCKFILE 2>/dev/null; then
+  if test `find $LOCKFILE -mmin +180 2>/dev/null`; then
+    rm -f $LOCKFILE
+    logger -p cron.alert "$0: detected an old lockfile \"$LOCKFILE\"."
+  fi
+fi
+trap "/bin/rm -f $LOCKFILE" EXIT
+
 if [ x${REPORTS} != xfalse ]
 then
 	${ENDIR}/sar $* -f ${DFILE} > ${RPT}
