@@ -156,7 +156,8 @@ $ sudo make install
 ### Feedback welcome!
 
 Of course tell me if there are any problems. This is the only way I can improve
-'sysstat'. Please also remember to read the FAQ that comes with sysstat.
+'sysstat'. Please also remember to read the FAQ that comes with sysstat or available
+from the Wiki page on GitHub.
 
 Patches and suggestions for improvements are always welcome!
 Send them to "sysstat (at) orange (dot) fr".
