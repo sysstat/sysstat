@@ -1702,22 +1702,11 @@ int main(int argc, char **argv)
 				/* File already specified */
 				usage(argv[0]);
 			}
-			if (!strcmp(argv[opt], "-")) {
-				/* File name set to '-' */
-				set_default_file(dfile, 0, -1);
-				opt++;
-			}
-			else if (!strncmp(argv[opt], "-", 1)) {
-				/* Bad option */
-				usage(argv[0]);
-			}
-			else {
-				/* Write data to file */
-				strncpy(dfile, argv[opt++], MAX_FILE_LEN);
-				dfile[MAX_FILE_LEN - 1] = '\0';
-				/* Check if this is an alternate directory for sa files */
-				check_alt_sa_dir(dfile, 0, -1);
-			}
+			/* Write data to file */
+			strncpy(dfile, argv[opt++], MAX_FILE_LEN);
+			dfile[MAX_FILE_LEN - 1] = '\0';
+			/* Check if this is an alternate directory for sa files */
+			check_alt_sa_dir(dfile, 0, -1);
 		}
 
 		else if (interval < 0) {
