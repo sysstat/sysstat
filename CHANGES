@@ -1,5 +1,23 @@
 Changes:
 
+2017/02/27: Version 11.5.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* SVG: Allow multiple charts on a row (new option added: "packed").
+	* SVG: Add new option: "height=..."
+	* SVG: Properly terminate SVG file when no data have been found
+	  [11.4.4].
+	* SVG: Don't extend X axis beyond time end [11.4.4].
+	* Add new %wait field to pidstat CPU utilization.
+	* sadf: Fix insecure data handling (CID #139643).
+	* sadf: Small code cleanup.
+	* Fix comment in /etc/sysconfig/sysstat file [11.4.4] [11.2.10].
+	* Makefile: Add regression tests ("test" target).
+	* Hook up to Travis CI.
+	* README file completely rewritten.
+	* FAQ file converted to MarkDown format.
+	* Remove isag support.
+	* sadf and pisdstat manual pages updated.
+	* Remove nfsiostat from .gitignore file [11.4.4] [11.2.10].
+
 2017/01/11: Version 11.5.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Add new "raw" output format.
 	* sar: Remove memory statistics (option -R).
