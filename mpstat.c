@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
+#include <dirent.h>
 #include <ctype.h>
 #include <sys/utsname.h>
 
@@ -50,20 +51,36 @@ unsigned long long uptime0[3] = {0, 0, 0};
 
 /* NOTE: Use array of _char_ for bitmaps to avoid endianness problems...*/
 unsigned char *cpu_bitmap;	/* Bit 0: Global; Bit 1: 1st proc; etc. */
+unsigned char *node_bitmap;	/* Bit 0: Global; Bit 1: 1st NUMA node; etc. */
 
-/* Structure used to save CPU stats */
+/* Structures used to save CPU and NUMA nodes CPU stats */
 struct stats_cpu *st_cpu[3];
+struct stats_cpu *st_node[3];
+
 /*
  * Structure used to save total number of interrupts received
  * among all CPU and for each CPU.
  */
 struct stats_irq *st_irq[3];
+
 /*
  * Structures used to save, for each interrupt, the number
  * received by each CPU.
  */
 struct stats_irqcpu *st_irqcpu[3];
 struct stats_irqcpu *st_softirqcpu[3];
+
+/*
+ * Number of CPU per node, e.g.:
+ * cpu_per_node[0]: nr of CPU for node 0..
+ */
+int *cpu_per_node;
+
+/*
+ * Node number the CPU belongs to, e.g.:
+ * cpu2node[0]: node nr for CPU 0
+ */
+int *cpu2node;
 
 struct tm mp_tstamp[3];
 
@@ -75,8 +92,19 @@ unsigned int flags = 0;
 /* Interval and count parameters */
 long interval = -1, count = 0;
 
-/* Nb of processors on the machine */
+/*
+ * Nb of processors on the machine.
+ * A value of 2 means there are 2 processors (0 and 1).
+ */
 int cpu_nr = 0;
+
+/*
+ * Highest NUMA node number found on the machine.
+ * A value of 0 means node 0 (one node).
+ * A value of -1 means no nodes found.
+ */
+int node_nr = -1;
+
 /* Nb of interrupts per processor */
 int irqcpu_nr = 0;
 /* Nb of soft interrupts per processor */
@@ -99,8 +127,8 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-			  "[ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"));
+			  "[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+			  "[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"));
 	exit(1);
 }
 
@@ -132,7 +160,9 @@ void int_handler(int sig)
 
 /*
  ***************************************************************************
- * Allocate stats structures and cpu bitmap.
+ * Allocate stats structures and cpu bitmap. Also do it for NUMA nodes
+ * (although the machine may not be a NUMA one). Assume that the number of
+ * nodes is lower or equal than that of CPU.
  *
  * IN:
  * @nr_cpus	Number of CPUs. This is the real number of available CPUs + 1
@@ -151,6 +181,13 @@ void salloc_mp_struct(int nr_cpus)
 			exit(4);
 		}
 		memset(st_cpu[i], 0, STATS_CPU_SIZE * nr_cpus);
+
+		if ((st_node[i] = (struct stats_cpu *) malloc(STATS_CPU_SIZE * nr_cpus))
+		    == NULL) {
+			perror("malloc");
+			exit(4);
+		}
+		memset(st_node[i], 0, STATS_CPU_SIZE * nr_cpus);
 
 		if ((st_irq[i] = (struct stats_irq *) malloc(STATS_IRQ_SIZE * nr_cpus))
 		    == NULL) {
@@ -179,6 +216,22 @@ void salloc_mp_struct(int nr_cpus)
 		exit(4);
 	}
 	memset(cpu_bitmap, 0, (nr_cpus >> 3) + 1);
+
+	if ((node_bitmap = (unsigned char *) malloc((nr_cpus >> 3) + 1)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
+	memset(node_bitmap, 0, (nr_cpus >> 3) + 1);
+
+	if ((cpu_per_node = (int *) malloc(sizeof(int) * nr_cpus)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
+
+	if ((cpu2node = (int *) malloc(sizeof(int) * nr_cpus)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
 }
 
 /*
@@ -192,12 +245,115 @@ void sfree_mp_struct(void)
 
 	for (i = 0; i < 3; i++) {
 		free(st_cpu[i]);
+		free(st_node[i]);
 		free(st_irq[i]);
 		free(st_irqcpu[i]);
 		free(st_softirqcpu[i]);
 	}
 
 	free(cpu_bitmap);
+	free(node_bitmap);
+	free(cpu_per_node);
+	free(cpu2node);
+}
+
+/*
+ ***************************************************************************
+ * Get node placement (which node each CPU belongs to, and total number of
+ * CPU that each node has).
+ *
+ * IN:
+ * @cpu_nr		Number of CPU on this machine.
+ *
+ * OUT:
+ * @cpu_per_node	Number of CPU per node.
+ * @cpu2node		The node the CPU belongs to.
+ *
+ * RETURNS:
+ * Highest node number found (e.g., 0 means node 0).
+ * A value of -1 means no nodes have been found.
+ ***************************************************************************
+ */
+int get_node_placement(int cpu_nr, int cpu_per_node[], int cpu2node[])
+
+{
+	DIR *dir;
+	struct dirent *drd;
+	char line[MAX_PF_NAME];
+	int cpu, node, node_nr = -1;
+
+	/* Init number of CPU per node */
+	memset(cpu_per_node, 0, sizeof(int) * cpu_nr);
+	/* CPU belongs to no node by default */
+	memset(cpu2node, -1, sizeof(int) * cpu_nr);
+
+	for (cpu = 0; cpu < cpu_nr; cpu++) {
+		snprintf(line, MAX_PF_NAME, "%s/cpu%d", SYSFS_DEVCPU, cpu);
+		line[MAX_PF_NAME - 1] = '\0';
+
+		/* Open relevant /sys directory */
+		if ((dir = opendir(line)) == NULL)
+			return -1;
+
+		/* Get current file entry */
+		while ((drd = readdir(dir)) != NULL) {
+
+			if (!strncmp(drd->d_name, "node", 4) && isdigit(drd->d_name[4])) {
+				node = atoi(drd->d_name + 4);
+				if (node >= cpu_nr) {
+					/* Assume we cannot have more nodes than CPU */
+					closedir(dir);
+					return -1;
+				}
+				cpu_per_node[node]++;
+				cpu2node[cpu] = node;
+				if (node > node_nr) {
+					node_nr = node;
+				}
+				/* Node placement found for current CPU: Go to next CPU directory */
+				break;
+			}
+		}
+
+		/* Close directory */
+		closedir(dir);
+	}
+
+	return node_nr;
+}
+
+/*
+ ***************************************************************************
+ * Compute node statistics: Split CPU statistics among nodes.
+ *
+ * IN:
+ * @st_cpu	Array where current CPU stats have been read.
+ *
+ * OUT:
+ * @st_node	Array where CPU stats for each node have been saved.
+ ***************************************************************************
+ */
+void set_node_cpu_stats(struct stats_cpu *st_node, struct stats_cpu *st_cpu)
+{
+	int cpu;
+	struct stats_cpu *st_cpu_i, *st_node_i;
+
+	for (cpu = 0; cpu < cpu_nr; cpu++) {
+		/* Don't store stats for node 'all'. They are the same as CPU 'all' */
+		st_cpu_i = st_cpu + cpu + 1;
+		st_node_i = st_node + cpu2node[cpu] + 1;
+
+		st_node_i->cpu_user += st_cpu_i->cpu_user;
+		st_node_i->cpu_nice += st_cpu_i->cpu_nice;
+		st_node_i->cpu_sys += st_cpu_i->cpu_sys;
+		st_node_i->cpu_idle += st_cpu_i->cpu_idle;
+		st_node_i->cpu_iowait += st_cpu_i->cpu_iowait;
+		st_node_i->cpu_hardirq += st_cpu_i->cpu_hardirq;
+		st_node_i->cpu_softirq += st_cpu_i->cpu_softirq;
+		st_node_i->cpu_steal += st_cpu_i->cpu_steal;
+		st_node_i->cpu_guest += st_cpu_i->cpu_guest;
+		st_node_i->cpu_guest_nice += st_cpu_i->cpu_guest_nice;
+	}
 }
 
 /*
@@ -566,6 +722,318 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
 	}
 	else {
 		write_plain_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display CPU statistics for NUMA nodes in plain format.
+ *
+ * IN:
+ * @dis		TRUE if a header line must be printed.
+ * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ ***************************************************************************
+ */
+void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long long itv,
+			    int prev, int curr, char *prev_string, char *curr_string)
+{
+	struct stats_cpu *snc, *snp;
+	int node;
+
+	if (dis) {
+		printf("\n%-11s NODE    %%usr   %%nice    %%sys %%iowait    %%irq   "
+		       "%%soft  %%steal  %%guest  %%gnice   %%idle\n",
+		       prev_string);
+	}
+
+	/*
+	 * Check if we want global stats among all nodes.
+	 * Stats are the same as global CPU stats among all processors.
+	 */
+	if (*node_bitmap & 1) {
+
+		printf("%-11s", curr_string);
+		cprintf_in(IS_STR, " %s", " all", 0);
+
+		cprintf_pc(10, 7, 2,
+			   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
+			   (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
+			   0.0 :
+			   ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
+				       st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
+				       g_itv),
+			   (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
+			   (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
+			   0.0 :
+			   ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
+				       st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_sys,
+				       st_cpu[curr]->cpu_sys,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_iowait,
+				       st_cpu[curr]->cpu_iowait,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_hardirq,
+				       st_cpu[curr]->cpu_hardirq,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_softirq,
+				       st_cpu[curr]->cpu_softirq,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_steal,
+				       st_cpu[curr]->cpu_steal,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_guest,
+				       st_cpu[curr]->cpu_guest,
+				       g_itv),
+			   ll_sp_value(st_cpu[prev]->cpu_guest_nice,
+				       st_cpu[curr]->cpu_guest_nice,
+				       g_itv),
+			   (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
+			   0.0 :
+			   ll_sp_value(st_cpu[prev]->cpu_idle,
+				       st_cpu[curr]->cpu_idle,
+				       g_itv));
+		printf("\n");
+	}
+
+	for (node = 0; node <= node_nr; node++) {
+
+		snc = st_node[curr] + node + 1;
+		snp = st_node[prev] + node + 1;
+
+		/* Check if we want stats about this node */
+		if (!(*(node_bitmap + ((node + 1) >> 3)) & (1 << ((node + 1) & 0x07))))
+			continue;
+
+		if (!cpu_per_node[node])
+			/* No CPU in this node */
+			continue;
+
+		printf("%-11s", curr_string);
+		cprintf_in(IS_INT, " %4d", "", node);
+
+		cprintf_pc(10, 7, 2,
+			   (snc->cpu_user - snc->cpu_guest) < (snp->cpu_user - snp->cpu_guest) ?
+			   0.0 :
+			   ll_sp_value(snp->cpu_user - snp->cpu_guest,
+				       snc->cpu_user - snc->cpu_guest,
+				       itv * cpu_per_node[node]),
+			   (snc->cpu_nice - snc->cpu_guest_nice) < (snp->cpu_nice - snp->cpu_guest_nice) ?
+			   0.0 :
+			   ll_sp_value(snp->cpu_nice - snp->cpu_guest_nice,
+				       snc->cpu_nice - snc->cpu_guest_nice,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_sys,
+				       snc->cpu_sys,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_iowait,
+				       snc->cpu_iowait,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_hardirq,
+				       snc->cpu_hardirq,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_softirq,
+				       snc->cpu_softirq,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_steal,
+				       snc->cpu_steal,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_guest,
+				       snc->cpu_guest,
+				       itv * cpu_per_node[node]),
+			   ll_sp_value(snp->cpu_guest_nice,
+				       snc->cpu_guest_nice,
+				       itv * cpu_per_node[node]),
+			   (snc->cpu_idle < snp->cpu_idle) ?
+			   0.0 :
+			   ll_sp_value(snp->cpu_idle,
+				       snc->cpu_idle,
+				       itv * cpu_per_node[node]));
+		printf("\n");
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display CPU statistics for NUMA nodes in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample.
+ ***************************************************************************
+ */
+void write_json_node_stats(int tab, unsigned long long g_itv, unsigned long long itv,
+			   int prev, int curr, char *curr_string)
+{
+	struct stats_cpu *snc, *snp;
+	int node, next = FALSE;
+
+	xprintf(tab++, "\"node-load\": [");
+
+	/* Check if we want global stats among all nodes */
+	if (*node_bitmap & 1) {
+
+		next = TRUE;
+		xprintf0(tab, "{\"node\": \"all\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
+			      "\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
+			      "\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}",
+			 (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
+			 (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
+			 0.0 :
+			 ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
+				     st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
+				     g_itv),
+			 (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
+			 (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
+			 0.0 :
+			 ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
+				     st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_sys,
+				     st_cpu[curr]->cpu_sys,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_iowait,
+				     st_cpu[curr]->cpu_iowait,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_hardirq,
+				     st_cpu[curr]->cpu_hardirq,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_softirq,
+				     st_cpu[curr]->cpu_softirq,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_steal,
+				     st_cpu[curr]->cpu_steal,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_guest,
+				     st_cpu[curr]->cpu_guest,
+				     g_itv),
+			 ll_sp_value(st_cpu[prev]->cpu_guest_nice,
+				     st_cpu[curr]->cpu_guest_nice,
+				     g_itv),
+			 (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
+			 0.0 :
+			 ll_sp_value(st_cpu[prev]->cpu_idle,
+				     st_cpu[curr]->cpu_idle,
+				     g_itv));
+	}
+
+	for (node = 0; node <= node_nr; node++) {
+
+		snc = st_node[curr] + node + 1;
+		snp = st_node[prev] + node + 1;
+
+		/* Check if we want stats about this node */
+		if (!(*(node_bitmap + ((node + 1) >> 3)) & (1 << ((node + 1) & 0x07))))
+			continue;
+
+		if (!cpu_per_node[node])
+			/* No CPU in this node */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		xprintf0(tab, "{\"node\": \"%d\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
+			      "\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
+			      "\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}", node,
+			 (snc->cpu_user - snc->cpu_guest) < (snp->cpu_user - snp->cpu_guest) ?
+			 0.0 :
+			 ll_sp_value(snp->cpu_user - snp->cpu_guest,
+				     snc->cpu_user - snc->cpu_guest,
+				     itv * cpu_per_node[node]),
+			 (snc->cpu_nice - snc->cpu_guest_nice) < (snp->cpu_nice - snp->cpu_guest_nice) ?
+			 0.0 :
+			 ll_sp_value(snp->cpu_nice - snp->cpu_guest_nice,
+				     snc->cpu_nice - snc->cpu_guest_nice,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_sys,
+				     snc->cpu_sys,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_iowait,
+				     snc->cpu_iowait,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_hardirq,
+				     snc->cpu_hardirq,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_softirq,
+				     snc->cpu_softirq,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_steal,
+				     snc->cpu_steal,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_guest,
+				     snc->cpu_guest,
+				     itv * cpu_per_node[node]),
+			 ll_sp_value(snp->cpu_guest_nice,
+				     snc->cpu_guest_nice,
+				     itv * cpu_per_node[node]),
+			 (snc->cpu_idle < snp->cpu_idle) ?
+			 0.0 :
+			 ll_sp_value(snp->cpu_idle,
+				     snc->cpu_idle,
+				     itv * cpu_per_node[node]));
+	}
+	printf("\n");
+	xprintf0(--tab, "]");
+}
+
+/*
+ ***************************************************************************
+ * Display nodes statistics in plain or JSON format.
+ *
+ * IN:
+ * @dis		TRUE if a header line must be printed.
+ * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @itv		Interval value.
+ * @prev	Position in array where statistics used	as reference are.
+ *		Stats used as reference may be the previous ones read, or
+ *		the very first ones when calculating the average.
+ * @curr	Position in array where current statistics will be saved.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @next	TRUE is a previous activity has been displayed (JSON format
+ * 		only).
+ ***************************************************************************
+ */
+void write_node_stats(int dis, unsigned long long g_itv, unsigned long long itv,
+		      int prev, int curr, char *prev_string, char *curr_string,
+		      int tab, int *next)
+{
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (*next) {
+			printf(",\n");
+		}
+		*next = TRUE;
+		write_json_node_stats(tab, g_itv, itv, prev, curr, curr_string);
+	}
+	else {
+		write_plain_node_stats(dis, g_itv, itv, prev, curr, prev_string, curr_string);
 	}
 }
 
@@ -1153,6 +1621,12 @@ void write_stats_core(int prev, int curr, int dis,
 				tab, &next);
 	}
 
+	/* Print node CPU stats */
+	if (DISPLAY_NODE(actflags)) {
+		write_node_stats(dis, g_itv, itv, prev, curr, prev_string, curr_string,
+				 tab, &next);
+	}
+
 	/* Print total number of interrupts per processor */
 	if (DISPLAY_IRQ_SUM(actflags)) {
 		write_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string,
@@ -1376,6 +1850,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		read_uptime(&(uptime0[0]));
 	}
 	read_stat_cpu(st_cpu[0], cpu_nr + 1, &(uptime[0]), &(uptime0[0]));
+	if (DISPLAY_NODE(actflags)) {
+		set_node_cpu_stats(st_node[0], st_cpu[0]);
+	}
 
 	/*
 	 * Read total number of interrupts received among all CPU.
@@ -1401,6 +1878,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		/* Display since boot time */
 		mp_tstamp[1] = mp_tstamp[0];
 		memset(st_cpu[1], 0, STATS_CPU_SIZE * (cpu_nr + 1));
+		memset(st_node[1], 0, STATS_CPU_SIZE * (cpu_nr + 1));
 		memset(st_irq[1], 0, STATS_IRQ_SIZE * (cpu_nr + 1));
 		memset(st_irqcpu[1], 0, STATS_IRQCPU_SIZE * (cpu_nr + 1) * irqcpu_nr);
 		if (DISPLAY_SOFTIRQS(actflags)) {
@@ -1424,6 +1902,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	uptime[2] = uptime[0];
 	uptime0[2] = uptime0[0];
 	memcpy(st_cpu[2], st_cpu[0], STATS_CPU_SIZE * (cpu_nr + 1));
+	memcpy(st_node[2], st_node[0], STATS_CPU_SIZE * (cpu_nr + 1));
 	memcpy(st_irq[2], st_irq[0], STATS_IRQ_SIZE * (cpu_nr + 1));
 	memcpy(st_irqcpu[2], st_irqcpu[0], STATS_IRQCPU_SIZE * (cpu_nr + 1) * irqcpu_nr);
 	if (DISPLAY_SOFTIRQS(actflags)) {
@@ -1454,6 +1933,8 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		for (cpu = 1; cpu <= cpu_nr; cpu++) {
 			scc = st_cpu[curr] + cpu;
 			memset(scc, 0, STATS_CPU_SIZE);
+			scc = st_node[curr] + cpu;
+			memset(scc, 0, STATS_CPU_SIZE);
 		}
 
 		/* Get time */
@@ -1465,6 +1946,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 			read_uptime(&(uptime0[curr]));
 		}
 		read_stat_cpu(st_cpu[curr], cpu_nr + 1, &(uptime[curr]), &(uptime0[curr]));
+		if (DISPLAY_NODE(actflags)) {
+			set_node_cpu_stats(st_node[curr], st_cpu[curr]);
+		}
 
 		/* Read total number of interrupts received among all CPU */
 		if (DISPLAY_IRQ_SUM(actflags)) {
@@ -1564,6 +2048,9 @@ int main(int argc, char **argv)
 	 */
 	salloc_mp_struct(cpu_nr + 1);
 
+	/* Get NUMA node placement */
+	node_nr = get_node_placement(cpu_nr, cpu_per_node, cpu2node);
+
 	while (++opt < argc) {
 
 		if (!strcmp(argv[opt], "-I")) {
@@ -1606,6 +2093,23 @@ int main(int argc, char **argv)
 			}
 		}
 
+		else if (!strcmp(argv[opt], "-N")) {
+			if (argv[++opt]) {
+				if (node_nr >= 0) {
+					flags |= F_N_OPTION;
+					actflags |= M_D_NODE;
+					actset = TRUE;
+					dis_hdr = 9;
+					if (parse_values(argv[opt], node_bitmap, node_nr + 1, K_LOWERALL)) {
+						usage(argv[0]);
+					}
+				}
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
+
 		else if (!strcmp(argv[opt], "-P")) {
 			/* '-P ALL' can be used on UP machines */
 			if (argv[++opt]) {
@@ -1633,10 +2137,23 @@ int main(int argc, char **argv)
 
 				case 'A':
 					actflags |= M_D_CPU + M_D_IRQ_SUM + M_D_IRQ_CPU + M_D_SOFTIRQS;
+					if (node_nr >= 0) {
+						actflags |= M_D_NODE;
+						flags |= F_N_OPTION;
+						memset(node_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
+					}
 					actset = TRUE;
 					/* Select all processors */
 					flags |= F_P_OPTION;
 					memset(cpu_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
+					break;
+
+				case 'n':
+					/* Display CPU stats based on NUMA node placement */
+					if (node_nr >= 0) {
+						actflags |= M_D_NODE;
+						actset = TRUE;
+					}
 					break;
 
 				case 'u':
@@ -1684,8 +2201,9 @@ int main(int argc, char **argv)
 		}
 	}
 
-	/* Default: Display CPU */
-	if (!actset) {
+	/* Default: Display CPU (e.g., "mpstat", "mpstat -P 1", "mpstat -P 1 -n", "mpstat -P 1 -N 1"... */
+	if (!actset ||
+	    (USE_P_OPTION(flags) && !(actflags & ~M_D_NODE))) {
 		actflags |= M_D_CPU;
 	}
 
@@ -1696,6 +2214,10 @@ int main(int argc, char **argv)
 	if (!USE_P_OPTION(flags)) {
 		/* Option -P not used: Set bit 0 (global stats among all proc) */
 		*cpu_bitmap = 1;
+	}
+	if (!USE_N_OPTION(flags)) {
+		/* Option -N not used: Set bit 0 (global stats among all nodes) */
+		*node_bitmap = 1;
 	}
 	if (dis_hdr < 0) {
 		dis_hdr = 0;

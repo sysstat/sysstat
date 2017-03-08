@@ -24,11 +24,13 @@
 #define M_D_IRQ_SUM	0x0002
 #define M_D_IRQ_CPU	0x0004
 #define M_D_SOFTIRQS	0x0008
+#define M_D_NODE	0x0010
 
 #define DISPLAY_CPU(m)		(((m) & M_D_CPU) == M_D_CPU)
 #define DISPLAY_IRQ_SUM(m)	(((m) & M_D_IRQ_SUM) == M_D_IRQ_SUM)
 #define DISPLAY_IRQ_CPU(m)	(((m) & M_D_IRQ_CPU) == M_D_IRQ_CPU)
 #define DISPLAY_SOFTIRQS(m)	(((m) & M_D_SOFTIRQS) == M_D_SOFTIRQS)
+#define DISPLAY_NODE(m)		(((m) & M_D_NODE) == M_D_NODE)
 
 /*
  ***************************************************************************
@@ -42,10 +44,13 @@
 #define F_P_ON		0x02
 /* JSON output */
 #define F_JSON_OUTPUT	0x04
+/* Indicate that option -N has been used */
+#define F_N_OPTION	0x08
 
 #define USE_P_OPTION(m)		(((m) & F_P_OPTION) == F_P_OPTION)
 #define DISPLAY_ONLINE_CPU(m)	(((m) & F_P_ON) == F_P_ON)
 #define DISPLAY_JSON_OUTPUT(m)	(((m) & F_JSON_OUTPUT) == F_JSON_OUTPUT)
+#define USE_N_OPTION(m)		(((m) & F_N_OPTION) == F_N_OPTION)
 
 #define K_SUM	"SUM"
 #define K_CPU	"CPU"
