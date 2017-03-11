@@ -300,7 +300,7 @@ int get_node_placement(int cpu_nr, int cpu_per_node[], int cpu2node[])
 
 			if (!strncmp(drd->d_name, "node", 4) && isdigit(drd->d_name[4])) {
 				node = atoi(drd->d_name + 4);
-				if (node >= cpu_nr) {
+				if ((node >= cpu_nr) || (node < 0)) {
 					/* Assume we cannot have more nodes than CPU */
 					closedir(dir);
 					return -1;
