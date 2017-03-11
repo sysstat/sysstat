@@ -535,12 +535,9 @@ void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
- * @curr_string	String displayed at the beginning of current sample stats.
- * 		This is the timestamp of the current sample.
  ***************************************************************************
  */
-void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr,
-			  char *curr_string)
+void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr)
 {
 	struct stats_cpu *scc, *scp;
 	unsigned long long pc_itv;
@@ -718,7 +715,7 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_cpu_stats(tab, g_itv, prev, curr, curr_string);
+		write_json_cpu_stats(tab, g_itv, prev, curr);
 	}
 	else {
 		write_plain_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string);
@@ -877,12 +874,10 @@ void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long lon
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
- * @curr_string	String displayed at the beginning of current sample stats.
- * 		This is the timestamp of the current sample.
  ***************************************************************************
  */
 void write_json_node_stats(int tab, unsigned long long g_itv, unsigned long long itv,
-			   int prev, int curr, char *curr_string)
+			   int prev, int curr)
 {
 	struct stats_cpu *snc, *snp;
 	int node, next = FALSE;
@@ -1030,7 +1025,7 @@ void write_node_stats(int dis, unsigned long long g_itv, unsigned long long itv,
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_node_stats(tab, g_itv, itv, prev, curr, curr_string);
+		write_json_node_stats(tab, g_itv, itv, prev, curr);
 	}
 	else {
 		write_plain_node_stats(dis, g_itv, itv, prev, curr, prev_string, curr_string);
@@ -1139,12 +1134,9 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
- * @curr_string	String displayed at the beginning of current sample stats.
- * 		This is the timestamp of the current sample.
  ***************************************************************************
  */
-void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int curr,
-			      char *curr_string)
+void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int curr)
 {
 	struct stats_cpu *scc, *scp;
 	struct stats_irq *sic, *sip;
@@ -1244,7 +1236,7 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_isumcpu_stats(tab, itv, prev, curr, curr_string);
+		write_json_isumcpu_stats(tab, itv, prev, curr);
 	}
 	else {
 		write_plain_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string);
@@ -1418,14 +1410,11 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
- * @curr_string	String displayed at the beginning of current sample stats.
- * 		This is the timestamp of the current sample.
  * @type	Activity (M_D_IRQ_CPU or M_D_SOFTIRQS).
  ***************************************************************************
  */
 void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
-			     unsigned long long itv, int prev, int curr,
-			     char *curr_string, int type)
+			     unsigned long long itv, int prev, int curr, int type)
 {
 	struct stats_cpu *scc;
 	int j = ic_nr, offset, cpu;
@@ -1562,8 +1551,7 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_irqcpu_stats(tab, st_ic, ic_nr, itv, prev, curr,
-					curr_string, type);
+		write_json_irqcpu_stats(tab, st_ic, ic_nr, itv, prev, curr, type);
 	}
 	else {
 		write_plain_irqcpu_stats(st_ic, ic_nr, dis, itv, prev, curr,
