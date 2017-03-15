@@ -1,10 +1,12 @@
-.TH MPSTAT 1 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "MARCH 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
-.B mpstat [ -A ] [ -u ] [ -V ] [ -I {
+.B mpstat [ -A ] [ -n ] [ -u ] [ -V ] [ -I {
 .I keyword
-.B [,...] | ALL } ] [ -o JSON ] [ -P {
+.B [,...] | ALL } ] [ -N {
+.I node_list
+.B | ALL } ] [ -o JSON ] [ -P {
 .I cpu_list
 .B | ON | ALL } ] [
 .I interval
@@ -47,7 +49,7 @@ command generates reports continuously.
 .SH OPTIONS
 .IP -A
 This option is equivalent to specifying
-.BR "-u -I ALL -P ALL"
+.BR "-n -u -I ALL -N ALL -P ALL"
 .IP "-I { keyword [,...] | ALL }"
 Report interrupts statistics.
 
@@ -97,6 +99,31 @@ The
 keyword is equivalent to specifying all the keywords above and
 therefore all the interrupts statistics are displayed.
 .RE
+.RE
+.IP "-N { node_list | ALL }"
+Indicate the NUMA nodes for which statistics are to be reported.
+.I node_list
+is a list of comma-separated values or range of values (e.g.,
+.BR 0,2,4-7,12- ).
+Note that node
+.B all
+is the global average among all nodes. The
+.B ALL
+keyword indicates that statistics are to be reported for all nodes.
+.IP -n
+Report summary CPU statistics based on NUMA node placement. The following
+values are displayed:
+
+.B NODE
+.RS
+.RS
+Node number. The keyword
+.I all
+indicates that statistics are calculated as averages among all nodes.
+.RE
+
+All the other fields are the same as those displayed with option -u
+(see below).
 .RE
 .IP "-o JSON"
 Display the statistics in JSON (Javascript Object Notation) format.
