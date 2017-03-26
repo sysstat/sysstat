@@ -107,6 +107,7 @@
 #define S_F_UNIT		0x00100000
 #define S_F_SVG_HEIGHT		0x00200000
 #define S_F_SVG_PACKED		0x00400000
+#define S_F_SVG_SHOW_INFO	0x00800000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -129,6 +130,7 @@
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
 #define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)   == S_F_SVG_ONE_DAY)
 #define DISPLAY_IDLE(m)			(((m) & S_F_SVG_SHOW_IDLE) == S_F_SVG_SHOW_IDLE)
+#define DISPLAY_INFO(m)			(((m) & S_F_SVG_SHOW_INFO) == S_F_SVG_SHOW_INFO)
 #define DISPLAY_UNIT(m)			(((m) & S_F_UNIT) == S_F_UNIT)
 #define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT) == S_F_SVG_HEIGHT)
 #define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED) == S_F_SVG_PACKED)
@@ -211,6 +213,7 @@
 #define K_AUTOSCALE	"autoscale"
 #define K_ONEDAY	"oneday"
 #define K_SHOWIDLE	"showidle"
+#define K_SHOWINFO	"showinfo"
 #define K_SHOWHINTS	"showhints"
 #define K_HEIGHT	"height="
 #define K_PACKED	"packed"
@@ -301,6 +304,7 @@ struct svg_parm {
 	unsigned long ust_time_first;	/* Time (in seconds since the epoch) for first sample */
 	int graph_no;			/* Total number of views already displayed */
 	int restart;			/* TRUE if we have just met a RESTART record */
+	struct file_header *file_hdr;	/* Pointer on file header structure */
 };
 
 /* Structure used when displaying SVG header */

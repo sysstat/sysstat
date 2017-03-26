@@ -809,7 +809,7 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 	unsigned int asfactor[16];
 	long int xpos;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
-	char val[32];
+	char val[32], cur_date[TIMESTAMP_LEN];
 
 	/* Translate to proper position for current activity */
 	printf("<g id=\"g%d\" transform=\"translate(0,%d)\">\n",
@@ -889,6 +889,24 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 			       asfactor[j] == 1 ? "" : val,
 			       !dp * 2, *(spmin + pos + j) * asfactor[j],
 			       !dp * 2, *(spmax + pos + j) * asfactor[j]);
+		}
+
+		if (DISPLAY_INFO(flags)) {
+			/* Display additional info (hostname, date) */
+			printf("<text x=\"%d\" y=\"%d\" "
+			       "style=\"fill: yellow; text-anchor: end; stroke: none; font-size: 14px\">"
+			       "%s\n",
+			       xv + SVG_V_XSIZE - 5, yv + SVG_M_YSIZE + SVG_G_YSIZE,
+			       svg_p->file_hdr->sa_nodename);
+
+			/* Get report date */
+			set_report_date(localtime((const time_t *) &(svg_p->file_hdr->sa_ust_time)),
+					cur_date, sizeof(cur_date));
+			printf("<tspan x=\"%d\" y=\"%d\" "
+			       "style=\"fill: yellow; text-anchor: end; stroke: none; font-size: 14px\">"
+			       "%s</tspan>\n</text>\n",
+			       xv + SVG_V_XSIZE - 5, yv + SVG_M_YSIZE + SVG_G_YSIZE + 14,
+			       cur_date);
 		}
 
 		/* Translate to proper position for current graph within current activity */

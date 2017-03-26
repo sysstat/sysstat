@@ -878,6 +878,7 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 	parm.ust_time_ref = get_time_ref();
 	parm.ust_time_first = record_hdr[2].ust_time;
 	parm.restart = TRUE;
+	parm.file_hdr = &file_hdr;
 
 	*cnt  = count;
 	reset_cd = 1;
@@ -1533,6 +1534,9 @@ int main(int argc, char **argv)
 				}
 				else if (!strcmp(t, K_SHOWIDLE)) {
 					flags |= S_F_SVG_SHOW_IDLE;
+				}
+				else if (!strcmp(t, K_SHOWINFO)) {
+					flags |= S_F_SVG_SHOW_INFO;
 				}
 				else if (!strcmp(t, K_SHOWHINTS)) {
 					flags |= S_F_RAW_SHOW_HINTS;
