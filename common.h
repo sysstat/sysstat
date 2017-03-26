@@ -284,6 +284,8 @@ int print_gal_header
 	(struct tm *, char *, char *, char *, char *, int, int);
 void print_version
 	(void);
+int set_report_date
+	(struct tm *, char[], int);
 char *strtolower
 	(char *);
 void sysstat_panic

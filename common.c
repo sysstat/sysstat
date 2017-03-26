@@ -417,6 +417,39 @@ void xprintf(int nr_tab, const char *fmtf, ...)
 
 /*
  ***************************************************************************
+ * Get report date as a string of characters.
+ *
+ * IN:
+ * @rectime	Date to display (don't use time fields).
+ * @cur_date	String where date will be saved.
+ * @sz		Max size of cur_date string.
+ *
+ * OUT:
+ * @cur_date	Date (string format).
+ *
+ * RETURNS:
+ * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
+ ***************************************************************************
+ */
+int set_report_date(struct tm *rectime, char cur_date[], int sz)
+{
+	if (rectime == NULL) {
+		strncpy(cur_date, "?/?/?", sz);
+		cur_date[sz - 1] = '\0';
+	}
+	else if (is_iso_time_fmt()) {
+		strftime(cur_date, sz, "%Y-%m-%d", rectime);
+		return 1;
+	}
+	else {
+		strftime(cur_date, sz, "%x", rectime);
+	}
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Print banner.
  *
  * IN:
@@ -439,16 +472,7 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 	char cur_date[TIMESTAMP_LEN];
 	int rc = 0;
 
-	if (rectime == NULL) {
-		strcpy(cur_date, "?/?/?");
-	}
-	else if (is_iso_time_fmt()) {
-		strftime(cur_date, sizeof(cur_date), "%Y-%m-%d", rectime);
-		rc = 1;
-	}
-	else {
-		strftime(cur_date, sizeof(cur_date), "%x", rectime);
-	}
+	rc = set_report_date(rectime, cur_date, sizeof(cur_date));
 
 	if (format == PLAIN_OUTPUT) {
 		/* Plain output */
