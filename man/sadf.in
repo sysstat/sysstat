@@ -1,4 +1,4 @@
-.TH SADF 1 "FEBRUARY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "MARCH 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -185,6 +185,11 @@ Group all views from the same activity (and for the same device) on the same row
 .B showidle
 .RS
 Also display %idle state in graphs for CPU statistics.
+.RE
+
+.B showinfo
+.RS
+Display additional information (such as the date and the host name) on each view.
 .RE
 
 .B skipempty
