@@ -275,7 +275,7 @@ proc out_msg {title text} {
 
 # specific paths and programs
 set sar_data_path "@SA_DIR@"
-set sar_data_mask "sa\[0-9\]\[0-9\]"
+set sar_data_mask "sa\[0-9\]{\[0-9\],\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]}"
 set prefix "@prefix@"
 set exec_prefix "@exec_prefix@"
 set sar "@bindir@/sar"
@@ -527,68 +527,77 @@ proc fill_file_menu {} {
 	set directories [lsort -decreasing [glob -nocomplain -directory $sar_data_path -type d \[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]]]
 
 	menu .file.menu.m -tearoff false
+	set ldirectory [string length $sar_data_path]
+	# List of strings in format "directory:mtime:menu_item_label:real_file_name" created from log file names
+	set tmpfiles [list]
 
-	foreach directory [concat $directories $sar_data_path ] {		
+	foreach directory [concat $directories $sar_data_path ] {
 		set files [glob -nocomplain -directory $directory -type f $sar_data_mask ]
 		# add compressed files too
 		set files [concat $files [glob -nocomplain -directory $directory -type f $sar_data_mask.gz ]]
 		set files [concat $files [glob -nocomplain -directory $directory -type f $sar_data_mask.bz2 ]]
+		# remove $sar_data_path prefix from $directory
+		set directory [string range $directory [expr $ldirectory + 1] end]
 
-		if { 0 == [llength $files] } {
-			continue
-		}
-
-		if { $directory == $sar_data_path } {
-			set menudir ".file.menu.m"
-			
-			# Sort files according to theirs modification times descending
-
-			# i) create temporary list of items in form `timestamp:file'
-			set tmpfiles [list]
-			foreach file $files {
-				# skip symbolic links
-				if { "link" == [ file type $file]} { continue }
-				set timestamp [file mtime $file]
-				set tmpfiles [linsert $tmpfiles end "$timestamp:$file"]
-			}
-			
-			# ii) sort the temporary list 
-			set tmpfiles [lsort -decreasing $tmpfiles]
-			# iii) remove timestamps to get back the file list
-			set files [list]
-			foreach file $tmpfiles {
-				set l [string first ":" $file]
-				set files [linsert $files end [string range $file [expr $l+1] end]]
-			}
-		} else {
-			# sort file list by file name, descending 
-			set files [ lsort -decreasing $files ]
-			set l [string last "/" $directory]
-			set dir [string range  $directory  [expr $l + 1] end]
-
-			# create submenu for the $dir directory
-			set menudir ".file.menu.m.dir$dir"
-			menu $menudir -tearoff 0
-			.file.menu.m add cascade -label $dir -menu $menudir
-		}
-
-
-		# Fill menu with files
 		foreach file $files {
-			set l [string length $sar_data_path]
-			set basefile [string range $file [expr $l + 1] end]
-			set l [string last "/" $basefile]
-			set label [string range  $basefile  [expr $l + 1] end]
-			set label [string map { .gz "" } $label]
-			set label [string map { .bz2 "" } $label]
+			# skip symbolic links
+			if { "link" == [ file type $file]} { continue }
 
-			$menudir add command -label "$label" -command "set_file $basefile"
+			# remove $sar_data_path prefix from $file
+			set file [string range $file [expr $ldirectory + 1] end]
+
+			if { $directory == ""} {
+				set l [string length $file]
+				if { $l < 10 } {
+					# old file format: saDD
+					set timestamp [file mtime "$sar_data_path/$file"]
+					set tmpfiles [linsert $tmpfiles end ".:$timestamp:$file:$file"]
+				} else {
+					# new file format: saYYYYMMDD
+					set dir [string range $file 0 7]
+					set basefile [string range $file 8 end]
+					set tmpfiles [linsert $tmpfiles end "$dir:0:$basefile:$file"]
+				}
+			} else {
+				# old file format: YYYYMM/saDD
+				set l [string last "/" $file]
+				set basefile [string range $file [expr $l + 1] end]
+				set tmpfiles [linsert $tmpfiles end "$directory:0:$basefile:$file"]
+			}
+		}
+	}
+
+	# Sort the list
+	set tmpfiles [lsort -decreasing $tmpfiles]
+	set prevdir ""
+
+	# Fill menu with files
+	foreach file $tmpfiles {
+		set components [split $file ":"]
+		lassign $components dir timestamp label basefile
+		if { $prevdir != $dir } {
+			set prevdir $dir
+			if { $dir == "." } {
+				set menudir ".file.menu.m"
+			} else {
+				set menudir ".file.menu.m.dir$dir"
+				menu $menudir -tearoff 0
+				.file.menu.m add cascade -label $dir -menu $menudir
+			}
+		}
+
+		set label [string map { .gz "" } $label]
+		set label [string map { .bz2 "" } $label]
+		$menudir add command -label "$label" -command "set_file $basefile"
+
+		set file "$sar_data_path/$basefile"
+		if { $timestamp == 0 } {
 			set timestamp [file mtime $file]
-			# ignore files small then 4kB to avoid "No data found" error
-			if { ($timestamp > $max_timestamp) && ([file size $file] > 4096) } {
-				set sag_latest_file  $basefile
-				set max_timestamp  $timestamp
-			}			
+		}
+		# Ignore files smaller then 4kB to avoid "No data found" error
+		if { ($timestamp > $max_timestamp) && ([file size $file] > 4096) } {
+			set sag_latest_file  $basefile
+			set max_timestamp  $timestamp
 		}
 	}
 	# Add Refresh button to fix https://bugs.launchpad.net/ubuntu/+source/sysstat/+bug/924197
