@@ -510,6 +510,14 @@ set sar_elim(v) "dentunusd"
 set sar_elim(w) "cswch"
 set sar_elim(W) "pswpin"
 
+proc refresh_file_menu {} {
+	set x [winfo x .file.menu.m]
+	set y [winfo y .file.menu.m]
+	destroy .file.menu.m
+	fill_file_menu
+	.file.menu.m post $x $y
+}
+
 # Functions which are responsible for data source selection and processing
 # funcs are referred from GUI
 proc fill_file_menu {} {
@@ -583,8 +591,9 @@ proc fill_file_menu {} {
 			}			
 		}
 	}
-}	
-	
+	# Add Refresh button to fix https://bugs.launchpad.net/ubuntu/+source/sysstat/+bug/924197
+	.file.menu.m add command -label "Refresh" -command "refresh_file_menu"
+}
 
 proc set_file {name} {
 	global sar_data_path sag_if_archive sag_if_archive_uncompressed last_graph fngr_tmpdir
