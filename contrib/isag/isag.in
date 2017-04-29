@@ -211,8 +211,6 @@ if {$tcl_version < $needed_version} {
 set gnuplot	"/usr/bin/gnuplot"
 set grep	"/bin/grep"
 set sh		"/bin/sh"
-set gunzip	"/usr/bin/gunzip"
-set sed		"/bin/sed"
 
 # default placement of config file
 set isag_cfg_file	"$env(HOME)/.isag.cfg"
@@ -534,8 +532,7 @@ proc fill_file_menu {} {
 	foreach directory [concat $directories $sar_data_path ] {
 		set files [glob -nocomplain -directory $directory -type f $sar_data_mask ]
 		# add compressed files too
-		set files [concat $files [glob -nocomplain -directory $directory -type f $sar_data_mask.gz ]]
-		set files [concat $files [glob -nocomplain -directory $directory -type f $sar_data_mask.bz2 ]]
+		set files [concat $files [glob -nocomplain -directory $directory -type f $sar_data_mask.gz $sar_data_mask.bz2 $sar_data_mask.xz ]]
 		# remove $sar_data_path prefix from $directory
 		set directory [string range $directory [expr $ldirectory + 1] end]
 
@@ -588,6 +585,7 @@ proc fill_file_menu {} {
 
 		set label [string map { .gz "" } $label]
 		set label [string map { .bz2 "" } $label]
+		set label [string map { .xz "" } $label]
 		$menudir add command -label "$label" -command "set_file $basefile"
 
 		set file "$sar_data_path/$basefile"
@@ -611,19 +609,20 @@ proc set_file {name} {
 	.file.lbl configure -text "Data Source: $name"
 
 	set l [string last "." $sag_if_archive]
-	if { [string range $sag_if_archive $l end] == ".gz" } {
+	switch [string range $sag_if_archive $l end] {
+		".xz"   { set filter "xzcat" }
+		".bz2"  { set filter "bzcat" }
+		".gz"   { set filter "zcat"  }
+		default { set filter ""      }
+	}
+
+	if {"" == $filter} {
+		set sag_if_archive_uncompressed "$sar_data_path/$sag_if_archive"
+	} else {
 		# uncompress file to sa_data located in the temporary dir
 		set sag_if_archive_uncompressed "$fngr_tmpdir/sa_data"
-		exec zcat "$sar_data_path/$sag_if_archive" > $sag_if_archive_uncompressed
-	} else {
-		if { [string range $sag_if_archive $l end] == ".bz2" } {
-			set sag_if_archive_uncompressed "$fngr_tmpdir/sa_data"
-			exec bzcat "$sar_data_path/$sag_if_archive" > $sag_if_archive_uncompressed
-		} else {
-			set sag_if_archive_uncompressed "$sar_data_path/$sag_if_archive"
-		}
-	}		
-
+		exec "$filter" "$sar_data_path/$sag_if_archive" > $sag_if_archive_uncompressed
+	}
 
 	if {"" != $last_graph} {
 		new_chart $last_graph
