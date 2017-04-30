@@ -13,7 +13,7 @@ exec wish "$0" -- "$@"
 # and/or modify it under the terms of the GNU General Public License
 # as published by Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version
-#  
+#
 # This program is distributed in the hope that it will be usefull,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY of FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -248,11 +248,11 @@ proc msg_box_btn {w} {
 
 proc err_msg {title text} {
 	tk_messageBox -icon error -type ok  -message $text -title $title
-}	
+}
 
 proc out_msg {title text} {
 	toplevel .msg_box
-	
+
 	wm title .msg_box $title
 	label .msg_box.l -text $text -justify left
 	pack .msg_box.l -side top
@@ -272,19 +272,19 @@ proc out_msg {title text} {
 # $Source: /var/CVSROOT/cvs/i-sag/isag/msg_box.m4,v $
 
 # specific paths and programs
-set sar_data_path "@SA_DIR@"
+set sar_data_path "/var/log/sa"
 set sar_data_mask "sa\[0-9\]{\[0-9\],\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]\[0-9\]}"
-set prefix "@prefix@"
-set exec_prefix "@exec_prefix@"
-set sar "@bindir@/sar"
+set prefix "/usr"
+set exec_prefix "${prefix}"
+set sar "${exec_prefix}/bin/sar"
 
 # following check added: Thu Mar 18 21:44:52 GMT+1 2004
 if { 1 != [file executable $sar]} {
 	err_msg "Error" "File: $sar does not exist"
-	exit 
+	exit
 }
 
-#fix: bug2001060501; set LC_ALL to sane value; see Debian bug #101545 
+#fix: bug2001060501; set LC_ALL to sane value; see Debian bug #101545
 set env(LC_ALL) "C"
 
 
@@ -316,7 +316,7 @@ proc Usage {} {
 Options:
 \t-p data_path (default: $sar_data_path)
 \t-m data_file_mask (default: $sar_data_mask)
-\t-c cfg_file (default: $isag_cfg_file) 
+\t-c cfg_file (default: $isag_cfg_file)
 \t-gwd graph_width (default: $sag_graph_wd)
 \t-ght graph_height (default: $sag_graph_ht) "
         exit
@@ -325,7 +325,7 @@ Options:
 proc getopt {argv opt} {
 	set rv ""
 	if {-1 != [set t [lsearch -exact $argv "-$opt"]]} {
-        	set rv [lindex $argv [expr $t + 1]]
+		set rv [lindex $argv [expr $t + 1]]
 	}
 	return $rv
 }
@@ -697,7 +697,7 @@ menu .menu.opt.m -tearoff false
 		-command "set isag_gr_scale_old 0;redraw_graph"
 .menu.opt.m add checkbutton -label "Show Grid" -underline 0 \
         -variable sag_opt_grid -command "set isag_gr_scale_old 0;redraw_graph"
-		
+
 menubutton .menu.help -text "Help" -menu .menu.help.m -underline 0
 menu .menu.help.m -tearoff false
 .menu.help.m add command -label "About" -underline 0 \
@@ -749,7 +749,7 @@ proc set_cur_max {l} {
 	set val_max($l) [lindex $norm 0]
 	.graph.scale configure -from $val_max($l) -resolution [lindex $norm 1]
 	unset norm
-	
+
 	set val_cur($l) $sag_gr_scale
 	if {$val_cur($l) == 0} {
 		set val_cur($l) $val_max($l)
@@ -822,18 +822,18 @@ proc gnuplot {w} {}
 
 proc ResizeAll {} {
 	global isag_enResizing isag_gr_scale_old
-	
+
 	set width [winfo width .]
 	set height [winfo height .]
-	
+
 	set w [expr [winfo width .graph.scale] + [winfo width .graph.canv]]
 	set h [expr [winfo height .menu] + [winfo height .file] + [winfo height .graph.scale]]
-	
+
 	if {($w >= $width) && ($h == $height)} {
 		incr isag_enResizing
 		return
 	}
-	
+
 	if {0 == $isag_enResizing} {
 		return
 	}
@@ -842,7 +842,7 @@ proc ResizeAll {} {
 	if {$w <= $width} {
 # number two look as magic number
 		.graph.canv configure -width [expr $width - [winfo width .graph.scale] - 2]
-	} 
+	}
 
 	if {$h != $height} {
 		set h1 [expr [winfo height .menu] + [.file cget -height]]
@@ -852,7 +852,7 @@ proc ResizeAll {} {
 #	set isag_gr_scale_old 0
 #	redraw_graph
 ## not reliable	WHY?
-	gnuplot .graph.canv 
+	gnuplot .graph.canv
 	#set isag_enResizing 1
 }
 
@@ -961,7 +961,7 @@ proc num_norm {num} {
 		set step 1
 	}
 	unset l n m
-	return [list $max $step]	
+	return [list $max $step]
 }
 
 ##
@@ -980,11 +980,11 @@ proc num_norm {num} {
 proc create_gnuplot_file {gp_term ext fn title xlabel ylabel y2label yrange plot_str f_grid} {
 	global sag_graph_wd sag_graph_ht
 
-	
+
 # Y2 percentage
 	set fp [open $fn.gp "w"]
-	
-# not consistent workaround	
+
+# not consistent workaround
 	if { $gp_term == "jpeg" } {
 		puts $fp "set term $gp_term transparent interlace size $sag_graph_wd,$sag_graph_ht"
 	} else {
@@ -1192,7 +1192,7 @@ proc sag_if_proc_line_generic {l fp line} {
 	# Here was a problem, time string was badly cutten
 		set time [time_normalize "$time"]
 	set rest [string trim [string range $line 12 end]]
-		
+
 #
 # Sebastien's isag specific
 # check for line: "time LINUX RESTART" and reset counter to next
@@ -1286,7 +1286,7 @@ proc sag_prepare_datafile {l} {
 	global sar sar_data_path sag_if_archive_uncompressed sag_if_out_tokens \
 		sag_opt_whole_day sag_if_last_time sar_elim fngr_tmpdir
 
-		
+
 	set sag_if_last_time ""
 		set fp [open "|$sar -$l -f $sag_if_archive_uncompressed" "r"]
 
@@ -1295,7 +1295,7 @@ proc sag_prepare_datafile {l} {
 	set fpgr [open $fgrname w]
 
 	set nlines 0
-	
+
 # if needed set starting time
 	if { 0 != $sag_opt_whole_day } {
 		set sag_if_last_time "00:00"
@@ -1305,10 +1305,10 @@ proc sag_prepare_datafile {l} {
 			puts $fpgr [sag_if__output_zero_metrics_$l $sag_if_last_time]
 		}
 	}
-	
+
 	while {[gets $fp line] != -1} {
 		if {(1 == [string match \[0-9\]* $line]) && (0 == [string match *$sar_elim($l)* $line])} {
-			
+
 			if {"" != $sag_if_out_tokens($l)} {
 				set n [sag_if_proc_line_generic $l $fpgr "$line"]
 			} else {
@@ -1316,11 +1316,11 @@ proc sag_prepare_datafile {l} {
 			}
 			incr nlines $n
 		}
-	
+
 	}
-	
+
 ## make closing remark if necessary
-# finishing whole day	
+# finishing whole day
 	if { 0 != $sag_opt_whole_day } {
 		if {"" != $sag_if_out_tokens($l)} {
 			puts $fpgr [sag_if__output_zero_metrics $sag_if_last_time $l]
@@ -1333,7 +1333,7 @@ proc sag_prepare_datafile {l} {
 			puts $fpgr [sag_if__output_zero_metrics_$l "23:59"]
 		}
 	}
-	
+
 	catch {close $fp}
 	catch {close $fpgr}
 
@@ -1395,7 +1395,7 @@ proc sag_draw {l} {
 	}
 	file delete $fgrname
 
-	unset nlines 
+	unset nlines
 }
 
 # $Source: /var/CVSROOT/cvs/i-sag/isag/draw.m4,v $
@@ -1442,7 +1442,7 @@ proc sag_save_graph {} {
 		ylabel y2label plotstr has_negative \
 		sag_if_last_time sag_opt_grid sag_opt_whole_day last_graph fngr_tmpdir
 
-		
+
 	set l $last_graph
 
 	if {$sag_if_archive == ""} {
@@ -1480,13 +1480,13 @@ proc sag_save_graph {} {
 		file delete $fngr.gp
 		file delete $fngr
 		set filename [tk_getSaveFile -title "Save Picture" \
-		   		-initialfile [string map { / _ } $sag_if_archive].$l.jpg \
+				-initialfile [string map { / _ } $sag_if_archive].$l.jpg \
 				-filetypes {{{JPEG Images} {.jpg}} {{All files} *}} ]
 		if { "" != $filename } {
 			file rename -force $fngr.jpg $filename
 		} else {
 			file delete $fngr.jpg
-		}			
+		}
 
 	} else {
 		.graph.canv delete all
@@ -1494,7 +1494,7 @@ proc sag_save_graph {} {
 	}
 	file delete "$fgrname"
 
-	unset nlines 
+	unset nlines
 }
 
 # $Source: /var/CVSROOT/cvs/i-sag/common/sag.save_graph.m4,v $
@@ -1544,7 +1544,7 @@ if {[file isfile $isag_cfg_file] == 1} {
 
 if { "" != $sag_latest_file } {
 	catch { set_file $sag_latest_file }
-}	
+}
 
 #
 # Finishing a program and writting of config file
@@ -1554,7 +1554,7 @@ proc exit_program {} {
 		sag_opt_whole_day sag_opt_grid \
 		fngr_tmpdir
 
-	
+
 	set fp [open $isag_cfg_file w]
 	foreach l $prog_swtch {
 						puts $fp "set val_max($l) $val_max($l)"
@@ -1565,10 +1565,10 @@ proc exit_program {} {
 	} else {
 		puts $fp "set last_graph $last_graph"
 	}
-	
+
 	puts $fp "set sag_opt_whole_day $sag_opt_whole_day"
 	puts $fp "set sag_opt_grid $sag_opt_grid"
-	
+
 	close $fp
 
 	file delete -force -- "$fngr_tmpdir"

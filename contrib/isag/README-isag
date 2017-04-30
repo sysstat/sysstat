@@ -14,5 +14,5 @@ Also isag assumes that sar is installed in /usr/bin directory.
 Update isag script if sar is located elsewhere.
 
 --
-Sébastien Godard (sysstat <at> wanadoo.fr)
+Sebastien Godard (sysstat <at> wanadoo.fr)
 
