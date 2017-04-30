@@ -247,7 +247,7 @@ by a pattern processing command.
 
 .SH BUGS
 SVG output (as created by option -g) is fully compliant with SVG 1.1 standard.
-Graphics have been succesfully displayed in various web browsers, including
+Graphics have been successfully displayed in various web browsers, including
 Firefox, Chrome and Opera. Yet SVG rendering is broken on Microsoft browsers
 (tested on Internet Explorer 11 and Edge 13.1): So please don't use them.
 
