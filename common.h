@@ -11,6 +11,7 @@
 
 #include <time.h>
 #include <sched.h>	/* For __CPU_SETSIZE */
+#include <stdlib.h>
 #include <limits.h>
 
 #ifdef HAVE_SYS_SYSMACROS_H
@@ -100,16 +101,21 @@
 
 /* Allocate and init structure */
 #define SREALLOC(S, TYPE, SIZE)	do {								 \
-   					TYPE *_p_;						 \
-				   	_p_ = S;						 \
+					TYPE *_p_ = S;						 \
    				   	if (SIZE) {						 \
-   				      		if ((S = (TYPE *) realloc(S, (SIZE))) == NULL) { \
+						void *_ptr = NULL;				 \
+						int error = posix_memalign(&_ptr, 16, (SIZE));	 \
+						if (error || (_ptr == NULL)) {			 \
 				         		perror("realloc");			 \
 				         		exit(4);				 \
 				      		}						 \
+						S = (TYPE *)_ptr;				 \
 				      		/* If the ptr was null, then it's a malloc() */	 \
 						if (!_p_) {					 \
 							memset(S, 0, (SIZE));			 \
+						}						 \
+						else {						 \
+							memcpy(S, _p_, (SIZE));			 \
 						}						 \
 				   	}							 \
 					if (!S) {						 \
