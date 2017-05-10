@@ -1,5 +1,18 @@
 Changes:
 
+2017/05/10: Version 11.5.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* mpstat: Provide CPU statistics based on NUMA node placement.
+	* SVG: Add new option: "showinfo".
+	* ARM: Fix sadc crash because of unaligned memory accesses [11.4.4]
+	  [11.2.10].
+	* Makefile: Fix test failures on big endian archs.
+	* rndr_stats.c: Simplify fix for warning given by
+	  gcc -Werror=format-security
+	* mpstat: Remove unneeded parameter from JSON functions.
+	* mpstat and sadf manual pages updated.
+	* [Robert Luberda]: isag: Add several enhancements and fixes.
+	* Fix typo in sadf manual page [11.4.4].
+
 2017/02/27: Version 11.5.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* SVG: Allow multiple charts on a row (new option added: "packed").
 	* SVG: Add new option: "height=..."
@@ -54,7 +67,7 @@ Changes:
 
 2016/11/04: Version 11.5.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Add software-based network processing (softnet) statistics.
-	* sadc: Add output formats for softnet statistics.
+	* sadf: Add output formats for softnet statistics.
 	* [Michal Sekletar]: sar: Make buffers that hold timestamps
 	  bigger [11.2.8] [11.4.2].
 	* [Shantanu Goel]: sar: /proc/vmstat fix for Linux 4.8 [11.2.8]
