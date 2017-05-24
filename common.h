@@ -180,9 +180,9 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define C_BOLD_RED	"\e[31;1m"
 #define C_LIGHT_GREEN	"\e[32;22m"
 #define C_LIGHT_YELLOW	"\e[33;22m"
-#define C_BOLD_YELLOW	"\e[33;1m"
+#define C_BOLD_MAGENTA	"\e[35;1m"
 #define C_BOLD_BLUE	"\e[34;1m"
-#define C_LIGHT_CYAN	"\e[36;22m"
+#define C_LIGHT_BLUE	"\e[34;22m"
 #define C_NORMAL	"\e[0m"
 
 #define PERCENT_LIMIT_HIGH	75.0
