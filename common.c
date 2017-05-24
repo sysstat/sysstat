@@ -57,12 +57,12 @@ unsigned int kb_shift;
 
 /* Colors strings */
 char sc_percent_high[MAX_SGR_LEN] = C_BOLD_RED;
-char sc_percent_low[MAX_SGR_LEN] = C_BOLD_BLUE;
-char sc_zero_int_stat[MAX_SGR_LEN] = C_LIGHT_YELLOW;
-char sc_int_stat[MAX_SGR_LEN] = C_BOLD_YELLOW;
+char sc_percent_low[MAX_SGR_LEN] = C_BOLD_MAGENTA;
+char sc_zero_int_stat[MAX_SGR_LEN] = C_LIGHT_BLUE;
+char sc_int_stat[MAX_SGR_LEN] = C_BOLD_BLUE;
 char sc_item_name[MAX_SGR_LEN] = C_LIGHT_GREEN;
 char sc_sa_restart[MAX_SGR_LEN] = C_LIGHT_RED;
-char sc_sa_comment[MAX_SGR_LEN] = C_LIGHT_CYAN;
+char sc_sa_comment[MAX_SGR_LEN] = C_LIGHT_YELLOW;
 char sc_normal[MAX_SGR_LEN] = C_NORMAL;
 
 /* Type of persistent device names used in sar and iostat */
