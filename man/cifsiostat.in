@@ -1,4 +1,4 @@
-.TH CIFSIOSTAT 1 "NOVEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "MAY 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
@@ -138,7 +138,7 @@ ranges of values.
 .IP S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR I=32;22:N=33;1:Z=33;22 .
+.BR I=32;22:N=34;1:Z=34;22 .
 Supported capabilities are:
 
 .RS
