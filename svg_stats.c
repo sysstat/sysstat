@@ -600,7 +600,7 @@ void display_hgrid(double ypos, double yfactor, double lmax, int dp)
 		       (long) (atof(stmp) * yfactor), dp, ypos * j);
 		j++;
 	}
-	while (ypos * j <= lmax);
+	while ((ypos * j <= lmax) && (j < MAX_HLINES_NR));
 }
 
 /*
