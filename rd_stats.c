@@ -589,7 +589,7 @@ void read_diskstats_io(struct stats_io *st_io)
 				 * OK: It's a (real) device and not a partition.
 				 * Note: Structure should have been initialized first!
 				 */
-				st_io->dk_drive      += rd_ios + wr_ios;
+				st_io->dk_drive      += (unsigned long long) rd_ios + (unsigned long long) wr_ios;
 				st_io->dk_drive_rio  += rd_ios;
 				st_io->dk_drive_rblk += rd_sec;
 				st_io->dk_drive_wio  += wr_ios;
@@ -643,7 +643,7 @@ void read_diskstats_disk(struct stats_disk *st_disk, int nbr, int read_part)
 				st_disk_i = st_disk + dsk++;
 				st_disk_i->major     = major;
 				st_disk_i->minor     = minor;
-				st_disk_i->nr_ios    = rd_ios + wr_ios;
+				st_disk_i->nr_ios    = (unsigned long long) rd_ios + (unsigned long long) wr_ios;
 				st_disk_i->rd_sect   = rd_sec;
 				st_disk_i->wr_sect   = wr_sec;
 				st_disk_i->rd_ticks  = rd_ticks;
@@ -2127,11 +2127,11 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 				continue;
 
 			st_filesystem_i = st_filesystem + fs++;
-			st_filesystem_i->f_blocks = buf.f_blocks * buf.f_frsize;
-			st_filesystem_i->f_bfree  = buf.f_bfree * buf.f_frsize;
-			st_filesystem_i->f_bavail = buf.f_bavail * buf.f_frsize;
-			st_filesystem_i->f_files  = buf.f_files;
-			st_filesystem_i->f_ffree  = buf.f_ffree;
+			st_filesystem_i->f_blocks = (unsigned long long) buf.f_blocks * (unsigned long long) buf.f_frsize;
+			st_filesystem_i->f_bfree  = (unsigned long long) buf.f_bfree * (unsigned long long) buf.f_frsize;
+			st_filesystem_i->f_bavail = (unsigned long long) buf.f_bavail * (unsigned long long) buf.f_frsize;
+			st_filesystem_i->f_files  = (unsigned long long) buf.f_files;
+			st_filesystem_i->f_ffree  = (unsigned long long) buf.f_ffree;
 			strncpy(st_filesystem_i->fs_name, fs_name, MAX_FS_LEN);
 			st_filesystem_i->fs_name[MAX_FS_LEN - 1] = '\0';
 			strncpy(st_filesystem_i->mountp, mountp, MAX_FS_LEN);
