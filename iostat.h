@@ -30,6 +30,7 @@
 #define I_D_GROUP_TOTAL_ONLY	0x040000
 #define I_D_ZERO_OMIT		0x080000
 #define I_D_UNIT		0x100000
+#define I_D_SHORT_OUTPUT	0x200000
 
 #define DISPLAY_CPU(m)			(((m) & I_D_CPU)              == I_D_CPU)
 #define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
@@ -52,6 +53,7 @@
 #define DISPLAY_ZERO_OMIT(m)		(((m) & I_D_ZERO_OMIT)        == I_D_ZERO_OMIT)
 #define DISPLAY_JSON_OUTPUT(m)		(((m) & I_D_JSON_OUTPUT)      == I_D_JSON_OUTPUT)
 #define DISPLAY_UNIT(m)			(((m) & I_D_UNIT)	      == I_D_UNIT)
+#define DISPLAY_SHORT_OUTPUT(m)		(((m) & I_D_SHORT_OUTPUT)     == I_D_SHORT_OUTPUT)
 
 /* Preallocation constants */
 #define NR_DEV_PREALLOC		4
