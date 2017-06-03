@@ -99,6 +99,27 @@ struct io_stats {
 
 #define IO_STATS_SIZE	(sizeof(struct io_stats))
 
+struct ext_io_stats {
+	/* r_await */
+	double r_await;
+	/* w_await */
+	double w_await;
+	/* rsec/s */
+	double rsectors;
+	/* wsec/s */
+	double wsectors;
+	/* sec/s */
+	double sectors;
+	/* %rrqm */
+	double rrqm_pc;
+	/* %wrqm */
+	double wrqm_pc;
+	/* rareq-sz */
+	double rarqsz;
+	/* wareq-sz */
+	double warqsz;
+};
+
 /* Possible values for field "status" in io_hdr_stats structure */
 #define DISK_UNREGISTERED	0
 #define DISK_REGISTERED		1

@@ -950,17 +950,34 @@ void write_disk_stat_header(int *fctr, int *tab)
 
 	if (DISPLAY_EXTENDED(flags)) {
 		/* Extended stats */
-		printf("Device:         rrqm/s   wrqm/s     r/s     w/s");
-		if (DISPLAY_MEGABYTES(flags)) {
-			printf("    rMB/s    wMB/s");
-		}
-		else if (DISPLAY_KILOBYTES(flags)) {
-			printf("    rkB/s    wkB/s");
+		printf("Device:      ");
+		if (DISPLAY_SHORT_OUTPUT(flags)) {
+			printf("      tps");
+			if (DISPLAY_MEGABYTES(flags)) {
+				printf("      MB/s");
+			}
+			else if (DISPLAY_KILOBYTES(flags)) {
+				printf("      kB/s");
+			}
+			else {
+				printf("     sec/s");
+			}
+			printf("    rqm/s   await aqu-sz  areq-sz  %%util\n");
 		}
 		else {
-			printf("   rsec/s   wsec/s");
+			printf("     r/s     w/s");
+			if (DISPLAY_MEGABYTES(flags)) {
+				printf("     rMB/s     wMB/s");
+			}
+			else if (DISPLAY_KILOBYTES(flags)) {
+				printf("     rkB/s     wkB/s");
+			}
+			else {
+				printf("    rsec/s    wsec/s");
+			}
+			printf("   rrqm/s   wrqm/s  %%rrqm  %%wrqm r_await w_await"
+			       " aqu-sz rareq-sz wareq-sz  svctm  %%util\n");
 		}
-		printf(" avgrq-sz avgqu-sz   await r_await w_await  svctm  %%util\n");
 	}
 	else {
 		/* Basic stats */
@@ -990,17 +1007,14 @@ void write_disk_stat_header(int *fctr, int *tab)
  * @ioj		Previous sample statistics.
  * @devname	Current device name.
  * @xds		Extended stats for current device.
- * @r_await	r_await metric value.
- * @w_await	w_await metric value.
+ * @xios	Additional extended statistics for current device.
  ***************************************************************************
  */
 void write_plain_ext_stat(unsigned long long itv, int fctr,
 			  struct io_hdr_stats *shi, struct io_stats *ioi,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
-			  double r_await, double w_await)
+			  struct ext_io_stats *xios)
 {
-	double rsectors, wsectors;
-
 	if (DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%s\n", devname, 0);
 		printf("%13s", "");
@@ -1009,36 +1023,80 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
-	/*       rrq/s wrq/s   r/s   w/s  rsec  wsec  rqsz  qusz await r_await w_await svctm %util */
-	cprintf_f(-1, 2, 8, 2,
-		  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
-		  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
-	cprintf_f(-1, 2, 7, 2,
-		  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
-		  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
-	rsectors = S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
-	wsectors = S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
-	if (!DISPLAY_UNIT(flags)) {
-		rsectors /= fctr;
-		wsectors /= fctr;
+	if (DISPLAY_SHORT_OUTPUT(flags)) {
+		/* tps */
+		cprintf_f(-1, 1, 8, 2,
+			  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
+		/* kB/s */
+		if (!DISPLAY_UNIT(flags)) {
+			xios->sectors /= fctr;
+		}
+		cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 1, 9, 2,
+			  xios->sectors);
+		/* rqm/s */
+		cprintf_f(-1, 1, 8, 2,
+			  S_VALUE(ioj->rd_merges + ioj->wr_merges, ioi->rd_merges + ioi->wr_merges, itv));
+		/* await */
+		cprintf_f(-1, 1, 7, 2,
+			  xds->await);
+		/* aqu-sz */
+		cprintf_f(-1, 1, 6, 2,
+			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+		/* areq-sz */
+		cprintf_f(-1, 1, 8, 2,
+			  xds->arqsz);
+		/*
+		 * %util
+		 * Again: Ticks in milliseconds.
+		 * In the case of a device group (option -g), shi->used is the number of
+		 * devices in the group. Else shi->used equals 1.
+		 */
+		cprintf_pc(1, 6, 2,
+			   shi->used ? xds->util / 10.0 / (double) shi->used
+				     : xds->util / 10.0);	/* shi->used should never be zero here */
+		printf("\n");
 	}
-	cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 2, 8, 2,
-		  rsectors, wsectors);
-	cprintf_f(-1, 2, 8, 2,
-		  xds->arqsz,
-		  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
-	cprintf_f(-1, 3, 7, 2, xds->await, r_await, w_await);
-	/* The ticks output is biased to output 1000 ticks per second */
-	cprintf_f(-1, 1, 6, 2, xds->svctm);
-	/*
-	 * Again: Ticks in milliseconds.
-	 * In the case of a device group (option -g), shi->used is the number of
-	 * devices in the group. Else shi->used equals 1.
-	 */
-	cprintf_pc(1, 6, 2,
-		   shi->used ? xds->util / 10.0 / (double) shi->used
-		             : xds->util / 10.0);	/* shi->used should never be zero here */
-	printf("\n");
+	else {
+		/* r/s  w/s */
+		cprintf_f(-1, 2, 7, 2,
+			  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+			  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
+		/* rkB/s  wkB/s */
+		if (!DISPLAY_UNIT(flags)) {
+			xios->rsectors /= fctr;
+			xios->wsectors /= fctr;
+		}
+		cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 2, 9, 2,
+			  xios->rsectors, xios->wsectors);
+		/* rrqm/s  wrqm/s */
+		cprintf_f(-1, 2, 8, 2,
+			  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+			  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
+		/* %rrqm  %wrqm */
+		cprintf_pc(2, 6, 2,
+			   xios->rrqm_pc, xios->wrqm_pc);
+		/* r_await  w_await */
+		cprintf_f(-1, 2, 7, 2,
+			  xios->r_await, xios->w_await);
+		/* aqu-sz */
+		cprintf_f(-1, 1, 6, 2,
+			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+		/* rareq-sz  wareq-sz */
+		cprintf_f(-1, 2, 8, 2,
+			  xios->rarqsz, xios->warqsz);
+		/* svctm - The ticks output is biased to output 1000 ticks per second */
+		cprintf_f(-1, 1, 6, 2, xds->svctm);
+		/*
+		 * %util
+		 * Again: Ticks in milliseconds.
+		 * In the case of a device group (option -g), shi->used is the number of
+		 * devices in the group. Else shi->used equals 1.
+		 */
+		cprintf_pc(1, 6, 2,
+			   shi->used ? xds->util / 10.0 / (double) shi->used
+				     : xds->util / 10.0);	/* shi->used should never be zero here */
+		printf("\n");
+	}
 }
 
 /*
@@ -1055,33 +1113,39 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
  * @ioj		Previous sample statistics.
  * @devname	Current device name.
  * @xds		Extended stats for current device.
- * @r_await	r_await metric value.
- * @w_await	w_await metric value.
+ * @xios	Additional extended statistics for current device.
  ***************************************************************************
  */
 void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
-		    struct io_hdr_stats *shi, struct io_stats *ioi,
-		    struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
-		    double r_await, double w_await)
+			 struct io_hdr_stats *shi, struct io_stats *ioi,
+			 struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
+			 struct ext_io_stats *xios)
 {
 	xprintf0(tab,
-		 "{\"disk_device\": \"%s\", \"rrqm\": %.2f, \"wrqm\": %.2f, "
-		 "\"r\": %.2f, \"w\": %.2f, \"rkB\": %.2f, \"wkB\": %.2f, "
-		 "\"avgrq-sz\": %.2f, \"avgqu-sz\": %.2f, "
+		 "{\"disk_device\": \"%s\", \"r\": %.2f, \"w\": %.2f, "
+		 "\"rkB\": %.2f, \"wkB\": %.2f, "
+		 "\"rrqm\": %.2f, \"wrqm\": %.2f, "
+		 "\"rrqm_pc\": %.2f, \"wrqm_pc\": %.2f, "
 		 "\"await\": %.2f, \"r_await\": %.2f, \"w_await\": %.2f, "
+		 "\"avgqu-sz\": %.2f, "
+		 "\"avgrq-sz\": %.2f, \"rareq-sz\": %.2f, \"wareq-sz\": %.2f, "
 		 "\"svctm\": %.2f, \"util\": %.2f}",
 		 devname,
-		 S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
-		 S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
 		 S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
 		 S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
-		 S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
-		 S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
-		 xds->arqsz,
-		 S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
+		 xios->rsectors / fctr,
+		 xios->wsectors / fctr,
+		 S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+		 S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
+		 xios->rrqm_pc,
+		 xios->wrqm_pc,
 		 xds->await,
-		 r_await,
-		 w_await,
+		 xios->r_await,
+		 xios->w_await,
+		 S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
+		 xds->arqsz,
+		 xios->rarqsz,
+		 xios->warqsz,
 		 xds->svctm,
 		 shi->used ? xds->util / 10.0 / (double) shi->used
 			   : xds->util / 10.0);	/* shi->used should never be zero here */
@@ -1108,7 +1172,7 @@ void write_ext_stat(unsigned long long itv, int fctr,
 	char *devname = NULL;
 	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
-	double r_await, w_await;
+	struct ext_io_stats xios;
 
 	/*
 	 * Counters overflows are possible, but don't need to be handled in
@@ -1137,12 +1201,36 @@ void write_ext_stat(unsigned long long itv, int fctr,
 
 	compute_ext_disk_stats(&sdc, &sdp, itv, &xds);
 
-	r_await = (ioi->rd_ios - ioj->rd_ios) ?
-		  (ioi->rd_ticks - ioj->rd_ticks) /
-		  ((double) (ioi->rd_ios - ioj->rd_ios)) : 0.0;
-	w_await = (ioi->wr_ios - ioj->wr_ios) ?
-		  (ioi->wr_ticks - ioj->wr_ticks) /
-		  ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
+	/* r_await  w_await */
+	xios.r_await = (ioi->rd_ios - ioj->rd_ios) ?
+		       (ioi->rd_ticks - ioj->rd_ticks) /
+		       ((double) (ioi->rd_ios - ioj->rd_ios)) : 0.0;
+	xios.w_await = (ioi->wr_ios - ioj->wr_ios) ?
+		       (ioi->wr_ticks - ioj->wr_ticks) /
+		       ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
+
+	/* rkB/s  wkB/s */
+	xios.rsectors = S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
+	xios.wsectors = S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
+	xios.sectors  = xios.rsectors + xios.wsectors;
+
+	/* %rrqm  %wrqm */
+	xios.rrqm_pc = (ioi->rd_merges - ioj->rd_merges) + (ioi->rd_ios - ioj->rd_ios) ?
+		       (double) ((ioi->rd_merges - ioj->rd_merges)) /
+		       ((ioi->rd_merges - ioj->rd_merges) + (ioi->rd_ios - ioj->rd_ios)) * 100 :
+		       0.0;
+	xios.wrqm_pc = (ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios) ?
+		       (double) ((ioi->wr_merges - ioj->wr_merges)) /
+		       ((ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios)) * 100 :
+		       0.0;
+
+	/* rareq-sz  wareq-sz */
+	xios.rarqsz = (ioi->rd_ios - ioj->rd_ios) ?
+		      (ioi->rd_sectors - ioj->rd_sectors) / ((double) (ioi->rd_ios - ioj->rd_ios)) :
+		      0.0;
+	xios.warqsz = (ioi->wr_ios - ioj->wr_ios) ?
+		      (ioi->wr_sectors - ioj->wr_sectors) / ((double) (ioi->wr_ios - ioj->wr_ios)) :
+		      0.0;
 
 	/* Get device name */
 	if (DISPLAY_PERSIST_NAME_I(flags)) {
@@ -1153,12 +1241,10 @@ void write_ext_stat(unsigned long long itv, int fctr,
 	}
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
-		write_json_ext_stat(tab, itv, fctr, shi, ioi, ioj, devname, &xds,
-				    r_await, w_await);
+		write_json_ext_stat(tab, itv, fctr, shi, ioi, ioj, devname, &xds, &xios);
 	}
 	else {
-		write_plain_ext_stat(itv, fctr, shi, ioi, ioj, devname, &xds,
-				     r_await, w_await);
+		write_plain_ext_stat(itv, fctr, shi, ioi, ioj, devname, &xds, &xios);
 	}
 }
 
