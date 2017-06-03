@@ -1,10 +1,10 @@
-.TH IOSTAT 1 "MAY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "JUNE 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
+.B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
 .B [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
@@ -19,7 +19,7 @@ statistics for devices and partitions.
 .B ] ]
 .\}
 .el \{
-.B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
+.B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
 .B [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
@@ -332,6 +332,9 @@ never been used. If option
 .B -j
 is defined before this option, devices entered on the command line can be
 specified with the chosen persistent name type.
+.IP -s
+Display a short (narrow) version of the report that should fit in 80
+characters wide screens.
 .IP -t
 Print the time for each report displayed. The timestamp format may depend
 on the value of the S_TIME_FORMAT environment variable (see below).
