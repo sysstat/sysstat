@@ -191,16 +191,6 @@ The total number of blocks (kilobytes, megabytes) read.
 The total number of blocks (kilobytes, megabytes) written.
 
 .RE
-.B rrqm/s
-.RS
-The number of read requests merged per second that were queued to the device.
-
-.RE
-.B wrqm/s
-.RS
-The number of write requests merged per second that were queued to the device.
-
-.RE
 .B r/s
 .RS
 The number (after merges) of read requests completed per second for the device.
@@ -209,6 +199,12 @@ The number (after merges) of read requests completed per second for the device.
 .B w/s
 .RS
 The number (after merges) of write requests completed per second for the device.
+
+.RE
+.B sec/s (kB/s, MB/s)
+.RS
+The number of sectors (kilobytes, megabytes) read from or written to the device
+per second.
 
 .RE
 .B rsec/s (rkB/s, rMB/s)
@@ -221,14 +217,49 @@ The number of sectors (kilobytes, megabytes) read from the device per second.
 The number of sectors (kilobytes, megabytes) written to the device per second.
 
 .RE
-.B avgrq-sz
+.B rqm/s
 .RS
-The average size (in sectors) of the requests that were issued to the device.
+The number of I/O requests merged per second that were queued to the device.
 
 .RE
-.B avgqu-sz
+.B rrqm/s
 .RS
-The average queue length of the requests that were issued to the device.
+The number of read requests merged per second that were queued to the device.
+
+.RE
+.B wrqm/s
+.RS
+The number of write requests merged per second that were queued to the device.
+
+.RE
+.B %rrqm
+.RS
+The percentage of read requests merged together before being sent to the device.
+
+.RE
+.B %wrqm
+.RS
+The percentage of write requests merged together before being sent to the device.
+
+.RE
+.B areq-sz
+.RS
+The average size (in kilobytes) of the I/O requests that were issued to the device.
+.br
+Note: In previous versions, this field was known as avgrq-sz and was expressed in
+sectors.
+
+.RE
+.B rareq-sz
+.RS
+The average size (in kilobytes) of the read requests that were issued to the
+device.
+
+.RE
+.B wareq-sz
+.RS
+The average size (in kilobytes) of the write requests that were issued to the
+device.
 
 .RE
 .B await
@@ -250,6 +281,13 @@ the time spent servicing them.
 The average time (in milliseconds) for write requests issued to the device
 to be served. This includes the time spent by the requests in queue and
 the time spent servicing them.
+
+.RE
+.B aqu-sz
+.RS
+The average queue length of the requests that were issued to the device.
+.br
+Note: In previous versions, this field was known as avgqu-sz.
 
 .RE
 .B svctm
