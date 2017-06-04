@@ -1042,9 +1042,9 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		/* aqu-sz */
 		cprintf_f(-1, 1, 6, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
-		/* areq-sz */
+		/* areq-sz (in kB, not sectors) */
 		cprintf_f(-1, 1, 8, 2,
-			  xds->arqsz);
+			  xds->arqsz / 2);
 		/*
 		 * %util
 		 * Again: Ticks in milliseconds.
@@ -1081,9 +1081,9 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		/* aqu-sz */
 		cprintf_f(-1, 1, 6, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
-		/* rareq-sz  wareq-sz */
+		/* rareq-sz  wareq-sz (in kB, not sectors) */
 		cprintf_f(-1, 2, 8, 2,
-			  xios->rarqsz, xios->warqsz);
+			  xios->rarqsz / 2, xios->warqsz / 2);
 		/* svctm - The ticks output is biased to output 1000 ticks per second */
 		cprintf_f(-1, 1, 6, 2, xds->svctm);
 		/*
@@ -1128,7 +1128,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		 "\"rrqm_pc\": %.2f, \"wrqm_pc\": %.2f, "
 		 "\"await\": %.2f, \"r_await\": %.2f, \"w_await\": %.2f, "
 		 "\"avgqu-sz\": %.2f, "
-		 "\"avgrq-sz\": %.2f, \"rareq-sz\": %.2f, \"wareq-sz\": %.2f, "
+		 "\"avgrq-sz\": %.2f, \"arq-sz\": %.2f, \"rareq-sz\": %.2f, \"wareq-sz\": %.2f, "
 		 "\"svctm\": %.2f, \"util\": %.2f}",
 		 devname,
 		 S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
@@ -1137,15 +1137,10 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		 xios->wsectors / fctr,
 		 S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 		 S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
-		 xios->rrqm_pc,
-		 xios->wrqm_pc,
-		 xds->await,
-		 xios->r_await,
-		 xios->w_await,
+		 xios->rrqm_pc, xios->wrqm_pc,
+		 xds->await, xios->r_await, xios->w_await,
 		 S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
-		 xds->arqsz,
-		 xios->rarqsz,
-		 xios->warqsz,
+		 xds->arqsz, xds->arqsz / 2, xios->rarqsz / 2, xios->warqsz / 2,
 		 xds->svctm,
 		 shi->used ? xds->util / 10.0 / (double) shi->used
 			   : xds->util / 10.0);	/* shi->used should never be zero here */
@@ -1224,7 +1219,7 @@ void write_ext_stat(unsigned long long itv, int fctr,
 		       ((ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios)) * 100 :
 		       0.0;
 
-	/* rareq-sz  wareq-sz */
+	/* rareq-sz  wareq-sz (still in sectors, not kB) */
 	xios.rarqsz = (ioi->rd_ios - ioj->rd_ios) ?
 		      (ioi->rd_sectors - ioj->rd_sectors) / ((double) (ioi->rd_ios - ioj->rd_ios)) :
 		      0.0;
