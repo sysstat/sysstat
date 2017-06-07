@@ -1043,7 +1043,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		cprintf_f(NO_UNIT, 1, 6, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 		/* areq-sz (in kB, not sectors) */
-		cprintf_f(NO_UNIT, 1, 8, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 1, 8, 2,
 			  xds->arqsz / 2);
 		/*
 		 * %util
@@ -1082,7 +1082,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		cprintf_f(NO_UNIT, 1, 6, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 		/* rareq-sz  wareq-sz (in kB, not sectors) */
-		cprintf_f(NO_UNIT, 2, 8, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 2, 8, 2,
 			  xios->rarqsz / 2, xios->warqsz / 2);
 		/* svctm - The ticks output is biased to output 1000 ticks per second */
 		cprintf_f(NO_UNIT, 1, 6, 2, xds->svctm);

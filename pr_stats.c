@@ -1025,9 +1025,10 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		cprintf_f(unit, 2, 9, 2,
 			  S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
 			  S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2);
-		cprintf_f(NO_UNIT, 4, 9, 2,
-			  /* See iostat for explanations */
-			  xds.arqsz / 2,
+		/* See iostat for explanations */
+		cprintf_f(unit, 1, 9, 2,
+			  xds.arqsz / 2);
+		cprintf_f(NO_UNIT, 3, 9, 2,
 			  S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
 			  xds.await,
 			  xds.svctm);
