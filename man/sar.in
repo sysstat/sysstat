@@ -1,4 +1,4 @@
-.TH SAR 1 "MAY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JUNE 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -301,24 +301,28 @@ requests can be combined into a single I/O request to the device.
 A transfer is of indeterminate size.
 .RE
 
-.B rd_sec/s
+.B rkB/s
 .RS
-Number of sectors read from the device. The size of a sector is 512 bytes.
+Number of kilobytes read from the device per second.
 .RE
 
-.B wr_sec/s
+.B wkB/s
 .RS
-Number of sectors written to the device. The size of a sector is 512 bytes.
+Number of kilobytes written to the device per second.
 .RE
 
-.B avgrq-sz
+.B areq-sz
 .RS
-The average size (in sectors) of the requests that were issued to the device.
+The average size (in kilobytes) of the I/O requests that were issued to the device.
+.br
+Note: In previous versions, this field was known as avgrq-sz and was expressed in sectors.
 .RE
 
-.B avgqu-sz
+.B aqu-sz
 .RS
 The average queue length of the requests that were issued to the device.
+.br
+Note: In previous versions, this field was known as avgqu-sz.
 .RE
 
 .B await
