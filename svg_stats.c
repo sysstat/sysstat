@@ -1960,8 +1960,8 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			 "Disk statistics (3)", "Disk statistics (4)",
 			 "Disk statistics (5)"};
 	char *g_title[] = {"tps",
-			   "rd_sec/s", "wr_sec/s",
-			   "avgrq-sz", "avgqu-sz",
+			   "rkB/s", "wkB/s",
+			   "areq-sz", "aqu-sz",
 			   "await", "svctm",
 			   "%util"};
 	int g_fields[] = {0, 1, 2};
@@ -1969,7 +1969,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	static char **out;
 	static int *outsize;
 	char *item_name, *persist_dev_name;
-	double aqusz;
+	double rkB, wkB, aqusz;
 	int i, j, k, pos, restart, *unregistered;
 
 	if (action & F_BEGIN) {
@@ -2052,15 +2052,30 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			}
 
 			/* Check for min/max values */
-			save_extrema(1, 2, 0, (void *) sdc, (void *) sdp,
+			save_extrema(1, 0, 0, (void *) sdc, (void *) sdp,
 				     itv, spmin + pos, spmax + pos, g_fields);
 
-			compute_ext_disk_stats(sdc, sdp, itv, &xds);
-			if (xds.arqsz < *(spmin + pos + 3)) {
-				*(spmin + pos + 3) = xds.arqsz;
+			rkB = S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2;
+			wkB = S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2;
+			if (rkB < *(spmin + pos + 1)) {
+				*(spmin + pos + 1) = rkB;
 			}
-			if (xds.arqsz > *(spmax + pos + 3)) {
-				*(spmax + pos + 3) = xds.arqsz;
+			if (rkB > *(spmax + pos + 1)) {
+				*(spmax + pos + 1) = rkB;
+			}
+			if (wkB < *(spmin + pos + 2)) {
+				*(spmin + pos + 2) = wkB;
+			}
+			if (wkB > *(spmax + pos + 2)) {
+				*(spmax + pos + 2) = wkB;
+			}
+
+			compute_ext_disk_stats(sdc, sdp, itv, &xds);
+			if ((xds.arqsz / 2) < *(spmin + pos + 3)) {
+				*(spmin + pos + 3) = xds.arqsz / 2;
+			}
+			if ((xds.arqsz / 2) > *(spmax + pos + 3)) {
+				*(spmax + pos + 3) = xds.arqsz / 2;
 			}
 			aqusz = S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0;
 			if (aqusz < *(spmin + pos + 4)) {
@@ -2092,19 +2107,19 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(sdp->nr_ios, sdc->nr_ios, itv),
 				 out + pos, outsize + pos, restart);
-			/* rd_sec/s */
+			/* rkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv),
+				 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
 				 out + pos + 1, outsize + pos + 1, restart);
-			/* wr_sec/s */
+			/* wkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv),
+				 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
 				 out + pos + 2, outsize + pos + 2, restart);
-			/* avgrq-sz */
+			/* areq-sz */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 xds.arqsz,
+				 xds.arqsz / 2,
 				 out + pos + 3, outsize + pos + 3, restart);
-			/* avgqu-sz */
+			/* aqu-sz */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 aqusz,
 				 out + pos + 4, outsize + pos + 4, restart);

@@ -734,18 +734,26 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 			 "\"tps\": %.2f, "
 			 "\"rd_sec\": %.2f, "
 			 "\"wr_sec\": %.2f, "
+			 "\"rkB\": %.2f, "
+			 "\"wkB\": %.2f, "
 			 "\"avgrq-sz\": %.2f, "
+			 "\"areq-sz\": %.2f, "
 			 "\"avgqu-sz\": %.2f, "
+			 "\"aqu-sz\": %.2f, "
 			 "\"await\": %.2f, "
 			 "\"svctm\": %.2f, "
 			 "\"util-percent\": %.2f}",
 			 /* Confusion possible here between index and minor numbers */
 			 dev_name,
 			 S_VALUE(sdp->nr_ios, sdc->nr_ios, itv),
-			 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv),
+			 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv), /* Unit = sectors (for backward compatibility) */
 			 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv),
+			 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
+			 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
 			 /* See iostat for explanations */
-			 xds.arqsz,
+			 xds.arqsz,	/* Unit = sectors (for backward compatibility) */
+			 xds.arqsz / 2,
+			 S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,	/* For backward compatibility */
 			 S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
 			 xds.await,
 			 xds.svctm,
