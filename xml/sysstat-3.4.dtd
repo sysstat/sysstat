@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.3 for sysstat. See sadf.h -->
+<!--DTD v3.4 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -247,10 +247,14 @@
 <!ATTLIST disk-device
 	dev CDATA #REQUIRED
 	tps CDATA #REQUIRED
-	rd_sec CDATA #REQUIRED
-	wr_sec CDATA #REQUIRED
-	avgrq-sz CDATA #REQUIRED
-	avgqu-sz CDATA #REQUIRED
+	rd_sec CDATA #IMPLIED
+	wr_sec CDATA #IMPLIED
+	rkB CDATA #REQUIRED
+	wkB CDATA #REQUIRED
+	avgrq-sz CDATA #IMPLIED
+	areq-sz CDATA #REQUIRED
+	avgqu-sz CDATA #IMPLIED
+	aqu-sz CDATA #REQUIRED
 	await CDATA #REQUIRED
 	svctm CDATA #REQUIRED
 	util-percent CDATA #REQUIRED
