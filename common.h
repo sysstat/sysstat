@@ -42,7 +42,6 @@
 
 #define NR_UNITS	8
 
-
 /* Timestamp buffer length */
 #define TIMESTAMP_LEN	64
 
@@ -251,7 +250,7 @@ void cprintf_f
 void cprintf_in
 	(int, char *, char *, int);
 void cprintf_pc
-	(int, int, int, ...);
+	(int, int, int, int, ...);
 void cprintf_s
 	(int, char *, char *);
 void cprintf_u64

@@ -369,7 +369,7 @@ void tape_write_headings(void)
 	} else {
 		printf("kB_read/s   kB_wrtn/s");
 	}
-	printf(" %%Rd %%Wr %%Oa    Rs/s    Ot/s\n");
+	printf("  %%Rd  %%Wr  %%Oa    Rs/s    Ot/s\n");
 }
 
 /*
@@ -454,7 +454,7 @@ void tape_write_stats(struct calc_stats *tape, int i)
 					: tape->kbytes_read_per_second / divisor,
 		    DISPLAY_UNIT(flags) ? tape->kbytes_written_per_second
 					: tape->kbytes_written_per_second / divisor);
-	cprintf_pc(3, 3, 0,
+	cprintf_pc(DISPLAY_UNIT(flags), 3, 4, 0,
 		   (double) tape->read_pct_wait,
 		   (double) tape->write_pct_wait,
 		   (double) tape->all_pct_wait);

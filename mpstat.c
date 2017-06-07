@@ -394,7 +394,7 @@ void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr
 		printf("%-11s", curr_string);
 		cprintf_in(IS_STR, " %s", " all", 0);
 
-		cprintf_pc(10, 7, 2,
+		cprintf_pc(NO_UNIT, 10, 7, 2,
 			   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
 			   (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
 			   0.0 :
@@ -458,7 +458,7 @@ void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr
 			if (!DISPLAY_ONLINE_CPU(flags)) {
 				printf("%-11s", curr_string);
 				cprintf_in(IS_INT, " %4d", "", cpu - 1);
-				cprintf_pc(10, 7, 2,
+				cprintf_pc(NO_UNIT, 10, 7, 2,
 					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 				printf("\n");
 			}
@@ -476,13 +476,13 @@ void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr
 			 * If the CPU is tickless then there is no change in CPU values
 			 * but the sum of values is not zero.
 			 */
-			cprintf_pc(10, 7, 2,
+			cprintf_pc(NO_UNIT, 10, 7, 2,
 				   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 			printf("\n");
 		}
 
 		else {
-			cprintf_pc(10, 7, 2,
+			cprintf_pc(NO_UNIT, 10, 7, 2,
 				   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 				   0.0 :
 				   ll_sp_value(scp->cpu_user - scp->cpu_guest,
@@ -763,7 +763,7 @@ void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long lon
 		printf("%-11s", curr_string);
 		cprintf_in(IS_STR, " %s", " all", 0);
 
-		cprintf_pc(10, 7, 2,
+		cprintf_pc(NO_UNIT, 10, 7, 2,
 			   (st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest) <
 			   (st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest) ?
 			   0.0 :
@@ -821,7 +821,7 @@ void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long lon
 		printf("%-11s", curr_string);
 		cprintf_in(IS_INT, " %4d", "", node);
 
-		cprintf_pc(10, 7, 2,
+		cprintf_pc(NO_UNIT, 10, 7, 2,
 			   (snc->cpu_user - snc->cpu_guest) < (snp->cpu_user - snp->cpu_guest) ?
 			   0.0 :
 			   ll_sp_value(snp->cpu_user - snp->cpu_guest,

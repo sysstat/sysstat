@@ -854,7 +854,7 @@ void write_plain_cpu_stat(int curr, unsigned long long itv)
 	printf("avg-cpu:  %%user   %%nice %%system %%iowait  %%steal   %%idle\n");
 
 	printf("       ");
-	cprintf_pc(6, 7, 2,
+	cprintf_pc(DISPLAY_UNIT(flags), 6, 7, 2,
 		   ll_sp_value(st_cpu[!curr]->cpu_user,   st_cpu[curr]->cpu_user,   itv),
 		   ll_sp_value(st_cpu[!curr]->cpu_nice,   st_cpu[curr]->cpu_nice,   itv),
 		   /*
@@ -1051,7 +1051,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		 * In the case of a device group (option -g), shi->used is the number of
 		 * devices in the group. Else shi->used equals 1.
 		 */
-		cprintf_pc(1, 6, 2,
+		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
 			   shi->used ? xds->util / 10.0 / (double) shi->used
 				     : xds->util / 10.0);	/* shi->used should never be zero here */
 		printf("\n");
@@ -1073,7 +1073,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 			  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 			  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
 		/* %rrqm  %wrqm */
-		cprintf_pc(2, 6, 2,
+		cprintf_pc(DISPLAY_UNIT(flags), 2, 6, 2,
 			   xios->rrqm_pc, xios->wrqm_pc);
 		/* r_await  w_await */
 		cprintf_f(NO_UNIT, 2, 7, 2,
@@ -1092,7 +1092,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		 * In the case of a device group (option -g), shi->used is the number of
 		 * devices in the group. Else shi->used equals 1.
 		 */
-		cprintf_pc(1, 6, 2,
+		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
 			   shi->used ? xds->util / 10.0 / (double) shi->used
 				     : xds->util / 10.0);	/* shi->used should never be zero here */
 		printf("\n");

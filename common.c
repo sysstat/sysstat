@@ -1276,16 +1276,37 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
  * Print "percent" statistics values using colors.
  *
  * IN:
+ * @human	Set to > 0 if a percent sign (%) shall be displayed after
+ *		the value.
  * @num		Number of values to print.
  * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
-void cprintf_pc(int num, int wi, int wd, ...)
+void cprintf_pc(int human, int num, int wi, int wd, ...)
 {
 	int i;
-	double val;
+	double val, lim = 0.005;
+	char u = '\0';
 	va_list args;
+
+	/*
+	 * If a percent sign is to be displayed, then there will be only one decimal place.
+	 * In this case, a value smaller than 0.05 shall be considered as 0.
+	 */
+	if (human > 0) {
+		lim = 0.05;
+		u = '%';
+		if (wi < 4) {
+			/* E.g., 100% */
+			wi = 4;
+		}
+		/* Keep one place for the percent sign */
+		wi -= 1;
+		if (wd > 0) {
+			wd -= 1;
+		}
+	}
 
 	va_start(args, wd);
 
@@ -1297,7 +1318,7 @@ void cprintf_pc(int num, int wi, int wd, ...)
 		else if (val >= PERCENT_LIMIT_LOW) {
 			printf("%s", sc_percent_low);
 		}
-		else if (val < 0.005) {
+		else if (val < lim) {
 			printf("%s", sc_zero_int_stat);
 		}
 		else {
@@ -1305,6 +1326,7 @@ void cprintf_pc(int num, int wi, int wd, ...)
 		}
 		printf(" %*.*f", wi, wd, val);
 		printf("%s", sc_normal);
+		printf("%c", u);
 	}
 
 	va_end(args);
