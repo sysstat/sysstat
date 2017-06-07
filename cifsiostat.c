@@ -446,12 +446,12 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 		rbytes /= fctr;
 		wbytes /= fctr;
 	}
-	cprintf_f(DISPLAY_UNIT(flags) ? 1 : -1, 2, 12, 2,
+	cprintf_f(DISPLAY_UNIT(flags) ? UNIT_BYTE : NO_UNIT, 2, 12, 2,
 		  rbytes, wbytes);
-	cprintf_f(-1, 2, 9, 2,
+	cprintf_f(NO_UNIT, 2, 9, 2,
 		  S_VALUE(ionj->rd_ops, ioni->rd_ops, itv),
 		  S_VALUE(ionj->wr_ops, ioni->wr_ops, itv));
-	cprintf_f(-1, 3, 12, 2,
+	cprintf_f(NO_UNIT, 3, 12, 2,
 		  S_VALUE(ionj->fopens, ioni->fopens, itv),
 		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
 		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));

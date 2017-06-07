@@ -1454,10 +1454,10 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			cprintf_f(-1, 2, 9, 2,
+			cprintf_f(NO_UNIT, 2, 9, 2,
 				  S_VALUE(pstp->minflt, pstc->minflt, itv),
 				  S_VALUE(pstp->majflt, pstc->majflt, itv));
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
 			cprintf_pc(1, 6, 2,
@@ -1465,7 +1465,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_STACK(actflag)) {
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
 				    (unsigned long long) pstc->stack_size,
 				    (unsigned long long) pstc->stack_ref);
 		}
@@ -1484,7 +1484,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 					wbytes /= 1024;
 					cbytes /= 1024;
 				}
-				cprintf_f(DISPLAY_UNIT(pidflag) ? 1 : -1, 3, 9, 2,
+				cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, 3, 9, 2,
 					  rbytes, wbytes, cbytes);
 			}
 			else {
@@ -1496,30 +1496,30 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				cprintf_s(IS_ZERO, "%s", dstr);
 			}
 			/* I/O delays come from another file (/proc/#/stat) */
-			cprintf_u64(-1, 1, 7,
+			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
-			cprintf_f(-1, 2, 9, 2,
+			cprintf_f(NO_UNIT, 2, 9, 2,
 				  S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
 				  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 		}
 
 		if (DISPLAY_KTAB(actflag)) {
-			cprintf_u64(-1, 1, 7,
+			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) pstc->threads);
 			if (NO_PID_FD(pstc->flags)) {
 				/* /proc/#/fd directory not readable */
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
-				cprintf_u64(-1, 1, 7, (unsigned long long) pstc->fd_nr);
+				cprintf_u64(NO_UNIT, 1, 7, (unsigned long long) pstc->fd_nr);
 			}
 		}
 
 		if (DISPLAY_RT(actflag)) {
-			cprintf_u64(-1, 1, 4,
+			cprintf_u64(NO_UNIT, 1, 4,
 				    (unsigned long long) pstc->priority);
 			cprintf_s(IS_STR, " %6s",
 				  GET_POLICY(pstc->policy));
@@ -1573,7 +1573,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		__print_line_id(pstc, '0');
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_f(-1, 3, 9, 0,
+			cprintf_f(NO_UNIT, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
 				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 				  0.0 :
@@ -1587,7 +1587,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			cprintf_u64(-1, 2, 9,
+			cprintf_u64(NO_UNIT, 2, 9,
 				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
 				    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 		}
@@ -1723,7 +1723,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, pstc);
 		if (disp_avg) {
-			cprintf_f(-1, 3, 9, 0,
+			cprintf_f(NO_UNIT, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
 				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 				  0.0 :
@@ -1738,7 +1738,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 					    (HZ * pstc->uc_asum_count) * 1000);
 		}
 		else {
-			cprintf_f(-1, 3, 9, 0,
+			cprintf_f(NO_UNIT, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
 				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 				  0.0 :
@@ -1812,12 +1812,12 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, pstc);
 
-		cprintf_f(-1, 2, 9, 2,
+		cprintf_f(NO_UNIT, 2, 9, 2,
 			  S_VALUE(pstp->minflt, pstc->minflt, itv),
 			  S_VALUE(pstp->majflt, pstc->majflt, itv));
 
 		if (disp_avg) {
-			cprintf_f(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7, 0,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7, 0,
 				  (double) pstc->total_vsz / pstc->rt_asum_count,
 				  (double) pstc->total_rss / pstc->rt_asum_count);
 
@@ -1827,7 +1827,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				   : 0.0);
 		}
 		else {
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
 
@@ -1893,14 +1893,14 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, pstc);
 		if (disp_avg) {
-			cprintf_f(-1, 2, 9, 0,
+			cprintf_f(NO_UNIT, 2, 9, 0,
 				  (double) ((pstc->minflt + pstc->cminflt) -
 					    (pstp->minflt + pstp->cminflt)) / pstc->rc_asum_count,
 				  (double) ((pstc->majflt + pstc->cmajflt) -
 					    (pstp->majflt + pstp->cmajflt)) / pstc->rc_asum_count);
 		}
 		else {
-			cprintf_u64(-1, 2, 9,
+			cprintf_u64(NO_UNIT, 2, 9,
 				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
                     (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 		}
@@ -1967,12 +1967,12 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 		print_line_id(curr_string, pstc);
 
 		if (disp_avg) {
-			cprintf_f(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7, 0,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7, 0,
 				  (double) pstc->total_stack_size / pstc->sk_asum_count,
 				  (double) pstc->total_stack_ref  / pstc->sk_asum_count);
 		}
 		else {
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? 2 : -1, 2, 7,
+			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
 				    (unsigned long long) pstc->stack_size,
 				    (unsigned long long) pstc->stack_ref);
 		}
@@ -2048,7 +2048,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 				wbytes /= 1024;
 				cbytes /= 1024;
 			}
-			cprintf_f(DISPLAY_UNIT(pidflag) ? 1 : -1, 3, 9, 2,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, 3, 9, 2,
 				  rbytes, wbytes, cbytes);
 		}
 		else {
@@ -2058,12 +2058,12 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		/* I/O delays come from another file (/proc/#/stat) */
 		if (disp_avg) {
-			cprintf_f(-1, 1, 7, 0,
+			cprintf_f(NO_UNIT, 1, 7, 0,
 				  (double) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays) /
 					    pstc->delay_asum_count);
 		}
 		else {
-			cprintf_u64(-1, 1, 7,
+			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
 		}
 
@@ -2115,7 +2115,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		cprintf_f(-1, 2, 9, 2,
+		cprintf_f(NO_UNIT, 2, 9, 2,
 			  S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
 			  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 		print_comm(pstc);
@@ -2166,7 +2166,7 @@ int write_pid_rt_stats(int prev, int curr, int dis,
 			continue;
 
 		print_line_id(curr_string, pstc);
-		cprintf_u64(-1, 1, 4,
+		cprintf_u64(NO_UNIT, 1, 4,
 			    (unsigned long long) pstc->priority);
 		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
 		print_comm(pstc);
@@ -2233,20 +2233,20 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 		print_line_id(curr_string, pstc);
 
 		if (disp_avg) {
-			cprintf_f(-1, 2, 7, 0,
+			cprintf_f(NO_UNIT, 2, 7, 0,
 				  (double) pstc->total_threads / pstc->tf_asum_count,
 				  NO_PID_FD(pstc->flags) ?
 				  -1.0 :
 				  (double) pstc->total_fd_nr / pstc->tf_asum_count);
 		}
 		else {
-			cprintf_u64(-1, 1, 7,
+			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) pstc->threads);
 			if (NO_PID_FD(pstc->flags)) {
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
-				cprintf_u64(-1, 1, 7,
+				cprintf_u64(NO_UNIT, 1, 7,
 					    (unsigned long long) pstc->fd_nr);
 			}
 		}

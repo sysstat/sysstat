@@ -34,6 +34,15 @@
 
 #define DISP_HDR	1
 
+/* Index in units array (see common.c) */
+#define NO_UNIT		-1
+#define UNIT_SECTOR	0
+#define UNIT_BYTE	1
+#define UNIT_KILOBYTE	2
+
+#define NR_UNITS	8
+
+
 /* Timestamp buffer length */
 #define TIMESTAMP_LEN	64
 

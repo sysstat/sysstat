@@ -48,7 +48,6 @@
 
 /* Units (sectors, Bytes, kilobytes, etc.) */
 char units[] = {'s', 'B', 'k', 'M', 'G', 'T', 'P', '?'};
-#define NR_UNITS	8
 
 /* Number of ticks per second */
 unsigned int hz;

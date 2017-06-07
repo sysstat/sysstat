@@ -1025,25 +1025,25 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		/* tps */
-		cprintf_f(-1, 1, 8, 2,
+		cprintf_f(NO_UNIT, 1, 8, 2,
 			  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
 		/* kB/s */
 		if (!DISPLAY_UNIT(flags)) {
 			xios->sectors /= fctr;
 		}
-		cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 1, 9, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 1, 9, 2,
 			  xios->sectors);
 		/* rqm/s */
-		cprintf_f(-1, 1, 8, 2,
+		cprintf_f(NO_UNIT, 1, 8, 2,
 			  S_VALUE(ioj->rd_merges + ioj->wr_merges, ioi->rd_merges + ioi->wr_merges, itv));
 		/* await */
-		cprintf_f(-1, 1, 7, 2,
+		cprintf_f(NO_UNIT, 1, 7, 2,
 			  xds->await);
 		/* aqu-sz */
-		cprintf_f(-1, 1, 6, 2,
+		cprintf_f(NO_UNIT, 1, 6, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 		/* areq-sz (in kB, not sectors) */
-		cprintf_f(-1, 1, 8, 2,
+		cprintf_f(NO_UNIT, 1, 8, 2,
 			  xds->arqsz / 2);
 		/*
 		 * %util
@@ -1058,7 +1058,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 	}
 	else {
 		/* r/s  w/s */
-		cprintf_f(-1, 2, 7, 2,
+		cprintf_f(NO_UNIT, 2, 7, 2,
 			  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
 			  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
 		/* rkB/s  wkB/s */
@@ -1066,26 +1066,26 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 			xios->rsectors /= fctr;
 			xios->wsectors /= fctr;
 		}
-		cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 2, 9, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 2, 9, 2,
 			  xios->rsectors, xios->wsectors);
 		/* rrqm/s  wrqm/s */
-		cprintf_f(-1, 2, 8, 2,
+		cprintf_f(NO_UNIT, 2, 8, 2,
 			  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 			  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
 		/* %rrqm  %wrqm */
 		cprintf_pc(2, 6, 2,
 			   xios->rrqm_pc, xios->wrqm_pc);
 		/* r_await  w_await */
-		cprintf_f(-1, 2, 7, 2,
+		cprintf_f(NO_UNIT, 2, 7, 2,
 			  xios->r_await, xios->w_await);
 		/* aqu-sz */
-		cprintf_f(-1, 1, 6, 2,
+		cprintf_f(NO_UNIT, 1, 6, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 		/* rareq-sz  wareq-sz (in kB, not sectors) */
-		cprintf_f(-1, 2, 8, 2,
+		cprintf_f(NO_UNIT, 2, 8, 2,
 			  xios->rarqsz / 2, xios->warqsz / 2);
 		/* svctm - The ticks output is biased to output 1000 ticks per second */
-		cprintf_f(-1, 1, 6, 2, xds->svctm);
+		cprintf_f(NO_UNIT, 1, 6, 2, xds->svctm);
 		/*
 		 * %util
 		 * Again: Ticks in milliseconds.
@@ -1308,7 +1308,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 	else {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
-	cprintf_f(-1, 1, 8, 2,
+	cprintf_f(NO_UNIT, 1, 8, 2,
 		  S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
 	rsectors = S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
 	wsectors = S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
@@ -1316,9 +1316,9 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 		rsectors /= fctr;
 		wsectors /= fctr;
 	}
-	cprintf_f(DISPLAY_UNIT(flags) ? 0 : -1, 2, 12, 2,
+	cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 2, 12, 2,
 		  rsectors, wsectors);
-	cprintf_u64(DISPLAY_UNIT(flags) ? 0 : -1, 2, 10,
+	cprintf_u64(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 2, 10,
 		    DISPLAY_UNIT(flags) ? (unsigned long long) rd_sec
 					: (unsigned long long) rd_sec / fctr,
 		    DISPLAY_UNIT(flags) ? (unsigned long long) wr_sec
