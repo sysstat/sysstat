@@ -458,7 +458,7 @@ struct activity disk_act = {
 	.f_print_avg	= print_disk_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "DEV;tps;rd_sec/s;wr_sec/s;avgrq-sz;avgqu-sz;await;svctm;%util",
+	.hdr_line	= "DEV;tps;rkB/s;wkB/s;areq-sz;aqu-sz;await;svctm;%util",
 #endif
 #ifdef SOURCE_SADF
 	.f_render	= render_disk_stats,

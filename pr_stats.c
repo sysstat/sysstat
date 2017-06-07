@@ -969,8 +969,8 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
 	if (DISPLAY_UNIT(flags)) {
-		/* Default values unit is sectors */
-		unit = 0;
+		/* Default values unit is kB */
+		unit = 2;
 	}
 
 	if (dis) {
@@ -1023,11 +1023,11 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		cprintf_f(-1, 1, 9, 2,
 			  S_VALUE(sdp->nr_ios, sdc->nr_ios,  itv));
 		cprintf_f(unit, 2, 9, 2,
-			  S_VALUE(sdp->rd_sect, sdc->rd_sect, itv),
-			  S_VALUE(sdp->wr_sect, sdc->wr_sect, itv));
+			  S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
+			  S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2);
 		cprintf_f(-1, 4, 9, 2,
 			  /* See iostat for explanations */
-			  xds.arqsz,
+			  xds.arqsz / 2,
 			  S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
 			  xds.await,
 			  xds.svctm);
