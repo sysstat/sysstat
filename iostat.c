@@ -950,7 +950,7 @@ void write_disk_stat_header(int *fctr, int *tab)
 
 	if (DISPLAY_EXTENDED(flags)) {
 		/* Extended stats */
-		printf("Device:      ");
+		printf("Device       ");
 		if (DISPLAY_SHORT_OUTPUT(flags)) {
 			printf("      tps");
 			if (DISPLAY_MEGABYTES(flags)) {
@@ -981,7 +981,7 @@ void write_disk_stat_header(int *fctr, int *tab)
 	}
 	else {
 		/* Basic stats */
-		printf("Device:            tps");
+		printf("Device             tps");
 		if (DISPLAY_KILOBYTES(flags)) {
 			printf("    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn\n");
 		}
