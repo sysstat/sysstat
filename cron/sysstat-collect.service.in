@@ -8,6 +8,7 @@
 [Unit]
 Description=system activity accounting tool
 Documentation=man:sa1(8)
+After=sysstat.service
 
 [Service]
 Type=oneshot
