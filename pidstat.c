@@ -431,10 +431,10 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 int read_proc_pid_sched(unsigned int pid, struct pid_stats *pst,
 		       unsigned int *thread_nr, unsigned int tgid)
 {
-	int fd, sz, rc;
+	int fd, sz, rc = 0;
 	char filename[128];
 	static char buffer[1024 + 1];
-	unsigned long long wtime;
+	unsigned long long wtime = 0;
 
 	if (tgid) {
 		sprintf(filename, TASK_SCHED, tgid, pid);
@@ -443,28 +443,26 @@ int read_proc_pid_sched(unsigned int pid, struct pid_stats *pst,
 		sprintf(filename, PID_SCHED, pid);
 	}
 
-	if ((fd = open(filename, O_RDONLY)) < 0)
-		/* No such process */
-		return 1;
+	if ((fd = open(filename, O_RDONLY)) >= 0) {
+		/* schedstat file found for process */
+		sz = read(fd, buffer, 1024);
+		close(fd);
+		if (sz > 0) {
+			buffer[sz] = '\0';
 
-	sz = read(fd, buffer, 1024);
-	close(fd);
-	if (sz <= 0)
-		return 1;
-	buffer[sz] = '\0';
-
-	rc = sscanf(buffer,
-		    "%*u %llu %*d\n",
-		    &wtime);
-
-	if (rc < 1)
-		return 1;
+			rc = sscanf(buffer, "%*u %llu %*d\n", &wtime);
+		}
+	}
 
 	/* Convert ns to jiffies */
 	pst->wtime = wtime * HZ / 1000000000;
 
 	pst->pid = pid;
 	pst->tgid = tgid;
+
+	if (rc < 1)
+		return 1;
+
 	return 0;
 }
 
@@ -785,8 +783,11 @@ int read_pid_stats(unsigned int pid, struct pid_stats *pst,
 	if (read_proc_pid_stat(pid, pst, thread_nr, tgid))
 		return 1;
 
-	if (read_proc_pid_sched(pid, pst, thread_nr, tgid))
-		return 1;
+	/*
+	 * No need to test the return code here: Not finding
+	 * the schedstat files shouldn't make pidstat stop.
+	 */
+	read_proc_pid_sched(pid, pst, thread_nr, tgid);
 
 	if (DISPLAY_CMDLINE(pidflag)) {
 		if (read_proc_pid_cmdline(pid, pst, tgid))
