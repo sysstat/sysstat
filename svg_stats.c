@@ -68,7 +68,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * @spmax	Array containing max values already found for this activity.
  * @g_fields	Index in spmin/spmax arrays where extrema values for each
  *		activity metric will be saved. As a consequence spmin/spmax
- *		arrays mau contain values in a different order than that of
+ *		arrays may contain values in a different order than that of
  *		the fields in the statistics structure.
  *
  * OUT:
