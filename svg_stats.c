@@ -1769,7 +1769,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 
 		if (DISPLAY_SWAP(a->opt_flags)) {
 			draw_activity_graphs(3, g_type2, title2, g_title2, NULL, group2,
-					     spmin + 15, spmax + 15, out + 15, outsize + 15,
+					     spmin + 16, spmax + 16, out + 16, outsize + 16,
 					     svg_p, record_hdr);
 		}
 
