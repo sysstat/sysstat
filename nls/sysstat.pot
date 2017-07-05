@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-05-10 15:48+0200\n"
+"POT-Creation-Date: 2017-07-05 10:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: iostat.c:1401 sa_common.c:1606
+#: iostat.c:1401 sa_common.c:1607
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -129,7 +129,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1223 count.c:118
+#: sa_common.c:1224 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -432,42 +432,42 @@ msgid ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: sa_common.c:1019
+#: sa_common.c:1020
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1029
+#: sa_common.c:1030
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1048
+#: sa_common.c:1049
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:1081
+#: sa_common.c:1082
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1093
+#: sa_common.c:1094
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr ""
 
-#: sa_common.c:1097
+#: sa_common.c:1098
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1226
+#: sa_common.c:1227
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1419
+#: sa_common.c:1420
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
