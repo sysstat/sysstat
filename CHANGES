@@ -1,5 +1,15 @@
 Changes:
 
+2017/07/05: Version 11.2.11 - Sebastien Godard (sysstat <at> orange.fr)
+	* Fix ressource leak (CID 144609).
+	* Cast variables to target type before use.
+	* Fix buffer overflow when options -s or -e are used with sar
+	  (DEBIAN bug #863197).
+	* Change default colors to be usable on both dark and light
+	  terminal backgrounds.
+	* Start collect and summary systemd services after sysstat.service.
+	* Manual pages updated.
+
 2017/05/10: Version 11.2.10 - Sebastien Godard (sysstat <at> orange.fr)
 	* ARM: Fix sadc crash because of unaligned memory accesses.
 	* Fix comment in /etc/sysconfig/sysstat file.
