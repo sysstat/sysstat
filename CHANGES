@@ -1,5 +1,32 @@
 Changes:
 
+2017/07/05: Version 11.5.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* iostat: Add new "-s" switch used to display a short (narrow)
+	  version of the report that should fit in 80 chars wide screens.
+	* iostat: Add new metrics to iostat's extended statistics report.
+	* iostat: Express requests average size in kB, not sectors.
+	* iostat: Make JSON output depend on options used.
+	* iostat: Remove trailing colon following "Device" field name.
+	* sar/sadf: Metrics from disks report previously expressed in
+	  sectors are now expressed in kB.
+	* Update DTD/XSD documents.
+	* SVG: Fix graphs for swap space utilization statistics.
+	* Display unit with areq-sz metric values when --human option used.
+	* Display a percent sign after values when --human option used.
+	* pidstat: Don't stop if /proc/#/schedstat files don't exist.
+	* Fix ressource leak (CID 144609) [11.4.5] [11.2.11].
+	* Cast variables to target type before use [11.4.5] [11.2.11].
+	* Fix buffer overflow when options -s or -e are used with sar
+	  (DEBIAN bug #863197) [11.4.5] [11.2.11].
+	* SVG: Define a max number of horizontal lines for the background
+	  grid [11.4.5].
+	* Change default colors to be usable on both dark and light
+	  terminal backgrounds [11.4.5] [11.2.11].
+	* Start collect and summary systemd services after sysstat.service
+	  [11.4.5] [11.2.11].
+	* Manual pages updated.
+	* CREDITS file updated.
+
 2017/05/10: Version 11.5.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* mpstat: Provide CPU statistics based on NUMA node placement.
 	* SVG: Add new option: "showinfo".
