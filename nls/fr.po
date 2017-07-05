@@ -7,10 +7,10 @@
 # Frédéric Marchal <fmarchal@perso.be>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.4\n"
+"Project-Id-Version: sysstat 11.5.6\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-01-11 14:04+0100\n"
-"PO-Revision-Date: 2017-01-15 17:14+0100\n"
+"POT-Creation-Date: 2017-05-10 15:57+0200\n"
+"PO-Revision-Date: 2017-05-15 07:00+0200\n"
 "Last-Translator: Frédéric Marchal <fmarchal@perso.be>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "Language: fr\n"
@@ -20,7 +20,8 @@ msgstr ""
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:95
+#: iostat.c:86 cifsiostat.c:70 mpstat.c:126 sar.c:96 pidstat.c:87
+#: tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Utilisation : %s [ options ] [ <intervalle> [ <itérations> ] ]\n"
@@ -64,59 +65,6 @@ msgstr "Impossible de trouver les données du disque\n"
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Type de périphérique persistant invalide\n"
-
-#: sadf_misc.c:834
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Fichier des données d'activité système :%s (%#x)\n"
-
-#: sadf_misc.c:843
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Fichier de données sa authentique:%s (%#x)\n"
-
-#: sadf_misc.c:844
-msgid "no"
-msgstr "non"
-
-#: sadf_misc.c:844
-msgid "yes"
-msgstr "oui"
-
-#: sadf_misc.c:847
-#, c-format
-msgid "Host: "
-msgstr "Hôte : "
-
-#: sadf_misc.c:854
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr "Nombre de CPU dans les derniers échantillons du fichier: %u\n"
-
-#: sadf_misc.c:860
-#, c-format
-msgid "File date: %s\n"
-msgstr "Date du fichier : %s\n"
-
-#: sadf_misc.c:863
-#, c-format
-msgid "File time: "
-msgstr "Heure du fichier : "
-
-#: sadf_misc.c:868
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Taille d'un « long int » :%d\n"
-
-#: sadf_misc.c:874
-#, c-format
-msgid "List of activities:\n"
-msgstr "Liste des activités :\n"
-
-#: sadf_misc.c:887
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Format d'activité inconnu]"
 
 #: sadc.c:89
 #, c-format
@@ -178,28 +126,28 @@ msgstr ""
 "Options possibles :\n"
 "[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:101
+#: mpstat.c:129
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
 msgstr ""
 "Options possibles :\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -o JSON ] [ -P { <liste_cpu> | ON | ALL } ]\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <liste_nœuds> | ALL } ] [ -o JSON ] [ -P { <liste_cpu> | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1210 sar.c:358 pidstat.c:2334
+#: mpstat.c:1672 sar.c:358 pidstat.c:2396
 msgid "Average:"
 msgstr "Moyenne :"
 
-#: sadf.c:86
+#: sadf.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "Utilisation :%s [ options ] [ <intervalle> [ <itérations> ] ] [ <fichier_données> | -[0-9]+ ]\n"
 
-#: sadf.c:89
+#: sadf.c:90
 #, c-format
 msgid ""
 "Options are:\n"
@@ -564,6 +512,59 @@ msgstr "Aucun lecteur de bande avec des statistiques n'a été trouvé\n"
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Impossible de gérer autant de processeurs !\n"
+
+#: sadf_misc.c:834
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Fichier des données d'activité système :%s (%#x)\n"
+
+#: sadf_misc.c:843
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Fichier de données sa authentique:%s (%#x)\n"
+
+#: sadf_misc.c:844
+msgid "no"
+msgstr "non"
+
+#: sadf_misc.c:844
+msgid "yes"
+msgstr "oui"
+
+#: sadf_misc.c:847
+#, c-format
+msgid "Host: "
+msgstr "Hôte : "
+
+#: sadf_misc.c:854
+#, c-format
+msgid "Number of CPU for last samples in file: %u\n"
+msgstr "Nombre de CPU dans les derniers échantillons du fichier: %u\n"
+
+#: sadf_misc.c:860
+#, c-format
+msgid "File date: %s\n"
+msgstr "Date du fichier : %s\n"
+
+#: sadf_misc.c:863
+#, c-format
+msgid "File time: "
+msgstr "Heure du fichier : "
+
+#: sadf_misc.c:868
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Taille d'un « long int » :%d\n"
+
+#: sadf_misc.c:874
+#, c-format
+msgid "List of activities:\n"
+msgstr "Liste des activités :\n"
+
+#: sadf_misc.c:887
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Format d'activité inconnu]"
 
 #~ msgid "\t-R\tMemory statistics\n"
 #~ msgstr "\t-R\tStatistiques mémoire\n"

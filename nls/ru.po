@@ -9,10 +9,10 @@
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.4\n"
+"Project-Id-Version: sysstat 11.5.6\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-01-11 14:04+0100\n"
-"PO-Revision-Date: 2017-01-16 18:58+0300\n"
+"POT-Creation-Date: 2017-05-10 15:57+0200\n"
+"PO-Revision-Date: 2017-05-16 18:57+0300\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -23,7 +23,8 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:98 sar.c:96 pidstat.c:87 tapestat.c:95
+#: iostat.c:86 cifsiostat.c:70 mpstat.c:126 sar.c:96 pidstat.c:87
+#: tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ]\n"
@@ -67,59 +68,6 @@ msgstr "Не удалось найти данные диска\n"
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Некорректный тип постоянного имени устройства\n"
-
-#: sadf_misc.c:834
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Недопустимый файл системных показателей: %s (%#x)\n"
-
-#: sadf_misc.c:843
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Файл данных оригинальной программы sa: %s (%x)\n"
-
-#: sadf_misc.c:844
-msgid "no"
-msgstr "нет"
-
-#: sadf_misc.c:844
-msgid "yes"
-msgstr "да"
-
-#: sadf_misc.c:847
-#, c-format
-msgid "Host: "
-msgstr "Узел: "
-
-#: sadf_misc.c:854
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr "Количество ЦП в последних измерениях в файле: %u\n"
-
-#: sadf_misc.c:860
-#, c-format
-msgid "File date: %s\n"
-msgstr "Дата файла: %s\n"
-
-#: sadf_misc.c:863
-#, c-format
-msgid "File time: "
-msgstr "Время файла: "
-
-#: sadf_misc.c:868
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Размер long int: %d\n"
-
-#: sadf_misc.c:874
-#, c-format
-msgid "List of activities:\n"
-msgstr "Список показателей:\n"
-
-#: sadf_misc.c:887
-#, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[Неизвестный формат показателя]"
 
 #: sadc.c:89
 #, c-format
@@ -181,28 +129,28 @@ msgstr ""
 "Параметры:\n"
 "[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:101
+#: mpstat.c:129
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
 msgstr ""
 "Параметры:\n"
-"[ -A ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -o JSON ] [ -P { <список_ЦП> | ON | ALL } ]\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <список_узлов> | ALL } ] [ -o JSON ] [ -P { <список_ЦП> | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1210 sar.c:358 pidstat.c:2334
+#: mpstat.c:1672 sar.c:358 pidstat.c:2396
 msgid "Average:"
 msgstr "Среднее:"
 
-#: sadf.c:86
+#: sadf.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ] [ <файл_данных> | -[0-9]+ ]\n"
 
-#: sadf.c:89
+#: sadf.c:90
 #, c-format
 msgid ""
 "Options are:\n"
@@ -568,6 +516,59 @@ msgstr "Ленточные устройства со статистикой не
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Не удаётся обработать так много процессоров!\n"
+
+#: sadf_misc.c:834
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Недопустимый файл системных показателей: %s (%#x)\n"
+
+#: sadf_misc.c:843
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Файл данных оригинальной программы sa: %s (%x)\n"
+
+#: sadf_misc.c:844
+msgid "no"
+msgstr "нет"
+
+#: sadf_misc.c:844
+msgid "yes"
+msgstr "да"
+
+#: sadf_misc.c:847
+#, c-format
+msgid "Host: "
+msgstr "Узел: "
+
+#: sadf_misc.c:854
+#, c-format
+msgid "Number of CPU for last samples in file: %u\n"
+msgstr "Количество ЦП в последних измерениях в файле: %u\n"
+
+#: sadf_misc.c:860
+#, c-format
+msgid "File date: %s\n"
+msgstr "Дата файла: %s\n"
+
+#: sadf_misc.c:863
+#, c-format
+msgid "File time: "
+msgstr "Время файла: "
+
+#: sadf_misc.c:868
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Размер long int: %d\n"
+
+#: sadf_misc.c:874
+#, c-format
+msgid "List of activities:\n"
+msgstr "Список показателей:\n"
+
+#: sadf_misc.c:887
+#, c-format
+msgid "\t[Unknown activity format]"
+msgstr "\t[Неизвестный формат показателя]"
 
 #~ msgid "\t-R\tMemory statistics\n"
 #~ msgstr "\t-R\tСтатистика памяти\n"
