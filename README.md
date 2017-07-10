@@ -8,7 +8,7 @@
 
 The sysstat package contains various utilities, common to many commercial Unixes, to monitor system performance and usage activity:
 
-* **iostat** reports CPU statistics and input/output statistics for devices, partitions and network filesystems.
+* **iostat** reports CPU statistics and input/output statistics for block devices and partitions.
 * **mpstat** reports individual or combined processor related statistics.
 * **pidstat** reports statistics for Linux tasks (processes) : I/O, CPU, memory, etc.
 * **tapestat** reports statistics for tape drives connected to the system.
