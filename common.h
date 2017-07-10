@@ -119,7 +119,6 @@
 						}						 \
 						else {						 \
 							memcpy(S, _p_, (SIZE));			 \
-							free(_p_);				 \
 						}						 \
 				   	}							 \
 					if (!S) {						 \
