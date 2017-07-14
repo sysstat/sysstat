@@ -1,0 +1,18 @@
+This file contains the data that you should provide to report a bug:
+
+System info: [Include sysstat version (e.g., the output of "sar -V" or "iostat -V" etc.),
+operating system name (e.g., the output of "uname -a"), and other relevant details]
+
+Steps to reproduce:
+
+    [First Step]
+    [Second Step]
+    [and so on...]
+
+Expected behavior: [What you expected to happen]
+
+Actual behavior: [What actually happened]
+
+Additional info: [Include gist of relevant binary system activity datafile, config, logs, etc.
+or send them directly to me at sysstat <at> orange_dot_fr]
+
