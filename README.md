@@ -155,12 +155,13 @@ $ sudo make install
 
 ### Feedback welcome!
 
-Of course tell me if there are any problems. This is the only way I can improve
-'sysstat'. Please also remember to read the FAQ that comes with sysstat or available
+Please use the BUG_REPORT template file to report a bug: It contains important data
+that should be provided for this.
+Please also remember to read the FAQ that comes with sysstat or is available
 from the Wiki page on GitHub.
 
+Opening a pull request is the preferred way to submit a patch.
 Patches and suggestions for improvements are always welcome!
-Send them to "sysstat (at) orange (dot) fr".
 
 ### Support sysstat!
 
