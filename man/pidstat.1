@@ -1,8 +1,8 @@
-.TH PIDSTAT 1 "MAY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "JULY 2017" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
-.B pidstat [ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [
+.B pidstat [ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [
 .I username
 .B ] ] [ -u ] [ -V ] [ -v ]
 .B [ -w ] [ -C
@@ -127,8 +127,11 @@ together with option -G then the threads belonging to that
 process are also displayed (even if their command name doesn't
 include the string
 .IR process_name ).
+.IP -H
+Display timestamp in seconds since the epoch.
 .IP -h
-Display all activities horizontally on a single line. This is
+Display all activities horizontally on a single line, with no
+average statistics at the end of the report. This is
 intended to make it easier to be parsed by other programs.
 .IP --human
 Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
