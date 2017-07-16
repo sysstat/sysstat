@@ -88,7 +88,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+			  "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ] [ --human ]\n"
 			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"));
 	exit(1);
@@ -1382,6 +1382,10 @@ void print_line_id(char *timestamp, struct pid_stats *pst)
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dis		TRUE if a header line must be printed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample.
  * @itv		Interval of time in jiffies.
  * @g_itv	Interval of time in jiffies multiplied by the number of
  * 		processors.
@@ -1392,6 +1396,7 @@ void print_line_id(char *timestamp, struct pid_stats *pst)
  ***************************************************************************
  */
 int write_pid_task_all_stats(int prev, int curr, int dis,
+			     char *prev_string, char *curr_string,
 			     unsigned long long itv,
 			     unsigned long long g_itv)
 {
@@ -1401,7 +1406,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 	int again = 0;
 
 	if (dis) {
-		PRINT_ID_HDR("#      Time", pidflag);
+		PRINT_ID_HDR(prev_string, pidflag);
 		if (DISPLAY_CPU(actflag)) {
 			printf("    %%usr %%system  %%guest   %%wait    %%CPU   CPU");
 		}
@@ -1432,8 +1437,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				       &pstc, &pstp) <= 0)
 			continue;
 
-		printf("%11ld", (long) time(NULL));
-		__print_line_id(pstc, '0');
+		print_line_id(curr_string, pstc);
 
 		if (DISPLAY_CPU(actflag)) {
 			cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
@@ -1541,6 +1545,10 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dis		TRUE if a header line must be printed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample.
  * @itv		Interval of time in jiffies.
  *
  * RETURNS:
@@ -1549,6 +1557,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  ***************************************************************************
  */
 int write_pid_child_all_stats(int prev, int curr, int dis,
+			      char *prev_string, char *curr_string,
 			      unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
@@ -1556,7 +1565,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 	int again = 0;
 
 	if (dis) {
-		PRINT_ID_HDR("#      Time", pidflag);
+		PRINT_ID_HDR(prev_string, pidflag);
 		if (DISPLAY_CPU(actflag))
 			printf("    usr-ms system-ms  guest-ms");
 		if (DISPLAY_MEM(actflag))
@@ -1570,8 +1579,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 				       &pstc, &pstp) <= 0)
 			continue;
 
-		printf("%11ld", (long) time(NULL));
-		__print_line_id(pstc, '0');
+		print_line_id(curr_string, pstc);
 
 		if (DISPLAY_CPU(actflag)) {
 			cprintf_f(NO_UNIT, 3, 9, 0,
@@ -2308,11 +2316,12 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 
 	if (DISPLAY_ONELINE(pidflag)) {
 		if (DISPLAY_TASK_STATS(tskflag)) {
-			again += write_pid_task_all_stats(prev, curr, dis,
-						  	 itv, g_itv);
+			again += write_pid_task_all_stats(prev, curr, dis, prev_string, curr_string,
+							  itv, g_itv);
 		}
 		if (DISPLAY_CHILD_STATS(tskflag)) {
-			again += write_pid_child_all_stats(prev, curr, dis, itv);
+			again += write_pid_child_all_stats(prev, curr, dis, prev_string, curr_string,
+							   itv);
 		}
 	}
 	else {
@@ -2417,7 +2426,14 @@ int write_stats(int curr, int dis)
 	char cur_time[2][TIMESTAMP_LEN];
 
 	/* Get previous timestamp */
-	if (is_iso_time_fmt()) {
+	if (DISPLAY_ONELINE(pidflag)) {
+		strcpy(cur_time[!curr], "# Time     ");
+	}
+	else if (PRINT_SEC_EPOCH(pidflag)) {
+		snprintf(cur_time[!curr], TIMESTAMP_LEN, "%-11ld", mktime(&ps_tstamp[!curr]));
+		cur_time[!curr][TIMESTAMP_LEN - 1] = '\0';
+	}
+	else if (is_iso_time_fmt()) {
 		strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%H:%M:%S", &ps_tstamp[!curr]);
 	}
 	else {
@@ -2425,7 +2441,11 @@ int write_stats(int curr, int dis)
 	}
 
 	/* Get current timestamp */
-	if (is_iso_time_fmt()) {
+	if (PRINT_SEC_EPOCH(pidflag)) {
+		snprintf(cur_time[curr], TIMESTAMP_LEN, "%-11ld", mktime(&ps_tstamp[curr]));
+		cur_time[curr][TIMESTAMP_LEN - 1] = '\0';
+	}
+	else if (is_iso_time_fmt()) {
 		strftime(cur_time[curr], sizeof(cur_time[curr]), "%H:%M:%S", &ps_tstamp[curr]);
 	}
 	else {
@@ -2711,6 +2731,11 @@ int main(int argc, char **argv)
 					/* Display I/O usage */
 					actflag |= P_A_IO;
 					dis_hdr++;
+					break;
+
+				case 'H':
+					/* Display timestamps in sec since the epoch */
+					pidflag |= P_D_SEC_EPOCH;
 					break;
 
 				case 'h':

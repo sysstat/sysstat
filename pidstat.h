@@ -58,18 +58,19 @@
 #define DISPLAY_TASK_STATS(m)	(((m) & P_TASK) == P_TASK)
 #define DISPLAY_CHILD_STATS(m)	(((m) & P_CHILD) == P_CHILD)
 
-#define P_D_PID		0x001
-#define P_D_ALL_PID	0x002
-#define P_F_IRIX_MODE	0x004
-#define P_F_COMMSTR	0x008
-#define P_D_ACTIVE_PID	0x010
-#define P_D_TID		0x020
-#define P_D_ONELINE	0x040
-#define P_D_CMDLINE	0x080
-#define P_D_USERNAME	0x100
-#define P_F_USERSTR	0x200
-#define P_F_PROCSTR	0x400
-#define P_D_UNIT	0x800
+#define P_D_PID		0x0001
+#define P_D_ALL_PID	0x0002
+#define P_F_IRIX_MODE	0x0004
+#define P_F_COMMSTR	0x0008
+#define P_D_ACTIVE_PID	0x0010
+#define P_D_TID		0x0020
+#define P_D_ONELINE	0x0040
+#define P_D_CMDLINE	0x0080
+#define P_D_USERNAME	0x0100
+#define P_F_USERSTR	0x0200
+#define P_F_PROCSTR	0x0400
+#define P_D_UNIT	0x0800
+#define P_D_SEC_EPOCH	0x1000
 
 #define DISPLAY_PID(m)		(((m) & P_D_PID) == P_D_PID)
 #define DISPLAY_ALL_PID(m)	(((m) & P_D_ALL_PID) == P_D_ALL_PID)
@@ -83,6 +84,7 @@
 #define USER_STRING(m)		(((m) & P_F_USERSTR) == P_F_USERSTR)
 #define PROCESS_STRING(m)	(((m) & P_F_PROCSTR) == P_F_PROCSTR)
 #define DISPLAY_UNIT(m)		(((m) & P_D_UNIT) == P_D_UNIT)
+#define PRINT_SEC_EPOCH(m)	(((m) & P_D_SEC_EPOCH) == P_D_SEC_EPOCH)
 
 /* Per-process flags */
 #define F_NO_PID_IO	0x01
