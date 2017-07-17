@@ -15,7 +15,10 @@ pidstat \- Report statistics for Linux tasks.
 .I interval
 .B [
 .I count
-.B ] ]
+.B ] ] [ -e
+.I program
+.I args
+.B ]
 .SH DESCRIPTION
 The
 .B pidstat
@@ -119,6 +122,17 @@ completion.
 The command name of the task.
 .RE
 .RE
+.IP "-e program args"
+Execute
+.IR program
+with given arguments
+.IR args
+and monitor it with
+.B pidstat.
+.B pidstat
+stops when
+.IR program
+terminates.
 .IP "-G process_name"
 Display only processes whose command name includes the string
 .IR process_name .
