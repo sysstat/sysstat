@@ -71,8 +71,8 @@ unsigned int pidflag = 0;	/* General flags */
 unsigned int tskflag = 0;	/* TASK/CHILD stats */
 unsigned int actflag = 0;	/* Activity flag */
 
-struct sigaction alrm_act, int_act;
-int sigint_caught = 0;
+struct sigaction alrm_act, int_act, chld_act;
+int signal_caught = 0;
 
 /*
  ***************************************************************************
@@ -84,7 +84,7 @@ int sigint_caught = 0;
  */
 void usage(char *progname)
 {
-	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
+	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"),
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
@@ -109,15 +109,15 @@ void alarm_handler(int sig)
 
 /*
  ***************************************************************************
- * SIGINT signal handler.
+ * SIGINT and SIGCHLD signals handler.
  *
  * IN:
  * @sig	Signal number.
  ***************************************************************************
  */
-void int_handler(int sig)
+void sig_handler(int sig)
 {
-	sigint_caught = 1;
+	signal_caught = 1;
 }
 
 /*
@@ -2512,14 +2512,14 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	/* Set a handler for SIGINT */
 	memset(&int_act, 0, sizeof(int_act));
-	int_act.sa_handler = int_handler;
+	int_act.sa_handler = sig_handler;
 	sigaction(SIGINT, &int_act, NULL);
 
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	pause();
 
-	if (sigint_caught)
-		/* SIGINT signal caught during first interval: Exit immediately */
+	if (signal_caught)
+		/* SIGINT/SIGCHLD signals caught during first interval: Exit immediately */
 		return;
 
 	do {
@@ -2561,8 +2561,8 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 			pause();
 
-			if (sigint_caught) {
-				/* SIGINT signal caught => Display average stats */
+			if (signal_caught) {
+				/* SIGINT/SIGCHLD signals caught => Display average stats */
 				count = 0;
 				printf("\n");	/* Skip "^C" displayed on screen */
 			}
@@ -2581,6 +2581,61 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	{
 		/* Write stats average */
 		write_stats_avg(curr, dis_hdr);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Start a program that will be monitored by pidstat.
+ *
+ * IN:
+ * @argc	Number of arguments.
+ * @argv	Arguments values.
+ *
+ * RETURNS:
+ * The PID of the program executed.
+ ***************************************************************************
+ */
+pid_t exec_pgm(int argc, char **argv)
+{
+	pid_t child;
+	char *args[argc + 1];
+	int i;
+
+	child = fork();
+
+	switch(child) {
+
+		case -1:
+			perror("fork");
+			exit(4);
+			break;
+
+		case 0:
+			/* Child */
+			for (i = 0; i < argc; i++) {
+				args[i] = argv[i];
+			}
+			args[argc] = NULL;
+
+			execvp(args[0], args);
+			perror("exec");
+			exit(4);
+			break;
+
+		default:
+			/*
+			 * Parent.
+			 * Set a handler for SIGCHLD (signal that will be received
+			 * by pidstat when the child program terminates).
+			 * The handler is the same as for SIGINT: Stop and display
+			 * average statistics.
+			 */
+			memset(&chld_act, 0, sizeof(chld_act));
+			chld_act.sa_handler = sig_handler;
+			sigaction(SIGCHLD, &chld_act, NULL);
+
+			return child;
 	}
 }
 
@@ -2620,7 +2675,16 @@ int main(int argc, char **argv)
 	/* Process args... */
 	while (opt < argc) {
 
-		if (!strcmp(argv[opt], "-p")) {
+		if (!strcmp(argv[opt], "-e")) {
+			if (!argv[++opt]) {
+				usage(argv[0]);
+			}
+			pidflag |= P_D_PID;
+			update_pid_array(&pid_array_nr, exec_pgm(argc - opt, argv + opt));
+			break;
+		}
+
+		else if (!strcmp(argv[opt], "-p")) {
 			pidflag |= P_D_PID;
 			if (argv[++opt]) {
 
