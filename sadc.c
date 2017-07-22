@@ -1238,12 +1238,10 @@ int main(int argc, char **argv)
 	while (++opt < argc) {
 
 		if (!strcmp(argv[opt], "-S")) {
-			if (argv[++opt]) {
-				parse_sadc_S_option(argv, opt);
-			}
-			else {
+			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
+			parse_sadc_S_option(argv, opt);
 		}
 
 		else if (!strcmp(argv[opt], "-D")) {
@@ -1268,14 +1266,12 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-C")) {
-			if (argv[++opt]) {
-				strncpy(comment, argv[opt], MAX_COMMENT_LEN);
-				comment[MAX_COMMENT_LEN - 1] = '\0';
-				if (!strlen(comment)) {
-					usage(argv[0]);
-				}
+			if (!argv[++opt]) {
+				usage(argv[0]);
 			}
-			else {
+			strncpy(comment, argv[opt], MAX_COMMENT_LEN);
+			comment[MAX_COMMENT_LEN - 1] = '\0';
+			if (!strlen(comment)) {
 				usage(argv[0]);
 			}
 		}

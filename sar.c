@@ -1260,25 +1260,21 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-m")) {
-			if (argv[++opt]) {
-				/* Parse option -m */
-				if (parse_sar_m_opt(argv, &opt, act)) {
-					usage(argv[0]);
-				}
+			if (!argv[++opt]) {
+				usage(argv[0]);
 			}
-			else {
+			/* Parse option -m */
+			if (parse_sar_m_opt(argv, &opt, act)) {
 				usage(argv[0]);
 			}
 		}
 
 		else if (!strcmp(argv[opt], "-n")) {
-			if (argv[++opt]) {
-				/* Parse option -n */
-				if (parse_sar_n_opt(argv, &opt, act)) {
-					usage(argv[0]);
-				}
+			if (!argv[++opt]) {
+				usage(argv[0]);
 			}
-			else {
+			/* Parse option -n */
+			if (parse_sar_n_opt(argv, &opt, act)) {
 				usage(argv[0]);
 			}
 		}

@@ -2686,57 +2686,51 @@ int main(int argc, char **argv)
 
 		else if (!strcmp(argv[opt], "-p")) {
 			pidflag |= P_D_PID;
-			if (argv[++opt]) {
-
-				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
-					if (!strcmp(t, K_ALL)) {
-						pidflag |= P_D_ALL_PID;
-					}
-					else if (!strcmp(t, K_SELF)) {
-						update_pid_array(&pid_array_nr, getpid());
-					}
-					else {
-						if (strspn(t, DIGITS) != strlen(t)) {
-							usage(argv[0]);
-						}
-						pid = atoi(t);
-						if (pid < 1) {
-							usage(argv[0]);
-						}
-						update_pid_array(&pid_array_nr, pid);
-					}
-				}
-				opt++;
-			}
-			else {
+			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
+
+			for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
+				if (!strcmp(t, K_ALL)) {
+					pidflag |= P_D_ALL_PID;
+				}
+				else if (!strcmp(t, K_SELF)) {
+					update_pid_array(&pid_array_nr, getpid());
+				}
+				else {
+					if (strspn(t, DIGITS) != strlen(t)) {
+						usage(argv[0]);
+					}
+					pid = atoi(t);
+					if (pid < 1) {
+						usage(argv[0]);
+					}
+					update_pid_array(&pid_array_nr, pid);
+				}
+			}
+			opt++;
 		}
 
 		else if (!strcmp(argv[opt], "-C")) {
-			if (argv[++opt]) {
-				strncpy(commstr, argv[opt++], MAX_COMM_LEN);
-				commstr[MAX_COMM_LEN - 1] = '\0';
-				pidflag |= P_F_COMMSTR;
-				if (!strlen(commstr)) {
-					usage(argv[0]);
-				}
+			if (!argv[++opt]) {
+				usage(argv[0]);
 			}
-			else {
+			strncpy(commstr, argv[opt++], MAX_COMM_LEN);
+			commstr[MAX_COMM_LEN - 1] = '\0';
+			pidflag |= P_F_COMMSTR;
+			if (!strlen(commstr)) {
 				usage(argv[0]);
 			}
 		}
 
 		else if (!strcmp(argv[opt], "-G")) {
-			if (argv[++opt]) {
-				strncpy(procstr, argv[opt++], MAX_COMM_LEN);
-				procstr[MAX_COMM_LEN - 1] = '\0';
-				pidflag |= P_F_PROCSTR;
-				if (!strlen(procstr)) {
-					usage(argv[0]);
-				}
+			if (!argv[++opt]) {
+				usage(argv[0]);
 			}
-			else {
+			strncpy(procstr, argv[opt++], MAX_COMM_LEN);
+			procstr[MAX_COMM_LEN - 1] = '\0';
+			pidflag |= P_F_PROCSTR;
+			if (!strlen(procstr)) {
 				usage(argv[0]);
 			}
 		}
@@ -2747,28 +2741,26 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-T")) {
-			if (argv[++opt]) {
-				if (tskflag) {
-					dis_hdr++;
-				}
-				if (!strcmp(argv[opt], K_P_TASK)) {
-					tskflag |= P_TASK;
-				}
-				else if (!strcmp(argv[opt], K_P_CHILD)) {
-					tskflag |= P_CHILD;
-				}
-				else if (!strcmp(argv[opt], K_P_ALL)) {
-					tskflag |= P_TASK + P_CHILD;
-					dis_hdr++;
-				}
-				else {
-					usage(argv[0]);
-				}
-				opt++;
+			if (!argv[++opt]) {
+				usage(argv[0]);
+			}
+			if (tskflag) {
+				dis_hdr++;
+			}
+			if (!strcmp(argv[opt], K_P_TASK)) {
+				tskflag |= P_TASK;
+			}
+			else if (!strcmp(argv[opt], K_P_CHILD)) {
+				tskflag |= P_CHILD;
+			}
+			else if (!strcmp(argv[opt], K_P_ALL)) {
+				tskflag |= P_TASK + P_CHILD;
+				dis_hdr++;
 			}
 			else {
 				usage(argv[0]);
 			}
+			opt++;
 		}
 
 		/* Option used individually. See below for grouped option */

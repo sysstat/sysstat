@@ -1576,28 +1576,26 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'j':
-			if (argv[*opt + 1]) {
-				(*opt)++;
-				if (strnlen(argv[*opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1)
-					return 1;
-
-				strncpy(persistent_name_type, argv[*opt], MAX_FILE_LEN - 1);
-				persistent_name_type[MAX_FILE_LEN - 1] = '\0';
-				strtolower(persistent_name_type);
-				if (!get_persistent_type_dir(persistent_name_type)) {
-					fprintf(stderr, _("Invalid type of persistent device name\n"));
-					return 2;
-				}
-				/*
-				 * If persistent device name doesn't exist for device, use
-				 * its pretty name.
-				 */
-				*flags |= S_F_PERSIST_NAME + S_F_DEV_PRETTY;
-				return 0;
-			}
-			else {
+			if (!argv[*opt + 1]) {
 				return 1;
 			}
+			(*opt)++;
+			if (strnlen(argv[*opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1)
+				return 1;
+
+			strncpy(persistent_name_type, argv[*opt], MAX_FILE_LEN - 1);
+			persistent_name_type[MAX_FILE_LEN - 1] = '\0';
+			strtolower(persistent_name_type);
+			if (!get_persistent_type_dir(persistent_name_type)) {
+				fprintf(stderr, _("Invalid type of persistent device name\n"));
+				return 2;
+			}
+			/*
+			 * If persistent device name doesn't exist for device, use
+			 * its pretty name.
+			 */
+			*flags |= S_F_PERSIST_NAME + S_F_DEV_PRETTY;
+			return 0;
 			break;
 
 		case 'p':
@@ -1632,11 +1630,10 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			 * But sadf option -t is checked in sadf.c as it won't
 			 * be entered as a sar option after "--".
 			 */
-			if (caller == C_SAR) {
-				*flags |= S_F_TRUE_TIME;
-			}
-			else
+			if (caller != C_SAR) {
 				return 1;
+			}
+			*flags |= S_F_TRUE_TIME;
 			break;
 
 		case 'u':

@@ -2042,32 +2042,30 @@ int main(int argc, char **argv)
 	while (++opt < argc) {
 
 		if (!strcmp(argv[opt], "-I")) {
-			if (argv[++opt]) {
-				actset = TRUE;
-
-				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
-					if (!strcmp(t, K_SUM)) {
-						/* Display total number of interrupts per CPU */
-						actflags |= M_D_IRQ_SUM;
-					}
-					else if (!strcmp(t, K_CPU)) {
-						/* Display interrupts per CPU */
-						actflags |= M_D_IRQ_CPU;
-					}
-					else if (!strcmp(t, K_SCPU)) {
-						/* Display soft interrupts per CPU */
-						actflags |= M_D_SOFTIRQS;
-					}
-					else if (!strcmp(t, K_ALL)) {
-						actflags |= M_D_IRQ_SUM + M_D_IRQ_CPU + M_D_SOFTIRQS;
-					}
-					else {
-						usage(argv[0]);
-					}
-				}
-			}
-			else {
+			if (!argv[++opt]) {
 				usage(argv[0]);
+			}
+			actset = TRUE;
+
+			for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
+				if (!strcmp(t, K_SUM)) {
+					/* Display total number of interrupts per CPU */
+					actflags |= M_D_IRQ_SUM;
+				}
+				else if (!strcmp(t, K_CPU)) {
+					/* Display interrupts per CPU */
+					actflags |= M_D_IRQ_CPU;
+				}
+				else if (!strcmp(t, K_SCPU)) {
+					/* Display soft interrupts per CPU */
+					actflags |= M_D_SOFTIRQS;
+				}
+				else if (!strcmp(t, K_ALL)) {
+					actflags |= M_D_IRQ_SUM + M_D_IRQ_CPU + M_D_SOFTIRQS;
+				}
+				else {
+					usage(argv[0]);
+				}
 			}
 		}
 
@@ -2082,38 +2080,34 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-N")) {
-			if (argv[++opt]) {
-				if (node_nr >= 0) {
-					flags |= F_N_OPTION;
-					actflags |= M_D_NODE;
-					actset = TRUE;
-					dis_hdr = 9;
-					if (parse_values(argv[opt], node_bitmap, node_nr + 1, K_LOWERALL)) {
-						usage(argv[0]);
-					}
-				}
-			}
-			else {
+			if (!argv[++opt]) {
 				usage(argv[0]);
+			}
+			if (node_nr >= 0) {
+				flags |= F_N_OPTION;
+				actflags |= M_D_NODE;
+				actset = TRUE;
+				dis_hdr = 9;
+				if (parse_values(argv[opt], node_bitmap, node_nr + 1, K_LOWERALL)) {
+					usage(argv[0]);
+				}
 			}
 		}
 
 		else if (!strcmp(argv[opt], "-P")) {
 			/* '-P ALL' can be used on UP machines */
-			if (argv[++opt]) {
-				flags |= F_P_OPTION;
-				dis_hdr = 9;
-
-				if (!strcmp(argv[opt], K_ON)) {
-					/* Display stats for all online CPU */
-					flags |= F_P_ON;
-					memset(cpu_bitmap, ~0, BITMAP_SIZE(cpu_nr));
-				}
-				else if (parse_values(argv[opt], cpu_bitmap, cpu_nr, K_LOWERALL)) {
-					usage(argv[0]);
-				}
+			if (!argv[++opt]) {
+				usage(argv[0]);
 			}
-			else {
+			flags |= F_P_OPTION;
+			dis_hdr = 9;
+
+			if (!strcmp(argv[opt], K_ON)) {
+				/* Display stats for all online CPU */
+				flags |= F_P_ON;
+				memset(cpu_bitmap, ~0, BITMAP_SIZE(cpu_nr));
+			}
+			else if (parse_values(argv[opt], cpu_bitmap, cpu_nr, K_LOWERALL)) {
 				usage(argv[0]);
 			}
 		}

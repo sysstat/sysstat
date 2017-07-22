@@ -1781,16 +1781,14 @@ int main(int argc, char **argv)
 			if (group_nr > 0) {
 				update_dev_list(&dlist_idx, group_name);
 			}
-			if (argv[++opt]) {
-				/*
-				 * MAX_NAME_LEN - 2: one char for the heading space,
-				 * and one for the trailing '\0'.
-				 */
-				snprintf(group_name, MAX_NAME_LEN, " %-.*s", MAX_NAME_LEN - 2, argv[opt++]);
-			}
-			else {
+			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
+			/*
+			 * MAX_NAME_LEN - 2: one char for the heading space,
+			 * and one for the trailing '\0'.
+			 */
+			snprintf(group_name, MAX_NAME_LEN, " %-.*s", MAX_NAME_LEN - 2, argv[opt++]);
 			group_nr++;
 		}
 
@@ -1800,28 +1798,26 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-j")) {
-			if (argv[++opt]) {
-				if (strnlen(argv[opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1) {
-					usage(argv[0]);
-				}
-				strncpy(persistent_name_type, argv[opt], MAX_FILE_LEN - 1);
-				persistent_name_type[MAX_FILE_LEN - 1] = '\0';
-				strtolower(persistent_name_type);
-				/* Check that this is a valid type of persistent device name */
-				if (!get_persistent_type_dir(persistent_name_type)) {
-					fprintf(stderr, _("Invalid type of persistent device name\n"));
-					exit(1);
-				}
-				/*
-				 * Persistent names are usually long: Display
-				 * them as human readable by default.
-				 */
-				flags |= I_D_PERSIST_NAME + I_D_HUMAN_READ;
-				opt++;
-			}
-			else {
+			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
+			if (strnlen(argv[opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1) {
+				usage(argv[0]);
+			}
+			strncpy(persistent_name_type, argv[opt], MAX_FILE_LEN - 1);
+			persistent_name_type[MAX_FILE_LEN - 1] = '\0';
+			strtolower(persistent_name_type);
+			/* Check that this is a valid type of persistent device name */
+			if (!get_persistent_type_dir(persistent_name_type)) {
+				fprintf(stderr, _("Invalid type of persistent device name\n"));
+				exit(1);
+			}
+			/*
+			 * Persistent names are usually long: Display
+			 * them as human readable by default.
+			 */
+			flags |= I_D_PERSIST_NAME + I_D_HUMAN_READ;
+			opt++;
 		}
 
 		else if (!strcmp(argv[opt], "-o")) {
