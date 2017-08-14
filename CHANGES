@@ -1,5 +1,19 @@
 Changes:
 
+2017/08/14: Version 11.6.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* pidstat: Add new option (-e) which can be used to pass a program
+	  to execute and make pidstat monitor it.
+	* pidstat: Add new option (-H) to display timestamps in seconds
+	  since the Epoch.
+	* pidstat manual page updated.
+	* Revert "ARM: Fix sadc crash because of unaligned memory accesses".
+	  The fix may cause segmentation faults in some cases [11.4.6]
+	  [11.2.12].
+	* Add BUG_REPORT template file.
+	* README file updated.
+	* Cosmetic changes in code.
+	* lsm file updated [11.4.6] [11.2.12].
+
 2017/07/05: Version 11.5.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* iostat: Add new "-s" switch used to display a short (narrow)
 	  version of the report that should fit in 80 chars wide screens.
