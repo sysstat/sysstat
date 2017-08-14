@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.6\n"
+"Project-Id-Version: sysstat 11.5.7\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-05-10 15:57+0200\n"
-"PO-Revision-Date: 2017-05-15 07:45+0900\n"
+"POT-Creation-Date: 2017-07-05 10:38+0200\n"
+"PO-Revision-Date: 2017-07-07 06:23+0900\n"
 "Last-Translator: Hideki Yamane <henrich@debian.or.jp>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "Language: ja\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:126 sar.c:96 pidstat.c:87
+#: iostat.c:86 cifsiostat.c:70 sar.c:96 mpstat.c:126 pidstat.c:87
 #: tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -28,13 +28,13 @@ msgstr "使い方: %s [ オプション ] [ <時間間隔> [ <カウント数> ]
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "利用可能なオプション:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <グループ名> ] [ -p [ <デバイス> [,...] | ALL ] ]\n"
 "[ <デバイス> [...] | ALL ] [ --debuginfo ]\n"
@@ -43,13 +43,13 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "利用可能なオプション:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <グループ名> ] [ -p [ <デバイス名> [,...] | ALL ] ]\n"
 "[ <デバイス名> [...] | ALL ]\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "ディスクデータが見つかりません\n"
 
-#: iostat.c:1682 sa_common.c:1587
+#: iostat.c:1812 sa_common.c:1588
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "永続的なデバイス名が不正です\n"
@@ -91,7 +91,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "システム動作情報ファイルのヘッダに書き込みができません: %s\n"
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1203 count.c:118
+#: sa_common.c:1204 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "%s を開けません: %s\n"
@@ -101,7 +101,7 @@ msgstr "%s を開けません: %s\n"
 msgid "Cannot append data to that file (%s)\n"
 msgstr "ファイル (%s) にデータを追加できません\n"
 
-#: common.c:78
+#: common.c:77
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat バージョン %s\n"
@@ -124,22 +124,6 @@ msgstr ""
 "利用可能なオプション:\n"
 "[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:129
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
-msgstr ""
-"利用可能なオプション:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
-
-# sar.c:
-#: mpstat.c:1672 sar.c:358 pidstat.c:2396
-msgid "Average:"
-msgstr "平均値:"
-
 #: sadf.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
@@ -160,11 +144,11 @@ msgstr ""
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar のオプション> ]\n"
 
-#: pr_stats.c:2537 pr_stats.c:2548 pr_stats.c:2655 pr_stats.c:2666
+#: pr_stats.c:2538 pr_stats.c:2549 pr_stats.c:2656 pr_stats.c:2667
 msgid "Summary:"
 msgstr "サマリ:"
 
-#: pr_stats.c:2590
+#: pr_stats.c:2591
 msgid "Other devices not listed here"
 msgstr "ここに挙げられていない他のデバイス"
 
@@ -374,6 +358,11 @@ msgstr "データコレクタが見つかりました: %s\n"
 msgid "End of data collecting unexpected\n"
 msgstr "データ収集が予期無く終了しました\n"
 
+# sar.c:
+#: sar.c:358 mpstat.c:1672 pidstat.c:2397
+msgid "Average:"
+msgstr "平均値:"
+
 #: sar.c:813
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
@@ -403,6 +392,17 @@ msgstr "システム動作情報ファイルの読み込みがありません (-
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "データ収集プログラム (%s) が見つかりません\n"
+
+#: mpstat.c:129
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
+msgstr ""
+"利用可能なオプション:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
 
 #: sa_conv.c:69
 #, c-format
@@ -454,42 +454,42 @@ msgstr ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <コマンド> ] [ -G <プロセス名> ] [ --human ]\n"
 " [ -p { <プロセスID> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: sa_common.c:999
+#: sa_common.c:1000
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "システム動作情報ファイルの読み込み中にエラーが起きました: %s\n"
 
-#: sa_common.c:1009
+#: sa_common.c:1010
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "システム動作情報ファイルが途中で予期無く終了しました\n"
 
-#: sa_common.c:1028
+#: sa_common.c:1029
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "sysstat (バージョン %d.%d.%d) の sar/sadc によって作られたファイル"
 
-#: sa_common.c:1061
+#: sa_common.c:1062
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "システム動作情報ファイルの形式が正しくありません: %s\n"
 
-#: sa_common.c:1073
+#: sa_common.c:1074
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "エンディアン形式が一致しません\n"
 
-#: sa_common.c:1077
+#: sa_common.c:1078
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "sysstat の現在のバージョンではこのデータファイル (%#x) の形式を読み込めません\n"
 
-#: sa_common.c:1206
+#: sa_common.c:1207
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "データ収集が有効になっているかを確認してください\n"
 
-#: sa_common.c:1399
+#: sa_common.c:1400
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "要求された動作情報はファイル %s 内にはありません\n"

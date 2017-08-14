@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.6\n"
+"Project-Id-Version: sysstat 11.5.7\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-05-10 15:57+0200\n"
-"PO-Revision-Date: 2017-05-15 06:48+0700\n"
+"POT-Creation-Date: 2017-07-05 10:38+0200\n"
+"PO-Revision-Date: 2017-07-11 14:20+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
 "Language: vi\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Language-Team-Website: <http://translationproject.org/team/vi.html>\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:126 sar.c:96 pidstat.c:87
+#: iostat.c:86 cifsiostat.c:70 sar.c:96 mpstat.c:126 pidstat.c:87
 #: tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -32,13 +32,13 @@ msgstr "Cách dùng: %s [ tùy_chọn… ] [ <nhịp> [ <số-lượng> ] ]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Các tùy chọn:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { MÃ_SỐ | NHÃN | ĐƯỜNG_DẪN | UUID | … } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <tên_nhóm> ] [ -p <thiết_bị> [,…] | ALL ] ]\n"
 "[ <thiết_bị> […] | ALL ] [ --debuginfo ]\n"
@@ -49,13 +49,13 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Các tùy chọn:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { MÃ_SỐ | NHÃN | ĐƯỜNG_DẪN | UUID | … } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <tên_nhóm> ] [ -p <thiết_bị> [,…] | ALL } ]\n"
 "[ <thiết_bị> […] | ALL ]\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Không tìm thấy dữ liệu về đĩa\n"
 
-#: iostat.c:1682 sa_common.c:1587
+#: iostat.c:1812 sa_common.c:1588
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Kiểu tên của thiết bị vĩnh cửu không hợp lệ\n"
@@ -105,7 +105,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Không thể ghi vào phần đầu của tập tin hoạt động hệ thống: %s\n"
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1203 count.c:118
+#: sa_common.c:1204 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Không thể mở %s: %s\n"
@@ -115,7 +115,7 @@ msgstr "Không thể mở %s: %s\n"
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Không thể nối thêm dữ liệu vào tập tin đó (%s)\n"
 
-#: common.c:78
+#: common.c:77
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat phiên bản %s\n"
@@ -137,25 +137,6 @@ msgid ""
 msgstr ""
 "Tùy chọn:\n"
 "[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-
-#: mpstat.c:129
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
-msgstr ""
-"Tùy chọn:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <danh_sách_node> | ALL } ] [ -o JSON ] [ -o JSON ] [ -P { <danh_sách_cpu> | ON | ALL } ]\n"
-"\n"
-"SUM       tổng\n"
-"CPU, cpu  bộ vi xử lý\n"
-"ALL       tất cả\n"
-
-#: mpstat.c:1672 sar.c:358 pidstat.c:2396
-msgid "Average:"
-msgstr "Trung bình:"
 
 #: sadf.c:87
 #, c-format
@@ -180,11 +161,11 @@ msgstr ""
 "ALL         tất cả\n"
 "gi:ph:gy    giờ:phút:giây (hai chữ số)\n"
 
-#: pr_stats.c:2537 pr_stats.c:2548 pr_stats.c:2655 pr_stats.c:2666
+#: pr_stats.c:2538 pr_stats.c:2549 pr_stats.c:2656 pr_stats.c:2667
 msgid "Summary:"
 msgstr "Tổng kết:"
 
-#: pr_stats.c:2590
+#: pr_stats.c:2591
 msgid "Other devices not listed here"
 msgstr "Các thiết bị khác không được liệt kê ở đây"
 
@@ -403,6 +384,10 @@ msgstr "Bộ sưu tập dữ liệu tìm thấy: %s\n"
 msgid "End of data collecting unexpected\n"
 msgstr "Kết thúc bất thường khi thu thập dữ liệu\n"
 
+#: sar.c:358 mpstat.c:1672 pidstat.c:2397
+msgid "Average:"
+msgstr "Trung bình:"
+
 #: sar.c:813
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
@@ -432,6 +417,21 @@ msgstr "Không phải đọc từ tập tin hoạt động hệ thống (dùng t
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Không tìm thấy bộ thu thập dữ liệu (%s)\n"
+
+#: mpstat.c:129
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
+msgstr ""
+"Tùy chọn:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <danh_sách_node> | ALL } ] [ -o JSON ] [ -o JSON ] [ -P { <danh_sách_cpu> | ON | ALL } ]\n"
+"\n"
+"SUM       tổng\n"
+"CPU, cpu  bộ vi xử lý\n"
+"ALL       tất cả\n"
 
 #: sa_conv.c:69
 #, c-format
@@ -489,42 +489,42 @@ msgstr ""
 "TASK      Tác vụ\n"
 "CHILD     Con\n"
 
-#: sa_common.c:999
+#: sa_common.c:1000
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Gặp lỗi khi đọc tập tin hoạt động hệ thống: %s\n"
 
-#: sa_common.c:1009
+#: sa_common.c:1010
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Gặp kết thúc bất thường trong tập tin hoạt động hệ thống\n"
 
-#: sa_common.c:1028
+#: sa_common.c:1029
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Tập tin được tạo bởi “sar/sadc” từ sysstat phiên bản %d.%d.%d"
 
-#: sa_common.c:1061
+#: sa_common.c:1062
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Tập tin hoạt động hệ thống không hợp lệ: %s\n"
 
-#: sa_common.c:1073
+#: sa_common.c:1074
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "Định dạng endian không khớp\n"
 
-#: sa_common.c:1077
+#: sa_common.c:1078
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Phiên bản “sysstat” hiện tại không thể đọc định dạng của tập tin này (%#x)\n"
 
-#: sa_common.c:1206
+#: sa_common.c:1207
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Vui lòng kiểm tra xem việc thu thập dữ liệu có được bật hay không\n"
 
-#: sa_common.c:1399
+#: sa_common.c:1400
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Hoạt động đã yêu cầu vẫn không sẵn có trong tập tin %s\n"

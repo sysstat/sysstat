@@ -5,10 +5,10 @@
 # Mehmet Kececi <mkececi@mehmetkececi.com>, 2016, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.5.6\n"
+"Project-Id-Version: sysstat 11.5.7\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-05-10 15:57+0200\n"
-"PO-Revision-Date: 2017-05-15 09:26+0300\n"
+"POT-Creation-Date: 2017-07-05 10:38+0200\n"
+"PO-Revision-Date: 2017-07-05 23:28+0300\n"
 "Last-Translator: Mehmet Kececi <mkececi@mehmetkececi.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:126 sar.c:96 pidstat.c:87
+#: iostat.c:86 cifsiostat.c:70 sar.c:96 mpstat.c:126 pidstat.c:87
 #: tapestat.c:95
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
@@ -29,13 +29,13 @@ msgstr "Kullanım: %s [ seçenekler ] [ <aralık> [ <sayı> ] ]\n"
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Seçenekler:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | ETİKET | YOL | UUID | ... } ] [ --insan ] [ -o JSON ]\n"
 "[ [ -H ] -g <grup_adı> ] [ -p [ <aygıt> [,...] | ALL ] ]\n"
 "[ <aygıt> [...] | ALL ] [ --debuginfo ]\n"
@@ -44,13 +44,13 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Seçenekler:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ -j { ID | ETİKET | YOL | UUID | ... } ] [ --insan ] [ -o JSON ]\n"
 "[ [ -H ] -g <grup_adı> ] [ -p [ <aygıt> [,...] | ALL ] ]\n"
 "[ <aygıt> [...] | ALL ]\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Disk verisi bulunamıyor\n"
 
-#: iostat.c:1682 sa_common.c:1587
+#: iostat.c:1812 sa_common.c:1588
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Geçersiz kalıcı aygıt adı türü\n"
@@ -92,7 +92,7 @@ msgid "Cannot write system activity file header: %s\n"
 msgstr "Sistem etkinlik dosyası başlığı yazılamıyor: %s\n"
 
 #: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1203 count.c:118
+#: sa_common.c:1204 count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "%s: %s'te açılamadı\n"
@@ -102,7 +102,7 @@ msgstr "%s: %s'te açılamadı\n"
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Veri bu dosyaya (%s) eklenemiyor\n"
 
-#: common.c:78
+#: common.c:77
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat sürümü %s\n"
@@ -125,21 +125,6 @@ msgstr ""
 "Seçenekler:\n"
 "[ --insan ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:129
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
-msgstr ""
-"Seçenekler:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
-
-#: mpstat.c:1672 sar.c:358 pidstat.c:2396
-msgid "Average:"
-msgstr "Ortalama:"
-
 #: sadf.c:87
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
@@ -160,11 +145,11 @@ msgstr ""
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_seçenekleri> ]\n"
 
-#: pr_stats.c:2537 pr_stats.c:2548 pr_stats.c:2655 pr_stats.c:2666
+#: pr_stats.c:2538 pr_stats.c:2549 pr_stats.c:2656 pr_stats.c:2667
 msgid "Summary:"
 msgstr "Özet:"
 
-#: pr_stats.c:2590
+#: pr_stats.c:2591
 msgid "Other devices not listed here"
 msgstr "Diğer aygıtlar burada listelenmemiş"
 
@@ -372,6 +357,10 @@ msgstr "Veri toplayıcı bulundu: %s\n"
 msgid "End of data collecting unexpected\n"
 msgstr "Beklenmeyen veri toplama işlemi sonu\n"
 
+#: sar.c:358 mpstat.c:1672 pidstat.c:2397
+msgid "Average:"
+msgstr "Ortalama:"
+
 #: sar.c:813
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
@@ -401,6 +390,17 @@ msgstr "Bir sistem etkinliğinden okunamıyor (-f seçeneğini kullanın)\n"
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Veri toplayıcı bulunamıyor (%s)\n"
+
+#: mpstat.c:129
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
+msgstr ""
+"Seçenekler:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
+"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
 
 #: sa_conv.c:69
 #, c-format
@@ -452,42 +452,42 @@ msgstr ""
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <komut> ] [ -G <süreç_adı> ] [ --insan ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 
-#: sa_common.c:999
+#: sa_common.c:1000
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Sistem etkinlik dosyası okunurken hata: %s\n"
 
-#: sa_common.c:1009
+#: sa_common.c:1010
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Beklenmedik sistem etkinlik dosyası sonu\n"
 
-#: sa_common.c:1028
+#: sa_common.c:1029
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Dosyalar, sar/sadc tarafından sysstat sürüm %d.%d.%d ile oluşturuldu"
 
-#: sa_common.c:1061
+#: sa_common.c:1062
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Geçersiz sistem etkinlik dosyası: %s\n"
 
-#: sa_common.c:1073
+#: sa_common.c:1074
 #, c-format
 msgid "Endian format mismatch\n"
 msgstr "Endian biçim uyumsuzluğu\n"
 
-#: sa_common.c:1077
+#: sa_common.c:1078
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Güncel sysstat sürümü bu dosya biçimini okuyamıyor (%#x)\n"
 
-#: sa_common.c:1206
+#: sa_common.c:1207
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Veri biriktirmenin etkin olup olmadığını denetleyin\n"
 
-#: sa_common.c:1399
+#: sa_common.c:1400
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Talep edilen etkinlikler dosyada bulunmamaktadır %s\n"
