@@ -1,5 +1,10 @@
 Changes:
 
+2017/08/14: Version 11.2.12 - Sebastien Godard (sysstat <at> orange.fr)
+	* Revert "ARM: Fix sadc crash because of unaligned memory accesses".
+	  The fix may cause segmentation faults in some cases.
+	* lsm file updated.
+
 2017/07/05: Version 11.2.11 - Sebastien Godard (sysstat <at> orange.fr)
 	* Fix ressource leak (CID 144609).
 	* Cast variables to target type before use.
