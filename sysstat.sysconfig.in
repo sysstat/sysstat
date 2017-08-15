@@ -12,7 +12,7 @@ COMPRESSAFTER=@COMPRESSAFTER@
 # which are used for the generation of log files.
 SADC_OPTIONS="@COLLECT_ALL@ @SADC_OPT@"
 
-# Directory where sa and sar files are saved.
+# Directory where sa and sar files are saved. The directory must exist.
 SA_DIR=@SA_DIR@
 
 # Compression program to use.
