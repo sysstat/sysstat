@@ -463,7 +463,8 @@ int get_filesystem_nr(void)
 {
 	FILE *fp;
 	char line[512], fs_name[MAX_FS_LEN], mountp[256];
-	int fs = 0;
+	int fs = 0, skip = 0, skip_next = 0;
+	char *pos = 0;
 	struct statvfs buf;
 
 	if ((fp = fopen(MTAB, "r")) == NULL)
@@ -472,11 +473,25 @@ int get_filesystem_nr(void)
 
 	/* Get current filesystem */
 	while (fgets(line, sizeof(line), fp) != NULL) {
+		/*
+		 * Ignore line if the preceding line did not contain '\n'.
+		 * (Some very long lines may be found for instance when
+		 * overlay2 filesystem with docker is used).
+		 */
+		skip = skip_next;
+		skip_next = (strchr(line, '\n') == NULL);
+		if (skip)
+			continue;
+
 		if (line[0] == '/') {
+			/* Find field separator position */
+			pos = strchr(line, ' ');
+			if (pos == NULL)
+				continue;
 
 			/* Read filesystem name and mount point */
 			sscanf(line, "%127s", fs_name);
-			sscanf(strchr(line, ' ') + 1, "%255s", mountp);
+			sscanf(pos + 1, "%255s", mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);
