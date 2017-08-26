@@ -1676,17 +1676,17 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			if (count > 0) {
 				count--;
 			}
+			if (DISPLAY_JSON_OUTPUT(flags)) {
+				if (count) {
+				printf(",");
+				}
+				printf("\n");
+			}
 		}
 		else {
 			skip = 0;
 		}
 
-		if (DISPLAY_JSON_OUTPUT(flags)) {
-			if (count) {
-			printf(",");
-			}
-			printf("\n");
-		}
 		if (count) {
 			curr ^= 1;
 			pause();
