@@ -2097,7 +2097,8 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 {
 	FILE *fp;
 	char line[512], fs_name[128], mountp[256];
-	int fs = 0;
+	int fs = 0, skip = 0, skip_next = 0;
+	char *pos = 0;
 	struct stats_filesystem *st_filesystem_i;
 	struct statvfs buf;
 
@@ -2105,7 +2106,21 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 		return;
 
 	while ((fgets(line, sizeof(line), fp) != NULL) && (fs < nbr)) {
+		/*
+		 * Ignore line if the preceding line did not contain '\n'.
+		 * (Some very long lines may be found for instance when
+		 * overlay2 filesystem with docker is used).
+		 */
+		skip = skip_next;
+		skip_next = (strchr(line, '\n') == NULL);
+		if (skip)
+			continue;
+
 		if (line[0] == '/') {
+			/* Find field separator position */
+			pos = strchr(line, ' ');
+			if (pos == NULL)
+				continue;
 
 			/* Read current filesystem name */
 			sscanf(line, "%127s", fs_name);
@@ -2118,7 +2133,7 @@ void read_filesystem(struct stats_filesystem *st_filesystem, int nbr)
 			 * from the fs name. This will result in a bogus name
 			 * and following statvfs() function will always fail.
 			 */
-			sscanf(strchr(line, ' ') + 1, "%255s", mountp);
+			sscanf(pos + 1, "%255s", mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);
