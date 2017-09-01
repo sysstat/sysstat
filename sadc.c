@@ -52,8 +52,10 @@
 #include "sensors/error.h"
 #endif
 
+#ifdef USE_SCCSID
 #define SCCSID "@(#)sysstat-" VERSION ": " __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
+#endif
 
 long interval = 0;
 unsigned int flags = 0;
