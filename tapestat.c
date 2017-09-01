@@ -52,8 +52,10 @@
 #define _(string) (string)
 #endif
 
+#ifdef USE_SCCSID
 #define SCCSID "@(#)sysstat-" VERSION ": " __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
+#endif
 
 int cpu_nr = 0;		/* Nb of processors on the machine */
 int flags = 0;		/* Flag for common options and system state */
