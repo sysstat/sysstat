@@ -41,8 +41,10 @@
 #define _(string) (string)
 #endif
 
+#ifdef USE_SCCSID
 #define SCCSID "@(#)sysstat-" VERSION ": " __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
+#endif
 
 unsigned long long uptime0[2] = {0, 0};
 struct cifs_stats *st_cifs[2];

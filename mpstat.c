@@ -43,8 +43,10 @@
 #define _(string) (string)
 #endif
 
+#ifdef USE_SCCSID
 #define SCCSID "@(#)sysstat-" VERSION ": "  __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
+#endif
 
 unsigned long long uptime[3] = {0, 0, 0};
 unsigned long long uptime0[3] = {0, 0, 0};
