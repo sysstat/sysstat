@@ -358,10 +358,10 @@ struct svg_hdr_parm {
  * Modified to indicate that the format of the file is
  * no longer compatible with that of previous sysstat versions.
  */
-#define FORMAT_MAGIC	0x2173
+#define FORMAT_MAGIC	0x2175
 
 /* Previous datafile format magic number used by older sysstat versions */
-#define PREVIOUS_FORMAT_MAGIC	0x2171
+#define PREVIOUS_FORMAT_MAGIC	0x2173
 
 /* Padding in file_magic structure. See below. */
 #define FILE_MAGIC_PADDING	63
@@ -474,23 +474,23 @@ struct file_activity {
 	/*
 	 * Identification value of activity.
 	 */
-	unsigned int id		__attribute__ ((aligned (4)));
+	unsigned int id;
 	/*
 	 * Activity magical number.
 	 */
-	unsigned int magic	__attribute__ ((packed));
+	unsigned int magic;
 	/*
 	 * Number of items for this activity.
 	 */
-	__nr_t nr		__attribute__ ((packed));
+	__nr_t nr;
 	/*
 	 * Number of sub-items for this activity.
 	 */
-	__nr_t nr2		__attribute__ ((packed));
+	__nr_t nr2;
 	/*
 	 * Size of an item structure.
 	 */
-	int size		__attribute__ ((packed));
+	int size;
 };
 
 #define FILE_ACTIVITY_SIZE	(sizeof(struct file_activity))
@@ -527,15 +527,15 @@ struct record_header {
 	/*
 	 * Machine uptime (multiplied by the # of proc).
 	 */
-	unsigned long long uptime	__attribute__ ((aligned (16)));
+	unsigned long long uptime;
 	/*
 	 * Uptime reduced to one processor. Always set, even on UP machines.
 	 */
-	unsigned long long uptime0	__attribute__ ((aligned (16)));
+	unsigned long long uptime0;
 	/*
 	 * Timestamp (number of seconds since the epoch).
 	 */
-	unsigned long ust_time		__attribute__ ((aligned (16)));
+	unsigned long ust_time		__attribute__ ((aligned (8)));
 	/*
 	 * Record type: R_STATS, R_RESTART,...
 	 */
