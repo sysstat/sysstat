@@ -1506,7 +1506,7 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(0, 5, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(5, 0, 0, (void *) a->buf[curr], (void *) a->buf[!curr],
 			     itv, spmin, spmax, g_fields);
 
 		/*
