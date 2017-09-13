@@ -1287,7 +1287,6 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 {
 	int i;
 	double val, lim = 0.005;
-	int print_percent = 0;
 	va_list args;
 
 	/*
@@ -1296,7 +1295,6 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 	 */
 	if (human > 0) {
 		lim = 0.05;
-		print_percent = 1;
 		if (wi < 4) {
 			/* E.g., 100% */
 			wi = 4;
@@ -1326,7 +1324,7 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 		}
 		printf(" %*.*f", wi, wd, val);
 		printf("%s", sc_normal);
-		if (print_percent) printf("%%");
+		if (human > 0) printf("%%");
 	}
 
 	va_end(args);
