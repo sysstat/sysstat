@@ -724,6 +724,15 @@ struct activity {
 	 */
 	char *name;
 	/*
+	 * Description of the corresponding structure containing statistics (as defined
+	 * in rd_stats.h or rd_sensors.h). Such a structure has 0+ fields of type
+	 * "long long", followed by 0+ fields of type "long", followed by 0+ fields of
+	 * type "int", followed by 0+ other fields (e.g. of type char). The array below
+	 * gives the number of "long long" fields composing the structure, then the number
+	 * of "long" fields, then the number of "int" fields.
+	 */
+	int gtypes_nr[3];
+	/*
 	 * Number of SVG graphs for this activity. The total number of graphs for
 	 * the activity can be greater though if flag AO_GRAPH_PER_ITEM is set, in
 	 * which case the total number will  be @g_nr * @nr.
