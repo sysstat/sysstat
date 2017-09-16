@@ -1134,7 +1134,7 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			  struct file_activity *file_actlst)
 {
-	int i, j, k, p;
+	int i, j, p;
 	struct file_activity *fal = file_actlst;
 	off_t offset;
 
@@ -1152,16 +1152,16 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 				perror("lseek");
 				exit(2);
 			}
+			continue;
 		}
-		else if ((act[p]->nr > 0) &&
+
+		if ((act[p]->nr > 0) &&
 			 ((act[p]->nr > 1) || (act[p]->nr2 > 1)) &&
 			 (act[p]->msize > act[p]->fsize)) {
-			for (j = 0; j < act[p]->nr; j++) {
-				for (k = 0; k < act[p]->nr2; k++) {
-					sa_fread(ifd,
-						 (char *) act[p]->buf[curr] + (j * act[p]->nr2 + k) * act[p]->msize,
-						 act[p]->fsize, HARD_SIZE);
-				}
+
+			for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
+				sa_fread(ifd, (char *) act[p]->buf[curr] + j * act[p]->msize,
+					 act[p]->fsize, HARD_SIZE);
 			}
 		}
 		else if (act[p]->nr > 0) {
