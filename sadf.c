@@ -48,6 +48,13 @@ char *sccsid(void) { return (SCCSID); }
 
 long interval = -1, count = 0;
 
+/* TRUE if data read from file don't match current machine's endianness */
+int endian_mismatch = FALSE;
+/* TRUE if file's data come from a 64 bit machine */
+int arch_64 = FALSE;
+
+int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
+
 unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */
 unsigned int format = 0;	/* Output format */
@@ -269,6 +276,11 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 	*rtype = record_hdr[curr].record_type;
 
 	if (!eosaf) {
+		/* Normalize endianness for file_hdr structure */
+		if (endian_mismatch) {
+			swap_struct(rec_types_nr, &record_hdr[curr], arch_64);
+		}
+
 		if (*rtype == R_COMMENT) {
 			if (action & IGNORE_COMMENT) {
 				/* Ignore COMMENT record */
@@ -284,7 +296,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 				/* Display COMMENT record */
 				print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
 						     *rtype, ifd, rectime, loctime, file, tab,
-						     file_magic, &file_hdr, act, fmt[f_position]);
+						     file_magic, &file_hdr, act, fmt[f_position],
+						     endian_mismatch, arch_64);
 			}
 		}
 		else if (*rtype == R_RESTART) {
@@ -297,7 +310,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 				 */
 				if (!(action & DONT_READ_VOLATILE)) {
 					read_vol_act_structures(ifd, act, file, file_magic,
-								file_hdr.sa_vol_act_nr);
+								file_hdr.sa_vol_act_nr,
+								endian_mismatch, arch_64);
 				}
 				if (action & SET_TIMESTAMPS) {
 					sa_get_record_timestamp_struct(flags, &record_hdr[curr],
@@ -308,7 +322,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 				/* Display RESTART record */
 				print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
 						     *rtype, ifd, rectime, loctime, file, tab,
-						     file_magic, &file_hdr, act, fmt[f_position]);
+						     file_magic, &file_hdr, act, fmt[f_position],
+						     endian_mismatch, arch_64);
 			}
 		}
 		else {
@@ -317,7 +332,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			 * So read now the extra fields.
 			 */
 			read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-					     file_actlst);
+					     file_actlst, endian_mismatch, arch_64);
 			sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime, loctime);
 		}
 	}
@@ -1253,7 +1268,8 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
 					     R_RESTART, ifd, rectime, loctime, file, 0,
-					     file_magic, &file_hdr, act, fmt[f_position]);
+					     file_magic, &file_hdr, act, fmt[f_position],
+					     endian_mismatch, arch_64);
 		}
 	}
 	while (!eosaf);
@@ -1414,7 +1430,7 @@ void read_stats_from_file(char dfile[])
 	/* Prepare file for reading and read its headers */
 	ignore = ACCEPT_BAD_FILE_FORMAT(fmt[f_position]->options);
 	check_file_actlst(&ifd, dfile, act, &file_magic, &file_hdr,
-			  &file_actlst, id_seq, ignore);
+			  &file_actlst, id_seq, ignore, &endian_mismatch, &arch_64);
 
 	/* Now pick up number of proc for this file */
 	cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;

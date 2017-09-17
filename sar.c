@@ -52,11 +52,16 @@ long interval = -1, count = 0;
 
 /* TRUE if a header line must be printed */
 int dis = TRUE;
+/* TRUE if data read from file don't match current machine's endianness */
+int endian_mismatch = FALSE;
+/* TRUE if file's data come from a 64 bit machine */
+int arch_64 = FALSE;
 
 unsigned int flags = 0;
 unsigned int dm_major;	/* Device-mapper major number */
 
 char timestamp[2][TIMESTAMP_LEN];
+int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
 
 unsigned long avg_count = 0;
 
@@ -680,19 +685,23 @@ void read_sadc_stat_bunch(int curr)
  * @file_actlst	List of activities in file.
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
  *
  * OUT:
  * @curr	Index in array for next sample statistics.
  * @cnt		Number of remaining lines of stats to write.
  * @eosaf	Set to TRUE if EOF (end of file) has been reached.
- * @reset	Set to TRUE if last_uptime variable should be
- * 		reinitialized (used in next_slice() function).
+ * @reset	Set to TRUE if last_uptime variable should be reinitialized
+ *		(used in next_slice() function).
  ***************************************************************************
  */
 void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 			   int rows, unsigned int act_id, int *reset,
 			   struct file_activity *file_actlst, char *file,
-			   struct file_magic *file_magic)
+			   struct file_magic *file_magic, int endian_mismatch,
+			   int arch_64)
 {
 	int p, reset_cd;
 	unsigned long lines = 0;
@@ -728,11 +737,17 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		/* Display count lines of stats */
 		*eosaf = sa_fread(ifd, &record_hdr[*curr],
 				  RECORD_HEADER_SIZE, SOFT_SIZE);
+
+		/* Normalize endianness for record_hdr structure */
+		if (endian_mismatch) {
+			swap_struct(rec_types_nr, &record_hdr[*curr], arch_64);
+		}
 		rtype = record_hdr[*curr].record_type;
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			/* Read the extra fields since it's not a special record */
-			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst);
+			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
+					     endian_mismatch, arch_64);
 		}
 
 		if ((lines >= rows) || !lines) {
@@ -749,7 +764,8 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 				next = print_special_record(&record_hdr[*curr], flags + S_F_LOCAL_TIME,
 							    &tm_start, &tm_end, R_COMMENT, ifd,
 							    &rectime, NULL, file, 0,
-							    file_magic, &file_hdr, act, &sar_fmt);
+							    file_magic, &file_hdr, act, &sar_fmt,
+							    endian_mismatch, arch_64);
 				if (next) {
 					/* A line of comment was actually displayed */
 					lines++;
@@ -892,7 +908,7 @@ void read_stats_from_file(char from_file[])
 
 	/* Read file headers and activity list */
 	check_file_actlst(&ifd, from_file, act, &file_magic, &file_hdr,
-			  &file_actlst, id_seq, FALSE);
+			  &file_actlst, id_seq, FALSE, &endian_mismatch, &arch_64);
 
 	/* Perform required allocations */
 	allocate_structures(act);
@@ -912,12 +928,17 @@ void read_stats_from_file(char from_file[])
 				/* End of sa data file */
 				return;
 
+			/* Normalize endianness for file_hdr structure */
+			if (endian_mismatch) {
+				swap_struct(rec_types_nr, &record_hdr[0], arch_64);
+			}
+
 			rtype = record_hdr[0].record_type;
 			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
 				print_special_record(&record_hdr[0], flags + S_F_LOCAL_TIME,
 						     &tm_start, &tm_end, rtype, ifd,
 						     &rectime, NULL, from_file, 0, &file_magic,
-						     &file_hdr, act, &sar_fmt);
+						     &file_hdr, act, &sar_fmt, endian_mismatch, arch_64);
 			}
 			else {
 				/*
@@ -925,7 +946,7 @@ void read_stats_from_file(char from_file[])
 				 * So read now the extra fields.
 				 */
 				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-						     file_actlst);
+						     file_actlst, endian_mismatch, arch_64);
 				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
 								   &record_hdr[0],
 								   &rectime, NULL))
@@ -967,7 +988,7 @@ void read_stats_from_file(char from_file[])
 			if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 				handle_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf, rows,
 						      act[p]->id, &reset, file_actlst,
-						      from_file, &file_magic);
+						      from_file, &file_magic, endian_mismatch, arch_64);
 			}
 			else {
 				unsigned int optf, msk;
@@ -981,7 +1002,8 @@ void read_stats_from_file(char from_file[])
 						handle_curr_act_stats(ifd, fpos, &curr, &cnt,
 								      &eosaf, rows, act[p]->id,
 								      &reset, file_actlst,
-								      from_file, &file_magic);
+								      from_file, &file_magic,
+								      endian_mismatch, arch_64);
 						act[p]->opt_flags = optf;
 					}
 				}
@@ -993,17 +1015,24 @@ void read_stats_from_file(char from_file[])
 			do {
 				eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
 						 SOFT_SIZE);
+
+				/* Normalize endianness for file_hdr structure */
+				if (endian_mismatch) {
+					swap_struct(rec_types_nr, &record_hdr[curr], arch_64);
+				}
 				rtype = record_hdr[curr].record_type;
+
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-							     file_actlst);
+							     file_actlst, endian_mismatch, arch_64);
 				}
 				else if (!eosaf && (rtype == R_COMMENT)) {
 					/* This was a COMMENT record: print it */
 					print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 							     &tm_start, &tm_end, R_COMMENT, ifd,
 							     &rectime, NULL, from_file, 0,
-							     &file_magic, &file_hdr, act, &sar_fmt);
+							     &file_magic, &file_hdr, act, &sar_fmt,
+							     endian_mismatch, arch_64);
 				}
 			}
 			while (!eosaf && (rtype != R_RESTART));
@@ -1014,7 +1043,8 @@ void read_stats_from_file(char from_file[])
 			print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 					     &tm_start, &tm_end, R_RESTART, ifd,
 					     &rectime, NULL, from_file, 0,
-					     &file_magic, &file_hdr, act, &sar_fmt);
+					     &file_magic, &file_hdr, act, &sar_fmt,
+					     endian_mismatch, arch_64);
 		}
 	}
 	while (!eosaf);

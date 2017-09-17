@@ -50,6 +50,9 @@
 int default_file_used = FALSE;
 extern struct act_bitmap cpu_bitmap;
 
+int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADER_U_NR};
+int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
+
 /*
  ***************************************************************************
  * Allocate structures.
@@ -1106,27 +1109,17 @@ void display_sa_file_version(FILE *st, struct file_magic *file_magic)
 void handle_invalid_sa_file(int *fd, struct file_magic *file_magic, char *file,
 			    int n)
 {
-	unsigned short sm;
-
 	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
 
 	if (n == FILE_MAGIC_SIZE) {
-		sm = (file_magic->sysstat_magic << 8) | (file_magic->sysstat_magic >> 8);
-		if ((file_magic->sysstat_magic == SYSSTAT_MAGIC) || (sm == SYSSTAT_MAGIC)) {
-			/*
-			 * This is a sysstat file, but this file has an old format
-			 * or its internal endian format doesn't match.
-			 */
+		if ((file_magic->sysstat_magic == SYSSTAT_MAGIC) || (file_magic->sysstat_magic == SYSSTAT_MAGIC_SWAPPED)) {
+			/* This is a sysstat file, but this file has an old format */
 			display_sa_file_version(stderr, file_magic);
 
-			if (sm == SYSSTAT_MAGIC) {
-				fprintf(stderr, _("Endian format mismatch\n"));
-			}
-			else {
-				fprintf(stderr,
-					_("Current sysstat version cannot read the format of this file (%#x)\n"),
-					file_magic->format_magic);
-			}
+			fprintf(stderr,
+				_("Current sysstat version cannot read the format of this file (%#x)\n"),
+				file_magic->sysstat_magic == SYSSTAT_MAGIC ?
+				file_magic->format_magic : __builtin_bswap16(file_magic->format_magic));
 		}
 	}
 
@@ -1178,10 +1171,14 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
  * @ifd		Input file descriptor.
  * @act_nr	Number of activities in file.
  * @file_actlst	Activity list in file.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
  ***************************************************************************
  */
 void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
-			  struct file_activity *file_actlst)
+			  struct file_activity *file_actlst, int endian_mismatch,
+			  int arch_64)
 {
 	int i, j, p;
 	struct file_activity *fal = file_actlst;
@@ -1219,6 +1216,14 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		else {
 			PANIC(p);
 		}
+
+		/* Normalize endianness for current activity's structures */
+		if (endian_mismatch) {
+			for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
+				swap_struct(act[p]->gtypes_nr, (char *) act[p]->buf[curr] + j * act[p]->msize,
+					    arch_64);
+			}
+		}
 	}
 }
 
@@ -1229,20 +1234,22 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
  * IN:
  * @dfile	Name of system activity data file.
  * @ignore	Set to 1 if a true sysstat activity file but with a bad
- * 		format should not yield an error message. Useful with
- * 		sadf -H and sadf -c.
+ *		format should not yield an error message. Useful with
+ *		sadf -H and sadf -c.
  *
  * OUT:
  * @fd		System activity data file descriptor.
  * @file_magic	file_magic structure containing data read from file magic
  *		header.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
  *
  * RETURNS:
  * -1 if data file is a sysstat file with an old format, 0 otherwise.
  ***************************************************************************
  */
 int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
-		       int ignore)
+		       int ignore, int *endian_mismatch)
 {
 	int n;
 
@@ -1262,11 +1269,20 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	n = read(*fd, file_magic, FILE_MAGIC_SIZE);
 
 	if ((n != FILE_MAGIC_SIZE) ||
-	    (file_magic->sysstat_magic != SYSSTAT_MAGIC) ||
-	    ((file_magic->format_magic != FORMAT_MAGIC) && !ignore)) {
+	    ((file_magic->sysstat_magic != SYSSTAT_MAGIC) && (file_magic->sysstat_magic != SYSSTAT_MAGIC_SWAPPED)) ||
+	    ((file_magic->format_magic != FORMAT_MAGIC) && (file_magic->format_magic != FORMAT_MAGIC_SWAPPED) && !ignore)) {
 		/* Display error message and exit */
 		handle_invalid_sa_file(fd, file_magic, dfile, n);
 	}
+
+	*endian_mismatch = (file_magic->sysstat_magic != SYSSTAT_MAGIC);
+	if (*endian_mismatch) {
+		/* Swap bytes for file_magic fields */
+		file_magic->sysstat_magic = __builtin_bswap16(file_magic->sysstat_magic);
+		file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
+		file_magic->header_size   = __builtin_bswap32(file_magic->header_size);
+	}
+
 	if ((file_magic->sysstat_version > 10) ||
 	    ((file_magic->sysstat_version == 10) && (file_magic->sysstat_patchlevel >= 3))) {
 		/* header_size field exists only for sysstat versions 10.3.1 and later */
@@ -1292,23 +1308,26 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
  * @dfile	Name of system activity data file.
  * @act		Array of activities.
  * @ignore	Set to 1 if a true sysstat activity file but with a bad
- * 		format should not yield an error message. Useful with
- * 		sadf -H and sadf -c.
+ *		format should not yield an error message. Useful with
+ *		sadf -H and sadf -c.
  *
  * OUT:
  * @ifd		System activity data file descriptor.
  * @file_magic	file_magic structure containing data read from file magic
  *		header.
  * @file_hdr	file_hdr structure containing data read from file standard
- * 		header.
+ *		header.
  * @file_actlst	Acvtivity list in file.
  * @id_seq	Activity sequence.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
  ***************************************************************************
  */
 void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		       struct file_magic *file_magic, struct file_header *file_hdr,
 		       struct file_activity **file_actlst, unsigned int id_seq[],
-		       int ignore)
+		       int ignore, int *endian_mismatch, int *arch_64)
 {
 	int i, j, p;
 	unsigned int a_cpu = FALSE;
@@ -1316,7 +1335,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	void *buffer = NULL;
 
 	/* Open sa data file and read its magic structure */
-	if (sa_open_read_magic(ifd, dfile, file_magic, ignore) < 0)
+	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch) < 0)
 		return;
 
 	SREALLOC(buffer, char, file_magic->header_size);
@@ -1329,6 +1348,12 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	 */
 	memcpy(file_hdr, buffer, FILE_HEADER_SIZE);
 	free(buffer);
+
+	/* Normalize endianness for file_hdr structure */
+	*arch_64 = (file_hdr->sa_sizeof_long == SIZEOF_LONG_64BIT);
+	if (*endian_mismatch) {
+		swap_struct(hdr_types_nr, file_hdr, *arch_64);
+	}
 
 	/*
 	 * Sanity check.
@@ -1349,6 +1374,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
 		sa_fread(*ifd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
+
+		/* Normalize endianness for file_activity structures */
+		if (*endian_mismatch) {
+			swap_struct(act_types_nr, fal, *arch_64);
+		}
 
 		/*
 		 * Every activity, known or unknown, should have
@@ -1500,6 +1530,9 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
  * @vol_act_nr	Number of volatile activities structures to read.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
  *
  * RETURNS:
  * New number of items.
@@ -1510,7 +1543,8 @@ int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
  */
 __nr_t read_vol_act_structures(int ifd, struct activity *act[], char *file,
 			       struct file_magic *file_magic,
-			       unsigned int vol_act_nr)
+			       unsigned int vol_act_nr, int endian_mismatch,
+			       int arch_64)
 {
 	struct file_activity file_act;
 	int item_nr = 0;
@@ -1519,6 +1553,11 @@ __nr_t read_vol_act_structures(int ifd, struct activity *act[], char *file,
 	for (i = 0; i < vol_act_nr; i++) {
 
 		sa_fread(ifd, &file_act, FILE_ACTIVITY_SIZE, HARD_SIZE);
+
+		/* Normalize endianness for file_activity structures */
+		if (endian_mismatch) {
+			swap_struct(act_types_nr, &file_act, arch_64);
+		}
 
 		if (file_act.id) {
 			rc = reallocate_vol_act_structures(act, file_act.nr, file_act.id);
@@ -2201,7 +2240,7 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
  * @rtype	Record type (R_RESTART or R_COMMENT).
  * @ifd		Input file descriptor.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
- *		depending on whether options -T/-t have	been used or not) can
+ *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record. May be NULL.
@@ -2210,13 +2249,16 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
  * @file_magic	file_magic structure filled with file magic header data.
  * @file_hdr	System activity file standard header.
  * @act		Array of activities.
- * @ofmt		Pointer on report output format structure.
+ * @ofmt	Pointer on report output format structure.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
  *
  * OUT:
- * @rectime		Structure where timestamp (expressed in local time
- * 			or in UTC) has been saved.
- * @loctime		Structure where timestamp (expressed in local time)
- * 			has been saved (if requested).
+ * @rectime	Structure where timestamp (expressed in local time or in UTC)
+ *		has been saved.
+ * @loctime	Structure where timestamp (expressed in local time) has been
+ *		saved (if requested).
  *
  * RETURNS:
  * 1 if the record has been successfully displayed, and 0 otherwise.
@@ -2226,7 +2268,8 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
 			 struct tm *rectime, struct tm *loctime, char *file, int tab,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
-			 struct activity *act[], struct report_format *ofmt)
+			 struct activity *act[], struct report_format *ofmt,
+			 int endian_mismatch, int arch_64)
 {
 	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN];
 	int dp = 1;
@@ -2256,7 +2299,8 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 	if (rtype == R_RESTART) {
 		/* Don't forget to read the volatile activities structures */
 		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
-						     file_hdr->sa_vol_act_nr);
+						     file_hdr->sa_vol_act_nr,
+						     endian_mismatch, arch_64);
 
 		if (!dp)
 			return 0;

@@ -38,6 +38,8 @@
 # define _(string) (string)
 #endif
 
+extern int endian_mismatch;
+
 /*
  ***************************************************************************
  * Read and upgrade file's magic data section.
@@ -62,7 +64,7 @@ int upgrade_magic_section(char dfile[], int *fd, int stdfd,
 	struct file_magic fm;
 
 	/* Open and read sa magic structure */
-	sa_open_read_magic(fd, dfile, file_magic, TRUE);
+	sa_open_read_magic(fd, dfile, file_magic, TRUE, &endian_mismatch);
 
 	if ((file_magic->format_magic != FORMAT_MAGIC) &&
 	    (file_magic->format_magic != PREVIOUS_FORMAT_MAGIC)) {

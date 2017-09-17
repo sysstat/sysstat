@@ -352,6 +352,7 @@ struct svg_hdr_parm {
  * Indicate that the file was created by sysstat.
  */
 #define SYSSTAT_MAGIC	0xd596
+#define SYSSTAT_MAGIC_SWAPPED	(((SYSSTAT_MAGIC << 8) | (SYSSTAT_MAGIC >> 8)) & 0xffff)
 
 /*
  * Datafile format magic number.
@@ -359,6 +360,7 @@ struct svg_hdr_parm {
  * no longer compatible with that of previous sysstat versions.
  */
 #define FORMAT_MAGIC	0x2175
+#define FORMAT_MAGIC_SWAPPED	(((FORMAT_MAGIC << 8) | (FORMAT_MAGIC >> 8)) & 0xffff)
 
 /* Previous datafile format magic number used by older sysstat versions */
 #define PREVIOUS_FORMAT_MAGIC	0x2173
@@ -454,6 +456,9 @@ struct file_header {
 };
 
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
+#define FILE_HEADER_ULL_NR	0	/* Nr of unsigned long long in file_header structure */
+#define FILE_HEADER_UL_NR	1	/* Nr of unsigned long in file_header structure */
+#define FILE_HEADER_U_NR	3	/* Nr of unsigned int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
@@ -494,6 +499,9 @@ struct file_activity {
 };
 
 #define FILE_ACTIVITY_SIZE	(sizeof(struct file_activity))
+#define FILE_ACTIVITY_ULL_NR	0	/* Nr of unsigned long long in file_activity structure */
+#define FILE_ACTIVITY_UL_NR	0	/* Nr of unsigned long in file_activity structure */
+#define FILE_ACTIVITY_U_NR	5	/* Nr of [unsigned] int in file_activity structure */
 
 
 /* Record type */
@@ -550,6 +558,9 @@ struct record_header {
 };
 
 #define RECORD_HEADER_SIZE	(sizeof(struct record_header))
+#define RECORD_HEADER_ULL_NR	2	/* Nr of unsigned long long in record_header structure */
+#define RECORD_HEADER_UL_NR	1	/* Nr of unsigned long in record_header structure */
+#define RECORD_HEADER_U_NR	0	/* Nr of unsigned int in record_header structure */
 
 
 /*
@@ -1121,7 +1132,7 @@ int check_disk_reg
 	(struct activity *, int, int, int);
 void check_file_actlst
 	(int *, char *, struct activity * [], struct file_magic *, struct file_header *,
-	 struct file_activity **, unsigned int [], int);
+	 struct file_activity **, unsigned int [], int, int *, int *);
 int check_net_dev_reg
 	(struct activity *, int, int, int);
 int check_net_edev_reg
@@ -1176,11 +1187,11 @@ void print_sar_restart
 int print_special_record
 	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
 	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,
-	 struct file_header *, struct activity * [], struct report_format *);
+	 struct file_header *, struct activity * [], struct report_format *, int, int);
 void read_file_stat_bunch
-	(struct activity * [], int, int, int, struct file_activity *);
+	(struct activity * [], int, int, int, struct file_activity *, int, int);
 __nr_t read_vol_act_structures
-	(int, struct activity * [], char *, struct file_magic *, unsigned int);
+	(int, struct activity * [], char *, struct file_magic *, unsigned int, int, int);
 int reallocate_vol_act_structures
 	(struct activity * [], unsigned int, unsigned int);
 void replace_nonprintable_char
@@ -1190,7 +1201,7 @@ int sa_fread
 int sa_get_record_timestamp_struct
 	(unsigned int, struct record_header *, struct tm *, struct tm *);
 int sa_open_read_magic
-	(int *, char *, struct file_magic *, int);
+	(int *, char *, struct file_magic *, int, int *);
 void select_all_activities
 	(struct activity * []);
 void select_default_activity

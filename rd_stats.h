@@ -78,9 +78,10 @@
  ***************************************************************************
  */
 
-#define ULL_ALIGNMENT_WIDTH 8
-#define UL_ALIGNMENT_WIDTH 8
-#define U_ALIGNMENT_WIDTH 4
+#define SIZEOF_LONG_64BIT	8
+#define ULL_ALIGNMENT_WIDTH	8
+#define UL_ALIGNMENT_WIDTH	SIZEOF_LONG_64BIT
+#define U_ALIGNMENT_WIDTH	4
 
 /*
  * Structure for CPU statistics.
