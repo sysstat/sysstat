@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>	/* For STDOUT_FILENO, among others */
@@ -974,6 +975,54 @@ void select_default_activity(struct activity *act[])
 	 */
 	if (!count_bits(cpu_bitmap.b_array, BITMAP_SIZE(cpu_bitmap.b_size))) {
 		cpu_bitmap.b_array[0] |= 0x01;
+	}
+}
+
+/*
+ ***************************************************************************
+ * Swap bytes for every numerical field in structure. Used to convert from
+ * one endianness type (big-endian or little-endian) to the other.
+ *
+ * IN:
+ * @types_nr	Number of fields in structure for each following types:
+ *		unsigned long long, unsigned long and int.
+ * @ps		Pointer on structure.
+ * @is64bit	TRUE if data come from a 64-bit machine.
+ ***************************************************************************
+ */
+void swap_struct(int types_nr[], void *ps, int is64bit)
+{
+	int i;
+	uint64_t *x;
+	uint32_t *y;
+
+	x = (uint64_t *) ps;
+	/* For each field of type long long (or double) */
+	for (i = 0; i < types_nr[0]; i++) {
+		*x = __builtin_bswap64(*x);
+		x = (uint64_t *) ((char *) x + ULL_ALIGNMENT_WIDTH);
+	}
+
+	y = (uint32_t *) x;
+	/* For each field of type long */
+	for (i = 0; i < types_nr[1]; i++) {
+		if (is64bit) {
+			*x = __builtin_bswap64(*x);
+			x = (uint64_t *) ((char *) x + UL_ALIGNMENT_WIDTH);
+		}
+		else {
+			*y = __builtin_bswap32(*y);
+			y = (uint32_t *) ((char *) y + UL_ALIGNMENT_WIDTH);
+		}
+	}
+
+	if (is64bit) {
+		y = (uint32_t *) x;
+	}
+	/* For each field of type int */
+	for (i = 0; i < types_nr[2]; i++) {
+		*y = __builtin_bswap32(*y);
+		y = (uint32_t *) ((char *) y + U_ALIGNMENT_WIDTH);
 	}
 }
 

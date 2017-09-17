@@ -1203,5 +1203,7 @@ void set_hdr_rectime
 	(unsigned int, struct tm *, struct file_header *);
 void set_record_timestamp_string
 	(unsigned int, struct record_header *, char *, char *, int, struct tm *);
+void swap_struct
+	(int [], void *, int);
 
 #endif  /* _SA_H */
