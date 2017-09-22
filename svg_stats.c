@@ -320,12 +320,13 @@ void save_svg_data(char *data, char **out, int *outsize)
  *		element in array of chars.
  ***************************************************************************
  */
-void lnappend(unsigned long timetag, double value, char **out, int *outsize, int restart)
+void lnappend(unsigned long long timetag, double value, char **out, int *outsize,
+	      int restart)
 {
 	char data[128];
 
 	/* Prepare additional graph definition data */
-	snprintf(data, 128, " %c%lu,%.2f", restart ? 'M' : 'L', timetag, value);
+	snprintf(data, 128, " %c%llu,%.2f", restart ? 'M' : 'L', timetag, value);
 	data[127] = '\0';
 
 	save_svg_data(data, out, outsize);
@@ -352,13 +353,13 @@ void lnappend(unsigned long timetag, double value, char **out, int *outsize, int
  *		element in array of chars.
  ***************************************************************************
  */
-void lniappend(unsigned long timetag, unsigned long value, char **out, int *outsize,
-	       int restart)
+void lniappend(unsigned long long timetag, unsigned long value, char **out,
+	       int *outsize, int restart)
 {
 	char data[128];
 
 	/* Prepare additional graph definition data */
-	snprintf(data, 128, " %c%lu,%lu", restart ? 'M' : 'L', timetag, value);
+	snprintf(data, 128, " %c%llu,%lu", restart ? 'M' : 'L', timetag, value);
 	data[127] = '\0';
 
 	save_svg_data(data, out, outsize);
@@ -386,8 +387,8 @@ void lniappend(unsigned long timetag, unsigned long value, char **out, int *outs
  *		element in array of chars.
  ***************************************************************************
  */
-void brappend(unsigned long timetag, double offset, double value, char **out, int *outsize,
-	      unsigned long dt)
+void brappend(unsigned long long timetag, double offset, double value, char **out,
+	      int *outsize, unsigned long long dt)
 {
 	char data[128];
 
@@ -396,7 +397,7 @@ void brappend(unsigned long timetag, double offset, double value, char **out, in
 		/* Dont draw a flat rectangle! */
 		return;
 
-	snprintf(data, 128, "<rect x=\"%lu\" y=\"%.2f\" height=\"%.2f\" width=\"%lu\"/>",
+	snprintf(data, 128, "<rect x=\"%llu\" y=\"%.2f\" height=\"%.2f\" width=\"%llu\"/>",
 		 timetag - dt, MINIMUM(offset, 100.0), MINIMUM(value, (100.0 - offset)), dt);
 	data[127] = '\0';
 
@@ -429,8 +430,8 @@ void brappend(unsigned long timetag, double offset, double value, char **out, in
  *		element in array of chars.
  ***************************************************************************
  */
-void cpuappend(unsigned long timetag, double *offset, double value, char **out, int *outsize,
-	       unsigned long dt, double *spmin, double *spmax)
+void cpuappend(unsigned long long timetag, double *offset, double value, char **out,
+	       int *outsize, unsigned long long dt, double *spmin, double *spmax)
 {
 	/* Save min and max values */
 	if (value < *spmin) {
@@ -472,8 +473,9 @@ void cpuappend(unsigned long timetag, double *offset, double value, char **out, 
  * @spmax	Max value for this metric.
  ***************************************************************************
  */
-void recappend(unsigned long timetag, double p_value, double value, char **out, int *outsize,
-	       int restart, unsigned long dt, double *spmin, double *spmax)
+void recappend(unsigned long long timetag, double p_value, double value, char **out,
+	       int *outsize, int restart, unsigned long long dt,
+	       double *spmin, double *spmax)
 {
 	char data[128], data1[128], data2[128];
 
@@ -486,14 +488,14 @@ void recappend(unsigned long timetag, double p_value, double value, char **out, 
 	}
 	/* Prepare additional graph definition data */
 	if (restart) {
-		snprintf(data1, 128, " M%lu,%.2f", timetag - dt, p_value);
+		snprintf(data1, 128, " M%llu,%.2f", timetag - dt, p_value);
 		data1[127] = '\0';
 	}
 	if (p_value != value) {
-		snprintf(data2, 128, " L%lu,%.2f", timetag, value);
+		snprintf(data2, 128, " L%llu,%.2f", timetag, value);
 		data2[127] = '\0';
 	}
-	snprintf(data, 128, "%s L%lu,%.2f%s", restart ? data1 : "", timetag, p_value,
+	snprintf(data, 128, "%s L%llu,%.2f%s", restart ? data1 : "", timetag, p_value,
 		 p_value != value ? data2 : "");
 	data[127] = '\0';
 

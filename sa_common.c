@@ -2310,7 +2310,7 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
 {
 	/* Set cur_time date value */
 	if (PRINT_SEC_EPOCH(l_flags) && cur_date) {
-		sprintf(cur_time, "%ld", record_hdr->ust_time);
+		sprintf(cur_time, "%llu", record_hdr->ust_time);
 		strcpy(cur_date, "");
 	}
 	else {

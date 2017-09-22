@@ -298,13 +298,13 @@
 
 /* Structure for SVG specific parameters */
 struct svg_parm {
-	unsigned long dt;		/* Interval of time for current sample */
-	unsigned long ust_time_ref;	/* X axis start time in seconds since the epoch */
-	unsigned long ust_time_end;	/* X axis end time in seconds since the epoch */
-	unsigned long ust_time_first;	/* Time (in seconds since the epoch) for first sample */
-	int graph_no;			/* Total number of views already displayed */
-	int restart;			/* TRUE if we have just met a RESTART record */
-	struct file_header *file_hdr;	/* Pointer on file header structure */
+	unsigned long long dt;			/* Interval of time for current sample */
+	unsigned long long ust_time_ref;	/* X axis start time in seconds since the epoch */
+	unsigned long long ust_time_end;	/* X axis end time in seconds since the epoch */
+	unsigned long long ust_time_first;	/* Time (in seconds since the epoch) for first sample */
+	int graph_no;				/* Total number of views already displayed */
+	int restart;				/* TRUE if we have just met a RESTART record */
+	struct file_header *file_hdr;		/* Pointer on file header structure */
 };
 
 /* Structure used when displaying SVG header */
@@ -410,11 +410,11 @@ struct file_header {
 	/*
 	 * Timestamp in seconds since the epoch.
 	 */
-	unsigned long sa_ust_time	__attribute__ ((aligned (8)));
+	unsigned long long sa_ust_time;
 	/*
 	 * Number of CPU items (1 .. CPU_NR + 1) for the last sample in file.
 	 */
-	unsigned int sa_last_cpu_nr	__attribute__ ((aligned (8)));
+	unsigned int sa_last_cpu_nr;
 	/*
 	 * Number of activities saved in file.
 	 */
@@ -429,9 +429,9 @@ struct file_header {
 	 * No need to save DST (Daylight Saving Time) flag, since it is not taken
 	 * into account by the strftime() function used to print the timestamp.
 	 */
+	int sa_year;
 	unsigned char sa_day;
 	unsigned char sa_month;
-	unsigned char sa_year;
 	/*
 	 * Size of a long integer. Useful to know the architecture on which
 	 * the datafile was created.
@@ -456,9 +456,9 @@ struct file_header {
 };
 
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
-#define FILE_HEADER_ULL_NR	0	/* Nr of unsigned long long in file_header structure */
-#define FILE_HEADER_UL_NR	1	/* Nr of unsigned long in file_header structure */
-#define FILE_HEADER_U_NR	3	/* Nr of unsigned int in file_header structure */
+#define FILE_HEADER_ULL_NR	1	/* Nr of unsigned long long in file_header structure */
+#define FILE_HEADER_UL_NR	0	/* Nr of unsigned long in file_header structure */
+#define FILE_HEADER_U_NR	4	/* Nr of [unsigned] int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
@@ -548,11 +548,11 @@ struct record_header {
 	/*
 	 * Timestamp (number of seconds since the epoch).
 	 */
-	unsigned long ust_time		__attribute__ ((aligned (8)));
+	unsigned long long ust_time;
 	/*
 	 * Record type: R_STATS, R_RESTART,...
 	 */
-	unsigned char record_type	__attribute__ ((aligned (8)));
+	unsigned char record_type;
 	/*
 	 * Timestamp: Hour (0-23), minute (0-59) and second (0-59).
 	 * Used to determine TRUE time (immutable, non locale dependent time).
@@ -563,8 +563,8 @@ struct record_header {
 };
 
 #define RECORD_HEADER_SIZE	(sizeof(struct record_header))
-#define RECORD_HEADER_ULL_NR	2	/* Nr of unsigned long long in record_header structure */
-#define RECORD_HEADER_UL_NR	1	/* Nr of unsigned long in record_header structure */
+#define RECORD_HEADER_ULL_NR	3	/* Nr of unsigned long long in record_header structure */
+#define RECORD_HEADER_UL_NR	0	/* Nr of unsigned long in record_header structure */
 #define RECORD_HEADER_U_NR	0	/* Nr of unsigned int in record_header structure */
 
 

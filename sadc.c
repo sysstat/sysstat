@@ -494,7 +494,7 @@ void setup_file_hdr(int fd)
 	memset(&file_hdr, 0, FILE_HEADER_SIZE);
 
 	/* Then get current date */
-	file_hdr.sa_ust_time = get_time(&rectime, 0);
+	file_hdr.sa_ust_time = (unsigned long long) get_time(&rectime, 0);
 
 	/* OK, now fill the header */
 	file_hdr.sa_act_nr      = get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES);
@@ -645,7 +645,7 @@ void write_special_record(int ofd, int rtype)
 	record_hdr.record_type = rtype;
 
 	/* Save time */
-	record_hdr.ust_time = get_time(&rectime, 0);
+	record_hdr.ust_time = (unsigned long long) get_time(&rectime, 0);
 
 	record_hdr.hour   = rectime.tm_hour;
 	record_hdr.minute = rectime.tm_min;
@@ -1112,7 +1112,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		reset_stats();
 
 		/* Save time */
-		record_hdr.ust_time = get_time(&rectime, 0);
+		record_hdr.ust_time = (unsigned long long) get_time(&rectime, 0);
 		record_hdr.hour     = rectime.tm_hour;
 		record_hdr.minute   = rectime.tm_min;
 		record_hdr.second   = rectime.tm_sec;

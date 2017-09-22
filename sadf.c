@@ -430,7 +430,7 @@ time_t get_time_ref(void)
 			return t;
 	}
 
-	return record_hdr[2].ust_time;
+	return (time_t) record_hdr[2].ust_time;
 }
 
 /*
@@ -892,7 +892,7 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 	copy_structures(act, id_seq, record_hdr, !*curr, 2);
 
 	parm.graph_no = *g_nr;
-	parm.ust_time_ref = get_time_ref();
+	parm.ust_time_ref = (unsigned long long) get_time_ref();
 	parm.ust_time_first = record_hdr[2].ust_time;
 	parm.restart = TRUE;
 	parm.file_hdr = &file_hdr;
