@@ -366,7 +366,7 @@ struct svg_hdr_parm {
 #define PREVIOUS_FORMAT_MAGIC	0x2173
 
 /* Padding in file_magic structure. See below. */
-#define FILE_MAGIC_PADDING	63
+#define FILE_MAGIC_PADDING	60
 
 /* Structure for file magic header data */
 struct file_magic {
@@ -392,10 +392,10 @@ struct file_magic {
 	/*
 	 * Set to non zero if data file has been converted with "sadf -c" from
 	 * an old format (version x.y.z) to a newest format (version X.Y.Z).
-	 * In this case, the value is: Y*16 + Z + 1.
+	 * In this case, the value is: Y*256 + Z + 1.
 	 * The FORMAT_MAGIC value of the file can be used to determine X.
 	 */
-	unsigned char upgraded;
+	unsigned int upgraded;
 	/*
 	 * Padding. Reserved for future use while avoiding a format change.
 	 */
