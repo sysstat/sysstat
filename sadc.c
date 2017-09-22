@@ -478,7 +478,7 @@ void fill_magic_header(struct file_magic *file_magic)
  */
 void setup_file_hdr(int fd)
 {
-	int i, p;
+	int i, j, p;
 	struct tm rectime;
 	struct utsname header;
 	struct file_magic file_magic;
@@ -546,6 +546,9 @@ void setup_file_hdr(int fd)
 			file_act.nr    = act[p]->nr;
 			file_act.nr2   = act[p]->nr2;
 			file_act.size  = act[p]->fsize;
+			for (j = 0; j < 3; j++) {
+				file_act.types_nr[j] = act[p]->gtypes_nr[j];
+			}
 
 			if (write_all(fd, &file_act, FILE_ACTIVITY_SIZE)
 			    != FILE_ACTIVITY_SIZE)
@@ -929,13 +932,21 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 
 		if ((file_act[i].nr <= 0) || (file_act[i].nr2 <= 0) ||
 		    (file_act[i].nr > act[p]->nr_max) ||
-		    (file_act[i].nr2 > NR2_MAX)) {
+		    (file_act[i].nr2 > NR2_MAX))
 			/*
 			 * Number of items and subitems should never be zero (or negative)
 			 * or greater than their upper limit.
 			 */
 			goto append_error;
-		}
+
+		if ((file_act[i].types_nr[0] != act[p]->gtypes_nr[0]) ||
+		    (file_act[i].types_nr[1] != act[p]->gtypes_nr[1]) ||
+		    (file_act[i].types_nr[2] != act[p]->gtypes_nr[2]))
+			/*
+			 * Composition of structure containing statsitics cannot
+			 * be different from that known by current version.
+			 */
+			goto append_error;
 	}
 
 	/*

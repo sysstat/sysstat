@@ -857,6 +857,9 @@ void read_header_data(void)
 		p = get_activity_position(act, file_act.id, RESUME_IF_NOT_FOUND);
 
 		if ((p < 0) || (act[p]->fsize != file_act.size)
+			    || (act[p]->gtypes_nr[0] != file_act.types_nr[0])
+			    || (act[p]->gtypes_nr[1] != file_act.types_nr[1])
+			    || (act[p]->gtypes_nr[2] != file_act.types_nr[2])
 			    || (file_act.nr <= 0)
 			    || (file_act.nr2 <= 0)
 			    || (act[p]->magic != file_act.magic))

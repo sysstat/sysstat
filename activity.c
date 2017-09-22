@@ -89,6 +89,7 @@ struct activity cpu_act = {
 		          "CPU;%usr;%nice;%sys;%iowait;%steal;%irq;%soft;%guest;%gnice;%idle",
 #endif
 	.gtypes_nr	= {10, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_cpu_stats,
 	.f_xml_print	= xml_print_cpu_stats,
@@ -127,6 +128,7 @@ struct activity pcsw_act = {
 	.hdr_line	= "proc/s;cswch/s",
 #endif
 	.gtypes_nr	= {1, 1, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pcsw_stats,
 	.f_xml_print	= xml_print_pcsw_stats,
@@ -165,6 +167,7 @@ struct activity irq_act = {
 	.hdr_line	= "INTR;intr/s",
 #endif
 	.gtypes_nr	= {1, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_irq_stats,
 	.f_xml_print	= xml_print_irq_stats,
@@ -203,6 +206,7 @@ struct activity swap_act = {
 	.hdr_line	= "pswpin/s;pswpout/s",
 #endif
 	.gtypes_nr	= {0, 2, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_swap_stats,
 	.f_xml_print	= xml_print_swap_stats,
@@ -242,6 +246,7 @@ struct activity paging_act = {
 		          "pgfree/s;pgscank/s;pgscand/s;pgsteal/s;%vmeff",
 #endif
 	.gtypes_nr	= {0, 8, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_paging_stats,
 	.f_xml_print	= xml_print_paging_stats,
@@ -280,6 +285,7 @@ struct activity io_act = {
 	.hdr_line	= "tps;rtps;wtps;bread/s;bwrtn/s",
 #endif
 	.gtypes_nr	= {5, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_io_stats,
 	.f_xml_print	= xml_print_io_stats,
@@ -319,6 +325,7 @@ struct activity memory_act = {
 		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 #endif
 	.gtypes_nr	= {0, 17, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_memory_stats,
 	.f_xml_print	= xml_print_memory_stats,
@@ -357,6 +364,7 @@ struct activity ktables_act = {
 	.hdr_line	= "dentunusd;file-nr;inode-nr;pty-nr",
 #endif
 	.gtypes_nr	= {0, 0, 4},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_ktables_stats,
 	.f_xml_print	= xml_print_ktables_stats,
@@ -395,6 +403,7 @@ struct activity queue_act = {
 	.hdr_line	= "runq-sz;plist-sz;ldavg-1;ldavg-5;ldavg-15;blocked",
 #endif
 	.gtypes_nr	= {0, 2, 4},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_queue_stats,
 	.f_xml_print	= xml_print_queue_stats,
@@ -433,6 +442,7 @@ struct activity serial_act = {
 	.hdr_line	= "TTY;rcvin/s;txmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s",
 #endif
 	.gtypes_nr	= {0, 0, 7},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_serial_stats,
 	.f_xml_print	= xml_print_serial_stats,
@@ -471,6 +481,7 @@ struct activity disk_act = {
 	.hdr_line	= "DEV;tps;rkB/s;wkB/s;areq-sz;aqu-sz;await;svctm;%util",
 #endif
 	.gtypes_nr	= {1, 2, 6},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_disk_stats,
 	.f_xml_print	= xml_print_disk_stats,
@@ -509,6 +520,7 @@ struct activity net_dev_act = {
 	.hdr_line	= "IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil",
 #endif
 	.gtypes_nr	= {7, 0, 1},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_dev_stats,
 	.f_xml_print	= xml_print_net_dev_stats,
@@ -548,6 +560,7 @@ struct activity net_edev_act = {
 		          "txcarr/s;rxfram/s;rxfifo/s;txfifo/s",
 #endif
 	.gtypes_nr	= {9, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_edev_stats,
 	.f_xml_print	= xml_print_net_edev_stats,
@@ -586,6 +599,7 @@ struct activity net_nfs_act = {
 	.hdr_line	= "call/s;retrans/s;read/s;write/s;access/s;getatt/s",
 #endif
 	.gtypes_nr	= {0, 0, 6},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_nfs_stats,
 	.f_xml_print	= xml_print_net_nfs_stats,
@@ -625,6 +639,7 @@ struct activity net_nfsd_act = {
 		          "sread/s;swrite/s;saccess/s;sgetatt/s",
 #endif
 	.gtypes_nr	= {0, 0, 11},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_nfsd_stats,
 	.f_xml_print	= xml_print_net_nfsd_stats,
@@ -663,6 +678,7 @@ struct activity net_sock_act = {
 	.hdr_line	= "totsck;tcpsck;udpsck;rawsck;ip-frag;tcp-tw",
 #endif
 	.gtypes_nr	= {0, 0, 6},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_sock_stats,
 	.f_xml_print	= xml_print_net_sock_stats,
@@ -701,6 +717,7 @@ struct activity net_ip_act = {
 	.hdr_line	= "irec/s;fwddgm/s;idel/s;orq/s;asmrq/s;asmok/s;fragok/s;fragcrt/s",
 #endif
 	.gtypes_nr	= {8, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_ip_stats,
 	.f_xml_print	= xml_print_net_ip_stats,
@@ -739,6 +756,7 @@ struct activity net_eip_act = {
 	.hdr_line	= "ihdrerr/s;iadrerr/s;iukwnpr/s;idisc/s;odisc/s;onort/s;asmf/s;fragf/s",
 #endif
 	.gtypes_nr	= {8, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_eip_stats,
 	.f_xml_print	= xml_print_net_eip_stats,
@@ -778,6 +796,7 @@ struct activity net_icmp_act = {
 		          "otmr/s;iadrmk/s;iadrmkr/s;oadrmk/s;oadrmkr/s",
 #endif
 	.gtypes_nr	= {0, 14, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_icmp_stats,
 	.f_xml_print	= xml_print_net_icmp_stats,
@@ -817,6 +836,7 @@ struct activity net_eicmp_act = {
 		          "iparmpb/s;oparmpb/s;isrcq/s;osrcq/s;iredir/s;oredir/s",
 #endif
 	.gtypes_nr	= {0, 12, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_eicmp_stats,
 	.f_xml_print	= xml_print_net_eicmp_stats,
@@ -855,6 +875,7 @@ struct activity net_tcp_act = {
 	.hdr_line	= "active/s;passive/s;iseg/s;oseg/s",
 #endif
 	.gtypes_nr	= {0, 4, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_tcp_stats,
 	.f_xml_print	= xml_print_net_tcp_stats,
@@ -893,6 +914,7 @@ struct activity net_etcp_act = {
 	.hdr_line	= "atmptf/s;estres/s;retrans/s;isegerr/s;orsts/s",
 #endif
 	.gtypes_nr	= {0, 5, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_etcp_stats,
 	.f_xml_print	= xml_print_net_etcp_stats,
@@ -931,6 +953,7 @@ struct activity net_udp_act = {
 	.hdr_line	= "idgm/s;odgm/s;noport/s;idgmerr/s",
 #endif
 	.gtypes_nr	= {0, 4, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_udp_stats,
 	.f_xml_print	= xml_print_net_udp_stats,
@@ -969,6 +992,7 @@ struct activity net_sock6_act = {
 	.hdr_line	= "tcp6sck;udp6sck;raw6sck;ip6-frag",
 #endif
 	.gtypes_nr	= {0, 0, 4},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_sock6_stats,
 	.f_xml_print	= xml_print_net_sock6_stats,
@@ -1008,6 +1032,7 @@ struct activity net_ip6_act = {
 			  "imcpck6/s;omcpck6/s;fragok6/s;fragcr6/s",
 #endif
 	.gtypes_nr	= {10, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_ip6_stats,
 	.f_xml_print	= xml_print_net_ip6_stats,
@@ -1047,6 +1072,7 @@ struct activity net_eip6_act = {
 			  "inort6/s;onort6/s;asmf6/s;fragf6/s;itrpck6/s",
 #endif
 	.gtypes_nr	= {11, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_eip6_stats,
 	.f_xml_print	= xml_print_net_eip6_stats,
@@ -1087,6 +1113,7 @@ struct activity net_icmp6_act = {
 			  "inbad6/s;onbad6/s",
 #endif
 	.gtypes_nr	= {0, 17, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_icmp6_stats,
 	.f_xml_print	= xml_print_net_icmp6_stats,
@@ -1126,6 +1153,7 @@ struct activity net_eicmp6_act = {
 		          "iprmpb6/s;oprmpb6/s;iredir6/s;oredir6/s;ipck2b6/s;opck2b6/s",
 #endif
 	.gtypes_nr	= {0, 11, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_eicmp6_stats,
 	.f_xml_print	= xml_print_net_eicmp6_stats,
@@ -1164,6 +1192,7 @@ struct activity net_udp6_act = {
 	.hdr_line	= "idgm6/s;odgm6/s;noport6/s;idgmer6/s",
 #endif
 	.gtypes_nr	= {0, 4, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_net_udp6_stats,
 	.f_xml_print	= xml_print_net_udp6_stats,
@@ -1202,6 +1231,7 @@ struct activity pwr_cpufreq_act = {
 	.hdr_line	= "CPU;MHz",
 #endif
 	.gtypes_nr	= {0, 1, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_cpufreq_stats,
 	.f_xml_print	= xml_print_pwr_cpufreq_stats,
@@ -1240,6 +1270,7 @@ struct activity pwr_fan_act = {
 	.hdr_line	= "FAN;DEVICE;rpm;drpm",
 #endif
 	.gtypes_nr	= {2, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_fan_stats,
 	.f_xml_print	= xml_print_pwr_fan_stats,
@@ -1278,6 +1309,7 @@ struct activity pwr_temp_act = {
 	.hdr_line	= "TEMP;DEVICE;degC;%temp",
 #endif
 	.gtypes_nr	= {3, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_temp_stats,
 	.f_xml_print	= xml_print_pwr_temp_stats,
@@ -1316,6 +1348,7 @@ struct activity pwr_in_act = {
 	.hdr_line	= "IN;DEVICE;inV;%in",
 #endif
 	.gtypes_nr	= {3, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_in_stats,
 	.f_xml_print	= xml_print_pwr_in_stats,
@@ -1354,6 +1387,7 @@ struct activity huge_act = {
 	.hdr_line	= "kbhugfree;kbhugused;%hugused",
 #endif
 	.gtypes_nr	= {0, 2, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_huge_stats,
 	.f_xml_print	= xml_print_huge_stats,
@@ -1392,6 +1426,7 @@ struct activity pwr_wghfreq_act = {
 	.hdr_line	= "CPU;wghMHz",
 #endif
 	.gtypes_nr	= {1, 1, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_wghfreq_stats,
 	.f_xml_print	= xml_print_pwr_wghfreq_stats,
@@ -1430,6 +1465,7 @@ struct activity pwr_usb_act = {
 	.hdr_line	= "manufact;product;BUS;idvendor;idprod;maxpower",
 #endif
 	.gtypes_nr	= {0, 0, 4},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_usb_stats,
 	.f_xml_print	= xml_print_pwr_usb_stats,
@@ -1469,6 +1505,7 @@ struct activity filesystem_act = {
 			  "MOUNTPOINT;MBfsfree;MBfsused;%fsused;%ufsused;Ifree;Iused;%Iused",
 #endif
 	.gtypes_nr	= {5, 0, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_filesystem_stats,
 	.f_xml_print	= xml_print_filesystem_stats,
@@ -1507,6 +1544,7 @@ struct activity fchost_act = {
 	.hdr_line	= "FCHOST;fch_rxf/s;fch_txf/s;fch_rxw/s;fch_txw/s",
 #endif
 	.gtypes_nr	= {0, 4, 0},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_fchost_stats,
 	.f_xml_print	= xml_print_fchost_stats,
@@ -1545,6 +1583,7 @@ struct activity softnet_act = {
 	.hdr_line	= "CPU;total/s;dropd/s;squeezd/s;rx_rps/s;flw_lim/s",
 #endif
 	.gtypes_nr	= {0, 0, 5},
+	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_softnet_stats,
 	.f_xml_print	= xml_print_softnet_stats,

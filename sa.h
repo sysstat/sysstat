@@ -496,12 +496,17 @@ struct file_activity {
 	 * Size of an item structure.
 	 */
 	int size;
+	/*
+	 * Description of the structure containing statistics for the
+	 * given activity (nr of "long long", nr of "long" and nr of "int").
+	 */
+	int types_nr[3];
 };
 
 #define FILE_ACTIVITY_SIZE	(sizeof(struct file_activity))
 #define FILE_ACTIVITY_ULL_NR	0	/* Nr of unsigned long long in file_activity structure */
 #define FILE_ACTIVITY_UL_NR	0	/* Nr of unsigned long in file_activity structure */
-#define FILE_ACTIVITY_U_NR	5	/* Nr of [unsigned] int in file_activity structure */
+#define FILE_ACTIVITY_U_NR	8	/* Nr of [unsigned] int in file_activity structure */
 
 
 /* Record type */
@@ -743,6 +748,12 @@ struct activity {
 	 * of "long" fields, then the number of "int" fields.
 	 */
 	int gtypes_nr[3];
+	/*
+	 * This array has the same meaning as @gtypes_nr[] above, but the values are those
+	 * read from current data file. They may be different from those of @gtypes_nr[]
+	 * because we can read data from a different sysstat version (older or newer).
+	 */
+	int ftypes_nr[3];
 	/*
 	 * Number of SVG graphs for this activity. The total number of graphs for
 	 * the activity can be greater though if flag AO_GRAPH_PER_ITEM is set, in

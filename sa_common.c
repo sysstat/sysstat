@@ -1282,6 +1282,10 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			}
 		}
 		else if (act[p]->nr > 0) {
+			/*
+			 * Note: If msize was smaller than fsize,
+			 * then it has been set to fsize in check_file_actlst().
+			 */
 			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2, HARD_SIZE);
 		}
 		else {
@@ -1291,9 +1295,15 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		/* Normalize endianness for current activity's structures */
 		if (endian_mismatch) {
 			for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
-				swap_struct(act[p]->gtypes_nr, (char *) act[p]->buf[curr] + j * act[p]->msize,
+				swap_struct(act[p]->ftypes_nr, (char *) act[p]->buf[curr] + j * act[p]->msize,
 					    arch_64);
 			}
+		}
+
+		/* Remap structure's fields to those known by current sysstat version */
+		for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
+			remap_struct(act[p]->gtypes_nr, act[p]->ftypes_nr,
+				     (char *) act[p]->buf[curr] + j * act[p]->msize, act[p]->fsize);
 		}
 	}
 }
@@ -1400,7 +1410,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		       struct file_activity **file_actlst, unsigned int id_seq[],
 		       int ignore, int *endian_mismatch, int *arch_64)
 {
-	int i, j, p;
+	int i, j, k, p;
 	unsigned int a_cpu = FALSE;
 	struct file_activity *fal;
 	void *buffer = NULL;
@@ -1420,8 +1430,10 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	memcpy(file_hdr, buffer, FILE_HEADER_SIZE);
 	free(buffer);
 
-	/* Normalize endianness for file_hdr structure */
+	/* Tell that data come from a 64 bit machine */
 	*arch_64 = (file_hdr->sa_sizeof_long == SIZEOF_LONG_64BIT);
+
+	/* Normalize endianness for file_hdr structure */
 	if (*endian_mismatch) {
 		swap_struct(hdr_types_nr, file_hdr, *arch_64);
 	}
@@ -1487,6 +1499,25 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		/* Check max value for known activities */
 		if (fal->nr > act[p]->nr_max) {
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
+		}
+		/*
+		 * Number of fields of each type ("long long", or "long"
+		 * or "int") composing the structure with statistics may
+		 * only increase with new sysstat versions. Here, we may
+		 * be reading a file created by current sysstat version,
+		 * or by an older or a newer version.
+		 */
+		if (!(((fal->types_nr[0] >= act[p]->gtypes_nr[0]) &&
+		     (fal->types_nr[1] >= act[p]->gtypes_nr[1]) &&
+		     (fal->types_nr[2] >= act[p]->gtypes_nr[2]))
+		     ||
+		     ((fal->types_nr[0] <= act[p]->gtypes_nr[0]) &&
+		     (fal->types_nr[1] <= act[p]->gtypes_nr[1]) &&
+		     (fal->types_nr[2] <= act[p]->gtypes_nr[2])))) {
+			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
+		}
+		for (k = 0; k < 3; k++) {
+			act[p]->ftypes_nr[k] = fal->types_nr[k];
 		}
 
 		if (fal->id == A_CPU) {
