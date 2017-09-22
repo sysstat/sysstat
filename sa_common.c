@@ -1031,6 +1031,77 @@ void swap_struct(int types_nr[], void *ps, int is64bit)
 
 /*
  ***************************************************************************
+ * Map the fields of a structure containing statistics read from a file to
+ * those of the structure known by current sysstat version.
+ * Each structure (either read from file or from current sysstat version)
+ * are described by 3 values: The number of [unsigned] long long integers,
+ * the number of [unsigned] long integers following in the structure, and
+ * last the number of [unsigned] integers.
+ * We assume that those numbers will *never* decrease with newer sysstat
+ * versions.
+ *
+ * IN:
+ * @gtypes_nr	Structure description as expected for current sysstat version.
+ * @ftypes_nr	Structure description as read from file.
+ * @ps		Pointer on structure containing statistics.
+ * @st_size	Size of the structure containing statistics. This is the size
+ *		of the structure *read from file* (not the size of the
+ *		structure expected by current sysstat version).
+ ***************************************************************************
+ */
+void remap_struct(int gtypes_nr[], int ftypes_nr[], void *ps, int st_size)
+{
+	int d;
+
+	/* Remap [unsigned] long fields */
+	d = gtypes_nr[0] - ftypes_nr[0];
+	if (d) {
+		memmove(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH,
+			((char *) ps) + ftypes_nr[0] * ULL_ALIGNMENT_WIDTH,
+			st_size - ftypes_nr[0] * ULL_ALIGNMENT_WIDTH);
+		if (d > 0) {
+			memset(((char *) ps) + ftypes_nr[0] * ULL_ALIGNMENT_WIDTH,
+			       0, d * ULL_ALIGNMENT_WIDTH);
+		}
+	}
+	/* Remap [unsigned] int fields */
+	d = gtypes_nr[1] - ftypes_nr[1];
+	if (d) {
+		memmove(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
+				      + gtypes_nr[1] * UL_ALIGNMENT_WIDTH,
+			((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
+				      + ftypes_nr[1] * UL_ALIGNMENT_WIDTH,
+			st_size - ftypes_nr[0] * ULL_ALIGNMENT_WIDTH
+				- ftypes_nr[1] * UL_ALIGNMENT_WIDTH);
+		if (d > 0) {
+			memset(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
+					     + ftypes_nr[1] * UL_ALIGNMENT_WIDTH,
+			       0, d * UL_ALIGNMENT_WIDTH);
+		}
+	}
+	/* Remap possible fields (like strings of chars) following int fields */
+	d = gtypes_nr[2] - ftypes_nr[2];
+	if (d) {
+		memmove(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
+				      + gtypes_nr[1] * UL_ALIGNMENT_WIDTH
+				      + gtypes_nr[2] * U_ALIGNMENT_WIDTH,
+			((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
+				      + gtypes_nr[1] * UL_ALIGNMENT_WIDTH
+				      + ftypes_nr[2] * U_ALIGNMENT_WIDTH,
+			st_size - ftypes_nr[0] * ULL_ALIGNMENT_WIDTH
+				- ftypes_nr[1] * UL_ALIGNMENT_WIDTH
+				- ftypes_nr[2] * U_ALIGNMENT_WIDTH);
+		if (d > 0) {
+			memset(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
+					     + gtypes_nr[1] * UL_ALIGNMENT_WIDTH
+					     + ftypes_nr[2] * U_ALIGNMENT_WIDTH,
+			       0, d * U_ALIGNMENT_WIDTH);
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Read data from a system activity data file.
  *
  * IN:

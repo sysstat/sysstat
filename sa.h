@@ -1194,6 +1194,8 @@ __nr_t read_vol_act_structures
 	(int, struct activity * [], char *, struct file_magic *, unsigned int, int, int);
 int reallocate_vol_act_structures
 	(struct activity * [], unsigned int, unsigned int);
+void remap_struct
+	(int [], int [], void *, int);
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
