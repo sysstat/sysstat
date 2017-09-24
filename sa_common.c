@@ -1375,7 +1375,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		}
 	}
 	if (file_magic->format_magic != FORMAT_MAGIC)
-		/* This is an old sa datafile format */
+		/* This is an old (or new) sa datafile format */
 		return -1;
 
 	return 0;
@@ -1384,12 +1384,14 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 /*
  ***************************************************************************
  * Open a data file, and perform various checks before reading.
+ * NB: This is called only when reading a datafile (sar and sadf), never
+ * when writing or appending data to a datafile.
  *
  * IN:
  * @dfile	Name of system activity data file.
  * @act		Array of activities.
  * @ignore	Set to 1 if a true sysstat activity file but with a bad
- *		format should not yield an error message. Useful with
+ *		format should not yield an error message. Used with
  *		sadf -H and sadf -c.
  *
  * OUT:
@@ -1419,6 +1421,9 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch) < 0)
 		return;
 
+	/* We know now that we have a *compatible* sysstat datafile format */
+
+	/* Allocate buffer for file_header structure */
 	SREALLOC(buffer, char, file_magic->header_size);
 
 	/* Read sa data file standard header and allocate activity list */

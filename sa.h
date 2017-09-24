@@ -317,6 +317,12 @@ struct svg_hdr_parm {
  ***************************************************************************
  * Definitions of header structures.
  *
+ * The rule is: "strict writing, broad reading", meaning that sar/sadc can
+ * only append data to a datafile whose format is strictly the same as that
+ * of current version (checking FORMAT_MAGIC is not enough), but sar/sadf
+ * can read data from different versions, providing that FORMAT_MAGIC value
+ * has not changed.
+ *
  * Format of system activity data files:
  *	 __
  *	|
@@ -398,6 +404,9 @@ struct file_magic {
 	unsigned int upgraded;
 	/*
 	 * Padding. Reserved for future use while avoiding a format change.
+	 * sysstat always reads a number of bytes which is that expected for
+	 * current sysstat version (FILE_MAGIC_SIZE). We cannot guess if we
+	 * are going to read a file from current, an older or a newer version.
 	 */
 	unsigned char pad[FILE_MAGIC_PADDING];
 };
