@@ -724,8 +724,6 @@ void write_stats(int ofd)
  */
 void rewrite_file_hdr(int *ofd, off_t fpos, struct file_magic *file_magic)
 {
-	int n;
-
 	/* Remove O_APPEND status flag */
 	if (fcntl(*ofd, F_SETFL, 0) < 0) {
 		perror("fcntl");
@@ -738,8 +736,7 @@ void rewrite_file_hdr(int *ofd, off_t fpos, struct file_magic *file_magic)
 		exit(2);
 	}
 
-	n = MINIMUM(file_magic->header_size, FILE_HEADER_SIZE);
-	if (write_all(*ofd, &file_hdr, n) != n) {
+	if (write_all(*ofd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE) {
 		p_write_error();
 	}
 
@@ -810,6 +807,8 @@ void open_stdout(int *stdfd)
  ***************************************************************************
  * Get descriptor for output file and write its header.
  * We may enter this function several times (when we rotate a file).
+ * NB: If data are appended to an existing file then the format must be
+ * strictly that expected by current version.
  *
  * IN:
  * @ofile		Name of output file.
@@ -826,8 +825,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	struct file_magic file_magic;
 	struct file_activity file_act[NR_ACT];
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
-	void *buffer = NULL;
-	ssize_t sz, n;
+	ssize_t sz;
 	off_t fpos;
 	int i, j, p;
 
@@ -856,7 +854,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	if ((sz != FILE_MAGIC_SIZE) ||
 	    (file_magic.sysstat_magic != SYSSTAT_MAGIC) ||
 	    (file_magic.format_magic != FORMAT_MAGIC) ||
-	    (file_magic.header_size > MAX_FILE_HEADER_SIZE)) {
+	    (file_magic.header_size != FILE_HEADER_SIZE)) {
 		if (FORCE_FILE(flags)) {
 			close(*ofd);
 			/* -F option used: Truncate file */
@@ -866,8 +864,6 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		/* Display error message and exit */
 		handle_invalid_sa_file(ofd, &file_magic, ofile, sz);
 	}
-
-	SREALLOC(buffer, char, file_magic.header_size);
 
 	/*
 	 * Save current file position.
@@ -879,14 +875,8 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	}
 
 	/* Read file standard header */
-	n = read(*ofd, buffer, file_magic.header_size);
-	memcpy(&file_hdr, buffer, MINIMUM(file_magic.header_size, FILE_HEADER_SIZE));
-	free(buffer);
-
-	if (n != file_magic.header_size) {
-		/* Display error message and exit */
-		handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
-	}
+	if ((sz = read(*ofd, &file_hdr, FILE_HEADER_SIZE)) != FILE_HEADER_SIZE)
+		goto append_error;
 
 	/*
 	 * If we are using the standard daily data file (file specified
