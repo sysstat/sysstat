@@ -53,7 +53,7 @@ int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
 
-int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
+unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
 
 unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */

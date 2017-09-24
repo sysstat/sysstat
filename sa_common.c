@@ -50,8 +50,8 @@
 int default_file_used = FALSE;
 extern struct act_bitmap cpu_bitmap;
 
-int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADER_U_NR};
-int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
+unsigned int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADER_U_NR};
+unsigned int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
 
 /*
  ***************************************************************************
@@ -993,7 +993,7 @@ void select_default_activity(struct activity *act[])
  * @is64bit	TRUE if data come from a 64-bit machine.
  ***************************************************************************
  */
-void swap_struct(int types_nr[], void *ps, int is64bit)
+void swap_struct(unsigned int types_nr[], void *ps, int is64bit)
 {
 	int i;
 	uint64_t *x;
@@ -1049,9 +1049,14 @@ void swap_struct(int types_nr[], void *ps, int is64bit)
  *		structure expected by current sysstat version).
  ***************************************************************************
  */
-void remap_struct(int gtypes_nr[], int ftypes_nr[], void *ps, int st_size)
+void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
+		  void *ps, unsigned int st_size)
 {
 	int d;
+
+	/* Sanity check */
+	if (MAP_SIZE(ftypes_nr) > st_size)
+		return;
 
 	/* Remap [unsigned] long fields */
 	d = gtypes_nr[0] - ftypes_nr[0];
@@ -1519,6 +1524,9 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		     ((fal->types_nr[0] <= act[p]->gtypes_nr[0]) &&
 		     (fal->types_nr[1] <= act[p]->gtypes_nr[1]) &&
 		     (fal->types_nr[2] <= act[p]->gtypes_nr[2])))) {
+			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
+		}
+		if (MAP_SIZE(fal->types_nr) > fal->size) {
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 		for (k = 0; k < 3; k++) {

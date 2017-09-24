@@ -75,7 +75,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * @spmax	Array containg the possible new max values for current activity.
  ***************************************************************************
  */
-void save_extrema(int types_nr[], void *cs, void *ps, unsigned long long itv,
+void save_extrema(unsigned int types_nr[], void *cs, void *ps, unsigned long long itv,
 		  double *spmin, double *spmax, int g_fields[])
 {
 	unsigned long long *lluc, *llup;
@@ -1966,7 +1966,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			   "await", "svctm",
 			   "%util"};
 	int g_fields[] = {0, 1, 2};
-	int local_types_nr[] = {1, 0, 0};
+	unsigned int local_types_nr[] = {1, 0, 0};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -2218,7 +2218,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			   "rxcmp/s", "txcmp/s", "rxmcst/s",
 			   "%ifutil"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6};
-	int local_types_nr[] = {7, 0, 0};
+	unsigned int local_types_nr[] = {7, 0, 0};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -4432,7 +4432,7 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 	char *g_title[] = {"~kbhugfree", "~kbhugused",
 			   "%hugused"};
 	int g_fields[] = {0};
-	int local_types_nr[] = {0, 1, 0};
+	unsigned int local_types_nr[] = {0, 1, 0};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;

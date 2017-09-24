@@ -83,6 +83,10 @@
 #define UL_ALIGNMENT_WIDTH	SIZEOF_LONG_64BIT
 #define U_ALIGNMENT_WIDTH	4
 
+#define MAP_SIZE(m)	((m[0] * ULL_ALIGNMENT_WIDTH) + \
+			 (m[1] * UL_ALIGNMENT_WIDTH) +  \
+			 (m[2] * U_ALIGNMENT_WIDTH))
+
 /*
  * Structure for CPU statistics.
  * In activity buffer: First structure is for global CPU utilisation ("all").
