@@ -372,7 +372,7 @@ struct svg_hdr_parm {
 #define PREVIOUS_FORMAT_MAGIC	0x2173
 
 /* Padding in file_magic structure. See below. */
-#define FILE_MAGIC_PADDING	60
+#define FILE_MAGIC_PADDING	48
 
 /* Structure for file magic header data */
 struct file_magic {
@@ -391,6 +391,9 @@ struct file_magic {
 	unsigned char sysstat_patchlevel;
 	unsigned char sysstat_sublevel;
 	unsigned char sysstat_extraversion;
+#define FILE_MAGIC_ULL_NR	0	/* Nr of unsigned long long below */
+#define FILE_MAGIC_UL_NR	0	/* Nr of unsigned long below */
+#define FILE_MAGIC_U_NR		5	/* Nr of [unsigned] int below */
 	/*
 	 * Size of file's header (size of file_header structure used by file).
 	 */
@@ -403,6 +406,11 @@ struct file_magic {
 	 */
 	unsigned int upgraded;
 	/*
+	 * Description of the file_header structure
+	 * (nr of "long long", nr of "long" and nr of "int").
+	 */
+	unsigned int hdr_types_nr[3];
+	/*
 	 * Padding. Reserved for future use while avoiding a format change.
 	 * sysstat always reads a number of bytes which is that expected for
 	 * current sysstat version (FILE_MAGIC_SIZE). We cannot guess if we
@@ -412,7 +420,6 @@ struct file_magic {
 };
 
 #define FILE_MAGIC_SIZE	(sizeof(struct file_magic))
-
 
 /* Header structure for system activity data file */
 struct file_header {

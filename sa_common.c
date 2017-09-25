@@ -1338,6 +1338,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		       int ignore, int *endian_mismatch)
 {
 	int n;
+	unsigned int fm_types_nr[] = {FILE_MAGIC_ULL_NR, FILE_MAGIC_UL_NR, FILE_MAGIC_U_NR};
 
 	/* Open sa data file */
 	if ((*fd = open(dfile, O_RDONLY)) < 0) {
@@ -1366,7 +1367,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		/* Swap bytes for file_magic fields */
 		file_magic->sysstat_magic = __builtin_bswap16(file_magic->sysstat_magic);
 		file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
-		file_magic->header_size   = __builtin_bswap32(file_magic->header_size);
+		swap_struct(fm_types_nr, &file_magic->header_size, 0);
 	}
 
 	if ((file_magic->sysstat_version > 10) ||
@@ -1379,6 +1380,14 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 			handle_invalid_sa_file(fd, file_magic, dfile, n);
 		}
 	}
+	if ((file_magic->sysstat_version > 11) ||
+	    ((file_magic->sysstat_version == 11) && (file_magic->sysstat_patchlevel >= 7))) {
+		/* hdr_types_nr field exists only for sysstat versions 11.7.1 and later */
+		if (MAP_SIZE(file_magic->hdr_types_nr) > file_magic->header_size) {
+			handle_invalid_sa_file(fd, file_magic, dfile, n);
+		}
+	}
+
 	if (file_magic->format_magic != FORMAT_MAGIC)
 		/* This is an old (or new) sa datafile format */
 		return -1;
@@ -1434,9 +1443,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	/* Read sa data file standard header and allocate activity list */
 	sa_fread(*ifd, buffer, file_magic->header_size, HARD_SIZE);
 	/*
-	 * Data file header size may be greater than FILE_HEADER_SIZE, but
-	 * anyway only the first FILE_HEADER_SIZE bytes can be interpreted.
+	 * Data file header size (file_magic->header_size) may be greater or
+	 * smaller than FILE_HEADER_SIZE. Remap the fields of the file header
+	 * then copy its contents to the expected  structure.
 	 */
+	remap_struct(hdr_types_nr, file_magic->hdr_types_nr, buffer, file_magic->header_size);
 	memcpy(file_hdr, buffer, FILE_HEADER_SIZE);
 	free(buffer);
 

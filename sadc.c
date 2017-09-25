@@ -72,6 +72,7 @@ char comment[MAX_COMMENT_LEN];
 unsigned int id_seq[NR_ACT];
 unsigned int vol_id_seq[NR_ACT];
 
+extern unsigned int hdr_types_nr[];
 extern struct activity *act[];
 extern __nr_t (*f_count[]) (struct activity *);
 
@@ -458,14 +459,20 @@ int ask_for_flock(int fd, int fatal)
  */
 void fill_magic_header(struct file_magic *file_magic)
 {
-	memset(file_magic, 0, FILE_MAGIC_SIZE);
+	int i;
 
-	file_magic->header_size = FILE_HEADER_SIZE;
+	memset(file_magic, 0, FILE_MAGIC_SIZE);
 
 	file_magic->sysstat_magic = SYSSTAT_MAGIC;
 	file_magic->format_magic  = FORMAT_MAGIC;
 
 	enum_version_nr(file_magic);
+
+	file_magic->header_size = FILE_HEADER_SIZE;
+
+	for (i = 0; i < 3; i++) {
+		file_magic->hdr_types_nr[i] = hdr_types_nr[i];
+	}
 }
 
 /*
@@ -851,10 +858,15 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		create_sa_file(ofd, ofile);
 		return;
 	}
+
+	/* Test various values ("strict writing" rule) */
 	if ((sz != FILE_MAGIC_SIZE) ||
 	    (file_magic.sysstat_magic != SYSSTAT_MAGIC) ||
 	    (file_magic.format_magic != FORMAT_MAGIC) ||
-	    (file_magic.header_size != FILE_HEADER_SIZE)) {
+	    (file_magic.header_size != FILE_HEADER_SIZE) ||
+	    (file_magic.hdr_types_nr[0] != FILE_HEADER_ULL_NR) ||
+	    (file_magic.hdr_types_nr[1] != FILE_HEADER_UL_NR) ||
+	    (file_magic.hdr_types_nr[2] != FILE_HEADER_U_NR)) {
 		if (FORCE_FILE(flags)) {
 			close(*ofd);
 			/* -F option used: Truncate file */
