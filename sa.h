@@ -1222,7 +1222,7 @@ __nr_t read_vol_act_structures
 int reallocate_vol_act_structures
 	(struct activity * [], unsigned int, unsigned int);
 void remap_struct
-	(int [], int [], void *, int);
+	(unsigned int [], unsigned int [], void *, unsigned int);
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
@@ -1244,6 +1244,6 @@ void set_hdr_rectime
 void set_record_timestamp_string
 	(unsigned int, struct record_header *, char *, char *, int, struct tm *);
 void swap_struct
-	(int [], void *, int);
+	(unsigned int [], void *, int);
 
 #endif  /* _SA_H */
