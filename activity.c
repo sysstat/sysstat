@@ -1342,7 +1342,7 @@ struct activity huge_act = {
 /* CPU weighted frequency */
 struct activity pwr_wghfreq_act = {
 	.id		= A_PWR_WGHFREQ,
-	.options	= AO_VOLATILE,
+	.options	= AO_VOLATILE + AO_MATRIX,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC

@@ -880,7 +880,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 
 			printf("%02d: %s\t(x%d)", act[p]->id, act[p]->name, act[p]->nr);
-			if (act[p]->f_count2 || (act[p]->nr2 > 1)) {
+			if (IS_MATRIX(act[p]->options) || (act[p]->nr2 > 1)) {
 				printf("\t(x%d)", act[p]->nr2);
 			}
 			if (act[p]->magic == ACTIVITY_MAGIC_UNKNOWN) {
