@@ -650,6 +650,10 @@ struct record_header {
  * distinct item for this activity (sadf -g).
  */
 #define AO_GRAPH_PER_ITEM	0x40
+/*
+ * Indicate that this activity may have sub-items.
+ */
+#define AO_MATRIX		0x80
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
@@ -658,6 +662,7 @@ struct record_header {
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 #define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
+#define IS_MATRIX(m)		(((m) & AO_MATRIX)           == AO_MATRIX)
 
 #define _buf0	buf[0]
 
