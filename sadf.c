@@ -53,7 +53,7 @@ int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
 
-unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
+extern unsigned int rec_types_nr[];
 
 unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */
@@ -270,17 +270,14 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		     struct tm *rectime, struct tm *loctime)
 {
 	int eosaf;
+	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];
 
 	/* Read current record */
-	eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE, SOFT_SIZE);
+	eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr], &file_hdr,
+				arch_64, endian_mismatch);
 	*rtype = record_hdr[curr].record_type;
 
 	if (!eosaf) {
-		/* Normalize endianness for file_hdr structure */
-		if (endian_mismatch) {
-			swap_struct(rec_types_nr, &record_hdr[curr], arch_64);
-		}
-
 		if (*rtype == R_COMMENT) {
 			if (action & IGNORE_COMMENT) {
 				/* Ignore COMMENT record */

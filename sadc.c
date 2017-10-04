@@ -73,6 +73,9 @@ unsigned int id_seq[NR_ACT];
 unsigned int vol_id_seq[NR_ACT];
 
 extern unsigned int hdr_types_nr[];
+extern unsigned int act_types_nr[];
+extern unsigned int rec_types_nr[];
+
 extern struct activity *act[];
 extern __nr_t (*f_count[]) (struct activity *);
 
@@ -512,6 +515,13 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_year        = rectime.tm_year;
 	file_hdr.sa_sizeof_long = sizeof(long);
 
+	for (i = 0; i < 3; i++) {
+		file_hdr.act_types_nr[i] = act_types_nr[i];
+		file_hdr.rec_types_nr[i] = rec_types_nr[i];
+	}
+	file_hdr.act_size = FILE_ACTIVITY_SIZE;
+	file_hdr.rec_size = RECORD_HEADER_SIZE;
+
 	/*
 	 * This is a new file (or stdout): Field sa_last_cpu_nr is set to the number
 	 * of CPU items of the machine (1 .. CPU_NR + 1).
@@ -913,6 +923,17 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		 * or too many volatile activities:
 		 * Cannot append data to such a file.
 		 */
+		goto append_error;
+
+	/* Other sanity checks ("strict writing" rule) */
+	if ((file_hdr.act_size != FILE_ACTIVITY_SIZE) ||
+	    (file_hdr.act_types_nr[0] != FILE_ACTIVITY_ULL_NR) ||
+	    (file_hdr.act_types_nr[1] != FILE_ACTIVITY_UL_NR) ||
+	    (file_hdr.act_types_nr[2] != FILE_ACTIVITY_U_NR) ||
+	    (file_hdr.rec_size != RECORD_HEADER_SIZE) ||
+	    (file_hdr.rec_types_nr[0] != RECORD_HEADER_ULL_NR) ||
+	    (file_hdr.rec_types_nr[1] != RECORD_HEADER_UL_NR) ||
+	    (file_hdr.rec_types_nr[2] != RECORD_HEADER_U_NR))
 		goto append_error;
 
 	for (i = 0; i < file_hdr.sa_act_nr; i++) {

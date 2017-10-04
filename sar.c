@@ -61,7 +61,7 @@ unsigned int flags = 0;
 unsigned int dm_major;	/* Device-mapper major number */
 
 char timestamp[2][TIMESTAMP_LEN];
-unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
+extern unsigned int rec_types_nr[];
 
 unsigned long avg_count = 0;
 
@@ -685,6 +685,7 @@ void read_sadc_stat_bunch(int curr)
  * @file_actlst	List of activities in file.
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
+ * @rec_hdr_tmp	Temporary buffer where current record header will be saved.
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
  * @arch_64	TRUE if file's data come from a 64 bit machine.
@@ -700,8 +701,8 @@ void read_sadc_stat_bunch(int curr)
 void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 			   int rows, unsigned int act_id, int *reset,
 			   struct file_activity *file_actlst, char *file,
-			   struct file_magic *file_magic, int endian_mismatch,
-			   int arch_64)
+			   struct file_magic *file_magic, void *rec_hdr_tmp,
+			   int endian_mismatch, int arch_64)
 {
 	int p, reset_cd;
 	unsigned long lines = 0;
@@ -734,14 +735,12 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 	reset_cd = 1;
 
 	do {
-		/* Display count lines of stats */
-		*eosaf = sa_fread(ifd, &record_hdr[*curr],
-				  RECORD_HEADER_SIZE, SOFT_SIZE);
-
-		/* Normalize endianness for record_hdr structure */
-		if (endian_mismatch) {
-			swap_struct(rec_types_nr, &record_hdr[*curr], arch_64);
-		}
+		/*
+		 * Display <count> lines of stats.
+		 * Start with reading current sample's record header.
+		 */
+		*eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[*curr],
+					 &file_hdr, arch_64, endian_mismatch);
 		rtype = record_hdr[*curr].record_type;
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
@@ -844,7 +843,12 @@ void read_header_data(void)
 		print_read_error();
 	}
 
+	/* All activities are not necessarily selected, but NR_ACT is a max */
 	if (file_hdr.sa_act_nr > NR_ACT)
+		goto input_error;
+
+	if ((file_hdr.act_size != FILE_ACTIVITY_SIZE) ||
+	    (file_hdr.rec_size != RECORD_HEADER_SIZE))
 		goto input_error;
 
 	/* Read activity list */
@@ -900,6 +904,7 @@ void read_stats_from_file(char from_file[])
 {
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
+	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];
 	int curr = 1, i, p;
 	int ifd, rtype;
 	int rows, eosaf = TRUE, reset = FALSE;
@@ -927,13 +932,10 @@ void read_stats_from_file(char from_file[])
 		 * (try to) get another one.
 		 */
 		do {
-			if (sa_fread(ifd, &record_hdr[0], RECORD_HEADER_SIZE, SOFT_SIZE))
+			if (read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[0], &file_hdr,
+					    arch_64, endian_mismatch)) {
 				/* End of sa data file */
 				return;
-
-			/* Normalize endianness for file_hdr structure */
-			if (endian_mismatch) {
-				swap_struct(rec_types_nr, &record_hdr[0], arch_64);
 			}
 
 			rtype = record_hdr[0].record_type;
@@ -991,7 +993,8 @@ void read_stats_from_file(char from_file[])
 			if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 				handle_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf, rows,
 						      act[p]->id, &reset, file_actlst,
-						      from_file, &file_magic, endian_mismatch, arch_64);
+						      from_file, &file_magic, rec_hdr_tmp,
+						      endian_mismatch, arch_64);
 			}
 			else {
 				unsigned int optf, msk;
@@ -1002,10 +1005,9 @@ void read_stats_from_file(char from_file[])
 					if ((act[p]->opt_flags & 0xff) & msk) {
 						act[p]->opt_flags &= (0xffffff00 + msk);
 
-						handle_curr_act_stats(ifd, fpos, &curr, &cnt,
-								      &eosaf, rows, act[p]->id,
-								      &reset, file_actlst,
-								      from_file, &file_magic,
+						handle_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
+								      rows, act[p]->id, &reset, file_actlst,
+								      from_file, &file_magic, rec_hdr_tmp,
 								      endian_mismatch, arch_64);
 						act[p]->opt_flags = optf;
 					}
@@ -1016,13 +1018,9 @@ void read_stats_from_file(char from_file[])
 		if (!cnt) {
 			/* Go to next Linux restart, if possible */
 			do {
-				eosaf = sa_fread(ifd, &record_hdr[curr], RECORD_HEADER_SIZE,
-						 SOFT_SIZE);
-
-				/* Normalize endianness for file_hdr structure */
-				if (endian_mismatch) {
-					swap_struct(rec_types_nr, &record_hdr[curr], arch_64);
-				}
+				/* Read next record header */
+				eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr],
+							&file_hdr, arch_64, endian_mismatch);
 				rtype = record_hdr[curr].record_type;
 
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {

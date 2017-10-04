@@ -441,11 +441,25 @@ struct file_header {
 	 */
 	unsigned int sa_vol_act_nr;
 	/*
-	 * Current day, month and year.
+	 * Current year.
+	 */
+	int sa_year;
+	/*
+	 * Description of the file_activity and record_header structures
+	 * (nr of "long long", nr of "long" and nr of "int").
+	 */
+	unsigned int act_types_nr[3];
+	unsigned int rec_types_nr[3];
+	/*
+	 * Size of file_activity and record_header structures used by file.
+	 */
+	unsigned int act_size;
+	unsigned int rec_size;
+	/*
+	 * Current day and month.
 	 * No need to save DST (Daylight Saving Time) flag, since it is not taken
 	 * into account by the strftime() function used to print the timestamp.
 	 */
-	int sa_year;
 	unsigned char sa_day;
 	unsigned char sa_month;
 	/*
@@ -474,7 +488,7 @@ struct file_header {
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
 #define FILE_HEADER_ULL_NR	1	/* Nr of unsigned long long in file_header structure */
 #define FILE_HEADER_UL_NR	0	/* Nr of unsigned long in file_header structure */
-#define FILE_HEADER_U_NR	4	/* Nr of [unsigned] int in file_header structure */
+#define FILE_HEADER_U_NR	12	/* Nr of [unsigned] int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
@@ -520,6 +534,7 @@ struct file_activity {
 };
 
 #define FILE_ACTIVITY_SIZE	(sizeof(struct file_activity))
+#define MAX_FILE_ACTIVITY_SIZE	1024	/* Used for sanity check */
 #define FILE_ACTIVITY_ULL_NR	0	/* Nr of unsigned long long in file_activity structure */
 #define FILE_ACTIVITY_UL_NR	0	/* Nr of unsigned long in file_activity structure */
 #define FILE_ACTIVITY_U_NR	8	/* Nr of [unsigned] int in file_activity structure */
@@ -579,6 +594,7 @@ struct record_header {
 };
 
 #define RECORD_HEADER_SIZE	(sizeof(struct record_header))
+#define MAX_RECORD_HEADER_SIZE	512	/* Used for sanity check */
 #define RECORD_HEADER_ULL_NR	3	/* Nr of unsigned long long in record_header structure */
 #define RECORD_HEADER_UL_NR	0	/* Nr of unsigned long in record_header structure */
 #define RECORD_HEADER_U_NR	0	/* Nr of unsigned int in record_header structure */
@@ -1217,6 +1233,8 @@ int print_special_record
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 void read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int);
+int read_record_hdr
+	(int, void *, struct record_header *, struct file_header *, int, int);
 __nr_t read_vol_act_structures
 	(int, struct activity * [], char *, struct file_magic *, unsigned int, int, int);
 int reallocate_vol_act_structures

@@ -52,6 +52,7 @@ extern struct act_bitmap cpu_bitmap;
 
 unsigned int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADER_U_NR};
 unsigned int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
+unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
 
 /*
  ***************************************************************************
@@ -1145,6 +1146,47 @@ int sa_fread(int ifd, void *buffer, int size, int mode)
 
 /*
  ***************************************************************************
+ * Read the record header of current sample and process it.
+ *
+ * IN:
+ * @ifd		Input file descriptor.
+ * @buffer	Buffer where data will be read.
+ * @record_hdr	Structure where record header will be saved.
+ * @file_hdr	file_hdr structure containing data read from file standard
+ *		header.
+ * @arch_64	TRUE if file's data come from a 64-bit machine.
+ * @endian_mismatch
+ *		TRUE if data read from file don't match current machine's
+ *		endianness.
+ *
+ * OUT:
+ * @record_hdr	Record header for current sample.
+ *
+ * RETURNS:
+ * 1 if EOF has been reached, 0 otherwise.
+ ***************************************************************************
+ */
+int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
+		    struct file_header *file_hdr, int arch_64, int endian_mismatch)
+{
+	if (sa_fread(ifd, buffer, file_hdr->rec_size, SOFT_SIZE))
+		/* End of sa data file */
+		return 1;
+
+	/* Remap record header structure to that expected by current version */
+	remap_struct(rec_types_nr, file_hdr->rec_types_nr, buffer, file_hdr->rec_size);
+	memcpy(record_hdr, buffer, RECORD_HEADER_SIZE);
+
+	/* Normalize endianness */
+	if (endian_mismatch) {
+		swap_struct(rec_types_nr, record_hdr, arch_64);
+	}
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Display sysstat version used to create system activity data file.
  *
  * IN:
@@ -1450,6 +1492,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	remap_struct(hdr_types_nr, file_magic->hdr_types_nr, buffer, file_magic->header_size);
 	memcpy(file_hdr, buffer, FILE_HEADER_SIZE);
 	free(buffer);
+	buffer = NULL;
 
 	/* Tell that data come from a 64 bit machine */
 	*arch_64 = (file_hdr->sa_sizeof_long == SIZEOF_LONG_64BIT);
@@ -1460,16 +1503,20 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	}
 
 	/*
-	 * Sanity check.
-	 * Compare against MAX_NR_ACT and not NR_ACT because
+	 * Sanity checks.
+	 * NB: Compare against MAX_NR_ACT and not NR_ACT because
 	 * we are maybe reading a datafile from a future sysstat version
 	 * with more activities than known today.
 	 */
-	if (file_hdr->sa_act_nr > MAX_NR_ACT) {
+	if ((file_hdr->sa_act_nr > MAX_NR_ACT) ||
+	    (file_hdr->act_size > MAX_FILE_ACTIVITY_SIZE) ||
+	    (file_hdr->rec_size > MAX_RECORD_HEADER_SIZE) ||
+	    (MAP_SIZE(file_hdr->act_types_nr) > file_hdr->act_size) ||
+	    (MAP_SIZE(file_hdr->rec_types_nr) > file_hdr->rec_size))
 		/* Maybe a "false positive" sysstat datafile? */
-		handle_invalid_sa_file(ifd, file_magic, dfile, 0);
-	}
+		goto format_error;
 
+	SREALLOC(buffer, char, file_hdr->act_size);
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
 	fal = *file_actlst;
 
@@ -1477,7 +1524,15 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	j = 0;
 	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
-		sa_fread(*ifd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
+		/* Read current file_activity structure from file */
+		sa_fread(*ifd, buffer, file_hdr->act_size, HARD_SIZE);
+		/*
+		* Data file_activity size (file_hdr->act_size) may be greater or
+		* smaller than FILE_ACTIVITY_SIZE. Remap the fields of the file's structure
+		* then copy its contents to the expected  structure.
+		*/
+		remap_struct(act_types_nr, file_hdr->act_types_nr, buffer, file_hdr->act_size);
+		memcpy(fal, buffer, FILE_ACTIVITY_SIZE);
 
 		/* Normalize endianness for file_activity structures */
 		if (*endian_mismatch) {
@@ -1496,9 +1551,8 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		 * activities which have each a specific max value.
 		 */
 		if ((fal->nr < 1) || (fal->nr2 < 1) ||
-		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX)) {
-			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
-		}
+		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX))
+			goto format_error;
 
 		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0)
 			/* Unknown activity */
@@ -1518,9 +1572,9 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		}
 
 		/* Check max value for known activities */
-		if (fal->nr > act[p]->nr_max) {
-			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
-		}
+		if (fal->nr > act[p]->nr_max)
+			goto format_error;
+
 		/*
 		 * Number of fields of each type ("long long", or "long"
 		 * or "int") composing the structure with statistics may
@@ -1534,12 +1588,12 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		     ||
 		     ((fal->types_nr[0] <= act[p]->gtypes_nr[0]) &&
 		     (fal->types_nr[1] <= act[p]->gtypes_nr[1]) &&
-		     (fal->types_nr[2] <= act[p]->gtypes_nr[2])))) {
-			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
-		}
-		if (MAP_SIZE(fal->types_nr) > fal->size) {
-			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
-		}
+		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))))
+			goto format_error;
+
+		if (MAP_SIZE(fal->types_nr) > fal->size)
+			goto format_error;
+
 		for (k = 0; k < 3; k++) {
 			act[p]->ftypes_nr[k] = fal->types_nr[k];
 		}
@@ -1572,17 +1626,18 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		id_seq[j++] = fal->id;
 	}
 
-	if (!a_cpu) {
+	if (!a_cpu)
 		/*
 		 * CPU activity should always be in file
 		 * and have a known format (expected magical number).
 		 */
-		handle_invalid_sa_file(ifd, file_magic, dfile, 0);
-	}
+		goto format_error;
 
 	while (j < NR_ACT) {
 		id_seq[j++] = 0;
 	}
+
+	free(buffer);
 
 	/* Check that at least one selected activity is available in file */
 	for (i = 0; i < NR_ACT; i++) {
@@ -1607,6 +1662,14 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		close(*ifd);
 		exit(1);
 	}
+
+	return;
+
+format_error:
+	if (buffer) {
+		free(buffer);
+	}
+	handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 }
 
 /*
