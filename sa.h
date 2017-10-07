@@ -310,6 +310,10 @@
  * sar -A is supposed to display.
  */
 #define AO_MULTIPLE_OUTPUTS	0x20
+/*
+ * Indicate that this activity may have sub-items.
+ */
+#define AO_MATRIX		0x80
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
@@ -317,6 +321,7 @@
 #define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
+#define IS_MATRIX(m)		(((m) & AO_MATRIX)           == AO_MATRIX)
 
 /* Type for all functions counting items */
 #define __nr_t		int
