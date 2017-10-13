@@ -569,11 +569,7 @@ struct file_activity {
 /* Header structure for every record */
 struct record_header {
 	/*
-	 * Machine uptime (multiplied by the # of proc).
-	 */
-	unsigned long long uptime;
-	/*
-	 * Uptime reduced to one processor. Always set, even on UP machines.
+	 * Machine uptime in jiffies (independent of the number of processors).
 	 */
 	unsigned long long uptime0;
 	/*
@@ -595,7 +591,7 @@ struct record_header {
 
 #define RECORD_HEADER_SIZE	(sizeof(struct record_header))
 #define MAX_RECORD_HEADER_SIZE	512	/* Used for sanity check */
-#define RECORD_HEADER_ULL_NR	3	/* Nr of unsigned long long in record_header structure */
+#define RECORD_HEADER_ULL_NR	2	/* Nr of unsigned long long in record_header structure */
 #define RECORD_HEADER_UL_NR	0	/* Nr of unsigned long in record_header structure */
 #define RECORD_HEADER_U_NR	0	/* Nr of unsigned int in record_header structure */
 
@@ -626,11 +622,8 @@ struct record_header {
  */
 #define AO_VOLATILE		0x04
 /*
- * Indicate that the interval of time, given to f_print() function
- * displaying statistics, should be the interval of time in jiffies
- * multiplied by the number of processors.
+ * 0x08: Unused.
  */
-#define AO_GLOBAL_ITV		0x08
 /*
  * This flag should be set for every activity closing a markup used
  * by several activities. Used by sadf f_xml_print() functions to
@@ -658,7 +651,6 @@ struct record_header {
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
 #define IS_VOLATILE(m)		(((m) & AO_VOLATILE)         == AO_VOLATILE)
-#define NEED_GLOBAL_ITV(m)	(((m) & AO_GLOBAL_ITV)       == AO_GLOBAL_ITV)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 #define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
@@ -1209,7 +1201,7 @@ void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned int,
-	 unsigned long long *, unsigned long long *);
+	 unsigned long long *);
 void handle_invalid_sa_file
 	(int *, struct file_magic *, char *, int);
 int next_slice

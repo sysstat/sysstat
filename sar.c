@@ -348,19 +348,14 @@ int check_line_hdr(void)
 void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 {
 	int i;
-	unsigned long long itv, g_itv;
+	unsigned long long itv;
 	static __nr_t cpu_nr = -1;
 
 	if (cpu_nr < 0)
 		cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	/* Interval value in jiffies */
-	g_itv = get_interval(record_hdr[2].uptime, record_hdr[curr].uptime);
-
-	if (cpu_nr > 1)
-		itv = get_interval(record_hdr[2].uptime0, record_hdr[curr].uptime0);
-	else
-		itv = g_itv;
+	itv = get_interval(record_hdr[2].uptime0, record_hdr[curr].uptime0);
 
 	strncpy(timestamp[curr], _("Average:"), TIMESTAMP_LEN);
 	timestamp[curr][TIMESTAMP_LEN - 1] = '\0';
@@ -376,8 +371,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			/* Display current average activity statistics */
-			(*act[i]->f_print_avg)(act[i], 2, curr,
-					       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
+			(*act[i]->f_print_avg)(act[i], 2, curr, itv);
 		}
 	}
 
@@ -419,7 +413,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		int use_tm_end, int reset, unsigned int act_id, int reset_cd)
 {
 	int i;
-	unsigned long long itv, g_itv;
+	unsigned long long itv;
 	static int cross_day = 0;
 	static __nr_t cpu_nr = -1;
 
@@ -488,7 +482,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 
 	/* Get interval values */
 	get_itv_value(&record_hdr[curr], &record_hdr[!curr],
-		      cpu_nr, &itv, &g_itv);
+		      cpu_nr, &itv);
 
 	/* Check time (3) */
 	if (use_tm_end && (datecmp(&rectime, &tm_end) > 0)) {
@@ -509,8 +503,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
 			/* Display current activity statistics */
-			(*act[i]->f_print)(act[i], !curr, curr,
-					   NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
+			(*act[i]->f_print)(act[i], !curr, curr, itv);
 		}
 	}
 

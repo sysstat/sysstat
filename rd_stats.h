@@ -595,7 +595,7 @@ struct stats_softnet {
 void oct2chr
 	(char *);
 void read_stat_cpu
-	(struct stats_cpu *, int, unsigned long long *);
+	(struct stats_cpu *, int);
 void read_stat_irq
 	(struct stats_irq *, int);
 void read_meminfo

@@ -54,8 +54,8 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 struct stats_cpu *st_cpu[2];
-unsigned long long uptime[2]  = {0, 0};
 unsigned long long uptime0[2] = {0, 0};
+unsigned long long tot_jiffies[2] = {0, 0};
 struct io_stats *st_iodev[2];
 struct io_hdr_stats *st_hdr_iodev;
 struct io_dlist *st_dev_list;
@@ -848,17 +848,18 @@ void write_sample_timestamp(int tab, struct tm *rectime)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  ***************************************************************************
  */
-void write_plain_cpu_stat(int curr, unsigned long long itv)
+void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies)
 {
 	printf("avg-cpu:  %%user   %%nice %%system %%iowait  %%steal   %%idle\n");
 
 	printf("       ");
 	cprintf_pc(DISPLAY_UNIT(flags), 6, 7, 2,
-		   ll_sp_value(st_cpu[!curr]->cpu_user,   st_cpu[curr]->cpu_user,   itv),
-		   ll_sp_value(st_cpu[!curr]->cpu_nice,   st_cpu[curr]->cpu_nice,   itv),
+		   ll_sp_value(st_cpu[!curr]->cpu_user, st_cpu[curr]->cpu_user, deltot_jiffies),
+		   ll_sp_value(st_cpu[!curr]->cpu_nice, st_cpu[curr]->cpu_nice, deltot_jiffies),
 		   /*
 		    * Time spent in system mode also includes time spent servicing
 		    * hard and soft interrupts.
@@ -866,12 +867,12 @@ void write_plain_cpu_stat(int curr, unsigned long long itv)
 		   ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
 			       st_cpu[!curr]->cpu_hardirq,
 			       st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
-			       st_cpu[curr]->cpu_hardirq, itv),
-		   ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, itv),
-		   ll_sp_value(st_cpu[!curr]->cpu_steal,  st_cpu[curr]->cpu_steal,  itv),
+			       st_cpu[curr]->cpu_hardirq, deltot_jiffies),
+		   ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, deltot_jiffies),
+		   ll_sp_value(st_cpu[!curr]->cpu_steal, st_cpu[curr]->cpu_steal, deltot_jiffies),
 		   (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
 		   0.0 :
-		   ll_sp_value(st_cpu[!curr]->cpu_idle,   st_cpu[curr]->cpu_idle,   itv));
+		   ll_sp_value(st_cpu[!curr]->cpu_idle, st_cpu[curr]->cpu_idle, deltot_jiffies));
 
 	printf("\n\n");
 }
@@ -883,15 +884,16 @@ void write_plain_cpu_stat(int curr, unsigned long long itv)
  * IN:
  * @tab		Number of tabs to print.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  ***************************************************************************
  */
-void write_json_cpu_stat(int tab, int curr, unsigned long long itv)
+void write_json_cpu_stat(int tab, int curr, unsigned long long deltot_jiffies)
 {
 	xprintf0(tab, "\"avg-cpu\":  {\"user\": %.2f, \"nice\": %.2f, \"system\": %.2f,"
 		      " \"iowait\": %.2f, \"steal\": %.2f, \"idle\": %.2f}",
-		 ll_sp_value(st_cpu[!curr]->cpu_user,   st_cpu[curr]->cpu_user,   itv),
-		 ll_sp_value(st_cpu[!curr]->cpu_nice,   st_cpu[curr]->cpu_nice,   itv),
+		 ll_sp_value(st_cpu[!curr]->cpu_user, st_cpu[curr]->cpu_user, deltot_jiffies),
+		 ll_sp_value(st_cpu[!curr]->cpu_nice, st_cpu[curr]->cpu_nice, deltot_jiffies),
 		 /*
 		  * Time spent in system mode also includes time spent servicing
 		  * hard and soft interrupts.
@@ -899,12 +901,12 @@ void write_json_cpu_stat(int tab, int curr, unsigned long long itv)
 		 ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
 			     st_cpu[!curr]->cpu_hardirq,
 			     st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
-			     st_cpu[curr]->cpu_hardirq, itv),
-		 ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, itv),
-		 ll_sp_value(st_cpu[!curr]->cpu_steal,  st_cpu[curr]->cpu_steal,  itv),
+			     st_cpu[curr]->cpu_hardirq, deltot_jiffies),
+		 ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, deltot_jiffies),
+		 ll_sp_value(st_cpu[!curr]->cpu_steal, st_cpu[curr]->cpu_steal, deltot_jiffies),
 		 (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
 		 0.0 :
-		 ll_sp_value(st_cpu[!curr]->cpu_idle,   st_cpu[curr]->cpu_idle,   itv));
+		 ll_sp_value(st_cpu[!curr]->cpu_idle, st_cpu[curr]->cpu_idle, deltot_jiffies));
 }
 
 /*
@@ -913,17 +915,52 @@ void write_json_cpu_stat(int tab, int curr, unsigned long long itv)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time.
  * @tab		Number of tabs to print (JSON format only).
  ***************************************************************************
  */
-void write_cpu_stat(int curr, unsigned long long itv, int tab)
+void write_cpu_stat(int curr, int tab)
 {
+	unsigned long long deltot_jiffies;
+
+	/*
+	 * Compute the total number of jiffies spent by all processors.
+	 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+	 * already include them.
+	 */
+	tot_jiffies[curr] = st_cpu[curr]->cpu_user + st_cpu[curr]->cpu_nice +
+			    st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_idle +
+			    st_cpu[curr]->cpu_iowait + st_cpu[curr]->cpu_hardirq +
+			    st_cpu[curr]->cpu_steal + st_cpu[curr]->cpu_softirq;
+
+	/* Total number of jiffies spent on the interval */
+	deltot_jiffies = get_interval(tot_jiffies[!curr], tot_jiffies[curr]);
+
+#ifdef DEBUG
+		if (DISPLAY_DEBUG(flags)) {
+			/* Debug output */
+			fprintf(stderr, "deltot_jiffies=%llu st_cpu[curr]{ cpu_user=%llu cpu_nice=%llu "
+					"cpu_sys=%llu cpu_idle=%llu cpu_iowait=%llu cpu_steal=%llu "
+					"cpu_hardirq=%llu cpu_softirq=%llu cpu_guest=%llu "
+					"cpu_guest_nice=%llu }\n",
+				deltot_jiffies,
+				st_cpu[curr]->cpu_user,
+				st_cpu[curr]->cpu_nice,
+				st_cpu[curr]->cpu_sys,
+				st_cpu[curr]->cpu_idle,
+				st_cpu[curr]->cpu_iowait,
+				st_cpu[curr]->cpu_steal,
+				st_cpu[curr]->cpu_hardirq,
+				st_cpu[curr]->cpu_softirq,
+				st_cpu[curr]->cpu_guest,
+				st_cpu[curr]->cpu_guest_nice);
+		}
+#endif
+
 	if (DISPLAY_JSON_OUTPUT(flags)) {
-		write_json_cpu_stat(tab, curr, itv);
+		write_json_cpu_stat(tab, curr, deltot_jiffies);
 	}
 	else {
-		write_plain_cpu_stat(curr, itv);
+		write_plain_cpu_stat(curr, deltot_jiffies);
 	}
 }
 
@@ -1456,33 +1493,9 @@ void write_stats(int curr, struct tm *rectime)
 #endif
 	}
 
-	/* Interval is multiplied by the number of processors */
-	itv = get_interval(uptime[!curr], uptime[curr]);
-
 	if (DISPLAY_CPU(flags)) {
-#ifdef DEBUG
-		if (DISPLAY_DEBUG(flags)) {
-			/* Debug output */
-			fprintf(stderr, "itv=%llu st_cpu[curr]{ cpu_user=%llu cpu_nice=%llu "
-					"cpu_sys=%llu cpu_idle=%llu cpu_iowait=%llu cpu_steal=%llu "
-					"cpu_hardirq=%llu cpu_softirq=%llu cpu_guest=%llu "
-					"cpu_guest_nice=%llu }\n",
-				itv,
-				st_cpu[curr]->cpu_user,
-				st_cpu[curr]->cpu_nice,
-				st_cpu[curr]->cpu_sys,
-				st_cpu[curr]->cpu_idle,
-				st_cpu[curr]->cpu_iowait,
-				st_cpu[curr]->cpu_steal,
-				st_cpu[curr]->cpu_hardirq,
-				st_cpu[curr]->cpu_softirq,
-				st_cpu[curr]->cpu_guest,
-				st_cpu[curr]->cpu_guest_nice);
-		}
-#endif
-
 		/* Display CPU utilization */
-		write_cpu_stat(curr, itv, tab);
+		write_cpu_stat(curr, tab);
 
 		if (DISPLAY_JSON_OUTPUT(flags)) {
 			if (DISPLAY_DISK(flags)) {
@@ -1492,10 +1505,8 @@ void write_stats(int curr, struct tm *rectime)
 		}
 	}
 
-	if (cpu_nr > 1) {
-		/* On SMP machines, reduce itv to one processor (see note above) */
-		itv = get_interval(uptime0[!curr], uptime0[curr]);
-	}
+	/* Calculate time interval in jiffies */
+	itv = get_interval(uptime0[!curr], uptime0[curr]);
 
 	if (DISPLAY_DISK(flags)) {
 		struct io_stats *ioi, *ioj;
@@ -1619,13 +1630,11 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	setbuf(stdout, NULL);
 
 	do {
-		if (cpu_nr > 1) {
-			/* Read system uptime (only for SMP machines) */
-			read_uptime(&(uptime0[curr]));
-		}
+		/* Read system uptime (only for SMP machines) */
+		read_uptime(&(uptime0[curr]));
 
-		/* Read stats for CPU "all" and system uptime in jiffies */
-		read_stat_cpu(st_cpu[curr], 1, &(uptime[curr]));
+		/* Read stats for CPU "all" */
+		read_stat_cpu(st_cpu[curr], 1);
 
 		if (dlist_idx) {
 			/*

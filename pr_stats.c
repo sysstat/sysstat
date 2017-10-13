@@ -109,19 +109,25 @@ void print_hdr_line(char *timestamp, struct activity *a, int pos, int iwidth, in
 /*
  ***************************************************************************
  * Display CPU statistics.
+ * NB: The stats are only calculated over the part of the time interval when
+ * the CPU was online. As a consequence, the sum (%user + %nice + ... + %idle)
+ * will always be 100% on the time interval even if the CPU has been offline
+ * most of the time.
  *
  * IN:
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @g_itv	Interval of time in jiffies multiplied by the number
- *		of processors.
+ * @itv		Interval of time in jiffies (independent of the number of
+ *		processors). Unused here.
  ***************************************************************************
  */
 __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
-				unsigned long long g_itv)
+				unsigned long long itv)
 {
 	int i;
+	unsigned long long tot_jiffies[3];
+	unsigned long long deltot_jiffies;
 	struct stats_cpu *scc, *scp;
 
 	if (dis) {
@@ -152,7 +158,23 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			/* No */
 			continue;
 
-		/* Yes: Display it */
+		/*
+		 * Yes: Compute the total number of jiffies spent by current processor.
+		 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+		 * already include them.
+		 */
+		tot_jiffies[curr] = scc->cpu_user + scc->cpu_nice +
+				    scc->cpu_sys + scc->cpu_idle +
+				    scc->cpu_iowait + scc->cpu_hardirq +
+				    scc->cpu_steal + scc->cpu_softirq;
+		tot_jiffies[prev] = scp->cpu_user + scp->cpu_nice +
+				    scp->cpu_sys + scp->cpu_idle +
+				    scp->cpu_iowait + scp->cpu_hardirq +
+				    scp->cpu_steal + scp->cpu_softirq;
+
+		/* Total number of jiffies spent on the interval */
+		deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
+
 		printf("%-11s", timestamp[curr]);
 
 		if (!i) {
@@ -168,9 +190,7 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			 * (Remember that guest/guest_nice times are already included in
 			 * user/nice modes.)
 			 */
-			if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-			     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+			if (tot_jiffies[curr] == 0) {
 				/*
 				 * Set current struct fields (which have been set to zero)
 				 * to values from previous iteration. Hence their values won't
@@ -195,9 +215,9 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			}
 
 			/* Recalculate interval for current proc */
-			g_itv = get_per_cpu_interval(scc, scp);
+			deltot_jiffies = get_per_cpu_interval(scc, scp);
 
-			if (!g_itv) {
+			if (!deltot_jiffies) {
 				/*
 				 * If the CPU is tickless then there is no change in CPU values
 				 * but the sum of values is not zero.
@@ -225,16 +245,16 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 
 		if (DISPLAY_CPU_DEF(a->opt_flags)) {
 			cprintf_pc(DISPLAY_UNIT(flags), 6, 9, 2,
-				   ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
-				   ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
+				   ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
+				   ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
 				   ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
 					       scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-					       g_itv),
-				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+					       deltot_jiffies),
+				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
+				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
 				   scc->cpu_idle < scp->cpu_idle ?
 				   0.0 :
-				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
+				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
 			printf("\n");
 		}
 		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
@@ -242,21 +262,21 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 				   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 				   0.0 :
 				   ll_sp_value(scp->cpu_user - scp->cpu_guest,
-					       scc->cpu_user - scc->cpu_guest, g_itv),
+					       scc->cpu_user - scc->cpu_guest, deltot_jiffies),
 					       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
 				   0.0 :
 				   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-					       scc->cpu_nice - scc->cpu_guest_nice, g_itv),
-				   ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
-				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
-				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
-				   ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
-				   ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
-				   ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
-				   ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
+					       scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
+				   ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
+				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
+				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
+				   ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
+				   ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
+				   ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
+				   ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies),
 				   scc->cpu_idle < scp->cpu_idle ?
 				   0.0 :
-				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv));
+				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
 			printf("\n");
 		}
 	}

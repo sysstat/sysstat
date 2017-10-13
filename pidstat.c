@@ -52,7 +52,7 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
-unsigned long long uptime[3] = {0, 0, 0};
+unsigned long long tot_jiffies[3] = {0, 0, 0};
 unsigned long long uptime0[3] = {0, 0, 0};
 struct pid_stats *st_pid_list[3] = {NULL, NULL, NULL};
 unsigned int *pid_array = NULL;
@@ -1007,8 +1007,18 @@ void read_stats(int curr)
 		perror("malloc");
 		exit(4);
 	}
-	/* Read statistics for CPUs "all" and system uptime (in jiffies) */
-	read_stat_cpu(st_cpu, 1, &uptime[curr]);
+	/* Read statistics for CPUs "all" */
+	read_stat_cpu(st_cpu, 1);
+
+	/*
+	 * Compute the total number of jiffies spent by all processors.
+	 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+	 * already include them.
+	 */
+	tot_jiffies[curr] = st_cpu->cpu_user + st_cpu->cpu_nice +
+			    st_cpu->cpu_sys + st_cpu->cpu_idle +
+			    st_cpu->cpu_iowait + st_cpu->cpu_hardirq +
+			    st_cpu->cpu_steal + st_cpu->cpu_softirq;
 	free(st_cpu);
 
 	if (DISPLAY_ALL_PID(pidflag)) {
@@ -1389,8 +1399,8 @@ void print_line_id(char *timestamp, struct pid_stats *pst)
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample.
  * @itv		Interval of time in jiffies.
- * @g_itv	Interval of time in jiffies multiplied by the number of
- * 		processors.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -1400,7 +1410,7 @@ void print_line_id(char *timestamp, struct pid_stats *pst)
 int write_pid_task_all_stats(int prev, int curr, int dis,
 			     char *prev_string, char *curr_string,
 			     unsigned long long itv,
-			     unsigned long long g_itv)
+			     unsigned long long deltot_jiffies)
 {
 	struct pid_stats *pstc, *pstp;
 	char dstr[32];
@@ -1453,7 +1463,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				   /* User time already includes guest time */
 				   IRIX_MODE_OFF(pidflag) ?
 				   SP_VALUE_100(pstp->utime + pstp->stime,
-					    pstc->utime + pstc->stime, g_itv) :
+					    pstc->utime + pstc->stime, deltot_jiffies) :
 				   SP_VALUE_100(pstp->utime + pstp->stime,
 					    pstc->utime + pstc->stime, itv));
 
@@ -1626,8 +1636,8 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
  * @itv		Interval of time in jiffies.
- * @g_itv	Interval of time in jiffies multiplied by the number of
- * 		processors.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -1637,7 +1647,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			     char *prev_string, char *curr_string,
 			     unsigned long long itv,
-			     unsigned long long g_itv)
+			     unsigned long long deltot_jiffies)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
@@ -1666,7 +1676,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			   /* User time already includes guest time */
 			   IRIX_MODE_OFF(pidflag) ?
 			   SP_VALUE_100(pstp->utime + pstp->stime,
-				    pstc->utime + pstc->stime, g_itv) :
+				    pstc->utime + pstc->stime, deltot_jiffies) :
 			   SP_VALUE_100(pstp->utime + pstp->stime,
 				    pstc->utime + pstc->stime, itv));
 
@@ -2293,23 +2303,16 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 int write_stats_core(int prev, int curr, int dis, int disp_avg,
 		     char *prev_string, char *curr_string)
 {
-	unsigned long long itv, g_itv;
+	unsigned long long itv, deltot_jiffies;
 	int again = 0;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
-	/* g_itv is multiplied by the number of processors */
-	g_itv = get_interval(uptime[prev], uptime[curr]);
+	/* Total number of jiffies spent on the interval */
+	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
-	if (cpu_nr > 1) {
-		/* SMP machines */
-		itv = get_interval(uptime0[prev], uptime0[curr]);
-	}
-	else {
-		/* UP machines */
-		itv = g_itv;
-	}
+	itv = get_interval(uptime0[prev], uptime0[curr]);
 
 	if (PROCESS_STRING(pidflag)) {
 		/* Reset "show threads" flag */
@@ -2319,7 +2322,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	if (DISPLAY_ONELINE(pidflag)) {
 		if (DISPLAY_TASK_STATS(tskflag)) {
 			again += write_pid_task_all_stats(prev, curr, dis, prev_string, curr_string,
-							  itv, g_itv);
+							  itv, deltot_jiffies);
 		}
 		if (DISPLAY_CHILD_STATS(tskflag)) {
 			again += write_pid_child_all_stats(prev, curr, dis, prev_string, curr_string,
@@ -2333,7 +2336,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 			if (DISPLAY_TASK_STATS(tskflag)) {
 				again += write_pid_task_cpu_stats(prev, curr, dis, disp_avg,
 								  prev_string, curr_string,
-								  itv, g_itv);
+								  itv, deltot_jiffies);
 			}
 			if (DISPLAY_CHILD_STATS(tskflag)) {
 				again += write_pid_child_cpu_stats(prev, curr, dis, disp_avg,
@@ -2476,10 +2479,8 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
 
-	if (cpu_nr > 1) {
-		/* Read system uptime (only for SMP machines) */
-		read_uptime(&uptime0[0]);
-	}
+	/* Read system uptime */
+	read_uptime(&uptime0[0]);
 	read_stats(0);
 
 	if (DISPLAY_MEM(actflag)) {
@@ -2503,7 +2504,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	/* Save the first stats collected. Will be used to compute the average */
 	ps_tstamp[2] = ps_tstamp[0];
-	uptime[2] = uptime[0];
+	tot_jiffies[2] = tot_jiffies[0];
 	uptime0[2] = uptime0[0];
 	memcpy(st_pid_list[2], st_pid_list[0], PID_STATS_SIZE * pid_nr);
 
@@ -2523,10 +2524,8 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		/* Get time */
 		get_localtime(&ps_tstamp[curr], 0);
 
-		if (cpu_nr > 1) {
-			/* Read system uptime (only for SMP machines) */
-			read_uptime(&(uptime0[curr]));
-		}
+		/* Read system uptime */
+		read_uptime(&(uptime0[curr]));
 
 		/* Read stats */
 		read_stats(curr);

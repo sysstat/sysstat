@@ -609,7 +609,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			struct tm *loctime, int reset_cd, unsigned int act_id)
 {
 	int i;
-	unsigned long long dt, itv, g_itv;
+	unsigned long long dt, itv;
 	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN], *pre = NULL;
 	static int cross_day = FALSE;
 
@@ -657,7 +657,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 	/* Get interval values */
 	get_itv_value(&record_hdr[curr], &record_hdr[!curr],
-		      cpu_nr, &itv, &g_itv);
+		      cpu_nr, &itv);
 
 	/* Check time (3) */
 	if (use_tm_end && (datecmp(loctime, &tm_end) > 0)) {
@@ -701,16 +701,14 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 										dt, &file_hdr, flags);
 					}
 				}
-				(*act[i]->f_json_print)(act[i], curr, *tab, NEED_GLOBAL_ITV(act[i]->options) ?
-							g_itv : itv);
+				(*act[i]->f_json_print)(act[i], curr, *tab, itv);
 			}
 
 			else if (format == F_XML_OUTPUT) {
 				/* XML output */
 				int *tab = (int *) parm;
 
-				(*act[i]->f_xml_print)(act[i], curr, *tab, NEED_GLOBAL_ITV(act[i]->options) ?
-						       g_itv : itv);
+				(*act[i]->f_xml_print)(act[i], curr, *tab, itv);
 			}
 
 			else if (format == F_SVG_OUTPUT) {
@@ -718,9 +716,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				struct svg_parm *svg_p = (struct svg_parm *) parm;
 
 				svg_p->dt = (unsigned long) dt;
-				(*act[i]->f_svg_print)(act[i], curr, F_MAIN, svg_p,
-						       NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv,
-						       &record_hdr[curr]);
+				(*act[i]->f_svg_print)(act[i], curr, F_MAIN, svg_p, itv, &record_hdr[curr]);
 			}
 
 			else if (format == F_RAW_OUTPUT) {
@@ -730,8 +726,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 			else {
 				/* Other output formats: db, ppc */
-				(*act[i]->f_render)(act[i], (format == F_DB_OUTPUT), pre, curr,
-						    NEED_GLOBAL_ITV(act[i]->options) ? g_itv : itv);
+				(*act[i]->f_render)(act[i], (format == F_DB_OUTPUT), pre, curr, itv);
 			}
 		}
 	}

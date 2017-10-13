@@ -44,7 +44,7 @@
 
 /*
  ***************************************************************************
- * Read CPU statistics and machine uptime.
+ * Read CPU statistics.
  *
  * IN:
  * @st_cpu	Structure where stats will be saved.
@@ -52,10 +52,9 @@
  *
  * OUT:
  * @st_cpu	Structure with statistics.
- * @uptime	Machine uptime multiplied by the number of processors.
  ***************************************************************************
  */
-void read_stat_cpu(struct stats_cpu *st_cpu, int nbr, unsigned long long *uptime)
+void read_stat_cpu(struct stats_cpu *st_cpu, int nbr)
 {
 	FILE *fp;
 	struct stats_cpu *st_cpu_i;
@@ -94,19 +93,6 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr, unsigned long long *uptime
 			       &st_cpu->cpu_steal,
 			       &st_cpu->cpu_guest,
 			       &st_cpu->cpu_guest_nice);
-
-			/*
-			 * Compute the uptime of the system in jiffies (1/100ths of a second
-			 * if HZ=100).
-			 * Machine uptime is multiplied by the number of processors here.
-			 *
-			 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
-			 * already include them.
-			 */
-			*uptime = st_cpu->cpu_user + st_cpu->cpu_nice    +
-				st_cpu->cpu_sys    + st_cpu->cpu_idle    +
-				st_cpu->cpu_iowait + st_cpu->cpu_hardirq +
-				st_cpu->cpu_steal  + st_cpu->cpu_softirq;
 		}
 
 		else if (!strncmp(line, "cpu", 3)) {

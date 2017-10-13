@@ -48,7 +48,7 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
-unsigned long long uptime[3] = {0, 0, 0};
+unsigned long long tot_jiffies[3] = {0, 0, 0};
 unsigned long long uptime0[3] = {0, 0, 0};
 
 /* NOTE: Use array of _char_ for bitmaps to avoid endianness problems...*/
@@ -364,7 +364,8 @@ void set_node_cpu_stats(struct stats_cpu *st_node, struct stats_cpu *st_cpu)
  *
  * IN:
  * @dis		TRUE if a header line must be printed.
- * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
@@ -377,7 +378,7 @@ void set_node_cpu_stats(struct stats_cpu *st_node, struct stats_cpu *st_cpu)
  * 		when displaying average stats.
  ***************************************************************************
  */
-void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
+void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int curr,
 			   char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc, *scp;
@@ -402,39 +403,39 @@ void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr
 			   0.0 :
 			   ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
 				       st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
-				       g_itv),
+				       deltot_jiffies),
 			   (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
 			   (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
 			   0.0 :
 			   ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
 				       st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_sys,
 				       st_cpu[curr]->cpu_sys,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_iowait,
 				       st_cpu[curr]->cpu_iowait,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_hardirq,
 				       st_cpu[curr]->cpu_hardirq,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_softirq,
 				       st_cpu[curr]->cpu_softirq,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_steal,
 				       st_cpu[curr]->cpu_steal,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_guest,
 				       st_cpu[curr]->cpu_guest,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_guest_nice,
 				       st_cpu[curr]->cpu_guest_nice,
-				       g_itv),
+				       deltot_jiffies),
 			   (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
 			   0.0 :
 			   ll_sp_value(st_cpu[prev]->cpu_idle,
 				       st_cpu[curr]->cpu_idle,
-				       g_itv));
+				       deltot_jiffies));
 		printf("\n");
 	}
 
@@ -532,14 +533,15 @@ void write_plain_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr
  *
  * IN:
  * @tab		Number of tabs to print.
- * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
  ***************************************************************************
  */
-void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr)
+void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, int curr)
 {
 	struct stats_cpu *scc, *scp;
 	unsigned long long pc_itv;
@@ -559,39 +561,39 @@ void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr)
 			 0.0 :
 			 ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
 				     st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
-				     g_itv),
+				     deltot_jiffies),
 			 (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
 			 (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
 			 0.0 :
 			 ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
 				     st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_sys,
 				     st_cpu[curr]->cpu_sys,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_iowait,
 				     st_cpu[curr]->cpu_iowait,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_hardirq,
 				     st_cpu[curr]->cpu_hardirq,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_softirq,
 				     st_cpu[curr]->cpu_softirq,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_steal,
 				     st_cpu[curr]->cpu_steal,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_guest,
 				     st_cpu[curr]->cpu_guest,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_guest_nice,
 				     st_cpu[curr]->cpu_guest_nice,
-				     g_itv),
+				     deltot_jiffies),
 			 (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
 			 0.0 :
 			 ll_sp_value(st_cpu[prev]->cpu_idle,
 				     st_cpu[curr]->cpu_idle,
-				     g_itv));
+				     deltot_jiffies));
 	}
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -693,7 +695,8 @@ void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr)
  *
  * IN:
  * @dis		TRUE if a header line must be printed.
- * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
@@ -709,7 +712,7 @@ void write_json_cpu_stats(int tab, unsigned long long g_itv, int prev, int curr)
  * 		only).
  ***************************************************************************
  */
-void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
+void write_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int curr,
 		     char *prev_string, char *curr_string, int tab, int *next)
 {
 	if (DISPLAY_JSON_OUTPUT(flags)) {
@@ -717,10 +720,10 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_cpu_stats(tab, g_itv, prev, curr);
+		write_json_cpu_stats(tab, deltot_jiffies, prev, curr);
 	}
 	else {
-		write_plain_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string);
+		write_plain_cpu_stats(dis, deltot_jiffies, prev, curr, prev_string, curr_string);
 	}
 }
 
@@ -730,7 +733,8 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
  *
  * IN:
  * @dis		TRUE if a header line must be printed.
- * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  * @itv		Interval value.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
@@ -744,7 +748,7 @@ void write_cpu_stats(int dis, unsigned long long g_itv, int prev, int curr,
  * 		when displaying average stats.
  ***************************************************************************
  */
-void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long long itv,
+void write_plain_node_stats(int dis, unsigned long long deltot_jiffies, unsigned long long itv,
 			    int prev, int curr, char *prev_string, char *curr_string)
 {
 	struct stats_cpu *snc, *snp;
@@ -771,39 +775,39 @@ void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long lon
 			   0.0 :
 			   ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
 				       st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
-				       g_itv),
+				       deltot_jiffies),
 			   (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
 			   (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
 			   0.0 :
 			   ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
 				       st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_sys,
 				       st_cpu[curr]->cpu_sys,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_iowait,
 				       st_cpu[curr]->cpu_iowait,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_hardirq,
 				       st_cpu[curr]->cpu_hardirq,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_softirq,
 				       st_cpu[curr]->cpu_softirq,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_steal,
 				       st_cpu[curr]->cpu_steal,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_guest,
 				       st_cpu[curr]->cpu_guest,
-				       g_itv),
+				       deltot_jiffies),
 			   ll_sp_value(st_cpu[prev]->cpu_guest_nice,
 				       st_cpu[curr]->cpu_guest_nice,
-				       g_itv),
+				       deltot_jiffies),
 			   (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
 			   0.0 :
 			   ll_sp_value(st_cpu[prev]->cpu_idle,
 				       st_cpu[curr]->cpu_idle,
-				       g_itv));
+				       deltot_jiffies));
 		printf("\n");
 	}
 
@@ -870,7 +874,8 @@ void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long lon
  *
  * IN:
  * @tab		Number of tabs to print.
- * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  * @itv		Interval value.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
@@ -878,7 +883,7 @@ void write_plain_node_stats(int dis, unsigned long long g_itv, unsigned long lon
  * @curr	Position in array where current statistics will be saved.
  ***************************************************************************
  */
-void write_json_node_stats(int tab, unsigned long long g_itv, unsigned long long itv,
+void write_json_node_stats(int tab, unsigned long long deltot_jiffies, unsigned long long itv,
 			   int prev, int curr)
 {
 	struct stats_cpu *snc, *snp;
@@ -898,39 +903,39 @@ void write_json_node_stats(int tab, unsigned long long g_itv, unsigned long long
 			 0.0 :
 			 ll_sp_value(st_cpu[prev]->cpu_user - st_cpu[prev]->cpu_guest,
 				     st_cpu[curr]->cpu_user - st_cpu[curr]->cpu_guest,
-				     g_itv),
+				     deltot_jiffies),
 			 (st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice) <
 			 (st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice) ?
 			 0.0 :
 			 ll_sp_value(st_cpu[prev]->cpu_nice - st_cpu[prev]->cpu_guest_nice,
 				     st_cpu[curr]->cpu_nice - st_cpu[curr]->cpu_guest_nice,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_sys,
 				     st_cpu[curr]->cpu_sys,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_iowait,
 				     st_cpu[curr]->cpu_iowait,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_hardirq,
 				     st_cpu[curr]->cpu_hardirq,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_softirq,
 				     st_cpu[curr]->cpu_softirq,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_steal,
 				     st_cpu[curr]->cpu_steal,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_guest,
 				     st_cpu[curr]->cpu_guest,
-				     g_itv),
+				     deltot_jiffies),
 			 ll_sp_value(st_cpu[prev]->cpu_guest_nice,
 				     st_cpu[curr]->cpu_guest_nice,
-				     g_itv),
+				     deltot_jiffies),
 			 (st_cpu[curr]->cpu_idle < st_cpu[prev]->cpu_idle) ?
 			 0.0 :
 			 ll_sp_value(st_cpu[prev]->cpu_idle,
 				     st_cpu[curr]->cpu_idle,
-				     g_itv));
+				     deltot_jiffies));
 	}
 
 	for (node = 0; node <= node_nr; node++) {
@@ -1001,7 +1006,8 @@ void write_json_node_stats(int tab, unsigned long long g_itv, unsigned long long
  *
  * IN:
  * @dis		TRUE if a header line must be printed.
- * @g_itv	Interval value in jiffies multiplied by the number of CPU.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
  * @itv		Interval value.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
@@ -1018,7 +1024,7 @@ void write_json_node_stats(int tab, unsigned long long g_itv, unsigned long long
  * 		only).
  ***************************************************************************
  */
-void write_node_stats(int dis, unsigned long long g_itv, unsigned long long itv,
+void write_node_stats(int dis, unsigned long long deltot_jiffies, unsigned long long itv,
 		      int prev, int curr, char *prev_string, char *curr_string,
 		      int tab, int *next)
 {
@@ -1027,10 +1033,11 @@ void write_node_stats(int dis, unsigned long long g_itv, unsigned long long itv,
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_node_stats(tab, g_itv, itv, prev, curr);
+		write_json_node_stats(tab, deltot_jiffies, itv, prev, curr);
 	}
 	else {
-		write_plain_node_stats(dis, g_itv, itv, prev, curr, prev_string, curr_string);
+		write_plain_node_stats(dis, deltot_jiffies, itv, prev, curr,
+				       prev_string, curr_string);
 	}
 }
 
@@ -1583,7 +1590,7 @@ void write_stats_core(int prev, int curr, int dis,
 		      char *prev_string, char *curr_string)
 {
 	struct stats_cpu *scc, *scp;
-	unsigned long long itv, g_itv;
+	unsigned long long itv, deltot_jiffies;
 	int cpu, tab = 4, next = FALSE;
 
 	/* Test stdout */
@@ -1594,27 +1601,31 @@ void write_stats_core(int prev, int curr, int dis,
 		xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
 	}
 
-	/* Compute time interval */
-	g_itv = get_interval(uptime[prev], uptime[curr]);
+	/*
+	 * Compute the total number of jiffies spent by all processors.
+	 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+	 * already include them.
+	 */
+	tot_jiffies[curr] = st_cpu[curr]->cpu_user + st_cpu[curr]->cpu_nice +
+			    st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_idle +
+			    st_cpu[curr]->cpu_iowait + st_cpu[curr]->cpu_hardirq +
+			    st_cpu[curr]->cpu_steal + st_cpu[curr]->cpu_softirq;
+	/* Total number of jiffies spent on the interval */
+	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
-	/* Reduce interval value to one processor */
-	if (cpu_nr > 1) {
-		itv = get_interval(uptime0[prev], uptime0[curr]);
-	}
-	else {
-		itv = g_itv;
-	}
+	/* Get time interval */
+	itv = get_interval(uptime0[prev], uptime0[curr]);
 
 	/* Print CPU stats */
 	if (DISPLAY_CPU(actflags)) {
-		write_cpu_stats(dis, g_itv, prev, curr, prev_string, curr_string,
-				tab, &next);
+		write_cpu_stats(dis, deltot_jiffies, prev, curr, prev_string,
+				curr_string, tab, &next);
 	}
 
 	/* Print node CPU stats */
 	if (DISPLAY_NODE(actflags)) {
-		write_node_stats(dis, g_itv, itv, prev, curr, prev_string, curr_string,
-				 tab, &next);
+		write_node_stats(dis, deltot_jiffies, itv, prev, curr, prev_string,
+				 curr_string, tab, &next);
 	}
 
 	/* Print total number of interrupts per processor */
@@ -1830,12 +1841,13 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	/* Dont buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
 
-	/* Read uptime and CPU stats */
-	if (cpu_nr > 1) {
-		/* Read system uptime (only for SMP machines) */
-		read_uptime(&(uptime0[0]));
-	}
-	read_stat_cpu(st_cpu[0], cpu_nr + 1, &(uptime[0]));
+	/* Read system uptime and CPU stats */
+	read_uptime(&(uptime0[0]));
+	read_stat_cpu(st_cpu[0], cpu_nr + 1);
+	tot_jiffies[0] = st_cpu[0]->cpu_user + st_cpu[0]->cpu_nice +
+			 st_cpu[0]->cpu_sys + st_cpu[0]->cpu_idle +
+			 st_cpu[0]->cpu_iowait + st_cpu[0]->cpu_hardirq +
+			 st_cpu[0]->cpu_steal + st_cpu[0]->cpu_softirq;
 	if (DISPLAY_NODE(actflags)) {
 		set_node_cpu_stats(st_node[0], st_cpu[0]);
 	}
@@ -1885,7 +1897,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 	/* Save the first stats collected. Will be used to compute the average */
 	mp_tstamp[2] = mp_tstamp[0];
-	uptime[2] = uptime[0];
+	tot_jiffies[2] = tot_jiffies[0];
 	uptime0[2] = uptime0[0];
 	memcpy(st_cpu[2], st_cpu[0], STATS_CPU_SIZE * (cpu_nr + 1));
 	memcpy(st_node[2], st_node[0], STATS_CPU_SIZE * (cpu_nr + 1));
@@ -1927,10 +1939,8 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		get_localtime(&(mp_tstamp[curr]), 0);
 
 		/* Read uptime and CPU stats */
-		if (cpu_nr > 1) {
-			read_uptime(&(uptime0[curr]));
-		}
-		read_stat_cpu(st_cpu[curr], cpu_nr + 1, &(uptime[curr]));
+		read_uptime(&(uptime0[curr]));
+		read_stat_cpu(st_cpu[curr], cpu_nr + 1);
 		if (DISPLAY_NODE(actflags)) {
 			set_node_cpu_stats(st_node[curr], st_cpu[curr]);
 		}

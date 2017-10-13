@@ -71,7 +71,7 @@ struct act_bitmap irq_bitmap = {
  */
 struct activity cpu_act = {
 	.id		= A_CPU,
-	.options	= AO_COLLECTED + AO_VOLATILE + AO_GLOBAL_ITV + AO_MULTIPLE_OUTPUTS +
+	.options	= AO_COLLECTED + AO_VOLATILE + AO_MULTIPLE_OUTPUTS +
 			  AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,

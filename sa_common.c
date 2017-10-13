@@ -505,26 +505,16 @@ int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
  * @nr_proc		Number of CPU, including CPU "all".
  *
  * OUT:
- * @itv			Interval in jiffies.
- * @g_itv		Interval in jiffies multiplied by the # of proc.
+ * @itv			Interval of time in jiffies.
  ***************************************************************************
  */
 void get_itv_value(struct record_header *record_hdr_curr,
 		   struct record_header *record_hdr_prev,
-		   unsigned int nr_proc,
-		   unsigned long long *itv, unsigned long long *g_itv)
+		   unsigned int nr_proc, unsigned long long *itv)
 {
 	/* Interval value in jiffies */
-	*g_itv = get_interval(record_hdr_prev->uptime,
-			      record_hdr_curr->uptime);
-
-	if (nr_proc > 2) {
-		*itv = get_interval(record_hdr_prev->uptime0,
-				    record_hdr_curr->uptime0);
-	}
-	else {
-		*itv = *g_itv;
-	}
+	*itv = get_interval(record_hdr_prev->uptime0,
+			    record_hdr_curr->uptime0);
 }
 
 /*

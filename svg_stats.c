@@ -1002,13 +1002,16 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
  * 		found (.@restart), and time used for the X axis origin
  *		(@ust_time_ref).
  * @itv		Interval of time in jiffies (only with F_MAIN action).
+ *		Unused here.
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
 __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-				    unsigned long long g_itv, struct record_header *record_hdr)
+				    unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_cpu *scc, *scp;
+	unsigned long long tot_jiffies[3];
+	unsigned long long deltot_jiffies;
 	int group1[] = {5};
 	int group2[] = {9};
 	int g_type[] = {SVG_BAR_GRAPH};
@@ -1042,6 +1045,23 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				/* No */
 				continue;
 
+			/*
+			 * Yes: Compute the total number of jiffies spent by current processor.
+			 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+			 * already include them.
+			 */
+			tot_jiffies[curr] = scc->cpu_user + scc->cpu_nice +
+					    scc->cpu_sys + scc->cpu_idle +
+					    scc->cpu_iowait + scc->cpu_hardirq +
+					    scc->cpu_steal + scc->cpu_softirq;
+			tot_jiffies[!curr] = scp->cpu_user + scp->cpu_nice +
+					     scp->cpu_sys + scp->cpu_idle +
+					     scp->cpu_iowait + scp->cpu_hardirq +
+					     scp->cpu_steal + scp->cpu_softirq;
+
+			/* Total number of jiffies spent on the interval */
+			deltot_jiffies = get_interval(tot_jiffies[!curr], tot_jiffies[curr]);
+
 			pos = i * 10;
 			offset = 0.0;
 
@@ -1052,9 +1072,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				 * (Remember that guest/guest_nice times are already included in
 				 * user/nice modes.)
 				 */
-				if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-				     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-				     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
+				if (tot_jiffies[curr] == 0) {
 					/*
 					 * Set current struct fields (which have been set to zero)
 					 * to values from previous iteration. Hence their values won't
@@ -1062,7 +1080,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					 */
 					*scc = *scp;
 
-					g_itv = 0;
+					deltot_jiffies = 0;
 					cpu_offline = TRUE;
 				}
 				else {
@@ -1070,11 +1088,11 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					 * Recalculate interval for current proc.
 					 * If result is 0 then current CPU is a tickless one.
 					 */
-					g_itv = get_per_cpu_interval(scc, scp);
+					deltot_jiffies = get_per_cpu_interval(scc, scp);
 					cpu_offline = FALSE;
 				}
 
-				if (!g_itv) {	/* Current CPU is offline or tickless */
+				if (!deltot_jiffies) {	/* Current CPU is offline or tickless */
 
 					val = (cpu_offline ? 0.0	/* Offline CPU: %idle = 0% */
 							   : 100.0);	/* Tickless CPU: %idle = 100% */
@@ -1108,7 +1126,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				/* %user */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_user, scc->cpu_user, g_itv),
+					  &offset, ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
 					  out + pos, outsize + pos, svg_p->dt,
 					  spmin + pos, spmax + pos);
 			}
@@ -1119,7 +1137,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					  (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 					   0.0 :
 					   ll_sp_value(scp->cpu_user - scp->cpu_guest,
-						       scc->cpu_user - scc->cpu_guest, g_itv),
+						       scc->cpu_user - scc->cpu_guest, deltot_jiffies),
 					  out + pos, outsize + pos, svg_p->dt,
 					  spmin + pos, spmax + pos);
 			}
@@ -1127,7 +1145,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				/* %nice */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_nice, scc->cpu_nice, g_itv),
+					  &offset, ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
 					  out + pos + 1, outsize + pos + 1, svg_p->dt,
 					  spmin + pos + 1, spmax + pos + 1);
 			}
@@ -1138,7 +1156,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					  (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
 					   0.0 :
 					   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-						       scc->cpu_nice - scc->cpu_guest_nice, g_itv),
+						       scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
 					  out + pos + 1, outsize + pos + 1, svg_p->dt,
 					  spmin + pos + 1, spmax + pos + 1);
 			}
@@ -1149,48 +1167,48 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					  &offset,
 					  ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
 						      scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-						      g_itv),
+						      deltot_jiffies),
 					  out + pos + 2, outsize + pos + 2, svg_p->dt,
 					  spmin + pos + 2, spmax + pos + 2);
 			}
 			else {
 				/* %sys */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_sys, scc->cpu_sys, g_itv),
+					  &offset, ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
 					  out + pos + 2, outsize + pos + 2, svg_p->dt,
 					  spmin + pos + 2, spmax + pos + 2);
 			}
 
 			/* %iowait */
 			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				  &offset, ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, g_itv),
+				  &offset, ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
 				  out + pos + 3, outsize + pos + 3, svg_p->dt,
 				  spmin + pos + 3, spmax + pos + 3);
 			/* %steal */
 			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				  &offset, ll_sp_value(scp->cpu_steal, scc->cpu_steal, g_itv),
+				  &offset, ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
 				  out + pos + 4, outsize + pos + 4, svg_p->dt,
 				  spmin + pos + 4, spmax + pos + 4);
 
 			if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				/* %irq */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, g_itv),
+					  &offset, ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
 					  out + pos + 5, outsize + pos + 5, svg_p->dt,
 					  spmin + pos + 5, spmax + pos + 5);
 				/* %soft */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, g_itv),
+					  &offset, ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
 					  out + pos + 6, outsize + pos + 6, svg_p->dt,
 					  spmin + pos + 6, spmax + pos + 6);
 				/* %guest */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_guest, scc->cpu_guest, g_itv),
+					  &offset, ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
 					  out + pos + 7, outsize + pos + 7, svg_p->dt,
 					  spmin + pos + 7, spmax + pos + 7);
 				/* %gnice */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, g_itv),
+					  &offset, ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies),
 					  out + pos + 8, outsize + pos + 8, svg_p->dt,
 					  spmin + pos + 8, spmax + pos + 8);
 
@@ -1204,7 +1222,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset,
 				  (scc->cpu_idle < scp->cpu_idle ? 0.0 :
-				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, g_itv)),
+				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies)),
 				  out + pos + j, outsize + pos + j, svg_p->dt,
 				  spmin + pos + j, spmax + pos + j);
 		}

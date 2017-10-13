@@ -1065,28 +1065,15 @@ append_error:
 void read_stats(void)
 {
 	int i;
-	__nr_t cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
-	if (cpu_nr > 1) {
-		/* Read system uptime in jiffies */
-		read_uptime(&(record_hdr.uptime0));
-	}
+	/* Read system uptime in jiffies */
+	read_uptime(&(record_hdr.uptime0));
 
 	for (i = 0; i < NR_ACT; i++) {
 		if (IS_COLLECTED(act[i]->options)) {
 			/* Read statistics for current activity */
 			(*act[i]->f_read)(act[i]);
 		}
-	}
-
-	if (cpu_nr == 1) {
-		/*
-		 * If cpu_nr = 1, uptime0 and uptime are equal.
-		 * Remember that cpu_nr = 1 means one CPU and no SMP kernel
-		 * (one structure for CPU "all") and cpu_nr = 2 means one CPU
-		 * and an SMP kernel (two structures for CPUs "all" and "0").
-		 */
-		record_hdr.uptime0 = record_hdr.uptime;
 	}
 }
 
