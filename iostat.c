@@ -1620,21 +1620,12 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 	do {
 		if (cpu_nr > 1) {
-			/*
-			 * Read system uptime (only for SMP machines).
-			 * Init uptime0. So if /proc/uptime cannot fill it,
-			 * this will be done by /proc/stat.
-			 */
-			uptime0[curr] = 0;
+			/* Read system uptime (only for SMP machines) */
 			read_uptime(&(uptime0[curr]));
 		}
 
-		/*
-		 * Read stats for CPU "all" and 0.
-		 * Note that stats for CPU 0 are not used per se. It only makes
-		 * read_stat_cpu() fill uptime0.
-		 */
-		read_stat_cpu(st_cpu[curr], 2, &(uptime[curr]), &(uptime0[curr]));
+		/* Read stats for CPU "all" and system uptime in jiffies */
+		read_stat_cpu(st_cpu[curr], 1, &(uptime[curr]));
 
 		if (dlist_idx) {
 			/*

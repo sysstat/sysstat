@@ -47,7 +47,7 @@ __read_funct_t wrap_read_stat_cpu(struct activity *a)
 		= (struct stats_cpu *) a->_buf0;
 
 	/* Read CPU statistics */
-	read_stat_cpu(st_cpu, a->nr, &record_hdr.uptime, &record_hdr.uptime0);
+	read_stat_cpu(st_cpu, a->nr, &record_hdr.uptime);
 
 	return;
 }

@@ -53,11 +53,9 @@
  * OUT:
  * @st_cpu	Structure with statistics.
  * @uptime	Machine uptime multiplied by the number of processors.
- * @uptime0	Machine uptime. Filled only if previously set to zero.
  ***************************************************************************
  */
-void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
-		   unsigned long long *uptime, unsigned long long *uptime0)
+void read_stat_cpu(struct stats_cpu *st_cpu, int nbr, unsigned long long *uptime)
 {
 	FILE *fp;
 	struct stats_cpu *st_cpu_i;
@@ -141,20 +139,6 @@ void read_stat_cpu(struct stats_cpu *st_cpu, int nbr,
 				 * else additional CPUs have been dynamically registered
 				 * in /proc/stat.
 				 */
-
-				if (!proc_nb && !*uptime0) {
-					/*
-					 * Compute uptime reduced to one proc using proc#0.
-					 * Done if /proc/uptime was unavailable.
-					 *
-					 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
-					 * already include them.
-					 */
-					*uptime0 = sc.cpu_user + sc.cpu_nice  +
-						sc.cpu_sys     + sc.cpu_idle  +
-						sc.cpu_iowait  + sc.cpu_steal +
-						sc.cpu_hardirq + sc.cpu_softirq;
-				}
 			}
 		}
 	}
@@ -311,20 +295,23 @@ void read_uptime(unsigned long long *uptime)
 	char line[128];
 	unsigned long up_sec, up_cent;
 
-	if ((fp = fopen(UPTIME, "r")) == NULL)
-		return;
-
-	if (fgets(line, sizeof(line), fp) == NULL) {
-		fclose(fp);
+	if ((fp = fopen(UPTIME, "r")) == NULL) {
+		fprintf(stderr, _("Cannot open %s: %s\n"), UPTIME, strerror(errno));
+		exit(2);
 		return;
 	}
 
-	sscanf(line, "%lu.%lu", &up_sec, &up_cent);
-	*uptime = (unsigned long long) up_sec * HZ +
-	          (unsigned long long) up_cent * HZ / 100;
+	if (fgets(line, sizeof(line), fp) != NULL) {
+		sscanf(line, "%lu.%lu", &up_sec, &up_cent);
+		*uptime = (unsigned long long) up_sec * HZ +
+			  (unsigned long long) up_cent * HZ / 100;
+	}
+	else {
+		/* Couldn't read system uptime */
+		*uptime = 0;
+	}
 
 	fclose(fp);
-
 }
 
 #ifdef SOURCE_SADC

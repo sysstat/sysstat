@@ -544,10 +544,9 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 	do {
 		/* Read system uptime (reduced to one processor) */
-		uptime0[curr] = 0;
 		read_uptime(&(uptime0[curr]));
 		if (!uptime0[curr])
-			/* Cannot read system uptime (/proc/uptime doesn't exist) */
+			/* Cannot read system uptime */
 			exit(2);
 
 		/* Read CIFS stats */

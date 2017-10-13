@@ -1832,14 +1832,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 	/* Read uptime and CPU stats */
 	if (cpu_nr > 1) {
-		/*
-		 * Init uptime0. So if /proc/uptime cannot fill it,
-		 * this will be done by /proc/stat.
-		 */
-		uptime0[0] = 0;
+		/* Read system uptime (only for SMP machines) */
 		read_uptime(&(uptime0[0]));
 	}
-	read_stat_cpu(st_cpu[0], cpu_nr + 1, &(uptime[0]), &(uptime0[0]));
+	read_stat_cpu(st_cpu[0], cpu_nr + 1, &(uptime[0]));
 	if (DISPLAY_NODE(actflags)) {
 		set_node_cpu_stats(st_node[0], st_cpu[0]);
 	}
@@ -1932,10 +1928,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 		/* Read uptime and CPU stats */
 		if (cpu_nr > 1) {
-			uptime0[curr] = 0;
 			read_uptime(&(uptime0[curr]));
 		}
-		read_stat_cpu(st_cpu[curr], cpu_nr + 1, &(uptime[curr]), &(uptime0[curr]));
+		read_stat_cpu(st_cpu[curr], cpu_nr + 1, &(uptime[curr]));
 		if (DISPLAY_NODE(actflags)) {
 			set_node_cpu_stats(st_node[curr], st_cpu[curr]);
 		}

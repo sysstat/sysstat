@@ -1067,18 +1067,8 @@ void read_stats(void)
 	int i;
 	__nr_t cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
-	/*
-	 * Init uptime0. So if /proc/uptime cannot fill it,
-	 * this will be done by /proc/stat.
-	 * If cpu_nr = 2, force /proc/stat to fill it.
-	 * If cpu_nr = 1, uptime0 and uptime are equal.
-	 * NB: uptime0 is always filled.
-	 * Remember that cpu_nr = 1 means one CPU and no SMP kernel
-	 * (one structure for CPU "all") and cpu_nr = 2 means one CPU
-	 * and an SMP kernel (two structures for CPUs "all" and "0").
-	 */
-	record_hdr.uptime0 = 0;
-	if (cpu_nr > 2) {
+	if (cpu_nr > 1) {
+		/* Read system uptime in jiffies */
 		read_uptime(&(record_hdr.uptime0));
 	}
 
@@ -1091,8 +1081,10 @@ void read_stats(void)
 
 	if (cpu_nr == 1) {
 		/*
-		 * uptime has been filled by read_uptime()
-		 * or when reading CPU stats from /proc/stat.
+		 * If cpu_nr = 1, uptime0 and uptime are equal.
+		 * Remember that cpu_nr = 1 means one CPU and no SMP kernel
+		 * (one structure for CPU "all") and cpu_nr = 2 means one CPU
+		 * and an SMP kernel (two structures for CPUs "all" and "0").
 		 */
 		record_hdr.uptime0 = record_hdr.uptime;
 	}

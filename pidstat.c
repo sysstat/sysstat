@@ -1007,8 +1007,8 @@ void read_stats(int curr)
 		perror("malloc");
 		exit(4);
 	}
-	/* Read statistics for CPUs "all" and 0 */
-	read_stat_cpu(st_cpu, 2, &uptime[curr], &uptime0[curr]);
+	/* Read statistics for CPUs "all" and system uptime (in jiffies) */
+	read_stat_cpu(st_cpu, 1, &uptime[curr]);
 	free(st_cpu);
 
 	if (DISPLAY_ALL_PID(pidflag)) {
@@ -2477,12 +2477,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	setbuf(stdout, NULL);
 
 	if (cpu_nr > 1) {
-		/*
-		 * Read system uptime (only for SMP machines).
-		 * Init uptime0. So if /proc/uptime cannot fill it, this will be
-		 * done by /proc/stat.
-		 */
-		uptime0[0] = 0;
+		/* Read system uptime (only for SMP machines) */
 		read_uptime(&uptime0[0]);
 	}
 	read_stats(0);
@@ -2529,12 +2524,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		get_localtime(&ps_tstamp[curr], 0);
 
 		if (cpu_nr > 1) {
-			/*
-			 * Read system uptime (only for SMP machines).
-			 * Init uptime0. So if /proc/uptime cannot fill it, this will be
-			 * done by /proc/stat.
-			 */
-			uptime0[curr] = 0;
+			/* Read system uptime (only for SMP machines) */
 			read_uptime(&(uptime0[curr]));
 		}
 
