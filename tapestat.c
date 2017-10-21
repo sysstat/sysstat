@@ -611,9 +611,6 @@ int main(int argc, char **argv)
 	/* Init color strings */
 	init_colors();
 
-	/* Get HZ */
-	get_HZ();
-
 	/* Process args... */
 	while (opt < argc) {
 

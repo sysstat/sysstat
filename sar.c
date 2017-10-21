@@ -1164,9 +1164,6 @@ int main(int argc, char **argv)
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
 	char ltemp[20];
 
-	/* Get HZ */
-	get_HZ();
-
 	/* Compute page shift in kB */
 	get_kb_shift();
 

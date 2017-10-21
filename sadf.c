@@ -1472,9 +1472,6 @@ int main(int argc, char **argv)
 	char dfile[MAX_FILE_LEN];
 	char *t, *v;
 
-	/* Get HZ */
-	get_HZ();
-
 	/* Compute page shift in kB */
 	get_kb_shift();
 

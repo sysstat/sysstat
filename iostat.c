@@ -1725,9 +1725,6 @@ int main(int argc, char **argv)
 	/* Init color strings */
 	init_colors();
 
-	/* Get HZ */
-	get_HZ();
-
 	/* Allocate structures for device list */
 	if (argc > 1) {
 		salloc_dev_list(argc - 1 + count_csvalues(argc, argv));
