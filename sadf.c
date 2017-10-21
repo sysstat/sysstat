@@ -656,8 +656,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		return 0;
 
 	/* Get interval values in 1/100th of a second */
-	get_itv_value(&record_hdr[curr], &record_hdr[!curr],
-		      cpu_nr, &itv);
+	get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
 
 	/* Check time (3) */
 	if (use_tm_end && (datecmp(loctime, &tm_end) > 0)) {

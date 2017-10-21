@@ -502,7 +502,6 @@ int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
  * IN:
  * @record_hdr_curr	Record with current sample statistics.
  * @record_hdr_prev	Record with previous sample statistics.
- * @nr_proc		Number of CPU, including CPU "all".
  *
  * OUT:
  * @itv			Interval of time in 1/100th of a second.
@@ -510,7 +509,7 @@ int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
  */
 void get_itv_value(struct record_header *record_hdr_curr,
 		   struct record_header *record_hdr_prev,
-		   unsigned int nr_proc, unsigned long long *itv)
+		   unsigned long long *itv)
 {
 	/* Interval value in jiffies */
 	*itv = get_interval(record_hdr_prev->uptime_cs,

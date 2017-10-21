@@ -487,12 +487,10 @@ __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-void stub_print_memory_stats(struct activity *a, int prev, int curr,
-			     unsigned long long itv, int dispavg)
+void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg)
 {
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
@@ -699,7 +697,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	stub_print_memory_stats(a, prev, curr, itv, FALSE);
+	stub_print_memory_stats(a, prev, curr, FALSE);
 }
 
 /*
@@ -716,7 +714,7 @@ __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_memory_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_memory_stats(a, prev, curr, itv, TRUE);
+	stub_print_memory_stats(a, prev, curr, TRUE);
 }
 
 /*
@@ -2543,7 +2541,6 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */

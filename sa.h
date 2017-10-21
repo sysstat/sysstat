@@ -1200,8 +1200,7 @@ char *get_devname
 void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
 void get_itv_value
-	(struct record_header *, struct record_header *, unsigned int,
-	 unsigned long long *);
+	(struct record_header *, struct record_header *, unsigned long long *);
 void handle_invalid_sa_file
 	(int *, struct file_magic *, char *, int);
 int next_slice
