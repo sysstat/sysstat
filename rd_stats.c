@@ -272,32 +272,37 @@ void read_meminfo(struct stats_memory *st_memory)
  * Read machine uptime, independently of the number of processors.
  *
  * OUT:
- * @uptime	Uptime value in jiffies.
+ * @uptime	Uptime value in hundredths of a second.
  ***************************************************************************
  */
 void read_uptime(unsigned long long *uptime)
 {
-	FILE *fp;
+	FILE *fp = NULL;
 	char line[128];
 	unsigned long up_sec, up_cent;
+	int err = FALSE;
 
 	if ((fp = fopen(UPTIME, "r")) == NULL) {
-		fprintf(stderr, _("Cannot open %s: %s\n"), UPTIME, strerror(errno));
-		exit(2);
-		return;
+		err = TRUE;
 	}
-
-	if (fgets(line, sizeof(line), fp) != NULL) {
-		sscanf(line, "%lu.%lu", &up_sec, &up_cent);
-		*uptime = (unsigned long long) up_sec * HZ +
-			  (unsigned long long) up_cent * HZ / 100;
+	else if (fgets(line, sizeof(line), fp) == NULL) {
+		err = TRUE;
+	}
+	else if (sscanf(line, "%lu.%lu", &up_sec, &up_cent) == 2) {
+		*uptime = (unsigned long long) up_sec * 100 +
+			  (unsigned long long) up_cent;
 	}
 	else {
-		/* Couldn't read system uptime */
-		*uptime = 0;
+		err = TRUE;
 	}
 
-	fclose(fp);
+	if (fp != NULL) {
+		fclose(fp);
+	}
+	if (err) {
+		fprintf(stderr, _("Cannot read %s\n"), UPTIME);
+		exit(2);
+	}
 }
 
 #ifdef SOURCE_SADC

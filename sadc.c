@@ -1066,8 +1066,8 @@ void read_stats(void)
 {
 	int i;
 
-	/* Read system uptime in jiffies */
-	read_uptime(&(record_hdr.uptime0));
+	/* Read system uptime in 1/100th of a second */
+	read_uptime(&(record_hdr.uptime_cs));
 
 	for (i = 0; i < NR_ACT; i++) {
 		if (IS_COLLECTED(act[i]->options)) {

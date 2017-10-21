@@ -62,7 +62,7 @@ unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
  * 		composing the structure.
  * @cs		Pointer on current sample statistics structure.
  * @ps		Pointer on previous sample statistics structure (may be NULL).
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  * @spmin	Array containing min values already found for this activity.
  * @spmax	Array containing max values already found for this activity.
  * @g_fields	Index in spmin/spmax arrays where extrema values for each
@@ -1001,7 +1001,7 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart), and time used for the X axis origin
  *		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  *		Unused here.
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
@@ -1282,7 +1282,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1345,7 +1345,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1407,7 +1407,7 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1495,7 +1495,7 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1582,7 +1582,7 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1809,7 +1809,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1879,7 +1879,7 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -1963,7 +1963,7 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2218,7 +2218,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2422,7 +2422,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2612,7 +2612,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2694,7 +2694,7 @@ __print_funct_t svg_print_net_nfs_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2800,7 +2800,7 @@ __print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2878,7 +2878,7 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -2967,7 +2967,7 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3057,7 +3057,7 @@ __print_funct_t svg_print_net_eip_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3173,7 +3173,7 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3284,7 +3284,7 @@ __print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int acti
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3356,7 +3356,7 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3432,7 +3432,7 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3504,7 +3504,7 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3573,7 +3573,7 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3673,7 +3673,7 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3778,7 +3778,7 @@ __print_funct_t svg_print_net_eip6_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -3908,7 +3908,7 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4015,7 +4015,7 @@ __print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int act
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4087,7 +4087,7 @@ __print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (unused here).
+ * @itv		Interval of time in 1/100th of a second (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4173,7 +4173,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (unused here).
+ * @itv		Interval of time in 1/100th of a second (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4246,7 +4246,7 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (unused here).
+ * @itv		Interval of time in 1/100th of a second (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4340,7 +4340,7 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4434,7 +4434,7 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4519,7 +4519,7 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (unused here).
+ * @itv		Interval of time in 1/100th of a second (unused here).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4748,7 +4748,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
@@ -4852,7 +4852,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in jiffies (only with F_MAIN action).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */

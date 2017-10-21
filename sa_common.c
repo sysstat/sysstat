@@ -183,8 +183,8 @@ char *get_devname(unsigned int major, unsigned int minor, int pretty)
  * IN:
  * @uptime_ref	Uptime used as reference. This is the system uptime for the
  *		first sample statistics, or the first system uptime after a
- *		LINUX RESTART.
- * @uptime	Current system uptime.
+ *		LINUX RESTART (in 1/100th of a second).
+ * @uptime	Current system uptime (in 1/100th of a second).
  * @reset	TRUE if @last_uptime should be reset with @uptime_ref.
  * @interval	Interval of time.
  *
@@ -200,13 +200,13 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
 	int min, max, pt1, pt2;
 	double f;
 
-	/* uptime is expressed in jiffies (basis of 1 processor) */
+	/* uptime is expressed in 1/100th of a second */
 	if (!last_uptime || reset) {
 		last_uptime = uptime_ref;
 	}
 
 	/* Interval cannot be greater than 0xffffffff here */
-	f = ((double) ((uptime - last_uptime) & 0xffffffff)) / HZ;
+	f = ((double) ((uptime - last_uptime) & 0xffffffff)) / 100;
 	file_interval = (unsigned long) f;
 	if ((f * 10) - (file_interval * 10) >= 5) {
 		file_interval++; /* Rounding to correct value */
@@ -227,7 +227,7 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
 	 *       (Pn * Iu) or (P'n * Iu) belongs to In
 	 * with  Pn = En / Iu and P'n = En / Iu + 1
 	 */
-	f = ((double) ((uptime - uptime_ref) & 0xffffffff)) / HZ;
+	f = ((double) ((uptime - uptime_ref) & 0xffffffff)) / 100;
 	entry = (unsigned long) f;
 	if ((f * 10) - (entry * 10) >= 5) {
 		entry++;
@@ -505,7 +505,7 @@ int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
  * @nr_proc		Number of CPU, including CPU "all".
  *
  * OUT:
- * @itv			Interval of time in jiffies.
+ * @itv			Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 void get_itv_value(struct record_header *record_hdr_curr,
@@ -513,8 +513,8 @@ void get_itv_value(struct record_header *record_hdr_curr,
 		   unsigned int nr_proc, unsigned long long *itv)
 {
 	/* Interval value in jiffies */
-	*itv = get_interval(record_hdr_prev->uptime0,
-			    record_hdr_curr->uptime0);
+	*itv = get_interval(record_hdr_prev->uptime_cs,
+			    record_hdr_curr->uptime_cs);
 }
 
 /*

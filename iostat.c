@@ -54,7 +54,7 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 struct stats_cpu *st_cpu[2];
-unsigned long long uptime0[2] = {0, 0};
+unsigned long long uptime_cs[2] = {0, 0};
 unsigned long long tot_jiffies[2] = {0, 0};
 struct io_stats *st_iodev[2];
 struct io_hdr_stats *st_hdr_iodev;
@@ -1505,8 +1505,8 @@ void write_stats(int curr, struct tm *rectime)
 		}
 	}
 
-	/* Calculate time interval in jiffies */
-	itv = get_interval(uptime0[!curr], uptime0[curr]);
+	/* Calculate time interval in 1/100th of a second */
+	itv = get_interval(uptime_cs[!curr], uptime_cs[curr]);
 
 	if (DISPLAY_DISK(flags)) {
 		struct io_stats *ioi, *ioj;
@@ -1631,7 +1631,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 	do {
 		/* Read system uptime (only for SMP machines) */
-		read_uptime(&(uptime0[curr]));
+		read_uptime(&(uptime_cs[curr]));
 
 		/* Read stats for CPU "all" */
 		read_stat_cpu(st_cpu[curr], 1);

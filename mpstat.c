@@ -49,7 +49,7 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 unsigned long long tot_jiffies[3] = {0, 0, 0};
-unsigned long long uptime0[3] = {0, 0, 0};
+unsigned long long uptime_cs[3] = {0, 0, 0};
 
 /* NOTE: Use array of _char_ for bitmaps to avoid endianness problems...*/
 unsigned char *cpu_bitmap;	/* Bit 0: Global; Bit 1: 1st proc; etc. */
@@ -735,7 +735,7 @@ void write_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int c
  * @dis		TRUE if a header line must be printed.
  * @deltot_jiffies
  *		Number of jiffies spent on the interval by all processors.
- * @itv		Interval value.
+ * @itv		Interval value in 1/100th of a second.
  * @prev	Position in array where statistics used	as reference are.
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
@@ -832,38 +832,38 @@ void write_plain_node_stats(int dis, unsigned long long deltot_jiffies, unsigned
 			   0.0 :
 			   ll_sp_value(snp->cpu_user - snp->cpu_guest,
 				       snc->cpu_user - snc->cpu_guest,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   (snc->cpu_nice - snc->cpu_guest_nice) < (snp->cpu_nice - snp->cpu_guest_nice) ?
 			   0.0 :
 			   ll_sp_value(snp->cpu_nice - snp->cpu_guest_nice,
 				       snc->cpu_nice - snc->cpu_guest_nice,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_sys,
 				       snc->cpu_sys,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_iowait,
 				       snc->cpu_iowait,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_hardirq,
 				       snc->cpu_hardirq,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_softirq,
 				       snc->cpu_softirq,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_steal,
 				       snc->cpu_steal,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_guest,
 				       snc->cpu_guest,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   ll_sp_value(snp->cpu_guest_nice,
 				       snc->cpu_guest_nice,
-				       itv * cpu_per_node[node]),
+				       itv * HZ / 100 * cpu_per_node[node]),
 			   (snc->cpu_idle < snp->cpu_idle) ?
 			   0.0 :
 			   ll_sp_value(snp->cpu_idle,
 				       snc->cpu_idle,
-				       itv * cpu_per_node[node]));
+				       itv * HZ / 100 * cpu_per_node[node]));
 		printf("\n");
 	}
 }
@@ -963,38 +963,38 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies, unsigned 
 			 0.0 :
 			 ll_sp_value(snp->cpu_user - snp->cpu_guest,
 				     snc->cpu_user - snc->cpu_guest,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 (snc->cpu_nice - snc->cpu_guest_nice) < (snp->cpu_nice - snp->cpu_guest_nice) ?
 			 0.0 :
 			 ll_sp_value(snp->cpu_nice - snp->cpu_guest_nice,
 				     snc->cpu_nice - snc->cpu_guest_nice,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_sys,
 				     snc->cpu_sys,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_iowait,
 				     snc->cpu_iowait,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_hardirq,
 				     snc->cpu_hardirq,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_softirq,
 				     snc->cpu_softirq,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_steal,
 				     snc->cpu_steal,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_guest,
 				     snc->cpu_guest,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 ll_sp_value(snp->cpu_guest_nice,
 				     snc->cpu_guest_nice,
-				     itv * cpu_per_node[node]),
+				     itv * HZ / 100 * cpu_per_node[node]),
 			 (snc->cpu_idle < snp->cpu_idle) ?
 			 0.0 :
 			 ll_sp_value(snp->cpu_idle,
 				     snc->cpu_idle,
-				     itv * cpu_per_node[node]));
+				     itv * HZ / 100 * cpu_per_node[node]));
 	}
 	printf("\n");
 	xprintf0(--tab, "]");
@@ -1614,7 +1614,7 @@ void write_stats_core(int prev, int curr, int dis,
 	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
 	/* Get time interval */
-	itv = get_interval(uptime0[prev], uptime0[curr]);
+	itv = get_interval(uptime_cs[prev], uptime_cs[curr]);
 
 	/* Print CPU stats */
 	if (DISPLAY_CPU(actflags)) {
@@ -1842,7 +1842,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	setbuf(stdout, NULL);
 
 	/* Read system uptime and CPU stats */
-	read_uptime(&(uptime0[0]));
+	read_uptime(&(uptime_cs[0]));
 	read_stat_cpu(st_cpu[0], cpu_nr + 1);
 	tot_jiffies[0] = st_cpu[0]->cpu_user + st_cpu[0]->cpu_nice +
 			 st_cpu[0]->cpu_sys + st_cpu[0]->cpu_idle +
@@ -1898,7 +1898,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	/* Save the first stats collected. Will be used to compute the average */
 	mp_tstamp[2] = mp_tstamp[0];
 	tot_jiffies[2] = tot_jiffies[0];
-	uptime0[2] = uptime0[0];
+	uptime_cs[2] = uptime_cs[0];
 	memcpy(st_cpu[2], st_cpu[0], STATS_CPU_SIZE * (cpu_nr + 1));
 	memcpy(st_node[2], st_node[0], STATS_CPU_SIZE * (cpu_nr + 1));
 	memcpy(st_irq[2], st_irq[0], STATS_IRQ_SIZE * (cpu_nr + 1));
@@ -1939,7 +1939,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		get_localtime(&(mp_tstamp[curr]), 0);
 
 		/* Read uptime and CPU stats */
-		read_uptime(&(uptime0[curr]));
+		read_uptime(&(uptime_cs[curr]));
 		read_stat_cpu(st_cpu[curr], cpu_nr + 1);
 		if (DISPLAY_NODE(actflags)) {
 			set_node_cpu_stats(st_node[curr], st_cpu[curr]);

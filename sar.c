@@ -354,8 +354,8 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 	if (cpu_nr < 0)
 		cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
-	/* Interval value in jiffies */
-	itv = get_interval(record_hdr[2].uptime0, record_hdr[curr].uptime0);
+	/* Interval value in 1/100th of a second */
+	itv = get_interval(record_hdr[2].uptime_cs, record_hdr[curr].uptime_cs);
 
 	strncpy(timestamp[curr], _("Average:"), TIMESTAMP_LEN);
 	timestamp[curr][TIMESTAMP_LEN - 1] = '\0';
@@ -436,7 +436,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 
 	/* Check time (1) */
 	if (read_from_file) {
-		if (!next_slice(record_hdr[2].uptime0, record_hdr[curr].uptime0,
+		if (!next_slice(record_hdr[2].uptime_cs, record_hdr[curr].uptime_cs,
 				reset, interval))
 			/* Not close enough to desired interval */
 			return 0;
@@ -480,7 +480,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		/* it's too soon... */
 		return 0;
 
-	/* Get interval values */
+	/* Get interval value in 1/100th of a second */
 	get_itv_value(&record_hdr[curr], &record_hdr[!curr],
 		      cpu_nr, &itv);
 

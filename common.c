@@ -666,11 +666,11 @@ double ll_sp_value(unsigned long long value1, unsigned long long value2,
  * Compute time interval.
  *
  * IN:
- * @prev_uptime	Previous uptime value in jiffies.
- * @curr_uptime	Current uptime value in jiffies.
+ * @prev_uptime	Previous uptime value (in jiffies or 1/100th of a second).
+ * @curr_uptime	Current uptime value (in jiffies or 1/100th of a second).
  *
  * RETURNS:
- * Interval of time in jiffies.
+ * Interval of time in jiffies or 1/100th of a second.
  ***************************************************************************
  */
 unsigned long long get_interval(unsigned long long prev_uptime,
@@ -701,7 +701,7 @@ unsigned long long get_interval(unsigned long long prev_uptime,
  * @scp	Previous sample statistics for current CPU.
  *
  * RETURNS:
- * Interval of time based on current CPU.
+ * Interval of time based on current CPU, expressed in jiffies.
  ***************************************************************************
  */
 unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
@@ -794,7 +794,7 @@ int count_bits(void *ptr, int size)
  * IN:
  * @sdc		Structure with current device statistics.
  * @sdp		Structure with previous device statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  *
  * OUT:
  * @xds		Structure with extended statistics.
@@ -804,7 +804,7 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
 			    unsigned long long itv, struct ext_disk_stats *xds)
 {
 	double tput
-		= ((double) (sdc->nr_ios - sdp->nr_ios)) * HZ / itv;
+		= ((double) (sdc->nr_ios - sdp->nr_ios)) * 100 / itv;
 
 	xds->util  = S_VALUE(sdp->tot_ticks, sdc->tot_ticks, itv);
 	xds->svctm = tput ? xds->util / tput : 0.0;

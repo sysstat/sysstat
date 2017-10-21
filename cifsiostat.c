@@ -46,7 +46,7 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
-unsigned long long uptime0[2] = {0, 0};
+unsigned long long uptime_cs[2] = {0, 0};
 struct cifs_stats *st_cifs[2];
 struct io_hdr_stats *st_hdr_cifs;
 
@@ -420,7 +420,7 @@ void write_cifs_stat_header(int *fctr)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time.
+ * @itv		Interval of time (in 1/100th of a second).
  * @fctr	Conversion factor.
  * @shi		Structures describing the CIFS filesystems.
  * @ioi		Current sample statistics.
@@ -496,7 +496,7 @@ void write_stats(int curr, struct tm *rectime)
 	}
 
 	/* Interval of time, reduced to one processor */
-	itv = get_interval(uptime0[!curr], uptime0[curr]);
+	itv = get_interval(uptime_cs[!curr], uptime_cs[curr]);
 
 	shi = st_hdr_cifs;
 
@@ -543,11 +543,8 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	setbuf(stdout, NULL);
 
 	do {
-		/* Read system uptime (reduced to one processor) */
-		read_uptime(&(uptime0[curr]));
-		if (!uptime0[curr])
-			/* Cannot read system uptime */
-			exit(2);
+		/* Read system uptime in 1/100th of a second */
+		read_uptime(&(uptime_cs[curr]));
 
 		/* Read CIFS stats */
 		read_cifs_stat(curr);

@@ -569,9 +569,9 @@ struct file_activity {
 /* Header structure for every record */
 struct record_header {
 	/*
-	 * Machine uptime in jiffies (independent of the number of processors).
+	 * Machine uptime in 1/100th of a second.
 	 */
-	unsigned long long uptime0;
+	unsigned long long uptime_cs;
 	/*
 	 * Timestamp (number of seconds since the epoch).
 	 */

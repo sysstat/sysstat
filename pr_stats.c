@@ -118,8 +118,8 @@ void print_hdr_line(char *timestamp, struct activity *a, int pos, int iwidth, in
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies (independent of the number of
- *		processors). Unused here.
+ * @itv		Interval of time in 1/100th of a second (independent of the
+ *		number of processors). Unused here.
  ***************************************************************************
  */
 __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
@@ -290,7 +290,7 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_pcsw_stats(struct activity *a, int prev, int curr,
@@ -319,7 +319,7 @@ __print_funct_t print_pcsw_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
@@ -372,7 +372,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_swap_stats(struct activity *a, int prev, int curr,
@@ -401,7 +401,7 @@ __print_funct_t print_swap_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
@@ -443,7 +443,7 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
@@ -487,7 +487,7 @@ __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
@@ -693,7 +693,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
@@ -710,7 +710,7 @@ __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_memory_stats(struct activity *a, int prev, int curr,
@@ -787,7 +787,7 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_ktables_stats(struct activity *a, int prev, int curr,
@@ -804,7 +804,7 @@ __print_funct_t print_ktables_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_ktables_stats(struct activity *a, int prev, int curr,
@@ -891,7 +891,7 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_queue_stats(struct activity *a, int prev, int curr,
@@ -908,7 +908,7 @@ __print_funct_t print_queue_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_queue_stats(struct activity *a, int prev, int curr,
@@ -925,7 +925,7 @@ __print_funct_t print_avg_queue_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
@@ -974,7 +974,7 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
@@ -1066,7 +1066,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
@@ -1134,7 +1134,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
@@ -1190,7 +1190,7 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_nfs_stats(struct activity *a, int prev, int curr,
@@ -1223,7 +1223,7 @@ __print_funct_t print_net_nfs_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_nfsd_stats(struct activity *a, int prev, int curr,
@@ -1326,7 +1326,7 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_sock_stats(struct activity *a, int prev, int curr,
@@ -1343,7 +1343,7 @@ __print_funct_t print_net_sock_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_net_sock_stats(struct activity *a, int prev, int curr,
@@ -1360,7 +1360,7 @@ __print_funct_t print_avg_net_sock_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_ip_stats(struct activity *a, int prev, int curr,
@@ -1395,7 +1395,7 @@ __print_funct_t print_net_ip_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_eip_stats(struct activity *a, int prev, int curr,
@@ -1430,7 +1430,7 @@ __print_funct_t print_net_eip_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_icmp_stats(struct activity *a, int prev, int curr,
@@ -1471,7 +1471,7 @@ __print_funct_t print_net_icmp_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_eicmp_stats(struct activity *a, int prev, int curr,
@@ -1510,7 +1510,7 @@ __print_funct_t print_net_eicmp_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_tcp_stats(struct activity *a, int prev, int curr,
@@ -1541,7 +1541,7 @@ __print_funct_t print_net_tcp_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_etcp_stats(struct activity *a, int prev, int curr,
@@ -1573,7 +1573,7 @@ __print_funct_t print_net_etcp_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_udp_stats(struct activity *a, int prev, int curr,
@@ -1660,7 +1660,7 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_sock6_stats(struct activity *a, int prev, int curr,
@@ -1677,7 +1677,7 @@ __print_funct_t print_net_sock6_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_net_sock6_stats(struct activity *a, int prev, int curr,
@@ -1694,7 +1694,7 @@ __print_funct_t print_avg_net_sock6_stats(struct activity *a, int prev, int curr
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_ip6_stats(struct activity *a, int prev, int curr,
@@ -1731,7 +1731,7 @@ __print_funct_t print_net_ip6_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_eip6_stats(struct activity *a, int prev, int curr,
@@ -1769,7 +1769,7 @@ __print_funct_t print_net_eip6_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_icmp6_stats(struct activity *a, int prev, int curr,
@@ -1813,7 +1813,7 @@ __print_funct_t print_net_icmp6_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_eicmp6_stats(struct activity *a, int prev, int curr,
@@ -1851,7 +1851,7 @@ __print_funct_t print_net_eicmp6_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_net_udp6_stats(struct activity *a, int prev, int curr,
@@ -1975,7 +1975,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_pwr_cpufreq_stats(struct activity *a, int prev, int curr,
@@ -1992,7 +1992,7 @@ __print_funct_t print_pwr_cpufreq_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_pwr_cpufreq_stats(struct activity *a, int prev, int curr,
@@ -2083,7 +2083,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_pwr_fan_stats(struct activity *a, int prev, int curr,
@@ -2100,7 +2100,7 @@ __print_funct_t print_pwr_fan_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_pwr_fan_stats(struct activity *a, int prev, int curr,
@@ -2208,7 +2208,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_pwr_temp_stats(struct activity *a, int prev, int curr,
@@ -2225,7 +2225,7 @@ __print_funct_t print_pwr_temp_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_pwr_temp_stats(struct activity *a, int prev, int curr,
@@ -2333,7 +2333,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_pwr_in_stats(struct activity *a, int prev, int curr,
@@ -2350,7 +2350,7 @@ __print_funct_t print_pwr_in_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_pwr_in_stats(struct activity *a, int prev, int curr,
@@ -2430,7 +2430,7 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_huge_stats(struct activity *a, int prev, int curr,
@@ -2447,7 +2447,7 @@ __print_funct_t print_huge_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_huge_stats(struct activity *a, int prev, int curr,
@@ -2465,7 +2465,7 @@ __print_funct_t print_avg_huge_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
@@ -2543,7 +2543,7 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
@@ -2624,7 +2624,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_pwr_usb_stats(struct activity *a, int prev, int curr,
@@ -2641,7 +2641,7 @@ __print_funct_t print_pwr_usb_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_pwr_usb_stats(struct activity *a, int prev, int curr,
@@ -2731,7 +2731,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
@@ -2748,7 +2748,7 @@ __print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int curr,
@@ -2765,7 +2765,7 @@ __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int cur
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
@@ -2805,7 +2805,7 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
  * @a		Activity structure with statistics.
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
 __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,

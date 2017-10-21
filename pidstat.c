@@ -53,7 +53,7 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 unsigned long long tot_jiffies[3] = {0, 0, 0};
-unsigned long long uptime0[3] = {0, 0, 0};
+unsigned long long uptime_cs[3] = {0, 0, 0};
 struct pid_stats *st_pid_list[3] = {NULL, NULL, NULL};
 unsigned int *pid_array = NULL;
 struct pid_stats st_pid_null;
@@ -1456,16 +1456,16 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 				   0.0 :
 				   SP_VALUE_100(pstp->utime - pstp->gtime,
-					    pstc->utime - pstc->gtime, itv),
-				   SP_VALUE_100(pstp->stime,  pstc->stime, itv),
-				   SP_VALUE_100(pstp->gtime,  pstc->gtime, itv),
-				   SP_VALUE_100(pstp->wtime, pstc->wtime, itv),
+					    pstc->utime - pstc->gtime, itv * HZ / 100),
+				   SP_VALUE_100(pstp->stime,  pstc->stime, itv * HZ / 100),
+				   SP_VALUE_100(pstp->gtime,  pstc->gtime, itv * HZ / 100),
+				   SP_VALUE_100(pstp->wtime, pstc->wtime, itv * HZ / 100),
 				   /* User time already includes guest time */
 				   IRIX_MODE_OFF(pidflag) ?
 				   SP_VALUE_100(pstp->utime + pstp->stime,
 					    pstc->utime + pstc->stime, deltot_jiffies) :
 				   SP_VALUE_100(pstp->utime + pstp->stime,
-					    pstc->utime + pstc->stime, itv));
+					    pstc->utime + pstc->stime, itv * HZ / 100));
 
 			cprintf_in(IS_INT, "   %3d", "", pstc->processor);
 		}
@@ -1561,7 +1561,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  * 		the timestamp of the previous sample.
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -1635,7 +1635,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  * @deltot_jiffies
  *		Number of jiffies spent on the interval by all processors.
  *
@@ -1669,16 +1669,16 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			   0.0 :
 			   SP_VALUE_100(pstp->utime - pstp->gtime,
-				    pstc->utime - pstc->gtime, itv),
-			   SP_VALUE_100(pstp->stime, pstc->stime, itv),
-			   SP_VALUE_100(pstp->gtime, pstc->gtime, itv),
-			   SP_VALUE_100(pstp->wtime, pstc->wtime, itv),
+				    pstc->utime - pstc->gtime, itv * HZ / 100),
+			   SP_VALUE_100(pstp->stime, pstc->stime, itv * HZ / 100),
+			   SP_VALUE_100(pstp->gtime, pstc->gtime, itv * HZ / 100),
+			   SP_VALUE_100(pstp->wtime, pstc->wtime, itv * HZ / 100),
 			   /* User time already includes guest time */
 			   IRIX_MODE_OFF(pidflag) ?
 			   SP_VALUE_100(pstp->utime + pstp->stime,
 				    pstc->utime + pstc->stime, deltot_jiffies) :
 			   SP_VALUE_100(pstp->utime + pstp->stime,
-				    pstc->utime + pstc->stime, itv));
+				    pstc->utime + pstc->stime, itv * HZ / 100));
 
 		if (!disp_avg) {
 			cprintf_in(IS_INT, "   %3d", "", pstc->processor);
@@ -1793,7 +1793,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -1947,7 +1947,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2020,7 +2020,7 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2109,7 +2109,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time in 1/100th of a second.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2160,7 +2160,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2212,7 +2212,7 @@ int write_pid_rt_stats(int prev, int curr, int dis,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
+ * @itv		Interval of time.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2312,7 +2312,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	/* Total number of jiffies spent on the interval */
 	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
-	itv = get_interval(uptime0[prev], uptime0[curr]);
+	itv = get_interval(uptime_cs[prev], uptime_cs[curr]);
 
 	if (PROCESS_STRING(pidflag)) {
 		/* Reset "show threads" flag */
@@ -2480,7 +2480,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	setbuf(stdout, NULL);
 
 	/* Read system uptime */
-	read_uptime(&uptime0[0]);
+	read_uptime(&uptime_cs[0]);
 	read_stats(0);
 
 	if (DISPLAY_MEM(actflag)) {
@@ -2505,7 +2505,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	/* Save the first stats collected. Will be used to compute the average */
 	ps_tstamp[2] = ps_tstamp[0];
 	tot_jiffies[2] = tot_jiffies[0];
-	uptime0[2] = uptime0[0];
+	uptime_cs[2] = uptime_cs[0];
 	memcpy(st_pid_list[2], st_pid_list[0], PID_STATS_SIZE * pid_nr);
 
 	/* Set a handler for SIGINT */
@@ -2524,8 +2524,8 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		/* Get time */
 		get_localtime(&ps_tstamp[curr], 0);
 
-		/* Read system uptime */
-		read_uptime(&(uptime0[curr]));
+		/* Read system uptime (in 1/100th of a second) */
+		read_uptime(&(uptime_cs[curr]));
 
 		/* Read stats */
 		read_stats(curr);
