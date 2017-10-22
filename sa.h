@@ -428,9 +428,13 @@ struct file_header {
 	 */
 	unsigned long long sa_ust_time;
 	/*
+	 * Number of jiffies per second.
+	 */
+	unsigned long sa_hz		__attribute__ ((aligned (8)));
+	/*
 	 * Number of CPU items (1 .. CPU_NR + 1) for the last sample in file.
 	 */
-	unsigned int sa_last_cpu_nr;
+	unsigned int sa_last_cpu_nr	__attribute__ ((aligned (8)));
 	/*
 	 * Number of activities saved in file.
 	 */

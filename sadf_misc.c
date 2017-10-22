@@ -866,6 +866,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		}
 
 		printf(_("Size of a long int: %d\n"), file_hdr->sa_sizeof_long);
+		printf("HZ = %lu\n", file_hdr->sa_hz);
 
 		/* Number of activities (number of volatile activities) in file */
 		printf("sa_act_nr (sa_vol_act_nr): %u (%u)\n",

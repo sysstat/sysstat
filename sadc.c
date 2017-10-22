@@ -514,6 +514,7 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_month       = rectime.tm_mon;
 	file_hdr.sa_year        = rectime.tm_year;
 	file_hdr.sa_sizeof_long = sizeof(long);
+	file_hdr.sa_hz		= HZ;
 
 	for (i = 0; i < 3; i++) {
 		file_hdr.act_types_nr[i] = act_types_nr[i];
