@@ -1,5 +1,15 @@
 Changes:
 
+2017/11/01: Version 11.6.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [JoungKyun Kim]: NLS updated: Add Korean translation.
+	* [Christian Ehrhardt]: Fix 00 byte after values when --human is
+	  not set.
+	* Fix invalid token in "iostat -y" JSON output.
+	* Remove SCCSID strings in executable files to allow reproducible
+	  build.
+	* Remove unused parameters passed to functions.
+	* [Lukas Zapletal]: Update comment of SA_DIR in sysconfig file.
+
 2017/08/14: Version 11.6.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* pidstat: Add new option (-e) which can be used to pass a program
 	  to execute and make pidstat monitor it.
