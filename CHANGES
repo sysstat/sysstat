@@ -1,5 +1,14 @@
 Changes:
 
+2017/11/01: Version 11.2.13 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Robert Luberda]: Fix sadc crash when really long lines are
+	  read from /etc/mtab.
+	* Remove SCCSID strings in executable files to allow reproducible
+	  build.
+	* Remove unused parameters passed to functions.
+	* sadf: Don't use f_count2() function pointer.
+	* [Lukas Zapletal]: Update comment of SA_DIR in sysconfig file.
+
 2017/08/14: Version 11.2.12 - Sebastien Godard (sysstat <at> orange.fr)
 	* Revert "ARM: Fix sadc crash because of unaligned memory accesses".
 	  The fix may cause segmentation faults in some cases.
