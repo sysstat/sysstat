@@ -1551,7 +1551,6 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  * 		the timestamp of the previous sample.
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample.
- * @itv		Interval of time in jiffies.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -1559,8 +1558,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  ***************************************************************************
  */
 int write_pid_child_all_stats(int prev, int curr, int dis,
-			      char *prev_string, char *curr_string,
-			      unsigned long long itv)
+			      char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
@@ -1937,7 +1935,6 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -1945,8 +1942,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
  ***************************************************************************
  */
 int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
-			  char *prev_string, char *curr_string,
-			  unsigned long long itv)
+			  char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
@@ -2150,7 +2146,6 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2158,8 +2153,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
  ***************************************************************************
  */
 int write_pid_rt_stats(int prev, int curr, int dis,
-		       char *prev_string, char *curr_string,
-		       unsigned long long itv)
+		       char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
@@ -2202,7 +2196,6 @@ int write_pid_rt_stats(int prev, int curr, int dis,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
- * @itv		Interval of time in jiffies.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
@@ -2210,8 +2203,7 @@ int write_pid_rt_stats(int prev, int curr, int dis,
  ***************************************************************************
  */
 int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
-			 char *prev_string, char *curr_string,
-			 unsigned long long itv)
+			 char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
@@ -2322,8 +2314,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 							  itv, g_itv);
 		}
 		if (DISPLAY_CHILD_STATS(tskflag)) {
-			again += write_pid_child_all_stats(prev, curr, dis, prev_string, curr_string,
-							   itv);
+			again += write_pid_child_all_stats(prev, curr, dis, prev_string, curr_string);
 		}
 	}
 	else {
@@ -2357,7 +2348,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 		/* Display stack stats */
 		if (DISPLAY_STACK(actflag)) {
 			again += write_pid_stack_stats(prev, curr, dis, disp_avg,
-						       prev_string, curr_string, itv);
+						       prev_string, curr_string);
 		}
 
 		/* Display I/O stats */
@@ -2375,13 +2366,13 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 		/* Display kernel table stats */
 		if (DISPLAY_KTAB(actflag)) {
 			again += write_pid_ktab_stats(prev, curr, dis, disp_avg,
-						      prev_string, curr_string, itv);
+						      prev_string, curr_string);
 		}
 
 		/* Display scheduling priority and policy information */
 		if (DISPLAY_RT(actflag)) {
 			again += write_pid_rt_stats(prev, curr, dis, prev_string,
-						    curr_string, itv);
+						    curr_string);
 		}
 	}
 
