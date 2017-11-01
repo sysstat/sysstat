@@ -491,7 +491,7 @@ struct file_header {
 
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
 #define FILE_HEADER_ULL_NR	1	/* Nr of unsigned long long in file_header structure */
-#define FILE_HEADER_UL_NR	0	/* Nr of unsigned long in file_header structure */
+#define FILE_HEADER_UL_NR	1	/* Nr of unsigned long in file_header structure */
 #define FILE_HEADER_U_NR	12	/* Nr of [unsigned] int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
