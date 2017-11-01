@@ -2504,7 +2504,6 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in jiffies.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
