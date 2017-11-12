@@ -242,19 +242,19 @@
  * items for each activity when we read a (possibly tainted)
  * sa data file.
  */
-#define MAX_NR_SERIAL_LINES	512
-#define MAX_NR_DISKS		8192
-#define MAX_NR_IFACES		512
-#define MAX_NR_FANS		128
-#define MAX_NR_TEMP_SENSORS	128
-#define MAX_NR_IN_SENSORS	128
-#define MAX_NR_USB		1024
-#define MAX_NR_FS		8192
-#define MAX_NR_FCHOSTS		8192
+#define MAX_NR_SERIAL_LINES	65536
+#define MAX_NR_DISKS		(65536 * 4096)
+#define MAX_NR_IFACES		65536
+#define MAX_NR_FANS		4096
+#define MAX_NR_TEMP_SENSORS	4096
+#define MAX_NR_IN_SENSORS	4096
+#define MAX_NR_USB		65536
+#define MAX_NR_FS		(65536 * 4096)
+#define MAX_NR_FCHOSTS		65536
 
 /* NR_MAX is the upper limit used for unknown activities */
-#define NR_MAX		65536
-#define NR2_MAX		128
+#define NR_MAX		(65536 * 4096)
+#define NR2_MAX		1024
 
 /* Maximum number of args that can be passed to sadc */
 #define MAX_ARGV_NR	32
