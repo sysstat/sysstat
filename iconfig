@@ -79,12 +79,6 @@ if [ "${COMPRESSAFTER}" != "" ]; then
 	COMPRESSAFTER="compressafter=${COMPRESSAFTER} "
 fi
 
-# Preallocation factor
-PREALLOC_ANSWER=`${ASK} 'Preallocation factor value:' "prealloc" "prealloc"`
-if [ "${PREALLOC_ANSWER}" != "" ]; then
-	PREALLOC_ANSWER="prealloc=${PREALLOC_ANSWER} "
-fi
-
 # Manual page group
 MAN=`${ASK} 'Group for manual pages:' "man_group" "man_group"`
 if [ "${MAN}" != "" ]; then
@@ -202,7 +196,7 @@ fi
 
 echo
 echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
+${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -211,7 +205,7 @@ echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${STRIP}${COPY_ONLY}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${HISTORY}${COMPRESSAFTER}${PREALLOC_ANSWER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
+${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${STRIP}${COPY_ONLY}
 

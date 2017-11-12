@@ -213,7 +213,7 @@ svg_stats.o: svg_stats.c sa.h sadf.h ioconf.h sysconfig.h svg_stats.h
 
 raw_stats.o: raw_stats.c sa.h sadf.h ioconf.h sysconfig.h raw_stats.h
 
-sa_wrap.o: sa_wrap.c sa.h rd_stats.h count.h rd_sensors.h prealloc.h
+sa_wrap.o: sa_wrap.c sa.h rd_stats.h count.h rd_sensors.h
 
 format_sadf.o: format.c sadf.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
@@ -587,7 +587,7 @@ clean:
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot
-	rm -f sa1 sa2 sysstat cron/crontab version.h sysconfig.h prealloc.h
+	rm -f sa1 sa2 sysstat cron/crontab version.h sysconfig.h
 	rm -f sysstat.sysconfig cron/sysstat.crond cron/sysstat.cron.daily sysstat.service
 	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer cron/sysstat-summary.service cron/sysstat-summary.timer
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in

@@ -437,8 +437,7 @@ time_t get_time_ref(void)
  * Each activity selected may have several views. Moreover we have to take
  * into account volatile activities (eg. CPU) for which the number of views
  * will depend on the highest number of items (eg. maximum number of CPU)
- * saved in the file. This number may be higher than the real number of views
- * that will be displayed since some items have a preallocation constant.
+ * saved in the file.
  *
  * IN:
  * @ifd			File descriptor of input file.

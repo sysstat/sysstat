@@ -9,7 +9,6 @@
 #include <stdio.h>
 
 #include "common.h"
-#include "prealloc.h"
 #include "rd_stats.h"
 #include "rd_sensors.h"
 

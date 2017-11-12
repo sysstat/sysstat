@@ -956,8 +956,8 @@ __nr_t wrap_get_irq_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of serial lines supporting tx/rx accouting + a pre-allocation
- * constant. Number cannot exceed MAX_NR_SERIAL_LINES.
+ * Number of serial lines supporting tx/rx accouting.
+ * Number cannot exceed MAX_NR_SERIAL_LINES.
  ***************************************************************************
  */
 __nr_t wrap_get_serial_nr(struct activity *a)
@@ -965,10 +965,10 @@ __nr_t wrap_get_serial_nr(struct activity *a)
 	__nr_t n = 0;
 
 	if ((n = get_serial_nr()) > 0) {
-		if ((n + NR_SERIAL_PREALLOC) > MAX_NR_SERIAL_LINES)
+		if (n > MAX_NR_SERIAL_LINES)
 			return MAX_NR_SERIAL_LINES;
 		else
-			return n + NR_SERIAL_PREALLOC;
+			return n;
 	}
 
 	return 0;
@@ -983,8 +983,7 @@ __nr_t wrap_get_serial_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of network interfaces + a pre-allocation constant. Number cannot
- * exceed MAX_NR_IFACES.
+ * Number of network interfaces. Number cannot exceed MAX_NR_IFACES.
  ***************************************************************************
  */
 __nr_t wrap_get_iface_nr(struct activity *a)
@@ -992,10 +991,10 @@ __nr_t wrap_get_iface_nr(struct activity *a)
 	__nr_t n = 0;
 
 	if ((n = get_iface_nr()) > 0) {
-		if ((n + NR_IFACE_PREALLOC) > MAX_NR_IFACES)
+		if (n > MAX_NR_IFACES)
 			return MAX_NR_IFACES;
 		else
-			return n + NR_IFACE_PREALLOC;
+			return n;
 	}
 
 	return 0;
@@ -1030,8 +1029,7 @@ __nr_t wrap_get_cpu_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of devices + a pre-allocation constant. Number cannot exceed
- * MAX_NR_DISKS.
+ * Number of devices. Number cannot exceed MAX_NR_DISKS.
  ***************************************************************************
  */
 __nr_t wrap_get_disk_nr(struct activity *a)
@@ -1040,10 +1038,10 @@ __nr_t wrap_get_disk_nr(struct activity *a)
 	unsigned int f = COLLECT_PARTITIONS(a->opt_flags);
 
 	if ((n = get_disk_nr(f)) > 0) {
-		if ((n + NR_DISK_PREALLOC) > MAX_NR_DISKS)
+		if (n > MAX_NR_DISKS)
 			return MAX_NR_DISKS;
 		else
-			return n + NR_DISK_PREALLOC;
+			return n;
 	}
 
 	return 0;
@@ -1120,7 +1118,7 @@ __nr_t wrap_get_in_nr(struct activity *a)
  * @a   Activity structure.
  *
  * RETURNS:
- * Number of CPU frequencies + a pre-allocation constant.
+ * Number of CPU frequencies.
  ***************************************************************************
  */
 __nr_t wrap_get_freq_nr(struct activity *a)
@@ -1128,7 +1126,7 @@ __nr_t wrap_get_freq_nr(struct activity *a)
 	__nr_t n = 0;
 
 	if ((n = get_freq_nr()) > 0)
-		return n + NR_FREQ_PREALLOC;
+		return n;
 
 	return 0;
 }
@@ -1141,20 +1139,18 @@ __nr_t wrap_get_freq_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of USB devices + a pre-allocation constant. Number cannot exceed
- * MAX_NR_USB.
+ * Number of USB devices. Number cannot exceed MAX_NR_USB.
  ***************************************************************************
  */
 __nr_t wrap_get_usb_nr(struct activity *a)
 {
 	__nr_t n = 0;
 
-	if ((n = get_usb_nr()) >= 0) {
-		/* Return a positive number even if no USB devices have been found */
-		if ((n + NR_USB_PREALLOC) > MAX_NR_USB)
+	if ((n = get_usb_nr()) > 0) {
+		if (n > MAX_NR_USB)
 			return MAX_NR_USB;
 		else
-			return n + NR_USB_PREALLOC;
+			return n;
 	}
 
 	return 0;
@@ -1169,8 +1165,7 @@ __nr_t wrap_get_usb_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of filesystems + a pre-allocation constant. Number cannot exceed
- * MAX_NR_FS.
+ * Number of filesystems. Number cannot exceed MAX_NR_FS.
  ***************************************************************************
  */
 __nr_t wrap_get_filesystem_nr(struct activity *a)
@@ -1178,10 +1173,10 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
 	__nr_t n = 0;
 
 	if ((n = get_filesystem_nr()) > 0) {
-		if ((n + NR_FILESYSTEM_PREALLOC) > MAX_NR_FS)
+		if (n > MAX_NR_FS)
 			return MAX_NR_FS;
 		else
-			return n + NR_FILESYSTEM_PREALLOC;
+			return n;
 	}
 
 	return 0;
@@ -1195,20 +1190,18 @@ __nr_t wrap_get_filesystem_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of FC hosts + a pre-allocation constant. Number cannot exceed
- * MAX_NR_FCHOSTS.
+ * Number of FC hosts. Number cannot exceed MAX_NR_FCHOSTS.
  ***************************************************************************
  */
 __nr_t wrap_get_fchost_nr(struct activity *a)
 {
 	__nr_t n = 0;
 
-	if ((n = get_fchost_nr()) >= 0) {
-		/* Return a positive number even if no FC hosts have been found */
-		if ((n + NR_FCHOST_PREALLOC) > MAX_NR_FCHOSTS)
+	if ((n = get_fchost_nr()) > 0) {
+		if (n > MAX_NR_FCHOSTS)
 			return MAX_NR_FCHOSTS;
 		else
-			return n + NR_FCHOST_PREALLOC;
+			return n;
 	}
 
 	return 0;
