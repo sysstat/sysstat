@@ -349,10 +349,6 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 {
 	int i;
 	unsigned long long itv;
-	static __nr_t cpu_nr = -1;
-
-	if (cpu_nr < 0)
-		cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	/* Interval value in 1/100th of a second */
 	itv = get_interval(record_hdr[2].uptime_cs, record_hdr[curr].uptime_cs);
@@ -415,10 +411,6 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	int i;
 	unsigned long long itv;
 	static int cross_day = 0;
-	static __nr_t cpu_nr = -1;
-
-	if (cpu_nr < 0)
-		cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	if (reset_cd) {
 		/*

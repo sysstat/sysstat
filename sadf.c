@@ -584,7 +584,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
  *			(used in next_slice() function).
  * @parm		Pointer on parameters depending on output format
  * 			(eg.: number of tabulations to print).
- * @cpu_nr		Number of processors.
  * @rectime		Structure where timestamp (expressed in local time
  *			or in UTC depending on whether options -T/-t have
  * 			been used or not) has been saved for current record.
@@ -604,7 +603,7 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
  ***************************************************************************
  */
 int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
-			long *cnt, void *parm, __nr_t cpu_nr, struct tm *rectime,
+			long *cnt, void *parm, struct tm *rectime,
 			struct tm *loctime, int reset_cd, unsigned int act_id)
 {
 	int i;
@@ -749,7 +748,6 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  * @curr	Index in array for current sample statistics.
  * @act_id	Activity to display, or ~0 for all.
  * @file_actlst	List of (known or unknown) activities in file.
- * @cpu_nr	Number of processors for current activity data file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
@@ -768,8 +766,8 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  */
 void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 		       unsigned int act_id, int *reset, struct file_activity *file_actlst,
-		        __nr_t cpu_nr, struct tm *rectime, struct tm *loctime,
-			char *file, struct file_magic *file_magic)
+		       struct tm *rectime, struct tm *loctime, char *file,
+		       struct file_magic *file_magic)
 {
 	int rtype;
 	int next, reset_cd;
@@ -801,7 +799,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
-						   NULL, cpu_nr, rectime, loctime, reset_cd, act_id);
+						   NULL, rectime, loctime, reset_cd, act_id);
 			reset_cd = 0;
 
 			if (next) {
@@ -834,7 +832,6 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
  * @curr	Index in array for current sample statistics.
  * @p		Current activity position.
  * @file_actlst	List of (known or unknown) activities in file.
- * @cpu_nr	Number of processors for current activity data file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
@@ -856,7 +853,7 @@ void rw_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
  */
 void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf,
 			     int p, int *reset, struct file_activity *file_actlst,
-			     __nr_t cpu_nr, struct tm *rectime, struct tm *loctime,
+			     struct tm *rectime, struct tm *loctime,
 			     char *file, struct file_magic *file_magic,
 			     __nr_t save_act_nr[], int *g_nr)
 {
@@ -901,7 +898,7 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
 		if (!*eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
-						   &parm, cpu_nr, rectime, loctime, reset_cd, act[p]->id);
+						   &parm, rectime, loctime, reset_cd, act[p]->id);
 			reset_cd = 0;
 			if (next) {
 				/*
@@ -1036,7 +1033,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 
 					/* next is set to 1 when we were close enough to desired interval */
 					next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
-								  &cnt, &tab, cpu_nr, rectime, loctime,
+								  &cnt, &tab, rectime, loctime,
 								  FALSE, ALL_ACTIVITIES);
 
 					if (next) {
@@ -1143,7 +1140,6 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
  * IN:
  * @ifd		File descriptor of input file.
  * @file_actlst	List of (known or unknown) activities in file.
- * @cpu_nr	Number of processors for current activity data file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
@@ -1153,7 +1149,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
  * @file_magic	file_magic structure filled with file magic header data.
  ***************************************************************************
  */
-void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr,
+void logic2_display_loop(int ifd, struct file_activity *file_actlst,
 			 struct tm *rectime, struct tm *loctime, char *file,
 			 struct file_magic *file_magic)
 {
@@ -1201,7 +1197,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 			 */
 			rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 					  ALL_ACTIVITIES, &reset, file_actlst,
-					  cpu_nr, rectime, loctime, file, file_magic);
+					  rectime, loctime, file, file_magic);
 		}
 		else {
 			/* For each requested activity... */
@@ -1217,8 +1213,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 				if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 					rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 							  act[p]->id, &reset, file_actlst,
-							  cpu_nr, rectime, loctime, file,
-							  file_magic);
+							  rectime, loctime, file, file_magic);
 				}
 				else {
 					unsigned int optf, msk;
@@ -1231,7 +1226,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 
 							rw_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 									  act[p]->id, &reset, file_actlst,
-									  cpu_nr, rectime, loctime, file,
+									  rectime, loctime, file,
 									  file_magic);
 							act[p]->opt_flags = optf;
 						}
@@ -1367,7 +1362,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 		if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 			display_curr_act_graphs(ifd, fpos, &curr, &cnt, &eosaf,
 						p, &reset, file_actlst,
-						cpu_nr, rectime, loctime, file,
+						rectime, loctime, file,
 						file_magic, save_act_nr, &g_nr);
 		}
 		else {
@@ -1380,7 +1375,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 					act[p]->opt_flags &= (0xffffff00 + msk);
 					display_curr_act_graphs(ifd, fpos, &curr, &cnt, &eosaf,
 								p, &reset, file_actlst,
-								cpu_nr, rectime, loctime, file,
+								rectime, loctime, file,
 								file_magic, save_act_nr, &g_nr);
 					act[p]->opt_flags = optf;
 				}
@@ -1443,7 +1438,7 @@ void read_stats_from_file(char dfile[])
 				    &rectime, &loctime, dfile, &file_magic);
 	}
 	else if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
-		logic2_display_loop(ifd, file_actlst, cpu_nr,
+		logic2_display_loop(ifd, file_actlst,
 				    &rectime, &loctime, dfile, &file_magic);
 	}
 	else {
