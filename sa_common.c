@@ -566,26 +566,27 @@ void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
  * IN:
  * @flags	Flags for common options and system state.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	Number of CPU (value in [1, NR_CPUS + 1]).
- * 		1 means that there is only one proc and non SMP kernel.
- * 		2 means one proc and SMP kernel.
- * 		Etc.
  *
  * OUT:
  * @rectime	Date and time from file header.
  ***************************************************************************
  */
 void print_report_hdr(unsigned int flags, struct tm *rectime,
-		      struct file_header *file_hdr, int cpu_nr)
+		      struct file_header *file_hdr)
 {
 
 	/* Get date of file creation */
 	get_file_timestamp_struct(flags, rectime, file_hdr);
 
-	/* Display the header */
+	/*
+	 * Display the header.
+	 * NB: Number of CPU (value in [1, NR_CPUS + 1]).
+	 * 	1 means that there is only one proc and non SMP kernel.
+	 *	2 means one proc and SMP kernel. Etc.
+	 */
 	print_gal_header(rectime, file_hdr->sa_sysname, file_hdr->sa_release,
 			 file_hdr->sa_nodename, file_hdr->sa_machine,
-			 cpu_nr > 1 ? cpu_nr - 1 : 1,
+			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 			 PLAIN_OUTPUT);
 }
 
@@ -956,8 +957,8 @@ void select_default_activity(struct activity *act[])
 	/* Default is CPU activity... */
 	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES)) {
 		/*
-		 * Still OK even when reading stats from a file
-		 * since A_CPU activity is always recorded.
+		 * Yet A_CPU activity may not be available in file
+		 * since the user can choose not to collect it.
 		 */
 		act[p]->options |= AO_SELECTED;
 	}
@@ -1458,7 +1459,6 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		       int ignore, int *endian_mismatch, int *arch_64)
 {
 	int i, j, k, p;
-	unsigned int a_cpu = FALSE;
 	struct file_activity *fal;
 	void *buffer = NULL;
 
@@ -1587,10 +1587,6 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			act[p]->ftypes_nr[k] = fal->types_nr[k];
 		}
 
-		if (fal->id == A_CPU) {
-			a_cpu = TRUE;
-		}
-
 		if (fal->size > act[p]->msize) {
 			act[p]->msize = fal->size;
 		}
@@ -1614,13 +1610,6 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		 */
 		id_seq[j++] = fal->id;
 	}
-
-	if (!a_cpu)
-		/*
-		 * CPU activity should always be in file
-		 * and have a known format (expected magical number).
-		 */
-		goto format_error;
 
 	while (j < NR_ACT) {
 		id_seq[j++] = 0;
@@ -2451,7 +2440,6 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 {
 	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN];
 	int dp = 1;
-	unsigned int new_cpu_nr;
 
 	/* Fill timestamp structure (rectime) for current record */
 	if (sa_get_record_timestamp_struct(l_flags, record_hdr, rectime, loctime))
@@ -2475,10 +2463,10 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 	}
 
 	if (rtype == R_RESTART) {
-		/* Don't forget to read the volatile activities structures */
-		new_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
-						     file_hdr->sa_vol_act_nr,
-						     endian_mismatch, arch_64);
+		/* Read new cpu number following RESTART record */
+		file_hdr->sa_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
+							      file_hdr->sa_vol_act_nr,
+							      endian_mismatch, arch_64);
 
 		if (!dp)
 			return 0;
@@ -2486,8 +2474,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 		if (*ofmt->f_restart) {
 			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time,
 					   !PRINT_LOCAL_TIME(l_flags) &&
-					   !PRINT_TRUE_TIME(l_flags), file_hdr,
-					   new_cpu_nr);
+					   !PRINT_TRUE_TIME(l_flags), file_hdr);
 		}
 	}
 	else if (rtype == R_COMMENT) {

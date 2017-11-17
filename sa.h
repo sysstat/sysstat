@@ -435,6 +435,13 @@ struct file_header {
 	 */
 	unsigned int sa_last_cpu_nr	__attribute__ ((aligned (8)));
 	/*
+	 * Number of [online or offline] CPU (1 .. CPU_NR + 1)
+	 * when the datafile has been created.
+	 * When reading a datafile, this value is updated whenever
+	 * a RESTART record is found.
+	 */
+	unsigned int sa_cpu_nr;
+	/*
 	 * Number of activities saved in file.
 	 */
 	unsigned int sa_act_nr;
@@ -491,7 +498,7 @@ struct file_header {
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
 #define FILE_HEADER_ULL_NR	1	/* Nr of unsigned long long in file_header structure */
 #define FILE_HEADER_UL_NR	1	/* Nr of unsigned long in file_header structure */
-#define FILE_HEADER_U_NR	12	/* Nr of [unsigned] int in file_header structure */
+#define FILE_HEADER_U_NR	13	/* Nr of [unsigned] int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
@@ -919,7 +926,7 @@ struct report_format {
 	 * (data displayed once at the beginning of the report).
 	 */
 	__printf_funct_t (*f_header) (void *, int, char *, struct file_magic *, struct file_header *,
-				      __nr_t, struct activity * [], unsigned int []);
+				      struct activity * [], unsigned int []);
 	/*
 	 * This function defines the statistics part of the report.
 	 * Used only with textual (XML-like) reports.
@@ -934,8 +941,7 @@ struct report_format {
 	/*
 	 * This function displays the restart messages.
 	 */
-	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *,
-				       unsigned int);
+	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *);
 	/*
 	 * This function displays the comments.
 	 */
@@ -1221,11 +1227,11 @@ int parse_sar_n_opt
 int parse_timestamp
 	(char * [], int *, struct tstamp *, const char *);
 void print_report_hdr
-	(unsigned int, struct tm *, struct file_header *, int);
+	(unsigned int, struct tm *, struct file_header *);
 void print_sar_comment
 	(int *, int, char *, char *, int, char *, struct file_header *);
-void print_sar_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+__printf_funct_t print_sar_restart
+	(int *, int, char *, char *, int, struct file_header *);
 int print_special_record
 	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
 	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,

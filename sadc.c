@@ -185,7 +185,7 @@ void parse_sadc_S_option(char *argv[], int opt)
 			/*
 			 * Although undocumented, option -S followed by a numerical value
 			 * enables the user to select each activity that should be
-			 * collected. "-S 0" unselects all activities but CPU.
+			 * collected. "-S 0" unselects all activities.
 			 * A value greater than 255 enables the user to select groups
 			 * of activities.
 			 */
@@ -204,11 +204,10 @@ void parse_sadc_S_option(char *argv[], int opt)
 				usage(argv[0]);
 			}
 			else if (!act_id) {
-				/* Unselect all activities but CPU */
+				/* Unselect all activities */
 				for (i = 0; i < NR_ACT; i++) {
 					act[i]->options &= ~AO_COLLECTED;
 				}
-				COLLECT_ACTIVITY(A_CPU);
 			}
 			else {
 				/* Select chosen activity */
@@ -530,6 +529,14 @@ void setup_file_hdr(int fd)
 	 * always counted (in sa_sys_init()).
 	 */
 	file_hdr.sa_last_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
+	/*
+	 * This is a new file (or stdout): Set sa_cpu_nr field to the number
+	 * of CPU of the machine (1 .. CPU_NR + 1). This is the number of CPU, whether
+	 * online or offline, at the time of the first collected sample.
+	 * All activities (including A_CPU) are counted in sa_sys_init(), even
+	 * if they are not collected.
+	 */
+	file_hdr.sa_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
 
 	/* Get system name, release number, hostname and machine architecture */
 	uname(&header);
@@ -1018,10 +1025,9 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	}
 
 	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-	if (!IS_COLLECTED(act[p]->options)) {
-		/* A_CPU activity should always exist in file */
-		goto append_error;
-	}
+	if (!IS_COLLECTED(act[p]->options))
+		/* A_CPU activity may not exist in file */
+		return;
 
 	if (act[p]->nr != file_hdr.sa_last_cpu_nr) {
 		if (restart_mark) {
@@ -1333,6 +1339,11 @@ int main(int argc, char **argv)
 		else {
 			usage(argv[0]);
 		}
+	}
+
+	/* At least one activity must be collected (default is A_CPU) */
+	if (!get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES)) {
+		COLLECT_ACTIVITY(A_CPU);
 	}
 
 	/* Process file entered on the command line */

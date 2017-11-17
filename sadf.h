@@ -130,17 +130,15 @@ void convert_file
  * Prototypes used to display restart messages
  */
 __printf_funct_t print_db_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+	(int *, int, char *, char *, int, struct file_header *);
 __printf_funct_t print_ppc_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+	(int *, int, char *, char *, int, struct file_header *);
 __printf_funct_t print_xml_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+	(int *, int, char *, char *, int, struct file_header *);
 __printf_funct_t print_json_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
-__printf_funct_t print_sar_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+	(int *, int, char *, char *, int, struct file_header *);
 __printf_funct_t print_raw_restart
-	(int *, int, char *, char *, int, struct file_header *, unsigned int);
+	(int *, int, char *, char *, int, struct file_header *);
 
 /*
  * Prototypes used to display comments
@@ -185,15 +183,15 @@ __tm_funct_t print_raw_timestamp
  */
 __printf_funct_t print_xml_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 __nr_t, struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int []);
 __printf_funct_t print_json_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 __nr_t, struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int []);
 __printf_funct_t print_hdr_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 __nr_t, struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int []);
 __printf_funct_t print_svg_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 __nr_t, struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int []);
 
 #endif  /* _SADF_H */

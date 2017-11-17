@@ -583,17 +583,16 @@ int sa_read(void *buffer, int size)
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC (unused here).
  * @file_hdr	System activity file standard header (unused here).
- * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
-__print_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *cur_time, int utc,
-				  struct file_header *file_hdr, unsigned int cpu_nr)
+__printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *cur_time,
+				  int utc, struct file_header *file_hdr)
 {
 	char restart[64];
 
 	printf("\n%-11s", cur_time);
 	sprintf(restart, "  LINUX RESTART\t(%d CPU)\n",
-		cpu_nr > 1 ? cpu_nr - 1 : 1);
+		file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	cprintf_s(IS_RESTART, "%s", restart);
 
 }
@@ -906,8 +905,7 @@ void read_stats_from_file(char from_file[])
 	allocate_structures(act);
 
 	/* Print report header */
-	print_report_hdr(flags, &rectime, &file_hdr,
-			 act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr);
+	print_report_hdr(flags, &rectime, &file_hdr);
 
 	/* Read system statistics from file */
 	do {
@@ -1071,8 +1069,7 @@ void read_stats(void)
 	allocate_structures(act);
 
 	/* Print report header */
-	print_report_hdr(flags, &rectime, &file_hdr,
-			 act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr);
+	print_report_hdr(flags, &rectime, &file_hdr);
 
 	/* Read system statistics sent by the data collector */
 	read_sadc_stat_bunch(0);

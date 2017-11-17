@@ -46,11 +46,10 @@ extern char *seps[];
  * @utc		True if @cur_time is expressed in UTC.
  * @sep		Character used as separator.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
-			 struct file_header *file_hdr, unsigned int cpu_nr)
+			 struct file_header *file_hdr)
 {
 	printf("%s%c-1%c", file_hdr->sa_nodename, sep, sep);
 	if (strlen(cur_date)) {
@@ -61,7 +60,7 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
 		printf(" UTC");
 	}
 	printf("%cLINUX-RESTART\t(%d CPU)\n",
-	       sep, cpu_nr > 1 ? cpu_nr - 1 : 1);
+	       sep, file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 }
 
 /*
@@ -75,16 +74,14 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
-				  char *cur_time, int utc, struct file_header *file_hdr,
-				  unsigned int cpu_nr)
+				  char *cur_time, int utc, struct file_header *file_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
-		print_dbppc_restart(cur_date, cur_time, utc, ';', file_hdr, cpu_nr);
+		print_dbppc_restart(cur_date, cur_time, utc, ';', file_hdr);
 	}
 }
 
@@ -99,16 +96,14 @@ __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr,
-				   unsigned int cpu_nr)
+				   char *cur_time, int utc, struct file_header *file_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
-		print_dbppc_restart(cur_date, cur_time, utc, '\t', file_hdr, cpu_nr);
+		print_dbppc_restart(cur_date, cur_time, utc, '\t', file_hdr);
 	}
 }
 
@@ -123,22 +118,21 @@ __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header (unused here).
- * @cpu_nr	CPU count associated with restart mark.
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr,
-				   unsigned int cpu_nr)
+				   char *cur_time, int utc, struct file_header *file_hdr)
 {
 	if (action & F_BEGIN) {
 		xprintf((*tab)++, "<restarts>");
 	}
 	if (action & F_MAIN) {
 		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" utc=\"%d\" cpu_count=\"%d\"/>",
-			cur_date, cur_time, utc ? 1 : 0, cpu_nr > 1 ? cpu_nr - 1 : 1);
+			cur_date, cur_time, utc ? 1 : 0,
+			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</restarts>");
@@ -156,15 +150,13 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header (unused here).
- * @cpu_nr	CPU count associated with restart mark.
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
-				    char *cur_time, int utc, struct file_header *file_hdr,
-				    unsigned int cpu_nr)
+				    char *cur_time, int utc, struct file_header *file_hdr)
 {
 	static int sep = FALSE;
 
@@ -178,7 +170,8 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
 		}
 		xprintf((*tab)++, "{");
 		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"utc\": %d, \"cpu_count\": %d}",
-			cur_date, cur_time, utc ? 1 : 0, cpu_nr > 1 ? cpu_nr - 1 : 1);
+			cur_date, cur_time, utc ? 1 : 0,
+			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 		xprintf0(--(*tab), "}");
 		sep = TRUE;
 	}
@@ -202,12 +195,10 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header (unused here).
- * @cpu_nr	CPU count associated with restart mark.
  ***************************************************************************
  */
 __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr,
-				   unsigned int cpu_nr)
+				   char *cur_time, int utc, struct file_header *file_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
@@ -215,7 +206,8 @@ __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
 		if (strlen(cur_date) && utc) {
 			printf(" UTC");
 		}
-		printf("\tLINUX-RESTART\t(%d CPU)\n", cpu_nr > 1 ? cpu_nr - 1 : 1);
+		printf("\tLINUX-RESTART\t(%d CPU)\n",
+		       file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 }
 
@@ -688,7 +680,6 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
  * @dfile	Name of system activity data file.
  * @file_magic	System activity file magic header.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	Number of processors for current daily data file.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
  *
@@ -698,7 +689,7 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
  */
 __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 				  struct file_magic *file_magic,
-				  struct file_header *file_hdr, __nr_t cpu_nr,
+				  struct file_header *file_hdr,
 				  struct activity *act[], unsigned int id_seq[])
 {
 	struct tm rectime, *loc_t;
@@ -726,7 +717,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 
 		xprintf(*tab, "<machine>%s</machine>", file_hdr->sa_machine);
 		xprintf(*tab, "<number-of-cpus>%d</number-of-cpus>",
-			cpu_nr > 1 ? cpu_nr - 1 : 1);
+			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
@@ -755,7 +746,6 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
  * @dfile	Name of system activity data file.
  * @file_magic	System activity file magic header.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	Number of processors for current daily data file.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
  *
@@ -765,7 +755,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
  */
 __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 				   struct file_magic *file_magic,
-				   struct file_header *file_hdr, __nr_t cpu_nr,
+				   struct file_header *file_hdr,
 				   struct activity *act[], unsigned int id_seq[])
 {
 	struct tm rectime, *loc_t;
@@ -783,7 +773,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 
 		xprintf(*tab, "\"machine\": \"%s\",", file_hdr->sa_machine);
 		xprintf(*tab, "\"number-of-cpus\": %d,",
-			cpu_nr > 1 ? cpu_nr - 1 : 1);
+			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
@@ -815,14 +805,13 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
  * @dfile	Name of system activity data file.
  * @file_magic	System activity file magic header.
  * @file_hdr	System activity file standard header.
- * @cpu_nr	Number of processors for current daily data file.
  * @act		Array of activities.
  * @id_seq	Activity sequence.
  ***************************************************************************
  */
 __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 				  struct file_magic *file_magic,
-				  struct file_header *file_hdr, __nr_t cpu_nr,
+				  struct file_header *file_hdr,
 				  struct activity *act[], unsigned int id_seq[])
 {
 	int i, p;
@@ -848,7 +837,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
-				 cpu_nr > 1 ? cpu_nr - 1 : 1,
+				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 				 PLAIN_OUTPUT);
 
 		printf(_("Number of CPU for last samples in file: %u\n"),
@@ -904,14 +893,13 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
  * @dfile	Name of system activity data file (unused here).
  * @file_magic	System activity file magic header (unused here).
  * @file_hdr	System activity file standard header.
- * @cpu_nr	Number of processors for current daily data file.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				  struct file_magic *file_magic,
-				  struct file_header *file_hdr, __nr_t cpu_nr,
+				  struct file_header *file_hdr,
 				  struct activity *act[], unsigned int id_seq[])
 {
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
@@ -936,7 +924,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
-				 cpu_nr > 1 ? cpu_nr - 1 : 1,
+				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 				 PLAIN_OUTPUT);
 		printf("</text>\n");
 	}

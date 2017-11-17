@@ -957,7 +957,6 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
  * @file_actlst	List of (known or unknown) activities in file.
  * @file	System activity data file name (name of file being read).
  * @file_magic	System activity file magic header.
- * @cpu_nr	Number of processors for current activity data file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
@@ -966,7 +965,7 @@ void display_curr_act_graphs(int ifd, off_t fpos, int *curr, long *cnt, int *eos
  ***************************************************************************
  */
 void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
-			 struct file_magic *file_magic, __nr_t cpu_nr,
+			 struct file_magic *file_magic,
 			 struct tm *rectime, struct tm *loctime)
 {
 	int curr, tab = 0, rtype;
@@ -991,7 +990,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&tab, F_BEGIN, file, file_magic,
-					     &file_hdr, cpu_nr, act, id_seq);
+					     &file_hdr, act, id_seq);
 	}
 
 	/* Process activities */
@@ -1079,7 +1078,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
 		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
-					      &file_hdr, 0);
+					      &file_hdr);
 	}
 
 	do {
@@ -1090,7 +1089,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr, 0);
+		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr);
 	}
 
 	/* Rewind file... */
@@ -1126,7 +1125,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&tab, F_END, file, file_magic,
-					     &file_hdr, cpu_nr, act, id_seq);
+					     &file_hdr, act, id_seq);
 	}
 }
 
@@ -1269,7 +1268,6 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst,
  * IN:
  * @ifd		File descriptor of input file.
  * @file_actlst	List of (known or unknown) activities in file.
- * @cpu_nr	Number of processors for current activity data file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
@@ -1279,7 +1277,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst,
  * @file_magic	file_magic structure filled with file magic header data.
  ***************************************************************************
  */
-void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_nr,
+void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 			 struct tm *rectime, struct tm *loctime, char *file,
 			 struct file_magic *file_magic)
 {
@@ -1317,7 +1315,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst, __nr_t cpu_
 	/* Print SVG header */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&parm, F_BEGIN + F_MAIN, file, file_magic,
-					     &file_hdr, cpu_nr, act, id_seq);
+					     &file_hdr, act, id_seq);
 	}
 
 	/*
@@ -1390,7 +1388,7 @@ close_svg:
 	/* Print SVG trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&parm, F_END, file, file_magic,
-					     &file_hdr, cpu_nr, act, id_seq);
+					     &file_hdr, act, id_seq);
 	}
 }
 
@@ -1410,21 +1408,17 @@ void read_stats_from_file(char dfile[])
 	struct file_activity *file_actlst = NULL;
 	struct tm rectime, loctime;
 	int ifd, ignore, tab = 0;
-	__nr_t cpu_nr;
 
 	/* Prepare file for reading and read its headers */
 	ignore = ACCEPT_BAD_FILE_FORMAT(fmt[f_position]->options);
 	check_file_actlst(&ifd, dfile, act, &file_magic, &file_hdr,
 			  &file_actlst, id_seq, ignore, &endian_mismatch, &arch_64);
 
-	/* Now pick up number of proc for this file */
-	cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
-
 	if (DISPLAY_HDR_ONLY(flags)) {
 		if (*fmt[f_position]->f_header) {
 			/* Display only data file header then exit */
 			(*fmt[f_position]->f_header)(&tab, F_BEGIN + F_END, dfile, &file_magic,
-						     &file_hdr, cpu_nr, act, id_seq);
+						     &file_hdr, act, id_seq);
 		}
 		exit(0);
 	}
@@ -1434,7 +1428,7 @@ void read_stats_from_file(char dfile[])
 
 	/* Call function corresponding to selected output format */
 	if (format == F_SVG_OUTPUT) {
-		logic3_display_loop(ifd, file_actlst, cpu_nr,
+		logic3_display_loop(ifd, file_actlst,
 				    &rectime, &loctime, dfile, &file_magic);
 	}
 	else if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
@@ -1443,7 +1437,7 @@ void read_stats_from_file(char dfile[])
 	}
 	else {
 		logic1_display_loop(ifd, file_actlst, dfile,
-				    &file_magic, cpu_nr, &rectime, &loctime);
+				    &file_magic, &rectime, &loctime);
 	}
 
 	close(ifd);
