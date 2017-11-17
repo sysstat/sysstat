@@ -53,6 +53,7 @@ extern struct act_bitmap cpu_bitmap;
 unsigned int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADER_U_NR};
 unsigned int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
 unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
+unsigned int nr_types_nr[]  = {0, 0, 1};
 
 /*
  ***************************************************************************
@@ -1590,16 +1591,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		if (fal->size > act[p]->msize) {
 			act[p]->msize = fal->size;
 		}
-		/*
-		 * NOTA BENE:
-		 * If current activity is a volatile one then fal->nr is the
-		 * number of items (CPU at the present time as only CPU related
-		 * activities are volatile today) for the statistics located
-		 * between the start of the data file and the first restart mark.
-		 * Volatile activities have a number of items which can vary
-		 * in file. In this case, a RESTART record is followed by the
-		 * volatile activity structures.
-		 */
+
 		act[p]->nr    = fal->nr;
 		act[p]->nr2   = fal->nr2;
 		act[p]->fsize = fal->size;
@@ -1652,95 +1644,39 @@ format_error:
 
 /*
  ***************************************************************************
- * Set number of items for current volatile activity and reallocate its
- * structures accordingly.
- * NB: As only activities related to CPU can be volatile, the number of
- * items corresponds in fact to the number of CPU.
- *
- * IN:
- * @act		Array of activities.
- * @act_nr	Number of items for current volatile activity.
- * @act_id	Activity identification for current volatile activity.
- *
- * RETURN:
- * -1 if unknown activity and 0 otherwise.
- ***************************************************************************
- */
-int reallocate_vol_act_structures(struct activity *act[], unsigned int act_nr,
-	                           unsigned int act_id)
-{
-	int j, p;
-
-	if ((p = get_activity_position(act, act_id, RESUME_IF_NOT_FOUND)) < 0)
-		/* Ignore unknown activity */
-		return -1;
-
-	act[p]->nr = act_nr;
-
-	for (j = 0; j < 3; j++) {
-		SREALLOC(act[p]->buf[j], void,
-			 (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
-	}
-
-	return 0;
-}
-
-/*
- ***************************************************************************
- * Read the volatile activities structures following a RESTART record.
- * Then set number of items for each corresponding activity and reallocate
- * structures.
+ * Read the new number of CPU saved after a RESTART record.
  *
  * IN:
  * @ifd		Input file descriptor.
- * @act		Array of activities.
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
- * @vol_act_nr	Number of volatile activities structures to read.
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
  * @arch_64	TRUE if file's data come from a 64 bit machine.
  *
  * RETURNS:
- * New number of items.
- *
- * NB: As only activities related to CPU can be volatile, the new number of
- * items corresponds in fact to the new number of CPU.
+ * New number of CPU.
  ***************************************************************************
  */
-__nr_t read_vol_act_structures(int ifd, struct activity *act[], char *file,
-			       struct file_magic *file_magic,
-			       unsigned int vol_act_nr, int endian_mismatch,
-			       int arch_64)
+__nr_t read_new_cpu_nr(int ifd, char *file, struct file_magic *file_magic,
+		       int endian_mismatch, int arch_64)
 {
-	struct file_activity file_act;
-	int item_nr = 0;
-	int i, rc;
+	__nr_t cpu_nr;
 
-	for (i = 0; i < vol_act_nr; i++) {
+	sa_fread(ifd, &cpu_nr, sizeof(__nr_t), HARD_SIZE);
 
-		sa_fread(ifd, &file_act, FILE_ACTIVITY_SIZE, HARD_SIZE);
-
-		/* Normalize endianness for file_activity structures */
-		if (endian_mismatch) {
-			swap_struct(act_types_nr, &file_act, arch_64);
-		}
-
-		if (file_act.id) {
-			rc = reallocate_vol_act_structures(act, file_act.nr, file_act.id);
-			if ((rc == 0) && !item_nr) {
-				item_nr = file_act.nr;
-			}
-		}
-		/* else ignore empty structures that may exist */
+	/* Normalize endianness for file_activity structures */
+	if (endian_mismatch) {
+		nr_types_nr[2] = 1;
+		swap_struct(nr_types_nr, &cpu_nr, arch_64);
 	}
 
-	if (!item_nr) {
-		/* All volatile activities structures cannot be empty */
+	if (!cpu_nr) {
+		/* CPU number cannot be zero */
 		handle_invalid_sa_file(&ifd, file_magic, file, 0);
 	}
 
-	return item_nr;
+	return cpu_nr;
 }
 
 /*
@@ -2464,9 +2400,8 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 
 	if (rtype == R_RESTART) {
 		/* Read new cpu number following RESTART record */
-		file_hdr->sa_cpu_nr = read_vol_act_structures(ifd, act, file, file_magic,
-							      file_hdr->sa_vol_act_nr,
-							      endian_mismatch, arch_64);
+		file_hdr->sa_cpu_nr = read_new_cpu_nr(ifd, file, file_magic,
+						      endian_mismatch, arch_64);
 
 		if (!dp)
 			return 0;

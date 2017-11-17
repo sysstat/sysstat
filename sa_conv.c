@@ -137,8 +137,8 @@ void upgrade_file_header(void *buffer, struct file_header *file_hdr)
 	strncpy(file_hdr->sa_machine, f_hdr->sa_machine, UTSNAME_LEN);
 	file_hdr->sa_machine[UTSNAME_LEN - 1] = '\0';
 	/* The last two values below will be updated later */
-	file_hdr->sa_vol_act_nr = 0;
-	file_hdr->sa_last_cpu_nr = 0;
+//	file_hdr->sa_vol_act_nr = 0;
+//	file_hdr->sa_last_cpu_nr = 0;
 }
 
 /*
@@ -442,7 +442,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 			   struct file_header *file_hdr, int previous_format,
 			   struct file_activity **file_actlst, unsigned int vol_id_seq[])
 {
-	int i, j, n, p;
+	int i, n, p;
 	unsigned int a_cpu = FALSE;
 	void *buffer = NULL;
 	struct file_activity *fal;
@@ -480,7 +480,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
 	fal = *file_actlst;
 
-	j = 0;
+//	j = 0;
 	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
 		sa_fread(fd, fal, FILE_ACTIVITY_SIZE, HARD_SIZE);
@@ -495,7 +495,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) >= 0) {
 			/* This is a known activity, maybe with an unknown format */
 
-			if (IS_VOLATILE(act[p]->options) && previous_format) {
+//			if (IS_VOLATILE(act[p]->options) && previous_format) {
 				/*
 				 * Current activity is known by current version
 				 * as a volatile one: So increment the number of
@@ -503,7 +503,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 				 * for old format data files, since up-to-date
 				 * format data files already have the right value here).
 				 */
-				file_hdr->sa_vol_act_nr += 1;
+//				file_hdr->sa_vol_act_nr += 1;
 
 				/*
 				 * Create the sequence of volatile activities.
@@ -512,8 +512,8 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 				 * since this sequence already exists following
 				 * the RESTART record.
 				 */
-				vol_id_seq[j++] = act[p]->id;
-			}
+//				vol_id_seq[j++] = act[p]->id;
+//			}
 
 			if (fal->id == A_CPU) {
 				/*
@@ -521,9 +521,9 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 				 * activities. The number of CPU is a constant
 				 * all along the file.
 				 */
-				if (previous_format) {
-					file_hdr->sa_last_cpu_nr = fal->nr;
-				}
+//				if (previous_format) {
+//					file_hdr->sa_last_cpu_nr = fal->nr;
+//				}
 				a_cpu = TRUE;
 			}
 
@@ -688,6 +688,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 			   struct file_header *file_hdr, int previous_format,
 			   unsigned int vol_id_seq[])
 {
+#if 0
 	int i, p;
 	struct file_activity file_act;
 
@@ -722,7 +723,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 	}
 
 	fprintf(stderr, "R");
-
+#endif
 	return 0;
 }
 

@@ -840,9 +840,6 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 				 PLAIN_OUTPUT);
 
-		printf(_("Number of CPU for last samples in file: %u\n"),
-		       file_hdr->sa_last_cpu_nr > 1 ? file_hdr->sa_last_cpu_nr - 1 : 1);
-
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
@@ -857,9 +854,9 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		printf(_("Size of a long int: %d\n"), file_hdr->sa_sizeof_long);
 		printf("HZ = %lu\n", file_hdr->sa_hz);
 
-		/* Number of activities (number of volatile activities) in file */
-		printf("sa_act_nr (sa_vol_act_nr): %u (%u)\n",
-		       file_hdr->sa_act_nr, file_hdr->sa_vol_act_nr);
+		/* Number of activities in file */
+		printf("sa_act_nr: %u\n",
+		       file_hdr->sa_act_nr);
 
 		printf(_("List of activities:\n"));
 

@@ -17,7 +17,7 @@
 
 #define IGNORE_NOTHING		0
 #define IGNORE_RESTART		1
-#define DONT_READ_VOLATILE	2
+#define DONT_READ_CPU_NR	2
 #define IGNORE_COMMENT		4
 #define SET_TIMESTAMPS		8
 

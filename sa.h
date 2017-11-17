@@ -339,16 +339,21 @@ struct svg_hdr_parm {
  * 	|                             |
  * 	| record_header structure     |
  * 	|                             |
+ * 	|--                         --|
+ * 	|(__nr_t)	* 0+          |
  * 	|--                           | * <count>
  * 	|                             |
- * 	| Statistics structures...(*) |
+ * 	| Statistics structures...    |
  * 	|                             |
  * 	|--                         --|
  *
- * (*)Note: If it's a special record, we may find a comment instead of
- * statistics (R_COMMENT record type) or, if it's a R_RESTART record type,
- * <sa_nr_vol_act> structures (of type file_activity) for the volatile
- * activities.
+ * Note: A record_header structure is followed by 0+ __nr_t values giving
+ * the number of statistics structures for activities whose number of items
+ * may vary (ie. activities having a positive f_count_index value).
+ * If the record header's type is R_COMMENT then we find only a comment
+ * following the record_header structure.
+ * If the record_header's type is R_RESTART then we find only the number of CPU
+ * (of type __nr_t) of the machine following the record_header structure.
  ***************************************************************************
  */
 
@@ -431,25 +436,16 @@ struct file_header {
 	 */
 	unsigned long sa_hz		__attribute__ ((aligned (8)));
 	/*
-	 * Number of CPU items (1 .. CPU_NR + 1) for the last sample in file.
-	 */
-	unsigned int sa_last_cpu_nr	__attribute__ ((aligned (8)));
-	/*
 	 * Number of [online or offline] CPU (1 .. CPU_NR + 1)
 	 * when the datafile has been created.
 	 * When reading a datafile, this value is updated whenever
 	 * a RESTART record is found.
 	 */
-	unsigned int sa_cpu_nr;
+	unsigned int sa_cpu_nr		__attribute__ ((aligned (8)));
 	/*
 	 * Number of activities saved in file.
 	 */
 	unsigned int sa_act_nr;
-	/*
-	 * Number of volatile activities in file. This is the number of
-	 * file_activity structures saved after each restart mark in file.
-	 */
-	unsigned int sa_vol_act_nr;
 	/*
 	 * Current year.
 	 */
@@ -498,7 +494,7 @@ struct file_header {
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
 #define FILE_HEADER_ULL_NR	1	/* Nr of unsigned long long in file_header structure */
 #define FILE_HEADER_UL_NR	1	/* Nr of unsigned long in file_header structure */
-#define FILE_HEADER_U_NR	13	/* Nr of [unsigned] int in file_header structure */
+#define FILE_HEADER_U_NR	11	/* Nr of [unsigned] int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
@@ -623,15 +619,7 @@ struct record_header {
  */
 #define AO_SELECTED		0x02
 /*
- * When appending data to a file, the number of items (for every activity)
- * is forced to that of the file (number of network interfaces, serial lines,
- * etc.) Exceptions are volatile activities (like A_CPU) whose number of items
- * is related to the number of CPUs: If current machine has a different number
- * of CPU than that of the file (but is equal to sa_last_cpu_nr) then data
- * will be appended with a number of items equal to that of the machine.
- */
-#define AO_VOLATILE		0x04
-/*
+ * 0x04: Unused.
  * 0x08: Unused.
  */
 /*
@@ -660,7 +648,6 @@ struct record_header {
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
-#define IS_VOLATILE(m)		(((m) & AO_VOLATILE)         == AO_VOLATILE)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 #define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
@@ -1238,12 +1225,10 @@ int print_special_record
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 void read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int);
+__nr_t read_new_cpu_nr
+	(int, char *, struct file_magic *, int, int);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int);
-__nr_t read_vol_act_structures
-	(int, struct activity * [], char *, struct file_magic *, unsigned int, int, int);
-int reallocate_vol_act_structures
-	(struct activity * [], unsigned int, unsigned int);
 void remap_struct
 	(unsigned int [], unsigned int [], void *, unsigned int);
 void replace_nonprintable_char
