@@ -1956,12 +1956,10 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		}
 	}
 
-	if (dispavg) {
+	if (dispavg && avg_cpufreq) {
 		/* Array of CPU frequency no longer needed: Free it! */
-		if (avg_cpufreq) {
-			free(avg_cpufreq);
-			avg_cpufreq = NULL;
-		}
+		free(avg_cpufreq);
+		avg_cpufreq = NULL;
 	}
 }
 
@@ -2024,8 +2022,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 			exit(4);
 		}
 		memset(avg_fan, 0, sizeof(double) * a->nr);
-	}
-	if (!avg_fan_min) {
+
 		if ((avg_fan_min = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
 			perror("malloc");
 			exit(4);
@@ -2061,15 +2058,11 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 		cprintf_in(IS_STR, " %s\n", spc->device, 0);
 	}
 
-	if (dispavg) {
-		if (avg_fan) {
-			free(avg_fan);
-			avg_fan = NULL;
-		}
-		if (avg_fan_min) {
-			free(avg_fan_min);
-			avg_fan_min = NULL;
-		}
+	if (dispavg && avg_fan) {
+		free(avg_fan);
+		free(avg_fan_min);
+		avg_fan = NULL;
+		avg_fan_min = NULL;
 	}
 }
 
@@ -2132,15 +2125,13 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 			exit(4);
 		}
 		memset(avg_temp, 0, sizeof(double) * a->nr);
-	}
-	if (!avg_temp_min) {
+
 		if ((avg_temp_min = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
 			perror("malloc");
 			exit(4);
 		}
 		memset(avg_temp_min, 0, sizeof(double) * a->nr);
-	}
-	if (!avg_temp_max) {
+
 		if ((avg_temp_max = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
 			perror("malloc");
 			exit(4);
@@ -2182,19 +2173,13 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		cprintf_in(IS_STR, " %s\n", spc->device, 0);
 	}
 
-	if (dispavg) {
-		if (avg_temp) {
-			free(avg_temp);
-			avg_temp = NULL;
-		}
-		if (avg_temp_min) {
-			free(avg_temp_min);
-			avg_temp_min = NULL;
-		}
-		if (avg_temp_max) {
-			free(avg_temp_max);
-			avg_temp_max = NULL;
-		}
+	if (dispavg && avg_temp) {
+		free(avg_temp);
+		free(avg_temp_min);
+		free(avg_temp_max);
+		avg_temp = NULL;
+		avg_temp_min = NULL;
+		avg_temp_max = NULL;
 	}
 }
 
@@ -2257,15 +2242,13 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 			exit(4);
 		}
 		memset(avg_in, 0, sizeof(double) * a->nr);
-	}
-	if (!avg_in_min) {
+
 		if ((avg_in_min = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
 			perror("malloc");
 			exit(4);
 		}
 		memset(avg_in_min, 0, sizeof(double) * a->nr);
-	}
-	if (!avg_in_max) {
+
 		if ((avg_in_max = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
 			perror("malloc");
 			exit(4);
@@ -2307,19 +2290,13 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		cprintf_in(IS_STR, " %s\n", spc->device, 0);
 	}
 
-	if (dispavg) {
-		if (avg_in) {
-			free(avg_in);
-			avg_in = NULL;
-		}
-		if (avg_in_min) {
-			free(avg_in_min);
-			avg_in_min = NULL;
-		}
-		if (avg_in_max) {
-			free(avg_in_max);
-			avg_in_max = NULL;
-		}
+	if (dispavg && avg_in) {
+		free(avg_in);
+		free(avg_in_min);
+		free(avg_in_max);
+		avg_in = NULL;
+		avg_in_min = NULL;
+		avg_in_max = NULL;
 	}
 }
 
@@ -2497,39 +2474,40 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes: Display it */
-			printf("%-11s", timestamp[curr]);
+		/* Yes: Display it */
+		printf("%-11s", timestamp[curr]);
 
-			if (!i) {
-				/* This is CPU "all" */
-				cprintf_in(IS_STR, "%s", "     all", 0);
-			}
-			else {
-				cprintf_in(IS_INT, "     %3d", "", i - 1);
-			}
-
-			tisfreq = 0;
-			tis = 0;
-
-			for (k = 0; k < a->nr2; k++) {
-
-				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
-				if (!spc_k->freq)
-					break;
-				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
-
-				tisfreq += (spc_k->freq / 1000) *
-				           (spc_k->time_in_state - spp_k->time_in_state);
-				tis     += (spc_k->time_in_state - spp_k->time_in_state);
-			}
-
-			/* Display weighted frequency for current CPU */
-			cprintf_f(NO_UNIT, 1, 9, 2,
-				  tis ? ((double) tisfreq) / tis : 0.0);
-			printf("\n");
+		if (!i) {
+			/* This is CPU "all" */
+			cprintf_in(IS_STR, "%s", "     all", 0);
 		}
+		else {
+			cprintf_in(IS_INT, "     %3d", "", i - 1);
+		}
+
+		tisfreq = 0;
+		tis = 0;
+
+		for (k = 0; k < a->nr2; k++) {
+
+			spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+			if (!spc_k->freq)
+				break;
+			spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+
+			tisfreq += (spc_k->freq / 1000) *
+			           (spc_k->time_in_state - spp_k->time_in_state);
+			tis     += (spc_k->time_in_state - spp_k->time_in_state);
+		}
+
+		/* Display weighted frequency for current CPU */
+		cprintf_f(NO_UNIT, 1, 9, 2,
+			  tis ? ((double) tisfreq) / tis : 0.0);
+		printf("\n");
 	}
 }
 
