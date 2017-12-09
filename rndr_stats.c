@@ -986,35 +986,35 @@ __print_funct_t render_serial_stats(struct activity *a, int isdb, char *pre,
 			       NULL);
 
 			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\txmtin/s", "%d",
+			       "ttyS%d\txmtin/s", NULL,
 			       cons(iv, ssc->line - 1, NOVAL),
 			       NOVAL,
 			       S_VALUE(ssp->tx, ssc->tx, itv),
 			       NULL);
 
 			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\tframerr/s", "%d",
+			       "ttyS%d\tframerr/s", NULL,
 			       cons(iv, ssc->line - 1, NOVAL),
 			       NOVAL,
 			       S_VALUE(ssp->frame, ssc->frame, itv),
 			       NULL);
 
 			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\tprtyerr/s", "%d",
+			       "ttyS%d\tprtyerr/s", NULL,
 			       cons(iv, ssc->line - 1, NOVAL),
 			       NOVAL,
 			       S_VALUE(ssp->parity, ssc->parity, itv),
 			       NULL);
 
 			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\tbrk/s", "%d",
+			       "ttyS%d\tbrk/s", NULL,
 			       cons(iv, ssc->line - 1, NOVAL),
 			       NOVAL,
 			       S_VALUE(ssp->brk, ssc->brk, itv),
 			       NULL);
 
 			render(isdb, pre, pt_newlin,
-			       "ttyS%d\tovrun/s", "%d",
+			       "ttyS%d\tovrun/s", NULL,
 			       cons(iv, ssc->line - 1, NOVAL),
 			       NOVAL,
 			       S_VALUE(ssp->overrun, ssc->overrun, itv),
