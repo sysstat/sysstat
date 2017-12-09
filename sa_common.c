@@ -604,8 +604,11 @@ void print_report_hdr(unsigned int flags, struct tm *rectime,
  *
  * RETURNS:
  * Position of current network interface in array of sample statistics used
- * as reference, or -1 if it is a new interface (it was not present in array
- * of stats used as reference).
+ * as reference.
+ * -1 if it is a new interface (it was not present in array of stats used
+ * as reference).
+ * -2 if it is a known interface but which has been unregistered then
+ * registered again on the interval.
  *
  * Note: A newly registered interface, if it is supernumerary, may make the
  * last interface in the array going out of the list. Yet an interface going
@@ -676,14 +679,12 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 					ovfw = TRUE;
 				}
 
-				if (!ovfw) {
+				if (!ovfw)
 					/*
 					 * OK: assume here that the device was
 					 * actually unregistered.
 					 */
-					memset(sndp, 0, STATS_NET_DEV_SIZE);
-					strncpy(sndp->interface, sndc->interface, MAX_IFACE_LEN - 1);
-				}
+					return -2;
 			}
 			return index;
 		}
@@ -707,7 +708,10 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
  *
  * RETURNS:
  * Position of current network interface in array of sample statistics used
- * as reference, or -1 if it is a newly registered interface.
+ * as reference.
+ * -1 if it is a newly registered interface.
+ * -2 if it is a known interface but which has been unregistered then
+ * registered again on the interval.
  ***************************************************************************
  */
 int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
@@ -732,15 +736,13 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 			    (snedc->tx_carrier_errors < snedp->tx_carrier_errors) ||
 			    (snedc->rx_frame_errors   < snedp->rx_frame_errors)   ||
 			    (snedc->rx_fifo_errors    < snedp->rx_fifo_errors)    ||
-			    (snedc->tx_fifo_errors    < snedp->tx_fifo_errors)) {
-
+			    (snedc->tx_fifo_errors    < snedp->tx_fifo_errors))
 				/*
 				 * OK: assume here that the device was
 				 * actually unregistered.
 				 */
-				memset(snedp, 0, STATS_NET_EDEV_SIZE);
-				strncpy(snedp->interface, snedc->interface, MAX_IFACE_LEN - 1);
-			}
+				return -2;
+
 			return index;
 		}
 		index++;
@@ -763,7 +765,9 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
  *
  * RETURNS:
  * Position of current disk in array of sample statistics used as reference
- * or -1 if it is a newly registered device.
+ * -1 if it is a newly registered device.
+ * -2 if it is a known device but which has been unregistered then registered
+ * again on the interval.
  ***************************************************************************
  */
 int check_disk_reg(struct activity *a, int curr, int ref, int pos)
@@ -786,12 +790,10 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 			 */
 			if ((sdc->nr_ios < sdp->nr_ios) &&
 			    (sdc->rd_sect < sdp->rd_sect) &&
-			    (sdc->wr_sect < sdp->wr_sect)) {
+			    (sdc->wr_sect < sdp->wr_sect))
+				/* Same device registered again */
+				return -2;
 
-				memset(sdp, 0, STATS_DISK_SIZE);
-				sdp->major = sdc->major;
-				sdp->minor = sdc->minor;
-			}
 			return index;
 		}
 		index++;
