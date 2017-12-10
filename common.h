@@ -12,6 +12,7 @@
 #include <time.h>
 #include <sched.h>	/* For __CPU_SETSIZE */
 #include <limits.h>
+#include <stdlib.h>
 
 #ifdef HAVE_SYS_SYSMACROS_H
 /* Needed on some non-glibc environments */
