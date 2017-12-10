@@ -258,13 +258,26 @@ void salloc(int i, char *ltemp)
 
 /*
  ***************************************************************************
- * Display an error message. Happens when the data collector doesn't send
- * enough data.
+ * Display an error message.
+ *
+ * IN:
+ * @error_code	Code of error message to display.
  ***************************************************************************
  */
-void print_read_error(void)
+void print_read_error(int error_code)
 {
-	fprintf(stderr, _("End of data collecting unexpected\n"));
+	switch (error_code) {
+
+		case END_OF_DATA_UNEXPECTED:
+			/* Happens when the data collector doesn't send enough data */
+			fprintf(stderr, _("End of data collecting unexpected\n"));
+			break;
+
+		default:
+			/* Strange data sent by sadc...! */
+			fprintf(stderr, _("Inconsistent input data\n"));
+			break;
+	}
 	exit(3);
 }
 
@@ -640,7 +653,7 @@ void read_sadc_stat_bunch(int curr)
 		if (sigint_caught)
 			return;
 
-		print_read_error();
+		print_read_error(END_OF_DATA_UNEXPECTED);
 	}
 
 	for (i = 0; i < NR_ACT; i++) {
@@ -650,7 +663,7 @@ void read_sadc_stat_bunch(int curr)
 		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 
 		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2)) {
-			print_read_error();
+			print_read_error(END_OF_DATA_UNEXPECTED);
 		}
 	}
 }
@@ -813,7 +826,7 @@ void read_header_data(void)
 				_("Using a wrong data collector from a different sysstat version\n"));
 		}
 
-		goto input_error;
+		print_read_error(INCONSISTENT_INPUT_DATA);
 	}
 
 	/*
@@ -823,22 +836,24 @@ void read_header_data(void)
 	 * but also VERSION above) and thus the size of file_header is FILE_HEADER_SIZE.
 	 */
 	if (sa_read(&file_hdr, FILE_HEADER_SIZE)) {
-		print_read_error();
+		print_read_error(END_OF_DATA_UNEXPECTED);
 	}
 
 	/* All activities are not necessarily selected, but NR_ACT is a max */
-	if (file_hdr.sa_act_nr > NR_ACT)
-		goto input_error;
+	if (file_hdr.sa_act_nr > NR_ACT) {
+		print_read_error(INCONSISTENT_INPUT_DATA);
+	}
 
 	if ((file_hdr.act_size != FILE_ACTIVITY_SIZE) ||
-	    (file_hdr.rec_size != RECORD_HEADER_SIZE))
-		goto input_error;
+	    (file_hdr.rec_size != RECORD_HEADER_SIZE)) {
+		print_read_error(INCONSISTENT_INPUT_DATA);
+	}
 
 	/* Read activity list */
 	for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
 		if (sa_read(&file_act, FILE_ACTIVITY_SIZE)) {
-			print_read_error();
+			print_read_error(END_OF_DATA_UNEXPECTED);
 		}
 
 		p = get_activity_position(act, file_act.id, RESUME_IF_NOT_FOUND);
@@ -849,9 +864,10 @@ void read_header_data(void)
 			    || (act[p]->gtypes_nr[2] != file_act.types_nr[2])
 			    || (file_act.nr <= 0)
 			    || (file_act.nr2 <= 0)
-			    || (act[p]->magic != file_act.magic))
+			    || (act[p]->magic != file_act.magic)) {
 			/* Remember that we are reading data from sadc and not from a file... */
-			goto input_error;
+			print_read_error(INCONSISTENT_INPUT_DATA);
+		}
 
 		id_seq[i]   = file_act.id;	/* We necessarily have "i < NR_ACT" */
 		act[p]->nr  = file_act.nr;
@@ -866,13 +882,6 @@ void read_header_data(void)
 	reverse_check_act(file_hdr.sa_act_nr);
 
 	return;
-
-input_error:
-
-	/* Strange data sent by sadc...! */
-	fprintf(stderr, _("Inconsistent input data\n"));
-
-	exit(3);
 }
 
 /*

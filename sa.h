@@ -279,6 +279,9 @@
 #define FIRST	0
 #define SECOND	1
 
+#define END_OF_DATA_UNEXPECTED	1
+#define INCONSISTENT_INPUT_DATA	2
+
 #define CLOSE_XML_MARKUP	0
 #define OPEN_XML_MARKUP		1
 
