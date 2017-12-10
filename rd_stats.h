@@ -40,6 +40,9 @@
 #define C_DUPLEX_HALF	1
 #define C_DUPLEX_FULL	2
 
+/* Type for all functions counting items. Value can be negative (-1) */
+#define __nr_t		int
+
 /*
  ***************************************************************************
  * System files containing statistics

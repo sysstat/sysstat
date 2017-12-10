@@ -156,9 +156,9 @@ int get_proc_cpu_nr(void)
  * 2: two proc...
  ***************************************************************************
  */
-int get_cpu_nr(unsigned int max_nr_cpus, int highest)
+__nr_t get_cpu_nr(unsigned int max_nr_cpus, int highest)
 {
-	int cpu_nr;
+	__nr_t cpu_nr;
 
 	if ((cpu_nr = get_sys_cpu_nr(highest)) == 0) {
 		/* /sys may be not mounted. Use /proc/stat instead */
@@ -188,11 +188,11 @@ int get_cpu_nr(unsigned int max_nr_cpus, int highest)
  * Number of interrupts per processor.
  ***************************************************************************
  */
-int get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
+__nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 {
 	FILE *fp;
 	char *line = NULL;
-	unsigned int irq = 0;
+	__nr_t irq = 0;
 	int p;
 
 	if ((fp = fopen(file, "r")) == NULL)
@@ -229,12 +229,13 @@ int get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
  * Number of devices (and partitions).
  ***************************************************************************
  */
-int get_diskstats_dev_nr(int count_part, int only_used_dev)
+__nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 {
 	FILE *fp;
 	char line[256];
 	char dev_name[MAX_NAME_LEN];
-	int dev = 0, i;
+	__nr_t dev = 0;
+	int i;
 	unsigned long rd_ios, wr_ios;
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
@@ -275,11 +276,11 @@ int get_diskstats_dev_nr(int count_part, int only_used_dev)
  * Number of interrupts, including total number of interrupts.
  ***************************************************************************
  */
-int get_irq_nr(void)
+__nr_t get_irq_nr(void)
 {
 	FILE *fp;
 	char line[8192];
-	int in = 0;
+	__nr_t in = 0;
 	int pos = 4;
 
 	if ((fp = fopen(STAT, "r")) == NULL)
@@ -310,11 +311,11 @@ int get_irq_nr(void)
  * Number of serial lines supporting tx/rx accouting.
  ***************************************************************************
  */
-int get_serial_nr(void)
+__nr_t get_serial_nr(void)
 {
 	FILE *fp;
 	char line[256];
-	int sl = 0;
+	__nr_t sl = 0;
 
 	if ((fp = fopen(SERIAL, "r")) == NULL)
 		return 0;	/* No SERIAL file */
@@ -343,11 +344,11 @@ int get_serial_nr(void)
  * Number of network interfaces.
  ***************************************************************************
  */
-int get_iface_nr(void)
+__nr_t get_iface_nr(void)
 {
 	FILE *fp;
 	char line[128];
-	int iface = 0;
+	__nr_t iface = 0;
 
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return 0;	/* No network device file */
@@ -375,9 +376,9 @@ int get_iface_nr(void)
  * Number of devices.
  ***************************************************************************
  */
-int get_disk_nr(unsigned int f)
+__nr_t get_disk_nr(unsigned int f)
 {
-	int disk_nr;
+	__nr_t disk_nr;
 
 	/*
 	 * Partitions are taken into account by sar -d only with
@@ -396,12 +397,12 @@ int get_disk_nr(unsigned int f)
  * Number of frequencies.
  ***************************************************************************
  */
-int get_freq_nr(void)
+__nr_t get_freq_nr(void)
 {
 	FILE *fp;
 	char filename[MAX_PF_NAME];
 	char line[128];
-	int freq = 0;
+	__nr_t freq = 0;
 
 	snprintf(filename, MAX_PF_NAME, "%s/cpu0/%s",
 		 SYSFS_DEVCPU, SYSFS_TIME_IN_STATE);
@@ -427,11 +428,11 @@ int get_freq_nr(void)
  * Return -1 if directory doesn't exist in sysfs.
  ***************************************************************************
  */
-int get_usb_nr(void)
+__nr_t get_usb_nr(void)
 {
 	DIR *dir;
 	struct dirent *drd;
-	int usb = 0;
+	__nr_t usb = 0;
 
 	/* Open relevant /sys directory */
 	if ((dir = opendir(SYSFS_USBDEV)) == NULL)
@@ -459,12 +460,13 @@ int get_usb_nr(void)
  * Number of filesystems.
  ***************************************************************************
  */
-int get_filesystem_nr(void)
+__nr_t get_filesystem_nr(void)
 {
 	FILE *fp;
 	char line[512], fs_name[MAX_FS_LEN], mountp[256];
-	int fs = 0, skip = 0, skip_next = 0;
 	char *pos = 0;
+	__nr_t fs = 0;
+	int skip = 0, skip_next = 0;
 	struct statvfs buf;
 
 	if ((fp = fopen(MTAB, "r")) == NULL)
@@ -520,11 +522,11 @@ int get_filesystem_nr(void)
  * Return -1 if directory doesn't exist in sysfs.
  ***************************************************************************
  */
-int get_fchost_nr(void)
+__nr_t get_fchost_nr(void)
 {
 	DIR *dir;
 	struct dirent *drd;
-	int fc = 0;
+	__nr_t fc = 0;
 
 	if ((dir = opendir(SYSFS_FCHOST)) == NULL) {
 		/* Directory non-existent */

@@ -218,8 +218,8 @@ void read_in(struct stats_pwr_in *st_pwr_in, int nbr)
  * Number of sensors.
  ***************************************************************************
  */
-int get_sensors_nr(sensors_feature_type type) {
-	int count = 0;
+__nr_t get_sensors_nr(sensors_feature_type type) {
+	__nr_t count = 0;
 	const sensors_chip_name *chip;
 	const sensors_feature *feature;
 	int chip_nr = 0;
@@ -246,7 +246,7 @@ int get_sensors_nr(sensors_feature_type type) {
  * Number of fans.
  ***************************************************************************
  */
-int get_fan_nr(void)
+__nr_t get_fan_nr(void)
 {
 #ifdef HAVE_SENSORS
 	return get_sensors_nr(SENSORS_FEATURE_FAN);
@@ -263,7 +263,7 @@ int get_fan_nr(void)
  * Number of temperature sensors.
  ***************************************************************************
  */
-int get_temp_nr(void)
+__nr_t get_temp_nr(void)
 {
 #ifdef HAVE_SENSORS
 	return get_sensors_nr(SENSORS_FEATURE_TEMP);
@@ -281,7 +281,7 @@ int get_temp_nr(void)
  * Number of voltage inputs.
  ***************************************************************************
  */
-int get_in_nr(void)
+__nr_t get_in_nr(void)
 {
 #ifdef HAVE_SENSORS
 	return get_sensors_nr(SENSORS_FEATURE_IN);

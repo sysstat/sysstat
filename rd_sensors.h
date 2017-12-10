@@ -68,11 +68,11 @@ void read_in
  ***************************************************************************
  */
 
-int get_fan_nr
+__nr_t get_fan_nr
 	(void);
-int get_temp_nr
+__nr_t get_temp_nr
 	(void);
-int get_in_nr
+__nr_t get_in_nr
 	(void);
 
 #endif /* _RD_SENSORS_H */

@@ -291,8 +291,6 @@
 #define COUNT_ACTIVITIES	0
 #define COUNT_OUTPUTS		1
 
-/* Type for all functions counting items */
-#define __nr_t		int
 /* Type for all functions reading statistics */
 #define __read_funct_t	void
 /* Type for all functions displaying statistics */
