@@ -199,7 +199,7 @@ count.o: count.c common.h rd_stats.h
 count_light.o: count.c common.h rd_stats.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-rd_sensors.o: rd_sensors.c common.h rd_sensors.h sysconfig.h
+rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h sysconfig.h
 
 pr_stats.o: pr_stats.c sa.h ioconf.h sysconfig.h pr_stats.h
 
