@@ -1914,6 +1914,10 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		 */
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
 
+		if (!spc->cpufreq)
+			/* This CPU is offline: Don't display it */
+			continue;
+
 		/*
 		 * Note: a->nr is in [1, NR_CPUS + 1].
 		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
