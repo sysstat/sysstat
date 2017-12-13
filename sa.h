@@ -620,9 +620,18 @@ struct record_header {
  */
 #define AO_SELECTED		0x02
 /*
- * 0x04: Unused.
- * 0x08: Unused.
+ * Indicate that corresponding activity has items that need to be counted.
+ * This means that its @f_count_index values is >= 0.
+ * (We use AO_COUNTED instead of @f_count_index because @f_count_index
+ * is available (initialized) only for sadc).
  */
+#define AO_COUNTED		0x04
+/*
+ * Indicate that activity's metrics have persistent values when devices
+ * are registered again (this means that when the device is registered again,
+ * the metrics pick the values they had when they had been unregistered).
+ */
+#define AO_PERSISTENT		0x08
 /*
  * This flag should be set for every activity closing a markup used
  * by several activities. Used by sadf f_xml_print() functions to
@@ -649,6 +658,8 @@ struct record_header {
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
+#define HAS_COUNT_FUNCTION(m)	(((m) & AO_COUNTED)          == AO_COUNTED)
+#define HAS_PERSISTENT_VALUES(m) (((m) & AO_PERSISTENT)      == AO_PERSISTENT)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 #define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)

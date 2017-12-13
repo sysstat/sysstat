@@ -311,9 +311,9 @@ void sa_sys_init(void)
 
 	for (i = 0; i < NR_ACT; i++) {
 
-		idx = act[i]->f_count_index;
+		if (HAS_COUNT_FUNCTION(act[i]->options)) {
+			idx = act[i]->f_count_index;
 
-		if (idx >= 0) {
 			/* Number of items is not a constant and should be calculated */
 			if (f_count_results[idx] >= 0) {
 				act[i]->nr = f_count_results[idx];

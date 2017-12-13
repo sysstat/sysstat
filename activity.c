@@ -71,8 +71,8 @@ struct act_bitmap irq_bitmap = {
  */
 struct activity cpu_act = {
 	.id		= A_CPU,
-	.options	= AO_COLLECTED + AO_MULTIPLE_OUTPUTS +
-			  AO_GRAPH_PER_ITEM,
+	.options	= AO_COLLECTED + AO_COUNTED + AO_PERSISTENT +
+			  AO_MULTIPLE_OUTPUTS + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -151,7 +151,7 @@ struct activity pcsw_act = {
 /* Interrupts statistics */
 struct activity irq_act = {
 	.id		= A_IRQ,
-	.options	= AO_NULL,
+	.options	= AO_COUNTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_INT,
 #ifdef SOURCE_SADC
@@ -426,7 +426,7 @@ struct activity queue_act = {
 /* Serial lines activity */
 struct activity serial_act = {
 	.id		= A_SERIAL,
-	.options	= AO_COLLECTED,
+	.options	= AO_COLLECTED + AO_COUNTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -465,7 +465,7 @@ struct activity serial_act = {
 /* Block devices activity */
 struct activity disk_act = {
 	.id		= A_DISK,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
@@ -504,7 +504,7 @@ struct activity disk_act = {
 /* Network interfaces activity */
 struct activity net_dev_act = {
 	.id		= A_NET_DEV,
-	.options	= AO_COLLECTED + AO_GRAPH_PER_ITEM,
+	.options	= AO_COLLECTED + AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -543,7 +543,7 @@ struct activity net_dev_act = {
 /* Network interfaces (errors) activity */
 struct activity net_edev_act = {
 	.id		= A_NET_EDEV,
-	.options	= AO_COLLECTED + AO_GRAPH_PER_ITEM,
+	.options	= AO_COLLECTED + AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -1215,7 +1215,7 @@ struct activity net_udp6_act = {
 /* CPU frequency */
 struct activity pwr_cpufreq_act = {
 	.id		= A_PWR_CPUFREQ,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1254,7 +1254,7 @@ struct activity pwr_cpufreq_act = {
 /* Fan */
 struct activity pwr_fan_act = {
 	.id		= A_PWR_FAN,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1293,7 +1293,7 @@ struct activity pwr_fan_act = {
 /* Temperature */
 struct activity pwr_temp_act = {
 	.id		= A_PWR_TEMP,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1332,7 +1332,7 @@ struct activity pwr_temp_act = {
 /* Voltage inputs */
 struct activity pwr_in_act = {
 	.id		= A_PWR_IN,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1410,7 +1410,7 @@ struct activity huge_act = {
 /* CPU weighted frequency */
 struct activity pwr_wghfreq_act = {
 	.id		= A_PWR_WGHFREQ,
-	.options	= AO_MATRIX,
+	.options	= AO_COUNTED + AO_MATRIX,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1449,7 +1449,7 @@ struct activity pwr_wghfreq_act = {
 /* USB devices plugged into the system */
 struct activity pwr_usb_act = {
 	.id		= A_PWR_USB,
-	.options	= AO_CLOSE_MARKUP,
+	.options	= AO_COUNTED + AO_CLOSE_MARKUP,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
@@ -1488,7 +1488,7 @@ struct activity pwr_usb_act = {
 /* Filesystem usage activity */
 struct activity filesystem_act = {
 	.id		= A_FILESYSTEM,
-	.options	= AO_GRAPH_PER_ITEM + AO_MULTIPLE_OUTPUTS,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM + AO_MULTIPLE_OUTPUTS,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_XDISK,
 #ifdef SOURCE_SADC
@@ -1528,7 +1528,7 @@ struct activity filesystem_act = {
 /* Fibre Channel HBA usage activity */
 struct activity fchost_act = {
 	.id		= A_NET_FC,
-	.options	= AO_GRAPH_PER_ITEM,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
@@ -1567,7 +1567,8 @@ struct activity fchost_act = {
 /* Softnet activity */
 struct activity softnet_act = {
 	.id		= A_NET_SOFT,
-	.options	= AO_COLLECTED + AO_CLOSE_MARKUP + AO_GRAPH_PER_ITEM,
+	.options	= AO_COLLECTED + AO_COUNTED + AO_CLOSE_MARKUP +
+			  AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
