@@ -727,6 +727,24 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 	}
 
 	/*
+	 * Workaround for CPU coming back online: With recent kernels
+	 * some fields (user, nice, system) restart from their previous value,
+	 * whereas others (idle, iowait) restart from zero.
+	 * For the latter we need to set their previous value to zero to
+	 * avoid getting an interval value < 0.
+	 * (I don't know how the other fields like hardirq, steal... behave).
+	 * Don't assume the CPU has come back from offline state if previous
+	 * value was greater than ULLONG_MAX & 0x80000 (the counter probably
+	 * overflew).
+	 */
+	if ((scc->cpu_idle < scp->cpu_idle) && (scp->cpu_idle < (ULLONG_MAX & 0x80000))) {
+		scp->cpu_idle = 0;
+	}
+	if ((scc->cpu_iowait < scp->cpu_iowait) && (scp->cpu_iowait < (ULLONG_MAX & 0x80000))) {
+		scp->cpu_iowait = 0;
+	}
+
+	/*
 	 * Don't take cpu_guest and cpu_guest_nice into account
 	 * because cpu_user and cpu_nice already include them.
 	 */
