@@ -112,7 +112,7 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 {
 	int i, cpu_offline;
 	int sep = FALSE;
-	unsigned long long tot_jiffies[3];
+	unsigned long long tot_jiffies_c, tot_jiffies_p;
 	unsigned long long deltot_jiffies;
 	struct stats_cpu *scc, *scp;
 	char cpuno[8];
@@ -134,17 +134,17 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 		 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
 		 * already include them.
 		 */
-		tot_jiffies[curr] = scc->cpu_user + scc->cpu_nice +
-				    scc->cpu_sys + scc->cpu_idle +
-				    scc->cpu_iowait + scc->cpu_hardirq +
-				    scc->cpu_steal + scc->cpu_softirq;
-		tot_jiffies[!curr] = scp->cpu_user + scp->cpu_nice +
-				     scp->cpu_sys + scp->cpu_idle +
-				     scp->cpu_iowait + scp->cpu_hardirq +
-				     scp->cpu_steal + scp->cpu_softirq;
+		tot_jiffies_c = scc->cpu_user + scc->cpu_nice +
+				scc->cpu_sys + scc->cpu_idle +
+				scc->cpu_iowait + scc->cpu_hardirq +
+				scc->cpu_steal + scc->cpu_softirq;
+		tot_jiffies_p = scp->cpu_user + scp->cpu_nice +
+				scp->cpu_sys + scp->cpu_idle +
+				scp->cpu_iowait + scp->cpu_hardirq +
+				scp->cpu_steal + scp->cpu_softirq;
 
 		/* Total number of jiffies spent on the interval */
-		deltot_jiffies = get_interval(tot_jiffies[!curr], tot_jiffies[curr]);
+		deltot_jiffies = get_interval(tot_jiffies_p, tot_jiffies_c);
 
 		if (sep) {
 			printf(",\n");
@@ -164,7 +164,7 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 			 * (Remember that guest/guest_nice times are already included in
 			 * user/nice modes.)
 			 */
-			if (tot_jiffies[curr] == 0) {
+			if (tot_jiffies_c == 0) {
 				/*
 				 * Set current struct fields (which have been set to zero)
 				 * to values from previous iteration. Hence their values won't
