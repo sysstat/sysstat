@@ -432,11 +432,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		exit(2);
 	}
 
-	/* Init total number of views for each activity */
-	for (i = 0; i < NR_ACT; i++) {
-		id_g_nr[i] = 0;
-	}
-
 	/* Look for the first record that will be displayed */
 	do {
 		eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
