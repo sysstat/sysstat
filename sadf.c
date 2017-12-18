@@ -69,8 +69,6 @@ struct file_header file_hdr;
  * This array must always be entirely filled (even with trailing zeros).
  */
 unsigned int id_seq[NR_ACT];
-/* Total number of SVG graphs for each activity */
-int id_g_nr[NR_ACT];
 
 /* Current record header */
 struct record_header record_hdr[3];
@@ -477,9 +475,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 				*views_per_row = act[p]->g_nr;
 			}
 
-			if (n > id_g_nr[i]) {
-				 id_g_nr[i] = n;
-			 }
 			new_tot_g_nr += n;
 		}
 
