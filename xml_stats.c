@@ -108,7 +108,7 @@ void xml_markup_power_management(int tab, int action)
 __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 				    unsigned long long itv)
 {
-	int i, cpu_offline;
+	int i;
 	unsigned long long tot_jiffies_p, tot_jiffies_c;
 	unsigned long long deltot_jiffies;
 	struct stats_cpu *scc, *scp;
@@ -116,7 +116,12 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "<cpu-load>");
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		scc = (struct stats_cpu *) ((char *) a->buf[curr]  + i * a->msize);
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
@@ -143,6 +148,25 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 		/* Total number of jiffies spent on the interval */
 		deltot_jiffies = get_interval(tot_jiffies_p, tot_jiffies_c);
 
+		/*
+		 * If the CPU is offline then it is omited from /proc/stat:
+		 * All the fields couldn't have been read and the sum of them is zero.
+		 */
+		if (tot_jiffies_c == 0) {
+			/*
+			 * Set current struct fields (which have been set to zero)
+			 * to values from previous iteration. Hence their values won't
+			 * jump from zero when the CPU comes back online.
+			 */
+			*scc = *scp;
+
+			/* An offline CPU is not displayed */
+			continue;
+		}
+		if (tot_jiffies_p == 0)
+			/* CPU has just come back online */
+			continue;
+
 		if (!i) {
 			/* This is CPU "all" */
 			strcpy(cpuno, "all");
@@ -151,33 +175,13 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 			sprintf(cpuno, "%d", i - 1);
 
 			/*
-			 * If the CPU is offline then it is omited from /proc/stat:
-			 * All the fields couldn't have been read and the sum of them is zero.
-			 * (Remember that guest/guest_nice times are already included in
-			 * user/nice modes.)
+			 * Recalculate interval for current proc.
+			 * If result is 0 then current CPU is a tickless one.
 			 */
-			if (tot_jiffies_c == 0) {
-				/*
-				 * Set current struct fields (which have been set to zero)
-				 * to values from previous iteration. Hence their values won't
-				 * jump from zero when the CPU comes back online.
-				 */
-				*scc = *scp;
-
-				deltot_jiffies = 0;
-				cpu_offline = TRUE;
-			}
-			else {
-				/*
-				 * Recalculate interval for current proc.
-				 * If result is 0 then current CPU is a tickless one.
-				 */
-				deltot_jiffies = get_per_cpu_interval(scc, scp);
-				cpu_offline = FALSE;
-			}
+			deltot_jiffies = get_per_cpu_interval(scc, scp);
 
 			if (!deltot_jiffies) {
-				/* Current CPU is offline or tickless */
+				/* Current CPU is tickless */
 				if (DISPLAY_CPU_DEF(a->opt_flags)) {
 					xprintf(tab, "<cpu number=\"%d\" "
 						"user=\"%.2f\" "
@@ -186,8 +190,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 						"iowait=\"%.2f\" "
 						"steal=\"%.2f\" "
 						"idle=\"%.2f\"/>",
-						i - 1, 0.0, 0.0, 0.0, 0.0, 0.0,
-						cpu_offline ? 0.0 : 100.0);
+						i - 1, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 				}
 				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
 					xprintf(tab, "<cpu number=\"%d\" "
@@ -202,8 +205,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 						"gnice=\"%.2f\" "
 						"idle=\"%.2f\"/>",
 						i - 1, 0.0, 0.0, 0.0, 0.0,
-						0.0, 0.0, 0.0, 0.0, 0.0,
-						cpu_offline ? 0.0 : 100.0);
+						0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 				}
 				continue;
 			}
@@ -313,7 +315,7 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 	xprintf(tab++, "<interrupts>");
 	xprintf(tab++, "<int-global per=\"second\">");
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
@@ -627,36 +629,54 @@ __print_funct_t xml_print_queue_stats(struct activity *a, int curr, int tab,
 __print_funct_t xml_print_serial_stats(struct activity *a, int curr, int tab,
 				       unsigned long long itv)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 
 	xprintf(tab++, "<serial per=\"second\">");
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		ssc = (struct stats_serial *) ((char *) a->buf[curr]  + i * a->msize);
-		ssp = (struct stats_serial *) ((char *) a->buf[!curr] + i * a->msize);
 
-		if (ssc->line == 0)
+		/* Look for corresponding serial line in previous iteration */
+		j = i;
+		if (j > a->nr[!curr]) {
+			j = a->nr[!curr];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[!curr]) {
+				j = 0;
+			}
+			ssp = (struct stats_serial *) ((char *) a->buf[!curr] + j * a->msize);
+			if (ssc->line == ssp->line) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
 			continue;
 
-		if (ssc->line == ssp->line) {
-
-			xprintf(tab, "<tty line=\"%d\" "
-				"rcvin=\"%.2f\" "
-				"xmtin=\"%.2f\" "
-				"framerr=\"%.2f\" "
-				"prtyerr=\"%.2f\" "
-				"brk=\"%.2f\" "
-				"ovrun=\"%.2f\"/>",
-				ssc->line - 1,
-				S_VALUE(ssp->rx,      ssc->rx,      itv),
-				S_VALUE(ssp->tx,      ssc->tx,      itv),
-				S_VALUE(ssp->frame,   ssc->frame,   itv),
-				S_VALUE(ssp->parity,  ssc->parity,  itv),
-				S_VALUE(ssp->brk,     ssc->brk,     itv),
-				S_VALUE(ssp->overrun, ssc->overrun, itv));
-		}
+		xprintf(tab, "<tty line=\"%d\" "
+			"rcvin=\"%.2f\" "
+			"xmtin=\"%.2f\" "
+			"framerr=\"%.2f\" "
+			"prtyerr=\"%.2f\" "
+			"brk=\"%.2f\" "
+			"ovrun=\"%.2f\"/>",
+			ssc->line - 1,
+			S_VALUE(ssp->rx,      ssc->rx,      itv),
+			S_VALUE(ssp->tx,      ssc->tx,      itv),
+			S_VALUE(ssp->frame,   ssc->frame,   itv),
+			S_VALUE(ssp->parity,  ssc->parity,  itv),
+			S_VALUE(ssp->brk,     ssc->brk,     itv),
+			S_VALUE(ssp->overrun, ssc->overrun, itv));
 	}
 
 	xprintf(--tab, "</serial>");
@@ -685,12 +705,9 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "<disk per=\"second\">");
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!(sdc->major + sdc->minor))
-			continue;
 
 		j = check_disk_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -784,12 +801,9 @@ __print_funct_t xml_print_net_dev_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(sndc->interface, ""))
-			break;
 
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -856,12 +870,9 @@ __print_funct_t xml_print_net_edev_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(snedc->interface, ""))
-			break;
 
 		j = check_net_edev_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -1715,7 +1726,7 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 	struct stats_pwr_cpufreq *spc;
 	char cpuno[8];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
@@ -1723,27 +1734,28 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 
 	xprintf(tab++, "<cpu-frequency unit=\"MHz\">");
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
-		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
+		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes: Display it */
-			if (!i) {
-				/* This is CPU "all" */
-				strcpy(cpuno, "all");
-			}
-			else {
-				sprintf(cpuno, "%d", i - 1);
-			}
-
-			xprintf(tab, "<cpufreq number=\"%s\" "
-				"frequency=\"%.2f\"/>",
-				cpuno,
-				((double) spc->cpufreq) / 100);
+		/* Yes: Display it */
+		if (!i) {
+			/* This is CPU "all" */
+			strcpy(cpuno, "all");
 		}
+		else {
+			sprintf(cpuno, "%d", i - 1);
+		}
+
+		xprintf(tab, "<cpufreq number=\"%s\" "
+			"frequency=\"%.2f\"/>",
+			cpuno,
+			((double) spc->cpufreq) / 100);
 	}
 
 	xprintf(--tab, "</cpu-frequency>");
@@ -1772,7 +1784,7 @@ __print_funct_t xml_print_pwr_fan_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_pwr_fan *spc;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
@@ -1780,8 +1792,8 @@ __print_funct_t xml_print_pwr_fan_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "<fan-speed unit=\"rpm\">");
 
-	for (i = 0; i < a->nr; i++) {
-		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
 		xprintf(tab, "<fan number=\"%d\" rpm=\"%llu\" drpm=\"%llu\" device=\"%s\"/>",
 			i + 1,
@@ -1816,7 +1828,7 @@ __print_funct_t xml_print_pwr_temp_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_pwr_temp *spc;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
@@ -1824,8 +1836,8 @@ __print_funct_t xml_print_pwr_temp_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "<temperature unit=\"degree Celsius\">");
 
-	for (i = 0; i < a->nr; i++) {
-		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 		xprintf(tab, "<temp number=\"%d\" degC=\"%.2f\" percent-temp=\"%.2f\" device=\"%s\"/>",
 			i + 1,
@@ -1862,7 +1874,7 @@ __print_funct_t xml_print_pwr_in_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_pwr_in *spc;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
@@ -1870,8 +1882,8 @@ __print_funct_t xml_print_pwr_in_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "<voltage-input unit=\"V\">");
 
-	for (i = 0; i < a->nr; i++) {
-		spc = (struct stats_pwr_in *) ((char *) a->buf[curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
 		xprintf(tab, "<in number=\"%d\" inV=\"%.2f\" percent-in=\"%.2f\" device=\"%s\"/>",
 			i,
@@ -1943,7 +1955,7 @@ __print_funct_t xml_print_pwr_wghfreq_stats(struct activity *a, int curr, int ta
 	unsigned long long tis, tisfreq;
 	char cpuno[8];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
@@ -1951,43 +1963,43 @@ __print_funct_t xml_print_pwr_wghfreq_stats(struct activity *a, int curr, int ta
 
 	xprintf(tab++, "<cpu-weighted-frequency unit=\"MHz\">");
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
 		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes... */
-			tisfreq = 0;
-			tis = 0;
+		tisfreq = 0;
+		tis = 0;
 
-			for (k = 0; k < a->nr2; k++) {
+		for (k = 0; k < a->nr2; k++) {
 
-				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
-				if (!spc_k->freq)
-					break;
-				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+			spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+			if (!spc_k->freq)
+				break;
+			spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
 
-				tisfreq += (spc_k->freq / 1000) *
-				           (spc_k->time_in_state - spp_k->time_in_state);
-				tis     += (spc_k->time_in_state - spp_k->time_in_state);
-			}
-
-			if (!i) {
-				/* This is CPU "all" */
-				strcpy(cpuno, "all");
-			}
-			else {
-				sprintf(cpuno, "%d", i - 1);
-			}
-
-			xprintf(tab, "<cpuwfreq number=\"%s\" "
-				"weighted-frequency=\"%.2f\"/>",
-				cpuno,
-				tis ? ((double) tisfreq) / tis : 0.0);
+			tisfreq += (spc_k->freq / 1000) *
+			           (spc_k->time_in_state - spp_k->time_in_state);
+			tis     += (spc_k->time_in_state - spp_k->time_in_state);
 		}
+
+		if (!i) {
+			/* This is CPU "all" */
+			strcpy(cpuno, "all");
+		}
+		else {
+			sprintf(cpuno, "%d", i - 1);
+		}
+
+		xprintf(tab, "<cpuwfreq number=\"%s\" "
+			"weighted-frequency=\"%.2f\"/>",
+			cpuno,
+			tis ? ((double) tisfreq) / tis : 0.0);
 	}
 
 	xprintf(--tab, "</cpu-weighted-frequency>");
@@ -2016,7 +2028,7 @@ __print_funct_t xml_print_pwr_usb_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_pwr_usb *suc;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
@@ -2024,12 +2036,8 @@ __print_funct_t xml_print_pwr_usb_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "<usb-devices>");
 
-	for (i = 0; i < a->nr; i++) {
-		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr]  + i * a->msize);
-
-		if (!suc->bus_nr)
-			/* Bus#0 doesn't exist: We are at the end of the list */
-			break;
+	for (i = 0; i < a->nr[curr]; i++) {
+		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 
 		xprintf(tab, "<usb bus_number=\"%d\" idvendor=\"%x\" idprod=\"%x\" "
 			     "maxpower=\"%u\" manufact=\"%s\" product=\"%s\"/>",
@@ -2069,13 +2077,9 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 
 	xprintf(tab++, "<filesystems>");
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!sfc->f_blocks)
-			/* Size of filesystem is zero: We are at the end of the list */
-			break;
 
 		xprintf(tab, "<filesystem %s=\"%s\" "
 			"MBfsfree=\"%.0f\" "
@@ -2117,23 +2121,42 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 				       unsigned long long itv)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_fchost *sfcc, *sfcp;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	for (i = 0; i < a->nr; i++) {
-
+	for (i = 0; i < a->nr[curr]; i++) {
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
 
-		if (!sfcc->fchost_name[0])
-			/* We are at the end of the list */
-			break;
+		/* Look for corresponding structure in previous iteration */
+		j = i;
+		if (j > a->nr[!curr]) {
+			j = a->nr[!curr];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[!curr]) {
+				j = 0;
+			}
+			sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
+			if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
+			continue;
 
 		xprintf(tab, "<fchost name=\"%s\" "
 			"fch_rxf=\"%.2f\" "
@@ -2172,13 +2195,13 @@ __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 	struct stats_softnet *ssnc, *ssnp;
 	char cpuno[8];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
 		ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);

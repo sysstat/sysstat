@@ -170,14 +170,19 @@ static void render(int isdb, char *pre, int rflags, const char *pptxt,
 __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 				 int curr, unsigned long long itv)
 {
-	int i, cpu_offline;
+	int i;
 	unsigned long long tot_jiffies_p, tot_jiffies_c;
 	unsigned long long deltot_jiffies;
 	struct stats_cpu *scc, *scp;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		scc = (struct stats_cpu *) ((char *) a->buf[curr]  + i * a->msize);
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
@@ -203,6 +208,25 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 
 		/* Total number of jiffies spent on the interval */
 		deltot_jiffies = get_interval(tot_jiffies_p, tot_jiffies_c);
+
+		/*
+		 * If the CPU is offline then it is omited from /proc/stat:
+		 * All the fields couldn't have been read and the sum of them is zero.
+		 */
+		if (tot_jiffies_c == 0) {
+			/*
+			 * Set current struct fields (which have been set to zero)
+			 * to values from previous iteration. Hence their values won't
+			 * jump from zero when the CPU comes back online.
+			 */
+			*scc = *scp;
+
+			/* An offline CPU is not displayed */
+			continue;
+		}
+		if (tot_jiffies_p == 0)
+			/* CPU has just come back online */
+			continue;
 
 		if (!i) {
 			/* This is CPU "all" */
@@ -312,30 +336,10 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 		}
 		else {
 			/*
-			 * If the CPU is offline then it is omited from /proc/stat:
-			 * All the fields couldn't have been read and the sum of them is zero.
-			 * (Remember that guest/guest_nice times are already included in
-			 * user/nice modes.)
+			 * Recalculate itv for current proc.
+			 * If the result is 0, then current CPU is a tickless one.
 			 */
-			if (tot_jiffies_c == 0) {
-				/*
-				 * Set current struct fields (which have been set to zero)
-				 * to values from previous iteration. Hence their values won't
-				 * jump from zero when the CPU comes back online.
-				 */
-				*scc = *scp;
-
-				deltot_jiffies = 0;
-				cpu_offline = TRUE;
-			}
-			else {
-				/*
-				 * Recalculate itv for current proc.
-				 * If the result is 0, then current CPU is a tickless one.
-				 */
-				deltot_jiffies = get_per_cpu_interval(scc, scp);
-				cpu_offline = FALSE;
-			}
+			deltot_jiffies = get_per_cpu_interval(scc, scp);
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
@@ -344,7 +348,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 				       cons(iv, i - 1, NOVAL),	/* how we pass format args  */
 				       NOVAL,
 				       !deltot_jiffies ?
-				       0.0 :			/* CPU is offline or tickless */
+				       0.0 :			/* CPU is tickless */
 				       ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
 				       NULL);
 			}
@@ -453,12 +457,11 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 			}
 
 			if (!deltot_jiffies) {
-				/* CPU is offline or tickless */
+				/* CPU is tickless */
 				render(isdb, pre, pt_newlin,
 				       "cpu%d\t%%idle", NULL, cons(iv, i - 1, NOVAL),
 				       NOVAL,
-				       cpu_offline ?
-				       0.0 : 100.0,
+				       100.0,
 				       NULL);
 			}
 			else {
@@ -534,7 +537,7 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
@@ -964,62 +967,81 @@ __print_funct_t render_queue_stats(struct activity *a, int isdb, char *pre,
 __print_funct_t render_serial_stats(struct activity *a, int isdb, char *pre,
 				    int curr, unsigned long long itv)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		ssc = (struct stats_serial *) ((char *) a->buf[curr]  + i * a->msize);
-		ssp = (struct stats_serial *) ((char *) a->buf[!curr] + i * a->msize);
 
-		if (ssc->line == 0)
+		/* Look for corresponding serial line in previous iteration */
+		j = i;
+		if (j > a->nr[!curr]) {
+			j = a->nr[!curr];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[!curr]) {
+				j = 0;
+			}
+			ssp = (struct stats_serial *) ((char *) a->buf[!curr] + j * a->msize);
+			if (ssc->line == ssp->line) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
 			continue;
 
-		if (ssc->line == ssp->line) {
-			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\trcvin/s", "%d",
-			       cons(iv, ssc->line - 1, NOVAL),
-			       NOVAL,
-			       S_VALUE(ssp->rx, ssc->rx, itv),
-			       NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "ttyS%d\trcvin/s", "%d",
+		       cons(iv, ssc->line - 1, NOVAL),
+		       NOVAL,
+		       S_VALUE(ssp->rx, ssc->rx, itv),
+		       NULL);
 
-			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\txmtin/s", NULL,
-			       cons(iv, ssc->line - 1, NOVAL),
-			       NOVAL,
-			       S_VALUE(ssp->tx, ssc->tx, itv),
-			       NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "ttyS%d\txmtin/s", NULL,
+		       cons(iv, ssc->line - 1, NOVAL),
+		       NOVAL,
+		       S_VALUE(ssp->tx, ssc->tx, itv),
+		       NULL);
 
-			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\tframerr/s", NULL,
-			       cons(iv, ssc->line - 1, NOVAL),
-			       NOVAL,
-			       S_VALUE(ssp->frame, ssc->frame, itv),
-			       NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "ttyS%d\tframerr/s", NULL,
+		       cons(iv, ssc->line - 1, NOVAL),
+		       NOVAL,
+		       S_VALUE(ssp->frame, ssc->frame, itv),
+		       NULL);
 
-			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\tprtyerr/s", NULL,
-			       cons(iv, ssc->line - 1, NOVAL),
-			       NOVAL,
-			       S_VALUE(ssp->parity, ssc->parity, itv),
-			       NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "ttyS%d\tprtyerr/s", NULL,
+		       cons(iv, ssc->line - 1, NOVAL),
+		       NOVAL,
+		       S_VALUE(ssp->parity, ssc->parity, itv),
+		       NULL);
 
-			render(isdb, pre, PT_NOFLAG,
-			       "ttyS%d\tbrk/s", NULL,
-			       cons(iv, ssc->line - 1, NOVAL),
-			       NOVAL,
-			       S_VALUE(ssp->brk, ssc->brk, itv),
-			       NULL);
+		render(isdb, pre, PT_NOFLAG,
+		       "ttyS%d\tbrk/s", NULL,
+		       cons(iv, ssc->line - 1, NOVAL),
+		       NOVAL,
+		       S_VALUE(ssp->brk, ssc->brk, itv),
+		       NULL);
 
-			render(isdb, pre, pt_newlin,
-			       "ttyS%d\tovrun/s", NULL,
-			       cons(iv, ssc->line - 1, NOVAL),
-			       NOVAL,
-			       S_VALUE(ssp->overrun, ssc->overrun, itv),
-			       NULL);
-		}
+		render(isdb, pre, pt_newlin,
+		       "ttyS%d\tovrun/s", NULL,
+		       cons(iv, ssc->line - 1, NOVAL),
+		       NOVAL,
+		       S_VALUE(ssp->overrun, ssc->overrun, itv),
+		       NULL);
 	}
 }
 
@@ -1047,12 +1069,9 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!(sdc->major + sdc->minor))
-			continue;
 
 		j = check_disk_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -1168,12 +1187,9 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(sndc->interface, ""))
-			break;
 
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -1267,12 +1283,9 @@ __print_funct_t render_net_edev_stats(struct activity *a, int isdb, char *pre,
 
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(snedc->interface, ""))
-			break;
 
 		j = check_net_edev_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -2508,30 +2521,35 @@ __print_funct_t render_pwr_cpufreq_stats(struct activity *a, int isdb, char *pre
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
 
-		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!spc->cpufreq)
+			/* This CPU is offline: Don't display it */
+			continue;
 
-			if (!i) {
-				/* This is CPU "all" */
-				render(isdb, pre, pt_newlin,
-				       "all\tMHz",
-				       "-1", NULL,
-				       NOVAL,
-				       ((double) spc->cpufreq) / 100,
-				       NULL);
-			}
-			else {
-				render(isdb, pre, pt_newlin,
-				       "cpu%d\tMHz",
-				       "%d", cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       ((double) spc->cpufreq) / 100,
-				       NULL);
-			}
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
+
+		if (!i) {
+			/* This is CPU "all" */
+			render(isdb, pre, pt_newlin,
+			       "all\tMHz",
+			       "-1", NULL,
+			       NOVAL,
+			       ((double) spc->cpufreq) / 100,
+			       NULL);
+		}
+		else {
+			render(isdb, pre, pt_newlin,
+			       "cpu%d\tMHz",
+			       "%d", cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       ((double) spc->cpufreq) / 100,
+			       NULL);
 		}
 	}
 }
@@ -2556,7 +2574,7 @@ __print_funct_t render_pwr_fan_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
 		render(isdb, pre, PT_USESTR,
@@ -2605,7 +2623,7 @@ __print_funct_t render_pwr_temp_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 		render(isdb, pre, PT_USESTR,
@@ -2656,7 +2674,7 @@ __print_funct_t render_pwr_in_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
 		render(isdb, pre, PT_USESTR,
@@ -2743,47 +2761,47 @@ __print_funct_t render_pwr_wghfreq_stats(struct activity *a, int isdb, char *pre
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
 		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes... */
-			tisfreq = 0;
-			tis = 0;
+		tisfreq = 0;
+		tis = 0;
 
-			for (k = 0; k < a->nr2; k++) {
+		for (k = 0; k < a->nr2; k++) {
 
-				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
-				if (!spc_k->freq)
-					break;
-				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+			spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+			if (!spc_k->freq)
+				break;
+			spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
 
-				tisfreq += (spc_k->freq / 1000) *
-				           (spc_k->time_in_state - spp_k->time_in_state);
-				tis     += (spc_k->time_in_state - spp_k->time_in_state);
-			}
+			tisfreq += (spc_k->freq / 1000) *
+			           (spc_k->time_in_state - spp_k->time_in_state);
+			tis     += (spc_k->time_in_state - spp_k->time_in_state);
+		}
 
-			if (!i) {
-				/* This is CPU "all" */
-				render(isdb, pre, pt_newlin,
-				       "all\twghMHz",
-				       "-1", NULL,
-				       NOVAL,
-				       tis ? ((double) tisfreq) / tis : 0.0,
-				       NULL);
-			}
-			else {
-				render(isdb, pre, pt_newlin,
-				       "cpu%d\twghMHz",
-				       "%d", cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       tis ? ((double) tisfreq) / tis : 0.0,
-				       NULL);
-			}
+		if (!i) {
+			/* This is CPU "all" */
+			render(isdb, pre, pt_newlin,
+			       "all\twghMHz",
+			       "-1", NULL,
+			       NOVAL,
+			       tis ? ((double) tisfreq) / tis : 0.0,
+			       NULL);
+		}
+		else {
+			render(isdb, pre, pt_newlin,
+			       "cpu%d\twghMHz",
+			       "%d", cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       tis ? ((double) tisfreq) / tis : 0.0,
+			       NULL);
 		}
 	}
 }
@@ -2807,12 +2825,8 @@ __print_funct_t render_pwr_usb_stats(struct activity *a, int isdb, char *pre,
 	struct stats_pwr_usb *suc;
 	char id[9];
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!suc->bus_nr)
-			/* Bus#0 doesn't exist: We are at the end of the list */
-			break;
 
 		sprintf(id, "%x", suc->vendor_id);
 		render(isdb, pre, PT_USESTR,
@@ -2877,12 +2891,8 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 	int i;
 	struct stats_filesystem *sfc;
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!sfc->f_blocks)
-			/* Size of filesystem is zero: We are at the end of the list */
-			break;
 
 		render(isdb, pre, PT_USERND,
 		       "%s\tMBfsfree",
@@ -2961,16 +2971,36 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 				    int curr, unsigned long long itv)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_fchost *sfcc, *sfcp;
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + i * a->msize);
 
-		if (!sfcc->fchost_name[0])
-			/* We are at the end of the list */
-			break;
+		/* Look for corresponding structure in previous iteration */
+		j = i;
+		if (j > a->nr[!curr]) {
+			j = a->nr[!curr];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[!curr]) {
+				j = 0;
+			}
+			sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
+			if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
+			continue;
 
 		render(isdb, pre, PT_NOFLAG ,
 		       "%s\tfch_rxf/s",
@@ -3021,7 +3051,7 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -3029,7 +3059,7 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 		 * That's why we don't use a syntax like:
 		 * ssnc = (struct stats_softnet *) a->buf[...] + i;
                  */
-                ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
+                ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
                 ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/*
@@ -3041,81 +3071,82 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			if (!i) {
-				/* This is CPU "all" */
-				render(isdb, pre, PT_NOFLAG,
-				       "all\ttotal/s",
-				       "-1", NULL,
-				       NOVAL,
-				       S_VALUE(ssnp->processed, ssnc->processed, itv),
-				       NULL);
+		if (!i) {
+			/* This is CPU "all" */
+			render(isdb, pre, PT_NOFLAG,
+			       "all\ttotal/s",
+			       "-1", NULL,
+			       NOVAL,
+			       S_VALUE(ssnp->processed, ssnc->processed, itv),
+			       NULL);
 
-				render(isdb, pre, PT_NOFLAG,
-				       "all\tdropd/s",
-				       NULL, NULL,
-				       NOVAL,
-				       S_VALUE(ssnp->dropped, ssnc->dropped, itv),
-				       NULL);
+			render(isdb, pre, PT_NOFLAG,
+			       "all\tdropd/s",
+			       NULL, NULL,
+			       NOVAL,
+			       S_VALUE(ssnp->dropped, ssnc->dropped, itv),
+			       NULL);
 
-				render(isdb, pre, PT_NOFLAG,
-				       "all\tsqueezd/s",
-				       NULL, NULL,
-				       NOVAL,
-				       S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
-				       NULL);
+			render(isdb, pre, PT_NOFLAG,
+			       "all\tsqueezd/s",
+			       NULL, NULL,
+			       NOVAL,
+			       S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
+			       NULL);
 
-				render(isdb, pre, PT_NOFLAG,
-				       "all\trx_rps/s",
-				       NULL, NULL,
-				       NOVAL,
-				       S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
-				       NULL);
+			render(isdb, pre, PT_NOFLAG,
+			       "all\trx_rps/s",
+			       NULL, NULL,
+			       NOVAL,
+			       S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
+			       NULL);
 
-				render(isdb, pre, pt_newlin,
-				       "all\tflw_lim/s",
-				       NULL, NULL,
-				       NOVAL,
-				       S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
-				       NULL);
-			}
-			else {
-				render(isdb, pre, PT_NOFLAG,
-				       "cpu%d\ttotal/s",
-				       "%d", cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       S_VALUE(ssnp->processed, ssnc->processed, itv),
-				       NULL);
+			render(isdb, pre, pt_newlin,
+			       "all\tflw_lim/s",
+			       NULL, NULL,
+			       NOVAL,
+			       S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
+			       NULL);
+		}
+		else {
+			render(isdb, pre, PT_NOFLAG,
+			       "cpu%d\ttotal/s",
+			       "%d", cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       S_VALUE(ssnp->processed, ssnc->processed, itv),
+			       NULL);
 
-				render(isdb, pre, PT_NOFLAG,
-				       "cpu%d\tdropd/s",
-				       NULL, cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       S_VALUE(ssnp->dropped, ssnc->dropped, itv),
-				       NULL);
+			render(isdb, pre, PT_NOFLAG,
+			       "cpu%d\tdropd/s",
+			       NULL, cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       S_VALUE(ssnp->dropped, ssnc->dropped, itv),
+			       NULL);
 
-				render(isdb, pre, PT_NOFLAG,
-				       "cpu%d\tsqueezd/s",
-				       NULL, cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
-				       NULL);
+			render(isdb, pre, PT_NOFLAG,
+			       "cpu%d\tsqueezd/s",
+			       NULL, cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
+			       NULL);
 
-				render(isdb, pre, PT_NOFLAG,
-				       "cpu%d\trx_rps/s",
-				       NULL, cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
-				       NULL);
+			render(isdb, pre, PT_NOFLAG,
+			       "cpu%d\trx_rps/s",
+			       NULL, cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
+			       NULL);
 
-				render(isdb, pre, pt_newlin,
-				       "cpu%d\tflw_lim/s",
-				       NULL, cons(iv, i - 1, NOVAL),
-				       NOVAL,
-				       S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
-				       NULL);
-			}
+			render(isdb, pre, pt_newlin,
+			       "cpu%d\tflw_lim/s",
+			       NULL, cons(iv, i - 1, NOVAL),
+			       NOVAL,
+			       S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
+			       NULL);
 		}
 	}
 }

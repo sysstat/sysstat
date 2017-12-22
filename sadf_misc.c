@@ -866,7 +866,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 
 			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 
-			printf("%02d: %s\t(x%d)", act[p]->id, act[p]->name, act[p]->nr);
+			printf("%02d: %s\t(x%d)", act[p]->id, act[p]->name, act[p]->nr_ini);
 			if (IS_MATRIX(act[p]->options)) {
 				printf("\t(x%d)", act[p]->nr2);
 			}

@@ -304,6 +304,7 @@ struct svg_parm {
 	unsigned long long ust_time_first;	/* Time (in seconds since the epoch) for first sample */
 	int graph_no;				/* Total number of views already displayed */
 	int restart;				/* TRUE if we have just met a RESTART record */
+	__nr_t nr_max;				/* Maximum number of items for this activity */
 	struct file_header *file_hdr;		/* Pointer on file header structure */
 };
 

@@ -118,7 +118,15 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 	int i;
 	struct stats_cpu *scc, *scp;
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		if (DISPLAY_HINTS(flags)) {
+			printf("[NEW: %d->%d]\n", a->nr_ini, a->nr[curr]);
+		}
+		a->nr_ini = a->nr[curr];
+	}
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -128,14 +136,6 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 		 */
 		scc = (struct stats_cpu *) ((char *) a->buf[curr] + i * a->msize);
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
-
-		/*
-		 * Note: a->nr is in [1, NR_CPUS + 1].
-		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
-		 * Anyway, NR_CPUS may vary between the version of sysstat
-		 * used by sadc to create a file, and the version of sysstat
-		 * used by sar to read it...
-		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
@@ -240,7 +240,7 @@ __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 	int i;
 	struct stats_irq *sic, *sip;
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
@@ -452,43 +452,57 @@ __print_funct_t raw_print_queue_stats(struct activity *a, char *timestr, int cur
  */
 __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int curr)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		ssc = (struct stats_serial *) ((char *) a->buf[curr]  + i * a->msize);
-		ssp = (struct stats_serial *) ((char *) a->buf[!curr] + i * a->msize);
 
-		printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
-		pval((unsigned long long) ssp->line, (unsigned long long) ssc->line);
+		/* Look for corresponding serial line in previous iteration */
+		j = i;
+		if (j > a->nr[!curr]) {
+			j = a->nr[!curr];
+		}
 
-		if (ssc->line == 0) {
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[!curr]) {
+				j = 0;
+			}
+			ssp = (struct stats_serial *) ((char *) a->buf[!curr] + j * a->msize);
+			if (ssc->line == ssp->line) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		printf("%s %s: %u", timestr, pfield(a->hdr_line, FIRST), ssc->line);
+
+		if (!found) {
 			if (DISPLAY_HINTS(flags)) {
-				printf(" [SKP]");
+				printf(" [NEW]");
 			}
 			printf("\n");
 			continue;
 		}
 
-		if (ssc->line == ssp->line) {
-			printf(" %s:", pfield(NULL, 0));
-			pval((unsigned long long) ssp->rx, (unsigned long long)ssc->rx);
-			printf(" %s:", pfield(NULL, 0));
-			pval((unsigned long long) ssp->tx, (unsigned long long) ssc->tx);
-			printf(" %s:", pfield(NULL, 0));
-			pval((unsigned long long) ssp->frame, (unsigned long long) ssc->frame);
-			printf(" %s:", pfield(NULL, 0));
-			pval((unsigned long long) ssp->parity, (unsigned long long) ssc->parity);
-			printf(" %s:", pfield(NULL, 0));
-			pval((unsigned long long) ssp->brk, (unsigned long long) ssc->brk);
-			printf(" %s:", pfield(NULL, 0));
-			pval((unsigned long long) ssp->overrun, (unsigned long long) ssc->overrun);
-		}
-		else if (DISPLAY_HINTS(flags)) {
-			printf(" [NEW]");
-		}
-
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssp->rx, (unsigned long long)ssc->rx);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssp->tx, (unsigned long long) ssc->tx);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssp->frame, (unsigned long long) ssc->frame);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssp->parity, (unsigned long long) ssc->parity);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssp->brk, (unsigned long long) ssc->brk);
+		printf(" %s:", pfield(NULL, 0));
+		pval((unsigned long long) ssp->overrun, (unsigned long long) ssc->overrun);
 		printf("\n");
 	}
 }
@@ -511,19 +525,11 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%s major:%u minor:%u", timestr, sdc->major, sdc->minor);
-
-		if (!(sdc->major + sdc->minor)) {
-			if (DISPLAY_HINTS(flags)) {
-				printf(" [SKP]");
-			}
-			printf("\n");
-			continue;
-		}
 
 		j = check_disk_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -591,12 +597,9 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(sndc->interface, ""))
-			break;
 
 		printf("%s %s:%s", timestr, pfield(a->hdr_line, FIRST), sndc->interface);
 
@@ -647,12 +650,9 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(snedc->interface, ""))
-			break;
 
 		printf("%s %s:%s", timestr, pfield(a->hdr_line, FIRST), snedc->interface);
 
@@ -1284,9 +1284,9 @@ __print_funct_t raw_print_pwr_cpufreq_stats(struct activity *a, char *timestr, i
 	int i;
 	struct stats_pwr_cpufreq *spc;
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
-		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
+		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
@@ -1312,8 +1312,8 @@ __print_funct_t raw_print_pwr_fan_stats(struct activity *a, char *timestr, int c
 	int i;
 	struct stats_pwr_fan *spc;
 
-	for (i = 0; i < a->nr; i++) {
-		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i + 1);
 		printf(" %s:%s", pfield(NULL, 0), spc->device);
@@ -1337,8 +1337,8 @@ __print_funct_t raw_print_pwr_temp_stats(struct activity *a, char *timestr, int 
 	int i;
 	struct stats_pwr_temp *spc;
 
-	for (i = 0; i < a->nr; i++) {
-		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i + 1);
 		printf(" %s:%s", pfield(NULL, 0), spc->device);
@@ -1363,8 +1363,8 @@ __print_funct_t raw_print_pwr_in_stats(struct activity *a, char *timestr, int cu
 	int i;
 	struct stats_pwr_in *spc;
 
-	for (i = 0; i < a->nr; i++) {
-		spc = (struct stats_pwr_in *) ((char *) a->buf[curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i);
 		printf(" %s:%s", pfield(NULL, 0), spc->device);
@@ -1408,30 +1408,30 @@ __print_funct_t raw_print_pwr_wghfreq_stats(struct activity *a, char *timestr, i
 	int i, k;
 	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
 		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes... */
-			printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
+		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
 
-			for (k = 0; k < a->nr2; k++) {
+		for (k = 0; k < a->nr2; k++) {
 
-				spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
-				if (!spc_k->freq)
-					break;
-				spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
+			spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * a->msize);
+			if (!spc_k->freq)
+				break;
+			spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
 
-				printf(" freq: %lu", spc_k->freq);
-				printf(" tminst:");
-				pval(spp_k->time_in_state, spc_k->time_in_state);
-			}
-			printf("\n");
+			printf(" freq: %lu", spc_k->freq);
+			printf(" tminst:");
+			pval(spp_k->time_in_state, spc_k->time_in_state);
 		}
+		printf("\n");
 	}
 }
 
@@ -1450,12 +1450,8 @@ __print_funct_t raw_print_pwr_usb_stats(struct activity *a, char *timestr, int c
 	int i;
 	struct stats_pwr_usb *suc;
 
-	for (i = 0; i < a->nr; i++) {
-		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr]  + i * a->msize);
-
-		if (!suc->bus_nr)
-			/* Bus#0 doesn't exist: We are at the end of the list */
-			break;
+	for (i = 0; i < a->nr[curr]; i++) {
+		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%s %s:\"%s\"", timestr, pfield(a->hdr_line, FIRST), suc->manufacturer);
 		printf(" %s:\"%s\"", pfield(NULL, 0), suc->product);
@@ -1481,13 +1477,8 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 	int i;
 	struct stats_filesystem *sfc;
 
-
-	for (i = 0; i < a->nr; i++) {
-		sfc = (struct stats_filesystem *) ((char *) a->buf[curr]  + i * a->msize);
-
-		if (!sfc->f_blocks)
-			/* Size of filesystem is zero: We are at the end of the list */
-			break;
+	for (i = 0; i < a->nr[curr]; i++) {
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%s %s:\"%s\"", timestr, pfield(a->hdr_line, FIRST + DISPLAY_MOUNT(a->opt_flags)),
 		       DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name);
@@ -1516,16 +1507,36 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
  */
 __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int curr)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_fchost *sfcc, *sfcp;
 
-	for (i = 0; i < a->nr; i++) {
-		sfcc = (struct stats_fchost *) ((char *) a->buf[curr]  + i * a->msize);
-		sfcp = (struct stats_fchost *) ((char *) a->buf[!curr]  + i * a->msize);
+	for (i = 0; i < a->nr[curr]; i++) {
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (!sfcc->fchost_name[0])
-			/* We are at the end of the list */
-			break;
+		/* Look for corresponding structure in previous iteration */
+		j = i;
+		if (j > a->nr[!curr]) {
+			j = a->nr[!curr];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[!curr]) {
+				j = 0;
+			}
+			sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
+			if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
+			continue;
 
 		printf(" %s:%s", pfield(a->hdr_line, FIRST), sfcc->fchost_name);
 		printf(" %s:", pfield(NULL, 0));
@@ -1555,7 +1566,7 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 	int i;
 	struct stats_softnet *ssnc, *ssnp;
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -1563,7 +1574,7 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 		 * That's why we don't use a syntax like:
 		 * ssnc = (struct stats_softnet *) a->buf[...] + i;
                  */
-                ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
+                ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
                 ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/*
