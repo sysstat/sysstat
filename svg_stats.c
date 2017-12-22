@@ -40,6 +40,8 @@
 
 extern unsigned int flags;
 extern unsigned int dm_major;
+extern int id_g_nr[];
+extern struct activity *act[];
 
 unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
 			     0xe85f00, 0x0000ff, 0x006020, 0x7030a0,
@@ -1025,8 +1027,10 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 		/*
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
+		 * Allocation is based on the maximum number of CPU saved in file.
 		 */
-		out = allocate_graph_lines(10 * a->nr, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(10 * id_g_nr[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)],
+					   &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
