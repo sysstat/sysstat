@@ -1953,36 +1953,36 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes: Display it */
-			printf("%-11s", timestamp[curr]);
+		printf("%-11s", timestamp[curr]);
 
-			if (!i) {
-				/* This is CPU "all" */
-				cprintf_in(IS_STR, "%s", "     all", 0);
-			}
-			else {
-				cprintf_in(IS_INT, "     %3d", "", i - 1);
-			}
+		if (!i) {
+			/* This is CPU "all" */
+			cprintf_in(IS_STR, "%s", "     all", 0);
+		}
+		else {
+			cprintf_in(IS_INT, "     %3d", "", i - 1);
+		}
 
-			if (!dispavg) {
-				/* Display instantaneous values */
-				cprintf_f(NO_UNIT, 1, 9, 2,
-					  ((double) spc->cpufreq) / 100);
-				printf("\n");
-				/*
-				 * Will be used to compute the average.
-				 * Note: Overflow unlikely to happen but not impossible...
-				 */
-				avg_cpufreq[i] += spc->cpufreq;
-			}
-			else {
-				/* Display average values */
-				cprintf_f(NO_UNIT, 1, 9, 2,
-					  (double) avg_cpufreq[i] / (100 * avg_count));
-				printf("\n");
-			}
+		if (!dispavg) {
+			/* Display instantaneous values */
+			cprintf_f(NO_UNIT, 1, 9, 2,
+				  ((double) spc->cpufreq) / 100);
+			printf("\n");
+			/*
+			 * Will be used to compute the average.
+			 * Note: Overflow unlikely to happen but not impossible...
+			 */
+			avg_cpufreq[i] += spc->cpufreq;
+		}
+		else {
+			/* Display average values */
+			cprintf_f(NO_UNIT, 1, 9, 2,
+				  (double) avg_cpufreq[i] / (100 * avg_count));
+			printf("\n");
 		}
 	}
 
@@ -2862,26 +2862,26 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
-			/* Yes: Display it */
-			printf("%-11s", timestamp[curr]);
+		printf("%-11s", timestamp[curr]);
 
-			if (!i) {
-				/* This is CPU "all" */
-				cprintf_in(IS_STR, " %s", "    all", 0);
-			}
-			else {
-				cprintf_in(IS_INT, " %7d", "", i - 1);
-			}
-
-			cprintf_f(NO_UNIT, 5, 9, 2,
-				  S_VALUE(ssnp->processed,    ssnc->processed,    itv),
-				  S_VALUE(ssnp->dropped,      ssnc->dropped,      itv),
-				  S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
-				  S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
-				  S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
-			printf("\n");
+		if (!i) {
+			/* This is CPU "all" */
+			cprintf_in(IS_STR, " %s", "    all", 0);
 		}
+		else {
+			cprintf_in(IS_INT, " %7d", "", i - 1);
+		}
+
+		cprintf_f(NO_UNIT, 5, 9, 2,
+			  S_VALUE(ssnp->processed,    ssnc->processed,    itv),
+			  S_VALUE(ssnp->dropped,      ssnc->dropped,      itv),
+			  S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
+			  S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
+			  S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
+		printf("\n");
 	}
 }
