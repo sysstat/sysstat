@@ -202,7 +202,7 @@ void upgrade_stats_disk(struct activity *act[], int p)
 	struct stats_disk *sdc;
 	struct stats_disk_8a *sdp;
 
-	for (i = 0; i < act[p]->nr; i++) {
+	for (i = 0; i < act[p]->nr[0]; i++) {
 		sdp = (struct stats_disk_8a *) ((char *) act[p]->buf[0] + i * act[p]->msize);
 		sdc = (struct stats_disk *)    ((char *) act[p]->buf[1] + i * act[p]->fsize);
 
@@ -237,7 +237,7 @@ void upgrade_stats_net_dev(struct activity *act[], int p, unsigned int m_format)
 	if (m_format == ACTIVITY_MAGIC_BASE) {
 		struct stats_net_dev_8a *sndp_a;
 
-		for (i = 0; i < act[p]->nr; i++) {
+		for (i = 0; i < act[p]->nr[0]; i++) {
 			sndp_a = (struct stats_net_dev_8a *) ((char *) act[p]->buf[0] + i * act[p]->msize);
 			sndc = (struct stats_net_dev *) ((char *) act[p]->buf[1] + i * act[p]->fsize);
 
@@ -257,7 +257,7 @@ void upgrade_stats_net_dev(struct activity *act[], int p, unsigned int m_format)
 	else {
 		struct stats_net_dev_8b *sndp_b;
 
-		for (i = 0; i < act[p]->nr; i++) {
+		for (i = 0; i < act[p]->nr[0]; i++) {
 			sndp_b = (struct stats_net_dev_8b *) ((char *) act[p]->buf[0] + i * act[p]->msize);
 			sndc = (struct stats_net_dev *) ((char *) act[p]->buf[1] + i * act[p]->fsize);
 
@@ -292,7 +292,7 @@ void upgrade_stats_net_edev(struct activity *act[], int p)
 	struct stats_net_edev *snedc;
 	struct stats_net_edev_8a *snedp;
 
-	for (i = 0; i < act[p]->nr; i++) {
+	for (i = 0; i < act[p]->nr[0]; i++) {
 		snedp = (struct stats_net_edev_8a *) ((char *) act[p]->buf[0] + i * act[p]->msize);
 		snedc = (struct stats_net_edev *) ((char *) act[p]->buf[1] + i * act[p]->fsize);
 
@@ -547,8 +547,8 @@ int upgrade_header_section(char dfile[], int fd, int stdfd,
 			 * act[p]->fsize: Size of an item for current activity with
 			 * 		  up-to-date format.
 			 */
-			act[p]->nr    = fal->nr;
-			act[p]->nr2   = fal->nr2;
+			act[p]->nr_ini = fal->nr;
+			act[p]->nr2    = fal->nr2;
 			/*
 			 * Don't set act[p]->fsize! Should retain the size of an item
 			 * for up-to-date format!
@@ -746,6 +746,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 			   struct file_header *file_hdr,
 			   struct file_activity *file_actlst)
 {
+#if 0
 	int i, j, k, p;
 	struct file_activity *fal;
 	void *buffer = NULL;
@@ -867,7 +868,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[],
 	if (buffer) {
 		free(buffer);
 	}
-
+#endif
 	return 0;
 }
 
