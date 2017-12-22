@@ -278,25 +278,38 @@ void p_write_error(void)
  * Init structures. All of them are init'ed first when they are allocated
  * (done by SREALLOC() macro in sa_sys_init() function).
  * Then, they are init'ed again each time before reading the various system
- * stats to make sure that no stats from a previous reading will remain (eg.
- * if some network interfaces or block devices have been unregistered).
+ * stats to make sure that no stats from a previous reading will remain.
+ * This is useful mainly for non sequential activities where some structures
+ * may remain unchanged. Such an activity is A_CPU, for which statistics
+ * for offline CPU won't be read and their corresponding stats structure
+ * won't be overwritten, giving the idea they are still online if we don't
+ * reset their structures to zero.
+ * Other activities may also assume that structure's fields are initialized
+ * when their stats are read.
  ***************************************************************************
  */
 void reset_stats(void)
 {
 	int i;
 
-	for (i = 0; i < NR_ACT; i++) {
+        for (i = 0; i < NR_ACT; i++) {
 		if ((act[i]->nr > 0) && act[i]->_buf0) {
 			memset(act[i]->_buf0, 0,
-			       (size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+			       (size_t) act[i]->msize * (size_t) act[i]->nr_allocated * (size_t) act[i]->nr2);
 		}
 	}
 }
 
 /*
  ***************************************************************************
- * Allocate and init structures, according to system state.
+ * Count activities items then allocate and init corresponding structures.
+ * ALL activities are always counted (thus the number of CPU will always be
+ * counted even if CPU activity is not collected), but ONLY those that will
+ * be collected have allocated structures.
+ * This function is called when sadc is started, and when a file is rotated.
+ * If a file is rotated and structures are reallocated with a larger size,
+ * additional space is not initialized: It doesn't matter as reset_stats()
+ * will do it later.
  ***************************************************************************
  */
 void sa_sys_init(void)
@@ -316,31 +329,33 @@ void sa_sys_init(void)
 
 			/* Number of items is not a constant and should be calculated */
 			if (f_count_results[idx] >= 0) {
-				act[i]->nr = f_count_results[idx];
+				act[i]->nr_ini = f_count_results[idx];
 			}
 			else {
-				act[i]->nr = (f_count[idx])(act[i]);
-				f_count_results[idx] = act[i]->nr;
+				act[i]->nr_ini = (f_count[idx])(act[i]);
+				f_count_results[idx] = act[i]->nr_ini;
 			}
 		}
 
-		if (act[i]->nr > 0) {
+		if (act[i]->nr_ini > 0) {
 			if (act[i]->f_count2) {
 				act[i]->nr2 = (*act[i]->f_count2)(act[i]);
 			}
 			/* else act[i]->nr2 is a constant and doesn't need to be calculated */
 
 			if (!act[i]->nr2) {
-				act[i]->nr = 0;
+				act[i]->nr_ini = 0;
 			}
 		}
 
-		if (act[i]->nr > 0) {
-			/* Allocate structures for current activity */
+		if (IS_COLLECTED(act[i]->options) && (act[i]->nr_ini > 0)) {
+			/* Allocate structures for current activity (using nr_ini and nr2 results) */
 			SREALLOC(act[i]->_buf0, void,
-				 (size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+				 (size_t) act[i]->msize * (size_t) act[i]->nr_ini * (size_t) act[i]->nr2);
+			act[i]->nr_allocated = act[i]->nr_ini;
 		}
-		else {
+
+		if (act[i]->nr_ini <= 0) {
 			/* No items found: Invalidate current activity */
 			act[i]->options &= ~AO_COLLECTED;
 		}
@@ -361,10 +376,11 @@ void sa_sys_free(void)
 
 	for (i = 0; i < NR_ACT; i++) {
 
-		if (act[i]->nr > 0) {
+		if (act[i]->nr_allocated > 0) {
 			if (act[i]->_buf0) {
 				free(act[i]->_buf0);
 				act[i]->_buf0 = NULL;
+				act[i]->nr_allocated = 0;
 			}
 		}
 	}
@@ -522,11 +538,11 @@ void setup_file_hdr(int fd)
 	/*
 	 * This is a new file (or stdout): Set sa_cpu_nr field to the number
 	 * of CPU of the machine (1 .. CPU_NR + 1). This is the number of CPU, whether
-	 * online or offline, at the time of the first collected sample.
+	 * online or offline, when sadc was started.
 	 * All activities (including A_CPU) are counted in sa_sys_init(), even
 	 * if they are not collected.
 	 */
-	file_hdr.sa_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr;
+	file_hdr.sa_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr_ini;
 
 	/* Get system name, release number, hostname and machine architecture */
 	uname(&header);
@@ -558,15 +574,16 @@ void setup_file_hdr(int fd)
 		if (IS_COLLECTED(act[p]->options)) {
 			file_act.id    = act[p]->id;
 			file_act.magic = act[p]->magic;
-			file_act.nr    = act[p]->nr;
+			file_act.nr    = act[p]->nr_ini;
 			file_act.nr2   = act[p]->nr2;
 			file_act.size  = act[p]->fsize;
 			for (j = 0; j < 3; j++) {
 				file_act.types_nr[j] = act[p]->gtypes_nr[j];
 			}
 
-			if (write_all(fd, &file_act, FILE_ACTIVITY_SIZE)
-			    != FILE_ACTIVITY_SIZE)
+			file_act.has_nr = HAS_COUNT_FUNCTION(act[p]->options);
+
+			if (write_all(fd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE)
 				goto write_error;
 		}
 	}
@@ -591,12 +608,10 @@ write_error:
 void write_new_cpu_nr(int ofd)
 {
 	int p;
-	__nr_t cpu_nr;
 
 	p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-	cpu_nr = act[p]->nr;
 
-	if (write_all(ofd, &cpu_nr, sizeof(__nr_t)) != sizeof(__nr_t)) {
+	if (write_all(ofd, &(act[p]->nr_ini), sizeof(__nr_t)) != sizeof(__nr_t)) {
 		p_write_error();
 	}
 }
@@ -689,8 +704,13 @@ void write_stats(int ofd)
 			continue;
 
 		if (IS_COLLECTED(act[p]->options)) {
-			if (write_all(ofd, act[p]->_buf0, act[p]->fsize * act[p]->nr * act[p]->nr2) !=
-			    (act[p]->fsize * act[p]->nr * act[p]->nr2)) {
+			if (act[p]->f_count_index >= 0) {
+				if (write_all(ofd, &(act[p]->_nr0), sizeof(__nr_t)) != sizeof(__nr_t)) {
+					p_write_error();
+				}
+			}
+			if (write_all(ofd, act[p]->_buf0, act[p]->fsize * act[p]->_nr0 * act[p]->nr2) !=
+			    (act[p]->fsize * act[p]->_nr0 * act[p]->nr2)) {
 				p_write_error();
 			}
 		}
@@ -870,7 +890,8 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		    (act[p]->magic != file_act[i].magic))
 			/*
 			 * Unknown activity in list or item size has changed or
-			 * unknown activity format: Cannot append data to such a file.
+			 * unknown activity format: Cannot append data to such a file
+			 * ("strict writing" rule).
 			 */
 			goto append_error;
 
@@ -891,6 +912,14 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			 * be different from that known by current version.
 			 */
 			goto append_error;
+
+		if ((file_act[i].has_nr && (act[p]->f_count_index < 0)) ||
+		    (!file_act[i].has_nr && (act[p]->f_count_index >=0)))
+			/*
+			 * For every activity whose number of items is not a constant,
+			 * a value giving the number of structures to read should exist.
+			 */
+			goto append_error;
 	}
 
 	/*
@@ -908,13 +937,14 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		p = get_activity_position(act, file_act[i].id, EXIT_IF_NOT_FOUND);
 
 		/*
-		 * Force number of items (serial lines, network interfaces...)
-		 * and sub-items to that of the file, and reallocate structures.
+		 * Force number of sub-items to that of the file, and reallocate structures.
+		 * We don't care for items as their structures will be dynamically allocated.
 		 */
-		act[p]->nr  = file_act[i].nr;
-		act[p]->nr2 = file_act[i].nr2;
-		SREALLOC(act[p]->_buf0, void,
-			 (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
+		if (file_act[i].nr2 != act[p]->nr2) {
+			act[p]->nr2 = file_act[i].nr2;
+			SREALLOC(act[p]->_buf0, void,
+				 (size_t) act[p]->msize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
+		}
 
 		/* Save activity sequence */
 		id_seq[i] = file_act[i].id;
@@ -985,11 +1015,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 	/* Main loop */
 	do {
 
-		/*
-		 * Init all structures.
-		 * Exception for individual CPUs structures which must not be
-		 * init'ed to keep values for CPU before they were disabled.
-		 */
+		/* Init all structures */
 		reset_stats();
 
 		/* Save time */

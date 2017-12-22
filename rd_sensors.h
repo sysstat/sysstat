@@ -7,6 +7,7 @@
 #define _RD_SENSORS_H
 
 #include "common.h"
+#include "rd_stats.h"
 
 /*
  ***************************************************************************
@@ -55,12 +56,12 @@ struct stats_pwr_in {
  ***************************************************************************
  */
 
-void read_fan
-	(struct stats_pwr_fan *, int);
-void read_temp
-	(struct stats_pwr_temp *, int);
-void read_in
-	(struct stats_pwr_in *, int);
+__nr_t read_fan
+	(struct stats_pwr_fan *, __nr_t);
+__nr_t read_temp
+	(struct stats_pwr_temp *, __nr_t);
+__nr_t read_in
+	(struct stats_pwr_in *, __nr_t);
 
 /*
  ***************************************************************************

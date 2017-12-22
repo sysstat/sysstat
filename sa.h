@@ -315,13 +315,14 @@ struct svg_hdr_parm {
 
 /*
  ***************************************************************************
- * Definitions of header structures.
+ * System activity data files
  *
- * The rule is: "strict writing, broad reading", meaning that sar/sadc can
+ * The rule is: "strict writing, read any", meaning that sar/sadc can
  * only append data to a datafile whose format is strictly the same as that
  * of current version (checking FORMAT_MAGIC is not enough), but sar/sadf
  * can read data from different versions, providing that FORMAT_MAGIC value
- * has not changed.
+ * has not changed (note that we are talking here of data read from a file,
+ * not data that sar reads from sadc, in which case the "strict" rule applies).
  *
  * Format of system activity data files:
  *	 __
@@ -340,17 +341,28 @@ struct svg_hdr_parm {
  * 	|                             |
  * 	| record_header structure     |
  * 	|                             |
- * 	|--                         --|
- * 	|(__nr_t)	* 0+          |
- * 	|--                           | * <count>
+ * 	|--                           |
+ * 	|(__nr_t)                     |
+ * 	|--                           |
  * 	|                             |
- * 	| Statistics structures...    |
+ * 	| Statistics structure(s)     | * <count>
+ * 	|                             |
+ * 	|--                           |
+ * 	|(__nr_t)                     |
+ * 	|--                           |
+ * 	|                             |
+ * 	| Statistics structure(s)...  |
  * 	|                             |
  * 	|--                         --|
  *
- * Note: A record_header structure is followed by 0+ __nr_t values giving
- * the number of statistics structures for activities whose number of items
- * may vary (ie. activities having a positive f_count_index value).
+ * Note: For activities with varying number of items, a __nr_t value, giving
+ * the number of items, arrives before the statistics structures so that
+ * we know how many of them have to be read.
+ * NB: This value exists for all the activities even if they share the same
+ * count function (e.g. A_NET_DEV and A_NET_EDEV). Indeed, statistics are not
+ * read atomically and the number of items (e.g. network interfaces) may have
+ * varied in between.
+ *
  * If the record header's type is R_COMMENT then we find only a comment
  * following the record_header structure.
  * If the record_header's type is R_RESTART then we find only the number of CPU
@@ -439,8 +451,10 @@ struct file_header {
 	/*
 	 * Number of [online or offline] CPU (1 .. CPU_NR + 1)
 	 * when the datafile has been created.
-	 * When reading a datafile, this value is updated whenever
-	 * a RESTART record is found.
+	 * When reading a datafile, this value is updated (in memory)
+	 * whenever a RESTART record is found.
+	 * When writing or appending data to a file, this field is updated
+	 * neither in file nor in memory.
 	 */
 	unsigned int sa_cpu_nr		__attribute__ ((aligned (8)));
 	/*
@@ -522,13 +536,19 @@ struct file_activity {
 	 */
 	unsigned int magic;
 	/*
-	 * Number of items for this activity.
+	 * Number of items for this activity
+	 * when the data file has been created.
 	 */
 	__nr_t nr;
 	/*
 	 * Number of sub-items for this activity.
 	 */
 	__nr_t nr2;
+	/*
+	 * Set to TRUE if statistics are preceded by
+	 * a value giving the number of structures to read.
+	 */
+	int has_nr;
 	/*
 	 * Size of an item structure.
 	 */
@@ -544,7 +564,7 @@ struct file_activity {
 #define MAX_FILE_ACTIVITY_SIZE	1024	/* Used for sanity check */
 #define FILE_ACTIVITY_ULL_NR	0	/* Nr of unsigned long long in file_activity structure */
 #define FILE_ACTIVITY_UL_NR	0	/* Nr of unsigned long in file_activity structure */
-#define FILE_ACTIVITY_U_NR	8	/* Nr of [unsigned] int in file_activity structure */
+#define FILE_ACTIVITY_U_NR	9	/* Nr of [unsigned] int in file_activity structure */
 
 
 /* Record type */
@@ -666,6 +686,7 @@ struct record_header {
 #define IS_MATRIX(m)		(((m) & AO_MATRIX)           == AO_MATRIX)
 
 #define _buf0	buf[0]
+#define _nr0	nr[0]
 
 /* Structure used to define a bitmap needed by an activity */
 struct act_bitmap {
@@ -799,14 +820,14 @@ struct activity {
 	 */
 	int g_nr;
 	/*
-	 * Number of items on the system.
+	 * Number of items on the system, as counted when the system is initialized.
 	 * A negative value (-1) is the default value and indicates that this number
 	 * has still not been calculated by the f_count() function.
 	 * A value of 0 means that this number has been calculated, but no items have
 	 * been found.
 	 * A positive value (>0) has either been calculated or is a constant.
 	 */
-	__nr_t nr;
+	__nr_t nr_ini;
 	/*
 	 * Number of sub-items on the system.
 	 * @nr2 is in fact the second dimension of a matrix of items, the first
@@ -831,6 +852,16 @@ struct activity {
 	 * is NR2_MAX.
 	 */
 	__nr_t nr_max;
+	/*
+	 * Number of items, as read and saved in corresponding buffer (@buf: See below).
+	 * The value may be zero for a particular sample if no items have been found.
+	 */
+	__nr_t nr[3];
+	/*
+	 * Number of structures allocated in @buf[*]. This number should be greater
+	 * than or equal to @nr[*].
+	 */
+	__nr_t nr_allocated;
 	/*
 	 * Size of an item.
 	 * This is the size of the corresponding structure, as read from or written
@@ -1158,7 +1189,7 @@ __read_funct_t wrap_read_in
 	(struct activity *);
 __read_funct_t wrap_read_meminfo_huge
 	(struct activity *);
-__read_funct_t wrap_read_time_in_state
+__read_funct_t wrap_read_cpu_wghfreq
 	(struct activity *);
 __read_funct_t wrap_read_bus_usb_dev
 	(struct activity *);
@@ -1236,11 +1267,14 @@ int print_special_record
 	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 void read_file_stat_bunch
-	(struct activity * [], int, int, int, struct file_activity *, int, int);
-__nr_t read_new_cpu_nr
-	(int, char *, struct file_magic *, int, int);
+	(struct activity * [], int, int, int, struct file_activity *, int, int,
+	 char *, struct file_magic *);
+__nr_t read_nr_value
+	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int);
+void reallocate_all_buffers
+	(struct activity *);
 void remap_struct
 	(unsigned int [], unsigned int [], void *, unsigned int);
 void replace_nonprintable_char

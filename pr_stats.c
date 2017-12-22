@@ -134,7 +134,20 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST + DISPLAY_CPU_ALL(a->opt_flags), 7, 9);
 	}
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	/*
+	 * @nr[curr] cannot normally be greater than @nr_ini
+	 * (since @nr_ini counts up all CPU, even those offline).
+	 * If this happens, it may be because the machine has been
+	 * restarted with more CPU and no LINUX_RESTART has been
+	 * inserted in file.
+	 * No problem here with @nr_allocated. Having been able to
+	 * read @nr[curr] structures shows that buffers are large enough.
+	 */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -146,7 +159,7 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		scp = (struct stats_cpu *) ((char *) a->buf[prev] + i * a->msize);
 
 		/*
-		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Note: @nr[curr] is in [1, NR_CPUS + 1].
 		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
 		 * Anyway, NR_CPUS may vary between the version of sysstat
 		 * used by sadc to create a file, and the version of sysstat
@@ -175,6 +188,37 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		/* Total number of jiffies spent on the interval */
 		deltot_jiffies = get_interval(tot_jiffies_p, tot_jiffies_c);
 
+		/*
+		 * If the CPU is offline then it is omited from /proc/stat:
+		 * All the fields couldn't have been read and the sum of them is zero.
+		 */
+		if (tot_jiffies_c == 0) {
+			/*
+			 * CPU is currently offline.
+			 * Set current struct fields (which have been set to zero)
+			 * to values from previous iteration. Hence their values won't
+			 * jump from zero when the CPU comes back online.
+			 * Note that this workaround is no longer enough with recent kernels,
+			 * as I have noticed that when a CPU comes back online, some fields
+			 * restart from their previous value (e.g. user, nice, system)
+			 * whereas others restart from zero (idle, iowait)!
+			 */
+			*scc = *scp;
+
+			/* An offline CPU is not displayed */
+			continue;
+		}
+		if (tot_jiffies_p == 0)
+			/*
+			 * CPU has just come back online.
+			 * Unfortunately, no reference values are available
+			 * from a previous iteration, probably because it was
+			 * already offline when the first sample has been taken.
+			 * So don't display that CPU to prevent "jump-from-zero"
+			 * output syndrome.
+			 */
+			continue;
+
 		printf("%-11s", timestamp[curr]);
 
 		if (!i) {
@@ -183,36 +227,6 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		}
 		else {
 			cprintf_in(IS_INT, " %7d", "", i - 1);
-
-			/*
-			 * If the CPU is offline then it is omited from /proc/stat:
-			 * All the fields couldn't have been read and the sum of them is zero.
-			 * (Remember that guest/guest_nice times are already included in
-			 * user/nice modes.)
-			 */
-			if (tot_jiffies_c == 0) {
-				/*
-				 * Set current struct fields (which have been set to zero)
-				 * to values from previous iteration. Hence their values won't
-				 * jump from zero when the CPU comes back online.
-				 */
-				*scc = *scp;
-
-				/* %user, %nice, %system, %iowait, %steal, ..., %idle */
-				cprintf_pc(DISPLAY_UNIT(flags), 6, 9, 2,
-					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-
-				if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					/*
-					 * Four additional fields to display:
-					 * %irq, %soft, %guest, %gnice.
-					 */
-					cprintf_pc(DISPLAY_UNIT(flags), 4, 9, 2,
-						   0.0, 0.0, 0.0, 0.0);
-				}
-				printf("\n");
-				continue;
-			}
 
 			/* Recalculate interval for current proc */
 			deltot_jiffies = get_per_cpu_interval(scc, scp);
@@ -332,13 +346,17 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
+		/*
+		 * If @nr[curr] > @nr[prev] then we consider that previous
+		 * interrupt value was 0.
+		 */
 		sic = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
 		sip = (struct stats_irq *) ((char *) a->buf[prev] + i * a->msize);
 
 		/*
-		 * Note: a->nr is in [0, NR_IRQS + 1].
+		 * Note: @nr[curr] gives the number of interrupts read (1 .. NR_IRQS + 1).
 		 * Bitmap size is provided for (NR_IRQS + 1) interrupts.
 		 * Anyway, NR_IRQS may vary between the version of sysstat
 		 * used by sadc to create a file, and the version of sysstat
@@ -929,38 +947,53 @@ __print_funct_t print_avg_queue_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
-		ssp = (struct stats_serial *) ((char *) a->buf[prev] + i * a->msize);
 
-		if (ssc->line == 0)
+		/* Look for corresponding serial line in previous iteration */
+		j = i;
+		if (j > a->nr[prev]) {
+			j = a->nr[prev];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[prev]) {
+				j = 0;
+			}
+			ssp = (struct stats_serial *) ((char *) a->buf[prev] + j * a->msize);
+			if ((ssc->line == ssp->line) || WANT_SINCE_BOOT(flags)) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
 			continue;
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "       %3d", "", ssc->line - 1);
 
-		if ((ssc->line == ssp->line) || WANT_SINCE_BOOT(flags)) {
-			cprintf_f(NO_UNIT, 6, 9, 2,
-				  S_VALUE(ssp->rx,      ssc->rx,      itv),
-				  S_VALUE(ssp->tx,      ssc->tx,      itv),
-				  S_VALUE(ssp->frame,   ssc->frame,   itv),
-				  S_VALUE(ssp->parity,  ssc->parity,  itv),
-				  S_VALUE(ssp->brk,     ssc->brk,     itv),
-				  S_VALUE(ssp->overrun, ssc->overrun, itv));
-			printf("\n");
-		}
-		else {
-			printf("       N/A       N/A       N/A       N/A"
-			       "       N/A       N/A\n");
-		}
+		cprintf_f(NO_UNIT, 6, 9, 2,
+			  S_VALUE(ssp->rx,      ssc->rx,      itv),
+			  S_VALUE(ssp->tx,      ssc->tx,      itv),
+			  S_VALUE(ssp->frame,   ssc->frame,   itv),
+			  S_VALUE(ssp->parity,  ssc->parity,  itv),
+			  S_VALUE(ssp->brk,     ssc->brk,     itv),
+			  S_VALUE(ssp->overrun, ssc->overrun, itv));
+		printf("\n");
 	}
 }
 
@@ -995,12 +1028,9 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!(sdc->major + sdc->minor))
-			continue;
 
 		j = check_disk_reg(a, curr, prev, i);
 		if (j < 0) {
@@ -1086,12 +1116,9 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(sndc->interface, ""))
-			break;
 
 		j = check_net_dev_reg(a, curr, prev, i);
 		if (j < 0) {
@@ -1147,12 +1174,9 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!strcmp(snedc->interface, ""))
-			break;
 
 		j = check_net_edev_reg(a, curr, prev, i);
 		if (j < 0) {
@@ -1887,24 +1911,26 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_cpufreq *spc;
+	static __nr_t nr_alloc = 0;
 	static unsigned long long
 		*avg_cpufreq = NULL;
 
-	if (!avg_cpufreq) {
+	if (!avg_cpufreq || (a->nr[curr] > nr_alloc)) {
 		/* Allocate array of CPU frequency */
-		if ((avg_cpufreq = (unsigned long long *) malloc(sizeof(unsigned long long) * a->nr))
-		    == NULL) {
-			perror("malloc");
-			exit(4);
+		SREALLOC(avg_cpufreq, unsigned long long, sizeof(unsigned long long) * a->nr[curr]);
+		if (a->nr[curr] > nr_alloc) {
+			/* Init additional space allocated */
+			memset(avg_cpufreq + nr_alloc, 0,
+			       sizeof(unsigned long long) * (a->nr[curr] - nr_alloc));
 		}
-		memset(avg_cpufreq, 0, sizeof(unsigned long long) * a->nr);
+		nr_alloc = a->nr[curr];
 	}
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9);
 	}
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -1919,7 +1945,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 			continue;
 
 		/*
-		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Note: @nr[curr] is in [1, NR_CPUS + 1].
 		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
 		 * Anyway, NR_CPUS may vary between the version of sysstat
 		 * used by sadc to create a file, and the version of sysstat
@@ -1947,7 +1973,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 				printf("\n");
 				/*
 				 * Will be used to compute the average.
-				 * Note: overflow unlikely to happen but not impossible...
+				 * Note: Overflow unlikely to happen but not impossible...
 				 */
 				avg_cpufreq[i] += spc->cpufreq;
 			}
@@ -1964,6 +1990,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		/* Array of CPU frequency no longer needed: Free it! */
 		free(avg_cpufreq);
 		avg_cpufreq = NULL;
+		nr_alloc = 0;
 	}
 }
 
@@ -2016,29 +2043,30 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_fan *spc;
+	static __nr_t nr_alloc = 0;
 	static double *avg_fan = NULL;
 	static double *avg_fan_min = NULL;
 
 	/* Allocate arrays of fan RPMs */
-	if (!avg_fan) {
-		if ((avg_fan = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
-		}
-		memset(avg_fan, 0, sizeof(double) * a->nr);
+	if (!avg_fan || (a->nr[curr] > nr_alloc)) {
+		SREALLOC(avg_fan, double, sizeof(double) * a->nr[curr]);
+		SREALLOC(avg_fan_min, double, sizeof(double) * a->nr[curr]);
 
-		if ((avg_fan_min = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
+		if (a->nr[curr] > nr_alloc) {
+			/* Init additional space allocated */
+			memset(avg_fan + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
+			memset(avg_fan_min + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
 		}
-		memset(avg_fan_min, 0, sizeof(double) * a->nr);
+		nr_alloc = a->nr[curr];
 	}
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -2, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%-11s", timestamp[curr]);
@@ -2067,6 +2095,7 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 		free(avg_fan_min);
 		avg_fan = NULL;
 		avg_fan_min = NULL;
+		nr_alloc = 0;
 	}
 }
 
@@ -2119,35 +2148,33 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_temp *spc;
+	static __nr_t nr_alloc = 0;
 	static double *avg_temp = NULL;
 	static double *avg_temp_min = NULL, *avg_temp_max = NULL;
 
 	/* Allocate arrays of temperatures */
-	if (!avg_temp) {
-		if ((avg_temp = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
-		}
-		memset(avg_temp, 0, sizeof(double) * a->nr);
+	if (!avg_temp || (a->nr[curr] > nr_alloc)) {
+		SREALLOC(avg_temp, double, sizeof(double) * a->nr[curr]);
+		SREALLOC(avg_temp_min, double, sizeof(double) * a->nr[curr]);
+		SREALLOC(avg_temp_max, double, sizeof(double) * a->nr[curr]);
 
-		if ((avg_temp_min = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
+		if (a->nr[curr] > nr_alloc) {
+			/* Init additional space allocated */
+			memset(avg_temp + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
+			memset(avg_temp_min + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
+			memset(avg_temp_max + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
 		}
-		memset(avg_temp_min, 0, sizeof(double) * a->nr);
-
-		if ((avg_temp_max = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
-		}
-		memset(avg_temp_max, 0, sizeof(double) * a->nr);
+		nr_alloc = a->nr[curr];
 	}
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -2, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%-11s", timestamp[curr]);
@@ -2184,6 +2211,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		avg_temp = NULL;
 		avg_temp_min = NULL;
 		avg_temp_max = NULL;
+		nr_alloc = 0;
 	}
 }
 
@@ -2236,35 +2264,33 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_in *spc;
+	static __nr_t nr_alloc = 0;
 	static double *avg_in = NULL;
 	static double *avg_in_min = NULL, *avg_in_max = NULL;
 
 	/* Allocate arrays of voltage inputs */
-	if (!avg_in) {
-		if ((avg_in = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
-		}
-		memset(avg_in, 0, sizeof(double) * a->nr);
+	if (!avg_in || (a->nr[curr] > nr_alloc)) {
+		SREALLOC(avg_in, double, sizeof(double) * a->nr[curr]);
+		SREALLOC(avg_in_min, double, sizeof(double) * a->nr[curr]);
+		SREALLOC(avg_in_max, double, sizeof(double) * a->nr[curr]);
 
-		if ((avg_in_min = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
+		if (a->nr[curr] > nr_alloc) {
+			/* Init additional space allocated */
+			memset(avg_in + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
+			memset(avg_in_min + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
+			memset(avg_in_max + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
 		}
-		memset(avg_in_min, 0, sizeof(double) * a->nr);
-
-		if ((avg_in_max = (double *) malloc(sizeof(double) * a->nr)) == NULL) {
-			perror("malloc");
-			exit(4);
-		}
-		memset(avg_in_max, 0, sizeof(double) * a->nr);
+		nr_alloc = a->nr[curr];
 	}
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -2, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
 		printf("%-11s", timestamp[curr]);
@@ -2301,6 +2327,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		avg_in = NULL;
 		avg_in_min = NULL;
 		avg_in_max = NULL;
+		nr_alloc = 0;
 	}
 }
 
@@ -2458,7 +2485,7 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9);
 	}
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -2538,12 +2565,8 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 		printf(" %-*s product\n", MAX_MANUF_LEN - 1, "manufact");
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!suc->bus_nr)
-			/* Bus#0 doesn't exist: We are at the end of the list */
-			break;
 
 		printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
 		cprintf_in(IS_INT, "  %6d", "", suc->bus_nr);
@@ -2560,7 +2583,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 
 		if (!dispavg) {
 			/* Save current USB device in summary list */
-			for (j = 0; j < a->nr; j++) {
+			for (j = 0; j < a->nr_allocated; j++) {
 				sum = (struct stats_pwr_usb *) ((char *) a->buf[2] + j * a->msize);
 
 				if ((sum->bus_nr     == suc->bus_nr) &&
@@ -2576,20 +2599,15 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 					*sum = *suc;
 					break;
 				}
-				if (j == a->nr - 1) {
-					/*
-					 * This is the last slot and
-					 * we still havent't found the device.
-					 * So create a dummy device here.
-					 */
-					sum->bus_nr = ~0;
-					sum->vendor_id = sum->product_id = 0;
-					sum->bmaxpower = 0;
-					sum->manufacturer[0] = '\0';
-					snprintf(sum->product, MAX_PROD_LEN, "%s",
-						 _("Other devices not listed here"));
-					sum->product[MAX_PROD_LEN - 1] = '\0';
-				}
+			}
+			if (j == a->nr_allocated) {
+				/*
+				 * No free slot has been found for current device.
+				 * So enlarge buffers then save device in list.
+				 */
+				reallocate_all_buffers(a);
+				sum = (struct stats_pwr_usb *) ((char *) a->buf[2] + j * a->msize);
+				*sum = *suc;
 			}
 		}
 	}
@@ -2656,12 +2674,8 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 			       a, FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
-
-		if (!sfc->f_blocks)
-			/* Size of filesystem is zero: We are at the end of the list */
-			break;
 
 		printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
 		cprintf_f(unit, 2, 9, 0,
@@ -2685,7 +2699,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 
 		if (!dispavg) {
 			/* Save current filesystem in summary list */
-			for (j = 0; j < a->nr; j++) {
+			for (j = 0; j < a->nr_allocated; j++) {
 				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
 
 				if (!strcmp(sfm->fs_name, sfc->fs_name) ||
@@ -2697,6 +2711,15 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 					*sfm = *sfc;
 					break;
 				}
+			}
+			if (j == a->nr_allocated) {
+				/*
+				 * No free slot has been found for current filesystem.
+				 * So enlarge buffers then save filesystem in list.
+				 */
+				reallocate_all_buffers(a);
+				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
+				*sfm = *sfc;
 			}
 		}
 	}
@@ -2750,21 +2773,41 @@ __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int cur
 __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	int i;
+	int i, j, j0, found;
 	struct stats_fchost *sfcc,*sfcp;
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9);
 	}
 
-	for (i = 0; i < a->nr; i++) {
+	for (i = 0; i < a->nr[curr]; i++) {
 
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-		sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + i * a->msize);
 
-		if (!sfcc->fchost_name[0])
-			/* We are at the end of the list */
-			break;
+		/* Look for corresponding structure in previous iteration */
+		j = i;
+		if (j > a->nr[prev]) {
+			j = a->nr[prev];
+		}
+
+		j0 = j;
+		found = FALSE;
+
+		do {
+			if (j > a->nr[prev]) {
+				j = 0;
+			}
+			sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + j * a->msize);
+			if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+				found = TRUE;
+				break;
+			}
+			j++;
+		}
+		while (j != j0);
+
+		if (!found)
+			continue;
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_f(NO_UNIT, 4, 9, 2,
@@ -2799,7 +2842,7 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9);
 	}
 
-	for (i = 0; (i < a->nr) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default

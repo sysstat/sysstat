@@ -68,11 +68,12 @@ void allocate_structures(struct activity *act[])
 	int i, j;
 
 	for (i = 0; i < NR_ACT; i++) {
-		if (act[i]->nr > 0) {
+		if (act[i]->nr_ini > 0) {
 			for (j = 0; j < 3; j++) {
 				SREALLOC(act[i]->buf[j], void,
-						(size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+						(size_t) act[i]->msize * (size_t) act[i]->nr_ini * (size_t) act[i]->nr2);
 			}
+			act[i]->nr_allocated = act[i]->nr_ini;
 		}
 	}
 }
@@ -90,15 +91,41 @@ void free_structures(struct activity *act[])
 	int i, j;
 
 	for (i = 0; i < NR_ACT; i++) {
-		if (act[i]->nr > 0) {
+		if (act[i]->nr_allocated > 0) {
 			for (j = 0; j < 3; j++) {
 				if (act[i]->buf[j]) {
 					free(act[i]->buf[j]);
 					act[i]->buf[j] = NULL;
 				}
 			}
+			act[i]->nr_allocated = 0;
 		}
 	}
+}
+
+/*
+ ***************************************************************************
+ * Reallocate all the buffers for given activity. The new size is the double
+ * of the original one.
+ * NB: nr_allocated is > 0.
+ *
+ * IN:
+ * @a	Activity whose buffers need to be reallocated.
+ ***************************************************************************
+ */
+void reallocate_all_buffers(struct activity *a)
+{
+	int j;
+
+	for (j = 0; j < 3; j++) {
+		SREALLOC(a->buf[j], void,
+			(size_t) a->msize * (size_t) a->nr_allocated * 2 * (size_t) a->nr2);
+		/* Init additional space which has been allocated */
+		memset(a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
+		       (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2);
+	}
+
+	a->nr_allocated *= 2;
 }
 
 /*
@@ -609,23 +636,26 @@ void print_report_hdr(unsigned int flags, struct tm *rectime,
  * as reference).
  * -2 if it is a known interface but which has been unregistered then
  * registered again on the interval.
- *
- * Note: A newly registered interface, if it is supernumerary, may make the
- * last interface in the array going out of the list. Yet an interface going
- * out of the list still exists in the /proc/net/dev file. Should it go back
- * in the list (e.g. if some other interfaces have been unregistered) then
- * its counters will jump as if starting from zero.
  ***************************************************************************
  */
 int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_dev *sndc, *sndp;
-	int index = 0;
+	int j0, j= pos;
+
+	if (j > a->nr[ref]) {
+		j = a->nr[ref];
+	}
+	j0 = j;
 
 	sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + pos * a->msize);
 
-	while (index < a->nr) {
-		sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + index * a->msize);
+	do {
+		if (j > a->nr[ref]) {
+			j = 0;
+		}
+		sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + j * a->msize);
+
 		if (!strcmp(sndc->interface, sndp->interface)) {
 			/*
 			 * Network interface found.
@@ -681,15 +711,16 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 
 				if (!ovfw)
 					/*
-					 * OK: assume here that the device was
+					 * OK: Assume here that the device was
 					 * actually unregistered.
 					 */
 					return -2;
 			}
-			return index;
+			return j;
 		}
-		index++;
+		j++;
 	}
+	while (j != j0);
 
 	/* This is a newly registered interface */
 	return -1;
@@ -717,12 +748,21 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_edev *snedc, *snedp;
-	int index = 0;
+	int j0, j = pos;
+
+	if (j > a->nr[ref]) {
+		j = a->nr[ref];
+	}
+	j0 = j;
 
 	snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + pos * a->msize);
 
-	while (index < a->nr) {
-		snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + index * a->msize);
+	do {
+		if (j > a->nr[ref]) {
+			j = 0;
+		}
+		snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + j * a->msize);
+
 		if (!strcmp(snedc->interface, snedp->interface)) {
 			/*
 			 * Network interface found.
@@ -743,10 +783,11 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 				 */
 				return -2;
 
-			return index;
+			return j;
 		}
-		index++;
+		j++;
 	}
+	while (j != j0);
 
 	/* This is a newly registered interface */
 	return -1;
@@ -773,12 +814,21 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_disk *sdc, *sdp;
-	int index = 0;
+	int j0, j = pos;
+
+	if (j > a->nr[ref]) {
+		j = a->nr[ref];
+	}
+	j0 = j;
 
 	sdc = (struct stats_disk *) ((char *) a->buf[curr] + pos * a->msize);
 
-	while (index < a->nr) {
-		sdp = (struct stats_disk *) ((char *) a->buf[ref] + index * a->msize);
+	do {
+		if (j > a->nr[ref]) {
+			j = 0;
+		}
+		sdp = (struct stats_disk *) ((char *) a->buf[ref] + j * a->msize);
+
 		if ((sdc->major == sdp->major) &&
 		    (sdc->minor == sdp->minor)) {
 			/*
@@ -794,10 +844,11 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 				/* Same device registered again */
 				return -2;
 
-			return index;
+			return j;
 		}
-		index++;
+		j++;
 	}
+	while (j != j0);
 
 	/* This is a newly registered device */
 	return -1;
@@ -1263,12 +1314,10 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 			continue;
 
 		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
-		if ((act[p]->nr < 1) || (act[p]->nr2 < 1)) {
-			PANIC(1);
-		}
 
 		memcpy(act[p]->buf[dest], act[p]->buf[src],
-		       (size_t) act[p]->msize * (size_t) act[p]->nr * (size_t) act[p]->nr2);
+		       (size_t) act[p]->msize * (size_t) act[p]->nr[src] * (size_t) act[p]->nr2);
+		act[p]->nr[dest] = act[p]->nr[src];
 	}
 }
 
@@ -1285,17 +1334,30 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
  * @arch_64	TRUE if file's data come from a 64 bit machine.
+ * @dfile	Name of system activity data file.
+ * @file_magic	file_magic structure containing data read from file magic
+ *		header.
  ***************************************************************************
  */
 void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			  struct file_activity *file_actlst, int endian_mismatch,
-			  int arch_64)
+			  int arch_64, char *dfile, struct file_magic *file_magic)
 {
 	int i, j, p;
 	struct file_activity *fal = file_actlst;
 	off_t offset;
+	__nr_t nr_value;
 
 	for (i = 0; i < act_nr; i++, fal++) {
+
+		/* Read __nr_t value preceding statistics structures if it exists */
+		if (fal->has_nr) {
+			nr_value = read_nr_value(ifd, dfile, file_magic,
+						 endian_mismatch, arch_64, FALSE);
+		}
+		else {
+			nr_value = fal->nr;
+		}
 
 		if (((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) ||
 		    (act[p]->magic != fal->magic)) {
@@ -1303,45 +1365,66 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 * Ignore current activity in file, which is unknown to
 			 * current sysstat version or has an unknown format.
 			 */
-			offset = (off_t) fal->size * (off_t) fal->nr * (off_t) fal->nr2;
-			if (lseek(ifd, offset, SEEK_CUR) < offset) {
-				close(ifd);
-				perror("lseek");
-				exit(2);
+			if (nr_value) {
+				offset = (off_t) fal->size * (off_t) nr_value * (off_t) fal->nr2;
+				if (lseek(ifd, offset, SEEK_CUR) < offset) {
+					close(ifd);
+					perror("lseek");
+					exit(2);
+				}
 			}
 			continue;
 		}
 
-		if ((act[p]->nr > 0) &&
-			 ((act[p]->nr > 1) || (act[p]->nr2 > 1)) &&
-			 (act[p]->msize > act[p]->fsize)) {
+		act[p]->nr[curr] = nr_value;
 
-			for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
+		/* Reallocate buffers if needed */
+		if (nr_value > act[p]->nr_allocated) {
+			reallocate_all_buffers(act[p]);
+		}
+
+		/*
+                 * For persistent activities, we must make sure that no statistics
+                 * from a previous iteration remain, especially if the number
+                 * of structures read is smaller than @nr_ini.
+                 */
+		if (HAS_PERSISTENT_VALUES(act[p]->options)) {
+                    memset(act[p]->buf[curr], 0,
+                           (size_t) act[p]->msize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
+                }
+
+		/* OK, this is a known activity: Read the stats structures */
+		if ((nr_value > 0) &&
+		    ((nr_value > 1) || (act[p]->nr2 > 1)) &&
+		    (act[p]->msize > act[p]->fsize)) {
+
+			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
 				sa_fread(ifd, (char *) act[p]->buf[curr] + j * act[p]->msize,
 					 act[p]->fsize, HARD_SIZE);
 			}
 		}
-		else if (act[p]->nr > 0) {
+		else if (nr_value > 0) {
 			/*
 			 * Note: If msize was smaller than fsize,
 			 * then it has been set to fsize in check_file_actlst().
 			 */
-			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2, HARD_SIZE);
+			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * nr_value * act[p]->nr2, HARD_SIZE);
 		}
 		else {
-			PANIC(p);
+			/* nr_value == 0: Nothing to read */
+			continue;
 		}
 
 		/* Normalize endianness for current activity's structures */
 		if (endian_mismatch) {
-			for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
+			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
 				swap_struct(act[p]->ftypes_nr, (char *) act[p]->buf[curr] + j * act[p]->msize,
 					    arch_64);
 			}
 		}
 
 		/* Remap structure's fields to those known by current sysstat version */
-		for (j = 0; j < (act[p]->nr * act[p]->nr2); j++) {
+		for (j = 0; j < (nr_value * act[p]->nr2); j++) {
 			remap_struct(act[p]->gtypes_nr, act[p]->ftypes_nr,
 				     (char *) act[p]->buf[curr] + j * act[p]->msize, act[p]->fsize);
 		}
@@ -1366,7 +1449,8 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
  *		TRUE if file's data don't match current machine's endianness.
  *
  * RETURNS:
- * -1 if data file is a sysstat file with an old format, 0 otherwise.
+ * -1 if data file is a sysstat file with an old format (which we cannot
+ * read), 0 otherwise.
  ***************************************************************************
  */
 int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
@@ -1402,6 +1486,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		/* Swap bytes for file_magic fields */
 		file_magic->sysstat_magic = __builtin_bswap16(file_magic->sysstat_magic);
 		file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
+		/* Start swapping at field "header_size" position */
 		swap_struct(fm_types_nr, &file_magic->header_size, 0);
 	}
 
@@ -1424,7 +1509,10 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	}
 
 	if (file_magic->format_magic != FORMAT_MAGIC)
-		/* This is an old (or new) sa datafile format */
+		/*
+		 * This is an old (or new) sa datafile format to
+		 * be read by sadf (since @ignore was set to TRUE).
+		 */
 		return -1;
 
 	return 0;
@@ -1467,6 +1555,10 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 	/* Open sa data file and read its magic structure */
 	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch) < 0)
+		/*
+		 * Not current sysstat's format.
+		 * Return now so that sadf can do its job.
+		 */
 		return;
 
 	/* We know now that we have a *compatible* sysstat datafile format */
@@ -1521,7 +1613,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		/*
 		* Data file_activity size (file_hdr->act_size) may be greater or
 		* smaller than FILE_ACTIVITY_SIZE. Remap the fields of the file's structure
-		* then copy its contents to the expected  structure.
+		* then copy its contents to the expected structure.
 		*/
 		remap_struct(act_types_nr, file_hdr->act_types_nr, buffer, file_hdr->act_size);
 		memcpy(fal, buffer, FILE_ACTIVITY_SIZE);
@@ -1594,9 +1686,9 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			act[p]->msize = fal->size;
 		}
 
-		act[p]->nr    = fal->nr;
-		act[p]->nr2   = fal->nr2;
-		act[p]->fsize = fal->size;
+		act[p]->nr_ini = fal->nr;
+		act[p]->nr2    = fal->nr2;
+		act[p]->fsize  = fal->size;
 		/*
 		 * This is a known activity with a known format
 		 * (magical number). Only such activities will be displayed.
@@ -1611,7 +1703,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 	free(buffer);
 
-	/* Check that at least one selected activity is available in file */
+	/* Check that at least one activity selected by the user is available in file */
 	for (i = 0; i < NR_ACT; i++) {
 
 		if (!IS_SELECTED(act[i]->options))
@@ -1646,7 +1738,10 @@ format_error:
 
 /*
  ***************************************************************************
- * Read the new number of CPU saved after a RESTART record.
+ * Read an __nr_t value from file.
+ * Such a value can be the new number of CPU saved after a RESTART record,
+ * or the number of structures to read saved before the structures containing
+ * statistics for an activity with a varying number of items in file.
  *
  * IN:
  * @ifd		Input file descriptor.
@@ -1655,30 +1750,31 @@ format_error:
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
  * @arch_64	TRUE if file's data come from a 64 bit machine.
+ * @non_zero	TRUE if value should not be zero.
  *
  * RETURNS:
- * New number of CPU.
+ * __nr_t value, as read from file.
  ***************************************************************************
  */
-__nr_t read_new_cpu_nr(int ifd, char *file, struct file_magic *file_magic,
-		       int endian_mismatch, int arch_64)
+__nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
+		     int endian_mismatch, int arch_64, int non_zero)
 {
-	__nr_t cpu_nr;
+	__nr_t value;
 
-	sa_fread(ifd, &cpu_nr, sizeof(__nr_t), HARD_SIZE);
+	sa_fread(ifd, &value, sizeof(__nr_t), HARD_SIZE);
 
 	/* Normalize endianness for file_activity structures */
 	if (endian_mismatch) {
 		nr_types_nr[2] = 1;
-		swap_struct(nr_types_nr, &cpu_nr, arch_64);
+		swap_struct(nr_types_nr, &value, arch_64);
 	}
 
-	if (!cpu_nr) {
-		/* CPU number cannot be zero */
+	if (non_zero && !value) {
+		/* Value number cannot be zero */
 		handle_invalid_sa_file(&ifd, file_magic, file, 0);
 	}
 
-	return cpu_nr;
+	return value;
 }
 
 /*
@@ -2336,6 +2432,7 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
 /*
  ***************************************************************************
  * Print contents of a special (RESTART or COMMENT) record.
+ * Note: This function is called only when reading a file.
  *
  * IN:
  * @record_hdr	Current record header.
@@ -2378,6 +2475,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 {
 	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN];
 	int dp = 1;
+	int p;
 
 	/* Fill timestamp structure (rectime) for current record */
 	if (sa_get_record_timestamp_struct(l_flags, record_hdr, rectime, loctime))
@@ -2402,8 +2500,20 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 
 	if (rtype == R_RESTART) {
 		/* Read new cpu number following RESTART record */
-		file_hdr->sa_cpu_nr = read_new_cpu_nr(ifd, file, file_magic,
-						      endian_mismatch, arch_64);
+		file_hdr->sa_cpu_nr = read_nr_value(ifd, file, file_magic,
+						    endian_mismatch, arch_64, TRUE);
+
+		/*
+		 * We don't know if A_CPU activity will be displayed or not.
+		 * But if it is the case, @nr_ini will be used in the loop
+		 * to display all processors. So update its value here and
+		 * reallocate buffers if needed.
+		 */
+		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
+		act[p]->nr_ini = file_hdr->sa_cpu_nr + 1;	/* Dont't forget to count CPU "all" */
+		if (act[p]->nr_ini > act[p]->nr_allocated) {
+			reallocate_all_buffers(act[p]);
+		}
 
 		if (!dp)
 			return 0;

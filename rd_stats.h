@@ -6,7 +6,6 @@
 #ifndef _RD_STATS_H
 #define _RD_STATS_H
 
-
 /*
  ***************************************************************************
  * Miscellaneous constants
@@ -597,81 +596,81 @@ struct stats_softnet {
 
 void oct2chr
 	(char *);
-void read_stat_cpu
-	(struct stats_cpu *, int);
-void read_stat_irq
-	(struct stats_irq *, int);
-void read_meminfo
+__nr_t read_stat_cpu
+	(struct stats_cpu *, __nr_t);
+__nr_t read_stat_irq
+	(struct stats_irq *, __nr_t);
+__nr_t read_meminfo
 	(struct stats_memory *);
 void read_uptime
 	(unsigned long long *);
-void read_stat_pcsw
+__nr_t read_stat_pcsw
 	(struct stats_pcsw *);
-void read_loadavg
+__nr_t read_loadavg
 	(struct stats_queue *);
-void read_vmstat_swap
+__nr_t read_vmstat_swap
 	(struct stats_swap *);
-void read_vmstat_paging
+__nr_t read_vmstat_paging
 	(struct stats_paging *);
-void read_diskstats_io
+__nr_t read_diskstats_io
 	(struct stats_io *);
-void read_diskstats_disk
-	(struct stats_disk *, int, int);
-void read_tty_driver_serial
-	(struct stats_serial *, int);
-void read_kernel_tables
+__nr_t read_diskstats_disk
+	(struct stats_disk *, __nr_t, int);
+__nr_t read_tty_driver_serial
+	(struct stats_serial *, __nr_t);
+__nr_t read_kernel_tables
 	(struct stats_ktables *);
-int read_net_dev
-	(struct stats_net_dev *, int);
+__nr_t read_net_dev
+	(struct stats_net_dev *, __nr_t);
 void read_if_info
 	(struct stats_net_dev *, int);
-void read_net_edev
-	(struct stats_net_edev *, int);
-void read_net_nfs
+__nr_t read_net_edev
+	(struct stats_net_edev *, __nr_t);
+__nr_t read_net_nfs
 	(struct stats_net_nfs *);
-void read_net_nfsd
+__nr_t read_net_nfsd
 	(struct stats_net_nfsd *);
-void read_net_sock
+__nr_t read_net_sock
 	(struct stats_net_sock *);
-void read_net_ip
+__nr_t read_net_ip
 	(struct stats_net_ip *);
-void read_net_eip
+__nr_t read_net_eip
 	(struct stats_net_eip *);
-void read_net_icmp
+__nr_t read_net_icmp
 	(struct stats_net_icmp *);
-void read_net_eicmp
+__nr_t read_net_eicmp
 	(struct stats_net_eicmp *);
-void read_net_tcp
+__nr_t read_net_tcp
 	(struct stats_net_tcp *);
-void read_net_etcp
+__nr_t read_net_etcp
 	(struct stats_net_etcp *);
-void read_net_udp
+__nr_t read_net_udp
 	(struct stats_net_udp *);
-void read_net_sock6
+__nr_t read_net_sock6
 	(struct stats_net_sock6 *);
-void read_net_ip6
+__nr_t read_net_ip6
 	(struct stats_net_ip6 *);
-void read_net_eip6
+__nr_t read_net_eip6
 	(struct stats_net_eip6 *);
-void read_net_icmp6
+__nr_t read_net_icmp6
 	(struct stats_net_icmp6 *);
-void read_net_eicmp6
+__nr_t read_net_eicmp6
 	(struct stats_net_eicmp6 *);
-void read_net_udp6
+__nr_t read_net_udp6
 	(struct stats_net_udp6 *);
-void read_cpuinfo
-	(struct stats_pwr_cpufreq *, int);
-void read_meminfo_huge
+__nr_t read_cpuinfo
+	(struct stats_pwr_cpufreq *, __nr_t);
+__nr_t read_meminfo_huge
 	(struct stats_huge *);
-void read_time_in_state
-	(struct stats_pwr_wghfreq *, int, int);
-void read_bus_usb_dev
-	(struct stats_pwr_usb *, int);
-void read_filesystem
-	(struct stats_filesystem *, int);
-void read_fchost
-	(struct stats_fchost *, int);
-void read_softnet
-	(struct stats_softnet *, int);
+__nr_t read_cpu_wghfreq
+	(struct stats_pwr_wghfreq *, __nr_t, __nr_t);
+__nr_t read_bus_usb_dev
+	(struct stats_pwr_usb *, __nr_t);
+__nr_t read_filesystem
+	(struct stats_filesystem *, __nr_t);
+__nr_t read_fchost
+	(struct stats_fchost *, __nr_t);
+__nr_t read_softnet
+	(struct stats_softnet *, __nr_t);
 
 #endif /* _RD_STATS_H */

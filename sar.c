@@ -334,7 +334,7 @@ int check_line_hdr(void)
 					rc = TRUE;
 				}
 			}
-			else if (act[i]->nr > 1) {
+			else if (act[i]->nr_ini > 1) {
 				rc = TRUE;
 			}
 			/* Stop now since we have only one selected activity */
@@ -378,7 +378,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 		if ((act_id != ALL_ACTIVITIES) && (act[i]->id != act_id))
 			continue;
 
-		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
+		if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
 			/* Display current average activity statistics */
 			(*act[i]->f_print_avg)(act[i], 2, curr, itv);
 		}
@@ -396,6 +396,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 /*
  ***************************************************************************
  * Print system statistics.
+ * This is called when we read stats either from a file or from sadc.
  *
  * IN:
  * @curr		Index in array for current sample statistics.
@@ -505,7 +506,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		if ((act_id != ALL_ACTIVITIES) && (act[i]->id != act_id))
 			continue;
 
-		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
+		if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
 			/* Display current activity statistics */
 			(*act[i]->f_print)(act[i], !curr, curr, itv);
 		}
@@ -535,9 +536,16 @@ void write_stats_startup(int curr)
 	record_hdr[!curr].ust_time    = record_hdr[curr].ust_time;
 
 	for (i = 0; i < NR_ACT; i++) {
-		if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
+		if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
+			/*
+			 * Using nr[curr] and not nr[!curr] below because we initialize
+			 * reference structures for each structure that has been
+			 * currently read in memory.
+			 * No problem with buffers allocation since they all have the
+			 * same size.
+			 */
 			memset(act[i]->buf[!curr], 0,
-			       (size_t) act[i]->msize * (size_t) act[i]->nr * (size_t) act[i]->nr2);
+			       (size_t) act[i]->msize * (size_t) act[i]->nr[curr] * (size_t) act[i]->nr2);
 		}
 	}
 
@@ -662,7 +670,29 @@ void read_sadc_stat_bunch(int curr)
 			continue;
 		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 
-		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr * act[p]->nr2)) {
+		if (HAS_COUNT_FUNCTION(act[p]->options)) {
+			if (sa_read(&(act[p]->nr[curr]), sizeof(__nr_t))) {
+				print_read_error(END_OF_DATA_UNEXPECTED);
+			}
+			if (act[p]->nr[curr] > act[p]->nr_max) {
+				print_read_error(INCONSISTENT_INPUT_DATA);
+			}
+			if (act[p]->nr[curr] > act[p]->nr_allocated) {
+				reallocate_all_buffers(act[p]);
+			}
+
+
+			/*
+			 * For persistent activities, we must make sure that no statistics
+                         * from a previous iteration remain, especially if the number
+                         * of structures read is smaller than @nr_ini.
+                         */
+                        if (HAS_PERSISTENT_VALUES(act[p]->options)) {
+                            memset(act[p]->buf[curr], 0,
+                                   (size_t) act[p]->fsize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
+                        }
+                }
+		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr[curr] * act[p]->nr2)) {
 			print_read_error(END_OF_DATA_UNEXPECTED);
 		}
 	}
@@ -725,7 +755,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 				 BITMAP_SIZE(act[p]->bitmap->b_size));
 	}
 	else {
-		inc = act[p]->nr;
+		inc = act[p]->nr[*curr];
 	}
 
 	reset_cd = 1;
@@ -742,7 +772,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			/* Read the extra fields since it's not a special record */
 			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
-					     endian_mismatch, arch_64);
+					     endian_mismatch, arch_64, file, file_magic);
 		}
 
 		if ((lines >= rows) || !lines) {
@@ -869,9 +899,9 @@ void read_header_data(void)
 			print_read_error(INCONSISTENT_INPUT_DATA);
 		}
 
-		id_seq[i]   = file_act.id;	/* We necessarily have "i < NR_ACT" */
-		act[p]->nr  = file_act.nr;
-		act[p]->nr2 = file_act.nr2;
+		id_seq[i]      = file_act.id;	/* We necessarily have "i < NR_ACT" */
+		act[p]->nr_ini = file_act.nr;
+		act[p]->nr2    = file_act.nr2;
 	}
 
 	while (i < NR_ACT) {
@@ -942,7 +972,8 @@ void read_stats_from_file(char from_file[])
 				 * So read now the extra fields.
 				 */
 				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-						     file_actlst, endian_mismatch, arch_64);
+						     file_actlst, endian_mismatch, arch_64,
+						     from_file, &file_magic);
 				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
 								   &record_hdr[0],
 								   &rectime, NULL))
@@ -971,6 +1002,10 @@ void read_stats_from_file(char from_file[])
 		/*
 		 * Read and write stats located between two possible Linux restarts.
 		 * Activities that should be displayed are saved in id_seq[] array.
+		 * Since we are reading from a file, we print all the stats for an
+		 * activity before displaying the next activity.
+		 * id_seq[] has been created in check_file_actlst(), retaining only
+		 * activities known by current sysstat version.
 		 */
 		for (i = 0; i < NR_ACT; i++) {
 
@@ -1016,7 +1051,8 @@ void read_stats_from_file(char from_file[])
 
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-							     file_actlst, endian_mismatch, arch_64);
+							     file_actlst, endian_mismatch, arch_64,
+							     from_file, &file_magic);
 				}
 				else if (!eosaf && (rtype == R_COMMENT)) {
 					/* This was a COMMENT record: print it */
