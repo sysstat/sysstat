@@ -670,7 +670,7 @@ __print_funct_t xml_print_serial_stats(struct activity *a, int curr, int tab,
 			"prtyerr=\"%.2f\" "
 			"brk=\"%.2f\" "
 			"ovrun=\"%.2f\"/>",
-			ssc->line - 1,
+			ssc->line,
 			S_VALUE(ssp->rx,      ssc->rx,      itv),
 			S_VALUE(ssp->tx,      ssc->tx,      itv),
 			S_VALUE(ssp->frame,   ssc->frame,   itv),

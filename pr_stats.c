@@ -984,7 +984,7 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 			continue;
 
 		printf("%-11s", timestamp[curr]);
-		cprintf_in(IS_INT, "       %3d", "", ssc->line - 1);
+		cprintf_in(IS_INT, "       %3d", "", ssc->line);
 
 		cprintf_f(NO_UNIT, 6, 9, 2,
 			  S_VALUE(ssp->rx,      ssc->rx,      itv),

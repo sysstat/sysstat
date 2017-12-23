@@ -221,10 +221,6 @@ struct stats_serial {
 	unsigned int parity;
 	unsigned int brk;
 	unsigned int overrun;
-	/*
-	 * A value of 0 means that the structure is unused.
-	 * To avoid the confusion, the line number is saved as (line# + 1)
-	 */
 	unsigned int line;
 };
 

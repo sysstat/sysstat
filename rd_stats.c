@@ -767,12 +767,6 @@ __nr_t read_tty_driver_serial(struct stats_serial *st_serial, __nr_t nr_alloc)
 			/* Read serial line number */
 			sscanf(line, "%u", &st_serial_i->line);
 			/*
-			 * A value of 0 means an unused structure.
-			 * So increment the value we have just read
-			 * to make sure it is not zero.
-			 */
-			(st_serial_i->line)++;
-			/*
 			 * Read the number of chars transmitted and received by
 			 * current serial line.
 			 */
