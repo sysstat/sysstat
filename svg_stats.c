@@ -686,8 +686,8 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 		 */
 		if (DISPLAY_ONE_DAY(flags) && (rectime.tm_min == 0)) {
 			printf("<text x=\"%ld\" y=\"15\" style=\"fill: white; stroke: none; font-size: 14px; "
-			       "text-anchor: start\">%2dH</text>\n",
-			       (long) (xpos * j * xfactor) - 8, rectime.tm_hour);
+			       "text-anchor: start\">%2d:00</text>\n",
+			       (long) (xpos * j * xfactor) - 15, rectime.tm_hour);
 		}
 		else {
 			printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
