@@ -2510,7 +2510,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 		 * reallocate buffers if needed.
 		 */
 		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-		act[p]->nr_ini = file_hdr->sa_cpu_nr + 1;	/* Dont't forget to count CPU "all" */
+		act[p]->nr_ini = file_hdr->sa_cpu_nr;
 		if (act[p]->nr_ini > act[p]->nr_allocated) {
 			reallocate_all_buffers(act[p]);
 		}
