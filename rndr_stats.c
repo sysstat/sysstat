@@ -233,7 +233,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				render(isdb, pre,
 				       PT_NOFLAG,	/* that's zero but you know what it means */
-				       "all\t%%user",	/* all ppctext is used as format, thus '%%' */
+				       "all\t%user",	/* ppctext */
 				       "-1",		/* look! dbtext */
 				       NULL,		/* no args */
 				       NOVAL,		/* another 0, named for readability */
@@ -242,7 +242,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 			}
 			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%usr", "-1", NULL,
+				       "all\t%usr", "-1", NULL,
 				       NOVAL,
 				       (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 				       0.0 :
@@ -254,14 +254,14 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%nice", NULL, NULL,
+				       "all\t%nice", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
 				       NULL);
 			}
 			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%nice", NULL, NULL,
+				       "all\t%nice", NULL, NULL,
 				       NOVAL,
 				       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
 				       0.0 :
@@ -273,7 +273,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%system", NULL, NULL,
+				       "all\t%system", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
 						   scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
@@ -282,52 +282,52 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 			}
 			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%sys", NULL, NULL,
+				       "all\t%sys", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
 				       NULL);
 			}
 
 			render(isdb, pre, PT_NOFLAG,
-			       "all\t%%iowait", NULL, NULL,
+			       "all\t%iowait", NULL, NULL,
 			       NOVAL,
 			       ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
 			       NULL);
 
 			render(isdb, pre, PT_NOFLAG,
-			       "all\t%%steal", NULL, NULL,
+			       "all\t%steal", NULL, NULL,
 			       NOVAL,
 			       ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
 			       NULL);
 
 			if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%irq", NULL, NULL,
+				       "all\t%irq", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
 				       NULL);
 
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%soft", NULL, NULL,
+				       "all\t%soft", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
 				       NULL);
 
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%guest", NULL, NULL,
+				       "all\t%guest", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
 				       NULL);
 
 				render(isdb, pre, PT_NOFLAG,
-				       "all\t%%gnice", NULL, NULL,
+				       "all\t%gnice", NULL, NULL,
 				       NOVAL,
 				       ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies),
 				       NULL);
 			}
 
 			render(isdb, pre, pt_newlin,
-			       "all\t%%idle", NULL, NULL,
+			       "all\t%idle", NULL, NULL,
 			       NOVAL,
 			       (scc->cpu_idle < scp->cpu_idle) ?
 			       0.0 :
@@ -668,7 +668,7 @@ __print_funct_t render_paging_stats(struct activity *a, int isdb, char *pre,
 	       NULL);
 
 	render(isdb, pre, pt_newlin,
-	       "-\t%%vmeff", NULL, NULL,
+	       "-\t%vmeff", NULL, NULL,
 	       NOVAL,
 	       (spc->pgscan_kswapd + spc->pgscan_direct -
 		spp->pgscan_kswapd - spp->pgscan_direct) ?
@@ -777,7 +777,7 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       smc->tlmkb - smc->frmkb, DNOVAL, NULL);
 
 		render(isdb, pre, PT_NOFLAG,
-		       "-\t%%memused", NULL, NULL, NOVAL,
+		       "-\t%memused", NULL, NULL, NOVAL,
 		       smc->tlmkb ?
 		       SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
 		       0.0, NULL);
@@ -795,7 +795,7 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       smc->comkb, DNOVAL, NULL);
 
 		render(isdb, pre, PT_NOFLAG,
-		       "-\t%%commit", NULL, NULL, NOVAL,
+		       "-\t%commit", NULL, NULL, NOVAL,
 		       (smc->tlmkb + smc->tlskb) ?
 		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
 		       0.0, NULL);
@@ -847,7 +847,7 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       smc->tlskb - smc->frskb, DNOVAL, NULL);
 
 		render(isdb, pre, PT_NOFLAG,
-		       "-\t%%swpused", NULL, NULL, NOVAL,
+		       "-\t%swpused", NULL, NULL, NOVAL,
 		       smc->tlskb ?
 		       SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) :
 		       0.0, NULL);
@@ -857,7 +857,7 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		       smc->caskb, DNOVAL, NULL);
 
 		render(isdb, pre, pt_newlin,
-		       "-\t%%swpcad", NULL, NULL, NOVAL,
+		       "-\t%swpcad", NULL, NULL, NOVAL,
 		       (smc->tlskb - smc->frskb) ?
 		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
 		       0.0, NULL);
@@ -2734,7 +2734,7 @@ __print_funct_t render_huge_stats(struct activity *a, int isdb, char *pre,
 	       smc->tlhkb - smc->frhkb, DNOVAL, NULL);
 
 	render(isdb, pre, pt_newlin,
-	       "-\t%%hugused", NULL, NULL, NOVAL,
+	       "-\t%hugused", NULL, NULL, NOVAL,
 	       smc->tlhkb ?
 	       SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 	       0.0, NULL);
