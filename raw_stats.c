@@ -118,11 +118,12 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 	int i;
 	struct stats_cpu *scc, *scp;
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
+
 	/* @nr[curr] cannot normally be greater than @nr_ini */
 	if (a->nr[curr] > a->nr_ini) {
-		if (DISPLAY_HINTS(flags)) {
-			printf("[NEW: %d->%d]\n", a->nr_ini, a->nr[curr]);
-		}
 		a->nr_ini = a->nr[curr];
 	}
 
@@ -239,6 +240,10 @@ __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 {
 	int i;
 	struct stats_irq *sic, *sip;
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -455,6 +460,10 @@ __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int cu
 	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
+
 	for (i = 0; i < a->nr[curr]; i++) {
 
 		ssc = (struct stats_serial *) ((char *) a->buf[curr]  + i * a->msize);
@@ -524,6 +533,10 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 	char *dev_name, *persist_dev_name;
 
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -597,6 +610,10 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
+
 	for (i = 0; i < a->nr[curr]; i++) {
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
@@ -649,6 +666,10 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 	struct stats_net_edev *snedc, *snedp, snedzero;
 
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -1284,6 +1305,10 @@ __print_funct_t raw_print_pwr_cpufreq_stats(struct activity *a, char *timestr, i
 	int i;
 	struct stats_pwr_cpufreq *spc;
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
+
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
@@ -1312,6 +1337,10 @@ __print_funct_t raw_print_pwr_fan_stats(struct activity *a, char *timestr, int c
 	int i;
 	struct stats_pwr_fan *spc;
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
+
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
@@ -1336,6 +1365,10 @@ __print_funct_t raw_print_pwr_temp_stats(struct activity *a, char *timestr, int 
 {
 	int i;
 	struct stats_pwr_temp *spc;
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
@@ -1362,6 +1395,10 @@ __print_funct_t raw_print_pwr_in_stats(struct activity *a, char *timestr, int cu
 {
 	int i;
 	struct stats_pwr_in *spc;
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
@@ -1408,6 +1445,10 @@ __print_funct_t raw_print_pwr_wghfreq_stats(struct activity *a, char *timestr, i
 	int i, k;
 	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d,%d]\n", a->nr[curr], a->nr_ini, a->nr2);
+	}
+
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		spc = (struct stats_pwr_wghfreq *) ((char *) a->buf[curr]  + i * a->msize * a->nr2);
@@ -1450,6 +1491,10 @@ __print_funct_t raw_print_pwr_usb_stats(struct activity *a, char *timestr, int c
 	int i;
 	struct stats_pwr_usb *suc;
 
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
+
 	for (i = 0; i < a->nr[curr]; i++) {
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 
@@ -1476,6 +1521,10 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 {
 	int i;
 	struct stats_filesystem *sfc;
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
@@ -1509,6 +1558,10 @@ __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int cu
 {
 	int i, j, j0, found;
 	struct stats_fchost *sfcc, *sfcp;
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
@@ -1565,6 +1618,10 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 {
 	int i;
 	struct stats_softnet *ssnc, *ssnp;
+
+	if (DISPLAY_HINTS(flags)) {
+		printf("[NBR: %d/%d]\n", a->nr[curr], a->nr_ini);
+	}
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
