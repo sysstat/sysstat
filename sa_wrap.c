@@ -36,15 +36,23 @@ extern struct record_header record_hdr;
  * double of the original one.
  * This is typically called when we find that current buffer is too small
  * to save all the data.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * RETURNS:
+ * New pointer address on buffer.
  ***************************************************************************
  */
-void reallocate_buffer(struct activity *a)
+void *reallocate_buffer(struct activity *a)
 {
 	SREALLOC(a->_buf0, void,
 		 (size_t) a->msize * (size_t) a->nr_allocated * 2);	/* a->nr2 value is 1 */
 	memset(a->_buf0, 0, (size_t) a->msize * (size_t) a->nr_allocated * 2);
 
 	a->nr_allocated *= 2;	/* NB: nr_allocated > 0 */
+
+	return a->_buf0;
 }
 
 /*
@@ -70,7 +78,7 @@ __read_funct_t wrap_read_stat_cpu(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_cpu = (struct stats_cpu *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -125,7 +133,7 @@ __read_funct_t wrap_read_stat_irq(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_irq = (struct stats_irq *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -269,7 +277,7 @@ __read_funct_t wrap_read_disk(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_disk = (struct stats_disk *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -302,7 +310,7 @@ __read_funct_t wrap_read_tty_driver_serial(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_serial = (struct stats_serial *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -357,7 +365,7 @@ __read_funct_t wrap_read_net_dev(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_net_dev = (struct stats_net_dev *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -397,7 +405,7 @@ __read_funct_t wrap_read_net_edev(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_net_edev = (struct stats_net_edev *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -782,7 +790,7 @@ __read_funct_t wrap_read_cpuinfo(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_pwr_cpufreq = (struct stats_pwr_cpufreq *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -815,7 +823,7 @@ __read_funct_t wrap_read_fan(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_pwr_fan = (struct stats_pwr_fan *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -848,7 +856,7 @@ __read_funct_t wrap_read_temp(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_pwr_temp = (struct stats_pwr_temp *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -881,7 +889,7 @@ __read_funct_t wrap_read_in(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_pwr_in = (struct stats_pwr_in *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -943,6 +951,7 @@ __read_funct_t wrap_read_cpu_wghfreq(struct activity *a)
 
 			/* NB: nr_allocated > 0 */
 			a->nr_allocated *= 2;
+			st_pwr_wghfreq = (struct stats_pwr_wghfreq *) a->_buf0;
 		}
 	}
 	while(nr_read < 0);
@@ -975,7 +984,7 @@ __read_funct_t wrap_read_bus_usb_dev(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_pwr_usb = (struct stats_pwr_usb *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -1008,7 +1017,7 @@ __read_funct_t wrap_read_filesystem(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_filesystem = (struct stats_filesystem *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -1041,7 +1050,7 @@ __read_funct_t wrap_read_fchost(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_fc = (struct stats_fchost *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
@@ -1074,7 +1083,7 @@ __read_funct_t wrap_read_softnet(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			reallocate_buffer(a);
+			st_softnet = (struct stats_softnet *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
