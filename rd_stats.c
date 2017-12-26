@@ -211,13 +211,6 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc)
 			while ((i > 0) && (pos < sizeof(line)));
 
 			break;
-#if 0
-			for (i = 1; i < nbr; i++) {
-				st_irq_i = st_irq + i;
-				sscanf(line + pos, " %llu", &st_irq_i->irq_nr);
-				pos += strcspn(line + pos + 1, " ") + 1;
-			}
-#endif
 		}
 	}
 
