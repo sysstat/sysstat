@@ -441,7 +441,7 @@ void brappend(unsigned long long timetag, double offset, double value, char **ou
 
 	/* Prepare additional graph definition data */
 	if ((value == 0.0) || (dt == 0))
-		/* Dont draw a flat rectangle! */
+		/* Don't draw a flat rectangle! */
 		return;
 
 	snprintf(data, 128, "<rect x=\"%llu\" y=\"%.2f\" height=\"%.2f\" width=\"%llu\"/>",

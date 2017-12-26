@@ -478,7 +478,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		 * sar -s time_start -e time_end with
 		 * time_start(day D) > time_end(day D+1)
 		 */
-		rectime.tm_hour +=24;
+		rectime.tm_hour += 24;
 	}
 
 	/* Check time (2) */
