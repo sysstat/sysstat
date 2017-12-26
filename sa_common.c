@@ -1720,7 +1720,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 			act[i]->options &= ~AO_SELECTED;
 		}
 	}
-	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES)) {
+
+	/*
+	 * None of selected activities exist in file: Abort.
+	 * NB: Error is ignored if we only want to display
+	 * datafile header (sadf -H).
+	 */
+	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES) && !ignore) {
 		fprintf(stderr, _("Requested activities not available in file %s\n"),
 			dfile);
 		close(*ifd);
