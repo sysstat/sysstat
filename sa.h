@@ -1257,6 +1257,8 @@ int parse_sar_n_opt
 	(char * [], int *, struct activity * []);
 int parse_timestamp
 	(char * [], int *, struct tstamp *, const char *);
+void print_collect_error
+	(void);
 void print_report_hdr
 	(unsigned int, struct tm *, struct file_header *);
 void print_sar_comment

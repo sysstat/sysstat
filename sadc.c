@@ -1239,11 +1239,6 @@ int main(int argc, char **argv)
 		}
 	}
 
-	/* At least one activity must be collected (default is A_CPU) */
-	if (!get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES)) {
-		COLLECT_ACTIVITY(A_CPU);
-	}
-
 	/* Process file entered on the command line */
 	if (WANT_SA_ROTAT(flags)) {
 		/* File name set to '-' */
@@ -1287,6 +1282,12 @@ int main(int argc, char **argv)
 
 	/* Init structures according to machine architecture */
 	sa_sys_init();
+
+	/* At least one activity must be collected */
+	if (!get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES)) {
+		/* Requested activities not available: Exit */
+		print_collect_error();
+	}
 
 	if (!interval && !comment[0]) {
 		/*

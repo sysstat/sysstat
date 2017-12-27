@@ -1291,6 +1291,17 @@ void handle_invalid_sa_file(int *fd, struct file_magic *file_magic, char *file,
 
 /*
  ***************************************************************************
+ * Display an error message then exit.
+ ***************************************************************************
+ */
+void print_collect_error(void)
+{
+	fprintf(stderr, _("Requested activities not available\n"));
+	exit(1);
+}
+
+/*
+ ***************************************************************************
  * Move structures data.
  *
  * IN:

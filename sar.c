@@ -1101,8 +1101,8 @@ void read_stats(void)
 	read_header_data();
 
 	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES)) {
-		fprintf(stderr, _("Requested activities not available\n"));
-		exit(1);
+		/* Requested activities not available: Exit */
+		print_collect_error();
 	}
 
 	/* Determine if a stat line header has to be displayed */
