@@ -949,6 +949,15 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		/* Save activity sequence */
 		id_seq[i] = file_act[i].id;
 		act[p]->options |= AO_COLLECTED;
+
+		/*
+		 * sar doesn't expect a number of items equal to 0.
+		 * Yet @nr_ini may be 0 if no items have been found on current machine.
+		 * Since we are appending data to a file, set @nr_ini to the value of the file.
+		 * Stats saved in file will all be 0 for that activity if no items exist on
+		 * the machine.
+		 */
+		act[p]->nr_ini = file_act[i].nr;
 	}
 
 	return;
