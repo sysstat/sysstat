@@ -956,29 +956,32 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
-		ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
-
-		/* Look for corresponding serial line in previous iteration */
-		j = i;
-		if (j > a->nr[prev]) {
-			j = a->nr[prev];
-		}
-
-		j0 = j;
 		found = FALSE;
 
-		do {
-			if (j > a->nr[prev]) {
-				j = 0;
+		if (a->nr[prev] > 0) {
+			ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
+
+			/* Look for corresponding serial line in previous iteration */
+			j = i;
+
+			if (j >= a->nr[prev]) {
+				j = a->nr[prev] - 1;
 			}
-			ssp = (struct stats_serial *) ((char *) a->buf[prev] + j * a->msize);
-			if ((ssc->line == ssp->line) || WANT_SINCE_BOOT(flags)) {
-				found = TRUE;
-				break;
+
+			j0 = j;
+
+			do {
+				ssp = (struct stats_serial *) ((char *) a->buf[prev] + j * a->msize);
+				if ((ssc->line == ssp->line) || WANT_SINCE_BOOT(flags)) {
+					found = TRUE;
+					break;
+				}
+				if (++j >= a->nr[prev]) {
+					j = 0;
+				}
 			}
-			j++;
+			while (j != j0);
 		}
-		while (j != j0);
 
 		if (!found)
 			continue;
@@ -2782,29 +2785,33 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
-		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-
-		/* Look for corresponding structure in previous iteration */
-		j = i;
-		if (j > a->nr[prev]) {
-			j = a->nr[prev];
-		}
-
-		j0 = j;
 		found = FALSE;
 
-		do {
-			if (j > a->nr[prev]) {
-				j = 0;
+		if (a->nr[prev] > 0) {
+			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+
+			/* Look for corresponding structure in previous iteration */
+			j = i;
+
+			if (j >= a->nr[prev]) {
+				j = a->nr[prev] - 1;
 			}
-			sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + j * a->msize);
-			if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
-				found = TRUE;
-				break;
+
+			j0 = j;
+
+			do {
+				sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + j * a->msize);
+				if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+					found = TRUE;
+					break;
+				}
+
+				if (++j >= a->nr[prev]) {
+					j = 0;
+				}
 			}
-			j++;
+			while (j != j0);
 		}
-		while (j != j0);
 
 		if (!found)
 			continue;

@@ -641,19 +641,23 @@ void print_report_hdr(unsigned int flags, struct tm *rectime,
 int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_dev *sndc, *sndp;
-	int j0, j= pos;
+	int j0, j = pos;
 
-	if (j > a->nr[ref]) {
-		j = a->nr[ref];
+	if (!a->nr[ref])
+		/*
+		 * No items found in previous iteration:
+		 * Current interface is necessarily new.
+		 */
+		return -1;
+
+	if (j >= a->nr[ref]) {
+		j = a->nr[ref] - 1;
 	}
 	j0 = j;
 
 	sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + pos * a->msize);
 
 	do {
-		if (j > a->nr[ref]) {
-			j = 0;
-		}
 		sndp = (struct stats_net_dev *) ((char *) a->buf[ref] + j * a->msize);
 
 		if (!strcmp(sndc->interface, sndp->interface)) {
@@ -718,7 +722,9 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 			}
 			return j;
 		}
-		j++;
+		if (++j >= a->nr[ref]) {
+			j = 0;
+		}
 	}
 	while (j != j0);
 
@@ -750,17 +756,21 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 	struct stats_net_edev *snedc, *snedp;
 	int j0, j = pos;
 
-	if (j > a->nr[ref]) {
-		j = a->nr[ref];
+	if (!a->nr[ref])
+		/*
+		 * No items found in previous iteration:
+		 * Current interface is necessarily new.
+		 */
+		return -1;
+
+	if (j >= a->nr[ref]) {
+		j = a->nr[ref] - 1;
 	}
 	j0 = j;
 
 	snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + pos * a->msize);
 
 	do {
-		if (j > a->nr[ref]) {
-			j = 0;
-		}
 		snedp = (struct stats_net_edev *) ((char *) a->buf[ref] + j * a->msize);
 
 		if (!strcmp(snedc->interface, snedp->interface)) {
@@ -785,7 +795,9 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 
 			return j;
 		}
-		j++;
+		if (++j >= a->nr[ref]) {
+			j = 0;
+		}
 	}
 	while (j != j0);
 
@@ -816,17 +828,21 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 	struct stats_disk *sdc, *sdp;
 	int j0, j = pos;
 
-	if (j > a->nr[ref]) {
-		j = a->nr[ref];
+	if (!a->nr[ref])
+		/*
+		 * No items found in previous iteration:
+		 * Current interface is necessarily new.
+		 */
+		return -1;
+
+	if (j >= a->nr[ref]) {
+		j = a->nr[ref] - 1;
 	}
 	j0 = j;
 
 	sdc = (struct stats_disk *) ((char *) a->buf[curr] + pos * a->msize);
 
 	do {
-		if (j > a->nr[ref]) {
-			j = 0;
-		}
 		sdp = (struct stats_disk *) ((char *) a->buf[ref] + j * a->msize);
 
 		if ((sdc->major == sdp->major) &&
@@ -846,7 +862,9 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 
 			return j;
 		}
-		j++;
+		if (++j >= a->nr[ref]) {
+			j = 0;
+		}
 	}
 	while (j != j0);
 

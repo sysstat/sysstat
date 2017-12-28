@@ -4850,54 +4850,58 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 
 		/* For each FC HBA */
 		for (i = 0; i < a->nr[curr]; i++) {
-			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
-			/* Look for corresponding graph */
-			for (k = 0; k < svg_p->nr_max; k++) {
-				item_name = *(out + k * 5 + 4);
-				if (!strcmp(sfcc->fchost_name, item_name))
-					/* Graph found! */
-					break;
-			}
-			if (k == svg_p->nr_max) {
-				/* Graph not found: Look for first free entry */
+			found = FALSE;
+
+			if (a->nr[!curr] > 0) {
+				sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+
+				/* Look for corresponding graph */
 				for (k = 0; k < svg_p->nr_max; k++) {
 					item_name = *(out + k * 5 + 4);
-					if (!strcmp(item_name, ""))
+					if (!strcmp(sfcc->fchost_name, item_name))
+						/* Graph found! */
 						break;
 				}
 				if (k == svg_p->nr_max) {
-					/* No free graph entry: Extend all buffers */
-					reallocate_all_graph_lines(svg_p->nr_max,
-								   &out, &outsize, &spmin, &spmax);
-					svg_p->nr_max *= 2;
+					/* Graph not found: Look for first free entry */
+					for (k = 0; k < svg_p->nr_max; k++) {
+						item_name = *(out + k * 5 + 4);
+						if (!strcmp(item_name, ""))
+							break;
+					}
+					if (k == svg_p->nr_max) {
+						/* No free graph entry: Extend all buffers */
+						reallocate_all_graph_lines(svg_p->nr_max,
+									   &out, &outsize, &spmin, &spmax);
+						svg_p->nr_max *= 2;
+					}
 				}
-			}
 
-			pos = k * 5;
-			unregistered = outsize + pos + 4;
+				pos = k * 5;
+				unregistered = outsize + pos + 4;
 
-			/* Look for corresponding structure in previous iteration */
-			j = i;
-			if (j > a->nr[!curr]) {
-				j = a->nr[!curr];
-			}
+				/* Look for corresponding structure in previous iteration */
+				j = i;
 
-			j0 = j;
-			found = FALSE;
-
-			do {
-				if (j > a->nr[!curr]) {
-					j = 0;
+				if (j >= a->nr[!curr]) {
+					j = a->nr[!curr] - 1;
 				}
-				sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
-				if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
-					found = TRUE;
-					break;
+
+				j0 = j;
+
+				do {
+					sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
+					if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+						found = TRUE;
+						break;
+					}
+					if (++j >= a->nr[!curr]) {
+						j = 0;
+					}
 				}
-				j++;
+				while (j != j0);
 			}
-			while (j != j0);
 
 			if (!found)
 				continue;
