@@ -937,20 +937,6 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		p = get_activity_position(act, file_act[i].id, EXIT_IF_NOT_FOUND);
 
 		/*
-		 * Force number of sub-items to that of the file, and reallocate structures.
-		 * We don't care for items as their structures will be dynamically allocated.
-		 */
-		if (file_act[i].nr2 != act[p]->nr2) {
-			act[p]->nr2 = file_act[i].nr2;
-			SREALLOC(act[p]->_buf0, void,
-				 (size_t) act[p]->msize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
-		}
-
-		/* Save activity sequence */
-		id_seq[i] = file_act[i].id;
-		act[p]->options |= AO_COLLECTED;
-
-		/*
 		 * sar doesn't expect a number of items equal to 0.
 		 * Yet @nr_ini may be 0 if no items have been found on current machine.
 		 * Since we are appending data to a file, set @nr_ini to the value of the file.
@@ -958,6 +944,21 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		 * the machine.
 		 */
 		act[p]->nr_ini = file_act[i].nr;
+
+		/*
+		 * Force number of sub-items to that of the file, and reallocate structures.
+		 * Note: Structures have been allocated in sa_sys_init() only for activities
+		 * that are collected. But since activities from file now prevail over them,
+		 * we need to reallocate.
+		 */
+		act[p]->nr2 = file_act[i].nr2;
+		SREALLOC(act[p]->_buf0, void,
+			 (size_t) act[p]->msize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
+		act[p]->nr_allocated = act[p]->nr_ini;
+
+		/* Save activity sequence */
+		id_seq[i] = file_act[i].id;
+		act[p]->options |= AO_COLLECTED;
 	}
 
 	return;
