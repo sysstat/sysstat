@@ -940,7 +940,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&tab, F_BEGIN, file, file_magic,
-					     &file_hdr, act, id_seq);
+					     &file_hdr, act, id_seq, file_actlst);
 	}
 
 	/* Process activities */
@@ -1059,7 +1059,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&tab, F_END, file, file_magic,
-					     &file_hdr, act, id_seq);
+					     &file_hdr, act, id_seq, file_actlst);
 	}
 }
 
@@ -1243,7 +1243,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 	/* Print SVG header */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&parm, F_BEGIN + F_MAIN, file, file_magic,
-					     &file_hdr, act, id_seq);
+					     &file_hdr, act, id_seq, file_actlst);
 	}
 
 	/*
@@ -1311,7 +1311,7 @@ close_svg:
 	/* Print SVG trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&parm, F_END, file, file_magic,
-					     &file_hdr, act, id_seq);
+					     &file_hdr, act, id_seq, file_actlst);
 	}
 }
 
@@ -1341,7 +1341,7 @@ void read_stats_from_file(char dfile[])
 		if (*fmt[f_position]->f_header) {
 			/* Display only data file header then exit */
 			(*fmt[f_position]->f_header)(&tab, F_BEGIN + F_END, dfile, &file_magic,
-						     &file_hdr, act, id_seq);
+						     &file_hdr, act, id_seq, file_actlst);
 		}
 		exit(0);
 	}

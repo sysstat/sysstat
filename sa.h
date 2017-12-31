@@ -957,7 +957,7 @@ struct report_format {
 	 * (data displayed once at the beginning of the report).
 	 */
 	__printf_funct_t (*f_header) (void *, int, char *, struct file_magic *, struct file_header *,
-				      struct activity * [], unsigned int []);
+				      struct activity * [], unsigned int [], struct file_activity *);
 	/*
 	 * This function defines the statistics part of the report.
 	 * Used only with textual (XML-like) reports.

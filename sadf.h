@@ -183,15 +183,15 @@ __tm_funct_t print_raw_timestamp
  */
 __printf_funct_t print_xml_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_json_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_hdr_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_svg_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
-	 struct activity * [], unsigned int []);
+	 struct activity * [], unsigned int [], struct file_activity *);
 
 #endif  /* _SADF_H */

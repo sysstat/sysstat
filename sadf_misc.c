@@ -682,6 +682,7 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
  * @file_hdr	System activity file standard header.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
+ * @file_actlst	List of (known or unknown) activities in file (unused here).
  *
  * OUT:
  * @parm	Number of tabulations.
@@ -690,7 +691,8 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 				  struct file_magic *file_magic,
 				  struct file_header *file_hdr,
-				  struct activity *act[], unsigned int id_seq[])
+				  struct activity *act[], unsigned int id_seq[],
+				  struct file_activity *file_actlst)
 {
 	struct tm rectime, *loc_t;
 	char cur_time[TIMESTAMP_LEN];
@@ -748,6 +750,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
  * @file_hdr	System activity file standard header.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
+ * @file_actlst	List of (known or unknown) activities in file (unused here).
  *
  * OUT:
  * @parm	Number of tabulations.
@@ -756,7 +759,8 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 				   struct file_magic *file_magic,
 				   struct file_header *file_hdr,
-				   struct activity *act[], unsigned int id_seq[])
+				   struct activity *act[], unsigned int id_seq[],
+				   struct file_activity *file_actlst)
 {
 	struct tm rectime, *loc_t;
 	char cur_time[TIMESTAMP_LEN];
@@ -807,15 +811,18 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
  * @file_hdr	System activity file standard header.
  * @act		Array of activities.
  * @id_seq	Activity sequence.
+ * @file_actlst	List of (known or unknown) activities in file.
  ***************************************************************************
  */
 __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 				  struct file_magic *file_magic,
 				  struct file_header *file_hdr,
-				  struct activity *act[], unsigned int id_seq[])
+				  struct activity *act[], unsigned int id_seq[],
+				  struct file_activity *file_actlst)
 {
 	int i, p;
 	struct tm rectime, *loc_t;
+	struct file_activity *fal;
 	char cur_time[TIMESTAMP_LEN];
 
 	/* Actions F_MAIN and F_END ignored */
@@ -853,24 +860,27 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 
 		printf(_("Size of a long int: %d\n"), file_hdr->sa_sizeof_long);
 		printf("HZ = %lu\n", file_hdr->sa_hz);
-
-		/* Number of activities in file */
-		printf("sa_act_nr: %u\n",
+		printf(_("Number of activities in file: %u\n"),
 		       file_hdr->sa_act_nr);
 
 		printf(_("List of activities:\n"));
+		fal = file_actlst;
+		for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
-		for (i = 0; i < NR_ACT; i++) {
-			if (!id_seq[i])
-				continue;
+			p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND);
 
-			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
-
-			printf("%02d: %s\t(x%d)", act[p]->id, act[p]->name, act[p]->nr_ini);
-			if (IS_MATRIX(act[p]->options)) {
-				printf("\t(x%d)", act[p]->nr2);
+			printf("%02d: ", fal->id);
+			if (p >= 0) {
+				printf("%-15s", act[p]->name);
 			}
-			if (act[p]->magic == ACTIVITY_MAGIC_UNKNOWN) {
+			else {
+				printf(_("Unknown activity"));
+			}
+			printf("\t(x%d)", fal->nr);
+			if (fal->nr2 > 1) {
+				printf("\t(x%d)", fal->nr2);
+			}
+			if ((p >= 0) && (act[p]->magic == ACTIVITY_MAGIC_UNKNOWN)) {
 				printf(_("\t[Unknown activity format]"));
 			}
 			printf("\n");
@@ -892,12 +902,14 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
  * @file_hdr	System activity file standard header.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
+ * @file_actlst	List of (known or unknown) activities in file (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				  struct file_magic *file_magic,
 				  struct file_header *file_hdr,
-				  struct activity *act[], unsigned int id_seq[])
+				  struct activity *act[], unsigned int id_seq[],
+				  struct file_activity *file_actlst)
 {
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
 
