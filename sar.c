@@ -733,7 +733,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 	int p, reset_cd;
 	unsigned long lines = 0;
 	unsigned char rtype;
-	int davg = 0, next, inc;
+	int davg = 0, next, inc = 0;
 
 	if (lseek(ifd, fpos, SEEK_SET) < fpos) {
 		perror("lseek");
@@ -748,16 +748,12 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 
 	*cnt  = count;
 
-	/* Assess number of lines printed */
+	/* Assess number of lines printed when a bitmap is used */
 	p = get_activity_position(act, act_id, EXIT_IF_NOT_FOUND);
 	if (act[p]->bitmap) {
 		inc = count_bits(act[p]->bitmap->b_array,
 				 BITMAP_SIZE(act[p]->bitmap->b_size));
 	}
-	else {
-		inc = act[p]->nr[*curr];
-	}
-
 	reset_cd = 1;
 
 	do {
@@ -805,10 +801,17 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 			if (next && (*cnt > 0)) {
 				(*cnt)--;
 			}
+
 			if (next) {
 				davg++;
-				*curr ^=1;
-				lines += inc;
+				*curr ^= 1;
+
+				if (inc) {
+					lines += inc;
+				}
+				else {
+					lines += act[p]->nr[*curr];
+				}
 			}
 			*reset = FALSE;
 		}
