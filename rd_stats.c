@@ -244,71 +244,71 @@ __nr_t read_meminfo(struct stats_memory *st_memory)
 
 		if (!strncmp(line, "MemTotal:", 9)) {
 			/* Read the total amount of memory in kB */
-			sscanf(line + 9, "%lu", &st_memory->tlmkb);
+			sscanf(line + 9, "%llu", &st_memory->tlmkb);
 		}
 		else if (!strncmp(line, "MemFree:", 8)) {
 			/* Read the amount of free memory in kB */
-			sscanf(line + 8, "%lu", &st_memory->frmkb);
+			sscanf(line + 8, "%llu", &st_memory->frmkb);
 		}
 		else if (!strncmp(line, "MemAvailable:", 13)) {
 			/* Read the amount of available memory in kB */
-			sscanf(line + 13, "%lu", &st_memory->availablekb);
+			sscanf(line + 13, "%llu", &st_memory->availablekb);
 		}
 		else if (!strncmp(line, "Buffers:", 8)) {
 			/* Read the amount of buffered memory in kB */
-			sscanf(line + 8, "%lu", &st_memory->bufkb);
+			sscanf(line + 8, "%llu", &st_memory->bufkb);
 		}
 		else if (!strncmp(line, "Cached:", 7)) {
 			/* Read the amount of cached memory in kB */
-			sscanf(line + 7, "%lu", &st_memory->camkb);
+			sscanf(line + 7, "%llu", &st_memory->camkb);
 		}
 		else if (!strncmp(line, "SwapCached:", 11)) {
 			/* Read the amount of cached swap in kB */
-			sscanf(line + 11, "%lu", &st_memory->caskb);
+			sscanf(line + 11, "%llu", &st_memory->caskb);
 		}
 		else if (!strncmp(line, "Active:", 7)) {
 			/* Read the amount of active memory in kB */
-			sscanf(line + 7, "%lu", &st_memory->activekb);
+			sscanf(line + 7, "%llu", &st_memory->activekb);
 		}
 		else if (!strncmp(line, "Inactive:", 9)) {
 			/* Read the amount of inactive memory in kB */
-			sscanf(line + 9, "%lu", &st_memory->inactkb);
+			sscanf(line + 9, "%llu", &st_memory->inactkb);
 		}
 		else if (!strncmp(line, "SwapTotal:", 10)) {
 			/* Read the total amount of swap memory in kB */
-			sscanf(line + 10, "%lu", &st_memory->tlskb);
+			sscanf(line + 10, "%llu", &st_memory->tlskb);
 		}
 		else if (!strncmp(line, "SwapFree:", 9)) {
 			/* Read the amount of free swap memory in kB */
-			sscanf(line + 9, "%lu", &st_memory->frskb);
+			sscanf(line + 9, "%llu", &st_memory->frskb);
 		}
 		else if (!strncmp(line, "Dirty:", 6)) {
 			/* Read the amount of dirty memory in kB */
-			sscanf(line + 6, "%lu", &st_memory->dirtykb);
+			sscanf(line + 6, "%llu", &st_memory->dirtykb);
 		}
 		else if (!strncmp(line, "Committed_AS:", 13)) {
 			/* Read the amount of commited memory in kB */
-			sscanf(line + 13, "%lu", &st_memory->comkb);
+			sscanf(line + 13, "%llu", &st_memory->comkb);
 		}
 		else if (!strncmp(line, "AnonPages:", 10)) {
 			/* Read the amount of pages mapped into userspace page tables in kB */
-			sscanf(line + 10, "%lu", &st_memory->anonpgkb);
+			sscanf(line + 10, "%llu", &st_memory->anonpgkb);
 		}
 		else if (!strncmp(line, "Slab:", 5)) {
 			/* Read the amount of in-kernel data structures cache in kB */
-			sscanf(line + 5, "%lu", &st_memory->slabkb);
+			sscanf(line + 5, "%llu", &st_memory->slabkb);
 		}
 		else if (!strncmp(line, "KernelStack:", 12)) {
 			/* Read the kernel stack utilization in kB */
-			sscanf(line + 12, "%lu", &st_memory->kstackkb);
+			sscanf(line + 12, "%llu", &st_memory->kstackkb);
 		}
 		else if (!strncmp(line, "PageTables:", 11)) {
 			/* Read the amount of memory dedicated to the lowest level of page tables in kB */
-			sscanf(line + 11, "%lu", &st_memory->pgtblkb);
+			sscanf(line + 11, "%llu", &st_memory->pgtblkb);
 		}
 		else if (!strncmp(line, "VmallocUsed:", 12)) {
 			/* Read the amount of vmalloc area which is used in kB */
-			sscanf(line + 12, "%lu", &st_memory->vmusedkb);
+			sscanf(line + 12, "%llu", &st_memory->vmusedkb);
 		}
 	}
 
@@ -451,14 +451,14 @@ __nr_t read_loadavg(struct stats_queue *st_queue)
 {
 	FILE *fp;
 	char line[8192];
-	int load_tmp[3];
+	unsigned int load_tmp[3];
 	int rc;
 
 	if ((fp = fopen(LOADAVG, "r")) == NULL)
 		return 0;
 
 	/* Read load averages and queue length */
-	rc = fscanf(fp, "%d.%u %d.%u %d.%u %lu/%u %*d\n",
+	rc = fscanf(fp, "%u.%u %u.%u %u.%u %llu/%llu %*d\n",
 		    &load_tmp[0], &st_queue->load_avg_1,
 		    &load_tmp[1], &st_queue->load_avg_5,
 		    &load_tmp[2], &st_queue->load_avg_15,
@@ -487,7 +487,7 @@ __nr_t read_loadavg(struct stats_queue *st_queue)
 
 		if (!strncmp(line, "procs_blocked ", 14)) {
 			/* Read number of processes blocked */
-			sscanf(line + 14, "%lu", &st_queue->procs_blocked);
+			sscanf(line + 14, "%llu", &st_queue->procs_blocked);
 			break;
 		}
 	}
@@ -803,12 +803,12 @@ __nr_t read_tty_driver_serial(struct stats_serial *st_serial, __nr_t nr_alloc)
 __nr_t read_kernel_tables(struct stats_ktables *st_ktables)
 {
 	FILE *fp;
-	unsigned int parm;
+	unsigned long long parm;
 	int rc = 0;
 
 	/* Open /proc/sys/fs/dentry-state file */
 	if ((fp = fopen(FDENTRY_STATE, "r")) != NULL) {
-		rc = fscanf(fp, "%*d %u",
+		rc = fscanf(fp, "%*d %llu",
 			    &st_ktables->dentry_stat);
 		fclose(fp);
 		if (rc == 0) {
@@ -818,7 +818,7 @@ __nr_t read_kernel_tables(struct stats_ktables *st_ktables)
 
 	/* Open /proc/sys/fs/file-nr file */
 	if ((fp = fopen(FFILE_NR, "r")) != NULL) {
-		rc = fscanf(fp, "%u %u",
+		rc = fscanf(fp, "%llu %llu",
 			    &st_ktables->file_used, &parm);
 		fclose(fp);
 		/*
@@ -835,7 +835,7 @@ __nr_t read_kernel_tables(struct stats_ktables *st_ktables)
 
 	/* Open /proc/sys/fs/inode-state file */
 	if ((fp = fopen(FINODE_STATE, "r")) != NULL) {
-		rc = fscanf(fp, "%u %u",
+		rc = fscanf(fp, "%llu %llu",
 			    &st_ktables->inode_used, &parm);
 		fclose(fp);
 		/*
@@ -852,7 +852,7 @@ __nr_t read_kernel_tables(struct stats_ktables *st_ktables)
 
 	/* Open /proc/sys/kernel/pty/nr file */
 	if ((fp = fopen(PTY_NR, "r")) != NULL) {
-		rc = fscanf(fp, "%u",
+		rc = fscanf(fp, "%llu",
 			    &st_ktables->pty_nr);
 		fclose(fp);
 		if (rc == 0) {
@@ -2044,11 +2044,11 @@ __nr_t read_meminfo_huge(struct stats_huge *st_huge)
 
 		if (!strncmp(line, "HugePages_Total:", 16)) {
 			/* Read the total number of huge pages */
-			sscanf(line + 16, "%lu", &st_huge->tlhkb);
+			sscanf(line + 16, "%llu", &st_huge->tlhkb);
 		}
 		else if (!strncmp(line, "HugePages_Free:", 15)) {
 			/* Read the number of free huge pages */
-			sscanf(line + 15, "%lu", &st_huge->frhkb);
+			sscanf(line + 15, "%llu", &st_huge->frhkb);
 		}
 		else if (!strncmp(line, "Hugepagesize:", 13)) {
 			/* Read the default size of a huge page in kB */

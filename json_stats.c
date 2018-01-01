@@ -494,17 +494,17 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 
 		sep = TRUE;
 
-		printf("\"memfree\": %lu, "
-		       "\"avail\": %lu, "
-		       "\"memused\": %lu, "
+		printf("\"memfree\": %llu, "
+		       "\"avail\": %llu, "
+		       "\"memused\": %llu, "
 		       "\"memused-percent\": %.2f, "
-		       "\"buffers\": %lu, "
-		       "\"cached\": %lu, "
-		       "\"commit\": %lu, "
+		       "\"buffers\": %llu, "
+		       "\"cached\": %llu, "
+		       "\"commit\": %llu, "
 		       "\"commit-percent\": %.2f, "
-		       "\"active\": %lu, "
-		       "\"inactive\": %lu, "
-		       "\"dirty\": %lu",
+		       "\"active\": %llu, "
+		       "\"inactive\": %llu, "
+		       "\"dirty\": %llu",
 		       smc->frmkb,
 		       smc->availablekb,
 		       smc->tlmkb - smc->frmkb,
@@ -523,11 +523,11 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 
 		if (DISPLAY_MEM_ALL(a->opt_flags)) {
 			/* Display extended memory stats */
-			printf(", \"anonpg\": %lu, "
-			       "\"slab\": %lu, "
-			       "\"kstack\": %lu, "
-			       "\"pgtbl\": %lu, "
-			       "\"vmused\": %lu",
+			printf(", \"anonpg\": %llu, "
+			       "\"slab\": %llu, "
+			       "\"kstack\": %llu, "
+			       "\"pgtbl\": %llu, "
+			       "\"vmused\": %llu",
 			       smc->anonpgkb,
 			       smc->slabkb,
 			       smc->kstackkb,
@@ -543,10 +543,10 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		}
 		sep = TRUE;
 
-		printf("\"swpfree\": %lu, "
-		       "\"swpused\": %lu, "
+		printf("\"swpfree\": %llu, "
+		       "\"swpused\": %llu, "
 		       "\"swpused-percent\": %.2f, "
-		       "\"swpcad\": %lu, "
+		       "\"swpcad\": %llu, "
 		       "\"swpcad-percent\": %.2f",
 		       smc->frskb,
 		       smc->tlskb - smc->frskb,
@@ -580,10 +580,10 @@ __print_funct_t json_print_ktables_stats(struct activity *a, int curr, int tab,
 		*skc = (struct stats_ktables *) a->buf[curr];
 
 	xprintf0(tab, "\"kernel\": {"
-		 "\"dentunusd\": %u, "
-		 "\"file-nr\": %u, "
-		 "\"inode-nr\": %u, "
-		 "\"pty-nr\": %u}",
+		 "\"dentunusd\": %llu, "
+		 "\"file-nr\": %llu, "
+		 "\"inode-nr\": %llu, "
+		 "\"pty-nr\": %llu}",
 		 skc->dentry_stat,
 		 skc->file_used,
 		 skc->inode_used,
@@ -608,12 +608,12 @@ __print_funct_t json_print_queue_stats(struct activity *a, int curr, int tab,
 		*sqc = (struct stats_queue *) a->buf[curr];
 
 	xprintf0(tab, "\"queue\": {"
-		 "\"runq-sz\": %lu, "
-		 "\"plist-sz\": %u, "
+		 "\"runq-sz\": %llu, "
+		 "\"plist-sz\": %llu, "
 		 "\"ldavg-1\": %.2f, "
 		 "\"ldavg-5\": %.2f, "
 		 "\"ldavg-15\": %.2f, "
-		 "\"blocked\": %lu}",
+		 "\"blocked\": %llu}",
 		 sqc->nr_running,
 		 sqc->nr_threads,
 		 (double) sqc->load_avg_1 / 100,
@@ -2005,8 +2005,8 @@ __print_funct_t json_print_huge_stats(struct activity *a, int curr, int tab,
 		*smc = (struct stats_huge *) a->buf[curr];
 
 	xprintf0(tab, "\"hugepages\": {"
-		 "\"hugfree\": %lu, "
-		 "\"hugused\": %lu, "
+		 "\"hugfree\": %llu, "
+		 "\"hugused\": %llu, "
 		 "\"hugused-percent\": %.2f}",
 		 smc->frhkb,
 		 smc->tlhkb - smc->frhkb,

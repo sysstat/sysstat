@@ -475,13 +475,13 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
-		xprintf(++tab, "<memfree>%lu</memfree>",
+		xprintf(++tab, "<memfree>%llu</memfree>",
 			smc->frmkb);
 
-		xprintf(tab, "<avail>%lu</avail>",
+		xprintf(tab, "<avail>%llu</avail>",
 			smc->availablekb);
 
-		xprintf(tab, "<memused>%lu</memused>",
+		xprintf(tab, "<memused>%llu</memused>",
 			smc->tlmkb - smc->frmkb);
 
 		xprintf(tab, "<memused-percent>%.2f</memused-percent>",
@@ -489,13 +489,13 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
 			0.0);
 
-		xprintf(tab, "<buffers>%lu</buffers>",
+		xprintf(tab, "<buffers>%llu</buffers>",
 			smc->bufkb);
 
-		xprintf(tab, "<cached>%lu</cached>",
+		xprintf(tab, "<cached>%llu</cached>",
 			smc->camkb);
 
-		xprintf(tab, "<commit>%lu</commit>",
+		xprintf(tab, "<commit>%llu</commit>",
 			smc->comkb);
 
 		xprintf(tab, "<commit-percent>%.2f</commit-percent>",
@@ -503,39 +503,39 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
 			0.0);
 
-		xprintf(tab, "<active>%lu</active>",
+		xprintf(tab, "<active>%llu</active>",
 			smc->activekb);
 
-		xprintf(tab, "<inactive>%lu</inactive>",
+		xprintf(tab, "<inactive>%llu</inactive>",
 			smc->inactkb);
 
-		xprintf(tab--, "<dirty>%lu</dirty>",
+		xprintf(tab--, "<dirty>%llu</dirty>",
 			smc->dirtykb);
 
 		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-			xprintf(++tab, "<anonpg>%lu</anonpg>",
+			xprintf(++tab, "<anonpg>%llu</anonpg>",
 				smc->anonpgkb);
 
-			xprintf(tab, "<slab>%lu</slab>",
+			xprintf(tab, "<slab>%llu</slab>",
 				smc->slabkb);
 
-			xprintf(tab, "<kstack>%lu</kstack>",
+			xprintf(tab, "<kstack>%llu</kstack>",
 				smc->kstackkb);
 
-			xprintf(tab, "<pgtbl>%lu</pgtbl>",
+			xprintf(tab, "<pgtbl>%llu</pgtbl>",
 				smc->pgtblkb);
 
-			xprintf(tab--, "<vmused>%lu</vmused>",
+			xprintf(tab--, "<vmused>%llu</vmused>",
 				smc->vmusedkb);
 		}
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
 
-		xprintf(++tab, "<swpfree>%lu</swpfree>",
+		xprintf(++tab, "<swpfree>%llu</swpfree>",
 			smc->frskb);
 
-		xprintf(tab, "<swpused>%lu</swpused>",
+		xprintf(tab, "<swpused>%llu</swpused>",
 			smc->tlskb - smc->frskb);
 
 		xprintf(tab, "<swpused-percent>%.2f</swpused-percent>",
@@ -543,7 +543,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) :
 			0.0);
 
-		xprintf(tab, "<swpcad>%lu</swpcad>",
+		xprintf(tab, "<swpcad>%llu</swpcad>",
 			smc->caskb);
 
 		xprintf(tab--, "<swpcad-percent>%.2f</swpcad-percent>",
@@ -573,10 +573,10 @@ __print_funct_t xml_print_ktables_stats(struct activity *a, int curr, int tab,
 		*skc = (struct stats_ktables *) a->buf[curr];
 
 	xprintf(tab, "<kernel "
-		"dentunusd=\"%u\" "
-		"file-nr=\"%u\" "
-		"inode-nr=\"%u\" "
-		"pty-nr=\"%u\"/>",
+		"dentunusd=\"%llu\" "
+		"file-nr=\"%llu\" "
+		"inode-nr=\"%llu\" "
+		"pty-nr=\"%llu\"/>",
 		skc->dentry_stat,
 		skc->file_used,
 		skc->inode_used,
@@ -601,12 +601,12 @@ __print_funct_t xml_print_queue_stats(struct activity *a, int curr, int tab,
 		*sqc = (struct stats_queue *) a->buf[curr];
 
 	xprintf(tab, "<queue "
-		"runq-sz=\"%lu\" "
-		"plist-sz=\"%u\" "
+		"runq-sz=\"%llu\" "
+		"plist-sz=\"%llu\" "
 		"ldavg-1=\"%.2f\" "
 		"ldavg-5=\"%.2f\" "
 		"ldavg-15=\"%.2f\" "
-		"blocked=\"%lu\"/>",
+		"blocked=\"%llu\"/>",
 		sqc->nr_running,
 		sqc->nr_threads,
 		(double) sqc->load_avg_1 / 100,
@@ -1925,10 +1925,10 @@ __print_funct_t xml_print_huge_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab, "<hugepages unit=\"kB\">");
 
-	xprintf(++tab, "<hugfree>%lu</hugfree>",
+	xprintf(++tab, "<hugfree>%llu</hugfree>",
 		smc->frhkb);
 
-	xprintf(tab, "<hugused>%lu</hugused>",
+	xprintf(tab, "<hugused>%llu</hugused>",
 		smc->tlhkb - smc->frhkb);
 
 	xprintf(tab--, "<hugused-percent>%.2f</hugused-percent>",

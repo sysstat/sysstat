@@ -366,35 +366,35 @@ __print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int cu
 		*smc = (struct stats_memory *) a->buf[curr];
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-		printf("%s %s:%lu", timestr, pfield(a->hdr_line, FIRST), smc->frmkb);
-		printf(" %s:%lu", pfield(NULL, 0), smc->availablekb);
-		printf(" kbttlmem:%lu", smc->tlmkb);
+		printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), smc->frmkb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->availablekb);
+		printf(" kbttlmem:%llu", smc->tlmkb);
 		pfield(NULL, 0); /* Skip kbmemused */
 		pfield(NULL, 0); /* Skip %memused */
-		printf(" %s:%lu", pfield(NULL, 0), smc->bufkb);
-		printf(" %s:%lu", pfield(NULL, 0), smc->camkb);
-		printf(" %s:%lu", pfield(NULL, 0), smc->comkb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->bufkb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->camkb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->comkb);
 		pfield(NULL, 0); /* Skip %commit */
-		printf(" %s:%lu", pfield(NULL, 0), smc->activekb);
-		printf(" %s:%lu", pfield(NULL, 0), smc->inactkb);
-		printf(" %s:%lu", pfield(NULL, 0), smc->dirtykb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->activekb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->inactkb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->dirtykb);
 
 		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-			printf(" %s:%lu", pfield(NULL, 0), smc->anonpgkb);
-			printf(" %s:%lu", pfield(NULL, 0), smc->slabkb);
-			printf(" %s:%lu", pfield(NULL, 0), smc->kstackkb);
-			printf(" %s:%lu", pfield(NULL, 0), smc->pgtblkb);
-			printf(" %s:%lu", pfield(NULL, 0), smc->vmusedkb);
+			printf(" %s:%llu", pfield(NULL, 0), smc->anonpgkb);
+			printf(" %s:%llu", pfield(NULL, 0), smc->slabkb);
+			printf(" %s:%llu", pfield(NULL, 0), smc->kstackkb);
+			printf(" %s:%llu", pfield(NULL, 0), smc->pgtblkb);
+			printf(" %s:%llu", pfield(NULL, 0), smc->vmusedkb);
 		}
 		printf("\n");
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-		printf("%s %s:%lu", timestr, pfield(a->hdr_line, SECOND), smc->frskb);
-		printf(" kbttlswp:%lu", smc->tlskb);
+		printf("%s %s:%llu", timestr, pfield(a->hdr_line, SECOND), smc->frskb);
+		printf(" kbttlswp:%llu", smc->tlskb);
 		pfield(NULL, 0); /* Skip kbswpused */
 		pfield(NULL, 0); /* Skip %swpused */
-		printf(" %s:%lu", pfield(NULL, 0), smc->caskb);
+		printf(" %s:%llu", pfield(NULL, 0), smc->caskb);
 		printf("\n");
 	}
 }
@@ -414,10 +414,10 @@ __print_funct_t raw_print_ktables_stats(struct activity *a, char *timestr, int c
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
 
-	printf("%s %s:%u", timestr, pfield(a->hdr_line, FIRST), skc->dentry_stat);
-	printf(" %s:%u", pfield(NULL, 0), skc->file_used);
-	printf(" %s:%u", pfield(NULL, 0), skc->inode_used);
-	printf(" %s:%u", pfield(NULL, 0), skc->pty_nr);
+	printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), skc->dentry_stat);
+	printf(" %s:%llu", pfield(NULL, 0), skc->file_used);
+	printf(" %s:%llu", pfield(NULL, 0), skc->inode_used);
+	printf(" %s:%llu", pfield(NULL, 0), skc->pty_nr);
 	printf("\n");
 }
 
@@ -436,12 +436,12 @@ __print_funct_t raw_print_queue_stats(struct activity *a, char *timestr, int cur
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
 
-	printf("%s %s:%lu", timestr, pfield(a->hdr_line, FIRST), sqc->nr_running);
-	printf(" %s:%u", pfield(NULL, 0), sqc->nr_threads);
+	printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), sqc->nr_running);
+	printf(" %s:%llu", pfield(NULL, 0), sqc->nr_threads);
 	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_1);
 	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_5);
 	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_15);
-	printf(" %s:%lu", pfield(NULL, 0), sqc->procs_blocked);
+	printf(" %s:%llu", pfield(NULL, 0), sqc->procs_blocked);
 	printf("\n");
 }
 
@@ -1429,8 +1429,8 @@ __print_funct_t raw_print_huge_stats(struct activity *a, char *timestr, int curr
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
 
-	printf("%s %s:%lu", timestr, pfield(a->hdr_line, FIRST), smc->frhkb);
-	printf(" hugtotal:%lu\n", smc->tlhkb);
+	printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), smc->frhkb);
+	printf(" hugtotal:%llu\n", smc->tlhkb);
 }
 
 /*
