@@ -400,13 +400,13 @@ void lnappend(unsigned long long timetag, double value, char **out, int *outsize
  *		element in array of chars.
  ***************************************************************************
  */
-void lniappend(unsigned long long timetag, unsigned long value, char **out,
+void lniappend(unsigned long long timetag, unsigned long long value, char **out,
 	       int *outsize, int restart)
 {
 	char data[128];
 
 	/* Prepare additional graph definition data */
-	snprintf(data, 128, " %c%llu,%lu", restart ? 'M' : 'L', timetag, value);
+	snprintf(data, 128, " %c%llu,%llu", restart ? 'M' : 'L', timetag, value);
 	data[127] = '\0';
 
 	save_svg_data(data, out, outsize);
@@ -1895,19 +1895,19 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 			     itv, spmin, spmax, g_fields);
 		/* dentunusd */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) skc->dentry_stat,
+			  (unsigned long long) skc->dentry_stat,
 			  out, outsize, svg_p->restart);
 		/* file-nr */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) skc->file_used,
+			  (unsigned long long) skc->file_used,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* inode-nr */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) skc->inode_used,
+			  (unsigned long long) skc->inode_used,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* pty-nr */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) skc->pty_nr,
+			  (unsigned long long) skc->pty_nr,
 			  out + 3, outsize + 3, svg_p->restart);
 	}
 
@@ -1966,15 +1966,15 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 			     itv, spmin, spmax, g_fields);
 		/* runq-sz */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) sqc->nr_running,
+			  (unsigned long long) sqc->nr_running,
 			  out, outsize, svg_p->restart);
 		/* blocked */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) sqc->procs_blocked,
+			  (unsigned long long) sqc->procs_blocked,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* plist-sz */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) sqc->nr_threads,
+			  (unsigned long long) sqc->nr_threads,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* ldavg-1 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2889,27 +2889,27 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 			     itv, spmin, spmax, g_fields);
 		/* totsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->sock_inuse,
+			  (unsigned long long) snsc->sock_inuse,
 			  out, outsize, svg_p->restart);
 		/* tcpsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->tcp_inuse,
+			  (unsigned long long) snsc->tcp_inuse,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* udpsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->udp_inuse,
+			  (unsigned long long) snsc->udp_inuse,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* rawsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->raw_inuse,
+			  (unsigned long long) snsc->raw_inuse,
 			  out + 3, outsize + 3, svg_p->restart);
 		/* ip-frag */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->frag_inuse,
+			  (unsigned long long) snsc->frag_inuse,
 			  out + 4, outsize + 4, svg_p->restart);
 		/* tcp-tw */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->tcp_tw,
+			  (unsigned long long) snsc->tcp_tw,
 			  out + 5, outsize + 5, svg_p->restart);
 	}
 
@@ -3592,19 +3592,19 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 			     itv, spmin, spmax, g_fields);
 		/* tcp6sck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->tcp6_inuse,
+			  (unsigned long long) snsc->tcp6_inuse,
 			  out, outsize, svg_p->restart);
 		/* udp6sck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->udp6_inuse,
+			  (unsigned long long) snsc->udp6_inuse,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* raw6sck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->raw6_inuse,
+			  (unsigned long long) snsc->raw6_inuse,
 			  out + 2, outsize + 2, svg_p->restart);
 		/* ip6-frag */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) snsc->frag6_inuse,
+			  (unsigned long long) snsc->frag6_inuse,
 			  out + 3, outsize + 3, svg_p->restart);
 	}
 
@@ -4541,11 +4541,11 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 
 		/* kbhugfree */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) smc->frhkb,
+			  (unsigned long long) smc->frhkb,
 			  out, outsize, svg_p->restart);
 		/* hugused */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  (unsigned long) smc->tlhkb - smc->frhkb,
+			  (unsigned long long) smc->tlhkb - smc->frhkb,
 			  out + 1, outsize + 1, svg_p->restart);
 		/* %hugused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,

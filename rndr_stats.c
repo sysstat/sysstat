@@ -91,7 +91,7 @@ static Cons *cons(tcons t, ...)
  *	     pptxt - printf-format text required for ppc output (may be null)
  *	     dbtxt - printf-format text required for db output (may be null)
  *	     mid - pptxt/dbtxt format args as a Cons.
- *	     luval - %lu printable arg (PT_USEINT must be set)
+ *	     lluval - %llu printable arg (PT_USEINT must be set)
  *	     dval  - %.2f printable arg (used unless PT_USEINT is set)
  *	     sval - %s printable arg (PT_USESTR must be set)
  *
@@ -102,7 +102,7 @@ static Cons *cons(tcons t, ...)
  ***************************************************************************
  */
 static void render(int isdb, char *pre, int rflags, const char *pptxt,
-		   const char *dbtxt, Cons *mid, unsigned long int luval,
+		   const char *dbtxt, Cons *mid, unsigned long long lluval,
 		   double dval, char *sval)
 {
 	static int newline = 1;
@@ -138,7 +138,7 @@ static void render(int isdb, char *pre, int rflags, const char *pptxt,
 	}
 
 	if (rflags & PT_USEINT) {
-		printf("%s%lu", seps[isdb], luval);
+		printf("%s%llu", seps[isdb], lluval);
 	}
 	else if (rflags & PT_USESTR) {
 		printf("%s%s", seps[isdb], sval);
@@ -1532,27 +1532,27 @@ __print_funct_t render_net_sock_stats(struct activity *a, int isdb, char *pre,
 
 	render(isdb, pre, PT_USEINT,
 	       "-\ttotsck", NULL, NULL,
-	       snsc->sock_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->sock_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\ttcpsck", NULL, NULL,
-	       snsc->tcp_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->tcp_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\tudpsck",  NULL, NULL,
-	       snsc->udp_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->udp_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\trawsck", NULL, NULL,
-	       snsc->raw_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->raw_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\tip-frag", NULL, NULL,
-	       snsc->frag_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->frag_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT | pt_newlin,
 	       "-\ttcp-tw", NULL, NULL,
-	       snsc->tcp_tw, DNOVAL, NULL);
+	       (unsigned long long) snsc->tcp_tw, DNOVAL, NULL);
 }
 
 /*
@@ -2061,19 +2061,19 @@ __print_funct_t render_net_sock6_stats(struct activity *a, int isdb, char *pre,
 
 	render(isdb, pre, PT_USEINT,
 	       "-\ttcp6sck", NULL, NULL,
-	       snsc->tcp6_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->tcp6_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\tudp6sck",  NULL, NULL,
-	       snsc->udp6_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->udp6_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\traw6sck", NULL, NULL,
-	       snsc->raw6_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->raw6_inuse, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT | pt_newlin,
 	       "-\tip6-frag", NULL, NULL,
-	       snsc->frag6_inuse, DNOVAL, NULL);
+	       (unsigned long long) snsc->frag6_inuse, DNOVAL, NULL);
 }
 
 /*
@@ -2853,7 +2853,7 @@ __print_funct_t render_pwr_usb_stats(struct activity *a, int isdb, char *pre,
 		       "bus%d\tmaxpower",
 		       NULL,
 		       cons(iv, suc->bus_nr, NOVAL),
-		       suc->bmaxpower << 1,
+		       (unsigned long long) (suc->bmaxpower << 1),
 		       NOVAL,
 		       NULL);
 
