@@ -208,7 +208,7 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			/* An offline CPU is not displayed */
 			continue;
 		}
-		if (tot_jiffies_p == 0)
+		if ((tot_jiffies_p == 0) && !WANT_SINCE_BOOT(flags))
 			/*
 			 * CPU has just come back online.
 			 * Unfortunately, no reference values are available
@@ -955,32 +955,45 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
+		ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
 
-		found = FALSE;
+		if (WANT_SINCE_BOOT(flags)) {
+			/*
+			 * We want to display statistics since boot time.
+			 * Take the first structure from buf[prev]: This is a
+			 * structure that only contains 0 (it has been set to 0
+			 * when it has been allocated), and which exists since
+			 * there is the same number of allocated structures for
+			 * buf[prev] and bur[curr] (even if nothing has been read).
+			 */
+			ssp = (struct stats_serial *) ((char *) a->buf[prev]);
+			found = TRUE;
+		}
+		else {
+			found = FALSE;
 
-		if (a->nr[prev] > 0) {
-			ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
+			if (a->nr[prev] > 0) {
+				/* Look for corresponding serial line in previous iteration */
+				j = i;
 
-			/* Look for corresponding serial line in previous iteration */
-			j = i;
-
-			if (j >= a->nr[prev]) {
-				j = a->nr[prev] - 1;
-			}
-
-			j0 = j;
-
-			do {
-				ssp = (struct stats_serial *) ((char *) a->buf[prev] + j * a->msize);
-				if ((ssc->line == ssp->line) || WANT_SINCE_BOOT(flags)) {
-					found = TRUE;
-					break;
+				if (j >= a->nr[prev]) {
+					j = a->nr[prev] - 1;
 				}
-				if (++j >= a->nr[prev]) {
-					j = 0;
+
+				j0 = j;
+
+				do {
+					ssp = (struct stats_serial *) ((char *) a->buf[prev] + j * a->msize);
+					if (ssc->line == ssp->line) {
+						found = TRUE;
+						break;
+					}
+					if (++j >= a->nr[prev]) {
+						j = 0;
+					}
 				}
+				while (j != j0);
 			}
-			while (j != j0);
 		}
 
 		if (!found)
@@ -1032,12 +1045,19 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
-
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
-		j = check_disk_reg(a, curr, prev, i);
+		if (!WANT_SINCE_BOOT(flags)) {
+			j = check_disk_reg(a, curr, prev, i);
+		}
+		else {
+			j = -1;
+		}
 		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
+			/*
+			 * This is a newly registered device or we want stats since boot time.
+			 * Previous stats are zero.
+			 */
 			sdp = &sdpzero;
 		}
 		else {
@@ -1119,12 +1139,19 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
-
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-		j = check_net_dev_reg(a, curr, prev, i);
+		if (!WANT_SINCE_BOOT(flags)) {
+			j = check_net_dev_reg(a, curr, prev, i);
+		}
+		else {
+			j = -1;
+		}
 		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
+			/*
+			 * This is a newly registered interface or we want stats since boot time.
+			 * Previous stats are zero.
+			 */
 			sndp = &sndzero;
 		}
 		else {
@@ -1176,12 +1203,19 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
-
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
-		j = check_net_edev_reg(a, curr, prev, i);
+		if (!WANT_SINCE_BOOT(flags)) {
+			j = check_net_edev_reg(a, curr, prev, i);
+		}
+		else {
+			j = -1;
+		}
 		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
+			/*
+			 * This is a newly registered interface or we want stats since boot time.
+			 * Previous stats are zero.
+			 */
 			snedp = &snedzero;
 		}
 		else {
@@ -2781,33 +2815,38 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
-		found = FALSE;
+		if (WANT_SINCE_BOOT(flags)) {
+			sfcp = (struct stats_fchost *) ((char *) a->buf[prev]);
+			found = TRUE;
+		}
+		else {
+			found = FALSE;
 
-		if (a->nr[prev] > 0) {
-			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+			if (a->nr[prev] > 0) {
+				/* Look for corresponding structure in previous iteration */
+				j = i;
 
-			/* Look for corresponding structure in previous iteration */
-			j = i;
-
-			if (j >= a->nr[prev]) {
-				j = a->nr[prev] - 1;
-			}
-
-			j0 = j;
-
-			do {
-				sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + j * a->msize);
-				if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
-					found = TRUE;
-					break;
+				if (j >= a->nr[prev]) {
+					j = a->nr[prev] - 1;
 				}
 
-				if (++j >= a->nr[prev]) {
-					j = 0;
+				j0 = j;
+
+				do {
+					sfcp = (struct stats_fchost *) ((char *) a->buf[prev] + j * a->msize);
+					if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+						found = TRUE;
+						break;
+					}
+
+					if (++j >= a->nr[prev]) {
+						j = 0;
+					}
 				}
+				while (j != j0);
 			}
-			while (j != j0);
 		}
 
 		if (!found)
