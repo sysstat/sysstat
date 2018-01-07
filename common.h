@@ -19,8 +19,6 @@
 #include <sys/sysmacros.h>
 #endif
 
-#include "rd_stats.h"
-
 /*
  ***************************************************************************
  * Various keywords and constants
@@ -233,9 +231,6 @@ struct ext_disk_stats {
  ***************************************************************************
  */
 
-void compute_ext_disk_stats
-	(struct stats_disk *, struct stats_disk *, unsigned long long,
-	 struct ext_disk_stats *);
 int count_bits
 	(void *, int);
 int count_csvalues
@@ -266,8 +261,6 @@ time_t get_localtime
 	(struct tm *, int);
 time_t get_time
 	(struct tm *, int);
-unsigned long long get_per_cpu_interval
-	(struct stats_cpu *, struct stats_cpu *);
 char *get_persistent_name_from_pretty
 	(char *);
 char *get_persistent_type_dir

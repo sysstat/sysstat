@@ -24,7 +24,6 @@
 #include <stdarg.h>
 
 #include "sa.h"
-#include "sadf.h"
 #include "ioconf.h"
 #include "xml_stats.h"
 

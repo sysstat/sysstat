@@ -29,9 +29,6 @@
 
 #include "version.h"
 #include "sadf.h"
-#include "sa.h"
-#include "common.h"
-#include "ioconf.h"
 
 # include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS

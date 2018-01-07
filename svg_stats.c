@@ -26,7 +26,6 @@
 #include <float.h>
 
 #include "sa.h"
-#include "sadf.h"
 #include "ioconf.h"
 #include "svg_stats.h"
 

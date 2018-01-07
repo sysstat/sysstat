@@ -23,7 +23,6 @@
 #include <string.h>
 
 #include "sadf.h"
-#include "sa.h"
 
 #ifdef USE_NLS
 #include <locale.h>

@@ -23,9 +23,7 @@
 #include <string.h>
 
 #include "sa.h"
-#include "rd_stats.h"
 #include "count.h"
-#include "rd_sensors.h"
 
 extern unsigned int flags;
 extern struct record_header record_hdr;

@@ -6,9 +6,6 @@
 #ifndef _RD_SENSORS_H
 #define _RD_SENSORS_H
 
-#include "common.h"
-#include "rd_stats.h"
-
 /*
  ***************************************************************************
  * Definitions of structures for sensors statistics

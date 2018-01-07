@@ -30,9 +30,6 @@
 
 #include "version.h"
 #include "sa.h"
-#include "common.h"
-#include "ioconf.h"
-#include "pr_stats.h"
 
 #ifdef USE_NLS
 #include <locale.h>

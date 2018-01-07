@@ -695,8 +695,11 @@ struct stats_softnet {
  ***************************************************************************
  */
 
-void oct2chr
-	(char *);
+void compute_ext_disk_stats
+	(struct stats_disk *, struct stats_disk *, unsigned long long,
+	 struct ext_disk_stats *);
+unsigned long long get_per_cpu_interval
+	(struct stats_cpu *, struct stats_cpu *);
 __nr_t read_stat_cpu
 	(struct stats_cpu *, __nr_t);
 __nr_t read_stat_irq
@@ -705,6 +708,9 @@ __nr_t read_meminfo
 	(struct stats_memory *);
 void read_uptime
 	(unsigned long long *);
+#ifdef SOURCE_SADC
+void oct2chr
+	(char *);
 __nr_t read_stat_pcsw
 	(struct stats_pcsw *);
 __nr_t read_loadavg
@@ -773,5 +779,6 @@ __nr_t read_fchost
 	(struct stats_fchost *, __nr_t);
 __nr_t read_softnet
 	(struct stats_softnet *, __nr_t);
+#endif /* SOURCE_SADC */
 
 #endif /* _RD_STATS_H */

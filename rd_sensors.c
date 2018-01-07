@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "rd_stats.h"
 #include "rd_sensors.h"
 
 #ifdef USE_NLS

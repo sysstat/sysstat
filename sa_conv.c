@@ -27,7 +27,6 @@
 
 #include "version.h"
 #include "sadf.h"
-#include "sa.h"
 #include "sa_conv.h"
 
 #ifdef USE_NLS

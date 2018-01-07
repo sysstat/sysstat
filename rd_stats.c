@@ -32,7 +32,6 @@
 
 #include "common.h"
 #include "rd_stats.h"
-#include "ioconf.h"
 
 #ifdef USE_NLS
 #include <locale.h>
@@ -352,6 +351,110 @@ void read_uptime(unsigned long long *uptime)
 		fprintf(stderr, _("Cannot read %s\n"), UPTIME);
 		exit(2);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Compute "extended" device statistics (service time, etc.).
+ *
+ * IN:
+ * @sdc		Structure with current device statistics.
+ * @sdp		Structure with previous device statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ *
+ * OUT:
+ * @xds		Structure with extended statistics.
+ ***************************************************************************
+*/
+void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
+			    unsigned long long itv, struct ext_disk_stats *xds)
+{
+	double tput
+		= ((double) (sdc->nr_ios - sdp->nr_ios)) * 100 / itv;
+
+	xds->util  = S_VALUE(sdp->tot_ticks, sdc->tot_ticks, itv);
+	xds->svctm = tput ? xds->util / tput : 0.0;
+	/*
+	 * Kernel gives ticks already in milliseconds for all platforms
+	 * => no need for further scaling.
+	 */
+	xds->await = (sdc->nr_ios - sdp->nr_ios) ?
+		((sdc->rd_ticks - sdp->rd_ticks) + (sdc->wr_ticks - sdp->wr_ticks)) /
+		((double) (sdc->nr_ios - sdp->nr_ios)) : 0.0;
+	xds->arqsz = (sdc->nr_ios - sdp->nr_ios) ?
+		((sdc->rd_sect - sdp->rd_sect) + (sdc->wr_sect - sdp->wr_sect)) /
+		((double) (sdc->nr_ios - sdp->nr_ios)) : 0.0;
+}
+
+/*
+ ***************************************************************************
+ * Since ticks may vary slightly from CPU to CPU, we'll want
+ * to recalculate itv based on this CPU's tick count, rather
+ * than that reported by the "cpu" line. Otherwise we
+ * occasionally end up with slightly skewed figures, with
+ * the skew being greater as the time interval grows shorter.
+ *
+ * IN:
+ * @scc	Current sample statistics for current CPU.
+ * @scp	Previous sample statistics for current CPU.
+ *
+ * RETURNS:
+ * Interval of time based on current CPU, expressed in jiffies.
+ ***************************************************************************
+ */
+unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
+					struct stats_cpu *scp)
+{
+	unsigned long long ishift = 0LL;
+
+	if ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest)) {
+		/*
+		 * Sometimes the nr of jiffies spent in guest mode given by the guest
+		 * counter in /proc/stat is slightly higher than that included in
+		 * the user counter. Update the interval value accordingly.
+		 */
+		ishift += (scp->cpu_user - scp->cpu_guest) -
+		          (scc->cpu_user - scc->cpu_guest);
+	}
+	if ((scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice)) {
+		/*
+		 * Idem for nr of jiffies spent in guest_nice mode.
+		 */
+		ishift += (scp->cpu_nice - scp->cpu_guest_nice) -
+		          (scc->cpu_nice - scc->cpu_guest_nice);
+	}
+
+	/*
+	 * Workaround for CPU coming back online: With recent kernels
+	 * some fields (user, nice, system) restart from their previous value,
+	 * whereas others (idle, iowait) restart from zero.
+	 * For the latter we need to set their previous value to zero to
+	 * avoid getting an interval value < 0.
+	 * (I don't know how the other fields like hardirq, steal... behave).
+	 * Don't assume the CPU has come back from offline state if previous
+	 * value was greater than ULLONG_MAX & 0x80000 (the counter probably
+	 * overflew).
+	 */
+	if ((scc->cpu_idle < scp->cpu_idle) && (scp->cpu_idle < (ULLONG_MAX & 0x80000))) {
+		scp->cpu_idle = 0;
+	}
+	if ((scc->cpu_iowait < scp->cpu_iowait) && (scp->cpu_iowait < (ULLONG_MAX & 0x80000))) {
+		scp->cpu_iowait = 0;
+	}
+
+	/*
+	 * Don't take cpu_guest and cpu_guest_nice into account
+	 * because cpu_user and cpu_nice already include them.
+	 */
+	return ((scc->cpu_user    + scc->cpu_nice   +
+		 scc->cpu_sys     + scc->cpu_iowait +
+		 scc->cpu_idle    + scc->cpu_steal  +
+		 scc->cpu_hardirq + scc->cpu_softirq) -
+		(scp->cpu_user    + scp->cpu_nice   +
+		 scp->cpu_sys     + scp->cpu_iowait +
+		 scp->cpu_idle    + scp->cpu_steal  +
+		 scp->cpu_hardirq + scp->cpu_softirq) +
+		 ishift);
 }
 
 #ifdef SOURCE_SADC
