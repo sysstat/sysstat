@@ -117,7 +117,7 @@ __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
- * @file_hdr	System activity file standard header (unused here).
+ * @file_hdr	System activity file standard header.
  *
  * OUT:
  * @tab		Number of tabulations.
@@ -149,7 +149,7 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
- * @file_hdr	System activity file standard header (unused here).
+ * @file_hdr	System activity file standard header.
  *
  * OUT:
  * @tab		Number of tabulations.
@@ -194,7 +194,7 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
- * @file_hdr	System activity file standard header (unused here).
+ * @file_hdr	System activity file standard header.
  ***************************************************************************
  */
 __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,

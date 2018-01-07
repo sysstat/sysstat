@@ -1024,7 +1024,6 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 
 	/* Main loop */
 	do {
-
 		/* Init all structures */
 		reset_stats();
 

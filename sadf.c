@@ -204,8 +204,8 @@ void check_format_options(void)
  * @curr	Index in array for current sample statistics.
  * @file	System activity data file name (name of file being read).
  * @tab		Number of tabulations to print.
- * @file_actlst	List of (known or unknown) activities in file.
  * @file_magic	System activity file magic header.
+ * @file_actlst	List of (known or unknown) activities in file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
@@ -304,7 +304,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
  * Display the field list (used eg. in database format).
  *
  * IN:
- * @act_d	Activity to display, or ~0 for all.
+ * @act_id	Activity to display, or ~0 for all.
  ***************************************************************************
  */
 void list_fields(unsigned int act_id)
@@ -397,7 +397,7 @@ time_t get_time_ref(void)
  * Save or restore position in file.
  *
  * IN:
- * @ifd			File descriptor of input file.
+ * @ifd		File descriptor of input file.
  * @action	DO_SAVE to save position or DO_RESTORE to restore it.
  ***************************************************************************
  */
