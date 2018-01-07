@@ -1,4 +1,4 @@
-.TH SAR 1 "JUNE 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -442,7 +442,7 @@ Percentage of total hugepages memory that has been allocated.
 .IP -h
 Display a short help message then exit.
 .IP --human
-Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
+Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
 .IP "-I { int_list | SUM | ALL }"

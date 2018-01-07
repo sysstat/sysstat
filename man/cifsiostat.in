@@ -1,4 +1,4 @@
-.TH CIFSIOSTAT 1 "MAY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
@@ -104,7 +104,7 @@ Make the CIFS report easier to read by a human.
 .B --human
 is enabled implicitly with this option.
 .IP --human
-Print sizes in human readable format (e.g. 1k, 1.23M, etc.)
+Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
 .IP -k
