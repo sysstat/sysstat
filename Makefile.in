@@ -181,10 +181,10 @@ ioconf.o: ioconf.c ioconf.h common.h sysconfig.h
 act_sadc.o: activity.c sa.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-act_sar.o: activity.c sa.h pr_stats.h
+act_sar.o: activity.c sa.h rd_stats.h rd_sensors.h pr_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-act_sadf.o: activity.c sa.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h
+act_sadf.o: activity.c sa.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
 rd_stats.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h

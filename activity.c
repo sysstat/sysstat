@@ -21,10 +21,8 @@
 
 #include "sa.h"
 
-#ifdef SOURCE_SADC
 #include "rd_stats.h"
 #include "rd_sensors.h"
-#endif
 
 #ifdef SOURCE_SAR
 #include "pr_stats.h"
