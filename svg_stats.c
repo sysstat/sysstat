@@ -1946,7 +1946,7 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 	char *g_title[] = {"~runq-sz", "~blocked",
 			   "~plist-sz",
 			   "ldavg-1", "ldavg-5", "ldavg-15"};
-	int g_fields[] = {0, 1, 3, 4, 5, 2};
+	int g_fields[] = {0, 1, 2, 3, 4, 5};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
