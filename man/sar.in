@@ -2,8 +2,8 @@
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
-.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ]
-.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]
+.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -p ] [ -q ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --help ] [ --human ] [ --sadc ]
 .B [ -I {
 .I int_list
 .B | SUM | ALL } ] [ -P {
@@ -439,7 +439,7 @@ Amount of hugepages memory in kilobytes that has been allocated.
 Percentage of total hugepages memory that has been allocated.
 .RE
 .RE
-.IP -h
+.IP --help
 Display a short help message then exit.
 .IP --human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
