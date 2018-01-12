@@ -1,5 +1,11 @@
 Changes:
 
+2018/01/12: Version 11.2.14 - Sebastien Godard (sysstat <at> orange.fr)
+	* Workaround for offline CPU coming back online.
+	* sadf: Fix CSV output for TTY statistics.
+	* sar: Use ULLONG_MAX/2 to check if network device counters have
+	  overflown.
+
 2017/11/01: Version 11.2.13 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Robert Luberda]: Fix sadc crash when really long lines are
 	  read from /etc/mtab.
