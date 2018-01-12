@@ -113,9 +113,9 @@ void usage(char *progname)
 {
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
+			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ]\n"
 			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]\n"
+			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -1225,6 +1225,11 @@ int main(int argc, char **argv)
 			which_sadc();
 		}
 
+		else if (!strcmp(argv[opt], "--help")) {
+			/* Display help message */
+			display_help(argv[0]);
+		}
+
 		else if (!strcmp(argv[opt], "--human")) {
 			/* Display sizes in a human readable format */
 			flags |= S_F_UNIT;
@@ -1297,11 +1302,6 @@ int main(int argc, char **argv)
 			if (parse_timestamp(argv, &opt, &tm_end, DEF_TMEND)) {
 				usage(argv[0]);
 			}
-		}
-
-		else if (!strcmp(argv[opt], "-h")) {
-			/* Display help message */
-			display_help(argv[0]);
 		}
 
 		else if (!strcmp(argv[opt], "-i")) {
