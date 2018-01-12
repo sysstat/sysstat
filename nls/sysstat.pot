@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-11-01 09:37+0100\n"
+"POT-Creation-Date: 2018-01-12 10:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,6 +121,59 @@ msgstr ""
 #: mpstat.c:1113
 #, c-format
 msgid "Not that many processors!\n"
+msgstr ""
+
+#: sadf_misc.c:748
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr ""
+
+#: sadf_misc.c:757
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr ""
+
+#: sadf_misc.c:758
+msgid "no"
+msgstr ""
+
+#: sadf_misc.c:758
+msgid "yes"
+msgstr ""
+
+#: sadf_misc.c:761
+#, c-format
+msgid "Host: "
+msgstr ""
+
+#: sadf_misc.c:767
+#, c-format
+msgid "Number of CPU for last samples in file: %u\n"
+msgstr ""
+
+#: sadf_misc.c:773
+#, c-format
+msgid "File date: %s\n"
+msgstr ""
+
+#: sadf_misc.c:776
+#, c-format
+msgid "File time: "
+msgstr ""
+
+#: sadf_misc.c:781
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr ""
+
+#: sadf_misc.c:787
+#, c-format
+msgid "List of activities:\n"
+msgstr ""
+
+#: sadf_misc.c:800
+#, c-format
+msgid "\t[Unknown activity format]"
 msgstr ""
 
 #: sadf.c:88
@@ -329,59 +382,6 @@ msgstr ""
 #: sar.c:1494
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
-msgstr ""
-
-#: sadf_misc.c:748
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr ""
-
-#: sadf_misc.c:757
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr ""
-
-#: sadf_misc.c:758
-msgid "no"
-msgstr ""
-
-#: sadf_misc.c:758
-msgid "yes"
-msgstr ""
-
-#: sadf_misc.c:761
-#, c-format
-msgid "Host: "
-msgstr ""
-
-#: sadf_misc.c:767
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr ""
-
-#: sadf_misc.c:773
-#, c-format
-msgid "File date: %s\n"
-msgstr ""
-
-#: sadf_misc.c:776
-#, c-format
-msgid "File time: "
-msgstr ""
-
-#: sadf_misc.c:781
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr ""
-
-#: sadf_misc.c:787
-#, c-format
-msgid "List of activities:\n"
-msgstr ""
-
-#: sadf_misc.c:800
-#, c-format
-msgid "\t[Unknown activity format]"
 msgstr ""
 
 #: pr_stats.c:2518 pr_stats.c:2530 pr_stats.c:2634 pr_stats.c:2645
