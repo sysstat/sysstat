@@ -107,6 +107,7 @@
 #define S_F_SVG_HEIGHT		0x00200000
 #define S_F_SVG_PACKED		0x00400000
 #define S_F_SVG_SHOW_INFO	0x00800000
+#define S_F_HUMAN_READ		0x01000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -133,6 +134,7 @@
 #define DISPLAY_UNIT(m)			(((m) & S_F_UNIT) == S_F_UNIT)
 #define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT) == S_F_SVG_HEIGHT)
 #define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED) == S_F_SVG_PACKED)
+#define DISPLAY_HUMAN_READ(m)		(((m) & S_F_HUMAN_READ) == S_F_HUMAN_READ)
 
 #define AO_F_NULL		0x00000000
 

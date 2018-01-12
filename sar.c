@@ -113,7 +113,7 @@ void usage(char *progname)
 {
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ]\n"
+			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
@@ -1233,6 +1233,15 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[opt], "--human")) {
 			/* Display sizes in a human readable format */
 			flags |= S_F_UNIT;
+			opt++;
+		}
+
+		else if (!strcmp(argv[opt], "-h")) {
+			/*
+			 * Make output easier to read by a human.
+			 * Option -h implies --human and -p (pretty-print).
+			 */
+			flags |= S_F_HUMAN_READ + S_F_UNIT + S_F_DEV_PRETTY;
 			opt++;
 		}
 

@@ -1041,7 +1041,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 	}
 
 	if (dis) {
-		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9);
+		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_HUMAN_READ(flags) ? -1 : 0, 9);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
@@ -1090,6 +1090,9 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 
 		printf("%-11s", timestamp[curr]);
 
+		if (!DISPLAY_HUMAN_READ(flags)) {
+			cprintf_in(IS_STR, " %9s", dev_name, 0);
+		}
 		cprintf_f(NO_UNIT, 1, 9, 2,
 			  S_VALUE(sdp->nr_ios, sdc->nr_ios,  itv));
 		cprintf_f(unit, 2, 9, 2,
@@ -1104,7 +1107,10 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 			  xds.svctm);
 		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
 			   xds.util / 10.0);
-		cprintf_in(IS_STR, " %s\n", dev_name, 0);
+		if (DISPLAY_HUMAN_READ(flags)) {
+			cprintf_in(IS_STR, " %s", dev_name, 0);
+		}
+		printf("\n");
 	}
 }
 
@@ -1135,7 +1141,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 	}
 
 	if (dis) {
-		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9);
+		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_HUMAN_READ(flags) ? -1 : 0, 9);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
@@ -1160,6 +1166,9 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 
 		printf("%-11s", timestamp[curr]);
 
+		if (!DISPLAY_HUMAN_READ(flags)) {
+			cprintf_in(IS_STR, " %9s", sndc->interface, 0);
+		}
 		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 
@@ -1175,7 +1184,10 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(sndp->multicast,     sndc->multicast,     itv));
 		ifutil = compute_ifutil(sndc, rxkb, txkb);
 		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2, ifutil);
-		cprintf_in(IS_STR, " %s\n", sndc->interface, 0);
+		if (DISPLAY_HUMAN_READ(flags)) {
+			cprintf_in(IS_STR, " %s", sndc->interface, 0);
+		}
+		printf("\n");
 	}
 }
 
@@ -1199,7 +1211,7 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
 	if (dis) {
-		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9);
+		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_HUMAN_READ(flags) ? -1 : 0, 9);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
@@ -1224,6 +1236,9 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 
 		printf("%-11s", timestamp[curr]);
 
+		if (!DISPLAY_HUMAN_READ(flags)) {
+			cprintf_in(IS_STR, " %9s", snedc->interface, 0);
+		}
 		cprintf_f(NO_UNIT, 9, 9, 2,
 			  S_VALUE(snedp->rx_errors,         snedc->rx_errors,         itv),
 			  S_VALUE(snedp->tx_errors,         snedc->tx_errors,         itv),
@@ -1234,7 +1249,10 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(snedp->rx_frame_errors,   snedc->rx_frame_errors,   itv),
 			  S_VALUE(snedp->rx_fifo_errors,    snedc->rx_fifo_errors,    itv),
 			  S_VALUE(snedp->tx_fifo_errors,    snedc->tx_fifo_errors,    itv));
-		cprintf_in(IS_STR, " %s\n", snedc->interface, 0);
+		if (DISPLAY_HUMAN_READ(flags)) {
+			cprintf_in(IS_STR, " %s", snedc->interface, 0);
+		}
+		printf("\n");
 	}
 }
 
