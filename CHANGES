@@ -1,5 +1,16 @@
 Changes:
 
+2018/01/12: Version 11.6.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* Workaround for offline CPU coming back online.
+	* SVG: Fix segfault triggered by a varying number of CPU in file.
+	* sadf: Fix CSV output for TTY statistics.
+	* sadf: Remove duplicate % sign displayed in ppc mode.
+	* SVG: Display time as xx:00 instead of xxH when "oneday" option
+	  is used.
+	* sar: Use ULLONG_MAX/2 to check if network device counters have
+	  overflown.
+	* NLS updated.
+
 2017/11/01: Version 11.6.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* [JoungKyun Kim]: NLS updated: Add Korean translation.
 	* [Christian Ehrhardt]: Fix 00 byte after values when --human is

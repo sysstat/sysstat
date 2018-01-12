@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-11-01 09:45+0100\n"
+"POT-Creation-Date: 2018-01-12 10:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,6 +117,59 @@ msgstr ""
 
 #: mpstat.c:1674 sar.c:360 pidstat.c:2399
 msgid "Average:"
+msgstr ""
+
+#: sadf_misc.c:834
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr ""
+
+#: sadf_misc.c:843
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr ""
+
+#: sadf_misc.c:844
+msgid "no"
+msgstr ""
+
+#: sadf_misc.c:844
+msgid "yes"
+msgstr ""
+
+#: sadf_misc.c:847
+#, c-format
+msgid "Host: "
+msgstr ""
+
+#: sadf_misc.c:854
+#, c-format
+msgid "Number of CPU for last samples in file: %u\n"
+msgstr ""
+
+#: sadf_misc.c:860
+#, c-format
+msgid "File date: %s\n"
+msgstr ""
+
+#: sadf_misc.c:863
+#, c-format
+msgid "File time: "
+msgstr ""
+
+#: sadf_misc.c:868
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr ""
+
+#: sadf_misc.c:874
+#, c-format
+msgid "List of activities:\n"
+msgstr ""
+
+#: sadf_misc.c:887
+#, c-format
+msgid "\t[Unknown activity format]"
 msgstr ""
 
 #: sadf.c:89
@@ -434,57 +487,4 @@ msgstr ""
 #: count.c:169
 #, c-format
 msgid "Cannot handle so many processors!\n"
-msgstr ""
-
-#: sadf_misc.c:834
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr ""
-
-#: sadf_misc.c:843
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr ""
-
-#: sadf_misc.c:844
-msgid "no"
-msgstr ""
-
-#: sadf_misc.c:844
-msgid "yes"
-msgstr ""
-
-#: sadf_misc.c:847
-#, c-format
-msgid "Host: "
-msgstr ""
-
-#: sadf_misc.c:854
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr ""
-
-#: sadf_misc.c:860
-#, c-format
-msgid "File date: %s\n"
-msgstr ""
-
-#: sadf_misc.c:863
-#, c-format
-msgid "File time: "
-msgstr ""
-
-#: sadf_misc.c:868
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr ""
-
-#: sadf_misc.c:874
-#, c-format
-msgid "List of activities:\n"
-msgstr ""
-
-#: sadf_misc.c:887
-#, c-format
-msgid "\t[Unknown activity format]"
 msgstr ""
