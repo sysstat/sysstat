@@ -1,5 +1,61 @@
 Changes:
 
+2018/01/12: Version 11.7.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadc: New binary data file format, which is now more flexible
+	  and takes much less space on disk.
+	* sar/sadc: Dynamic structures allocation for all devices registered
+	  by the system.
+	* sar/sadf: Support for big-endian/little-endian format for binary
+	  data files.
+	* sar/sadc: Use 64-bit time values in binary data files.
+	* sar/sadc: Update statistics structures to keep with current kernels.
+	* sar/sadc: Update binary file's header data to deal with patchlevel
+	  and sublevel version numbers greater than 15.
+	* sadc: Save HZ value in data file header.
+	* sar/sadc: Don't assume CPU statistics are always saved in binary
+	  data files.
+	* sar/sadf: Don't display offline CPU.
+	* sadf: Conversion function (option -c) temporarily inhibited.
+	  It will work again with next sysstat version (11.7.2).
+	* sar: The option used to display a help message is now "--help".
+	* sar: Add new option -h to make sar's output easier to read by a
+	  human. This option moves device names (disks, network interfaces)
+	  at the end of the line. This option also sets options -p (pretty-
+	  print) and --human.
+	* sadf: RAW: Display number of items for each activity.
+	* sadf: Make option -H display all the activities present in file,
+	  whether known or unknown.
+	* All commands now use only /proc/uptime to compute system uptime.
+	  Also use a time interval expressed in seconds, not in jiffies.
+	* Makefile: Fix dependencies between files.
+	* Makefile: Remove old references to nfsiostat command.
+	* [Robert Luberda]: Fix sadc crash when really long lines are
+	  read from /etc/mtab [11.6.1] [11.4.7] [11.2.13].
+	* [JoungKyun Kim]: NLS updated: Add Korean translation [11.6.1].
+	* [Christian Ehrhardt]: Fix 00 byte after values when --human is
+	  not set [11.6.1].
+	* Fix invalid token in "iostat -y" JSON output [11.6.1].
+	* Workaround for offline CPU coming back online [11.6.2] [11.4.8]
+	  [11.2.14].
+	* sadf: Fix CSV output for TTY statistics [11.6.2] [11.4.8]
+	  [11.2.14].
+	* sadf: Remove duplicate % sign displayed in ppc mode [11.6.2].
+	* SVG: Display time as xx:00 instead of xxH when "oneday" option
+	  is used [11.6.2] [11.4.8].
+	* sar: Use ULLONG_MAX/2 to check if network device counters have
+	  overflown [11.6.2] [11.4.8] [11.2.14].
+	* Remove SCCSID strings in executable files to allow reproducible
+	  build [11.6.1] [11.4.7] [11.2.13].
+	* Remove unused parameters passed to functions [11.6.1] [11.4.7]
+	  [11.2.13].
+	* sadf: Don't use f_count2() function pointer [11.6.1] [11.4.7]
+	  [11.2.13].
+	* [Lukas Zapletal]: Update comment of SA_DIR in sysconfig file [11.6.1]
+	  [11.4.7] [11.2.13].
+	* NLS: Various translations updated.
+	* Various cosmetic fixes, typo fixes and documentation enhancements
+	  in source code.
+
 2017/08/14: Version 11.6.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* pidstat: Add new option (-e) which can be used to pass a program
 	  to execute and make pidstat monitor it.
