@@ -346,11 +346,15 @@ You can now draw graphs with sysstat's standard tools!
 SVG (Scalable Vector Graphics) is a new output format that has been added to
 sadf in sysstat version 11.3.1. Read sadf(1) manual page to learn some more
 about this new format.
-There are other tools lying around on the internet that you can use with older
-sysstat versions. I haven't tested all of them and there must still be some
+There are other tools lying around on the internet that you can use to draw
+some graphs. I haven't tested all of them and there must still be some
 way for improvement...  First, some of them are included in the sysstat
-package: isag (a Perl script) or sargraph (a shell script).
-You can also find: kSar, sarvant, sar2gp, loadgraph, SysStat Charts, sarplot...
+package although they are no longer maintained: isag (a Perl script) or
+sargraph (a shell script).
+You can also find: kSar (a Java application capable of visualizing a sar file
+with static graphs), sarjitsu (a more sophisticated application producing
+dynamic visualizations based on Grafana), sarvant, sar2gp, loadgraph,
+SysStat Charts, sarplot...
 rrd.cgi (http://haroon.sis.utoronto.ca/rrd/scripts/) is a perl front-end for
 rrdtool and can be used to make some graphs (see a demo at
 http://haroon.sis.utoronto.ca/perl/rrd.cgi/sar_stats/).
@@ -359,8 +363,6 @@ that automatically generates and sends an email report every day/week/month
 with graphs generated from sysstat data.
 I've also heard of commercial tools which use sysstat: PerfMan comes to mind,
 among others.
-If you find others which you think are of real interest, please let me know
-so that I can update this list.
 
 ~~~
 
