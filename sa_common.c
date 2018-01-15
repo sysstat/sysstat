@@ -1035,7 +1035,7 @@ void select_default_activity(struct activity *act[])
 
 	/*
 	 * If no CPU's have been selected then select CPU "all".
-	 * cpu_bitmap bitmap may be used by several activities (A_CPU, A_PWR_CPUFREQ...)
+	 * cpu_bitmap bitmap may be used by several activities (A_CPU, A_PWR_CPU...)
 	 */
 	if (!count_bits(cpu_bitmap.b_array, BITMAP_SIZE(cpu_bitmap.b_size))) {
 		cpu_bitmap.b_array[0] |= 0x01;
@@ -1859,7 +1859,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			       BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->opt_flags = AO_F_CPU_ALL;
 
-			p = get_activity_position(act, A_FILESYSTEM, EXIT_IF_NOT_FOUND);
+			p = get_activity_position(act, A_FS, EXIT_IF_NOT_FOUND);
 			act[p]->opt_flags = AO_F_FILESYSTEM;
 			break;
 
@@ -1880,7 +1880,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'F':
-			p = get_activity_position(act, A_FILESYSTEM, EXIT_IF_NOT_FOUND);
+			p = get_activity_position(act, A_FS, EXIT_IF_NOT_FOUND);
 			act[p]->options |= AO_SELECTED;
 			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] && !strcmp(argv[*opt + 1], K_MOUNT)) {
 				(*opt)++;
@@ -2019,7 +2019,7 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 
 	for (t = strtok(argv[*opt], ","); t; t = strtok(NULL, ",")) {
 		if (!strcmp(t, K_CPU)) {
-			SELECT_ACTIVITY(A_PWR_CPUFREQ);
+			SELECT_ACTIVITY(A_PWR_CPU);
 		}
 		else if (!strcmp(t, K_FAN)) {
 			SELECT_ACTIVITY(A_PWR_FAN);
@@ -2031,17 +2031,17 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 			SELECT_ACTIVITY(A_PWR_TEMP);
 		}
 		else if (!strcmp(t, K_FREQ)) {
-			SELECT_ACTIVITY(A_PWR_WGHFREQ);
+			SELECT_ACTIVITY(A_PWR_FREQ);
 		}
 		else if (!strcmp(t, K_USB)) {
 			SELECT_ACTIVITY(A_PWR_USB);
 		}
 		else if (!strcmp(t, K_ALL)) {
-			SELECT_ACTIVITY(A_PWR_CPUFREQ);
+			SELECT_ACTIVITY(A_PWR_CPU);
 			SELECT_ACTIVITY(A_PWR_FAN);
 			SELECT_ACTIVITY(A_PWR_IN);
 			SELECT_ACTIVITY(A_PWR_TEMP);
-			SELECT_ACTIVITY(A_PWR_WGHFREQ);
+			SELECT_ACTIVITY(A_PWR_FREQ);
 			SELECT_ACTIVITY(A_PWR_USB);
 		}
 		else

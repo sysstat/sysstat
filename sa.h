@@ -56,14 +56,14 @@
 #define A_NET_ICMP6	27
 #define A_NET_EICMP6	28
 #define A_NET_UDP6	29
-#define A_PWR_CPUFREQ	30
+#define A_PWR_CPU	30
 #define A_PWR_FAN	31
 #define A_PWR_TEMP	32
 #define A_PWR_IN	33
 #define A_HUGE		34
-#define A_PWR_WGHFREQ	35
+#define A_PWR_FREQ	35
 #define A_PWR_USB	36
-#define A_FILESYSTEM	37
+#define A_FS		37
 #define A_NET_FC	38
 #define A_NET_SOFT	39
 

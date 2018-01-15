@@ -1267,7 +1267,7 @@ struct activity net_udp6_act = {
 
 /* CPU frequency */
 struct activity pwr_cpufreq_act = {
-	.id		= A_PWR_CPUFREQ,
+	.id		= A_PWR_CPU,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
@@ -1291,7 +1291,7 @@ struct activity pwr_cpufreq_act = {
 	.f_json_print	= json_print_pwr_cpufreq_stats,
 	.f_svg_print	= svg_print_pwr_cpufreq_stats,
 	.f_raw_print	= raw_print_pwr_cpufreq_stats,
-	.name		= "A_PWR_CPUFREQ",
+	.name		= "A_PWR_CPU",
 	.g_nr		= 1,
 #endif
 	.nr_ini		= -1,
@@ -1472,7 +1472,7 @@ struct activity huge_act = {
 
 /* CPU weighted frequency */
 struct activity pwr_wghfreq_act = {
-	.id		= A_PWR_WGHFREQ,
+	.id		= A_PWR_FREQ,
 	.options	= AO_COUNTED + AO_MATRIX,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_POWER,
@@ -1496,7 +1496,7 @@ struct activity pwr_wghfreq_act = {
 	.f_json_print	= json_print_pwr_wghfreq_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_pwr_wghfreq_stats,
-	.name		= "A_PWR_WGHFREQ",
+	.name		= "A_PWR_FREQ",
 	.g_nr		= 0,
 #endif
 	.nr_ini		= -1,
@@ -1554,7 +1554,7 @@ struct activity pwr_usb_act = {
 
 /* Filesystem usage activity */
 struct activity filesystem_act = {
-	.id		= A_FILESYSTEM,
+	.id		= A_FS,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM + AO_MULTIPLE_OUTPUTS,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_XDISK,
@@ -1579,7 +1579,7 @@ struct activity filesystem_act = {
 	.f_json_print	= json_print_filesystem_stats,
 	.f_svg_print	= svg_print_filesystem_stats,
 	.f_raw_print	= raw_print_filesystem_stats,
-	.name		= "A_FILESYSTEM",
+	.name		= "A_FS",
 	.g_nr		= 4,
 #endif
 	.nr_ini		= -1,
@@ -1620,7 +1620,7 @@ struct activity fchost_act = {
 	.f_json_print	= json_print_fchost_stats,
 	.f_svg_print	= svg_print_fchost_stats,
 	.f_raw_print	= raw_print_fchost_stats,
-	.name		= "A_FCHOST",
+	.name		= "A_NET_FC",
 	.g_nr		= 2,
 #endif
 	.nr_ini		= -1,
