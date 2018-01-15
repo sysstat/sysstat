@@ -76,7 +76,8 @@
 
 /*
  ***************************************************************************
- * Definitions of structures for system statistics
+ * Definitions of structures for system statistics.
+ * WARNING: Fields order matters for SVG graphs!
  ***************************************************************************
  */
 
