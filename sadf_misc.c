@@ -857,6 +857,12 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 			printf("%s UTC\n", cur_time);
 		}
 
+		/* File composition: file_header, file_activity, record_header */
+		printf(_("File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"),
+		       file_magic->hdr_types_nr[0], file_magic->hdr_types_nr[1], file_magic->hdr_types_nr[2],
+		       file_hdr->act_types_nr[0], file_hdr->act_types_nr[1], file_hdr->act_types_nr[2],
+		       file_hdr->rec_types_nr[0], file_hdr->rec_types_nr[1], file_hdr->rec_types_nr[2]);
+
 		printf(_("Size of a long int: %d\n"), file_hdr->sa_sizeof_long);
 		printf("HZ = %lu\n", file_hdr->sa_hz);
 		printf(_("Number of activities in file: %u\n"),
@@ -868,19 +874,20 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 
 			p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND);
 
-			printf("%02d: ", fal->id);
+			printf("%02d: [%02x] ", fal->id, fal->magic);
 			if (p >= 0) {
-				printf("%-15s", act[p]->name);
+				printf("%-20s", act[p]->name);
 			}
 			else {
-				printf(_("Unknown activity"));
+				printf("%-20s", _("Unknown activity"));
 			}
-			printf("\t(x%d)", fal->nr);
+			printf(" %c:%4d", fal->has_nr ? 'Y' : 'N', fal->nr);
 			if (fal->nr2 > 1) {
-				printf("\t(x%d)", fal->nr2);
+				printf("x%d", fal->nr2);
 			}
+			printf("\t(%d,%d,%d)", fal->types_nr[0], fal->types_nr[1], fal->types_nr[2]);
 			if ((p >= 0) && (act[p]->magic == ACTIVITY_MAGIC_UNKNOWN)) {
-				printf(_("\t[Unknown activity format]"));
+				printf(_("\t[Unknown format]"));
 			}
 			printf("\n");
 		}
