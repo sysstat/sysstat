@@ -986,9 +986,11 @@ void write_disk_stat_header(int *fctr, int *tab)
 		return;
 	}
 
+	if (!DISPLAY_HUMAN_READ(flags)) {
+		printf("Device       ");
+	}
 	if (DISPLAY_EXTENDED(flags)) {
 		/* Extended stats */
-		printf("Device       ");
 		if (DISPLAY_SHORT_OUTPUT(flags)) {
 			printf("      tps");
 			if (DISPLAY_MEGABYTES(flags)) {
@@ -1000,7 +1002,7 @@ void write_disk_stat_header(int *fctr, int *tab)
 			else {
 				printf("     sec/s");
 			}
-			printf("    rqm/s   await aqu-sz  areq-sz  %%util\n");
+			printf("    rqm/s   await aqu-sz  areq-sz  %%util");
 		}
 		else {
 			printf("     r/s     w/s");
@@ -1014,22 +1016,26 @@ void write_disk_stat_header(int *fctr, int *tab)
 				printf("    rsec/s    wsec/s");
 			}
 			printf("   rrqm/s   wrqm/s  %%rrqm  %%wrqm r_await w_await"
-			       " aqu-sz rareq-sz wareq-sz  svctm  %%util\n");
+			       " aqu-sz rareq-sz wareq-sz  svctm  %%util");
 		}
 	}
 	else {
 		/* Basic stats */
-		printf("Device             tps");
+		printf("      tps");
 		if (DISPLAY_KILOBYTES(flags)) {
-			printf("    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn\n");
+			printf("    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn");
 		}
 		else if (DISPLAY_MEGABYTES(flags)) {
-			printf("    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn\n");
+			printf("    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn");
 		}
 		else {
-			printf("   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn\n");
+			printf("   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn");
 		}
 	}
+	if (DISPLAY_HUMAN_READ(flags)) {
+		printf(" Device");
+	}
+	printf("\n");
 }
 
 /*
@@ -1053,11 +1059,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			  struct ext_io_stats *xios)
 {
-	if (DISPLAY_HUMAN_READ(flags)) {
-		cprintf_in(IS_STR, "%s\n", devname, 0);
-		printf("%13s", "");
-	}
-	else {
+	if (!DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
@@ -1092,7 +1094,6 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
 			   shi->used ? xds->util / 10.0 / (double) shi->used
 				     : xds->util / 10.0);	/* shi->used should never be zero here */
-		printf("\n");
 	}
 	else {
 		/* r/s  w/s */
@@ -1133,8 +1134,12 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
 			   shi->used ? xds->util / 10.0 / (double) shi->used
 				     : xds->util / 10.0);	/* shi->used should never be zero here */
-		printf("\n");
 	}
+
+	if (DISPLAY_HUMAN_READ(flags)) {
+		cprintf_in(IS_STR, " %s", devname, 0);
+	}
+	printf("\n");
 }
 
 /*
@@ -1339,11 +1344,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 {
 	double rsectors, wsectors;
 
-	if (DISPLAY_HUMAN_READ(flags)) {
-		cprintf_in(IS_STR, "%s\n", devname, 0);
-		printf("%13s", "");
-	}
-	else {
+	if (!DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 	cprintf_f(NO_UNIT, 1, 8, 2,
@@ -1361,6 +1362,9 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 					: (unsigned long long) rd_sec / fctr,
 		    DISPLAY_UNIT(flags) ? (unsigned long long) wr_sec
 					: (unsigned long long) wr_sec / fctr);
+	if (DISPLAY_HUMAN_READ(flags)) {
+		cprintf_in(IS_STR, " %s", devname, 0);
+	}
 	printf("\n");
 }
 
