@@ -398,7 +398,9 @@ void read_cifs_stat(int curr)
  */
 void write_cifs_stat_header(int *fctr)
 {
-	printf("Filesystem:           ");
+	if (!DISPLAY_HUMAN_READ(flags)) {
+		printf("Filesystem            ");
+	}
 	if (DISPLAY_KILOBYTES(flags)) {
 		printf("        rkB/s        wkB/s");
 		*fctr = 1024;
@@ -411,7 +413,11 @@ void write_cifs_stat_header(int *fctr)
 		printf("         rB/s         wB/s");
 		*fctr = 1;
 	}
-	printf("    rops/s    wops/s         fo/s         fc/s         fd/s\n");
+	printf("    rops/s    wops/s         fo/s         fc/s         fd/s");
+	if (DISPLAY_HUMAN_READ(flags)) {
+		printf(" Filesystem");
+	}
+	printf("\n");
 }
 
 /*
@@ -433,11 +439,7 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 {
 	double rbytes, wbytes;
 
-	if (DISPLAY_HUMAN_READ(flags)) {
-		cprintf_in(IS_STR, "%-22s\n", shi->name, 0);
-		printf("%22s", "");
-	}
-	else {
+	if (!DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%-22s", shi->name, 0);
 	}
 
@@ -457,6 +459,9 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 		  S_VALUE(ionj->fopens, ioni->fopens, itv),
 		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
 		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
+	if (DISPLAY_HUMAN_READ(flags)) {
+		cprintf_in(IS_STR, " %s", shi->name, 0);
+	}
 	printf("\n");
 }
 
