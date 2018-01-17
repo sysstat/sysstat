@@ -177,37 +177,22 @@ void parse_sadc_S_option(char *argv[], int opt)
 				collect_group_activities(G_DISK + G_XDISK, AO_F_DISK_PART);
 			}
 		}
-		else if (strspn(p, DIGITS) == strlen(p)) {
-			/*
-			 * Although undocumented, option -S followed by a numerical value
-			 * enables the user to select each activity that should be
-			 * collected. "-S 0" unselects all activities.
-			 * A value greater than 255 enables the user to select groups
-			 * of activities.
-			 */
-			int act_id;
-
-			act_id = atoi(p);
-			if (act_id > 255) {
-				act_id >>= 8;
-				for (i = 0; i < NR_ACT; i++) {
-					if (act[i]->group & act_id) {
-						act[i]->options |= AO_COLLECTED;
-					}
+		else if (!strcmp(p, K_A_NULL)) {
+			/* Unselect all activities */
+			for (i = 0; i < NR_ACT; i++) {
+				act[i]->options &= ~AO_COLLECTED;
+			}
+		}
+		else if (!strncmp(p, "A_", 2)) {
+			/* Select activity by name */
+			for (i = 0; i < NR_ACT; i++) {
+				if (!strcmp(p, act[i]->name)) {
+					act[i]->options |= AO_COLLECTED;
+					break;
 				}
 			}
-			else if ((act_id < 0) || (act_id > NR_ACT)) {
+			if (i == NR_ACT) {
 				usage(argv[0]);
-			}
-			else if (!act_id) {
-				/* Unselect all activities */
-				for (i = 0; i < NR_ACT; i++) {
-					act[i]->options &= ~AO_COLLECTED;
-				}
-			}
-			else {
-				/* Select chosen activity */
-				COLLECT_ACTIVITY(act_id);
 			}
 		}
 		else {

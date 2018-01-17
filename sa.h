@@ -173,6 +173,7 @@
  */
 
 /* Keywords */
+#define K_A_NULL	"A_NULL"
 #define K_XALL		"XALL"
 #define K_SUM		"SUM"
 #define K_DEV		"DEV"

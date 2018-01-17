@@ -91,9 +91,9 @@ struct activity cpu_act = {
 	.f_json_print	= json_print_cpu_stats,
 	.f_svg_print	= svg_print_cpu_stats,
 	.f_raw_print	= raw_print_cpu_stats,
+#endif
 	.name		= "A_CPU",
 	.g_nr		= 1,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= NR_CPUS + 1,
@@ -132,9 +132,9 @@ struct activity pcsw_act = {
 	.f_json_print	= json_print_pcsw_stats,
 	.f_svg_print	= svg_print_pcsw_stats,
 	.f_raw_print	= raw_print_pcsw_stats,
+#endif
 	.name		= "A_PCSW",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -173,9 +173,9 @@ struct activity irq_act = {
 	.f_json_print	= json_print_irq_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_irq_stats,
+#endif
 	.name		= "A_IRQ",
 	.g_nr		= 0,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= NR_IRQS + 1,
@@ -214,9 +214,9 @@ struct activity swap_act = {
 	.f_json_print	= json_print_swap_stats,
 	.f_svg_print	= svg_print_swap_stats,
 	.f_raw_print	= raw_print_swap_stats,
+#endif
 	.name		= "A_SWAP",
 	.g_nr		= 1,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -256,9 +256,9 @@ struct activity paging_act = {
 	.f_json_print	= json_print_paging_stats,
 	.f_svg_print	= svg_print_paging_stats,
 	.f_raw_print	= raw_print_paging_stats,
+#endif
 	.name		= "A_PAGE",
 	.g_nr		= 3,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -297,9 +297,9 @@ struct activity io_act = {
 	.f_json_print	= json_print_io_stats,
 	.f_svg_print	= svg_print_io_stats,
 	.f_raw_print	= raw_print_io_stats,
+#endif
 	.name		= "A_IO",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -339,9 +339,9 @@ struct activity memory_act = {
 	.f_json_print	= json_print_memory_stats,
 	.f_svg_print	= svg_print_memory_stats,
 	.f_raw_print	= raw_print_memory_stats,
+#endif
 	.name		= "A_MEMORY",
 	.g_nr		= 9,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -380,9 +380,9 @@ struct activity ktables_act = {
 	.f_json_print	= json_print_ktables_stats,
 	.f_svg_print	= svg_print_ktables_stats,
 	.f_raw_print	= raw_print_ktables_stats,
+#endif
 	.name		= "A_KTABLES",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -421,9 +421,9 @@ struct activity queue_act = {
 	.f_json_print	= json_print_queue_stats,
 	.f_svg_print	= svg_print_queue_stats,
 	.f_raw_print	= raw_print_queue_stats,
+#endif
 	.name		= "A_QUEUE",
 	.g_nr		= 3,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -462,9 +462,9 @@ struct activity serial_act = {
 	.f_json_print	= json_print_serial_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_serial_stats,
+#endif
 	.name		= "A_SERIAL",
 	.g_nr		= 0,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_SERIAL_LINES,
@@ -503,9 +503,9 @@ struct activity disk_act = {
 	.f_json_print	= json_print_disk_stats,
 	.f_svg_print	= svg_print_disk_stats,
 	.f_raw_print	= raw_print_disk_stats,
+#endif
 	.name		= "A_DISK",
 	.g_nr		= 5,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_DISKS,
@@ -544,9 +544,9 @@ struct activity net_dev_act = {
 	.f_json_print	= json_print_net_dev_stats,
 	.f_svg_print	= svg_print_net_dev_stats,
 	.f_raw_print	= raw_print_net_dev_stats,
+#endif
 	.name		= "A_NET_DEV",
 	.g_nr		= 4,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_IFACES,
@@ -586,9 +586,9 @@ struct activity net_edev_act = {
 	.f_json_print	= json_print_net_edev_stats,
 	.f_svg_print	= svg_print_net_edev_stats,
 	.f_raw_print	= raw_print_net_edev_stats,
+#endif
 	.name		= "A_NET_EDEV",
 	.g_nr		= 4,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_IFACES,
@@ -627,9 +627,9 @@ struct activity net_nfs_act = {
 	.f_json_print	= json_print_net_nfs_stats,
 	.f_svg_print	= svg_print_net_nfs_stats,
 	.f_raw_print	= raw_print_net_nfs_stats,
+#endif
 	.name		= "A_NET_NFS",
 	.g_nr		= 3,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -669,9 +669,9 @@ struct activity net_nfsd_act = {
 	.f_json_print	= json_print_net_nfsd_stats,
 	.f_svg_print	= svg_print_net_nfsd_stats,
 	.f_raw_print	= raw_print_net_nfsd_stats,
+#endif
 	.name		= "A_NET_NFSD",
 	.g_nr		= 5,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -710,9 +710,9 @@ struct activity net_sock_act = {
 	.f_json_print	= json_print_net_sock_stats,
 	.f_svg_print	= svg_print_net_sock_stats,
 	.f_raw_print	= raw_print_net_sock_stats,
+#endif
 	.name		= "A_NET_SOCK",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -751,9 +751,9 @@ struct activity net_ip_act = {
 	.f_json_print	= json_print_net_ip_stats,
 	.f_svg_print	= svg_print_net_ip_stats,
 	.f_raw_print	= raw_print_net_ip_stats,
+#endif
 	.name		= "A_NET_IP",
 	.g_nr		= 3,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -792,9 +792,9 @@ struct activity net_eip_act = {
 	.f_json_print	= json_print_net_eip_stats,
 	.f_svg_print	= svg_print_net_eip_stats,
 	.f_raw_print	= raw_print_net_eip_stats,
+#endif
 	.name		= "A_NET_EIP",
 	.g_nr		= 3,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -834,9 +834,9 @@ struct activity net_icmp_act = {
 	.f_json_print	= json_print_net_icmp_stats,
 	.f_svg_print	= svg_print_net_icmp_stats,
 	.f_raw_print	= raw_print_net_icmp_stats,
+#endif
 	.name		= "A_NET_ICMP",
 	.g_nr		= 4,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -876,9 +876,9 @@ struct activity net_eicmp_act = {
 	.f_json_print	= json_print_net_eicmp_stats,
 	.f_svg_print	= svg_print_net_eicmp_stats,
 	.f_raw_print	= raw_print_net_eicmp_stats,
+#endif
 	.name		= "A_NET_EICMP",
 	.g_nr		= 6,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -917,9 +917,9 @@ struct activity net_tcp_act = {
 	.f_json_print	= json_print_net_tcp_stats,
 	.f_svg_print	= svg_print_net_tcp_stats,
 	.f_raw_print	= raw_print_net_tcp_stats,
+#endif
 	.name		= "A_NET_TCP",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -958,9 +958,9 @@ struct activity net_etcp_act = {
 	.f_json_print	= json_print_net_etcp_stats,
 	.f_svg_print	= svg_print_net_etcp_stats,
 	.f_raw_print	= raw_print_net_etcp_stats,
+#endif
 	.name		= "A_NET_ETCP",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -999,9 +999,9 @@ struct activity net_udp_act = {
 	.f_json_print	= json_print_net_udp_stats,
 	.f_svg_print	= svg_print_net_udp_stats,
 	.f_raw_print	= raw_print_net_udp_stats,
+#endif
 	.name		= "A_NET_UDP",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1040,9 +1040,9 @@ struct activity net_sock6_act = {
 	.f_json_print	= json_print_net_sock6_stats,
 	.f_svg_print	= svg_print_net_sock6_stats,
 	.f_raw_print	= raw_print_net_sock6_stats,
+#endif
 	.name		= "A_NET_SOCK6",
 	.g_nr		= 1,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1082,9 +1082,9 @@ struct activity net_ip6_act = {
 	.f_json_print	= json_print_net_ip6_stats,
 	.f_svg_print	= svg_print_net_ip6_stats,
 	.f_raw_print	= raw_print_net_ip6_stats,
+#endif
 	.name		= "A_NET_IP6",
 	.g_nr		= 4,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1124,9 +1124,9 @@ struct activity net_eip6_act = {
 	.f_json_print	= json_print_net_eip6_stats,
 	.f_svg_print	= svg_print_net_eip6_stats,
 	.f_raw_print	= raw_print_net_eip6_stats,
+#endif
 	.name		= "A_NET_EIP6",
 	.g_nr		= 4,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1167,9 +1167,9 @@ struct activity net_icmp6_act = {
 	.f_json_print	= json_print_net_icmp6_stats,
 	.f_svg_print	= svg_print_net_icmp6_stats,
 	.f_raw_print	= raw_print_net_icmp6_stats,
+#endif
 	.name		= "A_NET_ICMP6",
 	.g_nr		= 5,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1209,9 +1209,9 @@ struct activity net_eicmp6_act = {
 	.f_json_print	= json_print_net_eicmp6_stats,
 	.f_svg_print	= svg_print_net_eicmp6_stats,
 	.f_raw_print	= raw_print_net_eicmp6_stats,
+#endif
 	.name		= "A_NET_EICMP6",
 	.g_nr		= 6,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1250,9 +1250,9 @@ struct activity net_udp6_act = {
 	.f_json_print	= json_print_net_udp6_stats,
 	.f_svg_print	= svg_print_net_udp6_stats,
 	.f_raw_print	= raw_print_net_udp6_stats,
+#endif
 	.name		= "A_NET_UDP6",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1291,9 +1291,9 @@ struct activity pwr_cpufreq_act = {
 	.f_json_print	= json_print_pwr_cpufreq_stats,
 	.f_svg_print	= svg_print_pwr_cpufreq_stats,
 	.f_raw_print	= raw_print_pwr_cpufreq_stats,
+#endif
 	.name		= "A_PWR_CPU",
 	.g_nr		= 1,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= NR_CPUS + 1,
@@ -1332,9 +1332,9 @@ struct activity pwr_fan_act = {
 	.f_json_print	= json_print_pwr_fan_stats,
 	.f_svg_print	= svg_print_pwr_fan_stats,
 	.f_raw_print	= raw_print_pwr_fan_stats,
+#endif
 	.name		= "A_PWR_FAN",
 	.g_nr		= 1,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_FANS,
@@ -1373,9 +1373,9 @@ struct activity pwr_temp_act = {
 	.f_json_print	= json_print_pwr_temp_stats,
 	.f_svg_print	= svg_print_pwr_temp_stats,
 	.f_raw_print	= raw_print_pwr_temp_stats,
+#endif
 	.name		= "A_PWR_TEMP",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_TEMP_SENSORS,
@@ -1414,9 +1414,9 @@ struct activity pwr_in_act = {
 	.f_json_print	= json_print_pwr_in_stats,
 	.f_svg_print	= svg_print_pwr_in_stats,
 	.f_raw_print	= raw_print_pwr_in_stats,
+#endif
 	.name		= "A_PWR_IN",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_IN_SENSORS,
@@ -1455,9 +1455,9 @@ struct activity huge_act = {
 	.f_json_print	= json_print_huge_stats,
 	.f_svg_print	= svg_print_huge_stats,
 	.f_raw_print	= raw_print_huge_stats,
+#endif
 	.name		= "A_HUGE",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= 1,
 	.nr2		= 1,
 	.nr_max		= 1,
@@ -1496,9 +1496,9 @@ struct activity pwr_wghfreq_act = {
 	.f_json_print	= json_print_pwr_wghfreq_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_pwr_wghfreq_stats,
+#endif
 	.name		= "A_PWR_FREQ",
 	.g_nr		= 0,
-#endif
 	.nr_ini		= -1,
 	.nr2		= -1,
 	.nr_max		= NR_CPUS + 1,
@@ -1537,9 +1537,9 @@ struct activity pwr_usb_act = {
 	.f_json_print	= json_print_pwr_usb_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_pwr_usb_stats,
+#endif
 	.name		= "A_PWR_USB",
 	.g_nr		= 0,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_USB,
@@ -1579,9 +1579,9 @@ struct activity filesystem_act = {
 	.f_json_print	= json_print_filesystem_stats,
 	.f_svg_print	= svg_print_filesystem_stats,
 	.f_raw_print	= raw_print_filesystem_stats,
+#endif
 	.name		= "A_FS",
 	.g_nr		= 4,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_FS,
@@ -1620,9 +1620,9 @@ struct activity fchost_act = {
 	.f_json_print	= json_print_fchost_stats,
 	.f_svg_print	= svg_print_fchost_stats,
 	.f_raw_print	= raw_print_fchost_stats,
+#endif
 	.name		= "A_NET_FC",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= MAX_NR_FCHOSTS,
@@ -1662,9 +1662,9 @@ struct activity softnet_act = {
 	.f_json_print	= json_print_softnet_stats,
 	.f_svg_print	= svg_print_softnet_stats,
 	.f_raw_print	= raw_print_softnet_stats,
+#endif
 	.name		= "A_NET_SOFT",
 	.g_nr		= 2,
-#endif
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= NR_CPUS + 1,
