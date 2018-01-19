@@ -1191,7 +1191,7 @@ void read_stats(void)
  */
 int main(int argc, char **argv)
 {
-	int i, rc, opt = 1, args_idx = 2;
+	int i, rc, opt = 1, args_idx = 1;
 	int fd[2];
 	int day_offset = 0;
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
@@ -1493,11 +1493,16 @@ int main(int argc, char **argv)
 		}
 		else if (!interval) {
 			strcpy(ltemp, "1");
+			/*
+			 * Display stats since system startup: Set <interval> to 1.
+			 * <count> arg will also be set to 1 below.
+			 */
+			salloc(args_idx++, ltemp);
 		}
 		else {
 			sprintf(ltemp, "%ld", interval);
 		}
-		salloc(1, ltemp);
+		salloc(args_idx++, ltemp);
 
 		/* Count number */
 		if (count >= 0) {
