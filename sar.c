@@ -1195,7 +1195,7 @@ int main(int argc, char **argv)
 	int fd[2];
 	int day_offset = 0;
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
-	char ltemp[20];
+	char ltemp[1024];
 
 	/* Compute page shift in kB */
 	get_kb_shift();
@@ -1525,20 +1525,15 @@ int main(int argc, char **argv)
 			 * If option -o hasn't been used, then tell sadc
 			 * to collect only activities that will be displayed.
 			 */
-			int act_id = 0;
-
+			salloc(args_idx++, "-S");
+			strcpy(ltemp, K_A_NULL);
 			for (i = 0; i < NR_ACT; i++) {
 				if (IS_SELECTED(act[i]->options)) {
-					act_id |= act[i]->group;
+					strcat(ltemp, ",");
+					strcat(ltemp, act[i]->name);
 				}
 			}
-			if (act_id) {
-				act_id <<= 8;
-				snprintf(ltemp, 19, "%d", act_id);
-				ltemp[19] = '\0';
-				salloc(args_idx++, "-S");
-				salloc(args_idx++, ltemp);
-			}
+			salloc(args_idx++, ltemp);
 		}
 
 		/* Last arg is NULL */
