@@ -33,7 +33,7 @@
 2.21. What happened to sar's options -h, -H, -x and -X?  
 2.22. What is the exact meaning of the `count` parameter for sar and sadc?  
 2.23. Why doesn't sar deal with sub-second sampling/monitoring?  
-2.24. Is it possible to save only some specific activities in my daily data files? It would help to make `saXX` files take less space on disk...  
+2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?
 
 **3. Questions related to iostat**
 
@@ -532,28 +532,35 @@ more prone to have an influence on the data you are retrieving as
 the interval of time is small.
 
 ---
-2.24. Is it possible to save only some specific activities in my
-daily data files? It would help to make saXX files take less space
-on disk...
+2.24. Is it possible to make sadc save only some specific activities
+in my binary daily data files?
 
 
 A: sadc's option -S followed by a keyword (DISK, SNMP...)  can already
 be used to specify which optional activities are to be collected.
 Without this option, sadc collects a default set of activities (CPU
-activity, memory activity, etc.)  
+activity, memory activity, network activity, etc.)  
 Yet it is actually possible to specify explicitly which activities
 should be collected by sadc! You have to use sadc's option -S
-followed by a numerical value corresponding to the activity you want
-to collect (the values are those displayed by sadf -H and preceding
-the activity name in the list of activities). The only limitation
-is CPU activity which is always collected for internal purpose.
-Example: To tell sadc to not collect any activities but CPU, enter:
+followed by the report name corresponding to the activity you want
+to collect (enter "sar --help" to know the formal report names
+used by sadc).  
+Example: To tell sadc to collect only temperature sensors activity
+in addition to the default set of activities, enter:
+
 ```
-$ sadc -S 0
+sadc -S A_PWR_TEMP
 ```
-followed by the other classic options (interval, count, filename...)  
-To tell sadc to collect only CPU and network activities, replace
-`-S 0` with `-S 0 -S 12` (the value 12 corresponds to network activity).
+
+followed by the other classic options (interval, count, filename...)
+Now assume you want to collect temperature sensors activity **without**
+the other activities collected by default,
+add the special report name A_NULL to the list passed to sadc, e.g.:
+```
+sadc -S A_NULL,A_PWR_TEMP
+```
+Of course you can enter as many report names as you want to collect
+different activities.
 This way you can tell sadc to collect only the desired activities.
 
 ---
