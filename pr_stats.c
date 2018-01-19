@@ -2649,6 +2649,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 					 * Save USB device in summary list.
 					 */
 					*sum = *suc;
+					a->nr[2] = j + 1;
 					break;
 				}
 			}
@@ -2660,6 +2661,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 				reallocate_all_buffers(a);
 				sum = (struct stats_pwr_usb *) ((char *) a->buf[2] + j * a->msize);
 				*sum = *suc;
+				a->nr[2] = j + 1;
 			}
 		}
 	}
@@ -2761,6 +2763,9 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 					 * or free slot (end of list).
 					 */
 					*sfm = *sfc;
+					if (j >= a->nr[2]) {
+						a->nr[2] = j + 1;
+					}
 					break;
 				}
 			}
@@ -2772,6 +2777,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 				reallocate_all_buffers(a);
 				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
 				*sfm = *sfc;
+				a->nr[2] = j + 1;
 			}
 		}
 	}
