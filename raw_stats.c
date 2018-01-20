@@ -536,7 +536,7 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 			/* This is a newly registered interface. Previous stats are zero */
 			sdp = &sdpzero;
 			if (DISPLAY_HINTS(flags)) {
-				printf(" [NEW]");
+				printf(" [%s]", j == -1 ? "NEW" : "BCK");
 			}
 		}
 		else {
@@ -608,7 +608,7 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 			/* This is a newly registered interface. Previous stats are zero */
 			sndp = &sndzero;
 			if (DISPLAY_HINTS(flags)) {
-				printf(" [NEW]");
+				printf(" [%s]", j == -1 ? "NEW" : "BCK");
 			}
 		}
 		else {
@@ -661,7 +661,7 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 			/* This is a newly registered interface. Previous stats are zero */
 			snedp = &snedzero;
 			if (DISPLAY_HINTS(flags)) {
-				printf(" [NEW]");
+				printf(" [%s]", j == -1 ? "NEW" : "BCK");
 			}
 		}
 		else {
