@@ -464,6 +464,11 @@ void save_stats(char *name, int curr, void *st_io, int iodev_nr,
 		st_hdr_iodev_i = st_hdr_iodev + i;
 		if (st_hdr_iodev_i->status == DISK_UNREGISTERED) {
 			st_hdr_iodev_i->status = DISK_REGISTERED;
+			if (st_hdr_iodev_i->used == FALSE) {
+				st_iodev_i = st_iodev[!curr] + i;
+				memset(st_iodev_i, 0, IO_STATS_SIZE);
+				st_hdr_iodev_i->used = TRUE;
+			}
 		}
 		st_iodev_i = st_iodev[curr] + i;
 		*st_iodev_i = *((struct io_stats *) st_io);
