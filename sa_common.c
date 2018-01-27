@@ -1511,9 +1511,12 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	*endian_mismatch = (file_magic->sysstat_magic != SYSSTAT_MAGIC);
 	if (*endian_mismatch) {
 		/* Swap bytes for file_magic fields */
-		file_magic->sysstat_magic = __builtin_bswap16(file_magic->sysstat_magic);
+		file_magic->sysstat_magic = SYSSTAT_MAGIC;
 		file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
-		/* Start swapping at field "header_size" position */
+		/*
+		 * Start swapping at field "header_size" position.
+		 * May not exist for older versions but in this case, it won't be used.
+		 */
 		swap_struct(fm_types_nr, &file_magic->header_size, 0);
 	}
 
