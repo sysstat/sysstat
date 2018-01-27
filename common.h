@@ -170,7 +170,7 @@
 
 /* Number of ticks per second */
 #define HZ		hz
-extern unsigned int hz;
+extern unsigned long hz;
 
 /* Number of bit shifts to convert pages to kB */
 extern unsigned int kb_shift;

@@ -48,7 +48,7 @@
 char units[] = {'s', 'B', 'k', 'M', 'G', 'T', 'P', '?'};
 
 /* Number of ticks per second */
-unsigned int hz;
+unsigned long hz;
 /* Number of bit shifts to convert pages to kB */
 unsigned int kb_shift;
 
@@ -641,7 +641,7 @@ void get_HZ(void)
 		perror("sysconf");
 	}
 
-	hz = (unsigned int) ticks;
+	hz = (unsigned long) ticks;
 }
 
 /*
