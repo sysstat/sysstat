@@ -1,4 +1,4 @@
-.TH SADF 1 "APRIL 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -200,10 +200,9 @@ Do not display views where all graphs have only zero values.
 The following option is used to control raw output displayed by
 .BR "sadf -r":
 
-.B showhints
+.B debug
 .RS
-Display additional noteworthy information, such as e.g., a monotonic
-counter value which has decreased.
+Display additional information, mainly useful for debugging purpose.
 .RE
 .RE
 .IP "-P { cpu_list | ALL }"
