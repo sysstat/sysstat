@@ -1474,6 +1474,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
  *		header.
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
+ * @do_swap	TRUE if endianness should be normalized.
  *
  * RETURNS:
  * -1 if data file is a sysstat file with an old format (which we cannot
@@ -1481,7 +1482,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
  ***************************************************************************
  */
 int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
-		       int ignore, int *endian_mismatch)
+		       int ignore, int *endian_mismatch, int do_swap)
 {
 	int n;
 	unsigned int fm_types_nr[] = {FILE_MAGIC_ULL_NR, FILE_MAGIC_UL_NR, FILE_MAGIC_U_NR};
@@ -1509,7 +1510,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	}
 
 	*endian_mismatch = (file_magic->sysstat_magic != SYSSTAT_MAGIC);
-	if (*endian_mismatch) {
+	if (*endian_mismatch && do_swap) {
 		/* Swap bytes for file_magic fields */
 		file_magic->sysstat_magic = SYSSTAT_MAGIC;
 		file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
@@ -1584,7 +1585,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	void *buffer = NULL;
 
 	/* Open sa data file and read its magic structure */
-	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch) < 0)
+	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch, TRUE) < 0)
 		/*
 		 * Not current sysstat's format.
 		 * Return now so that sadf can do its job.

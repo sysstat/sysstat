@@ -1290,7 +1290,7 @@ int sa_fread
 int sa_get_record_timestamp_struct
 	(unsigned int, struct record_header *, struct tm *, struct tm *);
 int sa_open_read_magic
-	(int *, char *, struct file_magic *, int, int *);
+	(int *, char *, struct file_magic *, int, int *, int);
 void select_all_activities
 	(struct activity * []);
 void select_default_activity
