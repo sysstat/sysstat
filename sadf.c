@@ -50,8 +50,6 @@ int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
 
-extern unsigned int rec_types_nr[];
-
 unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */
 unsigned int format = 0;	/* Output format */
