@@ -316,7 +316,7 @@ struct activity io_act = {
 struct activity memory_act = {
 	.id		= A_MEMORY,
 	.options	= AO_COLLECTED + AO_MULTIPLE_OUTPUTS,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -358,7 +358,7 @@ struct activity memory_act = {
 struct activity ktables_act = {
 	.id		= A_KTABLES,
 	.options	= AO_COLLECTED,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -399,7 +399,7 @@ struct activity ktables_act = {
 struct activity queue_act = {
 	.id		= A_QUEUE,
 	.options	= AO_COLLECTED,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -440,7 +440,7 @@ struct activity queue_act = {
 struct activity serial_act = {
 	.id		= A_SERIAL,
 	.options	= AO_COLLECTED + AO_COUNTED,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= 2,	/* wrap_get_serial_nr() */
@@ -1433,7 +1433,7 @@ struct activity pwr_in_act = {
 struct activity huge_act = {
 	.id		= A_HUGE,
 	.options	= AO_COLLECTED,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
