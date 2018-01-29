@@ -686,7 +686,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 			else if (format == F_RAW_OUTPUT) {
 				/* Raw output */
-				if (DISPLAY_HINTS(flags)) {
+				if (DISPLAY_DEBUG_MODE(flags)) {
 					printf("[%s: %d/%d (%d)]\n", act[i]->name,
 					       act[i]->nr[curr], act[i]->nr_ini, act[i]->nr_allocated);
 				}
@@ -1455,8 +1455,8 @@ int main(int argc, char **argv)
 				else if (!strcmp(t, K_SHOWINFO)) {
 					flags |= S_F_SVG_SHOW_INFO;
 				}
-				else if (!strcmp(t, K_SHOWHINTS)) {
-					flags |= S_F_RAW_SHOW_HINTS;
+				else if (!strcmp(t, K_DEBUG)) {
+					flags |= S_F_RAW_DEBUG_MODE;
 				}
 				else if (!strncmp(t, K_HEIGHT, strlen(K_HEIGHT))) {
 					v = t + strlen(K_HEIGHT);

@@ -95,7 +95,7 @@ char *pfield(char *hdr_line, int pos)
 void pval(unsigned long long valp, unsigned long long valc)
 {
 	printf("%llu>%llu", valp, valc);
-	if (DISPLAY_HINTS(flags)) {
+	if (DISPLAY_DEBUG_MODE(flags)) {
 		if (valc < valp) {
 			/* Field's value has decreased */
 			printf(" [DEC]");
@@ -143,7 +143,7 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 		printf("%s %s:%d", timestr,
 		       pfield(a->hdr_line, DISPLAY_CPU_ALL(a->opt_flags)), i - 1);
 
-		if (DISPLAY_HINTS(flags) && i) {
+		if (DISPLAY_DEBUG_MODE(flags) && i) {
 			if ((scc->cpu_user + scc->cpu_nice + scc->cpu_sys +
 			     scc->cpu_iowait + scc->cpu_idle + scc->cpu_steal +
 			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
@@ -484,7 +484,7 @@ __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int cu
 		printf("%s %s: %u", timestr, pfield(a->hdr_line, FIRST), ssc->line);
 
 		if (!found) {
-			if (DISPLAY_HINTS(flags)) {
+			if (DISPLAY_DEBUG_MODE(flags)) {
 				printf(" [NEW]");
 			}
 			printf("\n");
@@ -535,7 +535,7 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 		if (j < 0) {
 			/* This is a newly registered interface. Previous stats are zero */
 			sdp = &sdpzero;
-			if (DISPLAY_HINTS(flags)) {
+			if (DISPLAY_DEBUG_MODE(flags)) {
 				printf(" [%s]", j == -1 ? "NEW" : "BCK");
 			}
 		}
@@ -607,7 +607,7 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 		if (j < 0) {
 			/* This is a newly registered interface. Previous stats are zero */
 			sndp = &sndzero;
-			if (DISPLAY_HINTS(flags)) {
+			if (DISPLAY_DEBUG_MODE(flags)) {
 				printf(" [%s]", j == -1 ? "NEW" : "BCK");
 			}
 		}
@@ -660,7 +660,7 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 		if (j < 0) {
 			/* This is a newly registered interface. Previous stats are zero */
 			snedp = &snedzero;
-			if (DISPLAY_HINTS(flags)) {
+			if (DISPLAY_DEBUG_MODE(flags)) {
 				printf(" [%s]", j == -1 ? "NEW" : "BCK");
 			}
 		}
