@@ -445,9 +445,10 @@ unsigned long long moveto_long_long(void *buffer, int endian_mismatch, int arch_
  * IN:
  * @act		Array of activities.
  * @p		Position of activity in array.
+ * @st_size	Size of the structure read from file.
  ***************************************************************************
  */
-void upgrade_stats_cpu(struct activity *act[], int p)
+void upgrade_stats_cpu(struct activity *act[], int p, int st_size)
 {
 	int i;
 	struct stats_cpu *scc;
@@ -473,7 +474,11 @@ void upgrade_stats_cpu(struct activity *act[], int p)
 		scc->cpu_hardirq = scp->cpu_hardirq;
 		scc->cpu_softirq = scp->cpu_softirq;
 		scc->cpu_guest = scp->cpu_guest;
-		scc->cpu_guest_nice = scp->cpu_guest_nice;
+
+		if (st_size >= STATS_CPU_8A_SIZE) {
+			/* guest_nice field has been added without a structure format change */
+			scc->cpu_guest_nice = scp->cpu_guest_nice;
+		}
 	}
 }
 
@@ -580,15 +585,19 @@ void upgrade_stats_memory(struct activity *act[], int p, int st_size,
 	smc->comkb = moveto_long_long(&smp->comkb, endian_mismatch, arch_64);
 	smc->activekb = moveto_long_long(&smp->activekb, endian_mismatch, arch_64);
 	smc->inactkb = moveto_long_long(&smp->inactkb, endian_mismatch, arch_64);
-	smc->dirtykb = moveto_long_long(&smp->dirtykb, endian_mismatch, arch_64);
-	smc->anonpgkb = moveto_long_long(&smp->anonpgkb, endian_mismatch, arch_64);
-	smc->slabkb = moveto_long_long(&smp->slabkb, endian_mismatch, arch_64);
-	smc->kstackkb = moveto_long_long(&smp->kstackkb, endian_mismatch, arch_64);
-	smc->pgtblkb = moveto_long_long(&smp->pgtblkb, endian_mismatch, arch_64);
-	smc->vmusedkb = moveto_long_long(&smp->vmusedkb, endian_mismatch, arch_64);
 
+	/* Some fields have been added without a structure format change */
+	if (st_size >= STATS_MEMORY_8A_1_SIZE) {
+				smc->dirtykb = moveto_long_long(&smp->dirtykb, endian_mismatch, arch_64);
+	}
+	if (st_size >= STATS_MEMORY_8A_2_SIZE) {
+		smc->anonpgkb = moveto_long_long(&smp->anonpgkb, endian_mismatch, arch_64);
+		smc->slabkb = moveto_long_long(&smp->slabkb, endian_mismatch, arch_64);
+		smc->kstackkb = moveto_long_long(&smp->kstackkb, endian_mismatch, arch_64);
+		smc->pgtblkb = moveto_long_long(&smp->pgtblkb, endian_mismatch, arch_64);
+		smc->vmusedkb = moveto_long_long(&smp->vmusedkb, endian_mismatch, arch_64);
+	}
 	if (st_size >= STATS_MEMORY_8A_SIZE) {
-		/* availablekb field has been added without a structure format change */
 		smc->availablekb = moveto_long_long(&(smp->availablekb), endian_mismatch, arch_64);;
 	}
 }
@@ -1159,9 +1168,10 @@ void upgrade_stats_pwr_wghfreq(struct activity *act[], int p)
  * IN:
  * @act		Array of activities.
  * @p		Position of activity in array.
+ * @st_size	Size of the structure read from file.
  ***************************************************************************
  */
-void upgrade_stats_filesystem(struct activity *act[], int p)
+void upgrade_stats_filesystem(struct activity *act[], int p, int st_size)
 {
 	int i;
 	struct stats_filesystem *sfc;
@@ -1178,8 +1188,15 @@ void upgrade_stats_filesystem(struct activity *act[], int p)
 		sfc->f_ffree = sfp->f_ffree;
 		strncpy(sfc->fs_name, sfp->fs_name, MAX_FS_LEN);
 		sfc->fs_name[MAX_FS_LEN - 1] = '\0';
-		strncpy(sfc->mountp, sfp->mountp, MAX_FS_LEN);
-		sfc->mountp[MAX_FS_LEN - 1] = '\0';
+
+		if (st_size <= STATS_FILESYSTEM_8A_1_SIZE) {
+			/* mountp didn't exist with older versions */
+			sfc->mountp[0] = '\0';
+		}
+		else {
+			strncpy(sfc->mountp, sfp->mountp, MAX_FS_LEN);
+			sfc->mountp[MAX_FS_LEN - 1] = '\0';
+		}
 	}
 }
 
@@ -1633,7 +1650,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			switch (fal->id) {
 
 				case A_CPU:
-					upgrade_stats_cpu(act, p);
+					upgrade_stats_cpu(act, p, ofal->size);
 					break;
 
 				case A_PCSW:
@@ -1710,7 +1727,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 					break;
 
 				case A_FS:
-					upgrade_stats_filesystem(act, p);
+					upgrade_stats_filesystem(act, p, ofal->size);
 					break;
 				}
 		}

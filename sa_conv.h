@@ -92,6 +92,8 @@ struct stats_cpu_8a {
 	unsigned long long cpu_guest_nice	__attribute__ ((aligned (16)));
 };
 
+#define STATS_CPU_8A_SIZE	(sizeof(struct stats_cpu_8a))
+
 /* Structure stats_pcsw for ACTIVITY_MAGIC_BASE format */
 struct stats_pcsw_8a {
 	unsigned long long context_switch	__attribute__ ((aligned (16)));
@@ -124,12 +126,15 @@ struct stats_memory_8a {
 	unsigned long comkb		__attribute__ ((aligned (8)));
 	unsigned long activekb		__attribute__ ((aligned (8)));
 	unsigned long inactkb		__attribute__ ((aligned (8)));
+#define STATS_MEMORY_8A_1_SIZE	80
 	unsigned long dirtykb		__attribute__ ((aligned (8)));
+#define STATS_MEMORY_8A_2_SIZE	88
 	unsigned long anonpgkb		__attribute__ ((aligned (8)));
 	unsigned long slabkb		__attribute__ ((aligned (8)));
 	unsigned long kstackkb		__attribute__ ((aligned (8)));
 	unsigned long pgtblkb		__attribute__ ((aligned (8)));
 	unsigned long vmusedkb		__attribute__ ((aligned (8)));
+#define STATS_MEMORY_8A_3_SIZE	128
 	unsigned long availablekb	__attribute__ ((aligned (8)));
 };
 
@@ -380,6 +385,7 @@ struct stats_filesystem_8a {
 	unsigned long long f_files		__attribute__ ((aligned (16)));
 	unsigned long long f_ffree		__attribute__ ((aligned (16)));
 	char 		   fs_name[MAX_FS_LEN]	__attribute__ ((aligned (16)));
+#define STATS_FILESYSTEM_8A_1_SIZE	160
 	char 		   mountp[MAX_FS_LEN];
 };
 
