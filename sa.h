@@ -389,8 +389,11 @@ struct svg_hdr_parm {
 #define FORMAT_MAGIC	0x2175
 #define FORMAT_MAGIC_SWAPPED	(((FORMAT_MAGIC << 8) | (FORMAT_MAGIC >> 8)) & 0xffff)
 
-/* Previous datafile format magic number used by older sysstat versions */
-#define PREVIOUS_FORMAT_MAGIC	0x2173
+/* Previous datafile format magic numbers used by older sysstat versions */
+#define FORMAT_MAGIC_2171		0x2171
+#define FORMAT_MAGIC_2171_SWAPPED	(((FORMAT_MAGIC_2171 << 8) | (FORMAT_MAGIC_2171 >> 8)) & 0xffff)
+#define FORMAT_MAGIC_2173		0x2173
+#define FORMAT_MAGIC_2173_SWAPPED	(((FORMAT_MAGIC_2173 << 8) | (FORMAT_MAGIC_2173 >> 8)) & 0xffff)
 
 /* Padding in file_magic structure. See below. */
 #define FILE_MAGIC_PADDING	48
