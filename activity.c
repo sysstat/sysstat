@@ -68,7 +68,7 @@ struct activity cpu_act = {
 	.id		= A_CPU,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_PERSISTENT +
 			  AO_MULTIPLE_OUTPUTS + AO_GRAPH_PER_ITEM,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= 0,	/* wrap_get_cpu_nr() */
@@ -110,7 +110,7 @@ struct activity cpu_act = {
 struct activity pcsw_act = {
 	.id		= A_PCSW,
 	.options	= AO_COLLECTED,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -151,7 +151,7 @@ struct activity pcsw_act = {
 struct activity irq_act = {
 	.id		= A_IRQ,
 	.options	= AO_COUNTED,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_INT,
 #ifdef SOURCE_SADC
 	.f_count_index	= 1,	/* wrap_get_irq_nr() */
@@ -481,7 +481,7 @@ struct activity serial_act = {
 struct activity disk_act = {
 	.id		= A_DISK,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_DISK,
 #ifdef SOURCE_SADC
 	.f_count_index	= 3,	/* wrap_get_disk_nr() */
@@ -522,7 +522,7 @@ struct activity disk_act = {
 struct activity net_dev_act = {
 	.id		= A_NET_DEV,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_GRAPH_PER_ITEM,
-	.magic		= ACTIVITY_MAGIC_BASE + 2,
+	.magic		= ACTIVITY_MAGIC_BASE + 3,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= 4,	/* wrap_get_iface_nr() */
@@ -563,7 +563,7 @@ struct activity net_dev_act = {
 struct activity net_edev_act = {
 	.id		= A_NET_EDEV,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_GRAPH_PER_ITEM,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
 	.f_count_index	= 4,	/* wrap_get_iface_nr() */
@@ -729,7 +729,7 @@ struct activity net_sock_act = {
 struct activity net_ip_act = {
 	.id		= A_NET_IP,
 	.options	= AO_NULL,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -770,7 +770,7 @@ struct activity net_ip_act = {
 struct activity net_eip_act = {
 	.id		= A_NET_EIP,
 	.options	= AO_NULL,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_SNMP,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -1059,7 +1059,7 @@ struct activity net_sock6_act = {
 struct activity net_ip6_act = {
 	.id		= A_NET_IP6,
 	.options	= AO_NULL,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -1101,7 +1101,7 @@ struct activity net_ip6_act = {
 struct activity net_eip6_act = {
 	.id		= A_NET_EIP6,
 	.options	= AO_NULL,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_IPV6,
 #ifdef SOURCE_SADC
 	.f_count_index	= -1,
@@ -1474,7 +1474,7 @@ struct activity huge_act = {
 struct activity pwr_wghfreq_act = {
 	.id		= A_PWR_FREQ,
 	.options	= AO_COUNTED + AO_MATRIX,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_POWER,
 #ifdef SOURCE_SADC
 	.f_count_index	= 0,	/* wrap_get_cpu_nr() */
@@ -1556,7 +1556,7 @@ struct activity pwr_usb_act = {
 struct activity filesystem_act = {
 	.id		= A_FS,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM + AO_MULTIPLE_OUTPUTS,
-	.magic		= ACTIVITY_MAGIC_BASE,
+	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_XDISK,
 #ifdef SOURCE_SADC
 	.f_count_index	= 9,	/* wrap_get_filesystem_nr() */
