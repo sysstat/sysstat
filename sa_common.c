@@ -1474,7 +1474,8 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
  *		header.
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
- * @do_swap	TRUE if endianness should be normalized.
+ * @do_swap	TRUE if endianness should be normalized for sysstat_magic
+ *		and format_magic numbers.
  *
  * RETURNS:
  * -1 if data file is a sysstat file with an old format (which we cannot
@@ -1510,10 +1511,12 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	}
 
 	*endian_mismatch = (file_magic->sysstat_magic != SYSSTAT_MAGIC);
-	if (*endian_mismatch && do_swap) {
-		/* Swap bytes for file_magic fields */
-		file_magic->sysstat_magic = SYSSTAT_MAGIC;
-		file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
+	if (*endian_mismatch) {
+		if (do_swap) {
+			/* Swap bytes for file_magic fields */
+			file_magic->sysstat_magic = SYSSTAT_MAGIC;
+			file_magic->format_magic  = __builtin_bswap16(file_magic->format_magic);
+		}
 		/*
 		 * Start swapping at field "header_size" position.
 		 * May not exist for older versions but in this case, it won't be used.
@@ -1539,7 +1542,8 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		}
 	}
 
-	if (file_magic->format_magic != FORMAT_MAGIC)
+	if ((file_magic->format_magic != FORMAT_MAGIC) &&
+	    (file_magic->format_magic != FORMAT_MAGIC_SWAPPED))
 		/*
 		 * This is an old (or new) sa datafile format to
 		 * be read by sadf (since @ignore was set to TRUE).
