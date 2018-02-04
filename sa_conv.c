@@ -676,13 +676,24 @@ void upgrade_stats_queue(struct activity *act[], int p, unsigned int magic,
  * IN:
  * @act		Array of activities.
  * @p		Position of activity in array.
+ * @st_size	Size of the structure read from file.
+ * @endian_mismatch
+ *		TRUE if data read from file don't match current	machine's
+ *		endianness.
+ *
+ * RETURNS:
+ * Number of serial line structures that actually need to be written to
+ * disk.
  ***************************************************************************
  */
-void upgrade_stats_serial(struct activity *act[], int p, int endian_mismatch)
+int upgrade_stats_serial(struct activity *act[], int p, int st_size, int endian_mismatch)
 {
 	int i;
 	unsigned int line;
 	struct stats_serial *ssc;
+
+	/* Copy TTY stats to target structure */
+	memcpy(act[p]->buf[1], act[p]->buf[0], act[p]->nr_ini * st_size);
 
 	for (i = 0; i < act[p]->nr_ini; i++) {
 		ssc = (struct stats_serial *) ((char *) act[p]->buf[1] + i * act[p]->fsize);
@@ -695,13 +706,7 @@ void upgrade_stats_serial(struct activity *act[], int p, int endian_mismatch)
 		ssc->line = (endian_mismatch ? __builtin_bswap32(line) : line);
 	}
 
-	/*
-	 * Updating @nr_ini is part of the upgrade process so that
-	 * only the required number of structures gets written to disk.
-	 * Don't do it later as a line number of 0 no longer indicates the
-	 * end of the list.
-	 */
-	act[p]->nr_ini = i;
+	return i;
 }
 
 /*
@@ -1639,6 +1644,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			sa_fread(fd, act[p]->buf[0], ofal->size * act[p]->nr_ini * act[p]->nr2, HARD_SIZE);
 		}
 
+		nr_struct = act[p]->nr_ini;
 		/*
 		 * NB: Cannot upgrade a stats structure with
 		 * a magic number higher than currently known.
@@ -1680,7 +1686,8 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 					break;
 
 				case A_SERIAL:
-					upgrade_stats_serial(act, p, endian_mismatch);
+					nr_struct = upgrade_stats_serial(act, p, ofal->size,
+									 endian_mismatch);
 					break;
 
 				case A_DISK:
@@ -1743,7 +1750,6 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			}
 		}
 
-		nr_struct = act[p]->nr_ini;
 		if (fal->has_nr) {
 
 			switch (fal->id) {
