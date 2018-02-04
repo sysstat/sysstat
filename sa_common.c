@@ -1564,7 +1564,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
  * @act		Array of activities.
  * @ignore	Set to 1 if a true sysstat activity file but with a bad
  *		format should not yield an error message. Used with
- *		sadf -H and sadf -c.
+ *		sadf -H (sadf -c doesn't call check_file_actlst() function).
  *
  * OUT:
  * @ifd		System activity data file descriptor.
@@ -1592,7 +1592,8 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch, TRUE) < 0)
 		/*
 		 * Not current sysstat's format.
-		 * Return now so that sadf can do its job.
+		 * Return now so that sadf -H can display at least
+		 * file's version and magic number.
 		 */
 		return;
 
@@ -1707,7 +1708,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		     ||
 		     ((fal->types_nr[0] <= act[p]->gtypes_nr[0]) &&
 		     (fal->types_nr[1] <= act[p]->gtypes_nr[1]) &&
-		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))))
+		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))) && !ignore)
 			goto format_error;
 
 		if (MAP_SIZE(fal->types_nr) > fal->size)
