@@ -1154,10 +1154,10 @@ void upgrade_stats_pwr_wghfreq(struct activity *act[], int p)
 		spc = (struct stats_pwr_wghfreq *) ((char *) act[p]->buf[1] + i * act[p]->fsize * act[p]->nr2);
 
 		for (k = 0; k < act[p]->nr2; k++) {
-			spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * act[p]->fsize);
-			if (!spc_k->freq)
-				break;
 			spp_k = (struct stats_pwr_wghfreq_8a *) ((char *) spp + k * act[p]->msize);
+			if (!spp_k->freq)
+				break;
+			spc_k = (struct stats_pwr_wghfreq *) ((char *) spc + k * act[p]->fsize);
 
 			spc_k->time_in_state = spp_k->time_in_state;
 			memcpy(&spc_k->freq, &spp_k->freq, 8);
