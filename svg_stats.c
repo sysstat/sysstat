@@ -612,7 +612,8 @@ void display_hgrid(double ypos, double yfactor, double lmax, int dp)
  * IN:
  * @xpos	Gap between two vertical lines.
  * @xfactor	Scaling factor on X axis.
- * @v_gridnr	Number of vertical lines to display.
+ * @v_gridnr	Default number of vertical lines to display. The actual
+ *		number may vary between this value and 2 times this value.
  * @svg_p	SVG specific parameters (see draw_activity_graphs() function).
  ***************************************************************************
  */
@@ -625,7 +626,12 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 
 	stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
 
-	for (j = 0; (j <= v_gridnr) && (stamp.ust_time <= svg_p->ust_time_end); j++) {
+	/*
+	 * What really matters to know when we should stop drawing vertical lines
+	 * is the time end. v_gridnr is only informative and used to calculate
+	 * the gap between two lines.
+	 */
+	for (j = 0; (j <= (2 * v_gridnr)) && (stamp.ust_time <= svg_p->ust_time_end); j++) {
 
 		/* Display vertical lines */
 		sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
