@@ -1,4 +1,4 @@
-.TH SAR 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "FEBRUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -116,7 +116,7 @@ processors. If -P ALL
 is given, the
 .B sar
 command reports statistics for each individual processor and global
-statistics among all processors.
+statistics among all processors. Offline processors are not displayed.
 
 You can select information about specific system activities using
 flags. Not specifying any flags selects only CPU activity.
@@ -1872,7 +1872,7 @@ is the global average among all processors.
 Specifying the
 .B ALL
 keyword reports statistics for each individual processor, and globally for
-all processors.
+all processors. Offline processors are not displayed.
 .IP -p
 Pretty-print device names. Use this option in conjunction with option -d.
 By default names are printed as
@@ -2146,9 +2146,6 @@ Percentage of time spent by the CPU or CPUs to run a niced guest.
 Percentage of time that the CPU or CPUs were idle and the system
 did not have an outstanding disk I/O request.
 .RE
-
-Note: On SMP machines a processor that does not have any activity at all
-(0.00 for every field) is a disabled (offline) processor.
 .RE
 .IP -V
 Print version number then exit.
