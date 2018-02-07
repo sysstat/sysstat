@@ -1,0 +1,2 @@
+rm -f tests/data.tmp
+./sar -o tests/data.tmp 1 2 >/dev/null
