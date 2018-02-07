@@ -447,6 +447,7 @@ void seek_file_position(int ifd, int action)
  * RETURNS:
  * Number of rows containing views, taking into account only activities
  * to be displayed, and selected period of time (options -s/-e).
+ * Result may be 0.
  ***************************************************************************
  */
 int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
@@ -1221,21 +1222,21 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 	/* Use a decimal point to make SVG code locale independent */
 	setlocale(LC_NUMERIC, "C");
 
-	/* Calculate the number of rows and the max number of views per row to display */
+	/*
+	 * Calculate the number of rows and the max number of views per row to display.
+	 * Result may be 0. In this case, "No data" will be displayed instead of the graphs.
+	 */
 	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
 				    file_actlst, rectime, loctime, &views_per_row);
 
 	if (SET_CANVAS_HEIGHT(flags)) {
 		/*
-		 * Option "-O height=..." used: This is not a number
+		 * Option "-O height=..." used: @graph_nr is NO LONGER a number
 		 * of graphs but the SVG canvas height set on the command line.
 		 */
 		graph_nr = canvas_height;
 	}
 
-	if (!graph_nr)
-		/* No graph to display */
-		return;
 
 	parm.graph_nr = graph_nr;
 	parm.views_per_row = PACK_VIEWS(flags) ? views_per_row : 1;
