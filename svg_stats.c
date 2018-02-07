@@ -4188,6 +4188,10 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 			spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
 			spp = (struct stats_pwr_cpufreq *) ((char *) a->buf[!curr] + i * a->msize);
 
+			if (!spc->cpufreq)
+				/* This CPU is offline: Don't display it */
+				continue;
+
 			/* Should current CPU (including CPU "all") be displayed? */
 			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
 				/* No */
@@ -4221,7 +4225,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 			draw_activity_graphs(a->g_nr, g_type,
 					     title, g_title, item_name, group,
 					     spmin + i, spmax + i, out + i, outsize + i,
-					     svg_p, record_hdr, FALSE);
+					     svg_p, record_hdr, i);
 		}
 
 		/* Free remaining structures */
