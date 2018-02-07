@@ -918,6 +918,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
+	unsigned int height = 0;
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -930,11 +931,15 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 	}
 
 	if (action & F_MAIN) {
+		height = SET_CANVAS_HEIGHT(flags) ? hdr_parm->graph_nr
+						  : SVG_H_YSIZE + SVG_T_YSIZE * (hdr_parm->graph_nr);
+		if (height < 100) {
+			/* Min canvas height is 100 (at least to display "No data") */
+			height = 100;
+		}
 		printf(" width=\"%d\" height=\"%d\""
 		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
-		       SVG_T_XSIZE * (hdr_parm->views_per_row),
-		       SET_CANVAS_HEIGHT(flags) ? hdr_parm->graph_nr
-						: SVG_H_YSIZE + SVG_T_YSIZE * (hdr_parm->graph_nr));
+		       SVG_T_XSIZE * (hdr_parm->views_per_row), height);
 		printf("<text x= \"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
