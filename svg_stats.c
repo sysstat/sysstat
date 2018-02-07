@@ -4188,14 +4188,15 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 			spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr]  + i * a->msize);
 			spp = (struct stats_pwr_cpufreq *) ((char *) a->buf[!curr] + i * a->msize);
 
-			if (!spc->cpufreq)
-				/* This CPU is offline: Don't display it */
-				continue;
-
 			/* Should current CPU (including CPU "all") be displayed? */
 			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
 				/* No */
 				continue;
+
+			/*
+			 * Note: Don't skip offline CPU here as it is needed
+			 * to make the graph go though 0.
+			 */
 
 			/* MHz */
 			recappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4219,6 +4220,14 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 				strcpy(item_name, "all");
 			}
 			else {
+				/*
+				 * If the maximum frequency reached by the CPU is 0, then
+				 * the CPU has been offline on the whole period.
+				 * => Don't display it.
+				 */
+				if (*(spmax + i) == 0)
+					continue;
+
 				sprintf(item_name, "%d", i - 1);
 			}
 
