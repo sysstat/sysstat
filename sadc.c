@@ -818,7 +818,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			return;
 		}
 		/* Display error message and exit */
-		handle_invalid_sa_file(ofd, &file_magic, ofile, sz);
+		handle_invalid_sa_file(*ofd, &file_magic, ofile, sz);
 	}
 
 	/* Read file standard header */
@@ -863,7 +863,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 
 		/* Read current activity in list */
 		if (read(*ofd, &file_act[i], FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
-			handle_invalid_sa_file(ofd, &file_magic, ofile, 0);
+			handle_invalid_sa_file(*ofd, &file_magic, ofile, 0);
 		}
 
 		p = get_activity_position(act, file_act[i].id, RESUME_IF_NOT_FOUND);

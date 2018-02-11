@@ -1248,7 +1248,7 @@ void get_file_timestamp_struct
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
 void handle_invalid_sa_file
-	(int *, struct file_magic *, char *, int);
+	(int, struct file_magic *, char *, int);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 int parse_sar_opt

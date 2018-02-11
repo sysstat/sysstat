@@ -1284,7 +1284,7 @@ void display_sa_file_version(FILE *st, struct file_magic *file_magic)
  *		file. In this case, n is set to 0.
  ***************************************************************************
  */
-void handle_invalid_sa_file(int *fd, struct file_magic *file_magic, char *file,
+void handle_invalid_sa_file(int fd, struct file_magic *file_magic, char *file,
 			    int n)
 {
 	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
@@ -1301,7 +1301,7 @@ void handle_invalid_sa_file(int *fd, struct file_magic *file_magic, char *file,
 		}
 	}
 
-	close (*fd);
+	close (fd);
 	exit(3);
 }
 
@@ -1387,7 +1387,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		}
 
 		if (nr_value > NR_MAX) {
-			handle_invalid_sa_file(&ifd, file_magic, dfile, 0);
+			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 
 		if (((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) ||
@@ -1408,7 +1408,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		}
 
 		if (nr_value > act[p]->nr_max) {
-			handle_invalid_sa_file(&ifd, file_magic, dfile, 0);
+			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 		act[p]->nr[curr] = nr_value;
 
@@ -1515,7 +1515,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	    ((file_magic->sysstat_magic != SYSSTAT_MAGIC) && (file_magic->sysstat_magic != SYSSTAT_MAGIC_SWAPPED)) ||
 	    ((file_magic->format_magic != FORMAT_MAGIC) && (file_magic->format_magic != FORMAT_MAGIC_SWAPPED) && !ignore)) {
 		/* Display error message and exit */
-		handle_invalid_sa_file(fd, file_magic, dfile, n);
+		handle_invalid_sa_file(*fd, file_magic, dfile, n);
 	}
 
 	*endian_mismatch = (file_magic->sysstat_magic != SYSSTAT_MAGIC);
@@ -1539,14 +1539,14 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
 		    ((file_magic->header_size < FILE_HEADER_SIZE) && !ignore)) {
 			/* Display error message and exit */
-			handle_invalid_sa_file(fd, file_magic, dfile, n);
+			handle_invalid_sa_file(*fd, file_magic, dfile, n);
 		}
 	}
 	if ((file_magic->sysstat_version > 11) ||
 	    ((file_magic->sysstat_version == 11) && (file_magic->sysstat_patchlevel >= 7))) {
 		/* hdr_types_nr field exists only for sysstat versions 11.7.1 and later */
 		if (MAP_SIZE(file_magic->hdr_types_nr) > file_magic->header_size) {
-			handle_invalid_sa_file(fd, file_magic, dfile, n);
+			handle_invalid_sa_file(*fd, file_magic, dfile, n);
 		}
 	}
 
@@ -1783,7 +1783,7 @@ format_error:
 	if (buffer) {
 		free(buffer);
 	}
-	handle_invalid_sa_file(ifd, file_magic, dfile, 0);
+	handle_invalid_sa_file(*ifd, file_magic, dfile, 0);
 }
 
 /*
@@ -1821,7 +1821,7 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 
 	if ((non_zero && !value) || (value < 0)) {
 		/* Value number cannot be zero or negative */
-		handle_invalid_sa_file(&ifd, file_magic, file, 0);
+		handle_invalid_sa_file(ifd, file_magic, file, 0);
 	}
 
 	return value;
