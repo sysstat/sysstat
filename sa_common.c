@@ -1605,7 +1605,15 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		 */
 		return;
 
-	/* We know now that we have a *compatible* sysstat datafile format */
+	/*
+	 * We know now that we have a *compatible* sysstat datafile format
+	 * (correct FORMAT_MAGIC value), and in this case, we should have
+	 * checked header_size value. Anyway, with a corrupted datafile,
+	 * this may not be the case. So check again.
+	 */
+	if ((file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
+	    (file_magic->header_size > MAX_FILE_HEADER_SIZE))
+		goto format_error;
 
 	/* Allocate buffer for file_header structure */
 	SREALLOC(buffer, char, file_magic->header_size);
