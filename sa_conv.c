@@ -809,7 +809,7 @@ void upgrade_stats_net_dev(struct activity *act[], int p, unsigned int magic,
 			sndc->duplex = '\0'; /* New field */
 		}
 	}
-	else if (magic == ACTIVITY_MAGIC_BASE) {
+	else if (magic == ACTIVITY_MAGIC_BASE + 1) {
 		struct stats_net_dev_8b *sndp;
 
 		for (i = 0; i < act[p]->nr_ini; i++) {
