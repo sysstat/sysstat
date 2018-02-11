@@ -1387,6 +1387,9 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		}
 
 		if (nr_value > NR_MAX) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: Value=%d Max=%d\n", __FUNCTION__, nr_value, NR_MAX);
+#endif
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 
@@ -1408,6 +1411,10 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		}
 
 		if (nr_value > act[p]->nr_max) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: %s: Value=%d Max=%d\n",
+				__FUNCTION__, act[p]->name, nr_value, act[p]->nr_max);
+#endif
 			handle_invalid_sa_file(ifd, file_magic, dfile, 0);
 		}
 		act[p]->nr[curr] = nr_value;
@@ -1514,6 +1521,10 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	if ((n != FILE_MAGIC_SIZE) ||
 	    ((file_magic->sysstat_magic != SYSSTAT_MAGIC) && (file_magic->sysstat_magic != SYSSTAT_MAGIC_SWAPPED)) ||
 	    ((file_magic->format_magic != FORMAT_MAGIC) && (file_magic->format_magic != FORMAT_MAGIC_SWAPPED) && !ignore)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Bytes read=%d sysstat_magic=%x format_magic=%x\n",
+			__FUNCTION__, n, file_magic->sysstat_magic, file_magic->format_magic);
+#endif
 		/* Display error message and exit */
 		handle_invalid_sa_file(*fd, file_magic, dfile, n);
 	}
@@ -1538,6 +1549,10 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		if ((file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
 		    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
 		    ((file_magic->header_size < FILE_HEADER_SIZE) && !ignore)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: header_size=%u\n",
+				__FUNCTION__, file_magic->header_size);
+#endif
 			/* Display error message and exit */
 			handle_invalid_sa_file(*fd, file_magic, dfile, n);
 		}
@@ -1546,6 +1561,10 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	    ((file_magic->sysstat_version == 11) && (file_magic->sysstat_patchlevel >= 7))) {
 		/* hdr_types_nr field exists only for sysstat versions 11.7.1 and later */
 		if (MAP_SIZE(file_magic->hdr_types_nr) > file_magic->header_size) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: map_size=%u header_size=%u\n",
+				__FUNCTION__, MAP_SIZE(file_magic->hdr_types_nr), file_magic->header_size);
+#endif
 			handle_invalid_sa_file(*fd, file_magic, dfile, n);
 		}
 	}
@@ -1612,8 +1631,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	 * this may not be the case. So check again.
 	 */
 	if ((file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
-	    (file_magic->header_size > MAX_FILE_HEADER_SIZE))
+	    (file_magic->header_size > MAX_FILE_HEADER_SIZE)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: header_size=%u\n",
+			__FUNCTION__, file_magic->header_size);
+#endif
 		goto format_error;
+	}
 
 	/* Allocate buffer for file_header structure */
 	SREALLOC(buffer, char, file_magic->header_size);
@@ -1648,9 +1672,15 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	    (file_hdr->act_size > MAX_FILE_ACTIVITY_SIZE) ||
 	    (file_hdr->rec_size > MAX_RECORD_HEADER_SIZE) ||
 	    (MAP_SIZE(file_hdr->act_types_nr) > file_hdr->act_size) ||
-	    (MAP_SIZE(file_hdr->rec_types_nr) > file_hdr->rec_size))
+	    (MAP_SIZE(file_hdr->rec_types_nr) > file_hdr->rec_size)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: sa_act_nr=%d act_size=%u rec_size=%u map_size(act)=%u map_size(rec)=%u\n",
+			__FUNCTION__, file_hdr->sa_act_nr, file_hdr->act_size, file_hdr->rec_size,
+			MAP_SIZE(file_hdr->act_types_nr), MAP_SIZE(file_hdr->rec_types_nr));
+#endif
 		/* Maybe a "false positive" sysstat datafile? */
 		goto format_error;
+	}
 
 	SREALLOC(buffer, char, file_hdr->act_size);
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
@@ -1687,8 +1717,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		 * activities which have each a specific max value.
 		 */
 		if ((fal->nr < 1) || (fal->nr2 < 1) ||
-		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX))
+		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: id=%d nr=%d nr2=%d\n",
+				__FUNCTION__, fal->id, fal->nr, fal->nr2);
+#endif
 			goto format_error;
+		}
 
 		if ((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0)
 			/* Unknown activity */
@@ -1708,8 +1743,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		}
 
 		/* Check max value for known activities */
-		if (fal->nr > act[p]->nr_max)
+		if (fal->nr > act[p]->nr_max) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: id=%d nr=%d nr_max=%d\n",
+				__FUNCTION__, fal->id, fal->nr, act[p]->nr_max);
+#endif
 			goto format_error;
+		}
 
 		/*
 		 * Number of fields of each type ("long long", or "long"
@@ -1724,11 +1764,22 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		     ||
 		     ((fal->types_nr[0] <= act[p]->gtypes_nr[0]) &&
 		     (fal->types_nr[1] <= act[p]->gtypes_nr[1]) &&
-		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))) && !ignore)
+		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))) && !ignore) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: id=%d file=%d,%d,%d activity=%d,%d,%d\n",
+				__FUNCTION__, fal->id, fal->types_nr[0], fal->types_nr[1], fal->types_nr[2],
+				act[p]->gtypes_nr[0], act[p]->gtypes_nr[1], act[p]->gtypes_nr[2]);
+#endif
 			goto format_error;
+		}
 
-		if (MAP_SIZE(fal->types_nr) > fal->size)
+		if (MAP_SIZE(fal->types_nr) > fal->size) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: id=%d size=%u map_size=%u\n",
+			__FUNCTION__, fal->id, fal->size, MAP_SIZE(fal->types_nr));
+#endif
 			goto format_error;
+		}
 
 		for (k = 0; k < 3; k++) {
 			act[p]->ftypes_nr[k] = fal->types_nr[k];
@@ -1828,6 +1879,10 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 	}
 
 	if ((non_zero && !value) || (value < 0)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Value=%d\n",
+			__FUNCTION__, value);
+#endif
 		/* Value number cannot be zero or negative */
 		handle_invalid_sa_file(ifd, file_magic, file, 0);
 	}

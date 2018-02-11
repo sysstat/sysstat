@@ -817,13 +817,23 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			create_sa_file(ofd, ofile);
 			return;
 		}
+#ifdef DEBUG
+		fprintf(stderr, "%s: Size read=%ld sysstat_magic=%x format_magic=%x header_size=%u header=%d,%d,%d\n",
+			__FUNCTION__, sz, file_magic.sysstat_magic, file_magic.format_magic, file_magic.header_size,
+			file_magic.hdr_types_nr[0], file_magic.hdr_types_nr[1], file_magic.hdr_types_nr[2]);
+#endif
 		/* Display error message and exit */
 		handle_invalid_sa_file(*ofd, &file_magic, ofile, sz);
 	}
 
 	/* Read file standard header */
-	if ((sz = read(*ofd, &file_hdr, FILE_HEADER_SIZE)) != FILE_HEADER_SIZE)
+	if ((sz = read(*ofd, &file_hdr, FILE_HEADER_SIZE)) != FILE_HEADER_SIZE) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Size read=%ld\n",
+			__FUNCTION__, sz);
+#endif
 		goto append_error;
+	}
 
 	/*
 	 * If we are using the standard daily data file (file specified
@@ -841,12 +851,17 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	}
 
 	/* OK: It's a true system activity file */
-	if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT))
+	if (!file_hdr.sa_act_nr || (file_hdr.sa_act_nr > NR_ACT)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: sa_act_nr=%d\n",
+			__FUNCTION__, file_hdr.sa_act_nr);
+#endif
 		/*
 		 * No activities at all or at least one unknown activity:
 		 * Cannot append data to such a file.
 		 */
 		goto append_error;
+	}
 
 	/* Other sanity checks ("strict writing" rule) */
 	if ((file_hdr.act_size != FILE_ACTIVITY_SIZE) ||
@@ -856,52 +871,93 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	    (file_hdr.rec_size != RECORD_HEADER_SIZE) ||
 	    (file_hdr.rec_types_nr[0] != RECORD_HEADER_ULL_NR) ||
 	    (file_hdr.rec_types_nr[1] != RECORD_HEADER_UL_NR) ||
-	    (file_hdr.rec_types_nr[2] != RECORD_HEADER_U_NR))
+	    (file_hdr.rec_types_nr[2] != RECORD_HEADER_U_NR)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: act_size=%u act=%d,%d,%d rec_size=%u rec=%d,%d,%d\n",
+			__FUNCTION__, file_hdr.act_size,
+			file_hdr.act_types_nr[0], file_hdr.act_types_nr[1], file_hdr.act_types_nr[2],
+			file_hdr.rec_size,
+			file_hdr.rec_types_nr[0], file_hdr.rec_types_nr[1], file_hdr.rec_types_nr[2]);
+#endif
 		goto append_error;
+	}
 
 	for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
 		/* Read current activity in list */
 		if (read(*ofd, &file_act[i], FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: Wrong size for file_activity\n",
+				__FUNCTION__);
+#endif
 			handle_invalid_sa_file(*ofd, &file_magic, ofile, 0);
 		}
 
 		p = get_activity_position(act, file_act[i].id, RESUME_IF_NOT_FOUND);
 
 		if ((p < 0) || (act[p]->fsize != file_act[i].size) ||
-		    (act[p]->magic != file_act[i].magic))
+		    (act[p]->magic != file_act[i].magic)) {
+#ifdef DEBUG
+			if (p < 0) {
+				fprintf(stderr, "%s: p=%d\n", __FUNCTION__, p);
+			}
+			else {
+				fprintf(stderr, "%s: %s: size=%d/%d magic=%x/%x\n",
+					__FUNCTION__, act[p]->name, act[p]->fsize, file_act[i].size,
+					act[p]->magic, file_act[i].magic);
+			}
+#endif
 			/*
 			 * Unknown activity in list or item size has changed or
 			 * unknown activity format: Cannot append data to such a file
 			 * ("strict writing" rule).
 			 */
 			goto append_error;
+		}
 
 		if ((file_act[i].nr <= 0) || (file_act[i].nr2 <= 0) ||
 		    (file_act[i].nr > act[p]->nr_max) ||
-		    (file_act[i].nr2 > NR2_MAX))
+		    (file_act[i].nr2 > NR2_MAX)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: %s: nr=%d nr_max=%d nr2=%d\n",
+				__FUNCTION__, act[p]->name, file_act[i].nr,
+				act[p]->nr_max, file_act[i].nr2);
+#endif
 			/*
 			 * Number of items and subitems should never be zero (or negative)
 			 * or greater than their upper limit.
 			 */
 			goto append_error;
+		}
 
 		if ((file_act[i].types_nr[0] != act[p]->gtypes_nr[0]) ||
 		    (file_act[i].types_nr[1] != act[p]->gtypes_nr[1]) ||
-		    (file_act[i].types_nr[2] != act[p]->gtypes_nr[2]))
+		    (file_act[i].types_nr[2] != act[p]->gtypes_nr[2])) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: %s: types=%d,%d,%d/%d,%d,%d\n",
+				__FUNCTION__, act[p]->name,
+				file_act[i].types_nr[0], file_act[i].types_nr[1], file_act[i].types_nr[2],
+				act[p]->gtypes_nr[0], act[p]->gtypes_nr[1], act[p]->gtypes_nr[2]);
+#endif
 			/*
 			 * Composition of structure containing statsitics cannot
 			 * be different from that known by current version.
 			 */
 			goto append_error;
+		}
 
 		if ((file_act[i].has_nr && (act[p]->f_count_index < 0)) ||
-		    (!file_act[i].has_nr && (act[p]->f_count_index >=0)))
+		    (!file_act[i].has_nr && (act[p]->f_count_index >=0))) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: %s: has_nr=%d count_index=%d\n",
+				__FUNCTION__, act[p]->name, file_act[i].has_nr, act[p]->f_count_index);
+#endif
 			/*
 			 * For every activity whose number of items is not a constant,
 			 * a value giving the number of structures to read should exist.
 			 */
 			goto append_error;
+		}
 	}
 
 	/*

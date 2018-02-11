@@ -658,6 +658,9 @@ void read_sadc_stat_bunch(int curr)
 		if (sigint_caught)
 			return;
 
+#ifdef DEBUG
+		fprintf(stderr, "%s: Record header\n", __FUNCTION__);
+#endif
 		print_read_error(END_OF_DATA_UNEXPECTED);
 	}
 
@@ -669,9 +672,16 @@ void read_sadc_stat_bunch(int curr)
 
 		if (HAS_COUNT_FUNCTION(act[p]->options)) {
 			if (sa_read(&(act[p]->nr[curr]), sizeof(__nr_t))) {
+#ifdef DEBUG
+				fprintf(stderr, "%s: Nb of items\n", __FUNCTION__);
+#endif
 				print_read_error(END_OF_DATA_UNEXPECTED);
 			}
 			if ((act[p]->nr[curr] > act[p]->nr_max) || (act[p]->nr[curr] < 0)) {
+#ifdef DEBUG
+				fprintf(stderr, "%s: %s: nr=%d nr_max=%d\n",
+					__FUNCTION__, act[p]->name, act[p]->nr[curr], act[p]->nr_max);
+#endif
 				print_read_error(INCONSISTENT_INPUT_DATA);
 			}
 			if (act[p]->nr[curr] > act[p]->nr_allocated) {
@@ -691,6 +701,9 @@ void read_sadc_stat_bunch(int curr)
                 }
 		if (sa_read(act[p]->buf[curr],
 			    (size_t) act[p]->fsize * (size_t) act[p]->nr[curr] * (size_t) act[p]->nr2)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: Statistics\n", __FUNCTION__);
+#endif
 			print_read_error(END_OF_DATA_UNEXPECTED);
 		}
 	}
@@ -857,6 +870,10 @@ void read_header_data(void)
 				_("Using a wrong data collector from a different sysstat version\n"));
 		}
 
+#ifdef DEBUG
+		fprintf(stderr, "%s: sysstat_magic=%x format_magic=%x version=%s\n",
+			__FUNCTION__, file_magic.sysstat_magic, file_magic.format_magic, version);
+#endif
 		print_read_error(INCONSISTENT_INPUT_DATA);
 	}
 
@@ -867,16 +884,26 @@ void read_header_data(void)
 	 * but also VERSION above) and thus the size of file_header is FILE_HEADER_SIZE.
 	 */
 	if (sa_read(&file_hdr, FILE_HEADER_SIZE)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: File header\n", __FUNCTION__);
+#endif
 		print_read_error(END_OF_DATA_UNEXPECTED);
 	}
 
 	/* All activities are not necessarily selected, but NR_ACT is a max */
 	if (file_hdr.sa_act_nr > NR_ACT) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: sa_act_nr=%d\n", __FUNCTION__, file_hdr.sa_act_nr);
+#endif
 		print_read_error(INCONSISTENT_INPUT_DATA);
 	}
 
 	if ((file_hdr.act_size != FILE_ACTIVITY_SIZE) ||
 	    (file_hdr.rec_size != RECORD_HEADER_SIZE)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: act_size=%u/%lu rec_size=%u/%lu\n", __FUNCTION__,
+			file_hdr.act_size, FILE_ACTIVITY_SIZE, file_hdr.rec_size, RECORD_HEADER_SIZE);
+#endif
 		print_read_error(INCONSISTENT_INPUT_DATA);
 	}
 
@@ -884,6 +911,9 @@ void read_header_data(void)
 	for (i = 0; i < file_hdr.sa_act_nr; i++) {
 
 		if (sa_read(&file_act, FILE_ACTIVITY_SIZE)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: File activity (%d)\n", __FUNCTION__, i);
+#endif
 			print_read_error(END_OF_DATA_UNEXPECTED);
 		}
 
@@ -896,6 +926,18 @@ void read_header_data(void)
 			    || (file_act.nr <= 0)
 			    || (file_act.nr2 <= 0)
 			    || (act[p]->magic != file_act.magic)) {
+#ifdef DEBUG
+			if (p < 0) {
+				fprintf(stderr, "%s: p=%d\n", __FUNCTION__, p);
+			}
+			else {
+				fprintf(stderr, "%s: %s: size=%d/%d magic=%x/%x nr=%d nr2=%d types=%d,%d,%d/%d,%d,%d\n",
+					__FUNCTION__, act[p]->name, act[p]->fsize, file_act.size,
+					act[p]->magic, file_act.magic, file_act.nr, file_act.nr2,
+					act[p]->gtypes_nr[0], act[p]->gtypes_nr[1], act[p]->gtypes_nr[2],
+					file_act.types_nr[0], file_act.types_nr[1],file_act.types_nr[2]);
+			}
+#endif
 			/* Remember that we are reading data from sadc and not from a file... */
 			print_read_error(INCONSISTENT_INPUT_DATA);
 		}
@@ -1546,7 +1588,14 @@ int main(int argc, char **argv)
 		args[args_idx] = NULL;
 
 		/* Call now the data collector */
+#ifdef DEBUG
+		fprintf(stderr, "%s: 1.sadc: %s\n", __FUNCTION__, SADC_PATH);
+#endif
+
 		execv(SADC_PATH, args);
+#ifdef DEBUG
+		fprintf(stderr, "%s: 2.sadc: %s\n", __FUNCTION__, SADC);
+#endif
 		execvp(SADC, args);
 		/*
 		 * Note: Don't use execl/execlp since we don't have a fixed number of
