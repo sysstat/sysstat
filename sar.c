@@ -569,9 +569,9 @@ void write_stats_startup(int curr)
  * 1 if end of file has been reached, 0 otherwise.
  ***************************************************************************
  */
-int sa_read(void *buffer, int size)
+int sa_read(void *buffer, size_t size)
 {
-	int n;
+	ssize_t n;
 
 	while (size) {
 
@@ -689,7 +689,8 @@ void read_sadc_stat_bunch(int curr)
                                    (size_t) act[p]->fsize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
                         }
                 }
-		if (sa_read(act[p]->buf[curr], act[p]->fsize * act[p]->nr[curr] * act[p]->nr2)) {
+		if (sa_read(act[p]->buf[curr],
+			    (size_t) act[p]->fsize * (size_t) act[p]->nr[curr] * (size_t) act[p]->nr2)) {
 			print_read_error(END_OF_DATA_UNEXPECTED);
 		}
 	}

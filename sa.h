@@ -1289,7 +1289,7 @@ void remap_struct
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
-	(int, void *, int, int);
+	(int, void *, size_t, int);
 int sa_get_record_timestamp_struct
 	(unsigned int, struct record_header *, struct tm *, struct tm *);
 int sa_open_read_magic

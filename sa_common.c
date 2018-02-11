@@ -1181,9 +1181,9 @@ void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
  * 1 if EOF has been reached, 0 otherwise.
  ***************************************************************************
  */
-int sa_fread(int ifd, void *buffer, int size, int mode)
+int sa_fread(int ifd, void *buffer, size_t size, int mode)
 {
-	int n;
+	ssize_t n;
 
 	if ((n = read(ifd, buffer, size)) < 0) {
 		fprintf(stderr, _("Error while reading system activity file: %s\n"),
@@ -1229,7 +1229,7 @@ int sa_fread(int ifd, void *buffer, int size, int mode)
 int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		    struct file_header *file_hdr, int arch_64, int endian_mismatch)
 {
-	if (sa_fread(ifd, buffer, file_hdr->rec_size, SOFT_SIZE))
+	if (sa_fread(ifd, buffer, (size_t) file_hdr->rec_size, SOFT_SIZE))
 		/* End of sa data file */
 		return 1;
 
@@ -1427,7 +1427,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
 				sa_fread(ifd, (char *) act[p]->buf[curr] + j * act[p]->msize,
-					 act[p]->fsize, HARD_SIZE);
+					 (size_t) act[p]->fsize, HARD_SIZE);
 			}
 		}
 		else if (nr_value > 0) {
@@ -1435,7 +1435,8 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 * Note: If msize was smaller than fsize,
 			 * then it has been set to fsize in check_file_actlst().
 			 */
-			sa_fread(ifd, act[p]->buf[curr], act[p]->fsize * nr_value * act[p]->nr2, HARD_SIZE);
+			sa_fread(ifd, act[p]->buf[curr],
+				 (size_t) act[p]->fsize * (size_t) nr_value * (size_t) act[p]->nr2, HARD_SIZE);
 		}
 		else {
 			/* nr_value == 0: Nothing to read */
@@ -1603,7 +1604,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	SREALLOC(buffer, char, file_magic->header_size);
 
 	/* Read sa data file standard header and allocate activity list */
-	sa_fread(*ifd, buffer, file_magic->header_size, HARD_SIZE);
+	sa_fread(*ifd, buffer, (size_t) file_magic->header_size, HARD_SIZE);
 	/*
 	 * Data file header size (file_magic->header_size) may be greater or
 	 * smaller than FILE_HEADER_SIZE. Remap the fields of the file header
@@ -1645,7 +1646,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	for (i = 0; i < file_hdr->sa_act_nr; i++, fal++) {
 
 		/* Read current file_activity structure from file */
-		sa_fread(*ifd, buffer, file_hdr->act_size, HARD_SIZE);
+		sa_fread(*ifd, buffer, (size_t) file_hdr->act_size, HARD_SIZE);
 		/*
 		* Data file_activity size (file_hdr->act_size) may be greater or
 		* smaller than FILE_ACTIVITY_SIZE. Remap the fields of the file's structure

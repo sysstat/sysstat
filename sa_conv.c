@@ -287,7 +287,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 	n = (previous_format == FORMAT_MAGIC_2171 ? FILE_HEADER_SIZE_2171
 						  : hdr_size);
 	SREALLOC(buffer, char, n);
-	sa_fread(fd, buffer, n, HARD_SIZE);
+	sa_fread(fd, buffer, (size_t) n, HARD_SIZE);
 
 	/* Upgrade file_header structure */
 	upgrade_file_header(buffer, file_hdr, previous_format,
@@ -1636,12 +1636,14 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 				for (k = 0; k < act[p]->nr2; k++) {
 					sa_fread(fd,
 						 (char *) act[p]->buf[0] + (j * act[p]->nr2 + k) * act[p]->msize,
-						 ofal->size, HARD_SIZE);
+						 (size_t) ofal->size, HARD_SIZE);
 				}
 			}
 		}
 		else if (act[p]->nr_ini > 0) {
-			sa_fread(fd, act[p]->buf[0], ofal->size * act[p]->nr_ini * act[p]->nr2, HARD_SIZE);
+			sa_fread(fd, act[p]->buf[0],
+				 (size_t) ofal->size * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2,
+				 HARD_SIZE);
 		}
 
 		nr_struct = act[p]->nr_ini;
