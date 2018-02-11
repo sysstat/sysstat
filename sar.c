@@ -671,7 +671,7 @@ void read_sadc_stat_bunch(int curr)
 			if (sa_read(&(act[p]->nr[curr]), sizeof(__nr_t))) {
 				print_read_error(END_OF_DATA_UNEXPECTED);
 			}
-			if (act[p]->nr[curr] > act[p]->nr_max) {
+			if ((act[p]->nr[curr] > act[p]->nr_max) || (act[p]->nr[curr] < 0)) {
 				print_read_error(INCONSISTENT_INPUT_DATA);
 			}
 			if (act[p]->nr[curr] > act[p]->nr_allocated) {
