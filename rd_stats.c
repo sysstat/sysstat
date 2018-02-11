@@ -207,7 +207,7 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc)
 				i = strcspn(line + pos + 1, " ");
 				pos += i + 1;
 			}
-			while ((i > 0) && (pos < sizeof(line)));
+			while ((i > 0) && (pos < (sizeof(line) - 1)));
 
 			break;
 		}
