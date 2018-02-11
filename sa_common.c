@@ -1386,6 +1386,10 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			nr_value = fal->nr;
 		}
 
+		if (nr_value > NR_MAX) {
+			handle_invalid_sa_file(&ifd, file_magic, dfile, 0);
+		}
+
 		if (((p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND)) < 0) ||
 		    (act[p]->magic != fal->magic)) {
 			/*
@@ -1403,6 +1407,9 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			continue;
 		}
 
+		if (nr_value > act[p]->nr_max) {
+			handle_invalid_sa_file(&ifd, file_magic, dfile, 0);
+		}
 		act[p]->nr[curr] = nr_value;
 
 		/* Reallocate buffers if needed */
@@ -1812,8 +1819,8 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 		swap_struct(nr_types_nr, &value, arch_64);
 	}
 
-	if (non_zero && !value) {
-		/* Value number cannot be zero */
+	if ((non_zero && !value) || (value < 0)) {
+		/* Value number cannot be zero or negative */
 		handle_invalid_sa_file(&ifd, file_magic, file, 0);
 	}
 
