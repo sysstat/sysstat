@@ -1,5 +1,37 @@
 Changes:
 
+2018/02/12: Version 11.7.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Rewrite function used to convert an old binary data file to
+	  the up-to-date format.
+	* sar: Display all items for USB and filesystems activities in the
+	  summary ending the report.
+	* sar: Don't read statistics twice when displaying average stats since
+	  system startup.
+	* sar: Update magic number for certain activities structures (should have
+	  been done in 11.7.1).
+	* sar: Display reports name in help message (sar --help).
+	* sadc: Enable the user to select which activities will be collected
+	  by their name.
+	* sar/sadc: Add DEBUG code.
+	* sadf: RAW: Enhance output.
+	* sadf: RAW: Rename "showhints" option to "debug".
+	* sadf: sadf -H now displays more details on file.
+	* sadf: SVG: Set minimum canvas height to 100 points.
+	* sadf: SVG: Display grid and graduations on the whole width of the graph
+	  [11.6.3] [11.4.9].
+	* sadf: SVG: Don't display graphs for offline CPU.
+	* iostat, cifsiostat: Display device name at the end of the line
+	  when option -h is used.
+	* iostat: Refresh device list properly [11.6.3] [11.4.9].
+	* Travis CI: Add new tests.
+	* Increase maximum number of interrupts that can be processed by sysstat
+	  commands (NR_IRQS).
+	* FAQ updated [11.6.3] [11.4.9].
+	* sadf and sar manual pages updated.
+	* NLS updated: Various translations updated.
+	* README file updated.
+	* Code cleaned and cosmetic fixes.
+
 2018/01/12: Version 11.7.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: New binary data file format, which is now more flexible
 	  and takes much less space on disk.

@@ -1,6 +1,6 @@
 /*
  * rndr_stats.h: Include file used to display system statistics in selected format.
- * (C) 1999-2017 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2018 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _RNDR_STATS_H
