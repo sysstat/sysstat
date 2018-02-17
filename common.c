@@ -168,6 +168,113 @@ time_t get_time(struct tm *rectime, int d_off)
 		return get_localtime(rectime, d_off);
 }
 
+#ifdef USE_NLS
+/*
+ ***************************************************************************
+ * Init National Language Support.
+ ***************************************************************************
+ */
+void init_nls(void)
+{
+	setlocale(LC_MESSAGES, "");
+	setlocale(LC_CTYPE, "");
+	setlocale(LC_TIME, "");
+	setlocale(LC_NUMERIC, "");
+
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+}
+#endif
+
+/*
+ ***************************************************************************
+ * Test whether given name is a device or a partition, using sysfs.
+ * This is more straightforward that using ioc_iswhole() function from
+ * ioconf.c which should be used only with kernels that don't have sysfs.
+ *
+ * IN:
+ * @name		Device or partition name.
+ * @allow_virtual	TRUE if virtual devices are also accepted.
+ *			The device is assumed to be virtual if no
+ *			/sys/block/<device>/device link exists.
+ *
+ * RETURNS:
+ * TRUE if @name is not a partition.
+ ***************************************************************************
+ */
+int is_device(char *name, int allow_virtual)
+{
+	char syspath[PATH_MAX];
+	char *slash;
+
+	/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
+	while ((slash = strchr(name, '/'))) {
+		*slash = '!';
+	}
+	snprintf(syspath, sizeof(syspath), "%s/%s%s", SYSFS_BLOCK, name,
+		 allow_virtual ? "" : "/device");
+
+	return !(access(syspath, F_OK));
+}
+
+/*
+ ***************************************************************************
+ * Get page shift in kB.
+ ***************************************************************************
+ */
+void get_kb_shift(void)
+{
+	int shift = 0;
+	long size;
+
+	/* One can also use getpagesize() to get the size of a page */
+	if ((size = sysconf(_SC_PAGESIZE)) == -1) {
+		perror("sysconf");
+	}
+
+	size >>= 10;	/* Assume that a page has a minimum size of 1 kB */
+
+	while (size > 1) {
+		shift++;
+		size >>= 1;
+	}
+
+	kb_shift = (unsigned int) shift;
+}
+
+/*
+ ***************************************************************************
+ * Get number of clock ticks per second.
+ ***************************************************************************
+ */
+void get_HZ(void)
+{
+	long ticks;
+
+	if ((ticks = sysconf(_SC_CLK_TCK)) == -1) {
+		perror("sysconf");
+	}
+
+	hz = (unsigned long) ticks;
+}
+
+/*
+ ***************************************************************************
+ * Unhandled situation: Panic and exit. Should never happen.
+ *
+ * IN:
+ * @function	Function name where situation occured.
+ * @error_code	Error code.
+ ***************************************************************************
+ */
+void sysstat_panic(const char *function, int error_code)
+{
+	fprintf(stderr, "sysstat: %s[%d]: Internal error...\n",
+		function, error_code);
+	exit(1);
+}
+
+#ifndef SOURCE_SADC
 /*
  ***************************************************************************
  * Count number of comma-separated values in arguments list. For example,
@@ -493,24 +600,6 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 	return rc;
 }
 
-#ifdef USE_NLS
-/*
- ***************************************************************************
- * Init National Language Support.
- ***************************************************************************
- */
-void init_nls(void)
-{
-	setlocale(LC_MESSAGES, "");
-	setlocale(LC_CTYPE, "");
-	setlocale(LC_TIME, "");
-	setlocale(LC_NUMERIC, "");
-
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-}
-#endif
-
 /*
  ***************************************************************************
  * Get number of rows for current window.
@@ -574,78 +663,6 @@ char *device_name(char *name)
 
 /*
  ***************************************************************************
- * Test whether given name is a device or a partition, using sysfs.
- * This is more straightforward that using ioc_iswhole() function from
- * ioconf.c which should be used only with kernels that don't have sysfs.
- *
- * IN:
- * @name		Device or partition name.
- * @allow_virtual	TRUE if virtual devices are also accepted.
- *			The device is assumed to be virtual if no
- *			/sys/block/<device>/device link exists.
- *
- * RETURNS:
- * TRUE if @name is not a partition.
- ***************************************************************************
- */
-int is_device(char *name, int allow_virtual)
-{
-	char syspath[PATH_MAX];
-	char *slash;
-
-	/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
-	while ((slash = strchr(name, '/'))) {
-		*slash = '!';
-	}
-	snprintf(syspath, sizeof(syspath), "%s/%s%s", SYSFS_BLOCK, name,
-		 allow_virtual ? "" : "/device");
-
-	return !(access(syspath, F_OK));
-}
-
-/*
- ***************************************************************************
- * Get page shift in kB.
- ***************************************************************************
- */
-void get_kb_shift(void)
-{
-	int shift = 0;
-	long size;
-
-	/* One can also use getpagesize() to get the size of a page */
-	if ((size = sysconf(_SC_PAGESIZE)) == -1) {
-		perror("sysconf");
-	}
-
-	size >>= 10;	/* Assume that a page has a minimum size of 1 kB */
-
-	while (size > 1) {
-		shift++;
-		size >>= 1;
-	}
-
-	kb_shift = (unsigned int) shift;
-}
-
-/*
- ***************************************************************************
- * Get number of clock ticks per second.
- ***************************************************************************
- */
-void get_HZ(void)
-{
-	long ticks;
-
-	if ((ticks = sysconf(_SC_CLK_TCK)) == -1) {
-		perror("sysconf");
-	}
-
-	hz = (unsigned long) ticks;
-}
-
-/*
- ***************************************************************************
  * Workaround for CPU counters read from /proc/stat: Dyn-tick kernels
  * have a race issue that can make those counters go backward.
  ***************************************************************************
@@ -684,22 +701,6 @@ unsigned long long get_interval(unsigned long long prev_uptime,
 	}
 
 	return itv;
-}
-
-/*
- ***************************************************************************
- * Unhandled situation: Panic and exit. Should never happen.
- *
- * IN:
- * @function	Function name where situation occured.
- * @error_code	Error code.
- ***************************************************************************
- */
-void sysstat_panic(const char *function, int error_code)
-{
-	fprintf(stderr, "sysstat: %s[%d]: Internal error...\n",
-		function, error_code);
-	exit(1);
 }
 
 /*
@@ -1403,3 +1404,4 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 
 	return 0;
 }
+#endif /* SOURCE_SADC undefined */

@@ -1208,12 +1208,26 @@ __read_funct_t wrap_read_softnet
 	(struct activity *);
 
 /* Other functions */
+int check_alt_sa_dir
+	(char *, int, int);
+void enum_version_nr
+	(struct file_magic *);
+int get_activity_nr
+	(struct activity * [], unsigned int, int);
+int get_activity_position
+	(struct activity * [], unsigned int, int);
+void set_default_file
+	(char *, int, int);
+void handle_invalid_sa_file
+	(int, struct file_magic *, char *, int);
+void print_collect_error
+	(void);
+
+#ifndef SOURCE_SADC
 void allocate_bitmaps
 	(struct activity * []);
 void allocate_structures
 	(struct activity * []);
-int check_alt_sa_dir
-	(char *, int, int);
 int check_disk_reg
 	(struct activity *, int, int, int);
 void check_file_actlst
@@ -1231,24 +1245,16 @@ int datecmp
 	(struct tm *, struct tstamp *);
 void display_sa_file_version
 	(FILE *, struct file_magic *);
-void enum_version_nr
-	(struct file_magic *);
 void free_bitmaps
 	(struct activity * []);
 void free_structures
 	(struct activity * []);
-int get_activity_nr
-	(struct activity * [], unsigned int, int);
-int get_activity_position
-	(struct activity * [], unsigned int, int);
 char *get_devname
 	(unsigned int, unsigned int, int);
 void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
-void handle_invalid_sa_file
-	(int, struct file_magic *, char *, int);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 int parse_sar_opt
@@ -1263,8 +1269,6 @@ int parse_sar_n_opt
 	(char * [], int *, struct activity * []);
 int parse_timestamp
 	(char * [], int *, struct tstamp *, const char *);
-void print_collect_error
-	(void);
 void print_report_hdr
 	(unsigned int, struct tm *, struct file_header *);
 void print_sar_comment
@@ -1300,13 +1304,11 @@ void select_default_activity
 	(struct activity * []);
 void set_bitmap
 	(unsigned char [], unsigned char, unsigned int);
-void set_default_file
-	(char *, int, int);
 void set_hdr_rectime
 	(unsigned int, struct tm *, struct file_header *);
 void set_record_timestamp_string
 	(unsigned int, struct record_header *, char *, char *, int, struct tm *);
 void swap_struct
 	(unsigned int [], void *, int);
-
+#endif /* SOURCE_SADC undefined */
 #endif  /* _SA_H */

@@ -230,7 +230,24 @@ struct ext_disk_stats {
  * Functions prototypes
  ***************************************************************************
  */
+void print_version
+	(void);
+void get_HZ
+	(void);
+void get_kb_shift
+	(void);
+time_t get_localtime
+	(struct tm *, int);
+time_t get_time
+	(struct tm *, int);
+void init_nls
+	(void);
+int is_device
+	(char *, int);
+void sysstat_panic
+	(const char *, int);
 
+#ifndef SOURCE_SADC
 int count_bits
 	(void *, int);
 int count_csvalues
@@ -249,18 +266,10 @@ void cprintf_x
 	(int, int, ...);
 char *device_name
 	(char *);
-void get_HZ
-	(void);
 unsigned int get_devmap_major
 	(void);
 unsigned long long get_interval
 	(unsigned long long, unsigned long long);
-void get_kb_shift
-	(void);
-time_t get_localtime
-	(struct tm *, int);
-time_t get_time
-	(struct tm *, int);
 char *get_persistent_name_from_pretty
 	(char *);
 char *get_persistent_type_dir
@@ -273,10 +282,6 @@ int get_win_height
 	(void);
 void init_colors
 	(void);
-void init_nls
-	(void);
-int is_device
-	(char *, int);
 double ll_sp_value
 	(unsigned long long, unsigned long long, unsigned long long);
 int is_iso_time_fmt
@@ -285,17 +290,14 @@ int parse_values
 	(char *, unsigned char[], int, const char *);
 int print_gal_header
 	(struct tm *, char *, char *, char *, char *, int, int);
-void print_version
-	(void);
 int set_report_date
 	(struct tm *, char[], int);
 char *strtolower
 	(char *);
-void sysstat_panic
-	(const char *, int);
 void xprintf
 	(int, const char *, ...);
 void xprintf0
 	(int, const char *, ...);
 
+#endif /* SOURCE_SADC undefined */
 #endif  /* _COMMON_H */

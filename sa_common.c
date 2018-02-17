@@ -55,6 +55,338 @@ unsigned int nr_types_nr[]  = {0, 0, 1};
 
 /*
  ***************************************************************************
+ * Look for activity in array.
+ *
+ * IN:
+ * @act		Array of activities.
+ * @act_flag	Activity flag to look for.
+ * @stop	TRUE if sysstat should exit when activity is not found.
+ *
+ * RETURNS:
+ * Position of activity in array, or -1 if not found (this may happen when
+ * reading data from a system activity file created by another version of
+ * sysstat).
+ ***************************************************************************
+ */
+int get_activity_position(struct activity *act[], unsigned int act_flag, int stop)
+{
+	int i;
+
+	for (i = 0; i < NR_ACT; i++) {
+		if (act[i]->id == act_flag)
+			return i;
+	}
+
+	if (stop) {
+		PANIC((int) act_flag);
+	}
+
+	return -1;
+}
+
+/*
+ ***************************************************************************
+ * Count number of activities with given option.
+ *
+ * IN:
+ * @act			Array of activities.
+ * @option		Option that activities should have to be counted
+ *			(eg. AO_COLLECTED...)
+ * @count_outputs	TRUE if each output should be counted for activities with
+ * 			multiple outputs.
+ *
+ * RETURNS:
+ * Number of selected activities
+ ***************************************************************************
+ */
+int get_activity_nr(struct activity *act[], unsigned int option, int count_outputs)
+{
+	int i, n = 0;
+	unsigned int msk;
+
+	for (i = 0; i < NR_ACT; i++) {
+		if ((act[i]->options & option) == option) {
+
+			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && count_outputs) {
+				for (msk = 1; msk < 0x100; msk <<= 1) {
+					if ((act[i]->opt_flags & 0xff) & msk) {
+						n++;
+					}
+				}
+			}
+			else {
+				n++;
+			}
+		}
+	}
+
+	return n;
+}
+
+/*
+ ***************************************************************************
+ * Look for the most recent of saDD and saYYYYMMDD to decide which one to
+ * use. If neither exists then use saDD by default.
+ *
+ * IN:
+ * @sa_dir	Directory where standard daily data files are saved.
+ * @rectime	Structure containing the current date.
+ *
+ * OUT:
+ * @sa_name	0 to use saDD data files,
+ * 		1 to use saYYYYMMDD data files.
+ ***************************************************************************
+ */
+void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
+{
+	char filename[MAX_FILE_LEN];
+	struct stat sb;
+	time_t sa_mtime;
+
+	/* Use saDD by default */
+	*sa_name = 0;
+
+	/* Look for saYYYYMMDD */
+	snprintf(filename, MAX_FILE_LEN,
+		 "%s/sa%04d%02d%02d", sa_dir,
+		 rectime->tm_year + 1900,
+		 rectime->tm_mon + 1,
+		 rectime->tm_mday);
+	filename[MAX_FILE_LEN - 1] = '\0';
+
+	if (stat(filename, &sb) < 0)
+		/* Cannot find or access saYYYYMMDD, so use saDD */
+		return;
+	sa_mtime = sb.st_mtime;
+
+	/* Look for saDD */
+	snprintf(filename, MAX_FILE_LEN,
+		 "%s/sa%02d", sa_dir,
+		 rectime->tm_mday);
+	filename[MAX_FILE_LEN - 1] = '\0';
+
+	if (stat(filename, &sb) < 0) {
+		/* Cannot find or access saDD, so use saYYYYMMDD */
+		*sa_name = 1;
+		return;
+	}
+
+	if (sa_mtime > sb.st_mtime) {
+		/* saYYYYMMDD is more recent than saDD, so use it */
+		*sa_name = 1;
+	}
+}
+
+/*
+ ***************************************************************************
+ * Set current daily data file name.
+ *
+ * IN:
+ * @datafile	If not an empty string then this is the alternate directory
+ *		location where daily data files will be saved.
+ * @d_off	Day offset (number of days to go back in the past).
+ * @sa_name	0 for saDD data files,
+ * 		1 for saYYYYMMDD data files,
+ * 		-1 if unknown. In this case, will look for the most recent
+ * 		of saDD and saYYYYMMDD and use it.
+ *
+ * OUT:
+ * @datafile	Name of daily data file.
+ ***************************************************************************
+ */
+void set_default_file(char *datafile, int d_off, int sa_name)
+{
+	char sa_dir[MAX_FILE_LEN];
+	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
+
+	/* Set directory where daily data files will be saved */
+	if (datafile[0]) {
+		strncpy(sa_dir, datafile, MAX_FILE_LEN);
+	}
+	else {
+		strncpy(sa_dir, SA_DIR, MAX_FILE_LEN);
+	}
+	sa_dir[MAX_FILE_LEN - 1] = '\0';
+
+	get_time(&rectime, d_off);
+	if (sa_name < 0) {
+		/*
+		 * Look for the most recent of saDD and saYYYYMMDD
+		 * and use it. If neither exists then use saDD.
+		 * sa_name is set accordingly.
+		 */
+		guess_sa_name(sa_dir, &rectime, &sa_name);
+	}
+	if (sa_name) {
+		/* Using saYYYYMMDD data files */
+		snprintf(datafile, MAX_FILE_LEN,
+			 "%s/sa%04d%02d%02d", sa_dir,
+			 rectime.tm_year + 1900,
+			 rectime.tm_mon + 1,
+			 rectime.tm_mday);
+	}
+	else {
+		/* Using saDD data files */
+		snprintf(datafile, MAX_FILE_LEN,
+			 "%s/sa%02d", sa_dir,
+			 rectime.tm_mday);
+	}
+	datafile[MAX_FILE_LEN - 1] = '\0';
+	default_file_used = TRUE;
+}
+
+/*
+ ***************************************************************************
+ * Check data file type. If it is a directory then this is the alternate
+ * location where daily data files will be saved.
+ *
+ * IN:
+ * @datafile	Name of the daily data file. May be a directory.
+ * @d_off	Day offset (number of days to go back in the past).
+ * @sa_name	0 for saDD data files,
+ * 		1 for saYYYYMMDD data files,
+ * 		-1 if unknown. In this case, will look for the most recent
+ * 		of saDD and saYYYYMMDD and use it.
+ *
+ *
+ * OUT:
+ * @datafile	Name of the daily data file. This is now a plain file, not
+ * 		a directory.
+ *
+ * RETURNS:
+ * 1 if @datafile was a directory, and 0 otherwise.
+ ***************************************************************************
+ */
+int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
+{
+	struct stat sb;
+
+	if (stat(datafile, &sb) == 0) {
+		if (S_ISDIR(sb.st_mode)) {
+			/*
+			 * This is a directory: So append
+			 * the default file name to it.
+			 */
+			set_default_file(datafile, d_off, sa_name);
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Display sysstat version used to create system activity data file.
+ *
+ * IN:
+ * @st		Output stream (stderr or stdout).
+ * @file_magic	File magic header.
+ ***************************************************************************
+ */
+void display_sa_file_version(FILE *st, struct file_magic *file_magic)
+{
+	fprintf(st, _("File created by sar/sadc from sysstat version %d.%d.%d"),
+		file_magic->sysstat_version,
+		file_magic->sysstat_patchlevel,
+		file_magic->sysstat_sublevel);
+
+	if (file_magic->sysstat_extraversion) {
+		fprintf(st, ".%d", file_magic->sysstat_extraversion);
+	}
+	fprintf(st, "\n");
+}
+
+/*
+ ***************************************************************************
+ * An invalid system activity file has been opened for reading.
+ * If this file was created by an old version of sysstat, tell it to the
+ * user...
+ *
+ * IN:
+ * @fd		Descriptor of the file that has been opened.
+ * @file_magic	file_magic structure filled with file magic header data.
+ *		May contain invalid data.
+ * @file	Name of the file being read.
+ * @n		Number of bytes read while reading file magic header.
+ * 		This function may also be called after failing to read file
+ *		standard header, or if CPU activity has not been found in
+ *		file. In this case, n is set to 0.
+ ***************************************************************************
+ */
+void handle_invalid_sa_file(int fd, struct file_magic *file_magic, char *file,
+			    int n)
+{
+	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
+
+	if (n == FILE_MAGIC_SIZE) {
+		if ((file_magic->sysstat_magic == SYSSTAT_MAGIC) || (file_magic->sysstat_magic == SYSSTAT_MAGIC_SWAPPED)) {
+			/* This is a sysstat file, but this file has an old format */
+			display_sa_file_version(stderr, file_magic);
+
+			fprintf(stderr,
+				_("Current sysstat version cannot read the format of this file (%#x)\n"),
+				file_magic->sysstat_magic == SYSSTAT_MAGIC ?
+				file_magic->format_magic : __builtin_bswap16(file_magic->format_magic));
+		}
+	}
+
+	close (fd);
+	exit(3);
+}
+
+/*
+ ***************************************************************************
+ * Display an error message then exit.
+ ***************************************************************************
+ */
+void print_collect_error(void)
+{
+	fprintf(stderr, _("Requested activities not available\n"));
+	exit(1);
+}
+
+/*
+ ***************************************************************************
+ * Fill system activity file magic header.
+ *
+ * IN:
+ * @file_magic	System activity file magic header.
+ ***************************************************************************
+ */
+void enum_version_nr(struct file_magic *fm)
+{
+	char *v;
+	char version[16];
+
+	fm->sysstat_extraversion = 0;
+
+	strcpy(version, VERSION);
+
+	/* Get version number */
+	if ((v = strtok(version, ".")) == NULL)
+		return;
+	fm->sysstat_version = atoi(v) & 0xff;
+
+	/* Get patchlevel number */
+	if ((v = strtok(NULL, ".")) == NULL)
+		return;
+	fm->sysstat_patchlevel = atoi(v) & 0xff;
+
+	/* Get sublevel number */
+	if ((v = strtok(NULL, ".")) == NULL)
+		return;
+	fm->sysstat_sublevel = atoi(v) & 0xff;
+
+	/* Get extraversion number. Don't necessarily exist */
+	if ((v = strtok(NULL, ".")) == NULL)
+		return;
+	fm->sysstat_extraversion = atoi(v) & 0xff;
+}
+
+#ifndef SOURCE_SADC
+/*
+ ***************************************************************************
  * Allocate structures.
  *
  * IN:
@@ -367,158 +699,6 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 	timestamp[8] = '\0';
 
 	return decode_timestamp(timestamp, tse);
-}
-
-/*
- ***************************************************************************
- * Look for the most recent of saDD and saYYYYMMDD to decide which one to
- * use. If neither exists then use saDD by default.
- *
- * IN:
- * @sa_dir	Directory where standard daily data files are saved.
- * @rectime	Structure containing the current date.
- *
- * OUT:
- * @sa_name	0 to use saDD data files,
- * 		1 to use saYYYYMMDD data files.
- ***************************************************************************
- */
-void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
-{
-	char filename[MAX_FILE_LEN];
-	struct stat sb;
-	time_t sa_mtime;
-
-	/* Use saDD by default */
-	*sa_name = 0;
-
-	/* Look for saYYYYMMDD */
-	snprintf(filename, MAX_FILE_LEN,
-		 "%s/sa%04d%02d%02d", sa_dir,
-		 rectime->tm_year + 1900,
-		 rectime->tm_mon + 1,
-		 rectime->tm_mday);
-	filename[MAX_FILE_LEN - 1] = '\0';
-
-	if (stat(filename, &sb) < 0)
-		/* Cannot find or access saYYYYMMDD, so use saDD */
-		return;
-	sa_mtime = sb.st_mtime;
-
-	/* Look for saDD */
-	snprintf(filename, MAX_FILE_LEN,
-		 "%s/sa%02d", sa_dir,
-		 rectime->tm_mday);
-	filename[MAX_FILE_LEN - 1] = '\0';
-
-	if (stat(filename, &sb) < 0) {
-		/* Cannot find or access saDD, so use saYYYYMMDD */
-		*sa_name = 1;
-		return;
-	}
-
-	if (sa_mtime > sb.st_mtime) {
-		/* saYYYYMMDD is more recent than saDD, so use it */
-		*sa_name = 1;
-	}
-}
-
-/*
- ***************************************************************************
- * Set current daily data file name.
- *
- * IN:
- * @datafile	If not an empty string then this is the alternate directory
- *		location where daily data files will be saved.
- * @d_off	Day offset (number of days to go back in the past).
- * @sa_name	0 for saDD data files,
- * 		1 for saYYYYMMDD data files,
- * 		-1 if unknown. In this case, will look for the most recent
- * 		of saDD and saYYYYMMDD and use it.
- *
- * OUT:
- * @datafile	Name of daily data file.
- ***************************************************************************
- */
-void set_default_file(char *datafile, int d_off, int sa_name)
-{
-	char sa_dir[MAX_FILE_LEN];
-	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
-
-	/* Set directory where daily data files will be saved */
-	if (datafile[0]) {
-		strncpy(sa_dir, datafile, MAX_FILE_LEN);
-	}
-	else {
-		strncpy(sa_dir, SA_DIR, MAX_FILE_LEN);
-	}
-	sa_dir[MAX_FILE_LEN - 1] = '\0';
-
-	get_time(&rectime, d_off);
-	if (sa_name < 0) {
-		/*
-		 * Look for the most recent of saDD and saYYYYMMDD
-		 * and use it. If neither exists then use saDD.
-		 * sa_name is set accordingly.
-		 */
-		guess_sa_name(sa_dir, &rectime, &sa_name);
-	}
-	if (sa_name) {
-		/* Using saYYYYMMDD data files */
-		snprintf(datafile, MAX_FILE_LEN,
-			 "%s/sa%04d%02d%02d", sa_dir,
-			 rectime.tm_year + 1900,
-			 rectime.tm_mon + 1,
-			 rectime.tm_mday);
-	}
-	else {
-		/* Using saDD data files */
-		snprintf(datafile, MAX_FILE_LEN,
-			 "%s/sa%02d", sa_dir,
-			 rectime.tm_mday);
-	}
-	datafile[MAX_FILE_LEN - 1] = '\0';
-	default_file_used = TRUE;
-}
-
-/*
- ***************************************************************************
- * Check data file type. If it is a directory then this is the alternate
- * location where daily data files will be saved.
- *
- * IN:
- * @datafile	Name of the daily data file. May be a directory.
- * @d_off	Day offset (number of days to go back in the past).
- * @sa_name	0 for saDD data files,
- * 		1 for saYYYYMMDD data files,
- * 		-1 if unknown. In this case, will look for the most recent
- * 		of saDD and saYYYYMMDD and use it.
- *
- *
- * OUT:
- * @datafile	Name of the daily data file. This is now a plain file, not
- * 		a directory.
- *
- * RETURNS:
- * 1 if @datafile was a directory, and 0 otherwise.
- ***************************************************************************
- */
-int check_alt_sa_dir(char *datafile, int d_off, int sa_name)
-{
-	struct stat sb;
-
-	if (stat(datafile, &sb) == 0) {
-		if (S_ISDIR(sb.st_mode)) {
-			/*
-			 * This is a directory: So append
-			 * the default file name to it.
-			 */
-			set_default_file(datafile, d_off, sa_name);
-			return 1;
-		}
-	}
-
-	return 0;
 }
 
 /*
@@ -918,76 +1098,6 @@ void free_bitmaps(struct activity *act[])
 
 /*
  ***************************************************************************
- * Look for activity in array.
- *
- * IN:
- * @act		Array of activities.
- * @act_flag	Activity flag to look for.
- * @stop	TRUE if sysstat should exit when activity is not found.
- *
- * RETURNS:
- * Position of activity in array, or -1 if not found (this may happen when
- * reading data from a system activity file created by another version of
- * sysstat).
- ***************************************************************************
- */
-int get_activity_position(struct activity *act[], unsigned int act_flag, int stop)
-{
-	int i;
-
-	for (i = 0; i < NR_ACT; i++) {
-		if (act[i]->id == act_flag)
-			return i;
-	}
-
-	if (stop) {
-		PANIC((int) act_flag);
-	}
-
-	return -1;
-}
-
-/*
- ***************************************************************************
- * Count number of activities with given option.
- *
- * IN:
- * @act			Array of activities.
- * @option		Option that activities should have to be counted
- *			(eg. AO_COLLECTED...)
- * @count_outputs	TRUE if each output should be counted for activities with
- * 			multiple outputs.
- *
- * RETURNS:
- * Number of selected activities
- ***************************************************************************
- */
-int get_activity_nr(struct activity *act[], unsigned int option, int count_outputs)
-{
-	int i, n = 0;
-	unsigned int msk;
-
-	for (i = 0; i < NR_ACT; i++) {
-		if ((act[i]->options & option) == option) {
-
-			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && count_outputs) {
-				for (msk = 1; msk < 0x100; msk <<= 1) {
-					if ((act[i]->opt_flags & 0xff) & msk) {
-						n++;
-					}
-				}
-			}
-			else {
-				n++;
-			}
-		}
-	}
-
-	return n;
-}
-
-/*
- ***************************************************************************
  * Select all activities, even if they have no associated items.
  *
  * IN:
@@ -1247,77 +1357,6 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 
 /*
  ***************************************************************************
- * Display sysstat version used to create system activity data file.
- *
- * IN:
- * @st		Output stream (stderr or stdout).
- * @file_magic	File magic header.
- ***************************************************************************
- */
-void display_sa_file_version(FILE *st, struct file_magic *file_magic)
-{
-	fprintf(st, _("File created by sar/sadc from sysstat version %d.%d.%d"),
-		file_magic->sysstat_version,
-		file_magic->sysstat_patchlevel,
-		file_magic->sysstat_sublevel);
-
-	if (file_magic->sysstat_extraversion) {
-		fprintf(st, ".%d", file_magic->sysstat_extraversion);
-	}
-	fprintf(st, "\n");
-}
-
-/*
- ***************************************************************************
- * An invalid system activity file has been opened for reading.
- * If this file was created by an old version of sysstat, tell it to the
- * user...
- *
- * IN:
- * @fd		Descriptor of the file that has been opened.
- * @file_magic	file_magic structure filled with file magic header data.
- *		May contain invalid data.
- * @file	Name of the file being read.
- * @n		Number of bytes read while reading file magic header.
- * 		This function may also be called after failing to read file
- *		standard header, or if CPU activity has not been found in
- *		file. In this case, n is set to 0.
- ***************************************************************************
- */
-void handle_invalid_sa_file(int fd, struct file_magic *file_magic, char *file,
-			    int n)
-{
-	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
-
-	if (n == FILE_MAGIC_SIZE) {
-		if ((file_magic->sysstat_magic == SYSSTAT_MAGIC) || (file_magic->sysstat_magic == SYSSTAT_MAGIC_SWAPPED)) {
-			/* This is a sysstat file, but this file has an old format */
-			display_sa_file_version(stderr, file_magic);
-
-			fprintf(stderr,
-				_("Current sysstat version cannot read the format of this file (%#x)\n"),
-				file_magic->sysstat_magic == SYSSTAT_MAGIC ?
-				file_magic->format_magic : __builtin_bswap16(file_magic->format_magic));
-		}
-	}
-
-	close (fd);
-	exit(3);
-}
-
-/*
- ***************************************************************************
- * Display an error message then exit.
- ***************************************************************************
- */
-void print_collect_error(void)
-{
-	fprintf(stderr, _("Requested activities not available\n"));
-	exit(1);
-}
-
-/*
- ***************************************************************************
  * Move structures data.
  *
  * IN:
@@ -1346,6 +1385,51 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 		       (size_t) act[p]->msize * (size_t) act[p]->nr[src] * (size_t) act[p]->nr2);
 		act[p]->nr[dest] = act[p]->nr[src];
 	}
+}
+
+/*
+ ***************************************************************************
+ * Read an __nr_t value from file.
+ * Such a value can be the new number of CPU saved after a RESTART record,
+ * or the number of structures to read saved before the structures containing
+ * statistics for an activity with a varying number of items in file.
+ *
+ * IN:
+ * @ifd		Input file descriptor.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
+ * @non_zero	TRUE if value should not be zero.
+ *
+ * RETURNS:
+ * __nr_t value, as read from file.
+ ***************************************************************************
+ */
+__nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
+		     int endian_mismatch, int arch_64, int non_zero)
+{
+	__nr_t value;
+
+	sa_fread(ifd, &value, sizeof(__nr_t), HARD_SIZE);
+
+	/* Normalize endianness for file_activity structures */
+	if (endian_mismatch) {
+		nr_types_nr[2] = 1;
+		swap_struct(nr_types_nr, &value, arch_64);
+	}
+
+	if ((non_zero && !value) || (value < 0)) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Value=%d\n",
+			__FUNCTION__, value);
+#endif
+		/* Value number cannot be zero or negative */
+		handle_invalid_sa_file(ifd, file_magic, file, 0);
+	}
+
+	return value;
 }
 
 /*
@@ -1847,51 +1931,6 @@ format_error:
 
 /*
  ***************************************************************************
- * Read an __nr_t value from file.
- * Such a value can be the new number of CPU saved after a RESTART record,
- * or the number of structures to read saved before the structures containing
- * statistics for an activity with a varying number of items in file.
- *
- * IN:
- * @ifd		Input file descriptor.
- * @file	Name of file being read.
- * @file_magic	file_magic structure filled with file magic header data.
- * @endian_mismatch
- *		TRUE if file's data don't match current machine's endianness.
- * @arch_64	TRUE if file's data come from a 64 bit machine.
- * @non_zero	TRUE if value should not be zero.
- *
- * RETURNS:
- * __nr_t value, as read from file.
- ***************************************************************************
- */
-__nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
-		     int endian_mismatch, int arch_64, int non_zero)
-{
-	__nr_t value;
-
-	sa_fread(ifd, &value, sizeof(__nr_t), HARD_SIZE);
-
-	/* Normalize endianness for file_activity structures */
-	if (endian_mismatch) {
-		nr_types_nr[2] = 1;
-		swap_struct(nr_types_nr, &value, arch_64);
-	}
-
-	if ((non_zero && !value) || (value < 0)) {
-#ifdef DEBUG
-		fprintf(stderr, "%s: Value=%d\n",
-			__FUNCTION__, value);
-#endif
-		/* Value number cannot be zero or negative */
-		handle_invalid_sa_file(ifd, file_magic, file, 0);
-	}
-
-	return value;
-}
-
-/*
- ***************************************************************************
  * Parse sar activities options (also used by sadf).
  *
  * IN:
@@ -2352,44 +2391,6 @@ double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 
 /*
  ***************************************************************************
- * Fill system activity file magic header.
- *
- * IN:
- * @file_magic	System activity file magic header.
- ***************************************************************************
- */
-void enum_version_nr(struct file_magic *fm)
-{
-	char *v;
-	char version[16];
-
-	fm->sysstat_extraversion = 0;
-
-	strcpy(version, VERSION);
-
-	/* Get version number */
-	if ((v = strtok(version, ".")) == NULL)
-		return;
-	fm->sysstat_version = atoi(v) & 0xff;
-
-	/* Get patchlevel number */
-	if ((v = strtok(NULL, ".")) == NULL)
-		return;
-	fm->sysstat_patchlevel = atoi(v) & 0xff;
-
-	/* Get sublevel number */
-	if ((v = strtok(NULL, ".")) == NULL)
-		return;
-	fm->sysstat_sublevel = atoi(v) & 0xff;
-
-	/* Get extraversion number. Don't necessarily exist */
-	if ((v = strtok(NULL, ".")) == NULL)
-		return;
-	fm->sysstat_extraversion = atoi(v) & 0xff;
-}
-
-/*
- ***************************************************************************
  * Read and replace unprintable characters in comment with ".".
  *
  * IN:
@@ -2656,3 +2657,4 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 
 	return 1;
 }
+#endif /* SOURCE_SADC undefined */
