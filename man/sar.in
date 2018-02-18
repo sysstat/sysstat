@@ -3,7 +3,7 @@
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ]
-.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ --help ] [ --human ] [ --sadc ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ] [ --help ] [ --human ] [ --sadc ]
 .B [ -I {
 .I int_list
 .B | SUM | ALL } ] [ -P {
@@ -2237,6 +2237,11 @@ Number of breaks per second for current serial line.
 Number of overrun errors per second for current serial line.
 .RE
 .RE
+.IP -z
+Tell
+.B sar
+to omit output for any devices for which there was no activity during the
+sample period.
 
 .SH ENVIRONMENT
 The
