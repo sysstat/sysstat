@@ -1227,7 +1227,7 @@ int main(int argc, char **argv)
 			print_version();
 		}
 
-		else if (!strcmp(argv[opt], "-z")) {
+		else if (!strcmp(argv[opt], "-Z")) {
 			/* Set by sar command */
 			optz = 1;
 		}

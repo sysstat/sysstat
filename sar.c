@@ -1554,7 +1554,7 @@ int main(int argc, char **argv)
 		}
 
 		/* Flags to be passed to sadc */
-		salloc(args_idx++, "-z");
+		salloc(args_idx++, "-Z");
 
 		/* Writing data to a file (option -o) */
 		if (to_file[0]) {
