@@ -287,6 +287,7 @@ struct stats_net_dev {
 };
 
 #define STATS_NET_DEV_SIZE	(sizeof(struct stats_net_dev))
+#define STATS_NET_DEV_SIZE2CMP	(STATS_NET_DEV_SIZE - MAX_IFACE_LEN - 1)
 #define STATS_NET_DEV_ULL	7
 #define STATS_NET_DEV_UL	0
 #define STATS_NET_DEV_U		1
@@ -306,6 +307,7 @@ struct stats_net_edev {
 };
 
 #define STATS_NET_EDEV_SIZE	(sizeof(struct stats_net_edev))
+#define STATS_NET_EDEV_SIZE2CMP	(STATS_NET_EDEV_SIZE - MAX_IFACE_LEN)
 #define STATS_NET_EDEV_ULL	9
 #define STATS_NET_EDEV_UL	0
 #define STATS_NET_EDEV_U	0
@@ -657,10 +659,11 @@ struct stats_filesystem {
 	char 		   mountp[MAX_FS_LEN];
 };
 
-#define STATS_FILESYSTEM_SIZE	(sizeof(struct stats_filesystem))
-#define STATS_FILESYSTEM_ULL	5
-#define STATS_FILESYSTEM_UL	0
-#define STATS_FILESYSTEM_U	0
+#define STATS_FILESYSTEM_SIZE		(sizeof(struct stats_filesystem))
+#define STATS_FILESYSTEM_SIZE2CMP	(STATS_FILESYSTEM_SIZE - 2 * MAX_FS_LEN)
+#define STATS_FILESYSTEM_ULL		5
+#define STATS_FILESYSTEM_UL		0
+#define STATS_FILESYSTEM_U		0
 
 /* Structure for Fibre Channel HBA statistics */
 struct stats_fchost {

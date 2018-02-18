@@ -98,6 +98,8 @@
 #define S_F_LOCAL_TIME		0x00004000
 #define S_F_PREFD_TIME_OUTPUT	0x00008000
 #define S_F_SVG_SKIP		0x00010000
+/* Same value as S_F_SVG_SKIP above. Used for sar */
+#define S_F_ZERO_OMIT		0x00010000
 /* Same value as S_F_SVG_SKIP above. Used for a different output format */
 #define S_F_RAW_DEBUG_MODE	0x00010000
 #define S_F_SVG_AUTOSCALE	0x00020000
@@ -126,6 +128,7 @@
 #define PRINT_LOCAL_TIME(m)		(((m) & S_F_LOCAL_TIME)   == S_F_LOCAL_TIME)
 #define USE_PREFD_TIME_OUTPUT(m)	(((m) & S_F_PREFD_TIME_OUTPUT)   == S_F_PREFD_TIME_OUTPUT)
 #define SKIP_EMPTY_VIEWS(m)		(((m) & S_F_SVG_SKIP)     == S_F_SVG_SKIP)
+#define DISPLAY_ZERO_OMIT(m)		(((m) & S_F_ZERO_OMIT)    == S_F_ZERO_OMIT)
 #define DISPLAY_DEBUG_MODE(m)		(((m) & S_F_RAW_DEBUG_MODE) == S_F_RAW_DEBUG_MODE)
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
 #define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)   == S_F_SVG_ONE_DAY)

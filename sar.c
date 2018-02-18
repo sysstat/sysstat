@@ -115,7 +115,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-			  "[ -v ] [ -W ] [ -w ] [ -y ] [ --help ] [ --human ] [ --sadc ]\n"
+			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -1385,6 +1385,11 @@ int main(int argc, char **argv)
 			if (parse_sar_n_opt(argv, &opt, act)) {
 				usage(argv[0]);
 			}
+		}
+
+		else if (!strcmp(argv[opt], "-z")) {
+			flags |= S_F_ZERO_OMIT;
+			opt++;
 		}
 
 		else if ((strlen(argv[opt]) > 1) &&

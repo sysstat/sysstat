@@ -342,7 +342,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 	int i;
 	struct stats_irq *sic, *sip;
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
@@ -365,6 +365,9 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 
 		/* Should current interrupt (including int "sum") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sip, sic, STATS_IRQ_SIZE))
+				continue;
 
 			/* Yes: Display it */
 			printf("%-11s", timestamp[curr]);
@@ -950,7 +953,7 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
 
@@ -999,6 +1002,9 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 		if (!found)
 			continue;
 
+		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(ssp, ssc, STATS_SERIAL_SIZE))
+			continue;
+
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "       %3d", "", ssc->line);
 
@@ -1040,7 +1046,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		unit = UNIT_KILOBYTE;
 	}
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_HUMAN_READ(flags) ? -1 : 0, 9);
 	}
 
@@ -1063,6 +1069,9 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		else {
 			sdp = (struct stats_disk *) ((char *) a->buf[prev] + j * a->msize);
 		}
+
+		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sdp, sdc, STATS_DISK_SIZE))
+			continue;
 
 		/* Compute service time, etc. */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
@@ -1140,7 +1149,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		unit = UNIT_BYTE;
 	}
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_HUMAN_READ(flags) ? -1 : 0, 9);
 	}
 
@@ -1163,6 +1172,9 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		else {
 			sndp = (struct stats_net_dev *) ((char *) a->buf[prev] + j * a->msize);
 		}
+
+		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sndp, sndc, STATS_NET_DEV_SIZE2CMP))
+			continue;
 
 		printf("%-11s", timestamp[curr]);
 
@@ -1210,7 +1222,7 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_HUMAN_READ(flags) ? -1 : 0, 9);
 	}
 
@@ -1233,6 +1245,9 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 		else {
 			snedp = (struct stats_net_edev *) ((char *) a->buf[prev] + j * a->msize);
 		}
+
+		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(snedp, snedc, STATS_NET_EDEV_SIZE2CMP))
+			continue;
 
 		printf("%-11s", timestamp[curr]);
 
@@ -2708,14 +2723,15 @@ __print_funct_t print_avg_pwr_usb_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
  */
-__print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int dispavg)
+__print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int curr, int dispavg)
 {
-	int i, j;
-	struct stats_filesystem *sfc, *sfm;
+	int i, j, j0, found;
+	struct stats_filesystem *sfc, *sfp, *sfm;
 	int unit = NO_UNIT;
 
 	if (DISPLAY_UNIT(flags)) {
@@ -2723,7 +2739,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 		unit = UNIT_BYTE;
 	}
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line((dispavg ? _("Summary:") : timestamp[!curr]),
 			       a, FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9);
 	}
@@ -2731,25 +2747,56 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
-		cprintf_f(unit, 2, 9, 0,
-			  unit < 0 ? (double) sfc->f_bfree / 1024 / 1024 : (double) sfc->f_bfree,
-			  unit < 0 ? (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024 :
-				     (double) (sfc->f_blocks - sfc->f_bfree));
-		cprintf_pc(DISPLAY_UNIT(flags), 2, 9, 2,
-			   /* f_blocks is not zero. But test it anyway ;-) */
-			   sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
-			   : 0.0,
-			   sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
-			   : 0.0);
-		cprintf_u64(NO_UNIT, 2, 9,
-			    (unsigned long long) sfc->f_ffree,
-			    (unsigned long long) (sfc->f_files - sfc->f_ffree));
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
-			   sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
-			   : 0.0);
-		cprintf_in(IS_STR, " %s\n",
-			   DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, 0);
+		found = FALSE;
+		if (DISPLAY_ZERO_OMIT(flags) && !dispavg) {
+
+			if (a->nr[prev] > 0) {
+				/* Look for corresponding fs in previous iteration */
+				j = i;
+
+				if (j >= a->nr[prev]) {
+					j = a->nr[prev] - 1;
+				}
+
+				j0 = j;
+
+				do {
+					sfp = (struct stats_filesystem *) ((char *) a->buf[prev] + j * a->msize);
+					if (!strcmp(sfp->fs_name, sfc->fs_name)) {
+						found = TRUE;
+						break;
+					}
+					if (++j >= a->nr[prev]) {
+						j = 0;
+					}
+				}
+				while (j != j0);
+			}
+		}
+
+		if (!DISPLAY_ZERO_OMIT(flags) || dispavg || WANT_SINCE_BOOT(flags) || !found ||
+		    (found && memcmp(sfp, sfc, STATS_FILESYSTEM_SIZE2CMP))) {
+
+			printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
+			cprintf_f(unit, 2, 9, 0,
+				  unit < 0 ? (double) sfc->f_bfree / 1024 / 1024 : (double) sfc->f_bfree,
+				  unit < 0 ? (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024 :
+					     (double) (sfc->f_blocks - sfc->f_bfree));
+			cprintf_pc(DISPLAY_UNIT(flags), 2, 9, 2,
+				   /* f_blocks is not zero. But test it anyway ;-) */
+				   sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+				   : 0.0,
+				   sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+				   : 0.0);
+			cprintf_u64(NO_UNIT, 2, 9,
+				    (unsigned long long) sfc->f_ffree,
+				    (unsigned long long) (sfc->f_files - sfc->f_ffree));
+			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+				   sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+				   : 0.0);
+			cprintf_in(IS_STR, " %s\n",
+				   DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, 0);
+		}
 
 		if (!dispavg) {
 			/* Save current filesystem in summary list */
@@ -2797,7 +2844,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int curr, int di
 __print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_filesystem_stats(a, curr, FALSE);
+	stub_print_filesystem_stats(a, prev, curr, FALSE);
 }
 
 /*
@@ -2814,7 +2861,7 @@ __print_funct_t print_filesystem_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_filesystem_stats(struct activity *a, int prev, int curr,
 					   unsigned long long itv)
 {
-	stub_print_filesystem_stats(a, 2, TRUE);
+	stub_print_filesystem_stats(a, prev, 2, TRUE);
 }
 
 /*
@@ -2905,7 +2952,7 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 		*ssnp = (struct stats_softnet *) a->buf[prev];
 	int i;
 
-	if (dis) {
+	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9);
 	}
 
@@ -2931,6 +2978,9 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
 			/* No */
+			continue;
+
+		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(ssnp, ssnc,STATS_SOFTNET_SIZE))
 			continue;
 
 		printf("%-11s", timestamp[curr]);
