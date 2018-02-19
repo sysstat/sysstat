@@ -493,8 +493,9 @@ void setup_file_hdr(int fd)
 	/* Fill then write file magic header */
 	fill_magic_header(&file_magic);
 
-	if (write_all(fd, &file_magic, FILE_MAGIC_SIZE) != FILE_MAGIC_SIZE)
-		goto write_error;
+	if (write_all(fd, &file_magic, FILE_MAGIC_SIZE) != FILE_MAGIC_SIZE) {
+		p_write_error();
+	}
 
 	/* First reset the structure */
 	memset(&file_hdr, 0, FILE_HEADER_SIZE);
@@ -538,8 +539,9 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_machine[UTSNAME_LEN - 1]  = '\0';
 
 	/* Write file header */
-	if (write_all(fd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE)
-		goto write_error;
+	if (write_all(fd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE) {
+		p_write_error();
+	}
 
 	/* Write activity list */
 	for (i = 0; i < NR_ACT; i++) {
@@ -565,18 +567,13 @@ void setup_file_hdr(int fd)
 
 			file_act.has_nr = HAS_COUNT_FUNCTION(act[p]->options);
 
-			if (write_all(fd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE)
-				goto write_error;
+			if (write_all(fd, &file_act, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
+				p_write_error();
+			}
 		}
 	}
 
 	return;
-
-write_error:
-
-	fprintf(stderr, _("Cannot write system activity file header: %s\n"),
-		strerror(errno));
-	exit(2);
 }
 
 /*
@@ -713,22 +710,24 @@ void write_stats(int ofd)
 void create_sa_file(int *ofd, char *ofile)
 {
 	if ((*ofd = open(ofile, O_CREAT | O_WRONLY,
-			 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0) {
-		fprintf(stderr, _("Cannot open %s: %s\n"), ofile, strerror(errno));
-		exit(2);
-	}
+			 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0)
+		goto create_error;
 
 	/* Try to lock file */
 	ask_for_flock(*ofd, FATAL);
 
 	/* Truncate file */
-	if (ftruncate(*ofd, 0) < 0) {
-		fprintf(stderr, _("Cannot open %s: %s\n"), ofile, strerror(errno));
-		exit(2);
+	if (ftruncate(*ofd, 0) >= 0) {
+
+		/* Write file header */
+		setup_file_hdr(*ofd);
+
+		return;
 	}
 
-	/* Write file header */
-	setup_file_hdr(*ofd);
+create_error:
+	fprintf(stderr, _("Cannot open %s: %s\n"), ofile, strerror(errno));
+	exit(2);
 }
 
 /*
