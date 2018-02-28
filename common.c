@@ -1381,7 +1381,10 @@ void csv_efprintf_s(FILE *stream, const char *file_path,
 
 	// Write the string to the output file:
 	efprintf(stream, file_path, "\"");
-	for (int i = 0; i < formatted_len; ++ i) {
+
+	int i;
+
+	for (i = 0; i < formatted_len; ++ i) {
 		// Escape double quotes:
 		if (formatted_str[i] == '"') {
 			efprintf(stream, file_path, "\"");
