@@ -298,6 +298,8 @@ void xprintf
 	(int, const char *, ...);
 void xprintf0
 	(int, const char *, ...);
+void efprintf(FILE *, const char *, const char *, ...);
+void csv_efprintf_s(FILE *, const char *, const char *, ...);
 
 #endif /* SOURCE_SADC undefined */
 #endif  /* _COMMON_H */

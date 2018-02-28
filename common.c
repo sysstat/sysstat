@@ -1298,6 +1298,102 @@ void cprintf_s(int type, char *format, char *string)
 
 /*
  ***************************************************************************
+ * Print to a file, exiting on error.
+ *
+ * IN:
+ * @stream	The stream to write to.
+ * @file_path
+ * 		File path of the output stream for error reporting.
+ * @format	Output format.
+ ***************************************************************************
+ */
+void efprintf(FILE *stream, const char *file_path, const char *format, ...)
+{
+	va_list(args);
+
+	va_start(args, format);
+	if (vfprintf(stream, format, args) < 0) {
+		perror("fprintf");
+		if (file_path != NULL) {
+			fprintf(stderr, "  while writing to file: %s", file_path);
+		}
+		exit(4);
+	}
+	va_end(args);
+}
+
+/*
+ ***************************************************************************
+ * Print a quoted string field to a CSV file, exiting on error.
+ *
+ * We quote according to RFC 4180 (https://tools.ietf.org/html/rfc4180).
+ *
+ * IN:
+ * @stream	The stream to write to.
+ * @file_path
+ * 		File path of the output stream for error reporting.
+ * @format	Output format.
+ ***************************************************************************
+ */
+void csv_efprintf_s(FILE *stream, const char *file_path,
+		const char *format, ...)
+{
+	char buf[2];
+	va_list(args);
+	va_list(args_copy);
+	char *formatted_str;
+	int formatted_len;
+
+	va_start(args, format);
+
+	// Calculate the length of the formatted string:
+	va_copy(args_copy, args);
+	formatted_len = vsnprintf(buf, sizeof(buf), format, args_copy);
+	va_end(args_copy);
+	if (formatted_len < 0) {
+		perror("vsnprintf");
+		if (file_path != NULL) {
+			fprintf(stderr, "  while writing to file: %s", file_path);
+		}
+		va_end(args);
+		exit(4);
+	}
+
+	// Format the string:
+	formatted_str = malloc(formatted_len + 1);
+	if (formatted_str == NULL) {
+		perror("malloc");
+		if (file_path != NULL) {
+			fprintf(stderr, "  while writing to file: %s", file_path);
+		}
+		va_end(args);
+		exit(4);
+	}
+	va_end(args);
+	if (vsnprintf(formatted_str, formatted_len + 1, format, args) < 0) {
+		perror("vsnprintf");
+		if (file_path != NULL) {
+			fprintf(stderr, "  while writing to file: %s", file_path);
+		}
+		free(formatted_str);
+		exit(4);
+	}
+
+	// Write the string to the output file:
+	efprintf(stream, file_path, "\"");
+	for (int i = 0; i < formatted_len; ++ i) {
+		// Escape double quotes:
+		if (formatted_str[i] == '"') {
+			efprintf(stream, file_path, "\"");
+		}
+		efprintf(stream, file_path, "%c", (int) formatted_str[i]);
+	}
+	free(formatted_str);
+	efprintf(stream, file_path, "\"");
+}
+
+/*
+ ***************************************************************************
  * Parse a string containing a numerical value (e.g. CPU or IRQ number).
  * The string should contain only one value, not a range of values.
  *
