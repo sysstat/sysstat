@@ -2323,7 +2323,143 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 
 /*
  ***************************************************************************
- * Display statistics.
+ * Write statistics for a given task or process to the CSV output file.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @prev_tm	Pointer to a tm struct with the the timestamp of the
+ * 		previous sample.
+ * @curr_tm	Pointer to a tm struct with the timestamp of the current sample.
+ * @itv	Interval of time in jiffies.
+ * @deltot_jiffies
+ * 		Number of jiffies spent on the interval by all processors.
+ * @pstc	Structure with PID statistics for current sample.
+ * @pstp	Structure with PID statistics for previous sample.
+ ***************************************************************************
+ */
+void csv_write_pid_stats(int prev, int curr,
+		    struct tm *prev_tm, struct tm *curr_tm,
+			unsigned long long itv, unsigned long long deltot_jiffies,
+			struct pid_stats *pstc, struct pid_stats *pstp
+)
+{
+	char time_buf[256];
+
+	// Write timestamp,interval_ticks,interval_all_cpu_ticks:
+	if (strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", curr_tm) < 1) {
+		perror("strftime");
+		exit(4);
+	}
+	efprintf(csv_file, csv_file_path, "%s,%llu,%llu,",
+		time_buf, itv, deltot_jiffies);
+
+	// Write user name:
+	struct passwd *pwdent;
+
+	if ((pwdent = getpwuid(pstc->uid)) != NULL) {
+		csv_efprintf_s(csv_file, csv_file_path, "%s", pwdent->pw_name);
+	}
+
+	// Write UID, TGID, TID, PID:
+	efprintf(csv_file, csv_file_path, ",%d,%d,", pstc->uid, pstc->tgid);
+	if (pstc->tgid) {
+		// pstc->pid is, actually, a TID:
+		efprintf(csv_file, csv_file_path, "%d,0,", pstc->pid);
+	}
+	else
+	{
+		efprintf(csv_file, csv_file_path, "0,%d,", pstc->pid);
+	}
+
+	if (DISPLAY_CPU(actflag)) {
+		// Write user_ticks,system_ticks,guest_ticks,wait_ticks,
+		// %CPU,CPU,ticks/s:
+		efprintf(csv_file, csv_file_path,
+			"%llu,%llu,%llu,%llu,%f,%u,%lu,",
+			pstc->utime, pstc->stime, pstc->gtime, pstc->wtime,
+			/* User time already includes guest time */
+			IRIX_MODE_OFF(pidflag) ?
+				SP_VALUE_100(pstp->utime + pstp->stime,
+					pstc->utime + pstc->stime, deltot_jiffies) :
+				SP_VALUE_100(pstp->utime + pstp->stime,
+					pstc->utime + pstc->stime, itv * HZ / 100),
+			pstc->processor, HZ);
+	}
+
+	if (DISPLAY_MEM(actflag)) {
+		// Write minflt,majflt,VSZ_kb,RSS_kb,total_mem_kb,%mem:
+		efprintf(csv_file, csv_file_path,
+			"%llu,%llu,%llu,%llu,%lu,%f,",
+			pstc->minflt - pstp->minflt,
+			pstc->majflt - pstp->majflt,
+			pstc->vsz,
+			pstc->rss,
+			tlmkb,
+			tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
+	}
+
+	if (DISPLAY_STACK(actflag)) {
+		// Write StkSize_kb,StkRef_kb:
+		efprintf(csv_file, csv_file_path, "%lu,%lu,",
+			pstc->stack_size, pstc->stack_ref);
+	}
+
+	if (DISPLAY_IO(actflag)) {
+		// Write B_rd,B_wr,B_ccwr,IOdelay_ticks:
+		if (!NO_PID_IO(pstc->flags))
+		{
+			efprintf(csv_file, csv_file_path, "%llu,%llu,%llu,",
+				pstc->read_bytes - pstp->read_bytes,
+				pstc->write_bytes - pstp->write_bytes,
+				pstc->cancelled_write_bytes - pstp->cancelled_write_bytes);
+		}
+		else {
+			/*
+				* Keep the layout even though this task has no I/O
+				* typically threads with no I/O measurements.
+				*/
+			efprintf(csv_file, csv_file_path, "-1,-1,-1,");
+		}
+		/* I/O delays come from another file (/proc/#/stat) */
+		efprintf(csv_file, csv_file_path, "%llu,",
+			(unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
+	}
+
+	if (DISPLAY_CTXSW(actflag)) {
+		// Write cswch,nvcswch:
+		efprintf(csv_file, csv_file_path, "%lu,%lu,",
+				pstc->nvcsw - pstp->nvcsw,
+				pstc->nivcsw - pstp->nivcsw);
+	}
+
+	if (DISPLAY_KTAB(actflag)) {
+		// Write thread_count,fd_count:
+		efprintf(csv_file, csv_file_path, "%lu,", pstc->threads);
+		if (NO_PID_FD(pstc->flags)) {
+			/* /proc/#/fd directory not readable */
+			efprintf(csv_file, csv_file_path, "-1,");
+		}
+		else {
+			efprintf(csv_file, csv_file_path, "%lu,", pstc->fd_nr);
+		}
+	}
+
+	if (DISPLAY_RT(actflag)) {
+		// Write prio,policy:
+		efprintf(csv_file, csv_file_path, "%lu,%s,",
+			pstc->priority, GET_POLICY(pstc->policy));
+	}
+
+	// Write Command:
+	csv_efprintf_s(csv_file, csv_file_path, "%s", get_tcmd(pstc));
+
+	efprintf(csv_file, csv_file_path, "\n");
+}
+
+/*
+ ***************************************************************************
+ * Write statistics to the CSV output file.
  *
  * IN:
  * @prev	Index in array where stats used as reference are.
@@ -2342,122 +2478,14 @@ void csv_write_stats(int prev, int curr,
 {
 	struct pid_stats *pstc, *pstp;
 	unsigned int p;
-	char time_buf[256];
 
 	for (p = 0; p < pid_nr; p++) {
-
-		if (get_pid_to_display(prev, curr, p, actflag, P_TASK,
-				       &pstc, &pstp) <= 0)
+		if (get_pid_to_display(prev, curr, p, actflag, tskflag,
+					&pstc, &pstp) <= 0)
 			continue;
 
-		// Write timestamp,interval_ticks,interval_all_cpu_ticks:
-		if (strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", curr_tm) < 1) {
-			perror("strftime");
-			exit(4);
-		}
-		efprintf(csv_file, csv_file_path, "%s,%llu,%llu,",
-			time_buf, itv, deltot_jiffies);
-
-		// Write user name:
-		struct passwd *pwdent;
-
-		if ((pwdent = getpwuid(pstc->uid)) != NULL) {
-			csv_efprintf_s(csv_file, csv_file_path, "%s", pwdent->pw_name);
-		}
-
-		// Write UID, TGID, TID, PID:
-		efprintf(csv_file, csv_file_path, ",%d,%d,", pstc->uid, pstc->tgid);
-		if (pstc->tgid) {
-			// pstc->pid is, actually, a TID:
-			efprintf(csv_file, csv_file_path, "%d,0,", pstc->pid);
-		}
-		else
-		{
-			efprintf(csv_file, csv_file_path, "0,%d,", pstc->pid);
-		}
-
-		if (DISPLAY_CPU(actflag)) {
-			// Write user_ticks,system_ticks,guest_ticks,wait_ticks,
-			// %CPU,CPU,ticks/s:
-			efprintf(csv_file, csv_file_path,
-				"%llu,%llu,%llu,%llu,%f,%u,%lu,",
-				pstc->utime, pstc->stime, pstc->gtime, pstc->wtime,
-				/* User time already includes guest time */
-				IRIX_MODE_OFF(pidflag) ?
-				   SP_VALUE_100(pstp->utime + pstp->stime,
-					    pstc->utime + pstc->stime, deltot_jiffies) :
-				   SP_VALUE_100(pstp->utime + pstp->stime,
-					    pstc->utime + pstc->stime, itv * HZ / 100),
-				pstc->processor, HZ);
-		}
-
-		if (DISPLAY_MEM(actflag)) {
-			// Write minflt,majflt,VSZ_kb,RSS_kb,total_mem_kb,%mem:
-			efprintf(csv_file, csv_file_path,
-				"%llu,%llu,%llu,%llu,%lu,%f,",
-				pstc->minflt - pstp->minflt,
-				pstc->majflt - pstp->majflt,
-				pstc->vsz,
-				pstc->rss,
-				tlmkb,
-				tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
-		}
-
-		if (DISPLAY_STACK(actflag)) {
-			// Write StkSize_kb,StkRef_kb:
-			efprintf(csv_file, csv_file_path, "%lu,%lu,",
-				pstc->stack_size, pstc->stack_ref);
-		}
-
-		if (DISPLAY_IO(actflag)) {
-			// Write B_rd,B_wr,B_ccwr,IOdelay_ticks:
-			if (!NO_PID_IO(pstc->flags))
-			{
-				efprintf(csv_file, csv_file_path, "%llu,%llu,%llu,",
-					pstc->read_bytes, pstc->write_bytes,
-					pstp->cancelled_write_bytes);
-			}
-			else {
-				/*
-				 * Keep the layout even though this task has no I/O
-				 * typically threads with no I/O measurements.
-				 */
-				efprintf(csv_file, csv_file_path, "-1,-1,-1,");
-			}
-			/* I/O delays come from another file (/proc/#/stat) */
-			efprintf(csv_file, csv_file_path, "%llu,",
-				(unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
-		}
-
-		if (DISPLAY_CTXSW(actflag)) {
-			// Write cswch,nvcswch:
-			efprintf(csv_file, csv_file_path, "%lu,%lu,",
-				  pstc->nvcsw - pstp->nvcsw,
-				  pstc->nivcsw - pstp->nivcsw);
-		}
-
-		if (DISPLAY_KTAB(actflag)) {
-			// Write thread_count,fd_count:
-			efprintf(csv_file, csv_file_path, "%lu,", pstc->threads);
-			if (NO_PID_FD(pstc->flags)) {
-				/* /proc/#/fd directory not readable */
-				efprintf(csv_file, csv_file_path, "-1,");
-			}
-			else {
-				efprintf(csv_file, csv_file_path, "%lu,", pstc->fd_nr);
-			}
-		}
-
-		if (DISPLAY_RT(actflag)) {
-			// Write prio,policy:
-			efprintf(csv_file, csv_file_path, "%lu,%s,",
-				pstc->priority, GET_POLICY(pstc->policy));
-		}
-
-		// Write Command:
-		csv_efprintf_s(csv_file, csv_file_path, "%s", get_tcmd(pstc));
-
-		efprintf(csv_file, csv_file_path, "\n");
+		csv_write_pid_stats(prev, curr, prev_tm, curr_tm, itv, deltot_jiffies,
+			pstc, pstp);
 	}
 }
 
