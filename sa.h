@@ -98,8 +98,6 @@
 #define S_F_LOCAL_TIME		0x00004000
 #define S_F_PREFD_TIME_OUTPUT	0x00008000
 #define S_F_SVG_SKIP		0x00010000
-/* Same value as S_F_SVG_SKIP above. Used for sar */
-#define S_F_ZERO_OMIT		0x00010000
 /* Same value as S_F_SVG_SKIP above. Used for a different output format */
 #define S_F_RAW_DEBUG_MODE	0x00010000
 #define S_F_SVG_AUTOSCALE	0x00020000
@@ -110,6 +108,7 @@
 #define S_F_SVG_PACKED		0x00400000
 #define S_F_SVG_SHOW_INFO	0x00800000
 #define S_F_HUMAN_READ		0x01000000
+#define S_F_ZERO_OMIT		0x02000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)

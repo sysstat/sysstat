@@ -1279,15 +1279,6 @@ int main(int argc, char **argv)
 			opt++;
 		}
 
-		else if (!strcmp(argv[opt], "-h")) {
-			/*
-			 * Make output easier to read by a human.
-			 * Option -h implies --human and -p (pretty-print).
-			 */
-			flags |= S_F_HUMAN_READ + S_F_UNIT + S_F_DEV_PRETTY;
-			opt++;
-		}
-
 		else if (!strcmp(argv[opt], "-I")) {
 			/* Parse -I option */
 			if (parse_sar_I_opt(argv, &opt, act)) {
@@ -1385,11 +1376,6 @@ int main(int argc, char **argv)
 			if (parse_sar_n_opt(argv, &opt, act)) {
 				usage(argv[0]);
 			}
-		}
-
-		else if (!strcmp(argv[opt], "-z")) {
-			flags |= S_F_ZERO_OMIT;
-			opt++;
 		}
 
 		else if ((strlen(argv[opt]) > 1) &&

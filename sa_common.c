@@ -2016,6 +2016,14 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			act[p]->options   |= AO_SELECTED;
 			break;
 
+		case 'h':
+			/*
+			 * Make output easier to read by a human.
+			 * Option -h implies --human and -p (pretty-print).
+			 */
+			*flags |= S_F_HUMAN_READ + S_F_UNIT + S_F_DEV_PRETTY;
+			break;
+
 		case 'j':
 			if (!argv[*opt + 1]) {
 				return 1;
@@ -2104,6 +2112,10 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 
 		case 'y':
 			SELECT_ACTIVITY(A_SERIAL);
+			break;
+
+		case 'z':
+			*flags |= S_F_ZERO_OMIT;
 			break;
 
 		case 'V':
