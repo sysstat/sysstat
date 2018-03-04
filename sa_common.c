@@ -437,7 +437,6 @@ void free_structures(struct activity *act[])
  ***************************************************************************
  * Reallocate all the buffers for given activity. The new size is the double
  * of the original one.
- * NB: nr_allocated is > 0.
  *
  * IN:
  * @a	Activity whose buffers need to be reallocated.
@@ -446,16 +445,26 @@ void free_structures(struct activity *act[])
 void reallocate_all_buffers(struct activity *a)
 {
 	int j;
+	size_t nr_realloc;
+
+	if (!a->nr_allocated) {
+		nr_realloc = (a->nr_ini ? a->nr_ini : 1);
+	}
+	else {
+		nr_realloc = a->nr_allocated * 2;
+	}
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(a->buf[j], void,
-			(size_t) a->msize * (size_t) a->nr_allocated * 2 * (size_t) a->nr2);
+			(size_t) a->msize * nr_realloc * (size_t) a->nr2);
 		/* Init additional space which has been allocated */
-		memset(a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
-		       (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2);
+		if (a->nr_allocated) {
+			memset(a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
+			       (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2);
+		}
 	}
 
-	a->nr_allocated *= 2;
+	a->nr_allocated = nr_realloc;
 }
 
 /*
@@ -2634,6 +2643,8 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 		 * But if it is the case, @nr_ini will be used in the loop
 		 * to display all processors. So update its value here and
 		 * reallocate buffers if needed.
+		 * NB: We may have nr_allocated=0 here if A_CPU activity has
+		 * not been collected in file (or if it has an unknown format).
 		 */
 		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 		act[p]->nr_ini = file_hdr->sa_cpu_nr;
