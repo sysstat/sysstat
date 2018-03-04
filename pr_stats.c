@@ -2673,7 +2673,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 				 * No free slot has been found for current device.
 				 * So enlarge buffers then save device in list.
 				 */
-				reallocate_all_buffers(a);
+				reallocate_all_buffers(a, j);
 				sum = (struct stats_pwr_usb *) ((char *) a->buf[2] + j * a->msize);
 				*sum = *suc;
 				a->nr[2] = j + 1;
@@ -2821,7 +2821,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 				 * No free slot has been found for current filesystem.
 				 * So enlarge buffers then save filesystem in list.
 				 */
-				reallocate_all_buffers(a);
+				reallocate_all_buffers(a, j);
 				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
 				*sfm = *sfc;
 				a->nr[2] = j + 1;

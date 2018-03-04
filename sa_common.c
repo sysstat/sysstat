@@ -435,23 +435,31 @@ void free_structures(struct activity *act[])
 
 /*
  ***************************************************************************
- * Reallocate all the buffers for given activity. The new size is the double
- * of the original one.
+ * Reallocate all the buffers for a given activity.
  *
  * IN:
- * @a	Activity whose buffers need to be reallocated.
+ * @a		Activity whose buffers need to be reallocated.
+ * @nr_min	Minimum number of items that the new buffers should be able
+ *		to receive.
  ***************************************************************************
  */
-void reallocate_all_buffers(struct activity *a)
+void reallocate_all_buffers(struct activity *a, __nr_t nr_min)
 {
 	int j;
 	size_t nr_realloc;
 
+	if (nr_min <= 0) {
+		nr_min = 1;
+	}
 	if (!a->nr_allocated) {
-		nr_realloc = (a->nr_ini ? a->nr_ini : 1);
+		nr_realloc = nr_min;
 	}
 	else {
-		nr_realloc = a->nr_allocated * 2;
+		nr_realloc = a->nr_allocated;
+		do {
+			nr_realloc = nr_realloc * 2;
+		}
+		while (nr_realloc < nr_min);
 	}
 
 	for (j = 0; j < 3; j++) {
@@ -460,7 +468,7 @@ void reallocate_all_buffers(struct activity *a)
 		/* Init additional space which has been allocated */
 		if (a->nr_allocated) {
 			memset(a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
-			       (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2);
+			       (size_t) a->msize * (size_t) (nr_realloc - a->nr_allocated) * (size_t) a->nr2);
 		}
 	}
 
@@ -1514,7 +1522,7 @@ void read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 		/* Reallocate buffers if needed */
 		if (nr_value > act[p]->nr_allocated) {
-			reallocate_all_buffers(act[p]);
+			reallocate_all_buffers(act[p], nr_value);
 		}
 
 		/*
@@ -2649,7 +2657,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 		act[p]->nr_ini = file_hdr->sa_cpu_nr;
 		if (act[p]->nr_ini > act[p]->nr_allocated) {
-			reallocate_all_buffers(act[p]);
+			reallocate_all_buffers(act[p], act[p]->nr_ini);
 		}
 
 		if (!dp)
