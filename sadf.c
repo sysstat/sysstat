@@ -687,7 +687,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				/* Raw output */
 				if (DISPLAY_DEBUG_MODE(flags)) {
 					printf("[%s: %d/%d (%d)]\n", act[i]->name,
-					       act[i]->nr[curr], act[i]->nr_ini, act[i]->nr_allocated);
+					       act[i]->nr[curr], act[i]->nr_allocated, act[i]->nr_ini);
 				}
 
 				(*act[i]->f_raw_print)(act[i], pre, curr);
