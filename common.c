@@ -626,13 +626,13 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 	 * avoid getting an interval value < 0.
 	 * (I don't know how the other fields like hardirq, steal... behave).
 	 * Don't assume the CPU has come back from offline state if previous
-	 * value was greater than ULLONG_MAX & 0x80000 (the counter probably
+	 * value was greater than ULLONG_MAX & 0x7ffff (the counter probably
 	 * overflew).
 	 */
-	if ((scc->cpu_idle < scp->cpu_idle) && (scp->cpu_idle < (ULLONG_MAX & 0x80000))) {
+	if ((scc->cpu_idle < scp->cpu_idle) && (scp->cpu_idle < (ULLONG_MAX - 0x7ffff))) {
 		scp->cpu_idle = 0;
 	}
-	if ((scc->cpu_iowait < scp->cpu_iowait) && (scp->cpu_iowait < (ULLONG_MAX & 0x80000))) {
+	if ((scc->cpu_iowait < scp->cpu_iowait) && (scp->cpu_iowait < (ULLONG_MAX - 0x7ffff))) {
 		scp->cpu_iowait = 0;
 	}
 
