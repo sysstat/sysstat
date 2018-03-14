@@ -2377,7 +2377,10 @@ void csv_write_pid_stats(int prev, int curr,
 		// %CPU,CPU,ticks/s:
 		efprintf(csv_file, csv_file_path,
 			"%llu,%llu,%llu,%llu,%f,%u,%lu,",
-			pstc->utime, pstc->stime, pstc->gtime, pstc->wtime,
+			pstc->utime - pstp->utime,
+			pstc->stime - pstp->stime,
+			pstc->gtime - pstp->gtime,
+			pstc->wtime - pstp->wtime,
 			/* User time already includes guest time */
 			IRIX_MODE_OFF(pidflag) ?
 				SP_VALUE_100(pstp->utime + pstp->stime,
