@@ -94,13 +94,13 @@ char *pfield(char *hdr_line, int pos)
  */
 void pval(unsigned long long valp, unsigned long long valc)
 {
-	printf("%llu>%llu", valp, valc);
 	if (DISPLAY_DEBUG_MODE(flags)) {
 		if (valc < valp) {
 			/* Field's value has decreased */
 			printf(" [DEC]");
 		}
 	}
+	printf("; %llu; %llu;", valp, valc);
 }
 
 /*
@@ -140,9 +140,7 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 			continue;
 
 		/* Yes: Display it */
-		printf("%s %s:%d", timestr,
-		       pfield(a->hdr_line, DISPLAY_CPU_ALL(a->opt_flags)), i - 1);
-
+		printf("%s; %s", timestr,pfield(a->hdr_line, DISPLAY_CPU_ALL(a->opt_flags)));
 		if (DISPLAY_DEBUG_MODE(flags) && i) {
 			if ((scc->cpu_user + scc->cpu_nice + scc->cpu_sys +
 			     scc->cpu_iowait + scc->cpu_idle + scc->cpu_steal +
@@ -157,42 +155,43 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 				}
 			}
 		}
+		printf("; %d;", i - 1);
 
 		if (DISPLAY_CPU_DEF(a->opt_flags)) {
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_user, scc->cpu_user);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_nice, scc->cpu_nice);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
 			     scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_iowait, scc->cpu_iowait);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_steal, scc->cpu_steal);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_idle, scc->cpu_idle);
 		}
 		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_user - scp->cpu_guest, scc->cpu_user - scc->cpu_guest);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_nice - scp->cpu_guest_nice, scc->cpu_nice - scc->cpu_guest_nice);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_sys, scc->cpu_sys);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_iowait, scc->cpu_iowait);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_steal, scc->cpu_steal);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_hardirq, scc->cpu_hardirq);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_softirq, scc->cpu_softirq);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_guest, scc->cpu_guest);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_guest_nice, scc->cpu_guest_nice);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(scp->cpu_idle, scc->cpu_idle);
 		}
 		printf("\n");
@@ -215,9 +214,9 @@ __print_funct_t raw_print_pcsw_stats(struct activity *a, char *timestr, int curr
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) spp->processes, (unsigned long long) spc->processes);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(spp->context_switch, spc->context_switch);
 	printf("\n");
 }
@@ -246,9 +245,9 @@ __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 
 			/* Yes: Display it */
-			printf("%s %s:%d", timestr,
+			printf("%s; %s; %d;", timestr,
 			       pfield(a->hdr_line, FIRST), i - 1);
-			printf(" %s:", pfield(NULL, 0));
+			printf(" %s", pfield(NULL, 0));
 			pval(sip->irq_nr, sic->irq_nr);
 			printf("\n");
 		}
@@ -271,9 +270,9 @@ __print_funct_t raw_print_swap_stats(struct activity *a, char *timestr, int curr
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) ssp->pswpin, (unsigned long long) ssc->pswpin);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) ssp->pswpout, (unsigned long long) ssc->pswpout);
 	printf("\n");
 }
@@ -294,21 +293,21 @@ __print_funct_t raw_print_paging_stats(struct activity *a, char *timestr, int cu
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) spp->pgpgin, (unsigned long long) spc->pgpgin);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgpgout, (unsigned long long) spc->pgpgout);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgfault, (unsigned long long) spc->pgfault);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgmajfault, (unsigned long long) spc->pgmajfault);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgfree, (unsigned long long) spc->pgfree);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgscan_kswapd, (unsigned long long) spc->pgscan_kswapd);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgscan_direct, (unsigned long long) spc->pgscan_direct);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgsteal, (unsigned long long) spc->pgsteal);
 	printf("\n");
 }
@@ -329,15 +328,15 @@ __print_funct_t raw_print_io_stats(struct activity *a, char *timestr, int curr)
 		*sic = (struct stats_io *) a->buf[curr],
 		*sip = (struct stats_io *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval(sip->dk_drive, sic->dk_drive);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_rio, sic->dk_drive_rio);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_wio, sic->dk_drive_wio);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_rblk, sic->dk_drive_rblk);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_wblk, sic->dk_drive_wblk);
 	printf("\n");
 }
@@ -358,35 +357,35 @@ __print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int cu
 		*smc = (struct stats_memory *) a->buf[curr];
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-		printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), smc->frmkb);
-		printf(" %s:%llu", pfield(NULL, 0), smc->availablekb);
-		printf(" kbttlmem:%llu", smc->tlmkb);
+		printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, FIRST), smc->frmkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->availablekb);
+		printf(" kbttlmem; %llu;", smc->tlmkb);
 		pfield(NULL, 0); /* Skip kbmemused */
 		pfield(NULL, 0); /* Skip %memused */
-		printf(" %s:%llu", pfield(NULL, 0), smc->bufkb);
-		printf(" %s:%llu", pfield(NULL, 0), smc->camkb);
-		printf(" %s:%llu", pfield(NULL, 0), smc->comkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->bufkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->camkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->comkb);
 		pfield(NULL, 0); /* Skip %commit */
-		printf(" %s:%llu", pfield(NULL, 0), smc->activekb);
-		printf(" %s:%llu", pfield(NULL, 0), smc->inactkb);
-		printf(" %s:%llu", pfield(NULL, 0), smc->dirtykb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->activekb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->inactkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->dirtykb);
 
 		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-			printf(" %s:%llu", pfield(NULL, 0), smc->anonpgkb);
-			printf(" %s:%llu", pfield(NULL, 0), smc->slabkb);
-			printf(" %s:%llu", pfield(NULL, 0), smc->kstackkb);
-			printf(" %s:%llu", pfield(NULL, 0), smc->pgtblkb);
-			printf(" %s:%llu", pfield(NULL, 0), smc->vmusedkb);
+			printf(" %s; %llu;", pfield(NULL, 0), smc->anonpgkb);
+			printf(" %s; %llu;", pfield(NULL, 0), smc->slabkb);
+			printf(" %s; %llu;", pfield(NULL, 0), smc->kstackkb);
+			printf(" %s; %llu;", pfield(NULL, 0), smc->pgtblkb);
+			printf(" %s; %llu;", pfield(NULL, 0), smc->vmusedkb);
 		}
 		printf("\n");
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-		printf("%s %s:%llu", timestr, pfield(a->hdr_line, SECOND), smc->frskb);
-		printf(" kbttlswp:%llu", smc->tlskb);
+		printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, SECOND), smc->frskb);
+		printf(" kbttlswp; %llu;", smc->tlskb);
 		pfield(NULL, 0); /* Skip kbswpused */
 		pfield(NULL, 0); /* Skip %swpused */
-		printf(" %s:%llu", pfield(NULL, 0), smc->caskb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->caskb);
 		printf("\n");
 	}
 }
@@ -406,10 +405,10 @@ __print_funct_t raw_print_ktables_stats(struct activity *a, char *timestr, int c
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
 
-	printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), skc->dentry_stat);
-	printf(" %s:%llu", pfield(NULL, 0), skc->file_used);
-	printf(" %s:%llu", pfield(NULL, 0), skc->inode_used);
-	printf(" %s:%llu", pfield(NULL, 0), skc->pty_nr);
+	printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, FIRST), skc->dentry_stat);
+	printf(" %s; %llu;", pfield(NULL, 0), skc->file_used);
+	printf(" %s; %llu;", pfield(NULL, 0), skc->inode_used);
+	printf(" %s; %llu;", pfield(NULL, 0), skc->pty_nr);
 	printf("\n");
 }
 
@@ -428,12 +427,12 @@ __print_funct_t raw_print_queue_stats(struct activity *a, char *timestr, int cur
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
 
-	printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), sqc->nr_running);
-	printf(" %s:%llu", pfield(NULL, 0), sqc->nr_threads);
-	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_1);
-	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_5);
-	printf(" %s:%u", pfield(NULL, 0), sqc->load_avg_15);
-	printf(" %s:%llu", pfield(NULL, 0), sqc->procs_blocked);
+	printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, FIRST), sqc->nr_running);
+	printf(" %s; %llu;", pfield(NULL, 0), sqc->nr_threads);
+	printf(" %s; %u;", pfield(NULL, 0), sqc->load_avg_1);
+	printf(" %s; %u;", pfield(NULL, 0), sqc->load_avg_5);
+	printf(" %s; %u;", pfield(NULL, 0), sqc->load_avg_15);
+	printf(" %s; %llu;", pfield(NULL, 0), sqc->procs_blocked);
 	printf("\n");
 }
 
@@ -481,27 +480,27 @@ __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int cu
 			while (j != j0);
 		}
 
-		printf("%s %s: %u", timestr, pfield(a->hdr_line, FIRST), ssc->line);
-
+		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
+		if (!found && DISPLAY_DEBUG_MODE(flags)) {
+			printf(" [NEW]");
+		}
+		printf("; %u;", ssc->line);
 		if (!found) {
-			if (DISPLAY_DEBUG_MODE(flags)) {
-				printf(" [NEW]");
-			}
 			printf("\n");
 			continue;
 		}
 
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssp->rx, (unsigned long long)ssc->rx);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssp->tx, (unsigned long long) ssc->tx);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssp->frame, (unsigned long long) ssc->frame);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssp->parity, (unsigned long long) ssc->parity);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssp->brk, (unsigned long long) ssc->brk);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssp->overrun, (unsigned long long) ssc->overrun);
 		printf("\n");
 	}
@@ -529,7 +528,8 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s major:%u minor:%u", timestr, sdc->major, sdc->minor);
+		printf("%s; major; %u; minor; %u; %s",
+		       timestr, sdc->major, sdc->minor, pfield(a->hdr_line, FIRST));
 
 		j = check_disk_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -564,17 +564,17 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 			}
 		}
 
-		printf(" %s:%s", pfield(a->hdr_line, FIRST), dev_name);
-		printf(" %s:", pfield(NULL, 0));
+		printf("; %s;", dev_name);
+		printf(" %s", pfield(NULL, 0));
 		pval(sdp->nr_ios, sdc->nr_ios);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sdp->rd_sect, (unsigned long long) sdc->rd_sect);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sdp->wr_sect, (unsigned long long) sdc->wr_sect);
-		printf(" tot_ticks:");
+		printf(" tot_ticks");
 		pval((unsigned long long) sdp->tot_ticks, (unsigned long long) sdc->tot_ticks);
 		pfield(NULL, 0); /* Skip areq-sz */
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sdp->rq_ticks, (unsigned long long) sdc->rq_ticks);
 		printf("\n");
 	}
@@ -601,8 +601,7 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:%s", timestr, pfield(a->hdr_line, FIRST), sndc->interface);
-
+		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
 			/* This is a newly registered interface. Previous stats are zero */
@@ -614,22 +613,23 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 		else {
 			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
 		}
+		printf("; %s;", sndc->interface);
 
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->rx_packets, sndc->rx_packets);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->tx_packets, sndc->tx_packets);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->rx_bytes, sndc->rx_bytes);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->tx_bytes, sndc->tx_bytes);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->rx_compressed, sndc->rx_compressed);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->tx_compressed, sndc->tx_compressed);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(sndp->multicast, sndc->multicast);
-		printf(" speed:%u duplex:%u\n", sndc->speed, sndc->duplex);
+		printf(" speed; %u; duplex; %u;\n", sndc->speed, sndc->duplex);
 	}
 }
 
@@ -654,8 +654,7 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:%s", timestr, pfield(a->hdr_line, FIRST), snedc->interface);
-
+		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 		j = check_net_edev_reg(a, curr, !curr, i);
 		if (j < 0) {
 			/* This is a newly registered interface. Previous stats are zero */
@@ -667,24 +666,25 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 		else {
 			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
 		}
+		printf("; %s;", snedc->interface);
 
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->rx_errors, snedc->rx_errors);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->tx_errors, snedc->tx_errors);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->collisions, snedc->collisions);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->rx_dropped, snedc->rx_dropped);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->tx_dropped, snedc->tx_dropped);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->tx_carrier_errors, snedc->tx_carrier_errors);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->rx_frame_errors, snedc->rx_frame_errors);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->rx_fifo_errors, snedc->rx_fifo_errors);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval(snedp->tx_fifo_errors, snedc->tx_fifo_errors);
 		printf("\n");
 	}
@@ -706,17 +706,17 @@ __print_funct_t raw_print_net_nfs_stats(struct activity *a, char *timestr, int c
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snnp->nfs_rpccnt, (unsigned long long) snnc->nfs_rpccnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snnp->nfs_rpcretrans, (unsigned long long) snnc->nfs_rpcretrans);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snnp->nfs_readcnt, (unsigned long long) snnc->nfs_readcnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snnp->nfs_writecnt, (unsigned long long) snnc->nfs_writecnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snnp->nfs_accesscnt, (unsigned long long) snnc->nfs_accesscnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snnp->nfs_getattcnt, (unsigned long long) snnc->nfs_getattcnt);
 	printf("\n");
 }
@@ -737,27 +737,27 @@ __print_funct_t raw_print_net_nfsd_stats(struct activity *a, char *timestr, int 
 		*snndc = (struct stats_net_nfsd *) a->buf[curr],
 		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snndp->nfsd_rpccnt, (unsigned long long) snndc->nfsd_rpccnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_rpcbad, (unsigned long long) snndc->nfsd_rpcbad);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_netcnt, (unsigned long long) snndc->nfsd_netcnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_netudpcnt, (unsigned long long) snndc->nfsd_netudpcnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_nettcpcnt, (unsigned long long) snndc->nfsd_nettcpcnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_rchits, (unsigned long long) snndc->nfsd_rchits);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_rcmisses, (unsigned long long) snndc->nfsd_rcmisses);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_readcnt, (unsigned long long) snndc->nfsd_readcnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_writecnt, (unsigned long long) snndc->nfsd_writecnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_accesscnt, (unsigned long long) snndc->nfsd_accesscnt);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snndp->nfsd_getattcnt, (unsigned long long) snndc->nfsd_getattcnt);
 	printf("\n");
 }
@@ -777,12 +777,12 @@ __print_funct_t raw_print_net_sock_stats(struct activity *a, char *timestr, int 
 	struct stats_net_sock
 		*snsc = (struct stats_net_sock *) a->buf[curr];
 
-	printf("%s %s:%u", timestr, pfield(a->hdr_line, FIRST), snsc->sock_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->tcp_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->udp_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->raw_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->frag_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->tcp_tw);
+	printf("%s; %s; %u;", timestr, pfield(a->hdr_line, FIRST), snsc->sock_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->tcp_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->udp_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->raw_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->frag_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->tcp_tw);
 	printf("\n");
 }
 
@@ -802,21 +802,21 @@ __print_funct_t raw_print_net_ip_stats(struct activity *a, char *timestr, int cu
 		*snic = (struct stats_net_ip *) a->buf[curr],
 		*snip = (struct stats_net_ip *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval(snip->InReceives, snic->InReceives);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->ForwDatagrams, snic->ForwDatagrams);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->InDelivers, snic->InDelivers);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->OutRequests, snic->OutRequests);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->ReasmReqds, snic->ReasmReqds);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->ReasmOKs, snic->ReasmOKs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->FragOKs, snic->FragOKs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->FragCreates, snic->FragCreates);
 	printf("\n");
 }
@@ -837,21 +837,21 @@ __print_funct_t raw_print_net_eip_stats(struct activity *a, char *timestr, int c
 		*sneic = (struct stats_net_eip *) a->buf[curr],
 		*sneip = (struct stats_net_eip *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval(sneip->InHdrErrors, sneic->InHdrErrors);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InAddrErrors, sneic->InAddrErrors);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InUnknownProtos, sneic->InUnknownProtos);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InDiscards, sneic->InDiscards);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->OutDiscards, sneic->OutDiscards);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->OutNoRoutes, sneic->OutNoRoutes);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->ReasmFails, sneic->ReasmFails);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->FragFails, sneic->FragFails);
 	printf("\n");
 }
@@ -872,33 +872,33 @@ __print_funct_t raw_print_net_icmp_stats(struct activity *a, char *timestr, int 
 		*snic = (struct stats_net_icmp *) a->buf[curr],
 		*snip = (struct stats_net_icmp *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snip->InMsgs, (unsigned long long) snic->InMsgs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutMsgs, (unsigned long long) snic->OutMsgs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InEchos, (unsigned long long) snic->InEchos);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InEchoReps, (unsigned long long) snic->InEchoReps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutEchos, (unsigned long long) snic->OutEchos);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutEchoReps, (unsigned long long) snic->OutEchoReps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InTimestamps, (unsigned long long) snic->InTimestamps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InTimestampReps, (unsigned long long) snic->InTimestampReps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutTimestamps, (unsigned long long) snic->OutTimestamps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutTimestampReps, (unsigned long long) snic->OutTimestampReps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InAddrMasks, (unsigned long long) snic->InAddrMasks);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InAddrMaskReps, (unsigned long long) snic->InAddrMaskReps);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutAddrMasks, (unsigned long long) snic->OutAddrMasks);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutAddrMaskReps, (unsigned long long) snic->OutAddrMaskReps);
 	printf("\n");
 }
@@ -919,29 +919,29 @@ __print_funct_t raw_print_net_eicmp_stats(struct activity *a, char *timestr, int
 		*sneic = (struct stats_net_eicmp *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) sneip->InErrors, (unsigned long long) sneic->InErrors);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutErrors, (unsigned long long) sneic->OutErrors);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InDestUnreachs, (unsigned long long) sneic->InDestUnreachs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutDestUnreachs, (unsigned long long) sneic->OutDestUnreachs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InTimeExcds, (unsigned long long) sneic->InTimeExcds);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutTimeExcds, (unsigned long long) sneic->OutTimeExcds);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InParmProbs, (unsigned long long) sneic->InParmProbs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutParmProbs, (unsigned long long) sneic->OutParmProbs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InSrcQuenchs, (unsigned long long) sneic->InSrcQuenchs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutSrcQuenchs, (unsigned long long) sneic->OutSrcQuenchs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InRedirects, (unsigned long long) sneic->InRedirects);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutRedirects, (unsigned long long) sneic->OutRedirects);
 	printf("\n");
 }
@@ -962,13 +962,13 @@ __print_funct_t raw_print_net_tcp_stats(struct activity *a, char *timestr, int c
 		*sntc = (struct stats_net_tcp *) a->buf[curr],
 		*sntp = (struct stats_net_tcp *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) sntp->ActiveOpens, (unsigned long long) sntc->ActiveOpens);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sntp->PassiveOpens, (unsigned long long) sntc->PassiveOpens);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sntp->InSegs, (unsigned long long) sntc->InSegs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sntp->OutSegs, (unsigned long long) sntc->OutSegs);
 	printf("\n");
 }
@@ -989,15 +989,15 @@ __print_funct_t raw_print_net_etcp_stats(struct activity *a, char *timestr, int 
 		*snetc = (struct stats_net_etcp *) a->buf[curr],
 		*snetp = (struct stats_net_etcp *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snetp->AttemptFails, (unsigned long long) snetc->AttemptFails);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snetp->EstabResets, (unsigned long long) snetc->EstabResets);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snetp->RetransSegs, (unsigned long long) snetc->RetransSegs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snetp->InErrs, (unsigned long long) snetc->InErrs);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snetp->OutRsts, (unsigned long long) snetc->OutRsts);
 	printf("\n");
 }
@@ -1018,13 +1018,13 @@ __print_funct_t raw_print_net_udp_stats(struct activity *a, char *timestr, int c
 		*snuc = (struct stats_net_udp *) a->buf[curr],
 		*snup = (struct stats_net_udp *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snup->InDatagrams, (unsigned long long) snuc->InDatagrams);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snup->OutDatagrams, (unsigned long long) snuc->OutDatagrams);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snup->NoPorts, (unsigned long long) snuc->NoPorts);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snup->InErrors, (unsigned long long) snuc->InErrors);
 	printf("\n");
 }
@@ -1044,10 +1044,10 @@ __print_funct_t raw_print_net_sock6_stats(struct activity *a, char *timestr, int
 	struct stats_net_sock6
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
 
-	printf("%s %s:%u", timestr, pfield(a->hdr_line, FIRST), snsc->tcp6_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->udp6_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->raw6_inuse);
-	printf(" %s:%u", pfield(NULL, 0), snsc->frag6_inuse);
+	printf("%s; %s; %u;", timestr, pfield(a->hdr_line, FIRST), snsc->tcp6_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->udp6_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->raw6_inuse);
+	printf(" %s; %u;", pfield(NULL, 0), snsc->frag6_inuse);
 	printf("\n");
 }
 
@@ -1067,25 +1067,25 @@ __print_funct_t raw_print_net_ip6_stats(struct activity *a, char *timestr, int c
 		*snic = (struct stats_net_ip6 *) a->buf[curr],
 		*snip = (struct stats_net_ip6 *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval(snip->InReceives6, snic->InReceives6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->OutForwDatagrams6, snic->OutForwDatagrams6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->InDelivers6, snic->InDelivers6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->OutRequests6, snic->OutRequests6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->ReasmReqds6, snic->ReasmReqds6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->ReasmOKs6, snic->ReasmOKs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->InMcastPkts6, snic->InMcastPkts6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->OutMcastPkts6, snic->OutMcastPkts6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->FragOKs6, snic->FragOKs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(snip->FragCreates6, snic->FragCreates6);
 	printf("\n");
 }
@@ -1106,27 +1106,27 @@ __print_funct_t raw_print_net_eip6_stats(struct activity *a, char *timestr, int 
 		*sneic = (struct stats_net_eip6 *) a->buf[curr],
 		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval(sneip->InHdrErrors6, sneic->InHdrErrors6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InAddrErrors6, sneic->InAddrErrors6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InUnknownProtos6, sneic->InUnknownProtos6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InTooBigErrors6, sneic->InTooBigErrors6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InDiscards6, sneic->InDiscards6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->OutDiscards6, sneic->OutDiscards6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InNoRoutes6, sneic->InNoRoutes6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->OutNoRoutes6, sneic->OutNoRoutes6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->ReasmFails6, sneic->ReasmFails6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->FragFails6, sneic->FragFails6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval(sneip->InTruncatedPkts6, sneic->InTruncatedPkts6);
 	printf("\n");
 }
@@ -1147,55 +1147,55 @@ __print_funct_t raw_print_net_icmp6_stats(struct activity *a, char *timestr, int
 		*snic = (struct stats_net_icmp6 *) a->buf[curr],
 		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snip->InMsgs6,
 	     (unsigned long long) snic->InMsgs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutMsgs6,
 	     (unsigned long long) snic->OutMsgs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InEchos6,
 	     (unsigned long long) snic->InEchos6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InEchoReplies6,
 	     (unsigned long long) snic->InEchoReplies6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutEchoReplies6,
 	     (unsigned long long) snic->OutEchoReplies6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InGroupMembQueries6,
 	     (unsigned long long) snic->InGroupMembQueries6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InGroupMembResponses6,
 	     (unsigned long long) snic->InGroupMembResponses6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutGroupMembResponses6,
 	     (unsigned long long) snic->OutGroupMembResponses6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InGroupMembReductions6,
 	     (unsigned long long) snic->InGroupMembReductions6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutGroupMembReductions6,
 	     (unsigned long long) snic->OutGroupMembReductions6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InRouterSolicits6,
 	     (unsigned long long) snic->InRouterSolicits6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutRouterSolicits6,
 	     (unsigned long long) snic->OutRouterSolicits6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InRouterAdvertisements6,
 	     (unsigned long long) snic->InRouterAdvertisements6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InNeighborSolicits6,
 	     (unsigned long long) snic->InNeighborSolicits6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutNeighborSolicits6,
 	     (unsigned long long) snic->OutNeighborSolicits6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->InNeighborAdvertisements6,
 	     (unsigned long long) snic->InNeighborAdvertisements6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snip->OutNeighborAdvertisements6,
 	     (unsigned long long) snic->OutNeighborAdvertisements6);
 	printf("\n");
@@ -1217,27 +1217,27 @@ __print_funct_t raw_print_net_eicmp6_stats(struct activity *a, char *timestr, in
 		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) sneip->InErrors6, (unsigned long long) sneic->InErrors6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InDestUnreachs6, (unsigned long long) sneic->InDestUnreachs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutDestUnreachs6, (unsigned long long) sneic->OutDestUnreachs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InTimeExcds6, (unsigned long long) sneic->InTimeExcds6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutTimeExcds6, (unsigned long long) sneic->OutTimeExcds6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InParmProblems6, (unsigned long long) sneic->InParmProblems6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutParmProblems6, (unsigned long long) sneic->OutParmProblems6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InRedirects6, (unsigned long long) sneic->InRedirects6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutRedirects6, (unsigned long long) sneic->OutRedirects6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->InPktTooBigs6, (unsigned long long) sneic->InPktTooBigs6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) sneip->OutPktTooBigs6, (unsigned long long) sneic->OutPktTooBigs6);
 	printf("\n");
 }
@@ -1258,13 +1258,13 @@ __print_funct_t raw_print_net_udp6_stats(struct activity *a, char *timestr, int 
 		*snuc = (struct stats_net_udp6 *) a->buf[curr],
 		*snup = (struct stats_net_udp6 *) a->buf[!curr];
 
-	printf("%s %s:", timestr, pfield(a->hdr_line, FIRST));
+	printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 	pval((unsigned long long) snup->InDatagrams6, (unsigned long long) snuc->InDatagrams6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snup->OutDatagrams6, (unsigned long long) snuc->OutDatagrams6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snup->NoPorts6, (unsigned long long) snuc->NoPorts6);
-	printf(" %s:", pfield(NULL, 0));
+	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) snup->InErrors6, (unsigned long long) snuc->InErrors6);
 	printf("\n");
 }
@@ -1291,8 +1291,8 @@ __print_funct_t raw_print_pwr_cpufreq_stats(struct activity *a, char *timestr, i
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 			/* Yes: Display it */
-			printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
-			printf(" %s:%lu\n", pfield(NULL, 0), spc->cpufreq);
+			printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i - 1);
+			printf(" %s; %lu;\n", pfield(NULL, 0), spc->cpufreq);
 		}
 	}
 }
@@ -1315,10 +1315,10 @@ __print_funct_t raw_print_pwr_fan_stats(struct activity *a, char *timestr, int c
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i + 1);
-		printf(" %s:%s", pfield(NULL, 0), spc->device);
-		printf(" %s:%f", pfield(NULL, 0), spc->rpm);
-		printf(" rpm_min:%f\n", spc->rpm_min);
+		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i + 1);
+		printf(" %s; %s;", pfield(NULL, 0), spc->device);
+		printf(" %s; %f;", pfield(NULL, 0), spc->rpm);
+		printf(" rpm_min; %f;\n", spc->rpm_min);
 	}
 }
 
@@ -1340,11 +1340,11 @@ __print_funct_t raw_print_pwr_temp_stats(struct activity *a, char *timestr, int 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i + 1);
-		printf(" %s:%s", pfield(NULL, 0), spc->device);
-		printf(" %s:%f", pfield(NULL, 0), spc->temp);
-		printf(" temp_min:%f", spc->temp_min);
-		printf(" temp_max:%f\n", spc->temp_max);
+		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i + 1);
+		printf(" %s; %s;", pfield(NULL, 0), spc->device);
+		printf(" %s; %f;", pfield(NULL, 0), spc->temp);
+		printf(" temp_min; %f;", spc->temp_min);
+		printf(" temp_max; %f;\n", spc->temp_max);
 	}
 }
 
@@ -1366,11 +1366,11 @@ __print_funct_t raw_print_pwr_in_stats(struct activity *a, char *timestr, int cu
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i);
-		printf(" %s:%s", pfield(NULL, 0), spc->device);
-		printf(" %s:%f", pfield(NULL, 0), spc->in);
-		printf(" in_min:%f", spc->in_min);
-		printf(" in_max:%f\n", spc->in_max);
+		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i);
+		printf(" %s; %s;", pfield(NULL, 0), spc->device);
+		printf(" %s; %f;", pfield(NULL, 0), spc->in);
+		printf(" in_min; %f;", spc->in_min);
+		printf(" in_max; %f;\n", spc->in_max);
 	}
 }
 
@@ -1389,8 +1389,8 @@ __print_funct_t raw_print_huge_stats(struct activity *a, char *timestr, int curr
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
 
-	printf("%s %s:%llu", timestr, pfield(a->hdr_line, FIRST), smc->frhkb);
-	printf(" hugtotal:%llu\n", smc->tlhkb);
+	printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, FIRST), smc->frhkb);
+	printf(" hugtotal; %llu;\n", smc->tlhkb);
 }
 
 /*
@@ -1418,7 +1418,7 @@ __print_funct_t raw_print_pwr_wghfreq_stats(struct activity *a, char *timestr, i
 			/* No */
 			continue;
 
-		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
+		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i - 1);
 
 		for (k = 0; k < a->nr2; k++) {
 
@@ -1427,8 +1427,8 @@ __print_funct_t raw_print_pwr_wghfreq_stats(struct activity *a, char *timestr, i
 				break;
 			spp_k = (struct stats_pwr_wghfreq *) ((char *) spp + k * a->msize);
 
-			printf(" freq: %lu", spc_k->freq);
-			printf(" tminst:");
+			printf(" freq; %lu;", spc_k->freq);
+			printf(" tminst");
 			pval(spp_k->time_in_state, spc_k->time_in_state);
 		}
 		printf("\n");
@@ -1453,12 +1453,12 @@ __print_funct_t raw_print_pwr_usb_stats(struct activity *a, char *timestr, int c
 	for (i = 0; i < a->nr[curr]; i++) {
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:\"%s\"", timestr, pfield(a->hdr_line, FIRST), suc->manufacturer);
-		printf(" %s:\"%s\"", pfield(NULL, 0), suc->product);
-		printf(" %s:%d", pfield(NULL, 0), suc->bus_nr);
-		printf(" %s:%x", pfield(NULL, 0), suc->vendor_id);
-		printf(" %s:%x", pfield(NULL, 0), suc->product_id);
-		printf(" %s:%u\n", pfield(NULL, 0), suc->bmaxpower);
+		printf("%s; %s; \"%s\";", timestr, pfield(a->hdr_line, FIRST), suc->manufacturer);
+		printf(" %s; \"%s\";", pfield(NULL, 0), suc->product);
+		printf(" %s; %d;", pfield(NULL, 0), suc->bus_nr);
+		printf(" %s; %x;", pfield(NULL, 0), suc->vendor_id);
+		printf(" %s; %x;", pfield(NULL, 0), suc->product_id);
+		printf(" %s; %u;\n", pfield(NULL, 0), suc->bmaxpower);
 	}
 }
 
@@ -1480,17 +1480,17 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s %s:\"%s\"", timestr, pfield(a->hdr_line, FIRST + DISPLAY_MOUNT(a->opt_flags)),
+		printf("%s; %s; \"%s\";", timestr, pfield(a->hdr_line, FIRST + DISPLAY_MOUNT(a->opt_flags)),
 		       DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name);
-		printf(" f_bfree:%llu", sfc->f_bfree);
-		printf(" f_blocks:%llu", sfc->f_blocks);
-		printf(" f_bavail:%llu", sfc->f_bavail);
+		printf(" f_bfree; %llu;", sfc->f_bfree);
+		printf(" f_blocks; %llu;", sfc->f_blocks);
+		printf(" f_bavail; %llu;", sfc->f_bavail);
 		pfield(NULL, 0); /* Skip MBfsfree */
 		pfield(NULL, 0); /* Skip MBfsused */
 		pfield(NULL, 0); /* Skip %fsused */
 		pfield(NULL, 0); /* Skip %ufsused */
-		printf(" %s:%llu", pfield(NULL, 0), sfc->f_ffree);
-		printf(" f_files:%llu\n", sfc->f_files);
+		printf(" %s; %llu;", pfield(NULL, 0), sfc->f_ffree);
+		printf(" f_files; %llu;\n", sfc->f_files);
 
 	}
 }
@@ -1542,14 +1542,14 @@ __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int cu
 		if (!found)
 			continue;
 
-		printf(" %s:%s", pfield(a->hdr_line, FIRST), sfcc->fchost_name);
-		printf(" %s:", pfield(NULL, 0));
+		printf("%s; %s; %s;", timestr, pfield(a->hdr_line, FIRST), sfcc->fchost_name);
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sfcp->f_rxframes, (unsigned long long) sfcc->f_rxframes);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sfcp->f_txframes, (unsigned long long) sfcc->f_txframes);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sfcp->f_rxwords, (unsigned long long) sfcc->f_rxwords);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sfcp->f_txwords, (unsigned long long) sfcc->f_txwords);
 		printf("\n");
 	}
@@ -1595,16 +1595,16 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 			continue;
 
 		/* Yes: Display current CPU stats */
-		printf("%s %s:%d", timestr, pfield(a->hdr_line, FIRST), i - 1);
-		printf(" %s:", pfield(NULL, 0));
+		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i - 1);
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->processed, (unsigned long long) ssnc->processed);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->dropped, (unsigned long long) ssnc->dropped);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->time_squeeze, (unsigned long long) ssnc->time_squeeze);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->received_rps, (unsigned long long) ssnc->received_rps);
-		printf(" %s:", pfield(NULL, 0));
+		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->flow_limit, (unsigned long long) ssnc->flow_limit);
 		printf("\n");
 	}

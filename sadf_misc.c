@@ -205,7 +205,7 @@ __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
 		if (strlen(cur_date) && utc) {
 			printf(" UTC");
 		}
-		printf("\tLINUX-RESTART\t(%d CPU)\n",
+		printf("; LINUX-RESTART (%d CPU)\n",
 		       file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 }
@@ -392,7 +392,7 @@ __printf_funct_t print_raw_comment(int *tab, int action, char *cur_date,
 		if (strlen(cur_date) && utc) {
 			printf(" UTC");
 		}
-		printf("\tCOM %s\n", comment);
+		printf("; COM %s\n", comment);
 	}
 }
 
