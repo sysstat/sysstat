@@ -1255,6 +1255,8 @@ char *get_devname
 	(unsigned int, unsigned int, int);
 void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
+unsigned long long get_global_cpu_statistics
+	(struct activity *, int, int, unsigned int, unsigned char []);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
 int next_slice
