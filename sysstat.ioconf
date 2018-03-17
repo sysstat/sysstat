@@ -264,5 +264,10 @@
 247:232:15:
 
 # 240..254: LOCAL/Experimental
-# 255: reserved for big dev_t expansion
+
+256:rfd:*:0:a:16:*:16:Resident Flash Disk Flash Translation Layer (rfda..rfdp)
+
+257:ssfdc:*:0:a:8:*:8:SSFDC Flash Translation Layer filesystem (ssfdca..ssfdch)
+
+258:blockrom:*:0:d:256:*:1:ROM/Flash Read-Only Translation Layer (blockrom0...)
 
