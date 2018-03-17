@@ -13,12 +13,17 @@
 #define IOC_NAMELEN	31
 #define IOC_DESCLEN	63
 #define IOC_DEVLEN	47
-#define IOC_MAXMINOR	2047
 #define IOC_LINESIZ	255
 #define IOC_FMTLEN	15
 
+#ifndef MINORBITS
+#define MINORBITS	20
+#endif
+#define IOC_MAXMINOR	((1U << MINORBITS) - 1)
 #ifndef MAX_BLKDEV
-#define MAX_BLKDEV	255
+/* #define MAX_BLKDEV	((1U << (32 - MINORBITS)) - 1) */
+/* Use a lower value since this value is used to allocate arrays statically in ioconf.c */
+#define MAX_BLKDEV	511
 #endif
 
 #define K_NODEV	"nodev"

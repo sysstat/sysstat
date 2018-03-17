@@ -260,7 +260,7 @@ int ioc_init(void)
 
 			/*
 			 * device has an aliased minor
-			 * for now we only support on exception per major
+			 * for now we only support one exception per major
 			 * (catering to initrd: (1,250))
 			 */
 			if (ioconf[major] == NULL) {
@@ -390,7 +390,7 @@ char *ioc_name(unsigned int major, unsigned int minor)
 	struct ioc_entry *p;
 	int base, offset;
 
-	if ((MAX_BLKDEV <= major) || (IOC_MAXMINOR <= minor)) {
+	if ((major > MAX_BLKDEV) || (minor > IOC_MAXMINOR)) {
 		return (NULL);
 	}
 
@@ -469,16 +469,12 @@ int ioc_iswhole(unsigned int major, unsigned int minor)
 	if (!ioc_parsed && !ioc_init())
 		return 0;
 
-	if (major >= MAX_BLKDEV)
-		/*
-		 * Later: Handle Linux long major numbers here.
-		 * Now: This is an error.
-		 */
+	if (major > MAX_BLKDEV)
 		return 0;
 
 	if (ioconf[major] == NULL)
 		/* Device not registered */
-		return 0 ;
+		return 0;
 
 	return (IS_WHOLE(major, minor));
 }
