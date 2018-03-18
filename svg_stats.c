@@ -1069,8 +1069,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				    unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_cpu *scc, *scp;
-	unsigned long long tot_jiffies_c, tot_jiffies_p;
-	unsigned long long deltot_jiffies;
+	unsigned long long deltot_jiffies = 1;
+	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	int group1[] = {5};
 	int group2[] = {9};
 	int g_type[] = {SVG_BAR_GRAPH};
@@ -1099,59 +1099,41 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			a->nr_ini = a->nr[curr];
 		}
 
+		/*
+		 * Compute CPU "all" as sum of all individual CPU (on SMP machines)
+		 * and look for offline CPU.
+		 */
+		if (a->nr_ini > 1) {
+			deltot_jiffies = get_global_cpu_statistics(a, !curr, curr,
+								   flags, offline_cpu_bitmap);
+		}
+
 		/* For each CPU */
 		for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+			    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+				/* Don't display CPU */
+				continue;
 
 			scc = (struct stats_cpu *) ((char *) a->buf[curr]  + i * a->msize);
 			scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
 
-			/* Should current CPU (including CPU "all") be displayed? */
-			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
-				/* No */
-				continue;
-
-			/*
-			 * Yes: Compute the total number of jiffies spent by current processor.
-			 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
-			 * already include them.
-			 */
-			tot_jiffies_c = scc->cpu_user + scc->cpu_nice +
-					scc->cpu_sys + scc->cpu_idle +
-					scc->cpu_iowait + scc->cpu_hardirq +
-					scc->cpu_steal + scc->cpu_softirq;
-			tot_jiffies_p = scp->cpu_user + scp->cpu_nice +
-					scp->cpu_sys + scp->cpu_idle +
-					scp->cpu_iowait + scp->cpu_hardirq +
-					scp->cpu_steal + scp->cpu_softirq;
-
-			/* Total number of jiffies spent on the interval */
-			deltot_jiffies = get_interval(tot_jiffies_p, tot_jiffies_c);
-
 			pos = i * 10;
 			offset = 0.0;
 
-			if (i) {	/* Don't test CPU "all" here */
-				/*
-				 * If the CPU is offline then it is omited from /proc/stat:
-				 * All the fields couldn't have been read and the sum of them is zero.
-				 * (Remember that guest/guest_nice times are already included in
-				 * user/nice modes.)
-				 */
-				if (tot_jiffies_c == 0) {
+			if (i == 0) {
+				/* This is CPU "all" */
+				if (a->nr_ini == 1) {
 					/*
-					 * Set current struct fields (which have been set to zero)
-					 * to values from previous iteration. Hence their values won't
-					 * jump from zero when the CPU comes back online.
+					 * This is a UP machine. In this case
+					 * interval has still not been calculated.
 					 */
-					*scc = *scp;
-
-					/* An offline CPU is not displayed */
-					continue;
+					deltot_jiffies = get_per_cpu_interval(scc, scp);
 				}
-				if (tot_jiffies_p == 0)
-					/* CPU has just come back online */
-					continue;
-
+			}
+			else {
 				/*
 				 * Recalculate interval for current proc.
 				 * If result is 0 then current CPU is a tickless one.
