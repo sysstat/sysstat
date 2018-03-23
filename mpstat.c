@@ -132,7 +132,7 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-			  "[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"));
+			  "[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"));
 	exit(1);
 }
 
@@ -1084,17 +1084,6 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 
 			/* This is an offline CPU */
-
-			if (!DISPLAY_ONLINE_CPU(flags)) {
-				/*
-				 * Display offline CPU if requested by the user.
-				 * Value displayed is 0.00.
-				 */
-				printf("%-11s", curr_string);
-				cprintf_in(IS_INT, " %4d", "", cpu - 1);
-				cprintf_f(NO_UNIT, 1, 9, 2, 0.0);
-				printf("\n");
-			}
 			continue;
 		}
 
@@ -1170,15 +1159,6 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 
 			/* This is an offline CPU */
-
-			if (!DISPLAY_ONLINE_CPU(flags)) {
-				/*
-				 * Display offline CPU if requested by the user.
-				 * Value displayed is 0.00.
-				 */
-				xprintf0(tab, "{\"cpu\": \"%d\", \"intr\": 0.00}",
-					 cpu - 1);
-			}
 			continue;
 		}
 
@@ -1333,13 +1313,9 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
 		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0)
 			/* Offline CPU found */
-
-			if (DISPLAY_ONLINE_CPU(flags))
-				continue;
-		}
+			continue;
 
 		printf("%-11s", curr_string);
 		cprintf_in(IS_INT, "  %3d", "", cpu - 1);
@@ -1437,13 +1413,9 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 
 		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
 		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-
+		     scc->cpu_hardirq + scc->cpu_softirq) == 0)
 			/* Offline CPU found */
-
-			if (DISPLAY_ONLINE_CPU(flags))
-				continue;
-		}
+			continue;
 
 		if (nextcpu) {
 			printf(",\n");
@@ -2079,12 +2051,7 @@ int main(int argc, char **argv)
 			flags |= F_P_OPTION;
 			dis_hdr = 9;
 
-			if (!strcmp(argv[opt], K_ON)) {
-				/* Display stats for all online CPU */
-				flags |= F_P_ON;
-				memset(cpu_bitmap, ~0, BITMAP_SIZE(cpu_nr));
-			}
-			else if (parse_values(argv[opt], cpu_bitmap, cpu_nr, K_LOWERALL)) {
+			if (parse_values(argv[opt], cpu_bitmap, cpu_nr, K_LOWERALL)) {
 				usage(argv[0]);
 			}
 		}

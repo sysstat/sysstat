@@ -40,22 +40,19 @@
 
 /* Indicate that option -P has been used */
 #define F_P_OPTION	0x01
-/* Indicate that stats should be displayed on for online CPU ("-P ON") */
-#define F_P_ON		0x02
+/* 0x02: unused */
 /* JSON output */
 #define F_JSON_OUTPUT	0x04
 /* Indicate that option -N has been used */
 #define F_N_OPTION	0x08
 
 #define USE_P_OPTION(m)		(((m) & F_P_OPTION) == F_P_OPTION)
-#define DISPLAY_ONLINE_CPU(m)	(((m) & F_P_ON) == F_P_ON)
 #define DISPLAY_JSON_OUTPUT(m)	(((m) & F_JSON_OUTPUT) == F_JSON_OUTPUT)
 #define USE_N_OPTION(m)		(((m) & F_N_OPTION) == F_N_OPTION)
 
 #define K_SUM	"SUM"
 #define K_CPU	"CPU"
 #define K_SCPU	"SCPU"
-#define K_ON	"ON"
 
 #define NR_IRQCPU_PREALLOC	3
 
