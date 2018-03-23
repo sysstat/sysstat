@@ -1,4 +1,4 @@
-.TH MPSTAT 1 "MAY 2017" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "MARCH 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
@@ -8,7 +8,7 @@ mpstat \- Report processors related statistics.
 .I node_list
 .B | ALL } ] [ -o JSON ] [ -P {
 .I cpu_list
-.B | ON | ALL } ] [
+.B | ALL } ] [
 .I interval
 .B [
 .I count
@@ -129,7 +129,7 @@ All the other fields are the same as those displayed with option -u
 Display the statistics in JSON (Javascript Object Notation) format.
 JSON output field order is undefined, and new fields may be added
 in the future.
-.IP "-P { cpu_list | ON | ALL }"
+.IP "-P { cpu_list | ALL }"
 Indicate the processors for which statistics are to be reported.
 .I cpu_list
 is a list of comma-separated values or range of values (e.g.,
@@ -138,11 +138,9 @@ Note that processor 0 is the first processor, and processor
 .B all
 is the global average among all processors.
 The
-.B ON
-keyword indicates that statistics are to be reported for every
-online processor, whereas the
 .B ALL
 keyword indicates that statistics are to be reported for all processors.
+Offline processors are not displayed.
 .IP -u
 Report CPU utilization. The following values are displayed:
 
@@ -215,9 +213,6 @@ guest.
 Show the percentage of time that the CPU or CPUs were idle and the system
 did not have an outstanding disk I/O request.
 .RE
-
-Note: On SMP machines a processor that does not have any activity at all
-is a disabled (offline) processor.
 .RE
 .IP -V
 Print version number then exit.
@@ -292,8 +287,6 @@ Display five reports of statistics for all processors at two second intervals.
 filesystem must be mounted for the
 .B mpstat
 command to work.
-
-Only a few activities are given by the Linux kernel for each processor.
 
 .SH FILES
 .IR /proc
