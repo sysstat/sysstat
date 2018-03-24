@@ -2914,17 +2914,44 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 				    unsigned long long itv)
 {
+	int i;
 	struct stats_softnet
 		*ssnc = (struct stats_softnet *) a->buf[curr],
 		*ssnp = (struct stats_softnet *) a->buf[prev];
-	int i;
+	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
 	if (dis || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9);
 	}
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/*
+	 * @nr[curr] cannot normally be greater than @nr_ini
+	 * (since @nr_ini counts up all CPU, even those offline).
+	 * If this happens, it may be because the machine has been
+	 * restarted with more CPU and no LINUX_RESTART has been
+	 * inserted in file.
+	 */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
 
+	/* Compute statistics for CPU "all" */
+	get_global_soft_statistics(a, prev, curr, flags, offline_cpu_bitmap);
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * Should current CPU (including CPU "all") be displayed?
+		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
+		 * Anyway, NR_CPUS may vary between the version of sysstat
+		 * used by sadc to create a file, and the version of sysstat
+		 * used by sar to read it...
+		 */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+			/* No */
+			continue;
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
 		 * sizeof(struct stats_pwr_cpufreq) value if data have been read from a file!
@@ -2934,20 +2961,7 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
                 ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
                 ssnp = (struct stats_softnet *) ((char *) a->buf[prev] + i * a->msize);
 
-		/*
-		 * Note: a->nr is in [1, NR_CPUS + 1].
-		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
-		 * Anyway, NR_CPUS may vary between the version of sysstat
-		 * used by sadc to create a file, and the version of sysstat
-		 * used by sar to read it...
-		 */
-
-		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
-			/* No */
-			continue;
-
-		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(ssnp, ssnc,STATS_SOFTNET_SIZE))
+		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(ssnp, ssnc, STATS_SOFTNET_SIZE))
 			continue;
 
 		printf("%-11s", timestamp[curr]);

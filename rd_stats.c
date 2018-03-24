@@ -2603,58 +2603,47 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
  * IN:
  * @st_softnet	Structure where stats will be saved.
  * @nr_alloc	Total number of structures allocated. Value is >= 0.
+ * @online_cpu_bitmap
+ *		Bitmap listing online CPU.
  *
  * OUT:
  * @st_softnet	Structure with statistics.
  *
  * RETURNS:
- * Number of CPU for which statistics have been read.
- * 1 means CPU "all", 2 means CPU 0, 3 means CPU 1, etc.
- * Or -1 if the buffer was too small and needs to be reallocated.
+ * 1 if stats have been sucessfully read, or 0 otherwise.
  ***************************************************************************
  */
-__nr_t read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc)
+int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
+		  unsigned char online_cpu_bitmap[])
 {
 	FILE *fp;
 	struct stats_softnet *st_softnet_i;
 	char line[1024];
-	__nr_t cpu_read = 1;	/* For CPU "all" */
+	int cpu;
 
 	/* Open /proc/net/softnet_stat file */
 	if ((fp = fopen(NET_SOFTNET, "r")) == NULL)
 		return 0;
 
-	/*
-	 * Init a structure that will contain the values for CPU "all".
-	 * CPU "all" doesn't exist in /proc/net/softnet_stat file, so
-	 * we compute its values as the sum of the values of each CPU.
-	 */
-	memset(st_softnet, 0, sizeof(struct stats_softnet));
+	for (cpu = 1; cpu < nr_alloc; cpu++) {
+		if (!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07))))
+			/* CPU is offline */
+			continue;
 
-	while (fgets(line, sizeof(line), fp) != NULL) {
-
-		if (cpu_read + 1 > nr_alloc) {
-			cpu_read = -1;
+		if (fgets(line, sizeof(line), fp) == NULL)
 			break;
-		}
 
-		st_softnet_i = st_softnet + cpu_read++;
+		st_softnet_i = st_softnet + cpu;
 		sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x",
 		       &st_softnet_i->processed,
 		       &st_softnet_i->dropped,
 		       &st_softnet_i->time_squeeze,
 		       &st_softnet_i->received_rps,
 		       &st_softnet_i->flow_limit);
-
-		st_softnet->processed += st_softnet_i->processed;
-		st_softnet->dropped += st_softnet_i->dropped;
-		st_softnet->time_squeeze += st_softnet_i->time_squeeze;
-		st_softnet->received_rps += st_softnet_i->received_rps;
-		st_softnet->flow_limit += st_softnet_i->flow_limit;
 	}
 
 	fclose(fp);
-	return cpu_read;
+	return 1;
 }
 
 /*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/

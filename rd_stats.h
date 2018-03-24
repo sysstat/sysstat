@@ -781,8 +781,8 @@ __nr_t read_filesystem
 	(struct stats_filesystem *, __nr_t);
 __nr_t read_fchost
 	(struct stats_fchost *, __nr_t);
-__nr_t read_softnet
-	(struct stats_softnet *, __nr_t);
+int read_softnet
+	(struct stats_softnet *, __nr_t, unsigned char []);
 #endif /* SOURCE_SADC */
 
 #endif /* _RD_STATS_H */

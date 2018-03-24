@@ -1639,7 +1639,7 @@ struct activity fchost_act = {
 struct activity softnet_act = {
 	.id		= A_NET_SOFT,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_CLOSE_MARKUP +
-			  AO_GRAPH_PER_ITEM,
+			  AO_GRAPH_PER_ITEM + AO_PERSISTENT,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC

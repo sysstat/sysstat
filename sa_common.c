@@ -2647,17 +2647,20 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 						    endian_mismatch, arch_64, TRUE);
 
 		/*
-		 * We don't know if A_CPU activity will be displayed or not.
+		 * We don't know if CPU related activities will be displayed or not.
 		 * But if it is the case, @nr_ini will be used in the loop
-		 * to display all processors. So update its value here and
+		 * to process all CPUs. So update their value here and
 		 * reallocate buffers if needed.
-		 * NB: We may have nr_allocated=0 here if A_CPU activity has
+		 * NB: We may have nr_allocated=0 here if the activity has
 		 * not been collected in file (or if it has an unknown format).
 		 */
-		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-		act[p]->nr_ini = file_hdr->sa_cpu_nr;
-		if (act[p]->nr_ini > act[p]->nr_allocated) {
-			reallocate_all_buffers(act[p], act[p]->nr_ini);
+		for (p = 0; p < NR_ACT; p++) {
+			if (HAS_PERSISTENT_VALUES(act[p]->options)) {
+				act[p]->nr_ini = file_hdr->sa_cpu_nr;
+				if (act[p]->nr_ini > act[p]->nr_allocated) {
+					reallocate_all_buffers(act[p], act[p]->nr_ini);
+				}
+			}
 		}
 
 		if (!dp)
@@ -2837,6 +2840,82 @@ unsigned long long get_global_cpu_statistics(struct activity *a, int prev, int c
 	}
 
 	return deltot_jiffies;
+}
+
+/*
+ ***************************************************************************
+ * Compute softnet statistics for CPU "all" as the sum of individual CPU
+ * ones.
+ * Also identify offline CPU.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @flags	Flags for common options and system state.
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
+ *
+ * OUT:
+ * @a		Activity structure with updated statistics (those for global
+ *		CPU, and also those for offline CPU).
+ * @offline_cpu_bitmap
+ *		CPU bitmap with offline CPU.
+ ***************************************************************************
+ */
+void get_global_soft_statistics(struct activity *a, int prev, int curr,
+				unsigned int flags, unsigned char offline_cpu_bitmap[])
+{
+	int i;
+	struct stats_softnet *ssnc, *ssnp;
+	struct stats_softnet *ssnc_all = (struct stats_softnet *) ((char *) a->buf[curr]);
+	struct stats_softnet *ssnp_all = (struct stats_softnet *) ((char *) a->buf[prev]);
+
+	/*
+	 * Init structures that will contain values for CPU "all".
+	 * CPU "all" doesn't exist in /proc/net/softnet_stat file, so
+	 * we compute its values as the sum of the values of each CPU.
+	 */
+	memset(ssnc_all, 0, sizeof(struct stats_softnet));
+	memset(ssnp_all, 0, sizeof(struct stats_softnet));
+
+	for (i = 1; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * The size of a->buf[...] CPU structure may be different from the default
+		 * sizeof(struct stats_pwr_cpufreq) value if data have been read from a file!
+		 * That's why we don't use a syntax like:
+		 * ssnc = (struct stats_softnet *) a->buf[...] + i;
+                 */
+                ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
+                ssnp = (struct stats_softnet *) ((char *) a->buf[prev] + i * a->msize);
+
+		if (ssnc->processed + ssnc->dropped + ssnc->time_squeeze +
+		    ssnc->received_rps + ssnc->flow_limit == 0) {
+			/* Assume current CPU is offline */
+			*ssnc = *ssnp;
+			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+		}
+
+		if ((ssnp->processed + ssnp->dropped + ssnp->time_squeeze +
+		    ssnp->received_rps + ssnp->flow_limit == 0) && !WANT_SINCE_BOOT(flags)) {
+			/* Current CPU back online but no previous sample for it */
+			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			continue;
+		}
+
+		ssnc_all->processed += ssnc->processed;
+		ssnc_all->dropped += ssnc->dropped;
+		ssnc_all->time_squeeze += ssnc->time_squeeze;
+		ssnc_all->received_rps += ssnc->received_rps;
+		ssnc_all->flow_limit += ssnc->flow_limit;
+
+		ssnp_all->processed += ssnp->processed;
+		ssnp_all->dropped += ssnp->dropped;
+		ssnp_all->time_squeeze += ssnp->time_squeeze;
+		ssnp_all->received_rps += ssnp->received_rps;
+		ssnp_all->flow_limit += ssnp->flow_limit;
+	}
 }
 
 #endif /* SOURCE_SADC undefined */

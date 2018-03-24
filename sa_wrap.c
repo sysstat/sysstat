@@ -1060,6 +1060,52 @@ __read_funct_t wrap_read_fchost(struct activity *a)
 
 /*
  ***************************************************************************
+ * Look for online CPU and fill corresponding bitmap.
+ *
+ * IN:
+ * @bitmap_size	Size of the CPU bitmap.
+ *
+ * OUT:
+ * @online_cpu_bitmap
+ *		CPU bitmap which has been filled.
+ *
+ * RETURNS:
+ * Number of CPU for which statistics have to be be read.
+ * 1 means CPU "all", 2 means CPU 0, 3 means CPU 1, etc.
+ * Or -1 if the buffer was too small and needs to be reallocated.
+ ***************************************************************************
+ */
+int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
+{
+	FILE *fp;
+	char line[8192];
+	int proc_nr;
+
+	if ((fp = fopen(STAT, "r")) == NULL)
+		return 0;
+
+	while (fgets(line, sizeof(line), fp) != NULL) {
+
+		if (!strncmp(line, "cpu ", 4))
+			continue;
+
+		if (!strncmp(line, "cpu", 3)) {
+			sscanf(line + 3, "%d", &proc_nr);
+		}
+
+		if (proc_nr + 1 > bitmap_size) {
+			fclose(fp);
+			return -1;
+		}
+		online_cpu_bitmap[proc_nr >> 3] |= 1 << (proc_nr & 0x07);
+	}
+
+	fclose(fp);
+	return proc_nr + 2;
+}
+
+/*
+ ***************************************************************************
  * Read softnet statistics.
  *
  * IN:
@@ -1074,14 +1120,36 @@ __read_funct_t wrap_read_softnet(struct activity *a)
 	struct stats_softnet *st_softnet
 		= (struct stats_softnet *) a->_buf0;
 	__nr_t nr_read = 0;
+	static unsigned char *online_cpu_bitmap = NULL;
+	static int bitmap_size = 0;
 
 	/* Read softnet stats */
 	do {
-		nr_read = read_softnet(st_softnet, a->nr_allocated);
+		/* Allocate bitmap for online CPU */
+		if (bitmap_size < a->nr_allocated) {
+			if ((online_cpu_bitmap = (unsigned char *) realloc(online_cpu_bitmap,
+									   BITMAP_SIZE(a->nr_allocated))) == NULL) {
+				nr_read = 0;
+				break;
+			}
+			bitmap_size = a->nr_allocated;
+		}
+		memset(online_cpu_bitmap, 0, BITMAP_SIZE(a->nr_allocated));
+
+		/* Get online CPU list */
+		nr_read = get_online_cpu_list(online_cpu_bitmap, bitmap_size);
+		if (!nr_read)
+			break;
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
 			st_softnet = (struct stats_softnet *) reallocate_buffer(a);
+		}
+		else {
+			if (!read_softnet(st_softnet, a->nr_allocated, online_cpu_bitmap)) {
+				/* File /proc/net/softnet doesn't exist */
+				nr_read = 0;
+			}
 		}
 	}
 	while (nr_read < 0);

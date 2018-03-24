@@ -659,6 +659,7 @@ struct record_header {
  * Indicate that activity's metrics have persistent values when devices
  * are registered again (this means that when the device is registered again,
  * the metrics pick the values they had when they had been unregistered).
+ * Exclusively used for CPU related statistics at the present time.
  */
 #define AO_PERSISTENT		0x08
 /*
@@ -1256,6 +1257,8 @@ char *get_devname
 void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
 unsigned long long get_global_cpu_statistics
+	(struct activity *, int, int, unsigned int, unsigned char []);
+void get_global_soft_statistics
 	(struct activity *, int, int, unsigned int, unsigned char []);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
