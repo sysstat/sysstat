@@ -2294,6 +2294,7 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
 	struct stats_softnet *ssnc, *ssnp;
 	int sep = FALSE;
 	char cpuno[8];
+	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
 	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_json_markup;
@@ -2303,7 +2304,28 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
 
 	xprintf(tab++, "\"softnet\": [");
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
+
+	/* Compute statistics for CPU "all" */
+	get_global_soft_statistics(a, !curr, curr, flags, offline_cpu_bitmap);
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * Should current CPU (including CPU "all") be displayed?
+		 * Note: a->nr is in [1, NR_CPUS + 1].
+		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
+		 * Anyway, NR_CPUS may vary between the version of sysstat
+		 * used by sadc to create a file, and the version of sysstat
+		 * used by sar to read it...
+		 */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+			/* No */
+			continue;
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -2313,21 +2335,6 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
                  */
                 ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
                 ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
-
-		/*
-		 * Note: a->nr is in [1, NR_CPUS + 1].
-		 * Bitmap size is provided for (NR_CPUS + 1) CPUs.
-		 * Anyway, NR_CPUS may vary between the version of sysstat
-		 * used by sadc to create a file, and the version of sysstat
-		 * used by sar to read it...
-		 */
-
-		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
-			/* No */
-			continue;
-
-		/* Yes: Display current CPU stats */
 
 		if (sep) {
 			printf(",\n");

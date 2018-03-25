@@ -5012,6 +5012,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	static char **out;
 	static int *outsize;
 	char item_name[8];
+	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	int i, pos;
 
 	if (action & F_BEGIN) {
@@ -5023,16 +5024,25 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_MAIN) {
+		/* @nr[curr] cannot normally be greater than @nr_ini */
+		if (a->nr[curr] > a->nr_ini) {
+			a->nr_ini = a->nr[curr];
+		}
+
+		/* Compute statistics for CPU "all" */
+		get_global_soft_statistics(a, !curr, curr, flags, offline_cpu_bitmap);
+
 		/* For each CPU */
-		for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+		for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+			    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+				/* No */
+				continue;
 
 			ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
 			ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
-
-			/* Should current CPU (including CPU "all") be displayed? */
-			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
-				/* No */
-				continue;
 
 			pos = i * 5;
 

@@ -1570,7 +1570,13 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 	int i;
 	struct stats_softnet *ssnc, *ssnp;
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
+
+	/* Don't display CPU "all" which doesn't exist in file */
+	for (i = 1; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -1595,7 +1601,16 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 			continue;
 
 		/* Yes: Display current CPU stats */
-		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i - 1);
+		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
+		if (DISPLAY_DEBUG_MODE(flags) && i) {
+			if (ssnc->processed + ssnc->dropped + ssnc->time_squeeze +
+			    ssnc->received_rps + ssnc->flow_limit == 0) {
+				/* CPU is considered offline */
+				printf(" [OFF]");
+			}
+		}
+		printf("; %d;", i - 1);
+
 		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->processed, (unsigned long long) ssnc->processed);
 		printf(" %s", pfield(NULL, 0));
