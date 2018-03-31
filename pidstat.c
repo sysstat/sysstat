@@ -1455,16 +1455,16 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
 				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 				   0.0 :
-				   SP_VALUE_100(pstp->utime - pstp->gtime,
+				   SP_VALUE(pstp->utime - pstp->gtime,
 					    pstc->utime - pstc->gtime, itv * HZ / 100),
-				   SP_VALUE_100(pstp->stime,  pstc->stime, itv * HZ / 100),
-				   SP_VALUE_100(pstp->gtime,  pstc->gtime, itv * HZ / 100),
-				   SP_VALUE_100(pstp->wtime, pstc->wtime, itv * HZ / 100),
+				   SP_VALUE(pstp->stime,  pstc->stime, itv * HZ / 100),
+				   SP_VALUE(pstp->gtime,  pstc->gtime, itv * HZ / 100),
+				   SP_VALUE(pstp->wtime, pstc->wtime, itv * HZ / 100),
 				   /* User time already includes guest time */
 				   IRIX_MODE_OFF(pidflag) ?
-				   SP_VALUE_100(pstp->utime + pstp->stime,
+				   SP_VALUE(pstp->utime + pstp->stime,
 					    pstc->utime + pstc->stime, deltot_jiffies) :
-				   SP_VALUE_100(pstp->utime + pstp->stime,
+				   SP_VALUE(pstp->utime + pstp->stime,
 					    pstc->utime + pstc->stime, itv * HZ / 100));
 
 			cprintf_in(IS_INT, "   %3d", "", pstc->processor);
@@ -1666,16 +1666,16 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
 			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			   0.0 :
-			   SP_VALUE_100(pstp->utime - pstp->gtime,
+			   SP_VALUE(pstp->utime - pstp->gtime,
 				    pstc->utime - pstc->gtime, itv * HZ / 100),
-			   SP_VALUE_100(pstp->stime, pstc->stime, itv * HZ / 100),
-			   SP_VALUE_100(pstp->gtime, pstc->gtime, itv * HZ / 100),
-			   SP_VALUE_100(pstp->wtime, pstc->wtime, itv * HZ / 100),
+			   SP_VALUE(pstp->stime, pstc->stime, itv * HZ / 100),
+			   SP_VALUE(pstp->gtime, pstc->gtime, itv * HZ / 100),
+			   SP_VALUE(pstp->wtime, pstc->wtime, itv * HZ / 100),
 			   /* User time already includes guest time */
 			   IRIX_MODE_OFF(pidflag) ?
-			   SP_VALUE_100(pstp->utime + pstp->stime,
+			   SP_VALUE(pstp->utime + pstp->stime,
 				    pstc->utime + pstc->stime, deltot_jiffies) :
-			   SP_VALUE_100(pstp->utime + pstp->stime,
+			   SP_VALUE(pstp->utime + pstp->stime,
 				    pstc->utime + pstc->stime, itv * HZ / 100));
 
 		if (!disp_avg) {
