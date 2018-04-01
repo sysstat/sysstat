@@ -755,6 +755,11 @@ void write_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int c
 		     char *prev_string, char *curr_string, int tab, int *next,
 		     unsigned char offline_cpu_bitmap[])
 {
+	if (!deltot_jiffies) {
+		/* CPU "all" cannot be tickless */
+		deltot_jiffies = 1;
+	}
+
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		if (*next) {
 			printf(",\n");
@@ -1014,6 +1019,11 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 void write_node_stats(int dis, unsigned long long deltot_jiffies, int prev, int curr,
 		      char *prev_string, char *curr_string, int tab, int *next)
 {
+	if (!deltot_jiffies) {
+		/* CPU "all" cannot be tickless */
+		deltot_jiffies = 1;
+	}
+
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		if (*next) {
 			printf(",\n");
