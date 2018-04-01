@@ -191,6 +191,10 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 				 */
 				deltot_jiffies = get_per_cpu_interval(scc, scp);
 			}
+			if (!deltot_jiffies) {
+				/* CPU "all" cannot be tickless */
+				deltot_jiffies = 1;
+			}
 		}
 		else {
 			cprintf_in(IS_INT, " %7d", "", i - 1);

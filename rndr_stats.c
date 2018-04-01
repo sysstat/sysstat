@@ -211,6 +211,10 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 				 */
 				deltot_jiffies = get_per_cpu_interval(scc, scp);
 			}
+			if (!deltot_jiffies) {
+				/* CPU "all" cannot be tickless */
+				deltot_jiffies = 1;
+			}
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				render(isdb, pre,

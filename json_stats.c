@@ -159,6 +159,10 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 				 */
 				deltot_jiffies = get_per_cpu_interval(scc, scp);
 			}
+			if (!deltot_jiffies) {
+				/* CPU "all" cannot be tickless */
+				deltot_jiffies = 1;
+			}
 		}
 		else {
 			sprintf(cpuno, "%d", i - 1);
