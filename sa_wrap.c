@@ -1071,7 +1071,7 @@ __read_funct_t wrap_read_fchost(struct activity *a)
  *
  * RETURNS:
  * Number of CPU for which statistics have to be be read.
- * 1 means CPU "all", 2 means CPU 0, 3 means CPU 1, etc.
+ * 1 means CPU "all", 2 means CPU "all" and CPU 0, etc.
  * Or -1 if the buffer was too small and needs to be reallocated.
  ***************************************************************************
  */
@@ -1079,7 +1079,7 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 {
 	FILE *fp;
 	char line[8192];
-	int proc_nr;
+	int proc_nr = -2;
 
 	if ((fp = fopen(STAT, "r")) == NULL)
 		return 0;
@@ -1091,13 +1091,13 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 
 		if (!strncmp(line, "cpu", 3)) {
 			sscanf(line + 3, "%d", &proc_nr);
-		}
 
-		if (proc_nr + 1 > bitmap_size) {
-			fclose(fp);
-			return -1;
+			if (proc_nr + 1 > bitmap_size) {
+				fclose(fp);
+				return -1;
+			}
+			online_cpu_bitmap[proc_nr >> 3] |= 1 << (proc_nr & 0x07);
 		}
-		online_cpu_bitmap[proc_nr >> 3] |= 1 << (proc_nr & 0x07);
 	}
 
 	fclose(fp);
