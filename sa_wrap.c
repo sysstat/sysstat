@@ -1092,9 +1092,10 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 		if (!strncmp(line, "cpu", 3)) {
 			sscanf(line + 3, "%d", &proc_nr);
 
-			if (proc_nr + 1 > bitmap_size) {
+			if ((proc_nr + 1 > bitmap_size) || (proc_nr < 0)) {
 				fclose(fp);
-				return -1;
+				/* Return -1 or 0 */
+				return ((proc_nr >= 0) * -1);
 			}
 			online_cpu_bitmap[proc_nr >> 3] |= 1 << (proc_nr & 0x07);
 		}
