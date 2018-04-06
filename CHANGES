@@ -1,5 +1,12 @@
 Changes:
 
+2018/04/06: Version 11.4.9 - Sebastien Godard (sysstat <at> orange.fr)
+	* iostat: Refresh device list properly.
+	* pidstat: Report CPU usage for a process as the sum of all threads.
+	* sar: Change condition used in workaround for CPU coming back online.
+	* sadf: SVG: Display grid and graduations on the whole width of the graph.
+	* FAQ updated.
+
 2018/01/12: Version 11.4.8 - Sebastien Godard (sysstat <at> orange.fr)
 	* Workaround for offline CPU coming back online.
 	* SVG: Fix segfault triggered by a varying number of CPU in file.
