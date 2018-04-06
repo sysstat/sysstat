@@ -1,5 +1,31 @@
 Changes:
 
+2018/04/06: Version 11.7.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix possible crash happening when buffers needed to be
+	  reallocated to accomodate more devices.
+	* sar/sadf/mpstat: Compute global CPU statistics as the sum of individual
+	  CPU ones.
+	* mpstat: Compute statistics for node "all" as the sum of individual
+	  CPU statistics.
+	* sar: Add new "-z" option, which tells sar to omit output for any
+	  devices for which there was no activity during the sample period.
+	* sar/sadf: Now better take into account offline and online CPU when
+	  displaying softnet statistics.
+	* sadc: Shrink size of sadc binary file by compiling out unneeded
+	  functions.
+	* sadf: Change raw format output to be CSV compliant.
+	* sadf: Reorder some values displayed in debug mode/raw format.
+	* Add initial support for major numbers > 255.
+	* Update sysstat.ioconf devices list.
+	* mpstat: Remove option "-P ON". mpstat now displays only online CPU by
+	  default.
+	* sar and mpstat manual pages updated.
+	* pidstat: Report CPU usage for a process as the sum of all threads
+	  [11.6.3] [11.4.9].
+	* sar: Change condition used in workaround for CPU coming back online
+	  [11.6.3] [11.4.9].
+	* NLS updated: Various translations updated.
+
 2018/02/12: Version 11.7.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Rewrite function used to convert an old binary data file to
 	  the up-to-date format.
