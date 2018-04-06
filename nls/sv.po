@@ -7,10 +7,10 @@
 # Göran Uddeborg <goeran@uddeborg.se>, 2016, 2017, 2018.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.7.1\n"
+"Project-Id-Version: sysstat 11.7.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2018-01-12 11:06+0100\n"
-"PO-Revision-Date: 2018-01-12 22:04+0100\n"
+"PO-Revision-Date: 2018-04-02 20:42+0200\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -249,7 +249,7 @@ msgstr ""
 #: sar.c:138
 #, c-format
 msgid "Main options and reports:\n"
-msgstr "Huvudflaggor och rapporter:\n"
+msgstr "Huvudflaggor och -rapporter:\n"
 
 #: sar.c:139
 #, c-format
@@ -483,7 +483,7 @@ msgstr ""
 #: sa_conv.c:900
 #, c-format
 msgid "Statistics: "
-msgstr "Statistik:"
+msgstr "Statistik: "
 
 #: sa_conv.c:1019
 #, c-format
@@ -492,7 +492,7 @@ msgid ""
 "File successfully converted to sysstat format version %s\n"
 msgstr ""
 "\n"
-"Fil konverterades framgångsrikt till sysstat-format version %s\n"
+"Filen konverterades till sysstat-format version %s\n"
 
 #: pidstat.c:89
 #, c-format

@@ -9,10 +9,10 @@
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.7.1\n"
+"Project-Id-Version: sysstat 11.7.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2018-01-12 11:06+0100\n"
-"PO-Revision-Date: 2018-01-13 10:35+0300\n"
+"PO-Revision-Date: 2018-04-01 08:27+0300\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -403,7 +403,7 @@ msgstr "\t-v\tСтатистика таблиц ядра\n"
 #: sar.c:186
 #, c-format
 msgid "\t-W\tSwapping statistics\n"
-msgstr "\t-W\tСтатистика раздела подкачки\n"
+msgstr "\t-W\tСтатистика подкачки\n"
 
 #: sar.c:187
 #, c-format
@@ -574,6 +574,22 @@ msgstr "Ленточные устройства со статистикой не
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Не удаётся обработать так много процессоров!\n"
+
+#~ msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+#~ msgstr "Состав файла: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+
+#~ msgid "Main options and reports (report name between square brackets):\n"
+#~ msgstr "Основные параметры и отчёты (имя отчёта в квадратных скобках):\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "File format already up-to-date\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Формат файла уже самый актуальный\n"
+
+#~ msgid "HZ: Using current value: %lu\n"
+#~ msgstr "HZ: Используется текущее значение: %lu\n"
 
 #~ msgid "Other devices not listed here"
 #~ msgstr "Другие устройства здесь не перечислены"
