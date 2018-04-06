@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2018-01-12 10:54+0100\n"
+"POT-Creation-Date: 2018-04-06 11:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: iostat.c:1814 sa_common.c:1590
+#: iostat.c:1819 sa_common.c:1590
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -170,23 +170,6 @@ msgstr ""
 #: sadf_misc.c:887
 #, c-format
 msgid "\t[Unknown activity format]"
-msgstr ""
-
-#: sadf.c:89
-#, c-format
-msgid ""
-"Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr ""
-
-#: sadf.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] "
-"[ -V ]\n"
-"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <sar_options> ]\n"
 msgstr ""
 
 #: pr_stats.c:2535 pr_stats.c:2546 pr_stats.c:2653 pr_stats.c:2664
@@ -487,4 +470,21 @@ msgstr ""
 #: count.c:169
 #, c-format
 msgid "Cannot handle so many processors!\n"
+msgstr ""
+
+#: sadf.c:89
+#, c-format
+msgid ""
+"Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr ""
+
+#: sadf.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] "
+"[ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
 msgstr ""
