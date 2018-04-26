@@ -2,7 +2,7 @@
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
 [![Build Status](https://travis-ci.org/sysstat/sysstat.svg?branch=master)](https://travis-ci.org/sysstat/sysstat)
 
-(C) 1999-2017 Sebastien GODARD (sysstat (at) orange (dot) fr)
+(C) 1999-2018 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
 ### Introduction
 
