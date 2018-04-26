@@ -280,6 +280,8 @@ int update_pid_array(unsigned int *pid_array_nr, unsigned int pid)
 /*
  ***************************************************************************
  * Get pointer on task's command string.
+ * If this is a thread then return the short command name so that threads
+ * can still be identified.
  *
  * IN:
  * @pst		Pointer on structure with process stats and command line.
@@ -287,7 +289,7 @@ int update_pid_array(unsigned int *pid_array_nr, unsigned int pid)
  */
 char *get_tcmd(struct pid_stats *pst)
 {
-	if (DISPLAY_CMDLINE(pidflag) && strlen(pst->cmdline))
+	if (DISPLAY_CMDLINE(pidflag) && strlen(pst->cmdline) && !pst->tgid)
 		/* Option "-l" used */
 		return pst->cmdline;
 	else
