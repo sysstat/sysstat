@@ -98,7 +98,7 @@ void usage(char *progname)
 
 /*
  ***************************************************************************
- * SIGALRM signal handler. No need to resert the handler here.
+ * SIGALRM signal handler. No need to reset the handler here.
  *
  * IN:
  * @sig	Signal number.
