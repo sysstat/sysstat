@@ -455,10 +455,16 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
+	unsigned long long nousedmem;
 
 	xprintf(tab, "<memory per=\"second\" unit=\"kB\">");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+
+		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+		if (nousedmem > smc->tlmkb) {
+			nousedmem = smc->tlmkb;
+		}
 
 		xprintf(++tab, "<memfree>%llu</memfree>",
 			smc->frmkb);
@@ -467,11 +473,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 			smc->availablekb);
 
 		xprintf(tab, "<memused>%llu</memused>",
-			smc->tlmkb - smc->frmkb);
+			smc->tlmkb - nousedmem);
 
 		xprintf(tab, "<memused-percent>%.2f</memused-percent>",
 			smc->tlmkb ?
-			SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
+			SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) :
 			0.0);
 
 		xprintf(tab, "<buffers>%llu</buffers>",

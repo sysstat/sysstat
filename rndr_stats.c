@@ -747,8 +747,14 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 	int pt_newlin
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 	int ptn;
+	unsigned long long nousedmem;
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+
+		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+		if (nousedmem > smc->tlmkb) {
+			nousedmem = smc->tlmkb;
+		}
 
 		render(isdb, pre, PT_USEINT,
 		       "-\tkbmemfree", NULL, NULL,
@@ -760,12 +766,12 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 
 		render(isdb, pre, PT_USEINT,
 		       "-\tkbmemused", NULL, NULL,
-		       smc->tlmkb - smc->frmkb, DNOVAL, NULL);
+		       smc->tlmkb - nousedmem, DNOVAL, NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "-\t%memused", NULL, NULL, NOVAL,
 		       smc->tlmkb ?
-		       SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
+		       SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) :
 		       0.0, NULL);
 
 		render(isdb, pre, PT_USEINT,
