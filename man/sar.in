@@ -1,4 +1,4 @@
-.TH SAR 1 "FEBRUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -1942,8 +1942,14 @@ system to system.
 
 .B kbmemused
 .RS
-Amount of used memory in kilobytes. This does not take into account memory
-used by the kernel itself.
+Amount of used memory in kilobytes (calculated as total installed memory -
+.B kbmemfree
+-
+.B kbbuffers
+-
+.B kbcached
+-
+.BR kbslab ).
 .RE
 
 .B %memused
