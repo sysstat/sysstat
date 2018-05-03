@@ -71,6 +71,7 @@
 #define P_F_PROCSTR	0x0400
 #define P_D_UNIT	0x0800
 #define P_D_SEC_EPOCH	0x1000
+#define P_O_CSV	0x2000
 
 #define DISPLAY_PID(m)		(((m) & P_D_PID) == P_D_PID)
 #define DISPLAY_ALL_PID(m)	(((m) & P_D_ALL_PID) == P_D_ALL_PID)
@@ -85,6 +86,7 @@
 #define PROCESS_STRING(m)	(((m) & P_F_PROCSTR) == P_F_PROCSTR)
 #define DISPLAY_UNIT(m)		(((m) & P_D_UNIT) == P_D_UNIT)
 #define PRINT_SEC_EPOCH(m)	(((m) & P_D_SEC_EPOCH) == P_D_SEC_EPOCH)
+#define OUTPUT_CSV(m)		(((m) & P_O_CSV) == P_O_CSV)
 
 /* Per-process flags */
 #define F_NO_PID_IO	0x01

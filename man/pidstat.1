@@ -9,7 +9,9 @@ pidstat \- Report statistics for Linux tasks.
 .I comm
 .B ] [ -G
 .I process_name
-.B ] [ --human ] [ -p {
+.B ] [ --human ] [ --csv 
+.I file_path
+.B ] [ -p {
 .I pid
 .B [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
 .I interval
@@ -566,6 +568,20 @@ processor.
 .RS
 The command name of the task.
 .RE
+.RE
+.IP "--csv file_path"
+Output statistics to the given file in CSV format.  What statistics to
+output is selected by the options above.  This option causes them to be
+written to a CSV file, in addition to being printed to the console.
+
+The column names are similar to the ones output to the console.  However,
+there is less processing done when outputting to CSV.  For example, instead
+of reporting CPU utilization just as a percentage, the number of clock ticks
+spent in user, kernel and guest operations is reported, as well as the
+interval duration in clock ticks.  Column names also indicate the units for
+the values in them.  (E.g., "VSZ_kb" for virtual memory size in KB,
+"B_rd" for bytes read, or "wait_ticks" for the number of ticks the CPU spent
+waiting for the process to run).
 .RE
 .SH ENVIRONMENT
 The
