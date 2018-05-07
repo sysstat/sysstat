@@ -493,6 +493,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		avg_tlskb = 0,
 		avg_caskb = 0;
 	int unit = NO_UNIT;
+	unsigned long nousedmem;
 
 	if (DISPLAY_UNIT(flags)) {
 		/* Default values unit is kB */
@@ -506,14 +507,18 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 
 		if (!dispavg) {
 			/* Display instantaneous values */
+			nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+			if (nousedmem > smc->tlmkb) {
+				nousedmem = smc->tlmkb;
+			}
 			printf("%-11s", timestamp[curr]);
 			cprintf_u64(unit, 3, 9,
 				    (unsigned long long) smc->frmkb,
 				    (unsigned long long) smc->availablekb,
-				    (unsigned long long) (smc->tlmkb - smc->frmkb));
+				    (unsigned long long) (smc->tlmkb - nousedmem));
 			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
 				   smc->tlmkb ?
-				   SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb)
+				   SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
 				   : 0.0);
 			cprintf_u64(unit, 3, 9,
 				    (unsigned long long) smc->bufkb,
@@ -561,14 +566,15 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		}
 		else {
 			/* Display average values */
+			nousedmem = avg_frmkb + avg_bufkb + avg_camkb + avg_slabkb;
 			printf("%-11s", timestamp[curr]);
 			cprintf_f(unit, 3, 9, 0,
 				  (double) avg_frmkb / avg_count,
 				  (double) avg_availablekb / avg_count,
-				  (double) smc->tlmkb - ((double) avg_frmkb / avg_count));
+				  (double) smc->tlmkb - ((double) nousedmem / avg_count));
 			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
 				   smc->tlmkb ?
-				   SP_VALUE((double) (avg_frmkb / avg_count), smc->tlmkb, smc->tlmkb)
+				   SP_VALUE((double) (nousedmem / avg_count), smc->tlmkb, smc->tlmkb)
 				   : 0.0);
 			cprintf_f(unit, 3, 9, 0,
 				  (double) avg_bufkb / avg_count,

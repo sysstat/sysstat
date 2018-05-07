@@ -1604,6 +1604,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	static int *outsize;
 	double tval;
 	int i;
+	unsigned long nousedmem;
 
 	if (action & F_BEGIN) {
 		/*
@@ -1618,7 +1619,11 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		save_extrema(0, 17, 0, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax, g_fields);
 		/* Compute %memused min/max values */
-		tval = smc->tlmkb ? SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0;
+		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+		if (nousedmem > smc->tlmkb) {
+			nousedmem = smc->tlmkb;
+		}
+		tval = smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0;
 		if (tval > *(spmax + 3)) {
 			*(spmax + 3) = tval;
 		}
@@ -1653,7 +1658,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			*(spmin + 20) = tval;
 		}
 		/* Compute memused min/max values in MB */
-		tval = ((double) (smc->tlmkb - smc->frmkb)) / 1024;
+		tval = ((double) (smc->tlmkb - nousedmem)) / 1024;
 		if (tval > *(spmax + 2)) {
 			*(spmax + 2) = tval;
 		}
@@ -1675,7 +1680,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 			 out, outsize, svg_p->restart);
 		/* MBmemused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) (smc->tlmkb - smc->frmkb)) / 1024,
+			 ((double) (smc->tlmkb - nousedmem)) / 1024,
 			 out + 2, outsize + 2, svg_p->restart);
 		/* MBavail */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1741,7 +1746,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
 			 smc->tlmkb ?
-			 SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) : 0.0,
+			 SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0,
 			 out + 3, outsize + 3, svg_p->dt);
 		/* %commit */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,

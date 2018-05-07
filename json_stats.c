@@ -470,12 +470,18 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
 	int sep = FALSE;
+	unsigned long nousedmem;
 
 	xprintf0(tab, "\"memory\": {");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
 		sep = TRUE;
+
+		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+		if (nousedmem > smc->tlmkb) {
+			nousedmem = smc->tlmkb;
+		}
 
 		printf("\"memfree\": %lu, "
 		       "\"avail\": %lu, "
@@ -490,9 +496,9 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		       "\"dirty\": %lu",
 		       smc->frmkb,
 		       smc->availablekb,
-		       smc->tlmkb - smc->frmkb,
+		       smc->tlmkb - nousedmem,
 		       smc->tlmkb ?
-		       SP_VALUE(smc->frmkb, smc->tlmkb, smc->tlmkb) :
+		       SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) :
 		       0.0,
 		       smc->bufkb,
 		       smc->camkb,
