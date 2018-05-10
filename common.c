@@ -44,6 +44,9 @@
 #define _(string) (string)
 #endif
 
+/* Number of decimal places */
+extern int dplaces_nr;
+
 /* Units (sectors, Bytes, kilobytes, etc.) */
 char units[] = {'s', 'B', 'k', 'M', 'G', 'T', 'P', '?'};
 
@@ -1067,7 +1070,7 @@ void cprintf_unit(int unit, int wi, double dval)
 		dval /= 1024;
 		unit++;
 	}
-	printf(" %*.*f", wi - 1, 1, dval);
+	printf(" %*.*f", wi - 1, dplaces_nr ? 1 : 0, dval);
 	printf("%s", sc_normal);
 
 	/* Display unit */
@@ -1157,15 +1160,28 @@ void cprintf_x(int num, int wi, ...)
 void cprintf_f(int unit, int num, int wi, int wd, ...)
 {
 	int i;
-	double val;
+	double val, lim = 0.005;;
 	va_list args;
+
+	/*
+	 * If there are decimal places then get the value
+	 * entered on the command line (if existing).
+	 */
+	if ((wd > 0) && (dplaces_nr >= 0)) {
+		wd = dplaces_nr;
+	}
+
+	/* Update limit value according to number of decimal places */
+	if (wd == 1) {
+		lim = 0.05;
+	}
 
 	va_start(args, wd);
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, double);
-		if (((val < 0.005) && (val > -0.005)) ||
-		    ((wd == 0) && (val < 0.5))) {
+		if (((wd > 0) && (val < lim) && (val > (lim * -1))) ||
+		    ((wd == 0) && (val <= 0.5) && (val >= -0.5))) {	/* "Round half to even" law */
 			printf("%s", sc_zero_int_stat);
 		}
 		else {
@@ -1203,20 +1219,32 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 	va_list args;
 
 	/*
-	 * If a percent sign is to be displayed, then there will be only one decimal place.
-	 * In this case, a value smaller than 0.05 shall be considered as 0.
+	 * If there are decimal places then get the value
+	 * entered on the command line (if existing).
+	 */
+	if ((wd > 0) && (dplaces_nr >= 0)) {
+		wd = dplaces_nr;
+	}
+
+	/*
+	 * If a percent sign is to be displayed, then there will be
+	 * zero (or one) decimal place.
 	 */
 	if (human > 0) {
-		lim = 0.05;
 		if (wi < 4) {
 			/* E.g., 100% */
 			wi = 4;
 		}
 		/* Keep one place for the percent sign */
 		wi -= 1;
-		if (wd > 0) {
+		if (wd > 1) {
 			wd -= 1;
 		}
+	}
+
+	/* Update limit value according to number of decimal places */
+	if (wd == 1) {
+		lim = 0.05;
 	}
 
 	va_start(args, wd);
@@ -1229,7 +1257,8 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 		else if (val >= PERCENT_LIMIT_LOW) {
 			printf("%s", sc_percent_low);
 		}
-		else if (val < lim) {
+		else if (((wd > 0) && (val < lim)) ||
+			 ((wd == 0) && (val <= 0.5))) {	/* "Round half to even" law */
 			printf("%s", sc_zero_int_stat);
 		}
 		else {

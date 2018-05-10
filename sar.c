@@ -53,6 +53,8 @@ int dis = TRUE;
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
+/* Number of decimal places */
+int dplaces_nr = -1;
 
 unsigned int flags = 0;
 unsigned int dm_major;	/* Device-mapper major number */
@@ -115,7 +117,8 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ] [ --help ] [ --human ] [ --sadc ]\n"
+			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
@@ -1276,6 +1279,15 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[opt], "--human")) {
 			/* Display sizes in a human readable format */
 			flags |= S_F_UNIT;
+			opt++;
+		}
+
+		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
+			/* Get number of decimal places */
+			dplaces_nr = atoi(argv[opt] + 6);
+			if ((dplaces_nr < 0) || (dplaces_nr > 2)) {
+				usage(argv[0]);
+			}
 			opt++;
 		}
 

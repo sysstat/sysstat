@@ -49,6 +49,8 @@ long interval = -1, count = 0;
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
+/* Number of decimal places */
+int dplaces_nr = -1;
 
 unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */

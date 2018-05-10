@@ -53,6 +53,7 @@ struct io_hdr_stats *st_hdr_cifs;
 int cifs_nr = 0;	/* Nb of CIFS mounted directories found */
 int cpu_nr = 0;		/* Nb of processors on the machine */
 int flags = 0;		/* Flag for common options and system state */
+int dplaces_nr = -1;	/* Number of decimal places */
 
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
@@ -74,10 +75,10 @@ void usage(char *progname)
 
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
 #endif
 	exit(1);
 }
@@ -606,6 +607,15 @@ int main(int argc, char **argv)
 
 		if (!strcmp(argv[opt], "--human")) {
 			flags |= I_D_UNIT;
+			opt++;
+		}
+
+		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
+			/* Get number of decimal places */
+			dplaces_nr = atoi(argv[opt] + 6);
+			if ((dplaces_nr < 0) || (dplaces_nr > 2)) {
+				usage(argv[0]);
+			}
 			opt++;
 		}
 

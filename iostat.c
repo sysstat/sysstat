@@ -61,6 +61,8 @@ struct io_dlist *st_dev_list;
 
 /* Last group name entered on the command line */
 char group_name[MAX_NAME_LEN];
+/* Number of decimal places */
+int dplaces_nr = -1;
 
 int iodev_nr = 0;	/* Nb of devices and partitions found. Includes nb of device groups */
 int group_nr = 0;	/* Nb of device groups */
@@ -89,13 +91,15 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
 #endif
@@ -1801,6 +1805,15 @@ int main(int argc, char **argv)
 
 		else if (!strcmp(argv[opt], "--human")) {
 			flags |= I_D_UNIT;
+			opt++;
+		}
+
+		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
+			/* Get number of decimal places */
+			dplaces_nr = atoi(argv[opt] + 6);
+			if ((dplaces_nr < 0) || (dplaces_nr > 2)) {
+				usage(argv[0]);
+			}
 			opt++;
 		}
 

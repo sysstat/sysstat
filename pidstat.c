@@ -76,6 +76,8 @@ unsigned int actflag = 0;	/* Activity flag */
 struct sigaction alrm_act, int_act, chld_act;
 int signal_caught = 0;
 
+int dplaces_nr = -1;		/* Number of decimal places */
+
 /*
  ***************************************************************************
  * Print usage and exit.
@@ -91,8 +93,9 @@ void usage(char *progname)
 
 	fprintf(stderr, _("Options are:\n"
 			  "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ] [ --human ]\n"
-			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"));
+			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"));
 	exit(1);
 }
 
@@ -2720,6 +2723,15 @@ int main(int argc, char **argv)
 
 		else if (!strcmp(argv[opt], "--human")) {
 			pidflag |= P_D_UNIT;
+			opt++;
+		}
+
+		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
+			/* Get number of decimal places */
+			dplaces_nr = atoi(argv[opt] + 6);
+			if ((dplaces_nr < 0) || (dplaces_nr > 2)) {
+				usage(argv[0]);
+			}
 			opt++;
 		}
 
