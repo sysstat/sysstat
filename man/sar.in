@@ -3,7 +3,8 @@
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ]
-.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ] [ --help ] [ --human ] [ --sadc ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ]
+.B [ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]
 .B [ -I {
 .I int_list
 .B | SUM | ALL } ] [ -P {
@@ -348,6 +349,8 @@ devices serving requests in parallel, such as RAID arrays and modern SSDs,
 this number does not reflect their performance limits.
 .RE
 .RE
+.IP "--dec={ 0 | 1 | 2 }"
+Specify the number of decimal places to use (0 to 2, default value is 2).
 .IP "-e [ hh:mm[:ss] ]"
 Set the ending time of the report. The default ending time is
 18:00:00. Hours must be given in 24-hour format.

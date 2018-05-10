@@ -1,4 +1,4 @@
-.TH PIDSTAT 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH PIDSTAT 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 .SH SYNOPSIS
@@ -9,7 +9,7 @@ pidstat \- Report statistics for Linux tasks.
 .I comm
 .B ] [ -G
 .I process_name
-.B ] [ --human ] [ -p {
+.B ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ -p {
 .I pid
 .B [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
 .I interval
@@ -122,6 +122,8 @@ completion.
 The command name of the task.
 .RE
 .RE
+.IP "--dec={ 0 | 1 | 2 }"
+Specify the number of decimal places to use (0 to 2, default value is 2).
 .IP "-e program args"
 Execute
 .IR program

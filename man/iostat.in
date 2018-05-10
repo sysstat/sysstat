@@ -1,11 +1,11 @@
-.TH IOSTAT 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
-.B [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
+.B [ --dec={ 0 | 1 | 2 } ] [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
 .B ] [ --human ] [ -p [
@@ -20,7 +20,7 @@ statistics for devices and partitions.
 .\}
 .el \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
-.B [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
+.B [ --dec={ 0 | 1 | 2 } ] [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
 .B ] [ --human ] [ -p [
@@ -315,6 +315,8 @@ Display the device utilization report.
 .IP --debuginfo
 Print debug output to stderr.
 .\}
+.IP "--dec={ 0 | 1 | 2 }"
+Specify the number of decimal places to use (0 to 2, default value is 2).
 .IP "-g group_name { device [...] | ALL }
 Display statistics for a group of devices.
 The

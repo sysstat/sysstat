@@ -1,8 +1,8 @@
-.TH MPSTAT 1 "MARCH 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH MPSTAT 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
-.B mpstat [ -A ] [ -n ] [ -u ] [ -V ] [ -I {
+.B mpstat [ -A ] [ --dec={ 0 | 1 | 2 } ] [ -n ] [ -u ] [ -V ] [ -I {
 .I keyword
 .B [,...] | ALL } ] [ -N {
 .I node_list
@@ -50,6 +50,8 @@ command generates reports continuously.
 .IP -A
 This option is equivalent to specifying
 .BR "-n -u -I ALL -N ALL -P ALL"
+.IP "--dec={ 0 | 1 | 2 }"
+Specify the number of decimal places to use (0 to 2, default value is 2).
 .IP "-I { keyword [,...] | ALL }"
 Report interrupts statistics.
 

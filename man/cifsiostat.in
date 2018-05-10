@@ -1,16 +1,16 @@
-.TH CIFSIOSTAT 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [ --human ] [
+.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [
 .I interval
 .B [
 .I count
 .B ] ]
 .\}
 .el \{
-.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --human ] [
+.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [
 .I interval
 .B [
 .I count
@@ -99,6 +99,8 @@ Indicate the number of deleted files per second.
 .IP --debuginfo
 Print debug output to stderr.
 .\}
+.IP "--dec={ 0 | 1 | 2 }"
+Specify the number of decimal places to use (0 to 2, default value is 2).
 .IP -h
 Make the CIFS report easier to read by a human.
 .B --human
