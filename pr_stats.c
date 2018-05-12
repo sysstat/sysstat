@@ -41,7 +41,8 @@ extern unsigned int dm_major;
 extern int  dis;
 extern char timestamp[][TIMESTAMP_LEN];
 extern unsigned long avg_count;
-
+extern struct sa_dlist *st_dev_list;
+extern int dlist_idx;
 
 /*
  ***************************************************************************
@@ -1153,6 +1154,14 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sndp, sndc, STATS_NET_DEV_SIZE2CMP))
 			continue;
 
+		if (dlist_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlist_idx, sndc->interface,
+					     A_NET_DEV))
+				/* Device not found */
+				continue;
+		}
+
 		printf("%-11s", timestamp[curr]);
 
 		if (!DISPLAY_HUMAN_READ(flags)) {
@@ -1225,6 +1234,14 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(snedp, snedc, STATS_NET_EDEV_SIZE2CMP))
 			continue;
+
+		if (dlist_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlist_idx, snedc->interface,
+					     A_NET_DEV))
+				/* Device not found */
+				continue;
+		}
 
 		printf("%-11s", timestamp[curr]);
 

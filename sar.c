@@ -76,6 +76,10 @@ struct record_header record_hdr[3];
  */
 unsigned int id_seq[NR_ACT];
 
+/* Devices entered on the command line */
+struct sa_dlist *st_dev_list = NULL;
+int dlist_idx = 0;
+
 struct tm rectime;
 
 /* Contain the date specified by -s and -e options */
@@ -118,9 +122,10 @@ void usage(char *progname)
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --iface=<iface_list> ]\n"
+			  "[ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"));
@@ -1271,6 +1276,12 @@ int main(int argc, char **argv)
 			which_sadc();
 		}
 
+		else if (!strncmp(argv[opt], "--iface=", 8)) {
+			/* Parse devices entered on the command line */
+			parse_sa_devices(argc, argv, &st_dev_list,
+					 &dlist_idx, &opt, A_NET_DEV, 8);
+		}
+
 		else if (!strcmp(argv[opt], "--help")) {
 			/* Display help message */
 			display_help(argv[0]);
@@ -1501,6 +1512,9 @@ int main(int argc, char **argv)
 		/* Free stuctures and activity bitmaps */
 		free_bitmaps(act);
 		free_structures(act);
+		if (st_dev_list) {
+			free(st_dev_list);
+		}
 
 		return 0;
 	}
@@ -1625,6 +1639,9 @@ int main(int argc, char **argv)
 	/* Free structures and activity bitmaps */
 	free_bitmaps(act);
 	free_structures(act);
+	if (st_dev_list) {
+		free(st_dev_list);
+	}
 
 	return 0;
 }

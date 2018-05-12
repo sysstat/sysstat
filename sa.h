@@ -1097,6 +1097,16 @@ struct tstamp {
 	int use;
 };
 
+/* List of devices entered on the command line */
+struct sa_dlist {
+	/* Device type */
+	int dev_id		__attribute__ ((aligned (4)));
+	/* Device name */
+	char dev_name[MAX_NAME_LEN];
+};
+
+#define SA_DLIST_SIZE	(sizeof(struct sa_dlist))
+
 
 /*
  ***************************************************************************
@@ -1264,6 +1274,8 @@ void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
+void parse_sa_devices
+	(int, char *[], struct sa_dlist **, int *, int *, int, int);
 int parse_sar_opt
 	(char * [], int *, struct activity * [], unsigned int *, int);
 int parse_sar_I_opt
@@ -1305,6 +1317,10 @@ int sa_get_record_timestamp_struct
 	(unsigned int, struct record_header *, struct tm *, struct tm *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
+void salloc_sa_dlist
+	(struct sa_dlist **, int);
+int search_sa_dlist
+	(struct sa_dlist *, int, char *, int);
 void select_all_activities
 	(struct activity * []);
 void select_default_activity
