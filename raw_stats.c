@@ -30,6 +30,8 @@
 
 extern unsigned int flags;
 extern unsigned int dm_major;
+extern struct sa_dlist *st_dev_list;
+extern int dlist_idx;
 
 /*
  ***************************************************************************
@@ -601,6 +603,14 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
+		if (dlist_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlist_idx, sndc->interface,
+					     A_NET_DEV))
+				/* Device not found */
+				continue;
+		}
+
 		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
@@ -653,6 +663,14 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 	for (i = 0; i < a->nr[curr]; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (dlist_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlist_idx, snedc->interface,
+					     A_NET_DEV))
+				/* Device not found */
+				continue;
+		}
 
 		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 		j = check_net_edev_reg(a, curr, !curr, i);

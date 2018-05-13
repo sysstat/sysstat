@@ -37,6 +37,8 @@
 
 extern unsigned int flags;
 extern unsigned int dm_major;
+extern struct sa_dlist *st_dev_list;
+extern int dlist_idx;
 
 /*
  ***************************************************************************
@@ -823,6 +825,14 @@ __print_funct_t json_print_net_dev_stats(struct activity *a, int curr, int tab,
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
+		if (dlist_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlist_idx, sndc->interface,
+					     A_NET_DEV))
+				/* Device not found */
+				continue;
+		}
+
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
 			/* This is a newly registered interface. Previous stats are zero */
@@ -903,6 +913,14 @@ __print_funct_t json_print_net_edev_stats(struct activity *a, int curr, int tab,
 	for (i = 0; i < a->nr[curr]; i++) {
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (dlist_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlist_idx, snedc->interface,
+					     A_NET_DEV))
+				/* Device not found */
+				continue;
+		}
 
 		j = check_net_edev_reg(a, curr, !curr, i);
 		if (j < 0) {

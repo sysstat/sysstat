@@ -39,6 +39,8 @@
 
 extern unsigned int flags;
 extern unsigned int dm_major;
+extern struct sa_dlist *st_dev_list;
+extern int dlist_idx;
 
 unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
 			     0xe85f00, 0x0000ff, 0x006020, 0x7030a0,
@@ -2330,6 +2332,14 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 		for (i = 0; i < a->nr[curr]; i++) {
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
+			if (dlist_idx) {
+				/* A list of devices has been entered on the command line */
+				if (!search_sa_dlist(st_dev_list, dlist_idx, sndc->interface,
+						     A_NET_DEV))
+					/* Device not found */
+					continue;
+			}
+
 			/* Look for corresponding graph */
 			for (k = 0; k < svg_p->nr_max; k++) {
 				item_name = *(out + k * 9 + 8);
@@ -2534,6 +2544,14 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			if (!strcmp(snedc->interface, ""))
 				/* Empty structure: This is the end of the list */
 				break;
+
+			if (dlist_idx) {
+				/* A list of devices has been entered on the command line */
+				if (!search_sa_dlist(st_dev_list, dlist_idx, snedc->interface,
+						     A_NET_DEV))
+					/* Device not found */
+					continue;
+			}
 
 			/* Look for corresponding graph */
 			for (k = 0; k < svg_p->nr_max; k++) {

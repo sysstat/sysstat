@@ -77,6 +77,10 @@ struct record_header record_hdr[3];
 struct tstamp tm_start, tm_end;
 char *args[MAX_ARGV_NR];
 
+/* Devices entered on the command line */
+struct sa_dlist *st_dev_list = NULL;
+int dlist_idx = 0;
+
 extern struct activity *act[];
 extern struct report_format *fmt[];
 
@@ -97,7 +101,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-			  "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+			  "[ --iface=<iface_list> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
 }
@@ -1419,6 +1423,12 @@ int main(int argc, char **argv)
 			if (parse_sa_P_opt(argv, &opt, &flags, act)) {
 				usage(argv[0]);
 			}
+		}
+
+		else if (!strncmp(argv[opt], "--iface=", 8)) {
+			/* Parse devices entered on the command line */
+			parse_sa_devices(argc, argv, &st_dev_list,
+					 &dlist_idx, &opt, A_NET_DEV, 8);
 		}
 
 		else if (!strcmp(argv[opt], "-s")) {
