@@ -40,7 +40,9 @@ char *seps[] =  {"\t", ";"};
 extern unsigned int flags;
 extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
+extern struct sa_dlist *st_dev_list;
 extern int dlst_iface_idx;
+extern int dlst_dev_idx;
 
 /*
  ***************************************************************************
@@ -1079,9 +1081,6 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
 		}
 
-		/* Compute extended stats (service time, etc.) */
-		compute_ext_disk_stats(sdc, sdp, itv, &xds);
-
 		dev_name = NULL;
 		persist_dev_name = NULL;
 
@@ -1102,6 +1101,16 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 						       USE_PRETTY_OPTION(flags));
 			}
 		}
+
+		if (dlst_dev_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlst_dev_idx, dev_name))
+				/* Device not found */
+				continue;
+		}
+
+		/* Compute extended stats (service time, etc.) */
+		compute_ext_disk_stats(sdc, sdp, itv, &xds);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttps", "%s",

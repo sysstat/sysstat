@@ -31,7 +31,9 @@
 extern unsigned int flags;
 extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
+extern struct sa_dlist *st_dev_list;
 extern int dlst_iface_idx;
+extern int dlst_dev_idx;
 
 /*
  ***************************************************************************
@@ -530,21 +532,6 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
-		printf("%s; major; %u; minor; %u; %s",
-		       timestr, sdc->major, sdc->minor, pfield(a->hdr_line, FIRST));
-
-		j = check_disk_reg(a, curr, !curr, i);
-		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
-			sdp = &sdpzero;
-			if (DISPLAY_DEBUG_MODE(flags)) {
-				printf(" [%s]", j == -1 ? "NEW" : "BCK");
-			}
-		}
-		else {
-			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
-		}
-
 		dev_name = NULL;
 		persist_dev_name = NULL;
 
@@ -564,6 +551,28 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 			if (!dev_name) {
 				dev_name = get_devname(sdc->major, sdc->minor, TRUE);
 			}
+		}
+
+		if (dlst_dev_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlst_dev_idx, dev_name))
+				/* Device not found */
+				continue;
+		}
+
+		printf("%s; major; %u; minor; %u; %s",
+		       timestr, sdc->major, sdc->minor, pfield(a->hdr_line, FIRST));
+
+		j = check_disk_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sdp = &sdpzero;
+			if (DISPLAY_DEBUG_MODE(flags)) {
+				printf(" [%s]", j == -1 ? "NEW" : "BCK");
+			}
+		}
+		else {
+			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
 		}
 
 		printf("; %s;", dev_name);

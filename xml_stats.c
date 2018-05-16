@@ -38,7 +38,9 @@
 extern unsigned int flags;
 extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
+extern struct sa_dlist *st_dev_list;
 extern int dlst_iface_idx;
+extern int dlst_dev_idx;
 
 /*
  ***************************************************************************
@@ -714,9 +716,6 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
 		}
 
-		/* Compute extended statistics values */
-		compute_ext_disk_stats(sdc, sdp, itv, &xds);
-
 		dev_name = NULL;
 		persist_dev_name = NULL;
 
@@ -737,6 +736,16 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 						       USE_PRETTY_OPTION(flags));
 			}
 		}
+
+		if (dlst_dev_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlst_dev_idx, dev_name))
+				/* Device not found */
+				continue;
+		}
+
+		/* Compute extended statistics values */
+		compute_ext_disk_stats(sdc, sdp, itv, &xds);
 
 		xprintf(tab, "<disk-device dev=\"%s\" "
 			"tps=\"%.2f\" "

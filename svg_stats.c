@@ -40,7 +40,9 @@
 extern unsigned int flags;
 extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
+extern struct sa_dlist *st_dev_list;
 extern int dlst_iface_idx;
+extern int dlst_dev_idx;
 
 unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
 			     0xe85f00, 0x0000ff, 0x006020, 0x7030a0,
@@ -2251,6 +2253,13 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 					item_name = get_devname(*(spmax + pos + 8), *(spmin + pos + 8),
 								USE_PRETTY_OPTION(flags));
 				}
+			}
+
+			if (dlst_dev_idx) {
+				/* A list of devices has been entered on the command line */
+				if (!search_sa_dlist(st_dev_list, dlst_dev_idx, item_name))
+					/* Device not found */
+					continue;
 			}
 
 			draw_activity_graphs(a->g_nr, g_type,
