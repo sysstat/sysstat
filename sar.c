@@ -77,8 +77,8 @@ struct record_header record_hdr[3];
 unsigned int id_seq[NR_ACT];
 
 /* Devices entered on the command line */
-struct sa_dlist *st_dev_list = NULL;
-int dlist_idx = 0;
+struct sa_dlist *st_iface_list = NULL;
+int dlst_iface_idx = 0;
 
 struct tm rectime;
 
@@ -1278,8 +1278,8 @@ int main(int argc, char **argv)
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argc, argv, &st_dev_list,
-					 &dlist_idx, &opt, A_NET_DEV, 8);
+			parse_sa_devices(argc, argv, &st_iface_list,
+					 &dlst_iface_idx, &opt, 8);
 		}
 
 		else if (!strcmp(argv[opt], "--help")) {
@@ -1512,8 +1512,8 @@ int main(int argc, char **argv)
 		/* Free stuctures and activity bitmaps */
 		free_bitmaps(act);
 		free_structures(act);
-		if (st_dev_list) {
-			free(st_dev_list);
+		if (st_iface_list) {
+			free(st_iface_list);
 		}
 
 		return 0;
@@ -1639,8 +1639,8 @@ int main(int argc, char **argv)
 	/* Free structures and activity bitmaps */
 	free_bitmaps(act);
 	free_structures(act);
-	if (st_dev_list) {
-		free(st_dev_list);
+	if (st_iface_list) {
+		free(st_iface_list);
 	}
 
 	return 0;

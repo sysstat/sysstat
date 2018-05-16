@@ -30,8 +30,8 @@
 
 extern unsigned int flags;
 extern unsigned int dm_major;
-extern struct sa_dlist *st_dev_list;
-extern int dlist_idx;
+extern struct sa_dlist *st_iface_list;
+extern int dlst_iface_idx;
 
 /*
  ***************************************************************************
@@ -603,10 +603,9 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (dlist_idx) {
+		if (dlst_iface_idx) {
 			/* A list of devices has been entered on the command line */
-			if (!search_sa_dlist(st_dev_list, dlist_idx, sndc->interface,
-					     A_NET_DEV))
+			if (!search_sa_dlist(st_iface_list, dlst_iface_idx, sndc->interface))
 				/* Device not found */
 				continue;
 		}
@@ -664,10 +663,9 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (dlist_idx) {
+		if (dlst_iface_idx) {
 			/* A list of devices has been entered on the command line */
-			if (!search_sa_dlist(st_dev_list, dlist_idx, snedc->interface,
-					     A_NET_DEV))
+			if (!search_sa_dlist(st_iface_list, dlst_iface_idx, snedc->interface))
 				/* Device not found */
 				continue;
 		}

@@ -78,8 +78,8 @@ struct tstamp tm_start, tm_end;
 char *args[MAX_ARGV_NR];
 
 /* Devices entered on the command line */
-struct sa_dlist *st_dev_list = NULL;
-int dlist_idx = 0;
+struct sa_dlist *st_iface_list = NULL;
+int dlst_iface_idx = 0;
 
 extern struct activity *act[];
 extern struct report_format *fmt[];
@@ -1427,8 +1427,8 @@ int main(int argc, char **argv)
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argc, argv, &st_dev_list,
-					 &dlist_idx, &opt, A_NET_DEV, 8);
+			parse_sa_devices(argc, argv, &st_iface_list,
+					 &dlst_iface_idx, &opt, 8);
 		}
 
 		else if (!strcmp(argv[opt], "-s")) {

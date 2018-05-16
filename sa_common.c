@@ -128,19 +128,21 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
  * Allocate structures for devices entered on the command line.
  *
  * IN:
- * @list_len	Number of arguments on the command line.
+ * @nr_alloc_slots	Number of slots to allocate.
+ * @nr_used_slots	Number of slots currently used.
  *
  * OUT:
- * @st_dev_list	Address of allocated structures.
+ * @st_list		Address of allocated structures.
  ***************************************************************************
  */
-void salloc_sa_dlist(struct sa_dlist **st_dev_list, int list_len)
+void salloc_sa_dlist(struct sa_dlist **st_list, int nr_alloc_slots, int nr_used_slots)
 {
-	if ((*st_dev_list = (struct sa_dlist *) malloc(SA_DLIST_SIZE * list_len)) == NULL) {
-		perror("malloc");
-		exit(4);
+	if (!nr_alloc_slots) {
+		/* Allocate at least one slot */
+		nr_alloc_slots = 1;
 	}
-	memset(*st_dev_list, 0, SA_DLIST_SIZE * list_len);
+
+	SREALLOC(*st_list, struct sa_dlist, sizeof(struct sa_dlist) * (nr_used_slots + nr_alloc_slots));
 }
 
 /*
@@ -148,24 +150,22 @@ void salloc_sa_dlist(struct sa_dlist **st_dev_list, int list_len)
  * Look for device in list.
  *
  * IN:
- * @st_dev_list	Structure where devices are saved.
- * @dlist_idx	Number of devices in the list.
+ * @st_list	Structure where devices are saved.
+ * @dlst_idx	Number of devices in the list.
  * @d_name	Device name to look for.
- * @d_id	Device type.
  *
  * RETURNS:
  * 1 if device found in list, 0 otherwise.
  ***************************************************************************
  */
-int search_sa_dlist(struct sa_dlist *st_dev_list, int dlist_idx, char *d_name, int d_id)
+int search_sa_dlist(struct sa_dlist *st_list, int dlst_idx, char *d_name)
 {
 	int i;
-	struct sa_dlist *st_dev_list_i;
+	struct sa_dlist *st_list_i;
 
-	for (i = 0; i < dlist_idx; i++) {
-		st_dev_list_i = st_dev_list + i;
-		if ((st_dev_list_i->dev_id == d_id) &&
-		    !strcmp(st_dev_list_i->dev_name, d_name))
+	for (i = 0; i < dlst_idx; i++) {
+		st_list_i = st_list + i;
+		if (!strcmp(st_list_i->dev_name, d_name))
 			return 1;
 	}
 
@@ -2435,32 +2435,30 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
  * IN:
  * @argc	Number of arguments in the list.
  * @argv	Arguments list.
- * @st_dev_list	Structure where devices will be saved.
- * @dlist_idx	Number of devices previously saved in the list.
+ * @st_list	Structure where devices will be saved.
+ * @dlst_idx	Number of devices previously saved in the list.
  * @opt		Index in list of arguments.
- * @d_id	Type of device.
  * @pos		Position is string where is located the first device.
  *
  * OUT:
- * @st_dev_list	Structure where devices have been saved.
- * @dlist_idx	Total number of devices saved in the list.
+ * @st_list	Structure where devices have been saved.
+ * @dlst_idx	Total number of devices saved in the list.
  * @opt		Index on next argument.
  ***************************************************************************
  */
-void parse_sa_devices(int argc, char *argv[], struct sa_dlist **st_dev_list,
-		      int *dlist_idx, int *opt, int d_id, int pos)
+void parse_sa_devices(int argc, char *argv[], struct sa_dlist **st_list,
+		      int *dlst_idx, int *opt, int pos)
 {
 	char *t;
-	struct sa_dlist *st_dev_list_i;
+	struct sa_dlist *st_list_i;
 
-	if (*st_dev_list == NULL) {
-		/* Allocate device list */
-		salloc_sa_dlist(st_dev_list, argc - 1 + count_csvalues(argc, argv));
-	}
+	/* (Re)allocate device list */
+	salloc_sa_dlist(st_list, count_csvalues(argc, argv), *dlst_idx);
+
 	for (t = strtok(argv[*opt] + pos, ","); t; t = strtok(NULL, ",")) {
-		st_dev_list_i = *st_dev_list + (*dlist_idx)++;
-		st_dev_list_i->dev_id = d_id;
-		strncpy(st_dev_list_i->dev_name, t, MAX_NAME_LEN - 1);
+		st_list_i = *st_list + (*dlst_idx)++;
+		strncpy(st_list_i->dev_name, t, MAX_NAME_LEN - 1);
+		st_list_i->dev_name[MAX_NAME_LEN - 1] = '\0';
 	}
 	(*opt)++;
 }
