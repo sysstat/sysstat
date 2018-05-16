@@ -42,7 +42,9 @@ extern int  dis;
 extern char timestamp[][TIMESTAMP_LEN];
 extern unsigned long avg_count;
 extern struct sa_dlist *st_iface_list;
+extern struct sa_dlist *st_dev_list;
 extern int dlst_iface_idx;
+extern int dlst_dev_idx;
 
 /*
  ***************************************************************************
@@ -1051,9 +1053,6 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sdp, sdc, STATS_DISK_SIZE))
 			continue;
 
-		/* Compute service time, etc. */
-		compute_ext_disk_stats(sdc, sdp, itv, &xds);
-
 		dev_name = NULL;
 		persist_dev_name = NULL;
 
@@ -1074,6 +1073,16 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 						       USE_PRETTY_OPTION(flags));
 			}
 		}
+
+		if (dlst_dev_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_dev_list, dlst_dev_idx, dev_name))
+				/* Device not found */
+				continue;
+		}
+
+		/* Compute service time, etc. */
+		compute_ext_disk_stats(sdc, sdp, itv, &xds);
 
 		printf("%-11s", timestamp[curr]);
 
