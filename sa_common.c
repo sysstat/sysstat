@@ -137,12 +137,9 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
  */
 void salloc_sa_dlist(struct sa_dlist **st_list, int nr_alloc_slots, int nr_used_slots)
 {
-	if (!nr_alloc_slots) {
-		/* Allocate at least one slot */
-		nr_alloc_slots = 1;
+	if (nr_alloc_slots) {
+		SREALLOC(*st_list, struct sa_dlist, sizeof(struct sa_dlist) * (nr_used_slots + nr_alloc_slots));
 	}
-
-	SREALLOC(*st_list, struct sa_dlist, sizeof(struct sa_dlist) * (nr_used_slots + nr_alloc_slots));
 }
 
 /*
@@ -2430,11 +2427,43 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 
 /*
  ***************************************************************************
+ * Count number of comma-separated values in arguments list. For example,
+ * the number will be 3 for "sar --dev=sda,sdb,sdc -dp 2 5", 1 for
+ * "sar --dev=sda -dp 2 5" and 0 for "sar --dev= -dp 2 5".
+ *
+ * IN:
+ * @arg_v	Argument containing the list of coma-separated values.
+ *
+ * RETURNS:
+ * Number of comma-separated values in the list.
+ ***************************************************************************
+ */
+int count_csval_arg(char *arg_v)
+{
+	int nr = 0;
+	char *t;
+
+	if (arg_v[0] == '\0')
+		return 0;
+
+	if (strchr(arg_v, ',')) {
+		for (t = arg_v; t; t = strchr(t + 1, ',')) {
+			nr++;
+		}
+	}
+	if (!nr) {
+		nr = 1;
+	}
+
+	return nr;
+}
+
+/*
+ ***************************************************************************
  * Parse devices entered on the command line.
  *
  * IN:
- * @argc	Number of arguments in the list.
- * @argv	Arguments list.
+ * @argv	Argument with list of devices.
  * @st_list	Structure where devices will be saved.
  * @dlst_idx	Number of devices previously saved in the list.
  * @opt		Index in list of arguments.
@@ -2446,16 +2475,16 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
  * @opt		Index on next argument.
  ***************************************************************************
  */
-void parse_sa_devices(int argc, char *argv[], struct sa_dlist **st_list,
+void parse_sa_devices(char *argv, struct sa_dlist **st_list,
 		      int *dlst_idx, int *opt, int pos)
 {
 	char *t;
 	struct sa_dlist *st_list_i;
 
 	/* (Re)allocate device list */
-	salloc_sa_dlist(st_list, count_csvalues(argc, argv), *dlst_idx);
+	salloc_sa_dlist(st_list, count_csval_arg(argv + pos), *dlst_idx);
 
-	for (t = strtok(argv[*opt] + pos, ","); t; t = strtok(NULL, ",")) {
+	for (t = strtok(argv + pos, ","); t; t = strtok(NULL, ",")) {
 		st_list_i = *st_list + (*dlst_idx)++;
 		strncpy(st_list_i->dev_name, t, MAX_NAME_LEN - 1);
 		st_list_i->dev_name[MAX_NAME_LEN - 1] = '\0';

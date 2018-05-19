@@ -1273,7 +1273,7 @@ void get_itv_value
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices
-	(int, char *[], struct sa_dlist **, int *, int *, int);
+	(char *, struct sa_dlist **, int *, int *, int);
 int parse_sar_opt
 	(char * [], int *, struct activity * [], unsigned int *, int);
 int parse_sar_I_opt

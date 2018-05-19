@@ -1428,13 +1428,13 @@ int main(int argc, char **argv)
 
 		else if (!strncmp(argv[opt], "--dev=", 6)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argc, argv, &st_dev_list,
+			parse_sa_devices(argv[opt], &st_dev_list,
 					 &dlst_dev_idx, &opt, 6);
 		}
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argc, argv, &st_iface_list,
+			parse_sa_devices(argv[opt], &st_iface_list,
 					 &dlst_iface_idx, &opt, 8);
 		}
 
