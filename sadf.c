@@ -516,6 +516,19 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		if (!IS_SELECTED(act[p]->options))
 			continue;
 
+		if (((act[p]->id == A_NET_DEV) || (act[p]->id == A_NET_EDEV)) &&
+		    (dlst_iface_idx > 0) && (dlst_iface_idx < id_nr_max[p])) {
+			id_nr_max[p] = dlst_iface_idx;
+		}
+		if ((act[p]->id == A_DISK) &&
+		    (dlst_dev_idx > 0) && (dlst_dev_idx < id_nr_max[p])) {
+			id_nr_max[p] = dlst_dev_idx;
+		}
+		if ((act[p]->id == A_FS) &&
+		    (dlst_fs_idx > 0) && (dlst_fs_idx < id_nr_max[p])) {
+			id_nr_max[p] = dlst_fs_idx;
+		}
+
 		if (PACK_VIEWS(flags)) {
 			/* One activity = one row with multiple views */
 			n = 1;
