@@ -77,8 +77,8 @@ struct record_header record_hdr[3];
 unsigned int id_seq[NR_ACT];
 
 /* Devices entered on the command line */
-struct sa_dlist *st_iface_list = NULL, *st_dev_list = NULL;
-int dlst_iface_idx = 0, dlst_dev_idx = 0;
+struct sa_dlist *st_iface_list = NULL, *st_dev_list = NULL, *st_fs_list = NULL;
+int dlst_iface_idx = 0, dlst_dev_idx = 0, dlst_fs_idx = 0;
 
 struct tm rectime;
 
@@ -124,8 +124,8 @@ void usage(char *progname)
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --dev=<dev_list> ] [ --iface=<iface_list> ]\n"
-			  "[ --help ] [ --human ] [ --sadc ]\n"
+			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"));
@@ -1282,6 +1282,12 @@ int main(int argc, char **argv)
 					 &dlst_dev_idx, &opt, 6);
 		}
 
+		else if (!strncmp(argv[opt], "--fs=", 5)) {
+			/* Parse devices entered on the command line */
+			parse_sa_devices(argv[opt], &st_fs_list,
+					 &dlst_fs_idx, &opt, 5);
+		}
+
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
 			parse_sa_devices(argv[opt], &st_iface_list,
@@ -1518,12 +1524,6 @@ int main(int argc, char **argv)
 		/* Free stuctures and activity bitmaps */
 		free_bitmaps(act);
 		free_structures(act);
-		if (st_iface_list) {
-			free(st_iface_list);
-		}
-		if (st_dev_list) {
-			free(st_dev_list);
-		}
 
 		return 0;
 	}
@@ -1648,12 +1648,6 @@ int main(int argc, char **argv)
 	/* Free structures and activity bitmaps */
 	free_bitmaps(act);
 	free_structures(act);
-	if (st_iface_list) {
-		free(st_iface_list);
-	}
-	if (st_dev_list) {
-		free(st_dev_list);
-	}
 
 	return 0;
 }

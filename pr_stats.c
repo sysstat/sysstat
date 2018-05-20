@@ -43,8 +43,10 @@ extern char timestamp[][TIMESTAMP_LEN];
 extern unsigned long avg_count;
 extern struct sa_dlist *st_iface_list;
 extern struct sa_dlist *st_dev_list;
+extern struct sa_dlist *st_fs_list;
 extern int dlst_iface_idx;
 extern int dlst_dev_idx;
+extern int dlst_fs_idx;
 
 /*
  ***************************************************************************
@@ -2747,6 +2749,14 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (dlst_fs_idx) {
+			/* A list of devices has been entered on the command line */
+			if (!search_sa_dlist(st_fs_list, dlst_fs_idx,
+					     DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+				/* Device not found */
+				continue;
+		}
 
 		found = FALSE;
 		if (DISPLAY_ZERO_OMIT(flags) && !dispavg) {
