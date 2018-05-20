@@ -41,8 +41,10 @@ extern unsigned int flags;
 extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
 extern struct sa_dlist *st_dev_list;
+extern struct sa_dlist *st_fs_list;
 extern int dlst_iface_idx;
 extern int dlst_dev_idx;
+extern int dlst_fs_idx;
 
 unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
 			     0xe85f00, 0x0000ff, 0x006020, 0x7030a0,
@@ -4655,6 +4657,14 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 		/* For each filesystem structure */
 		for (i = 0; i < a->nr[curr]; i++) {
 			sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+
+			if (dlst_fs_idx) {
+				/* A list of devices has been entered on the command line */
+				if (!search_sa_dlist(st_fs_list, dlst_fs_idx,
+						     DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+					/* Device not found */
+					continue;
+			}
 
 			/* Look for corresponding graph */
 			for (k = 0; k < svg_p->nr_max; k++) {

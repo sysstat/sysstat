@@ -78,8 +78,8 @@ struct tstamp tm_start, tm_end;
 char *args[MAX_ARGV_NR];
 
 /* Devices entered on the command line */
-struct sa_dlist *st_iface_list = NULL, *st_dev_list = NULL;
-int dlst_iface_idx = 0, dlst_dev_idx = 0;
+struct sa_dlist *st_iface_list = NULL, *st_dev_list = NULL, *st_fs_list = NULL;
+int dlst_iface_idx = 0, dlst_dev_idx = 0, dlst_fs_idx = 0;
 
 extern struct activity *act[];
 extern struct report_format *fmt[];
@@ -101,7 +101,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-			  "[ --dev=<dev_list> ] [ --iface=<iface_list> ]\n"
+			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 			  "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
@@ -1430,6 +1430,12 @@ int main(int argc, char **argv)
 			/* Parse devices entered on the command line */
 			parse_sa_devices(argv[opt], &st_dev_list,
 					 &dlst_dev_idx, &opt, 6);
+		}
+
+		else if (!strncmp(argv[opt], "--fs=", 5)) {
+			/* Parse devices entered on the command line */
+			parse_sa_devices(argv[opt], &st_fs_list,
+					 &dlst_fs_idx, &opt, 5);
 		}
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
