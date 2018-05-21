@@ -4,7 +4,13 @@ sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ]
 .B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ]
-.B [ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]
+.B [ --dec={ 0 | 1 | 2 } ] [ --dev=
+.I dev_list
+.B ] [ --fs=
+.I fs_list
+.B ] [ --help ] [ --human ] [ --iface=
+.I iface_list
+.B ] [ --sadc ]
 .B [ -I {
 .I int_list
 .B | SUM | ALL } ] [ -P {
@@ -284,7 +290,10 @@ M is the major number of the device and n
 its minor number.
 Device names may also be pretty-printed if option -p
 is used or persistent device names can be printed if option -j is used
-(see below).
+(see below). Statistics for all devices are displayed unless
+a restricted list is specified using option
+.BR --dev=
+(see corresponding option entry).
 Note that disk activity depends on
 .B sadc
 options 
@@ -351,6 +360,11 @@ this number does not reflect their performance limits.
 .RE
 .IP "--dec={ 0 | 1 | 2 }"
 Specify the number of decimal places to use (0 to 2, default value is 2).
+.IP --dev=dev_list
+Specify the block devices for which statistics are to be displayed by
+.BR sar .
+.IR dev_list
+is a list of comma-separated device names.
 .IP "-e [ hh:mm[:ss] ]"
 Set the ending time of the report. The default ending time is
 18:00:00. Hours must be given in 24-hour format.
@@ -364,7 +378,10 @@ will display a summary of all those filesystems.
 Use of the
 .B MOUNT
 parameter keyword indicates that mountpoint will be reported instead of
-filesystem device.
+filesystem device. Statistics for all filesystems are displayed unless
+a restricted list is specified using option
+.BR --fs=
+(see corresponding option entry).
 Note that filesystems statistics depend on
 .B sadc
 option
@@ -422,6 +439,11 @@ If
 is a directory instead of a plain file then it is considered as the
 directory where the standard system activity daily data files are
 located. The -f option is exclusive of the -o option.
+.IP --fs=fs_list
+Specify the filesystems for which statistics are to be displayed by
+.BR sar .
+.IR fs_list
+is a list of comma-separated filesystem names or mountpoints.
 .IP -H
 Report hugepages utilization statistics.
 The following values are displayed:
@@ -475,6 +497,11 @@ Select data records at seconds as close as possible to the number specified
 by the
 .I interval
 parameter.
+.IP --iface=iface_list
+Specify the network interfaces for which statistics are to be displayed by
+.BR sar .
+.IR iface_list
+is a list of comma-separated interface names.
 .IP "-j { ID | LABEL | PATH | UUID | ... }"
 Display persistent device names. Use this option in conjunction with option -d.
 Options
@@ -662,6 +689,10 @@ and
 With the
 .B DEV
 keyword, statistics from the network devices are reported.
+Statistics for all network interfaces are displayed unless
+a restricted list is specified using option
+.BR --iface=
+(see corresponding option entry).
 The following values are displayed:
 
 .B IFACE
@@ -715,6 +746,10 @@ of the interface speed. For full-duplex, this is the greater of rxkB/S or txkB/s
 With the
 .B EDEV
 keyword, statistics on failures (errors) from the network devices are reported.
+Statistics for all network interfaces are displayed unless
+a restricted list is specified using option
+.BR --iface=
+(see corresponding option entry).
 The following values are displayed:
 
 .B IFACE

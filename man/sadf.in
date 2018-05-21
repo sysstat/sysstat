@@ -1,4 +1,4 @@
-.TH SADF 1 "JANUARY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -10,7 +10,13 @@ sadf \- Display data collected by sar in multiple formats.
 .I hh:mm[:ss]
 .B ] ] [ -e [
 .I hh:mm[:ss]
-.B ] ] [ --
+.B ] ] [ --dev=
+.I dev_list
+.B ] [ --fs=
+.I fs_list
+.B ] [ --iface=
+.I iface_list
+.B ] [ --
 .I sar_options
 .B ] [
 .I interval
@@ -125,9 +131,22 @@ by
 .I sar_options
 command line options.
 Note that timestamp output can be controlled by options -T, -t and -U.
+.IP --dev=dev_list
+Specify the block devices for which statistics are to be displayed by
+.BR sadf .
+.IR dev_list
+is a list of comma-separated device names. Useful with option -d from
+.BR sar .
 .IP "-e [ hh:mm[:ss] ]"
 Set the ending time of the report, given in local time. The default ending
 time is 18:00:00. Hours must be given in 24-hour format.
+.IP --fs=fs_list
+Specify the filesystems for which statistics are to be displayed by
+.BR sadf .
+.IR fs_list
+is a list of comma-separated filesystem names or mountpoints. Useful with
+option -F from
+.BR sar .
 .IP -g
 Print the contents of the data file in SVG (Scalable Vector Graphics) format.
 This option enables you to display some fancy graphs in your web browser.
@@ -144,6 +163,13 @@ been specified, then the header data (metadata) of the data file are displayed.
 .IP -h
 When used in conjunction with option -d, all activities
 will be displayed horizontally on a single line.
+.IP --iface=iface_list
+Specify the network interfaces for which statistics are to be displayed by
+.BR sadf .
+.IR iface_list
+is a list of comma-separated interface names. Useful with options -n DEV and
+-n EDEV from
+.BR sar .
 .IP -j
 Print the contents of the data file in JSON (JavaScript Object Notation)
 format. Timestamps can be controlled by options -T and -t.
