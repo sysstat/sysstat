@@ -38,7 +38,6 @@
 #endif
 
 extern unsigned int flags;
-extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
 extern struct sa_dlist *st_dev_list;
 extern struct sa_dlist *st_fs_list;
@@ -2050,7 +2049,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name, *persist_dev_name;
+	char *item_name;
 	double rkB, wkB, aqusz;
 	int i, j, k, pos, restart, *unregistered;
 
@@ -2235,27 +2234,8 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			if (!**(out + pos))
 				continue;
 
-			item_name = NULL;
-			persist_dev_name = NULL;
-
-			if (DISPLAY_PERSIST_NAME_S(flags)) {
-				persist_dev_name = get_persistent_name_from_pretty(get_devname(*(spmax + pos + 8),
-											       *(spmin + pos + 8),
-											       TRUE));
-			}
-			if (persist_dev_name) {
-				item_name = persist_dev_name;
-			}
-			else {
-				if ((USE_PRETTY_OPTION(flags)) && (*(spmax + pos + 8) == dm_major)) {
-					item_name = transform_devmapname(*(spmax + pos + 8), *(spmin + pos + 8));
-				}
-
-				if (!item_name) {
-					item_name = get_devname(*(spmax + pos + 8), *(spmin + pos + 8),
-								USE_PRETTY_OPTION(flags));
-				}
-			}
+			/* Get device name */
+			item_name = get_sa_devname(*(spmax + pos + 8), *(spmin + pos + 8), flags);
 
 			if (dlst_dev_idx) {
 				/* A list of devices has been entered on the command line */

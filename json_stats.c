@@ -36,7 +36,6 @@
 #endif
 
 extern unsigned int flags;
-extern unsigned int dm_major;
 extern struct sa_dlist *st_iface_list;
 extern struct sa_dlist *st_dev_list;
 extern struct sa_dlist *st_fs_list;
@@ -714,7 +713,7 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 	struct stats_disk *sdc,	*sdp, sdpzero;
 	struct ext_disk_stats xds;
 	int sep = FALSE;
-	char *dev_name, *persist_dev_name;
+	char *dev_name;
 
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
@@ -733,26 +732,8 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
 		}
 
-		dev_name = NULL;
-		persist_dev_name = NULL;
-
-		if (DISPLAY_PERSIST_NAME_S(flags)) {
-			persist_dev_name = get_persistent_name_from_pretty(get_devname(sdc->major, sdc->minor, TRUE));
-		}
-
-		if (persist_dev_name) {
-			dev_name = persist_dev_name;
-		}
-		else {
-			if ((USE_PRETTY_OPTION(flags)) && (sdc->major == dm_major)) {
-				dev_name = transform_devmapname(sdc->major, sdc->minor);
-			}
-
-			if (!dev_name) {
-				dev_name = get_devname(sdc->major, sdc->minor,
-						       USE_PRETTY_OPTION(flags));
-			}
-		}
+		/* Get device name */
+		dev_name = get_sa_devname(sdc->major, sdc->minor, flags);
 
 		if (dlst_dev_idx) {
 			/* A list of devices has been entered on the command line */

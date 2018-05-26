@@ -1262,6 +1262,8 @@ void free_structures
 	(struct activity * []);
 char *get_devname
 	(unsigned int, unsigned int, int);
+char *get_sa_devname
+	(unsigned int, unsigned int, unsigned int);
 void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
 unsigned long long get_global_cpu_statistics
