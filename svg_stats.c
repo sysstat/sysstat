@@ -2084,6 +2084,16 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 		for (i = 0; i < a->nr[curr]; i++) {
 			sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
+			/* Get device name */
+			item_name = get_sa_devname(sdc->major, sdc->minor, flags);
+
+			if (dlst_dev_idx) {
+				/* A list of devices has been entered on the command line */
+				if (!search_sa_dlist(st_dev_list, dlst_dev_idx, item_name))
+					/* Device not found */
+					continue;
+			}
+
 			/* Look for corresponding graph */
 			for (k = 0; k < svg_p->nr_max; k++) {
 				if ((sdc->major == *(spmax + k * 9 + 8)) &&
@@ -2107,15 +2117,6 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			pos = k * 9;
 			unregistered = outsize + pos + 8;
 
-			j = check_disk_reg(a, curr, !curr, i);
-			if (j < 0) {
-				/* This is a newly registered interface. Previous stats are zero */
-				sdp = &sdpzero;
-			}
-			else {
-				sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
-			}
-
 			/*
 			 * If current device was marked as previously unregistered,
 			 * then set restart variable to TRUE so that the graph will be
@@ -2130,6 +2131,15 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 				/* Save device major and minor numbers (if not already done) */
 				*(spmax + pos + 8) = sdc->major;
 				*(spmin + pos + 8) = sdc->minor;
+			}
+
+			j = check_disk_reg(a, curr, !curr, i);
+			if (j < 0) {
+				/* This is a newly registered interface. Previous stats are zero */
+				sdp = &sdpzero;
+			}
+			else {
+				sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
 			}
 
 			/* Check for min/max values */
