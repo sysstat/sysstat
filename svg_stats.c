@@ -2247,13 +2247,6 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			/* Get device name */
 			item_name = get_sa_devname(*(spmax + pos + 8), *(spmin + pos + 8), flags);
 
-			if (dlst_dev_idx) {
-				/* A list of devices has been entered on the command line */
-				if (!search_sa_dlist(st_dev_list, dlst_dev_idx, item_name))
-					/* Device not found */
-					continue;
-			}
-
 			draw_activity_graphs(a->g_nr, g_type,
 					     title, g_title, item_name, group,
 					     spmin + pos, spmax + pos, out + pos, outsize + pos,
