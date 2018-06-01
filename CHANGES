@@ -1,5 +1,10 @@
 Changes:
 
+2018/06/01: Version 11.6.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Change how used memory (kbmemused) is calculated to be
+	  consistent with free(1) and top(1)'s output.
+	* pidstat: Fix incorrect thread names displayed with -t and -l options.
+
 2018/04/06: Version 11.6.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* iostat: Refresh device list properly.
 	* pidstat: Report CPU usage for a process as the sum of all threads.
