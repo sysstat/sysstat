@@ -1,5 +1,20 @@
 Changes:
 
+2018/06/01: Version 11.7.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadf: Add new option "--iface=": Allow the user to select the
+	  network interfaces to display.
+	* sar/sadf: Add new option "--dev=": Allow the user to select the
+	  block devices to display.
+	* sar/sadf: Add new option "--fs=": Allow the user to select the
+	  filesystems to display.
+	* Add new option "--dec=": Allow the user to choose the number of decimal
+	  places to be used by sysstat commands.
+	* Manual pages updated (sar, sadf, cifsiostat, iostat, mpstat, pidstat).
+	* sar: Change how used memory (kbmemused) is calculated to be
+	  consistent with free(1) and top(1)'s output [11.6.4] [11.4.10].
+	* pidstat: Fix incorrect thread names displayed with -t and -l options
+	  [11.6.4] [11.4.10].
+
 2018/04/06: Version 11.7.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix possible crash happening when buffers needed to be
 	  reallocated to accomodate more devices.
