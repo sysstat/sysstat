@@ -940,7 +940,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		printf(" width=\"%d\" height=\"%d\""
 		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
 		       SVG_T_XSIZE * (hdr_parm->views_per_row), height);
-		printf("<text x= \"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
+		printf("<text x=\"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
 		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
