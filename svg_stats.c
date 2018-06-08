@@ -1026,11 +1026,11 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 			out_p = *(out + pos + j);
 			if (g_type[i] == SVG_LINE_GRAPH) {
 				/* Line graphs */
-				printf("<path id=\"g%dp%d\" d=\"%s\" "
+				printf("<path d=\"%s\" "
 				       "style=\"vector-effect: non-scaling-stroke; "
 				       "stroke: #%06x; stroke-width: 1; fill-opacity: 0\" "
 				       "transform=\"scale(%f,%f)\"/>\n",
-				       svg_p->graph_no, pos + j, out_p,
+				       out_p,
 				       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
 				       xfactor,
 				       yfactor * asfactor[j]);
