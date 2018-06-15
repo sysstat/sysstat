@@ -805,6 +805,10 @@ struct activity {
 	 */
 	char *hdr_line;
 	/*
+	 * Description of activity.
+	 */
+	char *desc;
+	/*
 	 * Name of activity.
 	 */
 	char *name;

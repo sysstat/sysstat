@@ -91,6 +91,7 @@ struct activity cpu_act = {
 	.f_json_print	= json_print_cpu_stats,
 	.f_svg_print	= svg_print_cpu_stats,
 	.f_raw_print	= raw_print_cpu_stats,
+	.desc		= "CPU utilization",
 #endif
 	.name		= "A_CPU",
 	.g_nr		= 1,
@@ -132,6 +133,7 @@ struct activity pcsw_act = {
 	.f_json_print	= json_print_pcsw_stats,
 	.f_svg_print	= svg_print_pcsw_stats,
 	.f_raw_print	= raw_print_pcsw_stats,
+	.desc		= "Task creation and switching activity",
 #endif
 	.name		= "A_PCSW",
 	.g_nr		= 2,
@@ -173,6 +175,7 @@ struct activity irq_act = {
 	.f_json_print	= json_print_irq_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_irq_stats,
+	.desc		= "Interrupts statistics",
 #endif
 	.name		= "A_IRQ",
 	.g_nr		= 0,
@@ -214,6 +217,7 @@ struct activity swap_act = {
 	.f_json_print	= json_print_swap_stats,
 	.f_svg_print	= svg_print_swap_stats,
 	.f_raw_print	= raw_print_swap_stats,
+	.desc		= "Swap activity",
 #endif
 	.name		= "A_SWAP",
 	.g_nr		= 1,
@@ -256,6 +260,7 @@ struct activity paging_act = {
 	.f_json_print	= json_print_paging_stats,
 	.f_svg_print	= svg_print_paging_stats,
 	.f_raw_print	= raw_print_paging_stats,
+	.desc		= "Paging activity",
 #endif
 	.name		= "A_PAGE",
 	.g_nr		= 3,
@@ -297,6 +302,7 @@ struct activity io_act = {
 	.f_json_print	= json_print_io_stats,
 	.f_svg_print	= svg_print_io_stats,
 	.f_raw_print	= raw_print_io_stats,
+	.desc		= "I/O and transfer rate statistics",
 #endif
 	.name		= "A_IO",
 	.g_nr		= 2,
@@ -339,6 +345,7 @@ struct activity memory_act = {
 	.f_json_print	= json_print_memory_stats,
 	.f_svg_print	= svg_print_memory_stats,
 	.f_raw_print	= raw_print_memory_stats,
+	.desc		= "Memory and swap utilization",
 #endif
 	.name		= "A_MEMORY",
 	.g_nr		= 9,
@@ -380,6 +387,7 @@ struct activity ktables_act = {
 	.f_json_print	= json_print_ktables_stats,
 	.f_svg_print	= svg_print_ktables_stats,
 	.f_raw_print	= raw_print_ktables_stats,
+	.desc		= "Kernel tables statistics",
 #endif
 	.name		= "A_KTABLES",
 	.g_nr		= 2,
@@ -421,6 +429,7 @@ struct activity queue_act = {
 	.f_json_print	= json_print_queue_stats,
 	.f_svg_print	= svg_print_queue_stats,
 	.f_raw_print	= raw_print_queue_stats,
+	.desc		= "Queue length and load average statistics",
 #endif
 	.name		= "A_QUEUE",
 	.g_nr		= 3,
@@ -462,6 +471,7 @@ struct activity serial_act = {
 	.f_json_print	= json_print_serial_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_serial_stats,
+	.desc		= "TTY devices statistics",
 #endif
 	.name		= "A_SERIAL",
 	.g_nr		= 0,
@@ -503,6 +513,7 @@ struct activity disk_act = {
 	.f_json_print	= json_print_disk_stats,
 	.f_svg_print	= svg_print_disk_stats,
 	.f_raw_print	= raw_print_disk_stats,
+	.desc		= "Block devices statistics",
 #endif
 	.name		= "A_DISK",
 	.g_nr		= 5,
@@ -544,6 +555,7 @@ struct activity net_dev_act = {
 	.f_json_print	= json_print_net_dev_stats,
 	.f_svg_print	= svg_print_net_dev_stats,
 	.f_raw_print	= raw_print_net_dev_stats,
+	.desc		= "Network interfaces statistics",
 #endif
 	.name		= "A_NET_DEV",
 	.g_nr		= 4,
@@ -586,6 +598,7 @@ struct activity net_edev_act = {
 	.f_json_print	= json_print_net_edev_stats,
 	.f_svg_print	= svg_print_net_edev_stats,
 	.f_raw_print	= raw_print_net_edev_stats,
+	.desc		= "Network interfaces errors statistics",
 #endif
 	.name		= "A_NET_EDEV",
 	.g_nr		= 4,
@@ -627,6 +640,7 @@ struct activity net_nfs_act = {
 	.f_json_print	= json_print_net_nfs_stats,
 	.f_svg_print	= svg_print_net_nfs_stats,
 	.f_raw_print	= raw_print_net_nfs_stats,
+	.desc		= "NFS client statistics",
 #endif
 	.name		= "A_NET_NFS",
 	.g_nr		= 3,
@@ -669,6 +683,7 @@ struct activity net_nfsd_act = {
 	.f_json_print	= json_print_net_nfsd_stats,
 	.f_svg_print	= svg_print_net_nfsd_stats,
 	.f_raw_print	= raw_print_net_nfsd_stats,
+	.desc		= "NFS server statistics",
 #endif
 	.name		= "A_NET_NFSD",
 	.g_nr		= 5,
@@ -710,6 +725,7 @@ struct activity net_sock_act = {
 	.f_json_print	= json_print_net_sock_stats,
 	.f_svg_print	= svg_print_net_sock_stats,
 	.f_raw_print	= raw_print_net_sock_stats,
+	.desc		= "IPv4 sockets statistics",
 #endif
 	.name		= "A_NET_SOCK",
 	.g_nr		= 2,
@@ -751,6 +767,7 @@ struct activity net_ip_act = {
 	.f_json_print	= json_print_net_ip_stats,
 	.f_svg_print	= svg_print_net_ip_stats,
 	.f_raw_print	= raw_print_net_ip_stats,
+	.desc		= "IPv4 traffic statistics",
 #endif
 	.name		= "A_NET_IP",
 	.g_nr		= 3,
@@ -792,6 +809,7 @@ struct activity net_eip_act = {
 	.f_json_print	= json_print_net_eip_stats,
 	.f_svg_print	= svg_print_net_eip_stats,
 	.f_raw_print	= raw_print_net_eip_stats,
+	.desc		= "IPv4 traffic errors statistics",
 #endif
 	.name		= "A_NET_EIP",
 	.g_nr		= 3,
@@ -834,6 +852,7 @@ struct activity net_icmp_act = {
 	.f_json_print	= json_print_net_icmp_stats,
 	.f_svg_print	= svg_print_net_icmp_stats,
 	.f_raw_print	= raw_print_net_icmp_stats,
+	.desc		= "ICMPv4 traffic statistics",
 #endif
 	.name		= "A_NET_ICMP",
 	.g_nr		= 4,
@@ -876,6 +895,7 @@ struct activity net_eicmp_act = {
 	.f_json_print	= json_print_net_eicmp_stats,
 	.f_svg_print	= svg_print_net_eicmp_stats,
 	.f_raw_print	= raw_print_net_eicmp_stats,
+	.desc		= "ICMPv4 traffic errors statistics",
 #endif
 	.name		= "A_NET_EICMP",
 	.g_nr		= 6,
@@ -917,6 +937,7 @@ struct activity net_tcp_act = {
 	.f_json_print	= json_print_net_tcp_stats,
 	.f_svg_print	= svg_print_net_tcp_stats,
 	.f_raw_print	= raw_print_net_tcp_stats,
+	.desc		= "TCPv4 traffic statistics",
 #endif
 	.name		= "A_NET_TCP",
 	.g_nr		= 2,
@@ -958,6 +979,7 @@ struct activity net_etcp_act = {
 	.f_json_print	= json_print_net_etcp_stats,
 	.f_svg_print	= svg_print_net_etcp_stats,
 	.f_raw_print	= raw_print_net_etcp_stats,
+	.desc		= "TCPv4 traffic errors statistics",
 #endif
 	.name		= "A_NET_ETCP",
 	.g_nr		= 2,
@@ -999,6 +1021,7 @@ struct activity net_udp_act = {
 	.f_json_print	= json_print_net_udp_stats,
 	.f_svg_print	= svg_print_net_udp_stats,
 	.f_raw_print	= raw_print_net_udp_stats,
+	.desc		= "UDPv4 traffic statistics",
 #endif
 	.name		= "A_NET_UDP",
 	.g_nr		= 2,
@@ -1040,6 +1063,7 @@ struct activity net_sock6_act = {
 	.f_json_print	= json_print_net_sock6_stats,
 	.f_svg_print	= svg_print_net_sock6_stats,
 	.f_raw_print	= raw_print_net_sock6_stats,
+	.desc		= "IPv6 sockets statistics",
 #endif
 	.name		= "A_NET_SOCK6",
 	.g_nr		= 1,
@@ -1082,6 +1106,7 @@ struct activity net_ip6_act = {
 	.f_json_print	= json_print_net_ip6_stats,
 	.f_svg_print	= svg_print_net_ip6_stats,
 	.f_raw_print	= raw_print_net_ip6_stats,
+	.desc		= "IPv6 traffic statistics",
 #endif
 	.name		= "A_NET_IP6",
 	.g_nr		= 4,
@@ -1124,6 +1149,7 @@ struct activity net_eip6_act = {
 	.f_json_print	= json_print_net_eip6_stats,
 	.f_svg_print	= svg_print_net_eip6_stats,
 	.f_raw_print	= raw_print_net_eip6_stats,
+	.desc		= "IPv6 traffic errors statistics",
 #endif
 	.name		= "A_NET_EIP6",
 	.g_nr		= 4,
@@ -1167,6 +1193,7 @@ struct activity net_icmp6_act = {
 	.f_json_print	= json_print_net_icmp6_stats,
 	.f_svg_print	= svg_print_net_icmp6_stats,
 	.f_raw_print	= raw_print_net_icmp6_stats,
+	.desc		= "ICMPv6 traffic statistics",
 #endif
 	.name		= "A_NET_ICMP6",
 	.g_nr		= 5,
@@ -1209,6 +1236,7 @@ struct activity net_eicmp6_act = {
 	.f_json_print	= json_print_net_eicmp6_stats,
 	.f_svg_print	= svg_print_net_eicmp6_stats,
 	.f_raw_print	= raw_print_net_eicmp6_stats,
+	.desc		= "ICMPv6 traffic errors statistics",
 #endif
 	.name		= "A_NET_EICMP6",
 	.g_nr		= 6,
@@ -1250,6 +1278,7 @@ struct activity net_udp6_act = {
 	.f_json_print	= json_print_net_udp6_stats,
 	.f_svg_print	= svg_print_net_udp6_stats,
 	.f_raw_print	= raw_print_net_udp6_stats,
+	.desc		= "UDPv6 traffic statistics",
 #endif
 	.name		= "A_NET_UDP6",
 	.g_nr		= 2,
@@ -1291,6 +1320,7 @@ struct activity pwr_cpufreq_act = {
 	.f_json_print	= json_print_pwr_cpufreq_stats,
 	.f_svg_print	= svg_print_pwr_cpufreq_stats,
 	.f_raw_print	= raw_print_pwr_cpufreq_stats,
+	.desc		= "CPU clock frequency",
 #endif
 	.name		= "A_PWR_CPU",
 	.g_nr		= 1,
@@ -1332,6 +1362,7 @@ struct activity pwr_fan_act = {
 	.f_json_print	= json_print_pwr_fan_stats,
 	.f_svg_print	= svg_print_pwr_fan_stats,
 	.f_raw_print	= raw_print_pwr_fan_stats,
+	.desc		= "Fans speed",
 #endif
 	.name		= "A_PWR_FAN",
 	.g_nr		= 1,
@@ -1373,6 +1404,7 @@ struct activity pwr_temp_act = {
 	.f_json_print	= json_print_pwr_temp_stats,
 	.f_svg_print	= svg_print_pwr_temp_stats,
 	.f_raw_print	= raw_print_pwr_temp_stats,
+	.desc		= "Devices temperature",
 #endif
 	.name		= "A_PWR_TEMP",
 	.g_nr		= 2,
@@ -1414,6 +1446,7 @@ struct activity pwr_in_act = {
 	.f_json_print	= json_print_pwr_in_stats,
 	.f_svg_print	= svg_print_pwr_in_stats,
 	.f_raw_print	= raw_print_pwr_in_stats,
+	.desc		= "Voltage inputs statistics",
 #endif
 	.name		= "A_PWR_IN",
 	.g_nr		= 2,
@@ -1455,6 +1488,7 @@ struct activity huge_act = {
 	.f_json_print	= json_print_huge_stats,
 	.f_svg_print	= svg_print_huge_stats,
 	.f_raw_print	= raw_print_huge_stats,
+	.desc		= "Huge pages utilization",
 #endif
 	.name		= "A_HUGE",
 	.g_nr		= 2,
@@ -1496,6 +1530,7 @@ struct activity pwr_wghfreq_act = {
 	.f_json_print	= json_print_pwr_wghfreq_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_pwr_wghfreq_stats,
+	.desc		= "CPU weighted frequency",
 #endif
 	.name		= "A_PWR_FREQ",
 	.g_nr		= 0,
@@ -1537,6 +1572,7 @@ struct activity pwr_usb_act = {
 	.f_json_print	= json_print_pwr_usb_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_pwr_usb_stats,
+	.desc		= "USB devices",
 #endif
 	.name		= "A_PWR_USB",
 	.g_nr		= 0,
@@ -1579,6 +1615,7 @@ struct activity filesystem_act = {
 	.f_json_print	= json_print_filesystem_stats,
 	.f_svg_print	= svg_print_filesystem_stats,
 	.f_raw_print	= raw_print_filesystem_stats,
+	.desc		= "Filesystems statistics",
 #endif
 	.name		= "A_FS",
 	.g_nr		= 4,
@@ -1620,6 +1657,7 @@ struct activity fchost_act = {
 	.f_json_print	= json_print_fchost_stats,
 	.f_svg_print	= svg_print_fchost_stats,
 	.f_raw_print	= raw_print_fchost_stats,
+	.desc		= "Fibre Channel HBA statistics",
 #endif
 	.name		= "A_NET_FC",
 	.g_nr		= 2,
@@ -1662,6 +1700,7 @@ struct activity softnet_act = {
 	.f_json_print	= json_print_softnet_stats,
 	.f_svg_print	= svg_print_softnet_stats,
 	.f_raw_print	= raw_print_softnet_stats,
+	.desc		= "Software-based network processing statistics",
 #endif
 	.name		= "A_NET_SOFT",
 	.g_nr		= 2,

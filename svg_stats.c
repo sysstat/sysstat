@@ -1082,7 +1082,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	int group1[] = {5};
 	int group2[] = {9};
 	int g_type[] = {SVG_BAR_GRAPH};
-	char *title[] = {"CPU load"};
+	char *title[] = {"CPU utilization"};
 	char *g_title1[] = {"%user", "%nice", "%system", "%iowait", "%steal", "%idle"};
 	char *g_title2[] = {"%usr", "%nice", "%sys", "%iowait", "%steal", "%irq", "%soft", "%guest", "%gnice", "%idle"};
 	static double *spmin, *spmax;
@@ -1884,7 +1884,7 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 		*skc = (struct stats_ktables *) a->buf[curr];
 	int group[] = {3, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"Kernel tables (1)", "Kernel tables (2)"};
+	char *title[] = {"Kernel tables statistics (1)", "Kernel tables statistics (2)"};
 	char *g_title[] = {"~dentunusd", "~file-nr", "~inode-nr",
 			   "~pty-nr"};
 	int g_fields[] = {1, 2, 0, 3};
@@ -1954,7 +1954,7 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 		*sqc = (struct stats_queue *) a->buf[curr];
 	int group[] = {2, 1, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"Queue length", "Task list", "Load average"};
+	char *title[] = {"Queue length", "Task list statistics", "Load average statistics"};
 	char *g_title[] = {"~runq-sz", "~blocked",
 			   "~plist-sz",
 			   "ldavg-1", "ldavg-5", "ldavg-15"};
@@ -2039,9 +2039,9 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	int group[] = {1, 2, 2, 2, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH, SVG_BAR_GRAPH};
-	char *title[] = {"Disk statistics (1)", "Disk statistics (2)",
-			 "Disk statistics (3)", "Disk statistics (4)",
-			 "Disk statistics (5)"};
+	char *title[] = {"Block devices statistics (1)", "Block devices statistics (2)",
+			 "Block devices statistics (3)", "Block devices statistics (4)",
+			 "Block devices statistics (5)"};
 	char *g_title[] = {"tps",
 			   "rkB/s", "wkB/s",
 			   "areq-sz", "aqu-sz",
@@ -2284,8 +2284,8 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	int group[] = {2, 2, 3, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_BAR_GRAPH};
-	char *title[] = {"Network statistics (1)", "Network statistics (2)",
-			 "Network statistics (3)", "Network statistics (4)"};
+	char *title[] = {"Network interfaces statistics (1)", "Network interfaces statistics (2)",
+			 "Network interfaces statistics (3)", "Network interfaces statistics (4)"};
 	char *g_title[] = {"rxpck/s", "txpck/s",
 			   "rxkB/s", "txkB/s",
 			   "rxcmp/s", "txcmp/s", "rxmcst/s",
@@ -2474,7 +2474,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
- * Display network interface errors statistics in SVG.
+ * Display network interfaces errors statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2495,8 +2495,8 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 	int group[] = {2, 2, 2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH};
-	char *title[] = {"Network errors statistics (1)", "Network errors statistics (2)",
-			 "Network errors statistics (3)", "Network errors statistics (4)"};
+	char *title[] = {"Network interfaces errors statistics (1)", "Network interfaces errors statistics (2)",
+			 "Network interfaces errors statistics (3)", "Network interfaces errors statistics (4)"};
 	char *g_title[] = {"rxerr/s", "txerr/s",
 			    "rxdrop/s", "txdrop/s",
 			    "rxfifo/s", "txfifo/s",
@@ -2862,7 +2862,7 @@ __print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int actio
 
 /*
  ***************************************************************************
- * Display network socket statistics in SVG.
+ * Display socket statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2883,7 +2883,7 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 		*snsc = (struct stats_net_sock *) a->buf[curr];
 	int group[] = {1, 5};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"IPv4 network sockets (1)", "IPv4 network sockets (2)"};
+	char *title[] = {"IPv4 sockets statistics (1)", "IPv4 sockets statistics (2)"};
 	char *g_title[] = {"~totsck",
 			   "~tcpsck", "~udpsck", "~rawsck", "~ip-frag", "~tcp-tw"};
 	int g_fields[] = {0, 1, 5, 2, 3, 4};
@@ -2940,7 +2940,7 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 
 /*
  ***************************************************************************
- * Display IPv4 network statistics in SVG.
+ * Display IPv4 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -2962,7 +2962,7 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 		*snip = (struct stats_net_ip *) a->buf[!curr];
 	int group[] = {4, 2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"IPv4 network statistics (1)", "IPv4 network statistics (2)", "IPv4 network statistics (3)"};
+	char *title[] = {"IPv4 traffic statistics (1)", "IPv4 traffic statistics (2)", "IPv4 traffic statistics (3)"};
 	char *g_title[] = {"irec/s", "fwddgm/s", "idel/s", "orq/s",
 			   "asmrq/s", "asmok/s",
 			   "fragok/s", "fragcrt/s"};
@@ -3029,7 +3029,7 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 
 /*
  ***************************************************************************
- * Display IPv4 network errors statistics in SVG.
+ * Display IPv4 traffic errors statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3051,8 +3051,8 @@ __print_funct_t svg_print_net_eip_stats(struct activity *a, int curr, int action
 		*sneip = (struct stats_net_eip *) a->buf[!curr];
 	int group[] = {3, 2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"IPv4 network errors statistics (1)", "IPv4 network errors statistics (2)",
-			 "IPv4 network errors statistics (3)"};
+	char *title[] = {"IPv4 traffic errors statistics (1)", "IPv4 traffic errors statistics (2)",
+			 "IPv4 traffic errors statistics (3)"};
 	char *g_title[] = {"ihdrerr/s", "iadrerr/s", "iukwnpr/s",
 			   "idisc/s", "odisc/s",
 			   "onort/s", "asmf/s", "fragf/s"};
@@ -3119,7 +3119,7 @@ __print_funct_t svg_print_net_eip_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
- * Display ICMPv4 network statistics in SVG.
+ * Display ICMPv4 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3142,8 +3142,8 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
 	int group[] = {2, 4, 4, 4};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH};
-	char *title[] = {"ICMPv4 network statistics (1)", "ICMPv4 network statistics (2)",
-			 "ICMPv4 network statistics (3)", "ICMPv4 network statistics (4)"};
+	char *title[] = {"ICMPv4 traffic statistics (1)", "ICMPv4 traffic statistics (2)",
+			 "ICMPv4 traffic statistics (3)", "ICMPv4 traffic statistics (4)"};
 	char *g_title[] = {"imsg/s", "omsg/s",
 			   "iech/s", "iechr/s", "oech/s", "oechr/s",
 			   "itm/s", "itmr/s", "otm/s", "otmr/s",
@@ -3235,7 +3235,7 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
 
 /*
  ***************************************************************************
- * Display ICMPv4 network errors statistics in SVG.
+ * Display ICMPv4 traffic errors statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3258,9 +3258,9 @@ __print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int acti
 	int group[] = {2, 2, 2, 2, 2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"ICMPv4 network errors statistics (1)", "ICMPv4 network errors statistics (2)",
-			 "ICMPv4 network errors statistics (3)", "ICMPv4 network errors statistics (4)",
-			 "ICMPv4 network errors statistics (5)", "ICMPv4 network errors statistics (6)"};
+	char *title[] = {"ICMPv4 traffic errors statistics (1)", "ICMPv4 traffic errors statistics (2)",
+			 "ICMPv4 traffic errors statistics (3)", "ICMPv4 traffic errors statistics (4)",
+			 "ICMPv4 traffic errors statistics (5)", "ICMPv4 traffic errors statistics (6)"};
 	char *g_title[] = {"ierr/s", "oerr/s",
 			   "idstunr/s", "odstunr/s",
 			   "itmex/s", "otmex/s",
@@ -3346,7 +3346,7 @@ __print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int acti
 
 /*
  ***************************************************************************
- * Display TCPv4 network statistics in SVG.
+ * Display TCPv4 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3368,7 +3368,7 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 		*sntp = (struct stats_net_tcp *) a->buf[!curr];
 	int group[] = {2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"TCPv4 network statistics (1)", "TCPv4 network statistics (2)"};
+	char *title[] = {"TCPv4 traffic statistics (1)", "TCPv4 traffic statistics (2)"};
 	char *g_title[] = {"active/s", "passive/s",
 			   "iseg/s", "oseg/s"};
 	int g_fields[] = {0, 1, 2, 3};
@@ -3418,7 +3418,7 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
- * Display TCPv4 network errors statistics in SVG.
+ * Display TCPv4 traffic errors statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3440,7 +3440,7 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 		*snetp = (struct stats_net_etcp *) a->buf[!curr];
 	int group[] = {2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"TCPv4 network errors statistics (1)", "TCPv4 network errors statistics (2)"};
+	char *title[] = {"TCPv4 traffic errors statistics (1)", "TCPv4 traffic errors statistics (2)"};
 	char *g_title[] = {"atmptf/s", "estres/s",
 			   "retrans/s", "isegerr/s", "orsts/s"};
 	int g_fields[] = {0, 1, 2, 3, 4};
@@ -3494,7 +3494,7 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 
 /*
  ***************************************************************************
- * Display UDPv4 network statistics in SVG.
+ * Display UDPv4 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3516,7 +3516,7 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
 		*snup = (struct stats_net_udp *) a->buf[!curr];
 	int group[] = {2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"UDPv4 network statistics (1)", "UDPv4 network statistics (2)"};
+	char *title[] = {"UDPv4 traffic statistics (1)", "UDPv4 traffic statistics (2)"};
 	char *g_title[] = {"idgm/s", "odgm/s",
 			   "noport/s", "idgmerr/s"};
 	int g_fields[] = {0, 1, 2, 3};
@@ -3566,7 +3566,7 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
- * Display IPV6 network socket statistics in SVG.
+ * Display IPV6 socket statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3587,7 +3587,7 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
 	int group[] = {4};
 	int g_type[] = {SVG_LINE_GRAPH};
-	char *title[] = {"IPv6 network sockets"};
+	char *title[] = {"IPv6 sockets statistics"};
 	char *g_title[] = {"~tcp6sck", "~udp6sck", "~raw6sck", "~ip6-frag"};
 	int g_fields[] = {0, 1, 2, 3};
 	static double *spmin, *spmax;
@@ -3635,7 +3635,7 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 
 /*
  ***************************************************************************
- * Display IPv6 network statistics in SVG.
+ * Display IPv6 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3658,8 +3658,8 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
 	int group[] = {4, 2, 2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH};
-	char *title[] = {"IPv6 network statistics (1)", "IPv6 network statistics (2)",
-			 "IPv6 network statistics (3)", "IPv6 network statistics (4)"};
+	char *title[] = {"IPv6 traffic statistics (1)", "IPv6 traffic statistics (2)",
+			 "IPv6 traffic statistics (3)", "IPv6 traffic statistics (4)"};
 	char *g_title[] = {"irec6/s", "fwddgm6/s", "idel6/s", "orq6/s",
 			   "asmrq6/s", "asmok6/s",
 			   "imcpck6/s", "omcpck6/s",
@@ -3735,7 +3735,7 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
 
 /*
  ***************************************************************************
- * Display IPv6 network errors statistics in SVG.
+ * Display IPv6 traffic errors statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3758,9 +3758,9 @@ __print_funct_t svg_print_net_eip6_stats(struct activity *a, int curr, int actio
 	int group[] = {4, 2, 2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH};
-	char *title[] = {"IPv6 network errors statistics (1)", "IPv6 network errors statistics (2)",
-			 "IPv6 network errors statistics (3)", "IPv6 network errors statistics (4)",
-			 "IPv6 network errors statistics (5)"};
+	char *title[] = {"IPv6 traffic errors statistics (1)", "IPv6 traffic errors statistics (2)",
+			 "IPv6 traffic errors statistics (3)", "IPv6 traffic errors statistics (4)",
+			 "IPv6 traffic errors statistics (5)"};
 	char *g_title[] = {"ihdrer6/s", "iadrer6/s", "iukwnp6/s", "i2big6/s",
 			   "idisc6/s", "odisc6/s",
 			   "inort6/s", "onort6/s",
@@ -3840,7 +3840,7 @@ __print_funct_t svg_print_net_eip6_stats(struct activity *a, int curr, int actio
 
 /*
  ***************************************************************************
- * Display ICMPv6 network statistics in SVG.
+ * Display ICMPv6 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3863,9 +3863,9 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 	int group[] = {2, 3, 5, 3, 4};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"ICMPv6 network statistics (1)", "ICMPv6 network statistics (2)",
-			 "ICMPv6 network statistics (3)", "ICMPv6 network statistics (4)",
-			 "ICMPv6 network statistics (5)"};
+	char *title[] = {"ICMPv6 traffic statistics (1)", "ICMPv6 traffic statistics (2)",
+			 "ICMPv6 traffic statistics (3)", "ICMPv6 traffic statistics (4)",
+			 "ICMPv6 traffic statistics (5)"};
 	char *g_title[] = {"imsg6/s", "omsg6/s",
 			   "iech6/s", "iechr6/s", "oechr6/s",
 			   "igmbq6/s", "igmbr6/s", "ogmbr6/s", "igmbrd6/s", "ogmbrd6/s",
@@ -3970,7 +3970,7 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 
 /*
  ***************************************************************************
- * Display ICMPv6 network errors statistics in SVG.
+ * Display ICMPv6 traffic errors statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -3993,9 +3993,9 @@ __print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int act
 	int group[] = {1, 2, 2, 2, 2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"ICMPv6 network errors statistics (1)", "ICMPv6 network errors statistics (2)",
-			 "ICMPv6 network errors statistics (3)", "ICMPv6 network errors statistics (4)",
-			 "ICMPv6 network errors statistics (5)", "ICMPv6 network errors statistics (6)"};
+	char *title[] = {"ICMPv6 traffic errors statistics (1)", "ICMPv6 traffic errors statistics (2)",
+			 "ICMPv6 traffic errors statistics (3)", "ICMPv6 traffic errors statistics (4)",
+			 "ICMPv6 traffic errors statistics (5)", "ICMPv6 traffic errors statistics (6)"};
 	char *g_title[] = {"ierr6/s",
 			   "idtunr6/s", "odtunr6/s",
 			   "itmex6/s", "otmex6/s",
@@ -4077,7 +4077,7 @@ __print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int act
 
 /*
  ***************************************************************************
- * Display UDPv6 network statistics in SVG.
+ * Display UDPv6 traffic statistics in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -4099,7 +4099,7 @@ __print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int actio
 		*snup = (struct stats_net_udp6 *) a->buf[!curr];
 	int group[] = {2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"UDPv6 network statistics (1)", "UDPv6 network statistics (2)"};
+	char *title[] = {"UDPv6 traffic statistics (1)", "UDPv6 traffic statistics (2)"};
 	char *g_title[] = {"idgm6/s", "odgm6/s",
 			   "noport6/s", "idgmer6/s"};
 	int g_fields[] = {0, 1, 2, 3};
@@ -4169,7 +4169,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 	struct stats_pwr_cpufreq *spc, *spp;
 	int group[] = {1};
 	int g_type[] = {SVG_LINE_GRAPH};
-	char *title[] = {"CPU frequency"};
+	char *title[] = {"CPU clock frequency"};
 	char *g_title[] = {"MHz"};
 	static double *spmin, *spmax;
 	static char **out;
@@ -4268,7 +4268,7 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 	struct stats_pwr_fan *spc, *spp;
 	int group[] = {1};
 	int g_type[] = {SVG_LINE_GRAPH};
-	char *title[] = {"Fan speed"};
+	char *title[] = {"Fans speed"};
 	char *g_title[] = {"~rpm"};
 	static double *spmin, *spmax;
 	static char **out;
@@ -4341,8 +4341,8 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 	struct stats_pwr_temp *spc;
 	int group[] = {1, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH};
-	char *title[] = {"Device temperature (1)",
-			 "Device temperature (2)"};
+	char *title[] = {"Devices temperature (1)",
+			 "Devices temperature (2)"};
 	char *g_title[] = {"~degC",
 			   "%temp"};
 	static double *spmin, *spmax;
@@ -4435,8 +4435,8 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 	struct stats_pwr_in *spc;
 	int group[] = {1, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH};
-	char *title[] = {"Voltage inputs (1)",
-			 "Voltage inputs (2)"};
+	char *title[] = {"Voltage inputs statistics (1)",
+			 "Voltage inputs statistics (2)"};
 	char *g_title[] = {"inV",
 			   "%in"};
 	static double *spmin, *spmax;
@@ -4615,8 +4615,8 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	int group[] = {2, 2, 2, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH,
 			SVG_LINE_GRAPH, SVG_BAR_GRAPH};
-	char *title[] = {"Filesystem statistics (1)", "Filesystem statistics (2)",
-			 "Filesystem statistics (3)", "Filesystem statistics (4)"};
+	char *title[] = {"Filesystems statistics (1)", "Filesystems statistics (2)",
+			 "Filesystems statistics (3)", "Filesystems statistics (4)"};
 	char *g_title[] = {"~MBfsfree", "~MBfsused",
 			   "%ufsused", "%fsused",
 			   "Ifree/1000", "Iused/1000",
