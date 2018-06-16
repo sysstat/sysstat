@@ -109,6 +109,7 @@
 #define S_F_SVG_SHOW_INFO	0x00800000
 #define S_F_HUMAN_READ		0x01000000
 #define S_F_ZERO_OMIT		0x02000000
+#define S_F_SVG_SHOW_TOC	0x04000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -137,6 +138,7 @@
 #define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT) == S_F_SVG_HEIGHT)
 #define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED) == S_F_SVG_PACKED)
 #define DISPLAY_HUMAN_READ(m)		(((m) & S_F_HUMAN_READ) == S_F_HUMAN_READ)
+#define DISPLAY_TOC(m)			(((m) & S_F_SVG_SHOW_TOC) == S_F_SVG_SHOW_TOC)
 
 #define AO_F_NULL		0x00000000
 
@@ -221,6 +223,7 @@
 #define K_DEBUG		"debug"
 #define K_HEIGHT	"height="
 #define K_PACKED	"packed"
+#define K_SHOWTOC	"showtoc"
 
 /* Groups of activities */
 #define G_DEFAULT	0x00
@@ -309,6 +312,7 @@ struct svg_parm {
 	unsigned long long ust_time_first;	/* Time (in seconds since the epoch) for first sample */
 	int graph_no;				/* Total number of views already displayed */
 	int restart;				/* TRUE if we have just met a RESTART record */
+	int nr_act_dispd;			/* Number of activities that will be displayed */
 	__nr_t nr_max;				/* Maximum number of items for this activity */
 	struct file_header *file_hdr;		/* Pointer on file header structure */
 };
@@ -317,6 +321,7 @@ struct svg_parm {
 struct svg_hdr_parm {
 	int graph_nr;	   /* Number of rows of views to display or canvas height entered on the command line */
 	int views_per_row; /* Maximum number of views on a single row */
+	int nr_act_dispd;  /* Number of activities that will be displayed */
 };
 
 /*
@@ -1007,6 +1012,9 @@ struct report_format {
  *   ^
  * 1 | General header
  *   v
+ *   ^
+ * 9 | One line from table of contents (if any)
+ *   v
  *   ^   ^   ^
  *   |   | 4 | Graph title
  *   |   |   v
@@ -1041,13 +1049,15 @@ struct report_format {
 /* #5 */
 #define SVG_G_YSIZE	200
 /* #1 */
-#define SVG_H_YSIZE	50
+#define SVG_H_YSIZE	60
 /* #4 */
 #define SVG_M_YSIZE	50
 /* #2 */
 #define SVG_T_YSIZE	310
 /* #3 */
 #define SVG_V_YSIZE	300
+/* #9 */
+#define SVG_C_YSIZE	20
 
 /* Grid: Nr of horizontal lines */
 #define SVG_H_GRIDNR	3

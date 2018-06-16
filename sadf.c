@@ -450,6 +450,8 @@ void seek_file_position(int ifd, int action)
  * OUT:
  * @views_per_row	Maximum number of views that will be displayed on a
  *			single row (useful only if "packed" option entered).
+ * @nr_act_dispd	Number of activities that will be displayed.
+ *			May be 0.
  *
  * RETURNS:
  * Number of rows containing views, taking into account only activities
@@ -459,10 +461,12 @@ void seek_file_position(int ifd, int action)
  */
 int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		     struct file_activity *file_actlst, struct tm *rectime,
-		     struct tm *loctime, int *views_per_row)
+		     struct tm *loctime, int *views_per_row, int *nr_act_dispd)
 {
 	int i, n, p, eosaf;
 	int rtype, tot_g_nr = 0;
+
+	*nr_act_dispd = 0;
 
 	/* Save current file position */
 	seek_file_position(ifd, DO_SAVE);
@@ -515,6 +519,8 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 		if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
 			continue;
+
+		(*nr_act_dispd)++;
 
 		if (((act[p]->id == A_NET_DEV) || (act[p]->id == A_NET_EDEV)) &&
 		    (dlst_iface_idx > 0) && (dlst_iface_idx < id_nr_max[p])) {
@@ -839,6 +845,8 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
  * @g_nr	Number of graphs already displayed (for all activities).
+ * @nr_act_dispd
+ *		Total number of activities that will be displayed.
  *
  * OUT:
  * @cnt		Number of lines of stats remaining to write.
@@ -851,7 +859,8 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			     int p, int *reset, struct file_activity *file_actlst,
 			     struct tm *rectime, struct tm *loctime,
-			     char *file, struct file_magic *file_magic, int *g_nr)
+			     char *file, struct file_magic *file_magic, int *g_nr,
+			     int nr_act_dispd)
 {
 	struct svg_parm parm;
 	int rtype;
@@ -872,6 +881,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	parm.restart = TRUE;
 	parm.file_hdr = &file_hdr;
 	parm.nr_max = id_nr_max[p];
+	parm.nr_act_dispd = nr_act_dispd;
 
 	*cnt  = count;
 	reset_cd = 1;
@@ -1245,7 +1255,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 {
 	struct svg_hdr_parm parm;
 	int i, p;
-	int curr = 1, rtype, g_nr = 0, views_per_row = 1;
+	int curr = 1, rtype, g_nr = 0, views_per_row = 1, nr_act_dispd;
 	int eosaf = TRUE, reset = TRUE;
 	long cnt = 1;
 	int graph_nr = 0;
@@ -1258,7 +1268,8 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 	 * Result may be 0. In this case, "No data" will be displayed instead of the graphs.
 	 */
 	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
-				    file_actlst, rectime, loctime, &views_per_row);
+				    file_actlst, rectime, loctime, &views_per_row,
+				    &nr_act_dispd);
 
 	if (SET_CANVAS_HEIGHT(flags)) {
 		/*
@@ -1271,6 +1282,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 
 	parm.graph_nr = graph_nr;
 	parm.views_per_row = PACK_VIEWS(flags) ? views_per_row : 1;
+	parm.nr_act_dispd = nr_act_dispd;
 
 	/* Print SVG header */
 	if (*fmt[f_position]->f_header) {
@@ -1316,7 +1328,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 			display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
 						p, &reset, file_actlst,
 						rectime, loctime, file,
-						file_magic, &g_nr);
+						file_magic, &g_nr, nr_act_dispd);
 		}
 		else {
 			unsigned int optf, msk;
@@ -1329,7 +1341,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 					display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
 								p, &reset, file_actlst,
 								rectime, loctime, file,
-								file_magic, &g_nr);
+								file_magic, &g_nr, nr_act_dispd);
 					act[p]->opt_flags = optf;
 				}
 			}
@@ -1516,6 +1528,9 @@ int main(int argc, char **argv)
 				}
 				else if (!strcmp(t, K_PACKED)) {
 					flags |= S_F_SVG_PACKED;
+				}
+				else if (!strcmp(t, K_SHOWTOC)) {
+					flags |= S_F_SVG_SHOW_TOC;
 				}
 				else {
 					usage(argv[0]);

@@ -878,7 +878,9 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 	/* Translate to proper position for current activity */
 	printf("<g id=\"g%d-%d\" transform=\"translate(0,%d)\">\n",
 	       id, xid,
-	       SVG_H_YSIZE + svg_p->graph_no * SVG_T_YSIZE);
+	       SVG_H_YSIZE +
+	       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? svg_p->nr_act_dispd : 0) +
+	       SVG_T_YSIZE * svg_p->graph_no);
 
 	/* For each view which is part of current activity */
 	for (i = 0; i < g_nr; i++) {

@@ -34,6 +34,8 @@
 
 extern unsigned int flags;
 extern char *seps[];
+extern unsigned int id_seq[];
+
 
 /*
  ***************************************************************************
@@ -918,21 +920,35 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
-	unsigned int height = 0;
+	unsigned int height = 0, ht = 0;
+	int i, p;
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		printf("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" ");
 		printf("\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
 		printf("<svg xmlns=\"http://www.w3.org/2000/svg\"");
+		if (DISPLAY_TOC(flags)) {
+			printf(" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
+		}
 		if (action & F_END) {
 			printf(">\n");
 		}
 	}
 
 	if (action & F_MAIN) {
-		height = SET_CANVAS_HEIGHT(flags) ? hdr_parm->graph_nr
-						  : SVG_H_YSIZE + SVG_T_YSIZE * (hdr_parm->graph_nr);
+		if (SET_CANVAS_HEIGHT(flags)) {
+			/*
+			 * Option "-O height=..." used: @graph_nr is
+			 * the SVG canvas height set on the command line.
+			 */
+			height = hdr_parm->graph_nr;
+		}
+		else {
+			height = SVG_H_YSIZE +
+				 SVG_C_YSIZE * (DISPLAY_TOC(flags) ? hdr_parm->nr_act_dispd : 0) +
+				 SVG_T_YSIZE * hdr_parm->graph_nr;
+		}
 		if (height < 100) {
 			/* Min canvas height is 100 (at least to display "No data") */
 			height = 100;
@@ -947,6 +963,22 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 				 PLAIN_OUTPUT);
 		printf("</text>\n");
+		if (DISPLAY_TOC(flags)) {
+			for (i = 0; i < NR_ACT; i++) {
+				if (!id_seq[i])
+					continue;
+
+			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+			if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
+				continue;
+
+			printf("<a xlink:href=\"#g%d-0\" xlink:title=\"%s\">\n",
+			       act[p]->id, act[p]->name);
+			printf("<text x=\"10\" y=\"%d\">%s</text></a>\n",
+			       SVG_H_YSIZE + ht, act[p]->desc);
+			ht += SVG_C_YSIZE;
+			}
+		}
 	}
 
 	if (action & F_END) {
@@ -958,7 +990,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 			}
 			/* Give actual SVG height */
 			printf("<!-- Actual canvas height: %d -->\n",
-			       SVG_H_YSIZE + SVG_T_YSIZE * (hdr_parm->graph_nr));
+			       SVG_H_YSIZE +
+			       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? hdr_parm->nr_act_dispd : 0) +
+			       SVG_T_YSIZE * hdr_parm->graph_nr);
 		}
 		printf("</svg>\n");
 	}
