@@ -1,4 +1,4 @@
-.TH SADF 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JUNE 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -216,6 +216,12 @@ Also display %idle state in graphs for CPU statistics.
 .B showinfo
 .RS
 Display additional information (such as the date and the host name) on each view.
+.RE
+
+.B showtoc
+.RS
+Add a table of contents at the beginning of the SVG output, consisting of links
+pointing at the first graph of each activity.
 .RE
 
 .B skipempty
