@@ -5032,7 +5032,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 					unsigned long long itv, struct record_header *record_hdr)
 {
-	struct stats_softnet *ssnc, *ssnp;
+	struct stats_softnet *ssnc, *ssnp, ssnczero;
 	int group[] = {2, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"Software-based network processing statistics (1)",
@@ -5045,7 +5045,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	static int *outsize;
 	char item_name[8];
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
-	int i, pos;
+	int i, pos, restart;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5056,6 +5056,8 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_MAIN) {
+		memset(&ssnczero, 0, STATS_SOFTNET_SIZE);
+
 		/* @nr[curr] cannot normally be greater than @nr_ini */
 		if (a->nr[curr] > a->nr_ini) {
 			a->nr_ini = a->nr[curr];
@@ -5066,16 +5068,33 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 
 		/* For each CPU */
 		for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+			restart = svg_p->restart;
 
 			/* Should current CPU (including CPU "all") be displayed? */
-			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
-			    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
 				/* No */
 				continue;
 
 			ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
 			ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
 
+			/* Is current CPU marked offline? */
+			if (offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07))) {
+				/*
+				 * Yes and it doesn't follow a RESTART record.
+				 * To add a discontinuity in graph, we simulate
+				 * a RESTART mark.
+				 */
+				restart = TRUE;
+				if (svg_p->restart) {
+					/*
+					 * CPU is offline and it follows a real
+					 * RESTART record. Ignore its current value
+					 * (no previous sample).
+					 */
+					ssnc = &ssnczero;
+				}
+			}
 			pos = i * 5;
 
 			/* Check for min/max values */
@@ -5085,23 +5104,23 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			/* total/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(ssnp->processed, ssnc->processed, itv),
-				 out + pos, outsize + pos, svg_p->restart);
+				 out + pos, outsize + pos, restart);
 			/* dropd/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(ssnp->dropped, ssnc->dropped, itv),
-				 out + pos + 1, outsize + pos + 1, svg_p->restart);
+				 out + pos + 1, outsize + pos + 1, restart);
 			/* squeezd/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
-				 out + pos + 2, outsize + pos + 2, svg_p->restart);
+				 out + pos + 2, outsize + pos + 2, restart);
 			/* rx_rps/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
-				 out + pos + 3, outsize + pos + 3, svg_p->restart);
+				 out + pos + 3, outsize + pos + 3, restart);
 			/* flw_lim/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
-				 out + pos + 4, outsize + pos + 4, svg_p->restart);
+				 out + pos + 4, outsize + pos + 4, restart);
 		}
 	}
 
