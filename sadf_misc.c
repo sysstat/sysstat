@@ -966,17 +966,17 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		if (DISPLAY_TOC(flags)) {
 			for (i = 0; i < NR_ACT; i++) {
 				if (!id_seq[i])
-					continue;
+					continue;	/* Activity not in file */
 
-			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
-			if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
-				continue;
+				p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+				if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
+					continue;	/* Activity not selected or no graph available */
 
-			printf("<a xlink:href=\"#g%d-0\" xlink:title=\"%s\">\n",
-			       act[p]->id, act[p]->name);
-			printf("<text x=\"10\" y=\"%d\">%s</text></a>\n",
-			       SVG_H_YSIZE + ht, act[p]->desc);
-			ht += SVG_C_YSIZE;
+				printf("<a xlink:href=\"#g%d-0\" xlink:title=\"%s\">\n",
+				       act[p]->id, act[p]->name);
+				printf("<text x=\"10\" y=\"%d\">%s</text></a>\n",
+				       SVG_H_YSIZE + ht, act[p]->desc);
+				ht += SVG_C_YSIZE;
 			}
 		}
 	}
