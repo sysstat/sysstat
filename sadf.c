@@ -493,8 +493,19 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 				continue;
 
 			if (PACK_VIEWS(flags)) {
-				/* One activity = one row with multiple views */
-				n = 1;
+				/*
+				 * One activity = one row with multiple views.
+				 * Exception is A_MEMORY, for which one activity may be
+				 * displayed in two rows if both memory *and* swap utilization
+				 * have been selected.
+				 */
+				if ((act[p]->id == A_MEMORY) &&
+				    (DISPLAY_MEMORY(act[p]->opt_flags) && DISPLAY_SWAP(act[p]->opt_flags))) {
+					n = 2;
+				}
+				else {
+					n = 1;
+				}
 			}
 			else {
 				/* One activity = multiple rows with only one view */
