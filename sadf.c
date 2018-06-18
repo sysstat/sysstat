@@ -489,7 +489,7 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 				continue;
 
 			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
-			if (!IS_SELECTED(act[p]->options))
+			if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
 				continue;
 
 			if (PACK_VIEWS(flags)) {
