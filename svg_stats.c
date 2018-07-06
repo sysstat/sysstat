@@ -868,19 +868,12 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 			  unsigned int id, unsigned int xid)
 {
 	char *out_p;
-	int i, j, dp, pos = 0, views_nr = 0;
+	int i, j, dp, pos = 0, views_nr = 0, displayed = FALSE;
 	int v_gridnr, xv, yv;
 	unsigned int asfactor[16];
 	long int xpos;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
 	char val[32], cur_date[TIMESTAMP_LEN];
-
-	/* Translate to proper position for current activity */
-	printf("<g id=\"g%d-%d\" transform=\"translate(0,%d)\">\n",
-	       id, xid,
-	       SVG_H_YSIZE +
-	       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? svg_p->nr_act_dispd : 0) +
-	       SVG_T_YSIZE * svg_p->graph_no);
 
 	/* For each view which is part of current activity */
 	for (i = 0; i < g_nr; i++) {
@@ -896,6 +889,16 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 		/* Skip void graphs */
 		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)))
 			continue;
+
+		if (!displayed) {
+			/* Translate to proper position for current activity */
+			printf("<g id=\"g%d-%d\" transform=\"translate(0,%d)\">\n",
+			       id, xid,
+			       SVG_H_YSIZE +
+			       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? svg_p->nr_act_dispd : 0) +
+			       SVG_T_YSIZE * svg_p->graph_no);
+			displayed = TRUE;
+		}
 
 		/* Increment number of views actually displayed */
 		views_nr++;
@@ -1052,7 +1055,9 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 		printf("</g>\n");
 		pos += group[i];
 	}
-	printf("</g>\n");
+	if (displayed) {
+		printf("</g>\n");
+	}
 
 	/* For next row of views */
 	(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
