@@ -1060,10 +1060,10 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 	}
 	if (displayed) {
 		printf("</g>\n");
-	}
 
-	/* For next row of views */
-	(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
+		/* For next row of views */
+		(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
+	}
 
 	return displayed;
 }
