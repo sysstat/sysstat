@@ -2871,7 +2871,7 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
 	int i, j, j0, found;
-	struct stats_fchost *sfcc,*sfcp;
+	struct stats_fchost *sfcc, *sfcp;
 
 	if (dis) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9);

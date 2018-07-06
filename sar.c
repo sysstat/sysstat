@@ -943,7 +943,7 @@ void read_header_data(void)
 					__FUNCTION__, act[p]->name, act[p]->fsize, file_act.size,
 					act[p]->magic, file_act.magic, file_act.nr, file_act.nr2,
 					act[p]->gtypes_nr[0], act[p]->gtypes_nr[1], act[p]->gtypes_nr[2],
-					file_act.types_nr[0], file_act.types_nr[1],file_act.types_nr[2]);
+					file_act.types_nr[0], file_act.types_nr[1], file_act.types_nr[2]);
 			}
 #endif
 			/* Remember that we are reading data from sadc and not from a file... */

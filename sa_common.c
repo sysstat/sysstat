@@ -746,7 +746,7 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 			case 5:
 				strncpy(timestamp, argv[(*opt)++], 5);
 				timestamp[5] = '\0';
-				strcat(timestamp,":00");
+				strcat(timestamp, ":00");
 				break;
 
 			case 8:

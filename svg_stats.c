@@ -3945,7 +3945,7 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 			 out + 12, outsize + 12, svg_p->restart);
 		/* inbsol6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 S_VALUE(snip->InNeighborSolicits6,snic->InNeighborSolicits6, itv),
+			 S_VALUE(snip->InNeighborSolicits6, snic->InNeighborSolicits6, itv),
 			 out + 13, outsize + 13, svg_p->restart);
 		/* onbsol6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,

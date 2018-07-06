@@ -145,7 +145,7 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 			continue;
 
 		/* Yes: Display it */
-		printf("%s; %s", timestr,pfield(a->hdr_line, DISPLAY_CPU_ALL(a->opt_flags)));
+		printf("%s; %s", timestr, pfield(a->hdr_line, DISPLAY_CPU_ALL(a->opt_flags)));
 		if (DISPLAY_DEBUG_MODE(flags) && i) {
 			if ((scc->cpu_user + scc->cpu_nice + scc->cpu_sys +
 			     scc->cpu_iowait + scc->cpu_idle + scc->cpu_steal +
