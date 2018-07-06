@@ -860,12 +860,15 @@ void skip_current_view(char **out, int *pos, int group)
  *		whole period.
  * @id		Current activity id.
  * @xid		Current activity extra id number.
+ *
+ * RETURNS:
+ * TRUE if at least one graph has been displayed.
  ***************************************************************************
  */
-void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[], char *item_name,
-			  int group[], double *spmin, double *spmax, char **out, int *outsize,
-			  struct svg_parm *svg_p, struct record_header *record_hdr, int skip_void,
-			  unsigned int id, unsigned int xid)
+int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[], char *item_name,
+			 int group[], double *spmin, double *spmax, char **out, int *outsize,
+			 struct svg_parm *svg_p, struct record_header *record_hdr, int skip_void,
+			 unsigned int id, unsigned int xid)
 {
 	char *out_p;
 	int i, j, dp, pos = 0, views_nr = 0, displayed = FALSE;
@@ -1061,6 +1064,8 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 
 	/* For next row of views */
 	(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
+
+	return displayed;
 }
 
 /*
@@ -1295,6 +1300,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	}
 
 	if (action & F_END) {
+		int xid = 0, displayed;
+
 		if (DISPLAY_IDLE(flags)) {
 			/* Include additional %idle field */
 			group1[0]++;
@@ -1318,16 +1325,19 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			}
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
-				draw_activity_graphs(a->g_nr, g_type,
-						     title, g_title1, item_name, group1,
-						     spmin + pos, spmax + pos, out + pos, outsize + pos,
-						     svg_p, record_hdr, i, a->id, i);
+				displayed = draw_activity_graphs(a->g_nr, g_type,
+								 title, g_title1, item_name, group1,
+								 spmin + pos, spmax + pos, out + pos, outsize + pos,
+								 svg_p, record_hdr, i, a->id, xid);
 			}
 			else {
-				draw_activity_graphs(a->g_nr, g_type,
-						     title, g_title2, item_name, group2,
-						     spmin + pos, spmax + pos, out + pos, outsize + pos,
-						     svg_p, record_hdr, i, a->id, i);
+				displayed = draw_activity_graphs(a->g_nr, g_type,
+								 title, g_title2, item_name, group2,
+								 spmin + pos, spmax + pos, out + pos, outsize + pos,
+								 svg_p, record_hdr, i, a->id, xid);
+			}
+			if (displayed) {
+				xid++;
 			}
 		}
 
@@ -2248,6 +2258,8 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; i < svg_p->nr_max; i++) {
 			/* Check if there is something to display */
 			pos = i * 9;
@@ -2257,10 +2269,12 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			/* Get device name */
 			item_name = get_sa_devname(*(spmax + pos + 8), *(spmin + pos + 8), flags);
 
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + pos, spmax + pos, out + pos, outsize + pos,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -2451,6 +2465,8 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; i < svg_p->nr_max; i++) {
 			/*
 			 * Check if there is something to display.
@@ -2468,10 +2484,12 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			*(spmax + pos + 3) /= 1024;
 
 			item_name = *(out + pos + 8);
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + pos, spmax + pos, out + pos, outsize + pos,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -2657,6 +2675,8 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; i < svg_p->nr_max; i++) {
 			/*
 			 * Check if there is something to display.
@@ -2668,10 +2688,12 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 				continue;
 
 			item_name = *(out + pos + 9);
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + pos, spmax + pos, out + pos, outsize + pos,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -4219,6 +4241,8 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; (i < svg_p->nr_max) && (i < a->bitmap->b_size + 1); i++) {
 
 			/* Should current CPU (including CPU "all") be displayed? */
@@ -4242,10 +4266,12 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 				sprintf(item_name, "%d", i - 1);
 			}
 
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + i, spmax + i, out + i, outsize + i,
-					     svg_p, record_hdr, i, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + i, spmax + i, out + i, outsize + i,
+						 svg_p, record_hdr, i, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -4308,6 +4334,8 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; i < svg_p->nr_max; i++) {
 
 			spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
@@ -4315,10 +4343,12 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
 			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
 
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + i, spmax + i, out + i, outsize + i,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + i, spmax + i, out + i, outsize + i,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -4402,6 +4432,8 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; i < svg_p->nr_max; i++) {
 
 			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
@@ -4409,10 +4441,12 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
 			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
 
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + 2 * i, spmax + 2 * i, out + 2 * i, outsize + 2 * i,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + 2 * i, spmax + 2 * i, out + 2 * i, outsize + 2 * i,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -4496,6 +4530,8 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_END) {
+		int xid = 0;
+
 		for (i = 0; i < svg_p->nr_max; i++) {
 
 			spc = (struct stats_pwr_in *) ((char *) a->buf[curr]  + i * a->msize);
@@ -4503,10 +4539,12 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
 			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
 
-			draw_activity_graphs(a->g_nr, g_type,
-					     title, g_title, item_name, group,
-					     spmin + 2 * i, spmax + 2 * i, out + 2 * i, outsize + 2 * i,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + 2 * i, spmax + 2 * i, out + 2 * i, outsize + 2 * i,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
@@ -4802,6 +4840,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	}
 
 	if (action & F_END) {
+		int xid = 0;
 
 		for (i = 0; i < svg_p->nr_max; i++) {
 
@@ -4825,9 +4864,11 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				item_name = *(out + pos + 7);
 			}
 
-			draw_activity_graphs(a->g_nr, g_type, title, g_title, item_name, group,
-					     spmin + pos, spmax + pos, out + pos, outsize + pos,
-					     svg_p, record_hdr, FALSE, a->id, i);
+			if (draw_activity_graphs(a->g_nr, g_type, title, g_title, item_name, group,
+						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 svg_p, record_hdr, FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		/* Free remaining structures */
