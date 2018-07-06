@@ -2076,8 +2076,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'H':
-			p = get_activity_position(act, A_HUGE, EXIT_IF_NOT_FOUND);
-			act[p]->options   |= AO_SELECTED;
+			SELECT_ACTIVITY(A_HUGE);
 			break;
 
 		case 'h':
