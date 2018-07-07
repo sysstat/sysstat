@@ -812,7 +812,7 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 			  struct svg_parm *svg_p, struct record_header *record_hdr)
 {
 	char *out_p;
-	int i, j, dp, pos = 0, views_nr = 0;
+	int i, j, dp, pos = 0, views_nr = 0, displayed = FALSE;
 	int v_gridnr, xv, yv;
 	unsigned int asfactor[16];
 	long int xpos;
@@ -835,6 +835,8 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 			skip_current_view(out, &pos, group[i]);
 			continue;
 		}
+		displayed = TRUE;
+
 		/* Increment number of views actually displayed */
 		views_nr++;
 
@@ -993,7 +995,9 @@ void draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[]
 	printf("</g>\n");
 
 	/* For next row of views */
-	(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
+	if (displayed) {
+		(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;
+	}
 }
 
 /*
