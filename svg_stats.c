@@ -1687,6 +1687,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
+	static int xid = 0;
 	double tval;
 	int i;
 	unsigned long long nousedmem;
@@ -1862,15 +1863,18 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		}
 
 		if (DISPLAY_MEMORY(a->opt_flags)) {
-			draw_activity_graphs(DISPLAY_MEM_ALL(a->opt_flags) ? 6 : 5,
-					     g_type1, title1, g_title1, NULL, group1,
-					     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a->id, 0);
+			if (draw_activity_graphs(DISPLAY_MEM_ALL(a->opt_flags) ? 6 : 5,
+						 g_type1, title1, g_title1, NULL, group1,
+						 spmin, spmax, out, outsize, svg_p, record_hdr,
+						 FALSE, a->id, xid)) {
+				xid++;
+			}
 		}
 
 		if (DISPLAY_SWAP(a->opt_flags)) {
 			draw_activity_graphs(3, g_type2, title2, g_title2, NULL, group2,
 					     spmin + 16, spmax + 16, out + 16, outsize + 16,
-					     svg_p, record_hdr, FALSE, a->id, 1);
+					     svg_p, record_hdr, FALSE, a->id, xid);
 		}
 
 		/* Free remaining structures */
