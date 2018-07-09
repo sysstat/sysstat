@@ -985,7 +985,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		if (!(action & F_BEGIN)) {
 			if (!hdr_parm->graph_nr) {
 				/* No views displayed */
-				printf("<text x= \"0\" y=\"60\" text-anchor=\"start\" stroke=\"red\">");
+				printf("<text x= \"0\" y=\"%d\" text-anchor=\"start\" stroke=\"red\">",
+				       SVG_H_YSIZE +
+				       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? hdr_parm->nr_act_dispd : 0));
 				printf("No data!</text>\n");
 			}
 			/* Give actual SVG height */
