@@ -345,7 +345,7 @@ struct activity memory_act = {
 	.f_json_print	= json_print_memory_stats,
 	.f_svg_print	= svg_print_memory_stats,
 	.f_raw_print	= raw_print_memory_stats,
-	.desc		= "Memory and swap utilization",
+	.desc		= "Memory and/or swap utilization",
 #endif
 	.name		= "A_MEMORY",
 	.g_nr		= 9,
