@@ -122,7 +122,7 @@
 /* Allocate and init structure */
 #define SREALLOC(S, TYPE, SIZE)	do {								 \
 					TYPE *_p_ = S;						 \
-   				   	if (SIZE) {						 \
+					if ((SIZE) != 0) {					 \
 						if ((S = (TYPE *) realloc(S, (SIZE))) == NULL) { \
 				         		perror("realloc");			 \
 				         		exit(4);				 \
