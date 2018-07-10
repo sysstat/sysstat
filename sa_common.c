@@ -239,12 +239,17 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
  *
  * OUT:
  * @datafile	Name of daily data file.
+ *
+ * RETURNS:
+ * 1 if an output error has been encountered or if datafile name has been
+ * truncated, or 0 otherwise.
  ***************************************************************************
  */
-void set_default_file(char *datafile, int d_off, int sa_name)
+int set_default_file(char *datafile, int d_off, int sa_name)
 {
 	char sa_dir[MAX_FILE_LEN];
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
+	int err = 0;
 
 	/* Set directory where daily data files will be saved */
 	if (datafile[0]) {
@@ -266,20 +271,22 @@ void set_default_file(char *datafile, int d_off, int sa_name)
 	}
 	if (sa_name) {
 		/* Using saYYYYMMDD data files */
-		snprintf(datafile, MAX_FILE_LEN,
-			 "%s/sa%04d%02d%02d", sa_dir,
-			 rectime.tm_year + 1900,
-			 rectime.tm_mon + 1,
-			 rectime.tm_mday);
+		err = snprintf(datafile, MAX_FILE_LEN,
+			       "%s/sa%04d%02d%02d", sa_dir,
+			       rectime.tm_year + 1900,
+			       rectime.tm_mon + 1,
+			       rectime.tm_mday);
 	}
 	else {
 		/* Using saDD data files */
-		snprintf(datafile, MAX_FILE_LEN,
-			 "%s/sa%02d", sa_dir,
-			 rectime.tm_mday);
+		err = snprintf(datafile, MAX_FILE_LEN,
+			       "%s/sa%02d", sa_dir,
+			       rectime.tm_mday);
 	}
 	datafile[MAX_FILE_LEN - 1] = '\0';
 	default_file_used = TRUE;
+
+	return ((err < 0) || (err >= MAX_FILE_LEN));
 }
 
 /*

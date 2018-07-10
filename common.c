@@ -325,7 +325,7 @@ int get_dev_part_nr(char *dev_name)
 	DIR *dir;
 	struct dirent *drd;
 	char dfile[MAX_PF_NAME], line[MAX_PF_NAME];
-	int part = 0;
+	int part = 0, err;
 
 	snprintf(dfile, MAX_PF_NAME, "%s/%s", SYSFS_BLOCK, dev_name);
 	dfile[MAX_PF_NAME - 1] = '\0';
@@ -338,8 +338,9 @@ int get_dev_part_nr(char *dev_name)
 	while ((drd = readdir(dir)) != NULL) {
 		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 			continue;
-		snprintf(line, MAX_PF_NAME, "%s/%s/%s", dfile, drd->d_name, S_STAT);
-		line[MAX_PF_NAME - 1] = '\0';
+		err = snprintf(line, MAX_PF_NAME, "%s/%s/%s", dfile, drd->d_name, S_STAT);
+		if ((err < 0) || (err >= MAX_PF_NAME))
+			continue;
 
 		/* Try to guess if current entry is a directory containing a stat file */
 		if (!access(line, R_OK)) {

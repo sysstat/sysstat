@@ -1241,7 +1241,7 @@ int get_activity_nr
 	(struct activity * [], unsigned int, int);
 int get_activity_position
 	(struct activity * [], unsigned int, int);
-void set_default_file
+int set_default_file
 	(char *, int, int);
 void handle_invalid_sa_file
 	(int, struct file_magic *, char *, int);

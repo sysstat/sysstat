@@ -88,7 +88,7 @@
 #define SYSFS_PRODUCT		"product"
 #define SYSFS_FCHOST		"/sys/class/fc_host"
 
-#define MAX_FILE_LEN		256
+#define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024
 #define MAX_NAME_LEN		128
 
