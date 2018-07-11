@@ -2320,7 +2320,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name;
+	char *item_name = NULL;
 	double rxkb, txkb, ifutil;
 	int i, j, k, pos, restart, *unregistered;
 
@@ -2534,7 +2534,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name;
+	char *item_name = NULL;
 	int i, j, k, pos, restart, *unregistered;
 
 	if (action & F_BEGIN) {
