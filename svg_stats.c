@@ -2133,7 +2133,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 				}
 				if (k == svg_p->nr_max) {
 					/* No free graph entry: Extend all buffers */
-					reallocate_all_graph_lines(svg_p->nr_max,
+					reallocate_all_graph_lines(9 * svg_p->nr_max,
 								   &out, &outsize, &spmin, &spmax);
 					svg_p->nr_max *= 2;
 				}
@@ -2377,12 +2377,11 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 				}
 				if (k == svg_p->nr_max) {
 					/* No free graph entry: Extend all buffers */
-					reallocate_all_graph_lines(svg_p->nr_max,
+					reallocate_all_graph_lines(9 * svg_p->nr_max,
 								   &out, &outsize, &spmin, &spmax);
 					svg_p->nr_max *= 2;
 				}
 			}
-
 			pos = k * 9;
 			unregistered = outsize + pos + 8;
 
@@ -2593,7 +2592,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 				}
 				if (k == svg_p->nr_max) {
 					/* No free graph entry: Extend all buffers */
-					reallocate_all_graph_lines(svg_p->nr_max,
+					reallocate_all_graph_lines(10 * svg_p->nr_max,
 								   &out, &outsize, &spmin, &spmax);
 					svg_p->nr_max *= 2;
 				}
@@ -4718,8 +4717,9 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				}
 				if (k == svg_p->nr_max) {
 					/* No free graph entry: Extend all buffers */
-					reallocate_all_graph_lines(svg_p->nr_max,
+					reallocate_all_graph_lines(9 * svg_p->nr_max,
 								   &out, &outsize, &spmin, &spmax);
+					item_name = *(out + k * 9 + 7);
 					svg_p->nr_max *= 2;
 				}
 			}
@@ -4961,7 +4961,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 					}
 					if (k == svg_p->nr_max) {
 						/* No free graph entry: Extend all buffers */
-						reallocate_all_graph_lines(svg_p->nr_max,
+						reallocate_all_graph_lines(5 * svg_p->nr_max,
 									   &out, &outsize, &spmin, &spmax);
 						svg_p->nr_max *= 2;
 					}
