@@ -2404,6 +2404,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			}
 			*unregistered = FALSE;
 
+			item_name = *(out + pos + 8);
 			if (!item_name[0]) {
 				/* Save network interface name (if not already done) */
 				strncpy(item_name, sndc->interface, CHUNKSIZE);
@@ -2620,6 +2621,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			}
 			*unregistered = FALSE;
 
+			item_name = *(out + pos + 9);
 			if (!item_name[0]) {
 				/* Save network interface name (if not already done) */
 				strncpy(item_name, snedc->interface, CHUNKSIZE);
@@ -4672,7 +4674,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name = NULL;
+	char *item_name;
 	double tval;
 	int i, k, pos, restart;
 
@@ -4719,13 +4721,13 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 					/* No free graph entry: Extend all buffers */
 					reallocate_all_graph_lines(9 * svg_p->nr_max,
 								   &out, &outsize, &spmin, &spmax);
-					item_name = *(out + k * 9 + 7);
 					svg_p->nr_max *= 2;
 				}
 			}
 
 			pos = k * 9;
 
+			item_name = *(out + pos + 7);
 			if (!item_name[0]) {
 				/* Save filesystem name and mount point (if not already done) */
 				strncpy(item_name, sfc->fs_name, CHUNKSIZE);
