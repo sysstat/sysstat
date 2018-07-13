@@ -999,3 +999,239 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		printf("</svg>\n");
 	}
 }
+
+/*
+ ***************************************************************************
+ * Count the number of new network interfaces in current sample. If a new
+ * interface is found then add it to the linked list starting at
+ * @a->item_list.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of new interfaces identified in current sample that were not
+ * previously in the list.
+ ***************************************************************************
+ */
+__nr_t count_new_net_dev(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	void **p;
+	struct interface_lst *e;
+	struct stats_net_dev *sndc;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+		p = &(a->item_list);
+
+		while (*p != NULL) {
+			e = *p;
+			if (!strcmp(e->name, sndc->interface))
+				break;	/* Item found */
+			p = &(e->next);
+		}
+		if (*p == NULL) {
+			/*
+			 * Item not found: Increment total number
+			 * of new items found and add it to the list.
+			 */
+			nr++;
+			SREALLOC(*p, struct interface_lst, sizeof(struct interface_lst));
+			e = *p;
+			strcpy(e->name, sndc->interface);
+		}
+	}
+
+	return nr;
+}
+
+/*
+ ***************************************************************************
+ * Count the number of new network interfaces in current sample. If a new
+ * interface is found then add it to the linked list starting at
+ * @a->item_list.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of new interfaces identified in current sample that were not
+ * previously in the list.
+ ***************************************************************************
+ */
+__nr_t count_new_net_edev(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	void **p;
+	struct interface_lst *e;
+	struct stats_net_edev *snedc;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+		p = &(a->item_list);
+
+		while (*p != NULL) {
+			e = *p;
+			if (!strcmp(e->name, snedc->interface))
+				break;	/* Item found */
+			p = &(e->next);
+		}
+		if (*p == NULL) {
+			/*
+			 * Item not found: Increment total number
+			 * of new items found and add it to the list.
+			 */
+			nr++;
+			SREALLOC(*p, struct interface_lst, sizeof(struct interface_lst));
+			e = *p;
+			strcpy(e->name, snedc->interface);
+		}
+	}
+
+	return nr;
+}
+
+/*
+ ***************************************************************************
+ * Count the number of new filesystems in current sample. If a new
+ * filesystem is found then add it to the linked list starting at
+ * @a->item_list.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of new filesystems identified in current sample that were not
+ * previously in the list.
+ ***************************************************************************
+ */
+__nr_t count_new_filesystem(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	void **p;
+	struct filesystem_lst *e;
+	struct stats_filesystem *sfc;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+		p = &(a->item_list);
+
+		while (*p != NULL) {
+			e = *p;
+			if (!strcmp(e->name, sfc->fs_name))
+				break;	/* Item found */
+			p = &(e->next);
+		}
+		if (*p == NULL) {
+			/*
+			 * Item not found: Increment total number
+			 * of new items found and add it to the list.
+			 */
+			nr++;
+			SREALLOC(*p, struct filesystem_lst, sizeof(struct filesystem_lst));
+			e = *p;
+			strcpy(e->name, sfc->fs_name);
+		}
+	}
+
+	return nr;
+}
+
+/*
+ ***************************************************************************
+ * Count the number of new fchosts in current sample. If a new
+ * fchost is found then add it to the linked list starting at
+ * @a->item_list.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of new fchosts identified in current sample that were not
+ * previously in the list.
+ ***************************************************************************
+ */
+__nr_t count_new_fchost(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	void **p;
+	struct fchost_lst *e;
+	struct stats_fchost *sfcc;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+		p = &(a->item_list);
+
+		while (*p != NULL) {
+			e = *p;
+			if (!strcmp(e->name, sfcc->fchost_name))
+				break;	/* Item found */
+			p = &(e->next);
+		}
+		if (*p == NULL) {
+			/*
+			 * Item not found: Increment total number
+			 * of new items found and add it to the list.
+			 */
+			nr++;
+			SREALLOC(*p, struct fchost_lst, sizeof(struct fchost_lst));
+			e = *p;
+			strcpy(e->name, sfcc->fchost_name);
+		}
+	}
+
+	return nr;
+}
+
+/*
+ ***************************************************************************
+ * Count the number of new block devices in current sample. If a new
+ * block device is found then add it to the linked list starting at
+ * @a->item_list.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of new block devices identified in current sample that were not
+ * previously in the list.
+ ***************************************************************************
+ */
+__nr_t count_new_disk(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	void **p;
+	struct disk_lst *e;
+	struct stats_disk *sdc;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
+		p = &(a->item_list);
+
+		while (*p != NULL) {
+			e = *p;
+			if ((e->major == sdc->major) && (e->minor == sdc->minor))
+				break;	/* Item found */
+			p = &(e->next);
+		}
+		if (*p == NULL) {
+			/*
+			 * Item not found: Increment total number
+			 * of new items found and add it to the list.
+			 */
+			nr++;
+			SREALLOC(*p, struct disk_lst, sizeof(struct disk_lst));
+			e = *p;
+			e->major = sdc->major;
+			e->minor = sdc->minor;
+		}
+	}
+
+	return nr;
+}

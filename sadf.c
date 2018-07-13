@@ -494,7 +494,10 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 	 */
 	do {
 		for (i = 0; i < NR_ACT; i++) {
-			if (act[i]->nr[0] > id_nr_max[i]) {
+			if (act[i]->f_count_new) {
+				id_nr_max[i] += (*act[i]->f_count_new)(act[i], 0);
+			}
+			else if (act[i]->nr[0] > id_nr_max[i]) {
 				id_nr_max[i] = act[i]->nr[0];
 			}
 		}

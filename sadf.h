@@ -116,6 +116,27 @@
 #define TEST_MARKUP(m)			(((m) & FO_TEST_MARKUP)		== FO_TEST_MARKUP)
 #define REJECT_TRUE_TIME(m)		(((m) & FO_NO_TRUE_TIME)	== FO_NO_TRUE_TIME)
 
+/* Structure for items in list */
+struct interface_lst {
+	char name[MAX_IFACE_LEN];
+	struct interface_lst *next;
+};
+
+struct filesystem_lst {
+	char name[MAX_FS_LEN];
+	struct filesystem_lst *next;
+};
+
+struct fchost_lst {
+	char name[MAX_FCH_LEN];
+	struct fchost_lst *next;
+};
+
+struct disk_lst {
+	int major;
+	int minor;
+	struct disk_lst *next;
+};
 
 /*
  ***************************************************************************

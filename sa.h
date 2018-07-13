@@ -802,6 +802,15 @@ struct activity {
 	 */
 	__print_funct_t (*f_raw_print) (struct activity *, char *, int);
 	/*
+	 * This function is used by sadf to count the number of new items in current
+	 * sample and add them to the linked list @item_list.
+	 */
+	__nr_t (*f_count_new) (struct activity *, int);
+	/*
+	 * Linked list containing all the different items found. Used by sadf.
+	 */
+	void *item_list;
+	/*
 	 * Header string displayed by sadf -d.
 	 * Header lines for each output (for activities with multiple outputs) are
 	 * separated with a '|' character.
@@ -1125,6 +1134,20 @@ struct sa_dlist {
  * Functions prototypes.
  ***************************************************************************
  */
+
+/*
+ * Prototypes used to count new items
+ */
+__nr_t count_new_net_dev
+	(struct activity *, int);
+__nr_t count_new_net_edev
+	(struct activity *, int);
+__nr_t count_new_filesystem
+	(struct activity *, int);
+__nr_t count_new_fchost
+	(struct activity *, int);
+__nr_t count_new_disk
+	(struct activity *, int);
 
 /* Functions used to count number of items */
 __nr_t wrap_get_cpu_nr
