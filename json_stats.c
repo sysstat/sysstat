@@ -119,7 +119,7 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 	unsigned long long deltot_jiffies = 1;
 	struct stats_cpu *scc, *scp;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
-	char cpuno[8];
+	char cpuno[16];
 
 	xprintf(tab++, "\"cpu-load\": [");
 
@@ -310,7 +310,7 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_irq *sic, *sip;
 	int sep = FALSE;
-	char irqno[8];
+	char irqno[16];
 
 	xprintf(tab++, "\"interrupts\": [");
 
@@ -1772,7 +1772,7 @@ __print_funct_t json_print_pwr_cpufreq_stats(struct activity *a, int curr, int t
 	int i;
 	struct stats_pwr_cpufreq *spc;
 	int sep = FALSE;
-	char cpuno[8];
+	char cpuno[16];
 
 	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_json_markup;
@@ -2032,7 +2032,7 @@ __print_funct_t json_print_pwr_wghfreq_stats(struct activity *a, int curr, int t
 	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
 	unsigned long long tis, tisfreq;
 	int sep = FALSE;
-	char cpuno[8];
+	char cpuno[16];
 
 	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_json_markup;
@@ -2319,7 +2319,7 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
 	int i;
 	struct stats_softnet *ssnc, *ssnp;
 	int sep = FALSE;
-	char cpuno[8];
+	char cpuno[16];
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
 	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))

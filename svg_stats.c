@@ -1100,7 +1100,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[8];
+	char item_name[16];
 	double offset, val;
 	int i, j, k, pos;
 
@@ -5095,7 +5095,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[8];
+	char item_name[16];
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	int i, pos, restart;
 
