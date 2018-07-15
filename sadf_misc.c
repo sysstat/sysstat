@@ -1018,13 +1018,12 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 __nr_t count_new_net_dev(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	void **p;
-	struct interface_lst *e;
+	struct interface_lst *e, **p;
 	struct stats_net_dev *sndc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-		p = &(a->item_list);
+		p = (struct interface_lst **) &(a->item_list);
 
 		while (*p != NULL) {
 			e = *p;
@@ -1065,13 +1064,12 @@ __nr_t count_new_net_dev(struct activity *a, int curr)
 __nr_t count_new_net_edev(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	void **p;
-	struct interface_lst *e;
+	struct interface_lst *e, **p;
 	struct stats_net_edev *snedc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
-		p = &(a->item_list);
+		p = (struct interface_lst **) &(a->item_list);
 
 		while (*p != NULL) {
 			e = *p;
@@ -1112,13 +1110,12 @@ __nr_t count_new_net_edev(struct activity *a, int curr)
 __nr_t count_new_filesystem(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	void **p;
-	struct filesystem_lst *e;
+	struct filesystem_lst *e, **p;
 	struct stats_filesystem *sfc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
-		p = &(a->item_list);
+		p = (struct filesystem_lst **) &(a->item_list);
 
 		while (*p != NULL) {
 			e = *p;
@@ -1159,13 +1156,12 @@ __nr_t count_new_filesystem(struct activity *a, int curr)
 __nr_t count_new_fchost(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	void **p;
-	struct fchost_lst *e;
+	struct fchost_lst *e, **p;
 	struct stats_fchost *sfcc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-		p = &(a->item_list);
+		p = (struct fchost_lst **) &(a->item_list);
 
 		while (*p != NULL) {
 			e = *p;
@@ -1206,13 +1202,12 @@ __nr_t count_new_fchost(struct activity *a, int curr)
 __nr_t count_new_disk(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	void **p;
-	struct disk_lst *e;
+	struct disk_lst *e, **p;
 	struct stats_disk *sdc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
-		p = &(a->item_list);
+		p = (struct disk_lst **) &(a->item_list);
 
 		while (*p != NULL) {
 			e = *p;
