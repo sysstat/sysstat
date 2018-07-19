@@ -10,11 +10,11 @@
 
 #include "sysconfig.h"
 
-#define IOC_NAMELEN	31
-#define IOC_DESCLEN	63
-#define IOC_DEVLEN	47
-#define IOC_LINESIZ	255
-#define IOC_FMTLEN	15
+#define IOC_NAMELEN	32
+#define IOC_DESCLEN	64
+#define IOC_DEVLEN	48
+#define IOC_LINESIZ	256
+#define IOC_FMTLEN	16
 
 #ifndef MINORBITS
 #define MINORBITS	20
@@ -49,20 +49,20 @@
 
 
 struct blk_config {
-	char name[IOC_NAMELEN + 1];	/* device basename */
-	char cfmt[IOC_FMTLEN + 1];	/* controller format string */
-	char dfmt[IOC_FMTLEN + 1];	/* disk format string */
-	char pfmt[IOC_FMTLEN + 1];	/* partition format string */
+	char name[IOC_NAMELEN];	/* device basename */
+	char cfmt[IOC_FMTLEN];	/* controller format string */
+	char dfmt[IOC_FMTLEN];	/* disk format string */
+	char pfmt[IOC_FMTLEN];	/* partition format string */
 	/* ctrlno is in the ioc_entry */
 	unsigned int ctrl_explicit;	/* use "cN" in name */
 	unsigned int dcount;		/* number of devices handled by this major */
 	unsigned int pcount;		/* partitions per device */
-	char desc[IOC_DESCLEN + 1];
+	char desc[IOC_DESCLEN];
 	/* disk info unit # conversion function */
 	char *(*cconv)(unsigned int);
 
 	/* extension properties (all this for initrd?) */
-	char ext_name[IOC_NAMELEN + 1];
+	char ext_name[IOC_NAMELEN];
 	unsigned int ext;		/* flag - this is an extension record */
 	unsigned int ext_minor;		/* which minor does this apply to */
 };

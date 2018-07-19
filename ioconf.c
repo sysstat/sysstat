@@ -141,11 +141,11 @@ int ioc_init(void)
 {
 	FILE *fp;
 	unsigned int i, major, indirect, count = 0;
-	char buf[IOC_LINESIZ + 1];
-	char cfmt[IOC_FMTLEN + 1];
-	char dfmt[IOC_FMTLEN + 1];
-	char pfmt[IOC_FMTLEN + 1];
-	char desc[IOC_DESCLEN + 1];
+	char buf[IOC_LINESIZ];
+	char cfmt[IOC_FMTLEN];
+	char dfmt[IOC_FMTLEN];
+	char pfmt[IOC_FMTLEN];
+	char desc[IOC_DESCLEN];
 	struct ioc_entry  *iocp = NULL;
 	struct blk_config *blkp = NULL;
 	char ioconf_name[64];
@@ -163,7 +163,7 @@ int ioc_init(void)
 	/* Init ioc_refnr array */
 	memset(ioc_refnr, 0, sizeof(ioc_refnr));
 
-	while (fgets(buf, IOC_LINESIZ, fp)) {
+	while (fgets(buf, IOC_LINESIZ - 1, fp)) {
 
 		if ((*buf == '#') || (*buf == '\n'))
 			continue;
@@ -218,8 +218,8 @@ int ioc_init(void)
 				iocp->desc = ioconf[indirect]->blkp->desc;
 			}
 			else {
-				IOC_ALLOC(iocp->desc, char, IOC_DESCLEN + 1);
-				strncpy(iocp->desc, desc, IOC_DESCLEN);
+				IOC_ALLOC(iocp->desc, char, IOC_DESCLEN);
+				strncpy(iocp->desc, desc, IOC_DESCLEN - 1);
 			}
 			ioc_refnr[indirect]++;
 			ioconf[major] = iocp;
@@ -287,8 +287,8 @@ int ioc_init(void)
 			 * exception info
 			 */
 			xblkp->ext_minor = iocp->ctrlno;
-			strncpy(xblkp->ext_name, blkp->name, IOC_NAMELEN + 1);
-			xblkp->ext_name[IOC_NAMELEN] = '\0';
+			strncpy(xblkp->ext_name, blkp->name, IOC_NAMELEN);
+			xblkp->ext_name[IOC_NAMELEN - 1] = '\0';
 			xblkp->ext = 1;
 			continue;
 		}
@@ -300,8 +300,8 @@ int ioc_init(void)
 
 		/* basename of device + provided string + controller # */
 		if (*cfmt == '*') {
-			strncpy(blkp->cfmt, blkp->name, IOC_FMTLEN);
-			blkp->cfmt[IOC_FMTLEN] = '\0';
+			strncpy(blkp->cfmt, blkp->name, IOC_FMTLEN - 1);
+			blkp->cfmt[IOC_FMTLEN - 1] = '\0';
 		}
 		else {
 			sprintf(blkp->cfmt, "%s%s%%d", blkp->name, cfmt);
@@ -317,7 +317,7 @@ int ioc_init(void)
 			break;
 
 		case '%':
-			strncpy(blkp->dfmt, dfmt + 1, IOC_FMTLEN);
+			strncpy(blkp->dfmt, dfmt + 1, IOC_FMTLEN - 1);
 			/* fallthrough to next case */
 		case 'd':
 			blkp->cconv = ioc_ito10;
@@ -337,7 +337,7 @@ int ioc_init(void)
 		iocp->desc = NULL;
 		iocp->basemajor = major;
 		ioconf[major] = iocp;
-		strncpy(blkp->desc, desc, IOC_DESCLEN);
+		strncpy(blkp->desc, desc, IOC_DESCLEN - 1);
 		blkp = NULL; iocp = NULL;
 		++count;
 	}
@@ -386,7 +386,7 @@ free_and_return:
 
 char *ioc_name(unsigned int major, unsigned int minor)
 {
-	static char name[IOC_DEVLEN + 1];
+	static char name[IOC_DEVLEN];
 	struct ioc_entry *p;
 	int base, offset;
 
@@ -411,8 +411,8 @@ char *ioc_name(unsigned int major, unsigned int minor)
 
 	/* Is this an extension record? */
 	if (p->blkp->ext && (p->blkp->ext_minor == minor)) {
-		strncpy(name, p->blkp->ext_name, IOC_DEVLEN + 1);
-		name[IOC_DEVLEN] = '\0';
+		strncpy(name, p->blkp->ext_name, IOC_DEVLEN);
+		name[IOC_DEVLEN - 1] = '\0';
 		return (name);
 	}
 
