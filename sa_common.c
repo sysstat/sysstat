@@ -2513,7 +2513,7 @@ int add_list_item(struct sa_item **list, char *item_name, int max_len)
 	/* Item not found: Add it to the list */
 	SREALLOC(*list, struct sa_item, sizeof(struct sa_item));
 	e = *list;
-	if ((e->item_name = (unsigned char *) malloc(len + 1)) == NULL) {
+	if ((e->item_name = (char *) malloc(len + 1)) == NULL) {
 		perror("malloc");
 		exit(4);
 	}
