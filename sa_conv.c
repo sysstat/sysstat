@@ -140,7 +140,7 @@ int upgrade_magic_section(char dfile[], int *fd, int stdfd, struct file_magic *f
 	}
 
 	/* Write file's magic structure */
-	if (write(stdfd, &fm, FILE_MAGIC_SIZE) != FILE_MAGIC_SIZE) {
+	if (write_all(stdfd, &fm, FILE_MAGIC_SIZE) != FILE_MAGIC_SIZE) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -378,7 +378,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 	}
 
 	/* Write file_header structure */
-	if ((n = write(stdfd, &fh, FILE_HEADER_SIZE)) != FILE_HEADER_SIZE) {
+	if ((n = write_all(stdfd, &fh, FILE_HEADER_SIZE)) != FILE_HEADER_SIZE) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -1424,7 +1424,7 @@ int upgrade_activity_section(int stdfd, struct activity *act[],
 		 * Even unknown activities must be written
 		 * (they are counted in sa_act_nr).
 		 */
-		if (write(stdfd, &fa, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
+		if (write_all(stdfd, &fa, FILE_ACTIVITY_SIZE) != FILE_ACTIVITY_SIZE) {
 			fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 			return -1;
 		}
@@ -1472,7 +1472,7 @@ int upgrade_record_header(int fd, int stdfd, struct old_record_header *orec_hdr,
 	}
 
 	/* Write record header */
-	if (write(stdfd, &rec_hdr, RECORD_HEADER_SIZE) != RECORD_HEADER_SIZE) {
+	if (write_all(stdfd, &rec_hdr, RECORD_HEADER_SIZE) != RECORD_HEADER_SIZE) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -1503,7 +1503,7 @@ int upgrade_comment_record(int fd, int stdfd)
 	file_comment[MAX_COMMENT_LEN - 1] = '\0';
 
 	/* Then write it. No changes at this time */
-	if (write(stdfd, file_comment, MAX_COMMENT_LEN) != MAX_COMMENT_LEN) {
+	if (write_all(stdfd, file_comment, MAX_COMMENT_LEN) != MAX_COMMENT_LEN) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -1578,7 +1578,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 	}
 
 	/* Write new number of CPU following the restart record */
-	if (write(stdfd, &cpu_nr, sizeof(__nr_t)) != sizeof(__nr_t)) {
+	if (write_all(stdfd, &cpu_nr, sizeof(__nr_t)) != sizeof(__nr_t)) {
 		fprintf(stderr, "\nwrite: %s\n", strerror(errno));
 		return -1;
 	}
@@ -1794,7 +1794,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			}
 
 			/* Write number of structures for current activity */
-			if (write(stdfd, &nr, sizeof(__nr_t)) != sizeof(__nr_t))
+			if (write_all(stdfd, &nr, sizeof(__nr_t)) != sizeof(__nr_t))
 				goto write_error;
 
 			fprintf(stderr, "n");
@@ -1802,9 +1802,9 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 
 		for (j = 0; j < nr_struct; j++) {
 			for (k = 0; k < act[p]->nr2; k++) {
-				if (write(stdfd,
-					  (char *) act[p]->buf[1] + (j * act[p]->nr2 + k) * act[p]->fsize,
-					  act[p]->fsize) != act[p]->fsize)
+				if (write_all(stdfd,
+					      (char *) act[p]->buf[1] + (j * act[p]->nr2 + k) * act[p]->fsize,
+					       act[p]->fsize) != act[p]->fsize)
 					goto write_error;
 			}
 		}

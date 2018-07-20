@@ -1274,12 +1274,14 @@ int get_activity_nr
 	(struct activity * [], unsigned int, int);
 int get_activity_position
 	(struct activity * [], unsigned int, int);
-int set_default_file
-	(char *, int, int);
 void handle_invalid_sa_file
 	(int, struct file_magic *, char *, int);
 void print_collect_error
 	(void);
+int set_default_file
+	(char *, int, int);
+int write_all
+	(int, const void *, int);
 
 #ifndef SOURCE_SADC
 int add_list_item

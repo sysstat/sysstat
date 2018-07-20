@@ -370,43 +370,6 @@ void sa_sys_free(void)
 
 /*
  ***************************************************************************
- * Write data to file. If the write() call was interrupted by a signal, try
- * again so that the whole buffer can be written.
- *
- * IN:
- * @fd		Output file descriptor.
- * @buf		Data buffer.
- * @nr_bytes	Number of bytes to write.
- *
- * RETURNS:
- * Number of bytes written to file, or -1 on error.
- ***************************************************************************
- */
-int write_all(int fd, const void *buf, int nr_bytes)
-{
-	int block, offset = 0;
-	char *buffer = (char *) buf;
-
-	while (nr_bytes > 0) {
-		block = write(fd, &buffer[offset], nr_bytes);
-
-		if (block < 0) {
-			if (errno == EINTR)
-				continue;
-			return block;
-		}
-		if (block == 0)
-			return offset;
-
-		offset += block;
-		nr_bytes -= block;
-	}
-
-	return offset;
-}
-
-/*
- ***************************************************************************
  * If -L option used, request a non-blocking, exclusive lock on the file.
  * If lock would block, then another process (possibly sadc) has already
  * opened that file => exit.
