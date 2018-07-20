@@ -1018,29 +1018,12 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 __nr_t count_new_net_dev(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	struct interface_lst *e, **p;
 	struct stats_net_dev *sndc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
-		p = (struct interface_lst **) &(a->item_list);
 
-		while (*p != NULL) {
-			e = *p;
-			if (!strcmp(e->name, sndc->interface))
-				break;	/* Item found */
-			p = &(e->next);
-		}
-		if (*p == NULL) {
-			/*
-			 * Item not found: Increment total number
-			 * of new items found and add it to the list.
-			 */
-			nr++;
-			SREALLOC(*p, struct interface_lst, sizeof(struct interface_lst));
-			e = *p;
-			strcpy(e->name, sndc->interface);
-		}
+		nr += add_list_item(&(a->item_list), sndc->interface, MAX_IFACE_LEN);
 	}
 
 	return nr;
@@ -1064,29 +1047,12 @@ __nr_t count_new_net_dev(struct activity *a, int curr)
 __nr_t count_new_net_edev(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	struct interface_lst *e, **p;
 	struct stats_net_edev *snedc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
-		p = (struct interface_lst **) &(a->item_list);
 
-		while (*p != NULL) {
-			e = *p;
-			if (!strcmp(e->name, snedc->interface))
-				break;	/* Item found */
-			p = &(e->next);
-		}
-		if (*p == NULL) {
-			/*
-			 * Item not found: Increment total number
-			 * of new items found and add it to the list.
-			 */
-			nr++;
-			SREALLOC(*p, struct interface_lst, sizeof(struct interface_lst));
-			e = *p;
-			strcpy(e->name, snedc->interface);
-		}
+		nr += add_list_item(&(a->item_list), snedc->interface, MAX_IFACE_LEN);
 	}
 
 	return nr;
@@ -1110,29 +1076,12 @@ __nr_t count_new_net_edev(struct activity *a, int curr)
 __nr_t count_new_filesystem(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	struct filesystem_lst *e, **p;
 	struct stats_filesystem *sfc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
-		p = (struct filesystem_lst **) &(a->item_list);
 
-		while (*p != NULL) {
-			e = *p;
-			if (!strcmp(e->name, sfc->fs_name))
-				break;	/* Item found */
-			p = &(e->next);
-		}
-		if (*p == NULL) {
-			/*
-			 * Item not found: Increment total number
-			 * of new items found and add it to the list.
-			 */
-			nr++;
-			SREALLOC(*p, struct filesystem_lst, sizeof(struct filesystem_lst));
-			e = *p;
-			strcpy(e->name, sfc->fs_name);
-		}
+		nr += add_list_item(&(a->item_list), sfc->fs_name, MAX_FS_LEN);
 	}
 
 	return nr;
@@ -1156,29 +1105,12 @@ __nr_t count_new_filesystem(struct activity *a, int curr)
 __nr_t count_new_fchost(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	struct fchost_lst *e, **p;
 	struct stats_fchost *sfcc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-		p = (struct fchost_lst **) &(a->item_list);
 
-		while (*p != NULL) {
-			e = *p;
-			if (!strcmp(e->name, sfcc->fchost_name))
-				break;	/* Item found */
-			p = &(e->next);
-		}
-		if (*p == NULL) {
-			/*
-			 * Item not found: Increment total number
-			 * of new items found and add it to the list.
-			 */
-			nr++;
-			SREALLOC(*p, struct fchost_lst, sizeof(struct fchost_lst));
-			e = *p;
-			strcpy(e->name, sfcc->fchost_name);
-		}
+		nr += add_list_item(&(a->item_list), sfcc->fchost_name, MAX_FCH_LEN);
 	}
 
 	return nr;
@@ -1202,30 +1134,14 @@ __nr_t count_new_fchost(struct activity *a, int curr)
 __nr_t count_new_disk(struct activity *a, int curr)
 {
 	int i, nr = 0;
-	struct disk_lst *e, **p;
 	struct stats_disk *sdc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
-		p = (struct disk_lst **) &(a->item_list);
 
-		while (*p != NULL) {
-			e = *p;
-			if ((e->major == sdc->major) && (e->minor == sdc->minor))
-				break;	/* Item found */
-			p = &(e->next);
-		}
-		if (*p == NULL) {
-			/*
-			 * Item not found: Increment total number
-			 * of new items found and add it to the list.
-			 */
-			nr++;
-			SREALLOC(*p, struct disk_lst, sizeof(struct disk_lst));
-			e = *p;
-			e->major = sdc->major;
-			e->minor = sdc->minor;
-		}
+		nr += add_list_item(&(a->item_list),
+				    get_sa_devname(sdc->major, sdc->minor, flags),
+				    MAX_DEV_LEN);
 	}
 
 	return nr;

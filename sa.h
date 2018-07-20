@@ -313,7 +313,6 @@ struct svg_parm {
 	int graph_no;				/* Total number of views already displayed */
 	int restart;				/* TRUE if we have just met a RESTART record */
 	int nr_act_dispd;			/* Number of activities that will be displayed */
-	__nr_t nr_max;				/* Maximum number of items for this activity */
 	struct file_header *file_hdr;		/* Pointer on file header structure */
 };
 
@@ -690,6 +689,11 @@ struct record_header {
  * Indicate that this activity may have sub-items.
  */
 #define AO_MATRIX		0x80
+/*
+ * Indicate that a list of devices has been entered on the command
+ * line for this activity (see options --dev=, --iface=, ...)
+ */
+#define AO_LIST_ON_CMDLINE	0x100
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
@@ -699,6 +703,7 @@ struct record_header {
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
 #define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
 #define IS_MATRIX(m)		(((m) & AO_MATRIX)           == AO_MATRIX)
+#define HAS_LIST_ON_CMDLINE(m)	(((m) & AO_LIST_ON_CMDLINE)  == AO_LIST_ON_CMDLINE)
 
 #define _buf0	buf[0]
 #define _nr0	nr[0]
@@ -807,9 +812,16 @@ struct activity {
 	 */
 	__nr_t (*f_count_new) (struct activity *, int);
 	/*
-	 * Linked list containing all the different items found. Used by sadf.
+	 * Linked list containing item names. This is either all the different items
+	 * found in a file for activities that have a @f_count_function() (used by sadf),
+	 * or a list entered on the command line (used by sadf and sar).
 	 */
-	void *item_list;
+	struct sa_item *item_list;
+	/*
+	 * Number of different items found in file (calculated by sadf).
+	 * This is also the number of items in @item_list if this list exists.
+	 */
+	__nr_t item_list_sz;
 	/*
 	 * Header string displayed by sadf -d.
 	 * Header lines for each output (for activities with multiple outputs) are
@@ -1120,13 +1132,11 @@ struct tstamp {
 	int use;
 };
 
-/* List of devices entered on the command line */
-struct sa_dlist {
-	/* Device name */
-	char dev_name[MAX_NAME_LEN];
+/* Structure for items in list */
+struct sa_item {
+	char *item_name;
+	struct sa_item *next;
 };
-
-#define SA_DLIST_SIZE	(sizeof(struct sa_dlist))
 
 
 /*
@@ -1272,6 +1282,8 @@ void print_collect_error
 	(void);
 
 #ifndef SOURCE_SADC
+int add_list_item
+	(struct sa_item **, char *, int);
 void allocate_bitmaps
 	(struct activity * []);
 void allocate_structures
@@ -1312,7 +1324,7 @@ void get_itv_value
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices
-	(char *, struct sa_dlist **, int *, int *, int);
+	(char *, struct activity *, int, int *, int);
 int parse_sar_opt
 	(char * [], int *, struct activity * [], unsigned int *, int);
 int parse_sar_I_opt
@@ -1354,8 +1366,8 @@ int sa_get_record_timestamp_struct
 	(unsigned int, struct record_header *, struct tm *, struct tm *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
-int search_sa_dlist
-	(struct sa_dlist *, int, char *);
+int search_list_item
+	(struct sa_item *, char *);
 void select_all_activities
 	(struct activity * []);
 void select_default_activity

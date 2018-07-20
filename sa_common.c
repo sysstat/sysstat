@@ -126,52 +126,6 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
 
 /*
  ***************************************************************************
- * Allocate structures for devices entered on the command line.
- *
- * IN:
- * @nr_alloc_slots	Number of slots to allocate.
- * @nr_used_slots	Number of slots currently used.
- *
- * OUT:
- * @st_list		Address of allocated structures.
- ***************************************************************************
- */
-void salloc_sa_dlist(struct sa_dlist **st_list, int nr_alloc_slots, int nr_used_slots)
-{
-	if (nr_alloc_slots) {
-		SREALLOC(*st_list, struct sa_dlist, sizeof(struct sa_dlist) * (nr_used_slots + nr_alloc_slots));
-	}
-}
-
-/*
- ***************************************************************************
- * Look for device in list.
- *
- * IN:
- * @st_list	Structure where devices are saved.
- * @dlst_idx	Number of devices in the list.
- * @d_name	Device name to look for.
- *
- * RETURNS:
- * 1 if device found in list, 0 otherwise.
- ***************************************************************************
- */
-int search_sa_dlist(struct sa_dlist *st_list, int dlst_idx, char *d_name)
-{
-	int i;
-	struct sa_dlist *st_list_i;
-
-	for (i = 0; i < dlst_idx; i++) {
-		st_list_i = st_list + i;
-		if (!strcmp(st_list_i->dev_name, d_name))
-			return 1;
-	}
-
-	return 0;
-}
-
-/*
- ***************************************************************************
  * Look for the most recent of saDD and saYYYYMMDD to decide which one to
  * use. If neither exists then use saDD by default.
  *
@@ -2467,34 +2421,95 @@ int count_csval_arg(char *arg_v)
 
 /*
  ***************************************************************************
- * Parse devices entered on the command line.
+ * Look for item in list.
+ *
+ * IN:
+ * @list	Pointer on the start of the linked list.
+ * @item_name	Item name to look for.
+ *
+ * RETURNS:
+ * 1 if item found in list, 0 otherwise.
+ ***************************************************************************
+ */
+int search_list_item(struct sa_item *list, char *item_name)
+{
+	while (list != NULL) {
+		if (!strcmp(list->item_name, item_name))
+			return 1;	/* Item found in list */
+		list = list->next;
+	}
+
+	/* Item not found */
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Add item to the list.
+ *
+ * IN:
+ * @list	Address of pointer on the start of the linked list.
+ * @item_name	Name of the item.
+ * @max_len	Max length of an item.
+ *
+ * RETURNS:
+ * 1 if item has been added to the list (since it was not previously there),
+ * and 0 otherwise (item already in list or item name too long).
+ ***************************************************************************
+ */
+int add_list_item(struct sa_item **list, char *item_name, int max_len)
+{
+	struct sa_item *e;
+	int len;
+
+	if ((len = strnlen(item_name, max_len)) == max_len)
+		/* Item too long */
+		return 0;
+
+	while (*list != NULL) {
+		e = *list;
+		if (!strcmp(e->item_name, item_name))
+			return 0;	/* Item found in list */
+		list = &(e->next);
+	}
+
+	/* Item not found: Add it to the list */
+	SREALLOC(*list, struct sa_item, sizeof(struct sa_item));
+	e = *list;
+	if ((e->item_name = (unsigned char *) malloc(len + 1)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
+	strcpy(e->item_name, item_name);
+
+	return 1;
+}
+
+/*
+ ***************************************************************************
+ * Parse devices entered on the command line and save them in activity's
+ * list.
  *
  * IN:
  * @argv	Argument with list of devices.
- * @st_list	Structure where devices will be saved.
- * @dlst_idx	Number of devices previously saved in the list.
+ * @a		Activity for which devices are entered on the command line.
+ * @max_len	Max length of a device name.
  * @opt		Index in list of arguments.
  * @pos		Position is string where is located the first device.
  *
  * OUT:
- * @st_list	Structure where devices have been saved.
- * @dlst_idx	Total number of devices saved in the list.
  * @opt		Index on next argument.
  ***************************************************************************
  */
-void parse_sa_devices(char *argv, struct sa_dlist **st_list,
-		      int *dlst_idx, int *opt, int pos)
+void parse_sa_devices(char *argv, struct activity *a, int max_len, int *opt, int pos)
 {
 	char *t;
-	struct sa_dlist *st_list_i;
-
-	/* (Re)allocate device list */
-	salloc_sa_dlist(st_list, count_csval_arg(argv + pos), *dlst_idx);
 
 	for (t = strtok(argv + pos, ","); t; t = strtok(NULL, ",")) {
-		st_list_i = *st_list + (*dlst_idx)++;
-		strncpy(st_list_i->dev_name, t, MAX_NAME_LEN - 1);
-		st_list_i->dev_name[MAX_NAME_LEN - 1] = '\0';
+		a->item_list_sz += add_list_item(&(a->item_list), t, max_len);
+	}
+	if (a->item_list_sz) {
+		a->options |= AO_LIST_ON_CMDLINE;
 	}
 	(*opt)++;
 }

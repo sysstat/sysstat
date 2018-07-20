@@ -76,10 +76,6 @@ struct record_header record_hdr[3];
  */
 unsigned int id_seq[NR_ACT];
 
-/* Devices entered on the command line */
-struct sa_dlist *st_iface_list = NULL, *st_dev_list = NULL, *st_fs_list = NULL;
-int dlst_iface_idx = 0, dlst_dev_idx = 0, dlst_fs_idx = 0;
-
 struct tm rectime;
 
 /* Contain the date specified by -s and -e options */
@@ -1242,7 +1238,7 @@ void read_stats(void)
  */
 int main(int argc, char **argv)
 {
-	int i, rc, opt = 1, args_idx = 1;
+	int i, rc, opt = 1, args_idx = 1, p, q;
 	int fd[2];
 	int day_offset = 0;
 	char from_file[MAX_FILE_LEN], to_file[MAX_FILE_LEN];
@@ -1278,20 +1274,24 @@ int main(int argc, char **argv)
 
 		else if (!strncmp(argv[opt], "--dev=", 6)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argv[opt], &st_dev_list,
-					 &dlst_dev_idx, &opt, 6);
+			p = get_activity_position(act, A_DISK, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_DEV_LEN, &opt, 6);
 		}
 
 		else if (!strncmp(argv[opt], "--fs=", 5)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argv[opt], &st_fs_list,
-					 &dlst_fs_idx, &opt, 5);
+			p = get_activity_position(act, A_FS, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_FS_LEN, &opt, 5);
 		}
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argv[opt], &st_iface_list,
-					 &dlst_iface_idx, &opt, 8);
+			p = get_activity_position(act, A_NET_DEV, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_IFACE_LEN, &opt, 8);
+			q = get_activity_position(act, A_NET_EDEV, EXIT_IF_NOT_FOUND);
+			act[q]->item_list = act[p]->item_list;
+			act[q]->item_list_sz = act[p]->item_list_sz;
+			act[q]->options |= AO_LIST_ON_CMDLINE;
 		}
 
 		else if (!strcmp(argv[opt], "--help")) {

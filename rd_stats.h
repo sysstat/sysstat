@@ -18,6 +18,8 @@
 #define IFNAMSIZ	16
 #endif
 
+/* Maximum length of block device name */
+#define MAX_DEV_LEN	128
 /* Maximum length of network interface name */
 #define MAX_IFACE_LEN	IFNAMSIZ
 /* Maximum length of USB manufacturer string */

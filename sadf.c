@@ -67,19 +67,12 @@ struct file_header file_hdr;
  */
 unsigned int id_seq[NR_ACT];
 
-/* Maximum number of items for each activity */
-__nr_t id_nr_max[NR_ACT];
-
 /* Current record header */
 struct record_header record_hdr[3];
 
 /* Contain the date specified by -s and -e options */
 struct tstamp tm_start, tm_end;
 char *args[MAX_ARGV_NR];
-
-/* Devices entered on the command line */
-struct sa_dlist *st_iface_list = NULL, *st_dev_list = NULL, *st_fs_list = NULL;
-int dlst_iface_idx = 0, dlst_dev_idx = 0, dlst_fs_idx = 0;
 
 extern struct activity *act[];
 extern struct report_format *fmt[];
@@ -428,6 +421,90 @@ void seek_file_position(int ifd, int action)
 
 /*
  ***************************************************************************
+ * Count number of different items in file. Save these numbers in fields
+ * @item_list_sz of structure activity, and create the corresponding list
+ * in field @item_list.
+ *
+ * IN:
+ * @ifd		File descriptor of input file.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @rectime	Structure where timestamp (expressed in local time or
+ *		in UTC depending on whether options -T/-t have been
+ *		used or not) can be saved for current record.
+ * @loctime	Structure where timestamp (expressed in local time)
+ *		can be saved for current record.
+ *
+ * RETURNS:
+ * 0 if no records are concerned in file, and 1 otherwise.
+ ***************************************************************************
+ */
+int count_file_items(int ifd, char *file, struct file_magic *file_magic,
+		      struct file_activity *file_actlst, struct tm *rectime,
+		      struct tm *loctime)
+{
+	int i, eosaf, rtype;
+
+	/* Save current file position */
+	seek_file_position(ifd, DO_SAVE);
+
+	/* Init maximum number of items for each activity */
+	for (i = 0; i < NR_ACT; i++) {
+		if (!HAS_LIST_ON_CMDLINE(act[i]->options)) {
+			act[i]->item_list_sz = 0;
+		}
+	}
+
+	/* Look for the first record that will be displayed */
+	do {
+		eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+					 0, file, &rtype, 0, file_magic, file_actlst,
+					 rectime, loctime);
+		if (eosaf)
+			/* No record to display */
+			return 0;
+	}
+	while ((tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
+	       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+
+	/*
+	 * Read all the file and determine the maximum number
+	 * of items for each activity.
+	 */
+	do {
+		for (i = 0; i < NR_ACT; i++) {
+			if (!HAS_LIST_ON_CMDLINE(act[i]->options)) {
+				if (act[i]->f_count_new) {
+					act[i]->item_list_sz += (*act[i]->f_count_new)(act[i], 0);
+				}
+				else if (act[i]->nr[0] > act[i]->item_list_sz) {
+					act[i]->item_list_sz = act[i]->nr[0];
+				}
+			}
+		}
+
+		do {
+			eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+						 0, file, &rtype, 0, file_magic, file_actlst,
+						 rectime, loctime);
+			if (eosaf ||
+			    (tm_end.use && (datecmp(loctime, &tm_end) >= 0)))
+				/* End of data file or end time exceeded */
+				break;
+		}
+		while ((rtype == R_RESTART) || (rtype == R_COMMENT));
+	}
+	while (!eosaf && !(tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+
+	/* Rewind file */
+	seek_file_position(ifd, DO_RESTORE);
+
+	return 1;
+}
+
+/*
+ ***************************************************************************
  * Compute the number of rows that will contain SVG views. Usually only one
  * view is displayed on a row, unless the "packed" option has been entered.
  * Each activity selected may have several views. Moreover some activities
@@ -463,57 +540,14 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		     struct file_activity *file_actlst, struct tm *rectime,
 		     struct tm *loctime, int *views_per_row, int *nr_act_dispd)
 {
-	int i, n, p, eosaf;
-	int rtype, tot_g_nr = 0;
+	int i, n, p, tot_g_nr = 0;
 
 	*nr_act_dispd = 0;
 
-	/* Save current file position */
-	seek_file_position(ifd, DO_SAVE);
-
-	/* Init maximum number of items for each activity */
-	for (i = 0; i < NR_ACT; i++) {
-		id_nr_max[i] = 0;
-	}
-
-	/* Look for the first record that will be displayed */
-	do {
-		eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
-					 0, file, &rtype, 0, file_magic, file_actlst,
-					 rectime, loctime);
-		if (eosaf)
-			/* No record to display => no graph too */
-			return 0;
-	}
-	while ((tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
-	       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
-
-	/*
-	 * Read all the file and determine the maximum number
-	 * of items for each activity.
-	 */
-	do {
-		for (i = 0; i < NR_ACT; i++) {
-			if (act[i]->f_count_new) {
-				id_nr_max[i] += (*act[i]->f_count_new)(act[i], 0);
-			}
-			else if (act[i]->nr[0] > id_nr_max[i]) {
-				id_nr_max[i] = act[i]->nr[0];
-			}
-		}
-
-		do {
-			eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
-						 0, file, &rtype, 0, file_magic, file_actlst,
-						 rectime, loctime);
-			if (eosaf ||
-			    (tm_end.use && (datecmp(loctime, &tm_end) >= 0)))
-				/* End of data file or end time exceeded */
-				break;
-		}
-		while ((rtype == R_RESTART) || (rtype == R_COMMENT));
-	}
-	while (!eosaf && !(tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+	/* Count items in file */
+	if (!count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime))
+		/* No record to display => No graph */
+		return 0;
 
 	for (i = 0; i < NR_ACT; i++) {
 		if (!id_seq[i])
@@ -524,19 +558,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 			continue;
 
 		(*nr_act_dispd)++;
-
-		if (((act[p]->id == A_NET_DEV) || (act[p]->id == A_NET_EDEV)) &&
-		    (dlst_iface_idx > 0) && (dlst_iface_idx < id_nr_max[p])) {
-			id_nr_max[p] = dlst_iface_idx;
-		}
-		if ((act[p]->id == A_DISK) &&
-		    (dlst_dev_idx > 0) && (dlst_dev_idx < id_nr_max[p])) {
-			id_nr_max[p] = dlst_dev_idx;
-		}
-		if ((act[p]->id == A_FS) &&
-		    (dlst_fs_idx > 0) && (dlst_fs_idx < id_nr_max[p])) {
-			id_nr_max[p] = dlst_fs_idx;
-		}
 
 		if (PACK_VIEWS(flags)) {
 			/*
@@ -558,7 +579,7 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 			n = act[p]->g_nr;
 		}
 		if (ONE_GRAPH_PER_ITEM(act[p]->options)) {
-			 n = n * id_nr_max[p];
+			 n = n * act[p]->item_list_sz;
 		}
 		if (act[p]->g_nr > *views_per_row) {
 			*views_per_row = act[p]->g_nr;
@@ -566,9 +587,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 
 		tot_g_nr += n;
 	}
-
-	/* Rewind file */
-	seek_file_position(ifd, DO_RESTORE);
 
 	if (*views_per_row > MAX_VIEWS_ON_A_ROW) {
 		*views_per_row = MAX_VIEWS_ON_A_ROW;
@@ -883,7 +901,6 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	parm.ust_time_first = record_hdr[2].ust_time;
 	parm.restart = TRUE;
 	parm.file_hdr = &file_hdr;
-	parm.nr_max = id_nr_max[p];
 	parm.nr_act_dispd = nr_act_dispd;
 
 	*cnt  = count;
@@ -1425,7 +1442,7 @@ int main(int argc, char **argv)
 {
 	int opt = 1, sar_options = 0;
 	int day_offset = 0;
-	int i, rc;
+	int i, rc, p, q;
 	char dfile[MAX_FILE_LEN];
 	char *t, *v;
 
@@ -1467,20 +1484,24 @@ int main(int argc, char **argv)
 
 		else if (!strncmp(argv[opt], "--dev=", 6)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argv[opt], &st_dev_list,
-					 &dlst_dev_idx, &opt, 6);
+			p = get_activity_position(act, A_DISK, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_DEV_LEN, &opt, 6);
 		}
 
 		else if (!strncmp(argv[opt], "--fs=", 5)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argv[opt], &st_fs_list,
-					 &dlst_fs_idx, &opt, 5);
+			p = get_activity_position(act, A_FS, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_FS_LEN, &opt, 5);
 		}
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
-			parse_sa_devices(argv[opt], &st_iface_list,
-					 &dlst_iface_idx, &opt, 8);
+			p = get_activity_position(act, A_NET_DEV, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_IFACE_LEN, &opt, 8);
+			q = get_activity_position(act, A_NET_EDEV, EXIT_IF_NOT_FOUND);
+			act[q]->item_list = act[p]->item_list;
+			act[q]->item_list_sz = act[p]->item_list_sz;
+			act[q]->options |= AO_LIST_ON_CMDLINE;
 		}
 
 		else if (!strcmp(argv[opt], "-s")) {

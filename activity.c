@@ -96,6 +96,7 @@ struct activity cpu_act = {
 	.desc		= "CPU utilization",
 #endif
 	.name		= "A_CPU",
+	.item_list_sz	= 0,
 	.g_nr		= 1,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -140,6 +141,7 @@ struct activity pcsw_act = {
 	.desc		= "Task creation and switching activity",
 #endif
 	.name		= "A_PCSW",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -184,6 +186,7 @@ struct activity irq_act = {
 	.desc		= "Interrupts statistics",
 #endif
 	.name		= "A_IRQ",
+	.item_list_sz	= 0,
 	.g_nr		= 0,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -228,6 +231,7 @@ struct activity swap_act = {
 	.desc		= "Swap activity",
 #endif
 	.name		= "A_SWAP",
+	.item_list_sz	= 0,
 	.g_nr		= 1,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -273,6 +277,7 @@ struct activity paging_act = {
 	.desc		= "Paging activity",
 #endif
 	.name		= "A_PAGE",
+	.item_list_sz	= 0,
 	.g_nr		= 3,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -317,6 +322,7 @@ struct activity io_act = {
 	.desc		= "I/O and transfer rate statistics",
 #endif
 	.name		= "A_IO",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -362,6 +368,7 @@ struct activity memory_act = {
 	.desc		= "Memory and/or swap utilization",
 #endif
 	.name		= "A_MEMORY",
+	.item_list_sz	= 0,
 	.g_nr		= 9,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -406,6 +413,7 @@ struct activity ktables_act = {
 	.desc		= "Kernel tables statistics",
 #endif
 	.name		= "A_KTABLES",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -450,6 +458,7 @@ struct activity queue_act = {
 	.desc		= "Queue length and load average statistics",
 #endif
 	.name		= "A_QUEUE",
+	.item_list_sz	= 0,
 	.g_nr		= 3,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -494,6 +503,7 @@ struct activity serial_act = {
 	.desc		= "TTY devices statistics",
 #endif
 	.name		= "A_SERIAL",
+	.item_list_sz	= 0,
 	.g_nr		= 0,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -538,6 +548,7 @@ struct activity disk_act = {
 	.desc		= "Block devices statistics",
 #endif
 	.name		= "A_DISK",
+	.item_list_sz	= 0,
 	.g_nr		= 5,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -582,6 +593,7 @@ struct activity net_dev_act = {
 	.desc		= "Network interfaces statistics",
 #endif
 	.name		= "A_NET_DEV",
+	.item_list_sz	= 0,
 	.g_nr		= 4,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -627,6 +639,7 @@ struct activity net_edev_act = {
 	.desc		= "Network interfaces errors statistics",
 #endif
 	.name		= "A_NET_EDEV",
+	.item_list_sz	= 0,
 	.g_nr		= 4,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -671,6 +684,7 @@ struct activity net_nfs_act = {
 	.desc		= "NFS client statistics",
 #endif
 	.name		= "A_NET_NFS",
+	.item_list_sz	= 0,
 	.g_nr		= 3,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -716,6 +730,7 @@ struct activity net_nfsd_act = {
 	.desc		= "NFS server statistics",
 #endif
 	.name		= "A_NET_NFSD",
+	.item_list_sz	= 0,
 	.g_nr		= 5,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -760,6 +775,7 @@ struct activity net_sock_act = {
 	.desc		= "IPv4 sockets statistics",
 #endif
 	.name		= "A_NET_SOCK",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -804,6 +820,7 @@ struct activity net_ip_act = {
 	.desc		= "IPv4 traffic statistics",
 #endif
 	.name		= "A_NET_IP",
+	.item_list_sz	= 0,
 	.g_nr		= 3,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -848,6 +865,7 @@ struct activity net_eip_act = {
 	.desc		= "IPv4 traffic errors statistics",
 #endif
 	.name		= "A_NET_EIP",
+	.item_list_sz	= 0,
 	.g_nr		= 3,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -893,6 +911,7 @@ struct activity net_icmp_act = {
 	.desc		= "ICMPv4 traffic statistics",
 #endif
 	.name		= "A_NET_ICMP",
+	.item_list_sz	= 0,
 	.g_nr		= 4,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -938,6 +957,7 @@ struct activity net_eicmp_act = {
 	.desc		= "ICMPv4 traffic errors statistics",
 #endif
 	.name		= "A_NET_EICMP",
+	.item_list_sz	= 0,
 	.g_nr		= 6,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -982,6 +1002,7 @@ struct activity net_tcp_act = {
 	.desc		= "TCPv4 traffic statistics",
 #endif
 	.name		= "A_NET_TCP",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1026,6 +1047,7 @@ struct activity net_etcp_act = {
 	.desc		= "TCPv4 traffic errors statistics",
 #endif
 	.name		= "A_NET_ETCP",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1070,6 +1092,7 @@ struct activity net_udp_act = {
 	.desc		= "UDPv4 traffic statistics",
 #endif
 	.name		= "A_NET_UDP",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1114,6 +1137,7 @@ struct activity net_sock6_act = {
 	.desc		= "IPv6 sockets statistics",
 #endif
 	.name		= "A_NET_SOCK6",
+	.item_list_sz	= 0,
 	.g_nr		= 1,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1159,6 +1183,7 @@ struct activity net_ip6_act = {
 	.desc		= "IPv6 traffic statistics",
 #endif
 	.name		= "A_NET_IP6",
+	.item_list_sz	= 0,
 	.g_nr		= 4,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1204,6 +1229,7 @@ struct activity net_eip6_act = {
 	.desc		= "IPv6 traffic errors statistics",
 #endif
 	.name		= "A_NET_EIP6",
+	.item_list_sz	= 0,
 	.g_nr		= 4,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1250,6 +1276,7 @@ struct activity net_icmp6_act = {
 	.desc		= "ICMPv6 traffic statistics",
 #endif
 	.name		= "A_NET_ICMP6",
+	.item_list_sz	= 0,
 	.g_nr		= 5,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1295,6 +1322,7 @@ struct activity net_eicmp6_act = {
 	.desc		= "ICMPv6 traffic errors statistics",
 #endif
 	.name		= "A_NET_EICMP6",
+	.item_list_sz	= 0,
 	.g_nr		= 6,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1339,6 +1367,7 @@ struct activity net_udp6_act = {
 	.desc		= "UDPv6 traffic statistics",
 #endif
 	.name		= "A_NET_UDP6",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1383,6 +1412,7 @@ struct activity pwr_cpufreq_act = {
 	.desc		= "CPU clock frequency",
 #endif
 	.name		= "A_PWR_CPU",
+	.item_list_sz	= 0,
 	.g_nr		= 1,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1427,6 +1457,7 @@ struct activity pwr_fan_act = {
 	.desc		= "Fans speed",
 #endif
 	.name		= "A_PWR_FAN",
+	.item_list_sz	= 0,
 	.g_nr		= 1,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1471,6 +1502,7 @@ struct activity pwr_temp_act = {
 	.desc		= "Devices temperature",
 #endif
 	.name		= "A_PWR_TEMP",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1515,6 +1547,7 @@ struct activity pwr_in_act = {
 	.desc		= "Voltage inputs statistics",
 #endif
 	.name		= "A_PWR_IN",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1559,6 +1592,7 @@ struct activity huge_act = {
 	.desc		= "Huge pages utilization",
 #endif
 	.name		= "A_HUGE",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= 1,
 	.nr2		= 1,
@@ -1603,6 +1637,7 @@ struct activity pwr_wghfreq_act = {
 	.desc		= "CPU weighted frequency",
 #endif
 	.name		= "A_PWR_FREQ",
+	.item_list_sz	= 0,
 	.g_nr		= 0,
 	.nr_ini		= -1,
 	.nr2		= -1,
@@ -1647,6 +1682,7 @@ struct activity pwr_usb_act = {
 	.desc		= "USB devices",
 #endif
 	.name		= "A_PWR_USB",
+	.item_list_sz	= 0,
 	.g_nr		= 0,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1692,6 +1728,7 @@ struct activity filesystem_act = {
 	.desc		= "Filesystems statistics",
 #endif
 	.name		= "A_FS",
+	.item_list_sz	= 0,
 	.g_nr		= 4,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1736,6 +1773,7 @@ struct activity fchost_act = {
 	.desc		= "Fibre Channel HBA statistics",
 #endif
 	.name		= "A_NET_FC",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= -1,
 	.nr2		= 1,
@@ -1781,6 +1819,7 @@ struct activity softnet_act = {
 	.desc		= "Software-based network processing statistics",
 #endif
 	.name		= "A_NET_SOFT",
+	.item_list_sz	= 0,
 	.g_nr		= 2,
 	.nr_ini		= -1,
 	.nr2		= 1,

@@ -29,12 +29,6 @@
 #include "raw_stats.h"
 
 extern unsigned int flags;
-extern struct sa_dlist *st_iface_list;
-extern struct sa_dlist *st_dev_list;
-extern struct sa_dlist *st_fs_list;
-extern int dlst_iface_idx;
-extern int dlst_dev_idx;
-extern int dlst_fs_idx;
 
 /*
  ***************************************************************************
@@ -536,9 +530,9 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 		/* Get device name */
 		dev_name = get_sa_devname(sdc->major, sdc->minor, flags);
 
-		if (dlst_dev_idx) {
+		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_sa_dlist(st_dev_list, dlst_dev_idx, dev_name))
+			if (!search_list_item(a->item_list, dev_name))
 				/* Device not found */
 				continue;
 		}
@@ -595,9 +589,9 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (dlst_iface_idx) {
+		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_sa_dlist(st_iface_list, dlst_iface_idx, sndc->interface))
+			if (!search_list_item(a->item_list, sndc->interface))
 				/* Device not found */
 				continue;
 		}
@@ -655,9 +649,9 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (dlst_iface_idx) {
+		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_sa_dlist(st_iface_list, dlst_iface_idx, snedc->interface))
+			if (!search_list_item(a->item_list, snedc->interface))
 				/* Device not found */
 				continue;
 		}
@@ -1488,10 +1482,10 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (dlst_fs_idx) {
+		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_sa_dlist(st_fs_list, dlst_fs_idx,
-					     DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+			if (!search_list_item(a->item_list,
+					      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
 				/* Device not found */
 				continue;
 		}
