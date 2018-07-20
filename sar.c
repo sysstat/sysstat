@@ -369,7 +369,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 
 	strncpy(timestamp[curr], _("Average:"), TIMESTAMP_LEN);
 	timestamp[curr][TIMESTAMP_LEN - 1] = '\0';
-	strcpy(timestamp[!curr], timestamp[curr]);
+	memcpy(timestamp[!curr], timestamp[curr], TIMESTAMP_LEN);
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
