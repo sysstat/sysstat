@@ -476,21 +476,21 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 			    char *cur_time, int utc, unsigned long long itv)
 {
 	int isdb = (fmt == F_DB_OUTPUT);
-	static char pre[80];
-	char temp[80];
+	static char pre[512];
+	char temp1[128], temp2[256];
 
 	/* This substring appears on every output line, preformat it here */
-	snprintf(pre, 80, "%s%s%lld%s",
+	snprintf(temp1, sizeof(temp1), "%s%s%lld%s",
 		 file_hdr->sa_nodename, seps[isdb], itv, seps[isdb]);
 	if (strlen(cur_date)) {
-		snprintf(temp, 80, "%s%s ", pre, cur_date);
+		snprintf(temp2, sizeof(temp2), "%s%s ", temp1, cur_date);
 	}
 	else {
-		strcpy(temp, pre);
+		strcpy(temp2, temp1);
 	}
-	snprintf(pre, 80, "%s%s%s", temp, cur_time,
+	snprintf(pre, sizeof(pre), "%s%s%s", temp2, cur_time,
 		 strlen(cur_date) && utc ? " UTC" : "");
-	pre[79] = '\0';
+	pre[sizeof(pre) - 1] = '\0';
 
 	if (DISPLAY_HORIZONTALLY(flags)) {
 		printf("%s", pre);
