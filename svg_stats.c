@@ -475,7 +475,7 @@ void recappend(unsigned long long timetag, double p_value, double value, char **
 	       int *outsize, int restart, unsigned long long dt,
 	       double *spmin, double *spmax)
 {
-	char data[128], data1[128], data2[128];
+	char data[512], data1[128], data2[128];
 
 	/* Save min and max values */
 	if (value < *spmin) {
@@ -486,16 +486,16 @@ void recappend(unsigned long long timetag, double p_value, double value, char **
 	}
 	/* Prepare additional graph definition data */
 	if (restart) {
-		snprintf(data1, 128, " M%llu,%.2f", timetag - dt, p_value);
-		data1[127] = '\0';
+		snprintf(data1, sizeof(data1), " M%llu,%.2f", timetag - dt, p_value);
+		data1[sizeof(data1) - 1] = '\0';
 	}
 	if (p_value != value) {
-		snprintf(data2, 128, " L%llu,%.2f", timetag, value);
-		data2[127] = '\0';
+		snprintf(data2, sizeof(data2), " L%llu,%.2f", timetag, value);
+		data2[sizeof(data2) - 1] = '\0';
 	}
-	snprintf(data, 128, "%s L%llu,%.2f%s", restart ? data1 : "", timetag, p_value,
+	snprintf(data, sizeof(data), "%s L%llu,%.2f%s", restart ? data1 : "", timetag, p_value,
 		 p_value != value ? data2 : "");
-	data[127] = '\0';
+	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
