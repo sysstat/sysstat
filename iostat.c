@@ -560,10 +560,10 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name)
 {
 	DIR *dir;
 	struct dirent *drd;
-	char dfile[MAX_PF_NAME], filename[MAX_PF_NAME];
+	char dfile[MAX_PF_NAME], filename[MAX_PF_NAME + 512];
 
-	snprintf(dfile, MAX_PF_NAME, "%s/%s", SYSFS_BLOCK, dev_name);
-	dfile[MAX_PF_NAME - 1] = '\0';
+	snprintf(dfile, sizeof(dfile), "%s/%s", SYSFS_BLOCK, dev_name);
+	dfile[sizeof(dfile) - 1] = '\0';
 
 	/* Open current device directory in /sys/block */
 	if ((dir = opendir(dfile)) == NULL)
@@ -573,8 +573,8 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name)
 	while ((drd = readdir(dir)) != NULL) {
 		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 			continue;
-		snprintf(filename, MAX_PF_NAME, "%s/%s/%s", dfile, drd->d_name, S_STAT);
-		filename[MAX_PF_NAME - 1] = '\0';
+		snprintf(filename, sizeof(filename), "%s/%s/%s", dfile, drd->d_name, S_STAT);
+		filename[sizeof(filename) - 1] = '\0';
 
 		/* Read current partition stats */
 		read_sysfs_file_stat(curr, filename, drd->d_name);
