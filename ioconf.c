@@ -219,7 +219,7 @@ int ioc_init(void)
 			}
 			else {
 				IOC_ALLOC(iocp->desc, char, IOC_DESCLEN);
-				strncpy(iocp->desc, desc, IOC_DESCLEN - 1);
+				memcpy(iocp->desc, desc, IOC_DESCLEN);
 			}
 			ioc_refnr[indirect]++;
 			ioconf[major] = iocp;
@@ -300,8 +300,8 @@ int ioc_init(void)
 
 		/* basename of device + provided string + controller # */
 		if (*cfmt == '*') {
-			strncpy(blkp->cfmt, blkp->name, IOC_FMTLEN - 1);
-			blkp->cfmt[IOC_FMTLEN - 1] = '\0';
+			strncpy(blkp->cfmt, blkp->name, sizeof(blkp->cfmt) - 1);
+			blkp->cfmt[sizeof(blkp->cfmt) - 1] = '\0';
 		}
 		else {
 			sprintf(blkp->cfmt, "%s%s%%d", blkp->name, cfmt);
@@ -337,7 +337,7 @@ int ioc_init(void)
 		iocp->desc = NULL;
 		iocp->basemajor = major;
 		ioconf[major] = iocp;
-		strncpy(blkp->desc, desc, IOC_DESCLEN - 1);
+		memcpy(blkp->desc, desc, IOC_DESCLEN);
 		blkp = NULL; iocp = NULL;
 		++count;
 	}

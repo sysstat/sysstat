@@ -15,6 +15,7 @@
 #define IOC_DEVLEN	48
 #define IOC_LINESIZ	256
 #define IOC_FMTLEN	16
+#define IOC_XFMTLEN	(IOC_FMTLEN + IOC_NAMELEN + 3)
 
 #ifndef MINORBITS
 #define MINORBITS	20
@@ -50,9 +51,9 @@
 
 struct blk_config {
 	char name[IOC_NAMELEN];	/* device basename */
-	char cfmt[IOC_FMTLEN];	/* controller format string */
+	char cfmt[IOC_XFMTLEN];	/* controller format string */
 	char dfmt[IOC_FMTLEN];	/* disk format string */
-	char pfmt[IOC_FMTLEN];	/* partition format string */
+	char pfmt[IOC_FMTLEN + 2];	/* partition format string */
 	/* ctrlno is in the ioc_entry */
 	unsigned int ctrl_explicit;	/* use "cN" in name */
 	unsigned int dcount;		/* number of devices handled by this major */
