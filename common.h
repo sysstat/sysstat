@@ -174,8 +174,8 @@ extern unsigned int kb_shift;
  * kB <-> number of pages.
  * Page size depends on machine architecture (4 kB, 8 kB, 16 kB, 64 kB...)
  */
-#define KB_TO_PG(k)	((k) >> kb_shift)
-#define PG_TO_KB(k)	((k) << kb_shift)
+#define KB_TO_PG(k)	((k) / (getpagesize()/1024))
+#define PG_TO_KB(k)	((k) * (getpagesize()/1024))
 
 /* Type of persistent device names used in sar and iostat */
 extern char persistent_name_type[MAX_FILE_LEN];
