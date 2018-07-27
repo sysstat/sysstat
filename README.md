@@ -58,13 +58,17 @@ Default sampling interval is 10 minutes but this can be changed of course (it ca
 
 ![Smart color output](images/color_output.png)
 - Internationalization support (sysstat has been translated into numerous different languages). Sysstat is now part of the [Translation Project](http://translationproject.org/).
-- Sysstat commands can automatically select the unit used to display sizes for easier reading (see option `--human`).
+- Sysstat commands can automatically select the unit used to display sizes for easier reading (see option `--human`):
+
+![Sample iostat output](images/iostat.png)
+
 - Graphs can be generated (SVG format - Scalable Vector Graphics) and displayed in your favorite web browser. See some sample screenshots below:
 
 ![Fancy sysstat graph](images/cpugraph.jpg)
 
 ![Fancy sysstat graph](images/tcgraph.png)
 
+![Fancy sysstat graph](images/loadavg-svg.png)
 
 
 Sysstat is Open Source / Free Software, and is freely available under the GNU General Public License, version 2.
@@ -175,7 +179,8 @@ contribution is? This in turn would encourage me to keep up the work as good as 
 Oh, and it would certainly also help me explain to my wife why I spend so much time in front
 of my computer instead of taking care of the household ;-)
 
-Go to my web page and [click on the Donate button](http://pagesperso-orange.fr/sebastien.godard/) on the left!
+Click on the "Donate PayPal" button above at the beginning of this file.
+You can also make a donation [from my web page](http://pagesperso-orange.fr/sebastien.godard/).
 
 Enjoy!
 
