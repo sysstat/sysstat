@@ -393,14 +393,18 @@ void brappend(unsigned long timetag, double offset, double value, char **out, in
 	      unsigned long dt)
 {
 	char data[128];
+	unsigned long t = 0;
 
 	/* Prepare additional graph definition data */
 	if ((value == 0.0) || (dt == 0))
 		/* Dont draw a flat rectangle! */
 		return;
+	if (dt < timetag) {
+		t = timetag - dt;
+	}
 
 	snprintf(data, 128, "<rect x=\"%lu\" y=\"%.2f\" height=\"%.2f\" width=\"%lu\"/>",
-		 timetag - dt, MINIMUM(offset, 100.0), MINIMUM(value, (100.0 - offset)), dt);
+		 t, MINIMUM(offset, 100.0), MINIMUM(value, (100.0 - offset)), dt);
 	data[127] = '\0';
 
 	save_svg_data(data, out, outsize);
@@ -479,6 +483,7 @@ void recappend(unsigned long timetag, double p_value, double value, char **out, 
 	       int restart, unsigned long dt, double *spmin, double *spmax)
 {
 	char data[128], data1[128], data2[128];
+	unsigned long t = 0;
 
 	/* Save min and max values */
 	if (value < *spmin) {
@@ -487,9 +492,12 @@ void recappend(unsigned long timetag, double p_value, double value, char **out, 
 	if (value > *spmax) {
 		*spmax = value;
 	}
+	if (dt < timetag) {
+		t = timetag -dt;
+	}
 	/* Prepare additional graph definition data */
 	if (restart) {
-		snprintf(data1, 128, " M%lu,%.2f", timetag - dt, p_value);
+		snprintf(data1, 128, " M%lu,%.2f", t, p_value);
 		data1[127] = '\0';
 	}
 	if (p_value != value) {
