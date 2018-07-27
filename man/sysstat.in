@@ -1,4 +1,4 @@
-.TH SYSSTAT 5 "APRIL 2015" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 .SH DESCRIPTION
@@ -173,5 +173,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sadc (8),
 .BR sa1 (8),
 .BR sa2 (8)
+
+.I https://github.com/sysstat/sysstat
 
 .I http://pagesperso-orange.fr/sebastien.godard/

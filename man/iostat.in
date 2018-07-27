@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -517,5 +517,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR tapestat (1),
 .BR nfsiostat (1),
 .BR cifsiostat (1)
+
+.I https://github.com/sysstat/sysstat
 
 .I http://pagesperso-orange.fr/sebastien.godard/

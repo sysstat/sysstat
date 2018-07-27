@@ -1,4 +1,4 @@
-.TH SADC 8 "DECEMBER 2016" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS
@@ -236,5 +236,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sa2 (8),
 .BR sadf (1),
 .BR sysstat (5)
+
+.I https://github.com/sysstat/sysstat
 
 .I http://pagesperso-orange.fr/sebastien.godard/

@@ -1,4 +1,4 @@
-.TH SA2 8 "JUNE 2014" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA2 8 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa2 \- Create a report from the current standard system activity daily data file.
 .SH SYNOPSIS
@@ -66,5 +66,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sa1 (8),
 .BR sadf (1),
 .BR sysstat (5)
+
+.I https://github.com/sysstat/sysstat
 
 .I http://pagesperso-orange.fr/sebastien.godard/

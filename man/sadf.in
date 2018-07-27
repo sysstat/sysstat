@@ -1,4 +1,4 @@
-.TH SADF 1 "JUNE 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -342,5 +342,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR sa1 (8),
 .BR sa2 (8),
 .BR sysstat (5)
+
+.I https://github.com/sysstat/sysstat
 
 .I http://pagesperso-orange.fr/sebastien.godard/
