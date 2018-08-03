@@ -1,5 +1,13 @@
 Changes:
 
+2018/08/03: Version 11.6.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: SVG: Display graphs for swap utilization in packed mode.
+	* sadf: SVG: Don't take into account activities with no graphs when
+	  calculating canvas height.
+	* sadf: SVG: Don't insert a gap in SVG output if an activity is not
+	  displayed.
+	* sadf: SVG: Fix possible negative value in graphs coordinates.
+
 2018/06/01: Version 11.6.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Change how used memory (kbmemused) is calculated to be
 	  consistent with free(1) and top(1)'s output.
