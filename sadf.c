@@ -508,7 +508,7 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
  * Compute the number of rows that will contain SVG views. Usually only one
  * view is displayed on a row, unless the "packed" option has been entered.
  * Each activity selected may have several views. Moreover some activities
- * may have a number of items that vary within the file: In this case,
+ * may have a number of items that varies within the file: In this case,
  * the number of views will depend on the highest number of items saved in
  * the file.
  *

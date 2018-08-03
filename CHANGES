@@ -1,5 +1,29 @@
 Changes:
 
+2018/08/03: Version 12.0.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: SVG: Remove id tag from individual graphs. Use activities
+	  identification numbers for id tags.
+	* sadf: SVG: Add new option "showtoc", which can be used to display
+	  the list of activities for which there are graphs ("table of
+	  contents").
+	* sadf: SVG: Improve output for softnet activity: Add a discontinuity in
+	  graph when corresponding CPU is marked offline.
+	* sadf: SVG: Improve function used to assess SVG canvas height.
+	* sadf: SVG: Fix core dumped on buffers reallocation.
+	* sar/sadf: Devices list management code refactoring.
+	* sadf: SVG: Display graphs for swap utilization in packed mode [11.6.5].
+	* sadf: SVG: Don't take into account activities with no graphs when
+	  calculating canvas height [11.6.5].
+	* sadf: SVG: Don't insert a gap in SVG output if an activity is not
+	  displayed [11.6.5].
+	* sadf: SVG: Fix possible negative value in graphs coordinates [11.6.5].
+	* sa_conv.c: Use write_all() function instead of write() to handle possible
+	  signal interruptions.
+	* spec file updated: No longer create a debug package.
+	* Remove many warnings from gcc v7/v8.
+	* README file updated.
+	* Manual pages updated.
+
 2018/06/01: Version 11.7.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadf: Add new option "--iface=": Allow the user to select the
 	  network interfaces to display.
