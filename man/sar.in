@@ -470,6 +470,8 @@ Make the output of sar easier to read by a human. Options
 and
 .B -p
 (pretty-print) are enabled implicitly with this option.
+This option may be especially useful when displaying e.g., network interfaces
+or block devices statistics.
 .IP --help
 Display a short help message then exit.
 .IP --human
