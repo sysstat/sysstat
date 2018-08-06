@@ -549,7 +549,7 @@ Example: To tell sadc to collect only temperature sensors activity
 in addition to the default set of activities, enter:
 
 ```
-sadc -S A_PWR_TEMP
+sadc -S A_PWR_TEMP (...)
 ```
 
 followed by the other classic options (interval, count, filename...)
@@ -557,10 +557,16 @@ Now assume you want to collect temperature sensors activity **without**
 the other activities collected by default,
 add the special report name A_NULL to the list passed to sadc, e.g.:
 ```
-sadc -S A_NULL,A_PWR_TEMP
+sadc -S A_NULL,A_PWR_TEMP (...)
 ```
 Of course you can enter as many report names as you want to collect
 different activities.
+Last you can exclude a specific activity from a list by prefixing its
+report name with a dash. For example, to collect all possible activities
+**except** statistics for interrupts, enter:
+```
+sadc -S XALL,-A_IRQ (...)
+```
 This way you can tell sadc to collect only the desired activities.
 
 ---
