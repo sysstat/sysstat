@@ -195,6 +195,18 @@ void parse_sadc_S_option(char *argv[], int opt)
 				usage(argv[0]);
 			}
 		}
+		else if (!strncmp(p, "-A_", 3)) {
+			/* Unselect activity by name */
+			for (i = 0; i < NR_ACT; i++) {
+				if (!strcmp(p + 1, act[i]->name)) {
+					act[i]->options &= ~AO_COLLECTED;
+					break;
+				}
+			}
+			if (i == NR_ACT) {
+				usage(argv[0]);
+			}
+		}
 		else {
 			usage(argv[0]);
 		}
