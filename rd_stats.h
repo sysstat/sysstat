@@ -613,7 +613,7 @@ struct stats_huge {
 	unsigned long long tlhkb;
 };
 
-#define STATS_HUGE_SIZE	(sizeof(struct stats_memory))
+#define STATS_HUGE_SIZE	(sizeof(struct stats_huge))
 #define STATS_HUGE_ULL	2
 #define STATS_HUGE_UL	0
 #define STATS_HUGE_U	0
