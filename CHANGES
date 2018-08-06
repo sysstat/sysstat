@@ -1,5 +1,8 @@
 Changes:
 
+2018/08/06: Version 12.0.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix wrong size for stats_huge structure.
+
 2018/08/03: Version 12.0.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: SVG: Remove id tag from individual graphs. Use activities
 	  identification numbers for id tags.
