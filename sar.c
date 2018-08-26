@@ -449,9 +449,6 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 			return 0;
 	}
 
-	if (!is_iso_time_fmt())
-		flags |= S_F_PREFD_TIME_OUTPUT;
-
 	/* Get then set previous timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
 					   &rectime, NULL))
@@ -1511,6 +1508,10 @@ int main(int argc, char **argv)
 
 	/* Default is CPU activity... */
 	select_default_activity(act);
+
+	/* Check S_TIME_FORMAT variable contents */
+	if (!is_iso_time_fmt())
+		flags |= S_F_PREFD_TIME_OUTPUT;
 
 	/* Reading stats from file: */
 	if (from_file[0]) {
