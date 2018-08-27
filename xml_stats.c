@@ -1924,10 +1924,16 @@ __print_funct_t xml_print_huge_stats(struct activity *a, int curr, int tab,
 	xprintf(tab, "<hugused>%llu</hugused>",
 		smc->tlhkb - smc->frhkb);
 
-	xprintf(tab--, "<hugused-percent>%.2f</hugused-percent>",
+	xprintf(tab, "<hugused-percent>%.2f</hugused-percent>",
 		smc->tlhkb ?
 		SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 		0.0);
+
+	xprintf(tab, "<hugrsvd>%llu</hugrsvd>",
+		smc->rsvdhkb);
+
+	xprintf(tab--, "<hugsurp>%llu</hugsurp>",
+		smc->surphkb);
 
 	xprintf(tab, "</hugepages>");
 }

@@ -1392,7 +1392,11 @@ __print_funct_t raw_print_huge_stats(struct activity *a, char *timestr, int curr
 		*smc = (struct stats_huge *) a->buf[curr];
 
 	printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, FIRST), smc->frhkb);
-	printf(" hugtotal; %llu;\n", smc->tlhkb);
+	printf(" hugtotal; %llu;", smc->tlhkb);
+	pfield(NULL, 0); /* Skip kbhugused */
+	pfield(NULL, 0); /* Skip %hugused */
+	printf(" %s; %llu;", pfield(NULL, 0), smc->rsvdhkb);
+	printf(" %s; %llu;\n", pfield(NULL, 0), smc->surphkb);
 }
 
 /*

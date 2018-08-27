@@ -2730,11 +2730,19 @@ __print_funct_t render_huge_stats(struct activity *a, int isdb, char *pre,
 	       "-\tkbhugused", NULL, NULL,
 	       smc->tlhkb - smc->frhkb, DNOVAL, NULL);
 
-	render(isdb, pre, pt_newlin,
+	render(isdb, pre, PT_NOFLAG,
 	       "-\t%hugused", NULL, NULL, NOVAL,
 	       smc->tlhkb ?
 	       SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 	       0.0, NULL);
+
+	render(isdb, pre, PT_USEINT,
+	       "-\tkbhugrsvd", NULL, NULL,
+	       smc->rsvdhkb, DNOVAL, NULL);
+
+	render(isdb, pre, PT_USEINT | pt_newlin,
+	       "-\tkbhugsurp", NULL, NULL,
+	       smc->surphkb, DNOVAL, NULL);
 }
 
 /*

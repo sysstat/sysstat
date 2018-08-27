@@ -2000,12 +2000,15 @@ __print_funct_t json_print_huge_stats(struct activity *a, int curr, int tab,
 	xprintf0(tab, "\"hugepages\": {"
 		 "\"hugfree\": %llu, "
 		 "\"hugused\": %llu, "
-		 "\"hugused-percent\": %.2f}",
+		 "\"hugused-percent\": %.2f, "
+		 "\"hugrsvd\": %llu, "
+		 "\"hugsurp\": %llu}",
 		 smc->frhkb,
 		 smc->tlhkb - smc->frhkb,
 		 smc->tlhkb ?
-		 SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
-		 0.0);
+		 SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0,
+		 smc->rsvdhkb,
+		 smc->surphkb);
 }
 
 /*
