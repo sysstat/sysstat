@@ -404,7 +404,7 @@ invalid_header:
  * Note: Consider the value 0x01020304 read on a 32-bit machine.
  * Big-endian, saved as:   01 02 03 04
  * Lille-endian, saved as: 04 03 02 01
- * The value should be saved as an 64-bit value and endianness should be
+ * The value should be saved as a 64-bit value and endianness should be
  * preserved:
  * Big-endian:    00 00 00 00 01 02 03 04
  * Little-endian: 04 03 02 01 00 00 00 00
