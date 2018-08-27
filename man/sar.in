@@ -1,4 +1,4 @@
-.TH SAR 1 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "AUGUST 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -462,6 +462,16 @@ Amount of hugepages memory in kilobytes that has been allocated.
 .B %hugused
 .RS
 Percentage of total hugepages memory that has been allocated.
+.RE
+
+.B kbhugrsvd
+.RS
+Amount of reserved hugepages memory in kilobytes.
+.RE
+
+.B kbhugsurp
+.RS
+Amount of surplus hugepages memory in kilobytes.
 .RE
 .RE
 .IP -h
