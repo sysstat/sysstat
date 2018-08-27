@@ -193,7 +193,7 @@
 
 <!ELEMENT campg (#PCDATA)>
 
-<!ELEMENT hugepages (hugfree, hugused, hugused-percent)>
+<!ELEMENT hugepages (hugfree, hugused, hugused-percent, hugrsvd?, hugsurp?)>
 <!ATTLIST hugepages
 	unit CDATA #REQUIRED
 >
@@ -203,6 +203,10 @@
 <!ELEMENT hugused (#PCDATA)>
 
 <!ELEMENT hugused-percent (#PCDATA)>
+
+<!ELEMENT hugrsvd (#PCDATA)>
+
+<!ELEMENT hugsurp (#PCDATA)>
 
 <!ELEMENT kernel EMPTY>
 <!ATTLIST kernel

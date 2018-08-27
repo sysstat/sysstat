@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.4 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.5 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -288,6 +288,8 @@
 		<xs:element name="hugfree" type="xs:nonNegativeInteger"></xs:element>
 		<xs:element name="hugused" type="xs:nonNegativeInteger"></xs:element>
 		<xs:element name="hugused-percent" type="hundredth-type"></xs:element>
+		<xs:element name="hugrsvd" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="hugsurp" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="unit" type="unit-type" use="required"></xs:attribute>
 </xs:complexType>
