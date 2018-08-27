@@ -611,10 +611,12 @@ struct stats_pwr_cpufreq {
 struct stats_huge {
 	unsigned long long frhkb;
 	unsigned long long tlhkb;
+	unsigned long long rsvdhkb;
+	unsigned long long surphkb;
 };
 
 #define STATS_HUGE_SIZE	(sizeof(struct stats_huge))
-#define STATS_HUGE_ULL	2
+#define STATS_HUGE_ULL	4
 #define STATS_HUGE_UL	0
 #define STATS_HUGE_U	0
 

@@ -2427,7 +2427,9 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		*smc = (struct stats_huge *) a->buf[curr];
 	static unsigned long long
 		avg_frhkb = 0,
-		avg_tlhkb = 0;
+		avg_tlhkb = 0,
+		avg_rsvdhkb = 0,
+		avg_surphkb = 0;
 	int unit = NO_UNIT;
 
 	if (DISPLAY_UNIT(flags)) {
@@ -2448,11 +2450,16 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
 			   smc->tlhkb ?
 			   SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0);
+		cprintf_u64(unit, 2, 9,
+			    (unsigned long long) smc->rsvdhkb,
+			    (unsigned long long) (smc->surphkb));
 		printf("\n");
 
 		/* Will be used to compute the average */
 		avg_frhkb += smc->frhkb;
 		avg_tlhkb += smc->tlhkb;
+		avg_rsvdhkb += smc->rsvdhkb;
+		avg_surphkb += smc->surphkb;
 	}
 	else {
 		/* Display average values */
@@ -2466,10 +2473,13 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 			   SP_VALUE((double) avg_frhkb / avg_count,
 				    (double) avg_tlhkb / avg_count,
 				    (double) avg_tlhkb / avg_count) : 0.0);
+		cprintf_f(unit, 2, 9, 0,
+			  (double) avg_rsvdhkb / avg_count,
+			  (double) avg_surphkb / avg_count);
 		printf("\n");
 
 		/* Reset average counters */
-		avg_frhkb = avg_tlhkb = 0;
+		avg_frhkb = avg_tlhkb = avg_rsvdhkb = avg_surphkb = 0;
 	}
 }
 

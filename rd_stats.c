@@ -2153,6 +2153,14 @@ __nr_t read_meminfo_huge(struct stats_huge *st_huge)
 			/* Read the number of free huge pages */
 			sscanf(line + 15, "%llu", &st_huge->frhkb);
 		}
+		else if (!strncmp(line, "HugePages_Rsvd:", 15)) {
+			/* Read the number of reserved huge pages */
+			sscanf(line + 15, "%llu", &st_huge->rsvdhkb);
+		}
+		else if (!strncmp(line, "HugePages_Surp:", 15)) {
+			/* Read the number of surplus huge pages */
+			sscanf(line + 15, "%llu", &st_huge->surphkb);
+		}
 		else if (!strncmp(line, "Hugepagesize:", 13)) {
 			/* Read the default size of a huge page in kB */
 			sscanf(line + 13, "%lu", &szhkb);
@@ -2164,6 +2172,9 @@ __nr_t read_meminfo_huge(struct stats_huge *st_huge)
 	/* We want huge pages stats in kB and not expressed in a number of pages */
 	st_huge->tlhkb *= szhkb;
 	st_huge->frhkb *= szhkb;
+	st_huge->rsvdhkb *= szhkb;
+	st_huge->surphkb *= szhkb;
+
 	return 1;
 }
 

@@ -1577,7 +1577,7 @@ struct activity huge_act = {
 	.f_print_avg	= print_avg_huge_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "kbhugfree;kbhugused;%hugused",
+	.hdr_line	= "kbhugfree;kbhugused;%hugused;kbhugrsvd;kbhugsurp",
 #endif
 	.gtypes_nr	= {STATS_HUGE_ULL, STATS_HUGE_UL, STATS_HUGE_U},
 	.ftypes_nr	= {0, 0, 0},
