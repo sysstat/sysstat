@@ -4539,14 +4539,13 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 {
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
-	int group[] = {2, 1};
+	int group[] = {4, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH};
 	char *title[] = {"Huge pages utilization (1)",
 			 "Huge pages utilization (2)"};
-	char *g_title[] = {"~kbhugfree", "~kbhugused",
+	char *g_title[] = {"~kbhugfree", "~kbhugused", "~kbhugrsvd", "~kbhugsurp",
 			   "%hugused"};
-	int g_fields[] = {0};
-	unsigned int local_types_nr[] = {0, 1, 0};
+	int g_fields[] = {0, 5, 2, 3};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -4556,13 +4555,15 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 		/*
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
+		 * Allocate one additional array (#5) to save min/max
+		 * values for tlhkb (unused).
 		 */
-		out = allocate_graph_lines(3, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(6, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(local_types_nr, (void *) a->buf[curr], NULL,
+		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax, g_fields);
 
 		if (smc->tlhkb - smc->frhkb < *(spmin + 1)) {
@@ -4572,11 +4573,11 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 			*(spmax + 1) = smc->tlhkb - smc->frhkb;
 		}
 		tval = smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0;
-		if (tval < *(spmin + 2)) {
-			*(spmin + 2) = tval;
+		if (tval < *(spmin + 4)) {
+			*(spmin + 4) = tval;
 		}
-		if (tval > *(spmax + 2)) {
-			*(spmax + 2) = tval;
+		if (tval > *(spmax + 4)) {
+			*(spmax + 4) = tval;
 		}
 
 		/* kbhugfree */
@@ -4587,10 +4588,18 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long long) smc->tlhkb - smc->frhkb,
 			  out + 1, outsize + 1, svg_p->restart);
+		/* kbhugrsvd */
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			  (unsigned long long) smc->rsvdhkb,
+			  out + 2, outsize + 2, svg_p->restart);
+		/* kbhugsurp */
+		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			  (unsigned long long) smc->surphkb,
+			  out + 3, outsize + 3, svg_p->restart);
 		/* %hugused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0, tval,
-			 out + 2, outsize + 2, svg_p->dt);
+			 out + 4, outsize + 4, svg_p->dt);
 	}
 
 	if (action & F_END) {
