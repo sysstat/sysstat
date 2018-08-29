@@ -747,7 +747,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 							    &tm_start, &tm_end, R_COMMENT, ifd,
 							    &rectime, NULL, file, 0,
 							    file_magic, &file_hdr, act, &sar_fmt);
-				if (next) {
+				if (next && lines) {
 					/* A line of comment was actually displayed */
 					lines++;
 				}
