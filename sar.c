@@ -799,8 +799,13 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 							    &rectime, NULL, file, 0,
 							    file_magic, &file_hdr, act, &sar_fmt,
 							    endian_mismatch, arch_64);
-				if (next) {
-					/* A line of comment was actually displayed */
+				if (next && lines) {
+					/*
+					 * A line of comment was actually displayed: Count it in the
+					 * total number of displayed lines.
+					 * If no lines of stats had been previously displayed, ignore it
+					 * to make sure the header line will be displayed.
+					 */
 					lines++;
 				}
 				continue;
