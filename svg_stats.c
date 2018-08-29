@@ -4546,7 +4546,7 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 	char *g_title[] = {"~kbhugfree", "~kbhugused",
 			   "%hugused"};
 	int g_fields[] = {0};
-	unsigned int local_types_nr[] = {0, 1, 0};
+	unsigned int local_types_nr[] = {1, 0, 0};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
