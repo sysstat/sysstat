@@ -34,7 +34,6 @@
 
 extern unsigned int flags;
 extern char *seps[];
-extern unsigned int id_seq[];
 
 
 /*
