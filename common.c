@@ -97,15 +97,11 @@ void print_version(void)
 time_t get_localtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
-	struct tm *ltm;
 
 	time(&timer);
 	timer -= SEC_PER_DAY * d_off;
-	ltm = localtime(&timer);
+	localtime_r(&timer, rectime);
 
-	if (ltm) {
-		*rectime = *ltm;
-	}
 	return timer;
 }
 
@@ -126,15 +122,11 @@ time_t get_localtime(struct tm *rectime, int d_off)
 time_t get_gmtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
-	struct tm *ltm;
 
 	time(&timer);
 	timer -= SEC_PER_DAY * d_off;
-	ltm = gmtime(&timer);
+	gmtime_r(&timer, rectime);
 
-	if (ltm) {
-		*rectime = *ltm;
-	}
 	return timer;
 }
 

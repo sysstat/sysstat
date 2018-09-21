@@ -804,8 +804,6 @@ void get_itv_value(struct record_header *record_hdr_curr,
 void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
 			       struct file_header *file_hdr)
 {
-	struct tm *loc_t;
-
 	if (PRINT_TRUE_TIME(flags)) {
 		/* Get local time. This is just to fill fields with a default value. */
 		get_time(rectime, 0);
@@ -821,9 +819,7 @@ void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
 		mktime(rectime);
 	}
 	else {
-		if ((loc_t = localtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
-			*rectime = *loc_t;
-		}
+		localtime_r((const time_t *) &file_hdr->sa_ust_time, rectime);
 	}
 }
 
@@ -2692,8 +2688,10 @@ int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *r
 
 	/* Fill localtime structure if given */
 	if (loctime) {
-		if ((ltm = localtime((const time_t *) &(record_hdr->ust_time))) != NULL) {
-			*loctime = *ltm;
+		ltm = localtime_r((const time_t *) &(record_hdr->ust_time), loctime);
+		if (ltm) {
+			/* Done so that we have some default values */
+			*rectime = *loctime;
 		}
 		else {
 			rc = 1;
@@ -2703,7 +2701,7 @@ int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *r
 	/* Fill generic rectime structure */
 	if (PRINT_LOCAL_TIME(l_flags) && !ltm) {
 		/* Get local time if not already done */
-		ltm = localtime((const time_t *) &(record_hdr->ust_time));
+		ltm = localtime_r((const time_t *) &(record_hdr->ust_time), rectime);
 	}
 
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
@@ -2711,14 +2709,10 @@ int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *r
 		 * Get time in UTC
 		 * (the user doesn't want local time nor time of file's creator).
 		 */
-		ltm = gmtime((const time_t *) &(record_hdr->ust_time));
+		ltm = gmtime_r((const time_t *) &(record_hdr->ust_time), rectime);
 	}
 
-	if (ltm) {
-		/* Done even in true time mode so that we have some default values */
-		*rectime = *ltm;
-	}
-	else {
+	if (!ltm) {
 		rc = 1;
 	}
 

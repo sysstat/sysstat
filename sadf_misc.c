@@ -694,7 +694,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 				  struct activity *act[], unsigned int id_seq[],
 				  struct file_activity *file_actlst)
 {
-	struct tm rectime, *loc_t;
+	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
@@ -726,8 +726,8 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf(*tab, "<file-date>%s</file-date>", cur_time);
 
-		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
-			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
+		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
+			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			xprintf(*tab, "<file-utc-time>%s</file-utc-time>", cur_time);
 		}
 
@@ -762,7 +762,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 				   struct activity *act[], unsigned int id_seq[],
 				   struct file_activity *file_actlst)
 {
-	struct tm rectime, *loc_t;
+	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
@@ -784,8 +784,8 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf0(*tab, "\"file-date\": \"%s\"", cur_time);
 
-		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
-			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
+		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
+			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			printf(",\n");
 			xprintf0(*tab, "\"file-utc-time\": \"%s\"", cur_time);
 		}
@@ -821,7 +821,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 	int i, p;
-	struct tm rectime, *loc_t;
+	struct tm rectime, loc_t;
 	struct file_activity *fal;
 	char cur_time[TIMESTAMP_LEN];
 
@@ -841,7 +841,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		       file_magic->upgraded);
 
 		printf(_("Host: "));
-		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
+		print_gal_header(localtime_r((const time_t *) &(file_hdr->sa_ust_time), &rectime),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
@@ -852,9 +852,9 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		printf(_("File date: %s\n"), cur_time);
 
-		if ((loc_t = gmtime((const time_t *) &file_hdr->sa_ust_time)) != NULL) {
+		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
 			printf(_("File time: "));
-			strftime(cur_time, sizeof(cur_time), "%T", loc_t);
+			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			printf("%s UTC\n", cur_time);
 		}
 
@@ -919,6 +919,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
+	struct tm rectime;
 	unsigned int height = 0, ht = 0;
 	int i, p;
 
@@ -956,7 +957,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
 		       SVG_T_XSIZE * (hdr_parm->views_per_row), height);
 		printf("<text x=\"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
-		print_gal_header(localtime((const time_t *) &(file_hdr->sa_ust_time)),
+		print_gal_header(localtime_r((const time_t *) &(file_hdr->sa_ust_time), &rectime),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,

@@ -832,6 +832,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 	long int xpos;
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
 	char val[32], cur_date[TIMESTAMP_LEN];
+	struct tm rectime;
 
 	/* For each view which is part of current activity */
 	for (i = 0; i < g_nr; i++) {
@@ -931,7 +932,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			       svg_p->file_hdr->sa_nodename);
 
 			/* Get report date */
-			set_report_date(localtime((const time_t *) &(svg_p->file_hdr->sa_ust_time)),
+			set_report_date(localtime_r((const time_t *) &(svg_p->file_hdr->sa_ust_time), &rectime),
 					cur_date, sizeof(cur_date));
 			printf("<tspan x=\"%d\" y=\"%d\" "
 			       "style=\"fill: yellow; text-anchor: end; stroke: none; font-size: 14px\">"
