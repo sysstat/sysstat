@@ -2,6 +2,8 @@
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
 [![Build Status](https://travis-ci.org/sysstat/sysstat.svg?branch=master)](https://travis-ci.org/sysstat/sysstat)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=45U6F9R73ESFQ)
+[![Code Quality: Cpp](https://img.shields.io/lgtm/grade/cpp/g/sysstat/sysstat.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sysstat/sysstat/context:cpp)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/sysstat/sysstat.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sysstat/sysstat/alerts)
 
 (C) 1999-2018 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
