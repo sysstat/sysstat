@@ -426,7 +426,7 @@ endif
 		$(INSTALL_DATA) cron/sysstat-summary.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	elif [ -d $(DESTDIR)$(INIT_DIR) ]; then \
 		$(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
-		if [ "$(COPY_ONLY)" == "n" ]; then \
+		if [ "$(COPY_ONLY)" = "n" ]; then \
 			if [ -x "$(CHKCONFIG)" ]; then \
 				cd $(DESTDIR)$(INIT_DIR) && $(CHKCONFIG) --add sysstat; \
 			else \
@@ -440,7 +440,7 @@ endif
 		fi \
 	elif [ -d $(DESTDIR)$(RC_DIR) ]; then \
 		$(INSTALL_BIN) sysstat $(DESTDIR)$(RC_DIR)/rc.sysstat; \
-		if [ "$(COPY_ONLY)" == "n" ]; then \
+		if [ "$(COPY_ONLY)" = "n" ]; then \
 			if [ -x "$(CHKCONFIG)" ]; then \
 				cd $(DESTDIR)$(RC_DIR) && $(CHKCONFIG) --add rc.sysstat; \
 			else \
