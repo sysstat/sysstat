@@ -206,6 +206,8 @@ void check_format_options(void)
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
+ * @oneof	Set to UEOF_CONT if an unexpected end of file should not make
+ *		sadf stop. Default behavior is to stop on unexpected EOF.
  *
  * OUT:
  * @rtype	Type of record read (R_RESTART, R_COMMENT, etc.)
@@ -221,20 +223,23 @@ void check_format_options(void)
  *		explicitly told to do so with the SET_TIMESTAMPS action flag.
  *
  * RETURNS:
- * TRUE if end of file has been reached.
+ * 1 if EOF has been reached,
+ * 2 if an unexpected EOF has been reached,
+ * 0 otherwise.
  ***************************************************************************
  */
 int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int tab,
 		     struct file_magic *file_magic, struct file_activity *file_actlst,
-		     struct tm *rectime, struct tm *loctime)
+		     struct tm *rectime, struct tm *loctime, int oneof)
 {
+	int rc;
 	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];
 
 	/* Read current record */
-	if (read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr], &file_hdr,
-			    arch_64, endian_mismatch))
+	if ((rc = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr], &file_hdr,
+			    arch_64, endian_mismatch, oneof)) != 0)
 		/* End of sa file */
-		return TRUE;
+		return rc;
 
 	*rtype = record_hdr[curr].record_type;
 
@@ -243,6 +248,10 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			/* Ignore COMMENT record */
 			if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
 				perror("lseek");
+				if (oneof == UEOF_CONT)
+					return 2;
+				close(ifd);
+				exit(2);
 			}
 			if (action & SET_TIMESTAMPS) {
 				sa_get_record_timestamp_struct(flags, &record_hdr[curr],
@@ -286,12 +295,13 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		 * OK: Previous record was not a special one.
 		 * So read now the extra fields.
 		 */
-		read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-				     file_actlst, endian_mismatch, arch_64, file, file_magic);
+		if (read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr, file_actlst,
+					 endian_mismatch, arch_64, file, file_magic, oneof) > 0)
+			return 2;
 		sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime, loctime);
 	}
 
-	return FALSE;
+	return 0;
 }
 
 /*
@@ -460,7 +470,7 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 	do {
 		eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 					 0, file, &rtype, 0, file_magic, file_actlst,
-					 rectime, loctime);
+					 rectime, loctime, UEOF_CONT);
 		if (eosaf)
 			/* No record to display */
 			return 0;
@@ -487,7 +497,7 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 						 0, file, &rtype, 0, file_magic, file_actlst,
-						 rectime, loctime);
+						 rectime, loctime, UEOF_CONT);
 			if (eosaf ||
 			    (tm_end.use && (datecmp(loctime, &tm_end) >= 0)))
 				/* End of data file or end time exceeded */
@@ -822,7 +832,7 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 		/* Display <count> lines of stats */
 		*eosaf = read_next_sample(ifd, IGNORE_RESTART | DONT_READ_CPU_NR,
 					  *curr, file, &rtype, 0, file_magic,
-					  file_actlst, rectime, loctime);
+					  file_actlst, rectime, loctime, UEOF_STOP);
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
@@ -912,7 +922,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	do {
 		*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 					  *curr, file, &rtype, 0, file_magic,
-					  file_actlst, rectime, loctime);
+					  file_actlst, rectime, loctime, UEOF_CONT);
 
 		if (!*eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 
@@ -941,7 +951,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			do {
 				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 							  *curr, file, &rtype, 0, file_magic,
-							  file_actlst, rectime, loctime);
+							  file_actlst, rectime, loctime, UEOF_CONT);
 			}
 			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
 
@@ -1018,7 +1028,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, 0,
 						 file, &rtype, tab, file_magic, file_actlst,
-						 rectime, loctime);
+						 rectime, loctime, UEOF_STOP);
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
 			(tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
@@ -1035,7 +1045,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 			do {
 				eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
 							 file, &rtype, tab, file_magic, file_actlst,
-							 rectime, loctime);
+							 rectime, loctime, UEOF_CONT);
 
 				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 					if (*fmt[f_position]->f_statistics) {
@@ -1063,7 +1073,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 				do {
 					eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
 								 file, &rtype, tab, file_magic, file_actlst,
-								 rectime, loctime);
+								 rectime, loctime, UEOF_CONT);
 				}
 				while (!eosaf && (rtype != R_RESTART));
 			}
@@ -1088,7 +1098,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	do {
 		eosaf = read_next_sample(ifd, IGNORE_COMMENT, 0,
 					 file, &rtype, tab, file_magic, file_actlst,
-					 rectime, loctime);
+					 rectime, loctime, UEOF_CONT);
 	}
 	while (!eosaf);
 
@@ -1108,7 +1118,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_RESTART, 0,
 						 file, &rtype, tab, file_magic, file_actlst,
-						 rectime, loctime);
+						 rectime, loctime, UEOF_CONT);
 		}
 		while (!eosaf);
 
@@ -1162,7 +1172,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst,
 		do {
 			if (read_next_sample(ifd, IGNORE_NOTHING, 0,
 					     file, &rtype, 0, file_magic, file_actlst,
-					     rectime, loctime))
+					     rectime, loctime, UEOF_STOP))
 				/* End of sa data file */
 				return;
 		}
@@ -1231,7 +1241,7 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst,
 			do {
 				eosaf = read_next_sample(ifd, IGNORE_RESTART | DONT_READ_CPU_NR,
 							 curr, file, &rtype, 0, file_magic,
-							 file_actlst, rectime, loctime);
+							 file_actlst, rectime, loctime, UEOF_STOP);
 			}
 			while (!eosaf && (rtype != R_RESTART));
 		}
@@ -1317,7 +1327,7 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 	do {
 		if (read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT, 0,
 				     file, &rtype, 0, file_magic, file_actlst,
-				     rectime, loctime))
+				     rectime, loctime, UEOF_CONT))
 		{
 			/* End of sa data file: No views displayed */
 			parm.graph_nr = 0;

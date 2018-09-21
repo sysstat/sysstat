@@ -287,7 +287,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 	n = (previous_format == FORMAT_MAGIC_2171 ? FILE_HEADER_SIZE_2171
 						  : hdr_size);
 	SREALLOC(buffer, char, n);
-	sa_fread(fd, buffer, (size_t) n, HARD_SIZE);
+	sa_fread(fd, buffer, (size_t) n, HARD_SIZE, UEOF_STOP);
 
 	/* Upgrade file_header structure */
 	upgrade_file_header(buffer, file_hdr, previous_format,
@@ -305,7 +305,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 
 	for (i = 0; i < file_hdr->sa_act_nr; i++, ofal++) {
 
-		sa_fread(fd, ofal, OLD_FILE_ACTIVITY_SIZE, HARD_SIZE);
+		sa_fread(fd, ofal, OLD_FILE_ACTIVITY_SIZE, HARD_SIZE, UEOF_STOP);
 
 		/* Normalize endianness for file_activity structures */
 		if (endian_mismatch) {
@@ -1499,7 +1499,7 @@ int upgrade_comment_record(int fd, int stdfd)
 	char file_comment[MAX_COMMENT_LEN];
 
 	/* Read the COMMENT record */
-	sa_fread(fd, file_comment, MAX_COMMENT_LEN, HARD_SIZE);
+	sa_fread(fd, file_comment, MAX_COMMENT_LEN, HARD_SIZE, UEOF_STOP);
 	file_comment[MAX_COMMENT_LEN - 1] = '\0';
 
 	/* Then write it. No changes at this time */
@@ -1552,7 +1552,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 		 * of volatile activity structures. Among them is A_CPU activity.
 		 */
 		for (i = 0; i < vol_act_nr; i++) {
-			sa_fread(fd, &ofile_act, OLD_FILE_ACTIVITY_SIZE, HARD_SIZE);
+			sa_fread(fd, &ofile_act, OLD_FILE_ACTIVITY_SIZE, HARD_SIZE, UEOF_STOP);
 
 			/* Normalize endianness for file_activity structures */
 			if (endian_mismatch) {
@@ -1636,14 +1636,14 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 				for (k = 0; k < act[p]->nr2; k++) {
 					sa_fread(fd,
 						 (char *) act[p]->buf[0] + (j * act[p]->nr2 + k) * act[p]->msize,
-						 (size_t) ofal->size, HARD_SIZE);
+						 (size_t) ofal->size, HARD_SIZE, UEOF_STOP);
 				}
 			}
 		}
 		else if (act[p]->nr_ini > 0) {
 			sa_fread(fd, act[p]->buf[0],
 				 (size_t) ofal->size * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2,
-				 HARD_SIZE);
+				 HARD_SIZE, UEOF_STOP);
 		}
 
 		nr_struct = act[p]->nr_ini;
@@ -1863,7 +1863,7 @@ int upgrade_stat_records(int fd, int stdfd, struct activity *act[], struct file_
 	fprintf(stderr, _("Statistics:\n"));
 
 	do {
-		eosaf = sa_fread(fd, &orec_hdr, OLD_RECORD_HEADER_SIZE, SOFT_SIZE);
+		eosaf = sa_fread(fd, &orec_hdr, OLD_RECORD_HEADER_SIZE, SOFT_SIZE, UEOF_STOP);
 
 		/* Normalize endianness */
 		if (endian_mismatch) {

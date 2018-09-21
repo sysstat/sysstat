@@ -774,13 +774,13 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		 * Start with reading current sample's record header.
 		 */
 		*eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[*curr],
-					 &file_hdr, arch_64, endian_mismatch);
+					 &file_hdr, arch_64, endian_mismatch, UEOF_STOP);
 		rtype = record_hdr[*curr].record_type;
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			/* Read the extra fields since it's not a special record */
 			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
-					     endian_mismatch, arch_64, file, file_magic);
+					     endian_mismatch, arch_64, file, file_magic, UEOF_STOP);
 		}
 
 		if ((lines >= rows) || !lines) {
@@ -1003,7 +1003,7 @@ void read_stats_from_file(char from_file[])
 		 */
 		do {
 			if (read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[0], &file_hdr,
-					    arch_64, endian_mismatch)) {
+					    arch_64, endian_mismatch, UEOF_STOP)) {
 				/* End of sa data file */
 				return;
 			}
@@ -1022,7 +1022,7 @@ void read_stats_from_file(char from_file[])
 				 */
 				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 						     file_actlst, endian_mismatch, arch_64,
-						     from_file, &file_magic);
+						     from_file, &file_magic, UEOF_STOP);
 				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
 								   &record_hdr[0],
 								   &rectime, NULL))
@@ -1095,13 +1095,13 @@ void read_stats_from_file(char from_file[])
 			do {
 				/* Read next record header */
 				eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr],
-							&file_hdr, arch_64, endian_mismatch);
+							&file_hdr, arch_64, endian_mismatch, UEOF_STOP);
 				rtype = record_hdr[curr].record_type;
 
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 							     file_actlst, endian_mismatch, arch_64,
-							     from_file, &file_magic);
+							     from_file, &file_magic, UEOF_STOP);
 				}
 				else if (!eosaf && (rtype == R_COMMENT)) {
 					/* This was a COMMENT record: print it */

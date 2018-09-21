@@ -290,6 +290,9 @@
 #define END_OF_DATA_UNEXPECTED	1
 #define INCONSISTENT_INPUT_DATA	2
 
+#define UEOF_STOP	0
+#define UEOF_CONT	1
+
 #define CLOSE_XML_MARKUP	0
 #define OPEN_XML_MARKUP		1
 
@@ -1349,13 +1352,13 @@ int print_special_record
 	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
 	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
-void read_file_stat_bunch
+int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
-	 char *, struct file_magic *);
+	 char *, struct file_magic *, int);
 __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
-	(int, void *, struct record_header *, struct file_header *, int, int);
+	(int, void *, struct record_header *, struct file_header *, int, int, int);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
 void remap_struct
@@ -1363,7 +1366,7 @@ void remap_struct
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
-	(int, void *, size_t, int);
+	(int, void *, size_t, int, int);
 int sa_get_record_timestamp_struct
 	(unsigned int, struct record_header *, struct tm *, struct tm *);
 int sa_open_read_magic
