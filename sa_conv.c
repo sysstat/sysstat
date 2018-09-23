@@ -686,14 +686,14 @@ void upgrade_stats_queue(struct activity *act[], int p, unsigned int magic,
  * disk.
  ***************************************************************************
  */
-int upgrade_stats_serial(struct activity *act[], int p, int st_size, int endian_mismatch)
+int upgrade_stats_serial(struct activity *act[], int p, size_t st_size, int endian_mismatch)
 {
 	int i;
 	unsigned int line;
 	struct stats_serial *ssc;
 
 	/* Copy TTY stats to target structure */
-	memcpy(act[p]->buf[1], act[p]->buf[0], act[p]->nr_ini * st_size);
+	memcpy(act[p]->buf[1], act[p]->buf[0], (size_t) act[p]->nr_ini * st_size);
 
 	for (i = 0; i < act[p]->nr_ini; i++) {
 		ssc = (struct stats_serial *) ((char *) act[p]->buf[1] + i * act[p]->fsize);
