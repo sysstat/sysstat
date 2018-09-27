@@ -1,0 +1,1 @@
+./sadf -j tests/data.tmp -C -- -A | json_pp >/dev/null
