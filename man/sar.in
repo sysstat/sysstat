@@ -1,4 +1,4 @@
-.TH SAR 1 "MAY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "OCTOBER 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -369,7 +369,7 @@ The following values are displayed:
 .B MBfsfree
 .RS
 .RS
-Total amount a free space in megabytes (including space available only to privileged user).
+Total amount of free space in megabytes (including space available only to privileged user).
 .RE
 
 .B MBfsused
