@@ -1,5 +1,11 @@
 Changes:
 
+2018/10/13: Version 11.4.11 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix timestamp format in report output.
+	* sar: Make sure header lines are always displayed in report for statistics.
+	* Makefile: Fix "unexpected operator" error on install.
+	* sar: Fix typo in manual page.
+
 2018/06/01: Version 11.4.10 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Change how used memory (kbmemused) is calculated to be
 	  consistent with free(1) and top(1)'s output.

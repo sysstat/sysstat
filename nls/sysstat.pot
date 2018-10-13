@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2018-06-01 09:58+0200\n"
+"POT-Creation-Date: 2018-10-13 09:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,59 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cifsiostat.c:72 mpstat.c:100 pidstat.c:89 iostat.c:88 sar.c:98
-#: tapestat.c:91
+#: pr_stats.c:2524 pr_stats.c:2536 pr_stats.c:2640 pr_stats.c:2651
+msgid "Summary:"
+msgstr ""
+
+#: pr_stats.c:2579
+msgid "Other devices not listed here"
+msgstr ""
+
+#: iostat.c:88 tapestat.c:91 cifsiostat.c:72 mpstat.c:100 sar.c:98 pidstat.c:89
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
 
-#: cifsiostat.c:76
+#: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 
-#: cifsiostat.c:79
+#: iostat.c:97
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+
+#: iostat.c:328
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr ""
+
+#: iostat.c:1408 sa_common.c:1607
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr ""
+
+#: tapestat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+
+#: tapestat.c:259
+#, c-format
+msgid "No tape drives with statistics found\n"
 msgstr ""
 
 #: sadc.c:91
@@ -60,8 +95,8 @@ msgstr ""
 msgid "Cannot write system activity file header: %s\n"
 msgstr ""
 
-#: sadc.c:765 sadc.c:774 sadc.c:841 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1224 count.c:118
+#: sadc.c:765 sadc.c:774 sadc.c:841 count.c:118 ioconf.c:510 rd_stats.c:69
+#: sa_common.c:1224
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -71,26 +106,28 @@ msgstr ""
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
 
-#: common.c:74
+#: count.c:169
 #, c-format
-msgid "sysstat version %s\n"
+msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: sadf.c:88
-#, c-format
-msgid ""
-"Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr ""
-
-#: sadf.c:91
+#: cifsiostat.c:76
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -"
-"V ]\n"
-"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <sar_options> ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgstr ""
+
+#: cifsiostat.c:79
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+
+#: common.c:74
+#, c-format
+msgid "sysstat version %s\n"
 msgstr ""
 
 #: mpstat.c:103
@@ -101,73 +138,13 @@ msgid ""
 "[ -P { <cpu> [,...] | ON | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:710 pidstat.c:2315 sar.c:360
+#: mpstat.c:710 sar.c:360 pidstat.c:2315
 msgid "Average:"
 msgstr ""
 
 #: mpstat.c:1113
 #, c-format
 msgid "Not that many processors!\n"
-msgstr ""
-
-#: sa_common.c:1020
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr ""
-
-#: sa_common.c:1030
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr ""
-
-#: sa_common.c:1049
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr ""
-
-#: sa_common.c:1082
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr ""
-
-#: sa_common.c:1094
-#, c-format
-msgid "Endian format mismatch\n"
-msgstr ""
-
-#: sa_common.c:1098
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr ""
-
-#: sa_common.c:1227
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr ""
-
-#: sa_common.c:1420
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr ""
-
-#: sa_common.c:1607 iostat.c:1408
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr ""
-
-#: pidstat.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
-"[ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-msgstr ""
-
-#: pidstat.c:241 sar.c:1046
-#, c-format
-msgid "Requested activities not available\n"
 msgstr ""
 
 #: sadf_misc.c:748
@@ -223,42 +200,21 @@ msgstr ""
 msgid "\t[Unknown activity format]"
 msgstr ""
 
-#: count.c:169
+#: sadf.c:88
 #, c-format
-msgid "Cannot handle so many processors!\n"
+msgid ""
+"Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr ""
 
-#: iostat.c:91
+#: sadf.c:91
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-
-#: iostat.c:97
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-
-#: iostat.c:328
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr ""
-
-#: pr_stats.c:2524 pr_stats.c:2536 pr_stats.c:2640 pr_stats.c:2651
-msgid "Summary:"
-msgstr ""
-
-#: pr_stats.c:2579
-msgid "Other devices not listed here"
+"[ -C ] [ -c | -d | -g | -j | -p | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -"
+"V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
 msgstr ""
 
 #: sar.c:113
@@ -422,27 +378,32 @@ msgstr ""
 msgid "End of data collecting unexpected\n"
 msgstr ""
 
-#: sar.c:815
+#: sar.c:812
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:867
+#: sar.c:864
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:1352
+#: sar.c:1043 pidstat.c:241
+#, c-format
+msgid "Requested activities not available\n"
+msgstr ""
+
+#: sar.c:1349
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1358
+#: sar.c:1355
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1494
+#: sar.c:1495
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
@@ -478,14 +439,52 @@ msgid ""
 "File successfully converted to sysstat format version %s\n"
 msgstr ""
 
-#: tapestat.c:93
+#: pidstat.c:92
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ -d ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
+"[ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 msgstr ""
 
-#: tapestat.c:259
+#: sa_common.c:1020
 #, c-format
-msgid "No tape drives with statistics found\n"
+msgid "Error while reading system activity file: %s\n"
+msgstr ""
+
+#: sa_common.c:1030
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr ""
+
+#: sa_common.c:1049
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr ""
+
+#: sa_common.c:1082
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr ""
+
+#: sa_common.c:1094
+#, c-format
+msgid "Endian format mismatch\n"
+msgstr ""
+
+#: sa_common.c:1098
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr ""
+
+#: sa_common.c:1227
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr ""
+
+#: sa_common.c:1420
+#, c-format
+msgid "Requested activities not available in file %s\n"
 msgstr ""
