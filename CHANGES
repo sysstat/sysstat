@@ -1,5 +1,11 @@
 Changes:
 
+2018/10/13: Version 11.6.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix timestamp format in report output.
+	* sar: Make sure header lines are always displayed in report for statistics.
+	* Makefile: Fix "unexpected operator" error on install.
+	* sar: Fix typo in manual page.
+
 2018/08/03: Version 11.6.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: SVG: Display graphs for swap utilization in packed mode.
 	* sadf: SVG: Don't take into account activities with no graphs when
