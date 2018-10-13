@@ -1,5 +1,14 @@
 Changes:
 
+2018/10/13: Version 12.0.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix timestamp format in report output.
+	* sar: Fortify remap_struct() function.
+	* sadf: SVG: Fix variable type used for huge pages kbhugfree metric.
+	* sar: Make sure header lines are always displayed in report for statistics.
+	* Makefile: Fix "unexpected operator" error on install.
+	* sar: Fix typo in manual page.
+	* Cosmetic fixes.
+
 2018/08/06: Version 12.0.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix wrong size for stats_huge structure.
 
