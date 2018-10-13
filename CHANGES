@@ -1,5 +1,26 @@
 Changes:
 
+2018/10/13: Version 12.1.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix wrong size for stats_huge structure [12.0.1].
+	* sar/sadc/sadf: Add new HugePages metrics: HugePages_Rsvd and
+	  HugePages_Surp.
+	* DTD and XSD documents updated.
+	* sadf: Make it more robust to corrupted datafiles.
+	* sadc: Allow to unselect activities by name.
+	* Use thread-safe versions of gmtime() and localtime() functions.
+	* sar: Fortify remap_struct() function [12.0.2].	
+	* sar: Fix timestamp format in report output [12.0.2] [11.6.6] [11.4.11].
+	* sar: Make sure header lines are always displayed in report for statistics
+	  [12.0.2] [11.6.6] [11.4.11].
+	* Makefile: Fix "unexpected operator" error on install [12.0.2] [11.6.6]
+	  [11.4.11].
+	* sar: Fix typo in manual page [12.0.2] [11.6.6] [11.4.11].
+	* New non regression tests added.
+	* README file updated: Added LGTM code quality badges.
+	* sar manual page updated.
+	* FAQ updated.
+	* Cosmetic fixes.
+
 2018/08/03: Version 12.0.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: SVG: Remove id tag from individual graphs. Use activities
 	  identification numbers for id tags.
