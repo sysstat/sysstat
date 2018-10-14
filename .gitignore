@@ -49,3 +49,4 @@ core
 TAGS
 nls/*.gmo
 tests/*.tmp
+tests/0230

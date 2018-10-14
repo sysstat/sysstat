@@ -600,6 +600,7 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer cron/sysstat-summary.service cron/sysstat-summary.timer
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
+	rm -f tests/0230
 	rm -f man/cifsiostat.1
 	rm -f *.log config.status
 	rm -rf autom4te.cache

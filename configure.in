@@ -30,11 +30,14 @@ AC_CHECK_PROG(INSTALL, install, install)
 AC_CHECK_PROG(MSGFMT, msgfmt, msgfmt)
 AC_CHECK_PROG(XGETTEXT, xgettext, xgettext)
 AC_CHECK_PROG(MSGMERGE, msgmerge, msgmerge)
+AC_CHECK_PROGS(VER_JSON, json_verify json_pp, true)
 AC_CHECK_PROGS(ZIP, xz bzip2 gzip, gzip)
 INSTALL_DATA="\${INSTALL} -m 644"
 AC_SUBST(INSTALL_DATA)
 INSTALL_BIN="\${INSTALL} -m 755"
 AC_SUBST(INSTALL_BIN)
+
+AC_SUBST(VER_JSON)
 
 AC_PATH_PROG(PATH_CP, cp)
 AC_PATH_PROG(PATH_CHKCONFIG, chkconfig)
@@ -598,6 +601,7 @@ AC_CONFIG_FILES([man/sar.1:man/sar.in])		# File must be renamed
 AC_CONFIG_FILES([man/sysstat.5:man/sysstat.in])	# File must be renamed
 AC_CONFIG_FILES([man/iostat.1:man/iostat.in])	# File must be renamed
 AC_CONFIG_FILES([man/cifsiostat.1:man/cifsiostat.in])	# File must be renamed
+AC_CONFIG_FILES([tests/0230])
 
 AC_OUTPUT(Makefile)
 
