@@ -50,3 +50,5 @@ TAGS
 nls/*.gmo
 tests/*.tmp
 tests/0230
+tests/0240
+tests/0250
