@@ -42,7 +42,7 @@ To run the
 .B sa2
 command daily, place the following entry in your root crontab file:
 
-.B 5 19 * * 1-5 @SA_LIB_DIR@/sa2 -A &
+.B 5 19 * * 1-5 @SA_LIB_DIR@/sa2 -A
 
 This will generate by default a daily report called
 .I sarDD

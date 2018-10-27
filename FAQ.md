@@ -317,7 +317,7 @@ file. Stop all sadc instances and try again.
 ---
 2.12. I have sysstat setup to run via cron:
 ```
-0 * * * * /usr/local/lib/sa/sa1 600 6 &
+0 * * * * /usr/local/lib/sa/sa1 600 6
 ```
 so that I get an activity report every 10 minutes.  
 When I use sar to get my output, there is no reading for `00:00:00`. This
@@ -335,13 +335,13 @@ rotation. So a crontab like the following one should enable you to get the
 data for midnight at the end of each daily data file:
 ```
 # Activity reports every 10 minutes from 01:00:00 to 22:50:00
-0 1-22 * * * /usr/local/lib/sa/sa1 600 6 &
+0 1-22 * * * /usr/local/lib/sa/sa1 600 6
 # Activity reports every 10 minutes from 23:00:00 to 00:00:00
 # Reporting until 00:00:00 ensures that a file rotation will be detected
 # by sadc
-0 23 * * * /usr/local/lib/sa/sa1 600 7 &
+0 23 * * * /usr/local/lib/sa/sa1 600 7
 # Activity reports every 10 minutes from 00:10:00 to 00:50:00
-10 0 * * * /usr/local/lib/sa/sa1 600 5 &
+10 0 * * * /usr/local/lib/sa/sa1 600 5
 ```
 Another possible crontab would be:
 ```
