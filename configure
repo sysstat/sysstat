@@ -5501,6 +5501,10 @@ ac_config_files="$ac_config_files man/cifsiostat.1:man/cifsiostat.in"
 	# File must be renamed
 ac_config_files="$ac_config_files tests/0230"
 
+ac_config_files="$ac_config_files tests/0231"
+
+ac_config_files="$ac_config_files tests/0232"
+
 ac_config_files="$ac_config_files tests/0240"
 
 ac_config_files="$ac_config_files tests/0250"
@@ -6238,6 +6242,8 @@ do
     "man/iostat.1") CONFIG_FILES="$CONFIG_FILES man/iostat.1:man/iostat.in" ;;
     "man/cifsiostat.1") CONFIG_FILES="$CONFIG_FILES man/cifsiostat.1:man/cifsiostat.in" ;;
     "tests/0230") CONFIG_FILES="$CONFIG_FILES tests/0230" ;;
+    "tests/0231") CONFIG_FILES="$CONFIG_FILES tests/0231" ;;
+    "tests/0232") CONFIG_FILES="$CONFIG_FILES tests/0232" ;;
     "tests/0240") CONFIG_FILES="$CONFIG_FILES tests/0240" ;;
     "tests/0250") CONFIG_FILES="$CONFIG_FILES tests/0250" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;

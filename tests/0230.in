@@ -1,4 +1,4 @@
 VER_JSON=@VER_JSON@
 if [ ! -z "$VER_JSON" ]; then
-	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null;
+	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null;
 fi
