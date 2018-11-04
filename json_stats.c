@@ -755,7 +755,6 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 			 "\"avgqu-sz\": %.2f, "
 			 "\"aqu-sz\": %.2f, "
 			 "\"await\": %.2f, "
-			 "\"svctm\": %.2f, "
 			 "\"util-percent\": %.2f}",
 			 /* Confusion possible here between index and minor numbers */
 			 dev_name,
@@ -770,7 +769,6 @@ __print_funct_t json_print_disk_stats(struct activity *a, int curr, int tab,
 			 S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,	/* For backward compatibility */
 			 S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
 			 xds.await,
-			 xds.svctm,
 			 xds.util / 10.0);
 	}
 

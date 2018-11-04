@@ -216,7 +216,6 @@ extern char persistent_name_type[MAX_FILE_LEN];
 struct ext_disk_stats {
 	double util;
 	double await;
-	double svctm;
 	double arqsz;
 };
 

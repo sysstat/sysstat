@@ -2013,7 +2013,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 {
 	struct stats_disk *sdc, *sdp, sdpzero;
 	struct ext_disk_stats xds;
-	int group[] = {1, 2, 2, 2, 1};
+	int group[] = {1, 2, 2, 1, 1};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH,
 			SVG_LINE_GRAPH, SVG_BAR_GRAPH};
 	char *title[] = {"Block devices statistics (1)", "Block devices statistics (2)",
@@ -2022,9 +2022,10 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	char *g_title[] = {"tps",
 			   "rkB/s", "wkB/s",
 			   "areq-sz", "aqu-sz",
-			   "await", "svctm",
+			   "await",
 			   "%util"};
 	int g_fields[] = {0, 1, 2};
+	int nr_arrays = 8;
 	unsigned int local_types_nr[] = {1, 0, 0};
 	static double *spmin, *spmax;
 	static char **out;
@@ -2035,15 +2036,15 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_BEGIN) {
 		/*
-		 * Allocate arrays (#0..7) that will contain the graphs data
+		 * Allocate arrays (#0..6) that will contain the graphs data
 		 * and the min/max values.
-		 * Also allocate one additional array (#8) for each disk device:
-		 * spmax + 8 will contain the device major number,
-		 * spmin + 8 will contain the device minor number,
-		 * outsize + 8 will contain a positive value (TRUE) if the device
+		 * Also allocate one additional array (#7) for each disk device:
+		 * spmax + 7 will contain the device major number,
+		 * spmin + 7 will contain the device minor number,
+		 * outsize + 7 will contain a positive value (TRUE) if the device
 		 * has either still not been registered, or has been unregistered.
 		 */
-		out = allocate_graph_lines(9 * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(nr_arrays * a->item_list_sz, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
@@ -2054,7 +2055,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 		 * possibly unregistered for all graphs.
 		 */
 		for (k = 0; k < a->item_list_sz; k++) {
-			unregistered = outsize + k * 9 + 8;
+			unregistered = outsize + k * nr_arrays + 7;
 			if (*unregistered == FALSE) {
 				*unregistered = MAYBE;
 			}
@@ -2076,15 +2077,15 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->item_list_sz; k++) {
-				if ((sdc->major == *(spmax + k * 9 + 8)) &&
-				    (sdc->minor == *(spmin + k * 9 + 8)))
+				if ((sdc->major == *(spmax + k * nr_arrays + 7)) &&
+				    (sdc->minor == *(spmin + k * nr_arrays + 7)))
 					/* Graph found! */
 					break;
 			}
 			if (k == a->item_list_sz) {
 				/* Graph not found: Look for first free entry */
 				for (k = 0; k < a->item_list_sz; k++) {
-					if (*(spmax + k * 9 + 8) == -DBL_MAX)
+					if (*(spmax + k * nr_arrays + 7) == -DBL_MAX)
 						break;
 				}
 				if (k == a->item_list_sz) {
@@ -2096,8 +2097,8 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 					continue;
 				}
 			}
-			pos = k * 9;
-			unregistered = outsize + pos + 8;
+			pos = k * nr_arrays;
+			unregistered = outsize + pos + 7;
 
 			/*
 			 * If current device was marked as previously unregistered,
@@ -2109,10 +2110,10 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			}
 			*unregistered = FALSE;
 
-			if (*(spmax + pos + 8) == -DBL_MAX) {
+			if (*(spmax + pos + 7) == -DBL_MAX) {
 				/* Save device major and minor numbers (if not already done) */
-				*(spmax + pos + 8) = sdc->major;
-				*(spmin + pos + 8) = sdc->minor;
+				*(spmax + pos + 7) = sdc->major;
+				*(spmin + pos + 7) = sdc->minor;
 			}
 
 			j = check_disk_reg(a, curr, !curr, i);
@@ -2163,17 +2164,11 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			if (xds.await > *(spmax + pos + 5)) {
 				*(spmax + pos + 5) = xds.await;
 			}
-			if (xds.svctm < *(spmin + pos + 6)) {
-				*(spmin + pos + 6) = xds.svctm;
+			if ((xds.util / 10.0) < *(spmin + pos + 6)) {
+				*(spmin + pos + 6) = xds.util / 10.0;
 			}
-			if (xds.svctm > *(spmax + pos + 6)) {
-				*(spmax + pos + 6) = xds.svctm;
-			}
-			if ((xds.util / 10.0) < *(spmin + pos + 7)) {
-				*(spmin + pos + 7) = xds.util / 10.0;
-			}
-			if ((xds.util / 10.0) > *(spmax + pos + 7)) {
-				*(spmax + pos + 7) = xds.util / 10.0;
+			if ((xds.util / 10.0) > *(spmax + pos + 6)) {
+				*(spmax + pos + 6) = xds.util / 10.0;
 			}
 
 			/* tps */
@@ -2200,19 +2195,15 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 xds.await,
 				 out + pos + 5, outsize + pos + 5, restart);
-			/* svctm */
-			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 xds.svctm,
-				 out + pos + 6, outsize + pos + 6, restart);
 			/* %util */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 0.0, xds.util / 10.0,
-				 out + pos + 7, outsize + pos + 7, svg_p->dt);
+				 out + pos + 6, outsize + pos + 6, svg_p->dt);
 		}
 
 		/* Mark devices not seen here as now unregistered */
 		for (k = 0; k < a->item_list_sz; k++) {
-			unregistered = outsize + k * 9 + 8;
+			unregistered = outsize + k * nr_arrays + 7;
 			if (*unregistered != FALSE) {
 				*unregistered = TRUE;
 			}
@@ -2224,12 +2215,12 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 
 		for (i = 0; i < a->item_list_sz; i++) {
 			/* Check if there is something to display */
-			pos = i * 9;
+			pos = i * nr_arrays;
 			if (!**(out + pos))
 				continue;
 
 			/* Get device name */
-			item_name = get_sa_devname(*(spmax + pos + 8), *(spmin + pos + 8), flags);
+			item_name = get_sa_devname(*(spmax + pos + 7), *(spmin + pos + 7), flags);
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,

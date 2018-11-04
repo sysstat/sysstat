@@ -1025,7 +1025,7 @@ void write_disk_stat_header(int *fctr, int *tab)
 				printf("    rsec/s    wsec/s");
 			}
 			printf("   rrqm/s   wrqm/s  %%rrqm  %%wrqm r_await w_await"
-			       " aqu-sz rareq-sz wareq-sz  svctm  %%util");
+			       " aqu-sz rareq-sz wareq-sz  %%util");
 		}
 	}
 	else {
@@ -1132,8 +1132,6 @@ void write_plain_ext_stat(unsigned long long itv, int fctr,
 		/* rareq-sz  wareq-sz (in kB, not sectors) */
 		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 2, 8, 2,
 			  xios->rarqsz / 2, xios->warqsz / 2);
-		/* svctm - The ticks output is biased to output 1000 ticks per second */
-		cprintf_f(NO_UNIT, 1, 6, 2, xds->svctm);
 		/*
 		 * %util
 		 * Again: Ticks in milliseconds.
@@ -1217,7 +1215,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       xios->wsectors /= fctr);
 		printf("\"rrqm/s\": %.2f, \"wrqm/s\": %.2f, \"rrqm\": %.2f, \"wrqm\": %.2f, "
 		       "\"r_await\": %.2f, \"w_await\": %.2f, "
-		       "\"aqu-sz\": %.2f, \"rareq-sz\": %.2f, \"wareq-sz\": %.2f,  \"svctm\": %.2f, ",
+		       "\"aqu-sz\": %.2f, \"rareq-sz\": %.2f, \"wareq-sz\": %.2f, ",
 		       S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 		       S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
 		       xios->rrqm_pc,
@@ -1226,8 +1224,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       xios->w_await,
 		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
 		       xios->rarqsz / 2,
-		       xios->warqsz / 2,
-		       xds->svctm);
+		       xios->warqsz / 2);
 	}
 	printf("\"util\": %.2f}",
 		 shi->used ? xds->util / 10.0 / (double) shi->used

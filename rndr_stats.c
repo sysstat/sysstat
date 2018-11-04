@@ -1131,13 +1131,6 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 		       xds.await,
 		       NULL);
 
-		render(isdb, pre, PT_NOFLAG,
-		       "%s\tsvctm", NULL,
-		       cons(sv, dev_name, NULL),
-		       NOVAL,
-		       xds.svctm,
-		       NULL);
-
 		render(isdb, pre, pt_newlin,
 		       "%s\t%%util", NULL,
 		       cons(sv, dev_name, NULL),

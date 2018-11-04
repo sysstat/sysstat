@@ -1074,10 +1074,9 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		/* See iostat for explanations */
 		cprintf_f(unit, 1, 9, 2,
 			  xds.arqsz / 2);
-		cprintf_f(NO_UNIT, 3, 9, 2,
+		cprintf_f(NO_UNIT, 2, 9, 2,
 			  S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
-			  xds.await,
-			  xds.svctm);
+			  xds.await);
 		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
 			   xds.util / 10.0);
 		if (DISPLAY_HUMAN_READ(flags)) {
