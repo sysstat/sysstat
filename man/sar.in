@@ -1,4 +1,4 @@
-.TH SAR 1 "OCTOBER 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "NOVEMBER 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -340,13 +340,6 @@ Note: In previous versions, this field was known as avgqu-sz.
 The average time (in milliseconds) for I/O requests issued to the device
 to be served. This includes the time spent by the requests in queue and
 the time spent servicing them.
-.RE
-
-.B svctm
-.RS
-The average service time (in milliseconds) for I/O requests that were issued
-to the device. Warning! Do not trust this field any more. This field will be
-removed in a future sysstat version.
 .RE
 
 .B %util

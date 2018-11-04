@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "NOVEMBER 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -290,13 +290,6 @@ The average queue length of the requests that were issued to the device.
 Note: In previous versions, this field was known as avgqu-sz.
 
 .RE
-.B svctm
-.RS
-The average service time (in milliseconds) for I/O requests that were issued
-to the device. Warning! Do not trust this field any more.
-This field will be removed in a future sysstat version.
-
-.RE
 .B %util
 .RS
 Percentage of elapsed time during which I/O requests were issued to the device
@@ -484,11 +477,6 @@ filesystem must be mounted for
 to work.
 
 Kernels older than 2.6.x are no longer supported.
-
-The average service time (svctm field) value is meaningless,
-as I/O statistics are now calculated at block level, and we don't know
-when the disk driver starts to process a request. For this reason,
-this field will be removed in a future sysstat version. 
 .SH FILES
 .I /proc/stat
 contains system statistics.
