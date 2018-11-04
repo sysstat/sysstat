@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.4 for sysstat. See sadf.h -->
+<!--DTD v3.6 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -260,7 +260,7 @@
 	avgqu-sz CDATA #IMPLIED
 	aqu-sz CDATA #REQUIRED
 	await CDATA #REQUIRED
-	svctm CDATA #REQUIRED
+	svctm CDATA #IMPLIED
 	util-percent CDATA #REQUIRED
 >
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.5 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.6 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -352,7 +352,7 @@
 	<xs:attribute name="avgqu-sz" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="aqu-sz" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="await" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="svctm" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="svctm" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="util-percent" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
