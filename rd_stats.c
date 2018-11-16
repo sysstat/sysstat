@@ -375,10 +375,10 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
 	 * => no need for further scaling.
 	 */
 	xds->await = (sdc->nr_ios - sdp->nr_ios) ?
-		((sdc->rd_ticks - sdp->rd_ticks) + (sdc->wr_ticks - sdp->wr_ticks)) /
+		((sdc->rd_ticks - sdp->rd_ticks) + (sdc->wr_ticks - sdp->wr_ticks) + (sdc->dc_ticks - sdp->dc_ticks)) /
 		((double) (sdc->nr_ios - sdp->nr_ios)) : 0.0;
 	xds->arqsz = (sdc->nr_ios - sdp->nr_ios) ?
-		((sdc->rd_sect - sdp->rd_sect) + (sdc->wr_sect - sdp->wr_sect)) /
+		((sdc->rd_sect - sdp->rd_sect) + (sdc->wr_sect - sdp->wr_sect) + (sdc->dc_sect - sdp->dc_sect)) /
 		((double) (sdc->nr_ios - sdp->nr_ios)) : 0.0;
 }
 

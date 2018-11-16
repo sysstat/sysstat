@@ -261,8 +261,10 @@ struct stats_disk {
 	unsigned long long nr_ios;
 	unsigned long	   rd_sect	__attribute__ ((aligned (8)));
 	unsigned long	   wr_sect	__attribute__ ((aligned (8)));
+	unsigned long	   dc_sect	__attribute__ ((aligned (8)));
 	unsigned int	   rd_ticks	__attribute__ ((aligned (8)));
 	unsigned int	   wr_ticks;
+	unsigned int	   dc_ticks;
 	unsigned int	   tot_ticks;
 	unsigned int	   rq_ticks;
 	unsigned int	   major;
