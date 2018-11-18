@@ -1774,7 +1774,7 @@ void write_stats(int curr, struct tm *rectime)
 					}
 				}
 			}
-			if (h) {
+			if ((h > 0) && (h < hh)) {
 				printf("\n");
 			}
 		}
