@@ -2594,7 +2594,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 			st_fc_i->f_txframes = tx_frames;
 			st_fc_i->f_rxwords  = rx_words;
 			st_fc_i->f_txwords  = tx_words;
-			strncpy(st_fc_i->fchost_name, drd->d_name, MAX_FCH_LEN);
+			memcpy(st_fc_i->fchost_name, drd->d_name, MAX_FCH_LEN);
 			st_fc_i->fchost_name[MAX_FCH_LEN - 1] = '\0';
 		}
 	}
