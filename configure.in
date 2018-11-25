@@ -141,7 +141,7 @@ echo .
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors	   do not link against libsensors even if available
 #  --disable-stripping     do not strip object files
-#  --enablle-copy-only     only copy files when installing sysstat
+#  --enable-copy-only      only copy files when installing sysstat
 #
 # Some influential environment variables:
 #  rcdir	 directory where startup scripts are installed
