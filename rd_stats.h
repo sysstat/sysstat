@@ -273,8 +273,8 @@ struct stats_disk {
 
 #define STATS_DISK_SIZE	(sizeof(struct stats_disk))
 #define STATS_DISK_ULL	1
-#define STATS_DISK_UL	2
-#define STATS_DISK_U	6
+#define STATS_DISK_UL	3
+#define STATS_DISK_U	7
 
 /* Structure for network interfaces statistics */
 struct stats_net_dev {
