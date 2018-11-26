@@ -4944,15 +4944,15 @@ echo .
 #  --enable-compress-manpg compress manual pages
 #  --enable-debuginfo      enable debug output (--debuginfo option)
 #  --disable-documentation do not install documentation (man pages...)
-#  --disable-sensors	   do not link against libsensors even if available
+#  --disable-sensors       do not link against libsensors even if available
 #  --disable-stripping     do not strip object files
-#  --enablle-copy-only     only copy files when installing sysstat
+#  --enable-copy-only      only copy files when installing sysstat
 #
 # Some influential environment variables:
-#  rcdir	 directory where startup scripts are installed
+#  rcdir         directory where startup scripts are installed
 #  sa_lib_dir    sadc, sa1 and sa2 directory
 #  sa_dir        system activity daily datafiles directory
-#  conf_dir	 sysstat configuration directory (default is /etc/sysconfig)
+#  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
 #  history       number of daily datafiles to keep (default value is 7)
 #  compressafter number of days after which datafiles are compressed
 #  man_group     group for man pages
@@ -4962,7 +4962,7 @@ echo .
 #
 # Fine tuning the installation directories:
 #  --mandir=DIR           man documentation directory [PREFIX/man]
-#  --docdir=DIR		  other documentation directory [PREFIX/share/doc]
+#  --docdir=DIR           other documentation directory [PREFIX/share/doc]
 #
 # Installation directories:
 #  --prefix=PREFIX         install architecture-independent files in PREFIX
