@@ -1358,11 +1358,12 @@ int read_file_stat_bunch
 __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
-	(int, void *, struct record_header *, struct file_header *, int, int, int);
+	(int, void *, struct record_header *, struct file_header *, int, int,
+	 int, size_t);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
 void remap_struct
-	(unsigned int [], unsigned int [], void *, unsigned int, unsigned int);
+	(unsigned int [], unsigned int [], void *, unsigned int, unsigned int, size_t);
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread

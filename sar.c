@@ -727,6 +727,7 @@ void read_sadc_stat_bunch(int curr)
  * @endian_mismatch
  *		TRUE if file's data don't match current machine's endianness.
  * @arch_64	TRUE if file's data come from a 64 bit machine.
+ * @b_size	Size of @rec_hdr_tmp buffer.
  *
  * OUT:
  * @curr	Index in array for next sample statistics.
@@ -740,7 +741,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 			   int rows, unsigned int act_id, int *reset,
 			   struct file_activity *file_actlst, char *file,
 			   struct file_magic *file_magic, void *rec_hdr_tmp,
-			   int endian_mismatch, int arch_64)
+			   int endian_mismatch, int arch_64, size_t b_size)
 {
 	int p, reset_cd;
 	unsigned long lines = 0;
@@ -774,7 +775,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		 * Start with reading current sample's record header.
 		 */
 		*eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[*curr],
-					 &file_hdr, arch_64, endian_mismatch, UEOF_STOP);
+					 &file_hdr, arch_64, endian_mismatch, UEOF_STOP, b_size);
 		rtype = record_hdr[*curr].record_type;
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
@@ -1003,7 +1004,7 @@ void read_stats_from_file(char from_file[])
 		 */
 		do {
 			if (read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[0], &file_hdr,
-					    arch_64, endian_mismatch, UEOF_STOP)) {
+					    arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp))) {
 				/* End of sa data file */
 				return;
 			}
@@ -1069,7 +1070,7 @@ void read_stats_from_file(char from_file[])
 				handle_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf, rows,
 						      act[p]->id, &reset, file_actlst,
 						      from_file, &file_magic, rec_hdr_tmp,
-						      endian_mismatch, arch_64);
+						      endian_mismatch, arch_64, sizeof(rec_hdr_tmp));
 			}
 			else {
 				unsigned int optf, msk;
@@ -1083,7 +1084,7 @@ void read_stats_from_file(char from_file[])
 						handle_curr_act_stats(ifd, fpos, &curr, &cnt, &eosaf,
 								      rows, act[p]->id, &reset, file_actlst,
 								      from_file, &file_magic, rec_hdr_tmp,
-								      endian_mismatch, arch_64);
+								      endian_mismatch, arch_64, sizeof(rec_hdr_tmp));
 						act[p]->opt_flags = optf;
 					}
 				}
@@ -1095,7 +1096,7 @@ void read_stats_from_file(char from_file[])
 			do {
 				/* Read next record header */
 				eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr],
-							&file_hdr, arch_64, endian_mismatch, UEOF_STOP);
+							&file_hdr, arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp));
 				rtype = record_hdr[curr].record_type;
 
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {

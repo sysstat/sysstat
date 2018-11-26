@@ -237,7 +237,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 
 	/* Read current record */
 	if ((rc = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr], &file_hdr,
-			    arch_64, endian_mismatch, oneof)) != 0)
+			    arch_64, endian_mismatch, oneof, sizeof(rec_hdr_tmp))) != 0)
 		/* End of sa file */
 		return rc;
 
