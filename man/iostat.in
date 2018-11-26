@@ -181,6 +181,12 @@ Indicate the amount of data written to the device expressed in a number of
 blocks (kilobytes, megabytes) per second.
 
 .RE
+.B Blk_dscd/s (kB_dscd/s, MB_dscd/s)
+.RS
+Indicate the amount of data discarded for the device expressed in a number of
+blocks (kilobytes, megabytes) per second.
+
+.RE
 .B Blk_read (kB_read, MB_read)
 .RS
 The total number of blocks (kilobytes, megabytes) read.
@@ -189,6 +195,11 @@ The total number of blocks (kilobytes, megabytes) read.
 .B Blk_wrtn (kB_wrtn, MB_wrtn)
 .RS
 The total number of blocks (kilobytes, megabytes) written.
+
+.RE
+.B Blk_dscd (kB_dscd, MB_dscd)
+.RS
+The total number of blocks (kilobytes, megabytes) discarded.
 
 .RE
 .B r/s
@@ -201,10 +212,15 @@ The number (after merges) of read requests completed per second for the device.
 The number (after merges) of write requests completed per second for the device.
 
 .RE
+.B d/s
+.RS
+The number (after merges) of discard requests completed per second for the device.
+
+.RE
 .B sec/s (kB/s, MB/s)
 .RS
-The number of sectors (kilobytes, megabytes) read from or written to the device
-per second.
+The number of sectors (kilobytes, megabytes) read from, written to or
+discarded for the device per second.
 
 .RE
 .B rsec/s (rkB/s, rMB/s)
@@ -215,6 +231,11 @@ The number of sectors (kilobytes, megabytes) read from the device per second.
 .B wsec/s (wkB/s, wMB/s)
 .RS
 The number of sectors (kilobytes, megabytes) written to the device per second.
+
+.RE
+.B dsec/s (dkB/s, dMB/s)
+.RS
+The number of sectors (kilobytes, megabytes) discarded for the device per second.
 
 .RE
 .B rqm/s
@@ -232,6 +253,11 @@ The number of read requests merged per second that were queued to the device.
 The number of write requests merged per second that were queued to the device.
 
 .RE
+.B drqm/s
+.RS
+The number of discard requests merged per second that were queued to the device.
+
+.RE
 .B %rrqm
 .RS
 The percentage of read requests merged together before being sent to the device.
@@ -240,6 +266,11 @@ The percentage of read requests merged together before being sent to the device.
 .B %wrqm
 .RS
 The percentage of write requests merged together before being sent to the device.
+
+.RE
+.B %drqm
+.RS
+The percentage of discard requests merged together before being sent to the device.
 
 .RE
 .B areq-sz
@@ -262,6 +293,12 @@ The average size (in kilobytes) of the write requests that were issued to the
 device.
 
 .RE
+.B dareq-sz
+.RS
+The average size (in kilobytes) of the discard requests that were issued to the
+device.
+
+.RE
 .B await
 .RS
 The average time (in milliseconds) for I/O requests issued to the device
@@ -279,6 +316,13 @@ the time spent servicing them.
 .B w_await
 .RS
 The average time (in milliseconds) for write requests issued to the device
+to be served. This includes the time spent by the requests in queue and
+the time spent servicing them.
+
+.RE
+.B d_await
+.RS
+The average time (in milliseconds) for discard requests issued to the device
 to be served. This includes the time spent by the requests in queue and
 the time spent servicing them.
 
