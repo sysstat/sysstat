@@ -1268,7 +1268,8 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		printf("\"tps\": %.2f, \"",
-		       S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
+		       S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
+			       ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 		if (DISPLAY_MEGABYTES(flags)) {
 			printf("MB/s");
 		}
@@ -1279,41 +1280,50 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 			printf("sec/s");
 		}
 		printf("\": %.2f, \"rqm/s\": %.2f, \"await\": %.2f, "
-		       "\"aqu-sz\": %.2f, \"areq-sz\": %.2f, ",
+		       "\"areq-sz\": %.2f, \"aqu-sz\": %.2f, ",
 		       xios->sectors /= fctr,
-		       S_VALUE(ioj->rd_merges + ioj->wr_merges, ioi->rd_merges + ioi->wr_merges, itv),
+		       S_VALUE(ioj->rd_merges + ioj->wr_merges + ioj->dc_merges,
+			       ioi->rd_merges + ioi->wr_merges + ioi->dc_merges, itv),
 		       xds->await,
-		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
-		       xds->arqsz / 2);
+		       xds->arqsz / 2,
+		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 	else {
-		printf("\"r/s\": %.2f, \"w/s\": %.2f, ",
+		printf("\"r/s\": %.2f, \"w/s\": %.2f, \"d/s\": %.2f, ",
 		       S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
-		       S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
+		       S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
+		       S_VALUE(ioj->dc_ios, ioi->dc_ios, itv));
 		if (DISPLAY_MEGABYTES(flags)) {
-			sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, ");
+			sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, \"dMB/s\": %%.2f, ");
 		}
 		else if (DISPLAY_KILOBYTES(flags)) {
-			sprintf(line, "\"rkB/s\": %%.2f, \"wkB/s\": %%.2f, ");
+			sprintf(line, "\"rkB/s\": %%.2f, \"wkB/s\": %%.2f, \"dkB/s\": %%.2f, ");
 		}
 		else {
-			sprintf(line, "\"rsec/s\": %%.2f, \"wsec/s\": %%.2f, ");
+			sprintf(line, "\"rsec/s\": %%.2f, \"wsec/s\": %%.2f, \"dsec/s\": %%.2f, ");
 		}
 		printf(line,
 		       xios->rsectors /= fctr,
-		       xios->wsectors /= fctr);
-		printf("\"rrqm/s\": %.2f, \"wrqm/s\": %.2f, \"rrqm\": %.2f, \"wrqm\": %.2f, "
-		       "\"r_await\": %.2f, \"w_await\": %.2f, "
-		       "\"aqu-sz\": %.2f, \"rareq-sz\": %.2f, \"wareq-sz\": %.2f, ",
+		       xios->wsectors /= fctr,
+		       xios->dsectors /= fctr);
+		printf("\"rrqm/s\": %.2f, \"wrqm/s\": %.2f, \"drqm/s\": %.2f, "
+		       "\"rrqm\": %.2f, \"wrqm\": %.2f, \"drqm\": %.2f, "
+		       "\"r_await\": %.2f, \"w_await\": %.2f, \"d_await\": %.2f, "
+		       "\"rareq-sz\": %.2f, \"wareq-sz\": %.2f, \"dareq-sz\": %.2f, "
+		       "\"aqu-sz\": %.2f, ",
 		       S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
 		       S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
+		       S_VALUE(ioj->dc_merges, ioi->dc_merges, itv),
 		       xios->rrqm_pc,
 		       xios->wrqm_pc,
+		       xios->drqm_pc,
 		       xios->r_await,
 		       xios->w_await,
-		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0,
+		       xios->d_await,
 		       xios->rarqsz / 2,
-		       xios->warqsz / 2);
+		       xios->warqsz / 2,
+		       xios->darqsz / 2,
+		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 	printf("\"util\": %.2f}",
 		 shi->used ? xds->util / 10.0 / (double) shi->used
@@ -1543,31 +1553,34 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
 			   struct io_stats *ioi, struct io_stats *ioj,
 			   char *devname, unsigned long long rd_sec,
-			   unsigned long long wr_sec)
+			   unsigned long long wr_sec, unsigned long long dc_sec)
 {
 	char line[256];
 
 	xprintf0(tab,
 		 "{\"disk_device\": \"%s\", \"tps\": %.2f, ",
 		 devname,
-		 S_VALUE(ioj->rd_ios + ioj->wr_ios, ioi->rd_ios + ioi->wr_ios, itv));
+		 S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
+			 ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 	if (DISPLAY_KILOBYTES(flags)) {
-		sprintf(line, "\"kB_read/s\": %%.2f, \"kB_wrtn/s\": %%.2f, "
-			"\"kB_read\": %%llu, \"kB_wrtn\": %%llu}");
+		sprintf(line, "\"kB_read/s\": %%.2f, \"kB_wrtn/s\": %%.2f, \"kB_dscd/s\": %%.2f, "
+			"\"kB_read\": %%llu, \"kB_wrtn\": %%llu, \"kB_dscd\": %%llu}");
 	}
 	else if (DISPLAY_MEGABYTES(flags)) {
-		sprintf(line, "\"MB_read/s\": %%.2f, \"MB_wrtn/s\": %%.2f, "
-			"\"MB_read\": %%llu, \"MB_wrtn\": %%llu}");
+		sprintf(line, "\"MB_read/s\": %%.2f, \"MB_wrtn/s\": %%.2f, \"MB_dscd/s\": %%.2f, "
+			"\"MB_read\": %%llu, \"MB_wrtn\": %%llu, \"MB_dscd\": %%llu}");
 	}
 	else {
-		sprintf(line, "\"Blk_read/s\": %%.2f, \"Blk_wrtn/s\": %%.2f, "
-			"\"Blk_read\": %%llu, \"Blk_wrtn\": %%llu}");
+		sprintf(line, "\"Blk_read/s\": %%.2f, \"Blk_wrtn/s\": %%.2f, \"Blk_dscd/s\": %%.2f, "
+			"\"Blk_read\": %%llu, \"Blk_wrtn\": %%llu, \"Blk_dscd\": %%llu}");
 	}
 	printf(line,
 	       S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv) / fctr,
 	       S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv) / fctr,
+	       S_VALUE(ioj->dc_sectors, ioi->dc_sectors, itv) / fctr,
 	       (unsigned long long) rd_sec / fctr,
-	       (unsigned long long) wr_sec / fctr);
+	       (unsigned long long) wr_sec / fctr,
+	       (unsigned long long) dc_sec / fctr);
 }
 
 /*
@@ -1615,7 +1628,7 @@ void write_basic_stat(unsigned long long itv, int fctr,
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		write_json_basic_stat(tab, itv, fctr, ioi, ioj, devname,
-				      rd_sec, wr_sec);
+				      rd_sec, wr_sec, dc_sec);
 	}
 	else {
 		write_plain_basic_stat(itv, fctr, ioi, ioj, devname,
@@ -1756,8 +1769,7 @@ void write_stats(int curr, struct tm *rectime)
 							ioi->dc_ticks,
 							ioi->ios_pgr,
 							ioi->tot_ticks,
-							ioi->rq_ticks
-							);
+							ioi->rq_ticks);
 					}
 #endif
 
