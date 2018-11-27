@@ -536,10 +536,10 @@ the interval of time is small.
 in my binary daily data files?
 
 
-A: sadc's option -S followed by a keyword (DISK, SNMP...)  can already
-be used to specify which optional activities are to be collected.
-Without this option, sadc collects a default set of activities (CPU
-activity, memory activity, network activity, etc.)  
+A: sadc's option -S followed by one or more keywords (DISK, SNMP...)
+can already be used to specify which optional activities are to be
+collected. Without this option, sadc collects a default set of
+activities (CPU activity, memory activity, network activity, etc.)  
 Yet it is actually possible to specify explicitly which activities
 should be collected by sadc! You have to use sadc's option -S
 followed by the report name corresponding to the activity you want
