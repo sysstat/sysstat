@@ -4,7 +4,7 @@ sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.B ] [ -D ] [ -F ] [ -L ] [ -V ] [ -S { DISK | INT | IPV6 | POWER | SNMP | XDISK | ALL | XALL [,...] } ] [
+.B ] [ -D ] [ -F ] [ -L ] [ -V ] [ -S { keyword [,...] | ALL | XALL } ] [
 .I interval
 .B [
 .I count
@@ -124,7 +124,9 @@ If the system is under heavy load, an old
 .B sadc
 might still be running when cron starts a new one. Without locking,
 this situation can result in a corrupted system activity file.
-.IP "-S { DISK | INT | IPV6 | POWER | SNMP | XDISK | ALL | XALL [,...] }"
+.IP "-S { keyword [,...] | ALL | XALL }"
+Possible keywords are DISK, INT, IPV6, POWER, SNMP, XDISK, ALL, and XALL.
+
 Specify which optional activities should be collected by
 .BR sadc .
 Some activities are optional to prevent data files from growing too large.
