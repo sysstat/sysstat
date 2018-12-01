@@ -264,11 +264,11 @@ struct stats_disk {
 	unsigned long	   dc_sect	__attribute__ ((aligned (8)));
 	unsigned int	   rd_ticks	__attribute__ ((aligned (8)));
 	unsigned int	   wr_ticks;
-	unsigned int	   dc_ticks;
 	unsigned int	   tot_ticks;
 	unsigned int	   rq_ticks;
 	unsigned int	   major;
 	unsigned int	   minor;
+	unsigned int	   dc_ticks;
 };
 
 #define STATS_DISK_SIZE	(sizeof(struct stats_disk))
