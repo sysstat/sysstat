@@ -9,7 +9,7 @@
 #include "sa.h"
 
 /* DTD version for XML output */
-#define XML_DTD_VERSION	"3.6"
+#define XML_DTD_VERSION	"3.7"
 
 /* Various constants */
 #define DO_SAVE		0

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.6 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.7 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -345,8 +345,10 @@
 	<xs:attribute name="tps" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="rd_sec" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="wr_sec" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="dc_sec" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="rkB" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="wkB" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="dkB" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="avgrq-sz" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="areq-sz" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="avgqu-sz" type="hundredth-type"></xs:attribute>
