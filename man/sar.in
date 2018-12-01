@@ -1,4 +1,4 @@
-.TH SAR 1 "NOVEMBER 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "DECEMBER 2018" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -319,6 +319,11 @@ Number of kilobytes read from the device per second.
 .B wkB/s
 .RS
 Number of kilobytes written to the device per second.
+.RE
+
+.B dkB/s
+.RS
+Number of kilobytes discarded for the device per second.
 .RE
 
 .B areq-sz
