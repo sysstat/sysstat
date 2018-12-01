@@ -533,7 +533,7 @@ struct activity disk_act = {
 	.f_print_avg	= print_disk_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "DEV;tps;rkB/s;wkB/s;areq-sz;aqu-sz;await;%util",
+	.hdr_line	= "DEV;tps;rkB/s;wkB/s;dkB/s;areq-sz;aqu-sz;await;%util",
 #endif
 	.gtypes_nr	= {STATS_DISK_ULL, STATS_DISK_UL, STATS_DISK_U},
 	.ftypes_nr	= {0, 0, 0},

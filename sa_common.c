@@ -1092,7 +1092,8 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 			 */
 			if ((sdc->nr_ios < sdp->nr_ios) &&
 			    (sdc->rd_sect < sdp->rd_sect) &&
-			    (sdc->wr_sect < sdp->wr_sect))
+			    (sdc->wr_sect < sdp->wr_sect) &&
+			    (sdc->dc_sect < sdp->dc_sect))
 				/* Same device registered again */
 				return -2;
 

@@ -776,8 +776,8 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 	char line[1024];
 	char dev_name[MAX_NAME_LEN];
 	struct stats_disk *st_disk_i;
-	unsigned int major, minor, rd_ticks, wr_ticks, tot_ticks, rq_ticks;
-	unsigned long rd_ios, wr_ios, rd_sec, wr_sec;
+	unsigned int major, minor, rd_ticks, wr_ticks, dc_ticks, tot_ticks, rq_ticks;
+	unsigned long rd_ios, wr_ios, dc_ios, rd_sec, wr_sec, dc_sec;
 	__nr_t dsk_read = 0;
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
@@ -785,13 +785,22 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		if (sscanf(line, "%u %u %s %lu %*u %lu %u %lu %*u %lu"
-			   " %u %*u %u %u",
-			   &major, &minor, dev_name,
-			   &rd_ios, &rd_sec, &rd_ticks, &wr_ios, &wr_sec, &wr_ticks,
-			   &tot_ticks, &rq_ticks) == 11) {
+		/* Discard I/O stats may be not available */
+		dc_ios = dc_sec = dc_ticks = 0;
 
-			if (!rd_ios && !wr_ios)
+		if (sscanf(line,
+			   "%u %u %s "
+			   "%lu %*u %lu %u "
+			   "%lu %*u %lu %u "
+			   "%*u %u %u "
+			   "%lu %*u %lu %u",
+			   &major, &minor, dev_name,
+			   &rd_ios, &rd_sec, &rd_ticks,
+			   &wr_ios, &wr_sec, &wr_ticks,
+			   &tot_ticks, &rq_ticks,
+			   &dc_ios, &dc_sec, &dc_ticks) >= 11) {
+
+			if (!rd_ios && !wr_ios && !dc_ios)
 				/* Unused device: Ignore it */
 				continue;
 			if (read_part || is_device(dev_name, ACCEPT_VIRTUAL_DEVICES)) {
@@ -804,11 +813,15 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 				st_disk_i = st_disk + dsk_read++;
 				st_disk_i->major     = major;
 				st_disk_i->minor     = minor;
-				st_disk_i->nr_ios    = (unsigned long long) rd_ios + (unsigned long long) wr_ios;
+				st_disk_i->nr_ios    = (unsigned long long) rd_ios +
+						       (unsigned long long) wr_ios +
+						       (unsigned long long) dc_ios;
 				st_disk_i->rd_sect   = rd_sec;
 				st_disk_i->wr_sect   = wr_sec;
+				st_disk_i->dc_sect   = dc_sec;
 				st_disk_i->rd_ticks  = rd_ticks;
 				st_disk_i->wr_ticks  = wr_ticks;
+				st_disk_i->dc_ticks  = dc_ticks;
 				st_disk_i->tot_ticks = tot_ticks;
 				st_disk_i->rq_ticks  = rq_ticks;
 			}
