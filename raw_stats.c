@@ -559,10 +559,14 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 		pval((unsigned long long) sdp->rd_sect, (unsigned long long) sdc->rd_sect);
 		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sdp->wr_sect, (unsigned long long) sdc->wr_sect);
+		printf(" %s", pfield(NULL, 0));
+		pval((unsigned long long) sdp->dc_sect, (unsigned long long) sdc->dc_sect);
 		printf(" rd_ticks");
 		pval((unsigned long long) sdp->rd_ticks, (unsigned long long) sdc->rd_ticks);
 		printf(" wr_ticks");
 		pval((unsigned long long) sdp->wr_ticks, (unsigned long long) sdc->wr_ticks);
+		printf(" dc_ticks");
+		pval((unsigned long long) sdp->dc_ticks, (unsigned long long) sdc->dc_ticks);
 		printf(" tot_ticks");
 		pval((unsigned long long) sdp->tot_ticks, (unsigned long long) sdc->tot_ticks);
 		pfield(NULL, 0); /* Skip areq-sz */

@@ -1111,6 +1111,13 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
+		       "%s\tdkB/s", NULL,
+		       cons(sv, dev_name, NULL),
+		       NOVAL,
+		       S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2,
+		       NULL);
+
+		render(isdb, pre, PT_NOFLAG,
 		       "%s\tareq-sz", NULL,
 		       cons(sv, dev_name, NULL),
 		       NOVAL,

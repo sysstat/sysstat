@@ -728,8 +728,10 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 			"tps=\"%.2f\" "
 			"rd_sec=\"%.2f\" "
 			"wr_sec=\"%.2f\" "
+			"dc_sec=\"%.2f\" "
 			"rkB=\"%.2f\" "
 			"wkB=\"%.2f\" "
+			"dkB=\"%.2f\" "
 			"avgrq-sz=\"%.2f\" "
 			"areq-sz=\"%.2f\" "
 			"avgqu-sz=\"%.2f\" "
@@ -741,8 +743,10 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 			S_VALUE(sdp->nr_ios, sdc->nr_ios, itv),
 			S_VALUE(sdp->rd_sect, sdc->rd_sect, itv), /* Unit = sectors (for backward compatibility) */
 			S_VALUE(sdp->wr_sect, sdc->wr_sect, itv),
+			S_VALUE(sdp->dc_sect, sdc->dc_sect, itv),
 			S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
 			S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
+			S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2,
 			/* See iostat for explanations */
 			xds.arqsz,	/* Unit = sectors (for backward compatibility) */
 			xds.arqsz / 2,
