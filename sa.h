@@ -1362,8 +1362,6 @@ int read_record_hdr
 	 int, size_t);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
-void remap_struct
-	(unsigned int [], unsigned int [], void *, unsigned int, unsigned int, size_t);
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
