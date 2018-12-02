@@ -1863,7 +1863,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 
 		/*
 		 * Every activity, known or unknown, should have
-		 * at least one item and sub-item.
+		 * at least one item and sub-item, and a positive size value.
 		 * Also check that the number of items and sub-items
 		 * doesn't exceed a max value. This is necessary
 		 * because we will use @nr and @nr2 to
@@ -1873,7 +1873,8 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		 * activities which have each a specific max value.
 		 */
 		if ((fal->nr < 1) || (fal->nr2 < 1) ||
-		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX)) {
+		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX) ||
+		    (fal->size <= 0)) {
 #ifdef DEBUG
 			fprintf(stderr, "%s: id=%d nr=%d nr2=%d\n",
 				__FUNCTION__, fal->id, fal->nr, fal->nr2);
