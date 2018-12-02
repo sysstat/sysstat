@@ -1278,17 +1278,20 @@ void swap_struct(unsigned int types_nr[], void *ps, int is64bit)
  *		size of the structure *read from file*.
  * @g_size	Size of the structure expected by current sysstat version.
  * @b_size	Size of the buffer pointed by @ps.
+ *
+ * RETURNS:
+ * -1 if an error has been encountered, or 0 otherwise.
  ***************************************************************************
  */
-void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
-		  void *ps, unsigned int f_size, unsigned int g_size, size_t b_size)
+int remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
+		 void *ps, unsigned int f_size, unsigned int g_size, size_t b_size)
 {
 	int d;
 	size_t n;
 
 	/* Sanity check */
 	if (MAP_SIZE(ftypes_nr) > f_size)
-		return;
+		return -1;
 
 	/* Remap [unsigned] long fields */
 	d = gtypes_nr[0] - ftypes_nr[0];
@@ -1298,7 +1301,7 @@ void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
 		if ((ftypes_nr[0] * ULL_ALIGNMENT_WIDTH >= b_size) ||
 		    (gtypes_nr[0] * ULL_ALIGNMENT_WIDTH + n > b_size) ||
 		    (ftypes_nr[0] * ULL_ALIGNMENT_WIDTH + n > b_size))
-			return;
+			return -1;
 		memmove(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH,
 			((char *) ps) + ftypes_nr[0] * ULL_ALIGNMENT_WIDTH, n);
 		if (d > 0) {
@@ -1319,7 +1322,7 @@ void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
 		     gtypes_nr[1] * UL_ALIGNMENT_WIDTH + n > b_size) ||
 		    (gtypes_nr[0] * ULL_ALIGNMENT_WIDTH +
 		     ftypes_nr[1] * UL_ALIGNMENT_WIDTH + n > b_size))
-			return;
+			return -1;
 		memmove(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
 				      + gtypes_nr[1] * UL_ALIGNMENT_WIDTH,
 			((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
@@ -1348,7 +1351,7 @@ void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
 		    (gtypes_nr[0] * ULL_ALIGNMENT_WIDTH +
 		     gtypes_nr[1] * UL_ALIGNMENT_WIDTH +
 		     ftypes_nr[2] * U_ALIGNMENT_WIDTH + n > b_size))
-			return;
+			return -1;
 		memmove(((char *) ps) + gtypes_nr[0] * ULL_ALIGNMENT_WIDTH
 				      + gtypes_nr[1] * UL_ALIGNMENT_WIDTH
 				      + gtypes_nr[2] * U_ALIGNMENT_WIDTH,
@@ -1362,6 +1365,7 @@ void remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
 			       0, d * U_ALIGNMENT_WIDTH);
 		}
 	}
+	return 0;
 }
 
 /*
@@ -1431,7 +1435,7 @@ int sa_fread(int ifd, void *buffer, size_t size, int mode, int oneof)
  *
  * RETURNS:
  * 1 if EOF has been reached,
- * 2 if an unexpected EOF has been reached,
+ * 2 if an error has been encountered (e.g. unexpected EOF),
  * 0 otherwise.
  ***************************************************************************
  */
@@ -1446,8 +1450,9 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		return rc;
 
 	/* Remap record header structure to that expected by current version */
-	remap_struct(rec_types_nr, file_hdr->rec_types_nr, buffer,
-		     file_hdr->rec_size, RECORD_HEADER_SIZE, b_size);
+	if (remap_struct(rec_types_nr, file_hdr->rec_types_nr, buffer,
+			 file_hdr->rec_size, RECORD_HEADER_SIZE, b_size) < 0)
+		return 2;
 	memcpy(record_hdr, buffer, RECORD_HEADER_SIZE);
 
 	/* Normalize endianness */
@@ -1555,7 +1560,7 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
  *		sadf stop. Default behavior is to stop on unexpected EOF.
  *
  * RETURNS:
- * 2 if an unexpected EOF has been reached,
+ * 2 if an error has been encountered (e.g. unexpected EOF),
  * 0 otherwise.
  ***************************************************************************
  */
@@ -1668,9 +1673,10 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 		/* Remap structure's fields to those known by current sysstat version */
 		for (j = 0; j < (nr_value * act[p]->nr2); j++) {
-			remap_struct(act[p]->gtypes_nr, act[p]->ftypes_nr,
-				     (char *) act[p]->buf[curr] + j * act[p]->msize,
-				     act[p]->fsize, act[p]->msize, act[p]->msize);
+			if (remap_struct(act[p]->gtypes_nr, act[p]->ftypes_nr,
+					 (char *) act[p]->buf[curr] + j * act[p]->msize,
+					 act[p]->fsize, act[p]->msize, act[p]->msize) < 0)
+				return 2;
 		}
 	}
 
@@ -1902,8 +1908,9 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 		* smaller than FILE_ACTIVITY_SIZE. Remap the fields of the file's structure
 		* then copy its contents to the expected structure.
 		*/
-		remap_struct(act_types_nr, file_hdr->act_types_nr, buffer,
-			     file_hdr->act_size, FILE_ACTIVITY_SIZE, file_hdr->act_size);
+		if (remap_struct(act_types_nr, file_hdr->act_types_nr, buffer,
+			     file_hdr->act_size, FILE_ACTIVITY_SIZE, file_hdr->act_size) < 0)
+			goto format_error;
 		memcpy(fal, buffer, FILE_ACTIVITY_SIZE);
 
 		/* Normalize endianness for file_activity structures */
