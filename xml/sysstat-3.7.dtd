@@ -120,7 +120,7 @@
 	vmeff-percent CDATA #REQUIRED
 >
 
-<!ELEMENT io (tps, io-reads, io-writes)>
+<!ELEMENT io (tps, io-reads, io-writes, io-discard)>
 <!ATTLIST io
 	per CDATA #REQUIRED
 >
@@ -137,6 +137,12 @@
 <!ATTLIST io-writes
 	wtps CDATA #REQUIRED
 	bwrtn CDATA #REQUIRED
+>
+
+<!ELEMENT io-discard EMPTY>
+<!ATTLIST io-discard
+	dtps CDATA #IMPLIED
+	bdscd CDATA #IMPLIED
 >
 
 <!ELEMENT memory (memfree?, avail?, memused?, memused-percent?, buffers?, cached?, commit?, commit-percent?, active?, inactive?, dirty?, anonpg?, slab?, kstack?, pgtbl?, vmused?, swpfree?, swpused?, swpused-percent?, swpcad?, swpcad-percent?, frmpg?, bufpg?, campg?)>

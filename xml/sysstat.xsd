@@ -223,6 +223,7 @@
 		<xs:element name="tps" type="tps-type"></xs:element>
 		<xs:element name="io-reads" type="io-reads-type"></xs:element>
 		<xs:element name="io-writes" type="io-writes-type"></xs:element>
+		<xs:element name="io-discard" type="io-discard-type"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="per" type="per-type" use="required"></xs:attribute>
 </xs:complexType>
@@ -237,6 +238,12 @@
 <xs:complexType name="io-writes-type">
 	<xs:attribute name="wtps" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="bwrtn" type="hundredth-type" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="io-discard" type="io-discard-type"></xs:element>
+<xs:complexType name="io-discard-type">
+	<xs:attribute name="dtps" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="bdscd" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="tps" type="tps-type"></xs:element>
