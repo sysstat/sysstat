@@ -334,9 +334,13 @@ __print_funct_t raw_print_io_stats(struct activity *a, char *timestr, int curr)
 	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_wio, sic->dk_drive_wio);
 	printf(" %s", pfield(NULL, 0));
+	pval(sip->dk_drive_dio, sic->dk_drive_dio);
+	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_rblk, sic->dk_drive_rblk);
 	printf(" %s", pfield(NULL, 0));
 	pval(sip->dk_drive_wblk, sic->dk_drive_wblk);
+	printf(" %s", pfield(NULL, 0));
+	pval(sip->dk_drive_dblk, sic->dk_drive_dblk);
 	printf("\n");
 }
 

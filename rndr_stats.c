@@ -712,17 +712,31 @@ __print_funct_t render_io_stats(struct activity *a, int isdb, char *pre,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
+	       "-\tdtps", NULL, NULL,
+	       NOVAL,
+	       sic->dk_drive_dio < sip->dk_drive_dio ? 0.0 :
+	       S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv),
+	       NULL);
+
+	render(isdb, pre, PT_NOFLAG,
 	       "-\tbread/s", NULL, NULL,
 	       NOVAL,
 	       sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 	       S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
 	       NULL);
 
-	render(isdb, pre, pt_newlin,
+	render(isdb, pre, PT_NOFLAG,
 	       "-\tbwrtn/s", NULL, NULL,
 	       NOVAL,
 	       sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 	       S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
+	       NULL);
+
+	render(isdb, pre, pt_newlin,
+	       "-\tbdscd/s", NULL, NULL,
+	       NOVAL,
+	       sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0 :
+	       S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv),
 	       NULL);
 }
 

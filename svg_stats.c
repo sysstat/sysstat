@@ -1537,12 +1537,23 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 	struct stats_io
 		*sic = (struct stats_io *) a->buf[curr],
 		*sip = (struct stats_io *) a->buf[!curr];
-	int group[] = {3, 2};
+	int group[] = {4, 3};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"I/O and transfer rate statistics (1)", "I/O and transfer rate statistics (2)"};
-	char *g_title[] = {"tps", "rtps", "wtps",
-			   "bread/s", "bwrtn/s"};
-	int g_fields[] = {0, 1, 2, 3, 4};
+	char *g_title[] = {"tps", "rtps", "wtps", "dtps",
+			   "bread/s", "bwrtn/s", "bdscd/s"};
+	/*
+	 * tps:0, rtps:1, wtps:2, dtps:3, bread/s:4, bwrtn/s:5, bdscd/s:6
+	 * g_fields[]:
+	 *	dk_drive=0
+	 *	dk_drive_rio:1
+	 *	dk_drive_wio:2
+	 *	dk_drive_rblk:4
+	 *	dk_drive_wblk:5
+	 *	dk_drive_dio:3
+	 *	dk_drive_dblk:6
+	 */
+	int g_fields[] = {0, 1, 2, 4, 5, 3, 6};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -1552,7 +1563,7 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
 		 */
-		out = allocate_graph_lines(5, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(7, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
@@ -1581,16 +1592,26 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 			 sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
 			 S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
 			 out + 2, outsize + 2, svg_p->restart);
+		/* dtps */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 sic->dk_drive_dio < sip->dk_drive_dio ? 0.0 :
+			 S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv),
+			 out + 3, outsize + 3, svg_p->restart);
 		/* bread/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 			 S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
-			 out + 3, outsize + 3, svg_p->restart);
+			 out + 4, outsize + 4, svg_p->restart);
 		/* bwrtn/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 			 S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
-			 out + 4, outsize + 4, svg_p->restart);
+			 out + 5, outsize + 5, svg_p->restart);
+		/* bdscd/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0 :
+			 S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv),
+			 out + 6, outsize + 6, svg_p->restart);
 	}
 
 	if (action & F_END) {

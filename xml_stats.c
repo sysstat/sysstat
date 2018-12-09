@@ -435,6 +435,12 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
 		sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 		S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv));
 
+	xprintf(tab, "<io-discard dtps=\"%.2f\" bdscd=\"%.2f\"/>",
+		sic->dk_drive_dio < sip->dk_drive_dio ? 0.0 :
+		S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv),
+		sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0 :
+		S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv));
+
 	xprintf(--tab, "</io>");
 }
 

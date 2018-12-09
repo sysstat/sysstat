@@ -435,7 +435,10 @@ __print_funct_t json_print_io_stats(struct activity *a, int curr, int tab,
 		 "\"bread\": %.2f}, "
 		 "\"io-writes\": {"
 		 "\"wtps\": %.2f, "
-		 "\"bwrtn\": %.2f}}",
+		 "\"bwrtn\": %.2f}, "
+		 "\"io-discard\": {"
+		 "\"dtps\": %.2f, "
+		 "\"bdscd\": %.2f}}",
 		 /*
 		  * If we get negative values, this is probably because
 		  * one or more devices/filesystems have been unmounted.
@@ -451,7 +454,11 @@ __print_funct_t json_print_io_stats(struct activity *a, int curr, int tab,
 		 sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
 		 S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
 		 sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
-		 S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv));
+		 S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
+		 sic->dk_drive_dio < sip->dk_drive_dio ? 0.0 :
+		 S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv),
+		 sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0 :
+		 S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv));
 }
 
 /*
