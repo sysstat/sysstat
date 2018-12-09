@@ -256,6 +256,11 @@ Total number of read requests per second issued to physical devices.
 Total number of write requests per second issued to physical devices.
 .RE
 
+.B dtps
+.RS
+Total number of discard requests per second issued to physical devices.
+.RE
+
 .B bread/s
 .RS
 Total amount of data read from the devices in blocks per second.
@@ -266,6 +271,11 @@ and therefore have a size of 512 bytes.
 .B bwrtn/s
 .RS
 Total amount of data written to devices in blocks per second.
+.RE
+
+.B bdscd/s
+.RS
+Total amount of data discarded for devices in blocks per second.
 .RE
 .RE
 .IP -C
