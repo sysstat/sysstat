@@ -307,7 +307,7 @@ struct activity io_act = {
 	.f_print_avg	= print_io_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "tps;rtps;wtps;bread/s;bwrtn/s",
+	.hdr_line	= "tps;rtps;wtps;dtps;bread/s;bwrtn/s;bdscd/s",
 #endif
 	.gtypes_nr	= {STATS_IO_ULL, STATS_IO_UL, STATS_IO_U},
 	.ftypes_nr	= {0, 0, 0},

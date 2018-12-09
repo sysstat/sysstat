@@ -722,27 +722,42 @@ __nr_t read_diskstats_io(struct stats_io *st_io)
 	char line[1024];
 	char dev_name[MAX_NAME_LEN];
 	unsigned int major, minor;
-	unsigned long rd_ios, wr_ios, rd_sec, wr_sec;
+	unsigned long rd_ios, wr_ios, dc_ios;
+	unsigned long rd_sec, wr_sec, dc_sec;
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return 0;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		if (sscanf(line, "%u %u %s %lu %*u %lu %*u %lu %*u %lu",
+		/* Discard I/O stats may be not available */
+		dc_ios = dc_sec = 0;
+
+		if (sscanf(line,
+			   "%u %u %s "
+			   "%lu %*u %lu %*u "
+			   "%lu %*u %lu %*u "
+			   "%*u %*u %*u "
+			   "%lu %*u %lu",
 			   &major, &minor, dev_name,
-			   &rd_ios, &rd_sec, &wr_ios, &wr_sec) == 7) {
+			   &rd_ios, &rd_sec,
+			   &wr_ios, &wr_sec,
+			   &dc_ios, &dc_sec) >= 7) {
 
 			if (is_device(dev_name, IGNORE_VIRTUAL_DEVICES)) {
 				/*
 				 * OK: It's a (real) device and not a partition.
 				 * Note: Structure should have been initialized first!
 				 */
-				st_io->dk_drive      += (unsigned long long) rd_ios + (unsigned long long) wr_ios;
+				st_io->dk_drive      += (unsigned long long) rd_ios +
+							(unsigned long long) wr_ios +
+							(unsigned long long) dc_ios;
 				st_io->dk_drive_rio  += rd_ios;
 				st_io->dk_drive_rblk += rd_sec;
 				st_io->dk_drive_wio  += wr_ios;
 				st_io->dk_drive_wblk += wr_sec;
+				st_io->dk_drive_dio  += dc_ios;
+				st_io->dk_drive_dblk += dc_sec;
 			}
 		}
 	}

@@ -179,10 +179,12 @@ struct stats_io {
 	unsigned long long dk_drive_wio;
 	unsigned long long dk_drive_rblk;
 	unsigned long long dk_drive_wblk;
+	unsigned long long dk_drive_dio;
+	unsigned long long dk_drive_dblk;
 };
 
 #define STATS_IO_SIZE	(sizeof(struct stats_io))
-#define STATS_IO_ULL	5
+#define STATS_IO_ULL	7
 #define STATS_IO_UL	0
 #define STATS_IO_U	0
 

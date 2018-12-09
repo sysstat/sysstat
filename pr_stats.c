@@ -454,17 +454,21 @@ __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
 	 * We display 0.0 in this case though we should rather tell
 	 * the user that the value cannot be calculated here.
 	 */
-	cprintf_f(NO_UNIT, 5, 9, 2,
+	cprintf_f(NO_UNIT, 7, 9, 2,
 		  sic->dk_drive < sip->dk_drive ? 0.0 :
 		  S_VALUE(sip->dk_drive, sic->dk_drive, itv),
 		  sic->dk_drive_rio < sip->dk_drive_rio ? 0.0 :
 		  S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv),
 		  sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
 		  S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
+		  sic->dk_drive_dio < sip->dk_drive_dio ? 0.0 :
+		  S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv),
 		  sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 		  S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv),
 		  sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
-		  S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv));
+		  S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv),
+		  sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0 :
+		  S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv));
 	printf("\n");
 }
 
