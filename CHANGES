@@ -1,5 +1,26 @@
 Changes:
 
+2018/12/14: Version 12.1.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Fix out of bound reads security issues (CVE-2018-19416 and
+	  CVE-2018-19517) [12.0.3].
+	* iostat: Add support for discard I/O statistics.
+	* iostat/sar: Remove service time (svctm) metric.
+	* sar/sadf: Add support for discard I/O statistics.
+	* sar: Add a return code to remap_struct() function.
+	* DTD and XSD documents updated.
+	* sar and iostat manual pages updated.
+	* Add non regression tests for XML output and improve those for
+	  JSON output.
+	* sadf: Fix possible infinite loop [12.0.3].
+	* Remove remap_struct() prototype from sa.h [12.0.3].
+	* [Jamin]: Add a JSON parse test.
+	* [Todd Walton]: Clarify sadc manual page and FAQ on using multiple -S keywords
+	  [12.0.3].
+	* [Steve Kay]: Use memcpy rather than strncpy, in order to avoid truncation
+	  warning [12.0.3].
+	* [Steve Kay]: Cosmetic fixes in configure file [12.0.3].
+	* [Anatoly Pugachev]: Fix comment in sar.c [12.0.3].
+
 2018/10/13: Version 12.1.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix wrong size for stats_huge structure [12.0.1].
 	* sar/sadc/sadf: Add new HugePages metrics: HugePages_Rsvd and
