@@ -1,5 +1,16 @@
 Changes:
 
+2018/12/14: Version 12.0.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Fix out of bound reads security issues (CVE-2018-19416 and
+	  CVE-2018-19517).
+	* sadf: Fix possible infinite loop.
+	* [Todd Walton]: Clarify sadc manual page and FAQ on using multiple -S keywords.
+	* Remove remap_struct() prototype from sa.h.
+	* [Steve Kay]: Use memcpy rather than strncpy, in order to avoid truncation
+	  warning.
+	* [Steve Kay]: Cosmetic fixes in configure file.
+	* [Anatoly Pugachev]: Fix comment in sar.c.
+
 2018/10/13: Version 12.0.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix timestamp format in report output.
 	* sar: Fortify remap_struct() function.

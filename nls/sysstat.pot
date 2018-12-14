@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2018-10-13 09:28+0200\n"
+"POT-Creation-Date: 2018-12-14 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr ""
 
-#: iostat.c:1832 sa_common.c:2110
+#: iostat.c:1832 sa_common.c:2136
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -91,7 +91,7 @@ msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
 #: sadc.c:692 sadc.c:755 count.c:118 ioconf.c:506 rd_stats.c:75
-#: sa_common.c:1664
+#: sa_common.c:1689
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -321,22 +321,22 @@ msgstr ""
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:876
+#: sar.c:877
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:1483
+#: sar.c:1484
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1489
+#: sar.c:1490
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1636
+#: sar.c:1637
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
@@ -486,22 +486,22 @@ msgstr ""
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1367
+#: sa_common.c:1390
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1377
+#: sa_common.c:1400
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1667
+#: sa_common.c:1692
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:1989
+#: sa_common.c:2015
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
