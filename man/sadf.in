@@ -1,4 +1,4 @@
-.TH SADF 1 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "JANUARY 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -157,6 +157,7 @@ Use the following syntax:
 .B ] > output.svg
 
 and open the resulting SVG file in your favorite web browser.
+Output can be controlled using option -O (see below).
 .IP -H
 Display only the header of the report (when applicable). If no format has
 been specified, then the header data (metadata) of the data file are displayed.
@@ -188,6 +189,12 @@ enlarge the graph drawing.
 This option may be interesting when several graphs are drawn on the same
 view, some with only very small values, and others with high ones,
 the latter making the former hardly visible.
+.RE
+
+.B customcol
+.RS
+Use a customizable color palette instead of the default one to draw
+the graphs.
 .RE
 
 .BR height= value
