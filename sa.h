@@ -224,6 +224,7 @@
 #define K_HEIGHT	"height="
 #define K_PACKED	"packed"
 #define K_SHOWTOC	"showtoc"
+#define K_CUSTOMCOL	"customcol"
 
 /* Groups of activities */
 #define G_DEFAULT	0x00
@@ -1099,6 +1100,22 @@ struct report_format {
 
 /* Maximum number of horizontal lines for the background grid */
 #define MAX_HLINES_NR	10
+
+/* Color palette constants */
+#define SVG_COLORS_IDX_MASK	0x0f
+#define SVG_COL_PALETTE_SIZE	24
+#define SVG_COL_PALETTE_NR	2
+#define SVG_COL_BCKGRD_IDX	16
+#define SVG_COL_AXIS_IDX	17
+#define SVG_COL_GRID_IDX	18
+#define SVG_COL_TITLE_IDX	19
+#define SVG_COL_INFO_IDX	20
+#define SVG_COL_DEFAULT_IDX	21
+#define SVG_COL_HEADER_IDX	22
+#define SVG_COL_ERROR_IDX	23
+
+#define SVG_DEFAULT_COL_PALETTE	0
+#define SVG_CUSTOM_COL_PALETTE	1
 
 #define MAYBE	0x80
 

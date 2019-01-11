@@ -51,6 +51,8 @@ int endian_mismatch = FALSE;
 int arch_64 = FALSE;
 /* Number of decimal places */
 int dplaces_nr = -1;
+/* Color palette number */
+int palette = SVG_DEFAULT_COL_PALETTE;
 
 unsigned int flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */
@@ -1565,6 +1567,9 @@ int main(int argc, char **argv)
 				}
 				else if (!strcmp(t, K_SHOWTOC)) {
 					flags |= S_F_SVG_SHOW_TOC;
+				}
+				else if (!strcmp(t, K_CUSTOMCOL)) {
+					palette = SVG_CUSTOM_COL_PALETTE;
 				}
 				else {
 					usage(argv[0]);

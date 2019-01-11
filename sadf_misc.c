@@ -35,6 +35,8 @@
 extern unsigned int flags;
 extern char *seps[];
 
+extern int palette;
+extern unsigned int svg_colors[][SVG_COL_PALETTE_SIZE];
 
 /*
  ***************************************************************************
@@ -954,9 +956,11 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 			height = 100;
 		}
 		printf(" width=\"%d\" height=\"%d\""
-		       " fill=\"black\" stroke=\"gray\" stroke-width=\"1\">\n",
-		       SVG_T_XSIZE * (hdr_parm->views_per_row), height);
-		printf("<text x=\"0\" y=\"30\" text-anchor=\"start\" stroke=\"brown\">");
+		       " fill=\"black\" stroke=\"#%06x\" stroke-width=\"1\">\n",
+		       SVG_T_XSIZE * (hdr_parm->views_per_row), height,
+		       svg_colors[palette][SVG_COL_DEFAULT_IDX]);
+		printf("<text x=\"0\" y=\"30\" text-anchor=\"start\" stroke=\"#%06x\">",
+		       svg_colors[palette][SVG_COL_HEADER_IDX]);
 		print_gal_header(localtime_r((const time_t *) &(file_hdr->sa_ust_time), &rectime),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
@@ -985,9 +989,10 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		if (!(action & F_BEGIN)) {
 			if (!hdr_parm->graph_nr) {
 				/* No views displayed */
-				printf("<text x= \"0\" y=\"%d\" text-anchor=\"start\" stroke=\"red\">",
+				printf("<text x= \"0\" y=\"%d\" text-anchor=\"start\" stroke=\"#%06x\">",
 				       SVG_H_YSIZE +
-				       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? hdr_parm->nr_act_dispd : 0));
+				       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? hdr_parm->nr_act_dispd : 0),
+				       svg_colors[palette][SVG_COL_ERROR_IDX]);
 				printf("No data!</text>\n");
 			}
 			/* Give actual SVG height */

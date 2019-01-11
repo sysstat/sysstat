@@ -38,12 +38,22 @@
 #endif
 
 extern unsigned int flags;
+extern int palette;
 
-unsigned int svg_colors[] = {0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,
-			     0xe85f00, 0x0000ff, 0x006020, 0x7030a0,
-			     0xffff00, 0x666635, 0xd60093, 0x00bfbf,
-			     0xcc3300, 0x50040f, 0xffffbf, 0x193d55};
-#define SVG_COLORS_IDX_MASK	0x0f
+unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =
+	{{0x00cc00, 0xff00bf, 0x00ffff, 0xff0000,	/* Default palette */
+	  0xe85f00, 0x0000ff, 0x006020, 0x7030a0,
+	  0xffff00, 0x666635, 0xd60093, 0x00bfbf,
+	  0xcc3300, 0x50040f, 0xffffbf, 0x193d55,
+	  0x000000, 0xffffff, 0x202020, 0xffff00,
+	  0xffff00, 0x808080, 0xa52a2a, 0xff0000},
+
+	 {0x915c83, 0x0000ff, 0x8a2be2, 0xde5d83,	/* Custom color palette */
+	  0xff55a3, 0x993300, 0x800020, 0x008080,
+	  0xdc143c, 0x006400, 0x483d8b, 0x2f4f4f,
+	  0xcc3300, 0x50040f, 0xffffbf, 0x193d55,
+	  0xf5f5dc, 0x000000, 0x536872, 0xff6347,
+	  0xff6347, 0x808080, 0xa52a2a, 0xff0000}};
 
 /*
  ***************************************************************************
@@ -592,8 +602,10 @@ void display_hgrid(double ypos, double yfactor, double lmax, int dp)
 		/* Display horizontal lines (except on X axis) */
 		if (j > 0) {
 			printf("<polyline points=\"0,%.2f %d,%.2f\" style=\"vector-effect: non-scaling-stroke; "
-			       "stroke: #202020\" transform=\"scale(1,%f)\"/>\n",
-			       ypos * j, SVG_G_XSIZE, ypos * j, yfactor);
+			       "stroke: #%06x\" transform=\"scale(1,%f)\"/>\n",
+			       ypos * j, SVG_G_XSIZE, ypos * j,
+			       svg_colors[palette][SVG_COL_GRID_IDX],
+			       yfactor);
 		}
 
 		/*
@@ -602,9 +614,11 @@ void display_hgrid(double ypos, double yfactor, double lmax, int dp)
 		 * to make sure they are properly aligned.
 		 */
 		sprintf(stmp, "%.2f", ypos * j);
-		printf("<text x=\"0\" y=\"%ld\" style=\"fill: white; stroke: none; font-size: 12px; "
+		printf("<text x=\"0\" y=\"%ld\" style=\"fill: #%06x; stroke: none; font-size: 12px; "
 		       "text-anchor: end\">%.*f.</text>\n",
-		       (long) (atof(stmp) * yfactor), dp, ypos * j);
+		       (long) (atof(stmp) * yfactor),
+		       svg_colors[palette][SVG_COL_AXIS_IDX],
+		       dp, ypos * j);
 		j++;
 	}
 	while ((ypos * j <= lmax) && (j < MAX_HLINES_NR));
@@ -642,29 +656,36 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 		sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
 		set_record_timestamp_string(flags, &stamp, NULL, cur_time, TIMESTAMP_LEN, &rectime);
 		printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
-		       "stroke: #202020\" transform=\"scale(%f,1)\"/>\n",
-		       xpos * j, xpos * j, -SVG_G_YSIZE, xfactor);
+		       "stroke: #%06x\" transform=\"scale(%f,1)\"/>\n",
+		       xpos * j, xpos * j, -SVG_G_YSIZE,
+		       svg_colors[palette][SVG_COL_GRID_IDX],
+		       xfactor);
 		/*
 		 * Display graduations.
 		 * NB: We may have tm_min != 0 if we have more than 24H worth of data in one datafile.
 		 * In this case, we should rather display the exact time instead of only the hour.
 		 */
 		if (DISPLAY_ONE_DAY(flags) && (rectime.tm_min == 0)) {
-			printf("<text x=\"%ld\" y=\"15\" style=\"fill: white; stroke: none; font-size: 14px; "
+			printf("<text x=\"%ld\" y=\"15\" style=\"fill: #%06x; stroke: none; font-size: 14px; "
 			       "text-anchor: start\">%2d:00</text>\n",
-			       (long) (xpos * j * xfactor) - 15, rectime.tm_hour);
+			       (long) (xpos * j * xfactor) - 15,
+			       svg_colors[palette][SVG_COL_AXIS_IDX],
+			       rectime.tm_hour);
 		}
 		else {
-			printf("<text x=\"%ld\" y=\"10\" style=\"fill: white; stroke: none; font-size: 12px; "
+			printf("<text x=\"%ld\" y=\"10\" style=\"fill: #%06x; stroke: none; font-size: 12px; "
 			       "text-anchor: start\" transform=\"rotate(45,%ld,0)\">%s</text>\n",
-			       (long) (xpos * j * xfactor), (long) (xpos * j * xfactor), cur_time);
+			       (long) (xpos * j * xfactor),
+			       svg_colors[palette][SVG_COL_AXIS_IDX],
+			       (long) (xpos * j * xfactor), cur_time);
 		}
 		stamp.ust_time += xpos;
 	}
 
 	if (!PRINT_LOCAL_TIME(flags)) {
-		printf("<text x=\"-10\" y=\"30\" style=\"fill: yellow; stroke: none; font-size: 12px; "
-		       "text-anchor: end\">UTC</text>\n");
+		printf("<text x=\"-10\" y=\"30\" style=\"fill: #%06x; stroke: none; font-size: 12px; "
+		       "text-anchor: end\">UTC</text>\n",
+		       svg_colors[palette][SVG_COL_INFO_IDX]);
 	}
 }
 
@@ -873,19 +894,23 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		}
 
 		/* Graph background */
-		printf("<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\"/>\n",
-		       xv, yv, SVG_V_YSIZE, SVG_V_XSIZE);
+		printf("<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" fill=\"#%06x\"/>\n",
+		       xv, yv, SVG_V_YSIZE, SVG_V_XSIZE,
+		       svg_colors[palette][SVG_COL_BCKGRD_IDX]);
 
 		/* Graph title */
-		printf("<text x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none\">%s",
-		       xv, 20 + yv, title[i]);
+		printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none\">%s",
+		       xv, 20 + yv,
+		       svg_colors[palette][SVG_COL_TITLE_IDX],
+		       title[i]);
 		if (item_name) {
 			printf(" [%s]", item_name);
 		}
 		printf("\n");
-		printf("<tspan x=\"%d\" y=\"%d\" style=\"fill: yellow; stroke: none; font-size: 12px\">"
+		printf("<tspan x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
 		       "(Min, Max values)</tspan>\n</text>\n",
-		       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + 25);
+		       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + 25,
+		       svg_colors[palette][SVG_COL_INFO_IDX]);
 
 		/*
 		 * At least two samples are needed.
@@ -894,17 +919,20 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		if ((record_hdr->ust_time == svg_p->ust_time_first) ||
 		    (*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
 			/* No data found */
-			printf("<text x=\"%d\" y=\"%d\" style=\"fill: red; stroke: none\">No data</text>\n",
-			       xv, yv + SVG_M_YSIZE);
+			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none\">No data</text>\n",
+			       xv, yv + SVG_M_YSIZE,
+			       svg_colors[palette][SVG_COL_ERROR_IDX]);
 			skip_current_view(out, &pos, group[i]);
 			continue;
 		}
 
 		/* X and Y axis */
-		printf("<polyline points=\"%d,%d %d,%d %d,%d\" stroke=\"white\" stroke-width=\"2\"/>\n",
+		printf("<polyline points=\"%d,%d %d,%d %d,%d\" style=\"fill: #%06x; stroke: #%06x; stroke-width: 2\"/>\n",
 		       xv + SVG_M_XSIZE, yv + SVG_M_YSIZE,
 		       xv + SVG_M_XSIZE, yv + SVG_M_YSIZE + SVG_G_YSIZE,
-		       xv + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + SVG_G_YSIZE);
+		       xv + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + SVG_G_YSIZE,
+		       svg_colors[palette][SVG_COL_BCKGRD_IDX],
+		       svg_colors[palette][SVG_COL_AXIS_IDX]);
 
 		/* Autoscaling graphs if needed */
 		gr_autoscaling(asfactor, 16, group[i], g_type[i], pos, gmax, spmax);
@@ -917,7 +945,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
 			       "%s %s(%.*f, %.*f)</text>\n",
 			       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + j * 15,
-			       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
+			       svg_colors[palette][(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
 			       asfactor[j] == 1 ? "" : val,
 			       !dp * 2, *(spmin + pos + j) * asfactor[j],
 			       !dp * 2, *(spmax + pos + j) * asfactor[j]);
@@ -926,18 +954,20 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		if (DISPLAY_INFO(flags)) {
 			/* Display additional info (hostname, date) */
 			printf("<text x=\"%d\" y=\"%d\" "
-			       "style=\"fill: yellow; text-anchor: end; stroke: none; font-size: 14px\">"
+			       "style=\"fill: #%06x; text-anchor: end; stroke: none; font-size: 14px\">"
 			       "%s\n",
 			       xv + SVG_V_XSIZE - 5, yv + SVG_M_YSIZE + SVG_G_YSIZE,
+			       svg_colors[palette][SVG_COL_INFO_IDX],
 			       svg_p->file_hdr->sa_nodename);
 
 			/* Get report date */
 			set_report_date(localtime_r((const time_t *) &(svg_p->file_hdr->sa_ust_time), &rectime),
 					cur_date, sizeof(cur_date));
 			printf("<tspan x=\"%d\" y=\"%d\" "
-			       "style=\"fill: yellow; text-anchor: end; stroke: none; font-size: 14px\">"
+			       "style=\"fill: #%06x; text-anchor: end; stroke: none; font-size: 14px\">"
 			       "%s</tspan>\n</text>\n",
 			       xv + SVG_V_XSIZE - 5, yv + SVG_M_YSIZE + SVG_G_YSIZE + 14,
+			       svg_colors[palette][SVG_COL_INFO_IDX],
 			       cur_date);
 		}
 
@@ -998,14 +1028,14 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 				       "stroke: #%06x; stroke-width: 1; fill-opacity: 0\" "
 				       "transform=\"scale(%f,%f)\"/>\n",
 				       out_p,
-				       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK],
+				       svg_colors[palette][(pos + j) & SVG_COLORS_IDX_MASK],
 				       xfactor,
 				       yfactor * asfactor[j]);
 			}
 			else if (*out_p) {	/* Ignore flat bars */
 				/* Bar graphs */
 				printf("<g style=\"fill: #%06x; stroke: none\" transform=\"scale(%f,%f)\">\n",
-				       svg_colors[(pos + j) & SVG_COLORS_IDX_MASK], xfactor, yfactor);
+				       svg_colors[palette][(pos + j) & SVG_COLORS_IDX_MASK], xfactor, yfactor);
 				printf("%s\n", out_p);
 				printf("</g>\n");
 			}
