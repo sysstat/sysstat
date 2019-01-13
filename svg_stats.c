@@ -53,7 +53,14 @@ unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =
 	  0xdc143c, 0x006400, 0x483d8b, 0x2f4f4f,
 	  0xcc3300, 0x50040f, 0xffffbf, 0x193d55,
 	  0xf5f5dc, 0x000000, 0x536872, 0xff6347,
-	  0xff6347, 0x808080, 0xa52a2a, 0xff0000}};
+	  0xff6347, 0x808080, 0xa52a2a, 0xff0000},
+
+	 {0x696969, 0xbebebe, 0x000000, 0xa9a9a9,	/* Black & white palette */
+	  0x708090, 0xc0c0c0, 0x808080, 0xd3d3d3,
+	  0x909090, 0x696969, 0xbebebe, 0x000000,
+	  0x000000, 0xa9a9a9, 0xc0c0c0, 0x808080,
+	  0xffffff, 0x000000, 0xbebebe, 0x000000,
+	  0x000000, 0x000000, 0x000000, 0x000000}};
 
 /*
  ***************************************************************************
@@ -847,7 +854,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			 unsigned int id, unsigned int xid)
 {
 	char *out_p;
-	int i, j, dp, pos = 0, views_nr = 0, displayed = FALSE;
+	int i, j, dp, pos = 0, views_nr = 0, displayed = FALSE, palpos;
 	int v_gridnr, xv, yv;
 	unsigned int asfactor[16];
 	long int xpos;
@@ -857,6 +864,9 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 
 	/* For each view which is part of current activity */
 	for (i = 0; i < g_nr; i++) {
+
+		/* Used as index in color palette */
+		palpos = (palette == SVG_BW_COL_PALETTE ? 0 : pos);
 
 		/* Get global min and max value for current view */
 		get_global_extrema(pos, group[i], spmin, spmax, &gmin, &gmax);
@@ -945,7 +955,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
 			       "%s %s(%.*f, %.*f)</text>\n",
 			       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + j * 15,
-			       svg_colors[palette][(pos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
+			       svg_colors[palette][(palpos + j) & SVG_COLORS_IDX_MASK], g_title[pos + j] + dp,
 			       asfactor[j] == 1 ? "" : val,
 			       !dp * 2, *(spmin + pos + j) * asfactor[j],
 			       !dp * 2, *(spmax + pos + j) * asfactor[j]);
@@ -1028,14 +1038,14 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 				       "stroke: #%06x; stroke-width: 1; fill-opacity: 0\" "
 				       "transform=\"scale(%f,%f)\"/>\n",
 				       out_p,
-				       svg_colors[palette][(pos + j) & SVG_COLORS_IDX_MASK],
+				       svg_colors[palette][(palpos + j) & SVG_COLORS_IDX_MASK],
 				       xfactor,
 				       yfactor * asfactor[j]);
 			}
 			else if (*out_p) {	/* Ignore flat bars */
 				/* Bar graphs */
 				printf("<g style=\"fill: #%06x; stroke: none\" transform=\"scale(%f,%f)\">\n",
-				       svg_colors[palette][(pos + j) & SVG_COLORS_IDX_MASK], xfactor, yfactor);
+				       svg_colors[palette][(palpos + j) & SVG_COLORS_IDX_MASK], xfactor, yfactor);
 				printf("%s\n", out_p);
 				printf("</g>\n");
 			}

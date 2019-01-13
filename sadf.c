@@ -1571,6 +1571,9 @@ int main(int argc, char **argv)
 				else if (!strcmp(t, K_CUSTOMCOL)) {
 					palette = SVG_CUSTOM_COL_PALETTE;
 				}
+				else if (!strcmp(t, K_BWCOL)) {
+					palette = SVG_BW_COL_PALETTE;
+				}
 				else {
 					usage(argv[0]);
 				}
