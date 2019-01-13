@@ -2243,7 +2243,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 				 out + pos + 2, outsize + pos + 2, restart);
 			/* dkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
+				 S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2,
 				 out + pos + 3, outsize + pos + 3, restart);
 			/* areq-sz */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
