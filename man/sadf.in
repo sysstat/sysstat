@@ -191,6 +191,11 @@ view, some with only very small values, and others with high ones,
 the latter making the former hardly visible.
 .RE
 
+.B bwcol
+.RS
+Use a black and white palette to draw the graphs.
+.RE
+
 .B customcol
 .RS
 Use a customizable color palette instead of the default one to draw
