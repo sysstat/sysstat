@@ -227,6 +227,9 @@
 #define K_CUSTOMCOL	"customcol"
 #define K_BWCOL		"bwcol"
 
+/* Environment variables */
+#define ENV_COLORS_PALETTE	"S_COLORS_PALETTE"
+
 /* Groups of activities */
 #define G_DEFAULT	0x00
 #define G_INT		0x01
@@ -1345,6 +1348,8 @@ void get_global_soft_statistics
 	(struct activity *, int, int, unsigned int, unsigned char []);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
+void init_custom_color_palette
+	(void);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices

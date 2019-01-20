@@ -1151,3 +1151,68 @@ __nr_t count_new_disk(struct activity *a, int curr)
 
 	return nr;
 }
+
+/*
+ ***************************************************************************
+ * Init custom color palette used to draw graphs (sadf -g).
+ ***************************************************************************
+ */
+void init_custom_color_palette()
+{
+	char *e, *p;
+	int len;
+	unsigned int val;
+
+	/* Read S_COLORS_PALETTE environment variable */
+	if ((e = getenv(ENV_COLORS_PALETTE)) == NULL)
+		/* Environment variable not set */
+		return;
+
+	for (p = strtok(e, ":"); p; p =strtok(NULL, ":")) {
+
+		len = strlen(p);
+		if ((len > 8) || (len < 3) || (*(p + 1) != '=') ||
+		    (strspn(p + 2, "0123456789ABCDEFabcdef") != (len - 2)))
+			/* Ignore malformed codes */
+			continue;
+
+		sscanf(p + 2, "%x", &val);
+
+		if ((*p >= '0') && (*p <= '9')) {
+			svg_colors[SVG_CUSTOM_COL_PALETTE][*p & 0xf] = val;
+			continue;
+		}
+		else if (((*p >= 'A') && (*p <= 'F')) ||
+			 ((*p >= 'a') && (*p <= 'f'))) {
+			svg_colors[SVG_CUSTOM_COL_PALETTE][9 + (*p & 0xf)] = val;
+			continue;
+		}
+
+		switch (*p) {
+			case 'G':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_GRID_IDX] = val;
+				break;
+			case 'H':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_HEADER_IDX] = val;
+				break;
+			case 'I':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_INFO_IDX] = val;
+				break;
+			case 'K':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_BCKGRD_IDX] = val;
+				break;
+			case 'L':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_DEFAULT_IDX] = val;
+				break;
+			case 'T':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_TITLE_IDX] = val;
+				break;
+			case 'W':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_ERROR_IDX] = val;
+				break;
+			case 'X':
+				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_AXIS_IDX] = val;
+				break;
+		}
+	}
+}

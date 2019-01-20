@@ -1295,6 +1295,9 @@ void logic3_display_loop(int ifd, struct file_activity *file_actlst,
 	/* Use a decimal point to make SVG code locale independent */
 	setlocale(LC_NUMERIC, "C");
 
+	/* Init custom colors palette */
+	init_custom_color_palette();
+
 	/*
 	 * Calculate the number of rows and the max number of views per row to display.
 	 * Result may be 0. In this case, "No data" will be displayed instead of the graphs.
