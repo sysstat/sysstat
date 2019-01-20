@@ -199,7 +199,9 @@ Use a black and white palette to draw the graphs.
 .B customcol
 .RS
 Use a customizable color palette instead of the default one to draw
-the graphs.
+the graphs. See environment variable
+.B S_COLORS_PALETTE
+below to know how to customize that palette.
 .RE
 
 .BR height= value
@@ -305,6 +307,60 @@ source package. They are also available at
 The
 .B sadf
 command takes into account the following environment variable:
+
+.IP S_COLORS_PALETTE
+Specify the colors used by
+.B sadf -g
+to render the SVG output. This environment variable is taken into account
+only when the custom color palette has been selected with the option
+.IR customcol
+(see option -O). Its value is a colon-separated list of capabilities associated
+with six-digit, three-byte
+hexadecimal numbers (hex triplets) representing colors that defaults to
+
+.BR 0=000000:1=1a1aff:2=1affb2:3=b21aff:4=1ab2ff:5=ff1a1a:6=ffb31a:7=b2ff1a:
+.br
+.BR 8=efefef:9=000000:A=1a1aff:B=1affb2:C=b21aff:D=1ab2ff:E=ff1a1a:F=ffb31a:
+.br
+.BR G=bebebe:H=000000:I=000000:K=ffffff:L=000000:T=000000:W=000000:X=000000
+
+Capabilities consisting of an hexadecimal digit (0 through F) are used to specify
+the first sixteen colors in the palette (these colors are used to draw the graphs), e.g., 3=ffffff indicates that the third color in the palette is white (0xffffff).
+Other capabilities are:
+
+.RS
+.TP
+.B G=
+Specify the color used to draw the grid lines.
+
+.TP
+.B H=
+Specify the color used to display the report header.
+
+.TP
+.B I=
+Specify the color used to display additional information (e.g., date, hostname...)
+
+.TP
+.B K=
+Specify the color used for the graphs background.
+
+.TP
+.B L=
+Specify the default color (which is for example used to display the table of contents).
+
+.TP
+.B T=
+Specify the color used to display the graphs title.
+
+.TP
+.B W=
+Specify the color used to display warning and error messages.
+
+.TP
+.B X=
+Specify the color used to draw the axes and display the graduations.
+.RE
 
 .IP S_TIME_DEF_TIME
 If this variable exists and its value is
