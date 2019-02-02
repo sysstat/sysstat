@@ -92,7 +92,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
+			  "[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
 			  "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"));
 	exit(1);
 }
@@ -1109,6 +1109,13 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 
 		/* Flush data */
 		fflush(stdout);
+		if (FDATASYNC(flags)) {
+			/* If indicated, sync the data to media */
+			if (fdatasync(ofd) < 0) {
+				perror("fdatasync");
+				exit(4);
+			}
+		}
 
 		if (count > 0) {
 			count--;
@@ -1204,6 +1211,10 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[opt], "-Z")) {
 			/* Set by sar command */
 			optz = 1;
+		}
+
+		else if (!strcmp(argv[opt], "-f")) {
+			flags |= S_F_FDATASYNC;
 		}
 
 		else if (!strcmp(argv[opt], "-C")) {

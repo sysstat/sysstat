@@ -4,7 +4,7 @@ sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.B ] [ -D ] [ -F ] [ -L ] [ -V ] [ -S { keyword [,...] | ALL | XALL } ] [
+.B ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -S { keyword [,...] | ALL | XALL } ] [
 .I interval
 .B [
 .I count
@@ -106,6 +106,12 @@ then it will be truncated. This may be useful for daily data files
 created by an older version of
 .B sadc
 and whose format is no longer compatible with current one.
+.IP -f
+fdatasync() will be used to ensure data is written to disk. This differs
+from the normal operation in that a sudden system reset is less likely to
+result in the saDD datafiles being corrupted. However, this is at the
+expense of performance within the sadc process as forward progress will be
+blocked while data is written to underlying disk instead of just to cache.
 .IP -L
 .B sadc
 will try to get an exclusive lock on the

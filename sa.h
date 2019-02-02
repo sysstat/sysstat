@@ -110,6 +110,7 @@
 #define S_F_HUMAN_READ		0x01000000
 #define S_F_ZERO_OMIT		0x02000000
 #define S_F_SVG_SHOW_TOC	0x04000000
+#define S_F_FDATASYNC		0x08000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -139,6 +140,7 @@
 #define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED) == S_F_SVG_PACKED)
 #define DISPLAY_HUMAN_READ(m)		(((m) & S_F_HUMAN_READ) == S_F_HUMAN_READ)
 #define DISPLAY_TOC(m)			(((m) & S_F_SVG_SHOW_TOC) == S_F_SVG_SHOW_TOC)
+#define FDATASYNC(m)			(((m) & S_F_FDATASYNC)    == S_F_FDATASYNC)
 
 #define AO_F_NULL		0x00000000
 
