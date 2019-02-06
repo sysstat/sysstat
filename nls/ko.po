@@ -7,10 +7,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.6.0\n"
+"Project-Id-Version: sysstat 12.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2017-08-14 08:32+0200\n"
-"PO-Revision-Date: 2017-08-21 01:54+0900\n"
+"POT-Creation-Date: 2018-12-14 15:17+0100\n"
+"PO-Revision-Date: 2019-02-07 15:31+0900\n"
 "Last-Translator: JoungKyun Kim <hostmaster@oops.org>\n"
 "Language-Team: AnNyung LInux <hostmaster@oops.org>\n"
 "Language: ko\n"
@@ -18,61 +18,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: iostat.c:86 cifsiostat.c:70 mpstat.c:126 sar.c:96 tapestat.c:95
+#: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
+msgid "Summary:"
+msgstr "요약:"
+
+#: iostat.c:89 cifsiostat.c:73 tapestat.c:101 mpstat.c:132 sar.c:102
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "사용법: %s [ 옵션 ] [ <간격> [ <회수> ] ]\n"
 
-#: iostat.c:89
+#: iostat.c:92
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
 "[ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "옵션:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
 "[ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
-"[ [ -T ] -g <그룹이름> ] [ -p [ <장치> [,...] | ALL ] ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <그룹이름> ] [ -p [ <장치> [,...] | ALL ] ]\n"
 "[ <장치> [...] | ALL ] [ --debuginfo ]\n"
 
-#: iostat.c:95
+#: iostat.c:99
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
 "[ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "옵션:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
 "[ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]\n"
-"[ [ -T ] -g <그룹이름> ] [ -p [ <장치> [,...] | ALL ] ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <그룹이름> ] [ -p [ <장치> [,...] | ALL ] ]\n"
 "[ <장치> [...] | ALL ]\n"
 
-#: iostat.c:326
+#: iostat.c:331
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "디스크 데이터를 찾을 수 없습니다.\n"
 
-#: iostat.c:1812 sa_common.c:1590
+#: iostat.c:2017 sa_common.c:2168
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "영구 장치 이름 형식이 잘못 되었습니다.\n"
 
-#: sadc.c:89
+#: sadc.c:91
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "사용법: %s [ 옵션 ] [ <간격> [ <회수> ] ] [ <출력파일> ]\n"
 
-#: sadc.c:92
+#: sadc.c:94
 #, c-format
 msgid ""
 "Options are:\n"
@@ -83,78 +91,97 @@ msgstr ""
 "[ -C <코멘트> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:267
+#: sadc.c:265
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "시스템 동작 파일을 기록할 수 없습니다: %s\n"
 
-#: sadc.c:563
-#, c-format
-msgid "Cannot write system activity file header: %s\n"
-msgstr "시스템 동작 파일 헤더를 기록할 수 없습니다: %s\n"
-
-#: sadc.c:763 sadc.c:772 sadc.c:839 ioconf.c:510 rd_stats.c:69
-#: sa_common.c:1204 count.c:118
+#: sadc.c:704 sadc.c:767 count.c:118 ioconf.c:506 rd_stats.c:75
+#: sa_common.c:1720
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "%s 파일을 열수 없습니다: %s\n"
 
-#: sadc.c:1019
+#: sadc.c:986
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "%s 파일에 데이터를 추가할 수 없습니다.\n"
 
-#: common.c:77
+#: count.c:169
 #, c-format
-msgid "sysstat version %s\n"
-msgstr "sysstat 버전 %s\n"
-
-#: cifsiostat.c:74
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
-msgstr ""
-"옵션:\n"
-"[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgid "Cannot handle so many processors!\n"
+msgstr "너무 많은 프로세서는 처리할 수 없습니다!\n"
 
 #: cifsiostat.c:77
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --"
+"debuginfo ]\n"
 msgstr ""
 "옵션:\n"
-"[ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --"
+"debuginfo ]\n"
 
-#: mpstat.c:129
+#: cifsiostat.c:80
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <node_list> | ALL } ] [ -o JSON ] [ -P { <cpu_list> | ON | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 "옵션:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ] [ -I { SUM | CPU | SCPU | ALL } ]\n"
-"[ -N { <노드목록> | ALL } ] [ -o JSON ] [ -P { <CPU목록> | ON | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: mpstat.c:1672 sar.c:358 pidstat.c:2406
+#: tapestat.c:103
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+"옵션:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+
+#: tapestat.c:269
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr "통계가 있는 테이프 장치가 없습니다.\n"
+
+#: common.c:78
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat 버전 %s\n"
+
+#: mpstat.c:135
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+msgstr ""
+"옵션:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <노드목록> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <CPU목록> | ALL } ]\n"
+
+#: mpstat.c:1632 sar.c:370 pidstat.c:2406
 msgid "Average:"
 msgstr "평균값:       "
 
-#: sadf.c:87
+#: sadf.c:91
 #, c-format
 msgid ""
 "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "사용법: %s [ 옵션 ] [ <간격> [ <회수> ] ] [ <데이터파일> | -[0-9]+ ]\n"
 
-#: sadf.c:90
+#: sadf.c:94
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] "
 "[ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
@@ -162,26 +189,21 @@ msgstr ""
 "[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] "
 "[ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar옵션> ]\n"
 
-#: pr_stats.c:2538 pr_stats.c:2549 pr_stats.c:2656 pr_stats.c:2667
-msgid "Summary:"
-msgstr "요약:"
-
-#: pr_stats.c:2591
-msgid "Other devices not listed here"
-msgstr "여기에 언급되지 않은 다른 장치"
-
-#: sar.c:111
+#: sar.c:117
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
 "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
@@ -189,62 +211,64 @@ msgstr ""
 "옵션:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ] [ --human ] [ --sadc ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
 "[ -I { <int목록> | SUM | ALL } ] [ -P { <cpu목록> | ALL } ]\n"
 "[ -m { <키워드> [,...] | ALL } ] [ -n { <키워드> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <파일이름> ] | -o [ <파일이름> ] | -[0-9]+ ]\n"
 "[ -i <간격> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 
-#: sar.c:134
+#: sar.c:142
 #, c-format
-msgid "Main options and reports:\n"
-msgstr "주요 옵션과 그 결과:\n"
+msgid "Main options and reports (report name between square brackets):\n"
+msgstr "주요 옵션 및 보고서 (대괄호 사이의 보고서 이름)\n"
 
-#: sar.c:135
+#: sar.c:143
 #, c-format
-msgid "\t-B\tPaging statistics\n"
-msgstr "\t-B\t페이징 통계\n"
+msgid "\t-B\tPaging statistics [A_PAGE]\n"
+msgstr "\t-B\t페이징 통계 [A_PAGE]\n"
 
-#: sar.c:136
+#: sar.c:144
 #, c-format
-msgid "\t-b\tI/O and transfer rate statistics\n"
-msgstr "\t-b\tI/O와 전송률 통계\n"
+msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
+msgstr "\t-b\tI/O와 전송률 통계 [A_IO]\n"
 
-#: sar.c:137
+#: sar.c:145
 #, c-format
-msgid "\t-d\tBlock devices statistics\n"
-msgstr "\t-d\t블럭 장치 통계\n"
+msgid "\t-d\tBlock devices statistics [A_DISK]\n"
+msgstr "\t-d\t블럭 장치 통계 [A_DISK]\n"
 
-#: sar.c:138
+#: sar.c:146
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ 마운트 ]\n"
 
-#: sar.c:139
+#: sar.c:147
 #, c-format
-msgid "\t\tFilesystems statistics\n"
-msgstr "\t\t파일시스템 통계\n"
+msgid "\t\tFilesystems statistics [A_FS]\n"
+msgstr "\t\t파일시스템 통계 [A_FS]\n"
 
-#: sar.c:140
+#: sar.c:148
 #, c-format
-msgid "\t-H\tHugepages utilization statistics\n"
-msgstr "\t-H\tHugepage 사용량 통계\n"
+msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
+msgstr "\t-H\tHugepage 사용량 통계 [A_HUGE]\n"
 
-#: sar.c:141
+#: sar.c:149
 #, c-format
 msgid ""
 "\t-I { <int_list> | SUM | ALL }\n"
-"\t\tInterrupts statistics\n"
+"\t\tInterrupts statistics [A_IRQ]\n"
 msgstr ""
 "\t-I { <int목록> | SUM | ALL }\n"
-"\t\t인터럽트 통계\n"
+"\t\t인터럽트 통계 [A_IRQ]\n"
 
-#: sar.c:143
+#: sar.c:151
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
-"\t\tPower management statistics\n"
+"\t\tPower management statistics [A_PWR_...]\n"
 "\t\tKeywords are:\n"
 "\t\tCPU\tCPU instantaneous clock frequency\n"
 "\t\tFAN\tFans speed\n"
@@ -254,20 +278,20 @@ msgid ""
 "\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
 "\t-m { <키워드> [,...] | ALL }\n"
-"\t\t전원 관리 통계\n"
+"\t\t전원 관리 통계 [A_PWR_...]\n"
 "\t\t키워드:\n"
-"\t\tCPU\tCPU 주파수\n"
+"\t\tCPU\tCPU 순간 클럭 주파수\n"
 "\t\tFAN\t팬 회전 수\n"
-"\t\tFREQ\tCPU 평균 주파수\n"
+"\t\tFREQ\tCPU 평균 클럭 주파수\n"
 "\t\tIN\t인입 전압\n"
 "\t\tTEMP\t장치 온도\n"
 "\t\tUSB\t시스템에 인식된 USB 장치\n"
 
-#: sar.c:152
-#, fuzzy, c-format
+#: sar.c:160
+#, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
-"\t\tNetwork statistics\n"
+"\t\tNetwork statistics [A_NET_...]\n"
 "\t\tKeywords are:\n"
 "\t\tDEV\tNetwork interfaces\n"
 "\t\tEDEV\tNetwork interfaces (errors)\n"
@@ -291,7 +315,7 @@ msgid ""
 "\t\tSOFT\tSoftware-based network processing\n"
 msgstr ""
 "\t-n { <키워드> [,...] | ALL }\n"
-"\t\t네트워크 통계\n"
+"\t\t네트워크 통계 [A_NET_...]\n"
 "\t\t키워드:\n"
 "\t\tDEV\t네트워크 장치\n"
 "\t\tEDEV\t네트워크 장치 (오류)\n"
@@ -314,105 +338,133 @@ msgstr ""
 "\t\tFC\t파이버 채널 HBA\n"
 "\t\tSOFT\t소프트웨어 기반 네트워킹\n"
 
-#: sar.c:175
-#, c-format
-msgid "\t-q\tQueue length and load average statistics\n"
-msgstr "\t-q\t큐 길이와 load average 통계\n"
-
-#: sar.c:176
-#, c-format
-msgid ""
-"\t-r [ ALL ]\n"
-"\t\tMemory utilization statistics\n"
-msgstr ""
-"\t-r [ ALL ]\n"
-"\t-r\t메모리 사용 통계\n"
-
-#: sar.c:178
-#, c-format
-msgid "\t-S\tSwap space utilization statistics\n"
-msgstr "\t-S\t스왑 공간 사용 통계\n"
-
-#: sar.c:179
-#, c-format
-msgid ""
-"\t-u [ ALL ]\n"
-"\t\tCPU utilization statistics\n"
-msgstr ""
-"\t-u [ ALL ]\n"
-"\t\tCPU 사용 통계\n"
-
-#: sar.c:181
-#, c-format
-msgid "\t-v\tKernel tables statistics\n"
-msgstr "\t-v\t커널 테이블 통계\n"
-
-#: sar.c:182
-#, c-format
-msgid "\t-W\tSwapping statistics\n"
-msgstr "\t-W\t스와핑 통계\n"
-
 #: sar.c:183
 #, c-format
-msgid "\t-w\tTask creation and system switching statistics\n"
-msgstr "\t-w\t작업 생성 및 시스템 스케줄링 통계\n"
+msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
+msgstr "\t-q\t큐 길이와 load average 통계 [A_QUEUE]\n"
 
 #: sar.c:184
 #, c-format
-msgid "\t-y\tTTY devices statistics\n"
-msgstr "\t-y\tTTY 장치 통계\n"
+msgid ""
+"\t-r [ ALL ]\n"
+"\t\tMemory utilization statistics [A_MEMORY]\n"
+msgstr ""
+"\t-r [ ALL ]\n"
+"\t-r\t메모리 사용 통계 [A_MEMORY]\n"
 
-#: sar.c:198
+#: sar.c:186
+#, c-format
+msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
+msgstr "\t-S\t스왑 공간 사용 통계 [A_MEMORY]\n"
+
+#: sar.c:187
+#, c-format
+msgid ""
+"\t-u [ ALL ]\n"
+"\t\tCPU utilization statistics [A_CPU]\n"
+msgstr ""
+"\t-u [ ALL ]\n"
+"\t\tCPU 사용 통계 [A_CPU]\n"
+
+#: sar.c:189
+#, c-format
+msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
+msgstr "\t-v\t커널 테이블 통계 [A_KTABLES]\n"
+
+#: sar.c:190
+#, c-format
+msgid "\t-W\tSwapping statistics [A_SWAP]\n"
+msgstr "\t-W\t스와핑 사용 통계 [A_SWAP]\n"
+
+#: sar.c:191
+#, c-format
+msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
+msgstr "\t-w\t작업 생성 및 시스템 스위칭 통계 [A_PCSW]\n"
+
+#: sar.c:192
+#, c-format
+msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
+msgstr "\t-y\tTTY 장치 통계 [A_SERIAL]\n"
+
+#: sar.c:206
 #, c-format
 msgid "Data collector will be sought in PATH\n"
-msgstr "데이터 수집기는 PATH에서 검색 됩니다.\n"
+msgstr "PATH에서 데이터 수집기가 검색됩니다.\n"
 
-#: sar.c:201
+#: sar.c:209
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "데이터 수집기 발견: %s\n"
 
-#: sar.c:260
+#: sar.c:274
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "데이터 수집이 예기치 않게 종료되었습니다.\n"
 
-#: sar.c:813
-#, c-format
-msgid "Using a wrong data collector from a different sysstat version\n"
-msgstr "다른 버전의 sysstat으로 잘못된 데이터 수집을 하고 있습니다.\n"
-
-#: sar.c:865
+#: sar.c:279
 #, c-format
 msgid "Inconsistent input data\n"
-msgstr "일치하지 않는 입력 데이터 입니다.\n"
+msgstr "입력 데이터가 일치하지 않습니다.\n"
 
-#: sar.c:1044 pidstat.c:239
+#: sar.c:877
 #, c-format
-msgid "Requested activities not available\n"
-msgstr "요청된 동작은 사용할 수 없습니다.\n"
+msgid "Using a wrong data collector from a different sysstat version\n"
+msgstr "다른 sysstat 버전으로 수집된 잘못된 데이터를 사용하고 있습니다.\n"
 
-#: sar.c:1347
+#: sar.c:1484
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
-msgstr "-f 및 -o 옵션은 함께 사용할 수 없습니다.\n"
+msgstr "-f 와 -o 옵션은 함께 사용할 수 없습니다.\n"
 
-#: sar.c:1353
+#: sar.c:1490
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "시스템 동작 파일을 읽지 않습니다. (-f 옵션을 사용하십시오)\n"
+msgstr "시스템 동작 파일에서 읽지 않습니다. (-f 옵션을 사용하십시오)\n"
 
-#: sar.c:1489
+#: sar.c:1637
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "데이터 수집기(%s)를 찾을 수 없습니다.\n"
 
-#: sa_conv.c:69
+#: pidstat.c:91
+#, c-format
+msgid ""
+"Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
+msgstr "사용법: %s [ 옵션 ] [ <간격> [ <회수> ] ] [ -e <프로그램> <옵션> ]\n"
+
+#: pidstat.c:94
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
+"[ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+msgstr ""
+"옵션:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
+"[ <사용자이름> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <명령> ] [ -G <프로세스이름> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+
+#: pidstat.c:244 sa_common.c:353
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "요청된 동작은 사용할 수 없습니다.\n"
+
+#: rd_stats.c:351
+#, c-format
+msgid "Cannot read %s\n"
+msgstr "%s 파일을 읽을 수 없습니다.\n"
+
+#: sa_conv.c:98
 #, c-format
 msgid "Cannot convert the format of this file\n"
 msgstr "이 파일의 형식은 변환할 수 없습니다.\n"
 
-#: sa_conv.c:562
+#: sa_conv.c:369
 #, c-format
 msgid ""
 "\n"
@@ -421,7 +473,7 @@ msgstr ""
 "\n"
 "파일에서 CPU 동작을 찾을 수 없습니다. 중단 중...\n"
 
-#: sa_conv.c:578
+#: sa_conv.c:392
 #, c-format
 msgid ""
 "\n"
@@ -430,152 +482,123 @@ msgstr ""
 "\n"
 "올바르지 않은 데이터가 발견 되었습니다. 중단 중..\n"
 
-#: sa_conv.c:897
+#: sa_conv.c:1863
 #, c-format
-msgid "Statistics: "
-msgstr "통계: "
+msgid "Statistics:\n"
+msgstr "통계:\n"
 
-#: sa_conv.c:1016
+#: sa_conv.c:1964
 #, c-format
 msgid ""
 "\n"
-"File successfully converted to sysstat format version %s\n"
+"File format already up-to-date\n"
 msgstr ""
 "\n"
-"파일이 sysstat version %s 형식으로 변환 되었습니다.\n"
+"파일 형식이 이미 최신 상태입니다.\n"
 
-#: pidstat.c:87
+#: sa_conv.c:1970
 #, c-format
-msgid ""
-"Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
-msgstr ""
-"사용법: %s [ 옵션 ] [ <간격> [ <회수> ] ] [ -e <프로그램> <옵션> ]\n"
+msgid "HZ: Using current value: %lu\n"
+msgstr "HZ: 현재 값 사용: %lu\n"
 
-#: pidstat.c:90
+#: sa_conv.c:2001
 #, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
-"[ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ] [ --"
-"human ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-msgstr ""
-"옵션:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
-"[ <사용자이름> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <명령> ] [ -G <프로세스이름> ] [ --"
-"human ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+msgid "File successfully converted to sysstat format version %s\n"
+msgstr "파일이 sysstat %s 버전의 형식으로 변환 되었습니다.\n"
 
-#: sa_common.c:1000
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "시스템 동작 파일을 읽는 중 오류가 발생했습니다: %s\n"
-
-#: sa_common.c:1010
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "시스템 동작 파일이 예기치 않게 종료되었습니다.\n"
-
-#: sa_common.c:1029
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "sysstat 버전 %d.%d.%d에 의해 생성된 파일"
-
-#: sa_common.c:1062
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "시스템 동작 파일이 올바르지 않습니다: %s\n"
-
-#: sa_common.c:1074
-#, c-format
-msgid "Endian format mismatch\n"
-msgstr "엔디안 형식이 일치하지 않습니다.\n"
-
-#: sa_common.c:1078
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr "현재 sysstat 버전으로는 더이상 이 파일(%#x)의 형식을 읽을 수 없습니다.\n"
-
-#: sa_common.c:1207
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "데이터 수집기가 사용가능 한지 확인하십시오.\n"
-
-#: sa_common.c:1400
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "요청한 동작은 %s 파일에서 사용할 수 없습니다.\n"
-
-#: tapestat.c:97
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-"옵션:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-
-#: tapestat.c:263
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr "통계가 있는 테이프 장치가 없습니다.\n"
-
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "너무 많은 프로세서는 지원하지 않습니다!\n"
-
-#: sadf_misc.c:834
+#: sadf_misc.c:830
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "시스템 동작 정보 파일: %s (%#x)\n"
 
-#: sadf_misc.c:843
+#: sadf_misc.c:839
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "실제 sa 데이터파일: %s (%x)\n"
 
-#: sadf_misc.c:844
+#: sadf_misc.c:840
 msgid "no"
 msgstr "아니오"
 
-#: sadf_misc.c:844
+#: sadf_misc.c:840
 msgid "yes"
 msgstr "예"
 
-#: sadf_misc.c:847
+#: sadf_misc.c:843
 #, c-format
 msgid "Host: "
 msgstr "호스트: "
 
-#: sadf_misc.c:854
-#, c-format
-msgid "Number of CPU for last samples in file: %u\n"
-msgstr "파일의 마지막 항목에 대한 프로세서 번호: %u\n"
-
-#: sadf_misc.c:860
+#: sadf_misc.c:853
 #, c-format
 msgid "File date: %s\n"
 msgstr "파일 날자: %s\n"
 
-#: sadf_misc.c:863
+#: sadf_misc.c:856
 #, c-format
 msgid "File time: "
 msgstr "파일 시간: "
 
-#: sadf_misc.c:868
+#: sadf_misc.c:862
+#, c-format
+msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgstr "파일 구성: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+
+#: sadf_misc.c:867
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "long int 크기: %d\n"
 
-#: sadf_misc.c:874
+#: sadf_misc.c:869
+#, c-format
+msgid "Number of activities in file: %u\n"
+msgstr "사용중인 파일 수: %u\n"
+
+#: sadf_misc.c:872
 #, c-format
 msgid "List of activities:\n"
-msgstr "동작 목록:\n"
+msgstr "사용 목록:\n"
 
-#: sadf_misc.c:887
+#: sadf_misc.c:883
+msgid "Unknown activity"
+msgstr "알 수없는 동작"
+
+#: sadf_misc.c:891
 #, c-format
-msgid "\t[Unknown activity format]"
-msgstr "\t[알 수없는 동작 형식]"
+msgid " \t[Unknown format]"
+msgstr "\t[알 수없는 형식]"
+
+#: sa_common.c:297
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "sysstat %d.%d.%d의 sar/sadc 명령으로 생성된 파일"
+
+#: sa_common.c:328
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "시스템 동작 파일이 올바르지 않습니다: %s\n"
+
+#: sa_common.c:336
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "현재 sysstat 버전으로는 더이상 이 파일(%#x)의 형식을 읽을 수 없습니다.\n"
+
+#: sa_common.c:1395
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "시스템 동작 파일을 읽는 중 오류가 발생했습니다: %s\n"
+
+#: sa_common.c:1405
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "시스템 동작 파일이 예기치 않게 종료되었습니다.\n"
+
+#: sa_common.c:1723
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "데이터 수집기가 사용 가능한지 확인하십시오.\n"
+
+#: sa_common.c:2047
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "%s 파일에 요청한 동작을 할 수 없습니다.\n"
