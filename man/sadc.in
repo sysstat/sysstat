@@ -1,4 +1,4 @@
-.TH SADC 8 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "FEBRUARY 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 .SH SYNOPSIS

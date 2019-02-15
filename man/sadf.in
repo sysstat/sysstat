@@ -1,4 +1,4 @@
-.TH SADF 1 "JANUARY 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "FEBRUARY 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -306,7 +306,7 @@ source package. They are also available at
 .SH ENVIRONMENT
 The
 .B sadf
-command takes into account the following environment variable:
+command takes into account the following environment variables:
 
 .IP S_COLORS_PALETTE
 Specify the colors used by
