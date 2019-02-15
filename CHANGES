@@ -1,5 +1,16 @@
 Changes:
 
+2019/02/15: Version 12.1.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: SVG: Add new "customcol" and "bwcol" options. These options
+	  enable the user to select distinct color palettes to draw the
+	  graphs with "sadf -g".
+	* sadf: SVG: Make it possible for the user to customize color palette
+	  used to draw graphs.
+	* sadf: SVG: Fix wrong variable used to draw discard IO graph.
+	* [Kyle Walker]: sadc: Add -f flag to force fdatasync() use.
+	* sadf and sadc manual pages updated.
+	* NLS translations updated.
+
 2018/12/14: Version 12.1.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Fix out of bound reads security issues (CVE-2018-19416 and
 	  CVE-2018-19517) [12.0.3].

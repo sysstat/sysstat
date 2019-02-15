@@ -1,6 +1,6 @@
 /*
  * pidstat: Display per-process statistics.
- * (C) 2007-2018 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 2007-2019 by Sebastien Godard (sysstat <at> orange.fr)
  */
 #ifndef _PIDSTAT_H
 #define _PIDSTAT_H

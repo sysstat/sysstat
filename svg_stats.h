@@ -1,6 +1,6 @@
 /*
  * svg_stats.h: Include file used to display system statistics in SVG format.
- * (C) 2016-2018 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 2016-2019 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _SVG_STATS_H

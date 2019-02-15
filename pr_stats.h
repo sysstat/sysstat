@@ -1,6 +1,6 @@
 /*
  * pr_stats.h: Include file used to display system statistics
- * (C) 1999-2018 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2019 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _PR_STATS_H
