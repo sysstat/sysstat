@@ -137,6 +137,7 @@ struct activity pcsw_act = {
 	.f_json_print	= json_print_pcsw_stats,
 	.f_svg_print	= svg_print_pcsw_stats,
 	.f_raw_print	= raw_print_pcsw_stats,
+	.f_pcp_print	= pcp_print_pcsw_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Task creation and switching activity",

@@ -1023,7 +1023,7 @@ struct report_format {
 	 * Used only with textual (XML-like) reports.
 	 */
 	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, unsigned long long,
-				     struct file_header *, unsigned int);
+				     struct record_header *, struct file_header *, unsigned int);
 	/*
 	 * This function displays the restart messages.
 	 */

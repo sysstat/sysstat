@@ -148,7 +148,7 @@ struct report_format pcp_fmt = {
 	.options	= FO_HEADER_ONLY,
 	.f_header	= print_pcp_header,
 	.f_statistics	= print_pcp_statistics,
-	.f_timestamp	= NULL,
+	.f_timestamp	= print_pcp_timestamp,
 	.f_restart	= NULL,
 	.f_comment	= NULL
 };

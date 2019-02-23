@@ -716,8 +716,8 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				    cur_date, cur_time, TIMESTAMP_LEN, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
-		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time,
-							       dt, &file_hdr, flags);
+		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time, dt,
+							       &record_hdr[curr], &file_hdr, flags);
 	}
 
 	/* Display statistics */
@@ -737,7 +737,8 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 
 					if (*fmt[f_position]->f_timestamp) {
 						(*fmt[f_position]->f_timestamp)(tab, F_MAIN, cur_date, cur_time,
-										dt, &file_hdr, flags);
+										dt, &record_hdr[curr],
+										&file_hdr, flags);
 					}
 				}
 				(*act[i]->f_json_print)(act[i], curr, *tab, itv);
@@ -783,8 +784,8 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	}
 
 	if (*fmt[f_position]->f_timestamp) {
-		(*fmt[f_position]->f_timestamp)(parm, F_END, cur_date, cur_time,
-						dt, &file_hdr, flags);
+		(*fmt[f_position]->f_timestamp)(parm, F_END, cur_date, cur_time, dt,
+						&record_hdr[curr], &file_hdr, flags);
 	}
 
 	return 1;

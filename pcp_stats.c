@@ -39,18 +39,32 @@ extern unsigned int flags;
 
 /*
  ***************************************************************************
- * Display PCP message error then exit.
+ * Display task creation and context switch statistics in PCP format.
  *
  * IN:
- * @rc	Error code.
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-void print_pcp_error(int rc)
+__print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr, unsigned long long itv,
+				     struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
-	fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
-	exit(4);
-#endif
+	char buf[64];
+	struct stats_pcsw
+		*spc = (struct stats_pcsw *) a->buf[curr],
+		*spp = (struct stats_pcsw *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->context_switch, spc->context_switch, itv));
+	pmiPutValue("kernel.all.pswitch", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->processes, spc->processes, itv));
+	pmiPutValue("kernel.all.proc", NULL, buf);
+#endif	/* HAVE_PCP */
 }
 
 /*
@@ -68,7 +82,6 @@ __print_funct_t pcp_print_queue_stats(struct activity *a, int curr, unsigned lon
 				      struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
-	int rc;
 	char buf[64];
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
@@ -90,10 +103,5 @@ __print_funct_t pcp_print_queue_stats(struct activity *a, int curr, unsigned lon
 
 	snprintf(buf, sizeof(buf), "%f", (double) sqc->load_avg_15 / 100);
 	pmiPutValue("kernel.all.load", "15 min", buf);
-
-	if ((rc = pmiWrite(record_hdr->ust_time, 0)) < 0) {
-		print_pcp_error(rc);
-	}
 #endif	/* HAVE_PCP */
 }
-

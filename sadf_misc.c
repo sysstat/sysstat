@@ -497,6 +497,15 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 
 			switch (act[p]->id) {
 
+				case A_PCSW:
+					pmiAddMetric("kernel.all.pswitch",
+						     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("kernel.all.proc",
+						     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					break;
+
 				case A_QUEUE:
 					pmiAddMetric("proc.runq.runnable",
 						     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
@@ -574,6 +583,7 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
  * @cur_date	Date string of current record.
  * @cur_time	Time string of current record.
  * @itv		Interval of time with preceding record.
+ * @record_hdr	Record header for current sample (unused here).
  * @file_hdr	System activity file standard header.
  * @flags	Flags for common options.
  *
@@ -583,6 +593,7 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
  */
 __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, unsigned long long itv,
+				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {
 	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
@@ -609,6 +620,7 @@ __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
  * @cur_date	Date string of current record.
  * @cur_time	Time string of current record.
  * @itv		Interval of time with preceding record.
+ * @record_hdr	Record header for current sample (unused here).
  * @file_hdr	System activity file standard header.
  * @flags	Flags for common options.
  *
@@ -618,6 +630,7 @@ __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
  */
 __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
 				char *cur_time, unsigned long long itv,
+				struct record_header *record_hdr,
 				struct file_header *file_hdr, unsigned int flags)
 {
 	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
@@ -644,12 +657,14 @@ __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
  * @cur_date	Date string of current comment.
  * @cur_time	Time string of current comment.
  * @itv		Interval of time with preceding record.
+ * @record_hdr	Record header for current sample (unused here).
  * @file_hdr	System activity file standard header (unused here).
  * @flags	Flags for common options.
  ***************************************************************************
  */
 __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, unsigned long long itv,
+				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {
 	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
@@ -676,12 +691,14 @@ __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
  * @cur_date	Date string of current comment.
  * @cur_time	Time string of current comment.
  * @itv		Interval of time with preceding record.
+ * @record_hdr	Record header for current sample (unused here).
  * @file_hdr	System activity file standard header (unused here).
  * @flags	Flags for common options.
  ***************************************************************************
  */
 __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 				  char *cur_time, unsigned long long itv,
+				  struct record_header *record_hdr,
 				  struct file_header *file_hdr, unsigned int flags)
 {
 	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
@@ -713,6 +730,7 @@ __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
  * @cur_date	Date string of current record.
  * @cur_time	Time string of current record.
  * @itv		Interval of time with preceding record (unused here).
+ * @record_hdr	Record header for current sample (unused here).
  * @file_hdr	System activity file standard header (unused here).
  * @flags	Flags for common options.
  *
@@ -721,8 +739,9 @@ __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
  ***************************************************************************
  */
 __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
-				char *cur_time, unsigned long long itv,
-				struct file_header *file_hdr, unsigned int flags)
+				 char *cur_time, unsigned long long itv,
+				 struct record_header *record_hdr,
+				 struct file_header *file_hdr, unsigned int flags)
 {
 	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
 	static char pre[80];
@@ -731,6 +750,41 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 		snprintf(pre, 80, "%s%s", cur_time, strlen(cur_date) && utc ? " UTC" : "");
 		pre[79] = '\0';
 		return pre;
+	}
+
+	return NULL;
+}
+
+/*
+ ***************************************************************************
+ * Display the "timestamp" part of the report (PCP format).
+ *
+ * IN:
+ * @parm	Pointer on specific parameters (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current record (unused here).
+ * @cur_time	Time string of current record (unused here).
+ * @itv		Interval of time with preceding record (unused here).
+ * @record_hdr	Record header for current sample.
+ * @file_hdr	System activity file standard header (unused here).
+ * @flags	Flags for common options (unused here).
+ *
+ * RETURNS:
+ * Pointer on the "timestamp" string.
+ ***************************************************************************
+ */
+__tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
+				 char *cur_time, unsigned long long itv,
+				 struct record_header *record_hdr,
+				 struct file_header *file_hdr, unsigned int flags)
+{
+	int rc;
+
+	if (action & F_END) {
+		if ((rc = pmiWrite(record_hdr->ust_time, 0)) < 0) {
+			fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
+			exit(4);
+		}
 	}
 
 	return NULL;
