@@ -778,6 +778,7 @@ __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {
+#ifdef HAVE_PCP
 	int rc;
 
 	if (action & F_END) {
@@ -786,7 +787,7 @@ __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 			exit(4);
 		}
 	}
-
+#endif
 	return NULL;
 }
 
