@@ -102,22 +102,24 @@ AC_ARG_ENABLE(sensors,
 			     [disable sensors support]),
 			     SENSORS=$enableval,SENSORS=yes)
 if test $SENSORS != "yes"; then
-   HAVE_SENSORS="n"
+	HAVE_SENSORS="n"
 else
-   HAVE_SENSORS="y"
+	HAVE_SENSORS="y"
 fi
 AC_MSG_RESULT($SENSORS)
 
 # Check for lm_sensors
-SENSORS=no
 LFSENSORS=""
 DFSENSORS=""
-AC_CHECK_LIB(sensors, sensors_get_detected_chips, LFSENSORS="-lsensors", HAVE_SENSORS="n")
-AC_MSG_CHECKING(for sensors lib)
-AC_TRY_COMPILE(#include <sensors/sensors.h>
-#include <sensors/error.h>
-		, sensors_cleanup();,SENSORS=yes; DFSENSORS="-DHAVE_SENSORS", HAVE_SENSORS="n"; SENSORS=no)
-AC_MSG_RESULT($SENSORS)
+if test $HAVE_SENSORS = "y"; then
+	SENSORS=no
+	AC_CHECK_LIB(sensors, sensors_get_detected_chips, LFSENSORS="-lsensors", HAVE_SENSORS="n")
+	AC_MSG_CHECKING(for sensors lib)
+	AC_TRY_COMPILE(#include <sensors/sensors.h>
+		       #include <sensors/error.h>
+		       , sensors_cleanup();,SENSORS=yes; DFSENSORS="-DHAVE_SENSORS", HAVE_SENSORS="n"; SENSORS=no)
+	AC_MSG_RESULT($SENSORS)
+fi
 AC_SUBST(HAVE_SENSORS)
 AC_SUBST(LFSENSORS)
 AC_SUBST(DFSENSORS)

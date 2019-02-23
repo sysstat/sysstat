@@ -4643,18 +4643,19 @@ else
 fi
 
 if test $SENSORS != "yes"; then
-   HAVE_SENSORS="n"
+	HAVE_SENSORS="n"
 else
-   HAVE_SENSORS="y"
+	HAVE_SENSORS="y"
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
 $as_echo "$SENSORS" >&6; }
 
 # Check for lm_sensors
-SENSORS=no
 LFSENSORS=""
 DFSENSORS=""
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors_get_detected_chips in -lsensors" >&5
+if test $HAVE_SENSORS = "y"; then
+	SENSORS=no
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors_get_detected_chips in -lsensors" >&5
 $as_echo_n "checking for sensors_get_detected_chips in -lsensors... " >&6; }
 if ${ac_cv_lib_sensors_sensors_get_detected_chips+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -4696,12 +4697,12 @@ else
   HAVE_SENSORS="n"
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors lib" >&5
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors lib" >&5
 $as_echo_n "checking for sensors lib... " >&6; }
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <sensors/sensors.h>
-#include <sensors/error.h>
+		       #include <sensors/error.h>
 
 int
 main ()
@@ -4717,8 +4718,9 @@ else
   HAVE_SENSORS="n"; SENSORS=no
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
 $as_echo "$SENSORS" >&6; }
+fi
 
 
 
