@@ -1799,6 +1799,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
  * IN:
  * @dfile	Name of system activity data file.
  * @act		Array of activities.
+ * @flags	Flags for common options and system state.
  * @ignore	Set to 1 if a true sysstat activity file but with a bad
  *		format should not yield an error message. Used with
  *		sadf -H (sadf -c doesn't call check_file_actlst() function).
@@ -1816,7 +1817,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
  * @arch_64	TRUE if file's data come from a 64 bit machine.
  ***************************************************************************
  */
-void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
+void check_file_actlst(int *ifd, char *dfile, struct activity *act[], unsigned int flags,
 		       struct file_magic *file_magic, struct file_header *file_hdr,
 		       struct file_activity **file_actlst, unsigned int id_seq[],
 		       int ignore, int *endian_mismatch, int *arch_64)
@@ -2043,7 +2044,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[],
 	 * NB: Error is ignored if we only want to display
 	 * datafile header (sadf -H).
 	 */
-	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES) && !ignore) {
+	if (!get_activity_nr(act, AO_SELECTED, COUNT_ACTIVITIES) && !DISPLAY_HDR_ONLY(flags)) {
 		fprintf(stderr, _("Requested activities not available in file %s\n"),
 			dfile);
 		close(*ifd);

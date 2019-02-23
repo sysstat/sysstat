@@ -1326,8 +1326,8 @@ void allocate_structures
 int check_disk_reg
 	(struct activity *, int, int, int);
 void check_file_actlst
-	(int *, char *, struct activity * [], struct file_magic *, struct file_header *,
-	 struct file_activity **, unsigned int [], int, int *, int *);
+	(int *, char *, struct activity * [], unsigned int, struct file_magic *,
+	 struct file_header *, struct file_activity **, unsigned int [], int, int *, int *);
 int check_net_dev_reg
 	(struct activity *, int, int, int);
 int check_net_edev_reg

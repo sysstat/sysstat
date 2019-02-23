@@ -987,7 +987,7 @@ void read_stats_from_file(char from_file[])
 	rows = get_win_height();
 
 	/* Read file headers and activity list */
-	check_file_actlst(&ifd, from_file, act, &file_magic, &file_hdr,
+	check_file_actlst(&ifd, from_file, act, flags, &file_magic, &file_hdr,
 			  &file_actlst, id_seq, FALSE, &endian_mismatch, &arch_64);
 
 	/* Perform required allocations */

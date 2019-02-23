@@ -1427,7 +1427,7 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 
 	/* Prepare file for reading and read its headers */
 	ignore = ACCEPT_BAD_FILE_FORMAT(fmt[f_position]->options);
-	check_file_actlst(&ifd, dfile, act, &file_magic, &file_hdr,
+	check_file_actlst(&ifd, dfile, act, flags, &file_magic, &file_hdr,
 			  &file_actlst, id_seq, ignore, &endian_mismatch, &arch_64);
 
 	if (DISPLAY_HDR_ONLY(flags)) {
