@@ -31,6 +31,7 @@
 #include "json_stats.h"
 #include "svg_stats.h"
 #include "raw_stats.h"
+#include "pcp_stats.h"
 #endif
 
 /*
@@ -453,6 +454,7 @@ struct activity queue_act = {
 	.f_json_print	= json_print_queue_stats,
 	.f_svg_print	= svg_print_queue_stats,
 	.f_raw_print	= raw_print_queue_stats,
+	.f_pcp_print	= pcp_print_queue_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Queue length and load average statistics",

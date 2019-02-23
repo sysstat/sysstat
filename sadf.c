@@ -38,6 +38,11 @@
 # define _(string) (string)
 #endif
 
+#ifdef HAVE_PCP
+#include <pcp/pmapi.h>
+#include <pcp/import.h>
+#endif
+
 #ifdef USE_SCCSID
 #define SCCSID "@(#)sysstat-" VERSION ": " __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
@@ -763,6 +768,13 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				(*act[i]->f_raw_print)(act[i], pre, curr);
 			}
 
+			else if (format == F_PCP_OUTPUT) {
+				/* PCP archive */
+				if (*act[i]->f_pcp_print) {
+					(*act[i]->f_pcp_print)(act[i], curr, itv, &record_hdr[curr]);
+				}
+			}
+
 			else {
 				/* Other output formats: db, ppc */
 				(*act[i]->f_render)(act[i], (format == F_DB_OUTPUT), pre, curr, itv);
@@ -981,12 +993,13 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  ***************************************************************************
  * Display file contents in selected format (logic #1).
  * Logic #1:	Grouped by record type. Sorted by timestamp.
- * Formats:	XML, JSON
+ * Formats:	XML, JSON, PCP
  *
  * IN:
  * @ifd		File descriptor of input file.
  * @file_actlst	List of (known or unknown) activities in file.
  * @file	System activity data file name (name of file being read).
+ * @pcparchive	PCP archive file name.
  * @file_magic	System activity file magic header.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
@@ -996,7 +1009,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  ***************************************************************************
  */
 void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
-			 struct file_magic *file_magic,
+			 char *pcparchive, struct file_magic *file_magic,
 			 struct tm *rectime, struct tm *loctime)
 {
 	int curr, tab = 0, rtype;
@@ -1013,13 +1026,13 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_BEGIN, file, file_magic,
+		(*fmt[f_position]->f_header)(&tab, F_BEGIN, pcparchive, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 
 	/* Process activities */
 	if (*fmt[f_position]->f_statistics) {
-		(*fmt[f_position]->f_statistics)(&tab, F_BEGIN);
+		(*fmt[f_position]->f_statistics)(&tab, F_BEGIN, act, id_seq);
 	}
 
 	do {
@@ -1051,7 +1064,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 
 				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 					if (*fmt[f_position]->f_statistics) {
-						(*fmt[f_position]->f_statistics)(&tab, F_MAIN);
+						(*fmt[f_position]->f_statistics)(&tab, F_MAIN, act, id_seq);
 					}
 
 					/* next is set to 1 when we were close enough to desired interval */
@@ -1085,7 +1098,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_statistics) {
-		(*fmt[f_position]->f_statistics)(&tab, F_END);
+		(*fmt[f_position]->f_statistics)(&tab, F_END, act, id_seq);
 	}
 
 	/* Rewind file */
@@ -1132,7 +1145,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_END, file, file_magic,
+		(*fmt[f_position]->f_header)(&tab, F_END, pcparchive, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 }
@@ -1402,9 +1415,10 @@ close_svg:
  *
  * IN:
  * @dfile	System activity data file name.
+ * @pcparchive	PCP archive file name.
  ***************************************************************************
  */
-void read_stats_from_file(char dfile[])
+void read_stats_from_file(char dfile[], char pcparchive[])
 {
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
@@ -1418,6 +1432,9 @@ void read_stats_from_file(char dfile[])
 
 	if (DISPLAY_HDR_ONLY(flags)) {
 		if (*fmt[f_position]->f_header) {
+			if (format == F_PCP_OUTPUT) {
+				dfile = pcparchive;
+			}
 			/* Display only data file header then exit */
 			(*fmt[f_position]->f_header)(&tab, F_BEGIN + F_END, dfile, &file_magic,
 						     &file_hdr, act, id_seq, file_actlst);
@@ -1438,7 +1455,7 @@ void read_stats_from_file(char dfile[])
 				    &rectime, &loctime, dfile, &file_magic);
 	}
 	else {
-		logic1_display_loop(ifd, file_actlst, dfile,
+		logic1_display_loop(ifd, file_actlst, dfile, pcparchive,
 				    &file_magic, &rectime, &loctime);
 	}
 
@@ -1831,7 +1848,7 @@ int main(int argc, char **argv)
 	}
 	else {
 		/* Read stats from file */
-		read_stats_from_file(dfile);
+		read_stats_from_file(dfile, pcparchive);
 	}
 
 	/* Free bitmaps */

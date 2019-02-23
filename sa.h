@@ -818,6 +818,11 @@ struct activity {
 	 */
 	__print_funct_t (*f_raw_print) (struct activity *, char *, int);
 	/*
+	 * This function is used by sadf to display activity statistics in PCP format.
+	 */
+	__print_funct_t (*f_pcp_print) (struct activity *, int, unsigned long long,
+					struct record_header *);
+	/*
 	 * This function is used by sadf to count the number of new items in current
 	 * sample and add them to the linked list @item_list.
 	 */
@@ -1010,9 +1015,9 @@ struct report_format {
 				      struct activity * [], unsigned int [], struct file_activity *);
 	/*
 	 * This function defines the statistics part of the report.
-	 * Used only with textual (XML-like) reports.
+	 * Used only with textual (XML-like) reports and PCP archives.
 	 */
-	__printf_funct_t (*f_statistics) (int *, int);
+	__printf_funct_t (*f_statistics) (int *, int, struct activity * [], unsigned int []);
 	/*
 	 * This function defines the timestamp part of the report.
 	 * Used only with textual (XML-like) reports.

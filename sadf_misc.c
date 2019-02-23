@@ -32,6 +32,11 @@
 #define _(string) (string)
 #endif
 
+#ifdef HAVE_PCP
+#include <pcp/pmapi.h>
+#include <pcp/import.h>
+#endif
+
 extern unsigned int flags;
 extern char *seps[];
 
@@ -406,12 +411,15 @@ __printf_funct_t print_raw_comment(int *tab, int action, char *cur_date,
  * IN:
  * @tab		Number of tabulations.
  * @action	Action expected from current function.
+ * @act		Array of activities (unused here).
+ * @id_seq	Activity sequence (unused here).
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
-__printf_funct_t print_xml_statistics(int *tab, int action)
+__printf_funct_t print_xml_statistics(int *tab, int action, struct activity *act[],
+				      unsigned int id_seq[])
 {
 	if (action & F_BEGIN) {
 		xprintf((*tab)++, "<statistics>");
@@ -428,12 +436,15 @@ __printf_funct_t print_xml_statistics(int *tab, int action)
  * IN:
  * @tab		Number of tabulations.
  * @action	Action expected from current function.
+ * @act		Array of activities (unused here).
+ * @id_seq	Activity sequence (unused here).
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
-__printf_funct_t print_json_statistics(int *tab, int action)
+__printf_funct_t print_json_statistics(int *tab, int action, struct activity *act[],
+				       unsigned int id_seq[])
 {
 	static int sep = FALSE;
 
@@ -455,6 +466,59 @@ __printf_funct_t print_json_statistics(int *tab, int action)
 		}
 		xprintf0(--(*tab), "]");
 	}
+}
+
+/*
+ ***************************************************************************
+ * Display the "statistics" part of the report (PCP format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @act		Array of activities.
+ * @id_seq	Activity sequence.
+ ***************************************************************************
+ */
+__printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act[],
+				      unsigned int id_seq[])
+{
+#ifdef HAVE_PCP
+	int i, p;
+	pmInDom indom;
+
+	if (action & F_BEGIN) {
+		for (i = 0; i < NR_ACT; i++) {
+			if (!id_seq[i])
+				continue;	/* Activity not in file */
+
+			p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+			if (!IS_SELECTED(act[p]->options))
+				continue;	/* Activity not selected */
+
+			switch (act[p]->id) {
+
+				case A_QUEUE:
+					pmiAddMetric("proc.runq.runnable",
+						     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+					pmiAddMetric("proc.nprocs",
+						     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+					pmiAddMetric("proc.blocked",
+						     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+					indom = pmInDom_build(0, 0);
+					pmiAddMetric("kernel.all.load",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddInstance(indom, "1 min", 0);
+					pmiAddInstance(indom, "5 min", 1);
+					pmiAddInstance(indom, "15 min", 2);
+					break;
+			}
+		}
+	}
+#endif /* HAVE_PCP */
 }
 
 /*
@@ -679,7 +743,7 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
  * IN:
  * @parm	Specific parameter. Here: number of tabulations.
  * @action	Action expected from current function.
- * @dfile	Name of system activity data file.
+ * @dfile	Unused here (PCP archive file).
  * @file_magic	System activity file magic header.
  * @file_hdr	System activity file standard header.
  * @act		Array of activities (unused here).
@@ -747,7 +811,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
  * IN:
  * @parm	Specific parameter. Here: number of tabulations.
  * @action	Action expected from current function.
- * @dfile	Name of system activity data file.
+ * @dfile	Unused here (PCP archive file).
  * @file_magic	System activity file magic header.
  * @file_hdr	System activity file standard header.
  * @act		Array of activities (unused here).
@@ -808,7 +872,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
  * IN:
  * @parm	Specific parameter (unused here).
  * @action	Action expected from current function.
- * @dfile	Name of system activity data file.
+ * @dfile	Name of system activity data file (unused here).
  * @file_magic	System activity file magic header.
  * @file_hdr	System activity file standard header.
  * @act		Array of activities.
@@ -1003,6 +1067,53 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		}
 		printf("</svg>\n");
 	}
+}
+
+/*
+ ***************************************************************************
+ * PCP header function.
+ *
+ * IN:
+ * @parm	Specific parameter.
+ * @action	Action expected from current function.
+ * @dfile	Name of PCP archive file.
+ * @file_magic	System activity file magic header (unused here).
+ * @file_hdr	System activity file standard header (unused here).
+ * @act		Array of activities (unused here).
+ * @id_seq	Activity sequence (unused here).
+ * @file_actlst	List of (known or unknown) activities in file (unused here).
+ ***************************************************************************
+ */
+__printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
+				  struct file_magic *file_magic,
+				  struct file_header *file_hdr,
+				  struct activity *act[], unsigned int id_seq[],
+				  struct file_activity *file_actlst)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+
+	if (action & F_BEGIN) {
+		/* Create new PCP context */
+		pmiStart(dfile, FALSE);
+		pmiSetTimezone("UTC");
+
+		/* Save number of CPU in PCP archive */
+		pmiAddMetric("hinv.ncpu",
+			     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+		snprintf(buf, sizeof(buf), "%u",
+			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
+		pmiPutValue("hinv.ncpu", NULL, buf);
+	}
+
+	if (action & F_END) {
+		if (action & F_BEGIN) {
+			pmiWrite(file_hdr->sa_ust_time, 0);
+		}
+		pmiEnd();
+	}
+#endif
 }
 
 /*

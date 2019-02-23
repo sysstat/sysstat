@@ -161,9 +161,11 @@ __printf_funct_t print_raw_comment
  * Prototypes used to display the statistics part of the report
  */
 __printf_funct_t print_xml_statistics
-	(int *, int);
+	(int *, int, struct activity * [], unsigned int []);
 __printf_funct_t print_json_statistics
-	(int *, int);
+	(int *, int, struct activity * [], unsigned int []);
+__printf_funct_t print_pcp_statistics
+	(int *, int, struct activity * [], unsigned int []);
 
 /*
  * Prototypes used to display the timestamp part of the report
@@ -192,6 +194,9 @@ __printf_funct_t print_hdr_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_svg_header
+	(void *, int, char *, struct file_magic *, struct file_header *,
+	 struct activity * [], unsigned int [], struct file_activity *);
+__printf_funct_t print_pcp_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 

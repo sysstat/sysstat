@@ -141,6 +141,19 @@ struct report_format raw_fmt = {
 };
 
 /*
+ * PCP output.
+ */
+struct report_format pcp_fmt = {
+	.id		= F_PCP_OUTPUT,
+	.options	= FO_HEADER_ONLY,
+	.f_header	= print_pcp_header,
+	.f_statistics	= print_pcp_statistics,
+	.f_timestamp	= NULL,
+	.f_restart	= NULL,
+	.f_comment	= NULL
+};
+
+/*
  * Array of output formats.
  */
 struct report_format *fmt[NR_FMT] = {
@@ -151,7 +164,8 @@ struct report_format *fmt[NR_FMT] = {
 	&json_fmt,
 	&conv_fmt,
 	&svg_fmt,
-	&raw_fmt
+	&raw_fmt,
+	&pcp_fmt
 };
 #endif
 

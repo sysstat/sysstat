@@ -1,0 +1,19 @@
+/*
+ * pcp_stats.h: Include file used to display system statistics in PCP format.
+ * (C) 2019 by Sebastien Godard (sysstat <at> orange.fr)
+ */
+
+#ifndef _PCP_STATS_H
+#define _PCP_STATS_H
+
+/*
+ ***************************************************************************
+ * Prototypes for functions used to display system statistics in PCP format
+ ***************************************************************************
+ */
+
+/* Functions used to display statistics in PCP format */
+__print_funct_t pcp_print_queue_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
+
+#endif /* _PCP_STATS_H */
