@@ -94,7 +94,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+			  "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 			  "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
@@ -1458,13 +1458,13 @@ int main(int argc, char **argv)
 	int opt = 1, sar_options = 0;
 	int day_offset = 0;
 	int i, rc, p, q;
-	char dfile[MAX_FILE_LEN];
+	char dfile[MAX_FILE_LEN], pcparchive[MAX_FILE_LEN];
 	char *t, *v;
 
 	/* Compute page shift in kB */
 	get_kb_shift();
 
-	dfile[0] = '\0';
+	dfile[0] = pcparchive[0] = '\0';
 
 #ifdef USE_NLS
 	/* Init National Language Support */
@@ -1577,6 +1577,11 @@ int main(int argc, char **argv)
 				else if (!strcmp(t, K_BWCOL)) {
 					palette = SVG_BW_COL_PALETTE;
 				}
+				else if (!strncmp(t, K_PCPARCHIVE, strlen(K_PCPARCHIVE))) {
+					v = t + strlen(K_PCPARCHIVE);
+					strncpy(pcparchive, v, MAX_FILE_LEN);
+					pcparchive[MAX_FILE_LEN - 1] = '\0';
+				}
 				else {
 					usage(argv[0]);
 				}
@@ -1676,6 +1681,13 @@ int main(int argc, char **argv)
 						format = F_JSON_OUTPUT;
 						break;
 
+					case 'l':
+						if (format) {
+							usage(argv[0]);
+						}
+						format = F_PCP_OUTPUT;
+						break;
+
 					case 'p':
 						if (format) {
 							usage(argv[0]);
@@ -1768,6 +1780,18 @@ int main(int argc, char **argv)
 	if (!dfile[0]) {
 		set_default_file(dfile, day_offset, -1);
 	}
+
+	/* PCP mode: If no archive file specified then use the name of the daily data file */
+	if (!pcparchive[0] && (format == F_PCP_OUTPUT)) {
+		strcpy(pcparchive, dfile);
+	}
+
+#ifndef HAVE_PCP
+	if (format == F_PCP_OUTPUT) {
+		fprintf(stderr, _("PCP support not compiled in\n"));
+		exit(1);
+	}
+#endif
 
 	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
 		tm_end.tm_hour += 24;

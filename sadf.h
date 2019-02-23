@@ -28,7 +28,7 @@
  */
 
 /* Number of output formats */
-#define NR_FMT	8
+#define NR_FMT	9
 
 /* Output formats */
 #define F_DB_OUTPUT	1
@@ -39,6 +39,7 @@
 #define F_CONV_OUTPUT	6
 #define F_SVG_OUTPUT	7
 #define F_RAW_OUTPUT	8
+#define F_PCP_OUTPUT	9
 
 /* Format options */
 
