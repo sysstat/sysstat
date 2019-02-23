@@ -31,6 +31,14 @@ LFSENSORS = @LFSENSORS@
 DFSENSORS = @DFSENSORS@
 endif
 
+HAVE_PCP = @HAVE_PCP@
+LFPCP =
+DFPCP =
+ifeq ($(HAVE_PCP),y)
+LFPCP = @LFPCP@
+DFPCP = @DFPCP@
+endif
+
 # Directories
 ifndef PREFIX
 PREFIX = @prefix@
@@ -74,6 +82,7 @@ DFLAGS = @DFLAGS@
 LFLAGS = @STRIP@
 DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
 DFLAGS += $(DFSENSORS)
+DFLAGS += $(DFPCP)
 
 # Commands
 ifndef MSGFMT
@@ -190,7 +199,7 @@ act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
 act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h
+act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
 rd_stats.o: rd_stats.c common.h rd_stats.h
@@ -218,6 +227,8 @@ json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h syscon
 svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h svg_stats.h
 
 raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h raw_stats.h
+
+pcp_stats.o: pcp_stats.c sa.h pcp_stats.h
 
 sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
@@ -260,7 +271,9 @@ sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o librdstats_light.a libs
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h
 
-sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o sa_common.o librdstats_light.a libsyscom.a
+sadf: LFLAGS += $(LFPCP)
+
+sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h count.h
 
