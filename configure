@@ -661,6 +661,9 @@ INITD_DIR
 INIT_DIR
 RC_DIR
 rcdir
+DFPCP
+LFPCP
+HAVE_PCP
 DFSENSORS
 LFSENSORS
 HAVE_SENSORS
@@ -735,6 +738,7 @@ ac_user_opts='
 enable_option_checking
 with_systemdsystemunitdir
 enable_sensors
+enable_pcp
 enable_largefile
 enable_nls
 enable_file_attr
@@ -1376,6 +1380,7 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-sensors       disable sensors support
+  --disable-pcp           disable PCP support
   --disable-largefile     omit support for large files
   --disable-nls           disable National Language Support
   --disable-file-attr     do not set attributes on files being installed
@@ -4725,6 +4730,99 @@ fi
 
 
 
+# Should we check for PCP support?
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PCP support" >&5
+$as_echo_n "checking for PCP support... " >&6; }
+# Check whether --enable-pcp was given.
+if test "${enable_pcp+set}" = set; then :
+  enableval=$enable_pcp; PCP=$enableval
+else
+  PCP=yes
+fi
+
+if test $PCP != "yes"; then
+	HAVE_PCP="n"
+else
+	HAVE_PCP="y"
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCP" >&5
+$as_echo "$PCP" >&6; }
+
+# Check for PCP libraries
+LFPCP=""
+DFPCP=""
+if test $HAVE_PCP = "y"; then
+	PCP=no
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pmGetVersion in -lpcp" >&5
+$as_echo_n "checking for pmGetVersion in -lpcp... " >&6; }
+if ${ac_cv_lib_pcp_pmGetVersion+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpcp  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pmGetVersion ();
+int
+main ()
+{
+return pmGetVersion ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_pcp_pmGetVersion=yes
+else
+  ac_cv_lib_pcp_pmGetVersion=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pcp_pmGetVersion" >&5
+$as_echo "$ac_cv_lib_pcp_pmGetVersion" >&6; }
+if test "x$ac_cv_lib_pcp_pmGetVersion" = xyes; then :
+  LFPCP="-lpcp -lpcp_import"
+else
+  HAVE_PCP="n"
+fi
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PCP libraries" >&5
+$as_echo_n "checking for PCP libraries... " >&6; }
+	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <pcp/pmapi.h>
+		       #include <pcp/import.h>
+
+int
+main ()
+{
+pmiEnd();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  PCP=yes; DFPCP="-DHAVE_PCP"
+else
+  HAVE_PCP="n"; PCP=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCP" >&5
+$as_echo "$PCP" >&6; }
+fi
+
+
+
+
 echo .
 echo Check system services:
 echo .
@@ -4947,6 +5045,7 @@ echo .
 #  --enable-debuginfo      enable debug output (--debuginfo option)
 #  --disable-documentation do not install documentation (man pages...)
 #  --disable-sensors       do not link against libsensors even if available
+#  --disable-pcp           do not link against PCP libraries even if available
 #  --disable-stripping     do not strip object files
 #  --enable-copy-only      only copy files when installing sysstat
 #

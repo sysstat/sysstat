@@ -67,6 +67,15 @@ else
 	echo "Parameter --disable-sensors is NOT set"
 fi
 
+# PCP support
+PCP=`${ASK} 'Disable PCP support? (y/n)' "--disable-pcp" "pcp"`
+if [ "${PCP}" = "y" ]; then
+	PCP="--disable-pcp "
+else
+	PCP=""
+	echo "Parameter --disable-pcp is NOT set"
+fi
+
 # Data history to keep by sa2
 HISTORY=`${ASK} 'Number of daily data files to keep:' "history" "history"`
 if [ "${HISTORY}" != "" ]; then
@@ -201,11 +210,11 @@ if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
 fi
-echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${STRIP}${COPY_ONLY}"
+echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${PCP}${STRIP}${COPY_ONLY}"
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
 ${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
-${STRIP}${COPY_ONLY}
+${PCP}${STRIP}${COPY_ONLY}
 
