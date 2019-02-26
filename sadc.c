@@ -318,6 +318,9 @@ void sa_sys_init(void)
 
 	for (i = 0; i < NR_ACT; i++) {
 
+		if ( ! (act[i]->options & AO_COLLECTED ) )
+			continue;
+
 		if (HAS_COUNT_FUNCTION(act[i]->options)) {
 			idx = act[i]->f_count_index;
 
