@@ -239,7 +239,9 @@ format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h
 format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-sadf_misc.o: sadf_misc.c sadf.h sa.h common.h rd_stats.h rd_sensors.h
+pcp_def_metrics.o: pcp_def_metrics.c
+
+sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h
 
 sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_conv.h
 
@@ -273,7 +275,7 @@ sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h
 
 sadf: LFLAGS += $(LFPCP)
 
-sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
+sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o pcp_def_metrics.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
 
 iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h count.h
 
