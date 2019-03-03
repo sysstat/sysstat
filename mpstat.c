@@ -1871,12 +1871,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		       STATS_IRQCPU_SIZE * (cpu_nr + 1) * softirqcpu_nr);
 	}
 
-	if (!DISPLAY_JSON_OUTPUT(flags)) {
-		/* Set a handler for SIGINT */
-		memset(&int_act, 0, sizeof(int_act));
-		int_act.sa_handler = int_handler;
-		sigaction(SIGINT, &int_act, NULL);
-	}
+	/* Set a handler for SIGINT */
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = int_handler;
+	sigaction(SIGINT, &int_act, NULL);
 
 	pause();
 
