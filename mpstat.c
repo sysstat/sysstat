@@ -1930,17 +1930,16 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 		if (count) {
 
-			if (DISPLAY_JSON_OUTPUT(flags)) {
-				printf(",\n");
-			}
 			pause();
 
 			if (sigint_caught) {
 				/* SIGINT signal caught => Display average stats */
 				count = 0;
-				printf("\n");	/* Skip "^C" displayed on screen */
 			}
 			else {
+				if (DISPLAY_JSON_OUTPUT(flags)) {
+					printf(",\n");
+				}
 				curr ^= 1;
 			}
 		}

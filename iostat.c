@@ -1715,12 +1715,6 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			if (count > 0) {
 				count--;
 			}
-			if (DISPLAY_JSON_OUTPUT(flags)) {
-				if (count) {
-				printf(",");
-				}
-				printf("\n");
-			}
 		}
 		else {
 			skip = 0;
@@ -1733,9 +1727,12 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			if (sigint_caught) {
 				/* SIGINT signal caught => Terminate JSON output properly */
 				count = 0;
-				printf("\n");	/* Skip "^C" displayed on screen */
+			}
+			else if (DISPLAY_JSON_OUTPUT(flags) && count) {
+				printf(",");
 			}
 		}
+		printf("\n");
 	}
 	while (count);
 
