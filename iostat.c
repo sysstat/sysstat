@@ -74,7 +74,8 @@ unsigned int dm_major;	/* Device-mapper major number */
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
 
-struct sigaction alrm_act;
+struct sigaction alrm_act, int_act;
+int sigint_caught = 0;
 
 /*
  ***************************************************************************
@@ -136,6 +137,19 @@ void set_disk_output_unit(void)
 void alarm_handler(int sig)
 {
 	alarm(interval);
+}
+
+/*
+ ***************************************************************************
+ * SIGINT signal handler.
+ *
+ * IN:
+ * @sig	Signal number.
+ **************************************************************************
+ */
+void int_handler(int sig)
+{
+	sigint_caught = 1;
 }
 
 /*
@@ -1638,6 +1652,17 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		skip = 1;
 	}
 
+	/* Set a handler for SIGALRM */
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
+
+	/* Set a handler for SIGINT */
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = int_handler;
+	sigaction(SIGINT, &int_act, NULL);
+
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
 
@@ -1704,6 +1729,12 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		if (count) {
 			curr ^= 1;
 			pause();
+
+			if (sigint_caught) {
+				/* SIGINT signal caught => Terminate JSON output properly */
+				count = 0;
+				printf("\n");	/* Skip "^C" displayed on screen */
+			}
 		}
 	}
 	while (count);
@@ -2057,12 +2088,6 @@ int main(int argc, char **argv)
 	if (!DISPLAY_JSON_OUTPUT(flags)) {
 		printf("\n");
 	}
-
-	/* Set a handler for SIGALRM */
-	memset(&alrm_act, 0, sizeof(alrm_act));
-	alrm_act.sa_handler = alarm_handler;
-	sigaction(SIGALRM, &alrm_act, NULL);
-	alarm(interval);
 
 	/* Main loop */
 	rw_io_stat_loop(count, &rectime);
