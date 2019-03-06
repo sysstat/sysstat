@@ -652,6 +652,7 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 			  unsigned char offline_cpu_bitmap[])
 {
 	int i, next = FALSE;
+	char cpu_name[16];
 	struct stats_cpu *scc, *scp;
 
 	xprintf(tab++, "\"cpu-load\": [");
@@ -675,7 +676,15 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 		}
 		next = TRUE;
 
-		if (i != 0) {
+		if (i == 0) {
+			/* This is CPU "all" */
+			strcpy(cpu_name, "all");
+
+		}
+		else {
+			snprintf(cpu_name, 16, "%d", i - 1);
+			cpu_name[15] = '\0';
+
 			/* Recalculate itv for current proc */
 			deltot_jiffies = get_per_cpu_interval(scc, scp);
 
@@ -694,9 +703,9 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 			}
 		}
 
-		xprintf0(tab, "{\"cpu\": \"%d\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
+		xprintf0(tab, "{\"cpu\": \"%s\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
 			 "\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
-			 "\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}", i - 1,
+			 "\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}", cpu_name,
 			 (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 			 0.0 :
 			 ll_sp_value(scp->cpu_user - scp->cpu_guest,
