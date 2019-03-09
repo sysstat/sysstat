@@ -297,9 +297,10 @@ void reset_stats(void)
 /*
  ***************************************************************************
  * Count activities items then allocate and init corresponding structures.
- * ALL activities are always counted (thus the number of CPU will always be
- * counted even if CPU activity is not collected), but ONLY those that will
- * be collected have allocated structures.
+ * Activities such A_CPU with AO_ALWAYS_COUNTED flag set are always counted
+ * (thus the number of CPU will always be counted even if CPU activity is
+ * not collected), but ONLY those that will be collected have allocated
+ * structures.
  * This function is called when sadc is started, and when a file is rotated.
  * If a file is rotated and structures are reallocated with a larger size,
  * additional space is not initialized: It doesn't matter as reset_stats()
@@ -318,10 +319,8 @@ void sa_sys_init(void)
 
 	for (i = 0; i < NR_ACT; i++) {
 
-		if ( ! (act[i]->options & AO_COLLECTED ) )
-			continue;
-
-		if (HAS_COUNT_FUNCTION(act[i]->options)) {
+		if ((HAS_COUNT_FUNCTION(act[i]->options) && IS_COLLECTED(act[i]->options)) ||
+		    ALWAYS_COUNT_ITEMS(act[i]->options)) {
 			idx = act[i]->f_count_index;
 
 			/* Number of items is not a constant and should be calculated */
@@ -500,8 +499,7 @@ void setup_file_hdr(int fd)
 	 * This is a new file (or stdout): Set sa_cpu_nr field to the number
 	 * of CPU of the machine (1 .. CPU_NR + 1). This is the number of CPU, whether
 	 * online or offline, when sadc was started.
-	 * All activities (including A_CPU) are counted in sa_sys_init(), even
-	 * if they are not collected.
+	 * A_CPU activity is always counted in sa_sys_init(), even if it's not collected.
 	 */
 	file_hdr.sa_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr_ini;
 

@@ -68,7 +68,8 @@ struct act_bitmap irq_bitmap = {
 struct activity cpu_act = {
 	.id		= A_CPU,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_PERSISTENT +
-			  AO_MULTIPLE_OUTPUTS + AO_GRAPH_PER_ITEM,
+			  AO_MULTIPLE_OUTPUTS + AO_GRAPH_PER_ITEM +
+			  AO_ALWAYS_COUNTED,
 	.magic		= ACTIVITY_MAGIC_BASE + 1,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC

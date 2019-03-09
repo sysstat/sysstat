@@ -705,6 +705,11 @@ struct record_header {
  * line for this activity (see options --dev=, --iface=, ...)
  */
 #define AO_LIST_ON_CMDLINE	0x100
+/*
+ * Indicate that the number of items for this activity should always
+ * be counted, even if the activity is not collected.
+ */
+#define AO_ALWAYS_COUNTED	0x200
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
@@ -715,6 +720,7 @@ struct record_header {
 #define ONE_GRAPH_PER_ITEM(m)	(((m) & AO_GRAPH_PER_ITEM)   == AO_GRAPH_PER_ITEM)
 #define IS_MATRIX(m)		(((m) & AO_MATRIX)           == AO_MATRIX)
 #define HAS_LIST_ON_CMDLINE(m)	(((m) & AO_LIST_ON_CMDLINE)  == AO_LIST_ON_CMDLINE)
+#define ALWAYS_COUNT_ITEMS(m)	(((m) & AO_ALWAYS_COUNTED)   == AO_ALWAYS_COUNTED)
 
 #define _buf0	buf[0]
 #define _nr0	nr[0]
