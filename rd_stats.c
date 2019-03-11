@@ -2496,7 +2496,6 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			 * read filesystem type,
 			 * if filesystem type is autofs, skip it 
 			*/
-			memset(type, 0, sizeof(type));
 			pos2 = strchr(pos + 1, ' ');
 			if (pos2 == NULL)
 				continue;
