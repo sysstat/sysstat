@@ -496,7 +496,6 @@ __nr_t get_filesystem_nr(void)
 			 * read filesystem type,
 			 * if filesystem type is autofs, skip it 
 			*/
-			memset(type, 0, sizeof(type));
 			pos2 = strchr(pos + 1, ' ');
 			if (pos2 == NULL)
 				continue;
