@@ -46,7 +46,7 @@ extern unsigned long avg_count;
  * Display current activity header line.
  *
  * IN:
- * @timestamp	Timestamp for previous stat sample.
+ * @p_timestamp	Timestamp for previous stat sample.
  * @a		Activity structure.
  * @pos		Index in @.hdr_line string, 0 being the first one (header
  * 		are delimited by the '|' character).
@@ -56,7 +56,7 @@ extern unsigned long avg_count;
  * @vwidth	Column width for stats values.
  ***************************************************************************
  */
-void print_hdr_line(char *timestamp, struct activity *a, int pos, int iwidth, int vwidth)
+void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, int vwidth)
 {
 	char hline[HEADER_LINE_LEN] = "";
 	char *hl, *tk, *it = NULL;
@@ -70,7 +70,7 @@ void print_hdr_line(char *timestamp, struct activity *a, int pos, int iwidth, in
 		/* Bad @pos arg given to function */
 		return;
 
-	printf("\n%-11s", timestamp);
+	printf("\n%-11s", p_timestamp);
 
 	if (strchr(hl, '&')) {
 		j = strcspn(hl, "&");

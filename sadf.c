@@ -126,14 +126,13 @@ void init_structures(void)
  * Look for output format in array.
  *
  * IN:
- * @fmt		Array of output formats.
  * @format	Output format to look for.
  *
  * RETURNS:
  * Position of output format in array.
  ***************************************************************************
  */
-int get_format_position(struct report_format *fmt[], unsigned int format)
+int get_format_position(unsigned int format)
 {
         int i;
 
@@ -169,7 +168,7 @@ void check_format_options(void)
 	}
 
 	/* Get format position in array */
-	f_position = get_format_position(fmt, format);
+	f_position = get_format_position(format);
 
 	/* Check options consistency wrt output format */
 	if (!ACCEPT_HEADER_ONLY(fmt[f_position]->options)) {
