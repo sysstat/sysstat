@@ -2464,10 +2464,10 @@ __nr_t read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, __nr_t nr_alloc)
 __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 {
 	FILE *fp;
-	char line[512], fs_name[128], mountp[256];
+	char line[512], fs_name[128], mountp[256], type[128];
 	int skip = 0, skip_next = 0;
 	char *pos = 0;
-	__nr_t fs_read = 0;
+	__nr_t fs_read = 0, *pos2 = 0;
 	struct stats_filesystem *st_filesystem_i;
 	struct statvfs buf;
 
@@ -2489,6 +2489,19 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			/* Find field separator position */
 			pos = strchr(line, ' ');
 			if (pos == NULL)
+				continue;
+
+			/* 	
+			 * Find second field separator position,
+			 * read filesystem type,
+			 * if filesystem type is autofs, skip it 
+			*/
+			pos2 = strchr(pos + 1, ' ');
+			if (pos2 == NULL)
+				continue;
+
+			sscanf(pos2 + 1, "%127s", type);
+			if(strcmp(type, "autofs") == 0)
 				continue;
 
 			/* Read current filesystem name */
