@@ -270,7 +270,7 @@ void sfree_mp_struct(void)
  * CPU that each node has).
  *
  * IN:
- * @cpu_nr		Number of CPU on this machine.
+ * @nr_cpus		Number of CPU on this machine.
  *
  * OUT:
  * @cpu_per_node	Number of CPU per node.
@@ -281,23 +281,23 @@ void sfree_mp_struct(void)
  * A value of -1 means no nodes have been found.
  ***************************************************************************
  */
-int get_node_placement(int cpu_nr, int cpu_per_node[], int cpu2node[])
+int get_node_placement(int nr_cpus, int cpu_per_node[], int cpu2node[])
 
 {
 	DIR *dir;
 	struct dirent *drd;
 	char line[MAX_PF_NAME];
-	int cpu, node, node_nr = -1;
+	int cpu, node, hi_node_nr = -1;
 
 	/* Init number of CPU per node */
-	memset(cpu_per_node, 0, sizeof(int) * (cpu_nr + 1));
+	memset(cpu_per_node, 0, sizeof(int) * (nr_cpus + 1));
 	/* CPU belongs to no node by default */
-	memset(cpu2node, -1, sizeof(int) * cpu_nr);
+	memset(cpu2node, -1, sizeof(int) * nr_cpus);
 
 	/* This is node "all" */
-	cpu_per_node[0] = cpu_nr;
+	cpu_per_node[0] = nr_cpus;
 
-	for (cpu = 0; cpu < cpu_nr; cpu++) {
+	for (cpu = 0; cpu < nr_cpus; cpu++) {
 		snprintf(line, MAX_PF_NAME, "%s/cpu%d", SYSFS_DEVCPU, cpu);
 		line[MAX_PF_NAME - 1] = '\0';
 
@@ -310,15 +310,15 @@ int get_node_placement(int cpu_nr, int cpu_per_node[], int cpu2node[])
 
 			if (!strncmp(drd->d_name, "node", 4) && isdigit(drd->d_name[4])) {
 				node = atoi(drd->d_name + 4);
-				if ((node >= cpu_nr) || (node < 0)) {
+				if ((node >= nr_cpus) || (node < 0)) {
 					/* Assume we cannot have more nodes than CPU */
 					closedir(dir);
 					return -1;
 				}
 				cpu_per_node[node + 1]++;
 				cpu2node[cpu] = node;
-				if (node > node_nr) {
-					node_nr = node;
+				if (node > hi_node_nr) {
+					hi_node_nr = node;
 				}
 				/* Node placement found for current CPU: Go to next CPU directory */
 				break;
@@ -329,7 +329,7 @@ int get_node_placement(int cpu_nr, int cpu_per_node[], int cpu2node[])
 		closedir(dir);
 	}
 
-	return node_nr;
+	return hi_node_nr;
 }
 
 /*
