@@ -64,7 +64,6 @@ char procstr[MAX_COMM_LEN];
 int show_threads = FALSE;
 
 unsigned int pid_nr = 0;	/* Nb of PID to display */
-unsigned int pid_array_nr = 0;
 int cpu_nr = 0;			/* Nb of processors on the machine */
 unsigned long tlmkb;		/* Total memory in kB */
 long interval = -1;
@@ -888,12 +887,15 @@ unsigned int count_pid(void)
  * Count number of threads associated with the tasks entered on the command
  * line.
  *
+ * IN:
+ * @pid_array_nr	Length of the PID list.
+ *
  * RETURNS:
  * Number of threads (including the leading one) associated with every task
  * entered on the command line.
  ***************************************************************************
  */
-unsigned int count_tid_in_list(void)
+unsigned int count_tid_in_list(unsigned int pid_array_nr)
 {
 	unsigned int p, tid, pid = 0;
 
@@ -917,9 +919,12 @@ unsigned int count_tid_in_list(void)
 /*
  ***************************************************************************
  * Allocate and init structures according to system state.
+ *
+ * IN:
+ * @pid_array_nr	Length of the PID list.
  ***************************************************************************
  */
-void pid_sys_init(void)
+void pid_sys_init(unsigned int pid_array_nr)
 {
 	/* Init stat common counters */
 	init_stats();
@@ -934,7 +939,7 @@ void pid_sys_init(void)
 	}
 	else if (DISPLAY_TID(pidflag)) {
 		/* Count total number of threads associated with tasks in list */
-		pid_nr = count_tid_in_list() + NR_PID_PREALLOC;
+		pid_nr = count_tid_in_list(pid_array_nr) + NR_PID_PREALLOC;
 		salloc_pid(pid_nr);
 	}
 	else {
@@ -993,10 +998,11 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
  * Read various stats.
  *
  * IN:
- * @curr	Index in array for current sample statistics.
+ * @curr		Index in array for current sample statistics.
+ * @pid_array_nr	Length of the PID list.
  ***************************************************************************
  */
-void read_stats(int curr)
+void read_stats(int curr, unsigned int pid_array_nr)
 {
 	DIR *dir;
 	struct dirent *drp;
@@ -2461,11 +2467,12 @@ int write_stats(int curr, int dis)
  * Main loop: Read and display PID stats.
  *
  * IN:
- * @dis_hdr	Set to TRUE if the header line must always be printed.
- * @rows	Number of rows of screen.
+ * @dis_hdr		Set to TRUE if the header line must always be printed.
+ * @rows		Number of rows of screen.
+ * @pid_array_nr	Length of the PID list.
  ***************************************************************************
  */
-void rw_pidstat_loop(int dis_hdr, int rows)
+void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 {
 	int curr = 1, dis = 1;
 	int again;
@@ -2476,7 +2483,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	/* Read system uptime */
 	read_uptime(&uptime_cs[0]);
-	read_stats(0);
+	read_stats(0, pid_array_nr);
 
 	if (DISPLAY_MEM(actflag)) {
 		/* Get total memory */
@@ -2523,7 +2530,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		read_uptime(&(uptime_cs[curr]));
 
 		/* Read stats */
-		read_stats(curr);
+		read_stats(curr, pid_array_nr);
 
 		if (!dis_hdr) {
 			dis = lines / rows;
@@ -2634,7 +2641,7 @@ int main(int argc, char **argv)
 {
 	int opt = 1, dis_hdr = -1;
 	int i;
-	unsigned int pid;
+	unsigned int pid, pid_array_nr = 0;
 	struct utsname header;
 	int rows = 23;
 	char *t;
@@ -2897,7 +2904,7 @@ int main(int argc, char **argv)
 	check_flags();
 
 	/* Init structures */
-	pid_sys_init();
+	pid_sys_init(pid_array_nr);
 
 	if (dis_hdr < 0) {
 		dis_hdr = 0;
@@ -2921,7 +2928,7 @@ int main(int argc, char **argv)
 			 PLAIN_OUTPUT);
 
 	/* Main loop */
-	rw_pidstat_loop(dis_hdr, rows);
+	rw_pidstat_loop(dis_hdr, rows, pid_array_nr);
 
 	/* Free structures */
 	free(pid_array);
