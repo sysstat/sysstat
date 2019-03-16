@@ -64,10 +64,8 @@ char group_name[MAX_NAME_LEN];
 /* Number of decimal places */
 int dplaces_nr = -1;
 
-int iodev_nr = 0;	/* Nb of devices and partitions found. Includes nb of device groups */
 int group_nr = 0;	/* Nb of device groups */
 int cpu_nr = 0;		/* Nb of processors on the machine */
-int dlist_idx = 0;	/* Nb of devices entered on the command line */
 int flags = 0;		/* Flag for common options and system state */
 unsigned int dm_major;	/* Device-mapper major number */
 
@@ -312,9 +310,12 @@ int update_dev_list(int *dlist_idx, char *device_name)
 /*
  ***************************************************************************
  * Allocate and init structures, according to system state.
+ *
+ * IN:
+ * @iodev_nr		Number of devices and partitions.
  ***************************************************************************
  */
-void io_sys_init(void)
+void io_sys_init(int *iodev_nr)
 {
 	/* Allocate and init stat common counters */
 	init_stats();
@@ -323,9 +324,9 @@ void io_sys_init(void)
 	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	/* Get number of block devices and partitions in /proc/diskstats */
-	if ((iodev_nr = get_diskstats_dev_nr(CNT_PART, CNT_ALL_DEV)) > 0) {
+	if ((*iodev_nr = get_diskstats_dev_nr(CNT_PART, CNT_ALL_DEV)) > 0) {
 		flags |= I_F_HAS_DISKSTATS;
-		iodev_nr += NR_DEV_PREALLOC;
+		*iodev_nr += NR_DEV_PREALLOC;
 	}
 
 	if (!HAS_DISKSTATS(flags) ||
@@ -337,9 +338,9 @@ void io_sys_init(void)
 		 */
 
 		/* Get number of block devices (and partitions) in sysfs */
-		if ((iodev_nr = get_sysfs_dev_nr(DISPLAY_PARTITIONS(flags))) > 0) {
+		if ((*iodev_nr = get_sysfs_dev_nr(DISPLAY_PARTITIONS(flags))) > 0) {
 			flags |= I_F_HAS_SYSFS;
-			iodev_nr += NR_DEV_PREALLOC;
+			*iodev_nr += NR_DEV_PREALLOC;
 		}
 		else {
 			fprintf(stderr, _("Cannot find disk data\n"));
@@ -348,14 +349,14 @@ void io_sys_init(void)
 	}
 
 	/* Also allocate stat structures for "group" devices */
-	iodev_nr += group_nr;
+	*iodev_nr += group_nr;
 
 	/*
 	 * Allocate structures for number of disks found, but also
 	 * for groups of devices if option -g has been entered on the command line.
 	 * iodev_nr must be <> 0.
 	 */
-	salloc_device(iodev_nr);
+	salloc_device(*iodev_nr);
 }
 
 /*
@@ -368,9 +369,13 @@ void io_sys_init(void)
  * proper group.
  * Note that we can still have an unexpected device that gets attached to a
  * group as devices can be registered or unregistered dynamically.
+ *
+ * IN:
+ * @iodev_nr	Number of devices and partitions.
+ * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void presave_device_list(void)
+void presave_device_list(int iodev_nr, int dlist_idx)
 {
 	int i;
 	struct io_hdr_stats *shi = st_hdr_iodev;
@@ -504,12 +509,13 @@ void save_stats(char *name, int curr, void *st_io, int iodev_nr,
  * @curr	Index in array for current sample statistics.
  * @filename	File name where stats will be read.
  * @dev_name	Device or partition name.
+ * @iodev_nr	Number of devices and partitions.
  *
  * RETURNS:
  * 0 if file couldn't be opened, 1 otherwise.
  ***************************************************************************
  */
-int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
+int read_sysfs_file_stat(int curr, char *filename, char *dev_name, int iodev_nr)
 {
 	FILE *fp;
 	struct io_stats sdev;
@@ -580,9 +586,10 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name)
  * IN:
  * @curr	Index in array for current sample statistics.
  * @dev_name	Device name.
+ * @iodev_nr		Number of devices and partitions.
  ***************************************************************************
  */
-void read_sysfs_dlist_part_stat(int curr, char *dev_name)
+void read_sysfs_dlist_part_stat(int curr, char *dev_name, int iodev_nr)
 {
 	DIR *dir;
 	struct dirent *drd;
@@ -603,7 +610,7 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name)
 		filename[sizeof(filename) - 1] = '\0';
 
 		/* Read current partition stats */
-		read_sysfs_file_stat(curr, filename, drd->d_name);
+		read_sysfs_file_stat(curr, filename, drd->d_name, iodev_nr);
 	}
 
 	/* Close device directory */
@@ -617,9 +624,11 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ * @iodev_nr	Number of devices and partitions.
+ * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void read_sysfs_dlist_stat(int curr)
+void read_sysfs_dlist_stat(int curr, int iodev_nr, int dlist_idx)
 {
 	int dev, ok;
 	char filename[MAX_PF_NAME];
@@ -642,11 +651,11 @@ void read_sysfs_dlist_stat(int curr)
 		filename[MAX_PF_NAME - 1] = '\0';
 
 		/* Read device stats */
-		ok = read_sysfs_file_stat(curr, filename, st_dev_list_i->dev_name);
+		ok = read_sysfs_file_stat(curr, filename, st_dev_list_i->dev_name, iodev_nr);
 
 		if (ok && st_dev_list_i->disp_part) {
 			/* Also read stats for its partitions */
-			read_sysfs_dlist_part_stat(curr, st_dev_list_i->dev_name);
+			read_sysfs_dlist_part_stat(curr, st_dev_list_i->dev_name, iodev_nr);
 		}
 	}
 
@@ -660,9 +669,10 @@ void read_sysfs_dlist_stat(int curr)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ * @iodev_nr		Number of devices and partitions.
  ***************************************************************************
  */
-void read_sysfs_stat(int curr)
+void read_sysfs_stat(int curr, int iodev_nr)
 {
 	DIR *dir;
 	struct dirent *drd;
@@ -684,14 +694,14 @@ void read_sysfs_stat(int curr)
 			filename[MAX_PF_NAME - 1] = '\0';
 
 			/* If current entry is a directory, try to read its stat file */
-			ok = read_sysfs_file_stat(curr, filename, drd->d_name);
+			ok = read_sysfs_file_stat(curr, filename, drd->d_name, iodev_nr);
 
 			/*
 			 * If '-p ALL' was entered on the command line,
 			 * also try to read stats for its partitions
 			 */
 			if (ok && DISPLAY_PART_ALL(flags)) {
-				read_sysfs_dlist_part_stat(curr, drd->d_name);
+				read_sysfs_dlist_part_stat(curr, drd->d_name, iodev_nr);
 			}
 		}
 
@@ -709,9 +719,11 @@ void read_sysfs_stat(int curr)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ * @iodev_nr	Number of devices and partitions.
+ * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void read_diskstats_stat(int curr)
+void read_diskstats_stat(int curr, int iodev_nr, int dlist_idx)
 {
 	FILE *fp;
 	char line[256], dev_name[MAX_NAME_LEN];
@@ -821,9 +833,10 @@ void read_diskstats_stat(int curr)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ * @iodev_nr		Number of devices and partitions.
  ***************************************************************************
  */
-void compute_device_groups_stats(int curr)
+void compute_device_groups_stats(int curr, int iodev_nr)
 {
 	struct io_stats gdev, *ioi;
 	struct io_hdr_stats *shi = st_hdr_iodev;
@@ -1657,9 +1670,11 @@ void write_basic_stat(unsigned long long itv, int fctr,
  * IN:
  * @curr	Index in array for current sample statistics.
  * @rectime	Current date and time.
+ * @iodev_nr	Number of devices and partitions.
+ * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void write_stats(int curr, struct tm *rectime)
+void write_stats(int curr, struct tm *rectime, int iodev_nr, int dlist_idx)
 {
 	int dev, h, hl = 0, hh = 0, i, fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
@@ -1825,9 +1840,11 @@ void write_stats(int curr, struct tm *rectime)
  * IN:
  * @count	Number of reports to print.
  * @rectime	Current date and time.
+ * @iodev_nr	Number of devices and partitions.
+ * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void rw_io_stat_loop(long int count, struct tm *rectime)
+void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist_idx)
 {
 	int curr = 1;
 	int skip = 0;
@@ -1865,10 +1882,10 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			 * (but not -p ALL).
 			 */
 			if (HAS_DISKSTATS(flags) && !DISPLAY_PARTITIONS(flags)) {
-				read_diskstats_stat(curr);
+				read_diskstats_stat(curr, iodev_nr, dlist_idx);
 			}
 			else if (HAS_SYSFS(flags)) {
-				read_sysfs_dlist_stat(curr);
+				read_sysfs_dlist_stat(curr, iodev_nr, dlist_idx);
 			}
 		}
 		else {
@@ -1877,16 +1894,16 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			 * (for example if -p ALL was used).
 			 */
 			if (HAS_DISKSTATS(flags)) {
-				read_diskstats_stat(curr);
+				read_diskstats_stat(curr, iodev_nr, dlist_idx);
 			}
 			else if (HAS_SYSFS(flags)) {
-				read_sysfs_stat(curr);
+				read_sysfs_stat(curr, iodev_nr);
 			}
 		}
 
 		/* Compute device groups stats */
 		if (group_nr > 0) {
-			compute_device_groups_stats(curr);
+			compute_device_groups_stats(curr, iodev_nr);
 		}
 
 		/* Get time */
@@ -1895,7 +1912,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		/* Check whether we should skip first report */
 		if (!skip) {
 			/* Print results */
-			write_stats(curr, rectime);
+			write_stats(curr, rectime, iodev_nr, dlist_idx);
 
 			if (count > 0) {
 				count--;
@@ -1933,6 +1950,11 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
  */
 int main(int argc, char **argv)
 {
+	/* Nb of devices and partitions found. Includes nb of device groups */
+	int iodev_nr = 0;
+	/* Nb of devices entered on the command line */
+	int dlist_idx = 0;
+
 	int it = 0;
 	int opt = 1;
 	int i, report_set = FALSE;
@@ -2249,13 +2271,13 @@ int main(int argc, char **argv)
 	}
 
 	/* Init structures according to machine architecture */
-	io_sys_init();
+	io_sys_init(&iodev_nr);
 	if (group_nr > 0) {
 		/*
 		 * If groups of devices have been defined
 		 * then save devices and groups in the list.
 		 */
-		presave_device_list();
+		presave_device_list(iodev_nr, dlist_idx);
 	}
 
 	get_localtime(&rectime, 0);
@@ -2272,7 +2294,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Main loop */
-	rw_io_stat_loop(count, &rectime);
+	rw_io_stat_loop(count, &rectime, iodev_nr, dlist_idx);
 
 	/* Free structures */
 	io_sys_free();
