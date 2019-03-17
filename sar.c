@@ -48,7 +48,7 @@ char *sccsid(void) { return (SCCSID); }
 long interval = -1, count = 0;
 
 /* TRUE if a header line must be printed */
-int dis = TRUE;
+int dish = TRUE;
 /* TRUE if data read from file don't match current machine's endianness */
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
@@ -548,7 +548,7 @@ void write_stats_startup(int curr)
 	}
 
 	flags |= S_F_SINCE_BOOT;
-	dis = TRUE;
+	dish = TRUE;
 
 	write_stats(curr, USE_SADC, &count, NO_TM_START, NO_TM_END, NO_RESET,
 		    ALL_ACTIVITIES, TRUE);
@@ -786,10 +786,10 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 
 		if ((lines >= rows) || !lines) {
 			lines = 0;
-			dis = 1;
+			dish = 1;
 		}
 		else
-			dis = 0;
+			dish = 0;
 
 		if (!*eosaf && (rtype != R_RESTART)) {
 
@@ -1199,8 +1199,8 @@ void read_stats(void)
 
 		/* Print results */
 		if (!dis_hdr) {
-			dis = lines / rows;
-			if (dis) {
+			dish = lines / rows;
+			if (dish) {
 				lines %= rows;
 			}
 			lines++;
@@ -1228,7 +1228,7 @@ void read_stats(void)
 	 * At least one line of stats must have been displayed for this.
 	 * (There may be no lines at all if we press Ctrl/C immediately).
 	 */
-	dis = dis_hdr;
+	dish = dis_hdr;
 	if (avg_count) {
 		write_stats_avg(curr, USE_SADC, ALL_ACTIVITIES);
 	}
