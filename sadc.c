@@ -57,7 +57,6 @@ char *sccsid(void) { return (SCCSID); }
 long interval = 0;
 unsigned int flags = 0;
 
-int dis;
 int optz = 0;
 char timestamp[2][TIMESTAMP_LEN];
 
