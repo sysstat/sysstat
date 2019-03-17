@@ -126,18 +126,18 @@ void init_structures(void)
  * Look for output format in array.
  *
  * IN:
- * @format	Output format to look for.
+ * @oformat	Output format to look for.
  *
  * RETURNS:
  * Position of output format in array.
  ***************************************************************************
  */
-int get_format_position(unsigned int format)
+int get_format_position(unsigned int oformat)
 {
         int i;
 
         for (i = 0; i < NR_FMT; i++) {
-                if (fmt[i]->id == format)
+                if (fmt[i]->id == oformat)
                         break;
         }
 
