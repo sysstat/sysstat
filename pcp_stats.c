@@ -485,6 +485,39 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr, unsigned lo
 
 /*
  ***************************************************************************
+ * Display kernel tables statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_ktables_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_ktables
+		*skc = (struct stats_ktables *) a->buf[curr];
+
+	snprintf(buf, sizeof(buf), "%llu", skc->dentry_stat);
+	pmiPutValue("vfs.dentry.count", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", skc->file_used);
+	pmiPutValue("vfs.files.count", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", skc->inode_used);
+	pmiPutValue("vfs.inodes.count", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", skc->pty_nr);
+	pmiPutValue("kernel.all.pty", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display queue and load statistics in PCP format
  *
  * IN:

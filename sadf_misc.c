@@ -525,6 +525,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_memory_metrics(act[p]);
 					break;
 
+				case A_KTABLES:
+					pcp_def_ktables_metrics();
+					break;
+
 				case A_QUEUE:
 					pcp_def_queue_metrics();
 					break;

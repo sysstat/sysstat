@@ -391,6 +391,32 @@ void pcp_def_memory_metrics(struct activity *a)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for kernel tables statistics.
+ ***************************************************************************
+ */
+void pcp_def_ktables_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("vfs.dentry.count",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("vfs.files.count",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("vfs.inodes.count",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("kernel.all.pty",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for queue and load statistics.
  ***************************************************************************
  */

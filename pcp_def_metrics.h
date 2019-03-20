@@ -19,6 +19,7 @@ void pcp_def_swap_metrics(void);
 void pcp_def_paging_metrics(void);
 void pcp_def_io_metrics(void);
 void pcp_def_memory_metrics(struct activity *);
+void pcp_def_ktables_metrics(void);
 void pcp_def_queue_metrics(void);
 
 #endif /* _PCP_DEF_METRICS_H */

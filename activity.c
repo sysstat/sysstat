@@ -417,6 +417,7 @@ struct activity ktables_act = {
 	.f_json_print	= json_print_ktables_stats,
 	.f_svg_print	= svg_print_ktables_stats,
 	.f_raw_print	= raw_print_ktables_stats,
+	.f_pcp_print	= pcp_print_ktables_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Kernel tables statistics",
