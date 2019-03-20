@@ -269,6 +269,60 @@ __print_funct_t pcp_print_swap_stats(struct activity *a, int curr, unsigned long
 
 /*
  ***************************************************************************
+ * Display paging statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_paging_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_paging
+		*spc = (struct stats_paging *) a->buf[curr],
+		*spp = (struct stats_paging *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgpgin, spc->pgpgin, itv));
+	pmiPutValue("mem.vmstat.pgpgin", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgpgout, spc->pgpgout, itv));
+	pmiPutValue("mem.vmstat.pgpgout", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgfault, spc->pgfault, itv));
+	pmiPutValue("mem.vmstat.pgfault", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgmajfault, spc->pgmajfault, itv));
+	pmiPutValue("mem.vmstat.pgmajfault", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgfree, spc->pgfree, itv));
+	pmiPutValue("mem.vmstat.pgfree", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv));
+	pmiPutValue("mem.vmstat.pgscank", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv));
+	pmiPutValue("mem.vmstat.pgscand", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(spp->pgsteal, spc->pgsteal, itv));
+	pmiPutValue("mem.vmstat.pgsteal", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display I/O and transfer rate statistics in PCP format.
  *
  * IN:

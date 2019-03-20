@@ -513,6 +513,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_swap_metrics();
 					break;
 
+				case A_PAGE:
+					pcp_def_paging_metrics();
+					break;
+
 				case A_IO:
 					pcp_def_io_metrics();
 					break;
