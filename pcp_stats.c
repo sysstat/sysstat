@@ -213,6 +213,32 @@ __print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr, unsigned long
 
 /*
  ***************************************************************************
+ * Display interrupts statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_irq_stats(struct activity *a, int curr, unsigned long long itv,
+				    struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_irq
+		*sic = (struct stats_irq *) a->buf[curr],
+		*sip = (struct stats_irq *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+	pmiPutValue("kernel.all.intr", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display memory statistics in PCP format.
  *
  * IN:

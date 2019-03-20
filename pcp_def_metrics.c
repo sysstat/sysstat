@@ -167,6 +167,26 @@ void pcp_def_pcsw_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for interrupts statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_irq_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	if (a->bitmap->b_array[0] & 1) {
+		/* Interrupt "sum" */
+		pmiAddMetric("kernel.all.intr",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	}
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for memory statistics.
  *
  * IN:

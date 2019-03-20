@@ -14,6 +14,7 @@
 
 void pcp_def_cpu_metrics(struct activity *);
 void pcp_def_pcsw_metrics(void);
+void pcp_def_irq_metrics(struct activity *);
 void pcp_def_memory_metrics(struct activity *);
 void pcp_def_queue_metrics(void);
 
