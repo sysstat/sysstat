@@ -149,7 +149,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 
 /*
  ***************************************************************************
- * Define PCP metrics for queue and load statistics.
+ * Define PCP metrics for task creation and context switch statistics.
  ***************************************************************************
  */
 void pcp_def_pcsw_metrics(void)
