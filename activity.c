@@ -231,6 +231,7 @@ struct activity swap_act = {
 	.f_json_print	= json_print_swap_stats,
 	.f_svg_print	= svg_print_swap_stats,
 	.f_raw_print	= raw_print_swap_stats,
+	.f_pcp_print	= pcp_print_swap_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Swap activity",

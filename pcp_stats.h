@@ -19,6 +19,8 @@ __print_funct_t pcp_print_pcsw_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_irq_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_swap_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_memory_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_queue_stats

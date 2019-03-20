@@ -239,6 +239,36 @@ __print_funct_t pcp_print_irq_stats(struct activity *a, int curr, unsigned long 
 
 /*
  ***************************************************************************
+ * Display swapping statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_swap_stats(struct activity *a, int curr, unsigned long long itv,
+				     struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_swap
+		*ssc = (struct stats_swap *) a->buf[curr],
+		*ssp = (struct stats_swap *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(ssp->pswpin, ssc->pswpin, itv));
+	pmiPutValue("swap.pagesin", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(ssp->pswpout, ssc->pswpout, itv));
+	pmiPutValue("swap.pagesout", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display memory statistics in PCP format.
  *
  * IN:

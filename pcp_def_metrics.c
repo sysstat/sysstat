@@ -187,6 +187,24 @@ void pcp_def_irq_metrics(struct activity *a)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for swapping statistics.
+ ***************************************************************************
+ */
+void pcp_def_swap_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("swap.pagesin",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("swap.pagesout",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for memory statistics.
  *
  * IN:
