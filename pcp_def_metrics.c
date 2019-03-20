@@ -167,6 +167,112 @@ void pcp_def_pcsw_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for memory statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_memory_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	if (DISPLAY_MEMORY(a->opt_flags)) {
+
+		pmiAddMetric("mem.util.free",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.available",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.used",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.used_pct",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("mem.util.buffers",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.cached",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.commit",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.commit_pct",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("mem.util.active",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.inactive",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.dirty",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		if (DISPLAY_MEM_ALL(a->opt_flags)) {
+
+			pmiAddMetric("mem.util.anonpages",
+				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+			pmiAddMetric("mem.util.slab",
+				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+			pmiAddMetric("mem.util.stack",
+				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+			pmiAddMetric("mem.util.pageTables",
+				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+			pmiAddMetric("mem.util.vmused",
+				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+		}
+	}
+
+	if (DISPLAY_SWAP(a->opt_flags)) {
+
+		pmiAddMetric("mem.util.swapFree",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.swapUsed",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.swapUsed_pct",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("mem.util.swapCached",
+			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+
+		pmiAddMetric("mem.util.swapCached_pct",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+	}
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for queue and load statistics.
  ***************************************************************************
  */
