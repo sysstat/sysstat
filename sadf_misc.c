@@ -513,6 +513,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_swap_metrics();
 					break;
 
+				case A_IO:
+					pcp_def_io_metrics();
+					break;
+
 				case A_MEMORY:
 					pcp_def_memory_metrics(act[p]);
 					break;

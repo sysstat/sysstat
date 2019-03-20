@@ -205,6 +205,44 @@ void pcp_def_swap_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for I/O and transfer rate statistics.
+ ***************************************************************************
+ */
+void pcp_def_io_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("disk.all.total",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("disk.all.read",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("disk.all.write",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("disk.all.discard",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("disk.all.read_bytes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, -1, 1, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+	pmiAddMetric("disk.all.write_bytes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, -1, 1, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+	pmiAddMetric("disk.all.discard_bytes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, -1, 1, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for memory statistics.
  *
  * IN:

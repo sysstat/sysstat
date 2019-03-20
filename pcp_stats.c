@@ -269,6 +269,63 @@ __print_funct_t pcp_print_swap_stats(struct activity *a, int curr, unsigned long
 
 /*
  ***************************************************************************
+ * Display I/O and transfer rate statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_io_stats(struct activity *a, int curr, unsigned long long itv,
+				   struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_io
+		*sic = (struct stats_io *) a->buf[curr],
+		*sip = (struct stats_io *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive < sip->dk_drive ? 0.0
+					       : S_VALUE(sip->dk_drive, sic->dk_drive, itv));
+	pmiPutValue("disk.all.total", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive_rio < sip->dk_drive_rio ? 0.0
+						       : S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv));
+	pmiPutValue("disk.all.read", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive_wio < sip->dk_drive_wio ? 0.0
+						       : S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv));
+	pmiPutValue("disk.all.write", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive_dio < sip->dk_drive_dio ? 0.0
+						       : S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv));
+	pmiPutValue("disk.all.discard", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0
+							 : S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv) / 2);
+	pmiPutValue("disk.all.read_bytes", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0
+							 : S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv) / 2);
+	pmiPutValue("disk.all.write_bytes", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0
+							 : S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv) / 2);
+	pmiPutValue("disk.all.discard_bytes", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display memory statistics in PCP format.
  *
  * IN:
