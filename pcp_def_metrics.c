@@ -424,6 +424,7 @@ void pcp_def_queue_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmInDom indom;
+
 	pmiAddMetric("proc.runq.runnable",
 		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
@@ -473,7 +474,7 @@ void pcp_def_net_dev_metrics(struct activity *a)
 	}
 
 	if (a->id == A_NET_DEV) {
-		/* Creating metrics for A_NET_DEV */
+		/* Create metrics for A_NET_DEV */
 		pmiAddMetric("network.interface.in.packets",
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
@@ -507,7 +508,7 @@ void pcp_def_net_dev_metrics(struct activity *a)
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 	else {
-		/* Creating metrics for A_NET_EDEV */
+		/* Create metrics for A_NET_EDEV */
 		pmiAddMetric("network.interface.in.errors",
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
