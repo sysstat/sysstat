@@ -23,4 +23,10 @@ void pcp_def_ktables_metrics(void);
 void pcp_def_queue_metrics(void);
 void pcp_def_net_dev_metrics(struct activity *);
 
+/* Define domains number */
+#define PM_INDOM_CPU		0
+#define PM_INDOM_QUEUE		1
+#define PM_INDOM_NET_DEV	2
+
+
 #endif /* _PCP_DEF_METRICS_H */

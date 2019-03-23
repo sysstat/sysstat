@@ -21,6 +21,7 @@
 
 #include "common.h"
 #include "sa.h"
+#include "pcp_def_metrics.h"
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
@@ -97,7 +98,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 		}
 		else {
 			if (i == 1) {
-				indom = pmInDom_build(0, 0);
+				indom = pmInDom_build(0, PM_INDOM_CPU);
 
 				pmiAddMetric("kernel.percpu.cpu.user",
 					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
@@ -435,7 +436,7 @@ void pcp_def_queue_metrics(void)
 		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	indom = pmInDom_build(0, 1);
+	indom = pmInDom_build(0, PM_INDOM_QUEUE);
 	pmiAddMetric("kernel.all.load",
 		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
@@ -462,7 +463,7 @@ void pcp_def_net_dev_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, 2);
+		indom = pmInDom_build(0, PM_INDOM_NET_DEV);
 
 		/* Create instances */
 		while (list != NULL) {
