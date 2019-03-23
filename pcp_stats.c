@@ -554,3 +554,161 @@ __print_funct_t pcp_print_queue_stats(struct activity *a, int curr, unsigned lon
 	pmiPutValue("kernel.all.load", "15 min", buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display network interfaces statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i, j;
+	struct stats_net_dev *sndc, *sndp, sndzero;
+	double rxkb, txkb, ifutil;
+	char buf[64];
+
+	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, sndc->interface))
+				/* Device not found */
+				continue;
+		}
+
+		j = check_net_dev_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sndp = &sndzero;
+		}
+		else {
+			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
+
+		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
+		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
+		ifutil = compute_ifutil(sndc, rxkb, txkb);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv));
+		pmiPutValue("network.interface.in.packets", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv));
+		pmiPutValue("network.interface.out.packets", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f", rxkb / 1024);
+		pmiPutValue("network.interface.in.bytes", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f", txkb / 1024);
+		pmiPutValue("network.interface.out.bytes", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv));
+		pmiPutValue("network.interface.in.compressed", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv));
+		pmiPutValue("network.interface.out.compressed", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sndp->multicast, sndc->multicast, itv));
+		pmiPutValue("network.interface.in.multicast", sndc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f", ifutil);
+		pmiPutValue("network.interface.util", sndc->interface, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Display network interfaces errors statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i, j;
+	struct stats_net_edev *snedc, *snedp, snedzero;
+	char buf[64];
+
+	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, snedc->interface))
+				/* Device not found */
+				continue;
+		}
+
+		j = check_net_edev_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			snedp = &snedzero;
+		}
+		else {
+			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+		}
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->rx_errors, snedc->rx_errors, itv));
+		pmiPutValue("network.interface.in.errors", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->tx_errors, snedc->tx_errors, itv));
+		pmiPutValue("network.interface.out.errors", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->collisions, snedc->collisions, itv));
+		pmiPutValue("network.interface.out.collisions", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->rx_dropped, snedc->rx_dropped, itv));
+		pmiPutValue("network.interface.in.drops", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->tx_dropped, snedc->tx_dropped, itv));
+		pmiPutValue("network.interface.out.drops", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->tx_carrier_errors, snedc->tx_carrier_errors, itv));
+		pmiPutValue("network.interface.out.carrier", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv));
+		pmiPutValue("network.interface.in.frame", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->rx_fifo_errors, snedc->rx_fifo_errors, itv));
+		pmiPutValue("network.interface.in.fifo", snedc->interface, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(snedp->tx_fifo_errors, snedc->tx_fifo_errors, itv));
+		pmiPutValue("network.interface.out.fifo", snedc->interface, buf);
+	}
+#endif	/* HAVE_PCP */
+}

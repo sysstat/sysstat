@@ -446,3 +446,103 @@ void pcp_def_queue_metrics(void)
 #endif /* HAVE_PCP */
 }
 
+/*
+ ***************************************************************************
+ * Define PCP metrics for network interfaces (errors) statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_dev_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int inst = 0;
+	static pmInDom indom = PM_INDOM_NULL;
+	struct sa_item *list = a->item_list;
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(0, 2);
+
+		/* Create instances */
+		while (list != NULL) {
+			pmiAddInstance(indom, list->item_name, inst++);
+			list = list->next;
+		}
+	}
+
+	if (a->id == A_NET_DEV) {
+		/* Creating metrics for A_NET_DEV */
+		pmiAddMetric("network.interface.in.packets",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.packets",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.in.bytes",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+		pmiAddMetric("network.interface.out.bytes",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+		pmiAddMetric("network.interface.in.compressed",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.compressed",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.in.multicast",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.util",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+	}
+	else {
+		/* Creating metrics for A_NET_EDEV */
+		pmiAddMetric("network.interface.in.errors",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.errors",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.collisions",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.in.drops",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.drops",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.carrier",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.in.frame",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.in.fifo",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("network.interface.out.fifo",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	}
+#endif /* HAVE_PCP */
+}

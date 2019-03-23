@@ -1021,6 +1021,11 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 		setlocale(LC_NUMERIC, "C");
 	}
 
+	/* Count items in file. Needed only for PCP output */
+	if (format == F_PCP_OUTPUT) {
+		count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime);
+	}
+
 	/* Save current file position */
 	seek_file_position(ifd, DO_SAVE);
 
