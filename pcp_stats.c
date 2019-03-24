@@ -792,3 +792,49 @@ __print_funct_t pcp_print_serial_stats(struct activity *a, int curr, unsigned lo
 	}
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display NFS client statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_nfs_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_nfs
+		*snnc = (struct stats_net_nfs *) a->buf[curr],
+		*snnp = (struct stats_net_nfs *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snnp->nfs_rpccnt, snnc->nfs_rpccnt, itv));
+	pmiPutValue("network.fs.client.call", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snnp->nfs_rpcretrans, snnc->nfs_rpcretrans, itv));
+	pmiPutValue("network.fs.client.retrans", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snnp->nfs_readcnt, snnc->nfs_readcnt, itv));
+	pmiPutValue("network.fs.client.read", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snnp->nfs_writecnt, snnc->nfs_writecnt, itv));
+	pmiPutValue("network.fs.client.write", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snnp->nfs_accesscnt, snnc->nfs_accesscnt, itv));
+	pmiPutValue("network.fs.client.access", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snnp->nfs_getattcnt, snnc->nfs_getattcnt, itv));
+	pmiPutValue("network.fs.client.getatt", NULL, buf);
+#endif	/* HAVE_PCP */
+}

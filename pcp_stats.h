@@ -37,5 +37,7 @@ __print_funct_t pcp_print_net_dev_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_net_edev_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_nfs_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
 
 #endif /* _PCP_STATS_H */
