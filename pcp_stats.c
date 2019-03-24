@@ -838,3 +838,69 @@ __print_funct_t pcp_print_net_nfs_stats(struct activity *a, int curr, unsigned l
 	pmiPutValue("network.fs.client.getatt", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display NFS server statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_nfsd_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_nfsd
+		*snndc = (struct stats_net_nfsd *) a->buf[curr],
+		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_rpccnt, snndc->nfsd_rpccnt, itv));
+	pmiPutValue("network.fs.server.call", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_rpcbad, snndc->nfsd_rpcbad, itv));
+	pmiPutValue("network.fs.server.badcall", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_netcnt, snndc->nfsd_netcnt, itv));
+	pmiPutValue("network.fs.server.packets", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_netudpcnt, snndc->nfsd_netudpcnt, itv));
+	pmiPutValue("network.fs.server.udp", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_nettcpcnt, snndc->nfsd_nettcpcnt, itv));
+	pmiPutValue("network.fs.server.tcp", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_rchits, snndc->nfsd_rchits, itv));
+	pmiPutValue("network.fs.server.hits", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_rcmisses, snndc->nfsd_rcmisses, itv));
+	pmiPutValue("network.fs.server.misses", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_readcnt, snndc->nfsd_readcnt, itv));
+	pmiPutValue("network.fs.server.read", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_writecnt, snndc->nfsd_writecnt, itv));
+	pmiPutValue("network.fs.server.write", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_accesscnt, snndc->nfsd_accesscnt, itv));
+	pmiPutValue("network.fs.server.access", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snndp->nfsd_getattcnt, snndc->nfsd_getattcnt, itv));
+	pmiPutValue("network.fs.server.getattr", NULL, buf);
+#endif	/* HAVE_PCP */
+}
