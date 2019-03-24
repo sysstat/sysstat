@@ -835,7 +835,7 @@ __print_funct_t pcp_print_net_nfs_stats(struct activity *a, int curr, unsigned l
 
 	snprintf(buf, sizeof(buf), "%f",
 		S_VALUE(snnp->nfs_getattcnt, snnc->nfs_getattcnt, itv));
-	pmiPutValue("network.fs.client.getatt", NULL, buf);
+	pmiPutValue("network.fs.client.getattr", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 

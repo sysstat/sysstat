@@ -627,7 +627,7 @@ void pcp_def_net_nfs_metrics(void)
 		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.client.getatt",
+	pmiAddMetric("network.fs.client.getattr",
 		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
