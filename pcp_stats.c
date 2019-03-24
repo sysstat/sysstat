@@ -712,3 +712,83 @@ __print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr, unsigned 
 	}
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display serial lines statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_serial_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i, j, j0, found;
+	char buf[64], serialno[64];
+	struct stats_serial *ssc, *ssp;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		found = FALSE;
+
+		if (a->nr[!curr] > 0) {
+			ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
+
+			/* Look for corresponding serial line in previous iteration */
+			j = i;
+
+			if (j >= a->nr[!curr]) {
+				j = a->nr[!curr] - 1;
+			}
+
+			j0 = j;
+
+			do {
+				ssp = (struct stats_serial *) ((char *) a->buf[!curr] + j * a->msize);
+				if (ssc->line == ssp->line) {
+					found = TRUE;
+					break;
+				}
+				if (++j >= a->nr[!curr]) {
+					j = 0;
+				}
+			}
+			while (j != j0);
+		}
+
+		if (!found)
+			continue;
+
+		sprintf(serialno, "serial%d", ssc->line);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssp->rx, ssc->rx, itv));
+		pmiPutValue("serial.in.interrupts", serialno, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssp->tx, ssc->tx, itv));
+		pmiPutValue("serial.out.interrupts", serialno, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssp->frame, ssc->frame, itv));
+		pmiPutValue("serial.frame", serialno, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssp->parity, ssc->parity, itv));
+		pmiPutValue("serial.parity", serialno, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssp->brk, ssc->brk, itv));
+		pmiPutValue("serial.breaks", serialno, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssp->overrun, ssc->overrun, itv));
+		pmiPutValue("serial.overrun", serialno, buf);
+	}
+#endif	/* HAVE_PCP */
+}

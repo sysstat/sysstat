@@ -547,3 +547,54 @@ void pcp_def_net_dev_metrics(struct activity *a)
 	}
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for serial lines statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_serial_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int i;
+	pmInDom indom;
+	char buf[64];
+
+	/* Create domain */
+	indom = pmInDom_build(0, PM_INDOM_SERIAL);
+
+	/* Create metrics */
+	pmiAddMetric("serial.in.interrupts",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("serial.out.interrupts",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("serial.frame",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("serial.parity",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("serial.breaks",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("serial.overrun",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	for (i = 0; i < a->nr_ini; i++) {
+		/* Create instances */
+		sprintf(buf, "serial%d", i);
+		pmiAddInstance(indom, buf, i);
+	}
+#endif /* HAVE_PCP */
+}
