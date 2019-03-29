@@ -25,6 +25,8 @@ void pcp_def_serial_metrics(struct activity *);
 void pcp_def_net_dev_metrics(struct activity *);
 void pcp_def_net_nfs_metrics(void);
 void pcp_def_net_nfsd_metrics(void);
+void pcp_def_net_ip_metrics(void);
+void pcp_def_net_eip_metrics(void);
 
 /* Define domains number */
 #define PM_INDOM_CPU		0

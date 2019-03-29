@@ -686,3 +686,87 @@ void pcp_def_net_nfsd_metrics(void)
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for IP network statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_ip_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.snmp.ip.ipInReceives",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipForwDatagrams",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipInDelivers",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipOutRequests",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipReasmReqds",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipReasmOKs",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipFragOKs",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipFragCreates",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for IP network errors statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_eip_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.snmp.ip.ipInHdrErrors",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipInAddrErrors",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipInUnknownProtos",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipInDiscards",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipOutDiscards",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipOutNoRoutes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipReasmFails",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.ip.ipFragFails",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}

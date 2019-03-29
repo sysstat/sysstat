@@ -904,3 +904,111 @@ __print_funct_t pcp_print_net_nfsd_stats(struct activity *a, int curr, unsigned 
 	pmiPutValue("network.fs.server.getattr", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display IP network statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_ip_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_ip
+		*snic = (struct stats_net_ip *) a->buf[curr],
+		*snip = (struct stats_net_ip *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InReceives, snic->InReceives, itv));
+	pmiPutValue("network.snmp.ip.ipInReceives", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->ForwDatagrams, snic->ForwDatagrams, itv));
+	pmiPutValue("network.snmp.ip.ipForwDatagrams", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InDelivers, snic->InDelivers, itv));
+	pmiPutValue("network.snmp.ip.ipInDelivers", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutRequests, snic->OutRequests, itv));
+	pmiPutValue("network.snmp.ip.ipOutRequests", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->ReasmReqds, snic->ReasmReqds, itv));
+	pmiPutValue("network.snmp.ip.ipReasmReqds", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->ReasmOKs, snic->ReasmOKs, itv));
+	pmiPutValue("network.snmp.ip.ipReasmOKs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->FragOKs, snic->FragOKs, itv));
+	pmiPutValue("network.snmp.ip.ipFragOKs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->FragCreates, snic->FragCreates, itv));
+	pmiPutValue("network.snmp.ip.ipFragCreates", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Display IP network errors statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_eip_stats(struct activity *a, int curr, unsigned long long itv,
+				        struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_eip
+		*sneic = (struct stats_net_eip *) a->buf[curr],
+		*sneip = (struct stats_net_eip *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InHdrErrors, sneic->InHdrErrors, itv));
+	pmiPutValue("network.snmp.ip.ipInHdrErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InAddrErrors, sneic->InAddrErrors, itv));
+	pmiPutValue("network.snmp.ip.ipInAddrErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InUnknownProtos, sneic->InUnknownProtos, itv));
+	pmiPutValue("network.snmp.ip.ipInUnknownProtos", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InDiscards, sneic->InDiscards, itv));
+	pmiPutValue("network.snmp.ip.ipInDiscards", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutDiscards, sneic->OutDiscards, itv));
+	pmiPutValue("network.snmp.ip.ipOutDiscards", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutNoRoutes, sneic->OutNoRoutes, itv));
+	pmiPutValue("network.snmp.ip.ipOutNoRoutes", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->ReasmFails, sneic->ReasmFails, itv));
+	pmiPutValue("network.snmp.ip.ipReasmFails", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->FragFails, sneic->FragFails, itv));
+	pmiPutValue("network.snmp.ip.ipFragFails", NULL, buf);
+#endif	/* HAVE_PCP */
+}

@@ -41,5 +41,9 @@ __print_funct_t pcp_print_net_nfs_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_net_nfsd_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_ip_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_eip_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
 
 #endif /* _PCP_STATS_H */
