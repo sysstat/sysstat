@@ -1012,7 +1012,8 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 			 char *pcparchive, struct file_magic *file_magic,
 			 struct tm *rectime, struct tm *loctime)
 {
-	int curr, tab = 0, rtype;
+	struct log1_parm parm;
+	int curr, rtype;
 	int eosaf, next, reset = FALSE;
 	long cnt = 1;
 
@@ -1029,15 +1030,18 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Save current file position */
 	seek_file_position(ifd, DO_SAVE);
 
+	parm.tab = 0;
+	parm.flags = flags;
+
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_BEGIN, pcparchive, file_magic,
+		(*fmt[f_position]->f_header)(&parm, F_BEGIN, pcparchive, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 
 	/* Process activities */
 	if (*fmt[f_position]->f_statistics) {
-		(*fmt[f_position]->f_statistics)(&tab, F_BEGIN, act, id_seq);
+		(*fmt[f_position]->f_statistics)(&(parm.tab), F_BEGIN, act, id_seq);
 	}
 
 	do {
@@ -1047,7 +1051,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 		 */
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, 0,
-						 file, &rtype, tab, file_magic, file_actlst,
+						 file, &rtype, parm.tab, file_magic, file_actlst,
 						 rectime, loctime, UEOF_STOP);
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
@@ -1064,17 +1068,17 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 		if (!eosaf) {
 			do {
 				eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
-							 file, &rtype, tab, file_magic, file_actlst,
+							 file, &rtype, parm.tab, file_magic, file_actlst,
 							 rectime, loctime, UEOF_CONT);
 
 				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 					if (*fmt[f_position]->f_statistics) {
-						(*fmt[f_position]->f_statistics)(&tab, F_MAIN, act, id_seq);
+						(*fmt[f_position]->f_statistics)(&(parm.tab), F_MAIN, act, id_seq);
 					}
 
 					/* next is set to 1 when we were close enough to desired interval */
 					next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
-								  &cnt, &tab, rectime, loctime,
+								  &cnt, &(parm.tab), rectime, loctime,
 								  FALSE, ALL_ACTIVITIES);
 
 					if (next) {
@@ -1092,7 +1096,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 				/* Go to next Linux restart, if possible */
 				do {
 					eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
-								 file, &rtype, tab, file_magic, file_actlst,
+								 file, &rtype, parm.tab, file_magic, file_actlst,
 								 rectime, loctime, UEOF_CONT);
 				}
 				while (!eosaf && (rtype != R_RESTART));
@@ -1103,7 +1107,7 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_statistics) {
-		(*fmt[f_position]->f_statistics)(&tab, F_END, act, id_seq);
+		(*fmt[f_position]->f_statistics)(&(parm.tab), F_END, act, id_seq);
 	}
 
 	/* Rewind file */
@@ -1111,19 +1115,19 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
+		(*fmt[f_position]->f_restart)(&(parm.tab), F_BEGIN, NULL, NULL, FALSE,
 					      &file_hdr);
 	}
 
 	do {
 		eosaf = read_next_sample(ifd, IGNORE_COMMENT, 0,
-					 file, &rtype, tab, file_magic, file_actlst,
+					 file, &rtype, parm.tab, file_magic, file_actlst,
 					 rectime, loctime, UEOF_CONT);
 	}
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr);
+		(*fmt[f_position]->f_restart)(&(parm.tab), F_END, NULL, NULL, FALSE, &file_hdr);
 	}
 
 	/* Rewind file */
@@ -1132,25 +1136,25 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 	/* Last, process COMMENT entries to display comments */
 	if (DISPLAY_COMMENT(flags)) {
 		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&(parm.tab), F_BEGIN, NULL, NULL, 0, NULL,
 						      &file_hdr);
 		}
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_RESTART, 0,
-						 file, &rtype, tab, file_magic, file_actlst,
+						 file, &rtype, parm.tab, file_magic, file_actlst,
 						 rectime, loctime, UEOF_CONT);
 		}
 		while (!eosaf);
 
 		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&(parm.tab), F_END, NULL, NULL, 0, NULL,
 						      &file_hdr);
 		}
 	}
 
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_END, pcparchive, file_magic,
+		(*fmt[f_position]->f_header)(&parm, F_END, pcparchive, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 }

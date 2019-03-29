@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "sadf.h"
 #include "pcp_def_metrics.h"
@@ -37,6 +38,8 @@
 #include <pcp/pmapi.h>
 #include <pcp/import.h>
 #endif
+
+extern char *tzname[2];
 
 extern unsigned int flags;
 extern char *seps[];
@@ -813,9 +816,19 @@ __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 {
 #ifdef HAVE_PCP
 	int rc;
+	struct tm lrectime;
+	unsigned long long utc_sec = record_hdr->ust_time;
 
 	if (action & F_END) {
-		if ((rc = pmiWrite(record_hdr->ust_time, 0)) < 0) {
+		if (!PRINT_LOCAL_TIME(flags)) {
+			/* Convert a time_t value from local time to UTC */
+			if (gmtime_r((const time_t *) &(record_hdr->ust_time), &lrectime)) {
+				utc_sec = mktime(&lrectime);
+			}
+		}
+
+		/* Write data to PCP archive */
+		if ((rc = pmiWrite(utc_sec, 0)) < 0) {
 			fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
 			exit(4);
 		}
@@ -850,7 +863,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 {
 	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
-	int *tab = (int *) parm;
+	int *tab = &(((struct log1_parm *) parm)->tab);
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -918,7 +931,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 {
 	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
-	int *tab = (int *) parm;
+	int *tab = &(((struct log1_parm *) parm)->tab);
 
 	if (action & F_BEGIN) {
 		xprintf(*tab, "{\"sysstat\": {");
@@ -1179,12 +1192,20 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 #ifdef HAVE_PCP
+	unsigned int lflags = ((struct log1_parm *) parm)->flags;
 	char buf[64];
 
 	if (action & F_BEGIN) {
 		/* Create new PCP context */
 		pmiStart(dfile, FALSE);
-		pmiSetTimezone("UTC");
+
+		if (PRINT_LOCAL_TIME(lflags)) {
+			tzset();	/* Set timezone value in tzname */
+			pmiSetTimezone(tzname[0]);
+		}
+		else {
+			pmiSetTimezone("UTC");
+		}
 
 		/* Save number of CPU in PCP archive */
 		pmiAddMetric("hinv.ncpu",
