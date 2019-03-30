@@ -863,7 +863,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 {
 	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
-	int *tab = &(((struct log1_parm *) parm)->tab);
+	int *tab = (int *) tab;
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -931,7 +931,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 {
 	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
-	int *tab = &(((struct log1_parm *) parm)->tab);
+	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
 		xprintf(*tab, "{\"sysstat\": {");
@@ -1175,7 +1175,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
  * PCP header function.
  *
  * IN:
- * @parm	Specific parameter.
+ * @parm	Specific parameter (unused here).
  * @action	Action expected from current function.
  * @dfile	Name of PCP archive file.
  * @file_magic	System activity file magic header (unused here).
@@ -1192,14 +1192,13 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 #ifdef HAVE_PCP
-	unsigned int lflags = ((struct log1_parm *) parm)->flags;
 	char buf[64];
 
 	if (action & F_BEGIN) {
 		/* Create new PCP context */
 		pmiStart(dfile, FALSE);
 
-		if (PRINT_LOCAL_TIME(lflags)) {
+		if (PRINT_LOCAL_TIME(flags)) {
 			tzset();	/* Set timezone value in tzname */
 			pmiSetTimezone(tzname[0]);
 		}

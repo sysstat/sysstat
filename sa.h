@@ -315,12 +315,6 @@
 /* Type for all functions displaying statistics */
 #define __print_funct_t void
 
-/* Structure containing specific parameters for logic#1 output (XML/JSON/PCP...) */
-struct log1_parm {
-	unsigned int flags;	/* Common flags */
-	int tab;		/* Number of tabulations */
-};
-
 /* Structure for SVG specific parameters */
 struct svg_parm {
 	unsigned long long dt;			/* Interval of time for current sample */
