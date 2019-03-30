@@ -863,7 +863,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 {
 	struct tm rectime, loc_t;
 	char cur_time[TIMESTAMP_LEN];
-	int *tab = (int *) tab;
+	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
