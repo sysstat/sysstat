@@ -1012,3 +1012,152 @@ __print_funct_t pcp_print_net_eip_stats(struct activity *a, int curr, unsigned l
 	pmiPutValue("network.snmp.ip.ipFragFails", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display ICMP network statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_icmp_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_icmp
+		*snic = (struct stats_net_icmp *) a->buf[curr],
+		*snip = (struct stats_net_icmp *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InMsgs, snic->InMsgs, itv));
+	pmiPutValue("network.snmp.icmp.icmpInMsgs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutMsgs, snic->OutMsgs, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutMsgs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InEchos, snic->InEchos, itv));
+	pmiPutValue("network.snmp.icmp.icmpInEchos", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InEchoReps, snic->InEchoReps, itv));
+	pmiPutValue("network.snmp.icmp.icmpInEchoReps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutEchos, snic->OutEchos, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutEchos", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutEchoReps, snic->OutEchoReps, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutEchoReps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InTimestamps, snic->InTimestamps, itv));
+	pmiPutValue("network.snmp.icmp.icmpInTimestamps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InTimestampReps, snic->InTimestampReps, itv));
+	pmiPutValue("network.snmp.icmp.icmpInTimestampReps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutTimestamps, snic->OutTimestamps, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutTimestamps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutTimestampReps, snic->OutTimestampReps, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutTimestampReps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InAddrMasks, snic->InAddrMasks, itv));
+	pmiPutValue("network.snmp.icmp.icmpInAddrMasks", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InAddrMaskReps, snic->InAddrMaskReps, itv));
+	pmiPutValue("network.snmp.icmp.icmpInAddrMaskReps", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutAddrMasks, snic->OutAddrMasks, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutAddrMasks", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutAddrMaskReps, snic->OutAddrMaskReps, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutAddrMaskReps", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+
+/*
+ ***************************************************************************
+ * Display ICMP network errors statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_eicmp_stats(struct activity *a, int curr, unsigned long long itv,
+					  struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_eicmp
+		*sneic = (struct stats_net_eicmp *) a->buf[curr],
+		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InErrors, sneic->InErrors, itv));
+	pmiPutValue("network.snmp.icmp.icmpInErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutErrors, sneic->OutErrors, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InDestUnreachs, sneic->InDestUnreachs, itv));
+	pmiPutValue("network.snmp.icmp.icmpInDestUnreachs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutDestUnreachs, sneic->OutDestUnreachs, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutDestUnreachs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InTimeExcds, sneic->InTimeExcds, itv));
+	pmiPutValue("network.snmp.icmp.icmpInTimeExcds", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutTimeExcds, sneic->OutTimeExcds, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutTimeExcds", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InParmProbs, sneic->InParmProbs, itv));
+	pmiPutValue("network.snmp.icmp.icmpInParmProbs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutParmProbs, sneic->OutParmProbs, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutParmProbs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InSrcQuenchs, sneic->InSrcQuenchs, itv));
+	pmiPutValue("network.snmp.icmp.icmpInSrcQuenchs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutSrcQuenchs, sneic->OutSrcQuenchs, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutSrcQuenchs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InRedirects, sneic->InRedirects, itv));
+	pmiPutValue("network.snmp.icmp.icmpInRedirects", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutRedirects, sneic->OutRedirects, itv));
+	pmiPutValue("network.snmp.icmp.icmpOutRedirects", NULL, buf);
+#endif	/* HAVE_PCP */
+}

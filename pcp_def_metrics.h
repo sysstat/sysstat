@@ -27,6 +27,8 @@ void pcp_def_net_nfs_metrics(void);
 void pcp_def_net_nfsd_metrics(void);
 void pcp_def_net_ip_metrics(void);
 void pcp_def_net_eip_metrics(void);
+void pcp_def_net_icmp_metrics(void);
+void pcp_def_net_eicmp_metrics(void);
 
 /* Define domains number */
 #define PM_INDOM_CPU		0

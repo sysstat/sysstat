@@ -560,6 +560,14 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 				case A_NET_EIP:
 					pcp_def_net_eip_metrics();
 					break;
+
+				case A_NET_ICMP:
+					pcp_def_net_icmp_metrics();
+					break;
+
+				case A_NET_EICMP:
+					pcp_def_net_eicmp_metrics();
+					break;
 			}
 		}
 	}
