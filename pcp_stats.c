@@ -1241,3 +1241,41 @@ __print_funct_t pcp_print_net_etcp_stats(struct activity *a, int curr, unsigned 
 	pmiPutValue("network.snmp.tcp.tcpOutRsts", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display UDP network statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_udp_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_udp
+		*snuc = (struct stats_net_udp *) a->buf[curr],
+		*snup = (struct stats_net_udp *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->InDatagrams, snuc->InDatagrams, itv));
+	pmiPutValue("network.snmp.udp.udpInDatagrams", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->OutDatagrams, snuc->OutDatagrams, itv));
+	pmiPutValue("network.snmp.udp.udpOutDatagrams", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->NoPorts, snuc->NoPorts, itv));
+	pmiPutValue("network.snmp.udp.udpNoPorts", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->InErrors, snuc->InErrors, itv));
+	pmiPutValue("network.snmp.udp.udpInErrors", NULL, buf);
+#endif	/* HAVE_PCP */
+}

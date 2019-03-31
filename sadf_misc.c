@@ -576,6 +576,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 				case A_NET_ETCP:
 					pcp_def_net_etcp_metrics();
 					break;
+
+				case A_NET_UDP:
+					pcp_def_net_udp_metrics();
+					break;
 			}
 		}
 	}
