@@ -34,6 +34,7 @@ void pcp_def_net_etcp_metrics(void);
 void pcp_def_net_udp_metrics(void);
 void pcp_def_net_ip6_metrics(void);
 void pcp_def_net_eip6_metrics(void);
+void pcp_def_net_udp6_metrics(void);
 
 /* Define domains number */
 #define PM_INDOM_CPU		0

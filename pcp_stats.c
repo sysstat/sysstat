@@ -1407,3 +1407,41 @@ __print_funct_t pcp_print_net_eip6_stats(struct activity *a, int curr, unsigned 
 	pmiPutValue("network.snmp.ip6.ipv6IfStatsInTruncatedPkts", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display UDPv6 network statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_udp6_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_udp6
+		*snuc = (struct stats_net_udp6 *) a->buf[curr],
+		*snup = (struct stats_net_udp6 *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->InDatagrams6, snuc->InDatagrams6, itv));
+	pmiPutValue("network.snmp.udp6.udpInDatagrams", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->OutDatagrams6, snuc->OutDatagrams6, itv));
+	pmiPutValue("network.snmp.udp6.udpOutDatagrams", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->NoPorts6, snuc->NoPorts6, itv));
+	pmiPutValue("network.snmp.udp6.udpNoPorts", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snup->InErrors6, snuc->InErrors6, itv));
+	pmiPutValue("network.snmp.udp6.udpInErrors", NULL, buf);
+#endif	/* HAVE_PCP */
+}

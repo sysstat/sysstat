@@ -1080,3 +1080,29 @@ void pcp_def_net_eip6_metrics(void)
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for UDPv6 network statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_udp6_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.snmp.udp6.udpInDatagrams",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.udp6.udpOutDatagrams",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.udp6.udpNoPorts",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.udp6.udpInErrors",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
