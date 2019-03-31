@@ -49,5 +49,9 @@ __print_funct_t pcp_print_net_icmp_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_net_eicmp_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_tcp_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_etcp_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
 
 #endif /* _PCP_STATS_H */

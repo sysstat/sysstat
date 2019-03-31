@@ -894,3 +894,59 @@ void pcp_def_net_eicmp_metrics(void)
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for TCP network statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_tcp_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.snmp.tcp.tcpActiveOpens",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpPassiveOpens",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpInSegs",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpOutSegs",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for TCP network errors statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_etcp_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.snmp.tcp.tcpAttemptFails",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpEstabResets",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpRetransSegs",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpInErrs",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.snmp.tcp.tcpOutRsts",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}

@@ -1161,3 +1161,83 @@ __print_funct_t pcp_print_net_eicmp_stats(struct activity *a, int curr, unsigned
 	pmiPutValue("network.snmp.icmp.icmpOutRedirects", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display TCP network statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_tcp_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_tcp
+		*sntc = (struct stats_net_tcp *) a->buf[curr],
+		*sntp = (struct stats_net_tcp *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sntp->ActiveOpens, sntc->ActiveOpens, itv));
+	pmiPutValue("network.snmp.tcp.tcpActiveOpens", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sntp->PassiveOpens, sntc->PassiveOpens, itv));
+	pmiPutValue("network.snmp.tcp.tcpPassiveOpens", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sntp->InSegs, sntc->InSegs, itv));
+	pmiPutValue("network.snmp.tcp.tcpInSegs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sntp->OutSegs, sntc->OutSegs, itv));
+	pmiPutValue("network.snmp.tcp.tcpOutSegs", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Display TCP network errors statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_etcp_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_etcp
+		*snetc = (struct stats_net_etcp *) a->buf[curr],
+		*snetp = (struct stats_net_etcp *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snetp->AttemptFails, snetc->AttemptFails, itv));
+	pmiPutValue("network.snmp.tcp.tcpAttemptFails", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snetp->EstabResets, snetc->EstabResets, itv));
+	pmiPutValue("network.snmp.tcp.tcpEstabResets", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snetp->RetransSegs, snetc->RetransSegs, itv));
+	pmiPutValue("network.snmp.tcp.tcpRetransSegs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snetp->InErrs, snetc->InErrs, itv));
+	pmiPutValue("network.snmp.tcp.tcpInErrs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snetp->OutRsts, snetc->OutRsts, itv));
+	pmiPutValue("network.snmp.tcp.tcpOutRsts", NULL, buf);
+#endif	/* HAVE_PCP */
+}
