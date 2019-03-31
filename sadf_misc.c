@@ -580,6 +580,14 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 				case A_NET_UDP:
 					pcp_def_net_udp_metrics();
 					break;
+
+				case A_NET_IP6:
+					pcp_def_net_ip6_metrics();
+					break;
+
+				case A_NET_EIP6:
+					pcp_def_net_eip6_metrics();
+					break;
 			}
 		}
 	}

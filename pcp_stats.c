@@ -1279,3 +1279,131 @@ __print_funct_t pcp_print_net_udp_stats(struct activity *a, int curr, unsigned l
 	pmiPutValue("network.snmp.udp.udpInErrors", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display IPv6 network statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_ip6_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_ip6
+		*snic = (struct stats_net_ip6 *) a->buf[curr],
+		*snip = (struct stats_net_ip6 *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InReceives6, snic->InReceives6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInReceives", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutForwDatagrams6, snic->OutForwDatagrams6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutForwDatagrams", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InDelivers6, snic->InDelivers6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInDelivers", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutRequests6, snic->OutRequests6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutRequests", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->ReasmReqds6, snic->ReasmReqds6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsReasmReqds", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->ReasmOKs6, snic->ReasmOKs6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsReasmOKs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->InMcastPkts6, snic->InMcastPkts6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInMcastPkts", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->OutMcastPkts6, snic->OutMcastPkts6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutMcastPkts", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->FragOKs6, snic->FragOKs6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutFragOKs", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(snip->FragCreates6, snic->FragCreates6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutFragCreates", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Display IPv6 network errors statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_eip6_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_eip6
+		*sneic = (struct stats_net_eip6 *) a->buf[curr],
+		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InHdrErrors6, sneic->InHdrErrors6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInHdrErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InAddrErrors6, sneic->InAddrErrors6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInAddrErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InUnknownProtos6, sneic->InUnknownProtos6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInUnknownProtos", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InTooBigErrors6, sneic->InTooBigErrors6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInTooBigErrors", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InDiscards6, sneic->InDiscards6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInDiscards", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutDiscards6, sneic->OutDiscards6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutDiscards", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InNoRoutes6, sneic->InNoRoutes6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInNoRoutes", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->OutNoRoutes6, sneic->OutNoRoutes6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutNoRoutes", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->ReasmFails6, sneic->ReasmFails6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsReasmFails", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->FragFails6, sneic->FragFails6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutFragFails", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		S_VALUE(sneip->InTruncatedPkts6, sneic->InTruncatedPkts6, itv));
+	pmiPutValue("network.snmp.ip6.ipv6IfStatsInTruncatedPkts", NULL, buf);
+#endif	/* HAVE_PCP */
+}
