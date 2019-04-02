@@ -59,6 +59,10 @@ __print_funct_t pcp_print_net_ip6_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_net_eip6_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_icmp6_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_net_eicmp6_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_net_udp6_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 

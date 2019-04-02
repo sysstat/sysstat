@@ -589,6 +589,14 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_net_eip6_metrics();
 					break;
 
+				case A_NET_ICMP6:
+					pcp_def_net_icmp6_metrics();
+					break;
+
+				case A_NET_EICMP6:
+					pcp_def_net_eicmp6_metrics();
+					break;
+
 				case A_NET_UDP6:
 					pcp_def_net_udp6_metrics();
 					break;
