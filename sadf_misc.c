@@ -1254,6 +1254,9 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 			pmiSetTimezone("UTC");
 		}
 
+		/* Save hostname */
+		pmiSetHostname(file_hdr->sa_nodename);
+
 		/* Save number of CPU in PCP archive */
 		pmiAddMetric("hinv.ncpu",
 			     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
