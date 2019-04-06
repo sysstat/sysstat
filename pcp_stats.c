@@ -1691,3 +1691,47 @@ __print_funct_t pcp_print_net_udp6_stats(struct activity *a, int curr, unsigned 
 	pmiPutValue("network.snmp.udp6.udpInErrors", NULL, buf);
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display CPU frequency statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsigned long long itv,
+					    struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_pwr_cpufreq *spc;
+	char buf[64], cpuno[64];
+	char *str;
+
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+
+		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
+
+		if (!i) {
+			/* This is CPU "all" */
+			str = NULL;
+		}
+		else {
+			sprintf(cpuno, "cpu%d", i - 1);
+			str = cpuno;
+		}
+
+		snprintf(buf, sizeof(buf), "%f", ((double) spc->cpufreq) / 100);
+		pmiPutValue(i ? "kernel.percpu.cpu.freqMHz" : "kernel.all.cpu.freqMHz", str, buf);
+	}
+#endif	/* HAVE_PCP */
+}

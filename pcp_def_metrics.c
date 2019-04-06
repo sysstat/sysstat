@@ -40,9 +40,9 @@
 void pcp_def_cpu_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int i, first = TRUE;
+	int i, first = TRUE, create = FALSE;
 	char buf[64];
-	pmInDom indom;
+	static pmInDom indom = PM_INDOM_NULL;
 
 	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -56,94 +56,121 @@ void pcp_def_cpu_metrics(struct activity *a)
 			continue;
 
 		if (!i) {
-			/* This is CPU "all" */
-			pmiAddMetric("kernel.all.cpu.user",
+			if (a->id == A_CPU) {
+				/* This is CPU "all" */
+				pmiAddMetric("kernel.all.cpu.user",
 				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 				     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.nice",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.nice",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.sys",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.sys",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.idle",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.idle",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.iowait",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.iowait",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.steal",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.steal",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.hardirq",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.hardirq",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.softirq",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.softirq",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.guest",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.guest",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
 
-			pmiAddMetric("kernel.all.cpu.guest_nice",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.guest_nice",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
+			}
+
+			else if (a->id == A_PWR_CPU) {
+				/* Create metric for A_PWR_CPU */
+				pmiAddMetric("kernel.all.cpu.freqMHz",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, 0, 0, 0, 0, 0));
+			}
 		}
 		else {
-			if (first) {
+			/* This is not CPU "all" */
+			if (indom == PM_INDOM_NULL) {
+				/* Create domain */
 				indom = pmInDom_build(0, PM_INDOM_CPU);
+				create = TRUE;
+			}
+			if (create) {
+				/* Create instance for current CPU */
+				sprintf(buf, "cpu%d", i - 1);
+				pmiAddInstance(indom, buf, i - 1);
+			}
 
-				pmiAddMetric("kernel.percpu.cpu.user",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+			if (first) {
+				if (a->id == A_CPU) {
+					/* Create metrics for A_CPU */
+					pmiAddMetric("kernel.percpu.cpu.user",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.nice",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.nice",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.sys",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.sys",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.idle",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.idle",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.iowait",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.iowait",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.steal",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.steal",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.hardirq",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.hardirq",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.softirq",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.softirq",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.guest",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.guest",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
 
-				pmiAddMetric("kernel.percpu.cpu.guest_nice",
-					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.guest_nice",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
+				}
+
+				else if (a->id == A_PWR_CPU) {
+					/* Create metric for A_PWR_CPU */
+					pmiAddMetric("kernel.percpu.cpu.freqMHz",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, 0, 0, 0, 0, 0));
+				}
 				first = FALSE;
 			}
-			sprintf(buf, "cpu%d", i - 1);
-			pmiAddInstance(indom, buf, i - 1);
 		}
 	}
 #endif /* HAVE_PCP */

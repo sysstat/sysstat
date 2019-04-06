@@ -501,6 +501,7 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 			switch (act[p]->id) {
 
 				case A_CPU:
+				case A_PWR_CPU:
 					pcp_def_cpu_metrics(act[p]);
 					break;
 
