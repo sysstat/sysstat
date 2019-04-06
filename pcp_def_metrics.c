@@ -177,11 +177,34 @@ void pcp_def_pcsw_metrics(void)
 void pcp_def_irq_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	if (a->bitmap->b_array[0] & 1) {
-		/* Interrupt "sum" */
-		pmiAddMetric("kernel.all.intr",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	int i, first = TRUE;
+	char buf[64];
+	pmInDom indom;
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+		/* Should current interrupt (including int "sum") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			if (!i) {
+				/* Interrupt "sum" */
+				pmiAddMetric("kernel.all.intr",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			}
+			else {
+				if (first) {
+					indom = pmInDom_build(0, PM_INDOM_INT);
+
+					pmiAddMetric("kernel.all.int.count",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					first = FALSE;
+				}
+				sprintf(buf, "int%d", i - 1);
+				pmiAddInstance(indom, buf, i - 1);
+			}
+		}
 	}
 #endif /* HAVE_PCP */
 }

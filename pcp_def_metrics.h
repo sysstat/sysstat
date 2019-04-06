@@ -45,6 +45,7 @@ void pcp_def_net_udp6_metrics(void);
 #define PM_INDOM_QUEUE		1
 #define PM_INDOM_NET_DEV	2
 #define PM_INDOM_SERIAL		3
+#define PM_INDOM_INT		4
 
 
 #endif /* _PCP_DEF_METRICS_H */

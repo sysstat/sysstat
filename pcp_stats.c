@@ -226,14 +226,32 @@ __print_funct_t pcp_print_irq_stats(struct activity *a, int curr, unsigned long 
 				    struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
-	char buf[64];
-	struct stats_irq
-		*sic = (struct stats_irq *) a->buf[curr],
-		*sip = (struct stats_irq *) a->buf[!curr];
+	char buf[64], intno[64];
+	int i;
+	struct stats_irq *sic, *sip;
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
-	pmiPutValue("kernel.all.intr", NULL, buf);
+	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+
+		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
+		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
+
+		/* Should current interrupt (including int "sum") be displayed? */
+		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+
+			if (!i) {
+				/* This is interrupt "sum" */
+				snprintf(buf, sizeof(buf), "%f",
+					 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+				pmiPutValue("kernel.all.intr", NULL, buf);
+			}
+			else {
+				sprintf(intno, "int%d", i - 1);
+				snprintf(buf, sizeof(buf), "%f",
+					 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+				pmiPutValue("kernel.all.int.count", intno, buf);
+			}
+		}
+	}
 #endif	/* HAVE_PCP */
 }
 
