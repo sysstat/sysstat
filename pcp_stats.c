@@ -1321,6 +1321,39 @@ __print_funct_t pcp_print_net_udp_stats(struct activity *a, int curr, unsigned l
 
 /*
  ***************************************************************************
+ * Display IPv6 network sockets statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_sock6_stats(struct activity *a, int curr, unsigned long long itv,
+					  struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_sock6
+		*snsc = (struct stats_net_sock6 *) a->buf[curr];
+
+	snprintf(buf, sizeof(buf), "%u", snsc->tcp6_inuse);
+	pmiPutValue("network.socket6.tcp6_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->udp6_inuse);
+	pmiPutValue("network.socket6.udp6_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->raw6_inuse);
+	pmiPutValue("network.socket6.raw6_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->frag6_inuse);
+	pmiPutValue("network.socket6.frag6_inuse", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display IPv6 network statistics in PCP format.
  *
  * IN:

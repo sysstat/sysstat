@@ -1013,6 +1013,32 @@ void pcp_def_net_udp_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for IPv6 network sockets statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_sock6_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.socket6.tcp6_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket6.udp6_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket6.raw6_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket6.frag6_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for IPv6 network statistics.
  ***************************************************************************
  */

@@ -33,6 +33,7 @@ void pcp_def_net_eicmp_metrics(void);
 void pcp_def_net_tcp_metrics(void);
 void pcp_def_net_etcp_metrics(void);
 void pcp_def_net_udp_metrics(void);
+void pcp_def_net_sock6_metrics(void);
 void pcp_def_net_ip6_metrics(void);
 void pcp_def_net_eip6_metrics(void);
 void pcp_def_net_icmp6_metrics(void);

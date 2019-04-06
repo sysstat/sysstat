@@ -1156,6 +1156,7 @@ struct activity net_sock6_act = {
 	.f_json_print	= json_print_net_sock6_stats,
 	.f_svg_print	= svg_print_net_sock6_stats,
 	.f_raw_print	= raw_print_net_sock6_stats,
+	.f_pcp_print	= pcp_print_net_sock6_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "IPv6 sockets statistics",

@@ -585,6 +585,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_net_udp_metrics();
 					break;
 
+				case A_NET_SOCK6:
+					pcp_def_net_sock6_metrics();
+					break;
+
 				case A_NET_IP6:
 					pcp_def_net_ip6_metrics();
 					break;
