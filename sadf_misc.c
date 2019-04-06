@@ -553,6 +553,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_net_nfsd_metrics();
 					break;
 
+				case A_NET_SOCK:
+					pcp_def_net_sock_metrics();
+					break;
+
 				case A_NET_IP:
 					pcp_def_net_ip_metrics();
 					break;

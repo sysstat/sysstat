@@ -689,6 +689,40 @@ void pcp_def_net_nfsd_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for network sockets statistics.
+ ***************************************************************************
+ */
+void pcp_def_net_sock_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.socket.sock_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket.tcp_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket.udp_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket.raw_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket.frag_inuse",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.socket.tcp_tw",
+		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for IP network statistics.
  ***************************************************************************
  */

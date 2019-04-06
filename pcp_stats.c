@@ -907,6 +907,45 @@ __print_funct_t pcp_print_net_nfsd_stats(struct activity *a, int curr, unsigned 
 
 /*
  ***************************************************************************
+ * Display network sockets statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_net_sock_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_net_sock
+		*snsc = (struct stats_net_sock *) a->buf[curr];
+
+	snprintf(buf, sizeof(buf), "%u", snsc->sock_inuse);
+	pmiPutValue("network.socket.sock_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->tcp_inuse);
+	pmiPutValue("network.socket.tcp_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->udp_inuse);
+	pmiPutValue("network.socket.udp_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->raw_inuse);
+	pmiPutValue("network.socket.raw_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->frag_inuse);
+	pmiPutValue("network.socket.frag_inuse", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%u", snsc->tcp_tw);
+	pmiPutValue("network.socket.tcp_tw", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display IP network statistics in PCP format.
  *
  * IN:
