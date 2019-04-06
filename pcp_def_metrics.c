@@ -25,6 +25,7 @@
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
+#include <pcp/impl.h>
 #include <pcp/import.h>
 #endif
 
