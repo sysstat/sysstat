@@ -40,7 +40,7 @@
 void pcp_def_cpu_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int i;
+	int i, first = TRUE;
 	char buf[64];
 	pmInDom indom;
 
@@ -98,7 +98,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 				     pmiUnits(0, 0, 0, 0, 0, 0));
 		}
 		else {
-			if (i == 1) {
+			if (first) {
 				indom = pmInDom_build(0, PM_INDOM_CPU);
 
 				pmiAddMetric("kernel.percpu.cpu.user",
@@ -140,6 +140,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 				pmiAddMetric("kernel.percpu.cpu.guest_nice",
 					     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 					     pmiUnits(0, 0, 0, 0, 0, 0));
+				first = FALSE;
 			}
 			sprintf(buf, "cpu%d", i - 1);
 			pmiAddInstance(indom, buf, i - 1);
