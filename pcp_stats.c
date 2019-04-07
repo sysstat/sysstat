@@ -1735,3 +1735,78 @@ __print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsign
 	}
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display softnet statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_softnet_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_softnet *ssnc, *ssnp;
+	char buf[64], cpuno[64];
+	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
+	char *str;
+
+	/*
+	 * @nr[curr] cannot normally be greater than @nr_ini.
+	 * Yet we have created PCP metrics only for @nr_ini CPU.
+	 */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
+
+	/* Compute statistics for CPU "all" */
+	get_global_soft_statistics(a, !curr, curr, flags, offline_cpu_bitmap);
+
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+			/* No */
+			continue;
+
+                ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
+                ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
+
+		if (!i) {
+			/* This is CPU "all" */
+			str = NULL;
+		}
+		else {
+			sprintf(cpuno, "cpu%d", i - 1);
+			str = cpuno;
+		}
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssnp->processed, ssnc->processed, itv));
+		pmiPutValue(i ? "network.percpu.soft.processed" : "network.all.soft.processed", str, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssnp->dropped, ssnc->dropped, itv));
+		pmiPutValue(i ? "network.percpu.soft.dropped" : "network.all.soft.dropped", str, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv));
+		pmiPutValue(i ? "network.percpu.soft.time_squeeze" : "network.all.soft.time_squeeze", str, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssnp->received_rps, ssnc->received_rps, itv));
+		pmiPutValue(i ? "network.percpu.soft.received_rps" : "network.all.soft.received_rps", str, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv));
+		pmiPutValue(i ? "network.percpu.soft.flow_limit" : "network.all.soft.flow_limit", str, buf);
+	}
+#endif	/* HAVE_PCP */
+}

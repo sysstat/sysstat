@@ -31,7 +31,7 @@
 
 /*
  ***************************************************************************
- * Define PCP metrics for CPU statistics.
+ * Define PCP metrics for CPU related statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
@@ -105,6 +105,29 @@ void pcp_def_cpu_metrics(struct activity *a)
 					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 					     pmiUnits(0, 0, 0, 0, 0, 0));
 			}
+
+			else if (a->id == A_NET_SOFT) {
+				/* Create metrics for a_NET_SOFT */
+				pmiAddMetric("network.all.soft.processed",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+				pmiAddMetric("network.all.soft.dropped",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+				pmiAddMetric("network.all.soft.time_squeeze",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+				pmiAddMetric("network.all.soft.received_rps",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+				pmiAddMetric("network.all.soft.flow_limit",
+					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			}
 		}
 		else {
 			/* This is not CPU "all" */
@@ -168,6 +191,29 @@ void pcp_def_cpu_metrics(struct activity *a)
 					pmiAddMetric("kernel.percpu.cpu.freqMHz",
 						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 						     pmiUnits(0, 0, 0, 0, 0, 0));
+				}
+
+				else if (a->id == A_NET_SOFT) {
+					/* Create metrics for a_NET_SOFT */
+					pmiAddMetric("network.percpu.soft.processed",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+					pmiAddMetric("network.percpu.soft.dropped",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+					pmiAddMetric("network.percpu.soft.time_squeeze",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+					pmiAddMetric("network.percpu.soft.received_rps",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+					pmiAddMetric("network.percpu.soft.flow_limit",
+						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 				}
 				first = FALSE;
 			}
