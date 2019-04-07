@@ -867,12 +867,28 @@ __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 	int rc;
 	struct tm lrectime;
 	unsigned long long utc_sec = record_hdr->ust_time;
+	static long long delta_utc = LONG_MAX;
 
 	if (action & F_END) {
 		if (!PRINT_LOCAL_TIME(flags)) {
-			/* Convert a time_t value from local time to UTC */
-			if (gmtime_r((const time_t *) &(record_hdr->ust_time), &lrectime)) {
-				utc_sec = mktime(&lrectime);
+			if (delta_utc == LONG_MAX) {
+				/* Convert a time_t value from local time to UTC */
+				if (gmtime_r((const time_t *) &(record_hdr->ust_time), &lrectime)) {
+					utc_sec = mktime(&lrectime);
+					delta_utc = utc_sec - record_hdr->ust_time;
+				}
+			}
+			else {
+				/*
+				 * Once pmiWrite() has been called (after the first stats sample),
+				 * subsequent mktime() calls will not give the same result with
+				 * the same input data. So compute a time shift that will be used
+				 * for the next samples.
+				 * We should (really) be careful if pmiWrite() was to be used sooner
+				 * than for the first stats sample (e.g. if we want to save a
+				 * LINUX RESTART record heading the file).
+				 */
+				utc_sec += delta_utc;
 			}
 		}
 
@@ -1242,6 +1258,8 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 {
 #ifdef HAVE_PCP
 	char buf[64];
+	struct tm lrectime;
+	unsigned long long utc_sec = file_hdr->sa_ust_time;
 
 	if (action & F_BEGIN) {
 		/* Create new PCP context */
@@ -1269,7 +1287,14 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 
 	if (action & F_END) {
 		if (action & F_BEGIN) {
-			pmiWrite(file_hdr->sa_ust_time, 0);
+			/* Only the header data will be written to PCP archive */
+			if (!PRINT_LOCAL_TIME(flags)) {
+				/* Convert a time_t value from local time to UTC */
+				if (gmtime_r((const time_t *) &(file_hdr->sa_ust_time), &lrectime)) {
+					utc_sec = mktime(&lrectime);
+				}
+			}
+			pmiWrite(utc_sec, 0);
 		}
 		pmiEnd();
 	}
