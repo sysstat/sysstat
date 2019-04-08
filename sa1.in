@@ -12,9 +12,12 @@ HISTORY=0
 SADC_OPTIONS=""
 SA_DIR=@SA_DIR@
 SYSCONFIG_DIR=@SYSCONFIG_DIR@
-umask 0022
+UMASK=0022
 
 [ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
+
+umask ${UMASK}
+
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
 
 if [ ${HISTORY} -gt 28 ]

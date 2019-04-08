@@ -6,7 +6,6 @@
 #@(#) sa2: Write a daily report
 #
 S_TIME_FORMAT=ISO ; export S_TIME_FORMAT
-umask 0022
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 SA_DIR=@SA_DIR@
@@ -14,9 +13,12 @@ SYSCONFIG_DIR=@SYSCONFIG_DIR@
 HISTORY=@HISTORY@
 COMPRESSAFTER=@COMPRESSAFTER@
 ZIP="@ZIP@"
+UMASK=0022
 
 # Read configuration file, overriding variables set above
 [ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
+
+umask ${UMASK}
 
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
 
