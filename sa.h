@@ -1038,6 +1038,11 @@ struct report_format {
 	 * This function displays the comments.
 	 */
 	__printf_funct_t (*f_comment) (int *, int, char *, char *, int, char *, struct file_header *);
+	/*
+	 * This is the main function used to display all the statistics for current format.
+	 */
+	void (*f_display) (int, char *, struct file_activity *, struct file_magic *,
+			   struct tm *, struct tm *, void *);
 };
 
 /* Possible actions for functions used to display reports */

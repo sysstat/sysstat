@@ -45,7 +45,8 @@ struct report_format hdr_fmt = {
 	.f_statistics	= NULL,
 	.f_timestamp	= NULL,
 	.f_restart	= NULL,
-	.f_comment	= NULL
+	.f_comment	= NULL,
+	.f_display	= NULL
 };
 
 /*
@@ -53,13 +54,14 @@ struct report_format hdr_fmt = {
  */
 struct report_format db_fmt = {
 	.id		= F_DB_OUTPUT,
-	.options	= FO_GROUPED_STATS + FO_LOCAL_TIME + FO_HORIZONTALLY +
+	.options	= FO_LOCAL_TIME + FO_HORIZONTALLY +
 			  FO_SEC_EPOCH + FO_FIELD_LIST,
 	.f_header	= NULL,
 	.f_statistics	= NULL,
 	.f_timestamp	= print_db_timestamp,
 	.f_restart	= print_db_restart,
-	.f_comment	= print_db_comment
+	.f_comment	= print_db_comment,
+	.f_display	= logic2_display_loop
 };
 
 /*
@@ -67,12 +69,13 @@ struct report_format db_fmt = {
  */
 struct report_format ppc_fmt = {
 	.id		= F_PPC_OUTPUT,
-	.options	= FO_GROUPED_STATS + FO_LOCAL_TIME + FO_SEC_EPOCH,
+	.options	= FO_LOCAL_TIME + FO_SEC_EPOCH,
 	.f_header	= NULL,
 	.f_statistics	= NULL,
 	.f_timestamp	= print_ppc_timestamp,
 	.f_restart	= print_ppc_restart,
-	.f_comment	= print_ppc_comment
+	.f_comment	= print_ppc_comment,
+	.f_display	= logic2_display_loop
 };
 
 /*
@@ -85,7 +88,8 @@ struct report_format xml_fmt = {
 	.f_statistics	= print_xml_statistics,
 	.f_timestamp	= print_xml_timestamp,
 	.f_restart	= print_xml_restart,
-	.f_comment	= print_xml_comment
+	.f_comment	= print_xml_comment,
+	.f_display	= logic1_display_loop
 };
 
 /*
@@ -98,7 +102,8 @@ struct report_format json_fmt = {
 	.f_statistics	= print_json_statistics,
 	.f_timestamp	= print_json_timestamp,
 	.f_restart	= print_json_restart,
-	.f_comment	= print_json_comment
+	.f_comment	= print_json_comment,
+	.f_display	= logic1_display_loop
 };
 
 /*
@@ -111,7 +116,8 @@ struct report_format conv_fmt = {
 	.f_statistics	= NULL,
 	.f_timestamp	= NULL,
 	.f_restart	= NULL,
-	.f_comment	= NULL
+	.f_comment	= NULL,
+	.f_display	= NULL
 };
 
 /*
@@ -124,7 +130,8 @@ struct report_format svg_fmt = {
 	.f_statistics	= NULL,
 	.f_timestamp	= NULL,
 	.f_restart	= NULL,
-	.f_comment	= NULL
+	.f_comment	= NULL,
+	.f_display	= svg_display_loop
 };
 
 /*
@@ -132,12 +139,13 @@ struct report_format svg_fmt = {
  */
 struct report_format raw_fmt = {
 	.id		= F_RAW_OUTPUT,
-	.options	= FO_GROUPED_STATS + FO_LOCAL_TIME + FO_SEC_EPOCH,
+	.options	= FO_LOCAL_TIME + FO_SEC_EPOCH,
 	.f_header	= NULL,
 	.f_statistics	= NULL,
 	.f_timestamp	= print_raw_timestamp,
 	.f_restart	= print_raw_restart,
-	.f_comment	= print_raw_comment
+	.f_comment	= print_raw_comment,
+	.f_display	= logic2_display_loop
 };
 
 /*
@@ -150,7 +158,8 @@ struct report_format pcp_fmt = {
 	.f_statistics	= print_pcp_statistics,
 	.f_timestamp	= print_pcp_timestamp,
 	.f_restart	= NULL,
-	.f_comment	= NULL
+	.f_comment	= NULL,
+	.f_display	= logic1_display_loop
 };
 
 /*

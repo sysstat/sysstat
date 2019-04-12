@@ -43,22 +43,7 @@
 
 /* Format options */
 
-/*
- * Indicate that all statistics data for one activity should be displayed before
- * displaying stats for next activity. This is what sar does in its report.
- * Example: If stats for activities A and B at time t and t' have been collected,
- * setting AO_GROUPED_STATS for a format will result in the following output:
- * stats for activity A at t
- * stats for activity A at t'
- * stats for activity B at t
- * stats for activity B at t'
- * Without this option, output would be:
- * stats for activity A at t
- * stats for activity B at t
- * stats for activity A at t'
- * stats for activity B at t'
- */
-#define FO_GROUPED_STATS	0x01
+/* Unused	0x01 */
 
 /*
  * Indicate that output should stop after the header is displayed.
@@ -107,7 +92,6 @@
  */
 #define FO_NO_TRUE_TIME		0x100
 
-#define DISPLAY_GROUPED_STATS(m)	(((m) & FO_GROUPED_STATS)	== FO_GROUPED_STATS)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
 #define ACCEPT_LOCAL_TIME(m)		(((m) & FO_LOCAL_TIME)		== FO_LOCAL_TIME)
@@ -207,5 +191,18 @@ __printf_funct_t print_svg_header
 __printf_funct_t print_pcp_header
 	(void *, int, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
+
+/*
+ * Main display functions
+ */
+void logic1_display_loop
+	(int, char *, struct file_activity *, struct file_magic *,
+	 struct tm *, struct tm *, void *);
+void logic2_display_loop
+	(int, char *, struct file_activity *, struct file_magic *,
+	 struct tm *, struct tm *, void *);
+void svg_display_loop
+	(int, char *, struct file_activity *, struct file_magic *,
+	 struct tm *, struct tm *, void *);
 
 #endif  /* _SADF_H */

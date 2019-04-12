@@ -995,26 +995,35 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  * Logic #1:	Grouped by record type. Sorted by timestamp.
  * Formats:	XML, JSON, PCP
  *
+ * NB: all statistics data will be sorted by timestamp.
+ * Example: If stats for activities A and B at time t and t' have been collected,
+ * the output will be:
+ * stats for activity A at t
+ * stats for activity B at t
+ * stats for activity A at t'
+ * stats for activity B at t'
+ *
  * IN:
  * @ifd		File descriptor of input file.
- * @file_actlst	List of (known or unknown) activities in file.
  * @file	System activity data file name (name of file being read).
- * @pcparchive	PCP archive file name.
+ * @file_actlst	List of (known or unknown) activities in file.
  * @file_magic	System activity file magic header.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
+ * @dparm	PCP archive file name.
  ***************************************************************************
  */
-void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
-			 char *pcparchive, struct file_magic *file_magic,
-			 struct tm *rectime, struct tm *loctime)
+void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
+			 struct file_magic *file_magic, struct tm *rectime,
+			 struct tm *loctime, void *dparm)
 {
 	int curr, rtype, tab = 0;
 	int eosaf, next, reset = FALSE;
 	long cnt = 1;
+	char *pcparchive = (char *) dparm;
 
 	if (format == F_JSON_OUTPUT) {
 		/* Use a decimal point to make JSON code compliant with RFC7159 */
@@ -1162,21 +1171,31 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
  * 		records.
  * Formats:	ppc, CSV, raw
  *
+ * NB: All statistics data for one activity will be displayed before
+ * displaying stats for next activity. This is what sar does in its report.
+ * Example: If stats for activities A and B at time t and t' have been collected,
+ * the output will be:
+ * stats for activity A at t
+ * stats for activity A at t'
+ * stats for activity B at t
+ * stats for activity B at t'
+ *
  * IN:
  * @ifd		File descriptor of input file.
+ * @file	Name of file being read.
  * @file_actlst	List of (known or unknown) activities in file.
+ * @file_magic	file_magic structure filled with file magic header data.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
- * @file	Name of file being read.
- * @file_magic	file_magic structure filled with file magic header data.
+ * @dparm	Unused here.
  ***************************************************************************
  */
-void logic2_display_loop(int ifd, struct file_activity *file_actlst,
-			 struct tm *rectime, struct tm *loctime, char *file,
-			 struct file_magic *file_magic)
+void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
+			 struct file_magic *file_magic, struct tm *rectime,
+			 struct tm *loctime, void *dparm)
 {
 	int i, p;
 	int curr = 1, rtype;
@@ -1283,25 +1302,24 @@ void logic2_display_loop(int ifd, struct file_activity *file_actlst,
 
 /*
  ***************************************************************************
- * Display file contents in selected format (logic #3).
- * Logic #3:	Special logic for SVG output format.
- * Formats:	SVG
+ * Display file contents in SVG format.
  *
  * IN:
  * @ifd		File descriptor of input file.
+ * @file	Name of file being read.
  * @file_actlst	List of (known or unknown) activities in file.
+ * @file_magic	file_magic structure filled with file magic header data.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
  * @loctime	Structure where timestamp (expressed in local time) can be
  *		saved for current record.
- * @file	Name of file being read.
- * @file_magic	file_magic structure filled with file magic header data.
+ * @dparm	Unused here.
  ***************************************************************************
  */
-void logic3_display_loop(int ifd, struct file_activity *file_actlst,
-			 struct tm *rectime, struct tm *loctime, char *file,
-			 struct file_magic *file_magic)
+void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
+		      struct file_magic *file_magic, struct tm *rectime,
+		      struct tm *loctime, void *dparm)
 {
 	struct svg_hdr_parm parm;
 	int i, p;
@@ -1451,17 +1469,9 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 	allocate_structures(act);
 
 	/* Call function corresponding to selected output format */
-	if (format == F_SVG_OUTPUT) {
-		logic3_display_loop(ifd, file_actlst,
-				    &rectime, &loctime, dfile, &file_magic);
-	}
-	else if (DISPLAY_GROUPED_STATS(fmt[f_position]->options)) {
-		logic2_display_loop(ifd, file_actlst,
-				    &rectime, &loctime, dfile, &file_magic);
-	}
-	else {
-		logic1_display_loop(ifd, file_actlst, dfile, pcparchive,
-				    &file_magic, &rectime, &loctime);
+	if (*fmt[f_position]->f_display) {
+		(*fmt[f_position]->f_display)(ifd, dfile, file_actlst, &file_magic,
+					      &rectime, &loctime, pcparchive);
 	}
 
 	close(ifd);
