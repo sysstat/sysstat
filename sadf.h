@@ -43,7 +43,11 @@
 
 /* Format options */
 
-/* Unused	0x01 */
+/*
+ * Indicate that a decimal point should be used to make output
+ * locale independent.
+ */
+#define FO_LC_NUMERIC_C		0x01
 
 /*
  * Indicate that output should stop after the header is displayed.
@@ -92,6 +96,7 @@
  */
 #define FO_NO_TRUE_TIME		0x100
 
+#define SET_LC_NUMERIC_C(m)		(((m) & FO_LC_NUMERIC_C)	== FO_LC_NUMERIC_C)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
 #define ACCEPT_LOCAL_TIME(m)		(((m) & FO_LOCAL_TIME)		== FO_LOCAL_TIME)

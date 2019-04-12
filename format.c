@@ -97,7 +97,8 @@ struct report_format xml_fmt = {
  */
 struct report_format json_fmt = {
 	.id		= F_JSON_OUTPUT,
-	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_TEST_MARKUP,
+	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_TEST_MARKUP +
+			  FO_LC_NUMERIC_C,
 	.f_header	= print_json_header,
 	.f_statistics	= print_json_statistics,
 	.f_timestamp	= print_json_timestamp,
@@ -125,7 +126,8 @@ struct report_format conv_fmt = {
  */
 struct report_format svg_fmt = {
 	.id		= F_SVG_OUTPUT,
-	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_NO_TRUE_TIME,
+	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_NO_TRUE_TIME +
+			  FO_LC_NUMERIC_C,
 	.f_header	= print_svg_header,
 	.f_statistics	= NULL,
 	.f_timestamp	= NULL,

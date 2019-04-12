@@ -1025,11 +1025,6 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	long cnt = 1;
 	char *pcparchive = (char *) dparm;
 
-	if (format == F_JSON_OUTPUT) {
-		/* Use a decimal point to make JSON code compliant with RFC7159 */
-		setlocale(LC_NUMERIC, "C");
-	}
-
 	/* Count items in file. Needed only for PCP output */
 	if (format == F_PCP_OUTPUT) {
 		count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime);
@@ -1328,9 +1323,6 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	long cnt = 1;
 	int graph_nr = 0;
 
-	/* Use a decimal point to make SVG code locale independent */
-	setlocale(LC_NUMERIC, "C");
-
 	/* Init custom colors palette */
 	init_custom_color_palette();
 
@@ -1467,6 +1459,11 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 
 	/* Perform required allocations */
 	allocate_structures(act);
+
+	if (SET_LC_NUMERIC_C(fmt[f_position]->options)) {
+		/* Use a decimal point */
+		setlocale(LC_NUMERIC, "C");
+	}
 
 	/* Call function corresponding to selected output format */
 	if (*fmt[f_position]->f_display) {
