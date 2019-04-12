@@ -1025,9 +1025,11 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	long cnt = 1;
 	char *pcparchive = (char *) dparm;
 
-	/* Count items in file. Needed only for PCP output */
-	if (format == F_PCP_OUTPUT) {
-		count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime);
+	if (CREATE_ITEM_LIST(fmt[f_position]->options)) {
+		/* Count items in file (e.g. for PCP output) */
+		if (!count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime))
+			/* No record to display */
+			return;
 	}
 
 	/* Save current file position */

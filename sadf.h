@@ -96,6 +96,12 @@
  */
 #define FO_NO_TRUE_TIME		0x100
 
+/*
+ * Indicate that the number of different items should be counted and
+ * a list created (see @item_list and @item_list_sz in struct activity).
+ */
+#define FO_ITEM_LIST		0x200
+
 #define SET_LC_NUMERIC_C(m)		(((m) & FO_LC_NUMERIC_C)	== FO_LC_NUMERIC_C)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
@@ -105,6 +111,7 @@
 #define DISPLAY_FIELD_LIST(m)		(((m) & FO_FIELD_LIST)		== FO_FIELD_LIST)
 #define TEST_MARKUP(m)			(((m) & FO_TEST_MARKUP)		== FO_TEST_MARKUP)
 #define REJECT_TRUE_TIME(m)		(((m) & FO_NO_TRUE_TIME)	== FO_NO_TRUE_TIME)
+#define CREATE_ITEM_LIST(m)		(((m) & FO_ITEM_LIST)		== FO_ITEM_LIST)
 
 
 /*

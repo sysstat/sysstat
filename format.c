@@ -155,7 +155,8 @@ struct report_format raw_fmt = {
  */
 struct report_format pcp_fmt = {
 	.id		= F_PCP_OUTPUT,
-	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_NO_TRUE_TIME,
+	.options	= FO_HEADER_ONLY + FO_LOCAL_TIME + FO_NO_TRUE_TIME +
+			  FO_ITEM_LIST,
 	.f_header	= print_pcp_header,
 	.f_statistics	= print_pcp_statistics,
 	.f_timestamp	= print_pcp_timestamp,
