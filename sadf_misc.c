@@ -299,7 +299,6 @@ __printf_funct_t print_pcp_restart(int *tab, int action, char *cur_date, char *c
 {
 #ifdef HAVE_PCP
 	static int def_metrics = FALSE;
-	int rc;
 	char buf[64];
 
 	if (action & F_BEGIN) {
@@ -316,15 +315,11 @@ __printf_funct_t print_pcp_restart(int *tab, int action, char *cur_date, char *c
 		}
 	}
 	if (action & F_MAIN) {
-		if ((rc = pmiPutValue("system.restart.count", NULL, "1")) < 0) {
-			fprintf(stderr, "PCP: pmiPutValue 1: %s\n", pmiErrStr(rc));
-		}
+		pmiPutValue("system.restart.count", NULL, "1");
 
 		snprintf(buf, sizeof(buf), "%u",
 			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
-		if ((rc = pmiPutValue("system.restart.ncpu", NULL, buf)) < 0) {
-			fprintf(stderr, "PCP: pmiPutValue 2: %s\n", pmiErrStr(rc));
-		}
+		pmiPutValue("system.restart.ncpu", NULL, buf);
 
 		/* Write data to PCP archive */
 		pcp_write_data(record_hdr, flags);
