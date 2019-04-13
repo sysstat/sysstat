@@ -1024,14 +1024,15 @@ void logic1_display_loop(int ifd, struct file_activity *file_actlst, char *file,
 			(tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
 			(tm_end.use && (datecmp(loctime, &tm_end) >= 0))));
 
-		/* Save the first stats collected. Used for example in next_slice() function */
-		copy_structures(act, id_seq, record_hdr, 2, 0);
-
 		curr = 1;
 		cnt = count;
 		reset = TRUE;
 
 		if (!eosaf) {
+
+			/* Save the first stats collected. Used for example in next_slice() function */
+			copy_structures(act, id_seq, record_hdr, 2, 0);
+
 			do {
 				eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
 							 file, &rtype, tab, file_magic, file_actlst,
