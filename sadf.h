@@ -102,6 +102,12 @@
  */
 #define FO_ITEM_LIST		0x200
 
+/*
+ * Indicate that all the records, including RESTART and COMMENT ones,
+ * should be displayed in order of time.
+ */
+#define FO_FULL_ORDER		0x400
+
 #define SET_LC_NUMERIC_C(m)		(((m) & FO_LC_NUMERIC_C)	== FO_LC_NUMERIC_C)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
 #define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
@@ -112,6 +118,7 @@
 #define TEST_MARKUP(m)			(((m) & FO_TEST_MARKUP)		== FO_TEST_MARKUP)
 #define REJECT_TRUE_TIME(m)		(((m) & FO_NO_TRUE_TIME)	== FO_NO_TRUE_TIME)
 #define CREATE_ITEM_LIST(m)		(((m) & FO_ITEM_LIST)		== FO_ITEM_LIST)
+#define ORDER_ALL_RECORDS(m)		(((m) & FO_FULL_ORDER)		== FO_FULL_ORDER)
 
 
 /*
@@ -127,15 +134,17 @@ void convert_file
  * Prototypes used to display restart messages
  */
 __printf_funct_t print_db_restart
-	(int *, int, char *, char *, int, struct file_header *);
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 __printf_funct_t print_ppc_restart
-	(int *, int, char *, char *, int, struct file_header *);
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 __printf_funct_t print_xml_restart
-	(int *, int, char *, char *, int, struct file_header *);
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 __printf_funct_t print_json_restart
-	(int *, int, char *, char *, int, struct file_header *);
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 __printf_funct_t print_raw_restart
-	(int *, int, char *, char *, int, struct file_header *);
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+__printf_funct_t print_pcp_restart
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 
 /*
  * Prototypes used to display comments

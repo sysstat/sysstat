@@ -602,10 +602,12 @@ int sa_read(void *buffer, size_t size)
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC (unused here).
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *cur_time,
-				  int utc, struct file_header *file_hdr)
+				  int utc, struct file_header *file_hdr,
+				  struct record_header *record_hdr)
 {
 	char restart[64];
 

@@ -1033,7 +1033,8 @@ struct report_format {
 	/*
 	 * This function displays the restart messages.
 	 */
-	__printf_funct_t (*f_restart) (int *, int, char *, char *, int, struct file_header *);
+	__printf_funct_t (*f_restart) (int *, int, char *, char *, int,
+				       struct file_header *, struct record_header *);
 	/*
 	 * This function displays the comments.
 	 */
@@ -1044,6 +1045,7 @@ struct report_format {
 	void (*f_display) (int, char *, struct file_activity *, struct file_magic *,
 			   struct tm *, struct tm *, void *);
 };
+
 
 /* Possible actions for functions used to display reports */
 #define F_BEGIN	0x01
@@ -1390,7 +1392,7 @@ void print_report_hdr
 void print_sar_comment
 	(int *, int, char *, char *, int, char *, struct file_header *);
 __printf_funct_t print_sar_restart
-	(int *, int, char *, char *, int, struct file_header *);
+	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 int print_special_record
 	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
 	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,

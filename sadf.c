@@ -1022,6 +1022,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 {
 	int curr, rtype, tab = 0;
 	int eosaf, next, reset = FALSE;
+	int ign_flag = IGNORE_COMMENT + IGNORE_RESTART;
 	long cnt = 1;
 	char *pcparchive = (char *) dparm;
 
@@ -1031,7 +1032,6 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 			/* No record to display */
 			return;
 	}
-
 	/* Save current file position */
 	seek_file_position(ifd, DO_SAVE);
 
@@ -1039,6 +1039,20 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&tab, F_BEGIN, pcparchive, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
+	}
+
+	if (ORDER_ALL_RECORDS(fmt[f_position]->options)) {
+		ign_flag = IGNORE_NOTHING;
+
+		/* RESTART and COMMENTS records will be immediately processed */
+		if (*fmt[f_position]->f_restart) {
+			(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
+						      &file_hdr, NULL);
+		}
+		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
+			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
+						      &file_hdr);
+		}
 	}
 
 	/* Process activities */
@@ -1049,11 +1063,11 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	do {
 		/*
 		 * If this record is a special (RESTART or COMMENT) one,
-		 * skip it and try to read the next record in file.
+		 * process it then try to read the next record in file.
 		 */
 		do {
-			eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, 0,
-						 file, &rtype, tab, file_magic, file_actlst,
+			eosaf = read_next_sample(ifd, ign_flag, 0, file,
+						 &rtype, tab, file_magic, file_actlst,
 						 rectime, loctime, UEOF_STOP);
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
@@ -1069,8 +1083,8 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 		if (!eosaf) {
 			do {
-				eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
-							 file, &rtype, tab, file_magic, file_actlst,
+				eosaf = read_next_sample(ifd, ign_flag, curr, file,
+							 &rtype, tab, file_magic, file_actlst,
 							 rectime, loctime, UEOF_CONT);
 
 				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
@@ -1097,8 +1111,8 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 			if (!cnt) {
 				/* Go to next Linux restart, if possible */
 				do {
-					eosaf = read_next_sample(ifd, IGNORE_COMMENT | IGNORE_RESTART, curr,
-								 file, &rtype, tab, file_magic, file_actlst,
+					eosaf = read_next_sample(ifd, ign_flag, curr, file,
+								 &rtype, tab, file_magic, file_actlst,
 								 rectime, loctime, UEOF_CONT);
 				}
 				while (!eosaf && (rtype != R_RESTART));
@@ -1112,13 +1126,29 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		(*fmt[f_position]->f_statistics)(&tab, F_END, act, id_seq);
 	}
 
+	if (ign_flag == IGNORE_NOTHING) {
+		/*
+		 * RESTART and COMMENT records have already been processed.
+		 * Display possible trailing data then terminate.
+		 */
+		if (*fmt[f_position]->f_restart) {
+			(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL,
+						      FALSE, &file_hdr, NULL);
+		}
+		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
+			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
+						      &file_hdr);
+		}
+		goto terminate;
+	}
+
 	/* Rewind file */
 	seek_file_position(ifd, DO_RESTORE);
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
 		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
-					      &file_hdr);
+					      &file_hdr, NULL);
 	}
 
 	do {
@@ -1129,7 +1159,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr);
+		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr, NULL);
 	}
 
 	/* Rewind file */
@@ -1154,6 +1184,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		}
 	}
 
+terminate:
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
 		(*fmt[f_position]->f_header)(&tab, F_END, pcparchive, file_magic,

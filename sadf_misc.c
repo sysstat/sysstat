@@ -49,6 +49,53 @@ extern unsigned int svg_colors[][SVG_COL_PALETTE_SIZE];
 
 /*
  ***************************************************************************
+ * Flush data to PCP archive.
+ *
+ * IN:
+ * @record_hdr	Record header for current sample.
+ * @flags	Flags for common options.
+ ***************************************************************************
+ */
+void pcp_write_data(struct record_header *record_hdr, unsigned int flags)
+{
+#ifdef HAVE_PCP
+	int rc;
+	struct tm lrectime;
+	unsigned long long utc_sec = record_hdr->ust_time;
+	static long long delta_utc = LONG_MAX;
+
+	if (!PRINT_LOCAL_TIME(flags)) {
+		if (delta_utc == LONG_MAX) {
+			/* Convert a time_t value from local time to UTC */
+			if (gmtime_r((const time_t *) &(record_hdr->ust_time), &lrectime)) {
+				utc_sec = mktime(&lrectime);
+				delta_utc = utc_sec - record_hdr->ust_time;
+			}
+		}
+		else {
+			/*
+			 * Once pmiWrite() has been called (after the first stats sample),
+			 * subsequent mktime() calls will not give the same result with
+			 * the same input data. So compute a time shift that will be used
+			 * for the next samples.
+			 * We should (really) be careful if pmiWrite() was to be used sooner
+			 * than for the first stats sample (e.g. if we want to save a
+			 * LINUX RESTART record heading the file).
+			 */
+			utc_sec += delta_utc;
+		}
+	}
+
+	/* Write data to PCP archive */
+	if ((rc = pmiWrite(utc_sec, 0)) < 0) {
+		fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
+		exit(4);
+	}
+#endif
+}
+
+/*
+ ***************************************************************************
  * Display restart messages (database and ppc formats).
  *
  * IN:
@@ -85,10 +132,12 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
-				  char *cur_time, int utc, struct file_header *file_hdr)
+				  char *cur_time, int utc, struct file_header *file_hdr,
+				  struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
@@ -107,10 +156,12 @@ __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr)
+				   char *cur_time, int utc, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
@@ -129,13 +180,15 @@ __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr)
+				   char *cur_time, int utc, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
 		xprintf((*tab)++, "<restarts>");
@@ -161,13 +214,15 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
 __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
-				    char *cur_time, int utc, struct file_header *file_hdr)
+				    char *cur_time, int utc, struct file_header *file_hdr,
+				    struct record_header *record_hdr)
 {
 	static int sep = FALSE;
 
@@ -206,10 +261,12 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
  * @cur_time	Time string of current restart message.
  * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr)
+				   char *cur_time, int utc, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
@@ -220,6 +277,59 @@ __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
 		printf("; LINUX-RESTART (%d CPU)\n",
 		       file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Display restart messages (PCP format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current restart message (unused here).
+ * @cur_time	Time string of current restart message (unused here).
+ * @utc		True if @cur_time is expressed in UTC (unused here).
+ * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header.
+ ***************************************************************************
+ */
+__printf_funct_t print_pcp_restart(int *tab, int action, char *cur_date, char *cur_time,
+				   int utc, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	static int def_metrics = FALSE;
+	int rc;
+	char buf[64];
+
+	if (action & F_BEGIN) {
+		if (!def_metrics) {
+			pmiAddMetric("system.restart.count",
+				     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
+				     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+			pmiAddMetric("system.restart.ncpu",
+				     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
+				     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+			def_metrics = TRUE;
+		}
+	}
+	if (action & F_MAIN) {
+		if ((rc = pmiPutValue("system.restart.count", NULL, "1")) < 0) {
+			fprintf(stderr, "PCP: pmiPutValue 1: %s\n", pmiErrStr(rc));
+		}
+
+		snprintf(buf, sizeof(buf), "%u",
+			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
+		if ((rc = pmiPutValue("system.restart.ncpu", NULL, buf)) < 0) {
+			fprintf(stderr, "PCP: pmiPutValue 2: %s\n", pmiErrStr(rc));
+		}
+
+		/* Write data to PCP archive */
+		pcp_write_data(record_hdr, flags);
+	}
+#endif /* HAVE_PCP */
 }
 
 /*
@@ -853,7 +963,7 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
  * @itv		Interval of time with preceding record (unused here).
  * @record_hdr	Record header for current sample.
  * @file_hdr	System activity file standard header (unused here).
- * @flags	Flags for common options (unused here).
+ * @flags	Flags for common options.
  *
  * RETURNS:
  * Pointer on the "timestamp" string.
@@ -864,42 +974,10 @@ __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {
-#ifdef HAVE_PCP
-	int rc;
-	struct tm lrectime;
-	unsigned long long utc_sec = record_hdr->ust_time;
-	static long long delta_utc = LONG_MAX;
-
 	if (action & F_END) {
-		if (!PRINT_LOCAL_TIME(flags)) {
-			if (delta_utc == LONG_MAX) {
-				/* Convert a time_t value from local time to UTC */
-				if (gmtime_r((const time_t *) &(record_hdr->ust_time), &lrectime)) {
-					utc_sec = mktime(&lrectime);
-					delta_utc = utc_sec - record_hdr->ust_time;
-				}
-			}
-			else {
-				/*
-				 * Once pmiWrite() has been called (after the first stats sample),
-				 * subsequent mktime() calls will not give the same result with
-				 * the same input data. So compute a time shift that will be used
-				 * for the next samples.
-				 * We should (really) be careful if pmiWrite() was to be used sooner
-				 * than for the first stats sample (e.g. if we want to save a
-				 * LINUX RESTART record heading the file).
-				 */
-				utc_sec += delta_utc;
-			}
-		}
-
-		/* Write data to PCP archive */
-		if ((rc = pmiWrite(utc_sec, 0)) < 0) {
-			fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
-			exit(4);
-		}
+		pcp_write_data(record_hdr, flags);
 	}
-#endif
+
 	return NULL;
 }
 

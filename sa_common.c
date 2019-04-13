@@ -2908,7 +2908,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 		if (*ofmt->f_restart) {
 			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time,
 					   !PRINT_LOCAL_TIME(l_flags) &&
-					   !PRINT_TRUE_TIME(l_flags), file_hdr);
+					   !PRINT_TRUE_TIME(l_flags), file_hdr, record_hdr);
 		}
 	}
 	else if (rtype == R_COMMENT) {
