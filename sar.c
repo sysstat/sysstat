@@ -630,10 +630,12 @@ __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *c
  * @utc		True if @cur_time is expressed in UTC (unused here).
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cur_time, int utc,
-				  char *comment, struct file_header *file_hdr)
+				  char *comment, struct file_header *file_hdr,
+				  struct record_header *record_hdr)
 {
 	printf("%-11s", cur_time);
 	cprintf_s(IS_COMMENT, "  COM %s\n", comment);

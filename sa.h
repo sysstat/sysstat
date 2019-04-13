@@ -1038,7 +1038,8 @@ struct report_format {
 	/*
 	 * This function displays the comments.
 	 */
-	__printf_funct_t (*f_comment) (int *, int, char *, char *, int, char *, struct file_header *);
+	__printf_funct_t (*f_comment) (int *, int, char *, char *, int, char *,
+				       struct file_header *, struct record_header *);
 	/*
 	 * This is the main function used to display all the statistics for current format.
 	 */
@@ -1390,7 +1391,8 @@ int parse_timestamp
 void print_report_hdr
 	(unsigned int, struct tm *, struct file_header *);
 void print_sar_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *,
+	 struct record_header *);
 __printf_funct_t print_sar_restart
 	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 int print_special_record

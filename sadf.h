@@ -150,17 +150,19 @@ __printf_funct_t print_pcp_restart
  * Prototypes used to display comments
  */
 __printf_funct_t print_db_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_ppc_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_xml_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_json_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_sar_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_raw_comment
-	(int *, int, char *, char *, int, char *, struct file_header *);
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+__printf_funct_t print_pcp_comment
+	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
 
 /*
  * Prototypes used to display the statistics part of the report

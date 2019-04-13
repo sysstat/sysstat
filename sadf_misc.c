@@ -371,11 +371,12 @@ void print_dbppc_comment(char *cur_date, char *cur_time, int utc,
  * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
-__printf_funct_t print_db_comment(int *tab, int action, char *cur_date,
-				  char *cur_time, int utc, char *comment,
-				  struct file_header *file_hdr)
+__printf_funct_t print_db_comment(int *tab, int action, char *cur_date, char *cur_time,
+				  int utc, char *comment, struct file_header *file_hdr,
+				  struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action & F_MAIN) {
@@ -396,11 +397,12 @@ __printf_funct_t print_db_comment(int *tab, int action, char *cur_date,
  * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header.
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
-__printf_funct_t print_ppc_comment(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, char *comment,
-				   struct file_header *file_hdr)
+__printf_funct_t print_ppc_comment(int *tab, int action, char *cur_date, char *cur_time,
+				   int utc, char *comment, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action & F_MAIN) {
@@ -421,14 +423,15 @@ __printf_funct_t print_ppc_comment(int *tab, int action, char *cur_date,
  * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
+ * @record_hdr	Current record header (unused here).
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
-__printf_funct_t print_xml_comment(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, char *comment,
-				   struct file_header *file_hdr)
+__printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *cur_time,
+				   int utc, char *comment, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
 		xprintf((*tab)++, "<comments>");
@@ -454,14 +457,15 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date,
  * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
+ * @record_hdr	Current record header (unused here).
  *
  * OUT:
  * @tab		Number of tabulations.
  ***************************************************************************
  */
-__printf_funct_t print_json_comment(int *tab, int action, char *cur_date,
-				    char *cur_time, int utc, char *comment,
-				    struct file_header *file_hdr)
+__printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *cur_time,
+				    int utc, char *comment, struct file_header *file_hdr,
+				    struct record_header *record_hdr)
 {
 	static int sep = FALSE;
 
@@ -502,11 +506,12 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date,
  * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
+ * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
-__printf_funct_t print_raw_comment(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, char *comment,
-				   struct file_header *file_hdr)
+__printf_funct_t print_raw_comment(int *tab, int action, char *cur_date, char *cur_time,
+				   int utc, char *comment, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action & F_MAIN) {
@@ -516,6 +521,46 @@ __printf_funct_t print_raw_comment(int *tab, int action, char *cur_date,
 		}
 		printf("; COM %s\n", comment);
 	}
+}
+
+/*
+ ***************************************************************************
+ * Display comments (PCP format).
+ *
+ * IN:
+ * @tab		Number of tabulations (unused here).
+ * @action	Action expected from current function.
+ * @cur_date	Date string of current restart message (unused here).
+ * @cur_time	Time string of current restart message (unused here).
+ * @utc		True if @cur_time is expressed in UTC (unused here).
+ * @comment	Comment to display.
+ * @file_hdr	System activity file standard header (unused here).
+ * @record_hdr	Current record header.
+ ***************************************************************************
+ */
+__printf_funct_t print_pcp_comment(int *tab, int action, char *cur_date, char *cur_time,
+				   int utc, char *comment, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	static int def_metrics = FALSE;
+
+	if (action & F_BEGIN) {
+		if (!def_metrics) {
+			pmiAddMetric("system.comment.value",
+				     PM_IN_NULL, PM_TYPE_STRING, PM_INDOM_NULL, PM_SEM_DISCRETE,
+				     pmiUnits(0, 0, 0, 0, 0, 0));
+
+			def_metrics = TRUE;
+		}
+	}
+	if (action & F_MAIN) {
+		pmiPutValue("system.comment.value", NULL, comment);
+
+		/* Write data to PCP archive */
+		pcp_write_data(record_hdr, flags);
+	}
+#endif /* HAVE_PCP */
 }
 
 /*

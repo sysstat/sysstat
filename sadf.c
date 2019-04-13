@@ -1051,7 +1051,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		}
 		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
 			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
-						      &file_hdr);
+						      &file_hdr, NULL);
 		}
 	}
 
@@ -1137,7 +1137,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		}
 		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
 			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
-						      &file_hdr);
+						      &file_hdr, NULL);
 		}
 		goto terminate;
 	}
@@ -1169,7 +1169,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	if (DISPLAY_COMMENT(flags)) {
 		if (*fmt[f_position]->f_comment) {
 			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
-						      &file_hdr);
+						      &file_hdr, NULL);
 		}
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_RESTART, 0,
@@ -1180,7 +1180,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 		if (*fmt[f_position]->f_comment) {
 			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
-						      &file_hdr);
+						      &file_hdr, NULL);
 		}
 	}
 

@@ -161,7 +161,7 @@ struct report_format pcp_fmt = {
 	.f_statistics	= print_pcp_statistics,
 	.f_timestamp	= print_pcp_timestamp,
 	.f_restart	= print_pcp_restart,
-	.f_comment	= NULL,
+	.f_comment	= print_pcp_comment,
 	.f_display	= logic1_display_loop
 };
 
