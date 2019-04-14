@@ -1,8 +1,8 @@
-.TH SADF 1 "FEBRUARY 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "APRIL 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
-.B sadf [ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
+.B sadf [ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
 .I opts
 .B [,...] ] [ -P {
 .I cpu_list
@@ -174,6 +174,11 @@ is a list of comma-separated interface names. Useful with options -n DEV and
 .IP -j
 Print the contents of the data file in JSON (JavaScript Object Notation)
 format. Timestamps can be controlled by options -T and -t.
+.IP -l
+Export the contents of the data file to a PCP (Performance Co-Pilot) archive.
+The name of the archive can be specified using the keyword
+.IR pcparchive=
+with option -O.
 .IP "-O opts [,...]"
 Use the specified options to control the output of
 .BR sadf .
@@ -241,6 +246,13 @@ pointing at the first graph of each activity.
 .B skipempty
 .RS
 Do not display views where all graphs have only zero values.
+.RE
+
+The following option may be used when data are exported to a PCP archive:
+
+.BR pcparchive= name
+.RS
+Specify the name of the PCP archive to create.
 .RE
 
 The following option is used to control raw output displayed by
