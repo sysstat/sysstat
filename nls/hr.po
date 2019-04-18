@@ -1,16 +1,16 @@
 # Translation of sysstat in Croatian (hrvatski).
-# Copyright © 2018 Sebastien GODARD - sysstat (at) orange (dot) fr
+# Copyright © 2019 Sebastien GODARD - sysstat (at) orange (dot) fr
 # This file is distributed under the same license as the sysstat package.
 # <http://sebastien.godard.pagesperso-orange.fr/index.html>
 #
 # Tomislav Krznar <tomislav.krznar@gmail.com>, 2012, 2013.
-# Božidar Putanec <bozidarp@yahoo.com>, 2016-2018.
+# Božidar Putanec <bozidarp@yahoo.com>, 2016, 2017, 2018, 2019.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.1.2\n"
+"Project-Id-Version: sysstat 12.1.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2018-12-14 15:17+0100\n"
-"PO-Revision-Date: 2018-12-16 12:06-0800\n"
+"POT-Creation-Date: 2019-02-15 10:36+0100\n"
+"PO-Revision-Date: 2019-02-15 13:24-0800\n"
 "Last-Translator: Božidar Putanec <bozidarp@yahoo.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -19,18 +19,247 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.2\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Lokalize 2.0\n"
+
+#  sar 2 5  --> will report CPU utilization every two seconds, five times.
+#: cifsiostat.c:73 mpstat.c:132 iostat.c:89 tapestat.c:101 sar.c:102
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "Uporaba: %s [OPCIJE...] [<interval> [<brojač>]]\n"
+
+#: cifsiostat.c:77
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgstr ""
+"Moguće opcije su:\n"
+"[--dec={0 | 1 | 2}] [--human] [-h] [-k | -m] [-t] [-V] [--debuginfo]\n"
+
+#: cifsiostat.c:80
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+"Moguće opcije su:\n"
+"[--dec={0 | 1 | 2}] [--human] [-h] [-k | -m] [-t] [-V]\n"
+
+#: sadc.c:91
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
+msgstr ""
+"Uporaba:\n"
+"%s [OPCIJE...] [<interval> [<brojač>]] [<izlazna_datoteka>]\n"
+
+#: sadc.c:94
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
+"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
+msgstr ""
+"Moguće opcije su:\n"
+"[-C <komentar>] [-D] [-F] [-f] [-L] [-V]\n"
+"[-S {INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL}]\n"
+
+#: sadc.c:265
+#, c-format
+msgid "Cannot write data to system activity file: %s\n"
+msgstr "Nije moguće zapisati podatke u datoteku aktivnosti sustava: %s\n"
+
+#: sadc.c:704 sadc.c:767 ioconf.c:506 rd_stats.c:75 sa_common.c:1720
+#: count.c:118
+#, c-format
+msgid "Cannot open %s: %s\n"
+msgstr "Nije moguće otvoriti %s: %s\n"
+
+#: sadc.c:986
+#, c-format
+msgid "Cannot append data to that file (%s)\n"
+msgstr "Nije moguće dodati podatke na kraj ove datoteku (%s)\n"
+
+#: mpstat.c:135
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+msgstr ""
+"Moguće opcije su:\n"
+"[-A] [-n] [-u] [-V]\n"
+"[-I {SUM | CPU | SCPU | ALL}] [-N {<node_popis> | ALL}]\n"
+"[--dec={0 | 1 | 2}] [-o JSON] [-P {<cpu_popis> | ALL}]\n"
+
+#: mpstat.c:1632 pidstat.c:2406 sar.c:370
+msgid "Average:"
+msgstr "Prosjek:"
+
+#: sadf.c:93
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr "Uporaba: %s [OPCIJE...] [<interval> [<brojač>]] [<data_datoteka> | -[0-9]+]\n"
+
+#: sadf.c:96
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
+msgstr ""
+"Moguće opcije su:\n"
+"[-C] [-c | -d | -g | -j | -p | -r | -x] [-H] [-h] [-T | -t | -U] [-V]\n"
+"[-O <opcije> [,...]] [-P {<cpu> [,...] | ALL}]\n"
+"[--dev=<popis_uređaja>] [--fs=<popis_fs> ] [--iface=<popis_sučelja>]\n"
+"[-s [<hh:mm[:ss]>]] [-e [<hh:mm[:ss]>]]\n"
+"[-- <sar_opcije>]\n"
+
+#: rd_stats.c:351
+#, c-format
+msgid "Cannot read %s\n"
+msgstr "Nije moguće čitati %s\n"
+
+#: sa_common.c:297
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Datoteku je stvorio sar/sadc iz sysstat inačice %d.%d.%d"
+
+#: sa_common.c:328
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Datoteka aktivnosti sustava nije valjana: %s\n"
+
+#: sa_common.c:336
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "Ova sysstat inačica ne može čitati format ove datoteke (%#x)\n"
+
+#: sa_common.c:353 pidstat.c:244
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "Zahtjevane aktivnosti nisu dostupne\n"
+
+#: sa_common.c:1395
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Greška pri čitanju datoteke aktivnosti sustava: %s\n"
+
+#: sa_common.c:1405
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Neočekivani kraj datoteke aktivnosti sustava\n"
+
+#: sa_common.c:1723
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "Provjerite je li je omogućeno prikupljanje podataka\n"
+
+#: sa_common.c:2047
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Zahtjevane aktivnosti nisu dostupne u datoteci %s\n"
+
+# Persistent block device naming
+# https://wiki.archlinux.org/index.php/persistent_block_device_naming
+#: sa_common.c:2168 iostat.c:2017
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Nevaljana vrsta imena za postojani uređaj\n"
+
+#: pidstat.c:91
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
+msgstr "Uporaba: %s [OPCIJE...] [<interval> [<brojač>]] [-e <program> <argumenti>]\n"
+
+#: pidstat.c:94
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+msgstr ""
+"Moguće opcije su:\n"
+"[-d] [-H] [-h] [-I] [-l] [-R] [-r] [-s] [-t] [-U [<korisnik>]]\n"
+"[-u] [-V] [-v] [-w] [-C <naredba>] [-G <ime_procesa>]\n"
+"[-p {<pid> [,...] | SELF | ALL}] [-T {TASK | CHILD | ALL}]\n"
+"[--dec={0 | 1 | 2}] [ --human ]\n"
+
+#: sadf_misc.c:832
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Datoteka s podacima o aktivnosti sustava: %s (%#x)\n"
+
+#: sadf_misc.c:841
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Izvorna datoteka s podacima o aktivnosti sustava: %s (%x)\n"
+
+#: sadf_misc.c:842
+msgid "no"
+msgstr "ne"
+
+#: sadf_misc.c:842
+msgid "yes"
+msgstr "da"
+
+#: sadf_misc.c:845
+#, c-format
+msgid "Host: "
+msgstr "Host: "
+
+#: sadf_misc.c:855
+#, c-format
+msgid "File date: %s\n"
+msgstr "Datum datoteke: %s\n"
+
+#: sadf_misc.c:858
+#, c-format
+msgid "File time: "
+msgstr "Vrijeme datoteke: "
+
+#: sadf_misc.c:864
+#, c-format
+msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgstr "Sastav datoteke: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+
+#: sadf_misc.c:869
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Veličina long int: %d\n"
+
+#: sadf_misc.c:871
+#, c-format
+msgid "Number of activities in file: %u\n"
+msgstr "Broj aktivnosti u datoteci: %u\n"
+
+#: sadf_misc.c:874
+#, c-format
+msgid "List of activities:\n"
+msgstr "Popis aktivnosti:\n"
+
+#: sadf_misc.c:885
+msgid "Unknown activity"
+msgstr "Nepoznata aktivnost"
+
+#: sadf_misc.c:893
+#, c-format
+msgid " \t[Unknown format]"
+msgstr "\t[Nepoznati format]"
 
 #: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
 msgid "Summary:"
 msgstr "Sažetak:"
 
-#  sar 2 5  --> will report CPU utilization every two seconds, five times.
-#: iostat.c:89 cifsiostat.c:73 tapestat.c:101 mpstat.c:132 sar.c:102
+#: count.c:169
 #, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
-msgstr "Uporaba: %s [OPCIJE...] [<interval> [<brojač>]]\n"
+msgid "Cannot handle so many processors!\n"
+msgstr "Nije moguće obraditi toliko procesora!\n"
 
 #: iostat.c:92
 #, c-format
@@ -71,70 +300,6 @@ msgstr ""
 msgid "Cannot find disk data\n"
 msgstr "Nije moguće pronaći podatke o disku\n"
 
-# Persistent block device naming
-# https://wiki.archlinux.org/index.php/persistent_block_device_naming
-#: iostat.c:2017 sa_common.c:2168
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Nevaljana vrsta imena za postojani uređaj\n"
-
-#: sadc.c:91
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr ""
-"Uporaba:\n"
-"%s [OPCIJE...] [<interval> [<brojač>]] [<izlazna_datoteka>]\n"
-
-#: sadc.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
-"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
-msgstr ""
-"Moguće opcije su:\n"
-"[-C <komentar>] [-D] [-F] [-L] [-V]\n"
-"[-S {INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL}]\n"
-
-#: sadc.c:265
-#, c-format
-msgid "Cannot write data to system activity file: %s\n"
-msgstr "Nije moguće zapisati podatke u datoteku aktivnosti sustava: %s\n"
-
-#: sadc.c:704 sadc.c:767 count.c:118 ioconf.c:506 rd_stats.c:75
-#: sa_common.c:1720
-#, c-format
-msgid "Cannot open %s: %s\n"
-msgstr "Nije moguće otvoriti %s: %s\n"
-
-#: sadc.c:986
-#, c-format
-msgid "Cannot append data to that file (%s)\n"
-msgstr "Nije moguće dodati podatke na kraj ove datoteku (%s)\n"
-
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Nije moguće obraditi toliko procesora!\n"
-
-#: cifsiostat.c:77
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
-msgstr ""
-"Moguće opcije su:\n"
-"[--dec={0 | 1 | 2}] [--human] [-h] [-k | -m] [-t] [-V] [--debuginfo]\n"
-
-#: cifsiostat.c:80
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-msgstr ""
-"Moguće opcije su:\n"
-"[--dec={0 | 1 | 2}] [--human] [-h] [-k | -m] [-t] [-V]\n"
-
 #: tapestat.c:103
 #, c-format
 msgid ""
@@ -153,45 +318,6 @@ msgstr "Uređaj s magnetskom vrpcom sa statistikom nije pronađen.\n"
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat inačica %s\n"
-
-#: mpstat.c:135
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
-msgstr ""
-"Moguće opcije su:\n"
-"[-A] [-n] [-u] [-V]\n"
-"[-I {SUM | CPU | SCPU | ALL}] [-N {<node_popis> | ALL}]\n"
-"[--dec={0 | 1 | 2}] [-o JSON] [-P {<cpu_popis> | ALL}]\n"
-
-#: mpstat.c:1632 sar.c:370 pidstat.c:2406
-msgid "Average:"
-msgstr "Prosjek:"
-
-#: sadf.c:91
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr "Uporaba: %s [OPCIJE...] [<interval> [<brojač>]] [<data_datoteka> | -[0-9]+]\n"
-
-#: sadf.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <sar_options> ]\n"
-msgstr ""
-"Moguće opcije su:\n"
-"[-C] [-c | -d | -g | -j | -p | -r | -x] [-H] [-h] [-T | -t | -U] [-V]\n"
-"[-O <opcije> [,...]] [-P {<cpu> [,...] | ALL}]\n"
-"[--dev=<popis_uređaja>] [--fs=<popis_fs> ] [--iface=<popis_sučelja>]\n"
-"[-s [<hh:mm[:ss]>]] [-e [<hh:mm[:ss]>]]\n"
-"[-- <sar_opcije>]\n"
 
 #: sar.c:117
 #, c-format
@@ -390,7 +516,7 @@ msgstr "\t-y\tStatistika TTY uređaja [A_SERIAL]\n"
 #: sar.c:206
 #, c-format
 msgid "Data collector will be sought in PATH\n"
-msgstr "Kolektor podataka tražiti će se u PATH\n"
+msgstr "Kolektor podataka tražit će se u PATH\n"
 
 #: sar.c:209
 #, c-format
@@ -426,36 +552,6 @@ msgstr "Ne čita se datoteka aktivnosti sustava (za čitanje rabite opciju -f)\n
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nije moguće pronaći kolektor podataka (%s)\n"
-
-#: pidstat.c:91
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
-msgstr "Uporaba: %s [OPCIJE...] [<interval> [<brojač>]] [-e <program> <argumenti>]\n"
-
-#: pidstat.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
-msgstr ""
-"Moguće opcije su:\n"
-"[-d] [-H] [-h] [-I] [-l] [-R] [-r] [-s] [-t] [-U [<korisnik>]]\n"
-"[-u] [-V] [-v] [-w] [-C <naredba>] [-G <ime_procesa>]\n"
-"[-p {<pid> [,...] | SELF | ALL}] [-T {TASK | CHILD | ALL}]\n"
-"[--dec={0 | 1 | 2}] [ --human ]\n"
-
-#: pidstat.c:244 sa_common.c:353
-#, c-format
-msgid "Requested activities not available\n"
-msgstr "Zahtjevane aktivnosti nisu dostupne\n"
-
-#: rd_stats.c:351
-#, c-format
-msgid "Cannot read %s\n"
-msgstr "Nije moguće čitati %s\n"
 
 #: sa_conv.c:98
 #, c-format
@@ -503,103 +599,6 @@ msgstr "HZ: Koristi se trenutačna vrijednost: %lu\n"
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "Datoteka je uspješno pretvorena u format sysstat inačice %s\n"
-
-#: sadf_misc.c:830
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Datoteka s podacima o aktivnosti sustava: %s (%#x)\n"
-
-#: sadf_misc.c:839
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Izvorna datoteka s podacima o aktivnosti sustava: %s (%x)\n"
-
-#: sadf_misc.c:840
-msgid "no"
-msgstr "ne"
-
-#: sadf_misc.c:840
-msgid "yes"
-msgstr "da"
-
-#: sadf_misc.c:843
-#, c-format
-msgid "Host: "
-msgstr "Računalo: "
-
-#: sadf_misc.c:853
-#, c-format
-msgid "File date: %s\n"
-msgstr "Datum datoteke: %s\n"
-
-#: sadf_misc.c:856
-#, c-format
-msgid "File time: "
-msgstr "Vrijeme datoteke: "
-
-#: sadf_misc.c:862
-#, c-format
-msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-msgstr "Sastav datoteke: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-
-#: sadf_misc.c:867
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Veličina long int: %d\n"
-
-#: sadf_misc.c:869
-#, c-format
-msgid "Number of activities in file: %u\n"
-msgstr "Broj aktivnosti u datoteci: %u\n"
-
-#: sadf_misc.c:872
-#, c-format
-msgid "List of activities:\n"
-msgstr "Popis aktivnosti:\n"
-
-#: sadf_misc.c:883
-msgid "Unknown activity"
-msgstr "Nepoznata aktivnost"
-
-#: sadf_misc.c:891
-#, c-format
-msgid " \t[Unknown format]"
-msgstr "\t[Nepoznati format]"
-
-#: sa_common.c:297
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Datoteku je stvorio sar/sadc iz sysstat inačice %d.%d.%d"
-
-#: sa_common.c:328
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Datoteka aktivnosti sustava nije valjana: %s\n"
-
-#: sa_common.c:336
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr "Ova sysstat inačica ne može čitati format ove datoteke (%#x)\n"
-
-#: sa_common.c:1395
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Greška pri čitanju datoteke aktivnosti sustava: %s\n"
-
-#: sa_common.c:1405
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Neočekivani kraj datoteke aktivnosti sustava\n"
-
-#: sa_common.c:1723
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "Provjerite je li je omogućeno prikupljanje podataka\n"
-
-#: sa_common.c:2047
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Zahtjevane aktivnosti nisu dostupne u datoteci %s\n"
 
 #~ msgid "Cannot write system activity file header: %s\n"
 #~ msgstr "Nije moguće zapisati zaglavlje datoteke aktivnosti sustava: %s\n"
