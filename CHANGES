@@ -1,5 +1,22 @@
 Changes:
 
+2019/04/18: Version 12.0.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Ondrej Dubaj]: sar/sadc: Ignore autofs entries in /etc/mtab.
+	* [Huang Ying]: mpstat: Fix missing "}" and "]" in JSON output when
+	  stopped by SIGINT.
+	* iostat: Add a SIGINT handler so that JSON output can be terminated
+	  properly when the user presses Ctrl/C.
+	* sadf: Fix segmentation fault error when trying to display XML or JSON
+	  data using a file which contains only RESTART records.
+	* mpstat: JSON output should display "all" for CPU number for global
+	  CPU utilization.
+	* [Danny Smit]: Add umask sysconfig variable for sa1 and sa2.
+	* configure: Don't check for sensors library if --disable-sensors
+	  option is used.
+	* sadf: Don't test for activities available in file if only the header
+	  needs to be displayed.
+	* json_stats.h: Replace XML -> JSON.
+
 2018/12/14: Version 12.0.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Fix out of bound reads security issues (CVE-2018-19416 and
 	  CVE-2018-19517).
