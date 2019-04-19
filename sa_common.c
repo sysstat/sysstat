@@ -1089,11 +1089,14 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 			 * is that the disk has been unregistered and a new disk inserted.
 			 * If only one or two have decreased then the likelyhood
 			 * is that the counter has simply wrapped.
+			 * Don't take into account a counter if its previous value was 0
+			 * (this may be a read-only device, or a kernel that doesn't
+			 * support discard stats yet...)
 			 */
 			if ((sdc->nr_ios < sdp->nr_ios) &&
-			    (sdc->rd_sect < sdp->rd_sect) &&
-			    (sdc->wr_sect < sdp->wr_sect) &&
-			    (sdc->dc_sect < sdp->dc_sect))
+			    (!sdp->rd_sect || (sdc->rd_sect < sdp->rd_sect)) &&
+			    (!sdp->wr_sect || (sdc->wr_sect < sdp->wr_sect)) &&
+			    (!sdp->dc_sect || (sdc->dc_sect < sdp->dc_sect)))
 				/* Same device registered again */
 				return -2;
 
