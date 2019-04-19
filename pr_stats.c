@@ -218,8 +218,8 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 				 * %irq, %soft, %guest, %gnice.
 				 */
 				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					cprintf_pc(DISPLAY_UNIT(flags), 4, 9, 2,
-						   0.0, 0.0, 0.0, 100.0);
+					cprintf_pc(DISPLAY_UNIT(flags), 5, 9, 2,
+						   0.0, 0.0, 0.0, 0.0, 100.0);
 					printf("\n");
 				}
 				continue;
