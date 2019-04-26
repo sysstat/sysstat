@@ -1,4 +1,4 @@
-.TH SAR 1 "DECEMBER 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "APRIL 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -173,7 +173,7 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdFHqSuvwWy -I SUM -I ALL -m ALL -n ALL -r ALL -u ALL -P ALL".
+.BR "-bBdFHqSvwWy -I SUM -I ALL -m ALL -n ALL -r ALL -u ALL -P ALL".
 .IP -B
 Report paging statistics.
 The following values are displayed:
