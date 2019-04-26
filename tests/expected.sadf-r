@@ -2326,14 +2326,13 @@
 13:20:39 UTC; idgm6/s; 671; 671; odgm6/s; 36; 36; noport6/s; 0; 0; idgmer6/s; 0; 0;
 # A_NET_UDP6: 1/1 (1)
 13:20:49 UTC; idgm6/s; 671; 671; odgm6/s; 36; 36; noport6/s; 0; 0; idgmer6/s; 0; 0;
-# A_NET_FC: 1/2 (1)
+# A_NET_FC: 1/1 (1)
 13:20:19 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
-# A_NET_FC: 1/2 (1)
+# A_NET_FC: 1/1 (1)
 13:20:29 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
-# A_NET_FC: 2/2 (1)
+# A_NET_FC: 1/1 (1)
 13:20:39 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
-# A_NET_FC: 2/2 (1)
-13:20:49 UTC; FCHOST; host1; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
+# A_NET_FC: 1/1 (1)
 13:20:49 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
 # A_NET_SOFT: 9/9 (9)
 13:20:19 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
@@ -3024,7 +3023,7 @@
 13:54:35 UTC; ierr6/s; 0; 0; idtunr6/s; 0; 0; odtunr6/s; 0; 0; itmex6/s; 0; 0; otmex6/s; 0; 0; iprmpb6/s; 0; 0; oprmpb6/s; 0; 0; iredir6/s; 0; 0; oredir6/s; 0; 0; ipck2b6/s; 0; 0; opck2b6/s; 0; 0;
 # A_NET_UDP6: 1/1 (1)
 13:54:35 UTC; idgm6/s; 671; 671; odgm6/s; 36; 36; noport6/s; 0; 0; idgmer6/s; 0; 0;
-# A_NET_FC: 1/2 (1)
+# A_NET_FC: 1/1 (1)
 13:54:35 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
 # A_NET_SOFT: 11/18 (11)
 13:54:35 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;

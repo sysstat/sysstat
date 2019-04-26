@@ -2487,7 +2487,6 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-icmp6 imsg6="0.00" omsg6="0.00" iech6="0.00" iechr6="0.00" oechr6="0.00" igmbq6="0.00" igmbr6="0.00" ogmbr6="0.00" igmbrd6="0.00" ogmbrd6="0.00" irtsol6="0.00" ortsol6="0.00" irtad6="0.00" inbsol6="0.00" onbsol6="0.00" inbad6="0.00" onbad6="0.00"/>
 					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
-					<fchost name="host1" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.09"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.09"/>
 					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
