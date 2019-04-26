@@ -54,6 +54,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+extern time_t __unix_time;
+#endif
+
 long interval = 0;
 unsigned int flags = 0;
 
@@ -503,7 +507,7 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_cpu_nr = act[get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND)]->nr_ini;
 
 	/* Get system name, release number, hostname and machine architecture */
-	uname(&header);
+	__uname(&header);
 	strncpy(file_hdr.sa_sysname, header.sysname, UTSNAME_LEN);
 	file_hdr.sa_sysname[UTSNAME_LEN - 1]  = '\0';
 	strncpy(file_hdr.sa_nodename, header.nodename, UTSNAME_LEN);
@@ -1165,6 +1169,10 @@ int main(int argc, char **argv)
 	int restart_mark;
 	long count = 0;
 
+#ifdef TEST
+	fprintf(stderr, "TEST MODE\n");
+#endif
+
 	/* Get HZ */
 	get_HZ();
 
@@ -1230,6 +1238,15 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--unix_time=", 12)) {
+			if (strspn(argv[opt] + 12, DIGITS) != strlen(argv[opt] + 12)) {
+				usage(argv[0]);
+			}
+			__unix_time = atoll(argv[opt] + 12);
+		}
+#endif
 
 		else if (strspn(argv[opt], DIGITS) != strlen(argv[opt])) {
 			if (ofile[0] || WANT_SA_ROTAT(flags)) {

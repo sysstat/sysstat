@@ -31,7 +31,6 @@
 
 #include "version.h"
 #include "mpstat.h"
-#include "common.h"
 #include "rd_stats.h"
 #include "count.h"
 
@@ -2193,7 +2192,7 @@ int main(int argc, char **argv)
 	get_localtime(&(mp_tstamp[0]), 0);
 
 	/* Get system name, release number and hostname */
-	uname(&header);
+	__uname(&header);
 	print_gal_header(&(mp_tstamp[0]), header.sysname, header.release,
 			 header.nodename, header.machine, get_cpu_nr(~0, FALSE),
 			 DISPLAY_JSON_OUTPUT(flags));

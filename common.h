@@ -13,6 +13,7 @@
 #include <sched.h>	/* For __CPU_SETSIZE */
 #include <limits.h>
 #include <stdlib.h>
+#include "systest.h"
 
 #ifdef HAVE_SYS_SYSMACROS_H
 /* Needed on some non-glibc environments */
@@ -67,26 +68,26 @@
 #define K_JSON		"JSON"
 
 /* Files */
-#define STAT			"/proc/stat"
-#define UPTIME			"/proc/uptime"
-#define DISKSTATS		"/proc/diskstats"
-#define INTERRUPTS		"/proc/interrupts"
-#define MEMINFO			"/proc/meminfo"
-#define SYSFS_BLOCK		"/sys/block"
-#define SYSFS_DEV_BLOCK		"/sys/dev/block"
-#define SYSFS_DEVCPU		"/sys/devices/system/cpu"
+#define STAT			PRE "/proc/stat"
+#define UPTIME			PRE "/proc/uptime"
+#define DISKSTATS		PRE "/proc/diskstats"
+#define INTERRUPTS		PRE "/proc/interrupts"
+#define MEMINFO			PRE "/proc/meminfo"
+#define SYSFS_BLOCK		PRE "/sys/block"
+#define SYSFS_DEV_BLOCK		PRE "/sys/dev/block"
+#define SYSFS_DEVCPU		PRE "/sys/devices/system/cpu"
 #define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
 #define S_STAT			"stat"
-#define DEVMAP_DIR		"/dev/mapper"
-#define DEVICES			"/proc/devices"
-#define SYSFS_USBDEV		"/sys/bus/usb/devices"
-#define DEV_DISK_BY		"/dev/disk/by"
+#define DEVMAP_DIR		PRE "/dev/mapper"
+#define DEVICES			PRE "/proc/devices"
+#define SYSFS_USBDEV		PRE "/sys/bus/usb/devices"
+#define DEV_DISK_BY		PRE "/dev/disk/by"
 #define SYSFS_IDVENDOR		"idVendor"
 #define SYSFS_IDPRODUCT		"idProduct"
 #define SYSFS_BMAXPOWER		"bMaxPower"
 #define SYSFS_MANUFACTURER	"manufacturer"
 #define SYSFS_PRODUCT		"product"
-#define SYSFS_FCHOST		"/sys/class/fc_host"
+#define SYSFS_FCHOST		PRE "/sys/class/fc_host"
 
 #define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024

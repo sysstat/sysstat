@@ -1,0 +1,16 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
+
+15:20:09          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+15:20:19          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+15:20:29          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+15:20:39          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+15:20:49          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+15:37:29     LINUX RESTART	(8 CPU)
+
+15:54:09     LINUX RESTART	(10 CPU)
+
+15:54:15          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+15:54:35          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:          sda      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00

@@ -118,7 +118,7 @@ void set_disk_output_unit(void)
 		return;
 
 	/* Check POSIXLY_CORRECT environment variable */
-	if (getenv(ENV_POSIXLY_CORRECT) == NULL) {
+	if (__getenv(ENV_POSIXLY_CORRECT) == NULL) {
 		/* Variable not set: Unit is kB/s and not blocks/s */
 		flags |= I_D_KILOBYTES;
 	}
@@ -2283,7 +2283,7 @@ int main(int argc, char **argv)
 	get_localtime(&rectime, 0);
 
 	/* Get system name, release number and hostname */
-	uname(&header);
+	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
 			     DISPLAY_JSON_OUTPUT(flags))) {

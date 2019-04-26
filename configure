@@ -5600,15 +5600,15 @@ ac_config_files="$ac_config_files man/iostat.1:man/iostat.in"
 	# File must be renamed
 ac_config_files="$ac_config_files man/cifsiostat.1:man/cifsiostat.in"
 	# File must be renamed
-ac_config_files="$ac_config_files tests/0230"
+ac_config_files="$ac_config_files tests/00300"
 
-ac_config_files="$ac_config_files tests/0231"
+ac_config_files="$ac_config_files tests/00310"
 
-ac_config_files="$ac_config_files tests/0232"
+ac_config_files="$ac_config_files tests/00320"
 
-ac_config_files="$ac_config_files tests/0240"
+ac_config_files="$ac_config_files tests/00400"
 
-ac_config_files="$ac_config_files tests/0250"
+ac_config_files="$ac_config_files tests/00410"
 
 
 ac_config_files="$ac_config_files Makefile"
@@ -6342,11 +6342,11 @@ do
     "man/sysstat.5") CONFIG_FILES="$CONFIG_FILES man/sysstat.5:man/sysstat.in" ;;
     "man/iostat.1") CONFIG_FILES="$CONFIG_FILES man/iostat.1:man/iostat.in" ;;
     "man/cifsiostat.1") CONFIG_FILES="$CONFIG_FILES man/cifsiostat.1:man/cifsiostat.in" ;;
-    "tests/0230") CONFIG_FILES="$CONFIG_FILES tests/0230" ;;
-    "tests/0231") CONFIG_FILES="$CONFIG_FILES tests/0231" ;;
-    "tests/0232") CONFIG_FILES="$CONFIG_FILES tests/0232" ;;
-    "tests/0240") CONFIG_FILES="$CONFIG_FILES tests/0240" ;;
-    "tests/0250") CONFIG_FILES="$CONFIG_FILES tests/0250" ;;
+    "tests/00300") CONFIG_FILES="$CONFIG_FILES tests/00300" ;;
+    "tests/00310") CONFIG_FILES="$CONFIG_FILES tests/00310" ;;
+    "tests/00320") CONFIG_FILES="$CONFIG_FILES tests/00320" ;;
+    "tests/00400") CONFIG_FILES="$CONFIG_FILES tests/00400" ;;
+    "tests/00410") CONFIG_FILES="$CONFIG_FILES tests/00410" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

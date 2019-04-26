@@ -512,7 +512,7 @@ __nr_t get_filesystem_nr(void)
 			oct2chr(mountp);
 
 			/* Check that total size is not zero */
-			if (statvfs(mountp, &buf) < 0)
+			if (__statvfs(mountp, &buf) < 0)
 				continue;
 
 			if (buf.f_blocks) {

@@ -1,1 +1,0 @@
-./sadf -g tests/data.tmp -C -- -A > /dev/null

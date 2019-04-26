@@ -1,0 +1,50 @@
+/*
+ * sysstat: System performance tools for Linux
+ * (C) 1999-2019 by Sebastien Godard (sysstat <at> orange.fr)
+ */
+
+#ifndef _SYSTEST_H
+#define _SYSTEST_H
+
+#include <time.h>
+#include <sys/utsname.h>
+#include <sys/statvfs.h>
+
+/* Test mode: Use alternate files and syscalls */
+#ifdef TEST
+
+#define PRE		"./tests/root"
+#define __time(m)	get_unix_time(m)
+#define __uname(m)	get_uname(m)
+#define __statvfs(m, n)	get_fs_stat(m, n)
+#define __getenv(m)	get_env_value(m)
+
+#else
+
+#define PRE	""
+
+#define __time(m)	time(m)
+#define __uname(m)	uname(m)
+#define __statvfs(m, n)	statvfs(m, n)
+#define __getenv(m)	getenv(m)
+
+#endif
+
+
+/*
+ ***************************************************************************
+ * Functions prototypes
+ ***************************************************************************
+ */
+#ifdef TEST
+char *get_env_value
+	(char *);
+int get_fs_stat
+	(char *, struct statvfs *);
+void get_uname
+	(struct utsname *);
+void get_unix_time
+	(time_t *);
+#endif
+
+#endif  /* _SYSTEST_H */

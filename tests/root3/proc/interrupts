@@ -1,0 +1,44 @@
+           CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
+  0:          8          0          0          0          0          0          0          0   IO-APIC   2-edge      timer
+  8:          0          0          0          0          0          1          0          0   IO-APIC   8-edge      rtc0
+  9:          0          0          0          0          0          0          0          0   IO-APIC   9-fasteoi   acpi
+ 16:          0          0          0      10536          0          0          0          0   IO-APIC  16-fasteoi   ehci_hcd:usb1
+ 17:          0          0        807          0          0          0          0          0   IO-APIC  17-fasteoi   snd_hda_intel:card2
+ 18:          0          0          0          0          0          0          0          0   IO-APIC  18-fasteoi   i801_smbus
+ 19:          0          0          0          0     181938          0          0          0   IO-APIC  19-fasteoi   rt2800pci
+ 23:          0          0          0          0     147948          0          0          0   IO-APIC  23-fasteoi   ehci_hcd:usb2
+ 24:          0          0     221678          0          0          0          0          0   PCI-MSI 512000-edge      ahci[0000:00:1f.2]
+ 25:          0          0          0          0          0          0          0          0   PCI-MSI 3670016-edge      xhci_hcd
+ 26:          0          0          0          0          0          0          0          0   PCI-MSI 3670017-edge      xhci_hcd
+ 27:          0          0          0          0          0          0          0          0   PCI-MSI 3670018-edge      xhci_hcd
+ 28:          0          0          0          0          0          0          0          0   PCI-MSI 3670019-edge      xhci_hcd
+ 29:          0          0          0          0          0          0          0          0   PCI-MSI 3670020-edge      xhci_hcd
+ 30:          0          0          0          0          0          0          0          0   PCI-MSI 3670021-edge      xhci_hcd
+ 31:          0          0          0          0          0          0          0          0   PCI-MSI 3670022-edge      xhci_hcd
+ 32:          0          0          0          0          0          0          0          0   PCI-MSI 3670023-edge      xhci_hcd
+ 33:          0          0          0      54232          0          0          0          0   PCI-MSI 3145728-edge      enp6s0
+ 34:          0          0          0          0          0          0     765098          0   PCI-MSI 524288-edge      nvkm
+ 35:         15          0          0          0          0          0          0          0   PCI-MSI 360448-edge      mei_me
+ 36:          0      15162          0          0          0          0          0          0   PCI-MSI 442368-edge      snd_hda_intel:card1
+NMI:        376        405        601        598        338        346        101        137   Non-maskable interrupts
+LOC:   11320772   12552359    8349305    9212607   13196636   11213289   13900096   12540126   Local timer interrupts
+SPU:          0          0          0          0          0          0          0          0   Spurious interrupts
+PMI:        376        405        601        598        338        346        101        137   Performance monitoring interrupts
+IWI:          0          0          6          1          0          0          0          0   IRQ work interrupts
+RTR:          0          0          0          0          0          0          0          0   APIC ICR read retries
+RES:    1425418     558267     105114     149070     547582      85681      92864      50061   Rescheduling interrupts
+CAL:      34339      39061      27910      30264      27748      32389      42656      37703   Function call interrupts
+TLB:      38374      49370      23428      32791      42890      40418      72245      59981   TLB shootdowns
+TRM:          0          0          0          0          0          0          0          0   Thermal event interrupts
+THR:          0          0          0          0          0          0          0          0   Threshold APIC interrupts
+DFR:          0          0          0          0          0          0          0          0   Deferred Error APIC interrupts
+MCE:          0          0          0          0          0          0          0          0   Machine check exceptions
+MCP:         23         24         24         24         24         24         24         24   Machine check polls
+HYP:          0          0          0          0          0          0          0          0   Hypervisor callback interrupts
+HRE:          0          0          0          0          0          0          0          0   Hyper-V reenlightenment interrupts
+HVS:          0          0          0          0          0          0          0          0   Hyper-V stimer0 interrupts
+ERR:          0
+MIS:          0
+PIN:          0          0          0          0          0          0          0          0   Posted-interrupt notification event
+NPI:          0          0          0          0          0          0          0          0   Nested posted-interrupt event
+PIW:          0          0          0          0          0          0          0          0   Posted-interrupt wakeup event

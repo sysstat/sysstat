@@ -693,7 +693,7 @@ int main(int argc, char **argv)
 	get_localtime(&rectime, 0);
 
 	/* Get system name, release number and hostname */
-	uname(&header);
+	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
 			     PLAIN_OUTPUT)) {

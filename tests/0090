@@ -1,2 +1,0 @@
-rm -f tests/data.tmp
-./sadc -S XALL tests/data.tmp 1 3 >/dev/null

@@ -1,0 +1,4 @@
+#!/bin/sh
+make distclean
+./configure sa_lib_dir=. && make CFLAGS="-D DEBUG -D TEST" && make simtest
+

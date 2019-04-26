@@ -1,0 +1,1 @@
+LC_ALL=C ./sar -s 15:20:20 -e 15:20:40 -f tests/data.tmp > tests/out.sar-se.tmp

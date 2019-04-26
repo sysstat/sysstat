@@ -1,1 +1,0 @@
-./sar -C -A -f tests/data.tmp >/dev/null

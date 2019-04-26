@@ -1,0 +1,66 @@
+Character devices:
+  1 mem
+  4 /dev/vc/0
+  4 tty
+  4 ttyS
+  5 /dev/tty
+  5 /dev/console
+  5 /dev/ptmx
+  7 vcs
+ 10 misc
+ 13 input
+ 14 sound
+ 21 sg
+ 29 fb
+ 81 video4linux
+116 alsa
+128 ptm
+136 pts
+162 raw
+180 usb
+188 ttyUSB
+189 usb_device
+202 cpu/msr
+203 cpu/cpuid
+226 drm
+237 media
+238 mei
+239 aux
+240 hidraw
+241 usbmon
+242 bsg
+243 hmm_device
+244 watchdog
+245 ptp
+246 pps
+247 cec
+248 BaseRemoteCtl
+249 rtc
+250 dax
+251 dimmctl
+252 ndctl
+253 tpm
+254 gpiochip
+
+Block devices:
+  8 sd
+  9 md
+ 11 sr
+ 65 sd
+ 66 sd
+ 67 sd
+ 68 sd
+ 69 sd
+ 70 sd
+ 71 sd
+128 sd
+129 sd
+130 sd
+131 sd
+132 sd
+133 sd
+134 sd
+135 sd
+253 device-mapper
+254 mdp
+259 blkext

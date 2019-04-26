@@ -6,13 +6,15 @@
 #ifndef _MPSTAT_H
 #define _MPSTAT_H
 
+#include "common.h"
+
 /*
  ***************************************************************************
  * mpstat's specific system files.
  ***************************************************************************
  */
 
-#define SOFTIRQS	"/proc/softirqs"
+#define SOFTIRQS	PRE "/proc/softirqs"
 
 /*
  ***************************************************************************

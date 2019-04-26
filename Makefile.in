@@ -186,6 +186,8 @@ common_sadc.o: common.c version.h common.h
 
 common.o: common.c version.h common.h
 
+systest.o: systest.c systest.h
+
 sa_common_sadc.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
@@ -247,7 +249,7 @@ sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_c
 
 # Explicit rules needed to prevent possible file corruption
 # when using parallel execution.
-libsyscom.a: common.o ioconf.o
+libsyscom.a: common.o ioconf.o systest.o
 	$(AR) rvs $@ $?
 
 # Ditto
@@ -265,11 +267,11 @@ sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
 sadc: LFLAGS += $(LFSENSORS)
 
-sadc: sadc.o act_sadc.o sa_wrap.o sa_common_sadc.o common_sadc.o librdstats.a librdsensors.a
+sadc: sadc.o act_sadc.o sa_wrap.o sa_common_sadc.o common_sadc.o systest.o librdstats.a librdsensors.a
 
 sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
-sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o librdstats_light.a libsyscom.a
+sar: sar.o act_sar.o format_sar.o sa_common.o systest.o pr_stats.o librdstats_light.a libsyscom.a
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h
 
@@ -308,7 +310,7 @@ nls/sysstat.pot: $(wildcard *.c)
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall \
-	uninstall_base uninstall_all dist bdist xdist gitdist squeeze test
+	uninstall_base uninstall_all dist bdist xdist gitdist squeeze test simtest
 
 install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
 ifeq ($(INSTALL_DOC),y)
@@ -601,7 +603,9 @@ unit:
 	@echo $(X) 2>&1
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
-test: all
+test:
+
+simtest: all
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 
 clean:
@@ -615,7 +619,7 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer cron/sysstat-summary.service cron/sysstat-summary.timer
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
-	rm -f tests/0230 tests/0231 tests/0232 tests/0240 tests/0250
+	rm -f tests/00300 tests/00310 tests/00320 tests/00400 tests/00410
 	rm -f man/cifsiostat.1
 	rm -f *.log config.status
 	rm -rf autom4te.cache

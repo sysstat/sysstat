@@ -6,6 +6,8 @@
 #ifndef _RD_STATS_H
 #define _RD_STATS_H
 
+#include "common.h"
+
 /*
  ***************************************************************************
  * Miscellaneous constants
@@ -51,26 +53,25 @@
  */
 
 /* Files */
-#define PROC		"/proc"
-#define SERIAL		"/proc/tty/driver/serial"
-#define FDENTRY_STATE	"/proc/sys/fs/dentry-state"
-#define FFILE_NR	"/proc/sys/fs/file-nr"
-#define FINODE_STATE	"/proc/sys/fs/inode-state"
-#define PTY_NR		"/proc/sys/kernel/pty/nr"
-#define NET_DEV		"/proc/net/dev"
-#define NET_SOCKSTAT	"/proc/net/sockstat"
-#define NET_SOCKSTAT6	"/proc/net/sockstat6"
-#define NET_RPC_NFS	"/proc/net/rpc/nfs"
-#define NET_RPC_NFSD	"/proc/net/rpc/nfsd"
-#define NET_SOFTNET	"/proc/net/softnet_stat"
-#define LOADAVG		"/proc/loadavg"
-#define VMSTAT		"/proc/vmstat"
-#define NET_SNMP	"/proc/net/snmp"
-#define NET_SNMP6	"/proc/net/snmp6"
-#define CPUINFO		"/proc/cpuinfo"
-#define MTAB		"/etc/mtab"
-#define IF_DUPLEX	"/sys/class/net/%s/duplex"
-#define IF_SPEED	"/sys/class/net/%s/speed"
+#define SERIAL		PRE "/proc/tty/driver/serial"
+#define FDENTRY_STATE	PRE "/proc/sys/fs/dentry-state"
+#define FFILE_NR	PRE "/proc/sys/fs/file-nr"
+#define FINODE_STATE	PRE "/proc/sys/fs/inode-state"
+#define PTY_NR		PRE "/proc/sys/kernel/pty/nr"
+#define NET_DEV		PRE "/proc/net/dev"
+#define NET_SOCKSTAT	PRE "/proc/net/sockstat"
+#define NET_SOCKSTAT6	PRE "/proc/net/sockstat6"
+#define NET_RPC_NFS	PRE "/proc/net/rpc/nfs"
+#define NET_RPC_NFSD	PRE "/proc/net/rpc/nfsd"
+#define NET_SOFTNET	PRE "/proc/net/softnet_stat"
+#define LOADAVG		PRE "/proc/loadavg"
+#define VMSTAT		PRE "/proc/vmstat"
+#define NET_SNMP	PRE "/proc/net/snmp"
+#define NET_SNMP6	PRE "/proc/net/snmp6"
+#define CPUINFO		PRE "/proc/cpuinfo"
+#define MTAB		PRE "/etc/mtab"
+#define IF_DUPLEX	PRE "/sys/class/net/%s/duplex"
+#define IF_SPEED	PRE "/sys/class/net/%s/speed"
 #define FC_RX_FRAMES	"%s/%s/statistics/rx_frames"
 #define FC_TX_FRAMES	"%s/%s/statistics/tx_frames"
 #define FC_RX_WORDS	"%s/%s/statistics/rx_words"

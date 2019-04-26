@@ -1,0 +1,51 @@
+==========root1:
+
+==========root2:
+
+==========root3:
+/proc/stat
+CPU#3: tickless
+CPU#6: offline
+
+/proc/diskstats
+sdb: unregistered then registered again
+
+/proc/net/dev
+enp6s0: unregistered then registered again
+
+/etc/mtab
+sdf,sdg: registered
+sdh: autofs, registered
+
+==========root4:
+/proc/stat
+CPU#6: offline
+
+/proc/diskstats
+sdb (dev8-16): unregistered
+sdf (dev8-80), sdg (dev-8,96): registered
+
+/proc/net/dev
+virbr0-nic: unregistered
+enp6s1, wlp5s1: registered
+
+/sys/class/fc_host
+host2: registered
+
+==========root5:
+/proc/stat
+CPU#6: online
+
+==========root6:
+/proc/stat
+#CPU: 8 > 10
+Old kernel format, with steal/guest/guest_nice fields.
+
+/proc/diskstats
+sda10, sda11, sda12: unregistered
+
+/proc/net/dev
+enp6s0-2,wlp5s0-2: available
+
+==========root7:
+

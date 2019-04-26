@@ -49,8 +49,8 @@ core
 TAGS
 nls/*.gmo
 tests/*.tmp
-tests/0230
-tests/0231
-tests/0232
-tests/0240
-tests/0250
+tests/00300
+tests/00310
+tests/00320
+tests/00400
+tests/00410

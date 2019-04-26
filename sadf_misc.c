@@ -1579,7 +1579,7 @@ void init_custom_color_palette()
 	unsigned int val;
 
 	/* Read S_COLORS_PALETTE environment variable */
-	if ((e = getenv(ENV_COLORS_PALETTE)) == NULL)
+	if ((e = __getenv(ENV_COLORS_PALETTE)) == NULL)
 		/* Environment variable not set */
 		return;
 

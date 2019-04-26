@@ -98,7 +98,7 @@ time_t get_localtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
 
-	time(&timer);
+	__time(&timer);
 	timer -= SEC_PER_DAY * d_off;
 	localtime_r(&timer, rectime);
 
@@ -123,7 +123,7 @@ time_t get_gmtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
 
-	time(&timer);
+	__time(&timer);
 	timer -= SEC_PER_DAY * d_off;
 	gmtime_r(&timer, rectime);
 
@@ -151,7 +151,7 @@ time_t get_time(struct tm *rectime, int d_off)
 
 	if (!utc) {
 		/* Read environment variable value once */
-		if ((e = getenv(ENV_TIME_DEFTM)) != NULL) {
+		if ((e = __getenv(ENV_TIME_DEFTM)) != NULL) {
 			utc = !strcmp(e, K_UTC);
 		}
 		utc++;
@@ -447,7 +447,7 @@ int is_iso_time_fmt(void)
 	char *e;
 
 	if (is_iso < 0) {
-		is_iso = (((e = getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO));
+		is_iso = (((e = __getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO));
 	}
 	return is_iso;
 }
@@ -978,7 +978,7 @@ void init_colors(void)
 	int len;
 
 	/* Read S_COLORS environment variable */
-	if (((e = getenv(ENV_COLORS)) == NULL) ||
+	if (((e = __getenv(ENV_COLORS)) == NULL) ||
 	    !strcmp(e, C_NEVER) ||
 	    (strcmp(e, C_ALWAYS) && !isatty(STDOUT_FILENO))) {
 		/*
@@ -999,7 +999,7 @@ void init_colors(void)
 	}
 
 	/* Read S_COLORS_SGR environment variable */
-	if ((e = getenv(ENV_COLORS_SGR)) == NULL)
+	if ((e = __getenv(ENV_COLORS_SGR)) == NULL)
 		/* Environment variable not set */
 		return;
 

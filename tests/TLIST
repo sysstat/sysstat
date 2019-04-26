@@ -1,0 +1,89 @@
+=====
+00010	./sar -V >/dev/null
+00011	./iostat -V >/dev/null
+00012	./mpstat -V >/dev/null
+00013	./sadc -V >/dev/null
+00014	./sadf -V >/dev/null
+00015	./pidstat -V >/dev/null
+00016	./tapestat -V >/dev/null
+00017	./cifsiostat -V >/dev/null
+
+=====	Creating data.tmp
+00100	5 x ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
+00110	./sadc --unix_time=XXXXXXXXX tests/data.tmp
+00120	./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
+
+=====	sar: Reading data.tmp
+00130	LC_ALL=C ./sar -C -u -P ALL -f tests/data.tmp > tests/out.sar-u.tmp
+00131	LC_ALL=C ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-all.tmp
+	[Don't take into account sensors statistics which are not read from test root directory]
+00134	diff -u tests/out.u.tmp tests/expected.sar-u
+00136	diff -u tests/out.sar-all.tmp tests/expected.sar-all
+
+=====	Appending data to data.tmp
+00140	./sadc --unix_time=1555595649 tests/data.tmp
+00150	2 x ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
+
+=====	sar: Reading data.tmp
+00160	LC_ALL=C ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
+00161	LC_ALL=C ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out2.sar-all.tmp
+	[Don't take into account sensors statistics which are not read from test root directory]
+00164	diff -u tests/out2.sar-u.tmp tests/expected2.sar-u
+00166	diff -u tests/out2.sar-all.tmp tests/expected2.sar-all
+
+=====	Checking JSON output validity
+00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null;
+00310	./mpstat -A -o JSON | $VER_JSON >/dev/null;
+00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null;
+
+=====	Checking XML output validity
+00400	./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
+00410	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+
+=====	Checking sadf output
+00500	./sadf -p tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-p.tmp
+00501	diff -u tests/out.sadf-p.tmp tests/expected.sadf-p
+00510	./sadf -d tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-d.tmp
+00511	diff -u tests/out.sadf-d.tmp tests/expected.sadf-d
+00520	./sadf -x tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-x.tmp
+00521	diff -u tests/out.sadf-x.tmp tests/expected.sadf-x
+00530	./sadf -j tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-j.tmp
+00531	diff -u tests/out.sadf-j.tmp tests/expected.sadf-j
+00540	./sadf -g tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-g.tmp
+00541	diff -u tests/out.sadf-g.tmp tests/expected.sadf-g
+00550	./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out2.sadf-g.tmp
+00551	diff -u tests/out2.sadf-g2.tmp tests/expected2.sadf-g2
+00560	./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
+00561	diff -u tests/out.sadf-H.tmp tests/expected.sadf-H
+00570	./sadf -r -O debug tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-r.tmp
+00571	diff -u tests/out.sadf-r.tmp tests/expected.sadf-r
+
+=====	Checking sadf conversion
+00600	./sadf -c tests/data-9.1.6 > tests/data-9.1.6.tmp
+00605	LC_ALL=C ./sar -C -A -f tests/data-9.1.6.tmp > tests/out.data-9.1.6.tmp
+00607	diff -u tests/out.data-9.1.6.tmp tests/expected.data-9.1.6
+00610	./sadf -c tests/data-10.3.1 > tests/data-10.3.1.tmp
+00615	LC_ALL=C ./sar -C -A -f tests/data-10.3.1.tmp > tests/out.data-10.3.1.tmp
+00617	diff -u tests/out.data-10.3.1.tmp tests/expected.data-10.3.1
+00620	./sadf -c tests/data-11.6.5 > tests/data-11.6.5.tmp
+00625	LC_ALL=C ./sar -C -A -f tests/data-11.6.5.tmp > tests/out.data-11.6.5.tmp
+00627	diff -u tests/out.data-11.6.5.tmp tests/expected.data-11.6.5	
+
+=====	Reading datafile from another architecture
+00700	LC_ALL=C ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
+00702	diff -u tests/out.data-ppc-11.7.2.tmp tests/expected.data-ppc-11.7.2
+
+=====	Testing sar's options
+00800	LC_ALL=C ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
+00802	diff -u tests/out.sar-iface.tmp tests/expected.sar-iface
+00810	LC_ALL=C ./sar --dev=sda -dp -f tests/data.tmp > tests/out.sar-dev.tmp
+00812	diff -u tests/out.sar-dev.tmp tests/expected.sar-dev
+00820	LC_ALL=C ./sar --fs=/dev/sda6,/dev/foo -F -f tests/data.tmp > tests/out.sar-fs.tmp
+00822	diff -u tests/out.sar-fs.tmp tests/expected.sar-fs
+00830	LC_ALL=C ./sar --dec=0 -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-dec.tmp
+00832	diff -u tests/out.sar-dec.tmp tests/expected.sar-dec
+00840	LC_ALL=C ./sar --human -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-human.tmp
+00842	diff -u tests/out.sar-human.tmp tests/expected.sar-human
+00850	LC_ALL=C ./sar -s 15:20:20 -e 15:20:40 -f tests/data.tmp > tests/out.sar-se.tmp
+00852	diff -u tests/out.sar-se.tmp tests/expected.sar-se
+

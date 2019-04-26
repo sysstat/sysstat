@@ -2524,7 +2524,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			 * It's important to have read the whole mount point name
 			 * for statvfs() to work properly (see above).
 			 */
-			if ((statvfs(mountp, &buf) < 0) || (!buf.f_blocks))
+			if ((__statvfs(mountp, &buf) < 0) || (!buf.f_blocks))
 				continue;
 
 			if (fs_read + 1 > nr_alloc) {

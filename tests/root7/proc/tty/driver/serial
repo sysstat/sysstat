@@ -1,0 +1,9 @@
+serinfo:1.0 driver revision:
+0: uart:16650V2 port:000003F8 irq:4 tx:14323 rx:32543 fe:123 pe:123 brk:42 oe:13
+1: uart:16550A port:000002F8 irq:3 tx:0 rx:0
+2: uart:unknown port:000003E8 irq:4
+3: uart:unknown port:000002E8 irq:3
+4: uart:unknown port:00000000 irq:0
+5: uart:unknown port:00000000 irq:0
+6: uart:unknown port:00000000 irq:0
+7: uart:unknown port:00000000 irq:0

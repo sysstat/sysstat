@@ -1,0 +1,24 @@
+rm -f tests/data.tmp
+
+rm -f tests/root
+ln -s root1 tests/root
+./sadc --unix_time=1555593609 -S XALL tests/data.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+./sadc --unix_time=1555593619 -S XALL tests/data.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root3 tests/root
+./sadc --unix_time=1555593629 -S XALL tests/data.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root4 tests/root
+./sadc --unix_time=1555593639 -S XALL tests/data.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root5 tests/root
+./sadc --unix_time=1555593649 -S XALL tests/data.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root1 tests/root

@@ -1,0 +1,1 @@
+./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out2.sadf-g.tmp

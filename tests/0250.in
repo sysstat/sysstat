@@ -1,4 +1,0 @@
-VER_XML=@VER_XML@
-if [ ! -z "$VER_XML" ]; then
-	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
-fi

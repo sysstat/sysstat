@@ -1,0 +1,1 @@
+LC_ALL=C ./sar -C -A -f tests/data-9.1.6.tmp > tests/out.data-9.1.6.tmp

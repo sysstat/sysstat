@@ -1,1 +1,0 @@
-./sadc -C "Hello world!" tests/data.tmp
