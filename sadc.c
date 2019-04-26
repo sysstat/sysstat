@@ -909,7 +909,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		}
 
 		if ((file_act[i].has_nr && (act[p]->f_count_index < 0)) ||
-		    (!file_act[i].has_nr && (act[p]->f_count_index >=0))) {
+		    (!file_act[i].has_nr && (act[p]->f_count_index >= 0))) {
 #ifdef DEBUG
 			fprintf(stderr, "%s: %s: has_nr=%d count_index=%d\n",
 				__FUNCTION__, act[p]->name, file_act[i].has_nr, act[p]->f_count_index);
