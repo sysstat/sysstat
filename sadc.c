@@ -954,8 +954,11 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		 * Since we are appending data to a file, set @nr_ini to the value of the file.
 		 * Stats saved in file will all be 0 for that activity if no items exist on
 		 * the machine.
+		 * NB: We must preserve the value read for A_CPU when a LINUX RESTART is inserted.
 		 */
-		act[p]->nr_ini = file_act[i].nr;
+		if (!ALWAYS_COUNT_ITEMS(act[p]->options) || !act[p]->nr_ini) {
+			act[p]->nr_ini = file_act[i].nr;
+		}
 
 		/*
 		 * Force number of sub-items to that of the file, and reallocate structures.
