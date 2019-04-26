@@ -7,7 +7,7 @@ File time: 13:20:09 UTC
 File composition: (1,1,11),(0,0,9),(2,0,0)
 Size of a long int: 8
 HZ = 100
-Number of activities in file: 37
+Number of activities in file: 34
 List of activities:
 01: [8b] A_CPU                Y:   9	(10,0,0)
 02: [8b] A_PCSW               N:   1	(1,1,0)
@@ -42,7 +42,4 @@ List of activities:
 38: [8a] A_NET_FC             Y:   1	(0,4,0)
 39: [8a] A_NET_SOFT           Y:   9	(0,0,5)
 30: [8a] A_PWR_CPU            Y:   9	(0,1,0)
-31: [8a] A_PWR_FAN            Y:   4	(2,0,0)
-32: [8a] A_PWR_TEMP           Y:   9	(3,0,0)
-33: [8a] A_PWR_IN             Y:   4	(3,0,0)
 37: [8b] A_FS                 Y:   4	(5,0,0)

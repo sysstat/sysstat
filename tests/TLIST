@@ -9,7 +9,7 @@
 00017	./cifsiostat -V >/dev/null
 
 =====	Creating data.tmp
-00100	5 x ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
+00100	5 x ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP tests/data.tmp 1 1 >/dev/null
 00110	./sadc --unix_time=XXXXXXXXX tests/data.tmp
 00120	./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
 
@@ -51,7 +51,7 @@
 00531	diff -u tests/out.sadf-j.tmp tests/expected.sadf-j
 00540	./sadf -g tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-g.tmp
 00541	diff -u tests/out.sadf-g.tmp tests/expected.sadf-g
-00550	./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out2.sadf-g.tmp
+00550	TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out2.sadf-g.tmp
 00551	diff -u tests/out2.sadf-g2.tmp tests/expected2.sadf-g2
 00560	./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00561	diff -u tests/out.sadf-H.tmp tests/expected.sadf-H

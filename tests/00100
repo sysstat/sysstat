@@ -2,7 +2,7 @@ rm -f tests/data.tmp
 
 rm -f tests/root
 ln -s root1 tests/root
-./sadc --unix_time=1555593609 -S XALL tests/data.tmp 1 1 >/dev/null
+./sadc --unix_time=1555593609 -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP tests/data.tmp 1 1 >/dev/null
 
 rm -f tests/root
 ln -s root2 tests/root
