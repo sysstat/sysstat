@@ -386,8 +386,13 @@ struct svg_hdr_parm {
  *
  * If the record header's type is R_COMMENT then we find only a comment
  * following the record_header structure.
+ *
  * If the record_header's type is R_RESTART then we find only the number of CPU
  * (of type __nr_t) of the machine following the record_header structure.
+ * This number is 1 for 1 CPU and not an SMP kernel (CPU "all"),
+ * 2 for 1 CPU and SMP kernel (CPU "all" and CPU 0), etc.
+ * Of course we display the real number of CPU (e.g. "1" for 1 CPU and SMP
+ * kernel) with the LINUX RESTART message.
  ***************************************************************************
  */
 
