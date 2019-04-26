@@ -39,7 +39,7 @@ CPU#6: online
 ==========root6:
 /proc/stat
 #CPU: 8 > 10
-Old kernel format, with steal/guest/guest_nice fields.
+Old kernel format, with no steal/guest/guest_nice fields.
 
 /proc/diskstats
 sda10, sda11, sda12: unregistered

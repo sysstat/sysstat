@@ -1,1 +1,1 @@
-LC_ALL=C ./sar --dec=0 -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-dec.tmp
+LC_ALL=C TZ=GMT ./sar --dec=0 -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-dec.tmp

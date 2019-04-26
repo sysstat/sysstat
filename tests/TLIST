@@ -14,8 +14,8 @@
 00120	./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
 
 =====	sar: Reading data.tmp
-00130	LC_ALL=C ./sar -C -u -P ALL -f tests/data.tmp > tests/out.sar-u.tmp
-00131	LC_ALL=C ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-all.tmp
+00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out.sar-u.tmp
+00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-all.tmp
 	[Don't take into account sensors statistics which are not read from test root directory]
 00134	diff -u tests/out.u.tmp tests/expected.sar-u
 00136	diff -u tests/out.sar-all.tmp tests/expected.sar-all
@@ -25,8 +25,8 @@
 00150	2 x ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
 
 =====	sar: Reading data.tmp
-00160	LC_ALL=C ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
-00161	LC_ALL=C ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out2.sar-all.tmp
+00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
+00161	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out2.sar-all.tmp
 	[Don't take into account sensors statistics which are not read from test root directory]
 00164	diff -u tests/out2.sar-u.tmp tests/expected2.sar-u
 00166	diff -u tests/out2.sar-all.tmp tests/expected2.sar-all
@@ -60,30 +60,30 @@
 
 =====	Checking sadf conversion
 00600	./sadf -c tests/data-9.1.6 > tests/data-9.1.6.tmp
-00605	LC_ALL=C ./sar -C -A -f tests/data-9.1.6.tmp > tests/out.data-9.1.6.tmp
+00605	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-9.1.6.tmp > tests/out.data-9.1.6.tmp
 00607	diff -u tests/out.data-9.1.6.tmp tests/expected.data-9.1.6
 00610	./sadf -c tests/data-10.3.1 > tests/data-10.3.1.tmp
-00615	LC_ALL=C ./sar -C -A -f tests/data-10.3.1.tmp > tests/out.data-10.3.1.tmp
+00615	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-10.3.1.tmp > tests/out.data-10.3.1.tmp
 00617	diff -u tests/out.data-10.3.1.tmp tests/expected.data-10.3.1
 00620	./sadf -c tests/data-11.6.5 > tests/data-11.6.5.tmp
-00625	LC_ALL=C ./sar -C -A -f tests/data-11.6.5.tmp > tests/out.data-11.6.5.tmp
+00625	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-11.6.5.tmp > tests/out.data-11.6.5.tmp
 00627	diff -u tests/out.data-11.6.5.tmp tests/expected.data-11.6.5	
 
 =====	Reading datafile from another architecture
-00700	LC_ALL=C ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
+00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
 00702	diff -u tests/out.data-ppc-11.7.2.tmp tests/expected.data-ppc-11.7.2
 
 =====	Testing sar's options
-00800	LC_ALL=C ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
+00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
 00802	diff -u tests/out.sar-iface.tmp tests/expected.sar-iface
-00810	LC_ALL=C ./sar --dev=sda -dp -f tests/data.tmp > tests/out.sar-dev.tmp
+00810	LC_ALL=C TZ=GMT ./sar --dev=sda -dp -f tests/data.tmp > tests/out.sar-dev.tmp
 00812	diff -u tests/out.sar-dev.tmp tests/expected.sar-dev
-00820	LC_ALL=C ./sar --fs=/dev/sda6,/dev/foo -F -f tests/data.tmp > tests/out.sar-fs.tmp
+00820	LC_ALL=C TZ=GMT ./sar --fs=/dev/sda6,/dev/foo -F -f tests/data.tmp > tests/out.sar-fs.tmp
 00822	diff -u tests/out.sar-fs.tmp tests/expected.sar-fs
-00830	LC_ALL=C ./sar --dec=0 -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-dec.tmp
+00830	LC_ALL=C TZ=GMT ./sar --dec=0 -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-dec.tmp
 00832	diff -u tests/out.sar-dec.tmp tests/expected.sar-dec
-00840	LC_ALL=C ./sar --human -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-human.tmp
+00840	LC_ALL=C TZ=GMT ./sar --human -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-human.tmp
 00842	diff -u tests/out.sar-human.tmp tests/expected.sar-human
-00850	LC_ALL=C ./sar -s 15:20:20 -e 15:20:40 -f tests/data.tmp > tests/out.sar-se.tmp
+00850	LC_ALL=C TZ=GMT ./sar -s 13:20:20 -e 13:20:40 -f tests/data.tmp > tests/out.sar-se.tmp
 00852	diff -u tests/out.sar-se.tmp tests/expected.sar-se
 

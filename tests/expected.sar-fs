@@ -1,16 +1,16 @@
 Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
 
-15:20:09     MBfsfree  MBfsused   %fsused  %ufsused     Ifree     Iused    %Iused FILESYSTEM
-15:20:19       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
-15:20:29        85582      7774      8.33     13.45   6008414    102818      1.68 /dev/sda6
-15:20:39        85582      7774      8.33     13.45   6008414    102818      1.68 /dev/sda6
-15:20:49       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
+13:20:09     MBfsfree  MBfsused   %fsused  %ufsused     Ifree     Iused    %Iused FILESYSTEM
+13:20:19       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
+13:20:29        85582      7774      8.33     13.45   6008414    102818      1.68 /dev/sda6
+13:20:39        85582      7774      8.33     13.45   6008414    102818      1.68 /dev/sda6
+13:20:49       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
 Summary:       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
 
-15:37:29     LINUX RESTART	(8 CPU)
+13:37:29     LINUX RESTART	(8 CPU)
 
-15:54:09     LINUX RESTART	(10 CPU)
+13:54:09     LINUX RESTART	(10 CPU)
 
-15:54:15     MBfsfree  MBfsused   %fsused  %ufsused     Ifree     Iused    %Iused FILESYSTEM
-15:54:35       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
+13:54:15     MBfsfree  MBfsused   %fsused  %ufsused     Ifree     Iused    %Iused FILESYSTEM
+13:54:35       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
 Summary:       279700     15464      5.24     10.33  19201593       455      0.00 /dev/sda6
