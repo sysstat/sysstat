@@ -1,1 +1,1 @@
-./sadf -r -O debug tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-r.tmp
+./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp

@@ -1,4 +1,11 @@
 #!/bin/sh
-make distclean
-./configure sa_lib_dir=. && make CFLAGS="-D DEBUG -D TEST" && make simtest
-
+if [ "$1" = "all" ] || [ "$1" = "simtest" ]
+then
+	make distclean
+	./configure sa_lib_dir=. conf_dir=. && make CFLAGS="-D DEBUG -D TEST" && make simtest
+fi
+if [ "$1" = "all" ] || [ "$1" = "test" ]
+then
+	make distclean
+	./configure sa_lib_dir=. && make CFLAGS="-D DEBUG" && make test
+fi

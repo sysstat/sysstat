@@ -26,36 +26,36 @@
 
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
-00161	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out2.sar-all.tmp
+00161	LC_ALL=C TZ=GMT ./sar -A -f tests/data.tmp > tests/out2.sar-all.tmp
 	[Don't take into account sensors statistics which are not read from test root directory]
 00164	diff -u tests/out2.sar-u.tmp tests/expected2.sar-u
 00166	diff -u tests/out2.sar-all.tmp tests/expected2.sar-all
 
 =====	Checking JSON output validity
-00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null;
-00310	./mpstat -A -o JSON | $VER_JSON >/dev/null;
-00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null;
+00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
+00310	./mpstat -A -o JSON | $VER_JSON >/dev/null
+00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null
 
 =====	Checking XML output validity
-00400	./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
-00410	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+00400	./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+00410	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 
 =====	Checking sadf output
-00500	./sadf -p tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-p.tmp
+00500	./sadf -p tests/data.tmp -C -- -A > tests/out.sadf-p.tmp
 00501	diff -u tests/out.sadf-p.tmp tests/expected.sadf-p
-00510	./sadf -d tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-d.tmp
+00510	./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
 00511	diff -u tests/out.sadf-d.tmp tests/expected.sadf-d
-00520	./sadf -x tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-x.tmp
+00520	./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
 00521	diff -u tests/out.sadf-x.tmp tests/expected.sadf-x
-00530	./sadf -j tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-j.tmp
+00530	./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
 00531	diff -u tests/out.sadf-j.tmp tests/expected.sadf-j
-00540	./sadf -g tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-g.tmp
+00540	./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
 00541	diff -u tests/out.sadf-g.tmp tests/expected.sadf-g
-00550	TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out2.sadf-g.tmp
+00550	TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
 00551	diff -u tests/out2.sadf-g2.tmp tests/expected2.sadf-g2
 00560	./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00561	diff -u tests/out.sadf-H.tmp tests/expected.sadf-H
-00570	./sadf -r -O debug tests/data.tmp -C -- -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL > tests/out.sadf-r.tmp
+00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
 00571	diff -u tests/out.sadf-r.tmp tests/expected.sadf-r
 
 =====	Checking sadf conversion
@@ -80,10 +80,14 @@
 00812	diff -u tests/out.sar-dev.tmp tests/expected.sar-dev
 00820	LC_ALL=C TZ=GMT ./sar --fs=/dev/sda6,/dev/foo -F -f tests/data.tmp > tests/out.sar-fs.tmp
 00822	diff -u tests/out.sar-fs.tmp tests/expected.sar-fs
-00830	LC_ALL=C TZ=GMT ./sar --dec=0 -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-dec.tmp
+00830	LC_ALL=C TZ=GMT ./sar --dec=0 -A -f tests/data.tmp > tests/out.sar-dec.tmp
 00832	diff -u tests/out.sar-dec.tmp tests/expected.sar-dec
-00840	LC_ALL=C TZ=GMT ./sar --human -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-human.tmp
+00840	LC_ALL=C TZ=GMT ./sar --human -A -f tests/data.tmp > tests/out.sar-human.tmp
 00842	diff -u tests/out.sar-human.tmp tests/expected.sar-human
 00850	LC_ALL=C TZ=GMT ./sar -s 13:20:20 -e 13:20:40 -f tests/data.tmp > tests/out.sar-se.tmp
 00852	diff -u tests/out.sar-se.tmp tests/expected.sar-se
-
+00860	LC_ALL=C TZ=GMT ./sar -i 60 -uw -P ALL -f tests/data.tmp > tests/out.sar-i.tmp
+00862	diff -u tests/out.sar-i.tmp tests/expected.sar-i
+	[WARNING: /proc/uptime files are not consistent with unix_time values used. Don't trust timestamps!]
+00900	LC_ALL=C TZ=GMT ./sar -h -j UUID -f tests/data.tmp > tests/out.sar-jUUID.tmp
+00902	diff -u tests/out.sar-jUUID.tmp tests/expected.sar-jUUID
