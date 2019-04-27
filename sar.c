@@ -1468,7 +1468,7 @@ int main(int argc, char **argv)
 
 	/* 'sar' is equivalent to 'sar -f' */
 	if ((argc == 1) ||
-	    ((interval < 0) && !from_file[0] && !to_file[0])) {
+	    (((interval < 0) || INTERVAL_SET(flags)) && !from_file[0] && !to_file[0])) {
 		set_default_file(from_file, day_offset, -1);
 	}
 
