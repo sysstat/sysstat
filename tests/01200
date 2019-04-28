@@ -1,0 +1,10 @@
+rm -f tests/root
+ln -s root6 tests/root
+./sadc --unix_time=1555593630 tests/data0.tmp >/dev/null
+
+rm -f tests/root
+ln -s root7 tests/root
+./sadc --unix_time=1555593651 -S XALL tests/data0.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root1 tests/root

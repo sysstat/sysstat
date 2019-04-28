@@ -1,0 +1,1 @@
+./sadf -x tests/data0.tmp -- -A > tests/out0.sadf-x.tmp

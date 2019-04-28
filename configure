@@ -5610,7 +5610,13 @@ ac_config_files="$ac_config_files tests/00400"
 
 ac_config_files="$ac_config_files tests/00410"
 
+ac_config_files="$ac_config_files tests/01130"
+
+ac_config_files="$ac_config_files tests/01230"
+
 ac_config_files="$ac_config_files tests/rt00010"
+
+ac_config_files="$ac_config_files tests/rt00020"
 
 
 ac_config_files="$ac_config_files Makefile"
@@ -6349,7 +6355,10 @@ do
     "tests/00320") CONFIG_FILES="$CONFIG_FILES tests/00320" ;;
     "tests/00400") CONFIG_FILES="$CONFIG_FILES tests/00400" ;;
     "tests/00410") CONFIG_FILES="$CONFIG_FILES tests/00410" ;;
+    "tests/01130") CONFIG_FILES="$CONFIG_FILES tests/01130" ;;
+    "tests/01230") CONFIG_FILES="$CONFIG_FILES tests/01230" ;;
     "tests/rt00010") CONFIG_FILES="$CONFIG_FILES tests/rt00010" ;;
+    "tests/rt00020") CONFIG_FILES="$CONFIG_FILES tests/rt00020" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

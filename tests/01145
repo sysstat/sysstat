@@ -1,0 +1,2 @@
+./sadf tests/data0.tmp 2>/dev/null || exit 0
+exit 1
