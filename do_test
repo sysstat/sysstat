@@ -2,10 +2,10 @@
 if [ "$1" = "all" ] || [ "$1" = "simtest" ]
 then
 	make distclean
-	./configure sa_lib_dir=. conf_dir=. && make CFLAGS="-D DEBUG -D TEST" && make simtest
+	./configure sa_lib_dir=. conf_dir=. sa_dir=tests && make CFLAGS="-D DEBUG -D TEST" && make simtest
 fi
 if [ "$1" = "all" ] || [ "$1" = "test" ]
 then
 	make distclean
-	./configure sa_lib_dir=. && make CFLAGS="-D DEBUG" && make test
+	./configure sa_lib_dir=. conf_dir=. sa_dir=tests && make CFLAGS="-D DEBUG" && make test
 fi

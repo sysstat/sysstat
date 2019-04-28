@@ -119,3 +119,18 @@
 01242	diff -u tests/out01.sadf-g.tmp tests/expected01.sadf-g
 01250	./sadf -H tests/data0.tmp > tests/out01.sadf-H.tmp
 01252	diff -u tests/out01.sadf-H.tmp tests/expected01.sadf-H
+
+=====	Playing with standard activity datafiles
+01300	echo foo >test/sa01 ; ./sadc 1 1 - 2>/dev/null || exit 0
+01305	./sadc -F 1 1 -
+01310	LC_ALL=C TZ=GMT ./sar -f tests/sa01 > tests/out3.sar-u.tmp
+01312	diff -u tests/out3.sar-u.tmp tests/expected3.sar-u
+01314	LC_ALL=C TZ=GMT ./sar > tests/out31.sar-u.tmp
+01316	diff -u tests/out31.sar-u.tmp tests/expected3.sar-u
+01320	./sadc -D -
+01330	LC_ALL=C TZ=GMT ./sar -f tests/sa19700101 > tests/out32.sar-u.tmp
+01332	diff -u tests/out32.sar-u.tmp tests/expected32.sar-u
+01335	LC_ALL=C TZ=GMT ./sar > tests/out33.sar-u.tmp
+01337	diff -u tests/out33.sar-u.tmp tests/expected32.sar-u
+01340	./sadf > tests/out3.sadf.tmp
+01342	diff -u tests/out3.sadf.tmp tests/expected3.sadf

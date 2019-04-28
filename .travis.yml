@@ -1,2 +1,2 @@
 language: c
-script: ./configure CFLAGS="-D DEBUG -D TEST" sa_lib_dir=. conf_dir=. && make && make simtest
+script: ./configure CFLAGS="-D DEBUG -D TEST" sa_lib_dir=. conf_dir=. sa_dir=tests && make && make simtest

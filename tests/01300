@@ -1,0 +1,5 @@
+rm -f tests/sa01
+echo foo >tests/sa01
+
+./sadc 1 1 - 2>/dev/null || exit 0
+exit 1

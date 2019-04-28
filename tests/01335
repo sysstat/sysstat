@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar > tests/out33.sar-u.tmp

@@ -1,0 +1,2 @@
+rm -f tests/sa19700101
+./sadc -D -
