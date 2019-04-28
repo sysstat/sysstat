@@ -143,6 +143,7 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	char filename[MAX_FILE_LEN];
 	struct stat sb;
 	time_t sa_mtime;
+	long nsec;
 
 	/* Use saDD by default */
 	*sa_name = 0;
@@ -159,6 +160,7 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 		/* Cannot find or access saYYYYMMDD, so use saDD */
 		return;
 	sa_mtime = sb.st_mtime;
+	nsec = sb.st_mtim.tv_nsec;
 
 	/* Look for saDD */
 	snprintf(filename, MAX_FILE_LEN,
@@ -172,7 +174,8 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 		return;
 	}
 
-	if (sa_mtime > sb.st_mtime) {
+	if ((sa_mtime > sb.st_mtime) ||
+	    ((sa_mtime == sb.st_mtime) && (nsec > sb.st_mtim.tv_nsec))) {
 		/* saYYYYMMDD is more recent than saDD, so use it */
 		*sa_name = 1;
 	}
