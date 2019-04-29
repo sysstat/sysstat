@@ -220,12 +220,12 @@ __printf_funct_t print_pcp_header
  */
 void logic1_display_loop
 	(int, char *, struct file_activity *, struct file_magic *,
-	 struct tm *, struct tm *, void *);
+	 struct tm *, void *);
 void logic2_display_loop
 	(int, char *, struct file_activity *, struct file_magic *,
-	 struct tm *, struct tm *, void *);
+	 struct tm *, void *);
 void svg_display_loop
 	(int, char *, struct file_activity *, struct file_magic *,
-	 struct tm *, struct tm *, void *);
+	 struct tm *, void *);
 
 #endif  /* _SADF_H */

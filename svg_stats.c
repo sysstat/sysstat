@@ -660,7 +660,7 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 	for (j = 0; (j <= (2 * v_gridnr)) && (stamp.ust_time <= svg_p->ust_time_end); j++) {
 
 		/* Display vertical lines */
-		sa_get_record_timestamp_struct(flags, &stamp, &rectime, NULL);
+		sa_get_record_timestamp_struct(flags, &stamp, &rectime);
 		set_record_timestamp_string(flags, &stamp, NULL, cur_time, TIMESTAMP_LEN, &rectime);
 		printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
 		       "stroke: #%06x\" transform=\"scale(%f,1)\"/>\n",

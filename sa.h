@@ -1049,7 +1049,7 @@ struct report_format {
 	 * This is the main function used to display all the statistics for current format.
 	 */
 	void (*f_display) (int, char *, struct file_activity *, struct file_magic *,
-			   struct tm *, struct tm *, void *);
+			   struct tm *, void *);
 };
 
 
@@ -1356,7 +1356,7 @@ double compute_ifutil
 void copy_structures
 	(struct activity * [], unsigned int [],	struct record_header [], int, int);
 int datecmp
-	(struct tm *, struct tstamp *);
+	(struct tm *, struct tstamp *, int);
 void display_sa_file_version
 	(FILE *, struct file_magic *);
 void free_bitmaps
@@ -1402,7 +1402,7 @@ __printf_funct_t print_sar_restart
 	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 int print_special_record
 	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
-	 int, int, struct tm *, struct tm *, char *, int, struct file_magic *,
+	 int, int, struct tm *, char *, int, struct file_magic *,
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
@@ -1419,7 +1419,7 @@ void replace_nonprintable_char
 int sa_fread
 	(int, void *, size_t, int, int);
 int sa_get_record_timestamp_struct
-	(unsigned int, struct record_header *, struct tm *, struct tm *);
+	(unsigned int, struct record_header *, struct tm *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
 int search_list_item

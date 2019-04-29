@@ -702,22 +702,34 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
  * IN:
  * @rectime	Date and time for current sample.
  * @tse		Timestamp used as reference.
+ * @cross_day	TRUE if a new day has been started.
  *
  * RETURNS:
  * A positive value if @rectime is greater than @tse,
  * a negative one otherwise.
  ***************************************************************************
  */
-int datecmp(struct tm *rectime, struct tstamp *tse)
+int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
 {
-	if (rectime->tm_hour == tse->tm_hour) {
+	int tm_hour = rectime->tm_hour;
+
+	if (cross_day) {
+		/*
+		 * This is necessary if we want to properly handle something like:
+		 * sar -s time_start -e time_end with
+		 * time_start(day D) > time_end(day D+1)
+		 */
+		tm_hour += 24;
+	}
+
+	if (tm_hour == tse->tm_hour) {
 		if (rectime->tm_min == tse->tm_min)
 			return (rectime->tm_sec - tse->tm_sec);
 		else
 			return (rectime->tm_min - tse->tm_min);
 	}
 	else
-		return (rectime->tm_hour - tse->tm_hour);
+		return (tm_hour - tse->tm_hour);
 }
 
 /*
@@ -2721,28 +2733,16 @@ void replace_nonprintable_char(int ifd, char *comment)
  ***************************************************************************
 */
 int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *record_hdr,
-				   struct tm *rectime, struct tm *loctime)
+				   struct tm *rectime)
 {
-	struct tm *ltm = NULL;
+	struct tm *ltm;
 	int rc = 0;
 
-	/* Fill localtime structure if given */
-	if (loctime) {
-		ltm = localtime_r((const time_t *) &(record_hdr->ust_time), loctime);
-		if (ltm) {
-			/* Done so that we have some default values */
-			*rectime = *loctime;
-		}
-		else {
-			rc = 1;
-		}
-	}
-
-	/* Fill generic rectime structure */
-	if (PRINT_LOCAL_TIME(l_flags) && !ltm) {
-		/* Get local time if not already done */
-		ltm = localtime_r((const time_t *) &(record_hdr->ust_time), rectime);
-	}
+	/*
+	 * Fill generic rectime structure in local time.
+	 * Done so that we have some default values.
+	 */
+	ltm = localtime_r((const time_t *) &(record_hdr->ust_time), rectime);
 
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
 		/*
@@ -2832,8 +2832,6 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record. May be NULL.
  * @file	Name of file being read.
  * @tab		Number of tabulations to print.
  * @file_magic	file_magic structure filled with file magic header data.
@@ -2847,8 +2845,6 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
  * OUT:
  * @rectime	Structure where timestamp (expressed in local time or in UTC)
  *		has been saved.
- * @loctime	Structure where timestamp (expressed in local time) has been
- *		saved (if requested).
  *
  * RETURNS:
  * 1 if the record has been successfully displayed, and 0 otherwise.
@@ -2856,7 +2852,7 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
  */
 int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
-			 struct tm *rectime, struct tm *loctime, char *file, int tab,
+			 struct tm *rectime, char *file, int tab,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
 			 struct activity *act[], struct report_format *ofmt,
 			 int endian_mismatch, int arch_64)
@@ -2866,17 +2862,12 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 	int p;
 
 	/* Fill timestamp structure (rectime) for current record */
-	if (sa_get_record_timestamp_struct(l_flags, record_hdr, rectime, loctime))
+	if (sa_get_record_timestamp_struct(l_flags, record_hdr, rectime))
 		return 0;
 
-	/* If loctime is NULL, then use rectime for comparison */
-	if (!loctime) {
-		loctime = rectime;
-	}
-
 	/* The record must be in the interval specified by -s/-e options */
-	if ((tm_start->use && (datecmp(loctime, tm_start) < 0)) ||
-	    (tm_end->use && (datecmp(loctime, tm_end) > 0))) {
+	if ((tm_start->use && (datecmp(rectime, tm_start, FALSE) < 0)) ||
+	    (tm_end->use && (datecmp(rectime, tm_end, FALSE) > 0))) {
 		/* Will not display the special record */
 		dp = 0;
 	}

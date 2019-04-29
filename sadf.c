@@ -210,8 +210,6 @@ void check_format_options(void)
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
  * @oneof	Set to UEOF_CONT if an unexpected end of file should not make
  *		sadf stop. Default behavior is to stop on unexpected EOF.
  *
@@ -219,11 +217,6 @@ void check_format_options(void)
  * @rtype	Type of record read (R_RESTART, R_COMMENT, etc.)
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on options used) has been saved for current record.
- *		If current record was a special one (RESTART or COMMENT) and
- *		noted to be ignored, then the timestamp is saved only if
- *		explicitly told to do so with the SET_TIMESTAMPS action flag.
- * @loctime	Structure where timestamp (expressed in local time) has been
- *		saved for current record.
  *		If current record was a special one (RESTART or COMMENT) and
  *		noted to be ignored, then the timestamp is saved only if
  *		explicitly told to do so with the SET_TIMESTAMPS action flag.
@@ -236,7 +229,7 @@ void check_format_options(void)
  */
 int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int tab,
 		     struct file_magic *file_magic, struct file_activity *file_actlst,
-		     struct tm *rectime, struct tm *loctime, int oneof)
+		     struct tm *rectime, int oneof)
 {
 	int rc;
 	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];
@@ -261,13 +254,13 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			}
 			if (action & SET_TIMESTAMPS) {
 				sa_get_record_timestamp_struct(flags, &record_hdr[curr],
-							       rectime, loctime);
+							       rectime);
 			}
 		}
 		else {
 			/* Display COMMENT record */
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
-					     *rtype, ifd, rectime, loctime, file, tab,
+					     *rtype, ifd, rectime, file, tab,
 					     file_magic, &file_hdr, act, fmt[f_position],
 					     endian_mismatch, arch_64);
 		}
@@ -284,14 +277,13 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 								   endian_mismatch, arch_64, TRUE);
 			}
 			if (action & SET_TIMESTAMPS) {
-				sa_get_record_timestamp_struct(flags, &record_hdr[curr],
-							       rectime, loctime);
+				sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime);
 			}
 		}
 		else {
 			/* Display RESTART record */
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
-					     *rtype, ifd, rectime, loctime, file, tab,
+					     *rtype, ifd, rectime, file, tab,
 					     file_magic, &file_hdr, act, fmt[f_position],
 					     endian_mismatch, arch_64);
 		}
@@ -304,7 +296,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		if (read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr, file_actlst,
 					 endian_mismatch, arch_64, file, file_magic, oneof) > 0)
 			return 2;
-		sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime, loctime);
+		sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime);
 	}
 
 	return 0;
@@ -449,16 +441,13 @@ void seek_file_position(int ifd, int action)
  * @rectime	Structure where timestamp (expressed in local time or
  *		in UTC depending on whether options -T/-t have been
  *		used or not) can be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time)
- *		can be saved for current record.
  *
  * RETURNS:
  * 0 if no records are concerned in file, and 1 otherwise.
  ***************************************************************************
  */
 int count_file_items(int ifd, char *file, struct file_magic *file_magic,
-		      struct file_activity *file_actlst, struct tm *rectime,
-		      struct tm *loctime)
+		      struct file_activity *file_actlst, struct tm *rectime)
 {
 	int i, eosaf, rtype;
 
@@ -476,13 +465,13 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 	do {
 		eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 					 0, file, &rtype, 0, file_magic, file_actlst,
-					 rectime, loctime, UEOF_CONT);
+					 rectime, UEOF_CONT);
 		if (eosaf)
 			/* No record to display */
 			return 0;
 	}
-	while ((tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
-	       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+	while ((tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
+	       (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
 
 	/*
 	 * Read all the file and determine the maximum number
@@ -503,15 +492,15 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 						 0, file, &rtype, 0, file_magic, file_actlst,
-						 rectime, loctime, UEOF_CONT);
+						 rectime, UEOF_CONT);
 			if (eosaf ||
-			    (tm_end.use && (datecmp(loctime, &tm_end) >= 0)))
+			    (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)))
 				/* End of data file or end time exceeded */
 				break;
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT));
 	}
-	while (!eosaf && !(tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+	while (!eosaf && !(tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
 
 	/* Rewind file */
 	seek_file_position(ifd, DO_RESTORE);
@@ -536,8 +525,6 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
  * @rectime		Structure where timestamp (expressed in local time or
  *			in UTC depending on whether options -T/-t have been
  *			used or not) can be saved for current record.
- * @loctime		Structure where timestamp (expressed in local time)
- *			can be saved for current record.
  * @views_per_row	Default number of views displayed on a single row.
  *
  * OUT:
@@ -554,14 +541,14 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
  */
 int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
 		     struct file_activity *file_actlst, struct tm *rectime,
-		     struct tm *loctime, int *views_per_row, int *nr_act_dispd)
+		     int *views_per_row, int *nr_act_dispd)
 {
 	int i, n, p, tot_g_nr = 0;
 
 	*nr_act_dispd = 0;
 
 	/* Count items in file */
-	if (!count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime))
+	if (!count_file_items(ifd, file, file_magic, file_actlst, rectime))
 		/* No record to display => No graph */
 		return 0;
 
@@ -628,8 +615,6 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
  * @rectime		Structure where timestamp (expressed in local time
  *			or in UTC depending on whether options -T/-t have
  * 			been used or not) has been saved for current record.
- * @loctime		Structure where timestamp (expressed in local time)
- *			has been saved for current record.
  * @reset_cd		TRUE if static cross_day variable should be reset.
  * @act_id		Activity to display (only for formats where
  * 			activities are displayed one at a time) or
@@ -645,7 +630,7 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
  */
 int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			long *cnt, void *parm, struct tm *rectime,
-			struct tm *loctime, int reset_cd, unsigned int act_id)
+			int reset_cd, unsigned int act_id)
 {
 	int i;
 	unsigned long long dt, itv;
@@ -680,17 +665,8 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		cross_day = TRUE;
 	}
 
-	if (cross_day) {
-		/*
-		 * This is necessary if we want to properly handle something like:
-		 * sar -s time_start -e time_end with
-		 * time_start(day D) > time_end(day D+1)
-		 */
-		loctime->tm_hour += 24;
-	}
-
 	/* Check time (2) */
-	if (use_tm_start && (datecmp(loctime, &tm_start) < 0))
+	if (use_tm_start && (datecmp(rectime, &tm_start, cross_day) < 0))
 		/* it's too soon... */
 		return 0;
 
@@ -698,7 +674,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
 
 	/* Check time (3) */
-	if (use_tm_end && (datecmp(loctime, &tm_end) > 0)) {
+	if (use_tm_end && (datecmp(rectime, &tm_end, cross_day) > 0)) {
 		/* It's too late... */
 		*cnt = 0;
 		return 0;
@@ -804,8 +780,6 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
  *
@@ -819,7 +793,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  */
 void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 		       unsigned int act_id, int *reset, struct file_activity *file_actlst,
-		       struct tm *rectime, struct tm *loctime, char *file,
+		       struct tm *rectime, char *file,
 		       struct file_magic *file_magic)
 {
 	int rtype;
@@ -846,11 +820,11 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 		/* Display <count> lines of stats */
 		*eosaf = read_next_sample(ifd, IGNORE_RESTART | DONT_READ_CPU_NR,
 					  *curr, file, &rtype, 0, file_magic,
-					  file_actlst, rectime, loctime, UEOF_STOP);
+					  file_actlst, rectime, UEOF_STOP);
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
-						   NULL, rectime, loctime, reset_cd, act_id);
+						   NULL, rectime, reset_cd, act_id);
 			reset_cd = 0;
 
 			if (next) {
@@ -885,8 +859,6 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
  * @file	Name of file being read.
  * @file_magic	file_magic structure filled with file magic header data.
  * @g_nr	Number of graphs already displayed (for all activities).
@@ -903,9 +875,8 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  */
 void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			     int p, int *reset, struct file_activity *file_actlst,
-			     struct tm *rectime, struct tm *loctime,
-			     char *file, struct file_magic *file_magic, int *g_nr,
-			     int nr_act_dispd)
+			     struct tm *rectime, char *file, struct file_magic *file_magic,
+			     int *g_nr, int nr_act_dispd)
 {
 	struct svg_parm parm;
 	int rtype;
@@ -936,12 +907,12 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	do {
 		*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 					  *curr, file, &rtype, 0, file_magic,
-					  file_actlst, rectime, loctime, UEOF_CONT);
+					  file_actlst, rectime, UEOF_CONT);
 
 		if (!*eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
-						   &parm, rectime, loctime, reset_cd, act[p]->id);
+						   &parm, rectime, reset_cd, act[p]->id);
 			reset_cd = 0;
 			if (next) {
 				/*
@@ -965,7 +936,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			do {
 				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 							  *curr, file, &rtype, 0, file_magic,
-							  file_actlst, rectime, loctime, UEOF_CONT);
+							  file_actlst, rectime, UEOF_CONT);
 			}
 			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
 
@@ -1011,14 +982,11 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
  * @dparm	PCP archive file name.
  ***************************************************************************
  */
 void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
-			 struct file_magic *file_magic, struct tm *rectime,
-			 struct tm *loctime, void *dparm)
+			 struct file_magic *file_magic, struct tm *rectime, void *dparm)
 {
 	int curr, rtype, tab = 0;
 	int eosaf, next, reset = FALSE;
@@ -1028,7 +996,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 	if (CREATE_ITEM_LIST(fmt[f_position]->options)) {
 		/* Count items in file (e.g. for PCP output) */
-		if (!count_file_items(ifd, file, file_magic, file_actlst, rectime, loctime))
+		if (!count_file_items(ifd, file, file_magic, file_actlst, rectime))
 			/* No record to display */
 			return;
 	}
@@ -1068,11 +1036,11 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		do {
 			eosaf = read_next_sample(ifd, ign_flag, 0, file,
 						 &rtype, tab, file_magic, file_actlst,
-						 rectime, loctime, UEOF_STOP);
+						 rectime, UEOF_STOP);
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-			(tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
-			(tm_end.use && (datecmp(loctime, &tm_end) >= 0))));
+			(tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
+			(tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0))));
 
 		curr = 1;
 		cnt = count;
@@ -1086,7 +1054,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 			do {
 				eosaf = read_next_sample(ifd, ign_flag, curr, file,
 							 &rtype, tab, file_magic, file_actlst,
-							 rectime, loctime, UEOF_CONT);
+							 rectime, UEOF_CONT);
 
 				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
 					if (*fmt[f_position]->f_statistics) {
@@ -1095,8 +1063,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 					/* next is set to 1 when we were close enough to desired interval */
 					next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
-								  &cnt, &tab, rectime, loctime,
-								  FALSE, ALL_ACTIVITIES);
+								  &cnt, &tab, rectime, FALSE, ALL_ACTIVITIES);
 
 					if (next) {
 						curr ^= 1;
@@ -1114,7 +1081,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 				do {
 					eosaf = read_next_sample(ifd, ign_flag, curr, file,
 								 &rtype, tab, file_magic, file_actlst,
-								 rectime, loctime, UEOF_CONT);
+								 rectime, UEOF_CONT);
 				}
 				while (!eosaf && (rtype != R_RESTART));
 			}
@@ -1155,7 +1122,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	do {
 		eosaf = read_next_sample(ifd, IGNORE_COMMENT, 0,
 					 file, &rtype, tab, file_magic, file_actlst,
-					 rectime, loctime, UEOF_CONT);
+					 rectime, UEOF_CONT);
 	}
 	while (!eosaf);
 
@@ -1175,7 +1142,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		do {
 			eosaf = read_next_sample(ifd, IGNORE_RESTART, 0,
 						 file, &rtype, tab, file_magic, file_actlst,
-						 rectime, loctime, UEOF_CONT);
+						 rectime, UEOF_CONT);
 		}
 		while (!eosaf);
 
@@ -1217,14 +1184,11 @@ terminate:
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
  * @dparm	Unused here.
  ***************************************************************************
  */
 void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
-			 struct file_magic *file_magic, struct tm *rectime,
-			 struct tm *loctime, void *dparm)
+			 struct file_magic *file_magic, struct tm *rectime, void *dparm)
 {
 	int i, p;
 	int curr = 1, rtype;
@@ -1240,13 +1204,13 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		do {
 			if (read_next_sample(ifd, IGNORE_NOTHING, 0,
 					     file, &rtype, 0, file_magic, file_actlst,
-					     rectime, loctime, UEOF_STOP))
+					     rectime, UEOF_STOP))
 				/* End of sa data file */
 				return;
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-		       (tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
-		       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+		       (tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
+		       (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
 
 		/* Save the first stats collected. Used for example in next_slice() function */
 		copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1266,7 +1230,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 			 */
 			rw_curr_act_stats(ifd, &curr, &cnt, &eosaf,
 					  ALL_ACTIVITIES, &reset, file_actlst,
-					  rectime, loctime, file, file_magic);
+					  rectime, file, file_magic);
 		}
 		else {
 			/* For each requested activity... */
@@ -1282,7 +1246,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 				if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 					rw_curr_act_stats(ifd, &curr, &cnt, &eosaf,
 							  act[p]->id, &reset, file_actlst,
-							  rectime, loctime, file, file_magic);
+							  rectime, file, file_magic);
 				}
 				else {
 					unsigned int optf, msk;
@@ -1295,7 +1259,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 							rw_curr_act_stats(ifd, &curr, &cnt, &eosaf,
 									  act[p]->id, &reset, file_actlst,
-									  rectime, loctime, file,
+									  rectime, file,
 									  file_magic);
 							act[p]->opt_flags = optf;
 						}
@@ -1309,7 +1273,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 			do {
 				eosaf = read_next_sample(ifd, IGNORE_RESTART | DONT_READ_CPU_NR,
 							 curr, file, &rtype, 0, file_magic,
-							 file_actlst, rectime, loctime, UEOF_STOP);
+							 file_actlst, rectime, UEOF_STOP);
 			}
 			while (!eosaf && (rtype != R_RESTART));
 		}
@@ -1321,7 +1285,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		 */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
-					     R_RESTART, ifd, rectime, loctime, file, 0,
+					     R_RESTART, ifd, rectime, file, 0,
 					     file_magic, &file_hdr, act, fmt[f_position],
 					     endian_mismatch, arch_64);
 		}
@@ -1341,14 +1305,11 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
  *		be saved for current record.
- * @loctime	Structure where timestamp (expressed in local time) can be
- *		saved for current record.
  * @dparm	Unused here.
  ***************************************************************************
  */
 void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
-		      struct file_magic *file_magic, struct tm *rectime,
-		      struct tm *loctime, void *dparm)
+		      struct file_magic *file_magic, struct tm *rectime, void *dparm)
 {
 	struct svg_hdr_parm parm;
 	int i, p;
@@ -1365,8 +1326,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	 * Result may be 0. In this case, "No data" will be displayed instead of the graphs.
 	 */
 	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
-				    file_actlst, rectime, loctime, &views_per_row,
-				    &nr_act_dispd);
+				    file_actlst, rectime, &views_per_row, &nr_act_dispd);
 
 	if (SET_CANVAS_HEIGHT(flags)) {
 		/*
@@ -1394,7 +1354,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	do {
 		if (read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT, 0,
 				     file, &rtype, 0, file_magic, file_actlst,
-				     rectime, loctime, UEOF_CONT))
+				     rectime, UEOF_CONT))
 		{
 			/* End of sa data file: No views displayed */
 			parm.graph_nr = 0;
@@ -1402,8 +1362,8 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		}
 	}
 	while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-	       (tm_start.use && (datecmp(loctime, &tm_start) < 0)) ||
-	       (tm_end.use && (datecmp(loctime, &tm_end) >= 0)));
+	       (tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
+	       (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
 
 	/* Save the first stats collected. Used for example in next_slice() function */
 	copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1424,7 +1384,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
 			display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
 						p, &reset, file_actlst,
-						rectime, loctime, file,
+						rectime, file,
 						file_magic, &g_nr, nr_act_dispd);
 		}
 		else {
@@ -1437,7 +1397,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 					act[p]->opt_flags &= (0xffffff00 + msk);
 					display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
 								p, &reset, file_actlst,
-								rectime, loctime, file,
+								rectime, file,
 								file_magic, &g_nr, nr_act_dispd);
 					act[p]->opt_flags = optf;
 				}
@@ -1471,7 +1431,7 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 {
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
-	struct tm rectime, loctime;
+	struct tm rectime;
 	int ifd, ignore, tab = 0;
 
 	/* Prepare file for reading and read its headers */
@@ -1502,7 +1462,7 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 	/* Call function corresponding to selected output format */
 	if (*fmt[f_position]->f_display) {
 		(*fmt[f_position]->f_display)(ifd, dfile, file_actlst, &file_magic,
-					      &rectime, &loctime, pcparchive);
+					      &rectime, pcparchive);
 	}
 
 	close(ifd);

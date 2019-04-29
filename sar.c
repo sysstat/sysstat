@@ -451,14 +451,14 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 
 	/* Get then set previous timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
-					   &rectime, NULL))
+					   &rectime))
 		return 0;
 	set_record_timestamp_string(flags, &record_hdr[!curr],
 				    NULL, timestamp[!curr], TIMESTAMP_LEN, &rectime);
 
 	/* Get then set current timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
-					   &rectime, NULL))
+					   &rectime))
 		return 0;
 	set_record_timestamp_string(flags, &record_hdr[curr],
 				    NULL, timestamp[curr], TIMESTAMP_LEN, &rectime);
@@ -470,17 +470,8 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		cross_day = 1;
 	}
 
-	if (cross_day) {
-		/*
-		 * This is necessary if we want to properly handle something like:
-		 * sar -s time_start -e time_end with
-		 * time_start(day D) > time_end(day D+1)
-		 */
-		rectime.tm_hour += 24;
-	}
-
 	/* Check time (2) */
-	if (use_tm_start && (datecmp(&rectime, &tm_start) < 0))
+	if (use_tm_start && (datecmp(&rectime, &tm_start, cross_day) < 0))
 		/* it's too soon... */
 		return 0;
 
@@ -488,7 +479,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
 
 	/* Check time (3) */
-	if (use_tm_end && (datecmp(&rectime, &tm_end) > 0)) {
+	if (use_tm_end && (datecmp(&rectime, &tm_end, cross_day) > 0)) {
 		/* It's too late... */
 		*cnt = 0;
 		return 0;
@@ -801,7 +792,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 				/* Display comment */
 				next = print_special_record(&record_hdr[*curr], flags + S_F_LOCAL_TIME,
 							    &tm_start, &tm_end, R_COMMENT, ifd,
-							    &rectime, NULL, file, 0,
+							    &rectime, file, 0,
 							    file_magic, &file_hdr, act, &sar_fmt,
 							    endian_mismatch, arch_64);
 				if (next && lines) {
@@ -1017,7 +1008,7 @@ void read_stats_from_file(char from_file[])
 			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
 				print_special_record(&record_hdr[0], flags + S_F_LOCAL_TIME,
 						     &tm_start, &tm_end, rtype, ifd,
-						     &rectime, NULL, from_file, 0, &file_magic,
+						     &rectime, from_file, 0, &file_magic,
 						     &file_hdr, act, &sar_fmt, endian_mismatch, arch_64);
 			}
 			else {
@@ -1029,8 +1020,7 @@ void read_stats_from_file(char from_file[])
 						     file_actlst, endian_mismatch, arch_64,
 						     from_file, &file_magic, UEOF_STOP);
 				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
-								   &record_hdr[0],
-								   &rectime, NULL))
+								   &record_hdr[0], &rectime))
 					/*
 					 * An error was detected.
 					 * The timestamp hasn't been updated.
@@ -1039,8 +1029,8 @@ void read_stats_from_file(char from_file[])
 			}
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-		       (tm_start.use && (datecmp(&rectime, &tm_start) < 0)) ||
-		       (tm_end.use && (datecmp(&rectime, &tm_end) >=0)));
+		       (tm_start.use && (datecmp(&rectime, &tm_start, FALSE) < 0)) ||
+		       (tm_end.use && (datecmp(&rectime, &tm_end, FALSE) >= 0)));
 
 		/* Save the first stats collected. Will be used to compute the average */
 		copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1112,7 +1102,7 @@ void read_stats_from_file(char from_file[])
 					/* This was a COMMENT record: print it */
 					print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 							     &tm_start, &tm_end, R_COMMENT, ifd,
-							     &rectime, NULL, from_file, 0,
+							     &rectime, from_file, 0,
 							     &file_magic, &file_hdr, act, &sar_fmt,
 							     endian_mismatch, arch_64);
 				}
@@ -1124,7 +1114,7 @@ void read_stats_from_file(char from_file[])
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 					     &tm_start, &tm_end, R_RESTART, ifd,
-					     &rectime, NULL, from_file, 0,
+					     &rectime, from_file, 0,
 					     &file_magic, &file_hdr, act, &sar_fmt,
 					     endian_mismatch, arch_64);
 		}
