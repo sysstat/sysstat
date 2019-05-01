@@ -1,0 +1,2 @@
+LC_ALL=C TZ=GMT ./sar -f tests/sa01 > tests/out33.sar-u.tmp
+LC_ALL=C TZ=GMT ./sar -f tests/sa02 >> tests/out33.sar-u.tmp

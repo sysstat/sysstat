@@ -1,0 +1,3 @@
+rm -f tests/sa01 tests/sa02 tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1556755199 - 1 3

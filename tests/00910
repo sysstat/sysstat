@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp

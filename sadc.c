@@ -226,7 +226,7 @@ void parse_sadc_S_option(char *argv[], int opt)
  */
 void alarm_handler(int sig)
 {
-	alarm(interval);
+	__alarm(interval);
 }
 
 /*
@@ -1130,7 +1130,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 
 		if (count) {
 			/* Wait for a signal (probably SIGALRM or SIGINT) */
-			pause();
+			__pause();
 		}
 
 		if (sigint_caught)
@@ -1390,7 +1390,7 @@ int main(int argc, char **argv)
 	memset(&alrm_act, 0, sizeof(alrm_act));
 	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
-	alarm(interval);
+	__alarm(interval);
 
 	/* Main loop */
 	rw_sa_stat_loop(count, stdfd, ofd, ofile, sa_dir);

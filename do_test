@@ -1,4 +1,8 @@
 #!/bin/sh
+if [ "$1" = "comp" ]
+then
+	make CFLAGS="-D DEBUG -D TEST"
+fi
 if [ "$1" = "all" ] || [ "$1" = "simtest" ]
 then
 	make distclean

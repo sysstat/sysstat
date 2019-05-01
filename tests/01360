@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -1 > tests/out.sar-1.tmp

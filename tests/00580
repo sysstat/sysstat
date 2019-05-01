@@ -1,0 +1,1 @@
+./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s1 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp

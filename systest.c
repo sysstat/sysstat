@@ -21,14 +21,19 @@
 
 #ifdef TEST
 
+#include <stdio.h>
 #include <string.h>
+#include <errno.h>
+#include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
 
 #include "systest.h"
 
 time_t __unix_time = 0;
+extern long interval;
 
 /*
  ***************************************************************************
@@ -101,6 +106,31 @@ int get_fs_stat(char *c, struct statvfs *buf)
 char *get_env_value(char *c)
 {
 	return NULL;
+}
+
+/*
+ ***************************************************************************
+ * Test mode: Go to next time period.
+ ***************************************************************************
+ */
+
+void next_time_step(void)
+{
+	static int root_nr = 1;
+	char rootf[64];
+
+	__unix_time += interval;
+
+	if ((unlink(ROOTDIR) < 0) && (errno != ENOENT)) {
+		perror("unlink");
+		exit(1);
+	}
+
+	sprintf(rootf, "%s%d", ROOTFILE, ++root_nr);
+	if (symlink(rootf, ROOTDIR) < 0) {
+		perror("link");
+		exit(1);
+	}
 }
 
 #endif	/* TEST */

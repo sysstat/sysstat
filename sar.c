@@ -44,6 +44,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+extern time_t __unix_time;
+#endif
+
 /* Interval and count parameters */
 long interval = -1, count = 0;
 
@@ -1410,6 +1414,14 @@ int main(int argc, char **argv)
 			}
 		}
 
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--unix_time=", 12)) {
+			if (strspn(argv[opt] + 12, DIGITS) != strlen(argv[opt] + 12)) {
+				usage(argv[0]);
+			}
+			__unix_time = atoll(argv[opt++] + 12);
+		}
+#endif
 		else if ((strlen(argv[opt]) > 1) &&
 			 (strlen(argv[opt]) < 4) &&
 			 !strncmp(argv[opt], "-", 1) &&

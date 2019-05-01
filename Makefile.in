@@ -613,7 +613,7 @@ simtest: all
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp
 	rm -f nfsiostat* man/nfsiostat*
-	rm -f tests/sa01 tests/19700101
+	rm -f tests/sa0[12] tests/19700101
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot

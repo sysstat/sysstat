@@ -1,0 +1,6 @@
+# hostname;interval;timestamp;DEV;tps;rkB/s;wkB/s;dkB/s;areq-sz;aqu-sz;await;%util
+SYSSTAT.TEST;39;2019-04-18 13:20:39 UTC;sda;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00
+# hostname;interval;timestamp;IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil
+SYSSTAT.TEST;39;2019-04-18 13:20:39 UTC;enp6s1;1.90;1.17;0.23;0.21;0.00;0.00;2.31;0.00
+# hostname;interval;timestamp;FILESYSTEM;MBfsfree;MBfsused;%fsused;%ufsused;Ifree;Iused;%Iused
+SYSSTAT.TEST;39;2019-04-18 13:20:39 UTC;/dev/sda6;85582;7774;8.33;13.45;6008414;102818;1.68

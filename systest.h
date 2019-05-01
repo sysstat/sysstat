@@ -18,6 +18,11 @@
 #define __uname(m)	get_uname(m)
 #define __statvfs(m, n)	get_fs_stat(m, n)
 #define __getenv(m)	get_env_value(m)
+#define __alarm(m)
+#define __pause()	next_time_step()
+
+#define ROOTDIR		"./tests/root"
+#define ROOTFILE	"root"
 
 #else
 
@@ -27,6 +32,8 @@
 #define __uname(m)	uname(m)
 #define __statvfs(m, n)	statvfs(m, n)
 #define __getenv(m)	getenv(m)
+#define __alarm(m)	alarm(m)
+#define __pause()	pause()
 
 #endif
 
@@ -45,6 +52,8 @@ void get_uname
 	(struct utsname *);
 void get_unix_time
 	(time_t *);
+void next_time_step
+	();
 #endif
 
 #endif  /* _SYSTEST_H */
