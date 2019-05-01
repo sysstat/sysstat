@@ -263,15 +263,22 @@ to strip the "UTC" characters from the data being loaded into the database.
 
 ---
 2.8. I tried to use options -s and -e with sadf. Unfortunately, I have
-nothing displayed at all.
+nothing displayed at all / the output doesn't match that of sar.
 
 
-A: This is because no data belong to the specified time interval!
-The time specified with options -s and -e is now always considered as
-being given in local time to be consistent with sar default output.
-Remember that timestamps are displayed by sadf in UTC (Coordinated
-Universal Time) by default. Use option -T to tell sadf to display them
-in local time.
+A: The way how options -s and -e are interpreted has changed with sysstat's
+versions.
+First if you don't have any data displayed by sadf, this is because no data
+belong to the specified time interval! Up to sysstat version 12.1.4, the
+time specified with options -s and -e was always considered as being given
+in local time to be consistent with sar's default output. Yet sadf displays
+its timestamps in UTC (Coordinated Universal Time) by default (and in local
+time with option -T). This could lead to some misunderstandings, as if sadf's
+options -s and -e didn't work properly.
+So with sysstat version 12.1.5, the time specified with options -s and -e
+is now consistent with the timestamps displayed by sadf (either in UTC by
+default or in local time with option -T), even if the output doesn't match
+that of sar.
 
 ---
 2.9. I cannot see all my disks when I use the sar -d command...

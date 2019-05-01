@@ -292,7 +292,7 @@ Print the raw contents of the data file. With this format, the values for
 all the counters are displayed as read from the kernel, which means e.g., that
 no average values are calculated over the elapsed time interval.
 .IP "-s [ hh:mm[:ss] ]"
-Set the starting time of the data (given in local time), causing the
+Set the starting time of the data, causing the
 .B sadf
 command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
