@@ -27,7 +27,6 @@
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
 00161	LC_ALL=C TZ=GMT ./sar -A -f tests/data.tmp > tests/out2.sar-all.tmp
-	[Don't take into account sensors statistics which are not read from test root directory]
 00164	diff -u tests/out2.sar-u.tmp tests/expected2.sar-u
 00166	diff -u tests/out2.sar-all.tmp tests/expected2.sar-all
 
@@ -91,14 +90,22 @@
 00860	LC_ALL=C TZ=GMT ./sar -i 60 -uw -P ALL -f tests/data.tmp > tests/out.sar-i.tmp
 00862	diff -u tests/out.sar-i.tmp tests/expected.sar-i
 	[WARNING: /proc/uptime files are not consistent with unix_time values used. Don't trust timestamps!]
+00870	LC_ALL=C TZ=GMT ./sar 60 -uw -P ALL -f tests/data.tmp > tests/out2.sar-i.tmp
+00872	diff -u tests/out2.sar-i.tmp tests/expected.sar-i
+00880	LC_ALL=C TZ=GMT ./sar 60 2 -f tests/data.tmp > tests/out3.sar-i.tmp
+00882	diff -u tests/out3.sar-i.tmp tests/expected3.sar-i
 00900	LC_ALL=C TZ=GMT ./sar -h -j UUID -f tests/data.tmp > tests/out.sar-jUUID.tmp
 00902	diff -u tests/out.sar-jUUID.tmp tests/expected.sar-jUUID
-00910	LC_ALL=C TZ=GMT ./sar -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
+00910	LC_ALL=C TZ=GMT ./sar -uw -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
 	[Testing options -s/-e on a file contents spanning two consecutive days]
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
 00912	diff -u tests/out.sar-cd.tmp tests/expected.sar-cd
-00920	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -e 13:30 -z -n DEV -dp > > tests/out.sar-z.tmp
+00920	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -e 13:30 -z -n DEV -dp > tests/out.sar-z.tmp
 00922	diff -u tests/out.sar-z.tmp tests/expected.sar-z
+00930	LC_ALL=C TZ=GMT ./sar -ur 0 > tests/out.sar-0.tmp
+00932	diff -u tests/out.sar-0.tmp tests/expected.sar-0
+00940	LC_ALL=C TZ=GMT ./sar 1 2 > tests/out.sar.tmp
+00942	diff -u tests/out.sar.tmp tests/expected.sar
 
 =====	Creating data0.tmp with no data inside
 01000	./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
@@ -111,8 +118,8 @@
 01120	./sadf -x tests/data0.tmp -- -A > tests/out0.sadf-x.tmp
 01122	diff -u tests/out0.sadf-x.tmp tests/expected0.sadf-x
 01130	./sadf -j tests/data0.tmp -- -A | $VER_JSON >/dev/null
-01140	LC_ALL=C TZ=GMT ./sar -r -f tests/data0.tmp 2>/dev/null || exit 0
-01145	./sadf tests/data0.tmp 2>/dev/null || exit 0
+01140	LC_ALL=C TZ=GMT ./sar -r -f tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
+01145	./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
 01150	./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
 01152	diff -u tests/out0.sadf-g.tmp tests/expected0.sadf-g
 
@@ -129,7 +136,7 @@
 01252	diff -u tests/out01.sadf-H.tmp tests/expected01.sadf-H
 
 =====	Playing with standard activity datafiles
-01300	echo foo >test/sa01 ; ./sadc 1 1 - 2>/dev/null || exit 0
+01300	echo foo >tests/sa01 ; ./sadc 1 1 - 2>&1 | grep "Invalid system activity" >/dev/null
 01305	./sadc -F 1 1 -
 01310	LC_ALL=C TZ=GMT ./sar -f tests/sa01 > tests/out3.sar-u.tmp
 01312	diff -u tests/out3.sar-u.tmp tests/expected3.sar-u
@@ -149,3 +156,16 @@
 01360	LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -1 > tests/out.sar-1.tmp
 	[Go to day 02 and try to read sa01]
 01362	diff -u tests/out.sar-1.tmp tests/expected.sar-1
+01370	LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -D -o 1 2 > /dev/null
+	[Create datafile sa20190502]
+01372	LC_ALL=C TZ=GMT ./sar -f tests/sa20190502 > tests/out.sar-D.tmp
+01375	diff -u tests/out.sar-D.tmp tests/expected.sar-D
+
+=====	Testing error cases
+01400	LC_ALL=C TZ=GMT ./sar -f tests/data-trunc 2>&1 | grep "End of system activity file unexpected" >/dev/null
+01410	./sar 0 0 2>&1 | grep "Usage:" >/dev/null
+01415	./sar 0 2 2>&1 | grep "Usage:" >/dev/null
+01420	./sar 2 0 2>&1 | grep "Usage:" >/dev/null
+01425	./sar 2 2 2 2>&1 | grep "Usage:" >/dev/null
+01430	./sar -o foo 2>&1 | grep "Usage:" >/dev/null
+01440	LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null

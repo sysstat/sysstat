@@ -1,0 +1,7 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00        CPU     %user     %nice   %system   %iowait    %steal     %idle
+00:00:00        all      1.65     44.90      1.84      1.01      0.00     50.60
+
+00:00:00    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+00:00:00      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396

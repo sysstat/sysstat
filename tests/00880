@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar 60 2 -f tests/data.tmp > tests/out3.sar-i.tmp

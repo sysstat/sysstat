@@ -1,0 +1,10 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
+
+13:20:09        CPU     %user     %nice   %system   %iowait    %steal     %idle
+13:20:29        all      2.19      7.68      2.14      0.29      0.00     87.70
+13:20:39        all      2.66     23.20      2.27      0.16      0.00     71.71
+Average:        all      2.39     14.28      2.20      0.23      0.00     80.90
+
+13:37:29     LINUX RESTART	(8 CPU)
+
+13:54:09     LINUX RESTART	(10 CPU)

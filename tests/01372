@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/sa20190502 > tests/out.sar-D.tmp

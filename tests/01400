@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/data-trunc 2>&1 | grep "End of system activity file unexpected" >/dev/null

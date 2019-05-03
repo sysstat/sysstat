@@ -1,0 +1,1 @@
+./sar 2 2 2 2>&1 | grep "Usage:" >/dev/null

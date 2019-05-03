@@ -1,2 +1,1 @@
-./sadf tests/data0.tmp 2>/dev/null || exit 0
-exit 1
+./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null

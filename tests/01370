@@ -1,0 +1,4 @@
+rm -f tests/sa20190502
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -D -o 1 2 > /dev/null

@@ -613,7 +613,9 @@ simtest: all
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp
 	rm -f nfsiostat* man/nfsiostat*
-	rm -f tests/sa0[12] tests/19700101
+	rm -f tests/sa[012]*
+	rm -f tests/root
+	ln -s root1 tests/root
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot
@@ -637,16 +639,16 @@ maintainer-clean: distclean
 	rm -f configure
 
 dist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git --dereference -cvf - sysstat-$(VERSION) | gzip -v9 > sysstat-$(VERSION).tar.gz)
+	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | gzip -v9 > sysstat-$(VERSION).tar.gz)
 
 bdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git --dereference -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
+	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
 
 xdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git --dereference -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
+	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
 
 gitdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --dereference -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
+	cd .. && (tar --exclude=Makefile -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
 
 tags:
 	etags ./*.[hc]

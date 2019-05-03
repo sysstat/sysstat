@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null

@@ -1592,6 +1592,12 @@ int main(int argc, char **argv)
 			salloc(args_idx++, ltemp);
 		}
 
+#ifdef TEST
+		if (__unix_time) {
+			sprintf(ltemp, "--unix_time=%llu", __unix_time);
+			salloc(args_idx++, ltemp);
+		}
+#endif
 		/* Flags to be passed to sadc */
 		salloc(args_idx++, "-Z");
 

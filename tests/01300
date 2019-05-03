@@ -1,5 +1,4 @@
 rm -f tests/sa01
 echo foo >tests/sa01
 
-./sadc 1 1 - 2>/dev/null || exit 0
-exit 1
+./sadc 1 1 - 2>&1 | grep "Invalid system activity" >/dev/null
