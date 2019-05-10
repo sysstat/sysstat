@@ -375,18 +375,18 @@ void io_sys_init(int *iodev_nr)
  * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void presave_device_list(int iodev_nr, int dlist_idx)
+void presave_device_list(int iodev_nr, int *dlist_idx)
 {
 	int i;
 	struct io_hdr_stats *shi = st_hdr_iodev;
 	struct io_dlist *sdli = st_dev_list;
 
-	if (dlist_idx>0) {
+	if (*dlist_idx > 0) {
 		/* First, save the last group name entered on the command line in the list */
-		update_dev_list(&dlist_idx, group_name);
+		update_dev_list(dlist_idx, group_name);
 
 		/* Now save devices and group names in the io_hdr_stats structures */
-		for (i = 0; (i < dlist_idx) && (i < iodev_nr); i++, shi++, sdli++) {
+		for (i = 0; (i < *dlist_idx) && (i < iodev_nr); i++, shi++, sdli++) {
 			strncpy(shi->name, sdli->dev_name, MAX_NAME_LEN);
 			shi->name[MAX_NAME_LEN - 1] = '\0';
 			shi->used = TRUE;
@@ -2275,7 +2275,7 @@ int main(int argc, char **argv)
 		 * If groups of devices have been defined
 		 * then save devices and groups in the list.
 		 */
-		presave_device_list(iodev_nr, dlist_idx);
+		presave_device_list(iodev_nr, &dlist_idx);
 	}
 
 	get_localtime(&rectime, 0);
