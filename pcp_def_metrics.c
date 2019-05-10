@@ -1396,3 +1396,59 @@ void pcp_def_net_udp6_metrics(void)
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for filesystem statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_filesystem_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int inst = 0;
+	static pmInDom indom = PM_INDOM_NULL;
+	struct sa_item *list = a->item_list;
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(0, PM_INDOM_FILESYSTEM);
+
+		/* Create instances */
+		while (list != NULL) {
+			pmiAddInstance(indom, list->item_name, inst++);
+			list = list->next;
+		}
+	}
+
+	pmiAddMetric("fs.util.fsfree",
+		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+
+	pmiAddMetric("fs.util.fsused",
+		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+
+	pmiAddMetric("fs.util.fsused_pct",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("fs.util.ufsused_pct",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("fs.util.ifree",
+		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("fs.util.iused",
+		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("fs.util.iused_pct",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+#endif /* HAVE_PCP */
+}

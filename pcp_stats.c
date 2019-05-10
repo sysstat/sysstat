@@ -1738,6 +1738,78 @@ __print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsign
 
 /*
  ***************************************************************************
+ * Display filesystem statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_filesystem_stats(struct activity *a, int curr, unsigned long long itv,
+					   struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_filesystem *sfc;
+	char buf[64];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list,
+					      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+				/* Device not found */
+				continue;
+		}
+
+		snprintf(buf, sizeof(buf), "%.0f",
+			 (double) sfc->f_bfree / 1024 / 1024);
+		pmiPutValue("fs.util.fsfree",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+
+		snprintf(buf, sizeof(buf), "%.0f",
+			 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024);
+		pmiPutValue("fs.util.fsused",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+				       : 0.0);
+		pmiPutValue("fs.util.fsused_pct",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+				       : 0.0);
+		pmiPutValue("fs.util.ufsused_pct",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+
+		snprintf(buf, sizeof(buf), "%llu",
+			 sfc->f_ffree);
+		pmiPutValue("fs.util.ifree",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+
+		snprintf(buf, sizeof(buf), "%llu",
+			 sfc->f_files - sfc->f_ffree);
+		pmiPutValue("fs.util.iused",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+				      : 0.0);
+		pmiPutValue("fs.util.iused_pct",
+			    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display softnet statistics in PCP format.
  *
  * IN:

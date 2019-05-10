@@ -39,6 +39,7 @@ void pcp_def_net_eip6_metrics(void);
 void pcp_def_net_icmp6_metrics(void);
 void pcp_def_net_eicmp6_metrics(void);
 void pcp_def_net_udp6_metrics(void);
+void pcp_def_filesystem_metrics(struct activity *);
 
 /* Define domains number */
 #define PM_INDOM_CPU		0
@@ -46,6 +47,7 @@ void pcp_def_net_udp6_metrics(void);
 #define PM_INDOM_NET_DEV	2
 #define PM_INDOM_SERIAL		3
 #define PM_INDOM_INT		4
+#define PM_INDOM_FILESYSTEM	5
 
 
 #endif /* _PCP_DEF_METRICS_H */
