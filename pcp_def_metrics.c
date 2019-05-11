@@ -1399,6 +1399,36 @@ void pcp_def_net_udp6_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for huge pages statistics.
+ ***************************************************************************
+ */
+void pcp_def_huge_metrics()
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("mem.huge.free",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.huge.used",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.huge.used_pct",
+		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("mem.huge.reserved",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.huge.surplus",
+		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for filesystem statistics.
  *
  * IN:

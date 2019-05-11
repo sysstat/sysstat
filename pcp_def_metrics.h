@@ -39,6 +39,7 @@ void pcp_def_net_eip6_metrics(void);
 void pcp_def_net_icmp6_metrics(void);
 void pcp_def_net_eicmp6_metrics(void);
 void pcp_def_net_udp6_metrics(void);
+void pcp_def_huge_metrics(void);
 void pcp_def_filesystem_metrics(struct activity *);
 
 /* Define domains number */

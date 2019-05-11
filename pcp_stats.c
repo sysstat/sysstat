@@ -1738,6 +1738,42 @@ __print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsign
 
 /*
  ***************************************************************************
+ * Display huge pages statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_huge_stats(struct activity *a, int curr, unsigned long long itv,
+				     struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_huge
+		*smc = (struct stats_huge *) a->buf[curr];
+
+	snprintf(buf, sizeof(buf), "%llu", smc->frhkb);
+	pmiPutValue("mem.huge.free", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->tlhkb - smc->frhkb);
+	pmiPutValue("mem.huge.used", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f", smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0);
+	pmiPutValue("mem.huge.used_pct", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->rsvdhkb);
+	pmiPutValue("mem.huge.reserved", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->surphkb);
+	pmiPutValue("mem.huge.surplus", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display filesystem statistics in PCP format.
  *
  * IN:
