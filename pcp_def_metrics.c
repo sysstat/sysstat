@@ -369,15 +369,15 @@ void pcp_def_io_metrics(void)
 
 	pmiAddMetric("disk.all.read_bytes",
 		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 1, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
 
 	pmiAddMetric("disk.all.write_bytes",
 		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 1, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
 
 	pmiAddMetric("disk.all.discard_bytes",
 		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 1, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -396,15 +396,15 @@ void pcp_def_memory_metrics(struct activity *a)
 
 		pmiAddMetric("mem.util.free",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.available",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.used",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.used_pct",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
@@ -412,15 +412,15 @@ void pcp_def_memory_metrics(struct activity *a)
 
 		pmiAddMetric("mem.util.buffers",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.cached",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.commit",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.commit_pct",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
@@ -428,37 +428,37 @@ void pcp_def_memory_metrics(struct activity *a)
 
 		pmiAddMetric("mem.util.active",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.inactive",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.dirty",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		if (DISPLAY_MEM_ALL(a->opt_flags)) {
 
 			pmiAddMetric("mem.util.anonpages",
 				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 			pmiAddMetric("mem.util.slab",
 				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 			pmiAddMetric("mem.util.stack",
 				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 			pmiAddMetric("mem.util.pageTables",
 				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 			pmiAddMetric("mem.util.vmused",
 				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 		}
 	}
 
@@ -466,11 +466,11 @@ void pcp_def_memory_metrics(struct activity *a)
 
 		pmiAddMetric("mem.util.swapFree",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.swapUsed",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.swapUsed_pct",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
@@ -478,7 +478,7 @@ void pcp_def_memory_metrics(struct activity *a)
 
 		pmiAddMetric("mem.util.swapCached",
 			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, 0, PM_SPACE_KBYTE, 0));
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.swapCached_pct",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
