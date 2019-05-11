@@ -50,8 +50,10 @@
 00531	diff -u tests/out.sadf-j.tmp tests/expected.sadf-j
 00540	./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
 00541	diff -u tests/out.sadf-g.tmp tests/expected.sadf-g
+00545	./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
+00546	diff -u tests/out1.sadf-g.tmp tests/expected1.sadf-g
 00550	TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
-00551	diff -u tests/out2.sadf-g2.tmp tests/expected2.sadf-g2
+00551	diff -u tests/out2.sadf-g.tmp tests/expected2.sadf-g
 00560	./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00561	diff -u tests/out.sadf-H.tmp tests/expected.sadf-H
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
@@ -105,7 +107,7 @@
 00930	LC_ALL=C TZ=GMT ./sar -ur 0 > tests/out.sar-0.tmp
 00932	diff -u tests/out.sar-0.tmp tests/expected.sar-0
 00940	LC_ALL=C TZ=GMT ./sar 1 2 > tests/out.sar.tmp
-00942	diff -u tests/out.sar.tmp tests/expected.sar
+00942	diff -u tests/out.sar.tmp tests/expected.sar1
 
 =====	Creating data0.tmp with no data inside
 01000	./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null

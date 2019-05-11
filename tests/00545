@@ -1,0 +1,1 @@
+./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
