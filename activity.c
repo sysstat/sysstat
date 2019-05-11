@@ -1801,6 +1801,7 @@ struct activity fchost_act = {
 	.f_json_print	= json_print_fchost_stats,
 	.f_svg_print	= svg_print_fchost_stats,
 	.f_raw_print	= raw_print_fchost_stats,
+	.f_pcp_print	= pcp_print_fchost_stats,
 	.f_count_new	= count_new_fchost,
 	.item_list	= NULL,
 	.desc		= "Fibre Channel HBA statistics",

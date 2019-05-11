@@ -1482,3 +1482,47 @@ void pcp_def_filesystem_metrics(struct activity *a)
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for Fibre Channel HBA statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_fchost_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int inst = 0;
+	static pmInDom indom = PM_INDOM_NULL;
+	struct sa_item *list = a->item_list;
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(0, PM_INDOM_FCHOST);
+
+		/* Create instances */
+		while (list != NULL) {
+			pmiAddInstance(indom, list->item_name, inst++);
+			list = list->next;
+		}
+	}
+
+	pmiAddMetric("network.fchost.in.frame",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.fchost.out.frame",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.fchost.in.word",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("network.fchost.out.word",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}

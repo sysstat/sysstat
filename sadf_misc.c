@@ -768,6 +768,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 				case A_FS:
 					pcp_def_filesystem_metrics(act[p]);
 					break;
+
+				case A_NET_FC:
+					pcp_def_fchost_metrics(act[p]);
+					break;
 			}
 		}
 	}

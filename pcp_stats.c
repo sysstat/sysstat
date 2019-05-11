@@ -1918,3 +1918,73 @@ __print_funct_t pcp_print_softnet_stats(struct activity *a, int curr, unsigned l
 	}
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display Fibre Channel HBA statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_fchost_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i, j, j0, found;
+	struct stats_fchost *sfcc, *sfcp;
+	char buf[64];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		found = FALSE;
+
+		if (a->nr[!curr] > 0) {
+			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+
+			/* Look for corresponding structure in previous iteration */
+			j = i;
+
+			if (j >= a->nr[!curr]) {
+				j = a->nr[!curr] - 1;
+			}
+
+			j0 = j;
+
+			do {
+				sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
+				if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
+					found = TRUE;
+					break;
+				}
+				if (++j >= a->nr[!curr]) {
+					j = 0;
+				}
+			}
+			while (j != j0);
+		}
+
+		if (!found)
+			continue;
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv));
+		pmiPutValue("network.fchost.in.frame", sfcc->fchost_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv));
+		pmiPutValue("network.fchost.out.frame", sfcc->fchost_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv));
+		pmiPutValue("network.fchost.in.word", sfcc->fchost_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv));
+		pmiPutValue("network.fchost.out.word", sfcc->fchost_name, buf);
+	}
+#endif	/* HAVE_PCP */
+}
