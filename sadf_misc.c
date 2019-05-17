@@ -765,6 +765,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_huge_metrics();
 					break;
 
+				case A_PWR_USB:
+					pcp_def_pwr_usb_metrics(act[p]);
+					break;
+
 				case A_FS:
 					pcp_def_filesystem_metrics(act[p]);
 					break;

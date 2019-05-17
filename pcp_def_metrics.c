@@ -1429,6 +1429,57 @@ void pcp_def_huge_metrics()
 
 /*
  ***************************************************************************
+ * Define PCP metrics for USB devices statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_pwr_usb_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int inst = 0;
+	static pmInDom indom = PM_INDOM_NULL;
+	char buf[16];
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(0, PM_INDOM_USB);
+
+		for (inst = 0; inst < a->item_list_sz; inst++) {
+			sprintf(buf, "usb%d", inst);
+			pmiAddInstance(indom,buf, inst);
+		}
+	}
+
+	pmiAddMetric("power.usb.bus",
+		     PM_IN_NULL, PM_TYPE_U32, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("power.usb.vendorId",
+		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("power.usb.productId",
+		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("power.usb.maxpower",
+		     PM_IN_NULL, PM_TYPE_U32, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("power.usb.manufacturer",
+		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("power.usb.productName",
+		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for filesystem statistics.
  *
  * IN:

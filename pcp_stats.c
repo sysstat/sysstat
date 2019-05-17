@@ -1774,6 +1774,51 @@ __print_funct_t pcp_print_huge_stats(struct activity *a, int curr, unsigned long
 
 /*
  ***************************************************************************
+ * Display USB devices in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_pwr_usb_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_pwr_usb *suc;
+	char buf[64], instance[32];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
+		sprintf(instance, "usb%d", i);
+
+		snprintf(buf, sizeof(buf), "%d", suc->bus_nr);
+		pmiPutValue("power.usb.bus", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%x", suc->vendor_id);
+		pmiPutValue("power.usb.vendorId", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%x", suc->product_id);
+		pmiPutValue("power.usb.productId", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%u", suc->bmaxpower << 1);
+		pmiPutValue("power.usb.maxpower", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%s", suc->manufacturer);
+		pmiPutValue("power.usb.manufacturer", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%s", suc->product);
+		pmiPutValue("power.usb.productName", instance, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display filesystem statistics in PCP format.
  *
  * IN:
