@@ -575,6 +575,90 @@ __print_funct_t pcp_print_queue_stats(struct activity *a, int curr, unsigned lon
 
 /*
  ***************************************************************************
+ * Display disks statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_disk_stats(struct activity *a, int curr, unsigned long long itv,
+				     struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i, j;
+	struct stats_disk *sdc,	*sdp, sdpzero;
+	struct ext_disk_stats xds;
+	char *dev_name;
+	char buf[64];
+
+	memset(&sdpzero, 0, STATS_DISK_SIZE);
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
+
+		j = check_disk_reg(a, curr, !curr, i);
+		if (j < 0) {
+			/* This is a newly registered interface. Previous stats are zero */
+			sdp = &sdpzero;
+		}
+		else {
+			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
+		}
+
+		/* Get device name */
+		dev_name = get_sa_devname(sdc->major, sdc->minor, flags);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, dev_name))
+				/* Device not found */
+				continue;
+		}
+
+		/* Compute extended statistics values */
+		compute_ext_disk_stats(sdc, sdp, itv, &xds);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sdp->nr_ios, sdc->nr_ios, itv));
+		pmiPutValue("disk.device.tps", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2);
+		pmiPutValue("disk.device.read_bytes", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2);
+		pmiPutValue("disk.device.write_bytes", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2);
+		pmiPutValue("disk.device.discard_bytes", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 xds.arqsz / 2);
+		pmiPutValue("disk.device.areq_sz", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0);
+		pmiPutValue("disk.device.aqu_sz", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 xds.await);
+		pmiPutValue("disk.device.await", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 xds.util / 10.0);
+		pmiPutValue("disk.device.util", dev_name, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display network interfaces statistics in PCP format.
  *
  * IN:

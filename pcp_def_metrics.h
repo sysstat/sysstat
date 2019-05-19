@@ -22,6 +22,7 @@ void pcp_def_memory_metrics(struct activity *);
 void pcp_def_ktables_metrics(void);
 void pcp_def_queue_metrics(void);
 void pcp_def_serial_metrics(struct activity *);
+void pcp_def_disk_metrics(struct activity *);
 void pcp_def_net_dev_metrics(struct activity *);
 void pcp_def_net_nfs_metrics(void);
 void pcp_def_net_nfsd_metrics(void);
@@ -53,6 +54,7 @@ void pcp_def_fchost_metrics(struct activity *);
 #define PM_INDOM_FILESYSTEM	5
 #define PM_INDOM_FCHOST		6
 #define PM_INDOM_USB		7
+#define PM_INDOM_DISK		8
 
 
 #endif /* _PCP_DEF_METRICS_H */

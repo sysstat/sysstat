@@ -547,6 +547,66 @@ void pcp_def_queue_metrics(void)
 
 /*
  ***************************************************************************
+ * Define PCP metrics for disks statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_disk_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int inst = 0;
+	static pmInDom indom = PM_INDOM_NULL;
+	struct sa_item *list = a->item_list;
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(0, PM_INDOM_DISK);
+
+		/* Create instances */
+		while (list != NULL) {
+			pmiAddInstance(indom, list->item_name, inst++);
+			list = list->next;
+		}
+	}
+
+	pmiAddMetric("disk.device.tps",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+	pmiAddMetric("disk.device.read_bytes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+	pmiAddMetric("disk.device.write_bytes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+	pmiAddMetric("disk.device.discard_bytes",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+
+	pmiAddMetric("disk.device.areq_sz",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("disk.device.aqu_sz",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("disk.device.await",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("disk.device.util",
+		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+#endif /* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for network interfaces (errors) statistics.
  *
  * IN:

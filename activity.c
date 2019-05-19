@@ -555,6 +555,7 @@ struct activity disk_act = {
 	.f_json_print	= json_print_disk_stats,
 	.f_svg_print	= svg_print_disk_stats,
 	.f_raw_print	= raw_print_disk_stats,
+	.f_pcp_print	= pcp_print_disk_stats,
 	.f_count_new	= count_new_disk,
 	.item_list	= NULL,
 	.desc		= "Block devices statistics",

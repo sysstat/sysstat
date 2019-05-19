@@ -692,6 +692,10 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					pcp_def_serial_metrics(act[p]);
 					break;
 
+				case A_DISK:
+					pcp_def_disk_metrics(act[p]);
+					break;
+
 				case A_NET_DEV:
 				case A_NET_EDEV:
 					pcp_def_net_dev_metrics(act[p]);
