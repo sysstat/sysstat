@@ -1902,6 +1902,47 @@ __print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr, unsigned 
 
 /*
  ***************************************************************************
+ * Display voltage inputs statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_pwr_in_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_pwr_in *spc;
+	char buf[64], instance[32];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
+		sprintf(instance, "in%d", i);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 spc->in);
+		pmiPutValue("power.in.inV", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 (spc->in_max - spc->in_min) ?
+			 (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100 :
+			 0.0);
+		pmiPutValue("power.in.in_pct", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%s",
+			spc->device);
+		pmiPutValue("power.in.device", instance, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display huge pages statistics in PCP format.
  *
  * IN:

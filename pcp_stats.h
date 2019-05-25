@@ -77,6 +77,8 @@ __print_funct_t pcp_print_pwr_fan_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_pwr_temp_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
+__print_funct_t pcp_print_pwr_in_stats
+	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_huge_stats
 	(struct activity *, int, unsigned long long, struct record_header *);
 __print_funct_t pcp_print_pwr_usb_stats
