@@ -1861,6 +1861,47 @@ __print_funct_t pcp_print_pwr_fan_stats(struct activity *a, int curr, unsigned l
 
 /*
  ***************************************************************************
+ * Display temperature statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr, unsigned long long itv,
+					 struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_pwr_temp *spc;
+	char buf[64], instance[32];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
+		sprintf(instance, "temp%d", i + 1);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 spc->temp);
+		pmiPutValue("power.temp.degC", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%f",
+			 (spc->temp_max - spc->temp_min) ?
+			 (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100 :
+			 0.0);
+		pmiPutValue("power.temp.temp_pct", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%s",
+			spc->device);
+		pmiPutValue("power.temp.device", instance, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display huge pages statistics in PCP format.
  *
  * IN:

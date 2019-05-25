@@ -42,6 +42,7 @@ void pcp_def_net_eicmp6_metrics(void);
 void pcp_def_net_udp6_metrics(void);
 void pcp_def_huge_metrics(void);
 void pcp_def_pwr_fan_metrics(struct activity *);
+void pcp_def_pwr_temp_metrics(struct activity *);
 void pcp_def_pwr_usb_metrics(struct activity *);
 void pcp_def_filesystem_metrics(struct activity *);
 void pcp_def_fchost_metrics(struct activity *);
@@ -57,6 +58,6 @@ void pcp_def_fchost_metrics(struct activity *);
 #define PM_INDOM_USB		7
 #define PM_INDOM_DISK		8
 #define PM_INDOM_FAN		9
-
+#define PM_INDOM_TEMP		10
 
 #endif /* _PCP_DEF_METRICS_H */
