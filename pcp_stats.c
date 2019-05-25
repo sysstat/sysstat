@@ -1822,6 +1822,45 @@ __print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsign
 
 /*
  ***************************************************************************
+ * Display fan statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_pwr_fan_stats(struct activity *a, int curr, unsigned long long itv,
+					struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_pwr_fan *spc;
+	char buf[64], instance[32];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
+		sprintf(instance, "fan%d", i + 1);
+
+		snprintf(buf, sizeof(buf), "%llu",
+			 (unsigned long long) spc->rpm);
+		pmiPutValue("power.fan.rpm", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%llu",
+			 (unsigned long long) (spc->rpm - spc->rpm_min));
+		pmiPutValue("power.fan.drpm", instance, buf);
+
+		snprintf(buf, sizeof(buf), "%s",
+			spc->device);
+		pmiPutValue("power.fan.device", instance, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
  * Display huge pages statistics in PCP format.
  *
  * IN:
