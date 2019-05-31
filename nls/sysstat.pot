@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-04-18 09:06+0200\n"
+"POT-Creation-Date: 2019-05-31 08:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,13 +55,13 @@ msgstr ""
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
-#: sadc.c:692 sadc.c:755 ioconf.c:506 rd_stats.c:75 sa_common.c:1689
+#: sadc.c:692 sadc.c:755 ioconf.c:506 rd_stats.c:75 sa_common.c:1691
 #: count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
 
-#: sadc.c:974
+#: sadc.c:977
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
@@ -122,27 +122,27 @@ msgstr ""
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: sa_common.c:1390
+#: sa_common.c:1392
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1400
+#: sa_common.c:1402
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1692
+#: sa_common.c:1694
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2016
+#: sa_common.c:2018
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:2137 iostat.c:1860
+#: sa_common.c:2139 iostat.c:1858
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""

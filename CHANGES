@@ -1,5 +1,17 @@
 Changes:
 
+2019/05/31: Version 12.0.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Add missing %gnice CPU value for tickless CPU.
+	* sar: Better detect if a disk has been unregistered then registered
+	  again.
+	* sar: Allow option -i when no input file is specified.
+	* sadc: Fix bad number of CPU displayed in a LINUX RESTART message.
+	* sadf: Fix SVG output for filesystem statistics when the user asked for
+	  the mount point to be displayed ("-F MOUNT").
+	* iostat: Fix invalid JSON output when option -y is used.
+	* sar: Cosmetic fix in manual page.
+	* Cosmectic changes in code.
+
 2019/04/18: Version 12.0.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Ondrej Dubaj]: sar/sadc: Ignore autofs entries in /etc/mtab.
 	* [Huang Ying]: mpstat: Fix missing "}" and "]" in JSON output when
