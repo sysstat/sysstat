@@ -3,13 +3,13 @@
 # Copyright (C) 2010 THE sysstat'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the sysstat package.
 # Ji ZhengYu <zhengyuji@gmail.com>, 2016.
-# Boyuan Yang <073plan@gmail.com>, 2018.
+# Boyuan Yang <073plan@gmail.com>, 2018, 2019.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 11.7.4\n"
+"Project-Id-Version: sysstat 12.1.4\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2018-06-01 10:26+0200\n"
-"PO-Revision-Date: 2018-06-07 11:22+0800\n"
+"POT-Creation-Date: 2019-04-18 08:23+0200\n"
+"PO-Revision-Date: 2019-04-18 16:36-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -17,133 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 2.0.8\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: sa_common.c:336
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "文件由 sysstat 版本 %d.%d.%d 中的 sar/sadc 创建"
-
-#: sa_common.c:367
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "无效的系统运行记录文件: %s\n"
-
-#: sa_common.c:375
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr "当前版本的 sysstat 无法读取此文件格式 (%#x)\n"
-
-#: sa_common.c:392 pidstat.c:244
-#, c-format
-msgid "Requested activities not available\n"
-msgstr "所需的运行记录无法获得\n"
-
-#: sa_common.c:1363
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "查看系统运行记录时出错: %s\n"
-
-#: sa_common.c:1373
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "系统运行记录文件的结尾有未知错误\n"
-
-#: sa_common.c:1658 sadc.c:729 sadc.c:792 ioconf.c:506 rd_stats.c:75
-#: count.c:118
-#, c-format
-msgid "Cannot open %s: %s\n"
-msgstr "无法打开 %s: %s\n"
-
-#: sa_common.c:1661
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "请检查是否允许数据收集\n"
-
-#: sa_common.c:1981
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "所需的运行记录在此文件 %s 中无法获得\n"
-
-#: sa_common.c:2103 iostat.c:1832
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "固有设备名类型无效\n"
-
-#: iostat.c:89 cifsiostat.c:73 mpstat.c:132 sar.c:106 tapestat.c:101
+#: cifsiostat.c:73 mpstat.c:132 iostat.c:88 tapestat.c:101 sar.c:102
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "用法: %s [ 选项 ] [ <时间间隔> [ <次数> ] ]\n"
-
-#: iostat.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"选项：\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <用户组名> ] [ -p [ <设备> [,...] | ALL ] ]\n"
-"[ <设备> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:99
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"选项：\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <用户组名> ] [ -p [ <设备> [,...] | ALL ] ]\n"
-"[ <设备> [...] | ALL ]\n"
-
-#: iostat.c:331
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "无法找到磁盘数据\n"
-
-#: sadc.c:91
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
-msgstr "用法: %s [ 选项 ] [ <时间间隔> [ <次数> ] ] [ <输出文件> ]\n"
-
-#: sadc.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C <comment> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
-"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
-msgstr ""
-"选项:\n"
-"[ -C <注释> ] [ -D ] [ -F ] [ -L ] [ -V ]\n"
-"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
-
-#: sadc.c:253
-#, c-format
-msgid "Cannot write data to system activity file: %s\n"
-msgstr "无法将数据写入系统运行记录文件: %s\n"
-
-#: sadc.c:1011
-#, c-format
-msgid "Cannot append data to that file (%s)\n"
-msgstr "无法向文件 (%s) 中追加记录\n"
-
-#: common.c:78
-#, c-format
-msgid "sysstat version %s\n"
-msgstr "sysstat 版本 %s\n"
 
 #: cifsiostat.c:77
 #, c-format
@@ -164,6 +43,70 @@ msgstr ""
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 "\n"
 
+#: sadc.c:90
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
+msgstr "用法: %s [ 选项 ] [ <时间间隔> [ <次数> ] ] [ <输出文件> ]\n"
+
+#: sadc.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
+"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
+msgstr ""
+"选项:\n"
+"[ -C <注释> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
+"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
+
+#: sadc.c:264
+#, c-format
+msgid "Cannot write data to system activity file: %s\n"
+msgstr "无法将数据写入系统运行记录文件: %s\n"
+
+#: sadc.c:704 sadc.c:767 count.c:118 ioconf.c:506 rd_stats.c:75
+#: sa_common.c:1720
+#, c-format
+msgid "Cannot open %s: %s\n"
+msgstr "无法打开 %s: %s\n"
+
+#: sadc.c:986
+#, c-format
+msgid "Cannot append data to that file (%s)\n"
+msgstr "无法向文件 (%s) 中追加记录\n"
+
+#: count.c:169
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "处理器太多，无法处理！\n"
+
+#: sadf.c:98
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr "用法: %s [ 选项 ] [ <时间间隔> [ <次数> ] ] [ <数据文件> | -[0-9]+ ]\n"
+
+#: sadf.c:101
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
+msgstr ""
+"选项：\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <选项> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<设备列表> ] [ --fs=<文件系统列表> ] [ --iface=<iface_列表> ]\n"
+"[ -s [ <时:分[:秒]> ] ] [ -e [ <时:分[:秒]> ] ]\n"
+"[ -- <sar_选项> ]\n"
+
+#: sadf.c:1854
+#, c-format
+msgid "PCP support not compiled in\n"
+msgstr "编译时未启用 PCP 支持\n"
+
 #: mpstat.c:135
 #, c-format
 msgid ""
@@ -177,99 +120,205 @@ msgstr ""
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <CPU_列表> | ALL } ]\n"
 "\n"
 
-#: mpstat.c:1632 sar.c:374 pidstat.c:2406
+#: mpstat.c:1641 pidstat.c:2412 sar.c:370
 msgid "Average:"
 msgstr "平均时间:"
 
-#: sadf_misc.c:829
+#: rd_stats.c:351
+#, c-format
+msgid "Cannot read %s\n"
+msgstr "无法读取 %s\n"
+
+#: sa_common.c:297
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "文件由 sysstat 版本 %d.%d.%d 中的 sar/sadc 创建"
+
+#: sa_common.c:328
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "无效的系统运行记录文件: %s\n"
+
+#: sa_common.c:336
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "当前版本的 sysstat 无法读取此文件格式 (%#x)\n"
+
+#: sa_common.c:353 pidstat.c:243
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "所需的运行记录无法获得\n"
+
+#: sa_common.c:1395
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "查看系统运行记录时出错: %s\n"
+
+#: sa_common.c:1405
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "系统运行记录文件的结尾有未知错误\n"
+
+#: sa_common.c:1723
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "请检查是否允许数据收集\n"
+
+#: sa_common.c:2048
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "所需的运行记录在此文件 %s 中无法获得\n"
+
+#: sa_common.c:2169 iostat.c:2067
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "固有设备名类型无效\n"
+
+#: pidstat.c:90
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
+msgstr "用法：%s [ 选项 ] [ <时间间隔> [ <计数> ] ] [ -e <程序> <参数> ]\n"
+
+#: pidstat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+msgstr ""
+"选项：\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <用户名> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <命令> ] [ -G <进程名> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+
+#: sadf_misc.c:1181
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "系统运行记录数据文件: %s (%#x)\n"
 
-#: sadf_misc.c:838
+#: sadf_misc.c:1190
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Genuine sa 数据文件: %s (%x)\n"
 
-#: sadf_misc.c:839
+#: sadf_misc.c:1191
 msgid "no"
 msgstr "否"
 
-#: sadf_misc.c:839
+#: sadf_misc.c:1191
 msgid "yes"
 msgstr "是"
 
-#: sadf_misc.c:842
+#: sadf_misc.c:1194
 #, c-format
 msgid "Host: "
 msgstr "主机："
 
-#: sadf_misc.c:852
+#: sadf_misc.c:1204
 #, c-format
 msgid "File date: %s\n"
 msgstr "文件日期：%s\n"
 
-#: sadf_misc.c:855
+#: sadf_misc.c:1207
 #, c-format
 msgid "File time: "
 msgstr "文件时间："
 
-#: sadf_misc.c:861
+#: sadf_misc.c:1213
 #, c-format
 msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 msgstr "文件组成：(%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 
-#: sadf_misc.c:866
+#: sadf_misc.c:1218
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "长整型数的字节大小：%d\n"
 
-#: sadf_misc.c:868
+#: sadf_misc.c:1220
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "文件中的运行记录数量：%u\n"
 
-#: sadf_misc.c:871
+#: sadf_misc.c:1223
 #, c-format
 msgid "List of activities:\n"
 msgstr "运行记录列表:\n"
 
-#: sadf_misc.c:882
+#: sadf_misc.c:1234
 msgid "Unknown activity"
 msgstr "未知活动"
 
-#: sadf_misc.c:890
+#: sadf_misc.c:1242
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[未知格式]"
 
-#: sadf.c:98
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr "用法: %s [ 选项 ] [ <时间间隔> [ <次数> ] ] [ <数据文件> | -[0-9]+ ]\n"
-
-#: sadf.c:101
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <sar_options> ]\n"
-msgstr ""
-"选项：\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <选项> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<设备列表> ] [ --fs=<文件系统列表> ] [ --iface=<iface_列表> ]\n"
-"[ -s [ <时:分[:秒]> ] ] [ -e [ <时:分[:秒]> ] ]\n"
-"[ -- <sar_选项> ]\n"
-
-#: pr_stats.c:2615 pr_stats.c:2622 pr_stats.c:2727 pr_stats.c:2772
+#: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
 msgid "Summary:"
 msgstr "总计:"
 
-#: sar.c:121
+#: iostat.c:91
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"选项：\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <用户组名> ] [ -p [ <设备> [,...] | ALL ] ]\n"
+"[ <设备> [...] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:98
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"选项：\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <用户组名> ] [ -p [ <设备> [,...] | ALL ] ]\n"
+"[ <设备> [...] | ALL ]\n"
+
+#: iostat.c:346
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "无法找到磁盘数据\n"
+
+#: tapestat.c:103
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+"选项：\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+
+#: tapestat.c:269
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr "未找到带统计信息的磁带设备\n"
+
+#: common.c:78
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat 版本 %s\n"
+
+#: sar.c:117
 #, c-format
 msgid ""
 "Options are:\n"
@@ -296,42 +345,42 @@ msgstr ""
 "[ -f [ <文件名> ] | -o [ <文件名> ] | -[0-9]+ ]\n"
 "[ -i <时间间隔> ] [ -s [ <时:分[:秒]> ] ] [ -e [ <时:分[:秒]> ] ]\n"
 
-#: sar.c:146
+#: sar.c:142
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "主要选项和报告（报告名以方括号分隔）：\n"
 
-#: sar.c:147
+#: sar.c:143
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\t分页状况 [A_PAGE]\n"
 
-#: sar.c:148
+#: sar.c:144
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr "\t-b\tI/O 和传输速率信息状况 [A_IO]\n"
 
-#: sar.c:149
+#: sar.c:145
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\t块设备状况 [A_DISK]\n"
 
-#: sar.c:150
+#: sar.c:146
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ MOUNT ]\n"
 
-#: sar.c:151
+#: sar.c:147
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\t文件系统统计信息 [A_FS]\n"
 
-#: sar.c:152
+#: sar.c:148
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\t巨大页面利用率 [A_HUGE]\n"
 
-#: sar.c:153
+#: sar.c:149
 #, c-format
 msgid ""
 "\t-I { <int_list> | SUM | ALL }\n"
@@ -340,7 +389,7 @@ msgstr ""
 "\t-I { <中断列表> | SUM | ALL }\n"
 "\t\t中断信息状况 [A_IRQ]\n"
 
-#: sar.c:155
+#: sar.c:151
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -363,7 +412,7 @@ msgstr ""
 "\t\tTEMP\t设备温度\n"
 "\\t\\tUSB\\t连接的 USB 设备\n"
 
-#: sar.c:164
+#: sar.c:160
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -415,12 +464,12 @@ msgstr ""
 "\t\tSOFT\t基于软件的网络处理\n"
 "\n"
 
-#: sar.c:187
+#: sar.c:183
 #, c-format
 msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
 msgstr "\t-q\t队列长度和平均负载统计信息 [A_QUEUE]\n"
 
-#: sar.c:188
+#: sar.c:184
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -429,12 +478,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\t内存利用率信息 [A_MEMORY]\n"
 
-#: sar.c:190
+#: sar.c:186
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\t交换空间利用率信息 [A_MEMORY]\n"
 
-#: sar.c:191
+#: sar.c:187
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -443,70 +492,65 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tCPU 利用率信息 [A_CPU]\n"
 
-#: sar.c:193
+#: sar.c:189
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\t内核表统计信息 [A_KTABLES]\n"
 
-#: sar.c:194
+#: sar.c:190
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\t交换信息 [A_SWAP]\n"
 
-#: sar.c:195
+#: sar.c:191
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\t任务创建与系统切换信息 [A_PCSW]\n"
 
-#: sar.c:196
+#: sar.c:192
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tTTY 设备信息 [A_SERIAL]\n"
 
-#: sar.c:210
+#: sar.c:206
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "将在 PATH 中查找数据收集器\n"
 
-#: sar.c:213
+#: sar.c:209
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "找到数据收集器: %s\n"
 
-#: sar.c:278
+#: sar.c:274
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "数据流结尾有未知错误\n"
 
-#: sar.c:283
+#: sar.c:279
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "所取数据前后不一致\n"
 
-#: sar.c:878
+#: sar.c:881
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "正在使用来自不同版本 sysstat 的错误的数据收集器\n"
 
-#: sar.c:1481
+#: sar.c:1488
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "-f 和 -o 选项不能同时使用\n"
 
-#: sar.c:1487
+#: sar.c:1494
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "无法查看系统活动记录文件 (用 -f 选项)\n"
 
-#: sar.c:1630
+#: sar.c:1641
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "无法找到数据收集器 (%s)\n"
-
-#: rd_stats.c:351
-#, c-format
-msgid "Cannot read %s\n"
-msgstr "无法读取 %s\n"
 
 #: sa_conv.c:98
 #, c-format
@@ -554,45 +598,6 @@ msgstr "HZ：正在使用当前值：%lu\n"
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "文件已成功转换为 sysstat 格式版本 %s\n"
-
-#: pidstat.c:91
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
-msgstr "用法：%s [ 选项 ] [ <时间间隔> [ <计数> ] ] [ -e <程序> <参数> ]\n"
-
-#: pidstat.c:94
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
-msgstr ""
-"选项：\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <用户名> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <命令> ] [ -G <进程名> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
-
-#: tapestat.c:103
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-"选项：\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-
-#: tapestat.c:269
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr "未找到带统计信息的磁带设备\n"
-
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "处理器太多，无法处理！\n"
 
 #~ msgid "Cannot write system activity file header: %s\n"
 #~ msgstr "无法写系统运行记录文件开始部分: %s\n"

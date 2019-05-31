@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.1.3\n"
+"Project-Id-Version: sysstat-12.1.4\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-02-15 10:36+0100\n"
-"PO-Revision-Date: 2019-02-16 07:09+0000\n"
+"POT-Creation-Date: 2019-04-18 08:23+0200\n"
+"PO-Revision-Date: 2019-04-18 10:20+0100\n"
 "Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
 "Language-Team: Portuguese <translation-team-pt@lists.sourceforge.net>\n"
 "Language: pt\n"
@@ -17,10 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\\n\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: cifsiostat.c:73 mpstat.c:132 iostat.c:89 tapestat.c:101 sar.c:102
+#: cifsiostat.c:73 mpstat.c:132 iostat.c:88 tapestat.c:101 sar.c:102
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Uso: %s [ opções ] [ <intervalo> [ <total> ] ]\n"
@@ -43,12 +43,12 @@ msgstr ""
 "As opções são:\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: sadc.c:91
+#: sadc.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Uso: %s [ opções ] [ <intervalo> [ <total> ] ] [ <ficheirosaída> ]\n"
 
-#: sadc.c:94
+#: sadc.c:93
 #, c-format
 msgid ""
 "Options are:\n"
@@ -59,13 +59,13 @@ msgstr ""
 "[ -C <comentário> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:265
+#: sadc.c:264
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Impossível escrever dados no ficheiro de actividade do sistema: %s\n"
 
-#: sadc.c:704 sadc.c:767 ioconf.c:506 rd_stats.c:75 sa_common.c:1720
-#: count.c:118
+#: sadc.c:704 sadc.c:767 count.c:118 ioconf.c:506 rd_stats.c:75
+#: sa_common.c:1720
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Impossível abrir %s: %s\n"
@@ -74,6 +74,38 @@ msgstr "Impossível abrir %s: %s\n"
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Impossível anexar dados a este ficheiro (%s)\n"
+
+#: count.c:169
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Impossível gerir tantos processadores!\n"
+
+#: sadf.c:98
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr "Uso: %s [ opçõess ] [ <intervalo> [ <total> ] ] [ <fichdados> | -[0-9]+ ]\n"
+
+#: sadf.c:101
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
+msgstr ""
+"As opções são:\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opções> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<lista_dev> ] [ --fs=<lista_fs> ] [ --iface=<lista_iface> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <opções_sar> ]\n"
+
+#: sadf.c:1854
+#, c-format
+msgid "PCP support not compiled in\n"
+msgstr "Suporte PCP não compilado\n"
 
 #: mpstat.c:135
 #, c-format
@@ -89,31 +121,9 @@ msgstr ""
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <lista_cpu> | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1632 pidstat.c:2406 sar.c:370
+#: mpstat.c:1641 pidstat.c:2412 sar.c:370
 msgid "Average:"
 msgstr "Média:"
-
-#: sadf.c:93
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr "Uso: %s [ opçõess ] [ <intervalo> [ <total> ] ] [ <fichdados> | -[0-9]+ ]\n"
-
-#: sadf.c:96
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <sar_options> ]\n"
-msgstr ""
-"As opções são:\n"
-"[ -C ] [ -c | -d | -g | -j | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <opções> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<lista_dev> ] [ --fs=<lista_fs> ] [ --iface=<lista_iface> ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <opções_sar> ]\n"
 
 #: rd_stats.c:351
 #, c-format
@@ -135,7 +145,7 @@ msgstr "Ficheiro de actividade do sistema inválido: %s\n"
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "A versão actual do sysstat não pode ler o formato deste ficheiro (%#x)\n"
 
-#: sa_common.c:353 pidstat.c:244
+#: sa_common.c:353 pidstat.c:243
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Atividades pedidas não disponíveis\n"
@@ -155,22 +165,22 @@ msgstr "Fim inesperado do ficheiro de actividade do sistema\n"
 msgid "Please check if data collecting is enabled\n"
 msgstr "Por favor, verifique se a recolha de dados está activada\n"
 
-#: sa_common.c:2047
+#: sa_common.c:2048
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Actividades pedidas não disponíveis no ficheiro %s\n"
 
-#: sa_common.c:2168 iostat.c:2017
+#: sa_common.c:2169 iostat.c:2067
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Tipo de nome de dispositivo persistente inválido\n"
 
-#: pidstat.c:91
+#: pidstat.c:90
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr "Uso: %s [ opções ] [ <intervalo> [ <total> ] ] [ -e <programa> <argumentos> ]\n"
 
-#: pidstat.c:94
+#: pidstat.c:93
 #, c-format
 msgid ""
 "Options are:\n"
@@ -185,64 +195,64 @@ msgstr ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
 
-#: sadf_misc.c:832
+#: sadf_misc.c:1181
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Ficheiro de actividade do sistema: %s (%#x)\n"
 
-#: sadf_misc.c:841
+#: sadf_misc.c:1190
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Ficheiro de dados sa genuíno: %s (%x)\n"
 
-#: sadf_misc.c:842
+#: sadf_misc.c:1191
 msgid "no"
 msgstr "não"
 
-#: sadf_misc.c:842
+#: sadf_misc.c:1191
 msgid "yes"
 msgstr "sim"
 
-#: sadf_misc.c:845
+#: sadf_misc.c:1194
 #, c-format
 msgid "Host: "
 msgstr "Anfitrião: "
 
-#: sadf_misc.c:855
+#: sadf_misc.c:1204
 #, c-format
 msgid "File date: %s\n"
 msgstr "Data do ficheiro: %s\n"
 
-#: sadf_misc.c:858
+#: sadf_misc.c:1207
 #, c-format
 msgid "File time: "
 msgstr "Hora do ficheiro: "
 
-#: sadf_misc.c:864
+#: sadf_misc.c:1213
 #, c-format
 msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 msgstr "Composição do ficheiro: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 
-#: sadf_misc.c:869
+#: sadf_misc.c:1218
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Tamanho de um longint: %d\n"
 
-#: sadf_misc.c:871
+#: sadf_misc.c:1220
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Número de actividades no ficheiro: %u\n"
 
-#: sadf_misc.c:874
+#: sadf_misc.c:1223
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista de actividades:\n"
 
-#: sadf_misc.c:885
+#: sadf_misc.c:1234
 msgid "Unknown activity"
 msgstr "Actividade desconhecida"
 
-#: sadf_misc.c:893
+#: sadf_misc.c:1242
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Formato desconhecido]"
@@ -251,12 +261,7 @@ msgstr " \t[Formato desconhecido]"
 msgid "Summary:"
 msgstr "Resumo:"
 
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Impossível gerir tantos processadores!\n"
-
-#: iostat.c:92
+#: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
@@ -273,7 +278,7 @@ msgstr ""
 "[ [ -H ] -g <nome de grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
 "[ <dispositivo> [...] | ALL ] [ --debuginfo ]\n"
 
-#: iostat.c:99
+#: iostat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
@@ -290,7 +295,7 @@ msgstr ""
 "[ [ -H ] -g <nome de grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
 "[ <dispositivo> [...] | ALL ]\n"
 
-#: iostat.c:331
+#: iostat.c:346
 #, c-format
 msgid "Cannot find disk data\n"
 msgstr "Impossível encontrar dados do disco\n"
@@ -527,22 +532,22 @@ msgstr "Fim de recolha de dados inesperado\n"
 msgid "Inconsistent input data\n"
 msgstr "Dados de entrada inconsistentes\n"
 
-#: sar.c:877
+#: sar.c:881
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "A usar uma versão errada do recolector de dados de uma versão diferente do sysstat\n"
 
-#: sar.c:1484
+#: sar.c:1488
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "As opções -f e -o são mutuamente exclusivas\n"
 
-#: sar.c:1490
+#: sar.c:1494
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Sem ler de um ficheiro de actividade do sistema (use a opção -f)\n"
 
-#: sar.c:1637
+#: sar.c:1641
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Impossível encontrar o recolector de dados(%s)\n"
