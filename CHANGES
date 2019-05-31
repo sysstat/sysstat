@@ -1,5 +1,28 @@
 Changes:
 
+2019/05/31: Version 12.1.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Support completed for PCP (Performance Co-Pilote) output format.
+	* Add sysstat simulation test environment.
+	* Add non regression tests.
+	* sar: Use nanoseconds to choose between saDD and saYYYYMMDD files.
+	* sar/sadf: Time used by options -s/-e no longer depends on the timezone
+	  value.
+	* sar: Add missing %gnice CPU value for tickless CPU [12.0.5].
+	* sar: Better detect if a disk has been unregistered then registered
+	  again [12.0.5].
+	* sar: Allow option -i when no input file is specified [12.0.5].
+	* sadc: Fix bad number of CPU displayed in a LINUX RESTART message [12.0.5].
+	* sadf: Fix SVG output for filesystem statistics when the user asked for
+	  the mount point to be displayed ("-F MOUNT") [12.0.5].
+	* sadf: Fix PCP and SVG output for filesystem statistics.
+	* iostat: Fix invalid JSON output when option -y is used [12.0.5].
+	* iostat: Fix regression for groups of devices which were no longer displayed
+	  in the report with option -g.
+	* sar: Cosmetic fix in manual page [12.0.5].
+	* sadf manual page updated.
+	* FAQ updated.
+	* Cosmectic changes in code [12.0.5].
+
 2019/04/18: Version 12.1.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Add initial support for PCP (Performance Co-Pilote).
 	  sadf can now export some of its data to a PCP archive file with
