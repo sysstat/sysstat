@@ -2,14 +2,7 @@
 if [ "$1" = "comp" ]
 then
 	make CFLAGS="-D DEBUG -D TEST"
-fi
-if [ "$1" = "all" ] || [ "$1" = "simtest" ]
-then
+else
 	make distclean
 	./configure sa_lib_dir=. conf_dir=. sa_dir=tests && make CFLAGS="-D DEBUG -D TEST" && make simtest
-fi
-if [ "$1" = "all" ] || [ "$1" = "test" ]
-then
-	make distclean
-	./configure sa_lib_dir=. conf_dir=. sa_dir=tests && make CFLAGS="-D DEBUG" && make test
 fi
