@@ -34,6 +34,10 @@
 00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
 00310	./mpstat -A -o JSON | $VER_JSON >/dev/null
 00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null
+00330	./mpstat -o JSON 1 10 | $VER_JSON >/dev/null;
+	[Simulate a Ctrl/C within mpstat]
+00340	./iostat -p ALL -o JSON 1 10 | $VER_JSON >/dev/null;
+	[Simulate a Ctrl/C within iostat]
 
 =====	Checking XML output validity
 00400	./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
@@ -162,6 +166,10 @@
 	[Create datafile sa20190502]
 01372	LC_ALL=C TZ=GMT ./sar -f tests/sa20190502 > tests/out.sar-D.tmp
 01375	diff -u tests/out.sar-D.tmp tests/expected.sar-D
+01380	LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -o tests/sa-sigint.tmp 1 10 > /dev/null
+	[Create binary datafile sa-sigint.tmp. Stop with a simulated Ctrl/C]
+01382	LC_ALL=C TZ=GMT ./sar -f tests/sa-sigint.tmp -m CPU > tests/out.sar-sigint.tmp
+01385	diff -u tests/out.sar-sigint.tmp tests/expected.sar-sigint
 
 =====	Testing error cases
 01400	LC_ALL=C TZ=GMT ./sar -f tests/data-trunc 2>&1 | grep "End of system activity file unexpected" >/dev/null

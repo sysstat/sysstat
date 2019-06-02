@@ -1,4 +1,4 @@
-VER_JSON=@VER_JSON@
+. tests/variables
 if [ ! -z "$VER_JSON" ]; then
 	./iostat -y 1 1 -o JSON -p ALL ALL -xt | $VER_JSON >/dev/null && ./iostat 1 1 -o JSON | $VER_JSON >/dev/null;
 fi

@@ -52,6 +52,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+void int_handler(int n) { return; }
+#endif
+
 unsigned long long tot_jiffies[3] = {0, 0, 0};
 unsigned long long uptime_cs[3] = {0, 0, 0};
 struct pid_stats *st_pid_list[3] = {NULL, NULL, NULL};

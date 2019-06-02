@@ -64,6 +64,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+void int_handler(int n) { return; }
+#endif
+
 int cpu_nr = 0;		/* Nb of processors on the machine */
 int flags = 0;		/* Flag for common options and system state */
 

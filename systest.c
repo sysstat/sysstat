@@ -34,6 +34,7 @@
 
 time_t __unix_time = 0;
 extern long interval;
+extern int sigint_caught;
 
 /*
  ***************************************************************************
@@ -117,7 +118,7 @@ char *get_env_value(char *c)
 void next_time_step(void)
 {
 	static int root_nr = 1;
-	char rootf[64];
+	char rootf[64], testf[64];
 
 	__unix_time += interval;
 
@@ -127,6 +128,15 @@ void next_time_step(void)
 	}
 
 	sprintf(rootf, "%s%d", ROOTFILE, ++root_nr);
+	sprintf(testf, "%s/%s", TESTDIR, rootf);
+	if (access(testf, F_OK) < 0) {
+		if (errno = ENOENT) {
+			/* No more kernel directories: Simulate a Ctrl/C */
+			int_handler(0);
+			return ;
+		}
+	}
+
 	if (symlink(rootf, ROOTDIR) < 0) {
 		perror("link");
 		exit(1);

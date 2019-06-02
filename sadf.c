@@ -48,6 +48,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+void int_handler(int n) { return; }
+#endif
+
 long interval = -1, count = 0;
 
 /* TRUE if data read from file don't match current machine's endianness */

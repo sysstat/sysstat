@@ -1884,7 +1884,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
 
-	pause();
+	__pause();
 
 	if (sigint_caught)
 		/* SIGINT signal caught during first interval: Exit immediately */
@@ -1938,7 +1938,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 		if (count) {
 
-			pause();
+			__pause();
 
 			if (sigint_caught) {
 				/* SIGINT signal caught => Display average stats */

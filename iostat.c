@@ -1921,7 +1921,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist
 
 		if (count) {
 			curr ^= 1;
-			pause();
+			__pause();
 
 			if (sigint_caught) {
 				/* SIGINT signal caught => Terminate JSON output properly */

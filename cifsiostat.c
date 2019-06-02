@@ -46,6 +46,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+void int_handler(int n) { return; }
+#endif
+
 unsigned long long uptime_cs[2] = {0, 0};
 struct cifs_stats *st_cifs[2];
 struct io_hdr_stats *st_hdr_cifs;

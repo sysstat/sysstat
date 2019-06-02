@@ -23,6 +23,7 @@
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
+#define TESTDIR		"./tests"
 
 #else
 
@@ -54,6 +55,9 @@ void get_unix_time
 	(time_t *);
 void next_time_step
 	();
+
+void int_handler
+	(int);
 #endif
 
 #endif  /* _SYSTEST_H */

@@ -635,15 +635,7 @@ AC_CONFIG_FILES([man/sar.1:man/sar.in])		# File must be renamed
 AC_CONFIG_FILES([man/sysstat.5:man/sysstat.in])	# File must be renamed
 AC_CONFIG_FILES([man/iostat.1:man/iostat.in])	# File must be renamed
 AC_CONFIG_FILES([man/cifsiostat.1:man/cifsiostat.in])	# File must be renamed
-AC_CONFIG_FILES([tests/00300])
-AC_CONFIG_FILES([tests/00310])
-AC_CONFIG_FILES([tests/00320])
-AC_CONFIG_FILES([tests/00400])
-AC_CONFIG_FILES([tests/00410])
-AC_CONFIG_FILES([tests/01130])
-AC_CONFIG_FILES([tests/01230])
-AC_CONFIG_FILES([tests/rt00010])
-AC_CONFIG_FILES([tests/rt00020])
+AC_CONFIG_FILES([tests/variables])
 
 AC_OUTPUT(Makefile)
 
