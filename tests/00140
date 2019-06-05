@@ -2,6 +2,3 @@ rm -f tests/root
 ln -s root6 tests/root
 
 ./sadc --unix_time=1555595649 tests/data.tmp
-
-rm -f tests/root
-ln -s root1 tests/root

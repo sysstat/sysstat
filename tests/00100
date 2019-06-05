@@ -19,6 +19,3 @@ ln -s root4 tests/root
 rm -f tests/root
 ln -s root5 tests/root
 ./sadc --unix_time=1555593649 -S XALL tests/data.tmp 1 1 >/dev/null
-
-rm -f tests/root
-ln -s root1 tests/root

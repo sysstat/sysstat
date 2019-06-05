@@ -173,6 +173,9 @@
 
 =====	Testing error cases
 01400	LC_ALL=C TZ=GMT ./sar -f tests/data-trunc 2>&1 | grep "End of system activity file unexpected" >/dev/null
+01405	./sadf -g tests/data-trunc -- -A > tests/out.sadf-g-trunc.tmp 2>/dev/null
+	[Check that sadf -g terminates properly on truncated input file]
+01406	diff -u tests/out.sadf-g-trunc.tmp tests/expected.sadf-g-trunc
 01410	./sar 0 0 2>&1 | grep "Usage:" >/dev/null
 01415	./sar 0 2 2>&1 | grep "Usage:" >/dev/null
 01420	./sar 2 0 2>&1 | grep "Usage:" >/dev/null
