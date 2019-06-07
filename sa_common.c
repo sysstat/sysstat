@@ -2110,21 +2110,19 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 
 		case 'A':
 			select_all_activities(act);
+			*flags |= S_F_OPTION_A;
 
 			/*
-			 * Force '-P ALL -I ALL -r ALL -u ALL -F'.
+			 * Force '-r ALL -u ALL -F'.
 			 * Setting -F is compulsory because corresponding activity
 			 * has AO_MULTIPLE_OUTPUTS flag set.
+			 * -P ALL / -I ALL will be set only corresponding option has
+			 * not been exlicitly entered on the command line.
 			 */
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->opt_flags |= AO_F_MEMORY + AO_F_SWAP + AO_F_MEM_ALL;
 
-			p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
-			memset(act[p]->bitmap->b_array, ~0,
-			       BITMAP_SIZE(act[p]->bitmap->b_size));
 			p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-			memset(act[p]->bitmap->b_array, ~0,
-			       BITMAP_SIZE(act[p]->bitmap->b_size));
 			act[p]->opt_flags = AO_F_CPU_ALL;
 
 			p = get_activity_position(act, A_FS, EXIT_IF_NOT_FOUND);
@@ -2451,13 +2449,14 @@ int parse_sar_n_opt(char *argv[], int *opt, struct activity *act[])
  * @act		Array of activities.
  *
  * OUT:
+ * @flags	Common flags and system state.
  * @act		Array of activities, with interrupts activity selected.
  *
  * RETURNS:
  * 0 on success, 1 otherwise.
  ***************************************************************************
  */
-int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
+int parse_sar_I_opt(char *argv[], int *opt, unsigned int *flags, struct activity *act[])
 {
 	int p;
 
@@ -2470,6 +2469,7 @@ int parse_sar_I_opt(char *argv[], int *opt, struct activity *act[])
 			     act[p]->bitmap->b_size, K_SUM))
 			return 1;
 		(*opt)++;
+		*flags |= S_F_OPTION_I;
 		return 0;
 	}
 
@@ -2504,10 +2504,42 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
 			     act[p]->bitmap->b_size, K_LOWERALL))
 			return 1;
 		(*opt)++;
+		*flags |= S_F_OPTION_P;
 		return 0;
 	}
 
 	return 1;
+}
+
+/*
+ ***************************************************************************
+ * If option -A has been used, force -P ALL -I ALL only if corresponding
+ * option has not been explicitly entered on the command line.
+ *
+ * IN:
+ * @flags	Common flags and system state.
+ *
+ * OUT:
+ * @act		Array of selected activities.
+ ***************************************************************************
+ */
+void set_bitmaps(struct activity *act[], unsigned int *flags)
+{
+	int p;
+
+	if (!USE_OPTION_P(*flags)) {
+		/* Force -P ALL */
+		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
+		memset(act[p]->bitmap->b_array, ~0,
+		       BITMAP_SIZE(act[p]->bitmap->b_size));
+	}
+
+	if (!USE_OPTION_I(*flags)) {
+		/* Force -I ALL */
+		p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
+		memset(act[p]->bitmap->b_array, ~0,
+		       BITMAP_SIZE(act[p]->bitmap->b_size));
+	}
 }
 
 /*

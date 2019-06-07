@@ -1513,7 +1513,7 @@ int main(int argc, char **argv)
 			if (!sar_options) {
 				usage(argv[0]);
 			}
-			if (parse_sar_I_opt(argv, &opt, act)) {
+			if (parse_sar_I_opt(argv, &opt, &flags, act)) {
 				usage(argv[0]);
 			}
 		}
@@ -1801,6 +1801,11 @@ int main(int argc, char **argv)
 				count = -1;	/* To generate a report continuously */
 			}
 		}
+	}
+
+	if (USE_OPTION_A(flags)) {
+		/* Set -P ALL -I ALL if needed */
+		set_bitmaps(act, &flags);
 	}
 
 	/* sadf reads current daily data file by default */

@@ -111,6 +111,9 @@
 #define S_F_ZERO_OMIT		0x02000000
 #define S_F_SVG_SHOW_TOC	0x04000000
 #define S_F_FDATASYNC		0x08000000
+#define S_F_OPTION_A		0x10000000
+#define S_F_OPTION_P		0x20000000
+#define S_F_OPTION_I		0x40000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -132,15 +135,18 @@
 #define DISPLAY_ZERO_OMIT(m)		(((m) & S_F_ZERO_OMIT)    == S_F_ZERO_OMIT)
 #define DISPLAY_DEBUG_MODE(m)		(((m) & S_F_RAW_DEBUG_MODE) == S_F_RAW_DEBUG_MODE)
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
-#define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)   == S_F_SVG_ONE_DAY)
+#define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)  == S_F_SVG_ONE_DAY)
 #define DISPLAY_IDLE(m)			(((m) & S_F_SVG_SHOW_IDLE) == S_F_SVG_SHOW_IDLE)
 #define DISPLAY_INFO(m)			(((m) & S_F_SVG_SHOW_INFO) == S_F_SVG_SHOW_INFO)
-#define DISPLAY_UNIT(m)			(((m) & S_F_UNIT) == S_F_UNIT)
-#define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT) == S_F_SVG_HEIGHT)
-#define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED) == S_F_SVG_PACKED)
-#define DISPLAY_HUMAN_READ(m)		(((m) & S_F_HUMAN_READ) == S_F_HUMAN_READ)
+#define DISPLAY_UNIT(m)			(((m) & S_F_UNIT)         == S_F_UNIT)
+#define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT)   == S_F_SVG_HEIGHT)
+#define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED)   == S_F_SVG_PACKED)
+#define DISPLAY_HUMAN_READ(m)		(((m) & S_F_HUMAN_READ)   == S_F_HUMAN_READ)
 #define DISPLAY_TOC(m)			(((m) & S_F_SVG_SHOW_TOC) == S_F_SVG_SHOW_TOC)
 #define FDATASYNC(m)			(((m) & S_F_FDATASYNC)    == S_F_FDATASYNC)
+#define USE_OPTION_A(m)			(((m) & S_F_OPTION_A)     == S_F_OPTION_A)
+#define USE_OPTION_P(m)			(((m) & S_F_OPTION_P)     == S_F_OPTION_P)
+#define USE_OPTION_I(m)			(((m) & S_F_OPTION_I)     == S_F_OPTION_I)
 
 #define AO_F_NULL		0x00000000
 
@@ -1384,7 +1390,7 @@ void parse_sa_devices
 int parse_sar_opt
 	(char * [], int *, struct activity * [], unsigned int *, int);
 int parse_sar_I_opt
-	(char * [], int *, struct activity * []);
+	(char * [], int *, unsigned int *, struct activity * []);
 int parse_sa_P_opt
 	(char * [], int *, unsigned int *, struct activity * []);
 int parse_sar_m_opt
@@ -1428,8 +1434,8 @@ void select_all_activities
 	(struct activity * []);
 void select_default_activity
 	(struct activity * []);
-void set_bitmap
-	(unsigned char [], unsigned char, unsigned int);
+void set_bitmaps
+	(struct activity * [], unsigned int *);
 void set_hdr_rectime
 	(unsigned int, struct tm *, struct file_header *);
 void set_record_timestamp_string

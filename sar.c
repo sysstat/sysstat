@@ -1317,7 +1317,7 @@ int main(int argc, char **argv)
 
 		else if (!strcmp(argv[opt], "-I")) {
 			/* Parse -I option */
-			if (parse_sar_I_opt(argv, &opt, act)) {
+			if (parse_sar_I_opt(argv, &opt, &flags, act)) {
 				usage(argv[0]);
 			}
 		}
@@ -1489,6 +1489,10 @@ int main(int argc, char **argv)
 	if (from_file[0] && to_file[0]) {
 		fprintf(stderr, _("-f and -o options are mutually exclusive\n"));
 		exit(1);
+	}
+	if (USE_OPTION_A(flags)) {
+		/* Set -P ALL -I ALL if needed */
+		set_bitmaps(act, &flags);
 	}
 	/* Use time start or option -i only when reading stats from a file */
 	if ((tm_start.use || INTERVAL_SET(flags)) && !from_file[0]) {
