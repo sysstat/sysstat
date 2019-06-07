@@ -47,5 +47,8 @@ sda10, sda11, sda12: unregistered
 /proc/net/dev
 enp6s0-2,wlp5s0-2: available
 
+/sys/devices/system/cpu directory non existent
+Determine number of CPU using /proc/stat
+
 ==========root7:
 

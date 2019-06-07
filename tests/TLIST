@@ -17,8 +17,11 @@
 00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out.sar-u.tmp
 00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-all.tmp
 	[Don't take into account sensors statistics which are not read from test root directory]
+00132	LC_ALL=C TZ=GMT ./sar -A -I 2-5 -P 3 -f tests/data.tmp > tests/out3.sar-all.tmp
+	[Check that -A doesn't necessarily imply -I ALL -P ALL]
 00134	diff -u tests/out.u.tmp tests/expected.sar-u
 00136	diff -u tests/out.sar-all.tmp tests/expected.sar-all
+00137	diff -u tests/out3.sar-all.tmp tests/expected3.sar-all
 
 =====	Appending data to data.tmp
 00140	./sadc --unix_time=1555595649 tests/data.tmp
