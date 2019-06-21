@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C ./iostat -d -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-g.tmp

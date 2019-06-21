@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C ./iostat -d -p ALL -j PARTUUID > tests/out.iostat-jPARTUUID.tmp

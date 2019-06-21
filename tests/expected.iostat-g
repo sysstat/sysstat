@@ -1,0 +1,20 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               8.59       222.14        57.08         0.00    1597749     410544          0
+sdb               0.01         0.29         0.00         0.00       2108          0          0
+ disks            8.60       222.43        57.08         0.00    1599857     410544          0
+sdc               0.00         0.00         0.00         0.00          0          0          0
+sdd               0.00         0.00         0.00         0.00          0          0          0
+ other            0.00         0.00         0.00         0.00          0          0          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               0.00         0.00         0.00         0.00          0          0          0
+sdb               0.00         0.00         0.00         0.00          0          0          0
+ disks            0.00         0.00         0.00         0.00          0          0          0
+sdc               0.00         0.00         0.00         0.00          0          0          0
+sdd               0.00         0.00         0.00         0.00          0          0          0
+ other            0.00         0.00         0.00         0.00          0          0          0
+
+

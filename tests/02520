@@ -1,0 +1,1 @@
+LC_ALL=C ./iostat -j FOObar 2>&1 | grep "Invalid" >/dev/null

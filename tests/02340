@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C ./iostat -dxs -p sda 2 3 > tests/out.iostat-xs-p-sda.tmp

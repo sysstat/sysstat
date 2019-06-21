@@ -1,0 +1,1 @@
+diff -u tests/out.iostat-sigint.tmp tests/expected.iostat-sigint

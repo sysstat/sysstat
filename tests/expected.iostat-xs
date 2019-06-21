@@ -1,0 +1,26 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.65   44.90    1.84    1.01    0.00   50.60
+
+Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
+sda               8.59    279.22     1.75   12.00    32.51    0.10   0.46
+sdb               0.01      0.29     0.00   60.92    41.33    0.00   0.00
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.15   12.50    2.35    0.12    0.00   82.89
+
+Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
+sda               0.00      0.00     0.00    0.00     0.00    0.00   0.00
+sdb               0.00      0.00     0.00    0.00     0.00    0.00   0.00
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.96   12.49    1.91    0.52    0.00   83.13
+
+Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
+sda               6.40      3.20     6.40    1.00     0.50    0.00   0.32
+sdb           590484765483660416.00 295242382741830208.00     0.00    0.00     0.50 137482.95 13748294.72
+
+

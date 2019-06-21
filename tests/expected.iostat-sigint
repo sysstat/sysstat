@@ -1,0 +1,56 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.65   44.90    1.84    1.01    0.00   50.60
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               8.59       222.14        57.08         0.00    1597749     410544          0
+sdb               0.01         0.29         0.00         0.00       2108          0          0
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.15   12.50    2.35    0.12    0.00   82.89
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               0.00         0.00         0.00         0.00          0          0          0
+sdb               0.00         0.00         0.00         0.00          0          0          0
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.96   12.49    1.91    0.52    0.00   83.13
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               6.40         1.60         1.60         0.00         50         50          0
+sdb           590484765483660416.00 295242382741830208.00         0.00         0.00 2147482246          0          0
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.99   12.51    2.49    0.20    0.00   81.81
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda           479136209706741632.00 239568104853370816.00 239568104853370816.00         0.00 2147483598 2147483598          0
+sdf               1.22        54.34         0.00         0.00       2092          0          0
+sdg               2.91       114.91         0.31         0.00       4424         12          0
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           7.51   12.53    4.64    0.30    0.00   75.02
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               0.00         0.00         0.00         0.00          0          0          0
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.00    0.00    0.00    0.00    0.00    0.00
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               0.00         0.00         0.00         0.00          0          0         50
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.47   17.18    3.55    0.77    0.00   76.03
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+sda               1.60         0.00         0.00         0.80          0          0         25
+
+

@@ -1,0 +1,14 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
+sdb               0.01      0.29     0.00   60.92    41.33    0.00   0.00
+
+
+Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
+sdb               0.00      0.00     0.00    0.00     0.00    0.00   0.00
+
+
+Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
+sdb           590484765483660416.00 295242382741830208.00     0.00    0.00     0.50 137482.95 13748294.72
+
+
