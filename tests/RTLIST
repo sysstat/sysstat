@@ -1,3 +1,0 @@
-=====	Checking JSON output validity
-00010	./iostat -y 1 1 -o JSON -p ALL ALL -xt | $VER_JSON >/dev/null && ./iostat 1 1 -o JSON | $VER_JSON >/dev/null
-00020	./mpstat 1 1 -o JSON | $VER_JSON >/dev/null && ./mpstat -A 1 1 -o JSON | $VER_JSON >/dev/null

@@ -598,14 +598,10 @@ endif
 TESTDIR="tests"
 TESTRUN="/bin/sh"
 TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
-RTESTLIST:=$(shell ls $(TESTDIR) | egrep '^rt' | egrep '[0-9]+$$' | sort -n)
 
 unit:
 	@echo $(X) 2>&1
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
-
-test: all
-	@$(foreach x, $(RTESTLIST), $(MAKE) X=$x unit || exit;)
 
 simtest: all
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
