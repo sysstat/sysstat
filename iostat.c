@@ -985,16 +985,6 @@ void write_cpu_stat(int curr, int tab)
 {
 	unsigned long long deltot_jiffies;
 
-	/*
-	 * Compute the total number of jiffies spent by all processors.
-	 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
-	 * already include them.
-	 */
-	tot_jiffies[curr] = st_cpu[curr]->cpu_user + st_cpu[curr]->cpu_nice +
-			    st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_idle +
-			    st_cpu[curr]->cpu_iowait + st_cpu[curr]->cpu_hardirq +
-			    st_cpu[curr]->cpu_steal + st_cpu[curr]->cpu_softirq;
-
 	/* Total number of jiffies spent on the interval */
 	deltot_jiffies = get_interval(tot_jiffies[!curr], tot_jiffies[curr]);
 
@@ -1874,6 +1864,16 @@ void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist
 
 		/* Read stats for CPU "all" */
 		read_stat_cpu(st_cpu[curr], 1);
+
+		/*
+		 * Compute the total number of jiffies spent by all processors.
+		 * NB: Don't add cpu_guest/cpu_guest_nice because cpu_user/cpu_nice
+		 * already include them.
+		 */
+		tot_jiffies[curr] = st_cpu[curr]->cpu_user + st_cpu[curr]->cpu_nice +
+				    st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_idle +
+				    st_cpu[curr]->cpu_iowait + st_cpu[curr]->cpu_hardirq +
+				    st_cpu[curr]->cpu_steal + st_cpu[curr]->cpu_softirq;
 
 		if (dlist_idx) {
 			/*
