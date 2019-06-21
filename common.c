@@ -776,9 +776,9 @@ char *strtolower(char *str)
 */
 char *get_persistent_type_dir(char *type)
 {
-	static char dir[32];
+	static char dir[PATH_MAX];
 
-	snprintf(dir, 32, "%s-%s", DEV_DISK_BY, type);
+	snprintf(dir, sizeof(dir), "%s-%s", DEV_DISK_BY, type);
 
 	if (access(dir, R_OK)) {
 		return (NULL);
