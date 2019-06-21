@@ -1,1 +1,1 @@
-./sar -o foo 2>&1 | grep "Usage:" >/dev/null
+LC_ALL=C ./sar -o foo 2>&1 | grep "Usage:" >/dev/null

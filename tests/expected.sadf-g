@@ -1004,18 +1004,22 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">tps (0.00, 0.00)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">rtps (0.00, 0.00)</text>
-<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">wtps (0.00, 0.00)</text>
-<text x="795" y="95" style="fill: #ff0000; stroke: none; font-size: 12px">dtps (0.00, 0.00)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">tps (0.00, 5.44)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">rtps (0.00, 2.24)</text>
+<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">wtps (0.00, 3.20)</text>
+<text x="795" y="95" style="fill: #ff0000; stroke: none; font-size: 12px">dtps (0.00, 1.60)</text>
 <g transform="translate(70,250)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-36.752941)"/>
+<text x="0" y="-36" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.</text>
+<polyline points="0,2.00 720,2.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-36.752941)"/>
+<text x="0" y="-73" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">2.</text>
+<polyline points="0,3.00 720,3.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-36.752941)"/>
+<text x="0" y="-110" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">3.</text>
+<polyline points="0,4.00 720,4.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-36.752941)"/>
+<text x="0" y="-147" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">4.</text>
+<polyline points="0,5.00 720,5.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-36.752941)"/>
+<text x="0" y="-183" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">5.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -1039,27 +1043,27 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,5.44 L30,0.00 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-36.752941)"/>
+<path d=" M10,0.00 L20,2.24 L30,0.91 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-36.752941)"/>
+<path d=" M10,0.00 L20,3.20 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-36.752941)"/>
+<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-36.752941)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">I/O and transfer rate statistics (2)
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #e85f00; stroke: none; font-size: 12px">bread/s (0.00, 0.00)</text>
-<text x="795" y="375" style="fill: #0000ff; stroke: none; font-size: 12px">bwrtn/s (0.00, 0.00)</text>
-<text x="795" y="390" style="fill: #006020; stroke: none; font-size: 12px">bdscd/s (0.00, 0.00)</text>
+<text x="795" y="360" style="fill: #e85f00; stroke: none; font-size: 12px">bread/s (0.00, 299.22)</text>
+<text x="795" y="375" style="fill: #0000ff; stroke: none; font-size: 12px">bwrtn/s (0.00, 3.20)</text>
+<text x="795" y="390" style="fill: #006020; stroke: none; font-size: 12px">bdscd/s (0.00, 1.60)</text>
 <g transform="translate(70,560)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,90.00 720,90.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.668403)"/>
+<text x="0" y="-60" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">90.</text>
+<polyline points="0,180.00 720,180.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.668403)"/>
+<text x="0" y="-120" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">180.</text>
+<polyline points="0,270.00 720,270.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.668403)"/>
+<text x="0" y="-180" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">270.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -1083,9 +1087,9 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,0.00 L30,299.22 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
+<path d=" M10,0.00 L20,3.20 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
+<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
 </g>
 </g>
 <g id="g7-0" transform="translate(0,5950)">
@@ -1783,15 +1787,15 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">tps (0.00, 0.00)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">tps (0.00, 1604.70)</text>
 <g transform="translate(70,250)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,500.00 720,500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.124634)"/>
+<text x="0" y="-62" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">500.</text>
+<polyline points="0,1000.00 720,1000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.124634)"/>
+<text x="0" y="-124" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1000.</text>
+<polyline points="0,1500.00 720,1500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.124634)"/>
+<text x="0" y="-186" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1500.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -1815,24 +1819,26 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,6.40 L30,1604.70 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.124634)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-0]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #ff00bf; stroke: none; font-size: 12px">rkB/s (0.00, 0.00)</text>
-<text x="795" y="375" style="fill: #00ffff; stroke: none; font-size: 12px">wkB/s (0.00, 0.00)</text>
-<text x="795" y="390" style="fill: #ff0000; stroke: none; font-size: 12px">dkB/s (0.00, 0.00)</text>
+<text x="795" y="360" style="fill: #ff00bf; stroke: none; font-size: 12px">rkB/s (0.00, 41499.97)</text>
+<text x="795" y="375" style="fill: #00ffff; stroke: none; font-size: 12px">wkB/s (0.00, 10663.48)</text>
+<text x="795" y="390" style="fill: #ff0000; stroke: none; font-size: 12px">dkB/s (0.00, 0.80)</text>
 <g transform="translate(70,560)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,10000.00 720,10000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.004819)"/>
+<text x="0" y="-48" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">10000.</text>
+<polyline points="0,20000.00 720,20000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.004819)"/>
+<text x="0" y="-96" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20000.</text>
+<polyline points="0,30000.00 720,30000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.004819)"/>
+<text x="0" y="-144" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">30000.</text>
+<polyline points="0,40000.00 720,40000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.004819)"/>
+<text x="0" y="-192" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">40000.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -1856,25 +1862,25 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,1.60 L30,41499.97 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.004819)"/>
+<path d=" M10,0.00 L20,1.60 L30,10663.48 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.004819)"/>
+<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.80" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.004819)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
 <text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-0]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">areq-sz (0.00, 0.00)</text>
-<text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">aqu-sz (0.00, 0.00)</text>
+<text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">areq-sz (0.00, 32.51)</text>
+<text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">aqu-sz (0.00, 18.56)</text>
 <g transform="translate(70,870)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,10.00 720,10.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-6.152588)"/>
+<text x="0" y="-61" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">10.</text>
+<polyline points="0,20.00 720,20.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-6.152588)"/>
+<text x="0" y="-123" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20.</text>
+<polyline points="0,30.00 720,30.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-6.152588)"/>
+<text x="0" y="-184" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">30.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -1898,23 +1904,23 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,0.50 L30,32.51 L40,0.00 M2066,0.50" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-6.152588)"/>
+<path d=" M10,0.00 L20,0.00 L30,18.56 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-6.152588)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
 <text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-0]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="980" style="fill: #006020; stroke: none; font-size: 12px">await (0.00, 0.00)</text>
+<text x="795" y="980" style="fill: #006020; stroke: none; font-size: 12px">await (0.00, 12.00)</text>
 <g transform="translate(70,1180)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,3.00 720,3.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-16.673256)"/>
+<text x="0" y="-50" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">3.</text>
+<polyline points="0,6.00 720,6.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-16.673256)"/>
+<text x="0" y="-100" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">6.</text>
+<polyline points="0,9.00 720,9.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-16.673256)"/>
+<text x="0" y="-150" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">9.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -1938,14 +1944,14 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,1.00 L30,12.00 L40,0.00 M2066,1.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-16.673256)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
 <text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-0]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="1290" style="fill: #7030a0; stroke: none; font-size: 12px">%util (0.00, 0.00)</text>
+<text x="795" y="1290" style="fill: #7030a0; stroke: none; font-size: 12px">%util (0.00, 85.36)</text>
 <g transform="translate(70,1490)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -1979,6 +1985,9 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<g style="fill: #7030a0; stroke: none" transform="scale(0.348500,-2.000000)">
+<rect x="0" y="0.00" height="0.32" width="31"/><rect x="0" y="0.00" height="85.36" width="39"/>
+</g>
 </g>
 </g>
 <g id="g11-1" transform="translate(0,12460)">
@@ -1987,15 +1996,15 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">tps (0.00, 0.00)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">tps (0.00, 6.40)</text>
 <g transform="translate(70,250)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,2.00 720,2.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-31.240000)"/>
+<text x="0" y="-62" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">2.</text>
+<polyline points="0,4.00 720,4.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-31.240000)"/>
+<text x="0" y="-124" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">4.</text>
+<polyline points="0,6.00 720,6.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-31.240000)"/>
+<text x="0" y="-187" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">6.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -2019,24 +2028,28 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,6.40 L30,1.32 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-31.240000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-1]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #ff00bf; stroke: none; font-size: 12px">rkB/s (0.00, 0.00)</text>
-<text x="795" y="375" style="fill: #00ffff; stroke: none; font-size: 12px">wkB/s (0.00, 0.00)</text>
-<text x="795" y="390" style="fill: #ff0000; stroke: none; font-size: 12px">dkB/s (0.00, 0.00)</text>
+<text x="795" y="360" style="fill: #ff00bf; stroke: none; font-size: 12px">rkB/s (0.00, 54.75)</text>
+<text x="795" y="375" style="fill: #00ffff; stroke: none; font-size: 12px">wkB/s (0.00, 1.60)</text>
+<text x="795" y="390" style="fill: #ff0000; stroke: none; font-size: 12px">dkB/s (0.00, 0.80)</text>
 <g transform="translate(70,560)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,10.00 720,10.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.652751)"/>
+<text x="0" y="-36" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">10.</text>
+<polyline points="0,20.00 720,20.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.652751)"/>
+<text x="0" y="-73" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20.</text>
+<polyline points="0,30.00 720,30.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.652751)"/>
+<text x="0" y="-109" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">30.</text>
+<polyline points="0,40.00 720,40.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.652751)"/>
+<text x="0" y="-146" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">40.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.652751)"/>
+<text x="0" y="-182" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">50.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -2060,25 +2073,27 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,1.60 L30,54.75 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.652751)"/>
+<path d=" M10,0.00 L20,1.60 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.652751)"/>
+<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.80" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.652751)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
 <text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-1]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">areq-sz (0.00, 0.00)</text>
-<text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">aqu-sz (0.00, 0.00)</text>
+<text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">areq-sz (0.00, 41.33)</text>
+<text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">aqu-sz (0.00, 0.08)</text>
 <g transform="translate(70,870)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,10.00 720,10.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-4.838710)"/>
+<text x="0" y="-48" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">10.</text>
+<polyline points="0,20.00 720,20.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-4.838710)"/>
+<text x="0" y="-96" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20.</text>
+<polyline points="0,30.00 720,30.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-4.838710)"/>
+<text x="0" y="-145" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">30.</text>
+<polyline points="0,40.00 720,40.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-4.838710)"/>
+<text x="0" y="-193" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">40.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -2102,23 +2117,23 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,0.50 L30,41.33 L40,0.00 M2066,0.50" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.838710)"/>
+<path d=" M10,0.00 L20,0.00 L30,0.08 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.838710)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
 <text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-1]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="980" style="fill: #006020; stroke: none; font-size: 12px">await (0.00, 0.00)</text>
+<text x="795" y="980" style="fill: #006020; stroke: none; font-size: 12px">await (0.00, 60.92)</text>
 <g transform="translate(70,1180)">
-<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.00.</text>
-<polyline points="0,0.33 720,0.33" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-66" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.33.</text>
-<polyline points="0,0.67 720,0.67" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-134" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.67.</text>
-<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-200.000000)"/>
-<text x="0" y="-200" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1.00.</text>
+<text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,20.00 720,20.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.282910)"/>
+<text x="0" y="-65" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20.</text>
+<polyline points="0,40.00 720,40.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.282910)"/>
+<text x="0" y="-131" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">40.</text>
+<polyline points="0,60.00 720,60.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-3.282910)"/>
+<text x="0" y="-196" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">60.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -2142,14 +2157,14 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
+<path d=" M10,0.00 L20,1.00 L30,60.92 L40,0.00 M2066,1.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.282910)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
 <text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-1]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="1290" style="fill: #7030a0; stroke: none; font-size: 12px">%util (0.00, 0.00)</text>
+<text x="795" y="1290" style="fill: #7030a0; stroke: none; font-size: 12px">%util (0.00, 0.32)</text>
 <g transform="translate(70,1490)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -2183,6 +2198,9 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<g style="fill: #7030a0; stroke: none" transform="scale(0.348500,-2.000000)">
+<rect x="0" y="0.00" height="0.32" width="31"/><rect x="0" y="0.00" height="0.11" width="39"/>
+</g>
 </g>
 </g>
 <g id="g11-2" transform="translate(0,14010)">

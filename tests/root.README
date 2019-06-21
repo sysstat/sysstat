@@ -8,6 +8,7 @@ CPU#3: tickless
 CPU#6: offline
 
 /proc/diskstats
+sda, sda1: counters increase
 sdb: unregistered then registered again
 
 /proc/net/dev
@@ -22,6 +23,7 @@ sdh: autofs, registered
 CPU#6: offline
 
 /proc/diskstats
+sda, sda1: counters decrease
 sdb (dev8-16): unregistered
 sdf (dev8-80), sdg (dev-8,96): registered
 
@@ -51,4 +53,5 @@ enp6s0-2,wlp5s0-2: available
 Determine number of CPU using /proc/stat
 
 ==========root7:
-
+/proc/diskstats
+sda, sda1: discard I/Os

@@ -1,1 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
 ./mpstat -V >/dev/null
