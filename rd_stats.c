@@ -1521,6 +1521,7 @@ __nr_t read_net_eicmp(struct stats_net_eicmp *st_net_eicmp)
 {
 	FILE *fp;
 	char line[1024];
+	static char format[256] = "";
 	int sw = FALSE;
 
 	if ((fp = fopen(NET_SNMP, "r")) == NULL)
@@ -1530,8 +1531,7 @@ __nr_t read_net_eicmp(struct stats_net_eicmp *st_net_eicmp)
 
 		if (!strncmp(line, "Icmp:", 5)) {
 			if (sw) {
-				sscanf(line + 5, "%*u %lu %lu %lu %lu %lu %lu %*u %*u "
-				       "%*u %*u %*u %*u %*u %lu %lu %lu %lu %lu %lu",
+				sscanf(line + 5, format,
 				       &st_net_eicmp->InErrors,
 				       &st_net_eicmp->InDestUnreachs,
 				       &st_net_eicmp->InTimeExcds,
@@ -1548,6 +1548,25 @@ __nr_t read_net_eicmp(struct stats_net_eicmp *st_net_eicmp)
 				break;
 			}
 			else {
+				if (!strlen(format)) {
+					if (strstr(line, "InCsumErrors")) {
+						/*
+						 * New format: InCsumErrors field exists at position #3.
+						 * Capture: 2,4,5,6,7,8,16,17,18,19,20,21
+						 */
+						strcpy(format, "%*u %lu %*u %lu %lu %lu %lu %lu %*u %*u "
+							       "%*u %*u %*u %*u %*u %lu %lu %lu %lu %lu %lu");
+					}
+					else {
+						/*
+						 * Old format: InCsumErrors field doesn't exist.
+						 * Capture: 2,3,4,5,6,7,15,16,17,18,19,20
+						 */
+						strcpy(format, "%*u %lu %lu %lu %lu %lu %lu %*u %*u "
+							       "%*u %*u %*u %*u %*u %lu %lu %lu %lu %lu %lu");
+
+					}
+				}
 				sw = TRUE;
 			}
 		}
