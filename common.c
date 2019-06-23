@@ -646,6 +646,10 @@ char *device_name(char *name)
 		return name;
 	}
 
+#ifdef DEBUG
+	fprintf(stderr, "Real pathname: %s (%s)\n", resolved_name, name);
+#endif
+
 	if (!strncmp(resolved_name, "/dev/", 5)) {
 		i = 5;
 	}
