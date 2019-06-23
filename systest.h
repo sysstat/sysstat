@@ -54,7 +54,7 @@ void get_uname
 void get_unix_time
 	(time_t *);
 void next_time_step
-	();
+	(void);
 
 void int_handler
 	(int);
