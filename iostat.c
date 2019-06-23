@@ -586,7 +586,7 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name, int iodev_nr)
  * IN:
  * @curr	Index in array for current sample statistics.
  * @dev_name	Device name.
- * @iodev_nr		Number of devices and partitions.
+ * @iodev_nr	Number of devices and partitions.
  ***************************************************************************
  */
 void read_sysfs_dlist_part_stat(int curr, char *dev_name, int iodev_nr)
@@ -599,11 +599,11 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name, int iodev_nr)
 	dfile[sizeof(dfile) - 1] = '\0';
 
 	/* Open current device directory in /sys/block */
-	if ((dir = opendir(dfile)) == NULL)
+	if ((dir = __opendir(dfile)) == NULL)
 		return;
 
 	/* Get current entry */
-	while ((drd = readdir(dir)) != NULL) {
+	while ((drd = __readdir(dir)) != NULL) {
 		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 			continue;
 		snprintf(filename, sizeof(filename), "%s/%s/%s", dfile, drd->d_name, S_STAT);
@@ -614,7 +614,7 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name, int iodev_nr)
 	}
 
 	/* Close device directory */
-	closedir(dir);
+	__closedir(dir);
 }
 
 /*
@@ -683,10 +683,10 @@ void read_sysfs_stat(int curr, int iodev_nr)
 	set_entries_unregistered(iodev_nr, st_hdr_iodev);
 
 	/* Open /sys/block directory */
-	if ((dir = opendir(SYSFS_BLOCK)) != NULL) {
+	if ((dir = __opendir(SYSFS_BLOCK)) != NULL) {
 
 		/* Get current entry */
-		while ((drd = readdir(dir)) != NULL) {
+		while ((drd = __readdir(dir)) != NULL) {
 			if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 				continue;
 			snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
@@ -706,7 +706,7 @@ void read_sysfs_stat(int curr, int iodev_nr)
 		}
 
 		/* Close /sys/block directory */
-		closedir(dir);
+		__closedir(dir);
 	}
 
 	/* Free structures corresponding to unregistered devices */

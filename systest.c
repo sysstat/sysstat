@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
@@ -126,7 +127,7 @@ void next_time_step(void)
 	sprintf(rootf, "%s%d", ROOTFILE, ++root_nr);
 	sprintf(testf, "%s/%s", TESTDIR, rootf);
 	if (access(testf, F_OK) < 0) {
-		if (errno = ENOENT) {
+		if (errno == ENOENT) {
 			/* No more kernel directories: Simulate a Ctrl/C */
 			int_handler(0);
 			return ;
@@ -163,6 +164,75 @@ int virtual_stat(const char *name, struct stat *statbuf)
 	}
 
 	return 1;
+}
+
+/*
+ ***************************************************************************
+ * Open a "_list" file containing a list of files enumerated in a known
+ * order contained in current directory.
+ *
+ * IN:
+ * @name	Pathname to directory containing the "_list" file.
+ *
+ * RETURNS:
+ * A pointer on current "_list" file.
+ ***************************************************************************
+ */
+DIR *open_list(const char *name)
+{
+	FILE *fp;
+	char filename[1024];
+
+	snprintf(filename, sizeof(filename), "%s/%s", name, _LIST);
+	filename[sizeof(filename) - 1] = '\0';
+
+	if ((fp = fopen(filename, "r")) == NULL)
+		return NULL;
+
+	return (DIR *) fp;
+}
+
+/*
+ ***************************************************************************
+ * Read next file name contained in a "_list" file.
+ *
+ * IN:
+ * @dir	Pointer on current "_list" file.
+ *
+ * RETURNS:
+ * A structure containing the name of the next file to read.
+ ***************************************************************************
+ */
+struct dirent *read_list(DIR *dir)
+{
+	FILE *fp = (FILE *) dir;
+	static struct dirent drd;
+	char line[1024];
+
+
+	if ((fgets(line, sizeof(line), fp) != NULL) && (strlen(line) > 1) &&
+		(strlen(line) < sizeof(drd.d_name))) {
+		strcpy(drd.d_name, line);
+		drd.d_name[strlen(line) - 1] = '\0';
+		return &drd;
+	}
+
+	return NULL;
+}
+
+/*
+ ***************************************************************************
+ * Close a "_list" file.
+ *
+ * IN:
+ * @dir	Pointer on "_list" file to close.
+ ***************************************************************************
+ */
+void close_list(DIR *dir)
+{
+	FILE *fp = (FILE *) dir;
+
+	fclose(fp);
 }
 
 #endif	/* TEST */

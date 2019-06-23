@@ -7,8 +7,10 @@
 #define _SYSTEST_H
 
 #include <time.h>
+#include <dirent.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
+#include <sys/stat.h>
 
 /* Test mode: Use alternate files and syscalls */
 #ifdef TEST
@@ -21,11 +23,15 @@
 #define __alarm(m)
 #define __pause()	next_time_step()
 #define __stat(m,n)	virtual_stat(m,n)
+#define __opendir(m)	open_list(m)
+#define __readdir(m)	read_list(m)
+#define __closedir(m)	close_list(m)
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
 #define TESTDIR		"./tests"
 #define VIRTUALHD	"./tests/root/dev/mapper/virtualhd"
+#define _LIST		"_list"
 
 #else
 
@@ -38,6 +44,9 @@
 #define __alarm(m)	alarm(m)
 #define __pause()	pause()
 #define __stat(m,n)	stat(m,n)
+#define __opendir(m)	opendir(m)
+#define __readdir(m)	readdir(m)
+#define __closedir(m)	closedir(m)
 
 #endif
 
@@ -48,6 +57,8 @@
  ***************************************************************************
  */
 #ifdef TEST
+void close_list
+	(DIR *);
 char *get_env_value
 	(char *);
 int get_fs_stat
@@ -58,6 +69,10 @@ void get_unix_time
 	(time_t *);
 void next_time_step
 	(void);
+DIR *open_list
+	(const char *);
+struct dirent *read_list
+	(DIR *);
 int virtual_stat
 	(const char *, struct stat *);
 

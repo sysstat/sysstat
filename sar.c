@@ -1598,7 +1598,7 @@ int main(int argc, char **argv)
 
 #ifdef TEST
 		if (__unix_time) {
-			sprintf(ltemp, "--unix_time=%llu", __unix_time);
+			sprintf(ltemp, "--unix_time=%ld", __unix_time);
 			salloc(args_idx++, ltemp);
 		}
 #endif
