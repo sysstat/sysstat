@@ -22,6 +22,7 @@ sdb               0.01         0.29         0.00       2108          0
 sde               0.00         0.00         0.00          0          0
 sdc               0.00         0.00         0.00          0          0
 sdd               0.00         0.00         0.00          0          0
+dm-2              0.00         0.00         0.00          0          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle

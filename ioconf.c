@@ -513,7 +513,7 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 		snprintf(filen, MAX_FILE_LEN, "%s/%s", DEVMAP_DIR, dp->d_name);
 		filen[MAX_FILE_LEN - 1] = '\0';
 
-		if (stat(filen, &aux) == 0) {
+		if (__stat(filen, &aux) == 0) {
 			/* Get its minor and major numbers */
 
 			dm_major = major(aux.st_rdev);

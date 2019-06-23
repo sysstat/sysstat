@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
 
@@ -45,7 +46,6 @@ extern int sigint_caught;
  * @t	Number of seconds since the epoch, as given on the command line.
  ***************************************************************************
  */
-
 void get_unix_time(time_t *t)
 {
 	*t = __unix_time;
@@ -59,7 +59,6 @@ void get_unix_time(time_t *t)
  * @h	Structure with kernel information.
  ***************************************************************************
  */
-
 void get_uname(struct utsname *h)
 {
 	strcpy(h->sysname, "Linux");
@@ -76,7 +75,6 @@ void get_uname(struct utsname *h)
  * @buf	Structure with filesystem information.
  ***************************************************************************
  */
-
 int get_fs_stat(char *c, struct statvfs *buf)
 {
 	static int p = 0;
@@ -103,7 +101,6 @@ int get_fs_stat(char *c, struct statvfs *buf)
  * Test mode: Ignore environment variable value.
  ***************************************************************************
  */
-
 char *get_env_value(char *c)
 {
 	return NULL;
@@ -114,7 +111,6 @@ char *get_env_value(char *c)
  * Test mode: Go to next time period.
  ***************************************************************************
  */
-
 void next_time_step(void)
 {
 	static int root_nr = 1;
@@ -141,6 +137,32 @@ void next_time_step(void)
 		perror("link");
 		exit(1);
 	}
+}
+
+/*
+ ***************************************************************************
+ * If current file is considered as a virtual one ("virtualhd"), then set
+ * its device ID (major 253, minor 2, corresponding here to dm-2) in the
+ * stat structure normally filled by the stat() system call.
+ *
+ * IN:
+ * @name	Pathname to file.
+ *
+ * OUT:
+ * @statbuf	Structure containing device ID.
+ *
+ * RETURNS:
+ * 0 if it actually was the virtual device, 1 otherwise.
+ ***************************************************************************
+ */
+int virtual_stat(const char *name, struct stat *statbuf)
+{
+	if (!strcmp(name, VIRTUALHD)) {
+		statbuf->st_rdev = (253 << 8) + 2;
+		return 0;
+	}
+
+	return 1;
 }
 
 #endif	/* TEST */

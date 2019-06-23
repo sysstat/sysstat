@@ -282,3 +282,11 @@
 =====	Playing again with iostat
 02600	LC_ALL=C ./iostat -ym 1 2 > tests/out.iostat-ym.tmp
 02605	diff -u tests/out.iostat-ym.tmp tests/expected.iostat-ym
+02610	LC_ALL=C ./iostat --human > tests/out.iostat-human.tmp
+02615	diff -u tests/out.iostat-human.tmp tests/expected.iostat-human
+02620	LC_ALL=C ./iostat -dh -p ALL > tests/out.iostat-h.tmp
+02625	diff -u tests/out.iostat-h.tmp tests/expected.iostat-h
+02630	LC_ALL=C ./iostat -kz -p ALL 1 2 > tests/out.iostat-kz.tmp
+02635	diff -u tests/out.iostat-kz.tmp tests/expected.iostat-kz
+02640	LC_ALL=C ./iostat -dN -p ALL > tests/out.iostat-N.tmp
+02645	diff -u tests/out.iostat-N.tmp tests/expected.iostat-N

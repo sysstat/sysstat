@@ -1,4 +1,6 @@
 ==========root1:
+/proc/diskstats
+dm-2 virtual device present
 
 ==========root2:
 

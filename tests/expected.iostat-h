@@ -1,0 +1,24 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+      tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd Device
+     8.59       222.1k        57.1k         0.0k       1.5G     400.9M       0.0k sda
+     0.01         0.3k         0.0k         0.0k       2.1M       0.0k       0.0k sda1
+     0.01         0.3k         0.0k         0.0k       2.0M       0.0k       0.0k sda2
+     0.01         0.3k         0.0k         0.0k       2.1M       0.0k       0.0k sda3
+     0.00         0.0k         0.0k         0.0k      14.0k       0.0k       0.0k sda4
+     0.01         0.3k         0.0k         0.0k       2.2M       0.0k       0.0k sda5
+     0.02         0.6k         0.0k         0.0k       4.3M      12.0k       0.0k sda6
+     0.02         0.6k         0.0k         0.0k       4.3M      12.0k       0.0k sda7
+     0.01         0.3k         0.0k         0.0k       2.4M       0.0k       0.0k sda8
+     6.60       193.2k        19.9k         0.0k       1.3G     139.7M       0.0k sda9
+     0.01         0.3k         0.0k         0.0k       2.2M       0.0k       0.0k sda10
+     0.01         0.3k         0.0k         0.0k       2.2M       0.0k       0.0k sda11
+     1.88        25.3k        37.2k         0.0k     177.6M     261.2M       0.0k sda12
+     0.00         0.0k         0.0k         0.0k       0.0k       0.0k       0.0k scd0
+     0.01         0.3k         0.0k         0.0k       2.1M       0.0k       0.0k sdb
+     0.00         0.0k         0.0k         0.0k       0.0k       0.0k       0.0k sde
+     0.00         0.0k         0.0k         0.0k       0.0k       0.0k       0.0k sdc
+     0.00         0.0k         0.0k         0.0k       0.0k       0.0k       0.0k sdd
+     0.00         0.0k         0.0k         0.0k       0.0k       0.0k       0.0k dm-2
+
+
