@@ -1,5 +1,9 @@
 #!/bin/sh
-if [ "$1" = "comp" ]
+if [ "$1" = "conf" ]
+then
+	make distclean
+	./configure sa_lib_dir=. conf_dir=. sa_dir=tests && make CFLAGS="-D DEBUG -D TEST"
+elif [ "$1" = "comp" ]
 then
 	make CFLAGS="-D DEBUG -D TEST"
 else
