@@ -3006,10 +3006,9 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 	for (i = 0; i < a->nr[curr]; i++) {
 
 		found = FALSE;
+		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (a->nr[!curr] > 0) {
-			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-
 			/* Look for corresponding structure in previous iteration */
 			j = i;
 

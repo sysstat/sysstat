@@ -4980,37 +4980,36 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 		for (i = 0; i < a->nr[curr]; i++) {
 
 			found = FALSE;
+			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
-			if (a->nr[!curr] > 0) {
-				sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
-
-				/* Look for corresponding graph */
+			/* Look for corresponding graph */
+			for (k = 0; k < a->item_list_sz; k++) {
+				item_name = *(out + k * 5 + 4);
+				if (!strcmp(sfcc->fchost_name, item_name))
+					/* Graph found! */
+					break;
+			}
+			if (k == a->item_list_sz) {
+				/* Graph not found: Look for first free entry */
 				for (k = 0; k < a->item_list_sz; k++) {
 					item_name = *(out + k * 5 + 4);
-					if (!strcmp(sfcc->fchost_name, item_name))
-						/* Graph found! */
+					if (!strcmp(item_name, ""))
 						break;
 				}
 				if (k == a->item_list_sz) {
-					/* Graph not found: Look for first free entry */
-					for (k = 0; k < a->item_list_sz; k++) {
-						item_name = *(out + k * 5 + 4);
-						if (!strcmp(item_name, ""))
-							break;
-					}
-					if (k == a->item_list_sz) {
-						/* No free graph entry: Ignore it (should never happen) */
+					/* No free graph entry: Ignore it (should never happen) */
 #ifdef DEBUG
-						fprintf(stderr, "%s: Name=%s\n",
-							__FUNCTION__, sfcc->fchost_name);
+					fprintf(stderr, "%s: Name=%s\n",
+						__FUNCTION__, sfcc->fchost_name);
 #endif
-						continue;
-					}
+					continue;
 				}
+			}
 
-				pos = k * 5;
-				unregistered = outsize + pos + 4;
+			pos = k * 5;
+			unregistered = outsize + pos + 4;
 
+			if (a->nr[!curr] > 0) {
 				/* Look for corresponding structure in previous iteration */
 				j = i;
 
