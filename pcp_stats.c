@@ -2185,8 +2185,10 @@ __print_funct_t pcp_print_fchost_stats(struct activity *a, int curr, unsigned lo
 {
 #ifdef HAVE_PCP
 	int i, j, j0, found;
-	struct stats_fchost *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp, sfczero;
 	char buf[64];
+
+	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -2217,8 +2219,10 @@ __print_funct_t pcp_print_fchost_stats(struct activity *a, int curr, unsigned lo
 			while (j != j0);
 		}
 
-		if (!found)
-			continue;
+		if (!found) {
+			/* This is a newly registered host */
+			sfcp = &sfczero;
+		}
 
 		snprintf(buf, sizeof(buf), "%f",
 			 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv));

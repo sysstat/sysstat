@@ -2999,7 +2999,9 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 				    int curr, unsigned long long itv)
 {
 	int i, j, j0, found;
-	struct stats_fchost *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp, sfczero;
+
+	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -3030,8 +3032,10 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 			while (j != j0);
 		}
 
-		if (!found)
-			continue;
+		if (!found) {
+			/* This is a newly registered host */
+			sfcp = &sfczero;
+		}
 
 		render(isdb, pre, PT_NOFLAG ,
 		       "%s\tfch_rxf/s",

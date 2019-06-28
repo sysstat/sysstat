@@ -2596,14 +2596,14 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 	unsigned long rx_frames, tx_frames, rx_words, tx_words;
 
 	/* Each host, if present, will have its own hostX entry within SYSFS_FCHOST */
-	if ((dir = opendir(SYSFS_FCHOST)) == NULL)
+	if ((dir = __opendir(SYSFS_FCHOST)) == NULL)
 		return 0; /* No FC hosts */
 
 	/*
 	 * Read each of the counters via sysfs, where they are
 	 * returned as hex values (e.g. 0x72400).
 	 */
-	while ((drd = readdir(dir)) != NULL) {
+	while ((drd = __readdir(dir)) != NULL) {
 		rx_frames = tx_frames = rx_words = tx_words = 0;
 
 		if (!strncmp(drd->d_name, "host", 4)) {
@@ -2659,7 +2659,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 		}
 	}
 
-	closedir(dir);
+	__closedir(dir);
 	return fch_read;
 }
 

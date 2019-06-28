@@ -1534,7 +1534,9 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int curr)
 {
 	int i, j, j0, found;
-	struct stats_fchost *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp, sfczero;
+
+	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -1565,8 +1567,13 @@ __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int cu
 			while (j != j0);
 		}
 
-		if (!found)
-			continue;
+		if (!found) {
+			/* This is a newly registered host. Previous stats are zero */
+			sfcp = &sfczero;
+			if (DISPLAY_DEBUG_MODE(flags)) {
+				printf(" [NEW]");
+			}
+		}
 
 		printf("%s; %s; %s;", timestr, pfield(a->hdr_line, FIRST), sfcc->fchost_name);
 		printf(" %s", pfield(NULL, 0));

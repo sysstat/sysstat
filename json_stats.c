@@ -2237,11 +2237,13 @@ __print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
 					unsigned long long itv)
 {
 	int i, j, j0, found;
-	struct stats_fchost *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp, sfczero;
 	int sep = FALSE;
 
 	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_json_markup;
+
+	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
 	json_markup_network(tab, OPEN_JSON_MARKUP);
 	tab++;
@@ -2277,8 +2279,10 @@ __print_funct_t json_print_fchost_stats(struct activity *a, int curr, int tab,
 			while (j != j0);
 		}
 
-		if (!found)
-			continue;
+		if (!found) {
+			/* This is a newly registered host */
+			sfcp = &sfczero;
+		}
 
 		if (sep)
 			printf(",\n");

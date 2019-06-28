@@ -4937,7 +4937,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 				       unsigned long long itv, struct record_header *record_hdr)
 {
-	struct stats_fchost *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp, sfczero;
 	int group[] = {2, 2};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"Fibre Channel HBA statistics (1)", "Fibre Channel HBA statistics (2)"};
@@ -4963,6 +4963,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
+		memset(&sfczero, 0, sizeof(struct stats_fchost));
 		restart = svg_p->restart;
 		/*
 		 * Mark previously registered interfaces as now
@@ -5032,8 +5033,10 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 				while (j != j0);
 			}
 
-			if (!found)
-				continue;
+			if (!found) {
+				/* This is a newly registered host */
+				sfcp = &sfczero;
+			}
 
 			/*
 			 * If current interface was marked as previously unregistered,

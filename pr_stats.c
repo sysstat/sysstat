@@ -2879,7 +2879,9 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
 	int i, j, j0, found;
-	struct stats_fchost *sfcc, *sfcp;
+	struct stats_fchost *sfcc, *sfcp, sfczero;
+
+	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9);
@@ -2920,8 +2922,10 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 			}
 		}
 
-		if (!found)
-			continue;
+		if (!found) {
+			/* This is a newly registered host */
+			sfcp = &sfczero;
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_f(NO_UNIT, 4, 9, 2,
