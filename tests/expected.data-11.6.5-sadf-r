@@ -1,0 +1,18 @@
+09:33:38 UTC; LINUX-RESTART (8 CPU)
+09:34:34 UTC; FAN; 1; DEVICE; f71858fg-isa-0200; rpm; 1283.000000; rpm_min; 0.000000;
+09:34:34 UTC; FAN; 2; DEVICE; f71858fg-isa-0200; rpm; 1347.000000; rpm_min; 0.000000;
+09:34:34 UTC; FAN; 3; DEVICE; f71858fg-isa-0200; rpm; 0.000000; rpm_min; 0.000000;
+09:34:34 UTC; FAN; 4; DEVICE; nouveau-pci-0100; rpm; 1650.000000; rpm_min; 0.000000;
+09:34:34 UTC; TEMP; 1; DEVICE; f71858fg-isa-0200; degC; 34.000000; temp_min; 0.000000; temp_max; 70.000000;
+09:34:34 UTC; TEMP; 2; DEVICE; f71858fg-isa-0200; degC; 30.500000; temp_min; 0.000000; temp_max; 100.000000;
+09:34:34 UTC; TEMP; 3; DEVICE; f71858fg-isa-0200; degC; 29.125000; temp_min; 0.000000; temp_max; 100.000000;
+09:34:34 UTC; TEMP; 4; DEVICE; nouveau-pci-0100; degC; 36.000000; temp_min; 0.000000; temp_max; 95.000000;
+09:34:34 UTC; TEMP; 5; DEVICE; coretemp-isa-0000; degC; 34.000000; temp_min; 0.000000; temp_max; 80.000000;
+09:34:34 UTC; TEMP; 6; DEVICE; coretemp-isa-0000; degC; 34.000000; temp_min; 0.000000; temp_max; 80.000000;
+09:34:34 UTC; TEMP; 7; DEVICE; coretemp-isa-0000; degC; 32.000000; temp_min; 0.000000; temp_max; 80.000000;
+09:34:34 UTC; TEMP; 8; DEVICE; coretemp-isa-0000; degC; 31.000000; temp_min; 0.000000; temp_max; 80.000000;
+09:34:34 UTC; TEMP; 9; DEVICE; coretemp-isa-0000; degC; 33.000000; temp_min; 0.000000; temp_max; 80.000000;
+09:34:34 UTC; IN; 0; DEVICE; f71858fg-isa-0200; inV; 3.328000; in_min; 0.000000; in_max; 0.000000;
+09:34:34 UTC; IN; 1; DEVICE; f71858fg-isa-0200; inV; 3.344000; in_min; 0.000000; in_max; 0.000000;
+09:34:34 UTC; IN; 2; DEVICE; f71858fg-isa-0200; inV; 3.312000; in_min; 0.000000; in_max; 0.000000;
+09:34:34 UTC; IN; 3; DEVICE; nouveau-pci-0100; inV; 0.950000; in_min; 0.825000; in_max; 1.150000;

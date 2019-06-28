@@ -1,0 +1,21 @@
+linux.home;-1;2018-08-29 09:33:38 UTC;LINUX-RESTART	(8 CPU)
+# hostname;interval;timestamp;FAN;DEVICE;rpm;drpm
+linux.home;46;2018-08-29 09:34:34 UTC;1;f71858fg-isa-0200;1283.00;1283.00
+linux.home;46;2018-08-29 09:34:34 UTC;2;f71858fg-isa-0200;1347.00;1347.00
+linux.home;46;2018-08-29 09:34:34 UTC;3;f71858fg-isa-0200;0.00;0.00
+linux.home;46;2018-08-29 09:34:34 UTC;4;nouveau-pci-0100;1650.00;1650.00
+# hostname;interval;timestamp;TEMP;DEVICE;degC;%temp
+linux.home;46;2018-08-29 09:34:34 UTC;1;f71858fg-isa-0200;34.00;48.57
+linux.home;46;2018-08-29 09:34:34 UTC;2;f71858fg-isa-0200;30.50;30.50
+linux.home;46;2018-08-29 09:34:34 UTC;3;f71858fg-isa-0200;29.12;29.12
+linux.home;46;2018-08-29 09:34:34 UTC;4;nouveau-pci-0100;36.00;37.89
+linux.home;46;2018-08-29 09:34:34 UTC;5;coretemp-isa-0000;34.00;42.50
+linux.home;46;2018-08-29 09:34:34 UTC;6;coretemp-isa-0000;34.00;42.50
+linux.home;46;2018-08-29 09:34:34 UTC;7;coretemp-isa-0000;32.00;40.00
+linux.home;46;2018-08-29 09:34:34 UTC;8;coretemp-isa-0000;31.00;38.75
+linux.home;46;2018-08-29 09:34:34 UTC;9;coretemp-isa-0000;33.00;41.25
+# hostname;interval;timestamp;IN;DEVICE;inV;%in
+linux.home;46;2018-08-29 09:34:34 UTC;0;f71858fg-isa-0200;3.33;0.00
+linux.home;46;2018-08-29 09:34:34 UTC;1;f71858fg-isa-0200;3.34;0.00
+linux.home;46;2018-08-29 09:34:34 UTC;2;f71858fg-isa-0200;3.31;0.00
+linux.home;46;2018-08-29 09:34:34 UTC;3;nouveau-pci-0100;0.95;38.46

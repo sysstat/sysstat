@@ -191,6 +191,23 @@
 01430	LC_ALL=C ./sar -o foo 2>&1 | grep "Usage:" >/dev/null
 01440	LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null
 
+=====	Specific tests for sensors statistics (basic sensor output already tested using data-11.6.5 conversion)
+01500	LC_ALL=C TZ=GMT ./sadf -d tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-d.tmp
+01505	diff -u tests/out.data-11.6.5-sadf-d.tmp tests/expected.data-11.6.5-sadf-d
+01510	LC_ALL=C TZ=GMT ./sadf -p tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-p.tmp
+01515	diff -u tests/out.data-11.6.5-sadf-p.tmp tests/expected.data-11.6.5-sadf-p
+01520	LC_ALL=C TZ=GMT ./sadf -r tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-r.tmp
+01525	diff -u tests/out.data-11.6.5-sadf-r.tmp tests/expected.data-11.6.5-sadf-r
+01530	LC_ALL=C TZ=GMT ./sadf -g tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-g.tmp
+01535	diff -u tests/out.data-11.6.5-sadf-g.tmp tests/expected.data-11.6.5-sadf-g
+01540	LC_ALL=C TZ=GMT ./sadf -j tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-j.tmp
+01545	diff -u tests/out.data-11.6.5-sadf-j.tmp tests/expected.data-11.6.5-sadf-j
+01547	cat tests/out.data-11.6.5-sadf-j.tmp | $VER_JSON >/dev/null;
+01550	LC_ALL=C TZ=GMT ./sadf -x tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-x.tmp
+01555	diff -u tests/out.data-11.6.5-sadf-x.tmp tests/expected.data-11.6.5-sadf-x
+01557	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
+01559	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+
 =====	iostat tests (basic output)
 02010	LC_ALL=C ./iostat 2 3 > tests/out.iostat.tmp
 02015	diff -u tests/out.iostat.tmp tests/expected.iostat

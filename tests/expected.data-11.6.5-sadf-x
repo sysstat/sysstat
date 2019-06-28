@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sysstat PUBLIC "DTD v3.7 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.7.dtd">
+<sysstat
+xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
+	<sysdata-version>3.7</sysdata-version>
+	<host nodename="linux.home">
+		<sysname>Linux</sysname>
+		<release>4.17.18-200.fc28.x86_64</release>
+		<machine>x86_64</machine>
+		<number-of-cpus>8</number-of-cpus>
+		<file-date>2018-08-29</file-date>
+		<file-utc-time>09:33:38</file-utc-time>
+		<statistics>
+			<timestamp date="2018-08-29" time="09:34:34" utc="1" interval="46">
+				<power-management>
+					<fan-speed unit="rpm">
+						<fan number="1" rpm="1283" drpm="1283" device="f71858fg-isa-0200"/>
+						<fan number="2" rpm="1347" drpm="1347" device="f71858fg-isa-0200"/>
+						<fan number="3" rpm="0" drpm="0" device="f71858fg-isa-0200"/>
+						<fan number="4" rpm="1650" drpm="1650" device="nouveau-pci-0100"/>
+					</fan-speed>
+					<temperature unit="degree Celsius">
+						<temp number="1" degC="34.00" percent-temp="48.57" device="f71858fg-isa-0200"/>
+						<temp number="2" degC="30.50" percent-temp="30.50" device="f71858fg-isa-0200"/>
+						<temp number="3" degC="29.12" percent-temp="29.12" device="f71858fg-isa-0200"/>
+						<temp number="4" degC="36.00" percent-temp="37.89" device="nouveau-pci-0100"/>
+						<temp number="5" degC="34.00" percent-temp="42.50" device="coretemp-isa-0000"/>
+						<temp number="6" degC="34.00" percent-temp="42.50" device="coretemp-isa-0000"/>
+						<temp number="7" degC="32.00" percent-temp="40.00" device="coretemp-isa-0000"/>
+						<temp number="8" degC="31.00" percent-temp="38.75" device="coretemp-isa-0000"/>
+						<temp number="9" degC="33.00" percent-temp="41.25" device="coretemp-isa-0000"/>
+					</temperature>
+					<voltage-input unit="V">
+						<in number="0" inV="3.33" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="1" inV="3.34" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="2" inV="3.31" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="3" inV="0.95" percent-in="38.46" device="nouveau-pci-0100"/>
+					</voltage-input>
+				</power-management>
+			</timestamp>
+		</statistics>
+		<restarts>
+			<boot date="2018-08-29" time="09:33:38" utc="1" cpu_count="8"/>
+		</restarts>
+	</host>
+</sysstat>
