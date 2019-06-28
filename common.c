@@ -639,7 +639,7 @@ char *device_name(char *name)
 	int i = 0;
 
 	/* realpath() creates new string, so we need to free it later */
-	resolved_name = realpath(name, NULL);
+	resolved_name = __realpath(name, NULL);
 
 	/* If path doesn't exist, just return input */
 	if (!resolved_name) {

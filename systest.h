@@ -26,6 +26,7 @@
 #define __opendir(m)	open_list(m)
 #define __readdir(m)	read_list(m)
 #define __closedir(m)	close_list(m)
+#define __realpath(m,n)	get_realname(m,n)
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
@@ -47,6 +48,7 @@
 #define __opendir(m)	opendir(m)
 #define __readdir(m)	readdir(m)
 #define __closedir(m)	closedir(m)
+#define __realpath(m,n)	realpath(m,n)
 
 #endif
 
@@ -63,6 +65,8 @@ char *get_env_value
 	(char *);
 int get_fs_stat
 	(char *, struct statvfs *);
+char *get_realname
+	(char *, char *);
 void get_uname
 	(struct utsname *);
 void get_unix_time

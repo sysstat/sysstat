@@ -235,5 +235,31 @@ void close_list(DIR *dir)
 	fclose(fp);
 }
 
+/*
+ ***************************************************************************
+ * Replacement function for realpath() system call. Do nothing here.
+ *
+ * IN:
+ * @name	Pathname to process.
+ * @c		Unused here.
+ *
+ * RETURNS:
+ * Pathname (unchanged).
+ ***************************************************************************
+ */
+char *get_realname(char *name, char *c)
+{
+	char *resolved_name;
+
+	if ((resolved_name = (char *) malloc(1024)) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
+	strncpy(resolved_name, name, 1024);
+	resolved_name[1023] = '\0';
+
+	return resolved_name;
+}
+
 #endif	/* TEST */
 
