@@ -255,7 +255,7 @@
 02415	diff -u tests/out.iostat-sigint.tmp tests/expected.iostat-sigint
 02420	LC_ALL=C ./iostat -d foo > tests/out.iostat-foo.tmp
 02425	diff -u tests/out.iostat-foo.tmp tests/expected.iostat-foo
-02430	LC_ALL=C ./iostat -ct 1 2 > tests/out.iostat-ct.tmp
+02430	LC_ALL=C TZ=GMT ./iostat -ct 1 2 > tests/out.iostat-ct.tmp
 02435	diff -u tests/out.iostat-ct.tmp tests/expected.iostat-ct
 02440	LC_ALL=C ./iostat -d -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-g.tmp
 02445	diff -u tests/out.iostat-g.tmp tests/expected.iostat-g
