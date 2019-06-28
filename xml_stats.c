@@ -2193,7 +2193,7 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 			S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 			S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 			S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
-			S_VALUE(sfcp->f_txwords,  sfcc->f_rxwords,  itv));
+			S_VALUE(sfcp->f_txwords,  sfcc->f_txwords,  itv));
 	}
 	tab--;
 
