@@ -1567,6 +1567,8 @@ __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int cu
 			while (j != j0);
 		}
 
+		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
+
 		if (!found) {
 			/* This is a newly registered host. Previous stats are zero */
 			sfcp = &sfczero;
@@ -1575,7 +1577,7 @@ __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int cu
 			}
 		}
 
-		printf("%s; %s; %s;", timestr, pfield(a->hdr_line, FIRST), sfcc->fchost_name);
+		printf("; %s;", sfcc->fchost_name);
 		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) sfcp->f_rxframes, (unsigned long long) sfcc->f_rxframes);
 		printf(" %s", pfield(NULL, 0));
