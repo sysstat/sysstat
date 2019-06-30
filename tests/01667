@@ -1,0 +1,4 @@
+. tests/variables
+if [ ! -z "$VER_XML" ]; then
+	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
+fi

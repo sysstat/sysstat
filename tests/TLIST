@@ -9,7 +9,7 @@
 00017	./cifsiostat -V >/dev/null
 
 =====	Creating data.tmp
-00100	5 x ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP tests/data.tmp 1 1 >/dev/null
+00100	5 x ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data.tmp 1 1 >/dev/null
 00110	./sadc --unix_time=XXXXXXXXX tests/data.tmp
 00120	./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
 
@@ -83,6 +83,8 @@
 00620	./sadf -c tests/data-11.6.5 > tests/data-11.6.5.tmp
 00625	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-11.6.5.tmp > tests/out.data-11.6.5.tmp
 00627	diff -u tests/out.data-11.6.5.tmp tests/expected.data-11.6.5	
+00650	LC_ALL=C TZ=GMT ./sar -AC -f tests/data-12.0.0 > tests/out.data-12.0.0.tmp
+00655	diff -u tests/out.data-12.0.0.tmp tests/expected.data-12.0.0
 
 =====	Reading datafile from another architecture
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
@@ -207,6 +209,24 @@
 01555	diff -u tests/out.data-11.6.5-sadf-x.tmp tests/expected.data-11.6.5-sadf-x
 01557	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
 01559	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+
+=====	Specific tests for A_PWR_FREQ statistics
+01600	./sadc --unix_time=1555593609 -S A_NULL,A_PWR_FREQ tests/data-wghfreq.tmp 1 3 >/dev/null
+01610	LC_ALL=C TZ=GMT ./sar -f tests/data-wghfreq.tmp -m FREQ -P ALL > tests/out.sar-m-freq.tmp
+01615	diff -u tests/out.sar-m-freq.tmp tests/expected.sar-m-freq
+01620	LC_ALL=C TZ=GMT ./sadf -d tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-d.tmp
+01625	diff -u tests/out.data-wghfreq-sadf-d.tmp tests/expected.data-wghfreq-sadf-d
+01630	LC_ALL=C TZ=GMT ./sadf -p tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-p.tmp
+01635	diff -u tests/out.data-wghfreq-sadf-p.tmp tests/expected.data-wghfreq-sadf-p
+01640	LC_ALL=C TZ=GMT ./sadf -r tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-r.tmp
+01645	diff -u tests/out.data-wghfreq-sadf-r.tmp tests/expected.data-wghfreq-sadf-r
+01650	LC_ALL=C TZ=GMT ./sadf -j tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-j.tmp
+01655	diff -u tests/out.data-wghfreq-sadf-j.tmp tests/expected.data-wghfreq-sadf-j
+01657	cat tests/out.data-wghfreq-sadf-j.tmp | $VER_JSON >/dev/null;
+01660	LC_ALL=C TZ=GMT ./sadf -x tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-x.tmp
+01665	diff -u tests/out.data-wghfreq-sadf-x.tmp tests/expected.data-wghfreq-sadf-x
+01667	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
+01669	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C ./iostat 2 3 > tests/out.iostat.tmp

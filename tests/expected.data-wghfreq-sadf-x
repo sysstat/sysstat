@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sysstat PUBLIC "DTD v3.7 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.7.dtd">
+<sysstat
+xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
+	<sysdata-version>3.7</sysdata-version>
+	<host nodename="SYSSTAT.TEST">
+		<sysname>Linux</sysname>
+		<release>1.2.3-TEST</release>
+		<machine>x86_64</machine>
+		<number-of-cpus>8</number-of-cpus>
+		<file-date>2019-04-18</file-date>
+		<file-utc-time>13:20:09</file-utc-time>
+		<statistics>
+			<timestamp date="2019-04-18" time="13:20:10" utc="1" interval="31">
+				<power-management>
+					<cpu-weighted-frequency unit="MHz">
+						<cpuwfreq number="all" weighted-frequency="1160.30"/>
+						<cpuwfreq number="0" weighted-frequency="1200.33"/>
+						<cpuwfreq number="1" weighted-frequency="872.73"/>
+						<cpuwfreq number="2" weighted-frequency="1200.33"/>
+						<cpuwfreq number="3" weighted-frequency="1200.33"/>
+						<cpuwfreq number="4" weighted-frequency="1200.33"/>
+						<cpuwfreq number="5" weighted-frequency="1200.33"/>
+						<cpuwfreq number="6" weighted-frequency="1200.33"/>
+						<cpuwfreq number="7" weighted-frequency="1200.33"/>
+					</cpu-weighted-frequency>
+				</power-management>
+			</timestamp>
+			<timestamp date="2019-04-18" time="13:20:11" utc="1" interval="31">
+				<power-management>
+					<cpu-weighted-frequency unit="MHz">
+						<cpuwfreq number="all" weighted-frequency="2001.00"/>
+						<cpuwfreq number="0" weighted-frequency="0.00"/>
+						<cpuwfreq number="1" weighted-frequency="2001.00"/>
+						<cpuwfreq number="2" weighted-frequency="0.00"/>
+						<cpuwfreq number="3" weighted-frequency="0.00"/>
+						<cpuwfreq number="4" weighted-frequency="0.00"/>
+						<cpuwfreq number="5" weighted-frequency="0.00"/>
+						<cpuwfreq number="6" weighted-frequency="0.00"/>
+						<cpuwfreq number="7" weighted-frequency="0.00"/>
+					</cpu-weighted-frequency>
+				</power-management>
+			</timestamp>
+		</statistics>
+		<restarts>
+		</restarts>
+	</host>
+</sysstat>

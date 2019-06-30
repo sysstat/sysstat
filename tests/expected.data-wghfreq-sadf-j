@@ -1,0 +1,49 @@
+{"sysstat": {
+	"hosts": [
+		{
+			"nodename": "SYSSTAT.TEST",
+			"sysname": "Linux",
+			"release": "1.2.3-TEST",
+			"machine": "x86_64",
+			"number-of-cpus": 8,
+			"file-date": "2019-04-18",
+			"file-utc-time": "13:20:09",
+			"statistics": [
+				{
+					"timestamp": {"date": "2019-04-18", "time": "13:20:10", "utc": 1, "interval": 31},
+					"power-management": {
+						"cpu-weighted-frequency": [
+							{"number": "all", "weighted-frequency": 1160.30},
+							{"number": "0", "weighted-frequency": 1200.33},
+							{"number": "1", "weighted-frequency": 872.73},
+							{"number": "2", "weighted-frequency": 1200.33},
+							{"number": "3", "weighted-frequency": 1200.33},
+							{"number": "4", "weighted-frequency": 1200.33},
+							{"number": "5", "weighted-frequency": 1200.33},
+							{"number": "6", "weighted-frequency": 1200.33},
+							{"number": "7", "weighted-frequency": 1200.33}
+						]
+					}
+				},
+				{
+					"timestamp": {"date": "2019-04-18", "time": "13:20:11", "utc": 1, "interval": 31},
+					"power-management": {
+						"cpu-weighted-frequency": [
+							{"number": "all", "weighted-frequency": 2001.00},
+							{"number": "0", "weighted-frequency": 0.00},
+							{"number": "1", "weighted-frequency": 2001.00},
+							{"number": "2", "weighted-frequency": 0.00},
+							{"number": "3", "weighted-frequency": 0.00},
+							{"number": "4", "weighted-frequency": 0.00},
+							{"number": "5", "weighted-frequency": 0.00},
+							{"number": "6", "weighted-frequency": 0.00},
+							{"number": "7", "weighted-frequency": 0.00}
+						]
+					}
+				}
+			],
+			"restarts": [
+			]
+		}
+	]
+}}
