@@ -7,7 +7,8 @@
 #
 #  This file gives iostat and sadc a clue about how to find whole
 #   disk devices in /proc/partitions and /proc/diskstats
-#  Authoritative source is: linux/Documentation/devices.txt
+#  Authoritative source is: linux/Documentation/devices.txt or
+#  linux/Documentation/admin-guide/devices.txt
 #
 # line format, general record:
 #   major:name:ctrlpre:ctrlno:devfmt:devcnt:partpre:partcnt:description
