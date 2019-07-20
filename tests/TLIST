@@ -1,3 +1,6 @@
+NOTES:
+	* The interval of time is calculated using ./proc/uptime files, not the value given on the command line.
+
 =====
 00010	./sar -V >/dev/null
 00011	./iostat -V >/dev/null
