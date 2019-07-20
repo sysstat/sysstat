@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C ./iostat -d -j LABEL OS SYSTEM 1 2 > tests/out.iostat-jLABEL-list.tmp

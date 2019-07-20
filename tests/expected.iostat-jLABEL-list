@@ -1,0 +1,12 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+      tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd Device
+     0.01         0.29         0.00         0.00       2108          0          0 SYSTEM
+     0.01         0.29         0.00         0.00       2092          0          0 OS
+
+
+      tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd Device
+     0.00         0.00         0.00         0.00          0          0          0 SYSTEM
+     0.00         0.00         0.00         0.00          0          0          0 OS
+
+

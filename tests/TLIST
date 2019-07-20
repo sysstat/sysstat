@@ -288,6 +288,8 @@ NOTES:
 02345	diff -u tests/out.iostat-xs-p-sda.tmp tests/expected.iostat-xs-p-sda
 02370	LC_ALL=C ./iostat -xs sda1 sda3 sdc1 -p sdb,sdd > tests/out.iostat-xs-list.tmp
 02375	diff -u tests/out.iostat-xs-list.tmp tests/expected.iostat-xs-list
+02380	LC_ALL=C ./iostat -xs sda3 sda1 1 3 > tests/out.iostat-xs-list-part.tmp
+02385	diff -u tests/out.iostat-xs-list-part.tmp tests/expected.iostat-xs-list-part
 
 =====	Playing with iostat
 02410	LC_ALL=C ./iostat 2 > tests/out.iostat-sigint.tmp
@@ -330,3 +332,7 @@ NOTES:
 02635	diff -u tests/out.iostat-kz.tmp tests/expected.iostat-kz
 02640	LC_ALL=C ./iostat -dN -p ALL > tests/out.iostat-N.tmp
 02645	diff -u tests/out.iostat-N.tmp tests/expected.iostat-N
+02650	LC_ALL=C ./iostat -d -j LABEL OS SYSTEM 1 2 > tests/out.iostat-jLABEL-list.tmp
+02655	diff -u tests/out.iostat-jLABEL-list.tmp tests/expected.iostat-jLABEL-list
+02660	LC_ALL=C ./iostat -dxs -j UUID 2578463f-6947-48c7-8b09-876a4145cfb1 1 2 > tests/out.iostat-jUUID-list.tmp
+02665	diff -u tests/out.iostat-jUUID-list.tmp tests/expected.iostat-jUUID-list
