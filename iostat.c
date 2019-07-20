@@ -526,7 +526,7 @@ int read_sysfs_part_stat(int curr, struct io_device *d)
 
 	/* Read stats for device */
 	snprintf(dfile, sizeof(dfile), "%s/%d:%d/%s",
-		 SYSFS_DEV_BLOCK, major, minor, S_STAT);
+		 SYSFS_DEV_BLOCK, d->major, d->minor, S_STAT);
 	dfile[sizeof(dfile) - 1] = '\0';
 
 	return read_sysfs_file_stat(dfile, d->dev_stats[curr]);
@@ -548,7 +548,7 @@ void read_sysfs_dlist_stat(int curr)
 
 	for (dlist = dev_list; dlist != NULL; dlist = dlist->next) {
 		if (dlist->exist)
-			/* Device statis already read */
+			/* Device stats already read */
 			continue;
 
 		else if (dlist->dev_tp == T_PART) {
