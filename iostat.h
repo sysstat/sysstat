@@ -155,27 +155,4 @@ struct ext_io_stats {
 	double darqsz;
 };
 
-/*
- * Each io_stats structure has an associated io_hdr_stats structure.
- * An io_hdr_stats structure tells if the corresponding device has been
- * unregistered or not (status field) and also indicates the device name.
- */
-struct io_hdr_stats {
-	unsigned int status		__attribute__ ((aligned (4)));
-	unsigned int used		__attribute__ ((packed));
-	char name[MAX_NAME_LEN];
-};
-
-#define IO_HDR_STATS_SIZE	(sizeof(struct io_hdr_stats))
-
-/* List of devices entered on the command line */
-struct io_dlist {
-	/* Indicate whether its partitions are to be displayed or not */
-	int disp_part			__attribute__ ((aligned (4)));
-	/* Device name */
-	char dev_name[MAX_NAME_LEN];
-};
-
-#define IO_DLIST_SIZE	(sizeof(struct io_dlist))
-
 #endif  /* _IOSTAT_H */
