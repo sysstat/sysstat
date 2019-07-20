@@ -88,6 +88,7 @@
 #define SYSFS_MANUFACTURER	"manufacturer"
 #define SYSFS_PRODUCT		"product"
 #define SYSFS_FCHOST		PRE "/sys/class/fc_host"
+#define SLASH_DEV		PRE "/dev/"
 
 #define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024

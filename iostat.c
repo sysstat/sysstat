@@ -55,12 +55,8 @@ char *sccsid(void) { return (SCCSID); }
 struct stats_cpu *st_cpu[2];
 unsigned long long uptime_cs[2] = {0, 0};
 unsigned long long tot_jiffies[2] = {0, 0};
-struct io_stats *st_iodev[2];
-struct io_hdr_stats *st_hdr_iodev;
-struct io_dlist *st_dev_list;
+struct io_device *dev_list;
 
-/* Last group name entered on the command line */
-char group_name[MAX_NAME_LEN];
 /* Number of decimal places */
 int dplaces_nr = -1;
 
@@ -171,334 +167,145 @@ void init_stats(void)
 
 /*
  ***************************************************************************
- * Set every device entry to unregistered status. But don't change status
- * for group entries (whose status is DISK_GROUP).
+ * Set every device entry to nonexistent status.
  *
  * IN:
- * @iodev_nr		Number of devices and partitions.
- * @st_hdr_iodev	Pointer on first structure describing a device/partition.
+ * @dlist	Pointer on the start of the linked list.
  ***************************************************************************
  */
-void set_entries_unregistered(int iodev_nr, struct io_hdr_stats *st_hdr_iodev)
+void set_devices_nonexistent(struct io_device *dlist)
 {
-	int i;
-	struct io_hdr_stats *shi = st_hdr_iodev;
-
-	for (i = 0; i < iodev_nr; i++, shi++) {
-		if (shi->status == DISK_REGISTERED) {
-			shi->status = DISK_UNREGISTERED;
-		}
+	while (dlist != NULL) {
+		dlist->exist = FALSE;
+		dlist = dlist->next;
 	}
 }
 
 /*
  ***************************************************************************
- * Free unregistered entries (mark them as unused).
+ * Check if a device is present in the list, and add it if requested.
+ * Also look for its type (device or partition) and save it.
  *
  * IN:
- * @iodev_nr		Number of devices and partitions.
- * @st_hdr_iodev	Pointer on first structure describing a device/partition.
+ * @dlist	Address of pointer on the start of the linked list.
+ * @name	Device name.
+ * @dtype	T_PART_DEV (=2) if the device and all its partitions should
+ *		also be read (option -p used), T_GROUP (=3) if it's a group
+ *		name, and 0 otherwise.
+ *
+ * RETURNS:
+ * Pointer on the io_device structure in the list where the device is located
+ * (whether it was already in the list or if it has been added).
+ * NULL if the device name is too long or if the device doesn't exist and we
+ * don't want to add it.
  ***************************************************************************
  */
-void free_unregistered_entries(int iodev_nr, struct io_hdr_stats *st_hdr_iodev)
+struct io_device *add_list_device(struct io_device **dlist, char *name, int dtype)
 {
+	struct io_device *d, *ds;
 	int i;
-	struct io_hdr_stats *shi = st_hdr_iodev;
 
-	for (i = 0; i < iodev_nr; i++, shi++) {
-		if (shi->status == DISK_UNREGISTERED) {
-			shi->used = FALSE;
+	if (strnlen(name, MAX_NAME_LEN) == MAX_NAME_LEN)
+		/* Device name is too long */
+		return NULL;
+
+	while (*dlist != NULL) {
+		d = *dlist;
+		if ((i = strcmp(d->name, name)) == 0) {
+			/* Device found in list */
+			if ((dtype == T_PART_DEV) && (d->dev_tp == T_DEV)) {
+				d->dev_tp = dtype;
+			}
+			d->exist = TRUE;
+			return d;
 		}
+		if (!GROUP_DEFINED(flags) && !DISPLAY_EVERYTHING(flags) && (i > 0))
+			/*
+			 * If no group defined and we don't use /proc/diskstats,
+			 * insert current device in alphabetical order.
+			 * NB: Using /proc/diskstats ("iostat -p ALL") is a bit better than
+			 * using alphabetical order because sda10 comes after sda9...
+			 */
+			break;
+
+		dlist = &(d->next);
 	}
-}
 
-/*
- ***************************************************************************
- * Allocate and init I/O device structures.
- *
- * IN:
- * @dev_nr	Number of devices and partitions (also including groups
- *		if option -g has been used).
- ***************************************************************************
- */
-void salloc_device(int dev_nr)
-{
-	int i;
+	/* Device not found */
+	ds = *dlist;
 
+	/* Add device to the list */
+	if ((*dlist = (struct io_device *) malloc(sizeof(struct io_device))) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
+	memset(*dlist, 0, sizeof(struct io_device));
+
+	d = *dlist;
 	for (i = 0; i < 2; i++) {
-		if ((st_iodev[i] =
-		     (struct io_stats *) malloc(IO_STATS_SIZE * dev_nr)) == NULL) {
+		if ((d->dev_stats[i] = (struct io_stats *) malloc(sizeof(struct io_stats))) == NULL) {
 			perror("malloc");
 			exit(4);
 		}
-		memset(st_iodev[i], 0, IO_STATS_SIZE * dev_nr);
+		memset(d->dev_stats[i], 0, sizeof(struct io_stats));
 	}
+	strcpy(d->name, name);
+	d->exist = TRUE;
+	d->next = ds;
 
-	if ((st_hdr_iodev =
-	     (struct io_hdr_stats *) malloc(IO_HDR_STATS_SIZE * dev_nr)) == NULL) {
-		perror("malloc");
-		exit(4);
+	if (dtype == T_GROUP) {
+		d->dev_tp = dtype;
 	}
-	memset(st_hdr_iodev, 0, IO_HDR_STATS_SIZE * dev_nr);
-}
-
-/*
- ***************************************************************************
- * Allocate structures for devices entered on the command line.
- *
- * IN:
- * @list_len	Number of arguments on the command line.
- ***************************************************************************
- */
-void salloc_dev_list(int list_len)
-{
-	if ((st_dev_list = (struct io_dlist *) malloc(IO_DLIST_SIZE * list_len)) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
-	memset(st_dev_list, 0, IO_DLIST_SIZE * list_len);
-}
-
-/*
- ***************************************************************************
- * Free structures used for devices entered on the command line.
- ***************************************************************************
- */
-void sfree_dev_list(void)
-{
-	free(st_dev_list);
-}
-
-/*
- ***************************************************************************
- * Look for the device in the device list and store it if not found.
- *
- * IN:
- * @dlist_idx	Length of the device list.
- * @device_name	Name of the device.
- *
- * OUT:
- * @dlist_idx	Length of the device list.
- *
- * RETURNS:
- * Position of the device in the list.
- ***************************************************************************
- */
-int update_dev_list(int *dlist_idx, char *device_name)
-{
-	int i;
-	struct io_dlist *sdli = st_dev_list;
-
-	for (i = 0; i < *dlist_idx; i++, sdli++) {
-		if (!strcmp(sdli->dev_name, device_name))
-			break;
-	}
-
-	if (i == *dlist_idx) {
-		/*
-		 * Device not found: Store it.
-		 * Group names will be distinguished from real device names
-		 * thanks to their names which begin with a space.
-		 */
-		(*dlist_idx)++;
-		strncpy(sdli->dev_name, device_name, MAX_NAME_LEN - 1);
-	}
-
-	return i;
-}
-
-/*
- ***************************************************************************
- * Allocate and init structures, according to system state.
- *
- * IN:
- * @iodev_nr		Number of devices and partitions.
- ***************************************************************************
- */
-void io_sys_init(int *iodev_nr)
-{
-	/* Allocate and init stat common counters */
-	init_stats();
-
-	/* How many processors on this machine? */
-	cpu_nr = get_cpu_nr(~0, FALSE);
-
-	/* Get number of block devices and partitions in /proc/diskstats */
-	if ((*iodev_nr = get_diskstats_dev_nr(CNT_PART, CNT_ALL_DEV)) > 0) {
-		flags |= I_F_HAS_DISKSTATS;
-		*iodev_nr += NR_DEV_PREALLOC;
-	}
-
-	if (!HAS_DISKSTATS(flags) ||
-	    (DISPLAY_PARTITIONS(flags) && !DISPLAY_PART_ALL(flags))) {
-		/*
-		 * If /proc/diskstats exists but we also want stats for the partitions
-		 * of a particular device, stats will have to be found in /sys. So we
-		 * need to know if /sys is mounted or not, and set flags accordingly.
-		 */
-
-		/* Get number of block devices (and partitions) in sysfs */
-		if ((*iodev_nr = get_sysfs_dev_nr(DISPLAY_PARTITIONS(flags))) > 0) {
-			flags |= I_F_HAS_SYSFS;
-			*iodev_nr += NR_DEV_PREALLOC;
-		}
-		else {
-			fprintf(stderr, _("Cannot find disk data\n"));
-			exit(2);
-		}
-	}
-
-	/* Also allocate stat structures for "group" devices */
-	*iodev_nr += group_nr;
-
-	/*
-	 * Allocate structures for number of disks found, but also
-	 * for groups of devices if option -g has been entered on the command line.
-	 * iodev_nr must be <> 0.
-	 */
-	salloc_device(*iodev_nr);
-}
-
-/*
- ***************************************************************************
- * When group stats are to be displayed (option -g entered on the command
- * line), save devices and group names in the io_hdr_stats structures. This
- * is normally done later when stats are actually read from /proc or /sys
- * files (via a call to save_stats() function), but here we want to make
- * sure that the structures are ordered and that each device belongs to its
- * proper group.
- * Note that we can still have an unexpected device that gets attached to a
- * group as devices can be registered or unregistered dynamically.
- *
- * IN:
- * @iodev_nr	Number of devices and partitions.
- * @dlist_idx	Number of devices entered on the command line.
- ***************************************************************************
- */
-void presave_device_list(int iodev_nr, int *dlist_idx)
-{
-	int i;
-	struct io_hdr_stats *shi = st_hdr_iodev;
-	struct io_dlist *sdli = st_dev_list;
-
-	if (*dlist_idx > 0) {
-		/* First, save the last group name entered on the command line in the list */
-		update_dev_list(dlist_idx, group_name);
-
-		/* Now save devices and group names in the io_hdr_stats structures */
-		for (i = 0; (i < *dlist_idx) && (i < iodev_nr); i++, shi++, sdli++) {
-			strncpy(shi->name, sdli->dev_name, MAX_NAME_LEN);
-			shi->name[MAX_NAME_LEN - 1] = '\0';
-			shi->used = TRUE;
-			if (shi->name[0] == ' ') {
-				/* Current device name is in fact the name of a group */
-				shi->status = DISK_GROUP;
-			}
-			else {
-				shi->status = DISK_REGISTERED;
-			}
-		}
+	else if (is_device(name, ACCEPT_VIRTUAL_DEVICES)) {
+		d->dev_tp = (dtype == T_PART_DEV ? T_PART_DEV : T_DEV);
 	}
 	else {
-		/*
-		 * No device names have been entered on the command line but
-		 * the name of a group. Save that name at the end of the
-		 * data table so that all devices that will be read will be
-		 * included in that group.
-		 */
-		shi += iodev_nr - 1;
-		strncpy(shi->name, group_name, MAX_NAME_LEN);
-		shi->name[MAX_NAME_LEN - 1] = '\0';
-		shi->used = TRUE;
-		shi->status = DISK_GROUP;
+		/* This is a partition (T_PART) */
+		d->dev_tp = T_PART;
 	}
+
+	return d;
 }
 
 /*
  ***************************************************************************
- * Free various structures.
- ***************************************************************************
-*/
-void io_sys_free(void)
-{
-	int i;
-
-	for (i = 0; i < 2; i++) {
-		/* Free CPU structures */
-		free(st_cpu[i]);
-
-		/* Free I/O device structures */
-		free(st_iodev[i]);
-	}
-
-	free(st_hdr_iodev);
-}
-
-/*
- ***************************************************************************
- * Save stats for current device or partition.
+ * Get device major and minor numbers.
  *
  * IN:
- * @name		Name of the device/partition.
- * @curr		Index in array for current sample statistics.
- * @st_io		Structure with device or partition to save.
- * @iodev_nr		Number of devices and partitions.
- * @st_hdr_iodev	Pointer on structures describing a device/partition.
+ * @filename	Name of the device ("sda", "/dev/sdb1"...)
  *
  * OUT:
- * @st_hdr_iodev	Pointer on structures describing a device/partition.
+ * @major	Major number of the device.
+ * @minor	Minor number of the device.
+ *
+ * RETURNS:
+ * 0 on success, and -1 otherwise.
  ***************************************************************************
  */
-void save_stats(char *name, int curr, void *st_io, int iodev_nr,
-		struct io_hdr_stats *st_hdr_iodev)
+int get_major_minor_nr(char filename[], int *major, int *minor)
 {
-	int i;
-	struct io_hdr_stats *st_hdr_iodev_i;
-	struct io_stats *st_iodev_i;
+	struct stat statbuf;
+	char *bang;
+	char dfile[MAX_PF_NAME];
 
-	/* Look for device in data table */
-	for (i = 0; i < iodev_nr; i++) {
-		st_hdr_iodev_i = st_hdr_iodev + i;
-		if (!strcmp(st_hdr_iodev_i->name, name)) {
-			break;
-		}
-	}
+	snprintf(dfile, sizeof(dfile), "%s%s", filename[0] == '/' ? "" : SLASH_DEV, filename);
+	dfile[sizeof(dfile) - 1] = '\0';
 
-	if (i == iodev_nr) {
+	while ((bang = strchr(dfile, '!'))) {
 		/*
-		 * This is a new device: Look for an unused entry to store it.
-		 * Thus we are able to handle dynamically registered devices.
+		 * Some devices may have had a slash replaced with a bang character (eg. cciss!c0d0...)
+		 * Restore their original names so that they can be found in /dev directory.
 		 */
-		for (i = 0; i < iodev_nr; i++) {
-			st_hdr_iodev_i = st_hdr_iodev + i;
-			if (!st_hdr_iodev_i->used) {
-				/* Unused entry found... */
-				st_hdr_iodev_i->used = TRUE; /* Indicate it is now used */
-				strncpy(st_hdr_iodev_i->name, name, MAX_NAME_LEN - 1);
-				st_hdr_iodev_i->name[MAX_NAME_LEN - 1] = '\0';
-				st_iodev_i = st_iodev[!curr] + i;
-				memset(st_iodev_i, 0, IO_STATS_SIZE);
-				break;
-			}
-		}
+		*bang = '/';
 	}
-	if (i < iodev_nr) {
-		st_hdr_iodev_i = st_hdr_iodev + i;
-		if (st_hdr_iodev_i->status == DISK_UNREGISTERED) {
-			st_hdr_iodev_i->status = DISK_REGISTERED;
-			if (st_hdr_iodev_i->used == FALSE) {
-				st_iodev_i = st_iodev[!curr] + i;
-				memset(st_iodev_i, 0, IO_STATS_SIZE);
-				st_hdr_iodev_i->used = TRUE;
-			}
-		}
-		st_iodev_i = st_iodev[curr] + i;
-		*st_iodev_i = *((struct io_stats *) st_io);
-	}
-	/*
-	 * else it was a new device
-	 * but there was no free structure to store it.
-	 */
+
+	if (__stat(dfile, &statbuf) < 0)
+		return -1;
+
+	*major = major(statbuf.st_rdev);
+	*minor = minor(statbuf.st_rdev);
+
+	return 0;
 }
 
 /*
@@ -506,16 +313,17 @@ void save_stats(char *name, int curr, void *st_io, int iodev_nr,
  * Read sysfs stat for current block device or partition.
  *
  * IN:
- * @curr	Index in array for current sample statistics.
  * @filename	File name where stats will be read.
- * @dev_name	Device or partition name.
- * @iodev_nr	Number of devices and partitions.
+ * @ios		Structure where stats will be saved.
+ *
+ * OUT:
+ * @ios		Structure where stats have been saved.
  *
  * RETURNS:
- * 0 if file couldn't be opened, 1 otherwise.
+ * 0 on success, -1 otherwise.
  ***************************************************************************
  */
-int read_sysfs_file_stat(int curr, char *filename, char *dev_name, int iodev_nr)
+int read_sysfs_file_stat(char *filename, struct io_stats *ios)
 {
 	FILE *fp;
 	struct io_stats sdev;
@@ -527,7 +335,7 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name, int iodev_nr)
 
 	/* Try to read given stat file */
 	if ((fp = fopen(filename, "r")) == NULL)
-		return 0;
+		return -1;
 
 	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %lu",
 		   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
@@ -566,55 +374,162 @@ int read_sysfs_file_stat(int curr, char *filename, char *dev_name, int iodev_nr)
 		sdev.wr_sectors = rd_ticks_or_wr_sec;
 	}
 
-	if ((i >= 11) || !DISPLAY_EXTENDED(flags)) {
-		/*
-		 * In fact, we _don't_ save stats if it's a partition without
-		 * extended stats and yet we want to display ext stats.
-		 */
-		save_stats(dev_name, curr, &sdev, iodev_nr, st_hdr_iodev);
-	}
+	*ios = sdev;
 
 	fclose(fp);
 
-	return 1;
+	return 0;
 }
 
 /*
  ***************************************************************************
- * Read sysfs stats for all the partitions of a device.
+ * Read sysfs stats for all the partitions of a whole device. Devices are
+ * saved in the linked list.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
- * @dev_name	Device name.
- * @iodev_nr	Number of devices and partitions.
+ * @dname	Whole device name.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
  ***************************************************************************
  */
-void read_sysfs_dlist_part_stat(int curr, char *dev_name, int iodev_nr)
+int read_sysfs_device_part_stat(int curr, char *dname)
 {
 	DIR *dir;
 	struct dirent *drd;
+	struct io_stats sdev;
+	struct io_device *d;
 	char dfile[MAX_PF_NAME], filename[MAX_PF_NAME + 512];
+	int major, minor;
 
-	snprintf(dfile, sizeof(dfile), "%s/%s", SYSFS_BLOCK, dev_name);
+	snprintf(dfile, sizeof(dfile), "%s/%s", SYSFS_BLOCK, dname);
 	dfile[sizeof(dfile) - 1] = '\0';
 
 	/* Open current device directory in /sys/block */
 	if ((dir = __opendir(dfile)) == NULL)
-		return;
+		return -1;
 
 	/* Get current entry */
 	while ((drd = __readdir(dir)) != NULL) {
+
 		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 			continue;
 		snprintf(filename, sizeof(filename), "%s/%s/%s", dfile, drd->d_name, S_STAT);
 		filename[sizeof(filename) - 1] = '\0';
 
 		/* Read current partition stats */
-		read_sysfs_file_stat(curr, filename, drd->d_name, iodev_nr);
+		if (read_sysfs_file_stat(filename, &sdev) < 0)
+			continue;
+
+		d = add_list_device(&dev_list, drd->d_name, 0);
+		if (d != NULL) {
+			*(d->dev_stats[curr]) = sdev;
+		}
+
+		if (!d->major) {
+			/* Get major and minor numbers for given device */
+			if (get_major_minor_nr(d->name, &major, &minor) == 0) {
+				d->major = major;
+				d->minor = minor;
+			}
+		}
 	}
 
 	/* Close device directory */
 	__closedir(dir);
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Read sysfs stats for every whole device. Devices are	saved in the linked
+ * list.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
+ ***************************************************************************
+ */
+int read_sysfs_all_devices_stat(int curr)
+{
+	DIR *dir;
+	struct dirent *drd;
+	struct io_stats sdev;
+	struct io_device *d;
+	char dfile[MAX_PF_NAME];
+	int major, minor;
+
+	/* Open /sys/block directory */
+	if ((dir = __opendir(SYSFS_BLOCK)) == NULL)
+		return -1;
+
+	/* Get current entry */
+	while ((drd = __readdir(dir)) != NULL) {
+
+		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
+			continue;
+		snprintf(dfile, sizeof(dfile), "%s/%s/%s", SYSFS_BLOCK, drd->d_name, S_STAT);
+		dfile[sizeof(dfile) - 1] = '\0';
+
+		/* Read current whole device stats */
+		if (read_sysfs_file_stat(dfile, &sdev) < 0)
+			continue;
+
+		d = add_list_device(&dev_list, drd->d_name, 0);
+		if (d != NULL) {
+			*(d->dev_stats[curr]) = sdev;
+		}
+
+		if (!d->major) {
+			/* Get major and minor numbers for given device */
+			if (get_major_minor_nr(d->name, &major, &minor) == 0) {
+				d->major = major;
+				d->minor = minor;
+			}
+		}
+	}
+
+	/* Close device directory */
+	__closedir(dir);
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Read sysfs stats for a partition using /sys/dev/block/M:m/ directory.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ * @d		Device structure.
+ *
+ * RETURNS:
+ * 0 on success, and -1 otherwise.
+ ***************************************************************************
+ */
+int read_sysfs_part_stat(int curr, struct io_device *d)
+{
+	char dfile[MAX_PF_NAME];
+	int major, minor;
+
+	if (!d->major) {
+		/* Get major and minor numbers for given device */
+		if (get_major_minor_nr(d->name, &major, &minor) < 0)
+			return -1;
+		d->major = major;
+		d->minor = minor;
+	}
+
+	/* Read stats for device */
+	snprintf(dfile, sizeof(dfile), "%s/%d:%d/%s",
+		 SYSFS_DEV_BLOCK, major, minor, S_STAT);
+	dfile[sizeof(dfile) - 1] = '\0';
+
+	return read_sysfs_file_stat(dfile, d->dev_stats[curr]);
 }
 
 /*
@@ -624,123 +539,73 @@ void read_sysfs_dlist_part_stat(int curr, char *dev_name, int iodev_nr)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
- * @iodev_nr	Number of devices and partitions.
- * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void read_sysfs_dlist_stat(int curr, int iodev_nr, int dlist_idx)
+void read_sysfs_dlist_stat(int curr)
 {
-	int dev, ok;
-	char filename[MAX_PF_NAME];
-	char *slash;
-	struct io_dlist *st_dev_list_i;
+	struct io_device *dlist;
+	char dfile[MAX_PF_NAME];
 
-	/* Every I/O device (or partition) is potentially unregistered */
-	set_entries_unregistered(iodev_nr, st_hdr_iodev);
+	for (dlist = dev_list; dlist != NULL; dlist = dlist->next) {
+		if (dlist->exist)
+			/* Device statis already read */
+			continue;
 
-	for (dev = 0; dev < dlist_idx; dev++) {
-		st_dev_list_i = st_dev_list + dev;
-
-		/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
-		while ((slash = strchr(st_dev_list_i->dev_name, '/'))) {
-			*slash = '!';
-		}
-
-		snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
-			 SYSFS_BLOCK, st_dev_list_i->dev_name, S_STAT);
-		filename[MAX_PF_NAME - 1] = '\0';
-
-		/* Read device stats */
-		ok = read_sysfs_file_stat(curr, filename, st_dev_list_i->dev_name, iodev_nr);
-
-		if (ok && st_dev_list_i->disp_part) {
-			/* Also read stats for its partitions */
-			read_sysfs_dlist_part_stat(curr, st_dev_list_i->dev_name, iodev_nr);
-		}
-	}
-
-	/* Free structures corresponding to unregistered devices */
-	free_unregistered_entries(iodev_nr, st_hdr_iodev);
-}
-
-/*
- ***************************************************************************
- * Read stats from the sysfs filesystem for every block devices found.
- *
- * IN:
- * @curr	Index in array for current sample statistics.
- * @iodev_nr		Number of devices and partitions.
- ***************************************************************************
- */
-void read_sysfs_stat(int curr, int iodev_nr)
-{
-	DIR *dir;
-	struct dirent *drd;
-	char filename[MAX_PF_NAME];
-	int ok;
-
-	/* Every I/O device entry is potentially unregistered */
-	set_entries_unregistered(iodev_nr, st_hdr_iodev);
-
-	/* Open /sys/block directory */
-	if ((dir = __opendir(SYSFS_BLOCK)) != NULL) {
-
-		/* Get current entry */
-		while ((drd = __readdir(dir)) != NULL) {
-			if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
-				continue;
-			snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
-				 SYSFS_BLOCK, drd->d_name, S_STAT);
-			filename[MAX_PF_NAME - 1] = '\0';
-
-			/* If current entry is a directory, try to read its stat file */
-			ok = read_sysfs_file_stat(curr, filename, drd->d_name, iodev_nr);
-
+		else if (dlist->dev_tp == T_PART) {
 			/*
-			 * If '-p ALL' was entered on the command line,
-			 * also try to read stats for its partitions
+			 * This is a partition.
+			 * Read its stats using /sys/dev/block/M:n/ directory.
 			 */
-			if (ok && DISPLAY_PART_ALL(flags)) {
-				read_sysfs_dlist_part_stat(curr, drd->d_name, iodev_nr);
+			if (read_sysfs_part_stat(curr, dlist) == 0) {
+				dlist->exist = TRUE;
 			}
 		}
 
-		/* Close /sys/block directory */
-		__closedir(dir);
+		else if ((dlist->dev_tp == T_PART_DEV) || (dlist->dev_tp == T_DEV)) {
+			/* Read stats for current whole device using /sys/block/ directory */
+			snprintf(dfile, sizeof(dfile), "%s/%s/%s",
+				 SYSFS_BLOCK, dlist->name, S_STAT);
+			dfile[sizeof(dfile) - 1] = '\0';
+			if (read_sysfs_file_stat(dfile, dlist->dev_stats[curr]) == 0) {
+				dlist->exist = TRUE;
+			}
+
+			if (dlist->dev_tp == T_PART_DEV) {
+				/* Also read all its partitions now */
+				read_sysfs_device_part_stat(curr, dlist->name);
+			}
+		}
 	}
 
-	/* Free structures corresponding to unregistered devices */
-	free_unregistered_entries(iodev_nr, st_hdr_iodev);
+	/* Read all whole devices stats if requested ("iostat ALL ...") */
+	if (DISPLAY_ALL_DEVICES(flags)) {
+		read_sysfs_all_devices_stat(curr);
+	}
 }
 
 /*
  ***************************************************************************
- * Read stats from /proc/diskstats.
+ * Read stats from /proc/diskstats. Only used when "-p ALL" has been entered
+ * on the command line.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
- * @iodev_nr	Number of devices and partitions.
- * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void read_diskstats_stat(int curr, int iodev_nr, int dlist_idx)
+void read_diskstats_stat(int curr)
 {
 	FILE *fp;
 	char line[256], dev_name[MAX_NAME_LEN];
-	char *dm_name;
+	struct io_device *d;
 	struct io_stats sdev;
 	int i;
 	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
 	unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
 	unsigned long wr_merges, rd_sec_or_wr_ios, wr_sec;
 	unsigned long dc_ios, dc_merges, dc_sec, dc_ticks;
-	char *ioc_dname;
 	unsigned int major, minor;
 
 	memset(&sdev, 0, sizeof(struct io_stats));
-
-	/* Every I/O device entry is potentially unregistered */
-	set_entries_unregistered(iodev_nr, st_hdr_iodev);
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
@@ -755,10 +620,6 @@ void read_diskstats_stat(int curr, int iodev_nr, int dlist_idx)
 			   &dc_ios, &dc_merges, &dc_sec, &dc_ticks);
 
 		if (i >= 14) {
-			/* Device or partition */
-			if (!dlist_idx && !DISPLAY_PARTITIONS(flags) &&
-			    !is_device(dev_name, ACCEPT_VIRTUAL_DEVICES))
-				continue;
 			sdev.rd_ios     = rd_ios;
 			sdev.rd_merges  = rd_merges_or_rd_sec;
 			sdev.rd_sectors = rd_sec_or_wr_ios;
@@ -781,8 +642,7 @@ void read_diskstats_stat(int curr, int iodev_nr, int dlist_idx)
 		}
 		else if (i == 7) {
 			/* Partition without extended statistics */
-			if (DISPLAY_EXTENDED(flags) ||
-			    (!dlist_idx && !DISPLAY_PARTITIONS(flags)))
+			if (DISPLAY_EXTENDED(flags))
 				continue;
 
 			sdev.rd_ios     = rd_ios;
@@ -794,90 +654,49 @@ void read_diskstats_stat(int curr, int iodev_nr, int dlist_idx)
 			/* Unknown entry: Ignore it */
 			continue;
 
-		if ((ioc_dname = ioc_name(major, minor)) != NULL) {
-			if (strcmp(dev_name, ioc_dname) && strcmp(ioc_dname, K_NODEV)) {
-				/*
-				 * No match: Use name generated from sysstat.ioconf data
-				 * (if different from "nodev") works around known issues
-				 * with EMC PowerPath.
-				 */
-				strncpy(dev_name, ioc_dname, MAX_NAME_LEN - 1);
-				dev_name[MAX_NAME_LEN - 1] = '\0';
-			}
+		d = add_list_device(&dev_list, dev_name, 0);
+		if (d != NULL) {
+			*d->dev_stats[curr] = sdev;
+			d->major = major;
+			d->minor = minor;
 		}
-
-		if ((DISPLAY_DEVMAP_NAME(flags)) && (major == dm_major)) {
-			/*
-			 * If the device is a device mapper device, try to get its
-			 * assigned name of its logical device.
-			 */
-			dm_name = transform_devmapname(major, minor);
-			if (dm_name) {
-				strncpy(dev_name, dm_name, MAX_NAME_LEN - 1);
-				dev_name[MAX_NAME_LEN - 1] = '\0';
-			}
-		}
-
-		save_stats(dev_name, curr, &sdev, iodev_nr, st_hdr_iodev);
 	}
 	fclose(fp);
-
-	/* Free structures corresponding to unregistered devices */
-	free_unregistered_entries(iodev_nr, st_hdr_iodev);
 }
 
 /*
  ***************************************************************************
- * Compute stats for device groups using stats of every device belonging
- * to each of these groups.
+ * Add current device statistics to corresponding group.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
  * @iodev_nr		Number of devices and partitions.
  ***************************************************************************
  */
-void compute_device_groups_stats(int curr, int iodev_nr)
+void compute_device_groups_stats(int curr, struct io_device *d, struct io_device *g)
 {
-	struct io_stats gdev, *ioi;
-	struct io_hdr_stats *shi = st_hdr_iodev;
-	int i, nr_disks;
-
-	memset(&gdev, 0, IO_STATS_SIZE);
-	nr_disks = 0;
-
-	for (i = 0; i < iodev_nr; i++, shi++) {
-		if (shi->used && (shi->status == DISK_REGISTERED)) {
-			ioi = st_iodev[curr] + i;
-
-			if (!DISPLAY_UNFILTERED(flags)) {
-				if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios)
-					continue;
-			}
-
-			gdev.rd_ios     += ioi->rd_ios;
-			gdev.rd_merges  += ioi->rd_merges;
-			gdev.rd_sectors += ioi->rd_sectors;
-			gdev.rd_ticks   += ioi->rd_ticks;
-			gdev.wr_ios     += ioi->wr_ios;
-			gdev.wr_merges  += ioi->wr_merges;
-			gdev.wr_sectors += ioi->wr_sectors;
-			gdev.wr_ticks   += ioi->wr_ticks;
-			gdev.dc_ios     += ioi->dc_ios;
-			gdev.dc_merges  += ioi->dc_merges;
-			gdev.dc_sectors += ioi->dc_sectors;
-			gdev.dc_ticks   += ioi->dc_ticks;
-			gdev.ios_pgr    += ioi->ios_pgr;
-			gdev.tot_ticks  += ioi->tot_ticks;
-			gdev.rq_ticks   += ioi->rq_ticks;
-			nr_disks++;
-		}
-		else if (shi->status == DISK_GROUP) {
-			save_stats(shi->name, curr, &gdev, iodev_nr, st_hdr_iodev);
-			shi->used = nr_disks;
-			nr_disks = 0;
-			memset(&gdev, 0, IO_STATS_SIZE);
-		}
+	if (!DISPLAY_UNFILTERED(flags)) {
+		if (!d->dev_stats[curr]->rd_ios &&
+		    !d->dev_stats[curr]->wr_ios &&
+		    !d->dev_stats[curr]->dc_ios)
+			return;
 	}
+
+	g->dev_stats[curr]->rd_ios     += d->dev_stats[curr]->rd_ios;
+	g->dev_stats[curr]->rd_merges  += d->dev_stats[curr]->rd_merges;
+	g->dev_stats[curr]->rd_sectors += d->dev_stats[curr]->rd_sectors;
+	g->dev_stats[curr]->rd_ticks   += d->dev_stats[curr]->rd_ticks;
+	g->dev_stats[curr]->wr_ios     += d->dev_stats[curr]->wr_ios;
+	g->dev_stats[curr]->wr_merges  += d->dev_stats[curr]->wr_merges;
+	g->dev_stats[curr]->wr_sectors += d->dev_stats[curr]->wr_sectors;
+	g->dev_stats[curr]->wr_ticks   += d->dev_stats[curr]->wr_ticks;
+	g->dev_stats[curr]->dc_ios     += d->dev_stats[curr]->dc_ios;
+	g->dev_stats[curr]->dc_merges  += d->dev_stats[curr]->dc_merges;
+	g->dev_stats[curr]->dc_sectors += d->dev_stats[curr]->dc_sectors;
+	g->dev_stats[curr]->dc_ticks   += d->dev_stats[curr]->dc_ticks;
+	g->dev_stats[curr]->ios_pgr    += d->dev_stats[curr]->ios_pgr;
+	g->dev_stats[curr]->tot_ticks  += d->dev_stats[curr]->tot_ticks;
+	g->dev_stats[curr]->rq_ticks   += d->dev_stats[curr]->rq_ticks;
 }
 
 /*
@@ -1112,7 +931,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
  * @hpart	Indicate which part of the report should be displayed in
  *		human mode. A value of 0 indicates that output should not be
  *		broken in several parts.
- * @shi		Structures describing the devices and partitions.
+ * @d		Structure containing device description.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
  * @devname	Current device name.
@@ -1121,12 +940,26 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
  ***************************************************************************
  */
 void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
-			  struct io_hdr_stats *shi, struct io_stats *ioi,
+			  struct io_device *d, struct io_stats *ioi,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			  struct ext_io_stats *xios)
 {
+	int n;
+
+	/* If this is a group with no devices, skip it */
+	if (d->dev_tp == T_GROUP)
+		return;
+
 	if (!DISPLAY_HUMAN_READ(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
+	}
+
+	/* Compute number of devices in group */
+	if (d->dev_tp > T_GROUP) {
+		n = d->dev_tp - T_GROUP;
+	}
+	else {
+		n = 1;
 	}
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
@@ -1156,12 +989,8 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		/*
 		 * %util
 		 * Again: Ticks in milliseconds.
-		 * In the case of a device group (option -g), shi->used is the number of
-		 * devices in the group. Else shi->used equals 1.
 		 */
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
-			   shi->used ? xds->util / 10.0 / (double) shi->used
-				     : xds->util / 10.0);	/* shi->used should never be zero here */
+		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2, xds->util / 10.0 / (double) n);
 	}
 	else {
 		if ((hpart == 1) || !hpart) {
@@ -1240,12 +1069,14 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			/*
 			 * %util
 			 * Again: Ticks in milliseconds.
-			 * In the case of a device group (option -g), shi->used is the number of
-			 * devices in the group. Else shi->used equals 1.
 			 */
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
-				   shi->used ? xds->util / 10.0 / (double) shi->used
-				   : xds->util / 10.0);	/* shi->used should never be zero here */
+			if (d->dev_tp > T_GROUP) {
+				n = d->dev_tp - T_GROUP;
+			}
+			else {
+				n = 1;
+			}
+			cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2, xds->util / 10.0 / (double) n);
 		}
 	}
 
@@ -1264,7 +1095,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
  * @tab		Number of tabs to print.
  * @itv		Interval of time.
  * @fctr	Conversion factor.
- * @shi		Structures describing the devices and partitions.
+ * @d		Structure containing the device description.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
  * @devname	Current device name.
@@ -1273,11 +1104,16 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
  ***************************************************************************
  */
 void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
-			 struct io_hdr_stats *shi, struct io_stats *ioi,
+			 struct io_device *d, struct io_stats *ioi,
 			 struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			 struct ext_io_stats *xios)
 {
+	int n;
 	char line[256];
+
+	/* If this is a group with no devices, skip it */
+	if (d->dev_tp == T_GROUP)
+		return;
 
 	xprintf0(tab,
 		 "{\"disk_device\": \"%s\", ",
@@ -1342,9 +1178,14 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       xios->darqsz / 2,
 		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
-	printf("\"util\": %.2f}",
-		 shi->used ? xds->util / 10.0 / (double) shi->used
-			   : xds->util / 10.0);	/* shi->used should never be zero here */
+
+	if (d->dev_tp > T_GROUP) {
+		n = d->dev_tp - T_GROUP;
+	}
+	else {
+		n = 1;
+	}
+	printf("\"util\": %.2f}", xds->util / 10.0 / (double) n);
 }
 
 /*
@@ -1358,17 +1199,17 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
  * @hpart	Indicate which part of the report should be displayed in
  *		human mode. A value of 0 indicates that output should not be
  *		broken in several parts.
- * @shi		Structures describing the devices and partitions.
+ * @d		Structure containing device description.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
  * @tab		Number of tabs to print (JSON output only).
+ * @dname	Name to be used for display for current device.
  ***************************************************************************
  */
 void write_ext_stat(unsigned long long itv, int fctr, int hpart,
-		    struct io_hdr_stats *shi, struct io_stats *ioi,
-		    struct io_stats *ioj, int tab)
+		    struct io_device *d, struct io_stats *ioi,
+		    struct io_stats *ioj, int tab, char *dname)
 {
-	char *devname = NULL;
 	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
 	struct ext_io_stats xios;
@@ -1463,19 +1304,11 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		}
 	}
 
-	/* Get device name */
-	if (DISPLAY_PERSIST_NAME_I(flags)) {
-		devname = get_persistent_name_from_pretty(shi->name);
-	}
-	if (!devname) {
-		devname = shi->name;
-	}
-
 	if (DISPLAY_JSON_OUTPUT(flags)) {
-		write_json_ext_stat(tab, itv, fctr, shi, ioi, ioj, devname, &xds, &xios);
+		write_json_ext_stat(tab, itv, fctr, d, ioi, ioj, dname, &xds, &xios);
 	}
 	else {
-		write_plain_ext_stat(itv, fctr, hpart, shi, ioi, ioj, devname, &xds, &xios);
+		write_plain_ext_stat(itv, fctr, hpart, d, ioi, ioj, dname, &xds, &xios);
 	}
 }
 
@@ -1608,26 +1441,18 @@ void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
  * IN:
  * @itv		Interval of time.
  * @fctr	Conversion factor.
- * @shi		Structures describing the devices and partitions.
+ * @d		Structure containing device description.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
  * @tab		Number of tabs to print (JSON format only).
+ * @dname	Name to be used for display for current device.
  ***************************************************************************
  */
 void write_basic_stat(unsigned long long itv, int fctr,
-		      struct io_hdr_stats *shi, struct io_stats *ioi,
-		      struct io_stats *ioj, int tab)
+		      struct io_device *d, struct io_stats *ioi,
+		      struct io_stats *ioj, int tab, char *dname)
 {
-	char *devname = NULL;
 	unsigned long long rd_sec, wr_sec, dc_sec;
-
-	/* Print device name */
-	if (DISPLAY_PERSIST_NAME_I(flags)) {
-		devname = get_persistent_name_from_pretty(shi->name);
-	}
-	if (!devname) {
-		devname = shi->name;
-	}
 
 	/* Print stats coming from /sys or /proc/diskstats */
 	rd_sec = ioi->rd_sectors - ioj->rd_sectors;
@@ -1644,11 +1469,11 @@ void write_basic_stat(unsigned long long itv, int fctr,
 	}
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
-		write_json_basic_stat(tab, itv, fctr, ioi, ioj, devname,
+		write_json_basic_stat(tab, itv, fctr, ioi, ioj, dname,
 				      rd_sec, wr_sec, dc_sec);
 	}
 	else {
-		write_plain_basic_stat(itv, fctr, ioi, ioj, devname,
+		write_plain_basic_stat(itv, fctr, ioi, ioj, dname,
 				       rd_sec, wr_sec, dc_sec);
 	}
 }
@@ -1660,26 +1485,26 @@ void write_basic_stat(unsigned long long itv, int fctr,
  * IN:
  * @curr	Index in array for current sample statistics.
  * @rectime	Current date and time.
- * @iodev_nr	Number of devices and partitions.
- * @dlist_idx	Number of devices entered on the command line.
+ * @skip	TRUE if nothing should be displayed (option -y). We must
+ *		go through write_stats() anyway to compute groups statistics.
  ***************************************************************************
  */
-void write_stats(int curr, struct tm *rectime, int iodev_nr, int dlist_idx)
+void write_stats(int curr, struct tm *rectime, int skip)
 {
-	int dev, h, hl = 0, hh = 0, i, fctr = 1, tab = 4, next = FALSE;
+	int h, hl = 0, hh = 0, fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
-	struct io_hdr_stats *shi;
-	struct io_dlist *st_dev_list_i;
+	struct io_device *d, *dtmp, *g = NULL, *dnext = NULL;
+	char *dev_name, *pdname;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(flags) && !skip) {
 		xprintf(tab++, "{");
 	}
 
 	/* Print time stamp */
-	if (DISPLAY_TIMESTAMP(flags)) {
+	if (DISPLAY_TIMESTAMP(flags) && !skip) {
 		write_sample_timestamp(tab, rectime);
 #ifdef DEBUG
 		if (DISPLAY_DEBUG(flags)) {
@@ -1688,7 +1513,7 @@ void write_stats(int curr, struct tm *rectime, int iodev_nr, int dlist_idx)
 #endif
 	}
 
-	if (DISPLAY_CPU(flags)) {
+	if (DISPLAY_CPU(flags) && !skip) {
 		/* Display CPU utilization */
 		write_cpu_stat(curr, tab);
 
@@ -1704,7 +1529,9 @@ void write_stats(int curr, struct tm *rectime, int iodev_nr, int dlist_idx)
 	itv = get_interval(uptime_cs[!curr], uptime_cs[curr]);
 
 	if (DISPLAY_DISK(flags)) {
-		struct io_stats *ioi, *ioj;
+		struct io_stats *ioi, *ioj, iozero;
+
+		memset(&iozero, 0, sizeof(struct io_stats));
 
 		if (DISPLAY_HUMAN_READ(flags) &&
 		    DISPLAY_EXTENDED(flags) &&
@@ -1715,111 +1542,180 @@ void write_stats(int curr, struct tm *rectime, int iodev_nr, int dlist_idx)
 
 		for (h = hl; h <= hh; h++) {
 
-			shi = st_hdr_iodev;
+			if (!skip) {
+				/* Display disk stats header */
+				write_disk_stat_header(&fctr, &tab, h);
+			}
 
-			/* Display disk stats header */
-			write_disk_stat_header(&fctr, &tab, h);
+			for (d = dev_list; ; d = dnext) {
 
-			for (i = 0; i < iodev_nr; i++, shi++) {
-				if (shi->used) {
+				if (d == NULL) {
+					if (g == NULL)
+						/* No group processing in progress */
+						break;
+					/* Display last group before exit */
+					dnext = NULL;
+					d = g;
+					g = NULL;
+				}
+				else {
+					dnext = d->next;
 
-					if (dlist_idx && !HAS_SYSFS(flags)) {
+					if (d->dev_tp >= T_GROUP) {
 						/*
-						 * With /proc/diskstats, stats for every device
-						 * are read even if we have entered a list on devices
-						 * on the command line. Thus we need to check
-						 * if stats for current device are to be displayed.
+						 * This is a new group: Save group position
+						 * and display previous one.
 						 */
-						for (dev = 0; dev < dlist_idx; dev++) {
-							st_dev_list_i = st_dev_list + dev;
-							if (!strcmp(shi->name, st_dev_list_i->dev_name))
-								break;
+						if (g != NULL) {
+							dtmp = g;
+							g = d;
+							d = dtmp;
+							memset(g->dev_stats[curr], 0, sizeof(struct io_stats));
 						}
-						if (dev == dlist_idx)
-							/* Device not found in list: Don't display it */
-							continue;
+						else {
+							g = d;
+							memset(g->dev_stats[curr], 0, sizeof(struct io_stats));
+							continue;	/* No previous group to display */
+						}
 					}
+				}
 
-					ioi = st_iodev[curr] + i;
-					ioj = st_iodev[!curr] + i;
+				if (!d->exist && (d->dev_tp < T_GROUP))
+					/* Current device is non existent (e.g. it has been unregistered from the system */
+					continue;
 
-					if (!DISPLAY_UNFILTERED(flags)) {
-						if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios)
-							continue;
+				if ((g != NULL) && (h == hl) && (d->dev_tp < T_GROUP)) {
+					/* We are within a group: Increment number of disks in the group */
+					(g->dev_tp)++;
+					/* Add current device stats to group */
+					compute_device_groups_stats(curr, d, g);
+				}
+
+				if (DISPLAY_GROUP_TOTAL_ONLY(flags) && (g != NULL) && (d->dev_tp < T_GROUP))
+					continue;
+
+				ioi = d->dev_stats[curr];
+				ioj = d->dev_stats[!curr];
+
+				if (!DISPLAY_UNFILTERED(flags)) {
+					if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios)
+						continue;
+				}
+
+				if (DISPLAY_ZERO_OMIT(flags)) {
+					if ((ioi->rd_ios == ioj->rd_ios) &&
+					    (ioi->wr_ios == ioj->wr_ios) &&
+					    (ioi->dc_ios == ioj->dc_ios))
+						/* No activity: Ignore it */
+						continue;
+				}
+
+				/* Try to detect if device has been removed then inserted again */
+				if (((ioi->rd_ios + ioi->wr_ios + ioi->dc_ios) < (ioj->rd_ios + ioj->wr_ios + ioj->dc_ios)) &&
+				    (!ioj->rd_sectors || (ioi->rd_sectors < ioj->rd_sectors)) &&
+				    (!ioj->wr_sectors || (ioi->wr_sectors < ioj->wr_sectors)) &&
+				    (!ioj->dc_sectors || (ioi->dc_sectors < ioj->dc_sectors))) {
+					    ioj = &iozero;
+				}
+
+				/* Get device name to print */
+				dev_name = NULL;
+
+				if ((DISPLAY_DEVMAP_NAME(flags)) && (d->major == dm_major)) {
+					/*
+					 * If the device is a device mapper device, try to get its
+					 * assigned name of its logical device.
+					 */
+					 dev_name = transform_devmapname(d->major, d->minor);
+				}
+
+				if (!dev_name && ((dev_name = ioc_name(d->major, d->minor)) != NULL)) {
+					if (!strcmp(d->name, dev_name) || !strcmp(dev_name, K_NODEV)) {
+						/*
+						 * Ignore name given by sysstat.ioconf if it's the same
+						 * as current one or if it's "nodev".
+						 * NB: Using names generated from sysstat.ioconf data
+						 * works around known issues with EMC PowerPath.
+						 */
+						dev_name = NULL;
 					}
+				}
 
-					if (DISPLAY_ZERO_OMIT(flags)) {
-						if ((ioi->rd_ios == ioj->rd_ios) &&
-						    (ioi->wr_ios == ioj->wr_ios) &&
-						    (ioi->dc_ios == ioj->dc_ios))
-							/* No activity: Ignore it */
-							continue;
+				if (DISPLAY_PERSIST_NAME_I(flags)) {
+					pdname = get_persistent_name_from_pretty(dev_name ? dev_name : d->name);
+					if (pdname) {
+						dev_name = pdname;
 					}
+				}
 
-					if (DISPLAY_GROUP_TOTAL_ONLY(flags)) {
-						if (shi->status != DISK_GROUP)
-							continue;
-					}
+				if (!dev_name) {
+					dev_name = d->name;
+				}
+
 #ifdef DEBUG
-					if (DISPLAY_DEBUG(flags)) {
-						/* Debug output */
-						fprintf(stderr,
-							"name=%s itv=%llu fctr=%d ioi{ rd_sectors=%lu "
-							"wr_sectors=%lu dc_sectors=%lu "
-							"rd_ios=%lu rd_merges=%lu rd_ticks=%u "
-							"wr_ios=%lu wr_merges=%lu wr_ticks=%u "
-							"dc_ios=%lu dc_merges=%lu dc_ticks=%u "
-							"ios_pgr=%u tot_ticks=%u "
-							"rq_ticks=%u }\n",
-							shi->name,
-							itv,
-							fctr,
-							ioi->rd_sectors,
-							ioi->wr_sectors,
-							ioi->dc_sectors,
-							ioi->rd_ios,
-							ioi->rd_merges,
-							ioi->rd_ticks,
-							ioi->wr_ios,
-							ioi->wr_merges,
-							ioi->wr_ticks,
-							ioi->dc_ios,
-							ioi->dc_merges,
-							ioi->dc_ticks,
-							ioi->ios_pgr,
-							ioi->tot_ticks,
-							ioi->rq_ticks);
-					}
+				if (DISPLAY_DEBUG(flags)) {
+					/* Debug output */
+					fprintf(stderr,
+						"name=%s itv=%llu fctr=%d ioi{ rd_sectors=%lu "
+						"wr_sectors=%lu dc_sectors=%lu "
+						"rd_ios=%lu rd_merges=%lu rd_ticks=%u "
+						"wr_ios=%lu wr_merges=%lu wr_ticks=%u "
+						"dc_ios=%lu dc_merges=%lu dc_ticks=%u "
+						"ios_pgr=%u tot_ticks=%u "
+						"rq_ticks=%u }\n",
+						dev_name,
+						itv,
+						fctr,
+						ioi->rd_sectors,
+						ioi->wr_sectors,
+						ioi->dc_sectors,
+						ioi->rd_ios,
+						ioi->rd_merges,
+						ioi->rd_ticks,
+						ioi->wr_ios,
+						ioi->wr_merges,
+						ioi->wr_ticks,
+						ioi->dc_ios,
+						ioi->dc_merges,
+						ioi->dc_ticks,
+						ioi->ios_pgr,
+						ioi->tot_ticks,
+						ioi->rq_ticks);
+				}
 #endif
 
+				if (!skip) {
 					if (DISPLAY_JSON_OUTPUT(flags) && next) {
 						printf(",\n");
 					}
 					next = TRUE;
 
 					if (DISPLAY_EXTENDED(flags)) {
-						write_ext_stat(itv, fctr, h, shi, ioi, ioj, tab);
+						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dev_name);
 					}
 					else {
-						write_basic_stat(itv, fctr, shi, ioi, ioj, tab);
+						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dev_name);
 					}
 				}
 			}
-			if ((h > 0) && (h < hh)) {
+
+			if ((h > 0) && (h < hh) && !skip) {
 				printf("\n");
 			}
 		}
-		if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (DISPLAY_JSON_OUTPUT(flags) && !skip) {
 			printf("\n");
 			xprintf(--tab, "]");
 		}
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
-		xprintf0(--tab, "}");
-	}
-	else {
-		printf("\n");
+	if (!skip) {
+		if (DISPLAY_JSON_OUTPUT(flags)) {
+			xprintf0(--tab, "}");
+		}
+		else {
+			printf("\n");
+		}
 	}
 }
 
@@ -1830,11 +1726,9 @@ void write_stats(int curr, struct tm *rectime, int iodev_nr, int dlist_idx)
  * IN:
  * @count	Number of reports to print.
  * @rectime	Current date and time.
- * @iodev_nr	Number of devices and partitions.
- * @dlist_idx	Number of devices entered on the command line.
  ***************************************************************************
  */
-void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist_idx)
+void rw_io_stat_loop(long int count, struct tm *rectime)
 {
 	int curr = 1;
 	int skip = 0;
@@ -1859,6 +1753,9 @@ void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist
 	setbuf(stdout, NULL);
 
 	do {
+		/* Every device is potentially nonexistent */
+		set_devices_nonexistent(dev_list);
+
 		/* Read system uptime (only for SMP machines) */
 		read_uptime(&(uptime_cs[curr]));
 
@@ -1875,45 +1772,20 @@ void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist
 				    st_cpu[curr]->cpu_iowait + st_cpu[curr]->cpu_hardirq +
 				    st_cpu[curr]->cpu_steal + st_cpu[curr]->cpu_softirq;
 
-		if (dlist_idx) {
-			/*
-			 * A device or partition name was explicitly entered
-			 * on the command line, with or without -p option
-			 * (but not -p ALL).
-			 */
-			if (HAS_DISKSTATS(flags) && !DISPLAY_PARTITIONS(flags)) {
-				read_diskstats_stat(curr, iodev_nr, dlist_idx);
-			}
-			else if (HAS_SYSFS(flags)) {
-				read_sysfs_dlist_stat(curr, iodev_nr, dlist_idx);
-			}
+		if (DISPLAY_EVERYTHING(flags)) {
+			read_diskstats_stat(curr);
 		}
 		else {
-			/*
-			 * No devices nor partitions entered on the command line
-			 * (for example if -p ALL was used).
-			 */
-			if (HAS_DISKSTATS(flags)) {
-				read_diskstats_stat(curr, iodev_nr, dlist_idx);
-			}
-			else if (HAS_SYSFS(flags)) {
-				read_sysfs_stat(curr, iodev_nr);
-			}
-		}
-
-		/* Compute device groups stats */
-		if (group_nr > 0) {
-			compute_device_groups_stats(curr, iodev_nr);
+			read_sysfs_dlist_stat(curr);
 		}
 
 		/* Get time */
 		get_localtime(rectime, 0);
 
-		/* Check whether we should skip first report */
-		if (!skip) {
-			/* Print results */
-			write_stats(curr, rectime, iodev_nr, dlist_idx);
+		/* Print results */
+		write_stats(curr, rectime, skip);
 
+		if (!skip) {
 			if (count > 0) {
 				count--;
 			}
@@ -1948,19 +1820,14 @@ void rw_io_stat_loop(long int count, struct tm *rectime, int iodev_nr, int dlist
  */
 int main(int argc, char **argv)
 {
-	/* Nb of devices and partitions found. Includes nb of device groups */
-	int iodev_nr = 0;
-	/* Nb of devices entered on the command line */
-	int dlist_idx = 0;
-
 	int it = 0;
 	int opt = 1;
 	int i, report_set = FALSE;
 	long count = 1;
 	struct utsname header;
-	struct io_dlist *st_dev_list_i;
 	struct tm rectime;
 	char *t, *persist_devname, *devname;
+	char group_name[MAX_NAME_LEN];
 
 #ifdef USE_NLS
 	/* Init National Language Support */
@@ -1970,17 +1837,11 @@ int main(int argc, char **argv)
 	/* Init color strings */
 	init_colors();
 
-	/* Allocate structures for device list */
-	if (argc > 1) {
-		salloc_dev_list(argc - 1 + count_csvalues(argc, argv));
-	}
-
 	/* Process args... */
 	while (opt < argc) {
 
 		/* -p option used individually. See below for grouped use */
 		if (!strcmp(argv[opt], "-p")) {
-			flags |= I_D_PARTITIONS;
 			if (argv[++opt] &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt])) &&
 			    (strncmp(argv[opt], "-", 1))) {
@@ -1988,7 +1849,7 @@ int main(int argc, char **argv)
 
 				for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
 					if (!strcmp(t, K_ALL)) {
-						flags |= I_D_PART_ALL;
+						flags |= I_D_EVERYTHING;
 					}
 					else {
 						devname = device_name(t);
@@ -2000,40 +1861,28 @@ int main(int argc, char **argv)
 							}
 						}
 						/* Store device name */
-						i = update_dev_list(&dlist_idx, devname);
-						st_dev_list_i = st_dev_list + i;
-						st_dev_list_i->disp_part = TRUE;
+						add_list_device(&dev_list, devname, T_PART_DEV);
 					}
 				}
 				opt++;
 			}
 			else {
-				flags |= I_D_PART_ALL;
+				flags |= I_D_EVERYTHING;
 			}
 		}
 
 		else if (!strcmp(argv[opt], "-g")) {
-			/*
-			 * Option -g: Stats for a group of devices.
-			 * group_name contains the last group name entered on
-			 * the command line. If we define an additional one, save
-			 * the previous one in the list. We do that this way because we
-			 * want the group name to appear in the list _after_ all
-			 * the devices included in that group. The last group name
-			 * will be saved in the list later, in presave_device_list() function.
-			 */
-			if (group_nr > 0) {
-				update_dev_list(&dlist_idx, group_name);
-			}
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
+			flags |= I_F_GROUP_DEFINED;
+
 			/*
 			 * MAX_NAME_LEN - 2: one char for the heading space,
 			 * and one for the trailing '\0'.
 			 */
 			snprintf(group_name, MAX_NAME_LEN, " %-.*s", MAX_NAME_LEN - 2, argv[opt++]);
-			group_nr++;
+			add_list_device(&dev_list, group_name, T_GROUP);
 		}
 
 		else if (!strcmp(argv[opt], "--human")) {
@@ -2144,7 +1993,7 @@ int main(int argc, char **argv)
 
 				case 'p':
 					/* If option -p is grouped then it cannot take an arg */
-					flags |= I_D_PARTITIONS + I_D_PART_ALL;
+					flags |= I_D_EVERYTHING;
 					break;
 
 				case 's':
@@ -2201,9 +2050,10 @@ int main(int argc, char **argv)
 						devname = persist_devname;
 					}
 				}
-				update_dev_list(&dlist_idx, devname);
+				add_list_device(&dev_list, devname, 0);
 			}
 			else {
+				flags |= I_D_ALL_DEVICES;
 				opt++;
 			}
 		}
@@ -2241,23 +2091,21 @@ int main(int argc, char **argv)
 	 * Also display DISK reports if options -p, -x or a device has been entered
 	 * on the command line.
 	 */
-	if (DISPLAY_PARTITIONS(flags) || DISPLAY_EXTENDED(flags) ||
+	if (DISPLAY_EVERYTHING(flags) || DISPLAY_EXTENDED(flags) ||
 	    DISPLAY_UNFILTERED(flags)) {
 		flags |= I_D_DISK;
 	}
 
-	/* Option -T can only be used with option -g */
-	if (DISPLAY_GROUP_TOTAL_ONLY(flags) && !group_nr) {
+	if (!DISPLAY_UNFILTERED(flags)) {
+		flags |= I_D_ALL_DEVICES;
+	}
+	/* Option -H can only be used with option -g */
+	if (DISPLAY_GROUP_TOTAL_ONLY(flags) && !GROUP_DEFINED(flags)) {
 		usage(argv[0]);
 	}
 
 	/* Select disk output unit (kB/s or blocks/s) */
 	set_disk_output_unit();
-
-	/* Ignore device list if '-p ALL' entered on the command line */
-	if (DISPLAY_PART_ALL(flags)) {
-		dlist_idx = 0;
-	}
 
 	if (DISPLAY_DEVMAP_NAME(flags)) {
 		dm_major = get_devmap_major();
@@ -2268,15 +2116,11 @@ int main(int argc, char **argv)
 		setlocale(LC_NUMERIC, "C");
 	}
 
-	/* Init structures according to machine architecture */
-	io_sys_init(&iodev_nr);
-	if (group_nr > 0) {
-		/*
-		 * If groups of devices have been defined
-		 * then save devices and groups in the list.
-		 */
-		presave_device_list(iodev_nr, &dlist_idx);
-	}
+	/* Allocate and init stat common counters */
+	init_stats();
+
+	/* How many processors on this machine? */
+	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	get_localtime(&rectime, 0);
 
@@ -2292,11 +2136,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Main loop */
-	rw_io_stat_loop(count, &rectime, iodev_nr, dlist_idx);
-
-	/* Free structures */
-	io_sys_free();
-	sfree_dev_list();
+	rw_io_stat_loop(count, &rectime);
 
 	return 0;
 }

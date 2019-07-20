@@ -13,14 +13,14 @@
 #define I_D_DISK		0x000002
 #define I_D_TIMESTAMP		0x000004
 #define I_D_EXTENDED		0x000008
-#define I_D_PART_ALL		0x000010
+#define I_D_EVERYTHING		0x000010
 #define I_D_KILOBYTES		0x000020
-#define I_F_HAS_SYSFS		0x000040
+/* Unused			0x000040 */
 #define I_D_DEBUG		0x000080
 #define I_D_UNFILTERED		0x000100
 #define I_D_MEGABYTES		0x000200
-#define I_D_PARTITIONS		0x000400
-#define I_F_HAS_DISKSTATS	0x000800
+#define I_D_ALL_DEVICES		0x000400
+#define I_F_GROUP_DEFINED	0x000800
 #define I_D_HUMAN_READ		0x001000
 #define I_D_PERSIST_NAME	0x002000
 #define I_D_OMIT_SINCE_BOOT	0x004000
@@ -36,14 +36,13 @@
 #define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
 #define DISPLAY_TIMESTAMP(m)		(((m) & I_D_TIMESTAMP)        == I_D_TIMESTAMP)
 #define DISPLAY_EXTENDED(m)		(((m) & I_D_EXTENDED)         == I_D_EXTENDED)
-#define DISPLAY_PART_ALL(m)		(((m) & I_D_PART_ALL)         == I_D_PART_ALL)
+#define DISPLAY_EVERYTHING(m)		(((m) & I_D_EVERYTHING)       == I_D_EVERYTHING)
 #define DISPLAY_KILOBYTES(m)		(((m) & I_D_KILOBYTES)        == I_D_KILOBYTES)
 #define DISPLAY_MEGABYTES(m)		(((m) & I_D_MEGABYTES)        == I_D_MEGABYTES)
-#define HAS_SYSFS(m)			(((m) & I_F_HAS_SYSFS)        == I_F_HAS_SYSFS)
 #define DISPLAY_DEBUG(m)		(((m) & I_D_DEBUG)            == I_D_DEBUG)
 #define DISPLAY_UNFILTERED(m)		(((m) & I_D_UNFILTERED)       == I_D_UNFILTERED)
-#define DISPLAY_PARTITIONS(m)		(((m) & I_D_PARTITIONS)       == I_D_PARTITIONS)
-#define HAS_DISKSTATS(m)		(((m) & I_F_HAS_DISKSTATS)    == I_F_HAS_DISKSTATS)
+#define DISPLAY_ALL_DEVICES(m)		(((m) & I_D_ALL_DEVICES)      == I_D_ALL_DEVICES)
+#define GROUP_DEFINED(m)		(((m) & I_F_GROUP_DEFINED)    == I_F_GROUP_DEFINED)
 #define DISPLAY_HUMAN_READ(m)		(((m) & I_D_HUMAN_READ)       == I_D_HUMAN_READ)
 #define DISPLAY_PERSIST_NAME_I(m)	(((m) & I_D_PERSIST_NAME)     == I_D_PERSIST_NAME)
 #define DISPLAY_OMIT_SINCE_BOOT(m)	(((m) & I_D_OMIT_SINCE_BOOT)  == I_D_OMIT_SINCE_BOOT)
@@ -55,8 +54,10 @@
 #define DISPLAY_UNIT(m)			(((m) & I_D_UNIT)	      == I_D_UNIT)
 #define DISPLAY_SHORT_OUTPUT(m)		(((m) & I_D_SHORT_OUTPUT)     == I_D_SHORT_OUTPUT)
 
-/* Preallocation constants */
-#define NR_DEV_PREALLOC		4
+#define T_PART		0
+#define T_DEV		1
+#define T_PART_DEV	2
+#define T_GROUP		3
 
 /* Environment variable */
 #define ENV_POSIXLY_CORRECT	"POSIXLY_CORRECT"
@@ -107,6 +108,24 @@ struct io_stats {
 
 #define IO_STATS_SIZE	(sizeof(struct io_stats))
 
+struct io_device {
+	char name[MAX_NAME_LEN];
+	/*
+	 * 0: Not a whole device (T_PART)
+	 * 1: whole device (T_DEV)
+	 * 2: whole device and all its partitions to be read (T_PART_DEV)
+	 * 3+: group name (T_GROUP) (4 means 1 device in the group, 5 means 2 devices in the group, etc.)
+	 */
+	int dev_tp;
+	/* TRUE if device exists in /proc/diskstats or /sys. Don't apply for groups. */
+	int exist;
+	/* major and minor numbers are set only for partitions (T_PART), not whole devices */
+	int major;
+	int minor;
+	struct io_stats *dev_stats[2];
+	struct io_device *next;
+};
+
 struct ext_io_stats {
 	/* r_await */
 	double r_await;
@@ -135,11 +154,6 @@ struct ext_io_stats {
 	/* dareq-sz */
 	double darqsz;
 };
-
-/* Possible values for field "status" in io_hdr_stats structure */
-#define DISK_UNREGISTERED	0
-#define DISK_REGISTERED		1
-#define DISK_GROUP		2
 
 /*
  * Each io_stats structure has an associated io_hdr_stats structure.

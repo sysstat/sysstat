@@ -145,6 +145,7 @@ void next_time_step(void)
  * If current file is considered as a virtual one ("virtualhd"), then set
  * its device ID (major 253, minor 2, corresponding here to dm-2) in the
  * stat structure normally filled by the stat() system call.
+ * Otherwise, open file and read its major and minor numbers.
  *
  * IN:
  * @name	Pathname to file.
@@ -153,15 +154,31 @@ void next_time_step(void)
  * @statbuf	Structure containing device ID.
  *
  * RETURNS:
- * 0 if it actually was the virtual device, 1 otherwise.
+ * 0 if it actually was the virtual device, 1 otherwise, and -1 on failure.
  ***************************************************************************
  */
 int virtual_stat(const char *name, struct stat *statbuf)
 {
+	FILE *fp;
+	char line[128];
+	int major, minor;
+
 	if (!strcmp(name, VIRTUALHD)) {
 		statbuf->st_rdev = (253 << 8) + 2;
 		return 0;
 	}
+
+	statbuf->st_rdev = 0;
+
+	if ((fp = fopen(name, "r")) == NULL)
+		return -1;
+
+	if (fgets(line, sizeof(line), fp) != NULL) {
+		sscanf(line, "%d %d", &major, &minor);
+		statbuf->st_rdev = (major << 8) + minor;
+	}
+
+	fclose(fp);
 
 	return 1;
 }

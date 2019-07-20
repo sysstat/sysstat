@@ -349,57 +349,6 @@ int get_dev_part_nr(char *dev_name)
 
 /*
  ***************************************************************************
- * Look for block devices present in /sys/ filesystem:
- * Check first that sysfs is mounted (done by trying to open /sys/block
- * directory), then find number of devices registered.
- *
- * IN:
- * @display_partitions	Set to TRUE if partitions must also be counted.
- *
- * RETURNS:
- * Total number of block devices (and partitions if @display_partitions was
- * set).
- ***************************************************************************
- */
-int get_sysfs_dev_nr(int display_partitions)
-{
-	DIR *dir;
-	struct dirent *drd;
-	char line[MAX_PF_NAME];
-	int dev = 0;
-
-	/* Open /sys/block directory */
-	if ((dir = opendir(SYSFS_BLOCK)) == NULL)
-		/* sysfs not mounted, or perhaps this is an old kernel */
-		return 0;
-
-	/* Get current file entry in /sys/block directory */
-	while ((drd = readdir(dir)) != NULL) {
-		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
-			continue;
-		snprintf(line, MAX_PF_NAME, "%s/%s/%s", SYSFS_BLOCK, drd->d_name, S_STAT);
-		line[MAX_PF_NAME - 1] = '\0';
-
-		/* Try to guess if current entry is a directory containing a stat file */
-		if (!access(line, R_OK)) {
-			/* Yep... */
-			dev++;
-
-			if (display_partitions) {
-				/* We also want the number of partitions for this device */
-				dev += get_dev_part_nr(drd->d_name);
-			}
-		}
-	}
-
-	/* Close /sys/block directory */
-	closedir(dir);
-
-	return dev;
-}
-
-/*
- ***************************************************************************
  * Read /proc/devices file and get device-mapper major number.
  * If device-mapper entry is not found in file, assume it's not active.
  *
@@ -623,7 +572,10 @@ int get_win_height(void)
 
 /*
  ***************************************************************************
- * Canonicalize and remove /dev from path name.
+ * Canonicalize and remove /dev from path name. If the device has a slash
+ * character in its name, replace it with a bang character ('!'), e.g.:
+ * cciss/c0d0 -> cciss!c0d0
+ * cciss/c0d0p1 -> cciss!c0d0p1
  *
  * IN:
  * @name	Device name (may begin with "/dev/" or can be a symlink).
@@ -635,7 +587,7 @@ int get_win_height(void)
 char *device_name(char *name)
 {
 	static char out[MAX_FILE_LEN];
-	char *resolved_name;
+	char *resolved_name = NULL, *slash;
 	int i = 0;
 
 	/* realpath() creates new string, so we need to free it later */
@@ -655,6 +607,11 @@ char *device_name(char *name)
 	}
 	strncpy(out, resolved_name + i, MAX_FILE_LEN);
 	out[MAX_FILE_LEN - 1] = '\0';
+
+	/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
+	while ((slash = strchr(out, '/'))) {
+		*slash = '!';
+	}
 
 	free(resolved_name);
 
