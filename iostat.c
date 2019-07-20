@@ -2033,7 +2033,7 @@ int main(int argc, char **argv)
 			opt++;
 		}
 
-		else if (!isdigit(argv[opt][0])) {
+		else if (strspn(argv[opt], DIGITS) != strlen(argv[opt])) {
 			/*
 			 * By default iostat doesn't display unused devices.
 			 * If some devices are explicitly entered on the command line
