@@ -1494,7 +1494,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 	int h, hl = 0, hh = 0, fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
 	struct io_device *d, *dtmp, *g = NULL, *dnext = NULL;
-	char *dev_name, *pdname;
+	char *dev_name, *pdname, *bang, dname[MAX_NAME_LEN];
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -1651,6 +1651,17 @@ void write_stats(int curr, struct tm *rectime, int skip)
 				if (!dev_name) {
 					dev_name = d->name;
 				}
+				strncpy(dname, dev_name, sizeof(dname));
+				dname[sizeof(dname) - 1] = '\0';
+
+				while ((bang = strchr(dname, '!'))) {
+					/*
+					 * Some devices may have had a slash replaced with
+					 * a bang character (eg. cciss!c0d0...)
+					 * Restore their original names.
+					 */
+					*bang = '/';
+				}
 
 #ifdef DEBUG
 				if (DISPLAY_DEBUG(flags)) {
@@ -1663,7 +1674,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 						"dc_ios=%lu dc_merges=%lu dc_ticks=%u "
 						"ios_pgr=%u tot_ticks=%u "
 						"rq_ticks=%u }\n",
-						dev_name,
+						dname,
 						itv,
 						fctr,
 						ioi->rd_sectors,
@@ -1691,10 +1702,10 @@ void write_stats(int curr, struct tm *rectime, int skip)
 					next = TRUE;
 
 					if (DISPLAY_EXTENDED(flags)) {
-						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dev_name);
+						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dname);
 					}
 					else {
-						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dev_name);
+						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dname);
 					}
 				}
 			}
