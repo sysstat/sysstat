@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root6 tests/root
+LC_ALL=C ./iostat cciss/c0d0p2 1 2 > tests/out.iostat-cciss.tmp

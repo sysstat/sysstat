@@ -2948,7 +2948,7 @@
 # A_PAGE: 1/1 (1)
 13:54:35 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0;
 # A_IO: 1/1 (1)
-13:54:35 UTC; tps; 61881; 61931; rtps; 49601; 49601; wtps; 12180; 12180; dtps; 100; 150; bread/s; 3195498; 3195498; bwrtn/s; 821088; 821088; bdscd/s; 100; 150;
+13:54:35 UTC; tps; 5153409; 6163459; rtps; 85418; 95418; wtps; 5067891; 6067891; dtps; 100; 150; bread/s; 3195498; 3195498; bwrtn/s; 821088; 821088; bdscd/s; 100; 150;
 # A_MEMORY: 1/1 (1)
 13:54:35 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
 # A_MEMORY: 1/1 (1)
@@ -2962,7 +2962,7 @@
 # A_SERIAL: 2/2 (2)
 13:54:35 UTC; TTY; 0; rcvin/s; 32543; 32543; txmtin/s; 14323; 14323; framerr/s; 123; 123; prtyerr/s; 123; 123; brk/s; 42; 42; ovrun/s; 13; 13;
 13:54:35 UTC; TTY; 1; rcvin/s; 0; 0; txmtin/s; 0; 0; framerr/s; 0; 0; prtyerr/s; 0; 0; brk/s; 0; 0; ovrun/s; 0; 0;
-# A_DISK: 10/19 (19)
+# A_DISK: 13/19 (19)
 13:54:35 UTC; major; 8; minor; 0; DEV; dev8-0; tps; 61881; 61931; rkB/s; 3195498; 3195498; wkB/s; 821088; 821088; dkB/s; 100; 150; rd_ticks; 623970; 623970; wr_ticks; 117109; 117109; dc_ticks; 100; 150; tot_ticks; 32862; 32862; aqu-sz; 714408; 714408;
 13:54:35 UTC; major; 8; minor; 1; DEV; dev8-1; tps; 151; 201; rkB/s; 4216; 4216; wkB/s; 0; 0; dkB/s; 100; 150; rd_ticks; 3107; 3107; wr_ticks; 0; 0; dc_ticks; 100; 150; tot_ticks; 41; 41; aqu-sz; 3086; 3086;
 13:54:35 UTC; major; 8; minor; 2; DEV; dev8-2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -2973,6 +2973,9 @@
 13:54:35 UTC; major; 8; minor; 7; DEV; dev8-7; tps; 114; 114; rkB/s; 8874; 8874; wkB/s; 24; 24; dkB/s; 0; 0; rd_ticks; 2612; 2612; wr_ticks; 60; 60; dc_ticks; 0; 0; tot_ticks; 86; 86; aqu-sz; 2624; 2624;
 13:54:35 UTC; major; 8; minor; 8; DEV; dev8-8; tps; 58; 58; rkB/s; 4888; 4888; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2510; 2510; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 52; 52; aqu-sz; 2484; 2484;
 13:54:35 UTC; major; 8; minor; 9; DEV; dev8-9; tps; 47488; 47488; rkB/s; 2778738; 2778738; wkB/s; 286080; 286080; dkB/s; 0; 0; rd_ticks; 464054; 464054; wr_ticks; 55902; 55902; dc_ticks; 0; 0; tot_ticks; 26401; 26401; aqu-sz; 499574; 499574;
+13:54:35 UTC; major; 104; minor; 0; DEV; dev104-0; tps; 5091528; 6101528; rkB/s; 0; 0; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 163484; 263484; wr_ticks; 18832400; 18832400; dc_ticks; 0; 0; tot_ticks; 7365500; 7365500; aqu-sz; 19000180; 19000180;
+13:54:35 UTC; major; 104; minor; 1; DEV; dev104-1; tps; 61528; 61528; rkB/s; 0; 0; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 63484; 63484; wr_ticks; 8832400; 8832400; dc_ticks; 0; 0; tot_ticks; 365500; 365500; aqu-sz; 9000180; 9000180;
+13:54:35 UTC; major; 104; minor; 2; DEV; dev104-2; tps; 5030000; 6040000; rkB/s; 0; 0; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 100000; 200000; wr_ticks; 10000000; 10000000; dc_ticks; 0; 0; tot_ticks; 7000000; 7000000; aqu-sz; 10000000; 10000000;
 # A_NET_DEV: 9/10 (5)
 13:54:35 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:54:35 UTC; IFACE; virbr0-nic; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;

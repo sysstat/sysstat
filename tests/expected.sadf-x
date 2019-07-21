@@ -3031,9 +3031,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
 				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" vmeff-percent="0.00"/>
 				<io per="second">
-					<tps>1.60</tps>
-					<io-reads rtps="0.00" bread="0.00"/>
-					<io-writes wtps="0.00" bwrtn="0.00"/>
+					<tps>32404.56</tps>
+					<io-reads rtps="320.82" bread="0.00"/>
+					<io-writes wtps="32082.13" bwrtn="0.00"/>
 					<io-discard dtps="1.60" bdscd="1.60"/>
 				</io>
 				<memory per="second" unit="kB">
@@ -3083,6 +3083,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<disk-device dev="dev8-7" tps="0.00" rd_sec="0.00" wr_sec="0.00" dc_sec="0.00" rkB="0.00" wkB="0.00" dkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.00" util-percent="0.00"/>
 					<disk-device dev="dev8-8" tps="0.00" rd_sec="0.00" wr_sec="0.00" dc_sec="0.00" rkB="0.00" wkB="0.00" dkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.00" util-percent="0.00"/>
 					<disk-device dev="dev8-9" tps="0.00" rd_sec="0.00" wr_sec="0.00" dc_sec="0.00" rkB="0.00" wkB="0.00" dkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.00" util-percent="0.00"/>
+					<disk-device dev="dev104-0" tps="32402.95" rd_sec="0.00" wr_sec="0.00" dc_sec="0.00" rkB="0.00" wkB="0.00" dkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.10" util-percent="0.00"/>
+					<disk-device dev="dev104-1" tps="0.00" rd_sec="0.00" wr_sec="0.00" dc_sec="0.00" rkB="0.00" wkB="0.00" dkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.00" util-percent="0.00"/>
+					<disk-device dev="dev104-2" tps="32402.95" rd_sec="0.00" wr_sec="0.00" dc_sec="0.00" rkB="0.00" wkB="0.00" dkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.10" util-percent="0.00"/>
 				</disk>
 				<network per="second">
 					<net-dev iface="lo" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
