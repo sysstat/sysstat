@@ -114,11 +114,18 @@ char *get_env_value(char *c)
  */
 void next_time_step(void)
 {
-	static int root_nr = 1;
+	int root_nr = 1;
 	char rootf[64], testf[64];
+	char *resolved_name;
 
 	__unix_time += interval;
 
+	if ((resolved_name = realpath(ROOTDIR, NULL)) != NULL) {
+		if (strlen(resolved_name) > 4) {
+			root_nr = atoi(resolved_name + strlen(resolved_name) - 1);
+		}
+		free(resolved_name);
+	}
 	if ((unlink(ROOTDIR) < 0) && (errno != ENOENT)) {
 		perror("unlink");
 		exit(1);
