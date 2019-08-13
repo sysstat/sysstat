@@ -1767,7 +1767,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		/* Every device is potentially nonexistent */
 		set_devices_nonexistent(dev_list);
 
-		/* Read system uptime (only for SMP machines) */
+		/* Read system uptime */
 		read_uptime(&(uptime_cs[curr]));
 
 		/* Read stats for CPU "all" */
