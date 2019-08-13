@@ -427,7 +427,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		int use_tm_end, int reset, unsigned int act_id, int reset_cd)
 {
-	int i;
+	int i, prev_hour;
 	unsigned long long itv;
 	static int cross_day = 0;
 
@@ -457,6 +457,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
 					   &rectime))
 		return 0;
+	prev_hour = rectime.tm_hour;
 	set_record_timestamp_string(flags, &record_hdr[!curr],
 				    NULL, timestamp[!curr], TIMESTAMP_LEN, &rectime);
 
@@ -467,10 +468,15 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	set_record_timestamp_string(flags, &record_hdr[curr],
 				    NULL, timestamp[curr], TIMESTAMP_LEN, &rectime);
 
-	/* Check if we are beginning a new day */
+	/*
+	 * Check if we are beginning a new day.
+	 * Use rectime.tm_hour and prev_hour instead of record_hdr[].hour for comparison
+	 * to take into account the current timezone (hours displayed will depend on the
+	 * TZ variable value).
+	 */
 	if (use_tm_start && record_hdr[!curr].ust_time &&
 	    (record_hdr[curr].ust_time > record_hdr[!curr].ust_time) &&
-	    (record_hdr[curr].hour < record_hdr[!curr].hour)) {
+	    (rectime.tm_hour < prev_hour)) {
 		cross_day = 1;
 	}
 
