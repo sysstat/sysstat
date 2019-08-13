@@ -119,6 +119,7 @@ NOTES:
 00910	LC_ALL=C TZ=GMT ./sar -uw -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
 	[Testing options -s/-e on a file contents spanning two consecutive days]
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
+	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
 00912	diff -u tests/out.sar-cd.tmp tests/expected.sar-cd
 00920	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -e 13:30 -z -n DEV -dp > tests/out.sar-z.tmp
 00922	diff -u tests/out.sar-z.tmp tests/expected.sar-z
