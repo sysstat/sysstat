@@ -105,6 +105,11 @@ void pval(unsigned long long valp, unsigned long long valc)
 /*
  ***************************************************************************
  * Display CPU statistics in raw format.
+ * Note: Values displayed for CPU "all" may slightly differ from those you
+ * would get if you were displaying them in pr_stats.c:print_cpu_stats().
+ * This is because values for CPU "all" are recalculated there as the sum of
+ * all individual CPU values (done by a call to get_global_cpu_statistics()
+ * function).
  *
  * IN:
  * @a		Activity structure with statistics.
