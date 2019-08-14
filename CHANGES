@@ -1,5 +1,31 @@
 Changes:
 
+2019/08/14: Version 12.1.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* iostat: Major code refactoring. Devices structures are now
+	  dynamically allocated, better handle the case when devices are
+	  removed then inserted again in the system, better command line
+	  parsing, better handle devices with a slash in their name.
+	* sar/sadf: Allow to select individual CPU and/or interrupts when
+	  option -A is used.
+	* sar: Better handle the case when Fibre Channel hosts are added to
+	  the system.
+	* [Alexandros Kosiaris]: sadc: Check if InCsumErrors is present for
+	  EICMP as well [12.0.6].
+	* sar: Fix sar -s/-e output on datafiles spanning two consecutive days.
+	* sadf: XML: Fix bad transmission words statistics for Fibre Channel
+	  hosts [12.0.6].
+	* sadf: Fix memory corruption bug due to integer overflow in
+	  remap_struct() function.
+	* iostat: Fix wrong CPU statistics displayed for the first sample
+	  when option -y is used [12.0.6].
+	* iostat: Make sure UUID given on the command line is not taken as
+	  interval value [12.0.6].
+	* Allow more space for persistent type directory names [12.0.6].
+	* Update sysstat simulation test environment (new tests added, etc.)
+	* sar manual page updated.
+	* Various cosmetic fixes (comments updated in code, etc.)
+	* NLS updated.
+
 2019/05/31: Version 12.1.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Support completed for PCP (Performance Co-Pilote) output format.
 	* Add sysstat simulation test environment.
