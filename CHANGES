@@ -1,5 +1,16 @@
 Changes:
 
+2019/08/14: Version 12.0.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Alexandros Kosiaris]: sadc: Check if InCsumErrors is present for
+	  EICMP as well.
+	* sadf: XML: Fix bad transmission words statistics for Fibre Channel
+	  hosts.
+	* iostat: Fix wrong CPU statistics displayed for the first sample
+	  when option -y is used.
+	* iostat: Make sure UUID given on the command line is not taken as
+	  interval value.
+	* Allow more space for persistent type directory names.
+
 2019/05/31: Version 12.0.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Add missing %gnice CPU value for tickless CPU.
 	* sar: Better detect if a disk has been unregistered then registered
