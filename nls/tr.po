@@ -5,10 +5,10 @@
 # Mehmet Kececi <mkececi@mehmetkececi.com>, 2016, 2017, 2018, 2019.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.1.4\n"
+"Project-Id-Version: sysstat 12.1.5\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-04-18 08:23+0200\n"
-"PO-Revision-Date: 2019-04-18 20:45+0300\n"
+"POT-Creation-Date: 2019-05-31 08:49+0200\n"
+"PO-Revision-Date: 2019-06-01 04:48+0300\n"
 "Last-Translator: Mehmet Kececi <mkececi@mehmetkececi.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
@@ -19,35 +19,79 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 
-#: cifsiostat.c:73 mpstat.c:132 iostat.c:88 tapestat.c:101 sar.c:102
+#: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
+msgid "Summary:"
+msgstr "Özet:"
+
+#: iostat.c:88 tapestat.c:101 cifsiostat.c:73 mpstat.c:131 sar.c:106
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Kullanım: %s [ seçenekler ] [ <aralık> [ <sayı> ] ]\n"
 
-#: cifsiostat.c:77
+#: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Seçenekler:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --insan ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <grup_adı> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <aygıt> [...] | ALL ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:80
+#: iostat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
 msgstr ""
 "Seçenekler:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --insan ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <grup_adı> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <aygıt> [...] | ALL ]\n"
 
-#: sadc.c:90
+#: iostat.c:346
+#, c-format
+msgid "Cannot find disk data\n"
+msgstr "Disk verisi bulunamıyor\n"
+
+#: iostat.c:2065 sa_common.c:2187
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Geçersiz kalıcı aygıt adı türü\n"
+
+#: tapestat.c:103
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+"Seçenekler:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+
+#: tapestat.c:269
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr "İstatistiklere sahip herhangi bir teyp sürücüsü bulunamadı\n"
+
+#: sadc.c:94
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Kullanım: %s [ seçenekler ] [ <aralık> [ <sayı> ] ] [ <çıkış dosyası> ]\n"
 
-#: sadc.c:93
+#: sadc.c:97
 #, c-format
 msgid ""
 "Options are:\n"
@@ -58,18 +102,18 @@ msgstr ""
 "[ -C <komut> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:264
+#: sadc.c:268
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Sistem etkinlik dosyasına veri yazılamıyor: %s\n"
 
-#: sadc.c:704 sadc.c:767 count.c:118 ioconf.c:506 rd_stats.c:75
-#: sa_common.c:1720
+#: sadc.c:708 sadc.c:771 count.c:118 ioconf.c:506 rd_stats.c:75
+#: sa_common.c:1738
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "%s: %s'te açılamadı\n"
 
-#: sadc.c:986
+#: sadc.c:993
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Veri bu dosyaya (%s) eklenemiyor\n"
@@ -78,6 +122,46 @@ msgstr "Veri bu dosyaya (%s) eklenemiyor\n"
 #, c-format
 msgid "Cannot handle so many processors!\n"
 msgstr "Bu kadar çok işlemciyi idare edemiyor!\n"
+
+#: cifsiostat.c:77
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgstr ""
+"Seçenekler:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+
+#: cifsiostat.c:80
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+"Seçenekler:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
+#: common.c:78
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat sürümü %s\n"
+
+#: mpstat.c:134
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+msgstr ""
+"Seçenekler:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+
+#: mpstat.c:1640 sar.c:374 pidstat.c:2412
+msgid "Average:"
+msgstr "Ortalama:"
 
 #: sadf.c:98
 #, c-format
@@ -101,223 +185,12 @@ msgstr ""
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_seçenekleri> ]\n"
 
-#: sadf.c:1854
+#: sadf.c:1814
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "PCP desteği derlenmedi\n"
 
-#: mpstat.c:135
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
-msgstr ""
-"Seçenekler:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
-
-#: mpstat.c:1641 pidstat.c:2412 sar.c:370
-msgid "Average:"
-msgstr "Ortalama:"
-
-#: rd_stats.c:351
-#, c-format
-msgid "Cannot read %s\n"
-msgstr "%s okunamıyor\n"
-
-#: sa_common.c:297
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Dosyalar, sar/sadc tarafından sysstat sürüm %d.%d.%d ile oluşturuldu"
-
-#: sa_common.c:328
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Geçersiz sistem etkinlik dosyası: %s\n"
-
-#: sa_common.c:336
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr "Güncel sysstat sürümü bu dosya biçimini okuyamıyor (%#x)\n"
-
-#: sa_common.c:353 pidstat.c:243
-#, c-format
-msgid "Requested activities not available\n"
-msgstr "Talep edilen eylemler geçerli değil\n"
-
-#: sa_common.c:1395
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Sistem etkinlik dosyası okunurken hata: %s\n"
-
-#: sa_common.c:1405
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Beklenmedik sistem etkinlik dosyası sonu\n"
-
-#: sa_common.c:1723
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "Veri biriktirmenin etkin olup olmadığını denetleyin\n"
-
-#: sa_common.c:2048
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Talep edilen etkinlikler dosyada bulunmamaktadır %s\n"
-
-#: sa_common.c:2169 iostat.c:2067
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Geçersiz kalıcı aygıt adı türü\n"
-
-#: pidstat.c:90
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
-msgstr "Kullanım: %s [ seçenekler ] [ <aralık> [ <sayı> ] ] [ -e <program> <args> ]\n"
-
-#: pidstat.c:93
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
-msgstr ""
-"Seçenekler:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <kullanıcıadı> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <komut> ] [ -G <süreç_adı> ]\n"
-"[ -p { <pid> [,...] | SELF | TÜM } ] [ -T { GÖREV | CHILD | TÜM } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --insan ]\n"
-
-#: sadf_misc.c:1181
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Sistem etkinliği veri dosyası: %s (%#x)\n"
-
-#: sadf_misc.c:1190
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Gerçek sa veri dosyası: %s (%x)\n"
-
-#: sadf_misc.c:1191
-msgid "no"
-msgstr "hayır"
-
-#: sadf_misc.c:1191
-msgid "yes"
-msgstr "evet"
-
-#: sadf_misc.c:1194
-#, c-format
-msgid "Host: "
-msgstr "Sunucu: "
-
-#: sadf_misc.c:1204
-#, c-format
-msgid "File date: %s\n"
-msgstr "Dosya tarihi: %s\n"
-
-#: sadf_misc.c:1207
-#, c-format
-msgid "File time: "
-msgstr "Dosya zamanı: "
-
-#: sadf_misc.c:1213
-#, c-format
-msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-msgstr "Dosya bileşimi: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-
-#: sadf_misc.c:1218
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Bir long int boyutu: %d\n"
-
-#: sadf_misc.c:1220
-#, c-format
-msgid "Number of activities in file: %u\n"
-msgstr "Dosyasındaki faaliyetlerin sayısı: %u\n"
-
-#: sadf_misc.c:1223
-#, c-format
-msgid "List of activities:\n"
-msgstr "Etkinlikler listesi:\n"
-
-#: sadf_misc.c:1234
-msgid "Unknown activity"
-msgstr "Bilinmeyen etkinlik"
-
-#: sadf_misc.c:1242
-#, c-format
-msgid " \t[Unknown format]"
-msgstr " \t[Bilinmeyen biçim]"
-
-#: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
-msgid "Summary:"
-msgstr "Özet:"
-
-#: iostat.c:91
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"Seçenekler:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | ETİKET | YOL | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <grup_adı> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <aygıt> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:98
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"Seçenekler:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | ETİKET | YOL | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <grup_adı> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <aygıt> [...] | ALL ]\n"
-
-#: iostat.c:346
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Disk verisi bulunamıyor\n"
-
-#: tapestat.c:103
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-"Seçenekler:\n"
-"[ --insan ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-
-#: tapestat.c:269
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr "İstatistiklere sahip herhangi bir teyp sürücüsü bulunamadı\n"
-
-#: common.c:78
-#, c-format
-msgid "sysstat version %s\n"
-msgstr "sysstat sürümü %s\n"
-
-#: sar.c:117
+#: sar.c:121
 #, c-format
 msgid ""
 "Options are:\n"
@@ -339,47 +212,47 @@ msgstr ""
 "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --yardım ] [ --insan ] [ --sadc ]\n"
-"[ -j { ID | ETİKET | YOL | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
+"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <dosyaadı> ] | -o [ <dosyaadı> ] | -[0-9]+ ]\n"
 "[ -i <aralık> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 
-#: sar.c:142
+#: sar.c:146
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "Ana seçenekler ve raporlar (köşeli ayraçlar arasındaki rapor adı):\n"
 
-#: sar.c:143
+#: sar.c:147
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\tSayfalama istatistikleri [A_PAGE]\n"
 
-#: sar.c:144
+#: sar.c:148
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
-msgstr "\t-b\tG/Ç ve aktarım oranı istatistikleri [A_IO]\n"
+msgstr "\t-b\tI/O ve aktarım oranı istatistikleri [A_IO]\n"
 
-#: sar.c:145
+#: sar.c:149
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\tBlok aygıtları istatistikleri [A_DISK]\n"
 
-#: sar.c:146
+#: sar.c:150
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ MOUNT ]\n"
 
-#: sar.c:147
+#: sar.c:151
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\tDosyasistemi istatistikleri [A_FS]\n"
 
-#: sar.c:148
+#: sar.c:152
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\tBüyük sayfa kullanım istatistikleri [A_HUGE]\n"
 
-#: sar.c:149
+#: sar.c:153
 #, c-format
 msgid ""
 "\t-I { <int_list> | SUM | ALL }\n"
@@ -388,7 +261,7 @@ msgstr ""
 "\t-I { <int_list> | SUM | ALL }\n"
 "\t\tKesme istatistikleri [A_IRQ]\n"
 
-#: sar.c:151
+#: sar.c:155
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -411,7 +284,7 @@ msgstr ""
 "\t\tTEMP\tAygıt sıcaklıkları\n"
 "\t\tUSB\tSisteme takılı USB aygıtları\n"
 
-#: sar.c:160
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -462,12 +335,12 @@ msgstr ""
 "\t\tFC\tFiber kanal HBAs\n"
 "\t\tSOFT\tYazılım tabanlı ağ işleme\n"
 
-#: sar.c:183
+#: sar.c:187
 #, c-format
 msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
 msgstr "\t-q\tKuyruk uzunluğu ve ortalama yük istatistikleri [A_QUEUE]\n"
 
-#: sar.c:184
+#: sar.c:188
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -476,12 +349,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tBellek kullanım istatistikleri [A_MEMORY]\n"
 
-#: sar.c:186
+#: sar.c:190
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\tTakas alanı kullanım istatistikleri [A_MEMORY]\n"
 
-#: sar.c:187
+#: sar.c:191
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -490,65 +363,70 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tCPU kullanım istatistikleri [A_CPU]\n"
 
-#: sar.c:189
+#: sar.c:193
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\tÇekirdek tablosu istatistikleri [A_KTABLES]\n"
 
-#: sar.c:190
+#: sar.c:194
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\tTakas kullanım istatistikleri [A_SWAP]\n"
 
-#: sar.c:191
+#: sar.c:195
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\tGörev oluşturma ve sistem anahtarlama istatistikleri [A_PCSW]\n"
 
-#: sar.c:192
+#: sar.c:196
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tTTY aygıt istatistikleri [A_SERIAL]\n"
 
-#: sar.c:206
+#: sar.c:210
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Veri toplayıcı PATH'da aranacak\n"
 
-#: sar.c:209
+#: sar.c:213
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Veri toplayıcı bulundu: %s\n"
 
-#: sar.c:274
+#: sar.c:278
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Beklenmeyen veri toplama işlemi sonu\n"
 
-#: sar.c:279
+#: sar.c:283
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Tutarsız girdi verisi\n"
 
-#: sar.c:881
+#: sar.c:876
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Farklı bir sysstat sürümünden hatalı veri toplayıcı kullanılıyor\n"
 
-#: sar.c:1488
+#: sar.c:1490
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "-f ve -o seçenekleri tamamen birbirinden ayrıdır\n"
 
-#: sar.c:1494
+#: sar.c:1496
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Bir sistem etkinliğinden okunamıyor (-f seçeneğini kullanın)\n"
 
-#: sar.c:1641
+#: sar.c:1649
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Veri toplayıcı bulunamıyor (%s)\n"
+
+#: rd_stats.c:351
+#, c-format
+msgid "Cannot read %s\n"
+msgstr "%s okunamıyor\n"
 
 #: sa_conv.c:98
 #, c-format
@@ -596,6 +474,128 @@ msgstr "HZ: Şu anki değeri kullanarak: %lu\n"
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "Dosya başarıyla sysstat biçimi %s sürümüne dönüştürüldü\n"
+
+#: pidstat.c:90
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
+msgstr "Kullanım: %s [ seçenekler ] [ <aralık> [ <sayı> ] ] [ -e <program> <args> ]\n"
+
+#: pidstat.c:93
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+msgstr ""
+"Seçenekler:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <kullanıcıadı> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <komut> ] [ -G <süreç_adı> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+
+#: pidstat.c:243 sa_common.c:356
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "Talep edilen eylemler geçerli değil\n"
+
+#: sadf_misc.c:1213
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Sistem etkinliği veri dosyası: %s (%#x)\n"
+
+#: sadf_misc.c:1222
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Gerçek sa veri dosyası: %s (%x)\n"
+
+#: sadf_misc.c:1223
+msgid "no"
+msgstr "hayır"
+
+#: sadf_misc.c:1223
+msgid "yes"
+msgstr "evet"
+
+#: sadf_misc.c:1226
+#, c-format
+msgid "Host: "
+msgstr "Sunucu: "
+
+#: sadf_misc.c:1236
+#, c-format
+msgid "File date: %s\n"
+msgstr "Dosya tarihi: %s\n"
+
+#: sadf_misc.c:1239
+#, c-format
+msgid "File time: "
+msgstr "Dosya zamanı: "
+
+#: sadf_misc.c:1245
+#, c-format
+msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgstr "Dosya bileşimi: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+
+#: sadf_misc.c:1250
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Bir long int boyutu: %d\n"
+
+#: sadf_misc.c:1252
+#, c-format
+msgid "Number of activities in file: %u\n"
+msgstr "Dosyasındaki faaliyetlerin sayısı: %u\n"
+
+#: sadf_misc.c:1255
+#, c-format
+msgid "List of activities:\n"
+msgstr "Etkinlikler listesi:\n"
+
+#: sadf_misc.c:1266
+msgid "Unknown activity"
+msgstr "Bilinmeyen etkinlik"
+
+#: sadf_misc.c:1274
+#, c-format
+msgid " \t[Unknown format]"
+msgstr " \t[Bilinmeyen biçim]"
+
+#: sa_common.c:300
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Dosyalar, sar/sadc tarafından sysstat sürüm %d.%d.%d ile oluşturuldu"
+
+#: sa_common.c:331
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Geçersiz sistem etkinlik dosyası: %s\n"
+
+#: sa_common.c:339
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "Güncel sysstat sürümü bu dosya biçimini okuyamıyor (%#x)\n"
+
+#: sa_common.c:1413
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Sistem etkinlik dosyası okunurken hata: %s\n"
+
+#: sa_common.c:1423
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Beklenmedik sistem etkinlik dosyası sonu\n"
+
+#: sa_common.c:1741
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "Veri biriktirmenin etkin olup olmadığını denetleyin\n"
+
+#: sa_common.c:2066
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Talep edilen etkinlikler dosyada bulunmamaktadır %s\n"
 
 #~ msgid "Cannot write system activity file header: %s\n"
 #~ msgstr "Sistem etkinlik dosyası başlığı yazılamıyor: %s\n"
