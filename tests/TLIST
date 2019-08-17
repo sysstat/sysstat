@@ -94,6 +94,12 @@ NOTES:
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
 00702	diff -u tests/out.data-ppc-11.7.2.tmp tests/expected.data-ppc-11.7.2
 
+=====	Reading data.tmp using an old sysstat version
+00750	LC_ALL=C TZ=GMT ./tests/ini/inisar -C -A -f tests/data.tmp > tests/out.data-ini.tmp
+00752	diff -u tests/out.data-ini.tmp tests/expected.data-ini
+	[There may be some small differences in ext disks stats between initial and current version
+	outputs, because initial version doesn't take into account discard fields]
+
 =====	Testing sar's options
 00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
 00802	diff -u tests/out.sar-iface.tmp tests/expected.sar-iface

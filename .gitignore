@@ -51,3 +51,4 @@ nls/*.gmo
 tests/*.tmp
 tests/sa[012]*
 tests/variables
+inisar

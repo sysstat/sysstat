@@ -299,6 +299,32 @@ cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h
 
 cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
 
+tests/ini/sa_common.o: tests/ini/sa_common.c tests/ini/version.h tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/sysconfig.h
+
+tests/ini/act_sar.o: tests/ini/activity.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/pr_stats.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
+
+tests/ini/rd_stats_light.o: tests/ini/rd_stats.c tests/ini/common.h tests/ini/rd_stats.h tests/ini/ioconf.h tests/ini/sysconfig.h
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/ini/count_light.o: tests/ini/count.c tests/ini/common.h tests/ini/rd_stats.h
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/ini/libsyscom.a: tests/ini/common.o tests/ini/ioconf.o
+	$(AR) rvs $@ $?
+
+tests/ini/format_sar.o: tests/ini/format.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
+
+tests/ini/pr_stats.o: tests/ini/pr_stats.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/sysconfig.h tests/ini/pr_stats.h
+
+tests/ini/librdstats_light.a: tests/ini/rd_stats_light.o tests/ini/count_light.o
+	$(AR) rvs $@ $?
+
+tests/ini/inisar.o: tests/ini/inisar.c tests/ini/sa.h tests/ini/version.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h
+
+tests/ini/inisar: tests/ini/inisar.o tests/ini/act_sar.o tests/ini/format_sar.o tests/ini/sa_common.o tests/ini/pr_stats.o tests/ini/librdstats_light.a tests/ini/libsyscom.a
+
 ifdef REQUIRE_NLS
 locales: $(NLSGMO)
 else
@@ -310,7 +336,7 @@ nls/sysstat.pot: $(wildcard *.c)
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall \
-	uninstall_base uninstall_all dist bdist xdist gitdist squeeze test simtest
+	uninstall_base uninstall_all dist bdist xdist gitdist squeeze simtest
 
 install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
 ifeq ($(INSTALL_DOC),y)
@@ -599,11 +625,13 @@ TESTDIR="tests"
 TESTRUN="/bin/sh"
 TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
 
+testcomp: tests/ini/inisar
+
 unit:
 	@echo $(X) 2>&1
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
-simtest: all
+simtest: all testcomp
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 	rm -f tests/root
 	ln -s root1 tests/root
@@ -614,6 +642,8 @@ clean:
 	rm -f tests/sa[012]*
 	rm -f tests/root
 	ln -s root1 tests/root
+	rm -f tests/ini/inisar
+	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot
