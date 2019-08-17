@@ -8,7 +8,7 @@
 #ifndef _IOCONF_H
 #define _IOCONF_H
 
-#include "sysconfig.h"
+#include "inisysconfig.h"
 
 #define IOC_NAMELEN	32
 #define IOC_DESCLEN	64

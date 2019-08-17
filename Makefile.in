@@ -299,12 +299,12 @@ cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h
 
 cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
 
-tests/ini/sa_common.o: tests/ini/sa_common.c tests/ini/version.h tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/sysconfig.h
+tests/ini/sa_common.o: tests/ini/sa_common.c tests/ini/iniversion.h tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/inisysconfig.h
 
 tests/ini/act_sar.o: tests/ini/activity.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/pr_stats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-tests/ini/rd_stats_light.o: tests/ini/rd_stats.c tests/ini/common.h tests/ini/rd_stats.h tests/ini/ioconf.h tests/ini/sysconfig.h
+tests/ini/rd_stats_light.o: tests/ini/rd_stats.c tests/ini/common.h tests/ini/rd_stats.h tests/ini/ioconf.h tests/ini/inisysconfig.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/ini/count_light.o: tests/ini/count.c tests/ini/common.h tests/ini/rd_stats.h
@@ -316,12 +316,12 @@ tests/ini/libsyscom.a: tests/ini/common.o tests/ini/ioconf.o
 tests/ini/format_sar.o: tests/ini/format.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-tests/ini/pr_stats.o: tests/ini/pr_stats.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/sysconfig.h tests/ini/pr_stats.h
+tests/ini/pr_stats.o: tests/ini/pr_stats.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/inisysconfig.h tests/ini/pr_stats.h
 
 tests/ini/librdstats_light.a: tests/ini/rd_stats_light.o tests/ini/count_light.o
 	$(AR) rvs $@ $?
 
-tests/ini/inisar.o: tests/ini/inisar.c tests/ini/sa.h tests/ini/version.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h
+tests/ini/inisar.o: tests/ini/inisar.c tests/ini/sa.h tests/ini/iniversion.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h
 
 tests/ini/inisar: tests/ini/inisar.o tests/ini/act_sar.o tests/ini/format_sar.o tests/ini/sa_common.o tests/ini/pr_stats.o tests/ini/librdstats_light.a tests/ini/libsyscom.a
 

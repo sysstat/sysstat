@@ -33,7 +33,7 @@
 #include <ctype.h>
 #include <libgen.h>
 
-#include "version.h"
+#include "iniversion.h"
 #include "common.h"
 
 #ifdef USE_NLS

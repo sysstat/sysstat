@@ -28,7 +28,7 @@
 #include <signal.h>
 #include <sys/stat.h>
 
-#include "version.h"
+#include "iniversion.h"
 #include "sa.h"
 
 #ifdef USE_NLS

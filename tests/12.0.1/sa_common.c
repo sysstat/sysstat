@@ -33,7 +33,7 @@
 #include <sys/stat.h>
 #include <ctype.h>
 
-#include "version.h"
+#include "iniversion.h"
 #include "sa.h"
 #include "ioconf.h"
 
