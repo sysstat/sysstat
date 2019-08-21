@@ -1,2 +1,2 @@
 rm -f tests/sa19700101
-./sadc -D -
+LC_ALL=C TZ=GMT ./sadc -D -

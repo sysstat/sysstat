@@ -1,3 +1,3 @@
 rm -f tests/root
 ln -s root1 tests/root
-LC_ALL=C ./iostat -dh -p ALL > tests/out.iostat-h.tmp
+LC_ALL=C TZ=GMT ./iostat -dh -p ALL > tests/out.iostat-h.tmp

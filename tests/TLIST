@@ -240,86 +240,86 @@ NOTES:
 01669	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
 
 =====	iostat tests (basic output)
-02010	LC_ALL=C ./iostat 2 3 > tests/out.iostat.tmp
+02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
 02015	diff -u tests/out.iostat.tmp tests/expected.iostat
-02020	LC_ALL=C ./iostat ALL 2 3 > tests/out.iostat-ALL.tmp
+02020	LC_ALL=C TZ=GMT ./iostat ALL 2 3 > tests/out.iostat-ALL.tmp
 02025	diff -u tests/out.iostat-ALL.tmp tests/expected.iostat-ALL
-02030	LC_ALL=C ./iostat -d -p ALL 2 3 > tests/out.iostat-p-ALL.tmp
+02030	LC_ALL=C TZ=GMT ./iostat -d -p ALL 2 3 > tests/out.iostat-p-ALL.tmp
 02035	diff -u tests/out.iostat-p-ALL.tmp tests/expected.iostat-p-ALL
-02040	LC_ALL=C ./iostat -p sda 2 3 > tests/out.iostat-p-sda.tmp
+02040	LC_ALL=C TZ=GMT ./iostat -p sda 2 3 > tests/out.iostat-p-sda.tmp
 02045	diff -u tests/out.iostat-p-sda.tmp tests/expected.iostat-p-sda
-02050	LC_ALL=C ./iostat -d ALL -p ALL 2 3 > tests/out.iostat-ALL-p-ALL.tmp
+02050	LC_ALL=C TZ=GMT ./iostat -d ALL -p ALL 2 3 > tests/out.iostat-ALL-p-ALL.tmp
 02055	diff -u tests/out.iostat-ALL-p-ALL.tmp tests/expected.iostat-ALL-p-ALL
-02060	LC_ALL=C ./iostat > tests/out.iostat-0.tmp
+02060	LC_ALL=C TZ=GMT ./iostat > tests/out.iostat-0.tmp
 02065	diff -u tests/out.iostat-0.tmp tests/expected.iostat-0
-02070	LC_ALL=C ./iostat sda sdc 2 3 > tests/out.iostat-list.tmp
+02070	LC_ALL=C TZ=GMT ./iostat sda sdc 2 3 > tests/out.iostat-list.tmp
 02075	diff -u tests/out.iostat-list.tmp tests/expected.iostat-list
 
 =====	iostat extended statistics
-02110	LC_ALL=C ./iostat -x 1 2 > tests/out.iostat-x.tmp
+02110	LC_ALL=C TZ=GMT ./iostat -x 1 2 > tests/out.iostat-x.tmp
 02115	diff -u tests/out.iostat-x.tmp tests/expected.iostat-x
-02120	LC_ALL=C ./iostat -x ALL 1 2 > tests/out.iostat-x-ALL.tmp
+02120	LC_ALL=C TZ=GMT ./iostat -x ALL 1 2 > tests/out.iostat-x-ALL.tmp
 02125	diff -u tests/out.iostat-x-ALL.tmp tests/expected.iostat-x-ALL
-02130	LC_ALL=C ./iostat -x -p ALL 1 2 > tests/out.iostat-x-p-ALL.tmp
+02130	LC_ALL=C TZ=GMT ./iostat -x -p ALL 1 2 > tests/out.iostat-x-p-ALL.tmp
 02135	diff -u tests/out.iostat-x-p-ALL.tmp tests/expected.iostat-x-p-ALL
-02140	LC_ALL=C ./iostat -x -p sda 1 2 > tests/out.iostat-x-p-sda.tmp
+02140	LC_ALL=C TZ=GMT ./iostat -x -p sda 1 2 > tests/out.iostat-x-p-sda.tmp
 02145	diff -u tests/out.iostat-x-p-sda.tmp tests/expected.iostat-x-p-sda
-02150	LC_ALL=C ./iostat -dx ALL -p ALL 1 7 > tests/out.iostat-x-ALL-p-ALL.tmp
+02150	LC_ALL=C TZ=GMT ./iostat -dx ALL -p ALL 1 7 > tests/out.iostat-x-ALL-p-ALL.tmp
 02155	diff -u tests/out.iostat-x-ALL-p-ALL.tmp tests/expected.iostat-x-ALL-p-ALL
-02160	LC_ALL=C ./iostat -x > tests/out.iostat-x-0.tmp
+02160	LC_ALL=C TZ=GMT ./iostat -x > tests/out.iostat-x-0.tmp
 02165	diff -u tests/out.iostat-x-0.tmp tests/expected.iostat-x-0
-02170	LC_ALL=C ./iostat -dx -p sdb,sdc > tests/out.iostat-x-list.tmp
+02170	LC_ALL=C TZ=GMT ./iostat -dx -p sdb,sdc > tests/out.iostat-x-list.tmp
 02175	diff -u tests/out.iostat-x-list.tmp tests/expected.iostat-x-list
 
 =====	iostat tests (narrow/basic output)
-02210	LC_ALL=C ./iostat -s 1 2 > tests/out.iostat-s.tmp
+02210	LC_ALL=C TZ=GMT ./iostat -s 1 2 > tests/out.iostat-s.tmp
 02215	diff -u tests/out.iostat-s.tmp tests/expected.iostat-s
-02220	LC_ALL=C ./iostat -ds ALL 1 2 > tests/out.iostat-s-ALL.tmp
+02220	LC_ALL=C TZ=GMT ./iostat -ds ALL 1 2 > tests/out.iostat-s-ALL.tmp
 02225	diff -u tests/out.iostat-s-ALL.tmp tests/expected.iostat-s-ALL
-02230	LC_ALL=C ./iostat -s sdb -p ALL 1 2 > tests/out.iostat-s-list-p.tmp
+02230	LC_ALL=C TZ=GMT ./iostat -s sdb -p ALL 1 2 > tests/out.iostat-s-list-p.tmp
 02235	diff -u tests/out.iostat-s-list-p.tmp tests/expected.iostat-s-list-p
-02240	LC_ALL=C ./iostat -s -p > tests/out.iostat-sp-0.tmp
+02240	LC_ALL=C TZ=GMT ./iostat -s -p > tests/out.iostat-sp-0.tmp
 02245	diff -u tests/out.iostat-sp-0.tmp tests/expected.iostat-sp-0
-02250	LC_ALL=C ./iostat -s ALL -p ALL 1 2 > tests/out.iostat-s-ALL-p-ALL.tmp
+02250	LC_ALL=C TZ=GMT ./iostat -s ALL -p ALL 1 2 > tests/out.iostat-s-ALL-p-ALL.tmp
 02255	diff -u tests/out.iostat-s-ALL-p-ALL.tmp tests/expected.iostat-s-ALL-p-ALL
-02260	LC_ALL=C ./iostat -s > tests/out.iostat-s-0.tmp
+02260	LC_ALL=C TZ=GMT ./iostat -s > tests/out.iostat-s-0.tmp
 02265	diff -u tests/out.iostat-s-0.tmp tests/expected.iostat-s-0
-02270	LC_ALL=C ./iostat -ds sda -p sdb 1 2 > tests/out.iostat-s-list.tmp
+02270	LC_ALL=C TZ=GMT ./iostat -ds sda -p sdb 1 2 > tests/out.iostat-s-list.tmp
 02275	diff -u tests/out.iostat-s-list.tmp tests/expected.iostat-s-list
 
 =====	iostat extended statistics (narrow output)
-02310	LC_ALL=C ./iostat -xs 2 3 > tests/out.iostat-xs.tmp
+02310	LC_ALL=C TZ=GMT ./iostat -xs 2 3 > tests/out.iostat-xs.tmp
 02315	diff -u tests/out.iostat-xs.tmp tests/expected.iostat-xs
-02320	LC_ALL=C ./iostat -dxs /dev/sdb 2 3 > tests/out.iostat-xs-sdb.tmp
+02320	LC_ALL=C TZ=GMT ./iostat -dxs /dev/sdb 2 3 > tests/out.iostat-xs-sdb.tmp
 02325	diff -u tests/out.iostat-xs-sdb.tmp tests/expected.iostat-xs-sdb
-02340	LC_ALL=C ./iostat -dxs -p sda 2 3 > tests/out.iostat-xs-p-sda.tmp
+02340	LC_ALL=C TZ=GMT ./iostat -dxs -p sda 2 3 > tests/out.iostat-xs-p-sda.tmp
 02345	diff -u tests/out.iostat-xs-p-sda.tmp tests/expected.iostat-xs-p-sda
-02370	LC_ALL=C ./iostat -xs sda1 sda3 sdc1 -p sdb,sdd > tests/out.iostat-xs-list.tmp
+02370	LC_ALL=C TZ=GMT ./iostat -xs sda1 sda3 sdc1 -p sdb,sdd > tests/out.iostat-xs-list.tmp
 02375	diff -u tests/out.iostat-xs-list.tmp tests/expected.iostat-xs-list
-02380	LC_ALL=C ./iostat -xs sda3 sda1 1 3 > tests/out.iostat-xs-list-part.tmp
+02380	LC_ALL=C TZ=GMT ./iostat -xs sda3 sda1 1 3 > tests/out.iostat-xs-list-part.tmp
 02385	diff -u tests/out.iostat-xs-list-part.tmp tests/expected.iostat-xs-list-part
 
 =====	Playing with iostat
-02410	LC_ALL=C ./iostat 2 > tests/out.iostat-sigint.tmp
+02410	LC_ALL=C TZ=GMT ./iostat 2 > tests/out.iostat-sigint.tmp
 	[Simulate a Ctrl/C]
 02415	diff -u tests/out.iostat-sigint.tmp tests/expected.iostat-sigint
-02420	LC_ALL=C ./iostat -d foo > tests/out.iostat-foo.tmp
+02420	LC_ALL=C TZ=GMT ./iostat -d foo > tests/out.iostat-foo.tmp
 02425	diff -u tests/out.iostat-foo.tmp tests/expected.iostat-foo
 02430	LC_ALL=C TZ=GMT ./iostat -ct 1 2 > tests/out.iostat-ct.tmp
 02435	diff -u tests/out.iostat-ct.tmp tests/expected.iostat-ct
-02440	LC_ALL=C ./iostat -d -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-g.tmp
+02440	LC_ALL=C TZ=GMT ./iostat -d -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-g.tmp
 02445	diff -u tests/out.iostat-g.tmp tests/expected.iostat-g
-02450	LC_ALL=C ./iostat -dH -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-gH.tmp
+02450	LC_ALL=C TZ=GMT ./iostat -dH -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-gH.tmp
 02455	diff -u tests/out.iostat-gH.tmp tests/expected.iostat-gH
-02460	LC_ALL=C ./iostat --dec=1 1 2 > tests/out.iostat-dec.tmp
+02460	LC_ALL=C TZ=GMT ./iostat --dec=1 1 2 > tests/out.iostat-dec.tmp
 02465	diff -u tests/out.iostat-dec.tmp tests/expected.iostat-dec
-02470	LC_ALL=C ./iostat -d -p ALL -j PATH > tests/out.iostat-jPATH.tmp
+02470	LC_ALL=C TZ=GMT ./iostat -d -p ALL -j PATH > tests/out.iostat-jPATH.tmp
 02472	diff -u tests/out.iostat-jPATH.tmp tests/expected.iostat-jPATH
-02474	LC_ALL=C ./iostat -d -p ALL -j ID > tests/out.iostat-jID.tmp
+02474	LC_ALL=C TZ=GMT ./iostat -d -p ALL -j ID > tests/out.iostat-jID.tmp
 02476	diff -u tests/out.iostat-jID.tmp tests/expected.iostat-jID
-02480	LC_ALL=C ./iostat -d -p ALL -j LABEL > tests/out.iostat-jLABEL.tmp
+02480	LC_ALL=C TZ=GMT ./iostat -d -p ALL -j LABEL > tests/out.iostat-jLABEL.tmp
 02482	diff -u tests/out.iostat-jLABEL.tmp tests/expected.iostat-jLABEL
-02484	LC_ALL=C ./iostat -d -p ALL -j PARTUUID > tests/out.iostat-jPARTUUID.tmp
+02484	LC_ALL=C TZ=GMT ./iostat -d -p ALL -j PARTUUID > tests/out.iostat-jPARTUUID.tmp
 02486	diff -u tests/out.iostat-jPARTUUID.tmp tests/expected.iostat-jPARTUUID
 
 =====	Testing iostat error cases
@@ -330,31 +330,31 @@ NOTES:
 02520	LC_ALL=C ./iostat -j FOObar 2>&1 | grep "Invalid" >/dev/null
 
 =====	Playing again with iostat
-02600	LC_ALL=C ./iostat -ym 1 2 > tests/out.iostat-ym.tmp
+02600	LC_ALL=C TZ=GMT ./iostat -ym 1 2 > tests/out.iostat-ym.tmp
 02605	diff -u tests/out.iostat-ym.tmp tests/expected.iostat-ym
-02610	LC_ALL=C ./iostat --human > tests/out.iostat-human.tmp
+02610	LC_ALL=C TZ=GMT ./iostat --human > tests/out.iostat-human.tmp
 02615	diff -u tests/out.iostat-human.tmp tests/expected.iostat-human
-02620	LC_ALL=C ./iostat -dh -p ALL > tests/out.iostat-h.tmp
+02620	LC_ALL=C TZ=GMT ./iostat -dh -p ALL > tests/out.iostat-h.tmp
 02625	diff -u tests/out.iostat-h.tmp tests/expected.iostat-h
-02630	LC_ALL=C ./iostat -kz -p ALL 1 2 > tests/out.iostat-kz.tmp
+02630	LC_ALL=C TZ=GMT ./iostat -kz -p ALL 1 2 > tests/out.iostat-kz.tmp
 02635	diff -u tests/out.iostat-kz.tmp tests/expected.iostat-kz
-02640	LC_ALL=C ./iostat -dN -p ALL > tests/out.iostat-N.tmp
+02640	LC_ALL=C TZ=GMT ./iostat -dN -p ALL > tests/out.iostat-N.tmp
 02645	diff -u tests/out.iostat-N.tmp tests/expected.iostat-N
-02650	LC_ALL=C ./iostat -d -j LABEL OS SYSTEM 1 2 > tests/out.iostat-jLABEL-list.tmp
+02650	LC_ALL=C TZ=GMT ./iostat -d -j LABEL OS SYSTEM 1 2 > tests/out.iostat-jLABEL-list.tmp
 02655	diff -u tests/out.iostat-jLABEL-list.tmp tests/expected.iostat-jLABEL-list
-02660	LC_ALL=C ./iostat -dxs -j UUID 2578463f-6947-48c7-8b09-876a4145cfb1 1 2 > tests/out.iostat-jUUID-list.tmp
+02660	LC_ALL=C TZ=GMT ./iostat -dxs -j UUID 2578463f-6947-48c7-8b09-876a4145cfb1 1 2 > tests/out.iostat-jUUID-list.tmp
 02665	diff -u tests/out.iostat-jUUID-list.tmp tests/expected.iostat-jUUID-list
-02670	LC_ALL=C ./iostat -g total sda -g foo 1 2 > tests/out.iostat-g2.tmp
+02670	LC_ALL=C TZ=GMT ./iostat -g total sda -g foo 1 2 > tests/out.iostat-g2.tmp
 02675	diff -u tests/out.iostat-g2.tmp tests/expected.iostat-g2
-02680	LC_ALL=C ./iostat -g total ALL 1 2 > tests/out.iostat-gALL.tmp
+02680	LC_ALL=C TZ=GMT ./iostat -g total ALL 1 2 > tests/out.iostat-gALL.tmp
 02685	diff -u tests/out.iostat-gALL.tmp tests/expected.iostat-gALL
-02690	LC_ALL=C ./iostat -g total -p ALL 1 2 > tests/out.iostat-gpALL.tmp
+02690	LC_ALL=C TZ=GMT ./iostat -g total -p ALL 1 2 > tests/out.iostat-gpALL.tmp
 02695	diff -u tests/out.iostat-gpALL.tmp tests/expected.iostat-gpALL
-02700	LC_ALL=C ./iostat -g total -p sda 1 2 > tests/out.iostat-gp.tmp
+02700	LC_ALL=C TZ=GMT ./iostat -g total -p sda 1 2 > tests/out.iostat-gp.tmp
 02705	diff -u tests/out.iostat-gp.tmp tests/expected.iostat-gp
-02710	LC_ALL=C ./iostat -g total -p sda -y 1 3 > tests/out.iostat-gpy.tmp
+02710	LC_ALL=C TZ=GMT ./iostat -g total -p sda -y 1 3 > tests/out.iostat-gpy.tmp
 02715	diff -u tests/out.iostat-gpy.tmp tests/expected.iostat-gpy
-02720	LC_ALL=C ./iostat -p cciss/c0d0 1 2 > tests/out.iostat-p-cciss.tmp
+02720	LC_ALL=C TZ=GMT ./iostat -p cciss/c0d0 1 2 > tests/out.iostat-p-cciss.tmp
 02725	diff -u tests/out.iostat-p-cciss.tmp tests/expected.iostat-p-cciss
-02730	LC_ALL=C ./iostat cciss/c0d0p1 1 2 > tests/out.iostat-cciss.tmp
+02730	LC_ALL=C TZ=GMT ./iostat cciss/c0d0p1 1 2 > tests/out.iostat-cciss.tmp
 02735	diff -u tests/out.iostat-cciss.tmp tests/expected.iostat-cciss
