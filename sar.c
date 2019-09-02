@@ -126,7 +126,7 @@ void usage(char *progname)
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"));
 	exit(1);
