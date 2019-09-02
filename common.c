@@ -269,6 +269,146 @@ void sysstat_panic(const char *function, int error_code)
 	exit(1);
 }
 
+/*
+ ***************************************************************************
+ * Extract WWWN identifiers from filename, as read from /dev/disk/by-id.
+ *
+ * Sample valid names read from /dev/disk/by-id:
+ * wwn-0x5000cca369f193ac
+ * wwn-0x5000cca369f193ac-part12
+ * wwn-0x600605b00a2bdf00242b28c10dcb1999
+ * wwn-0x600605b00a2bdf00242b28c10dcb1999-part2
+ *
+ * WWN ids like these ones are ignored:
+ * wwn-0x5438850077615869953x
+ * wwn-0x5438850077615869953x-part1
+ *
+ * IN:
+ * @name	Filename read from /dev/disk/by-id.
+ *
+ * OUT:
+ * @wwn		WWN identifier (8 or 16 hex characters).
+ * @part-nr	Partition number if applicable.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
+ ***************************************************************************
+*/
+int extract_wwnid(char *name, unsigned long long *wwn, unsigned int *part_nr)
+{
+	char id[17];
+	char *s;
+	int wwnlen;
+
+	*wwn = *(wwn + 1) = 0ULL;
+	*part_nr = 0;
+
+	/* Check name */
+	if (((wwnlen = strlen(name)) < 22) || (strncmp(name, "wwn-0x", 6)))
+		return -1;
+
+	/* Is there a partition number? */
+	if ((s = strstr(name, "-part")) != NULL) {
+		/* Yes: Get partition number */
+		if (sscanf(s + 5, "%u", part_nr) == 0)
+			return -1;
+		wwnlen = s - name - 6;
+	}
+	else {
+		wwnlen -= 6;	/* Don't count "wwn-0x" */
+	}
+
+	/* Check WWN length */
+	if ((wwnlen != 16) && (wwnlen != 32))
+		return -1;
+
+	/* Extract first 8 hex chars of WWN */
+	strncpy(id, name + 6, 16);
+	id[16] = '\0';
+	if (sscanf(id, "%llx", wwn) == 0)
+		return -1;
+
+	if (strlen(name) < 38)
+		/* This is a short (8 hex chars) WWN id */
+		return 0;
+
+	/* Extract second part of WWN */
+	if (sscanf(name + 22, "%llx", wwn + 1) == 0)
+		return -1;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Get WWWN identifiers from a pretty filename using links present in
+ * /dev/disk/by-id directory.
+ *
+ * IN:
+ * @pretty	Pretty name (e.g. sda, sdb3...).
+ *
+ * OUT:
+ * @wwn		WWN identifier (8 or 16 hex characters).
+ * @part-nr	Partition number if applicable.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
+ ***************************************************************************
+*/
+int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *part_nr)
+{
+	DIR *dir;
+	struct dirent *drd;
+	ssize_t r;
+	char link[PATH_MAX], target[PATH_MAX], wwn_name[FILENAME_MAX];
+	char *name;
+	int rc = -1;
+
+	/* Open  /dev/disk/by-id directory */
+	if ((dir = opendir(DEV_DISK_BY_ID)) == NULL)
+		return -1;
+
+	/* Get current id */
+	while ((drd = readdir(dir)) != NULL) {
+
+		if (strncmp(drd->d_name, "wwn-0x", 6))
+			continue;
+
+		/* Get absolute path for current persistent name */
+		snprintf(link, PATH_MAX, "%s/%s", DEV_DISK_BY_ID, drd->d_name);
+
+		/* Persistent name is usually a symlink: Read it... */
+		r = readlink(link, target, PATH_MAX);
+		if ((r <= 0) || (r >= PATH_MAX))
+			continue;
+
+		target[r] = '\0';
+
+		/* ... and get device pretty name it points at */
+		name = basename(target);
+		if (!name || (name[0] == '\0'))
+			continue;
+
+		if (!strncmp(name, pretty, FILENAME_MAX)) {
+			/* We have found pretty name for current persistent one */
+			strncpy(wwn_name, drd->d_name, FILENAME_MAX);
+			wwn_name[FILENAME_MAX - 1] = '\0';
+
+			/* Try to extract WWN */
+			if (!extract_wwnid(wwn_name, wwn, part_nr)) {
+				/* WWN successfully extracted */
+				rc = 0;
+				break;
+			}
+		}
+	}
+
+	/* Close directory */
+	closedir(dir);
+
+	return rc;
+}
+
 #ifndef SOURCE_SADC
 /*
  ***************************************************************************
@@ -804,7 +944,7 @@ char **get_persistent_names(void)
 	 * i != k because we are ignoring "." and ".." entries.
 	 */
 	for (i = 0; i < n; i++) {
-		/* Ignore "." and "..". */
+		/* Ignore "." and ".." */
 		if (!strcmp(".", namelist[i]->d_name) ||
 		    !strcmp("..", namelist[i]->d_name))
 			continue;

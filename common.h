@@ -82,6 +82,7 @@
 #define DEVICES			PRE "/proc/devices"
 #define SYSFS_USBDEV		PRE "/sys/bus/usb/devices"
 #define DEV_DISK_BY		PRE "/dev/disk/by"
+#define DEV_DISK_BY_ID		PRE "/dev/disk/by-id"
 #define SYSFS_IDVENDOR		"idVendor"
 #define SYSFS_IDPRODUCT		"idProduct"
 #define SYSFS_BMAXPOWER		"bMaxPower"
@@ -242,6 +243,10 @@ int is_device
 	(char *, int);
 void sysstat_panic
 	(const char *, int);
+int extract_wwnid
+	(char *, unsigned long long *, unsigned int *);
+int get_wwnid_from_pretty
+	(char *, unsigned long long *, unsigned int *);
 
 #ifndef SOURCE_SADC
 int count_bits

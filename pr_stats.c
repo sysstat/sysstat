@@ -1053,7 +1053,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 			continue;
 
 		/* Get device name */
-		dev_name = get_sa_devname(sdc->major, sdc->minor, flags);
+		dev_name = get_sa_devname(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr, flags);
 
 		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */

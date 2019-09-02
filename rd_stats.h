@@ -262,6 +262,7 @@ struct stats_serial {
 /* Structure for block devices statistics */
 struct stats_disk {
 	unsigned long long nr_ios;
+	unsigned long long wwn[2];
 	unsigned long	   rd_sect	__attribute__ ((aligned (8)));
 	unsigned long	   wr_sect	__attribute__ ((aligned (8)));
 	unsigned long	   dc_sect	__attribute__ ((aligned (8)));
@@ -272,12 +273,13 @@ struct stats_disk {
 	unsigned int	   major;
 	unsigned int	   minor;
 	unsigned int	   dc_ticks;
+	unsigned int	   part_nr;
 };
 
 #define STATS_DISK_SIZE	(sizeof(struct stats_disk))
-#define STATS_DISK_ULL	1
+#define STATS_DISK_ULL	3
 #define STATS_DISK_UL	3
-#define STATS_DISK_U	7
+#define STATS_DISK_U	8
 
 /* Structure for network interfaces statistics */
 struct stats_net_dev {

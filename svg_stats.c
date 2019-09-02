@@ -2091,7 +2091,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name;
+	char *dev_name, *item_name;
 	double rkB, wkB, dkB, aqusz;
 	int i, j, k, pos, restart, *unregistered;
 
@@ -2100,8 +2100,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 		 * Allocate arrays (#0..7) that will contain the graphs data
 		 * and the min/max values.
 		 * Also allocate one additional array (#8) for each disk device:
-		 * spmax + 8 will contain the device major number,
-		 * spmin + 8 will contain the device minor number,
+		 * out + 8 will contain the device name (WWN id, pretty name or devm-n),
 		 * outsize + 8 will contain a positive value (TRUE) if the device
 		 * has either still not been registered, or has been unregistered.
 		 */
@@ -2126,34 +2125,36 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 		for (i = 0; i < a->nr[curr]; i++) {
 			sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
-			/* Get device name */
-			item_name = get_sa_devname(sdc->major, sdc->minor, flags);
+			/* Get device name  */
+			dev_name = get_sa_devname(sdc->major, sdc->minor,
+						  sdc->wwn, sdc->part_nr, flags);
 
 			if (a->item_list != NULL) {
 				/* A list of devices has been entered on the command line */
-				if (!search_list_item(a->item_list, item_name))
+				if (!search_list_item(a->item_list, dev_name))
 					/* Device not found */
 					continue;
 			}
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->item_list_sz; k++) {
-				if ((sdc->major == *(spmax + k * nr_arrays + 8)) &&
-				    (sdc->minor == *(spmin + k * nr_arrays + 8)))
+				item_name = *(out + k * nr_arrays + 8);
+				if (!strcmp(dev_name, item_name))
 					/* Graph found! */
 					break;
 			}
 			if (k == a->item_list_sz) {
 				/* Graph not found: Look for first free entry */
 				for (k = 0; k < a->item_list_sz; k++) {
-					if (*(spmax + k * nr_arrays + 8) == -DBL_MAX)
+					item_name = *(out + k * nr_arrays + 8);
+					if (!strcmp(item_name, ""))
 						break;
 				}
 				if (k == a->item_list_sz) {
 					/* No free graph entry: Ignore it (should never happen) */
 #ifdef DEBUG
 					fprintf(stderr, "%s: Name=%s major=%d minor=%d\n",
-						__FUNCTION__, item_name, sdc->major, sdc->minor);
+						__FUNCTION__, dev_name, sdc->major, sdc->minor);
 #endif
 					continue;
 				}
@@ -2171,10 +2172,11 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			}
 			*unregistered = FALSE;
 
-			if (*(spmax + pos + 8) == -DBL_MAX) {
-				/* Save device major and minor numbers (if not already done) */
-				*(spmax + pos + 8) = sdc->major;
-				*(spmin + pos + 8) = sdc->minor;
+			item_name = *(out + pos + 8);
+			if (!item_name[0]) {
+				/* Save device name (WWN id or pretty name) if not already done */
+				strncpy(item_name, dev_name, CHUNKSIZE);
+				item_name[CHUNKSIZE - 1] = '\0';
 			}
 
 			j = check_disk_reg(a, curr, !curr, i);
@@ -2291,9 +2293,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			if (!**(out + pos))
 				continue;
 
-			/* Get device name */
-			item_name = get_sa_devname(*(spmax + pos + 8), *(spmin + pos + 8), flags);
-
+			item_name = *(out + pos + 8);
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
 						 spmin + pos, spmax + pos, out + pos, outsize + pos,

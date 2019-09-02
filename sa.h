@@ -82,7 +82,8 @@
  */
 
 #define S_F_SINCE_BOOT		0x00000001
-#define S_F_SA_ROTAT      	0x00000002
+#define S_F_SA_ROTAT      	0x00000002	/* Only used by sadc */
+#define S_F_DEV_SID		0x00000002	/* Only used by sar/sadf */
 #define S_F_DEV_PRETTY		0x00000004
 #define S_F_FORCE_FILE		0x00000008
 #define S_F_INTERVAL_SET	0x00000010
@@ -117,6 +118,7 @@
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
+#define USE_STABLE_ID(m)		(((m) & S_F_DEV_SID)      == S_F_DEV_SID)
 #define USE_PRETTY_OPTION(m)		(((m) & S_F_DEV_PRETTY)   == S_F_DEV_PRETTY)
 #define FORCE_FILE(m)			(((m) & S_F_FORCE_FILE)   == S_F_FORCE_FILE)
 #define INTERVAL_SET(m)			(((m) & S_F_INTERVAL_SET) == S_F_INTERVAL_SET)
@@ -186,34 +188,35 @@
 
 /* Keywords */
 #define K_A_NULL	"A_NULL"
-#define K_XALL		"XALL"
-#define K_SUM		"SUM"
+#define K_CPU		"CPU"
 #define K_DEV		"DEV"
 #define K_EDEV		"EDEV"
+#define K_EICMP		"EICMP"
+#define K_EICMP6	"EICMP6"
+#define K_EIP		"EIP"
+#define K_EIP6		"EIP6"
+#define K_ETCP		"ETCP"
+#define K_FAN		"FAN"
+#define K_FC		"FC"
+#define K_FREQ		"FREQ"
+#define K_ICMP		"ICMP"
+#define K_ICMP6		"ICMP6"
+#define K_IN		"IN"
+#define K_IP		"IP"
+#define K_IP6		"IP6"
+#define K_MOUNT		"MOUNT"
 #define K_NFS		"NFS"
 #define K_NFSD		"NFSD"
+#define K_SID		"SID"
 #define K_SOCK		"SOCK"
-#define K_IP		"IP"
-#define K_EIP		"EIP"
-#define K_ICMP		"ICMP"
-#define K_EICMP		"EICMP"
-#define K_TCP		"TCP"
-#define K_ETCP		"ETCP"
-#define K_UDP		"UDP"
 #define K_SOCK6		"SOCK6"
-#define K_IP6		"IP6"
-#define K_EIP6		"EIP6"
-#define K_ICMP6		"ICMP6"
-#define K_EICMP6	"EICMP6"
-#define K_UDP6		"UDP6"
-#define K_CPU		"CPU"
-#define K_FAN		"FAN"
-#define K_TEMP		"TEMP"
-#define K_IN		"IN"
-#define K_FREQ		"FREQ"
-#define K_MOUNT		"MOUNT"
-#define K_FC		"FC"
 #define K_SOFT		"SOFT"
+#define K_SUM		"SUM"
+#define K_TCP		"TCP"
+#define K_TEMP		"TEMP"
+#define K_UDP		"UDP"
+#define K_UDP6		"UDP6"
+#define K_XALL		"XALL"
 
 #define K_INT		"INT"
 #define K_DISK		"DISK"
@@ -1372,7 +1375,7 @@ void free_structures
 char *get_devname
 	(unsigned int, unsigned int, int);
 char *get_sa_devname
-	(unsigned int, unsigned int, unsigned int);
+	(unsigned int, unsigned int, unsigned long long [], unsigned int, unsigned int);
 void get_file_timestamp_struct
 	(unsigned int, struct tm *, struct file_header *);
 unsigned long long get_global_cpu_statistics

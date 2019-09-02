@@ -791,8 +791,9 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 	char line[1024];
 	char dev_name[MAX_NAME_LEN];
 	struct stats_disk *st_disk_i;
-	unsigned int major, minor, rd_ticks, wr_ticks, dc_ticks, tot_ticks, rq_ticks;
+	unsigned int major, minor, rd_ticks, wr_ticks, dc_ticks, tot_ticks, rq_ticks, part_nr;
 	unsigned long rd_ios, wr_ios, dc_ios, rd_sec, wr_sec, dc_sec;
+	unsigned long long wwn[2];
 	__nr_t dsk_read = 0;
 
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
@@ -839,6 +840,15 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 				st_disk_i->dc_ticks  = dc_ticks;
 				st_disk_i->tot_ticks = tot_ticks;
 				st_disk_i->rq_ticks  = rq_ticks;
+
+				if (get_wwnid_from_pretty(dev_name, wwn, &part_nr) < 0) {
+					st_disk_i->wwn[0] = 0ULL;
+				}
+				else {
+					st_disk_i->wwn[0] = wwn[0];
+					st_disk_i->wwn[1] = wwn[1];
+					st_disk_i->part_nr = part_nr;
+				}
 			}
 		}
 	}

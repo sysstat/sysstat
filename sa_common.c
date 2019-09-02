@@ -2192,6 +2192,11 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				return 1;
 			}
 			(*opt)++;
+			if (!strcmp(argv[*opt], K_SID)) {
+				*flags |= S_F_DEV_SID + S_F_DEV_PRETTY;
+				return 0;
+			}
+
 			if (strnlen(argv[*opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1)
 				return 1;
 
@@ -3210,15 +3215,20 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
  * IN:
  * @major	Major number of the device.
  * @minor	Minor number of the device.
+ * @wwn		WWN identifier of the device (0 if unknown).
+ * @part_nr	Partition number (0 if unknown).
  * @flags	Flags for common options and system state.
  *
  * RETURNS:
  * The name of the device.
  ***************************************************************************
  */
-char *get_sa_devname(unsigned int major, unsigned int minor, unsigned int flags)
+char *get_sa_devname(unsigned int major, unsigned int minor, unsigned long long wwn[],
+		     unsigned int part_nr, unsigned int flags)
 {
 	char *dev_name = NULL, *persist_dev_name = NULL;
+	static char sid[64];
+	char xsid[32] = "", pn[16] = "";
 
 	if (DISPLAY_PERSIST_NAME_S(flags)) {
 		persist_dev_name = get_persistent_name_from_pretty(get_devname(major, minor, TRUE));
@@ -3228,7 +3238,17 @@ char *get_sa_devname(unsigned int major, unsigned int minor, unsigned int flags)
 		dev_name = persist_dev_name;
 	}
 	else {
-		if ((USE_PRETTY_OPTION(flags)) && (major == dm_major)) {
+		if ((USE_STABLE_ID(flags)) && (wwn[0] != 0)) {
+			if (wwn[1] != 0) {
+				sprintf(xsid, "%016llx", wwn[1]);
+			}
+			if (part_nr) {
+				sprintf(pn, "-%d", part_nr);
+			}
+			snprintf(sid, sizeof(sid), "%#016llx%s%s", wwn[0], xsid, pn);
+			dev_name = sid;
+		}
+		else if ((USE_PRETTY_OPTION(flags)) && (major == dm_major)) {
 			dev_name = transform_devmapname(major, minor);
 		}
 
