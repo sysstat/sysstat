@@ -1,4 +1,4 @@
-.TH SAR 1 "JUNE 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "SEPTEMBER 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -22,7 +22,7 @@ sar \- Collect, report, or save system activity information.
 .B [ -n {
 .I keyword
 .B [,...] | ALL } ]
-.B [ -j { ID | LABEL | PATH | UUID | ... } ]
+.B [ -j { SID | ID | LABEL | PATH | UUID | ... } ]
 .B [ -f [
 .I filename
 .B ] | -o [
@@ -525,7 +525,7 @@ Specify the network interfaces for which statistics are to be displayed by
 .BR sar .
 .IR iface_list
 is a list of comma-separated interface names.
-.IP "-j { ID | LABEL | PATH | UUID | ... }"
+.IP "-j { SID | ID | LABEL | PATH | UUID | ... }"
 Display persistent device names. Use this option in conjunction with option -d.
 Options
 .BR ID ,
@@ -535,6 +535,13 @@ only prerequisite is that directory with required persistent names is present in
 .IR /dev/disk .
 If persistent name is not found for the device, the device name
 is pretty-printed (see option -p below).
+Option
+.BR SID
+tries to get a stable identifier to use as the device name. A stable
+identifier won't change across reboots for the same physical device. If it exists,
+this identifier is normally the WWN (World Wide Name) of the device, as read from the
+.IR /dev/disk/by-id
+directory.
 .IP "-m { keyword [,...] | ALL }"
 Report power management statistics.
 Note that these statistics depend on
