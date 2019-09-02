@@ -322,14 +322,14 @@ int extract_wwnid(char *name, unsigned long long *wwn, unsigned int *part_nr)
 	if ((wwnlen != 16) && (wwnlen != 32))
 		return -1;
 
-	/* Extract first 8 hex chars of WWN */
+	/* Extract first 16 hex chars of WWN */
 	strncpy(id, name + 6, 16);
 	id[16] = '\0';
 	if (sscanf(id, "%llx", wwn) == 0)
 		return -1;
 
 	if (strlen(name) < 38)
-		/* This is a short (8 hex chars) WWN id */
+		/* This is a short (16 hex chars) WWN id */
 		return 0;
 
 	/* Extract second part of WWN */
