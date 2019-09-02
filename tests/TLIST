@@ -120,8 +120,13 @@ NOTES:
 00872	diff -u tests/out2.sar-i.tmp tests/expected.sar-i
 00880	LC_ALL=C TZ=GMT ./sar 60 2 -f tests/data.tmp > tests/out3.sar-i.tmp
 00882	diff -u tests/out3.sar-i.tmp tests/expected3.sar-i
-00900	LC_ALL=C TZ=GMT ./sar -h -j UUID -f tests/data.tmp > tests/out.sar-jUUID.tmp
+00900	LC_ALL=C TZ=GMT ./sar -dh -j UUID -f tests/data.tmp > tests/out.sar-jUUID.tmp
 00902	diff -u tests/out.sar-jUUID.tmp tests/expected.sar-jUUID
+00904	LC_ALL=C TZ=GMT ./sar -dh -j ID -f tests/data.tmp > tests/out.sar-jID.tmp
+	[Done on root4. IDs are determined at run-time using ./dev/disk/by-id contents]
+00905	diff -u tests/out.sar-jID.tmp tests/expected.sar-jID
+00906	LC_ALL=C TZ=GMT ./sar -dh -j SID -f tests/data.tmp > tests/out.sar-jSID.tmp
+00907	diff -u tests/out.sar-jSID.tmp tests/expected.sar-jSID
 00910	LC_ALL=C TZ=GMT ./sar -uw -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
 	[Testing options -s/-e on a file contents spanning two consecutive days]
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
