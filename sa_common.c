@@ -1335,7 +1335,8 @@ int remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
 	/* Remap [unsigned] int fields */
 	d = gtypes_nr[1] - ftypes_nr[1];
 	if (d) {
-		if (ftypes_nr[1] * UL_ALIGNMENT_WIDTH < ftypes_nr[1])
+		if (gtypes_nr[0] * ULL_ALIGNMENT_WIDTH +
+		    ftypes_nr[1] * UL_ALIGNMENT_WIDTH < ftypes_nr[1])
 			/* Overflow */
 			return -1;
 
@@ -1364,7 +1365,9 @@ int remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
 	/* Remap possible fields (like strings of chars) following int fields */
 	d = gtypes_nr[2] - ftypes_nr[2];
 	if (d) {
-		if (ftypes_nr[2] * U_ALIGNMENT_WIDTH < ftypes_nr[2])
+		if (gtypes_nr[0] * ULL_ALIGNMENT_WIDTH +
+		    gtypes_nr[1] * UL_ALIGNMENT_WIDTH +
+		    ftypes_nr[2] * U_ALIGNMENT_WIDTH < ftypes_nr[2])
 			/* Overflow */
 			return -1;
 
