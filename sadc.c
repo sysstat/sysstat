@@ -522,6 +522,9 @@ void setup_file_hdr(int fd)
 		p_write_error();
 	}
 
+	/* Reset file_activity structure (in case some unknown extra fields exist) */
+	memset(&file_act, 0, FILE_ACTIVITY_SIZE);
+
 	/* Write activity list */
 	for (i = 0; i < NR_ACT; i++) {
 
@@ -596,7 +599,7 @@ void write_special_record(int ofd, int rtype)
 		ask_for_flock(ofd, FATAL);
 	}
 
-	/* Reset the structure (not compulsory, but a bit cleaner) */
+	/* Reset the structure (sane to do it, as other fields may be added in the future) */
 	memset(&record_hdr, 0, RECORD_HEADER_SIZE);
 
 	/* Set record type */
@@ -1045,6 +1048,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 	do {
 		/* Init all structures */
 		reset_stats();
+		memset(&record_hdr, 0, RECORD_HEADER_SIZE);
 
 		/* Save time */
 		record_hdr.ust_time = (unsigned long long) get_time(&rectime, 0);
