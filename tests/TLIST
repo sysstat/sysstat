@@ -52,29 +52,29 @@ NOTES:
 00350	./iostat -o JSON -g total /dev/sda1 sda3 -g foo 1 3 | $VER_JSON >/dev/null;
 
 =====	Checking XML output validity
-00400	./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
-00410	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+00400	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+00410	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 
 =====	Checking sadf output
-00500	./sadf -p tests/data.tmp -C -- -A > tests/out.sadf-p.tmp
+00500	LC_ALL=C ./sadf -p tests/data.tmp -C -- -A > tests/out.sadf-p.tmp
 00501	diff -u tests/out.sadf-p.tmp tests/expected.sadf-p
-00510	./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
+00510	LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
 00511	diff -u tests/out.sadf-d.tmp tests/expected.sadf-d
-00520	./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
+00520	LC_ALL=C ./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
 00521	diff -u tests/out.sadf-x.tmp tests/expected.sadf-x
-00530	./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
+00530	LC_ALL=C ./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
 00531	diff -u tests/out.sadf-j.tmp tests/expected.sadf-j
-00540	./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
+00540	LC_ALL=C ./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
 00541	diff -u tests/out.sadf-g.tmp tests/expected.sadf-g
-00545	./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
+00545	LC_ALL=C ./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
 00546	diff -u tests/out1.sadf-g.tmp tests/expected1.sadf-g
-00550	TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
+00550	LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
 00551	diff -u tests/out2.sadf-g.tmp tests/expected2.sadf-g
-00560	./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
+00560	LC_ALL=C ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00561	diff -u tests/out.sadf-H.tmp tests/expected.sadf-H
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
 00571	diff -u tests/out.sadf-r.tmp tests/expected.sadf-r
-00580	./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
+00580	LC_ALL=C ./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
 00582	diff -u tests/out.sadf-se.tmp tests/expected.sadf-se
 
 =====	Checking sadf conversion
@@ -152,7 +152,7 @@ NOTES:
 01130	./sadf -j tests/data0.tmp -- -A | $VER_JSON >/dev/null
 01140	LC_ALL=C TZ=GMT ./sar -r -f tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
 01145	./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
-01150	./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
+01150	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
 01152	diff -u tests/out0.sadf-g.tmp tests/expected0.sadf-g
 
 =====	Append data to data0.tmp then read its contents
@@ -162,9 +162,9 @@ NOTES:
 01220	./sadf -d tests/data0.tmp -- -A > tests/out01.sadf-d.tmp
 01222	diff -u tests/out01.sadf-d.tmp tests/expected01.sadf-d
 01230	./sadf -j tests/data0.tmp -- -A | $VER_JSON >/dev/null
-01240	./sadf -g tests/data0.tmp -- -A > tests/out01.sadf-g.tmp
+01240	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out01.sadf-g.tmp
 01242	diff -u tests/out01.sadf-g.tmp tests/expected01.sadf-g
-01250	./sadf -H tests/data0.tmp > tests/out01.sadf-H.tmp
+01250	LC_ALL=C ./sadf -H tests/data0.tmp > tests/out01.sadf-H.tmp
 01252	diff -u tests/out01.sadf-H.tmp tests/expected01.sadf-H
 
 =====	Playing with standard activity datafiles
@@ -199,7 +199,7 @@ NOTES:
 
 =====	Testing error cases
 01400	LC_ALL=C TZ=GMT ./sar -f tests/data-trunc 2>&1 | grep "End of system activity file unexpected" >/dev/null
-01405	./sadf -g tests/data-trunc -- -A > tests/out.sadf-g-trunc.tmp 2>/dev/null
+01405	LC_ALL=C TZ=GMT ./sadf -g tests/data-trunc -- -A > tests/out.sadf-g-trunc.tmp 2>/dev/null
 	[Check that sadf -g terminates properly on truncated input file]
 01406	diff -u tests/out.sadf-g-trunc.tmp tests/expected.sadf-g-trunc
 01410	LC_ALL=C ./sar 0 0 2>&1 | grep "Usage:" >/dev/null

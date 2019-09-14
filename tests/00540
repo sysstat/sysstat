@@ -1,1 +1,1 @@
-./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
+LC_ALL=C ./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
