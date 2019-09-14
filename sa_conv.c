@@ -1458,6 +1458,8 @@ int upgrade_record_header(int fd, int stdfd, struct old_record_header *orec_hdr,
 {
 	struct record_header rec_hdr;
 
+	memset(&rec_hdr, 0, sizeof(struct record_header));
+
 	/* Convert current record header */
 	rec_hdr.uptime_cs = orec_hdr->uptime0 * 100 / HZ;	/* Uptime in cs, not jiffies */
 	rec_hdr.ust_time = (unsigned long long) orec_hdr->ust_time;
