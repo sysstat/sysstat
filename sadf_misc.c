@@ -1230,7 +1230,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 				 PLAIN_OUTPUT);
 
-		/* Fill file timestmap structure (rectime) */
+		/* Fill file timestamp structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		printf(_("File date: %s\n"), cur_time);
@@ -1251,6 +1251,8 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		printf("HZ = %lu\n", file_hdr->sa_hz);
 		printf(_("Number of activities in file: %u\n"),
 		       file_hdr->sa_act_nr);
+		printf(_("Extra structures available: %c\n"),
+		       file_hdr->extra_next ? 'Y' : 'N');
 
 		printf(_("List of activities:\n"));
 		fal = file_actlst;
