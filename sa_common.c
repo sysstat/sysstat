@@ -52,6 +52,7 @@ extern unsigned int dm_major;
 unsigned int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADER_U_NR};
 unsigned int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
 unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
+unsigned int extra_desc_types_nr[] = {EXTRA_DESC_ULL_NR, EXTRA_DESC_UL_NR, EXTRA_DESC_U_NR};
 unsigned int nr_types_nr[]  = {0, 0, 1};
 
 /*
@@ -1450,6 +1451,58 @@ int sa_fread(int ifd, void *buffer, size_t size, int mode, int oneof)
 
 /*
  ***************************************************************************
+ * Skip unknown extra structures present in file.
+ *
+ * IN:
+ * @ifd		System activity data file descriptor.
+ * @endian_mismatch
+ *		TRUE if file's data don't match current machine's endianness.
+ * @arch_64	TRUE if file's data come from a 64 bit machine.
+ *
+ * RETURNS:
+ * -1 on error, 0 otherwise.
+ ***************************************************************************
+ */
+int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
+{
+	int i;
+	struct extra_desc xtra_d;
+
+	do {
+		/* Read extra structure description */
+		sa_fread(ifd, &xtra_d, EXTRA_DESC_SIZE, HARD_SIZE, UEOF_STOP);
+
+		/*
+		 * We don't need to remap as the extra_desc structure won't change,
+		 * but we may need to normalize endianness anyway.
+		 */
+		if (endian_mismatch) {
+			swap_struct(extra_desc_types_nr, &xtra_d, arch_64);
+		}
+
+		/* Check values consistency */
+		if (MAP_SIZE(xtra_d.extra_types_nr) > xtra_d.extra_size) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: extra_size=%u types=%d,%d,%d\n",
+				__FUNCTION__, xtra_d.extra_size,
+				xtra_d.extra_types_nr[0], xtra_d.extra_types_nr[1], xtra_d.extra_types_nr[2]);
+#endif
+			return -1;
+		}
+
+		/* Ignore current unknown extra structures */
+		for (i = 0; i < xtra_d.extra_nr; i++) {
+			if (lseek(ifd, xtra_d.extra_size, SEEK_CUR) < xtra_d.extra_size)
+				return -1;
+		}
+	}
+	while (xtra_d.extra_next);
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Read the record header of current sample and process it.
  *
  * IN:
@@ -1481,20 +1534,32 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 {
 	int rc;
 
-	if ((rc = sa_fread(ifd, buffer, (size_t) file_hdr->rec_size, SOFT_SIZE, oneof)) != 0)
-		/* End of sa data file */
-		return rc;
+	do {
+		if ((rc = sa_fread(ifd, buffer, (size_t) file_hdr->rec_size, SOFT_SIZE, oneof)) != 0)
+			/* End of sa data file */
+			return rc;
 
-	/* Remap record header structure to that expected by current version */
-	if (remap_struct(rec_types_nr, file_hdr->rec_types_nr, buffer,
-			 file_hdr->rec_size, RECORD_HEADER_SIZE, b_size) < 0)
-		return 2;
-	memcpy(record_hdr, buffer, RECORD_HEADER_SIZE);
+		/* Remap record header structure to that expected by current version */
+		if (remap_struct(rec_types_nr, file_hdr->rec_types_nr, buffer,
+				 file_hdr->rec_size, RECORD_HEADER_SIZE, b_size) < 0)
+			return 2;
+		memcpy(record_hdr, buffer, RECORD_HEADER_SIZE);
 
-	/* Normalize endianness */
-	if (endian_mismatch) {
-		swap_struct(rec_types_nr, record_hdr, arch_64);
+		/* Normalize endianness */
+		if (endian_mismatch) {
+			swap_struct(rec_types_nr, record_hdr, arch_64);
+		}
+
+		/*
+		 * Skip unknown extra structures if present.
+		 * This will be done later for R_COMMENT and R_RESTART records, as extra structures
+		 * are saved after the comment or the number of CPU.
+		 */
+		if ((record_hdr->record_type != R_COMMENT) && (record_hdr->record_type != R_RESTART) &&
+		    record_hdr->extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
+			return 2;
 	}
+	while (record_hdr->record_type == R_EXTRA);
 
 	return 0;
 }
@@ -2088,6 +2153,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], unsigned i
 		close(*ifd);
 		exit(1);
 	}
+
+	/*
+	 * Check if there are some extra structures.
+	 * We will just skip them as they are unknown for now.
+	 */
+	if (file_hdr->extra_next && (skip_extra_struct(*ifd, *endian_mismatch, *arch_64) < 0))
+		goto format_error;
 
 	return;
 
@@ -2956,6 +3028,10 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 			}
 		}
 
+		/* Ignore unknown extra structures if present */
+		if (record_hdr->extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
+			return 0;
+
 		if (!dp)
 			return 0;
 
@@ -2970,6 +3046,10 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
 
 		/* Read and replace non printable chars in comment */
 		replace_nonprintable_char(ifd, file_comment);
+
+		/* Ignore unknown extra structures if present */
+		if (record_hdr->extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
+			return 0;
 
 		if (!dp || !DISPLAY_COMMENT(l_flags))
 			return 0;

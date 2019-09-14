@@ -365,17 +365,49 @@ struct svg_hdr_parm {
  * 	|
  * 	|--                         --|
  * 	|                             |
- * 	| file_activity structure     | * sa_act_nr
+ * 	| file_activity structure     | x file_header:sa_act_nr
  * 	|                             |
- * 	|--                         --|
+ * 	|---------                  --|
+ *		|
+ * 		| extra_desc structure (exists only if file_header:extra_next != 0)
+ * 		|
+ * 		|--                         --|
+ *		|                             |
+ * 		| unknown extra structure(s)  | x extra_desc:extra_nr
+ * 		|                             |
+ * 		|--                         --|
+ *		|
+ * 		| (extra_desc structure (exists only if previous extra_desc:extra_next != 0))
+ * 		|
+ * 		|--
+ *		|
+ * 		| (...)
+ * 		|
+ * 	|---------                  --|
  * 	|                             |
  * 	| record_header structure     |
  * 	|                             |
- * 	|--                           |
+ * 	|---------                  --|
+ *		|
+ * 		| extra_desc structure (exists only if record_header:extra_next != 0)
+ * 		|
+ * 		|--                         --|
+ *		|                             |
+ * 		| unknown extra structure(s)  | x extra_desc:extra_nr
+ * 		|                             |
+ * 		|--                         --|
+ *		|
+ * 		| (extra_desc structure (exists only if previous extra_desc:extra_next != 0))
+ * 		|
+ * 		|--
+ *		|
+ * 		| (...)
+ * 		|
+ * 	|---------                  --|
  * 	|(__nr_t)                     |
  * 	|--                           |
  * 	|                             |
- * 	| Statistics structure(s)     | * <count>
+ * 	| Statistics structure(s)     | x <count>
  * 	|                             |
  * 	|--                           |
  * 	|(__nr_t)                     |
@@ -402,6 +434,12 @@ struct svg_hdr_parm {
  * 2 for 1 CPU and SMP kernel (CPU "all" and CPU 0), etc.
  * Of course we display the real number of CPU (e.g. "1" for 1 CPU and SMP
  * kernel) with the LINUX RESTART message.
+ *
+ * If the record_header's type is R_EXTRA then we find only a list of extra
+ * structures following the record_header structure but no statistics ones.
+ * Note that extra structures may exist for all record_header types
+ * (R_STATS, R_COMMENT, R_RESTART...). For R_COMMENT and R_RESTART records,
+ * the extra structures will be found after the comment or the number of CPU.
  ***************************************************************************
  */
 
@@ -515,6 +553,10 @@ struct file_header {
 	unsigned int act_size;
 	unsigned int rec_size;
 	/*
+	 * TRUE if an extra_desc structure exists.
+	 */
+	unsigned int extra_next;
+	/*
 	 * Current day and month.
 	 * No need to save DST (Daylight Saving Time) flag, since it is not taken
 	 * into account by the strftime() function used to print the timestamp.
@@ -547,7 +589,7 @@ struct file_header {
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
 #define FILE_HEADER_ULL_NR	1	/* Nr of unsigned long long in file_header structure */
 #define FILE_HEADER_UL_NR	1	/* Nr of unsigned long in file_header structure */
-#define FILE_HEADER_U_NR	11	/* Nr of [unsigned] int in file_header structure */
+#define FILE_HEADER_U_NR	12	/* Nr of [unsigned] int in file_header structure */
 /* The values below are used for sanity check */
 #define MIN_FILE_HEADER_SIZE	0
 #define MAX_FILE_HEADER_SIZE	8192
@@ -604,6 +646,35 @@ struct file_activity {
 #define FILE_ACTIVITY_UL_NR	0	/* Nr of unsigned long in file_activity structure */
 #define FILE_ACTIVITY_U_NR	9	/* Nr of [unsigned] int in file_activity structure */
 
+/*
+ * Description of an extra structure.
+ * The composition of this structure should not change in time.
+ */
+struct extra_desc {
+	/*
+	 * Number of extra structures to read.
+	 */
+	unsigned int extra_nr;
+	/*
+	 * Size of an extra structure.
+	 */
+	unsigned int extra_size;
+	/*
+	 * TRUE if another extra_desc structure exists after
+	 * all the extra structures.
+	 */
+	unsigned int extra_next;
+	/*
+	 * Description of an extra structure
+	 * (nr of "long long", nr of "long" and nr of "int").
+	 */
+	unsigned int extra_types_nr[3];
+};
+
+#define EXTRA_DESC_SIZE		(sizeof(struct extra_desc))
+#define EXTRA_DESC_ULL_NR	0	/* Nr of unsigned long long in extra_desc structure */
+#define EXTRA_DESC_UL_NR	0	/* Nr of unsigned long in extra_desc structure */
+#define EXTRA_DESC_U_NR		6	/* Nr of [unsigned] int in extra_desc structure */
 
 /* Record type */
 /*
@@ -627,6 +698,11 @@ struct file_activity {
  * a comment.
  */
 #define R_COMMENT	4
+/*
+ * R_EXTRA means that extra structures are following current
+ * record_header structure, but no statistics structures.
+ */
+#define R_EXTRA		5
 
 /* Maximum length of a comment */
 #define MAX_COMMENT_LEN	64
@@ -641,6 +717,10 @@ struct record_header {
 	 * Timestamp (number of seconds since the epoch).
 	 */
 	unsigned long long ust_time;
+	/*
+	 * TRUE if an extra_desc structure exists.
+	 */
+	unsigned int extra_next;
 	/*
 	 * Record type: R_STATS, R_RESTART,...
 	 */
@@ -658,7 +738,7 @@ struct record_header {
 #define MAX_RECORD_HEADER_SIZE	512	/* Used for sanity check */
 #define RECORD_HEADER_ULL_NR	2	/* Nr of unsigned long long in record_header structure */
 #define RECORD_HEADER_UL_NR	0	/* Nr of unsigned long in record_header structure */
-#define RECORD_HEADER_U_NR	0	/* Nr of unsigned int in record_header structure */
+#define RECORD_HEADER_U_NR	1	/* Nr of unsigned int in record_header structure */
 
 
 /*
@@ -1341,6 +1421,8 @@ void print_collect_error
 	(void);
 int set_default_file
 	(char *, int, int);
+int skip_extra_struct
+	(int, int, int);
 int write_all
 	(int, const void *, int);
 

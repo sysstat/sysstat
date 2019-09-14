@@ -250,12 +250,16 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		if (action & IGNORE_COMMENT) {
 			/* Ignore COMMENT record */
 			if (lseek(ifd, MAX_COMMENT_LEN, SEEK_CUR) < MAX_COMMENT_LEN) {
-				perror("lseek");
 				if (oneof == UEOF_CONT)
 					return 2;
 				close(ifd);
 				exit(2);
 			}
+
+			/* Ignore unknown extra structures if present */
+			if (record_hdr[curr].extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
+				return 2;
+
 			if (action & SET_TIMESTAMPS) {
 				sa_get_record_timestamp_struct(flags, &record_hdr[curr],
 							       rectime);
@@ -279,6 +283,10 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			if (!(action & DONT_READ_CPU_NR)) {
 				file_hdr.sa_cpu_nr = read_nr_value(ifd, file, file_magic,
 								   endian_mismatch, arch_64, TRUE);
+
+				/* Ignore unknown extra structures if present */
+				if (record_hdr[curr].extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
+					return 2;
 			}
 			if (action & SET_TIMESTAMPS) {
 				sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime);

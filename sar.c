@@ -841,6 +841,12 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 	}
 	while (*cnt && !*eosaf && (rtype != R_RESTART));
 
+	/*
+	 * At this moment, if we had a R_RESTART record, we still haven't read
+	 * the number of CPU following it (nor the possible extra structures).
+	 * But in this case, we always have @cnt != 0.
+	 */
+
 	if (davg) {
 		write_stats_avg(!*curr, USE_SA_FILE, act_id);
 	}
@@ -1094,9 +1100,16 @@ void read_stats_from_file(char from_file[])
 				}
 			}
 		}
-
 		if (!cnt) {
-			/* Go to next Linux restart, if possible */
+			/*
+			 * Go to next Linux restart, if possible.
+			 * Note: If we have @cnt == 0 then the last record we read was not a R_RESTART one
+			 * (else we would have had @cnt != 0, i.e. we would have stopped reading previous activity
+			 * because such a R_RESTART record would have been read, not because all the <count> lines
+			 * had been printed).
+			 * Remember @cnt is decremented only when a real line of stats have been displayed
+			 * (not when a special record has been read).
+			 */
 			do {
 				/* Read next record header */
 				eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr],
