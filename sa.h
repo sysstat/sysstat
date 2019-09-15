@@ -435,7 +435,7 @@ struct svg_hdr_parm {
  * Of course we display the real number of CPU (e.g. "1" for 1 CPU and SMP
  * kernel) with the LINUX RESTART message.
  *
- * If the record_header's type is R_EXTRA then we find only a list of extra
+ * If the record_header's type is R_EXTRA* then we find only a list of extra
  * structures following the record_header structure but no statistics ones.
  * Note that extra structures may exist for all record_header types
  * (R_STATS, R_COMMENT, R_RESTART...). For R_COMMENT and R_RESTART records,
@@ -699,10 +699,11 @@ struct extra_desc {
  */
 #define R_COMMENT	4
 /*
- * R_EXTRA means that extra structures are following current
+ * R_EXTRA* records means that extra structures are following current
  * record_header structure, but no statistics structures.
  */
-#define R_EXTRA		5
+#define R_EXTRA_MIN	5
+#define R_EXTRA_MAX	15
 
 /* Maximum length of a comment */
 #define MAX_COMMENT_LEN	64

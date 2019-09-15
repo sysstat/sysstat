@@ -1559,7 +1559,7 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		    record_hdr->extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
 			return 2;
 	}
-	while (record_hdr->record_type == R_EXTRA);
+	while ((record_hdr->record_type >= R_EXTRA_MIN) && (record_hdr->record_type <= R_EXTRA_MAX)) ;
 
 	return 0;
 }
