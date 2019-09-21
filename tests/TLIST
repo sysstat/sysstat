@@ -100,6 +100,10 @@ NOTES:
 	[There may be some small differences in ext disks stats between initial and current version
 	outputs, because initial version doesn't take into account discard fields]
 
+=====	Reading datafile with extra structures
+00770	LC_ALL=C TZ=GMT ./sar -A -f tests/data-extra-12.1.7 > tests/out.data-extra-12.1.7.tmp
+00772	diff -u tests/out.data-extra-12.1.7.tmp tests/expected.data-extra-12.1.7
+
 =====	Testing sar's options
 00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
 00802	diff -u tests/out.sar-iface.tmp tests/expected.sar-iface
