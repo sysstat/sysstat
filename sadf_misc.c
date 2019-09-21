@@ -1238,7 +1238,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
 			printf(_("File time: "));
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			printf("%s UTC\n", cur_time);
+			printf("%s UTC (%lld)\n", cur_time, file_hdr->sa_ust_time);
 		}
 
 		/* File composition: file_header, file_activity, record_header */
