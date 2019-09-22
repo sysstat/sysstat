@@ -1215,6 +1215,9 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 	struct ext_disk_stats xds;
 	struct ext_io_stats xios;
 
+	memset(&xds, 0, sizeof(struct ext_disk_stats));
+	memset(&xios, 0, sizeof(struct ext_io_stats));
+
 	/*
 	 * Counters overflows are possible, but don't need to be handled in
 	 * a special way: The difference is still properly calculated if the
