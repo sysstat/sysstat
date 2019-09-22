@@ -249,7 +249,8 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 		}
 		memset(d->dev_stats[i], 0, sizeof(struct io_stats));
 	}
-	strcpy(d->name, name);
+	strncpy(d->name, name, MAX_NAME_LEN);
+	d->name[MAX_NAME_LEN - 1] = '\0';
 	d->exist = TRUE;
 	d->next = ds;
 
