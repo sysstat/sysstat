@@ -426,13 +426,13 @@ int read_sysfs_device_part_stat(int curr, char *dname)
 		d = add_list_device(&dev_list, drd->d_name, 0);
 		if (d != NULL) {
 			*(d->dev_stats[curr]) = sdev;
-		}
 
-		if (!d->major) {
-			/* Get major and minor numbers for given device */
-			if (get_major_minor_nr(d->name, &major, &minor) == 0) {
-				d->major = major;
-				d->minor = minor;
+			if (!d->major) {
+				/* Get major and minor numbers for given device */
+				if (get_major_minor_nr(d->name, &major, &minor) == 0) {
+					d->major = major;
+					d->minor = minor;
+				}
 			}
 		}
 	}
@@ -483,13 +483,13 @@ int read_sysfs_all_devices_stat(int curr)
 		d = add_list_device(&dev_list, drd->d_name, 0);
 		if (d != NULL) {
 			*(d->dev_stats[curr]) = sdev;
-		}
 
-		if (!d->major) {
-			/* Get major and minor numbers for given device */
-			if (get_major_minor_nr(d->name, &major, &minor) == 0) {
-				d->major = major;
-				d->minor = minor;
+			if (!d->major) {
+				/* Get major and minor numbers for given device */
+				if (get_major_minor_nr(d->name, &major, &minor) == 0) {
+					d->major = major;
+					d->minor = minor;
+				}
 			}
 		}
 	}
