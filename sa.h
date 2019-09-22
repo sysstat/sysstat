@@ -675,6 +675,8 @@ struct extra_desc {
 #define EXTRA_DESC_ULL_NR	0	/* Nr of unsigned long long in extra_desc structure */
 #define EXTRA_DESC_UL_NR	0	/* Nr of unsigned long in extra_desc structure */
 #define EXTRA_DESC_U_NR		6	/* Nr of [unsigned] int in extra_desc structure */
+#define MAX_EXTRA_NR		8192
+#define MAX_EXTRA_SIZE		1024
 
 /* Record type */
 /*

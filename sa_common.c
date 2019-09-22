@@ -1490,6 +1490,14 @@ int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
 			return -1;
 		}
 
+		if ((xtra_d.extra_nr > MAX_EXTRA_NR) || (xtra_d.extra_size > MAX_EXTRA_SIZE)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: extra_size=%u extra_nr=%u\n",
+				__FUNCTION__, xtra_d.extra_size, xtra_d.extra_size);
+#endif
+			return -1;
+		}
+
 		/* Ignore current unknown extra structures */
 		for (i = 0; i < xtra_d.extra_nr; i++) {
 			if (lseek(ifd, xtra_d.extra_size, SEEK_CUR) < xtra_d.extra_size)
