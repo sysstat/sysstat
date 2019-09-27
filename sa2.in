@@ -10,13 +10,14 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 SA_DIR=@SA_DIR@
 SYSCONFIG_DIR=@SYSCONFIG_DIR@
+SYSCONFIG_FILE=@SYSCONFIG_FILE@
 HISTORY=@HISTORY@
 COMPRESSAFTER=@COMPRESSAFTER@
 ZIP="@ZIP@"
 UMASK=0022
 
 # Read configuration file, overriding variables set above
-[ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
+[ -r ${SYSCONFIG_DIR}/${SYSCONFIG_FILE} ] && . ${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
 
 umask ${UMASK}
 

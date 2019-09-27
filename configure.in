@@ -185,6 +185,7 @@ echo .
 #  sa_lib_dir    sadc, sa1 and sa2 directory
 #  sa_dir        system activity daily datafiles directory
 #  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
+#  conf_file     sysstat configuration file (default is sysstat)
 #  history       number of daily datafiles to keep (default value is 7)
 #  compressafter number of days after which datafiles are compressed
 #  man_group     group for man pages
@@ -318,6 +319,17 @@ if test ! -d $SYSCONFIG_DIR; then
    echo "INFO: Directory ${SYSCONFIG_DIR} will be created during installation stage." 
 fi
 AC_SUBST(SYSCONFIG_DIR)
+
+# Set configuration directory
+AC_MSG_CHECKING(sysstat configuration file)
+AC_ARG_VAR([conf_file],[sysstat configuration file])
+if test x$conf_file != x""; then
+   SYSCONFIG_FILE=$conf_file
+else
+   SYSCONFIG_FILE=sysstat
+fi
+AC_MSG_RESULT($SYSCONFIG_FILE)
+AC_SUBST(SYSCONFIG_FILE)
 
 # National Language Support
 AC_MSG_CHECKING(National Language Support)
@@ -645,7 +657,7 @@ echo "
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}
    Systemd unit dir:		${with_systemdsystemunitdir}
-   Configuration directory:	${SYSCONFIG_DIR}
+   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS

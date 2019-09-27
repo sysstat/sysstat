@@ -1,0 +1,5 @@
+
+This is the name of the main sysstat configuration file which
+contains the values of various environment variables.
+Default configuration file name is "sysstat".
+

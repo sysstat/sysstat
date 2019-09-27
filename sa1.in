@@ -7,14 +7,15 @@
 #
 
 # Set default value for some variables.
-# Used only if ${SYSCONFIG_DIR}/sysstat doesn't exist!
+# Used only if ${SYSCONFIG_DIR}/${SYSCONFIG_FILE} doesn't exist!
 HISTORY=0
 SADC_OPTIONS=""
 SA_DIR=@SA_DIR@
 SYSCONFIG_DIR=@SYSCONFIG_DIR@
+SYSCONFIG_FILE=@SYSCONFIG_FILE@
 UMASK=0022
 
-[ -r ${SYSCONFIG_DIR}/sysstat ] && . ${SYSCONFIG_DIR}/sysstat
+[ -r ${SYSCONFIG_DIR}/${SYSCONFIG_FILE} ] && . ${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
 
 umask ${UMASK}
 

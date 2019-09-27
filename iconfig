@@ -40,6 +40,12 @@ if [ "${SYSCONFIG_DIR}" != "" ]; then
 	SYSCONFIG_DIR="conf_dir=${SYSCONFIG_DIR} "
 fi
 
+# sysstat configuration file
+SYSCONFIG_FILE=`${ASK} 'sysstat configuration file:' "conf_file" "conf_file"`
+if [ "${SYSCONFIG_FILE}" != "" ]; then
+	SYSCONFIG_FILE="conf_file=${SYSCONFIG_FILE} "
+fi
+
 # Clean sa directory
 CLEAN_SA_DIR=`${ASK} 'Clean system activity directory? (y/n)' "--enable-clean-sa-dir" "clean-sa-dir"`
 if [ "${CLEAN_SA_DIR}" = "y" ]; then
@@ -204,8 +210,8 @@ else
 fi
 
 echo
-echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
-${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
+echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
+${CLEAN_SA_DIR}${NLS}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -213,7 +219,8 @@ fi
 echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${PCP}${STRIP}${COPY_ONLY}"
 echo
 
-./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${CLEAN_SA_DIR}${NLS} \
+./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
+${CLEAN_SA_DIR}${NLS} \
 ${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}

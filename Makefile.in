@@ -75,6 +75,7 @@ endif
 
 NLS_DIR = $(PREFIX)/share/locale
 SYSCONFIG_DIR = @SYSCONFIG_DIR@
+SYSCONFIG_FILE = @SYSCONFIG_FILE@
 
 # Compiler flags
 CFLAGS = @CFLAGS@ -Wall -Wstrict-prototypes -pipe -O2
@@ -422,7 +423,7 @@ endif
 	$(INSTALL_BIN) pidstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) cifsiostat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_DATA) sysstat.ioconf $(DESTDIR)$(SYSCONFIG_DIR)
-	$(INSTALL_DATA) sysstat.sysconfig $(DESTDIR)$(SYSCONFIG_DIR)/sysstat
+	$(INSTALL_DATA) sysstat.sysconfig $(DESTDIR)$(SYSCONFIG_DIR)/$(SYSCONFIG_FILE)
 ifeq ($(INSTALL_DOC),y)
 	$(INSTALL_DATA) CHANGES $(DESTDIR)$(DOC_DIR)
 	$(INSTALL_DATA) COPYING $(DESTDIR)$(DOC_DIR)
@@ -555,7 +556,7 @@ uninstall_base: uninstall_man uninstall_nls
 #		the binaries have been deleted.
 	rm -f $(DESTDIR)$(INIT_DIR)/sysstat
 	rm -f $(DESTDIR)$(RC_DIR)/rc.sysstat
-	rm -f $(DESTDIR)$(SYSCONFIG_DIR)/sysstat
+	rm -f $(DESTDIR)$(SYSCONFIG_DIR)/$(SYSCONFIG_FILE)
 	rm -f $(DESTDIR)$(SYSCONFIG_DIR)/sysstat.ioconf
 	rm -f $(DESTDIR)$(RC2_DIR)/S??sysstat
 	rm -f $(DESTDIR)$(RC2_DIR)/S??rc.sysstat
