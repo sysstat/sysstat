@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/sa18 > tests/out.sa1.tmp

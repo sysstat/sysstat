@@ -1,0 +1,1 @@
+grep -i FIXME *.c *.h *.in && exit 1 || exit 0
