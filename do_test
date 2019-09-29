@@ -2,11 +2,11 @@
 if [ "$1" = "conf" ]
 then
 	make distclean
-	./configure sa_lib_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests && make CFLAGS="-D DEBUG -D TEST"
+	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests && make CFLAGS="-D DEBUG -D TEST"
 elif [ "$1" = "comp" ]
 then
 	make CFLAGS="-D DEBUG -D TEST"
 else
 	make distclean
-	./configure sa_lib_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests && make CFLAGS="-D DEBUG -D TEST" && make simtest
+	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests && make CFLAGS="-D DEBUG -D TEST" && make simtest
 fi

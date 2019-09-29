@@ -1,0 +1,9 @@
+TZ=GMT
+DATE=`date --date=yesterday +%d`
+if [ ${DATE} -ne 18 ]
+then
+	rm -f tests/sa${DATE}
+	mv tests/sa18 tests/sa${DATE}
+fi
+echo sa2: File is sa${DATE}
+LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp
