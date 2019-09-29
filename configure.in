@@ -184,6 +184,7 @@ echo .
 #  rcdir         directory where startup scripts are installed
 #  sa_lib_dir    sadc, sa1 and sa2 directory
 #  sa_dir        system activity daily datafiles directory
+#  sar_dir       sar binary location. Used only in sa2 shell script
 #  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
 #  conf_file     sysstat configuration file (default is sysstat)
 #  history       number of daily datafiles to keep (default value is 7)
@@ -305,6 +306,17 @@ if test ! -d $SA_DIR; then
    echo "INFO: Directory ${SA_DIR} will be created during installation stage." 
 fi
 AC_SUBST(SA_DIR)
+
+# sar binary location. Used only in sa2 shell script
+AC_MSG_CHECKING(sar directory)
+AC_ARG_VAR([sar_dir],[sar directory])
+if test x$sar_dir != x""; then
+   SAR_DIR=$sar_dir
+else
+   SAR_DIR=
+fi
+AC_MSG_RESULT($SAR_DIR)
+AC_SUBST(SAR_DIR)
 
 # Set configuration directory
 AC_MSG_CHECKING(sysstat configuration directory)

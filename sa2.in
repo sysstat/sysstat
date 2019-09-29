@@ -15,6 +15,7 @@ HISTORY=@HISTORY@
 COMPRESSAFTER=@COMPRESSAFTER@
 ZIP="@ZIP@"
 UMASK=0022
+ENDIR=@SAR_DIR@
 
 # Read configuration file, overriding variables set above
 [ -r ${SYSCONFIG_DIR}/${SYSCONFIG_FILE} ] && . ${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
@@ -42,7 +43,10 @@ CURRENTRPT=sar${DATE}
 
 RPT=${SA_DIR}/${CURRENTRPT}
 DFILE=${SA_DIR}/${CURRENTFILE}
-ENDIR=@bindir@
+if [ -z "${ENDIR}" ];
+then
+       ENDIR=@bindir@
+fi
 
 [ -f "${DFILE}" ] || exit 0
 cd ${ENDIR}

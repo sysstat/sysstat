@@ -653,6 +653,8 @@ SYSCONFIG_FILE
 conf_file
 SYSCONFIG_DIR
 conf_dir
+SAR_DIR
+sar_dir
 SA_DIR
 sa_dir
 SA_LIB_DIR
@@ -765,6 +767,7 @@ CPP
 rcdir
 sa_lib_dir
 sa_dir
+sar_dir
 conf_dir
 conf_file
 history
@@ -1414,6 +1417,7 @@ Some influential environment variables:
   rcdir       run-commands directory
   sa_lib_dir  sadc directory
   sa_dir      system activity directory
+  sar_dir     sar directory
   conf_dir    sysstat configuration directory
   conf_file   sysstat configuration file
   history     number of daily data files to keep (default value is 7)
@@ -5057,6 +5061,7 @@ echo .
 #  rcdir         directory where startup scripts are installed
 #  sa_lib_dir    sadc, sa1 and sa2 directory
 #  sa_dir        system activity daily datafiles directory
+#  sar_dir       sar binary location. Used only in sa2 shell script
 #  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
 #  conf_file     sysstat configuration file (default is sysstat)
 #  history       number of daily datafiles to keep (default value is 7)
@@ -5183,6 +5188,19 @@ $as_echo "$SA_DIR" >&6; }
 if test ! -d $SA_DIR; then
    echo "INFO: Directory ${SA_DIR} will be created during installation stage."
 fi
+
+
+# sar binary location. Used only in sa2 shell script
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking sar directory" >&5
+$as_echo_n "checking sar directory... " >&6; }
+
+if test x$sar_dir != x""; then
+   SAR_DIR=$sar_dir
+else
+   SAR_DIR=
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SAR_DIR" >&5
+$as_echo "$SAR_DIR" >&6; }
 
 
 # Set configuration directory
