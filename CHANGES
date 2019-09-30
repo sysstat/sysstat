@@ -1,5 +1,20 @@
 Changes:
 
+2019/09/30: Version 12.1.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadc: Add stable identifier support for disks statistics.
+	* sar/sadf: Add extra flexibility in binary data file in case of
+	  a future format change.
+	* sadf: sadf -H output updated.
+	* iostat: Fix several bugs (CID ##349502, #349503, #349500 and
+	  #349501).
+	* sar: Manual page updated.
+	* sadf: Fix memory corruption bug due to integer overflow in
+	  remap_struct() function (try #2).
+	* configure: Add new configuration variables: conf_file and sar_dir.
+	* simtest: sar: Add new non regression tests.
+	* simtest: iostat: Make tests independent from timezone value.
+	* NLS updated.
+
 2019/08/14: Version 12.1.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* iostat: Major code refactoring. Devices structures are now
 	  dynamically allocated, better handle the case when devices are
