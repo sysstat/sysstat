@@ -13,9 +13,9 @@ NOTES:
 00050	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
 
 =====	Creating data.tmp
-00100	5 x ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data.tmp 1 1 >/dev/null
-00110	./sadc --unix_time=XXXXXXXXX tests/data.tmp
-00120	./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
+00100	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data.tmp 1 1 >/dev/null
+00110	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data.tmp
+00120	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
 
 =====	sar: Reading data.tmp
 00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out.sar-u.tmp
@@ -28,8 +28,8 @@ NOTES:
 00137	diff -u tests/out3.sar-all.tmp tests/expected3.sar-all
 
 =====	Appending data to data.tmp
-00140	./sadc --unix_time=1555595649 tests/data.tmp
-00150	2 x ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
+00140	TZ=GMT ./sadc --unix_time=1555595649 tests/data.tmp
+00150	2 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
 
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
@@ -152,7 +152,7 @@ NOTES:
 00942	diff -u tests/out.sar.tmp tests/expected.sar1
 
 =====	Creating data0.tmp with no data inside
-01000	./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
+01000	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
 
 =====	sar/sadf: Reading data0.tmp
 01100	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out0.sar-A.tmp
@@ -168,7 +168,7 @@ NOTES:
 01152	diff -u tests/out0.sadf-g.tmp tests/expected0.sadf-g
 
 =====	Append data to data0.tmp then read its contents
-01200	2 x ./sadc --unix_time=xxxxxxxxx [ -S XALL ] tests/data0.tmp [ 1 1 ] >/dev/null
+01200	2 x TZ=GMT ./sadc --unix_time=xxxxxxxxx [ -S XALL ] tests/data0.tmp [ 1 1 ] >/dev/null
 01210	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out01.sar-A.tmp
 01212	diff -u tests/out01.sar-A.tmp tests/expected01.sar-A
 01220	./sadf -d tests/data0.tmp -- -A > tests/out01.sadf-d.tmp
@@ -181,12 +181,12 @@ NOTES:
 
 =====	Playing with standard activity datafiles
 01300	echo foo >tests/sa01 ; ./sadc 1 1 - 2>&1 | grep "Invalid system activity" >/dev/null
-01305	./sadc -F 1 1 -
+01305	LC_ALL=C TZ=GMT ./sadc -F 1 1 -
 01310	LC_ALL=C TZ=GMT ./sar -f tests/sa01 > tests/out3.sar-u.tmp
 01312	diff -u tests/out3.sar-u.tmp tests/expected3.sar-u
 01314	LC_ALL=C TZ=GMT ./sar > tests/out31.sar-u.tmp
 01316	diff -u tests/out31.sar-u.tmp tests/expected3.sar-u
-01320	./sadc -D -
+01320	LC_ALL=C TZ=GMT ./sadc -D -
 01330	LC_ALL=C TZ=GMT ./sar -f tests/sa19700101 > tests/out32.sar-u.tmp
 01332	diff -u tests/out32.sar-u.tmp tests/expected32.sar-u
 01335	LC_ALL=C TZ=GMT ./sar > tests/out33.sar-u.tmp
@@ -239,7 +239,7 @@ NOTES:
 01559	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
 
 =====	Specific tests for A_PWR_FREQ statistics
-01600	./sadc --unix_time=1555593609 -S A_NULL,A_PWR_FREQ tests/data-wghfreq.tmp 1 3 >/dev/null
+01600	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PWR_FREQ tests/data-wghfreq.tmp 1 3 >/dev/null
 01610	LC_ALL=C TZ=GMT ./sar -f tests/data-wghfreq.tmp -m FREQ -P ALL > tests/out.sar-m-freq.tmp
 01615	diff -u tests/out.sar-m-freq.tmp tests/expected.sar-m-freq
 01620	LC_ALL=C TZ=GMT ./sadf -d tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-d.tmp

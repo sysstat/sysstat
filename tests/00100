@@ -1,4 +1,5 @@
 rm -f tests/data.tmp
+TZ=GMT
 
 rm -f tests/root
 ln -s root1 tests/root

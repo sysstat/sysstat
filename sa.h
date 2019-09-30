@@ -730,7 +730,8 @@ struct record_header {
 	unsigned char record_type;
 	/*
 	 * Timestamp: Hour (0-23), minute (0-59) and second (0-59).
-	 * Used to determine TRUE time (immutable, non locale dependent time).
+	 * Used to determine TRUE time.
+	 * Hour value depends in fact on timezone (TZ variable) value.
 	 */
 	unsigned char hour;
 	unsigned char minute;
