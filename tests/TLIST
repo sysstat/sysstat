@@ -41,7 +41,7 @@ NOTES:
 00200	./sa1 --boot; ./sa1 --unix_time=1555593629 1 1; ./sa1 --unix_time=1555593649 1 1
 00205	LC_ALL=C TZ=GMT ./sar -f tests/sa18 > tests/out.sa1.tmp
 00208	diff -u tests/out.sa1.tmp tests/expected.sa1
-00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp
+00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
 00225	diff -u tests/out.sa2.tmp tests/expected.sa2
 
 =====	Checking JSON output validity
