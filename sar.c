@@ -780,7 +780,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		 * Start with reading current sample's record header.
 		 */
 		*eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[*curr],
-					 &file_hdr, arch_64, endian_mismatch, UEOF_STOP, b_size);
+					 &file_hdr, arch_64, endian_mismatch, UEOF_STOP, b_size, flags);
 		rtype = record_hdr[*curr].record_type;
 
 		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
@@ -1015,7 +1015,7 @@ void read_stats_from_file(char from_file[])
 		 */
 		do {
 			if (read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[0], &file_hdr,
-					    arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp))) {
+					    arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp), flags)) {
 				/* End of sa data file */
 				return;
 			}
@@ -1113,7 +1113,7 @@ void read_stats_from_file(char from_file[])
 			do {
 				/* Read next record header */
 				eosaf = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr],
-							&file_hdr, arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp));
+							&file_hdr, arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp), flags);
 				rtype = record_hdr[curr].record_type;
 
 				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {

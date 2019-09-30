@@ -99,8 +99,6 @@
 #define S_F_LOCAL_TIME		0x00004000
 #define S_F_PREFD_TIME_OUTPUT	0x00008000
 #define S_F_SVG_SKIP		0x00010000
-/* Same value as S_F_SVG_SKIP above. Used for a different output format */
-#define S_F_RAW_DEBUG_MODE	0x00010000
 #define S_F_SVG_AUTOSCALE	0x00020000
 #define S_F_SVG_ONE_DAY		0x00040000
 #define S_F_SVG_SHOW_IDLE	0x00080000
@@ -115,6 +113,7 @@
 #define S_F_OPTION_A		0x10000000
 #define S_F_OPTION_P		0x20000000
 #define S_F_OPTION_I		0x40000000
+#define S_F_RAW_DEBUG_MODE	0x80000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -1505,7 +1504,7 @@ __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int,
-	 int, size_t);
+	 int, size_t, unsigned int);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
 void replace_nonprintable_char

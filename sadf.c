@@ -240,7 +240,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 
 	/* Read current record */
 	if ((rc = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr], &file_hdr,
-			    arch_64, endian_mismatch, oneof, sizeof(rec_hdr_tmp))) != 0)
+			    arch_64, endian_mismatch, oneof, sizeof(rec_hdr_tmp), flags)) != 0)
 		/* End of sa file */
 		return rc;
 
@@ -749,7 +749,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			else if (format == F_RAW_OUTPUT) {
 				/* Raw output */
 				if (DISPLAY_DEBUG_MODE(flags)) {
-					printf("# %s: %d/%d (%d)\n", act[i]->name,
+					printf("# name; %s; nr_curr; %d; nr_alloc; %d; nr_ini; %d\n", act[i]->name,
 					       act[i]->nr[curr], act[i]->nr_allocated, act[i]->nr_ini);
 				}
 
