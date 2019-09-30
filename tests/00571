@@ -1,1 +1,9 @@
-diff -u tests/out.sadf-r.tmp tests/expected.sadf-r
+diff -u tests/out.sadf-r.tmp tests/expected.sadf-r && exit 0
+ls -l tests/out.sadf-r.tmp
+sum tests/out.sadf-r.tmp
+ls -l tests/expected.sadf-r
+sum tests/expected.sadf-r
+cmp -l tests/out.sadf-r.tmp tests/expected.sadf-r
+echo
+cmp -l tests/out.sadf-r.tmp tests/expected.sadf-r | gawk '{printf "%08X %02X %02X\n", $1, strtonum(0$2), strtonum(0$3)}'
+exit 1
