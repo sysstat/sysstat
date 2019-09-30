@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include <time.h>
@@ -63,7 +64,7 @@ int dplaces_nr = -1;
 /* Color palette number */
 int palette = SVG_DEFAULT_COL_PALETTE;
 
-unsigned int flags = 0;
+uint64_t flags = 0;
 unsigned int dm_major;		/* Device-mapper major number */
 unsigned int format = 0;	/* Output format */
 unsigned int f_position = 0;	/* Output format position in array */

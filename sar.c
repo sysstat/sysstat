@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <time.h>
 #include <errno.h>
@@ -60,7 +61,7 @@ int arch_64 = FALSE;
 /* Number of decimal places */
 int dplaces_nr = -1;
 
-unsigned int flags = 0;
+uint64_t flags = 0;
 unsigned int dm_major;	/* Device-mapper major number */
 
 char timestamp[2][TIMESTAMP_LEN];

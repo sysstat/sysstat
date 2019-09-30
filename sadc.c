@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -59,7 +60,7 @@ extern time_t __unix_time;
 #endif
 
 long interval = 0;
-unsigned int flags = 0;
+uint64_t flags = 0;
 
 int optz = 0;
 char timestamp[2][TIMESTAMP_LEN];
@@ -1035,7 +1036,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		     char sa_dir[])
 {
 	int do_sa_rotat = 0;
-	unsigned int save_flags;
+	uint64_t save_flags;
 	char new_ofile[MAX_FILE_LEN] = "";
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
 

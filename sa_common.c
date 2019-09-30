@@ -817,7 +817,7 @@ void get_itv_value(struct record_header *record_hdr_curr,
  * 		not the time, should be used by the caller.
  ***************************************************************************
  */
-void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
+void get_file_timestamp_struct(uint64_t flags, struct tm *rectime,
 			       struct file_header *file_hdr)
 {
 	if (PRINT_TRUE_TIME(flags)) {
@@ -851,7 +851,7 @@ void get_file_timestamp_struct(unsigned int flags, struct tm *rectime,
  * @rectime	Date and time from file header.
  ***************************************************************************
  */
-void print_report_hdr(unsigned int flags, struct tm *rectime,
+void print_report_hdr(uint64_t flags, struct tm *rectime,
 		      struct file_header *file_hdr)
 {
 
@@ -1539,7 +1539,7 @@ int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
  */
 int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		    struct file_header *file_hdr, int arch_64, int endian_mismatch,
-		    int oneof, size_t b_size, unsigned int flags)
+		    int oneof, size_t b_size, uint64_t flags)
 {
 	int rc;
 
@@ -1935,7 +1935,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
  * @arch_64	TRUE if file's data come from a 64 bit machine.
  ***************************************************************************
  */
-void check_file_actlst(int *ifd, char *dfile, struct activity *act[], unsigned int flags,
+void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t flags,
 		       struct file_magic *file_magic, struct file_header *file_hdr,
 		       struct file_activity **file_actlst, unsigned int id_seq[],
 		       int ignore, int *endian_mismatch, int *arch_64)
@@ -2205,7 +2205,7 @@ format_error:
  ***************************************************************************
  */
 int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
-		  unsigned int *flags, int caller)
+		  uint64_t *flags, int caller)
 {
 	int i, p;
 
@@ -2570,7 +2570,7 @@ int parse_sar_n_opt(char *argv[], int *opt, struct activity *act[])
  * 0 on success, 1 otherwise.
  ***************************************************************************
  */
-int parse_sar_I_opt(char *argv[], int *opt, unsigned int *flags, struct activity *act[])
+int parse_sar_I_opt(char *argv[], int *opt, uint64_t *flags, struct activity *act[])
 {
 	int p;
 
@@ -2607,7 +2607,7 @@ int parse_sar_I_opt(char *argv[], int *opt, unsigned int *flags, struct activity
  * 0 on success, 1 otherwise.
  ***************************************************************************
  */
-int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity *act[])
+int parse_sa_P_opt(char *argv[], int *opt, uint64_t *flags, struct activity *act[])
 {
 	int p;
 
@@ -2637,7 +2637,7 @@ int parse_sa_P_opt(char *argv[], int *opt, unsigned int *flags, struct activity 
  * @act		Array of selected activities.
  ***************************************************************************
  */
-void set_bitmaps(struct activity *act[], unsigned int *flags)
+void set_bitmaps(struct activity *act[], uint64_t *flags)
 {
 	int p;
 
@@ -2878,7 +2878,7 @@ void replace_nonprintable_char(int ifd, char *comment)
  * 1 if an error was detected, or 0 otherwise.
  ***************************************************************************
 */
-int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *record_hdr,
+int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *record_hdr,
 				   struct tm *rectime)
 {
 	struct tm *ltm;
@@ -2938,7 +2938,7 @@ int sa_get_record_timestamp_struct(unsigned int l_flags, struct record_header *r
  * 		been used.
  ***************************************************************************
 */
-void set_record_timestamp_string(unsigned int l_flags, struct record_header *record_hdr,
+void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_hdr,
 				 char *cur_date, char *cur_time, int len, struct tm *rectime)
 {
 	/* Set cur_time date value */
@@ -2996,7 +2996,7 @@ void set_record_timestamp_string(unsigned int l_flags, struct record_header *rec
  * 1 if the record has been successfully displayed, and 0 otherwise.
  ***************************************************************************
  */
-int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
+int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
 			 struct tm *rectime, char *file, int tab,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
@@ -3107,7 +3107,7 @@ int print_special_record(struct record_header *record_hdr, unsigned int l_flags,
  ***************************************************************************
  */
 unsigned long long get_global_cpu_statistics(struct activity *a, int prev, int curr,
-					     unsigned int flags, unsigned char offline_cpu_bitmap[])
+					     uint64_t flags, unsigned char offline_cpu_bitmap[])
 {
 	int i;
 	unsigned long long tot_jiffies_c, tot_jiffies_p;
@@ -3254,7 +3254,7 @@ unsigned long long get_global_cpu_statistics(struct activity *a, int prev, int c
  ***************************************************************************
  */
 void get_global_soft_statistics(struct activity *a, int prev, int curr,
-				unsigned int flags, unsigned char offline_cpu_bitmap[])
+				uint64_t flags, unsigned char offline_cpu_bitmap[])
 {
 	int i;
 	struct stats_softnet *ssnc, *ssnp;
@@ -3324,7 +3324,7 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
  ***************************************************************************
  */
 char *get_sa_devname(unsigned int major, unsigned int minor, unsigned long long wwn[],
-		     unsigned int part_nr, unsigned int flags)
+		     unsigned int part_nr, uint64_t flags)
 {
 	char *dev_name = NULL, *persist_dev_name = NULL;
 	static char sid[64];

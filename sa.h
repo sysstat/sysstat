@@ -7,6 +7,7 @@
 #define _SA_H
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "common.h"
 #include "rd_stats.h"
@@ -1438,7 +1439,7 @@ void allocate_structures
 int check_disk_reg
 	(struct activity *, int, int, int);
 void check_file_actlst
-	(int *, char *, struct activity * [], unsigned int, struct file_magic *,
+	(int *, char *, struct activity * [], uint64_t, struct file_magic *,
 	 struct file_header *, struct file_activity **, unsigned int [], int, int *, int *);
 int check_net_dev_reg
 	(struct activity *, int, int, int);
@@ -1459,13 +1460,13 @@ void free_structures
 char *get_devname
 	(unsigned int, unsigned int, int);
 char *get_sa_devname
-	(unsigned int, unsigned int, unsigned long long [], unsigned int, unsigned int);
+	(unsigned int, unsigned int, unsigned long long [], unsigned int, uint64_t);
 void get_file_timestamp_struct
-	(unsigned int, struct tm *, struct file_header *);
+	(uint64_t, struct tm *, struct file_header *);
 unsigned long long get_global_cpu_statistics
-	(struct activity *, int, int, unsigned int, unsigned char []);
+	(struct activity *, int, int, uint64_t, unsigned char []);
 void get_global_soft_statistics
-	(struct activity *, int, int, unsigned int, unsigned char []);
+	(struct activity *, int, int, uint64_t, unsigned char []);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
 void init_custom_color_palette
@@ -1475,11 +1476,11 @@ int next_slice
 void parse_sa_devices
 	(char *, struct activity *, int, int *, int);
 int parse_sar_opt
-	(char * [], int *, struct activity * [], unsigned int *, int);
+	(char * [], int *, struct activity * [], uint64_t *, int);
 int parse_sar_I_opt
-	(char * [], int *, unsigned int *, struct activity * []);
+	(char * [], int *, uint64_t *, struct activity * []);
 int parse_sa_P_opt
-	(char * [], int *, unsigned int *, struct activity * []);
+	(char * [], int *, uint64_t *, struct activity * []);
 int parse_sar_m_opt
 	(char * [], int *, struct activity * []);
 int parse_sar_n_opt
@@ -1487,14 +1488,14 @@ int parse_sar_n_opt
 int parse_timestamp
 	(char * [], int *, struct tstamp *, const char *);
 void print_report_hdr
-	(unsigned int, struct tm *, struct file_header *);
+	(uint64_t, struct tm *, struct file_header *);
 void print_sar_comment
 	(int *, int, char *, char *, int, char *, struct file_header *,
 	 struct record_header *);
 __printf_funct_t print_sar_restart
 	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
 int print_special_record
-	(struct record_header *, unsigned int, struct tstamp *, struct tstamp *,
+	(struct record_header *, uint64_t, struct tstamp *, struct tstamp *,
 	 int, int, struct tm *, char *, int, struct file_magic *,
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 int read_file_stat_bunch
@@ -1504,7 +1505,7 @@ __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int,
-	 int, size_t, unsigned int);
+	 int, size_t, uint64_t);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
 void replace_nonprintable_char
@@ -1512,7 +1513,7 @@ void replace_nonprintable_char
 int sa_fread
 	(int, void *, size_t, int, int);
 int sa_get_record_timestamp_struct
-	(unsigned int, struct record_header *, struct tm *);
+	(uint64_t, struct record_header *, struct tm *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
 int search_list_item
@@ -1522,11 +1523,11 @@ void select_all_activities
 void select_default_activity
 	(struct activity * []);
 void set_bitmaps
-	(struct activity * [], unsigned int *);
+	(struct activity * [], uint64_t *);
 void set_hdr_rectime
 	(unsigned int, struct tm *, struct file_header *);
 void set_record_timestamp_string
-	(unsigned int, struct record_header *, char *, char *, int, struct tm *);
+	(uint64_t, struct record_header *, char *, char *, int, struct tm *);
 void swap_struct
 	(unsigned int [], void *, int);
 #endif /* SOURCE_SADC undefined */
