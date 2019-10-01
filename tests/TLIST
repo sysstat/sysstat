@@ -10,7 +10,6 @@ NOTES:
 00015	./pidstat -V >/dev/null
 00016	./tapestat -V >/dev/null
 00017	./cifsiostat -V >/dev/null
-00050	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
 
 =====	Creating data.tmp
 00100	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data.tmp 1 1 >/dev/null
@@ -375,3 +374,6 @@ NOTES:
 02725	diff -u tests/out.iostat-p-cciss.tmp tests/expected.iostat-p-cciss
 02730	LC_ALL=C TZ=GMT ./iostat cciss/c0d0p1 1 2 > tests/out.iostat-cciss.tmp
 02735	diff -u tests/out.iostat-cciss.tmp tests/expected.iostat-cciss
+
+=====	Tests to be done at the very end
+09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
