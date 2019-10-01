@@ -1875,8 +1875,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 	    ((file_magic->sysstat_version == 10) && (file_magic->sysstat_patchlevel >= 3))) {
 		/* header_size field exists only for sysstat versions 10.3.1 and later */
 		if ((file_magic->header_size <= MIN_FILE_HEADER_SIZE) ||
-		    (file_magic->header_size > MAX_FILE_HEADER_SIZE) ||
-		    ((file_magic->header_size < FILE_HEADER_SIZE) && !ignore)) {
+		    (file_magic->header_size > MAX_FILE_HEADER_SIZE)) {
 #ifdef DEBUG
 			fprintf(stderr, "%s: header_size=%u\n",
 				__FUNCTION__, file_magic->header_size);
@@ -1943,6 +1942,8 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 	int i, j, k, p;
 	struct file_activity *fal;
 	void *buffer = NULL;
+	size_t bh_size = FILE_HEADER_SIZE;
+	size_t ba_size = FILE_ACTIVITY_SIZE;
 
 	/* Open sa data file and read its magic structure */
 	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch, TRUE) < 0)
@@ -1969,17 +1970,20 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 	}
 
 	/* Allocate buffer for file_header structure */
-	SREALLOC(buffer, char, file_magic->header_size);
+	if (file_magic->header_size > FILE_HEADER_SIZE) {
+		bh_size = file_magic->header_size;
+	}
+	SREALLOC(buffer, char, bh_size);
 
 	/* Read sa data file standard header and allocate activity list */
 	sa_fread(*ifd, buffer, (size_t) file_magic->header_size, HARD_SIZE, UEOF_STOP);
 	/*
 	 * Data file header size (file_magic->header_size) may be greater or
 	 * smaller than FILE_HEADER_SIZE. Remap the fields of the file header
-	 * then copy its contents to the expected  structure.
+	 * then copy its contents to the expected structure.
 	 */
 	if (remap_struct(hdr_types_nr, file_magic->hdr_types_nr, buffer,
-			 file_magic->header_size, FILE_HEADER_SIZE, file_magic->header_size) < 0)
+			 file_magic->header_size, FILE_HEADER_SIZE, bh_size) < 0)
 		goto format_error;
 
 	memcpy(file_hdr, buffer, FILE_HEADER_SIZE);
@@ -2014,7 +2018,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		goto format_error;
 	}
 
-	SREALLOC(buffer, char, file_hdr->act_size);
+	/* Allocate buffer for file_activity structures */
+	if (file_hdr->act_size > FILE_ACTIVITY_SIZE) {
+		ba_size = file_hdr->act_size;
+	}
+	SREALLOC(buffer, char, ba_size);
 	SREALLOC(*file_actlst, struct file_activity, FILE_ACTIVITY_SIZE * file_hdr->sa_act_nr);
 	fal = *file_actlst;
 
@@ -2030,7 +2038,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		* then copy its contents to the expected structure.
 		*/
 		if (remap_struct(act_types_nr, file_hdr->act_types_nr, buffer,
-			     file_hdr->act_size, FILE_ACTIVITY_SIZE, file_hdr->act_size) < 0)
+			     file_hdr->act_size, FILE_ACTIVITY_SIZE, ba_size) < 0)
 			goto format_error;
 		memcpy(fal, buffer, FILE_ACTIVITY_SIZE);
 
