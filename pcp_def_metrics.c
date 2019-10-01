@@ -25,8 +25,10 @@
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
-#include <pcp/impl.h>
 #include <pcp/import.h>
+#ifdef HAVE_PCP_IMPL_H
+#include <pcp/impl.h>
+#endif
 #endif
 
 /*

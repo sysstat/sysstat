@@ -31,7 +31,10 @@
 #include <pwd.h>
 #include <sys/utsname.h>
 #include <regex.h>
+
+#ifdef HAVE_LINUX_SCHED_H
 #include <linux/sched.h>
+#endif
 
 #include "version.h"
 #include "pidstat.h"

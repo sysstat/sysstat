@@ -70,15 +70,29 @@ AC_CHECK_HEADERS(ctype.h)
 AC_CHECK_HEADERS(errno.h)
 AC_CHECK_HEADERS(libintl.h, HAVE_LIBINTL_H=1)
 AC_CHECK_HEADERS(locale.h, HAVE_LOCALE_H=1)
+AC_CHECK_HEADERS(linux/sched.h, HAVE_LINUX_SCHED_H=1)
 AC_CHECK_HEADERS(net/if.h)
 AC_CHECK_HEADERS(regex.h)
 AC_CHECK_HEADERS(signal.h)
 AC_CHECK_HEADERS(stdio.h)
+AC_CHECK_HEADERS(stdint.h)
+AC_CHECK_HEADERS(fcntl.h)
+AC_CHECK_HEADERS(inttypes.h)
+AC_CHECK_HEADERS(libgen.h)
+AC_CHECK_HEADERS(pwd.h)
+AC_CHECK_HEADERS(time.h)
+AC_CHECK_HEADERS(unistd.h)
+AC_CHECK_HEADERS(pcp/pmapi.h, HAVE_PCP_PMAPI_H=1)
+AC_CHECK_HEADERS(pcp/impl.h, HAVE_PCP_IMPL_H=1)
+AC_CHECK_HEADERS(sys/time.h)
+AC_CHECK_HEADERS(sys/statvfs.h)
+AC_CHECK_HEADERS(sys/types.h)
 AC_CHECK_HEADERS(sys/file.h)
 AC_CHECK_HEADERS(sys/ioctl.h)
 AC_CHECK_HEADERS(sys/param.h, HAVE_SYS_PARAM_H=1)
 AC_CHECK_HEADERS(sys/stat.h)
 AC_CHECK_HEADERS(sys/sysmacros.h, HAVE_SYS_SYSMACROS_H=1)
+AC_CHECK_HEADERS(sys/utsname.h)
 
 echo .
 echo Check typedefs, structures and compiler characteristics:
@@ -137,6 +151,10 @@ else
 fi
 AC_MSG_RESULT($PCP)
 
+if test ! $HAVE_PCP_PMAPI_H; then
+	HAVE_PCP="n"
+fi
+
 # Check for PCP libraries
 LFPCP=""
 DFPCP=""
@@ -152,6 +170,13 @@ fi
 AC_SUBST(HAVE_PCP)
 AC_SUBST(LFPCP)
 AC_SUBST(DFPCP)
+
+if test $HAVE_PCP_IMPL_H; then
+   PCP_IMPL="y"
+else
+   PCP_IMPL="n"
+fi
+AC_SUBST(PCP_IMPL)
 
 echo .
 echo Check system services:
@@ -248,6 +273,13 @@ else
    SYSMACROS="n"
 fi
 AC_SUBST(SYSMACROS)
+
+if test $HAVE_LINUX_SCHED_H; then
+   LINUX_SCHED="y"
+else
+   LINUX_SCHED="n"
+fi
+AC_SUBST(LINUX_SCHED)
 
 if test $HAVE_SYS_PARAM_H; then
    SYSPARAM="y"

@@ -660,11 +660,13 @@ sa_dir
 SA_LIB_DIR
 sa_lib_dir
 SYSPARAM
+LINUX_SCHED
 SYSMACROS
 INITD_DIR
 INIT_DIR
 RC_DIR
 rcdir
+PCP_IMPL
 DFPCP
 LFPCP
 HAVE_PCP
@@ -4429,6 +4431,18 @@ fi
 
 done
 
+for ac_header in linux/sched.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "linux/sched.h" "ac_cv_header_linux_sched_h" "$ac_includes_default"
+if test "x$ac_cv_header_linux_sched_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LINUX_SCHED_H 1
+_ACEOF
+ HAVE_LINUX_SCHED_H=1
+fi
+
+done
+
 for ac_header in net/if.h
 do :
   ac_fn_c_check_header_mongrel "$LINENO" "net/if.h" "ac_cv_header_net_if_h" "$ac_includes_default"
@@ -4471,6 +4485,150 @@ do :
 if test "x$ac_cv_header_stdio_h" = xyes; then :
   cat >>confdefs.h <<_ACEOF
 #define HAVE_STDIO_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in stdint.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "stdint.h" "ac_cv_header_stdint_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdint_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STDINT_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in fcntl.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "fcntl.h" "ac_cv_header_fcntl_h" "$ac_includes_default"
+if test "x$ac_cv_header_fcntl_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_FCNTL_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in inttypes.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "inttypes.h" "ac_cv_header_inttypes_h" "$ac_includes_default"
+if test "x$ac_cv_header_inttypes_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_INTTYPES_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in libgen.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "libgen.h" "ac_cv_header_libgen_h" "$ac_includes_default"
+if test "x$ac_cv_header_libgen_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGEN_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in pwd.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "pwd.h" "ac_cv_header_pwd_h" "$ac_includes_default"
+if test "x$ac_cv_header_pwd_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_PWD_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in time.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "time.h" "ac_cv_header_time_h" "$ac_includes_default"
+if test "x$ac_cv_header_time_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_TIME_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in unistd.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "unistd.h" "ac_cv_header_unistd_h" "$ac_includes_default"
+if test "x$ac_cv_header_unistd_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_UNISTD_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in pcp/pmapi.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "pcp/pmapi.h" "ac_cv_header_pcp_pmapi_h" "$ac_includes_default"
+if test "x$ac_cv_header_pcp_pmapi_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_PCP_PMAPI_H 1
+_ACEOF
+ HAVE_PCP_PMAPI_H=1
+fi
+
+done
+
+for ac_header in pcp/impl.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "pcp/impl.h" "ac_cv_header_pcp_impl_h" "$ac_includes_default"
+if test "x$ac_cv_header_pcp_impl_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_PCP_IMPL_H 1
+_ACEOF
+ HAVE_PCP_IMPL_H=1
+fi
+
+done
+
+for ac_header in sys/time.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "sys/time.h" "ac_cv_header_sys_time_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_time_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SYS_TIME_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in sys/statvfs.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "sys/statvfs.h" "ac_cv_header_sys_statvfs_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_statvfs_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SYS_STATVFS_H 1
+_ACEOF
+
+fi
+
+done
+
+for ac_header in sys/types.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "sys/types.h" "ac_cv_header_sys_types_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_types_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SYS_TYPES_H 1
 _ACEOF
 
 fi
@@ -4533,6 +4691,18 @@ if test "x$ac_cv_header_sys_sysmacros_h" = xyes; then :
 #define HAVE_SYS_SYSMACROS_H 1
 _ACEOF
  HAVE_SYS_SYSMACROS_H=1
+fi
+
+done
+
+for ac_header in sys/utsname.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "sys/utsname.h" "ac_cv_header_sys_utsname_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_utsname_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SYS_UTSNAME_H 1
+_ACEOF
+
 fi
 
 done
@@ -4756,6 +4926,10 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCP" >&5
 $as_echo "$PCP" >&6; }
 
+if test ! $HAVE_PCP_PMAPI_H; then
+	HAVE_PCP="n"
+fi
+
 # Check for PCP libraries
 LFPCP=""
 DFPCP=""
@@ -4829,6 +5003,13 @@ $as_echo "$PCP" >&6; }
 fi
 
 
+
+
+if test $HAVE_PCP_IMPL_H; then
+   PCP_IMPL="y"
+else
+   PCP_IMPL="n"
+fi
 
 
 echo .
@@ -5125,6 +5306,13 @@ if test $HAVE_SYS_SYSMACROS_H; then
    SYSMACROS="y"
 else
    SYSMACROS="n"
+fi
+
+
+if test $HAVE_LINUX_SCHED_H; then
+   LINUX_SCHED="y"
+else
+   LINUX_SCHED="n"
 fi
 
 
