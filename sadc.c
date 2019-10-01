@@ -59,6 +59,8 @@ char *sccsid(void) { return (SCCSID); }
 extern time_t __unix_time;
 #endif
 
+extern char *tzname[2];
+
 long interval = 0;
 uint64_t flags = 0;
 
@@ -517,6 +519,11 @@ void setup_file_hdr(int fd)
 	file_hdr.sa_release[UTSNAME_LEN - 1]  = '\0';
 	strncpy(file_hdr.sa_machine, header.machine, UTSNAME_LEN);
 	file_hdr.sa_machine[UTSNAME_LEN - 1]  = '\0';
+
+	/* Get timezone value and save it */
+	tzset();
+	strncpy(file_hdr.sa_tzname, tzname[0], TZNAME_LEN);
+	file_hdr.sa_tzname[TZNAME_LEN - 1] = '\0';
 
 	/* Write file header */
 	if (write_all(fd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE) {

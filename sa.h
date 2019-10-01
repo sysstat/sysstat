@@ -259,6 +259,7 @@
 #define DEF_TMEND	"18:00:00"
 
 #define UTSNAME_LEN	65
+#define TZNAME_LEN	8
 #define HEADER_LINE_LEN	512
 
 /*
@@ -584,6 +585,10 @@ struct file_header {
 	 * Machine architecture.
 	 */
 	char sa_machine[UTSNAME_LEN];
+	/*
+	 * Timezone value.
+	 */
+	char sa_tzname[TZNAME_LEN];
 };
 
 #define FILE_HEADER_SIZE	(sizeof(struct file_header))
