@@ -8,6 +8,7 @@
 			"number-of-cpus": 8,
 			"file-date": "2019-04-18",
 			"file-utc-time": "13:20:09",
+			"timezone": "GMT",
 			"statistics": [
 				{
 					"timestamp": {"date": "2019-04-18", "time": "13:20:19", "utc": 1, "interval": 31},
