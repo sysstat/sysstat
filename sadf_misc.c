@@ -1114,6 +1114,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 			xprintf(*tab, "<file-utc-time>%s</file-utc-time>", cur_time);
 		}
 
+		xprintf(*tab, "<timezone>%s</timezone>", file_hdr->sa_tzname);
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</host>");
@@ -1165,14 +1166,14 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
-		xprintf0(*tab, "\"file-date\": \"%s\"", cur_time);
+		xprintf(*tab, "\"file-date\": \"%s\",", cur_time);
 
 		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			printf(",\n");
-			xprintf0(*tab, "\"file-utc-time\": \"%s\"", cur_time);
+			xprintf(*tab, "\"file-utc-time\": \"%s\",", cur_time);
 		}
 
+		xprintf0(*tab, "\"timezone\": \"%s\"", file_hdr->sa_tzname);
 	}
 	if (action & F_END) {
 		printf("\n");
@@ -1240,6 +1241,8 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			printf("%s UTC (%lld)\n", cur_time, file_hdr->sa_ust_time);
 		}
+
+		printf(_("Timezone: %s\n"), file_hdr->sa_tzname);
 
 		/* File composition: file_header, file_activity, record_header */
 		printf(_("File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"),
