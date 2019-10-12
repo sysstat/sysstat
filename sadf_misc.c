@@ -1422,8 +1422,7 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 		pmiStart(dfile, FALSE);
 
 		if (PRINT_LOCAL_TIME(flags)) {
-			tzset();	/* Set timezone value in tzname */
-			pmiSetTimezone(tzname[0]);
+			pmiSetTimezone(file_hdr->sa_tzname);
 		}
 		else {
 			pmiSetTimezone("UTC");
