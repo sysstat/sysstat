@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.7 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.8 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -27,6 +27,7 @@
 		<xs:element name="number-of-cpus" type="number-of-cpus-type"></xs:element>
 		<xs:element name="file-date" type="file-date-type"></xs:element>
 		<xs:element name="file-utc-time" type="file-utc-time-type"></xs:element>
+		<xs:element name="timezone" type="timezone-type" minOccurs="0"></xs:element>
 		<xs:element name="statistics" type="statistics-type"></xs:element>
 		<xs:element name="restarts" type="restarts-type"></xs:element>
 		<xs:element name="comments" type="comments-type" minOccurs="0" maxOccurs="1"></xs:element>
@@ -57,6 +58,11 @@
 <xs:element name="file-utc-time" type="file-utc-time-type"></xs:element>
 <xs:simpleType name="file-utc-time-type">
         <xs:restriction base="xs:time"></xs:restriction>
+</xs:simpleType>
+
+<xs:element name="timezone" type="timezone-type"></xs:element>
+<xs:simpleType name="timezone-type">
+        <xs:restriction base="xs:string"></xs:restriction>
 </xs:simpleType>
 
 <xs:element name="number-of-cpus" type="number-of-cpus-type"></xs:element>

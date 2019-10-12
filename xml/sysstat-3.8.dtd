@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.7 for sysstat. See sadf.h -->
+<!--DTD v3.8 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -11,7 +11,7 @@
 <!ELEMENT sysdata-version (#PCDATA)>
 
 <!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management|filesystems">
-<!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|file-utc-time|statistics|restarts|comments">
+<!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|file-utc-time|timezone|statistics|restarts|comments">
 
 <!ELEMENT host (%HOST_ELEMENTS;)+>
 <!ATTLIST host
@@ -27,6 +27,8 @@
 <!ELEMENT number-of-cpus (#PCDATA)>
 
 <!ELEMENT file-date (#PCDATA)>
+
+<!ELEMENT timezone (#PCDATA)>
 
 <!ELEMENT file-utc-time (#PCDATA)>
 
