@@ -1,0 +1,1287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sysstat PUBLIC "DTD v3.4 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.4.dtd">
+<sysstat
+xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
+	<sysdata-version>3.4</sysdata-version>
+	<host nodename="linux.home">
+		<sysname>Linux</sysname>
+		<release>5.0.16-100.fc28.x86_64</release>
+		<machine>x86_64</machine>
+		<number-of-cpus>8</number-of-cpus>
+		<file-date>2019-10-13</file-date>
+		<file-utc-time>13:26:28</file-utc-time>
+		<statistics>
+			<timestamp date="2019-10-13" time="13:26:35" utc="1" interval="1">
+				<cpu-load>
+					<cpu number="all" usr="0.25" nice="0.00" sys="0.25" iowait="0.00" steal="0.00" irq="0.13" soft="0.13" guest="0.00" gnice="0.00" idle="99.25"/>
+					<cpu number="0" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="1" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="2" usr="1.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="99.00"/>
+					<cpu number="3" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="4" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="5" usr="1.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="99.00"/>
+					<cpu number="6" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.99" soft="0.99" guest="0.00" gnice="0.00" idle="98.02"/>
+					<cpu number="7" usr="0.00" nice="0.00" sys="2.04" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="97.96"/>
+				</cpu-load>
+				<process-and-context-switch per="second" proc="0.00" cswch="11002.00"/>
+				<interrupts>
+					<int-global per="second">
+						<irq intr="sum" value="5731.00"/>
+						<irq intr="0" value="0.00"/>
+						<irq intr="1" value="0.00"/>
+						<irq intr="2" value="0.00"/>
+						<irq intr="3" value="0.00"/>
+						<irq intr="4" value="0.00"/>
+						<irq intr="5" value="0.00"/>
+						<irq intr="6" value="0.00"/>
+						<irq intr="7" value="0.00"/>
+						<irq intr="8" value="0.00"/>
+						<irq intr="9" value="0.00"/>
+						<irq intr="10" value="0.00"/>
+						<irq intr="11" value="0.00"/>
+						<irq intr="12" value="0.00"/>
+						<irq intr="13" value="0.00"/>
+						<irq intr="14" value="0.00"/>
+						<irq intr="15" value="0.00"/>
+						<irq intr="16" value="0.00"/>
+						<irq intr="17" value="0.00"/>
+						<irq intr="18" value="0.00"/>
+						<irq intr="19" value="49.00"/>
+						<irq intr="20" value="0.00"/>
+						<irq intr="21" value="0.00"/>
+						<irq intr="22" value="0.00"/>
+						<irq intr="23" value="1.00"/>
+						<irq intr="24" value="2.00"/>
+						<irq intr="25" value="0.00"/>
+						<irq intr="26" value="0.00"/>
+						<irq intr="27" value="0.00"/>
+						<irq intr="28" value="0.00"/>
+						<irq intr="29" value="0.00"/>
+						<irq intr="30" value="0.00"/>
+						<irq intr="31" value="0.00"/>
+						<irq intr="32" value="0.00"/>
+						<irq intr="33" value="1.00"/>
+						<irq intr="34" value="126.00"/>
+						<irq intr="35" value="0.00"/>
+						<irq intr="36" value="0.00"/>
+						<irq intr="37" value="0.00"/>
+						<irq intr="38" value="0.00"/>
+						<irq intr="39" value="0.00"/>
+						<irq intr="40" value="0.00"/>
+						<irq intr="41" value="0.00"/>
+						<irq intr="42" value="0.00"/>
+						<irq intr="43" value="0.00"/>
+						<irq intr="44" value="0.00"/>
+						<irq intr="45" value="0.00"/>
+						<irq intr="46" value="0.00"/>
+						<irq intr="47" value="0.00"/>
+						<irq intr="48" value="0.00"/>
+						<irq intr="49" value="0.00"/>
+						<irq intr="50" value="0.00"/>
+						<irq intr="51" value="0.00"/>
+						<irq intr="52" value="0.00"/>
+						<irq intr="53" value="0.00"/>
+						<irq intr="54" value="0.00"/>
+						<irq intr="55" value="0.00"/>
+						<irq intr="56" value="0.00"/>
+						<irq intr="57" value="0.00"/>
+						<irq intr="58" value="0.00"/>
+						<irq intr="59" value="0.00"/>
+						<irq intr="60" value="0.00"/>
+						<irq intr="61" value="0.00"/>
+						<irq intr="62" value="0.00"/>
+						<irq intr="63" value="0.00"/>
+						<irq intr="64" value="0.00"/>
+						<irq intr="65" value="0.00"/>
+						<irq intr="66" value="0.00"/>
+						<irq intr="67" value="0.00"/>
+						<irq intr="68" value="0.00"/>
+						<irq intr="69" value="0.00"/>
+						<irq intr="70" value="0.00"/>
+						<irq intr="71" value="0.00"/>
+						<irq intr="72" value="0.00"/>
+						<irq intr="73" value="0.00"/>
+						<irq intr="74" value="0.00"/>
+						<irq intr="75" value="0.00"/>
+						<irq intr="76" value="0.00"/>
+						<irq intr="77" value="0.00"/>
+						<irq intr="78" value="0.00"/>
+						<irq intr="79" value="0.00"/>
+						<irq intr="80" value="0.00"/>
+						<irq intr="81" value="0.00"/>
+						<irq intr="82" value="0.00"/>
+						<irq intr="83" value="0.00"/>
+						<irq intr="84" value="0.00"/>
+						<irq intr="85" value="0.00"/>
+						<irq intr="86" value="0.00"/>
+						<irq intr="87" value="0.00"/>
+						<irq intr="88" value="0.00"/>
+						<irq intr="89" value="0.00"/>
+						<irq intr="90" value="0.00"/>
+						<irq intr="91" value="0.00"/>
+						<irq intr="92" value="0.00"/>
+						<irq intr="93" value="0.00"/>
+						<irq intr="94" value="0.00"/>
+						<irq intr="95" value="0.00"/>
+						<irq intr="96" value="0.00"/>
+						<irq intr="97" value="0.00"/>
+						<irq intr="98" value="0.00"/>
+						<irq intr="99" value="0.00"/>
+						<irq intr="100" value="0.00"/>
+						<irq intr="101" value="0.00"/>
+						<irq intr="102" value="0.00"/>
+						<irq intr="103" value="0.00"/>
+						<irq intr="104" value="0.00"/>
+						<irq intr="105" value="0.00"/>
+						<irq intr="106" value="0.00"/>
+						<irq intr="107" value="0.00"/>
+						<irq intr="108" value="0.00"/>
+						<irq intr="109" value="0.00"/>
+						<irq intr="110" value="0.00"/>
+						<irq intr="111" value="0.00"/>
+						<irq intr="112" value="0.00"/>
+						<irq intr="113" value="0.00"/>
+						<irq intr="114" value="0.00"/>
+						<irq intr="115" value="0.00"/>
+						<irq intr="116" value="0.00"/>
+						<irq intr="117" value="0.00"/>
+						<irq intr="118" value="0.00"/>
+						<irq intr="119" value="0.00"/>
+						<irq intr="120" value="0.00"/>
+						<irq intr="121" value="0.00"/>
+						<irq intr="122" value="0.00"/>
+						<irq intr="123" value="0.00"/>
+						<irq intr="124" value="0.00"/>
+						<irq intr="125" value="0.00"/>
+						<irq intr="126" value="0.00"/>
+						<irq intr="127" value="0.00"/>
+						<irq intr="128" value="0.00"/>
+						<irq intr="129" value="0.00"/>
+						<irq intr="130" value="0.00"/>
+						<irq intr="131" value="0.00"/>
+						<irq intr="132" value="0.00"/>
+						<irq intr="133" value="0.00"/>
+						<irq intr="134" value="0.00"/>
+						<irq intr="135" value="0.00"/>
+						<irq intr="136" value="0.00"/>
+						<irq intr="137" value="0.00"/>
+						<irq intr="138" value="0.00"/>
+						<irq intr="139" value="0.00"/>
+						<irq intr="140" value="0.00"/>
+						<irq intr="141" value="0.00"/>
+						<irq intr="142" value="0.00"/>
+						<irq intr="143" value="0.00"/>
+						<irq intr="144" value="0.00"/>
+						<irq intr="145" value="0.00"/>
+						<irq intr="146" value="0.00"/>
+						<irq intr="147" value="0.00"/>
+						<irq intr="148" value="0.00"/>
+						<irq intr="149" value="0.00"/>
+						<irq intr="150" value="0.00"/>
+						<irq intr="151" value="0.00"/>
+						<irq intr="152" value="0.00"/>
+						<irq intr="153" value="0.00"/>
+						<irq intr="154" value="0.00"/>
+						<irq intr="155" value="0.00"/>
+						<irq intr="156" value="0.00"/>
+						<irq intr="157" value="0.00"/>
+						<irq intr="158" value="0.00"/>
+						<irq intr="159" value="0.00"/>
+						<irq intr="160" value="0.00"/>
+						<irq intr="161" value="0.00"/>
+						<irq intr="162" value="0.00"/>
+						<irq intr="163" value="0.00"/>
+						<irq intr="164" value="0.00"/>
+						<irq intr="165" value="0.00"/>
+						<irq intr="166" value="0.00"/>
+						<irq intr="167" value="0.00"/>
+						<irq intr="168" value="0.00"/>
+						<irq intr="169" value="0.00"/>
+						<irq intr="170" value="0.00"/>
+						<irq intr="171" value="0.00"/>
+						<irq intr="172" value="0.00"/>
+						<irq intr="173" value="0.00"/>
+						<irq intr="174" value="0.00"/>
+						<irq intr="175" value="0.00"/>
+						<irq intr="176" value="0.00"/>
+						<irq intr="177" value="0.00"/>
+						<irq intr="178" value="0.00"/>
+						<irq intr="179" value="0.00"/>
+						<irq intr="180" value="0.00"/>
+						<irq intr="181" value="0.00"/>
+						<irq intr="182" value="0.00"/>
+						<irq intr="183" value="0.00"/>
+						<irq intr="184" value="0.00"/>
+						<irq intr="185" value="0.00"/>
+						<irq intr="186" value="0.00"/>
+						<irq intr="187" value="0.00"/>
+						<irq intr="188" value="0.00"/>
+						<irq intr="189" value="0.00"/>
+						<irq intr="190" value="0.00"/>
+						<irq intr="191" value="0.00"/>
+						<irq intr="192" value="0.00"/>
+						<irq intr="193" value="0.00"/>
+						<irq intr="194" value="0.00"/>
+						<irq intr="195" value="0.00"/>
+						<irq intr="196" value="0.00"/>
+						<irq intr="197" value="0.00"/>
+						<irq intr="198" value="0.00"/>
+						<irq intr="199" value="0.00"/>
+						<irq intr="200" value="0.00"/>
+						<irq intr="201" value="0.00"/>
+						<irq intr="202" value="0.00"/>
+						<irq intr="203" value="0.00"/>
+						<irq intr="204" value="0.00"/>
+						<irq intr="205" value="0.00"/>
+						<irq intr="206" value="0.00"/>
+						<irq intr="207" value="0.00"/>
+						<irq intr="208" value="0.00"/>
+						<irq intr="209" value="0.00"/>
+						<irq intr="210" value="0.00"/>
+						<irq intr="211" value="0.00"/>
+						<irq intr="212" value="0.00"/>
+						<irq intr="213" value="0.00"/>
+						<irq intr="214" value="0.00"/>
+						<irq intr="215" value="0.00"/>
+						<irq intr="216" value="0.00"/>
+						<irq intr="217" value="0.00"/>
+						<irq intr="218" value="0.00"/>
+						<irq intr="219" value="0.00"/>
+						<irq intr="220" value="0.00"/>
+						<irq intr="221" value="0.00"/>
+						<irq intr="222" value="0.00"/>
+						<irq intr="223" value="0.00"/>
+						<irq intr="224" value="0.00"/>
+						<irq intr="225" value="0.00"/>
+						<irq intr="226" value="0.00"/>
+						<irq intr="227" value="0.00"/>
+						<irq intr="228" value="0.00"/>
+						<irq intr="229" value="0.00"/>
+						<irq intr="230" value="0.00"/>
+						<irq intr="231" value="0.00"/>
+						<irq intr="232" value="0.00"/>
+						<irq intr="233" value="0.00"/>
+						<irq intr="234" value="0.00"/>
+						<irq intr="235" value="0.00"/>
+						<irq intr="236" value="0.00"/>
+						<irq intr="237" value="0.00"/>
+						<irq intr="238" value="0.00"/>
+						<irq intr="239" value="0.00"/>
+						<irq intr="240" value="0.00"/>
+						<irq intr="241" value="0.00"/>
+						<irq intr="242" value="0.00"/>
+						<irq intr="243" value="0.00"/>
+						<irq intr="244" value="0.00"/>
+						<irq intr="245" value="0.00"/>
+						<irq intr="246" value="0.00"/>
+						<irq intr="247" value="0.00"/>
+						<irq intr="248" value="0.00"/>
+						<irq intr="249" value="0.00"/>
+						<irq intr="250" value="0.00"/>
+						<irq intr="251" value="0.00"/>
+						<irq intr="252" value="0.00"/>
+						<irq intr="253" value="0.00"/>
+						<irq intr="254" value="0.00"/>
+						<irq intr="255" value="0.00"/>
+						<irq intr="256" value="0.00"/>
+						<irq intr="257" value="0.00"/>
+						<irq intr="258" value="0.00"/>
+						<irq intr="259" value="0.00"/>
+						<irq intr="260" value="0.00"/>
+						<irq intr="261" value="0.00"/>
+						<irq intr="262" value="0.00"/>
+						<irq intr="263" value="0.00"/>
+						<irq intr="264" value="0.00"/>
+						<irq intr="265" value="0.00"/>
+						<irq intr="266" value="0.00"/>
+						<irq intr="267" value="0.00"/>
+						<irq intr="268" value="0.00"/>
+						<irq intr="269" value="0.00"/>
+						<irq intr="270" value="0.00"/>
+						<irq intr="271" value="0.00"/>
+						<irq intr="272" value="0.00"/>
+						<irq intr="273" value="0.00"/>
+						<irq intr="274" value="0.00"/>
+						<irq intr="275" value="0.00"/>
+						<irq intr="276" value="0.00"/>
+						<irq intr="277" value="0.00"/>
+						<irq intr="278" value="0.00"/>
+						<irq intr="279" value="0.00"/>
+						<irq intr="280" value="0.00"/>
+						<irq intr="281" value="0.00"/>
+						<irq intr="282" value="0.00"/>
+						<irq intr="283" value="0.00"/>
+						<irq intr="284" value="0.00"/>
+						<irq intr="285" value="0.00"/>
+						<irq intr="286" value="0.00"/>
+						<irq intr="287" value="0.00"/>
+						<irq intr="288" value="0.00"/>
+						<irq intr="289" value="0.00"/>
+						<irq intr="290" value="0.00"/>
+						<irq intr="291" value="0.00"/>
+						<irq intr="292" value="0.00"/>
+						<irq intr="293" value="0.00"/>
+						<irq intr="294" value="0.00"/>
+						<irq intr="295" value="0.00"/>
+						<irq intr="296" value="0.00"/>
+						<irq intr="297" value="0.00"/>
+						<irq intr="298" value="0.00"/>
+						<irq intr="299" value="0.00"/>
+						<irq intr="300" value="0.00"/>
+						<irq intr="301" value="0.00"/>
+						<irq intr="302" value="0.00"/>
+						<irq intr="303" value="0.00"/>
+						<irq intr="304" value="0.00"/>
+						<irq intr="305" value="0.00"/>
+						<irq intr="306" value="0.00"/>
+						<irq intr="307" value="0.00"/>
+						<irq intr="308" value="0.00"/>
+						<irq intr="309" value="0.00"/>
+						<irq intr="310" value="0.00"/>
+						<irq intr="311" value="0.00"/>
+						<irq intr="312" value="0.00"/>
+						<irq intr="313" value="0.00"/>
+						<irq intr="314" value="0.00"/>
+						<irq intr="315" value="0.00"/>
+						<irq intr="316" value="0.00"/>
+						<irq intr="317" value="0.00"/>
+						<irq intr="318" value="0.00"/>
+						<irq intr="319" value="0.00"/>
+						<irq intr="320" value="0.00"/>
+						<irq intr="321" value="0.00"/>
+						<irq intr="322" value="0.00"/>
+						<irq intr="323" value="0.00"/>
+						<irq intr="324" value="0.00"/>
+						<irq intr="325" value="0.00"/>
+						<irq intr="326" value="0.00"/>
+						<irq intr="327" value="0.00"/>
+						<irq intr="328" value="0.00"/>
+						<irq intr="329" value="0.00"/>
+						<irq intr="330" value="0.00"/>
+						<irq intr="331" value="0.00"/>
+						<irq intr="332" value="0.00"/>
+						<irq intr="333" value="0.00"/>
+						<irq intr="334" value="0.00"/>
+						<irq intr="335" value="0.00"/>
+						<irq intr="336" value="0.00"/>
+						<irq intr="337" value="0.00"/>
+						<irq intr="338" value="0.00"/>
+						<irq intr="339" value="0.00"/>
+						<irq intr="340" value="0.00"/>
+						<irq intr="341" value="0.00"/>
+						<irq intr="342" value="0.00"/>
+						<irq intr="343" value="0.00"/>
+						<irq intr="344" value="0.00"/>
+						<irq intr="345" value="0.00"/>
+						<irq intr="346" value="0.00"/>
+						<irq intr="347" value="0.00"/>
+						<irq intr="348" value="0.00"/>
+						<irq intr="349" value="0.00"/>
+						<irq intr="350" value="0.00"/>
+						<irq intr="351" value="0.00"/>
+						<irq intr="352" value="0.00"/>
+						<irq intr="353" value="0.00"/>
+						<irq intr="354" value="0.00"/>
+						<irq intr="355" value="0.00"/>
+						<irq intr="356" value="0.00"/>
+						<irq intr="357" value="0.00"/>
+						<irq intr="358" value="0.00"/>
+						<irq intr="359" value="0.00"/>
+						<irq intr="360" value="0.00"/>
+						<irq intr="361" value="0.00"/>
+						<irq intr="362" value="0.00"/>
+						<irq intr="363" value="0.00"/>
+						<irq intr="364" value="0.00"/>
+						<irq intr="365" value="0.00"/>
+						<irq intr="366" value="0.00"/>
+						<irq intr="367" value="0.00"/>
+						<irq intr="368" value="0.00"/>
+						<irq intr="369" value="0.00"/>
+						<irq intr="370" value="0.00"/>
+						<irq intr="371" value="0.00"/>
+						<irq intr="372" value="0.00"/>
+						<irq intr="373" value="0.00"/>
+						<irq intr="374" value="0.00"/>
+						<irq intr="375" value="0.00"/>
+						<irq intr="376" value="0.00"/>
+						<irq intr="377" value="0.00"/>
+						<irq intr="378" value="0.00"/>
+						<irq intr="379" value="0.00"/>
+						<irq intr="380" value="0.00"/>
+						<irq intr="381" value="0.00"/>
+						<irq intr="382" value="0.00"/>
+						<irq intr="383" value="0.00"/>
+						<irq intr="384" value="0.00"/>
+						<irq intr="385" value="0.00"/>
+						<irq intr="386" value="0.00"/>
+						<irq intr="387" value="0.00"/>
+						<irq intr="388" value="0.00"/>
+						<irq intr="389" value="0.00"/>
+						<irq intr="390" value="0.00"/>
+						<irq intr="391" value="0.00"/>
+						<irq intr="392" value="0.00"/>
+						<irq intr="393" value="0.00"/>
+						<irq intr="394" value="0.00"/>
+						<irq intr="395" value="0.00"/>
+						<irq intr="396" value="0.00"/>
+						<irq intr="397" value="0.00"/>
+						<irq intr="398" value="0.00"/>
+						<irq intr="399" value="0.00"/>
+						<irq intr="400" value="0.00"/>
+						<irq intr="401" value="0.00"/>
+						<irq intr="402" value="0.00"/>
+						<irq intr="403" value="0.00"/>
+						<irq intr="404" value="0.00"/>
+						<irq intr="405" value="0.00"/>
+						<irq intr="406" value="0.00"/>
+						<irq intr="407" value="0.00"/>
+						<irq intr="408" value="0.00"/>
+						<irq intr="409" value="0.00"/>
+						<irq intr="410" value="0.00"/>
+						<irq intr="411" value="0.00"/>
+						<irq intr="412" value="0.00"/>
+						<irq intr="413" value="0.00"/>
+						<irq intr="414" value="0.00"/>
+						<irq intr="415" value="0.00"/>
+						<irq intr="416" value="0.00"/>
+						<irq intr="417" value="0.00"/>
+						<irq intr="418" value="0.00"/>
+						<irq intr="419" value="0.00"/>
+						<irq intr="420" value="0.00"/>
+						<irq intr="421" value="0.00"/>
+						<irq intr="422" value="0.00"/>
+						<irq intr="423" value="0.00"/>
+						<irq intr="424" value="0.00"/>
+						<irq intr="425" value="0.00"/>
+						<irq intr="426" value="0.00"/>
+						<irq intr="427" value="0.00"/>
+						<irq intr="428" value="0.00"/>
+						<irq intr="429" value="0.00"/>
+						<irq intr="430" value="0.00"/>
+						<irq intr="431" value="0.00"/>
+						<irq intr="432" value="0.00"/>
+						<irq intr="433" value="0.00"/>
+						<irq intr="434" value="0.00"/>
+						<irq intr="435" value="0.00"/>
+						<irq intr="436" value="0.00"/>
+						<irq intr="437" value="0.00"/>
+						<irq intr="438" value="0.00"/>
+						<irq intr="439" value="0.00"/>
+						<irq intr="440" value="0.00"/>
+						<irq intr="441" value="0.00"/>
+						<irq intr="442" value="0.00"/>
+						<irq intr="443" value="0.00"/>
+						<irq intr="444" value="0.00"/>
+						<irq intr="445" value="0.00"/>
+						<irq intr="446" value="0.00"/>
+						<irq intr="447" value="0.00"/>
+						<irq intr="448" value="0.00"/>
+						<irq intr="449" value="0.00"/>
+						<irq intr="450" value="0.00"/>
+						<irq intr="451" value="0.00"/>
+						<irq intr="452" value="0.00"/>
+						<irq intr="453" value="0.00"/>
+						<irq intr="454" value="0.00"/>
+						<irq intr="455" value="0.00"/>
+						<irq intr="456" value="0.00"/>
+						<irq intr="457" value="0.00"/>
+						<irq intr="458" value="0.00"/>
+						<irq intr="459" value="0.00"/>
+						<irq intr="460" value="0.00"/>
+						<irq intr="461" value="0.00"/>
+						<irq intr="462" value="0.00"/>
+						<irq intr="463" value="0.00"/>
+						<irq intr="464" value="0.00"/>
+						<irq intr="465" value="0.00"/>
+						<irq intr="466" value="0.00"/>
+						<irq intr="467" value="0.00"/>
+						<irq intr="468" value="0.00"/>
+						<irq intr="469" value="0.00"/>
+						<irq intr="470" value="0.00"/>
+						<irq intr="471" value="0.00"/>
+						<irq intr="472" value="0.00"/>
+						<irq intr="473" value="0.00"/>
+						<irq intr="474" value="0.00"/>
+						<irq intr="475" value="0.00"/>
+						<irq intr="476" value="0.00"/>
+						<irq intr="477" value="0.00"/>
+						<irq intr="478" value="0.00"/>
+						<irq intr="479" value="0.00"/>
+						<irq intr="480" value="0.00"/>
+						<irq intr="481" value="0.00"/>
+						<irq intr="482" value="0.00"/>
+						<irq intr="483" value="0.00"/>
+						<irq intr="484" value="0.00"/>
+						<irq intr="485" value="0.00"/>
+						<irq intr="486" value="0.00"/>
+						<irq intr="487" value="0.00"/>
+					</int-global>
+				</interrupts>
+				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="188.00" majflt="0.00" pgfree="427.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" vmeff-percent="0.00"/>
+				<io per="second">
+					<tps>0.00</tps>
+					<io-reads rtps="0.00" bread="0.00"/>
+					<io-writes wtps="0.00" bwrtn="0.00"/>
+				</io>
+				<memory per="second" unit="kB">
+					<memfree>5057504</memfree>
+					<avail>6089980</avail>
+					<memused>1612740</memused>
+					<memused-percent>19.80</memused-percent>
+					<buffers>76620</buffers>
+					<cached>1154736</cached>
+					<commit>6238560</commit>
+					<commit-percent>25.03</commit-percent>
+					<active>1682592</active>
+					<inactive>897708</inactive>
+					<dirty>4840</dirty>
+					<anonpg>1348968</anonpg>
+					<slab>243476</slab>
+					<kstack>12512</kstack>
+					<pgtbl>60368</pgtbl>
+					<vmused>0</vmused>
+					<swpfree>16777212</swpfree>
+					<swpused>0</swpused>
+					<swpused-percent>0.00</swpused-percent>
+					<swpcad>0</swpcad>
+					<swpcad-percent>0.00</swpcad-percent>
+				</memory>
+				<hugepages unit="kB">
+					<hugfree>0</hugfree>
+					<hugused>0</hugused>
+					<hugused-percent>0.00</hugused-percent>
+				</hugepages>
+				<kernel dentunusd="41656" file-nr="14048" inode-nr="55177" pty-nr="2"/>
+				<queue runq-sz="0" plist-sz="775" ldavg-1="0.65" ldavg-5="0.80" ldavg-15="0.36" blocked="0"/>
+				<disk per="second">
+					<disk-device dev="dev8-0" tps="0.00" rd_sec="0.00" wr_sec="0.00" rkB="0.00" wkB="0.00" avgrq-sz="0.00" areq-sz="0.00" avgqu-sz="0.00" aqu-sz="0.00" await="0.00" svctm="0.00" util-percent="0.00"/>
+				</disk>
+				<network per="second">
+					<net-dev iface="virbr0" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="lo" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="virbr0-nic" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="enp6s0" rxpck="1.00" txpck="0.00" rxkB="0.06" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="1.00" ifutil-percent="0.00"/>
+					<net-dev iface="wlp5s0" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-edev iface="virbr0" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="lo" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="virbr0-nic" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="enp6s0" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="wlp5s0" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-nfs call="0.00" retrans="0.00" read="0.00" write="0.00" access="0.00" getatt="0.00"/>
+					<net-nfsd scall="0.00" badcall="0.00" packet="0.00" udp="0.00" tcp="0.00" hit="0.00" miss="0.00" sread="0.00" swrite="0.00" saccess="0.00" sgetatt="0.00"/>
+					<net-sock totsck="1192" tcpsck="16" udpsck="6" rawsck="0" ip-frag="0" tcp-tw="0"/>
+					<net-ip irec="1.00" fwddgm="0.00" idel="0.00" orq="0.00" asmrq="0.00" asmok="0.00" fragok="0.00" fragcrt="0.00"/>
+					<net-eip ihdrerr="0.00" iadrerr="0.00" iukwnpr="0.00" idisc="0.00" odisc="0.00" onort="0.00" asmf="0.00" fragf="0.00"/>
+					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
+					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
+					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
+					<net-sock6 tcp6sck="7" udp6sck="4" raw6sck="1" ip6-frag="0"/>
+					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>
+					<net-eip6 ihdrer6="0.00" iadrer6="0.00" iukwnp6="0.00" i2big6="0.00" idisc6="0.00" odisc6="0.00" inort6="0.00" onort6="0.00" asmf6="0.00" fragf6="0.00" itrpck6="0.00"/>
+					<net-icmp6 imsg6="0.00" omsg6="0.00" iech6="0.00" iechr6="0.00" oechr6="0.00" igmbq6="0.00" igmbr6="0.00" ogmbr6="0.00" igmbrd6="0.00" ogmbrd6="0.00" irtsol6="0.00" ortsol6="0.00" irtad6="0.00" inbsol6="0.00" onbsol6="0.00" inbad6="0.00" onbad6="0.00"/>
+					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
+					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
+					<softnet cpu="all" total="1.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="3" total="1.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+				</network>
+				<power-management>
+					<cpu-frequency unit="MHz">
+						<cpufreq number="all" frequency="1927.57"/>
+						<cpufreq number="0" frequency="2117.72"/>
+						<cpufreq number="1" frequency="1778.92"/>
+						<cpufreq number="2" frequency="1958.48"/>
+						<cpufreq number="3" frequency="1703.39"/>
+						<cpufreq number="4" frequency="1606.62"/>
+						<cpufreq number="5" frequency="1909.15"/>
+						<cpufreq number="6" frequency="1872.78"/>
+						<cpufreq number="7" frequency="2473.52"/>
+					</cpu-frequency>
+					<fan-speed unit="rpm">
+						<fan number="1" rpm="1263" drpm="1263" device="f71858fg-isa-0200"/>
+						<fan number="2" rpm="1338" drpm="1338" device="f71858fg-isa-0200"/>
+						<fan number="3" rpm="0" drpm="0" device="f71858fg-isa-0200"/>
+						<fan number="4" rpm="1650" drpm="1650" device="nouveau-pci-0100"/>
+					</fan-speed>
+					<temperature unit="degree Celsius">
+						<temp number="1" degC="26.25" percent-temp="37.50" device="f71858fg-isa-0200"/>
+						<temp number="2" degC="22.88" percent-temp="22.88" device="f71858fg-isa-0200"/>
+						<temp number="3" degC="22.75" percent-temp="22.75" device="f71858fg-isa-0200"/>
+						<temp number="4" degC="30.00" percent-temp="31.58" device="nouveau-pci-0100"/>
+						<temp number="5" degC="29.00" percent-temp="36.25" device="coretemp-isa-0000"/>
+						<temp number="6" degC="29.00" percent-temp="36.25" device="coretemp-isa-0000"/>
+						<temp number="7" degC="25.00" percent-temp="31.25" device="coretemp-isa-0000"/>
+						<temp number="8" degC="25.00" percent-temp="31.25" device="coretemp-isa-0000"/>
+						<temp number="9" degC="25.00" percent-temp="31.25" device="coretemp-isa-0000"/>
+					</temperature>
+					<voltage-input unit="V">
+						<in number="0" inV="3.33" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="1" inV="3.34" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="2" inV="3.30" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="3" inV="0.95" percent-in="38.46" device="nouveau-pci-0100"/>
+					</voltage-input>
+					<usb-devices>
+						<usb bus_number="2" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
+						<usb bus_number="2" idvendor="8087" idprod="24" maxpower="0" manufact="" product=""/>
+						<usb bus_number="2" idvendor="58f" idprod="6362" maxpower="500" manufact="Generic" product="Mass Storage Device"/>
+						<usb bus_number="1" idvendor="8087" idprod="24" maxpower="0" manufact="" product=""/>
+						<usb bus_number="2" idvendor="46d" idprod="825" maxpower="1000" manufact="" product=""/>
+					</usb-devices>
+				</power-management>
+				<filesystems>
+					<filesystem fsname="/dev/sda9" MBfsfree="8383" MBfsused="21018" fsused-percent="71.49" ufsused-percent="76.64" Ifree="1617286" Iused="304074" Iused-percent="15.83"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="81697" MBfsused="11660" fsused-percent="12.49" ufsused-percent="17.61" Ifree="5933860" Iused="177372" Iused-percent="2.90"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="279564" MBfsused="15600" fsused-percent="5.29" ufsused-percent="10.37" Ifree="19201549" Iused="499" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="278754" MBfsused="16410" fsused-percent="5.56" ufsused-percent="10.65" Ifree="19042030" Iused="160018" Iused-percent="0.83"/>
+				</filesystems>
+			</timestamp>
+			<timestamp date="2019-10-13" time="13:26:36" utc="1" interval="1">
+				<cpu-load>
+					<cpu number="all" usr="0.00" nice="0.00" sys="0.25" iowait="1.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="98.75"/>
+					<cpu number="0" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="1" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="2" usr="0.00" nice="0.00" sys="1.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="99.00"/>
+					<cpu number="3" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="4" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="5" usr="0.00" nice="0.00" sys="0.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="100.00"/>
+					<cpu number="6" usr="0.00" nice="0.00" sys="0.00" iowait="7.92" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="92.08"/>
+					<cpu number="7" usr="0.00" nice="0.00" sys="1.00" iowait="0.00" steal="0.00" irq="0.00" soft="0.00" guest="0.00" gnice="0.00" idle="99.00"/>
+				</cpu-load>
+				<process-and-context-switch per="second" proc="0.00" cswch="3218.00"/>
+				<interrupts>
+					<int-global per="second">
+						<irq intr="sum" value="1820.00"/>
+						<irq intr="0" value="0.00"/>
+						<irq intr="1" value="0.00"/>
+						<irq intr="2" value="0.00"/>
+						<irq intr="3" value="0.00"/>
+						<irq intr="4" value="0.00"/>
+						<irq intr="5" value="0.00"/>
+						<irq intr="6" value="0.00"/>
+						<irq intr="7" value="0.00"/>
+						<irq intr="8" value="0.00"/>
+						<irq intr="9" value="0.00"/>
+						<irq intr="10" value="0.00"/>
+						<irq intr="11" value="0.00"/>
+						<irq intr="12" value="0.00"/>
+						<irq intr="13" value="0.00"/>
+						<irq intr="14" value="0.00"/>
+						<irq intr="15" value="0.00"/>
+						<irq intr="16" value="0.00"/>
+						<irq intr="17" value="0.00"/>
+						<irq intr="18" value="0.00"/>
+						<irq intr="19" value="40.00"/>
+						<irq intr="20" value="0.00"/>
+						<irq intr="21" value="0.00"/>
+						<irq intr="22" value="0.00"/>
+						<irq intr="23" value="24.00"/>
+						<irq intr="24" value="95.00"/>
+						<irq intr="25" value="0.00"/>
+						<irq intr="26" value="0.00"/>
+						<irq intr="27" value="0.00"/>
+						<irq intr="28" value="0.00"/>
+						<irq intr="29" value="0.00"/>
+						<irq intr="30" value="0.00"/>
+						<irq intr="31" value="0.00"/>
+						<irq intr="32" value="0.00"/>
+						<irq intr="33" value="0.00"/>
+						<irq intr="34" value="123.00"/>
+						<irq intr="35" value="0.00"/>
+						<irq intr="36" value="0.00"/>
+						<irq intr="37" value="0.00"/>
+						<irq intr="38" value="0.00"/>
+						<irq intr="39" value="0.00"/>
+						<irq intr="40" value="0.00"/>
+						<irq intr="41" value="0.00"/>
+						<irq intr="42" value="0.00"/>
+						<irq intr="43" value="0.00"/>
+						<irq intr="44" value="0.00"/>
+						<irq intr="45" value="0.00"/>
+						<irq intr="46" value="0.00"/>
+						<irq intr="47" value="0.00"/>
+						<irq intr="48" value="0.00"/>
+						<irq intr="49" value="0.00"/>
+						<irq intr="50" value="0.00"/>
+						<irq intr="51" value="0.00"/>
+						<irq intr="52" value="0.00"/>
+						<irq intr="53" value="0.00"/>
+						<irq intr="54" value="0.00"/>
+						<irq intr="55" value="0.00"/>
+						<irq intr="56" value="0.00"/>
+						<irq intr="57" value="0.00"/>
+						<irq intr="58" value="0.00"/>
+						<irq intr="59" value="0.00"/>
+						<irq intr="60" value="0.00"/>
+						<irq intr="61" value="0.00"/>
+						<irq intr="62" value="0.00"/>
+						<irq intr="63" value="0.00"/>
+						<irq intr="64" value="0.00"/>
+						<irq intr="65" value="0.00"/>
+						<irq intr="66" value="0.00"/>
+						<irq intr="67" value="0.00"/>
+						<irq intr="68" value="0.00"/>
+						<irq intr="69" value="0.00"/>
+						<irq intr="70" value="0.00"/>
+						<irq intr="71" value="0.00"/>
+						<irq intr="72" value="0.00"/>
+						<irq intr="73" value="0.00"/>
+						<irq intr="74" value="0.00"/>
+						<irq intr="75" value="0.00"/>
+						<irq intr="76" value="0.00"/>
+						<irq intr="77" value="0.00"/>
+						<irq intr="78" value="0.00"/>
+						<irq intr="79" value="0.00"/>
+						<irq intr="80" value="0.00"/>
+						<irq intr="81" value="0.00"/>
+						<irq intr="82" value="0.00"/>
+						<irq intr="83" value="0.00"/>
+						<irq intr="84" value="0.00"/>
+						<irq intr="85" value="0.00"/>
+						<irq intr="86" value="0.00"/>
+						<irq intr="87" value="0.00"/>
+						<irq intr="88" value="0.00"/>
+						<irq intr="89" value="0.00"/>
+						<irq intr="90" value="0.00"/>
+						<irq intr="91" value="0.00"/>
+						<irq intr="92" value="0.00"/>
+						<irq intr="93" value="0.00"/>
+						<irq intr="94" value="0.00"/>
+						<irq intr="95" value="0.00"/>
+						<irq intr="96" value="0.00"/>
+						<irq intr="97" value="0.00"/>
+						<irq intr="98" value="0.00"/>
+						<irq intr="99" value="0.00"/>
+						<irq intr="100" value="0.00"/>
+						<irq intr="101" value="0.00"/>
+						<irq intr="102" value="0.00"/>
+						<irq intr="103" value="0.00"/>
+						<irq intr="104" value="0.00"/>
+						<irq intr="105" value="0.00"/>
+						<irq intr="106" value="0.00"/>
+						<irq intr="107" value="0.00"/>
+						<irq intr="108" value="0.00"/>
+						<irq intr="109" value="0.00"/>
+						<irq intr="110" value="0.00"/>
+						<irq intr="111" value="0.00"/>
+						<irq intr="112" value="0.00"/>
+						<irq intr="113" value="0.00"/>
+						<irq intr="114" value="0.00"/>
+						<irq intr="115" value="0.00"/>
+						<irq intr="116" value="0.00"/>
+						<irq intr="117" value="0.00"/>
+						<irq intr="118" value="0.00"/>
+						<irq intr="119" value="0.00"/>
+						<irq intr="120" value="0.00"/>
+						<irq intr="121" value="0.00"/>
+						<irq intr="122" value="0.00"/>
+						<irq intr="123" value="0.00"/>
+						<irq intr="124" value="0.00"/>
+						<irq intr="125" value="0.00"/>
+						<irq intr="126" value="0.00"/>
+						<irq intr="127" value="0.00"/>
+						<irq intr="128" value="0.00"/>
+						<irq intr="129" value="0.00"/>
+						<irq intr="130" value="0.00"/>
+						<irq intr="131" value="0.00"/>
+						<irq intr="132" value="0.00"/>
+						<irq intr="133" value="0.00"/>
+						<irq intr="134" value="0.00"/>
+						<irq intr="135" value="0.00"/>
+						<irq intr="136" value="0.00"/>
+						<irq intr="137" value="0.00"/>
+						<irq intr="138" value="0.00"/>
+						<irq intr="139" value="0.00"/>
+						<irq intr="140" value="0.00"/>
+						<irq intr="141" value="0.00"/>
+						<irq intr="142" value="0.00"/>
+						<irq intr="143" value="0.00"/>
+						<irq intr="144" value="0.00"/>
+						<irq intr="145" value="0.00"/>
+						<irq intr="146" value="0.00"/>
+						<irq intr="147" value="0.00"/>
+						<irq intr="148" value="0.00"/>
+						<irq intr="149" value="0.00"/>
+						<irq intr="150" value="0.00"/>
+						<irq intr="151" value="0.00"/>
+						<irq intr="152" value="0.00"/>
+						<irq intr="153" value="0.00"/>
+						<irq intr="154" value="0.00"/>
+						<irq intr="155" value="0.00"/>
+						<irq intr="156" value="0.00"/>
+						<irq intr="157" value="0.00"/>
+						<irq intr="158" value="0.00"/>
+						<irq intr="159" value="0.00"/>
+						<irq intr="160" value="0.00"/>
+						<irq intr="161" value="0.00"/>
+						<irq intr="162" value="0.00"/>
+						<irq intr="163" value="0.00"/>
+						<irq intr="164" value="0.00"/>
+						<irq intr="165" value="0.00"/>
+						<irq intr="166" value="0.00"/>
+						<irq intr="167" value="0.00"/>
+						<irq intr="168" value="0.00"/>
+						<irq intr="169" value="0.00"/>
+						<irq intr="170" value="0.00"/>
+						<irq intr="171" value="0.00"/>
+						<irq intr="172" value="0.00"/>
+						<irq intr="173" value="0.00"/>
+						<irq intr="174" value="0.00"/>
+						<irq intr="175" value="0.00"/>
+						<irq intr="176" value="0.00"/>
+						<irq intr="177" value="0.00"/>
+						<irq intr="178" value="0.00"/>
+						<irq intr="179" value="0.00"/>
+						<irq intr="180" value="0.00"/>
+						<irq intr="181" value="0.00"/>
+						<irq intr="182" value="0.00"/>
+						<irq intr="183" value="0.00"/>
+						<irq intr="184" value="0.00"/>
+						<irq intr="185" value="0.00"/>
+						<irq intr="186" value="0.00"/>
+						<irq intr="187" value="0.00"/>
+						<irq intr="188" value="0.00"/>
+						<irq intr="189" value="0.00"/>
+						<irq intr="190" value="0.00"/>
+						<irq intr="191" value="0.00"/>
+						<irq intr="192" value="0.00"/>
+						<irq intr="193" value="0.00"/>
+						<irq intr="194" value="0.00"/>
+						<irq intr="195" value="0.00"/>
+						<irq intr="196" value="0.00"/>
+						<irq intr="197" value="0.00"/>
+						<irq intr="198" value="0.00"/>
+						<irq intr="199" value="0.00"/>
+						<irq intr="200" value="0.00"/>
+						<irq intr="201" value="0.00"/>
+						<irq intr="202" value="0.00"/>
+						<irq intr="203" value="0.00"/>
+						<irq intr="204" value="0.00"/>
+						<irq intr="205" value="0.00"/>
+						<irq intr="206" value="0.00"/>
+						<irq intr="207" value="0.00"/>
+						<irq intr="208" value="0.00"/>
+						<irq intr="209" value="0.00"/>
+						<irq intr="210" value="0.00"/>
+						<irq intr="211" value="0.00"/>
+						<irq intr="212" value="0.00"/>
+						<irq intr="213" value="0.00"/>
+						<irq intr="214" value="0.00"/>
+						<irq intr="215" value="0.00"/>
+						<irq intr="216" value="0.00"/>
+						<irq intr="217" value="0.00"/>
+						<irq intr="218" value="0.00"/>
+						<irq intr="219" value="0.00"/>
+						<irq intr="220" value="0.00"/>
+						<irq intr="221" value="0.00"/>
+						<irq intr="222" value="0.00"/>
+						<irq intr="223" value="0.00"/>
+						<irq intr="224" value="0.00"/>
+						<irq intr="225" value="0.00"/>
+						<irq intr="226" value="0.00"/>
+						<irq intr="227" value="0.00"/>
+						<irq intr="228" value="0.00"/>
+						<irq intr="229" value="0.00"/>
+						<irq intr="230" value="0.00"/>
+						<irq intr="231" value="0.00"/>
+						<irq intr="232" value="0.00"/>
+						<irq intr="233" value="0.00"/>
+						<irq intr="234" value="0.00"/>
+						<irq intr="235" value="0.00"/>
+						<irq intr="236" value="0.00"/>
+						<irq intr="237" value="0.00"/>
+						<irq intr="238" value="0.00"/>
+						<irq intr="239" value="0.00"/>
+						<irq intr="240" value="0.00"/>
+						<irq intr="241" value="0.00"/>
+						<irq intr="242" value="0.00"/>
+						<irq intr="243" value="0.00"/>
+						<irq intr="244" value="0.00"/>
+						<irq intr="245" value="0.00"/>
+						<irq intr="246" value="0.00"/>
+						<irq intr="247" value="0.00"/>
+						<irq intr="248" value="0.00"/>
+						<irq intr="249" value="0.00"/>
+						<irq intr="250" value="0.00"/>
+						<irq intr="251" value="0.00"/>
+						<irq intr="252" value="0.00"/>
+						<irq intr="253" value="0.00"/>
+						<irq intr="254" value="0.00"/>
+						<irq intr="255" value="0.00"/>
+						<irq intr="256" value="0.00"/>
+						<irq intr="257" value="0.00"/>
+						<irq intr="258" value="0.00"/>
+						<irq intr="259" value="0.00"/>
+						<irq intr="260" value="0.00"/>
+						<irq intr="261" value="0.00"/>
+						<irq intr="262" value="0.00"/>
+						<irq intr="263" value="0.00"/>
+						<irq intr="264" value="0.00"/>
+						<irq intr="265" value="0.00"/>
+						<irq intr="266" value="0.00"/>
+						<irq intr="267" value="0.00"/>
+						<irq intr="268" value="0.00"/>
+						<irq intr="269" value="0.00"/>
+						<irq intr="270" value="0.00"/>
+						<irq intr="271" value="0.00"/>
+						<irq intr="272" value="0.00"/>
+						<irq intr="273" value="0.00"/>
+						<irq intr="274" value="0.00"/>
+						<irq intr="275" value="0.00"/>
+						<irq intr="276" value="0.00"/>
+						<irq intr="277" value="0.00"/>
+						<irq intr="278" value="0.00"/>
+						<irq intr="279" value="0.00"/>
+						<irq intr="280" value="0.00"/>
+						<irq intr="281" value="0.00"/>
+						<irq intr="282" value="0.00"/>
+						<irq intr="283" value="0.00"/>
+						<irq intr="284" value="0.00"/>
+						<irq intr="285" value="0.00"/>
+						<irq intr="286" value="0.00"/>
+						<irq intr="287" value="0.00"/>
+						<irq intr="288" value="0.00"/>
+						<irq intr="289" value="0.00"/>
+						<irq intr="290" value="0.00"/>
+						<irq intr="291" value="0.00"/>
+						<irq intr="292" value="0.00"/>
+						<irq intr="293" value="0.00"/>
+						<irq intr="294" value="0.00"/>
+						<irq intr="295" value="0.00"/>
+						<irq intr="296" value="0.00"/>
+						<irq intr="297" value="0.00"/>
+						<irq intr="298" value="0.00"/>
+						<irq intr="299" value="0.00"/>
+						<irq intr="300" value="0.00"/>
+						<irq intr="301" value="0.00"/>
+						<irq intr="302" value="0.00"/>
+						<irq intr="303" value="0.00"/>
+						<irq intr="304" value="0.00"/>
+						<irq intr="305" value="0.00"/>
+						<irq intr="306" value="0.00"/>
+						<irq intr="307" value="0.00"/>
+						<irq intr="308" value="0.00"/>
+						<irq intr="309" value="0.00"/>
+						<irq intr="310" value="0.00"/>
+						<irq intr="311" value="0.00"/>
+						<irq intr="312" value="0.00"/>
+						<irq intr="313" value="0.00"/>
+						<irq intr="314" value="0.00"/>
+						<irq intr="315" value="0.00"/>
+						<irq intr="316" value="0.00"/>
+						<irq intr="317" value="0.00"/>
+						<irq intr="318" value="0.00"/>
+						<irq intr="319" value="0.00"/>
+						<irq intr="320" value="0.00"/>
+						<irq intr="321" value="0.00"/>
+						<irq intr="322" value="0.00"/>
+						<irq intr="323" value="0.00"/>
+						<irq intr="324" value="0.00"/>
+						<irq intr="325" value="0.00"/>
+						<irq intr="326" value="0.00"/>
+						<irq intr="327" value="0.00"/>
+						<irq intr="328" value="0.00"/>
+						<irq intr="329" value="0.00"/>
+						<irq intr="330" value="0.00"/>
+						<irq intr="331" value="0.00"/>
+						<irq intr="332" value="0.00"/>
+						<irq intr="333" value="0.00"/>
+						<irq intr="334" value="0.00"/>
+						<irq intr="335" value="0.00"/>
+						<irq intr="336" value="0.00"/>
+						<irq intr="337" value="0.00"/>
+						<irq intr="338" value="0.00"/>
+						<irq intr="339" value="0.00"/>
+						<irq intr="340" value="0.00"/>
+						<irq intr="341" value="0.00"/>
+						<irq intr="342" value="0.00"/>
+						<irq intr="343" value="0.00"/>
+						<irq intr="344" value="0.00"/>
+						<irq intr="345" value="0.00"/>
+						<irq intr="346" value="0.00"/>
+						<irq intr="347" value="0.00"/>
+						<irq intr="348" value="0.00"/>
+						<irq intr="349" value="0.00"/>
+						<irq intr="350" value="0.00"/>
+						<irq intr="351" value="0.00"/>
+						<irq intr="352" value="0.00"/>
+						<irq intr="353" value="0.00"/>
+						<irq intr="354" value="0.00"/>
+						<irq intr="355" value="0.00"/>
+						<irq intr="356" value="0.00"/>
+						<irq intr="357" value="0.00"/>
+						<irq intr="358" value="0.00"/>
+						<irq intr="359" value="0.00"/>
+						<irq intr="360" value="0.00"/>
+						<irq intr="361" value="0.00"/>
+						<irq intr="362" value="0.00"/>
+						<irq intr="363" value="0.00"/>
+						<irq intr="364" value="0.00"/>
+						<irq intr="365" value="0.00"/>
+						<irq intr="366" value="0.00"/>
+						<irq intr="367" value="0.00"/>
+						<irq intr="368" value="0.00"/>
+						<irq intr="369" value="0.00"/>
+						<irq intr="370" value="0.00"/>
+						<irq intr="371" value="0.00"/>
+						<irq intr="372" value="0.00"/>
+						<irq intr="373" value="0.00"/>
+						<irq intr="374" value="0.00"/>
+						<irq intr="375" value="0.00"/>
+						<irq intr="376" value="0.00"/>
+						<irq intr="377" value="0.00"/>
+						<irq intr="378" value="0.00"/>
+						<irq intr="379" value="0.00"/>
+						<irq intr="380" value="0.00"/>
+						<irq intr="381" value="0.00"/>
+						<irq intr="382" value="0.00"/>
+						<irq intr="383" value="0.00"/>
+						<irq intr="384" value="0.00"/>
+						<irq intr="385" value="0.00"/>
+						<irq intr="386" value="0.00"/>
+						<irq intr="387" value="0.00"/>
+						<irq intr="388" value="0.00"/>
+						<irq intr="389" value="0.00"/>
+						<irq intr="390" value="0.00"/>
+						<irq intr="391" value="0.00"/>
+						<irq intr="392" value="0.00"/>
+						<irq intr="393" value="0.00"/>
+						<irq intr="394" value="0.00"/>
+						<irq intr="395" value="0.00"/>
+						<irq intr="396" value="0.00"/>
+						<irq intr="397" value="0.00"/>
+						<irq intr="398" value="0.00"/>
+						<irq intr="399" value="0.00"/>
+						<irq intr="400" value="0.00"/>
+						<irq intr="401" value="0.00"/>
+						<irq intr="402" value="0.00"/>
+						<irq intr="403" value="0.00"/>
+						<irq intr="404" value="0.00"/>
+						<irq intr="405" value="0.00"/>
+						<irq intr="406" value="0.00"/>
+						<irq intr="407" value="0.00"/>
+						<irq intr="408" value="0.00"/>
+						<irq intr="409" value="0.00"/>
+						<irq intr="410" value="0.00"/>
+						<irq intr="411" value="0.00"/>
+						<irq intr="412" value="0.00"/>
+						<irq intr="413" value="0.00"/>
+						<irq intr="414" value="0.00"/>
+						<irq intr="415" value="0.00"/>
+						<irq intr="416" value="0.00"/>
+						<irq intr="417" value="0.00"/>
+						<irq intr="418" value="0.00"/>
+						<irq intr="419" value="0.00"/>
+						<irq intr="420" value="0.00"/>
+						<irq intr="421" value="0.00"/>
+						<irq intr="422" value="0.00"/>
+						<irq intr="423" value="0.00"/>
+						<irq intr="424" value="0.00"/>
+						<irq intr="425" value="0.00"/>
+						<irq intr="426" value="0.00"/>
+						<irq intr="427" value="0.00"/>
+						<irq intr="428" value="0.00"/>
+						<irq intr="429" value="0.00"/>
+						<irq intr="430" value="0.00"/>
+						<irq intr="431" value="0.00"/>
+						<irq intr="432" value="0.00"/>
+						<irq intr="433" value="0.00"/>
+						<irq intr="434" value="0.00"/>
+						<irq intr="435" value="0.00"/>
+						<irq intr="436" value="0.00"/>
+						<irq intr="437" value="0.00"/>
+						<irq intr="438" value="0.00"/>
+						<irq intr="439" value="0.00"/>
+						<irq intr="440" value="0.00"/>
+						<irq intr="441" value="0.00"/>
+						<irq intr="442" value="0.00"/>
+						<irq intr="443" value="0.00"/>
+						<irq intr="444" value="0.00"/>
+						<irq intr="445" value="0.00"/>
+						<irq intr="446" value="0.00"/>
+						<irq intr="447" value="0.00"/>
+						<irq intr="448" value="0.00"/>
+						<irq intr="449" value="0.00"/>
+						<irq intr="450" value="0.00"/>
+						<irq intr="451" value="0.00"/>
+						<irq intr="452" value="0.00"/>
+						<irq intr="453" value="0.00"/>
+						<irq intr="454" value="0.00"/>
+						<irq intr="455" value="0.00"/>
+						<irq intr="456" value="0.00"/>
+						<irq intr="457" value="0.00"/>
+						<irq intr="458" value="0.00"/>
+						<irq intr="459" value="0.00"/>
+						<irq intr="460" value="0.00"/>
+						<irq intr="461" value="0.00"/>
+						<irq intr="462" value="0.00"/>
+						<irq intr="463" value="0.00"/>
+						<irq intr="464" value="0.00"/>
+						<irq intr="465" value="0.00"/>
+						<irq intr="466" value="0.00"/>
+						<irq intr="467" value="0.00"/>
+						<irq intr="468" value="0.00"/>
+						<irq intr="469" value="0.00"/>
+						<irq intr="470" value="0.00"/>
+						<irq intr="471" value="0.00"/>
+						<irq intr="472" value="0.00"/>
+						<irq intr="473" value="0.00"/>
+						<irq intr="474" value="0.00"/>
+						<irq intr="475" value="0.00"/>
+						<irq intr="476" value="0.00"/>
+						<irq intr="477" value="0.00"/>
+						<irq intr="478" value="0.00"/>
+						<irq intr="479" value="0.00"/>
+						<irq intr="480" value="0.00"/>
+						<irq intr="481" value="0.00"/>
+						<irq intr="482" value="0.00"/>
+						<irq intr="483" value="0.00"/>
+						<irq intr="484" value="0.00"/>
+						<irq intr="485" value="0.00"/>
+						<irq intr="486" value="0.00"/>
+						<irq intr="487" value="0.00"/>
+					</int-global>
+				</interrupts>
+				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="4768.00" fault="2.00" majflt="0.00" pgfree="22.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" vmeff-percent="0.00"/>
+				<io per="second">
+					<tps>93.00</tps>
+					<io-reads rtps="0.00" bread="0.00"/>
+					<io-writes wtps="93.00" bwrtn="9536.00"/>
+				</io>
+				<memory per="second" unit="kB">
+					<memfree>5057252</memfree>
+					<avail>6089732</avail>
+					<memused>1612968</memused>
+					<memused-percent>19.80</memused-percent>
+					<buffers>76628</buffers>
+					<cached>1154748</cached>
+					<commit>6238560</commit>
+					<commit-percent>25.03</commit-percent>
+					<active>1682592</active>
+					<inactive>897708</inactive>
+					<dirty>164</dirty>
+					<anonpg>1348968</anonpg>
+					<slab>243480</slab>
+					<kstack>12512</kstack>
+					<pgtbl>60368</pgtbl>
+					<vmused>0</vmused>
+					<swpfree>16777212</swpfree>
+					<swpused>0</swpused>
+					<swpused-percent>0.00</swpused-percent>
+					<swpcad>0</swpcad>
+					<swpcad-percent>0.00</swpcad-percent>
+				</memory>
+				<hugepages unit="kB">
+					<hugfree>0</hugfree>
+					<hugused>0</hugused>
+					<hugused-percent>0.00</hugused-percent>
+				</hugepages>
+				<kernel dentunusd="41656" file-nr="14048" inode-nr="55177" pty-nr="2"/>
+				<queue runq-sz="0" plist-sz="775" ldavg-1="0.65" ldavg-5="0.80" ldavg-15="0.36" blocked="0"/>
+				<disk per="second">
+					<disk-device dev="dev8-0" tps="93.00" rd_sec="0.00" wr_sec="9536.00" rkB="0.00" wkB="4768.00" avgrq-sz="102.54" areq-sz="51.27" avgqu-sz="0.75" aqu-sz="0.75" await="8.57" svctm="0.33" util-percent="3.10"/>
+				</disk>
+				<network per="second">
+					<net-dev iface="virbr0" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="lo" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="virbr0-nic" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="enp6s0" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-dev iface="wlp5s0" rxpck="0.00" txpck="0.00" rxkB="0.00" txkB="0.00" rxcmp="0.00" txcmp="0.00" rxmcst="0.00" ifutil-percent="0.00"/>
+					<net-edev iface="virbr0" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="lo" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="virbr0-nic" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="enp6s0" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-edev iface="wlp5s0" rxerr="0.00" txerr="0.00" coll="0.00" rxdrop="0.00" txdrop="0.00" txcarr="0.00" rxfram="0.00" rxfifo="0.00" txfifo="0.00"/>
+					<net-nfs call="0.00" retrans="0.00" read="0.00" write="0.00" access="0.00" getatt="0.00"/>
+					<net-nfsd scall="0.00" badcall="0.00" packet="0.00" udp="0.00" tcp="0.00" hit="0.00" miss="0.00" sread="0.00" swrite="0.00" saccess="0.00" sgetatt="0.00"/>
+					<net-sock totsck="1192" tcpsck="16" udpsck="6" rawsck="0" ip-frag="0" tcp-tw="0"/>
+					<net-ip irec="0.00" fwddgm="0.00" idel="0.00" orq="0.00" asmrq="0.00" asmok="0.00" fragok="0.00" fragcrt="0.00"/>
+					<net-eip ihdrerr="0.00" iadrerr="0.00" iukwnpr="0.00" idisc="0.00" odisc="0.00" onort="0.00" asmf="0.00" fragf="0.00"/>
+					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
+					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
+					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
+					<net-sock6 tcp6sck="7" udp6sck="4" raw6sck="1" ip6-frag="0"/>
+					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>
+					<net-eip6 ihdrer6="0.00" iadrer6="0.00" iukwnp6="0.00" i2big6="0.00" idisc6="0.00" odisc6="0.00" inort6="0.00" onort6="0.00" asmf6="0.00" fragf6="0.00" itrpck6="0.00"/>
+					<net-icmp6 imsg6="0.00" omsg6="0.00" iech6="0.00" iechr6="0.00" oechr6="0.00" igmbq6="0.00" igmbr6="0.00" ogmbr6="0.00" igmbrd6="0.00" ogmbrd6="0.00" irtsol6="0.00" ortsol6="0.00" irtad6="0.00" inbsol6="0.00" onbsol6="0.00" inbad6="0.00" onbad6="0.00"/>
+					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
+					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
+					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+				</network>
+				<power-management>
+					<cpu-frequency unit="MHz">
+						<cpufreq number="all" frequency="1596.37"/>
+						<cpufreq number="0" frequency="1596.38"/>
+						<cpufreq number="1" frequency="1596.37"/>
+						<cpufreq number="2" frequency="1596.38"/>
+						<cpufreq number="3" frequency="1596.37"/>
+						<cpufreq number="4" frequency="1596.40"/>
+						<cpufreq number="5" frequency="1596.38"/>
+						<cpufreq number="6" frequency="1596.34"/>
+						<cpufreq number="7" frequency="1596.38"/>
+					</cpu-frequency>
+					<fan-speed unit="rpm">
+						<fan number="1" rpm="1263" drpm="1263" device="f71858fg-isa-0200"/>
+						<fan number="2" rpm="1328" drpm="1328" device="f71858fg-isa-0200"/>
+						<fan number="3" rpm="0" drpm="0" device="f71858fg-isa-0200"/>
+						<fan number="4" rpm="1650" drpm="1650" device="nouveau-pci-0100"/>
+					</fan-speed>
+					<temperature unit="degree Celsius">
+						<temp number="1" degC="26.12" percent-temp="37.32" device="f71858fg-isa-0200"/>
+						<temp number="2" degC="23.75" percent-temp="23.75" device="f71858fg-isa-0200"/>
+						<temp number="3" degC="22.50" percent-temp="22.50" device="f71858fg-isa-0200"/>
+						<temp number="4" degC="30.00" percent-temp="31.58" device="nouveau-pci-0100"/>
+						<temp number="5" degC="27.00" percent-temp="33.75" device="coretemp-isa-0000"/>
+						<temp number="6" degC="27.00" percent-temp="33.75" device="coretemp-isa-0000"/>
+						<temp number="7" degC="24.00" percent-temp="30.00" device="coretemp-isa-0000"/>
+						<temp number="8" degC="25.00" percent-temp="31.25" device="coretemp-isa-0000"/>
+						<temp number="9" degC="25.00" percent-temp="31.25" device="coretemp-isa-0000"/>
+					</temperature>
+					<voltage-input unit="V">
+						<in number="0" inV="3.34" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="1" inV="3.34" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="2" inV="3.30" percent-in="0.00" device="f71858fg-isa-0200"/>
+						<in number="3" inV="0.95" percent-in="38.46" device="nouveau-pci-0100"/>
+					</voltage-input>
+					<usb-devices>
+						<usb bus_number="2" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
+						<usb bus_number="2" idvendor="8087" idprod="24" maxpower="0" manufact="" product=""/>
+						<usb bus_number="2" idvendor="58f" idprod="6362" maxpower="500" manufact="Generic" product="Mass Storage Device"/>
+						<usb bus_number="1" idvendor="8087" idprod="24" maxpower="0" manufact="" product=""/>
+						<usb bus_number="2" idvendor="46d" idprod="825" maxpower="1000" manufact="" product=""/>
+					</usb-devices>
+				</power-management>
+				<filesystems>
+					<filesystem fsname="/dev/sda9" MBfsfree="8383" MBfsused="21018" fsused-percent="71.49" ufsused-percent="76.64" Ifree="1617286" Iused="304074" Iused-percent="15.83"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="81696" MBfsused="11660" fsused-percent="12.49" ufsused-percent="17.61" Ifree="5933860" Iused="177372" Iused-percent="2.90"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="279564" MBfsused="15600" fsused-percent="5.29" ufsused-percent="10.37" Ifree="19201549" Iused="499" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="278754" MBfsused="16410" fsused-percent="5.56" ufsused-percent="10.65" Ifree="19042030" Iused="160018" Iused-percent="0.83"/>
+				</filesystems>
+			</timestamp>
+		</statistics>
+		<restarts>
+			<boot date="2019-10-13" time="13:26:28" utc="1" cpu_count="8"/>
+		</restarts>
+		<comments>
+			<comment date="2019-10-13" time="13:26:45" utc="1" com="Hello world!"/>
+		</comments>
+	</host>
+</sysstat>
