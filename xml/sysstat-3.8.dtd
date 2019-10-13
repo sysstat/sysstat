@@ -122,7 +122,7 @@
 	vmeff-percent CDATA #REQUIRED
 >
 
-<!ELEMENT io (tps, io-reads, io-writes, io-discard)>
+<!ELEMENT io (tps, io-reads, io-writes, io-discard?)>
 <!ATTLIST io
 	per CDATA #REQUIRED
 >
