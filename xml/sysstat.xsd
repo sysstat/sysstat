@@ -28,8 +28,8 @@
 		<xs:element name="file-date" type="file-date-type"></xs:element>
 		<xs:element name="file-utc-time" type="file-utc-time-type"></xs:element>
 		<xs:element name="timezone" type="timezone-type" minOccurs="0"></xs:element>
-		<xs:element name="statistics" type="statistics-type"></xs:element>
-		<xs:element name="restarts" type="restarts-type"></xs:element>
+		<xs:element name="statistics" type="statistics-type" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="restarts" type="restarts-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="comments" type="comments-type" minOccurs="0" maxOccurs="1"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="nodename" type="xs:string" use="required"></xs:attribute>
