@@ -45,6 +45,7 @@ NOTES:
 
 =====	Checking JSON output validity
 00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
+00305	./sadf -Hj tests/data.tmp -C | $VER_JSON >/dev/null
 00310	./mpstat -A -o JSON | $VER_JSON >/dev/null
 00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null
 00330	./mpstat -o JSON 1 10 | $VER_JSON >/dev/null
@@ -60,7 +61,9 @@ NOTES:
 
 =====	Checking XML output validity
 00400	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+00405	export LC_ALL=C ; ./sadf -Hx tests/data.tmp -C | $VER_XML --schema xml/sysstat.xsd - >/dev/null
 00410	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+00415	export LC_ALL=C ; ./sadf -Hx tests/data.tmp -C | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 
 =====	Checking sadf output
 00500	LC_ALL=C ./sadf -p tests/data.tmp -C -- -A > tests/out.sadf-p.tmp
