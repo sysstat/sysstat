@@ -88,6 +88,7 @@ NOTES:
 00571	diff -u tests/out.sadf-r.tmp tests/expected.sadf-r
 00580	LC_ALL=C ./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
 00582	diff -u tests/out.sadf-se.tmp tests/expected.sadf-se
+00590	LC_ALL=C ./sadf -l -O pcparchive=tests/pcpar tests/data.tmp -C -- -A
 
 =====	Checking sadf conversion
 00600	./sadf -c tests/data-9.1.6 > tests/data-9.1.6.tmp

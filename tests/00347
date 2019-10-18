@@ -2,5 +2,7 @@
 if [ ! -z "$VER_JSON" ]; then
 	rm -f tests/root
 	ln -s root1 tests/root
-	./iostat -xs 1 3 -o JSON ALL -p ALL | $VER_JSON >/dev/null;
+	./iostat -xs 1 3 -o JSON ALL -p ALL | $VER_JSON >/dev/null
+else
+	echo Skipped
 fi

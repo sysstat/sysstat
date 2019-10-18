@@ -640,6 +640,7 @@ unit:
 	@echo $(X) 2>&1
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
+# Use "do_test" script to make the following target
 simtest: all testcomp
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 	rm -f tests/root
@@ -652,7 +653,7 @@ clean:
 	rm -f tests/root
 	ln -s root1 tests/root
 	rm -f tests/ini/inisar
-	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core
+	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar.*
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot
@@ -661,7 +662,7 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer cron/sysstat-summary.service cron/sysstat-summary.timer
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
-	rm -f tests/variables
+	rm -f tests/variables tests/data
 	rm -f man/cifsiostat.1
 	rm -f *.log config.status
 	rm -rf autom4te.cache

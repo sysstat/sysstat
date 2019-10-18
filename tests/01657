@@ -1,4 +1,6 @@
 . tests/variables
 if [ ! -z "$VER_JSON" ]; then
-	cat tests/out.data-wghfreq-sadf-j.tmp | $VER_JSON >/dev/null;
+	cat tests/out.data-wghfreq-sadf-j.tmp | $VER_JSON >/dev/null
+else
+	echo Skipped
 fi

@@ -1,4 +1,6 @@
 . tests/variables
 if [ ! -z "$VER_JSON" ]; then
-	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null;
+	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
+else
+	echo Skipped
 fi

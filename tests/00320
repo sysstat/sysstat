@@ -1,4 +1,6 @@
 . tests/variables
 if [ ! -z "$VER_JSON" ]; then
-	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null;
+	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null
+else
+	echo Skipped
 fi

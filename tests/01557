@@ -1,4 +1,6 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
-	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
+	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+else
+	echo Skipped
 fi

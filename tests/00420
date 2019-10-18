@@ -1,5 +1,7 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
 	export LC_ALL=C
-	cat tests/data-12.0.1.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
+	cat tests/data-12.0.1.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+else
+	echo Skipped
 fi

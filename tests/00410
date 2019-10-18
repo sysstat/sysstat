@@ -1,5 +1,7 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
 	export LC_ALL=C
-	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+	./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+else
+	echo Skipped
 fi

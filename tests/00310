@@ -2,5 +2,7 @@ rm -f tests/root
 ln -s root1 tests/root
 . tests/variables
 if [ ! -z "$VER_JSON" ]; then
-	./mpstat -A -o JSON | $VER_JSON >/dev/null;
+	./mpstat -A -o JSON | $VER_JSON >/dev/null
+else
+	echo Skipped
 fi
