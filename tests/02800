@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never POSIXLY_CORRECT= ./iostat --getenv -d 2 3 > tests/out.iostat-ev.tmp

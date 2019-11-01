@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="3470" fill="black" stroke="#000000" stroke-width="1">
+<text x="0" y="30" text-anchor="start" stroke="#000000">Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
+</text>
+<g id="g1-0" transform="translate(0,60)">
+<rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [all]
+<tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #000000; stroke: none; font-size: 12px">%user (2.15, 6.53)</text>
+<text x="795" y="65" style="fill: #1a1aff; stroke: none; font-size: 12px">%nice (0.00, 23.20)</text>
+<text x="795" y="80" style="fill: #1affb2; stroke: none; font-size: 12px">%system (1.93, 4.42)</text>
+<text x="795" y="95" style="fill: #b21aff; stroke: none; font-size: 12px">%iowait (0.12, 0.77)</text>
+<text x="795" y="110" style="fill: #1ab2ff; stroke: none; font-size: 12px">%steal (0.00, 0.00)</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="0" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
+<polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="71" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,71,0)">13:23:35</text>
+<polyline points="412,0 412,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="143" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,143,0)">13:27:01</text>
+<polyline points="618,0 618,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="215" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,215,0)">13:30:27</text>
+<polyline points="824,0 824,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="287" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,287,0)">13:33:53</text>
+<polyline points="1030,0 1030,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="358" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,358,0)">13:37:19</text>
+<polyline points="1236,0 1236,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="430" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,430,0)">13:40:45</text>
+<polyline points="1442,0 1442,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="502" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,502,0)">13:44:11</text>
+<polyline points="1648,0 1648,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="574" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,574,0)">13:47:37</text>
+<polyline points="1854,0 1854,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="646" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,646,0)">13:51:03</text>
+<polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #cc3300" transform="scale(0.348500,1)"/>
+<text x="717" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<g style="fill: #000000; stroke: none" transform="scale(0.348500,-2.000000)">
+<rect x="0" y="0.00" height="2.15" width="31"/><rect x="0" y="0.00" height="2.28" width="31"/><rect x="0" y="0.00" height="2.66" width="39"/><rect x="18" y="0.00" height="6.53" width="22"/><rect x="2035" y="0.00" height="2.47" width="31"/>
+</g>
+<g style="fill: #1a1aff; stroke: none" transform="scale(0.348500,-2.000000)">
+<rect x="0" y="2.15" height="12.50" width="31"/><rect x="0" y="2.66" height="23.20" width="39"/><rect x="18" y="6.53" height="9.63" width="22"/><rect x="2035" y="2.47" height="17.21" width="31"/>
+</g>
+<g style="fill: #1affb2; stroke: none" transform="scale(0.348500,-2.000000)">
+<rect x="0" y="14.64" height="2.36" width="31"/><rect x="0" y="2.28" height="1.93" width="31"/><rect x="0" y="25.86" height="2.27" width="39"/><rect x="18" y="16.16" height="4.42" width="22"/><rect x="2035" y="19.68" height="3.39" width="31"/>
+</g>
+<g style="fill: #b21aff; stroke: none" transform="scale(0.348500,-2.000000)">
+<rect x="0" y="17.00" height="0.12" width="31"/><rect x="0" y="4.21" height="0.50" width="31"/><rect x="0" y="28.13" height="0.16" width="39"/><rect x="18" y="20.58" height="0.54" width="22"/><rect x="2035" y="23.07" height="0.77" width="31"/>
+</g>
+</g>
+</g>
+<!-- Actual canvas height: 370 -->
+</svg>

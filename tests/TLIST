@@ -36,6 +36,16 @@ NOTES:
 00164	diff -u tests/out2.sar-u.tmp tests/expected2.sar-u
 00166	diff -u tests/out2.sar-all.tmp tests/expected2.sar-all
 
+=====	sar: Playing with environment variables
+00180	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-ISO.tmp
+00182	diff -u tests/out.sar-ISO.tmp tests/expected.sar-ISO
+00184	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-never.tmp
+00186	diff -u tests/out.sar-never.tmp tests/expected.sar-autonever
+00188	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp
+00189	diff -u tests/out.sar-auto.tmp tests/expected.sar-autonever
+00190	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=36;22" ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-always.tmp
+00192	diff -u tests/out.sar-always.tmp tests/expected.sar-always
+
 =====	sar: Playing with sa1 and sa2 shell scripts
 00200	./sa1 --boot; ./sa1 --unix_time=1555593629 1 1; ./sa1 --unix_time=1555593649 1 1
 00205	LC_ALL=C TZ=GMT ./sar -f tests/sa18 > tests/out.sa1.tmp
@@ -82,6 +92,8 @@ NOTES:
 00546	diff -u tests/out1.sadf-g.tmp tests/expected1.sadf-g
 00550	LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
 00551	diff -u tests/out2.sadf-g.tmp tests/expected2.sadf-g
+00555	LC_ALL=C TZ=GMT S_COLORS_PALETTE="0=000000:1=1a1aff:2=1affb2:3=b21aff:4=1ab2ff:5=ff1a1a:6=ffb31a:7=b2ff1a:8=efefef:9=000000:A=1a1aff:B=1affb2:C=b21aff:D=1ab2ff:E=ff1a1a:F=ffb31a:G=cc3300:H=000000:I=000000:K=ffffff:L=000000:T=000000:W=000000:X=000000" ./sadf -g --getenv -O customcol tests/data.tmp -C > tests/out.sadf-g-cc.tmp
+00557	diff -u tests/out.sadf-g-cc.tmp tests/expected.sadf-g-cc
 00560	LC_ALL=C ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00561	diff -u tests/out.sadf-H.tmp tests/expected.sadf-H
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
@@ -380,6 +392,10 @@ NOTES:
 02725	diff -u tests/out.iostat-p-cciss.tmp tests/expected.iostat-p-cciss
 02730	LC_ALL=C TZ=GMT ./iostat cciss/c0d0p1 1 2 > tests/out.iostat-cciss.tmp
 02735	diff -u tests/out.iostat-cciss.tmp tests/expected.iostat-cciss
+
+=====	iostat: Playing with environment variables
+02800	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never POSIXLY_CORRECT= ./iostat --getenv -d 2 3 > tests/out.iostat-ev.tmp
+02805	diff -u tests/out.iostat-ev.tmp tests/expected.iostat-ev
 
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
