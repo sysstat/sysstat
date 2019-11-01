@@ -645,6 +645,7 @@ simtest: all testcomp
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 	rm -f tests/root
 	ln -s root1 tests/root
+	@echo Simulation tests: Success!
 
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp
