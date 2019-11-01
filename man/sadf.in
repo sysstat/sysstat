@@ -1,4 +1,4 @@
-.TH SADF 1 "APRIL 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "NOVEMBER 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -138,7 +138,7 @@ Specify the block devices for which statistics are to be displayed by
 is a list of comma-separated device names. Useful with option -d from
 .BR sar .
 .IP "-e [ hh:mm[:ss] ]"
-Set the ending time of the report, given in local time. The default ending
+Set the ending time of the report. The default ending
 time is 18:00:00. Hours must be given in 24-hour format.
 .IP --fs=fs_list
 Specify the filesystems for which statistics are to be displayed by
