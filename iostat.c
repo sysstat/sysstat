@@ -52,6 +52,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+extern int __env;
+#endif
+
 struct stats_cpu *st_cpu[2];
 unsigned long long uptime_cs[2] = {0, 0};
 unsigned long long tot_jiffies[2] = {0, 0};
@@ -1849,9 +1853,6 @@ int main(int argc, char **argv)
 	init_nls();
 #endif
 
-	/* Init color strings */
-	init_colors();
-
 	/* Process args... */
 	while (opt < argc) {
 
@@ -1904,6 +1905,13 @@ int main(int argc, char **argv)
 			flags |= I_D_UNIT;
 			opt++;
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+			opt++;
+		}
+#endif
 
 		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
 			/* Get number of decimal places */
@@ -2097,6 +2105,9 @@ int main(int argc, char **argv)
 	if (!interval) {
 		count = 1;
 	}
+
+	/* Init color strings */
+	init_colors();
 
 	/* Default: Display CPU and DISK reports */
 	if (!report_set) {

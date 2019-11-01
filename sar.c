@@ -47,6 +47,7 @@ char *sccsid(void) { return (SCCSID); }
 
 #ifdef TEST
 extern time_t __unix_time;
+extern int __env;
 #endif
 
 /* Interval and count parameters */
@@ -1275,9 +1276,6 @@ int main(int argc, char **argv)
 	init_nls();
 #endif
 
-	/* Init color strings */
-	init_colors();
-
 	tm_start.use = tm_end.use = FALSE;
 
 	/* Allocate and init activity bitmaps */
@@ -1435,6 +1433,11 @@ int main(int argc, char **argv)
 		}
 
 #ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+			opt++;
+		}
+
 		else if (!strncmp(argv[opt], "--unix_time=", 12)) {
 			if (strspn(argv[opt] + 12, DIGITS) != strlen(argv[opt] + 12)) {
 				usage(argv[0]);
@@ -1491,6 +1494,9 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
+	/* Init color strings */
+	init_colors();
 
 	/* 'sar' is equivalent to 'sar -f' */
 	if ((argc == 1) ||

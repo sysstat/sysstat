@@ -244,6 +244,10 @@ int set_default_file(char *datafile, int d_off, int sa_name)
 	datafile[MAX_FILE_LEN - 1] = '\0';
 	default_file_used = TRUE;
 
+#ifdef DEBUG
+	fprintf(stderr, "%s: Datafile: %s\n", __FUNCTION__, datafile);
+#endif
+
 	return ((err < 0) || (err >= MAX_FILE_LEN));
 }
 

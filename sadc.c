@@ -57,6 +57,7 @@ char *sccsid(void) { return (SCCSID); }
 
 #ifdef TEST
 extern time_t __unix_time;
+extern int __env;
 #endif
 
 extern char *tzname[2];
@@ -1252,6 +1253,10 @@ int main(int argc, char **argv)
 		}
 
 #ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+		}
+
 		else if (!strncmp(argv[opt], "--unix_time=", 12)) {
 			if (strspn(argv[opt] + 12, DIGITS) != strlen(argv[opt] + 12)) {
 				usage(argv[0]);

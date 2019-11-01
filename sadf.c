@@ -50,6 +50,7 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 #ifdef TEST
+extern int __env;
 void int_handler(int n) { return; }
 #endif
 
@@ -1568,6 +1569,13 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+			opt++;
+		}
+#endif
 
 		else if (!strcmp(argv[opt], "-O")) {
 			/* Parse output options */

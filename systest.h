@@ -62,7 +62,7 @@
 void close_list
 	(DIR *);
 char *get_env_value
-	(char *);
+	(const char *);
 int get_fs_stat
 	(char *, struct statvfs *);
 char *get_realname

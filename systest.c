@@ -35,6 +35,8 @@
 #include "systest.h"
 
 time_t __unix_time = 0;
+int __env = 0;
+
 extern long interval;
 extern int sigint_caught;
 
@@ -102,9 +104,13 @@ int get_fs_stat(char *c, struct statvfs *buf)
  * Test mode: Ignore environment variable value.
  ***************************************************************************
  */
-char *get_env_value(char *c)
+char *get_env_value(const char *c)
 {
-	return NULL;
+	if (!__env)
+		return NULL;
+
+	fprintf(stderr, "Reading contents of %s\n", c);
+	return getenv(c);
 }
 
 /*
