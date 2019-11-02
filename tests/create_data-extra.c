@@ -1,5 +1,5 @@
 /*
- * create_sadd.c: Create a system activity binary data file.
+ * create_data-extra.c: Create a binary data file with extra structures
  * (C) 2019 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************

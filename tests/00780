@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -P ALL -f tests/data-ukwn > tests/out.sar-data-ukwn.tmp

@@ -129,6 +129,18 @@ NOTES:
 00770	LC_ALL=C TZ=GMT ./sar -A -f tests/data-extra-12.1.7 > tests/out.data-extra-12.1.7.tmp
 00772	diff -u tests/out.data-extra-12.1.7.tmp tests/expected.data-extra-12.1.7
 
+=====	Reaing datafiles with unknown activity type or format
+00780	LC_ALL=C TZ=GMT ./sar -P ALL -f tests/data-ukwn > tests/out.sar-data-ukwn.tmp
+00781	diff -u tests/out.sar-data-ukwn.tmp tests/expected.sar-data-ukwn
+00784	LC_ALL=C TZ=GMT ./sar -w -f tests/data-ukwn > tests/out2.sar-data-ukwn.tmp
+00785	diff -u tests/out2.sar-data-ukwn.tmp tests/expected2.sar-data-ukwn
+00787	LC_ALL=C ./sadf -H tests/data-ukwn > tests/out.sadf-data-ukwn.tmp
+00788	diff -u tests/out.sadf-data-ukwn.tmp tests/expected.sadf-data-ukwn
+00790	LC_ALL=C TZ=GMT ./sar -A -f tests/data-ukwn0 > tests/out.sar-data-ukwn0.tmp
+00791	diff -u tests/out.sar-data-ukwn0.tmp tests/expected.sar-data-ukwn0
+00795	LC_ALL=C ./sadf -H tests/data-ukwn0 > tests/out.sadf-data-ukwn0.tmp
+00796	diff -u tests/out.sadf-data-ukwn0.tmp tests/expected.sadf-data-ukwn0
+
 =====	Testing sar's options
 00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
 00802	diff -u tests/out.sar-iface.tmp tests/expected.sar-iface
@@ -180,7 +192,7 @@ NOTES:
 01122	diff -u tests/out0.sadf-x.tmp tests/expected0.sadf-x
 01130	./sadf -j tests/data0.tmp -- -A | $VER_JSON >/dev/null
 01140	LC_ALL=C TZ=GMT ./sar -r -f tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
-01145	./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
+01145	LC_ALL=C ./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
 01150	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
 01152	diff -u tests/out0.sadf-g.tmp tests/expected0.sadf-g
 
@@ -203,6 +215,8 @@ NOTES:
 01312	diff -u tests/out3.sar-u.tmp tests/expected3.sar-u
 01314	LC_ALL=C TZ=GMT ./sar > tests/out31.sar-u.tmp
 01316	diff -u tests/out31.sar-u.tmp tests/expected3.sar-u
+01318	LC_ALL=C TZ=GMT ./sar -f tests > tests/out34.sar-u.tmp
+01319	diff -u tests/out34.sar-u.tmp tests/expected3.sar-u
 01320	LC_ALL=C TZ=GMT ./sadc -D -
 01330	LC_ALL=C TZ=GMT ./sar -f tests/sa19700101 > tests/out32.sar-u.tmp
 01332	diff -u tests/out32.sar-u.tmp tests/expected32.sar-u
@@ -237,6 +251,7 @@ NOTES:
 01425	LC_ALL=C ./sar 2 2 2 2>&1 | grep "Usage:" >/dev/null
 01430	LC_ALL=C ./sar -o foo 2>&1 | grep "Usage:" >/dev/null
 01440	LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null
+01450	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6 2>&1 | grep "cannot read the format of this file" >/dev/null
 
 =====	Specific tests for sensors statistics (basic sensor output already tested using data-11.6.5 conversion)
 01500	LC_ALL=C TZ=GMT ./sadf -d tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-d.tmp

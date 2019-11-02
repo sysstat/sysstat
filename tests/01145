@@ -1,1 +1,1 @@
-./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
+LC_ALL=C ./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
