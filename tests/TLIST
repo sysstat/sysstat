@@ -88,6 +88,8 @@ NOTES:
 00531	diff -u tests/out.sadf-j.tmp tests/expected.sadf-j
 00540	LC_ALL=C ./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
 00541	diff -u tests/out.sadf-g.tmp tests/expected.sadf-g
+00542	LC_ALL=C ./sadf -O height=370 -g tests/data.tmp > tests/out3.sadf-g.tmp
+00543	diff -u tests/out3.sadf-g.tmp tests/expected3.sadf-g
 00545	LC_ALL=C ./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
 00546	diff -u tests/out1.sadf-g.tmp tests/expected1.sadf-g
 00550	LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
@@ -118,6 +120,10 @@ NOTES:
 =====	Reading datafile from another architecture
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
 00702	diff -u tests/out.data-ppc-11.7.2.tmp tests/expected.data-ppc-11.7.2
+
+=====	Reading datafile with non printable chrs in comment (created using hexedit)
+00720	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
+00722	diff -u tests/out.sar-non-printable.tmp tests/expected.sar-non-printable
 
 =====	Reading data.tmp using an old sysstat version
 00750	LC_ALL=C TZ=GMT ./tests/ini/inisar -C -A -f tests/data.tmp > tests/out.data-ini.tmp

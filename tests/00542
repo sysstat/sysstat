@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -O height=370 -g tests/data.tmp > tests/out3.sadf-g.tmp

@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
