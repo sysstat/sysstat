@@ -34,6 +34,7 @@
 2.22. What is the exact meaning of the `count` parameter for sar and sadc?  
 2.23. Why doesn't sar deal with sub-second sampling/monitoring?  
 2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?
+2.25. The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`
 
 **3. Questions related to iostat**
 
@@ -134,7 +135,8 @@ even some words (like "Average") have changed according to the specified locale.
 ```
 Invalid system activity file: ...
 ```
-A: You are trying to use a file which is not a system activity file, or whose format is no longer compatible with that of files created by current version of sar.
+A: You are trying to use a file which is not a system activity file, or whose
+format is no longer compatible with that of files created by current version of sar.
 If you were trying to use the standard system activity files located in the
 `/var/log/sa` directory then the solution is easy: just log in as root and
 remove by hand all the files located in the `/var/log/sa` directory:
@@ -575,6 +577,22 @@ report name with a dash. For example, to collect all possible activities
 sadc -S XALL,-A_IRQ (...)
 ```
 This way you can tell sadc to collect only the desired activities.
+
+---
+2.25. The sar and/or sadf command complain(s) with the following message:
+```
+End of system activity file unexpected
+```
+
+
+A: sadc, the data collector, was unable to write all its data to the
+system activity data file (`/var/log/sa/saDD` by default).
+This is probably because there was no space left on the device where
+the data file is located.
+Make sure there is enough free space on the device. Sometimes it seems
+there is enough free space but there may be some jobs run by crontab
+(particularly during the night) that can temporarily consume all of
+your free space, making sadc fail.
 
 ---
 ### 3. Questions related to iostat
