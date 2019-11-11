@@ -1,5 +1,23 @@
 Changes:
 
+2019/11/11: Version 12.2.0 - Sebastien Godard (sysstat <at> orange.fr)a
+	* sar/sadc: Save timezone value in binary data files (saDD).
+	* sadf: Display timezone value in output from sadf -H.
+	* sar/sadf: Make sure we will always be able to read file headers
+	  structures
+	  from older versions.
+	* sadf: Enhance raw format output (now also display records header
+	  contents).
+	* sadf: Update DTD and XSD documents. Fix their contents so that XML
+	  output from 12.0.x sadf versions validates.
+	* sar/sadf: Change 'flags' variable type from "unsigned int" to
+	  "uint64_t".
+	* simtest: Make all tests independent from timezone value.
+	* simtest: Add more non regression tests.
+	* sadf: Small fix in manual page.
+	* NLS updated.
+	* FAQ updated.
+
 2019/09/30: Version 12.1.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: Add stable identifier support for disks statistics.
 	* sar/sadf: Add extra flexibility in binary data file in case of
