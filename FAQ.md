@@ -359,6 +359,7 @@ Another possible crontab would be:
 50 23 * * * /usr/lib/sa/sa1 600 2
 10,20,30,40,50 0 * * * /usr/lib/sa/sa1 1 1
 ```
+
 ---
 2.13. The sar command complains with the following message:
 ```
