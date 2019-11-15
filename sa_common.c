@@ -2237,7 +2237,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			 * Force '-r ALL -u ALL -F'.
 			 * Setting -F is compulsory because corresponding activity
 			 * has AO_MULTIPLE_OUTPUTS flag set.
-			 * -P ALL / -I ALL will be set only corresponding option has
+			 * -P ALL / -I ALL will be set only if corresponding option has
 			 * not been exlicitly entered on the command line.
 			 */
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
