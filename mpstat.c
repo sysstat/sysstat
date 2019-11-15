@@ -1329,7 +1329,7 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 		 * CPU must have been explicitly selected using option -P,
 		 * else we display every CPU.
 		 */
-		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_P_OPTION(flags))
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags))
 			continue;
 
 		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
@@ -1429,7 +1429,7 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 		 * CPU must have been explicitly selected using option -P,
 		 * else we display every CPU.
 		 */
-		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_P_OPTION(flags))
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags))
 			continue;
 
 		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
@@ -2059,7 +2059,7 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			if (node_nr >= 0) {
-				flags |= F_N_OPTION;
+				flags |= F_OPTION_N;
 				actflags |= M_D_NODE;
 				actset = TRUE;
 				dis_hdr = 9;
@@ -2074,7 +2074,7 @@ int main(int argc, char **argv)
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
-			flags |= F_P_OPTION;
+			flags |= F_OPTION_P;
 			dis_hdr = 9;
 
 			if (parse_values(argv[opt], cpu_bitmap, cpu_nr, K_LOWERALL)) {
@@ -2088,16 +2088,12 @@ int main(int argc, char **argv)
 				switch (*(argv[opt] + i)) {
 
 				case 'A':
+					flags |= F_OPTION_A;
 					actflags |= M_D_CPU + M_D_IRQ_SUM + M_D_IRQ_CPU + M_D_SOFTIRQS;
 					if (node_nr >= 0) {
 						actflags |= M_D_NODE;
-						flags |= F_N_OPTION;
-						memset(node_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
 					}
 					actset = TRUE;
-					/* Select all processors */
-					flags |= F_P_OPTION;
-					memset(cpu_bitmap, 0xff, ((cpu_nr + 1) >> 3) + 1);
 					break;
 
 				case 'n':
@@ -2155,7 +2151,7 @@ int main(int argc, char **argv)
 
 	/* Default: Display CPU (e.g., "mpstat", "mpstat -P 1", "mpstat -P 1 -n", "mpstat -P 1 -N 1"... */
 	if (!actset ||
-	    (USE_P_OPTION(flags) && !(actflags & ~M_D_NODE))) {
+	    (USE_OPTION_P(flags) && !(actflags & ~M_D_NODE))) {
 		actflags |= M_D_CPU;
 	}
 
@@ -2163,11 +2159,26 @@ int main(int argc, char **argv)
 		dis_hdr = 9;
 	}
 
-	if (!USE_P_OPTION(flags)) {
+	if (USE_OPTION_A(flags)) {
+		/*
+		 * Set -P ALL -N ALL only if individual CPU and/or nodes
+		 * have not been selected.
+		 */
+		if ((node_nr >= 0) && !USE_OPTION_N(flags)) {
+			memset(node_bitmap, ~0, ((cpu_nr + 1) >> 3) + 1);
+			flags += F_OPTION_N;
+		}
+		if (!USE_OPTION_P(flags)) {
+			memset(cpu_bitmap, ~0, ((cpu_nr + 1) >> 3) + 1);
+			flags += F_OPTION_P;
+		}
+	}
+
+	if (!USE_OPTION_P(flags)) {
 		/* Option -P not used: Set bit 0 (global stats among all proc) */
 		*cpu_bitmap = 1;
 	}
-	if (!USE_N_OPTION(flags)) {
+	if (!USE_OPTION_N(flags)) {
 		/* Option -N not used: Set bit 0 (global stats among all nodes) */
 		*node_bitmap = 1;
 	}

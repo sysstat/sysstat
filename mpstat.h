@@ -41,16 +41,18 @@
  */
 
 /* Indicate that option -P has been used */
-#define F_P_OPTION	0x01
-/* 0x02: unused */
+#define F_OPTION_P	0x01
+/* Indicate that option -A has been used */
+#define F_OPTION_A	0x02
 /* JSON output */
 #define F_JSON_OUTPUT	0x04
 /* Indicate that option -N has been used */
-#define F_N_OPTION	0x08
+#define F_OPTION_N	0x08
 
-#define USE_P_OPTION(m)		(((m) & F_P_OPTION) == F_P_OPTION)
+#define USE_OPTION_P(m)		(((m) & F_OPTION_P) == F_OPTION_P)
+#define USE_OPTION_A(m)		(((m) & F_OPTION_A) == F_OPTION_A)
 #define DISPLAY_JSON_OUTPUT(m)	(((m) & F_JSON_OUTPUT) == F_JSON_OUTPUT)
-#define USE_N_OPTION(m)		(((m) & F_N_OPTION) == F_N_OPTION)
+#define USE_OPTION_N(m)		(((m) & F_OPTION_N) == F_OPTION_N)
 
 #define K_SUM	"SUM"
 #define K_CPU	"CPU"
