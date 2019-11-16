@@ -1,0 +1,1 @@
+LC_ALL=C ./mpstat --dec=3 2>&1 | grep "Usage:" >/dev/null

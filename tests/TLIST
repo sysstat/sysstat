@@ -418,5 +418,29 @@ NOTES:
 02800	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never POSIXLY_CORRECT= ./iostat --getenv -d 2 3 > tests/out.iostat-ev.tmp
 02805	diff -u tests/out.iostat-ev.tmp tests/expected.iostat-ev
 
+=====	mpstat: Basic tests
+03000	LC_ALL=C TZ=GMT ./mpstat > tests/out.mpstat.tmp
+03002	diff -u tests/out.mpstat.tmp tests/expected.mpstat
+03010	LC_ALL=C TZ=GMT ./mpstat -A 1 2 > tests/out.mpstat-A.tmp
+03012	diff -u tests/out.mpstat-A.tmp tests/expected.mpstat-A
+03020	LC_ALL=C TZ=GMT ./mpstat -A -P 0,3-5 -N all 1 1 > tests/out.mpstat-APN.tmp
+03022	diff -u tests/out.mpstat-APN.tmp tests/expected.mpstat-APN
+03030	LC_ALL=C TZ=GMT ./mpstat -P 0,3-5 -N all,1 -I CPU,SCPU,SUM > tests/out.mpstat-I.tmp
+03032	diff -u tests/out.mpstat-I.tmp tests/expected.mpstat-I
+
+=====	Playing with mpstat
+03040	LC_ALL=C TZ=GMT ./mpstat -I ALL --dec=1 > tests/out.mpstat-dec.tmp
+03042	diff -u tests/out.mpstat-dec.tmp tests/expected.mpstat-dec
+
+=====	Tests mpstat error cases
+03100	LC_ALL=C ./mpstat -1 2>&1 | grep "Usage:" >/dev/null
+03105	LC_ALL=C ./mpstat 0 0 2>&1 | grep "Usage:" >/dev/null
+03110	LC_ALL=C ./mpstat 0 2 2>&1 | grep "Usage:" >/dev/null
+03115	LC_ALL=C ./mpstat 2 0 2>&1 | grep "Usage:" >/dev/null
+03120	LC_ALL=C ./mpstat 2 2 2 2>&1 | grep "Usage:" >/dev/null
+03125	LC_ALL=C ./mpstat --dec=3 2>&1 | grep "Usage:" >/dev/null
+03130	LC_ALL=C ./mpstat -N -1 2>&1 | grep "Usage:" >/dev/null
+03135	LC_ALL=C ./mpstat -P 16 2>&1 | grep "Usage:" >/dev/null
+
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
