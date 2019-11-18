@@ -2,7 +2,7 @@
 .SH NAME
 mpstat \- Report processors related statistics.
 .SH SYNOPSIS
-.B mpstat [ -A ] [ --dec={ 0 | 1 | 2 } ] [ -n ] [ -u ] [ -V ] [ -I {
+.B mpstat [ -A ] [ --dec={ 0 | 1 | 2 } ] [ -n ] [ -u ] [ -T ] [ -V ] [ -I {
 .I keyword
 .B [,...] | ALL } ] [ -N {
 .I node_list
@@ -122,7 +122,7 @@ values are displayed:
 .B NODE
 .RS
 .RS
-Node number. The keyword
+Logical NUMA node number. The keyword
 .I all
 indicates that statistics are calculated as averages among all nodes.
 .RE
@@ -146,6 +146,26 @@ The
 .B ALL
 keyword indicates that statistics are to be reported for all processors.
 Offline processors are not displayed.
+.IP -T
+Display topology elements in the CPU report (see option -u below). The
+following elements are displayed:
+
+.B CORE
+.RS
+.RS
+Logical core number.
+.RE
+
+.B SOCK
+.RS
+Logical socket number.
+.RE
+
+.B NODE
+.RS
+Logical NUMA node number.
+.RE
+.RE
 .IP -u
 Report CPU utilization. The following values are displayed:
 
