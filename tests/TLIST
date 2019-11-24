@@ -413,6 +413,10 @@ NOTES:
 02725	diff -u tests/out.iostat-p-cciss.tmp tests/expected.iostat-p-cciss
 02730	LC_ALL=C TZ=GMT ./iostat cciss/c0d0p1 1 2 > tests/out.iostat-cciss.tmp
 02735	diff -u tests/out.iostat-cciss.tmp tests/expected.iostat-cciss
+02740	LC_ALL=C TZ=GMT ./iostat -o JSON -x -p ALL 1 2 > tests/out.iostat-x-p-ALL-JSON.tmp
+02745	diff -u tests/out.iostat-x-p-ALL-JSON.tmp tests/expected.iostat-x-p-ALL-JSON
+02750	LC_ALL=C TZ=GMT ./iostat -o JSON -dm -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-g-JSON.tmp
+02755	diff -u tests/out.iostat-g-JSON.tmp tests/expected.iostat-g-JSON
 
 =====	iostat: Playing with environment variables
 02800	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never POSIXLY_CORRECT= ./iostat --getenv -d 2 3 > tests/out.iostat-ev.tmp

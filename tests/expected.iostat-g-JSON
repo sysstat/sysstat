@@ -1,0 +1,34 @@
+{"sysstat": {
+	"hosts": [
+		{
+			"nodename": "SYSSTAT.TEST",
+			"sysname": "Linux",
+			"release": "1.2.3-TEST",
+			"machine": "x86_64",
+			"number-of-cpus": 8,
+			"date": "01/01/70",
+			"statistics": [
+				{
+					"disk": [
+						{"disk_device": "sda", "tps": 8.59, "MB_read/s": 0.22, "MB_wrtn/s": 0.06, "MB_dscd/s": 0.00, "MB_read": 1560, "MB_wrtn": 400, "MB_dscd": 0},
+						{"disk_device": "sdb", "tps": 0.01, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 2, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": " disks", "tps": 8.60, "MB_read/s": 0.22, "MB_wrtn/s": 0.06, "MB_dscd/s": 0.00, "MB_read": 1562, "MB_wrtn": 400, "MB_dscd": 0},
+						{"disk_device": "sdc", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": "sdd", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": " other", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0}
+					]
+				},
+				{
+					"disk": [
+						{"disk_device": "sda", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": "sdb", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": " disks", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": "sdc", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": "sdd", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0},
+						{"disk_device": " other", "tps": 0.00, "MB_read/s": 0.00, "MB_wrtn/s": 0.00, "MB_dscd/s": 0.00, "MB_read": 0, "MB_wrtn": 0, "MB_dscd": 0}
+					]
+				}
+			]
+		}
+	]
+}}
