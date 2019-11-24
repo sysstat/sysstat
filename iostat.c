@@ -857,11 +857,6 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 {
 	char *units, *spc;
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
-		xprintf((*tab)++, "\"disk\": [");
-		return;
-	}
-
 	if (DISPLAY_KILOBYTES(flags)) {
 		*fctr = 2;
 		units = "kB";
@@ -879,6 +874,11 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 	else {
 		units = "Blk";
 		spc = "";
+	}
+
+	if (DISPLAY_JSON_OUTPUT(flags)) {
+		xprintf((*tab)++, "\"disk\": [");
+		return;
 	}
 
 	if (!DISPLAY_HUMAN_READ(flags)) {
