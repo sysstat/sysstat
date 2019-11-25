@@ -67,7 +67,8 @@ NOTES:
 00345	./iostat -y 1 3 -o JSON ALL -p ALL -xt | $VER_JSON >/dev/null
 00346	./iostat 1 3 -o JSON | $VER_JSON >/dev/null
 00347	./iostat -xs 1 3 -o JSON ALL -p ALL | $VER_JSON >/dev/null
-00350	./iostat -o JSON -g total /dev/sda1 sda3 -g foo 1 3 | $VER_JSON >/dev/null;
+00350	./iostat -o JSON -g total /dev/sda1 sda3 -g foo 1 3 | $VER_JSON >/dev/null
+00360	./mpstat -P ALL -T 1 2 -o JSON | $VER_JSON >/dev/null
 
 =====	Checking XML output validity
 00400	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
@@ -435,6 +436,12 @@ NOTES:
 =====	Playing with mpstat
 03040	LC_ALL=C TZ=GMT ./mpstat -I ALL --dec=1 > tests/out.mpstat-dec.tmp
 03042	diff -u tests/out.mpstat-dec.tmp tests/expected.mpstat-dec
+03050	LC_ALL=C TZ=GMT ./mpstat -T -P ALL 1 2 > tests/out.mpstat-T.tmp
+03055	diff -u tests/out.mpstat-T.tmp tests/expected.mpstat-T
+03060	LC_ALL=C TZ=GMT ./mpstat -o JSON -A 1 1 > tests/out.mpstat-A-JSON.tmp
+03065	diff -u tests/out.mpstat-A-JSON.tmp tests/expected.mpstat-A-JSON
+03070	LC_ALL=C TZ=GMT ./mpstat -o JSON -T -P ALL > tests/out.mpstat-T-JSON.tmp
+03075	diff -u tests/out.mpstat-T-JSON.tmp tests/expected.mpstat-T-JSON
 
 =====	Tests mpstat error cases
 03100	LC_ALL=C ./mpstat -1 2>&1 | grep "Usage:" >/dev/null

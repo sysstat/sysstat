@@ -1,0 +1,8 @@
+. tests/variables
+if [ ! -z "$VER_JSON" ]; then
+	rm -f tests/root
+	ln -s root1 tests/root
+	./mpstat -P ALL -T 1 2 -o JSON | $VER_JSON >/dev/null
+else
+	echo Skipped
+fi
