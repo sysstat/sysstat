@@ -91,8 +91,8 @@ struct stats_irqcpu {
 };
 
 struct cpu_topology {
-	unsigned int phys_package_id;
-	unsigned int logical_core_id;
+	int phys_package_id;
+	int logical_core_id;
 };
 
 #define STATS_IRQCPU_SIZE      (sizeof(struct stats_irqcpu))

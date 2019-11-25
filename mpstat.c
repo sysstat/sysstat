@@ -361,7 +361,7 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 	struct cpu_topology *cpu_topo_i;
 	FILE *fp;
 	char filename[MAX_PF_NAME];
-	int cpu;
+	int cpu, rc;
 
 	/* Init system topology */
 	memset(st_cpu_topology, 0, sizeof(struct cpu_topology) * nr_cpus);
@@ -375,8 +375,12 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 		filename[MAX_PF_NAME - 1] = '\0';
 
 		if ((fp = fopen(filename, "r")) != NULL) {
-			fscanf(fp, "%d", &cpu_topo_i->phys_package_id);
+			rc = fscanf(fp, "%d", &cpu_topo_i->phys_package_id);
 			fclose(fp);
+
+			if (rc < 1) {
+				cpu_topo_i->phys_package_id = -1;
+			}
 		}
 
 		/* Read current CPU's logical core id number */
@@ -384,8 +388,12 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 		filename[MAX_PF_NAME - 1] = '\0';
 
 		if ((fp = fopen(filename, "r")) != NULL) {
-			fscanf(fp, "%d", &cpu_topo_i->logical_core_id);
+			rc = fscanf(fp, "%d", &cpu_topo_i->logical_core_id);
 			fclose(fp);
+
+			if (rc < 1) {
+				cpu_topo_i->logical_core_id = -1;
+			}
 		}
 	}
 }
