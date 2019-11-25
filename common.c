@@ -31,6 +31,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <ctype.h>
+#include <limits.h>
 #include <libgen.h>
 
 #include "version.h"

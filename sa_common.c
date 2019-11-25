@@ -28,6 +28,7 @@
 #include <unistd.h>	/* For STDOUT_FILENO, among others */
 #include <dirent.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <libgen.h>
 #include <sys/types.h>
 #include <sys/stat.h>
