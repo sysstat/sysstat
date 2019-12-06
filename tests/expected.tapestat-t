@@ -1,0 +1,12 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+01/01/70 00:00:02
+Tape:     r/s     w/s   kB_read/s   kB_wrtn/s  %Rd  %Wr  %Oa    Rs/s    Ot/s
+st0         1     139          24        2673    0    4    6       1       0
+st1         1     139          24        2673    0    4    6       1       0
+
+01/01/70 00:00:05
+Tape:     r/s     w/s   kB_read/s   kB_wrtn/s  %Rd  %Wr  %Oa    Rs/s    Ot/s
+st0         3      26           0           0    0    0    0       6       0
+st1         0       0           0           0    0    0    0       0       0
+

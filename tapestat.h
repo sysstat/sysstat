@@ -9,6 +9,8 @@
 #ifndef _TAPESTAT_H
 #define _TAPESTAT_H
 
+#include "common.h"
+
 /* T_: tapestat - D_: Display - F_: Flag */
 #define T_D_TIMESTAMP		0x00001
 #define T_D_KILOBYTES		0x00002
@@ -29,8 +31,8 @@
 #define TAPE_STATS_VALID 1
 #define TAPE_STATS_INVALID 0
 
-#define SYSFS_CLASS_TAPE_DIR "/sys/class/scsi_tape"
-#define TAPE_STAT_PATH "/sys/class/scsi_tape/st%i/stats/"
+#define SYSFS_CLASS_TAPE_DIR 	PRE "/sys/class/scsi_tape"
+#define TAPE_STAT_PATH		PRE "/sys/class/scsi_tape/st%i/stats/"
 
 #define TAPE_STAT_FILE_VAL(A, B)					\
 	snprintf(filename, MAXPATHLEN, A, i);				\

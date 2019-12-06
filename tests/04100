@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root4 tests/root
+LC_ALL=C TZ=GMT ./tapestat 1 2 2>&1 | grep "No tape drives" >/dev/null

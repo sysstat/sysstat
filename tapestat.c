@@ -47,7 +47,6 @@
 
 #include "version.h"
 #include "tapestat.h"
-#include "common.h"
 #include "rd_stats.h"
 #include "count.h"
 
@@ -299,7 +298,7 @@ void tape_gather_initial_stats(void)
 		tape_new_stats[i].valid = TAPE_STATS_VALID;
 		tape_old_stats[i].valid = TAPE_STATS_VALID;
 
-		gettimeofday(&tape_old_stats[i].tv, NULL);
+		__gettimeofday(&tape_old_stats[i].tv, NULL);
 
 		tape_new_stats[i].tv.tv_sec = tape_old_stats[i].tv.tv_sec;
 		tape_new_stats[i].tv.tv_usec = tape_old_stats[i].tv.tv_usec;
@@ -346,7 +345,7 @@ void tape_get_updated_stats(void)
 		 * to open a file gets the tape drive marked invalid.
 		 */
 		tape_new_stats[i].valid = TAPE_STATS_VALID;
-		gettimeofday(&tape_new_stats[i].tv, NULL);
+		__gettimeofday(&tape_new_stats[i].tv, NULL);
 
 		TAPE_STAT_FILE_VAL(TAPE_STAT_PATH "read_ns", read_time)
 		TAPE_STAT_FILE_VAL(TAPE_STAT_PATH "write_ns", write_time)
@@ -407,7 +406,7 @@ void tape_calc_one_stats(struct calc_stats *stats, int i)
 
 	/* If duration is zero we need to calculate the ms since boot time */
 	if (duration == 0) {
-		fp = fopen("/proc/uptime", "r");
+		fp = fopen(UPTIME, "r");
 
 		/*
 		 * Get uptime from /proc/uptime and if we can't then just set duration to
@@ -591,7 +590,7 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		}
 
 		if (count) {
-			pause();
+			__pause();
 		}
 	}
 	while (count);
@@ -705,7 +704,7 @@ int main(int argc, char **argv)
 	get_localtime(&rectime, 0);
 
 	/* Get system name, release number and hostname */
-	uname(&header);
+	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
 			     PLAIN_OUTPUT)) {

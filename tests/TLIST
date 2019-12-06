@@ -453,5 +453,25 @@ NOTES:
 03130	LC_ALL=C ./mpstat -N -1 2>&1 | grep "Usage:" >/dev/null
 03135	LC_ALL=C ./mpstat -P 16 2>&1 | grep "Usage:" >/dev/null
 
+=====	tapestat: Basic tests
+04000	LC_ALL=C TZ=GMT ./tapestat > tests/out.tapestat.tmp
+04005	diff -u tests/out.tapestat.tmp tests/expected.tapestat
+04010	LC_ALL=C TZ=GMT ./tapestat -m 1 2 > tests/out.tapestat-m.tmp
+04015	diff -u tests/out.tapestat-m.tmp tests/expected.tapestat-m
+04020	LC_ALL=C TZ=GMT ./tapestat --human -y 1 2 > tests/out.tapestat-y.tmp
+04025	diff -u tests/out.tapestat-y.tmp tests/expected.tapestat-y
+04030	LC_ALL=C TZ=GMT ./tapestat -z 1 2 > tests/out.tapestat-z.tmp
+04035	diff -u tests/out.tapestat-z.tmp tests/expected.tapestat-z
+04040	LC_ALL=C TZ=GMT ./tapestat -t 1 2 > tests/out.tapestat-t.tmp
+04045	diff -u tests/out.tapestat-t.tmp tests/expected.tapestat-t
+
+=====	Tests tapestat error cases
+04100	LC_ALL=C TZ=GMT ./tapestat 1 2 2>&1 | grep "No tape drives" >/dev/null
+04102	LC_ALL=C ./tapestat -1 2>&1 | grep "Usage:" >/dev/null
+04105	LC_ALL=C ./tapestat 0 0 2>&1 | grep "Usage:" >/dev/null
+04110	LC_ALL=C ./tapestat 0 2 2>&1 | grep "Usage:" >/dev/null
+04115	LC_ALL=C ./tapestat 2 0 2>&1 | grep "Usage:" >/dev/null
+04120	LC_ALL=C ./tapestat 2 2 2 2>&1 | grep "Usage:" >/dev/null
+
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0

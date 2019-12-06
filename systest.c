@@ -31,6 +31,7 @@
 #include <sys/stat.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
+#include <sys/time.h>
 
 #include "systest.h"
 
@@ -52,6 +53,21 @@ extern int sigint_caught;
 void get_unix_time(time_t *t)
 {
 	*t = __unix_time;
+}
+
+/*
+ ***************************************************************************
+ * Test mode: Get time of the day using __unix_time variable contents.
+ *
+ * OUT:
+ * @tv	Number of seconds since the Epoch.
+ ***************************************************************************
+ */
+void get_day_time(struct timeval *tv)
+{
+	__unix_time += interval;
+	tv->tv_sec = __unix_time;
+	tv->tv_usec = 0;
 }
 
 /*
