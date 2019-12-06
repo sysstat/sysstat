@@ -484,6 +484,8 @@ NOTES:
 04535	diff -u tests/out.cifsiostat-h.tmp tests/expected.cifsiostat-h
 04540	LC_ALL=C TZ=GMT ./cifsiostat --dec=0 1 3 > tests/out.cifsiostat-dec.tmp
 04545	diff -u tests/out.cifsiostat-dec.tmp tests/expected.cifsiostat-dec
+04550	LC_ALL=C TZ=GMT ./cifsiostat 1 2 > tests/out.cifsiostat-SMB2.tmp
+04555	diff -u tests/out.cifsiostat-SMB2.tmp tests/expected.cifsiostat-SMB2
 
 =====	Test cifsiostat error cases
 04600	LC_ALL=C ./cifsiostat -1 2>&1 | grep "Usage:" >/dev/null

@@ -1,0 +1,10 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+Filesystem                     rB/s         wB/s    rops/s    wops/s         fo/s         fc/s         fd/s
+\\addr\SHARED                  0.03         0.01      0.00      0.00         0.00         0.32         0.00
+\\server\name1                 0.00         0.00      0.00      0.00         0.00         0.03         0.00
+
+Filesystem                     rB/s         wB/s    rops/s    wops/s         fo/s         fc/s         fd/s
+\\addr\SHARED                  4.47         0.00      0.04      0.00         0.00         0.00         0.40
+\\server\name1                40.20        22.33      0.45      0.71         0.18         1.79         0.00
+

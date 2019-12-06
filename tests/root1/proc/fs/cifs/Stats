@@ -14,7 +14,7 @@ Reads: 2 Bytes: 196
 Writes: 0 Bytes: 0 
 Flushes: 0 
 Locks: 0 HardLinks: 0 Symlinks: 0 
-Opens: 6 Closes: 6Deletes: 0 
+Opens: 6 Closes: 6 Deletes: 0
 Mkdirs: 0 Rmdirs: 0 
 Renames: 0 T2 Renames 0 
 FindFirst: 5 FNext 0 FClose 0 

@@ -43,9 +43,13 @@ enp6s1, wlp5s1: registered
 /sys/class/fc_host
 host2: registered
 
+CIFS SMB1 and SMB2 statistics available
+
 ==========root5:
 /proc/stat
 CPU#6: online
+
+CIFS SMB1 and SMB2 statistics available
 
 ==========root6:
 /proc/stat
