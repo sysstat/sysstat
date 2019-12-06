@@ -1,0 +1,30 @@
+Resources in use 
+CIFS Session: 1 
+Share (unique mount targets): 1 
+SMB Request/Response Buffer: 1 Pool size: 5 
+SMB Small Req/Resp Buffer: 1 Pool size: 30 
+Operations (MIDs): 0 
+
+75 session 1 share reconnects 
+Total vfs operations: 85 maximum at one time: 2 
+
+1) \\addr\SHARED 
+SMBs: 40 Oplock Breaks: 0 
+Reads: 8 Bytes: 916 
+Writes: 3 Bytes: 123 
+Flushes: 0 
+Locks: 0 HardLinks: 0 Symlinks: 0 
+Opens: 9 Closes: 12 Deletes: 5 
+Mkdirs: 0 Rmdirs: 0 
+Renames: 0 T2 Renames 0 
+FindFirst: 5 FNext 0 FClose 0
+2) \\server\share1
+SMBs: 40 Oplock Breaks: 0
+Reads: 14 Bytes: 901
+Writes: 14 Bytes: 803
+Flushes: 0
+Locks: 0 HardLinks: 0 Symlinks: 0
+Opens: 15 Closes: 12 Deletes: 11
+Mkdirs: 0 Rmdirs: 0
+Renames: 0 T2 Renames 0
+FindFirst: 5 FNext 0 FClose 0

@@ -571,7 +571,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 
 		if (count) {
 			curr ^= 1;
-			pause();
+			__pause();
 		}
 	}
 	while (count);

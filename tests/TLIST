@@ -473,5 +473,24 @@ NOTES:
 04115	LC_ALL=C ./tapestat 2 0 2>&1 | grep "Usage:" >/dev/null
 04120	LC_ALL=C ./tapestat 2 2 2 2>&1 | grep "Usage:" >/dev/null
 
+=====	cifsiostat: Basic tests
+04500	LC_ALL=C TZ=GMT ./cifsiostat > tests/out.cifsiostat.tmp
+04505	diff -u tests/out.cifsiostat.tmp tests/expected.cifsiostat
+04510	LC_ALL=C TZ=GMT ./cifsiostat -k 1 3 > tests/out.cifsiostat-k.tmp
+04515	diff -u tests/out.cifsiostat-k.tmp tests/expected.cifsiostat-k
+04520	LC_ALL=C TZ=GMT ./cifsiostat -t --human 1 3 > tests/out.cifsiostat-t-human.tmp
+04525	diff -u tests/out.cifsiostat-t-human.tmp tests/expected.cifsiostat-t-human
+04530	LC_ALL=C TZ=GMT ./cifsiostat -h 2 3 > tests/out.cifsiostat-h.tmp
+04535	diff -u tests/out.cifsiostat-h.tmp tests/expected.cifsiostat-h
+04540	LC_ALL=C TZ=GMT ./cifsiostat --dec=0 1 3 > tests/out.cifsiostat-dec.tmp
+04545	diff -u tests/out.cifsiostat-dec.tmp tests/expected.cifsiostat-dec
+
+=====	Test cifsiostat error cases
+04600	LC_ALL=C ./cifsiostat -1 2>&1 | grep "Usage:" >/dev/null
+04605	LC_ALL=C ./cifsiostat 0 0 2>&1 | grep "Usage:" >/dev/null
+04610	LC_ALL=C ./cifsiostat 0 2 2>&1 | grep "Usage:" >/dev/null
+04615	LC_ALL=C ./cifsiostat 2 0 2>&1 | grep "Usage:" >/dev/null
+04620	LC_ALL=C ./cifsiostat 2 2 2 2>&1 | grep "Usage:" >/dev/null
+
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0

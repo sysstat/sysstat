@@ -1,0 +1,1 @@
+LC_ALL=C ./cifsiostat 0 2 2>&1 | grep "Usage:" >/dev/null

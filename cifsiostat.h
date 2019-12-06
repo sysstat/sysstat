@@ -9,9 +9,9 @@
 
 #include "common.h"
 
-#define CIFSSTATS  "/proc/fs/cifs/Stats"
+#define CIFSSTATS  PRE "/proc/fs/cifs/Stats"
 
-/* I_: iostat - D_: Display - F_: Flag */
+/* I_: cifsiostat - D_: Display - F_: Flag */
 #define I_D_TIMESTAMP		0x001
 #define I_D_KILOBYTES		0x002
 #define I_D_MEGABYTES		0x004

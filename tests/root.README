@@ -2,7 +2,12 @@
 /proc/diskstats
 dm-2 virtual device present
 
+tape statistics available
+CIFS SMB1 statistics available
+
 ==========root2:
+tape statistics available
+CIFS SMB1 statistics available. New share added.
 
 ==========root3:
 /proc/stat
@@ -19,6 +24,8 @@ enp6s0: unregistered then registered again
 /etc/mtab
 sdf,sdg: registered
 sdh: autofs, registered
+
+CIFS SMB1 statistics available
 
 ==========root4:
 /proc/stat
