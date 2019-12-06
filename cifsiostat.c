@@ -362,22 +362,45 @@ void read_cifs_stat(int curr)
 			}
 			strncpy(cifs_name, name_tmp, MAX_NAME_LEN);
 			cifs_name[MAX_NAME_LEN - 1] = '\0';
+			memset(&scifs, 0, sizeof(struct cifs_stats));
 		}
 		else {
 			if (!strncmp(line, "Reads:", 6)) {
+				/*
+				 * SMB1 format: Reads: %llu Bytes: %llu
+				 * SMB2 format: Reads: %llu sent %llu failed
+				 * If this is SMB2 format then only the first variable (rd_ops) will be set.
+				 */
 				sscanf(line, "Reads: %llu Bytes: %llu", &scifs.rd_ops, &scifs.rd_bytes);
 			}
-			if (!strncmp(line, "Writes:", 7)) {
+			else if (!strncmp(line, "Bytes read:", 11)) {
+				sscanf(line, "Bytes read: %llu  Bytes written: %llu",
+				       &scifs.rd_bytes, &scifs.wr_bytes);
+			}
+			else if (!strncmp(line, "Writes:", 7)) {
+				/*
+				 * SMB1 format: Writes: %llu Bytes: %llu
+				 * SMB2 format: Writes: %llu sent %llu failed
+				 * If this is SMB2 format then only the first variable (wr_ops) will be set.
+				 */
 				sscanf(line, "Writes: %llu Bytes: %llu", &scifs.wr_ops, &scifs.wr_bytes);
 			}
-			if (!strncmp(line, "Opens:", 6)) {
+			else if (!strncmp(line, "Opens:", 6)) {
 				sscanf(line, "Opens: %llu Closes:%llu Deletes: %llu",
 				       &aux_open, &scifs.fcloses, &scifs.fdeletes);
 				all_open += aux_open;
 			}
-			if (!strncmp(line, "Posix Opens:", 12)) {
+			else if (!strncmp(line, "Posix Opens:", 12)) {
 				sscanf(line, "Posix Opens: %llu", &aux_open);
 				all_open += aux_open;
+			}
+			else if (!strncmp(line, "Open files:", 11)) {
+				sscanf(line, "Open files: %llu total (local), %d",
+				       &all_open, &aux_open);
+				all_open += aux_open;
+			}
+			else if (!strncmp(line, "Closes:", 7)) {
+				sscanf(line, "Closes: %llu", &scifs.fcloses);
 			}
 		}
 	}
