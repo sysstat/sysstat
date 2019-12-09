@@ -395,7 +395,7 @@ void read_cifs_stat(int curr)
 				all_open += aux_open;
 			}
 			else if (!strncmp(line, "Open files:", 11)) {
-				sscanf(line, "Open files: %llu total (local), %d",
+				sscanf(line, "Open files: %llu total (local), %llu",
 				       &all_open, &aux_open);
 				all_open += aux_open;
 			}
