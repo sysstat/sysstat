@@ -2153,6 +2153,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 	}
 
 	free(buffer);
+	buffer = NULL;
 
 	/* Check that at least one activity selected by the user is available in file */
 	for (i = 0; i < NR_ACT; i++) {
