@@ -40,7 +40,7 @@
  */
 struct report_format hdr_fmt = {
 	.id		= F_HEADER_OUTPUT,
-	.options	= FO_HEADER_ONLY + FO_BAD_FILE_FORMAT,
+	.options	= FO_HEADER_ONLY,
 	.f_header	= print_hdr_header,
 	.f_statistics	= NULL,
 	.f_timestamp	= NULL,
@@ -112,7 +112,7 @@ struct report_format json_fmt = {
  */
 struct report_format conv_fmt = {
 	.id		= F_CONV_OUTPUT,
-	.options	= FO_BAD_FILE_FORMAT,
+	.options	= 0,
 	.f_header	= NULL,
 	.f_statistics	= NULL,
 	.f_timestamp	= NULL,

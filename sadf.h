@@ -54,11 +54,7 @@
  */
 #define FO_HEADER_ONLY		0x02
 
-/*
- * Indicate that a true sysstat activity file but with a bad
- * format should not yield an error message.
- */
-#define FO_BAD_FILE_FORMAT	0x04
+/* Unused: 0x04 */
 
 /*
  * Indicate that timestamp can be displayed in local time instead of UTC
@@ -110,7 +106,6 @@
 
 #define SET_LC_NUMERIC_C(m)		(((m) & FO_LC_NUMERIC_C)	== FO_LC_NUMERIC_C)
 #define ACCEPT_HEADER_ONLY(m)		(((m) & FO_HEADER_ONLY)		== FO_HEADER_ONLY)
-#define ACCEPT_BAD_FILE_FORMAT(m)	(((m) & FO_BAD_FILE_FORMAT)	== FO_BAD_FILE_FORMAT)
 #define ACCEPT_LOCAL_TIME(m)		(((m) & FO_LOCAL_TIME)		== FO_LOCAL_TIME)
 #define ACCEPT_HORIZONTALLY(m)		(((m) & FO_HORIZONTALLY)	== FO_HORIZONTALLY)
 #define ACCEPT_SEC_EPOCH(m)		(((m) & FO_SEC_EPOCH)		== FO_SEC_EPOCH)

@@ -1922,9 +1922,6 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
  * @dfile	Name of system activity data file.
  * @act		Array of activities.
  * @flags	Flags for common options and system state.
- * @ignore	Set to 1 if a true sysstat activity file but with a bad
- *		format should not yield an error message. Used with
- *		sadf -H (sadf -c doesn't call check_file_actlst() function).
  *
  * OUT:
  * @ifd		System activity data file descriptor.
@@ -1942,16 +1939,17 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t flags,
 		       struct file_magic *file_magic, struct file_header *file_hdr,
 		       struct file_activity **file_actlst, unsigned int id_seq[],
-		       int ignore, int *endian_mismatch, int *arch_64)
+		       int *endian_mismatch, int *arch_64)
 {
-	int i, j, k, p;
+	int i, j, k, p, skip;
 	struct file_activity *fal;
 	void *buffer = NULL;
 	size_t bh_size = FILE_HEADER_SIZE;
 	size_t ba_size = FILE_ACTIVITY_SIZE;
 
 	/* Open sa data file and read its magic structure */
-	if (sa_open_read_magic(ifd, dfile, file_magic, ignore, endian_mismatch, TRUE) < 0)
+	if (sa_open_read_magic(ifd, dfile, file_magic,
+			       DISPLAY_HDR_ONLY(flags), endian_mismatch, TRUE) < 0)
 		/*
 		 * Not current sysstat's format.
 		 * Return now so that sadf -H can display at least
@@ -2077,17 +2075,19 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 			/* Unknown activity */
 			continue;
 
-		if (act[p]->magic != fal->magic) {
+		skip = FALSE;
+		if (fal->magic != act[p]->magic) {
 			/* Bad magical number */
-			if (ignore) {
+			if (DISPLAY_HDR_ONLY(flags)) {
 				/*
 				 * This is how sadf -H knows that this
 				 * activity has an unknown format.
 				 */
 				act[p]->magic = ACTIVITY_MAGIC_UNKNOWN;
 			}
-			else
-				continue;
+			else {
+				skip = TRUE;
+			}
 		}
 
 		/* Check max value for known activities */
@@ -2112,7 +2112,16 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		     ||
 		     ((fal->types_nr[0] <= act[p]->gtypes_nr[0]) &&
 		     (fal->types_nr[1] <= act[p]->gtypes_nr[1]) &&
-		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))) && !ignore) {
+		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))) &&
+		     (act[p]->magic != ACTIVITY_MAGIC_UNKNOWN) && !DISPLAY_HDR_ONLY(flags)) {
+			/*
+			 * This may not be an error (that's actually why we may have changed
+			 * the magic number for this activity above).
+			 * So, if the activity magic number has changed (e.g.: ACTIVITY_MAGIC_UNKNOWN)
+			 * and we want to display only the header, then ignore the error.
+			 * If we want to also display the stats then we must stop here because
+			 * we won't know how to map the contents of the stats structure.
+			 */
 #ifdef DEBUG
 			fprintf(stderr, "%s: id=%d file=%d,%d,%d activity=%d,%d,%d\n",
 				__FUNCTION__, fal->id, fal->types_nr[0], fal->types_nr[1], fal->types_nr[2],
@@ -2128,6 +2137,13 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 #endif
 			goto format_error;
 		}
+
+		if (skip)
+			/*
+			 * This is an unknown activity and we want stats about it:
+			 * This is not possible so skip it.
+			 */
+			continue;
 
 		for (k = 0; k < 3; k++) {
 			act[p]->ftypes_nr[k] = fal->types_nr[k];

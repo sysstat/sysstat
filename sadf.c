@@ -1446,12 +1446,11 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
 	struct tm rectime;
-	int ifd, ignore, tab = 0;
+	int ifd, tab = 0;
 
 	/* Prepare file for reading and read its headers */
-	ignore = ACCEPT_BAD_FILE_FORMAT(fmt[f_position]->options);
 	check_file_actlst(&ifd, dfile, act, flags, &file_magic, &file_hdr,
-			  &file_actlst, id_seq, ignore, &endian_mismatch, &arch_64);
+			  &file_actlst, id_seq, &endian_mismatch, &arch_64);
 
 	if (DISPLAY_HDR_ONLY(flags)) {
 		if (*fmt[f_position]->f_header) {

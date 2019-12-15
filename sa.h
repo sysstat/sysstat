@@ -1446,7 +1446,7 @@ int check_disk_reg
 	(struct activity *, int, int, int);
 void check_file_actlst
 	(int *, char *, struct activity * [], uint64_t, struct file_magic *,
-	 struct file_header *, struct file_activity **, unsigned int [], int, int *, int *);
+	 struct file_header *, struct file_activity **, unsigned int [], int *, int *);
 int check_net_dev_reg
 	(struct activity *, int, int, int);
 int check_net_edev_reg
