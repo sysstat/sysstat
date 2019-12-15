@@ -217,6 +217,12 @@ The number (after merges) of write requests completed per second for the device.
 The number (after merges) of discard requests completed per second for the device.
 
 .RE
+.B f/s
+.RS
+The number (after merges) of flush requests completed per second for the device.
+Origin (unmerged) flush operations are counted as writes (likely with zero size).
+
+.RE
 .B sec/s (kB/s, MB/s)
 .RS
 The number of sectors (kilobytes, megabytes) read from, written to or
@@ -325,6 +331,13 @@ the time spent servicing them.
 The average time (in milliseconds) for discard requests issued to the device
 to be served. This includes the time spent by the requests in queue and
 the time spent servicing them.
+
+.RE
+.B f_await
+.RS
+The average time (in milliseconds) for flush requests issued to the device
+to be served. Flush requests are issued one at a time, thus flush operation
+could be twice longer: wait current flush request, then issue and wait next.
 
 .RE
 .B aqu-sz
