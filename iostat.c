@@ -333,19 +333,20 @@ int read_sysfs_file_stat(char *filename, struct io_stats *ios)
 	FILE *fp;
 	struct io_stats sdev;
 	int i;
-	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
+	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks, dc_ticks, fl_ticks;
 	unsigned long rd_ios, rd_merges_or_rd_sec, wr_ios, wr_merges;
 	unsigned long rd_sec_or_wr_ios, wr_sec, rd_ticks_or_wr_sec;
-	unsigned long dc_ios, dc_merges, dc_sec, dc_ticks;
+	unsigned long dc_ios, dc_merges, dc_sec, fl_ios;
 
 	/* Try to read given stat file */
 	if ((fp = fopen(filename, "r")) == NULL)
 		return -1;
 
-	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %lu",
+	i = fscanf(fp, "%lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %u %lu %u",
 		   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
 		   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks,
-		   &dc_ios, &dc_merges, &dc_sec, &dc_ticks);
+		   &dc_ios, &dc_merges, &dc_sec, &dc_ticks,
+		   &fl_ios, &fl_ticks);
 
 	memset(&sdev, 0, sizeof(struct io_stats));
 
@@ -363,12 +364,18 @@ int read_sysfs_file_stat(char *filename, struct io_stats *ios)
 		sdev.tot_ticks  = tot_ticks;
 		sdev.rq_ticks   = rq_ticks;
 
-		if (i == 15) {
+		if (i >= 15) {
 			/* Discard I/O */
 			sdev.dc_ios     = dc_ios;
 			sdev.dc_merges  = dc_merges;
 			sdev.dc_sectors = dc_sec;
 			sdev.dc_ticks   = dc_ticks;
+		}
+
+		if (i >= 17) {
+			/* Flush I/O */
+			sdev.fl_ios     = fl_ios;
+			sdev.fl_ticks   = fl_ticks;
 		}
 	}
 	else if (i == 4) {
@@ -604,10 +611,10 @@ void read_diskstats_stat(int curr)
 	struct io_device *d;
 	struct io_stats sdev;
 	int i;
-	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks;
+	unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks, dc_ticks, fl_ticks;
 	unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
 	unsigned long wr_merges, rd_sec_or_wr_ios, wr_sec;
-	unsigned long dc_ios, dc_merges, dc_sec, dc_ticks;
+	unsigned long dc_ios, dc_merges, dc_sec, fl_ios;
 	unsigned int major, minor;
 
 	memset(&sdev, 0, sizeof(struct io_stats));
@@ -617,12 +624,13 @@ void read_diskstats_stat(int curr)
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq dcio dcmerge dcsect dcuse*/
-		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %lu",
+		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq dcio dcmerge dcsect dcuse flio fltm */
+		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %u %lu %u",
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
 			   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks,
-			   &dc_ios, &dc_merges, &dc_sec, &dc_ticks);
+			   &dc_ios, &dc_merges, &dc_sec, &dc_ticks,
+			   &fl_ios, &fl_ticks);
 
 		if (i >= 14) {
 			sdev.rd_ios     = rd_ios;
@@ -637,12 +645,18 @@ void read_diskstats_stat(int curr)
 			sdev.tot_ticks  = tot_ticks;
 			sdev.rq_ticks   = rq_ticks;
 
-			if (i == 18) {
+			if (i >= 18) {
 				/* Discard I/O */
 				sdev.dc_ios     = dc_ios;
 				sdev.dc_merges  = dc_merges;
 				sdev.dc_sectors = dc_sec;
 				sdev.dc_ticks   = dc_ticks;
+			}
+
+			if (i >= 20) {
+				/* Flush I/O */
+				sdev.fl_ios     = fl_ios;
+				sdev.fl_ticks   = fl_ticks;
 			}
 		}
 		else if (i == 7) {
@@ -683,7 +697,8 @@ void compute_device_groups_stats(int curr, struct io_device *d, struct io_device
 	if (!DISPLAY_UNFILTERED(flags)) {
 		if (!d->dev_stats[curr]->rd_ios &&
 		    !d->dev_stats[curr]->wr_ios &&
-		    !d->dev_stats[curr]->dc_ios)
+		    !d->dev_stats[curr]->dc_ios &&
+		    !d->dev_stats[curr]->fl_ios)
 			return;
 	}
 
@@ -699,6 +714,8 @@ void compute_device_groups_stats(int curr, struct io_device *d, struct io_device
 	g->dev_stats[curr]->dc_merges  += d->dev_stats[curr]->dc_merges;
 	g->dev_stats[curr]->dc_sectors += d->dev_stats[curr]->dc_sectors;
 	g->dev_stats[curr]->dc_ticks   += d->dev_stats[curr]->dc_ticks;
+	g->dev_stats[curr]->fl_ios     += d->dev_stats[curr]->fl_ios;
+	g->dev_stats[curr]->fl_ticks   += d->dev_stats[curr]->fl_ticks;
 	g->dev_stats[curr]->ios_pgr    += d->dev_stats[curr]->ios_pgr;
 	g->dev_stats[curr]->tot_ticks  += d->dev_stats[curr]->tot_ticks;
 	g->dev_stats[curr]->rq_ticks   += d->dev_stats[curr]->rq_ticks;
@@ -904,7 +921,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 				      spc, units);
 			}
 			if ((hpart == 4) || !hpart) {
-			       printf("  aqu-sz  %%util");
+			       printf("     f/s f_await  aqu-sz  %%util");
 			}
 		}
 	}
@@ -1068,6 +1085,12 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 				  xios->darqsz / 2);
 		}
 		if ((hpart == 4) || !hpart) {
+			/* f/s */
+			cprintf_f(NO_UNIT, 1, 7, 2,
+				  S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
+			/* f_await */
+			cprintf_f(NO_UNIT, 1, 7, 2,
+				  xios->f_await);
 			/* aqu-sz */
 			cprintf_f(NO_UNIT, 1, 7, 2,
 				  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
@@ -1147,10 +1170,11 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 	else {
-		printf("\"r/s\": %.2f, \"w/s\": %.2f, \"d/s\": %.2f, ",
+		printf("\"r/s\": %.2f, \"w/s\": %.2f, \"d/s\": %.2f, \"f/s\": %.2f, ",
 		       S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
 		       S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
-		       S_VALUE(ioj->dc_ios, ioi->dc_ios, itv));
+		       S_VALUE(ioj->dc_ios, ioi->dc_ios, itv),
+		       S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
 		if (DISPLAY_MEGABYTES(flags)) {
 			sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, \"dMB/s\": %%.2f, ");
 		}
@@ -1166,7 +1190,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       xios->dsectors /= fctr);
 		printf("\"rrqm/s\": %.2f, \"wrqm/s\": %.2f, \"drqm/s\": %.2f, "
 		       "\"rrqm\": %.2f, \"wrqm\": %.2f, \"drqm\": %.2f, "
-		       "\"r_await\": %.2f, \"w_await\": %.2f, \"d_await\": %.2f, "
+		       "\"r_await\": %.2f, \"w_await\": %.2f, \"d_await\": %.2f, \"f_await\": %.2f, "
 		       "\"rareq-sz\": %.2f, \"wareq-sz\": %.2f, \"dareq-sz\": %.2f, "
 		       "\"aqu-sz\": %.2f, ",
 		       S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
@@ -1178,6 +1202,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       xios->r_await,
 		       xios->w_await,
 		       xios->d_await,
+		       xios->f_await,
 		       xios->rarqsz / 2,
 		       xios->warqsz / 2,
 		       xios->darqsz / 2,
@@ -1233,6 +1258,7 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 	 */
 
 	if ((hpart == 4) || !hpart || DISPLAY_SHORT_OUTPUT(flags)) {
+		/* Origin (unmerged) flush operations are counted as writes */
 		sdc.nr_ios    = ioi->rd_ios + ioi->wr_ios + ioi->dc_ios;
 		sdp.nr_ios    = ioj->rd_ios + ioj->wr_ios + ioj->dc_ios;
 
@@ -1309,6 +1335,12 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 			xios.darqsz = (ioi->dc_ios - ioj->dc_ios) ?
 				      (ioi->dc_sectors - ioj->dc_sectors) / ((double) (ioi->dc_ios - ioj->dc_ios)) :
 				      0.0;
+		}
+		if ((hpart == 4) || !hpart) {
+			/* f_await */
+			xios.f_await = (ioi->fl_ios - ioj->fl_ios) ?
+				       (ioi->fl_ticks - ioj->fl_ticks) /
+				       ((double) (ioi->fl_ios - ioj->fl_ios)) : 0.0;
 		}
 	}
 
@@ -1680,6 +1712,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 						"rd_ios=%lu rd_merges=%lu rd_ticks=%u "
 						"wr_ios=%lu wr_merges=%lu wr_ticks=%u "
 						"dc_ios=%lu dc_merges=%lu dc_ticks=%u "
+						"fl_ios=%lu fl_ticks=%u "
 						"ios_pgr=%u tot_ticks=%u "
 						"rq_ticks=%u }\n",
 						dname,
@@ -1697,6 +1730,8 @@ void write_stats(int curr, struct tm *rectime, int skip)
 						ioi->dc_ios,
 						ioi->dc_merges,
 						ioi->dc_ticks,
+						ioi->fl_ios,
+						ioi->fl_ticks,
 						ioi->ios_pgr,
 						ioi->tot_ticks,
 						ioi->rq_ticks);

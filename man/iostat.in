@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "NOVEMBER 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "DECEMBER 2019" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -217,6 +217,12 @@ The number (after merges) of write requests completed per second for the device.
 The number (after merges) of discard requests completed per second for the device.
 
 .RE
+.B f/s
+.RS
+The number (after merges) of flush requests completed per second for the device.
+This counts flush requests executed by disks. Flush requests are not tracked for partitions.
+
+.RE
 .B sec/s (kB/s, MB/s)
 .RS
 The number of sectors (kilobytes, megabytes) read from, written to or
@@ -325,6 +331,15 @@ the time spent servicing them.
 The average time (in milliseconds) for discard requests issued to the device
 to be served. This includes the time spent by the requests in queue and
 the time spent servicing them.
+
+.RE
+.B f_await
+.RS
+The average time (in milliseconds) for flush requests issued to the device
+to be served.
+The block layer combines flush requests and executes at most one at a time.
+Thus flush operations could be twice as long: Wait for current flush request,
+then execute it, then wait for the next one.
 
 .RE
 .B aqu-sz
