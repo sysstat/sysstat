@@ -64,14 +64,7 @@
 
 /*
  * Structures for I/O stats.
- * The number of structures allocated corresponds to the number of devices
- * present in the system, plus a preallocation number to handle those
- * that can be registered dynamically.
- * The number of devices is found by using /sys filesystem (if mounted).
- * For each io_stats structure allocated corresponds a io_hdr_stats structure.
- * A io_stats structure is considered as unused or "free" (containing no stats
- * for a particular device) if the 'major' field of the io_hdr_stats
- * structure is set to 0.
+ * These are now dynamically allocated.
  */
 struct io_stats {
 	/* # of sectors read */
