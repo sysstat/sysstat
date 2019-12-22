@@ -373,6 +373,7 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
 	/*
 	 * Kernel gives ticks already in milliseconds for all platforms
 	 * => no need for further scaling.
+	 * Origin (unmerged) flush operations are counted as writes.
 	 */
 	xds->await = (sdc->nr_ios - sdp->nr_ios) ?
 		((sdc->rd_ticks - sdp->rd_ticks) + (sdc->wr_ticks - sdp->wr_ticks) + (sdc->dc_ticks - sdp->dc_ticks)) /

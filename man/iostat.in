@@ -221,6 +221,7 @@ The number (after merges) of discard requests completed per second for the devic
 .RS
 The number (after merges) of flush requests completed per second for the device.
 This counts flush requests executed by disks. Flush requests are not tracked for partitions.
+Before being merged, flush operations are counted as writes.
 
 .RE
 .B sec/s (kB/s, MB/s)

@@ -986,6 +986,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		/* tps */
+		/* Origin (unmerged) flush operations are counted as writes */
 		cprintf_f(NO_UNIT, 1, 8, 2,
 			  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 				  ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
@@ -1149,6 +1150,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		printf("\"tps\": %.2f, \"",
+		       /* Origin (unmerged) flush operations are counted as writes */
 		       S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 			       ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 		if (DISPLAY_MEGABYTES(flags)) {
@@ -1390,6 +1392,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 
 	/* tps */
 	cprintf_f(NO_UNIT, 1, 8, 2,
+		  /* Origin (unmerged) flush operations are counted as writes */
 		  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 			  ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 
@@ -1450,6 +1453,7 @@ void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
 	xprintf0(tab,
 		 "{\"disk_device\": \"%s\", \"tps\": %.2f, ",
 		 devname,
+		 /* Origin (unmerged) flush operations are counted as writes */
 		 S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 			 ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 	if (DISPLAY_KILOBYTES(flags)) {
@@ -1636,7 +1640,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 
 				ioi = d->dev_stats[curr];
 				ioj = d->dev_stats[!curr];
-
+				/* Origin (unmerged) flush operations are counted as writes */
 				if (!DISPLAY_UNFILTERED(flags)) {
 					if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios)
 						continue;
