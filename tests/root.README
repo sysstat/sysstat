@@ -17,6 +17,7 @@ CPU#6: offline
 /proc/diskstats
 sda, sda1: counters increase
 sdb: unregistered then registered again
+sdc: flush I/Os stats
 
 /proc/net/dev
 enp6s0: unregistered then registered again
@@ -34,6 +35,7 @@ CPU#6: offline
 /proc/diskstats
 sda, sda1: counters decrease
 sdb (dev8-16): unregistered
+sdc: flush I/Os stats
 sdf (dev8-80), sdg (dev-8,96): registered
 
 /proc/net/dev
@@ -48,6 +50,9 @@ CIFS SMB1 and SMB2 statistics available
 ==========root5:
 /proc/stat
 CPU#6: online
+
+/proc/diskstats
+sdc: flush I/Os stats
 
 CIFS SMB1 and SMB2 statistics available
 
