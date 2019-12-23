@@ -617,12 +617,12 @@ void read_diskstats_stat(int curr)
 	unsigned long dc_ios, dc_merges, dc_sec, fl_ios;
 	unsigned int major, minor;
 
-	memset(&sdev, 0, sizeof(struct io_stats));
-
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
+
+		memset(&sdev, 0, sizeof(struct io_stats));
 
 		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq dcio dcmerge dcsect dcuse flio fltm */
 		i = sscanf(line, "%u %u %s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %u %lu %u",
@@ -1642,20 +1642,22 @@ void write_stats(int curr, struct tm *rectime, int skip)
 				ioj = d->dev_stats[!curr];
 				/* Origin (unmerged) flush operations are counted as writes */
 				if (!DISPLAY_UNFILTERED(flags)) {
-					if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios)
+					if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios && !ioi->fl_ios)
 						continue;
 				}
 
 				if (DISPLAY_ZERO_OMIT(flags)) {
 					if ((ioi->rd_ios == ioj->rd_ios) &&
 					    (ioi->wr_ios == ioj->wr_ios) &&
-					    (ioi->dc_ios == ioj->dc_ios))
+					    (ioi->dc_ios == ioj->dc_ios) &&
+					    (ioi->fl_ios == ioj->fl_ios))
 						/* No activity: Ignore it */
 						continue;
 				}
 
 				/* Try to detect if device has been removed then inserted again */
-				if (((ioi->rd_ios + ioi->wr_ios + ioi->dc_ios) < (ioj->rd_ios + ioj->wr_ios + ioj->dc_ios)) &&
+				if (((ioi->rd_ios + ioi->wr_ios + ioi->dc_ios + ioi->fl_ios) <
+					(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios + ioj->fl_ios)) &&
 				    (!ioj->rd_sectors || (ioi->rd_sectors < ioj->rd_sectors)) &&
 				    (!ioj->wr_sectors || (ioi->wr_sectors < ioj->wr_sectors)) &&
 				    (!ioj->dc_sectors || (ioi->dc_sectors < ioj->dc_sectors))) {
