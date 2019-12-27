@@ -1,6 +1,13 @@
 Changes:
 
-2019/11/11: Version 12.2.0 - Sebastien Godard (sysstat <at> orange.fr)a
+2019/12/27: Version 12.2.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Fix double free in check_file_actlst().
+	* [Leo]: Add missing header files when using musl C library.
+	* iostat: Fix wrong unit used in JSON output.
+	* [Albert]: Add missing empty line in FAQ.md file.
+	* Cosmetic changes.
+
+2019/11/11: Version 12.2.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: Save timezone value in binary data files (saDD).
 	* sadf: Display timezone value in output from sadf -H.
 	* sar/sadf: Make sure we will always be able to read file headers
