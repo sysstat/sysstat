@@ -9,10 +9,10 @@
 # Pavel Maryanov <acid@jack.kiev.ua>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.1.4\n"
+"Project-Id-Version: sysstat 12.3.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-04-18 08:23+0200\n"
-"PO-Revision-Date: 2019-04-18 18:50+0300\n"
+"POT-Creation-Date: 2019-12-24 14:48+0100\n"
+"PO-Revision-Date: 2019-12-25 18:54+0300\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -23,12 +23,12 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: cifsiostat.c:73 mpstat.c:132 iostat.c:88 tapestat.c:101 sar.c:102
+#: cifsiostat.c:77 mpstat.c:134 iostat.c:88 tapestat.c:104 sar.c:108
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ]\n"
 
-#: cifsiostat.c:77
+#: cifsiostat.c:81
 #, c-format
 msgid ""
 "Options are:\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Параметры:\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:80
+#: cifsiostat.c:84
 #, c-format
 msgid ""
 "Options are:\n"
@@ -46,12 +46,12 @@ msgstr ""
 "Параметры:\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
-#: sadc.c:90
+#: sadc.c:98
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ] [ <вых_файл> ]\n"
 
-#: sadc.c:93
+#: sadc.c:101
 #, c-format
 msgid ""
 "Options are:\n"
@@ -62,33 +62,28 @@ msgstr ""
 "[ -C <комментарий> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:264
+#: sadc.c:272
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Не удалось записать данные в файл системных показателей: %s\n"
 
-#: sadc.c:704 sadc.c:767 count.c:118 ioconf.c:506 rd_stats.c:75
-#: sa_common.c:1720
+#: sadc.c:720 sadc.c:783 ioconf.c:507 rd_stats.c:75 sa_common.c:1843
+#: count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Не удалось открыть %s: %s\n"
 
-#: sadc.c:986
+#: sadc.c:1005
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не удалось добавить данные в этот файл (%s)\n"
 
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Не удаётся обработать так много процессоров!\n"
-
-#: sadf.c:98
+#: sadf.c:104
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ] [ <файл_данных> | -[0-9]+ ]\n"
 
-#: sadf.c:101
+#: sadf.c:107
 #, c-format
 msgid ""
 "Options are:\n"
@@ -105,12 +100,12 @@ msgstr ""
 "[ -s [ <чч:мм[:сс]> ] ] [ -e [ <чч:мм[:сс]> ] ]\n"
 "[ -- <параметры_sar> ]\n"
 
-#: sadf.c:1854
+#: sadf.c:1839
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "скомпилирована без поддержки PCP\n"
 
-#: mpstat.c:135
+#: mpstat.c:137
 #, c-format
 msgid ""
 "Options are:\n"
@@ -123,7 +118,7 @@ msgstr ""
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <список_узлов> | ALL } ] [ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <список_ЦП> | ON | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1641 pidstat.c:2412 sar.c:370
+#: mpstat.c:1736 pidstat.c:2419 sar.c:376
 msgid "Average:"
 msgstr "Среднее:"
 
@@ -132,57 +127,57 @@ msgstr "Среднее:"
 msgid "Cannot read %s\n"
 msgstr "Не удалось прочитать %s\n"
 
-#: sa_common.c:297
+#: sa_common.c:306
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Файл создан с помощью sar/sadc из sysstat версии %d.%d.%d"
 
-#: sa_common.c:328
+#: sa_common.c:337
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Недопустимый файл системных показателей: %s\n"
 
-#: sa_common.c:336
+#: sa_common.c:345
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Текущая версия sysstat не может читать формат этого файла (%#x)\n"
 
-#: sa_common.c:353 pidstat.c:243
+#: sa_common.c:362 pidstat.c:250
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Запрошенный показатель недоступен\n"
 
-#: sa_common.c:1395
+#: sa_common.c:1437
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Ошибка чтения файла системных показателей: %s\n"
 
-#: sa_common.c:1405
+#: sa_common.c:1447
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Неожиданный конец файла системных показателей\n"
 
-#: sa_common.c:1723
+#: sa_common.c:1846
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Проверьте, включён ли сбор данных\n"
 
-#: sa_common.c:2048
+#: sa_common.c:2198
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Запрашиваемые показатели из файла %s недоступны\n"
 
-#: sa_common.c:2169 iostat.c:2067
+#: sa_common.c:2329 iostat.c:1978
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Некорректный тип постоянного имени устройства\n"
 
-#: pidstat.c:90
+#: pidstat.c:97
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr "Использование: %s [ параметры ] [ <интервал> [ <счётчик> ] ] [ -e <программа> <аргументы> ]\n"
 
-#: pidstat.c:93
+#: pidstat.c:100
 #, c-format
 msgid ""
 "Options are:\n"
@@ -197,64 +192,74 @@ msgstr ""
 "[ -G <имя_процесса> ] [ -p { <pid> [,…] | SELF | ALL } ]\n"
 "[ -T { TASK | CHILD | ALL } ] [ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
 
-#: sadf_misc.c:1181
+#: sadf_misc.c:1214
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Файл системных показателей: %s (%#x)\n"
 
-#: sadf_misc.c:1190
+#: sadf_misc.c:1223
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Файл данных оригинальной программы sa: %s (%x)\n"
 
-#: sadf_misc.c:1191
+#: sadf_misc.c:1224
 msgid "no"
 msgstr "нет"
 
-#: sadf_misc.c:1191
+#: sadf_misc.c:1224
 msgid "yes"
 msgstr "да"
 
-#: sadf_misc.c:1194
+#: sadf_misc.c:1227
 #, c-format
 msgid "Host: "
 msgstr "Узел: "
 
-#: sadf_misc.c:1204
+#: sadf_misc.c:1237
 #, c-format
 msgid "File date: %s\n"
 msgstr "Дата файла: %s\n"
 
-#: sadf_misc.c:1207
+#: sadf_misc.c:1240
 #, c-format
 msgid "File time: "
 msgstr "Время файла: "
 
-#: sadf_misc.c:1213
+#: sadf_misc.c:1245
+#, c-format
+msgid "Timezone: %s\n"
+msgstr "Часовой пояс: %s\n"
+
+#: sadf_misc.c:1248
 #, c-format
 msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 msgstr "Состав файла: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 
-#: sadf_misc.c:1218
+#: sadf_misc.c:1253
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Размер long int: %d\n"
 
-#: sadf_misc.c:1220
+#: sadf_misc.c:1255
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Количество показателей в файле: %u\n"
 
-#: sadf_misc.c:1223
+#: sadf_misc.c:1257
+#, c-format
+msgid "Extra structures available: %c\n"
+msgstr "Доступны дополнительные структуры: %c\n"
+
+#: sadf_misc.c:1260
 #, c-format
 msgid "List of activities:\n"
 msgstr "Список показателей:\n"
 
-#: sadf_misc.c:1234
+#: sadf_misc.c:1271
 msgid "Unknown activity"
 msgstr "Неизвестный показатель"
 
-#: sadf_misc.c:1242
+#: sadf_misc.c:1279
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Неизвестный формат]"
@@ -262,6 +267,11 @@ msgstr " \t[Неизвестный формат]"
 #: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
 msgid "Summary:"
 msgstr "Сводка:"
+
+#: count.c:169
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Не удаётся обработать так много процессоров!\n"
 
 #: iostat.c:91
 #, c-format
@@ -297,12 +307,7 @@ msgstr ""
 "[ [ -H ] -g <имя_группы> ] [ -p [ <устройство> [,…] | ALL ] ]\n"
 "[ <устройство> […] | ALL ]\n"
 
-#: iostat.c:346
-#, c-format
-msgid "Cannot find disk data\n"
-msgstr "Не удалось найти данные диска\n"
-
-#: tapestat.c:103
+#: tapestat.c:106
 #, c-format
 msgid ""
 "Options are:\n"
@@ -311,17 +316,17 @@ msgstr ""
 "Параметры:\n"
 "[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:269
+#: tapestat.c:272
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Ленточные устройства со статистикой не найдены\n"
 
-#: common.c:78
+#: common.c:79
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat, версия %s\n"
 
-#: sar.c:117
+#: sar.c:123
 #, c-format
 msgid ""
 "Options are:\n"
@@ -332,7 +337,7 @@ msgid ""
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 msgstr ""
@@ -344,46 +349,46 @@ msgstr ""
 "[ -m { <ключ_слово> [,…] | ALL } ] [ -n { <ключ_слово> [,…] | ALL } ]\n"
 "[ --dev=<спск_устройств> ] [ --fs=<спск_ФС> ] [ --iface=<спск_интерфейсов> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
-"[ -j { ID | LABEL | PATH | UUID | … } ]\n"
+"[ -j { SID | ID | LABEL | PATH | UUID | … } ]\n"
 "[ -f [ <имя_файла> ] | -o [ <имя_файла> ]| -[0-9]+ ]\n"
 "[ -i <интервал> ] [ -s [ <чч:мм[:сс]> ] ] [ -e [ <чч:мм[:сс]> ] ]\n"
 
-#: sar.c:142
+#: sar.c:148
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "Основные параметры и отчёты (имя отчёта в квадратных скобках):\n"
 
-#: sar.c:143
+#: sar.c:149
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\tСтатистика обмена страниц [A_PAGE]\n"
 
-#: sar.c:144
+#: sar.c:150
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr "\t-b\tСтатистика ввода-вывода и скорости передачи [A_IO]\n"
 
-#: sar.c:145
+#: sar.c:151
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\tСтатистика блочных устройств [A_DISK]\n"
 
-#: sar.c:146
+#: sar.c:152
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ MOUNT ]\n"
 
-#: sar.c:147
+#: sar.c:153
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\tСтатистика файловых систем [A_FS]\n"
 
-#: sar.c:148
+#: sar.c:154
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\tСтатистика использования огромных страниц [A_HUGE]\n"
 
-#: sar.c:149
+#: sar.c:155
 #, c-format
 msgid ""
 "\t-I { <int_list> | SUM | ALL }\n"
@@ -392,7 +397,7 @@ msgstr ""
 "\t-I { <список_прерываний> | SUM | ALL }\n"
 "\t\tСтатистика прерываний [A_IRQ]\n"
 
-#: sar.c:151
+#: sar.c:157
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -415,7 +420,7 @@ msgstr ""
 "\t\tTEMP\tтемпература устройств\n"
 "\t\tUSB\tподключённые USB-устройства\n"
 
-#: sar.c:160
+#: sar.c:166
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -466,12 +471,12 @@ msgstr ""
 "\t\tFC\tАдаптер Fibre channel\n"
 "\t\tSOFT\tПрограммная сетевая обработка\n"
 
-#: sar.c:183
+#: sar.c:189
 #, c-format
 msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
 msgstr "\t-q\tСтатистика длины и средней загрузки очереди [A_QUEUE]\n"
 
-#: sar.c:184
+#: sar.c:190
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -480,12 +485,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tСтатистика использования памяти [A_MEMORY]\n"
 
-#: sar.c:186
+#: sar.c:192
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\tСтатистика использования области подкачки [A_MEMORY]\n"
 
-#: sar.c:187
+#: sar.c:193
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -494,62 +499,62 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tСтатистика использования ЦП [A_CPU]\n"
 
-#: sar.c:189
+#: sar.c:195
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\tСтатистика таблиц ядра [A_KTABLES]\n"
 
-#: sar.c:190
+#: sar.c:196
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\tСтатистика раздела подкачки [A_SWAP]\n"
 
-#: sar.c:191
+#: sar.c:197
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\tСтатистика создания задач и системных переключений [A_PCSW]\n"
 
-#: sar.c:192
+#: sar.c:198
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tСтатистика устройств TTY [A_SERIAL]\n"
 
-#: sar.c:206
+#: sar.c:212
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Поиск системы сбора данных будет выполнен в PATH\n"
 
-#: sar.c:209
+#: sar.c:215
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Обнаружена система сбора данных: %s\n"
 
-#: sar.c:274
+#: sar.c:280
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Неожиданно закончились собираемые данные\n"
 
-#: sar.c:279
+#: sar.c:285
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Несогласованные входные данные\n"
 
-#: sar.c:881
+#: sar.c:890
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Используется ошибочное средство сбора данных от другой версии sysstat\n"
 
-#: sar.c:1488
+#: sar.c:1516
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Параметры -f и -o являются взаимоисключающими\n"
 
-#: sar.c:1494
+#: sar.c:1526
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Не выполняется чтение из файла системных показателей (используйте параметр -f)\n"
 
-#: sar.c:1641
+#: sar.c:1679
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Не удалось найти средство сбора данных (%s)\n"
@@ -577,12 +582,12 @@ msgstr ""
 "\n"
 "Обнаружены некорректные данные. Прекращение работы…\n"
 
-#: sa_conv.c:1863
+#: sa_conv.c:1865
 #, c-format
 msgid "Statistics:\n"
 msgstr "Статистика:\n"
 
-#: sa_conv.c:1964
+#: sa_conv.c:1966
 #, c-format
 msgid ""
 "\n"
@@ -591,15 +596,18 @@ msgstr ""
 "\n"
 "Формат файла уже самый актуальный\n"
 
-#: sa_conv.c:1970
+#: sa_conv.c:1972
 #, c-format
 msgid "HZ: Using current value: %lu\n"
 msgstr "HZ: Используется текущее значение: %lu\n"
 
-#: sa_conv.c:2001
+#: sa_conv.c:2003
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "Файл успешно преобразован в формат sysstat версии %s\n"
+
+#~ msgid "Cannot find disk data\n"
+#~ msgstr "Не удалось найти данные диска\n"
 
 #~ msgid "Cannot write system activity file header: %s\n"
 #~ msgstr "Не удалось записать заголовок в файл системных показателей: %s\n"
