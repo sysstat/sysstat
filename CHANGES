@@ -1,6 +1,24 @@
 Changes:
 
-2019/11/11: Version 12.2.0 - Sebastien Godard (sysstat <at> orange.fr)a
+2019/12/27: Version 12.3.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Konstantin Khlebnikov]: iostat: Add flush I/O statistics
+	  (statistics available starting with kernel 5.5).
+	* mpstat: Add new switch to display system topology.
+	* mpstat: Allow to select individual CPU/nodes with option -A.
+	* cifsiostat: Add support for SMB2 version of statistics file.
+	* mpstat: Add non regression tests.
+	* tapestat: Add non regression tests.
+	* cifsiostat: Add non regression tests.
+	* iostat: Add new non regression tests.
+	* sadf: Fix double free in check_file_actlst() [12.2.1].
+	* sadf: Fix heap overflow in logic2_display_loop() function.
+	* iostat: Fix wrong unit used in JSON output [12.2.1].
+	* [Leo]: Add missing header files when using musl C library [12.2.1].
+	* [Albert]: Add missing empty line in FAQ.md file [12.2.1].
+	* mpstat and iostat manual pages updated.
+	* Cosmetic changes.
+
+2019/11/11: Version 12.2.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: Save timezone value in binary data files (saDD).
 	* sadf: Display timezone value in output from sadf -H.
 	* sar/sadf: Make sure we will always be able to read file headers
