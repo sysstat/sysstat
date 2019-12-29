@@ -22,5 +22,6 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
 sda               6.40         1.60         1.60         0.00         50         50          0
 sdb               0.67        22.60         0.00         0.00        706          0          0
+sdd               1.63        67.48         0.00         0.00       2108          0          0
 
 

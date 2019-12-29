@@ -326,6 +326,8 @@ NOTES:
 02165	diff -u tests/out.iostat-x-0.tmp tests/expected.iostat-x-0
 02170	LC_ALL=C TZ=GMT ./iostat -dx -p sdb,sdc > tests/out.iostat-x-list.tmp
 02175	diff -u tests/out.iostat-x-list.tmp tests/expected.iostat-x-list
+02180	LC_ALL=C TZ=GMT ./iostat -x ALL 1 3 > tests/out.iostat-x-ALL-flush.tmp
+02185	diff -u tests/out.iostat-x-ALL-flush.tmp tests/expected.iostat-x-ALL-flush
 
 =====	iostat tests (narrow/basic output)
 02210	LC_ALL=C TZ=GMT ./iostat -s 1 2 > tests/out.iostat-s.tmp

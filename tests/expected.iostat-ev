@@ -13,5 +13,6 @@ sdb               0.00         0.00         0.00         0.00          0        
 Device             tps   Blk_read/s   Blk_wrtn/s   Blk_dscd/s   Blk_read   Blk_wrtn   Blk_dscd
 sda               6.40         3.20         3.20         0.00        100        100          0
 sdb               0.67        45.20         0.00         0.00       1412          0          0
+sdd               1.63       134.96         0.00         0.00       4216          0          0
 
 

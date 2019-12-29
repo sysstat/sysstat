@@ -22,5 +22,6 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
 sda               6.40      3.20     6.40    1.00     0.50    0.00   0.32
 sdb               0.67     22.60     0.00   47.00    33.62    0.10   0.05
+sdd               1.63     67.48     0.00   55.08    41.33    0.09   0.13
 
 
