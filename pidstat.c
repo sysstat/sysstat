@@ -38,7 +38,6 @@
 
 #include "version.h"
 #include "pidstat.h"
-#include "common.h"
 #include "rd_stats.h"
 #include "count.h"
 
@@ -53,10 +52,6 @@
 #ifdef USE_SCCSID
 #define SCCSID "@(#)sysstat-" VERSION ": " __FILE__ " compiled " __DATE__ " " __TIME__
 char *sccsid(void) { return (SCCSID); }
-#endif
-
-#ifdef TEST
-void int_handler(int n) { return; }
 #endif
 
 unsigned long long tot_jiffies[3] = {0, 0, 0};
@@ -126,7 +121,7 @@ void alarm_handler(int sig)
  * @sig	Signal number.
  ***************************************************************************
  */
-void sig_handler(int sig)
+void int_handler(int sig)
 {
 	signal_caught = 1;
 }
@@ -750,7 +745,7 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 		sprintf(filename, PID_FD, pid);
 	}
 
-	if ((dir = opendir(filename)) == NULL) {
+	if ((dir = __opendir(filename)) == NULL) {
 		/* Cannot read fd directory */
 		pst->flags |= F_NO_PID_FD;
 		return 0;
@@ -759,13 +754,13 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 	pst->fd_nr = 0;
 
 	/* Count number of entries if fd directory */
-	while ((drp = readdir(dir)) != NULL) {
+	while ((drp = __readdir(dir)) != NULL) {
 		if (isdigit(drp->d_name[0])) {
 			(pst->fd_nr)++;
 		}
 	}
 
-	closedir(dir);
+	__closedir(dir);
 
 	pst->pid = pid;
 	pst->tgid = tgid;
@@ -867,13 +862,13 @@ unsigned int count_pid(void)
 	unsigned int pid = 0;
 
 	/* Open /proc directory */
-	if ((dir = opendir(PROC)) == NULL) {
+	if ((dir = __opendir(PROC)) == NULL) {
 		perror("opendir");
 		exit(4);
 	}
 
 	/* Get directory entries */
-	while ((drp = readdir(dir)) != NULL) {
+	while ((drp = __readdir(dir)) != NULL) {
 		if (isdigit(drp->d_name[0])) {
 			/* There is at least the TGID */
 			pid++;
@@ -884,7 +879,7 @@ unsigned int count_pid(void)
 	}
 
 	/* Close /proc directory */
-	closedir(dir);
+	__closedir(dir);
 
 	return pid;
 }
@@ -978,10 +973,10 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
 
 	/* Open /proc/#/task directory */
 	sprintf(filename, PROC_TASK, pid);
-	if ((dir = opendir(filename)) == NULL)
+	if ((dir = __opendir(filename)) == NULL)
 		return;
 
-	while ((drp = readdir(dir)) != NULL) {
+	while ((drp = __readdir(dir)) != NULL) {
 		if (!isdigit(drp->d_name[0])) {
 			continue;
 		}
@@ -997,7 +992,7 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
 		}
 	}
 
-	closedir(dir);
+	__closedir(dir);
 }
 
 /*
@@ -1042,13 +1037,13 @@ void read_stats(int curr, unsigned int pid_array_nr)
 	if (DISPLAY_ALL_PID(pidflag)) {
 
 		/* Open /proc directory */
-		if ((dir = opendir(PROC)) == NULL) {
+		if ((dir = __opendir(PROC)) == NULL) {
 			perror("opendir");
 			exit(4);
 		}
 
 		/* Get directory entries */
-		while ((drp = readdir(dir)) != NULL) {
+		while ((drp = __readdir(dir)) != NULL) {
 			if (!isdigit(drp->d_name[0])) {
 				continue;
 			}
@@ -1075,7 +1070,7 @@ void read_stats(int curr, unsigned int pid_array_nr)
 		}
 
 		/* Close /proc directory */
-		closedir(dir);
+		__closedir(dir);
 	}
 
 	else if (DISPLAY_PID(pidflag)) {
@@ -2519,11 +2514,11 @@ void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 
 	/* Set a handler for SIGINT */
 	memset(&int_act, 0, sizeof(int_act));
-	int_act.sa_handler = sig_handler;
+	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
 
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
-	pause();
+	__pause();
 
 	if (signal_caught)
 		/* SIGINT/SIGCHLD signals caught during first interval: Exit immediately */
@@ -2559,7 +2554,7 @@ void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 
 		if (count) {
 
-			pause();
+			__pause();
 
 			if (signal_caught) {
 				/* SIGINT/SIGCHLD signals caught => Display average stats */
@@ -2632,7 +2627,7 @@ pid_t exec_pgm(int argc, char **argv)
 			 * average statistics.
 			 */
 			memset(&chld_act, 0, sizeof(chld_act));
-			chld_act.sa_handler = sig_handler;
+			chld_act.sa_handler = int_handler;
 			sigaction(SIGCHLD, &chld_act, NULL);
 
 			return child;
@@ -2929,7 +2924,7 @@ int main(int argc, char **argv)
 	get_localtime(&(ps_tstamp[0]), 0);
 
 	/* Get system name, release number and hostname */
-	uname(&header);
+	__uname(&header);
 	print_gal_header(&(ps_tstamp[0]), header.sysname, header.release,
 			 header.nodename, header.machine, cpu_nr,
 			 PLAIN_OUTPUT);

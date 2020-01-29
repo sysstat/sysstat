@@ -10,6 +10,7 @@
 /* sys/param.h defines HZ but needed for _POSIX_ARG_MAX and LOGIN_NAME_MAX */
 #undef HZ
 #endif
+#include "common.h"
 
 #define K_SELF		"SELF"
 
@@ -94,24 +95,24 @@
 #define NO_PID_FD(m)		(((m) & F_NO_PID_FD) == F_NO_PID_FD)
 
 
-#define PROC		"/proc"
+#define PROC		PRE "/proc"
 
-#define PID_STAT	"/proc/%u/stat"
-#define PID_STATUS	"/proc/%u/status"
-#define PID_IO		"/proc/%u/io"
-#define PID_CMDLINE	"/proc/%u/cmdline"
-#define PID_SMAP	"/proc/%u/smaps"
-#define PID_FD		"/proc/%u/fd"
-#define PID_SCHED	"/proc/%u/schedstat"
+#define PID_STAT	PRE "/proc/%u/stat"
+#define PID_STATUS	PRE "/proc/%u/status"
+#define PID_IO		PRE "/proc/%u/io"
+#define PID_CMDLINE	PRE "/proc/%u/cmdline"
+#define PID_SMAP	PRE "/proc/%u/smaps"
+#define PID_FD		PRE "/proc/%u/fd"
+#define PID_SCHED	PRE "/proc/%u/schedstat"
 
-#define PROC_TASK	"/proc/%u/task"
-#define TASK_STAT	"/proc/%u/task/%u/stat"
-#define TASK_SCHED	"/proc/%u/task/%u/schedstat"
-#define TASK_STATUS	"/proc/%u/task/%u/status"
-#define TASK_IO		"/proc/%u/task/%u/io"
-#define TASK_CMDLINE	"/proc/%u/task/%u/cmdline"
-#define TASK_SMAP	"/proc/%u/task/%u/smaps"
-#define TASK_FD		"/proc/%u/task/%u/fd"
+#define PROC_TASK	PRE "/proc/%u/task"
+#define TASK_STAT	PRE "/proc/%u/task/%u/stat"
+#define TASK_SCHED	PRE "/proc/%u/task/%u/schedstat"
+#define TASK_STATUS	PRE "/proc/%u/task/%u/status"
+#define TASK_IO		PRE "/proc/%u/task/%u/io"
+#define TASK_CMDLINE	PRE "/proc/%u/task/%u/cmdline"
+#define TASK_SMAP	PRE "/proc/%u/task/%u/smaps"
+#define TASK_FD		PRE "/proc/%u/task/%u/fd"
 
 #define PRINT_ID_HDR(_timestamp_, _flag_)	do {						\
 							printf("\n%-11s", _timestamp_);	\

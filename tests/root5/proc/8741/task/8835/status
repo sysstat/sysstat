@@ -1,0 +1,55 @@
+Name:	ImgDecoder #1
+Umask:	0002
+State:	S (sleeping)
+Tgid:	8741
+Ngid:	0
+Pid:	8835
+PPid:	7900
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	512
+Groups:	1000 
+NStgid:	8741
+NSpid:	8835
+NSpgid:	7783
+NSsid:	7783
+VmPeak:	 2594864 kB
+VmSize:	 2524288 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	  380892 kB
+VmRSS:	  331540 kB
+RssAnon:	  199356 kB
+RssFile:	  114148 kB
+RssShmem:	   18036 kB
+VmData:	  409572 kB
+VmStk:	     136 kB
+VmExe:	     164 kB
+VmLib:	  174948 kB
+VmPTE:	    2288 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	1
+Threads:	69
+SigQ:	0/31709
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000001001000
+SigCgt:	0000000f800044af
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000003fffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Speculation_Store_Bypass:	thread vulnerable
+Cpus_allowed:	ff
+Cpus_allowed_list:	0-7
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	181
+nonvoluntary_ctxt_switches:	1

@@ -1,0 +1,55 @@
+Name:	dconf worker
+Umask:	0002
+State:	S (sleeping)
+Tgid:	10208
+Ngid:	0
+Pid:	10334
+PPid:	7928
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	256
+Groups:	1000 
+NStgid:	10208
+NSpid:	10334
+NSpgid:	7807
+NSsid:	7807
+VmPeak:	 2536592 kB
+VmSize:	 2512656 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	  362376 kB
+VmRSS:	  291884 kB
+RssAnon:	  163792 kB
+RssFile:	  108068 kB
+RssShmem:	   20024 kB
+VmData:	  391884 kB
+VmStk:	     136 kB
+VmExe:	     164 kB
+VmLib:	  171316 kB
+VmPTE:	    2232 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	1
+Threads:	67
+SigQ:	0/31709
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000001001000
+SigCgt:	0000000f800044af
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000003fffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Speculation_Store_Bypass:	thread vulnerable
+Cpus_allowed:	ff
+Cpus_allowed_list:	0-7
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	9
+nonvoluntary_ctxt_switches:	0

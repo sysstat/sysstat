@@ -1,0 +1,16 @@
+8407
+8741
+21342
+cpuinfo
+devices
+diskstats
+interrupts
+loadavg
+meminfo
+net
+softirqs
+stat
+sys
+tty
+uptime
+vmstat

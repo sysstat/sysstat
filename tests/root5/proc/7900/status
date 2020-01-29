@@ -1,0 +1,55 @@
+Name:	gnome-shell
+Umask:	0002
+State:	S (sleeping)
+Tgid:	7900
+Ngid:	0
+Pid:	7900
+PPid:	7786
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	128
+Groups:	1000 
+NStgid:	7900
+NSpid:	7900
+NSpgid:	7783
+NSsid:	7783
+VmPeak:	 4522916 kB
+VmSize:	 4450844 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	  271304 kB
+VmRSS:	  259144 kB
+RssAnon:	  163364 kB
+RssFile:	   86404 kB
+RssShmem:	    9376 kB
+VmData:	  353256 kB
+VmStk:	     132 kB
+VmExe:	      16 kB
+VmLib:	  147412 kB
+VmPTE:	    1784 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	1
+Threads:	18
+SigQ:	0/31709
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000001001000
+SigCgt:	00000001820144f0
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000003fffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Speculation_Store_Bypass:	thread vulnerable
+Cpus_allowed:	ff
+Cpus_allowed_list:	0-7
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	179498
+nonvoluntary_ctxt_switches:	22693

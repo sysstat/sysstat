@@ -5,9 +5,22 @@ dm-2 virtual device present
 tape statistics available
 CIFS SMB1 statistics available
 
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 21344 21350]
+9009[9009 9029]
+8407[8407]
+
 ==========root2:
 tape statistics available
 CIFS SMB1 statistics available. New share added.
+
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 21344 21350]
+9009[9009 9029]
+7900[7900 10334]
+8407[8407]
 
 ==========root3:
 /proc/stat
@@ -28,6 +41,12 @@ sdh: autofs, registered
 
 CIFS SMB1 statistics available
 
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 21350 8364 8365]
+7900[7900 10334]
+8407[8407]
+
 ==========root4:
 /proc/stat
 CPU#6: offline
@@ -47,6 +66,13 @@ host2: registered
 
 CIFS SMB1 and SMB2 statistics available
 
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 8364 8365]
+9009[9009 9033]
+7900[7900]
+8407[8407]
+
 ==========root5:
 /proc/stat
 CPU#6: online
@@ -55,6 +81,13 @@ CPU#6: online
 sdc: flush I/Os stats
 
 CIFS SMB1 and SMB2 statistics available
+
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 21344 8364 8365]
+9009[9009 9033]
+7900[7900]
+8407[8407]
 
 ==========root6:
 /proc/stat
@@ -71,6 +104,16 @@ enp6s0-2,wlp5s0-2: available
 /sys/devices/system/cpu directory non existent
 Determine number of CPU using /proc/stat
 
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 21344 8365]
+8407[8407]
+
 ==========root7:
 /proc/diskstats
 sda, sda1: discard I/Os
+
+PID:
+8741[8741 8785 9109 8789 8835]
+21342[21342 21344 8365]
+8407[8407]
