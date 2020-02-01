@@ -28,6 +28,7 @@
 #define __closedir(m)		close_list(m)
 #define __realpath(m,n)		get_realname(m,n)
 #define __gettimeofday(m,n)	get_day_time(m)
+#define __getpwuid(m)		get_usrname(m)
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
@@ -51,6 +52,7 @@
 #define __closedir(m)		closedir(m)
 #define __realpath(m,n)		realpath(m,n)
 #define __gettimeofday(m,n)	gettimeofday(m,n)
+#define __getpwuid(m)		getpwuid(m)
 
 #endif
 
@@ -75,6 +77,8 @@ void get_uname
 	(struct utsname *);
 void get_unix_time
 	(time_t *);
+struct passwd *get_usrname
+	(uid_t);
 void next_time_step
 	(void);
 DIR *open_list

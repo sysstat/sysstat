@@ -1334,7 +1334,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	}
 
 	if (USER_STRING(pidflag)) {
-		if ((pwdent = getpwuid((*pstc)->uid)) != NULL) {
+		if ((pwdent = __getpwuid((*pstc)->uid)) != NULL) {
 			if (strcmp(pwdent->pw_name, userstr))
 				/* This PID doesn't belong to user */
 				return -1;
@@ -1358,7 +1358,7 @@ void __print_line_id(struct pid_stats *pst, char c)
 	char format[32];
 	struct passwd *pwdent;
 
-	if (DISPLAY_USERNAME(pidflag) && ((pwdent = getpwuid(pst->uid)) != NULL)) {
+	if (DISPLAY_USERNAME(pidflag) && ((pwdent = __getpwuid(pst->uid)) != NULL)) {
 		cprintf_in(IS_STR, " %8s", pwdent->pw_name, 0);
 	}
 	else {

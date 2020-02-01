@@ -28,10 +28,12 @@
 #include <time.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <pwd.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
 #include <sys/time.h>
+#include <sys/types.h>
 
 #include "systest.h"
 
@@ -305,6 +307,34 @@ char *get_realname(char *name, char *c)
 	resolved_name[1023] = '\0';
 
 	return resolved_name;
+}
+
+/*
+ ***************************************************************************
+ * Replacement function for getpwuid() system call. Fill a dummy passwd
+ * structure containing the name of a user.
+ *
+ * IN:
+ * @uid		UID of the user
+ *
+ * RETURNS:
+ * Pointer on the passwd structure.
+ ***************************************************************************
+ */
+struct passwd *get_usrname(uid_t uid)
+{
+	static struct passwd pwd_ent;
+	static char pw_name[16];
+
+	pwd_ent.pw_name = pw_name;
+	if (!uid) {
+		strcpy(pwd_ent.pw_name, "root");
+	}
+	else {
+		strcpy(pwd_ent.pw_name, "testusr");
+	}
+
+	return &pwd_ent;
 }
 
 #endif	/* TEST */
