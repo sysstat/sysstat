@@ -1,0 +1,1 @@
+diff -u tests/out.pidstat.tmp tests/expected.pidstat

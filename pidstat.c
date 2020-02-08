@@ -745,7 +745,7 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 		sprintf(filename, PID_FD, pid);
 	}
 
-	if ((dir = __opendir(filename)) == NULL) {
+	if ((dir = opendir(filename)) == NULL) {
 		/* Cannot read fd directory */
 		pst->flags |= F_NO_PID_FD;
 		return 0;
@@ -754,13 +754,13 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 	pst->fd_nr = 0;
 
 	/* Count number of entries if fd directory */
-	while ((drp = __readdir(dir)) != NULL) {
+	while ((drp = readdir(dir)) != NULL) {
 		if (isdigit(drp->d_name[0])) {
 			(pst->fd_nr)++;
 		}
 	}
 
-	__closedir(dir);
+	closedir(dir);
 
 	pst->pid = pid;
 	pst->tgid = tgid;
@@ -1220,7 +1220,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 
 
 			if (DISPLAY_STACK(activity) && (!isActive)) {
-				if (((*pstc)->stack_size  != (*pstp)->stack_size) ||
+				if (((*pstc)->stack_size != (*pstp)->stack_size) ||
 				    ((*pstc)->stack_ref != (*pstp)->stack_ref)) {
 					isActive = TRUE;
 				}

@@ -496,5 +496,17 @@ NOTES:
 04615	LC_ALL=C ./cifsiostat 2 0 2>&1 | grep "Usage:" >/dev/null
 04620	LC_ALL=C ./cifsiostat 2 2 2 2>&1 | grep "Usage:" >/dev/null
 
+=====	pidstat: Basic tests
+05000	LC_ALL=C TZ=GMT ./pidstat > tests/out.pidstat.tmp
+05005	diff -u tests/out.pidstat.tmp tests/expected.pidstat
+05010	LC_ALL=C TZ=GMT ./pidstat -dRrsuvw > tests/out.pidstat-A.tmp
+05015	diff -u tests/out.pidstat-A.tmp tests/expected.pidstat-A
+05020	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw > tests/out.pidstat-At.tmp
+05025	diff -u tests/out.pidstat-At.tmp tests/expected.pidstat-At
+05030	LC_ALL=C TZ=GMT ./pidstat -dRrsuvw -p ALL > tests/out.pidstat-A-ALL.tmp
+05035	diff -u tests/out.pidstat-A-ALL.tmp tests/expected.pidstat-A-ALL
+05040	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw -p ALL > tests/out.pidstat-At-ALL.tmp
+05045	diff -u tests/out.pidstat-At-ALL.tmp tests/expected.pidstat-At-ALL
+
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
