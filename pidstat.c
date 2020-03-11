@@ -1197,7 +1197,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 				}
 			}
 
-			if (DISPLAY_MEM(activity) && (!isActive)) {
+			if (DISPLAY_MEM(activity) && !isActive) {
 				if (((*pstc)->minflt != (*pstp)->minflt) ||
 				    ((*pstc)->majflt != (*pstp)->majflt)) {
 					isActive = TRUE;
@@ -1219,19 +1219,19 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			}
 
 
-			if (DISPLAY_STACK(activity) && (!isActive)) {
+			if (DISPLAY_STACK(activity) && !isActive) {
 				if (((*pstc)->stack_size != (*pstp)->stack_size) ||
 				    ((*pstc)->stack_ref != (*pstp)->stack_ref)) {
 					isActive = TRUE;
 				}
 			}
 
-			if (DISPLAY_IO(activity) && (!isActive)) {
+			if (DISPLAY_IO(activity) && !isActive) {
 				if ((*pstc)->blkio_swapin_delays !=
 				     (*pstp)->blkio_swapin_delays) {
 					isActive = TRUE;
 				}
-				if (!(NO_PID_IO((*pstc)->flags)) && (!isActive)) {
+				if (!(NO_PID_IO((*pstc)->flags)) && !isActive) {
 					/* /proc/#/io file should exist to check I/O stats */
 					if (((*pstc)->read_bytes  != (*pstp)->read_bytes)  ||
 					    ((*pstc)->write_bytes != (*pstp)->write_bytes) ||
@@ -1242,21 +1242,21 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 				}
 			}
 
-			if (DISPLAY_CTXSW(activity) && (!isActive)) {
+			if (DISPLAY_CTXSW(activity) && !isActive) {
 				if (((*pstc)->nvcsw  != (*pstp)->nvcsw) ||
 				    ((*pstc)->nivcsw != (*pstp)->nivcsw)) {
 					isActive = TRUE;
 				}
 			}
 
-			if (DISPLAY_RT(activity) && (!isActive)) {
+			if (DISPLAY_RT(activity) && !isActive) {
 				if (((*pstc)->priority != (*pstp)->priority) ||
 				    ((*pstc)->policy != (*pstp)->policy)) {
 					isActive = TRUE;
 				}
 			}
 
-			if (DISPLAY_KTAB(activity) && (!isActive) &&
+			if (DISPLAY_KTAB(activity) && !isActive &&
 				/* /proc/#/fd directory should be readable */
 				!(NO_PID_FD((*pstc)->flags))) {
 				if (((*pstc)->threads != (*pstp)->threads) ||
