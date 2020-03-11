@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./pidstat -T TASK -d 1 3 > tests/out1.pidstat-d-TTASK.tmp

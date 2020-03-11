@@ -507,6 +507,32 @@ NOTES:
 05035	diff -u tests/out.pidstat-A-ALL.tmp tests/expected.pidstat-A-ALL
 05040	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw -p ALL > tests/out.pidstat-At-ALL.tmp
 05045	diff -u tests/out.pidstat-At-ALL.tmp tests/expected.pidstat-At-ALL
+05050	LC_ALL=C TZ=GMT ./pidstat -T TASK -dRrsuvw > tests/out.pidstat-A-TTASK.tmp
+05055	diff -u tests/out.pidstat-A-TTASK.tmp tests/expected.pidstat-A-TTASK
+05060	LC_ALL=C TZ=GMT ./pidstat -T TASK -dRrsuvw 2 6 > tests/out1.pidstat-A-TTASK.tmp
+05065	diff -u tests/out.pidstat-A-TTASK-run.tmp tests/expected1.pidstat-A-TTASK
+05070	LC_ALL=C TZ=GMT ./pidstat -T TASK -t -dRrsuvw 2 6 > tests/out1.pidstat-At-TTASK.tmp
+05075	diff -u tests/out1.pidstat-At-TTASK.tmp tests/expected1.pidstat-At-TTASK
+05080	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw 2 6 > tests/out1.pidstat-At.tmp
+05085	diff -u tests/out1.pidstat-At.tmp tests/expected1.pidstat-At
+05090	LC_ALL=C TZ=GMT ./pidstat -T TASK -t -dRrsuvw -p ALL 2 6 > tests/out1.pidstat-At-TTASK-ALL.tmp
+05095	diff -u tests/out1.pidstat-At-TTASK-ALL.tmp tests/expected1.pidstat-At-TTASK-ALL
+05100	LC_ALL=C TZ=GMT ./pidstat -T CHILD -dRrsuvw > tests/out.pidstat-A-TCHILD.tmp
+05105	diff -u tests/out.pidstat-A-TCHILD.tmp tests/expected.pidstat-A-TCHILD
+05110	LC_ALL=C TZ=GMT ./pidstat -T CHILD -dRrsuvw 2 6 > tests/out1.pidstat-A-TCHILD.tmp
+05115	diff -u tests/out1.pidstat-A-TCHILD.tmp tests/expected1.pidstat-A-TCHILD
+05120	LC_ALL=C TZ=GMT ./pidstat -T CHILD -t -dRrsuvw 2 6 > tests/out1.pidstat-At-TCHILD.tmp
+05125	diff -u tests/out1.pidstat-At-TCHILD.tmp tests/expected1.pidstat-At-TCHILD
+05130	LC_ALL=C TZ=GMT ./pidstat -T CHILD -t -dRrsuvw -p ALL 2 6 > tests/out1.pidstat-At-TCHILD-ALL.tmp
+05135	diff -u tests/out1.pidstat-At-TCHILD-ALL.tmp tests/expected1.pidstat-At-TCHILD-ALL
+05140	LC_ALL=C TZ=GMT ./pidstat -T ALL -t -dRrsuvw > tests/out.pidstat-At-TALL.tmp
+05145	diff -u tests/out.pidstat-At-TALL.tmp tests/expected.pidstat-At-TALL
+05150	LC_ALL=C TZ=GMT ./pidstat -T ALL -t -dRrsuvw -p ALL 2 6 > tests/out1.pidstat-At-TALL-ALL.tmp
+05155	diff -u tests/out1.pidstat-At-TALL-ALL.tmp tests/expected1.pidstat-At-TALL-ALL
+05160	LC_ALL=C TZ=GMT ./pidstat -T TASK -d 1 3 > tests/out1.pidstat-d-TTASK.tmp
+05165	diff -u tests/out1.pidstat-d-TTASK.tmp tests/expected1.pidstat-d-TTASK
+05170	LC_ALL=C TZ=GMT ./pidstat -T TASK -d -p ALL > tests/out.pidstat-d-TTASK-ALL.tmp
+05175	diff -u tests/out.pidstat-d-TTASK-ALL.tmp tests/expected.pidstat-d-TTASK-ALL
 
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
