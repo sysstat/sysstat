@@ -632,13 +632,12 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
 	len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp);
 	fclose(fp);
 
-	for (i = 0; i < len; i++) {
-		if (line[i] == '\0') {
-			line[i] = ' ';
-		}
-	}
-
 	if (len) {
+		for (i = 0; i < len - 1; i++) {
+			if (line[i] == '\0') {
+				line[i] = ' ';
+			}
+		}
 		strncpy(pst->cmdline, line, MAX_CMDLINE_LEN - 1);
 		pst->cmdline[MAX_CMDLINE_LEN - 1] = '\0';
 	}
