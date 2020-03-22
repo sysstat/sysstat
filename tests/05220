@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./pidstat -druws 1 3 > tests/out1.pidstat.tmp

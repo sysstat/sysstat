@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./pidstat -t -rw -u -U root 2 1 > tests/out.pidstat-Uroot.tmp

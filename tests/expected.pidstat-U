@@ -1,0 +1,9 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00        USER       PID    usr-ms system-ms  guest-ms  Command
+00:00:02     testusr      7900    112090     16710         0  gnome-shell
+00:00:02        root      8407       110        10         0  gnome-terminal-
+
+Average:        USER       PID    usr-ms system-ms  guest-ms  Command
+Average:     testusr      7900    112090     16710         0  gnome-shell
+Average:        root      8407       110        10         0  gnome-terminal-

@@ -1,0 +1,17 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:02      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:04      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:06     1000      9009   11.74    5.77    0.00    1.56   17.51     3  /usr/lib64/firefox/firefox -contentproc -childID 3 -isForBrowser -prefsLen 5430 -prefMapSize 178526 -parentBuildID 20190506075542 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appdir /usr/lib64/firefox/browser 8741 tab
+
+00:00:06      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:08     1000      9009    0.04    0.04    0.00    0.00    0.09     1  /usr/lib64/firefox/firefox -contentproc -childID 3 -isForBrowser -prefsLen 5430 -prefMapSize 178526 -parentBuildID 20190506075542 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appdir /usr/lib64/firefox/browser 8741 tab
+
+00:00:08      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:10      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command

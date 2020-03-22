@@ -1,0 +1,13 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00        USER      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:00        USER      TGID       TID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+
+00:00:00        USER      TGID       TID   cswch/s nvcswch/s  Command
+
+Average:        USER      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+Average:        USER      TGID       TID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+
+Average:        USER      TGID       TID   cswch/s nvcswch/s  Command

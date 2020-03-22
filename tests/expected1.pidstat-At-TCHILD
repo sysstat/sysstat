@@ -4,8 +4,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:02     1000      7900         -    112090     16710         0  gnome-shell
 00:00:02     1000         -      7900    109060     16050         0  |__gnome-shell
 00:00:02     1000         -     10334       410       120         0  |__dconf worker
-00:00:02     1000      8407         -       110        10         0  gnome-terminal-
-00:00:02     1000         -      8407       110        10         0  |__gnome-terminal-
+00:00:02        0      8407         -       110        10         0  gnome-terminal-
+00:00:02        0         -      8407       110        10         0  |__gnome-terminal-
 00:00:02     1000         -      8741        10         0         0  |__firefox
 00:00:02     1000         -      9009        10         0         0  |__WebExtensions
 
@@ -13,16 +13,16 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:02     1000      7900         -    785212        49  gnome-shell
 00:00:02     1000         -      7900    740534        45  |__gnome-shell
 00:00:02     1000         -     10334     16402         3  |__dconf worker
-00:00:02     1000      8407         -         5         0  gnome-terminal-
-00:00:02     1000         -      8407         5         0  |__gnome-terminal-
+00:00:02        0      8407         -         5         0  gnome-terminal-
+00:00:02        0         -      8407         5         0  |__gnome-terminal-
 00:00:02     1000      9009         -         1         0  WebExtensions
 00:00:02     1000         -      9009         1         0  |__WebExtensions
 
 00:00:02      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
 00:00:04     1000      7900         -       210        50         0  gnome-shell
 00:00:04     1000         -      7900       200        40         0  |__gnome-shell
-00:00:04     1000      8407         -        60         0         0  gnome-terminal-
-00:00:04     1000         -      8407        60         0         0  |__gnome-terminal-
+00:00:04        0      8407         -        60         0         0  gnome-terminal-
+00:00:04        0         -      8407        60         0         0  |__gnome-terminal-
 00:00:04     1000      8741         -        40        10         0  firefox
 00:00:04     1000         -      8741        20         0         0  |__firefox
 00:00:04     1000         -      8365        20         0         0  |__evolution-addre
@@ -30,8 +30,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:02      UID      TGID       TID minflt-nr majflt-nr  Command
 00:00:04     1000      7900         -      5281         0  gnome-shell
 00:00:04     1000         -      7900      5280         0  |__gnome-shell
-00:00:04     1000      8407         -         4         0  gnome-terminal-
-00:00:04     1000         -      8407         4         0  |__gnome-terminal-
+00:00:04        0      8407         -         4         0  gnome-terminal-
+00:00:04        0         -      8407         4         0  |__gnome-terminal-
 00:00:04     1000      8741         -         5         0  firefox
 00:00:04     1000         -      8741         5         0  |__firefox
 00:00:04     1000         -      8364        13         0  |__dconf worker
@@ -40,8 +40,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:04      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
 00:00:06     1000      7900         -       340        90         0  gnome-shell
 00:00:06     1000         -      7900       320        90         0  |__gnome-shell
-00:00:06     1000      8407         -        20        10         0  gnome-terminal-
-00:00:06     1000         -      8407        20        10         0  |__gnome-terminal-
+00:00:06        0      8407         -        20        10         0  gnome-terminal-
+00:00:06        0         -      8407        20        10         0  |__gnome-terminal-
 00:00:06     1000         -      8785         0 184467440737095483392         0  |__disk_cache:0
 00:00:06     1000      9009         -      4520      2220         0  WebExtensions
 00:00:06     1000         -      9009      3430      1010         0  |__WebExtensions
@@ -57,8 +57,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:06      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
 00:00:08     1000      7900         -       740       160         0  gnome-shell
 00:00:08     1000         -      7900       690       150         0  |__gnome-shell
-00:00:08     1000      8407         -        10         0         0  gnome-terminal-
-00:00:08     1000         -      8407        10         0         0  |__gnome-terminal-
+00:00:08        0      8407         -        10         0         0  gnome-terminal-
+00:00:08        0         -      8407        10         0         0  |__gnome-terminal-
 00:00:08     1000      9009         -        10        10         0  WebExtensions
 00:00:08     1000         -      9009        10        10         0  |__WebExtensions
 00:00:08     1000         -     21344       100        40         0  |__rtl_cache_wsupd
@@ -71,31 +71,31 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:08     1000         -     21344      2497         1  |__rtl_cache_wsupd
 
 00:00:08      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
-00:00:10     1000      8407         -        20         0         0  gnome-terminal-
-00:00:10     1000         -      8407        20         0         0  |__gnome-terminal-
+00:00:10        0      8407         -        20         0         0  gnome-terminal-
+00:00:10        0         -      8407        20         0         0  |__gnome-terminal-
 
 00:00:08      UID      TGID       TID minflt-nr majflt-nr  Command
 00:00:10     1000         -      8835         3         0  |__ImgDecoder #1
 
 00:00:10      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
-00:00:12     1000      8407         -        20         0         0  gnome-terminal-
-00:00:12     1000         -      8407        20         0         0  |__gnome-terminal-
+00:00:12        0      8407         -        20         0         0  gnome-terminal-
+00:00:12        0         -      8407        20         0         0  |__gnome-terminal-
 
 00:00:10      UID      TGID       TID minflt-nr majflt-nr  Command
-00:00:12     1000      8407         -         1         0  gnome-terminal-
-00:00:12     1000         -      8407         1         0  |__gnome-terminal-
+00:00:12        0      8407         -         1         0  gnome-terminal-
+00:00:12        0         -      8407         1         0  |__gnome-terminal-
 
 Average:      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
-Average:     1000      8407         -        40         3         0  gnome-terminal-
-Average:     1000         -      8407        40         3         0  |__gnome-terminal-
+Average:        0      8407         -        40         3         0  gnome-terminal-
+Average:        0         -      8407        40         3         0  |__gnome-terminal-
 Average:     1000      8741         -         7         2         0  firefox
 Average:     1000         -      8741         5         0         0  |__firefox
 Average:     1000         -      8785         0 30744573456182583296         0  |__disk_cache:0
 Average:     1000         -      8365         4         0         0  |__evolution-addre
 
 Average:      UID      TGID       TID minflt-nr majflt-nr  Command
-Average:     1000      8407         -         2         0  gnome-terminal-
-Average:     1000         -      8407         2         0  |__gnome-terminal-
+Average:        0      8407         -         2         0  gnome-terminal-
+Average:        0         -      8407         2         0  |__gnome-terminal-
 Average:     1000      8741         -         1         0  firefox
 Average:     1000         -      8741         1         0  |__firefox
 Average:     1000         -      8785 3074457345618034176 3074457345618258432  |__disk_cache:0

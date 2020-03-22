@@ -6,8 +6,8 @@ Ngid:	0
 Pid:	8407
 PPid:	7757
 TracerPid:	0
-Uid:	1000	1000	1000	1000
-Gid:	1000	1000	1000	1000
+Uid:	0	0	0	0
+Gid:	0	0	0	0
 FDSize:	64
 Groups:	1000 
 NStgid:	8407

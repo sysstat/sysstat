@@ -1,0 +1,17 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:02      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:04     1000      8741    0.13    0.03    0.00    0.03    0.16     5  firefox
+
+00:00:04      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:06      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:08      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:10      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+Average:     1000      8741    0.13    0.03    0.00    0.03    0.16     -  firefox

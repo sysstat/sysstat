@@ -1,0 +1,28 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00      UID       PID StkSize  StkRef  Command
+00:00:01     1000      8741     132      52  firefox
+
+00:00:00      UID       PID   cswch/s nvcswch/s  Command
+00:00:01     1000      8741      1.60      0.00  firefox
+
+00:00:00      UID       PID threads   fd-nr  Command
+00:00:01     1000      8741      67       5  firefox
+
+00:00:01      UID       PID StkSize  StkRef  Command
+00:00:02     1000      8741     132      52  firefox
+
+00:00:01      UID       PID   cswch/s nvcswch/s  Command
+00:00:02     1000      8741      7.68      0.00  firefox
+
+00:00:01      UID       PID threads   fd-nr  Command
+00:00:02     1000      8741      67       5  firefox
+
+Average:      UID       PID StkSize  StkRef  Command
+Average:     1000      8741     132      52  firefox
+
+Average:      UID       PID   cswch/s nvcswch/s  Command
+Average:     1000      8741      4.65      0.00  firefox
+
+Average:      UID       PID threads   fd-nr  Command
+Average:     1000      8741      67       5  firefox

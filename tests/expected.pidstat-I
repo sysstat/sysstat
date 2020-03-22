@@ -1,0 +1,73 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:02     1000      7900  359.4%   53.5%    0.0%    8.5%   51.8%     2  gnome-shell
+00:00:02        0      8407    0.4%    0.0%    0.0%    0.0%    0.0%     0  gnome-terminal-
+
+00:00:00      UID       PID    usr-ms system-ms  guest-ms  Command
+00:00:02     1000      7900    112090     16710         0  gnome-shell
+00:00:02        0      8407       110        10         0  gnome-terminal-
+
+00:00:00      UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+00:00:02     1000      7900  25095.93      1.48    4.2G  253.0M   3.2%  gnome-shell
+00:00:02        0      8407      0.16      0.00  706.9M   41.2M   0.5%  gnome-terminal-
+00:00:02     1000      8741      0.00      0.00    2.4G  327.9M   4.1%  firefox
+00:00:02     1000      9009      0.03      0.00    1.7G  103.2M   1.3%  WebExtensions
+
+00:00:00      UID       PID minflt-nr majflt-nr  Command
+00:00:02     1000      7900    785212        49  gnome-shell
+00:00:02        0      8407         5         0  gnome-terminal-
+00:00:02     1000      9009         1         0  WebExtensions
+
+00:00:00      UID       PID StkSize  StkRef  Command
+00:00:02     1000      7900  128.0k  108.0k  gnome-shell
+
+00:00:00      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
+00:00:02     1000      7900    411.8k      2.8k      0.0B     253  gnome-shell
+
+00:00:00      UID       PID   cswch/s nvcswch/s  Command
+00:00:02     1000      7900   5700.42    700.96  gnome-shell
+00:00:02        0      8407      5.00      0.06  gnome-terminal-
+00:00:02     1000      8741      1.60      0.00  firefox
+00:00:02     1000      9009      0.19      0.00  WebExtensions
+
+00:00:00      UID       PID threads   fd-nr  Command
+00:00:02     1000      7900      18       5  gnome-shell
+
+00:00:00      UID       PID prio policy  Command
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+Average:     1000      7900  359.4%   53.5%    0.0%    8.5%   51.8%     -  gnome-shell
+Average:        0      8407    0.4%    0.0%    0.0%    0.0%    0.0%     -  gnome-terminal-
+
+Average:      UID       PID    usr-ms system-ms  guest-ms  Command
+Average:     1000      7900    112090     16710         0  gnome-shell
+Average:        0      8407       110        10         0  gnome-terminal-
+
+Average:      UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+Average:     1000      7900  25095.93      1.48    4.2G  253.0M   3.2%  gnome-shell
+Average:        0      8407      0.16      0.00  706.9M   41.2M   0.5%  gnome-terminal-
+Average:     1000      8741      0.00      0.00    2.4G  327.9M   4.1%  firefox
+Average:     1000      9009      0.03      0.00    1.7G  103.2M   1.3%  WebExtensions
+
+Average:      UID       PID minflt-nr majflt-nr  Command
+Average:     1000      7900    785212        49  gnome-shell
+Average:        0      8407         5         0  gnome-terminal-
+Average:     1000      9009         1         0  WebExtensions
+
+Average:      UID       PID StkSize  StkRef  Command
+Average:     1000      7900  128.0k  108.0k  gnome-shell
+
+Average:      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
+Average:     1000      7900    411.8k      2.8k      0.0B     253  gnome-shell
+
+Average:      UID       PID   cswch/s nvcswch/s  Command
+Average:     1000      7900   5700.42    700.96  gnome-shell
+Average:        0      8407      5.00      0.06  gnome-terminal-
+Average:     1000      8741      1.60      0.00  firefox
+Average:     1000      9009      0.19      0.00  WebExtensions
+
+Average:      UID       PID threads   fd-nr  Command
+Average:     1000      7900      18       5  gnome-shell
+
+Average:      UID       PID prio policy  Command

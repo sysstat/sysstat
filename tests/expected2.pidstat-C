@@ -1,0 +1,17 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:02      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:04      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:06     1000      9009   11.74    5.77    0.00    1.56   17.51     3  WebExtensions
+
+00:00:06      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:08     1000      9009    0.04    0.04    0.00    0.00    0.09     1  WebExtensions
+
+00:00:08      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:10      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command

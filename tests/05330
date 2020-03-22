@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./pidstat -t -G fox -p ALL 2 6 > tests/out4.pidstat-G.tmp

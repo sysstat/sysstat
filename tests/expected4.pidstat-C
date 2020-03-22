@@ -1,0 +1,28 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+
+00:00:00      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:02     1000      7900         -  359.42   53.55    0.00    8.47  412.96     2  gnome-shell
+00:00:02     1000         -      7900  349.70   51.43    0.00    8.47  401.12     2  |__gnome-shell
+00:00:02     1000         -      8741    0.03    0.00    0.00    0.00    0.03     0  |__firefox
+
+00:00:02      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:04     1000      7900         -    0.67    0.16    0.00    0.06    0.83     7  gnome-shell
+00:00:04     1000         -      7900    0.64    0.13    0.00    0.06    0.77     7  |__gnome-shell
+00:00:04     1000      8741         -    0.13    0.03    0.00    0.03    0.16     5  firefox
+00:00:04     1000         -      8741    0.06    0.00    0.00    0.03    0.06     5  |__firefox
+
+00:00:04      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:06     1000      7900         -    0.88    0.23    0.00    0.00    1.12     0  gnome-shell
+00:00:06     1000         -      7900    0.83    0.23    0.00    0.00    1.06     0  |__gnome-shell
+
+00:00:06      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:08     1000      7900         -    3.31    0.71    0.00    0.09    4.02     5  gnome-shell
+00:00:08     1000         -      7900    3.08    0.67    0.00    0.09    3.75     5  |__gnome-shell
+
+00:00:08      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+00:00:10      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+
+Average:      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+Average:     1000      8741         -    0.13    0.03    0.00    0.03    0.16     -  firefox
+Average:     1000         -      8741    0.10    0.00    0.00    0.03    0.10     -  |__firefox

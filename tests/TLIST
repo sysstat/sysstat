@@ -533,6 +533,62 @@ NOTES:
 05165	diff -u tests/out1.pidstat-d-TTASK.tmp tests/expected1.pidstat-d-TTASK
 05170	LC_ALL=C TZ=GMT ./pidstat -T TASK -d -p ALL > tests/out.pidstat-d-TTASK-ALL.tmp
 05175	diff -u tests/out.pidstat-d-TTASK-ALL.tmp tests/expected.pidstat-d-TTASK-ALL
+05180	LC_ALL=C TZ=GMT ./pidstat -uRr -p 1234 1 2 > tests/out.pidstat-p-unkwn.tmp
+05185	diff -u tests/out.pidstat-p-unkwn.tmp tests/expected.pidstat-p-unkwn
+05190	LC_ALL=C TZ=GMT ./pidstat -svw -p 21342,8835 1 2 > tests/out2.pidstat-p-unkwn.tmp
+05195	diff -u tests/out2.pidstat-p-unkwn.tmp tests/expected2.pidstat-p-unkwn
+05200	LC_ALL=C TZ=GMT ./pidstat -ds -p 8741,21342 1 3 > tests/out.pidstat-p.tmp
+05205	diff -u tests/out.pidstat-p.tmp tests/expected.pidstat-p
+05210	LC_ALL=C TZ=GMT ./pidstat -uws -p ALL 1 3 > tests/out1.pidstat-p.tmp
+05215	diff -u tests/out1.pidstat-p.tmp tests/expected1.pidstat-p
+05220	LC_ALL=C TZ=GMT ./pidstat -druws 1 3 > tests/out1.pidstat.tmp
+05225	diff -u tests/out1.pidstat.tmp tests/expected1.pidstat
+05230	LC_ALL=C TZ=GMT ./pidstat -Rw 2 > tests/out.pidstat-sigint.tmp
+05235	diff -u tests/out.pidstat-sigint.tmp tests/expected.pidstat-sigint
+05240	LC_ALL=C TZ=GMT ./pidstat -C foofox 2 6 > tests/out.pidstat-C.tmp
+05245	diff -u tests/out.pidstat-C.tmp tests/expected.pidstat-C
+05250	LC_ALL=C TZ=GMT ./pidstat -C fox 2 6 > tests/out1.pidstat-C.tmp
+05255	diff -u tests/out1.pidstat-C.tmp tests/expected1.pidstat-C
+05260	LC_ALL=C TZ=GMT ./pidstat -C shell -C Web 2 6 > tests/out2.pidstat-C.tmp
+05265	diff -u tests/out2.pidstat-C.tmp tests/expected2.pidstat-C
+05270	LC_ALL=C TZ=GMT ./pidstat -t -C Web 2 6 > tests/out3.pidstat-C.tmp
+05275	diff -u tests/out3.pidstat-C.tmp tests/expected3.pidstat-C
+05280	LC_ALL=C TZ=GMT ./pidstat -t -C "(fox|shell)" 2 6 > tests/out4.pidstat-C.tmp
+05285	diff -u tests/out4.pidstat-C.tmp tests/expected4.pidstat-C
+05290	LC_ALL=C TZ=GMT ./pidstat -t -G foofox 2 6 > tests/out.pidstat-G.tmp
+05295	diff -u tests/out.pidstat-G.tmp tests/expected.pidstat-G
+05300	LC_ALL=C TZ=GMT ./pidstat -G fox 2 6 > tests/out1.pidstat-G.tmp
+05305	diff -u tests/out1.pidstat-G.tmp tests/expected1.pidstat-G
+05310	LC_ALL=C TZ=GMT ./pidstat -t -G fox 2 6 > tests/out2.pidstat-G.tmp
+05315	diff -u tests/out2.pidstat-G.tmp tests/expected2.pidstat-G
+05320	LC_ALL=C TZ=GMT ./pidstat -G fox -p ALL 2 6 > tests/out3.pidstat-G.tmp
+05325	diff -u tests/out3.pidstat-G.tmp tests/expected3.pidstat-G
+05330	LC_ALL=C TZ=GMT ./pidstat -t -G fox -p ALL 2 6 > tests/out4.pidstat-G.tmp
+05335	diff -u tests/out4.pidstat-G.tmp tests/expected4.pidstat-G
+05340	LC_ALL=C TZ=GMT ./pidstat -t -G "^s" -p ALL 2 6 > tests/out5.pidstat-C.tmp
+05345	diff -u tests/out5.pidstat-C.tmp tests/expected5.pidstat-C
+05346	LC_ALL=C TZ=GMT ./pidstat -t -G "terminal-$" -p ALL 2 6 > tests/out6.pidstat-C.tmp
+05347	diff -u tests/out6.pidstat-C.tmp tests/expected6.pidstat-C
+05350	LC_ALL=C TZ=GMT ./pidstat -lt -u -p ALL 2 6 > tests/out.pidstat-l.tmp
+05355	diff -u tests/out.pidstat-l.tmp tests/expected.pidstat-l
+05360	LC_ALL=C TZ=GMT ./pidstat -l -C "browser" 2 6 > tests/out.pidstat-lC.tmp
+05365	diff -u tests/out.pidstat-lC.tmp tests/expected.pidstat-lC
+05370	LC_ALL=C TZ=GMT ./pidstat -lt -G "server$" -p ALL 2 6 > tests/out.pidstat-lG.tmp
+05375	diff -u tests/out.pidstat-lG.tmp tests/expected.pidstat-lG
+05380	LC_ALL=C TZ=GMT ./pidstat -T ALL -t -dRrsuvw --dec=1 > tests/out.pidstat-dec.tmp
+05385	diff -u tests/out.pidstat-dec.tmp tests/expected.pidstat-dec
+05390	LC_ALL=C TZ=GMT ./pidstat -T ALL -t -dRrsuvw -H -h 2 1 > tests/out.pidstat-Hh.tmp
+05395	diff -u tests/out.pidstat-Hh.tmp tests/expected.pidstat-Hh
+05400	LC_ALL=C TZ=GMT ./pidstat -T ALL -dRrsuvw --human -I 2 1 > tests/out.pidstat-I.tmp
+05405	diff -u tests/out.pidstat-I.tmp tests/expected.pidstat-I
+05410	LC_ALL=C TZ=GMT ./pidstat -T CHILD -u -U 2 1 > tests/out.pidstat-U.tmp
+05415	diff -u tests/out.pidstat-U.tmp tests/expected.pidstat-U
+05420	LC_ALL=C TZ=GMT ./pidstat -t -rw -u -U foo 2 1 > tests/out.pidstat-Ufoo.tmp
+05425	diff -u tests/out.pidstat-Ufoo.tmp tests/expected.pidstat-Ufoo
+05430	LC_ALL=C TZ=GMT ./pidstat -t -rw -u -U root 2 1 > tests/out.pidstat-Uroot.tmp
+05435	diff -u tests/out.pidstat-Uroot.tmp tests/expected.pidstat-Uroot
+05440	LC_ALL=C TZ=GMT ./pidstat -t -svwu -p 21342,1234,7900,9009 2 6 > tests/out.pidstat-plist.tmp
+05445	diff -u tests/out.pidstat-plist.tmp tests/expected.pidstat-plist
 
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
