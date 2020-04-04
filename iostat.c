@@ -59,7 +59,7 @@ extern int __env;
 struct stats_cpu *st_cpu[2];
 unsigned long long uptime_cs[2] = {0, 0};
 unsigned long long tot_jiffies[2] = {0, 0};
-struct io_device *dev_list;
+struct io_device *dev_list = NULL;
 
 /* Number of decimal places */
 int dplaces_nr = -1;
