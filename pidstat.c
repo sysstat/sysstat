@@ -650,7 +650,7 @@ int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 	FILE *fp;
 	char filename[128], line[MAX_CMDLINE_LEN];
 	size_t len;
-	int i;
+	int i, found = FALSE;
 
 	if (tgid) {
 		sprintf(filename, TASK_CMDLINE, tgid, pid);
@@ -669,8 +669,11 @@ int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 	fclose(fp);
 
 	if (len) {
-		for (i = 0; i < len - 1; i++) {
-			if (line[i] == '\0') {
+		for (i = len - 2; i >= 0; i--) {
+			if (line[i]) {
+				found = TRUE;
+			}
+			else if (found) {
 				line[i] = ' ';
 			}
 		}
