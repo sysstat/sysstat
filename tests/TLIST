@@ -589,6 +589,8 @@ NOTES:
 05435	diff -u tests/out.pidstat-Uroot.tmp tests/expected.pidstat-Uroot
 05440	LC_ALL=C TZ=GMT ./pidstat -t -svwu -p 21342,1234,7900,9009 2 6 > tests/out.pidstat-plist.tmp
 05445	diff -u tests/out.pidstat-plist.tmp tests/expected.pidstat-plist
+05450	LC_ALL=C TZ=GMT ./pidstat 2 6 -t -e sleep 1 > tests/out.pidstat-e.tmp
+05455	diff -u tests/out.pidstat-e.tmp tests/expected.pidstat-e
 
 =====	Tests to be done at the very end
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0
