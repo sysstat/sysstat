@@ -18,8 +18,6 @@
 #define K_P_CHILD	"CHILD"
 #define K_P_ALL		"ALL"
 
-#define NR_PID_PREALLOC	100
-
 #ifdef _POSIX_ARG_MAX
 #define MAX_COMM_LEN    _POSIX_ARG_MAX
 #define MAX_CMDLINE_LEN _POSIX_ARG_MAX
@@ -90,9 +88,11 @@
 /* Per-process flags */
 #define F_NO_PID_IO	0x01
 #define F_NO_PID_FD	0x02
+#define F_PID_DISPLAYED	0x04
 
 #define NO_PID_IO(m)		(((m) & F_NO_PID_IO) == F_NO_PID_IO)
 #define NO_PID_FD(m)		(((m) & F_NO_PID_FD) == F_NO_PID_FD)
+#define IS_PID_DISPLAYED(m)	(((m) & F_PID_DISPLAYED) == F_PID_DISPLAYED)
 
 
 #define PROC		PRE "/proc"
@@ -164,12 +164,6 @@ struct pid_stats {
 	unsigned long long read_bytes			__attribute__ ((aligned (16)));
 	unsigned long long write_bytes			__attribute__ ((packed));
 	unsigned long long cancelled_write_bytes	__attribute__ ((packed));
-	unsigned long long total_vsz			__attribute__ ((packed));
-	unsigned long long total_rss			__attribute__ ((packed));
-	unsigned long long total_stack_size		__attribute__ ((packed));
-	unsigned long long total_stack_ref		__attribute__ ((packed));
-	unsigned long long total_threads		__attribute__ ((packed));
-	unsigned long long total_fd_nr			__attribute__ ((packed));
 	unsigned long long blkio_swapin_delays		__attribute__ ((packed));
 	unsigned long long minflt			__attribute__ ((packed));
 	unsigned long long cminflt			__attribute__ ((packed));
@@ -188,27 +182,37 @@ struct pid_stats {
 	unsigned long      nivcsw			__attribute__ ((packed));
 	unsigned long      stack_size			__attribute__ ((packed));
 	unsigned long      stack_ref			__attribute__ ((packed));
-	/* If pid is null, the process has terminated */
-	unsigned int       pid				__attribute__ ((packed));
-	/* If tgid is not null, then this PID is in fact a TID */
-	unsigned int       tgid				__attribute__ ((packed));
-	unsigned int       rt_asum_count		__attribute__ ((packed));
-	unsigned int       rc_asum_count		__attribute__ ((packed));
-	unsigned int       uc_asum_count		__attribute__ ((packed));
-	unsigned int       tf_asum_count		__attribute__ ((packed));
-	unsigned int       sk_asum_count		__attribute__ ((packed));
-	unsigned int       delay_asum_count		__attribute__ ((packed));
 	unsigned int       processor			__attribute__ ((packed));
 	unsigned int       priority			__attribute__ ((packed));
 	unsigned int       policy			__attribute__ ((packed));
-	unsigned int       flags			__attribute__ ((packed));
-	unsigned int       uid				__attribute__ ((packed));
 	unsigned int       threads			__attribute__ ((packed));
 	unsigned int       fd_nr			__attribute__ ((packed));
-	char               comm[MAX_COMM_LEN];
-	char               cmdline[MAX_CMDLINE_LEN];
 };
 
 #define PID_STATS_SIZE	(sizeof(struct pid_stats))
+
+struct st_pid {
+	unsigned long long total_vsz;
+	unsigned long long total_rss;
+	unsigned long long total_stack_size;
+	unsigned long long total_stack_ref;
+	unsigned long long total_threads;
+	unsigned long long total_fd_nr;
+	pid_t		   pid;
+	uid_t		   uid;
+	int		   exist;	/* TRUE if PID exists */
+	unsigned int	   flags;
+	unsigned int	   rt_asum_count;
+	unsigned int	   rc_asum_count;
+	unsigned int	   uc_asum_count;
+	unsigned int	   tf_asum_count;
+	unsigned int	   sk_asum_count;
+	unsigned int	   delay_asum_count;
+	struct pid_stats  *pstats[3];
+	struct st_pid	  *tgid;	/* If current task is a TID, pointer to its TGID. NULL otherwise. */
+	struct st_pid	  *next;
+	char		   comm[MAX_COMM_LEN];
+	char		   cmdline[MAX_CMDLINE_LEN];
+};
 
 #endif  /* _PIDSTAT_H */

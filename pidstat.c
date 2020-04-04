@@ -56,16 +56,14 @@ char *sccsid(void) { return (SCCSID); }
 
 unsigned long long tot_jiffies[3] = {0, 0, 0};
 unsigned long long uptime_cs[3] = {0, 0, 0};
-struct pid_stats *st_pid_list[3] = {NULL, NULL, NULL};
-unsigned int *pid_array = NULL;
-struct pid_stats st_pid_null;
+struct st_pid *pid_list = NULL;
+
 struct tm ps_tstamp[3];
 char commstr[MAX_COMM_LEN];
 char userstr[MAX_USER_LEN];
 char procstr[MAX_COMM_LEN];
 int show_threads = FALSE;
 
-unsigned int pid_nr = 0;	/* Nb of PID to display */
 int cpu_nr = 0;			/* Nb of processors on the machine */
 unsigned long tlmkb;		/* Total memory in kB */
 long interval = -1;
@@ -128,83 +126,48 @@ void int_handler(int sig)
 
 /*
  ***************************************************************************
- * Initialize uptime variables.
- ***************************************************************************
- */
-void init_stats(void)
-{
-	memset(&st_pid_null, 0, PID_STATS_SIZE);
-}
-
-/*
- ***************************************************************************
- * Allocate structures for PIDs entered on command line.
+ * Free unused PID structures.
  *
- * IN:
- * @len	Number of PIDs entered on the command line.
+ * IN
+ * @plist	Pointer address on the start of the linked list.
+ * @force	Set to TRUE if all PID structures shall be freed.
  ***************************************************************************
  */
-void salloc_pid_array(unsigned int len)
-{
-	if ((pid_array = (unsigned int *) malloc(sizeof(unsigned int) * len)) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
-	memset(pid_array, 0, sizeof(int) * len);
-}
-
-/*
- ***************************************************************************
- * Allocate structures for PIDs to read.
- *
- * IN:
- * @len	Number of PIDs (and TIDs) on the system.
- ***************************************************************************
- */
-void salloc_pid(unsigned int len)
-{
-	short i;
-
-	for (i = 0; i < 3; i++) {
-		if ((st_pid_list[i] = (struct pid_stats *) calloc(len, PID_STATS_SIZE)) == NULL) {
-			perror("calloc");
-			exit(4);
-		}
-	}
-}
-
-/*
- ***************************************************************************
- * Reallocate structures for PIDs to read.
- ***************************************************************************
- */
-void realloc_pid(void)
-{
-	short i;
-	unsigned int new_size = 2 * pid_nr;
-
-	for (i = 0; i < 3; i++) {
-		if ((st_pid_list[i] = (struct pid_stats *) realloc(st_pid_list[i], PID_STATS_SIZE * new_size)) == NULL) {
-			perror("realloc");
-			exit(4);
-		}
-		memset(st_pid_list[i] + pid_nr, 0, PID_STATS_SIZE * (new_size - pid_nr));
-	}
-
-	pid_nr = new_size;
-}
-
-/*
- ***************************************************************************
- * Free PID list structures.
- ***************************************************************************
- */
-void sfree_pid(void)
+void sfree_pid(struct st_pid **plist, int force)
 {
 	int i;
+	struct st_pid *p;
 
-	for (i = 0; i < 3; i++) {
-		free(st_pid_list[i]);
+	while (*plist != NULL) {
+		p = *plist;
+		if (!p->exist || force) {
+			*plist = p->next;
+			for (i = 0; i < 3; i++) {
+				if (p->pstats[i]) {
+					free(p->pstats[i]);
+				}
+			}
+			free(p);
+		}
+		else {
+			plist = &(p->next);
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Set every PID in list to nonexistent status.
+ *
+ * IN:
+ * @plist	Pointer on the start of the linked list.
+ ***************************************************************************
+ */
+void set_pid_nonexistent(struct st_pid *plist)
+{
+	while (plist != NULL) {
+		plist->exist = FALSE;
+		plist = plist->next;
 	}
 }
 
@@ -249,36 +212,114 @@ void check_flags(void)
 
 /*
  ***************************************************************************
- * Look for the PID in the list of PIDs entered on the command line, and
- * store it if necessary.
+ * Look for the PID in the list and store it if necessary.
+ *       PID ->  PID -> TGID ->  TID ->  TID ->  TID ->  PID -> NULL
+ * Eg.: 1234 -> 1289 -> 1356 -> 1356 -> 1361 -> 4678 -> 1376 -> NULL
  *
  * IN:
- * @pid_array_nr	Length of the PID list.
- * @pid			PID to search.
- *
- * OUT:
- * @pid_array_nr	New length of the PID list.
+ * @plist	Pointer address on the start of the linked list.
+ * @pid		PID number.
+ * @tgid	If PID is a TID then @tgid is its TGID number. 0 otherwise.
  *
  * RETURNS:
- * Returns the position of the PID in the list.
+ * Pointer on the st_pid structure in the list where the PID is located
+ * (whether it was already in the list or if it has been added).
+ * NULL if the PID is 0 or it is a TID and its TGID has not been found in
+ * list.
  ***************************************************************************
  */
-int update_pid_array(unsigned int *pid_array_nr, unsigned int pid)
+struct st_pid *add_list_pid(struct st_pid **plist, pid_t pid, pid_t tgid)
 {
-	unsigned int i;
+	struct st_pid *p, *ps, *tgid_p = NULL;
+	int i;
+	int tgid_found = FALSE;
 
-	for (i = 0; i < *pid_array_nr; i++) {
-		if (pid_array[i] == pid)
-			break;
+	if (!pid)
+		return NULL;
+
+	if (!tgid) {
+		/*
+		 * Add a true PID to the list.
+		 * Add it in ascending order, not taking into account
+		 * other TIDs.
+		 */
+		while (*plist != NULL) {
+			p = *plist;
+			if (!p->tgid && (p->pid == pid))
+				/* PID found in list */
+				return p;
+
+			if (!p->tgid && (p->pid > pid))
+				/* Stop now to insert PID in list */
+				break;
+
+			plist = &(p->next);
+		}
+	}
+	else {
+		/*
+		 * PID is a TID.
+		 * It will be inserted in ascending order immediately
+		 * following its TGID.
+		 */
+		while (*plist != NULL) {
+			p = *plist;
+			if (p->pid == tgid) {
+				/* TGID found in list */
+				tgid_found = TRUE;
+				tgid_p = p;
+				break;
+			}
+
+			plist = &(p->next);
+		}
+		if (!tgid_found)
+			/* TGID not found: Stop now */
+			return NULL;
+
+		plist = &(p->next);
+		while (*plist != NULL) {
+			p = *plist;
+			if ((p->tgid == tgid_p) && (p->pid == pid))
+				/* TID found in list */
+				return p;
+
+			if ((p->tgid == tgid_p) && (p->pid > pid))
+				/* Stop now to insert TID in list */
+				break;
+			if (p->tgid != tgid_p)
+				/* End of TID list: insert TID here */
+				break;
+
+			plist = &(p->next);
+		}
 	}
 
-	if (i == *pid_array_nr) {
-		/* PID not found: Store it */
-		(*pid_array_nr)++;
-		pid_array[i] = pid;
+	/* PID not found */
+	ps = *plist;
+
+	/* Add PID to the list */
+	if ((*plist = (struct st_pid *) malloc(sizeof(struct st_pid))) == NULL) {
+		perror("malloc");
+		exit(4);
+	}
+	memset(*plist, 0, sizeof(struct st_pid));
+
+	p = *plist;
+	for (i = 0; i < 3; i++) {
+		if ((p->pstats[i] = (struct pid_stats *) malloc(sizeof(struct pid_stats))) == NULL) {
+			perror("malloc");
+			exit(4);
+		}
+		memset(p->pstats[i], 0, PID_STATS_SIZE);
+	}
+	p->pid = pid;
+	p->next = ps;
+	if (tgid_p) {
+		p->tgid = tgid_p;
 	}
 
-	return i;
+	return p;
 }
 
 /*
@@ -288,16 +329,16 @@ int update_pid_array(unsigned int *pid_array_nr, unsigned int pid)
  * can still be identified.
  *
  * IN:
- * @pst		Pointer on structure with process stats and command line.
+ * @plist	Pointer address on the start of the linked list.
  ***************************************************************************
  */
-char *get_tcmd(struct pid_stats *pst)
+char *get_tcmd(struct st_pid *plist)
 {
-	if (DISPLAY_CMDLINE(pidflag) && strlen(pst->cmdline) && !pst->tgid)
+	if (DISPLAY_CMDLINE(pidflag) && strlen(plist->cmdline) && !plist->tgid)
 		/* Option "-l" used */
-		return pst->cmdline;
+		return plist->cmdline;
 	else
-		return pst->comm;
+		return plist->comm;
 }
 
 /*
@@ -305,18 +346,28 @@ char *get_tcmd(struct pid_stats *pst)
  * Display process command name or command line.
  *
  * IN:
- * @pst		Pointer on structure with process stats and command line.
+ * @plist	Pointer address on the start of the linked list.
  ***************************************************************************
  */
-void print_comm(struct pid_stats *pst)
+void print_comm(struct st_pid *plist)
 {
 	char *p;
 
 	/* Get pointer on task's command string */
-	p = get_tcmd(pst);
+	p = get_tcmd(plist);
 
-	if (pst->tgid) {
-		cprintf_s(IS_ZERO, "  |__%s\n", p);
+	if (plist->tgid) {
+		if (IS_PID_DISPLAYED(plist->tgid->flags)) {
+			cprintf_s(IS_ZERO, "  |__%s\n", p);
+		}
+		else {
+			/* Its TGID has not been displayed */
+			cprintf_s(IS_STR, "  (%s)", plist->tgid->comm);
+			cprintf_s(IS_ZERO, "__%s\n", p);
+
+			/* We can now consider this has been the case */
+			plist->tgid->flags |= F_PID_DISPLAYED;
+		}
 	}
 	else {
 		cprintf_s(IS_STR, "  %s\n", p);
@@ -343,24 +394,25 @@ void read_proc_meminfo(void)
  *
  * IN:
  * @pid		Process whose stats are to be read.
- * @pst		Pointer on structure where stats will be saved.
+ * @plist	Pointer on the linked list where PID is saved.
  * @tgid	If !=0, thread whose stats are to be read.
+ * @curr	Index in array for current sample statistics.
  *
  * OUT:
- * @pst		Pointer on structure where stats have been saved.
  * @thread_nr	Number of threads of the process.
  *
  * RETURNS:
  * 0 if stats have been successfully read, and 1 otherwise.
  ***************************************************************************
  */
-int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
-		       unsigned int *thread_nr, unsigned int tgid)
+int read_proc_pid_stat(pid_t pid, struct st_pid *plist,
+		       unsigned int *thread_nr, pid_t tgid, int curr)
 {
 	int fd, sz, rc, commsz;
 	char filename[128];
 	static char buffer[1024 + 1];
 	char *start, *end;
+	struct pid_stats *pst = plist->pstats[curr];
 
 	if (tgid) {
 		sprintf(filename, TASK_STAT, tgid, pid);
@@ -387,8 +439,8 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 	commsz = end - start;
 	if (commsz >= MAX_COMM_LEN)
 		return 1;
-	memcpy(pst->comm, start, commsz);
-	pst->comm[commsz] = '\0';
+	memcpy(plist->comm, start, commsz);
+	plist->comm[commsz] = '\0';
 	start = end + 2;
 
 	rc = sscanf(start,
@@ -414,8 +466,6 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
 	pst->vsz >>= 10;
 	pst->rss = PG_TO_KB(pst->rss);
 
-	pst->pid = pid;
-	pst->tgid = tgid;
 	return 0;
 }
 
@@ -425,24 +475,21 @@ int read_proc_pid_stat(unsigned int pid, struct pid_stats *pst,
  *
  * IN:
  * @pid		Process whose stats are to be read.
- * @pst		Pointer on structure where stats will be saved.
+ * @plist	Pointer on the linked list where PID is saved.
  * @tgid	If != 0, thread whose stats are to be read.
- *
- * OUT:
- * @pst		Pointer on structure where stats have been saved.
- * @thread_nr	Number of threads of the process.
+ * @curr	Index in array for current sample statistics.
  *
  * RETURNS:
  * 0 if stats have been successfully read, and 1 otherwise.
  ***************************************************************************
  */
-int read_proc_pid_sched(unsigned int pid, struct pid_stats *pst,
-		       unsigned int *thread_nr, unsigned int tgid)
+int read_proc_pid_sched(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 {
 	int fd, sz, rc = 0;
 	char filename[128];
 	static char buffer[1024 + 1];
 	unsigned long long wtime = 0;
+	struct pid_stats *pst = plist->pstats[curr];
 
 	if (tgid) {
 		sprintf(filename, TASK_SCHED, tgid, pid);
@@ -465,9 +512,6 @@ int read_proc_pid_sched(unsigned int pid, struct pid_stats *pst,
 	/* Convert ns to jiffies */
 	pst->wtime = wtime * HZ / 1000000000;
 
-	pst->pid = pid;
-	pst->tgid = tgid;
-
 	if (rc < 1)
 		return 1;
 
@@ -480,21 +524,19 @@ int read_proc_pid_sched(unsigned int pid, struct pid_stats *pst,
  *
  * IN:
  * @pid		Process whose stats are to be read.
- * @pst		Pointer on structure where stats will be saved.
- * @tgid	If !=0, thread whose stats are to be read.
- *
- * OUT:
- * @pst		Pointer on structure where stats have been saved.
+ * @plist	Pointer on the linked list where PID is saved.
+ * @tgid	If != 0, thread whose stats are to be read.
+ * @curr	Index in array for current sample statistics.
  *
  * RETURNS:
  * 0 if stats have been successfully read, and 1 otherwise.
  *****************************************************************************
  */
-int read_proc_pid_status(unsigned int pid, struct pid_stats *pst,
-			 unsigned int tgid)
+int read_proc_pid_status(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 {
 	FILE *fp;
 	char filename[128], line[256];
+	struct pid_stats *pst = plist->pstats[curr];
 
 	if (tgid) {
 		sprintf(filename, TASK_STATUS, tgid, pid);
@@ -510,7 +552,7 @@ int read_proc_pid_status(unsigned int pid, struct pid_stats *pst,
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!strncmp(line, "Uid:", 4)) {
-			sscanf(line + 5, "%u", &pst->uid);
+			sscanf(line + 5, "%u", &plist->uid);
 		}
 		else if (!strncmp(line, "Threads:", 8)) {
 			sscanf(line + 9, "%u", &pst->threads);
@@ -525,31 +567,28 @@ int read_proc_pid_status(unsigned int pid, struct pid_stats *pst,
 
 	fclose(fp);
 
-	pst->pid = pid;
-	pst->tgid = tgid;
 	return 0;
 }
 
 /*
-  *****************************************************************************
-  * Read information from /proc/#[/task/##}/smaps.
-  *
-  * @pid		Process whose stats are to be read.
-  * @pst		Pointer on structure where stats will be saved.
-  * @tgid		If !=0, thread whose stats are to be read.
-  *
-  * OUT:
-  * @pst		Pointer on structure where stats have been saved.
-  *
-  * RETURNS:
-  * 0 if stats have been successfully read, and 1 otherwise.
-  *****************************************************************************
-  */
-int read_proc_pid_smap(unsigned int pid, struct pid_stats *pst, unsigned int tgid)
+ *****************************************************************************
+ * Read information from /proc/#[/task/##}/smaps.
+ *
+ * @pid		Process whose stats are to be read.
+ * @plist	Pointer on the linked list where PID is saved.
+ * @tgid	If != 0, thread whose stats are to be read.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * 0 if stats have been successfully read, and 1 otherwise.
+ *****************************************************************************
+ */
+int read_proc_pid_smap(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 {
 	FILE *fp;
 	char filename[128], line[256];
 	int state = 0;
+	struct pid_stats *pst = plist->pstats[curr];
 
 	if (tgid) {
 		sprintf(filename, TASK_SMAP, tgid, pid);
@@ -586,8 +625,6 @@ int read_proc_pid_smap(unsigned int pid, struct pid_stats *pst, unsigned int tgi
 
 	fclose(fp);
 
-	pst->pid = pid;
-	pst->tgid = tgid;
 	return 0;
 }
 
@@ -597,8 +634,8 @@ int read_proc_pid_smap(unsigned int pid, struct pid_stats *pst, unsigned int tgi
  *
  * IN:
  * @pid		Process whose command line is to be read.
- * @pst		Pointer on structure where command line will be saved.
- * @tgid	If !=0, thread whose command line is to be read.
+ * @plist	Pointer on the linked list where PID is saved.
+ * @tgid	If != 0, thread whose stats are to be read.
  *
  * OUT:
  * @pst		Pointer on structure where command line has been saved.
@@ -608,8 +645,7 @@ int read_proc_pid_smap(unsigned int pid, struct pid_stats *pst, unsigned int tgi
  * is just empty), and 1 otherwise (the process has terminated).
  *****************************************************************************
  */
-int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
-			  unsigned int tgid)
+int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 {
 	FILE *fp;
 	char filename[128], line[MAX_CMDLINE_LEN];
@@ -638,12 +674,12 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
 				line[i] = ' ';
 			}
 		}
-		strncpy(pst->cmdline, line, MAX_CMDLINE_LEN - 1);
-		pst->cmdline[MAX_CMDLINE_LEN - 1] = '\0';
+		strncpy(plist->cmdline, line, MAX_CMDLINE_LEN - 1);
+		plist->cmdline[MAX_CMDLINE_LEN - 1] = '\0';
 	}
 	else {
 		/* proc/.../cmdline was empty */
-		pst->cmdline[0] = '\0';
+		plist->cmdline[0] = '\0';
 	}
 	return 0;
 }
@@ -654,11 +690,9 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
  *
  * IN:
  * @pid		Process whose stats are to be read.
- * @pst		Pointer on structure where stats will be saved.
- * @tgid	If !=0, thread whose stats are to be read.
- *
- * OUT:
- * @pst		Pointer on structure where stats have been saved.
+ * @plist	Pointer on the linked list where PID is saved.
+ * @tgid	If != 0, thread whose stats are to be read.
+ * @curr	Index in array for current sample statistics.
  *
  * RETURNS:
  * 0 if stats have been successfully read.
@@ -667,11 +701,11 @@ int read_proc_pid_cmdline(unsigned int pid, struct pid_stats *pst,
  * indicate that I/O stats should no longer be read for it.
  ***************************************************************************
  */
-int read_proc_pid_io(unsigned int pid, struct pid_stats *pst,
-		     unsigned int tgid)
+int read_proc_pid_io(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 {
 	FILE *fp;
 	char filename[128], line[256];
+	struct pid_stats *pst = plist->pstats[curr];
 
 	if (tgid) {
 		sprintf(filename, TASK_IO, tgid, pid);
@@ -682,7 +716,7 @@ int read_proc_pid_io(unsigned int pid, struct pid_stats *pst,
 
 	if ((fp = fopen(filename, "r")) == NULL) {
 		/* No such process... or file non existent! */
-		pst->flags |= F_NO_PID_IO;
+		plist->flags |= F_NO_PID_IO;
 		/*
 		 * Also returns 0 since io stats file doesn't necessarily exist,
 		 * depending on the kernel version used.
@@ -705,9 +739,8 @@ int read_proc_pid_io(unsigned int pid, struct pid_stats *pst,
 
 	fclose(fp);
 
-	pst->pid = pid;
-	pst->tgid = tgid;
-	pst->flags &= ~F_NO_PID_IO;
+	plist->flags &= ~F_NO_PID_IO;
+
 	return 0;
 }
 
@@ -717,11 +750,9 @@ int read_proc_pid_io(unsigned int pid, struct pid_stats *pst,
  *
  * IN:
  * @pid		Process whose stats are to be read.
- * @pst		Pointer on structure where stats will be saved.
- * @tgid	If !=0, thread whose stats are to be read.
- *
- * OUT:
- * @pst		Pointer on structure where stats have been saved.
+ * @plist	Pointer on the linked list where PID is saved.
+ * @tgid	If != 0, thread whose stats are to be read.
+ * @curr	Index in array for current sample statistics.
  *
  * RETURNS:
  * 0 if stats have been successfully read.
@@ -730,12 +761,12 @@ int read_proc_pid_io(unsigned int pid, struct pid_stats *pst,
  * indicate that fd directory couldn't be read.
  ***************************************************************************
  */
-int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
-		     unsigned int tgid)
+int read_proc_pid_fd(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 {
 	DIR *dir;
 	struct dirent *drp;
 	char filename[128];
+	struct pid_stats *pst = plist->pstats[curr];
 
 	if (tgid) {
 		sprintf(filename, TASK_FD, tgid, pid);
@@ -746,7 +777,7 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 
 	if ((dir = opendir(filename)) == NULL) {
 		/* Cannot read fd directory */
-		pst->flags |= F_NO_PID_FD;
+		plist->flags |= F_NO_PID_FD;
 		return 0;
 	}
 
@@ -761,9 +792,8 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
 
 	closedir(dir);
 
-	pst->pid = pid;
-	pst->tgid = tgid;
-	pst->flags &= ~F_NO_PID_FD;
+	plist->flags &= ~F_NO_PID_FD;
+
 	return 0;
 }
 
@@ -773,180 +803,52 @@ int read_proc_pid_fd(unsigned int pid, struct pid_stats *pst,
  *
  * IN:
  * @pid		Process whose stats are to be read.
- * @pst		Pointer on structure where stats will be saved.
+ * @plist	Pointer on the linked list where PID is saved.
  * @tgid	If !=0, thread whose stats are to be read.
+ * @curr	Index in array for current sample statistics.
  *
  * OUT:
- * @pst		Pointer on structure where stats have been saved.
  * @thread_nr	Number of threads of the process.
  *
  * RETURNS:
  * 0 if stats have been successfully read, and 1 otherwise.
  ***************************************************************************
  */
-int read_pid_stats(unsigned int pid, struct pid_stats *pst,
-		   unsigned int *thread_nr, unsigned int tgid)
+int read_pid_stats(pid_t pid, struct st_pid *plist, unsigned int *thread_nr,
+		   pid_t tgid, int curr)
 {
-	if (read_proc_pid_stat(pid, pst, thread_nr, tgid))
+	if (read_proc_pid_stat(pid, plist, thread_nr, tgid, curr))
 		return 1;
 
 	/*
 	 * No need to test the return code here: Not finding
 	 * the schedstat files shouldn't make pidstat stop.
 	 */
-	read_proc_pid_sched(pid, pst, thread_nr, tgid);
+	read_proc_pid_sched(pid, plist, tgid, curr);
 
-	if (DISPLAY_CMDLINE(pidflag)) {
-		if (read_proc_pid_cmdline(pid, pst, tgid))
+	if (DISPLAY_CMDLINE(pidflag) && !plist->cmdline[0]) {
+		if (read_proc_pid_cmdline(pid, plist, tgid))
 			return 1;
 	}
 
-	if (read_proc_pid_status(pid, pst, tgid))
+	if (read_proc_pid_status(pid, plist, tgid, curr))
 		return 1;
 
 	if (DISPLAY_STACK(actflag)) {
-		if (read_proc_pid_smap(pid, pst, tgid))
+		if (read_proc_pid_smap(pid, plist, tgid, curr))
 			return 1;
 	}
 
 	if (DISPLAY_KTAB(actflag)) {
-		if (read_proc_pid_fd(pid, pst, tgid))
+		if (read_proc_pid_fd(pid, plist, tgid, curr))
 			return 1;
 	}
 
 	if (DISPLAY_IO(actflag))
 		/* Assume that /proc/#/task/#/io exists! */
-		return (read_proc_pid_io(pid, pst, tgid));
+		return (read_proc_pid_io(pid, plist, tgid, curr));
 
 	return 0;
-}
-
-/*
- ***************************************************************************
- * Count number of threads in /proc/#/task directory, including the leader
- * one.
- *
- * IN:
- * @pid	Process number for which the number of threads are to be counted.
- *
- * RETURNS:
- * Number of threads for the given process (min value is 1).
- * A value of 0 indicates that the process has terminated.
- ***************************************************************************
- */
-unsigned int count_tid(unsigned int pid)
-{
-	struct pid_stats pst;
-	unsigned int thread_nr;
-
-	if (read_proc_pid_stat(pid, &pst, &thread_nr, 0) != 0)
-		/* Task no longer exists */
-		return 0;
-
-	return thread_nr;
-}
-
-/*
- ***************************************************************************
- * Count number of processes (and threads).
- *
- * RETURNS:
- * Number of processes (and threads if requested).
- ***************************************************************************
- */
-unsigned int count_pid(void)
-{
-	DIR *dir;
-	struct dirent *drp;
-	unsigned int pid = 0;
-
-	/* Open /proc directory */
-	if ((dir = __opendir(PROC)) == NULL) {
-		perror("opendir");
-		exit(4);
-	}
-
-	/* Get directory entries */
-	while ((drp = __readdir(dir)) != NULL) {
-		if (isdigit(drp->d_name[0])) {
-			/* There is at least the TGID */
-			pid++;
-			if (DISPLAY_TID(pidflag)) {
-				pid += count_tid(atoi(drp->d_name));
-			}
-		}
-	}
-
-	/* Close /proc directory */
-	__closedir(dir);
-
-	return pid;
-}
-
-/*
- ***************************************************************************
- * Count number of threads associated with the tasks entered on the command
- * line.
- *
- * IN:
- * @pid_array_nr	Length of the PID list.
- *
- * RETURNS:
- * Number of threads (including the leading one) associated with every task
- * entered on the command line.
- ***************************************************************************
- */
-unsigned int count_tid_in_list(unsigned int pid_array_nr)
-{
-	unsigned int p, tid, pid = 0;
-
-	for (p = 0; p < pid_array_nr; p++) {
-
-		tid = count_tid(pid_array[p]);
-
-		if (!tid) {
-			/* PID no longer exists */
-			pid_array[p] = 0;
-		}
-		else {
-			/* <tid_value> TIDs + 1 TGID */
-			pid += tid + 1;
-		}
-	}
-
-	return pid;
-}
-
-/*
- ***************************************************************************
- * Allocate and init structures according to system state.
- *
- * IN:
- * @pid_array_nr	Length of the PID list.
- ***************************************************************************
- */
-void pid_sys_init(unsigned int pid_array_nr)
-{
-	/* Init stat common counters */
-	init_stats();
-
-	/* Count nb of proc */
-	cpu_nr = get_cpu_nr(~0, FALSE);
-
-	if (DISPLAY_ALL_PID(pidflag)) {
-		/* Count PIDs and allocate structures */
-		pid_nr = count_pid() + NR_PID_PREALLOC;
-		salloc_pid(pid_nr);
-	}
-	else if (DISPLAY_TID(pidflag)) {
-		/* Count total number of threads associated with tasks in list */
-		pid_nr = count_tid_in_list(pid_array_nr) + NR_PID_PREALLOC;
-		salloc_pid(pid_nr);
-	}
-	else {
-		pid_nr = pid_array_nr;
-		salloc_pid(pid_nr);
-	}
 }
 
 /*
@@ -954,21 +856,19 @@ void pid_sys_init(unsigned int pid_array_nr)
  * Read stats for threads in /proc/#/task directory.
  *
  * IN:
- * @curr	Index in array for current sample statistics.
  * @pid		Process number whose threads stats are to be read.
- * @index	Index in process list where stats will be saved.
- *
- * OUT:
- * @index	Index in process list where next stats will be saved.
+ * @plist	Pointer on the linked list where PID is saved.
+ * @curr	Index in array for current sample statistics.
  ***************************************************************************
  */
-void read_task_stats(int curr, unsigned int pid, unsigned int *index)
+void read_task_stats(pid_t pid, struct st_pid *plist, int curr)
 {
 	DIR *dir;
+	pid_t tid;
 	struct dirent *drp;
 	char filename[128];
-	struct pid_stats *pst;
 	unsigned int thr_nr;
+	struct st_pid *tlist;
 
 	/* Open /proc/#/task directory */
 	sprintf(filename, PROC_TASK, pid);
@@ -980,14 +880,16 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
 			continue;
 		}
 
-		pst = st_pid_list[curr] + (*index)++;
-		if (read_pid_stats(atoi(drp->d_name), pst, &thr_nr, pid)) {
-			/* Thread no longer exists */
-			pst->pid = 0;
-		}
+		tid = atoi(drp->d_name);
 
-		if (*index >= pid_nr) {
-			realloc_pid();
+		tlist = add_list_pid(&pid_list, tid, pid);
+		if (!tlist)
+			continue;
+		tlist->exist = TRUE;
+
+		if (read_pid_stats(tid, tlist, &thr_nr, pid, curr)) {
+			/* Thread doesn't exist */
+			tlist->exist = FALSE;
 		}
 	}
 
@@ -999,16 +901,16 @@ void read_task_stats(int curr, unsigned int pid, unsigned int *index)
  * Read various stats.
  *
  * IN:
- * @curr		Index in array for current sample statistics.
- * @pid_array_nr	Length of the PID list.
+ * @curr	Index in array for current sample statistics.
  ***************************************************************************
  */
-void read_stats(int curr, unsigned int pid_array_nr)
+void read_stats(int curr)
 {
 	DIR *dir;
 	struct dirent *drp;
-	unsigned int p = 0, q, pid, thr_nr;
-	struct pid_stats *pst;
+	unsigned int thr_nr;
+	pid_t pid;
+	struct st_pid *plist;
 	struct stats_cpu *st_cpu;
 
 	/*
@@ -1047,25 +949,21 @@ void read_stats(int curr, unsigned int pid_array_nr)
 				continue;
 			}
 
-			pst = st_pid_list[curr] + p++;
 			pid = atoi(drp->d_name);
 
-			if (read_pid_stats(pid, pst, &thr_nr, 0)) {
-				/* Process has terminated */
-				pst->pid = 0;
+			plist = add_list_pid(&pid_list, pid, 0);
+			if (!plist)
+				continue;
+			plist->exist = TRUE;
+
+			if (read_pid_stats(pid, plist, &thr_nr, 0, curr)) {
+				/* PID has terminated */
+				plist->exist = FALSE;
+
 			} else if (DISPLAY_TID(pidflag)) {
 				/* Read stats for threads in task subdirectory */
-				read_task_stats(curr, pid, &p);
+				read_task_stats(pid, plist, curr);
 			}
-
-			if (p >= pid_nr) {
-				realloc_pid();
-			}
-		}
-
-		for (q = p; q < pid_nr; q++) {
-			pst = st_pid_list[curr] + q;
-			pst->pid = 0;
 		}
 
 		/* Close /proc directory */
@@ -1073,35 +971,35 @@ void read_stats(int curr, unsigned int pid_array_nr)
 	}
 
 	else if (DISPLAY_PID(pidflag)) {
-		unsigned int op;
-
 		/* Read stats for each PID in the list */
-		for (op = 0; op < pid_array_nr; op++) {
+		for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-			if (p >= pid_nr)
-				break;
-			pst = st_pid_list[curr] + p++;
+			if (plist->tgid)
+				/*
+				 * Ignore TIDs.
+				 * The user can only enter PIDs on the command line.
+				 * If there is a TID then this is because the user has
+				 * used option -t, and the TID has been inserted in the
+				 * list by read_task_stats() function below.
+				 */
+				continue;
 
-			if (pid_array[op]) {
-				/* PID should still exist. So read its stats */
-				if (read_pid_stats(pid_array[op], pst, &thr_nr, 0)) {
-					/* PID has terminated */
-					pst->pid = 0;
-					pid_array[op] = 0;
-				}
-				else if (DISPLAY_TID(pidflag)) {
-					read_task_stats(curr, pid_array[op], &p);
+			if (read_pid_stats(plist->pid, plist, &thr_nr, 0, curr)) {
+				/* PID has terminated */
+				plist->exist = FALSE;
+			}
+			else {
+				plist->exist = TRUE;
+
+				if (DISPLAY_TID(pidflag)) {
+					read_task_stats(plist->pid, plist, curr);
 				}
 			}
 		}
-		/* Reset remaining structures */
-		for (q = p; q < pid_nr; q++) {
-			pst = st_pid_list[curr] + q;
-			pst->pid = 0;
-		}
-
 	}
-	/* else unknown command */
+
+	/* Free unused PID structures */
+	sfree_pid(&pid_list, FALSE);
 }
 
 /*
@@ -1117,15 +1015,11 @@ void read_stats(int curr, unsigned int pid_array_nr)
  * IN:
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
- * @p		Index in process list.
  * @activity	Current activity to display (CPU, memory...).
  * 		Can be more than one if stats are displayed on one line.
  * @pflag	Flag indicating whether stats are to be displayed for
  * 		individual tasks or for all their children.
- *
- * OUT:
- * @pstc	Structure with PID statistics for current sample.
- * @pstp	Structure with PID statistics for previous sample.
+ * @plist	Pointer on the linked list where PID is saved.
  *
  * RETURNS:
  *  0 if PID no longer exists.
@@ -1133,157 +1027,119 @@ void read_stats(int curr, unsigned int pid_array_nr)
  *  1 if PID can be displayed.
  ***************************************************************************
  */
-int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
-		       unsigned int pflag,
-		       struct pid_stats **pstc, struct pid_stats **pstp)
+int get_pid_to_display(int prev, int curr, unsigned int activity, unsigned int pflag,
+		       struct st_pid *plist)
 {
-	int q, rc;
+	int rc;
+	char *pc;
 	regex_t regex;
 	struct passwd *pwdent;
-	char *pc;
+	struct pid_stats *pstc = plist->pstats[curr], *pstp = plist->pstats[prev];
 
-	*pstc = st_pid_list[curr] + p;
-
-	if (!(*pstc)->pid)
+	if (!plist->exist)
 		/* PID no longer exists */
 		return 0;
 
-	if (DISPLAY_ALL_PID(pidflag) || DISPLAY_TID(pidflag)) {
+	if (!plist->tgid) {
+		/* This is group leader: Set it as not displayed by default */
+		plist->flags &= ~F_PID_DISPLAYED;
+	}
 
-		/* Look for previous stats for same PID */
-		q = p;
+	if ((DISPLAY_ALL_PID(pidflag) || DISPLAY_TID(pidflag)) &&
+		DISPLAY_ACTIVE_PID(pidflag)) {
+		int isActive = FALSE;
 
-		do {
-			*pstp = st_pid_list[prev] + q;
-			if (((*pstp)->pid == (*pstc)->pid) &&
-			    ((*pstp)->tgid == (*pstc)->tgid))
-				break;
-			q++;
-			if (q >= pid_nr) {
-				q = 0;
+		/* Check that it's an "active" process */
+		if (DISPLAY_CPU(activity)) {
+			/* User time already includes guest time */
+			if ((pstc->utime != pstp->utime) ||
+			    (pstc->stime != pstp->stime)) {
+				isActive = TRUE;
 			}
-		}
-		while (q != p);
-
-		if (((*pstp)->pid != (*pstc)->pid) ||
-		    ((*pstp)->tgid != (*pstc)->tgid)) {
-			/* PID not found (no data previously read) */
-			*pstp = &st_pid_null;
-		}
-
-		if (DISPLAY_ACTIVE_PID(pidflag)) {
-			int isActive = FALSE;
-
-			/* Check that it's an "active" process */
-			if (DISPLAY_CPU(activity)) {
-				/* User time already includes guest time */
-				if (((*pstc)->utime != (*pstp)->utime) ||
-				    ((*pstc)->stime != (*pstp)->stime)) {
-					isActive = TRUE;
-				}
-				else {
-					/*
-					 * Process is not active but if we are showing
-					 * child stats then we need to look there.
-					 */
-					if (DISPLAY_CHILD_STATS(pflag)) {
-						/* User time already includes guest time */
-						if (((*pstc)->cutime != (*pstp)->cutime) ||
-						    ((*pstc)->cstime != (*pstp)->cstime)) {
-							isActive = TRUE;
-						}
-					}
-				}
-			}
-
-			if (DISPLAY_MEM(activity) && !isActive) {
-				if (((*pstc)->minflt != (*pstp)->minflt) ||
-				    ((*pstc)->majflt != (*pstp)->majflt)) {
-					isActive = TRUE;
-				}
-				else {
-					if (DISPLAY_TASK_STATS(pflag)) {
-						if (((*pstc)->vsz != (*pstp)->vsz) ||
-						    ((*pstc)->rss != (*pstp)->rss)) {
-							isActive = TRUE;
-						}
-					}
-					else if (DISPLAY_CHILD_STATS(pflag)) {
-						if (((*pstc)->cminflt != (*pstp)->cminflt) ||
-						    ((*pstc)->cmajflt != (*pstp)->cmajflt)) {
-							isActive = TRUE;
-						}
-					}
-				}
-			}
-
-
-			if (DISPLAY_STACK(activity) && !isActive) {
-				if (((*pstc)->stack_size != (*pstp)->stack_size) ||
-				    ((*pstc)->stack_ref != (*pstp)->stack_ref)) {
-					isActive = TRUE;
-				}
-			}
-
-			if (DISPLAY_IO(activity) && !isActive) {
-				if ((*pstc)->blkio_swapin_delays !=
-				     (*pstp)->blkio_swapin_delays) {
-					isActive = TRUE;
-				}
-				if (!(NO_PID_IO((*pstc)->flags)) && !isActive) {
-					/* /proc/#/io file should exist to check I/O stats */
-					if (((*pstc)->read_bytes  != (*pstp)->read_bytes)  ||
-					    ((*pstc)->write_bytes != (*pstp)->write_bytes) ||
-					    ((*pstc)->cancelled_write_bytes !=
-					     (*pstp)->cancelled_write_bytes)) {
+			else {
+				/*
+				 * Process is not active but if we are showing
+				 * child stats then we need to look there.
+				 */
+				if (DISPLAY_CHILD_STATS(pflag)) {
+					/* User time already includes guest time */
+					if ((pstc->cutime != pstp->cutime) ||
+					    (pstc->cstime != pstp->cstime)) {
 						isActive = TRUE;
 					}
 				}
 			}
-
-			if (DISPLAY_CTXSW(activity) && !isActive) {
-				if (((*pstc)->nvcsw  != (*pstp)->nvcsw) ||
-				    ((*pstc)->nivcsw != (*pstp)->nivcsw)) {
-					isActive = TRUE;
-				}
-			}
-
-			if (DISPLAY_RT(activity) && !isActive) {
-				if (((*pstc)->priority != (*pstp)->priority) ||
-				    ((*pstc)->policy != (*pstp)->policy)) {
-					isActive = TRUE;
-				}
-			}
-
-			if (DISPLAY_KTAB(activity) && !isActive &&
-				/* /proc/#/fd directory should be readable */
-				!(NO_PID_FD((*pstc)->flags))) {
-				if (((*pstc)->threads != (*pstp)->threads) ||
-				    ((*pstc)->fd_nr != (*pstp)->fd_nr)) {
-					isActive = TRUE;
-				}
-			}
-
-			/* If PID isn't active for any of the activities then return */
-			if (!isActive)
-				return -1;
 		}
-	}
 
-	else if (DISPLAY_PID(pidflag)) {
-		*pstp = st_pid_list[prev] + p;
-		if (!(*pstp)->pid) {
-			if (interval)
-				/* PID no longer exists */
-				return 0;
+		if (DISPLAY_MEM(activity) && !isActive) {
+			if ((pstc->minflt != pstp->minflt) ||
+			    (pstc->majflt != pstp->majflt)) {
+				isActive = TRUE;
+			}
 			else {
-				/*
-				 * If interval is zero, then we are trying to
-				 * display stats for a given process since boot time.
-				 */
-				*pstp = &st_pid_null;
+				if (DISPLAY_TASK_STATS(pflag)) {
+					if ((pstc->vsz != pstp->vsz) ||
+					    (pstc->rss != pstp->rss)) {
+						isActive = TRUE;
+					}
+				}
+				else if (DISPLAY_CHILD_STATS(pflag)) {
+					if ((pstc->cminflt != pstp->cminflt) ||
+					    (pstc->cmajflt != pstp->cmajflt)) {
+						isActive = TRUE;
+					}
+				}
 			}
 		}
+
+		if (DISPLAY_STACK(activity) && !isActive) {
+			if ((pstc->stack_size != pstp->stack_size) ||
+			    (pstc->stack_ref != pstp->stack_ref)) {
+				isActive = TRUE;
+			}
+		}
+
+		if (DISPLAY_IO(activity) && !isActive) {
+			if (pstc->blkio_swapin_delays !=
+			     pstp->blkio_swapin_delays) {
+				isActive = TRUE;
+			}
+			if (!(NO_PID_IO(plist->flags)) && !isActive) {
+				/* /proc/#/io file should exist to check I/O stats */
+				if ((pstc->read_bytes  != pstp->read_bytes)  ||
+				    (pstc->write_bytes != pstp->write_bytes) ||
+				    (pstc->cancelled_write_bytes !=
+				     pstp->cancelled_write_bytes)) {
+					isActive = TRUE;
+				}
+			}
+		}
+
+		if (DISPLAY_CTXSW(activity) && !isActive) {
+			if ((pstc->nvcsw  != pstp->nvcsw) ||
+			    (pstc->nivcsw != pstp->nivcsw)) {
+				isActive = TRUE;
+			}
+		}
+
+		if (DISPLAY_RT(activity) && !isActive) {
+			if ((pstc->priority != pstp->priority) ||
+			    (pstc->policy != pstp->policy)) {
+				isActive = TRUE;
+			}
+		}
+
+		if (DISPLAY_KTAB(activity) && !isActive &&
+			!(NO_PID_FD(plist->flags))) {	/* /proc/#/fd directory should be readable */
+			if ((pstc->threads != pstp->threads) ||
+			    (pstc->fd_nr != pstp->fd_nr)) {
+				isActive = TRUE;
+			}
+		}
+
+		/* If PID isn't active for any of the activities then return */
+		if (!isActive)
+			return -1;
 	}
 
 	if (COMMAND_STRING(pidflag)) {
@@ -1291,7 +1147,7 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 			/* Error in preparing regex structure */
 			return -1;
 
-		pc = get_tcmd(*pstc);	/* Get pointer on task's command string */
+		pc = get_tcmd(plist);	/* Get pointer on task's command string */
 		rc = regexec(&regex, pc, 0, NULL, 0);
 		regfree(&regex);
 
@@ -1301,45 +1157,35 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
 	}
 
 	if (PROCESS_STRING(pidflag)) {
-		if (!(*pstc)->tgid) {
+		if (!plist->tgid) {
 			/* This PID is a process ("thread group leader") */
-			if (regcomp(&regex, procstr, REG_EXTENDED | REG_NOSUB) != 0) {
+			if (regcomp(&regex, procstr, REG_EXTENDED | REG_NOSUB) != 0)
 				/* Error in preparing regex structure */
-				show_threads = FALSE;
 				return -1;
-			}
 
-			pc = get_tcmd(*pstc);	/* Get pointer on task's command string */
+			pc = get_tcmd(plist);	/* Get pointer on task's command string */
 			rc = regexec(&regex, pc, 0, NULL, 0);
 			regfree(&regex);
 
-			if (rc) {
+			if (rc)
 				/* regex pattern not found in command name */
-				show_threads = FALSE;
 				return -1;
-			}
 
-			/*
-			 * This process and all its threads will be displayed.
-			 * No need to save PID value: For every process read by pidstat,
-			 * pidstat then immediately reads all its threads.
-			 */
-			show_threads = TRUE;
 		}
-		else if (!show_threads) {
+		else if (!IS_PID_DISPLAYED(plist->tgid->flags))
 			/* This pid is a thread and is not part of a process to display */
 			return -1;
-		}
 	}
 
 	if (USER_STRING(pidflag)) {
-		if ((pwdent = __getpwuid((*pstc)->uid)) != NULL) {
+		if ((pwdent = __getpwuid(plist->uid)) != NULL) {
 			if (strcmp(pwdent->pw_name, userstr))
 				/* This PID doesn't belong to user */
 				return -1;
 		}
 	}
 
+	plist->flags |= F_PID_DISPLAYED;
 	return 1;
 }
 
@@ -1348,27 +1194,33 @@ int get_pid_to_display(int prev, int curr, int p, unsigned int activity,
  * Display UID/username, PID and TID.
  *
  * IN:
- * @pst		Current process statistics.
+ * @plist	Pointer on the linked list where PID is saved.
  * @c		No-op character.
  ***************************************************************************
  */
-void __print_line_id(struct pid_stats *pst, char c)
+void __print_line_id(struct st_pid *plist, char c)
 {
 	char format[32];
 	struct passwd *pwdent;
 
-	if (DISPLAY_USERNAME(pidflag) && ((pwdent = __getpwuid(pst->uid)) != NULL)) {
+	if (DISPLAY_USERNAME(pidflag) && ((pwdent = __getpwuid(plist->uid)) != NULL)) {
 		cprintf_in(IS_STR, " %8s", pwdent->pw_name, 0);
 	}
 	else {
-		cprintf_in(IS_INT, " %5d", "", pst->uid);
+		cprintf_in(IS_INT, " %5d", "", plist->uid);
 	}
 
 	if (DISPLAY_TID(pidflag)) {
 
-		if (pst->tgid) {
+		if (plist->tgid) {
 			/* This is a TID */
-			sprintf(format, "         %c %%9u", c);
+			if (IS_PID_DISPLAYED(plist->tgid->flags)) {
+				sprintf(format, "         %c %%9u", c);
+			}
+			else {
+				strcpy(format, " %9u");
+				cprintf_in(IS_INT, format, "", plist->tgid->pid);
+			}
 		}
 		else {
 			/* This is a PID (TGID) */
@@ -1379,7 +1231,7 @@ void __print_line_id(struct pid_stats *pst, char c)
 		strcpy(format, " %9u");
 	}
 
-	cprintf_in(IS_INT, format, "", pst->pid);
+	cprintf_in(IS_INT, format, "", plist->pid);
 }
 
 /*
@@ -1388,14 +1240,13 @@ void __print_line_id(struct pid_stats *pst, char c)
  *
  * IN:
  * @timestamp	Current timestamp.
- * @pst		Current process statistics.
+ * @plist	Pointer on the linked list where PID is saved.
  ***************************************************************************
  */
-void print_line_id(char *timestamp, struct pid_stats *pst)
+void print_line_id(char *timestamp, struct st_pid *plist)
 {
 	printf("%-11s", timestamp);
-
-	__print_line_id(pst, '-');
+	__print_line_id(plist, '-');
 }
 
 /*
@@ -1425,8 +1276,8 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			     unsigned long long deltot_jiffies)
 {
 	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
 	char dstr[32];
-	unsigned int p;
 	int again = 0;
 
 	if (dis) {
@@ -1455,13 +1306,15 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		printf("  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if (get_pid_to_display(prev, curr, p, actflag, P_TASK,
-				       &pstc, &pstp) <= 0)
+		if (get_pid_to_display(prev, curr, actflag, P_TASK, plist) <= 0)
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
 			cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
@@ -1471,7 +1324,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 					    pstc->utime - pstc->gtime, itv * HZ / 100),
 				   SP_VALUE(pstp->stime,  pstc->stime, itv * HZ / 100),
 				   SP_VALUE(pstp->gtime,  pstc->gtime, itv * HZ / 100),
-				   SP_VALUE(pstp->wtime, pstc->wtime, itv * HZ / 100),
+				   SP_VALUE(pstp->wtime,  pstc->wtime, itv * HZ / 100),
 				   /* User time already includes guest time */
 				   IRIX_MODE_OFF(pidflag) ?
 				   SP_VALUE(pstp->utime + pstp->stime,
@@ -1500,7 +1353,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_IO(actflag)) {
-			if (!NO_PID_IO(pstc->flags))
+			if (!NO_PID_IO(plist->flags))
 			{
 				double rbytes, wbytes, cbytes;
 
@@ -1538,7 +1391,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		if (DISPLAY_KTAB(actflag)) {
 			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) pstc->threads);
-			if (NO_PID_FD(pstc->flags)) {
+			if (NO_PID_FD(plist->flags)) {
 				/* /proc/#/fd directory not readable */
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
@@ -1554,7 +1407,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 				  GET_POLICY(pstc->policy));
 		}
 
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -1583,7 +1436,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 			      char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct st_pid *plist;
 	int again = 0;
 
 	if (dis) {
@@ -1595,13 +1448,15 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		printf("  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if (get_pid_to_display(prev, curr, p, actflag, P_CHILD,
-				       &pstc, &pstp) <= 0)
+		if (get_pid_to_display(prev, curr, actflag, P_CHILD, plist) <= 0)
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
 			cprintf_f(NO_UNIT, 3, 9, 0,
@@ -1623,7 +1478,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 				    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 		}
 
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -1660,7 +1515,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			     unsigned long long deltot_jiffies)
 {
 	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct st_pid *plist;
 	int again = 0;
 
 	if (dis) {
@@ -1668,13 +1523,16 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		printf("    %%usr %%system  %%guest   %%wait    %%CPU   CPU  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if (get_pid_to_display(prev, curr, p, P_A_CPU, P_TASK,
-				       &pstc, &pstp) <= 0)
+		if (get_pid_to_display(prev, curr, P_A_CPU, P_TASK, plist) <= 0)
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
 		cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
 			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			   0.0 :
@@ -1696,7 +1554,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		else {
 			cprintf_in(IS_STR, "%s", "     -", 0);
 		}
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -1728,7 +1586,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 			      char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct st_pid *plist;
 	int rc, again = 0;
 
 	if (dis) {
@@ -1736,23 +1594,26 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		printf("    usr-ms system-ms  guest-ms  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if ((rc = get_pid_to_display(prev, curr, p, P_A_CPU, P_CHILD,
-					     &pstc, &pstp)) == 0)
+		if ((rc = get_pid_to_display(prev, curr, P_A_CPU, P_CHILD, plist)) == 0)
 			/* PID no longer exists */
 			continue;
 
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			pstc->uc_asum_count = pstp->uc_asum_count + 1;
+			plist->uc_asum_count += 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
 		if (disp_avg) {
 			cprintf_f(NO_UNIT, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
@@ -1760,13 +1621,13 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 				  0.0 :
 				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
 					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
-					    (HZ * pstc->uc_asum_count) * 1000,
+					    (HZ * plist->uc_asum_count) * 1000,
 				  (double) ((pstc->stime + pstc->cstime) -
 					    (pstp->stime + pstp->cstime)) /
-					    (HZ * pstc->uc_asum_count) * 1000,
+					    (HZ * plist->uc_asum_count) * 1000,
 				  (double) ((pstc->gtime + pstc->cgtime) -
 					    (pstp->gtime + pstp->cgtime)) /
-					    (HZ * pstc->uc_asum_count) * 1000);
+					    (HZ * plist->uc_asum_count) * 1000);
 		}
 		else {
 			cprintf_f(NO_UNIT, 3, 9, 0,
@@ -1781,7 +1642,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 				  (double) ((pstc->gtime + pstc->cgtime) -
 					    (pstp->gtime + pstp->cgtime)) / HZ * 1000);
 		}
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -1815,7 +1676,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct st_pid *plist;
 	int rc, again = 0;
 
 	if (dis) {
@@ -1823,25 +1684,27 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 		printf("  minflt/s  majflt/s     VSZ     RSS   %%MEM  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if ((rc = get_pid_to_display(prev, curr, p, P_A_MEM, P_TASK,
-					     &pstc, &pstp)) == 0)
+		if ((rc = get_pid_to_display(prev, curr, P_A_MEM, P_TASK, plist)) == 0)
 			/* PID no longer exists */
 			continue;
 
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			pstc->total_vsz = pstp->total_vsz + pstc->vsz;
-			pstc->total_rss = pstp->total_rss + pstc->rss;
-			pstc->rt_asum_count = pstp->rt_asum_count + 1;
+			plist->total_vsz += pstc->vsz;
+			plist->total_rss += pstc->rss;
+			plist->rt_asum_count += 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
 
 		cprintf_f(NO_UNIT, 2, 9, 2,
 			  S_VALUE(pstp->minflt, pstc->minflt, itv),
@@ -1849,12 +1712,12 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 		if (disp_avg) {
 			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7, 0,
-				  (double) pstc->total_vsz / pstc->rt_asum_count,
-				  (double) pstc->total_rss / pstc->rt_asum_count);
+				  (double) plist->total_vsz / plist->rt_asum_count,
+				  (double) plist->total_rss / plist->rt_asum_count);
 
 			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
 				   tlmkb ?
-				   SP_VALUE(0, pstc->total_rss / pstc->rt_asum_count, tlmkb)
+				   SP_VALUE(0, plist->total_rss / plist->rt_asum_count, tlmkb)
 				   : 0.0);
 		}
 		else {
@@ -1866,7 +1729,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -1898,7 +1761,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 				 char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct st_pid *plist;
 	int rc, again = 0;
 
 	if (dis) {
@@ -1906,36 +1769,39 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 		printf(" minflt-nr majflt-nr  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if ((rc = get_pid_to_display(prev, curr, p, P_A_MEM, P_CHILD,
-					     &pstc, &pstp)) == 0)
+		if ((rc = get_pid_to_display(prev, curr, P_A_MEM, P_CHILD, plist)) == 0)
 			/* PID no longer exists */
 			continue;
 
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			pstc->rc_asum_count = pstp->rc_asum_count + 1;
+			plist->rc_asum_count += 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
 		if (disp_avg) {
 			cprintf_f(NO_UNIT, 2, 9, 0,
 				  (double) ((pstc->minflt + pstc->cminflt) -
-					    (pstp->minflt + pstp->cminflt)) / pstc->rc_asum_count,
+					    (pstp->minflt + pstp->cminflt)) / plist->rc_asum_count,
 				  (double) ((pstc->majflt + pstc->cmajflt) -
-					    (pstp->majflt + pstp->cmajflt)) / pstc->rc_asum_count);
+					    (pstp->majflt + pstp->cmajflt)) / plist->rc_asum_count);
 		}
 		else {
 			cprintf_u64(NO_UNIT, 2, 9,
 				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
                     (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 		}
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -1966,8 +1832,8 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 			  char *prev_string, char *curr_string)
 {
-	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct pid_stats *pstc;
+	struct st_pid *plist;
 	int rc, again = 0;
 
 	if (dis) {
@@ -1975,30 +1841,31 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 		printf(" StkSize  StkRef  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if ((rc = get_pid_to_display(prev, curr, p, P_A_STACK, P_NULL,
-					     &pstc, &pstp)) == 0)
+		if ((rc = get_pid_to_display(prev, curr, P_A_STACK, P_NULL, plist)) == 0)
 			/* PID no longer exists */
 			continue;
 
+		pstc = plist->pstats[curr];
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			pstc->total_stack_size = pstp->total_stack_size + pstc->stack_size;
-			pstc->total_stack_ref  = pstp->total_stack_ref  + pstc->stack_ref;
-			pstc->sk_asum_count = pstp->sk_asum_count + 1;
+			plist->total_stack_size += pstc->stack_size;
+			plist->total_stack_ref  += pstc->stack_ref;
+			plist->sk_asum_count += 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
 
 		if (disp_avg) {
 			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7, 0,
-				  (double) pstc->total_stack_size / pstc->sk_asum_count,
-				  (double) pstc->total_stack_ref  / pstc->sk_asum_count);
+				  (double) plist->total_stack_size / plist->sk_asum_count,
+				  (double) plist->total_stack_ref  / plist->sk_asum_count);
 		}
 		else {
 			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
@@ -2006,7 +1873,7 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 				    (unsigned long long) pstc->stack_ref);
 		}
 
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -2040,8 +1907,8 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		       unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
 	char dstr[32];
-	unsigned int p;
 	int rc, again = 0;
 	double rbytes, wbytes, cbytes;
 
@@ -2050,24 +1917,27 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		printf("   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if ((rc = get_pid_to_display(prev, curr, p, P_A_IO, P_NULL,
-					     &pstc, &pstp)) == 0)
+		if ((rc = get_pid_to_display(prev, curr, P_A_IO, P_NULL, plist)) == 0)
 			/* PID no longer exists */
 			continue;
 
 		/* This will be used to compute average delays */
 		if (!disp_avg) {
-			pstc->delay_asum_count = pstp->delay_asum_count + 1;
+			plist->delay_asum_count += 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, pstc);
-		if (!NO_PID_IO(pstc->flags)) {
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		if (!NO_PID_IO(plist->flags)) {
 			rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
 			wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
 			cbytes = S_VALUE(pstp->cancelled_write_bytes,
@@ -2089,14 +1959,14 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		if (disp_avg) {
 			cprintf_f(NO_UNIT, 1, 7, 0,
 				  (double) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays) /
-					    pstc->delay_asum_count);
+					    plist->delay_asum_count);
 		}
 		else {
 			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
 		}
 
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -2129,7 +1999,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 			      unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct st_pid *plist;
 	int again = 0;
 
 	if (dis) {
@@ -2137,17 +2007,21 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 		printf("   cswch/s nvcswch/s  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if (get_pid_to_display(prev, curr, p, P_A_CTXSW, P_NULL,
-				       &pstc, &pstp) <= 0)
+		if (get_pid_to_display(prev, curr, P_A_CTXSW, P_NULL, plist) <= 0)
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
 		cprintf_f(NO_UNIT, 2, 9, 2,
-			  S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
+			  S_VALUE(pstp->nvcsw,  pstc->nvcsw,  itv),
 			  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
-		print_comm(pstc);
+
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -2177,8 +2051,8 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 int write_pid_rt_stats(int prev, int curr, int dis,
 		       char *prev_string, char *curr_string)
 {
-	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct pid_stats *pstc;
+	struct st_pid *plist;
 	int again = 0;
 
 	if (dis) {
@@ -2186,17 +2060,20 @@ int write_pid_rt_stats(int prev, int curr, int dis,
 		printf(" prio policy  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if (get_pid_to_display(prev, curr, p, P_A_RT, P_NULL,
-				       &pstc, &pstp) <= 0)
+		if (get_pid_to_display(prev, curr, P_A_RT, P_NULL, plist) <= 0)
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+
 		cprintf_u64(NO_UNIT, 1, 4,
 			    (unsigned long long) pstc->priority);
 		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
-		print_comm(pstc);
+
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -2227,8 +2104,8 @@ int write_pid_rt_stats(int prev, int curr, int dis,
 int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 			 char *prev_string, char *curr_string)
 {
-	struct pid_stats *pstc, *pstp;
-	unsigned int p;
+	struct pid_stats *pstc;
+	struct st_pid *plist;
 	int rc, again = 0;
 
 	if (dis) {
@@ -2237,37 +2114,38 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 		printf("  Command\n");
 	}
 
-	for (p = 0; p < pid_nr; p++) {
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
-		if ((rc = get_pid_to_display(prev, curr, p, P_A_KTAB, P_NULL,
-					     &pstc, &pstp)) == 0)
+		if ((rc = get_pid_to_display(prev, curr, P_A_KTAB, P_NULL, plist)) == 0)
 			/* PID no longer exists */
 			continue;
 
+		pstc = plist->pstats[curr];
+
 		/* This will be used to compute average */
 		if (!disp_avg) {
-			pstc->total_threads = pstp->total_threads + pstc->threads;
-			pstc->total_fd_nr = pstp->total_fd_nr + pstc->fd_nr;
-			pstc->tf_asum_count = pstp->tf_asum_count + 1;
+			plist->total_threads += pstc->threads;
+			plist->total_fd_nr   += pstc->fd_nr;
+			plist->tf_asum_count += 1;
 		}
 
 		if (rc < 0)
 			/* PID should not be displayed */
 			continue;
 
-		print_line_id(curr_string, pstc);
+		print_line_id(curr_string, plist);
 
 		if (disp_avg) {
 			cprintf_f(NO_UNIT, 2, 7, 0,
-				  (double) pstc->total_threads / pstc->tf_asum_count,
-				  NO_PID_FD(pstc->flags) ?
+				  (double) plist->total_threads / plist->tf_asum_count,
+				  NO_PID_FD(plist->flags) ?
 				  -1.0 :
-				  (double) pstc->total_fd_nr / pstc->tf_asum_count);
+				  (double) plist->total_fd_nr / plist->tf_asum_count);
 		}
 		else {
 			cprintf_u64(NO_UNIT, 1, 7,
 				    (unsigned long long) pstc->threads);
-			if (NO_PID_FD(pstc->flags)) {
+			if (NO_PID_FD(plist->flags)) {
 				cprintf_s(IS_ZERO, " %7s", "-1");
 			}
 			else {
@@ -2276,7 +2154,7 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 			}
 		}
 
-		print_comm(pstc);
+		print_comm(plist);
 		again = 1;
 	}
 
@@ -2317,11 +2195,6 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
 	itv = get_interval(uptime_cs[prev], uptime_cs[curr]);
-
-	if (PROCESS_STRING(pidflag)) {
-		/* Reset "show threads" flag */
-		show_threads = FALSE;
-	}
 
 	if (DISPLAY_ONELINE(pidflag)) {
 		if (DISPLAY_TASK_STATS(tskflag)) {
@@ -2468,23 +2341,23 @@ int write_stats(int curr, int dis)
  * Main loop: Read and display PID stats.
  *
  * IN:
- * @dis_hdr		Set to TRUE if the header line must always be printed.
- * @rows		Number of rows of screen.
- * @pid_array_nr	Length of the PID list.
+ * @dis_hdr	Set to TRUE if the header line must always be printed.
+ * @rows	Number of rows of screen.
  ***************************************************************************
  */
-void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
+void rw_pidstat_loop(int dis_hdr, int rows)
 {
 	int curr = 1, dis = 1;
 	int again;
 	unsigned long lines = rows;
+	struct st_pid *plist;
 
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
 
 	/* Read system uptime */
 	read_uptime(&uptime_cs[0]);
-	read_stats(0, pid_array_nr);
+	read_stats(0);
 
 	if (DISPLAY_MEM(actflag)) {
 		/* Get total memory */
@@ -2494,7 +2367,6 @@ void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 	if (!interval) {
 		/* Display since boot time */
 		ps_tstamp[1] = ps_tstamp[0];
-		memset(st_pid_list[1], 0, PID_STATS_SIZE * pid_nr);
 		write_stats(0, DISP_HDR);
 		exit(0);
 	}
@@ -2509,7 +2381,9 @@ void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 	ps_tstamp[2] = ps_tstamp[0];
 	tot_jiffies[2] = tot_jiffies[0];
 	uptime_cs[2] = uptime_cs[0];
-	memcpy(st_pid_list[2], st_pid_list[0], PID_STATS_SIZE * pid_nr);
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+		memcpy(plist->pstats[2], plist->pstats[0], PID_STATS_SIZE);
+	}
 
 	/* Set a handler for SIGINT */
 	memset(&int_act, 0, sizeof(int_act));
@@ -2524,6 +2398,9 @@ void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 		return;
 
 	do {
+		/* Every PID is potentially nonexistent */
+		set_pid_nonexistent(pid_list);
+
 		/* Get time */
 		get_localtime(&ps_tstamp[curr], 0);
 
@@ -2531,7 +2408,7 @@ void rw_pidstat_loop(int dis_hdr, int rows, unsigned int pid_array_nr)
 		read_uptime(&(uptime_cs[curr]));
 
 		/* Read stats */
-		read_stats(curr, pid_array_nr);
+		read_stats(curr);
 
 		if (!dis_hdr) {
 			dis = lines / rows;
@@ -2640,9 +2517,9 @@ pid_t exec_pgm(int argc, char **argv)
  */
 int main(int argc, char **argv)
 {
-	int opt = 1, dis_hdr = -1;
+	int opt = 1, dis_hdr = -1, pid_nr = 0;
 	int i;
-	unsigned int pid, pid_array_nr = 0;
+	unsigned int pid;
 	struct utsname header;
 	int rows = 23;
 	char *t;
@@ -2661,11 +2538,6 @@ int main(int argc, char **argv)
 	/* Compute page shift in kB */
 	get_kb_shift();
 
-	/* Allocate structures for device list */
-	if (argc > 1) {
-		salloc_pid_array((argc / 2) + count_csvalues(argc, argv));
-	}
-
 	/* Process args... */
 	while (opt < argc) {
 
@@ -2674,7 +2546,7 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			pidflag |= P_D_PID;
-			update_pid_array(&pid_array_nr, exec_pgm(argc - opt, argv + opt));
+			add_list_pid(&pid_list, exec_pgm(argc - opt, argv + opt), 0);
 			break;
 		}
 
@@ -2684,12 +2556,13 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 
-			for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ",")) {
+			for (t = strtok(argv[opt], ","); t; t = strtok(NULL, ","), pid_nr++) {
 				if (!strcmp(t, K_ALL)) {
 					pidflag |= P_D_ALL_PID;
+					pid_nr++;
 				}
 				else if (!strcmp(t, K_SELF)) {
-					update_pid_array(&pid_array_nr, getpid());
+					add_list_pid(&pid_list, getpid(), 0);
 				}
 				else {
 					if (strspn(t, DIGITS) != strlen(t)) {
@@ -2699,7 +2572,7 @@ int main(int argc, char **argv)
 					if (pid < 1) {
 						usage(argv[0]);
 					}
-					update_pid_array(&pid_array_nr, pid);
+					add_list_pid(&pid_list, pid, 0);
 				}
 			}
 			opt++;
@@ -2901,17 +2774,21 @@ int main(int argc, char **argv)
 		interval = 0;
 	}
 
+	if (!DISPLAY_PID(pidflag)) {
+		dis_hdr = 1;
+	}
+
 	/* Check flags and set default values */
 	check_flags();
 
-	/* Init structures */
-	pid_sys_init(pid_array_nr);
+	/* Count nb of proc */
+	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	if (dis_hdr < 0) {
 		dis_hdr = 0;
 	}
 	if (!dis_hdr) {
-		if (pid_nr > 1) {
+		if ((pid_nr > 1)) {
 			dis_hdr = 1;
 		}
 		else {
@@ -2929,11 +2806,10 @@ int main(int argc, char **argv)
 			 PLAIN_OUTPUT);
 
 	/* Main loop */
-	rw_pidstat_loop(dis_hdr, rows, pid_array_nr);
+	rw_pidstat_loop(dis_hdr, rows);
 
 	/* Free structures */
-	free(pid_array);
-	sfree_pid();
+	sfree_pid(&pid_list, TRUE);
 
 	return 0;
 }
