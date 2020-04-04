@@ -222,7 +222,7 @@ Average:     1000         -      9109         0         0         0  |__DOM Work
 Average:     1000     21342         -         0         0         0  soffice.bin
 Average:     1000         -      8365         4         0         0  |__evolution-addre
 Average:     1000         -     21342         0         0         0  |__soffice.bin
-Average:     1000         -     21344         0         0         0  |__rtl_cache_wsupd
+Average:     1000         -     21344        33        13         0  |__rtl_cache_wsupd
 
 Average:      UID      TGID       TID minflt-nr majflt-nr  Command
 Average:        0      8407         -         2         0  gnome-terminal-
@@ -236,4 +236,4 @@ Average:     1000         -      9109         0         0  |__DOM Worker
 Average:     1000     21342         -         0         0  soffice.bin
 Average:     1000         -      8365        56         0  |__evolution-addre
 Average:     1000         -     21342         0         0  |__soffice.bin
-Average:     1000         -     21344         0         0  |__rtl_cache_wsupd
+Average:     1000         -     21344       832         0  |__rtl_cache_wsupd

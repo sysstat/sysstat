@@ -3,7 +3,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:00      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:02     1000      7900         -  359.42   53.55    0.00    8.47  412.96     2  gnome-shell
 00:00:02     1000         -      7900  349.70   51.43    0.00    8.47  401.12     2  |__gnome-shell
-00:00:02     1000         -      8741    0.03    0.00    0.00    0.00    0.03     0  |__firefox
+00:00:02     1000      8741      8741    0.03    0.00    0.00    0.00    0.03     0  (firefox)__firefox
 
 00:00:02      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:04     1000      7900         -    0.67    0.16    0.00    0.06    0.83     7  gnome-shell

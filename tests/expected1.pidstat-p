@@ -64,7 +64,7 @@ Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Comma
 Average:     1000      7900  111.56   16.68    0.00    2.64  128.24     -  gnome-shell
 Average:        0      8407    0.19    0.02    0.00    0.01    0.21     -  gnome-terminal-
 Average:     1000      8741    0.04    0.01    0.00    0.01    0.05     -  firefox
-Average:     1000      9009    0.01    0.00    0.00    0.00    0.01     -  WebExtensions
+Average:     1000      9009    4.48    2.20    0.00    0.59    6.68     -  WebExtensions
 Average:     1000     21342    0.00    0.00    0.00    0.00    0.00     -  soffice.bin
 
 Average:      UID       PID StkSize  StkRef  Command
@@ -78,5 +78,5 @@ Average:      UID       PID   cswch/s nvcswch/s  Command
 Average:     1000      7900   1769.08    220.92  gnome-shell
 Average:        0      8407      2.74      0.02  gnome-terminal-
 Average:     1000      8741      2.87      0.00  firefox
-Average:     1000      9009      0.63      0.00  WebExtensions
+Average:     1000      9009    240.12      4.54  WebExtensions
 Average:     1000     21342      0.00      0.00  soffice.bin

@@ -1,40 +1,40 @@
 Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 
 00:00:00      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+00:00:02     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
+00:00:02     1000         -      9009    0.03    0.00    0.00    0.00    0.03     3  |__WebExtensions
+00:00:02     1000         -      9029    0.00    0.00    0.00    0.00    0.00     2  |__Timer
 00:00:02     1000     21342         -    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
 00:00:02     1000         -     21342    0.00    0.00    0.00    0.00    0.00     5  |__soffice.bin
 00:00:02     1000         -     21344    0.00    0.00    0.00    0.00    0.00     5  |__rtl_cache_wsupd
 00:00:02     1000         -     21350    0.00    0.00    0.00    0.00    0.00     4  |__gdbus
-00:00:02     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
-00:00:02     1000         -      9009    0.03    0.00    0.00    0.00    0.03     3  |__WebExtensions
-00:00:02     1000         -      9029    0.00    0.00    0.00    0.00    0.00     2  |__Timer
 
 00:00:00      UID      TGID       TID StkSize  StkRef  Command
+00:00:02     1000      9009         -     132      20  WebExtensions
+00:00:02     1000         -      9009     132      20  |__WebExtensions
+00:00:02     1000         -      9029     132      20  |__Timer
 00:00:02     1000     21342         -     132      36  soffice.bin
 00:00:02     1000         -     21342     132      36  |__soffice.bin
 00:00:02     1000         -     21344     132      36  |__rtl_cache_wsupd
 00:00:02     1000         -     21350     132      36  |__gdbus
-00:00:02     1000      9009         -     132      20  WebExtensions
-00:00:02     1000         -      9009     132      20  |__WebExtensions
-00:00:02     1000         -      9029     132      20  |__Timer
 
 00:00:00      UID      TGID       TID   cswch/s nvcswch/s  Command
+00:00:02     1000      9009         -      0.19      0.00  WebExtensions
+00:00:02     1000         -      9009      0.19      0.00  |__WebExtensions
+00:00:02     1000         -      9029      0.32      0.00  |__Timer
 00:00:02     1000     21342         -      0.00      0.00  soffice.bin
 00:00:02     1000         -     21342      0.00      0.00  |__soffice.bin
 00:00:02     1000         -     21344      0.00      0.00  |__rtl_cache_wsupd
 00:00:02     1000         -     21350      0.00      0.00  |__gdbus
-00:00:02     1000      9009         -      0.19      0.00  WebExtensions
-00:00:02     1000         -      9009      0.19      0.00  |__WebExtensions
-00:00:02     1000         -      9029      0.32      0.00  |__Timer
 
 00:00:00      UID      TGID       TID threads   fd-nr  Command
+00:00:02     1000      9009         -      32       5  WebExtensions
+00:00:02     1000         -      9009      32       5  |__WebExtensions
+00:00:02     1000         -      9029      32       5  |__Timer
 00:00:02     1000     21342         -       6       5  soffice.bin
 00:00:02     1000         -     21342       6       5  |__soffice.bin
 00:00:02     1000         -     21344       6       5  |__rtl_cache_wsupd
 00:00:02     1000         -     21350       6       5  |__gdbus
-00:00:02     1000      9009         -      32       5  WebExtensions
-00:00:02     1000         -      9009      32       5  |__WebExtensions
-00:00:02     1000         -      9029      32       5  |__Timer
 
 00:00:02      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:04     1000     21342         -    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
@@ -42,7 +42,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:04     1000         -      8365    0.06    0.00    0.00    0.00    0.06     7  |__evolution-addre
 00:00:04     1000         -     21342    0.00    0.00    0.00    0.00    0.00     5  |__soffice.bin
 00:00:04     1000         -     21350    0.00    0.00    0.00    0.00    0.00     4  |__gdbus
-00:00:04     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
 
 00:00:02      UID      TGID       TID StkSize  StkRef  Command
 00:00:04     1000     21342         -     132      36  soffice.bin
@@ -50,7 +49,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:04     1000         -      8365     132      36  |__evolution-addre
 00:00:04     1000         -     21342     132      36  |__soffice.bin
 00:00:04     1000         -     21350     132      36  |__gdbus
-00:00:04     1000      9009         -     132      20  WebExtensions
 
 00:00:02      UID      TGID       TID   cswch/s nvcswch/s  Command
 00:00:04     1000     21342         -      0.00      0.00  soffice.bin
@@ -58,7 +56,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:04     1000         -      8365      0.45      0.03  |__evolution-addre
 00:00:04     1000         -     21342      0.00      0.00  |__soffice.bin
 00:00:04     1000         -     21350      0.00      0.00  |__gdbus
-00:00:04     1000      9009         - 590484765483660416.00      0.00  WebExtensions
 
 00:00:02      UID      TGID       TID threads   fd-nr  Command
 00:00:04     1000     21342         -       6       5  soffice.bin
@@ -66,35 +63,30 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:04     1000         -      8365       5       5  |__evolution-addre
 00:00:04     1000         -     21342       6       5  |__soffice.bin
 00:00:04     1000         -     21350       6       5  |__gdbus
-00:00:04     1000      9009         -      32       5  WebExtensions
 
 00:00:04      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:06     1000     21342         -    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
 00:00:06     1000         -      8364    0.00    0.00    0.00    0.00    0.00     0  |__dconf worker
 00:00:06     1000         -      8365    0.00    0.00    0.00    0.00    0.00     7  |__evolution-addre
 00:00:06     1000         -     21342    0.00    0.00    0.00    0.00    0.00     5  |__soffice.bin
-00:00:06     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
 
 00:00:04      UID      TGID       TID StkSize  StkRef  Command
 00:00:06     1000     21342         -     132      36  soffice.bin
 00:00:06     1000         -      8364     132      36  |__dconf worker
 00:00:06     1000         -      8365     132      36  |__evolution-addre
 00:00:06     1000         -     21342     132      36  |__soffice.bin
-00:00:06     1000      9009         -     132      20  WebExtensions
 
 00:00:04      UID      TGID       TID   cswch/s nvcswch/s  Command
 00:00:06     1000     21342         -      0.00      0.00  soffice.bin
 00:00:06     1000         -      8364      0.00      0.00  |__dconf worker
 00:00:06     1000         -      8365      0.00      0.00  |__evolution-addre
 00:00:06     1000         -     21342      0.00      0.00  |__soffice.bin
-00:00:06     1000      9009         -      0.16      0.00  WebExtensions
 
 00:00:04      UID      TGID       TID threads   fd-nr  Command
 00:00:06     1000     21342         -       6       5  soffice.bin
 00:00:06     1000         -      8364       5       5  |__dconf worker
 00:00:06     1000         -      8365       5       5  |__evolution-addre
 00:00:06     1000         -     21342       6       5  |__soffice.bin
-00:00:06     1000      9009         -      32       5  WebExtensions
 
 00:00:06      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:08     1000     21342         -    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
@@ -102,7 +94,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:08     1000         -      8365    0.00    0.00    0.00    0.00    0.00     7  |__evolution-addre
 00:00:08     1000         -     21342    0.00    0.00    0.00    0.00    0.00     5  |__soffice.bin
 00:00:08     1000         -     21344    0.00    0.00    0.00    0.00    0.00     5  |__rtl_cache_wsupd
-00:00:08     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
 
 00:00:06      UID      TGID       TID StkSize  StkRef  Command
 00:00:08     1000     21342         -     132      36  soffice.bin
@@ -110,7 +101,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:08     1000         -      8365     132      36  |__evolution-addre
 00:00:08     1000         -     21342     132      36  |__soffice.bin
 00:00:08     1000         -     21344     132      36  |__rtl_cache_wsupd
-00:00:08     1000      9009         -     132      20  WebExtensions
 
 00:00:06      UID      TGID       TID   cswch/s nvcswch/s  Command
 00:00:08     1000     21342         -      0.00      0.00  soffice.bin
@@ -118,7 +108,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:08     1000         -      8365      0.00      0.00  |__evolution-addre
 00:00:08     1000         -     21342      0.00      0.00  |__soffice.bin
 00:00:08     1000         -     21344      9.65      0.00  |__rtl_cache_wsupd
-00:00:08     1000      9009         - 823883165418023680.00      0.00  WebExtensions
 
 00:00:06      UID      TGID       TID threads   fd-nr  Command
 00:00:08     1000     21342         -       6       5  soffice.bin
@@ -126,96 +115,75 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 00:00:08     1000         -      8365       5       5  |__evolution-addre
 00:00:08     1000         -     21342       6       5  |__soffice.bin
 00:00:08     1000         -     21344       6       5  |__rtl_cache_wsupd
-00:00:08     1000      9009         -      32       5  WebExtensions
 
 00:00:08      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:10     1000     21342         -    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
 00:00:10     1000         -      8365    0.00    0.00    0.00    0.00    0.00     7  |__evolution-addre
 00:00:10     1000         -     21342    0.00    0.00    0.00    0.00    0.00     5  |__soffice.bin
 00:00:10     1000         -     21344    0.00    0.00    0.00    0.00    0.00     5  |__rtl_cache_wsupd
-00:00:10     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
 
 00:00:08      UID      TGID       TID StkSize  StkRef  Command
 00:00:10     1000     21342         -     132      36  soffice.bin
 00:00:10     1000         -      8365     132      36  |__evolution-addre
 00:00:10     1000         -     21342     132      36  |__soffice.bin
 00:00:10     1000         -     21344     132      36  |__rtl_cache_wsupd
-00:00:10     1000      9009         -     132      20  WebExtensions
 
 00:00:08      UID      TGID       TID   cswch/s nvcswch/s  Command
 00:00:10     1000     21342         -      0.00      0.00  soffice.bin
 00:00:10     1000         -      8365      0.00      0.00  |__evolution-addre
 00:00:10     1000         -     21342      0.00      0.00  |__soffice.bin
 00:00:10     1000         -     21344      0.00      0.00  |__rtl_cache_wsupd
-00:00:10     1000      9009         -      0.00      0.00  WebExtensions
 
 00:00:08      UID      TGID       TID threads   fd-nr  Command
 00:00:10     1000     21342         -       6       5  soffice.bin
 00:00:10     1000         -      8365       5       5  |__evolution-addre
 00:00:10     1000         -     21342       6       5  |__soffice.bin
 00:00:10     1000         -     21344       6       5  |__rtl_cache_wsupd
-00:00:10     1000      9009         -      32       5  WebExtensions
 
 00:00:10      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:12     1000     21342         -    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
 00:00:12     1000         -      8365    0.00    0.00    0.00    0.00    0.00     7  |__evolution-addre
 00:00:12     1000         -     21342    0.00    0.00    0.00    0.00    0.00     5  |__soffice.bin
 00:00:12     1000         -     21344    0.00    0.00    0.00    0.00    0.00     5  |__rtl_cache_wsupd
-00:00:12     1000         -     21344    0.00    0.00    0.00    0.00    0.00     5  |__rtl_cache_wsupd
-00:00:12     1000      9009         -    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
 
 00:00:10      UID      TGID       TID StkSize  StkRef  Command
 00:00:12     1000     21342         -     132      36  soffice.bin
 00:00:12     1000         -      8365     132      36  |__evolution-addre
 00:00:12     1000         -     21342     132      36  |__soffice.bin
 00:00:12     1000         -     21344     132      36  |__rtl_cache_wsupd
-00:00:12     1000         -     21344     132      36  |__rtl_cache_wsupd
-00:00:12     1000      9009         -     132      20  WebExtensions
 
 00:00:10      UID      TGID       TID   cswch/s nvcswch/s  Command
 00:00:12     1000     21342         -      0.00      0.00  soffice.bin
 00:00:12     1000         -      8365      0.00      0.00  |__evolution-addre
 00:00:12     1000         -     21342      0.00      0.00  |__soffice.bin
 00:00:12     1000         -     21344      0.00      0.00  |__rtl_cache_wsupd
-00:00:12     1000         -     21344      0.00      0.00  |__rtl_cache_wsupd
-00:00:12     1000      9009         - 591810846124785152.00      0.00  WebExtensions
 
 00:00:10      UID      TGID       TID threads   fd-nr  Command
 00:00:12     1000     21342         -       6       5  soffice.bin
 00:00:12     1000         -      8365       5       5  |__evolution-addre
 00:00:12     1000         -     21342       6       5  |__soffice.bin
 00:00:12     1000         -     21344       6       5  |__rtl_cache_wsupd
-00:00:12     1000         -     21344       6       5  |__rtl_cache_wsupd
-00:00:12     1000      9009         -      32       5  WebExtensions
 
 Average:      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 Average:     1000     21342         -    0.00    0.00    0.00    0.00    0.00     -  soffice.bin
 Average:     1000         -      8365    0.06    0.00    0.00    0.00    0.06     -  |__evolution-addre
 Average:     1000         -     21342    0.00    0.00    0.00    0.00    0.00     -  |__soffice.bin
 Average:     1000         -     21344    0.00    0.00    0.00    0.00    0.00     -  |__rtl_cache_wsupd
-Average:     1000         -     21344    0.00    0.00    0.00    0.00    0.00     -  |__rtl_cache_wsupd
-Average:     1000      9009         -    0.00    0.00    0.00    0.00    0.00     -  WebExtensions
 
 Average:      UID      TGID       TID StkSize  StkRef  Command
 Average:     1000     21342         -     132      36  soffice.bin
 Average:     1000         -      8365     132      36  |__evolution-addre
 Average:     1000         -     21342     132      36  |__soffice.bin
 Average:     1000         -     21344     132      36  |__rtl_cache_wsupd
-Average:     1000         -     21344     132      36  |__rtl_cache_wsupd
-Average:     1000      9009         -     132      20  WebExtensions
 
 Average:      UID      TGID       TID   cswch/s nvcswch/s  Command
 Average:     1000     21342         -      0.00      0.00  soffice.bin
 Average:     1000         -      8365      0.45      0.03  |__evolution-addre
 Average:     1000         -     21342      0.00      0.00  |__soffice.bin
-Average:     1000         -     21344      0.00      0.00  |__rtl_cache_wsupd
-Average:     1000         -     21344      0.00      0.00  |__rtl_cache_wsupd
-Average:     1000      9009         -      0.00      0.00  WebExtensions
+Average:     1000         -     21344      6.93      0.00  |__rtl_cache_wsupd
 
 Average:      UID      TGID       TID threads   fd-nr  Command
 Average:     1000     21342         -       6       5  soffice.bin
 Average:     1000         -      8365       5       5  |__evolution-addre
 Average:     1000         -     21342       6       5  |__soffice.bin
 Average:     1000         -     21344       6       5  |__rtl_cache_wsupd
-Average:     1000         -     21344       6       5  |__rtl_cache_wsupd
-Average:     1000      9009         -      32       5  WebExtensions

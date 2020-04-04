@@ -535,7 +535,7 @@ NOTES:
 05175	diff -u tests/out.pidstat-d-TTASK-ALL.tmp tests/expected.pidstat-d-TTASK-ALL
 05180	LC_ALL=C TZ=GMT ./pidstat -uRr -p 1234 1 2 > tests/out.pidstat-p-unkwn.tmp
 05185	diff -u tests/out.pidstat-p-unkwn.tmp tests/expected.pidstat-p-unkwn
-05190	LC_ALL=C TZ=GMT ./pidstat -svw -p 21342,8835 1 2 > tests/out2.pidstat-p-unkwn.tmp
+05190	LC_ALL=C TZ=GMT ./pidstat -svw -p 8741,8835 1 2 > tests/out2.pidstat-p-unkwn.tmp
 05195	diff -u tests/out2.pidstat-p-unkwn.tmp tests/expected2.pidstat-p-unkwn
 05200	LC_ALL=C TZ=GMT ./pidstat -ds -p 8741,21342 1 3 > tests/out.pidstat-p.tmp
 05205	diff -u tests/out.pidstat-p.tmp tests/expected.pidstat-p

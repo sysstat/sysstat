@@ -65,22 +65,24 @@ Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Comma
 Average:     1000      7900  111.56   16.68    0.00    2.64  128.24     -  gnome-shell
 Average:        0      8407    0.19    0.02    0.00    0.01    0.21     -  gnome-terminal-
 Average:     1000      8741    0.04    0.01    0.00    0.01    0.05     -  firefox
-Average:     1000      9009    0.01    0.00    0.00    0.00    0.01     -  WebExtensions
+Average:     1000      9009    4.48    2.20    0.00    0.59    6.68     -  WebExtensions
 
 Average:      UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
 Average:     1000      7900   7925.82      0.46 4451763  259072   3.18  gnome-shell
 Average:        0      8407      0.09      0.00  723868   42156   0.52  gnome-terminal-
 Average:     1000      8741      0.05      0.00 2535720  335804   4.12  firefox
-Average:     1000      9009      0.02      0.00 1744508  105628   1.30  WebExtensions
+Average:     1000      9009    245.57      0.14 1744508  105628   1.30  WebExtensions
 
 Average:      UID       PID StkSize  StkRef  Command
 Average:     1000      7900     128     108  gnome-shell
+Average:     1000      9009     132      20  WebExtensions
 
 Average:      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
 Average:     1000      7900    127.20      0.87      0.00      84  gnome-shell
+Average:     1000      9009     11.69      0.00      0.00      69  WebExtensions
 
 Average:      UID       PID   cswch/s nvcswch/s  Command
 Average:     1000      7900   1769.08    220.92  gnome-shell
 Average:        0      8407      2.74      0.02  gnome-terminal-
 Average:     1000      8741      2.87      0.00  firefox
-Average:     1000      9009      0.63      0.00  WebExtensions
+Average:     1000      9009    240.12      4.54  WebExtensions

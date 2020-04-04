@@ -10,3 +10,4 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
 
 Average:      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
 Average:     1000      7900    127.20      0.87      0.00      84  gnome-shell
+Average:     1000      9009     11.69      0.00      0.00      69  WebExtensions
