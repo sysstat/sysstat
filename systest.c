@@ -337,5 +337,19 @@ struct passwd *get_usrname(uid_t uid)
 	return &pwd_ent;
 }
 
+/*
+ ***************************************************************************
+ * Replacement function for fork() system call. Don't fork really but return
+ * a known PID number.
+ *
+ * RETURNS:
+ * Known PID number.
+ ***************************************************************************
+ */
+pid_t get_known_pid(void)
+{
+	return 8741;
+}
+
 #endif	/* TEST */
 

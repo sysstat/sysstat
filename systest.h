@@ -29,6 +29,7 @@
 #define __realpath(m,n)		get_realname(m,n)
 #define __gettimeofday(m,n)	get_day_time(m)
 #define __getpwuid(m)		get_usrname(m)
+#define __fork(m)		get_known_pid(m)
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
@@ -53,9 +54,9 @@
 #define __realpath(m,n)		realpath(m,n)
 #define __gettimeofday(m,n)	gettimeofday(m,n)
 #define __getpwuid(m)		getpwuid(m)
+#define __fork(m)		fork(m)
 
 #endif
-
 
 /*
  ***************************************************************************
@@ -71,6 +72,8 @@ char *get_env_value
 	(const char *);
 int get_fs_stat
 	(char *, struct statvfs *);
+pid_t get_known_pid
+	(void);
 char *get_realname
 	(char *, char *);
 void get_uname

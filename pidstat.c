@@ -2473,7 +2473,7 @@ pid_t exec_pgm(int argc, char **argv)
 	char *args[argc + 1];
 	int i;
 
-	child = fork();
+	child = __fork();
 
 	switch(child) {
 
