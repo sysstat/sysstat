@@ -51,10 +51,8 @@ void int_handler(int n) { return; }
 #endif
 
 unsigned long long uptime_cs[2] = {0, 0};
-struct cifs_stats *st_cifs[2];
-struct io_hdr_stats *st_hdr_cifs;
+struct io_cifs *cifs_list = NULL;
 
-int cifs_nr = 0;	/* Nb of CIFS mounted directories found */
 int cpu_nr = 0;		/* Nb of processors on the machine */
 int flags = 0;		/* Flag for common options and system state */
 int dplaces_nr = -1;	/* Number of decimal places */
@@ -102,221 +100,87 @@ void alarm_handler(int sig)
 
 /*
  ***************************************************************************
- * Find number of CIFS-mounted points that are registered in
- * /proc/fs/cifs/Stats.
+ * Set every cifs entry to nonexistent status.
+ *
+ * IN:
+ * @clist	Pointer on the start of the linked list.
+ ***************************************************************************
+ */
+void set_cifs_nonexistent(struct io_cifs *clist)
+{
+	while (clist != NULL) {
+		clist->exist = FALSE;
+		clist = clist->next;
+	}
+}
+
+/*
+ ***************************************************************************
+ * Check if a cifs filesystem is present in the list, and add it if requested.
+ *
+ * IN:
+ * @clist	Address of pointer on the start of the linked list.
+ * @name	cifs name.
  *
  * RETURNS:
- * Number of CIFS-mounted points.
+ * Pointer on the io_cifs structure in the list where the cifs is located
+ * (whether it was already in the list or if it has been added).
+ * NULL if the cifs name is too long or if the cifs doesn't exist and we
+ * don't want to add it.
  ***************************************************************************
  */
-int get_cifs_nr(void)
+struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name)
 {
-	FILE *fp;
-	char line[128];
-	int cifs = 0;
+	struct io_cifs *c, *cs;
+	int i;
 
-	if ((fp = fopen(CIFSSTATS, "r")) == NULL)
-		/* File non-existent */
-		return 0;
+	if (strnlen(name, MAX_NAME_LEN) == MAX_NAME_LEN)
+		/* cifs name is too long */
+		return NULL;
 
-	while (fgets(line, sizeof(line), fp) != NULL) {
-
-		if (!strncmp(line, "Share (unique mount targets): ", 30)) {
-			sscanf(line + 30, "%d", &cifs);
+	while (*clist != NULL) {
+		c = *clist;
+		if ((i = strcmp(c->name, name)) == 0) {
+			/* cifs found in list */
+			c->exist = TRUE;
+			return c;
+		}
+		if (i > 0)
+			/*
+			 * If no group defined and we don't use /proc/diskstats,
+			 * insert current device in alphabetical order.
+			 * NB: Using /proc/diskstats ("iostat -p ALL") is a bit better than
+			 * using alphabetical order because sda10 comes after sda9...
+			 */
 			break;
-		}
+
+		clist = &(c->next);
 	}
 
-	/* Close file */
-	fclose(fp);
+	/* cifs not found */
+	cs = *clist;
 
-	return cifs;
-}
-
-/*
- ***************************************************************************
- * Set every cifs_io entry to inactive state (unregistered).
- ***************************************************************************
- */
-void set_entries_inactive(void)
-{
-	int i;
-	struct io_hdr_stats *shi = st_hdr_cifs;
-
-	for (i = 0; i < cifs_nr; i++, shi++) {
-		shi->active = FALSE;
+	/* Add cifs to the list */
+	if ((*clist = (struct io_cifs *) malloc(IO_CIFS_SIZE)) == NULL) {
+		perror("malloc");
+		exit(4);
 	}
-}
+	memset(*clist, 0, IO_CIFS_SIZE);
 
-/*
- ***************************************************************************
- * Free inactive entries (mark them as unused).
- ***************************************************************************
- */
-void free_inactive_entries(void)
-{
-	int i;
-	struct io_hdr_stats *shi = st_hdr_cifs;
-
-	for (i = 0; i < cifs_nr; i++, shi++) {
-		if (!shi->active) {
-			shi->used = FALSE;
-		}
-	}
-}
-
-/*
- ***************************************************************************
- * Allocate and init structures, according to system state.
- ***************************************************************************
- */
-void io_sys_init(void)
-{
-	int i;
-
-	/* How many processors on this machine? */
-	cpu_nr = get_cpu_nr(~0, FALSE);
-
-	/* Get number of CIFS directories in /proc/fs/cifs/Stats */
-	if ((cifs_nr = get_cifs_nr()) > 0) {
-		cifs_nr += NR_CIFS_PREALLOC;
-	}
-
-	if (cifs_nr > 0) {
-		if ((st_hdr_cifs = (struct io_hdr_stats *) calloc(cifs_nr, IO_HDR_STATS_SIZE)) == NULL) {
+	c = *clist;
+	for (i = 0; i < 2; i++) {
+		if ((c->cifs_stats[i] = (struct cifs_st *) malloc(CIFS_ST_SIZE)) == NULL) {
 			perror("malloc");
 			exit(4);
 		}
-
-		/* Allocate structures for number of CIFS directories found */
-		for (i = 0; i < 2; i++) {
-			if ((st_cifs[i] =
-			(struct cifs_stats *) calloc(cifs_nr, CIFS_STATS_SIZE)) == NULL) {
-				perror("malloc");
-				exit(4);
-			}
-		}
+		memset(c->cifs_stats[i], 0, CIFS_ST_SIZE);
 	}
-	else {
-		/*
-		 * cifs_nr value is probably zero, but it can also be negative
-		 * (possible overflow when adding NR_CIFS_PREALLOC above).
-		 */
-		cifs_nr = 0;
-	}
-}
+	strncpy(c->name, name, MAX_NAME_LEN);
+	c->name[MAX_NAME_LEN - 1] = '\0';
+	c->exist = TRUE;
+	c->next = cs;
 
-/*
- ***************************************************************************
- * Free various structures.
- ***************************************************************************
-*/
-void io_sys_free(void)
-{
-	int i;
-
-	/* Free CIFS directories structures */
-	for (i = 0; i < 2; i++) {
-		free(st_cifs[i]);
-	}
-
-	free(st_hdr_cifs);
-}
-
-/*
- ***************************************************************************
- * Save stats for current CIFS filesystem.
- *
- * IN:
- * @name		Name of CIFS filesystem.
- * @curr		Index in array for current sample statistics.
- * @st_io		Structure with CIFS statistics to save.
- ***************************************************************************
- */
-void save_stats(char *name, int curr, struct cifs_stats *st_io)
-{
-	int i, j;
-	struct io_hdr_stats *st_hdr_cifs_i;
-	struct cifs_stats *st_cifs_i;
-
-	/* Look for CIFS directory in data table */
-	for (i = 0; i < cifs_nr; i++) {
-		st_hdr_cifs_i = st_hdr_cifs + i;
-		if ((st_hdr_cifs_i->used == TRUE) &&
-		    (!strcmp(st_hdr_cifs_i->name, name))) {
-			break;
-		}
-	}
-
-	if (i == cifs_nr) {
-		/*
-		 * This is a new filesystem: Look for an unused entry to store it.
-		 */
-		for (i = 0; i < cifs_nr; i++) {
-			st_hdr_cifs_i = st_hdr_cifs + i;
-			if (!st_hdr_cifs_i->used) {
-				/* Unused entry found... */
-				st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
-				st_hdr_cifs_i->active = TRUE;
-				strncpy(st_hdr_cifs_i->name, name, MAX_NAME_LEN - 1);
-				st_hdr_cifs_i->name[MAX_NAME_LEN - 1] = '\0';
-				st_cifs_i = st_cifs[curr] + i;
-				*st_cifs_i = *((struct cifs_stats *) st_io);
-				break;
-			}
-		}
-		if (i == cifs_nr) {
-			/*
-			 * It is a new CIFS directory
-			 * but there is no free structure to store it.
-			 */
-
-			/* All entries are used: The number has to be increased */
-			cifs_nr = cifs_nr + 5;
-
-			/* Increase the size of st_hdr_ionfs buffer */
-			if ((st_hdr_cifs = (struct io_hdr_stats *)
-				realloc(st_hdr_cifs, cifs_nr * IO_HDR_STATS_SIZE)) == NULL) {
-				perror("malloc");
-				exit(4);
-			}
-
-			/* Set the new entries inactive */
-			for (j = 0; j < 5; j++) {
-				st_hdr_cifs_i = st_hdr_cifs + i + j;
-				st_hdr_cifs_i->used = FALSE;
-				st_hdr_cifs_i->active = FALSE;
-			}
-
-			/* Increase the size of st_hdr_ionfs buffer */
-			for (j = 0; j < 2; j++) {
-				if ((st_cifs[j] = (struct cifs_stats *)
-					realloc(st_cifs[j], cifs_nr * CIFS_STATS_SIZE)) == NULL) {
-					perror("malloc");
-					exit(4);
-				}
-				memset(st_cifs[j] + i, 0, 5 * CIFS_STATS_SIZE);
-			}
-			/* Now i shows the first unused entry of the new block */
-			st_hdr_cifs_i = st_hdr_cifs + i;
-			st_hdr_cifs_i->used = TRUE; /* Indicate it is now used */
-			st_hdr_cifs_i->active = TRUE;
-			strncpy(st_hdr_cifs_i->name, name, MAX_NAME_LEN - 1);
-			st_hdr_cifs_i->name[MAX_NAME_LEN - 1] = '\0';
-			st_cifs_i = st_cifs[curr] + i;
-			*st_cifs_i = *st_io;
-		}
-	} else {
-		st_hdr_cifs_i = st_hdr_cifs + i;
-		st_hdr_cifs_i->active = TRUE;
-		st_hdr_cifs_i->used = TRUE;
-		st_cifs_i = st_cifs[curr] + i;
-		*st_cifs_i = *st_io;
-	}
-	/*
-	 * else it was a new CIFS directory
-	 * but there was no free structure to store it.
-	 */
+	return c;
 }
 
 /*
@@ -337,10 +201,8 @@ void read_cifs_stat(int curr)
 	long long unsigned all_open = 0;
 	char cifs_name[MAX_NAME_LEN];
 	char name_tmp[MAX_NAME_LEN];
-	struct cifs_stats scifs = {0, 0, 0, 0, 0, 0, 0};
-
-	/* Every CIFS entry is potentially unregistered */
-	set_entries_inactive();
+	struct cifs_st scifs;
+	struct io_cifs *ci;
 
 	if ((fp = fopen(CIFSSTATS, "r")) == NULL)
 		return;
@@ -348,13 +210,18 @@ void read_cifs_stat(int curr)
 	sprintf(aux, "%%*d) %%%ds",
 		MAX_NAME_LEN < 200 ? MAX_NAME_LEN - 1 : 200);
 
+	memset(&scifs, 0, CIFS_ST_SIZE);
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		/* Read CIFS directory name */
 		if (isdigit((unsigned char) line[0]) && sscanf(line, aux , name_tmp) == 1) {
 			if (start) {
 				scifs.fopens = all_open;
-				save_stats(cifs_name, curr, &scifs);
+				ci = add_list_cifs(&cifs_list, cifs_name);
+				if (ci != NULL) {
+					*ci->cifs_stats[curr] = scifs;
+				}
 				all_open = 0;
 			}
 			else {
@@ -362,7 +229,7 @@ void read_cifs_stat(int curr)
 			}
 			strncpy(cifs_name, name_tmp, MAX_NAME_LEN);
 			cifs_name[MAX_NAME_LEN - 1] = '\0';
-			memset(&scifs, 0, sizeof(struct cifs_stats));
+			memset(&scifs, 0, CIFS_ST_SIZE);
 		}
 		else {
 			if (!strncmp(line, "Reads:", 6)) {
@@ -407,13 +274,13 @@ void read_cifs_stat(int curr)
 
 	if (start) {
 		scifs.fopens = all_open;
-		save_stats(cifs_name, curr, &scifs);
+		ci = add_list_cifs(&cifs_list, cifs_name);
+		if (ci != NULL) {
+			*ci->cifs_stats[curr] = scifs;
+		}
 	}
 
 	fclose(fp);
-
-	/* Free structures corresponding to unregistered filesystems */
-	free_inactive_entries();
 }
 
 /*
@@ -456,19 +323,19 @@ void write_cifs_stat_header(int *fctr)
  * @curr	Index in array for current sample statistics.
  * @itv		Interval of time (in 1/100th of a second).
  * @fctr	Conversion factor.
- * @shi		Structures describing the CIFS filesystems.
+ * @clist	Pointer on the linked list where the cifs is saved.
  * @ioi		Current sample statistics.
  * @ioj		Previous sample statistics.
  ***************************************************************************
  */
 void write_cifs_stat(int curr, unsigned long long itv, int fctr,
-		     struct io_hdr_stats *shi, struct cifs_stats *ioni,
-		     struct cifs_stats *ionj)
+		     struct io_cifs *clist, struct cifs_st *ioni,
+		     struct cifs_st *ionj)
 {
 	double rbytes, wbytes;
 
 	if (!DISPLAY_HUMAN_READ(flags)) {
-		cprintf_in(IS_STR, "%-22s", shi->name, 0);
+		cprintf_in(IS_STR, "%-22s", clist->name, 0);
 	}
 
 	/*       rB/s   wB/s   fo/s   fc/s   fd/s*/
@@ -488,7 +355,7 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
 		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
 	if (DISPLAY_HUMAN_READ(flags)) {
-		cprintf_in(IS_STR, " %s", shi->name, 0);
+		cprintf_in(IS_STR, " %s", clist->name, 0);
 	}
 	printf("\n");
 }
@@ -504,10 +371,10 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
  */
 void write_stats(int curr, struct tm *rectime)
 {
-	int i, fctr = 1;
+	int fctr = 1;
 	unsigned long long itv;
-	struct io_hdr_stats *shi;
-	struct cifs_stats *ioni, *ionj;
+	struct io_cifs *clist;
+	struct cifs_st *ioni, *ionj;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -531,30 +398,32 @@ void write_stats(int curr, struct tm *rectime)
 	/* Interval of time, reduced to one processor */
 	itv = get_interval(uptime_cs[!curr], uptime_cs[curr]);
 
-	shi = st_hdr_cifs;
-
 	/* Display CIFS stats header */
 	write_cifs_stat_header(&fctr);
 
-	for (i = 0; i < cifs_nr; i++, shi++) {
-		if (shi->used) {
-			ioni = st_cifs[curr]  + i;
-			ionj = st_cifs[!curr] + i;
+	for (clist = cifs_list; clist != NULL; clist = clist->next) {
+
+		if (!clist->exist)
+			/* Current cifs non existent */
+			continue;
+
+		ioni = clist->cifs_stats[curr];
+		ionj = clist->cifs_stats[!curr];
+
 #ifdef DEBUG
-			if (DISPLAY_DEBUG(flags)) {
-				/* Debug output */
-				fprintf(stderr, "name=%s itv=%llu fctr=%d ioni{ rd_bytes=%llu "
-						"wr_bytes=%llu rd_ops=%llu wr_ops=%llu fopens=%llu "
-						"fcloses=%llu fdeletes=%llu}\n",
-					shi->name, itv, fctr,
-					ioni->rd_bytes, ioni->wr_bytes,
-					ioni->rd_ops,   ioni->wr_ops,
-					ioni->fopens,   ioni->fcloses,
-					ioni->fdeletes);
-			}
-#endif
-			write_cifs_stat(curr, itv, fctr, shi, ioni, ionj);
+		if (DISPLAY_DEBUG(flags)) {
+			/* Debug output */
+			fprintf(stderr, "name=%s itv=%llu fctr=%d ioni{ rd_bytes=%llu "
+					"wr_bytes=%llu rd_ops=%llu wr_ops=%llu fopens=%llu "
+					"fcloses=%llu fdeletes=%llu}\n",
+				clist->name, itv, fctr,
+				ioni->rd_bytes, ioni->wr_bytes,
+				ioni->rd_ops,   ioni->wr_ops,
+				ioni->fopens,   ioni->fcloses,
+				ioni->fdeletes);
 		}
+#endif
+		write_cifs_stat(curr, itv, fctr, clist, ioni, ionj);
 	}
 	printf("\n");
 }
@@ -572,10 +441,19 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 {
 	int curr = 1;
 
+	/* Set a handler for SIGALRM */
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
+
 	/* Don't buffer data if redirected to a pipe */
 	setbuf(stdout, NULL);
 
 	do {
+		/* Every device is potentially nonexistent */
+		set_cifs_nonexistent(cifs_list);
+
 		/* Read system uptime in 1/100th of a second */
 		read_uptime(&(uptime_cs[curr]));
 
@@ -714,8 +592,8 @@ int main(int argc, char **argv)
 		count = 1;
 	}
 
-	/* Init structures according to machine architecture */
-	io_sys_init();
+	/* How many processors on this machine? */
+	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	get_localtime(&rectime, 0);
 
@@ -728,17 +606,8 @@ int main(int argc, char **argv)
 	}
 	printf("\n");
 
-	/* Set a handler for SIGALRM */
-	memset(&alrm_act, 0, sizeof(alrm_act));
-	alrm_act.sa_handler = alarm_handler;
-	sigaction(SIGALRM, &alrm_act, NULL);
-	alarm(interval);
-
 	/* Main loop */
 	rw_io_stat_loop(count, &rectime);
-
-	/* Free structures */
-	io_sys_free();
 
 	return 0;
 }
