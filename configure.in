@@ -389,6 +389,8 @@ else
    NLS="n"
 fi
 AC_MSG_RESULT($AUX_NLS)
+AC_CHECK_LIB(intl, gettext, LFINTL="-lintl")
+AC_SUBST(LFINTL)
 LACKING_GETTEXT="n"
 if test $AUX_NLS = "yes" &&  test x$MSGFMT != x"msgfmt"; then 
    echo "WARNING: msgfmt command not found!"
