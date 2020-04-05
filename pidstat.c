@@ -62,7 +62,6 @@ struct tm ps_tstamp[3];
 char commstr[MAX_COMM_LEN];
 char userstr[MAX_USER_LEN];
 char procstr[MAX_COMM_LEN];
-int show_threads = FALSE;
 
 int cpu_nr = 0;			/* Nb of processors on the machine */
 unsigned long tlmkb;		/* Total memory in kB */
