@@ -117,6 +117,7 @@ ifeq ($(SYSPARAM),y)
 	DFLAGS += -DHAVE_SYS_PARAM_H
 endif
 NLS = @NLS@
+LFLAGS += @LFINTL@
 ifeq ($(NLS),y)
 REQUIRE_NLS = -DUSE_NLS -DPACKAGE=\"$(PACKAGE)\" -DLOCALEDIR=\"$(NLS_DIR)\"
 endif
