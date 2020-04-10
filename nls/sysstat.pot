@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-12-27 13:33+0100\n"
+"POT-Creation-Date: 2020-04-10 09:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Summary:"
 msgstr ""
 
-#: iostat.c:88 tapestat.c:104 cifsiostat.c:77 mpstat.c:134 sar.c:108
+#: iostat.c:88 tapestat.c:104 cifsiostat.c:75 mpstat.c:134 sar.c:108
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: cifsiostat.c:81
+#: cifsiostat.c:79
 #, c-format
 msgid ""
 "Options are:\n"
@@ -109,7 +109,7 @@ msgid ""
 "debuginfo ]\n"
 msgstr ""
 
-#: cifsiostat.c:84
+#: cifsiostat.c:82
 #, c-format
 msgid ""
 "Options are:\n"
@@ -130,7 +130,7 @@ msgid ""
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:1736 sar.c:376 pidstat.c:2419
+#: mpstat.c:1736 sar.c:376 pidstat.c:2288
 msgid "Average:"
 msgstr ""
 
@@ -387,13 +387,13 @@ msgstr ""
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr ""
 
-#: pidstat.c:97
+#: pidstat.c:89
 #, c-format
 msgid ""
 "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr ""
 
-#: pidstat.c:100
+#: pidstat.c:92
 #, c-format
 msgid ""
 "Options are:\n"
@@ -404,7 +404,7 @@ msgid ""
 "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
 msgstr ""
 
-#: pidstat.c:250 sa_common.c:362
+#: pidstat.c:207 sa_common.c:362
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
