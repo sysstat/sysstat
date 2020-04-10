@@ -1,5 +1,19 @@
 Changes:
 
+2020/04/10: Version 12.3.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* pidstat: Major code refactoring. Several bugs fixed.
+	* pidstat: Don't display unneeded spaces following command name
+	  when option -l is used.
+	* cifsiostat: Major code refactoring.
+	* simtest: Add test environment for pidstat command.
+	* simtest: Add new non regression tests for iostat command.
+	* pidstat: Remove extra space at end of command name [12.2.2].
+	* [Anatoly Pugachev]: Fix sa2 script, so it wont complain on empty list
+	  for compress program [12.2.2].
+	* iostat: Make sure pointer on linked list is initialized [12.2.2].
+	* [Fabrice Fontaine]: Makefile: Link with -lintl if needed [12.2.2].
+	* NLS translation updated.
+
 2019/12/27: Version 12.3.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Konstantin Khlebnikov]: iostat: Add flush I/O statistics
 	  (statistics available starting with kernel 5.5).
