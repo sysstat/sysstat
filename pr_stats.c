@@ -3020,3 +3020,208 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 		printf("\n");
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display pressure-stall CPU statistics. This function is used to display
+ * instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+void stub_print_psicpu_stats(struct activity *a, int curr, int dispavg)
+{
+#if 0
+//FIX
+	struct stats_queue
+		*sqc = (struct stats_queue *) a->buf[curr];
+	static unsigned long long
+		avg_nr_running    = 0,
+		avg_nr_threads    = 0,
+		avg_load_avg_1    = 0,
+		avg_load_avg_5    = 0,
+		avg_load_avg_15   = 0,
+		avg_procs_blocked = 0;
+
+	if (dish) {
+		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
+	}
+
+	if (!dispavg) {
+		/* Display instantaneous values */
+		printf("%-11s", timestamp[curr]);
+		cprintf_u64(NO_UNIT, 2, 9,
+			    (unsigned long long) sqc->nr_running,
+			    (unsigned long long) sqc->nr_threads);
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) sqc->load_avg_1  / 100,
+			  (double) sqc->load_avg_5  / 100,
+			  (double) sqc->load_avg_15 / 100);
+		cprintf_u64(NO_UNIT, 1, 9,
+			    (unsigned long long) sqc->procs_blocked);
+		printf("\n");
+
+		/* Will be used to compute the average */
+		avg_nr_running    += sqc->nr_running;
+		avg_nr_threads    += sqc->nr_threads;
+		avg_load_avg_1    += sqc->load_avg_1;
+		avg_load_avg_5    += sqc->load_avg_5;
+		avg_load_avg_15   += sqc->load_avg_15;
+		avg_procs_blocked += sqc->procs_blocked;
+	}
+	else {
+		/* Display average values */
+		printf("%-11s", timestamp[curr]);
+		cprintf_f(NO_UNIT, 2, 9, 0,
+			  (double) avg_nr_running / avg_count,
+			  (double) avg_nr_threads / avg_count);
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) avg_load_avg_1  / (avg_count * 100),
+			  (double) avg_load_avg_5  / (avg_count * 100),
+			  (double) avg_load_avg_15 / (avg_count * 100));
+		cprintf_f(NO_UNIT, 1, 9, 0,
+			  (double) avg_procs_blocked / avg_count);
+		printf("\n");
+
+		/* Reset average counters */
+		avg_nr_running = avg_nr_threads = 0;
+		avg_load_avg_1 = avg_load_avg_5 = avg_load_avg_15 = 0;
+		avg_procs_blocked = 0;
+	}
+#endif
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall CPU statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_psicpu_stats(struct activity *a, int prev, int curr,
+				   unsigned long long itv)
+{
+	stub_print_psicpu_stats(a, curr, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display average pressure-stall CPU statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_psicpu_stats(struct activity *a, int prev, int curr,
+				       unsigned long long itv)
+{
+	stub_print_psicpu_stats(a, curr, TRUE);
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall I/O statistics. This function is used to display
+ * instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+void stub_print_psiio_stats(struct activity *a, int curr, int dispavg)
+{
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall I/O statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_psiio_stats(struct activity *a, int prev, int curr,
+				  unsigned long long itv)
+{
+	stub_print_psiio_stats(a, curr, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display average pressure-stall I/O statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_psiio_stats(struct activity *a, int prev, int curr,
+				      unsigned long long itv)
+{
+	stub_print_psiio_stats(a, curr, TRUE);
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall memory statistics. This function is used to display
+ * instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+void stub_print_psimem_stats(struct activity *a, int curr, int dispavg)
+{
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall memory statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_psimem_stats(struct activity *a, int prev, int curr,
+				   unsigned long long itv)
+{
+	stub_print_psimem_stats(a, curr, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display average pressure-stall memory statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_psimem_stats(struct activity *a, int prev, int curr,
+				       unsigned long long itv)
+{
+	stub_print_psimem_stats(a, curr, TRUE);
+}

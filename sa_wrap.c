@@ -1162,6 +1162,72 @@ __read_funct_t wrap_read_softnet(struct activity *a)
 
 /*
  ***************************************************************************
+ * Read pressure-stall CPU statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_psicpu(struct activity *a)
+{
+	struct stats_psi_cpu *st_psicpu
+		= (struct stats_psi_cpu *) a->_buf0;
+
+	/* Read pressure-stall CPU stats */
+//	read_psicpu(st_psicpu);
+
+	return;
+}
+
+/*
+ ***************************************************************************
+ * Read pressure-stall I/O statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_psiio(struct activity *a)
+{
+	struct stats_psi_io *st_psiio
+		= (struct stats_psi_io *) a->_buf0;
+
+	/* Read pressure-stall I/O stats */
+//	read_psiio(st_psiio);
+
+	return;
+}
+
+/*
+ ***************************************************************************
+ * Read pressure-stall memory statistics.
+ *
+ * IN:
+ * @a	Activity structure.
+ *
+ * OUT:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+__read_funct_t wrap_read_psimem(struct activity *a)
+{
+	struct stats_psi_mem *st_psimem
+		= (struct stats_psi_mem *) a->_buf0;
+
+	/* Read pressure-stall memory stats */
+//	read_psimem(st_psimem);
+
+	return;
+}
+
+/*
+ ***************************************************************************
  * Count number of interrupts that are in /proc/stat file.
  * Truncate the number of different individual interrupts to NR_IRQS.
  *

@@ -20,7 +20,7 @@
  */
 
 /* Number of activities */
-#define NR_ACT		39
+#define NR_ACT		42
 /* The value below is used for sanity check */
 #define MAX_NR_ACT	256
 
@@ -67,6 +67,9 @@
 #define A_FS		37
 #define A_NET_FC	38
 #define A_NET_SOFT	39
+#define A_PSI_CPU	40
+#define A_PSI_IO	41
+#define A_PSI_MEM	42
 
 
 /* Macro used to flag an activity that should be collected */
@@ -189,6 +192,7 @@
 /* Keywords */
 #define K_A_NULL	"A_NULL"
 #define K_CPU		"CPU"
+#define K_PSI_CPU	"CPU"
 #define K_DEV		"DEV"
 #define K_EDEV		"EDEV"
 #define K_EICMP		"EICMP"
@@ -202,8 +206,11 @@
 #define K_ICMP		"ICMP"
 #define K_ICMP6		"ICMP6"
 #define K_IN		"IN"
+#define K_PSI_IO	"IO"
 #define K_IP		"IP"
 #define K_IP6		"IP6"
+#define K_LOAD		"LOAD"
+#define K_PSI_MEM	"MEM"
 #define K_MOUNT		"MOUNT"
 #define K_NFS		"NFS"
 #define K_NFSD		"NFSD"
@@ -1414,6 +1421,12 @@ __read_funct_t wrap_read_fchost
 	(struct activity *);
 __read_funct_t wrap_read_softnet
 	(struct activity *);
+__read_funct_t wrap_read_psicpu
+	(struct activity *);
+__read_funct_t wrap_read_psiio
+	(struct activity *);
+__read_funct_t wrap_read_psimem
+	(struct activity *);
 
 /* Other functions */
 int check_alt_sa_dir
@@ -1490,6 +1503,8 @@ int parse_sa_P_opt
 int parse_sar_m_opt
 	(char * [], int *, struct activity * []);
 int parse_sar_n_opt
+	(char * [], int *, struct activity * []);
+int parse_sar_q_opt
 	(char * [], int *, struct activity * []);
 int parse_timestamp
 	(char * [], int *, struct tstamp *, const char *);

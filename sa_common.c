@@ -2342,6 +2342,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'q':
+			/* Option -q grouped with other ones */
 			SELECT_ACTIVITY(A_QUEUE);
 			break;
 
@@ -2574,6 +2575,52 @@ int parse_sar_n_opt(char *argv[], int *opt, struct activity *act[])
 			SELECT_ACTIVITY(A_NET_UDP6);
 			SELECT_ACTIVITY(A_NET_FC);
 			SELECT_ACTIVITY(A_NET_SOFT);
+		}
+		else
+			return 1;
+	}
+
+	(*opt)++;
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Parse sar "-q" option.
+ *
+ * IN:
+ * @argv	Arguments list.
+ * @opt		Index in list of arguments.
+ *
+ * OUT:
+ * @act		Array of selected activities.
+ *
+ * RETURNS:
+ * 0 on success, 1 otherwise.
+ ***************************************************************************
+ */
+int parse_sar_q_opt(char *argv[], int *opt, struct activity *act[])
+{
+	char *t;
+
+	for (t = strtok(argv[*opt], ","); t; t = strtok(NULL, ",")) {
+		if (!strcmp(t, K_LOAD)) {
+			SELECT_ACTIVITY(A_QUEUE);
+		}
+		else if (!strcmp(t, K_PSI_CPU)) {
+			SELECT_ACTIVITY(A_PSI_CPU);
+		}
+		else if (!strcmp(t, K_PSI_IO)) {
+			SELECT_ACTIVITY(A_PSI_IO);
+		}
+		else if (!strcmp(t, K_PSI_MEM)) {
+			SELECT_ACTIVITY(A_PSI_MEM);
+		}
+		else if (!strcmp(t, K_ALL)) {
+			SELECT_ACTIVITY(A_QUEUE);
+			SELECT_ACTIVITY(A_PSI_CPU);
+			SELECT_ACTIVITY(A_PSI_IO);
+			SELECT_ACTIVITY(A_PSI_MEM);
 		}
 		else
 			return 1;

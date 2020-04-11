@@ -1873,6 +1873,144 @@ struct activity softnet_act = {
 	.bitmap		= &cpu_bitmap
 };
 
+/* Pressure-stall CPU activity */
+struct activity psi_cpu_act = {
+	.id		= A_PSI_CPU,
+	.options	= AO_COLLECTED,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
+#ifdef SOURCE_SADC
+	.f_count_index	= -1,
+	.f_count2	= NULL,
+	.f_read		= wrap_read_psicpu,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_psicpu_stats,
+	.f_print_avg	= print_avg_psicpu_stats,
+#endif
+#if defined(SOURCE_SAR) || defined(SOURCE_SADF)
+	.hdr_line	= "s_acpu10;s_acpu60;s_acpu300;s_totcpu",
+#endif
+	.gtypes_nr	= {STATS_PSI_CPU_ULL, STATS_PSI_CPU_UL, STATS_PSI_CPU_U},
+	.ftypes_nr	= {0, 0, 0},
+#ifdef SOURCE_SADF
+//FIX	.f_render	= render_psicpu_stats,
+//FIX	.f_xml_print	= xml_print_psicpu_stats,
+//FIX	.f_json_print	= json_print_psicpu_stats,
+//FIX	.f_svg_print	= svg_print_psicpu_stats,
+//FIX	.f_raw_print	= raw_print_psicpu_stats,
+//FIX	.f_pcp_print	= pcp_print_psicpu_stats,
+	.f_count_new	= NULL,
+	.item_list	= NULL,
+	.desc		= "Pressure-stall CPU statistics",
+#endif
+	.name		= "A_PSI_CPU",
+	.item_list_sz	= 0,
+	.g_nr		= 2,
+	.nr_ini		= 1,
+	.nr2		= 1,
+	.nr_max		= 1,
+	.nr		= {1, 1, 1},
+	.nr_allocated	= 0,
+	.fsize		= STATS_PSI_CPU_SIZE,
+	.msize		= STATS_PSI_CPU_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
+/* Pressure-stall I/O activity */
+struct activity psi_io_act = {
+	.id		= A_PSI_IO,
+	.options	= AO_COLLECTED,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
+#ifdef SOURCE_SADC
+	.f_count_index	= -1,
+	.f_count2	= NULL,
+	.f_read		= wrap_read_psiio,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_psiio_stats,
+	.f_print_avg	= print_avg_psiio_stats,
+#endif
+#if defined(SOURCE_SAR) || defined(SOURCE_SADF)
+	.hdr_line	= "s_aio10;s_aio60;s_aio300;s_totio;f_aio10;f_aio60;f_aio300;f_totio",
+#endif
+	.gtypes_nr	= {STATS_PSI_IO_ULL, STATS_PSI_IO_UL, STATS_PSI_IO_U},
+	.ftypes_nr	= {0, 0, 0},
+#ifdef SOURCE_SADF
+//FIX	.f_render	= render_psiio_stats,
+//FIX	.f_xml_print	= xml_print_psiio_stats,
+//FIX	.f_json_print	= json_print_psiio_stats,
+//FIX	.f_svg_print	= svg_print_psiio_stats,
+//FIX	.f_raw_print	= raw_print_psiio_stats,
+//FIX	.f_pcp_print	= pcp_print_psiio_stats,
+	.f_count_new	= NULL,
+	.item_list	= NULL,
+	.desc		= "Pressure-stall I/O statistics",
+#endif
+	.name		= "A_PSI_IO",
+	.item_list_sz	= 0,
+	.g_nr		= 4,
+	.nr_ini		= 1,
+	.nr2		= 1,
+	.nr_max		= 1,
+	.nr		= {1, 1, 1},
+	.nr_allocated	= 0,
+	.fsize		= STATS_PSI_IO_SIZE,
+	.msize		= STATS_PSI_IO_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
+/* Pressure-stall memory activity */
+struct activity psi_mem_act = {
+	.id		= A_PSI_MEM,
+	.options	= AO_COLLECTED,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_DEFAULT,
+#ifdef SOURCE_SADC
+	.f_count_index	= -1,
+	.f_count2	= NULL,
+	.f_read		= wrap_read_psimem,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_psimem_stats,
+	.f_print_avg	= print_avg_psimem_stats,
+#endif
+#if defined(SOURCE_SAR) || defined(SOURCE_SADF)
+	.hdr_line	= "s_amem10;s_amem60;s_amem300;s_totmem;f_amem10;f_amem60;f_amem300;f_totmem",
+#endif
+	.gtypes_nr	= {STATS_PSI_MEM_ULL, STATS_PSI_MEM_UL, STATS_PSI_MEM_U},
+	.ftypes_nr	= {0, 0, 0},
+#ifdef SOURCE_SADF
+//FIX	.f_render	= render_psimem_stats,
+//FIX	.f_xml_print	= xml_print_psimem_stats,
+//FIX	.f_json_print	= json_print_psimem_stats,
+//FIX	.f_svg_print	= svg_print_psimem_stats,
+//FIX	.f_raw_print	= raw_print_psimem_stats,
+//FIX	.f_pcp_print	= pcp_print_psimem_stats,
+	.f_count_new	= NULL,
+	.item_list	= NULL,
+	.desc		= "Pressure-stall memory statistics",
+#endif
+	.name		= "A_PSI_MEM",
+	.item_list_sz	= 0,
+	.g_nr		= 4,
+	.nr_ini		= 1,
+	.nr2		= 1,
+	.nr_max		= 1,
+	.nr		= {1, 1, 1},
+	.nr_allocated	= 0,
+	.fsize		= STATS_PSI_MEM_SIZE,
+	.msize		= STATS_PSI_MEM_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
 #ifdef SOURCE_SADC
 /*
  * Array of functions used to count number of items.
@@ -1939,5 +2077,8 @@ struct activity *act[NR_ACT] = {
 	&pwr_wghfreq_act,
 	&pwr_usb_act,		/* AO_CLOSE_MARKUP */
 	/* </power-management> */
-	&filesystem_act
+	&filesystem_act,
+	&psi_cpu_act,
+	&psi_io_act,
+	&psi_mem_act
 };

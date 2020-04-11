@@ -65,6 +65,9 @@
 #define NET_RPC_NFSD	PRE "/proc/net/rpc/nfsd"
 #define NET_SOFTNET	PRE "/proc/net/softnet_stat"
 #define LOADAVG		PRE "/proc/loadavg"
+#define PSI_CPU		PRE "/proc/pressure/cpu"
+#define PSI_IO		PRE "/proc/pressure/io"
+#define PSI_MEM		PRE "/proc/pressure/mem"
 #define VMSTAT		PRE "/proc/vmstat"
 #define NET_SNMP	PRE "/proc/net/snmp"
 #define NET_SNMP6	PRE "/proc/net/snmp6"
@@ -703,6 +706,53 @@ struct stats_softnet {
 #define STATS_SOFTNET_ULL	0
 #define STATS_SOFTNET_UL	0
 #define STATS_SOFTNET_U		5
+
+/* Structure for pressure-stall CPU statistics */
+struct stats_psi_cpu {
+	unsigned long long some_cpu_total;
+	unsigned long	   some_acpu_10;
+	unsigned long	   some_acpu_60;
+	unsigned long	   some_acpu_300;
+};
+
+#define STATS_PSI_CPU_SIZE	(sizeof(struct stats_psi_cpu))
+#define STATS_PSI_CPU_ULL	1
+#define STATS_PSI_CPU_UL	3
+#define STATS_PSI_CPU_U		0
+
+/* Structure for pressure-stall I/O statistics */
+struct stats_psi_io {
+	unsigned long long some_io_total;
+	unsigned long long full_io_total;
+	unsigned long	   some_aio_10;
+	unsigned long	   some_aio_60;
+	unsigned long	   some_aio_300;
+	unsigned long	   full_aio_10;
+	unsigned long	   full_aio_60;
+	unsigned long	   full_aio_300;
+};
+
+#define STATS_PSI_IO_SIZE	(sizeof(struct stats_psi_io))
+#define STATS_PSI_IO_ULL	2
+#define STATS_PSI_IO_UL		6
+#define STATS_PSI_IO_U		0
+
+/* Structure for pressure-stall memory statistics */
+struct stats_psi_mem {
+	unsigned long long some_mem_total;
+	unsigned long long full_mem_total;
+	unsigned long	   some_amem_10;
+	unsigned long	   some_amem_60;
+	unsigned long	   some_amem_300;
+	unsigned long	   full_amem_10;
+	unsigned long	   full_amem_60;
+	unsigned long	   full_amem_300;
+};
+
+#define STATS_PSI_MEM_SIZE	(sizeof(struct stats_psi_mem))
+#define STATS_PSI_MEM_ULL	2
+#define STATS_PSI_MEM_UL	6
+#define STATS_PSI_MEM_U		0
 
 /*
  ***************************************************************************

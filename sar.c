@@ -122,10 +122,11 @@ void usage(char *progname)
 	print_usage_title(stderr, progname);
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
-			  "[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+			  "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
 			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
+			  "[ -q [ <keyword> [,...] | ALL ] ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 			  "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
@@ -187,6 +188,13 @@ void display_help(char *progname)
 		 "\t\tFC\tFibre channel HBAs\n"
 		 "\t\tSOFT\tSoftware-based network processing\n"));
 	printf(_("\t-q\tQueue length and load average statistics [A_QUEUE]\n"));
+	printf(_("\t-q [ <keyword> [,...] | ALL ]\n"
+		 "\t\tSystem load and pressure-stall statistics\n"
+		 "\t\tKeywords are:\n"
+		 "\t\tLOAD\tQueue length and load average statistics [A_QUEUE]\n"
+		 "\t\tCPU\tPressure-stall CPU statistics [A_PSI_CPU]\n"
+		 "\t\tIO\tPressure-stall I/O statistics [A_PSI_IO]\n"
+		 "\t\tMEM\tPressure-stall memory statistics [A_PSI_MEM]\n"));
 	printf(_("\t-r [ ALL ]\n"
 		 "\t\tMemory utilization statistics [A_MEMORY]\n"));
 	printf(_("\t-S\tSwap space utilization statistics [A_MEMORY]\n"));
@@ -1429,6 +1437,16 @@ int main(int argc, char **argv)
 			/* Parse option -n */
 			if (parse_sar_n_opt(argv, &opt, act)) {
 				usage(argv[0]);
+			}
+		}
+
+		else if (!strcmp(argv[opt], "-q")) {
+			if (!argv[++opt]) {
+				SELECT_ACTIVITY(A_QUEUE);
+			}
+			/* Parse option -q */
+			else if (parse_sar_q_opt(argv, &opt, act)) {
+				SELECT_ACTIVITY(A_QUEUE);
 			}
 		}
 
