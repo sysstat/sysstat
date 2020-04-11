@@ -844,6 +844,13 @@ __nr_t read_fchost
 	(struct stats_fchost *, __nr_t);
 int read_softnet
 	(struct stats_softnet *, __nr_t, unsigned char []);
+__nr_t read_psicpu
+	(struct stats_psi_cpu *);
+__nr_t read_psiio
+	(struct stats_psi_io *);
+__nr_t read_psimem
+	(struct stats_psi_mem *);
+
 #endif /* SOURCE_SADC */
 
 #endif /* _RD_STATS_H */

@@ -41,6 +41,14 @@
 #define _(string) (string)
 #endif
 
+/* Generic PSI structure */
+struct stats_psi {
+	unsigned long long total;
+	unsigned long	   avg10;
+	unsigned long	   avg60;
+	unsigned long	   avg300;
+};
+
 /*
  ***************************************************************************
  * Read CPU statistics.
@@ -2721,6 +2729,166 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 	}
 
 	fclose(fp);
+	return 1;
+}
+
+/*
+ ***************************************************************************
+ * Read pressure-stall information from a file located in /proc/pressure
+ * directory.
+ *
+ * IN:
+ * @st_psi	Structure where stats will be saved.
+ * @filename	File located in /proc/pressure directory to read.
+ * @token	"some" or "full". Indicate which line shall be read in file.
+ *
+ * OUT:
+ * @st_psi	Structure with statistics.
+ *
+ * RETURNS:
+ * 1 on success, 0 otherwise.
+ ***************************************************************************
+ */
+int read_psi_stub(struct stats_psi *st_psi, char *filename, char *token)
+{
+	FILE *fp;
+	char line[8192];
+	unsigned long psi_tmp[3];
+	int rc = 0, len;
+
+	if ((fp = fopen(filename, "r")) == NULL)
+		return 0;
+
+	len = strlen(token);
+	while (fgets(line, sizeof(line), fp) != NULL) {
+
+		if (!strncmp(line, token, len)) {
+			/* Read stats */
+			rc = sscanf(line + len + 1, "avg10=%lu.%lu avg60=%lu.%lu avg300=%lu.%lu total=%llu",
+				    &psi_tmp[0], &st_psi->avg10,
+				    &psi_tmp[1], &st_psi->avg60,
+				    &psi_tmp[2], &st_psi->avg300,
+				    &st_psi->total);
+		}
+	}
+
+	fclose(fp);
+
+	if (rc < 7)
+		return 0;
+
+	st_psi->avg10  += psi_tmp[0] * 100;
+	st_psi->avg60  += psi_tmp[1] * 100;
+	st_psi->avg300 += psi_tmp[2] * 100;
+
+	return 1;
+}
+
+/*
+ ***************************************************************************
+ * Read pressure-stall CPU information.
+ *
+ * IN:
+ * @st_psi_cpu	Structure where stats will be saved.
+ *
+ * OUT:
+ * @st_psi_cpu	Structure with statistics.
+ *
+ * RETURNS:
+ * 1 on success, 0 otherwise.
+ ***************************************************************************
+ */
+__nr_t read_psicpu(struct stats_psi_cpu *st_psi_cpu)
+{
+	struct stats_psi st_psi;
+
+	/* Read CPU stats */
+	if (!read_psi_stub(&st_psi, PSI_CPU, "some"))
+		return 0;
+
+	st_psi_cpu->some_acpu_10   = st_psi.avg10;
+	st_psi_cpu->some_acpu_60   = st_psi.avg60;
+	st_psi_cpu->some_acpu_300  = st_psi.avg300;
+	st_psi_cpu->some_cpu_total = st_psi.total;
+
+	return 1;
+}
+
+/*
+ ***************************************************************************
+ * Read pressure-stall I/O information.
+ *
+ * IN:
+ * @st_psi_io	Structure where stats will be saved.
+ *
+ * OUT:
+ * @st_psi_io	Structure with statistics.
+ *
+ * RETURNS:
+ * 1 on success, 0 otherwise.
+ ***************************************************************************
+ */
+__nr_t read_psiio(struct stats_psi_io *st_psi_io)
+{
+	struct stats_psi st_psi;
+
+	/* Read I/O "some" stats */
+	if (!read_psi_stub(&st_psi, PSI_IO, "some"))
+		return 0;
+
+	st_psi_io->some_aio_10   = st_psi.avg10;
+	st_psi_io->some_aio_60   = st_psi.avg60;
+	st_psi_io->some_aio_300  = st_psi.avg300;
+	st_psi_io->some_io_total = st_psi.total;
+
+	/* Read I/O "full" stats */
+	if (!read_psi_stub(&st_psi, PSI_IO, "full"))
+		return 0;
+
+	st_psi_io->full_aio_10   = st_psi.avg10;
+	st_psi_io->full_aio_60   = st_psi.avg60;
+	st_psi_io->full_aio_300  = st_psi.avg300;
+	st_psi_io->full_io_total = st_psi.total;
+
+	return 1;
+}
+
+/*
+ ***************************************************************************
+ * Read pressure-stall memory information.
+ *
+ * IN:
+ * @st_psi_mem	Structure where stats will be saved.
+ *
+ * OUT:
+ * @st_psi_mem	Structure with statistics.
+ *
+ * RETURNS:
+ * 1 on success, 0 otherwise.
+ ***************************************************************************
+ */
+__nr_t read_psimem(struct stats_psi_mem *st_psi_mem)
+{
+	struct stats_psi st_psi;
+
+	/* Read memory "some" stats */
+	if (!read_psi_stub(&st_psi, PSI_MEM, "some"))
+		return 0;
+
+	st_psi_mem->some_amem_10   = st_psi.avg10;
+	st_psi_mem->some_amem_60   = st_psi.avg60;
+	st_psi_mem->some_amem_300  = st_psi.avg300;
+	st_psi_mem->some_mem_total = st_psi.total;
+
+	/* Read memory "full" stats */
+	if (!read_psi_stub(&st_psi, PSI_MEM, "full"))
+		return 0;
+
+	st_psi_mem->full_amem_10   = st_psi.avg10;
+	st_psi_mem->full_amem_60   = st_psi.avg60;
+	st_psi_mem->full_amem_300  = st_psi.avg300;
+	st_psi_mem->full_mem_total = st_psi.total;
+
 	return 1;
 }
 

@@ -1177,7 +1177,7 @@ __read_funct_t wrap_read_psicpu(struct activity *a)
 		= (struct stats_psi_cpu *) a->_buf0;
 
 	/* Read pressure-stall CPU stats */
-//	read_psicpu(st_psicpu);
+	read_psicpu(st_psicpu);
 
 	return;
 }
@@ -1199,7 +1199,7 @@ __read_funct_t wrap_read_psiio(struct activity *a)
 		= (struct stats_psi_io *) a->_buf0;
 
 	/* Read pressure-stall I/O stats */
-//	read_psiio(st_psiio);
+	read_psiio(st_psiio);
 
 	return;
 }
@@ -1221,7 +1221,7 @@ __read_funct_t wrap_read_psimem(struct activity *a)
 		= (struct stats_psi_mem *) a->_buf0;
 
 	/* Read pressure-stall memory stats */
-//	read_psimem(st_psimem);
+	read_psimem(st_psimem);
 
 	return;
 }
