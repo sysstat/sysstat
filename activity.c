@@ -1895,7 +1895,7 @@ struct activity psi_cpu_act = {
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_psicpu_stats,
-//FIXME	.f_xml_print	= xml_print_psicpu_stats,
+	.f_xml_print	= xml_print_psicpu_stats,
 //FIXME	.f_json_print	= json_print_psicpu_stats,
 //FIXME	.f_svg_print	= svg_print_psicpu_stats,
 	.f_raw_print	= raw_print_psicpu_stats,
@@ -1941,7 +1941,7 @@ struct activity psi_io_act = {
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_psiio_stats,
-//FIXME	.f_xml_print	= xml_print_psiio_stats,
+	.f_xml_print	= xml_print_psiio_stats,
 //FIXME	.f_json_print	= json_print_psiio_stats,
 //FIXME	.f_svg_print	= svg_print_psiio_stats,
 	.f_raw_print	= raw_print_psiio_stats,
@@ -1968,7 +1968,7 @@ struct activity psi_io_act = {
 /* Pressure-stall memory activity */
 struct activity psi_mem_act = {
 	.id		= A_PSI_MEM,
-	.options	= AO_COLLECTED,
+	.options	= AO_COLLECTED + AO_CLOSE_MARKUP,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
@@ -1987,7 +1987,7 @@ struct activity psi_mem_act = {
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_psimem_stats,
-//FIXME	.f_xml_print	= xml_print_psimem_stats,
+	.f_xml_print	= xml_print_psimem_stats,
 //FIXME	.f_json_print	= json_print_psimem_stats,
 //FIXME	.f_svg_print	= svg_print_psimem_stats,
 	.f_raw_print	= raw_print_psimem_stats,
@@ -2075,10 +2075,12 @@ struct activity *act[NR_ACT] = {
 	&pwr_temp_act,
 	&pwr_in_act,
 	&pwr_wghfreq_act,
-	&pwr_usb_act,		/* AO_CLOSE_MARKUP */
+	&pwr_usb_act,	/* AO_CLOSE_MARKUP */
 	/* </power-management> */
 	&filesystem_act,
+	/* <psi> */
 	&psi_cpu_act,
 	&psi_io_act,
-	&psi_mem_act
+	&psi_mem_act	/* AO_CLOSE_MARKUP */
+	/* </psi> */
 };

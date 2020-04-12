@@ -93,6 +93,33 @@ void xml_markup_power_management(int tab, int action)
 
 /*
  ***************************************************************************
+ * Open or close <psi> markup.
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Open or close action.
+ ***************************************************************************
+ */
+void xml_markup_psi(int tab, int action)
+{
+	static int markup_state = CLOSE_XML_MARKUP;
+
+	if (action == markup_state)
+		return;
+	markup_state = action;
+
+	if (action == OPEN_XML_MARKUP) {
+		/* Open markup */
+		xprintf(tab, "<psi per=\"second\">");
+	}
+	else {
+		/* Close markup */
+		xprintf(tab, "</psi>");
+	}
+}
+
+/*
+ ***************************************************************************
  * Display CPU statistics in XML.
  *
  * IN:
@@ -2274,5 +2301,144 @@ __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 close_xml_markup:
 	if (CLOSE_MARKUP(a->options)) {
 		xml_markup_network(tab, CLOSE_XML_MARKUP);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall CPU statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_psicpu_stats(struct activity *a, int curr, int tab,
+				       unsigned long long itv)
+{
+	struct stats_psi_cpu
+		*psic = (struct stats_psi_cpu *) a->buf[curr],
+		*psip = (struct stats_psi_cpu *) a->buf[!curr];
+
+	if (!IS_SELECTED(a->options))
+		goto close_xml_markup;
+
+	xml_markup_psi(tab, OPEN_XML_MARKUP);
+	tab++;
+
+	xprintf(tab, "<psi-cpu "
+		"some_avg10=\"%.2f\" "
+		"some_avg60=\"%.2f\" "
+		"some_avg300=\"%.2f\" "
+		"some_total=\"%.2f\"/>",
+		(double) psic->some_acpu_10  / 100,
+		(double) psic->some_acpu_60  / 100,
+		(double) psic->some_acpu_300 / 100,
+		S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
+	tab--;
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_psi(tab, CLOSE_XML_MARKUP);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall I/O statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_psiio_stats(struct activity *a, int curr, int tab,
+				      unsigned long long itv)
+{
+	struct stats_psi_io
+		*psic = (struct stats_psi_io *) a->buf[curr],
+		*psip = (struct stats_psi_io *) a->buf[!curr];
+
+	if (!IS_SELECTED(a->options))
+		goto close_xml_markup;
+
+	xml_markup_psi(tab, OPEN_XML_MARKUP);
+	tab++;
+
+	xprintf(tab, "<psi-io "
+		"some_avg10=\"%.2f\" "
+		"some_avg60=\"%.2f\" "
+		"some_avg300=\"%.2f\" "
+		"some_total=\"%.2f\" "
+		"full_avg10=\"%.2f\" "
+		"full_avg60=\"%.2f\" "
+		"full_avg300=\"%.2f\" "
+		"full_total=\"%.2f\"/>",
+		(double) psic->some_aio_10  / 100,
+		(double) psic->some_aio_60  / 100,
+		(double) psic->some_aio_300 / 100,
+		S_VALUE(psip->some_io_total, psic->some_io_total, itv),
+		(double) psic->full_aio_10  / 100,
+		(double) psic->full_aio_60  / 100,
+		(double) psic->full_aio_300 / 100,
+		S_VALUE(psip->full_io_total, psic->full_io_total, itv));
+	tab--;
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_psi(tab, CLOSE_XML_MARKUP);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall memory statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_psimem_stats(struct activity *a, int curr, int tab,
+				       unsigned long long itv)
+{
+	struct stats_psi_mem
+		*psic = (struct stats_psi_mem *) a->buf[curr],
+		*psip = (struct stats_psi_mem *) a->buf[!curr];
+
+	if (!IS_SELECTED(a->options))
+		goto close_xml_markup;
+
+	xml_markup_psi(tab, OPEN_XML_MARKUP);
+	tab++;
+
+	xprintf(tab, "<psi-mem "
+		"some_avg10=\"%.2f\" "
+		"some_avg60=\"%.2f\" "
+		"some_avg300=\"%.2f\" "
+		"some_total=\"%.2f\" "
+		"full_avg10=\"%.2f\" "
+		"full_avg60=\"%.2f\" "
+		"full_avg300=\"%.2f\" "
+		"full_total=\"%.2f\"/>",
+		(double) psic->some_amem_10  / 100,
+		(double) psic->some_amem_60  / 100,
+		(double) psic->some_amem_300 / 100,
+		S_VALUE(psip->some_mem_total, psic->some_mem_total, itv),
+		(double) psic->full_amem_10  / 100,
+		(double) psic->full_amem_60  / 100,
+		(double) psic->full_amem_300 / 100,
+		S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
+	tab--;
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_psi(tab, CLOSE_XML_MARKUP);
 	}
 }
