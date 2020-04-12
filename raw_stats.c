@@ -1664,3 +1664,87 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 		printf("\n");
 	}
 }
+
+/*
+ ***************************************************************************
+ * Display pressure-stall CPU statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_psicpu_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_psi_cpu
+		*spic = (struct stats_psi_cpu *) a->buf[curr],
+		*spip = (struct stats_psi_cpu *) a->buf[!curr];
+
+	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), spic->some_acpu_10);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->some_acpu_60);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->some_acpu_300);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spip->some_cpu_total, (unsigned long long) spic->some_cpu_total);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall I/O statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_psiio_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_psi_io
+		*spic = (struct stats_psi_io *) a->buf[curr],
+		*spip = (struct stats_psi_io *) a->buf[!curr];
+
+	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), spic->some_aio_10);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->some_aio_60);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->some_aio_300);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spip->some_io_total, (unsigned long long) spic->some_io_total);
+
+	printf(" %s; %lu;", pfield(NULL, 0), spic->full_aio_10);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->full_aio_60);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->full_aio_300);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spip->full_io_total, (unsigned long long) spic->full_io_total);
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall mem statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_psimem_stats(struct activity *a, char *timestr, int curr)
+{
+	struct stats_psi_mem
+		*spic = (struct stats_psi_mem *) a->buf[curr],
+		*spip = (struct stats_psi_mem *) a->buf[!curr];
+
+	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), spic->some_amem_10);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->some_amem_60);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->some_amem_300);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spip->some_mem_total, (unsigned long long) spic->some_mem_total);
+
+	printf(" %s; %lu;", pfield(NULL, 0), spic->full_amem_10);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->full_amem_60);
+	printf(" %s; %lu;", pfield(NULL, 0), spic->full_amem_300);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spip->full_mem_total, (unsigned long long) spic->full_mem_total);
+	printf("\n");
+}
