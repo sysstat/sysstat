@@ -1894,7 +1894,7 @@ struct activity psi_cpu_act = {
 	.gtypes_nr	= {STATS_PSI_CPU_ULL, STATS_PSI_CPU_UL, STATS_PSI_CPU_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-//FIXME	.f_render	= render_psicpu_stats,
+	.f_render	= render_psicpu_stats,
 //FIXME	.f_xml_print	= xml_print_psicpu_stats,
 //FIXME	.f_json_print	= json_print_psicpu_stats,
 //FIXME	.f_svg_print	= svg_print_psicpu_stats,
@@ -1940,7 +1940,7 @@ struct activity psi_io_act = {
 	.gtypes_nr	= {STATS_PSI_IO_ULL, STATS_PSI_IO_UL, STATS_PSI_IO_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-//FIXME	.f_render	= render_psiio_stats,
+	.f_render	= render_psiio_stats,
 //FIXME	.f_xml_print	= xml_print_psiio_stats,
 //FIXME	.f_json_print	= json_print_psiio_stats,
 //FIXME	.f_svg_print	= svg_print_psiio_stats,
@@ -1986,7 +1986,7 @@ struct activity psi_mem_act = {
 	.gtypes_nr	= {STATS_PSI_MEM_ULL, STATS_PSI_MEM_UL, STATS_PSI_MEM_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-//FIXME	.f_render	= render_psimem_stats,
+	.f_render	= render_psimem_stats,
 //FIXME	.f_xml_print	= xml_print_psimem_stats,
 //FIXME	.f_json_print	= json_print_psimem_stats,
 //FIXME	.f_svg_print	= svg_print_psimem_stats,

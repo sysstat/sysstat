@@ -124,5 +124,11 @@ __print_funct_t render_fchost_stats
 	(struct activity *, int, char *, int, unsigned long long);
 __print_funct_t render_softnet_stats
 	(struct activity *, int, char *, int, unsigned long long);
+__print_funct_t render_psicpu_stats
+	(struct activity *, int, char *, int, unsigned long long);
+__print_funct_t render_psiio_stats
+	(struct activity *, int, char *, int, unsigned long long);
+__print_funct_t render_psimem_stats
+	(struct activity *, int, char *, int, unsigned long long);
 
 #endif /* _RNDR_STATS_H */
