@@ -1668,6 +1668,19 @@ int main(int argc, char **argv)
 			}
 		}
 
+		else if (!strcmp(argv[opt], "-q")) {
+			if (!sar_options) {
+				usage(argv[0]);
+			}
+			else if (!argv[++opt]) {
+				SELECT_ACTIVITY(A_QUEUE);
+			}
+			/* Parse option -q */
+			else if (parse_sar_q_opt(argv, &opt, act)) {
+				SELECT_ACTIVITY(A_QUEUE);
+			}
+		}
+
 		else if (!strncmp(argv[opt], "-", 1)) {
 			/* Other options not previously tested */
 			if (sar_options) {
