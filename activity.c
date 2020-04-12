@@ -1889,17 +1889,17 @@ struct activity psi_cpu_act = {
 	.f_print_avg	= print_avg_psicpu_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "s_acpu10;s_acpu60;s_acpu300;s_totcpu",
+	.hdr_line	= "s_acpu10;s_acpu60;s_acpu300;s_tcpu/s",
 #endif
 	.gtypes_nr	= {STATS_PSI_CPU_ULL, STATS_PSI_CPU_UL, STATS_PSI_CPU_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-//FIX	.f_render	= render_psicpu_stats,
-//FIX	.f_xml_print	= xml_print_psicpu_stats,
-//FIX	.f_json_print	= json_print_psicpu_stats,
-//FIX	.f_svg_print	= svg_print_psicpu_stats,
-//FIX	.f_raw_print	= raw_print_psicpu_stats,
-//FIX	.f_pcp_print	= pcp_print_psicpu_stats,
+//FIXME	.f_render	= render_psicpu_stats,
+//FIXME	.f_xml_print	= xml_print_psicpu_stats,
+//FIXME	.f_json_print	= json_print_psicpu_stats,
+//FIXME	.f_svg_print	= svg_print_psicpu_stats,
+//FIXME	.f_raw_print	= raw_print_psicpu_stats,
+//FIXME	.f_pcp_print	= pcp_print_psicpu_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Pressure-stall CPU statistics",
@@ -1935,17 +1935,17 @@ struct activity psi_io_act = {
 	.f_print_avg	= print_avg_psiio_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "s_aio10;s_aio60;s_aio300;s_totio;f_aio10;f_aio60;f_aio300;f_totio",
+	.hdr_line	= "s_aio10;s_aio60;s_aio300;s_tio/s;f_aio10;f_aio60;f_aio300;f_tio/s",
 #endif
 	.gtypes_nr	= {STATS_PSI_IO_ULL, STATS_PSI_IO_UL, STATS_PSI_IO_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-//FIX	.f_render	= render_psiio_stats,
-//FIX	.f_xml_print	= xml_print_psiio_stats,
-//FIX	.f_json_print	= json_print_psiio_stats,
-//FIX	.f_svg_print	= svg_print_psiio_stats,
-//FIX	.f_raw_print	= raw_print_psiio_stats,
-//FIX	.f_pcp_print	= pcp_print_psiio_stats,
+//FIXME	.f_render	= render_psiio_stats,
+//FIXME	.f_xml_print	= xml_print_psiio_stats,
+//FIXME	.f_json_print	= json_print_psiio_stats,
+//FIXME	.f_svg_print	= svg_print_psiio_stats,
+//FIXME	.f_raw_print	= raw_print_psiio_stats,
+//FIXME	.f_pcp_print	= pcp_print_psiio_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Pressure-stall I/O statistics",
@@ -1981,17 +1981,17 @@ struct activity psi_mem_act = {
 	.f_print_avg	= print_avg_psimem_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "s_amem10;s_amem60;s_amem300;s_totmem;f_amem10;f_amem60;f_amem300;f_totmem",
+	.hdr_line	= "s_amem10;s_amem60;s_amem300;s_tmem/s;f_amem10;f_amem60;f_amem300;f_tmem/s",
 #endif
 	.gtypes_nr	= {STATS_PSI_MEM_ULL, STATS_PSI_MEM_UL, STATS_PSI_MEM_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-//FIX	.f_render	= render_psimem_stats,
-//FIX	.f_xml_print	= xml_print_psimem_stats,
-//FIX	.f_json_print	= json_print_psimem_stats,
-//FIX	.f_svg_print	= svg_print_psimem_stats,
-//FIX	.f_raw_print	= raw_print_psimem_stats,
-//FIX	.f_pcp_print	= pcp_print_psimem_stats,
+//FIXME	.f_render	= render_psimem_stats,
+//FIXME	.f_xml_print	= xml_print_psimem_stats,
+//FIXME	.f_json_print	= json_print_psimem_stats,
+//FIXME	.f_svg_print	= svg_print_psimem_stats,
+//FIXME	.f_raw_print	= raw_print_psimem_stats,
+//FIXME	.f_pcp_print	= pcp_print_psimem_stats,
 	.f_count_new	= NULL,
 	.item_list	= NULL,
 	.desc		= "Pressure-stall memory statistics",

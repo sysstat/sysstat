@@ -3028,23 +3028,22 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	TRUE if displaying average statistics.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
-void stub_print_psicpu_stats(struct activity *a, int curr, int dispavg)
+void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg,
+			     unsigned long long itv)
 {
-#if 0
-//FIX
-	struct stats_queue
-		*sqc = (struct stats_queue *) a->buf[curr];
+	struct stats_psi_cpu
+		*psic = (struct stats_psi_cpu *) a->buf[curr],
+		*psip = (struct stats_psi_cpu *) a->buf[prev];
 	static unsigned long long
-		avg_nr_running    = 0,
-		avg_nr_threads    = 0,
-		avg_load_avg_1    = 0,
-		avg_load_avg_5    = 0,
-		avg_load_avg_15   = 0,
-		avg_procs_blocked = 0;
+		s_avg10  = 0,
+		s_avg60  = 0,
+		s_avg300 = 0;
 
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
@@ -3053,45 +3052,31 @@ void stub_print_psicpu_stats(struct activity *a, int curr, int dispavg)
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_u64(NO_UNIT, 2, 9,
-			    (unsigned long long) sqc->nr_running,
-			    (unsigned long long) sqc->nr_threads);
 		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) sqc->load_avg_1  / 100,
-			  (double) sqc->load_avg_5  / 100,
-			  (double) sqc->load_avg_15 / 100);
-		cprintf_u64(NO_UNIT, 1, 9,
-			    (unsigned long long) sqc->procs_blocked);
-		printf("\n");
+			  (double) psic->some_acpu_10  / 100,
+			  (double) psic->some_acpu_60  / 100,
+			  (double) psic->some_acpu_300 / 100);
 
 		/* Will be used to compute the average */
-		avg_nr_running    += sqc->nr_running;
-		avg_nr_threads    += sqc->nr_threads;
-		avg_load_avg_1    += sqc->load_avg_1;
-		avg_load_avg_5    += sqc->load_avg_5;
-		avg_load_avg_15   += sqc->load_avg_15;
-		avg_procs_blocked += sqc->procs_blocked;
+		s_avg10  += psic->some_acpu_10;
+		s_avg60  += psic->some_acpu_60;
+		s_avg300 += psic->some_acpu_300;
 	}
 	else {
 		/* Display average values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 2, 9, 0,
-			  (double) avg_nr_running / avg_count,
-			  (double) avg_nr_threads / avg_count);
 		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) avg_load_avg_1  / (avg_count * 100),
-			  (double) avg_load_avg_5  / (avg_count * 100),
-			  (double) avg_load_avg_15 / (avg_count * 100));
-		cprintf_f(NO_UNIT, 1, 9, 0,
-			  (double) avg_procs_blocked / avg_count);
-		printf("\n");
+			  (double) s_avg10  / (avg_count * 100),
+			  (double) s_avg60  / (avg_count * 100),
+			  (double) s_avg300 / (avg_count * 100));
 
 		/* Reset average counters */
-		avg_nr_running = avg_nr_threads = 0;
-		avg_load_avg_1 = avg_load_avg_5 = avg_load_avg_15 = 0;
-		avg_procs_blocked = 0;
+		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
-#endif
+
+	cprintf_f(NO_UNIT, 1, 9, 2,
+		  S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
+	printf("\n");
 }
 
 /*
@@ -3108,7 +3093,7 @@ void stub_print_psicpu_stats(struct activity *a, int curr, int dispavg)
 __print_funct_t print_psicpu_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	stub_print_psicpu_stats(a, curr, FALSE);
+	stub_print_psicpu_stats(a, prev, curr, FALSE, itv);
 }
 
 /*
@@ -3125,7 +3110,7 @@ __print_funct_t print_psicpu_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_psicpu_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_psicpu_stats(a, curr, TRUE);
+	stub_print_psicpu_stats(a, prev, curr, TRUE, itv);
 }
 
 /*
@@ -3135,12 +3120,84 @@ __print_funct_t print_avg_psicpu_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	TRUE if displaying average statistics.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
-void stub_print_psiio_stats(struct activity *a, int curr, int dispavg)
+void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
+			    unsigned long long itv)
 {
+	struct stats_psi_io
+		*psic = (struct stats_psi_io *) a->buf[curr],
+		*psip = (struct stats_psi_io *) a->buf[prev];
+	static unsigned long long
+		s_avg10  = 0,
+		s_avg60  = 0,
+		s_avg300 = 0,
+		f_avg10  = 0,
+		f_avg60  = 0,
+		f_avg300 = 0;
+
+	if (dish) {
+		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
+	}
+
+	if (!dispavg) {
+		/* Display instantaneous "some" values */
+		printf("%-11s", timestamp[curr]);
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) psic->some_aio_10  / 100,
+			  (double) psic->some_aio_60  / 100,
+			  (double) psic->some_aio_300 / 100);
+
+		/* Will be used to compute the average */
+		s_avg10  += psic->some_aio_10;
+		s_avg60  += psic->some_aio_60;
+		s_avg300 += psic->some_aio_300;
+	}
+	else {
+		/* Display average "some" values */
+		printf("%-11s", timestamp[curr]);
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) s_avg10  / (avg_count * 100),
+			  (double) s_avg60  / (avg_count * 100),
+			  (double) s_avg300 / (avg_count * 100));
+
+		/* Reset average counters */
+		s_avg10 = s_avg60 = s_avg300 = 0;
+	}
+
+	cprintf_f(NO_UNIT, 1, 9, 2,
+		  S_VALUE(psip->some_io_total, psic->some_io_total, itv));
+
+	if (!dispavg) {
+		/* Display instantaneous "full" values */
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) psic->full_aio_10  / 100,
+			  (double) psic->full_aio_60  / 100,
+			  (double) psic->full_aio_300 / 100);
+
+		/* Will be used to compute the average */
+		f_avg10  += psic->full_aio_10;
+		f_avg60  += psic->full_aio_60;
+		f_avg300 += psic->full_aio_300;
+	}
+	else {
+		/* Display average "full" values */
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) f_avg10  / (avg_count * 100),
+			  (double) f_avg60  / (avg_count * 100),
+			  (double) f_avg300 / (avg_count * 100));
+
+		/* Reset average counters */
+		f_avg10 = f_avg60 = f_avg300 = 0;
+	}
+
+	cprintf_f(NO_UNIT, 1, 9, 2,
+		  S_VALUE(psip->full_io_total, psic->full_io_total, itv));
+	printf("\n");
 }
 
 /*
@@ -3157,7 +3214,7 @@ void stub_print_psiio_stats(struct activity *a, int curr, int dispavg)
 __print_funct_t print_psiio_stats(struct activity *a, int prev, int curr,
 				  unsigned long long itv)
 {
-	stub_print_psiio_stats(a, curr, FALSE);
+	stub_print_psiio_stats(a, prev, curr, FALSE, itv);
 }
 
 /*
@@ -3174,7 +3231,7 @@ __print_funct_t print_psiio_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_psiio_stats(struct activity *a, int prev, int curr,
 				      unsigned long long itv)
 {
-	stub_print_psiio_stats(a, curr, TRUE);
+	stub_print_psiio_stats(a, prev, curr, TRUE, itv);
 }
 
 /*
@@ -3184,12 +3241,84 @@ __print_funct_t print_avg_psiio_stats(struct activity *a, int prev, int curr,
  *
  * IN:
  * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	TRUE if displaying average statistics.
+ * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
-void stub_print_psimem_stats(struct activity *a, int curr, int dispavg)
+void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg,
+			     unsigned long long itv)
 {
+	struct stats_psi_mem
+		*psic = (struct stats_psi_mem *) a->buf[curr],
+		*psip = (struct stats_psi_mem *) a->buf[prev];
+	static unsigned long long
+		s_avg10  = 0,
+		s_avg60  = 0,
+		s_avg300 = 0,
+		f_avg10  = 0,
+		f_avg60  = 0,
+		f_avg300 = 0;
+
+	if (dish) {
+		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
+	}
+
+	if (!dispavg) {
+		/* Display instantaneous "some" values */
+		printf("%-11s", timestamp[curr]);
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) psic->some_amem_10  / 100,
+			  (double) psic->some_amem_60  / 100,
+			  (double) psic->some_amem_300 / 100);
+
+		/* Will be used to compute the average */
+		s_avg10  += psic->some_amem_10;
+		s_avg60  += psic->some_amem_60;
+		s_avg300 += psic->some_amem_300;
+	}
+	else {
+		/* Display average "some" values */
+		printf("%-11s", timestamp[curr]);
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) s_avg10  / (avg_count * 100),
+			  (double) s_avg60  / (avg_count * 100),
+			  (double) s_avg300 / (avg_count * 100));
+
+		/* Reset average counters */
+		s_avg10 = s_avg60 = s_avg300 = 0;
+	}
+
+	cprintf_f(NO_UNIT, 1, 9, 2,
+		  S_VALUE(psip->some_mem_total, psic->some_mem_total, itv));
+
+	if (!dispavg) {
+		/* Display instantaneous "full" values */
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) psic->full_amem_10  / 100,
+			  (double) psic->full_amem_60  / 100,
+			  (double) psic->full_amem_300 / 100);
+
+		/* Will be used to compute the average */
+		f_avg10  += psic->full_amem_10;
+		f_avg60  += psic->full_amem_60;
+		f_avg300 += psic->full_amem_300;
+	}
+	else {
+		/* Display average "full" values */
+		cprintf_f(NO_UNIT, 3, 9, 2,
+			  (double) f_avg10  / (avg_count * 100),
+			  (double) f_avg60  / (avg_count * 100),
+			  (double) f_avg300 / (avg_count * 100));
+
+		/* Reset average counters */
+		f_avg10 = f_avg60 = f_avg300 = 0;
+	}
+
+	cprintf_f(NO_UNIT, 1, 9, 2,
+		  S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
+	printf("\n");
 }
 
 /*
@@ -3206,7 +3335,7 @@ void stub_print_psimem_stats(struct activity *a, int curr, int dispavg)
 __print_funct_t print_psimem_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	stub_print_psimem_stats(a, curr, FALSE);
+	stub_print_psimem_stats(a, prev, curr, FALSE, itv);
 }
 
 /*
@@ -3223,5 +3352,5 @@ __print_funct_t print_psimem_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_psimem_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_psimem_stats(a, curr, TRUE);
+	stub_print_psimem_stats(a, prev, curr, TRUE, itv);
 }
