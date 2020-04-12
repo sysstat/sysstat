@@ -2616,6 +2616,11 @@ int parse_sar_q_opt(char *argv[], int *opt, struct activity *act[])
 		else if (!strcmp(t, K_PSI_MEM)) {
 			SELECT_ACTIVITY(A_PSI_MEM);
 		}
+		else if (!strcmp(t, K_PSI)) {
+			SELECT_ACTIVITY(A_PSI_CPU);
+			SELECT_ACTIVITY(A_PSI_IO);
+			SELECT_ACTIVITY(A_PSI_MEM);
+		}
 		else if (!strcmp(t, K_ALL)) {
 			SELECT_ACTIVITY(A_QUEUE);
 			SELECT_ACTIVITY(A_PSI_CPU);

@@ -214,6 +214,7 @@
 #define K_MOUNT		"MOUNT"
 #define K_NFS		"NFS"
 #define K_NFSD		"NFSD"
+#define K_PSI		"PSI"
 #define K_SID		"SID"
 #define K_SOCK		"SOCK"
 #define K_SOCK6		"SOCK6"
