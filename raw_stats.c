@@ -1678,14 +1678,14 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 __print_funct_t raw_print_psicpu_stats(struct activity *a, char *timestr, int curr)
 {
 	struct stats_psi_cpu
-		*spic = (struct stats_psi_cpu *) a->buf[curr],
-		*spip = (struct stats_psi_cpu *) a->buf[!curr];
+		*psic = (struct stats_psi_cpu *) a->buf[curr],
+		*psip = (struct stats_psi_cpu *) a->buf[!curr];
 
-	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), spic->some_acpu_10);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->some_acpu_60);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->some_acpu_300);
+	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), psic->some_acpu_10);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->some_acpu_60);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->some_acpu_300);
 	printf(" %s", pfield(NULL, 0));
-	pval((unsigned long long) spip->some_cpu_total, (unsigned long long) spic->some_cpu_total);
+	pval((unsigned long long) psip->some_cpu_total, (unsigned long long) psic->some_cpu_total);
 	printf("\n");
 }
 
@@ -1702,20 +1702,20 @@ __print_funct_t raw_print_psicpu_stats(struct activity *a, char *timestr, int cu
 __print_funct_t raw_print_psiio_stats(struct activity *a, char *timestr, int curr)
 {
 	struct stats_psi_io
-		*spic = (struct stats_psi_io *) a->buf[curr],
-		*spip = (struct stats_psi_io *) a->buf[!curr];
+		*psic = (struct stats_psi_io *) a->buf[curr],
+		*psip = (struct stats_psi_io *) a->buf[!curr];
 
-	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), spic->some_aio_10);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->some_aio_60);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->some_aio_300);
+	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), psic->some_aio_10);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->some_aio_60);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->some_aio_300);
 	printf(" %s", pfield(NULL, 0));
-	pval((unsigned long long) spip->some_io_total, (unsigned long long) spic->some_io_total);
+	pval((unsigned long long) psip->some_io_total, (unsigned long long) psic->some_io_total);
 
-	printf(" %s; %lu;", pfield(NULL, 0), spic->full_aio_10);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->full_aio_60);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->full_aio_300);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->full_aio_10);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->full_aio_60);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->full_aio_300);
 	printf(" %s", pfield(NULL, 0));
-	pval((unsigned long long) spip->full_io_total, (unsigned long long) spic->full_io_total);
+	pval((unsigned long long) psip->full_io_total, (unsigned long long) psic->full_io_total);
 	printf("\n");
 }
 
@@ -1732,19 +1732,19 @@ __print_funct_t raw_print_psiio_stats(struct activity *a, char *timestr, int cur
 __print_funct_t raw_print_psimem_stats(struct activity *a, char *timestr, int curr)
 {
 	struct stats_psi_mem
-		*spic = (struct stats_psi_mem *) a->buf[curr],
-		*spip = (struct stats_psi_mem *) a->buf[!curr];
+		*psic = (struct stats_psi_mem *) a->buf[curr],
+		*psip = (struct stats_psi_mem *) a->buf[!curr];
 
-	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), spic->some_amem_10);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->some_amem_60);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->some_amem_300);
+	printf("%s; %s; %lu;", timestr, pfield(a->hdr_line, FIRST), psic->some_amem_10);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->some_amem_60);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->some_amem_300);
 	printf(" %s", pfield(NULL, 0));
-	pval((unsigned long long) spip->some_mem_total, (unsigned long long) spic->some_mem_total);
+	pval((unsigned long long) psip->some_mem_total, (unsigned long long) psic->some_mem_total);
 
-	printf(" %s; %lu;", pfield(NULL, 0), spic->full_amem_10);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->full_amem_60);
-	printf(" %s; %lu;", pfield(NULL, 0), spic->full_amem_300);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->full_amem_10);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->full_amem_60);
+	printf(" %s; %lu;", pfield(NULL, 0), psic->full_amem_300);
 	printf(" %s", pfield(NULL, 0));
-	pval((unsigned long long) spip->full_mem_total, (unsigned long long) spic->full_mem_total);
+	pval((unsigned long long) psip->full_mem_total, (unsigned long long) psic->full_mem_total);
 	printf("\n");
 }
