@@ -95,6 +95,34 @@ void json_markup_power_management(int tab, int action)
 
 /*
  ***************************************************************************
+ * Open or close "psi" markup.
+ *
+ * IN:
+ * @tab		Number of tabulations.
+ * @action	Open or close action.
+ ***************************************************************************
+ */
+void json_markup_psi(int tab, int action)
+{
+	static int markup_state = CLOSE_JSON_MARKUP;
+
+	if (action == markup_state)
+		return;
+	markup_state = action;
+
+	if (action == OPEN_JSON_MARKUP) {
+		/* Open markup */
+		xprintf(tab, "\"psi\": {");
+	}
+	else {
+		/* Close markup */
+		printf("\n");
+		xprintf0(tab, "}");
+	}
+}
+
+/*
+ ***************************************************************************
  * Display CPU statistics in JSON.
  *
  * IN:
@@ -2407,5 +2435,144 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
 close_json_markup:
 	if (CLOSE_MARKUP(a->options)) {
 		json_markup_network(tab, CLOSE_JSON_MARKUP);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall CPU statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t json_print_psicpu_stats(struct activity *a, int curr, int tab,
+				        unsigned long long itv)
+{
+	struct stats_psi_cpu
+		*psic = (struct stats_psi_cpu *) a->buf[curr],
+		*psip = (struct stats_psi_cpu *) a->buf[!curr];
+
+	if (!IS_SELECTED(a->options))
+		goto close_json_markup;
+
+	json_markup_psi(tab, OPEN_JSON_MARKUP);
+	tab++;
+
+	xprintf0(tab, "\"psi-cpu\": {"
+		 "\"some_avg10\": %.2f, "
+		 "\"some_avg60\": %.2f, "
+		 "\"some_avg300\": %.2f, "
+		 "\"some_total\": %.2f}",
+		 (double) psic->some_acpu_10  / 100,
+		 (double) psic->some_acpu_60  / 100,
+		 (double) psic->some_acpu_300 / 100,
+		 S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
+	tab--;
+
+close_json_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		json_markup_psi(tab, CLOSE_JSON_MARKUP);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall I/O statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t json_print_psiio_stats(struct activity *a, int curr, int tab,
+				       unsigned long long itv)
+{
+	struct stats_psi_io
+		*psic = (struct stats_psi_io *) a->buf[curr],
+		*psip = (struct stats_psi_io *) a->buf[!curr];
+
+	if (!IS_SELECTED(a->options))
+		goto close_json_markup;
+
+	json_markup_psi(tab, OPEN_JSON_MARKUP);
+	tab++;
+
+	xprintf0(tab, "\"psi-io\": {"
+		 "\"some_avg10\": %.2f, "
+		 "\"some_avg60\": %.2f, "
+		 "\"some_avg300\": %.2f, "
+		 "\"some_total\": %.2f, "
+		 "\"full_avg10\": %.2f, "
+		 "\"full_avg60\": %.2f, "
+		 "\"full_avg300\": %.2f, "
+		 "\"full_total\": %.2f}",
+		 (double) psic->some_aio_10  / 100,
+		 (double) psic->some_aio_60  / 100,
+		 (double) psic->some_aio_300 / 100,
+		 S_VALUE(psip->some_io_total, psic->some_io_total, itv),
+		 (double) psic->full_aio_10  / 100,
+		 (double) psic->full_aio_60  / 100,
+		 (double) psic->full_aio_300 / 100,
+		 S_VALUE(psip->full_io_total, psic->full_io_total, itv));
+	tab--;
+
+close_json_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		json_markup_psi(tab, CLOSE_JSON_MARKUP);
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall memory statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t json_print_psimem_stats(struct activity *a, int curr, int tab,
+				        unsigned long long itv)
+{
+	struct stats_psi_mem
+		*psic = (struct stats_psi_mem *) a->buf[curr],
+		*psip = (struct stats_psi_mem *) a->buf[!curr];
+
+	if (!IS_SELECTED(a->options))
+		goto close_json_markup;
+
+	json_markup_psi(tab, OPEN_JSON_MARKUP);
+	tab++;
+
+	xprintf0(tab, "\"psi-mem\": {"
+		 "\"some_avg10\": %.2f, "
+		 "\"some_avg60\": %.2f, "
+		 "\"some_avg300\": %.2f, "
+		 "\"some_total\": %.2f, "
+		 "\"full_avg10\": %.2f, "
+		 "\"full_avg60\": %.2f, "
+		 "\"full_avg300\": %.2f, "
+		 "\"full_total\": %.2f}",
+		 (double) psic->some_amem_10  / 100,
+		 (double) psic->some_amem_60  / 100,
+		 (double) psic->some_amem_300 / 100,
+		 S_VALUE(psip->some_mem_total, psic->some_mem_total, itv),
+		 (double) psic->full_amem_10  / 100,
+		 (double) psic->full_amem_60  / 100,
+		 (double) psic->full_amem_300 / 100,
+		 S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
+	tab--;
+
+close_json_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		json_markup_psi(tab, CLOSE_JSON_MARKUP);
 	}
 }
