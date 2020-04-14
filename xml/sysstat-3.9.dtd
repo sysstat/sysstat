@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.8 for sysstat. See sadf.h -->
+<!--DTD v3.9 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -10,7 +10,7 @@
 
 <!ELEMENT sysdata-version (#PCDATA)>
 
-<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management|filesystems">
+<!ENTITY % TIMESTAMP_ELEMENTS "cpu-load|process-and-context-switch|interrupts|swap-pages|paging|io|memory|hugepages|kernel|queue|serial|disk|network|power-management|filesystems|psi">
 <!ENTITY % HOST_ELEMENTS "sysname|release|machine|number-of-cpus|file-date|file-utc-time|timezone|statistics|restarts|comments">
 
 <!ELEMENT host (%HOST_ELEMENTS;)+>
@@ -612,4 +612,41 @@
 	Ifree CDATA #REQUIRED
 	Iused CDATA #REQUIRED
 	Iused-percent CDATA #REQUIRED
+>
+
+<!ELEMENT psi (psi-cpu?, psi-io?, psi-mem?)>
+<!ATTLIST psi
+	per CDATA #REQUIRED
+>
+
+<!ELEMENT psi-cpu EMPTY>
+<!ATTLIST psi-cpu
+	some_avg10 CDATA #REQUIRED
+	some_avg60 CDATA #REQUIRED
+	some_avg300 CDATA #REQUIRED
+	some_total CDATA #REQUIRED
+>
+
+<!ELEMENT psi-io EMPTY>
+<!ATTLIST psi-io
+	some_avg10 CDATA #REQUIRED
+	some_avg60 CDATA #REQUIRED
+	some_avg300 CDATA #REQUIRED
+	some_total CDATA #REQUIRED
+	full_avg10 CDATA #REQUIRED
+	full_avg60 CDATA #REQUIRED
+	full_avg300 CDATA #REQUIRED
+	full_total CDATA #REQUIRED
+>
+
+<!ELEMENT psi-mem EMPTY>
+<!ATTLIST psi-mem
+	some_avg10 CDATA #REQUIRED
+	some_avg60 CDATA #REQUIRED
+	some_avg300 CDATA #REQUIRED
+	some_total CDATA #REQUIRED
+	full_avg10 CDATA #REQUIRED
+	full_avg60 CDATA #REQUIRED
+	full_avg300 CDATA #REQUIRED
+	full_total CDATA #REQUIRED
 >

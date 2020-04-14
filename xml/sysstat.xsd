@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.8 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.9 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -109,6 +109,7 @@
 		<xs:element name="network" type="network-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="power-management" type="power-management-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="filesystems" type="filesystems-type" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="psi" type="psi-type" minOccurs="0" maxOccurs="1"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
@@ -790,6 +791,37 @@
 	<xs:attribute name="Ifree" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 	<xs:attribute name="Iused" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 	<xs:attribute name="Iused-percent" type="hundredth-type" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="psi" type="psi-type"></xs:element>
+<xs:complexType name="psi-type">
+	<xs:sequence>
+		<xs:element name="psi-cpu" type="psi-some-type" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="psi-io" type="psi-full-type" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="psi-mem" type="psi-full-type" minOccurs="0" maxOccurs="1"></xs:element>
+	</xs:sequence>
+	<xs:attribute name="per" type="per-type" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="psi-cpu" type="psi-some-type"></xs:element>
+<xs:complexType name="psi-some-type">
+	<xs:attribute name="some_avg10" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_avg60" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_avg300" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_total" type="hundredth-type" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="psi-io" type="psi-full-type"></xs:element>
+<xs:element name="psi-mem" type="psi-full-type"></xs:element>
+<xs:complexType name="psi-full-type">
+	<xs:attribute name="some_avg10" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_avg60" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_avg300" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_total" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="full_avg10" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="full_avg60" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="full_avg300" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="full_total" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
 </xs:schema>
