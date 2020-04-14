@@ -104,6 +104,8 @@ enp6s0-2,wlp5s0-2: available
 /sys/devices/system/cpu directory non existent
 Determine number of CPU using /proc/stat
 
+/proc/pressure/ non existent.
+
 PID:
 8741[8741 8785 9109 8789 8835]
 21342[21342 21344 8365]
