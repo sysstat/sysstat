@@ -792,6 +792,12 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 				case A_NET_FC:
 					pcp_def_fchost_metrics(act[p]);
 					break;
+
+				case A_PSI_CPU:
+				case A_PSI_IO:
+				case A_PSI_MEM:
+					pcp_def_psi_metrics(act[p]);
+					break;
 			}
 		}
 	}

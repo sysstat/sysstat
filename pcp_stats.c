@@ -2242,3 +2242,134 @@ __print_funct_t pcp_print_fchost_stats(struct activity *a, int curr, unsigned lo
 	}
 #endif	/* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Display pressure-stall CPU statistics in PCP format
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_psicpu_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_psi_cpu
+		*psic = (struct stats_psi_cpu *) a->buf[curr],
+		*psip = (struct stats_psi_cpu *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_acpu_10 / 100);
+	pmiPutValue("psi.cpu.some.trends", "10 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_acpu_60 / 100);
+	pmiPutValue("psi.cpu.some.trends", "60 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_acpu_300 / 100);
+	pmiPutValue("psi.cpu.some.trends", "300 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
+	pmiPutValue("psi.cpu.some.total", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall I/O statistics in PCP format
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_psiio_stats(struct activity *a, int curr, unsigned long long itv,
+				      struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_psi_io
+		*psic = (struct stats_psi_io *) a->buf[curr],
+		*psip = (struct stats_psi_io *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_aio_10 / 100);
+	pmiPutValue("psi.io.some.trends", "10 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_aio_60 / 100);
+	pmiPutValue("psi.io.some.trends", "60 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_aio_300 / 100);
+	pmiPutValue("psi.io.some.trends", "300 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(psip->some_io_total, psic->some_io_total, itv));
+	pmiPutValue("psi.io.some.total", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_10 / 100);
+	pmiPutValue("psi.io.full.trends", "10 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_60 / 100);
+	pmiPutValue("psi.io.full.trends", "60 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_300 / 100);
+	pmiPutValue("psi.io.full.trends", "300 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(psip->full_io_total, psic->full_io_total, itv));
+	pmiPutValue("psi.io.full.total", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
+ ***************************************************************************
+ * Display pressure-stall memory statistics in PCP format
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Record header for current sample.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_psimem_stats(struct activity *a, int curr, unsigned long long itv,
+				       struct record_header *record_hdr)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+	struct stats_psi_mem
+		*psic = (struct stats_psi_mem *) a->buf[curr],
+		*psip = (struct stats_psi_mem *) a->buf[!curr];
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_amem_10 / 100);
+	pmiPutValue("psi.mem.some.trends", "10 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_amem_60 / 100);
+	pmiPutValue("psi.mem.some.trends", "60 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->some_amem_300 / 100);
+	pmiPutValue("psi.mem.some.trends", "300 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(psip->some_mem_total, psic->some_mem_total, itv));
+	pmiPutValue("psi.mem.some.total", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_10 / 100);
+	pmiPutValue("psi.mem.full.trends", "10 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_60 / 100);
+	pmiPutValue("psi.mem.full.trends", "60 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_300 / 100);
+	pmiPutValue("psi.mem.full.trends", "300 sec", buf);
+
+	snprintf(buf, sizeof(buf), "%f",
+		 S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
+	pmiPutValue("psi.mem.full.total", NULL, buf);
+#endif	/* HAVE_PCP */
+}

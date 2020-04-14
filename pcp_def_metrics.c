@@ -1756,3 +1756,74 @@ void pcp_def_fchost_metrics(struct activity *a)
 		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
+
+/*
+ ***************************************************************************
+ * Define PCP metrics for pressure-stall statistics.
+ *
+ * IN:
+ * @a	Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_psi_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	static pmInDom indom = PM_INDOM_NULL;
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(0, PM_INDOM_PSI);
+
+		pmiAddInstance(indom, "10 sec", 0);
+		pmiAddInstance(indom, "60 sec", 1);
+		pmiAddInstance(indom, "300 sec", 2);
+	}
+
+	if (a->id == A_PSI_CPU) {
+		/* Create metrics for A_PSI_CPU */
+		pmiAddMetric("psi.cpu.some.trends",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("psi.cpu.some.total",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	}
+	else if (a->id == A_PSI_IO) {
+		/* Create metrics for A_PSI_IO */
+		pmiAddMetric("psi.io.some.trends",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("psi.io.some.total",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("psi.io.full.trends",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("psi.io.full.total",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	}
+	else {
+		/* Create metrics for A_PSI_MEM */
+		pmiAddMetric("psi.mem.some.trends",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("psi.mem.some.total",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+
+		pmiAddMetric("psi.mem.full.trends",
+			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+			     pmiUnits(0, 0, 0, 0, 0, 0));
+
+		pmiAddMetric("psi.mem.full.total",
+			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	}
+#endif /* HAVE_PCP */
+}

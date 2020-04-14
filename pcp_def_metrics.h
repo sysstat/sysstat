@@ -47,6 +47,7 @@ void pcp_def_pwr_in_metrics(struct activity *);
 void pcp_def_pwr_usb_metrics(struct activity *);
 void pcp_def_filesystem_metrics(struct activity *);
 void pcp_def_fchost_metrics(struct activity *);
+void pcp_def_psi_metrics(struct activity *);
 
 /* Define domains number */
 #define PM_INDOM_CPU		0
@@ -61,5 +62,6 @@ void pcp_def_fchost_metrics(struct activity *);
 #define PM_INDOM_FAN		9
 #define PM_INDOM_TEMP		10
 #define PM_INDOM_IN		11
+#define PM_INDOM_PSI		12
 
 #endif /* _PCP_DEF_METRICS_H */
