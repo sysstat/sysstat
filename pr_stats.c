@@ -3052,10 +3052,10 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 	if (!dispavg) {
 		/* Display instantaneous values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) psic->some_acpu_10  / 100,
-			  (double) psic->some_acpu_60  / 100,
-			  (double) psic->some_acpu_300 / 100);
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) psic->some_acpu_10  / 100,
+			   (double) psic->some_acpu_60  / 100,
+			   (double) psic->some_acpu_300 / 100);
 
 		/* Will be used to compute the average */
 		s_avg10  += psic->some_acpu_10;
@@ -3065,10 +3065,10 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 	else {
 		/* Display average values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) s_avg10  / (avg_count * 100),
-			  (double) s_avg60  / (avg_count * 100),
-			  (double) s_avg300 / (avg_count * 100));
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) s_avg10  / (avg_count * 100),
+			   (double) s_avg60  / (avg_count * 100),
+			   (double) s_avg300 / (avg_count * 100));
 
 		/* Reset average counters */
 		s_avg10 = s_avg60 = s_avg300 = 0;
@@ -3147,10 +3147,10 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	if (!dispavg) {
 		/* Display instantaneous "some" values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) psic->some_aio_10  / 100,
-			  (double) psic->some_aio_60  / 100,
-			  (double) psic->some_aio_300 / 100);
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) psic->some_aio_10  / 100,
+			   (double) psic->some_aio_60  / 100,
+			   (double) psic->some_aio_300 / 100);
 
 		/* Will be used to compute the average */
 		s_avg10  += psic->some_aio_10;
@@ -3160,10 +3160,10 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	else {
 		/* Display average "some" values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) s_avg10  / (avg_count * 100),
-			  (double) s_avg60  / (avg_count * 100),
-			  (double) s_avg300 / (avg_count * 100));
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) s_avg10  / (avg_count * 100),
+			   (double) s_avg60  / (avg_count * 100),
+			   (double) s_avg300 / (avg_count * 100));
 
 		/* Reset average counters */
 		s_avg10 = s_avg60 = s_avg300 = 0;
@@ -3174,10 +3174,10 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) psic->full_aio_10  / 100,
-			  (double) psic->full_aio_60  / 100,
-			  (double) psic->full_aio_300 / 100);
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) psic->full_aio_10  / 100,
+			   (double) psic->full_aio_60  / 100,
+			   (double) psic->full_aio_300 / 100);
 
 		/* Will be used to compute the average */
 		f_avg10  += psic->full_aio_10;
@@ -3186,10 +3186,10 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	}
 	else {
 		/* Display average "full" values */
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) f_avg10  / (avg_count * 100),
-			  (double) f_avg60  / (avg_count * 100),
-			  (double) f_avg300 / (avg_count * 100));
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) f_avg10  / (avg_count * 100),
+			   (double) f_avg60  / (avg_count * 100),
+			   (double) f_avg300 / (avg_count * 100));
 
 		/* Reset average counters */
 		f_avg10 = f_avg60 = f_avg300 = 0;
@@ -3268,10 +3268,10 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	if (!dispavg) {
 		/* Display instantaneous "some" values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) psic->some_amem_10  / 100,
-			  (double) psic->some_amem_60  / 100,
-			  (double) psic->some_amem_300 / 100);
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) psic->some_amem_10  / 100,
+			   (double) psic->some_amem_60  / 100,
+			   (double) psic->some_amem_300 / 100);
 
 		/* Will be used to compute the average */
 		s_avg10  += psic->some_amem_10;
@@ -3281,10 +3281,10 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	else {
 		/* Display average "some" values */
 		printf("%-11s", timestamp[curr]);
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) s_avg10  / (avg_count * 100),
-			  (double) s_avg60  / (avg_count * 100),
-			  (double) s_avg300 / (avg_count * 100));
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) s_avg10  / (avg_count * 100),
+			   (double) s_avg60  / (avg_count * 100),
+			   (double) s_avg300 / (avg_count * 100));
 
 		/* Reset average counters */
 		s_avg10 = s_avg60 = s_avg300 = 0;
@@ -3295,10 +3295,10 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) psic->full_amem_10  / 100,
-			  (double) psic->full_amem_60  / 100,
-			  (double) psic->full_amem_300 / 100);
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) psic->full_amem_10  / 100,
+			   (double) psic->full_amem_60  / 100,
+			   (double) psic->full_amem_300 / 100);
 
 		/* Will be used to compute the average */
 		f_avg10  += psic->full_amem_10;
@@ -3307,10 +3307,10 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 	else {
 		/* Display average "full" values */
-		cprintf_f(NO_UNIT, 3, 9, 2,
-			  (double) f_avg10  / (avg_count * 100),
-			  (double) f_avg60  / (avg_count * 100),
-			  (double) f_avg300 / (avg_count * 100));
+		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+			   (double) f_avg10  / (avg_count * 100),
+			   (double) f_avg60  / (avg_count * 100),
+			   (double) f_avg300 / (avg_count * 100));
 
 		/* Reset average counters */
 		f_avg10 = f_avg60 = f_avg300 = 0;
