@@ -808,7 +808,7 @@
 	<xs:attribute name="some_avg10" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="some_avg60" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="some_avg300" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="some_total" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_avg" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="psi-io" type="psi-full-type"></xs:element>
@@ -817,11 +817,11 @@
 	<xs:attribute name="some_avg10" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="some_avg60" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="some_avg300" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="some_total" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="some_avg" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="full_avg10" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="full_avg60" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="full_avg300" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="full_total" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="full_avg" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
 </xs:schema>

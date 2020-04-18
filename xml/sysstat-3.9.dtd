@@ -624,7 +624,7 @@
 	some_avg10 CDATA #REQUIRED
 	some_avg60 CDATA #REQUIRED
 	some_avg300 CDATA #REQUIRED
-	some_total CDATA #REQUIRED
+	some_avg CDATA #REQUIRED
 >
 
 <!ELEMENT psi-io EMPTY>
@@ -632,11 +632,11 @@
 	some_avg10 CDATA #REQUIRED
 	some_avg60 CDATA #REQUIRED
 	some_avg300 CDATA #REQUIRED
-	some_total CDATA #REQUIRED
+	some_avg CDATA #REQUIRED
 	full_avg10 CDATA #REQUIRED
 	full_avg60 CDATA #REQUIRED
 	full_avg300 CDATA #REQUIRED
-	full_total CDATA #REQUIRED
+	full_avg CDATA #REQUIRED
 >
 
 <!ELEMENT psi-mem EMPTY>
@@ -644,9 +644,9 @@
 	some_avg10 CDATA #REQUIRED
 	some_avg60 CDATA #REQUIRED
 	some_avg300 CDATA #REQUIRED
-	some_total CDATA #REQUIRED
+	some_avg CDATA #REQUIRED
 	full_avg10 CDATA #REQUIRED
 	full_avg60 CDATA #REQUIRED
 	full_avg300 CDATA #REQUIRED
-	full_total CDATA #REQUIRED
+	full_avg CDATA #REQUIRED
 >
