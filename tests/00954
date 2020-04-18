@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./sar -q -u 0 > tests/out1.sar-qu.tmp

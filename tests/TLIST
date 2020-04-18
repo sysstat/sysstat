@@ -83,6 +83,8 @@ NOTES:
 00501	diff -u tests/out.sadf-p.tmp tests/expected.sadf-p
 00510	LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
 00511	diff -u tests/out.sadf-d.tmp tests/expected.sadf-d
+00515	LC_ALL=C ./sadf -d tests/data.tmp -- -qu > tests/out.sadf-d-qu.tmp
+00516	diff -u tests/out.sadf-d-qu.tmp tests/expected.sadf-d-qu
 00520	LC_ALL=C ./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
 00521	diff -u tests/out.sadf-x.tmp tests/expected.sadf-x
 00530	LC_ALL=C ./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
@@ -186,6 +188,18 @@ NOTES:
 00932	diff -u tests/out.sar-0.tmp tests/expected.sar-0
 00940	LC_ALL=C TZ=GMT ./sar 1 2 > tests/out.sar.tmp
 00942	diff -u tests/out.sar.tmp tests/expected.sar1
+00950	LC_ALL=C TZ=GMT ./sar -qu 0 > tests/out.sar-qu.tmp
+00952	diff -u tests/out.sar-qu.tmp tests/expected.sar-qu
+00954	LC_ALL=C TZ=GMT ./sar -q -u 0 > tests/out1.sar-qu.tmp
+00956	diff -u tests/out1.sar-qu.tmp tests/expected.sar-qu
+00958	LC_ALL=C TZ=GMT ./sar -q IO 0 > tests/out.sar-qIO.tmp
+00959	diff -u tests/out.sar-qIO.tmp tests/expected.sar-qIO
+00960	LC_ALL=C TZ=GMT ./sar -q MEM,IO 0 > tests/out.sar-qMEMIO.tmp
+00962	diff -u tests/out.sar-qMEMIO.tmp tests/expected.sar-qMEMIO
+00964	LC_ALL=C TZ=GMT ./sar -q PSI 0 > tests/out.sar-qPSI.tmp
+00966	diff -u tests/out.sar-qPSI.tmp tests/expected.sar-qPSI
+00968	LC_ALL=C TZ=GMT ./sar -q ALL 0 > tests/out.sar-qALL.tmp
+00969	diff -u tests/out.sar-qALL.tmp tests/expected.sar-qALL
 
 =====	Creating data0.tmp with no data inside
 01000	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
@@ -259,6 +273,7 @@ NOTES:
 01430	LC_ALL=C ./sar -o foo 2>&1 | grep "Usage:" >/dev/null
 01440	LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null
 01450	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6 2>&1 | grep "cannot read the format of this file" >/dev/null
+01460	LC_ALL=C ./sar -q FOO 2>&1 | grep "Usage:" >/dev/null
 
 =====	Specific tests for sensors statistics (basic sensor output already tested using data-11.6.5 conversion)
 01500	LC_ALL=C TZ=GMT ./sadf -d tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-d.tmp

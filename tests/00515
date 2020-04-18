@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -d tests/data.tmp -- -qu > tests/out.sadf-d-qu.tmp

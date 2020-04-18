@@ -1,0 +1,1 @@
+LC_ALL=C ./sar -q FOO 2>&1 | grep "Usage:" >/dev/null

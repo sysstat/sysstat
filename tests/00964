@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./sar -q PSI 0 > tests/out.sar-qPSI.tmp
