@@ -2332,11 +2332,11 @@ __print_funct_t xml_print_psicpu_stats(struct activity *a, int curr, int tab,
 		"some_avg10=\"%.2f\" "
 		"some_avg60=\"%.2f\" "
 		"some_avg300=\"%.2f\" "
-		"some_total=\"%.2f\"/>",
+		"some_avg=\"%.2f\"/>",
 		(double) psic->some_acpu_10  / 100,
 		(double) psic->some_acpu_60  / 100,
 		(double) psic->some_acpu_300 / 100,
-		S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
+		((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv));
 	tab--;
 
 close_xml_markup:
@@ -2373,19 +2373,19 @@ __print_funct_t xml_print_psiio_stats(struct activity *a, int curr, int tab,
 		"some_avg10=\"%.2f\" "
 		"some_avg60=\"%.2f\" "
 		"some_avg300=\"%.2f\" "
-		"some_total=\"%.2f\" "
+		"some_avg=\"%.2f\" "
 		"full_avg10=\"%.2f\" "
 		"full_avg60=\"%.2f\" "
 		"full_avg300=\"%.2f\" "
-		"full_total=\"%.2f\"/>",
+		"full_avg=\"%.2f\"/>",
 		(double) psic->some_aio_10  / 100,
 		(double) psic->some_aio_60  / 100,
 		(double) psic->some_aio_300 / 100,
-		S_VALUE(psip->some_io_total, psic->some_io_total, itv),
+		((double) psic->some_io_total - psip->some_io_total) / (100 * itv),
 		(double) psic->full_aio_10  / 100,
 		(double) psic->full_aio_60  / 100,
 		(double) psic->full_aio_300 / 100,
-		S_VALUE(psip->full_io_total, psic->full_io_total, itv));
+		((double) psic->full_io_total - psip->full_io_total) / (100 * itv));
 	tab--;
 
 close_xml_markup:
@@ -2422,19 +2422,19 @@ __print_funct_t xml_print_psimem_stats(struct activity *a, int curr, int tab,
 		"some_avg10=\"%.2f\" "
 		"some_avg60=\"%.2f\" "
 		"some_avg300=\"%.2f\" "
-		"some_total=\"%.2f\" "
+		"some_avg=\"%.2f\" "
 		"full_avg10=\"%.2f\" "
 		"full_avg60=\"%.2f\" "
 		"full_avg300=\"%.2f\" "
-		"full_total=\"%.2f\"/>",
+		"full_avg=\"%.2f\"/>",
 		(double) psic->some_amem_10  / 100,
 		(double) psic->some_amem_60  / 100,
 		(double) psic->some_amem_300 / 100,
-		S_VALUE(psip->some_mem_total, psic->some_mem_total, itv),
+		((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv),
 		(double) psic->full_amem_10  / 100,
 		(double) psic->full_amem_60  / 100,
 		(double) psic->full_amem_300 / 100,
-		S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
+		((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv));
 	tab--;
 
 close_xml_markup:

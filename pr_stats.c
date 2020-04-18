@@ -3074,8 +3074,8 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_f(NO_UNIT, 1, 9, 2,
-		  S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
+	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		  ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv));
 	printf("\n");
 }
 
@@ -3169,8 +3169,8 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_f(NO_UNIT, 1, 9, 2,
-		  S_VALUE(psip->some_io_total, psic->some_io_total, itv));
+	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		  ((double) psic->some_io_total - psip->some_io_total) / (100 * itv));
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
@@ -3195,8 +3195,8 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		f_avg10 = f_avg60 = f_avg300 = 0;
 	}
 
-	cprintf_f(NO_UNIT, 1, 9, 2,
-		  S_VALUE(psip->full_io_total, psic->full_io_total, itv));
+	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		  ((double) psic->full_io_total - psip->full_io_total) / (100 * itv));
 	printf("\n");
 }
 
@@ -3290,8 +3290,8 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_f(NO_UNIT, 1, 9, 2,
-		  S_VALUE(psip->some_mem_total, psic->some_mem_total, itv));
+	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		  ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv));
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
@@ -3316,8 +3316,8 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		f_avg10 = f_avg60 = f_avg300 = 0;
 	}
 
-	cprintf_f(NO_UNIT, 1, 9, 2,
-		  S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
+	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		  ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv));
 	printf("\n");
 }
 

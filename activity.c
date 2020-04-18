@@ -1889,7 +1889,7 @@ struct activity psi_cpu_act = {
 	.f_print_avg	= print_avg_psicpu_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "s_acpu10;s_acpu60;s_acpu300;s_tcpu/s",
+	.hdr_line	= "%scpu-10;%scpu-60;%scpu-300;%scpu",
 #endif
 	.gtypes_nr	= {STATS_PSI_CPU_ULL, STATS_PSI_CPU_UL, STATS_PSI_CPU_U},
 	.ftypes_nr	= {0, 0, 0},
@@ -1935,7 +1935,7 @@ struct activity psi_io_act = {
 	.f_print_avg	= print_avg_psiio_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "s_aio10;s_aio60;s_aio300;s_tio/s;f_aio10;f_aio60;f_aio300;f_tio/s",
+	.hdr_line	= "%sio-10;%sio-60;%sio-300;%sio;%fio-10;%fio-60;%fio-300;%fio",
 #endif
 	.gtypes_nr	= {STATS_PSI_IO_ULL, STATS_PSI_IO_UL, STATS_PSI_IO_U},
 	.ftypes_nr	= {0, 0, 0},
@@ -1981,7 +1981,7 @@ struct activity psi_mem_act = {
 	.f_print_avg	= print_avg_psimem_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "s_amem10;s_amem60;s_amem300;s_tmem/s;f_amem10;f_amem60;f_amem300;f_tmem/s",
+	.hdr_line	= "%smem-10;%smem-60;%smem-300;%smem;%fmem-10;%fmem-60;%fmem-300;%fmem",
 #endif
 	.gtypes_nr	= {STATS_PSI_MEM_ULL, STATS_PSI_MEM_UL, STATS_PSI_MEM_U},
 	.ftypes_nr	= {0, 0, 0},

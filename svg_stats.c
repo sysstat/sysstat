@@ -5268,23 +5268,14 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 		*psic = (struct stats_psi_cpu *) a->buf[curr],
 		*psip = (struct stats_psi_cpu *) a->buf[!curr];
 	int group[] = {3, 1};
-	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH};
 	char *title[] = {"CPU pressure trends (some tasks)", "CPU stall time (some tasks)"};
-	char *g_title[] = {"s_acpu10", "s_acpu60", "s_acpu300",
-			   "s_tcpu/s"};
-	/*
-	 * s_acpu10:0, s_acpu60:1, s_acpu300:2, s_tcpu/s:3
-	 * g_fields[]: metric position for each field in stats_psi_cpu structure
-	 *	 some_cpu_total=3  -> only s_tcpu/s will be checked in save_extrema() function.
-	 *	(some_acpu_10=0)
-	 *	(some_acpu_60=1)
-	 *	(some_acpu_300=2)
-	 */
-	int g_fields[] = {3};
-	unsigned int local_types_nr[] = {1, 0, 0};
+	char *g_title[] = {"%scpu-10", "%scpu-60", "%scpu-300",
+			   "%scpu"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
+	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5295,13 +5286,7 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
-		/*
-		 * Check for min/max values.
-		 * Don't use save_extrema() function as some values are absolute ones (s_acpu10,...)
-		 * but s_tcpu/s is a per-second value.
-		 */
-		save_extrema(local_types_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+		/* Check for min/max values */
 		if (psic->some_acpu_10 > *spmax) {
 			*spmax = psic->some_acpu_10;
 		}
@@ -5320,23 +5305,31 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 		if (psic->some_acpu_300 < *(spmin + 2)) {
 			*(spmin + 2) = psic->some_acpu_300;
 		}
+		tval = ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv);
+		if (tval > *(spmax + 3)) {
+			*(spmax + 3) = tval;
+		}
+		if (tval < *(spmin + 3)) {
+			*(spmin + 3) = tval;
+		}
 
-		/* s_acpu10 */
+		/* %scpu-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_acpu_10 / 100,
 			 out, outsize, svg_p->restart);
-		/* s_acpu60 */
+		/* %scpu-60 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_acpu_60 / 100,
 			 out + 1, outsize + 1, svg_p->restart);
-		/* s_acpu300 */
+		/* %scpu-300 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_acpu_300 / 100,
 			 out + 2, outsize + 2, svg_p->restart);
-		/* s_tcpu/s */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv),
-			  out + 3, outsize + 3, svg_p->restart);
+		/* %scpu */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv),
+			 out + 3, outsize + 3, svg_p->dt);
 	}
 
 	if (action & F_END) {
@@ -5376,18 +5369,17 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 		*psic = (struct stats_psi_io *) a->buf[curr],
 		*psip = (struct stats_psi_io *) a->buf[!curr];
 	int group[] = {3, 1, 3, 1};
-	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_BAR_GRAPH};
 	char *title[] = {"I/O pressure trends (some tasks)", "I/O stall time (some tasks)",
 			 "I/O pressure trends (full)", "I/O stall time (full)"};
-	char *g_title[] = {"s_aio10", "s_aio60", "s_aio300",
-			   "s_tio/s",
-			   "f_aio10", "f_aio60", "f_aio300",
-			   "f_tio/s"};
-	int g_fields[] = {3, 7};
-	unsigned int local_types_nr[] = {2, 0, 0};
+	char *g_title[] = {"%sio-10", "%sio-60", "%sio-300",
+			   "%sio",
+			   "%fio-10", "%fio-60", "%fio-300",
+			   "%fio"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
+	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5398,13 +5390,7 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 	}
 
 	if (action & F_MAIN) {
-		/*
-		 * Check for min/max values.
-		 * Don't use save_extrema() function as some values are absolute ones and others are
-		 * per-second ones.
-		 */
-		save_extrema(local_types_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+		/* Check for min/max values */
 		if (psic->some_aio_10 > *spmax) {
 			*spmax = psic->some_aio_10;
 		}
@@ -5422,6 +5408,13 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 		}
 		if (psic->some_aio_300 < *(spmin + 2)) {
 			*(spmin + 2) = psic->some_aio_300;
+		}
+		tval = ((double) psic->some_io_total - psip->some_io_total) / (100 * itv);
+		if (tval > *(spmax + 3)) {
+			*(spmax + 3) = tval;
+		}
+		if (tval < *(spmin + 3)) {
+			*(spmin + 3) = tval;
 		}
 
 		if (psic->full_aio_10 > *(spmax + 4)) {
@@ -5442,40 +5435,49 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 		if (psic->full_aio_300 < *(spmin + 6)) {
 			*(spmin + 6) = psic->full_aio_300;
 		}
+		tval = ((double) psic->full_io_total - psip->full_io_total) / (100 * itv);
+		if (tval > *(spmax + 7)) {
+			*(spmax + 7) = tval;
+		}
+		if (tval < *(spmin + 7)) {
+			*(spmin + 7) = tval;
+		}
 
-		/* s_aio10 */
+		/* %sio-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_aio_10 / 100,
 			 out, outsize, svg_p->restart);
-		/* s_aio60 */
+		/* %sio-60 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_aio_60 / 100,
 			 out + 1, outsize + 1, svg_p->restart);
-		/* s_aio300 */
+		/* %sio-300 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_aio_300 / 100,
 			 out + 2, outsize + 2, svg_p->restart);
-		/* s_tio/s */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  S_VALUE(psip->some_io_total, psic->some_io_total, itv),
-			  out + 3, outsize + 3, svg_p->restart);
+		/* %sio */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 ((double) psic->some_io_total - psip->some_io_total) / (100 * itv),
+			 out + 3, outsize + 3, svg_p->dt);
 
-		/* f_aio10 */
+		/* %fio-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->full_aio_10 / 100,
 			 out + 4, outsize + 4, svg_p->restart);
-		/* f_aio60 */
+		/* %fio-60 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->full_aio_60 / 100,
 			 out + 5, outsize + 5, svg_p->restart);
-		/* f_aio300 */
+		/* %fio-300 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->full_aio_300 / 100,
 			 out + 6, outsize + 6, svg_p->restart);
-		/* f_tio/s */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  S_VALUE(psip->full_io_total, psic->full_io_total, itv),
-			  out + 7, outsize + 7, svg_p->restart);
+		/* %fio */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 ((double) psic->full_io_total - psip->full_io_total) / (100 * itv),
+			 out + 7, outsize + 7, svg_p->dt);
 	}
 
 	if (action & F_END) {
@@ -5519,18 +5521,17 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 		*psic = (struct stats_psi_mem *) a->buf[curr],
 		*psip = (struct stats_psi_mem *) a->buf[!curr];
 	int group[] = {3, 1, 3, 1};
-	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_BAR_GRAPH};
 	char *title[] = {"Memory pressure trends (some tasks)", "Memory stall time (some tasks)",
 			 "Memory pressure trends (full)", "Memory stall time (full)"};
-	char *g_title[] = {"s_amem10", "s_amem60", "s_amem300",
-			   "s_tmem/s",
-			   "f_amem10", "f_amem60", "f_amem300",
-			   "f_tmem/s"};
-	int g_fields[] = {3, 7};
-	unsigned int local_types_nr[] = {2, 0, 0};
+	char *g_title[] = {"%smem-10", "%smem-60", "%smem-300",
+			   "%smem",
+			   "%fmem-10", "%fmem-60", "%fmem-300",
+			   "%fmem"};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
+	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5541,13 +5542,7 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
-		/*
-		 * Check for min/max values.
-		 * Don't use save_extrema() function as some values are absolute ones and others are
-		 * per-second ones.
-		 */
-		save_extrema(local_types_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+		/* Check for min/max values */
 		if (psic->some_amem_10 > *spmax) {
 			*spmax = psic->some_amem_10;
 		}
@@ -5565,6 +5560,13 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 		}
 		if (psic->some_amem_300 < *(spmin + 2)) {
 			*(spmin + 2) = psic->some_amem_300;
+		}
+		tval = ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv);
+		if (tval > *(spmax + 3)) {
+			*(spmax + 3) = tval;
+		}
+		if (tval < *(spmin + 3)) {
+			*(spmin + 3) = tval;
 		}
 
 		if (psic->full_amem_10 > *(spmax + 4)) {
@@ -5585,40 +5587,49 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 		if (psic->full_amem_300 < *(spmin + 6)) {
 			*(spmin + 6) = psic->full_amem_300;
 		}
+		tval = ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv);
+		if (tval > *(spmax + 7)) {
+			*(spmax + 7) = tval;
+		}
+		if (tval < *(spmin + 7)) {
+			*(spmin + 7) = tval;
+		}
 
-		/* s_amem10 */
+		/* %smem-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_amem_10 / 100,
 			 out, outsize, svg_p->restart);
-		/* s_amem60 */
+		/* %smem-60 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_amem_60 / 100,
 			 out + 1, outsize + 1, svg_p->restart);
-		/* s_amem300 */
+		/* %smem-300 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->some_amem_300 / 100,
 			 out + 2, outsize + 2, svg_p->restart);
-		/* s_tmem/s */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  S_VALUE(psip->some_mem_total, psic->some_mem_total, itv),
-			  out + 3, outsize + 3, svg_p->restart);
+		/* %smem */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv),
+			 out + 3, outsize + 3, svg_p->dt);
 
-		/* f_amem10 */
+		/* %fmem-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->full_amem_10 / 100,
 			 out + 4, outsize + 4, svg_p->restart);
-		/* f_amem60 */
+		/* %fmem-60 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->full_amem_60 / 100,
 			 out + 5, outsize + 5, svg_p->restart);
-		/* f_amem300 */
+		/* %fmem-300 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 (double) psic->full_amem_300 / 100,
 			 out + 6, outsize + 6, svg_p->restart);
-		/* f_tmem/s */
-		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			  S_VALUE(psip->full_mem_total, psic->full_mem_total, itv),
-			  out + 7, outsize + 7, svg_p->restart);
+		/* %fmem */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv),
+			 out + 7, outsize + 7, svg_p->dt);
 	}
 
 	if (action & F_END) {

@@ -2273,8 +2273,8 @@ __print_funct_t pcp_print_psicpu_stats(struct activity *a, int curr, unsigned lo
 	pmiPutValue("psi.cpu.some.trends", "300 sec", buf);
 
 	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv));
-	pmiPutValue("psi.cpu.some.total", NULL, buf);
+		 ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv));
+	pmiPutValue("psi.cpu.some.avg", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -2308,8 +2308,8 @@ __print_funct_t pcp_print_psiio_stats(struct activity *a, int curr, unsigned lon
 	pmiPutValue("psi.io.some.trends", "300 sec", buf);
 
 	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(psip->some_io_total, psic->some_io_total, itv));
-	pmiPutValue("psi.io.some.total", NULL, buf);
+		 ((double) psic->some_io_total - psip->some_io_total) / (100 * itv));
+	pmiPutValue("psi.io.some.avg", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_10 / 100);
 	pmiPutValue("psi.io.full.trends", "10 sec", buf);
@@ -2321,8 +2321,8 @@ __print_funct_t pcp_print_psiio_stats(struct activity *a, int curr, unsigned lon
 	pmiPutValue("psi.io.full.trends", "300 sec", buf);
 
 	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(psip->full_io_total, psic->full_io_total, itv));
-	pmiPutValue("psi.io.full.total", NULL, buf);
+		 ((double) psic->full_io_total - psip->full_io_total) / (100 * itv));
+	pmiPutValue("psi.io.full.avg", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -2356,8 +2356,8 @@ __print_funct_t pcp_print_psimem_stats(struct activity *a, int curr, unsigned lo
 	pmiPutValue("psi.mem.some.trends", "300 sec", buf);
 
 	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(psip->some_mem_total, psic->some_mem_total, itv));
-	pmiPutValue("psi.mem.some.total", NULL, buf);
+		 ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv));
+	pmiPutValue("psi.mem.some.avg", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_10 / 100);
 	pmiPutValue("psi.mem.full.trends", "10 sec", buf);
@@ -2369,7 +2369,7 @@ __print_funct_t pcp_print_psimem_stats(struct activity *a, int curr, unsigned lo
 	pmiPutValue("psi.mem.full.trends", "300 sec", buf);
 
 	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(psip->full_mem_total, psic->full_mem_total, itv));
-	pmiPutValue("psi.mem.full.total", NULL, buf);
+		 ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv));
+	pmiPutValue("psi.mem.full.avg", NULL, buf);
 #endif	/* HAVE_PCP */
 }

@@ -3216,27 +3216,27 @@ __print_funct_t render_psicpu_stats(struct activity *a, int isdb, char *pre,
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_acpu10", NULL, NULL,
+	       "-\t%scpu-10", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_acpu_10 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_acpu60", NULL, NULL,
+	       "-\t%scpu-60", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_acpu_60 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_acpu300", NULL, NULL,
+	       "-\t%scpu-300", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_acpu_300 / 100,
 	       NULL);
 
 	render(isdb, pre, pt_newlin,
-	       "-\ts_tcpu/s", NULL, NULL,
+	       "-\t%scpu", NULL, NULL,
 	       NOVAL,
-	       S_VALUE(psip->some_cpu_total, psic->some_cpu_total, itv),
+	       ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv),
 	       NULL);
 }
 
@@ -3262,51 +3262,51 @@ __print_funct_t render_psiio_stats(struct activity *a, int isdb, char *pre,
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_aio10", NULL, NULL,
+	       "-\t%sio-10", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_aio_10 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_aio60", NULL, NULL,
+	       "-\t%sio-60", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_aio_60 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_aio300", NULL, NULL,
+	       "-\t%sio-300", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_aio_300 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_tio/s", NULL, NULL,
+	       "-\t%sio", NULL, NULL,
 	       NOVAL,
-	       S_VALUE(psip->some_io_total, psic->some_io_total, itv),
+	       ((double) psic->some_io_total - psip->some_io_total) / (100 * itv),
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tf_aio10", NULL, NULL,
+	       "-\t%fio-10", NULL, NULL,
 	       NOVAL,
 	       (double) psic->full_aio_10 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tf_aio60", NULL, NULL,
+	       "-\t%fio-60", NULL, NULL,
 	       NOVAL,
 	       (double) psic->full_aio_60 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tf_aio300", NULL, NULL,
+	       "-\t%fio-300", NULL, NULL,
 	       NOVAL,
 	       (double) psic->full_aio_300 / 100,
 	       NULL);
 
 	render(isdb, pre, pt_newlin,
-	       "-\tf_tio/s", NULL, NULL,
+	       "-\t%fio", NULL, NULL,
 	       NOVAL,
-	       S_VALUE(psip->full_io_total, psic->full_io_total, itv),
+	       ((double) psic->full_io_total - psip->full_io_total) / (100 * itv),
 	       NULL);
 }
 
@@ -3332,50 +3332,50 @@ __print_funct_t render_psimem_stats(struct activity *a, int isdb, char *pre,
 		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_amem10", NULL, NULL,
+	       "-\t%smem-10", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_amem_10 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_amem60", NULL, NULL,
+	       "-\t%smem-60", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_amem_60 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_amem300", NULL, NULL,
+	       "-\t%smem-300", NULL, NULL,
 	       NOVAL,
 	       (double) psic->some_amem_300 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\ts_tmem/s", NULL, NULL,
+	       "-\t%smem", NULL, NULL,
 	       NOVAL,
-	       S_VALUE(psip->some_mem_total, psic->some_mem_total, itv),
+	       ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv),
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tf_amem10", NULL, NULL,
+	       "-\t%fmem-10", NULL, NULL,
 	       NOVAL,
 	       (double) psic->full_amem_10 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tf_amem60", NULL, NULL,
+	       "-\t%fmem-60", NULL, NULL,
 	       NOVAL,
 	       (double) psic->full_amem_60 / 100,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tf_amem300", NULL, NULL,
+	       "-\t%fmem-300", NULL, NULL,
 	       NOVAL,
 	       (double) psic->full_amem_300 / 100,
 	       NULL);
 
 	render(isdb, pre, pt_newlin,
-	       "-\tf_tmem/s", NULL, NULL,
+	       "-\t%fmem", NULL, NULL,
 	       NOVAL,
-	       S_VALUE(psip->full_mem_total, psic->full_mem_total, itv),
+	       ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv),
 	       NULL);
 }

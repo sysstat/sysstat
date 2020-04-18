@@ -1785,9 +1785,9 @@ void pcp_def_psi_metrics(struct activity *a)
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.cpu.some.total",
+		pmiAddMetric("psi.cpu.some.avg",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 	else if (a->id == A_PSI_IO) {
 		/* Create metrics for A_PSI_IO */
@@ -1795,17 +1795,17 @@ void pcp_def_psi_metrics(struct activity *a)
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.io.some.total",
+		pmiAddMetric("psi.io.some.avg",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiUnits(0, 0, 0, 0, 0, 0));
 
 		pmiAddMetric("psi.io.full.trends",
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.io.full.total",
+		pmiAddMetric("psi.io.full.avg",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 	else {
 		/* Create metrics for A_PSI_MEM */
@@ -1813,17 +1813,17 @@ void pcp_def_psi_metrics(struct activity *a)
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.mem.some.total",
+		pmiAddMetric("psi.mem.some.avg",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiUnits(0, 0, 0, 0, 0, 0));
 
 		pmiAddMetric("psi.mem.full.trends",
 			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.mem.full.total",
+		pmiAddMetric("psi.mem.full.avg",
 			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 #endif /* HAVE_PCP */
 }
