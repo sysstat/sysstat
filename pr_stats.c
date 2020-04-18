@@ -518,6 +518,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		if (dish) {
 			print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 		}
+		printf("%-11s", timestamp[curr]);
 
 		if (!dispavg) {
 			/* Display instantaneous values */
@@ -525,7 +526,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 			if (nousedmem > smc->tlmkb) {
 				nousedmem = smc->tlmkb;
 			}
-			printf("%-11s", timestamp[curr]);
 			cprintf_u64(unit, 3, 9,
 				    (unsigned long long) smc->frmkb,
 				    (unsigned long long) smc->availablekb,
@@ -581,7 +581,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		else {
 			/* Display average values */
 			nousedmem = avg_frmkb + avg_bufkb + avg_camkb + avg_slabkb;
-			printf("%-11s", timestamp[curr]);
 			cprintf_f(unit, 3, 9, 0,
 				  (double) avg_frmkb / avg_count,
 				  (double) avg_availablekb / avg_count,
@@ -626,10 +625,10 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		if (dish) {
 			print_hdr_line(timestamp[!curr], a, SECOND, 0, 9);
 		}
+		printf("%-11s", timestamp[curr]);
 
 		if (!dispavg) {
 			/* Display instantaneous values */
-			printf("%-11s", timestamp[curr]);
 			cprintf_u64(unit, 2, 9,
 				    (unsigned long long) smc->frskb,
 				    (unsigned long long) (smc->tlskb - smc->frskb));
@@ -656,7 +655,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		}
 		else {
 			/* Display average values */
-			printf("%-11s", timestamp[curr]);
 			cprintf_f(unit, 2, 9, 0,
 				  (double) avg_frskb / avg_count,
 				  ((double) avg_tlskb / avg_count) -
@@ -742,10 +740,10 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_u64(NO_UNIT, 4, 9,
 			    (unsigned long long) skc->dentry_stat,
 			    (unsigned long long) skc->file_used,
@@ -764,7 +762,6 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 	}
 	else {
 		/* Display average values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_f(NO_UNIT, 4, 9, 0,
 			  (double) avg_dentry_stat / avg_count,
 			  (double) avg_file_used   / avg_count,
@@ -837,10 +834,10 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_u64(NO_UNIT, 2, 9,
 			    (unsigned long long) sqc->nr_running,
 			    (unsigned long long) sqc->nr_threads);
@@ -862,7 +859,6 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 	}
 	else {
 		/* Display average values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_f(NO_UNIT, 2, 9, 0,
 			  (double) avg_nr_running / avg_count,
 			  (double) avg_nr_threads / avg_count);
@@ -1350,10 +1346,10 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_u64(NO_UNIT, 6, 9,
 			    (unsigned long long) snsc->sock_inuse,
 			    (unsigned long long) snsc->tcp_inuse,
@@ -1373,7 +1369,6 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 	}
 	else {
 		/* Display average values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_f(NO_UNIT, 6, 9, 0,
 			  (double) avg_sock_inuse / avg_count,
 			  (double) avg_tcp_inuse  / avg_count,
@@ -1691,10 +1686,10 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_u64(NO_UNIT, 4, 9,
 			    (unsigned long long) snsc->tcp6_inuse,
 			    (unsigned long long) snsc->udp6_inuse,
@@ -1710,7 +1705,6 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 	}
 	else {
 		/* Display average values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_f(NO_UNIT, 4, 9, 0,
 			  (double) avg_tcp6_inuse  / avg_count,
 			  (double) avg_udp6_inuse  / avg_count,
@@ -2444,10 +2438,10 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_u64(unit, 2, 9,
 			    (unsigned long long) smc->frhkb,
 			    (unsigned long long) (smc->tlhkb - smc->frhkb));
@@ -2467,7 +2461,6 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 	}
 	else {
 		/* Display average values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_f(unit, 2, 9, 0,
 			  (double) avg_frhkb / avg_count,
 			  ((double) avg_tlhkb / avg_count) -
@@ -3048,10 +3041,10 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
 			   (double) psic->some_acpu_10  / 100,
 			   (double) psic->some_acpu_60  / 100,
@@ -3064,7 +3057,6 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 	else {
 		/* Display average values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
 			   (double) s_avg10  / (avg_count * 100),
 			   (double) s_avg60  / (avg_count * 100),
@@ -3143,10 +3135,10 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous "some" values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
 			   (double) psic->some_aio_10  / 100,
 			   (double) psic->some_aio_60  / 100,
@@ -3159,7 +3151,6 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	}
 	else {
 		/* Display average "some" values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
 			   (double) s_avg10  / (avg_count * 100),
 			   (double) s_avg60  / (avg_count * 100),
@@ -3264,10 +3255,10 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	if (dish) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9);
 	}
+	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
 		/* Display instantaneous "some" values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
 			   (double) psic->some_amem_10  / 100,
 			   (double) psic->some_amem_60  / 100,
@@ -3280,7 +3271,6 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 	else {
 		/* Display average "some" values */
-		printf("%-11s", timestamp[curr]);
 		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
 			   (double) s_avg10  / (avg_count * 100),
 			   (double) s_avg60  / (avg_count * 100),
