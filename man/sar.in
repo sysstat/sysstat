@@ -1,8 +1,8 @@
-.TH SAR 1 "SEPTEMBER 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "APRIL 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
-.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ] [ -q ]
+.B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ]
 .B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ]
 .B [ --dec={ 0 | 1 | 2 } ] [ --dev=
 .I dev_list
@@ -22,6 +22,9 @@ sar \- Collect, report, or save system activity information.
 .B [ -n {
 .I keyword
 .B [,...] | ALL } ]
+.B [ -q [
+.I keyword
+.B [,...] | ALL ] ]
 .B [ -j { SID | ID | LABEL | PATH | UUID | ... } ]
 .B [ -f [
 .I filename
@@ -173,7 +176,7 @@ command only reports on local activities.
 .SH OPTIONS
 .IP -A
 This is equivalent to specifying
-.BR "-bBdFHqSvwWy -I SUM -m ALL -n ALL -r ALL -u ALL".
+.BR "-bBdFHSvwWy -I SUM -m ALL -n ALL -q ALL -r ALL -u ALL".
 This option also implies specifying
 .BR "-I ALL -P ALL"
 unless these options are explicitly set on the command line.
@@ -1949,11 +1952,94 @@ where M and n are the major and minor numbers for the device.
 Use of this option displays the names of the devices as they (should) appear
 in /dev. Name mappings are controlled by
 .IR @SYSCONFIG_DIR@/sysstat.ioconf .
-.IP -q
-Report queue length and load averages. The following values are displayed:
+.IP "-q [ keyword [,...] | ALL ]"
+Report system load and pressure-stall statistics.
+
+Possible keywords are
+.BR CPU ,
+.BR IO ,
+.BR LOAD ,
+.BR MEM ,
+and
+.BR PSI .
+
+With the
+.B CPU
+keyword, CPU pressure statistics are reported.
+The following values are displayed:
+
+.B %scpu-10
+.RS
+.RS
+Percentage of the time that at least some runnable tasks were delayed because the CPU was unavailable to them, over the last 10 second window.
+.RE
+
+.B %scpu-60
+.RS
+Percentage of the time that at least some runnable tasks were delayed because the CPU was unavailable to them, over the last 60 second window.
+.RE
+
+.B %scpu-300
+.RS
+Percentage of the time that at least some runnable tasks were delayed because the CPU was unavailable to them, over the last 300 second window.
+.RE
+
+.B %scpu
+.RS
+Percentage of the time that at least some runnable tasks were delayed because the CPU was unavailable to them, over the last time interval.
+.RE
+
+With the
+.B IO
+keyword, I/O pressure statistics are reported.
+The following values are displayed:
+
+.B %sio-10
+.RS
+Percentage of the time that at least some tasks lost waiting for I/O, over the last 10 second window.
+.RE
+
+.B %sio-60
+.RS
+Percentage of the time that at least some tasks lost waiting for I/O, over the last 60 second window.
+.RE
+
+.B %sio-300
+.RS
+Percentage of the time that at least some tasks lost waiting for I/O, over the last 300 second window.
+.RE
+
+.B %sio
+.RS
+Percentage of the time that at least some tasks lost waiting for I/O, over the last time interval.
+.RE
+
+.B %fio-10
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for I/O, over the last 10 second window.
+.RE
+
+.B %fio-60
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for I/O, over the last 60 second window.
+.RE
+
+.B %fio-300
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for I/O, over the last 300 second window.
+.RE
+
+.B %fio
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for I/O, over the last time interval.
+.RE
+
+With the
+.B LOAD
+keyword, queue length and load averages statistics are reported.
+The following values are displayed:
 
 .B runq-sz
-.RS
 .RS
 Run queue length (number of tasks waiting for run time). 
 .RE
@@ -1984,6 +2070,60 @@ System load average for the past 15 minutes.
 .B blocked
 .RS
 Number of tasks currently blocked, waiting for I/O to complete.
+.RE
+
+With the
+.B MEM
+keyword, memory pressure statistics are reported.
+The following values are displayed:
+
+.B %smem-10
+.RS
+Percentage of the time during which at least some tasks were waiting for memory ressources, over the last 10 second window.
+.RE
+
+.B %smem-60
+.RS
+Percentage of the time during which at least some tasks were waiting for memory ressources, over the last 60 second window.
+.RE
+
+.B %smem-300
+.RS
+Percentage of the time during which at least some tasks were waiting for memory ressources, over the last 300 second window.
+.RE
+
+.B %smem
+.RS
+Percentage of the time during which at least some tasks were waiting for memory ressources, over the last time interval.
+.RE
+
+.B %fmem-10
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last 10 second window.
+.RE
+
+.B %fmem-60
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last 60 second window.
+.RE
+
+.B %fmem-300
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last 300 second window.
+.RE
+
+.B %fmem
+.RS
+Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last time interval.
+.RE
+
+The
+.B PSI
+keyword is equivalent to specifying CPU, IO and MEM keywords together and therefore all the pressure-stall statistics are reported.
+
+The
+.B ALL
+keyword is equivalent to specifying all the keywords above and therefore all the statistics are reported.
 .RE
 .RE
 .IP "-r [ ALL ]"
