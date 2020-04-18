@@ -2614,42 +2614,42 @@
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; s_acpu10; 0; s_acpu60; 0; s_acpu300; 0; s_tcpu/s; 1473177; 1481906;
+13:20:19 UTC; %scpu-10; 0; %scpu-60; 0; %scpu-300; 0; %scpu; 1473177; 1481906;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; s_acpu10; 0; s_acpu60; 0; s_acpu300; 0; s_tcpu/s; 1481906; 1553911;
+13:20:29 UTC; %scpu-10; 0; %scpu-60; 0; %scpu-300; 0; %scpu; 1481906; 1553911;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; s_acpu10; 0; s_acpu60; 0; s_acpu300; 0; s_tcpu/s; 1553911; 1556997;
+13:20:39 UTC; %scpu-10; 0; %scpu-60; 0; %scpu-300; 0; %scpu; 1553911; 1556997;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; s_acpu10; 0; s_acpu60; 0; s_acpu300; 0; s_tcpu/s; 1556997; 1608139;
+13:20:49 UTC; %scpu-10; 0; %scpu-60; 0; %scpu-300; 0; %scpu; 1556997; 1608139;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PSI_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; s_aio10; 319; s_aio60; 114; s_aio300; 43; s_tio/s; 96242289; 96968324; f_aio10; 319; f_aio60; 114; f_aio300; 42; f_tio/s; 92732851; 93434041;
+13:20:19 UTC; %sio-10; 319; %sio-60; 114; %sio-300; 43; %sio; 96242289; 96968324; %fio-10; 319; %fio-60; 114; %fio-300; 42; %fio; 92732851; 93434041;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_PSI_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; s_aio10; 0; s_aio60; 16; s_aio300; 29; s_tio/s; 96968324; 97403226; f_aio10; 0; f_aio60; 15; f_aio300; 28; f_tio/s; 93434041; 93822846;
+13:20:29 UTC; %sio-10; 0; %sio-60; 16; %sio-300; 29; %sio; 96968324; 97403226; %fio-10; 0; %fio-60; 15; %fio-300; 28; %fio; 93434041; 93822846;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_PSI_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; s_aio10; 0; s_aio60; 7; s_aio300; 25; s_tio/s; 97403226; 97408223; f_aio10; 0; f_aio60; 7; f_aio300; 24; f_tio/s; 93822846; 93827811;
+13:20:39 UTC; %sio-10; 0; %sio-60; 7; %sio-300; 25; %sio; 97403226; 97408223; %fio-10; 0; %fio-60; 7; %fio-300; 24; %fio; 93822846; 93827811;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_PSI_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; s_aio10; 0; s_aio60; 0; s_aio300; 3; s_tio/s; 97408223; 97617263; f_aio10; 0; f_aio60; 0; f_aio300; 3; f_tio/s; 93827811; 94001210;
+13:20:49 UTC; %sio-10; 0; %sio-60; 0; %sio-300; 3; %sio; 97408223; 97617263; %fio-10; 0; %fio-60; 0; %fio-300; 3; %fio; 93827811; 94001210;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PSI_MEM; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; s_amem10; 312; s_amem60; 140; s_amem300; 3; s_tmem/s; 0; 16030; f_amem10; 0; f_amem60; 0; f_amem300; 0; f_tmem/s; 0; 7200;
+13:20:19 UTC; %smem-10; 312; %smem-60; 140; %smem-300; 3; %smem; 0; 16030; %fmem-10; 0; %fmem-60; 0; %fmem-300; 0; %fmem; 0; 7200;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_PSI_MEM; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; s_amem10; 2106; s_amem60; 1431; s_amem300; 380; s_tmem/s; 16030; 24037; f_amem10; 0; f_amem60; 0; f_amem300; 0; f_tmem/s; 7200; 9803;
+13:20:29 UTC; %smem-10; 2106; %smem-60; 1431; %smem-300; 380; %smem; 16030; 24037; %fmem-10; 0; %fmem-60; 0; %fmem-300; 0; %fmem; 7200; 9803;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_PSI_MEM; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; s_amem10; 9980; s_amem60; 7016; s_amem300; 3870; s_tmem/s; 24037; 56879; f_amem10; 0; f_amem60; 0; f_amem300; 0; f_tmem/s; 9803; 12037;
+13:20:39 UTC; %smem-10; 9980; %smem-60; 7016; %smem-300; 3870; %smem; 24037; 56879; %fmem-10; 0; %fmem-60; 0; %fmem-300; 0; %fmem; 9803; 12037;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_PSI_MEM; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; s_amem10; 2300; s_amem60; 300; s_amem300; 36; s_tmem/s; 56879; 103290; f_amem10; 0; f_amem60; 0; f_amem300; 0; f_tmem/s; 12037; 45780;
+13:20:49 UTC; %smem-10; 2300; %smem-60; 300; %smem-300; 36; %smem; 56879; 103290; %fmem-10; 0; %fmem-60; 0; %fmem-300; 0; %fmem; 12037; 45780;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 13:37:29 UTC; LINUX-RESTART (8 CPU)
 # uptime_cs; 0; ust_time; 1555594749; extra_next; 0; record_type; 4; HH:MM:SS; 13:39:09
@@ -3313,10 +3313,10 @@
 13:54:35 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:54:35 UTC; s_acpu10; 0; s_acpu60; 0; s_acpu300; 0; s_tcpu/s; 0; 0;
+13:54:35 UTC; %scpu-10; 0; %scpu-60; 0; %scpu-300; 0; %scpu; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PSI_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:54:35 UTC; s_aio10; 0; s_aio60; 0; s_aio300; 0; s_tio/s; 0; 0; f_aio10; 0; f_aio60; 0; f_aio300; 0; f_tio/s; 0; 0;
+13:54:35 UTC; %sio-10; 0; %sio-60; 0; %sio-300; 0; %sio; 0; 0; %fio-10; 0; %fio-60; 0; %fio-300; 0; %fio; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PSI_MEM; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:54:35 UTC; s_amem10; 0; s_amem60; 0; s_amem300; 0; s_tmem/s; 0; 0; f_amem10; 0; f_amem60; 0; f_amem300; 0; f_tmem/s; 0; 0;
+13:54:35 UTC; %smem-10; 0; %smem-60; 0; %smem-300; 0; %smem; 0; 0; %fmem-10; 0; %fmem-60; 0; %fmem-300; 0; %fmem; 0; 0;

@@ -639,9 +639,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
 				</filesystems>
 				<psi per="second">
-					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="280.04"/>
-					<psi-io some_avg10="3.19" some_avg60="1.14" some_avg300="0.43" some_total="23292.75" full_avg10="3.19" full_avg60="1.14" full_avg300="0.42" full_total="22495.67"/>
-					<psi-mem some_avg10="3.12" some_avg60="1.40" some_avg300="0.03" some_total="514.28" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_total="230.99"/>
+					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.03"/>
+					<psi-io some_avg10="3.19" some_avg60="1.14" some_avg300="0.43" some_avg="2.33" full_avg10="3.19" full_avg60="1.14" full_avg300="0.42" full_avg="2.25"/>
+					<psi-mem some_avg10="3.12" some_avg60="1.40" some_avg300="0.03" some_avg="0.05" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.02"/>
 				</psi>
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:20:29" utc="1" interval="31">
@@ -1268,9 +1268,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<filesystem fsname="/dev/sdg" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
 				</filesystems>
 				<psi per="second">
-					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="2304.90"/>
-					<psi-io some_avg10="0.00" some_avg60="0.16" some_avg300="0.29" some_total="13921.32" full_avg10="0.00" full_avg60="0.15" full_avg300="0.28" full_total="12445.74"/>
-					<psi-mem some_avg10="21.06" some_avg60="14.31" some_avg300="3.80" some_total="256.31" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_total="83.32"/>
+					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.23"/>
+					<psi-io some_avg10="0.00" some_avg60="0.16" some_avg300="0.29" some_avg="1.39" full_avg10="0.00" full_avg60="0.15" full_avg300="0.28" full_avg="1.24"/>
+					<psi-mem some_avg10="21.06" some_avg60="14.31" some_avg300="3.80" some_avg="0.03" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.01"/>
 				</psi>
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:20:39" utc="1" interval="39">
@@ -1901,9 +1901,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<filesystem fsname="/dev/sdg" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
 				</filesystems>
 				<psi per="second">
-					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="80.16"/>
-					<psi-io some_avg10="0.00" some_avg60="0.07" some_avg300="0.25" some_total="129.79" full_avg10="0.00" full_avg60="0.07" full_avg300="0.24" full_total="128.96"/>
-					<psi-mem some_avg10="99.80" some_avg60="70.16" some_avg300="38.70" some_total="853.04" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_total="58.03"/>
+					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.01"/>
+					<psi-io some_avg10="0.00" some_avg60="0.07" some_avg300="0.25" some_avg="0.01" full_avg10="0.00" full_avg60="0.07" full_avg300="0.24" full_avg="0.01"/>
+					<psi-mem some_avg10="99.80" some_avg60="70.16" some_avg300="38.70" some_avg="0.09" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.01"/>
 				</psi>
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:20:49" utc="1" interval="22">
@@ -2536,9 +2536,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
 				</filesystems>
 				<psi per="second">
-					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="2284.14"/>
-					<psi-io some_avg10="0.00" some_avg60="0.00" some_avg300="0.03" some_total="9336.31" full_avg10="0.00" full_avg60="0.00" full_avg300="0.03" full_total="7744.48"/>
-					<psi-mem some_avg10="23.00" some_avg60="3.00" some_avg300="0.36" some_total="2072.85" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_total="1507.06"/>
+					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.23"/>
+					<psi-io some_avg10="0.00" some_avg60="0.00" some_avg300="0.03" some_avg="0.93" full_avg10="0.00" full_avg60="0.00" full_avg300="0.03" full_avg="0.77"/>
+					<psi-mem some_avg10="23.00" some_avg60="3.00" some_avg300="0.36" some_avg="0.21" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.15"/>
 				</psi>
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:54:35" utc="1" interval="31">
@@ -3178,9 +3178,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
 				</filesystems>
 				<psi per="second">
-					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="0.00"/>
-					<psi-io some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="0.00" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_total="0.00"/>
-					<psi-mem some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_total="0.00" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_total="0.00"/>
+					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.00"/>
+					<psi-io some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.00" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.00"/>
+					<psi-mem some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.00" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.00"/>
 				</psi>
 			</timestamp>
 		</statistics>
