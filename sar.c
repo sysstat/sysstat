@@ -187,8 +187,7 @@ void display_help(char *progname)
 		 "\t\tUDP6\tUDP traffic\t(v6)\n"
 		 "\t\tFC\tFibre channel HBAs\n"
 		 "\t\tSOFT\tSoftware-based network processing\n"));
-	printf(_("\t-q\tQueue length and load average statistics [A_QUEUE]\n"));
-	printf(_("\t-q [ <keyword> [,...] | ALL ]\n"
+	printf(_("\t-q [ <keyword> [,...] | PSI | ALL ]\n"
 		 "\t\tSystem load and pressure-stall statistics\n"
 		 "\t\tKeywords are:\n"
 		 "\t\tLOAD\tQueue length and load average statistics [A_QUEUE]\n"
