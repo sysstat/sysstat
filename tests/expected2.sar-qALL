@@ -4,7 +4,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(10 CPU)
 13:20:19            3       956      3.16      3.24      3.43         0
 Average:            3       956      3.16      3.24      3.43         0
 
-13:20:23     LINUX RESTART	(10 CPU)
+13:20:23     LINUX RESTART	(8 CPU)
 
 13:20:29      runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked
 13:20:39            3       956      3.16      3.24      3.43         0
