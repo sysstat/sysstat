@@ -1,0 +1,5 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(10 CPU)
+
+00:00:00      runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked
+00:00:01            3       956      3.16      3.24      3.43         0
+Average:            3       956      3.16      3.24      3.43         0

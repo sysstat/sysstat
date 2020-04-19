@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-q.tmp

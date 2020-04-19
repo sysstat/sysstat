@@ -200,9 +200,20 @@ NOTES:
 00966	diff -u tests/out.sar-qPSI.tmp tests/expected.sar-qPSI
 00968	LC_ALL=C TZ=GMT ./sar -q ALL 0 > tests/out.sar-qALL.tmp
 00969	diff -u tests/out.sar-qALL.tmp tests/expected.sar-qALL
+00970	LC_ALL=C TZ=GMT ./sar -q ALL 1 1 > tests/out1.sar-qALL.tmp
+00972	diff -u tests/out1.sar-qALL.tmp tests/expected1.sar-qALL
+00974	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Requested activities not available" >/dev/null
+00976	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Inconsistent input data" >/dev/null
+00980	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
+00982	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-q.tmp
+00984	diff -u tests/out2.sar-q.tmp tests/expected2.sar-q
 
-=====	Creating data0.tmp with no data inside
+=====	Creating data0.tmp and data1.tmp with no data inside
 01000	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
+01010	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
+01012	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
+01014	diff -u tests/out2.sar-qALL.tmp tests/expected2.sar-qALL
+01020	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
 
 =====	sar/sadf: Reading data0.tmp
 01100	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out0.sar-A.tmp
