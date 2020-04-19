@@ -1876,11 +1876,11 @@ struct activity softnet_act = {
 /* Pressure-stall CPU activity */
 struct activity psi_cpu_act = {
 	.id		= A_PSI_CPU,
-	.options	= AO_COLLECTED,
+	.options	= AO_COLLECTED + AO_DETECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
-	.f_count_index	= -1,
+	.f_count_index	= 11,
 	.f_count2	= NULL,
 	.f_read		= wrap_read_psicpu,
 #endif
@@ -1922,11 +1922,11 @@ struct activity psi_cpu_act = {
 /* Pressure-stall I/O activity */
 struct activity psi_io_act = {
 	.id		= A_PSI_IO,
-	.options	= AO_COLLECTED,
+	.options	= AO_COLLECTED + AO_DETECTED,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
-	.f_count_index	= -1,
+	.f_count_index	= 11,
 	.f_count2	= NULL,
 	.f_read		= wrap_read_psiio,
 #endif
@@ -1968,11 +1968,11 @@ struct activity psi_io_act = {
 /* Pressure-stall memory activity */
 struct activity psi_mem_act = {
 	.id		= A_PSI_MEM,
-	.options	= AO_COLLECTED + AO_CLOSE_MARKUP,
+	.options	= AO_COLLECTED + AO_DETECTED + AO_CLOSE_MARKUP,
 	.magic		= ACTIVITY_MAGIC_BASE,
 	.group		= G_DEFAULT,
 #ifdef SOURCE_SADC
-	.f_count_index	= -1,
+	.f_count_index	= 11,
 	.f_count2	= NULL,
 	.f_read		= wrap_read_psimem,
 #endif
@@ -2026,7 +2026,8 @@ __nr_t (*f_count[NR_F_COUNT]) (struct activity *) = {
 	wrap_get_in_nr,
 	wrap_get_usb_nr,
 	wrap_get_filesystem_nr,
-	wrap_get_fchost_nr
+	wrap_get_fchost_nr,
+	wrap_detect_psi
 };
 #endif
 

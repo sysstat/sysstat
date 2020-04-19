@@ -247,6 +247,8 @@ int extract_wwnid
 	(char *, unsigned long long *, unsigned int *);
 int get_wwnid_from_pretty
 	(char *, unsigned long long *, unsigned int *);
+int check_dir
+	(char *);
 
 #ifndef SOURCE_SADC
 int count_bits

@@ -363,6 +363,19 @@ void sa_sys_init(void)
 			act[i]->options &= ~AO_COLLECTED;
 		}
 
+		if (HAS_DETECT_FUNCTION(act[i]->options) && IS_COLLECTED(act[i]->options)) {
+			idx = act[i]->f_count_index;
+
+			/* Detect if files needed by activity exist */
+			if (f_count_results[idx] < 0) {
+				f_count_results[idx] = (f_count[idx])(act[i]);
+			}
+			if (f_count_results[idx] == 0) {
+				/* Files not present */
+				act[i]->options &= ~AO_COLLECTED;
+			}
+		}
+
 		/* Set default activity list */
 		id_seq[i] = act[i]->id;
 	}
@@ -674,7 +687,7 @@ void write_stats(int ofd)
 			continue;
 
 		if (IS_COLLECTED(act[p]->options)) {
-			if (act[p]->f_count_index >= 0) {
+			if (HAS_COUNT_FUNCTION(act[p]->options) && (act[p]->f_count_index >= 0)) {
 				if (write_all(ofd, &(act[p]->_nr0), sizeof(__nr_t)) != sizeof(__nr_t)) {
 					p_write_error();
 				}
@@ -937,7 +950,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		}
 
 		if ((file_act[i].has_nr && (act[p]->f_count_index < 0)) ||
-		    (!file_act[i].has_nr && (act[p]->f_count_index >= 0))) {
+		    (!file_act[i].has_nr && (act[p]->f_count_index >= 0) && HAS_COUNT_FUNCTION(act[p]->options))) {
 #ifdef DEBUG
 			fprintf(stderr, "%s: %s: has_nr=%d count_index=%d\n",
 				__FUNCTION__, act[p]->name, file_act[i].has_nr, act[p]->f_count_index);

@@ -25,7 +25,7 @@
 #define MAX_NR_ACT	256
 
 /* Number of functions used to count items */
-#define NR_F_COUNT	11
+#define NR_F_COUNT	12
 
 /* Activities */
 #define A_CPU		1
@@ -821,10 +821,22 @@ struct record_header {
  * be counted, even if the activity is not collected.
  */
 #define AO_ALWAYS_COUNTED	0x200
+/*
+ * Indicate that corresponding activity should be collected only
+ * if a test has been successfully passed before.
+ * The test corresponds to the count() function (see @f_count_index).
+ * This is intended for activities with a fixed number of items but
+ * whose {/proc|/sys} files are not necessarily available, e.g. depending
+ * on the kernel version used. Unlike activities with AO_COUNTED flag,
+ * those having AO_DETECTED flag won't have a @has_nr number preceding
+ * their statistics structures in datafile.
+ */
+#define AO_DETECTED		0x400
 
 #define IS_COLLECTED(m)		(((m) & AO_COLLECTED)        == AO_COLLECTED)
 #define IS_SELECTED(m)		(((m) & AO_SELECTED)         == AO_SELECTED)
 #define HAS_COUNT_FUNCTION(m)	(((m) & AO_COUNTED)          == AO_COUNTED)
+#define HAS_DETECT_FUNCTION(m)	(((m) & AO_DETECTED)         == AO_DETECTED)
 #define HAS_PERSISTENT_VALUES(m) (((m) & AO_PERSISTENT)      == AO_PERSISTENT)
 #define CLOSE_MARKUP(m)		(((m) & AO_CLOSE_MARKUP)     == AO_CLOSE_MARKUP)
 #define HAS_MULTIPLE_OUTPUTS(m)	(((m) & AO_MULTIPLE_OUTPUTS) == AO_MULTIPLE_OUTPUTS)
@@ -876,7 +888,8 @@ struct activity {
 	unsigned int group;
 	/*
 	 * Index in f_count[] array to determine function used to count
-	 * the number of items (serial lines, network interfaces, etc.) -> @nr
+	 * the number of items (serial lines, network interfaces, etc.) for
+	 * activities with AO_COUNTED flag. Determine @nr value.
 	 * Such a function should _always_ return a value greater than
 	 * or equal to 0.
 	 *
@@ -886,6 +899,10 @@ struct activity {
 	 * These functions are called even if corresponding activities have not
 	 * been selected, to make sure that all items have been calculated
 	 * (including #CPU, etc.)
+	 *
+	 * The count() function may also be used to know if an activity (with
+	 * AO_DETECTED flag) can actually be collected based on the presence of
+	 * {/proc|/sys} files.
 	 */
 	int f_count_index;
 	/*
@@ -1341,6 +1358,8 @@ __nr_t wrap_get_usb_nr
 __nr_t wrap_get_filesystem_nr
 	(struct activity *);
 __nr_t wrap_get_fchost_nr
+	(struct activity *);
+__nr_t wrap_detect_psi
 	(struct activity *);
 
 /* Functions used to read activities statistics */

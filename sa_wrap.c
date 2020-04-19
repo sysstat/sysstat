@@ -1509,3 +1509,19 @@ __nr_t wrap_get_fchost_nr(struct activity *a)
 
 	return 0;
 }
+
+/*
+ ***************************************************************************
+ * Check that /proc/pressure directory exists.
+ *
+ * IN:
+ * @a  Activity structure.
+ *
+ * RETURNS:
+ * TRUE if directory exists.
+ ***************************************************************************
+ */
+__nr_t wrap_detect_psi(struct activity *a)
+{
+	return (check_dir(PRESSURE));
+}

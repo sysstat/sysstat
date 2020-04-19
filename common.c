@@ -410,6 +410,28 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 	return rc;
 }
 
+/*
+ ***************************************************************************
+ * Check if a directory exists.
+ *
+ * IN:
+ * @dirname	Name of the directory.
+ *
+ * RETURNS:
+ * TRUE if @dirname is actually an existing directory.
+ ***************************************************************************
+ */
+int check_dir(char *dirname)
+{
+	struct stat sb;
+
+	if (!stat(dirname, &sb) && S_ISDIR(sb.st_mode))
+		return 1;
+
+	return 0;
+}
+
+
 #ifndef SOURCE_SADC
 /*
  ***************************************************************************
