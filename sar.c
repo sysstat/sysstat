@@ -577,10 +577,11 @@ void write_stats_startup(int curr)
  * @buffer	Buffer where data will be saved.
  *
  * RETURNS:
- * 1 if end of file has been reached, 0 otherwise.
+ * 0 if all the data have been successfully read.
+ * Otherwise, return the number of bytes left to be read.
  ***************************************************************************
  */
-int sa_read(void *buffer, size_t size)
+size_t sa_read(void *buffer, size_t size)
 {
 	ssize_t n;
 
@@ -592,7 +593,7 @@ int sa_read(void *buffer, size_t size)
 		}
 
 		if (!n)
-			return 1;	/* EOF */
+			return size;	/* EOF */
 
 		size -= n;
 		buffer = (char *) buffer + n;
@@ -901,6 +902,15 @@ void read_header_data(void)
 		fprintf(stderr, "%s: sysstat_magic=%x format_magic=%x version=%s\n",
 			__FUNCTION__, file_magic.sysstat_magic, file_magic.format_magic, version);
 #endif
+		if (rc == FILE_MAGIC_SIZE) {
+			/*
+			 * No data (0 byte) have been sent by sadc.
+			 * This is probably because no activities have been collected
+			 * ("Requested activities not available"). In this case, don't
+			 * display an error message: Exit now.
+			 */
+			exit(3);
+		}
 		print_read_error(INCONSISTENT_INPUT_DATA);
 	}
 
