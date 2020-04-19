@@ -784,7 +784,7 @@ __print_funct_t xml_print_net_dev_stats(struct activity *a, int curr, int tab,
 	struct stats_net_dev *sndc, *sndp, sndzero;
 	double rxkb, txkb, ifutil;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
@@ -860,7 +860,7 @@ __print_funct_t xml_print_net_edev_stats(struct activity *a, int curr, int tab,
 	int i, j;
 	struct stats_net_edev *snedc, *snedp, snedzero;
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
@@ -935,7 +935,7 @@ __print_funct_t xml_print_net_nfs_stats(struct activity *a, int curr, int tab,
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -980,7 +980,7 @@ __print_funct_t xml_print_net_nfsd_stats(struct activity *a, int curr, int tab,
 		*snndc = (struct stats_net_nfsd *) a->buf[curr],
 		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1034,7 +1034,7 @@ __print_funct_t xml_print_net_sock_stats(struct activity *a, int curr, int tab,
 	struct stats_net_sock
 		*snsc = (struct stats_net_sock *) a->buf[curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1079,7 +1079,7 @@ __print_funct_t xml_print_net_ip_stats(struct activity *a, int curr, int tab,
 		*snic = (struct stats_net_ip *) a->buf[curr],
 		*snip = (struct stats_net_ip *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1128,7 +1128,7 @@ __print_funct_t xml_print_net_eip_stats(struct activity *a, int curr, int tab,
 		*sneic = (struct stats_net_eip *) a->buf[curr],
 		*sneip = (struct stats_net_eip *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1177,7 +1177,7 @@ __print_funct_t xml_print_net_icmp_stats(struct activity *a, int curr, int tab,
 		*snic = (struct stats_net_icmp *) a->buf[curr],
 		*snip = (struct stats_net_icmp *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1238,7 +1238,7 @@ __print_funct_t xml_print_net_eicmp_stats(struct activity *a, int curr, int tab,
 		*sneic = (struct stats_net_eicmp *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1295,7 +1295,7 @@ __print_funct_t xml_print_net_tcp_stats(struct activity *a, int curr, int tab,
 		*sntc = (struct stats_net_tcp *) a->buf[curr],
 		*sntp = (struct stats_net_tcp *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1336,7 +1336,7 @@ __print_funct_t xml_print_net_etcp_stats(struct activity *a, int curr, int tab,
 		*snetc = (struct stats_net_etcp *) a->buf[curr],
 		*snetp = (struct stats_net_etcp *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1379,7 +1379,7 @@ __print_funct_t xml_print_net_udp_stats(struct activity *a, int curr, int tab,
 		*snuc = (struct stats_net_udp *) a->buf[curr],
 		*snup = (struct stats_net_udp *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1419,7 +1419,7 @@ __print_funct_t xml_print_net_sock6_stats(struct activity *a, int curr, int tab,
 	struct stats_net_sock6
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1460,7 +1460,7 @@ __print_funct_t xml_print_net_ip6_stats(struct activity *a, int curr, int tab,
 		*snic = (struct stats_net_ip6 *) a->buf[curr],
 		*snip = (struct stats_net_ip6 *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1513,7 +1513,7 @@ __print_funct_t xml_print_net_eip6_stats(struct activity *a, int curr, int tab,
 		*sneic = (struct stats_net_eip6 *) a->buf[curr],
 		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1568,7 +1568,7 @@ __print_funct_t xml_print_net_icmp6_stats(struct activity *a, int curr, int tab,
 		*snic = (struct stats_net_icmp6 *) a->buf[curr],
 		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1635,7 +1635,7 @@ __print_funct_t xml_print_net_eicmp6_stats(struct activity *a, int curr, int tab
 		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
@@ -1690,7 +1690,7 @@ __print_funct_t xml_print_net_udp6_stats(struct activity *a, int curr, int tab,
 		*snuc = (struct stats_net_udp6 *) a->buf[curr],
 		*snup = (struct stats_net_udp6 *) a->buf[!curr];
 
-	if (!IS_SELECTED(a->options) || (a->nr <= 0))
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
 		goto close_xml_markup;
 
 	xml_markup_network(tab, OPEN_XML_MARKUP);
