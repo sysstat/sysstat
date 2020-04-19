@@ -203,7 +203,7 @@ NOTES:
 00970	LC_ALL=C TZ=GMT ./sar -q ALL 1 1 > tests/out1.sar-qALL.tmp
 00972	diff -u tests/out1.sar-qALL.tmp tests/expected1.sar-qALL
 00974	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Requested activities not available" >/dev/null
-00976	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Inconsistent input data" >/dev/null
+00976	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Inconsistent input data" >/dev/null && exit 1 || exit 0
 00980	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
 00982	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-q.tmp
 00984	diff -u tests/out2.sar-q.tmp tests/expected2.sar-q
