@@ -489,7 +489,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		*smc = (struct stats_memory *) a->buf[curr];
 	unsigned long long nousedmem;
 
-	xprintf(tab, "<memory per=\"second\" unit=\"kB\">");
+	xprintf(tab, "<memory unit=\"kB\">");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
