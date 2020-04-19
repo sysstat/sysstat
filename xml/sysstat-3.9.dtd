@@ -149,7 +149,7 @@
 
 <!ELEMENT memory (memfree?, avail?, memused?, memused-percent?, buffers?, cached?, commit?, commit-percent?, active?, inactive?, dirty?, anonpg?, slab?, kstack?, pgtbl?, vmused?, swpfree?, swpused?, swpused-percent?, swpcad?, swpcad-percent?, frmpg?, bufpg?, campg?)>
 <!ATTLIST memory
-	per CDATA #REQUIRED
+	per CDATA #IMPLIED
 	unit CDATA #REQUIRED
 >
 

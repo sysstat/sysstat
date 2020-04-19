@@ -286,7 +286,7 @@
 		<xs:element name="bufpg" type="negative-hundredth-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="campg" type="negative-hundredth-type" minOccurs="0" maxOccurs="1"></xs:element>
 	</xs:sequence>
-	<xs:attribute name="per" type="per-type" use="required"></xs:attribute>
+	<xs:attribute name="per" type="per-type"></xs:attribute>
 	<xs:attribute name="unit" type="unit-type" use="required"></xs:attribute>
 </xs:complexType>
 
