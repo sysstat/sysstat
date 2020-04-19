@@ -529,7 +529,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<io-writes wtps="0.00" bwrtn="0.00"/>
 					<io-discard dtps="0.00" bdscd="0.00"/>
 				</io>
-				<memory per="second" unit="kB">
+				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
 					<memused>3179712</memused>
@@ -1157,7 +1157,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<io-writes wtps="3.20" bwrtn="3.20"/>
 					<io-discard dtps="0.00" bdscd="0.00"/>
 				</io>
-				<memory per="second" unit="kB">
+				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
 					<memused>3179712</memused>
@@ -1786,7 +1786,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<io-writes wtps="0.00" bwrtn="0.00"/>
 					<io-discard dtps="0.00" bdscd="0.00"/>
 				</io>
-				<memory per="second" unit="kB">
+				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
 					<memused>3179712</memused>
@@ -2420,7 +2420,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<io-writes wtps="0.00" bwrtn="0.00"/>
 					<io-discard dtps="0.00" bdscd="0.00"/>
 				</io>
-				<memory per="second" unit="kB">
+				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
 					<memused>3179712</memused>
@@ -3057,7 +3057,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<io-writes wtps="32082.13" bwrtn="0.00"/>
 					<io-discard dtps="1.60" bdscd="1.60"/>
 				</io>
-				<memory per="second" unit="kB">
+				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
 					<memused>3179712</memused>
