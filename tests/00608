@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6-hz.tmp > tests/out.data-9.1.6-hz.tmp

@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sadf -r -O debug tests/data-9.1.6-hz.tmp > tests/out.sadf-r-hz.tmp

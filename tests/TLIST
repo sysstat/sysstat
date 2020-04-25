@@ -109,8 +109,11 @@ NOTES:
 
 =====	Checking sadf conversion
 00600	./sadf -c tests/data-9.1.6 > tests/data-9.1.6.tmp
+00602	./sadf -c tests/data-9.1.6 -O hz=250 > tests/data-9.1.6-hz.tmp
 00605	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-9.1.6.tmp > tests/out.data-9.1.6.tmp
 00607	diff -u tests/out.data-9.1.6.tmp tests/expected.data-9.1.6
+00608	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6-hz.tmp > tests/out.data-9.1.6-hz.tmp
+00609	diff -u tests/out.data-9.1.6-hz.tmp tests/expected.data-9.1.6-hz
 00610	./sadf -c tests/data-10.3.1 > tests/data-10.3.1.tmp
 00615	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-10.3.1.tmp > tests/out.data-10.3.1.tmp
 00617	diff -u tests/out.data-10.3.1.tmp tests/expected.data-10.3.1
@@ -119,6 +122,10 @@ NOTES:
 00627	diff -u tests/out.data-11.6.5.tmp tests/expected.data-11.6.5	
 00650	LC_ALL=C TZ=GMT ./sar -AC -f tests/data-12.0.0 > tests/out.data-12.0.0.tmp
 00655	diff -u tests/out.data-12.0.0.tmp tests/expected.data-12.0.0
+00660	LC_ALL=C TZ=GMT ./sadf -H tests/data-9.1.6-hz.tmp > tests/out.sadf-H-hz.tmp
+00662	diff -u tests/out.sadf-H-hz.tmp tests/expected.sadf-H-hz
+00664	LC_ALL=C TZ=GMT ./sadf -r -O debug tests/data-9.1.6-hz.tmp > tests/out.sadf-r-hz.tmp
+00665	diff -u tests/out.sadf-r-hz.tmp tests/expected.sadf-r-hz
 
 =====	Reading datafile from another architecture
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp

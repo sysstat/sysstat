@@ -1,0 +1,7 @@
+Linux 4.4.14-200.fc22.x86_64 (kluane.home) 	01/21/17 	_x86_64_	(8 CPU)
+
+08:16:11     LINUX RESTART	(8 CPU)
+
+08:17:01        CPU     %user     %nice   %system   %iowait    %steal     %idle
+08:17:02        all      0.13      0.00      0.13      0.38      0.00     99.37
+Average:        all      0.13      0.00      0.13      0.38      0.00     99.37

@@ -1,0 +1,7 @@
+# uptime_cs; 0; ust_time; 1484986571; extra_next; 0; record_type; 2; HH:MM:SS; 09:16:11
+08:16:11 UTC; LINUX-RESTART (8 CPU)
+# uptime_cs; 0; ust_time; 1484986616; extra_next; 0; record_type; 4; HH:MM:SS; 09:16:56
+# uptime_cs; 143121; ust_time; 1484986621; extra_next; 0; record_type; 1; HH:MM:SS; 09:17:01
+# uptime_cs; 143161; ust_time; 1484986622; extra_next; 0; record_type; 1; HH:MM:SS; 09:17:02
+# name; A_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+08:17:02 UTC; CPU; -1; %user; 24019; 24021; %nice; 389; 389; %system; 9942; 9944; %iowait; 18502; 18505; %steal; 0; 0; %idle; 2805605; 2806397;
