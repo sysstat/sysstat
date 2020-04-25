@@ -70,6 +70,7 @@ unsigned int dm_major;		/* Device-mapper major number */
 unsigned int format = 0;	/* Output format */
 unsigned int f_position = 0;	/* Output format position in array */
 unsigned int canvas_height = 0; /* SVG canvas height value set with option -O */
+unsigned int user_hz = 0;	/* HZ value set with option -O */
 
 /* File header */
 struct file_header file_hdr;
@@ -1624,6 +1625,13 @@ int main(int argc, char **argv)
 					v = t + strlen(K_PCPARCHIVE);
 					strncpy(pcparchive, v, MAX_FILE_LEN);
 					pcparchive[MAX_FILE_LEN - 1] = '\0';
+				}
+				else if (!strncmp(t, K_HZ, strlen(K_HZ))) {
+					v = t + strlen(K_HZ);
+					if (!strlen(v) || (strspn(v, DIGITS) != strlen(v))) {
+						usage(argv[0]);
+					}
+					user_hz = atoi(v);
 				}
 				else {
 					usage(argv[0]);

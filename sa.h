@@ -246,6 +246,7 @@
 #define K_CUSTOMCOL	"customcol"
 #define K_BWCOL		"bwcol"
 #define K_PCPARCHIVE	"pcparchive="
+#define K_HZ		"hz="
 
 /* Environment variables */
 #define ENV_COLORS_PALETTE	"S_COLORS_PALETTE"

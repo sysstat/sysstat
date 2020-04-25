@@ -38,6 +38,7 @@
 #endif
 
 extern int endian_mismatch;
+extern unsigned int user_hz;
 extern unsigned int act_types_nr[];
 extern unsigned int rec_types_nr[];
 extern unsigned int hdr_types_nr[];
@@ -238,6 +239,11 @@ void upgrade_file_header(void *buffer, struct file_header *file_hdr, int previou
 	}
 	file_hdr->act_size = FILE_ACTIVITY_SIZE;
 	file_hdr->rec_size = RECORD_HEADER_SIZE;
+
+	/*
+	 * Note: @extra_next and @sa_tzname[] members are set to zero
+	 * because file_hdr has been memset'd to zero.
+	 */
 }
 
 /*
@@ -1967,8 +1973,14 @@ void convert_file(char dfile[], struct activity *act[])
 		goto success;
 	}
 
-	/* Get HZ */
-	get_HZ();
+	if (!user_hz) {
+		/* Get HZ */
+		get_HZ();
+	}
+	else {
+		/* HZ set on the command line with option -O */
+		hz = user_hz;
+	}
 	fprintf(stderr, _("HZ: Using current value: %lu\n"), HZ);
 
 	/* Upgrade file's header section */
