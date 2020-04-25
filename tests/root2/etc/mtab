@@ -1,3 +1,5 @@
+/dev/sda9 / ext4 rw,seclabel,relatime 0 0
+/dev/sda9 /srv1/ ext4 rw,seclabel,relatime 0 0
 sysfs /sys sysfs rw,seclabel,nosuid,nodev,noexec,relatime 0 0
 proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
 devtmpfs /dev devtmpfs rw,seclabel,nosuid,size=4057852k,nr_inodes=1014463,mode=755 0 0
@@ -21,16 +23,19 @@ cgroup /sys/fs/cgroup/memory cgroup rw,seclabel,nosuid,nodev,noexec,relatime,mem
 cgroup /sys/fs/cgroup/blkio cgroup rw,seclabel,nosuid,nodev,noexec,relatime,blkio 0 0
 cgroup /sys/fs/cgroup/perf_event cgroup rw,seclabel,nosuid,nodev,noexec,relatime,perf_event 0 0
 configfs /sys/kernel/config configfs rw,relatime 0 0
-/dev/sda9 / ext4 rw,seclabel,relatime 0 0
+/dev/sda9 /srv0/ ext4 rw,seclabel,relatime 0 0
 selinuxfs /sys/fs/selinux selinuxfs rw,relatime 0 0
 systemd-1 /proc/sys/fs/binfmt_misc autofs rw,relatime,fd=29,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=14067 0 0
 debugfs /sys/kernel/debug debugfs rw,seclabel,relatime 0 0
 hugetlbfs /dev/hugepages hugetlbfs rw,seclabel,relatime,pagesize=2M 0 0
 mqueue /dev/mqueue mqueue rw,seclabel,relatime 0 0
+overlay /var/lib/docker/overlay2/f23d2377a67b9ab1b49555ecd09b2ccdc037e0ee5d9e54f87e59f07f4398e71f/merged overlay rw,relatime,lowerdir=/var/lib/docker/overlay2/l/L6VKIYXWBQSJ5R7V35SS43R6Y6:/var/lib/docker/overlay2/l/UCCHKGXUJPWCMLHR36IZJNNIQP:/var/lib/docker/overlay2/l/RKVYEXD2FH65FTMK76RDWPLESX:/var/lib/docker/overlay2/l/DX4JZRKTFP2GOO4V6OWQ6CPJFY:/var/lib/docker/overlay2/l/6CYNWDKADUPPDZJ5IHOH2R7Y5S:/var/lib/docker/overlay2/l/JTPINUZIATXADL6XWFHG2OYGSF:/var/lib/docker/overlay2/l/OTSTIV5TTRHF4IUD7BODQ2FUON:/var/lib/docker/overlay2/l/QFNH3EFS5EZGRTC4DPHU3PJ4TU:/var/lib/docker/overlay2/l/ZOOUKT2E5U4CSLP57Z7MXYX5CD:/var/lib/docker/overlay2/l/3LUU6IDR2HWPTVBARC5K6XSMRC:/var/lib/docker/overlay2/l/XOHYBP4RWXQKQZ43I7JKG24KE4:/var/lib/docker/overlay2/l/MN5M5B7AY5LPXQQC6V2MBJWWBF:/var/lib/docker/overlay2/l/3DRMKQ34AIZD2AROU3TVK3OCUT:/var/lib/docker/overlay2/l/73ZXDHBV6C53Q3SPXA57EOLGHU:/var/lib/docker/overlay2/l/C2IZBQ55EUTGEAAORSLE73ZPNM:/var/lib/docker/overlay2/l/ITHARNV7RPWN5S3BCZ2QDMZIMJ:/var/lib/docker/overlay2/l/TQKUV4LEG4AFUUCMFHHRLDBHAH:/var/lib/docker/overlay2/l/N75JZWPPDEKJ4DTN4GMEGTDIZL:/var/lib/docker/overlay2/l/QGUUYAETPMK643DG3AKWJAIIZA,upperdir=/var/lib/docker/overlay2/f23d2377a67b9ab1b49555ecd09b2ccdc037e0ee5d9e54f87e59f07f4398e71f/diff,workdir=/var/lib/docker/overlay2/f23d2377a67b9ab1b49555ecd09b2ccdc037e0ee5d9e54f87e59f07f4398e71f/work 0 0
 tmpfs /tmp tmpfs rw,seclabel,nosuid,nodev 0 0
 /dev/sda7 /opt ext4 rw,seclabel,relatime 0 0
 /dev/sda12 /home ext4 rw,seclabel,relatime 0 0
 /dev/sda6 /data ext4 rw,seclabel,relatime 0 0
+/dev/sda6 /srv1/data ext4 rw,seclabel,relatime 0 0
+/dev/sda6 /srv2/data ext4 rw,seclabel,relatime 0 0
 sunrpc /var/lib/nfs/rpc_pipefs rpc_pipefs rw,relatime 0 0
 tmpfs /run/user/42 tmpfs rw,seclabel,nosuid,nodev,relatime,size=814496k,mode=700,uid=42,gid=42 0 0
 tracefs /sys/kernel/debug/tracing tracefs rw,seclabel,relatime 0 0
