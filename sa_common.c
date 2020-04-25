@@ -618,7 +618,7 @@ char *get_devname(unsigned int major, unsigned int minor, int pretty)
  * @interval	Interval of time.
  *
  * RETURNS:
- * 1 if we are actually close enough to desired interval, 0 otherwise.
+ * TRUE if we are actually close enough to desired interval, FALSE otherwise.
  ***************************************************************************
 */
 int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
@@ -642,6 +642,10 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
 	}
 
 	last_uptime = uptime;
+
+	if (interval == 1)
+		/* Smallest time interval: Always close enough to desired interval */
+		return TRUE;
 
 	/*
 	 * A few notes about the "algorithm" used here to display selected entries
