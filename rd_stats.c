@@ -2503,7 +2503,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 {
 	FILE *fp;
 	char line[512], fs_name[MAX_FS_LEN], mountp[256], type[128];
-	int skip = 0, skip_next = 0;
+	int skip = 0, skip_next = 0, fs;
 	char *pos = 0, *pos2 = 0;
 	__nr_t fs_read = 0;
 	struct stats_filesystem *st_filesystem_i;
@@ -2546,12 +2546,13 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			sscanf(line, "%127s", fs_name);
 			/*
 			 * And now read the corresponding mount point.
-			 * Read fs name and mount point in two distinct operations.
+			 * Read fs name and mount point in two distinct operations,
+			 * using '@pos + 1' position value for the mount point.
 			 * Indeed, if fs name length is greater than 127 chars,
-			 * previous scanf() will read only the first 127 chars, and
-			 * mount point name will be read using the remaining chars
-			 * from the fs name. This will result in a bogus name
-			 * and following statvfs() function will always fail.
+			 * previous scanf() would read only the first 127 chars, and
+			 * mount point name would be read using the remaining chars
+			 * from the fs name. This would result in a bogus name
+			 * and following statvfs() function would always fail.
 			 */
 			sscanf(pos + 1, "%255s", mountp);
 
@@ -2563,6 +2564,18 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			 * for statvfs() to work properly (see above).
 			 */
 			if ((__statvfs(mountp, &buf) < 0) || (!buf.f_blocks))
+				continue;
+
+			/* Check if it's a duplicate entry */
+			fs = fs_read - 1;
+			while (fs >= 0) {
+				st_filesystem_i = st_filesystem + fs;
+				if (!strcmp(st_filesystem_i->fs_name, fs_name))
+					break;
+				fs--;
+			}
+			if (fs >= 0)
+				/* Duplicate entry found! Ignore current entry */
 				continue;
 
 			if (fs_read + 1 > nr_alloc) {
