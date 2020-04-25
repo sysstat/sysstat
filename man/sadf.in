@@ -1,4 +1,4 @@
-.TH SADF 1 "NOVEMBER 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADF 1 "APRIL 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
@@ -120,6 +120,7 @@ to current up-to-date format. Use the following syntax:
 
 .B sadf -c old_datafile > new_datafile
 
+Conversion can be controlled using option -O (see below).
 .IP -d
 Print the contents of the data file in a format that can easily
 be ingested by a relational database system. The output consists
@@ -248,6 +249,14 @@ pointing at the first graph of each activity.
 Do not display views where all graphs have only zero values.
 .RE
 
+The following option may be used when converting an old system activity binary datafile
+to current up-to-date format:
+
+.BR hz= value
+.RS
+Specify the number of ticks per second for the machine where the old datafile has been created.
+.RE
+
 The following option may be used when data are exported to a PCP archive:
 
 .BR pcparchive= name
@@ -291,6 +300,7 @@ Note that timestamp output can be controlled by options -T, -t and -U.
 Print the raw contents of the data file. With this format, the values for
 all the counters are displayed as read from the kernel, which means e.g., that
 no average values are calculated over the elapsed time interval.
+Output can be controlled using option -O (see above).
 .IP "-s [ hh:mm[:ss] ]"
 Set the starting time of the data, causing the
 .B sadf
