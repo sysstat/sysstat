@@ -467,52 +467,6 @@ int count_csvalues(int arg_c, char **arg_v)
 
 /*
  ***************************************************************************
- * Look for partitions of a given block device in /sys filesystem.
- *
- * IN:
- * @dev_name	Name of the block device.
- *
- * RETURNS:
- * Number of partitions for the given block device.
- ***************************************************************************
- */
-int get_dev_part_nr(char *dev_name)
-{
-	DIR *dir;
-	struct dirent *drd;
-	char dfile[MAX_PF_NAME], line[MAX_PF_NAME];
-	int part = 0, err;
-
-	snprintf(dfile, MAX_PF_NAME, "%s/%s", SYSFS_BLOCK, dev_name);
-	dfile[MAX_PF_NAME - 1] = '\0';
-
-	/* Open current device directory in /sys/block */
-	if ((dir = opendir(dfile)) == NULL)
-		return 0;
-
-	/* Get current file entry */
-	while ((drd = readdir(dir)) != NULL) {
-		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
-			continue;
-		err = snprintf(line, MAX_PF_NAME, "%s/%s/%s", dfile, drd->d_name, S_STAT);
-		if ((err < 0) || (err >= MAX_PF_NAME))
-			continue;
-
-		/* Try to guess if current entry is a directory containing a stat file */
-		if (!access(line, R_OK)) {
-			/* Yep... */
-			part++;
-		}
-	}
-
-	/* Close directory */
-	closedir(dir);
-
-	return part;
-}
-
-/*
- ***************************************************************************
  * Read /proc/devices file and get device-mapper major number.
  * If device-mapper entry is not found in file, assume it's not active.
  *
