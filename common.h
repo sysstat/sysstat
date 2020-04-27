@@ -68,13 +68,18 @@
 #define K_JSON		"JSON"
 
 /* Files */
+#define __DISKSTATS		"diskstats"
+#define __BLOCK			"block"
+#define __DEV_BLOCK		"dev/block"
+#define SLASH_SYS		PRE "/sys"
+#define SLASH_DEV		PRE "/dev/"
 #define STAT			PRE "/proc/stat"
 #define UPTIME			PRE "/proc/uptime"
-#define DISKSTATS		PRE "/proc/diskstats"
+#define DISKSTATS		PRE "/proc/" __DISKSTATS
 #define INTERRUPTS		PRE "/proc/interrupts"
 #define MEMINFO			PRE "/proc/meminfo"
-#define SYSFS_BLOCK		PRE "/sys/block"
-#define SYSFS_DEV_BLOCK		PRE "/sys/dev/block"
+#define SYSFS_BLOCK		SLASH_SYS "/" __BLOCK
+#define SYSFS_DEV_BLOCK		SLASH_SYS "/" __DEV_BLOCK
 #define SYSFS_DEVCPU		PRE "/sys/devices/system/cpu"
 #define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
 #define S_STAT			"stat"
@@ -89,7 +94,6 @@
 #define SYSFS_MANUFACTURER	"manufacturer"
 #define SYSFS_PRODUCT		"product"
 #define SYSFS_FCHOST		PRE "/sys/class/fc_host"
-#define SLASH_DEV		PRE "/dev/"
 
 #define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024
@@ -240,7 +244,7 @@ time_t get_time
 void init_nls
 	(void);
 int is_device
-	(char *, int);
+	(char *, char *, int);
 void sysstat_panic
 	(const char *, int);
 int extract_wwnid

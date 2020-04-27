@@ -71,6 +71,7 @@ unsigned int dm_major;	/* Device-mapper major number */
 
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
+char alt_dir[MAX_FILE_LEN];
 
 struct sigaction alrm_act, int_act;
 int sigint_caught = 0;
@@ -90,14 +91,14 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
@@ -207,7 +208,7 @@ void set_devices_nonexistent(struct io_device *dlist)
 struct io_device *add_list_device(struct io_device **dlist, char *name, int dtype)
 {
 	struct io_device *d, *ds;
-	int i;
+	int i, rc = 0;
 
 	if (strnlen(name, MAX_NAME_LEN) == MAX_NAME_LEN)
 		/* Device name is too long */
@@ -261,12 +262,22 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 	if (dtype == T_GROUP) {
 		d->dev_tp = dtype;
 	}
-	else if (is_device(name, ACCEPT_VIRTUAL_DEVICES)) {
-		d->dev_tp = (dtype == T_PART_DEV ? T_PART_DEV : T_DEV);
-	}
-	else {
-		/* This is a partition (T_PART) */
-		d->dev_tp = T_PART;
+	else  {
+		if (!alt_dir[0] || USE_ALL_DIR(flags)) {
+			rc = is_device(SLASH_SYS, name, ACCEPT_VIRTUAL_DEVICES);
+		}
+
+		if (alt_dir[0] && (!USE_ALL_DIR(flags) || (USE_ALL_DIR(flags) && !rc))) {
+			rc = is_device(alt_dir, name, ACCEPT_VIRTUAL_DEVICES);
+		}
+
+		if (rc) {
+			d->dev_tp = (dtype == T_PART_DEV ? T_PART_DEV : T_DEV);
+		}
+		else {
+			/* This is a partition (T_PART) */
+			d->dev_tp = T_PART;
+		}
 	}
 
 	return d;
@@ -328,7 +339,7 @@ int get_major_minor_nr(char filename[], int *major, int *minor)
  * 0 on success, -1 otherwise.
  ***************************************************************************
  */
-int read_sysfs_file_stat(char *filename, struct io_stats *ios)
+int read_sysfs_file_stat_work(char *filename, struct io_stats *ios)
 {
 	FILE *fp;
 	struct io_stats sdev;
@@ -395,18 +406,61 @@ int read_sysfs_file_stat(char *filename, struct io_stats *ios)
 
 /*
  ***************************************************************************
+ * Read sysfs stat for current whole device using /sys or an alternate
+ * location.
+ *
+ * IN:
+ * @devname	Device name for which stats have to be read.
+ * @ios		Structure where stats will be saved.
+ *
+ * OUT:
+ * @ios		Structure where stats have been saved.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
+ ***************************************************************************
+ */
+int read_sysfs_file_stat(char *devname, struct io_stats *ios)
+{
+	int rc = 0;
+	char dfile[MAX_PF_NAME];
+
+	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
+		/* Read stats for current whole device using /sys/block/ directory */
+		snprintf(dfile, sizeof(dfile), "%s/%s/%s/%s",
+			 SLASH_SYS, __BLOCK, devname, S_STAT);
+		dfile[sizeof(dfile) - 1] = '\0';
+
+		rc = read_sysfs_file_stat_work(dfile, ios);
+	}
+
+	if (alt_dir[0] && (!USE_ALL_DIR(flags) || (USE_ALL_DIR(flags) && (rc < 0)))) {
+		/* Read stats for current whole device using an alternate /sys directory */
+		snprintf(dfile, sizeof(dfile), "%s/%s/%s/%s",
+			 alt_dir, __BLOCK, devname, S_STAT);
+		dfile[sizeof(dfile) - 1] = '\0';
+
+		rc = read_sysfs_file_stat_work(dfile, ios);
+	}
+
+	return rc;
+}
+
+/*
+ ***************************************************************************
  * Read sysfs stats for all the partitions of a whole device. Devices are
  * saved in the linked list.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
  * @dname	Whole device name.
+ * @sysdev	sysfs location.
  *
  * RETURNS:
  * 0 on success, -1 otherwise.
  ***************************************************************************
  */
-int read_sysfs_device_part_stat(int curr, char *dname)
+int read_sysfs_device_part_stat_work(int curr, char *dname, char *sysdev)
 {
 	DIR *dir;
 	struct dirent *drd;
@@ -415,7 +469,7 @@ int read_sysfs_device_part_stat(int curr, char *dname)
 	char dfile[MAX_PF_NAME], filename[MAX_PF_NAME + 512];
 	int major, minor;
 
-	snprintf(dfile, sizeof(dfile), "%s/%s", SYSFS_BLOCK, dname);
+	snprintf(dfile, sizeof(dfile), "%s/%s/%s", sysdev, __BLOCK, dname);
 	dfile[sizeof(dfile) - 1] = '\0';
 
 	/* Open current device directory in /sys/block */
@@ -431,7 +485,7 @@ int read_sysfs_device_part_stat(int curr, char *dname)
 		filename[sizeof(filename) - 1] = '\0';
 
 		/* Read current partition stats */
-		if (read_sysfs_file_stat(filename, &sdev) < 0)
+		if (read_sysfs_file_stat_work(filename, &sdev) < 0)
 			continue;
 
 		d = add_list_device(&dev_list, drd->d_name, 0);
@@ -456,8 +510,96 @@ int read_sysfs_device_part_stat(int curr, char *dname)
 
 /*
  ***************************************************************************
+ * Read sysfs stats for all the partitions of a whole device.
+ * Stats are from /sys or an alternate directory.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ * @dname	Whole device name.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
+ ***************************************************************************
+ */
+int read_sysfs_device_part_stat(int curr, char *dname)
+{
+	int rc = 0;
+
+	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
+		/* Read partition stats from /sys */
+		rc = read_sysfs_device_part_stat_work(curr, dname, SLASH_SYS);
+	}
+
+	if (alt_dir[0] && (!USE_ALL_DIR(flags) || (USE_ALL_DIR(flags) && (rc < 0)))) {
+		/* Read partition stats from an alternate /sys directory */
+		rc = read_sysfs_device_part_stat_work(curr, dname, alt_dir);
+	}
+
+	return rc;
+}
+
+/*
+ ***************************************************************************
  * Read sysfs stats for every whole device. Devices are	saved in the linked
  * list.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ * @sysblock	__sys/block directory location.
+ *
+ * RETURNS:
+ * 0 on success, -1 otherwise.
+ ***************************************************************************
+ */
+int read_sysfs_all_devices_stat_work(int curr, char *sysblock)
+{
+	DIR *dir;
+	struct dirent *drd;
+	struct io_stats sdev;
+	struct io_device *d;
+	char dfile[MAX_PF_NAME];
+	int major, minor;
+
+	/* Open __sys/block directory */
+	if ((dir = __opendir(sysblock)) == NULL)
+		return -1;
+
+	/* Get current entry */
+	while ((drd = __readdir(dir)) != NULL) {
+
+		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
+			continue;
+		snprintf(dfile, sizeof(dfile), "%s/%s/%s", sysblock, drd->d_name, S_STAT);
+		dfile[sizeof(dfile) - 1] = '\0';
+
+		/* Read current whole device stats */
+		if (read_sysfs_file_stat_work(dfile, &sdev) < 0)
+			continue;
+
+		d = add_list_device(&dev_list, drd->d_name, 0);
+		if (d != NULL) {
+			*(d->dev_stats[curr]) = sdev;
+
+			if (!d->major) {
+				/* Get major and minor numbers for given device */
+				if (get_major_minor_nr(d->name, &major, &minor) == 0) {
+					d->major = major;
+					d->minor = minor;
+				}
+			}
+		}
+	}
+
+	/* Close device directory */
+	__closedir(dir);
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Read sysfs stats for every whole device from /sys or an alternate
+ * location.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
@@ -468,62 +610,38 @@ int read_sysfs_device_part_stat(int curr, char *dname)
  */
 int read_sysfs_all_devices_stat(int curr)
 {
-	DIR *dir;
-	struct dirent *drd;
-	struct io_stats sdev;
-	struct io_device *d;
-	char dfile[MAX_PF_NAME];
-	int major, minor;
+	int rc = 0;
+	char sysblock[MAX_PF_NAME];
 
-	/* Open /sys/block directory */
-	if ((dir = __opendir(SYSFS_BLOCK)) == NULL)
-		return -1;
-
-	/* Get current entry */
-	while ((drd = __readdir(dir)) != NULL) {
-
-		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
-			continue;
-		snprintf(dfile, sizeof(dfile), "%s/%s/%s", SYSFS_BLOCK, drd->d_name, S_STAT);
-		dfile[sizeof(dfile) - 1] = '\0';
-
-		/* Read current whole device stats */
-		if (read_sysfs_file_stat(dfile, &sdev) < 0)
-			continue;
-
-		d = add_list_device(&dev_list, drd->d_name, 0);
-		if (d != NULL) {
-			*(d->dev_stats[curr]) = sdev;
-
-			if (!d->major) {
-				/* Get major and minor numbers for given device */
-				if (get_major_minor_nr(d->name, &major, &minor) == 0) {
-					d->major = major;
-					d->minor = minor;
-				}
-			}
-		}
+	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
+		/* Read all whole devices from /sys */
+		rc = read_sysfs_all_devices_stat_work(curr, SYSFS_BLOCK);
 	}
 
-	/* Close device directory */
-	__closedir(dir);
+	if (alt_dir[0]) {
+		snprintf(sysblock, sizeof(sysblock), "%s/%s", alt_dir, __BLOCK);
+		sysblock[sizeof(sysblock) - 1] = '\0';
+		/* Read stats from an alternate sys location */
+		rc = read_sysfs_all_devices_stat_work(curr, sysblock);
+	}
 
-	return 0;
+	return rc;
 }
 
 /*
  ***************************************************************************
- * Read sysfs stats for a partition using /sys/dev/block/M:m/ directory.
+ * Read sysfs stats for a partition using __sys/dev/block/M:m/ directory.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
  * @d		Device structure.
+ * @sysdev	sysfs directory.
  *
  * RETURNS:
  * 0 on success, and -1 otherwise.
  ***************************************************************************
  */
-int read_sysfs_part_stat(int curr, struct io_device *d)
+int read_sysfs_part_stat_work(int curr, struct io_device *d, char *sysdev)
 {
 	char dfile[MAX_PF_NAME];
 	int major, minor;
@@ -537,11 +655,41 @@ int read_sysfs_part_stat(int curr, struct io_device *d)
 	}
 
 	/* Read stats for device */
-	snprintf(dfile, sizeof(dfile), "%s/%d:%d/%s",
-		 SYSFS_DEV_BLOCK, d->major, d->minor, S_STAT);
+	snprintf(dfile, sizeof(dfile), "%s/%s/%d:%d/%s",
+		 sysdev, __DEV_BLOCK, d->major, d->minor, S_STAT);
 	dfile[sizeof(dfile) - 1] = '\0';
 
-	return read_sysfs_file_stat(dfile, d->dev_stats[curr]);
+	return read_sysfs_file_stat_work(dfile, d->dev_stats[curr]);
+}
+
+/*
+ ***************************************************************************
+ * Read sysfs stats for a partition using /sys/dev/block/M:m/ directory or
+ * an alternate directory.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ * @d		Device structure.
+ *
+ * RETURNS:
+ * 0 on success, and -1 otherwise.
+ ***************************************************************************
+ */
+int read_sysfs_part_stat(int curr, struct io_device *d)
+{
+	int rc = 0;
+
+	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
+		/* Read partition stats from /sys */
+		rc = read_sysfs_part_stat_work(curr, d, SLASH_SYS);
+	}
+
+	if (alt_dir[0] && (!USE_ALL_DIR(flags) || (USE_ALL_DIR(flags) && (rc < 0)))) {
+		/* Read partition stats from an alternate /sys directory */
+		rc = read_sysfs_part_stat_work(curr, d, alt_dir);
+	}
+
+	return rc;
 }
 
 /*
@@ -556,7 +704,6 @@ int read_sysfs_part_stat(int curr, struct io_device *d)
 void read_sysfs_dlist_stat(int curr)
 {
 	struct io_device *dlist;
-	char dfile[MAX_PF_NAME];
 
 	for (dlist = dev_list; dlist != NULL; dlist = dlist->next) {
 		if (dlist->exist)
@@ -575,10 +722,7 @@ void read_sysfs_dlist_stat(int curr)
 
 		else if ((dlist->dev_tp == T_PART_DEV) || (dlist->dev_tp == T_DEV)) {
 			/* Read stats for current whole device using /sys/block/ directory */
-			snprintf(dfile, sizeof(dfile), "%s/%s/%s",
-				 SYSFS_BLOCK, dlist->name, S_STAT);
-			dfile[sizeof(dfile) - 1] = '\0';
-			if (read_sysfs_file_stat(dfile, dlist->dev_stats[curr]) == 0) {
+			if (read_sysfs_file_stat(dlist->name, dlist->dev_stats[curr]) == 0) {
 				dlist->exist = TRUE;
 			}
 
@@ -597,14 +741,15 @@ void read_sysfs_dlist_stat(int curr)
 
 /*
  ***************************************************************************
- * Read stats from /proc/diskstats. Only used when "-p ALL" has been entered
- * on the command line.
+ * Read stats from the diskstats file. Only used when "-p ALL" has been
+ * entered on the command line.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ * @diskstats	Path to diskstats file (e.g. "/proc/diskstats").
  ***************************************************************************
  */
-void read_diskstats_stat(int curr)
+void read_diskstats_stat_work(int curr, char *diskstats)
 {
 	FILE *fp;
 	char line[256], dev_name[MAX_NAME_LEN];
@@ -617,7 +762,7 @@ void read_diskstats_stat(int curr)
 	unsigned long dc_ios, dc_merges, dc_sec, fl_ios;
 	unsigned int major, minor;
 
-	if ((fp = fopen(DISKSTATS, "r")) == NULL)
+	if ((fp = fopen(diskstats, "r")) == NULL)
 		return;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
@@ -681,6 +826,32 @@ void read_diskstats_stat(int curr)
 		}
 	}
 	fclose(fp);
+}
+
+/*
+ ***************************************************************************
+ * Read stats from /proc/diskstats or an alternate diskstats file.
+ * Only used when "-p ALL" has been entered on the command line.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+void read_diskstats_stat(int curr)
+{
+	char diskstats[MAX_PF_NAME];
+
+	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
+		/* Read stats from /proc/diskstats */
+		read_diskstats_stat_work(curr, DISKSTATS);
+	}
+
+	if (alt_dir[0]) {
+		snprintf(diskstats, sizeof(diskstats), "%s/%s", alt_dir, __DISKSTATS);
+		diskstats[sizeof(diskstats) - 1] = '\0';
+		/* Read stats from an alternate diskstats file */
+		read_diskstats_stat_work(curr, diskstats);
+	}
 }
 
 /*
@@ -1894,6 +2065,8 @@ int main(int argc, char **argv)
 	init_nls();
 #endif
 
+	alt_dir[0] = '\0';
+
 	/* Process args... */
 	while (opt < argc) {
 
@@ -1961,6 +2134,20 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			opt++;
+		}
+
+		else if (!strcmp(argv[opt], "-f") || !strcmp(argv[opt], "+f")) {
+			if (alt_dir[0] || !argv[opt + 1]) {
+				usage(argv[0]);
+			}
+			if (argv[opt++][0] == '+') {
+				flags |= I_D_ALL_DIR;
+			}
+			strncpy(alt_dir, argv[opt++], MAX_FILE_LEN);
+			alt_dir[MAX_FILE_LEN - 1] = '\0';
+			if (!check_dir(alt_dir)) {
+				usage(argv[0]);
+			}
 		}
 
 		else if (!strcmp(argv[opt], "-j")) {

@@ -753,7 +753,7 @@ __nr_t read_diskstats_io(struct stats_io *st_io)
 			   &wr_ios, &wr_sec,
 			   &dc_ios, &dc_sec) >= 7) {
 
-			if (is_device(dev_name, IGNORE_VIRTUAL_DEVICES)) {
+			if (is_device(SLASH_SYS, dev_name, IGNORE_VIRTUAL_DEVICES)) {
 				/*
 				 * OK: It's a (real) device and not a partition.
 				 * Note: Structure should have been initialized first!
@@ -828,7 +828,7 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 			if (!rd_ios && !wr_ios && !dc_ios)
 				/* Unused device: Ignore it */
 				continue;
-			if (read_part || is_device(dev_name, ACCEPT_VIRTUAL_DEVICES)) {
+			if (read_part || is_device(SLASH_SYS, dev_name, ACCEPT_VIRTUAL_DEVICES)) {
 
 				if (dsk_read + 1 > nr_alloc) {
 					dsk_read = -1;

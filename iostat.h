@@ -15,7 +15,7 @@
 #define I_D_EXTENDED		0x000008
 #define I_D_EVERYTHING		0x000010
 #define I_D_KILOBYTES		0x000020
-/* Unused			0x000040 */
+#define I_D_ALL_DIR		0x000040
 #define I_D_DEBUG		0x000080
 #define I_D_UNFILTERED		0x000100
 #define I_D_MEGABYTES		0x000200
@@ -53,6 +53,7 @@
 #define DISPLAY_JSON_OUTPUT(m)		(((m) & I_D_JSON_OUTPUT)      == I_D_JSON_OUTPUT)
 #define DISPLAY_UNIT(m)			(((m) & I_D_UNIT)	      == I_D_UNIT)
 #define DISPLAY_SHORT_OUTPUT(m)		(((m) & I_D_SHORT_OUTPUT)     == I_D_SHORT_OUTPUT)
+#define USE_ALL_DIR(m)			(((m) & I_D_ALL_DIR)          == I_D_ALL_DIR)
 
 #define T_PART		0
 #define T_DEV		1

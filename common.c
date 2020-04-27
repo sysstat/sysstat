@@ -189,6 +189,7 @@ void init_nls(void)
  * ioconf.c which should be used only with kernels that don't have sysfs.
  *
  * IN:
+ * @sysdev		sysfs location.
  * @name		Device or partition name.
  * @allow_virtual	TRUE if virtual devices are also accepted.
  *			The device is assumed to be virtual if no
@@ -198,7 +199,7 @@ void init_nls(void)
  * TRUE if @name is not a partition.
  ***************************************************************************
  */
-int is_device(char *name, int allow_virtual)
+int is_device(char *sysdev, char *name, int allow_virtual)
 {
 	char syspath[PATH_MAX];
 	char *slash;
@@ -207,7 +208,7 @@ int is_device(char *name, int allow_virtual)
 	while ((slash = strchr(name, '/'))) {
 		*slash = '!';
 	}
-	snprintf(syspath, sizeof(syspath), "%s/%s%s", SYSFS_BLOCK, name,
+	snprintf(syspath, sizeof(syspath), "%s/%s/%s%s", sysdev, __BLOCK, name,
 		 allow_virtual ? "" : "/device");
 
 	return !(access(syspath, F_OK));
