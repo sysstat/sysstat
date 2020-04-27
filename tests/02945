@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./iostat +f tests/root/my_stats dm-2 sdg -p sda > tests/out.iostat+f-alt-list-ms.tmp

@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./iostat -p ALL 2 2 > tests/out.iostat-alt-pALL.tmp

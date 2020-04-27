@@ -419,6 +419,7 @@ NOTES:
 02510	LC_ALL=C ./iostat 2 -1 2>&1 | grep "Usage:" >/dev/null
 02515	LC_ALL=C ./iostat -H 2>&1 | grep "Usage:" >/dev/null
 02520	LC_ALL=C ./iostat -j FOObar 2>&1 | grep "Invalid" >/dev/null
+02525	LC_ALL=C ./iostat -p ALL +f tests/root/foo  2>&1 | grep "Usage:" >/dev/null
 
 =====	Playing again with iostat
 02600	LC_ALL=C TZ=GMT ./iostat -ym 1 2 > tests/out.iostat-ym.tmp
@@ -457,6 +458,28 @@ NOTES:
 =====	iostat: Playing with environment variables
 02800	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never POSIXLY_CORRECT= ./iostat --getenv -d 2 3 > tests/out.iostat-ev.tmp
 02805	diff -u tests/out.iostat-ev.tmp tests/expected.iostat-ev
+
+=====	iostat: Using alternate statistics location
+02900	LC_ALL=C TZ=GMT ./iostat -p ALL 2 2 > tests/out.iostat-alt-pALL.tmp
+02902	diff -u tests/out.iostat-alt-pALL.tmp tests/expected.iostat-alt-pALL
+02905	LC_ALL=C TZ=GMT ./iostat -p ALL -f tests/root/proc 2 2 > tests/out.iostat-f-alt-pALL.tmp
+02907	diff -u tests/out.iostat-f-alt-pALL.tmp tests/expected.iostat-f-alt-pALL
+02910	LC_ALL=C TZ=GMT ./iostat -p ALL +f tests/root/proc 2 2 > tests/out.iostat+f-alt-pALL.tmp
+02912	diff -u tests/out.iostat+f-alt-pALL.tmp tests/expected.iostat+f-alt-pALL
+02920	LC_ALL=C TZ=GMT ./iostat -p ALL -f tests/root/my_stats 2 2 > tests/out.iostat-f-alt-pALL-ms.tmp
+02922	diff -u tests/out.iostat-f-alt-pALL-ms.tmp tests/expected.iostat-f-alt-pALL-ms
+02930	LC_ALL=C TZ=GMT ./iostat ALL -f tests/root/my_stats 2 2 > tests/out.iostat-f-alt-ALL-ms.tmp
+02932	diff -u tests/out.iostat-f-alt-ALL-ms.tmp tests/expected.iostat-f-alt-ALL-ms
+02935	LC_ALL=C TZ=GMT ./iostat ALL +f tests/root/my_stats 2 2 > tests/out.iostat+f-alt-ALL-ms.tmp
+02937	diff -u tests/out.iostat+f-alt-ALL-ms.tmp tests/expected.iostat+f-alt-ALL-ms
+02940	LC_ALL=C TZ=GMT ./iostat -f tests/root/my_stats dm-2 sdg -p sda > tests/out.iostat-f-alt-list-ms.tmp
+02942	diff -u tests/out.iostat-f-alt-list-ms.tmp tests/expected.iostat-f-alt-list-ms
+02945	LC_ALL=C TZ=GMT ./iostat +f tests/root/my_stats dm-2 sdg -p sda > tests/out.iostat+f-alt-list-ms.tmp
+02947	diff -u tests/out.iostat+f-alt-list-ms.tmp tests/expected.iostat+f-alt-list-ms
+02950	LC_ALL=C TZ=GMT ./iostat -f tests/root/my_stats sda1 sda13 sdc > tests/out2.iostat-f-alt-list-ms.tmp
+02952	diff -u tests/out2.iostat-f-alt-list-ms.tmp tests/expected2.iostat-f-alt-list-ms
+02955	LC_ALL=C TZ=GMT ./iostat +f tests/root/my_stats sda1 sda13 sdc > tests/out2.iostat+f-alt-list-ms.tmp
+02957	diff -u tests/out2.iostat+f-alt-list-ms.tmp tests/expected2.iostat+f-alt-list-ms
 
 =====	mpstat: Basic tests
 03000	LC_ALL=C TZ=GMT ./mpstat > tests/out.mpstat.tmp
