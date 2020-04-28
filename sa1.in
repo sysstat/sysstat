@@ -20,6 +20,7 @@ UMASK=0022
 umask ${UMASK}
 
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
+[ -d @SA_DIR@ ] || mkdir @SA_DIR@
 
 if [ ${HISTORY} -gt 28 ]
 then
