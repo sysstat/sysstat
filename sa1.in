@@ -19,7 +19,10 @@ UMASK=0022
 
 umask ${UMASK}
 
+# If the user-supplied value for SA_DIR in sysconfig file is not a directory
+# then fall back on default directory. Create this default directory if it doesn't exist.
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
+[ -d @SA_DIR@ ] || mkdir @SA_DIR@
 
 if [ ${HISTORY} -gt 28 ]
 then
