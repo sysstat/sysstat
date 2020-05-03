@@ -301,7 +301,7 @@ int ioc_init(void)
 
 		/* basename of device + provided string + controller # */
 		if (*cfmt == '*') {
-			strncpy(blkp->cfmt, blkp->name, sizeof(blkp->cfmt) - 1);
+			strncpy(blkp->cfmt, blkp->name, MINIMUM(sizeof(blkp->name), sizeof(blkp->cfmt) - 1));
 			blkp->cfmt[sizeof(blkp->cfmt) - 1] = '\0';
 		}
 		else {

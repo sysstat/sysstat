@@ -393,7 +393,7 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 
 		if (!strncmp(name, pretty, FILENAME_MAX)) {
 			/* We have found pretty name for current persistent one */
-			strncpy(wwn_name, drd->d_name, sizeof(wwn_name));
+			strncpy(wwn_name, drd->d_name, MINIMUM(sizeof(wwn_name), sizeof(drd->d_name)));
 			wwn_name[sizeof(wwn_name) - 1] = '\0';
 
 			/* Try to extract WWN */
@@ -842,16 +842,18 @@ char *strtolower(char *str)
  * @type	Persistent type name (UUID, LABEL, etc.)
  *
  * RETURNS:
- * Path to the persistent type name directory, or NULL if access is denied.
+ * Path to the persistent type name directory, or NULL if access is denied
+ * or strings have been truncated.
  ***************************************************************************
 */
 char *get_persistent_type_dir(char *type)
 {
 	static char dir[PATH_MAX];
+	int n;
 
-	snprintf(dir, sizeof(dir), "%s-%s", DEV_DISK_BY, type);
+	n = snprintf(dir, sizeof(dir), "%s-%s", DEV_DISK_BY, type);
 
-	if (access(dir, R_OK)) {
+	if ((n >= sizeof(dir)) || access(dir, R_OK)) {
 		return (NULL);
 	}
 
@@ -866,17 +868,19 @@ char *get_persistent_type_dir(char *type)
  * @name	Persistent name.
  *
  * RETURNS:
- * Path to the persistent name, or NULL if file doesn't exist.
+ * Path to the persistent name, or NULL if file doesn't exist or strings
+ * have been truncated.
  ***************************************************************************
 */
 char *get_persistent_name_path(char *name)
 {
 	static char path[PATH_MAX];
+	int n;
 
-	snprintf(path, sizeof(path), "%s/%s",
-		 get_persistent_type_dir(persistent_name_type), name);
+	n = snprintf(path, sizeof(path), "%s/%s",
+		     get_persistent_type_dir(persistent_name_type), name);
 
-	if (access(path, F_OK)) {
+	if ((n >= sizeof(path)) || access(path, F_OK)) {
 		return (NULL);
 	}
 
