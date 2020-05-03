@@ -348,8 +348,8 @@ void list_fields(unsigned int act_id)
 			}
 			else {
 				msk = 1;
-				strncpy(hline, act[i]->hdr_line, HEADER_LINE_LEN - 1);
-				hline[HEADER_LINE_LEN - 1] = '\0';
+				strncpy(hline, act[i]->hdr_line, sizeof(hline) - 1);
+				hline[sizeof(hline) - 1] = '\0';
 				for (hl = strtok(hline, "|"); hl; hl = strtok(NULL, "|"), msk <<= 1) {
 					if ((hl != NULL) && ((act[i]->opt_flags & 0xff) & msk)) {
 						if (strchr(hl, '&')) {
@@ -1623,8 +1623,8 @@ int main(int argc, char **argv)
 				}
 				else if (!strncmp(t, K_PCPARCHIVE, strlen(K_PCPARCHIVE))) {
 					v = t + strlen(K_PCPARCHIVE);
-					strncpy(pcparchive, v, MAX_FILE_LEN);
-					pcparchive[MAX_FILE_LEN - 1] = '\0';
+					strncpy(pcparchive, v, sizeof(pcparchive));
+					pcparchive[sizeof(pcparchive) - 1] = '\0';
 				}
 				else if (!strncmp(t, K_HZ, strlen(K_HZ))) {
 					v = t + strlen(K_HZ);
@@ -1804,8 +1804,8 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			/* Write data to file */
-			strncpy(dfile, argv[opt++], MAX_FILE_LEN);
-			dfile[MAX_FILE_LEN - 1] = '\0';
+			strncpy(dfile, argv[opt++], sizeof(dfile));
+			dfile[sizeof(dfile) - 1] = '\0';
 			/* Check if this is an alternate directory for sa files */
 			check_alt_sa_dir(dfile, 0, -1);
 		}

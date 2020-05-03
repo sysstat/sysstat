@@ -393,8 +393,8 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 
 		if (!strncmp(name, pretty, FILENAME_MAX)) {
 			/* We have found pretty name for current persistent one */
-			strncpy(wwn_name, drd->d_name, FILENAME_MAX);
-			wwn_name[FILENAME_MAX - 1] = '\0';
+			strncpy(wwn_name, drd->d_name, sizeof(wwn_name));
+			wwn_name[sizeof(wwn_name) - 1] = '\0';
 
 			/* Try to extract WWN */
 			if (!extract_wwnid(wwn_name, wwn, part_nr)) {
@@ -723,8 +723,8 @@ char *device_name(char *name)
 	if (!strncmp(resolved_name, "/dev/", 5)) {
 		i = 5;
 	}
-	strncpy(out, resolved_name + i, MAX_FILE_LEN);
-	out[MAX_FILE_LEN - 1] = '\0';
+	strncpy(out, resolved_name + i, sizeof(out));
+	out[sizeof(out) - 1] = '\0';
 
 	/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
 	while ((slash = strchr(out, '/'))) {
@@ -873,7 +873,7 @@ char *get_persistent_name_path(char *name)
 {
 	static char path[PATH_MAX];
 
-	snprintf(path, PATH_MAX, "%s/%s",
+	snprintf(path, sizeof(path), "%s/%s",
 		 get_persistent_type_dir(persistent_name_type), name);
 
 	if (access(path, F_OK)) {
@@ -992,8 +992,8 @@ char *get_persistent_name_from_pretty(char *pretty)
 
 		if (!strncmp(name, pretty, FILENAME_MAX)) {
 			/* We have found pretty name for current persistent one */
-			strncpy(persist_name, persist_names[i], FILENAME_MAX);
-			persist_name[FILENAME_MAX - 1] = '\0';
+			strncpy(persist_name, persist_names[i], sizeof(persist_name));
+			persist_name[sizeof(persist_name) - 1] = '\0';
 			break;
 		}
 	}

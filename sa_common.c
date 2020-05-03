@@ -151,12 +151,12 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	*sa_name = 0;
 
 	/* Look for saYYYYMMDD */
-	snprintf(filename, MAX_FILE_LEN,
+	snprintf(filename, sizeof(filename),
 		 "%s/sa%04d%02d%02d", sa_dir,
 		 rectime->tm_year + 1900,
 		 rectime->tm_mon + 1,
 		 rectime->tm_mday);
-	filename[MAX_FILE_LEN - 1] = '\0';
+	filename[sizeof(filename) - 1] = '\0';
 
 	if (stat(filename, &sb) < 0)
 		/* Cannot find or access saYYYYMMDD, so use saDD */
@@ -165,10 +165,10 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	nsec = sb.st_mtim.tv_nsec;
 
 	/* Look for saDD */
-	snprintf(filename, MAX_FILE_LEN,
+	snprintf(filename, sizeof(filename),
 		 "%s/sa%02d", sa_dir,
 		 rectime->tm_mday);
-	filename[MAX_FILE_LEN - 1] = '\0';
+	filename[sizeof(filename) - 1] = '\0';
 
 	if (stat(filename, &sb) < 0) {
 		/* Cannot find or access saDD, so use saYYYYMMDD */
@@ -212,12 +212,12 @@ int set_default_file(char *datafile, int d_off, int sa_name)
 
 	/* Set directory where daily data files will be saved */
 	if (datafile[0]) {
-		strncpy(sa_dir, datafile, MAX_FILE_LEN);
+		strncpy(sa_dir, datafile, sizeof(sa_dir));
 	}
 	else {
-		strncpy(sa_dir, SA_DIR, MAX_FILE_LEN);
+		strncpy(sa_dir, SA_DIR, sizeof(sa_dir));
 	}
-	sa_dir[MAX_FILE_LEN - 1] = '\0';
+	sa_dir[sizeof(sa_dir) - 1] = '\0';
 
 	get_time(&rectime, d_off);
 	if (sa_name < 0) {
@@ -2319,11 +2319,11 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				return 0;
 			}
 
-			if (strnlen(argv[*opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1)
+			if (strnlen(argv[*opt], sizeof(persistent_name_type)) >= sizeof(persistent_name_type) - 1)
 				return 1;
 
-			strncpy(persistent_name_type, argv[*opt], MAX_FILE_LEN - 1);
-			persistent_name_type[MAX_FILE_LEN - 1] = '\0';
+			strncpy(persistent_name_type, argv[*opt], sizeof(persistent_name_type) - 1);
+			persistent_name_type[sizeof(persistent_name_type) - 1] = '\0';
 			strtolower(persistent_name_type);
 			if (!get_persistent_type_dir(persistent_name_type)) {
 				fprintf(stderr, _("Invalid type of persistent device name\n"));

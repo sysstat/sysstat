@@ -63,8 +63,8 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 	int i = -1, j;
 	int p = pos;
 
-	strncpy(hline, a->hdr_line, HEADER_LINE_LEN - 1);
-	hline[HEADER_LINE_LEN - 1] = '\0';
+	strncpy(hline, a->hdr_line, sizeof(hline) - 1);
+	hline[sizeof(hline) - 1] = '\0';
 	for (hl = strtok(hline, "|"); hl && (pos > 0); hl = strtok(NULL, "|"), pos--);
 	if (!hl)
 		/* Bad @pos arg given to function */

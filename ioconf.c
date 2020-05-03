@@ -154,17 +154,17 @@ int ioc_init(void)
 	if ((fp = fopen(IOCONF, "r")) == NULL) {
 		if ((fp = fopen(LOCAL_IOCONF, "r")) == NULL)
 			return 0;
-		strncpy(ioconf_name, LOCAL_IOCONF, 64);
+		strncpy(ioconf_name, LOCAL_IOCONF, sizeof(ioconf_name));
 	}
 	else {
-		strncpy(ioconf_name, IOCONF, 64);
+		strncpy(ioconf_name, IOCONF, sizeof(ioconf_name));
 	}
-	ioconf_name[63] = '\0';
+	ioconf_name[sizeof(ioconf_name) - 1] = '\0';
 
 	/* Init ioc_refnr array */
 	memset(ioc_refnr, 0, sizeof(ioc_refnr));
 
-	while (fgets(buf, IOC_LINESIZ - 1, fp)) {
+	while (fgets(buf, sizeof(buf) - 1, fp)) {
 
 		if ((*buf == '#') || (*buf == '\n'))
 			continue;
@@ -412,8 +412,8 @@ char *ioc_name(unsigned int major, unsigned int minor)
 
 	/* Is this an extension record? */
 	if (p->blkp->ext && (p->blkp->ext_minor == minor)) {
-		strncpy(name, p->blkp->ext_name, IOC_DEVLEN);
-		name[IOC_DEVLEN - 1] = '\0';
+		strncpy(name, p->blkp->ext_name, sizeof(name));
+		name[sizeof(name) - 1] = '\0';
 		return (name);
 	}
 
@@ -511,8 +511,8 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 	while ((dp = readdir(dm_dir)) != NULL) {
 		/* For each file in DEVMAP_DIR */
 
-		snprintf(filen, MAX_FILE_LEN, "%s/%s", DEVMAP_DIR, dp->d_name);
-		filen[MAX_FILE_LEN - 1] = '\0';
+		snprintf(filen, sizeof(filen), "%s/%s", DEVMAP_DIR, dp->d_name);
+		filen[sizeof(filen) - 1] = '\0';
 
 		if (__stat(filen, &aux) == 0) {
 			/* Get its minor and major numbers */
@@ -521,8 +521,8 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 			dm_minor = minor(aux.st_rdev);
 
 			if ((dm_minor == minor) && (dm_major == major)) {
-				strncpy(name, dp->d_name, MAX_NAME_LEN);
-				name[MAX_NAME_LEN - 1] = '\0';
+				strncpy(name, dp->d_name, sizeof(name));
+				name[sizeof(name) - 1] = '\0';
 				dm_name = name;
 				break;
 			}

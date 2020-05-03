@@ -664,7 +664,7 @@ int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 
 	memset(line, 0, MAX_CMDLINE_LEN);
 
-	len = fread(line, 1, MAX_CMDLINE_LEN - 1, fp);
+	len = fread(line, 1, sizeof(line) - 1, fp);
 	fclose(fp);
 
 	if (len) {
@@ -676,8 +676,8 @@ int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 				line[i] = ' ';
 			}
 		}
-		strncpy(plist->cmdline, line, MAX_CMDLINE_LEN - 1);
-		plist->cmdline[MAX_CMDLINE_LEN - 1] = '\0';
+		strncpy(plist->cmdline, line, sizeof(plist->cmdline) - 1);
+		plist->cmdline[sizeof(plist->cmdline) - 1] = '\0';
 	}
 	else {
 		/* proc/.../cmdline was empty */
@@ -2312,8 +2312,8 @@ int write_stats(int curr, int dis)
 		strcpy(cur_time[!curr], "# Time     ");
 	}
 	else if (PRINT_SEC_EPOCH(pidflag)) {
-		snprintf(cur_time[!curr], TIMESTAMP_LEN, "%-11ld", mktime(&ps_tstamp[!curr]));
-		cur_time[!curr][TIMESTAMP_LEN - 1] = '\0';
+		snprintf(cur_time[!curr], sizeof(cur_time[!curr]), "%-11ld", mktime(&ps_tstamp[!curr]));
+		cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
 	}
 	else if (is_iso_time_fmt()) {
 		strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%H:%M:%S", &ps_tstamp[!curr]);
@@ -2324,8 +2324,8 @@ int write_stats(int curr, int dis)
 
 	/* Get current timestamp */
 	if (PRINT_SEC_EPOCH(pidflag)) {
-		snprintf(cur_time[curr], TIMESTAMP_LEN, "%-11ld", mktime(&ps_tstamp[curr]));
-		cur_time[curr][TIMESTAMP_LEN - 1] = '\0';
+		snprintf(cur_time[curr], sizeof(cur_time[curr]), "%-11ld", mktime(&ps_tstamp[curr]));
+		cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
 	}
 	else if (is_iso_time_fmt()) {
 		strftime(cur_time[curr], sizeof(cur_time[curr]), "%H:%M:%S", &ps_tstamp[curr]);
@@ -2584,8 +2584,8 @@ int main(int argc, char **argv)
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
-			strncpy(commstr, argv[opt++], MAX_COMM_LEN);
-			commstr[MAX_COMM_LEN - 1] = '\0';
+			strncpy(commstr, argv[opt++], sizeof(commstr));
+			commstr[sizeof(commstr) - 1] = '\0';
 			pidflag |= P_F_COMMSTR;
 			if (!strlen(commstr)) {
 				usage(argv[0]);
@@ -2596,8 +2596,8 @@ int main(int argc, char **argv)
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
-			strncpy(procstr, argv[opt++], MAX_COMM_LEN);
-			procstr[MAX_COMM_LEN - 1] = '\0';
+			strncpy(procstr, argv[opt++], sizeof(procstr));
+			procstr[sizeof(procstr) - 1] = '\0';
 			pidflag |= P_F_PROCSTR;
 			if (!strlen(procstr)) {
 				usage(argv[0]);
@@ -2647,8 +2647,8 @@ int main(int argc, char **argv)
 			pidflag |= P_D_USERNAME;
 			if (argv[++opt] && (argv[opt][0] != '-') &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
-				strncpy(userstr, argv[opt++], MAX_USER_LEN);
-				userstr[MAX_USER_LEN - 1] = '\0';
+				strncpy(userstr, argv[opt++], sizeof(userstr));
+				userstr[sizeof(userstr) - 1] = '\0';
 				pidflag |= P_F_USERSTR;
 				if (!strlen(userstr)) {
 					usage(argv[0]);

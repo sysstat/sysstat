@@ -305,8 +305,8 @@ int get_node_placement(int nr_cpus, int cpu_per_node[], int cpu2node[])
 	cpu_per_node[0] = nr_cpus;
 
 	for (cpu = 0; cpu < nr_cpus; cpu++) {
-		snprintf(line, MAX_PF_NAME, "%s/cpu%d", SYSFS_DEVCPU, cpu);
-		line[MAX_PF_NAME - 1] = '\0';
+		snprintf(line, sizeof(line), "%s/cpu%d", SYSFS_DEVCPU, cpu);
+		line[sizeof(line) - 1] = '\0';
 
 		/* Open relevant /sys directory */
 		if ((dir = opendir(line)) == NULL)
@@ -371,8 +371,8 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 		cpu_topo_i = cpu_topo + cpu;
 
 		/* Read current CPU's socket number */
-		snprintf(filename, MAX_PF_NAME, "%s/cpu%d/%s", SYSFS_DEVCPU, cpu, PHYS_PACK_ID);
-		filename[MAX_PF_NAME - 1] = '\0';
+		snprintf(filename, sizeof(filename), "%s/cpu%d/%s", SYSFS_DEVCPU, cpu, PHYS_PACK_ID);
+		filename[sizeof(filename) - 1] = '\0';
 
 		if ((fp = fopen(filename, "r")) != NULL) {
 			rc = fscanf(fp, "%d", &cpu_topo_i->phys_package_id);
@@ -384,8 +384,8 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 		}
 
 		/* Read current CPU's logical core id number */
-		snprintf(filename, MAX_PF_NAME, "%s/cpu%d/%s", SYSFS_DEVCPU, cpu, THREAD_SBL_LST);
-		filename[MAX_PF_NAME - 1] = '\0';
+		snprintf(filename, sizeof(filename), "%s/cpu%d/%s", SYSFS_DEVCPU, cpu, THREAD_SBL_LST);
+		filename[sizeof(filename) - 1] = '\0';
 
 		if ((fp = fopen(filename, "r")) != NULL) {
 			rc = fscanf(fp, "%d", &cpu_topo_i->logical_core_id);

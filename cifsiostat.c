@@ -175,8 +175,8 @@ struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name)
 		}
 		memset(c->cifs_stats[i], 0, CIFS_ST_SIZE);
 	}
-	strncpy(c->name, name, MAX_NAME_LEN);
-	c->name[MAX_NAME_LEN - 1] = '\0';
+	strncpy(c->name, name, sizeof(c->name));
+	c->name[sizeof(c->name) - 1] = '\0';
 	c->exist = TRUE;
 	c->next = cs;
 
@@ -227,8 +227,8 @@ void read_cifs_stat(int curr)
 			else {
 				start = 1;
 			}
-			strncpy(cifs_name, name_tmp, MAX_NAME_LEN);
-			cifs_name[MAX_NAME_LEN - 1] = '\0';
+			strncpy(cifs_name, name_tmp, sizeof(cifs_name));
+			cifs_name[sizeof(cifs_name) - 1] = '\0';
 			memset(&scifs, 0, CIFS_ST_SIZE);
 		}
 		else {

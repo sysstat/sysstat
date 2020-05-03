@@ -525,14 +525,14 @@ void setup_file_hdr(int fd)
 
 	/* Get system name, release number, hostname and machine architecture */
 	__uname(&header);
-	strncpy(file_hdr.sa_sysname, header.sysname, UTSNAME_LEN);
-	file_hdr.sa_sysname[UTSNAME_LEN - 1]  = '\0';
-	strncpy(file_hdr.sa_nodename, header.nodename, UTSNAME_LEN);
-	file_hdr.sa_nodename[UTSNAME_LEN - 1] = '\0';
-	strncpy(file_hdr.sa_release, header.release, UTSNAME_LEN);
-	file_hdr.sa_release[UTSNAME_LEN - 1]  = '\0';
-	strncpy(file_hdr.sa_machine, header.machine, UTSNAME_LEN);
-	file_hdr.sa_machine[UTSNAME_LEN - 1]  = '\0';
+	strncpy(file_hdr.sa_sysname, header.sysname, sizeof(file_hdr.sa_sysname));
+	file_hdr.sa_sysname[sizeof(file_hdr.sa_sysname) - 1]  = '\0';
+	strncpy(file_hdr.sa_nodename, header.nodename, sizeof(file_hdr.sa_nodename));
+	file_hdr.sa_nodename[sizeof(file_hdr.sa_nodename) - 1] = '\0';
+	strncpy(file_hdr.sa_release, header.release, sizeof(file_hdr.sa_release));
+	file_hdr.sa_release[sizeof(file_hdr.sa_release) - 1]  = '\0';
+	strncpy(file_hdr.sa_machine, header.machine, sizeof(file_hdr.sa_machine));
+	file_hdr.sa_machine[sizeof(file_hdr.sa_machine) - 1]  = '\0';
 
 	/* Get timezone value and save it */
 	tzset();
@@ -1166,8 +1166,8 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		/* Rotate activity file if necessary */
 		if (WANT_SA_ROTAT(flags)) {
 			/* The user specified '-' as the filename to use */
-			strncpy(new_ofile, sa_dir, MAX_FILE_LEN - 1);
-			new_ofile[MAX_FILE_LEN - 1] = '\0';
+			strncpy(new_ofile, sa_dir, sizeof(new_ofile) - 1);
+			new_ofile[sizeof(new_ofile) - 1] = '\0';
 			set_default_file(new_ofile, 0, USE_SA_YYYYMMDD(flags));
 
 			if (strcmp(ofile, new_ofile)) {
@@ -1258,8 +1258,8 @@ int main(int argc, char **argv)
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
-			strncpy(comment, argv[opt], MAX_COMMENT_LEN);
-			comment[MAX_COMMENT_LEN - 1] = '\0';
+			strncpy(comment, argv[opt], sizeof(comment));
+			comment[sizeof(comment) - 1] = '\0';
 			if (!strlen(comment)) {
 				usage(argv[0]);
 			}
@@ -1294,8 +1294,8 @@ int main(int argc, char **argv)
 			}
 			else {
 				/* Write data to file */
-				strncpy(ofile, argv[opt], MAX_FILE_LEN);
-				ofile[MAX_FILE_LEN - 1] = '\0';
+				strncpy(ofile, argv[opt], sizeof(ofile));
+				ofile[sizeof(ofile) - 1] = '\0';
 			}
 		}
 

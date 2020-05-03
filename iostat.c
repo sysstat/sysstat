@@ -2143,8 +2143,8 @@ int main(int argc, char **argv)
 			if (argv[opt++][0] == '+') {
 				flags |= I_D_ALL_DIR;
 			}
-			strncpy(alt_dir, argv[opt++], MAX_FILE_LEN);
-			alt_dir[MAX_FILE_LEN - 1] = '\0';
+			strncpy(alt_dir, argv[opt++], sizeof(alt_dir));
+			alt_dir[sizeof(alt_dir) - 1] = '\0';
 			if (!check_dir(alt_dir)) {
 				usage(argv[0]);
 			}
@@ -2154,11 +2154,11 @@ int main(int argc, char **argv)
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
-			if (strnlen(argv[opt], MAX_FILE_LEN) >= MAX_FILE_LEN - 1) {
+			if (strnlen(argv[opt], sizeof(persistent_name_type)) >= sizeof(persistent_name_type) - 1) {
 				usage(argv[0]);
 			}
-			strncpy(persistent_name_type, argv[opt], MAX_FILE_LEN - 1);
-			persistent_name_type[MAX_FILE_LEN - 1] = '\0';
+			strncpy(persistent_name_type, argv[opt], sizeof(persistent_name_type) - 1);
+			persistent_name_type[sizeof(persistent_name_type) - 1] = '\0';
 			strtolower(persistent_name_type);
 			/* Check that this is a valid type of persistent device name */
 			if (!get_persistent_type_dir(persistent_name_type)) {

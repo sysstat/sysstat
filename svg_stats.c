@@ -4233,7 +4233,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[8];
+	char item_name[16];
 	int i;
 
 	if (action & F_BEGIN) {
@@ -4336,7 +4336,7 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[MAX_SENSORS_DEV_LEN + 8];
+	char item_name[MAX_SENSORS_DEV_LEN + 16];
 	int i;
 
 	if (action & F_BEGIN) {
@@ -4370,8 +4370,8 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 
 			spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
-			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
-			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
+			snprintf(item_name, sizeof(item_name), "%d: %s", i + 1, spc->device);
+			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
@@ -4415,7 +4415,7 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[MAX_SENSORS_DEV_LEN + 8];
+	char item_name[MAX_SENSORS_DEV_LEN + 16];
 	int i;
 	double tval;
 
@@ -4468,8 +4468,8 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 
 			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
-			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
-			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
+			snprintf(item_name, sizeof(item_name), "%d: %s", i + 1, spc->device);
+			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
@@ -4513,7 +4513,7 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[MAX_SENSORS_DEV_LEN + 8];
+	char item_name[MAX_SENSORS_DEV_LEN + 16];
 	int i;
 	double tval;
 
@@ -4566,8 +4566,8 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 
 			spc = (struct stats_pwr_in *) ((char *) a->buf[curr]  + i * a->msize);
 
-			snprintf(item_name, MAX_SENSORS_DEV_LEN + 8, "%d: %s", i + 1, spc->device);
-			item_name[MAX_SENSORS_DEV_LEN + 7] = '\0';
+			snprintf(item_name, sizeof(item_name), "%d: %s", i + 1, spc->device);
+			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,

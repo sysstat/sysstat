@@ -1048,8 +1048,8 @@ __nr_t read_net_dev(struct stats_net_dev *st_net_dev, __nr_t nr_alloc)
 			}
 
 			st_net_dev_i = st_net_dev + dev_read++;
-			strncpy(iface, line, MINIMUM(pos, MAX_IFACE_LEN - 1));
-			iface[MINIMUM(pos, MAX_IFACE_LEN - 1)] = '\0';
+			strncpy(iface, line, MINIMUM(pos, sizeof(iface) - 1));
+			iface[MINIMUM(pos, sizeof(iface) - 1)] = '\0';
 			sscanf(iface, "%s", st_net_dev_i->interface); /* Skip heading spaces */
 			sscanf(line + pos + 1, "%llu %llu %*u %*u %*u %*u %llu %llu %llu %llu "
 			       "%*u %*u %*u %*u %*u %llu",
@@ -1171,8 +1171,8 @@ __nr_t read_net_edev(struct stats_net_edev *st_net_edev, __nr_t nr_alloc)
 			}
 
 			st_net_edev_i = st_net_edev + dev_read++;
-			strncpy(iface, line, MINIMUM(pos, MAX_IFACE_LEN - 1));
-			iface[MINIMUM(pos, MAX_IFACE_LEN - 1)] = '\0';
+			strncpy(iface, line, MINIMUM(pos, sizeof(iface) - 1));
+			iface[MINIMUM(pos, sizeof(iface) - 1)] = '\0';
 			sscanf(iface, "%s", st_net_edev_i->interface); /* Skip heading spaces */
 			sscanf(line + pos + 1, "%*u %*u %llu %llu %llu %llu %*u %*u %*u %*u "
 			       "%llu %llu %llu %llu %llu",
@@ -2589,10 +2589,10 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			st_filesystem_i->f_bavail = (unsigned long long) buf.f_bavail * (unsigned long long) buf.f_frsize;
 			st_filesystem_i->f_files  = (unsigned long long) buf.f_files;
 			st_filesystem_i->f_ffree  = (unsigned long long) buf.f_ffree;
-			strncpy(st_filesystem_i->fs_name, fs_name, MAX_FS_LEN);
-			st_filesystem_i->fs_name[MAX_FS_LEN - 1] = '\0';
-			strncpy(st_filesystem_i->mountp, mountp, MAX_FS_LEN);
-			st_filesystem_i->mountp[MAX_FS_LEN - 1] = '\0';
+			strncpy(st_filesystem_i->fs_name, fs_name, sizeof(st_filesystem_i->fs_name));
+			st_filesystem_i->fs_name[sizeof(st_filesystem_i->fs_name) - 1] = '\0';
+			strncpy(st_filesystem_i->mountp, mountp, sizeof(st_filesystem_i->mountp));
+			st_filesystem_i->mountp[sizeof(st_filesystem_i->mountp) - 1] = '\0';
 		}
 	}
 
@@ -2686,8 +2686,8 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 			st_fc_i->f_txframes = tx_frames;
 			st_fc_i->f_rxwords  = rx_words;
 			st_fc_i->f_txwords  = tx_words;
-			memcpy(st_fc_i->fchost_name, drd->d_name, MAX_FCH_LEN);
-			st_fc_i->fchost_name[MAX_FCH_LEN - 1] = '\0';
+			memcpy(st_fc_i->fchost_name, drd->d_name, sizeof(st_fc_i->fchost_name));
+			st_fc_i->fchost_name[sizeof(st_fc_i->fchost_name) - 1] = '\0';
 		}
 	}
 

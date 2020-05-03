@@ -53,8 +53,8 @@ char *pfield(char *hdr_line, int pos)
 	int i, j = 0;
 
 	if (hdr_line) {
-		strncpy(hline, hdr_line, HEADER_LINE_LEN - 1);
-		hline[HEADER_LINE_LEN - 1] = '\0';
+		strncpy(hline, hdr_line, sizeof(hline) - 1);
+		hline[sizeof(hline) - 1] = '\0';
 		idx = 0;
 
 		for (hl = strtok(hline, "|"); hl && (pos > 0); hl = strtok(NULL, "|"), pos--);
@@ -67,8 +67,8 @@ char *pfield(char *hdr_line, int pos)
 			j = strcspn(hl, "&");
 			*(hl + j) = ';';
 		}
-		strncpy(field, hl, HEADER_LINE_LEN);
-		field[HEADER_LINE_LEN - 1] = '\0';
+		strncpy(field, hl, sizeof(field));
+		field[sizeof(field) - 1] = '\0';
 	}
 
 	/* Display current field */
