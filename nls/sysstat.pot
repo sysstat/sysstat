@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-12-27 13:17+0100\n"
+"POT-Creation-Date: 2020-05-08 09:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
+#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
 msgid "Summary:"
 msgstr ""
 
-#: iostat.c:88 tapestat.c:105 cifsiostat.c:77 mpstat.c:131 sar.c:108
+#: iostat.c:88 cifsiostat.c:77 mpstat.c:131 tapestat.c:105 sar.c:108
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
@@ -50,21 +50,24 @@ msgid ""
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: iostat.c:1937 sa_common.c:2313
+#: iostat.c:1937 sa_common.c:2317
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
 
-#: tapestat.c:107
+#: cifsiostat.c:81
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --"
+"debuginfo ]\n"
 msgstr ""
 
-#: tapestat.c:273
+#: cifsiostat.c:84
 #, c-format
-msgid "No tape drives with statistics found\n"
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 
 #: sadc.c:98
@@ -86,7 +89,7 @@ msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
 #: sadc.c:720 sadc.c:783 count.c:118 ioconf.c:507 rd_stats.c:75
-#: sa_common.c:1843
+#: sa_common.c:1847
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -101,26 +104,6 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: cifsiostat.c:81
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --"
-"debuginfo ]\n"
-msgstr ""
-
-#: cifsiostat.c:84
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
-msgstr ""
-
-#: common.c:79
-#, c-format
-msgid "sysstat version %s\n"
-msgstr ""
-
 #: mpstat.c:134
 #, c-format
 msgid ""
@@ -130,7 +113,7 @@ msgid ""
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:1640 sar.c:376 pidstat.c:2419
+#: mpstat.c:1640 sar.c:376 pidstat.c:2418
 msgid "Average:"
 msgstr ""
 
@@ -155,6 +138,23 @@ msgstr ""
 #: sadf.c:1840
 #, c-format
 msgid "PCP support not compiled in\n"
+msgstr ""
+
+#: tapestat.c:107
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+
+#: tapestat.c:273
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr ""
+
+#: common.c:79
+#, c-format
+msgid "sysstat version %s\n"
 msgstr ""
 
 #: sar.c:123
@@ -341,11 +341,6 @@ msgstr ""
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
-#: rd_stats.c:351
-#, c-format
-msgid "Cannot read %s\n"
-msgstr ""
-
 #: sa_conv.c:98
 #, c-format
 msgid "Cannot convert the format of this file\n"
@@ -481,6 +476,11 @@ msgstr ""
 msgid " \t[Unknown format]"
 msgstr ""
 
+#: rd_stats.c:351
+#, c-format
+msgid "Cannot read %s\n"
+msgstr ""
+
 #: sa_common.c:306
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
@@ -496,22 +496,22 @@ msgstr ""
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:1437
+#: sa_common.c:1441
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1447
+#: sa_common.c:1451
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1846
+#: sa_common.c:1850
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2182
+#: sa_common.c:2186
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""

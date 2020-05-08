@@ -1,5 +1,19 @@
 Changes:
 
+2020/05/08: Version 12.2.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Don't display duplicate entries in /etc/mtab.
+	* pidstat: Remove extra space at end of command name.
+	* [Anatoly Pugachev]: Fix sa2 script, so it wont complain on empty list
+	  for compress program.
+	* iostat: Make sure pointer on linked list is initialized.
+	* [Fabrice Fontaine]: Makefile: Link with -lintl if needed.
+	* [Sdrkun]: sa1: Create default sa directory if it doesn't exist.
+	* sar: Don't check if we are close enough to selected interval when
+	  interval=1.
+	* sadf: Use actual number of items, not its pointer address.
+	* pr_stats.c: Printing timestamp should appear only once.
+	* common.c: Remove unused get_dev_part_nr() function.
+
 2019/12/27: Version 12.2.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sadf: Fix double free in check_file_actlst().
 	* [Leo]: Add missing header files when using musl C library.
