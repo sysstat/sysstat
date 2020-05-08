@@ -5,7 +5,7 @@
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/sysstat/sysstat.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sysstat/sysstat/alerts)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=45U6F9R73ESFQ)
 
-(C) 1999-2019 Sebastien GODARD (sysstat (at) orange (dot) fr)
+(C) 1999-2020 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
 ### Introduction
 
@@ -46,6 +46,7 @@ Default sampling interval is 10 minutes but this can be changed of course (it ca
 - Power management statistics (instantaneous and average CPU clock frequency, fans speed, devices temperature, voltage inputs)
 - USB devices plugged into the system
 - Filesystems utilization (inodes and blocks)
+- Pressure-Stall Information statistics
 
 #### Sysstat key features:
 - Display average statistics values at the end of the reports.
@@ -56,6 +57,7 @@ Default sampling interval is 10 minutes but this can be changed of course (it ca
 - Needs very little CPU time to run (written in C).
 - System statistics collected by sar/sadc can be saved in a file for future inspection. You can configure the length of data history to keep. There is no limit for this history length but the available space on your storage device.
 - System statistics collected by sar/sadc can be exported in various different formats (CSV, XML, JSON, SVG, etc.). DTD and XML Schema documents are included in sysstat package. JSON output format is also available for mpstat and iostat commands.
+- iostat can display statistics for devices managed by drivers in userspace like spdk.
 - Smart color output for easier statistics reading.
 
 ![Smart color output](images/color_output.png)
@@ -167,7 +169,7 @@ that should be provided for this.
 Please also remember to read the FAQ that comes with sysstat or is available
 from the Wiki page on GitHub.
 
-Opening a pull request is the preferred way to submit a patch.
+Opening an issue or a pull request on GitHub is the preferred way to report a bug or submit a patch.
 Patches and suggestions for improvements are always welcome!
 
 ### Support sysstat!

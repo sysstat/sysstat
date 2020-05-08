@@ -1,5 +1,26 @@
 Changes:
 
+2020/05/08: Version 12.3.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadc: Add new Pressure-Stall Information (PSI) statistics.
+	* sadf: Add support for PSI statistics.
+	* iostat: Add support for devices managed by userspace drivers (e.g. spdk).
+	  Add new flags -f/+f to specify an alternate location for stats files.
+	* sar: Don't display duplicate entries in /etc/mtab [12.2.2].
+	* sar: Don't display "Inconsistent input data" error message when no
+	  activities are collected by sadc.
+	* sadf: XML: Remove "per" attribute for memory activity.
+	* sadf: Add new option "hz=" for datafile conversion.
+	* Various updates to remove GCC v9/v10 warnings.
+	* sar: Don't check if we are close enough to selected interval when
+	  interval=1 [12.2.2].
+	* sadf: Use actual number of items, not its pointer address [12.2.2].
+	* [Sdrkun]: sa1: Create default sa directory if it doesn't exist [12.2.2].
+	* pr_stats.c: Printing timestamp should appear only once [12.2.2].
+	* common.c: Remove unused get_dev_part_nr() function [12.2.2].
+	* DTD and XSD documents updated.
+	* sar and sadf manual pages updated.
+	* Non regression tests updated. New tests added (sar, iostat).
+
 2020/04/10: Version 12.3.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* pidstat: Major code refactoring. Several bugs fixed.
 	* pidstat: Don't display unneeded spaces following command name

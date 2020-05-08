@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2020-05-08 09:24+0200\n"
+"POT-Creation-Date: 2020-05-08 09:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cifsiostat.c:75 tapestat.c:104 mpstat.c:134 iostat.c:89 sar.c:108
+#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
+msgid "Summary:"
+msgstr ""
+
+#: iostat.c:89 cifsiostat.c:75 mpstat.c:134 tapestat.c:104 sar.c:108
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr ""
+
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
+"[ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+
+#: iostat.c:99
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
+"[ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+
+#: iostat.c:2165 sa_common.c:2329
+#, c-format
+msgid "Invalid type of persistent device name\n"
 msgstr ""
 
 #: cifsiostat.c:79
@@ -71,18 +104,6 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: tapestat.c:106
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-
-#: tapestat.c:272
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr ""
-
 #: mpstat.c:137
 #, c-format
 msgid ""
@@ -94,35 +115,6 @@ msgstr ""
 
 #: mpstat.c:1736 sar.c:383 pidstat.c:2288
 msgid "Average:"
-msgstr ""
-
-#: iostat.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
-"[ -z ]\n"
-"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-
-#: iostat.c:99
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] "
-"[ -z ]\n"
-"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-
-#: iostat.c:2165 sa_common.c:2329
-#, c-format
-msgid "Invalid type of persistent device name\n"
 msgstr ""
 
 #: sadf.c:105
@@ -148,8 +140,21 @@ msgstr ""
 msgid "PCP support not compiled in\n"
 msgstr ""
 
-#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
-msgid "Summary:"
+#: tapestat.c:106
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+
+#: tapestat.c:272
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr ""
+
+#: common.c:79
+#, c-format
+msgid "sysstat version %s\n"
 msgstr ""
 
 #: sar.c:123
@@ -344,16 +349,6 @@ msgstr ""
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
-#: rd_stats.c:359
-#, c-format
-msgid "Cannot read %s\n"
-msgstr ""
-
-#: common.c:79
-#, c-format
-msgid "sysstat version %s\n"
-msgstr ""
-
 #: sa_conv.c:99
 #, c-format
 msgid "Cannot convert the format of this file\n"
@@ -487,6 +482,11 @@ msgstr ""
 #: sadf_misc.c:1285
 #, c-format
 msgid " \t[Unknown format]"
+msgstr ""
+
+#: rd_stats.c:359
+#, c-format
+msgid "Cannot read %s\n"
 msgstr ""
 
 #: sa_common.c:302

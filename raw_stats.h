@@ -1,6 +1,6 @@
 /*
  * raw_stats.h: Include file used to display statistics in raw format.
- * (C) 1999-2019 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2020 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _RAW_STATS_H

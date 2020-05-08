@@ -1,6 +1,6 @@
 /*
  * pcp_def_metrics.h: Include file used to define PCP metrics.
- * (C) 2019 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 2019-2020 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _PCP_DEF_METRICS_H
