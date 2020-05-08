@@ -1,4 +1,4 @@
-.TH SAR 1 "APRIL 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MAY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -2079,42 +2079,42 @@ The following values are displayed:
 
 .B %smem-10
 .RS
-Percentage of the time during which at least some tasks were waiting for memory ressources, over the last 10 second window.
+Percentage of the time during which at least some tasks were waiting for memory resources, over the last 10 second window.
 .RE
 
 .B %smem-60
 .RS
-Percentage of the time during which at least some tasks were waiting for memory ressources, over the last 60 second window.
+Percentage of the time during which at least some tasks were waiting for memory resources, over the last 60 second window.
 .RE
 
 .B %smem-300
 .RS
-Percentage of the time during which at least some tasks were waiting for memory ressources, over the last 300 second window.
+Percentage of the time during which at least some tasks were waiting for memory resources, over the last 300 second window.
 .RE
 
 .B %smem
 .RS
-Percentage of the time during which at least some tasks were waiting for memory ressources, over the last time interval.
+Percentage of the time during which at least some tasks were waiting for memory resources, over the last time interval.
 .RE
 
 .B %fmem-10
 .RS
-Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last 10 second window.
+Percentage of the time during which all non-idle tasks were stalled waiting for memory resources, over the last 10 second window.
 .RE
 
 .B %fmem-60
 .RS
-Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last 60 second window.
+Percentage of the time during which all non-idle tasks were stalled waiting for memory resources, over the last 60 second window.
 .RE
 
 .B %fmem-300
 .RS
-Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last 300 second window.
+Percentage of the time during which all non-idle tasks were stalled waiting for memory resources, over the last 300 second window.
 .RE
 
 .B %fmem
 .RS
-Percentage of the time during which all non-idle tasks were stalled waiting for memory ressources, over the last time interval.
+Percentage of the time during which all non-idle tasks were stalled waiting for memory resources, over the last time interval.
 .RE
 
 The
