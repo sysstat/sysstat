@@ -4889,8 +4889,7 @@ $as_echo_n "checking for sensors lib... " >&6; }
 	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <sensors/sensors.h>
-		       #include <sensors/error.h>
-
+					     #include <sensors/error.h>
 int
 main ()
 {
@@ -4986,8 +4985,7 @@ $as_echo_n "checking for PCP libraries... " >&6; }
 	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <pcp/pmapi.h>
-		       #include <pcp/import.h>
-
+					     #include <pcp/import.h>
 int
 main ()
 {
@@ -5792,7 +5790,7 @@ else
   AUX_DOC=yes
 fi
 
-if  test $AUX_DOC !=  "no"; then
+if test $AUX_DOC != "no"; then
    AUX_DOC="yes"
    INSTALL_DOC="y"
 else
@@ -7089,7 +7087,7 @@ echo "
    Installation prefix:		$prefix
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}"
-if test $UCROND != "yes"; then
+if test "$UCROND" != "yes"; then
    echo "   Systemd unit dir:		${with_systemdsystemunitdir}"
 else
    echo "   Use standard cron daemon"

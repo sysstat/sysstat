@@ -129,9 +129,9 @@ if test $HAVE_SENSORS = "y"; then
 	SENSORS=no
 	AC_CHECK_LIB(sensors, sensors_get_detected_chips, LFSENSORS="-lsensors", HAVE_SENSORS="n")
 	AC_MSG_CHECKING(for sensors lib)
-	AC_TRY_COMPILE(#include <sensors/sensors.h>
-		       #include <sensors/error.h>
-		       , sensors_cleanup();,SENSORS=yes; DFSENSORS="-DHAVE_SENSORS", HAVE_SENSORS="n"; SENSORS=no)
+	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sensors/sensors.h>
+					     #include <sensors/error.h>]],
+					   [[sensors_cleanup();]])],SENSORS=yes; DFSENSORS="-DHAVE_SENSORS", HAVE_SENSORS="n"; SENSORS=no)
 	AC_MSG_RESULT($SENSORS)
 fi
 AC_SUBST(HAVE_SENSORS)
@@ -162,9 +162,9 @@ if test $HAVE_PCP = "y"; then
 	PCP=no
 	AC_CHECK_LIB(pcp, pmGetVersion, LFPCP="-lpcp -lpcp_import", HAVE_PCP="n")
 	AC_MSG_CHECKING(for PCP libraries)
-	AC_TRY_COMPILE(#include <pcp/pmapi.h>
-		       #include <pcp/import.h>
-		       , pmiEnd();,PCP=yes; DFPCP="-DHAVE_PCP", HAVE_PCP="n"; PCP=no)
+	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <pcp/pmapi.h>
+					     #include <pcp/import.h>]],
+					   [[pmiEnd();]])],PCP=yes; DFPCP="-DHAVE_PCP", HAVE_PCP="n"; PCP=no)
 	AC_MSG_RESULT($PCP)
 fi
 AC_SUBST(HAVE_PCP)
@@ -644,7 +644,7 @@ AC_ARG_ENABLE(documentation,
 	      AC_HELP_STRING([--disable-documentation],
 			     [do not install documentation]),
 			     AUX_DOC=$enableval,AUX_DOC=yes)
-if  test $AUX_DOC !=  "no"; then
+if test $AUX_DOC != "no"; then
    AUX_DOC="yes"
    INSTALL_DOC="y"
 else
@@ -718,7 +718,7 @@ echo "
    Installation prefix:		$prefix
    rc directory:		${RC_DIR}
    Init directory:		${INIT_DIR}"
-if test $UCROND != "yes"; then
+if test "$UCROND" != "yes"; then
    echo "   Systemd unit dir:		${with_systemdsystemunitdir}"
 else
    echo "   Use standard cron daemon"
