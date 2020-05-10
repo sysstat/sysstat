@@ -1,0 +1,4 @@
+By default sysstat uses systemd if available to start
+the sa1 (the data collector) and sa2 scripts periodically.
+Answer y if you want to use the standard cron daemon instead.
+Default answer is n (no).

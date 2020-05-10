@@ -1,6 +1,6 @@
 #!/bin/sh
 #@(#) Configuration script for sysstat
-# (C) 2000-2014 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 2000-2020 Sebastien GODARD (sysstat <at> orange.fr)
 
 ASK="sh build/Ask.sh"
 
@@ -128,6 +128,17 @@ fi
 
 if [ "${CRON}" != "" ];
 then
+	USE_CROND=`${ASK} 'Use standard cron daemon? (y/n)' "--enable-use-crond" "use-crond"`
+	if [ "${USE_CROND}" = "y" ]; then
+		USE_CROND="--enable-use-crond "
+	else
+		USE_CROND=""
+		echo "Parameter --enable-use-crond is NOT set"
+	fi
+fi
+
+if [ "${CRON}" != "" ];
+then
 	CRON_INTERVAL=`${ASK} 'Crontab sampling interval (in minutes):' "cron_interval" "cron_interval"`
 	if [ "${CRON_INTERVAL}" != "" ]; then
 		CRON="${CRON}cron_interval=${CRON_INTERVAL} "
@@ -211,7 +222,7 @@ fi
 
 echo
 echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
-${CLEAN_SA_DIR}${NLS}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR}"
+${CLEAN_SA_DIR}${NLS}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -221,7 +232,6 @@ echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS} \
-${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${RCDIR} \
+${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}
-

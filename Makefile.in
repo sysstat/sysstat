@@ -153,6 +153,13 @@ endif
 SYSTEMCTL = @SYSTEMCTL@
 SYSTEMD_UNIT_DIR = @SYSTEMD_UNIT_DIR@
 
+ifndef USE_CROND
+USE_CROND = @USE_CROND@
+endif
+ifeq ($(USE_CROND),y)
+SYSTEMD_UNIT_DIR =
+endif
+
 # Run-command directories
 ifndef RC_DIR
 RC_DIR = @RC_DIR@
@@ -515,7 +522,7 @@ endif
 		fi \
 	fi
 ifeq ($(COPY_ONLY),n)
-	if [ -x "$(SYSTEMCTL)" ]; then \
+	if [ -n "$(SYSTEMD_UNIT_DIR)" -a -x "$(SYSTEMCTL)" ]; then \
 		$(SYSTEMCTL) enable sysstat.service; \
 	fi
 endif
@@ -595,17 +602,17 @@ endif
 
 uninstall_all: uninstall_base
 ifeq ($(COPY_ONLY),n)
-	if [ -z "$(SYSTEMD_UNIT_DIR)" -o ! -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) ]; then \
-		-su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).old" ; \
-		-$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old ; \
-		@echo "USER'S CRONTAB SAVED IN CURRENT DIRECTORY (USING .old SUFFIX)." ; \
-		-su $(CRON_OWNER) -c "crontab -r" ; \
+	-if [ -z "$(SYSTEMD_UNIT_DIR)" -o ! -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
+		su $(CRON_OWNER) -c "crontab -l > /tmp/crontab-$(CRON_OWNER).old" ; \
+		$(CP) -a /tmp/crontab-$(CRON_OWNER).old ./crontab-$(CRON_OWNER).`date '+%Y%m%d.%H%M%S'`.old ; \
+		echo "USER'S CRONTAB SAVED IN CURRENT DIRECTORY (USING .old SUFFIX)." ; \
+		su $(CRON_OWNER) -c "crontab -r" ; \
 	fi
-	if [ -x $(SYSTEMCTL) ]; then \
+	-if [ -n "$(SYSTEMD_UNIT_DIR)" -a -x "$(SYSTEMCTL)" ]; then \
 		$(SYSTEMCTL) disable sysstat.service; \
 	fi
 endif
-	if [ -n "$(SYSTEMD_UNIT_DIR)" -a -d $(DESTDIR)$(SYSTEMD_UNIT_DIR) ]; then \
+	if [ -n "$(SYSTEMD_UNIT_DIR)" -a -d "$(DESTDIR)$(SYSTEMD_UNIT_DIR)" ]; then \
 		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat.service; \
 		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.service; \
 		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.timer; \

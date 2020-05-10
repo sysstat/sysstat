@@ -637,6 +637,7 @@ COPY_ONLY
 SADC_OPT
 sadc_options
 cron_interval
+USE_CROND
 cron_owner
 INSTALL_CRON
 CLEAN_SA_DIR
@@ -752,6 +753,7 @@ enable_file_attr
 enable_compress_manpg
 enable_clean_sa_dir
 enable_install_cron
+enable_use_crond
 enable_collect_all
 enable_copy_only
 enable_documentation
@@ -1396,6 +1398,7 @@ Optional Features:
   --enable-compress-manpg compress sysstat manual pages
   --enable-clean-sa-dir   clean system activity directory
   --enable-install-cron   install a crontab to start sar
+  --enable-use-crond      use standard cron daemon
   --enable-collect-all    collect all possible activities
   --enable-copy-only      only copy files when installing
   --disable-documentation do not install documentation
@@ -5238,6 +5241,7 @@ echo .
 #  --disable-pcp           do not link against PCP libraries even if available
 #  --disable-stripping     do not strip object files
 #  --enable-copy-only      only copy files when installing sysstat
+#  --enable-use-crond      use standard cron daemon
 #
 # Some influential environment variables:
 #  rcdir         directory where startup scripts are installed
@@ -5673,6 +5677,26 @@ $as_echo "$CRON_OWNER" >&6; }
       REM_CHOWN=$CHOWN
    fi
 
+#  Check whether we should use the standard cron daemon
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether we should use the standard cron daemon" >&5
+$as_echo_n "checking whether we should use the standard cron daemon... " >&6; }
+   # Check whether --enable-use-crond was given.
+if test "${enable_use_crond+set}" = set; then :
+  enableval=$enable_use_crond; UCROND=$enableval
+else
+  UCROND=no
+fi
+
+   if test $UCROND != "yes"; then
+      USE_CROND=n
+      UCROND=no
+   else
+      USE_CROND=y
+   fi
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $UCROND" >&5
+$as_echo "$UCROND" >&6; }
+
+
 #  Crontab interval
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking crontab interval" >&5
 $as_echo_n "checking crontab interval... " >&6; }
@@ -5768,7 +5792,7 @@ else
   AUX_DOC=yes
 fi
 
-if  test  $AUX_DOC !=  "no"; then
+if  test $AUX_DOC !=  "no"; then
    AUX_DOC="yes"
    INSTALL_DOC="y"
 else
@@ -7064,11 +7088,14 @@ echo "
    Sysstat version:		$PACKAGE_VERSION
    Installation prefix:		$prefix
    rc directory:		${RC_DIR}
-   Init directory:		${INIT_DIR}
-   Systemd unit dir:		${with_systemdsystemunitdir}
-   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
+   Init directory:		${INIT_DIR}"
+if test $UCROND != "yes"; then
+   echo "   Systemd unit dir:		${with_systemdsystemunitdir}"
+else
+   echo "   Use standard cron daemon"
+fi
+echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS
 "
-

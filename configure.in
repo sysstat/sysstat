@@ -204,6 +204,7 @@ echo .
 #  --disable-pcp           do not link against PCP libraries even if available
 #  --disable-stripping     do not strip object files
 #  --enable-copy-only      only copy files when installing sysstat
+#  --enable-use-crond      use standard cron daemon
 #
 # Some influential environment variables:
 #  rcdir         directory where startup scripts are installed
@@ -551,6 +552,21 @@ if test $INSTALL_CRON = "y"; then
       REM_CHOWN=$CHOWN
    fi
 
+#  Check whether we should use the standard cron daemon
+   AC_MSG_CHECKING(whether we should use the standard cron daemon)
+   AC_ARG_ENABLE(use-crond,
+	         AC_HELP_STRING([--enable-use-crond],
+			        [use standard cron daemon]),
+			        UCROND=$enableval,UCROND=no)
+   if test $UCROND != "yes"; then
+      USE_CROND=n
+      UCROND=no
+   else
+      USE_CROND=y
+   fi
+   AC_MSG_RESULT($UCROND)
+   AC_SUBST(USE_CROND)
+
 #  Crontab interval
    AC_MSG_CHECKING(crontab interval)
    AC_ARG_VAR([cron_interval],[crontab interval])
@@ -628,7 +644,7 @@ AC_ARG_ENABLE(documentation,
 	      AC_HELP_STRING([--disable-documentation],
 			     [do not install documentation]),
 			     AUX_DOC=$enableval,AUX_DOC=yes)
-if  test  $AUX_DOC !=  "no"; then
+if  test $AUX_DOC !=  "no"; then
    AUX_DOC="yes"
    INSTALL_DOC="y"
 else
@@ -701,11 +717,14 @@ echo "
    Sysstat version:		$PACKAGE_VERSION
    Installation prefix:		$prefix
    rc directory:		${RC_DIR}
-   Init directory:		${INIT_DIR}
-   Systemd unit dir:		${with_systemdsystemunitdir}
-   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
+   Init directory:		${INIT_DIR}"
+if test $UCROND != "yes"; then
+   echo "   Systemd unit dir:		${with_systemdsystemunitdir}"
+else
+   echo "   Use standard cron daemon"
+fi
+echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS
 "
-
