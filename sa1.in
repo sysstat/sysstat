@@ -32,7 +32,11 @@ fi
 ENDIR=@SA_LIB_DIR@
 cd ${ENDIR}
 [ "$1" = "--boot" ] && shift && BOOT=y || BOOT=n
-if [ $# = 0 ] && [ "${BOOT}" = "n" ]
+[ "$1" = "--sleep" ] && shift && SLEEP=y || SLEEP=n
+if [ "${SLEEP}" = "y" ]
+then
+	exec ${ENDIR}/sadc -F -L ${SADC_OPTIONS} -C "LINUX SLEEP MODE ($*)" ${SA_DIR}
+elif [ $# = 0 ] && [ "${BOOT}" = "n" ]
 then
 # Note: Stats are written at the end of previous file *and* at the
 # beginning of the new one (when there is a file rotation) only if

@@ -19,6 +19,7 @@ cron/sysstat-collect.service
 cron/sysstat-collect.timer
 cron/sysstat-summary.service
 cron/sysstat-summary.timer
+cron/sysstat.sleep
 man/sa1.8
 man/sa2.8
 man/sadc.8

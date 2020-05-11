@@ -677,6 +677,7 @@ HAVE_PCP
 DFSENSORS
 LFSENSORS
 HAVE_SENSORS
+SYSTEMD_SLEEP_DIR
 SYSTEMD_UNIT_DIR
 SYSTEMCTL
 PKG_CONFIG
@@ -747,6 +748,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 with_systemdsystemunitdir
+with_systemdsleepdir
 enable_sensors
 enable_pcp
 enable_largefile
@@ -1413,6 +1415,8 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-systemdsystemunitdir=DIR
                           Directory for systemd service files
+  --with-systemdsleepdir=DIR
+                          Directory for systemd suspend/resume scripts
 
 Some influential environment variables:
   CC          C compiler command
@@ -4112,6 +4116,18 @@ if test -n "$with_systemdsystemunitdir" -a "x$with_systemdsystemunitdir" != xno 
 
 fi
 
+# Check whether --with-systemdsleepdir was given.
+if test "${with_systemdsleepdir+set}" = set; then :
+  withval=$with_systemdsleepdir;
+else
+  with_systemdsleepdir=$($PKG_CONFIG --variable=systemdsleepdir systemd)
+fi
+
+if test -n "$with_systemdsleepdir" -a "x$with_systemdsleepdir" != xno ; then
+    SYSTEMD_SLEEP_DIR=$with_systemdsleepdir
+
+fi
+
 # Check libraries
 
 # Check header files
@@ -5891,6 +5907,8 @@ ac_config_files="$ac_config_files cron/sysstat-summary.service"
 
 ac_config_files="$ac_config_files cron/sysstat-summary.timer"
 
+ac_config_files="$ac_config_files cron/sysstat.sleep"
+	# Permissions must be changed
 ac_config_files="$ac_config_files man/sa1.8:man/sa1.in"
 		# File must be renamed
 ac_config_files="$ac_config_files man/sa2.8:man/sa2.in"
@@ -6633,6 +6651,7 @@ do
     "cron/sysstat-collect.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-collect.timer" ;;
     "cron/sysstat-summary.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.service" ;;
     "cron/sysstat-summary.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.timer" ;;
+    "cron/sysstat.sleep") CONFIG_FILES="$CONFIG_FILES cron/sysstat.sleep" ;;
     "man/sa1.8") CONFIG_FILES="$CONFIG_FILES man/sa1.8:man/sa1.in" ;;
     "man/sa2.8") CONFIG_FILES="$CONFIG_FILES man/sa2.8:man/sa2.in" ;;
     "man/sadc.8") CONFIG_FILES="$CONFIG_FILES man/sadc.8:man/sadc.in" ;;
@@ -7062,6 +7081,7 @@ which seems to be undefined.  Please make sure it is defined" >&2;}
     "sa2":F) chmod +x sa2 ;;
     "cron/sysstat.crond.sample.in":F) sed s/^/#/ cron/sysstat.crond.sample.in > cron/sysstat.crond.sample ;;
     "sysstat":F) chmod +x sysstat ;;
+    "cron/sysstat.sleep":F) chmod +x cron/sysstat.sleep ;;
 
   esac
 done # for ac_tag
@@ -7108,6 +7128,7 @@ echo "
    Init directory:		${INIT_DIR}"
 if test "$UCROND" != "yes"; then
    echo "   Systemd unit dir:		${with_systemdsystemunitdir}"
+   echo "   Systemd sleep dir:		${with_systemdsleepdir}"
 else
    echo "   Use standard cron daemon"
 fi
