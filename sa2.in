@@ -16,11 +16,20 @@ COMPRESSAFTER=@COMPRESSAFTER@
 ZIP="@ZIP@"
 UMASK=0022
 ENDIR=@SAR_DIR@
+DELAY_RANGE=@DELAY_RANGE@
 
 # Read configuration file, overriding variables set above
 [ -r ${SYSCONFIG_DIR}/${SYSCONFIG_FILE} ] && . ${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
 
 umask ${UMASK}
+
+# Wait for a random delay if requested
+if [ ${DELAY_RANGE} -gt 0 ]
+then
+	RANDOM=$$
+	DELAY=$((${RANDOM}%${DELAY_RANGE}))
+	sleep ${DELAY}
+fi
 
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
 

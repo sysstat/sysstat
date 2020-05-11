@@ -1,4 +1,4 @@
-.TH SYSSTAT 5 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "MAY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 .SH DESCRIPTION
@@ -16,6 +16,13 @@ Number of days after which daily data files are to be compressed.
 The compression program is given in the
 .B ZIP
 variable.
+
+.TP
+.B DELAY_RANGE
+Tell sa2 script to wait for a random delay in the indicated range before running.
+This delay is expressed in seconds, and is aimed at preventing a massive I/O burst
+at the same time on VM sharing the same storage area.
+A value of 0 means that sa2 script will generate its reports files immediately.
 
 .TP
 .B HISTORY

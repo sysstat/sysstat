@@ -88,6 +88,12 @@ if [ "${HISTORY}" != "" ]; then
 	HISTORY="history=${HISTORY} "
 fi
 
+# Random delay before sa2 script generates its reports files
+DELAY_RANGE=`${ASK} 'Maximum delay in seconds to wait before sa2 script runs:' "delay_range" "delay_range"`
+if [ "${DELAY_RANGE}" != "" ]; then
+	DELAY_RANGE="delay_range=${DELAY_RANGE} "
+fi
+
 # Delay after which datafiles are to be compressed
 COMPRESSAFTER=`${ASK} 'Number of days after which sar datafiles must be compressed:' "compressafter" "compressafter"`
 if [ "${COMPRESSAFTER}" != "" ]; then
@@ -222,7 +228,8 @@ fi
 
 echo
 echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
-${CLEAN_SA_DIR}${NLS}${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR}"
+${CLEAN_SA_DIR}${NLS}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
+${CRON}${USE_CROND}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -232,6 +239,6 @@ echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS} \
-${HISTORY}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR} \
+${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}

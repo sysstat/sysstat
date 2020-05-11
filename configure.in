@@ -214,6 +214,7 @@ echo .
 #  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
 #  conf_file     sysstat configuration file (default is sysstat)
 #  history       number of daily datafiles to keep (default value is 7)
+#  delay_range   maximum delay (in seconds) to wait before sa2 script generates its reports
 #  compressafter number of days after which datafiles are compressed
 #  man_group     group for man pages
 #  cron_owner    crontab owner
@@ -432,6 +433,17 @@ else
 fi
 AC_MSG_RESULT($COMPRESSAFTER)
 AC_SUBST(COMPRESSAFTER)
+
+# Random delay to wait before sa2 script runs
+AC_MSG_CHECKING(random delay to wait before sa2 script runs)
+AC_ARG_VAR([delay_range],[maximum delay (in seconds) to wait before sa2 script generates its reports])
+if test x$delay_range = x""; then
+   DELAY_RANGE=0
+else
+   DELAY_RANGE=$delay_range
+fi
+AC_MSG_RESULT($DELAY_RANGE)
+AC_SUBST(DELAY_RANGE)
 
 # Manual page group
 grep ^man: /etc/group >/dev/null 2>&1

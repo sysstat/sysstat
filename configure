@@ -645,6 +645,8 @@ COMPRESS_MANPG
 IGNORE_FILE_ATTRIBUTES
 MAN_GROUP
 man_group
+DELAY_RANGE
+delay_range
 COMPRESSAFTER
 compressafter
 HISTORY
@@ -777,6 +779,7 @@ conf_dir
 conf_file
 history
 compressafter
+delay_range
 man_group
 cron_owner
 cron_interval
@@ -1430,6 +1433,8 @@ Some influential environment variables:
   compressafter
               number of days after which data files are compressed (default
               value is 10)
+  delay_range maximum delay (in seconds) to wait before sa2 script generates
+              its reports
   man_group   group for manual pages
   cron_owner  crontab owner
   cron_interval
@@ -5249,6 +5254,7 @@ echo .
 #  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
 #  conf_file     sysstat configuration file (default is sysstat)
 #  history       number of daily datafiles to keep (default value is 7)
+#  delay_range   maximum delay (in seconds) to wait before sa2 script generates its reports
 #  compressafter number of days after which datafiles are compressed
 #  man_group     group for man pages
 #  cron_owner    crontab owner
@@ -5526,6 +5532,19 @@ else
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $COMPRESSAFTER" >&5
 $as_echo "$COMPRESSAFTER" >&6; }
+
+
+# Random delay to wait before sa2 script runs
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking random delay to wait before sa2 script runs" >&5
+$as_echo_n "checking random delay to wait before sa2 script runs... " >&6; }
+
+if test x$delay_range = x""; then
+   DELAY_RANGE=0
+else
+   DELAY_RANGE=$delay_range
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $DELAY_RANGE" >&5
+$as_echo "$DELAY_RANGE" >&6; }
 
 
 # Manual page group
