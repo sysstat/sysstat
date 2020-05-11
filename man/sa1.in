@@ -1,8 +1,8 @@
-.TH SA1 8 "JULY 2018" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA1 8 "MAY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
 .SH SYNOPSIS
-.B @SA_LIB_DIR@/sa1 [ --boot |
+.B @SA_LIB_DIR@/sa1 [ --boot | --sleep |
 .I interval
 .I count
 .B ]
@@ -57,6 +57,13 @@ and
 .I count
 parameters in order to insert a dummy record, marking the time when the counters
 restart from 0.
+.IP --sleep
+This option tells
+.B sa1
+that the
+.B sadc
+command should insert a comment indicating that the system is entering or leaving
+sleep mode (i.e. system suspend or hibernation).
 
 .SH EXAMPLE
 To collect data (including those from disks) every 10 minutes,
