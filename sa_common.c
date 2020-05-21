@@ -1064,7 +1064,7 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 
 /*
  ***************************************************************************
- * Disks may be registered dynamically (true in /proc/stat file).
+ * Disks may be registered dynamically (true in /proc/diskstats file).
  * This is what we try to guess here.
  *
  * IN:
