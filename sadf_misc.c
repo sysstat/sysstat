@@ -875,11 +875,6 @@ __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 	if (action & F_BEGIN) {
 		return print_dbppc_timestamp(F_PPC_OUTPUT, file_hdr, cur_date, cur_time, utc, itv);
 	}
-	if (action & F_END) {
-		if (DISPLAY_HORIZONTALLY(flags)) {
-			printf("\n");
-		}
-	}
 
 	return NULL;
 }
