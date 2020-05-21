@@ -1,0 +1,4 @@
+rm -f tests/root
+ln -s root1 tests/root
+# -p ALL should not be used before a list of devices
+LC_ALL=C TZ=GMT ./iostat -g total -p ALL -g other sda9 sda12 1 2 > tests/out3.iostat-gpALL.tmp

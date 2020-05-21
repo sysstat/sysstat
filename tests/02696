@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./iostat -g other sda9 sda12 -g total -p ALL 1 2 > tests/out2.iostat-gpALL.tmp

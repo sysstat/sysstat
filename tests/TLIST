@@ -220,7 +220,7 @@ NOTES:
 01010	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
 01012	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
 01014	diff -u tests/out2.sar-qALL.tmp tests/expected2.sar-qALL
-01020	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
+01020	LC_ALL=C TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
 
 =====	sar/sadf: Reading data0.tmp
 01100	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out0.sar-A.tmp
@@ -442,6 +442,10 @@ NOTES:
 02685	diff -u tests/out.iostat-gALL.tmp tests/expected.iostat-gALL
 02690	LC_ALL=C TZ=GMT ./iostat -g total -p ALL 1 2 > tests/out.iostat-gpALL.tmp
 02695	diff -u tests/out.iostat-gpALL.tmp tests/expected.iostat-gpALL
+02696	LC_ALL=C TZ=GMT ./iostat -g other sda9 sda12 -g total -p ALL 1 2 > tests/out2.iostat-gpALL.tmp
+02697	diff -u tests/out2.iostat-gpALL.tmp tests/expected2.iostat-gpALL
+02698	LC_ALL=C TZ=GMT ./iostat -g total -p ALL -g other sda9 sda12 1 2 > tests/out3.iostat-gpALL.tmp
+02699	diff -u tests/out3.iostat-gpALL.tmp tests/expected3.iostat-gpALL
 02700	LC_ALL=C TZ=GMT ./iostat -g total -p sda 1 2 > tests/out.iostat-gp.tmp
 02705	diff -u tests/out.iostat-gp.tmp tests/expected.iostat-gp
 02710	LC_ALL=C TZ=GMT ./iostat -g total -p sda -y 1 3 > tests/out.iostat-gpy.tmp
