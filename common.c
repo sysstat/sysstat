@@ -1451,7 +1451,7 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 			strncpy(range, t, 16);
 			range[15] = '\0';
 			valstr = t;
-			if ((s = index(range, '-')) != NULL) {
+			if ((s = strchr(range, '-')) != NULL) {
 				/* Possible range of values */
 				*s = '\0';
 				if (parse_valstr(range, max_val, &val_low) || (val_low < 0))
