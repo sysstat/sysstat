@@ -99,7 +99,7 @@ time_t get_localtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
 
-	__time(&timer);
+	timer = __time(NULL);
 	timer -= SEC_PER_DAY * d_off;
 	localtime_r(&timer, rectime);
 
@@ -124,7 +124,7 @@ time_t get_gmtime(struct tm *rectime, int d_off)
 {
 	time_t timer;
 
-	__time(&timer);
+	timer = __time(NULL);
 	timer -= SEC_PER_DAY * d_off;
 	gmtime_r(&timer, rectime);
 

@@ -45,13 +45,13 @@ extern int sigint_caught;
  * Test mode: Instead of reading system time, use time given on the command
  * line.
  *
- * OUT:
- * @t	Number of seconds since the epoch, as given on the command line.
+ * RETURNS:
+ * Number of seconds since the epoch, as given on the command line.
  ***************************************************************************
  */
-void get_unix_time(time_t *t)
+time_t get_unix_time(time_t *t)
 {
-	*t = __unix_time;
+	return __unix_time;
 }
 
 /*
