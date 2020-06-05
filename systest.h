@@ -78,7 +78,7 @@ char *get_realname
 	(char *, char *);
 void get_uname
 	(struct utsname *);
-void get_unix_time
+time_t get_unix_time
 	(time_t *);
 struct passwd *get_usrname
 	(uid_t);
