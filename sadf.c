@@ -186,8 +186,8 @@ void check_format_options(void)
 		flags &= ~S_F_HORIZONTALLY;
 	}
 	if (!ACCEPT_LOCAL_TIME(fmt[f_position]->options)) {
-		/* Remove options -T and -t */
-		flags &= ~(S_F_LOCAL_TIME + S_F_TRUE_TIME);
+		/* Remove option -T */
+		flags &= ~S_F_LOCAL_TIME;
 	}
 	if (!ACCEPT_SEC_EPOCH(fmt[f_position]->options)) {
 		/* Remove option -U */
