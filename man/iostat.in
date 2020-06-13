@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "DECEMBER 2019" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "JUNE 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -454,13 +454,13 @@ When this variable is set, transfer rates are shown in 512-byte blocks instead
 of the default 1K blocks.
 
 .IP S_COLORS
-When this variable is set, display statistics in color on the terminal.
-Possible values for this variable are
+By default statistics are displayed in color when the output is connected to a terminal.
+Use this variable to change the settings. Possible values for this variable are
 .IR never ,
 .IR always
 or
 .IR auto
-(the latter is the default).
+(the latter is equivalent to the default settings).
 
 Please note that the color (being red, yellow, or some other color) used to display a value
 is not indicative of any kind of issue simply because of the color. It only indicates different
