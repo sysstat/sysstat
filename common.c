@@ -1061,11 +1061,13 @@ void init_colors(void)
 	int len;
 
 	/* Read S_COLORS environment variable */
-	if (((e = __getenv(ENV_COLORS)) == NULL) ||
-	    !strcmp(e, C_NEVER) ||
-	    (strcmp(e, C_ALWAYS) && !isatty(STDOUT_FILENO))) {
+	if ((e = __getenv(ENV_COLORS)) == NULL
+	     ? !isatty(STDOUT_FILENO)
+	     : (!strcmp(e, C_NEVER) ||
+		(strcmp(e, C_ALWAYS) && !isatty(STDOUT_FILENO)))) {
 		/*
-		 * Environment variable not set, or set to "never",
+		 * Environment variable not set and stdout is not a terminal,
+		 * or set to "never",
 		 * or set to "auto" and stdout is not a terminal:
 		 * Unset color strings.
 		 */
