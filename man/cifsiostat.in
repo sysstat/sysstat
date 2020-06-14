@@ -173,6 +173,10 @@ filesystem must be mounted for
 .B cifsiostat
 to work.
 
+Although
+.B cifsiostat
+speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 .SH FILE
 .I /proc/fs/cifs/Stats
 contains CIFS statistics.

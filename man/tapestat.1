@@ -244,6 +244,10 @@ to work. It will not work on kernels that do not have sysfs support
 This command requires kernel version 4.2 or later
 (or tape statistics support backported for an earlier kernel version).
 
+Although
+.B tapestat
+speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 .SH FILES
 .I /sys/class/scsi_tape/st<num>/stats/*
 Statistics files for tape devices.

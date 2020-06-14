@@ -2563,6 +2563,11 @@ command to work.
 All the statistics are not necessarily available, depending on the kernel version used.
 .B sar
 assumes that you are using at least a 2.6 kernel.
+
+Although
+.B sar
+speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 .SH FILES
 .I @SA_DIR@/saDD
 .br
