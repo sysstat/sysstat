@@ -1,2 +1,2 @@
 language: c
-script: ./configure CFLAGS="-D DEBUG -D TEST" sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests && make && make simtest
+script: ./do_test
