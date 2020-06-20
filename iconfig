@@ -191,12 +191,12 @@ then
 fi
 
 # Compress manual pages
-COMPRESSMANPG=`${ASK} 'Compress manual pages? (y/n)' "--enable-compress-manpg" "compress-manpg"`
+COMPRESSMANPG=`${ASK} 'Do not compress manual pages? (y/n)' "--disable-compress-manpg" "compress-manpg"`
 if [ "${COMPRESSMANPG}" = "y" ]; then
-	COMPRESSMANPG="--enable-compress-manpg "
+	COMPRESSMANPG="--disable-compress-manpg "
 else
 	COMPRESSMANPG=""
-	echo "Parameter --enable-compress-manpg is NOT set"
+	echo "Parameter --disable-compress-manpg is NOT set"
 fi
 
 # Install documentation

@@ -383,7 +383,7 @@ ifeq ($(INSTALL_DOC),y)
 	$(INSTALL_DATA) $(MANGRPARG) man/pidstat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/cifsiostat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/cifsiostat.1 $(DESTDIR)$(MAN1_DIR)
-ifeq ($(COMPRESS_MANPG),y)
+ifeq ($(COMPRESS_MANPG),n)
 	$(ZIP) $(DESTDIR)$(MAN8_DIR)/sa1.8
 	$(ZIP) $(DESTDIR)$(MAN8_DIR)/sa2.8
 	$(ZIP) $(DESTDIR)$(MAN8_DIR)/sadc.8

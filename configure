@@ -1400,7 +1400,8 @@ Optional Features:
   --disable-largefile     omit support for large files
   --disable-nls           disable National Language Support
   --disable-file-attr     do not set attributes on files being installed
-  --enable-compress-manpg compress sysstat manual pages
+  --disable-compress-manpg
+                          do not compress sysstat manual pages
   --enable-clean-sa-dir   clean system activity directory
   --enable-install-cron   install a crontab to start sar
   --enable-use-crond      use standard cron daemon
@@ -4975,22 +4976,22 @@ echo .
 # Check arguments used
 #
 # Optional Features:
-#  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
-#  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-#  --disable-largefile     omit support for large files
-#  --disable-nls           disable National Language Support
-#  --disable-file-attr     don't set attributes on files being installed
-#  --enable-install-cron   tell sysstat to install cron scripts
-#  --collect-all           tell sadc to collect all possible data
-#  --enable-clean-sa-dir   clean system activity directory
-#  --enable-compress-manpg compress manual pages
-#  --enable-debuginfo      enable debug output (--debuginfo option)
-#  --disable-documentation do not install documentation (man pages...)
-#  --disable-sensors       do not link against libsensors even if available
-#  --disable-pcp           do not link against PCP libraries even if available
-#  --disable-stripping     do not strip object files
-#  --enable-copy-only      only copy files when installing sysstat
-#  --enable-use-crond      use standard cron daemon
+#  --disable-FEATURE        do not include FEATURE (same as --enable-FEATURE=no)
+#  --enable-FEATURE[=ARG]   include FEATURE [ARG=yes]
+#  --disable-largefile      omit support for large files
+#  --disable-nls            disable National Language Support
+#  --disable-file-attr      don't set attributes on files being installed
+#  --enable-install-cron    tell sysstat to install cron scripts
+#  --collect-all            tell sadc to collect all possible data
+#  --enable-clean-sa-dir    clean system activity directory
+#  --disable-compress-manpg do not compress manual pages when installed
+#  --enable-debuginfo       enable debug output (--debuginfo option)
+#  --disable-documentation  do not install documentation (man pages...)
+#  --disable-sensors        do not link against libsensors even if available
+#  --disable-pcp            do not link against PCP libraries even if available
+#  --disable-stripping      do not strip object files
+#  --enable-copy-only       only copy files when installing sysstat
+#  --enable-use-crond       use standard cron daemon
 #
 # Some influential environment variables:
 #  rcdir         directory where startup scripts are installed
@@ -5345,8 +5346,8 @@ $as_echo "$AUX_IMG" >&6; }
 
 
 # Compress manual pages?
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether manual pages should be compressed" >&5
-$as_echo_n "checking whether manual pages should be compressed... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether manual pages should not be compressed" >&5
+$as_echo_n "checking whether manual pages should not be compressed... " >&6; }
 # Check whether --enable-compress-manpg was given.
 if test "${enable_compress_manpg+set}" = set; then :
   enableval=$enable_compress_manpg; AUX_MPG=$enableval
