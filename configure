@@ -623,7 +623,6 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 STRIP
 DFLAGS
-WITH_DEBUG
 INSTALL_DOC
 COLLECT_ALL
 REM_CHOWN
@@ -5570,7 +5569,9 @@ $as_echo "$AUX_DOC" >&6; }
 # Set directory for installing manual pages (see comment in Makefile)
 
 
-# Check whether --debuginfo options should be allowed
+# Check whether debug mode should be activated
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether debug mode should be activated" >&5
+$as_echo_n "checking whether debug mode should be activated... " >&6; }
 # Check whether --enable-debuginfo was given.
 if test "${enable_debuginfo+set}" = set; then :
   enableval=$enable_debuginfo; WITH_DEBUG=yes ; DFLAGS="$DFLAGS -DDEBUG"
@@ -5578,7 +5579,8 @@ else
   WITH_DEBUG=no
 fi
 
-
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $WITH_DEBUG" >&5
+$as_echo "$WITH_DEBUG" >&6; }
 
 
 # Check whether object files should be stripped

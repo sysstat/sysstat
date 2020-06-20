@@ -673,12 +673,13 @@ AC_SUBST(INSTALL_DOC)
 # Set directory for installing manual pages (see comment in Makefile)
 AC_SUBST(mandir)
 
-# Check whether --debuginfo options should be allowed
+# Check whether debug mode should be activated
+AC_MSG_CHECKING(whether debug mode should be activated)
 AC_ARG_ENABLE(debuginfo, 
 	      AC_HELP_STRING([--enable-debuginfo],
 			     [enable debug output (--debuginfo option)]),
 			     WITH_DEBUG=yes ; DFLAGS="$DFLAGS -DDEBUG" , WITH_DEBUG=no)
-AC_SUBST(WITH_DEBUG)
+AC_MSG_RESULT($WITH_DEBUG)
 AC_SUBST(DFLAGS)
 
 # Check whether object files should be stripped
