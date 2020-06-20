@@ -1,5 +1,5 @@
 
-Answering y here disable sensors support. Sysstat commands
+Answering y here disables sensors support. Sysstat commands
 will not be linked against sensors library even if this library
 is installed on your system.
 Without sensors support, some statistics related to power management

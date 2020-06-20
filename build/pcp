@@ -1,0 +1,4 @@
+
+Answering y here disables PCP (Performance Co-Pilot) support.
+sadf command will then not be able to export its data into a PCP compliant format.
+
