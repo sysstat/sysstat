@@ -681,6 +681,7 @@ AC_ARG_ENABLE(debuginfo,
 			     WITH_DEBUG=yes ; DFLAGS="$DFLAGS -DDEBUG" , WITH_DEBUG=no)
 AC_MSG_RESULT($WITH_DEBUG)
 AC_SUBST(DFLAGS)
+AC_SUBST(WITH_DEBUG)
 
 # Check whether object files should be stripped
 AC_MSG_CHECKING(whether object files should be stripped)

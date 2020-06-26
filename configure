@@ -622,6 +622,7 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 STRIP
+WITH_DEBUG
 DFLAGS
 INSTALL_DOC
 COLLECT_ALL
@@ -5581,6 +5582,7 @@ fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $WITH_DEBUG" >&5
 $as_echo "$WITH_DEBUG" >&6; }
+
 
 
 # Check whether object files should be stripped
