@@ -454,34 +454,6 @@ char *ioc_name(unsigned int major, unsigned int minor)
 
 /*
  ***************************************************************************
- * Check whether a device is a whole disk device or not.
- *
- * IN:
- * @major	Device major number.
- * @minor	Device minor number.
- *
- * RETURNS:
- * Predicate: Returns 1 if dev (major,minor) is a whole disk device.
- *            Returns 0 otherwise.
- ***************************************************************************
- */
-int ioc_iswhole(unsigned int major, unsigned int minor)
-{
-	if (!ioc_parsed && !ioc_init())
-		return 0;
-
-	if (major > MAX_BLKDEV)
-		return 0;
-
-	if (ioconf[major] == NULL)
-		/* Device not registered */
-		return 0;
-
-	return (IS_WHOLE(major, minor));
-}
-
-/*
- ***************************************************************************
  * Transform device mapper name: Get the user assigned name of the logical
  * device instead of the internal device mapper numbering.
  *
