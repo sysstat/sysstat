@@ -786,13 +786,14 @@ struct record_header {
  * Indicate that activity's metrics have persistent values when devices
  * are registered again (this means that when the device is registered again,
  * the metrics pick the values they had when they had been unregistered).
- * Exclusively used for CPU related statistics at the present time.
+ * Exclusively used for CPU related statistics at the present time
+ * (e.g. A_CPU and A_NET_SOFT).
  */
 #define AO_PERSISTENT		0x08
 /*
  * This flag should be set for every activity closing a markup used
  * by several activities. Used by sadf f_xml_print() functions to
- * display XML output.
+ * display XML output, and also by f_json_print() functions to display JSON output.
  */
 #define AO_CLOSE_MARKUP		0x10
 /*
@@ -895,11 +896,11 @@ struct activity {
 	 * or equal to 0.
 	 *
 	 * A value of -1 indicates that the number of items
-	 * is a constant (and @nr is set to this value).
+	 * is a constant (and @nr_ini is set to this value).
 	 *
-	 * These functions are called even if corresponding activities have not
-	 * been selected, to make sure that all items have been calculated
-	 * (including #CPU, etc.)
+	 * This function may be called even if corresponding activity has not
+	 * been selected if flag AO_ALWAYS_COUNTED is set, to make sure that
+	 * all items have been calculated (e.g. #CPU)
 	 *
 	 * The count() function may also be used to know if an activity (with
 	 * AO_DETECTED flag) can actually be collected based on the presence of
@@ -964,7 +965,7 @@ struct activity {
 	__nr_t (*f_count_new) (struct activity *, int);
 	/*
 	 * Linked list containing item names. This is either all the different items
-	 * found in a file for activities that have a @f_count_function() (used by sadf),
+	 * found in a file for activities that have a @f_count_new() function (used by sadf),
 	 * or a list entered on the command line (used by sadf and sar).
 	 */
 	struct sa_item *item_list;
@@ -1013,7 +1014,7 @@ struct activity {
 	/*
 	 * Number of items on the system, as counted when the system is initialized.
 	 * A negative value (-1) is the default value and indicates that this number
-	 * has still not been calculated by the f_count() function.
+	 * has still not been calculated by the function whose index is in @f_count_index.
 	 * A value of 0 means that this number has been calculated, but no items have
 	 * been found.
 	 * A positive value (>0) has either been calculated or is a constant.
@@ -1029,11 +1030,11 @@ struct activity {
 	 * been found.
 	 * A positive value (>0) has either been calculated or is a constant.
 	 * Rules:
-	 * 1) IF @nr2 = 0 THEN @nr = 0
-	 *    Note: If @nr = 0, then @nr2 is undetermined (may be -1, 0 or >0).
-	 * 2) IF @nr > 0 THEN @nr2 > 0.
-	 *    Note: If @nr2 > 0 then @nr is undetermined (may be -1, 0 or >0).
-	 * 3) IF @nr <= 0 THEN @nr2 = -1 (this is the default value for @nr2,
+	 * 1) IF @nr2 = 0 THEN @nr_ini = 0
+	 *    Note: If @nr_ini = 0, then @nr2 is undetermined (may be -1, 0 or >0).
+	 * 2) IF @nr_ini > 0 THEN @nr2 > 0.
+	 *    Note: If @nr2 > 0 then @nr_ini is undetermined (may be -1, 0 or >0).
+	 * 3) IF @nr_ini <= 0 THEN @nr2 = -1 (this is the default value for @nr2,
 	 * meaning that it has not been calculated).
 	 */
 	__nr_t nr2;
@@ -1070,7 +1071,7 @@ struct activity {
 	 * Optional flags for activity. This is eg. used when AO_MULTIPLE_OUTPUTS
 	 * option is set.
 	 * 0x0001 - 0x0080 : Multiple outputs (eg. AO_F_MEMORY, AO_F_SWAP...)
-	 * 0x0100 - 0x8000 : If bit set then display complete header (hdr_line) for
+	 * 0x0100 - 0x8000 : If bit set then display complete header (@hdr_line) for
 	 *                   corresponding output
 	 * 0x010000+       : Optional flags
 	 */

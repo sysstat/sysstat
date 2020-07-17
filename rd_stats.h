@@ -122,7 +122,7 @@ struct stats_cpu {
 
 /*
  * Structure for task creation and context switch statistics.
- * The attribute (aligned(16)) is necessary so that sizeof(structure) has
+ * The attribute (aligned(8)) is necessary so that sizeof(structure) has
  * the same value on 32 and 64-bit architectures.
  */
 struct stats_pcsw {

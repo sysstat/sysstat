@@ -50,7 +50,8 @@
 #define FO_LC_NUMERIC_C		0x01
 
 /*
- * Indicate that output should stop after the header is displayed.
+ * Indicate that option -H may be used with corresponding format
+ * so that only the header is displayed.
  */
 #define FO_HEADER_ONLY		0x02
 

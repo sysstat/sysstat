@@ -5,8 +5,8 @@
 #
 #  Maintained by Sebastien Godard (sysstat [at] orange.fr)
 #
-#  This file gives iostat and sadc a clue about how to find whole
-#   disk devices in /proc/partitions and /proc/diskstats
+#  This file gives iostat, sar, and sadf a clue about how to find whole
+#  disk devices in /proc/diskstats.
 #  Authoritative source is: linux/Documentation/devices.txt or
 #  linux/Documentation/admin-guide/devices.txt
 #

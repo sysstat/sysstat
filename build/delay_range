@@ -1,4 +1,6 @@
+
 Tell sa2 script to wait for a random delay in the indicated range before
 running. This delay is expressed in seconds, and is aimed at preventing
 a massive I/O burst at the same time on VM sharing the same storage area.
 Default value is 0, meaning that sa2 will generate reports files immediately.
+

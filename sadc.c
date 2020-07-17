@@ -609,7 +609,7 @@ void write_new_cpu_nr(int ofd)
  *
  * IN:
  * @ofd		Output file descriptor.
- * @rtype	Record type to write (dummy or comment).
+ * @rtype	Record type to write (restart or comment).
  ***************************************************************************
  */
 void write_special_record(int ofd, int rtype)

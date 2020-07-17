@@ -185,8 +185,6 @@ void init_nls(void)
 /*
  ***************************************************************************
  * Test whether given name is a device or a partition, using sysfs.
- * This is more straightforward that using ioc_iswhole() function from
- * ioconf.c which should be used only with kernels that don't have sysfs.
  *
  * IN:
  * @sysdev		sysfs location.
@@ -196,7 +194,7 @@ void init_nls(void)
  *			/sys/block/<device>/device link exists.
  *
  * RETURNS:
- * TRUE if @name is not a partition.
+ * TRUE if @name is a device, and FALSE if it's a partition.
  ***************************************************************************
  */
 int is_device(char *sysdev, char *name, int allow_virtual)

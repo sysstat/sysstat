@@ -566,8 +566,6 @@ char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
 /*
  ***************************************************************************
  * Get device real name if possible.
- * Warning: This routine may return a bad name on 2.4 kernels where
- * disk activities are read from /proc/stat.
  *
  * IN:
  * @major	Major number of the device.
