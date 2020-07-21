@@ -1,0 +1,7 @@
+# By default __unix_time value is 0, which corresponds to sa01
+rm -f tests/sa01
+
+rm -f tests/root
+ln -s root1 tests/root
+./cron/sysstat.sleep post hibernate
+

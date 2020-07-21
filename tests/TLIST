@@ -52,6 +52,9 @@ NOTES:
 00208	diff -u tests/out.sa1.tmp tests/expected.sa1
 00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
 00225	diff -u tests/out.sa2.tmp tests/expected.sa2
+00230	./cron/sysstat.sleep post hibernate
+00235	LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp
+00238	diff -u tests/out.sa1-sleep.tmp tests/expected.sa1-sleep
 
 =====	Checking JSON output validity
 00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
