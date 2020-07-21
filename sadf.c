@@ -1816,7 +1816,7 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			interval = atol(argv[opt++]);
-			if (interval <= 0) {
+			if (interval < 1) {
 				usage(argv[0]);
 			}
 		}

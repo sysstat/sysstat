@@ -161,7 +161,7 @@
 	"?"))))))
 
 struct pid_stats {
-	unsigned long long read_bytes			__attribute__ ((aligned (16)));
+	unsigned long long read_bytes			__attribute__ ((aligned (8)));
 	unsigned long long write_bytes			__attribute__ ((packed));
 	unsigned long long cancelled_write_bytes	__attribute__ ((packed));
 	unsigned long long blkio_swapin_delays		__attribute__ ((packed));

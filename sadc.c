@@ -62,7 +62,7 @@ extern int __env;
 
 extern char *tzname[2];
 
-long interval = 0;
+long interval = -1;
 uint64_t flags = 0;
 
 int optz = 0;
@@ -1299,7 +1299,7 @@ int main(int argc, char **argv)
 			}
 		}
 
-		else if (!interval) {
+		else if (interval < 0) {
 			/* Get interval */
 			interval = atol(argv[opt]);
 			if (interval < 1) {
@@ -1371,7 +1371,7 @@ int main(int argc, char **argv)
 		print_collect_error();
 	}
 
-	if (!interval && !comment[0]) {
+	if ((interval < 0) && !comment[0]) {
 		/*
 		 * Interval (and count) not set, and no comment given
 		 * => We are going to insert a restart mark.
@@ -1392,7 +1392,7 @@ int main(int argc, char **argv)
 	open_ofile(&ofd, ofile, restart_mark);
 	open_stdout(&stdfd);
 
-	if (!interval) {
+	if (interval < 0) {
 		if (ofd >= 0) {
 			/*
 			 * Interval (and count) not set:
