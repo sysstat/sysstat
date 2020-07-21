@@ -776,11 +776,12 @@ char *strtolower(char *str)
 */
 char *get_persistent_type_dir(char *type)
 {
-	static char dir[32];
+	static char dir[PATH_MAX];
+	int n;
 
-	snprintf(dir, 32, "%s-%s", DEV_DISK_BY, type);
+	n = snprintf(dir, sizeof(dir), "%s-%s", DEV_DISK_BY, type);
 
-	if (access(dir, R_OK)) {
+	if ((n >= sizeof(dir)) || access(dir, R_OK)) {
 		return (NULL);
 	}
 
@@ -801,11 +802,12 @@ char *get_persistent_type_dir(char *type)
 char *get_persistent_name_path(char *name)
 {
 	static char path[PATH_MAX];
+	int n;
 
-	snprintf(path, PATH_MAX, "%s/%s",
-		 get_persistent_type_dir(persistent_name_type), name);
+	n = snprintf(path, PATH_MAX, "%s/%s",
+		     get_persistent_type_dir(persistent_name_type), name);
 
-	if (access(path, F_OK)) {
+	if ((n >= sizeof(path)) || access(path, F_OK)) {
 		return (NULL);
 	}
 
