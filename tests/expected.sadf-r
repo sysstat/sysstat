@@ -3172,7 +3172,7 @@
 13:54:35 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:54:35 UTC; tps; 5153409; 6163459; rtps; 85418; 95418; wtps; 5067891; 6067891; dtps; 100; 150; bread/s; 3195498; 3195498; bwrtn/s; 821088; 821088; bdscd/s; 100; 150;
+13:54:35 UTC; tps; 5153543; 6163613; rtps; 85552; 95572; wtps; 5067891; 6067891; dtps; 100; 150; bread/s; 3200690; 3202690; bwrtn/s; 821088; 821088; bdscd/s; 100; 150;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
@@ -3193,7 +3193,7 @@
 13:54:35 UTC; TTY; 0; rcvin/s; 32543; 32543; txmtin/s; 14323; 14323; framerr/s; 123; 123; prtyerr/s; 123; 123; brk/s; 42; 42; ovrun/s; 13; 13;
 13:54:35 UTC; TTY; 1; rcvin/s; 0; 0; txmtin/s; 0; 0; framerr/s; 0; 0; prtyerr/s; 0; 0; brk/s; 0; 0; ovrun/s; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_DISK; nr_curr; 13; nr_alloc; 19; nr_ini; 19
+# name; A_DISK; nr_curr; 15; nr_alloc; 19; nr_ini; 19
 13:54:35 UTC; major; 8; minor; 0; DEV; dev8-0; tps; 61881; 61931; rkB/s; 3195498; 3195498; wkB/s; 821088; 821088; dkB/s; 100; 150; rd_ticks; 623970; 623970; wr_ticks; 117109; 117109; dc_ticks; 100; 150; tot_ticks; 32862; 32862; aqu-sz; 714408; 714408;
 13:54:35 UTC; major; 8; minor; 1; DEV; dev8-1; tps; 151; 201; rkB/s; 4216; 4216; wkB/s; 0; 0; dkB/s; 100; 150; rd_ticks; 3107; 3107; wr_ticks; 0; 0; dc_ticks; 100; 150; tot_ticks; 41; 41; aqu-sz; 3086; 3086;
 13:54:35 UTC; major; 8; minor; 2; DEV; dev8-2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -3207,6 +3207,8 @@
 13:54:35 UTC; major; 104; minor; 0; DEV; dev104-0; tps; 5091528; 6101528; rkB/s; 0; 0; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 163484; 263484; wr_ticks; 18832400; 18832400; dc_ticks; 0; 0; tot_ticks; 7365500; 7365500; aqu-sz; 19000180; 19000180;
 13:54:35 UTC; major; 104; minor; 1; DEV; dev104-1; tps; 61528; 61528; rkB/s; 0; 0; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 63484; 63484; wr_ticks; 8832400; 8832400; dc_ticks; 0; 0; tot_ticks; 365500; 365500; aqu-sz; 9000180; 9000180;
 13:54:35 UTC; major; 104; minor; 2; DEV; dev104-2; tps; 5030000; 6040000; rkB/s; 0; 0; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 100000; 200000; wr_ticks; 10000000; 10000000; dc_ticks; 0; 0; tot_ticks; 7000000; 7000000; aqu-sz; 10000000; 10000000;
+13:54:35 UTC; major; 202; minor; 240; DEV; dev202-240; tps; 82; 92; rkB/s; 3096; 4096; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 82; 92; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 52; 62; aqu-sz; 44; 54;
+13:54:35 UTC; major; 202; minor; 4096; DEV; dev202-4096; tps; 52; 62; rkB/s; 2096; 3096; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 31; 41; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 20; 30; aqu-sz; 40; 50;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_NET_DEV; nr_curr; 9; nr_alloc; 10; nr_ini; 5
 13:54:35 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;

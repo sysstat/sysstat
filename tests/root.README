@@ -99,6 +99,7 @@ Old kernel format, with no steal/guest/guest_nice fields.
 /proc/diskstats
 sda10, sda11, sda12: unregistered
 cciss/c0d0* registered
+xvd* registered (xvdq with a big minor number)
 
 /proc/net/dev
 enp6s0-2,wlp5s0-2: available

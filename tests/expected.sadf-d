@@ -2858,7 +2858,7 @@ SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;0.00;0.00
 # hostname;interval;timestamp;pgpgin/s;pgpgout/s;fault/s;majflt/s;pgfree/s;pgscank/s;pgscand/s;pgsteal/s;%vmeff
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00
 # hostname;interval;timestamp;tps;rtps;wtps;dtps;bread/s;bwrtn/s;bdscd/s
-SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;32404.56;320.82;32082.13;1.60;0.00;0.00;1.60
+SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;32405.20;321.46;32082.13;1.60;64.16;0.00;1.60
 # hostname;interval;timestamp;kbmemfree;kbavail;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty;kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;1437740;4389516;3179712;39.04;260172;2821596;12097852;48.54;4042384;1772396;396;2733164;445740;15328;73760;0
 # hostname;interval;timestamp;kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad
@@ -2886,6 +2886,8 @@ SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;dev8-9;0.00;0.00;0.00;0.00;0.00;0.00;0.0
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;dev104-0;32402.95;0.00;0.00;0.00;0.00;0.00;0.10;0.00
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;dev104-1;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;dev104-2;32402.95;0.00;0.00;0.00;0.00;0.00;0.10;0.00
+SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;dev202-240;0.32;16.04;0.00;0.00;50.00;0.00;1.00;0.03
+SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;dev202-4096;0.32;16.04;0.00;0.00;50.00;0.00;1.00;0.03
 # hostname;interval;timestamp;IFACE;rxpck/s;txpck/s;rxkB/s;txkB/s;rxcmp/s;txcmp/s;rxmcst/s;%ifutil
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;lo;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;virbr0-nic;0.00;0.00;0.00;0.00;0.00;0.00;0.00;0.00
