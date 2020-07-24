@@ -318,8 +318,8 @@ int get_major_minor_nr(char filename[], int *major, int *minor)
 	if (__stat(dfile, &statbuf) < 0)
 		return -1;
 
-	*major = major(statbuf.st_rdev);
-	*minor = minor(statbuf.st_rdev);
+	*major = __major(statbuf.st_rdev);
+	*minor = __minor(statbuf.st_rdev);
 
 	return 0;
 }

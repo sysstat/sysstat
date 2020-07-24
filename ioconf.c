@@ -489,8 +489,8 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 		if (__stat(filen, &aux) == 0) {
 			/* Get its minor and major numbers */
 
-			dm_major = major(aux.st_rdev);
-			dm_minor = minor(aux.st_rdev);
+			dm_major = __major(aux.st_rdev);
+			dm_minor = __minor(aux.st_rdev);
 
 			if ((dm_minor == minor) && (dm_major == major)) {
 				strncpy(name, dp->d_name, sizeof(name));

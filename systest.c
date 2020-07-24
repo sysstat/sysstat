@@ -195,7 +195,7 @@ int virtual_stat(const char *name, struct stat *statbuf)
 	int major, minor;
 
 	if (!strcmp(name, VIRTUALHD)) {
-		statbuf->st_rdev = (253 << 8) + 2;
+		statbuf->st_rdev = (253 << MINORBITS) + 2;
 		return 0;
 	}
 
@@ -206,7 +206,7 @@ int virtual_stat(const char *name, struct stat *statbuf)
 
 	if (fgets(line, sizeof(line), fp) != NULL) {
 		sscanf(line, "%d %d", &major, &minor);
-		statbuf->st_rdev = (major << 8) + minor;
+		statbuf->st_rdev = (major << MINORBITS) + minor;
 	}
 
 	fclose(fp);

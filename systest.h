@@ -12,6 +12,12 @@
 #include <sys/statvfs.h>
 #include <sys/stat.h>
 
+#ifndef MINORBITS
+#define MINORBITS	20
+#endif
+#define S_MAXMINOR	((1U << MINORBITS) - 1)
+#define S_MAXMAJOR	((1U << (32 - MINORBITS)) - 1)
+
 /* Test mode: Use alternate files and syscalls */
 #ifdef TEST
 
@@ -30,6 +36,8 @@
 #define __gettimeofday(m,n)	get_day_time(m)
 #define __getpwuid(m)		get_usrname(m)
 #define __fork(m)		get_known_pid(m)
+#define __major(m)		(m >> MINORBITS)
+#define __minor(m)		(m & S_MAXMINOR)
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
@@ -55,6 +63,8 @@
 #define __gettimeofday(m,n)	gettimeofday(m,n)
 #define __getpwuid(m)		getpwuid(m)
 #define __fork(m)		fork(m)
+#define __major(m)		major(m)
+#define __minor(m)		minor(m)
 
 #endif
 
