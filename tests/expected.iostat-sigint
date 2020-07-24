@@ -50,7 +50,7 @@ Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_w
 cciss/c0d0        0.00         0.00         0.00         0.00          0          0          0
 sda               0.00         0.00         0.00         0.00          0          0         50
 xvdp              0.00         0.00         0.00         0.00       1548          0          0
-xvdiw             0.00         0.00         0.00         0.00       1048          0          0
+xvdq              0.00         0.00         0.00         0.00       1048          0          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -60,6 +60,6 @@ Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_w
 cciss/c0d0    32402.95         0.00         0.00         0.00          0          0          0
 sda               1.60         0.00         0.00         0.80          0          0         25
 xvdp              0.32        16.04         0.00         0.00        500          0          0
-xvdiw             0.32        16.04         0.00         0.00        500          0          0
+xvdq              0.32        16.04         0.00         0.00        500          0          0
 
 

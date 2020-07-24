@@ -14,7 +14,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
      0.01         0.31         0.00         0.00       2220          0          0 ata-Hitachi_HDS723020BLA642_MN1240F33J1XND-part10
      0.01         0.31         0.00         0.00       2252          0          0 ata-Hitachi_HDS723020BLA642_MN1240F33J1XND-part11
      1.88        25.28        37.19         0.00     181825     267480          0 ata-Hitachi_HDS723020BLA642_MN1240F33J1XND-part12
-     0.00         0.00         0.00         0.00          0          0          0 scd0
+     0.00         0.00         0.00         0.00          0          0          0 ata-hp_DVD-RAM_GH80N_B1LCEP1D03707
      0.01         0.29         0.00         0.00       2108          0          0 usb-Generic-_SD_MMC_058F63626476-0:0
      0.00         0.00         0.00         0.00          0          0          0 usb-Generic-_MS_MS-Pro_058F63626476-0:3
      0.00         0.00         0.00         0.00          0          0          0 usb-Generic-_Compact_Flash_058F63626476-0:1
