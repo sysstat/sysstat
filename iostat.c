@@ -1846,18 +1846,6 @@ void write_stats(int curr, struct tm *rectime, int skip)
 					 dev_name = transform_devmapname(d->major, d->minor);
 				}
 
-				if (!dev_name && ((dev_name = ioc_name(d->major, d->minor)) != NULL)) {
-					if (!strcmp(d->name, dev_name) || !strcmp(dev_name, K_NODEV)) {
-						/*
-						 * Ignore name given by sysstat.ioconf if it's the same
-						 * as current one or if it's "nodev".
-						 * NB: Using names generated from sysstat.ioconf data
-						 * works around known issues with EMC PowerPath.
-						 */
-						dev_name = NULL;
-					}
-				}
-
 				if (DISPLAY_PERSIST_NAME_I(flags)) {
 					pdname = get_persistent_name_from_pretty(dev_name ? dev_name : d->name);
 					if (pdname) {
