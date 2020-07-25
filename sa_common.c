@@ -2295,11 +2295,8 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			break;
 
 		case 'h':
-			/*
-			 * Make output easier to read by a human.
-			 * Option -h implies --human and -p (pretty-print).
-			 */
-			*flags |= S_F_HUMAN_READ + S_F_UNIT + S_F_DEV_PRETTY;
+			/* Option -h is equivalent to --pretty --human */
+			*flags |= S_F_PRETTY + S_F_UNIT;
 			break;
 
 		case 'j':
@@ -2308,7 +2305,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			}
 			(*opt)++;
 			if (!strcmp(argv[*opt], K_SID)) {
-				*flags |= S_F_DEV_SID + S_F_DEV_PRETTY;
+				*flags |= S_F_DEV_SID + S_F_PRETTY;
 				return 0;
 			}
 
@@ -2323,12 +2320,12 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				return 2;
 			}
 			/* Pretty print report (option -j implies option -p) */
-			*flags |= S_F_PERSIST_NAME + S_F_DEV_PRETTY;
+			*flags |= S_F_PERSIST_NAME + S_F_PRETTY;
 			return 0;
 			break;
 
 		case 'p':
-			*flags |= S_F_DEV_PRETTY;
+			*flags |= S_F_PRETTY;
 			break;
 
 		case 'q':
@@ -3420,7 +3417,7 @@ char *get_sa_devname(unsigned int major, unsigned int minor, unsigned long long 
 			snprintf(sid, sizeof(sid), "%#016llx%s%s", wwn[0], xsid, pn);
 			dev_name = sid;
 		}
-		else if ((USE_PRETTY_OPTION(flags)) && (major == dm_major)) {
+		else if ((DISPLAY_PRETTY(flags)) && (major == dm_major)) {
 			dev_name = transform_devmapname(major, minor);
 		}
 

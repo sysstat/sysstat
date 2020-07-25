@@ -88,7 +88,7 @@
 #define S_F_SINCE_BOOT		0x00000001
 #define S_F_SA_ROTAT      	0x00000002	/* Only used by sadc */
 #define S_F_DEV_SID		0x00000002	/* Only used by sar/sadf */
-#define S_F_DEV_PRETTY		0x00000004
+#define S_F_PRETTY		0x00000004
 #define S_F_FORCE_FILE		0x00000008
 #define S_F_INTERVAL_SET	0x00000010
 #define S_F_TRUE_TIME		0x00000020
@@ -110,7 +110,7 @@
 #define S_F_SVG_HEIGHT		0x00200000
 #define S_F_SVG_PACKED		0x00400000
 #define S_F_SVG_SHOW_INFO	0x00800000
-#define S_F_HUMAN_READ		0x01000000
+/* Unused 			0x01000000 */
 #define S_F_ZERO_OMIT		0x02000000
 #define S_F_SVG_SHOW_TOC	0x04000000
 #define S_F_FDATASYNC		0x08000000
@@ -122,7 +122,7 @@
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
 #define USE_STABLE_ID(m)		(((m) & S_F_DEV_SID)      == S_F_DEV_SID)
-#define USE_PRETTY_OPTION(m)		(((m) & S_F_DEV_PRETTY)   == S_F_DEV_PRETTY)
+#define DISPLAY_PRETTY(m)		(((m) & S_F_PRETTY)       == S_F_PRETTY)
 #define FORCE_FILE(m)			(((m) & S_F_FORCE_FILE)   == S_F_FORCE_FILE)
 #define INTERVAL_SET(m)			(((m) & S_F_INTERVAL_SET) == S_F_INTERVAL_SET)
 #define PRINT_TRUE_TIME(m)		(((m) & S_F_TRUE_TIME)    == S_F_TRUE_TIME)
@@ -146,7 +146,6 @@
 #define DISPLAY_UNIT(m)			(((m) & S_F_UNIT)         == S_F_UNIT)
 #define SET_CANVAS_HEIGHT(m)		(((m) & S_F_SVG_HEIGHT)   == S_F_SVG_HEIGHT)
 #define PACK_VIEWS(m)			(((m) & S_F_SVG_PACKED)   == S_F_SVG_PACKED)
-#define DISPLAY_HUMAN_READ(m)		(((m) & S_F_HUMAN_READ)   == S_F_HUMAN_READ)
 #define DISPLAY_TOC(m)			(((m) & S_F_SVG_SHOW_TOC) == S_F_SVG_SHOW_TOC)
 #define FDATASYNC(m)			(((m) & S_F_FDATASYNC)    == S_F_FDATASYNC)
 #define USE_OPTION_A(m)			(((m) & S_F_OPTION_A)     == S_F_OPTION_A)

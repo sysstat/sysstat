@@ -1341,6 +1341,12 @@ int main(int argc, char **argv)
 			opt++;
 		}
 
+		else if (!strcmp(argv[opt], "--pretty")) {
+			/* Display an easy-to-read report */
+			flags |= S_F_PRETTY;
+			opt++;
+		}
+
 		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
 			/* Get number of decimal places */
 			dplaces_nr = atoi(argv[opt] + 6);
@@ -1563,7 +1569,7 @@ int main(int argc, char **argv)
 		usage(argv[0]);
 	}
 
-	if (USE_PRETTY_OPTION(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		dm_major = get_devmap_major();
 	}
 

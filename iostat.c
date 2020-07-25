@@ -1069,7 +1069,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 		return;
 	}
 
-	if (!DISPLAY_HUMAN_READ(flags)) {
+	if (!DISPLAY_PRETTY(flags)) {
 		printf("Device       ");
 	}
 	if (DISPLAY_EXTENDED(flags)) {
@@ -1107,7 +1107,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 			       spc, units, spc, units, spc, units, spc, units, spc, units, spc, units);
 		}
 	}
-	if (DISPLAY_HUMAN_READ(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		printf(" Device");
 	}
 	printf("\n");
@@ -1143,7 +1143,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 	if (d->dev_tp == T_GROUP)
 		return;
 
-	if (!DISPLAY_HUMAN_READ(flags)) {
+	if (!DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
@@ -1280,7 +1280,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		}
 	}
 
-	if (DISPLAY_HUMAN_READ(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, " %s", devname, 0);
 	}
 	printf("\n");
@@ -1548,7 +1548,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 {
 	double rsectors, wsectors, dsectors;
 
-	if (!DISPLAY_HUMAN_READ(flags)) {
+	if (!DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
 	}
 
@@ -1592,7 +1592,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 						: (unsigned long long) dc_sec / fctr);
 	}
 
-	if (DISPLAY_HUMAN_READ(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, " %s", devname, 0);
 	}
 	printf("\n");
@@ -1748,7 +1748,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 
 		memset(&iozero, 0, sizeof(struct io_stats));
 
-		if (DISPLAY_HUMAN_READ(flags) &&
+		if (DISPLAY_PRETTY(flags) &&
 		    DISPLAY_EXTENDED(flags) &&
 		    !DISPLAY_SHORT_OUTPUT(flags) &&
 		    !DISPLAY_JSON_OUTPUT(flags)) {
@@ -2108,6 +2108,12 @@ int main(int argc, char **argv)
 			opt++;
 		}
 
+		else if (!strcmp(argv[opt], "--pretty")) {
+			/* Display an easy-to-read CIFS report */
+			flags |= I_D_PRETTY;
+			opt++;
+		}
+
 #ifdef TEST
 		else if (!strncmp(argv[opt], "--getenv", 8)) {
 			__env = TRUE;
@@ -2153,11 +2159,8 @@ int main(int argc, char **argv)
 				fprintf(stderr, _("Invalid type of persistent device name\n"));
 				exit(1);
 			}
-			/*
-			 * Persistent names are usually long: Display
-			 * them as human readable by default.
-			 */
-			flags |= I_D_PERSIST_NAME + I_D_HUMAN_READ;
+			/* Persistent names are usually long: Pretty display them */
+			flags |= I_D_PERSIST_NAME + I_D_PRETTY;
 			opt++;
 		}
 
@@ -2202,11 +2205,8 @@ int main(int argc, char **argv)
 					break;
 
 				case 'h':
-					/*
-					 * Display device utilization report
-					 * in a human readable format. Also imply --human.
-					 */
-					flags |= I_D_HUMAN_READ + I_D_UNIT;
+					/* Option -h is equivalent to --pretty --human */
+					flags |= I_D_PRETTY + I_D_UNIT;
 					break;
 
 				case 'k':

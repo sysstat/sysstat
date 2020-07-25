@@ -293,7 +293,7 @@ void read_cifs_stat(int curr)
  */
 void write_cifs_stat_header(int *fctr)
 {
-	if (!DISPLAY_HUMAN_READ(flags)) {
+	if (!DISPLAY_PRETTY(flags)) {
 		printf("Filesystem            ");
 	}
 	if (DISPLAY_KILOBYTES(flags)) {
@@ -309,7 +309,7 @@ void write_cifs_stat_header(int *fctr)
 		*fctr = 1;
 	}
 	printf("    rops/s    wops/s         fo/s         fc/s         fd/s");
-	if (DISPLAY_HUMAN_READ(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		printf(" Filesystem");
 	}
 	printf("\n");
@@ -334,7 +334,7 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 {
 	double rbytes, wbytes;
 
-	if (!DISPLAY_HUMAN_READ(flags)) {
+	if (!DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, "%-22s", clist->name, 0);
 	}
 
@@ -354,7 +354,7 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 		  S_VALUE(ionj->fopens, ioni->fopens, itv),
 		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
 		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
-	if (DISPLAY_HUMAN_READ(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, " %s", clist->name, 0);
 	}
 	printf("\n");
@@ -515,6 +515,12 @@ int main(int argc, char **argv)
 			opt++;
 		}
 
+		else if (!strcmp(argv[opt], "--pretty")) {
+			/* Display an easy-to-read CIFS report */
+			flags |= I_D_PRETTY;
+			opt++;
+		}
+
 		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
 			/* Get number of decimal places */
 			dplaces_nr = atoi(argv[opt] + 6);
@@ -530,8 +536,8 @@ int main(int argc, char **argv)
 				switch (*(argv[opt] + i)) {
 
 				case 'h':
-					/* Display an easy-to-read CIFS report. Also imply --human */
-					flags |= I_D_HUMAN_READ + I_D_UNIT;
+					/* Option -h is equivalent to --pretty --human */
+					flags |= I_D_PRETTY + I_D_UNIT;
 					break;
 
 				case 'k':

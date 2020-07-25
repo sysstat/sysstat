@@ -1866,7 +1866,7 @@ int main(int argc, char **argv)
 		tm_end.tm_hour += 24;
 	}
 
-	if (USE_PRETTY_OPTION(flags)) {
+	if (DISPLAY_PRETTY(flags)) {
 		dm_major = get_devmap_major();
 	}
 
