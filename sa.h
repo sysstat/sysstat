@@ -1499,7 +1499,7 @@ void free_bitmaps
 void free_structures
 	(struct activity * []);
 char *get_devname
-	(unsigned int, unsigned int, int);
+	(unsigned int, unsigned int);
 char *get_sa_devname
 	(unsigned int, unsigned int, unsigned long long [], unsigned int, uint64_t);
 void get_file_timestamp_struct

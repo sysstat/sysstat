@@ -570,23 +570,18 @@ char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
  * IN:
  * @major	Major number of the device.
  * @minor	Minor number of the device.
- * @pretty	TRUE if the real name of the device (as it appears in /dev)
- * 		should be returned.
  *
  * RETURNS:
  * The name of the device, which may be the real name (as it appears in /dev)
  * or a string with the following format devM-n.
  ***************************************************************************
  */
-char *get_devname(unsigned int major, unsigned int minor, int pretty)
+char *get_devname(unsigned int major, unsigned int minor)
 {
 	static char buf[32];
 	char *name;
 
 	snprintf(buf, 32, "dev%u-%u", major, minor);
-
-	if (!pretty)
-		return (buf);
 
 	name = get_devname_from_sysfs(major, minor);
 	if (name != NULL)
@@ -2327,10 +2322,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				fprintf(stderr, _("Invalid type of persistent device name\n"));
 				return 2;
 			}
-			/*
-			 * If persistent device name doesn't exist for device, use
-			 * its pretty name.
-			 */
+			/* Pretty print report (option -j implies option -p) */
 			*flags |= S_F_PERSIST_NAME + S_F_DEV_PRETTY;
 			return 0;
 			break;
@@ -3411,7 +3403,7 @@ char *get_sa_devname(unsigned int major, unsigned int minor, unsigned long long 
 	char xsid[32] = "", pn[16] = "";
 
 	if (DISPLAY_PERSIST_NAME_S(flags)) {
-		persist_dev_name = get_persistent_name_from_pretty(get_devname(major, minor, TRUE));
+		persist_dev_name = get_persistent_name_from_pretty(get_devname(major, minor));
 	}
 
 	if (persist_dev_name) {
@@ -3433,8 +3425,7 @@ char *get_sa_devname(unsigned int major, unsigned int minor, unsigned long long 
 		}
 
 		if (!dev_name) {
-			dev_name = get_devname(major, minor,
-					       USE_PRETTY_OPTION(flags));
+			dev_name = get_devname(major, minor);
 		}
 	}
 
