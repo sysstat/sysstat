@@ -35,6 +35,8 @@ NOTES:
 00161	LC_ALL=C TZ=GMT ./sar -A -f tests/data.tmp > tests/out2.sar-all.tmp
 00164	diff -u tests/out2.sar-u.tmp tests/expected2.sar-u
 00166	diff -u tests/out2.sar-all.tmp tests/expected2.sar-all
+00170	LC_ALL=C TZ=GMT ./sar --pretty -d -f tests/data.tmp > tests/out.sar-pretty.tmp
+00172	diff -u tests/out.sar-pretty.tmp tests/expected.sar-pretty
 
 =====	sar: Playing with environment variables
 00180	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS= ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-ISO.tmp
@@ -346,6 +348,8 @@ NOTES:
 02065	diff -u tests/out.iostat-0.tmp tests/expected.iostat-0
 02070	LC_ALL=C TZ=GMT ./iostat sda sdc 2 3 > tests/out.iostat-list.tmp
 02075	diff -u tests/out.iostat-list.tmp tests/expected.iostat-list
+02080	LC_ALL=C TZ=GMT ./iostat --pretty -d ALL -p ALL 2 2 > tests/out.iostat-pretty.tmp
+02085	diff -u tests/out.iostat-pretty.tmp tests/expected.iostat-pretty
 
 =====	iostat extended statistics
 02110	LC_ALL=C TZ=GMT ./iostat -x 1 2 > tests/out.iostat-x.tmp
@@ -551,6 +555,8 @@ NOTES:
 04545	diff -u tests/out.cifsiostat-dec.tmp tests/expected.cifsiostat-dec
 04550	LC_ALL=C TZ=GMT ./cifsiostat 1 2 > tests/out.cifsiostat-SMB2.tmp
 04555	diff -u tests/out.cifsiostat-SMB2.tmp tests/expected.cifsiostat-SMB2
+04560	LC_ALL=C TZ=GMT ./cifsiostat --pretty 2 3 > tests/out.cifsiostat-pretty.tmp
+04565	diff -u tests/out.cifsiostat-pretty.tmp tests/expected.cifsiostat-pretty
 
 =====	Test cifsiostat error cases
 04600	LC_ALL=C ./cifsiostat -1 2>&1 | grep "Usage:" >/dev/null

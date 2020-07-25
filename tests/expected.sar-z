@@ -1,38 +1,38 @@
 Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
 
-13:20:09          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+13:20:09          tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util DEV
 
-13:20:19          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
-13:20:29          sda      6.40      1.60      1.60      0.00      0.50      0.00      1.00      0.32
-13:20:29         sda1      6.40      1.60      1.60      0.00      0.50      0.00      1.00      0.32
-13:20:29          sdb      0.67     22.60      0.00      0.00     33.62      0.10     47.00      0.05
+13:20:19          tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util DEV
+13:20:29         6.40      1.60      1.60      0.00      0.50      0.00      1.00      0.32 sda
+13:20:29         6.40      1.60      1.60      0.00      0.50      0.00      1.00      0.32 sda1
+13:20:29         0.67     22.60      0.00      0.00     33.62      0.10     47.00      0.05 sdb
 
-13:20:29          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
-13:20:39          sda   1604.70  41499.97  10663.48      0.00     32.51     18.56     12.00     85.36
-13:20:39         sda1      1.32     54.75      0.00      0.00     41.33      0.08     60.92      0.11
-13:20:39          sdf      1.22     54.34      0.00      0.00     44.51      0.08     62.51      0.09
-13:20:39          sdg      2.91    114.91      0.31      0.00     39.61      0.07     24.75      0.19
+13:20:29          tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util DEV
+13:20:39      1604.70  41499.97  10663.48      0.00     32.51     18.56     12.00     85.36 sda
+13:20:39         1.32     54.75      0.00      0.00     41.33      0.08     60.92      0.11 sda1
+13:20:39         1.22     54.34      0.00      0.00     44.51      0.08     62.51      0.09 sdf
+13:20:39         2.91    114.91      0.31      0.00     39.61      0.07     24.75      0.19 sdg
 
-13:20:39          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
-13:20:49          sdg      0.94     22.33      0.22      0.00     24.05      0.04      6.19      0.09
+13:20:39          tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util DEV
+13:20:49         0.94     22.33      0.22      0.00     24.05      0.04      6.19      0.09 sdg
 
-Average:          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
-Average:          sdf      0.38     16.97      0.00      0.00     44.51      0.02     62.51      0.03
-Average:          sdg      1.08     39.94      0.14      0.00     37.15      0.03     21.82      0.08
+Average:          tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util DEV
+Average:         0.38     16.97      0.00      0.00     44.51      0.02     62.51      0.03 sdf
+Average:         1.08     39.94      0.14      0.00     37.15      0.03     21.82      0.08 sdg
 
-13:20:09        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+13:20:09      rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil IFACE
 
-13:20:19        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-13:20:29       enp6s0     53.55     17.45     64.37      3.38      0.00      0.00      9.25      0.05
+13:20:19      rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil IFACE
+13:20:29        53.55     17.45     64.37      3.38      0.00      0.00      9.25      0.05 enp6s0
 
-13:20:29        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-13:20:39       enp6s1      1.90      1.17      0.23      0.21      0.00      0.00      2.31      0.00
-13:20:39       wlp5s1      0.39      0.13      0.03      0.01      0.00      0.00      0.00      0.00
+13:20:29      rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil IFACE
+13:20:39         1.90      1.17      0.23      0.21      0.00      0.00      2.31      0.00 enp6s1
+13:20:39         0.39      0.13      0.03      0.01      0.00      0.00      0.00      0.00 wlp5s1
 
-13:20:39        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-13:20:49    virbr0-nic      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-13:20:49       enp6s0   7397.68   2412.77   8891.46    466.82      0.00      0.00    116.21      7.28
+13:20:39      rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil IFACE
+13:20:49         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00 virbr0-nic
+13:20:49      7397.68   2412.77   8891.46    466.82      0.00      0.00    116.21      7.28 enp6s0
 
-Average:        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
-Average:       enp6s1      0.59      0.36      0.07      0.06      0.00      0.00      0.72      0.00
-Average:       wlp5s1      0.12      0.04      0.01      0.00      0.00      0.00      0.00      0.00
+Average:      rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil IFACE
+Average:         0.59      0.36      0.07      0.06      0.00      0.00      0.72      0.00 enp6s1
+Average:         0.12      0.04      0.01      0.00      0.00      0.00      0.00      0.00 wlp5s1

@@ -1779,7 +1779,7 @@
 </g>
 <g id="g11-0" transform="translate(0,10910)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-0]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -1818,7 +1818,7 @@
 <path d=" M10,0.00 L20,6.40 L30,1604.70 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.124634)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-0]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -1863,7 +1863,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.80" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.004819)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-0]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -1904,7 +1904,7 @@
 <path d=" M10,0.00 L20,0.00 L30,18.56 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-6.152588)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-0]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -1943,7 +1943,7 @@
 <path d=" M10,0.00 L20,1.00 L30,12.00 L40,0.00 M2066,1.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-16.673256)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-0]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -1988,7 +1988,7 @@
 </g>
 <g id="g11-1" transform="translate(0,12460)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-1]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda1]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2027,7 +2027,7 @@
 <path d=" M10,0.00 L20,6.40 L30,1.32 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-31.240000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-1]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda1]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2074,7 +2074,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.80" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.652751)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-1]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda1]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2117,7 +2117,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.08 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.838710)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-1]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda1]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2156,7 +2156,7 @@
 <path d=" M10,0.00 L20,1.00 L30,60.92 L40,0.00 M2066,1.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.282910)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-1]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda1]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2201,7 +2201,7 @@
 </g>
 <g id="g11-2" transform="translate(0,14010)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-2]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda2]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2240,7 +2240,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-2]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda2]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2283,7 +2283,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-2]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda2]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2324,7 +2324,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-2]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda2]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2363,7 +2363,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-2]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda2]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2405,7 +2405,7 @@
 </g>
 <g id="g11-3" transform="translate(0,15560)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-3]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda3]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2444,7 +2444,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-3]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda3]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2487,7 +2487,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-3]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda3]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2528,7 +2528,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-3]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda3]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2567,7 +2567,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-3]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda3]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2609,7 +2609,7 @@
 </g>
 <g id="g11-4" transform="translate(0,17110)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-4]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda4]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2648,7 +2648,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-4]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda4]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2691,7 +2691,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-4]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda4]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2732,7 +2732,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-4]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda4]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2771,7 +2771,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-4]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda4]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2813,7 +2813,7 @@
 </g>
 <g id="g11-5" transform="translate(0,18660)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-5]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda5]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2852,7 +2852,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-5]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda5]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2895,7 +2895,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-5]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda5]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2936,7 +2936,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-5]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda5]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -2975,7 +2975,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-5]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda5]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3017,7 +3017,7 @@
 </g>
 <g id="g11-6" transform="translate(0,20210)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-6]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda6]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3056,7 +3056,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-6]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda6]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3099,7 +3099,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-6]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda6]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3140,7 +3140,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-6]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda6]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3179,7 +3179,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-6]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda6]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3221,7 +3221,7 @@
 </g>
 <g id="g11-7" transform="translate(0,21760)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-7]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda7]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3260,7 +3260,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-7]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda7]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3303,7 +3303,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-7]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda7]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3344,7 +3344,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-7]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda7]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3383,7 +3383,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-7]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda7]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3425,7 +3425,7 @@
 </g>
 <g id="g11-8" transform="translate(0,23310)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-8]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda8]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3464,7 +3464,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-8]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda8]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3507,7 +3507,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-8]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda8]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3548,7 +3548,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-8]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda8]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3587,7 +3587,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-8]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda8]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3629,7 +3629,7 @@
 </g>
 <g id="g11-9" transform="translate(0,24860)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-9]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda9]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3668,7 +3668,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-9]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda9]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3711,7 +3711,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-9]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda9]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3752,7 +3752,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-9]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda9]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3791,7 +3791,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-9]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda9]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3833,7 +3833,7 @@
 </g>
 <g id="g11-10" transform="translate(0,26410)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-10]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda10]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3872,7 +3872,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-10]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda10]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3915,7 +3915,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-10]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda10]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3956,7 +3956,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-10]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda10]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -3995,7 +3995,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-10]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda10]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4037,7 +4037,7 @@
 </g>
 <g id="g11-11" transform="translate(0,27960)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-11]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda11]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4076,7 +4076,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-11]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda11]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4119,7 +4119,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-11]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda11]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4160,7 +4160,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-11]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda11]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4199,7 +4199,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-11]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda11]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4241,7 +4241,7 @@
 </g>
 <g id="g11-12" transform="translate(0,29510)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-12]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sda12]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4280,7 +4280,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-12]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sda12]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4323,7 +4323,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-12]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sda12]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4364,7 +4364,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-12]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sda12]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4403,7 +4403,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-12]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sda12]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4445,7 +4445,7 @@
 </g>
 <g id="g11-13" transform="translate(0,31060)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-16]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sdb]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4484,7 +4484,7 @@
 <path d=" M10,0.00 L20,0.67" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-297.523810)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-16]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sdb]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4527,7 +4527,7 @@
 <path d=" M10,0.00 L20,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-8.849858)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-16]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sdb]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4568,7 +4568,7 @@
 <path d=" M10,0.00 L20,0.10" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-5.949008)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-16]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sdb]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4609,7 +4609,7 @@
 <path d=" M10,0.00 L20,47.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.255319)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-16]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sdb]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4654,7 +4654,7 @@
 </g>
 <g id="g11-14" transform="translate(0,32610)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-80]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sdf]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4693,7 +4693,7 @@
 <path d=" M30,1.22 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-163.829787)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-80]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sdf]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4740,7 +4740,7 @@
 <path d=" M30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.680688)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-80]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sdf]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4783,7 +4783,7 @@
 <path d=" M30,0.08 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.493308)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-80]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sdf]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4822,7 +4822,7 @@
 <path d=" M30,62.51 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-3.199455)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-80]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sdf]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4867,7 +4867,7 @@
 </g>
 <g id="g11-15" transform="translate(0,34160)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev8-96]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [sdg]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4906,7 +4906,7 @@
 <path d=" M30,2.91 L40,0.94" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-68.750000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev8-96]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [sdg]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4949,7 +4949,7 @@
 <path d=" M30,0.00 L40,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-1.740506)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev8-96]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [sdg]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -4990,7 +4990,7 @@
 <path d=" M30,0.07 L40,0.04" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-5.049594)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev8-96]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [sdg]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5029,7 +5029,7 @@
 <path d=" M30,24.75 L40,6.19" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-8.080808)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev8-96]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [sdg]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5074,7 +5074,7 @@
 </g>
 <g id="g11-16" transform="translate(0,35710)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev104-0]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [cciss/c0d0]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5113,7 +5113,7 @@
 <path d=" M2066,32402.95" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev104-0]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [cciss/c0d0]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5156,7 +5156,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev104-0]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [cciss/c0d0]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5197,7 +5197,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev104-0]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [cciss/c0d0]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5236,7 +5236,7 @@
 <path d=" M2066,0.10" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-2020.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev104-0]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [cciss/c0d0]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5278,7 +5278,7 @@
 </g>
 <g id="g11-17" transform="translate(0,37260)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev104-1]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [cciss/c0d0p1]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5317,7 +5317,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev104-1]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [cciss/c0d0p1]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5360,7 +5360,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev104-1]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [cciss/c0d0p1]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5401,7 +5401,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev104-1]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [cciss/c0d0p1]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5440,7 +5440,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev104-1]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [cciss/c0d0p1]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5482,7 +5482,7 @@
 </g>
 <g id="g11-18" transform="translate(0,38810)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev104-2]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [cciss/c0d0p2]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5521,7 +5521,7 @@
 <path d=" M2066,32402.95" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev104-2]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [cciss/c0d0p2]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5564,7 +5564,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev104-2]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [cciss/c0d0p2]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5605,7 +5605,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev104-2]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [cciss/c0d0p2]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5644,7 +5644,7 @@
 <path d=" M2066,0.10" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-2020.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev104-2]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [cciss/c0d0p2]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5686,7 +5686,7 @@
 </g>
 <g id="g11-19" transform="translate(0,40360)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev202-240]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [xvdp]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5725,7 +5725,7 @@
 <path d=" M2066,0.32" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-623.400000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev202-240]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [xvdp]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5768,7 +5768,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-12.468000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev202-240]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [xvdp]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5813,7 +5813,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev202-240]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [xvdp]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5852,7 +5852,7 @@
 <path d=" M2066,1.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev202-240]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [xvdp]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5897,7 +5897,7 @@
 </g>
 <g id="g11-20" transform="translate(0,41910)">
 <rect x="0" y="0" height="300" width="1050" fill="#000000"/>
-<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [dev202-4096]
+<text x="0" y="20" style="fill: #ffff00; stroke: none">Block devices statistics (1) [xvdiw]
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5936,7 +5936,7 @@
 <path d=" M2066,0.32" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-623.400000)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
-<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [dev202-4096]
+<text x="0" y="330" style="fill: #ffff00; stroke: none">Block devices statistics (2) [xvdiw]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -5979,7 +5979,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-12.468000)"/>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
-<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [dev202-4096]
+<text x="0" y="640" style="fill: #ffff00; stroke: none">Block devices statistics (3) [xvdiw]
 <tspan x="795" y="645" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -6024,7 +6024,7 @@
 <path d=" M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-4.000000)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
-<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [dev202-4096]
+<text x="0" y="950" style="fill: #ffff00; stroke: none">Block devices statistics (4) [xvdiw]
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
@@ -6063,7 +6063,7 @@
 <path d=" M2066,1.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-200.000000)"/>
 </g>
 <rect x="0" y="1240" height="300" width="1050" fill="#000000"/>
-<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [dev202-4096]
+<text x="0" y="1260" style="fill: #ffff00; stroke: none">Block devices statistics (5) [xvdiw]
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
