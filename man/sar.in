@@ -1,4 +1,4 @@
-.TH SAR 1 "JUNE 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 .SH SYNOPSIS
@@ -10,7 +10,7 @@ sar \- Collect, report, or save system activity information.
 .I fs_list
 .B ] [ --help ] [ --human ] [ --iface=
 .I iface_list
-.B ] [ --sadc ]
+.B ] [ --pretty ] [ --sadc ]
 .B [ -I {
 .I int_list
 .B | SUM | ALL } ] [ -P {
@@ -299,13 +299,10 @@ works only when used in conjunction with option -o
 to save data to file.
 .IP -d
 Report activity for each block device.
-When data are displayed, the device specification
-.I devM-n
-is generally used (DEV column).
-M is the major number of the device and n
-its minor number.
-Device names may also be pretty-printed if option -p
-is used or persistent device names can be printed if option -j is used
+When data are displayed, the device name is displayed as it
+(should) appear in
+.IR /dev .
+Persistent device names can also be printed if option -j is used
 (see below). Statistics for all devices are displayed unless
 a restricted list is specified using option
 .BR --dev=
@@ -489,13 +486,8 @@ Amount of surplus hugepages memory in kilobytes.
 .RE
 .RE
 .IP -h
-Make the output of sar easier to read by a human. Options
-.B --human
-and
-.B -p
-(pretty-print) are enabled implicitly with this option.
-This option may be especially useful when displaying e.g., network interfaces
-or block devices statistics.
+This option is equivalent to specifying
+.BR "--pretty --human" .
 .IP --help
 Display a short help message then exit.
 .IP --human
@@ -536,8 +528,6 @@ Options
 etc. specify the type of the persistent name. These options are not limited,
 only prerequisite is that directory with required persistent names is present in
 .IR /dev/disk .
-If persistent name is not found for the device, the device name
-is pretty-printed (see option -p below).
 Option
 .BR SID
 tries to get a stable identifier to use as the device name. A stable
@@ -1944,14 +1934,10 @@ Specifying the
 .B ALL
 keyword reports statistics for each individual processor, and globally for
 all processors. Offline processors are not displayed.
-.IP -p
-Pretty-print device names. Use this option in conjunction with option -d.
-By default names are printed as
-.I devM-n
-where M and n are the major and minor numbers for the device.
-Use of this option displays the names of the devices as they (should) appear
-in /dev. Name mappings are controlled by
-.IR @SYSCONFIG_DIR@/sysstat.ioconf .
+.IP "-p, --pretty"
+Make reports easier to read by a human.
+This option may be especially useful when displaying e.g., network interfaces
+or block devices statistics.
 .IP "-q [ keyword [,...] | ALL ]"
 Report system load and pressure-stall statistics.
 

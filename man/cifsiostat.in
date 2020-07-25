@@ -1,16 +1,16 @@
-.TH CIFSIOSTAT 1 "JUNE 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [
+.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [
 .I interval
 .B [
 .I count
 .B ] ]
 .\}
 .el \{
-.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [
+.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [
 .I interval
 .B [
 .I count
@@ -102,9 +102,8 @@ Print debug output to stderr.
 .IP "--dec={ 0 | 1 | 2 }"
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .IP -h
-Make the CIFS report easier to read by a human.
-.B --human
-is enabled implicitly with this option.
+This option is equivalent to specifying
+.BR "--human --pretty" .
 .IP --human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
@@ -113,6 +112,8 @@ kilobytes, sectors...) associated with the metrics.
 Display statistics in kilobytes per second.
 .IP -m
 Display statistics in megabytes per second.
+.IP --pretty
+Make the CIFS report easier to read by a human.
 .IP -t
 Print the time for each report displayed. The timestamp format may depend
 on the value of the S_TIME_FORMAT environment variable (see below).

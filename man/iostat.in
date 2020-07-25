@@ -1,4 +1,4 @@
-.TH IOSTAT 1 "JUNE 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -8,7 +8,7 @@ statistics for devices and partitions.
 .B [ --dec={ 0 | 1 | 2 } ] [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
-.B ] [ --human ] [ -p [
+.B ] [ --human ] [ --pretty ] [ -p [
 .I device
 .B [,...] | ALL ] ] [
 .I device
@@ -23,7 +23,7 @@ statistics for devices and partitions.
 .B [ --dec={ 0 | 1 | 2 } ] [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
 .B [ [ -H ] -g
 .I group_name
-.B ] [ --human ] [ -p [
+.B ] [ --human ] [ --pretty ] [ -p [
 .I device
 .B [,...] | ALL ] ] [
 .I device
@@ -386,9 +386,8 @@ This option must be used with option -g and indicates that only global
 statistics for the group are to be displayed, and not statistics for
 individual devices in the group.
 .IP -h
-Make the Device Utilization Report easier to read by a human.
-.B --human
-is enabled implicitly with this option.
+This option is equivalent to specifying
+.BR "--human --pretty" .
 .IP --human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
@@ -402,6 +401,8 @@ only prerequisite is that directory with required persistent names is present in
 .IR /dev/disk .
 Optionally, multiple devices can be specified in the chosen persistent name type.
 Because persistent device names are usually long, option
+.B --pretty
+is implicitly set with this option.
 .IP -k
 Display statistics in kilobytes per second.
 .IP -m
@@ -425,6 +426,8 @@ never been used. If option
 .B -j
 is defined before this option, devices entered on the command line can be
 specified with the chosen persistent name type.
+.IP --pretty
+Make the Device Utilization Report easier to read by a human.
 .IP -s
 Display a short (narrow) version of the report that should fit in 80
 characters wide screens.
