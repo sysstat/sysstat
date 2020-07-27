@@ -67,7 +67,6 @@ int dplaces_nr = -1;
 int group_nr = 0;	/* Nb of device groups */
 int cpu_nr = 0;		/* Nb of processors on the machine */
 int flags = 0;		/* Flag for common options and system state */
-unsigned int dm_major;	/* Device-mapper major number */
 
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
@@ -1709,7 +1708,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 	int h, hl = 0, hh = 0, fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
 	struct io_device *d, *dtmp, *g = NULL, *dnext = NULL;
-	char *dev_name, *pdname, *bang, dname[MAX_NAME_LEN];
+	char *dev_name, *pdname;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -1835,39 +1834,10 @@ void write_stats(int curr, struct tm *rectime, int skip)
 					    ioj = &iozero;
 				}
 
-				/* Get device name to print */
-				dev_name = NULL;
-
-				if ((DISPLAY_DEVMAP_NAME(flags)) && (d->major == dm_major)) {
-					/*
-					 * If the device is a device mapper device, try to get its
-					 * assigned name of its logical device.
-					 */
-					 dev_name = transform_devmapname(d->major, d->minor);
-				}
-
-				if (DISPLAY_PERSIST_NAME_I(flags)) {
-					pdname = get_persistent_name_from_pretty(dev_name ? dev_name : d->name);
-					if (pdname) {
-						dev_name = pdname;
-					}
-				}
-
-				if (!dev_name) {
-					dev_name = d->name;
-				}
-				strncpy(dname, dev_name, sizeof(dname));
-				dname[sizeof(dname) - 1] = '\0';
-
-				while ((bang = strchr(dname, '!'))) {
-					/*
-					 * Some devices may have had a slash replaced with
-					 * a bang character (eg. cciss!c0d0...)
-					 * Restore their original names.
-					 */
-					*bang = '/';
-				}
-
+				dev_name = get_device_name(d->major, d->minor, NULL, 0,
+							   DISPLAY_DEVMAP_NAME(flags),
+							   DISPLAY_PERSIST_NAME_I(flags),
+							   FALSE, d->name);
 #ifdef DEBUG
 				if (DISPLAY_DEBUG(flags)) {
 					/* Debug output */
@@ -1880,7 +1850,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 						"fl_ios=%lu fl_ticks=%u "
 						"ios_pgr=%u tot_ticks=%u "
 						"rq_ticks=%u }\n",
-						dname,
+						dev_name,
 						itv,
 						fctr,
 						ioi->rd_sectors,
@@ -1910,10 +1880,10 @@ void write_stats(int curr, struct tm *rectime, int skip)
 					next = TRUE;
 
 					if (DISPLAY_EXTENDED(flags)) {
-						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dname);
+						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dev_name);
 					}
 					else {
-						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dname);
+						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dev_name);
 					}
 				}
 			}
@@ -2348,10 +2318,6 @@ int main(int argc, char **argv)
 
 	/* Select disk output unit (kB/s or blocks/s) */
 	set_disk_output_unit();
-
-	if (DISPLAY_DEVMAP_NAME(flags)) {
-		dm_major = get_devmap_major();
-	}
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		/* Use a decimal point to make JSON code compliant with RFC7159 */

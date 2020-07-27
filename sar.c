@@ -63,7 +63,6 @@ int arch_64 = FALSE;
 int dplaces_nr = -1;
 
 uint64_t flags = 0;
-unsigned int dm_major;	/* Device-mapper major number */
 
 char timestamp[2][TIMESTAMP_LEN];
 extern unsigned int rec_types_nr[];
@@ -1567,10 +1566,6 @@ int main(int argc, char **argv)
 	/* Cannot enter a day shift with -o option */
 	if (to_file[0] && day_offset) {
 		usage(argv[0]);
-	}
-
-	if (DISPLAY_PRETTY(flags)) {
-		dm_major = get_devmap_major();
 	}
 
 	if (!count) {

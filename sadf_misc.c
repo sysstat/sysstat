@@ -1599,8 +1599,9 @@ __nr_t count_new_disk(struct activity *a, int curr)
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
 
 		nr += add_list_item(&(a->item_list),
-				    get_sa_devname(sdc->major, sdc->minor, sdc->wwn,
-						   sdc->part_nr, flags),
+				    get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
+						    DISPLAY_PRETTY(flags), DISPLAY_PERSIST_NAME_S(flags),
+						    USE_STABLE_ID(flags), NULL),
 				    MAX_DEV_LEN);
 	}
 

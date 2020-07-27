@@ -36,6 +36,7 @@
 
 #include "version.h"
 #include "common.h"
+#include "ioconf.h"
 
 #ifdef USE_NLS
 #include <locale.h>
@@ -1046,6 +1047,154 @@ char *get_pretty_name_from_persistent(char *persistent)
 		return (NULL);
 
 	return pretty;
+}
+
+/*
+ * **************************************************************************
+ * Try to get device real name from sysfs tree.
+ *
+ * IN:
+ * @major	Major number of the device.
+ * @minor	Minor number of the device.
+ *
+ * RETURNS:
+ * The name of the device, which may be the real name (as it appears in /dev)
+ * or NULL.
+ ***************************************************************************
+ */
+char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
+{
+	static char link[256], target[PATH_MAX];
+	char *devname;
+	ssize_t r;
+
+	snprintf(link, 256, "%s/%u:%u", SYSFS_DEV_BLOCK, major, minor);
+
+	/* Get full path to device knowing its major and minor numbers */
+	r = readlink(link, target, PATH_MAX);
+	if (r <= 0 || r >= PATH_MAX) {
+		return (NULL);
+	}
+
+	target[r] = '\0';
+
+	/* Get device name */
+	devname = basename(target);
+	if (!devname || strnlen(devname, FILENAME_MAX) == 0) {
+		return (NULL);
+	}
+
+	return (devname);
+}
+
+/*
+ * **************************************************************************
+ * Get device real name if possible.
+ *
+ * IN:
+ * @major	Major number of the device.
+ * @minor	Minor number of the device.
+ *
+ * RETURNS:
+ * The name of the device, which may be the real name (as it appears in /dev)
+ * or a string with the following format devM-n.
+ ***************************************************************************
+ */
+char *get_devname(unsigned int major, unsigned int minor)
+{
+	static char buf[32];
+	char *name;
+
+	name = get_devname_from_sysfs(major, minor);
+	if (name != NULL)
+		return (name);
+
+	name = ioc_name(major, minor);
+	if ((name != NULL) && strcmp(name, K_NODEV))
+		return (name);
+
+	snprintf(buf, 32, "dev%u-%u", major, minor);
+	return (buf);
+}
+
+/*
+ * **************************************************************************
+ * Get device name (whether pretty-printed, persistent or not).
+ *
+ * IN:
+ * @major		Major number of the device.
+ * @minor		Minor number of the device.
+ * @wwn			WWN identifier of the device (0 if unknown).
+ * @part_nr		Partition number (0 if unknown).
+ * @disp_devmap_name	Display device mapper name.
+ * @disp_persist_name	Display persistent name of the device.
+ * @use_stable_id	Display stable-across-reboots name.
+ * @dflt_name		Device name to use by default (if existent).
+ *
+ * RETURNS:
+ * The name of the device.
+ ***************************************************************************
+ */
+char *get_device_name(unsigned int major, unsigned int minor, unsigned long long wwn[],
+		      unsigned int part_nr, unsigned int disp_devmap_name,
+		      unsigned int disp_persist_name, unsigned int use_stable_id,
+		      char *dflt_name)
+{
+	static unsigned int dm_major = 0;
+	char *dev_name = NULL, *persist_dev_name = NULL, *bang;
+	static char sid[64], dname[MAX_NAME_LEN];
+	char xsid[32] = "", pn[16] = "";
+
+	if (disp_persist_name) {
+		persist_dev_name = get_persistent_name_from_pretty(get_devname(major, minor));
+	}
+
+	if (persist_dev_name) {
+		dev_name = persist_dev_name;
+	}
+	else {
+		if (use_stable_id && (wwn[0] != 0)) {
+			if (wwn[1] != 0) {
+				sprintf(xsid, "%016llx", wwn[1]);
+			}
+			if (part_nr) {
+				sprintf(pn, "-%d", part_nr);
+			}
+			snprintf(sid, sizeof(sid), "%#016llx%s%s", wwn[0], xsid, pn);
+			dev_name = sid;
+		}
+		else if (disp_devmap_name) {
+			if (!dm_major) {
+				dm_major = get_devmap_major();
+			}
+			if (major == dm_major) {
+				dev_name = transform_devmapname(major, minor);
+			}
+		}
+
+		if (!dev_name) {
+			if (dflt_name) {
+				dev_name = dflt_name;
+			}
+			else {
+				dev_name = get_devname(major, minor);
+			}
+		}
+	}
+
+	strncpy(dname, dev_name, sizeof(dname));
+	dname[sizeof(dname) - 1] = '\0';
+
+	while ((bang = strchr(dname, '!'))) {
+		/*
+		 * Some devices may have had a slash replaced with
+		 * a bang character (eg. cciss!c0d0...)
+		 * Restore their original names.
+		 */
+		*bang = '/';
+	}
+
+	return dname;
 }
 
 /*

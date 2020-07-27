@@ -1091,8 +1091,9 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 		}
 
 		/* Get device name */
-		dev_name = get_sa_devname(sdc->major, sdc->minor,
-					  sdc->wwn, sdc->part_nr, flags);
+		dev_name = get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
+					   DISPLAY_PRETTY(flags), DISPLAY_PERSIST_NAME_S(flags),
+					   USE_STABLE_ID(flags), NULL);
 
 		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */

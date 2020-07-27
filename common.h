@@ -273,6 +273,9 @@ void cprintf_x
 	(int, int, ...);
 char *device_name
 	(char *);
+char *get_device_name
+	(unsigned int, unsigned int, unsigned long long [],
+	 unsigned int, unsigned int, unsigned int, unsigned int, char *);
 unsigned int get_devmap_major
 	(void);
 unsigned long long get_interval
