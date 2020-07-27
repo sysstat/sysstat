@@ -1039,9 +1039,9 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,5.44 L30,0.00 L40,0.00 M2066,32405.20" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
-<path d=" M10,0.00 L20,2.24 L30,0.91 L40,0.00 M2066,321.46" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
-<path d=" M10,0.00 L20,3.20 L30,0.00 L40,0.00 M2066,32082.13" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
+<path d=" M10,0.00 L20,5.44 L30,0.00 L40,0.94 M2066,32405.20" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
+<path d=" M10,0.00 L20,2.24 L30,0.91 L40,0.89 M2066,321.46" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
+<path d=" M10,0.00 L20,3.20 L30,0.00 L40,0.04 M2066,32082.13" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #ff0000; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006172)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
@@ -1083,8 +1083,8 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,0.00 L20,0.00 L30,299.22 L40,0.00 M2066,64.16" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
-<path d=" M10,0.00 L20,3.20 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
+<path d=" M10,0.00 L20,0.00 L30,299.22 L40,44.66 M2066,64.16" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
+<path d=" M10,0.00 L20,3.20 L30,0.00 L40,0.45 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,1.60" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.668403)"/>
 </g>
 </g>

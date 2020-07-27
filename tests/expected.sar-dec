@@ -2517,8 +2517,8 @@ Average:            0         0         0         0         0         0         
 13:20:19            0         0         0         0         0         0         0
 13:20:29            5         2         3         0         0         3         0
 13:20:39            0         1         0         0       299         0         0
-13:20:49            0         0         0         0         0         0         0
-Average:            0         0         0         0         0         0         0
+13:20:49            1         1         0         0        45         0         0
+Average:            1         1         0         0        80         0         0
 
 13:20:09    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
 13:20:19      1437740   4389516   3179712        39    260172   2821596  12097852        49   4042384   1772396       396   2733164    445740     15328     73760         0

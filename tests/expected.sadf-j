@@ -2330,7 +2330,7 @@
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
 					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
-					"io": {"tps": 0.00, "io-reads": {"rtps": 0.00, "bread": 0.00}, "io-writes": {"wtps": 0.00, "bwrtn": 0.00}, "io-discard": {"dtps": 0.00, "bdscd": 0.00}},
+					"io": {"tps": 0.94, "io-reads": {"rtps": 0.89, "bread": 44.66}, "io-writes": {"wtps": 0.04, "bwrtn": 0.45}, "io-discard": {"dtps": 0.00, "bdscd": 0.00}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
 					"kernel": {"dentunusd": 156063, "file-nr": 16704, "inode-nr": 157735, "pty-nr": 4},

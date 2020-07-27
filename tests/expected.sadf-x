@@ -2415,9 +2415,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
 				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" vmeff-percent="0.00"/>
 				<io per="second">
-					<tps>0.00</tps>
-					<io-reads rtps="0.00" bread="0.00"/>
-					<io-writes wtps="0.00" bwrtn="0.00"/>
+					<tps>0.94</tps>
+					<io-reads rtps="0.89" bread="44.66"/>
+					<io-writes wtps="0.04" bwrtn="0.45"/>
 					<io-discard dtps="0.00" bdscd="0.00"/>
 				</io>
 				<memory unit="kB">

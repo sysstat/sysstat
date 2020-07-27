@@ -2059,7 +2059,7 @@
 13:20:39 UTC; tps [DEC]; 62002; 61940; rtps; 49722; 49757; wtps [DEC]; 12280; 12183; dtps; 0; 0; bread/s; 3197010; 3208530; bwrtn/s [DEC]; 821188; 821112; bdscd/s; 0; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; tps [DEC]; 61940; 61781; rtps [DEC]; 49757; 49601; wtps [DEC]; 12183; 12180; dtps; 0; 0; bread/s [DEC]; 3208530; 3195498; bwrtn/s [DEC]; 821112; 821088; bdscd/s; 0; 0;
+13:20:49 UTC; tps; 61940; 61961; rtps; 49757; 49777; wtps; 12183; 12184; dtps; 0; 0; bread/s; 3208530; 3209530; bwrtn/s; 821112; 821122; bdscd/s; 0; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1

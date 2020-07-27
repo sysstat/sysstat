@@ -1065,9 +1065,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,5.44 L48039,0.00 L48049,0.00 M50075,32405.20" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
-<path d=" M48019,0.00 L48029,2.24 L48039,0.91 L48049,0.00 M50075,321.46" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.617185)"/>
-<path d=" M48019,0.00 L48029,3.20 L48039,0.00 L48049,0.00 M50075,32082.13" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
+<path d=" M48019,0.00 L48029,5.44 L48039,0.00 L48049,0.94 M50075,32405.20" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
+<path d=" M48019,0.00 L48029,2.24 L48039,0.91 L48049,0.89 M50075,321.46" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.617185)"/>
+<path d=" M48019,0.00 L48029,3.20 L48039,0.00 L48049,0.04 M50075,32082.13" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-61.718495)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -1115,8 +1115,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,0.00 L48039,299.22 L48049,0.00 M50075,64.16" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.668403)"/>
-<path d=" M48019,0.00 L48029,3.20 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.684028)"/>
+<path d=" M48019,0.00 L48029,0.00 L48039,299.22 L48049,44.66 M50075,64.16" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.668403)"/>
+<path d=" M48019,0.00 L48029,3.20 L48039,0.00 L48049,0.45 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.684028)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.840278)"/>
 </g>
 </g>
