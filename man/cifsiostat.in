@@ -38,9 +38,9 @@ The report shows the following fields:
 
 .IP Filesystem:
 This columns shows the mount point of the CIFS filesystem.
-.IP rB/s (rkB/s, rMB/s)
+.IP "rB/s (rkB/s, rMB/s)"
 Indicate the average number of bytes (kilobytes, megabytes) read per second.
-.IP wB/s (wkB/s, wMB/s)
+.IP "wB/s (wkB/s, wMB/s)"
 Indicate the average number of bytes (kilobytes, megabytes) written per second.
 .IP rop/s
 Indicate the number of 'read' operations that were issued to the filesystem
