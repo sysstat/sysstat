@@ -1,48 +1,37 @@
-.TH SADC 8 "FEBRUARY 2019" Linux "Linux User's Manual" -*- nroff -*-
+.\" sadc manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
+.TH SADC 8 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
+
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.B ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -S { keyword [,...] | ALL | XALL } ] [
-.I interval
-.B [
-.I count
-.B ] ] [
-.I outfile
-.B ]
+.BI "] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -S { " "keyword" "[,...] | ALL | XALL } ] ["
+.IB "interval " "[ " "count " "] ] [ " "outfile " "]"
+
 .SH DESCRIPTION
-The
-.B sadc
+.RB "The " "sadc"
 command samples system data a specified number of times
-(\fIcount\fR) at a specified interval measured in seconds
-(\fIinterval\fR). It writes in binary format to the specified
-.I outfile
-or to standard output. If
-.I outfile
-is set to -, then
-.B sadc
+.RI "(" "count" ") at a specified interval measured in seconds (" "interval" ")."
+It writes in binary format to the specified
+.IR "outfile " "or to standard output. If " "outfile"
+.RB "is set to " "-" ", then " "sadc"
 uses the standard system activity daily data file (see below).
 In this case, if the file already exists,
 .B sadc
-will overwrite it if it is from a previous month.
-By default
+will overwrite it if it is from a previous month. By default
 .B sadc
 collects most of the data available from the kernel.
 But there are also optional metrics, for which the
 relevant options must be explicitly passed to
-.B sadc
-to be collected (see option -S below).
-
+.BR "sadc " "to be collected (see option " "-S " "below)."
+.PP
 The standard system activity daily data file is named
-.I saDD
-unless option
+.IR "saDD " "unless option"
 .B -D
 is used, in which case its name is
-.IR saYYYYMMDD ,
-where YYYY stands for the current year, MM for the current month
-and DD for the current day.
-By default it is located in the
+.IR "saYYYYMMDD" ", where " "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
+for the current day. By default it is located in the
 .I @SA_DIR@
 directory. Yet it is possible to specify an alternate location for
 it: If
@@ -50,69 +39,63 @@ it: If
 is a directory (instead of a plain file) then it will be considered
 as the directory where the standard system activity daily data file
 will be saved.
-
-When the
-.I count
+.PP
+.RI "When the " "count"
 parameter is not specified,
 .B sadc
-writes its data endlessly.
-When both
-.I interval
-and
-.I count
-are not specified, and option -C is not used,
-a dummy record, which is used at system startup to mark
+writes its data endlessly. When both
+.IR "interval " "and " "count"
+are not specified, and option
+.B -C
+is not used, a dummy record, which is used at system startup to mark
 the time when the counter restarts from 0, will be written.
 For example, one of the system startup script may write the restart mark to
 the daily data file by the command entry:
 
-.B "@SA_LIB_DIR@/sadc -"
+.B @SA_LIB_DIR@/sadc -
 
-The
-.B sadc
-command is intended to be used as a backend to the
-.B sar
-command.
-
-Note: The
-.B sadc
+.RB "The " "sadc " "command is intended to be used as a backend to the " "sar " "command."
+.PP
+.RB "Note: The " "sadc"
 command only reports on local activities.
 
 .SH OPTIONS
-.IP "-C comment"
+.TP
+.BI "-C " "comment"
 When neither the
-.I interval
-nor the
-.I count
+.IR "interval " "nor the " "count"
 parameters are specified, this option tells
 .B sadc
 to write a dummy record containing the specified
 .I comment
-string.
-This comment can then be displayed with option -C of
-.BR sar .
-.IP -D
-Use
-.I saYYYYMMDD
-instead of
-.I saDD
+string. This comment can then be displayed with option
+.BR "-C " "of " "sar" "."
+.TP
+.B -D
+.RI "Use " "saYYYYMMDD " "instead of " "saDD"
 as the standard system activity daily data file name.
-.IP -F
-The creation of
-.I outfile
+.TP
+.B -F
+.RI "The creation of " "outfile"
 will be forced. If the file already exists and has a format unknown to
 .B sadc
 then it will be truncated. This may be useful for daily data files
 created by an older version of
 .B sadc
 and whose format is no longer compatible with current one.
-.IP -f
+.TP
+.B -f
 fdatasync() will be used to ensure data is written to disk. This differs
 from the normal operation in that a sudden system reset is less likely to
-result in the saDD datafiles being corrupted. However, this is at the
-expense of performance within the sadc process as forward progress will be
+result in the
+.I saDD
+datafiles being corrupted. However, this is at the
+expense of performance within the
+.B sadc
+process as forward progress will be
 blocked while data is written to underlying disk instead of just to cache.
-.IP -L
+.TP
+.B -L
 .B sadc
 will try to get an exclusive lock on the
 .I outfile
@@ -122,129 +105,101 @@ a header) record to an existing file, in which case
 .B sadc
 will try again at the next interval. Usually, the only reason a lock
 would fail would be if another
-.B sadc
-process were also writing to the file. This can happen when cron is used
-to launch
-.BR sadc .
-If the system is under heavy load, an old
-.B sadc
-might still be running when cron starts a new one. Without locking,
-this situation can result in a corrupted system activity file.
-.IP "-S { keyword [,...] | ALL | XALL }"
-Possible keywords are DISK, INT, IPV6, POWER, SNMP, XDISK, ALL, and XALL.
-
+.BR "sadc " "process were also writing to the file. This can happen when " "cron"
+is used to launch
+.BR "sadc" ". If the system is under heavy load, an old " "sadc"
+might still be running when
+.B cron
+starts a new one. Without locking, this situation can result in a corrupted system
+activity file.
+.TP
+.BI "-S { " "keyword" "[,...] | ALL | XALL }"
+Possible keywords are
+.BR "DISK" ", " "INT" ", " "IPV6" ", " "POWER" ", " "SNMP" ", " "XDISK" ", " "ALL " "and " "XALL" "."
+.br
 Specify which optional activities should be collected by
-.BR sadc .
-Some activities are optional to prevent data files from growing too large.
-The
-.B DISK
-keyword indicates that
-.B sadc
-should collect data for block devices.
-The
-.B INT
-keyword indicates that
-.B sadc
-should collect data for system interrupts.
-The
-.B IPV6
-keyword indicates that IPv6 statistics should be
-collected by
-.BR sadc .
-The
-.B POWER
-keyword indicates that
-.B sadc
-should collect power management statistics.
-The
-.B SNMP
-keyword indicates that SNMP statistics should be
-collected by
-.BR sadc .
-The
-.B ALL
-keyword is equivalent to specifying all the keywords above and therefore
+.BR "sadc" "."
+Some activities are optional to prevent data files from growing too large. The
+.BR "DISK " "keyword indicates that " "sadc"
+should collect data for block devices. The
+.BR "INT " "keyword indicates that " "sadc"
+should collect data for system interrupts. The
+.BR "IPV6 " "keyword indicates that IPv6 statistics should be collected by " "sadc" ". The"
+.BR "POWER " "keyword indicates that " "sadc"
+should collect power management statistics. The
+.BR "SNMP " "keyword indicates that SNMP statistics should be collected by " "sadc" ". The"
+.BR "ALL " "keyword is equivalent to specifying all the keywords above and therefore"
 all previous activities are collected.
-
-The
-.B XDISK
-keyword is an extension to the
-.B DISK
+.IP
+.RB "The " "XDISK " "keyword is an extension to the " "DISK"
 one and indicates that partitions and filesystems statistics should be collected by
 .B sadc
 in addition to disk statistics. This option works only with kernels 2.6.25
-and later.
-The
+and later. The
 .B XALL
 keyword is equivalent to specifying all the keywords above (including
 keyword extensions) and therefore all possible activities are collected.
-
+.IP
 Important note: The activities (including optional ones) saved in an existing
-data file prevail over those selected with option -S.
-As a consequence, appending data to an existing data file will result in
-option -S being ignored.
-.IP -V
+data file prevail over those selected with option
+.BR "-S" "."
+As a consequence, appending data to an existing data file will result in option
+.B -S
+being ignored.
+.TP
+.B -V
 Print version number then exit.
 
 .SH ENVIRONMENT
-The
-.B sadc
+.RB "The " "sadc"
 command takes into account the following environment variable:
-
-.IP S_TIME_DEF_TIME
+.TP
+.B S_TIME_DEF_TIME
 If this variable exists and its value is
-.BR UTC
-then
-.B sadc
+.BR "UTC " "then " "sadc"
 will save its data in UTC time.
 .B sadc
 will also use UTC time instead of local time to determine the current
 daily data file located in the
 .IR @SA_DIR@
 directory.
+
 .SH EXAMPLES
+.TP
 .B @SA_LIB_DIR@/sadc 1 10 /tmp/datafile
-.RS
-Write 10 records of one second intervals to the /tmp/datafile binary file.
-.RE
+Write 10 records of one second intervals to the
+.IR "/tmp/datafile " "binary file."
+.TP
+.B @SA_LIB_DIR@/sadc -C """Backup Start"" /tmp/datafile
+Insert the comment "Backup Start" into the file
+.IR "/tmp/datafile" "."
 
-.B @SA_LIB_DIR@/sadc -C Backup_Start /tmp/datafile
-.RS
-Insert the comment Backup_Start into the file /tmp/datafile.
-.RE
 .SH BUGS
-The
-.I /proc
+.RI "The " "/proc"
 filesystem must be mounted for the
-.B sadc
-command to work.
-
+.BR "sadc " "command to work."
+.PP
 All the statistics are not necessarily available, depending on the kernel version used.
 .B sadc
 assumes that you are using at least a 2.6 kernel.
+
 .SH FILES
 .I @SA_DIR@/saDD
 .br
 .I @SA_DIR@/saYYYYMMDD
 .RS
 The standard system activity daily data files and their default location.
-YYYY stands for the current year, MM for the current month and DD for the
-current day.
-
+.IR "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
+for the current day.
 .RE
-.I /proc
-and
-.I /sys
-contain various files with system statistics.
+.IR "/proc " "and " "/sys " "contain various files with system statistics."
+
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
+
 .SH SEE ALSO
-.BR sar (1),
-.BR sa1 (8),
-.BR sa2 (8),
-.BR sadf (1),
-.BR sysstat (5)
-
+.BR "sar" "(1), " "sa1" "(8), " "sa2" "(8), " "sadf" "(1), " "sysstat" "(5)"
+.PP
 .I https://github.com/sysstat/sysstat
-
+.br
 .I http://pagesperso-orange.fr/sebastien.godard/

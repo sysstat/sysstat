@@ -1,330 +1,241 @@
-.TH MPSTAT 1 "JUNE 2020" Linux "Linux User's Manual" -*- nroff -*-
+.\" mpstat manual page - (C) 2000-2020 Sebastien Godard (sysstat <at> orange.fr)
+.TH MPSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
+
 .SH SYNOPSIS
 .B mpstat [ -A ] [ --dec={ 0 | 1 | 2 } ] [ -n ] [ -u ] [ -T ] [ -V ] [ -I {
-.I keyword
-.B [,...] | ALL } ] [ -N {
-.I node_list
-.B | ALL } ] [ -o JSON ] [ -P {
-.I cpu_list
-.B | ALL } ] [
-.I interval
-.B [
-.I count
-.B ] ]
+.IB "keyword" "[,...] | ALL } ] [ -N { " "node_list " "| ALL } ] [ -o JSON ] [ -P {"
+.IB "cpu_list " "| ALL } ] [ " "interval " "[ " "count " "] ]"
+
 .SH DESCRIPTION
-The
-.B mpstat
+.RB "The " "mpstat"
 command writes to standard output activities for each available processor,
 processor 0 being the first one.
 Global average activities among all processors are also reported.
-The
-.B mpstat
+.RB "The " "mpstat"
 command can be used both on SMP and UP machines, but in the latter, only global
 average activities will be printed. If no activity has been selected, then the
 default report is the CPU utilization report.
-
-The
-.I interval
+.PP
+.RI "The " "interval"
 parameter specifies the amount of time in seconds between each report.
 A value of 0 (or no parameters at all) indicates that processors statistics are
-to be reported for the time since system startup (boot).
-The
-.I count
-parameter can be specified in conjunction with the
-.I interval
+to be reported for the time since system startup (boot). The
+.IR "count " "parameter can be specified in conjunction with the " "interval"
 parameter if this one is not set to zero. The value of
 .I count
 determines the number of reports generated at
-.I interval
-seconds apart. If the
-.I interval
+.IR "interval " "seconds apart. If the " "interval"
 parameter is specified without the
-.I count
-parameter, the
+.IR "count " "parameter, the"
 .B mpstat
 command generates reports continuously.
 
 .SH OPTIONS
-.IP -A
+.TP
+.B -A
 This option is equivalent to specifying
-.BR "-n -u -I ALL".
+.BR "-n -u -I ALL" "."
 This option also implies specifying
-.BR "-N ALL -P ALL"
+.B "-N ALL -P ALL"
 unless these options are explicitly set on the command line.
-.IP "--dec={ 0 | 1 | 2 }"
+.TP
+.B --dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
-.IP "-I { keyword [,...] | ALL }"
+.TP
+.BI "-I { " "keyword" "[,...] | ALL }"
 Report interrupts statistics.
-
-Possible keywords are
-.BR CPU ,
-.BR SCPU ,
-and
-.BR SUM .
-
-With the
-.B CPU
+.RI "Possible " "keywords " "are"
+.BR "CPU" ", " "SCPU" ", and " "SUM" "."
+.PP
+.RS
+.RB "With the " "CPU"
 keyword, the number of each individual interrupt received per
-second by the CPU or CPUs is displayed. Interrupts are those listed
-in /proc/interrupts file.
-
-With the
-.B SCPU
+second by the CPU or CPUs is displayed. Interrupts are those listed in
+.IR "/proc/interrupts " "file."
+.PP
+.RB "With the " "SCPU"
 keyword, the number of each individual software interrupt received per
 second by the CPU or CPUs is displayed. This option works only
-with kernels 2.6.31 and later. Software interrupts are those listed
-in /proc/softirqs file.
-
-With the
-.B SUM
-keyword, the
-.B mpstat
+with kernels 2.6.31 and later. Software interrupts are those listed in
+.IR "/proc/softirqs " "file."
+.PP
+.RB "With the " "SUM " "keyword, the " "mpstat"
 command reports the total number of interrupts per processor.
 The following values are displayed:
 
-.B CPU
-.RS
-.RS
+.IP CPU
 Processor number. The keyword
-.I all
-indicates that statistics are calculated as averages among all
-processors.
-.RE
+.B all
+indicates that statistics are calculated as averages among all processors.
 
-.B intr/s
-.RS
+.IP intr/s
 Show the total number of interrupts received per second by
 the CPU or CPUs.
 .RE
-
-The
-.B ALL
+.IP
+.RB "The " "ALL"
 keyword is equivalent to specifying all the keywords above and
 therefore all the interrupts statistics are displayed.
-.RE
-.RE
-.IP "-N { node_list | ALL }"
+.TP
+.BI "-N { " "node_list " "| ALL }"
 Indicate the NUMA nodes for which statistics are to be reported.
 .I node_list
 is a list of comma-separated values or range of values (e.g.,
-.BR 0,2,4-7,12- ).
-Note that node
-.B all
+.BR "0,2,4-7,12-" "). Note that node " "all"
 is the global average among all nodes. The
 .B ALL
 keyword indicates that statistics are to be reported for all nodes.
-.IP -n
+.TP
+.B -n
 Report summary CPU statistics based on NUMA node placement. The following
 values are displayed:
-
-.B NODE
 .RS
-.RS
+.IP NODE
 Logical NUMA node number. The keyword
-.I all
+.B all
 indicates that statistics are calculated as averages among all nodes.
 .RE
-
-All the other fields are the same as those displayed with option -u
-(see below).
-.RE
-.IP "-o JSON"
+.IP
+All the other fields are the same as those displayed with option
+.BR "-u " "(see below)."
+.TP
+.B -o JSON
 Display the statistics in JSON (Javascript Object Notation) format.
 JSON output field order is undefined, and new fields may be added
 in the future.
-.IP "-P { cpu_list | ALL }"
+.TP
+.BI "-P { " "cpu_list " "| ALL }"
 Indicate the processors for which statistics are to be reported.
 .I cpu_list
 is a list of comma-separated values or range of values (e.g.,
-.BR 0,2,4-7,12- ).
+.BR "0,2,4-7,12-" ")."
 Note that processor 0 is the first processor, and processor
 .B all
 is the global average among all processors.
-The
-.B ALL
+.RB "The " "ALL"
 keyword indicates that statistics are to be reported for all processors.
 Offline processors are not displayed.
-.IP -T
-Display topology elements in the CPU report (see option -u below). The
-following elements are displayed:
-
-.B CORE
+.TP
+.B -T
+Display topology elements in the CPU report (see option
+.B -u
+below). The following elements are displayed:
 .RS
-.RS
+.IP CORE
 Logical core number.
-.RE
-
-.B SOCK
-.RS
+.IP SOCK
 Logical socket number.
-.RE
-
-.B NODE
-.RS
+.IP NODE
 Logical NUMA node number.
 .RE
-.RE
-.IP -u
+.TP
+.B -u
 Report CPU utilization. The following values are displayed:
-
-.B CPU
 .RS
-.RS
+.IP CPU
 Processor number. The keyword
 .I all
-indicates that statistics are calculated as averages among all
-processors.
-.RE
-
-.B %usr
-.RS
+indicates that statistics are calculated as averages among all processors.
+.IP %usr
 Show the percentage of CPU utilization that occurred while
 executing at the user level (application).
-.RE
-
-.B %nice
-.RS
+.IP %nice
 Show the percentage of CPU utilization that occurred while
 executing at the user level with nice priority.
-.RE
-
-.B %sys
-.RS
+.IP %sys
 Show the percentage of CPU utilization that occurred while
 executing at the system level (kernel). Note that this does not
 include time spent servicing hardware and software interrupts.
-.RE
-
-.B %iowait
-.RS
+.IP %iowait
 Show the percentage of time that the CPU or CPUs were idle during which
 the system had an outstanding disk I/O request.
-.RE
-
-.B %irq
-.RS
-Show the percentage of time spent by the CPU or CPUs to service hardware
-interrupts.
-.RE
-
-.B %soft
-.RS
-Show the percentage of time spent by the CPU or CPUs to service software
-interrupts.
-.RE
-
-.B %steal
-.RS
+.IP %irq
+Show the percentage of time spent by the CPU or CPUs to service hardware interrupts.
+.IP %soft
+Show the percentage of time spent by the CPU or CPUs to service software interrupts.
+.IP %steal
 Show the percentage of time spent in involuntary wait by the virtual CPU
 or CPUs while the hypervisor was servicing another virtual processor.
-.RE
-
-.B %guest
-.RS
-Show the percentage of time spent by the CPU or CPUs to run a virtual
-processor.
-.RE
-
-.B %gnice
-.RS
-Show the percentage of time spent by the CPU or CPUs to run a niced
-guest.
-.RE
-
-.B %idle
-.RS
+.IP %guest
+Show the percentage of time spent by the CPU or CPUs to run a virtual processor.
+.IP %gnice
+Show the percentage of time spent by the CPU or CPUs to run a niced guest.
+.IP %idle
 Show the percentage of time that the CPU or CPUs were idle and the system
 did not have an outstanding disk I/O request.
 .RE
-.RE
-.IP -V
+.TP
+.B -V
 Print version number then exit.
 
 .SH ENVIRONMENT
-The
-.B mpstat
+.RB "The " "mpstat"
 command takes into account the following environment variable:
-
-.IP S_COLORS
+.TP
+.B S_COLORS
 By default statistics are displayed in color when the output is connected to a terminal.
 Use this variable to change the settings. Possible values for this variable are
-.IR never ,
-.IR always
-or
-.IR auto
+.IR "never" ", " "always " "or " "auto"
 (the latter is equivalent to the default settings).
-
+.br
 Please note that the color (being red, yellow, or some other color) used to display a value
 is not indicative of any kind of issue simply because of the color. It only indicates different
 ranges of values.
-
-.IP S_COLORS_SGR
+.TP
+.B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR H=31;1:I=32;22:M=35;1:N=34;1:Z=34;22 .
+.BR "H=31;1:I=32;22:M=35;1:N=34;1:Z=34;22" "."
 Supported capabilities are:
-
 .RS
 .TP
 .B H=
 SGR (Select Graphic Rendition) substring for percentage values greater than or equal to 75%.
-
 .TP
 .B I=
 SGR substring for CPU number.
-
 .TP
 .B M=
 SGR substring for percentage values in the range from 50% to 75%.
-
 .TP
 .B N=
 SGR substring for non-zero statistics values.
-
 .TP
 .B Z=
 SGR substring for zero values.
 .RE
-
-.IP S_TIME_FORMAT
+.TP
+.B S_TIME_FORMAT
 If this variable exists and its value is
 .BR ISO
 then the current locale will be ignored when printing the date in the report header.
-The
-.B mpstat
+.RB "The " "mpstat"
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
 The timestamp will also be compliant with ISO 8601 format.
 
 .SH EXAMPLES
+.TP
 .B mpstat 2 5
-.RS
 Display five reports of global statistics among all processors at two second intervals.
-.RE
-
+.TP
 .B mpstat -P ALL 2 5
-.RS
 Display five reports of statistics for all processors at two second intervals.
 
 .SH BUGS
-.I /proc
-filesystem must be mounted for the
-.B mpstat
-command to work.
+.IR "/proc " "filesystem must be mounted for the"
+.BR "mpstat " "command to work."
 
 .SH FILES
-.IR /proc
-contains various files with system statistics.
+.IR "/proc " "contains various files with system statistics."
 
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
+
 .SH SEE ALSO
-.BR sar (1),
-.BR pidstat (1),
-.BR iostat (1),
-.BR vmstat (8)
-
+.BR "sar" "(1), " "pidstat" "(1), " "iostat" "(1), " "vmstat" "(8)"
+.PP
 .I https://github.com/sysstat/sysstat
-
+.br
 .I http://pagesperso-orange.fr/sebastien.godard/

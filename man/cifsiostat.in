@@ -1,199 +1,154 @@
+.\" cifsiostat manual page - (C) 2020 Sebastien Godard (sysstat <at> orange.fr)
 .TH CIFSIOSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
+
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
 .B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [
-.I interval
-.B [
-.I count
-.B ] ]
+.IB "interval " "[ " "count " "] ]"
 .\}
 .el \{
 .B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [
-.I interval
-.B [
-.I count
-.B ] ]
+.IB "interval " "[ " "count " "] ]"
 .\}
+
 .SH DESCRIPTION
 The
 .B cifsiostat
 command displays statistics about read and write operations
 on CIFS filesystems.
-
-The
-.I interval
+.PP
+.RI "The " "interval"
 parameter specifies the amount of time in seconds between
 each report. The first report contains statistics for the time since
 system startup (boot). Each subsequent report contains statistics
 collected during the interval since the previous report.
 A report consists of a CIFS header row followed by
 a line of statistics for each CIFS filesystem that is mounted.
-The
-.I count
-parameter can be specified in conjunction with the
-.I interval
-parameter. If the
-.I count
-parameter is specified, the value of
-.I count
-determines the number of reports generated at
-.I interval
-seconds apart. If the
-.I interval
-parameter is specified without the
-.I count
-parameter, the
-.B cifsiostat
-command generates reports continuously.
+.RI "The " "count " "parameter can be specified in conjunction with the " "interval "
+.RI "parameter. If the " "count " "parameter is specified, the value of " "count "
+.RI "determines the number of reports generated at " "interval " "seconds apart. If the " "interval "
+.RI "parameter is specified without the " "count " "parameter, the "
+.BR "cifsiostat " "command generates reports continuously."
 
 .SH REPORT
 The CIFS report provides statistics for each mounted CIFS filesystem.
 The report shows the following fields:
 
-.B Filesystem:
-.RS
+.IP Filesystem:
 This columns shows the mount point of the CIFS filesystem.
-
-.RE
-.B rB/s (rkB/s, rMB/s)
-.RS
+.IP rB/s (rkB/s, rMB/s)
 Indicate the average number of bytes (kilobytes, megabytes) read per second.
-
-.RE
-.B wB/s (wkB/s, wMB/s)
-.RS
+.IP wB/s (wkB/s, wMB/s)
 Indicate the average number of bytes (kilobytes, megabytes) written per second.
-
-.RE
-.B rop/s
-.RS
+.IP rop/s
 Indicate the number of 'read' operations that were issued to the filesystem
 per second.
-
-.RE
-.B wop/s
-.RS
+.IP wop/s
 Indicate the number of 'write' operations that were issued to the filesystem
 per second.
-
-.RE
-.B fo/s
-.RS
+.IP fo/s
 Indicate the number of open files per second.
-
-.RE
-.B fc/s
-.RS
+.IP fc/s
 Indicate the number of closed files per second.
-
-.RE
-.B fd/s
-.RS
+.IP fd/s
 Indicate the number of deleted files per second.
-.RE
-.RE
+
 .SH OPTIONS
 .if 'yes'@WITH_DEBUG@' \{
-.IP --debuginfo
+.TP
+.B --debuginfo
 Print debug output to stderr.
 .\}
-.IP "--dec={ 0 | 1 | 2 }"
+.TP
+.B --dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
-.IP -h
+.TP
+.B -h
 This option is equivalent to specifying
-.BR "--human --pretty" .
-.IP --human
+.BR "--human --pretty" "."
+.TP
+.B --human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
-.IP -k
+.TP
+.B -k
 Display statistics in kilobytes per second.
-.IP -m
+.TP
+.B -m
 Display statistics in megabytes per second.
-.IP --pretty
+.TP
+.B --pretty
 Make the CIFS report easier to read by a human.
-.IP -t
+.TP
+.B -t
 Print the time for each report displayed. The timestamp format may depend
-on the value of the S_TIME_FORMAT environment variable (see below).
-.IP -V
+on the value of the
+.BR "S_TIME_FORMAT " "environment variable (see below)."
+.TP
+.B -V
 Print version number then exit.
 
 .SH ENVIRONMENT
-The
-.B cifsiostat
-command takes into account the following environment variables:
-
-.IP S_COLORS
+.RB "The " "cifsiostat " "command takes into account the following environment variables: "
+.TP
+.B S_COLORS
 By default statistics are displayed in color when the output is connected to a terminal.
 Use this variable to change the settings. Possible values for this variable are
-.IR never ,
-.IR always
-or
-.IR auto
-(the latter is equivalent to the default settings).
-
+.BR "never" ", " "always " "or " "auto " "(the latter is equivalent to the default settings)."
+.br
 Please note that the color (being red, yellow, or some other color) used to display a value
 is not indicative of any kind of issue simply because of the color. It only indicates different
 ranges of values.
-
-.IP S_COLORS_SGR
+.TP
+.B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR I=32;22:N=34;1:Z=34;22 .
+.BR "I=32;22:N=34;1:Z=34;22" "."
 Supported capabilities are:
-
 .RS
 .TP
 .B I=
 SGR substring for filesystem names.
-
 .TP
 .B N=
 SGR substring for non-zero statistics values.
-
 .TP
 .B Z=
 SGR substring for zero values.
 .RE
-
-.IP S_TIME_FORMAT
+.TP
+.B S_TIME_FORMAT
 If this variable exists and its value is
-.BR ISO
+.B ISO
 then the current locale will be ignored when printing the date in the report
 header. The
 .B cifsiostat
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
-The timestamp displayed with option -t will also be compliant with ISO 8601
-format.
+.RB "The timestamp displayed with option " "-t " "will also be compliant with ISO 8601 format."
 
 .SH BUG
-.I /proc
-filesystem must be mounted for
-.B cifsiostat
-to work.
-
-Although
-.B cifsiostat
+.IR "/proc " "filesystem must be mounted for"
+.BR "cifsiostat " "to work."
+.PP
+.RB "Although " "cifsiostat"
 speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
+
 .SH FILE
-.I /proc/fs/cifs/Stats
-contains CIFS statistics.
+.IR "/proc/fs/cifs/Stats " "contains CIFS statistics."
+
 .SH AUTHORS
 Written by Ivana Varekova (varekova <at> redhat.com)
-
+.br
 Maintained by Sebastien Godard (sysstat <at> orange.fr)
+
 .SH SEE ALSO
-.BR sar (1),
-.BR pidstat (1),
-.BR mpstat (1),
-.BR vmstat (8),
-.BR iostat (1),
-.BR tapestat (1),
-.BR nfsiostat (1)
+.BR "sar" "(1), " "pidstat" "(1), " "mpstat" "(1), " "vmstat" "(8), " "iostat" "(1),"
+.BR "tapestat" "(1), " "nfsiostat" "(1)"
 
 .I https://github.com/sysstat/sysstat
-
+.br
 .I http://pagesperso-orange.fr/sebastien.godard/

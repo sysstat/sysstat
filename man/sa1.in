@@ -1,67 +1,54 @@
-.TH SA1 8 "MAY 2020" Linux "Linux User's Manual" -*- nroff -*-
+.\" sa1 manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
+.TH SA1 8 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
+
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sa1 [ --boot | --sleep |
-.I interval
-.I count
+.I interval count
 .B ]
+
 .SH DESCRIPTION
-The
-.B sa1
-command is a shell procedure variant of the
-.B sadc
+.RB "The " "sa1"
+.RB "command is a shell procedure variant of the " "sadc"
 command and handles all of the flags and parameters of that command. The
 .B sa1
 command collects and stores binary data in the current standard
 system activity daily data file.
-
+.PP
 The standard system activity daily data file is named
-.I saDD
-unless
-.BR sadc 's
-option
-.B -D
-is used, in which case its name is
-.IR saYYYYMMDD ,
-where YYYY stands for the current year, MM for the current month
-and DD for the current day. By default it is located in the
+.IR "saDD " "unless"
+.BR "sadc" "'s option " "-D " "is used, in which case its name is"
+.IR "saYYYYMMDD" ","
+.RI "where " "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
+for the current day. By default it is located in the
 .I @SA_DIR@
 directory.
-
-The
-.I interval
-and
-.I count
+.PP
+.RI "The " "interval " "and " "count"
 parameters specify that the record should be written
-.I count
-times at
-.I interval
+.IR "count " "times at " "interval"
 seconds. If no arguments are given to
 .B sa1
 then a single record is written.
 
 The
 .B sa1
-command is designed to be started automatically by the cron command.
+command is designed to be started automatically by the
+.BR "cron " "command."
 
 .SH OPTIONS
-.IP --boot
+.TP
+.B --boot
 This option tells
-.B sa1
-that the
-.B sadc
+.BR "sa1 " "that the " "sadc"
 command should be called without specifying the
-.I interval
-and
-.I count
+.IR "interval " "and " "count"
 parameters in order to insert a dummy record, marking the time when the counters
 restart from 0.
-.IP --sleep
-This option tells
-.B sa1
-that the
-.B sadc
+.TP
+.B --sleep
+.RB "This option tells " "sa1 " "that the " "sadc"
 command should insert a comment indicating that the system is entering or leaving
 sleep mode (i.e. system suspend or hibernation).
 
@@ -77,17 +64,15 @@ place the following entry in your root crontab file:
 .I @SA_DIR@/saYYYYMMDD
 .RS
 The standard system activity daily data files and their default location.
-YYYY stands for the current year, MM for the current month and DD for the
-current day.
+.IR "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
+for the current day.
+
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
+
 .SH SEE ALSO
-.BR sar (1),
-.BR sadc (8),
-.BR sa2 (8),
-.BR sadf (1),
-.BR sysstat (5)
-
+.BR "sar" "(1), " "sadc" "(8), " "sa2" "(8), " "sadf" "(1), " "sysstat" "(5)"
+.PP
 .I https://github.com/sysstat/sysstat
-
+.br
 .I http://pagesperso-orange.fr/sebastien.godard/

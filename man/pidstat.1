@@ -1,27 +1,18 @@
-.TH PIDSTAT 1 "JUNE 2020" Linux "Linux User's Manual" -*- nroff -*-
+.\" pidstat manual page - (C) 2007-2020 Sebastien Godard (sysstat <at> orange.fr)
+.TH PIDSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
+
 .SH SYNOPSIS
 .B pidstat [ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [
-.I username
-.B ] ] [ -u ] [ -V ] [ -v ]
-.B [ -w ] [ -C
-.I comm
-.B ] [ -G
-.I process_name
-.B ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ -p {
-.I pid
-.B [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
-.I interval
-.B [
-.I count
-.B ] ] [ -e
-.I program
-.I args
-.B ]
+.IB "username " "] ] [ -u ] [ -V ] [ -v ] [ -w ] [ -C " "comm " "] [ -G " "process_name"
+.BI "] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ -p { " "pid" "[,...]"
+.B | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
+.IB "interval " "[ " "count " "] ] [ -e " "program"
+.IB "args " "]"
+
 .SH DESCRIPTION
-The
-.B pidstat
+.RB "The " "pidstat"
 command is used for monitoring individual tasks currently being managed
 by the Linux kernel.
 It writes to standard output activities for every task selected with option
@@ -32,315 +23,207 @@ has been used. Not selecting any tasks is equivalent to specifying
 .B -p ALL
 but only active tasks (tasks with non-zero statistics values)
 will appear in the report.
-
-The
-.B pidstat
+.PP
+.RB "The " "pidstat"
 command can also be used for monitoring the child processes of selected tasks.
 Read about option
-.B -T
-below.
-
-The
-.I interval
+.BR "-T " "below."
+.PP
+.RI "The " "interval"
 parameter specifies the amount of time in seconds between each report.
 A value of 0 (or no parameters at all) indicates that tasks statistics are
-to be reported for the time since system startup (boot).
-The
-.I count
-parameter can be specified in conjunction with the
-.I interval
-parameter if this one is not set to zero. The value of
-.I count
-determines the number of reports generated at
-.I interval
-seconds apart. If the
-.I interval
-parameter is specified without the
-.I count
+to be reported for the time since system startup (boot). The
+.IR "count " "parameter can be specified in conjunction with the"
+.IR "interval " "parameter if this one is not set to zero. The value of"
+.IR "count " "determines the number of reports generated at"
+.IR "interval " "seconds apart. If the " "interval " "parameter is specified without the " "count"
 parameter, the
 .B pidstat
 command generates reports continuously.
-
+.PP
 You can select information about specific task activities using flags.
 Not specifying any flags selects only CPU activity.
 
 .SH OPTIONS
-.IP "-C comm"
+.TP
+.BI "-C " "comm"
 Display only tasks whose command name includes the string
-.IR comm .
-This string can be a regular expression.
-.IP -d
+.IR "comm" ". This string can be a regular expression."
+.TP
+.B -d
 Report I/O statistics (kernels 2.6.20 and later only).
 The following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B kB_rd/s
-.RS
-Number of kilobytes the task has caused to be read from disk
-per second.
-.RE
-
-.B kB_wr/s
-.RS
+.IP kB_rd/s
+Number of kilobytes the task has caused to be read from disk per second.
+.IP kB_wr/s
 Number of kilobytes the task has caused, or shall cause to be
 written to disk per second.
-.RE
-
-.B kB_ccwr/s
-.RS
+.IP kB_ccwr/s
 Number of kilobytes whose writing to disk has been cancelled by
 the task. This may occur when the task truncates some
 dirty pagecache. In this case, some IO which another task has
 been accounted for will not be happening.
-.RE
-
-.B iodelay
-.RS
+.IP iodelay
 Block I/O delay of the task being monitored,
 measured in clock ticks. This metric includes the delays spent
 waiting for sync block I/O completion and for swapin block I/O
 completion.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-.RE
-.IP "--dec={ 0 | 1 | 2 }"
+.TP
+.B --dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
-.IP "-e program args"
+.TP
+.BI "-e " "program args"
 Execute
-.IR program
+.I program
 with given arguments
-.IR args
+.I args
 and monitor it with
-.B pidstat.
-.B pidstat
-stops when
-.IR program
-terminates.
-.IP "-G process_name"
+.BR "pidstat" "."
+.BR "pidstat " "stops when"
+.IR "program " "terminates."
+.TP
+.BI "-G " "process_name"
 Display only processes whose command name includes the string
-.IR process_name .
-This string can be a regular expression. If option -t is used
-together with option -G then the threads belonging to that
-process are also displayed (even if their command name doesn't
-include the string
-.IR process_name ).
-.IP -H
+.IR "process_name" "."
+This string can be a regular expression. If option
+.BR "-t " "is used together with option " "-G"
+then the threads belonging to that process are also displayed
+(even if their command name doesn't include the string
+.IR "process_name" ")."
+.TP
+.B -H
 Display timestamp in seconds since the epoch.
-.IP -h
+.TP
+.B -h
 Display all activities horizontally on a single line, with no
 average statistics at the end of the report. This is
 intended to make it easier to be parsed by other programs.
-.IP --human
+.TP
+.B --human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
-.IP -I
+.TP
+.B -I
 In an SMP environment, indicate that tasks CPU usage
-(as displayed by option
-.B -u
-) should be divided by the total number of processors.
-.IP -l
+.RB "(as displayed by option " "-u" ")"
+should be divided by the total number of processors.
+.TP
+.B -l
 Display the process command name and all its arguments.
-.IP "-p { pid [,...] | SELF | ALL }"
+.TP
+.BI "-p { " "pid" "[,...] | SELF | ALL }"
 Select tasks (processes) for which statistics are to be reported.
 .I pid
 is the process identification number. The
 .B SELF
 keyword indicates that statistics are to be reported for the
-.B pidstat
-process itself, whereas the
-.B ALL
+.BR "pidstat " "process itself, whereas the " "ALL"
 keyword indicates that statistics are to be reported for all the
 tasks managed by the system.
-.IP -R
+.TP
+.B -R
 Report realtime priority and scheduling policy information.
 The following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B prio
-.RS
+.IP prio
 The realtime priority of the task being monitored.
-.RE
-
-.B policy
-.RS
+.IP policy
 The scheduling policy of the task being monitored.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-.RE
-.IP -r
+.TP
+.B -r
 Report page faults and memory utilization.
 
 When reporting statistics for individual tasks,
 the following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B minflt/s
-.RS
+.IP minflt/s
 Total number of minor faults the task has made per second, those
 which have not required loading a memory page from disk.
-.RE
-
-.B majflt/s
-.RS
+.IP majflt/s
 Total number of major faults the task has made per second, those
 which have required loading a memory page from disk.
-.RE
-
-.B VSZ
-.RS
+.IP VSZ
 Virtual Size: The virtual memory usage of entire task in kilobytes.
-.RE
-
-.B RSS
-.RS
+.IP RSS
 Resident Set Size: The non-swapped physical memory
 used by the task in kilobytes.
-.RE
-
-.B %MEM
-.RS
+.IP %MEM
 The tasks's currently used share of available physical memory.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-
+.IP
 When reporting global statistics for tasks and all their children,
 the following values may be displayed:
-
-.B UID
 .RS
+.IP UID
 The real user identification number of the task which is being monitored
 together with its children.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task which is being monitored
 together with its children.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task which is being monitored
 together with its children.
-.RE
-
-.B minflt-nr
-.RS
+.IP minflt-nr
 Total number of minor faults made by the task and all its children,
 and collected during the interval of time.
-.RE
-
-.B majflt-nr
-.RS
+.IP majflt-nr
 Total number of major faults made by the task and all its children,
 and collected during the interval of time.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task which is being monitored
 together with its children.
 .RE
-.RE
-.IP -s
+.TP
+.B -s
 Report stack utilization.
 The following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B StkSize
-.RS
+.IP StkSize
 The amount of memory in kilobytes reserved for the task as stack,
 but not necessarily used.
-.RE
-
-.B StkRef
-.RS
+.IP StkRef
 The amount of memory in kilobytes used as stack, referenced by the task.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-.RE
-.IP "-T { TASK | CHILD | ALL }"
+.TP
+.B -T { TASK | CHILD | ALL }
 This option specifies what has to be monitored by the
-.B pidstat
-command. The
-.B TASK
+.BR "pidstat " "command. The " "TASK"
 keyword indicates that statistics are to be reported for individual tasks
 (this is the default option) whereas the
 .B CHILD
@@ -357,321 +240,211 @@ for all options of
 Also these statistics are not necessarily relevant to current time interval:
 The statistics of a child process are collected only when it finishes or
 it is killed.
-.IP -t
+.TP
+.B -t
 Also display statistics for threads associated with selected tasks.
 
 This option adds the following values to the reports:
-
-.B TGID
 .RS
-.RS
+.IP TGID
 The identification number of the thread group leader.
-.RE
-
-.B TID
-.RS
+.IP TID
 The identification number of the thread being monitored.
 .RE
-.RE
-.IP "-U [ username ]"
+.TP
+.BI "-U [ " "username " "]"
 Display the real user name of the tasks being monitored instead of the UID.
-If
-.I username
+.RI "If " "username"
 is specified, then only tasks belonging to the specified user are displayed.
-.IP -u
+.TP
+.B -u
 Report CPU utilization.
 
 When reporting statistics for individual tasks,
 the following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B %usr
-.RS
+.IP %usr
 Percentage of CPU used by the task while executing at the user level
 (application), with or without nice priority. Note that this field
 does NOT include time spent running a virtual processor.
-.RE
-
-.B %system
-.RS
-Percentage of CPU used by the task while executing at the system level
-(kernel).
-.RE
-
-.B %guest
-.RS
-Percentage of CPU spent by the task in virtual machine (running a virtual
-processor).
-.RE
-
-.B %wait
-.RS
+.IP %system
+Percentage of CPU used by the task while executing at the system level (kernel).
+.IP %guest
+Percentage of CPU spent by the task in virtual machine (running a virtual processor).
+.IP %wait
 Percentage of CPU spent by the task while waiting to run.
-.RE
-
-.B %CPU
-.RS
+.IP %CPU
 Total percentage of CPU time used by the task. In an SMP environment,
-the task's CPU usage will be divided by the total number of CPU's if
-option
+the task's CPU usage will be divided by the total number of CPU's if option
 .B -I
 has been entered on the command line.
-.RE
-
-.B CPU
-.RS
+.IP CPU
 Processor number to which the task is attached.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-
+.IP
 When reporting global statistics for tasks and all their children,
 the following values may be displayed:
-
-.B UID
 .RS
+.IP UID
 The real user identification number of the task which is being monitored
 together with its children.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task which is being monitored
 together with its children.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task which is being monitored
 together with its children.
-.RE
-
-.B usr-ms
-.RS
+.IP usr-ms
 Total number of milliseconds spent
 by the task and all its children while executing at the
 user level (application), with or without nice priority, and
 collected during the interval of time. Note that this field does
 NOT include time spent running a virtual processor.
-.RE
-
-.B system-ms
-.RS
+.IP system-ms
 Total number of milliseconds spent
 by the task and all its children while executing at the
 system level (kernel), and collected during the interval of time.
-.RE
-
-.B guest-ms
-.RS
+.IP guest-ms
 Total number of milliseconds spent
-by the task and all its children in virtual machine (running a virtual
-processor).
-.RE
-
-.B Command
-.RS
+by the task and all its children in virtual machine (running a virtual processor).
+.IP Command
 The command name of the task which is being monitored
 together with its children.
 .RE
-.RE
-.IP -V
+.TP
+.B -V
 Print version number then exit.
-.IP -v
+.TP
+.B -v
 Report values of some kernel tables. The following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B threads
-.RS
+.IP threads
 Number of threads associated with current task.
-.RE
-
-.B fd-nr
-.RS
+.IP fd-nr
 Number of file descriptors associated with current task.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-.RE
-.IP -w
+.TP
+.B -w
 Report task switching activity (kernels 2.6.23 and later only).
 The following values may be displayed:
-
-.B UID
 .RS
-.RS
+.IP UID
 The real user identification number of the task being monitored.
-.RE
-
-.B USER
-.RS
+.IP USER
 The name of the real user owning the task being monitored.
-.RE
-
-.B PID
-.RS
+.IP PID
 The identification number of the task being monitored.
-.RE
-
-.B cswch/s
-.RS
+.IP cswch/s
 Total number of voluntary context switches the task made per second.
 A voluntary context switch occurs when a task blocks because it
 requires a resource that is unavailable.
-.RE
-
-.B nvcswch/s
-.RS
+.IP nvcswch/s
 Total number of non voluntary context switches the task made per second.
 A involuntary context switch takes place when a task executes
 for the duration of its time slice and then is forced to relinquish the
 processor.
-.RE
-
-.B Command
-.RS
+.IP Command
 The command name of the task.
 .RE
-.RE
+
 .SH ENVIRONMENT
 The
 .B pidstat
 command takes into account the following environment variables:
-
-.IP S_COLORS
+.TP
+.B S_COLORS
 By default statistics are displayed in color when the output is connected to a terminal.
 Use this variable to change the settings. Possible values for this variable are
-.IR never ,
-.IR always
-or
-.IR auto
+.IR "never" ", " "always " "or " "auto"
 (the latter is equivalent to the default settings).
-
+.br
 Please note that the color (being red, yellow, or some other color) used to display a value
 is not indicative of any kind of issue simply because of the color. It only indicates different
 ranges of values.
-
-.IP S_COLORS_SGR
+.TP
+.B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR H=31;1:I=32;22:M=35;1:N=34;1:Z=34;22 .
+.BR "H=31;1:I=32;22:M=35;1:N=34;1:Z=34;22" "."
 Supported capabilities are:
-
 .RS
 .TP
 .B H=
 SGR (Select Graphic Rendition) substring for percentage values greater than or equal to 75%.
-
 .TP
 .B I=
 SGR substring for item values like PID, UID or CPU number.
-
 .TP
 .B M=
 SGR substring for percentage values in the range from 50% to 75%.
-
 .TP
 .B N=
 SGR substring for non-zero statistics values and for tasks names.
-
 .TP
 .B Z=
 SGR substring for zero values and for threads names.
 .RE
-
-.IP S_TIME_FORMAT
+.TP
+.B S_TIME_FORMAT
 If this variable exists and its value is
 .BR ISO
-then the current locale will be ignored when printing the date in the report header.
-The
+then the current locale will be ignored when printing the date in the report header. The
 .B pidstat
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
 The timestamp will also be compliant with ISO 8601 format.
 
 .SH EXAMPLES
+.TP
 .B pidstat 2 5
-.RS
 Display five reports of CPU statistics for every active task in the system
 at two second intervals.
-.RE
-
+.TP
 .B pidstat -r -p 1643 2 5
-.RS
 Display five reports of page faults and memory statistics for
 PID 1643 at two second intervals.
-.RE
-
+.TP
 .B pidstat -C """fox|bird"" -r -p ALL
-.RS
 Display global page faults and memory statistics for all the
 processes whose command name includes the string "fox" or "bird".
-.RE
-
+.TP
 .B pidstat -T CHILD -r 2 5
-.RS
 Display five reports of page faults statistics at two second intervals
 for the child processes of all tasks in the system. Only child processes
 with non-zero statistics values are displayed.
-.SH BUGS
-.I /proc
-filesystem must be mounted for the
-.B pidstat
-command to work.
 
-Although
-.B pidstat
+.SH BUGS
+.IR "/proc " "filesystem must be mounted for the"
+.BR "pidstat " "command to work."
+.PP
+.RB "Although " "pidstat"
 speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
+
 .SH FILES
-.IR /proc
-contains various files with system statistics.
+.IR "/proc " "contains various files with system statistics."
 
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
+
 .SH SEE ALSO
-.BR sar (1),
-.BR top (1),
-.BR ps (1),
-.BR mpstat (1),
-.BR iostat (1),
-.BR vmstat (8)
-
+.BR "sar" "(1), " "top" "(1), " "ps" "(1), " "mpstat" "(1), " "iostat" "(1), " "vmstat" "(8)"
+.PP
 .I https://github.com/sysstat/sysstat
-
+.br
 .I http://pagesperso-orange.fr/sebastien.godard/
