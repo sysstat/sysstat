@@ -1,5 +1,11 @@
 Changes:
 
+2020/07/31: Version 12.2.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: Output format which doesn't accept the use of option -T
+	  should not also reject the use of option -t.
+	* [Tom Hebb]: Replace index() call with strchr() call.
+	* Use NULL as an argument for time(2) system call.
+
 2020/05/08: Version 12.2.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Don't display duplicate entries in /etc/mtab.
 	* pidstat: Remove extra space at end of command name.

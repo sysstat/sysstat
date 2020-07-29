@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2020-05-08 09:12+0200\n"
+"POT-Creation-Date: 2020-07-29 09:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
-msgid "Summary:"
-msgstr ""
-
-#: iostat.c:88 cifsiostat.c:77 mpstat.c:131 tapestat.c:105 sar.c:108
+#: iostat.c:88 cifsiostat.c:77 tapestat.c:105 mpstat.c:131 sar.c:108
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
@@ -104,6 +100,18 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
+#: tapestat.c:107
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+
+#: tapestat.c:273
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr ""
+
 #: mpstat.c:134
 #, c-format
 msgid ""
@@ -140,21 +148,8 @@ msgstr ""
 msgid "PCP support not compiled in\n"
 msgstr ""
 
-#: tapestat.c:107
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-
-#: tapestat.c:273
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr ""
-
-#: common.c:79
-#, c-format
-msgid "sysstat version %s\n"
+#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
+msgid "Summary:"
 msgstr ""
 
 #: sar.c:123
@@ -341,6 +336,16 @@ msgstr ""
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
+#: rd_stats.c:351
+#, c-format
+msgid "Cannot read %s\n"
+msgstr ""
+
+#: common.c:79
+#, c-format
+msgid "sysstat version %s\n"
+msgstr ""
+
 #: sa_conv.c:98
 #, c-format
 msgid "Cannot convert the format of this file\n"
@@ -474,11 +479,6 @@ msgstr ""
 #: sadf_misc.c:1279
 #, c-format
 msgid " \t[Unknown format]"
-msgstr ""
-
-#: rd_stats.c:351
-#, c-format
-msgid "Cannot read %s\n"
 msgstr ""
 
 #: sa_common.c:306
