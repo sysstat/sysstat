@@ -1072,9 +1072,8 @@ char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
 
 	/* Get full path to device knowing its major and minor numbers */
 	r = readlink(link, target, PATH_MAX);
-	if (r <= 0 || r >= PATH_MAX) {
+	if (r <= 0 || r >= PATH_MAX)
 		return (NULL);
-	}
 
 	target[r] = '\0';
 

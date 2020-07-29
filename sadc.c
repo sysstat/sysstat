@@ -1350,7 +1350,7 @@ int main(int argc, char **argv)
 	}
 
 	/*
-	 * If option -z used, write to STDOUT even if a filename
+	 * If option -Z used, write to STDOUT even if a filename
 	 * has been entered on the command line.
 	 */
 	if (optz) {
