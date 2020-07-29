@@ -77,10 +77,12 @@ void usage(char *progname)
 
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+			  "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
 #endif
 	exit(1);
 }
