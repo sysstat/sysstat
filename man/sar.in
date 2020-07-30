@@ -201,6 +201,10 @@ Report activity for each block device.
 When data are displayed, the device name is displayed as it
 (should) appear in
 .IR "/dev" "."
+.BR "sar " "uses data in"
+.IR "/sys " "to determine the device name based on its major and minor numbers."
+.RB "If this name resolution fails, " "sar " "will use name mapping controlled by"
+.IR "@SYSCONFIG_DIR@/sysstat.ioconf " "file."
 Persistent device names can also be printed if option
 .B -j
 is used (see below). Statistics for all devices are displayed unless
