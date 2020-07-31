@@ -1708,7 +1708,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 	int h, hl = 0, hh = 0, fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
 	struct io_device *d, *dtmp, *g = NULL, *dnext = NULL;
-	char *dev_name, *pdname;
+	char *dev_name;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
