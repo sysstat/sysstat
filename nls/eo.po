@@ -1,14 +1,14 @@
 # Esperanto translation.
-# Copyright (C) 2011, 2012, 2013, 2014, 2015, 2016, 2019 Free Software Foundation, Inc.
+# Copyright (C) 2011, 2012, 2013, 2014, 2015, 2016, 2019, 2020 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
-# Felipe Castro <fefcas@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2019.
+# Felipe Castro <fefcas@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2019, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.3.1\n"
+"Project-Id-Version: sysstat 12.3.3\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2019-12-24 14:48+0100\n"
-"PO-Revision-Date: 2019-12-29 10:21-0300\n"
+"POT-Creation-Date: 2020-05-01 09:28+0200\n"
+"PO-Revision-Date: 2020-05-30 16:42-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3.1\n"
 
-#: cifsiostat.c:77 mpstat.c:134 iostat.c:88 tapestat.c:104 sar.c:108
+#: cifsiostat.c:75 mpstat.c:134 iostat.c:89 tapestat.c:104 sar.c:108
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Uzmaniero: %s [ modifiloj ] [ <intervalo> [ <nombro> ] ]\n"
 
-#: cifsiostat.c:81
+#: cifsiostat.c:79
 #, c-format
 msgid ""
 "Options are:\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Modifiloj estas:\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:84
+#: cifsiostat.c:82
 #, c-format
 msgid ""
 "Options are:\n"
@@ -62,23 +62,23 @@ msgstr ""
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Ne eblas skribi datumaron al sistem-aktivaĵa dosiero: %s\n"
 
-#: sadc.c:720 sadc.c:783 ioconf.c:507 rd_stats.c:75 sa_common.c:1843
+#: sadc.c:733 sadc.c:796 ioconf.c:507 rd_stats.c:83 sa_common.c:1843
 #: count.c:118
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Ne eblas malfermi %s: %s\n"
 
-#: sadc.c:1005
+#: sadc.c:1018
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Ne eblas postaldoni datumaron al tiu dosiero (%s)\n"
 
-#: sadf.c:104
+#: sadf.c:105
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "Uzmaniero: %s [ modifiloj ] [ <intervalo> [ <nombro> ] ] [ <datumdosiero> | -[0-9]+ ]\n"
 
-#: sadf.c:107
+#: sadf.c:108
 #, c-format
 msgid ""
 "Options are:\n"
@@ -95,7 +95,7 @@ msgstr ""
 "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 "[ -- <sar_opcioj> ]\n"
 
-#: sadf.c:1839
+#: sadf.c:1860
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "Subteno al PCP ne estas enkompilita\n"
@@ -113,31 +113,31 @@ msgstr ""
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <nod_listo> | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_listo> | ALL } ]\n"
 
-#: mpstat.c:1736 pidstat.c:2419 sar.c:376
+#: mpstat.c:1736 pidstat.c:2288 sar.c:383
 msgid "Average:"
 msgstr "Meznombro:"
 
-#: rd_stats.c:351
+#: rd_stats.c:359
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "Ne eblas legi %s\n"
 
-#: sa_common.c:306
+#: sa_common.c:302
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Dosiero kreita de sar/sadc el sysstat versio %d.%d.%d"
 
-#: sa_common.c:337
+#: sa_common.c:333
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Malvalida sistem-aktivaĵa dosiero: %s\n"
 
-#: sa_common.c:345
+#: sa_common.c:341
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "La nuna versio de sysstat ne povas legi la formon de tiu ĉi dosiero (%#x)\n"
 
-#: sa_common.c:362 pidstat.c:250
+#: sa_common.c:358 pidstat.c:207
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Petitaj aktivaĵoj ne disponeblas\n"
@@ -162,17 +162,17 @@ msgstr "Bonvolu kontroli ĉu kolektado de datumaro estas ebligata\n"
 msgid "Requested activities not available in file %s\n"
 msgstr "Petitaj aktivaĵoj ne disponeblas en la dosiero %s\n"
 
-#: sa_common.c:2329 iostat.c:1978
+#: sa_common.c:2329 iostat.c:2165
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Nevalida tipo de persista aparat-nomo\n"
 
-#: pidstat.c:97
+#: pidstat.c:89
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr "Uzmaniero: %s [ modifiloj ] [ <intervalo> [ <nombro> ] ] [ -e <programo> <argj> ]\n"
 
-#: pidstat.c:100
+#: pidstat.c:92
 #, c-format
 msgid ""
 "Options are:\n"
@@ -187,79 +187,79 @@ msgstr ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
 
-#: sadf_misc.c:1214
+#: sadf_misc.c:1220
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Sistem-aktivaĵa datumara dosiero: %s (%#x)\n"
 
-#: sadf_misc.c:1223
+#: sadf_misc.c:1229
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Aŭtentika sa-datumdosiero: %s (%x)\n"
 
-#: sadf_misc.c:1224
+#: sadf_misc.c:1230
 msgid "no"
 msgstr "ne"
 
-#: sadf_misc.c:1224
+#: sadf_misc.c:1230
 msgid "yes"
 msgstr "jes"
 
-#: sadf_misc.c:1227
+#: sadf_misc.c:1233
 #, c-format
 msgid "Host: "
 msgstr "Gastiganto: "
 
-#: sadf_misc.c:1237
+#: sadf_misc.c:1243
 #, c-format
 msgid "File date: %s\n"
 msgstr "Dosier-dato: %s\n"
 
-#: sadf_misc.c:1240
+#: sadf_misc.c:1246
 #, c-format
 msgid "File time: "
 msgstr "Dosier-tempo: "
 
-#: sadf_misc.c:1245
+#: sadf_misc.c:1251
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Horzono: %s\n"
 
-#: sadf_misc.c:1248
+#: sadf_misc.c:1254
 #, c-format
 msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 msgstr "Dosiera kombino: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 
-#: sadf_misc.c:1253
+#: sadf_misc.c:1259
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Grando de long int: %d\n"
 
-#: sadf_misc.c:1255
+#: sadf_misc.c:1261
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Nombro da aktivaĵoj en dosiero: %u\n"
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1263
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Kromaj strukturoj disponeblaj: %c\n"
 
-#: sadf_misc.c:1260
+#: sadf_misc.c:1266
 #, c-format
 msgid "List of activities:\n"
 msgstr "Listo de aktivaĵoj:\n"
 
-#: sadf_misc.c:1271
+#: sadf_misc.c:1277
 msgid "Unknown activity"
 msgstr "Nekonata aktivado"
 
-#: sadf_misc.c:1279
+#: sadf_misc.c:1285
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Nekonata formo]"
 
-#: pr_stats.c:2623 pr_stats.c:2630 pr_stats.c:2735 pr_stats.c:2780
+#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
 msgid "Summary:"
 msgstr "Resumo:"
 
@@ -268,36 +268,36 @@ msgstr "Resumo:"
 msgid "Cannot handle so many processors!\n"
 msgstr "Ne eblas trakti tiom da procesoroj!\n"
 
-#: iostat.c:91
+#: iostat.c:92
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Modifiloj estas:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ { -f | +f } <dosierujo> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <grup_nomo> ] [ -p [ <aparato> [,...] | ALL ] ]\n"
 "[ <aparato> [...] | ALL ] [ --debuginfo ]\n"
 
-#: iostat.c:98
+#: iostat.c:99
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Modifiloj estas:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ { -f | +f } <dosierujo> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 "[ [ -H ] -g <grup_nomo> ] [ -p [ <aparato> [,...] | ALL ] ]\n"
 "[ <aparato> [...] | ALL ]\n"
@@ -326,10 +326,11 @@ msgstr "sysstat versio %s\n"
 msgid ""
 "Options are:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
-"[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
 "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
+"[ -q [ <keyword> [,...] | ALL ] ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
@@ -338,52 +339,53 @@ msgid ""
 msgstr ""
 "Modifiloj estas:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
-"[ -p ] [ -q ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
 "[ -I { <int_listo> | SUM | ALL } ] [ -P { <cpu_listo> | ALL } ]\n"
 "[ -m { <ŝlosilvorto> [,...] | ALL } ] [ -n { <ŝlosilvorto> [,...] | ALL } ]\n"
+"[ -q [ <ŝlosilvorto> [,...] | ALL ] ]\n"
 "[ --dev=<apar_listo> ] [ --fs=<ds_list> ] [ --iface=<iface_listo> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
 "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <dosiernomo> ] | -o [ <dosiernomo> ] | -[0-9]+ ]\n"
 "[ -i <intervalo> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 
-#: sar.c:148
+#: sar.c:149
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "Ĉefaj eblecoj kaj raportoj (raport-nomo inter kvadrataj krampoj):\n"
 
-#: sar.c:149
+#: sar.c:150
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\tStatistikoj pri paĝigo [A_PAGE]\n"
 
-#: sar.c:150
+#: sar.c:151
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr "\t-b\tStatistikoj pri en/eligo kaj pri transig-rapido [A_IO]\n"
 
-#: sar.c:151
+#: sar.c:152
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\tStatistikoj pri blok-aparatoj [A_DISK]\n"
 
-#: sar.c:152
+#: sar.c:153
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ MUNTO ]\n"
 
-#: sar.c:153
+#: sar.c:154
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\tStatistikoj pri dosiersistemoj [A_FS]\n"
 
-#: sar.c:154
+#: sar.c:155
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\tStatistikoj pri uzo de paĝegoj [A_HUGE]\n"
 
-#: sar.c:155
+#: sar.c:156
 #, c-format
 msgid ""
 "\t-I { <int_list> | SUM | ALL }\n"
@@ -392,7 +394,7 @@ msgstr ""
 "\t-I { <int_listo> | SUM | ALL }\n"
 "\t\tStatistikoj pri interrompoj [A_IRQ]\n"
 
-#: sar.c:157
+#: sar.c:158
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -415,7 +417,7 @@ msgstr ""
 "\t\tTEMP\tTemperaturo de aparatoj\n"
 "\t\tUSB\tAparatoj USB konektataj al la sistemo\n"
 
-#: sar.c:166
+#: sar.c:167
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -466,12 +468,26 @@ msgstr ""
 "\t\tFC\tFibro-kanalo HBAs\n"
 "\t\tSOFT\tProgramar-surbaza reta procezado\n"
 
-#: sar.c:189
-#, c-format
-msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
-msgstr "\t-q\tStatistikoj pri longeco de vico kaj pri meznombra ŝarĝado [A_QUEUE]\n"
-
 #: sar.c:190
+#, c-format
+msgid ""
+"\t-q [ <keyword> [,...] | PSI | ALL ]\n"
+"\t\tSystem load and pressure-stall statistics\n"
+"\t\tKeywords are:\n"
+"\t\tLOAD\tQueue length and load average statistics [A_QUEUE]\n"
+"\t\tCPU\tPressure-stall CPU statistics [A_PSI_CPU]\n"
+"\t\tIO\tPressure-stall I/O statistics [A_PSI_IO]\n"
+"\t\tMEM\tPressure-stall memory statistics [A_PSI_MEM]\n"
+msgstr ""
+"\t-q [ <ŝlosilvorto> [,...] | PSI | ALL ]\n"
+"\t\tStatistikoj pri sistem-ŝarĝo kaj prem-malrapido\n"
+"\t\tŜlosilvortoj estas:\n"
+"\t\tLOAD\tStatistikoj pri grando de vicigoj kaj averaĝa ŝarĝo [A_QUEUE]\n"
+"\t\tCPU\tStatistikoj pri prem-malrapido de procesoro [A_PSI_CPU]\n"
+"\t\tIO\tStatistikoj pri prem-malrapido de en/eligo [A_PSI_IO]\n"
+"\t\tMEM\tStatistikoj pri prem-malrapido de memoro [A_PSI_MEM]\n"
+
+#: sar.c:197
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -480,12 +496,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tStatistikoj pri uzo de memoro [A_MEMORY]\n"
 
-#: sar.c:192
+#: sar.c:199
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\tStatistikoj pri uzo de permut-spaco [A_MEMORY]\n"
 
-#: sar.c:193
+#: sar.c:200
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -494,72 +510,72 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistikoj pri uzo de CPU [A_CPU]\n"
 
-#: sar.c:195
+#: sar.c:202
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\tStatistikoj pri kerno-tabeloj [A_KTABLES]\n"
 
-#: sar.c:196
+#: sar.c:203
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\tStatistikoj pri permutado [A_SWAP]\n"
 
-#: sar.c:197
+#: sar.c:204
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\tStatistikoj pri tasko-kreado kaj pri sistem-ŝaltado [A_PCSW]\n"
 
-#: sar.c:198
+#: sar.c:205
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tStatistikoj pri TTY-aparatoj [A_SERIAL]\n"
 
-#: sar.c:212
+#: sar.c:219
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Datumar-kolektilo estos serĉata en PATH\n"
 
-#: sar.c:215
+#: sar.c:222
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Datumar-kolektilo trovita: %s\n"
 
-#: sar.c:280
+#: sar.c:287
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Ne atendita fino de datumar-kolektado\n"
 
-#: sar.c:285
+#: sar.c:292
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Nekongrua enig-datumaro\n"
 
-#: sar.c:890
+#: sar.c:898
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Uzo de malĝusta datumar-kolektilo el alia versio de sysstat\n"
 
-#: sar.c:1516
+#: sar.c:1543
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Modifiloj -f kaj -o ne povas aperi kune\n"
 
-#: sar.c:1526
+#: sar.c:1553
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Ni ne legas el sistem-aktivaĵa dosiero (uzu la modifilon -f)\n"
 
-#: sar.c:1679
+#: sar.c:1706
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Ne eblas trovi la datumar-kolektilon (%s)\n"
 
-#: sa_conv.c:98
+#: sa_conv.c:99
 #, c-format
 msgid "Cannot convert the format of this file\n"
 msgstr "Ne eblas konverti la formon de tiu ĉi dosiero\n"
 
-#: sa_conv.c:369
+#: sa_conv.c:375
 #, c-format
 msgid ""
 "\n"
@@ -568,7 +584,7 @@ msgstr ""
 "\n"
 "Aktivaĵo de CPU ne estis trovata en dosiero. Ni ĉesas...\n"
 
-#: sa_conv.c:392
+#: sa_conv.c:398
 #, c-format
 msgid ""
 "\n"
@@ -577,12 +593,12 @@ msgstr ""
 "\n"
 "Malvalida datumaro estis trovata. Ni ĉesas...\n"
 
-#: sa_conv.c:1865
+#: sa_conv.c:1871
 #, c-format
 msgid "Statistics:\n"
 msgstr "Statistikoj:\n"
 
-#: sa_conv.c:1966
+#: sa_conv.c:1972
 #, c-format
 msgid ""
 "\n"
@@ -591,15 +607,18 @@ msgstr ""
 "\n"
 "Dosierformo jam estas ĝisdata\n"
 
-#: sa_conv.c:1972
+#: sa_conv.c:1984
 #, c-format
 msgid "HZ: Using current value: %lu\n"
 msgstr "HZ: uzas nunan valoron: %lu\n"
 
-#: sa_conv.c:2003
+#: sa_conv.c:2015
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "La dosiero estas sukcese convertita al formo de sysstat, versio %s\n"
+
+#~ msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
+#~ msgstr "\t-q\tStatistikoj pri longeco de vico kaj pri meznombra ŝarĝado [A_QUEUE]\n"
 
 #~ msgid "Cannot find disk data\n"
 #~ msgstr "Ne eblas trovi disk-datumaron\n"

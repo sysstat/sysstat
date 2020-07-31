@@ -5,10 +5,10 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.3.3\n"
+"Project-Id-Version: sysstat 12.4.0\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2020-05-01 09:28+0200\n"
-"PO-Revision-Date: 2020-05-01 13:37+0300\n"
+"POT-Creation-Date: 2020-07-29 08:16+0200\n"
+"PO-Revision-Date: 2020-07-29 12:34+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 20.07.70\n"
 
-#: cifsiostat.c:75 mpstat.c:134 iostat.c:89 tapestat.c:104 sar.c:108
+#: cifsiostat.c:75 mpstat.c:134 iostat.c:88 tapestat.c:104 sar.c:107
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Використання: %s [ параметри ] [ <інтервал> [ <лічильник> ] ]\n"
@@ -28,19 +28,23 @@ msgstr "Використання: %s [ параметри ] [ <інтервал>
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 msgstr ""
 "Параметри:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:82
+#: cifsiostat.c:83
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 msgstr ""
 "Параметри:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
 #: sadc.c:98
 #, c-format
@@ -63,8 +67,8 @@ msgstr ""
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Не вдалося записати дані до файла показників системи: %s\n"
 
-#: sadc.c:733 sadc.c:796 ioconf.c:507 rd_stats.c:83 sa_common.c:1843
-#: count.c:118
+#: sadc.c:733 sadc.c:796 count.c:118 ioconf.c:479 rd_stats.c:83
+#: sa_common.c:1767
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Не вдалося відкрити %s: %s\n"
@@ -73,6 +77,105 @@ msgstr "Не вдалося відкрити %s: %s\n"
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Не вдалося додати дані до файла (%s)\n"
+
+#: mpstat.c:137
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+msgstr ""
+"Параметри:\n"
+"[ -A ] [ -n ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <список_вузлів> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <список_процесорів> | ALL } ]\n"
+
+#: mpstat.c:1736 pidstat.c:2288 sar.c:382
+msgid "Average:"
+msgstr "Середнє:"
+
+#: count.c:169
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Обробка такої кількості процесорів неможлива!\n"
+
+#: common.c:80
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat, версія %s\n"
+
+#: sadf_misc.c:1215
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "Файл даних щодо показників системи: %s (%#x)\n"
+
+#: sadf_misc.c:1224
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "Справжній файл даних sa: %s (%x)\n"
+
+#: sadf_misc.c:1225
+msgid "no"
+msgstr "ні"
+
+#: sadf_misc.c:1225
+msgid "yes"
+msgstr "так"
+
+#: sadf_misc.c:1228
+#, c-format
+msgid "Host: "
+msgstr "Вузол: "
+
+#: sadf_misc.c:1238
+#, c-format
+msgid "File date: %s\n"
+msgstr "Дата файла: %s\n"
+
+#: sadf_misc.c:1241
+#, c-format
+msgid "File time: "
+msgstr "Час створення файла: "
+
+#: sadf_misc.c:1246
+#, c-format
+msgid "Timezone: %s\n"
+msgstr "Часовий пояс: %s\n"
+
+#: sadf_misc.c:1249
+#, c-format
+msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgstr "Побудова файла: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+
+#: sadf_misc.c:1254
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Розмір long int: %d\n"
+
+#: sadf_misc.c:1256
+#, c-format
+msgid "Number of activities in file: %u\n"
+msgstr "Кількість дій у файлі: %u\n"
+
+#: sadf_misc.c:1258
+#, c-format
+msgid "Extra structures available: %c\n"
+msgstr "Доступні додаткові структури: %c\n"
+
+#: sadf_misc.c:1261
+#, c-format
+msgid "List of activities:\n"
+msgstr "Список показників:\n"
+
+#: sadf_misc.c:1272
+msgid "Unknown activity"
+msgstr "Невідома дія"
+
+#: sadf_misc.c:1280
+#, c-format
+msgid " \t[Unknown format]"
+msgstr "\t[Невідомий формат]"
 
 #: sadf.c:105
 #, c-format
@@ -101,22 +204,9 @@ msgstr ""
 msgid "PCP support not compiled in\n"
 msgstr "Програму зібрано без підтримки PCP\n"
 
-#: mpstat.c:137
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
-msgstr ""
-"Параметри:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <список_вузлів> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <список_процесорів> | ALL } ]\n"
-
-#: mpstat.c:1736 pidstat.c:2288 sar.c:383
-msgid "Average:"
-msgstr "Середнє:"
+#: pr_stats.c:2618 pr_stats.c:2625 pr_stats.c:2730 pr_stats.c:2775
+msgid "Summary:"
+msgstr "Резюме:"
 
 #: rd_stats.c:359
 #, c-format
@@ -143,27 +233,27 @@ msgstr "Поточна версія sysstat не може прочитати ф�
 msgid "Requested activities not available\n"
 msgstr "Потрібний вам показник недоступний\n"
 
-#: sa_common.c:1437
+#: sa_common.c:1361
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Помилка під час читання файла показників системи: %s\n"
 
-#: sa_common.c:1447
+#: sa_common.c:1371
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Неочікуваний кінець файла показників системи\n"
 
-#: sa_common.c:1846
+#: sa_common.c:1770
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Будь ласка, переконайтеся, що увімкнено збирання даних.\n"
 
-#: sa_common.c:2198
+#: sa_common.c:2122
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "У файлі %s немає потрібних вам показників\n"
 
-#: sa_common.c:2329 iostat.c:2165
+#: sa_common.c:2250 iostat.c:2129
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Некоректний тип назви постійного пристрою\n"
@@ -188,118 +278,37 @@ msgstr ""
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
 
-#: sadf_misc.c:1220
-#, c-format
-msgid "System activity data file: %s (%#x)\n"
-msgstr "Файл даних щодо показників системи: %s (%#x)\n"
-
-#: sadf_misc.c:1229
-#, c-format
-msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Справжній файл даних sa: %s (%x)\n"
-
-#: sadf_misc.c:1230
-msgid "no"
-msgstr "ні"
-
-#: sadf_misc.c:1230
-msgid "yes"
-msgstr "так"
-
-#: sadf_misc.c:1233
-#, c-format
-msgid "Host: "
-msgstr "Вузол: "
-
-#: sadf_misc.c:1243
-#, c-format
-msgid "File date: %s\n"
-msgstr "Дата файла: %s\n"
-
-#: sadf_misc.c:1246
-#, c-format
-msgid "File time: "
-msgstr "Час створення файла: "
-
-#: sadf_misc.c:1251
-#, c-format
-msgid "Timezone: %s\n"
-msgstr "Часовий пояс: %s\n"
-
-#: sadf_misc.c:1254
-#, c-format
-msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-msgstr "Побудова файла: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-
-#: sadf_misc.c:1259
-#, c-format
-msgid "Size of a long int: %d\n"
-msgstr "Розмір long int: %d\n"
-
-#: sadf_misc.c:1261
-#, c-format
-msgid "Number of activities in file: %u\n"
-msgstr "Кількість дій у файлі: %u\n"
-
-#: sadf_misc.c:1263
-#, c-format
-msgid "Extra structures available: %c\n"
-msgstr "Доступні додаткові структури: %c\n"
-
-#: sadf_misc.c:1266
-#, c-format
-msgid "List of activities:\n"
-msgstr "Список показників:\n"
-
-#: sadf_misc.c:1277
-msgid "Unknown activity"
-msgstr "Невідома дія"
-
-#: sadf_misc.c:1285
-#, c-format
-msgid " \t[Unknown format]"
-msgstr "\t[Невідомий формат]"
-
-#: pr_stats.c:2616 pr_stats.c:2623 pr_stats.c:2728 pr_stats.c:2773
-msgid "Summary:"
-msgstr "Резюме:"
-
-#: count.c:169
-#, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Обробка такої кількості процесорів неможлива!\n"
-
-#: iostat.c:92
+#: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 "Параметри:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <каталог> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 "[ [ -H ] -g <назва_групи> ] [ -p [ <пристрій> [,...] | ALL ] ]\n"
 "[ <пристрій> [...] | ALL ] [ --debuginfo ]\n"
 
-#: iostat.c:99
+#: iostat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 "Параметри:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 "[ { -f | +f } <каталог> ] [-j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 "[ [ -H ] -g <назва_групи> ] [ -p [ <пристрій> [,...] | ALL ] ]\n"
 "[ <пристрій> [...] | ALL ]\n"
 
@@ -317,12 +326,7 @@ msgstr ""
 msgid "No tape drives with statistics found\n"
 msgstr "Не знайдено стрічкових пристроїв зі статистичними даними\n"
 
-#: common.c:79
-#, c-format
-msgid "sysstat version %s\n"
-msgstr "sysstat, версія %s\n"
-
-#: sar.c:123
+#: sar.c:122
 #, c-format
 msgid ""
 "Options are:\n"
@@ -333,7 +337,7 @@ msgid ""
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -q [ <keyword> [,...] | ALL ] ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
@@ -346,47 +350,47 @@ msgstr ""
 "[ -m { <ключове слово> [,...] | ALL } ] [ -n { <ключове слово> [,...] | ALL } ]\n"
 "[ -q [ <ключове слово> [,...] | ALL ] ]\n"
 "[ --dev=<список пристроїв> ] [ --fs=<список фс> ] [ --iface=<список інтерфейсів> ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --sadc ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <назва_файла> ] | -o [ <назва_файла> ] | -[0-9]+ ]\n"
 "[ -i <інтервал> ] [ -s [ <гг:хх[:сс]> ] ] [ -e [ <гг:хх[:сс]> ] ]\n"
 
-#: sar.c:149
+#: sar.c:148
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "Основні параметри і звіти (назву звіту вказано у квадратних дужках):\n"
 
-#: sar.c:150
+#: sar.c:149
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\tСтатистичні дані щодо обміну даних сторінок [A_PAGE]\n"
 
-#: sar.c:151
+#: sar.c:150
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr "\t-b\tСтатистичні дані щодо вводу-виводу та швидкості передавання [A_IO]\n"
 
-#: sar.c:152
+#: sar.c:151
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\tСтатистичні дані щодо блокових пристроїв [A_DISK]\n"
 
-#: sar.c:153
+#: sar.c:152
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ МОНТУВАННЯ ]\n"
 
-#: sar.c:154
+#: sar.c:153
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\tСтатистичні дані щодо файлових систем [A_FS]\n"
 
-#: sar.c:155
+#: sar.c:154
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\tСтатистичні дані щодо використання великих сторінок [A_HUGE]\n"
 
-#: sar.c:156
+#: sar.c:155
 #, c-format
 msgid ""
 "\t-I { <int_list> | SUM | ALL }\n"
@@ -395,7 +399,7 @@ msgstr ""
 "\t-I { <список переривань> | SUM | ALL }\n"
 "\t\tСтатистичні дані щодо переривань [A_IRQ]\n"
 
-#: sar.c:158
+#: sar.c:157
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -418,7 +422,7 @@ msgstr ""
 "\t\tTEMP\tтемпература пристроїв\n"
 "\t\tUSB\tПристрої USB, з’єднані з комп’ютером\n"
 
-#: sar.c:167
+#: sar.c:166
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -469,7 +473,7 @@ msgstr ""
 "\t\tFC\tHBA із волоконними каналами\n"
 "\t\tSOFT\tПрограмна обробка мережевих запитів\n"
 
-#: sar.c:190
+#: sar.c:189
 #, c-format
 msgid ""
 "\t-q [ <keyword> [,...] | PSI | ALL ]\n"
@@ -488,7 +492,7 @@ msgstr ""
 "\t\tIO\tстатистика навантаження-розвантаження введення-виведення [A_PSI_IO]\n"
 "\t\tMEM\tстатистика навантаження-розвантаження пам'яті [A_PSI_MEM]\n"
 
-#: sar.c:197
+#: sar.c:196
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -497,12 +501,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tСтатистичні дані щодо використання пам’яті [A_MEMORY]\n"
 
-#: sar.c:199
+#: sar.c:198
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\tСтатистичні дані щодо використання резервної пам'яті на диску [A_MEMORY]\n"
 
-#: sar.c:200
+#: sar.c:199
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -511,62 +515,62 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tСтатистичні дані щодо використання центрального процесора [A_CPU]\n"
 
-#: sar.c:202
+#: sar.c:201
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\tСтатистичні дані щодо таблиць ядра [A_KTABLES]\n"
 
-#: sar.c:203
+#: sar.c:202
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\tСтатистичні дані щодо резервної пам'яті на диску [A_SWAP]\n"
 
-#: sar.c:204
+#: sar.c:203
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\tСтатистичні дані щодо створення завдань і перемикання системи [A_PCSW]\n"
 
-#: sar.c:205
+#: sar.c:204
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tСтатистичні дані щодо пристроїв TTY [A_SERIAL]\n"
 
-#: sar.c:219
+#: sar.c:218
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Пошук засобу збирання даних буде виконано у PATH\n"
 
-#: sar.c:222
+#: sar.c:221
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Знайдений засіб збирання даних: %s\n"
 
-#: sar.c:287
+#: sar.c:286
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Неочікуване завершення даних, які збиралися\n"
 
-#: sar.c:292
+#: sar.c:291
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Неузгоджені вхідні дані\n"
 
-#: sar.c:898
+#: sar.c:897
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Використано помилковий інструмент збирання даних з іншої версії sysstat\n"
 
-#: sar.c:1543
+#: sar.c:1548
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Не можна одночасно використовувати параметри -f і -o\n"
 
-#: sar.c:1553
+#: sar.c:1558
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Немає читання з файла показників системи (використайте параметр -f)\n"
 
-#: sar.c:1706
+#: sar.c:1707
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Не вдалося виявити інструмента збирання даних (%s)\n"
