@@ -1,10 +1,52 @@
 Changes:
 
+2020/07/31: Version 12.4.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* All commands: Display statistics in color by default when the
+	  output is connected to a terminal.
+	* sar: Now pretty-print all device names by default (that is to
+	  say, you no longer need to use option -p with option -d for that).
+	* cifsiostat, iostat, sar: Add new --pretty option (this option
+	  makes the reports easier to read when long item names are used).
+	* iostat: No longer use sysstat.ioconf file to determine the name
+	  of the devices. This file gave a wrong name for some devices
+	  with big minor numbers.
+	* iostat, sar: Make device name consistent between both of them.
+	* configure: Add new option "--enable-use-crond" to use standard
+	  cron daemon even if systemd is installed.
+	* configure: Use AC_COMPILE_IFELSE instead of old AC_TRY_COMPILE
+	  macro. Remove other obsolete autoconf macros.
+	* configure: Add new option "delay_range=". Used by sa2 script
+	  to wait for a random delay.
+	* configure: Fix --enable-debuginfo option.
+	* sa1: Insert a comment in daily datafile on system suspend/resume.
+	* sa2: Wait for a random delay before running to prevent massive
+	  I/O burst on some systems.
+	* sar: Fix typo in manual page.
+	* sar, iostat, cifsiostat, mpstat, pidstat, tapestat and sa1 manual
+	  pages updated.
+	* Update style for all manual pages.
+	* Compress manual pages by default when they are installed.
+	* Makefile: Remove all reports and date files (even those compressed
+	  with another program than gzip) when told to do so.
+	* Add pcp help file to be used with iconfig script.
+	* Update Travis script (now calls do_test script).
+	* sadf: Output format which doesn't accept the use of option -T
+	  should not also reject the use of option -t [12.2.3].
+	* [Tom Hebb]: Replace index() call with strchr() call [12.2.3].
+	* Use NULL as an argument for time(2) system call [12.2.3].
+	* Various cosmetic changes in code (comments updated, dead code
+	  removed, etc.)
+	* NLS updated.
+	* Non regression environment updated. New tests added.
+	* Better handle big minor numbers in sysstat test code.
+	* Fix gcc V10 warnings in sysstat 12.0.1 code used for test.
+
 2020/05/08: Version 12.3.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: Add new Pressure-Stall Information (PSI) statistics.
 	* sadf: Add support for PSI statistics.
-	* iostat: Add support for devices managed by userspace drivers (e.g. spdk).
-	  Add new flags -f/+f to specify an alternate location for stats files.
+	* iostat: Add support for devices managed by userspace drivers
+	  (e.g. spdk). Add new flags -f/+f to specify an alternate location
+	  for stats files.
 	* sar: Don't display duplicate entries in /etc/mtab [12.2.2].
 	* sar: Don't display "Inconsistent input data" error message when no
 	  activities are collected by sadc.
@@ -14,7 +56,8 @@ Changes:
 	* sar: Don't check if we are close enough to selected interval when
 	  interval=1 [12.2.2].
 	* sadf: Use actual number of items, not its pointer address [12.2.2].
-	* [Sdrkun]: sa1: Create default sa directory if it doesn't exist [12.2.2].
+	* [Sdrkun]: sa1: Create default sa directory if it doesn't exist
+	  [12.2.2].
 	* pr_stats.c: Printing timestamp should appear only once [12.2.2].
 	* common.c: Remove unused get_dev_part_nr() function [12.2.2].
 	* DTD and XSD documents updated.
@@ -29,7 +72,7 @@ Changes:
 	* simtest: Add test environment for pidstat command.
 	* simtest: Add new non regression tests for iostat command.
 	* pidstat: Remove extra space at end of command name [12.2.2].
-	* [Anatoly Pugachev]: Fix sa2 script, so it wont complain on empty list
+	* [Anatoly Pugachev]: Fix sa2 script, so it won't complain on empty list
 	  for compress program [12.2.2].
 	* iostat: Make sure pointer on linked list is initialized [12.2.2].
 	* [Fabrice Fontaine]: Makefile: Link with -lintl if needed [12.2.2].
