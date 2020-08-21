@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "AUGUST 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1309,7 +1309,7 @@ keyword, queue length and load averages statistics are reported.
 The following values are displayed:
 .RS
 .IP runq-sz
-Run queue length (number of tasks waiting for run time). 
+Run queue length (number of tasks running or waiting for run time).
 .IP plist-sz
 Number of tasks in the task list.
 .IP ldavg-1
