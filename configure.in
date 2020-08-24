@@ -492,14 +492,13 @@ AC_MSG_RESULT($AUX_IMG)
 AC_SUBST(IGNORE_FILE_ATTRIBUTES)
 
 # Compress manual pages?
-AC_MSG_CHECKING(whether manual pages should not be compressed)
+AC_MSG_CHECKING(whether manual pages should be compressed)
 AC_ARG_ENABLE(compress-manpg,
 	      AC_HELP_STRING([--disable-compress-manpg],
 			     [do not compress sysstat manual pages]),
-			     AUX_MPG=$enableval,AUX_MPG=no)
+			     AUX_MPG=no,AUX_MPG=yes)
 if test $AUX_MPG != "yes"; then
    COMPRESS_MANPG=n
-   AUX_MPG=no
 else
    COMPRESS_MANPG=y
 fi
