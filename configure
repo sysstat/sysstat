@@ -5346,18 +5346,17 @@ $as_echo "$AUX_IMG" >&6; }
 
 
 # Compress manual pages?
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether manual pages should not be compressed" >&5
-$as_echo_n "checking whether manual pages should not be compressed... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether manual pages should be compressed" >&5
+$as_echo_n "checking whether manual pages should be compressed... " >&6; }
 # Check whether --enable-compress-manpg was given.
 if test "${enable_compress_manpg+set}" = set; then :
-  enableval=$enable_compress_manpg; AUX_MPG=$enableval
+  enableval=$enable_compress_manpg; AUX_MPG=no
 else
-  AUX_MPG=no
+  AUX_MPG=yes
 fi
 
 if test $AUX_MPG != "yes"; then
    COMPRESS_MANPG=n
-   AUX_MPG=no
 else
    COMPRESS_MANPG=y
 fi
