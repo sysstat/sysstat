@@ -5350,7 +5350,7 @@ $as_echo "$AUX_IMG" >&6; }
 $as_echo_n "checking whether manual pages should be compressed... " >&6; }
 # Check whether --enable-compress-manpg was given.
 if test "${enable_compress_manpg+set}" = set; then :
-  enableval=$enable_compress_manpg; AUX_MPG=no
+  enableval=$enable_compress_manpg; AUX_MPG=$enableval
 else
   AUX_MPG=yes
 fi

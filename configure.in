@@ -496,7 +496,7 @@ AC_MSG_CHECKING(whether manual pages should be compressed)
 AC_ARG_ENABLE(compress-manpg,
 	      AC_HELP_STRING([--disable-compress-manpg],
 			     [do not compress sysstat manual pages]),
-			     AUX_MPG=no,AUX_MPG=yes)
+			     AUX_MPG=$enableval,AUX_MPG=yes)
 if test $AUX_MPG != "yes"; then
    COMPRESS_MANPG=n
 else
