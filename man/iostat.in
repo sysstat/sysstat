@@ -1,5 +1,5 @@
 .\" iostat manual page - (C) 1998-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH IOSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "AUGUST 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -108,7 +108,8 @@ Transfer rates are shown in 1K blocks by default, unless the environment
 variable
 .B POSIXLY_CORRECT
 is set, in which case 512-byte blocks are used.
-The report may show the following fields, depending on the flags used:
+The report may show the following fields, depending on the flags used (e.g.
+.BR "-x" ", " "-s " "and " "-k " "or " "-m" "):"
 .RS
 .IP Device:
 This column gives the device (or partition) name as listed in the
@@ -128,12 +129,17 @@ blocks (kilobytes, megabytes) per second.
 .IP "Blk_dscd/s (kB_dscd/s, MB_dscd/s)"
 Indicate the amount of data discarded for the device expressed in a number of
 blocks (kilobytes, megabytes) per second.
+.IP "Blk_w+d/s (kB_w+d/s, MB_w+d/s)"
+Indicate the amount of data written to or discarded for the device expresssed
+in a number of blocks (kilobytes, megabytes) per second.
 .IP "Blk_read (kB_read, MB_read)"
 The total number of blocks (kilobytes, megabytes) read.
 .IP "Blk_wrtn (kB_wrtn, MB_wrtn)"
 The total number of blocks (kilobytes, megabytes) written.
 .IP "Blk_dscd (kB_dscd, MB_dscd)"
 The total number of blocks (kilobytes, megabytes) discarded.
+.IP "Blk_w+d (kB_w+d, MB_w+d)"
+The total number of blocks (kilobytes, megabytes) written or discarded.
 .IP r/s
 The number (after merges) of read requests completed per second for the device.
 .IP w/s
