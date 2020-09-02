@@ -28,6 +28,7 @@ PID:
 /proc/stat
 CPU#3: tickless
 CPU#6: offline
+CPU#7: iowait decremented
 
 /proc/diskstats
 sda, sda1: counters increase
