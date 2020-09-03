@@ -20,7 +20,7 @@
 13:20:29 UTC; CPU; 4; %usr; 12827; 12934; %nice; 293975; 293975; %sys; 7985; 8052; %iowait; 9350; 9376; %steal; 0; 0; %irq; 3472; 3482; %soft; 5338; 5343; %guest; 0; 0; %gnice; 0; 0; %idle; 387774; 390667;
 13:20:29 UTC; CPU; 5; %usr; 12458; 12544; %nice; 308545; 308545; %sys; 6748; 6813; %iowait; 7908; 7913; %steal; 0; 0; %irq; 3104; 3110; %soft; 1074; 1077; %guest; 0; 0; %gnice; 0; 0; %idle; 381259; 384212;
 13:20:29 UTC; CPU [OFF]; 6; %usr [DEC]; 17940; 0; %nice [DEC]; 60354; 0; %sys [DEC]; 10201; 0; %iowait [DEC]; 10830; 0; %steal; 0; 0; %irq [DEC]; 3514; 0; %soft [DEC]; 1110; 0; %guest; 0; 0; %gnice; 0; 0; %idle [DEC]; 616306; 0;
-13:20:29 UTC; CPU; 7; %usr; 16369; 16395; %nice; 100925; 100925; %sys; 9098; 9124; %iowait; 0; 7293; %steal; 0; 0; %irq; 2104; 2107; %soft; 979; 981; %guest; 0; 0; %gnice; 0; 0; %idle; 583650; 586713;
+13:20:29 UTC; CPU; 7; %usr; 16369; 16395; %nice; 100925; 100925; %sys; 9098; 9124; %iowait; 7293; 7293; %steal; 0; 0; %irq; 2104; 2107; %soft; 979; 981; %guest; 0; 0; %gnice; 0; 0; %idle; 583650; 586713;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
 13:20:39 UTC; CPU; -1; %usr; 95612; 96528; %nice; 2584890; 2588725; %sys; 53235; 53830; %iowait; 58198; 58263; %steal; 0; 0; %irq; 27773; 27878; %soft; 25908; 25972; %guest; 0; 0; %gnice; 0; 0; %idle; 2947795; 2972869;

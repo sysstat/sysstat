@@ -9,13 +9,13 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">%usr (1.64, 6.53)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">%usr (2.15, 6.53)</text>
 <text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">%nice (0.00, 23.20)</text>
-<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">%sys (1.11, 3.44)</text>
-<text x="795" y="95" style="fill: #ff0000; stroke: none; font-size: 12px">%iowait (0.12, 28.40)</text>
+<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">%sys (1.55, 3.44)</text>
+<text x="795" y="95" style="fill: #ff0000; stroke: none; font-size: 12px">%iowait (0.12, 0.77)</text>
 <text x="795" y="110" style="fill: #e85f00; stroke: none; font-size: 12px">%steal (0.00, 0.00)</text>
-<text x="795" y="125" style="fill: #0000ff; stroke: none; font-size: 12px">%irq (0.13, 0.96)</text>
-<text x="795" y="140" style="fill: #006020; stroke: none; font-size: 12px">%soft (0.14, 0.38)</text>
+<text x="795" y="125" style="fill: #0000ff; stroke: none; font-size: 12px">%irq (0.19, 0.96)</text>
+<text x="795" y="140" style="fill: #006020; stroke: none; font-size: 12px">%soft (0.19, 0.38)</text>
 <text x="795" y="155" style="fill: #7030a0; stroke: none; font-size: 12px">%guest (0.00, 0.00)</text>
 <text x="795" y="170" style="fill: #ffff00; stroke: none; font-size: 12px">%gnice (0.00, 0.00)</text>
 <g transform="translate(70,250)">
@@ -52,22 +52,22 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00cc00; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="2.15" width="31"/><rect x="0" y="0.00" height="1.64" width="31"/><rect x="0" y="0.00" height="2.66" width="39"/><rect x="18" y="0.00" height="6.53" width="22"/><rect x="2035" y="0.00" height="2.47" width="31"/>
+<rect x="0" y="0.00" height="2.15" width="31"/><rect x="0" y="0.00" height="2.28" width="31"/><rect x="0" y="0.00" height="2.66" width="39"/><rect x="18" y="0.00" height="6.53" width="22"/><rect x="2035" y="0.00" height="2.47" width="31"/>
 </g>
 <g style="fill: #ff00bf; stroke: none" transform="scale(0.348500,-2.000000)">
 <rect x="0" y="2.15" height="12.50" width="31"/><rect x="0" y="2.66" height="23.20" width="39"/><rect x="18" y="6.53" height="9.63" width="22"/><rect x="2035" y="2.47" height="17.21" width="31"/>
 </g>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="14.64" height="1.84" width="31"/><rect x="0" y="1.64" height="1.11" width="31"/><rect x="0" y="25.86" height="1.74" width="39"/><rect x="18" y="16.16" height="3.44" width="22"/><rect x="2035" y="19.68" height="2.21" width="31"/>
+<rect x="0" y="14.64" height="1.84" width="31"/><rect x="0" y="2.28" height="1.55" width="31"/><rect x="0" y="25.86" height="1.74" width="39"/><rect x="18" y="16.16" height="3.44" width="22"/><rect x="2035" y="19.68" height="2.21" width="31"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="16.48" height="0.12" width="31"/><rect x="0" y="2.75" height="28.40" width="31"/><rect x="0" y="27.60" height="0.17" width="39"/><rect x="18" y="19.60" height="0.54" width="22"/><rect x="2035" y="21.89" height="0.77" width="31"/>
+<rect x="0" y="16.48" height="0.12" width="31"/><rect x="0" y="3.83" height="0.48" width="31"/><rect x="0" y="27.60" height="0.17" width="39"/><rect x="18" y="19.60" height="0.54" width="22"/><rect x="2035" y="21.89" height="0.77" width="31"/>
 </g>
 <g style="fill: #0000ff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="16.60" height="0.34" width="31"/><rect x="0" y="31.16" height="0.13" width="31"/><rect x="0" y="27.77" height="0.33" width="39"/><rect x="18" y="20.14" height="0.60" width="22"/><rect x="2035" y="22.66" height="0.96" width="31"/>
+<rect x="0" y="16.60" height="0.34" width="31"/><rect x="0" y="4.31" height="0.19" width="31"/><rect x="0" y="27.77" height="0.33" width="39"/><rect x="18" y="20.14" height="0.60" width="22"/><rect x="2035" y="22.66" height="0.96" width="31"/>
 </g>
 <g style="fill: #006020; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="16.93" height="0.19" width="31"/><rect x="0" y="31.29" height="0.14" width="31"/><rect x="0" y="28.10" height="0.20" width="39"/><rect x="18" y="20.74" height="0.38" width="22"/><rect x="2035" y="23.62" height="0.22" width="31"/>
+<rect x="0" y="16.93" height="0.19" width="31"/><rect x="0" y="4.50" height="0.19" width="31"/><rect x="0" y="28.10" height="0.20" width="39"/><rect x="18" y="20.74" height="0.38" width="22"/><rect x="2035" y="23.62" height="0.22" width="31"/>
 </g>
 </g>
 </g>
@@ -547,13 +547,13 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">%usr (0.25, 7.81)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">%usr (0.83, 7.81)</text>
 <text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">%nice (0.00, 0.00)</text>
-<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">%sys (0.25, 4.38)</text>
-<text x="795" y="95" style="fill: #ff0000; stroke: none; font-size: 12px">%iowait (0.06, 70.04)</text>
+<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">%sys (0.74, 4.38)</text>
+<text x="795" y="95" style="fill: #ff0000; stroke: none; font-size: 12px">%iowait (0.00, 0.36)</text>
 <text x="795" y="110" style="fill: #e85f00; stroke: none; font-size: 12px">%steal (0.00, 0.00)</text>
-<text x="795" y="125" style="fill: #0000ff; stroke: none; font-size: 12px">%irq (0.03, 0.63)</text>
-<text x="795" y="140" style="fill: #006020; stroke: none; font-size: 12px">%soft (0.02, 0.23)</text>
+<text x="795" y="125" style="fill: #0000ff; stroke: none; font-size: 12px">%irq (0.06, 0.63)</text>
+<text x="795" y="140" style="fill: #006020; stroke: none; font-size: 12px">%soft (0.06, 0.23)</text>
 <text x="795" y="155" style="fill: #7030a0; stroke: none; font-size: 12px">%guest (0.00, 0.00)</text>
 <text x="795" y="170" style="fill: #ffff00; stroke: none; font-size: 12px">%gnice (0.00, 0.00)</text>
 <g transform="translate(70,250)">
@@ -590,19 +590,19 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00cc00; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="2.89" width="31"/><rect x="0" y="0.00" height="0.25" width="31"/><rect x="0" y="0.00" height="3.23" width="39"/><rect x="18" y="0.00" height="7.81" width="22"/><rect x="2035" y="0.00" height="2.89" width="31"/>
+<rect x="0" y="0.00" height="2.89" width="31"/><rect x="0" y="0.00" height="0.83" width="31"/><rect x="0" y="0.00" height="3.23" width="39"/><rect x="18" y="0.00" height="7.81" width="22"/><rect x="2035" y="0.00" height="2.89" width="31"/>
 </g>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="2.89" height="0.74" width="31"/><rect x="0" y="0.25" height="0.25" width="31"/><rect x="0" y="3.23" height="1.35" width="39"/><rect x="18" y="7.81" height="4.38" width="22"/><rect x="2035" y="2.89" height="0.74" width="31"/>
+<rect x="0" y="2.89" height="0.74" width="31"/><rect x="0" y="0.83" height="0.83" width="31"/><rect x="0" y="3.23" height="1.35" width="39"/><rect x="18" y="7.81" height="4.38" width="22"/><rect x="2035" y="2.89" height="0.74" width="31"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="3.63" height="0.06" width="31"/><rect x="0" y="0.50" height="70.04" width="31"/><rect x="0" y="4.58" height="0.36" width="39"/><rect x="18" y="12.20" height="0.32" width="22"/><rect x="2035" y="3.63" height="0.06" width="31"/>
+<rect x="0" y="3.63" height="0.06" width="31"/><rect x="0" y="4.58" height="0.36" width="39"/><rect x="18" y="12.20" height="0.32" width="22"/><rect x="2035" y="3.63" height="0.06" width="31"/>
 </g>
 <g style="fill: #0000ff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="3.69" height="0.06" width="31"/><rect x="0" y="70.54" height="0.03" width="31"/><rect x="0" y="4.95" height="0.13" width="39"/><rect x="18" y="12.51" height="0.63" width="22"/><rect x="2035" y="3.69" height="0.06" width="31"/>
+<rect x="0" y="3.69" height="0.06" width="31"/><rect x="0" y="1.67" height="0.10" width="31"/><rect x="0" y="4.95" height="0.13" width="39"/><rect x="18" y="12.51" height="0.63" width="22"/><rect x="2035" y="3.69" height="0.06" width="31"/>
 </g>
 <g style="fill: #006020; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="3.76" height="0.06" width="31"/><rect x="0" y="70.57" height="0.02" width="31"/><rect x="0" y="5.08" height="0.13" width="39"/><rect x="18" y="13.14" height="0.23" width="22"/><rect x="2035" y="3.76" height="0.06" width="31"/>
+<rect x="0" y="3.76" height="0.06" width="31"/><rect x="0" y="1.76" height="0.06" width="31"/><rect x="0" y="5.08" height="0.13" width="39"/><rect x="18" y="13.14" height="0.23" width="22"/><rect x="2035" y="3.76" height="0.06" width="31"/>
 </g>
 </g>
 </g>
