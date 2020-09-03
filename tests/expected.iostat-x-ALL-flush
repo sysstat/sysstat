@@ -13,7 +13,7 @@ sr0              0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
-           2.99   12.51    2.49    0.20    0.00   81.81
+           2.99   12.51    2.49    0.21    0.00   81.80
 
 Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
 sda           1288.34  41499.97    73.30   5.38   12.58    32.21  316.36  10663.48   254.13  44.55    9.61    33.71    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00   18.56  85.36
