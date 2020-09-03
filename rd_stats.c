@@ -440,11 +440,25 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 	 * value was greater than ULLONG_MAX - 0x7ffff (the counter probably
 	 * overflew).
 	 */
+	if ((scc->cpu_iowait < scp->cpu_iowait) && (scp->cpu_iowait < (ULLONG_MAX - 0x7ffff))) {
+		/*
+		 * The iowait value reported by the kernel can also decrement as
+		 * a result of inaccurate iowait tracking. Waiting on IO can be
+		 * first accounted as iowait but then instead as idle.
+		 * Therefore if the idle value during the same period did not
+		 * decrease then consider this is a problem with the iowait
+		 * reporting and correct the previous value according to the new
+		 * reading. Otherwise, treat this as CPU coming back online.
+		 */
+		if ((scc->cpu_idle > scp->cpu_idle) || (scp->cpu_idle >= (ULLONG_MAX - 0x7ffff))) {
+			scp->cpu_iowait = scc->cpu_iowait;
+		}
+		else {
+			scp->cpu_iowait = 0;
+		}
+	}
 	if ((scc->cpu_idle < scp->cpu_idle) && (scp->cpu_idle < (ULLONG_MAX - 0x7ffff))) {
 		scp->cpu_idle = 0;
-	}
-	if ((scc->cpu_iowait < scp->cpu_iowait) && (scp->cpu_iowait < (ULLONG_MAX - 0x7ffff))) {
-		scp->cpu_iowait = 0;
 	}
 
 	/*
