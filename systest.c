@@ -112,7 +112,7 @@ int get_fs_stat(char *c, struct statvfs *buf)
 	buf->f_files = files[p];
 	buf->f_ffree = ffree[p];
 
-	p = (p + 1) & 0x11;
+	p = (p + 1) & 0x3;
 
 	return 0;
 }
