@@ -996,9 +996,11 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		 * we need to reallocate.
 		 */
 		act[p]->nr2 = file_act[i].nr2;
+		if (act[p]->nr_ini > act[p]->nr_allocated) {
+			act[p]->nr_allocated = act[p]->nr_ini;
+		}
 		SREALLOC(act[p]->_buf0, void,
-			 (size_t) act[p]->msize * (size_t) act[p]->nr_ini * (size_t) act[p]->nr2);
-		act[p]->nr_allocated = act[p]->nr_ini;
+			 (size_t) act[p]->msize * (size_t) act[p]->nr_allocated * (size_t) act[p]->nr2);
 
 		/* Save activity sequence */
 		id_seq[i] = file_act[i].id;
