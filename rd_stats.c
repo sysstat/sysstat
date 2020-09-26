@@ -2724,6 +2724,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
  *
  * RETURNS:
  * 1 if stats have been sucessfully read, or 0 otherwise.
+ * Returns -1 if the buffer was too small and needs to be reallocated.
  ***************************************************************************
  */
 int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
@@ -2732,21 +2733,27 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 	FILE *fp;
 	struct stats_softnet *st_softnet_i;
 	char line[1024];
-	int cpu;
+	int cpu = 1, rc = 1;
 
 	/* Open /proc/net/softnet_stat file */
 	if ((fp = fopen(NET_SOFTNET, "r")) == NULL)
 		return 0;
 
-	for (cpu = 1; cpu < nr_alloc; cpu++) {
-		if (!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07))))
-			/* CPU is offline */
-			continue;
+	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		if (fgets(line, sizeof(line), fp) == NULL)
+		while ((!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07)))) && (cpu <= NR_CPUS + 1)) {
+			cpu++;
+		}
+		if (cpu > NR_CPUS + 1)
+			/* Should never happen */
+			return 0;
+
+		if (cpu + 1 > nr_alloc) {
+			rc = -1;
 			break;
+		}
 
-		st_softnet_i = st_softnet + cpu;
+		st_softnet_i = st_softnet + cpu++;
 		sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x",
 		       &st_softnet_i->processed,
 		       &st_softnet_i->dropped,
@@ -2756,7 +2763,7 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 	}
 
 	fclose(fp);
-	return 1;
+	return rc;
 }
 
 /*

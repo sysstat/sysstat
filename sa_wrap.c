@@ -1070,7 +1070,7 @@ __read_funct_t wrap_read_fchost(struct activity *a)
  *		CPU bitmap which has been filled.
  *
  * RETURNS:
- * Number of CPU for which statistics have to be be read.
+ * Number of CPU for which statistics have to be read.
  * 1 means CPU "all", 2 means CPU "all" and CPU 0, etc.
  * Or -1 if the buffer was too small and needs to be reallocated.
  ***************************************************************************
@@ -1139,18 +1139,15 @@ __read_funct_t wrap_read_softnet(struct activity *a)
 
 		/* Get online CPU list */
 		nr_read = get_online_cpu_list(online_cpu_bitmap, bitmap_size);
-		if (!nr_read)
-			break;
+
+		if (nr_read > 0) {
+			/* Read /proc/net/softnet stats */
+			nr_read *= read_softnet(st_softnet, a->nr_allocated, online_cpu_bitmap);
+		}
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
 			st_softnet = (struct stats_softnet *) reallocate_buffer(a);
-		}
-		else {
-			if (!read_softnet(st_softnet, a->nr_allocated, online_cpu_bitmap)) {
-				/* File /proc/net/softnet doesn't exist */
-				nr_read = 0;
-			}
 		}
 	}
 	while (nr_read < 0);
