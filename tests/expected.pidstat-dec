@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 
 00:00:00      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 00:00:00        0      8407         -     0.1     0.0     0.0     0.0     0.1     1  gnome-terminal-

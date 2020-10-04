@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 
 13:20:09          tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util DEV
 

@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 
 00:00:00      UID      TGID       TID    usr-ms system-ms  guest-ms  Command
 00:00:02     1000      7900         -    112090     16710         0  gnome-shell

@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 
 Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
 sda               8.59    279.22     1.75   12.00    32.51    0.10   0.46

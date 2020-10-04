@@ -10,7 +10,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
 		<machine>x86_64</machine>
-		<number-of-cpus>8</number-of-cpus>
+		<number-of-cpus>9</number-of-cpus>
 		<file-date>2019-04-18</file-date>
 		<file-utc-time>13:20:09</file-utc-time>
 		<timezone>GMT</timezone>
@@ -634,7 +634,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
 					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
 				</filesystems>
@@ -1260,12 +1260,12 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sdf" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sdg" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sdf" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sdg" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.23"/>
@@ -1275,7 +1275,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:20:39" utc="1" interval="39">
 				<cpu-load>
-					<cpu number="all" usr="2.66" nice="23.20" sys="1.74" iowait="0.17" steal="0.00" irq="0.33" soft="0.20" guest="0.00" gnice="0.00" idle="71.70"/>
+					<cpu number="all" usr="2.67" nice="23.08" sys="1.79" iowait="0.17" steal="0.00" irq="0.33" soft="0.28" guest="0.00" gnice="0.00" idle="71.68"/>
 					<cpu number="0" usr="2.19" nice="52.01" sys="1.46" iowait="0.00" steal="0.00" irq="0.36" soft="0.39" guest="0.00" gnice="0.00" idle="43.59"/>
 					<cpu number="1" usr="3.45" nice="0.00" sys="2.33" iowait="0.55" steal="0.00" irq="0.34" soft="0.39" guest="0.00" gnice="0.00" idle="92.94"/>
 					<cpu number="2" usr="0.68" nice="16.81" sys="1.77" iowait="0.39" steal="0.00" irq="0.34" soft="0.08" guest="0.00" gnice="0.00" idle="79.93"/>
@@ -1283,6 +1283,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<cpu number="4" usr="3.11" nice="31.18" sys="2.27" iowait="0.00" steal="0.00" irq="0.50" soft="0.18" guest="0.00" gnice="0.00" idle="62.76"/>
 					<cpu number="5" usr="3.92" nice="0.00" sys="2.56" iowait="0.03" steal="0.00" irq="0.37" soft="0.10" guest="0.00" gnice="0.00" idle="93.02"/>
 					<cpu number="7" usr="3.23" nice="0.00" sys="1.35" iowait="0.36" steal="0.00" irq="0.13" soft="0.13" guest="0.00" gnice="0.00" idle="94.79"/>
+					<cpu number="8" usr="5.26" nice="0.00" sys="10.53" iowait="0.00" steal="0.00" irq="0.00" soft="16.45" guest="0.00" gnice="0.00" idle="67.76"/>
 				</cpu-load>
 				<process-and-context-switch per="second" proc="3.66" cswch="64945.01"/>
 				<interrupts>
@@ -1878,6 +1879,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -1893,12 +1895,12 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sdf" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sdg" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sdf" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sdg" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.01"/>
@@ -1908,7 +1910,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:20:49" utc="1" interval="22">
 				<cpu-load>
-					<cpu number="all" usr="6.53" nice="9.63" sys="3.44" iowait="0.54" steal="0.00" irq="0.60" soft="0.38" guest="0.00" gnice="0.00" idle="78.89"/>
+					<cpu number="all" usr="6.21" nice="8.70" sys="6.64" iowait="0.49" steal="0.39" irq="0.54" soft="0.34" guest="0.59" gnice="0.10" idle="75.90"/>
 					<cpu number="0" usr="2.69" nice="47.44" sys="1.26" iowait="0.18" steal="0.00" irq="0.36" soft="0.85" guest="0.00" gnice="0.00" idle="47.22"/>
 					<cpu number="1" usr="9.25" nice="0.00" sys="4.06" iowait="0.18" steal="0.00" irq="0.59" soft="0.95" guest="0.00" gnice="0.00" idle="84.97"/>
 					<cpu number="2" usr="9.90" nice="0.04" sys="3.78" iowait="0.90" steal="0.00" irq="0.49" soft="0.49" guest="0.00" gnice="0.00" idle="84.39"/>
@@ -1917,6 +1919,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<cpu number="5" usr="7.62" nice="0.00" sys="4.01" iowait="0.14" steal="0.00" irq="0.50" soft="0.23" guest="0.00" gnice="0.00" idle="87.51"/>
 					<cpu number="6" usr="4.13" nice="0.01" sys="2.72" iowait="0.63" steal="0.00" irq="0.59" soft="0.13" guest="0.00" gnice="0.00" idle="91.79"/>
 					<cpu number="7" usr="7.81" nice="0.00" sys="4.38" iowait="0.32" steal="0.00" irq="0.63" soft="0.23" guest="0.00" gnice="0.00" idle="86.63"/>
+					<cpu number="8" usr="2.84" nice="0.00" sys="39.98" iowait="0.00" steal="4.50" irq="0.00" soft="0.00" guest="6.75" gnice="1.13" idle="44.80"/>
 				</cpu-load>
 				<process-and-context-switch per="second" proc="5.27" cswch="108286.78"/>
 				<interrupts>
@@ -2506,7 +2509,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
 					<fchost name="host1" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
-					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="4.29" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
@@ -2515,6 +2518,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="8" total="4.29" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -2532,8 +2536,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
 					<filesystem fsname="/dev/sda7" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.23"/>
@@ -3146,17 +3150,17 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
-					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="394.13" rx_rps="0.00" flw_lim="0.00"/>
 					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="9" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="8.76" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="17.52" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="26.28" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="35.03" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="43.79" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="52.55" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="61.31" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="70.07" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="9" total="0.00" dropd="0.00" squeezd="78.83" rx_rps="0.00" flw_lim="0.00"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -3176,8 +3180,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
 					<filesystem fsname="/dev/sda7" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.00"/>
@@ -3187,7 +3191,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			</timestamp>
 		</statistics>
 		<restarts>
-			<boot date="2019-04-18" time="13:37:29" utc="1" cpu_count="8"/>
+			<boot date="2019-04-18" time="13:37:29" utc="1" cpu_count="9"/>
 			<boot date="2019-04-18" time="13:54:09" utc="1" cpu_count="10"/>
 		</restarts>
 		<comments>

@@ -333,6 +333,17 @@ NOTES:
 01667	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
 01669	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
 
+=====	Specific tests
+01700	LC_ALL=C TZ=GMT ./sar -P ALL -u 2 3 > tests/out.sar-cpu6off.tmp
+	[Starting at root3 where CPU#6 is already offline]
+01705	diff -u tests/out.sar-cpu6off.tmp tests/expected.sar-cpu6off
+01710	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8onoff.tmp
+01705	diff -u tests/out.sar-cpu8onoff.tmp tests/expected.sar-cpu8onoff
+	[CPU#8 - Last in list - online then offline]
+01720	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8off.tmp
+	[CPU#8 - Last in list - already offline]
+01725	diff -u tests/out.sar-cpu8off.tmp tests/expected.sar-cpu8off
+
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
 02015	diff -u tests/out.iostat.tmp tests/expected.iostat

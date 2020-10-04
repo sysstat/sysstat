@@ -1,7 +1,7 @@
 # uptime_cs; 719255; ust_time; 1555593609; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:09
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
-# name; A_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
-13:20:19 UTC; CPU; -1; %usr; 94591; 95124; %nice; 2578673; 2581777; %sys; 52404; 52861; %iowait; 58043; 58072; %steal; 0; 0; %irq; 27627; 27711; %soft; 25825; 25869; %guest; 0; 0; %gnice; 0; 0; %idle; 2906475; 2927065;
+# name; A_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
+13:20:19 UTC; CPU; -1; %usr; 96005; 96538; %nice; 2578701; 2581805; %sys; 53845; 54302; %iowait; 60648; 60677; %steal; 0; 0; %irq; 27891; 27975; %soft; 25853; 25897; %guest; 0; 0; %gnice; 0; 0; %idle; 3617879; 3638469;
 13:20:19 UTC; CPU; 0; %usr; 10600; 10684; %nice; 331675; 331676; %sys; 5802; 5869; %iowait; 4235; 4235; %steal; 0; 0; %irq; 3243; 3253; %soft; 9600; 9620; %guest; 0; 0; %gnice; 0; 0; %idle; 352894; 355816;
 13:20:19 UTC; CPU; 1; %usr; 11041; 11129; %nice; 363180; 363180; %sys; 6237; 6369; %iowait; 5418; 5418; %steal; 0; 0; %irq; 3438; 3459; %soft; 4668; 4674; %guest; 0; 0; %gnice; 0; 0; %idle; 323953; 326789;
 13:20:19 UTC; CPU; 2; %usr; 5839; 5909; %nice; 566300; 566301; %sys; 2858; 2905; %iowait; 7393; 7414; %steal; 0; 0; %irq; 4440; 4447; %soft; 1356; 1360; %guest; 0; 0; %gnice; 0; 0; %idle; 130672; 133632;
@@ -10,9 +10,10 @@
 13:20:19 UTC; CPU; 5; %usr; 12407; 12458; %nice; 308545; 308545; %sys; 6676; 6748; %iowait; 7908; 7908; %steal; 0; 0; %irq; 3093; 3104; %soft; 1071; 1074; %guest; 0; 0; %gnice; 0; 0; %idle; 378302; 381259;
 13:20:19 UTC; CPU; 6; %usr; 17865; 17940; %nice; 60354; 60354; %sys; 10138; 10201; %iowait; 10825; 10830; %steal; 0; 0; %irq; 3499; 3514; %soft; 1107; 1110; %guest; 0; 0; %gnice; 0; 0; %idle; 613356; 616306;
 13:20:19 UTC; CPU; 7; %usr; 16279; 16369; %nice; 100925; 100925; %sys; 9075; 9098; %iowait; 7292; 7294; %steal; 0; 0; %irq; 2102; 2104; %soft; 977; 979; %guest; 0; 0; %gnice; 0; 0; %idle; 580654; 583650;
+13:20:19 UTC; CPU [OFF]; 8; %usr [DEC]; 1414; 0; %nice [DEC]; 28; 0; %sys [DEC]; 1441; 0; %iowait [DEC]; 2605; 0; %steal; 0; 0; %irq [DEC]; 264; 0; %soft [DEC]; 28; 0; %guest; 0; 0; %gnice; 0; 0; %idle [DEC]; 711404; 0;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
-# name; A_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
-13:20:29 UTC; CPU; -1; %usr; 95124; 95612; %nice; 2581777; 2584890; %sys; 52861; 53235; %iowait; 58072; 58198; %steal; 0; 0; %irq; 27711; 27773; %soft; 25869; 25908; %guest; 0; 0; %gnice; 0; 0; %idle; 2927065; 2947795;
+# name; A_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
+13:20:29 UTC; CPU; -1; %usr; 96538; 97026; %nice; 2581805; 2584918; %sys; 54302; 54676; %iowait; 60677; 60803; %steal; 0; 0; %irq; 27975; 28037; %soft; 25897; 25936; %guest; 0; 0; %gnice; 0; 0; %idle; 3638469; 3659199;
 13:20:29 UTC; CPU; 0; %usr; 10684; 10723; %nice; 331676; 331676; %sys; 5869; 5916; %iowait; 4235; 4246; %steal; 0; 0; %irq; 3253; 3259; %soft; 9620; 9638; %guest; 0; 0; %gnice; 0; 0; %idle; 355816; 358812;
 13:20:29 UTC; CPU; 1; %usr; 11129; 11196; %nice; 363180; 363180; %sys; 6369; 6399; %iowait; 5418; 5442; %steal; 0; 0; %irq; 3459; 3462; %soft; 4674; 4679; %guest; 0; 0; %gnice; 0; 0; %idle; 326789; 329782;
 13:20:29 UTC; CPU; 2; %usr; 5909; 6011; %nice; 566301; 566301; %sys; 2905; 2959; %iowait; 7414; 7438; %steal; 0; 0; %irq; 4447; 4454; %soft; 1360; 1363; %guest; 0; 0; %gnice; 0; 0; %idle; 133632; 136557;
@@ -21,9 +22,10 @@
 13:20:29 UTC; CPU; 5; %usr; 12458; 12544; %nice; 308545; 308545; %sys; 6748; 6813; %iowait; 7908; 7913; %steal; 0; 0; %irq; 3104; 3110; %soft; 1074; 1077; %guest; 0; 0; %gnice; 0; 0; %idle; 381259; 384212;
 13:20:29 UTC; CPU [OFF]; 6; %usr [DEC]; 17940; 0; %nice [DEC]; 60354; 0; %sys [DEC]; 10201; 0; %iowait [DEC]; 10830; 0; %steal; 0; 0; %irq [DEC]; 3514; 0; %soft [DEC]; 1110; 0; %guest; 0; 0; %gnice; 0; 0; %idle [DEC]; 616306; 0;
 13:20:29 UTC; CPU; 7; %usr; 16369; 16395; %nice; 100925; 100925; %sys; 9098; 9124; %iowait; 7293; 7293; %steal; 0; 0; %irq; 2104; 2107; %soft; 979; 981; %guest; 0; 0; %gnice; 0; 0; %idle; 583650; 586713;
+13:20:29 UTC; CPU [OFF]; 8; %usr; 0; 0; %nice; 0; 0; %sys; 0; 0; %iowait; 0; 0; %steal; 0; 0; %irq; 0; 0; %soft; 0; 0; %guest; 0; 0; %gnice; 0; 0; %idle; 0; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
-# name; A_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
-13:20:39 UTC; CPU; -1; %usr; 95612; 96528; %nice; 2584890; 2588725; %sys; 53235; 53830; %iowait; 58198; 58263; %steal; 0; 0; %irq; 27773; 27878; %soft; 25908; 25972; %guest; 0; 0; %gnice; 0; 0; %idle; 2947795; 2972869;
+# name; A_CPU; nr_curr; 10; nr_alloc; 10; nr_ini; 10
+13:20:39 UTC; CPU; -1; %usr; 97026; 97950; %nice; 2584918; 2588753; %sys; 54676; 55287; %iowait [DEC]; 60803; 58263; %steal; 0; 0; %irq; 28037; 28142; %soft; 25936; 26025; %guest; 0; 0; %gnice; 0; 0; %idle [DEC]; 3659199; 2972972;
 13:20:39 UTC; CPU; 0; %usr; 10723; 10807; %nice; 331676; 333672; %sys; 5916; 5972; %iowait; 4246; 4246; %steal; 0; 0; %irq; 3259; 3273; %soft; 9638; 9653; %guest; 0; 0; %gnice; 0; 0; %idle; 358812; 360485;
 13:20:39 UTC; CPU; 1; %usr; 11196; 11328; %nice; 363180; 363180; %sys; 6399; 6488; %iowait; 5442; 5463; %steal; 0; 0; %irq; 3462; 3475; %soft; 4679; 4694; %guest; 0; 0; %gnice; 0; 0; %idle; 329782; 333338;
 13:20:39 UTC; CPU; 2; %usr; 6011; 6037; %nice; 566301; 566945; %sys; 2959; 3027; %iowait; 7438; 7453; %steal; 0; 0; %irq; 4454; 4467; %soft; 1363; 1366; %guest; 0; 0; %gnice; 0; 0; %idle; 136557; 139619;
@@ -32,9 +34,10 @@
 13:20:39 UTC; CPU; 5; %usr; 12544; 12694; %nice; 308545; 308545; %sys; 6813; 6911; %iowait; 7913; 7914; %steal; 0; 0; %irq; 3110; 3124; %soft; 1077; 1081; %guest; 0; 0; %gnice; 0; 0; %idle; 384212; 387770;
 13:20:39 UTC; CPU [OFF]; 6; %usr; 0; 0; %nice; 0; 0; %sys; 0; 0; %iowait; 0; 0; %steal; 0; 0; %irq; 0; 0; %soft; 0; 0; %guest; 0; 0; %gnice; 0; 0; %idle; 0; 0;
 13:20:39 UTC; CPU; 7; %usr; 16395; 16519; %nice; 100925; 100925; %sys; 9124; 9176; %iowait; 7293; 7307; %steal; 0; 0; %irq; 2107; 2112; %soft; 981; 986; %guest; 0; 0; %gnice; 0; 0; %idle; 586713; 590355;
+13:20:39 UTC; CPU; 8; %usr; 0; 1422; %nice; 0; 28; %sys; 0; 1457; %iowait; 0; 0; %steal; 0; 0; %irq; 0; 264; %soft; 0; 53; %guest; 0; 0; %gnice; 0; 0; %idle; 0; 103;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
-# name; A_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
-13:20:49 UTC; CPU; -1; %usr; 96528; 97862; %nice; 2588725; 2590952; %sys; 53830; 54469; %iowait; 58263; 58317; %steal; 0; 0; %irq; 27878; 27982; %soft; 25972; 26053; %guest; 0; 0; %gnice; 0; 0; %idle; 2972869; 2986198;
+# name; A_CPU; nr_curr; 10; nr_alloc; 10; nr_ini; 10
+13:20:49 UTC; CPU; -1; %usr; 97950; 99347; %nice; 2588753; 2590960; %sys; 55287; 56814; %iowait; 58263; 58317; %steal; 0; 100; %irq; 28142; 28246; %soft; 26025; 26106; %guest; 0; 150; %gnice; 0; 25; %idle; 2972972; 2987296;
 13:20:49 UTC; CPU; 0; %usr; 10807; 10867; %nice; 333672; 334730; %sys; 5972; 6000; %iowait; 4246; 4250; %steal; 0; 0; %irq; 3273; 3281; %soft; 9653; 9672; %guest; 0; 0; %gnice; 0; 0; %idle; 360485; 361538;
 13:20:49 UTC; CPU; 1; %usr; 11328; 11533; %nice; 363180; 363180; %sys; 6488; 6578; %iowait; 5463; 5467; %steal; 0; 0; %irq; 3475; 3488; %soft; 4694; 4715; %guest; 0; 0; %gnice; 0; 0; %idle; 333338; 335221;
 13:20:49 UTC; CPU; 2; %usr; 6037; 6257; %nice; 566945; 566946; %sys; 3027; 3111; %iowait; 7453; 7473; %steal; 0; 0; %irq; 4467; 4478; %soft; 1366; 1377; %guest; 0; 0; %gnice; 0; 0; %idle; 139619; 141495;
@@ -43,6 +46,7 @@
 13:20:49 UTC; CPU; 5; %usr; 12694; 12863; %nice; 308545; 308545; %sys; 6911; 7000; %iowait; 7914; 7917; %steal; 0; 0; %irq; 3124; 3135; %soft; 1081; 1086; %guest; 0; 0; %gnice; 0; 0; %idle; 387770; 389710;
 13:20:49 UTC; CPU; 6; %usr; 0; 18318; %nice; 0; 60355; %sys; 0; 10450; %iowait; 0; 10888; %steal; 0; 0; %irq; 0; 3568; %soft; 0; 1122; %guest; 0; 0; %gnice; 0; 0; %idle; 0; 624713;
 13:20:49 UTC; CPU; 7; %usr; 16519; 16692; %nice; 100925; 100925; %sys; 9176; 9273; %iowait; 7307; 7314; %steal; 0; 0; %irq; 2112; 2126; %soft; 986; 991; %guest; 0; 0; %gnice; 0; 0; %idle; 590355; 592273;
+13:20:49 UTC; CPU; 8; %usr; 1422; 1485; %nice [DEC]; 28; 8; %sys; 1457; 2345; %iowait; 0; 0; %steal; 0; 100; %irq; 264; 264; %soft; 53; 53; %guest; 0; 150; %gnice; 0; 25; %idle; 103; 1098;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PCSW; nr_curr; 1; nr_alloc; 1; nr_ini; 1
@@ -2498,7 +2502,7 @@
 13:20:49 UTC; FCHOST; host1; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
-# name; A_NET_SOFT; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_NET_SOFT; nr_curr; 9; nr_alloc; 10; nr_ini; 10
 13:20:19 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:19 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:19 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
@@ -2507,8 +2511,9 @@
 13:20:19 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:19 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:19 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:19 UTC; CPU [OFF]; 8; total/s [DEC]; 34; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
-# name; A_NET_SOFT; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_NET_SOFT; nr_curr; 9; nr_alloc; 10; nr_ini; 10
 13:20:29 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:29 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:29 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
@@ -2517,8 +2522,9 @@
 13:20:29 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:29 UTC; CPU [OFF]; 6; total/s [DEC]; 21614; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:29 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:29 UTC; CPU [OFF]; 8; total/s; 0; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
-# name; A_NET_SOFT; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_NET_SOFT; nr_curr; 10; nr_alloc; 10; nr_ini; 10
 13:20:39 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:39 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:39 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
@@ -2527,8 +2533,9 @@
 13:20:39 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:39 UTC; CPU [OFF]; 6; total/s; 0; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:39 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:39 UTC; CPU; 8; total/s; 0; 34; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
-# name; A_NET_SOFT; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_NET_SOFT; nr_curr; 10; nr_alloc; 10; nr_ini; 10
 13:20:49 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:49 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:49 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
@@ -2537,9 +2544,10 @@
 13:20:49 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:49 UTC; CPU; 6; total/s; 0; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 13:20:49 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:49 UTC; CPU; 8; total/s; 34; 130; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
-# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
 13:20:19 UTC; CPU; -1; MHz; 352254;
 13:20:19 UTC; CPU; 0; MHz; 356648;
 13:20:19 UTC; CPU; 1; MHz; 356639;
@@ -2550,7 +2558,7 @@
 13:20:19 UTC; CPU; 6; MHz; 349222;
 13:20:19 UTC; CPU; 7; MHz; 349756;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
-# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
 13:20:29 UTC; CPU; -1; MHz; 352254;
 13:20:29 UTC; CPU; 0; MHz; 356648;
 13:20:29 UTC; CPU; 1; MHz; 356639;
@@ -2561,7 +2569,7 @@
 13:20:29 UTC; CPU; 6; MHz; 349222;
 13:20:29 UTC; CPU; 7; MHz; 349756;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
-# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
 13:20:39 UTC; CPU; -1; MHz; 352254;
 13:20:39 UTC; CPU; 0; MHz; 356648;
 13:20:39 UTC; CPU; 1; MHz; 356639;
@@ -2572,7 +2580,7 @@
 13:20:39 UTC; CPU; 6; MHz; 349222;
 13:20:39 UTC; CPU; 7; MHz; 349756;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
-# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 9; nr_ini; 9
+# name; A_PWR_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
 13:20:49 UTC; CPU; -1; MHz; 352254;
 13:20:49 UTC; CPU; 0; MHz; 356648;
 13:20:49 UTC; CPU; 1; MHz; 356639;
@@ -2586,31 +2594,31 @@
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_FS; nr_curr; 4; nr_alloc; 8; nr_ini; 4
 13:20:19 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:20:19 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
+13:20:19 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
 13:20:19 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
 13:20:19 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_FS; nr_curr; 6; nr_alloc; 8; nr_ini; 4
-13:20:29 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:29 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:20:29 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:29 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:20:29 UTC; FILESYSTEM; "/dev/sdf"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:29 UTC; FILESYSTEM; "/dev/sdg"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
+13:20:29 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 11696156672; f_blocks; 30829043712; f_bavail; 10106515456; Ifree; 1621550; f_files; 1921360;
+13:20:29 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
+13:20:29 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
+13:20:29 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
+13:20:29 UTC; FILESYSTEM; "/dev/sdf"; f_bfree; 11696156672; f_blocks; 30829043712; f_bavail; 10106515456; Ifree; 1621550; f_files; 1921360;
+13:20:29 UTC; FILESYSTEM; "/dev/sdg"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_FS; nr_curr; 6; nr_alloc; 8; nr_ini; 4
-13:20:39 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:39 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:20:39 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:39 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:20:39 UTC; FILESYSTEM; "/dev/sdf"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:39 UTC; FILESYSTEM; "/dev/sdg"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
+13:20:39 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 11696156672; f_blocks; 30829043712; f_bavail; 10106515456; Ifree; 1621550; f_files; 1921360;
+13:20:39 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
+13:20:39 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
+13:20:39 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
+13:20:39 UTC; FILESYSTEM; "/dev/sdf"; f_bfree; 11696156672; f_blocks; 30829043712; f_bavail; 10106515456; Ifree; 1621550; f_files; 1921360;
+13:20:39 UTC; FILESYSTEM; "/dev/sdg"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_FS; nr_curr; 4; nr_alloc; 8; nr_ini; 4
 13:20:49 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
 13:20:49 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:20:49 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:20:49 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
+13:20:49 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 11696156672; f_blocks; 30829043712; f_bavail; 10106515456; Ifree; 1621550; f_files; 1921360;
+13:20:49 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
@@ -2651,14 +2659,14 @@
 # name; A_PSI_MEM; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:20:49 UTC; %smem-10; 2300; %smem-60; 300; %smem-300; 36; %smem; 56879; 103290; %fmem-10; 0; %fmem-60; 0; %fmem-300; 0; %fmem; 12037; 45780;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
-13:37:29 UTC; LINUX-RESTART (8 CPU)
+13:37:29 UTC; LINUX-RESTART (9 CPU)
 # uptime_cs; 0; ust_time; 1555594749; extra_next; 0; record_type; 4; HH:MM:SS; 13:39:09
 13:39:09 UTC; COM Testing sysstat!
 # uptime_cs; 0; ust_time; 1555595649; extra_next; 0; record_type; 2; HH:MM:SS; 13:54:09
 13:54:09 UTC; LINUX-RESTART (10 CPU)
 # uptime_cs; 719255; ust_time; 1555595655; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:15
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_CPU; nr_curr; 11; nr_alloc; 18; nr_ini; 11
+# name; A_CPU; nr_curr; 11; nr_alloc; 20; nr_ini; 11
 13:54:35 UTC; CPU; -1; %usr; 94891; 95624; %nice; 2581673; 2586777; %sys; 52704; 53361; %iowait; 58343; 58572; %steal; 0; 0; %irq; 27927; 28211; %soft; 25855; 25969; %guest; 0; 0; %gnice; 0; 0; %idle; 2909475; 2932065;
 13:54:35 UTC; CPU; 0; %usr; 10600; 10684; %nice; 331675; 331676; %sys; 5802; 5869; %iowait; 4235; 4235; %steal; 0; 0; %irq; 3243; 3253; %soft; 9600; 9620; %guest; 0; 0; %gnice; 0; 0; %idle; 352894; 355816;
 13:54:35 UTC; CPU; 1; %usr; 11041; 11129; %nice; 363180; 363180; %sys; 6237; 6369; %iowait; 5418; 5418; %steal; 0; 0; %irq; 3438; 3459; %soft; 4668; 4674; %guest; 0; 0; %gnice; 0; 0; %idle; 323953; 326789;
@@ -3283,19 +3291,19 @@
 # name; A_NET_FC; nr_curr; 1; nr_alloc; 2; nr_ini; 1
 13:54:35 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_NET_SOFT; nr_curr; 11; nr_alloc; 18; nr_ini; 11
+# name; A_NET_SOFT; nr_curr; 11; nr_alloc; 20; nr_ini; 11
 13:54:35 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 8; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 9; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 273; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 546; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 819; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 1092; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 1365; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 1638; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 1911; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 8; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 2184; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 9; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 2457; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_PWR_CPU; nr_curr; 11; nr_alloc; 18; nr_ini; 9
+# name; A_PWR_CPU; nr_curr; 11; nr_alloc; 20; nr_ini; 10
 13:54:35 UTC; CPU; -1; MHz; 351754;
 13:54:35 UTC; CPU; 0; MHz; 356648;
 13:54:35 UTC; CPU; 1; MHz; 356639;
@@ -3311,8 +3319,8 @@
 # name; A_FS; nr_curr; 4; nr_alloc; 8; nr_ini; 4
 13:54:35 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
 13:54:35 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
-13:54:35 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 89739427840; f_blocks; 97891291136; f_bavail; 84722675712; Ifree; 6008414; f_files; 6111232;
-13:54:35 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 293286670336; f_blocks; 309502345216; f_bavail; 277541253120; Ifree; 19201593; f_files; 19202048;
+13:54:35 UTC; FILESYSTEM; "/dev/sda12"; f_bfree; 11696156672; f_blocks; 30829043712; f_bavail; 10106515456; Ifree; 1621550; f_files; 1921360;
+13:54:35 UTC; FILESYSTEM; "/dev/sda6"; f_bfree; 292616732672; f_blocks; 309502345216; f_bavail; 276871315456; Ifree; 19051710; f_files; 19202048;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PSI_CPU; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; %scpu-10; 0; %scpu-60; 0; %scpu-300; 0; %scpu; 0; 0;

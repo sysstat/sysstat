@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 
 00:00:00      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
 00:00:00        0      8407     23.34     28.80      0.01      58  gnome-terminal-

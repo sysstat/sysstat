@@ -1,0 +1,5 @@
+rm -f tests/root
+ln -s root3 tests/root
+LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu6off.tmp
+rm -f tests/root
+ln -s root1 tests/root

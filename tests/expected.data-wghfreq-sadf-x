@@ -10,7 +10,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
 		<machine>x86_64</machine>
-		<number-of-cpus>8</number-of-cpus>
+		<number-of-cpus>9</number-of-cpus>
 		<file-date>2019-04-18</file-date>
 		<file-utc-time>13:20:09</file-utc-time>
 		<timezone>GMT</timezone>
@@ -18,7 +18,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			<timestamp date="2019-04-18" time="13:20:10" utc="1" interval="31">
 				<power-management>
 					<cpu-weighted-frequency unit="MHz">
-						<cpuwfreq number="all" weighted-frequency="1160.30"/>
+						<cpuwfreq number="all" weighted-frequency="1123.35"/>
 						<cpuwfreq number="0" weighted-frequency="1200.33"/>
 						<cpuwfreq number="1" weighted-frequency="872.73"/>
 						<cpuwfreq number="2" weighted-frequency="1200.33"/>
@@ -27,6 +27,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpuwfreq number="5" weighted-frequency="1200.33"/>
 						<cpuwfreq number="6" weighted-frequency="1200.33"/>
 						<cpuwfreq number="7" weighted-frequency="1200.33"/>
+						<cpuwfreq number="8" weighted-frequency="0.00"/>
 					</cpu-weighted-frequency>
 				</power-management>
 			</timestamp>
@@ -42,6 +43,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpuwfreq number="5" weighted-frequency="0.00"/>
 						<cpuwfreq number="6" weighted-frequency="0.00"/>
 						<cpuwfreq number="7" weighted-frequency="0.00"/>
+						<cpuwfreq number="8" weighted-frequency="0.00"/>
 					</cpu-weighted-frequency>
 				</power-management>
 			</timestamp>

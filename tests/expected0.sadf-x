@@ -10,14 +10,14 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
 		<machine>x86_64</machine>
-		<number-of-cpus>8</number-of-cpus>
+		<number-of-cpus>9</number-of-cpus>
 		<file-date>2019-04-18</file-date>
 		<file-utc-time>13:20:09</file-utc-time>
 		<timezone>GMT</timezone>
 		<statistics>
 		</statistics>
 		<restarts>
-			<boot date="2019-04-18" time="13:20:09" utc="1" cpu_count="8"/>
+			<boot date="2019-04-18" time="13:20:09" utc="1" cpu_count="9"/>
 		</restarts>
 	</host>
 </sysstat>

@@ -5,11 +5,11 @@
 			"sysname": "Linux",
 			"release": "1.2.3-TEST",
 			"machine": "x86_64",
-			"number-of-cpus": 8,
+			"number-of-cpus": 9,
 			"date": "01/01/70",
 			"statistics": [
 				{
-					"avg-cpu":  {"user": 1.65, "nice": 44.90, "system": 1.84, "iowait": 1.01, "steal": 0.00, "idle": 50.60},
+					"avg-cpu":  {"user": 1.49, "nice": 39.91, "system": 1.67, "iowait": 0.94, "steal": 0.00, "idle": 56.00},
 					"disk": [
 						{"disk_device": "sda", "r/s": 6.90, "w/s": 1.69, "d/s": 0.00, "f/s": 0.00, "rkB/s": 222.14, "wkB/s": 57.08, "dkB/s": 0.00, "rrqm/s": 0.39, "wrqm/s": 1.36, "drqm/s": 0.00, "rrqm": 5.38, "wrqm": 44.55, "drqm": 0.00, "r_await": 12.58, "w_await": 9.61, "d_await": 0.00, "f_await": 0.00, "rareq-sz": 32.21, "wareq-sz": 33.71, "dareq-sz": 0.00, "aqu-sz": 0.10, "util": 0.46},
 						{"disk_device": "sda1", "r/s": 0.01, "w/s": 0.00, "d/s": 0.00, "f/s": 0.00, "rkB/s": 0.29, "wkB/s": 0.00, "dkB/s": 0.00, "rrqm/s": 0.00, "wrqm/s": 0.00, "drqm/s": 0.00, "rrqm": 0.00, "wrqm": 0.00, "drqm": 0.00, "r_await": 60.92, "w_await": 0.00, "d_await": 0.00, "f_await": 0.00, "rareq-sz": 41.33, "wareq-sz": 0.00, "dareq-sz": 0.00, "aqu-sz": 0.00, "util": 0.00},

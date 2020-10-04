@@ -1,7 +1,7 @@
 System activity data file: tests/data0.tmp (0x2175)
 File created by sar/sadc from sysstat version 99.9.9
 Genuine sa datafile: yes (0)
-Host: Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
+Host: Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 File date: 2019-04-18
 File time: 13:20:09 UTC (1555593609)
 Timezone: GMT

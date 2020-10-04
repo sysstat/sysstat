@@ -12,6 +12,9 @@ PID:
 8407[8407]
 
 ==========root2:
+/proc/stat:
+CPU#8: offline
+
 tape statistics available
 CIFS SMB1 statistics available. New share added.
 
@@ -29,6 +32,7 @@ PID:
 CPU#3: tickless
 CPU#6: offline
 CPU#7: iowait decremented
+CPU#8: offline
 
 /proc/diskstats
 sda, sda1: counters increase
@@ -53,6 +57,7 @@ PID:
 ==========root4:
 /proc/stat
 CPU#6: offline
+CPU#8: online
 
 /proc/diskstats
 sda, sda1: counters decrease
@@ -94,7 +99,7 @@ PID:
 
 ==========root6:
 /proc/stat
-#CPU: 8 > 10
+#CPU: 9 > 10
 Old kernel format, with no steal/guest/guest_nice fields.
 
 /proc/diskstats

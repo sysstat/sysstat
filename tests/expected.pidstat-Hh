@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 
 # Time        UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  minflt/s  majflt/s     VSZ     RSS   %MEM StkSize  StkRef   kB_rd/s   kB_wr/s kB_ccwr/s iodelay   cswch/s nvcswch/s threads   fd-nr prio policy  Command
 2            1000      7900         -  359.42   53.55    0.00    8.47  412.96     2  25095.93      1.48 4453984  259044   3.18     128     108    411.81      2.82      0.00     253   5700.42    700.96      18       5    0 NORMAL  gnome-shell

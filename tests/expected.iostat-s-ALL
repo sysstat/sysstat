@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 
 Device             tps    kB_read/s     kB_w+d/s    kB_read     kB_w+d
 dm-2              0.00         0.00         0.00          0          0

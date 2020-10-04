@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 
 13:20:09        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
 13:20:19           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
@@ -24,7 +24,7 @@ Average:       enp6s0      0.00      0.00      0.00      0.00      0.00      0.0
 Average:           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 Average:       enp6s0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
-13:37:29     LINUX RESTART	(8 CPU)
+13:37:29     LINUX RESTART	(9 CPU)
 
 13:54:09     LINUX RESTART	(10 CPU)
 

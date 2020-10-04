@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	05/02/19 	_x86_64_	(8 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	05/02/19 	_x86_64_	(9 CPU)
 
 00:00:03        CPU     %user     %nice   %system   %iowait    %steal     %idle
 00:00:04        all      2.15     12.50      2.36      0.12      0.00     82.88
