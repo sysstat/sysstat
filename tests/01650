@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -j tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-j.tmp
+LC_ALL=C TZ=GMT ./sadf -j tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-j.tmp && diff -u tests/expected.data-wghfreq-sadf-j tests/out.data-wghfreq-sadf-j.tmp

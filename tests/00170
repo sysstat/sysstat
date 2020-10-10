@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar --pretty -d -f tests/data.tmp > tests/out.sar-pretty.tmp
+LC_ALL=C TZ=GMT ./sar --pretty -d -f tests/data.tmp > tests/out.sar-pretty.tmp && diff -u tests/expected.sar-pretty tests/out.sar-pretty.tmp

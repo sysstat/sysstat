@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -x tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-x.tmp
+LC_ALL=C TZ=GMT ./sadf -x tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-x.tmp && diff -u tests/expected.data-11.6.5-sadf-x tests/out.data-11.6.5-sadf-x.tmp

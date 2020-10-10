@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -A -f tests/data-extra-12.1.7 > tests/out.data-extra-12.1.7.tmp
+LC_ALL=C TZ=GMT ./sar -A -f tests/data-extra-12.1.7 > tests/out.data-extra-12.1.7.tmp && diff -u tests/expected.data-extra-12.1.7 tests/out.data-extra-12.1.7.tmp

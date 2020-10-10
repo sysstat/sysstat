@@ -1,1 +1,1 @@
-./sadf -x tests/data0.tmp -- -A > tests/out0.sadf-x.tmp
+./sadf -x tests/data0.tmp -- -A > tests/out0.sadf-x.tmp && diff -u tests/expected0.sadf-x tests/out0.sadf-x.tmp

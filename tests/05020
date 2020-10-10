@@ -1,3 +1,3 @@
 rm -f tests/root
 ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw > tests/out.pidstat-At.tmp
+LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw > tests/out.pidstat-At.tmp && diff -u tests/expected.pidstat-At tests/out.pidstat-At.tmp

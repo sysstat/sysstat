@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -f tests/sa-sigint.tmp -m CPU > tests/out.sar-sigint.tmp
+LC_ALL=C TZ=GMT ./sar -f tests/sa-sigint.tmp -m CPU > tests/out.sar-sigint.tmp && diff -u tests/expected.sar-sigint tests/out.sar-sigint.tmp

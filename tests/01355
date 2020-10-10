@@ -1,1 +1,1 @@
-diff -u tests/out33.sar-u.tmp tests/expected33.sar-u
+LC_ALL=C TZ=GMT ./sar -f tests/sa02 >> tests/out33.sar-u.tmp && diff -u tests/expected33.sar-u tests/out33.sar-u.tmp

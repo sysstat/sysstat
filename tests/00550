@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
+LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp && diff -u tests/expected2.sadf-g tests/out2.sadf-g.tmp
