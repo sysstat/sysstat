@@ -1,5 +1,5 @@
 .\" iostat manual page - (C) 1998-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH IOSTAT 1 "AUGUST 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "OCTOBER 2020" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -7,14 +7,14 @@ statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
-.B [ --dec={ 0 | 1 | 2 } ] [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
-.BI "[ [ -H ] -g " "group_name " "] [ --human ] [ --pretty ] [ -p [ " "device" "[,...] | ALL ] ] ["
+.BI "[ --dec={ 0 | 1 | 2 } ] [ { -f | +f } " "directory" " ] [ -j { ID | LABEL | PATH | UUID | ... } ] "
+.BI "[ -o JSON ] [ [ -H ] -g " "group_name " "] [ --human ] [ --pretty ] [ -p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ --debuginfo ] [ " "interval " "[ " "count " "] ] "
 .\}
 .el \{
 .B iostat [ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
-.B [ --dec={ 0 | 1 | 2 } ] [ -j { ID | LABEL | PATH | UUID | ... } ] [ -o JSON ]
-.BI "[ [ -H ] -g " "group_name " "] [ --human ] [ --pretty ] [ -p [ " "device" "[,...] | ALL ] ] ["
+.BI "[ --dec={ 0 | 1 | 2 } ] [ { -f | +f } " "directory" " ] [ -j { ID | LABEL | PATH | UUID | ... } ] "
+.BI "[ -o JSON ] [ [ -H ] -g " "group_name " "] [ --human ] [ --pretty ] [ -p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ " "interval " "[ " "count " "] ]"
 .\}
 
@@ -232,6 +232,40 @@ Print debug output to stderr.
 .TP
 .B --dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
+.TP
+.BI "-f " "directory"
+.RE
+.BI "+f " "directory"
+.RS
+Specify an alternative directory for
+.B iostat
+to read devices statistics. Option
+.BR "-f " "tells " "iostat " "to use only the files located in the alternative directory, "
+whereas option
+.B +f
+tells it to use both the standard kernel files and the files located in the alternative directory
+to read device statistics.
+
+.IR "directory" " is a directory containing files with statistics for devices managed in userspace."
+It may contain:
+
+- a "diskstats" file whose format is compliant with that located in "/proc",
+.br
+- statistics for individual devices contained in files whose format is compliant with that of files located in
+"/sys".
+
+In particular, the following files located in
+.I "directory"
+.RB "may be used by " "iostat" ":"
+
+.IR "directory" "/block/" "device" "/stat"
+.br
+.IR "directory" "/block/" "device" "/" "partition" "/stat"
+
+.IR "partition" " files must have an entry in " "directory" "/dev/block/ directory, e.g.:"
+
+.IR "directory" "/dev/block/" "major" ":" "minor" " --> ../../block/" "device" "/" "partition"
+.RE
 .TP
 .BI "-g " "group_name " "{ " "device " "[...] | ALL }"
 Display statistics for a group of devices.
