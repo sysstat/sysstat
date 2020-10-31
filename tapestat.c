@@ -559,9 +559,6 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		skip = 1;
 	}
 
-	/* Don't buffer data if redirected to a pipe */
-	setbuf(stdout, NULL);
-
 	do {
 
 		if (tape_new_stats == NULL) {
@@ -702,6 +699,13 @@ int main(int argc, char **argv)
 	tape_initialise();
 
 	get_localtime(&rectime, 0);
+
+	/*
+	 * Don't buffer data if redirected to a pipe.
+	 * Note: With musl-c, the behavior of this function is undefined except
+	 * when it is the first operation on the stream.
+	 */
+	setbuf(stdout, NULL);
 
 	/* Get system name, release number and hostname */
 	__uname(&header);

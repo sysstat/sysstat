@@ -449,9 +449,6 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
 
-	/* Don't buffer data if redirected to a pipe */
-	setbuf(stdout, NULL);
-
 	do {
 		/* Every device is potentially nonexistent */
 		set_cifs_nonexistent(cifs_list);
@@ -604,6 +601,13 @@ int main(int argc, char **argv)
 	cpu_nr = get_cpu_nr(~0, FALSE);
 
 	get_localtime(&rectime, 0);
+
+	/*
+	 * Don't buffer data if redirected to a pipe.
+	 * Note: With musl-c, the behavior of this function is undefined except
+	 * when it is the first operation on the stream.
+	 */
+	setbuf(stdout, NULL);
 
 	/* Get system name, release number and hostname */
 	__uname(&header);
