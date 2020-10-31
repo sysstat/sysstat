@@ -15,7 +15,7 @@
  */
 
 #define SOFTIRQS	PRE "/proc/softirqs"
-#define PHYS_PACK_ID	"topology/pysical_package_id"
+#define PHYS_PACK_ID	"topology/physical_package_id"
 #define THREAD_SBL_LST	"topology/thread_siblings_list"
 
 /*
