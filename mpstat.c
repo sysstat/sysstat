@@ -1889,9 +1889,6 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	int curr = 1, dis = 1;
 	unsigned long lines = rows;
 
-	/* Dont buffer data if redirected to a pipe */
-	setbuf(stdout, NULL);
-
 	/* Read system uptime and CPU stats */
 	read_uptime(&(uptime_cs[0]));
 	read_stat_cpu(st_cpu[0], cpu_nr + 1);
@@ -2312,6 +2309,13 @@ int main(int argc, char **argv)
 
 	/* Get time */
 	get_localtime(&(mp_tstamp[0]), 0);
+
+	/*
+	 * Don't buffer data if redirected to a pipe.
+	 * Note: With musl-c, the behavior of this function is undefined except
+	 * when it is the first operation on the stream.
+	 */
+	setbuf(stdout, NULL);
 
 	/* Get system name, release number and hostname */
 	__uname(&header);
