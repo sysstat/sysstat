@@ -199,14 +199,14 @@ NLSPOT= $(NLSPO:.po=.pot)
 
 all: sadc sar sadf iostat tapestat mpstat pidstat cifsiostat locales
 
-common_sadc.o: common.c version.h common.h
+common_light.o: common.c version.h common.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 common.o: common.c version.h common.h
 
 systest.o: systest.c systest.h
 
-sa_common_sadc.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
@@ -285,7 +285,7 @@ sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
 sadc: LFLAGS += $(LFSENSORS)
 
-sadc: sadc.o act_sadc.o sa_wrap.o sa_common_sadc.o common_sadc.o systest.o librdstats.a librdsensors.a
+sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o librdstats.a librdsensors.a
 
 sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
