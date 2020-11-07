@@ -214,6 +214,7 @@ NOTES:
 01440	LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null
 01450	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6 2>&1 | grep "cannot read the format of this file" >/dev/null
 01460	LC_ALL=C ./sar -q FOO 2>&1 | grep "Usage:" >/dev/null
+01470	LC_ALL=C ./sadf -x -j tests/data.tmp 2>&1 | grep "Usage:" >/dev/null
 
 =====	Specific tests for sensors statistics (basic sensor output already tested using data-11.6.5 conversion)
 01500	LC_ALL=C TZ=GMT ./sadf -d tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-d.tmp

@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -x -j tests/data.tmp 2>&1 | grep "Usage:" >/dev/null
