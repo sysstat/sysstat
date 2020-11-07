@@ -4706,10 +4706,11 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			   "%ufsused", "%fsused",
 			   "Ifree/1000", "Iused/1000",
 			   "%Iused"};
+	int nr_arrays = 8;
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char *item_name;
+	char *dev_name, *item_name;
 	double tval;
 	int i, k, pos, restart;
 
@@ -4717,11 +4718,10 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 		/*
 		 * Allocate arrays (#0..6) that will contain the graphs data
 		 * and the min/max values.
-		 * Also allocate two additional arrays (#7..8) for each filesystem:
-                 * out + 7 will contain the filesystem name,
-		 * out + 8 will contain the mount point.
+		 * Also allocate an additional arrays (#7) for each filesystem:
+                 * out + 7 will contain the persistent or standard fs name, or mount point.
 		 */
-		out = allocate_graph_lines(9 * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(nr_arrays * a->item_list_sz, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
@@ -4729,18 +4729,20 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 		for (i = 0; i < a->nr[curr]; i++) {
 			sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
+			/* Get name to display (persistent or standard fs name, or mount point) */
+			dev_name = get_fs_name_to_display(a, flags, sfc);
+
 			if (a->item_list != NULL) {
 				/* A list of devices has been entered on the command line */
-				if (!search_list_item(a->item_list,
-						      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+				if (!search_list_item(a->item_list, dev_name))
 					/* Device not found */
 					continue;
 			}
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->item_list_sz; k++) {
-				item_name = *(out + k * 9 + 7);
-				if (!strcmp(sfc->fs_name, item_name))
+				item_name = *(out + k * nr_arrays + 7);
+				if (!strcmp(dev_name, item_name))
 					/* Graph found! */
 					break;
 			}
@@ -4748,7 +4750,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			if (k == a->item_list_sz) {
 				/* Graph not found: Look for first free entry */
 				for (k = 0; k < a->item_list_sz; k++) {
-					item_name = *(out + k * 9 + 7);
+					item_name = *(out + k * nr_arrays + 7);
 					if (!strcmp(item_name, ""))
 						break;
 				}
@@ -4762,15 +4764,12 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				}
 			}
 
-			pos = k * 9;
+			pos = k * nr_arrays;
 
 			item_name = *(out + pos + 7);
 			if (!item_name[0]) {
 				/* Save filesystem name and mount point (if not already done) */
-				strncpy(item_name, sfc->fs_name, CHUNKSIZE);
-				item_name[CHUNKSIZE - 1] = '\0';
-				item_name = *(out + pos + 8);
-				strncpy(item_name, sfc->mountp, CHUNKSIZE);
+				strncpy(item_name, dev_name, CHUNKSIZE);
 				item_name[CHUNKSIZE - 1] = '\0';
 			}
 
@@ -4888,11 +4887,11 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 		for (i = 0; i < a->item_list_sz; i++) {
 
 			/* Check if there is something to display */
-			pos = i * 9;
+			pos = i * nr_arrays;
 			if (!**(out + pos))
 				continue;
 
-			/* Conversion B -> MB and inodes/1000 */
+			/* Conversion B -> MiB and inodes/1000 */
 			for (k = 0; k < 2; k++) {
 				*(spmin + pos + k) /= (1024 * 1024);
 				*(spmax + pos + k) /= (1024 * 1024);
@@ -4900,12 +4899,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				*(spmax + pos + 4 + k) /= 1000;
 			}
 
-			if (DISPLAY_MOUNT(a->opt_flags)) {
-				item_name = *(out + pos + 8);
-			}
-			else {
-				item_name = *(out + pos + 7);
-			}
+			item_name = *(out + pos + 7);
 
 			if (draw_activity_graphs(a->g_nr, g_type, title, g_title, item_name, group,
 						 spmin + pos, spmax + pos, out + pos, outsize + pos,

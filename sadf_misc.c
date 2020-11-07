@@ -1539,7 +1539,7 @@ __nr_t count_new_filesystem(struct activity *a, int curr)
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
 		nr += add_list_item(&(a->item_list),
-				    DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name,
+				    get_fs_name_to_display(a, flags, sfc),
 				    MAX_FS_LEN);
 	}
 

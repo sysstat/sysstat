@@ -2113,17 +2113,19 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 {
 	int i;
 	struct stats_filesystem *sfc;
+	char *dev_name;
 
 	xprintf(tab++, "<filesystems>");
 
 	for (i = 0; i < a->nr[curr]; i++) {
-
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
+
+		/* Get name to display (persistent or standard fs name, or mount point) */
+		dev_name = get_fs_name_to_display(a, flags, sfc);
 
 		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_list_item(a->item_list,
-					      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+			if (!search_list_item(a->item_list, dev_name))
 				/* Device not found */
 				continue;
 		}
@@ -2137,7 +2139,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 			"Iused=\"%llu\" "
 			"Iused-percent=\"%.2f\"/>",
 			DISPLAY_MOUNT(a->opt_flags) ? "mountp" : "fsname",
-			DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name,
+			dev_name,
 			(double) sfc->f_bfree / 1024 / 1024,
 			(double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
 			/* f_blocks is not zero. But test it anyway ;-) */

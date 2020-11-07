@@ -1501,20 +1501,23 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 {
 	int i;
 	struct stats_filesystem *sfc;
+	char *dev_name;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
+		/* Get name to display (persistent or standard fs name, or mount point) */
+		dev_name = get_fs_name_to_display(a, flags, sfc);
+
 		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_list_item(a->item_list,
-					      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+			if (!search_list_item(a->item_list, dev_name))
 				/* Device not found */
 				continue;
 		}
 
 		printf("%s; %s; \"%s\";", timestr, pfield(a->hdr_line, FIRST + DISPLAY_MOUNT(a->opt_flags)),
-		       DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name);
+		       dev_name);
 		printf(" f_bfree; %llu;", sfc->f_bfree);
 		printf(" f_blocks; %llu;", sfc->f_blocks);
 		printf(" f_bavail; %llu;", sfc->f_bavail);

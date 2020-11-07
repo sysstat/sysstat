@@ -2911,14 +2911,17 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 {
 	int i;
 	struct stats_filesystem *sfc;
+	char *dev_name;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
+		/* Get name to display (persistent or standard fs name, or mount point) */
+		dev_name = get_fs_name_to_display(a, flags, sfc);
+
 		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_list_item(a->item_list,
-					      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+			if (!search_list_item(a->item_list, dev_name))
 				/* Device not found */
 				continue;
 		}
@@ -2926,7 +2929,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		render(isdb, pre, PT_USERND,
 		       "%s\tMBfsfree",
 		       "%s",
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       (double) sfc->f_bfree / 1024 / 1024,
 		       NULL);
@@ -2934,7 +2937,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		render(isdb, pre, PT_USERND,
 		       "%s\tMBfsused",
 		       NULL,
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024,
 		       NULL);
@@ -2942,7 +2945,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\t%%fsused",
 		       NULL,
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
 				     : 0.0,
@@ -2951,7 +2954,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\t%%ufsused",
 		       NULL,
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
 				     : 0.0,
@@ -2960,7 +2963,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		render(isdb, pre, PT_USEINT,
 		       "%s\tIfree",
 		       NULL,
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       sfc->f_ffree,
 		       NOVAL,
 		       NULL);
@@ -2968,7 +2971,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		render(isdb, pre, PT_USEINT,
 		       "%s\tIused",
 		       NULL,
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       sfc->f_files - sfc->f_ffree,
 		       NOVAL,
 		       NULL);
@@ -2977,7 +2980,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		       (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN),
 		       "%s\t%%Iused",
 		       NULL,
-		       cons(sv, DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, NOVAL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 				    : 0.0,
