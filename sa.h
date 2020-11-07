@@ -1503,6 +1503,8 @@ char *get_sa_devname
 	(unsigned int, unsigned int, unsigned long long [], unsigned int, uint64_t);
 void get_file_timestamp_struct
 	(uint64_t, struct tm *, struct file_header *);
+char *get_fs_name_to_display
+	(struct activity *, uint64_t, struct stats_filesystem *);
 unsigned long long get_global_cpu_statistics
 	(struct activity *, int, int, uint64_t, unsigned char []);
 void get_global_soft_statistics

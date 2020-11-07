@@ -2720,6 +2720,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 	int i, j, j0, found;
 	struct stats_filesystem *sfc, *sfp, *sfm;
 	int unit = NO_UNIT;
+	char *dev_name;
 
 	if (DISPLAY_UNIT(flags)) {
 		/* Default values unit is B */
@@ -2734,10 +2735,12 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
 
+		/* Get name to display (persistent or standard fs name, or mount point) */
+		dev_name = get_fs_name_to_display(a, flags, sfc);
+
 		if (a->item_list != NULL) {
 			/* A list of devices has been entered on the command line */
-			if (!search_list_item(a->item_list,
-					      DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name))
+			if (!search_list_item(a->item_list, dev_name))
 				/* Device not found */
 				continue;
 		}
@@ -2789,8 +2792,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
 				   sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 				   : 0.0);
-			cprintf_in(IS_STR, " %s\n",
-				   DISPLAY_MOUNT(a->opt_flags) ? sfc->mountp : sfc->fs_name, 0);
+			cprintf_in(IS_STR, " %s\n", dev_name, 0);
 		}
 
 		if (!dispavg) {

@@ -3307,4 +3307,38 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 		ssnp_all->flow_limit += ssnp->flow_limit;
 	}
 }
+
+/*
+ ***************************************************************************
+ * Get filesystem name to display. This may be either the persistent name
+ * if requested by the user, the standard filesystem name (e.g. /dev/sda1,
+ * /dev/sdb3, etc.) or the mount point. This is used when displaying
+ * filesystem statistics: sar -F or sadf -- -F).
+ *
+ * IN:
+ * @a		Activity structure.
+ * @flags	Flags for common options and system state.
+ * @st_fs	Statistics for current filesystem.
+ *
+ * RETURNS:
+ * Filesystem name to display.
+ ***************************************************************************
+ */
+char *get_fs_name_to_display(struct activity *a, uint64_t flags, struct stats_filesystem *st_fs)
+{
+	char *pname = NULL, *persist_dev_name;
+	char fname[MAX_FS_LEN];
+
+	if (DISPLAY_PERSIST_NAME_S(flags) && !DISPLAY_MOUNT(a->opt_flags)) {
+		strncpy(fname, st_fs->fs_name, sizeof(fname));
+		fname[sizeof(fname) - 1] = '\0';
+		if ((persist_dev_name = get_persistent_name_from_pretty(basename(fname))) != NULL) {
+			pname = persist_dev_name;
+		}
+	}
+	if (!pname) {
+		pname = DISPLAY_MOUNT(a->opt_flags) ? st_fs->mountp : st_fs->fs_name;
+	}
+	return pname;
+}
 #endif /* SOURCE_SADC undefined */
