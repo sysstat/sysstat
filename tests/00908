@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./sar -F -j UUID -f tests/data.tmp > tests/out.sar-F-jUUID.tmp && diff -u tests/expected.sar-F-jUUID tests/out.sar-F-jUUID.tmp
