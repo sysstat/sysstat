@@ -33,8 +33,8 @@
 2.21. What happened to sar's options -h, -H, -x and -X?  
 2.22. What is the exact meaning of the `count` parameter for sar and sadc?  
 2.23. Why doesn't sar deal with sub-second sampling/monitoring?  
-2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?
-2.25. The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`
+2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?  
+2.25. The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`  
 
 **3. Questions related to iostat**
 
@@ -359,6 +359,17 @@ Another possible crontab would be:
 50 23 * * * /usr/lib/sa/sa1 600 2
 10,20,30,40,50 0 * * * /usr/lib/sa/sa1 1 1
 ```
+Things are much easier with recent sysstat versions (12.5.1 and later): You simply have to run
+sa1 with its option `--rotate` shortly after midnight to add a statistics record to the system
+activity daily data file of the previous day. So your full crontab could be:
+```
+# Rotate file at midnight
+0 0 * * * /usr/lib/sa/sa1 --rotate
+# Run system activity accounting tool every 10 minutes
+0,10,20,30,40,50 * * * * /usr/lib/sa/sa1 1 1
+# Generate a text summary of previous day process accounting at 00:07
+7 0 * * * /usr/lib/sa/sa2 -A
+```
 
 ---
 2.13. The sar command complains with the following message:
@@ -594,6 +605,12 @@ Make sure there is enough free space on the device. Sometimes it seems
 there is enough free space but there may be some jobs run by crontab
 (particularly during the night) that can temporarily consume all of
 your free space, making sadc fail.
+
+Another reason could be linked to the system activity daily data file
+being corrupted. This could possibly happen when several instances of
+sadc are trying to update the same data file, especially around midnight
+when making a file rotation. See question 2.12 to know how to make such
+a file rotation properly.
 
 ---
 ### 3. Questions related to iostat
