@@ -39,11 +39,15 @@ NOTES:
 00190	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=36;22" ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-always.tmp
 
 =====	sar: Playing with sa1 and sa2 shell scripts
-00200	./sa1 --boot; ./sa1 --unix_time=1555593629 1 1; ./sa1 --unix_time=1555593649 1 1
+00200	TZ=GMT ./sa1 --boot; TZ=GMT ./sa1 --unix_time=1555593629 1 1; TZ=GMT ./sa1 --unix_time=1555593649 1 1
 00205	LC_ALL=C TZ=GMT ./sar -f tests/sa18 > tests/out.sa1.tmp
 00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
 00230	./cron/sysstat.sleep post hibernate
 00235	LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp
+00240	TZ=GMT ./sa1 --rotate --unix_time=${STEP} 1 1
+00245	LC_ALL=C TZ=GMT ./sar -f tests/sa${DATE} | grep -v SYSSTAT > tests/out.sa1-rot.tmp
+00250	TZ=GMT ./sa1 --rotate iso --unix_time=${STEP} 1 1
+00255	LC_ALL=C TZ=GMT ./sar -f tests/sa${DATE} | grep -v SYSSTAT > tests/out1.sa1-rot.tmp
 
 =====	Checking JSON output validity
 00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null

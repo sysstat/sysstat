@@ -1,0 +1,22 @@
+rm -f tests/sa[012]*
+rm -f tests/sa[012]*
+
+rm -f tests/root
+ln -s root1 tests/root
+STEP=`TZ=GMT date --date="yesterday 23:59:57" +%s`
+TZ=GMT ./sadc -D --unix_time=${STEP} - 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+STEP=`TZ=GMT date --date="yesterday 23:59:58" +%s`
+TZ=GMT ./sa1 -D --unix_time=${STEP} 1 1
+
+rm -f tests/root
+ln -s root3 tests/root
+STEP=`TZ=GMT date --date="yesterday 23:59:59" +%s`
+TZ=GMT ./sa1 -D --unix_time=${STEP} 1 1
+
+rm -f tests/root
+ln -s root4 tests/root
+STEP=`TZ=GMT date --date="today 00:00:01" +%s`
+TZ=GMT ./sa1 --rotate iso --unix_time=${STEP} 1 1

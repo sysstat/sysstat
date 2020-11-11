@@ -1,0 +1,2 @@
+DATE=`date --date=yesterday +%Y%m%d`
+LC_ALL=C TZ=GMT ./sar -f tests/sa${DATE} | grep -v SYSSTAT > tests/out1.sa1-rot.tmp && diff -u tests/expected.sa1-rot tests/out1.sa1-rot.tmp
