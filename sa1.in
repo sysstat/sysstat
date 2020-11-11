@@ -14,6 +14,7 @@ SA_DIR=@SA_DIR@
 SYSCONFIG_DIR=@SYSCONFIG_DIR@
 SYSCONFIG_FILE=@SYSCONFIG_FILE@
 UMASK=0022
+LONG_NAME=n
 
 [ -r ${SYSCONFIG_DIR}/${SYSCONFIG_FILE} ] && . ${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
 
@@ -27,12 +28,27 @@ umask ${UMASK}
 if [ ${HISTORY} -gt 28 ]
 then
 	SADC_OPTIONS="${SADC_OPTIONS} -D"
+	LONG_NAME=y
 fi
 
 ENDIR=@SA_LIB_DIR@
 cd ${ENDIR}
 [ "$1" = "--boot" ] && shift && BOOT=y || BOOT=n
 [ "$1" = "--sleep" ] && shift && SLEEP=y || SLEEP=n
+
+ROTATE=n
+[ "$1" = "--rotate" ] && shift && ROTATE=y && [ "$1" = "iso" ] && shift && LONG_NAME=y
+if [ "${ROTATE}" = "y" ]
+then
+	if [ "${LONG_NAME}" = "y" ]
+	then
+		DATE=`date --date=yesterday +%Y%m%d`
+	else
+		DATE=`date --date=yesterday +%d`
+	fi
+	SA_DIR=${SA_DIR}/sa${DATE}
+fi
+
 if [ "${SLEEP}" = "y" ]
 then
 	exec ${ENDIR}/sadc -F -L ${SADC_OPTIONS} -C "LINUX SLEEP MODE ($*)" ${SA_DIR}
@@ -40,7 +56,7 @@ elif [ $# = 0 ] && [ "${BOOT}" = "n" ]
 then
 # Note: Stats are written at the end of previous file *and* at the
 # beginning of the new one (when there is a file rotation) only if
-# outfile has been specified as '-' on the command line...
+# outfile has not been explicitly specified on the command line...
 	exec ${ENDIR}/sadc -F -L ${SADC_OPTIONS} 1 1 ${SA_DIR}
 else
 	exec ${ENDIR}/sadc -F -L ${SADC_OPTIONS} $* ${SA_DIR}
