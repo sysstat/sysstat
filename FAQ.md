@@ -33,8 +33,8 @@
 2.21. What happened to sar's options -h, -H, -x and -X?  
 2.22. What is the exact meaning of the `count` parameter for sar and sadc?  
 2.23. Why doesn't sar deal with sub-second sampling/monitoring?  
-2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?
-2.25. The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`
+2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?  
+2.25. The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`  
 
 **3. Questions related to iostat**
 
