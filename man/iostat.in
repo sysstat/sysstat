@@ -130,7 +130,7 @@ blocks (kilobytes, megabytes) per second.
 Indicate the amount of data discarded for the device expressed in a number of
 blocks (kilobytes, megabytes) per second.
 .IP "Blk_w+d/s (kB_w+d/s, MB_w+d/s)"
-Indicate the amount of data written to or discarded for the device expresssed
+Indicate the amount of data written to or discarded for the device expressed
 in a number of blocks (kilobytes, megabytes) per second.
 .IP "Blk_read (kB_read, MB_read)"
 The total number of blocks (kilobytes, megabytes) read.
