@@ -1,5 +1,20 @@
 Changes:
 
+2020/11/21: Version 12.4.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Petr Pavlu]: Workaround for iowait being decremented.
+	* [SacValleyTech]: Make sure setbuf() is the first operation
+	  performed on stream.
+	* [Michal Berger]: Fix typo in PHYS_PACK_ID definition.
+	* configure: Fix option --disable-compress-manpg.
+	* sar: Update definition for runq-sz metric in manual page.
+	* iostat: Update manual page (explain "*_w+d*" fields).
+	* iostat: Explain options -f/+f in manual page.
+	* [Nan Xiao]: mpstat: Add -T option in help message.
+	* [Nan Xiao]: mpstat: Fix typo in manual page.
+	* FAQ.md file: Add missing spaces at end of line.
+	* Non regression tests updated.
+	* NLS updated.
+
 2020/07/31: Version 12.4.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* All commands: Display statistics in color by default when the
 	  output is connected to a terminal.
@@ -26,7 +41,7 @@ Changes:
 	  pages updated.
 	* Update style for all manual pages.
 	* Compress manual pages by default when they are installed.
-	* Makefile: Remove all reports and date files (even those compressed
+	* Makefile: Remove all reports and data files (even those compressed
 	  with another program than gzip) when told to do so.
 	* Add pcp help file to be used with iconfig script.
 	* Update Travis script (now calls do_test script).
