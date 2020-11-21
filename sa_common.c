@@ -1959,11 +1959,12 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 
 		/* Read current file_activity structure from file */
 		sa_fread(*ifd, buffer, (size_t) file_hdr->act_size, HARD_SIZE, UEOF_STOP);
+
 		/*
-		* Data file_activity size (file_hdr->act_size) may be greater or
-		* smaller than FILE_ACTIVITY_SIZE. Remap the fields of the file's structure
-		* then copy its contents to the expected structure.
-		*/
+		 * Data file_activity size (file_hdr->act_size) may be greater or
+		 * smaller than FILE_ACTIVITY_SIZE. Remap the fields of the file's structure
+		 * then copy its contents to the expected structure.
+		 */
 		if (remap_struct(act_types_nr, file_hdr->act_types_nr, buffer,
 			     file_hdr->act_size, FILE_ACTIVITY_SIZE, ba_size) < 0)
 			goto format_error;
