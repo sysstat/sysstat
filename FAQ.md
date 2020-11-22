@@ -2,71 +2,71 @@
 
 ### Table of contents
 
-**1. General questions**
+**[1. General questions](#general)**
 
-1.1. When I compile sysstat, it fails with the following message: `make: msgfmt: Command not found`  
-1.2. When I try to compile sysstat, it fails and says it cannot find some include files.  
-1.3. I don't understand why sysstat displays the time sometimes as `HH:MM:SS` and sometimes as `HH:MM:SS AM/PM`...
+[1.1.](#1_1) When I compile sysstat, it fails with the following message: `make: msgfmt: Command not found`  
+[1.2.](#1_2) When I try to compile sysstat, it fails and says it cannot find some include files.  
+[1.3.](#1_3) I don't understand why sysstat displays the time sometimes as `HH:MM:SS` and sometimes as `HH:MM:SS AM/PM`...  
 
-**2. Questions related to sar, sadc and sadf**
+**[2. Questions related to sar, sadc and sadf](#sar)**
 
-2.1. The sar command complains with the following message: `Invalid system activity file: ...`  
-2.2. The sar command complains with the following message: `Cannot append data to that file (...)`  
-2.3. The sar command complains with the following message: `Inconsistent input data`  
-2.4. I get the following error message when I try to run sar: `Cannot open /var/log/sa/sa30: No such file or directory`  
-2.5. Are sar daily data files fully compatible with Sun Solaris format sar files?  
-2.6 The `Average:` results from the sar command are just rubbish...  
-2.7. My database (e.g. MySQL) doesn't appear to understand the time zone displayed by 'sadf -d'...  
-2.8. I tried to use options -s and -e with sadf. Unfortunately, I have nothing displayed at all / the output doesn't match that of sar.
-2.9. I cannot see all my disks when I use the sar -d command...  
-2.10. Do you know a tool which can graphically plot the data collected by sar?  
-2.11. When I launch sadc, I get the error message: `flock: Resource temporarily unavailable`  
-2.12. How should I run sysstat / sar so that I get a reading for `00:00:00`?  
-2.13. The sar command complains with the following message: `Requested activities not available in file ...`  
-2.14. Does sar need a lot of resources to run?  
-2.15. Are the measurements gathered by sadc cumulative or instantaneous?  
-2.16. Some fields are always displayed as `0.00` when I use the `sar -d` command.  
-2.17. The sar command complains with the following message: `Requested activities not available`  
-2.18. How can I keep sar data for more than one month?  
-2.19. How can I load sar data into an Oracle database for performance analysis and capacity planning?  
-2.20. The sar command displays some weird output values...  
-2.21. What happened to sar's options -h, -H, -x and -X?  
-2.22. What is the exact meaning of the `count` parameter for sar and sadc?  
-2.23. Why doesn't sar deal with sub-second sampling/monitoring?  
-2.24. Is it possible to make sadc save only some specific activities in my binary daily data files?  
-2.25. The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`  
+[2.1.](#2_1) The sar command complains with the following message: `Invalid system activity file: ...`  
+[2.2.](#2_2) The sar command complains with the following message: `Cannot append data to that file (...)`  
+[2.3.](#2_3) The sar command complains with the following message: `Inconsistent input data`  
+[2.4.](#2_4) I get the following error message when I try to run sar: `Cannot open /var/log/sa/sa30: No such file or directory`  
+[2.5.](#2_5) Are sar daily data files fully compatible with Sun Solaris format sar files?  
+[2.6.](#2_6) The `Average:` results from the sar command are just rubbish...  
+[2.7.](#2_7) My database (e.g. MySQL) doesn't appear to understand the time zone displayed by 'sadf -d'...  
+[2.8.](#2_8) I tried to use options -s and -e with sadf. Unfortunately, I have nothing displayed at all / the output doesn't match that of sar.  
+[2.9.](#2_9) I cannot see all my disks when I use the sar -d command...  
+[2.10.](#2_10) Do you know a tool which can graphically plot the data collected by sar?  
+[2.11.](#2_11) When I launch sadc, I get the error message: `flock: Resource temporarily unavailable`  
+[2.12.](#2_12) How should I run sysstat / sar so that I get a reading for `00:00:00`?  
+[2.13.](#2_13) The sar command complains with the following message: `Requested activities not available in file ...`  
+[2.14.](#2_14) Does sar need a lot of resources to run?  
+[2.15.](#2_15) Are the measurements gathered by sadc cumulative or instantaneous?  
+[2.16.](#2_16) Some fields are always displayed as `0.00` when I use the `sar -d` command.  
+[2.17.](#2_17) The sar command complains with the following message: `Requested activities not available`  
+[2.18.](#2_18) How can I keep sar data for more than one month?  
+[2.19.](#2_19) How can I load sar data into an Oracle database for performance analysis and capacity planning?  
+[2.20.](#2_20) The sar command displays some weird output values...  
+[2.21.](#2_21) What happened to sar's options -h, -H, -x and -X?  
+[2.22.](#2_22) What is the exact meaning of the `count` parameter for sar and sadc?  
+[2.23.](#2_23) Why doesn't sar deal with sub-second sampling/monitoring?  
+[2.24.](#2_24) Is it possible to make sadc save only some specific activities in my binary daily data files?  
+[2.25.](#2_25) The sar and/or sadf command complain(s) with the following message: `End of system activity file unexpected`  
 
-**3. Questions related to iostat**
+**[3. Questions related to iostat](#iostat)**
 
-3.1. I can't see all my disks when I use the iostat command...  
-3.2. iostat -x doesn't report disk I/O statistics...  
-3.3. Why can't iostat display extended statistics for partitions with 2.6.x kernels?  
-3.4. I don't understand the output of iostat. It doesn't match what I expect it to be...  
-3.5. Why values displayed by iostat are so different in the first report from those displayed in subsequent ones?  
-3.6. iostat -x displays huge numbers for some fields...  
+[3.1.](#3_1) I can't see all my disks when I use the iostat command...  
+[3.2.](#3_2) iostat -x doesn't report disk I/O statistics...  
+[3.3.](#3_3) Why can't iostat display extended statistics for partitions with 2.6.x kernels?  
+[3.4.](#3_4) I don't understand the output of iostat. It doesn't match what I expect it to be...  
+[3.5.](#3_5) Why values displayed by iostat are so different in the first report from those displayed in subsequent ones?  
+[3.6.](#3_6) iostat -x displays huge numbers for some fields...  
 
-**4. Questions related to pidstat**
+**[4. Questions related to pidstat](#pidstat)**
 
-4.1. pidstat -d doesn't report task I/O statistics...  
-4.2. The pidstat command complains with the following message: `Requested activities not available`  
-4.3. pidstat doesn't display statistics for process (task) _xyz_...  
-4.4. I noticed that the total CPU utilization for threads running on an individual CPU can exceed 100%...  
+[4.1.](#4_1) pidstat -d doesn't report task I/O statistics...  
+[4.2.](#4_2) The pidstat command complains with the following message: `Requested activities not available`  
+[4.3.](#4_3) pidstat doesn't display statistics for process (task) _xyz_...  
+[4.4.](#4_4) I noticed that the total CPU utilization for threads running on an individual CPU can exceed 100%...  
 
 ---
 
-### 1. General questions
+### 1. General questions<a name="general"></a>
 
-1.1. When I compile sysstat, it fails with the following message:  
+1.1.<a name="1_1"></a> When I compile sysstat, it fails with the following message:
 ```
 make: msgfmt: Command not found
 make: ***[locales] Error 127
 ```
 A: The **msgfmt** command belongs to the GNU gettext package.
-If you don't have it on your system, just configure sysstat with NLS disabled like this:  
+If you don't have it on your system, just configure sysstat with NLS disabled like this:
 ```
 $ ./configure --disable-nls
 ```
-or answer 'y' (for "yes") to the question  
+or answer 'y' (for "yes") to the question
 ```
 Disable National Language Support (NLS)? (y/n) [--disable-nls]
 ```
@@ -77,7 +77,7 @@ Please read the _README-nls_ file included in sysstat source package to learn
 some more about National Language Support.
 
 ---
-1.2. When I try to compile sysstat, it fails and says it cannot find some include files:
+1.2.<a name="1_2"></a> When I try to compile sysstat, it fails and says it cannot find some include files:
 ```
 In file included from /usr/include/bits/errno.h:25,
                  from /usr/include/errno.h:36,
@@ -99,7 +99,7 @@ lrwxrwxrwx   1 root     root            8 May  5 18:31 /usr/src/linux/include/as
 In fact, only the Linux kernel headers should be necessary to be able to compile sysstat.
 
 ---
-1.3. I don't understand why sysstat displays the time sometimes as `HH:MM:SS` and sometimes as `HH:MM:SS AM/PM`...  
+1.3.<a name="1_3"></a> I don't understand why sysstat displays the time sometimes as `HH:MM:SS` and sometimes as `HH:MM:SS AM/PM`...
   
 A: The time format used by sysstat tools depends on the locale of your system.
 The locale is defined by several environment variables, among which the **LANG**
@@ -129,9 +129,9 @@ As you can notice, the time format but also the date, the decimal point, and
 even some words (like "Average") have changed according to the specified locale.
 
 ---
-### 2. Questions related to sar, sadc and sadf
+### 2. Questions related to sar, sadc and sadf<a name="sar"></a>
 
-2.1. The sar command complains with the following message:
+2.1.<a name="2_1"></a> The sar command complains with the following message:
 ```
 Invalid system activity file: ...
 ```
@@ -158,7 +158,7 @@ File created using sar/sadc from sysstat version 8.1.7
 ```
 
 ---
-2.2. The sar command complains with the following message:
+2.2.<a name="2_2"></a> The sar command complains with the following message:
 ```
 Cannot append data to that file (...)
 ```
@@ -173,7 +173,7 @@ mark (this is typically done when sadc is called at system restart). You
 can then append data to the data file as usual.
 
 ---
-2.3. The sar command complains with the following message:
+2.3.<a name="2_3"></a> The sar command complains with the following message:
 ```
 Inconsistent input data
 ```
@@ -187,7 +187,7 @@ With sysstat version 11.1.5 and later, enter `sar --sadc`
 to determine which data collector is called by sar.
 
 ---
-2.4. I get the following error message when I try to run sar:
+2.4.<a name="2_4"></a> I get the following error message when I try to run sar:
 ```
 Cannot open /var/log/sa/sa30: No such file or directory
 ```
@@ -204,7 +204,7 @@ to be displayed, and also specify `interval` and `count` numbers, e.g.:
 ```
 
 ---
-2.5. Are sar daily data files fully compatible with Sun Solaris format
+2.5.<a name="2_5"></a> Are sar daily data files fully compatible with Sun Solaris format
 sar files?
 
 
@@ -214,7 +214,7 @@ data which are closely linked to Linux.
 For the same reason, sysstat cannot work on platforms other than Linux...
 
 ---
-2.6. The `Average:` results from the sar command are just rubbish, e.g.:
+2.6.<a name="2_6"></a> The `Average:` results from the sar command are just rubbish, e.g.:
 ```
  11:00:00 AM       CPU     %user     %nice   %system     %idle
  11:10:00 AM       all      0.54      0.00      0.89     98.57
@@ -249,7 +249,7 @@ if you use the Interactive Configuration script (iconfig).
 Then compile sysstat as usual and run 'make install' as the last stage.
 
 ---
-2.7. My database (e.g. MySQL) doesn't appear to understand the time zone
+2.7.<a name="2_7"></a> My database (e.g. MySQL) doesn't appear to understand the time zone
 displayed by 'sadf -d'...
 
 
@@ -264,7 +264,7 @@ If your database can't deal with timezones, you should write a short script
 to strip the "UTC" characters from the data being loaded into the database.
 
 ---
-2.8. I tried to use options -s and -e with sadf. Unfortunately, I have
+2.8.<a name="2_8"></a> I tried to use options -s and -e with sadf. Unfortunately, I have
 nothing displayed at all / the output doesn't match that of sar.
 
 
@@ -283,13 +283,13 @@ default or in local time with option -T), even if the output doesn't match
 that of sar.
 
 ---
-2.9. I cannot see all my disks when I use the sar -d command...
+2.9.<a name="2_9"></a> I cannot see all my disks when I use the sar -d command...
 
 
 A: See question "I can't see all my disks when I use the iostat command" below.
 
 ---
-2.10. Do you know a tool which can graphically plot the data collected by sar?
+2.10.<a name="2_10"></a> Do you know a tool which can graphically plot the data collected by sar?
 
 
 A: You can now draw graphs with sysstat's standard tools!
@@ -311,10 +311,10 @@ rrdtool and can be used to make some graphs (see a demo [here](http://haroon.sis
 that automatically generates and sends an email report every day/week/month
 with graphs generated from sysstat data.  
 I've also heard of commercial tools which use sysstat: PerfMan comes to mind,
-among others.  
+among others.
 
 ---
-2.11. When I launch sadc, I get the error message:
+2.11.<a name="2_11"></a> When I launch sadc, I get the error message:
 ```
 flock: Resource temporarily unavailable
 ```
@@ -324,7 +324,7 @@ that another sadc process was running and had already locked the same output
 file. Stop all sadc instances and try again.
 
 ---
-2.12. I have sysstat setup to run via cron:
+2.12.<a name="2_12"></a> I have sysstat setup to run via cron:
 ```
 0 * * * * /usr/local/lib/sa/sa1 600 6
 ```
@@ -361,7 +361,7 @@ Another possible crontab would be:
 ```
 
 ---
-2.13. The sar command complains with the following message:
+2.13.<a name="2_13"></a> The sar command complains with the following message:
 ```
 Requested activities not available in file ...
 ```
@@ -386,7 +386,7 @@ Requested activities not available
 (without mentioning `in file`), then see question 2.17 below.
 
 ---
-2.14. Does sar need a lot of resources to run?
+2.14.<a name="2_14"></a> Does sar need a lot of resources to run?
 
 
 A: No, sar doesn't need a lot of CPU to run, nor does it make your system slow,
@@ -406,7 +406,7 @@ number of days: see the COMPRESSAFTER parameter in the `/etc/sysconfig/sysstat`
 configuration file.
 
 ---
-2.15. Are the measurements gathered by sadc cumulative or instantaneous values?
+2.15.<a name="2_15"></a> Are the measurements gathered by sadc cumulative or instantaneous values?
 
 
 A: Each counter maintained by the kernel is cumulative since system boot. As a
@@ -419,14 +419,14 @@ foo/s = [foo(T) - foo(T-dt)] / dt
 where dt is the interval given on the command line.
 
 ---
-2.16. Some fields are always displayed as 0.00 when I use the sar -d
+2.16.<a name="2_16"></a> Some fields are always displayed as 0.00 when I use the sar -d
 command.
 
 
 A: See question 3.2 below.
 
 ---
-2.17. The sar command complains with the following message:
+2.17.<a name="2_17"></a> The sar command complains with the following message:
 ```
 Requested activities not available
 ```
@@ -438,7 +438,7 @@ file cannot accept the requested activities. In this case, just try to use
 another file or create a new one. See also question 2.13 above.
 
 ---
-2.18. How can I keep sar data for more than one month?
+2.18.<a name="2_18"></a> How can I keep sar data for more than one month?
 
 
 A: By default sar saves its data in the standard system activity data file,
@@ -459,7 +459,7 @@ the current day. All these files are saved in the same directory
 (`/var/log/sa` by default).
 
 ---
-2.19. How can I load sar data into an Oracle database for performance
+2.19.<a name="2_19"></a> How can I load sar data into an Oracle database for performance
 analysis and capacity planning?
 
 
@@ -470,7 +470,7 @@ by a semicolon). It should then be easy for a tool like SQL*Loader to
 load the data into the Oracle database.
 
 ---
-2.20. The sar command displays some weird CPU values, e.g.:
+2.20.<a name="2_20"></a> The sar command displays some weird CPU values, e.g.:
 ```
 10:50:01 AM       CPU     %user     %nice   %system   %iowait     %idle
 11:00:01 AM       all     90.90      0.00      5.17      3.93      0.00
@@ -490,7 +490,7 @@ the latest stable release and check that the problem has gone.
 Also see question 2.6 above.
 
 ---
-2.21. What happened to sar's options -h, -H, -x and -X?
+2.21.<a name="2_21"></a> What happened to sar's options -h, -H, -x and -X?
 
 
 A: These old options have been removed from sar because new commands have been
@@ -499,7 +499,7 @@ sar -H, and the pidstat command instead of sar -x or sar -X. Please read
 their manual page to learn some more about their respective options.
 
 ---
-2.22. What is the exact meaning of the `count` parameter for sar and sadc?
+2.22.<a name="2_22"></a> What is the exact meaning of the `count` parameter for sar and sadc?
 
 
 A: For sadc, `count` is the number of data samples collected.  
@@ -521,7 +521,7 @@ of data samples pre-existing in the data file. If the file is empty
 when first running sadc then the above is true.
 
 ---
-2.23. Why doesn't sar deal with sub-second sampling/monitoring?
+2.23.<a name="2_23"></a> Why doesn't sar deal with sub-second sampling/monitoring?
 
 
 A: There are two reasons for sar to not handle sub-second intervals:
@@ -542,7 +542,7 @@ more prone to have an influence on the data you are retrieving as
 the interval of time is small.
 
 ---
-2.24. Is it possible to make sadc save only some specific activities
+2.24.<a name="2_24"></a> Is it possible to make sadc save only some specific activities
 in my binary daily data files?
 
 
@@ -580,12 +580,10 @@ sadc -S XALL,-A_IRQ (...)
 This way you can tell sadc to collect only the desired activities.
 
 ---
-2.25. The sar and/or sadf command complain(s) with the following message:
+2.25.<a name="2_25"></a> The sar and/or sadf command complain(s) with the following message:
 ```
 End of system activity file unexpected
 ```
-
-
 A: sadc, the data collector, was unable to write all its data to the
 system activity data file (`/var/log/sa/saDD` by default).
 This is probably because there was no space left on the device where
@@ -596,9 +594,9 @@ there is enough free space but there may be some jobs run by crontab
 your free space, making sadc fail.
 
 ---
-### 3. Questions related to iostat
+### 3. Questions related to iostat<a name="iostat"></a>
 
-3.1. I can't see all my disks when I use the iostat command...
+3.1.<a name="3_1"></a> I can't see all my disks when I use the iostat command...
 
 
 A: Yes. This is a kernel limit. Old kernels (2.2.x for instance) used to
@@ -619,7 +617,7 @@ every device, including those that are defined but have never been used
 by the system.
 
 ---
-3.2. iostat -x doesn't report disk I/O statistics...
+3.2.<a name="3_2"></a> iostat -x doesn't report disk I/O statistics...
 
 
 A: For `iostat -x` to be able to report extended disk I/O statistics,
@@ -635,7 +633,7 @@ kernels, the /proc/partitions file has all the necessary data
 providing that the kernel has been compiled with CONFIG_BLK_STATS=y.
 
 ---
-3.3. Why can't iostat display extended statistics for partitions with
+3.3.<a name="3_3"></a> Why can't iostat display extended statistics for partitions with
 some 2.6.x kernels?
 
 
@@ -655,7 +653,7 @@ Extended I/O statistics for partitions are available again with kernels
 2.6.25 and later.
 
 ---
-3.4. I don't understand the output of iostat. It doesn't match what I expect it
+3.4.<a name="3_4"></a> I don't understand the output of iostat. It doesn't match what I expect it
 to be...
 
 
@@ -668,7 +666,7 @@ look at the kernel code, the sector size is actually allowed to vary although
 I have never seen anything other than 512 bytes.
 
 ---
-3.5. Why values displayed by iostat are so different in the first report
+3.5.<a name="3_5"></a> Why values displayed by iostat are so different in the first report
 from those displayed in subsequent ones?
 
 
@@ -678,7 +676,7 @@ cover only the time since the previous report (that is to say, the interval
 of time entered on the command line).
 
 ---
-3.6. iostat -x displays huge numbers for some fields...
+3.6.<a name="3_6"></a> iostat -x displays huge numbers for some fields...
 
 
 A: Because of a Linux kernel bug, iostat -x may display huge I/O response times
@@ -692,9 +690,9 @@ To (temporarily) fix the problem, you should reboot your system to reset the
 counters in `/proc/{partitions,diskstats}`.
 
 ---
-### 4. Questions related to pidstat
+### 4. Questions related to pidstat<a name="pidstat"></a>
 
-4.1. pidstat -d doesn't report task I/O statistics...
+4.1.<a name="4_1"></a> pidstat -d doesn't report task I/O statistics...
 
 
 A: For pidstat -d to be able to report I/O statistics for tasks, you need
@@ -702,7 +700,7 @@ a recent Linux kernel (2.6.20 or later) with the option
 CONFIG_TASK_IO_ACCOUNTING compiled in.
 
 ---
-4.2. The pidstat command complains with the following message:
+4.2.<a name="4_2"></a> The pidstat command complains with the following message:
 ```
 Requested activities not available
 ```
@@ -713,7 +711,7 @@ pidstat don't necessarily work for child processes. Read the manual page
 to know which statistics are available for child processes.
 
 ---
-4.3. pidstat doesn't display statistics for process (task) _xyz_...
+4.3.<a name="4_3"></a> pidstat doesn't display statistics for process (task) _xyz_...
 
 
 A: This must be because pidstat only displays statistics for active tasks
@@ -724,7 +722,7 @@ system startup. You should enter `pidstat -u -p ALL` to make sure that all
 the processes are listed in the report.
 
 ---
-4.4. I noticed that the total CPU utilization for threads running on
+4.4.<a name="4_4"></a> I noticed that the total CPU utilization for threads running on
 an individual CPU can exceed 100%...
 
 
