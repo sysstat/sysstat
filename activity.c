@@ -499,7 +499,7 @@ struct activity serial_act = {
 	.f_print_avg	= print_serial_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "TTY;rcvin/s;txmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s",
+	.hdr_line	= "TTY;rcvin/s;xmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s",
 #endif
 	.gtypes_nr	= {STATS_SERIAL_ULL, STATS_SERIAL_UL, STATS_SERIAL_U},
 	.ftypes_nr	= {0, 0, 0},
