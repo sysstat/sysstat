@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp && diff -u tests/expected.sar-ext-hl tests/out.sar-ext-hl.tmp

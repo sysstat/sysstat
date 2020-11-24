@@ -11,7 +11,7 @@ NOTES:
 00016	./tapestat -V >/dev/null
 00017	./cifsiostat -V >/dev/null
 
-=====	Creating data.tmp
+=====	Creating data.tmp [.....RC]
 00100	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data.tmp 1 1 >/dev/null
 00110	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data.tmp
 00120	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
@@ -23,7 +23,7 @@ NOTES:
 00132	LC_ALL=C TZ=GMT ./sar -A -I 2-5 -P 3 -f tests/data.tmp > tests/out3.sar-all.tmp
 	[Check that -A doesn't necessarily imply -I ALL -P ALL]
 
-=====	Appending data to data.tmp
+=====	Appending data to data.tmp [.....RCR..]
 00140	TZ=GMT ./sadc --unix_time=1555595649 tests/data.tmp
 00150	2 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
 
@@ -160,7 +160,7 @@ NOTES:
 00980	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
 00982	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-q.tmp
 
-=====	Creating data0.tmp and data1.tmp with no data inside
+=====	Creating data0.tmp [R] and data1.tmp [..R..] with no data inside
 01000	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
 01010	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
 01012	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
@@ -175,7 +175,7 @@ NOTES:
 01145	LC_ALL=C ./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
 01150	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
 
-=====	Append data to data0.tmp then read its contents
+=====	Append data to data0.tmp [RR.] then read its contents
 01200	2 x TZ=GMT ./sadc --unix_time=xxxxxxxxx [ -S XALL ] tests/data0.tmp [ 1 1 ] >/dev/null
 01210	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out01.sar-A.tmp
 01220	./sadf -d tests/data0.tmp -- -A > tests/out01.sadf-d.tmp
@@ -250,6 +250,10 @@ NOTES:
 	[CPU#8 - Last in list - online then offline]
 01720	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8off.tmp
 	[CPU#8 - Last in list - already offline]
+
+=====	Creating datax.tmp [RC....R..CR.RR..CC.]
+01800	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx tests/datax.tmp (...)
+01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp

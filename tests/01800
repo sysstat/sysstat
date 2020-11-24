@@ -1,0 +1,54 @@
+rm -f tests/datax.tmp
+
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_CPU,A_IRQ,A_NET_DEV,A_FS,A_PCSW tests/datax.tmp
+TZ=GMT ./sadc --unix_time=1555593613 tests/datax.tmp -C "First comment!" >/dev/null
+TZ=GMT ./sadc --unix_time=1555593615 tests/datax.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593619 tests/datax.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root3 tests/root
+TZ=GMT ./sadc --unix_time=1555593623 tests/datax.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root4 tests/root
+TZ=GMT ./sadc --unix_time=1555593627 tests/datax.tmp 1 1 >/dev/null
+
+# LINUX RESTART
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593731 tests/datax.tmp >/dev/null
+TZ=GMT ./sadc --unix_time=1555593741 tests/datax.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593751 tests/datax.tmp 1 1 >/dev/null
+TZ=GMT ./sadc --unix_time=1555593755 tests/datax.tmp -C "Second comment!" >/dev/null
+
+#LINUX RESTART
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593800 tests/datax.tmp >/dev/null
+TZ=GMT ./sadc --unix_time=1555593808 tests/datax.tmp 1 1 >/dev/null
+
+#LINUX RESTART
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593850 tests/datax.tmp >/dev/null
+TZ=GMT ./sadc --unix_time=1555593852 tests/datax.tmp >/dev/null
+TZ=GMT ./sadc --unix_time=1555593860 tests/datax.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593865 tests/datax.tmp 1 1 >/dev/null
+
+TZ=GMT ./sadc --unix_time=1555593766 tests/datax.tmp -C "Third..." >/dev/null
+TZ=GMT ./sadc --unix_time=1555593767 tests/datax.tmp -C "and fourth comment!" >/dev/null
+
+rm -f tests/root
+ln -s root3 tests/root
+TZ=GMT ./sadc --unix_time=1555593870 tests/datax.tmp 1 1 >/dev/null
