@@ -2035,7 +2035,7 @@ SYSSTAT.TEST;31;2019-04-18 13:20:19 UTC;3;956;3.16;3.24;3.43;0
 SYSSTAT.TEST;31;2019-04-18 13:20:29 UTC;3;956;3.16;3.24;3.43;0
 SYSSTAT.TEST;39;2019-04-18 13:20:39 UTC;3;956;3.16;3.24;3.43;0
 SYSSTAT.TEST;22;2019-04-18 13:20:49 UTC;3;956;3.16;3.24;3.43;0
-# hostname;interval;timestamp;TTY;rcvin/s;txmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s
+# hostname;interval;timestamp;TTY;rcvin/s;xmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s
 SYSSTAT.TEST;31;2019-04-18 13:20:19 UTC;0;0.00;0.00;0.00;0.00;0.00;0.00
 SYSSTAT.TEST;31;2019-04-18 13:20:19 UTC;1;0.00;0.00;0.00;0.00;0.00;0.00
 SYSSTAT.TEST;31;2019-04-18 13:20:29 UTC;0;0.00;0.00;0.00;0.00;0.00;0.00
@@ -2869,7 +2869,7 @@ SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;0;0;0.00;0;0
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;156063;16704;157735;4
 # hostname;interval;timestamp;runq-sz;plist-sz;ldavg-1;ldavg-5;ldavg-15;blocked
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;3;956;3.16;3.24;3.43;0
-# hostname;interval;timestamp;TTY;rcvin/s;txmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s
+# hostname;interval;timestamp;TTY;rcvin/s;xmtin/s;framerr/s;prtyerr/s;brk/s;ovrun/s
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;0;0.00;0.00;0.00;0.00;0.00;0.00
 SYSSTAT.TEST;31;2019-04-18 13:54:35 UTC;1;0.00;0.00;0.00;0.00;0.00;0.00
 # hostname;interval;timestamp;DEV;tps;rkB/s;wkB/s;dkB/s;areq-sz;aqu-sz;await;%util

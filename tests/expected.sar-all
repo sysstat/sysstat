@@ -2555,7 +2555,7 @@ Average:       156063     16704    157735         4
 13:20:49            3       956      3.16      3.24      3.43         0
 Average:            3       956      3.16      3.24      3.43         0
 
-13:20:09          TTY   rcvin/s  txmtin/s framerr/s prtyerr/s     brk/s   ovrun/s
+13:20:09          TTY   rcvin/s   xmtin/s framerr/s prtyerr/s     brk/s   ovrun/s
 13:20:19            0      0.00      0.00      0.00      0.00      0.00      0.00
 13:20:19            1      0.00      0.00      0.00      0.00      0.00      0.00
 13:20:29            0      0.00      0.00      0.00      0.00      0.00      0.00
