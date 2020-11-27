@@ -1592,7 +1592,7 @@ int main(int argc, char **argv)
 		/* Read stats from file */
 		read_stats_from_file(from_file);
 
-		/* Free stuctures and activity bitmaps */
+		/* Free structures and activity bitmaps */
 		free_bitmaps(act);
 		free_structures(act);
 
