@@ -141,10 +141,6 @@ NOTES:
 	[Done on root4. IDs are determined at run-time using ./dev/disk/by-id contents]
 00906	LC_ALL=C TZ=GMT ./sar -dh -j SID -f tests/data.tmp > tests/out.sar-jSID.tmp
 00908	LC_ALL=C TZ=GMT ./sar -F -j UUID -f tests/data.tmp > tests/out.sar-F-jUUID.tmp
-00910	LC_ALL=C TZ=GMT ./sar -uw -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
-	[Testing options -s/-e on a file contents spanning two consecutive days]
-	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
-	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
 00920	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -e 13:30 -z -n DEV -dp > tests/out.sar-z.tmp
 00930	LC_ALL=C TZ=GMT ./sar -ur 0 > tests/out.sar-0.tmp
 00940	LC_ALL=C TZ=GMT ./sar 1 2 > tests/out.sar.tmp
@@ -250,9 +246,14 @@ NOTES:
 	[CPU#8 - Last in list - online then offline]
 01720	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8off.tmp
 	[CPU#8 - Last in list - already offline]
-
-=====	Creating datax.tmp [RC....R..CR.RR..CC.]
+01750	5 x TZ=GMT ./sadc --unix-time=xxxxxxxx -S A_NULL,A_CPU,A_PCSW tests/data-cd 1 1
+	[Create data-cd.tmp [.....] spanning two consecutive days]
+01755	LC_ALL=C TZ=GMT ./sar -uw -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
+	[Testing options -s/-e on a file contents spanning two consecutive days]
+	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
+	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
 01800	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx tests/datax.tmp (...)
+	[Creating datax.tmp [RC....R..CR.RR..CC.] ]
 01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 
 =====	iostat tests (basic output)

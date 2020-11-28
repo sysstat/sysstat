@@ -1,0 +1,25 @@
+rm -f tests/data-cd.tmp
+rm -f tests/root
+ln -s root1 tests/root
+STEP=`TZ=GMT date --date="2019-05-01 23:59:57" +%s`
+TZ=GMT ./sadc --unix_time=${STEP} -S A_NULL,A_CPU,A_PCSW tests/data-cd.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+STEP=`TZ=GMT date --date="2019-05-01 23:59:58" +%s`
+TZ=GMT ./sadc --unix_time=${STEP} -S A_NULL,A_CPU,A_PCSW tests/data-cd.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root3 tests/root
+STEP=`TZ=GMT date --date="2019-05-01 23:59:59" +%s`
+TZ=GMT ./sadc --unix_time=${STEP} -S A_NULL,A_CPU,A_PCSW tests/data-cd.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root4 tests/root
+STEP=`TZ=GMT date --date="2019-05-02 00:00:00" +%s`
+TZ=GMT ./sadc --unix_time=${STEP} -S A_NULL,A_CPU,A_PCSW tests/data-cd.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root5 tests/root
+STEP=`TZ=GMT date --date="2019-05-02 00:00:01" +%s`
+TZ=GMT ./sadc --unix_time=${STEP} -S A_NULL,A_CPU,A_PCSW tests/data-cd.tmp 1 1 >/dev/null
