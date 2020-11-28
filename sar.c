@@ -437,29 +437,27 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 {
 	int i, prev_hour;
 	unsigned long long itv;
-	static int cross_day = 0;
+	static int cross_day = FALSE;
 
 	if (reset_cd) {
 		/*
 		 * cross_day is a static variable that is set to 1 when the first
 		 * record of stats from a new day is read from a unique data file
 		 * (in the case where the file contains data from two consecutive
-		 * days). When set to 1, every following records timestamp will
+		 * days). When set to TRUE, every following records timestamp will
 		 * have its hour value increased by 24.
 		 * Yet when a new activity (being read from the file) is going to
 		 * be displayed, we start reading the file from the beginning
 		 * again, and so cross_day should be reset in this case.
 		 */
-		cross_day = 0;
+		cross_day = FALSE;
 	}
 
 	/* Check time (1) */
-	if (read_from_file) {
-		if (!next_slice(record_hdr[2].uptime_cs, record_hdr[curr].uptime_cs,
-				reset, interval))
-			/* Not close enough to desired interval */
-			return 0;
-	}
+	if (read_from_file && !next_slice(record_hdr[2].uptime_cs, record_hdr[curr].uptime_cs,
+					  reset, interval))
+		/* Not close enough to desired interval */
+		return 0;
 
 	/* Get then set previous timestamp */
 	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
@@ -485,7 +483,7 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	if (use_tm_start && record_hdr[!curr].ust_time &&
 	    (record_hdr[curr].ust_time > record_hdr[!curr].ust_time) &&
 	    (rectime.tm_hour < prev_hour)) {
-		cross_day = 1;
+		cross_day = TRUE;
 	}
 
 	/* Check time (2) */
@@ -726,7 +724,8 @@ void read_sadc_stat_bunch(int curr)
 
 /*
  ***************************************************************************
- * Read stats for current activity from file and display them.
+ * Read current activity's statistics (located between two consecutive
+ * LINUX RESTART messages) from file and display them.
  *
  * IN:
  * @ifd		Input file descriptor.
@@ -792,63 +791,63 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 					 &file_hdr, arch_64, endian_mismatch, UEOF_STOP, b_size, flags);
 		rtype = record_hdr[*curr].record_type;
 
-		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
+		if ((lines >= rows) || !lines) {
+			lines = 0;
+			dish = TRUE;
+		}
+		else
+			dish = FALSE;
+
+		if (*eosaf || (rtype == R_RESTART))
+			/* This is EOF or we have met a LINUX RESTART record: Stop now */
+			break;
+
+		if (rtype != R_COMMENT) {
 			/* Read the extra fields since it's not a special record */
 			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
 					     endian_mismatch, arch_64, file, file_magic, UEOF_STOP);
 		}
-
-		if ((lines >= rows) || !lines) {
-			lines = 0;
-			dish = 1;
+		else {
+			/* Display comment */
+			next = print_special_record(&record_hdr[*curr], flags + S_F_LOCAL_TIME,
+						    &tm_start, &tm_end, R_COMMENT, ifd,
+						    &rectime, file, 0,
+						    file_magic, &file_hdr, act, &sar_fmt,
+						    endian_mismatch, arch_64);
+			if (next && lines) {
+				/*
+				 * A line of comment was actually displayed: Count it in the
+				 * total number of displayed lines.
+				 * If no lines of stats had been previously displayed, ignore it
+				 * to make sure the header line will be displayed.
+				 */
+				lines++;
+			}
+			continue;
 		}
-		else
-			dish = 0;
 
-		if (!*eosaf && (rtype != R_RESTART)) {
-
-			if (rtype == R_COMMENT) {
-				/* Display comment */
-				next = print_special_record(&record_hdr[*curr], flags + S_F_LOCAL_TIME,
-							    &tm_start, &tm_end, R_COMMENT, ifd,
-							    &rectime, file, 0,
-							    file_magic, &file_hdr, act, &sar_fmt,
-							    endian_mismatch, arch_64);
-				if (next && lines) {
-					/*
-					 * A line of comment was actually displayed: Count it in the
-					 * total number of displayed lines.
-					 * If no lines of stats had been previously displayed, ignore it
-					 * to make sure the header line will be displayed.
-					 */
-					lines++;
-				}
-				continue;
-			}
-
-			/* next is set to 1 when we were close enough to desired interval */
-			next = write_stats(*curr, USE_SA_FILE, cnt, tm_start.use, tm_end.use,
-					   *reset, act_id, reset_cd);
-			reset_cd = 0;
-			if (next && (*cnt > 0)) {
-				(*cnt)--;
-			}
-
-			if (next) {
-				davg++;
-				*curr ^= 1;
-
-				if (inc) {
-					lines += inc;
-				}
-				else {
-					lines += act[p]->nr[*curr];
-				}
-			}
-			*reset = FALSE;
+		/* next is set to 1 when we were close enough to desired interval */
+		next = write_stats(*curr, USE_SA_FILE, cnt, tm_start.use, tm_end.use,
+				   *reset, act_id, reset_cd);
+		reset_cd = 0;
+		if (next && (*cnt > 0)) {
+			(*cnt)--;
 		}
+
+		if (next) {
+			davg++;
+			*curr ^= 1;
+
+			if (inc) {
+				lines += inc;
+			}
+			else {
+				lines += act[p]->nr[*curr];
+			}
+		}
+		*reset = FALSE;
 	}
-	while (*cnt && !*eosaf && (rtype != R_RESTART));
+	while (*cnt);
 
 	/*
 	 * At this moment, if we had a R_RESTART record, we still haven't read
@@ -1118,7 +1117,7 @@ void read_stats_from_file(char from_file[])
 				}
 			}
 		}
-		if (!cnt) {
+		if (cnt == 0) {
 			/*
 			 * Go to next Linux restart, if possible.
 			 * Note: If we have @cnt == 0 then the last record we read was not a R_RESTART one
@@ -1134,12 +1133,15 @@ void read_stats_from_file(char from_file[])
 							&file_hdr, arch_64, endian_mismatch, UEOF_STOP, sizeof(rec_hdr_tmp), flags);
 				rtype = record_hdr[curr].record_type;
 
-				if (!eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
+				if (eosaf || (rtype == R_RESTART))
+					break;
+
+				if (rtype != R_COMMENT) {
 					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 							     file_actlst, endian_mismatch, arch_64,
 							     from_file, &file_magic, UEOF_STOP);
 				}
-				else if (!eosaf && (rtype == R_COMMENT)) {
+				else {
 					/* This was a COMMENT record: print it */
 					print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 							     &tm_start, &tm_end, R_COMMENT, ifd,
@@ -1148,7 +1150,7 @@ void read_stats_from_file(char from_file[])
 							     endian_mismatch, arch_64);
 				}
 			}
-			while (!eosaf && (rtype != R_RESTART));
+			while (1);
 		}
 
 		/* The last record we read was a RESTART one: Print it */
