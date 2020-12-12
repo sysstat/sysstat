@@ -711,9 +711,9 @@ struct stats_softnet {
 /* Structure for pressure-stall CPU statistics */
 struct stats_psi_cpu {
 	unsigned long long some_cpu_total;
-	unsigned long	   some_acpu_10;
-	unsigned long	   some_acpu_60;
-	unsigned long	   some_acpu_300;
+	unsigned long	   some_acpu_10		__attribute__ ((aligned (8)));
+	unsigned long	   some_acpu_60		__attribute__ ((aligned (8)));
+	unsigned long	   some_acpu_300		__attribute__ ((aligned (8)));
 };
 
 #define STATS_PSI_CPU_SIZE	(sizeof(struct stats_psi_cpu))
@@ -725,12 +725,12 @@ struct stats_psi_cpu {
 struct stats_psi_io {
 	unsigned long long some_io_total;
 	unsigned long long full_io_total;
-	unsigned long	   some_aio_10;
-	unsigned long	   some_aio_60;
-	unsigned long	   some_aio_300;
-	unsigned long	   full_aio_10;
-	unsigned long	   full_aio_60;
-	unsigned long	   full_aio_300;
+	unsigned long	   some_aio_10		__attribute__ ((aligned (8)));
+	unsigned long	   some_aio_60		__attribute__ ((aligned (8)));
+	unsigned long	   some_aio_300		__attribute__ ((aligned (8)));
+	unsigned long	   full_aio_10		__attribute__ ((aligned (8)));
+	unsigned long	   full_aio_60		__attribute__ ((aligned (8)));
+	unsigned long	   full_aio_300		__attribute__ ((aligned (8)));
 };
 
 #define STATS_PSI_IO_SIZE	(sizeof(struct stats_psi_io))
@@ -742,12 +742,12 @@ struct stats_psi_io {
 struct stats_psi_mem {
 	unsigned long long some_mem_total;
 	unsigned long long full_mem_total;
-	unsigned long	   some_amem_10;
-	unsigned long	   some_amem_60;
-	unsigned long	   some_amem_300;
-	unsigned long	   full_amem_10;
-	unsigned long	   full_amem_60;
-	unsigned long	   full_amem_300;
+	unsigned long	   some_amem_10		__attribute__ ((aligned (8)));
+	unsigned long	   some_amem_60		__attribute__ ((aligned (8)));
+	unsigned long	   some_amem_300		__attribute__ ((aligned (8)));
+	unsigned long	   full_amem_10		__attribute__ ((aligned (8)));
+	unsigned long	   full_amem_60		__attribute__ ((aligned (8)));
+	unsigned long	   full_amem_300		__attribute__ ((aligned (8)));
 };
 
 #define STATS_PSI_MEM_SIZE	(sizeof(struct stats_psi_mem))
