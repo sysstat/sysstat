@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sadf -H tests/data-12.0.0 > tests/out.data-12.0.0-H.tmp && diff -u tests/expected.data-12.0.0-H tests/out.data-12.0.0-H.tmp

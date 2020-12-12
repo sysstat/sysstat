@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./sadc -F 1 1 tests/data-11.6.5-ow.tmp 2>&1

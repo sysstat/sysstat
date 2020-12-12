@@ -1,0 +1,4 @@
+rm -f tests/data-11.6.5-ow.tmp
+cp -f tests/data-11.6.5 tests/data-11.6.5-ow.tmp
+
+LC_ALL=C TZ=GMT ./sadc 1 1 tests/data-11.6.5-ow.tmp 2>&1 | grep "Invalid system activity" >/dev/null

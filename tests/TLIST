@@ -100,8 +100,13 @@ NOTES:
 00620	./sadf -c tests/data-11.6.5 > tests/data-11.6.5.tmp
 00625	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-11.6.5.tmp > tests/out.data-11.6.5.tmp
 00650	LC_ALL=C TZ=GMT ./sar -AC -f tests/data-12.0.0 > tests/out.data-12.0.0.tmp
+00655	LC_ALL=C TZ=GMT ./sadf -H tests/data-12.0.0 > tests/out.data-12.0.0-H.tmp
 00660	LC_ALL=C TZ=GMT ./sadf -H tests/data-9.1.6-hz.tmp > tests/out.sadf-H-hz.tmp
 00664	LC_ALL=C TZ=GMT ./sadf -r -O debug tests/data-9.1.6-hz.tmp > tests/out.sadf-r-hz.tmp
+00670	LC_ALL=C TZ=GMT ./sadc 1 1 tests/data-11.6.5-ow.tmp 2>&1 | grep "Invalid system activity" >/dev/null
+	[See also 01300 and 01305]
+00675	LC_ALL=C TZ=GMT ./sadc -F 1 1 tests/data-11.6.5-ow.tmp 2>&1
+00678	LC_ALL=C TZ=GMT ./sar -f tests/data-11.6.5-ow.tmp > tests/out.sar-ow.tmp
 
 =====	Reading datafile from another architecture
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
