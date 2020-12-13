@@ -936,7 +936,7 @@ void read_header_data(void)
 	if ((file_hdr.act_size != FILE_ACTIVITY_SIZE) ||
 	    (file_hdr.rec_size != RECORD_HEADER_SIZE)) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: act_size=%u/%lu rec_size=%u/%lu\n", __FUNCTION__,
+		fprintf(stderr, "%s: act_size=%u/%zu rec_size=%u/%zu\n", __FUNCTION__,
 			file_hdr.act_size, FILE_ACTIVITY_SIZE, file_hdr.rec_size, RECORD_HEADER_SIZE);
 #endif
 		print_read_error(INCONSISTENT_INPUT_DATA);

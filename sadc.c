@@ -304,10 +304,10 @@ void reset_stats(void)
 /*
  ***************************************************************************
  * Count activities items then allocate and init corresponding structures.
- * Activities such A_CPU with AO_ALWAYS_COUNTED flag set are always counted
- * (thus the number of CPU will always be counted even if CPU activity is
- * not collected), but ONLY those that will be collected have allocated
- * structures.
+ * Activities such as A_CPU with AO_ALWAYS_COUNTED flag set are always
+ * counted (thus the number of CPU will always be counted even if CPU
+ * activity is not collected), but ONLY those that will be collected have
+ * allocated structures.
  * This function is called when sadc is started, and when a file is rotated.
  * If a file is rotated and structures are reallocated with a larger size,
  * additional space is not initialized: It doesn't matter as reset_stats()
@@ -821,7 +821,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			return;
 		}
 #ifdef DEBUG
-		fprintf(stderr, "%s: Size read=%ld sysstat_magic=%x format_magic=%x header_size=%u header=%d,%d,%d\n",
+		fprintf(stderr, "%s: Size read=%zd sysstat_magic=%x format_magic=%x header_size=%u header=%d,%d,%d\n",
 			__FUNCTION__, sz, file_magic.sysstat_magic, file_magic.format_magic, file_magic.header_size,
 			file_magic.hdr_types_nr[0], file_magic.hdr_types_nr[1], file_magic.hdr_types_nr[2]);
 #endif
@@ -832,7 +832,7 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 	/* Read file standard header */
 	if ((sz = read(*ofd, &file_hdr, FILE_HEADER_SIZE)) != FILE_HEADER_SIZE) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Size read=%ld\n",
+		fprintf(stderr, "%s: Size read=%zd\n",
 			__FUNCTION__, sz);
 #endif
 		goto append_error;
