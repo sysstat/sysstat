@@ -99,11 +99,16 @@ void get_uname(struct utsname *h)
 int get_fs_stat(char *c, struct statvfs *buf)
 {
 	static int p = 0;
-	unsigned long long bfree[4] = {89739427840, 293286670336, 11696156672, 292616732672};
-	unsigned long long blocks[4] = {97891291136, 309502345216, 30829043712, 309502345216};
-	unsigned long long bavail[4] = {84722675712, 277541253120, 10106515456, 276871315456};
-	unsigned long long files[4] = {6111232, 19202048, 1921360, 19202048};
-	unsigned long long ffree[4] = {6008414, 19201593, 1621550, 19051710};
+	/*
+	 * f_bfree, f_blocks and f_bavail used to be unsigned long.
+	 * So don't use values greater then UINT_MAX to make sure that values
+	 * won't overflow on 32-bit systems.
+	 */
+	unsigned long long bfree[4]  = {739427840, 286670336, 1696156672, 2616732672};
+	unsigned long long blocks[4] = {891291136, 502345216, 1829043712, 3502345216};
+	unsigned long long bavail[4] = {722675712, 241253120, 1106515456, 1871315456};
+	unsigned long long files[4]  = {6111232, 19202048, 1921360, 19202048};
+	unsigned long long ffree[4]  = {6008414, 19201593, 1621550, 19051710};
 
 	buf->f_bfree = bfree[p];
 	buf->f_blocks = blocks[p];

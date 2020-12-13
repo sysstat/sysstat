@@ -633,10 +633,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.03"/>
@@ -1260,12 +1260,12 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sdf" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
-					<filesystem fsname="/dev/sdg" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sdf" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sdg" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.23"/>
@@ -1895,12 +1895,12 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sdf" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
-					<filesystem fsname="/dev/sdg" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sdf" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sdg" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.01"/>
@@ -2534,10 +2534,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.23"/>
@@ -3178,10 +3178,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-frequency>
 				</power-management>
 				<filesystems>
-					<filesystem fsname="/dev/sda9" MBfsfree="85582" MBfsused="7774" fsused-percent="8.33" ufsused-percent="13.45" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
-					<filesystem fsname="/dev/sda7" MBfsfree="279700" MBfsused="15464" fsused-percent="5.24" ufsused-percent="10.33" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
-					<filesystem fsname="/dev/sda12" MBfsfree="11154" MBfsused="18247" fsused-percent="62.06" ufsused-percent="67.22" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
-					<filesystem fsname="/dev/sda6" MBfsfree="279061" MBfsused="16103" fsused-percent="5.46" ufsused-percent="10.54" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+					<filesystem fsname="/dev/sda9" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem fsname="/dev/sda7" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+					<filesystem fsname="/dev/sda12" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem fsname="/dev/sda6" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
 				</filesystems>
 				<psi per="second">
 					<psi-cpu some_avg10="0.00" some_avg60="0.00" some_avg300="0.00" some_avg="0.00"/>

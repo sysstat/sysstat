@@ -9,18 +9,16 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (11154, 85582)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (7774, 18247)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (705, 1618)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (127, 145)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
-<polyline points="0,20000.00 720,20000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-46" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20000.</text>
-<polyline points="0,40000.00 720,40000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-93" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">40000.</text>
-<polyline points="0,60000.00 720,60000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-140" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">60000.</text>
-<polyline points="0,80000.00 720,80000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-186" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">80000.</text>
+<polyline points="0,500.00 720,500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-61" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">500.</text>
+<polyline points="0,1000.00 720,1000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-123" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1000.</text>
+<polyline points="0,1500.00 720,1500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-185" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1500.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -44,16 +42,16 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,85582.19 L20,11154.32 L30,11154.32 L40,85582.19 M2066,85582.19" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.002337)"/>
-<path d=" M10,7774.22 L20,18246.54 L30,18246.54 L40,7774.22 M2066,7774.22" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.002337)"/>
+<path d=" M10,705.17 L20,1617.58 L30,1617.58 L40,705.17 M2066,705.17" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.123641)"/>
+<path d=" M10,144.83 L20,126.73 L30,126.73 L40,144.83 M2066,144.83" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.123641)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Filesystems statistics (2) [/]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (13.45, 67.22)</text>
-<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (8.33, 62.06)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (18.92, 39.50)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (7.27, 17.04)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -88,10 +86,10 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="13.45" width="31"/><rect x="0" y="0.00" height="67.22" width="31"/><rect x="0" y="0.00" height="67.22" width="39"/><rect x="18" y="0.00" height="13.45" width="22"/><rect x="2035" y="0.00" height="13.45" width="31"/>
+<rect x="0" y="0.00" height="18.92" width="31"/><rect x="0" y="0.00" height="39.50" width="31"/><rect x="0" y="0.00" height="39.50" width="39"/><rect x="18" y="0.00" height="18.92" width="22"/><rect x="2035" y="0.00" height="18.92" width="31"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="8.33" width="31"/><rect x="0" y="0.00" height="62.06" width="31"/><rect x="0" y="0.00" height="62.06" width="39"/><rect x="18" y="0.00" height="8.33" width="22"/><rect x="2035" y="0.00" height="8.33" width="31"/>
+<rect x="0" y="0.00" height="17.04" width="31"/><rect x="0" y="0.00" height="7.27" width="31"/><rect x="0" y="0.00" height="7.27" width="39"/><rect x="18" y="0.00" height="17.04" width="22"/><rect x="2035" y="0.00" height="17.04" width="31"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
@@ -185,16 +183,16 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (279061, 279700)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (15464, 16103)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (273, 2496)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (206, 845)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
-<polyline points="0,90000.00 720,90000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000715)"/>
-<text x="0" y="-64" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">90000.</text>
-<polyline points="0,180000.00 720,180000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000715)"/>
-<text x="0" y="-128" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">180000.</text>
-<polyline points="0,270000.00 720,270000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000715)"/>
-<text x="0" y="-193" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">270000.</text>
+<polyline points="0,800.00 720,800.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-64" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">800.</text>
+<polyline points="0,1600.00 720,1600.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-128" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1600.</text>
+<polyline points="0,2400.00 720,2400.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-192" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">2400.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -218,16 +216,16 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,279061.06 L20,279061.06 L30,279061.06 L40,279699.96 M2066,279699.96" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.000715)"/>
-<path d=" M10,16103.38 L20,16103.38 L30,16103.38 L40,15464.47 M2066,15464.47" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.000715)"/>
+<path d=" M10,2495.51 L20,2495.51 L30,2495.51 L40,273.39 M2066,273.39" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.080144)"/>
+<path d=" M10,844.59 L20,844.59 L30,844.59 L40,205.68 M2066,205.68" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.080144)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Filesystems statistics (2) [/opt]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (10.33, 10.54)</text>
-<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (5.24, 5.46)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (46.57, 51.97)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (25.29, 42.93)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -262,10 +260,10 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="10.54" width="31"/><rect x="0" y="0.00" height="10.54" width="31"/><rect x="0" y="0.00" height="10.54" width="39"/><rect x="18" y="0.00" height="10.33" width="22"/><rect x="2035" y="0.00" height="10.33" width="31"/>
+<rect x="0" y="0.00" height="46.57" width="31"/><rect x="0" y="0.00" height="46.57" width="31"/><rect x="0" y="0.00" height="46.57" width="39"/><rect x="18" y="0.00" height="51.97" width="22"/><rect x="2035" y="0.00" height="51.97" width="31"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="5.46" width="31"/><rect x="0" y="0.00" height="5.46" width="31"/><rect x="0" y="0.00" height="5.46" width="39"/><rect x="18" y="0.00" height="5.24" width="22"/><rect x="2035" y="0.00" height="5.24" width="31"/>
+<rect x="0" y="0.00" height="25.29" width="31"/><rect x="0" y="0.00" height="25.29" width="31"/><rect x="0" y="0.00" height="25.29" width="39"/><rect x="18" y="0.00" height="42.93" width="22"/><rect x="2035" y="0.00" height="42.93" width="31"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
@@ -359,18 +357,16 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (11154, 85582)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (7774, 18247)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (705, 1618)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (127, 145)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
-<polyline points="0,20000.00 720,20000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-46" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">20000.</text>
-<polyline points="0,40000.00 720,40000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-93" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">40000.</text>
-<polyline points="0,60000.00 720,60000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-140" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">60000.</text>
-<polyline points="0,80000.00 720,80000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.002337)"/>
-<text x="0" y="-186" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">80000.</text>
+<polyline points="0,500.00 720,500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-61" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">500.</text>
+<polyline points="0,1000.00 720,1000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-123" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1000.</text>
+<polyline points="0,1500.00 720,1500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-185" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1500.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -394,16 +390,16 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,85582.19 L20,85582.19 L30,85582.19 L40,11154.32 M2066,11154.32" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.002337)"/>
-<path d=" M10,7774.22 L20,7774.22 L30,7774.22 L40,18246.54 M2066,18246.54" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.002337)"/>
+<path d=" M10,705.17 L20,705.17 L30,705.17 L40,1617.58 M2066,1617.58" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.123641)"/>
+<path d=" M10,144.83 L20,144.83 L30,144.83 L40,126.73 M2066,126.73" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.123641)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Filesystems statistics (2) [/home]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (13.45, 67.22)</text>
-<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (8.33, 62.06)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (18.92, 39.50)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (7.27, 17.04)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -438,10 +434,10 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="13.45" width="31"/><rect x="0" y="0.00" height="13.45" width="31"/><rect x="0" y="0.00" height="13.45" width="39"/><rect x="18" y="0.00" height="67.22" width="22"/><rect x="2035" y="0.00" height="67.22" width="31"/>
+<rect x="0" y="0.00" height="18.92" width="31"/><rect x="0" y="0.00" height="18.92" width="31"/><rect x="0" y="0.00" height="18.92" width="39"/><rect x="18" y="0.00" height="39.50" width="22"/><rect x="2035" y="0.00" height="39.50" width="31"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="8.33" width="31"/><rect x="0" y="0.00" height="8.33" width="31"/><rect x="0" y="0.00" height="8.33" width="39"/><rect x="18" y="0.00" height="62.06" width="22"/><rect x="2035" y="0.00" height="62.06" width="31"/>
+<rect x="0" y="0.00" height="17.04" width="31"/><rect x="0" y="0.00" height="17.04" width="31"/><rect x="0" y="0.00" height="17.04" width="39"/><rect x="18" y="0.00" height="7.27" width="22"/><rect x="2035" y="0.00" height="7.27" width="31"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
@@ -535,16 +531,16 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (279061, 279700)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (15464, 16103)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (273, 2496)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (206, 845)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
-<polyline points="0,90000.00 720,90000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000715)"/>
-<text x="0" y="-64" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">90000.</text>
-<polyline points="0,180000.00 720,180000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000715)"/>
-<text x="0" y="-128" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">180000.</text>
-<polyline points="0,270000.00 720,270000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000715)"/>
-<text x="0" y="-193" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">270000.</text>
+<polyline points="0,800.00 720,800.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-64" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">800.</text>
+<polyline points="0,1600.00 720,1600.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-128" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1600.</text>
+<polyline points="0,2400.00 720,2400.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-192" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">2400.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -568,16 +564,16 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,279699.96 L20,279699.96 L30,279699.96 L40,279061.06 M2066,279061.06" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.000715)"/>
-<path d=" M10,15464.47 L20,15464.47 L30,15464.47 L40,16103.38 M2066,16103.38" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.000715)"/>
+<path d=" M10,273.39 L20,273.39 L30,273.39 L40,2495.51 M2066,2495.51" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.080144)"/>
+<path d=" M10,205.68 L20,205.68 L30,205.68 L40,844.59 M2066,844.59" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.080144)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Filesystems statistics (2) [/data]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (10.33, 10.54)</text>
-<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (5.24, 5.46)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (46.57, 51.97)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (25.29, 42.93)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -612,10 +608,10 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="10.33" width="31"/><rect x="0" y="0.00" height="10.33" width="31"/><rect x="0" y="0.00" height="10.33" width="39"/><rect x="18" y="0.00" height="10.54" width="22"/><rect x="2035" y="0.00" height="10.54" width="31"/>
+<rect x="0" y="0.00" height="51.97" width="31"/><rect x="0" y="0.00" height="51.97" width="31"/><rect x="0" y="0.00" height="51.97" width="39"/><rect x="18" y="0.00" height="46.57" width="22"/><rect x="2035" y="0.00" height="46.57" width="31"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="5.24" width="31"/><rect x="0" y="0.00" height="5.24" width="31"/><rect x="0" y="0.00" height="5.24" width="39"/><rect x="18" y="0.00" height="5.46" width="22"/><rect x="2035" y="0.00" height="5.46" width="31"/>
+<rect x="0" y="0.00" height="42.93" width="31"/><rect x="0" y="0.00" height="42.93" width="31"/><rect x="0" y="0.00" height="42.93" width="39"/><rect x="18" y="0.00" height="25.29" width="22"/><rect x="2035" y="0.00" height="25.29" width="31"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
@@ -709,16 +705,16 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (11154, 11154)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (18247, 18247)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (1618, 1618)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (127, 127)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
-<polyline points="0,6000.00 720,6000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.010961)"/>
-<text x="0" y="-65" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">6000.</text>
-<polyline points="0,12000.00 720,12000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.010961)"/>
-<text x="0" y="-131" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">12000.</text>
-<polyline points="0,18000.00 720,18000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.010961)"/>
-<text x="0" y="-197" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">18000.</text>
+<polyline points="0,500.00 720,500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-61" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">500.</text>
+<polyline points="0,1000.00 720,1000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-123" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1000.</text>
+<polyline points="0,1500.00 720,1500.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.123641)"/>
+<text x="0" y="-185" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1500.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -742,16 +738,16 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M20,11154.32 L30,11154.32" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.010961)"/>
-<path d=" M20,18246.54 L30,18246.54" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.010961)"/>
+<path d=" M20,1617.58 L30,1617.58" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.123641)"/>
+<path d=" M20,126.73 L30,126.73" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.123641)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Filesystems statistics (2) [/foo]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (67.22, 67.22)</text>
-<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (62.06, 62.06)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (39.50, 39.50)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (7.27, 7.27)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -786,10 +782,10 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="67.22" width="31"/><rect x="0" y="0.00" height="67.22" width="39"/>
+<rect x="0" y="0.00" height="39.50" width="31"/><rect x="0" y="0.00" height="39.50" width="39"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="62.06" width="31"/><rect x="0" y="0.00" height="62.06" width="39"/>
+<rect x="0" y="0.00" height="7.27" width="31"/><rect x="0" y="0.00" height="7.27" width="39"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
@@ -883,16 +879,16 @@
 <tspan x="795" y="25" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (279061, 279061)</text>
-<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (16103, 16103)</text>
+<text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBfsfree (2496, 2496)</text>
+<text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBfsused (845, 845)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
-<polyline points="0,90000.00 720,90000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000717)"/>
-<text x="0" y="-64" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">90000.</text>
-<polyline points="0,180000.00 720,180000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000717)"/>
-<text x="0" y="-129" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">180000.</text>
-<polyline points="0,270000.00 720,270000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.000717)"/>
-<text x="0" y="-193" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">270000.</text>
+<polyline points="0,800.00 720,800.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-64" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">800.</text>
+<polyline points="0,1600.00 720,1600.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-128" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">1600.</text>
+<polyline points="0,2400.00 720,2400.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.080144)"/>
+<text x="0" y="-192" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">2400.</text>
 <polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="0" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,0,0)">13:20:09</text>
 <polyline points="206,0 206,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
@@ -916,16 +912,16 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M20,279061.06 L30,279061.06" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.000717)"/>
-<path d=" M20,16103.38 L30,16103.38" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.000717)"/>
+<path d=" M20,2495.51 L30,2495.51" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.080144)"/>
+<path d=" M20,844.59 L30,844.59" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.080144)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Filesystems statistics (2) [/bar]
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (10.54, 10.54)</text>
-<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (5.46, 5.46)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">%ufsused (46.57, 46.57)</text>
+<text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">%fsused (25.29, 25.29)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -960,10 +956,10 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #00ffff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="10.54" width="31"/><rect x="0" y="0.00" height="10.54" width="39"/>
+<rect x="0" y="0.00" height="46.57" width="31"/><rect x="0" y="0.00" height="46.57" width="39"/>
 </g>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="5.46" width="31"/><rect x="0" y="0.00" height="5.46" width="39"/>
+<rect x="0" y="0.00" height="25.29" width="31"/><rect x="0" y="0.00" height="25.29" width="39"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>
