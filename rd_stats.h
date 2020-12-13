@@ -713,7 +713,7 @@ struct stats_psi_cpu {
 	unsigned long long some_cpu_total;
 	unsigned long	   some_acpu_10		__attribute__ ((aligned (8)));
 	unsigned long	   some_acpu_60		__attribute__ ((aligned (8)));
-	unsigned long	   some_acpu_300		__attribute__ ((aligned (8)));
+	unsigned long	   some_acpu_300	__attribute__ ((aligned (8)));
 };
 
 #define STATS_PSI_CPU_SIZE	(sizeof(struct stats_psi_cpu))
@@ -744,10 +744,10 @@ struct stats_psi_mem {
 	unsigned long long full_mem_total;
 	unsigned long	   some_amem_10		__attribute__ ((aligned (8)));
 	unsigned long	   some_amem_60		__attribute__ ((aligned (8)));
-	unsigned long	   some_amem_300		__attribute__ ((aligned (8)));
+	unsigned long	   some_amem_300	__attribute__ ((aligned (8)));
 	unsigned long	   full_amem_10		__attribute__ ((aligned (8)));
 	unsigned long	   full_amem_60		__attribute__ ((aligned (8)));
-	unsigned long	   full_amem_300		__attribute__ ((aligned (8)));
+	unsigned long	   full_amem_300	__attribute__ ((aligned (8)));
 };
 
 #define STATS_PSI_MEM_SIZE	(sizeof(struct stats_psi_mem))
