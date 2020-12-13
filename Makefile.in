@@ -116,6 +116,7 @@ SYSPARAM = @SYSPARAM@
 ifeq ($(SYSPARAM),y)
 	DFLAGS += -DHAVE_SYS_PARAM_H
 endif
+TGLIB32 = @TGLIB32@
 NLS = @NLS@
 LFLAGS += @LFINTL@
 ifeq ($(NLS),y)
@@ -342,6 +343,80 @@ tests/ini/librdstats_light.a: tests/ini/rd_stats_light.o tests/ini/count_light.o
 tests/ini/inisar.o: tests/ini/inisar.c tests/ini/sa.h tests/ini/iniversion.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h
 
 tests/ini/inisar: tests/ini/inisar.o tests/ini/act_sar.o tests/ini/format_sar.o tests/ini/sa_common.o tests/ini/pr_stats.o tests/ini/librdstats_light.a tests/ini/libsyscom.a
+
+tests/32bits/sadc32.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/sadc32: LFLAGS += $(LFSENSORS)
+
+tests/32bits/sadc32: tests/32bits/sadc32.o tests/32bits/act_sadc32.o tests/32bits/sa_wrap32.o tests/32bits/sa_common_light32.o tests/32bits/common_light32.o tests/32bits/systest32.o tests/32bits/librdstats32.a tests/32bits/librdsensors32.a
+	$(CC) -m32 -o $@ $(CFLAGS) $^ $(LFLAGS)
+
+tests/32bits/sar32.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/sar32: tests/32bits/sar32.o tests/32bits/act_sar32.o tests/32bits/format_sar32.o tests/32bits/sa_common32.o tests/32bits/pr_stats32.o tests/32bits/librdstats_light32.a tests/32bits/libsyscom32.a
+	$(CC) -m32 -o $@ $(CFLAGS) $^ $(LFLAGS)
+
+tests/32bits/act_sadc32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+tests/32bits/act_sar32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
+
+tests/32bits/sa_wrap32.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+tests/32bits/sa_common_light32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+tests/32bits/sa_common32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/common_light32.o: common.c version.h common.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+tests/32bits/systest32.o: systest.c systest.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/libsyscom32.a: tests/32bits/common32.o tests/32bits/ioconf32.o tests/32bits/systest32.o
+	$(AR) rvs $@ $?
+
+tests/32bits/librdstats32.a: tests/32bits/rd_stats32.o tests/32bits/count32.o
+	$(AR) rvs $@ $?
+
+tests/32bits/librdstats_light32.a: tests/32bits/rd_stats_light32.o tests/32bits/count_light32.o
+	$(AR) rvs $@ $?
+
+tests/32bits/librdsensors32.a: tests/32bits/rd_sensors32.o
+	$(AR) rvs $@ $?
+
+tests/32bits/rd_stats32.o: rd_stats.c common.h rd_stats.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+tests/32bits/rd_stats_light32.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/count32.o: count.c common.h rd_stats.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+
+tests/32bits/count_light32.o: count.c common.h rd_stats.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/format_sar32.o: format.c sa.h common.h rd_stats.h rd_sensors.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
+
+tests/32bits/pr_stats32.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/common32.o: common.c version.h common.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/ioconf32.o: ioconf.c ioconf.h common.h sysconfig.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/rd_sensors32.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
+	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 ifdef REQUIRE_NLS
 locales: $(NLSGMO)
@@ -660,7 +735,13 @@ TESTDIR="tests"
 TESTRUN="/bin/sh"
 TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
 
-testcomp: tests/ini/inisar
+testcomp: tests/ini/inisar sa32bit
+
+ifeq ($(TGLIB32),yes)
+sa32bit: tests/32bits/sadc32 tests/32bits/sar32
+else
+sa32bit:
+endif
 
 unit:
 	@echo $(X) 2>&1
@@ -679,8 +760,9 @@ clean:
 	rm -f tests/sa[012]*
 	rm -f tests/root
 	ln -s root1 tests/root
-	rm -f tests/ini/inisar
+	rm -f tests/ini/inisar tests/32bits/sadc32 tests/32bits/sar32
 	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar.*
+	rm -f tests/32bits/*.o tests/32bits/*.a tests/32bits/core
 	find nls -name "*.gmo" -exec rm -f {} \;
 
 almost-distclean: clean nls/sysstat.pot

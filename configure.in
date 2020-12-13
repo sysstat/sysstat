@@ -182,6 +182,17 @@ else
 fi
 AC_SUBST(PCP_IMPL)
 
+# Check for 32-bit system libraries
+TGLIB32=no
+CFLAGS_SAVE=$CFLAGS
+CFLAGS+=" -m32"
+AC_MSG_CHECKING(for 32-bit system libraries)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
+				   [[printf("%d\n", sizeof(long));]])],TGLIB32=yes, TGLIB32=no)
+AC_MSG_RESULT($TGLIB32)
+CFLAGS=$CFLAGS_SAVE
+AC_SUBST(TGLIB32)
+
 echo .
 echo Check system services:
 echo .

@@ -54,3 +54,5 @@ tests/sa[012]*
 tests/variables
 tests/pcpar.*
 inisar
+sar32
+sadc32

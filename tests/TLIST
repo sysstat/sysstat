@@ -110,6 +110,12 @@ NOTES:
 
 =====	Reading datafile from another architecture
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
+00710	4 x TZ=GMT tests/32bits/sadc32 -unix_time=xxxxxxxxx -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data32.tmp [...]
+	[Creating a 32-bit datafile: tests/data32.tmp [RC..]]
+00712	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data32.tmp > tests/out.sar32-A.tmp
+	[Read 32-bit datafile tests/data32.tmp using 64-bit sar. Assuming current arch is 64 bits]
+00715	LC_ALL=C TZ=GMT tests/32bits/sar32 -C -A -f tests/data.tmp 1 2 > tests/out2.sar32-A.tmp
+	[Read 64-bit datafile tests/data.tmp using 32-bit sar]
 
 =====	Reading datafile with non printable chrs in comment (created using hexedit)
 00720	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
