@@ -45,7 +45,7 @@
 #define _(string) (string)
 #endif
 
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 #include "sensors/sensors.h"
 #include "sensors/error.h"
 #endif
@@ -1209,7 +1209,7 @@ int main(int argc, char **argv)
 
 	ofile[0] = sa_dir[0] = comment[0] = '\0';
 
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	/* Initialize sensors, let it use the default cfg file */
 	int err = sensors_init(NULL);
 	if (err) {
@@ -1427,7 +1427,7 @@ int main(int argc, char **argv)
 	/* Main loop */
 	rw_sa_stat_loop(count, stdfd, ofd, ofile, sa_dir);
 
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	/* Cleanup sensors */
 	sensors_cleanup();
 #endif /* HAVE_SENSORS */

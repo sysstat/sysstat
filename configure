@@ -671,13 +671,16 @@ INIT_DIR
 RC_DIR
 rcdir
 TGLIB32
+DFSENSORS32
+LFSENSORS32
+HAVE_SENSORS32
+DFSENSORS
+LFSENSORS
+HAVE_SENSORS
 PCP_IMPL
 DFPCP
 LFPCP
 HAVE_PCP
-DFSENSORS
-LFSENSORS
-HAVE_SENSORS
 SYSTEMD_SLEEP_DIR
 SYSTEMD_UNIT_DIR
 SYSTEMCTL
@@ -750,8 +753,8 @@ ac_user_opts='
 enable_option_checking
 with_systemdsystemunitdir
 with_systemdsleepdir
-enable_sensors
 enable_pcp
+enable_sensors
 enable_largefile
 enable_nls
 enable_file_attr
@@ -1396,8 +1399,8 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --disable-sensors       disable sensors support
   --disable-pcp           disable PCP support
+  --disable-sensors       disable sensors support
   --disable-largefile     omit support for large files
   --disable-nls           disable National Language Support
   --disable-file-attr     do not set attributes on files being installed
@@ -4572,98 +4575,6 @@ fi
 done
 
 
-# Should we check for lm_sensors?
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors support" >&5
-$as_echo_n "checking for sensors support... " >&6; }
-# Check whether --enable-sensors was given.
-if test "${enable_sensors+set}" = set; then :
-  enableval=$enable_sensors; SENSORS=$enableval
-else
-  SENSORS=yes
-fi
-
-if test $SENSORS != "yes"; then
-	HAVE_SENSORS="n"
-else
-	HAVE_SENSORS="y"
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
-$as_echo "$SENSORS" >&6; }
-
-# Check for lm_sensors
-LFSENSORS=""
-DFSENSORS=""
-if test $HAVE_SENSORS = "y"; then
-	SENSORS=no
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors_get_detected_chips in -lsensors" >&5
-$as_echo_n "checking for sensors_get_detected_chips in -lsensors... " >&6; }
-if ${ac_cv_lib_sensors_sensors_get_detected_chips+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lsensors  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char sensors_get_detected_chips ();
-int
-main ()
-{
-return sensors_get_detected_chips ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_sensors_sensors_get_detected_chips=yes
-else
-  ac_cv_lib_sensors_sensors_get_detected_chips=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_sensors_sensors_get_detected_chips" >&5
-$as_echo "$ac_cv_lib_sensors_sensors_get_detected_chips" >&6; }
-if test "x$ac_cv_lib_sensors_sensors_get_detected_chips" = xyes; then :
-  LFSENSORS="-lsensors"
-else
-  HAVE_SENSORS="n"
-fi
-
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors lib" >&5
-$as_echo_n "checking for sensors lib... " >&6; }
-	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <sensors/sensors.h>
-					     #include <sensors/error.h>
-int
-main ()
-{
-sensors_cleanup();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  SENSORS=yes; DFSENSORS="-DHAVE_SENSORS"
-else
-  HAVE_SENSORS="n"; SENSORS=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
-$as_echo "$SENSORS" >&6; }
-fi
-
-
-
-
 # Should we check for PCP support?
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for PCP support" >&5
 $as_echo_n "checking for PCP support... " >&6; }
@@ -4679,12 +4590,13 @@ if test $PCP != "yes"; then
 else
 	HAVE_PCP="y"
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCP" >&5
-$as_echo "$PCP" >&6; }
 
 if test ! $HAVE_PCP_PMAPI_H; then
 	HAVE_PCP="n"
+	PCP=no
 fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCP" >&5
+$as_echo "$PCP" >&6; }
 
 # Check for PCP libraries
 LFPCP=""
@@ -4765,6 +4677,180 @@ if test $HAVE_PCP_IMPL_H; then
 else
    PCP_IMPL="n"
 fi
+
+
+# Should we check for lm_sensors?
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors support" >&5
+$as_echo_n "checking for sensors support... " >&6; }
+# Check whether --enable-sensors was given.
+if test "${enable_sensors+set}" = set; then :
+  enableval=$enable_sensors; SENSORS=$enableval
+else
+  SENSORS=yes
+fi
+
+if test $SENSORS != "yes"; then
+	SENSORS_SUPPORT="n"
+else
+	SENSORS_SUPPORT="y"
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
+$as_echo "$SENSORS" >&6; }
+
+# Check for lm_sensors library
+LFSENSORS=""
+DFSENSORS=""
+HAVE_SENSORS="n"
+if test $SENSORS_SUPPORT = "y"; then
+	SENSORS=no
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors_get_detected_chips in -lsensors" >&5
+$as_echo_n "checking for sensors_get_detected_chips in -lsensors... " >&6; }
+if ${ac_cv_lib_sensors_sensors_get_detected_chips+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsensors  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char sensors_get_detected_chips ();
+int
+main ()
+{
+return sensors_get_detected_chips ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_sensors_sensors_get_detected_chips=yes
+else
+  ac_cv_lib_sensors_sensors_get_detected_chips=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_sensors_sensors_get_detected_chips" >&5
+$as_echo "$ac_cv_lib_sensors_sensors_get_detected_chips" >&6; }
+if test "x$ac_cv_lib_sensors_sensors_get_detected_chips" = xyes; then :
+  LFSENSORS="-lsensors"
+else
+  HAVE_SENSORS="n"
+fi
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors library" >&5
+$as_echo_n "checking for sensors library... " >&6; }
+	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <sensors/sensors.h>
+					     #include <sensors/error.h>
+int
+main ()
+{
+sensors_cleanup();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  SENSORS=yes; HAVE_SENSORS="y"; DFSENSORS="-DHAVE_SENSORS"
+else
+  HAVE_SENSORS="n"; SENSORS=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
+$as_echo "$SENSORS" >&6; }
+fi
+
+
+
+
+# Check for 32-bit version of lm_sensors library
+LFSENSORS32=""
+DFSENSORS32=""
+HAVE_SENSORS32="n"
+if test $SENSORS_SUPPORT = "y"; then
+	CFLAGS_SAVE=$CFLAGS
+	CFLAGS+=" -m32"
+	LDFLAGS=" -lsensors"
+	SENSORS=no
+#	Check for another function to avoid using cached result
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors_cleanup in -lsensors" >&5
+$as_echo_n "checking for sensors_cleanup in -lsensors... " >&6; }
+if ${ac_cv_lib_sensors_sensors_cleanup+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsensors  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char sensors_cleanup ();
+int
+main ()
+{
+return sensors_cleanup ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_sensors_sensors_cleanup=yes
+else
+  ac_cv_lib_sensors_sensors_cleanup=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_sensors_sensors_cleanup" >&5
+$as_echo "$ac_cv_lib_sensors_sensors_cleanup" >&6; }
+if test "x$ac_cv_lib_sensors_sensors_cleanup" = xyes; then :
+  LFSENSORS32="-lsensors"
+else
+  HAVE_SENSORS32="n"
+fi
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors 32-bit library" >&5
+$as_echo_n "checking for sensors 32-bit library... " >&6; }
+	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <sensors/sensors.h>
+					  #include <sensors/error.h>
+int
+main ()
+{
+sensors_cleanup();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  SENSORS=yes; HAVE_SENSORS32="y"; DFSENSORS32="-DHAVE_SENSORS32"
+else
+  HAVE_SENSORS32="n"; SENSORS=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
+$as_echo "$SENSORS" >&6; }
+	CFLAGS=$CFLAGS_SAVE
+fi
+
+
 
 
 # Check for 32-bit system libraries

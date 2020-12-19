@@ -23,12 +23,23 @@ INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_BIN = @INSTALL_BIN@
 
+ifndef HAVE_SENSORS
 HAVE_SENSORS = @HAVE_SENSORS@
+endif
 LFSENSORS =
 DFSENSORS =
 ifeq ($(HAVE_SENSORS),y)
 LFSENSORS = @LFSENSORS@
 DFSENSORS = @DFSENSORS@
+endif
+ifndef HAVE_SENSORS32
+HAVE_SENSORS32 = @HAVE_SENSORS32@
+endif
+LFSENSORS32 =
+DFSENSORS32 =
+ifeq ($(HAVE_SENSORS32),y)
+LFSENSORS32 = @LFSENSORS32@
+DFSENSORS32 = @DFSENSORS32@
 endif
 
 HAVE_PCP = @HAVE_PCP@
@@ -74,16 +85,33 @@ DOC_DIR = @docdir@
 endif
 
 NLS_DIR = $(PREFIX)/share/locale
+
+ifndef SYSCONFIG_DIR
 SYSCONFIG_DIR = @SYSCONFIG_DIR@
+endif
+ifndef SYSCONFIG_FILE
 SYSCONFIG_FILE = @SYSCONFIG_FILE@
+endif
 
 # Compiler flags
-CFLAGS = @CFLAGS@ -Wall -Wstrict-prototypes -pipe -O2
+ifndef CFLAGS
+CFLAGS = @CFLAGS@
+endif
+CFLAGS += -Wall -Wstrict-prototypes -pipe -O2
+
+ifndef DFLAGS
 DFLAGS = @DFLAGS@
-LFLAGS = @STRIP@
+endif
 DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
-DFLAGS += $(DFSENSORS)
+DFLAGS += $(DFSENSORS) $(DFSENSORS32)
 DFLAGS += $(DFPCP)
+ifdef TFLAGS
+DFLAGS += $(TFLAGS)
+endif
+
+ifndef LFLAGS
+LFLAGS = @STRIP@
+endif
 
 # Commands
 ifndef MSGFMT
@@ -116,8 +144,14 @@ SYSPARAM = @SYSPARAM@
 ifeq ($(SYSPARAM),y)
 	DFLAGS += -DHAVE_SYS_PARAM_H
 endif
+
+ifndef TGLIB32
 TGLIB32 = @TGLIB32@
+endif
+
+ifndef NLS
 NLS = @NLS@
+endif
 LFLAGS += @LFINTL@
 ifeq ($(NLS),y)
 REQUIRE_NLS = -DUSE_NLS -DPACKAGE=\"$(PACKAGE)\" -DLOCALEDIR=\"$(NLS_DIR)\"
@@ -125,8 +159,13 @@ endif
 ifdef REQUIRE_NLS
 	DFLAGS += $(REQUIRE_NLS)
 endif
+
+ifndef INSTALL_CRON
 INSTALL_CRON = @INSTALL_CRON@
+endif
+ifndef CRON_OWNER
 CRON_OWNER = @CRON_OWNER@
+endif
 
 MAN_GROUP = @MAN_GROUP@
 ifndef IGNORE_FILE_ATTRIBUTES
@@ -318,6 +357,8 @@ cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h
 
 cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
 
+# inisar: Old sar version
+
 tests/ini/sa_common.o: tests/ini/sa_common.c tests/ini/iniversion.h tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/ioconf.h tests/ini/inisysconfig.h
 
 tests/ini/act_sar.o: tests/ini/activity.c tests/ini/sa.h tests/ini/common.h tests/ini/rd_stats.h tests/ini/rd_sensors.h tests/ini/pr_stats.h
@@ -344,40 +385,33 @@ tests/ini/inisar.o: tests/ini/inisar.c tests/ini/sa.h tests/ini/iniversion.h tes
 
 tests/ini/inisar: tests/ini/inisar.o tests/ini/act_sar.o tests/ini/format_sar.o tests/ini/sa_common.o tests/ini/pr_stats.o tests/ini/librdstats_light.a tests/ini/libsyscom.a
 
+# sar32/sadc32: 32-bit versions of sar/sadc
 tests/32bits/sadc32.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
-
-tests/32bits/sadc32: LFLAGS += $(LFSENSORS)
-
-tests/32bits/sadc32: tests/32bits/sadc32.o tests/32bits/act_sadc32.o tests/32bits/sa_wrap32.o tests/32bits/sa_common_light32.o tests/32bits/common_light32.o tests/32bits/systest32.o tests/32bits/librdstats32.a tests/32bits/librdsensors32.a
-	$(CC) -m32 -o $@ $(CFLAGS) $^ $(LFLAGS)
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/sar32.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
-
-tests/32bits/sar32: tests/32bits/sar32.o tests/32bits/act_sar32.o tests/32bits/format_sar32.o tests/32bits/sa_common32.o tests/32bits/pr_stats32.o tests/32bits/librdstats_light32.a tests/32bits/libsyscom32.a
-	$(CC) -m32 -o $@ $(CFLAGS) $^ $(LFLAGS)
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/act_sadc32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/act_sar32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
 tests/32bits/sa_wrap32.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/sa_common_light32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/sa_common32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/common_light32.o: common.c version.h common.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/systest32.o: systest.c systest.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/libsyscom32.a: tests/32bits/common32.o tests/32bits/ioconf32.o tests/32bits/systest32.o
 	$(AR) rvs $@ $?
@@ -392,31 +426,37 @@ tests/32bits/librdsensors32.a: tests/32bits/rd_sensors32.o
 	$(AR) rvs $@ $?
 
 tests/32bits/rd_stats32.o: rd_stats.c common.h rd_stats.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/rd_stats_light32.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/count32.o: count.c common.h rd_stats.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/count_light32.o: count.c common.h rd_stats.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/format_sar32.o: format.c sa.h common.h rd_stats.h rd_sensors.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
 tests/32bits/pr_stats32.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/common32.o: common.c version.h common.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/ioconf32.o: ioconf.c ioconf.h common.h sysconfig.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/rd_sensors32.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
-	$(CC) -m32 -o $@ -c $(CFLAGS) $(DFLAGS) $<
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/sadc32: LFLAGS += $(LFSENSORS32)
+
+tests/32bits/sadc32: tests/32bits/sadc32.o tests/32bits/act_sadc32.o tests/32bits/sa_wrap32.o tests/32bits/sa_common_light32.o tests/32bits/common_light32.o tests/32bits/systest32.o tests/32bits/librdstats32.a tests/32bits/librdsensors32.a
+
+tests/32bits/sar32: tests/32bits/sar32.o tests/32bits/act_sar32.o tests/32bits/format_sar32.o tests/32bits/sa_common32.o tests/32bits/pr_stats32.o tests/32bits/librdstats_light32.a tests/32bits/libsyscom32.a
 
 ifdef REQUIRE_NLS
 locales: $(NLSGMO)
@@ -738,6 +778,10 @@ TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
 testcomp: tests/ini/inisar sa32bit
 
 ifeq ($(TGLIB32),yes)
+sa32bit: DFLAGS += -DARCH32
+
+sa32bit: CFLAGS += -m32
+
 sa32bit: tests/32bits/sadc32 tests/32bits/sar32
 else
 sa32bit:

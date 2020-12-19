@@ -34,7 +34,7 @@
 #define _(string) (string)
 #endif
 
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 #include "sensors/sensors.h"
 #endif
 
@@ -56,7 +56,7 @@
  */
 __nr_t read_fan(struct stats_pwr_fan *st_pwr_fan, __nr_t nr_alloc)
 {
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	__nr_t fan_read = 0;
 	const sensors_chip_name *chip;
 	const sensors_feature *feature;
@@ -118,7 +118,7 @@ __nr_t read_fan(struct stats_pwr_fan *st_pwr_fan, __nr_t nr_alloc)
  */
 __nr_t read_temp(struct stats_pwr_temp *st_pwr_temp, __nr_t nr_alloc)
 {
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	__nr_t temp_read = 0;
 	const sensors_chip_name *chip;
 	const sensors_feature *feature;
@@ -185,7 +185,7 @@ __nr_t read_temp(struct stats_pwr_temp *st_pwr_temp, __nr_t nr_alloc)
  */
 __nr_t read_in(struct stats_pwr_in *st_pwr_in, __nr_t nr_alloc)
 {
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	__nr_t in_read = 0;
 	const sensors_chip_name *chip;
 	const sensors_feature *feature;
@@ -234,7 +234,7 @@ __nr_t read_in(struct stats_pwr_in *st_pwr_in, __nr_t nr_alloc)
 #endif /* HAVE_SENSORS */
 }
 
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 /*
  ***************************************************************************
  * Count the number of sensors of given type on the machine.
@@ -276,7 +276,7 @@ __nr_t get_sensors_nr(sensors_feature_type type) {
  */
 __nr_t get_fan_nr(void)
 {
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	return get_sensors_nr(SENSORS_FEATURE_FAN);
 #else
 	return 0;
@@ -293,12 +293,11 @@ __nr_t get_fan_nr(void)
  */
 __nr_t get_temp_nr(void)
 {
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	return get_sensors_nr(SENSORS_FEATURE_TEMP);
 #else
 	return 0;
 #endif /* HAVE_SENSORS */
-
 }
 
 /*
@@ -311,10 +310,9 @@ __nr_t get_temp_nr(void)
  */
 __nr_t get_in_nr(void)
 {
-#ifdef HAVE_SENSORS
+#if (defined(HAVE_SENSORS) && !defined(ARCH32)) || (defined(ARCH32) && defined(HAVE_SENSORS32))
 	return get_sensors_nr(SENSORS_FEATURE_IN);
 #else
 	return 0;
 #endif /* HAVE_SENSORS */
-
 }
