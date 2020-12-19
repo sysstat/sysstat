@@ -5,8 +5,8 @@ then
 	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo
 elif [ "$1" = "comp" ]
 then
-	make CFLAGS="-D DEBUG -D TEST"
+	make TFLAGS="-DTEST"
 else
 	make distclean
-	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make CFLAGS="-D DEBUG -D TEST" && make simtest CFLAGS="-D DEBUG -D TEST"
+	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make simtest TFLAGS="-DTEST"
 fi
