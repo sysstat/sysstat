@@ -3,23 +3,24 @@
 # This file is distributed under the same license as the sysstat package.
 # João Victor Duarte Martins <jvdm@sdf.lonestar.org>, 2010.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2014-2020.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.4.0\n"
+"Project-Id-Version: sysstat 12.5.1\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2020-07-29 08:16+0200\n"
-"PO-Revision-Date: 2020-07-29 08:25-0300\n"
+"POT-Creation-Date: 2020-11-14 08:23+0100\n"
+"PO-Revision-Date: 2020-11-23 09:05-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge.net>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Virtaal 1.0.0-beta1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 3.38.0\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 
-#: cifsiostat.c:75 mpstat.c:134 iostat.c:88 tapestat.c:104 sar.c:107
+#: cifsiostat.c:75 iostat.c:88 mpstat.c:134 sar.c:107 tapestat.c:104
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Uso: %s [ opções ] [ <intervalo> [ <contagem> ] ]\n"
@@ -46,6 +47,194 @@ msgstr ""
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
 "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
 
+#: common.c:80
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat versão %s\n"
+
+#: count.c:118 ioconf.c:479 rd_stats.c:83 sa_common.c:1767 sadc.c:733
+#: sadc.c:796
+#, c-format
+msgid "Cannot open %s: %s\n"
+msgstr "Não é possível abrir %s: %s\n"
+
+#: count.c:169
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "Não é possível lidar com tantos processadores!\n"
+
+#: iostat.c:91
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"As opções são:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <diretório> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <nome_grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
+"[ <dispositivo> [...] | ALL ] [ --debuginfo ]\n"
+
+#: iostat.c:98
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"As opções são:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <diretório> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <nome_grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
+"[ <dispositivo> [...] | ALL ]\n"
+
+#: iostat.c:2126 sa_common.c:2250
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "Tipo inválido de nome do dispositivo persistente\n"
+
+#: mpstat.c:137
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+msgstr ""
+"As opções são:\n"
+"[ -A ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <lista_nó> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <lista_cpu> | ALL } ]\n"
+
+#: mpstat.c:1736 pidstat.c:2288 sar.c:382
+msgid "Average:"
+msgstr "Média:"
+
+#: pidstat.c:89
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
+msgstr "Uso: %s [ opções ] [ <intervalo> [ <contagem> ] ] [ -e <programa> <args> ]\n"
+
+#: pidstat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+msgstr ""
+"As opções são:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <usuário> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <comando> ] [ -G <nome_processo> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+
+#: pidstat.c:207 sa_common.c:358
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "As atividade requisitadas não estão disponíveis\n"
+
+#: pr_stats.c:2618 pr_stats.c:2625 pr_stats.c:2731 pr_stats.c:2778
+msgid "Summary:"
+msgstr "Sumário:"
+
+#: rd_stats.c:359
+#, c-format
+msgid "Cannot read %s\n"
+msgstr "Não foi possível ler %s\n"
+
+#: sa_common.c:302
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "Arquivo criado por sar/sadc da versão %d.%d.%d do sysstat"
+
+#: sa_common.c:333
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "Arquivo de atividades do sistema inválido: %s\n"
+
+#: sa_common.c:341
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "A versão atual do sysstat não consegue ler o formato deste arquivo (%#x)\n"
+
+#: sa_common.c:1361
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "Erro ao ler o arquivo de atividades do sistema: %s\n"
+
+#: sa_common.c:1371
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "Fim inesperado do arquivo de atividades do sistema\n"
+
+#: sa_common.c:1770
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "Por favor, verifique se a coleta de dados está habilitado\n"
+
+#: sa_common.c:2122
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "Atividades requisitadas não estão disponíveis no arquivo %s\n"
+
+#: sa_conv.c:99
+#, c-format
+msgid "Cannot convert the format of this file\n"
+msgstr "Não foi possível converter o formato deste arquivo\n"
+
+#: sa_conv.c:375
+#, c-format
+msgid ""
+"\n"
+"CPU activity not found in file. Aborting...\n"
+msgstr ""
+"\n"
+"Atividade do CPU não foi encontrada no arquivo. Abortando...\n"
+
+#: sa_conv.c:398
+#, c-format
+msgid ""
+"\n"
+"Invalid data found. Aborting...\n"
+msgstr ""
+"\n"
+"Dados inválidos encontrados. Abortando...\n"
+
+#: sa_conv.c:1871
+#, c-format
+msgid "Statistics:\n"
+msgstr "Estatísticas:\n"
+
+#: sa_conv.c:1972
+#, c-format
+msgid ""
+"\n"
+"File format already up-to-date\n"
+msgstr ""
+"\n"
+"Formato de arquivo já atualizado\n"
+
+#: sa_conv.c:1984
+#, c-format
+msgid "HZ: Using current value: %lu\n"
+msgstr "HZ: Usando valor atual: %lu\n"
+
+#: sa_conv.c:2015
+#, c-format
+msgid "File successfully converted to sysstat format version %s\n"
+msgstr "Arquivo convertido com sucesso para formato do sysstat versão %s\n"
+
 #: sadc.c:98
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
@@ -67,43 +256,37 @@ msgstr ""
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Não é possível escrever dados no arquivo de atividades do sistema: %s\n"
 
-#: sadc.c:733 sadc.c:796 count.c:118 ioconf.c:479 rd_stats.c:83
-#: sa_common.c:1767
-#, c-format
-msgid "Cannot open %s: %s\n"
-msgstr "Não é possível abrir %s: %s\n"
-
-#: sadc.c:1018
+#: sadc.c:1020
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Não é possível inserir dados no final deste arquivo (%s)\n"
 
-#: mpstat.c:137
+#: sadf.c:105
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr "Uso: %s [ opções ] [ <intervalo> [ <contagem> ] ] [ <arquivo_dados> | -[0-9]+ ]\n"
+
+#: sadf.c:108
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
 msgstr ""
 "As opções são:\n"
-"[ -A ] [ -n ] [ -u ] [ -V ]\n"
-"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <lista_nó> | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <lista-cpu> | ALL } ]\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opções> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<lista_disp> ] [ --fs=<lista_fs> ] [ --iface=<lista_iface> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <opções_sar> ]\n"
 
-#: mpstat.c:1736 pidstat.c:2288 sar.c:382
-msgid "Average:"
-msgstr "Média:"
-
-#: count.c:169
+#: sadf.c:1860
 #, c-format
-msgid "Cannot handle so many processors!\n"
-msgstr "Não é possível lidar com tantos processadores!\n"
-
-#: common.c:80
-#, c-format
-msgid "sysstat version %s\n"
-msgstr "sysstat versão %s\n"
+msgid "PCP support not compiled in\n"
+msgstr "Suporte a PCP não compilado\n"
 
 #: sadf_misc.c:1215
 #, c-format
@@ -176,155 +359,6 @@ msgstr "Atividade desconhecida"
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Formato desconhecido]"
-
-#: sadf.c:105
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
-msgstr "Uso: %s [ opções ] [ <intervalo> [ <contagem> ] ] [ <arquivo_dados> | -[0-9]+ ]\n"
-
-#: sadf.c:108
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <sar_options> ]\n"
-msgstr ""
-"As opções são:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
-"[ -O <opções> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<lista_disp> ] [ --fs=<lista_fs> ] [ --iface=<lista_iface> ]\n"
-"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
-"[ -- <opções_sar> ]\n"
-
-#: sadf.c:1860
-#, c-format
-msgid "PCP support not compiled in\n"
-msgstr "Suporte a PCP não compilado\n"
-
-#: pr_stats.c:2618 pr_stats.c:2625 pr_stats.c:2730 pr_stats.c:2775
-msgid "Summary:"
-msgstr "Sumário:"
-
-#: rd_stats.c:359
-#, c-format
-msgid "Cannot read %s\n"
-msgstr "Não foi possível ler %s\n"
-
-#: sa_common.c:302
-#, c-format
-msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Arquivo criado por sar/sadc da versão %d.%d.%d do sysstat"
-
-#: sa_common.c:333
-#, c-format
-msgid "Invalid system activity file: %s\n"
-msgstr "Arquivo de atividades do sistema inválido: %s\n"
-
-#: sa_common.c:341
-#, c-format
-msgid "Current sysstat version cannot read the format of this file (%#x)\n"
-msgstr "A versão atual do sysstat não consegue ler o formato deste arquivo (%#x)\n"
-
-#: sa_common.c:358 pidstat.c:207
-#, c-format
-msgid "Requested activities not available\n"
-msgstr "As atividade requisitadas não estão disponíveis\n"
-
-#: sa_common.c:1361
-#, c-format
-msgid "Error while reading system activity file: %s\n"
-msgstr "Erro ao ler o arquivo de atividades do sistema: %s\n"
-
-#: sa_common.c:1371
-#, c-format
-msgid "End of system activity file unexpected\n"
-msgstr "Fim inesperado do arquivo de atividades do sistema\n"
-
-#: sa_common.c:1770
-#, c-format
-msgid "Please check if data collecting is enabled\n"
-msgstr "Por favor, verifique se a coleta de dados está habilitado\n"
-
-#: sa_common.c:2122
-#, c-format
-msgid "Requested activities not available in file %s\n"
-msgstr "Atividades requisitadas não estão disponíveis no arquivo %s\n"
-
-#: sa_common.c:2250 iostat.c:2129
-#, c-format
-msgid "Invalid type of persistent device name\n"
-msgstr "Tipo inválido de nome do dispositivo persistente\n"
-
-#: pidstat.c:89
-#, c-format
-msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
-msgstr "Uso: %s [ opções ] [ <intervalo> [ <contagem> ] ] [ -e <programa> <args> ]\n"
-
-#: pidstat.c:92
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
-msgstr ""
-"As opções são:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <usuário> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <comando> ] [ -G <nome_processo> ]\n"
-"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
-
-#: iostat.c:91
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ] [ --debuginfo ]\n"
-msgstr ""
-"As opções são:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <diretório> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ [ -H ] -g <nome_grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
-"[ <dispositivo> [...] | ALL ] [ --debuginfo ]\n"
-
-#: iostat.c:98
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-"As opções são:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <diretório> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ [ -H ] -g <nome_grupo> ] [ -p [ <dispositivo> [,...] | ALL ] ]\n"
-"[ <dispositivo> [...] | ALL ]\n"
-
-#: tapestat.c:106
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-msgstr ""
-"As opções são:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
-
-#: tapestat.c:272
-#, c-format
-msgid "No tape drives with statistics found\n"
-msgstr "Nenhuma unidade de fita com estatísticas encontrada\n"
 
 #: sar.c:122
 #, c-format
@@ -575,52 +609,19 @@ msgstr "Não está sendo lido de um arquivo de atividade do sistema (use a opç�
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Não é possível encontrar o coletor de dados (%s)\n"
 
-#: sa_conv.c:99
-#, c-format
-msgid "Cannot convert the format of this file\n"
-msgstr "Não foi possível converter o formato deste arquivo\n"
-
-#: sa_conv.c:375
+#: tapestat.c:106
 #, c-format
 msgid ""
-"\n"
-"CPU activity not found in file. Aborting...\n"
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
-"\n"
-"Atividade do CPU não foi encontrada no arquivo. Abortando...\n"
+"As opções são:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: sa_conv.c:398
+#: tapestat.c:272
 #, c-format
-msgid ""
-"\n"
-"Invalid data found. Aborting...\n"
-msgstr ""
-"\n"
-"Dados inválidos encontrados. Abortando...\n"
-
-#: sa_conv.c:1871
-#, c-format
-msgid "Statistics:\n"
-msgstr "Estatísticas:\n"
-
-#: sa_conv.c:1972
-#, c-format
-msgid ""
-"\n"
-"File format already up-to-date\n"
-msgstr ""
-"\n"
-"Formato de arquivo já atualizado\n"
-
-#: sa_conv.c:1984
-#, c-format
-msgid "HZ: Using current value: %lu\n"
-msgstr "HZ: Usando valor atual: %lu\n"
-
-#: sa_conv.c:2015
-#, c-format
-msgid "File successfully converted to sysstat format version %s\n"
-msgstr "Arquivo convertido com sucesso para formato do sysstat versão %s\n"
+msgid "No tape drives with statistics found\n"
+msgstr "Nenhuma unidade de fita com estatísticas encontrada\n"
 
 #~ msgid "\t-q\tQueue length and load average statistics [A_QUEUE]\n"
 #~ msgstr "\t-q\tTamanho da fila e estatísticas da média de carga [A_QUEUE]\n"
