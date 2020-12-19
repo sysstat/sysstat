@@ -1,0 +1,21 @@
+rm -f tests/data1.tmp
+
+rm -f tests/root
+ln -s root6 tests/root
+TZ=GMT ./sadc --unix_time=1555593609 tests/data1.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root7 tests/root
+TZ=GMT ./sadc --unix_time=1555593619 tests/data1.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root1 tests/root
+# LINUX RESTART
+TZ=GMT ./sadc --unix_time=1555593623 tests/data1.tmp >/dev/null
+
+TZ=GMT ./sadc --unix_time=1555593629 tests/data1.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593639 tests/data1.tmp 1 1 >/dev/null
+

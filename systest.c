@@ -144,7 +144,7 @@ char *get_env_value(const char *c)
 void next_time_step(void)
 {
 	int root_nr = 1;
-	char rootf[64], testf[64];
+	char rootf[64], testf[128];
 	char *resolved_name;
 
 	__unix_time += interval;
@@ -160,8 +160,11 @@ void next_time_step(void)
 		exit(1);
 	}
 
-	sprintf(rootf, "%s%d", ROOTFILE, ++root_nr);
-	sprintf(testf, "%s/%s", TESTDIR, rootf);
+	snprintf(rootf, sizeof(rootf), "%s%d", ROOTFILE, ++root_nr);
+	rootf[sizeof(rootf) - 1] = '\0';
+	snprintf(testf, sizeof(testf), "%s/%s", TESTDIR, rootf);
+	testf[sizeof(testf) - 1] = '\0';
+
 	if (access(testf, F_OK) < 0) {
 		if (errno == ENOENT) {
 			/* No more kernel directories: Simulate a Ctrl/C */

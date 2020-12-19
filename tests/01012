@@ -1,1 +1,0 @@
-LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp && diff -u tests/expected2.sar-qALL tests/out2.sar-qALL.tmp
