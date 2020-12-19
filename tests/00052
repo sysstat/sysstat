@@ -1,3 +1,3 @@
 rm -f tests/root
 ln -s root1 tests/root
-TZ=GMT ./sadc --unix_time=1555594649 tests/data.tmp
+TZ=GMT ./sadc --unix_time=1555594649 tests/data-new.tmp

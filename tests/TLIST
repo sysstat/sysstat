@@ -11,21 +11,49 @@ NOTES:
 00016	./tapestat -V >/dev/null
 00017	./cifsiostat -V >/dev/null
 
-=====	Creating data.tmp [.....RC]
-00100	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data.tmp 1 1 >/dev/null
-00110	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data.tmp
-00120	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
+=====	Files creation
+-----	Create data-new.tmp [.....RC]
+00050	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data-new.tmp 1 1 >/dev/null
+00052	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data-new.tmp
+00054	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data-new.tmp
 
-=====	sar: Reading data.tmp
-00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out.sar-u.tmp
-00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data.tmp > tests/out.sar-all.tmp
+-----	Create data.tmp by appending data to data-new.tmp [.....RCR..]
+00055	TZ=GMT ./sadc --unix_time=1555595649 tests/data.tmp
+00057	2 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
+
+-----	Create data0.tmp [R] with no data inside
+00060	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
+
+-----	Create data0-1.tmp by appending data to data0.tmp [RR.]
+00062	2 x TZ=GMT ./sadc --unix_time=xxxxxxxxx [ -S XALL ] tests/data0.tmp [ 1 1 ] >/dev/null
+
+-----	Create data1.tmp [..R..] starting at root6
+00065	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
+
+-----	Create data2.tmp [..R..] starting at root1
+00068	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data2.tmp 1 1 >/dev/null
+
+-----	Create datafile data-ssr.tmp [..] containing all statistics, including sensors ones
+00070	2 x TZ=GMT ./sadc --unix_time=1555593609 -S XALL tests/data-ssr.tmp 1 1 >/dev/null
+
+-----	Create data-cd.tmp [.....] spanning two consecutive days
+00072	5 x TZ=GMT ./sadc --unix-time=xxxxxxxx -S A_NULL,A_CPU,A_PCSW tests/data-cd 1 1
+
+-----	Creating datax.tmp [RC....R..CR.RR..CC.]
+00074	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx tests/datax.tmp (...)
+
+-----	Creating a 32-bit datafile: tests/data32.tmp [RC..]
+00080	4 x TZ=GMT tests/32bits/sadc32 -unix_time=xxxxxxxxx -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data32.tmp [...]
+
+-----	Creating 32-bit datafile data32-ssr.tmp [..] containing all statistics, including sensors ones
+00090	2 x TZ=GMT tests/32bits/sadc32 --unix_time=1555593609 -S XALL tests/data32-ssr.tmp 1 1 >/dev/null
+
+=====	sar: Reading data-new.tmp
+00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data-new.tmp > tests/out.sar-u.tmp
+00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp
 	[Don't take into account sensors statistics which are not read from test root directory]
-00132	LC_ALL=C TZ=GMT ./sar -A -I 2-5 -P 3 -f tests/data.tmp > tests/out3.sar-all.tmp
+00132	LC_ALL=C TZ=GMT ./sar -A -I 2-5 -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp
 	[Check that -A doesn't necessarily imply -I ALL -P ALL]
-
-=====	Appending data to data.tmp [.....RCR..]
-00140	TZ=GMT ./sadc --unix_time=1555595649 tests/data.tmp
-00150	2 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
 
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
@@ -110,15 +138,15 @@ NOTES:
 
 =====	Reading datafile from another architecture
 00700	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp
-00710	4 x TZ=GMT tests/32bits/sadc32 -unix_time=xxxxxxxxx -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data32.tmp [...]
-	[Creating a 32-bit datafile: tests/data32.tmp [RC..]]
-00712	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data32.tmp > tests/out.sar32-A.tmp
+00710	LC_ALL=C TZ=GMT ./sar -C -A -f tests/data32.tmp > tests/out.sar32-A.tmp
 	[Read 32-bit datafile tests/data32.tmp using 64-bit sar. Assuming current arch is 64 bits]
 00715	LC_ALL=C TZ=GMT tests/32bits/sar32 -C -A -f tests/data.tmp 1 2 > tests/out2.sar32-A.tmp
 	[Read 64-bit datafile tests/data.tmp using 32-bit sar]
+00720	LC_ALL=C TZ=GMT ./sar -w -f tests/data32-ssr.tmp > tests/out.sar32-ssr.tmp
+00725	LC_ALL=C TZ=GMT ./sar -A -f tests/data32-ssr.tmp >/dev/null
 
 =====	Reading datafile with non printable chrs in comment (created using hexedit)
-00720	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
+00740	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
 
 =====	Reading data.tmp using an old sysstat version
 00750	LC_ALL=C TZ=GMT ./tests/ini/inisar -C -A -f tests/data.tmp > tests/out.data-ini.tmp
@@ -164,13 +192,8 @@ NOTES:
 00970	LC_ALL=C TZ=GMT ./sar -q ALL 1 1 > tests/out1.sar-qALL.tmp
 00974	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Requested activities not available" >/dev/null
 00976	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Inconsistent input data" >/dev/null && exit 1 || exit 0
-00980	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
-00982	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-q.tmp
-
-=====	Creating data0.tmp [R] and data1.tmp [..R..] with no data inside
-01000	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
-01010	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
-01012	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
+00980	LC_ALL=C TZ=GMT ./sar -f tests/data2.tmp -q ALL > tests/out2.sar-q.tmp
+01010	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
 01020	LC_ALL=C TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
 
 =====	sar/sadf: Reading data0.tmp
@@ -182,13 +205,11 @@ NOTES:
 01145	LC_ALL=C ./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
 01150	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
 
-=====	Append data to data0.tmp [RR.] then read its contents
-01200	2 x TZ=GMT ./sadc --unix_time=xxxxxxxxx [ -S XALL ] tests/data0.tmp [ 1 1 ] >/dev/null
-01210	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out01.sar-A.tmp
-01220	./sadf -d tests/data0.tmp -- -A > tests/out01.sadf-d.tmp
-01230	./sadf -j tests/data0.tmp -- -A | $VER_JSON >/dev/null
-01240	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out01.sadf-g.tmp
-01250	LC_ALL=C ./sadf -H tests/data0.tmp > tests/out01.sadf-H.tmp
+01210	LC_ALL=C TZ=GMT ./sar -A -f tests/data0-1.tmp > tests/out01.sar-A.tmp
+01220	./sadf -d tests/data0-1.tmp -- -A > tests/out01.sadf-d.tmp
+01230	./sadf -j tests/data0-1.tmp -- -A | $VER_JSON >/dev/null
+01240	LC_ALL=C ./sadf -g tests/data0-1.tmp -- -A > tests/out01.sadf-g.tmp
+01250	LC_ALL=C ./sadf -H tests/data0-1.tmp > tests/out01.sadf-H.tmp
 
 =====	Playing with standard activity datafiles
 01300	echo foo >tests/sa01 ; ./sadc 1 1 - 2>&1 | grep "Invalid system activity" >/dev/null
@@ -237,6 +258,10 @@ NOTES:
 01550	LC_ALL=C TZ=GMT ./sadf -x tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-x.tmp
 01557	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
 01559	cat tests/out.data-11.6.5-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null;
+01575	LC_ALL=C TZ=GMT ./sar -w -f tests/data-ssr.tmp > tests/out.sar-ssr.tmp
+01577	LC_ALL=C TZ=GMT ./sar -A -f tests/data-ssr.tmp >/dev/null
+01580	LC_ALL=C TZ=GMT tests/32bits/sar32 -w -f tests/data-ssr.tmp > tests/out2.sar-ssr.tmp
+01585	LC_ALL=C TZ=GMT tests/32bits/sar32 -A -f tests/data-ssr.tmp >/dev/null
 
 =====	Specific tests for A_PWR_FREQ statistics
 01600	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PWR_FREQ tests/data-wghfreq.tmp 1 3 >/dev/null
@@ -257,14 +282,10 @@ NOTES:
 	[CPU#8 - Last in list - online then offline]
 01720	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8off.tmp
 	[CPU#8 - Last in list - already offline]
-01750	5 x TZ=GMT ./sadc --unix-time=xxxxxxxx -S A_NULL,A_CPU,A_PCSW tests/data-cd 1 1
-	[Create data-cd.tmp [.....] spanning two consecutive days]
 01755	LC_ALL=C TZ=GMT ./sar -uw -f tests/data-cd -s 23:59:58 -e 00:00:00 > tests/out.sar-cd.tmp
 	[Testing options -s/-e on a file contents spanning two consecutive days]
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
 	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
-01800	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx tests/datax.tmp (...)
-	[Creating datax.tmp [RC....R..CR.RR..CC.] ]
 01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 
 =====	iostat tests (basic output)

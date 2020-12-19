@@ -1,0 +1,7 @@
+. tests/variables
+if [ "${TGLIB32}" = "yes" ]; then
+# Don't check output as sensors stats are system dependent
+	LC_ALL=C TZ=GMT ./sar -A -f tests/data32-ssr.tmp >/dev/null
+else
+	echo Skipped
+fi

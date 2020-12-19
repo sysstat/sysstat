@@ -1,1 +1,3 @@
+rm -f tests/root
+ln -s root7 tests/root
 LC_ALL=C TZ=GMT ./sar -A -f tests/data.tmp > tests/out2.sar-all.tmp && diff -u tests/expected2.sar-all tests/out2.sar-all.tmp

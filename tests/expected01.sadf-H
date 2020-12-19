@@ -1,4 +1,4 @@
-System activity data file: tests/data0.tmp (0x2175)
+System activity data file: tests/data0-1.tmp (0x2175)
 File created by sar/sadc from sysstat version 99.9.9
 Genuine sa datafile: yes (0)
 Host: Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)

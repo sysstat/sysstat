@@ -1,0 +1,14 @@
+. tests/variables
+if [ "${TGLIB32}" = "yes" ]; then
+	rm -f tests/data32-ssr.tmp
+
+	rm -f tests/root
+	ln -s root1 tests/root
+	TZ=GMT tests/32bits/sadc32 --unix_time=1555593609 -S XALL tests/data32-ssr.tmp 1 1 >/dev/null
+
+	rm -f tests/root
+	ln -s root2 tests/root
+	TZ=GMT tests/32bits/sadc32 --unix_time=1555593619 -S XALL tests/data32-ssr.tmp 1 1 >/dev/null
+else
+	echo Skipped
+fi

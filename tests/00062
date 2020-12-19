@@ -1,7 +1,9 @@
+rm -f tests/data0-1.tmp
+cp -f tests/data0.tmp tests/data0-1.tmp
 rm -f tests/root
 ln -s root6 tests/root
-TZ=GMT ./sadc --unix_time=1555593630 tests/data0.tmp >/dev/null
+TZ=GMT ./sadc --unix_time=1555593630 tests/data0-1.tmp >/dev/null
 
 rm -f tests/root
 ln -s root7 tests/root
-TZ=GMT ./sadc --unix_time=1555593651 -S XALL tests/data0.tmp 1 1 >/dev/null
+TZ=GMT ./sadc --unix_time=1555593651 -S XALL tests/data0-1.tmp 1 1 >/dev/null

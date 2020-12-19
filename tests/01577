@@ -1,0 +1,2 @@
+# Don't check output as sensors stats are system dependent
+LC_ALL=C TZ=GMT ./sar -A -f tests/data-ssr.tmp >/dev/null

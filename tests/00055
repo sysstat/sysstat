@@ -1,4 +1,5 @@
+rm -f tests/data.tmp
+cp -f tests/data-new.tmp tests/data.tmp
 rm -f tests/root
 ln -s root6 tests/root
-
 TZ=GMT ./sadc --unix_time=1555595649 tests/data.tmp

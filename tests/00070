@@ -1,0 +1,9 @@
+rm -f tests/data-ssr.tmp
+
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593609 -S XALL tests/data-ssr.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593619 -S XALL tests/data-ssr.tmp 1 1 >/dev/null

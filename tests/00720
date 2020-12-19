@@ -1,0 +1,6 @@
+. tests/variables
+if [ "${TGLIB32}" = "yes" ]; then
+	LC_ALL=C TZ=GMT ./sar -w -f tests/data32-ssr.tmp > tests/out.sar32-ssr.tmp && diff -u tests/expected.sar32-ssr tests/out.sar32-ssr.tmp
+else
+	echo Skipped
+fi

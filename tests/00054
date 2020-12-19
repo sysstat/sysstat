@@ -1,1 +1,1 @@
-TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data.tmp
+TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data-new.tmp
