@@ -1,5 +1,18 @@
 Changes:
 
+2020/12/19: Version 12.5.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Aleksei Nikiforov]: Fix alignment and structure size for 32-bit
+	  systems [12.4.2].
+	* Fix metric's name in sar -y output: txmtin -> xmtin [12.4.2].
+	* FAQ: Add links to markdown file [12.4.2].
+	* [Tim Gates]: sar.c: Fix typo in comment [12.4.2].
+	* simtest: Create a 32 bit version of sar and sadc. This is to make
+	  sure that datafiles created by 32 and 64 bit versions of sadc can
+	  be used on both architectures.
+	* simtest: Update non regression tests. Also add new tests.
+	* systest.c: Fix GCC warnings.
+	* NLS translations updated [12.4.2].
+
 2020/11/21: Version 12.5.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadf: Make option -j work with filesystems statistics.
 	* sa1: Add "--rotate" option to make it easier to handle file rotation.
@@ -22,7 +35,7 @@ Changes:
 	* Add a sponsor button to GitHub page.
 	* systest: Small fix for array index value.
 	* Makefile: Rename object files used by sadc.
-	* Add new non regression tests and updated some existing ones.
+	* Add new non regression tests and update some existing ones.
 	* Simplify/merge non regression tests.
 	* NLS translations updated.
 
