@@ -1,5 +1,13 @@
 Changes:
 
+2020/12/19: Version 12.4.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Aleksei Nikiforov]: Fix alignment and structure size for 32-bit
+	  systems.
+	* Fix metric's name in sar -y output: txmtin -> xmtin.
+	* FAQ: Add links to markdown file.
+	* [Tim Gates]: sar.c: Fix typo in comment.
+	* NLS updated.
+
 2020/11/21: Version 12.4.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Petr Pavlu]: Workaround for iowait being decremented.
 	* [SacValleyTech]: Make sure setbuf() is the first operation
