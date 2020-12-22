@@ -435,7 +435,7 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		int use_tm_end, int reset, unsigned int act_id, int reset_cd)
 {
-	int i, prev_hour;
+	int i, prev_hour, rc = 0;
 	unsigned long long itv;
 	static int cross_day = 0;
 
@@ -516,10 +516,11 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
 			/* Display current activity statistics */
 			(*act[i]->f_print)(act[i], !curr, curr, itv);
+			rc = 1;
 		}
 	}
 
-	return 1;
+	return rc;
 }
 
 /*
@@ -702,7 +703,6 @@ void read_sadc_stat_bunch(int curr)
 			if (act[p]->nr[curr] > act[p]->nr_allocated) {
 				reallocate_all_buffers(act[p], act[p]->nr[curr]);
 			}
-
 
 			/*
 			 * For persistent activities, we must make sure that no statistics
