@@ -1258,6 +1258,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<usb-devices>
+						<usb bus_number="1" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
+						<usb bus_number="3" idvendor="174c" idprod="55aa" maxpower="0" manufact="ASMT" product="ASM1153"/>
+					</usb-devices>
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
@@ -2532,6 +2536,12 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<usb-devices>
+						<usb bus_number="1" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
+						<usb bus_number="3" idvendor="174c" idprod="55aa" maxpower="0" manufact="ASMT" product="ASM1153"/>
+						<usb bus_number="3" idvendor="5e3" idprod="608" maxpower="200" manufact="" product="USB2.0 Hub"/>
+						<usb bus_number="3" idvendor="4f2" idprod="b62a" maxpower="1000" manufact="Chicony Electronics C" product="HP Webcam"/>
+					</usb-devices>
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>

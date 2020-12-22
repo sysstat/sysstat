@@ -2473,11 +2473,11 @@ __nr_t read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, __nr_t nr_alloc)
 	__nr_t usb_read = 0;
 
 	/* Open relevant /sys directory */
-	if ((dir = opendir(SYSFS_USBDEV)) == NULL)
+	if ((dir = __opendir(SYSFS_USBDEV)) == NULL)
 		return 0;
 
 	/* Get current file entry */
-	while ((drd = readdir(dir)) != NULL) {
+	while ((drd = __readdir(dir)) != NULL) {
 
 		if (isdigit(drd->d_name[0]) && !strchr(drd->d_name, ':')) {
 
@@ -2493,7 +2493,7 @@ __nr_t read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, __nr_t nr_alloc)
 	}
 
 	/* Close directory */
-	closedir(dir);
+	__closedir(dir);
 	return usb_read;
 }
 

@@ -1200,6 +1200,10 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"usb-devices": [
+							{"bus_number": 1, "idvendor": "3f0", "idprod": "862", "maxpower": 196, "manufact": "HP", "product": "HP Wireless Keyboard Mouse Kit"},
+							{"bus_number": 3, "idvendor": "174c", "idprod": "55aa", "maxpower": 0, "manufact": "ASMT", "product": "ASM1153"}
 						]
 					},
 					"filesystems": [
@@ -2422,6 +2426,12 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"usb-devices": [
+							{"bus_number": 1, "idvendor": "3f0", "idprod": "862", "maxpower": 196, "manufact": "HP", "product": "HP Wireless Keyboard Mouse Kit"},
+							{"bus_number": 3, "idvendor": "174c", "idprod": "55aa", "maxpower": 0, "manufact": "ASMT", "product": "ASM1153"},
+							{"bus_number": 3, "idvendor": "5e3", "idprod": "608", "maxpower": 200, "manufact": "", "product": "USB2.0 Hub"},
+							{"bus_number": 3, "idvendor": "4f2", "idprod": "b62a", "maxpower": 1000, "manufact": "Chicony Electronics C", "product": "HP Webcam"}
 						]
 					},
 					"filesystems": [

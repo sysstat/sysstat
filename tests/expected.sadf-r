@@ -2592,6 +2592,21 @@
 13:20:49 UTC; CPU; 7; MHz; 349756;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
+# name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
+# uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
+# name; A_PWR_USB; nr_curr; 2; nr_alloc; 4; nr_ini; 2
+13:20:29 UTC; manufact; "HP"; product; "HP Wireless Keyboard Mouse Kit"; BUS; 1; idvendor; 3f0; idprod; 862; maxpower; 98;
+13:20:29 UTC; manufact; "ASMT"; product; "ASM1153"; BUS; 3; idvendor; 174c; idprod; 55aa; maxpower; 0;
+# uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
+# name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
+# uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
+# name; A_PWR_USB; nr_curr; 4; nr_alloc; 4; nr_ini; 2
+13:20:49 UTC; manufact; "HP"; product; "HP Wireless Keyboard Mouse Kit"; BUS; 1; idvendor; 3f0; idprod; 862; maxpower; 98;
+13:20:49 UTC; manufact; "ASMT"; product; "ASM1153"; BUS; 3; idvendor; 174c; idprod; 55aa; maxpower; 0;
+13:20:49 UTC; manufact; ""; product; "USB2.0 Hub"; BUS; 3; idvendor; 5e3; idprod; 608; maxpower; 100;
+13:20:49 UTC; manufact; "Chicony Electronics C"; product; "HP Webcam"; BUS; 3; idvendor; 4f2; idprod; b62a; maxpower; 500;
+# uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
+# uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_FS; nr_curr; 4; nr_alloc; 8; nr_ini; 4
 13:20:19 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 739427840; f_blocks; 891291136; f_bavail; 722675712; Ifree; 6008414; f_files; 6111232;
 13:20:19 UTC; FILESYSTEM; "/dev/sda7"; f_bfree; 2616732672; f_blocks; 3502345216; f_bavail; 1871315456; Ifree; 19051710; f_files; 19202048;
@@ -3315,6 +3330,8 @@
 13:54:35 UTC; CPU; 7; MHz; 349756;
 13:54:35 UTC; CPU; 8; MHz; 349756;
 13:54:35 UTC; CPU; 9; MHz; 349756;
+# uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
+# name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_FS; nr_curr; 4; nr_alloc; 8; nr_ini; 4
 13:54:35 UTC; FILESYSTEM; "/dev/sda9"; f_bfree; 739427840; f_blocks; 891291136; f_bavail; 722675712; Ifree; 6008414; f_files; 6111232;

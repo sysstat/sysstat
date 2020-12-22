@@ -2926,6 +2926,18 @@ Average:          5   3493.55
 Average:          6   3492.22
 Average:          7   3497.56
 
+13:20:09        BUS  idvendor    idprod  maxpower manufact                product
+13:20:29          1       3f0       862       196 HP                      HP Wireless Keyboard Mouse Kit
+13:20:29          3      174c      55aa         0 ASMT                    ASM1153
+13:20:49          1       3f0       862       196 HP                      HP Wireless Keyboard Mouse Kit
+13:20:49          3      174c      55aa         0 ASMT                    ASM1153
+13:20:49          3       5e3       608       200                         USB2.0 Hub
+13:20:49          3       4f2      b62a      1000 Chicony Electronics C   HP Webcam
+Summary:          1       3f0       862       196 HP                      HP Wireless Keyboard Mouse Kit
+Summary:          3      174c      55aa         0 ASMT                    ASM1153
+Summary:          3       5e3       608       200                         USB2.0 Hub
+Summary:          3       4f2      b62a      1000 Chicony Electronics C   HP Webcam
+
 13:20:09     MBfsfree  MBfsused   %fsused  %ufsused     Ifree     Iused    %Iused FILESYSTEM
 13:20:19       705.2M    144.8M     17.0%     18.9%   6008414    102818      1.7% /dev/sda9
 13:20:19         2.4G    844.6M     25.3%     46.6%  19051710    150338      0.8% /dev/sda7

@@ -2,6 +2,7 @@
 /proc/diskstats
 dm-2 virtual device present
 
+Statistics available for some USB devices
 tape statistics available
 CIFS SMB1 statistics available
 
@@ -15,6 +16,7 @@ PID:
 /proc/stat:
 CPU#8: offline
 
+No USB devices
 tape statistics available
 CIFS SMB1 statistics available. New share added.
 
@@ -46,6 +48,7 @@ enp6s0: unregistered then registered again
 sdf,sdg: registered
 sdh: autofs, registered
 
+Statistics available for some USB devices
 CIFS SMB1 statistics available
 
 PID:
