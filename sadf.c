@@ -717,7 +717,8 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			continue;
 
 		if ((TEST_MARKUP(fmt[f_position]->options) && CLOSE_MARKUP(act[i]->options)) ||
-		    (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0))) {
+		    (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) ||
+		    (format == F_RAW_OUTPUT)) {
 
 			if (format == F_JSON_OUTPUT) {
 				/* JSON output */
@@ -756,7 +757,9 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 					       act[i]->nr[curr], act[i]->nr_allocated, act[i]->nr_ini);
 				}
 
-				(*act[i]->f_raw_print)(act[i], pre, curr);
+				if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
+					(*act[i]->f_raw_print)(act[i], pre, curr);
+				}
 			}
 
 			else if (format == F_PCP_OUTPUT) {
