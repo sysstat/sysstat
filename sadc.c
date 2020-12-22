@@ -294,7 +294,7 @@ void reset_stats(void)
 	int i;
 
         for (i = 0; i < NR_ACT; i++) {
-		if ((act[i]->nr > 0) && act[i]->_buf0) {
+		if ((act[i]->_nr0 > 0) && act[i]->_buf0) {
 			memset(act[i]->_buf0, 0,
 			       (size_t) act[i]->msize * (size_t) act[i]->nr_allocated * (size_t) act[i]->nr2);
 		}
