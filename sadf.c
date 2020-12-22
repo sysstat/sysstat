@@ -717,13 +717,13 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			continue;
 
 		if ((TEST_MARKUP(fmt[f_position]->options) && CLOSE_MARKUP(act[i]->options)) ||
-		    (IS_SELECTED(act[i]->options) && (act[i]->nr > 0))) {
+		    (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0))) {
 
 			if (format == F_JSON_OUTPUT) {
 				/* JSON output */
 				int *tab = (int *) parm;
 
-				if (IS_SELECTED(act[i]->options) && (act[i]->nr > 0)) {
+				if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
 
 					if (*fmt[f_position]->f_timestamp) {
 						(*fmt[f_position]->f_timestamp)(tab, F_MAIN, cur_date, cur_time,
