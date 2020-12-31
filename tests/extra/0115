@@ -1,0 +1,7 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+#	Don't check resulting output as it depends on pmdumplog command.
+	LC_ALL=C pmdumplog -a tests/extra/pcpar-ssr > tests/extra/out.pcpar-ssr.tmp
+else
+	echo Skipped
+fi

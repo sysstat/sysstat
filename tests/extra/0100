@@ -1,0 +1,6 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" -a -f tests/pcpar.meta ]; then
+	LC_ALL=C pmdumplog -a tests/pcpar | grep -v pmlogger > tests/extra/out.pcpar.tmp && diff -u tests/extra/expected.pcpar tests/extra/out.pcpar.tmp
+else
+	echo Skipped
+fi

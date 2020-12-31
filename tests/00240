@@ -1,5 +1,5 @@
-rm -f tests/sa[012]*
-rm -f tests/sa[012]*
+rm -f tests/sa[0123]*
+rm -f tests/sa[0123]*
 
 rm -f tests/root
 ln -s root1 tests/root

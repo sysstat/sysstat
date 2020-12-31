@@ -12,40 +12,40 @@ NOTES:
 00017	./cifsiostat -V >/dev/null
 
 =====	Files creation
------	Create data-new.tmp [.....RC]
+-----	Create data-new.tmp [.....RC / 12345]
 00050	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data-new.tmp 1 1 >/dev/null
 00052	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data-new.tmp
 00054	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data-new.tmp
 
------	Create data.tmp by appending data to data-new.tmp [.....RCR..]
-00055	TZ=GMT ./sadc --unix_time=1555595649 tests/data.tmp
+-----	Create data.tmp by appending data to data-new.tmp [.....RCR.. / 12345667]
+00055	TZ=GMT ./sadc --unix_time=1555595649 [-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ] tests/data.tmp
 00057	2 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
 
------	Create data0.tmp [R] with no data inside
+-----	Create data0.tmp [R / 1] with no data inside
 00060	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null
 
------	Create data0-1.tmp by appending data to data0.tmp [RR.]
-00062	2 x TZ=GMT ./sadc --unix_time=xxxxxxxxx [ -S XALL ] tests/data0.tmp [ 1 1 ] >/dev/null
+-----	Create data0-1.tmp by appending data to data0.tmp [RR. / 167]
+00062	2 x TZ=GMT ./sadc --unix_time=xxxxxxxxx [-S A_NULL,A_PCSW] tests/data0.tmp [ 1 1 ] >/dev/null
 
------	Create data1.tmp [..R..] starting at root6
+-----	Create data1.tmp [..R.. / 67112] starting at root6
 00065	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
 
------	Create data2.tmp [..R..] starting at root1
+-----	Create data2.tmp [..R.. / 12267] starting at root1
 00068	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data2.tmp 1 1 >/dev/null
 
------	Create datafile data-ssr.tmp [..] containing all statistics, including sensors ones
+-----	Create datafile data-ssr.tmp [.. / 12] containing all statistics, including sensors ones
 00070	2 x TZ=GMT ./sadc --unix_time=1555593609 -S XALL tests/data-ssr.tmp 1 1 >/dev/null
 
------	Create data-cd.tmp [.....] spanning two consecutive days
+-----	Create data-cd.tmp [..... / 12345] spanning two consecutive days
 00072	5 x TZ=GMT ./sadc --unix-time=xxxxxxxx -S A_NULL,A_CPU,A_PCSW tests/data-cd 1 1
 
------	Creating datax.tmp [RC....R..CR.RR..CC.]
-00074	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx tests/datax.tmp (...)
+-----	Creating datax.tmp [RC....R..CR.RR..CC. / 1112341122111112223]
+00074	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx [-S A_NULL,A_CPU,A_IRQ,A_NET_DEV,A_FS,A_PCSW] tests/datax.tmp (...)
 
------	Creating a 32-bit datafile: tests/data32.tmp [RC..]
+-----	Creating a 32-bit datafile: tests/data32.tmp [RC.. / 1112]
 00080	4 x TZ=GMT tests/32bits/sadc32 -unix_time=xxxxxxxxx -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data32.tmp [...]
 
------	Creating 32-bit datafile data32-ssr.tmp [..] containing all statistics, including sensors ones
+-----	Creating 32-bit datafile data32-ssr.tmp [.. / 12] containing all statistics, including sensors ones
 00090	2 x TZ=GMT tests/32bits/sadc32 --unix_time=1555593609 -S XALL tests/data32-ssr.tmp 1 1 >/dev/null
 
 =====	sar: Reading data-new.tmp
@@ -261,7 +261,7 @@ NOTES:
 01575	LC_ALL=C TZ=GMT ./sar -w -f tests/data-ssr.tmp > tests/out.sar-ssr.tmp
 01577	LC_ALL=C TZ=GMT ./sar -A -f tests/data-ssr.tmp >/dev/null
 01580	LC_ALL=C TZ=GMT tests/32bits/sar32 -w -f tests/data-ssr.tmp > tests/out2.sar-ssr.tmp
-01585	LC_ALL=C TZ=GMT tests/32bits/sar32 -A -f tests/data-ssr.tmp >/dev/null
+01585	LC_ALL=C TZ=GMT tests/32bits/sar32 -A -f tests/data-ssr.tmp > tests/out22.sar-ssr.tmp
 
 =====	Specific tests for A_PWR_FREQ statistics
 01600	TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PWR_FREQ tests/data-wghfreq.tmp 1 3 >/dev/null
@@ -286,6 +286,7 @@ NOTES:
 	[Testing options -s/-e on a file contents spanning two consecutive days]
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
 	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
+01760	LC_ALL=C TZ=GMT ./sar -BbdFHSvWwy -I ALL -m CPU,FREQ,USB -n ALL -q ALL -r ALL -u ALL 1 2 > tests/out.sar-A.tmp
 01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 
 =====	iostat tests (basic output)

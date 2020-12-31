@@ -1,0 +1,6 @@
+Extra tests
+
+====	PCP tests
+0100	LC_ALL=C pmdumplog -a tests/pcpar > tests/extra/out.pcpar.tmp
+0110	LC_ALL=C ./sadf -l -O pcparchive=tests/extra/pcpar-ssr tests/data-ssr.tmp -- -m FAN,TEMP,IN
+0115	LC_ALL=C pmdumplog -a tests/extra/pcpar-ssr > tests/extra/out.pcpar-ssr.tmp

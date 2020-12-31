@@ -50,7 +50,7 @@ core
 TAGS
 nls/*.gmo
 tests/*.tmp
-tests/sa[012]*
+tests/sa[0123]*
 tests/variables
 tests/pcpar.*
 inisar

@@ -469,7 +469,7 @@ nls/sysstat.pot: $(wildcard *.c)
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall \
-	uninstall_base uninstall_all dist bdist xdist gitdist squeeze simtest
+	uninstall_base uninstall_all dist bdist xdist gitdist squeeze simtest extratest
 
 install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
 ifeq ($(INSTALL_DOC),y)
@@ -774,6 +774,8 @@ endif
 TESTDIR="tests"
 TESTRUN="/bin/sh"
 TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
+EXTRADIR="tests/extra"
+EXTRALIST:=$(shell ls $(EXTRADIR) | egrep '^[0-9]+$$' | sort -n)
 
 testcomp: tests/ini/inisar sa32bit
 
@@ -791,6 +793,10 @@ unit:
 	@echo $(X) 2>&1
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
+extraunit:
+	@echo $(X) 2>&1
+	@cat $(EXTRADIR)/$(X) | $(TESTRUN)
+
 # Use "do_test" script to make the following target
 simtest: all testcomp
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
@@ -798,14 +804,20 @@ simtest: all testcomp
 	ln -s root1 tests/root
 	@echo Simulation tests: Success!
 
+extratest: all
+	@$(foreach x, $(EXTRALIST), $(MAKE) X=$x extraunit || exit;)
+	rm -f tests/root
+	ln -s root1 tests/root
+	@echo Extra simulation tests: Success!
+
 clean:
-	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp
+	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp tests/extra/*.tmp
 	rm -f nfsiostat* man/nfsiostat*
-	rm -f tests/sa[012]*
+	rm -f tests/sa[0123]*
 	rm -f tests/root
 	ln -s root1 tests/root
 	rm -f tests/ini/inisar tests/32bits/sadc32 tests/32bits/sar32
-	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar.*
+	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar.* tests/extra/pcpar-ssr.*
 	rm -f tests/32bits/*.o tests/32bits/*.a tests/32bits/core
 	find nls -name "*.gmo" -exec rm -f {} \;
 
