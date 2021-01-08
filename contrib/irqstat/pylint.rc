@@ -3,7 +3,8 @@ disable=too-many-arguments,
         too-many-locals,
         too-many-branches,
         too-many-statements,
-        global-statement
+        global-statement,
+        superfluous-parens  # https://docs.python.org/3.0/whatsnew/3.0.html#print-is-a-function
 
 [REPORTS]
 reports=no

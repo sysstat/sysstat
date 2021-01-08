@@ -1,14 +1,40 @@
 #!/usr/bin/python
 
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Lance W. Shelton
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """
 A better way to watch /proc/interrupts, especially on large NUMA machines with
 so many CPUs that /proc/interrupts is wider than the screen.  Press '0'-'9'
 for node views, 't' for node totals
 """
 
+__version__ = '1.0.1-pre'
+
+import os
 import sys
 import tty
 import termios
+import time
 from time import sleep
 import subprocess
 from optparse import OptionParser
@@ -18,25 +44,49 @@ import threading
 KEYEVENT = threading.Event()
 
 
-def gen_numa():
+def gen_numa(numafile):
     """Generate NUMA info"""
     cpunodes = {}
     numacores = {}
-    out = subprocess.Popen('numactl --hardware | grep cpus', shell=True,
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    errtxt = out.stderr.readline()
-    if errtxt:
-        print errtxt + '\r\n'
-        print "Is numactl installed?\r"
+    err_str = ""
+
+    try:
+        if not numafile:
+            temp = subprocess.Popen(['numactl', '--hardware'],
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+            (output, error) = temp.communicate()
+            temp.wait()
+
+            if error:
+                print("NUMACTL ERROR:")
+                print(error)
+                exit(1)
+        else:
+            numa_file = open(numafile, 'r')
+            output = numa_file.read()
+            numa_file.close()
+
+        output = output.split("\n")
+        for line in output:
+            arr = line.split()
+            if len(arr) < 3:
+                continue
+            if arr[0] == "node" and arr[2] == "cpus:":
+                node = arr[1]
+                numacores[node] = arr[3:]
+                for core in arr[3:]:
+                    cpunodes[core] = node
+                continue
+        return numacores, cpunodes
+    except (OSError, IOError) as err:
+        if err.errno == 2: # No such file or directory
+            if numafile:
+                err_str = " (does '" + numafile + "' exist?)"
+            else:
+                err_str = err.strerror + " (is numactl installed?)"
+        print("ERROR: " + err.strerror + err_str)
         exit(1)
-    for line in out.stdout.readlines():
-        arr = line.split()
-        if arr[0] == "node" and arr[2] == "cpus:" and len(arr) > 3:
-            node = arr[1]
-            numacores[node] = arr[3:]
-            for core in arr[3:]:
-                cpunodes[core] = node
-    return numacores, cpunodes
 
 # input character, passed between threads
 INCHAR = ''
@@ -68,8 +118,8 @@ def filter_found(name, filter_list):
     return False
 
 
-def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
-                 filters):
+def display_itop(batch, seconds, rowcnt, iterations, sort, totals, dispnode,
+                 zero, filters, file1, file2, overall, numafile):
     """Main I/O loop"""
     irqs = {}
     cpunodes = {}
@@ -77,61 +127,69 @@ def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
     loops = 0
     width = len('NODEXX')
 
-    print ("interactive commands -- "
-           "t: view totals, 0-9: view node, any other key: quit")
+    if not file1 and batch:
+        print("Running in batch mode")
+    elif not file1:
+        print("interactive commands -- "
+              "t: view totals, 0-9: view node, any other key: quit\r")
+
+    if file1:
+        intr_filename = file1
+    else:
+        intr_filename = '/proc/interrupts'
 
     while True:
         # Grab the new display type at a time when nothing is in flux
         if KEYEVENT.isSet():
             KEYEVENT.clear()
-            dispnode = INCHAR if INCHAR in numacores.keys() else '-1'
+            dispnode = INCHAR if INCHAR in numacores else '-1'
 
-        out = open('/proc/interrupts', 'r')
-        header = out.readline()
-        cpus = []
-        for name in header.split():
-            num = name[3:]
-            cpus.append(num)
+        with open(intr_filename, 'r') as intr_file:
+            header = intr_file.readline()
+            cpus = []
+            for name in header.split():
+                num = name[3:]
+                cpus.append(num)
 
-            # Only query the numa information when something is missing.
-            # This is effectively the first time and when any disabled CPUs
-            # are enabled
-            if not num in cpunodes.keys():
-                numacores, cpunodes = gen_numa()
+                # Only query the numa information when something is missing.
+                # This is effectively the first time and when any disabled CPUs
+                # are enabled
+                if not num in cpunodes:
+                    numacores, cpunodes = gen_numa(numafile)
 
-        for line in out.readlines():
-            vals = line.split()
-            irqnum = vals[0].rstrip(':')
+            for line in intr_file.readlines():
+                vals = line.split()
+                irqnum = vals[0].rstrip(':')
 
-            # Optionally exclude rows that are not an IRQ number
-            if totals is None:
-                try:
-                    num = int(irqnum)
-                except ValueError:
-                    continue
+                # Optionally exclude rows that are not an IRQ number
+                if totals is None:
+                    try:
+                        num = int(irqnum)
+                    except ValueError:
+                        continue
 
-            irq = {}
-            irq['cpus'] = [int(x) for x in vals[1:len(cpus)+1]]
-            irq['oldcpus'] = (irqs[irqnum]['cpus'] if irqnum in irqs
-                              else [0] * len(cpus))
-            irq['name'] = ' '.join(vals[len(cpus)+1:])
-            irq['oldsum'] = irqs[irqnum]['sum'] if irqnum in irqs else 0
-            irq['sum'] = sum(irq['cpus'])
-            irq['num'] = irqnum
+                irq = {}
+                irq['cpus'] = [int(x) for x in vals[1:len(cpus)+1]]
+                irq['oldcpus'] = (irqs[irqnum]['cpus'] if irqnum in irqs
+                                  else [0] * len(cpus))
+                irq['name'] = ' '.join(vals[len(cpus)+1:])
+                irq['oldsum'] = irqs[irqnum]['sum'] if irqnum in irqs else 0
+                irq['sum'] = sum(irq['cpus'])
+                irq['num'] = irqnum
 
-            for node in numacores.keys():
-                oldkey = 'oldsum' + node
-                key = 'sum' + node
-                irq[oldkey] = (irqs[irqnum][key] if irqnum in irqs
-                               and key in irqs[irqnum] else 0)
-                irq[key] = 0
+                for node in numacores:
+                    oldkey = 'oldsum' + node
+                    key = 'sum' + node
+                    irq[oldkey] = (irqs[irqnum][key] if irqnum in irqs
+                                   and key in irqs[irqnum] else 0)
+                    irq[key] = 0
 
-            for idx, val in enumerate(irq['cpus']):
-                key = 'sum' + cpunodes[cpus[idx]]
-                irq[key] = irq[key] + val if key in irq else val
+                for idx, val in enumerate(irq['cpus']):
+                    key = 'sum' + cpunodes[cpus[idx]]
+                    irq[key] = irq[key] + val if key in irq else val
 
-            # save old
-            irqs[irqnum] = irq
+                # save old
+                irqs[irqnum] = irq
 
         def sort_func(val):
             """Sort output"""
@@ -142,15 +200,19 @@ def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
                 pass
 
             if sortnum >= 0:
-                for node in numacores.keys():
+                for node in numacores:
                     if sortnum == int(node):
                         return val['sum' + node] - val['oldsum' + node]
             if sort == 't':
                 return val['sum'] - val['oldsum']
             if sort == 'i':
-                return int(val['num'])
+                if val['num'].isdigit():
+                    return int(val['num'])
+                return sys.maxsize
             if sort == 'n':
                 return val['name']
+            raise Exception('Invalid sort type {}'.format(sort))
+
         # reverse sort all IRQ count sorts
         rev = sort not in ['i', 'n']
         rows = sorted(irqs.values(), key=sort_func, reverse=rev)
@@ -159,8 +221,11 @@ def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
         for idx, irq in enumerate(rows):
             width = max(width, len(str(irq['sum'] - irq['oldsum'])))
 
-        print "" + '\r'
-        print "IRQs / " + str(seconds) + " second(s)" + '\r'
+        if overall and loops > 0:
+            print("" + '\r')
+        if not file1 and (overall or loops > 0):
+            print(time.ctime() + '\r')
+            print("IRQs / " + str(seconds) + " second(s)" + '\r')
         fmtstr = ('IRQ# %' + str(width) + 's') % 'TOTAL'
 
         # node view header
@@ -173,16 +238,17 @@ def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
                     fmtstr += (' %' + str(width) + 's ') % cpu
         # top view header
         else:
-            for node in sorted(numacores.keys()):
+            for node in sorted(numacores):
                 node = 'NODE%s' % node
                 fmtstr += (' %' + str(width) + 's ') % node
 
         fmtstr += ' NAME'
-        print fmtstr + '\r'
+        if overall or loops > 0:
+            print(fmtstr + '\r')
 
         displayed_rows = 0
         for idx, irq in enumerate(rows):
-            if len(filters) and not filter_found(irq['name'], filters):
+            if filters and not filter_found(irq['name'], filters):
                 continue
 
             total = irq['sum'] - irq['oldsum']
@@ -207,13 +273,14 @@ def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
 
             # top view
             else:
-                for node in sorted(numacores.keys()):
+                for node in sorted(numacores):
                     oldnodesum = 'oldsum' + node
                     nodesum = 'sum' + node
                     nodecnt = irq[nodesum] - irq[oldnodesum]
                     fmtstr += ((' %' + str(width) + 's ') % str(nodecnt))
             fmtstr += ' ' + irq['name']
-            print fmtstr + '\r'
+            if overall or loops > 0:
+                print(fmtstr + '\r')
             displayed_rows += 1
             if displayed_rows == rowcnt:
                 break
@@ -229,6 +296,10 @@ def display_itop(seconds, rowcnt, iterations, sort, totals, dispnode, zero,
         if loops == iterations:
             break
 
+        if file2 and loops == 1:
+            intr_filename = file2
+            continue
+
         # thread.interrupt_main() does not seem to interrupt a sleep, so break
         # it into tenth-of-a-second sleeps to improve user response time on exit
         for _ in range(0, seconds * 10):
@@ -239,6 +310,8 @@ def main(args):
     """Parse arguments, call main loop"""
 
     parser = OptionParser(description=__doc__)
+    parser.add_option("-b", "--batch", action="store_true",
+                      help="run under batch mode")
     parser.add_option("-i", "--iterations", default='-1',
                       help="iterations to run")
     parser.add_option("-n", "--node", default='-1',
@@ -252,35 +325,72 @@ def main(args):
                       help="update interval in seconds")
     parser.add_option("-z", "--zero", action="store_true",
                       help="exclude inactive IRQs")
+    parser.add_option("-v", "--version", action="store_true",
+                      help="get version")
     parser.add_option("--filter", default="",
                       help="filter IRQs based on name matching comma "
                       "separated filters")
     parser.add_option("--totals", action="store_true",
                       help="include total rows")
+    parser.add_option("-f", "--file1", default="",
+                      help="read a file instead of /proc/interrupts")
+    parser.add_option("-F", "--file2", default="",
+                      help="no monitoring. Compare the samples from two files "
+                      "instead")
+    parser.add_option("-O", "--overall", action="store_true",
+                      help="print all-time stats at the beginning")
+    parser.add_option("-N", "--numafile", default="",
+                      help="read the NUMA info from a file, instead of "
+                      "calling numactl")
 
     options = parser.parse_args(args)[0]
+
+    if options.version:
+        print __version__
+        return 0
 
     if options.filter:
         options.filter = options.filter.split(',')
     else:
         options.filter = []
 
-    # Set the terminal to unbuffered, to catch a single keypress
-    out = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(out)
-    tty.setraw(sys.stdin.fileno())
+    # If file is specified, no iterations
+    if options.file1:
+        options.iterations = 1
+        options.batch = True
 
-    # input thread
-    thread.start_new_thread(wait_for_input, tuple())
+    if options.file2:
+        if not options.file1:
+            print("ERROR: --file2 requires --file1")
+            return -1
+        options.iterations = 2
+
+    if options.file1 and not options.file2:
+        options.overall = True
+
+    # Set the terminal to unbuffered, to catch a single keypress
+    if not options.batch:
+        out = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(out)
+        tty.setraw(sys.stdin.fileno())
+
+        # input thread
+        thread.start_new_thread(wait_for_input, tuple())
+    else:
+        sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 
     try:
-        display_itop(int(options.time), int(options.rows),
+        display_itop(options.batch, int(options.time), int(options.rows),
                      int(options.iterations), options.sort, options.totals,
-                     options.node, options.zero, options.filter)
+                     options.node, options.zero, options.filter, options.file1,
+                     options.file2, options.overall, options.numafile)
     except (KeyboardInterrupt, SystemExit):
         pass
     finally:
-        termios.tcsetattr(out, termios.TCSADRAIN, old_settings)
+        if not options.batch:
+            termios.tcsetattr(out, termios.TCSADRAIN, old_settings)
+    return 0
+
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
