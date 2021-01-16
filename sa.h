@@ -1155,7 +1155,7 @@ struct report_format {
 	__printf_funct_t (*f_statistics) (int *, int, struct activity * [], unsigned int []);
 	/*
 	 * This function defines the timestamp part of the report.
-	 * Used only with textual (XML-like) reports.
+	 * Used only with textual (XML-like) reports, PCP archives and RAW output format.
 	 */
 	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, unsigned long long,
 				     struct record_header *, struct file_header *, unsigned int);

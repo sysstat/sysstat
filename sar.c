@@ -1142,7 +1142,7 @@ void read_stats_from_file(char from_file[])
 							     from_file, &file_magic, UEOF_STOP);
 				}
 				else {
-					/* This was a COMMENT record: print it */
+					/* This was a COMMENT record: Print it */
 					print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 							     &tm_start, &tm_end, R_COMMENT, ifd,
 							     &rectime, from_file, 0,
