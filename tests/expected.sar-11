@@ -1,0 +1,63 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
+
+13:20:09     LINUX RESTART	(9 CPU)
+13:20:13     COM First comment!
+
+13:20:15        CPU     %user     %nice   %system   %iowait    %steal     %idle
+13:20:19          0      2.71      0.03      3.12      0.00      0.00     94.14
+13:20:19          1      2.85      0.00      5.16      0.00      0.00     91.99
+13:20:19          2      2.25      0.03      1.86      0.68      0.00     95.18
+
+Average:        CPU     %user     %nice   %system   %iowait    %steal     %idle
+Average:          0      2.71      0.03      3.12      0.00      0.00     94.14
+Average:          1      2.85      0.00      5.16      0.00      0.00     91.99
+Average:          2      2.25      0.03      1.86      0.68      0.00     95.18
+
+13:20:15       proc/s   cswch/s
+13:20:19         3.56  68409.30
+
+Average:       proc/s   cswch/s
+Average:         3.56  68409.30
+
+13:22:11     LINUX RESTART	(9 CPU)
+
+13:22:21        CPU     %user     %nice   %system   %iowait    %steal     %idle
+13:22:31          0      2.71      0.03      3.12      0.00      0.00     94.14
+13:22:31          1      2.85      0.00      5.16      0.00      0.00     91.99
+13:22:31          2      2.25      0.03      1.86      0.68      0.00     95.18
+
+Average:        CPU     %user     %nice   %system   %iowait    %steal     %idle
+Average:          0      2.71      0.03      3.12      0.00      0.00     94.14
+Average:          1      2.85      0.00      5.16      0.00      0.00     91.99
+Average:          2      2.25      0.03      1.86      0.68      0.00     95.18
+
+13:22:21       proc/s   cswch/s
+13:22:31         3.56  68409.30
+
+Average:       proc/s   cswch/s
+Average:         3.56  68409.30
+13:22:35     COM Second comment!
+
+13:23:20     LINUX RESTART	(9 CPU)
+
+13:24:10     LINUX RESTART	(9 CPU)
+
+13:24:12     LINUX RESTART	(9 CPU)
+
+13:24:20        CPU     %user     %nice   %system   %iowait    %steal     %idle
+13:24:25          0      2.71      0.03      3.12      0.00      0.00     94.14
+13:24:25          1      2.85      0.00      5.16      0.00      0.00     91.99
+13:24:25          2      2.25      0.03      1.86      0.68      0.00     95.18
+
+Average:        CPU     %user     %nice   %system   %iowait    %steal     %idle
+Average:          0      2.71      0.03      3.12      0.00      0.00     94.14
+Average:          1      2.85      0.00      5.16      0.00      0.00     91.99
+Average:          2      2.25      0.03      1.86      0.68      0.00     95.18
+
+13:24:20       proc/s   cswch/s
+13:24:25         3.56  68409.30
+
+Average:       proc/s   cswch/s
+Average:         3.56  68409.30
+13:22:46     COM Third...
+13:22:47     COM and fourth comment!

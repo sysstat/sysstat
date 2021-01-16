@@ -107,6 +107,7 @@ NOTES:
 00510	LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
 00515	LC_ALL=C ./sadf -d tests/data.tmp -- -qu > tests/out.sadf-d-qu.tmp
 00520	LC_ALL=C ./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
+00525	LC_ALL=C ./sadf -x tests/datax.tmp -C 1 2 -- -uw -P 0-2 > tests/out1.sadf-x.tmp
 00530	LC_ALL=C ./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
 00540	LC_ALL=C ./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
 00542	LC_ALL=C ./sadf -O height=370 -g tests/data.tmp > tests/out3.sadf-g.tmp
@@ -195,6 +196,7 @@ NOTES:
 00980	LC_ALL=C TZ=GMT ./sar -f tests/data2.tmp -q ALL > tests/out2.sar-q.tmp
 01010	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
 01020	LC_ALL=C TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
+01030	LC_ALL=C TZ=GMT ./sar -f tests/datax.tmp 1 1 -C -uw -P 0-2 > tests/out.sar-11.tmp
 
 =====	sar/sadf: Reading data0.tmp
 01100	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out0.sar-A.tmp
