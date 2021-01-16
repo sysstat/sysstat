@@ -1456,6 +1456,7 @@ int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
  *		sadf stop. Default behavior is to stop on unexpected EOF.
  * @b_size	@buffer size.
  * @flags	Flags for common options and system state.
+ * @ofmt	Pointer on report output format structure.
  *
  * OUT:
  * @record_hdr	Record header for current sample.
@@ -1468,7 +1469,7 @@ int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
  */
 int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		    struct file_header *file_hdr, int arch_64, int endian_mismatch,
-		    int oneof, size_t b_size, uint64_t flags)
+		    int oneof, size_t b_size, uint64_t flags, struct report_format *ofmt)
 {
 	int rc;
 
@@ -1489,7 +1490,7 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		}
 
 		/* Raw output in debug mode */
-		if (DISPLAY_DEBUG_MODE(flags)) {
+		if (DISPLAY_DEBUG_MODE(flags) && (ofmt->id == F_RAW_OUTPUT)) {
 			printf("# uptime_cs; %llu; ust_time; %llu; extra_next; %u; record_type; %d; HH:MM:SS; %02d:%02d:%02d\n",
 			       record_hdr->uptime_cs, record_hdr->ust_time,
 			       record_hdr->extra_next, record_hdr->record_type,

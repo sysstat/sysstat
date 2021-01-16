@@ -188,7 +188,7 @@ struct report_format *fmt[NR_FMT] = {
  * (RESTART and COMMENT) records.
  */
 struct report_format sar_fmt = {
-	.id		= 0,
+	.id		= F_SAR_OUTPUT,
 	.options	= 0,
 	.f_header	= NULL,
 	.f_statistics	= NULL,

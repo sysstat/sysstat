@@ -27,22 +27,6 @@
  ***************************************************************************
  */
 
-/* Number of output formats */
-#define NR_FMT	9
-
-/* Output formats */
-#define F_DB_OUTPUT	1
-#define F_HEADER_OUTPUT	2
-#define F_PPC_OUTPUT	3
-#define F_XML_OUTPUT	4
-#define F_JSON_OUTPUT	5
-#define F_CONV_OUTPUT	6
-#define F_SVG_OUTPUT	7
-#define F_RAW_OUTPUT	8
-#define F_PCP_OUTPUT	9
-
-/* Format options */
-
 /*
  * Indicate that a decimal point should be used to make output
  * locale independent.
