@@ -797,12 +797,16 @@ extraunit:
 	@echo $(X) 2>&1
 	@cat $(EXTRADIR)/$(X) | $(TESTRUN)
 
-# Use "do_test" script to make the following target
+# Use "do_test" script to make the following targets
+simtest: DFLAGS += -DTEST
+
 simtest: all testcomp
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 	rm -f tests/root
 	ln -s root1 tests/root
 	@echo Simulation tests: Success!
+
+extratest: DFLAGS += -DTEST
 
 extratest: all
 	@$(foreach x, $(EXTRALIST), $(MAKE) X=$x extraunit || exit;)
