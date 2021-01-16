@@ -840,7 +840,10 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 					  *curr, file, &rtype, 0, file_magic,
 					  file_actlst, rectime, UEOF_STOP);
 
-		if (!*eosaf && (rtype != R_RESTART) && (rtype != R_COMMENT)) {
+		if (*eosaf || (rtype == R_RESTART))
+			break;
+
+		if (rtype != R_COMMENT) {
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
 						   NULL, rectime, reset_cd, act_id);
 			reset_cd = 0;
@@ -859,7 +862,7 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 			*reset = FALSE;
 		}
 	}
-	while (*cnt && !*eosaf && (rtype != R_RESTART));
+	while (*cnt);
 
 	*reset = TRUE;
 }
@@ -905,7 +908,8 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 
 	/*
 	 * Restore the first stats collected.
-	 * Used to compute the rate displayed on the first line.
+	 * Originally used to compute the rate displayed on the first line.
+	 * Here, this is to plot the first point and start the graph.
 	 */
 	copy_structures(act, id_seq, record_hdr, !*curr, 2);
 
@@ -926,8 +930,23 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 		*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 					  *curr, file, &rtype, 0, file_magic,
 					  file_actlst, rectime, UEOF_CONT);
+		if (*eosaf)
+			break;
 
-		if (!*eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
+		if (rtype == R_RESTART) {
+			parm.restart = TRUE;
+			*reset = TRUE;
+			/* Go to next statistics record, if possible */
+			do {
+				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+							  *curr, file, &rtype, 0, file_magic,
+							  file_actlst, rectime, UEOF_CONT);
+			}
+			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
+
+			*curr ^= 1;
+		}
+		else if (rtype != R_COMMENT) {
 
 			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
 						   &parm, rectime, reset_cd, act[p]->id);
@@ -946,19 +965,6 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 				}
 			}
 			*reset = FALSE;
-		}
-		if (!*eosaf && (rtype == R_RESTART)) {
-			parm.restart = TRUE;
-			*reset = TRUE;
-			/* Go to next statistics record, if possible */
-			do {
-				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
-							  *curr, file, &rtype, 0, file_magic,
-							  file_actlst, rectime, UEOF_CONT);
-			}
-			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
-
-			*curr ^= 1;
 		}
 	}
 	while (!*eosaf);
@@ -1064,47 +1070,47 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		cnt = count;
 		reset = TRUE;
 
-		if (!eosaf) {
+		if (eosaf)
+			break;
 
-			/* Save the first stats collected. Used for example in next_slice() function */
-			copy_structures(act, id_seq, record_hdr, 2, 0);
+		/* Save the first stats collected. Used for example in next_slice() function */
+		copy_structures(act, id_seq, record_hdr, 2, 0);
 
+		do {
+			eosaf = read_next_sample(ifd, ign_flag, curr, file,
+						 &rtype, tab, file_magic, file_actlst,
+						 rectime, UEOF_CONT);
+
+			if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
+				if (*fmt[f_position]->f_statistics) {
+					(*fmt[f_position]->f_statistics)(&tab, F_MAIN, act, id_seq);
+				}
+
+				/* next is set to 1 when we were close enough to desired interval */
+				next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
+							  &cnt, &tab, rectime, FALSE, ALL_ACTIVITIES);
+
+				if (next) {
+					curr ^= 1;
+					if (cnt > 0) {
+						cnt--;
+					}
+				}
+				reset = FALSE;
+			}
+		}
+		while (cnt && !eosaf && (rtype != R_RESTART));
+
+		if (!cnt) {
+			/* Go to next Linux restart, if possible */
 			do {
 				eosaf = read_next_sample(ifd, ign_flag, curr, file,
 							 &rtype, tab, file_magic, file_actlst,
 							 rectime, UEOF_CONT);
-
-				if (!eosaf && (rtype != R_COMMENT) && (rtype != R_RESTART)) {
-					if (*fmt[f_position]->f_statistics) {
-						(*fmt[f_position]->f_statistics)(&tab, F_MAIN, act, id_seq);
-					}
-
-					/* next is set to 1 when we were close enough to desired interval */
-					next = generic_write_stats(curr, tm_start.use, tm_end.use, reset,
-								  &cnt, &tab, rectime, FALSE, ALL_ACTIVITIES);
-
-					if (next) {
-						curr ^= 1;
-						if (cnt > 0) {
-							cnt--;
-						}
-					}
-					reset = FALSE;
-				}
 			}
-			while (cnt && !eosaf && (rtype != R_RESTART));
-
-			if (!cnt) {
-				/* Go to next Linux restart, if possible */
-				do {
-					eosaf = read_next_sample(ifd, ign_flag, curr, file,
-								 &rtype, tab, file_magic, file_actlst,
-								 rectime, UEOF_CONT);
-				}
-				while (!eosaf && (rtype != R_RESTART));
-			}
-			reset = TRUE;
+			while (!eosaf && (rtype != R_RESTART));
 		}
+		reset = TRUE;
 	}
 	while (!eosaf);
 
