@@ -2184,6 +2184,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			if (j < 0) {
 				/* This is a newly registered interface. Previous stats are zero */
 				sdp = &sdpzero;
+				restart = TRUE;
 			}
 			else {
 				sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
@@ -2413,6 +2414,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			if (j < 0) {
 				/* This is a newly registered interface. Previous stats are zero */
 				sndp = &sndzero;
+				restart = TRUE;
 			}
 			else {
 				sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
@@ -2590,6 +2592,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 		/* For each network interfaces structure */
 		for (i = 0; i < a->nr[curr]; i++) {
 			snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+
 			if (!strcmp(snedc->interface, ""))
 				/* Empty structure: This is the end of the list */
 				break;
@@ -2632,6 +2635,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			if (j < 0) {
 				/* This is a newly registered interface. Previous stats are zero */
 				snedp = &snedzero;
+				restart = TRUE;
 			}
 			else {
 				snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
@@ -5036,6 +5040,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 			if (!found) {
 				/* This is a newly registered host */
 				sfcp = &sfczero;
+				restart = TRUE;
 			}
 
 			/*
