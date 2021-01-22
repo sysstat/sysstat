@@ -2596,10 +2596,6 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 			restart = svg_p->restart;
 
-			if (!strcmp(snedc->interface, ""))
-				/* Empty structure: This is the end of the list */
-				break;
-
 			if (a->item_list != NULL) {
 				/* A list of devices has been entered on the command line */
 				if (!search_list_item(a->item_list, snedc->interface))
