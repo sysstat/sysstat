@@ -2110,7 +2110,6 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_MAIN) {
 		memset(&sdpzero, 0, STATS_DISK_SIZE);
-		restart = svg_p->restart;
 		/*
 		 * Mark previously registered devices as now
 		 * possibly unregistered for all graphs.
@@ -2125,6 +2124,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 		/* For each device structure */
 		for (i = 0; i < a->nr[curr]; i++) {
 			sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
+			restart = svg_p->restart;
 
 			/* Get device name  */
 			dev_name = get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
@@ -2363,7 +2363,6 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		memset(&sndzero, 0, STATS_NET_DEV_SIZE);
-		restart = svg_p->restart;
 		/*
 		 * Mark previously registered interfaces as now
 		 * possibly unregistered for all graphs.
@@ -2378,6 +2377,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 		/* For each network interfaces structure */
 		for (i = 0; i < a->nr[curr]; i++) {
 			sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
+			restart = svg_p->restart;
 
 			if (a->item_list != NULL) {
 				/* A list of devices has been entered on the command line */
@@ -2580,7 +2580,6 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
-		restart = svg_p->restart;
 		/*
 		 * Mark previously registered interfaces as now
 		 * possibly unregistered for all graphs.
@@ -2595,6 +2594,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 		/* For each network interfaces structure */
 		for (i = 0; i < a->nr[curr]; i++) {
 			snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
+			restart = svg_p->restart;
 
 			if (!strcmp(snedc->interface, ""))
 				/* Empty structure: This is the end of the list */
@@ -4971,7 +4971,6 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 
 	if (action & F_MAIN) {
 		memset(&sfczero, 0, sizeof(struct stats_fchost));
-		restart = svg_p->restart;
 		/*
 		 * Mark previously registered interfaces as now
 		 * possibly unregistered for all graphs.
@@ -4988,6 +4987,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 
 			found = FALSE;
 			sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
+			restart = svg_p->restart;
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->item_list_sz; k++) {
