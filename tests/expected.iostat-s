@@ -6,6 +6,9 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps    kB_read/s     kB_w+d/s    kB_read     kB_w+d
 sda               8.59       222.14        57.08    1597749     410544
 sdb               0.01         0.29         0.00       2108          0
+sdq               8.07       222.11        25.21    1597504     181305
+sdr               2.77        29.93        19.48     215243     140127
+sds               0.15         0.59         0.61       4277       4373
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -14,5 +17,8 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps    kB_read/s     kB_w+d/s    kB_read     kB_w+d
 sda               0.00         0.00         0.00          0          0
 sdb               0.00         0.00         0.00          0          0
+sdq               9.62         7.86        16.04        245        500
+sdr               4.81         4.81        16.04        150        500
+sds               6.42        16.04         3.21        500        100
 
 

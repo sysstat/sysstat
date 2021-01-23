@@ -6,6 +6,9 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
 sda               8.59       222.14        57.08         0.00    1597749     410544          0
 sdb               0.01         0.29         0.00         0.00       2108          0          0
+sdq               8.07       222.11         0.00        25.21    1597504          0     181305
+sdr               2.77        29.93        19.48         0.00     215243     140127          0
+sds               0.15         0.59         0.61         0.00       4277       4373          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -14,6 +17,9 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
 sda               0.00         0.00         0.00         0.00          0          0          0
 sdb               0.00         0.00         0.00         0.00          0          0          0
+sdq               9.62         7.86         0.00        16.04        245          0        500
+sdr               4.81         4.81        16.04         0.00        150        500          0
+sds               6.42        16.04         3.21         0.00        500        100          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -23,6 +29,9 @@ Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_w
 sda               6.40         1.60         1.60         0.00         50         50          0
 sdb               0.67        22.60         0.00         0.00        706          0          0
 sdd               1.63        67.48         0.00         0.00       2108          0          0
+sdq              38.41        48.02         0.00        16.01       1500          0        500
+sdr               8.32         3.20         6.40         0.00        100        200          0
+sds               4.45         0.64         2.40         0.00         20         75          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -33,6 +42,8 @@ sda            1604.70     41499.97     10663.48         0.00    1597749     410
 sdd               0.00         0.00         0.00         0.00          0          0          0
 sdf               1.22        54.34         0.00         0.00       2092          0          0
 sdg               2.91       114.91         0.31         0.00       4424         12          0
+sdr               3.90         0.13         0.52         0.00          5         20          0
+sds               3.32        83.56         0.23         0.00       3217          9          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -43,6 +54,9 @@ sda               0.00         0.00         0.00         0.00          0        
 sdd               0.00         0.00         0.00         0.00          0          0          0
 sdf               0.00         0.00         0.00         0.00          0          0          0
 sdg               0.94        22.33         0.22         0.00        500          5          0
+sdq             116.08      2221.93         0.00       107.41      49749          0       2405
+sdr               8.93         2.23        22.33         0.00         50        500          0
+sds              10.27         2.23         1.56         0.00         50         35          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle

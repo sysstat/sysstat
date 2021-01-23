@@ -7,6 +7,9 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps    MB_read/s    MB_wrtn/s    MB_dscd/s    MB_read    MB_wrtn    MB_dscd
 sda               0.00         0.00         0.00         0.00          0          0          0
 sdb               0.00         0.00         0.00         0.00          0          0          0
+sdq               9.62         0.01         0.00         0.02          0          0          0
+sdr               4.81         0.00         0.02         0.00          0          0          0
+sds               6.42         0.02         0.00         0.00          0          0          0
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -16,5 +19,8 @@ Device             tps    MB_read/s    MB_wrtn/s    MB_dscd/s    MB_read    MB_w
 sda               6.40         0.00         0.00         0.00          0          0          0
 sdb               0.67         0.02         0.00         0.00          0          0          0
 sdd               1.63         0.07         0.00         0.00          2          0          0
+sdq              38.41         0.05         0.00         0.02          1          0          0
+sdr               8.32         0.00         0.01         0.00          0          0          0
+sds               4.45         0.00         0.00         0.00          0          0          0
 
 

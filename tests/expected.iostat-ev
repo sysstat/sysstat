@@ -3,16 +3,25 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	1970-01-01 	_x86_64_	(9 CPU)
 Device             tps   Blk_read/s   Blk_wrtn/s   Blk_dscd/s   Blk_read   Blk_wrtn   Blk_dscd
 sda               8.59       444.28       114.16         0.00    3195498     821088          0
 sdb               0.01         0.59         0.00         0.00       4216          0          0
+sdq               8.07       444.21         0.00        50.41    3195008          0     362610
+sdr               2.77        59.85        38.96         0.00     430486     280254          0
+sds               0.15         1.19         1.22         0.00       8554       8746          0
 
 
 Device             tps   Blk_read/s   Blk_wrtn/s   Blk_dscd/s   Blk_read   Blk_wrtn   Blk_dscd
 sda               0.00         0.00         0.00         0.00          0          0          0
 sdb               0.00         0.00         0.00         0.00          0          0          0
+sdq               9.62        15.72         0.00        32.08        490          0       1000
+sdr               4.81         9.62        32.08         0.00        300       1000          0
+sds               6.42        32.08         6.42         0.00       1000        200          0
 
 
 Device             tps   Blk_read/s   Blk_wrtn/s   Blk_dscd/s   Blk_read   Blk_wrtn   Blk_dscd
 sda               6.40         3.20         3.20         0.00        100        100          0
 sdb               0.67        45.20         0.00         0.00       1412          0          0
 sdd               1.63       134.96         0.00         0.00       4216          0          0
+sdq              38.41        96.03         0.00        32.01       3000          0       1000
+sdr               8.32         6.40        12.80         0.00        200        400          0
+sds               4.45         1.28         4.80         0.00         40        150          0
 
 

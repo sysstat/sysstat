@@ -42,6 +42,9 @@ NOTES:
 -----	Creating datax.tmp [RC....R..CR.RR..CC. / 1112341122111112223]
 00074	n x TZ=GMT ./sadc --unix_time=xxxxxxxxxx [-S A_NULL,A_CPU,A_IRQ,A_NET_DEV,A_FS,A_PCSW] tests/datax.tmp (...)
 
+-----	Creating data-long.tmp [...... / 123456b]
+00076	6 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S A_NULL,A_DISK,A_NET_DEV,A_NET_EDEV,A_NET_FC tests/data-long.tmp 1 1 >/dev/null
+
 -----	Creating a 32-bit datafile: tests/data32.tmp [RC.. / 1112]
 00080	4 x TZ=GMT tests/32bits/sadc32 -unix_time=xxxxxxxxx -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data32.tmp [...]
 
@@ -290,6 +293,8 @@ NOTES:
 	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
 01760	LC_ALL=C TZ=GMT ./sar -BbdFHSvWwy -I ALL -m CPU,FREQ,USB -n ALL -q ALL -r ALL -u ALL 1 2 > tests/out.sar-A.tmp
 01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
+01820	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -- -d --dev=sds -n DEV,EDEV --iface=wlp5s0 > tests/out.sadf-disc.tmp
+01825	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -O debug -- -d --dev=sdq,sdr -n DEV,EDEV --iface=virbr0,virbr0-1 > tests/out2.sadf-disc.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp

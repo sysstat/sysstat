@@ -1,0 +1,26 @@
+rm -f tests/data-long.tmp
+
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_DISK,A_NET_DEV,A_NET_EDEV,A_NET_FC tests/data-long.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593619 -S XALL tests/data-long.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root3 tests/root
+TZ=GMT ./sadc --unix_time=1555593629 -S XALL tests/data-long.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root4 tests/root
+TZ=GMT ./sadc --unix_time=1555593639 -S XALL tests/data-long.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root5 tests/root
+TZ=GMT ./sadc --unix_time=1555593649 -S XALL tests/data-long.tmp 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root6b tests/root
+TZ=GMT ./sadc --unix_time=1555593659 -S XALL tests/data-long.tmp 1 1 >/dev/null
+

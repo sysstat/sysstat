@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -- -d --dev=sds -n DEV,EDEV --iface=wlp5s0 > tests/out.sadf-disc.tmp && diff -u tests/expected.sadf-disc tests/out.sadf-disc.tmp

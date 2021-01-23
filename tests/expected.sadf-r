@@ -2054,16 +2054,16 @@
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; tps; 61832; 61832; rtps; 49652; 49652; wtps; 12180; 12180; dtps; 0; 0; bread/s; 3199714; 3199714; bwrtn/s; 821088; 821088; bdscd/s; 0; 0;
+13:20:19 UTC; tps; 140919; 141569; rtps; 115828; 116228; wtps; 16453; 16603; dtps; 8638; 8738; bread/s; 6833762; 6835552; bwrtn/s; 1110088; 1111288; bdscd/s; 362610; 363610;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; tps; 61832; 62002; rtps; 49652; 49722; wtps; 12180; 12280; dtps; 0; 0; bread/s [DEC]; 3199714; 3197010; bwrtn/s; 821088; 821188; bdscd/s; 0; 0;
+13:20:29 UTC; tps; 141569; 143338; rtps; 116228; 117517; wtps; 16603; 16883; dtps; 8738; 8938; bread/s; 6835552; 6836088; bwrtn/s; 1111288; 1111938; bdscd/s; 363610; 364610;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; tps [DEC]; 62002; 61940; rtps; 49722; 49757; wtps [DEC]; 12280; 12183; dtps; 0; 0; bread/s; 3197010; 3208530; bwrtn/s [DEC]; 821188; 821112; bdscd/s; 0; 0;
+13:20:39 UTC; tps [DEC]; 143338; 82563; rtps [DEC]; 117517; 66581; wtps [DEC]; 16883; 15982; dtps [DEC]; 8938; 0; bread/s [DEC]; 6836088; 3645960; bwrtn/s [DEC]; 1111938; 1102824; bdscd/s [DEC]; 364610; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; tps; 61940; 61961; rtps; 49757; 49777; wtps; 12183; 12184; dtps; 0; 0; bread/s; 3208530; 3209530; bwrtn/s; 821112; 821122; bdscd/s; 0; 0;
+13:20:49 UTC; tps; 82563; 85613; rtps; 66581; 68502; wtps; 15982; 16113; dtps; 0; 998; bread/s; 3645960; 3746658; bwrtn/s; 1102824; 1103904; bdscd/s; 0; 4810;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
@@ -2148,7 +2148,7 @@
 13:20:49 UTC; TTY; 1; rcvin/s; 0; 0; xmtin/s; 0; 0; framerr/s; 0; 0; prtyerr/s; 0; 0; brk/s; 0; 0; ovrun/s; 0; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
-# name; A_DISK; nr_curr; 14; nr_alloc; 19; nr_ini; 19
+# name; A_DISK; nr_curr; 17; nr_alloc; 22; nr_ini; 22
 13:20:19 UTC; major; 8; minor; 0; DEV; sda; tps; 61781; 61781; rkB/s; 3195498; 3195498; wkB/s; 821088; 821088; dkB/s; 0; 0; rd_ticks; 623970; 623970; wr_ticks; 117109; 117109; dc_ticks; 0; 0; tot_ticks; 32862; 32862; aqu-sz; 714408; 714408;
 13:20:19 UTC; major; 8; minor; 1; DEV; sda1; tps; 51; 51; rkB/s; 4216; 4216; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 3107; 3107; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 41; 41; aqu-sz; 3086; 3086;
 13:20:19 UTC; major; 8; minor; 2; DEV; sda2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -2163,8 +2163,11 @@
 13:20:19 UTC; major; 8; minor; 11; DEV; sda11; tps; 57; 57; rkB/s; 4504; 4504; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2180; 2180; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 53; 53; aqu-sz; 2155; 2155;
 13:20:19 UTC; major; 8; minor; 12; DEV; sda12; tps; 13528; 13528; rkB/s; 363650; 363650; wkB/s; 534960; 534960; dkB/s; 0; 0; rd_ticks; 124848; 124848; wr_ticks; 59590; 59590; dc_ticks; 0; 0; tot_ticks; 7316; 7316; aqu-sz; 178474; 178474;
 13:20:19 UTC; major; 8; minor; 16; DEV; sdb; tps; 51; 51; rkB/s; 4216; 4216; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 3107; 3107; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 41; 41; aqu-sz; 3086; 3086;
+13:20:19 UTC; major; 65; minor; 0; DEV; sdq; tps; 58039; 58339; rkB/s; 3195008; 3195498; wkB/s; 0; 0; dkB/s; 362610; 363610; rd_ticks; 622070; 623970; wr_ticks; 0; 0; dc_ticks; 123000; 125000; tot_ticks; 32562; 32862; aqu-sz; 714008; 714408;
+13:20:19 UTC; major; 65; minor; 16; DEV; sdr; tps; 19935; 20085; rkB/s; 430486; 430786; wkB/s; 280254; 281254; dkB/s; 0; 0; rd_ticks; 159667; 159967; wr_ticks; 140316; 142316; dc_ticks; 0; 0; tot_ticks; 97087; 99087; aqu-sz; 335106; 337106;
+13:20:19 UTC; major; 65; minor; 32; DEV; sds; tps; 1113; 1313; rkB/s; 8554; 9554; wkB/s; 8746; 8946; dkB/s; 0; 0; rd_ticks; 100; 800; wr_ticks; 3902; 4902; dc_ticks; 0; 0; tot_ticks; 762; 862; aqu-sz; 7902; 9002;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
-# name; A_DISK; nr_curr; 14; nr_alloc; 19; nr_ini; 19
+# name; A_DISK; nr_curr; 17; nr_alloc; 22; nr_ini; 22
 13:20:29 UTC; major; 8; minor; 0; DEV; sda; tps; 61781; 61981; rkB/s; 3195498; 3195598; wkB/s; 821088; 821188; dkB/s; 0; 0; rd_ticks; 623970; 624070; wr_ticks; 117109; 117209; dc_ticks; 0; 0; tot_ticks; 32862; 32962; aqu-sz; 714408; 714508;
 13:20:29 UTC; major; 8; minor; 1; DEV; sda1; tps; 51; 251; rkB/s; 4216; 4316; wkB/s; 0; 100; dkB/s; 0; 0; rd_ticks; 3107; 3207; wr_ticks; 0; 100; dc_ticks; 0; 0; tot_ticks; 41; 141; aqu-sz; 3086; 3186;
 13:20:29 UTC; major; 8; minor; 2; DEV; sda2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -2179,8 +2182,11 @@
 13:20:29 UTC; major; 8; minor; 11; DEV; sda11; tps; 57; 57; rkB/s; 4504; 4504; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2180; 2180; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 53; 53; aqu-sz; 2155; 2155;
 13:20:29 UTC; major; 8; minor; 12; DEV; sda12; tps; 13528; 13528; rkB/s; 363650; 363650; wkB/s; 534960; 534960; dkB/s; 0; 0; rd_ticks; 124848; 124848; wr_ticks; 59590; 59590; dc_ticks; 0; 0; tot_ticks; 7316; 7316; aqu-sz; 178474; 178474;
 13:20:29 UTC; major; 8; minor; 16; DEV [BCK]; sdb; tps; 0; 21; rkB/s; 0; 1412; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 0; 987; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 0; 17; aqu-sz; 0; 3000;
+13:20:29 UTC; major; 65; minor; 0; DEV; sdq; tps; 58339; 59539; rkB/s; 3195498; 3198498; wkB/s; 0; 0; dkB/s; 363610; 364610; rd_ticks; 623970; 624970; wr_ticks; 0; 0; dc_ticks; 125000; 126000; tot_ticks; 32862; 32862; aqu-sz; 714408; 714408;
+13:20:29 UTC; major; 65; minor; 16; DEV; sdr; tps; 20085; 20345; rkB/s; 430786; 430986; wkB/s; 281254; 281654; dkB/s; 0; 0; rd_ticks; 159967; 160067; wr_ticks; 142316; 142916; dc_ticks; 0; 0; tot_ticks; 99087; 100007; aqu-sz; 337106; 338196;
+13:20:29 UTC; major; 65; minor; 32; DEV; sds; tps; 1313; 1452; rkB/s; 9554; 9594; wkB/s; 8946; 9096; dkB/s; 0; 0; rd_ticks; 800; 890; wr_ticks; 4902; 5002; dc_ticks; 0; 0; tot_ticks; 862; 962; aqu-sz; 9002; 10002;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
-# name; A_DISK; nr_curr; 15; nr_alloc; 19; nr_ini; 19
+# name; A_DISK; nr_curr; 17; nr_alloc; 22; nr_ini; 22
 13:20:39 UTC; major; 8; minor; 0; DEV [BCK]; sda; tps; 0; 61781; rkB/s; 0; 3195498; wkB/s; 0; 821088; dkB/s; 0; 0; rd_ticks; 0; 623970; wr_ticks; 0; 117109; dc_ticks; 0; 0; tot_ticks; 0; 32862; aqu-sz; 0; 714408;
 13:20:39 UTC; major; 8; minor; 1; DEV [BCK]; sda1; tps; 0; 51; rkB/s; 0; 4216; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 0; 3107; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 0; 41; aqu-sz; 0; 3086;
 13:20:39 UTC; major; 8; minor; 2; DEV; sda2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -2196,8 +2202,10 @@
 13:20:39 UTC; major; 8; minor; 12; DEV; sda12; tps; 13528; 13528; rkB/s; 363650; 363650; wkB/s; 534960; 534960; dkB/s; 0; 0; rd_ticks; 124848; 124848; wr_ticks; 59590; 59590; dc_ticks; 0; 0; tot_ticks; 7316; 7316; aqu-sz; 178474; 178474;
 13:20:39 UTC; major; 8; minor; 80; DEV [NEW]; sdf; tps; 0; 47; rkB/s; 0; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 0; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 0; 33; aqu-sz; 0; 2917;
 13:20:39 UTC; major; 8; minor; 96; DEV [NEW]; sdg; tps; 0; 112; rkB/s; 0; 8848; wkB/s; 0; 24; dkB/s; 0; 0; rd_ticks; 0; 2732; wr_ticks; 0; 40; dc_ticks; 0; 0; tot_ticks; 0; 73; aqu-sz; 0; 2724;
+13:20:39 UTC; major; 65; minor; 16; DEV; sdr; tps; 20345; 20495; rkB/s; 430986; 430996; wkB/s; 281654; 281694; dkB/s; 0; 0; rd_ticks; 160067; 160097; wr_ticks; 142916; 142996; dc_ticks; 0; 0; tot_ticks; 100007; 100097; aqu-sz; 338196; 338996;
+13:20:39 UTC; major; 65; minor; 32; DEV [BCK]; sds; tps; 0; 128; rkB/s; 0; 6434; wkB/s; 0; 18; dkB/s; 0; 0; rd_ticks; 0; 1259; wr_ticks; 0; 181; dc_ticks; 0; 0; tot_ticks; 0; 1210; aqu-sz; 0; 1440;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
-# name; A_DISK; nr_curr; 15; nr_alloc; 19; nr_ini; 19
+# name; A_DISK; nr_curr; 18; nr_alloc; 22; nr_ini; 22
 13:20:49 UTC; major; 8; minor; 0; DEV; sda; tps; 61781; 61781; rkB/s; 3195498; 3195498; wkB/s; 821088; 821088; dkB/s; 0; 0; rd_ticks; 623970; 623970; wr_ticks; 117109; 117109; dc_ticks; 0; 0; tot_ticks; 32862; 32862; aqu-sz; 714408; 714408;
 13:20:49 UTC; major; 8; minor; 1; DEV; sda1; tps; 51; 51; rkB/s; 4216; 4216; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 3107; 3107; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 41; 41; aqu-sz; 3086; 3086;
 13:20:49 UTC; major; 8; minor; 2; DEV; sda2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -2213,69 +2221,78 @@
 13:20:49 UTC; major; 8; minor; 12; DEV; sda12; tps; 13528; 13528; rkB/s; 363650; 363650; wkB/s; 534960; 534960; dkB/s; 0; 0; rd_ticks; 124848; 124848; wr_ticks; 59590; 59590; dc_ticks; 0; 0; tot_ticks; 7316; 7316; aqu-sz; 178474; 178474;
 13:20:49 UTC; major; 8; minor; 80; DEV; sdf; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
 13:20:49 UTC; major; 8; minor; 96; DEV; sdg; tps; 112; 133; rkB/s; 8848; 9848; wkB/s; 24; 34; dkB/s; 0; 0; rd_ticks; 2732; 2832; wr_ticks; 40; 70; dc_ticks; 0; 0; tot_ticks; 73; 93; aqu-sz; 2724; 3724;
+13:20:49 UTC; major; 65; minor; 0; DEV [NEW]; sdq; tps; 0; 2599; rkB/s; 0; 99498; wkB/s; 0; 0; dkB/s; 0; 4810; rd_ticks; 0; 5970; wr_ticks; 0; 0; dc_ticks; 0; 6700; tot_ticks; 0; 2962; aqu-sz; 0; 4808;
+13:20:49 UTC; major; 65; minor; 16; DEV; sdr; tps; 20495; 20695; rkB/s; 430996; 431096; wkB/s; 281694; 282694; dkB/s; 0; 0; rd_ticks; 160097; 161097; wr_ticks; 142996; 143996; dc_ticks; 0; 0; tot_ticks; 100097; 101097; aqu-sz; 338996; 339996;
+13:20:49 UTC; major; 65; minor; 32; DEV; sds; tps; 128; 358; rkB/s; 6434; 6534; wkB/s; 18; 88; dkB/s; 0; 0; rd_ticks; 1259; 1459; wr_ticks; 181; 381; dc_ticks; 0; 0; tot_ticks; 1210; 1410; aqu-sz; 1440; 1740;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
-# name; A_NET_DEV; nr_curr; 5; nr_alloc; 10; nr_ini; 5
+# name; A_NET_DEV; nr_curr; 6; nr_alloc; 12; nr_ini; 6
 13:20:19 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:19 UTC; IFACE; virbr0-nic; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:19 UTC; IFACE; enp6s0; rxpck/s; 167307; 167307; txpck/s; 54567; 54567; rxkB/s; 205916976; 205916976; txkB/s; 10811120; 10811120; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 2891; 2891; speed; 1000; duplex; 2;
-13:20:19 UTC; IFACE; virbr0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
-13:20:19 UTC; IFACE; wlp5s0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
+13:20:19 UTC; IFACE; virbr0; rxpck/s; 100; 200; txpck/s; 0; 0; rxkB/s; 1000; 1800; txkB/s; 20; 120; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 80; 680; speed; 0; duplex; 0;
+13:20:19 UTC; IFACE; virbr0-1; rxpck/s; 1800; 2500; txpck/s; 0; 0; rxkB/s; 21000; 24000; txkB/s; 2001; 6001; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 2280; 12280; speed; 0; duplex; 0;
+13:20:19 UTC; IFACE; wlp5s0; rxpck/s; 55481; 55981; txpck/s; 21420; 22420; rxkB/s; 60065311; 60075311; txkB/s; 2446402; 2449402; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 2558; 3558; speed; 0; duplex; 0;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
-# name; A_NET_DEV; nr_curr; 5; nr_alloc; 10; nr_ini; 5
+# name; A_NET_DEV; nr_curr; 6; nr_alloc; 12; nr_ini; 6
 13:20:29 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:29 UTC; IFACE; virbr0-nic; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:29 UTC; IFACE [BCK]; enp6s0; rxpck/s; 0; 1673; txpck/s; 0; 545; rxkB/s; 0; 2059169; txkB/s; 0; 108111; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 289; speed; 1000; duplex; 2;
-13:20:29 UTC; IFACE; virbr0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
-13:20:29 UTC; IFACE; wlp5s0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
+13:20:29 UTC; IFACE; virbr0; rxpck/s; 200; 700; txpck/s; 0; 0; rxkB/s; 1800; 2100; txkB/s; 120; 190; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 680; 1280; speed; 0; duplex; 0;
+13:20:29 UTC; IFACE; virbr0-1; rxpck/s; 2500; 2680; txpck/s; 0; 0; rxkB/s; 24000; 25000; txkB/s; 6001; 6501; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 12280; 13280; speed; 0; duplex; 0;
+13:20:29 UTC; IFACE; wlp5s0; rxpck/s; 55981; 56181; txpck/s; 22420; 23420; rxkB/s; 60075311; 60079311; txkB/s; 2449402; 2451402; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 3558; 3858; speed; 0; duplex; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
-# name; A_NET_DEV; nr_curr; 6; nr_alloc; 10; nr_ini; 5
+# name; A_NET_DEV; nr_curr; 6; nr_alloc; 12; nr_ini; 6
 13:20:39 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:39 UTC; IFACE; enp6s0; rxpck/s; 1673; 1673; txpck/s; 545; 545; rxkB/s; 2059169; 2059169; txkB/s; 108111; 108111; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 289; 289; speed; 1000; duplex; 2;
 13:20:39 UTC; IFACE [NEW]; enp6s1; rxpck/s; 0; 73; txpck/s; 0; 45; rxkB/s; 0; 9169; txkB/s; 0; 8111; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 89; speed; 1000; duplex; 2;
-13:20:39 UTC; IFACE; virbr0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
-13:20:39 UTC; IFACE; wlp5s0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
+13:20:39 UTC; IFACE; virbr0-1; rxpck/s; 2680; 2980; txpck/s; 0; 0; rxkB/s; 25000; 25800; txkB/s; 6501; 6601; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 13280; 13380; speed; 0; duplex; 0;
+13:20:39 UTC; IFACE [BCK]; wlp5s0; rxpck/s; 0; 981; txpck/s; 0; 420; rxkB/s; 0; 9311; txkB/s; 0; 1402; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 58; speed; 0; duplex; 0;
 13:20:39 UTC; IFACE [NEW]; wlp5s1; rxpck/s; 0; 15; txpck/s; 0; 5; rxkB/s; 0; 1000; txkB/s; 0; 250; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
-# name; A_NET_DEV; nr_curr; 7; nr_alloc; 10; nr_ini; 5
+# name; A_NET_DEV; nr_curr; 8; nr_alloc; 12; nr_ini; 6
 13:20:49 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:49 UTC; IFACE [NEW]; virbr0-nic; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:20:49 UTC; IFACE; enp6s0; rxpck/s; 1673; 167307; txpck/s; 545; 54567; rxkB/s; 2059169; 205916976; txkB/s; 108111; 10811120; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 289; 2891; speed; 1000; duplex; 2;
 13:20:49 UTC; IFACE; enp6s1; rxpck/s; 73; 73; txpck/s; 45; 45; rxkB/s; 9169; 9169; txkB/s; 8111; 8111; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 89; 89; speed; 1000; duplex; 2;
-13:20:49 UTC; IFACE; virbr0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
-13:20:49 UTC; IFACE; wlp5s0; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
+13:20:49 UTC; IFACE [NEW]; virbr0; rxpck/s; 0; 282; txpck/s; 0; 282; rxkB/s; 0; 27434; txkB/s; 0; 27434; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
+13:20:49 UTC; IFACE; virbr0-1; rxpck/s; 2980; 2980; txpck/s; 0; 0; rxkB/s; 25800; 25800; txkB/s; 6601; 6601; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 13380; 13380; speed; 0; duplex; 0;
+13:20:49 UTC; IFACE; wlp5s0; rxpck/s; 981; 981; txpck/s; 420; 420; rxkB/s; 9311; 9311; txkB/s; 1402; 1402; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 58; 58; speed; 0; duplex; 0;
 13:20:49 UTC; IFACE; wlp5s1; rxpck/s; 15; 15; txpck/s; 5; 5; rxkB/s; 1000; 1000; txkB/s; 250; 250; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
-# name; A_NET_EDEV; nr_curr; 5; nr_alloc; 10; nr_ini; 5
+# name; A_NET_EDEV; nr_curr; 6; nr_alloc; 12; nr_ini; 6
 13:20:19 UTC; IFACE; lo; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:19 UTC; IFACE; virbr0-nic; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:19 UTC; IFACE; enp6s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:19 UTC; IFACE; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:19 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:19 UTC; IFACE; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 50; 70; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 10; 90; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:19 UTC; IFACE; virbr0-1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 150; 250; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 250; 280; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:19 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 848; 948; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
-# name; A_NET_EDEV; nr_curr; 5; nr_alloc; 10; nr_ini; 5
+# name; A_NET_EDEV; nr_curr; 6; nr_alloc; 12; nr_ini; 6
 13:20:29 UTC; IFACE; lo; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:29 UTC; IFACE; virbr0-nic; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:29 UTC; IFACE; enp6s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:29 UTC; IFACE; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:29 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:29 UTC; IFACE; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 70; 70; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 90; 170; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:29 UTC; IFACE; virbr0-1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 250; 255; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 280; 280; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:29 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 948; 1248; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
-# name; A_NET_EDEV; nr_curr; 6; nr_alloc; 10; nr_ini; 5
+# name; A_NET_EDEV; nr_curr; 6; nr_alloc; 12; nr_ini; 6
 13:20:39 UTC; IFACE; lo; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:39 UTC; IFACE; enp6s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:39 UTC; IFACE [NEW]; enp6s1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:39 UTC; IFACE; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:39 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:39 UTC; IFACE; virbr0-1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 255; 267; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 280; 289; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:39 UTC; IFACE [BCK]; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 248; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:39 UTC; IFACE [NEW]; wlp5s1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 10; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
-# name; A_NET_EDEV; nr_curr; 7; nr_alloc; 10; nr_ini; 5
+# name; A_NET_EDEV; nr_curr; 8; nr_alloc; 12; nr_ini; 6
 13:20:49 UTC; IFACE; lo; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:49 UTC; IFACE [NEW]; virbr0-nic; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:49 UTC; IFACE; enp6s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:49 UTC; IFACE; enp6s1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:49 UTC; IFACE; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
-13:20:49 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:49 UTC; IFACE [NEW]; virbr0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:49 UTC; IFACE; virbr0-1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 267; 267; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 289; 289; rxfifo/s; 0; 0; txfifo/s; 0; 0;
+13:20:49 UTC; IFACE; wlp5s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 248; 248; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:20:49 UTC; IFACE; wlp5s1; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 10; 10; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
@@ -3216,7 +3233,7 @@
 13:54:35 UTC; TTY; 0; rcvin/s; 32543; 32543; xmtin/s; 14323; 14323; framerr/s; 123; 123; prtyerr/s; 123; 123; brk/s; 42; 42; ovrun/s; 13; 13;
 13:54:35 UTC; TTY; 1; rcvin/s; 0; 0; xmtin/s; 0; 0; framerr/s; 0; 0; prtyerr/s; 0; 0; brk/s; 0; 0; ovrun/s; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_DISK; nr_curr; 15; nr_alloc; 19; nr_ini; 19
+# name; A_DISK; nr_curr; 15; nr_alloc; 22; nr_ini; 22
 13:54:35 UTC; major; 8; minor; 0; DEV; sda; tps; 61881; 61931; rkB/s; 3195498; 3195498; wkB/s; 821088; 821088; dkB/s; 100; 150; rd_ticks; 623970; 623970; wr_ticks; 117109; 117109; dc_ticks; 100; 150; tot_ticks; 32862; 32862; aqu-sz; 714408; 714408;
 13:54:35 UTC; major; 8; minor; 1; DEV; sda1; tps; 151; 201; rkB/s; 4216; 4216; wkB/s; 0; 0; dkB/s; 100; 150; rd_ticks; 3107; 3107; wr_ticks; 0; 0; dc_ticks; 100; 150; tot_ticks; 41; 41; aqu-sz; 3086; 3086;
 13:54:35 UTC; major; 8; minor; 2; DEV; sda2; tps; 47; 47; rkB/s; 4184; 4184; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 2938; 2938; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 33; 33; aqu-sz; 2917; 2917;
@@ -3233,7 +3250,7 @@
 13:54:35 UTC; major; 202; minor; 240; DEV; xvdp; tps; 82; 92; rkB/s; 3096; 4096; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 82; 92; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 52; 62; aqu-sz; 44; 54;
 13:54:35 UTC; major; 202; minor; 4096; DEV; xvdiw; tps; 52; 62; rkB/s; 2096; 3096; wkB/s; 0; 0; dkB/s; 0; 0; rd_ticks; 31; 41; wr_ticks; 0; 0; dc_ticks; 0; 0; tot_ticks; 20; 30; aqu-sz; 40; 50;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_NET_DEV; nr_curr; 9; nr_alloc; 10; nr_ini; 5
+# name; A_NET_DEV; nr_curr; 9; nr_alloc; 12; nr_ini; 6
 13:54:35 UTC; IFACE; lo; rxpck/s; 95831; 95831; txpck/s; 95831; 95831; rxkB/s; 81228574; 81228574; txkB/s; 81228574; 81228574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:54:35 UTC; IFACE; virbr0-nic; rxpck/s; 0; 0; txpck/s; 0; 0; rxkB/s; 0; 0; txkB/s; 0; 0; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:54:35 UTC; IFACE; enp6s0; rxpck/s; 167307; 167307; txpck/s; 54567; 54567; rxkB/s; 205916976; 205916976; txkB/s; 10811120; 10811120; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 2891; 2891; speed; 1000; duplex; 2;
@@ -3244,7 +3261,7 @@
 13:54:35 UTC; IFACE; wlp5s1; rxpck/s; 15; 5831; txpck/s; 5; 5831; rxkB/s; 1000; 28574; txkB/s; 250; 828574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 13:54:35 UTC; IFACE; wlp5s2; rxpck/s; 15; 5831; txpck/s; 5; 5831; rxkB/s; 2000; 18574; txkB/s; 350; 828574; rxcmp/s; 0; 0; txcmp/s; 0; 0; rxmcst/s; 0; 0; speed; 0; duplex; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_NET_EDEV; nr_curr; 9; nr_alloc; 10; nr_ini; 5
+# name; A_NET_EDEV; nr_curr; 9; nr_alloc; 12; nr_ini; 6
 13:54:35 UTC; IFACE; lo; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:54:35 UTC; IFACE; virbr0-nic; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;
 13:54:35 UTC; IFACE; enp6s0; rxerr/s; 0; 0; txerr/s; 0; 0; coll/s; 0; 0; rxdrop/s; 0; 0; txdrop/s; 0; 0; txcarr/s; 0; 0; rxfram/s; 0; 0; rxfifo/s; 0; 0; txfifo/s; 0; 0;

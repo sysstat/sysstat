@@ -6,6 +6,9 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
 sda               8.59    279.22     1.75   12.00    32.51    0.10   0.46
 sdb               0.01      0.29     0.00   60.92    41.33    0.00   0.00
+sdq               8.07    247.31     0.45   12.84    30.65    0.10   0.45
+sdr               2.77     49.41     2.29   15.05    17.83    0.05   1.35
+sds               0.15      1.20     0.17    3.60     7.77    0.00   0.01
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -14,6 +17,9 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
 sda               0.00      0.00     0.00    0.00     0.00    0.00   0.00
 sdb               0.00      0.00     0.00    0.00     0.00    0.00   0.00
+sdq               9.62     23.90     5.77   13.00     2.48    0.01   0.96
+sdr               4.81     20.85     6.42   15.33     4.33    0.06   6.42
+sds               6.42     19.25     6.42    8.50     3.00    0.04   0.32
 
 
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -23,5 +29,8 @@ Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
 sda               6.40      3.20     6.40    1.00     0.50    0.00   0.32
 sdb               0.67     22.60     0.00   47.00    33.62    0.10   0.05
 sdd               1.63     67.48     0.00   55.08    41.33    0.09   0.13
+sdq              38.41     64.02     6.40    1.67     1.67    0.00   0.00
+sdr               8.32      9.60     8.32    2.69     1.15    0.03   2.94
+sds               4.45      3.04     4.90    1.37     0.68    0.03   0.32
 
 

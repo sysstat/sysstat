@@ -1,0 +1,10 @@
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo: 81228574   95831    0    0    0     0          0         0 81228574   95831    0    0    0     0       0          0
+virbr0-nic:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+enp6s0: 205916976  167307    0    0    0     0          0      2891 10811120   54567    0    0    0     0       0          0
+enp6s1: 9169  73    0    0    0     0          0      89 8111   45    0    0    0     0       0          0
+virbr0:   29434     882    0    0    0     0          0         0    39434    1282    0    0    0     0       0          0
+virbr0-1:   27800    3180    0    0    0   309          0     13780     6901       0    0    0    0   287       0          0
+wlp5s0:   9811   1181    0  278    0     0          0       88    1802     920    0    0    0     0       0          0
+wlp5s1:      1000       15    0    0    0     0          0         0        250       5    0    0    0     10       0          0

@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -O debug -- -d --dev=sdq,sdr -n DEV,EDEV --iface=virbr0,virbr0-1 > tests/out2.sadf-disc.tmp && diff -u tests/expected2.sadf-disc tests/out2.sadf-disc.tmp
