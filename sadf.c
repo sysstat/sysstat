@@ -243,7 +243,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 
 	/* Read current record */
 	if ((rc = read_record_hdr(ifd, rec_hdr_tmp, &record_hdr[curr], &file_hdr,
-			    arch_64, endian_mismatch, oneof, sizeof(rec_hdr_tmp), flags)) != 0)
+				  arch_64, endian_mismatch, oneof, sizeof(rec_hdr_tmp), flags,
+				  fmt[f_position])) != 0)
 		/* End of sa file */
 		return rc;
 
@@ -1608,7 +1609,7 @@ int main(int argc, char **argv)
 					flags |= S_F_SVG_SHOW_INFO;
 				}
 				else if (!strcmp(t, K_DEBUG)) {
-					flags |= S_F_RAW_DEBUG_MODE;
+					flags |= S_F_DEBUG_MODE;
 				}
 				else if (!strncmp(t, K_HEIGHT, strlen(K_HEIGHT))) {
 					v = t + strlen(K_HEIGHT);

@@ -117,7 +117,7 @@
 #define S_F_OPTION_A		0x10000000
 #define S_F_OPTION_P		0x20000000
 #define S_F_OPTION_I		0x40000000
-#define S_F_RAW_DEBUG_MODE	0x80000000
+#define S_F_DEBUG_MODE		0x80000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -138,7 +138,7 @@
 #define USE_PREFD_TIME_OUTPUT(m)	(((m) & S_F_PREFD_TIME_OUTPUT)   == S_F_PREFD_TIME_OUTPUT)
 #define SKIP_EMPTY_VIEWS(m)		(((m) & S_F_SVG_SKIP)     == S_F_SVG_SKIP)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & S_F_ZERO_OMIT)    == S_F_ZERO_OMIT)
-#define DISPLAY_DEBUG_MODE(m)		(((m) & S_F_RAW_DEBUG_MODE) == S_F_RAW_DEBUG_MODE)
+#define DISPLAY_DEBUG_MODE(m)		(((m) & S_F_DEBUG_MODE)   == S_F_DEBUG_MODE)
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
 #define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)  == S_F_SVG_ONE_DAY)
 #define DISPLAY_IDLE(m)			(((m) & S_F_SVG_SHOW_IDLE) == S_F_SVG_SHOW_IDLE)
@@ -332,6 +332,28 @@
 #define __read_funct_t	void
 /* Type for all functions displaying statistics */
 #define __print_funct_t void
+
+/*
+ ***************************************************************************
+ * Output formats for sadf
+ ***************************************************************************
+ */
+
+/* Number of output formats */
+#define NR_FMT	9
+
+/* Output formats */
+#define F_SAR_OUTPUT	0
+#define F_DB_OUTPUT	1
+#define F_HEADER_OUTPUT	2
+#define F_PPC_OUTPUT	3
+#define F_XML_OUTPUT	4
+#define F_JSON_OUTPUT	5
+#define F_CONV_OUTPUT	6
+#define F_SVG_OUTPUT	7
+#define F_RAW_OUTPUT	8
+#define F_PCP_OUTPUT	9
+
 
 /* Structure for SVG specific parameters */
 struct svg_parm {
@@ -1549,7 +1571,7 @@ __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int,
-	 int, size_t, uint64_t);
+	 int, size_t, uint64_t, struct report_format *);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
 void replace_nonprintable_char

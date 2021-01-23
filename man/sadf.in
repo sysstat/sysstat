@@ -165,6 +165,8 @@ Use a customizable color palette instead of the default one to draw
 the graphs. See environment variable
 .B S_COLORS_PALETTE
 below to know how to customize that palette.
+.IP debug
+Add helpful comments in SVG output file.
 .TP
 .RI "height=" "value"
 Set SVG canvas height to
