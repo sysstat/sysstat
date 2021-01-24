@@ -968,7 +968,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			*reset = FALSE;
 		}
 	}
-	while (!*eosaf);
+	while (!*eosaf && *cnt);
 
 	*reset = TRUE;
 
