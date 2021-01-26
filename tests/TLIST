@@ -120,6 +120,7 @@ NOTES:
 00560	LC_ALL=C ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
 00580	LC_ALL=C ./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
+00585	LC_ALL=C ./sadf -d --iface=enp6s0 tests/data-long.tmp -- -n DEV 65 > tests/out.sadf-i.tmp
 00590	LC_ALL=C ./sadf -l -O pcparchive=tests/pcpar tests/data.tmp -C -- -A
 
 =====	Checking sadf conversion

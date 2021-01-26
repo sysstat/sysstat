@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -d --iface=enp6s0 tests/data-long.tmp -- -n DEV 65 > tests/out.sadf-i.tmp && diff -u tests/expected.sadf-i tests/out.sadf-i.tmp

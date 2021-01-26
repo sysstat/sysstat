@@ -681,17 +681,12 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		cross_day = TRUE;
 	}
 
-	/* Check time (2) */
-	if (use_tm_start && (datecmp(rectime, &tm_start, cross_day) < 0))
-		/* it's too soon... */
-		return 0;
-
 	/* Get interval values in 1/100th of a second */
 	get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
 
-	/* Check time (3) */
+	/* Check time (2) */
 	if (use_tm_end && (datecmp(rectime, &tm_end, cross_day) > 0)) {
-		/* It's too late... */
+		/* End time exceeded */
 		*cnt = 0;
 		return 0;
 	}
@@ -968,7 +963,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			*reset = FALSE;
 		}
 	}
-	while (!*eosaf);
+	while (!*eosaf && *cnt);
 
 	*reset = TRUE;
 
