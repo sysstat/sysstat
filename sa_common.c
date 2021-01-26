@@ -570,15 +570,11 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
 	/*
 	 * A few notes about the "algorithm" used here to display selected entries
 	 * from the system activity file (option -f with -i flag):
-	 * Let 'Iu' be the interval value given by the user on the command line,
-	 *     'If' the interval between current and previous line in the system
-	 * activity file,
-	 * and 'En' the nth entry (identified by its time stamp) of the file.
-	 * We choose In = [ En - If/2, En + If/2 [ if If is even,
-	 *        or In = [ En - If/2, En + If/2 ] if not.
-	 * En will be displayed if
-	 *       (Pn * Iu) or (P'n * Iu) belongs to In
-	 * with  Pn = En / Iu and P'n = En / Iu + 1
+	 * Let Iu be the interval value given by the user on the command line,
+	 *     In the interval between current and previous sample,
+	 * and En the current sample (identified by its time stamp) in the file.
+	 * En will ne displayed if there is an integer p so that:
+	 * p * Iu belongs to [En - In/2, En + In/2[.
 	 */
 	f = ((double) ((uptime - uptime_ref) & 0xffffffff)) / 100;
 	entry = (unsigned long) f;
