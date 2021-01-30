@@ -681,15 +681,15 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 		cross_day = TRUE;
 	}
 
-	/* Get interval values in 1/100th of a second */
-	get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
-
 	/* Check time (2) */
 	if (use_tm_end && (datecmp(rectime, &tm_end, cross_day) > 0)) {
 		/* End time exceeded */
 		*cnt = 0;
 		return 0;
 	}
+
+	/* Get interval values in 1/100th of a second */
+	get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
 
 	dt = itv / 100;
 	/* Correct rounding error for dt */
