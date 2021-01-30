@@ -244,6 +244,7 @@ echo .
 #  --disable-stripping      do not strip object files
 #  --enable-copy-only       only copy files when installing sysstat
 #  --enable-use-crond       use standard cron daemon
+#  --enable-lto	            compile with Link Time Optimizations
 #
 # Some influential environment variables:
 #  rcdir         directory where startup scripts are installed
@@ -450,6 +451,25 @@ if test $NLS = "y" && test $LACKING_GETTEXT = "y"; then
    NLS="n"
 fi
 AC_SUBST(NLS)
+
+# Link Time Optimization
+AC_MSG_CHECKING(Link Time Optimization support)
+AC_ARG_ENABLE(lto,
+	      AC_HELP_STRING([--enable-lto],
+			     [enable Link Time Optimization]),
+			     AUX_LTO=$enableval,AUX_LTO=no)
+AC_MSG_RESULT($AUX_LTO)
+LTO="n"
+if test $AUX_LTO = "yes"; then
+	AC_CHECK_PROG(GCC_AR, gcc-ar, gcc-ar)
+	if test x$GCC_AR != x"gcc-ar"; then
+		echo "WARNING: gcc-ar command not found! Disabling LTO support"
+		AUX_LTO="no"
+	else
+		LTO="y"
+	fi
+fi
+AC_SUBST(LTO)
 
 # Data history to keep by sa2
 AC_MSG_CHECKING(number of daily data files to keep)

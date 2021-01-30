@@ -1,0 +1,7 @@
+
+Link Time Optimization (LTO) gives the compiler the opportunity to optimize
+as a single module all the different compilation units that make up a single
+executable. The downside is an increased compile time.
+Answer y to compile sysstat commands with link time optimizations.
+The default answer is n (no).
+

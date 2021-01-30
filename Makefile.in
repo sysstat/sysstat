@@ -160,6 +160,19 @@ ifdef REQUIRE_NLS
 	DFLAGS += $(REQUIRE_NLS)
 endif
 
+ifndef LTO
+LTO = @LTO@
+endif
+ifndef GCC_AR
+GCC_AR = @GCC_AR@
+endif
+ifeq ($(LTO),y)
+AR = $(GCC_AR)
+CFLAGS += -flto
+LD = gcc
+LDFLAGS += $(CFLAGS)
+endif
+
 ifndef INSTALL_CRON
 INSTALL_CRON = @INSTALL_CRON@
 endif

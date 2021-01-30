@@ -64,6 +64,15 @@ else
 	echo "Parameter --disable-nls is NOT set"
 fi
 
+# Link Time Optimization support
+LTO=`${ASK} 'Compile with Link Time Optimizations (LTO)? (y/n)' "--enable-lto" "lto"`
+if [ "${LTO}" = "y" ]; then
+	LTO="--enable-lto "
+else
+	LTO=""
+	echo "Parameter --enable-lto is NOT set"
+fi
+
 # Sensors support
 SENSORS=`${ASK} 'Disable sensors support? (y/n)' "--disable-sensors" "sensors"`
 if [ "${SENSORS}" = "y" ]; then
@@ -228,7 +237,7 @@ fi
 
 echo
 echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
-${CLEAN_SA_DIR}${NLS}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
+${CLEAN_SA_DIR}${NLS}${LTO}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
 ${CRON}${USE_CROND}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
@@ -238,7 +247,7 @@ echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${PCP}${STRIP}${COPY_O
 echo
 
 ./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
-${CLEAN_SA_DIR}${NLS} \
+${CLEAN_SA_DIR}${NLS}${LTO} \
 ${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}
