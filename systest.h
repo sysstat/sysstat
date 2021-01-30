@@ -66,7 +66,7 @@
 #define __major(m)		major(m)
 #define __minor(m)		minor(m)
 
-#endif
+#endif	/* TEST */
 
 /*
  ***************************************************************************
@@ -103,6 +103,6 @@ int virtual_stat
 
 void int_handler
 	(int);
-#endif
+#endif /* TEST */
 
 #endif  /* _SYSTEST_H */

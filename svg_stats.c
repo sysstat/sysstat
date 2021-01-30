@@ -37,7 +37,7 @@
 #define _(string) (string)
 #endif
 
-extern unsigned int flags;
+extern uint64_t flags;
 extern int palette;
 
 unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =

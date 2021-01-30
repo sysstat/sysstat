@@ -28,7 +28,7 @@
 #include "ioconf.h"
 #include "raw_stats.h"
 
-extern unsigned int flags;
+extern uint64_t flags;
 
 /*
  ***************************************************************************

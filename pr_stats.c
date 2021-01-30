@@ -36,7 +36,7 @@
 #define _(string) (string)
 #endif
 
-extern unsigned int flags;
+extern uint64_t flags;
 extern int  dish;
 extern char timestamp[][TIMESTAMP_LEN];
 extern unsigned long avg_count;
