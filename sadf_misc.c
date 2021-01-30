@@ -41,7 +41,7 @@
 
 extern char *tzname[2];
 
-extern unsigned int flags;
+extern uint64_t flags;
 extern char *seps[];
 
 extern int palette;

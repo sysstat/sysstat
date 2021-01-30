@@ -30,7 +30,7 @@
 #define _(string) (string)
 #endif
 
-extern unsigned int flags;
+extern uint64_t flags;
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
