@@ -1496,6 +1496,17 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 			       record_hdr->hour, record_hdr->minute, record_hdr->second);
 		}
 
+		/* Sanity checks */
+		if ((record_hdr->record_type <= 0) || (record_hdr->record_type > R_EXTRA_MAX) ||
+		    (record_hdr->hour > 23) || (record_hdr->minute > 59) || (record_hdr->second > 60)) {
+#ifdef DEBUG
+			fprintf(stderr, "%s: record_type=%d HH:MM:SS=%02d:%02d:%02d\n",
+				__FUNCTION__, record_hdr->record_type,
+				record_hdr->hour, record_hdr->minute, record_hdr->second);
+#endif
+			return 2;
+		}
+
 		/*
 		 * Skip unknown extra structures if present.
 		 * This will be done later for R_COMMENT and R_RESTART records, as extra structures
@@ -1977,7 +1988,8 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 
 		/*
 		 * Every activity, known or unknown, should have
-		 * at least one item and sub-item, and a positive size value.
+		 * at least one item and sub-item, and a size value in
+		 * a defined range.
 		 * Also check that the number of items and sub-items
 		 * doesn't exceed a max value. This is necessary
 		 * because we will use @nr and @nr2 to
@@ -1988,10 +2000,10 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		 */
 		if ((fal->nr < 1) || (fal->nr2 < 1) ||
 		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX) ||
-		    (fal->size <= 0)) {
+		    (fal->size <= 0) || (fal->size > MAX_ITEM_STRUCT_SIZE)) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: id=%d nr=%d nr2=%d\n",
-				__FUNCTION__, fal->id, fal->nr, fal->nr2);
+			fprintf(stderr, "%s: id=%d nr=%d nr2=%d size=%d\n",
+				__FUNCTION__, fal->id, fal->nr, fal->nr2, fal->size);
 #endif
 			goto format_error;
 		}
