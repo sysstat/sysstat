@@ -435,37 +435,6 @@ int check_dir(char *dirname)
 #ifndef SOURCE_SADC
 /*
  ***************************************************************************
- * Count number of comma-separated values in arguments list. For example,
- * the number will be 3 for the list "foobar -p 1 -p 2,3,4 2 5".
- *
- * IN:
- * @arg_c	Number of arguments in the list.
- * @arg_v	Arguments list.
- *
- * RETURNS:
- * Number of comma-separated values in the list.
- ***************************************************************************
- */
-int count_csvalues(int arg_c, char **arg_v)
-{
-	int opt = 1;
-	int nr = 0;
-	char *t;
-
-	while (opt < arg_c) {
-		if (strchr(arg_v[opt], ',')) {
-			for (t = arg_v[opt]; t; t = strchr(t + 1, ',')) {
-				nr++;
-			}
-		}
-		opt++;
-	}
-
-	return nr;
-}
-
-/*
- ***************************************************************************
  * Read /proc/devices file and get device-mapper major number.
  * If device-mapper entry is not found in file, assume it's not active.
  *
