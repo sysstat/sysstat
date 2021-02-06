@@ -14,16 +14,10 @@
  ***************************************************************************
  */
 
-/* Get IFNAMSIZ */
-#include <net/if.h>
-#ifndef IFNAMSIZ
-#define IFNAMSIZ	16
-#endif
-
 /* Maximum length of block device name */
 #define MAX_DEV_LEN	128
 /* Maximum length of network interface name */
-#define MAX_IFACE_LEN	IFNAMSIZ
+#define MAX_IFACE_LEN	16
 /* Maximum length of USB manufacturer string */
 #define MAX_MANUF_LEN	24
 /* Maximum length of USB product string */
