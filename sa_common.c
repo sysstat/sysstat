@@ -2668,39 +2668,6 @@ void set_bitmaps(struct activity *act[], uint64_t *flags)
 
 /*
  ***************************************************************************
- * Count number of comma-separated values in arguments list. For example,
- * the number will be 3 for "sar --dev=sda,sdb,sdc -dp 2 5", 1 for
- * "sar --dev=sda -dp 2 5" and 0 for "sar --dev= -dp 2 5".
- *
- * IN:
- * @arg_v	Argument containing the list of coma-separated values.
- *
- * RETURNS:
- * Number of comma-separated values in the list.
- ***************************************************************************
- */
-int count_csval_arg(char *arg_v)
-{
-	int nr = 0;
-	char *t;
-
-	if (arg_v[0] == '\0')
-		return 0;
-
-	if (strchr(arg_v, ',')) {
-		for (t = arg_v; t; t = strchr(t + 1, ',')) {
-			nr++;
-		}
-	}
-	if (!nr) {
-		nr = 1;
-	}
-
-	return nr;
-}
-
-/*
- ***************************************************************************
  * Look for item in list.
  *
  * IN:
