@@ -681,6 +681,8 @@ struct file_activity {
 #define FILE_ACTIVITY_UL_NR	0	/* Nr of unsigned long in file_activity structure */
 #define FILE_ACTIVITY_U_NR	9	/* Nr of [unsigned] int in file_activity structure */
 
+#define MAX_ITEM_STRUCT_SIZE	1024	/* Used for sanity check */
+
 /*
  * Description of an extra structure.
  * The composition of this structure should not change in time.
@@ -764,7 +766,7 @@ struct record_header {
 	 */
 	unsigned char record_type;
 	/*
-	 * Timestamp: Hour (0-23), minute (0-59) and second (0-59).
+	 * Timestamp: Hour (0-23), minute (0-59) and second (0-60).
 	 * Used to determine TRUE time.
 	 * Hour value depends in fact on timezone (TZ variable) value.
 	 */

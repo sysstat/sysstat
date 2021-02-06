@@ -338,8 +338,8 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 				a_cpu = TRUE;
 			}
 
-			/* Size of an activity cannot be zero */
-			if (!ofal->size)
+			/* Sanity checks */
+			if (!ofal->size || (ofal->size > MAX_ITEM_STRUCT_SIZE))
 				goto invalid_header;
 
 			/* Size of activity in file is larger than up-to-date activity size */
