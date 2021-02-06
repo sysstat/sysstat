@@ -230,7 +230,7 @@ void check_format_options(void)
  *
  * RETURNS:
  * 1 if EOF has been reached,
- * 2 if an unexpected EOF has been reached,
+ * 2 if an unexpected EOF has been reached, or an error occurred.
  * 0 otherwise.
  ***************************************************************************
  */
@@ -265,8 +265,9 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 				return 2;
 
 			if (action & SET_TIMESTAMPS) {
-				sa_get_record_timestamp_struct(flags, &record_hdr[curr],
-							       rectime);
+				if (sa_get_record_timestamp_struct(flags, &record_hdr[curr],
+								   rectime))
+					return 2;
 			}
 		}
 		else {
@@ -293,7 +294,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 					return 2;
 			}
 			if (action & SET_TIMESTAMPS) {
-				sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime);
+				if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime))
+					return 2;
 			}
 		}
 		else {
@@ -312,7 +314,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		if (read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr, file_actlst,
 					 endian_mismatch, arch_64, file, file_magic, oneof) > 0)
 			return 2;
-		sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime);
+		if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime))
+			return 2;
 	}
 
 	return 0;

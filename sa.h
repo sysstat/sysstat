@@ -1486,7 +1486,7 @@ void handle_invalid_sa_file
 	(int, struct file_magic *, char *, int);
 void print_collect_error
 	(void);
-int set_default_file
+void set_default_file
 	(char *, int, int);
 int skip_extra_struct
 	(int, int, int);

@@ -800,8 +800,10 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 
 		if (rtype != R_COMMENT) {
 			/* Read the extra fields since it's not a special record */
-			read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
-					     endian_mismatch, arch_64, file, file_magic, UEOF_STOP);
+			if (read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
+						 endian_mismatch, arch_64, file, file_magic, UEOF_STOP))
+				/* Error or unexpected EOF */
+				break;
 		}
 		else {
 			/* Display comment */
@@ -1045,9 +1047,12 @@ void read_stats_from_file(char from_file[])
 				 * OK: Previous record was not a special one.
 				 * So read now the extra fields.
 				 */
-				read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
-						     file_actlst, endian_mismatch, arch_64,
-						     from_file, &file_magic, UEOF_STOP);
+				if (read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
+							 file_actlst, endian_mismatch, arch_64,
+							 from_file, &file_magic, UEOF_STOP))
+					/* Possible unexpected EOF */
+					return;
+
 				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
 								   &record_hdr[0], &rectime))
 					/*
@@ -1133,9 +1138,11 @@ void read_stats_from_file(char from_file[])
 					break;
 
 				if (rtype != R_COMMENT) {
-					read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
-							     file_actlst, endian_mismatch, arch_64,
-							     from_file, &file_magic, UEOF_STOP);
+					if (read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
+								 file_actlst, endian_mismatch, arch_64,
+								 from_file, &file_magic, UEOF_STOP))
+						/* Possible unexpected EOF */
+						break;
 				}
 				else {
 					/* This was a COMMENT record: Print it */

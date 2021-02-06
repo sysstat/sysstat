@@ -198,13 +198,9 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
  *
  * OUT:
  * @datafile	Name of daily data file.
- *
- * RETURNS:
- * 1 if an output error has been encountered or if datafile name has been
- * truncated, or 0 otherwise.
  ***************************************************************************
  */
-int set_default_file(char *datafile, int d_off, int sa_name)
+void set_default_file(char *datafile, int d_off, int sa_name)
 {
 	char sa_dir[MAX_FILE_LEN];
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
@@ -243,13 +239,17 @@ int set_default_file(char *datafile, int d_off, int sa_name)
 			       rectime.tm_mday);
 	}
 	datafile[MAX_FILE_LEN - 1] = '\0';
+
+	if ((err < 0) || (err >= MAX_FILE_LEN)) {
+		fprintf(stderr, "%s: %s\n", __FUNCTION__, datafile);
+		exit(1);
+	}
+
 	default_file_used = TRUE;
 
 #ifdef DEBUG
 	fprintf(stderr, "%s: Datafile: %s\n", __FUNCTION__, datafile);
 #endif
-
-	return ((err < 0) || (err >= MAX_FILE_LEN));
 }
 
 /*
