@@ -84,6 +84,9 @@ LFLAGS = @STRIP@
 DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
 DFLAGS += $(DFSENSORS)
 DFLAGS += $(DFPCP)
+ifdef TFLAGS
+DFLAGS += $(TFLAGS)
+endif
 
 # Commands
 ifndef MSGFMT
@@ -667,6 +670,8 @@ unit:
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
 # Use "do_test" script to make the following target
+simtest: DFLAGS += -DTEST
+
 simtest: all testcomp
 	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 	rm -f tests/root
@@ -676,7 +681,7 @@ simtest: all testcomp
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp
 	rm -f nfsiostat* man/nfsiostat*
-	rm -f tests/sa[012]*
+	rm -f tests/sa[0123]*
 	rm -f tests/root
 	ln -s root1 tests/root
 	rm -f tests/ini/inisar
