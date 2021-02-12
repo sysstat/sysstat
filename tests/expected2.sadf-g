@@ -1758,7 +1758,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,6.40 L48039,1604.70 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.124634)"/>
+<path d=" M48019,0.00 L48029,6.40 M48039,1604.70 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.124634)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Block devices statistics (2) [sda]
@@ -1807,9 +1807,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,1.60 L48039,41499.97 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.004819)"/>
-<path d=" M48019,0.00 L48029,1.60 L48039,10663.48 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.004819)"/>
-<path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.80" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-48.192801)"/>
+<path d=" M48019,0.00 L48029,1.60 M48039,41499.97 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.004819)"/>
+<path d=" M48019,0.00 L48029,1.60 M48039,10663.48 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.004819)"/>
+<path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.80" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-48.192801)"/>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="2120" y="20" style="fill: #000000; stroke: none">Block devices statistics (3) [sda]
@@ -1855,8 +1855,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,0.50 L48039,32.51 L48049,0.00 M50075,0.50" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.152588)"/>
-<path d=" M48019,0.00 L48029,0.00 L48039,18.56 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.152588)"/>
+<path d=" M48019,0.00 L48029,0.50 M48039,32.51 L48049,0.00 M50075,0.50" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.152588)"/>
+<path d=" M48019,0.00 L48029,0.00 M48039,18.56 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.152588)"/>
 </g>
 <rect x="3180" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="3180" y="20" style="fill: #000000; stroke: none">Block devices statistics (4) [sda]
@@ -1901,7 +1901,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,1.00 L48039,12.00 L48049,0.00 M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-16.673256)"/>
+<path d=" M48019,0.00 L48029,1.00 M48039,12.00 L48049,0.00 M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-16.673256)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="4240" y="20" style="fill: #000000; stroke: none">Block devices statistics (5) [sda]
@@ -1997,7 +1997,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,6.40 L48039,1.32 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-31.240000)"/>
+<path d=" M48019,0.00 L48029,6.40 M48039,1.32 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-31.240000)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Block devices statistics (2) [sda1]
@@ -2048,9 +2048,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,1.60 L48039,54.75 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.652751)"/>
-<path d=" M48019,0.00 L48029,1.60 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-36.527514)"/>
-<path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.80" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-36.527514)"/>
+<path d=" M48019,0.00 L48029,1.60 M48039,54.75 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.652751)"/>
+<path d=" M48019,0.00 L48029,1.60 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-36.527514)"/>
+<path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.80" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-36.527514)"/>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="2120" y="20" style="fill: #000000; stroke: none">Block devices statistics (3) [sda1]
@@ -2098,8 +2098,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,0.50 L48039,41.33 L48049,0.00 M50075,0.50" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.838710)"/>
-<path d=" M48019,0.00 L48029,0.00 L48039,0.08 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-483.870968)"/>
+<path d=" M48019,0.00 L48029,0.50 M48039,41.33 L48049,0.00 M50075,0.50" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.838710)"/>
+<path d=" M48019,0.00 L48029,0.00 M48039,0.08 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-483.870968)"/>
 </g>
 <rect x="3180" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="3180" y="20" style="fill: #000000; stroke: none">Block devices statistics (4) [sda1]
@@ -2144,7 +2144,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,1.00 L48039,60.92 L48049,0.00 M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.282910)"/>
+<path d=" M48019,0.00 L48029,1.00 M48039,60.92 L48049,0.00 M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.282910)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="4240" y="20" style="fill: #000000; stroke: none">Block devices statistics (5) [sda1]
@@ -2240,7 +2240,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,0.67" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-297.523810)"/>
+<path d=" M48019,0.00 M48029,0.67" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-297.523810)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Block devices statistics (2) [sdb]
@@ -2287,9 +2287,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,22.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
-<path d=" M48019,0.00 L48029,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
-<path d=" M48019,0.00 L48029,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
+<path d=" M48019,0.00 M48029,22.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
+<path d=" M48019,0.00 M48029,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
+<path d=" M48019,0.00 M48029,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="2120" y="20" style="fill: #000000; stroke: none">Block devices statistics (3) [sdb]
@@ -2335,8 +2335,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,33.62" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.949008)"/>
-<path d=" M48019,0.00 L48029,0.10" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-594.900850)"/>
+<path d=" M48019,0.00 M48029,33.62" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.949008)"/>
+<path d=" M48019,0.00 M48029,0.10" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-594.900850)"/>
 </g>
 <rect x="3180" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="3180" y="20" style="fill: #000000; stroke: none">Block devices statistics (4) [sdb]
@@ -2383,7 +2383,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,47.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.255319)"/>
+<path d=" M48019,0.00 M48029,47.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.255319)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="4240" y="20" style="fill: #000000; stroke: none">Block devices statistics (5) [sdb]
@@ -3626,8 +3626,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,53.55 L48039,0.00 M48049,7397.68 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.027036)"/>
-<path d=" M48019,0.00 L48029,17.45 L48039,0.00 M48049,2412.77 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.027036)"/>
+<path d=" M48019,0.00 M48029,53.55 L48039,0.00 L48049,7397.68 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.027036)"/>
+<path d=" M48019,0.00 M48029,17.45 L48039,0.00 L48049,2412.77 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.027036)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (2) [enp6s0]
@@ -3675,8 +3675,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,64.37 L48039,0.00 M48049,8891.46 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.022493)"/>
-<path d=" M48019,0.00 L48029,3.38 L48039,0.00 M48049,466.82 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.224935)"/>
+<path d=" M48019,0.00 M48029,64.37 L48039,0.00 L48049,8891.46 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.022493)"/>
+<path d=" M48019,0.00 M48029,3.38 L48039,0.00 L48049,466.82 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.224935)"/>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="2120" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (3) [enp6s0]
@@ -3723,9 +3723,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48019,0.00 L48029,0.00 L48039,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
-<path d=" M48019,0.00 L48029,0.00 L48039,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
-<path d=" M48019,0.00 L48029,9.25 L48039,0.00 M48049,116.21 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
+<path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
+<path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
+<path d=" M48019,0.00 M48029,9.25 L48039,0.00 L48049,116.21 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
 </g>
 <rect x="3180" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="3180" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (4) [enp6s0]
@@ -3826,8 +3826,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48039,1.90 M48049,0.00 M50075,51.33" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.896250)"/>
-<path d=" M48039,1.17 M48049,0.00 M50075,16.04" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.896250)"/>
+<path d=" M48039,1.90 L48049,0.00 M50075,51.33" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.896250)"/>
+<path d=" M48039,1.17 L48049,0.00 M50075,16.04" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.896250)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (2) [enp6s1]
@@ -3873,8 +3873,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48039,0.23 M48049,0.00 M50075,64.23" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.113959)"/>
-<path d=" M48039,0.21 M48049,0.00 M50075,25.16" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.113959)"/>
+<path d=" M48039,0.23 L48049,0.00 M50075,64.23" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.113959)"/>
+<path d=" M48039,0.21 L48049,0.00 M50075,25.16" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.113959)"/>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="2120" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (3) [enp6s1]
@@ -3923,9 +3923,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48039,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
-<path d=" M48039,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
-<path d=" M48039,2.31 M48049,0.00 M50075,89.89" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
+<path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
+<path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
+<path d=" M48039,2.31 L48049,0.00 M50075,89.89" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 </g>
 </g>
 <g id="g12-2" transform="translate(0,9440)">
@@ -3973,8 +3973,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48039,0.39 M48049,0.00 M50075,186.59" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
-<path d=" M48039,0.13 M48049,0.00 M50075,186.91" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
+<path d=" M48039,0.39 L48049,0.00 M50075,186.59" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
+<path d=" M48039,0.13 L48049,0.00 M50075,186.91" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (2) [wlp5s1]
@@ -4020,8 +4020,8 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48039,0.03 M48049,0.00 M50075,0.86" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.066655)"/>
-<path d=" M48039,0.01 M48049,0.00 M50075,25.95" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.706666)"/>
+<path d=" M48039,0.03 L48049,0.00 M50075,0.86" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.066655)"/>
+<path d=" M48039,0.01 L48049,0.00 M50075,25.95" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.706666)"/>
 </g>
 </g>
 <g id="g12-3" transform="translate(0,9750)">
@@ -4313,9 +4313,9 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
-<path d=" M48039,0.26 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
-<path d=" M48039,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
-<path d=" M48039,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
+<path d=" M48039,0.26 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
+<path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
+<path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
 </g>
 </g>
 <g id="g16-0" transform="translate(0,10680)">
