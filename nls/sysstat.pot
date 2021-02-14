@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2020-12-19 09:31+0100\n"
+"POT-Creation-Date: 2021-02-14 10:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: count.c:118 ioconf.c:479 rd_stats.c:83 sa_common.c:1767 sadc.c:733
+#: count.c:118 ioconf.c:479 rd_stats.c:83 sa_common.c:1778 sadc.c:733
 #: sadc.c:796
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -78,7 +78,7 @@ msgid ""
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: iostat.c:2126 sa_common.c:2251
+#: iostat.c:2126 sa_common.c:2263
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -152,12 +152,12 @@ msgstr ""
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1770
+#: sa_common.c:1781
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2123
+#: sa_common.c:2135
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
