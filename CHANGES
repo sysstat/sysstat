@@ -1,5 +1,17 @@
 Changes:
 
+2021/02/14: Version 12.4.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix return code sent by write_stats() function.
+	* sar/sadc: Dereference nr array pointer in struct activity.
+	* sadf: SVG: Make graphs discontinuous for disconnected devices.
+	* sadf: SVG: Fix inadequate discontinuities in some graphs.
+	* sadf: SVG: Use the <count> parameter entered on the command line.
+	* sar/sadc/sadf: Check untrusted values before use.
+	* sar/sadc: Don't use IFNAMSIZ value from <net/if.h>.
+	* Makefile: Define TEST flag when making simulation tests.
+	* Non regression tests results updated.
+	* Update NLS translations.
+
 2020/12/19: Version 12.4.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Aleksei Nikiforov]: Fix alignment and structure size for 32-bit
 	  systems.
