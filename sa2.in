@@ -1,6 +1,6 @@
 #!/bin/sh
 # @SA_LIB_DIR@/sa2
-# (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
+# (C) 1999-2021 Sebastien Godard (sysstat <at> orange.fr)
 #
 #@(#) @PACKAGE_NAME@-@PACKAGE_VERSION@
 #@(#) sa2: Write a daily report
