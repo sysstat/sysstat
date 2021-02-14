@@ -1,5 +1,5 @@
 # Makefile to build sysstat commands
-# (C) 1999-2020 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 1999-2021 Sebastien GODARD (sysstat <at> orange.fr)
 
 # Version and package name
 VERSION = @PACKAGE_VERSION@
@@ -481,7 +481,7 @@ nls/sysstat.pot: $(wildcard *.c)
 	$(XGETTEXT) -o $@ -k_ --msgid-bugs-address="sysstat <at> orange.fr" $^
 
 # Phony targets
-.PHONY: clean distclean install install_base install_all uninstall \
+.PHONY: clean distclean install install_base install_all uninstall copyyear \
 	uninstall_base uninstall_all dist bdist xdist gitdist squeeze simtest extratest
 
 install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
@@ -532,6 +532,15 @@ squeeze:
 		echo "Squeezing file: $$c"; \
 		sed 's/[\t ]*$$//g' $$c > squeeze.tmp; \
 		mv squeeze.tmp $$c; \
+	done
+
+# Update Makefile.in by hand
+copyyear:
+	catalogs="$(SOURCE_CODE) iconfig README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
+	for c in $$catalogs; do \
+		echo "Updating file: $$c"; \
+		sed 's/-2020/-2021/g' $$c > copyyear.tmp; \
+		mv copyyear.tmp $$c; \
 	done
 
 install_nls: locales
