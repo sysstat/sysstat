@@ -534,7 +534,7 @@ squeeze:
 		mv squeeze.tmp $$c; \
 	done
 
-# Update Makefile.in by hand
+# Update Makefile.in by hand - Restore mode for iconfig.
 copyyear:
 	catalogs="$(SOURCE_CODE) iconfig README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
 	for c in $$catalogs; do \
