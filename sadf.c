@@ -764,7 +764,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			else if (format == F_PCP_OUTPUT) {
 				/* PCP archive */
 				if (*act[i]->f_pcp_print) {
-					(*act[i]->f_pcp_print)(act[i], curr, itv, &record_hdr[curr]);
+					(*act[i]->f_pcp_print)(act[i], curr);
 				}
 			}
 
