@@ -2366,15 +2366,14 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	if (!interval) {
 		/* Display since boot time */
 		ps_tstamp[1] = ps_tstamp[0];
-		write_stats(0, DISP_HDR);
-		exit(0);
 	}
 
 	/* Set a handler for SIGALRM */
 	memset(&alrm_act, 0, sizeof(alrm_act));
 	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
-	alarm(interval);
+	if (interval)
+		alarm(interval);
 
 	/* Save the first stats collected. Will be used to compute the average */
 	ps_tstamp[2] = ps_tstamp[0];
@@ -2392,7 +2391,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	__pause();
 
-	if (signal_caught)
+	if (signal_caught && interval)
 		/* SIGINT/SIGCHLD signals caught during first interval: Exit immediately */
 		return;
 
