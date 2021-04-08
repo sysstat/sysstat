@@ -185,7 +185,7 @@ __print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr)
 	pmiPutValue("kernel.all.pswitch", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%lu", spc->processes);
-	pmiPutValue("kernel.all.nprocs", NULL, buf);
+	pmiPutValue("kernel.all.sysfork", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -351,6 +351,12 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr)
 		*smc = (struct stats_memory *) a->buf[curr];
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long)(smc->tlmkb >> 10));
+		pmiPutValue("hinv.physmem", NULL, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb);
+		pmiPutValue("mem.physmem", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->frmkb);
 		pmiPutValue("mem.util.free", NULL, buf);
@@ -526,10 +532,10 @@ __print_funct_t pcp_print_disk_stats(struct activity *a, int curr)
 		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sdc->dc_sect / 2);
 		pmiPutValue("disk.dev.discard_bytes", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->rq_ticks + sdc->wr_ticks);
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->rd_ticks + sdc->wr_ticks);
 		pmiPutValue("disk.dev.total_rawactive", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->rq_ticks);
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->rd_ticks);
 		pmiPutValue("disk.dev.read_rawactive", dev_name, buf);
 
 		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->wr_ticks);
@@ -1502,7 +1508,7 @@ __print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr)
 		sprintf(instance, "temp%d", i + 1);
 
 		snprintf(buf, sizeof(buf), "%f", spc->temp);
-		pmiPutValue("power.temp.celcius", instance, buf);
+		pmiPutValue("power.temp.celsius", instance, buf);
 
 		snprintf(buf, sizeof(buf), "%f",
 			 (spc->temp_max - spc->temp_min) ?

@@ -233,9 +233,9 @@ void pcp_def_pcsw_metrics(void)
 		     pmiID(60, 0, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("kernel.all.nprocs",
-		     pmiID(60, 2, 3), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddMetric("kernel.all.sysfork",
+		     pmiID(60, 0, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -391,6 +391,14 @@ void pcp_def_memory_metrics(struct activity *a)
 #ifdef HAVE_PCP
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
+		pmiAddMetric("hinv.physmem",
+			     pmiID(60, 1, 9), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
+			     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+
+		pmiAddMetric("mem.physmem",
+			     pmiID(60, 1, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_DISCRETE,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
 		pmiAddMetric("mem.util.free",
 			     pmiID(60, 1, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
@@ -490,7 +498,7 @@ void pcp_def_ktables_metrics(void)
 
 	pmiAddMetric("kernel.all.nptys",
 		     pmiID(60, 72, 3), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -657,18 +665,6 @@ void pcp_def_net_dev_metrics(struct activity *a)
 		pmiAddMetric("network.interface.in.mcasts",
 			     pmiID(60, 3, 7), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-		pmiAddMetric("network.interface.speed",
-			     pmiID(60, 3, 22), PM_TYPE_FLOAT, indom, PM_SEM_DISCRETE,
-			     pmiUnits(1, -1, 0, PM_SPACE_MBYTE, PM_TIME_SEC, 0));
-
-		pmiAddMetric("network.interface.baudrate",
-			     pmiID(60, 3, 23), PM_TYPE_U64, indom, PM_SEM_DISCRETE,
-			     pmiUnits(1, -1, 0, PM_SPACE_BYTE, PM_TIME_SEC, 0));
-
-		pmiAddMetric("network.interface.duplex",
-			     pmiID(60, 3, 24), PM_TYPE_U32, indom, PM_SEM_DISCRETE,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 	else {
 		/* Create metrics for A_NET_EDEV */
@@ -1544,7 +1540,7 @@ void pcp_def_pwr_temp_metrics(struct activity *a)
 		}
 	}
 
-	pmiAddMetric("power.temp.celcius",
+	pmiAddMetric("power.temp.celsius",
 		     pmiID(34, 1, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
