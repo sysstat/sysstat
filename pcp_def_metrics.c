@@ -61,73 +61,70 @@ void pcp_def_cpu_metrics(struct activity *a)
 			if (a->id == A_CPU) {
 				/* This is CPU "all" */
 				pmiAddMetric("kernel.all.cpu.user",
-				     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.nice",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.sys",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.idle",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 23), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-				pmiAddMetric("kernel.all.cpu.iowait",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.wait.total",
+					     pmiID(60, 0, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+				pmiAddMetric("kernel.all.cpu.intr",
+					     pmiID(60, 0, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.steal",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 55), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-				pmiAddMetric("kernel.all.cpu.hardirq",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.irq.hard",
+					     pmiID(60, 0, 54), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-				pmiAddMetric("kernel.all.cpu.softirq",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+				pmiAddMetric("kernel.all.cpu.irq.soft",
+					     pmiID(60, 0, 53), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.guest",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 60), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.guest_nice",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
-			}
-
-			else if (a->id == A_PWR_CPU) {
-				/* Create metric for A_PWR_CPU */
-				pmiAddMetric("kernel.all.cpu.freqMHz",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, 0, 0, 0, 0, 0));
+					     pmiID(60, 0, 81), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 			}
 
 			else if (a->id == A_NET_SOFT) {
 				/* Create metrics for a_NET_SOFT */
-				pmiAddMetric("network.all.soft.processed",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+				pmiAddMetric("network.softnet.processed",
+					     pmiID(60, 57, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-				pmiAddMetric("network.all.soft.dropped",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+				pmiAddMetric("network.softnet.dropped",
+					     pmiID(60, 57, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-				pmiAddMetric("network.all.soft.time_squeeze",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+				pmiAddMetric("network.softnet.time_squeeze",
+					     pmiID(60, 57, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-				pmiAddMetric("network.all.soft.received_rps",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+				pmiAddMetric("network.softnet.received_rps",
+					     pmiID(60, 57, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-				pmiAddMetric("network.all.soft.flow_limit",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+				pmiAddMetric("network.softnet.flow_limit_count",
+					     pmiID(60, 57, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
 			}
 		}
@@ -135,7 +132,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 			/* This is not CPU "all" */
 			if (indom == PM_INDOM_NULL) {
 				/* Create domain */
-				indom = pmInDom_build(0, PM_INDOM_CPU);
+				indom = pmInDom_build(60, 0);
 				create = TRUE;
 			}
 			if (create) {
@@ -148,74 +145,74 @@ void pcp_def_cpu_metrics(struct activity *a)
 				if (a->id == A_CPU) {
 					/* Create metrics for A_CPU */
 					pmiAddMetric("kernel.percpu.cpu.user",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.nice",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.sys",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 2), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.idle",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-					pmiAddMetric("kernel.percpu.cpu.iowait",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.wait.total",
+						     pmiID(60, 0, 30), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.steal",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 58), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-					pmiAddMetric("kernel.percpu.cpu.hardirq",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.irq.hard",
+						     pmiID(60, 0, 57), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-					pmiAddMetric("kernel.percpu.cpu.softirq",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("kernel.percpu.cpu.irq.soft",
+						     pmiID(60, 0, 56), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.guest",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 61), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.guest_nice",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+						     pmiID(60, 0, 83), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 				}
 
 				else if (a->id == A_PWR_CPU) {
 					/* Create metric for A_PWR_CPU */
-					pmiAddMetric("kernel.percpu.cpu.freqMHz",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, 0, 0, 0, 0, 0));
+					pmiAddMetric("hinv.cpu.clock",
+						     pmiID(60, 18, 0), PM_TYPE_FLOAT, indom, PM_SEM_DISCRETE,
+						     pmiUnits(0, -1, 0, 0, PM_TIME_USEC, 0));
 				}
 
 				else if (a->id == A_NET_SOFT) {
 					/* Create metrics for a_NET_SOFT */
-					pmiAddMetric("network.percpu.soft.processed",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("network.softnet.percpu.processed",
+						     pmiID(60, 57, 6), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-					pmiAddMetric("network.percpu.soft.dropped",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("network.softnet.percpu.dropped",
+						     pmiID(60, 57, 7), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-					pmiAddMetric("network.percpu.soft.time_squeeze",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("network.softnet.percpu.time_squeeze",
+						     pmiID(60, 57, 8), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-					pmiAddMetric("network.percpu.soft.received_rps",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("network.softnet.percpu.received_rps",
+						     pmiID(60, 57, 10), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-					pmiAddMetric("network.percpu.soft.flow_limit",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("network.softnet.percpu.flow_limit_count",
+						     pmiID(60, 57, 11), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 				}
 				first = FALSE;
 			}
@@ -233,12 +230,12 @@ void pcp_def_pcsw_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmiAddMetric("kernel.all.pswitch",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("kernel.all.proc",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("kernel.all.sysfork",
+		     pmiID(60, 0, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -255,7 +252,7 @@ void pcp_def_irq_metrics(struct activity *a)
 #ifdef HAVE_PCP
 	int i, first = TRUE;
 	char buf[64];
-	pmInDom indom;
+	pmInDom indom = pmiInDom(60, 4);
 
 	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -265,19 +262,17 @@ void pcp_def_irq_metrics(struct activity *a)
 			if (!i) {
 				/* Interrupt "sum" */
 				pmiAddMetric("kernel.all.intr",
-					     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					     pmiID(60, 0, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 			}
 			else {
 				if (first) {
-					indom = pmInDom_build(0, PM_INDOM_INT);
-
-					pmiAddMetric("kernel.all.int.count",
-						     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-						     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					pmiAddMetric("kernel.all.interrupts.total",
+						     pmiID(60, 4, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 					first = FALSE;
 				}
-				sprintf(buf, "int%d", i - 1);
+				sprintf(buf, "%d", i - 1);
 				pmiAddInstance(indom, buf, i - 1);
 			}
 		}
@@ -294,12 +289,12 @@ void pcp_def_swap_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmiAddMetric("swap.pagesin",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 8), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("swap.pagesout",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 9), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -312,36 +307,36 @@ void pcp_def_paging_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmiAddMetric("mem.vmstat.pgpgin",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 28, 6), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("mem.vmstat.pgpgout",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 28, 7), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("mem.vmstat.pgfault",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 28, 16), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("mem.vmstat.pgmajfault",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 28, 17), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("mem.vmstat.pgfree",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 28, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("mem.vmstat.pgscank",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("mem.vmstat.pgscan_kswapd_total",
+		     pmiID(60, 28, 177), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("mem.vmstat.pgscand",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("mem.vmstat.pgscan_direct_total",
+		     pmiID(60, 28, 176), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("mem.vmstat.pgsteal",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("mem.vmstat.pgsteal_total",
+		     pmiID(60, 28, 178), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -354,32 +349,32 @@ void pcp_def_io_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmiAddMetric("disk.all.total",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 29), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("disk.all.read",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 24), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("disk.all.write",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("disk.all.discard",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		     pmiID(60, 0, 96), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 	pmiAddMetric("disk.all.read_bytes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+		     pmiID(60, 0, 41), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 	pmiAddMetric("disk.all.write_bytes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+		     pmiID(60, 0, 42), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 	pmiAddMetric("disk.all.discard_bytes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+		     pmiID(60, 0, 98), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -396,70 +391,70 @@ void pcp_def_memory_metrics(struct activity *a)
 #ifdef HAVE_PCP
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
+		pmiAddMetric("hinv.physmem",
+			     pmiID(60, 1, 9), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
+			     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+
+		pmiAddMetric("mem.physmem",
+			     pmiID(60, 1, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_DISCRETE,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
 		pmiAddMetric("mem.util.free",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.available",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 58), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.used",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-		pmiAddMetric("mem.util.used_pct",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
-
-		pmiAddMetric("mem.util.buffers",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		pmiAddMetric("mem.util.bufmem",
+			     pmiID(60, 1, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.cached",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-		pmiAddMetric("mem.util.commit",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		pmiAddMetric("mem.util.committed_AS",
+			     pmiID(60, 1, 26), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.commit_pct",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
 
 		pmiAddMetric("mem.util.active",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.inactive",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 15), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		pmiAddMetric("mem.util.dirty",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 		if (DISPLAY_MEM_ALL(a->opt_flags)) {
 
 			pmiAddMetric("mem.util.anonpages",
-				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiID(60, 1, 30), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 			pmiAddMetric("mem.util.slab",
-				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiID(60, 1, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-			pmiAddMetric("mem.util.stack",
-				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			pmiAddMetric("mem.util.kernelStack",
+				     pmiID(60, 1, 43), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
 			pmiAddMetric("mem.util.pageTables",
-				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+				     pmiID(60, 1, 27), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-			pmiAddMetric("mem.util.vmused",
-				     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			pmiAddMetric("mem.util.vmallocUsed",
+				     pmiID(60, 1, 51), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 		}
 	}
@@ -467,24 +462,16 @@ void pcp_def_memory_metrics(struct activity *a)
 	if (DISPLAY_SWAP(a->opt_flags)) {
 
 		pmiAddMetric("mem.util.swapFree",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-		pmiAddMetric("mem.util.swapUsed",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		pmiAddMetric("mem.util.swapTotal",
+			     pmiID(60, 1, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.swapUsed_pct",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
 
 		pmiAddMetric("mem.util.swapCached",
-			     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiID(60, 1, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.swapCached_pct",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 #endif /* HAVE_PCP */
 }
@@ -498,20 +485,20 @@ void pcp_def_ktables_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmiAddMetric("vfs.dentry.count",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+		     pmiID(60, 27, 5), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("vfs.files.count",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+		     pmiID(60, 27, 0), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("vfs.inodes.count",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+		     pmiID(60, 27, 3), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("kernel.all.pty",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+	pmiAddMetric("kernel.all.nptys",
+		     pmiID(60, 72, 3), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -525,25 +512,25 @@ void pcp_def_queue_metrics(void)
 #ifdef HAVE_PCP
 	pmInDom indom;
 
-	pmiAddMetric("proc.runq.runnable",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-	pmiAddMetric("proc.nprocs",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-	pmiAddMetric("proc.blocked",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-	indom = pmInDom_build(0, PM_INDOM_QUEUE);
-	pmiAddMetric("kernel.all.load",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("kernel.all.runnable",
+		     pmiID(60, 2, 2), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
-	pmiAddInstance(indom, "1 min", 0);
-	pmiAddInstance(indom, "5 min", 1);
-	pmiAddInstance(indom, "15 min", 2);
+
+	pmiAddMetric("kernel.all.nprocs",
+		     pmiID(60, 2, 3), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("kernel.all.blocked",
+		     pmiID(60, 0, 16), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	indom = pmiInDom(60, 2);
+	pmiAddMetric("kernel.all.load",
+		     pmiID(60, 2, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddInstance(indom, "1 minute", 1);
+	pmiAddInstance(indom, "5 minute", 5);
+	pmiAddInstance(indom, "15 minute", 15);
 #endif /* HAVE_PCP */
 }
 
@@ -564,7 +551,7 @@ void pcp_def_disk_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_DISK);
+		indom = pmInDom_build(60, 1);
 
 		/* Create instances */
 		while (list != NULL) {
@@ -573,37 +560,53 @@ void pcp_def_disk_metrics(struct activity *a)
 		}
 	}
 
-	pmiAddMetric("disk.device.tps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("disk.dev.read",
+		     pmiID(60, 0, 4), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("disk.device.read_bytes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+	pmiAddMetric("disk.dev.write",
+		     pmiID(60, 0, 5), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("disk.device.write_bytes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+	pmiAddMetric("disk.dev.total",
+		     pmiID(60, 0, 28), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("disk.device.discard_bytes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
-
-	pmiAddMetric("disk.device.areq_sz",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("disk.dev.read_bytes",
+		     pmiID(60, 0, 38), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-	pmiAddMetric("disk.device.aqu_sz",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddMetric("disk.dev.write_bytes",
+		     pmiID(60, 0, 39), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-	pmiAddMetric("disk.device.await",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddMetric("disk.dev.discard_bytes",
+		     pmiID(60, 0, 90), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-	pmiAddMetric("disk.device.util",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddMetric("disk.dev.read_rawactive",
+		     pmiID(60, 0, 72), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("disk.dev.write_rawactive",
+		     pmiID(60, 0, 73), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("disk.dev.total_rawactive",
+		     pmiID(60, 0, 79), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("disk.dev.discard_rawactive",
+		     pmiID(60, 0, 92), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("disk.dev.avactive",
+		     pmiID(60, 0, 46), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("disk.dev.aveq",
+		     pmiID(60, 0, 47), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -624,7 +627,7 @@ void pcp_def_net_dev_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_NET_DEV);
+		indom = pmInDom_build(60, 3);
 
 		/* Create instances */
 		while (list != NULL) {
@@ -636,74 +639,70 @@ void pcp_def_net_dev_metrics(struct activity *a)
 	if (a->id == A_NET_DEV) {
 		/* Create metrics for A_NET_DEV */
 		pmiAddMetric("network.interface.in.packets",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.out.packets",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 9), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.in.bytes",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+			     pmiID(60, 3, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 
 		pmiAddMetric("network.interface.out.bytes",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(1, -1, 0, PM_SPACE_KBYTE, PM_TIME_SEC, 0));
+			     pmiID(60, 3, 8), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 
 		pmiAddMetric("network.interface.in.compressed",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 6), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.out.compressed",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 15), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-		pmiAddMetric("network.interface.in.multicast",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
-
-		pmiAddMetric("network.interface.util",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiAddMetric("network.interface.in.mcasts",
+			     pmiID(60, 3, 7), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 	}
 	else {
 		/* Create metrics for A_NET_EDEV */
 		pmiAddMetric("network.interface.in.errors",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 2), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.out.errors",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 10), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-		pmiAddMetric("network.interface.out.collisions",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+		pmiAddMetric("network.interface.collisions",
+			     pmiID(60, 3, 13), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.in.drops",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.out.drops",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 11), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.out.carrier",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 14), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.in.frame",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 5), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.in.fifo",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 4), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
 		pmiAddMetric("network.interface.out.fifo",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+			     pmiID(60, 3, 12), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 	}
 #endif /* HAVE_PCP */
 }
@@ -724,32 +723,32 @@ void pcp_def_serial_metrics(struct activity *a)
 	char buf[64];
 
 	/* Create domain */
-	indom = pmInDom_build(0, PM_INDOM_SERIAL);
+	indom = pmInDom_build(60, 35);
 
 	/* Create metrics */
-	pmiAddMetric("serial.in.interrupts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("tty.serial.rx",
+		     pmiID(60, 74, 0), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("serial.out.interrupts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("tty.serial.tx",
+		     pmiID(60, 74, 1), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("serial.frame",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("tty.serial.frame",
+		     pmiID(60, 74, 2), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("serial.parity",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("tty.serial.parity",
+		     pmiID(60, 74, 3), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("serial.breaks",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("tty.serial.brk",
+		     pmiID(60, 74, 4), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("serial.overrun",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("tty.serial.overrun",
+		     pmiID(60, 74, 5), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	for (i = 0; i < a->nr_ini; i++) {
 		/* Create instances */
@@ -767,29 +766,25 @@ void pcp_def_serial_metrics(struct activity *a)
 void pcp_def_net_nfs_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.fs.client.call",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmInDom indom;
 
-	pmiAddMetric("network.fs.client.retrans",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.client.rpccnt",
+		     pmiID(60, 7, 20), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.client.read",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.client.rpcretrans",
+		     pmiID(60, 7, 21), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.client.write",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	indom = pmiInDom(60, 7);
+	pmiAddInstance(indom, "read", 6);
+	pmiAddInstance(indom, "write", 8);
+	pmiAddInstance(indom, "access", 18);
+	pmiAddInstance(indom, "lookup", 4);
 
-	pmiAddMetric("network.fs.client.access",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
-
-	pmiAddMetric("network.fs.client.getattr",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("nfs.client.reqs",
+		     pmiID(60, 7, 4), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -801,50 +796,46 @@ void pcp_def_net_nfs_metrics(void)
 void pcp_def_net_nfsd_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.fs.server.call",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmInDom indom;
 
-	pmiAddMetric("network.fs.server.badcall",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.rpccnt",
+		     pmiID(60, 7, 30), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.packets",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.rpcbadclnt",
+		     pmiID(60, 7, 34), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.udp",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.netcnt",
+		     pmiID(60, 7, 44), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.tcp",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.netudpcnt",
+		     pmiID(60, 7, 45), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.hits",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.nettcpcnt",
+		     pmiID(60, 7, 46), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.misses",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.rchits",
+		     pmiID(60, 7, 35), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.read",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("rpc.server.rcmisses",
+		     pmiID(60, 7, 36), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fs.server.write",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	indom = pmiInDom(60, 7);
+	pmiAddInstance(indom, "read", 6);
+	pmiAddInstance(indom, "write", 8);
+	pmiAddInstance(indom, "access", 18);
+	pmiAddInstance(indom, "lookup", 4);
 
-	pmiAddMetric("network.fs.server.access",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
-
-	pmiAddMetric("network.fs.server.gettattr",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
-#endif /* HAVE_PCP */
+	pmiAddMetric("nfs.server.reqs",
+		     pmiID(60, 7, 12), PM_TYPE_U32, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+#endif
 }
 
 /*
@@ -855,28 +846,28 @@ void pcp_def_net_nfsd_metrics(void)
 void pcp_def_net_sock_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.socket.sock_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.total",
+		     pmiID(60, 11, 9), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket.tcp_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.tcp.inuse",
+		     pmiID(60, 11, 0), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket.udp_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.udp.inuse",
+		     pmiID(60, 11, 3), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket.raw_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.raw.inuse",
+		     pmiID(60, 11, 6), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket.frag_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.frag.inuse",
+		     pmiID(60, 11, 15), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket.tcp_tw",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.tcp.tw",
+		     pmiID(60, 11, 11), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
@@ -889,37 +880,37 @@ void pcp_def_net_sock_metrics(void)
 void pcp_def_net_ip_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.ip.ipInReceives",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.inreceives",
+		     pmiID(60, 14, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipForwDatagrams",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.forwdatagrams",
+		     pmiID(60, 14, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipInDelivers",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.indelivers",
+		     pmiID(60, 14, 8), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipOutRequests",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.ipoutrequests",
+		     pmiID(60, 14, 9), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipReasmReqds",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.ipreasmreqds",
+		     pmiID(60, 14, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipReasmOKs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.ipreasmoks",
+		     pmiID(60, 14, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipFragOKs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.fragoks",
+		     pmiID(60, 14, 16), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipFragCreates",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.fragcreates",
+		     pmiID(60, 14, 18), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -931,37 +922,37 @@ void pcp_def_net_ip_metrics(void)
 void pcp_def_net_eip_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.ip.ipInHdrErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.inhdrerrors",
+		     pmiID(60, 14, 3), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipInAddrErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.inaddrerrors",
+		     pmiID(60, 14, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipInUnknownProtos",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.inunknownprotos",
+		     pmiID(60, 14, 6), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipInDiscards",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.indiscards",
+		     pmiID(60, 14, 7), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipOutDiscards",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.outdiscards",
+		     pmiID(60, 14, 10), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipOutNoRoutes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.outnoroutes",
+		     pmiID(60, 14, 11), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipReasmFails",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.reasmfails",
+		     pmiID(60, 14, 15), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip.ipFragFails",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip.fragfails",
+		     pmiID(60, 14, 17), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -973,61 +964,61 @@ void pcp_def_net_eip_metrics(void)
 void pcp_def_net_icmp_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.icmp.icmpInMsgs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inmsgs",
+		     pmiID(60, 14, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutMsgs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outmsgs",
+		     pmiID(60, 14, 33), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInEchos",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inechos",
+		     pmiID(60, 14, 27), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInEchoReps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inechoreps",
+		     pmiID(60, 14, 28), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutEchos",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outechos",
+		     pmiID(60, 14, 40), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutEchoReps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outechoreps",
+		     pmiID(60, 14, 41), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInTimestamps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.intimestamps",
+		     pmiID(60, 14, 29), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInTimestampReps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.intimestampreps",
+		     pmiID(60, 14, 30), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutTimestamps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outtimestamps",
+		     pmiID(60, 14, 42), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutTimestampReps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outtimestampreps",
+		     pmiID(60, 14, 43), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInAddrMasks",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inaddrmasks",
+		     pmiID(60, 14, 31), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInAddrMaskReps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inaddrmaskreps",
+		     pmiID(60, 14, 32), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutAddrMasks",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outaddrmasks",
+		     pmiID(60, 14, 44), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutAddrMaskReps",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outaddrmaskreps",
+		     pmiID(60, 14, 45), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1039,53 +1030,53 @@ void pcp_def_net_icmp_metrics(void)
 void pcp_def_net_eicmp_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.icmp.icmpInErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inerrors",
+		     pmiID(60, 14, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outerrors",
+		     pmiID(60, 14, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInDestUnreachs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.indestunreachs",
+		     pmiID(60, 14, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutDestUnreachs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outdestunreachs",
+		     pmiID(60, 14, 35), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInTimeExcds",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.intimeexcds",
+		     pmiID(60, 14, 23), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutTimeExcds",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outtimeexcds",
+		     pmiID(60, 14, 36), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInParmProbs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inparmprobs",
+		     pmiID(60, 14, 24), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutParmProbs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outparmprobs",
+		     pmiID(60, 14, 37), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInSrcQuenchs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.insrcquenchs",
+		     pmiID(60, 14, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutSrcQuenchs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outsrcquenchs",
+		     pmiID(60, 14, 38), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpInRedirects",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.inredirects",
+		     pmiID(60, 14, 27), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp.icmpOutRedirects",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp.outredirects",
+		     pmiID(60, 14, 39), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1097,21 +1088,21 @@ void pcp_def_net_eicmp_metrics(void)
 void pcp_def_net_tcp_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.tcp.tcpActiveOpens",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.activeopens",
+		     pmiID(60, 14, 54), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpPassiveOpens",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.passiveopens",
+		     pmiID(60, 14, 55), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpInSegs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.insegs",
+		     pmiID(60, 14, 59), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpOutSegs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.outsegs",
+		     pmiID(60, 14, 60), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1123,25 +1114,25 @@ void pcp_def_net_tcp_metrics(void)
 void pcp_def_net_etcp_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.tcp.tcpAttemptFails",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.attemptfails",
+		     pmiID(60, 14, 56), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpEstabResets",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.estabresets",
+		     pmiID(60, 14, 57), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpRetransSegs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.retranssegs",
+		     pmiID(60, 14, 61), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpInErrs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.inerrs",
+		     pmiID(60, 14, 62), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.tcp.tcpOutRsts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.tcp.outrsts",
+		     pmiID(60, 14, 63), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1153,21 +1144,21 @@ void pcp_def_net_etcp_metrics(void)
 void pcp_def_net_udp_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.udp.udpInDatagrams",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp.indatagrams",
+		     pmiID(60, 14, 70), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.udp.udpOutDatagrams",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp.outdatagrams",
+		     pmiID(60, 14, 74), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.udp.udpNoPorts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp.noports",
+		     pmiID(60, 14, 71), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.udp.udpInErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp.inerrors",
+		     pmiID(60, 14, 72), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1179,20 +1170,20 @@ void pcp_def_net_udp_metrics(void)
 void pcp_def_net_sock6_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.socket6.tcp6_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.tcp6.inuse",
+		     pmiID(60, 73, 0), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket6.udp6_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.udp6.inuse",
+		     pmiID(60, 73, 1), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket6.raw6_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.raw6.inuse",
+		     pmiID(60, 73, 3), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.socket6.frag6_inuse",
-		     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+	pmiAddMetric("network.sockstat.frag6.inuse",
+		     pmiID(60, 73, 4), PM_TYPE_32, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
@@ -1205,45 +1196,45 @@ void pcp_def_net_sock6_metrics(void)
 void pcp_def_net_ip6_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInReceives",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.inreceives",
+		     pmiID(60, 58, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutForwDatagrams",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.outforwdatagrams",
+		     pmiID(60, 58, 9), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInDelivers",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.indelivers",
+		     pmiID(60, 58, 8), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutRequests",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.outrequests",
+		     pmiID(60, 58, 10), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsReasmReqds",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.reasmreqds",
+		     pmiID(60, 58, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsReasmOKs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.reasmoks",
+		     pmiID(60, 58, 15), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInMcastPkts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.inmcastpkts",
+		     pmiID(60, 58, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutMcastPkts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.outmcastpkts",
+		     pmiID(60, 58, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutFragOKs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.fragoks",
+		     pmiID(60, 58, 17), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutFragCreates",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.fragcreates",
+		     pmiID(60, 58, 19), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1255,49 +1246,49 @@ void pcp_def_net_ip6_metrics(void)
 void pcp_def_net_eip6_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInHdrErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.inhdrerrors",
+		     pmiID(60, 58, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInAddrErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.inaddrerrors",
+		     pmiID(60, 58, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInUnknownProtos",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.inunknownprotos",
+		     pmiID(60, 58, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInTooBigErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.intoobigerrors",
+		     pmiID(60, 58, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInDiscards",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.indiscards",
+		     pmiID(60, 58, 7), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutDiscards",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.outdiscards",
+		     pmiID(60, 58, 11), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInNoRoutes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.innoroutes",
+		     pmiID(60, 58, 3), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutNoRoutes",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.outnoroutes",
+		     pmiID(60, 58, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsReasmFails",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.reasmfails",
+		     pmiID(60, 58, 16), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsOutFragFails",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.fragfails",
+		     pmiID(60, 58, 18), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.ip6.ipv6IfStatsInTruncatedPkts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.ip6.intruncatedpkts",
+		     pmiID(60, 58, 6), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1309,73 +1300,73 @@ void pcp_def_net_eip6_metrics(void)
 void pcp_def_net_icmp6_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInMsgs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inmsgs",
+		     pmiID(60, 58, 32), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutMsgs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outmsgs",
+		     pmiID(60, 58, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInEchos",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inechos",
+		     pmiID(60, 58, 41), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInEchoReplies",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inechoreplies",
+		     pmiID(60, 58, 42), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutEchoReplies",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outechoreplies",
+		     pmiID(60, 58, 57), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInGroupMembQueries",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.ingroupmembqueries",
+		     pmiID(60, 58, 43), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInGroupMembResponses",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.ingroupmembresponses",
+		     pmiID(60, 58, 44), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutGroupMembResponses",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outgroupmembresponses",
+		     pmiID(60, 58, 59), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInGroupMembReductions",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.ingroupmembreductions",
+		     pmiID(60, 58, 45), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutGroupMembReductions",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outgroupmembreductions",
+		     pmiID(60, 58, 60), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInRouterSolicits",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inroutersolicits",
+		     pmiID(60, 58, 46), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutRouterSolicits",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outroutersolicits",
+		     pmiID(60, 58, 61), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInRouterAdvertisements",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inrouteradvertisements",
+		     pmiID(60, 58, 47), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInNeighborSolicits",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inneighborsolicits",
+		     pmiID(60, 58, 48), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutNeighborSolicits",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outneighborsolicits",
+		     pmiID(60, 58, 63), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInNeighborAdvertisements",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inneighboradvertisements",
+		     pmiID(60, 58, 49), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutNeighborAdvertisements",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outneighboradvertisements",
+		     pmiID(60, 58, 64), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1387,49 +1378,49 @@ void pcp_def_net_icmp6_metrics(void)
 void pcp_def_net_eicmp6_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inerrors",
+		     pmiID(60, 58, 33), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInDestUnreachs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.indestunreachs",
+		     pmiID(60, 58, 37), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutDestUnreachs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outdestunreachs",
+		     pmiID(60, 58, 52), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInTimeExcds",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.intimeexcds",
+		     pmiID(60, 58, 39), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutTimeExcds",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outtimeexcds",
+		     pmiID(60, 58, 54), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInParmProblems",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inparmproblems",
+		     pmiID(60, 58, 40), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutParmProblems",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outparmproblems",
+		     pmiID(60, 58, 55), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInRedirects",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inredirects",
+		     pmiID(60, 58, 50), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutRedirects",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outredirects",
+		     pmiID(60, 58, 65), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpInPktTooBigs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.inpkttoobigs",
+		     pmiID(60, 58, 38), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.icmp6.ipv6IfIcmpOutPktTooBigs",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.icmp6.outpkttoobigs",
+		     pmiID(60, 58, 53), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1441,21 +1432,21 @@ void pcp_def_net_eicmp6_metrics(void)
 void pcp_def_net_udp6_metrics(void)
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("network.snmp.udp6.udpInDatagrams",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp6.indatagrams",
+		     pmiID(60, 58, 67), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.udp6.udpOutDatagrams",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp6.outdatagrams",
+		     pmiID(60, 58, 70), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.udp6.udpNoPorts",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp6.noports",
+		     pmiID(60, 58, 68), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.snmp.udp6.udpInErrors",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("network.udp6.inerrors",
+		     pmiID(60, 58, 69), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
@@ -1467,25 +1458,21 @@ void pcp_def_net_udp6_metrics(void)
 void pcp_def_huge_metrics()
 {
 #ifdef HAVE_PCP
-	pmiAddMetric("mem.huge.free",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+	pmiAddMetric("mem.util.hugepagesTotalBytes",
+		     pmiID(60, 1, 60), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 
-	pmiAddMetric("mem.huge.used",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+	pmiAddMetric("mem.util.hugepagesFreeBytes",
+		     pmiID(60, 1, 61), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 
-	pmiAddMetric("mem.huge.used_pct",
-		     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddMetric("mem.util.hugepagesRsvdBytes",
+		     pmiID(60, 1, 62), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 
-	pmiAddMetric("mem.huge.reserved",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-	pmiAddMetric("mem.huge.surplus",
-		     PM_IN_NULL, PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+	pmiAddMetric("mem.util.hugepagesSurpBytes",
+		     pmiID(60, 1, 63), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -1506,7 +1493,7 @@ void pcp_def_pwr_fan_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_FAN);
+		indom = pmInDom_build(34, 0);
 
 		for (inst = 0; inst < a->item_list_sz; inst++) {
 			sprintf(buf, "fan%d", inst + 1);
@@ -1515,15 +1502,15 @@ void pcp_def_pwr_fan_metrics(struct activity *a)
 	}
 
 	pmiAddMetric("power.fan.rpm",
-		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiID(34, 0, 0), PM_TYPE_U64, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.fan.drpm",
-		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiID(34, 0, 1), PM_TYPE_U64, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.fan.device",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 0, 2), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
@@ -1545,7 +1532,7 @@ void pcp_def_pwr_temp_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_TEMP);
+		indom = pmInDom_build(34, 1);
 
 		for (inst = 0; inst < a->item_list_sz; inst++) {
 			sprintf(buf, "temp%d", inst + 1);
@@ -1553,16 +1540,16 @@ void pcp_def_pwr_temp_metrics(struct activity *a)
 		}
 	}
 
-	pmiAddMetric("power.temp.degC",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("power.temp.celsius",
+		     pmiID(34, 1, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("power.temp.temp_pct",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("power.temp.percent",
+		     pmiID(34, 1, 1), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.temp.device",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 1, 2), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
@@ -1584,7 +1571,7 @@ void pcp_def_pwr_in_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_IN);
+		indom = pmInDom_build(34, 2);
 
 		for (inst = 0; inst < a->item_list_sz; inst++) {
 			sprintf(buf, "in%d", inst);
@@ -1592,16 +1579,16 @@ void pcp_def_pwr_in_metrics(struct activity *a)
 		}
 	}
 
-	pmiAddMetric("power.in.inV",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("power.in.voltage",
+		     pmiID(34, 2, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("power.in.in_pct",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("power.in.percent",
+		     pmiID(34, 2, 1), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.in.device",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 2, 2), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
@@ -1623,7 +1610,7 @@ void pcp_def_pwr_usb_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_USB);
+		indom = pmInDom_build(34, 3);
 
 		for (inst = 0; inst < a->item_list_sz; inst++) {
 			sprintf(buf, "usb%d", inst);
@@ -1632,27 +1619,27 @@ void pcp_def_pwr_usb_metrics(struct activity *a)
 	}
 
 	pmiAddMetric("power.usb.bus",
-		     PM_IN_NULL, PM_TYPE_U32, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 0), PM_TYPE_U32, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.vendorId",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 1), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.productId",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 2), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.maxpower",
-		     PM_IN_NULL, PM_TYPE_U32, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 3), PM_TYPE_U32, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.manufacturer",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 3), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.productName",
-		     PM_IN_NULL, PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 3), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
@@ -1674,7 +1661,7 @@ void pcp_def_filesystem_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_FILESYSTEM);
+		indom = pmInDom_build(60, 5);
 
 		/* Create instances */
 		while (list != NULL) {
@@ -1683,33 +1670,37 @@ void pcp_def_filesystem_metrics(struct activity *a)
 		}
 	}
 
-	pmiAddMetric("fs.util.fsfree",
-		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
-		     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+	pmiAddMetric("filesys.capacity",
+		     pmiID(60, 5, 1), PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-	pmiAddMetric("fs.util.fsused",
-		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
-		     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+	pmiAddMetric("filesys.free",
+		     pmiID(60, 5, 3), PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
-	pmiAddMetric("fs.util.fsused_pct",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+	pmiAddMetric("filesys.used",
+		     pmiID(60, 5, 2), PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("filesys.full",
+		     pmiID(60, 5, 8), PM_TYPE_DOUBLE, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
-	pmiAddMetric("fs.util.ufsused_pct",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
-
-	pmiAddMetric("fs.util.ifree",
-		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+	pmiAddMetric("filesys.maxfiles",
+		     pmiID(60, 5, 4), PM_TYPE_U64, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("fs.util.iused",
-		     PM_IN_NULL, PM_TYPE_U64, indom, PM_SEM_INSTANT,
+	pmiAddMetric("filesys.freefiles",
+		     pmiID(60, 5, 6), PM_TYPE_U64, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("fs.util.iused_pct",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, 0, 0, 0, 0, 0));
+	pmiAddMetric("filesys.usedfiles",
+		     pmiID(60, 5, 5), PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("filesys.avail",
+		     pmiID(60, 5, 10), PM_TYPE_U64, indom, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -1730,7 +1721,7 @@ void pcp_def_fchost_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_FCHOST);
+		indom = pmInDom_build(60, 39);
 
 		/* Create instances */
 		while (list != NULL) {
@@ -1739,21 +1730,21 @@ void pcp_def_fchost_metrics(struct activity *a)
 		}
 	}
 
-	pmiAddMetric("network.fchost.in.frame",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("fchost.in.frames",
+		     pmiID(60, 91, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fchost.out.frame",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("fchost.out.frames",
+		     pmiID(60, 91, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.fchost.in.word",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("fchost.in.bytes",
+		     pmiID(60, 91, 2), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 
-	pmiAddMetric("network.fchost.out.word",
-		     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-		     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+	pmiAddMetric("fchost.out.bytes",
+		     pmiID(60, 91, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_BYTE, 0, 0));
 #endif /* HAVE_PCP */
 }
 
@@ -1772,57 +1763,57 @@ void pcp_def_psi_metrics(struct activity *a)
 
 	if (indom == PM_INDOM_NULL) {
 		/* Create domain */
-		indom = pmInDom_build(0, PM_INDOM_PSI);
+		indom = pmInDom_build(60, 37);
 
-		pmiAddInstance(indom, "10 sec", 0);
-		pmiAddInstance(indom, "60 sec", 1);
-		pmiAddInstance(indom, "300 sec", 2);
+		pmiAddInstance(indom, "10 second", 10);
+		pmiAddInstance(indom, "1 minute", 60);
+		pmiAddInstance(indom, "5 minute", 300);
 	}
 
 	if (a->id == A_PSI_CPU) {
 		/* Create metrics for A_PSI_CPU */
-		pmiAddMetric("psi.cpu.some.trends",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiAddMetric("kernel.all.pressure.cpu.some.total",
+			     pmiID(60, 83, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
-		pmiAddMetric("psi.cpu.some.avg",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		pmiAddMetric("kernel.all.pressure.cpu.some.avg",
+			     pmiID(60, 83, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 	else if (a->id == A_PSI_IO) {
 		/* Create metrics for A_PSI_IO */
-		pmiAddMetric("psi.io.some.trends",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		pmiAddMetric("kernel.all.pressure.io.some.total",
+			     pmiID(60, 85, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+		pmiAddMetric("kernel.all.pressure.io.some.avg",
+			     pmiID(60, 85, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.io.some.avg",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiAddMetric("kernel.all.pressure.io.full.total",
+			     pmiID(60, 85, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
-		pmiAddMetric("psi.io.full.trends",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
-
-		pmiAddMetric("psi.io.full.avg",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		pmiAddMetric("kernel.all.pressure.io.full.avg",
+			     pmiID(60, 85, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 	else {
 		/* Create metrics for A_PSI_MEM */
-		pmiAddMetric("psi.mem.some.trends",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
+		pmiAddMetric("kernel.all.pressure.memory.some.total",
+			     pmiID(60, 84, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+		pmiAddMetric("kernel.all.pressure.memory.some.avg",
+			     pmiID(60, 84, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 
-		pmiAddMetric("psi.mem.some.avg",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiAddMetric("kernel.all.pressure.memory.full.total",
+			     pmiID(60, 84, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
-		pmiAddMetric("psi.mem.full.trends",
-			     PM_IN_NULL, PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
-
-		pmiAddMetric("psi.mem.full.avg",
-			     PM_IN_NULL, PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		pmiAddMetric("kernel.all.pressure.memory.full.avg",
+			     pmiID(60, 84, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
 			     pmiUnits(0, 0, 0, 0, 0, 0));
 	}
 #endif /* HAVE_PCP */

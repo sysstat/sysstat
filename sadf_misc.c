@@ -1434,11 +1434,29 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 
 		/* Save number of CPU in PCP archive */
 		pmiAddMetric("hinv.ncpu",
-			     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
-			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+			     pmiID(60, 0, 32), PM_TYPE_U32, PM_INDOM_NULL,
+			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
 		snprintf(buf, sizeof(buf), "%u",
 			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 		pmiPutValue("hinv.ncpu", NULL, buf);
+
+		/* Save uname(2) information */
+		pmiAddMetric("kernel.uname.release",
+			     pmiID(60, 12, 0), PM_TYPE_STRING, PM_INDOM_NULL,
+			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiPutValue("kernel.uname.release", NULL, file_hdr->sa_release);
+		pmiAddMetric("kernel.uname.sysname",
+			     pmiID(60, 12, 2), PM_TYPE_STRING, PM_INDOM_NULL,
+			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiPutValue("kernel.uname.sysname", NULL, file_hdr->sa_sysname);
+		pmiAddMetric("kernel.uname.machine",
+			     pmiID(60, 12, 3), PM_TYPE_STRING, PM_INDOM_NULL,
+			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiPutValue("kernel.uname.machine", NULL, file_hdr->sa_machine);
+		pmiAddMetric("kernel.uname.nodename",
+			     pmiID(60, 12, 4), PM_TYPE_STRING, PM_INDOM_NULL,
+			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
+		pmiPutValue("kernel.uname.nodename", NULL, file_hdr->sa_nodename);
 	}
 
 	if (action & F_END) {

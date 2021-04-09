@@ -48,8 +48,7 @@ extern uint64_t flags;
  * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_cpu_stats(struct activity *a, int curr, unsigned long long itv,
-				    struct record_header *record_hdr)
+__print_funct_t pcp_print_cpu_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
@@ -130,52 +129,37 @@ __print_funct_t pcp_print_cpu_stats(struct activity *a, int curr, unsigned long 
 			}
 		}
 
-		snprintf(buf, sizeof(buf), "%f",
-			 (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-			 0.0 :
-			 ll_sp_value(scp->cpu_user - scp->cpu_guest,
-				     scc->cpu_user - scc->cpu_guest, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_user - scc->cpu_guest);
 		pmiPutValue(i ? "kernel.percpu.cpu.user" : "kernel.all.cpu.user", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-			 0.0 :
-			 ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-				     scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_nice - scc->cpu_guest_nice);
 		pmiPutValue(i ? "kernel.percpu.cpu.nice" : "kernel.all.cpu.nice", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_sys);
 		pmiPutValue(i ? "kernel.percpu.cpu.sys" : "kernel.all.cpu.sys", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies));
-		pmiPutValue(i ? "kernel.percpu.cpu.iowait" : "kernel.all.cpu.iowait", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_iowait);
+		pmiPutValue(i ? "kernel.percpu.cpu.iowait" : "kernel.all.cpu.wait.total", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_steal);
 		pmiPutValue(i ? "kernel.percpu.cpu.steal" : "kernel.all.cpu.steal", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies));
-		pmiPutValue(i ? "kernel.percpu.cpu.hardirq" : "kernel.all.cpu.hardirq", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_hardirq + scc->cpu_softirq);
+		pmiPutValue(i ? "kernel.percpu.cpu.intr" : "kernel.all.cpu.intr", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies));
-		pmiPutValue(i ? "kernel.percpu.cpu.softirq" : "kernel.all.cpu.softirq", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_hardirq);
+		pmiPutValue(i ? "kernel.percpu.cpu.irq.hard" : "kernel.all.cpu.irq.hard", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_softirq);
+		pmiPutValue(i ? "kernel.percpu.cpu.irq.soft" : "kernel.all.cpu.irq.soft", str, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_guest);
 		pmiPutValue(i ? "kernel.percpu.cpu.guest" : "kernel.all.cpu.guest", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_guest_nice);
 		pmiPutValue(i ? "kernel.percpu.cpu.guest_nice" : "kernel.all.cpu.guest_nice", str, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 scc->cpu_idle < scp->cpu_idle ?
-			 0.0 :
-			 ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
+		snprintf(buf, sizeof(buf), "%llu", scc->cpu_idle);
 		pmiPutValue(i ? "kernel.percpu.cpu.idle" : "kernel.all.cpu.idle", str, buf);
 	}
 #endif	/* HAVE_PCP */
@@ -188,26 +172,20 @@ __print_funct_t pcp_print_cpu_stats(struct activity *a, int curr, unsigned long 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr, unsigned long long itv,
-				     struct record_header *record_hdr)
+__print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_pcsw
-		*spc = (struct stats_pcsw *) a->buf[curr],
-		*spp = (struct stats_pcsw *) a->buf[!curr];
+		*spc = (struct stats_pcsw *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->context_switch, spc->context_switch, itv));
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->context_switch);
 	pmiPutValue("kernel.all.pswitch", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->processes, spc->processes, itv));
-	pmiPutValue("kernel.all.proc", NULL, buf);
+	snprintf(buf, sizeof(buf), "%lu", spc->processes);
+	pmiPutValue("kernel.all.sysfork", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -218,37 +196,31 @@ __print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr, unsigned long
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_irq_stats(struct activity *a, int curr, unsigned long long itv,
-				    struct record_header *record_hdr)
+__print_funct_t pcp_print_irq_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64], intno[64];
 	int i;
-	struct stats_irq *sic, *sip;
+	struct stats_irq *sic;
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
-		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/* Should current interrupt (including int "sum") be displayed? */
 		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
 
 			if (!i) {
 				/* This is interrupt "sum" */
-				snprintf(buf, sizeof(buf), "%f",
-					 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+				snprintf(buf, sizeof(buf), "%llu", sic->irq_nr);
 				pmiPutValue("kernel.all.intr", NULL, buf);
 			}
 			else {
-				sprintf(intno, "int%d", i - 1);
-				snprintf(buf, sizeof(buf), "%f",
-					 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
-				pmiPutValue("kernel.all.int.count", intno, buf);
+				snprintf(intno, sizeof(intno), "int%d", i - 1);
+				snprintf(buf, sizeof(buf), "%llu", sic->irq_nr);
+				pmiPutValue("kernel.all.interrupts.total", intno, buf);
 			}
 		}
 	}
@@ -266,21 +238,17 @@ __print_funct_t pcp_print_irq_stats(struct activity *a, int curr, unsigned long 
  * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_swap_stats(struct activity *a, int curr, unsigned long long itv,
-				     struct record_header *record_hdr)
+__print_funct_t pcp_print_swap_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_swap
-		*ssc = (struct stats_swap *) a->buf[curr],
-		*ssp = (struct stats_swap *) a->buf[!curr];
+		*ssc = (struct stats_swap *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(ssp->pswpin, ssc->pswpin, itv));
+	snprintf(buf, sizeof(buf), "%lu", ssc->pswpin);
 	pmiPutValue("swap.pagesin", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(ssp->pswpout, ssc->pswpout, itv));
+	snprintf(buf, sizeof(buf), "%lu", ssc->pswpout);
 	pmiPutValue("swap.pagesout", NULL, buf);
 #endif	/* HAVE_PCP */
 }
@@ -292,50 +260,38 @@ __print_funct_t pcp_print_swap_stats(struct activity *a, int curr, unsigned long
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_paging_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_paging_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_paging
-		*spc = (struct stats_paging *) a->buf[curr],
-		*spp = (struct stats_paging *) a->buf[!curr];
+		*spc = (struct stats_paging *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgpgin, spc->pgpgin, itv));
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgpgin);
 	pmiPutValue("mem.vmstat.pgpgin", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgpgout, spc->pgpgout, itv));
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgpgout);
 	pmiPutValue("mem.vmstat.pgpgout", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgfault, spc->pgfault, itv));
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgfault);
 	pmiPutValue("mem.vmstat.pgfault", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgmajfault, spc->pgmajfault, itv));
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgmajfault);
 	pmiPutValue("mem.vmstat.pgmajfault", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgfree, spc->pgfree, itv));
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgfree);
 	pmiPutValue("mem.vmstat.pgfree", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv));
-	pmiPutValue("mem.vmstat.pgscank", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgscan_kswapd);
+	pmiPutValue("mem.vmstat.pgscan_kswapd_total", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv));
-	pmiPutValue("mem.vmstat.pgscand", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgscan_direct);
+	pmiPutValue("mem.vmstat.pgscan_direct_total", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 S_VALUE(spp->pgsteal, spc->pgsteal, itv));
-	pmiPutValue("mem.vmstat.pgsteal", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgsteal);
+	pmiPutValue("mem.vmstat.pgsteal_total", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -346,52 +302,34 @@ __print_funct_t pcp_print_paging_stats(struct activity *a, int curr, unsigned lo
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_io_stats(struct activity *a, int curr, unsigned long long itv,
-				   struct record_header *record_hdr)
+__print_funct_t pcp_print_io_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_io
-		*sic = (struct stats_io *) a->buf[curr],
-		*sip = (struct stats_io *) a->buf[!curr];
+		*sic = (struct stats_io *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive < sip->dk_drive ? 0.0
-					       : S_VALUE(sip->dk_drive, sic->dk_drive, itv));
+	snprintf(buf, sizeof(buf), "%llu", sic->dk_drive);
 	pmiPutValue("disk.all.total", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive_rio < sip->dk_drive_rio ? 0.0
-						       : S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv));
+	snprintf(buf, sizeof(buf), "%llu", sic->dk_drive_rio);
 	pmiPutValue("disk.all.read", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive_wio < sip->dk_drive_wio ? 0.0
-						       : S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv));
+	snprintf(buf, sizeof(buf), "%llu",sic->dk_drive_wio);
 	pmiPutValue("disk.all.write", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive_dio < sip->dk_drive_dio ? 0.0
-						       : S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv));
+	snprintf(buf, sizeof(buf), "%llu", sic->dk_drive_dio);
 	pmiPutValue("disk.all.discard", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0
-							 : S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv) / 2);
+	snprintf(buf, sizeof(buf), "%llu", sic->dk_drive_rblk);
 	pmiPutValue("disk.all.read_bytes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0
-							 : S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv) / 2);
+	snprintf(buf, sizeof(buf), "%llu", sic->dk_drive_wblk);
 	pmiPutValue("disk.all.write_bytes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0
-							 : S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv) / 2);
+	snprintf(buf, sizeof(buf), "%llu", sic->dk_drive_dblk);
 	pmiPutValue("disk.all.discard_bytes", NULL, buf);
 #endif	/* HAVE_PCP */
 }
@@ -403,25 +341,22 @@ __print_funct_t pcp_print_io_stats(struct activity *a, int curr, unsigned long l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_memory_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_memory_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
-	unsigned long long nousedmem;
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
-		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-		if (nousedmem > smc->tlmkb) {
-			nousedmem = smc->tlmkb;
-		}
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long)(smc->tlmkb >> 10));
+		pmiPutValue("hinv.physmem", NULL, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb);
+		pmiPutValue("mem.physmem", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->frmkb);
 		pmiPutValue("mem.util.free", NULL, buf);
@@ -429,12 +364,8 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr, unsigned lo
 		snprintf(buf, sizeof(buf), "%llu", smc->availablekb);
 		pmiPutValue("mem.util.available", NULL, buf);
 
-		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb - nousedmem);
+		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb - smc->frmkb);
 		pmiPutValue("mem.util.used", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0);
-		pmiPutValue("mem.util.used_pct", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->bufkb);
 		pmiPutValue("mem.util.buffers", NULL, buf);
@@ -443,12 +374,7 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr, unsigned lo
 		pmiPutValue("mem.util.cached", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->comkb);
-		pmiPutValue("mem.util.commit", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 (smc->tlmkb + smc->tlskb) ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
-						   : 0.0);
-		pmiPutValue("mem.util.commit_pct", NULL, buf);
+		pmiPutValue("mem.util.committed_AS", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->activekb);
 		pmiPutValue("mem.util.active", NULL, buf);
@@ -483,20 +409,11 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr, unsigned lo
 		snprintf(buf, sizeof(buf), "%llu", smc->frskb);
 		pmiPutValue("mem.util.swapFree", NULL, buf);
 
-		snprintf(buf, sizeof(buf), "%llu", smc->tlskb - smc->frskb);
-		pmiPutValue("mem.util.swapUsed", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0);
-		pmiPutValue("mem.util.swapUsed_pct", NULL, buf);
+		snprintf(buf, sizeof(buf), "%llu", smc->tlskb);
+		pmiPutValue("mem.util.swapTotal", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->caskb);
 		pmiPutValue("mem.util.swapCached", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 (smc->tlskb - smc->frskb) ? SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
-						   : 0.0);
-		pmiPutValue("mem.util.swapCached_pct", NULL, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -508,29 +425,26 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr, unsigned lo
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_ktables_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_ktables_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%llu", skc->dentry_stat);
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) skc->dentry_stat);
 	pmiPutValue("vfs.dentry.count", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", skc->file_used);
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) skc->file_used);
 	pmiPutValue("vfs.files.count", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", skc->inode_used);
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) skc->inode_used);
 	pmiPutValue("vfs.inodes.count", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%llu", skc->pty_nr);
-	pmiPutValue("kernel.all.pty", NULL, buf);
+	pmiPutValue("kernel.all.nptys", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -541,35 +455,32 @@ __print_funct_t pcp_print_ktables_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_queue_stats(struct activity *a, int curr, unsigned long long itv,
-				      struct record_header *record_hdr)
+__print_funct_t pcp_print_queue_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%llu", sqc->nr_running);
-	pmiPutValue("proc.runq.runnable", NULL, buf);
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) sqc->nr_running);
+	pmiPutValue("kernel.all.runnable", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", sqc->nr_threads);
-	pmiPutValue("proc.nprocs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) sqc->nr_threads);
+	pmiPutValue("kernel.all.nprocs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", sqc->procs_blocked);
-	pmiPutValue("proc.blocked", NULL, buf);
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) sqc->procs_blocked);
+	pmiPutValue("kernel.all.blocked", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) sqc->load_avg_1 / 100);
-	pmiPutValue("kernel.all.load", "1 min", buf);
+	pmiPutValue("kernel.all.load", "1 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) sqc->load_avg_5 / 100);
-	pmiPutValue("kernel.all.load", "5 min", buf);
+	pmiPutValue("kernel.all.load", "5 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) sqc->load_avg_15 / 100);
-	pmiPutValue("kernel.all.load", "15 min", buf);
+	pmiPutValue("kernel.all.load", "15 minute", buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -580,34 +491,19 @@ __print_funct_t pcp_print_queue_stats(struct activity *a, int curr, unsigned lon
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_disk_stats(struct activity *a, int curr, unsigned long long itv,
-				     struct record_header *record_hdr)
+__print_funct_t pcp_print_disk_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	int i, j;
-	struct stats_disk *sdc,	*sdp, sdpzero;
-	struct ext_disk_stats xds;
+	int i;
+	struct stats_disk *sdc;
 	char *dev_name;
 	char buf[64];
-
-	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
-
-		j = check_disk_reg(a, curr, !curr, i);
-		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
-			sdp = &sdpzero;
-		}
-		else {
-			sdp = (struct stats_disk *) ((char *) a->buf[!curr] + j * a->msize);
-		}
 
 		/* Get device name */
 		dev_name = get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
@@ -621,40 +517,38 @@ __print_funct_t pcp_print_disk_stats(struct activity *a, int curr, unsigned long
 				continue;
 		}
 
-		/* Compute extended statistics values */
-		compute_ext_disk_stats(sdc, sdp, itv, &xds);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sdc->nr_ios);
+		pmiPutValue("disk.dev.total", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sdp->nr_ios, sdc->nr_ios, itv));
-		pmiPutValue("disk.device.tps", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) (sdc->rd_sect + sdc->wr_sect) / 2);
+		pmiPutValue("disk.dev.total_bytes", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2);
-		pmiPutValue("disk.device.read_bytes", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sdc->rd_sect / 2);
+		pmiPutValue("disk.dev.read_bytes", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2);
-		pmiPutValue("disk.device.write_bytes", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sdc->wr_sect / 2);
+		pmiPutValue("disk.dev.write_bytes", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2);
-		pmiPutValue("disk.device.discard_bytes", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sdc->dc_sect / 2);
+		pmiPutValue("disk.dev.discard_bytes", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 xds.arqsz / 2);
-		pmiPutValue("disk.device.areq_sz", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->rd_ticks + sdc->wr_ticks);
+		pmiPutValue("disk.dev.total_rawactive", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0);
-		pmiPutValue("disk.device.aqu_sz", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->rd_ticks);
+		pmiPutValue("disk.dev.read_rawactive", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 xds.await);
-		pmiPutValue("disk.device.await", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long) sdc->wr_ticks);
+		pmiPutValue("disk.dev.write_rawactive", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 xds.util / 10.0);
-		pmiPutValue("disk.device.util", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long)sdc->dc_ticks);
+		pmiPutValue("disk.dev.discard_rawactive", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long)sdc->tot_ticks);
+		pmiPutValue("disk.dev.avactive", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long)sdc->rq_ticks);
+		pmiPutValue("disk.dev.aveq", dev_name, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -666,20 +560,14 @@ __print_funct_t pcp_print_disk_stats(struct activity *a, int curr, unsigned long
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i, j;
-	struct stats_net_dev *sndc, *sndp, sndzero;
-	double rxkb, txkb, ifutil;
+	struct stats_net_dev *sndc;
 	char buf[64];
-
-	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -694,45 +582,30 @@ __print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr, unsigned l
 
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
-			sndp = &sndzero;
-		}
-		else {
-			sndp = (struct stats_net_dev *) ((char *) a->buf[!curr] + j * a->msize);
+			/* This is a newly registered interface. */
+			/* TODO: add a new instance? */
 		}
 
-		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
-		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
-		ifutil = compute_ifutil(sndc, rxkb, txkb);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sndp->rx_packets, sndc->rx_packets, itv));
+		snprintf(buf, sizeof(buf), "%llu", sndc->rx_packets);
 		pmiPutValue("network.interface.in.packets", sndc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sndp->tx_packets, sndc->tx_packets, itv));
+		snprintf(buf, sizeof(buf), "%llu", sndc->tx_packets);
 		pmiPutValue("network.interface.out.packets", sndc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f", rxkb / 1024);
+		snprintf(buf, sizeof(buf), "%llu", sndc->rx_bytes);
 		pmiPutValue("network.interface.in.bytes", sndc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f", txkb / 1024);
+		snprintf(buf, sizeof(buf), "%llu", sndc->tx_bytes);
 		pmiPutValue("network.interface.out.bytes", sndc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv));
+		snprintf(buf, sizeof(buf), "%llu", sndc->rx_compressed);
 		pmiPutValue("network.interface.in.compressed", sndc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv));
+		snprintf(buf, sizeof(buf), "%llu", sndc->tx_compressed);
 		pmiPutValue("network.interface.out.compressed", sndc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sndp->multicast, sndc->multicast, itv));
-		pmiPutValue("network.interface.in.multicast", sndc->interface, buf);
-
-		snprintf(buf, sizeof(buf), "%f", ifutil);
-		pmiPutValue("network.interface.util", sndc->interface, buf);
+		snprintf(buf, sizeof(buf), "%llu", sndc->multicast);
+		pmiPutValue("network.interface.in.mcasts", sndc->interface, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -744,19 +617,14 @@ __print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i, j;
-	struct stats_net_edev *snedc, *snedp, snedzero;
+	struct stats_net_edev *snedc;
 	char buf[64];
-
-	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -771,47 +639,35 @@ __print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr, unsigned 
 
 		j = check_net_edev_reg(a, curr, !curr, i);
 		if (j < 0) {
-			/* This is a newly registered interface. Previous stats are zero */
-			snedp = &snedzero;
-		}
-		else {
-			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
+			/* This is a newly registered interface. */
+			/* TODO: add a new instance? */
 		}
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->rx_errors, snedc->rx_errors, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->rx_errors);
 		pmiPutValue("network.interface.in.errors", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->tx_errors, snedc->tx_errors, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->tx_errors);
 		pmiPutValue("network.interface.out.errors", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->collisions, snedc->collisions, itv));
-		pmiPutValue("network.interface.out.collisions", snedc->interface, buf);
+		snprintf(buf, sizeof(buf), "%llu", snedc->collisions);
+		pmiPutValue("network.interface.collisions", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->rx_dropped, snedc->rx_dropped, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->rx_dropped);
 		pmiPutValue("network.interface.in.drops", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->tx_dropped, snedc->tx_dropped, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->tx_dropped);
 		pmiPutValue("network.interface.out.drops", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->tx_carrier_errors, snedc->tx_carrier_errors, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->tx_carrier_errors);
 		pmiPutValue("network.interface.out.carrier", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->rx_frame_errors);
 		pmiPutValue("network.interface.in.frame", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->rx_fifo_errors, snedc->rx_fifo_errors, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->rx_fifo_errors);
 		pmiPutValue("network.interface.in.fifo", snedc->interface, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(snedp->tx_fifo_errors, snedc->tx_fifo_errors, itv));
+		snprintf(buf, sizeof(buf), "%llu", snedc->tx_fifo_errors);
 		pmiPutValue("network.interface.out.fifo", snedc->interface, buf);
 	}
 #endif	/* HAVE_PCP */
@@ -824,75 +680,38 @@ __print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr, unsigned 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_serial_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_serial_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	int i, j, j0, found;
+	int i;
 	char buf[64], serialno[64];
-	struct stats_serial *ssc, *ssp;
+	struct stats_serial *ssc;
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
-		found = FALSE;
+		ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (a->nr[!curr] > 0) {
-			ssc = (struct stats_serial *) ((char *) a->buf[curr] + i * a->msize);
+		snprintf(serialno, sizeof(serialno), "serial%u", ssc->line);
 
-			/* Look for corresponding serial line in previous iteration */
-			j = i;
+		snprintf(buf, sizeof(buf), "%u", ssc->rx);
+		pmiPutValue("tty.serial.rx", serialno, buf);
 
-			if (j >= a->nr[!curr]) {
-				j = a->nr[!curr] - 1;
-			}
+		snprintf(buf, sizeof(buf), "%u", ssc->tx);
+		pmiPutValue("tty.serial.tx", serialno, buf);
 
-			j0 = j;
+		snprintf(buf, sizeof(buf), "%u", ssc->frame);
+		pmiPutValue("tty.serial.frame", serialno, buf);
 
-			do {
-				ssp = (struct stats_serial *) ((char *) a->buf[!curr] + j * a->msize);
-				if (ssc->line == ssp->line) {
-					found = TRUE;
-					break;
-				}
-				if (++j >= a->nr[!curr]) {
-					j = 0;
-				}
-			}
-			while (j != j0);
-		}
+		snprintf(buf, sizeof(buf), "%u", ssc->parity);
+		pmiPutValue("tty.serial.parity", serialno, buf);
 
-		if (!found)
-			continue;
+		snprintf(buf, sizeof(buf), "%u", ssc->brk);
+		pmiPutValue("tty.serial.brk", serialno, buf);
 
-		sprintf(serialno, "serial%d", ssc->line);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssp->rx, ssc->rx, itv));
-		pmiPutValue("serial.in.interrupts", serialno, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssp->tx, ssc->tx, itv));
-		pmiPutValue("serial.out.interrupts", serialno, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssp->frame, ssc->frame, itv));
-		pmiPutValue("serial.frame", serialno, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssp->parity, ssc->parity, itv));
-		pmiPutValue("serial.parity", serialno, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssp->brk, ssc->brk, itv));
-		pmiPutValue("serial.breaks", serialno, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssp->overrun, ssc->overrun, itv));
-		pmiPutValue("serial.overrun", serialno, buf);
+		snprintf(buf, sizeof(buf), "%u", ssc->overrun);
+		pmiPutValue("tty.serial.overrun", serialno, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -904,42 +723,32 @@ __print_funct_t pcp_print_serial_stats(struct activity *a, int curr, unsigned lo
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_nfs_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_net_nfs_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_nfs
-		*snnc = (struct stats_net_nfs *) a->buf[curr],
-		*snnp = (struct stats_net_nfs *) a->buf[!curr];
+		*snnc = (struct stats_net_nfs *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snnp->nfs_rpccnt, snnc->nfs_rpccnt, itv));
-	pmiPutValue("network.fs.client.call", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snnc->nfs_rpccnt);
+	pmiPutValue("rpc.client.rpccnt", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snnp->nfs_rpcretrans, snnc->nfs_rpcretrans, itv));
-	pmiPutValue("network.fs.client.retrans", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snnc->nfs_rpcretrans);
+	pmiPutValue("rpc.client.rpcretrans", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snnp->nfs_readcnt, snnc->nfs_readcnt, itv));
-	pmiPutValue("network.fs.client.read", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snnc->nfs_readcnt);
+	pmiPutValue("nfs.client.reqs", "read", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snnp->nfs_writecnt, snnc->nfs_writecnt, itv));
-	pmiPutValue("network.fs.client.write", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snnc->nfs_writecnt);
+	pmiPutValue("nfs.client.reqs", "write", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snnp->nfs_accesscnt, snnc->nfs_accesscnt, itv));
-	pmiPutValue("network.fs.client.access", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snnc->nfs_accesscnt);
+	pmiPutValue("nfs.client.reqs", "access", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snnp->nfs_getattcnt, snnc->nfs_getattcnt, itv));
-	pmiPutValue("network.fs.client.getattr", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snnc->nfs_getattcnt);
+	pmiPutValue("nfs.client.reqs", "getattr", buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -950,62 +759,47 @@ __print_funct_t pcp_print_net_nfs_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_nfsd_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_net_nfsd_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_nfsd
-		*snndc = (struct stats_net_nfsd *) a->buf[curr],
-		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
+		*snndc = (struct stats_net_nfsd *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_rpccnt, snndc->nfsd_rpccnt, itv));
-	pmiPutValue("network.fs.server.call", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_rpccnt);
+	pmiPutValue("rpc.server.rpccnt", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_rpcbad, snndc->nfsd_rpcbad, itv));
-	pmiPutValue("network.fs.server.badcall", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_rpcbad);
+	pmiPutValue("rpc.server.rpcbadclnt", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_netcnt, snndc->nfsd_netcnt, itv));
-	pmiPutValue("network.fs.server.packets", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_netcnt);
+	pmiPutValue("rpc.server.netcnt", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_netudpcnt, snndc->nfsd_netudpcnt, itv));
-	pmiPutValue("network.fs.server.udp", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_netudpcnt);
+	pmiPutValue("rpc.server.netudpcnt", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_nettcpcnt, snndc->nfsd_nettcpcnt, itv));
-	pmiPutValue("network.fs.server.tcp", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_nettcpcnt);
+	pmiPutValue("rpc.server.nettcpcnt", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_rchits, snndc->nfsd_rchits, itv));
-	pmiPutValue("network.fs.server.hits", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_rchits);
+	pmiPutValue("rpc.server.rchits", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_rcmisses, snndc->nfsd_rcmisses, itv));
-	pmiPutValue("network.fs.server.misses", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_rcmisses);
+	pmiPutValue("rpc.server.rcmisses", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_readcnt, snndc->nfsd_readcnt, itv));
-	pmiPutValue("network.fs.server.read", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_readcnt);
+	pmiPutValue("nfs.server.reqs", "read", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_writecnt, snndc->nfsd_writecnt, itv));
-	pmiPutValue("network.fs.server.write", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_writecnt);
+	pmiPutValue("nfs.server.reqs", "write", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_accesscnt, snndc->nfsd_accesscnt, itv));
-	pmiPutValue("network.fs.server.access", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_accesscnt);
+	pmiPutValue("nfs.server.reqs", "access", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snndp->nfsd_getattcnt, snndc->nfsd_getattcnt, itv));
-	pmiPutValue("network.fs.server.getattr", NULL, buf);
+	snprintf(buf, sizeof(buf), "%u", snndc->nfsd_getattcnt);
+	pmiPutValue("nfs.server.reqs", "getattr", buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1016,12 +810,9 @@ __print_funct_t pcp_print_net_nfsd_stats(struct activity *a, int curr, unsigned 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_sock_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_net_sock_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
@@ -1029,22 +820,22 @@ __print_funct_t pcp_print_net_sock_stats(struct activity *a, int curr, unsigned 
 		*snsc = (struct stats_net_sock *) a->buf[curr];
 
 	snprintf(buf, sizeof(buf), "%u", snsc->sock_inuse);
-	pmiPutValue("network.socket.sock_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.total", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->tcp_inuse);
-	pmiPutValue("network.socket.tcp_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.tcp.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->udp_inuse);
-	pmiPutValue("network.socket.udp_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.udp.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->raw_inuse);
-	pmiPutValue("network.socket.raw_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.raw.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->frag_inuse);
-	pmiPutValue("network.socket.frag_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.frag.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->tcp_tw);
-	pmiPutValue("network.socket.tcp_tw", NULL, buf);
+	pmiPutValue("network.sockstat.tcp.tw", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1059,46 +850,36 @@ __print_funct_t pcp_print_net_sock_stats(struct activity *a, int curr, unsigned 
  * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_ip_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_net_ip_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_ip
-		*snic = (struct stats_net_ip *) a->buf[curr],
-		*snip = (struct stats_net_ip *) a->buf[!curr];
+		*snic = (struct stats_net_ip *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InReceives, snic->InReceives, itv));
-	pmiPutValue("network.snmp.ip.ipInReceives", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->InReceives);
+	pmiPutValue("network.ip.inreceives", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->ForwDatagrams, snic->ForwDatagrams, itv));
-	pmiPutValue("network.snmp.ip.ipForwDatagrams", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->ForwDatagrams);
+	pmiPutValue("network.ip.forwdatagrams", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InDelivers, snic->InDelivers, itv));
-	pmiPutValue("network.snmp.ip.ipInDelivers", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->InDelivers);
+	pmiPutValue("network.ip.indelivers", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutRequests, snic->OutRequests, itv));
-	pmiPutValue("network.snmp.ip.ipOutRequests", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->OutRequests);
+	pmiPutValue("network.ip.outrequests", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->ReasmReqds, snic->ReasmReqds, itv));
-	pmiPutValue("network.snmp.ip.ipReasmReqds", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->ReasmReqds);
+	pmiPutValue("network.ip.reasmreqds", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->ReasmOKs, snic->ReasmOKs, itv));
-	pmiPutValue("network.snmp.ip.ipReasmOKs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->ReasmOKs);
+	pmiPutValue("network.ip.reasmoks", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->FragOKs, snic->FragOKs, itv));
-	pmiPutValue("network.snmp.ip.ipFragOKs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->FragOKs);
+	pmiPutValue("network.ip.fragoks", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->FragCreates, snic->FragCreates, itv));
-	pmiPutValue("network.snmp.ip.ipFragCreates", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->FragCreates);
+	pmiPutValue("network.ip.fragcreates", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1109,50 +890,38 @@ __print_funct_t pcp_print_net_ip_stats(struct activity *a, int curr, unsigned lo
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_eip_stats(struct activity *a, int curr, unsigned long long itv,
-				        struct record_header *record_hdr)
+__print_funct_t pcp_print_net_eip_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_eip
-		*sneic = (struct stats_net_eip *) a->buf[curr],
-		*sneip = (struct stats_net_eip *) a->buf[!curr];
+		*sneic = (struct stats_net_eip *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InHdrErrors, sneic->InHdrErrors, itv));
-	pmiPutValue("network.snmp.ip.ipInHdrErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InHdrErrors);
+	pmiPutValue("network.ip.inhdrerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InAddrErrors, sneic->InAddrErrors, itv));
-	pmiPutValue("network.snmp.ip.ipInAddrErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InAddrErrors);
+	pmiPutValue("network.ip.inaddrerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InUnknownProtos, sneic->InUnknownProtos, itv));
-	pmiPutValue("network.snmp.ip.ipInUnknownProtos", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InUnknownProtos);
+	pmiPutValue("network.ip.inunknownprotos", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InDiscards, sneic->InDiscards, itv));
-	pmiPutValue("network.snmp.ip.ipInDiscards", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InDiscards);
+	pmiPutValue("network.ip.indiscards", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutDiscards, sneic->OutDiscards, itv));
-	pmiPutValue("network.snmp.ip.ipOutDiscards", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->OutDiscards);
+	pmiPutValue("network.ip.outdiscards", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutNoRoutes, sneic->OutNoRoutes, itv));
-	pmiPutValue("network.snmp.ip.ipOutNoRoutes", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->OutNoRoutes);
+	pmiPutValue("network.ip.outnoroutes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->ReasmFails, sneic->ReasmFails, itv));
-	pmiPutValue("network.snmp.ip.ipReasmFails", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->ReasmFails);
+	pmiPutValue("network.ip.reasmfails", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->FragFails, sneic->FragFails, itv));
-	pmiPutValue("network.snmp.ip.ipFragFails", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->FragFails);
+	pmiPutValue("network.ip.fragfails", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1163,74 +932,56 @@ __print_funct_t pcp_print_net_eip_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_icmp_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_net_icmp_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_icmp
-		*snic = (struct stats_net_icmp *) a->buf[curr],
-		*snip = (struct stats_net_icmp *) a->buf[!curr];
+		*snic = (struct stats_net_icmp *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InMsgs, snic->InMsgs, itv));
-	pmiPutValue("network.snmp.icmp.icmpInMsgs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InMsgs);
+	pmiPutValue("network.icmp.inmsgs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutMsgs, snic->OutMsgs, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutMsgs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutMsgs);
+	pmiPutValue("network.icmp.outmsgs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InEchos, snic->InEchos, itv));
-	pmiPutValue("network.snmp.icmp.icmpInEchos", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InEchos);
+	pmiPutValue("network.icmp.inechos", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InEchoReps, snic->InEchoReps, itv));
-	pmiPutValue("network.snmp.icmp.icmpInEchoReps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InEchoReps);
+	pmiPutValue("network.icmp.inechoreps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutEchos, snic->OutEchos, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutEchos", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutEchos);
+	pmiPutValue("network.icmp.outechos", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutEchoReps, snic->OutEchoReps, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutEchoReps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutEchoReps);
+	pmiPutValue("network.icmp.outechoreps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InTimestamps, snic->InTimestamps, itv));
-	pmiPutValue("network.snmp.icmp.icmpInTimestamps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InTimestamps);
+	pmiPutValue("network.icmp.intimestamps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InTimestampReps, snic->InTimestampReps, itv));
-	pmiPutValue("network.snmp.icmp.icmpInTimestampReps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InTimestampReps);
+	pmiPutValue("network.icmp.intimestampreps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutTimestamps, snic->OutTimestamps, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutTimestamps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutTimestamps);
+	pmiPutValue("network.icmp.outtimestamps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutTimestampReps, snic->OutTimestampReps, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutTimestampReps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutTimestampReps);
+	pmiPutValue("network.icmp.outtimestampreps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InAddrMasks, snic->InAddrMasks, itv));
-	pmiPutValue("network.snmp.icmp.icmpInAddrMasks", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InAddrMasks);
+	pmiPutValue("network.icmp.inaddrmasks", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InAddrMaskReps, snic->InAddrMaskReps, itv));
-	pmiPutValue("network.snmp.icmp.icmpInAddrMaskReps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InAddrMaskReps);
+	pmiPutValue("network.icmp.inaddrmaskreps", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutAddrMasks, snic->OutAddrMasks, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutAddrMasks", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutAddrMasks);
+	pmiPutValue("network.icmp.outaddrmasks", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutAddrMaskReps, snic->OutAddrMaskReps, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutAddrMaskReps", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutAddrMaskReps);
+	pmiPutValue("network.icmp.outaddrmaskreps", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1242,66 +993,50 @@ __print_funct_t pcp_print_net_icmp_stats(struct activity *a, int curr, unsigned 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_eicmp_stats(struct activity *a, int curr, unsigned long long itv,
-					  struct record_header *record_hdr)
+__print_funct_t pcp_print_net_eicmp_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_eicmp
-		*sneic = (struct stats_net_eicmp *) a->buf[curr],
-		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
+		*sneic = (struct stats_net_eicmp *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InErrors, sneic->InErrors, itv));
-	pmiPutValue("network.snmp.icmp.icmpInErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InErrors);
+	pmiPutValue("network.icmp.inerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutErrors, sneic->OutErrors, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutErrors);
+	pmiPutValue("network.icmp.outerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InDestUnreachs, sneic->InDestUnreachs, itv));
-	pmiPutValue("network.snmp.icmp.icmpInDestUnreachs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InDestUnreachs);
+	pmiPutValue("network.icmp.indestunreachs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutDestUnreachs, sneic->OutDestUnreachs, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutDestUnreachs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutDestUnreachs);
+	pmiPutValue("network.icmp.outdestunreachs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InTimeExcds, sneic->InTimeExcds, itv));
-	pmiPutValue("network.snmp.icmp.icmpInTimeExcds", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InTimeExcds);
+	pmiPutValue("network.icmp.intimeexcds", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutTimeExcds, sneic->OutTimeExcds, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutTimeExcds", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutTimeExcds);
+	pmiPutValue("network.icmp.outtimeexcds", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InParmProbs, sneic->InParmProbs, itv));
-	pmiPutValue("network.snmp.icmp.icmpInParmProbs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InParmProbs);
+	pmiPutValue("network.icmp.inparmprobs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutParmProbs, sneic->OutParmProbs, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutParmProbs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutParmProbs);
+	pmiPutValue("network.icmp.outparmprobs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InSrcQuenchs, sneic->InSrcQuenchs, itv));
-	pmiPutValue("network.snmp.icmp.icmpInSrcQuenchs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InSrcQuenchs);
+	pmiPutValue("network.icmp.insrcquenchs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutSrcQuenchs, sneic->OutSrcQuenchs, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutSrcQuenchs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutSrcQuenchs);
+	pmiPutValue("network.icmp.outsrcquenchs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InRedirects, sneic->InRedirects, itv));
-	pmiPutValue("network.snmp.icmp.icmpInRedirects", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InRedirects);
+	pmiPutValue("network.icmp.inredirects", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutRedirects, sneic->OutRedirects, itv));
-	pmiPutValue("network.snmp.icmp.icmpOutRedirects", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutRedirects);
+	pmiPutValue("network.icmp.outredirects", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1312,34 +1047,26 @@ __print_funct_t pcp_print_net_eicmp_stats(struct activity *a, int curr, unsigned
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_tcp_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_net_tcp_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_tcp
-		*sntc = (struct stats_net_tcp *) a->buf[curr],
-		*sntp = (struct stats_net_tcp *) a->buf[!curr];
+		*sntc = (struct stats_net_tcp *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sntp->ActiveOpens, sntc->ActiveOpens, itv));
-	pmiPutValue("network.snmp.tcp.tcpActiveOpens", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sntc->ActiveOpens);
+	pmiPutValue("network.tcp.activeopens", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sntp->PassiveOpens, sntc->PassiveOpens, itv));
-	pmiPutValue("network.snmp.tcp.tcpPassiveOpens", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sntc->PassiveOpens);
+	pmiPutValue("network.tcp.passiveopens", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sntp->InSegs, sntc->InSegs, itv));
-	pmiPutValue("network.snmp.tcp.tcpInSegs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sntc->InSegs);
+	pmiPutValue("network.tcp.insegs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sntp->OutSegs, sntc->OutSegs, itv));
-	pmiPutValue("network.snmp.tcp.tcpOutSegs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sntc->OutSegs);
+	pmiPutValue("network.tcp.outsegs", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1350,38 +1077,29 @@ __print_funct_t pcp_print_net_tcp_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_etcp_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_net_etcp_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_etcp
-		*snetc = (struct stats_net_etcp *) a->buf[curr],
-		*snetp = (struct stats_net_etcp *) a->buf[!curr];
+		*snetc = (struct stats_net_etcp *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snetp->AttemptFails, snetc->AttemptFails, itv));
-	pmiPutValue("network.snmp.tcp.tcpAttemptFails", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->AttemptFails);
+	pmiPutValue("network.tcp.attemptfails", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snetp->EstabResets, snetc->EstabResets, itv));
-	pmiPutValue("network.snmp.tcp.tcpEstabResets", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->EstabResets);
+	pmiPutValue("network.tcp.tcpestabresets", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snetp->RetransSegs, snetc->RetransSegs, itv));
-	pmiPutValue("network.snmp.tcp.tcpRetransSegs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->RetransSegs);
+	pmiPutValue("network.tcp.tcpretranssegs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snetp->InErrs, snetc->InErrs, itv));
-	pmiPutValue("network.snmp.tcp.tcpInErrs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->InErrs);
+	pmiPutValue("network.tcp.inerrs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snetp->OutRsts, snetc->OutRsts, itv));
-	pmiPutValue("network.snmp.tcp.tcpOutRsts", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->OutRsts);
+	pmiPutValue("network.tcp.outrsts", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1392,34 +1110,26 @@ __print_funct_t pcp_print_net_etcp_stats(struct activity *a, int curr, unsigned 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_udp_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_net_udp_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_udp
-		*snuc = (struct stats_net_udp *) a->buf[curr],
-		*snup = (struct stats_net_udp *) a->buf[!curr];
+		*snuc = (struct stats_net_udp *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->InDatagrams, snuc->InDatagrams, itv));
-	pmiPutValue("network.snmp.udp.udpInDatagrams", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->InDatagrams);
+	pmiPutValue("network.udp.indatagrams", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->OutDatagrams, snuc->OutDatagrams, itv));
-	pmiPutValue("network.snmp.udp.udpOutDatagrams", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->OutDatagrams);
+	pmiPutValue("network.udp.outdatagrams", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->NoPorts, snuc->NoPorts, itv));
-	pmiPutValue("network.snmp.udp.udpNoPorts", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->NoPorts);
+	pmiPutValue("network.udp.noports", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->InErrors, snuc->InErrors, itv));
-	pmiPutValue("network.snmp.udp.udpInErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->InErrors);
+	pmiPutValue("network.udp.inerrors", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1430,12 +1140,9 @@ __print_funct_t pcp_print_net_udp_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_sock6_stats(struct activity *a, int curr, unsigned long long itv,
-					  struct record_header *record_hdr)
+__print_funct_t pcp_print_net_sock6_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
@@ -1443,16 +1150,16 @@ __print_funct_t pcp_print_net_sock6_stats(struct activity *a, int curr, unsigned
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
 
 	snprintf(buf, sizeof(buf), "%u", snsc->tcp6_inuse);
-	pmiPutValue("network.socket6.tcp6_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.tcp6.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->udp6_inuse);
-	pmiPutValue("network.socket6.udp6_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.udp6.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->raw6_inuse);
-	pmiPutValue("network.socket6.raw6_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.raw6.inuse", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%u", snsc->frag6_inuse);
-	pmiPutValue("network.socket6.frag6_inuse", NULL, buf);
+	pmiPutValue("network.sockstat.frag6.inuse", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1463,58 +1170,44 @@ __print_funct_t pcp_print_net_sock6_stats(struct activity *a, int curr, unsigned
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_ip6_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_net_ip6_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_ip6
-		*snic = (struct stats_net_ip6 *) a->buf[curr],
-		*snip = (struct stats_net_ip6 *) a->buf[!curr];
+		*snic = (struct stats_net_ip6 *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InReceives6, snic->InReceives6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInReceives", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->InReceives6);
+	pmiPutValue("network.ip6.inreceives", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutForwDatagrams6, snic->OutForwDatagrams6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutForwDatagrams", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->OutForwDatagrams6);
+	pmiPutValue("network.ip6.outforwdatagrams", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InDelivers6, snic->InDelivers6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInDelivers", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->InDelivers6);
+	pmiPutValue("network.ip6.indelivers", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutRequests6, snic->OutRequests6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutRequests", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->OutRequests6);
+	pmiPutValue("network.ip6.outrequests", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->ReasmReqds6, snic->ReasmReqds6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsReasmReqds", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->ReasmReqds6);
+	pmiPutValue("network.ip6.reasmreqds", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->ReasmOKs6, snic->ReasmOKs6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsReasmOKs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->ReasmOKs6);
+	pmiPutValue("network.ip6.reasmoks", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InMcastPkts6, snic->InMcastPkts6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInMcastPkts", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->InMcastPkts6);
+	pmiPutValue("network.ip6.inmcastpkts", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutMcastPkts6, snic->OutMcastPkts6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutMcastPkts", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->OutMcastPkts6);
+	pmiPutValue("network.ip6.outmcastpkts", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->FragOKs6, snic->FragOKs6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutFragOKs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->FragOKs6);
+	pmiPutValue("network.ip6.fragoks", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->FragCreates6, snic->FragCreates6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutFragCreates", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", snic->FragCreates6);
+	pmiPutValue("network.ip6.fragcreates", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1525,62 +1218,47 @@ __print_funct_t pcp_print_net_ip6_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_eip6_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_net_eip6_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_eip6
-		*sneic = (struct stats_net_eip6 *) a->buf[curr],
-		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
+		*sneic = (struct stats_net_eip6 *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InHdrErrors6, sneic->InHdrErrors6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInHdrErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InHdrErrors6);
+	pmiPutValue("network.ip6.inhdrerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InAddrErrors6, sneic->InAddrErrors6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInAddrErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InAddrErrors6);
+	pmiPutValue("network.ip6.inaddrerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InUnknownProtos6, sneic->InUnknownProtos6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInUnknownProtos", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InUnknownProtos6);
+	pmiPutValue("network.ip6.inunknownprotos", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InTooBigErrors6, sneic->InTooBigErrors6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInTooBigErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InTooBigErrors6);
+	pmiPutValue("network.ip6.intoobigerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InDiscards6, sneic->InDiscards6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInDiscards", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InDiscards6);
+	pmiPutValue("network.ip6.indiscards", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutDiscards6, sneic->OutDiscards6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutDiscards", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->OutDiscards6);
+	pmiPutValue("network.ip6.outdiscards", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InNoRoutes6, sneic->InNoRoutes6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInNoRoutes", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InNoRoutes6);
+	pmiPutValue("network.ip6.innoroutes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutNoRoutes6, sneic->OutNoRoutes6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutNoRoutes", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->OutNoRoutes6);
+	pmiPutValue("network.ip6.outnoroutes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->ReasmFails6, sneic->ReasmFails6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsReasmFails", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->ReasmFails6);
+	pmiPutValue("network.ip6.reasmfails", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->FragFails6, sneic->FragFails6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsOutFragFails", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->FragFails6);
+	pmiPutValue("network.ip6.fragfails", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InTruncatedPkts6, sneic->InTruncatedPkts6, itv));
-	pmiPutValue("network.snmp.ip6.ipv6IfStatsInTruncatedPkts", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", sneic->InTruncatedPkts6);
+	pmiPutValue("network.ip6.intruncatedpkts", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1591,86 +1269,65 @@ __print_funct_t pcp_print_net_eip6_stats(struct activity *a, int curr, unsigned 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_icmp6_stats(struct activity *a, int curr, unsigned long long itv,
-					  struct record_header *record_hdr)
+__print_funct_t pcp_print_net_icmp6_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_icmp6
-		*snic = (struct stats_net_icmp6 *) a->buf[curr],
-		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
+		*snic = (struct stats_net_icmp6 *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InMsgs6, snic->InMsgs6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInMsgs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InMsgs6);
+	pmiPutValue("network.icmp6.inmsgs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutMsgs6, snic->OutMsgs6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutMsgs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutMsgs6);
+	pmiPutValue("network.icmp6.outmsgs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InEchos6, snic->InEchos6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInEchos", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InEchos6);
+	pmiPutValue("network.icmp6.inechos", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InEchoReplies6, snic->InEchoReplies6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInEchoReplies", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InEchoReplies6);
+	pmiPutValue("network.icmp6.inechoreplies", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutEchoReplies6, snic->OutEchoReplies6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutEchoReplies", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutEchoReplies6);
+	pmiPutValue("network.icmp6.outechoreplies", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InGroupMembQueries6, snic->InGroupMembQueries6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInGroupMembQueries", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InGroupMembQueries6);
+	pmiPutValue("network.icmp6.ingroupmembqueries", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InGroupMembResponses6, snic->InGroupMembResponses6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInGroupMembResponses", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InGroupMembResponses6);
+	pmiPutValue("network.icmp6.ingroupmembresponses", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutGroupMembResponses6, snic->OutGroupMembResponses6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutGroupMembResponses", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutGroupMembResponses6);
+	pmiPutValue("network.icmp6.outgroupmembresponses", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InGroupMembReductions6, snic->InGroupMembReductions6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInGroupMembReductions", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InGroupMembReductions6);
+	pmiPutValue("network.icmp6.ingroupmembreductions", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutGroupMembReductions6, snic->OutGroupMembReductions6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutGroupMembReductions", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutGroupMembReductions6);
+	pmiPutValue("network.icmp6.outgroupmembreductions", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InRouterSolicits6, snic->InRouterSolicits6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInRouterSolicits", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InRouterSolicits6);
+	pmiPutValue("network.icmp6.inroutersolicits", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutRouterSolicits6, snic->OutRouterSolicits6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutRouterSolicits", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutRouterSolicits6);
+	pmiPutValue("network.icmp6.outroutersolicits", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InRouterAdvertisements6, snic->InRouterAdvertisements6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInRouterAdvertisements", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InRouterAdvertisements6);
+	pmiPutValue("network.icmp6.inrouteradvertisements", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InNeighborSolicits6, snic->InNeighborSolicits6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInNeighborSolicits", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InNeighborSolicits6);
+	pmiPutValue("network.icmp6.inneighborsolicits", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutNeighborSolicits6, snic->OutNeighborSolicits6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutNeighborSolicits", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutNeighborSolicits6);
+	pmiPutValue("network.icmp6.outneighborsolicits", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->InNeighborAdvertisements6, snic->InNeighborAdvertisements6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInNeighborAdvertisements", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->InNeighborAdvertisements6);
+	pmiPutValue("network.icmp6.inneighboradvertisements", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snip->OutNeighborAdvertisements6, snic->OutNeighborAdvertisements6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutNeighborAdvertisements", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snic->OutNeighborAdvertisements6);
+	pmiPutValue("network.icmp6.outneighboradvertisements", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1681,62 +1338,47 @@ __print_funct_t pcp_print_net_icmp6_stats(struct activity *a, int curr, unsigned
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_eicmp6_stats(struct activity *a, int curr, unsigned long long itv,
-					   struct record_header *record_hdr)
+__print_funct_t pcp_print_net_eicmp6_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_eicmp6
-		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
-		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
+		*sneic = (struct stats_net_eicmp6 *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InErrors6, sneic->InErrors6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InErrors6);
+	pmiPutValue("network.icmp6.inerrors", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InDestUnreachs6, sneic->InDestUnreachs6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInDestUnreachs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InDestUnreachs6);
+	pmiPutValue("network.icmp6.indestunreachs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutDestUnreachs6, sneic->OutDestUnreachs6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutDestUnreachs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutDestUnreachs6);
+	pmiPutValue("network.icmp6.outdestunreachs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InTimeExcds6, sneic->InTimeExcds6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInTimeExcds", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InTimeExcds6);
+	pmiPutValue("network.icmp6.intimeexcds", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutTimeExcds6, sneic->OutTimeExcds6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutTimeExcds", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutTimeExcds6);
+	pmiPutValue("network.icmp6.outtimeexcds", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InParmProblems6, sneic->InParmProblems6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInParmProblems", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InParmProblems6);
+	pmiPutValue("network.icmp6.inparmproblems", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutParmProblems6, sneic->OutParmProblems6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutParmProblems", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutParmProblems6);
+	pmiPutValue("network.icmp6.outparmproblems", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InRedirects6, sneic->InRedirects6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInRedirects", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InRedirects6);
+	pmiPutValue("network.icmp6.inredirects", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutRedirects6, sneic->OutRedirects6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutRedirects", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutRedirects6);
+	pmiPutValue("network.icmp6.outredirects", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->InPktTooBigs6, sneic->InPktTooBigs6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpInPktTooBigs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->InPktTooBigs6);
+	pmiPutValue("network.icmp6.inpkttoobigs", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(sneip->OutPktTooBigs6, sneic->OutPktTooBigs6, itv));
-	pmiPutValue("network.snmp.icmp6.ipv6IfIcmpOutPktTooBigs", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sneic->OutPktTooBigs6);
+	pmiPutValue("network.icmp6.outpkttoobigs", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1747,34 +1389,26 @@ __print_funct_t pcp_print_net_eicmp6_stats(struct activity *a, int curr, unsigne
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_net_udp6_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_net_udp6_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_net_udp6
-		*snuc = (struct stats_net_udp6 *) a->buf[curr],
-		*snup = (struct stats_net_udp6 *) a->buf[!curr];
+		*snuc = (struct stats_net_udp6 *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->InDatagrams6, snuc->InDatagrams6, itv));
-	pmiPutValue("network.snmp.udp6.udpInDatagrams", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->InDatagrams6);
+	pmiPutValue("network.udp6.indatagrams", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->OutDatagrams6, snuc->OutDatagrams6, itv));
-	pmiPutValue("network.snmp.udp6.udpOutDatagrams", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->OutDatagrams6);
+	pmiPutValue("network.udp6.outdatagrams", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->NoPorts6, snuc->NoPorts6, itv));
-	pmiPutValue("network.snmp.udp6.udpNoPorts", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->NoPorts6);
+	pmiPutValue("network.udp6.noports", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		S_VALUE(snup->InErrors6, snuc->InErrors6, itv));
-	pmiPutValue("network.snmp.udp6.udpInErrors", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snuc->InErrors6);
+	pmiPutValue("network.udp6.inerrors", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1785,18 +1419,14 @@ __print_funct_t pcp_print_net_udp6_stats(struct activity *a, int curr, unsigned 
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsigned long long itv,
-					    struct record_header *record_hdr)
+__print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
 	struct stats_pwr_cpufreq *spc;
 	char buf[64], cpuno[64];
-	char *str;
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -1809,15 +1439,14 @@ __print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsign
 
 		if (!i) {
 			/* This is CPU "all" */
-			str = NULL;
+			continue;
 		}
 		else {
 			sprintf(cpuno, "cpu%d", i - 1);
-			str = cpuno;
 		}
 
 		snprintf(buf, sizeof(buf), "%f", ((double) spc->cpufreq) / 100);
-		pmiPutValue(i ? "kernel.percpu.cpu.freqMHz" : "kernel.all.cpu.freqMHz", str, buf);
+		pmiPutValue("hinv.cpu.clock", cpuno, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -1829,12 +1458,9 @@ __print_funct_t pcp_print_pwr_cpufreq_stats(struct activity *a, int curr, unsign
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_pwr_fan_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_pwr_fan_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
@@ -1854,8 +1480,7 @@ __print_funct_t pcp_print_pwr_fan_stats(struct activity *a, int curr, unsigned l
 			 (unsigned long long) (spc->rpm - spc->rpm_min));
 		pmiPutValue("power.fan.drpm", instance, buf);
 
-		snprintf(buf, sizeof(buf), "%s",
-			spc->device);
+		snprintf(buf, sizeof(buf), "%s", spc->device);
 		pmiPutValue("power.fan.device", instance, buf);
 	}
 #endif	/* HAVE_PCP */
@@ -1868,12 +1493,9 @@ __print_funct_t pcp_print_pwr_fan_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr, unsigned long long itv,
-					 struct record_header *record_hdr)
+__print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
@@ -1885,15 +1507,14 @@ __print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr, unsigned 
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 		sprintf(instance, "temp%d", i + 1);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 spc->temp);
-		pmiPutValue("power.temp.degC", instance, buf);
+		snprintf(buf, sizeof(buf), "%f", spc->temp);
+		pmiPutValue("power.temp.celsius", instance, buf);
 
 		snprintf(buf, sizeof(buf), "%f",
 			 (spc->temp_max - spc->temp_min) ?
 			 (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100 :
 			 0.0);
-		pmiPutValue("power.temp.temp_pct", instance, buf);
+		pmiPutValue("power.temp.percent", instance, buf);
 
 		snprintf(buf, sizeof(buf), "%s",
 			spc->device);
@@ -1913,8 +1534,7 @@ __print_funct_t pcp_print_pwr_temp_stats(struct activity *a, int curr, unsigned 
  * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_pwr_in_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_pwr_in_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
@@ -1928,13 +1548,13 @@ __print_funct_t pcp_print_pwr_in_stats(struct activity *a, int curr, unsigned lo
 
 		snprintf(buf, sizeof(buf), "%f",
 			 spc->in);
-		pmiPutValue("power.in.inV", instance, buf);
+		pmiPutValue("power.in.voltage", instance, buf);
 
 		snprintf(buf, sizeof(buf), "%f",
 			 (spc->in_max - spc->in_min) ?
 			 (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100 :
 			 0.0);
-		pmiPutValue("power.in.in_pct", instance, buf);
+		pmiPutValue("power.in.percent", instance, buf);
 
 		snprintf(buf, sizeof(buf), "%s",
 			spc->device);
@@ -1954,28 +1574,24 @@ __print_funct_t pcp_print_pwr_in_stats(struct activity *a, int curr, unsigned lo
  * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_huge_stats(struct activity *a, int curr, unsigned long long itv,
-				     struct record_header *record_hdr)
+__print_funct_t pcp_print_huge_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
 
-	snprintf(buf, sizeof(buf), "%llu", smc->frhkb);
-	pmiPutValue("mem.huge.free", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", smc->frhkb * 1024);
+	pmiPutValue("mem.util.hugepagesFreeBytes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", smc->tlhkb - smc->frhkb);
-	pmiPutValue("mem.huge.used", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", smc->tlhkb * 1024);
+	pmiPutValue("mem.util.hugepagesTotalBytes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%f", smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0);
-	pmiPutValue("mem.huge.used_pct", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", smc->rsvdhkb * 1024);
+	pmiPutValue("mem.util.hugepagesRsvdBytes", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", smc->rsvdhkb);
-	pmiPutValue("mem.huge.reserved", NULL, buf);
-
-	snprintf(buf, sizeof(buf), "%llu", smc->surphkb);
-	pmiPutValue("mem.huge.surplus", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", smc->surphkb * 1024);
+	pmiPutValue("mem.util.hugepagesSurpBytes", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -1986,12 +1602,9 @@ __print_funct_t pcp_print_huge_stats(struct activity *a, int curr, unsigned long
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_pwr_usb_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_pwr_usb_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
@@ -2031,12 +1644,9 @@ __print_funct_t pcp_print_pwr_usb_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_filesystem_stats(struct activity *a, int curr, unsigned long long itv,
-					   struct record_header *record_hdr)
+__print_funct_t pcp_print_filesystem_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
@@ -2057,36 +1667,32 @@ __print_funct_t pcp_print_filesystem_stats(struct activity *a, int curr, unsigne
 				continue;
 		}
 
-		snprintf(buf, sizeof(buf), "%.0f",
-			 (double) sfc->f_bfree / 1024 / 1024);
-		pmiPutValue("fs.util.fsfree", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", sfc->f_blocks / 1024);
+		pmiPutValue("filesys.capacity", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%.0f",
-			 (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024);
-		pmiPutValue("fs.util.fsused", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", sfc->f_bfree / 1024);
+		pmiPutValue("filesys.free", dev_name, buf);
+
+		snprintf(buf, sizeof(buf), "%llu",
+			 (sfc->f_blocks - sfc->f_bfree) / 1024);
+		pmiPutValue("filesys.used", dev_name, buf);
 
 		snprintf(buf, sizeof(buf), "%f",
 			 sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
 				       : 0.0);
-		pmiPutValue("fs.util.fsused_pct", dev_name, buf);
+		pmiPutValue("filesys.full", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
-				       : 0.0);
-		pmiPutValue("fs.util.ufsused_pct", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", sfc->f_files);
+		pmiPutValue("filesys.maxfiles", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%llu",
-			 sfc->f_ffree);
-		pmiPutValue("fs.util.ifree", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", sfc->f_ffree);
+		pmiPutValue("filesys.freefiles", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%llu",
-			 sfc->f_files - sfc->f_ffree);
-		pmiPutValue("fs.util.iused", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", sfc->f_files - sfc->f_ffree);
+		pmiPutValue("filesys.usedfiles", dev_name, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
-				      : 0.0);
-		pmiPutValue("fs.util.iused_pct", dev_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", sfc->f_bavail / 1024);
+		pmiPutValue("filesys.avail", dev_name, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -2098,19 +1704,15 @@ __print_funct_t pcp_print_filesystem_stats(struct activity *a, int curr, unsigne
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_softnet_stats(struct activity *a, int curr, unsigned long long itv,
-					struct record_header *record_hdr)
+__print_funct_t pcp_print_softnet_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i;
-	struct stats_softnet *ssnc, *ssnp;
+	struct stats_softnet *ssnc;
 	char buf[64], cpuno[64];
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
-	char *str;
 
 	/*
 	 * @nr[curr] cannot normally be greater than @nr_ini.
@@ -2132,36 +1734,29 @@ __print_funct_t pcp_print_softnet_stats(struct activity *a, int curr, unsigned l
 			continue;
 
                 ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
-                ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
 
 		if (!i) {
 			/* This is CPU "all" */
-			str = NULL;
+			continue;
 		}
 		else {
 			sprintf(cpuno, "cpu%d", i - 1);
-			str = cpuno;
 		}
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssnp->processed, ssnc->processed, itv));
-		pmiPutValue(i ? "network.percpu.soft.processed" : "network.all.soft.processed", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->processed);
+		pmiPutValue("network.softnet.percpu.processed", cpuno, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssnp->dropped, ssnc->dropped, itv));
-		pmiPutValue(i ? "network.percpu.soft.dropped" : "network.all.soft.dropped", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->dropped);
+		pmiPutValue("network.softnet.percpu.dropped", cpuno, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv));
-		pmiPutValue(i ? "network.percpu.soft.time_squeeze" : "network.all.soft.time_squeeze", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->time_squeeze);
+		pmiPutValue("network.softnet.percpu.time_squeeze", cpuno, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssnp->received_rps, ssnc->received_rps, itv));
-		pmiPutValue(i ? "network.percpu.soft.received_rps" : "network.all.soft.received_rps", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->received_rps);
+		pmiPutValue("network.softnet.percpu.received_rps", cpuno, buf);
 
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv));
-		pmiPutValue(i ? "network.percpu.soft.flow_limit" : "network.all.soft.flow_limit", str, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->flow_limit);
+		pmiPutValue("network.softnet.percpu.flow_limit", cpuno, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -2173,68 +1768,30 @@ __print_funct_t pcp_print_softnet_stats(struct activity *a, int curr, unsigned l
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_fchost_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_fchost_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	int i, j, j0, found;
-	struct stats_fchost *sfcc, *sfcp, sfczero;
+	int i;
+	struct stats_fchost *sfcc;
 	char buf[64];
-
-	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
-		found = FALSE;
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
-		if (a->nr[!curr] > 0) {
-			/* Look for corresponding structure in previous iteration */
-			j = i;
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sfcc->f_rxframes);
+		pmiPutValue("fchost.in.frames", sfcc->fchost_name, buf);
 
-			if (j >= a->nr[!curr]) {
-				j = a->nr[!curr] - 1;
-			}
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sfcc->f_txframes);
+		pmiPutValue("fchost.out.frames", sfcc->fchost_name, buf);
 
-			j0 = j;
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sfcc->f_rxwords * 4);
+		pmiPutValue("fchost.in.bytes", sfcc->fchost_name, buf);
 
-			do {
-				sfcp = (struct stats_fchost *) ((char *) a->buf[!curr] + j * a->msize);
-				if (!strcmp(sfcc->fchost_name, sfcp->fchost_name)) {
-					found = TRUE;
-					break;
-				}
-				if (++j >= a->nr[!curr]) {
-					j = 0;
-				}
-			}
-			while (j != j0);
-		}
-
-		if (!found) {
-			/* This is a newly registered host */
-			sfcp = &sfczero;
-		}
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv));
-		pmiPutValue("network.fchost.in.frame", sfcc->fchost_name, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv));
-		pmiPutValue("network.fchost.out.frame", sfcc->fchost_name, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv));
-		pmiPutValue("network.fchost.in.word", sfcc->fchost_name, buf);
-
-		snprintf(buf, sizeof(buf), "%f",
-			 S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv));
-		pmiPutValue("network.fchost.out.word", sfcc->fchost_name, buf);
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) sfcc->f_txwords * 4);
+		pmiPutValue("fchost.out.bytes", sfcc->fchost_name, buf);
 	}
 #endif	/* HAVE_PCP */
 }
@@ -2246,31 +1803,26 @@ __print_funct_t pcp_print_fchost_stats(struct activity *a, int curr, unsigned lo
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_psicpu_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_psicpu_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_psi_cpu
-		*psic = (struct stats_psi_cpu *) a->buf[curr],
-		*psip = (struct stats_psi_cpu *) a->buf[!curr];
+		*psic = (struct stats_psi_cpu *) a->buf[curr];
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_acpu_10 / 100);
-	pmiPutValue("psi.cpu.some.trends", "10 sec", buf);
+	pmiPutValue("kernel.all.pressure.cpu.some.avg", "10 second", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_acpu_60 / 100);
-	pmiPutValue("psi.cpu.some.trends", "60 sec", buf);
+	pmiPutValue("kernel.all.pressure.cpu.some.avg", "1 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_acpu_300 / 100);
-	pmiPutValue("psi.cpu.some.trends", "300 sec", buf);
+	pmiPutValue("kernel.all.pressure.cpu.some.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv));
-	pmiPutValue("psi.cpu.some.avg", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", psic->some_cpu_total);
+	pmiPutValue("kernel.all.pressure.cpu.some.total", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -2281,44 +1833,38 @@ __print_funct_t pcp_print_psicpu_stats(struct activity *a, int curr, unsigned lo
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_psiio_stats(struct activity *a, int curr, unsigned long long itv,
-				      struct record_header *record_hdr)
+__print_funct_t pcp_print_psiio_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_psi_io
-		*psic = (struct stats_psi_io *) a->buf[curr],
-		*psip = (struct stats_psi_io *) a->buf[!curr];
+		*psic = (struct stats_psi_io *) a->buf[curr];
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_aio_10 / 100);
-	pmiPutValue("psi.io.some.trends", "10 sec", buf);
+	pmiPutValue("kernel.all.pressure.io.some.avg", "10 second", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_aio_60 / 100);
-	pmiPutValue("psi.io.some.trends", "60 sec", buf);
+	pmiPutValue("kernel.all.pressure.io.some.avg", "1 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_aio_300 / 100);
-	pmiPutValue("psi.io.some.trends", "300 sec", buf);
+	pmiPutValue("kernel.all.pressure.io.some.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 ((double) psic->some_io_total - psip->some_io_total) / (100 * itv));
-	pmiPutValue("psi.io.some.avg", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", psic->some_io_total);
+	pmiPutValue("kernel.all.pressure.io.some.total", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_10 / 100);
-	pmiPutValue("psi.io.full.trends", "10 sec", buf);
+	pmiPutValue("kernel.all.pressure.io.full.avg", "10 second", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_60 / 100);
-	pmiPutValue("psi.io.full.trends", "60 sec", buf);
+	pmiPutValue("kernel.all.pressure.io.full.avg", "1 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_300 / 100);
-	pmiPutValue("psi.io.full.trends", "300 sec", buf);
+	pmiPutValue("kernel.all.pressure.io.full.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 ((double) psic->full_io_total - psip->full_io_total) / (100 * itv));
-	pmiPutValue("psi.io.full.avg", NULL, buf);
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_io_total);
+	pmiPutValue("kernel.all.pressure.io.full.total", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 
@@ -2329,43 +1875,37 @@ __print_funct_t pcp_print_psiio_stats(struct activity *a, int curr, unsigned lon
  * IN:
  * @a		Activity structure with statistics.
  * @curr	Index in array for current sample statistics.
- * @itv		Interval of time in 1/100th of a second.
- * @record_hdr	Record header for current sample.
  ***************************************************************************
  */
-__print_funct_t pcp_print_psimem_stats(struct activity *a, int curr, unsigned long long itv,
-				       struct record_header *record_hdr)
+__print_funct_t pcp_print_psimem_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	char buf[64];
 	struct stats_psi_mem
-		*psic = (struct stats_psi_mem *) a->buf[curr],
-		*psip = (struct stats_psi_mem *) a->buf[!curr];
+		*psic = (struct stats_psi_mem *) a->buf[curr];
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_amem_10 / 100);
-	pmiPutValue("psi.mem.some.trends", "10 sec", buf);
+	pmiPutValue("kernel.all.pressure.memory.some.avg", "10 second", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_amem_60 / 100);
-	pmiPutValue("psi.mem.some.trends", "60 sec", buf);
+	pmiPutValue("kernel.all.pressure.memory.some.avg", "1 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->some_amem_300 / 100);
-	pmiPutValue("psi.mem.some.trends", "300 sec", buf);
+	pmiPutValue("kernel.all.pressure.memory.some.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv));
-	pmiPutValue("psi.mem.some.avg", NULL, buf);
+	snprintf(buf, sizeof(buf), "%llu", psic->some_mem_total);
+	pmiPutValue("kernel.all.pressure.memory.some.total", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_10 / 100);
-	pmiPutValue("psi.mem.full.trends", "10 sec", buf);
+	pmiPutValue("kernel.all.pressure.memory.full.avg", "10 second", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_60 / 100);
-	pmiPutValue("psi.mem.full.trends", "60 sec", buf);
+	pmiPutValue("kernel.all.pressure.memory.full.avg", "1 minute", buf);
 
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_300 / 100);
-	pmiPutValue("psi.mem.full.trends", "300 sec", buf);
+	pmiPutValue("kernel.all.pressure.memory.full.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f",
-		 ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv));
-	pmiPutValue("psi.mem.full.avg", NULL, buf);
+	snprintf(buf, sizeof(buf), "%f", (double) psic->full_mem_total);
+	pmiPutValue("kernel.all.pressure.memory.full.total", NULL, buf);
 #endif	/* HAVE_PCP */
 }

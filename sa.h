@@ -979,8 +979,7 @@ struct activity {
 	/*
 	 * This function is used by sadf to display activity statistics in PCP format.
 	 */
-	__print_funct_t (*f_pcp_print) (struct activity *, int, unsigned long long,
-					struct record_header *);
+	__print_funct_t (*f_pcp_print) (struct activity *, int);
 	/*
 	 * This function is used by sadf to count the number of new items in current
 	 * sample and add them to the linked list @item_list.
