@@ -352,7 +352,7 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr)
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 
-		snprintf(buf, sizeof(buf), "%lu", (unsigned long)(smc->tlmkb >> 10));
+		snprintf(buf, sizeof(buf), "%lu", (unsigned long) (smc->tlmkb >> 10));
 		pmiPutValue("hinv.physmem", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb);
@@ -582,7 +582,7 @@ __print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr)
 
 		j = check_net_dev_reg(a, curr, !curr, i);
 		if (j < 0) {
-			/* This is a newly registered interface. */
+			/* This is a newly registered interface */
 			/* TODO: add a new instance? */
 		}
 
@@ -639,7 +639,7 @@ __print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr)
 
 		j = check_net_edev_reg(a, curr, !curr, i);
 		if (j < 0) {
-			/* This is a newly registered interface. */
+			/* This is a newly registered interface */
 			/* TODO: add a new instance? */
 		}
 

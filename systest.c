@@ -169,7 +169,7 @@ void next_time_step(void)
 		if (errno == ENOENT) {
 			/* No more kernel directories: Simulate a Ctrl/C */
 			int_handler(0);
-			return ;
+			return;
 		}
 	}
 

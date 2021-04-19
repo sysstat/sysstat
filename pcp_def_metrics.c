@@ -29,7 +29,7 @@
 #ifdef HAVE_PCP_IMPL_H
 #include <pcp/impl.h>
 #endif
-#endif
+#endif /* HAVE_PCP */
 
 /*
  ***************************************************************************
@@ -835,7 +835,7 @@ void pcp_def_net_nfsd_metrics(void)
 	pmiAddMetric("nfs.server.reqs",
 		     pmiID(60, 7, 12), PM_TYPE_U32, indom, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-#endif
+#endif /* HAVE_PCP */
 }
 
 /*
