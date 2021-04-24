@@ -1,0 +1,4 @@
+if [ ! -x configure -o ! -x do_test -o ! -x iconfig ]; then
+	echo Not executable
+	exit 1
+fi
