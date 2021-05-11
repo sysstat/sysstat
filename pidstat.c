@@ -185,7 +185,11 @@ void check_flags(void)
 	}
 
 	if (!DISPLAY_PID(pidflag)) {
-		pidflag |= P_D_ACTIVE_PID + P_D_PID + P_D_ALL_PID;
+		/*
+		 * If no PIDs nor -p ALL entered on the command line then
+		 * only active PIDs will be displayed.
+		 */
+		pidflag |= P_D_ACTIVE_PID + P_D_ALL_PID;
 	}
 
 	if (!tskflag) {
@@ -972,7 +976,7 @@ void read_stats(int curr)
 		__closedir(dir);
 	}
 
-	else if (DISPLAY_PID(pidflag)) {
+	else {
 		/* Read stats for each PID in the list */
 		for (plist = pid_list; plist != NULL; plist = plist->next) {
 
