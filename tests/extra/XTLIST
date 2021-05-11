@@ -1,5 +1,8 @@
 Extra tests
 
+====	Global tests
+0010	Check that configure, do_test and iconfig are executable
+
 ====	PCP tests
 0100	LC_ALL=C pmdumplog -a tests/pcpar > tests/extra/out.pcpar.tmp
 0110	LC_ALL=C ./sadf -l -O pcparchive=tests/extra/pcpar-ssr tests/data-ssr.tmp -- -m FAN,TEMP,IN
