@@ -565,7 +565,7 @@ __print_funct_t pcp_print_disk_stats(struct activity *a, int curr)
 __print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	int i, j;
+	int i;
 	struct stats_net_dev *sndc;
 	char buf[64];
 
@@ -580,11 +580,14 @@ __print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr)
 				continue;
 		}
 
-		j = check_net_dev_reg(a, curr, !curr, i);
-		if (j < 0) {
-			/* This is a newly registered interface */
-			/* TODO: add a new instance? */
-		}
+		/*
+		 * No need to look for the previous sample values: PCP displays the raw
+		 * counter value, not its variation over the interval.
+		 * The whole list of network interfaces present in file has been created
+		 * (this is goal of the FO_ITEM_LIST option set for pcp_fmt report format -
+		 * see format.c). So no need to wonder if an instance needs to be created
+		 * for current interface.
+		 */
 
 		snprintf(buf, sizeof(buf), "%llu", sndc->rx_packets);
 		pmiPutValue("network.interface.in.packets", sndc->interface, buf);
@@ -622,7 +625,7 @@ __print_funct_t pcp_print_net_dev_stats(struct activity *a, int curr)
 __print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	int i, j;
+	int i;
 	struct stats_net_edev *snedc;
 	char buf[64];
 
@@ -635,12 +638,6 @@ __print_funct_t pcp_print_net_edev_stats(struct activity *a, int curr)
 			if (!search_list_item(a->item_list, snedc->interface))
 				/* Device not found */
 				continue;
-		}
-
-		j = check_net_edev_reg(a, curr, !curr, i);
-		if (j < 0) {
-			/* This is a newly registered interface */
-			/* TODO: add a new instance? */
 		}
 
 		snprintf(buf, sizeof(buf), "%llu", snedc->rx_errors);
