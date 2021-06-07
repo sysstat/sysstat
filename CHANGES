@@ -1,14 +1,28 @@
 Changes:
 
+2021/06/07: Version 12.5.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Nathan Scott]: PCP: Update sadf to use metadata matching the same
+	  metrics from PCP.
+	* [Parth Shah]: pidstat monitors and shows statistics at the end of the
+	  program run with option -e, when no interval and count parameters
+	  have been defined.
+	* pidstat: Simplify use of P_D_PID flag.
+	* Restore mode for iconfig file.
+	* Non regression tests updated.
+	* Various cosmetic fixes.
+	* NLS translations updated.
+
 2021/02/14: Version 12.5.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* Add Link Time Optimization (LTO) support.
 	* Fix LTO compilation warnings.
 	* sar: Fix return code sent by write_stats() function [12.4.3].
 	* sar/sadc: Dereference nr array pointer in struct activity [12.4.3].
-	* sadf: SVG: Make graphs discontinuous for disconnected devices [12.4.3].
+	* sadf: SVG: Make graphs discontinuous for disconnected devices
+	  [12.4.3].
 	* sadf: SVG: Fix inadequate discontinuities in some graphs [12.4.3].
 	* sadf: Raw: Display number of items in debug mode even if it's zero.
-	* sadf: SVG: Use the <count> parameter entered on the command line [12.4.3].
+	* sadf: SVG: Use the <count> parameter entered on the command line
+	  [12.4.3].
 	* sadf: SVG: Add 'debug' option.
 	* sadf: Update manual page.
 	* sar/sadc/sadf: Check untrusted values before use [12.4.3].
