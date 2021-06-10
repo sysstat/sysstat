@@ -330,6 +330,8 @@ void display_sa_file_version(FILE *st, struct file_magic *file_magic)
 void handle_invalid_sa_file(int fd, struct file_magic *file_magic, char *file,
 			    int n)
 {
+	unsigned short fmt_magic;
+
 	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
 
 	if (n == FILE_MAGIC_SIZE) {
@@ -337,10 +339,19 @@ void handle_invalid_sa_file(int fd, struct file_magic *file_magic, char *file,
 			/* This is a sysstat file, but this file has an old format */
 			display_sa_file_version(stderr, file_magic);
 
+			fmt_magic = file_magic->sysstat_magic == SYSSTAT_MAGIC ?
+				    file_magic->format_magic : __builtin_bswap16(file_magic->format_magic);
 			fprintf(stderr,
 				_("Current sysstat version cannot read the format of this file (%#x)\n"),
-				file_magic->sysstat_magic == SYSSTAT_MAGIC ?
-				file_magic->format_magic : __builtin_bswap16(file_magic->format_magic));
+				fmt_magic);
+			if (fmt_magic >= FORMAT_MAGIC_2171) {
+				fprintf(stderr,
+					_("Try to convert it to current format. Enter:\n\n"));
+				fprintf(stderr, "sadf -c %s > %s.new\n\n", file, file);
+				fprintf(stderr,
+					_("You should then be able to read the new file created (%s.new)\n"),
+					file);
+			}
 		}
 	}
 
