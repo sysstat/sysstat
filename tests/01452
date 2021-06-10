@@ -1,0 +1,4 @@
+LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.5 2>&1 | grep "cannot read the format of this file" >/dev/null
+if [ $? -eq 0 ]; then
+	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.5 2>&1 | grep "Try to convert" >/dev/null && exit 1 || exit 0
+fi

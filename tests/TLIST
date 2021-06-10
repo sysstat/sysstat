@@ -250,7 +250,8 @@ NOTES:
 01425	LC_ALL=C ./sar 2 2 2 2>&1 | grep "Usage:" >/dev/null
 01430	LC_ALL=C ./sar -o foo 2>&1 | grep "Usage:" >/dev/null
 01440	LC_ALL=C TZ=GMT ./sar --unix_time=123456789 2>&1 | grep "Please check" >/dev/null
-01450	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6 2>&1 | grep "cannot read the format of this file" >/dev/null
+01450	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6 2>&1 | grep "Try to convert" >/dev/null
+01452	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.5 2>&1 | grep "cannot read the format of this file" >/dev/null
 01460	LC_ALL=C ./sar -q FOO 2>&1 | grep "Usage:" >/dev/null
 01470	LC_ALL=C ./sadf -x -j tests/data.tmp 2>&1 | grep "Usage:" >/dev/null
 
