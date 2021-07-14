@@ -60,6 +60,8 @@
 #define T_PART_DEV	2
 #define T_GROUP		3
 
+#define UKWN_MAJ_NR	0
+
 /* Environment variable */
 #define ENV_POSIXLY_CORRECT	"POSIXLY_CORRECT"
 
@@ -117,7 +119,7 @@ struct io_device {
 	int dev_tp;
 	/* TRUE if device exists in /proc/diskstats or /sys. Don't apply for groups. */
 	int exist;
-	/* major and minor numbers are set only for partitions (T_PART), not whole devices */
+	/* major and minor numbers (not set for T_GROUP "devices") */
 	int major;
 	int minor;
 	struct io_stats *dev_stats[2];
