@@ -187,6 +187,47 @@ void set_devices_nonexistent(struct io_device *dlist)
 
 /*
  ***************************************************************************
+ * Get device major and minor numbers.
+ *
+ * IN:
+ * @filename	Name of the device ("sda", "/dev/sdb1"...)
+ *
+ * OUT:
+ * @major	Major number of the device.
+ * @minor	Minor number of the device.
+ *
+ * RETURNS:
+ * 0 on success, and -1 otherwise.
+ ***************************************************************************
+ */
+int get_major_minor_nr(char filename[], int *major, int *minor)
+{
+	struct stat statbuf;
+	char *bang;
+	char dfile[MAX_PF_NAME];
+
+	snprintf(dfile, sizeof(dfile), "%s%s", filename[0] == '/' ? "" : SLASH_DEV, filename);
+	dfile[sizeof(dfile) - 1] = '\0';
+
+	while ((bang = strchr(dfile, '!'))) {
+		/*
+		 * Some devices may have had a slash replaced with a bang character (eg. cciss!c0d0...)
+		 * Restore their original names so that they can be found in /dev directory.
+		 */
+		*bang = '/';
+	}
+
+	if (__stat(dfile, &statbuf) < 0)
+		return -1;
+
+	*major = __major(statbuf.st_rdev);
+	*minor = __minor(statbuf.st_rdev);
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Check if a device is present in the list, and add it if requested.
  * Also look for its type (device or partition) and save it.
  *
@@ -196,6 +237,10 @@ void set_devices_nonexistent(struct io_device *dlist)
  * @dtype	T_PART_DEV (=2) if the device and all its partitions should
  *		also be read (option -p used), T_GROUP (=3) if it's a group
  *		name, and 0 otherwise.
+ * @major	Major number of the device (set to UKWN_MAJ_NR by caller if
+ *		unknown: In this case, major and minor numbers will be
+ *		determined here).
+ * @minor	Minor number of the device.
  *
  * RETURNS:
  * Pointer on the io_device structure in the list where the device is located
@@ -204,10 +249,11 @@ void set_devices_nonexistent(struct io_device *dlist)
  * don't want to add it.
  ***************************************************************************
  */
-struct io_device *add_list_device(struct io_device **dlist, char *name, int dtype)
+struct io_device *add_list_device(struct io_device **dlist, char *name, int dtype,
+				  int major, int minor)
 {
 	struct io_device *d, *ds;
-	int i, rc = 0;
+	int i, rc = 0, maj_nr, min_nr;
 
 	if (strnlen(name, MAX_NAME_LEN) == MAX_NAME_LEN)
 		/* Device name is too long */
@@ -277,50 +323,22 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 			/* This is a partition (T_PART) */
 			d->dev_tp = T_PART;
 		}
+
+		/* Save major and minor numbers */
+		if (major != UKWN_MAJ_NR) {
+			d->major = major;
+			d->minor = minor;
+		}
+		else {
+			/* Look for device major and minor numbers */
+			if (get_major_minor_nr(d->name, &maj_nr, &min_nr) == 0) {
+				d->major = maj_nr;
+				d->minor = min_nr;
+			}
+		}
 	}
 
 	return d;
-}
-
-/*
- ***************************************************************************
- * Get device major and minor numbers.
- *
- * IN:
- * @filename	Name of the device ("sda", "/dev/sdb1"...)
- *
- * OUT:
- * @major	Major number of the device.
- * @minor	Minor number of the device.
- *
- * RETURNS:
- * 0 on success, and -1 otherwise.
- ***************************************************************************
- */
-int get_major_minor_nr(char filename[], int *major, int *minor)
-{
-	struct stat statbuf;
-	char *bang;
-	char dfile[MAX_PF_NAME];
-
-	snprintf(dfile, sizeof(dfile), "%s%s", filename[0] == '/' ? "" : SLASH_DEV, filename);
-	dfile[sizeof(dfile) - 1] = '\0';
-
-	while ((bang = strchr(dfile, '!'))) {
-		/*
-		 * Some devices may have had a slash replaced with a bang character (eg. cciss!c0d0...)
-		 * Restore their original names so that they can be found in /dev directory.
-		 */
-		*bang = '/';
-	}
-
-	if (__stat(dfile, &statbuf) < 0)
-		return -1;
-
-	*major = __major(statbuf.st_rdev);
-	*minor = __minor(statbuf.st_rdev);
-
-	return 0;
 }
 
 /*
@@ -466,7 +484,6 @@ int read_sysfs_device_part_stat_work(int curr, char *dname, char *sysdev)
 	struct io_stats sdev;
 	struct io_device *d;
 	char dfile[MAX_PF_NAME], filename[MAX_PF_NAME + 512];
-	int major, minor;
 
 	snprintf(dfile, sizeof(dfile), "%s/%s/%s", sysdev, __BLOCK, dname);
 	dfile[sizeof(dfile) - 1] = '\0';
@@ -487,17 +504,9 @@ int read_sysfs_device_part_stat_work(int curr, char *dname, char *sysdev)
 		if (read_sysfs_file_stat_work(filename, &sdev) < 0)
 			continue;
 
-		d = add_list_device(&dev_list, drd->d_name, 0);
+		d = add_list_device(&dev_list, drd->d_name, 0, UKWN_MAJ_NR, 0);
 		if (d != NULL) {
 			*(d->dev_stats[curr]) = sdev;
-
-			if (!d->major) {
-				/* Get major and minor numbers for given device */
-				if (get_major_minor_nr(d->name, &major, &minor) == 0) {
-					d->major = major;
-					d->minor = minor;
-				}
-			}
 		}
 	}
 
@@ -557,7 +566,6 @@ int read_sysfs_all_devices_stat_work(int curr, char *sysblock)
 	struct io_stats sdev;
 	struct io_device *d;
 	char dfile[MAX_PF_NAME];
-	int major, minor;
 
 	/* Open __sys/block directory */
 	if ((dir = __opendir(sysblock)) == NULL)
@@ -575,17 +583,9 @@ int read_sysfs_all_devices_stat_work(int curr, char *sysblock)
 		if (read_sysfs_file_stat_work(dfile, &sdev) < 0)
 			continue;
 
-		d = add_list_device(&dev_list, drd->d_name, 0);
+		d = add_list_device(&dev_list, drd->d_name, 0, UKWN_MAJ_NR, 0);
 		if (d != NULL) {
 			*(d->dev_stats[curr]) = sdev;
-
-			if (!d->major) {
-				/* Get major and minor numbers for given device */
-				if (get_major_minor_nr(d->name, &major, &minor) == 0) {
-					d->major = major;
-					d->minor = minor;
-				}
-			}
 		}
 	}
 
@@ -643,15 +643,6 @@ int read_sysfs_all_devices_stat(int curr)
 int read_sysfs_part_stat_work(int curr, struct io_device *d, char *sysdev)
 {
 	char dfile[MAX_PF_NAME];
-	int major, minor;
-
-	if (!d->major) {
-		/* Get major and minor numbers for given device */
-		if (get_major_minor_nr(d->name, &major, &minor) < 0)
-			return -1;
-		d->major = major;
-		d->minor = minor;
-	}
 
 	/* Read stats for device */
 	snprintf(dfile, sizeof(dfile), "%s/%s/%d:%d/%s",
@@ -817,11 +808,9 @@ void read_diskstats_stat_work(int curr, char *diskstats)
 			/* Unknown entry: Ignore it */
 			continue;
 
-		d = add_list_device(&dev_list, dev_name, 0);
+		d = add_list_device(&dev_list, dev_name, 0, major, minor);
 		if (d != NULL) {
 			*d->dev_stats[curr] = sdev;
-			d->major = major;
-			d->minor = minor;
 		}
 	}
 	fclose(fp);
@@ -2046,7 +2035,7 @@ int main(int argc, char **argv)
 							}
 						}
 						/* Store device name */
-						add_list_device(&dev_list, devname, T_PART_DEV);
+						add_list_device(&dev_list, devname, T_PART_DEV, 0, 0);
 					}
 				}
 				opt++;
@@ -2067,7 +2056,7 @@ int main(int argc, char **argv)
 			 * and one for the trailing '\0'.
 			 */
 			snprintf(group_name, MAX_NAME_LEN, " %-.*s", MAX_NAME_LEN - 2, argv[opt++]);
-			add_list_device(&dev_list, group_name, T_GROUP);
+			add_list_device(&dev_list, group_name, T_GROUP, 0, 0);
 		}
 
 		else if (!strcmp(argv[opt], "--human")) {
@@ -2256,7 +2245,7 @@ int main(int argc, char **argv)
 						devname = persist_devname;
 					}
 				}
-				add_list_device(&dev_list, devname, 0);
+				add_list_device(&dev_list, devname, 0, UKWN_MAJ_NR, 0);
 			}
 			else {
 				flags |= I_D_ALL_DEVICES;
