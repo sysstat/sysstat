@@ -1,0 +1,4 @@
+rm -f tests/root
+ln -s root1 tests/root
+# 12345678-abcd-98ef-8521-7539adfbaf90 is a whole device here
+LC_ALL=C TZ=GMT ./iostat -d -j UUID 12345678-abcd-98ef-8521-7539adfbaf90 > tests/out.iostat-jUUID-list2.tmp && diff -u tests/expected.iostat-jUUID-list2 tests/out.iostat-jUUID-list2.tmp
