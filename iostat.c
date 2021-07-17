@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
+#include <libgen.h>
 
 #include "version.h"
 #include "iostat.h"
@@ -122,6 +123,44 @@ void set_disk_output_unit(void)
 		/* Variable not set: Unit is kB/s and not blocks/s */
 		flags |= I_D_KILOBYTES;
 	}
+}
+
+/*
+ ***************************************************************************
+ * Get device mapper name (e.g. "dm-0") from its registered name (e.g.
+ * "virtualhd-home").
+ *
+ * IN:
+ * @name	Registered name of the device (e.g. "virtualhd-home").
+ *
+ * RETURNS:
+ * Name of the device mapper name (e.g. "dm-0").
+ ***************************************************************************
+ */
+char *get_dm_name_from_registered_name(char *registered_name)
+{
+	int n;
+	char filen[PATH_MAX];
+	char target[PATH_MAX];
+
+	/*
+	 * The registered device name is a symlink pointing at its device mapper name
+	 * in the /dev/mapper directory.
+	 */
+	n = snprintf(filen, sizeof(filen), "%s/%s", DEVMAP_DIR, registered_name);
+	if ((n >= sizeof(filen)) || access(filen, F_OK)) {
+		return (NULL);
+	}
+
+	/* Read symlink */
+	n = readlink(filen, target, PATH_MAX);
+	if ((n <= 0) || (n >= PATH_MAX))
+		return (NULL);
+
+	target[n] = '\0';
+
+	/* ... and get device mapper name it points at */
+	return basename(target);
 }
 
 /*
@@ -254,6 +293,7 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 {
 	struct io_device *d, *ds;
 	int i, rc = 0, maj_nr, min_nr;
+	char *dm_name;
 
 	if (strnlen(name, MAX_NAME_LEN) == MAX_NAME_LEN)
 		/* Device name is too long */
@@ -299,7 +339,23 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 		}
 		memset(d->dev_stats[i], 0, sizeof(struct io_stats));
 	}
-	strncpy(d->name, name, MAX_NAME_LEN);
+	if (DISPLAY_DEVMAP_NAME(flags)) {
+		/*
+		 * Save device mapper name (e.g. "dm-0") instead of
+		 * its registered name (e.g. "virtualhd-home")
+		 * This is because we won't read stats for a file named "virtualhd-home" but
+		 * for a file named "dm-0" (we will display "virtualhd-home" anyway at the end
+		 * because option -N has been used).
+		 */
+		dm_name = get_dm_name_from_registered_name(name);
+		if (!dm_name) {
+			dm_name = name;
+		}
+		strncpy(d->name, dm_name, sizeof(d->name) - 1);
+	}
+	else {
+		strncpy(d->name, name, sizeof(d->name));
+	}
 	d->name[MAX_NAME_LEN - 1] = '\0';
 	d->exist = TRUE;
 	d->next = ds;

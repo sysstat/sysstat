@@ -67,7 +67,10 @@ char sc_sa_restart[MAX_SGR_LEN] = C_LIGHT_RED;
 char sc_sa_comment[MAX_SGR_LEN] = C_LIGHT_YELLOW;
 char sc_normal[MAX_SGR_LEN] = C_NORMAL;
 
-/* Type of persistent device names used in sar and iostat */
+/*
+ * Type of persistent device names in lowercase letters
+ * (e.g. "uuid", "label", "path"...) Used in sar and iostat.
+ */
 char persistent_name_type[MAX_FILE_LEN];
 
 /*
