@@ -1,0 +1,10 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.49   39.91    1.67    0.94    0.00   56.00
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+virtualhd         0.00         0.00         0.00         0.00          0          0          0
+sda1              0.01         0.29         0.00         0.00       2108          0          0
+
+

@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./iostat -dN virtualhd sdr > tests/out.iostat-N-list2.tmp && diff -u tests/expected.iostat-N-list2 tests/out.iostat-N-list2.tmp

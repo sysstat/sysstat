@@ -361,6 +361,8 @@ NOTES:
 02620	LC_ALL=C TZ=GMT ./iostat -dh -p ALL > tests/out.iostat-h.tmp
 02630	LC_ALL=C TZ=GMT ./iostat -kz -p ALL 1 2 > tests/out.iostat-kz.tmp
 02640	LC_ALL=C TZ=GMT ./iostat -dN -p ALL > tests/out.iostat-N.tmp
+02642	LC_ALL=C TZ=GMT ./iostat -N dm-2 sda1 > tests/out.iostat-N-list1.tmp
+02644	LC_ALL=C TZ=GMT ./iostat -dN virtualhd sdr > tests/out.iostat-N-list2.tmp
 02650	LC_ALL=C TZ=GMT ./iostat -d -j LABEL OS SYSTEM 1 2 > tests/out.iostat-jLABEL-list.tmp
 02660	LC_ALL=C TZ=GMT ./iostat -dxs -j UUID 2578463f-6947-48c7-8b09-876a4145cfb1 1 2 > tests/out.iostat-jUUID-list.tmp
 02665	LC_ALL=C TZ=GMT ./iostat -d -j UUID 12345678-abcd-98ef-8521-7539adfbaf90 > tests/out.iostat-jUUID-list2.tmp
