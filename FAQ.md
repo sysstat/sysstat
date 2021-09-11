@@ -610,6 +610,11 @@ sadc are trying to update the same data file, especially around midnight
 when making a file rotation. See question 2.12 to know how to make such
 a file rotation properly.
 
+Last this issue can also be triggered when the system is rebooted forcibly
+without data in cache being written to disk. You can use switch -f with sadc
+to make sure data are written to disk immediately. Of course sync'ing each
+data sample to disk implies a (probably slight) performance penalty.
+
 ---
 ### 3. Questions related to iostat<a name="iostat"></a>
 
