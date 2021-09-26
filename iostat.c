@@ -92,14 +92,14 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
 #endif
@@ -1795,7 +1795,8 @@ void write_stats(int curr, struct tm *rectime, int skip)
 		if (DISPLAY_PRETTY(flags) &&
 		    DISPLAY_EXTENDED(flags) &&
 		    !DISPLAY_SHORT_OUTPUT(flags) &&
-		    !DISPLAY_JSON_OUTPUT(flags)) {
+		    !DISPLAY_JSON_OUTPUT(flags) &&
+		    !DISPLAY_COMPACT(flags)) {
 			hl = 1; hh = 4;
 		}
 
@@ -2123,6 +2124,11 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[opt], "--pretty")) {
 			/* Display an easy-to-read CIFS report */
 			flags |= I_D_PRETTY;
+			opt++;
+		}
+
+		else if (!strcmp(argv[opt], "--compact")) {
+			flags |= I_D_COMPACT;
 			opt++;
 		}
 

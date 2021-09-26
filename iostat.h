@@ -31,6 +31,7 @@
 #define I_D_ZERO_OMIT		0x080000
 #define I_D_UNIT		0x100000
 #define I_D_SHORT_OUTPUT	0x200000
+#define I_D_COMPACT		0x400000
 
 #define DISPLAY_CPU(m)			(((m) & I_D_CPU)              == I_D_CPU)
 #define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
@@ -54,6 +55,7 @@
 #define DISPLAY_UNIT(m)			(((m) & I_D_UNIT)	      == I_D_UNIT)
 #define DISPLAY_SHORT_OUTPUT(m)		(((m) & I_D_SHORT_OUTPUT)     == I_D_SHORT_OUTPUT)
 #define USE_ALL_DIR(m)			(((m) & I_D_ALL_DIR)          == I_D_ALL_DIR)
+#define DISPLAY_COMPACT(m)		(((m) & I_D_COMPACT)          == I_D_COMPACT)
 
 #define T_PART		0
 #define T_DEV		1
