@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./iostat -x --pretty --compact 1 2 > tests/out.iostat-compact.tmp && diff -u tests/expected.iostat-compact tests/out.iostat-compact.tmp

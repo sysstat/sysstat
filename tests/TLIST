@@ -358,6 +358,8 @@ NOTES:
 =====	Playing again with iostat
 02600	LC_ALL=C TZ=GMT ./iostat -ym 1 2 > tests/out.iostat-ym.tmp
 02610	LC_ALL=C TZ=GMT ./iostat --human > tests/out.iostat-human.tmp
+02613	LC_ALL=C TZ=GMT ./iostat -x --pretty > tests/out.iostat-x-pretty.tmp
+02615	LC_ALL=C TZ=GMT ./iostat -x --pretty --compact 1 2 > tests/out.iostat-compact.tmp
 02620	LC_ALL=C TZ=GMT ./iostat -dh -p ALL > tests/out.iostat-h.tmp
 02630	LC_ALL=C TZ=GMT ./iostat -kz -p ALL 1 2 > tests/out.iostat-kz.tmp
 02640	LC_ALL=C TZ=GMT ./iostat -dN -p ALL > tests/out.iostat-N.tmp
