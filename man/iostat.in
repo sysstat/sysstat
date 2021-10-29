@@ -317,7 +317,7 @@ Display the registered device mapper names for any device mapper devices.
 Useful for viewing LVM2 statistics.
 .TP
 .B -o JSON
-Display the statistics in JSON (Javascript Object Notation) format.
+Display the statistics in JSON (JavaScript Object Notation) format.
 JSON output field order is undefined, and new fields may be added
 in the future.
 .TP
