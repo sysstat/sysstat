@@ -130,7 +130,7 @@ decompress_copy()
 cpu_gnuplot()                             # %iowait,%user,%nice,%system,%steal
 {
     # First make sure that the columns are where we expect them to be
-    HEADER=`egrep -v ';LINUX-RESTART|;COM' $2 | head -1 | cut -d ';' -f 5-10`
+    HEADER=`grep -Ev ';LINUX-RESTART|;COM' $2 | head -1 | cut -d ';' -f 5-10`
     EXPECTED="%user;%nice;%system;%iowait;%steal;%idle"
     if [ "$HEADER" != "$EXPECTED" ]
     then
@@ -159,14 +159,14 @@ EOF
 mem_gnuplot()                    # free,used,buffers,cached / %commit,%swpused
 {
     # First make sure that the columns are where we expect them to be
-    HEADER=`egrep -v ';LINUX-RESTART|;COM' $2 | head -1 | cut -d ';' -f 4-10`
+    HEADER=`grep -Ev ';LINUX-RESTART|;COM' $2 | head -1 | cut -d ';' -f 4-10`
     EXPECTED="kbmemfree;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit"
     if [ "$HEADER" != "$EXPECTED" ]
     then
         echo "Headers not in right order: $HEADER" 1>&2
         exit 1
     fi
-    HEADER=`egrep -v ';LINUX-RESTART|;COM' $3 | head -1 | cut -d ';' -f 4-6`
+    HEADER=`grep -Ev ';LINUX-RESTART|;COM' $3 | head -1 | cut -d ';' -f 4-6`
     EXPECTED="kbswpfree;kbswpused;%swpused"
     if [ "$HEADER" != "$EXPECTED" ]
     then
@@ -201,7 +201,7 @@ EOF
 io_gnuplot()                                      # %KBr/s,KBw/s / rIOPS,wIOPS
 {
     # First make sure that the columns are where we expect them to be
-    HEADER=`egrep -v ';LINUX-RESTART|;COM' $2 | head -1 | cut -d ';' -f 4-8`
+    HEADER=`grep -Ev ';LINUX-RESTART|;COM' $2 | head -1 | cut -d ';' -f 4-8`
     EXPECTED="tps;rtps;wtps;bread/s;bwrtn/s"
     if [ "$HEADER" != "$EXPECTED" ]
     then
