@@ -1,5 +1,5 @@
 /*
- * xml_stats.c: Funtions used by sadf to display statistics in XML.
+ * xml_stats.c: Functions used by sadf to display statistics in XML.
  * (C) 1999-2020 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************

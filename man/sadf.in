@@ -293,7 +293,7 @@ hexadecimal numbers (hex triplets) representing colors that defaults to
 .br
 .B L=000000:T=000000:W=000000:X=000000
 
-Capabilities consisting of an hexadecimal digit
+Capabilities consisting of a hexadecimal digit
 .RB "(" "0 " "through " "F" ") are used to specify"
 the first sixteen colors in the palette (these colors are used to draw the graphs),
 e.g., 3=ffffff would indicate that the third color in the palette is white (0xffffff).

@@ -84,7 +84,7 @@ exec wish "$0" -- "$@"
 # Revision 1.9  2001/01/27 19:28:43  root
 # added secondary Y axes functionality
 # added -c cfg_file cmdln option
-# writting of selected config data to cfg_file
+# writing of selected config data to cfg_file
 # renamed chart lines to names used in sar
 # parametrized creating of cmd() array
 # added generic var __M4_TIMELEN__ for proc_line_generic
@@ -143,7 +143,7 @@ exec wish "$0" -- "$@"
 
 set ident "/usr/bin/ident"
 set version ""
-# This can be set only if small interactive change in result code was occured
+# This can be set only if small interactive change in result code occurred
 set patchlevel ""
 if {[catch {set fp [open "| $ident $argv0" "r"]}] == 0} {
 	set n 0
@@ -395,7 +395,7 @@ set sag_latest_file ""
 
 # SGo 2008-07-06: Update options (options -S added).
 # SGo 2008-06-15: Update options (options -c and -w have been merged).
-# sar switches as names for object-instances (final and curent)
+# sar switches as names for object-instances (final and current)
 set  prog_swtch [list b B q r R S u v w W]
 
 # maximal and current values for each graph indexed by sar switch i.e. for cpu 
@@ -683,7 +683,7 @@ menu .menu.file.m -tearoff false
 menubutton .menu.chart -text "Chart" -menu .menu.chart.m -underline 0
 menu .menu.chart.m -tearoff true
 
-# creates for each sar-switch menu item with apropriate command
+# creates for each sar-switch menu item with appropriate command
 foreach l $prog_swtch {
 	.menu.chart.m add command -label $view_n($l) \
 		-command "new_chart $l" -accelerator $l
