@@ -341,8 +341,16 @@ void sa_sys_init(void)
 		}
 
 		if (act[i]->nr_ini > 0) {
-			if (act[i]->f_count2) {
-				act[i]->nr2 = (*act[i]->f_count2)(act[i]);
+			if (act[i]->f_count2_index >= 0) {
+				idx = act[i]->f_count2_index;
+
+				if (f_count_results[idx] >= 0) {
+					act[i]->nr2 = f_count_results[idx];
+				}
+				else {
+					act[i]->nr2 = (f_count[idx])(act[i]);
+					f_count_results[idx] = act[i]->nr2;
+				}
 			}
 			/* else act[i]->nr2 is a constant and doesn't need to be calculated */
 

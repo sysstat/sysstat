@@ -25,7 +25,7 @@
 #define MAX_NR_ACT	256
 
 /* Number of functions used to count items */
-#define NR_F_COUNT	12
+#define NR_F_COUNT	13
 
 /* Activities */
 #define A_CPU		1
@@ -931,15 +931,15 @@ struct activity {
 	 */
 	int f_count_index;
 	/*
-	 * The f_count2() function is used to count the number of
-	 * sub-items -> @nr2
+	 * Index in f_count[] array to determine function used to count the
+	 * number of sub-items -> @nr2
 	 * Such a function should _always_ return a value greater than
 	 * or equal to 0.
 	 *
-	 * A NULL value for this function pointer indicates that the number of items
-	 * is a constant (and @nr2 is set to this value).
+	 * A value of -1 indicates that the number of items is a constant
+	 * (and @nr2 is set to this value).
 	 */
-	__nr_t (*f_count2) (struct activity *);
+	int f_count2_index;
 	/*
 	 * This function reads the relevant file and fill the buffer
 	 * with statistics corresponding to given activity.
