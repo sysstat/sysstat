@@ -123,6 +123,9 @@ PID:
 21342[21342 21344 8365]
 8407[8407]
 
+==========root6b:
+Some more statistics, especially for disks and network interfaces.
+
 ==========root7:
 /proc/diskstats
 sda, sda1: discard I/Os

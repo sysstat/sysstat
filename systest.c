@@ -149,8 +149,10 @@ void next_time_step(void)
 
 	__unix_time += interval;
 
+	/* Get root directory name (root1, root2, etc.) at which the "root" symlink points */
 	if ((resolved_name = realpath(ROOTDIR, NULL)) != NULL) {
 		if (strlen(resolved_name) > 4) {
+			/* Set root_nr to the root directory number (1, 2, etc.) */
 			root_nr = atoi(resolved_name + strlen(resolved_name) - 1);
 		}
 		free(resolved_name);
@@ -160,19 +162,22 @@ void next_time_step(void)
 		exit(1);
 	}
 
+	/* Set next root directory name (root2, root3, etc.). Directories like root1b are unreachable */
 	snprintf(rootf, sizeof(rootf), "%s%d", ROOTFILE, ++root_nr);
 	rootf[sizeof(rootf) - 1] = '\0';
 	snprintf(testf, sizeof(testf), "%s/%s", TESTDIR, rootf);
 	testf[sizeof(testf) - 1] = '\0';
 
+	/* Make sure that new root directory exists */
 	if (access(testf, F_OK) < 0) {
 		if (errno == ENOENT) {
-			/* No more kernel directories: Simulate a Ctrl/C */
+			/* No more root directories: Simulate a Ctrl/C */
 			int_handler(0);
 			return;
 		}
 	}
 
+	/* Create "root" symlink pointing at the new root directory */
 	if (symlink(rootf, ROOTDIR) < 0) {
 		perror("link");
 		exit(1);
