@@ -659,7 +659,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	if (reset_cd) {
 		/*
 		 * See note in sar.c.
-		 * NB: Reseting cross_day is needed only if datafile
+		 * NB: Resetting cross_day is needed only if datafile
 		 * may be rewinded (eg. in db or ppc output formats).
 		 */
 		cross_day = 0;

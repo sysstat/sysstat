@@ -1,5 +1,5 @@
 /*
- * sadf_misc.c: Funtions used by sadf to display special records
+ * sadf_misc.c: Functions used by sadf to display special records
  * (C) 2011-2021 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************

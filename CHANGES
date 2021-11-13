@@ -375,7 +375,7 @@ Changes:
 
 2018/04/06: Version 11.7.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix possible crash happening when buffers needed to be
-	  reallocated to accomodate more devices.
+	  reallocated to accommodate more devices.
 	* sar/sadf/mpstat: Compute global CPU statistics as the sum of individual
 	  CPU ones.
 	* mpstat: Compute statistics for node "all" as the sum of individual

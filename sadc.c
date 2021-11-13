@@ -110,7 +110,7 @@ void usage(char *progname)
  *
  * IN:
  * @group_id	Group identification number.
- * @opt_f	Optionnal flag to set.
+ * @opt_f	Optional flag to set.
  ***************************************************************************
  */
 void collect_group_activities(unsigned int group_id, unsigned int opt_f)

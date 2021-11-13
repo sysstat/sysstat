@@ -541,7 +541,7 @@ unsigned long long get_global_cpu_mpstats(int prev, int curr,
 				scp->cpu_steal + scp->cpu_softirq;
 
 		/*
-		 * If the CPU is offline then it is omited from /proc/stat:
+		 * If the CPU is offline then it is omitted from /proc/stat:
 		 * All the fields couldn't have been read and the sum of them is zero.
 		 */
 		if (tot_jiffies_c == 0) {

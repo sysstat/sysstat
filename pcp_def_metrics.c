@@ -1,5 +1,5 @@
 /*
- * pcp_def_metrics.c: Funtions used by sadf to define PCP metrics
+ * pcp_def_metrics.c: Functions used by sadf to define PCP metrics
  * (C) 2019-2021 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
