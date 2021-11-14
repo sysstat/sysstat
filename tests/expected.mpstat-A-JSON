@@ -35,8 +35,7 @@
 						{"cpu": "4", "intr": 68.85},
 						{"cpu": "5", "intr": 42.67},
 						{"cpu": "6", "intr": 62.88},
-						{"cpu": "7", "intr": 42.22},
-						{"cpu": "8", "intr": 0.00}
+						{"cpu": "7", "intr": 42.22}
 					],
 					"individual-interrupts": [
 						{"cpu": "0", "intr": [
@@ -398,51 +397,6 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
-						{"cpu": "8", "intr": [
-							{"name": "0", "value": 0.00},
-							{"name": "8", "value": 0.00},
-							{"name": "9", "value": 0.00},
-							{"name": "16", "value": 0.00},
-							{"name": "17", "value": 0.00},
-							{"name": "18", "value": 0.00},
-							{"name": "19", "value": 0.00},
-							{"name": "23", "value": 0.00},
-							{"name": "24", "value": 0.00},
-							{"name": "25", "value": 0.00},
-							{"name": "26", "value": 0.00},
-							{"name": "27", "value": 0.00},
-							{"name": "28", "value": 0.00},
-							{"name": "29", "value": 0.00},
-							{"name": "30", "value": 0.00},
-							{"name": "31", "value": 0.00},
-							{"name": "32", "value": 0.00},
-							{"name": "33", "value": 0.00},
-							{"name": "34", "value": 0.00},
-							{"name": "35", "value": 0.00},
-							{"name": "36", "value": 0.00},
-							{"name": "NMI", "value": 0.00},
-							{"name": "LOC", "value": 0.00},
-							{"name": "SPU", "value": 0.00},
-							{"name": "PMI", "value": 0.00},
-							{"name": "IWI", "value": 0.00},
-							{"name": "RTR", "value": 0.00},
-							{"name": "RES", "value": 0.00},
-							{"name": "CAL", "value": 0.00},
-							{"name": "TLB", "value": 0.00},
-							{"name": "TRM", "value": 0.00},
-							{"name": "THR", "value": 0.00},
-							{"name": "DFR", "value": 0.00},
-							{"name": "MCE", "value": 0.00},
-							{"name": "MCP", "value": 0.00},
-							{"name": "HYP", "value": 0.00},
-							{"name": "HRE", "value": 0.00},
-							{"name": "HVS", "value": 0.00},
-							{"name": "ERR", "value": 0.00},
-							{"name": "MIS", "value": 0.00},
-							{"name": "PIN", "value": 0.00},
-							{"name": "NPI", "value": 0.00},
-							{"name": "PIW", "value": 0.00}
 						] }
 					],
 					"soft-interrupts": [
@@ -541,18 +495,6 @@
 							{"name": "SCHED", "value": 9.82},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 12.32}
-						] },
-						{"cpu": "8", "intr": [
-							{"name": "HI", "value": 0.00},
-							{"name": "TIMER", "value": 0.00},
-							{"name": "NET_TX", "value": 0.00},
-							{"name": "NET_RX", "value": 0.00},
-							{"name": "BLOCK", "value": 0.00},
-							{"name": "IRQ_POLL", "value": 0.00},
-							{"name": "TASKLET", "value": 0.00},
-							{"name": "SCHED", "value": 0.00},
-							{"name": "HRTIMER", "value": 0.00},
-							{"name": "RCU", "value": 0.00}
 						] }
 					]
 				}
