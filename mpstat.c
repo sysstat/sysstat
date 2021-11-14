@@ -1161,10 +1161,12 @@ void write_node_stats(int dis, unsigned long long deltot_jiffies, int prev, int 
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
 void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
-			       char *prev_string, char *curr_string)
+			       char *prev_string, char *curr_string, unsigned char offline_cpu_bitmap[])
 {
 	struct stats_cpu *scc, *scp;
 	struct stats_irq *sic, *sip;
@@ -1193,16 +1195,9 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 		scp = st_cpu[prev] + cpu;
 
 		/* Check if we want stats about this CPU */
-		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) ||
+		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
 			continue;
-
-		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-
-			/* This is an offline CPU */
-			continue;
-		}
 
 		printf("%-11s", curr_string);
 		cprintf_in(IS_INT, " %4d", "", cpu - 1);
@@ -1235,9 +1230,12 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
  *		Stats used as reference may be the previous ones read, or
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
-void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int curr)
+void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int curr,
+			      unsigned char offline_cpu_bitmap[])
 {
 	struct stats_cpu *scc, *scp;
 	struct stats_irq *sic, *sip;
@@ -1263,21 +1261,14 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 		scp = st_cpu[prev] + cpu;
 
 		/* Check if we want stats about this CPU */
-		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))))
+		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) ||
+		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
 			continue;
 
 		if (next) {
 			printf(",\n");
 		}
 		next = TRUE;
-
-		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-		     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
-
-			/* This is an offline CPU */
-			continue;
-		}
 
 		/* Recalculate itv for current proc */
 		pc_itv = get_per_cpu_interval(scc, scp);
@@ -1318,20 +1309,24 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
  * @tab		Number of tabs to print (JSON format only).
  * @next	TRUE is a previous activity has been displayed (JSON format
  * 		only).
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
 void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
-		     char *prev_string, char *curr_string, int tab, int *next)
+			 char *prev_string, char *curr_string, int tab, int *next,
+			 unsigned char offline_cpu_bitmap[])
 {
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		if (*next) {
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_isumcpu_stats(tab, itv, prev, curr);
+		write_json_isumcpu_stats(tab, itv, prev, curr, offline_cpu_bitmap);
 	}
 	else {
-		write_plain_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string);
+		write_plain_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string,
+					  offline_cpu_bitmap);
 	}
 }
 
@@ -1354,13 +1349,14 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
 void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			      unsigned long long itv, int prev, int curr,
-			      char *prev_string, char *curr_string)
+			      char *prev_string, char *curr_string, unsigned char offline_cpu_bitmap[])
 {
-	struct stats_cpu *scc;
 	int j = ic_nr, offset, cpu, colwidth[NR_IRQS];
 	struct stats_irqcpu *p, *q, *p0, *q0;
 
@@ -1418,20 +1414,13 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
 
-		scc = st_cpu[curr] + cpu;
-
 		/*
 		 * Check if we want stats about this CPU.
 		 * CPU must have been explicitly selected using option -P,
-		 * else we display every CPU.
+		 * else we display every CPU (unless it's offline).
 		 */
-		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags))
-			continue;
-
-		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-		     scc->cpu_hardirq + scc->cpu_softirq) == 0)
-			/* Offline CPU found */
+		if ((!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags)) ||
+		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
 			continue;
 
 		printf("%-11s", curr_string);
@@ -1499,12 +1488,14 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
  *		the very first ones when calculating the average.
  * @curr	Position in array where current statistics will be saved.
  * @type	Activity (M_D_IRQ_CPU or M_D_SOFTIRQS).
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
 void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
-			     unsigned long long itv, int prev, int curr, int type)
+			     unsigned long long itv, int prev, int curr, int type,
+			     unsigned char offline_cpu_bitmap[])
 {
-	struct stats_cpu *scc;
 	int j = ic_nr, offset, cpu;
 	struct stats_irqcpu *p, *q, *p0, *q0;
 	int nextcpu = FALSE, nextirq;
@@ -1518,20 +1509,13 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
 
-		scc = st_cpu[curr] + cpu;
-
 		/*
 		 * Check if we want stats about this CPU.
 		 * CPU must have been explicitly selected using option -P,
-		 * else we display every CPU.
+		 * else we display every CPU (unless it's offline).
 		 */
-		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags))
-			continue;
-
-		if ((scc->cpu_user    + scc->cpu_nice + scc->cpu_sys   +
-		     scc->cpu_iowait  + scc->cpu_idle + scc->cpu_steal +
-		     scc->cpu_hardirq + scc->cpu_softirq) == 0)
-			/* Offline CPU found */
+		if ((!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags)) ||
+		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
 			continue;
 
 		if (nextcpu) {
@@ -1623,23 +1607,26 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
  * @next	TRUE is a previous activity has been displayed (JSON format
  * 		only).
  * @type	Activity (M_D_IRQ_CPU or M_D_SOFTIRQS).
+ * @offline_cpu_bitmap
+ *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
 void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			unsigned long long itv, int prev, int curr,
 			char *prev_string, char *curr_string, int tab,
-			int *next, int type)
+			int *next, int type, unsigned char offline_cpu_bitmap[])
 {
 	if (DISPLAY_JSON_OUTPUT(flags)) {
 		if (*next) {
 			printf(",\n");
 		}
 		*next = TRUE;
-		write_json_irqcpu_stats(tab, st_ic, ic_nr, itv, prev, curr, type);
+		write_json_irqcpu_stats(tab, st_ic, ic_nr, itv, prev, curr, type,
+					offline_cpu_bitmap);
 	}
 	else {
 		write_plain_irqcpu_stats(st_ic, ic_nr, dis, itv, prev, curr,
-					 prev_string, curr_string);
+					 prev_string, curr_string, offline_cpu_bitmap);
 	}
 }
 
@@ -1701,17 +1688,19 @@ void write_stats_core(int prev, int curr, int dis,
 	/* Print total number of interrupts per processor */
 	if (DISPLAY_IRQ_SUM(actflags)) {
 		write_isumcpu_stats(dis, itv, prev, curr, prev_string, curr_string,
-				    tab, &next);
+				    tab, &next, offline_cpu_bitmap);
 	}
 
 	/* Display each interrupt value for each CPU */
 	if (DISPLAY_IRQ_CPU(actflags)) {
 		write_irqcpu_stats(st_irqcpu, irqcpu_nr, dis, itv, prev, curr,
-				   prev_string, curr_string, tab, &next, M_D_IRQ_CPU);
+				   prev_string, curr_string, tab, &next, M_D_IRQ_CPU,
+				   offline_cpu_bitmap);
 	}
 	if (DISPLAY_SOFTIRQS(actflags)) {
 		write_irqcpu_stats(st_softirqcpu, softirqcpu_nr, dis, itv, prev, curr,
-				   prev_string, curr_string, tab, &next, M_D_SOFTIRQS);
+				   prev_string, curr_string, tab, &next, M_D_SOFTIRQS,
+				   offline_cpu_bitmap);
 	}
 
 	if (DISPLAY_JSON_OUTPUT(flags)) {
