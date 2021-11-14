@@ -404,7 +404,7 @@ EOF
 
 
 SA_FILES=`$FIND "$SA_DIR" -type f -printf '%T@,%p\n' \
-    | egrep "$SA_REGEX" | $SORT -n -r | $CUT -d, -f2`
+    | grep -E "$SA_REGEX" | $SORT -n -r | $CUT -d, -f2`
 
 # Main loop
 
