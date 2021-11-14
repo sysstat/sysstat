@@ -1,5 +1,5 @@
 /*
- * svg_stats.c: Funtions used by sadf to display statistics in SVG format.
+ * svg_stats.c: Functions used by sadf to display statistics in SVG format.
  * (C) 2016-2021 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
@@ -86,8 +86,8 @@ unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =
  *		the fields in the statistics structure.
  *
  * OUT:
- * @spmin	Array containg the possible new min values for current activity.
- * @spmax	Array containg the possible new max values for current activity.
+ * @spmin	Array containing the possible new min values for current activity.
+ * @spmax	Array containing the possible new max values for current activity.
  ***************************************************************************
  */
 void save_extrema(unsigned int types_nr[], void *cs, void *ps, unsigned long long itv,
