@@ -559,8 +559,8 @@ install_base: all sa1 sa2 sysstat.sysconfig install_man install_nls
 	mkdir -p $(DESTDIR)$(SA_LIB_DIR)
 	mkdir -p $(DESTDIR)$(SA_DIR)
 ifeq ($(CLEAN_SA_DIR),y)
-	find $(DESTDIR)$(SA_DIR) -type f | egrep "/sar?[0-9]{2,8}(\.(Z|gz|bz2|xz|lz|lzo))?$$" | xargs rm -f
-	find $(DESTDIR)$(SA_DIR) -type f | egrep "/sar?[0-9]{2,8}$$" | xargs rm -f
+	find $(DESTDIR)$(SA_DIR) -type f | grep -E "/sar?[0-9]{2,8}(\.(Z|gz|bz2|xz|lz|lzo))?$$" | xargs rm -f
+	find $(DESTDIR)$(SA_DIR) -type f | grep -E "/sar?[0-9]{2,8}$$" | xargs rm -f
 endif
 	mkdir -p $(DESTDIR)$(BIN_DIR)
 	mkdir -p $(DESTDIR)$(DOC_DIR)
@@ -795,9 +795,9 @@ endif
 
 TESTDIR="tests"
 TESTRUN="/bin/sh"
-TESTLIST:=$(shell ls $(TESTDIR) | egrep '^[0-9]+$$' | sort -n)
+TESTLIST:=$(shell ls $(TESTDIR) | grep -E '^[0-9]+$$' | sort -n)
 EXTRADIR="tests/extra"
-EXTRALIST:=$(shell ls $(EXTRADIR) | egrep '^[0-9]+$$' | sort -n)
+EXTRALIST:=$(shell ls $(EXTRADIR) | grep -E '^[0-9]+$$' | sort -n)
 
 testcomp: tests/ini/inisar sa32bit
 
