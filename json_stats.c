@@ -1,5 +1,5 @@
 /*
- * json_stats.c: Funtions used by sadf to display statistics in JSON format.
+ * json_stats.c: Functions used by sadf to display statistics in JSON format.
  * (C) 1999-2021 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************

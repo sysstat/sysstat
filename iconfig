@@ -10,7 +10,7 @@ echo
 echo This script enables you to set the parameters value used by ./configure.
 echo Please enter the value for the parameters listed below.
 echo Press Return to tell ./configure to use the default value or to try to guess the proper one.
-echo "Defaut value for yes/no questions is no (parameter is NOT set)."
+echo "Default value for yes/no questions is no (parameter is NOT set)."
 echo You can enter a ? to display a help message at any time...
 echo
 
