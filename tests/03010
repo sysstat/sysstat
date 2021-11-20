@@ -1,3 +1,3 @@
 rm -f tests/root
 ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./mpstat -A 1 2 > tests/out.mpstat-A.tmp && diff -u tests/expected.mpstat-A tests/out.mpstat-A.tmp
+LC_ALL=C TZ=GMT ./mpstat -A 1 4 > tests/out.mpstat-A.tmp && diff -u tests/expected.mpstat-A tests/out.mpstat-A.tmp
