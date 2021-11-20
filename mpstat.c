@@ -273,6 +273,39 @@ void sfree_mp_struct(void)
 
 /*
  ***************************************************************************
+ * Set interrupt values for current sample to those of previous sample.
+ *
+ * IN:
+ * @st_ic	Array for per-CPU interrupts statistics.
+ * @c		Fist CPU to process.
+ * @last	Last CPU to process.
+ * @ic_nr	Number of interrupts (hard or soft) per CPU.
+ * @curr	Position in array where current statistics will be saved.
+ **************************************************************************
+ */
+void fwd_irq_values(struct stats_irqcpu *st_ic[], unsigned int c,
+		    unsigned int last, int ic_nr, int curr)
+{
+	struct stats_irq *st_irq_i, *st_irq_j;
+	struct stats_irqcpu *p, *q;
+	int j;
+
+	while (c < last) {
+		st_irq_i = st_irq[curr] + c + 1;
+		st_irq_j = st_irq[!curr] + c + 1;
+		st_irq_i->irq_nr = st_irq_j->irq_nr;
+
+		for (j = 0; j < ic_nr; j++) {
+			p = st_ic[curr] + c * ic_nr + j;
+			q = st_ic[!curr] + c * ic_nr + j;
+			p->interrupt = q->interrupt;
+		}
+		c++;
+	}
+}
+
+/*
+ ***************************************************************************
  * Get node placement (which node each CPU belongs to, and total number of
  * CPU that each node has).
  *
@@ -1779,15 +1812,9 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 	struct stats_irqcpu *p;
 	char *line = NULL, *li;
 	unsigned long irq = 0;
-	unsigned int cpu;
+	unsigned int cpu, c = 0;
 	int cpu_index[cpu_nr], index = 0, len;
 	char *cp, *next;
-
-	/* Reset total number of interrupts received by each CPU */
-	for (cpu = 0; cpu < cpu_nr; cpu++) {
-		st_irq_i = st_irq[curr] + cpu + 1;
-		st_irq_i->irq_nr = 0;
-	}
 
 	if ((fp = fopen(file, "r")) != NULL) {
 
@@ -1801,11 +1828,28 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 			while (((cp = strstr(next, "CPU")) != NULL) && (index < cpu_nr)) {
 				cpu = strtol(cp + 3, &next, 10);
 				cpu_index[index++] = cpu;
+
+				/*
+				 * Reset total number of interrupts received by a CPU
+				 * only for online CPU. Only needed for st_irq structures.
+				 */
+				st_irq_i = st_irq[curr] + cpu + 1;
+				st_irq_i->irq_nr = 0;
+
+				/*
+				 * For offline CPU, pick up previous values so that when the
+				 * CPU goes back online, values won't jump from zero.
+				 */
+				fwd_irq_values(st_ic, c, cpu, ic_nr, curr);
+				c = cpu + 1;
 			}
 			if (index)
 				/* Header line found */
 				break;
 		}
+
+		/* Process possible offline CPU at the end of the list */
+		fwd_irq_values(st_ic, c, cpu_nr, ic_nr, curr);
 
 		/* Parse each line of interrupts statistics data */
 		while ((fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) &&
