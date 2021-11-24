@@ -1827,6 +1827,8 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 			next = line;
 			while (((cp = strstr(next, "CPU")) != NULL) && (index < cpu_nr)) {
 				cpu = strtol(cp + 3, &next, 10);
+				if (cpu >= cpu_nr)
+					break;
 				cpu_index[index++] = cpu;
 
 				/*
