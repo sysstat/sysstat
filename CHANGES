@@ -1,5 +1,18 @@
 Changes:
 
+2021/12/05: Version 12.4.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* iostat: Always display persistent names with option -j.
+	* iostat: Fix how device mapper names are taken into account when
+	  entered on the command line.
+	* mpstat: Don't display offline CPU.
+	* mpstat: Fix values displayed when an offline CPU goes back online.
+	* mpstat: Fix untrusted loop bound.
+	* mpstat: Update non regression tests.
+	* [Ville Skyttä]: Use `grep -E` instead of deprecated `egrep`.
+	* [Ville Skyttä]: Spelling and grammar fixes.
+	* [Nathan Naze]: Update man pages with correct spelling of
+	  "JavaScript".
+
 2021/02/14: Version 12.4.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix return code sent by write_stats() function.
 	* sar/sadc: Dereference nr array pointer in struct activity.
@@ -334,7 +347,7 @@ Changes:
 
 2018/04/06: Version 11.7.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix possible crash happening when buffers needed to be
-	  reallocated to accommodate more devices.
+	  reallocated to accomodate more devices.
 	* sar/sadf/mpstat: Compute global CPU statistics as the sum of individual
 	  CPU ones.
 	* mpstat: Compute statistics for node "all" as the sum of individual
