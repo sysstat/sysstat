@@ -1,5 +1,25 @@
 Changes:
 
+2021/12/05: Version 12.5.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* iostat: Add --compact option.
+	* iostat: Always display persistent names with option -j [12.4.4].
+	* iostat: Fix how device mapper names are taken into account when
+	  entered on the command line [12.4.4].
+	* iostat: Update manual page.
+	* mpstat: Don't display offline CPU [12.4.4].
+	* mpstat: Fix values displayed when an offline CPU goes back online
+	  [12.4.4].
+	* mpstat: Fix untrusted loop bound [12.4.4].
+	* mpstat: Update non regression tests [12.4.4].
+	* sar: Tell the user to convert the file when needed.
+	* sadc: Reuse count results for sub-items.
+	* [Ville Skyttä]: Use `grep -E` instead of deprecated `egrep` [12.4.4].
+	* [Ville Skyttä]: Spelling and grammar fixes [12.4.4].
+	* Update FAQ.
+	* [Nathan Naze]: Update man pages with correct spelling of
+	  "JavaScript" [12.4.4].
+	* Update non regression tests.
+
 2021/06/07: Version 12.5.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Nathan Scott]: PCP: Update sadf to use metadata matching the same
 	  metrics from PCP.
@@ -375,7 +395,7 @@ Changes:
 
 2018/04/06: Version 11.7.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix possible crash happening when buffers needed to be
-	  reallocated to accommodate more devices.
+	  reallocated to accomodate more devices.
 	* sar/sadf/mpstat: Compute global CPU statistics as the sum of individual
 	  CPU ones.
 	* mpstat: Compute statistics for node "all" as the sum of individual
