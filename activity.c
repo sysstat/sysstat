@@ -175,7 +175,7 @@ struct activity irq_act = {
 	.f_print_avg	= print_irq_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "INTR;intr/s",
+	.hdr_line	= "INTR;CPU*",
 #endif
 	.gtypes_nr	= {STATS_IRQ_ULL, STATS_IRQ_UL, STATS_IRQ_U},
 	.ftypes_nr	= {0, 0, 0},
