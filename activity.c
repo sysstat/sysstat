@@ -162,12 +162,12 @@ struct activity pcsw_act = {
 /* Interrupts statistics */
 struct activity irq_act = {
 	.id		= A_IRQ,
-	.options	= AO_COUNTED,
-	.magic		= ACTIVITY_MAGIC_BASE + 1,
+	.options	= AO_COUNTED + AO_MATRIX,
+	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_INT,
 #ifdef SOURCE_SADC
-	.f_count_index	= 1,	/* wrap_get_irq_nr() */
-	.f_count2_index	= -1,
+	.f_count_index	= 0,	/* wrap_get_cpu_nr() */
+	.f_count2_index	= 1,	/* wrap_get_irq_nr() */
 	.f_read		= wrap_read_stat_irq,
 #endif
 #ifdef SOURCE_SAR
@@ -194,7 +194,7 @@ struct activity irq_act = {
 	.item_list_sz	= 0,
 	.g_nr		= 0,
 	.nr_ini		= -1,
-	.nr2		= 1,
+	.nr2		= -1,
 	.nr_max		= NR_IRQS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,

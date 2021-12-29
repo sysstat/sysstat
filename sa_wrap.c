@@ -1225,7 +1225,8 @@ __read_funct_t wrap_read_psimem(struct activity *a)
 
 /*
  ***************************************************************************
- * Count number of interrupts that are in /proc/stat file.
+ * Count number of interrupts that are in /proc/interrupts file, including
+ * total number of interrupts.
  * Truncate the number of different individual interrupts to NR_IRQS.
  *
  * IN:
@@ -1240,8 +1241,13 @@ __nr_t wrap_get_irq_nr(struct activity *a)
 {
 	__nr_t n;
 
-	if ((n = get_irq_nr()) > (a->bitmap->b_size + 1)) {
-		n = a->bitmap->b_size + 1;
+	/*
+	 * Get number of different interrupts.
+	 * Number of CPU (including CPU "all") has already been calculated and saved in a->nr_ini.
+	 */
+	n = get_irqcpu_nr(INTERRUPTS, a->bitmap->b_size, a->nr_ini - 1);
+	if (n > 0) {
+		n++;	/* Add 1 for total number of interrupts. A value of bitmap->b_size + 1 is OK. */
 	}
 
 	return n;
