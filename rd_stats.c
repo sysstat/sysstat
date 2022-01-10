@@ -2741,14 +2741,11 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		while ((!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07)))) && (cpu <= NR_CPUS + 1)) {
+		while ((!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07)))) && (cpu < nr_alloc)) {
 			cpu++;
 		}
-		if (cpu > NR_CPUS + 1)
-			/* Should never happen */
-			return 0;
 
-		if (cpu + 1 > nr_alloc) {
+		if (cpu >= nr_alloc) {
 			rc = -1;
 			break;
 		}
