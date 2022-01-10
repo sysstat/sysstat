@@ -221,6 +221,9 @@ __nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 	return irq;
 }
 
+#ifdef SOURCE_SADC
+/*---------------- BEGIN: FUNCTIONS USED BY SADC ONLY ---------------------*/
+
 /*
  ***************************************************************************
  * Find number of devices and partitions available in /proc/diskstats.
@@ -270,9 +273,6 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 
 	return dev;
 }
-
-#ifdef SOURCE_SADC
-/*---------------- BEGIN: FUNCTIONS USED BY SADC ONLY ---------------------*/
 
 /*
  ***************************************************************************
