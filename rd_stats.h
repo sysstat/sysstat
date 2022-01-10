@@ -93,8 +93,10 @@
 
 /*
  * Structure for CPU statistics.
- * In activity buffer: First structure is for global CPU utilisation ("all").
+ * In activity buffer: First structure is for global CPU utilization ("all").
  * Following structures are for each individual CPU (0, 1, etc.)
+ *
+ * Used by: sadc, sar, sadf, iostat, mpstat, pidstat
  */
 struct stats_cpu {
 	unsigned long long cpu_user;
@@ -187,7 +189,11 @@ struct stats_io {
 #define STATS_IO_UL	0
 #define STATS_IO_U	0
 
-/* Structure for memory and swap space utilization statistics */
+/*
+ * Structure for memory and swap space utilization statistics.
+ *
+ * Used by: sadc, sar, sadf, pidstat
+ */
 struct stats_memory {
 	unsigned long long frmkb;
 	unsigned long long bufkb;
@@ -257,7 +263,11 @@ struct stats_serial {
 #define STATS_SERIAL_UL		0
 #define STATS_SERIAL_U		7
 
-/* Structure for block devices statistics */
+/*
+ * Structure for block devices statistics.
+ *
+ * Used by: sadc, sar, sadf, iostat
+ */
 struct stats_disk {
 	unsigned long long nr_ios;
 	unsigned long long wwn[2];
@@ -600,7 +610,7 @@ struct stats_net_udp6 {
 
 /*
  * Structure for CPU frequency statistics.
- * In activity buffer: First structure is for global CPU utilisation ("all").
+ * In activity buffer: First structure is for global CPU utilization ("all").
  * Following structures are for each individual CPU (0, 1, etc.)
  */
 struct stats_pwr_cpufreq {
@@ -627,7 +637,7 @@ struct stats_huge {
 
 /*
  * Structure for weighted CPU frequency statistics.
- * In activity buffer: First structure is for global CPU utilisation ("all").
+ * In activity buffer: First structure is for global CPU utilization ("all").
  * Following structures are for each individual CPU (0, 1, etc.)
  */
 struct stats_pwr_wghfreq {

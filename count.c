@@ -154,6 +154,9 @@ int get_proc_cpu_nr(void)
  *    one have been disabled, we get the total number of proc since we use
  *    /sys to count them).
  * 2: two proc...
+ *
+ * USED BY:
+ * sadc, cifsiostat, iostat, mpstat, pidstat, tapestat
  ***************************************************************************
  */
 __nr_t get_cpu_nr(unsigned int max_nr_cpus, int highest)
@@ -186,6 +189,9 @@ __nr_t get_cpu_nr(unsigned int max_nr_cpus, int highest)
  *
  * RETURNS:
  * Number of interrupts per processor.
+ *
+ * USED BY:
+ * sadc, mpstat
  ***************************************************************************
  */
 __nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)

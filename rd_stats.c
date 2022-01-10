@@ -68,6 +68,9 @@ struct stats_psi {
  *
  * (*)This doesn't account for all processors in the machine in the case
  * where some CPU are offline and located at the end of the list.
+ *
+ * USED BY:
+ * sadc, iostat, mpstat, pidstat
  ***************************************************************************
  */
 __nr_t read_stat_cpu(struct stats_cpu *st_cpu, __nr_t nr_alloc)
@@ -237,6 +240,9 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc)
  *
  * RETURNS:
  * 1 on success, 0 otherwise.
+ *
+ * USED BY:
+ * sadc, pidstat
  ***************************************************************************
  */
 __nr_t read_meminfo(struct stats_memory *st_memory)
@@ -329,6 +335,9 @@ __nr_t read_meminfo(struct stats_memory *st_memory)
  *
  * OUT:
  * @uptime	Uptime value in hundredths of a second.
+ *
+ * USED BY:
+ * sadc, cifsiostat, iostat, mpstat, pidstat
  ***************************************************************************
  */
 void read_uptime(unsigned long long *uptime)
@@ -372,6 +381,9 @@ void read_uptime(unsigned long long *uptime)
  *
  * OUT:
  * @xds		Structure with extended statistics.
+ *
+ * USED BY:
+ * sar, sadf, iostat
  ***************************************************************************
 */
 void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
@@ -405,6 +417,9 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
  *
  * RETURNS:
  * Interval of time based on current CPU, expressed in jiffies.
+ *
+ * USED BY:
+ * sar, sadf, mpstat
  ***************************************************************************
  */
 unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
@@ -2728,7 +2743,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
  ***************************************************************************
  */
 int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
-		  unsigned char online_cpu_bitmap[])
+		 unsigned char online_cpu_bitmap[])
 {
 	FILE *fp;
 	struct stats_softnet *st_softnet_i;
