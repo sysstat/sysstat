@@ -31,7 +31,6 @@
 
 #include "version.h"
 #include "mpstat.h"
-#include "rd_stats.h"
 #include "count.h"
 
 #include <locale.h>	/* For setlocale() */
@@ -61,7 +60,7 @@ struct stats_cpu *st_node[3];
  * Structure used to save total number of interrupts received
  * among all CPU and for each CPU.
  */
-struct stats_irq *st_irq[3];
+struct stats_global_irq *st_irq[3];
 
 /*
  * Structures used to save, for each interrupt, the number
@@ -198,12 +197,12 @@ void salloc_mp_struct(int nr_cpus)
 		}
 		memset(st_node[i], 0, STATS_CPU_SIZE * nr_cpus);
 
-		if ((st_irq[i] = (struct stats_irq *) malloc(STATS_IRQ_SIZE * nr_cpus))
+		if ((st_irq[i] = (struct stats_global_irq *) malloc(STATS_GLOBAL_IRQ_SIZE * nr_cpus))
 		    == NULL) {
 			perror("malloc");
 			exit(4);
 		}
-		memset(st_irq[i], 0, STATS_IRQ_SIZE * nr_cpus);
+		memset(st_irq[i], 0, STATS_GLOBAL_IRQ_SIZE * nr_cpus);
 
 		if ((st_irqcpu[i] = (struct stats_irqcpu *) malloc(STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr))
 		    == NULL) {
@@ -286,7 +285,7 @@ void sfree_mp_struct(void)
 void fwd_irq_values(struct stats_irqcpu *st_ic[], unsigned int c,
 		    unsigned int last, int ic_nr, int curr)
 {
-	struct stats_irq *st_irq_i, *st_irq_j;
+	struct stats_global_irq *st_irq_i, *st_irq_j;
 	struct stats_irqcpu *p, *q;
 	int j;
 
@@ -1202,7 +1201,7 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 			       char *prev_string, char *curr_string, unsigned char offline_cpu_bitmap[])
 {
 	struct stats_cpu *scc, *scp;
-	struct stats_irq *sic, *sip;
+	struct stats_global_irq *sic, *sip;
 	unsigned long long pc_itv;
 	int cpu;
 
@@ -1271,7 +1270,7 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 			      unsigned char offline_cpu_bitmap[])
 {
 	struct stats_cpu *scc, *scp;
-	struct stats_irq *sic, *sip;
+	struct stats_global_irq *sic, *sip;
 	unsigned long long pc_itv;
 	int cpu, next = FALSE;
 
@@ -1794,6 +1793,39 @@ void write_stats(int curr, int dis)
 
 /*
  ***************************************************************************
+ * Read total number of interrupts from /proc/stat.
+ *
+ * IN:
+ * @st_irq	Structure where total number of interrupts will be saved.
+ *
+ * OUT:
+ * @st_irq	Structure with total number of interrupts.
+ ***************************************************************************
+ */
+void read_stat_total_irq(struct stats_global_irq *st_irq)
+{
+	FILE *fp;
+	char line[1024];
+	unsigned long long irq_nr;
+
+	if ((fp = fopen(STAT, "r")) == NULL)
+		return;
+
+	while (fgets(line, sizeof(line), fp) != NULL) {
+
+		if (!strncmp(line, "intr ", 5)) {
+			/* Read total number of interrupts received since system boot */
+			sscanf(line + 5, "%llu", &irq_nr);
+			st_irq->irq_nr = (unsigned int) irq_nr;
+
+			break;
+		}
+	}
+
+	fclose(fp);
+}
+/*
+ ***************************************************************************
  * Read stats from /proc/interrupts or /proc/softirqs.
  *
  * IN:
@@ -1808,7 +1840,7 @@ void write_stats(int curr, int dis)
 void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, int curr)
 {
 	FILE *fp;
-	struct stats_irq *st_irq_i;
+	struct stats_global_irq *st_irq_i;
 	struct stats_irqcpu *p;
 	char *line = NULL, *li;
 	unsigned long irq = 0;
@@ -1885,8 +1917,9 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 				/*
 				 * No need to set (st_irqcpu + cpu * irqcpu_nr)->irq_name:
 				 * This is the same as st_irqcpu->irq_name.
-				 * Now save current interrupt value for current CPU (in stats_irqcpu structure)
-				 * and total number of interrupts received by current CPU (in stats_irq structure).
+				 * Now save current interrupt value for current CPU (in
+				 * stats_irqcpu structure) and total number of interrupts
+				 * received by current CPU (in stats_global_irq structure).
 				 */
 				p->interrupt = strtoul(cp, &next, 10);
 				st_irq_i->irq_nr += p->interrupt;
@@ -1962,7 +1995,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	 * (this is the first value on the line "intr:" in the /proc/stat file).
 	 */
 	if (DISPLAY_IRQ_SUM(actflags)) {
-		read_stat_irq(st_irq[0], 1);
+		read_stat_total_irq(st_irq[0]);
 	}
 
 	/*
@@ -1982,7 +2015,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		mp_tstamp[1] = mp_tstamp[0];
 		memset(st_cpu[1], 0, STATS_CPU_SIZE * (cpu_nr + 1));
 		memset(st_node[1], 0, STATS_CPU_SIZE * (cpu_nr + 1));
-		memset(st_irq[1], 0, STATS_IRQ_SIZE * (cpu_nr + 1));
+		memset(st_irq[1], 0, STATS_GLOBAL_IRQ_SIZE * (cpu_nr + 1));
 		memset(st_irqcpu[1], 0, STATS_IRQCPU_SIZE * (cpu_nr + 1) * irqcpu_nr);
 		if (DISPLAY_SOFTIRQS(actflags)) {
 			memset(st_softirqcpu[1], 0, STATS_IRQCPU_SIZE * (cpu_nr + 1) * softirqcpu_nr);
@@ -2005,7 +2038,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	uptime_cs[2] = uptime_cs[0];
 	memcpy(st_cpu[2], st_cpu[0], STATS_CPU_SIZE * (cpu_nr + 1));
 	memcpy(st_node[2], st_node[0], STATS_CPU_SIZE * (cpu_nr + 1));
-	memcpy(st_irq[2], st_irq[0], STATS_IRQ_SIZE * (cpu_nr + 1));
+	memcpy(st_irq[2], st_irq[0], STATS_GLOBAL_IRQ_SIZE * (cpu_nr + 1));
 	memcpy(st_irqcpu[2], st_irqcpu[0], STATS_IRQCPU_SIZE * (cpu_nr + 1) * irqcpu_nr);
 	if (DISPLAY_SOFTIRQS(actflags)) {
 		memcpy(st_softirqcpu[2], st_softirqcpu[0],
@@ -2046,7 +2079,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 		/* Read total number of interrupts received among all CPU */
 		if (DISPLAY_IRQ_SUM(actflags)) {
-			read_stat_irq(st_irq[curr], 1);
+			read_stat_total_irq(st_irq[curr]);
 		}
 
 		/*

@@ -7,6 +7,7 @@
 #define _MPSTAT_H
 
 #include "common.h"
+#include "rd_stats.h"
 
 /*
  ***************************************************************************
@@ -90,11 +91,17 @@ struct stats_irqcpu {
 	char         irq_name[MAX_IRQ_LEN];
 };
 
+#define STATS_IRQCPU_SIZE      (sizeof(struct stats_irqcpu))
+
+struct stats_global_irq {
+	unsigned long long irq_nr;
+};
+
+#define STATS_GLOBAL_IRQ_SIZE	(sizeof(struct stats_global_irq))
+
 struct cpu_topology {
 	int phys_package_id;
 	int logical_core_id;
 };
-
-#define STATS_IRQCPU_SIZE      (sizeof(struct stats_irqcpu))
 
 #endif
