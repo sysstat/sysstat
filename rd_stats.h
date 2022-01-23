@@ -26,6 +26,8 @@
 #define MAX_FS_LEN	128
 /* Maximum length of FC host name */
 #define MAX_FCH_LEN	16
+/* Maximum length of interrupt name */
+#define MAX_SA_IRQ_LEN	8
 
 #define CNT_PART	1
 #define CNT_ALL_DEV	0
@@ -133,17 +135,21 @@ struct stats_pcsw {
 
 /*
  * Structure for interrupts statistics.
- * In activity buffer: First structure is for total number of interrupts ("SUM").
- * Following structures are for each individual interrupt (0, 1, etc.)
+ * In activity buffer (sadc): First structures are for global CPU utilization ("all"):
+ * interrupts sum, 0, 1,...
+ * Following structures are for each individual CPU (0, 1, etc.)
+ *
+ * Used by: sadc, sar, sadf
  */
 struct stats_irq {
-	unsigned long long irq_nr;
+	unsigned int irq_nr;
+	char	     irq_name[MAX_SA_IRQ_LEN];
 };
 
 #define STATS_IRQ_SIZE	(sizeof(struct stats_irq))
-#define STATS_IRQ_ULL	1
+#define STATS_IRQ_ULL	0
 #define STATS_IRQ_UL	0
-#define STATS_IRQ_U	0
+#define STATS_IRQ_U	1
 
 /* Structure for swapping statistics */
 struct stats_swap {

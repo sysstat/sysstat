@@ -53,12 +53,6 @@ struct act_bitmap cpu_bitmap = {
 	.b_size		= NR_CPUS
 };
 
-/* Interrupts bitmap */
-struct act_bitmap irq_bitmap = {
-	.b_array	= NULL,
-	.b_size		= NR_IRQS
-};
-
 
 /*
  * CPU statistics.
@@ -162,7 +156,7 @@ struct activity pcsw_act = {
 /* Interrupts statistics */
 struct activity irq_act = {
 	.id		= A_IRQ,
-	.options	= AO_COUNTED + AO_MATRIX,
+	.options	= AO_COUNTED + AO_MATRIX + AO_PERSISTENT,
 	.magic		= ACTIVITY_MAGIC_BASE + 2,
 	.group		= G_INT,
 #ifdef SOURCE_SADC
@@ -202,7 +196,7 @@ struct activity irq_act = {
 	.msize		= STATS_IRQ_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
-	.bitmap		= &irq_bitmap
+	.bitmap		= &cpu_bitmap
 };
 
 /* Swapping activity */
