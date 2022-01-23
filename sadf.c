@@ -1527,16 +1527,7 @@ int main(int argc, char **argv)
 	/* Process options */
 	while (opt < argc) {
 
-		if (!strcmp(argv[opt], "-I")) {
-			if (!sar_options) {
-				usage(argv[0]);
-			}
-			if (parse_sar_I_opt(argv, &opt, &flags, act)) {
-				usage(argv[0]);
-			}
-		}
-
-		else if (!strcmp(argv[opt], "-P")) {
+		if (!strcmp(argv[opt], "-P")) {
 			if (parse_sa_P_opt(argv, &opt, &flags, act)) {
 				usage(argv[0]);
 			}

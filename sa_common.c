@@ -2181,7 +2181,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			 * Force '-r ALL -u ALL -F'.
 			 * Setting -F is compulsory because corresponding activity
 			 * has AO_MULTIPLE_OUTPUTS flag set.
-			 * -P ALL / -I ALL will be set only if corresponding option has
+			 * -P ALL will be set only if corresponding option has
 			 * not been exlicitly entered on the command line.
 			 */
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
@@ -2230,6 +2230,22 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 		case 'h':
 			/* Option -h is equivalent to --pretty --human */
 			*flags |= S_F_PRETTY + S_F_UNIT;
+			break;
+
+		case 'I':
+			p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
+			act[p]->options |= AO_SELECTED;
+
+			if (!*(argv[*opt] + i + 1) && argv[*opt + 1] &&
+			    (!strcmp(argv[*opt + 1], K_ALL) || !strcmp(argv[*opt + 1], K_SUM))) {
+				(*opt)++;
+				/* Select int "sum". Keyword ALL is ignored */
+				if (!strcmp(argv[*opt], K_SUM)) {
+					act[p]->item_list_sz += add_list_item(&(act[p]->item_list), K_LOWERSUM, MAX_SA_IRQ_LEN);
+					act[p]->options |= AO_LIST_ON_CMDLINE;
+				}
+				return 0;
+			}
 			break;
 
 		case 'j':
@@ -2557,43 +2573,6 @@ int parse_sar_q_opt(char *argv[], int *opt, struct activity *act[])
 
 /*
  ***************************************************************************
- * Parse sar "-I" option.
- *
- * IN:
- * @argv	Arguments list.
- * @opt		Index in list of arguments.
- * @act		Array of activities.
- *
- * OUT:
- * @flags	Common flags and system state.
- * @act		Array of activities, with interrupts activity selected.
- *
- * RETURNS:
- * 0 on success, 1 otherwise.
- ***************************************************************************
- */
-int parse_sar_I_opt(char *argv[], int *opt, uint64_t *flags, struct activity *act[])
-{
-	int p;
-
-	/* Select interrupt activity */
-	p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
-	act[p]->options |= AO_SELECTED;
-
-	if (argv[++(*opt)]) {
-		if (parse_values(argv[*opt], act[p]->bitmap->b_array,
-			     act[p]->bitmap->b_size, K_SUM))
-			return 1;
-		(*opt)++;
-		*flags |= S_F_OPTION_I;
-		return 0;
-	}
-
-	return 1;
-}
-
-/*
- ***************************************************************************
  * Parse sar and sadf "-P" option.
  *
  * IN:
@@ -2629,7 +2608,7 @@ int parse_sa_P_opt(char *argv[], int *opt, uint64_t *flags, struct activity *act
 
 /*
  ***************************************************************************
- * If option -A has been used, force -P ALL -I ALL only if corresponding
+ * If option -A has been used, force -P ALL only if corresponding
  * option has not been explicitly entered on the command line.
  *
  * IN:
@@ -2646,13 +2625,6 @@ void set_bitmaps(struct activity *act[], uint64_t *flags)
 	if (!USE_OPTION_P(*flags)) {
 		/* Force -P ALL */
 		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
-		memset(act[p]->bitmap->b_array, ~0,
-		       BITMAP_SIZE(act[p]->bitmap->b_size));
-	}
-
-	if (!USE_OPTION_I(*flags)) {
-		/* Force -I ALL */
-		p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
 		memset(act[p]->bitmap->b_array, ~0,
 		       BITMAP_SIZE(act[p]->bitmap->b_size));
 	}

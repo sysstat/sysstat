@@ -1540,8 +1540,6 @@ void parse_sa_devices
 	(char *, struct activity *, int, int *, int);
 int parse_sar_opt
 	(char * [], int *, struct activity * [], uint64_t *, int);
-int parse_sar_I_opt
-	(char * [], int *, uint64_t *, struct activity * []);
 int parse_sa_P_opt
 	(char * [], int *, uint64_t *, struct activity * []);
 int parse_sar_m_opt

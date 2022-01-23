@@ -64,6 +64,7 @@
 #define K_ISO		"ISO"
 #define K_ALL		"ALL"
 #define K_LOWERALL	"all"
+#define K_LOWERSUM	"sum"
 #define K_UTC		"UTC"
 #define K_JSON		"JSON"
 
