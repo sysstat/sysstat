@@ -612,11 +612,6 @@ struct file_header {
  * Base magical number for activities.
  */
 #define ACTIVITY_MAGIC_BASE	0x8a
-/*
- * Magical value used for activities with
- * unknown format (used for sadf -H only).
- */
-#define ACTIVITY_MAGIC_UNKNOWN	0x89
 
 /* List of activities saved in file */
 struct file_activity {
