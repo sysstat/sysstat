@@ -1276,7 +1276,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 				printf("x%d", fal->nr2);
 			}
 			printf("\t(%d,%d,%d)", fal->types_nr[0], fal->types_nr[1], fal->types_nr[2]);
-			if ((p >= 0) && (act[p]->magic == ACTIVITY_MAGIC_UNKNOWN)) {
+			if ((p >= 0) && (act[p]->magic != fal->magic)) {
 				printf(_(" \t[Unknown format]"));
 			}
 			printf("\n");
