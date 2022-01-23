@@ -997,6 +997,9 @@ struct activity {
 	 * separated with a '|' character.
 	 * For a given output, the first field corresponding to extended statistics
 	 * (eg. -r ALL) begins with a '&' character.
+	 * A field having '*' in its name means that all items will have its own column
+	 * (the first one will be displayed as "all", the following ones will get the '*'
+	 * character replaced with their item number (0, 1, etc.)
 	 */
 	char *hdr_line;
 	/*

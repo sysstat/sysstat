@@ -154,6 +154,9 @@ int get_proc_cpu_nr(void)
  *    one have been disabled, we get the total number of proc since we use
  *    /sys to count them).
  * 2: two proc...
+ *
+ * USED BY:
+ * sadc, cifsiostat, iostat, mpstat, pidstat, tapestat
  ***************************************************************************
  */
 __nr_t get_cpu_nr(unsigned int max_nr_cpus, int highest)
@@ -186,6 +189,9 @@ __nr_t get_cpu_nr(unsigned int max_nr_cpus, int highest)
  *
  * RETURNS:
  * Number of interrupts per processor.
+ *
+ * USED BY:
+ * sadc, mpstat
  ***************************************************************************
  */
 __nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
@@ -214,6 +220,9 @@ __nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 
 	return irq;
 }
+
+#ifdef SOURCE_SADC
+/*---------------- BEGIN: FUNCTIONS USED BY SADC ONLY ---------------------*/
 
 /*
  ***************************************************************************
@@ -263,43 +272,6 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 	fclose(fp);
 
 	return dev;
-}
-
-#ifdef SOURCE_SADC
-/*---------------- BEGIN: FUNCTIONS USED BY SADC ONLY ---------------------*/
-
-/*
- ***************************************************************************
- * Count number of interrupts that are in /proc/stat file.
- *
- * RETURNS:
- * Number of interrupts, including total number of interrupts.
- ***************************************************************************
- */
-__nr_t get_irq_nr(void)
-{
-	FILE *fp;
-	char line[8192];
-	__nr_t in = 0;
-	int pos = 4;
-
-	if ((fp = fopen(STAT, "r")) == NULL)
-		return 0;
-
-	while (fgets(line, sizeof(line), fp) != NULL) {
-
-		if (!strncmp(line, "intr ", 5)) {
-
-			while (pos < strlen(line)) {
-				in++;
-				pos += strcspn(line + pos + 1, " ") + 1;
-			}
-		}
-	}
-
-	fclose(fp);
-
-	return in;
 }
 
 /*

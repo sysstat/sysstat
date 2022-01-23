@@ -21,8 +21,6 @@ __nr_t get_irqcpu_nr
 	(char *, int, int);
 __nr_t get_diskstats_dev_nr
 	(int, int);
-__nr_t get_irq_nr
-	(void);
 __nr_t get_serial_nr
 	(void);
 __nr_t get_iface_nr
