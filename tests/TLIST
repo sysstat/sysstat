@@ -166,7 +166,9 @@ NOTES:
 00784	LC_ALL=C TZ=GMT ./sar -w -f tests/data-ukwn > tests/out2.sar-data-ukwn.tmp
 00787	LC_ALL=C ./sadf -H tests/data-ukwn > tests/out.sadf-data-ukwn.tmp
 00790	LC_ALL=C TZ=GMT ./sar -A -f tests/data-ukwn0 > tests/out.sar-data-ukwn0.tmp
-00795	LC_ALL=C ./sadf -H tests/data-ukwn0 > tests/out.sadf-data-ukwn0.tmp
+00791	LC_ALL=C ./sadf -H tests/data-ukwn0 > tests/out.sadf-data-ukwn0.tmp
+00793	LC_ALL=C TZ=GMT ./sar -uq -f tests/data-ukwn1 > tests/out.sar-data-ukwn1.tmp
+00794	LC_ALL=C ./sadf -H tests/data-ukwn1 > tests/out.sadf-data-ukwn1.tmp
 
 =====	Testing sar's options
 00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp

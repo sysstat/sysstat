@@ -1,0 +1,6 @@
+Linux 5.14.18-100.fc33.x86_64 (localhost.localdomain) 	01/23/22 	_x86_64_	(8 CPU)
+
+13:26:31        CPU     %user     %nice   %system   %iowait    %steal     %idle
+13:26:32        all      0.37      0.00      0.12      0.00      0.00     99.50
+13:26:33        all      0.25      0.00      0.00      0.00      0.00     99.75
+Average:        all      0.31      0.00      0.06      0.00      0.00     99.63

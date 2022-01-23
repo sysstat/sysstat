@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -uq -f tests/data-ukwn1 > tests/out.sar-data-ukwn1.tmp && diff -u tests/expected3.sar-data-ukwn tests/out.sar-data-ukwn1.tmp
