@@ -2707,16 +2707,34 @@ int add_list_item(struct sa_item **list, char *item_name, int max_len)
  * @max_len	Max length of a device name.
  * @opt		Index in list of arguments.
  * @pos		Position is string where is located the first device.
+ * @max_val	If > 0 then ranges of values are allowed (e.g. 3-5,9-, etc.)
+ *		Values are in range [0..@max_val].
  *
  * OUT:
  * @opt		Index on next argument.
  ***************************************************************************
  */
-void parse_sa_devices(char *argv, struct activity *a, int max_len, int *opt, int pos)
+void parse_sa_devices(char *argv, struct activity *a, int max_len, int *opt, int pos,
+		      int max_val)
 {
+	int i, val_low, val;
 	char *t;
+	char svalue[9];
 
 	for (t = strtok(argv + pos, ","); t; t = strtok(NULL, ",")) {
+
+		/* Test ranges of values, if allowed */
+		if ((max_val > 0) && (strlen(t) <= 16) && (strspn(t, XDIGITS) == strlen(t))) {
+			if (parse_range_values(t, max_val, &val_low, &val) == 0) {
+				/* This is a real range of values: Save each if its values */
+				for (i = val_low; i <= val; i++) {
+					snprintf(svalue, sizeof(svalue), "%d", i);
+					svalue[sizeof(svalue) - 1] = '\0';
+					a->item_list_sz += add_list_item(&(a->item_list), svalue, max_len);
+				}
+				continue;
+			}
+		}
 		a->item_list_sz += add_list_item(&(a->item_list), t, max_len);
 	}
 	if (a->item_list_sz) {

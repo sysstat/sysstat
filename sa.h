@@ -299,6 +299,7 @@
 #define NO_TM_START		0
 #define NO_TM_END		0
 #define NO_RESET		0
+#define NO_RANGE		0
 #define NON_FATAL		0
 #define FATAL			1
 #define C_SAR			0
@@ -1537,7 +1538,7 @@ void init_custom_color_palette
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices
-	(char *, struct activity *, int, int *, int);
+	(char *, struct activity *, int, int *, int, int);
 int parse_sar_opt
 	(char * [], int *, struct activity * [], uint64_t *, int);
 int parse_sa_P_opt

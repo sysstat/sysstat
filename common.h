@@ -113,6 +113,7 @@
 #define C_ALWAYS		"always"
 
 #define DIGITS			"0123456789"
+#define XDIGITS			"0123456789-"
 
 /*
  ***************************************************************************
@@ -297,6 +298,8 @@ double ll_sp_value
 	(unsigned long long, unsigned long long, unsigned long long);
 int is_iso_time_fmt
 	(void);
+int parse_range_values
+	(char *t, int, int *, int *);
 int parse_values
 	(char *, unsigned char[], int, const char *);
 int print_gal_header

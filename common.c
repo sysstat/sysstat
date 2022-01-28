@@ -1555,6 +1555,59 @@ int parse_valstr(char *s, int max_val, int *val)
 
 /*
  ***************************************************************************
+ * Parse string containing a single value or a range of values
+ * (e.g. "0,2-5,10-").
+ *
+ * IN:
+ * @t		String to parse.
+ * @max_val	Upper limit that value should not reach.
+ *
+ * OUT:
+ * @val_low	Low value in range
+ * @val		High value in range. @val_low and @val are the same if it's
+ *		a single value.
+ *
+ * RETURNS:
+ * 0 on success, 1 otherwise.
+ ***************************************************************************
+ */
+int parse_range_values(char *t, int max_val, int *val_low, int *val)
+{
+	char *s, *valstr, range[16];
+
+	/* Parse value or range of values */
+	strncpy(range, t, 16);
+	range[15] = '\0';
+	valstr = t;
+
+	if ((s = strchr(range, '-')) != NULL) {
+		/* Possible range of values */
+		*s = '\0';
+		if (parse_valstr(range, max_val, val_low) || (*val_low < 0))
+			return 1;
+		valstr = s + 1;
+	}
+	if (parse_valstr(valstr, max_val, val))
+		return 1;
+	if (s && *val < 0) {
+		/* Range of values with no upper limit (e.g. "3-") */
+		*val = max_val - 1;
+	}
+	if ((!s && (*val < 0)) || (s && (*val < *val_low)))
+		/*
+		 * Individual value: string cannot be empty.
+		 * Range of values: n-m: m can be empty (e.g. "3-") but
+		 * cannot be lower than n.
+		 */
+		return 1;
+	if (!s) {
+		*val_low = *val;
+	}
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Parse string containing a set of coma-separated values or ranges of
  * values (e.g. "0,2-5,10-"). The ALL keyword is allowed and indicate that
  * all possible values are selected.
@@ -1577,7 +1630,7 @@ int parse_valstr(char *s, int max_val, int *val)
 int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char *__K_VALUE0)
 {
 	int i, val_low, val;
-	char *t, *s, *valstr, range[16];
+	char *t;
 
 	if (!strcmp(strargv, K_ALL)) {
 		/* Set bit for every possible values (CPU, IRQ, etc.) */
@@ -1595,32 +1648,9 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 		}
 		else {
 			/* Parse value or range of values */
-			strncpy(range, t, 16);
-			range[15] = '\0';
-			valstr = t;
-			if ((s = strchr(range, '-')) != NULL) {
-				/* Possible range of values */
-				*s = '\0';
-				if (parse_valstr(range, max_val, &val_low) || (val_low < 0))
-					return 1;
-				valstr = s + 1;
-			}
-			if (parse_valstr(valstr, max_val, &val))
+			if (parse_range_values(t, max_val, &val_low, &val))
 				return 1;
-			if (s && val < 0) {
-				/* Range of values with no upper limit (e.g. "3-") */
-				val = max_val - 1;
-			}
-			if ((!s && (val < 0)) || (s && (val < val_low)))
-				/*
-				 * Individual value: string cannot be empty.
-				 * Range of values: n-m: m can be empty (e.g. "3-") but
-				 * cannot be lower than n.
-				 */
-				return 1;
-			if (!s) {
-				val_low = val;
-			}
+
 			for (i = val_low; i <= val; i++) {
 				bitmap[(i + 1) >> 3] |= 1 << ((i + 1) & 0x07);
 			}

@@ -108,7 +108,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ]\n"
+			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 			  "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
@@ -1536,23 +1536,29 @@ int main(int argc, char **argv)
 		else if (!strncmp(argv[opt], "--dev=", 6)) {
 			/* Parse devices entered on the command line */
 			p = get_activity_position(act, A_DISK, EXIT_IF_NOT_FOUND);
-			parse_sa_devices(argv[opt], act[p], MAX_DEV_LEN, &opt, 6);
+			parse_sa_devices(argv[opt], act[p], MAX_DEV_LEN, &opt, 6, NO_RANGE);
 		}
 
 		else if (!strncmp(argv[opt], "--fs=", 5)) {
 			/* Parse devices entered on the command line */
 			p = get_activity_position(act, A_FS, EXIT_IF_NOT_FOUND);
-			parse_sa_devices(argv[opt], act[p], MAX_FS_LEN, &opt, 5);
+			parse_sa_devices(argv[opt], act[p], MAX_FS_LEN, &opt, 5, NO_RANGE);
 		}
 
 		else if (!strncmp(argv[opt], "--iface=", 8)) {
 			/* Parse devices entered on the command line */
 			p = get_activity_position(act, A_NET_DEV, EXIT_IF_NOT_FOUND);
-			parse_sa_devices(argv[opt], act[p], MAX_IFACE_LEN, &opt, 8);
+			parse_sa_devices(argv[opt], act[p], MAX_IFACE_LEN, &opt, 8, NO_RANGE);
 			q = get_activity_position(act, A_NET_EDEV, EXIT_IF_NOT_FOUND);
 			act[q]->item_list = act[p]->item_list;
 			act[q]->item_list_sz = act[p]->item_list_sz;
 			act[q]->options |= AO_LIST_ON_CMDLINE;
+		}
+
+		else if (!strncmp(argv[opt], "--int=", 6)) {
+			/* Parse interrupts names entered on the command line */
+			p = get_activity_position(act, A_IRQ, EXIT_IF_NOT_FOUND);
+			parse_sa_devices(argv[opt], act[p], MAX_SA_IRQ_LEN, &opt, 6, NR_IRQS);
 		}
 
 		else if (!strcmp(argv[opt], "-s")) {
