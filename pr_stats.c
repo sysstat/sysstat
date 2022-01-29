@@ -380,7 +380,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 		printf("%-11s", timestamp[curr]);
 
 		if (!DISPLAY_PRETTY(flags)) {
-			cprintf_in(IS_STR, " %9s", i ? stc_cpuall_irq->irq_name : "sum", 0);
+			cprintf_in(IS_STR, " %9s", stc_cpuall_irq->irq_name, 0);
 		}
 
 		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
@@ -399,7 +399,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 			cprintf_f(NO_UNIT, 1, 9, 2, S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 
 			if (DISPLAY_PRETTY(flags)) {
-				cprintf_in(IS_STR, " %9s", i ? stc_cpuall_irq->irq_name : "sum", 0);
+				cprintf_in(IS_STR, " %9s", stc_cpuall_irq->irq_name, 0);
 			}
 		}
 		printf("\n");
