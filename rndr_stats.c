@@ -145,7 +145,7 @@ static void render(int isdb, char *pre, int rflags, const char *pptxt,
 	else if (rflags & PT_USERND) {
 		printf("%s%.0f", seps[isdb], dval);
 	}
-	else {
+	else if (rflags & PT_NOFLAG) {
 		printf("%s%.2f", seps[isdb], dval);
 	}
 	if (newline) {
@@ -517,35 +517,76 @@ __print_funct_t render_pcsw_stats(struct activity *a, int isdb, char *pre,
 __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 				 int curr, unsigned long long itv)
 {
-	int i;
-	struct stats_irq *sic, *sip;
-	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+	int i, c, first;
+	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq;
+	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
+	char cpu_name[32], ppc_txt[512];
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
 
-		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
-		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
+	/* Identify offline and unselected CPU, and keep persistent statistics values */
+	get_global_int_statistics(a, !curr, curr, flags, masked_cpu_bitmap);
 
-		/* Should current interrupt (including int "sum") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+	for (i = 0; i < a->nr2; i++) {
+
+		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, stc_cpuall_irq->irq_name))
+				/* Device not found */
+				continue;
+		}
+
+		first = TRUE;
+		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
+
+			stc_cpu_irq = (struct stats_irq *) ((char *) a->buf[curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+			stp_cpu_irq = (struct stats_irq *) ((char *) a->buf[!curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (masked_cpu_bitmap[c >> 3] & (1 << (c & 0x07)))
+				/* No */
+				continue;
 
 			/* Yes: Display it */
-			if (!i) {
-				/* This is interrupt "sum" */
-				render(isdb, pre, pt_newlin,
-				       "sum\tintr/s", "-1", NULL,
-				       NOVAL,
-				       S_VALUE(sip->irq_nr, sic->irq_nr, itv),
-				       NULL);
+			if (!c) {
+				strcpy(cpu_name, "all");
 			}
 			else {
-				render(isdb, pre, pt_newlin,
-				       "i%03d\tintr/s", "%d", cons(iv, i - 1, NOVAL),
+				snprintf(cpu_name, sizeof(cpu_name), "CPU%d", c - 1);
+				cpu_name[sizeof(cpu_name) - 1] = '\0';
+			}
+			snprintf(ppc_txt, sizeof(ppc_txt), "%s\t%s", stc_cpuall_irq->irq_name, cpu_name);
+			ppc_txt[sizeof(ppc_txt) - 1] = '\0';
+
+			if (first) {
+				render(isdb, pre, PT_NOFLAG,
+				       "%s", "%s",
+				       isdb ? cons(sv, stc_cpuall_irq->irq_name, NULL)
+				            : cons(sv, ppc_txt, NULL),
 				       NOVAL,
-				       S_VALUE(sip->irq_nr, sic->irq_nr, itv),
+				       S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv),
+				       NULL);
+				first = FALSE;
+			}
+			else {
+				render(isdb, pre, PT_NOFLAG,
+				       "%s", NULL,
+				       cons(sv, ppc_txt, NULL),
+				       NOVAL,
+				       S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv),
 				       NULL);
 			}
+		}
+		if (isdb && !DISPLAY_HORIZONTALLY(flags)) {
+			/* Print a newline chr and make sure that @pre text will be printed next time */
+			render(isdb, pre, PT_NEWLIN, NULL, NULL, NULL, NOVAL, NOVAL, NULL);
 		}
 	}
 }

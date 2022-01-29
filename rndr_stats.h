@@ -14,11 +14,11 @@
  ***************************************************************************
  */
 
-#define PT_NOFLAG  0x0000	/* Prevent undescribed '0' in render calls */
 #define PT_USEINT  0x0001	/* Use the integer arg, not double nor string */
 #define PT_NEWLIN  0x0002	/* Terminate the current output line */
 #define PT_USESTR  0x0004	/* Use the string arg */
 #define PT_USERND  0x0008	/* Double value, format %.0f */
+#define PT_NOFLAG  0x0010	/* Prevent undescribed '0' in render calls */
 
 #define NOVAL      0		/* For placeholder zeros */
 #define DNOVAL     0.0		/* Wilma!  */
