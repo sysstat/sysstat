@@ -127,10 +127,10 @@ __read_funct_t wrap_read_stat_irq(struct activity *a)
 
 	/* Read interrupts stats */
 	do {
-		nr_read = read_stat_irq(st_irq, a->nr_allocated);
+		nr_read = read_stat_irq(st_irq, a->nr_allocated, a->nr2);
 
 		if (nr_read < 0) {
-			/* Buffer needs to be reallocated */
+			/* Buffer needs to be reallocated (for CPU, not interrupts) */
 			st_irq = (struct stats_irq *) reallocate_buffer(a);
 		}
 	}

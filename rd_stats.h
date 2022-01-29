@@ -779,7 +779,7 @@ unsigned long long get_per_cpu_interval
 __nr_t read_stat_cpu
 	(struct stats_cpu *, __nr_t);
 __nr_t read_stat_irq
-	(struct stats_irq *, __nr_t);
+	(struct stats_irq *, __nr_t, __nr_t);
 __nr_t read_meminfo
 	(struct stats_memory *);
 void read_uptime

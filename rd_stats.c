@@ -164,68 +164,125 @@ __nr_t read_stat_cpu(struct stats_cpu *st_cpu, __nr_t nr_alloc)
 
 /*
  ***************************************************************************
- * Read interrupts statistics from /proc/stat.
- * Remember that this function is used by several sysstat commands!
+ * Read interrupts statistics from /proc/interrupts.
  *
  * IN:
  * @st_irq	Structure where stats will be saved.
- * @nr_alloc	Number of structures allocated. Value is >= 1.
+ * @nr_alloc	Number of CPU structures allocated. Value is >= 1.
+ * @nr_int	Number of interrupts, including sum. value is >= 1.
  *
  * OUT:
  * @st_irq	Structure with statistics.
  *
  * RETURNS:
- * Number of interrupts read, or -1 if the buffer was too small and
- * needs to be reallocated.
+ * Highest CPU number for which stats have been successfully read (2 for CPU0,
+ * 3 for CPU 1, etc.) Same logic than for softnet statistics. This number will
+ * be saved in a->_nr0. See wrap_read_stat_irq().
+ * Returns 0 if no statistics have been read.
+ * Returns -1 if the buffer was too small and needs to be reallocated (we
+ * mean here, too small for all the CPU, not for the interrupts whose number
+ * is considered to be a constant. Remember that only the number of items is
+ * saved in file preceding each sample, not the number of sub-items).
  ***************************************************************************
  */
-__nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc)
+__nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc, __nr_t nr_int)
 {
 	FILE *fp;
-	struct stats_irq *st_irq_i;
-	char line[8192];
-	int i, pos;
-	unsigned long long irq_nr;
-	__nr_t irq_read = 0;
+	struct stats_irq *st_cpuall_sum, *st_cpu_irq, *st_cpu_sum, *st_cpuall_irq;
+	char *line = NULL, *li;
+	int rc = 0, irq_read = 0;
+	int cpu, len;
+	int cpu_nr = nr_alloc - 1;
+	int *cpu_index = NULL, index = 0;
+	char *cp, *next;
 
-	if ((fp = fopen(STAT, "r")) == NULL)
-		return 0;
+	if (!cpu_nr) {
+		/* We have only one proc and a non SMP kernel */
+		cpu_nr = 1;
+	}
+	SREALLOC(cpu_index, int, sizeof(int) * cpu_nr);
 
-	while (fgets(line, sizeof(line), fp) != NULL) {
+	if ((fp = fopen(INTERRUPTS, "r")) != NULL) {
 
-		if (!strncmp(line, "intr ", 5)) {
-			/* Read total number of interrupts received since system boot */
-			sscanf(line + 5, "%llu", &st_irq->irq_nr);
-			pos = strcspn(line + 5, " ") + 5;
+		SREALLOC(line, char, INTERRUPTS_LINE + 11 * cpu_nr);
+
+		/*
+		 * Parse header line to see which CPUs are online
+		 */
+		while (fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) {
+			next = line;
+			while (((cp = strstr(next, "CPU")) != NULL) && (index < cpu_nr)) {
+				cpu = strtol(cp + 3, &next, 10);
+				if (cpu + 2 > nr_alloc) {
+					rc = -1;
+					goto out;
+				}
+				cpu_index[index++] = cpu;
+			}
+			if (index)
+				/* Header line found */
+				break;
+		}
+
+		st_cpuall_sum = st_irq;
+		/* Save name "sum" for total number of interrupts */
+		strcpy(st_cpuall_sum->irq_name, K_LOWERSUM);
+
+		/* Parse each line of interrupts statistics data */
+		while ((fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) &&
+		       (irq_read < nr_int - 1)) {
+
+			/* Skip over "<irq>:" */
+			if ((cp = strchr(line, ':')) == NULL)
+				/* Chr ':' not found */
+				continue;
+			cp++;
 
 			irq_read++;
-			if (nr_alloc == 1)
-				/* We just want to read the total number of interrupts */
-				break;
+			st_cpuall_irq = st_irq + irq_read;
 
-			do {
-				i = sscanf(line + pos, " %llu", &irq_nr);
-				if (i < 1)
-					break;
+			/* Remove possible heading spaces in interrupt's name... */
+			li = line;
+			while (*li == ' ')
+				li++;
 
-				if (irq_read + 1 > nr_alloc) {
-					irq_read = -1;
-					break;
-				}
-				st_irq_i = st_irq + irq_read++;
-				st_irq_i->irq_nr = irq_nr;
-
-				i = strcspn(line + pos + 1, " ");
-				pos += i + 1;
+			len = strcspn(li, ":");
+			if (len >= MAX_SA_IRQ_LEN) {
+				len = MAX_SA_IRQ_LEN - 1;
 			}
-			while ((i > 0) && (pos < (sizeof(line) - 1)));
+			/* ...then save its name */
+			strncpy(st_cpuall_irq->irq_name, li, len);
+			st_cpuall_irq->irq_name[len] = '\0';
 
-			break;
+			/* For each interrupt: Get number received by each CPU */
+			for (cpu = 0; cpu < index; cpu++) {
+				st_cpu_sum = st_irq + (cpu_index[cpu] + 1) * nr_int;
+				st_cpu_irq = st_irq + (cpu_index[cpu] + 1) * nr_int + irq_read;
+				/*
+				 * Interrupt name is saved only for CPU "all".
+				 * Now save current interrupt value for current CPU
+				 * and total number of interrupts received by current CPU
+				 * and number of current interrupt received by all CPU.
+				 */
+				st_cpu_irq->irq_nr = strtoul(cp, &next, 10);
+				st_cpuall_irq->irq_nr += st_cpu_irq->irq_nr;
+				st_cpu_sum->irq_nr += st_cpu_irq->irq_nr;
+				cp = next;
+			}
+			st_cpuall_sum->irq_nr += st_cpuall_irq->irq_nr;
 		}
+out:
+		free(line);
+		fclose(fp);
 	}
 
-	fclose(fp);
-	return irq_read;
+	if (index && !rc) {
+		rc = cpu_index[index - 1] + 2;
+	}
+
+	free(cpu_index);
+
+	return rc;
 }
 
 /*
