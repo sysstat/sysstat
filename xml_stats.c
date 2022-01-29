@@ -319,32 +319,56 @@ __print_funct_t xml_print_pcsw_stats(struct activity *a, int curr, int tab,
 __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 				    unsigned long long itv)
 {
-	int i;
-	struct stats_irq *sic, *sip;
-	char irqno[16];
+	int i, c;
+	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq;
+	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
 	xprintf(tab++, "<interrupts>");
 	xprintf(tab++, "<int-global per=\"second\">");
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
 
-		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
-		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
+	/* Identify offline and unselected CPU, and keep persistent statistics values */
+	get_global_int_statistics(a, !curr, curr, flags, masked_cpu_bitmap);
 
-		/* Should current interrupt (including int "sum") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+	for (i = 0; i < a->nr2; i++) {
+
+		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, stc_cpuall_irq->irq_name))
+				/* Device not found */
+				continue;
+		}
+
+		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
+
+			stc_cpu_irq = (struct stats_irq *) ((char *) a->buf[curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+			stp_cpu_irq = (struct stats_irq *) ((char *) a->buf[!curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (masked_cpu_bitmap[c >> 3] & (1 << (c & 0x07)))
+				/* No */
+				continue;
 
 			/* Yes: Display it */
-			if (!i) {
-				/* This is interrupt "sum" */
-				strcpy(irqno, "sum");
+			if (!c) {
+				xprintf(tab, "<irq intr=\"%s\" cpu=\"all\" value=\"%.2f\"/>",
+					stc_cpuall_irq->irq_name,
+					S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 			}
 			else {
-				sprintf(irqno, "%d", i - 1);
+				xprintf(tab, "<irq intr=\"%s\" cpu=\"CPU%d\" value=\"%.2f\"/>",
+					stc_cpuall_irq->irq_name,
+					c - 1,
+					S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 			}
-
-			xprintf(tab, "<irq intr=\"%s\" value=\"%.2f\"/>", irqno,
-				S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 		}
 	}
 
