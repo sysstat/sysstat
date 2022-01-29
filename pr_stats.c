@@ -338,49 +338,71 @@ __print_funct_t print_pcsw_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 				unsigned long long itv)
 {
-	int i;
-	struct stats_irq *sic, *sip;
+	int c, i;
+	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq, *stp_cpuall_irq;
+	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
-		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);	// TODO: Check for offline CPU
+	/*
+	 * @nr[curr] cannot normally be greater than @nr_ini
+	 * (since @nr_ini counts up all CPU, even those offline).
+	 * If this happens, it may be because the machine has been
+	 * restarted with more CPU and no LINUX_RESTART has been
+	 * inserted in file.
+	 */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
 	}
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* Identify offline and unselected CPU, and keep persistent statistics values */
+	get_global_int_statistics(a, prev, curr, flags, masked_cpu_bitmap);
 
-		/*
-		 * If @nr[curr] > @nr[prev] then we consider that previous
-		 * interrupt value was 0.
-		 */
-		sic = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
-		sip = (struct stats_irq *) ((char *) a->buf[prev] + i * a->msize);
+	if (dish || DISPLAY_ZERO_OMIT(flags)) {
+		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9,
+			       masked_cpu_bitmap);
+	}
 
-		/*
-		 * Note: @nr[curr] gives the number of interrupts read (1 .. NR_IRQS + 1).
-		 * Bitmap size is provided for (NR_IRQS + 1) interrupts.
-		 * Anyway, NR_IRQS may vary between the version of sysstat
-		 * used by sadc to create a file, and the version of sysstat
-		 * used by sar to read it...
-		 */
+	for (i = 0; i < a->nr2; i++) {
 
-		/* Should current interrupt (including int "sum") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
 
-			if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sip, sic, STATS_IRQ_SIZE))
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, stc_cpuall_irq->irq_name))
+				/* Device not found */
+				continue;
+		}
+
+		stp_cpuall_irq = (struct stats_irq *) ((char *) a->buf[prev] + i * a->msize);
+
+		if (DISPLAY_ZERO_OMIT(flags) && (stc_cpuall_irq->irq_nr == stp_cpuall_irq->irq_nr))
+			continue;
+
+		printf("%-11s", timestamp[curr]);
+
+		if (!DISPLAY_PRETTY(flags)) {
+			cprintf_in(IS_STR, " %9s", i ? stc_cpuall_irq->irq_name : "sum", 0);
+		}
+
+		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
+
+			stc_cpu_irq = (struct stats_irq *) ((char *) a->buf[curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+			stp_cpu_irq = (struct stats_irq *) ((char *) a->buf[prev] + c * a->msize * a->nr2
+										  + i * a->msize);
+
+			/* Should current CPU (including CPU "all") be displayed? */
+			if (masked_cpu_bitmap[c >> 3] & (1 << (c & 0x07)))
+				/* No */
 				continue;
 
 			/* Yes: Display it */
-			printf("%-11s", timestamp[curr]);
-			if (!i) {
-				/* This is interrupt "sum" */
-				cprintf_in(IS_STR, " %s", "      sum", 0);
-			}
-			else {
-				cprintf_in(IS_INT, " %9d", "", i -1);
-			}
+			cprintf_f(NO_UNIT, 1, 9, 2, S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 
-			cprintf_f(NO_UNIT, 1, 9, 2, S_VALUE(sip->irq_nr, sic->irq_nr, itv));
-			printf("\n");
+			if (DISPLAY_PRETTY(flags)) {
+				cprintf_in(IS_STR, " %9s", i ? stc_cpuall_irq->irq_name : "sum", 0);
+			}
 		}
+		printf("\n");
 	}
 }
 

@@ -3267,6 +3267,64 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 
 /*
  ***************************************************************************
+ * Identify offline CPU (those for which all interrupts are 0) and keep
+ * interrupts statistics (their values are persistent). Include also CPU
+ * which have not been selected (this is necessary so that the header of the
+ * interrupts statistics report can be displayed).
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @flags	Flags for common options and system state.
+ * @masked_cpu_bitmap
+ *		CPU bitmap for offline and unselected CPU.
+ *
+ * OUT:
+ * @a		Activity structure with updated statistics (those for global
+ *		CPU, and also those for offline CPU).
+ * @masked_cpu_bitmap
+ *		CPU bitmap with offline and unselected CPU.
+ ***************************************************************************
+ */
+void get_global_int_statistics(struct activity *a, int prev, int curr,
+			       uint64_t flags, unsigned char masked_cpu_bitmap[])
+{
+	int i;
+	struct stats_irq *stc_cpu_sum, *stp_cpu_sum;
+
+	for (i = 1; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+
+		/*
+		 * The size of a->buf[...] CPU structure may be different from the default
+		 * sizeof(struct stats_irq) value if data have been read from a file!
+		 * That's why we don't use a syntax like:
+		 * stc_cpu_sum = (struct stats_irq *) a->buf[...] + i;
+                 */
+		stc_cpu_sum = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize * a->nr2);
+		stp_cpu_sum = (struct stats_irq *) ((char *) a->buf[prev] + i * a->msize * a->nr2);
+
+		if (stc_cpu_sum->irq_nr == 0) {
+			/* Assume current CPU is offline */
+			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			memcpy(stc_cpu_sum, stp_cpu_sum, a->msize * a->nr2);
+			continue;
+		}
+
+		/*
+		 * Check if current CPU is back online but with no previous sample for it,
+		 * or if it has not been selected.
+		 */
+		if (((stp_cpu_sum->irq_nr == 0) && !WANT_SINCE_BOOT(flags)) ||
+		    (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))) {
+			/* CPU should not be displayed */
+			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Get filesystem name to display. This may be either the persistent name
  * if requested by the user, the standard filesystem name (e.g. /dev/sda1,
  * /dev/sdb3, etc.) or the mount point. This is used when displaying

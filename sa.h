@@ -1529,6 +1529,8 @@ char *get_fs_name_to_display
 	(struct activity *, uint64_t, struct stats_filesystem *);
 unsigned long long get_global_cpu_statistics
 	(struct activity *, int, int, uint64_t, unsigned char []);
+void get_global_int_statistics
+	(struct activity *, int, int, uint64_t, unsigned char []);
 void get_global_soft_statistics
 	(struct activity *, int, int, uint64_t, unsigned char []);
 void get_itv_value
