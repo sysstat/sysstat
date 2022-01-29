@@ -1,5 +1,5 @@
-.\" sadf manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SADF 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
+.\" sadf manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
+.TH SADF 1 "JANUARY 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 
@@ -7,7 +7,7 @@ sadf \- Display data collected by sar in multiple formats.
 .B sadf [ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
 .IB "opts " "[,...] ] [ -P { " "cpu_list " "| ALL } ] [ -s ["
 .IB "hh" ":" "mm" "[:" "ss" "] ] ] [ -e [" "hh" ":" "mm" "[:" "ss" "] ] ]"
-.BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --iface=" "iface_list" "] [ --"
+.BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --iface=" "iface_list" "] [ --int=" "int_list " "] [ --"
 .IB "sar_options " "] [ " "interval " "[ " "count " "] ] [ " "datafile " "| " "-[0-9]+ " "]"
 
 .SH DESCRIPTION
@@ -134,6 +134,13 @@ Specify the network interfaces for which statistics are to be displayed by
 .I iface_list
 is a list of comma-separated interface names. Useful with options
 .BR "-n DEV " "and " "-n EDEV " "from " "sar" "."
+.TP
+.BI "--int=" "int_list"
+Specify the interrupts names for which statistics are to be displayed by
+.BR "sadf" "."
+.I int_list
+is a list of comma-separated values or range of values (e.g.,
+.BR "0-16,35,40-" "). Useful with option " "-I " "from " "sar" "."
 .TP
 .B -j
 Print the contents of the data file in JSON (JavaScript Object Notation)

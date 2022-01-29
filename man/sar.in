@@ -1,5 +1,5 @@
-.\" sar manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "AUGUST 2020" Linux "Linux User's Manual" -*- nroff -*-
+.\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
+.TH SAR 1 "JANUARY 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -8,7 +8,7 @@ sar \- Collect, report, or save system activity information.
 .B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ]
 .B [ --dec={ 0 | 1 | 2 } ]
 .BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --help ] [ --human ] [ --iface=" "iface_list"
-.BI "] [ --pretty ] [ --sadc ] [ -I { " "int_list " "| SUM | ALL } ] [ -P { " "cpu_list"
+.BI "] [ --int=" "int_list " "] [ --pretty ] [ --sadc ] [ -I [ SUM | ALL ] ] [ -P { " "cpu_list"
 .B | ALL } ] [ -m {
 .IB "keyword" "[,...] | ALL } ] [ -n { " "keyword" "[,...] | ALL } ] [ -q [ " "keyword" "[,...] | ALL ] ]"
 .B [ -j { SID | ID | LABEL | PATH | UUID | ... } ]
@@ -125,7 +125,7 @@ command only reports on local activities.
 .TP
 .B -A
 This is equivalent to specifying
-.BR "-bBdFHSvwWy -I SUM -m ALL -n ALL -q ALL -r ALL -u ALL" "."
+.BR "-bBdFHISvwWy -m ALL -n ALL -q ALL -r ALL -u ALL" "."
 This option also implies specifying
 .B -I ALL -P ALL
 unless these options are explicitly set on the command line.
@@ -340,17 +340,19 @@ Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
 .TP
-.BI "-I { " "int_list " "| SUM | ALL }"
-Report statistics for interrupts.
-.I int_list
-is a list of comma-separated values or range of values (e.g.,
-.BR "0-16,35,400-" "). The " "SUM"
+.BI "-I [ SUM | ALL ]"
+Report statistics for interrupts. The values displayed are the number of interrupts
+per second for the given processor or among all processors.
+A list of interrupts can be specified using
+.B --int=
+(see this option). The
+.B SUM
 keyword indicates that the total number of interrupts received per second
 is to be displayed. The
 .B ALL
-keyword indicates that statistics from all interrupts, including potential
-APIC interrupt sources, are to be reported.
-Note that interrupt statistics depend on
+keyword indicates that statistics from all interrupts are to be reported
+(this is the default).
+Note that interrupts statistics depend on
 .BR "sadc" "'s option " "-S INT"
 to be collected.
 .TP
@@ -363,6 +365,13 @@ Specify the network interfaces for which statistics are to be displayed by
 .BR "sar" "."
 .I iface_list
 is a list of comma-separated interface names.
+.TP
+.BI "--int=" "int_list"
+Specify the interrupts names for which statistics are to be displayed by
+.BR "sar" "."
+.I int_list
+is a list of comma-separated values or range of values (e.g.,
+.BR "0-16,35,40-" ").
 .TP
 .B -j { SID | ID | LABEL | PATH | UUID | ... }
 Display persistent device names. Use this option in conjunction with option
