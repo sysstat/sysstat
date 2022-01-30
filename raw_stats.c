@@ -39,6 +39,8 @@ extern uint64_t flags;
  *		metric names. In each subsequent call, must be NULL.
  * @pos		Index in @hdr_line string, 0 being the first one (headers
  * 		are delimited by the '|' character).
+ *		If @hdr_line is NULL then @pos is the item number for fields
+ *		containing a '*' character (e.g. "CPU*").
  *
  * RETURNS:
  * Pointer on string containing field name.
@@ -48,6 +50,7 @@ char *pfield(char *hdr_line, int pos)
 {
 	char hline[HEADER_LINE_LEN] = "";
 	static char field[HEADER_LINE_LEN] = "";
+	static char gen_name[HEADER_LINE_LEN] = "";
 	static int idx = 0;
 	char *hl;
 	int i, j = 0;
@@ -71,11 +74,26 @@ char *pfield(char *hdr_line, int pos)
 		field[sizeof(field) - 1] = '\0';
 	}
 
-	/* Display current field */
 	if (strchr(field + idx, ';')) {
 		j = strcspn(field + idx, ";");
 		*(field + idx + j) = '\0';
 	}
+	else if (strchr(field + idx, '*') || (!hdr_line && pos)) {
+		j = strcspn(field + idx, "*");
+		if (j < strlen(field + idx)) {
+			*(field + idx + j) = '\0';
+		}
+		if (!pos) {
+			strcpy(gen_name, K_LOWERALL);
+		}
+		else {
+			snprintf(gen_name, sizeof(gen_name), "%s%d", field + idx, pos - 1);
+			gen_name[sizeof(gen_name) - 1] = '\0';
+		}
+
+		return gen_name;
+	}
+
 	i = idx;
 	idx += j + 1;
 
@@ -237,24 +255,46 @@ __print_funct_t raw_print_pcsw_stats(struct activity *a, char *timestr, int curr
  */
 __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 {
-	int i;
-	struct stats_irq *sic, *sip;
+	int i, c;
+	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq;
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
 
-		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
-		sip = (struct stats_irq *) ((char *) a->buf[!curr] + i * a->msize);
+	for (i = 0; i < a->nr2; i++) {
 
-		/* Should current interrupt (including int "sum") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
 
-			/* Yes: Display it */
-			printf("%s; %s; %d;", timestr,
-			       pfield(a->hdr_line, FIRST), i - 1);
-			printf(" %s", pfield(NULL, 0));
-			pval(sip->irq_nr, sic->irq_nr);
-			printf("\n");
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, stc_cpuall_irq->irq_name))
+				/* Device not found */
+				continue;
 		}
+
+		printf("%s; %s; %s;", timestr,
+		       pfield(a->hdr_line, FIRST), stc_cpuall_irq->irq_name);
+
+		/* In reaw mode, offline CPU (in datafile) are always displayed */
+		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
+
+			stc_cpu_irq = (struct stats_irq *) ((char *) a->buf[curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+			stp_cpu_irq = (struct stats_irq *) ((char *) a->buf[!curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+
+			/* Should current interrupt (including int "sum") be displayed? */
+			if (!(a->bitmap->b_array[c >> 3] & (1 << (c & 0x07))))
+				/* No */
+				continue;
+
+			printf(" %s", pfield(NULL, c));
+			pval((unsigned long long) stp_cpu_irq->irq_nr,
+			     (unsigned long long) stc_cpu_irq->irq_nr);
+		}
+		printf("\n");
 	}
 }
 
