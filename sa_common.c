@@ -3293,7 +3293,7 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 	int i;
 	struct stats_irq *stc_cpu_sum, *stp_cpu_sum;
 
-	for (i = 1; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
