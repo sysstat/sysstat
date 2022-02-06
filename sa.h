@@ -1346,6 +1346,8 @@ struct sa_item {
 /*
  * Prototypes used to count new items
  */
+__nr_t count_new_int
+	(struct activity *, int);
 __nr_t count_new_net_dev
 	(struct activity *, int);
 __nr_t count_new_net_edev

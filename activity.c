@@ -180,7 +180,7 @@ struct activity irq_act = {
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_irq_stats,
 	.f_pcp_print	= pcp_print_irq_stats,
-	.f_count_new	= NULL,
+	.f_count_new	= count_new_int,
 	.item_list	= NULL,
 	.desc		= "Interrupts statistics",
 #endif

@@ -1628,6 +1628,43 @@ __nr_t count_new_disk(struct activity *a, int curr)
 
 /*
  ***************************************************************************
+ * Count the number of interrupts in current sample. Add each interrupt name
+ * to the linked list starting at @a->item_list.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of interrupts added to the list.
+ ***************************************************************************
+ */
+__nr_t count_new_int(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	struct stats_irq *stc_cpuall_irq;
+
+	if (a->item_list)
+		/*
+		 * If a list already exists, do nothing. This means that a list has been
+		 * explicitly entered on the command line using option "--int=", or that
+		 * the list has already been created here (remember that the number of
+		 * interrupts cannot change in file: @nr2, the second matrix dimension,
+		 * is a constant).
+		 */
+		return 0;
+
+	for (i = 0; i < a->nr2; i++) {
+		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
+
+		nr += add_list_item(&(a->item_list), stc_cpuall_irq->irq_name, MAX_SA_IRQ_LEN);
+	}
+
+	return nr;
+}
+
+/*
+ ***************************************************************************
  * Init custom color palette used to draw graphs (sadf -g).
  ***************************************************************************
  */
