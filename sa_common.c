@@ -2995,6 +2995,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 		 */
 		for (p = 0; p < NR_ACT; p++) {
 			if (HAS_PERSISTENT_VALUES(act[p]->options) && (act[p]->nr_ini > 0)) {
+				act[p]->nr_ini = file_hdr->sa_cpu_nr;
 				if (act[p]->nr_ini > act[p]->nr_allocated) {
 					reallocate_all_buffers(act[p], act[p]->nr_ini);
 				}
