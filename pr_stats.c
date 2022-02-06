@@ -397,8 +397,18 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 				/* No */
 				continue;
 
-			/* Yes: Display it */
-			cprintf_f(NO_UNIT, 1, 9, 2, S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
+			if (!c && (stc_cpu_irq->irq_nr < stp_cpu_irq->irq_nr)) {
+				/*
+				 * Total number among all CPU for a given interrupt may decrease if
+				 * a CPU has gone offline. In this case we display "0.00" instead of
+				 * the huge number that would appear otherwise.
+				 */
+				cprintf_f(NO_UNIT, 1, 9, 2, 0.0);
+			}
+			else {
+				cprintf_f(NO_UNIT, 1, 9, 2,
+					  S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
+			}
 
 			if (DISPLAY_PRETTY(flags)) {
 				cprintf_in(IS_STR, " %9s", stc_cpuall_irq->irq_name, 0);
