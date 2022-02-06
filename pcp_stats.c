@@ -201,26 +201,65 @@ __print_funct_t pcp_print_pcsw_stats(struct activity *a, int curr)
 __print_funct_t pcp_print_irq_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	char buf[64], intno[64];
-	int i;
-	struct stats_irq *sic;
+	int i, c;
+	char buf[64], cpuno[64], name[64];
+	struct stats_irq *stc_cpu_irq, *stc_cpuall_irq;
+	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
-	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+	/* @nr[curr] cannot normally be greater than @nr_ini */
+	if (a->nr[curr] > a->nr_ini) {
+		a->nr_ini = a->nr[curr];
+	}
 
-		sic = (struct stats_irq *) ((char *) a->buf[curr]  + i * a->msize);
+	/* Identify offline and unselected CPU, and keep persistent statistics values */
+	get_global_int_statistics(a, !curr, curr, flags, masked_cpu_bitmap);
 
-		/* Should current interrupt (including int "sum") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+	for (i = 0; i < a->nr2; i++) {
 
-			if (!i) {
-				/* This is interrupt "sum" */
-				snprintf(buf, sizeof(buf), "%llu", sic->irq_nr);
-				pmiPutValue("kernel.all.intr", NULL, buf);
+		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, stc_cpuall_irq->irq_name))
+				/* Device not found */
+				continue;
+		}
+
+		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
+
+			stc_cpu_irq = (struct stats_irq *) ((char *) a->buf[curr] + c * a->msize * a->nr2
+										  + i * a->msize);
+
+			/* Should current CPU (including CPU "all") be processed? */
+			if (masked_cpu_bitmap[c >> 3] & (1 << (c & 0x07)))
+				/* No */
+				continue;
+
+			snprintf(buf, sizeof(buf), "%u", stc_cpu_irq->irq_nr);
+
+			if (!c) {
+				/* This is CPU "all" */
+				if (!i) {
+					/* This is interrupt "sum" */
+					pmiPutValue("kernel.all.intr", NULL, buf);
+				}
+				else {
+					pmiPutValue("kernel.all.interrupts.total",
+						    stc_cpuall_irq->irq_name, buf);
+				}
 			}
 			else {
-				snprintf(intno, sizeof(intno), "int%d", i - 1);
-				snprintf(buf, sizeof(buf), "%llu", sic->irq_nr);
-				pmiPutValue("kernel.all.interrupts.total", intno, buf);
+				/* This is a particular CPU */
+				sprintf(cpuno, "cpu%d", c - 1);
+
+				snprintf(name, sizeof(name), "kernel.percpu.interrupts.%s",
+					 stc_cpuall_irq->irq_name);
+				name[sizeof(name) - 1] = '\0';
+
+				/* Metric name cannot contain digits */
+				replace_digits(name);
+
+				pmiPutValue(name, cpuno, buf);
 			}
 		}
 	}

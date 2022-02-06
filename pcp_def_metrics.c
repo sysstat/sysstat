@@ -33,6 +33,36 @@
 
 /*
  ***************************************************************************
+ * Define PCP metrics for per-CPU interrupts statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @indom	PCP domain for interrupts metrics.
+ ***************************************************************************
+ */
+void pcp_def_percpu_int_metrics(struct activity *a, pmInDom indom)
+{
+	int inst = 1;
+	char name[64];
+	struct sa_item *list = a->item_list;
+
+	/* Create per-CPU metrics for A_IRQ */
+	while (list != NULL) {
+		snprintf(name, sizeof(name), "kernel.percpu.interrupts.%s", list->item_name);
+		name[sizeof(name) - 1] = '\0';
+
+		/* Metric name cannot contain digits :-( Translate them to characters instead */
+		replace_digits(name);
+
+		pmiAddMetric(name,
+			     pmiID(60, 4, inst++), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+		list = list->next;
+	}
+}
+
+/*
+ ***************************************************************************
  * Define PCP metrics for CPU related statistics.
  *
  * IN:
@@ -214,6 +244,11 @@ void pcp_def_cpu_metrics(struct activity *a)
 						     pmiID(60, 57, 11), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 				}
+
+				else if (a->id == A_IRQ) {
+					/* Create per-CPU interrupts metrics */
+					pcp_def_percpu_int_metrics(a, indom);
+				}
 				first = FALSE;
 			}
 		}
@@ -250,32 +285,41 @@ void pcp_def_pcsw_metrics(void)
 void pcp_def_irq_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int i, first = TRUE;
-	char buf[64];
-	pmInDom indom = pmiInDom(60, 4);
+	int first = TRUE, inst = 0;
+	struct sa_item *list = a->item_list;
+	pmInDom indom;
 
-	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
+	if (!(a->bitmap->b_array[0] & 1))
+		/* CPU "all" not selected: Nothing to do here */
+		return;
 
-		/* Should current interrupt (including int "sum") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+	/* Create domain */
+	indom = pmiInDom(60, 4);
 
-			if (!i) {
-				/* Interrupt "sum" */
-				pmiAddMetric("kernel.all.intr",
-					     pmiID(60, 0, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-			}
-			else {
-				if (first) {
-					pmiAddMetric("kernel.all.interrupts.total",
-						     pmiID(60, 4, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-					first = FALSE;
-				}
-				sprintf(buf, "%d", i - 1);
-				pmiAddInstance(indom, buf, i - 1);
-			}
+	/* Create instances and metrics for each interrupts for CPU "all" */
+	while (list != NULL) {
+		if (!strcmp(list->item_name, K_LOWERSUM)) {
+			/*
+			 * Create metric for interrupt "sum" for CPU "all".
+			 * Interrupt "sum" appears at most once in list.
+			 * No need to create an instance for it: It has a specific metric name.
+			 */
+			pmiAddMetric("kernel.all.intr",
+				     pmiID(60, 0, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+				     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 		}
+		else {
+			if (first) {
+				/* Create metric for a common interrupt for CPU "all" if not already done */
+				pmiAddMetric("kernel.all.interrupts.total",
+					     pmiID(60, 4, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+				first = FALSE;
+			}
+			/* Create instance */
+			pmiAddInstance(indom, list->item_name, inst++);
+		}
+		list = list->next;
 	}
 #endif /* HAVE_PCP */
 }

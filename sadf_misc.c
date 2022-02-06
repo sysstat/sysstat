@@ -662,6 +662,7 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 
 				case A_IRQ:
 					pcp_def_irq_metrics(act[p]);
+					pcp_def_cpu_metrics(act[p]);	/* For per_CPU int metrics */
 					break;
 
 				case A_SWAP:
@@ -1724,6 +1725,22 @@ void init_custom_color_palette()
 			case 'X':
 				svg_colors[SVG_CUSTOM_COL_PALETTE][SVG_COL_AXIS_IDX] = val;
 				break;
+		}
+	}
+}
+
+/*
+ ***************************************************************************
+ * Replace digits in a string with letters ('0' -> 'a', etc.
+ ***************************************************************************
+ */
+void replace_digits(char name[])
+{
+	int i;
+
+	for (i = 0; i < strlen(name); i++) {
+		if ((name[i] >= '0') && (name[i] <= '9')) {
+			name[i] += 'a' - '0';
 		}
 	}
 }

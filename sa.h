@@ -1576,6 +1576,8 @@ int read_record_hdr
 	 int, size_t, uint64_t, struct report_format *);
 void reallocate_all_buffers
 	(struct activity *, __nr_t);
+void replace_digits
+	(char []);
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
