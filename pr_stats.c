@@ -356,10 +356,12 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 	/* Identify offline and unselected CPU, and keep persistent statistics values */
 	get_global_int_statistics(a, prev, curr, flags, masked_cpu_bitmap);
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
-		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9,
-			       masked_cpu_bitmap);
-	}
+	/*
+	 * Always display header line. The columns may vary if e.g. a CPU goes offline
+	 * and/or comes back online.
+	 */
+	print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9,
+		       masked_cpu_bitmap);
 
 	for (i = 0; i < a->nr2; i++) {
 
