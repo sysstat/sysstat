@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.9 for sysstat. See sadf.h -->
+<!--DTD v3.10 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -98,6 +98,7 @@
 <!ELEMENT irq EMPTY>
 <!ATTLIST irq
 	intr CDATA #REQUIRED
+	cpu CDATA #IMPLIED
 	value CDATA #REQUIRED
 >
 

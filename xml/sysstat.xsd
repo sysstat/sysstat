@@ -200,6 +200,7 @@
 <xs:element name="irq" type="irq-type"></xs:element>
 <xs:complexType name="irq-type">
 	<xs:attribute name="intr" type="xs:string" use="required"></xs:attribute>
+	<xs:attribute name="cpu" type="xs:string"></xs:attribute>
 	<xs:attribute name="value" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
