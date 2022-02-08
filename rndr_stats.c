@@ -174,7 +174,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 	struct stats_cpu *scc, *scp;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	/* @nr[curr] cannot normally be greater than @nr_ini */
 	if (a->nr[curr] > a->nr_ini) {
@@ -481,7 +481,7 @@ __print_funct_t render_pcsw_stats(struct activity *a, int isdb, char *pre,
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	/* The first one as an example */
 	render(isdb,		/* db/ppc flag */
@@ -610,7 +610,7 @@ __print_funct_t render_swap_stats(struct activity *a, int isdb, char *pre,
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tpswpin/s", NULL, NULL,
@@ -643,7 +643,7 @@ __print_funct_t render_paging_stats(struct activity *a, int isdb, char *pre,
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tpgpgin/s", NULL, NULL,
@@ -723,7 +723,7 @@ __print_funct_t render_io_stats(struct activity *a, int isdb, char *pre,
 		*sic = (struct stats_io *) a->buf[curr],
 		*sip = (struct stats_io *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	/*
 	 * If we get negative values, this is probably because
@@ -799,7 +799,7 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 	int ptn;
 	unsigned long long nousedmem;
 
@@ -928,7 +928,7 @@ __print_funct_t render_ktables_stats(struct activity *a, int isdb, char *pre,
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\tdentunusd", NULL, NULL,
@@ -965,7 +965,7 @@ __print_funct_t render_queue_stats(struct activity *a, int isdb, char *pre,
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\trunq-sz", NULL, NULL,
@@ -1016,7 +1016,7 @@ __print_funct_t render_serial_stats(struct activity *a, int isdb, char *pre,
 	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -1114,7 +1114,7 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 	struct ext_disk_stats xds;
 	char *dev_name;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
@@ -1223,7 +1223,7 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 	struct stats_net_dev *sndc, *sndp, sndzero;
 	double rxkb, txkb, ifutil;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
@@ -1326,7 +1326,7 @@ __print_funct_t render_net_edev_stats(struct activity *a, int isdb, char *pre,
 	int i, j;
 	struct stats_net_edev *snedc, *snedp, snedzero;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
@@ -1434,7 +1434,7 @@ __print_funct_t render_net_nfs_stats(struct activity *a, int isdb, char *pre,
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tcall/s", NULL, NULL,
@@ -1492,7 +1492,7 @@ __print_funct_t render_net_nfsd_stats(struct activity *a, int isdb, char *pre,
 		*snndc = (struct stats_net_nfsd *) a->buf[curr],
 		*snndp = (struct stats_net_nfsd *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tscall/s", NULL, NULL,
@@ -1579,7 +1579,7 @@ __print_funct_t render_net_sock_stats(struct activity *a, int isdb, char *pre,
 	struct stats_net_sock
 		*snsc = (struct stats_net_sock *) a->buf[curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\ttotsck", NULL, NULL,
@@ -1625,7 +1625,7 @@ __print_funct_t render_net_ip_stats(struct activity *a, int isdb, char *pre,
 		*snic = (struct stats_net_ip *) a->buf[curr],
 		*snip = (struct stats_net_ip *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tirec/s", NULL, NULL,
@@ -1695,7 +1695,7 @@ __print_funct_t render_net_eip_stats(struct activity *a, int isdb, char *pre,
 		*sneic = (struct stats_net_eip *) a->buf[curr],
 		*sneip = (struct stats_net_eip *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tihdrerr/s", NULL, NULL,
@@ -1765,7 +1765,7 @@ __print_funct_t render_net_icmp_stats(struct activity *a, int isdb, char *pre,
 		*snic = (struct stats_net_icmp *) a->buf[curr],
 		*snip = (struct stats_net_icmp *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\timsg/s", NULL, NULL,
@@ -1871,7 +1871,7 @@ __print_funct_t render_net_eicmp_stats(struct activity *a, int isdb, char *pre,
 		*sneic = (struct stats_net_eicmp *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tierr/s", NULL, NULL,
@@ -1965,7 +1965,7 @@ __print_funct_t render_net_tcp_stats(struct activity *a, int isdb, char *pre,
 		*sntc = (struct stats_net_tcp *) a->buf[curr],
 		*sntp = (struct stats_net_tcp *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tactive/s", NULL, NULL,
@@ -2011,7 +2011,7 @@ __print_funct_t render_net_etcp_stats(struct activity *a, int isdb, char *pre,
 		*snetc = (struct stats_net_etcp *) a->buf[curr],
 		*snetp = (struct stats_net_etcp *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tatmptf/s", NULL, NULL,
@@ -2063,7 +2063,7 @@ __print_funct_t render_net_udp_stats(struct activity *a, int isdb, char *pre,
 		*snuc = (struct stats_net_udp *) a->buf[curr],
 		*snup = (struct stats_net_udp *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tidgm/s", NULL, NULL,
@@ -2108,7 +2108,7 @@ __print_funct_t render_net_sock6_stats(struct activity *a, int isdb, char *pre,
 	struct stats_net_sock6
 		*snsc = (struct stats_net_sock6 *) a->buf[curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\ttcp6sck", NULL, NULL,
@@ -2146,7 +2146,7 @@ __print_funct_t render_net_ip6_stats(struct activity *a, int isdb, char *pre,
 		*snic = (struct stats_net_ip6 *) a->buf[curr],
 		*snip = (struct stats_net_ip6 *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tirec6/s", NULL, NULL,
@@ -2228,7 +2228,7 @@ __print_funct_t render_net_eip6_stats(struct activity *a, int isdb, char *pre,
 		*sneic = (struct stats_net_eip6 *) a->buf[curr],
 		*sneip = (struct stats_net_eip6 *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tihdrer6/s", NULL, NULL,
@@ -2316,7 +2316,7 @@ __print_funct_t render_net_icmp6_stats(struct activity *a, int isdb, char *pre,
 		*snic = (struct stats_net_icmp6 *) a->buf[curr],
 		*snip = (struct stats_net_icmp6 *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\timsg6/s", NULL, NULL,
@@ -2440,7 +2440,7 @@ __print_funct_t render_net_eicmp6_stats(struct activity *a, int isdb, char *pre,
 		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp6 *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tierr6/s", NULL, NULL,
@@ -2528,7 +2528,7 @@ __print_funct_t render_net_udp6_stats(struct activity *a, int isdb, char *pre,
 		*snuc = (struct stats_net_udp6 *) a->buf[curr],
 		*snup = (struct stats_net_udp6 *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\tidgm6/s", NULL, NULL,
@@ -2573,7 +2573,7 @@ __print_funct_t render_pwr_cpufreq_stats(struct activity *a, int isdb, char *pre
 	int i;
 	struct stats_pwr_cpufreq *spc;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -2626,7 +2626,7 @@ __print_funct_t render_pwr_fan_stats(struct activity *a, int isdb, char *pre,
 	int i;
 	struct stats_pwr_fan *spc;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
@@ -2675,7 +2675,7 @@ __print_funct_t render_pwr_temp_stats(struct activity *a, int isdb, char *pre,
 	int i;
 	struct stats_pwr_temp *spc;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
@@ -2726,7 +2726,7 @@ __print_funct_t render_pwr_in_stats(struct activity *a, int isdb, char *pre,
 	int i;
 	struct stats_pwr_in *spc;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
@@ -2777,7 +2777,7 @@ __print_funct_t render_huge_stats(struct activity *a, int isdb, char *pre,
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_USEINT,
 	       "-\tkbhugfree", NULL, NULL,
@@ -2821,7 +2821,7 @@ __print_funct_t render_pwr_wghfreq_stats(struct activity *a, int isdb, char *pre
 	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
 	unsigned long long tis, tisfreq;
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -2953,6 +2953,8 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 	int i;
 	struct stats_filesystem *sfc;
 	char *dev_name;
+	int pt_newlin
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
@@ -3017,8 +3019,7 @@ __print_funct_t render_filesystem_stats(struct activity *a, int isdb, char *pre,
 		       NOVAL,
 		       NULL);
 
-		render(isdb, pre,
-		       (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN),
+		render(isdb, pre, pt_newlin,
 		       "%s\t%%Iused",
 		       NULL,
 		       cons(sv, dev_name, NOVAL),
@@ -3046,6 +3047,8 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 {
 	int i, j, j0, found;
 	struct stats_fchost *sfcc, *sfcp, sfczero;
+	int pt_newlin
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
@@ -3101,8 +3104,7 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 		       NOVAL,
 		       S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv),
 		       NULL);
-		render(isdb, pre,
-		       (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN),
+		render(isdb, pre, pt_newlin,
 		       "%s\tfch_txw/s", NULL,
 		       cons(sv, sfcc->fchost_name, NULL),
 		       NOVAL,
@@ -3130,7 +3132,7 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 	struct stats_softnet *ssnc, *ssnp;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	/* @nr[curr] cannot normally be greater than @nr_ini */
 	if (a->nr[curr] > a->nr_ini) {
@@ -3258,7 +3260,7 @@ __print_funct_t render_psicpu_stats(struct activity *a, int isdb, char *pre,
 		*psic = (struct stats_psi_cpu *) a->buf[curr],
 		*psip = (struct stats_psi_cpu *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\t%scpu-10", NULL, NULL,
@@ -3304,7 +3306,7 @@ __print_funct_t render_psiio_stats(struct activity *a, int isdb, char *pre,
 		*psic = (struct stats_psi_io *) a->buf[curr],
 		*psip = (struct stats_psi_io *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\t%sio-10", NULL, NULL,
@@ -3374,7 +3376,7 @@ __print_funct_t render_psimem_stats(struct activity *a, int isdb, char *pre,
 		*psic = (struct stats_psi_mem *) a->buf[curr],
 		*psip = (struct stats_psi_mem *) a->buf[!curr];
 	int pt_newlin
-		= (DISPLAY_HORIZONTALLY(flags) ? PT_NOFLAG : PT_NEWLIN);
+		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\t%smem-10", NULL, NULL,
