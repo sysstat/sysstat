@@ -1728,19 +1728,3 @@ void init_custom_color_palette()
 		}
 	}
 }
-
-/*
- ***************************************************************************
- * Replace digits in a string with letters ('0' -> 'a', etc.
- ***************************************************************************
- */
-void replace_digits(char name[])
-{
-	int i;
-
-	for (i = 0; i < strlen(name); i++) {
-		if ((name[i] >= '0') && (name[i] <= '9')) {
-			name[i] += 'a' - '0';
-		}
-	}
-}
