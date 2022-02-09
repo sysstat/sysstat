@@ -202,7 +202,7 @@ __print_funct_t pcp_print_irq_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
 	int i, c;
-	char buf[64], cpuno[64], name[64];
+	char buf[64], name[64];
 	struct stats_irq *stc_cpu_irq, *stc_cpuall_irq;
 	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
@@ -250,16 +250,11 @@ __print_funct_t pcp_print_irq_stats(struct activity *a, int curr)
 			}
 			else {
 				/* This is a particular CPU */
-				sprintf(cpuno, "cpu%d", c - 1);
-
-				snprintf(name, sizeof(name), "kernel.percpu.interrupts.%s",
-					 stc_cpuall_irq->irq_name);
+				snprintf(name, sizeof(name), "%s::cpu%d",
+					 stc_cpuall_irq->irq_name, c - 1);
 				name[sizeof(name) - 1] = '\0';
 
-				/* Metric name cannot contain digits */
-				replace_digits(name);
-
-				pmiPutValue(name, cpuno, buf);
+				pmiPutValue("kernel.percpu.interrupts", name, buf);
 			}
 		}
 	}

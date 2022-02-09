@@ -40,25 +40,33 @@
  * @indom	PCP domain for interrupts metrics.
  ***************************************************************************
  */
-void pcp_def_percpu_int_metrics(struct activity *a, pmInDom indom)
+void pcp_def_percpu_int_metrics(struct activity *a, int cpu)
 {
-	int inst = 1;
-	char name[64];
+#ifdef HAVE_PCP
+	char buf[64];
 	struct sa_item *list = a->item_list;
+	static pmInDom indom = PM_INDOM_NULL;
+	static int inst;
 
-	/* Create per-CPU metrics for A_IRQ */
-	while (list != NULL) {
-		snprintf(name, sizeof(name), "kernel.percpu.interrupts.%s", list->item_name);
-		name[sizeof(name) - 1] = '\0';
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(60, 40);
 
-		/* Metric name cannot contain digits :-( Translate them to characters instead */
-		replace_digits(name);
-
-		pmiAddMetric(name,
-			     pmiID(60, 4, inst++), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		/* Create metric */
+		pmiAddMetric("kernel.percpu.interrupts",
+			     pmiID(60, 4, 1), PM_TYPE_U32, indom, PM_SEM_COUNTER,
 			     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+	}
+
+	/* Create instance for each interrupt for the current CPU */
+	while (list != NULL) {
+		snprintf(buf, sizeof(buf), "%s::cpu%d", list->item_name, cpu);
+		buf[sizeof(buf) - 1] = '\0';
+
+		pmiAddInstance(indom, buf, inst++);
 		list = list->next;
 	}
+#endif /* HAVE_PCP */
 }
 
 /*
@@ -247,7 +255,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 
 				else if (a->id == A_IRQ) {
 					/* Create per-CPU interrupts metrics */
-					pcp_def_percpu_int_metrics(a, indom);
+					pcp_def_percpu_int_metrics(a, i - 1);
 				}
 				first = FALSE;
 			}
