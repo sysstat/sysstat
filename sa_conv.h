@@ -105,6 +105,11 @@ struct stats_irq_8a {
 	unsigned long long irq_nr	__attribute__ ((aligned (16)));
 };
 
+/* Structure stats_irq for ACTIVITY_MAGIC_BASE + 1 format */
+struct stats_irq_8b {
+	unsigned long long irq_nr;
+};
+
 /* Structure stats_io for ACTIVITY_MAGIC_BASE format */
 struct stats_io_8a {
 	unsigned int dk_drive		__attribute__ ((aligned (4)));

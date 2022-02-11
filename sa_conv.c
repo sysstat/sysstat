@@ -342,11 +342,6 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 			if (!ofal->size || (ofal->size > MAX_ITEM_STRUCT_SIZE))
 				goto invalid_header;
 
-			/* Size of activity in file is larger than up-to-date activity size */
-			if (ofal->size > act[p]->msize) {
-				act[p]->msize = ofal->size;
-			}
-
 			/*
 			 * When upgrading a file:
 			 * ofal->size	: Size of an item for current activity, as
@@ -358,12 +353,25 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 			 * act[p]->fsize: Size of an item for current activity with
 			 * 		  up-to-date format.
 			 */
-			act[p]->nr_ini = ofal->nr;
-			act[p]->nr2    = ofal->nr2;
+
+			/* Size of activity in file is larger than up-to-date activity size */
+			if (ofal->size > act[p]->msize) {
+				act[p]->msize = ofal->size;
+			}
 			/*
 			 * Don't set act[p]->fsize! Should retain the size of an item
 			 * for up-to-date format!
 			 */
+
+			if ((ofal->id == A_IRQ) && (ofal->magic < ACTIVITY_MAGIC_BASE + 2)) {
+				/* Special processing for A_IRQ activity */
+				act[p]->nr_ini = 1;	/* Only CPU "all" */
+				act[p]->nr2    = ofal->nr;	/* Number of interrupts in file */
+			}
+			else {
+				act[p]->nr_ini = ofal->nr;
+				act[p]->nr2    = ofal->nr2;
+			}
 		}
 	}
 
@@ -519,19 +527,50 @@ void upgrade_stats_pcsw(struct activity *act[], int p)
  * IN:
  * @act		Array of activities.
  * @p		Position of activity in array.
+ * @magic	Structure format magic value.
  ***************************************************************************
  */
-void upgrade_stats_irq(struct activity *act[], int p)
+void upgrade_stats_irq(struct activity *act[], int p, unsigned int magic)
 {
 	int i;
 	struct stats_irq *sic;
-	struct stats_irq_8a *sip;
 
-	for (i = 0; i < act[p]->nr_ini; i++) {
-		sip = (struct stats_irq_8a *) ((char *) act[p]->buf[0] + i * act[p]->msize);
-		sic = (struct stats_irq *)    ((char *) act[p]->buf[1] + i * act[p]->fsize);
+	if (magic == ACTIVITY_MAGIC_BASE) {
+		struct stats_irq_8a *sip;
 
-		sic->irq_nr = sip->irq_nr;
+		/* For each interrupt saved in the file to convert */
+		for (i = 0; i < act[p]->nr2; i++) {
+			sip = (struct stats_irq_8a *) ((char *) act[p]->buf[0] + i * act[p]->msize);
+			sic = (struct stats_irq *)    ((char *) act[p]->buf[1] + i * act[p]->fsize);
+
+			/* Hum... Probably something to do if there is an endian mismatch... */
+			sic->irq_nr = (unsigned int) sip->irq_nr;
+			if (!i) {
+				/* This is interrupts "sum" */
+				strcpy(sic->irq_name, K_LOWERSUM);
+			}
+			else {
+				sprintf(sic->irq_name, "%d", i - 1);
+			}
+		}
+	}
+	else {
+		struct stats_irq_8b *sip;
+
+		for (i = 0; i < act[p]->nr2; i++) {
+			sip = (struct stats_irq_8b *) ((char *) act[p]->buf[0] + i * act[p]->msize);
+			sic = (struct stats_irq *)    ((char *) act[p]->buf[1] + i * act[p]->fsize);
+
+			/* Endian mismatch should be tested before... */
+			sic->irq_nr = (unsigned int) sip->irq_nr;
+			if (!i) {
+				/* This is interrupts "sum" */
+				strcpy(sic->irq_name, K_LOWERSUM);
+			}
+			else {
+				sprintf(sic->irq_name, "%d", i - 1);
+			}
+		}
 	}
 }
 
@@ -1409,8 +1448,17 @@ int upgrade_activity_section(int stdfd, struct activity *act[],
 		/* Every activity should be known at the moment (may change in the future) */
 		p = get_activity_position(act, ofal->id, EXIT_IF_NOT_FOUND);
 		fal->id = ofal->id;
-		fal->nr = ofal->nr;
-		fal->nr2 = ofal->nr2;
+
+		if ((ofal->id == A_IRQ) && (ofal->magic < ACTIVITY_MAGIC_BASE + 2)) {
+			/* Special processing for A_IRQ activity */
+			fal->nr = 1;	/* Only CPU "all" */
+			/* The number of interrupts is the 2nd dimension of the matrix */
+			fal->nr2 = ofal->nr;
+		}
+		else {
+			fal->nr = ofal->nr;
+			fal->nr2 = ofal->nr2;
+		}
 		fal->magic = act[p]->magic;	/* Update activity magic number */
 		fal->has_nr = HAS_COUNT_FUNCTION(act[p]->options);
 		/* Also update its size, which may have changed with recent versions */
@@ -1674,7 +1722,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 					break;
 
 				case A_IRQ:
-					upgrade_stats_irq(act, p);
+					upgrade_stats_irq(act, p, ofal->magic);
 					break;
 
 				case A_IO:
@@ -1763,6 +1811,14 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 		if (fal->has_nr) {
 
 			switch (fal->id) {
+
+				case A_IRQ:
+					/*
+					 * Nothing to do: Use current nr_struct value set to
+					 * act[p]->nr_ini above (value is "1" for A_IRQ: See
+					 * upgrade_header_section()).
+					 */
+					break;
 
 				case A_SERIAL:
 					/* Nothing to do: Already done in upgrade_stats_serial() */
