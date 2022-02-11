@@ -361,6 +361,7 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 			if (!c) {
 				xprintf(tab, "<irq intr=\"%s\" cpu=\"all\" value=\"%.2f\"/>",
 					stc_cpuall_irq->irq_name,
+					(stc_cpu_irq->irq_nr < stp_cpu_irq->irq_nr) ? 0.0 :
 					S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 			}
 			else {

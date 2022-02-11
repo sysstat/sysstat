@@ -376,6 +376,7 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 			/* Yes: Display it */
 			if (!c) {
 				printf(", \"all\": %.2f",
+				       (stc_cpu_irq->irq_nr < stp_cpu_irq->irq_nr) ? 0.0 :
 				       S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 			}
 			else {

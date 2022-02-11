@@ -521,6 +521,7 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq;
 	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	char cpu_name[32], ppc_txt[512];
+	double dval;
 
 	/* @nr[curr] cannot normally be greater than @nr_ini */
 	if (a->nr[curr] > a->nr_ini) {
@@ -554,12 +555,20 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 				/* No */
 				continue;
 
+			/* Compute value to be displayed */
+			dval = S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv);
+
 			/* Yes: Display it */
 			if (!c) {
 				strcpy(cpu_name, "all");
+
+				/* If number of int has decreased for CPU "all" then display 0.00 */
+				if (stc_cpu_irq->irq_nr < stp_cpu_irq->irq_nr) {
+					dval = 0.0;
+				}
 			}
 			else {
-				snprintf(cpu_name, sizeof(cpu_name), "CPU%d", c - 1);
+				snprintf(cpu_name, sizeof(cpu_name), "cpu%d", c - 1);
 				cpu_name[sizeof(cpu_name) - 1] = '\0';
 			}
 			snprintf(ppc_txt, sizeof(ppc_txt), "%s\t%s", stc_cpuall_irq->irq_name, cpu_name);
@@ -571,7 +580,7 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 				       isdb ? cons(sv, stc_cpuall_irq->irq_name, NULL)
 				            : cons(sv, ppc_txt, NULL),
 				       NOVAL,
-				       S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv),
+				       dval,
 				       NULL);
 				first = FALSE;
 			}
@@ -580,7 +589,7 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 				       "%s", NULL,
 				       cons(sv, ppc_txt, NULL),
 				       NOVAL,
-				       S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv),
+				       dval,
 				       NULL);
 			}
 		}
