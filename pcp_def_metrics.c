@@ -179,7 +179,12 @@ void pcp_def_cpu_metrics(struct activity *a)
 				pmiAddInstance(indom, buf, i - 1);
 			}
 
-			if (first) {
+			if (a->id == A_IRQ) {
+				/* Create per-CPU interrupts metrics */
+				pcp_def_percpu_int_metrics(a, i - 1);
+			}
+
+			else if (first) {
 				if (a->id == A_CPU) {
 					/* Create metrics for A_CPU */
 					pmiAddMetric("kernel.percpu.cpu.user",
@@ -253,10 +258,6 @@ void pcp_def_cpu_metrics(struct activity *a)
 						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 				}
 
-				else if (a->id == A_IRQ) {
-					/* Create per-CPU interrupts metrics */
-					pcp_def_percpu_int_metrics(a, i - 1);
-				}
 				first = FALSE;
 			}
 		}
