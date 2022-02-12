@@ -144,7 +144,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 			}
 
 			else if (a->id == A_NET_SOFT) {
-				/* Create metrics for a_NET_SOFT */
+				/* Create metrics for A_NET_SOFT */
 				pmiAddMetric("network.softnet.processed",
 					     pmiID(60, 57, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));

@@ -3230,7 +3230,7 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
-		 * sizeof(struct stats_pwr_cpufreq) value if data have been read from a file!
+		 * sizeof(struct stats_softnet) value if data have been read from a file!
 		 * That's why we don't use a syntax like:
 		 * ssnc = (struct stats_softnet *) a->buf[...] + i;
                  */

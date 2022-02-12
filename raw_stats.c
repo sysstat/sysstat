@@ -277,7 +277,7 @@ __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 		printf("%s; %s; %s;", timestr,
 		       pfield(a->hdr_line, FIRST), stc_cpuall_irq->irq_name);
 
-		/* In reaw mode, offline CPU (in datafile) are always displayed */
+		/* In raw mode, offline CPU (in datafile) are always displayed */
 		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
 
 			stc_cpu_irq = (struct stats_irq *) ((char *) a->buf[curr] + c * a->msize * a->nr2
