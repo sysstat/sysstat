@@ -341,8 +341,8 @@ void lnappend(unsigned long long timetag, double value, char **out, int *outsize
 	char data[128];
 
 	/* Prepare additional graph definition data */
-	snprintf(data, 128, " %c%llu,%.2f", restart ? 'M' : 'L', timetag, value);
-	data[127] = '\0';
+	snprintf(data, sizeof(data), " %c%llu,%.2f", restart ? 'M' : 'L', timetag, value);
+	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
@@ -374,8 +374,8 @@ void lniappend(unsigned long long timetag, unsigned long long value, char **out,
 	char data[128];
 
 	/* Prepare additional graph definition data */
-	snprintf(data, 128, " %c%llu,%llu", restart ? 'M' : 'L', timetag, value);
-	data[127] = '\0';
+	snprintf(data, sizeof(data), " %c%llu,%llu", restart ? 'M' : 'L', timetag, value);
+	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
@@ -416,9 +416,9 @@ void brappend(unsigned long long timetag, double offset, double value, char **ou
 		t = timetag -dt;
 	}
 
-	snprintf(data, 128, "<rect x=\"%llu\" y=\"%.2f\" height=\"%.2f\" width=\"%llu\"/>",
+	snprintf(data, sizeof(data), "<rect x=\"%llu\" y=\"%.2f\" height=\"%.2f\" width=\"%llu\"/>",
 		 t, MINIMUM(offset, 100.0), MINIMUM(value, (100.0 - offset)), dt);
-	data[127] = '\0';
+	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 
@@ -581,7 +581,7 @@ void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, int g_type, 
 			if (!*(spmax + pos + j) || (*(spmax + pos + j) == gmax))
 				continue;
 
-			snprintf(val, 32, "%u", (unsigned int) (gmax / *(spmax + pos + j)));
+			snprintf(val, sizeof(val), "%u", (unsigned int) (gmax / *(spmax + pos + j)));
 			if (strlen(val) > 0) {
 				asfactor[j] = pwr10(strlen(val) - 1);
 			}
@@ -742,8 +742,8 @@ double ygrid(double lmax, int *dp)
 		*dp = 2;
 		return (lmax / SVG_H_GRIDNR);
 	}
-	snprintf(val, 32, "%ld", n);
-	val[31] = '\0';
+	snprintf(val, sizeof(val), "%ld", n);
+	val[sizeof(val) - 1] = '\0';
 	l = strlen(val);
 	if (l < 2)
 		return n;
@@ -976,7 +976,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		for (j = 0; j < group[i]; j++) {
 			/* Set dp to TRUE (1) if current metric is based on integer values */
 			dp = (g_title[pos + j][0] == '~');
-			snprintf(val, 32, "x%u ", asfactor[j]);
+			snprintf(val, sizeof(val), "x%u ", asfactor[j]);
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none; font-size: 12px\">"
 			       "%s %s(%.*f, %.*f)</text>\n",
 			       xv + 5 + SVG_M_XSIZE + SVG_G_XSIZE, yv + SVG_M_YSIZE + j * 15,

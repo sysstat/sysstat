@@ -2695,7 +2695,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 			    /* bMaxPower is expressed in 2 mA units */
 			    (unsigned long long) (suc->bmaxpower << 1));
 
-		snprintf(fmt, 16, " %%-%ds", MAX_MANUF_LEN - 1);
+		snprintf(fmt, sizeof(fmt), " %%-%ds", MAX_MANUF_LEN - 1);
 		cprintf_s(IS_STR, fmt, suc->manufacturer);
 		cprintf_s(IS_STR, " %s\n", suc->product);
 

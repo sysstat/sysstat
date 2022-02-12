@@ -795,18 +795,18 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 			strcpy(cpu_name, "all");
 
 			if (DISPLAY_TOPOLOGY(flags)) {
-				snprintf(topology, 1024,
+				snprintf(topology, sizeof(topology),
 					 ", \"core\": \"\", \"socket\": \"\", \"node\": \"\"");
 			}
 
 		}
 		else {
-			snprintf(cpu_name, 16, "%d", i - 1);
-			cpu_name[15] = '\0';
+			snprintf(cpu_name, sizeof(cpu_name), "%d", i - 1);
+			cpu_name[sizeof(cpu_name) - 1] = '\0';
 
 			if (DISPLAY_TOPOLOGY(flags)) {
 				cpu_topo_i = st_cpu_topology + i - 1;
-				snprintf(topology, 1024,
+				snprintf(topology, sizeof(topology),
 					 ", \"core\": \"%d\", \"socket\": \"%d\", \"node\": \"%d\"",
 					 cpu_topo_i->logical_core_id, cpu_topo_i->phys_package_id, cpu2node[i - 1]);
 			}
@@ -1069,8 +1069,8 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 			strcpy(node_name, "all");
 		}
 		else {
-			snprintf(node_name, 16, "%d", node - 1);
-			node_name[15] = '\0';
+			snprintf(node_name, sizeof(node_name), "%d", node - 1);
+			node_name[sizeof(node_name) -1] = '\0';
 
 			/* Recalculate interval for current node */
 			deltot_jiffies = 0;
