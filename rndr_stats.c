@@ -577,8 +577,8 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 			if (first) {
 				render(isdb, pre, PT_NOFLAG,
 				       "%s", "%s",
-				       isdb ? cons(sv, stc_cpuall_irq->irq_name, NULL)
-				            : cons(sv, ppc_txt, NULL),
+				       isdb ? cons(sv, stc_cpuall_irq->irq_name, NOVAL)
+				            : cons(sv, ppc_txt, NOVAL),
 				       NOVAL,
 				       dval,
 				       NULL);
@@ -587,7 +587,7 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 			else {
 				render(isdb, pre, PT_NOFLAG,
 				       "%s", NULL,
-				       cons(sv, ppc_txt, NULL),
+				       cons(sv, ppc_txt, NOVAL),
 				       NOVAL,
 				       dval,
 				       NULL);
@@ -1157,56 +1157,56 @@ __print_funct_t render_disk_stats(struct activity *a, int isdb, char *pre,
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttps", "%s",
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sdp->nr_ios, sdc->nr_ios, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trkB/s", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\twkB/s", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\tdkB/s", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\tareq-sz", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       xds.arqsz / 2,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\taqu-sz", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\tawait", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       xds.await,
 		       NULL);
 
 		render(isdb, pre, pt_newlin,
 		       "%s\t%%util", NULL,
-		       cons(sv, dev_name, NULL),
+		       cons(sv, dev_name, NOVAL),
 		       NOVAL,
 		       xds.util / 10.0,
 		       NULL);
@@ -1258,14 +1258,14 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxpck/s", "%s",
-		       cons(sv, sndc->interface, NULL), /* What if the format args are strings? */
+		       cons(sv, sndc->interface, NOVAL), /* What if the format args are strings? */
 		       NOVAL,
 		       S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxpck/s", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(sndp->tx_packets, sndc->tx_packets, itv),
 		       NULL);
@@ -1273,7 +1273,7 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxkB/s", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       rxkb / 1024,
 		       NULL);
@@ -1281,28 +1281,28 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxkB/s", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       txkb / 1024,
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxcmp/s", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxcmp/s", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxmcst/s", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(sndp->multicast, sndc->multicast, itv),
 		       NULL);
@@ -1310,7 +1310,7 @@ __print_funct_t render_net_dev_stats(struct activity *a, int isdb, char *pre,
 		ifutil = compute_ifutil(sndc, rxkb, txkb);
 		render(isdb, pre, pt_newlin,
 		       "%s\t%%ifutil", NULL,
-		       cons(sv, sndc->interface, NULL),
+		       cons(sv, sndc->interface, NOVAL),
 		       NOVAL,
 		       ifutil,
 		       NULL);
@@ -1361,63 +1361,63 @@ __print_funct_t render_net_edev_stats(struct activity *a, int isdb, char *pre,
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxerr/s", "%s",
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->rx_errors, snedc->rx_errors, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxerr/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->tx_errors, snedc->tx_errors, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\tcoll/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->collisions, snedc->collisions, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxdrop/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->rx_dropped, snedc->rx_dropped, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxdrop/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->tx_dropped, snedc->tx_dropped, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\ttxcarr/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->tx_carrier_errors, snedc->tx_carrier_errors, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxfram/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->rx_frame_errors, snedc->rx_frame_errors, itv),
 		       NULL);
 
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\trxfifo/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->rx_fifo_errors, snedc->rx_fifo_errors, itv),
 		       NULL);
 
 		render(isdb, pre, pt_newlin,
 		       "%s\ttxfifo/s", NULL,
-		       cons(sv, snedc->interface, NULL),
+		       cons(sv, snedc->interface, NOVAL),
 		       NOVAL,
 		       S_VALUE(snedp->tx_fifo_errors, snedc->tx_fifo_errors, itv),
 		       NULL);
@@ -3103,19 +3103,19 @@ __print_funct_t render_fchost_stats(struct activity *a, int isdb, char *pre,
 	               NULL);
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\tfch_txf/s", NULL,
-		       cons(sv, sfcc->fchost_name, NULL),
+		       cons(sv, sfcc->fchost_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 		       NULL);
 		render(isdb, pre, PT_NOFLAG,
 		       "%s\tfch_rxw/s", NULL,
-		       cons(sv, sfcc->fchost_name, NULL),
+		       cons(sv, sfcc->fchost_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_rxwords, sfcc->f_rxwords, itv),
 		       NULL);
 		render(isdb, pre, pt_newlin,
 		       "%s\tfch_txw/s", NULL,
-		       cons(sv, sfcc->fchost_name, NULL),
+		       cons(sv, sfcc->fchost_name, NOVAL),
 		       NOVAL,
 		       S_VALUE(sfcp->f_txwords, sfcc->f_txwords, itv),
 		       NULL);
