@@ -792,7 +792,7 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 
 		if (i == 0) {
 			/* This is CPU "all" */
-			strcpy(cpu_name, "all");
+			strcpy(cpu_name, K_LOWERALL);
 
 			if (DISPLAY_TOPOLOGY(flags)) {
 				snprintf(topology, sizeof(topology),
@@ -1066,7 +1066,7 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 
 		if (node == 0) {
 			/* This is node "all", i.e. CPU "all" */
-			strcpy(node_name, "all");
+			strcpy(node_name, K_LOWERALL);
 		}
 		else {
 			snprintf(node_name, sizeof(node_name), "%d", node - 1);

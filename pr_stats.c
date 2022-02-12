@@ -104,7 +104,7 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 					/* Don't display current item if offline */
 					continue;
 				if (j == 0) {
-					printf(" %*s", vwidth, "all");
+					printf(" %*s", vwidth, K_LOWERALL);
 				}
 				else {
 					snprintf(dfld, sizeof(dfld), "%s%d%s", cfld, j - 1, cfld + k + 1);

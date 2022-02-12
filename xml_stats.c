@@ -168,7 +168,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 
 		if (i == 0) {
 			/* This is CPU "all" */
-			strcpy(cpuno, "all");
+			strcpy(cpuno, K_LOWERALL);
 
 			if (a->nr_ini == 1) {
 				/*
@@ -1804,7 +1804,7 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 		/* Yes: Display it */
 		if (!i) {
 			/* This is CPU "all" */
-			strcpy(cpuno, "all");
+			strcpy(cpuno, K_LOWERALL);
 		}
 		else {
 			sprintf(cpuno, "%d", i - 1);
@@ -2054,7 +2054,7 @@ __print_funct_t xml_print_pwr_wghfreq_stats(struct activity *a, int curr, int ta
 
 		if (!i) {
 			/* This is CPU "all" */
-			strcpy(cpuno, "all");
+			strcpy(cpuno, K_LOWERALL);
 		}
 		else {
 			sprintf(cpuno, "%d", i - 1);
@@ -2305,7 +2305,7 @@ __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 		/* Yes: Display it */
 		if (!i) {
 			/* This is CPU "all" */
-			strcpy(cpuno, "all");
+			strcpy(cpuno, K_LOWERALL);
 		}
 		else {
 			sprintf(cpuno, "%d", i - 1);

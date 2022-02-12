@@ -1345,7 +1345,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			pos = i * CPU_ARRAY_SZ;
 			if (!i) {
 				/* This is CPU "all" */
-				strcpy(item_name, "all");
+				strcpy(item_name, K_LOWERALL);
 			}
 			else {
 				sprintf(item_name, "%d", i - 1);
@@ -4316,7 +4316,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 
 			if (!i) {
 				/* This is CPU "all" */
-				strcpy(item_name, "all");
+				strcpy(item_name, K_LOWERALL);
 			}
 			else {
 				/*
@@ -5263,7 +5263,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 
 			if (!i) {
 				/* This is CPU "all" */
-				strcpy(item_name, "all");
+				strcpy(item_name, K_LOWERALL);
 			}
 			else {
 				sprintf(item_name, "%d", i - 1);

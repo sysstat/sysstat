@@ -119,7 +119,7 @@ static char *ioc_conv(int radix, int nozero, const char *syms,
 
 char *ioc_ito10(unsigned int n)
 {
-	return (ioc_conv(10, 0, "0123456789", n));
+	return (ioc_conv(10, 0, DIGITS, n));
 }
 
 char *ioc_ito26(unsigned int n)
