@@ -137,6 +137,12 @@ PMID: 60.0.14 (kernel.all.sysfork)
 PMID: 60.0.16 (kernel.all.blocked)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: none
+PMID: 60.4.0 (kernel.all.interrupts.total)
+    Data Type: 64-bit unsigned int  InDom: 60.4 0xf000004
+    Semantics: counter  Units: count
+PMID: 60.4.1 (kernel.percpu.interrupts)
+    Data Type: 32-bit unsigned int  InDom: 60.40 0xf000028
+    Semantics: counter  Units: count
 PMID: 60.0.20 (kernel.all.cpu.user)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
@@ -332,15 +338,15 @@ PMID: 60.0.57 (kernel.percpu.cpu.irq.hard)
 PMID: 60.58.65 (network.icmp6.outredirects)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.14.2 (network.ip.inreceives)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.74.2 (tty.serial.frame)
     Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
     Semantics: counter  Units: none
 PMID: 60.0.58 (kernel.percpu.cpu.steal)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
+PMID: 60.14.2 (network.ip.inreceives)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.57.10 (network.softnet.percpu.received_rps)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: count
@@ -365,15 +371,15 @@ PMID: 60.14.4 (network.ip.inaddrerrors)
 PMID: 60.58.68 (network.udp6.noports)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.14.5 (network.ip.forwdatagrams)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.74.5 (tty.serial.overrun)
     Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
     Semantics: counter  Units: none
 PMID: 60.0.61 (kernel.percpu.cpu.guest)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
+PMID: 60.14.5 (network.ip.forwdatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.58.69 (network.udp6.inerrors)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -539,6 +545,9 @@ PMID: 60.14.28 (network.icmp.inechoreps)
 PMID: 60.5.4 (filesys.maxfiles)
     Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
     Semantics: instant  Units: count
+PMID: 60.5.5 (filesys.usedfiles)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: count
 PMID: 60.3.13 (network.interface.collisions)
     Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
     Semantics: counter  Units: count
@@ -548,12 +557,12 @@ PMID: 60.1.21 (mem.util.swapFree)
 PMID: 60.14.29 (network.icmp.intimestamps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.5.5 (filesys.usedfiles)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: count
 PMID: 245.0.6 (system.restart.count)
     Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: discrete  Units: count
+PMID: 60.5.6 (filesys.freefiles)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: count
 PMID: 60.3.14 (network.interface.out.carrier)
     Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
     Semantics: counter  Units: count
@@ -563,9 +572,6 @@ PMID: 60.1.22 (mem.util.dirty)
 PMID: 60.14.30 (network.icmp.intimestampreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.5.6 (filesys.freefiles)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: count
 PMID: 245.0.7 (system.restart.ncpu)
     Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: discrete  Units: count
@@ -761,7 +767,7 @@ PMID: 60.58.7 (network.ip6.indiscards)
 
 Instance Domains in the Log ...
 InDom: 60.0
-14:20:19.000000 9 instances
+14:20:19.000000000 9 instances
    0 or "cpu0"
    1 or "cpu1"
    2 or "cpu2"
@@ -772,13 +778,19 @@ InDom: 60.0
    7 or "cpu7"
    8 or "cpu8"
 InDom: 34.3
-14:20:29.000000 4 instances
+14:20:29.000000000 4 instances
    0 or "usb0"
    1 or "usb1"
    2 or "usb2"
    3 or "usb3"
+InDom: 60.7
+14:20:19.000000000 4 instances
+   4 or "lookup"
+   6 or "read"
+   8 or "write"
+   18 or "access"
 InDom: 60.1
-14:20:19.000000 24 instances
+14:20:19.000000000 24 instances
    0 or "sda"
    1 or "sda1"
    2 or "sda2"
@@ -803,19 +815,17 @@ InDom: 60.1
    21 or "cciss/c0d0p2"
    22 or "xvdp"
    23 or "xvdiw"
-InDom: 60.7
-14:20:19.000000 4 instances
-   4 or "lookup"
-   6 or "read"
-   8 or "write"
-   18 or "access"
 InDom: 60.2
-14:20:19.000000 3 instances
+14:20:19.000000000 3 instances
    1 or "1 minute"
    5 or "5 minute"
    15 or "15 minute"
+InDom: 60.39
+14:20:19.000000000 2 instances
+   0 or "host0"
+   1 or "host1"
 InDom: 60.3
-14:20:19.000000 10 instances
+14:20:19.000000000 10 instances
    0 or "lo"
    1 or "virbr0-nic"
    2 or "enp6s0"
@@ -826,12 +836,451 @@ InDom: 60.3
    7 or "wlp5s1"
    8 or "enp6s2"
    9 or "wlp5s2"
-InDom: 60.39
-14:20:19.000000 2 instances
-   0 or "host0"
-   1 or "host1"
+InDom: 60.40
+14:20:19.000000000 396 instances
+   0 or "sum::cpu0"
+   1 or "0::cpu0"
+   2 or "8::cpu0"
+   3 or "9::cpu0"
+   4 or "16::cpu0"
+   5 or "17::cpu0"
+   6 or "18::cpu0"
+   7 or "19::cpu0"
+   8 or "23::cpu0"
+   9 or "24::cpu0"
+   10 or "25::cpu0"
+   11 or "26::cpu0"
+   12 or "27::cpu0"
+   13 or "28::cpu0"
+   14 or "29::cpu0"
+   15 or "30::cpu0"
+   16 or "31::cpu0"
+   17 or "32::cpu0"
+   18 or "33::cpu0"
+   19 or "34::cpu0"
+   20 or "35::cpu0"
+   21 or "36::cpu0"
+   22 or "NMI::cpu0"
+   23 or "LOC::cpu0"
+   24 or "SPU::cpu0"
+   25 or "PMI::cpu0"
+   26 or "IWI::cpu0"
+   27 or "RTR::cpu0"
+   28 or "RES::cpu0"
+   29 or "CAL::cpu0"
+   30 or "TLB::cpu0"
+   31 or "TRM::cpu0"
+   32 or "THR::cpu0"
+   33 or "DFR::cpu0"
+   34 or "MCE::cpu0"
+   35 or "MCP::cpu0"
+   36 or "HYP::cpu0"
+   37 or "HRE::cpu0"
+   38 or "HVS::cpu0"
+   39 or "ERR::cpu0"
+   40 or "MIS::cpu0"
+   41 or "PIN::cpu0"
+   42 or "NPI::cpu0"
+   43 or "PIW::cpu0"
+   44 or "sum::cpu1"
+   45 or "0::cpu1"
+   46 or "8::cpu1"
+   47 or "9::cpu1"
+   48 or "16::cpu1"
+   49 or "17::cpu1"
+   50 or "18::cpu1"
+   51 or "19::cpu1"
+   52 or "23::cpu1"
+   53 or "24::cpu1"
+   54 or "25::cpu1"
+   55 or "26::cpu1"
+   56 or "27::cpu1"
+   57 or "28::cpu1"
+   58 or "29::cpu1"
+   59 or "30::cpu1"
+   60 or "31::cpu1"
+   61 or "32::cpu1"
+   62 or "33::cpu1"
+   63 or "34::cpu1"
+   64 or "35::cpu1"
+   65 or "36::cpu1"
+   66 or "NMI::cpu1"
+   67 or "LOC::cpu1"
+   68 or "SPU::cpu1"
+   69 or "PMI::cpu1"
+   70 or "IWI::cpu1"
+   71 or "RTR::cpu1"
+   72 or "RES::cpu1"
+   73 or "CAL::cpu1"
+   74 or "TLB::cpu1"
+   75 or "TRM::cpu1"
+   76 or "THR::cpu1"
+   77 or "DFR::cpu1"
+   78 or "MCE::cpu1"
+   79 or "MCP::cpu1"
+   80 or "HYP::cpu1"
+   81 or "HRE::cpu1"
+   82 or "HVS::cpu1"
+   83 or "ERR::cpu1"
+   84 or "MIS::cpu1"
+   85 or "PIN::cpu1"
+   86 or "NPI::cpu1"
+   87 or "PIW::cpu1"
+   88 or "sum::cpu2"
+   89 or "0::cpu2"
+   90 or "8::cpu2"
+   91 or "9::cpu2"
+   92 or "16::cpu2"
+   93 or "17::cpu2"
+   94 or "18::cpu2"
+   95 or "19::cpu2"
+   96 or "23::cpu2"
+   97 or "24::cpu2"
+   98 or "25::cpu2"
+   99 or "26::cpu2"
+   100 or "27::cpu2"
+   101 or "28::cpu2"
+   102 or "29::cpu2"
+   103 or "30::cpu2"
+   104 or "31::cpu2"
+   105 or "32::cpu2"
+   106 or "33::cpu2"
+   107 or "34::cpu2"
+   108 or "35::cpu2"
+   109 or "36::cpu2"
+   110 or "NMI::cpu2"
+   111 or "LOC::cpu2"
+   112 or "SPU::cpu2"
+   113 or "PMI::cpu2"
+   114 or "IWI::cpu2"
+   115 or "RTR::cpu2"
+   116 or "RES::cpu2"
+   117 or "CAL::cpu2"
+   118 or "TLB::cpu2"
+   119 or "TRM::cpu2"
+   120 or "THR::cpu2"
+   121 or "DFR::cpu2"
+   122 or "MCE::cpu2"
+   123 or "MCP::cpu2"
+   124 or "HYP::cpu2"
+   125 or "HRE::cpu2"
+   126 or "HVS::cpu2"
+   127 or "ERR::cpu2"
+   128 or "MIS::cpu2"
+   129 or "PIN::cpu2"
+   130 or "NPI::cpu2"
+   131 or "PIW::cpu2"
+   132 or "sum::cpu3"
+   133 or "0::cpu3"
+   134 or "8::cpu3"
+   135 or "9::cpu3"
+   136 or "16::cpu3"
+   137 or "17::cpu3"
+   138 or "18::cpu3"
+   139 or "19::cpu3"
+   140 or "23::cpu3"
+   141 or "24::cpu3"
+   142 or "25::cpu3"
+   143 or "26::cpu3"
+   144 or "27::cpu3"
+   145 or "28::cpu3"
+   146 or "29::cpu3"
+   147 or "30::cpu3"
+   148 or "31::cpu3"
+   149 or "32::cpu3"
+   150 or "33::cpu3"
+   151 or "34::cpu3"
+   152 or "35::cpu3"
+   153 or "36::cpu3"
+   154 or "NMI::cpu3"
+   155 or "LOC::cpu3"
+   156 or "SPU::cpu3"
+   157 or "PMI::cpu3"
+   158 or "IWI::cpu3"
+   159 or "RTR::cpu3"
+   160 or "RES::cpu3"
+   161 or "CAL::cpu3"
+   162 or "TLB::cpu3"
+   163 or "TRM::cpu3"
+   164 or "THR::cpu3"
+   165 or "DFR::cpu3"
+   166 or "MCE::cpu3"
+   167 or "MCP::cpu3"
+   168 or "HYP::cpu3"
+   169 or "HRE::cpu3"
+   170 or "HVS::cpu3"
+   171 or "ERR::cpu3"
+   172 or "MIS::cpu3"
+   173 or "PIN::cpu3"
+   174 or "NPI::cpu3"
+   175 or "PIW::cpu3"
+   176 or "sum::cpu4"
+   177 or "0::cpu4"
+   178 or "8::cpu4"
+   179 or "9::cpu4"
+   180 or "16::cpu4"
+   181 or "17::cpu4"
+   182 or "18::cpu4"
+   183 or "19::cpu4"
+   184 or "23::cpu4"
+   185 or "24::cpu4"
+   186 or "25::cpu4"
+   187 or "26::cpu4"
+   188 or "27::cpu4"
+   189 or "28::cpu4"
+   190 or "29::cpu4"
+   191 or "30::cpu4"
+   192 or "31::cpu4"
+   193 or "32::cpu4"
+   194 or "33::cpu4"
+   195 or "34::cpu4"
+   196 or "35::cpu4"
+   197 or "36::cpu4"
+   198 or "NMI::cpu4"
+   199 or "LOC::cpu4"
+   200 or "SPU::cpu4"
+   201 or "PMI::cpu4"
+   202 or "IWI::cpu4"
+   203 or "RTR::cpu4"
+   204 or "RES::cpu4"
+   205 or "CAL::cpu4"
+   206 or "TLB::cpu4"
+   207 or "TRM::cpu4"
+   208 or "THR::cpu4"
+   209 or "DFR::cpu4"
+   210 or "MCE::cpu4"
+   211 or "MCP::cpu4"
+   212 or "HYP::cpu4"
+   213 or "HRE::cpu4"
+   214 or "HVS::cpu4"
+   215 or "ERR::cpu4"
+   216 or "MIS::cpu4"
+   217 or "PIN::cpu4"
+   218 or "NPI::cpu4"
+   219 or "PIW::cpu4"
+   220 or "sum::cpu5"
+   221 or "0::cpu5"
+   222 or "8::cpu5"
+   223 or "9::cpu5"
+   224 or "16::cpu5"
+   225 or "17::cpu5"
+   226 or "18::cpu5"
+   227 or "19::cpu5"
+   228 or "23::cpu5"
+   229 or "24::cpu5"
+   230 or "25::cpu5"
+   231 or "26::cpu5"
+   232 or "27::cpu5"
+   233 or "28::cpu5"
+   234 or "29::cpu5"
+   235 or "30::cpu5"
+   236 or "31::cpu5"
+   237 or "32::cpu5"
+   238 or "33::cpu5"
+   239 or "34::cpu5"
+   240 or "35::cpu5"
+   241 or "36::cpu5"
+   242 or "NMI::cpu5"
+   243 or "LOC::cpu5"
+   244 or "SPU::cpu5"
+   245 or "PMI::cpu5"
+   246 or "IWI::cpu5"
+   247 or "RTR::cpu5"
+   248 or "RES::cpu5"
+   249 or "CAL::cpu5"
+   250 or "TLB::cpu5"
+   251 or "TRM::cpu5"
+   252 or "THR::cpu5"
+   253 or "DFR::cpu5"
+   254 or "MCE::cpu5"
+   255 or "MCP::cpu5"
+   256 or "HYP::cpu5"
+   257 or "HRE::cpu5"
+   258 or "HVS::cpu5"
+   259 or "ERR::cpu5"
+   260 or "MIS::cpu5"
+   261 or "PIN::cpu5"
+   262 or "NPI::cpu5"
+   263 or "PIW::cpu5"
+   264 or "sum::cpu6"
+   265 or "0::cpu6"
+   266 or "8::cpu6"
+   267 or "9::cpu6"
+   268 or "16::cpu6"
+   269 or "17::cpu6"
+   270 or "18::cpu6"
+   271 or "19::cpu6"
+   272 or "23::cpu6"
+   273 or "24::cpu6"
+   274 or "25::cpu6"
+   275 or "26::cpu6"
+   276 or "27::cpu6"
+   277 or "28::cpu6"
+   278 or "29::cpu6"
+   279 or "30::cpu6"
+   280 or "31::cpu6"
+   281 or "32::cpu6"
+   282 or "33::cpu6"
+   283 or "34::cpu6"
+   284 or "35::cpu6"
+   285 or "36::cpu6"
+   286 or "NMI::cpu6"
+   287 or "LOC::cpu6"
+   288 or "SPU::cpu6"
+   289 or "PMI::cpu6"
+   290 or "IWI::cpu6"
+   291 or "RTR::cpu6"
+   292 or "RES::cpu6"
+   293 or "CAL::cpu6"
+   294 or "TLB::cpu6"
+   295 or "TRM::cpu6"
+   296 or "THR::cpu6"
+   297 or "DFR::cpu6"
+   298 or "MCE::cpu6"
+   299 or "MCP::cpu6"
+   300 or "HYP::cpu6"
+   301 or "HRE::cpu6"
+   302 or "HVS::cpu6"
+   303 or "ERR::cpu6"
+   304 or "MIS::cpu6"
+   305 or "PIN::cpu6"
+   306 or "NPI::cpu6"
+   307 or "PIW::cpu6"
+   308 or "sum::cpu7"
+   309 or "0::cpu7"
+   310 or "8::cpu7"
+   311 or "9::cpu7"
+   312 or "16::cpu7"
+   313 or "17::cpu7"
+   314 or "18::cpu7"
+   315 or "19::cpu7"
+   316 or "23::cpu7"
+   317 or "24::cpu7"
+   318 or "25::cpu7"
+   319 or "26::cpu7"
+   320 or "27::cpu7"
+   321 or "28::cpu7"
+   322 or "29::cpu7"
+   323 or "30::cpu7"
+   324 or "31::cpu7"
+   325 or "32::cpu7"
+   326 or "33::cpu7"
+   327 or "34::cpu7"
+   328 or "35::cpu7"
+   329 or "36::cpu7"
+   330 or "NMI::cpu7"
+   331 or "LOC::cpu7"
+   332 or "SPU::cpu7"
+   333 or "PMI::cpu7"
+   334 or "IWI::cpu7"
+   335 or "RTR::cpu7"
+   336 or "RES::cpu7"
+   337 or "CAL::cpu7"
+   338 or "TLB::cpu7"
+   339 or "TRM::cpu7"
+   340 or "THR::cpu7"
+   341 or "DFR::cpu7"
+   342 or "MCE::cpu7"
+   343 or "MCP::cpu7"
+   344 or "HYP::cpu7"
+   345 or "HRE::cpu7"
+   346 or "HVS::cpu7"
+   347 or "ERR::cpu7"
+   348 or "MIS::cpu7"
+   349 or "PIN::cpu7"
+   350 or "NPI::cpu7"
+   351 or "PIW::cpu7"
+   352 or "sum::cpu8"
+   353 or "0::cpu8"
+   354 or "8::cpu8"
+   355 or "9::cpu8"
+   356 or "16::cpu8"
+   357 or "17::cpu8"
+   358 or "18::cpu8"
+   359 or "19::cpu8"
+   360 or "23::cpu8"
+   361 or "24::cpu8"
+   362 or "25::cpu8"
+   363 or "26::cpu8"
+   364 or "27::cpu8"
+   365 or "28::cpu8"
+   366 or "29::cpu8"
+   367 or "30::cpu8"
+   368 or "31::cpu8"
+   369 or "32::cpu8"
+   370 or "33::cpu8"
+   371 or "34::cpu8"
+   372 or "35::cpu8"
+   373 or "36::cpu8"
+   374 or "NMI::cpu8"
+   375 or "LOC::cpu8"
+   376 or "SPU::cpu8"
+   377 or "PMI::cpu8"
+   378 or "IWI::cpu8"
+   379 or "RTR::cpu8"
+   380 or "RES::cpu8"
+   381 or "CAL::cpu8"
+   382 or "TLB::cpu8"
+   383 or "TRM::cpu8"
+   384 or "THR::cpu8"
+   385 or "DFR::cpu8"
+   386 or "MCE::cpu8"
+   387 or "MCP::cpu8"
+   388 or "HYP::cpu8"
+   389 or "HRE::cpu8"
+   390 or "HVS::cpu8"
+   391 or "ERR::cpu8"
+   392 or "MIS::cpu8"
+   393 or "PIN::cpu8"
+   394 or "NPI::cpu8"
+   395 or "PIW::cpu8"
+InDom: 60.4
+14:20:19.000000000 43 instances
+   0 or "0"
+   1 or "8"
+   2 or "9"
+   3 or "16"
+   4 or "17"
+   5 or "18"
+   6 or "19"
+   7 or "23"
+   8 or "24"
+   9 or "25"
+   10 or "26"
+   11 or "27"
+   12 or "28"
+   13 or "29"
+   14 or "30"
+   15 or "31"
+   16 or "32"
+   17 or "33"
+   18 or "34"
+   19 or "35"
+   20 or "36"
+   21 or "NMI"
+   22 or "LOC"
+   23 or "SPU"
+   24 or "PMI"
+   25 or "IWI"
+   26 or "RTR"
+   27 or "RES"
+   28 or "CAL"
+   29 or "TLB"
+   30 or "TRM"
+   31 or "THR"
+   32 or "DFR"
+   33 or "MCE"
+   34 or "MCP"
+   35 or "HYP"
+   36 or "HRE"
+   37 or "HVS"
+   38 or "ERR"
+   39 or "MIS"
+   40 or "PIN"
+   41 or "NPI"
+   42 or "PIW"
 InDom: 60.5
-14:20:19.000000 6 instances
+14:20:19.000000000 6 instances
    0 or "/dev/sda9"
    1 or "/dev/sda7"
    2 or "/dev/sda12"
@@ -839,21 +1288,21 @@ InDom: 60.5
    4 or "/dev/sdf"
    5 or "/dev/sdg"
 InDom: 60.35
-14:20:19.000000 2 instances
+14:20:19.000000000 2 instances
    0 or "serial0"
    1 or "serial1"
 
 Temporal Index
-		Log Vol    end(meta)     end(log)
-14:20:19.000000	      0          132          132
-14:20:19.000000	      0        16412          132
-14:20:29.000000	      0        16720        13620
-14:37:29.000000	      0        16839        55536
-14:39:09.000000	      0        16899        55596
-14:54:35.000000	      0        16899        70028
+			Log Vol    end(meta)     end(log)
+14:20:19.000000000	      0          132          132
+14:20:19.000000000	      0        24003          132
+14:20:29.000000000	      0        24311        17320
+14:37:29.000000000	      0        24430        70336
+14:39:09.000000000	      0        24490        70396
+14:54:35.000000000	      0        24490        88528
 
-[13488 bytes]
-14:20:19.000000 244 metrics
+[17188 bytes]
+14:20:19.000000 246 metrics
     60.0.32 (hinv.ncpu): value 9
     60.12.0 (kernel.uname.release): value "1.2.3-TEST"
     60.12.2 (kernel.uname.sysname): value "Linux"
@@ -953,7 +1402,404 @@ Temporal Index
         inst [7 or "cpu7"] value 583650
     60.0.13 (kernel.all.pswitch): value 132598184
     60.0.14 (kernel.all.sysfork): value 47083
-    60.0.12 (kernel.all.intr): value 96212396
+    60.0.12 (kernel.all.intr): value 96567796
+    60.4.1 (kernel.percpu.interrupts):
+        inst [0 or "sum::cpu0"] value 12722279
+        inst [1 or "0::cpu0"] value 8
+        inst [2 or "8::cpu0"] value 0
+        inst [3 or "9::cpu0"] value 0
+        inst [4 or "16::cpu0"] value 0
+        inst [5 or "17::cpu0"] value 0
+        inst [6 or "18::cpu0"] value 0
+        inst [7 or "19::cpu0"] value 0
+        inst [8 or "23::cpu0"] value 0
+        inst [9 or "24::cpu0"] value 0
+        inst [10 or "25::cpu0"] value 0
+        inst [11 or "26::cpu0"] value 0
+        inst [12 or "27::cpu0"] value 0
+        inst [13 or "28::cpu0"] value 0
+        inst [14 or "29::cpu0"] value 0
+        inst [15 or "30::cpu0"] value 0
+        inst [16 or "31::cpu0"] value 0
+        inst [17 or "32::cpu0"] value 0
+        inst [18 or "33::cpu0"] value 0
+        inst [19 or "34::cpu0"] value 0
+        inst [20 or "35::cpu0"] value 15
+        inst [21 or "36::cpu0"] value 0
+        inst [22 or "NMI::cpu0"] value 376
+        inst [23 or "LOC::cpu0"] value 11228073
+        inst [24 or "SPU::cpu0"] value 0
+        inst [25 or "PMI::cpu0"] value 376
+        inst [26 or "IWI::cpu0"] value 0
+        inst [27 or "RTR::cpu0"] value 0
+        inst [28 or "RES::cpu0"] value 1421353
+        inst [29 or "CAL::cpu0"] value 34172
+        inst [30 or "TLB::cpu0"] value 37883
+        inst [31 or "TRM::cpu0"] value 0
+        inst [32 or "THR::cpu0"] value 0
+        inst [33 or "DFR::cpu0"] value 0
+        inst [34 or "MCE::cpu0"] value 0
+        inst [35 or "MCP::cpu0"] value 23
+        inst [36 or "HYP::cpu0"] value 0
+        inst [37 or "HRE::cpu0"] value 0
+        inst [38 or "HVS::cpu0"] value 0
+        inst [39 or "ERR::cpu0"] value 0
+        inst [40 or "MIS::cpu0"] value 0
+        inst [41 or "PIN::cpu0"] value 0
+        inst [42 or "NPI::cpu0"] value 0
+        inst [43 or "PIW::cpu0"] value 0
+        inst [44 or "sum::cpu1"] value 13183251
+        inst [45 or "0::cpu1"] value 0
+        inst [46 or "8::cpu1"] value 0
+        inst [47 or "9::cpu1"] value 0
+        inst [48 or "16::cpu1"] value 0
+        inst [49 or "17::cpu1"] value 0
+        inst [50 or "18::cpu1"] value 0
+        inst [51 or "19::cpu1"] value 0
+        inst [52 or "23::cpu1"] value 0
+        inst [53 or "24::cpu1"] value 0
+        inst [54 or "25::cpu1"] value 0
+        inst [55 or "26::cpu1"] value 0
+        inst [56 or "27::cpu1"] value 0
+        inst [57 or "28::cpu1"] value 0
+        inst [58 or "29::cpu1"] value 0
+        inst [59 or "30::cpu1"] value 0
+        inst [60 or "31::cpu1"] value 0
+        inst [61 or "32::cpu1"] value 0
+        inst [62 or "33::cpu1"] value 0
+        inst [63 or "34::cpu1"] value 0
+        inst [64 or "35::cpu1"] value 0
+        inst [65 or "36::cpu1"] value 15162
+        inst [66 or "NMI::cpu1"] value 405
+        inst [67 or "LOC::cpu1"] value 12522126
+        inst [68 or "SPU::cpu1"] value 0
+        inst [69 or "PMI::cpu1"] value 405
+        inst [70 or "IWI::cpu1"] value 0
+        inst [71 or "RTR::cpu1"] value 0
+        inst [72 or "RES::cpu1"] value 557675
+        inst [73 or "CAL::cpu1"] value 38906
+        inst [74 or "TLB::cpu1"] value 48548
+        inst [75 or "TRM::cpu1"] value 0
+        inst [76 or "THR::cpu1"] value 0
+        inst [77 or "DFR::cpu1"] value 0
+        inst [78 or "MCE::cpu1"] value 0
+        inst [79 or "MCP::cpu1"] value 24
+        inst [80 or "HYP::cpu1"] value 0
+        inst [81 or "HRE::cpu1"] value 0
+        inst [82 or "HVS::cpu1"] value 0
+        inst [83 or "ERR::cpu1"] value 0
+        inst [84 or "MIS::cpu1"] value 0
+        inst [85 or "PIN::cpu1"] value 0
+        inst [86 or "NPI::cpu1"] value 0
+        inst [87 or "PIW::cpu1"] value 0
+        inst [88 or "sum::cpu2"] value 8621864
+        inst [89 or "0::cpu2"] value 0
+        inst [90 or "8::cpu2"] value 0
+        inst [91 or "9::cpu2"] value 0
+        inst [92 or "16::cpu2"] value 0
+        inst [93 or "17::cpu2"] value 807
+        inst [94 or "18::cpu2"] value 0
+        inst [95 or "19::cpu2"] value 0
+        inst [96 or "23::cpu2"] value 0
+        inst [97 or "24::cpu2"] value 221274
+        inst [98 or "25::cpu2"] value 0
+        inst [99 or "26::cpu2"] value 0
+        inst [100 or "27::cpu2"] value 0
+        inst [101 or "28::cpu2"] value 0
+        inst [102 or "29::cpu2"] value 0
+        inst [103 or "30::cpu2"] value 0
+        inst [104 or "31::cpu2"] value 0
+        inst [105 or "32::cpu2"] value 0
+        inst [106 or "33::cpu2"] value 0
+        inst [107 or "34::cpu2"] value 0
+        inst [108 or "35::cpu2"] value 0
+        inst [109 or "36::cpu2"] value 0
+        inst [110 or "NMI::cpu2"] value 600
+        inst [111 or "LOC::cpu2"] value 8243161
+        inst [112 or "SPU::cpu2"] value 0
+        inst [113 or "PMI::cpu2"] value 600
+        inst [114 or "IWI::cpu2"] value 6
+        inst [115 or "RTR::cpu2"] value 0
+        inst [116 or "RES::cpu2"] value 104876
+        inst [117 or "CAL::cpu2"] value 27725
+        inst [118 or "TLB::cpu2"] value 22791
+        inst [119 or "TRM::cpu2"] value 0
+        inst [120 or "THR::cpu2"] value 0
+        inst [121 or "DFR::cpu2"] value 0
+        inst [122 or "MCE::cpu2"] value 0
+        inst [123 or "MCP::cpu2"] value 24
+        inst [124 or "HYP::cpu2"] value 0
+        inst [125 or "HRE::cpu2"] value 0
+        inst [126 or "HVS::cpu2"] value 0
+        inst [127 or "ERR::cpu2"] value 0
+        inst [128 or "MIS::cpu2"] value 0
+        inst [129 or "PIN::cpu2"] value 0
+        inst [130 or "NPI::cpu2"] value 0
+        inst [131 or "PIW::cpu2"] value 0
+        inst [132 or "sum::cpu3"] value 9458809
+        inst [133 or "0::cpu3"] value 0
+        inst [134 or "8::cpu3"] value 0
+        inst [135 or "9::cpu3"] value 0
+        inst [136 or "16::cpu3"] value 10536
+        inst [137 or "17::cpu3"] value 0
+        inst [138 or "18::cpu3"] value 0
+        inst [139 or "19::cpu3"] value 0
+        inst [140 or "23::cpu3"] value 0
+        inst [141 or "24::cpu3"] value 0
+        inst [142 or "25::cpu3"] value 0
+        inst [143 or "26::cpu3"] value 0
+        inst [144 or "27::cpu3"] value 0
+        inst [145 or "28::cpu3"] value 0
+        inst [146 or "29::cpu3"] value 0
+        inst [147 or "30::cpu3"] value 0
+        inst [148 or "31::cpu3"] value 0
+        inst [149 or "32::cpu3"] value 0
+        inst [150 or "33::cpu3"] value 53913
+        inst [151 or "34::cpu3"] value 0
+        inst [152 or "35::cpu3"] value 0
+        inst [153 or "36::cpu3"] value 0
+        inst [154 or "NMI::cpu3"] value 595
+        inst [155 or "LOC::cpu3"] value 9181047
+        inst [156 or "SPU::cpu3"] value 0
+        inst [157 or "PMI::cpu3"] value 595
+        inst [158 or "IWI::cpu3"] value 1
+        inst [159 or "RTR::cpu3"] value 0
+        inst [160 or "RES::cpu3"] value 149065
+        inst [161 or "CAL::cpu3"] value 30252
+        inst [162 or "TLB::cpu3"] value 32781
+        inst [163 or "TRM::cpu3"] value 0
+        inst [164 or "THR::cpu3"] value 0
+        inst [165 or "DFR::cpu3"] value 0
+        inst [166 or "MCE::cpu3"] value 0
+        inst [167 or "MCP::cpu3"] value 24
+        inst [168 or "HYP::cpu3"] value 0
+        inst [169 or "HRE::cpu3"] value 0
+        inst [170 or "HVS::cpu3"] value 0
+        inst [171 or "ERR::cpu3"] value 0
+        inst [172 or "MIS::cpu3"] value 0
+        inst [173 or "PIN::cpu3"] value 0
+        inst [174 or "NPI::cpu3"] value 0
+        inst [175 or "PIW::cpu3"] value 0
+        inst [176 or "sum::cpu4"] value 13993792
+        inst [177 or "0::cpu4"] value 0
+        inst [178 or "8::cpu4"] value 0
+        inst [179 or "9::cpu4"] value 0
+        inst [180 or "16::cpu4"] value 0
+        inst [181 or "17::cpu4"] value 0
+        inst [182 or "18::cpu4"] value 0
+        inst [183 or "19::cpu4"] value 181209
+        inst [184 or "23::cpu4"] value 147202
+        inst [185 or "24::cpu4"] value 0
+        inst [186 or "25::cpu4"] value 0
+        inst [187 or "26::cpu4"] value 0
+        inst [188 or "27::cpu4"] value 0
+        inst [189 or "28::cpu4"] value 0
+        inst [190 or "29::cpu4"] value 0
+        inst [191 or "30::cpu4"] value 0
+        inst [192 or "31::cpu4"] value 0
+        inst [193 or "32::cpu4"] value 0
+        inst [194 or "33::cpu4"] value 0
+        inst [195 or "34::cpu4"] value 0
+        inst [196 or "35::cpu4"] value 0
+        inst [197 or "36::cpu4"] value 0
+        inst [198 or "NMI::cpu4"] value 338
+        inst [199 or "LOC::cpu4"] value 13047185
+        inst [200 or "SPU::cpu4"] value 0
+        inst [201 or "PMI::cpu4"] value 338
+        inst [202 or "IWI::cpu4"] value 0
+        inst [203 or "RTR::cpu4"] value 0
+        inst [204 or "RES::cpu4"] value 547438
+        inst [205 or "CAL::cpu4"] value 27589
+        inst [206 or "TLB::cpu4"] value 42469
+        inst [207 or "TRM::cpu4"] value 0
+        inst [208 or "THR::cpu4"] value 0
+        inst [209 or "DFR::cpu4"] value 0
+        inst [210 or "MCE::cpu4"] value 0
+        inst [211 or "MCP::cpu4"] value 24
+        inst [212 or "HYP::cpu4"] value 0
+        inst [213 or "HRE::cpu4"] value 0
+        inst [214 or "HVS::cpu4"] value 0
+        inst [215 or "ERR::cpu4"] value 0
+        inst [216 or "MIS::cpu4"] value 0
+        inst [217 or "PIN::cpu4"] value 0
+        inst [218 or "NPI::cpu4"] value 0
+        inst [219 or "PIW::cpu4"] value 0
+        inst [220 or "sum::cpu5"] value 11282113
+        inst [221 or "0::cpu5"] value 0
+        inst [222 or "8::cpu5"] value 1
+        inst [223 or "9::cpu5"] value 0
+        inst [224 or "16::cpu5"] value 0
+        inst [225 or "17::cpu5"] value 0
+        inst [226 or "18::cpu5"] value 0
+        inst [227 or "19::cpu5"] value 0
+        inst [228 or "23::cpu5"] value 0
+        inst [229 or "24::cpu5"] value 0
+        inst [230 or "25::cpu5"] value 0
+        inst [231 or "26::cpu5"] value 0
+        inst [232 or "27::cpu5"] value 0
+        inst [233 or "28::cpu5"] value 0
+        inst [234 or "29::cpu5"] value 0
+        inst [235 or "30::cpu5"] value 0
+        inst [236 or "31::cpu5"] value 0
+        inst [237 or "32::cpu5"] value 0
+        inst [238 or "33::cpu5"] value 0
+        inst [239 or "34::cpu5"] value 0
+        inst [240 or "35::cpu5"] value 0
+        inst [241 or "36::cpu5"] value 0
+        inst [242 or "NMI::cpu5"] value 345
+        inst [243 or "LOC::cpu5"] value 11124166
+        inst [244 or "SPU::cpu5"] value 0
+        inst [245 or "PMI::cpu5"] value 345
+        inst [246 or "IWI::cpu5"] value 0
+        inst [247 or "RTR::cpu5"] value 0
+        inst [248 or "RES::cpu5"] value 85576
+        inst [249 or "CAL::cpu5"] value 31994
+        inst [250 or "TLB::cpu5"] value 39662
+        inst [251 or "TRM::cpu5"] value 0
+        inst [252 or "THR::cpu5"] value 0
+        inst [253 or "DFR::cpu5"] value 0
+        inst [254 or "MCE::cpu5"] value 0
+        inst [255 or "MCP::cpu5"] value 24
+        inst [256 or "HYP::cpu5"] value 0
+        inst [257 or "HRE::cpu5"] value 0
+        inst [258 or "HVS::cpu5"] value 0
+        inst [259 or "ERR::cpu5"] value 0
+        inst [260 or "MIS::cpu5"] value 0
+        inst [261 or "PIN::cpu5"] value 0
+        inst [262 or "NPI::cpu5"] value 0
+        inst [263 or "PIW::cpu5"] value 0
+        inst [264 or "sum::cpu6"] value 14653430
+        inst [265 or "0::cpu6"] value 0
+        inst [266 or "8::cpu6"] value 0
+        inst [267 or "9::cpu6"] value 0
+        inst [268 or "16::cpu6"] value 0
+        inst [269 or "17::cpu6"] value 0
+        inst [270 or "18::cpu6"] value 0
+        inst [271 or "19::cpu6"] value 0
+        inst [272 or "23::cpu6"] value 0
+        inst [273 or "24::cpu6"] value 0
+        inst [274 or "25::cpu6"] value 0
+        inst [275 or "26::cpu6"] value 0
+        inst [276 or "27::cpu6"] value 0
+        inst [277 or "28::cpu6"] value 0
+        inst [278 or "29::cpu6"] value 0
+        inst [279 or "30::cpu6"] value 0
+        inst [280 or "31::cpu6"] value 0
+        inst [281 or "32::cpu6"] value 0
+        inst [282 or "33::cpu6"] value 0
+        inst [283 or "34::cpu6"] value 760815
+        inst [284 or "35::cpu6"] value 0
+        inst [285 or "36::cpu6"] value 0
+        inst [286 or "NMI::cpu6"] value 101
+        inst [287 or "LOC::cpu6"] value 13685641
+        inst [288 or "SPU::cpu6"] value 0
+        inst [289 or "PMI::cpu6"] value 101
+        inst [290 or "IWI::cpu6"] value 0
+        inst [291 or "RTR::cpu6"] value 0
+        inst [292 or "RES::cpu6"] value 92730
+        inst [293 or "CAL::cpu6"] value 42414
+        inst [294 or "TLB::cpu6"] value 71604
+        inst [295 or "TRM::cpu6"] value 0
+        inst [296 or "THR::cpu6"] value 0
+        inst [297 or "DFR::cpu6"] value 0
+        inst [298 or "MCE::cpu6"] value 0
+        inst [299 or "MCP::cpu6"] value 24
+        inst [300 or "HYP::cpu6"] value 0
+        inst [301 or "HRE::cpu6"] value 0
+        inst [302 or "HVS::cpu6"] value 0
+        inst [303 or "ERR::cpu6"] value 0
+        inst [304 or "MIS::cpu6"] value 0
+        inst [305 or "PIN::cpu6"] value 0
+        inst [306 or "NPI::cpu6"] value 0
+        inst [307 or "PIW::cpu6"] value 0
+        inst [308 or "sum::cpu7"] value 12652258
+        inst [309 or "0::cpu7"] value 0
+        inst [310 or "8::cpu7"] value 0
+        inst [311 or "9::cpu7"] value 0
+        inst [312 or "16::cpu7"] value 0
+        inst [313 or "17::cpu7"] value 0
+        inst [314 or "18::cpu7"] value 0
+        inst [315 or "19::cpu7"] value 0
+        inst [316 or "23::cpu7"] value 0
+        inst [317 or "24::cpu7"] value 0
+        inst [318 or "25::cpu7"] value 0
+        inst [319 or "26::cpu7"] value 0
+        inst [320 or "27::cpu7"] value 0
+        inst [321 or "28::cpu7"] value 0
+        inst [322 or "29::cpu7"] value 0
+        inst [323 or "30::cpu7"] value 0
+        inst [324 or "31::cpu7"] value 0
+        inst [325 or "32::cpu7"] value 0
+        inst [326 or "33::cpu7"] value 0
+        inst [327 or "34::cpu7"] value 0
+        inst [328 or "35::cpu7"] value 0
+        inst [329 or "36::cpu7"] value 0
+        inst [330 or "NMI::cpu7"] value 137
+        inst [331 or "LOC::cpu7"] value 12504738
+        inst [332 or "SPU::cpu7"] value 0
+        inst [333 or "PMI::cpu7"] value 137
+        inst [334 or "IWI::cpu7"] value 0
+        inst [335 or "RTR::cpu7"] value 0
+        inst [336 or "RES::cpu7"] value 49987
+        inst [337 or "CAL::cpu7"] value 37588
+        inst [338 or "TLB::cpu7"] value 59647
+        inst [339 or "TRM::cpu7"] value 0
+        inst [340 or "THR::cpu7"] value 0
+        inst [341 or "DFR::cpu7"] value 0
+        inst [342 or "MCE::cpu7"] value 0
+        inst [343 or "MCP::cpu7"] value 24
+        inst [344 or "HYP::cpu7"] value 0
+        inst [345 or "HRE::cpu7"] value 0
+        inst [346 or "HVS::cpu7"] value 0
+        inst [347 or "ERR::cpu7"] value 0
+        inst [348 or "MIS::cpu7"] value 0
+        inst [349 or "PIN::cpu7"] value 0
+        inst [350 or "NPI::cpu7"] value 0
+        inst [351 or "PIW::cpu7"] value 0
+    60.4.0 (kernel.all.interrupts.total):
+        inst [0 or "0"] value 8
+        inst [1 or "8"] value 1
+        inst [2 or "9"] value 0
+        inst [3 or "16"] value 10536
+        inst [4 or "17"] value 807
+        inst [5 or "18"] value 0
+        inst [6 or "19"] value 181209
+        inst [7 or "23"] value 147202
+        inst [8 or "24"] value 221274
+        inst [9 or "25"] value 0
+        inst [10 or "26"] value 0
+        inst [11 or "27"] value 0
+        inst [12 or "28"] value 0
+        inst [13 or "29"] value 0
+        inst [14 or "30"] value 0
+        inst [15 or "31"] value 0
+        inst [16 or "32"] value 0
+        inst [17 or "33"] value 53913
+        inst [18 or "34"] value 760815
+        inst [19 or "35"] value 15
+        inst [20 or "36"] value 15162
+        inst [21 or "NMI"] value 2897
+        inst [22 or "LOC"] value 91536137
+        inst [23 or "SPU"] value 0
+        inst [24 or "PMI"] value 2897
+        inst [25 or "IWI"] value 7
+        inst [26 or "RTR"] value 0
+        inst [27 or "RES"] value 3008700
+        inst [28 or "CAL"] value 270640
+        inst [29 or "TLB"] value 355385
+        inst [30 or "TRM"] value 0
+        inst [31 or "THR"] value 0
+        inst [32 or "DFR"] value 0
+        inst [33 or "MCE"] value 0
+        inst [34 or "MCP"] value 191
+        inst [35 or "HYP"] value 0
+        inst [36 or "HRE"] value 0
+        inst [37 or "HVS"] value 0
+        inst [38 or "ERR"] value 0
+        inst [39 or "MIS"] value 0
+        inst [40 or "PIN"] value 0
+        inst [41 or "NPI"] value 0
+        inst [42 or "PIW"] value 0
     60.0.8 (swap.pagesin): value 0
     60.0.9 (swap.pagesout): value 0
     60.28.6 (mem.vmstat.pgpgin): value 2685938
@@ -1530,8 +2376,8 @@ Temporal Index
         inst [2 or "/dev/sda12"] value 705738
         inst [3 or "/dev/sda6"] value 235598
 
-[13500 bytes]
-14:20:29.000000 243 metrics
+[16848 bytes]
+14:20:29.000000 245 metrics
     60.0.20 (kernel.all.cpu.user): value 96963
     60.0.21 (kernel.all.cpu.nice): value 2581802
     60.0.22 (kernel.all.cpu.sys): value 54588
@@ -1615,7 +2461,360 @@ Temporal Index
         inst [7 or "cpu7"] value 586713
     60.0.13 (kernel.all.pswitch): value 134044213
     60.0.14 (kernel.all.sysfork): value 47234
-    60.0.12 (kernel.all.intr): value 96974734
+    60.0.12 (kernel.all.intr): value 82461054
+    60.4.1 (kernel.percpu.interrupts):
+        inst [0 or "sum::cpu0"] value 12819701
+        inst [1 or "0::cpu0"] value 8
+        inst [2 or "8::cpu0"] value 0
+        inst [3 or "9::cpu0"] value 0
+        inst [4 or "16::cpu0"] value 0
+        inst [5 or "17::cpu0"] value 0
+        inst [6 or "18::cpu0"] value 0
+        inst [7 or "19::cpu0"] value 0
+        inst [8 or "23::cpu0"] value 0
+        inst [9 or "24::cpu0"] value 0
+        inst [10 or "25::cpu0"] value 0
+        inst [11 or "26::cpu0"] value 0
+        inst [12 or "27::cpu0"] value 0
+        inst [13 or "28::cpu0"] value 0
+        inst [14 or "29::cpu0"] value 0
+        inst [15 or "30::cpu0"] value 0
+        inst [16 or "31::cpu0"] value 0
+        inst [17 or "32::cpu0"] value 0
+        inst [18 or "33::cpu0"] value 0
+        inst [19 or "34::cpu0"] value 0
+        inst [20 or "35::cpu0"] value 15
+        inst [21 or "36::cpu0"] value 0
+        inst [22 or "NMI::cpu0"] value 376
+        inst [23 or "LOC::cpu0"] value 11320772
+        inst [24 or "SPU::cpu0"] value 0
+        inst [25 or "PMI::cpu0"] value 376
+        inst [26 or "IWI::cpu0"] value 0
+        inst [27 or "RTR::cpu0"] value 0
+        inst [28 or "RES::cpu0"] value 1425418
+        inst [29 or "CAL::cpu0"] value 34339
+        inst [30 or "TLB::cpu0"] value 38374
+        inst [31 or "TRM::cpu0"] value 0
+        inst [32 or "THR::cpu0"] value 0
+        inst [33 or "DFR::cpu0"] value 0
+        inst [34 or "MCE::cpu0"] value 0
+        inst [35 or "MCP::cpu0"] value 23
+        inst [36 or "HYP::cpu0"] value 0
+        inst [37 or "HRE::cpu0"] value 0
+        inst [38 or "HVS::cpu0"] value 0
+        inst [39 or "ERR::cpu0"] value 0
+        inst [40 or "MIS::cpu0"] value 0
+        inst [41 or "PIN::cpu0"] value 0
+        inst [42 or "NPI::cpu0"] value 0
+        inst [43 or "PIW::cpu0"] value 0
+        inst [44 or "sum::cpu1"] value 13215053
+        inst [45 or "0::cpu1"] value 0
+        inst [46 or "8::cpu1"] value 0
+        inst [47 or "9::cpu1"] value 0
+        inst [48 or "16::cpu1"] value 0
+        inst [49 or "17::cpu1"] value 0
+        inst [50 or "18::cpu1"] value 0
+        inst [51 or "19::cpu1"] value 0
+        inst [52 or "23::cpu1"] value 0
+        inst [53 or "24::cpu1"] value 0
+        inst [54 or "25::cpu1"] value 0
+        inst [55 or "26::cpu1"] value 0
+        inst [56 or "27::cpu1"] value 0
+        inst [57 or "28::cpu1"] value 0
+        inst [58 or "29::cpu1"] value 0
+        inst [59 or "30::cpu1"] value 0
+        inst [60 or "31::cpu1"] value 0
+        inst [61 or "32::cpu1"] value 0
+        inst [62 or "33::cpu1"] value 0
+        inst [63 or "34::cpu1"] value 0
+        inst [64 or "35::cpu1"] value 0
+        inst [65 or "36::cpu1"] value 15162
+        inst [66 or "NMI::cpu1"] value 405
+        inst [67 or "LOC::cpu1"] value 12552359
+        inst [68 or "SPU::cpu1"] value 0
+        inst [69 or "PMI::cpu1"] value 405
+        inst [70 or "IWI::cpu1"] value 0
+        inst [71 or "RTR::cpu1"] value 0
+        inst [72 or "RES::cpu1"] value 558267
+        inst [73 or "CAL::cpu1"] value 39061
+        inst [74 or "TLB::cpu1"] value 49370
+        inst [75 or "TRM::cpu1"] value 0
+        inst [76 or "THR::cpu1"] value 0
+        inst [77 or "DFR::cpu1"] value 0
+        inst [78 or "MCE::cpu1"] value 0
+        inst [79 or "MCP::cpu1"] value 24
+        inst [80 or "HYP::cpu1"] value 0
+        inst [81 or "HRE::cpu1"] value 0
+        inst [82 or "HVS::cpu1"] value 0
+        inst [83 or "ERR::cpu1"] value 0
+        inst [84 or "MIS::cpu1"] value 0
+        inst [85 or "PIN::cpu1"] value 0
+        inst [86 or "NPI::cpu1"] value 0
+        inst [87 or "PIW::cpu1"] value 0
+        inst [88 or "sum::cpu2"] value 8729474
+        inst [89 or "0::cpu2"] value 0
+        inst [90 or "8::cpu2"] value 0
+        inst [91 or "9::cpu2"] value 0
+        inst [92 or "16::cpu2"] value 0
+        inst [93 or "17::cpu2"] value 807
+        inst [94 or "18::cpu2"] value 0
+        inst [95 or "19::cpu2"] value 0
+        inst [96 or "23::cpu2"] value 0
+        inst [97 or "24::cpu2"] value 221678
+        inst [98 or "25::cpu2"] value 0
+        inst [99 or "26::cpu2"] value 0
+        inst [100 or "27::cpu2"] value 0
+        inst [101 or "28::cpu2"] value 0
+        inst [102 or "29::cpu2"] value 0
+        inst [103 or "30::cpu2"] value 0
+        inst [104 or "31::cpu2"] value 0
+        inst [105 or "32::cpu2"] value 0
+        inst [106 or "33::cpu2"] value 0
+        inst [107 or "34::cpu2"] value 0
+        inst [108 or "35::cpu2"] value 0
+        inst [109 or "36::cpu2"] value 0
+        inst [110 or "NMI::cpu2"] value 601
+        inst [111 or "LOC::cpu2"] value 8349305
+        inst [112 or "SPU::cpu2"] value 0
+        inst [113 or "PMI::cpu2"] value 601
+        inst [114 or "IWI::cpu2"] value 6
+        inst [115 or "RTR::cpu2"] value 0
+        inst [116 or "RES::cpu2"] value 105114
+        inst [117 or "CAL::cpu2"] value 27910
+        inst [118 or "TLB::cpu2"] value 23428
+        inst [119 or "TRM::cpu2"] value 0
+        inst [120 or "THR::cpu2"] value 0
+        inst [121 or "DFR::cpu2"] value 0
+        inst [122 or "MCE::cpu2"] value 0
+        inst [123 or "MCP::cpu2"] value 24
+        inst [124 or "HYP::cpu2"] value 0
+        inst [125 or "HRE::cpu2"] value 0
+        inst [126 or "HVS::cpu2"] value 0
+        inst [127 or "ERR::cpu2"] value 0
+        inst [128 or "MIS::cpu2"] value 0
+        inst [129 or "PIN::cpu2"] value 0
+        inst [130 or "NPI::cpu2"] value 0
+        inst [131 or "PIW::cpu2"] value 0
+        inst [132 or "sum::cpu3"] value 9490721
+        inst [133 or "0::cpu3"] value 0
+        inst [134 or "8::cpu3"] value 0
+        inst [135 or "9::cpu3"] value 0
+        inst [136 or "16::cpu3"] value 10536
+        inst [137 or "17::cpu3"] value 0
+        inst [138 or "18::cpu3"] value 0
+        inst [139 or "19::cpu3"] value 0
+        inst [140 or "23::cpu3"] value 0
+        inst [141 or "24::cpu3"] value 0
+        inst [142 or "25::cpu3"] value 0
+        inst [143 or "26::cpu3"] value 0
+        inst [144 or "27::cpu3"] value 0
+        inst [145 or "28::cpu3"] value 0
+        inst [146 or "29::cpu3"] value 0
+        inst [147 or "30::cpu3"] value 0
+        inst [148 or "31::cpu3"] value 0
+        inst [149 or "32::cpu3"] value 0
+        inst [150 or "33::cpu3"] value 54232
+        inst [151 or "34::cpu3"] value 0
+        inst [152 or "35::cpu3"] value 0
+        inst [153 or "36::cpu3"] value 0
+        inst [154 or "NMI::cpu3"] value 598
+        inst [155 or "LOC::cpu3"] value 9212607
+        inst [156 or "SPU::cpu3"] value 0
+        inst [157 or "PMI::cpu3"] value 598
+        inst [158 or "IWI::cpu3"] value 1
+        inst [159 or "RTR::cpu3"] value 0
+        inst [160 or "RES::cpu3"] value 149070
+        inst [161 or "CAL::cpu3"] value 30264
+        inst [162 or "TLB::cpu3"] value 32791
+        inst [163 or "TRM::cpu3"] value 0
+        inst [164 or "THR::cpu3"] value 0
+        inst [165 or "DFR::cpu3"] value 0
+        inst [166 or "MCE::cpu3"] value 0
+        inst [167 or "MCP::cpu3"] value 24
+        inst [168 or "HYP::cpu3"] value 0
+        inst [169 or "HRE::cpu3"] value 0
+        inst [170 or "HVS::cpu3"] value 0
+        inst [171 or "ERR::cpu3"] value 0
+        inst [172 or "MIS::cpu3"] value 0
+        inst [173 or "PIN::cpu3"] value 0
+        inst [174 or "NPI::cpu3"] value 0
+        inst [175 or "PIW::cpu3"] value 0
+        inst [176 or "sum::cpu4"] value 14145442
+        inst [177 or "0::cpu4"] value 0
+        inst [178 or "8::cpu4"] value 0
+        inst [179 or "9::cpu4"] value 0
+        inst [180 or "16::cpu4"] value 0
+        inst [181 or "17::cpu4"] value 0
+        inst [182 or "18::cpu4"] value 0
+        inst [183 or "19::cpu4"] value 181938
+        inst [184 or "23::cpu4"] value 147948
+        inst [185 or "24::cpu4"] value 0
+        inst [186 or "25::cpu4"] value 0
+        inst [187 or "26::cpu4"] value 0
+        inst [188 or "27::cpu4"] value 0
+        inst [189 or "28::cpu4"] value 0
+        inst [190 or "29::cpu4"] value 0
+        inst [191 or "30::cpu4"] value 0
+        inst [192 or "31::cpu4"] value 0
+        inst [193 or "32::cpu4"] value 0
+        inst [194 or "33::cpu4"] value 0
+        inst [195 or "34::cpu4"] value 0
+        inst [196 or "35::cpu4"] value 0
+        inst [197 or "36::cpu4"] value 0
+        inst [198 or "NMI::cpu4"] value 338
+        inst [199 or "LOC::cpu4"] value 13196636
+        inst [200 or "SPU::cpu4"] value 0
+        inst [201 or "PMI::cpu4"] value 338
+        inst [202 or "IWI::cpu4"] value 0
+        inst [203 or "RTR::cpu4"] value 0
+        inst [204 or "RES::cpu4"] value 547582
+        inst [205 or "CAL::cpu4"] value 27748
+        inst [206 or "TLB::cpu4"] value 42890
+        inst [207 or "TRM::cpu4"] value 0
+        inst [208 or "THR::cpu4"] value 0
+        inst [209 or "DFR::cpu4"] value 0
+        inst [210 or "MCE::cpu4"] value 0
+        inst [211 or "MCP::cpu4"] value 24
+        inst [212 or "HYP::cpu4"] value 0
+        inst [213 or "HRE::cpu4"] value 0
+        inst [214 or "HVS::cpu4"] value 0
+        inst [215 or "ERR::cpu4"] value 0
+        inst [216 or "MIS::cpu4"] value 0
+        inst [217 or "PIN::cpu4"] value 0
+        inst [218 or "NPI::cpu4"] value 0
+        inst [219 or "PIW::cpu4"] value 0
+        inst [220 or "sum::cpu5"] value 11372494
+        inst [221 or "0::cpu5"] value 0
+        inst [222 or "8::cpu5"] value 1
+        inst [223 or "9::cpu5"] value 0
+        inst [224 or "16::cpu5"] value 0
+        inst [225 or "17::cpu5"] value 0
+        inst [226 or "18::cpu5"] value 0
+        inst [227 or "19::cpu5"] value 0
+        inst [228 or "23::cpu5"] value 0
+        inst [229 or "24::cpu5"] value 0
+        inst [230 or "25::cpu5"] value 0
+        inst [231 or "26::cpu5"] value 0
+        inst [232 or "27::cpu5"] value 0
+        inst [233 or "28::cpu5"] value 0
+        inst [234 or "29::cpu5"] value 0
+        inst [235 or "30::cpu5"] value 0
+        inst [236 or "31::cpu5"] value 0
+        inst [237 or "32::cpu5"] value 0
+        inst [238 or "33::cpu5"] value 0
+        inst [239 or "34::cpu5"] value 0
+        inst [240 or "35::cpu5"] value 0
+        inst [241 or "36::cpu5"] value 0
+        inst [242 or "NMI::cpu5"] value 346
+        inst [243 or "LOC::cpu5"] value 11213289
+        inst [244 or "SPU::cpu5"] value 0
+        inst [245 or "PMI::cpu5"] value 346
+        inst [246 or "IWI::cpu5"] value 0
+        inst [247 or "RTR::cpu5"] value 0
+        inst [248 or "RES::cpu5"] value 85681
+        inst [249 or "CAL::cpu5"] value 32389
+        inst [250 or "TLB::cpu5"] value 40418
+        inst [251 or "TRM::cpu5"] value 0
+        inst [252 or "THR::cpu5"] value 0
+        inst [253 or "DFR::cpu5"] value 0
+        inst [254 or "MCE::cpu5"] value 0
+        inst [255 or "MCP::cpu5"] value 24
+        inst [256 or "HYP::cpu5"] value 0
+        inst [257 or "HRE::cpu5"] value 0
+        inst [258 or "HVS::cpu5"] value 0
+        inst [259 or "ERR::cpu5"] value 0
+        inst [260 or "MIS::cpu5"] value 0
+        inst [261 or "PIN::cpu5"] value 0
+        inst [262 or "NPI::cpu5"] value 0
+        inst [263 or "PIW::cpu5"] value 0
+        inst [308 or "sum::cpu7"] value 12688169
+        inst [309 or "0::cpu7"] value 0
+        inst [310 or "8::cpu7"] value 0
+        inst [311 or "9::cpu7"] value 0
+        inst [312 or "16::cpu7"] value 0
+        inst [313 or "17::cpu7"] value 0
+        inst [314 or "18::cpu7"] value 0
+        inst [315 or "19::cpu7"] value 0
+        inst [316 or "23::cpu7"] value 0
+        inst [317 or "24::cpu7"] value 0
+        inst [318 or "25::cpu7"] value 0
+        inst [319 or "26::cpu7"] value 0
+        inst [320 or "27::cpu7"] value 0
+        inst [321 or "28::cpu7"] value 0
+        inst [322 or "29::cpu7"] value 0
+        inst [323 or "30::cpu7"] value 0
+        inst [324 or "31::cpu7"] value 0
+        inst [325 or "32::cpu7"] value 0
+        inst [326 or "33::cpu7"] value 0
+        inst [327 or "34::cpu7"] value 0
+        inst [328 or "35::cpu7"] value 0
+        inst [329 or "36::cpu7"] value 0
+        inst [330 or "NMI::cpu7"] value 137
+        inst [331 or "LOC::cpu7"] value 12540126
+        inst [332 or "SPU::cpu7"] value 0
+        inst [333 or "PMI::cpu7"] value 137
+        inst [334 or "IWI::cpu7"] value 0
+        inst [335 or "RTR::cpu7"] value 0
+        inst [336 or "RES::cpu7"] value 50061
+        inst [337 or "CAL::cpu7"] value 37703
+        inst [338 or "TLB::cpu7"] value 59981
+        inst [339 or "TRM::cpu7"] value 0
+        inst [340 or "THR::cpu7"] value 0
+        inst [341 or "DFR::cpu7"] value 0
+        inst [342 or "MCE::cpu7"] value 0
+        inst [343 or "MCP::cpu7"] value 24
+        inst [344 or "HYP::cpu7"] value 0
+        inst [345 or "HRE::cpu7"] value 0
+        inst [346 or "HVS::cpu7"] value 0
+        inst [347 or "ERR::cpu7"] value 0
+        inst [348 or "MIS::cpu7"] value 0
+        inst [349 or "PIN::cpu7"] value 0
+        inst [350 or "NPI::cpu7"] value 0
+        inst [351 or "PIW::cpu7"] value 0
+    60.4.0 (kernel.all.interrupts.total):
+        inst [0 or "0"] value 8
+        inst [1 or "8"] value 1
+        inst [2 or "9"] value 0
+        inst [3 or "16"] value 10536
+        inst [4 or "17"] value 807
+        inst [5 or "18"] value 0
+        inst [6 or "19"] value 181938
+        inst [7 or "23"] value 147948
+        inst [8 or "24"] value 221678
+        inst [9 or "25"] value 0
+        inst [10 or "26"] value 0
+        inst [11 or "27"] value 0
+        inst [12 or "28"] value 0
+        inst [13 or "29"] value 0
+        inst [14 or "30"] value 0
+        inst [15 or "31"] value 0
+        inst [16 or "32"] value 0
+        inst [17 or "33"] value 54232
+        inst [18 or "34"] value 0
+        inst [19 or "35"] value 15
+        inst [20 or "36"] value 15162
+        inst [21 or "NMI"] value 2801
+        inst [22 or "LOC"] value 78385094
+        inst [23 or "SPU"] value 0
+        inst [24 or "PMI"] value 2801
+        inst [25 or "IWI"] value 7
+        inst [26 or "RTR"] value 0
+        inst [27 or "RES"] value 2921193
+        inst [28 or "CAL"] value 229414
+        inst [29 or "TLB"] value 287252
+        inst [30 or "TRM"] value 0
+        inst [31 or "THR"] value 0
+        inst [32 or "DFR"] value 0
+        inst [33 or "MCE"] value 0
+        inst [34 or "MCP"] value 167
+        inst [35 or "HYP"] value 0
+        inst [36 or "HRE"] value 0
+        inst [37 or "HVS"] value 0
+        inst [38 or "ERR"] value 0
+        inst [39 or "MIS"] value 0
+        inst [40 or "PIN"] value 0
+        inst [41 or "NPI"] value 0
+        inst [42 or "PIW"] value 0
     60.0.8 (swap.pagesin): value 0
     60.0.9 (swap.pagesout): value 0
     60.28.6 (mem.vmstat.pgpgin): value 2685938
@@ -2216,8 +3415,8 @@ Temporal Index
         inst [4 or "/dev/sdf"] value 1080581
         inst [5 or "/dev/sdg"] value 1827456
 
-[13728 bytes]
-14:20:39.000000 239 metrics
+[17428 bytes]
+14:20:39.000000 241 metrics
     60.0.20 (kernel.all.cpu.user): value 97768
     60.0.21 (kernel.all.cpu.nice): value 2588749
     60.0.22 (kernel.all.cpu.sys): value 55126
@@ -2312,7 +3511,404 @@ Temporal Index
         inst [8 or "cpu8"] value 103
     60.0.13 (kernel.all.pswitch): value 136544596
     60.0.14 (kernel.all.sysfork): value 47375
-    60.0.12 (kernel.all.intr): value 98268434
+    60.0.12 (kernel.all.intr): value 83759539
+    60.4.1 (kernel.percpu.interrupts):
+        inst [0 or "sum::cpu0"] value 12952189
+        inst [1 or "0::cpu0"] value 8
+        inst [2 or "8::cpu0"] value 0
+        inst [3 or "9::cpu0"] value 0
+        inst [4 or "16::cpu0"] value 0
+        inst [5 or "17::cpu0"] value 0
+        inst [6 or "18::cpu0"] value 0
+        inst [7 or "19::cpu0"] value 0
+        inst [8 or "23::cpu0"] value 0
+        inst [9 or "24::cpu0"] value 0
+        inst [10 or "25::cpu0"] value 0
+        inst [11 or "26::cpu0"] value 0
+        inst [12 or "27::cpu0"] value 0
+        inst [13 or "28::cpu0"] value 0
+        inst [14 or "29::cpu0"] value 0
+        inst [15 or "30::cpu0"] value 0
+        inst [16 or "31::cpu0"] value 0
+        inst [17 or "32::cpu0"] value 0
+        inst [18 or "33::cpu0"] value 0
+        inst [19 or "34::cpu0"] value 0
+        inst [20 or "35::cpu0"] value 15
+        inst [21 or "36::cpu0"] value 0
+        inst [22 or "NMI::cpu0"] value 378
+        inst [23 or "LOC::cpu0"] value 11445542
+        inst [24 or "SPU::cpu0"] value 0
+        inst [25 or "PMI::cpu0"] value 378
+        inst [26 or "IWI::cpu0"] value 0
+        inst [27 or "RTR::cpu0"] value 0
+        inst [28 or "RES::cpu0"] value 1428506
+        inst [29 or "CAL::cpu0"] value 35963
+        inst [30 or "TLB::cpu0"] value 41376
+        inst [31 or "TRM::cpu0"] value 0
+        inst [32 or "THR::cpu0"] value 0
+        inst [33 or "DFR::cpu0"] value 0
+        inst [34 or "MCE::cpu0"] value 0
+        inst [35 or "MCP::cpu0"] value 23
+        inst [36 or "HYP::cpu0"] value 0
+        inst [37 or "HRE::cpu0"] value 0
+        inst [38 or "HVS::cpu0"] value 0
+        inst [39 or "ERR::cpu0"] value 0
+        inst [40 or "MIS::cpu0"] value 0
+        inst [41 or "PIN::cpu0"] value 0
+        inst [42 or "NPI::cpu0"] value 0
+        inst [43 or "PIW::cpu0"] value 0
+        inst [44 or "sum::cpu1"] value 13424480
+        inst [45 or "0::cpu1"] value 0
+        inst [46 or "8::cpu1"] value 0
+        inst [47 or "9::cpu1"] value 0
+        inst [48 or "16::cpu1"] value 0
+        inst [49 or "17::cpu1"] value 0
+        inst [50 or "18::cpu1"] value 0
+        inst [51 or "19::cpu1"] value 0
+        inst [52 or "23::cpu1"] value 0
+        inst [53 or "24::cpu1"] value 0
+        inst [54 or "25::cpu1"] value 0
+        inst [55 or "26::cpu1"] value 0
+        inst [56 or "27::cpu1"] value 0
+        inst [57 or "28::cpu1"] value 0
+        inst [58 or "29::cpu1"] value 0
+        inst [59 or "30::cpu1"] value 0
+        inst [60 or "31::cpu1"] value 0
+        inst [61 or "32::cpu1"] value 0
+        inst [62 or "33::cpu1"] value 0
+        inst [63 or "34::cpu1"] value 0
+        inst [64 or "35::cpu1"] value 0
+        inst [65 or "36::cpu1"] value 15162
+        inst [66 or "NMI::cpu1"] value 406
+        inst [67 or "LOC::cpu1"] value 12752911
+        inst [68 or "SPU::cpu1"] value 0
+        inst [69 or "PMI::cpu1"] value 406
+        inst [70 or "IWI::cpu1"] value 0
+        inst [71 or "RTR::cpu1"] value 0
+        inst [72 or "RES::cpu1"] value 561390
+        inst [73 or "CAL::cpu1"] value 40769
+        inst [74 or "TLB::cpu1"] value 53412
+        inst [75 or "TRM::cpu1"] value 0
+        inst [76 or "THR::cpu1"] value 0
+        inst [77 or "DFR::cpu1"] value 0
+        inst [78 or "MCE::cpu1"] value 0
+        inst [79 or "MCP::cpu1"] value 24
+        inst [80 or "HYP::cpu1"] value 0
+        inst [81 or "HRE::cpu1"] value 0
+        inst [82 or "HVS::cpu1"] value 0
+        inst [83 or "ERR::cpu1"] value 0
+        inst [84 or "MIS::cpu1"] value 0
+        inst [85 or "PIN::cpu1"] value 0
+        inst [86 or "NPI::cpu1"] value 0
+        inst [87 or "PIW::cpu1"] value 0
+        inst [88 or "sum::cpu2"] value 8924405
+        inst [89 or "0::cpu2"] value 0
+        inst [90 or "8::cpu2"] value 0
+        inst [91 or "9::cpu2"] value 0
+        inst [92 or "16::cpu2"] value 0
+        inst [93 or "17::cpu2"] value 807
+        inst [94 or "18::cpu2"] value 0
+        inst [95 or "19::cpu2"] value 0
+        inst [96 or "23::cpu2"] value 0
+        inst [97 or "24::cpu2"] value 222016
+        inst [98 or "25::cpu2"] value 0
+        inst [99 or "26::cpu2"] value 0
+        inst [100 or "27::cpu2"] value 0
+        inst [101 or "28::cpu2"] value 0
+        inst [102 or "29::cpu2"] value 0
+        inst [103 or "30::cpu2"] value 0
+        inst [104 or "31::cpu2"] value 0
+        inst [105 or "32::cpu2"] value 0
+        inst [106 or "33::cpu2"] value 0
+        inst [107 or "34::cpu2"] value 0
+        inst [108 or "35::cpu2"] value 0
+        inst [109 or "36::cpu2"] value 0
+        inst [110 or "NMI::cpu2"] value 601
+        inst [111 or "LOC::cpu2"] value 8542361
+        inst [112 or "SPU::cpu2"] value 0
+        inst [113 or "PMI::cpu2"] value 601
+        inst [114 or "IWI::cpu2"] value 6
+        inst [115 or "RTR::cpu2"] value 0
+        inst [116 or "RES::cpu2"] value 105579
+        inst [117 or "CAL::cpu2"] value 28077
+        inst [118 or "TLB::cpu2"] value 24333
+        inst [119 or "TRM::cpu2"] value 0
+        inst [120 or "THR::cpu2"] value 0
+        inst [121 or "DFR::cpu2"] value 0
+        inst [122 or "MCE::cpu2"] value 0
+        inst [123 or "MCP::cpu2"] value 24
+        inst [124 or "HYP::cpu2"] value 0
+        inst [125 or "HRE::cpu2"] value 0
+        inst [126 or "HVS::cpu2"] value 0
+        inst [127 or "ERR::cpu2"] value 0
+        inst [128 or "MIS::cpu2"] value 0
+        inst [129 or "PIN::cpu2"] value 0
+        inst [130 or "NPI::cpu2"] value 0
+        inst [131 or "PIW::cpu2"] value 0
+        inst [132 or "sum::cpu3"] value 9611446
+        inst [133 or "0::cpu3"] value 0
+        inst [134 or "8::cpu3"] value 0
+        inst [135 or "9::cpu3"] value 0
+        inst [136 or "16::cpu3"] value 10536
+        inst [137 or "17::cpu3"] value 0
+        inst [138 or "18::cpu3"] value 0
+        inst [139 or "19::cpu3"] value 0
+        inst [140 or "23::cpu3"] value 0
+        inst [141 or "24::cpu3"] value 0
+        inst [142 or "25::cpu3"] value 0
+        inst [143 or "26::cpu3"] value 0
+        inst [144 or "27::cpu3"] value 0
+        inst [145 or "28::cpu3"] value 0
+        inst [146 or "29::cpu3"] value 0
+        inst [147 or "30::cpu3"] value 0
+        inst [148 or "31::cpu3"] value 0
+        inst [149 or "32::cpu3"] value 0
+        inst [150 or "33::cpu3"] value 56614
+        inst [151 or "34::cpu3"] value 0
+        inst [152 or "35::cpu3"] value 0
+        inst [153 or "36::cpu3"] value 0
+        inst [154 or "NMI::cpu3"] value 599
+        inst [155 or "LOC::cpu3"] value 9324130
+        inst [156 or "SPU::cpu3"] value 0
+        inst [157 or "PMI::cpu3"] value 599
+        inst [158 or "IWI::cpu3"] value 1
+        inst [159 or "RTR::cpu3"] value 0
+        inst [160 or "RES::cpu3"] value 149606
+        inst [161 or "CAL::cpu3"] value 32139
+        inst [162 or "TLB::cpu3"] value 37198
+        inst [163 or "TRM::cpu3"] value 0
+        inst [164 or "THR::cpu3"] value 0
+        inst [165 or "DFR::cpu3"] value 0
+        inst [166 or "MCE::cpu3"] value 0
+        inst [167 or "MCP::cpu3"] value 24
+        inst [168 or "HYP::cpu3"] value 0
+        inst [169 or "HRE::cpu3"] value 0
+        inst [170 or "HVS::cpu3"] value 0
+        inst [171 or "ERR::cpu3"] value 0
+        inst [172 or "MIS::cpu3"] value 0
+        inst [173 or "PIN::cpu3"] value 0
+        inst [174 or "NPI::cpu3"] value 0
+        inst [175 or "PIW::cpu3"] value 0
+        inst [176 or "sum::cpu4"] value 14374869
+        inst [177 or "0::cpu4"] value 0
+        inst [178 or "8::cpu4"] value 0
+        inst [179 or "9::cpu4"] value 0
+        inst [180 or "16::cpu4"] value 0
+        inst [181 or "17::cpu4"] value 0
+        inst [182 or "18::cpu4"] value 0
+        inst [183 or "19::cpu4"] value 182813
+        inst [184 or "23::cpu4"] value 149146
+        inst [185 or "24::cpu4"] value 0
+        inst [186 or "25::cpu4"] value 0
+        inst [187 or "26::cpu4"] value 0
+        inst [188 or "27::cpu4"] value 0
+        inst [189 or "28::cpu4"] value 0
+        inst [190 or "29::cpu4"] value 0
+        inst [191 or "30::cpu4"] value 0
+        inst [192 or "31::cpu4"] value 0
+        inst [193 or "32::cpu4"] value 0
+        inst [194 or "33::cpu4"] value 0
+        inst [195 or "34::cpu4"] value 0
+        inst [196 or "35::cpu4"] value 0
+        inst [197 or "36::cpu4"] value 0
+        inst [198 or "NMI::cpu4"] value 340
+        inst [199 or "LOC::cpu4"] value 13419451
+        inst [200 or "SPU::cpu4"] value 0
+        inst [201 or "PMI::cpu4"] value 340
+        inst [202 or "IWI::cpu4"] value 0
+        inst [203 or "RTR::cpu4"] value 0
+        inst [204 or "RES::cpu4"] value 547996
+        inst [205 or "CAL::cpu4"] value 29120
+        inst [206 or "TLB::cpu4"] value 45639
+        inst [207 or "TRM::cpu4"] value 0
+        inst [208 or "THR::cpu4"] value 0
+        inst [209 or "DFR::cpu4"] value 0
+        inst [210 or "MCE::cpu4"] value 0
+        inst [211 or "MCP::cpu4"] value 24
+        inst [212 or "HYP::cpu4"] value 0
+        inst [213 or "HRE::cpu4"] value 0
+        inst [214 or "HVS::cpu4"] value 0
+        inst [215 or "ERR::cpu4"] value 0
+        inst [216 or "MIS::cpu4"] value 0
+        inst [217 or "PIN::cpu4"] value 0
+        inst [218 or "NPI::cpu4"] value 0
+        inst [219 or "PIW::cpu4"] value 0
+        inst [220 or "sum::cpu5"] value 11586600
+        inst [221 or "0::cpu5"] value 0
+        inst [222 or "8::cpu5"] value 1
+        inst [223 or "9::cpu5"] value 0
+        inst [224 or "16::cpu5"] value 0
+        inst [225 or "17::cpu5"] value 0
+        inst [226 or "18::cpu5"] value 0
+        inst [227 or "19::cpu5"] value 0
+        inst [228 or "23::cpu5"] value 0
+        inst [229 or "24::cpu5"] value 0
+        inst [230 or "25::cpu5"] value 0
+        inst [231 or "26::cpu5"] value 0
+        inst [232 or "27::cpu5"] value 0
+        inst [233 or "28::cpu5"] value 0
+        inst [234 or "29::cpu5"] value 0
+        inst [235 or "30::cpu5"] value 0
+        inst [236 or "31::cpu5"] value 0
+        inst [237 or "32::cpu5"] value 0
+        inst [238 or "33::cpu5"] value 0
+        inst [239 or "34::cpu5"] value 0
+        inst [240 or "35::cpu5"] value 0
+        inst [241 or "36::cpu5"] value 0
+        inst [242 or "NMI::cpu5"] value 346
+        inst [243 or "LOC::cpu5"] value 11422892
+        inst [244 or "SPU::cpu5"] value 0
+        inst [245 or "PMI::cpu5"] value 346
+        inst [246 or "IWI::cpu5"] value 0
+        inst [247 or "RTR::cpu5"] value 0
+        inst [248 or "RES::cpu5"] value 86036
+        inst [249 or "CAL::cpu5"] value 33536
+        inst [250 or "TLB::cpu5"] value 43419
+        inst [251 or "TRM::cpu5"] value 0
+        inst [252 or "THR::cpu5"] value 0
+        inst [253 or "DFR::cpu5"] value 0
+        inst [254 or "MCE::cpu5"] value 0
+        inst [255 or "MCP::cpu5"] value 24
+        inst [256 or "HYP::cpu5"] value 0
+        inst [257 or "HRE::cpu5"] value 0
+        inst [258 or "HVS::cpu5"] value 0
+        inst [259 or "ERR::cpu5"] value 0
+        inst [260 or "MIS::cpu5"] value 0
+        inst [261 or "PIN::cpu5"] value 0
+        inst [262 or "NPI::cpu5"] value 0
+        inst [263 or "PIW::cpu5"] value 0
+        inst [308 or "sum::cpu7"] value 12760072
+        inst [309 or "0::cpu7"] value 0
+        inst [310 or "8::cpu7"] value 0
+        inst [311 or "9::cpu7"] value 0
+        inst [312 or "16::cpu7"] value 0
+        inst [313 or "17::cpu7"] value 0
+        inst [314 or "18::cpu7"] value 0
+        inst [315 or "19::cpu7"] value 0
+        inst [316 or "23::cpu7"] value 0
+        inst [317 or "24::cpu7"] value 0
+        inst [318 or "25::cpu7"] value 0
+        inst [319 or "26::cpu7"] value 0
+        inst [320 or "27::cpu7"] value 0
+        inst [321 or "28::cpu7"] value 0
+        inst [322 or "29::cpu7"] value 0
+        inst [323 or "30::cpu7"] value 0
+        inst [324 or "31::cpu7"] value 0
+        inst [325 or "32::cpu7"] value 0
+        inst [326 or "33::cpu7"] value 0
+        inst [327 or "34::cpu7"] value 0
+        inst [328 or "35::cpu7"] value 0
+        inst [329 or "36::cpu7"] value 0
+        inst [330 or "NMI::cpu7"] value 137
+        inst [331 or "LOC::cpu7"] value 12605877
+        inst [332 or "SPU::cpu7"] value 0
+        inst [333 or "PMI::cpu7"] value 137
+        inst [334 or "IWI::cpu7"] value 0
+        inst [335 or "RTR::cpu7"] value 0
+        inst [336 or "RES::cpu7"] value 50363
+        inst [337 or "CAL::cpu7"] value 39677
+        inst [338 or "TLB::cpu7"] value 63857
+        inst [339 or "TRM::cpu7"] value 0
+        inst [340 or "THR::cpu7"] value 0
+        inst [341 or "DFR::cpu7"] value 0
+        inst [342 or "MCE::cpu7"] value 0
+        inst [343 or "MCP::cpu7"] value 24
+        inst [344 or "HYP::cpu7"] value 0
+        inst [345 or "HRE::cpu7"] value 0
+        inst [346 or "HVS::cpu7"] value 0
+        inst [347 or "ERR::cpu7"] value 0
+        inst [348 or "MIS::cpu7"] value 0
+        inst [349 or "PIN::cpu7"] value 0
+        inst [350 or "NPI::cpu7"] value 0
+        inst [351 or "PIW::cpu7"] value 0
+        inst [352 or "sum::cpu8"] value 125478
+        inst [353 or "0::cpu8"] value 0
+        inst [354 or "8::cpu8"] value 0
+        inst [355 or "9::cpu8"] value 0
+        inst [356 or "16::cpu8"] value 0
+        inst [357 or "17::cpu8"] value 0
+        inst [358 or "18::cpu8"] value 0
+        inst [359 or "19::cpu8"] value 0
+        inst [360 or "23::cpu8"] value 0
+        inst [361 or "24::cpu8"] value 0
+        inst [362 or "25::cpu8"] value 0
+        inst [363 or "26::cpu8"] value 0
+        inst [364 or "27::cpu8"] value 50
+        inst [365 or "28::cpu8"] value 0
+        inst [366 or "29::cpu8"] value 0
+        inst [367 or "30::cpu8"] value 0
+        inst [368 or "31::cpu8"] value 0
+        inst [369 or "32::cpu8"] value 0
+        inst [370 or "33::cpu8"] value 0
+        inst [371 or "34::cpu8"] value 0
+        inst [372 or "35::cpu8"] value 0
+        inst [373 or "36::cpu8"] value 0
+        inst [374 or "NMI::cpu8"] value 220
+        inst [375 or "LOC::cpu8"] value 12456
+        inst [376 or "SPU::cpu8"] value 0
+        inst [377 or "PMI::cpu8"] value 220
+        inst [378 or "IWI::cpu8"] value 0
+        inst [379 or "RTR::cpu8"] value 0
+        inst [380 or "RES::cpu8"] value 54421
+        inst [381 or "CAL::cpu8"] value 23476
+        inst [382 or "TLB::cpu8"] value 34597
+        inst [383 or "TRM::cpu8"] value 0
+        inst [384 or "THR::cpu8"] value 0
+        inst [385 or "DFR::cpu8"] value 0
+        inst [386 or "MCE::cpu8"] value 0
+        inst [387 or "MCP::cpu8"] value 38
+        inst [388 or "HYP::cpu8"] value 0
+        inst [389 or "HRE::cpu8"] value 0
+        inst [390 or "HVS::cpu8"] value 0
+        inst [391 or "ERR::cpu8"] value 0
+        inst [392 or "MIS::cpu8"] value 0
+        inst [393 or "PIN::cpu8"] value 0
+        inst [394 or "NPI::cpu8"] value 0
+        inst [395 or "PIW::cpu8"] value 0
+    60.4.0 (kernel.all.interrupts.total):
+        inst [0 or "0"] value 8
+        inst [1 or "8"] value 1
+        inst [2 or "9"] value 0
+        inst [3 or "16"] value 10536
+        inst [4 or "17"] value 807
+        inst [5 or "18"] value 0
+        inst [6 or "19"] value 182813
+        inst [7 or "23"] value 149146
+        inst [8 or "24"] value 222016
+        inst [9 or "25"] value 0
+        inst [10 or "26"] value 0
+        inst [11 or "27"] value 50
+        inst [12 or "28"] value 0
+        inst [13 or "29"] value 0
+        inst [14 or "30"] value 0
+        inst [15 or "31"] value 0
+        inst [16 or "32"] value 0
+        inst [17 or "33"] value 56614
+        inst [18 or "34"] value 0
+        inst [19 or "35"] value 15
+        inst [20 or "36"] value 15162
+        inst [21 or "NMI"] value 3027
+        inst [22 or "LOC"] value 79525620
+        inst [23 or "SPU"] value 0
+        inst [24 or "PMI"] value 3027
+        inst [25 or "IWI"] value 7
+        inst [26 or "RTR"] value 0
+        inst [27 or "RES"] value 2983897
+        inst [28 or "CAL"] value 262757
+        inst [29 or "TLB"] value 343831
+        inst [30 or "TRM"] value 0
+        inst [31 or "THR"] value 0
+        inst [32 or "DFR"] value 0
+        inst [33 or "MCE"] value 0
+        inst [34 or "MCP"] value 205
+        inst [35 or "HYP"] value 0
+        inst [36 or "HRE"] value 0
+        inst [37 or "HVS"] value 0
+        inst [38 or "ERR"] value 0
+        inst [39 or "MIS"] value 0
+        inst [40 or "PIN"] value 0
+        inst [41 or "NPI"] value 0
+        inst [42 or "PIW"] value 0
     60.0.8 (swap.pagesin): value 0
     60.0.9 (swap.pagesout): value 0
     60.28.6 (mem.vmstat.pgpgin): value 2685938
@@ -2913,8 +4509,8 @@ Temporal Index
         inst [4 or "/dev/sdf"] value 1080581
         inst [5 or "/dev/sdg"] value 1827456
 
-[14688 bytes]
-14:20:49.000000 243 metrics
+[18740 bytes]
+14:20:49.000000 245 metrics
     60.0.20 (kernel.all.cpu.user): value 99343
     60.0.21 (kernel.all.cpu.nice): value 2590956
     60.0.22 (kernel.all.cpu.sys): value 56811
@@ -3018,7 +4614,448 @@ Temporal Index
         inst [8 or "cpu8"] value 1098
     60.0.13 (kernel.all.pswitch): value 138969137
     60.0.14 (kernel.all.sysfork): value 47493
-    60.0.12 (kernel.all.intr): value 99525101
+    60.0.12 (kernel.all.intr): value 100044085
+    60.4.1 (kernel.percpu.interrupts):
+        inst [0 or "sum::cpu0"] value 13012418
+        inst [1 or "0::cpu0"] value 8
+        inst [2 or "8::cpu0"] value 0
+        inst [3 or "9::cpu0"] value 0
+        inst [4 or "16::cpu0"] value 0
+        inst [5 or "17::cpu0"] value 0
+        inst [6 or "18::cpu0"] value 0
+        inst [7 or "19::cpu0"] value 0
+        inst [8 or "23::cpu0"] value 0
+        inst [9 or "24::cpu0"] value 0
+        inst [10 or "25::cpu0"] value 0
+        inst [11 or "26::cpu0"] value 0
+        inst [12 or "27::cpu0"] value 0
+        inst [13 or "28::cpu0"] value 0
+        inst [14 or "29::cpu0"] value 0
+        inst [15 or "30::cpu0"] value 0
+        inst [16 or "31::cpu0"] value 0
+        inst [17 or "32::cpu0"] value 0
+        inst [18 or "33::cpu0"] value 0
+        inst [19 or "34::cpu0"] value 0
+        inst [20 or "35::cpu0"] value 15
+        inst [21 or "36::cpu0"] value 0
+        inst [22 or "NMI::cpu0"] value 379
+        inst [23 or "LOC::cpu0"] value 11501606
+        inst [24 or "SPU::cpu0"] value 0
+        inst [25 or "PMI::cpu0"] value 379
+        inst [26 or "IWI::cpu0"] value 0
+        inst [27 or "RTR::cpu0"] value 0
+        inst [28 or "RES::cpu0"] value 1431424
+        inst [29 or "CAL::cpu0"] value 36251
+        inst [30 or "TLB::cpu0"] value 42333
+        inst [31 or "TRM::cpu0"] value 0
+        inst [32 or "THR::cpu0"] value 0
+        inst [33 or "DFR::cpu0"] value 0
+        inst [34 or "MCE::cpu0"] value 0
+        inst [35 or "MCP::cpu0"] value 23
+        inst [36 or "HYP::cpu0"] value 0
+        inst [37 or "HRE::cpu0"] value 0
+        inst [38 or "HVS::cpu0"] value 0
+        inst [39 or "ERR::cpu0"] value 0
+        inst [40 or "MIS::cpu0"] value 0
+        inst [41 or "PIN::cpu0"] value 0
+        inst [42 or "NPI::cpu0"] value 0
+        inst [43 or "PIW::cpu0"] value 0
+        inst [44 or "sum::cpu1"] value 13623340
+        inst [45 or "0::cpu1"] value 0
+        inst [46 or "8::cpu1"] value 0
+        inst [47 or "9::cpu1"] value 0
+        inst [48 or "16::cpu1"] value 0
+        inst [49 or "17::cpu1"] value 0
+        inst [50 or "18::cpu1"] value 0
+        inst [51 or "19::cpu1"] value 0
+        inst [52 or "23::cpu1"] value 0
+        inst [53 or "24::cpu1"] value 0
+        inst [54 or "25::cpu1"] value 0
+        inst [55 or "26::cpu1"] value 0
+        inst [56 or "27::cpu1"] value 0
+        inst [57 or "28::cpu1"] value 0
+        inst [58 or "29::cpu1"] value 0
+        inst [59 or "30::cpu1"] value 0
+        inst [60 or "31::cpu1"] value 0
+        inst [61 or "32::cpu1"] value 0
+        inst [62 or "33::cpu1"] value 0
+        inst [63 or "34::cpu1"] value 0
+        inst [64 or "35::cpu1"] value 0
+        inst [65 or "36::cpu1"] value 15162
+        inst [66 or "NMI::cpu1"] value 406
+        inst [67 or "LOC::cpu1"] value 12945933
+        inst [68 or "SPU::cpu1"] value 0
+        inst [69 or "PMI::cpu1"] value 406
+        inst [70 or "IWI::cpu1"] value 0
+        inst [71 or "RTR::cpu1"] value 0
+        inst [72 or "RES::cpu1"] value 564840
+        inst [73 or "CAL::cpu1"] value 41583
+        inst [74 or "TLB::cpu1"] value 54986
+        inst [75 or "TRM::cpu1"] value 0
+        inst [76 or "THR::cpu1"] value 0
+        inst [77 or "DFR::cpu1"] value 0
+        inst [78 or "MCE::cpu1"] value 0
+        inst [79 or "MCP::cpu1"] value 24
+        inst [80 or "HYP::cpu1"] value 0
+        inst [81 or "HRE::cpu1"] value 0
+        inst [82 or "HVS::cpu1"] value 0
+        inst [83 or "ERR::cpu1"] value 0
+        inst [84 or "MIS::cpu1"] value 0
+        inst [85 or "PIN::cpu1"] value 0
+        inst [86 or "NPI::cpu1"] value 0
+        inst [87 or "PIW::cpu1"] value 0
+        inst [88 or "sum::cpu2"] value 9069083
+        inst [89 or "0::cpu2"] value 0
+        inst [90 or "8::cpu2"] value 0
+        inst [91 or "9::cpu2"] value 0
+        inst [92 or "16::cpu2"] value 0
+        inst [93 or "17::cpu2"] value 807
+        inst [94 or "18::cpu2"] value 0
+        inst [95 or "19::cpu2"] value 0
+        inst [96 or "23::cpu2"] value 0
+        inst [97 or "24::cpu2"] value 222355
+        inst [98 or "25::cpu2"] value 0
+        inst [99 or "26::cpu2"] value 0
+        inst [100 or "27::cpu2"] value 0
+        inst [101 or "28::cpu2"] value 0
+        inst [102 or "29::cpu2"] value 0
+        inst [103 or "30::cpu2"] value 0
+        inst [104 or "31::cpu2"] value 0
+        inst [105 or "32::cpu2"] value 0
+        inst [106 or "33::cpu2"] value 0
+        inst [107 or "34::cpu2"] value 0
+        inst [108 or "35::cpu2"] value 0
+        inst [109 or "36::cpu2"] value 0
+        inst [110 or "NMI::cpu2"] value 602
+        inst [111 or "LOC::cpu2"] value 8683983
+        inst [112 or "SPU::cpu2"] value 0
+        inst [113 or "PMI::cpu2"] value 602
+        inst [114 or "IWI::cpu2"] value 6
+        inst [115 or "RTR::cpu2"] value 0
+        inst [116 or "RES::cpu2"] value 106856
+        inst [117 or "CAL::cpu2"] value 28533
+        inst [118 or "TLB::cpu2"] value 25315
+        inst [119 or "TRM::cpu2"] value 0
+        inst [120 or "THR::cpu2"] value 0
+        inst [121 or "DFR::cpu2"] value 0
+        inst [122 or "MCE::cpu2"] value 0
+        inst [123 or "MCP::cpu2"] value 24
+        inst [124 or "HYP::cpu2"] value 0
+        inst [125 or "HRE::cpu2"] value 0
+        inst [126 or "HVS::cpu2"] value 0
+        inst [127 or "ERR::cpu2"] value 0
+        inst [128 or "MIS::cpu2"] value 0
+        inst [129 or "PIN::cpu2"] value 0
+        inst [130 or "NPI::cpu2"] value 0
+        inst [131 or "PIW::cpu2"] value 0
+        inst [132 or "sum::cpu3"] value 9856544
+        inst [133 or "0::cpu3"] value 0
+        inst [134 or "8::cpu3"] value 0
+        inst [135 or "9::cpu3"] value 0
+        inst [136 or "16::cpu3"] value 10536
+        inst [137 or "17::cpu3"] value 0
+        inst [138 or "18::cpu3"] value 0
+        inst [139 or "19::cpu3"] value 0
+        inst [140 or "23::cpu3"] value 0
+        inst [141 or "24::cpu3"] value 0
+        inst [142 or "25::cpu3"] value 0
+        inst [143 or "26::cpu3"] value 0
+        inst [144 or "27::cpu3"] value 0
+        inst [145 or "28::cpu3"] value 0
+        inst [146 or "29::cpu3"] value 0
+        inst [147 or "30::cpu3"] value 0
+        inst [148 or "31::cpu3"] value 0
+        inst [149 or "32::cpu3"] value 0
+        inst [150 or "33::cpu3"] value 57105
+        inst [151 or "34::cpu3"] value 0
+        inst [152 or "35::cpu3"] value 0
+        inst [153 or "36::cpu3"] value 0
+        inst [154 or "NMI::cpu3"] value 599
+        inst [155 or "LOC::cpu3"] value 9567133
+        inst [156 or "SPU::cpu3"] value 0
+        inst [157 or "PMI::cpu3"] value 599
+        inst [158 or "IWI::cpu3"] value 1
+        inst [159 or "RTR::cpu3"] value 0
+        inst [160 or "RES::cpu3"] value 150135
+        inst [161 or "CAL::cpu3"] value 32465
+        inst [162 or "TLB::cpu3"] value 37947
+        inst [163 or "TRM::cpu3"] value 0
+        inst [164 or "THR::cpu3"] value 0
+        inst [165 or "DFR::cpu3"] value 0
+        inst [166 or "MCE::cpu3"] value 0
+        inst [167 or "MCP::cpu3"] value 24
+        inst [168 or "HYP::cpu3"] value 0
+        inst [169 or "HRE::cpu3"] value 0
+        inst [170 or "HVS::cpu3"] value 0
+        inst [171 or "ERR::cpu3"] value 0
+        inst [172 or "MIS::cpu3"] value 0
+        inst [173 or "PIN::cpu3"] value 0
+        inst [174 or "NPI::cpu3"] value 0
+        inst [175 or "PIW::cpu3"] value 0
+        inst [176 or "sum::cpu4"] value 14458524
+        inst [177 or "0::cpu4"] value 0
+        inst [178 or "8::cpu4"] value 0
+        inst [179 or "9::cpu4"] value 0
+        inst [180 or "16::cpu4"] value 0
+        inst [181 or "17::cpu4"] value 0
+        inst [182 or "18::cpu4"] value 0
+        inst [183 or "19::cpu4"] value 183412
+        inst [184 or "23::cpu4"] value 149539
+        inst [185 or "24::cpu4"] value 0
+        inst [186 or "25::cpu4"] value 0
+        inst [187 or "26::cpu4"] value 0
+        inst [188 or "27::cpu4"] value 0
+        inst [189 or "28::cpu4"] value 0
+        inst [190 or "29::cpu4"] value 0
+        inst [191 or "30::cpu4"] value 0
+        inst [192 or "31::cpu4"] value 0
+        inst [193 or "32::cpu4"] value 0
+        inst [194 or "33::cpu4"] value 0
+        inst [195 or "34::cpu4"] value 0
+        inst [196 or "35::cpu4"] value 0
+        inst [197 or "36::cpu4"] value 0
+        inst [198 or "NMI::cpu4"] value 341
+        inst [199 or "LOC::cpu4"] value 13501572
+        inst [200 or "SPU::cpu4"] value 0
+        inst [201 or "PMI::cpu4"] value 341
+        inst [202 or "IWI::cpu4"] value 0
+        inst [203 or "RTR::cpu4"] value 0
+        inst [204 or "RES::cpu4"] value 548217
+        inst [205 or "CAL::cpu4"] value 29246
+        inst [206 or "TLB::cpu4"] value 45832
+        inst [207 or "TRM::cpu4"] value 0
+        inst [208 or "THR::cpu4"] value 0
+        inst [209 or "DFR::cpu4"] value 0
+        inst [210 or "MCE::cpu4"] value 0
+        inst [211 or "MCP::cpu4"] value 24
+        inst [212 or "HYP::cpu4"] value 0
+        inst [213 or "HRE::cpu4"] value 0
+        inst [214 or "HVS::cpu4"] value 0
+        inst [215 or "ERR::cpu4"] value 0
+        inst [216 or "MIS::cpu4"] value 0
+        inst [217 or "PIN::cpu4"] value 0
+        inst [218 or "NPI::cpu4"] value 0
+        inst [219 or "PIW::cpu4"] value 0
+        inst [220 or "sum::cpu5"] value 11768926
+        inst [221 or "0::cpu5"] value 0
+        inst [222 or "8::cpu5"] value 1
+        inst [223 or "9::cpu5"] value 0
+        inst [224 or "16::cpu5"] value 0
+        inst [225 or "17::cpu5"] value 0
+        inst [226 or "18::cpu5"] value 0
+        inst [227 or "19::cpu5"] value 0
+        inst [228 or "23::cpu5"] value 0
+        inst [229 or "24::cpu5"] value 0
+        inst [230 or "25::cpu5"] value 0
+        inst [231 or "26::cpu5"] value 0
+        inst [232 or "27::cpu5"] value 0
+        inst [233 or "28::cpu5"] value 0
+        inst [234 or "29::cpu5"] value 0
+        inst [235 or "30::cpu5"] value 0
+        inst [236 or "31::cpu5"] value 0
+        inst [237 or "32::cpu5"] value 0
+        inst [238 or "33::cpu5"] value 0
+        inst [239 or "34::cpu5"] value 0
+        inst [240 or "35::cpu5"] value 0
+        inst [241 or "36::cpu5"] value 0
+        inst [242 or "NMI::cpu5"] value 346
+        inst [243 or "LOC::cpu5"] value 11603859
+        inst [244 or "SPU::cpu5"] value 0
+        inst [245 or "PMI::cpu5"] value 346
+        inst [246 or "IWI::cpu5"] value 0
+        inst [247 or "RTR::cpu5"] value 0
+        inst [248 or "RES::cpu5"] value 86212
+        inst [249 or "CAL::cpu5"] value 33868
+        inst [250 or "TLB::cpu5"] value 44270
+        inst [251 or "TRM::cpu5"] value 0
+        inst [252 or "THR::cpu5"] value 0
+        inst [253 or "DFR::cpu5"] value 0
+        inst [254 or "MCE::cpu5"] value 0
+        inst [255 or "MCP::cpu5"] value 24
+        inst [256 or "HYP::cpu5"] value 0
+        inst [257 or "HRE::cpu5"] value 0
+        inst [258 or "HVS::cpu5"] value 0
+        inst [259 or "ERR::cpu5"] value 0
+        inst [260 or "MIS::cpu5"] value 0
+        inst [261 or "PIN::cpu5"] value 0
+        inst [262 or "NPI::cpu5"] value 0
+        inst [263 or "PIW::cpu5"] value 0
+        inst [264 or "sum::cpu6"] value 15162284
+        inst [265 or "0::cpu6"] value 0
+        inst [266 or "8::cpu6"] value 0
+        inst [267 or "9::cpu6"] value 0
+        inst [268 or "16::cpu6"] value 0
+        inst [269 or "17::cpu6"] value 0
+        inst [270 or "18::cpu6"] value 0
+        inst [271 or "19::cpu6"] value 0
+        inst [272 or "23::cpu6"] value 0
+        inst [273 or "24::cpu6"] value 0
+        inst [274 or "25::cpu6"] value 0
+        inst [275 or "26::cpu6"] value 0
+        inst [276 or "27::cpu6"] value 0
+        inst [277 or "28::cpu6"] value 0
+        inst [278 or "29::cpu6"] value 0
+        inst [279 or "30::cpu6"] value 0
+        inst [280 or "31::cpu6"] value 0
+        inst [281 or "32::cpu6"] value 0
+        inst [282 or "33::cpu6"] value 0
+        inst [283 or "34::cpu6"] value 775355
+        inst [284 or "35::cpu6"] value 0
+        inst [285 or "36::cpu6"] value 0
+        inst [286 or "NMI::cpu6"] value 101
+        inst [287 or "LOC::cpu6"] value 14172658
+        inst [288 or "SPU::cpu6"] value 0
+        inst [289 or "PMI::cpu6"] value 101
+        inst [290 or "IWI::cpu6"] value 0
+        inst [291 or "RTR::cpu6"] value 0
+        inst [292 or "RES::cpu6"] value 93512
+        inst [293 or "CAL::cpu6"] value 44587
+        inst [294 or "TLB::cpu6"] value 75946
+        inst [295 or "TRM::cpu6"] value 0
+        inst [296 or "THR::cpu6"] value 0
+        inst [297 or "DFR::cpu6"] value 0
+        inst [298 or "MCE::cpu6"] value 0
+        inst [299 or "MCP::cpu6"] value 24
+        inst [300 or "HYP::cpu6"] value 0
+        inst [301 or "HRE::cpu6"] value 0
+        inst [302 or "HVS::cpu6"] value 0
+        inst [303 or "ERR::cpu6"] value 0
+        inst [304 or "MIS::cpu6"] value 0
+        inst [305 or "PIN::cpu6"] value 0
+        inst [306 or "NPI::cpu6"] value 0
+        inst [307 or "PIW::cpu6"] value 0
+        inst [308 or "sum::cpu7"] value 12966317
+        inst [309 or "0::cpu7"] value 0
+        inst [310 or "8::cpu7"] value 0
+        inst [311 or "9::cpu7"] value 0
+        inst [312 or "16::cpu7"] value 0
+        inst [313 or "17::cpu7"] value 0
+        inst [314 or "18::cpu7"] value 0
+        inst [315 or "19::cpu7"] value 0
+        inst [316 or "23::cpu7"] value 0
+        inst [317 or "24::cpu7"] value 0
+        inst [318 or "25::cpu7"] value 0
+        inst [319 or "26::cpu7"] value 0
+        inst [320 or "27::cpu7"] value 0
+        inst [321 or "28::cpu7"] value 0
+        inst [322 or "29::cpu7"] value 0
+        inst [323 or "30::cpu7"] value 0
+        inst [324 or "31::cpu7"] value 0
+        inst [325 or "32::cpu7"] value 0
+        inst [326 or "33::cpu7"] value 0
+        inst [327 or "34::cpu7"] value 0
+        inst [328 or "35::cpu7"] value 0
+        inst [329 or "36::cpu7"] value 0
+        inst [330 or "NMI::cpu7"] value 138
+        inst [331 or "LOC::cpu7"] value 12809909
+        inst [332 or "SPU::cpu7"] value 0
+        inst [333 or "PMI::cpu7"] value 138
+        inst [334 or "IWI::cpu7"] value 0
+        inst [335 or "RTR::cpu7"] value 0
+        inst [336 or "RES::cpu7"] value 50479
+        inst [337 or "CAL::cpu7"] value 40183
+        inst [338 or "TLB::cpu7"] value 65446
+        inst [339 or "TRM::cpu7"] value 0
+        inst [340 or "THR::cpu7"] value 0
+        inst [341 or "DFR::cpu7"] value 0
+        inst [342 or "MCE::cpu7"] value 0
+        inst [343 or "MCP::cpu7"] value 24
+        inst [344 or "HYP::cpu7"] value 0
+        inst [345 or "HRE::cpu7"] value 0
+        inst [346 or "HVS::cpu7"] value 0
+        inst [347 or "ERR::cpu7"] value 0
+        inst [348 or "MIS::cpu7"] value 0
+        inst [349 or "PIN::cpu7"] value 0
+        inst [350 or "NPI::cpu7"] value 0
+        inst [351 or "PIW::cpu7"] value 0
+        inst [352 or "sum::cpu8"] value 126649
+        inst [353 or "0::cpu8"] value 0
+        inst [354 or "8::cpu8"] value 0
+        inst [355 or "9::cpu8"] value 0
+        inst [356 or "16::cpu8"] value 0
+        inst [357 or "17::cpu8"] value 0
+        inst [358 or "18::cpu8"] value 0
+        inst [359 or "19::cpu8"] value 0
+        inst [360 or "23::cpu8"] value 0
+        inst [361 or "24::cpu8"] value 0
+        inst [362 or "25::cpu8"] value 0
+        inst [363 or "26::cpu8"] value 0
+        inst [364 or "27::cpu8"] value 53
+        inst [365 or "28::cpu8"] value 0
+        inst [366 or "29::cpu8"] value 0
+        inst [367 or "30::cpu8"] value 0
+        inst [368 or "31::cpu8"] value 0
+        inst [369 or "32::cpu8"] value 0
+        inst [370 or "33::cpu8"] value 0
+        inst [371 or "34::cpu8"] value 0
+        inst [372 or "35::cpu8"] value 0
+        inst [373 or "36::cpu8"] value 0
+        inst [374 or "NMI::cpu8"] value 225
+        inst [375 or "LOC::cpu8"] value 12466
+        inst [376 or "SPU::cpu8"] value 0
+        inst [377 or "PMI::cpu8"] value 225
+        inst [378 or "IWI::cpu8"] value 0
+        inst [379 or "RTR::cpu8"] value 0
+        inst [380 or "RES::cpu8"] value 54429
+        inst [381 or "CAL::cpu8"] value 23576
+        inst [382 or "TLB::cpu8"] value 35597
+        inst [383 or "TRM::cpu8"] value 0
+        inst [384 or "THR::cpu8"] value 0
+        inst [385 or "DFR::cpu8"] value 0
+        inst [386 or "MCE::cpu8"] value 0
+        inst [387 or "MCP::cpu8"] value 78
+        inst [388 or "HYP::cpu8"] value 0
+        inst [389 or "HRE::cpu8"] value 0
+        inst [390 or "HVS::cpu8"] value 0
+        inst [391 or "ERR::cpu8"] value 0
+        inst [392 or "MIS::cpu8"] value 0
+        inst [393 or "PIN::cpu8"] value 0
+        inst [394 or "NPI::cpu8"] value 0
+        inst [395 or "PIW::cpu8"] value 0
+    60.4.0 (kernel.all.interrupts.total):
+        inst [0 or "0"] value 8
+        inst [1 or "8"] value 1
+        inst [2 or "9"] value 0
+        inst [3 or "16"] value 10536
+        inst [4 or "17"] value 807
+        inst [5 or "18"] value 0
+        inst [6 or "19"] value 183412
+        inst [7 or "23"] value 149539
+        inst [8 or "24"] value 222355
+        inst [9 or "25"] value 0
+        inst [10 or "26"] value 0
+        inst [11 or "27"] value 53
+        inst [12 or "28"] value 0
+        inst [13 or "29"] value 0
+        inst [14 or "30"] value 0
+        inst [15 or "31"] value 0
+        inst [16 or "32"] value 0
+        inst [17 or "33"] value 57105
+        inst [18 or "34"] value 775355
+        inst [19 or "35"] value 15
+        inst [20 or "36"] value 15162
+        inst [21 or "NMI"] value 3137
+        inst [22 or "LOC"] value 94799119
+        inst [23 or "SPU"] value 0
+        inst [24 or "PMI"] value 3137
+        inst [25 or "IWI"] value 7
+        inst [26 or "RTR"] value 0
+        inst [27 or "RES"] value 3086104
+        inst [28 or "CAL"] value 310292
+        inst [29 or "TLB"] value 427672
+        inst [30 or "TRM"] value 0
+        inst [31 or "THR"] value 0
+        inst [32 or "DFR"] value 0
+        inst [33 or "MCE"] value 0
+        inst [34 or "MCP"] value 269
+        inst [35 or "HYP"] value 0
+        inst [36 or "HRE"] value 0
+        inst [37 or "HVS"] value 0
+        inst [38 or "ERR"] value 0
+        inst [39 or "MIS"] value 0
+        inst [40 or "PIN"] value 0
+        inst [41 or "NPI"] value 0
+        inst [42 or "PIW"] value 0
     60.0.8 (swap.pagesin): value 0
     60.0.9 (swap.pagesout): value 0
     60.28.6 (mem.vmstat.pgpgin): value 2685938
@@ -3683,8 +5720,8 @@ Temporal Index
     245.0.6 (system.restart.count): value 1
     245.0.7 (system.restart.ncpu): value 10
 
-[14308 bytes]
-14:54:35.000000 239 metrics
+[18008 bytes]
+14:54:35.000000 241 metrics
     60.0.20 (kernel.all.cpu.user): value 95622
     60.0.21 (kernel.all.cpu.nice): value 2586774
     60.0.22 (kernel.all.cpu.sys): value 53358
@@ -3788,7 +5825,404 @@ Temporal Index
         inst [8 or "cpu8"] value 2000
     60.0.13 (kernel.all.pswitch): value 132598184
     60.0.14 (kernel.all.sysfork): value 47083
-    60.0.12 (kernel.all.intr): value 96212396
+    60.0.12 (kernel.all.intr): value 96567796
+    60.4.1 (kernel.percpu.interrupts):
+        inst [0 or "sum::cpu0"] value 12722279
+        inst [1 or "0::cpu0"] value 8
+        inst [2 or "8::cpu0"] value 0
+        inst [3 or "9::cpu0"] value 0
+        inst [4 or "16::cpu0"] value 0
+        inst [5 or "17::cpu0"] value 0
+        inst [6 or "18::cpu0"] value 0
+        inst [7 or "19::cpu0"] value 0
+        inst [8 or "23::cpu0"] value 0
+        inst [9 or "24::cpu0"] value 0
+        inst [10 or "25::cpu0"] value 0
+        inst [11 or "26::cpu0"] value 0
+        inst [12 or "27::cpu0"] value 0
+        inst [13 or "28::cpu0"] value 0
+        inst [14 or "29::cpu0"] value 0
+        inst [15 or "30::cpu0"] value 0
+        inst [16 or "31::cpu0"] value 0
+        inst [17 or "32::cpu0"] value 0
+        inst [18 or "33::cpu0"] value 0
+        inst [19 or "34::cpu0"] value 0
+        inst [20 or "35::cpu0"] value 15
+        inst [21 or "36::cpu0"] value 0
+        inst [22 or "NMI::cpu0"] value 376
+        inst [23 or "LOC::cpu0"] value 11228073
+        inst [24 or "SPU::cpu0"] value 0
+        inst [25 or "PMI::cpu0"] value 376
+        inst [26 or "IWI::cpu0"] value 0
+        inst [27 or "RTR::cpu0"] value 0
+        inst [28 or "RES::cpu0"] value 1421353
+        inst [29 or "CAL::cpu0"] value 34172
+        inst [30 or "TLB::cpu0"] value 37883
+        inst [31 or "TRM::cpu0"] value 0
+        inst [32 or "THR::cpu0"] value 0
+        inst [33 or "DFR::cpu0"] value 0
+        inst [34 or "MCE::cpu0"] value 0
+        inst [35 or "MCP::cpu0"] value 23
+        inst [36 or "HYP::cpu0"] value 0
+        inst [37 or "HRE::cpu0"] value 0
+        inst [38 or "HVS::cpu0"] value 0
+        inst [39 or "ERR::cpu0"] value 0
+        inst [40 or "MIS::cpu0"] value 0
+        inst [41 or "PIN::cpu0"] value 0
+        inst [42 or "NPI::cpu0"] value 0
+        inst [43 or "PIW::cpu0"] value 0
+        inst [44 or "sum::cpu1"] value 13183251
+        inst [45 or "0::cpu1"] value 0
+        inst [46 or "8::cpu1"] value 0
+        inst [47 or "9::cpu1"] value 0
+        inst [48 or "16::cpu1"] value 0
+        inst [49 or "17::cpu1"] value 0
+        inst [50 or "18::cpu1"] value 0
+        inst [51 or "19::cpu1"] value 0
+        inst [52 or "23::cpu1"] value 0
+        inst [53 or "24::cpu1"] value 0
+        inst [54 or "25::cpu1"] value 0
+        inst [55 or "26::cpu1"] value 0
+        inst [56 or "27::cpu1"] value 0
+        inst [57 or "28::cpu1"] value 0
+        inst [58 or "29::cpu1"] value 0
+        inst [59 or "30::cpu1"] value 0
+        inst [60 or "31::cpu1"] value 0
+        inst [61 or "32::cpu1"] value 0
+        inst [62 or "33::cpu1"] value 0
+        inst [63 or "34::cpu1"] value 0
+        inst [64 or "35::cpu1"] value 0
+        inst [65 or "36::cpu1"] value 15162
+        inst [66 or "NMI::cpu1"] value 405
+        inst [67 or "LOC::cpu1"] value 12522126
+        inst [68 or "SPU::cpu1"] value 0
+        inst [69 or "PMI::cpu1"] value 405
+        inst [70 or "IWI::cpu1"] value 0
+        inst [71 or "RTR::cpu1"] value 0
+        inst [72 or "RES::cpu1"] value 557675
+        inst [73 or "CAL::cpu1"] value 38906
+        inst [74 or "TLB::cpu1"] value 48548
+        inst [75 or "TRM::cpu1"] value 0
+        inst [76 or "THR::cpu1"] value 0
+        inst [77 or "DFR::cpu1"] value 0
+        inst [78 or "MCE::cpu1"] value 0
+        inst [79 or "MCP::cpu1"] value 24
+        inst [80 or "HYP::cpu1"] value 0
+        inst [81 or "HRE::cpu1"] value 0
+        inst [82 or "HVS::cpu1"] value 0
+        inst [83 or "ERR::cpu1"] value 0
+        inst [84 or "MIS::cpu1"] value 0
+        inst [85 or "PIN::cpu1"] value 0
+        inst [86 or "NPI::cpu1"] value 0
+        inst [87 or "PIW::cpu1"] value 0
+        inst [88 or "sum::cpu2"] value 8621864
+        inst [89 or "0::cpu2"] value 0
+        inst [90 or "8::cpu2"] value 0
+        inst [91 or "9::cpu2"] value 0
+        inst [92 or "16::cpu2"] value 0
+        inst [93 or "17::cpu2"] value 807
+        inst [94 or "18::cpu2"] value 0
+        inst [95 or "19::cpu2"] value 0
+        inst [96 or "23::cpu2"] value 0
+        inst [97 or "24::cpu2"] value 221274
+        inst [98 or "25::cpu2"] value 0
+        inst [99 or "26::cpu2"] value 0
+        inst [100 or "27::cpu2"] value 0
+        inst [101 or "28::cpu2"] value 0
+        inst [102 or "29::cpu2"] value 0
+        inst [103 or "30::cpu2"] value 0
+        inst [104 or "31::cpu2"] value 0
+        inst [105 or "32::cpu2"] value 0
+        inst [106 or "33::cpu2"] value 0
+        inst [107 or "34::cpu2"] value 0
+        inst [108 or "35::cpu2"] value 0
+        inst [109 or "36::cpu2"] value 0
+        inst [110 or "NMI::cpu2"] value 600
+        inst [111 or "LOC::cpu2"] value 8243161
+        inst [112 or "SPU::cpu2"] value 0
+        inst [113 or "PMI::cpu2"] value 600
+        inst [114 or "IWI::cpu2"] value 6
+        inst [115 or "RTR::cpu2"] value 0
+        inst [116 or "RES::cpu2"] value 104876
+        inst [117 or "CAL::cpu2"] value 27725
+        inst [118 or "TLB::cpu2"] value 22791
+        inst [119 or "TRM::cpu2"] value 0
+        inst [120 or "THR::cpu2"] value 0
+        inst [121 or "DFR::cpu2"] value 0
+        inst [122 or "MCE::cpu2"] value 0
+        inst [123 or "MCP::cpu2"] value 24
+        inst [124 or "HYP::cpu2"] value 0
+        inst [125 or "HRE::cpu2"] value 0
+        inst [126 or "HVS::cpu2"] value 0
+        inst [127 or "ERR::cpu2"] value 0
+        inst [128 or "MIS::cpu2"] value 0
+        inst [129 or "PIN::cpu2"] value 0
+        inst [130 or "NPI::cpu2"] value 0
+        inst [131 or "PIW::cpu2"] value 0
+        inst [132 or "sum::cpu3"] value 9458809
+        inst [133 or "0::cpu3"] value 0
+        inst [134 or "8::cpu3"] value 0
+        inst [135 or "9::cpu3"] value 0
+        inst [136 or "16::cpu3"] value 10536
+        inst [137 or "17::cpu3"] value 0
+        inst [138 or "18::cpu3"] value 0
+        inst [139 or "19::cpu3"] value 0
+        inst [140 or "23::cpu3"] value 0
+        inst [141 or "24::cpu3"] value 0
+        inst [142 or "25::cpu3"] value 0
+        inst [143 or "26::cpu3"] value 0
+        inst [144 or "27::cpu3"] value 0
+        inst [145 or "28::cpu3"] value 0
+        inst [146 or "29::cpu3"] value 0
+        inst [147 or "30::cpu3"] value 0
+        inst [148 or "31::cpu3"] value 0
+        inst [149 or "32::cpu3"] value 0
+        inst [150 or "33::cpu3"] value 53913
+        inst [151 or "34::cpu3"] value 0
+        inst [152 or "35::cpu3"] value 0
+        inst [153 or "36::cpu3"] value 0
+        inst [154 or "NMI::cpu3"] value 595
+        inst [155 or "LOC::cpu3"] value 9181047
+        inst [156 or "SPU::cpu3"] value 0
+        inst [157 or "PMI::cpu3"] value 595
+        inst [158 or "IWI::cpu3"] value 1
+        inst [159 or "RTR::cpu3"] value 0
+        inst [160 or "RES::cpu3"] value 149065
+        inst [161 or "CAL::cpu3"] value 30252
+        inst [162 or "TLB::cpu3"] value 32781
+        inst [163 or "TRM::cpu3"] value 0
+        inst [164 or "THR::cpu3"] value 0
+        inst [165 or "DFR::cpu3"] value 0
+        inst [166 or "MCE::cpu3"] value 0
+        inst [167 or "MCP::cpu3"] value 24
+        inst [168 or "HYP::cpu3"] value 0
+        inst [169 or "HRE::cpu3"] value 0
+        inst [170 or "HVS::cpu3"] value 0
+        inst [171 or "ERR::cpu3"] value 0
+        inst [172 or "MIS::cpu3"] value 0
+        inst [173 or "PIN::cpu3"] value 0
+        inst [174 or "NPI::cpu3"] value 0
+        inst [175 or "PIW::cpu3"] value 0
+        inst [176 or "sum::cpu4"] value 13993792
+        inst [177 or "0::cpu4"] value 0
+        inst [178 or "8::cpu4"] value 0
+        inst [179 or "9::cpu4"] value 0
+        inst [180 or "16::cpu4"] value 0
+        inst [181 or "17::cpu4"] value 0
+        inst [182 or "18::cpu4"] value 0
+        inst [183 or "19::cpu4"] value 181209
+        inst [184 or "23::cpu4"] value 147202
+        inst [185 or "24::cpu4"] value 0
+        inst [186 or "25::cpu4"] value 0
+        inst [187 or "26::cpu4"] value 0
+        inst [188 or "27::cpu4"] value 0
+        inst [189 or "28::cpu4"] value 0
+        inst [190 or "29::cpu4"] value 0
+        inst [191 or "30::cpu4"] value 0
+        inst [192 or "31::cpu4"] value 0
+        inst [193 or "32::cpu4"] value 0
+        inst [194 or "33::cpu4"] value 0
+        inst [195 or "34::cpu4"] value 0
+        inst [196 or "35::cpu4"] value 0
+        inst [197 or "36::cpu4"] value 0
+        inst [198 or "NMI::cpu4"] value 338
+        inst [199 or "LOC::cpu4"] value 13047185
+        inst [200 or "SPU::cpu4"] value 0
+        inst [201 or "PMI::cpu4"] value 338
+        inst [202 or "IWI::cpu4"] value 0
+        inst [203 or "RTR::cpu4"] value 0
+        inst [204 or "RES::cpu4"] value 547438
+        inst [205 or "CAL::cpu4"] value 27589
+        inst [206 or "TLB::cpu4"] value 42469
+        inst [207 or "TRM::cpu4"] value 0
+        inst [208 or "THR::cpu4"] value 0
+        inst [209 or "DFR::cpu4"] value 0
+        inst [210 or "MCE::cpu4"] value 0
+        inst [211 or "MCP::cpu4"] value 24
+        inst [212 or "HYP::cpu4"] value 0
+        inst [213 or "HRE::cpu4"] value 0
+        inst [214 or "HVS::cpu4"] value 0
+        inst [215 or "ERR::cpu4"] value 0
+        inst [216 or "MIS::cpu4"] value 0
+        inst [217 or "PIN::cpu4"] value 0
+        inst [218 or "NPI::cpu4"] value 0
+        inst [219 or "PIW::cpu4"] value 0
+        inst [220 or "sum::cpu5"] value 11282113
+        inst [221 or "0::cpu5"] value 0
+        inst [222 or "8::cpu5"] value 1
+        inst [223 or "9::cpu5"] value 0
+        inst [224 or "16::cpu5"] value 0
+        inst [225 or "17::cpu5"] value 0
+        inst [226 or "18::cpu5"] value 0
+        inst [227 or "19::cpu5"] value 0
+        inst [228 or "23::cpu5"] value 0
+        inst [229 or "24::cpu5"] value 0
+        inst [230 or "25::cpu5"] value 0
+        inst [231 or "26::cpu5"] value 0
+        inst [232 or "27::cpu5"] value 0
+        inst [233 or "28::cpu5"] value 0
+        inst [234 or "29::cpu5"] value 0
+        inst [235 or "30::cpu5"] value 0
+        inst [236 or "31::cpu5"] value 0
+        inst [237 or "32::cpu5"] value 0
+        inst [238 or "33::cpu5"] value 0
+        inst [239 or "34::cpu5"] value 0
+        inst [240 or "35::cpu5"] value 0
+        inst [241 or "36::cpu5"] value 0
+        inst [242 or "NMI::cpu5"] value 345
+        inst [243 or "LOC::cpu5"] value 11124166
+        inst [244 or "SPU::cpu5"] value 0
+        inst [245 or "PMI::cpu5"] value 345
+        inst [246 or "IWI::cpu5"] value 0
+        inst [247 or "RTR::cpu5"] value 0
+        inst [248 or "RES::cpu5"] value 85576
+        inst [249 or "CAL::cpu5"] value 31994
+        inst [250 or "TLB::cpu5"] value 39662
+        inst [251 or "TRM::cpu5"] value 0
+        inst [252 or "THR::cpu5"] value 0
+        inst [253 or "DFR::cpu5"] value 0
+        inst [254 or "MCE::cpu5"] value 0
+        inst [255 or "MCP::cpu5"] value 24
+        inst [256 or "HYP::cpu5"] value 0
+        inst [257 or "HRE::cpu5"] value 0
+        inst [258 or "HVS::cpu5"] value 0
+        inst [259 or "ERR::cpu5"] value 0
+        inst [260 or "MIS::cpu5"] value 0
+        inst [261 or "PIN::cpu5"] value 0
+        inst [262 or "NPI::cpu5"] value 0
+        inst [263 or "PIW::cpu5"] value 0
+        inst [264 or "sum::cpu6"] value 14653430
+        inst [265 or "0::cpu6"] value 0
+        inst [266 or "8::cpu6"] value 0
+        inst [267 or "9::cpu6"] value 0
+        inst [268 or "16::cpu6"] value 0
+        inst [269 or "17::cpu6"] value 0
+        inst [270 or "18::cpu6"] value 0
+        inst [271 or "19::cpu6"] value 0
+        inst [272 or "23::cpu6"] value 0
+        inst [273 or "24::cpu6"] value 0
+        inst [274 or "25::cpu6"] value 0
+        inst [275 or "26::cpu6"] value 0
+        inst [276 or "27::cpu6"] value 0
+        inst [277 or "28::cpu6"] value 0
+        inst [278 or "29::cpu6"] value 0
+        inst [279 or "30::cpu6"] value 0
+        inst [280 or "31::cpu6"] value 0
+        inst [281 or "32::cpu6"] value 0
+        inst [282 or "33::cpu6"] value 0
+        inst [283 or "34::cpu6"] value 760815
+        inst [284 or "35::cpu6"] value 0
+        inst [285 or "36::cpu6"] value 0
+        inst [286 or "NMI::cpu6"] value 101
+        inst [287 or "LOC::cpu6"] value 13685641
+        inst [288 or "SPU::cpu6"] value 0
+        inst [289 or "PMI::cpu6"] value 101
+        inst [290 or "IWI::cpu6"] value 0
+        inst [291 or "RTR::cpu6"] value 0
+        inst [292 or "RES::cpu6"] value 92730
+        inst [293 or "CAL::cpu6"] value 42414
+        inst [294 or "TLB::cpu6"] value 71604
+        inst [295 or "TRM::cpu6"] value 0
+        inst [296 or "THR::cpu6"] value 0
+        inst [297 or "DFR::cpu6"] value 0
+        inst [298 or "MCE::cpu6"] value 0
+        inst [299 or "MCP::cpu6"] value 24
+        inst [300 or "HYP::cpu6"] value 0
+        inst [301 or "HRE::cpu6"] value 0
+        inst [302 or "HVS::cpu6"] value 0
+        inst [303 or "ERR::cpu6"] value 0
+        inst [304 or "MIS::cpu6"] value 0
+        inst [305 or "PIN::cpu6"] value 0
+        inst [306 or "NPI::cpu6"] value 0
+        inst [307 or "PIW::cpu6"] value 0
+        inst [308 or "sum::cpu7"] value 12652258
+        inst [309 or "0::cpu7"] value 0
+        inst [310 or "8::cpu7"] value 0
+        inst [311 or "9::cpu7"] value 0
+        inst [312 or "16::cpu7"] value 0
+        inst [313 or "17::cpu7"] value 0
+        inst [314 or "18::cpu7"] value 0
+        inst [315 or "19::cpu7"] value 0
+        inst [316 or "23::cpu7"] value 0
+        inst [317 or "24::cpu7"] value 0
+        inst [318 or "25::cpu7"] value 0
+        inst [319 or "26::cpu7"] value 0
+        inst [320 or "27::cpu7"] value 0
+        inst [321 or "28::cpu7"] value 0
+        inst [322 or "29::cpu7"] value 0
+        inst [323 or "30::cpu7"] value 0
+        inst [324 or "31::cpu7"] value 0
+        inst [325 or "32::cpu7"] value 0
+        inst [326 or "33::cpu7"] value 0
+        inst [327 or "34::cpu7"] value 0
+        inst [328 or "35::cpu7"] value 0
+        inst [329 or "36::cpu7"] value 0
+        inst [330 or "NMI::cpu7"] value 137
+        inst [331 or "LOC::cpu7"] value 12504738
+        inst [332 or "SPU::cpu7"] value 0
+        inst [333 or "PMI::cpu7"] value 137
+        inst [334 or "IWI::cpu7"] value 0
+        inst [335 or "RTR::cpu7"] value 0
+        inst [336 or "RES::cpu7"] value 49987
+        inst [337 or "CAL::cpu7"] value 37588
+        inst [338 or "TLB::cpu7"] value 59647
+        inst [339 or "TRM::cpu7"] value 0
+        inst [340 or "THR::cpu7"] value 0
+        inst [341 or "DFR::cpu7"] value 0
+        inst [342 or "MCE::cpu7"] value 0
+        inst [343 or "MCP::cpu7"] value 24
+        inst [344 or "HYP::cpu7"] value 0
+        inst [345 or "HRE::cpu7"] value 0
+        inst [346 or "HVS::cpu7"] value 0
+        inst [347 or "ERR::cpu7"] value 0
+        inst [348 or "MIS::cpu7"] value 0
+        inst [349 or "PIN::cpu7"] value 0
+        inst [350 or "NPI::cpu7"] value 0
+        inst [351 or "PIW::cpu7"] value 0
+    60.4.0 (kernel.all.interrupts.total):
+        inst [0 or "0"] value 8
+        inst [1 or "8"] value 1
+        inst [2 or "9"] value 0
+        inst [3 or "16"] value 10536
+        inst [4 or "17"] value 807
+        inst [5 or "18"] value 0
+        inst [6 or "19"] value 181209
+        inst [7 or "23"] value 147202
+        inst [8 or "24"] value 221274
+        inst [9 or "25"] value 0
+        inst [10 or "26"] value 0
+        inst [11 or "27"] value 0
+        inst [12 or "28"] value 0
+        inst [13 or "29"] value 0
+        inst [14 or "30"] value 0
+        inst [15 or "31"] value 0
+        inst [16 or "32"] value 0
+        inst [17 or "33"] value 53913
+        inst [18 or "34"] value 760815
+        inst [19 or "35"] value 15
+        inst [20 or "36"] value 15162
+        inst [21 or "NMI"] value 2897
+        inst [22 or "LOC"] value 91536137
+        inst [23 or "SPU"] value 0
+        inst [24 or "PMI"] value 2897
+        inst [25 or "IWI"] value 7
+        inst [26 or "RTR"] value 0
+        inst [27 or "RES"] value 3008700
+        inst [28 or "CAL"] value 270640
+        inst [29 or "TLB"] value 355385
+        inst [30 or "TRM"] value 0
+        inst [31 or "THR"] value 0
+        inst [32 or "DFR"] value 0
+        inst [33 or "MCE"] value 0
+        inst [34 or "MCP"] value 191
+        inst [35 or "HYP"] value 0
+        inst [36 or "HRE"] value 0
+        inst [37 or "HVS"] value 0
+        inst [38 or "ERR"] value 0
+        inst [39 or "MIS"] value 0
+        inst [40 or "PIN"] value 0
+        inst [41 or "NPI"] value 0
+        inst [42 or "PIW"] value 0
     60.0.8 (swap.pagesin): value 0
     60.0.9 (swap.pagesout): value 0
     60.28.6 (mem.vmstat.pgpgin): value 2685938

@@ -13,7 +13,7 @@ Extra structures available: N
 List of activities:
 01: [8b] A_CPU                Y:   9	(10,0,0)
 02: [8b] A_PCSW               N:   1	(1,1,0)
-03: [8b] A_IRQ                Y: 489	(1,0,0)
+03: [8b] A_IRQ                Y: 489	(1,0,0) 	[Unknown format]
 04: [8a] A_SWAP               N:   1	(0,2,0)
 05: [8a] A_PAGE               N:   1	(0,8,0)
 06: [8b] A_IO                 N:   1	(5,0,0)

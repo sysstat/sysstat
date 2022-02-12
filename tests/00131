@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp && diff -u tests/expected.sar-all tests/out.sar-all.tmp
+LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp && diff -u tests/expected.sar-all tests/out.sar-all.tmp

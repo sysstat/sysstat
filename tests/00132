@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -A -I 2-5 -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp && diff -u tests/expected3.sar-all tests/out3.sar-all.tmp
+LC_ALL=C TZ=GMT ./sar -A --int=30-35,RES -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp && diff -u tests/expected3.sar-all tests/out3.sar-all.tmp

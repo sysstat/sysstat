@@ -47,15 +47,21 @@ Average:          8      5.26      0.00     26.97      0.00      0.00     67.76
 13:20:27         3.66  64945.01
 Average:         3.99  60239.12
 
-13:20:15         INTR    intr/s
-13:20:19            2      0.00
-13:20:19            3      0.00
-13:20:23            2      0.00
-13:20:23            3      0.00
-13:20:27            2      0.00
-13:20:27            3      0.00
-Average:            2      0.00
-Average:            3      0.00
+13:20:15         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU6      CPU7
+13:20:19           19     25.92      0.00      0.00      0.00      0.00     25.92      0.00      0.00      0.00
+13:20:19          NMI      0.00      0.03      0.00      0.00      0.13      0.00      0.00      0.03      0.00
+
+13:20:19         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU7
+13:20:23           19     23.34      0.00      0.00      0.00      0.00     23.34      0.00      0.00
+13:20:23          NMI      0.00      0.00      0.00      0.03      0.10      0.00      0.03      0.00
+
+13:20:23         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU7      CPU8
+13:20:27           19     22.73      0.00      0.00      0.00      0.00     22.73      0.00      0.00      0.00
+13:20:27          NMI      5.87      0.05      0.03      0.00      0.03      0.05      0.00      0.00      1.90
+
+Average:         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU6      CPU7      CPU8
+Average:           19     23.90      0.00      0.00      0.00      0.00     23.90      0.00      0.00      0.00      0.00
+Average:          NMI      0.00      0.03      0.01      0.01      0.08      0.02      0.01      0.01      0.00      0.72
 
 13:20:15        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
 13:20:19           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
@@ -136,12 +142,14 @@ Average:          8      0.00      0.00      0.00      0.00      0.00    100.00
 13:22:35     COM Second comment!
 Average:         3.56  68409.30
 
-13:22:21         INTR    intr/s
-13:22:31            2      0.00
-13:22:31            3      0.00
+13:22:21         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU6      CPU7
+13:22:31           19     25.92      0.00      0.00      0.00      0.00     25.92      0.00      0.00      0.00
+13:22:31          NMI      0.00      0.03      0.00      0.00      0.13      0.00      0.00      0.03      0.00
 13:22:35     COM Second comment!
-Average:            2      0.00
-Average:            3      0.00
+
+Average:         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU6      CPU7      CPU8
+Average:           19     25.92      0.00      0.00      0.00      0.00     25.92      0.00      0.00      0.00
+Average:          NMI      0.00      0.03      0.00      0.00      0.13      0.00      0.00      0.03      0.00
 
 13:22:21        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
 13:22:31           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
@@ -213,15 +221,19 @@ Average:          8      0.00      0.00      0.00      0.00      0.00    100.00
 13:24:30         4.83  46287.74
 Average:         4.20  57336.12
 
-13:24:20         INTR    intr/s
-13:24:25            2      0.00
-13:24:25            3      0.00
+13:24:20         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU6      CPU7
+13:24:25           19     25.92      0.00      0.00      0.00      0.00     25.92      0.00      0.00      0.00
+13:24:25          NMI      0.00      0.03      0.00      0.00      0.13      0.00      0.00      0.03      0.00
 13:22:46     COM Third...
 13:22:47     COM and fourth comment!
-13:24:30            2      0.00
-13:24:30            3      0.00
-Average:            2      0.00
-Average:            3      0.00
+
+13:24:25         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU7
+13:24:30           19     23.34      0.00      0.00      0.00      0.00     23.34      0.00      0.00
+13:24:30          NMI      0.00      0.00      0.00      0.03      0.10      0.00      0.03      0.00
+
+Average:         INTR       all      CPU0      CPU1      CPU2      CPU3      CPU4      CPU5      CPU6      CPU7      CPU8
+Average:           19     24.63      0.00      0.00      0.00      0.00     24.63      0.00      0.00      0.00
+Average:          NMI      0.00      0.02      0.00      0.02      0.11      0.00      0.02      0.02      0.00
 
 13:24:20        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
 13:24:25           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00

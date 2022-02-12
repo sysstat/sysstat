@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.9 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.9.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.10 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.10.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.9</sysdata-version>
+	<sysdata-version>3.10</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -30,495 +30,402 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 				<interrupts>
 					<int-global per="second">
-						<irq intr="sum" value="35525.06"/>
-						<irq intr="0" value="0.00"/>
-						<irq intr="1" value="0.00"/>
-						<irq intr="2" value="0.00"/>
-						<irq intr="3" value="0.00"/>
-						<irq intr="4" value="0.00"/>
-						<irq intr="5" value="0.00"/>
-						<irq intr="6" value="0.00"/>
-						<irq intr="7" value="0.00"/>
-						<irq intr="8" value="0.00"/>
-						<irq intr="9" value="0.00"/>
-						<irq intr="10" value="0.00"/>
-						<irq intr="11" value="0.00"/>
-						<irq intr="12" value="0.00"/>
-						<irq intr="13" value="0.00"/>
-						<irq intr="14" value="0.00"/>
-						<irq intr="15" value="0.00"/>
-						<irq intr="16" value="0.00"/>
-						<irq intr="17" value="0.00"/>
-						<irq intr="18" value="0.00"/>
-						<irq intr="19" value="25.92"/>
-						<irq intr="20" value="0.00"/>
-						<irq intr="21" value="0.00"/>
-						<irq intr="22" value="0.00"/>
-						<irq intr="23" value="35.03"/>
-						<irq intr="24" value="10.39"/>
-						<irq intr="25" value="0.00"/>
-						<irq intr="26" value="0.00"/>
-						<irq intr="27" value="0.00"/>
-						<irq intr="28" value="0.00"/>
-						<irq intr="29" value="0.00"/>
-						<irq intr="30" value="0.00"/>
-						<irq intr="31" value="0.00"/>
-						<irq intr="32" value="0.00"/>
-						<irq intr="33" value="15.11"/>
-						<irq intr="34" value="149.98"/>
-						<irq intr="35" value="0.00"/>
-						<irq intr="36" value="0.00"/>
-						<irq intr="37" value="0.00"/>
-						<irq intr="38" value="0.00"/>
-						<irq intr="39" value="0.00"/>
-						<irq intr="40" value="0.00"/>
-						<irq intr="41" value="0.00"/>
-						<irq intr="42" value="0.00"/>
-						<irq intr="43" value="0.00"/>
-						<irq intr="44" value="0.00"/>
-						<irq intr="45" value="0.00"/>
-						<irq intr="46" value="0.00"/>
-						<irq intr="47" value="0.00"/>
-						<irq intr="48" value="0.00"/>
-						<irq intr="49" value="0.00"/>
-						<irq intr="50" value="0.00"/>
-						<irq intr="51" value="0.00"/>
-						<irq intr="52" value="0.00"/>
-						<irq intr="53" value="0.00"/>
-						<irq intr="54" value="0.00"/>
-						<irq intr="55" value="0.00"/>
-						<irq intr="56" value="0.00"/>
-						<irq intr="57" value="0.00"/>
-						<irq intr="58" value="0.00"/>
-						<irq intr="59" value="0.00"/>
-						<irq intr="60" value="0.00"/>
-						<irq intr="61" value="0.00"/>
-						<irq intr="62" value="0.00"/>
-						<irq intr="63" value="0.00"/>
-						<irq intr="64" value="0.00"/>
-						<irq intr="65" value="0.00"/>
-						<irq intr="66" value="0.00"/>
-						<irq intr="67" value="0.00"/>
-						<irq intr="68" value="0.00"/>
-						<irq intr="69" value="0.00"/>
-						<irq intr="70" value="0.00"/>
-						<irq intr="71" value="0.00"/>
-						<irq intr="72" value="0.00"/>
-						<irq intr="73" value="0.00"/>
-						<irq intr="74" value="0.00"/>
-						<irq intr="75" value="0.00"/>
-						<irq intr="76" value="0.00"/>
-						<irq intr="77" value="0.00"/>
-						<irq intr="78" value="0.00"/>
-						<irq intr="79" value="0.00"/>
-						<irq intr="80" value="0.00"/>
-						<irq intr="81" value="0.00"/>
-						<irq intr="82" value="0.00"/>
-						<irq intr="83" value="0.00"/>
-						<irq intr="84" value="0.00"/>
-						<irq intr="85" value="0.00"/>
-						<irq intr="86" value="0.00"/>
-						<irq intr="87" value="0.00"/>
-						<irq intr="88" value="0.00"/>
-						<irq intr="89" value="0.00"/>
-						<irq intr="90" value="0.00"/>
-						<irq intr="91" value="0.00"/>
-						<irq intr="92" value="0.00"/>
-						<irq intr="93" value="0.00"/>
-						<irq intr="94" value="0.00"/>
-						<irq intr="95" value="0.00"/>
-						<irq intr="96" value="0.00"/>
-						<irq intr="97" value="0.00"/>
-						<irq intr="98" value="0.00"/>
-						<irq intr="99" value="0.00"/>
-						<irq intr="100" value="0.00"/>
-						<irq intr="101" value="0.00"/>
-						<irq intr="102" value="0.00"/>
-						<irq intr="103" value="0.00"/>
-						<irq intr="104" value="0.00"/>
-						<irq intr="105" value="0.00"/>
-						<irq intr="106" value="0.00"/>
-						<irq intr="107" value="0.00"/>
-						<irq intr="108" value="0.00"/>
-						<irq intr="109" value="0.00"/>
-						<irq intr="110" value="0.00"/>
-						<irq intr="111" value="0.00"/>
-						<irq intr="112" value="0.00"/>
-						<irq intr="113" value="0.00"/>
-						<irq intr="114" value="0.00"/>
-						<irq intr="115" value="0.00"/>
-						<irq intr="116" value="0.00"/>
-						<irq intr="117" value="0.00"/>
-						<irq intr="118" value="0.00"/>
-						<irq intr="119" value="0.00"/>
-						<irq intr="120" value="0.00"/>
-						<irq intr="121" value="0.00"/>
-						<irq intr="122" value="0.00"/>
-						<irq intr="123" value="0.00"/>
-						<irq intr="124" value="0.00"/>
-						<irq intr="125" value="0.00"/>
-						<irq intr="126" value="0.00"/>
-						<irq intr="127" value="0.00"/>
-						<irq intr="128" value="0.00"/>
-						<irq intr="129" value="0.00"/>
-						<irq intr="130" value="0.00"/>
-						<irq intr="131" value="0.00"/>
-						<irq intr="132" value="0.00"/>
-						<irq intr="133" value="0.00"/>
-						<irq intr="134" value="0.00"/>
-						<irq intr="135" value="0.00"/>
-						<irq intr="136" value="0.00"/>
-						<irq intr="137" value="0.00"/>
-						<irq intr="138" value="0.00"/>
-						<irq intr="139" value="0.00"/>
-						<irq intr="140" value="0.00"/>
-						<irq intr="141" value="0.00"/>
-						<irq intr="142" value="0.00"/>
-						<irq intr="143" value="0.00"/>
-						<irq intr="144" value="0.00"/>
-						<irq intr="145" value="0.00"/>
-						<irq intr="146" value="0.00"/>
-						<irq intr="147" value="0.00"/>
-						<irq intr="148" value="0.00"/>
-						<irq intr="149" value="0.00"/>
-						<irq intr="150" value="0.00"/>
-						<irq intr="151" value="0.00"/>
-						<irq intr="152" value="0.00"/>
-						<irq intr="153" value="0.00"/>
-						<irq intr="154" value="0.00"/>
-						<irq intr="155" value="0.00"/>
-						<irq intr="156" value="0.00"/>
-						<irq intr="157" value="0.00"/>
-						<irq intr="158" value="0.00"/>
-						<irq intr="159" value="0.00"/>
-						<irq intr="160" value="0.00"/>
-						<irq intr="161" value="0.00"/>
-						<irq intr="162" value="0.00"/>
-						<irq intr="163" value="0.00"/>
-						<irq intr="164" value="0.00"/>
-						<irq intr="165" value="0.00"/>
-						<irq intr="166" value="0.00"/>
-						<irq intr="167" value="0.00"/>
-						<irq intr="168" value="0.00"/>
-						<irq intr="169" value="0.00"/>
-						<irq intr="170" value="0.00"/>
-						<irq intr="171" value="0.00"/>
-						<irq intr="172" value="0.00"/>
-						<irq intr="173" value="0.00"/>
-						<irq intr="174" value="0.00"/>
-						<irq intr="175" value="0.00"/>
-						<irq intr="176" value="0.00"/>
-						<irq intr="177" value="0.00"/>
-						<irq intr="178" value="0.00"/>
-						<irq intr="179" value="0.00"/>
-						<irq intr="180" value="0.00"/>
-						<irq intr="181" value="0.00"/>
-						<irq intr="182" value="0.00"/>
-						<irq intr="183" value="0.00"/>
-						<irq intr="184" value="0.00"/>
-						<irq intr="185" value="0.00"/>
-						<irq intr="186" value="0.00"/>
-						<irq intr="187" value="0.00"/>
-						<irq intr="188" value="0.00"/>
-						<irq intr="189" value="0.00"/>
-						<irq intr="190" value="0.00"/>
-						<irq intr="191" value="0.00"/>
-						<irq intr="192" value="0.00"/>
-						<irq intr="193" value="0.00"/>
-						<irq intr="194" value="0.00"/>
-						<irq intr="195" value="0.00"/>
-						<irq intr="196" value="0.00"/>
-						<irq intr="197" value="0.00"/>
-						<irq intr="198" value="0.00"/>
-						<irq intr="199" value="0.00"/>
-						<irq intr="200" value="0.00"/>
-						<irq intr="201" value="0.00"/>
-						<irq intr="202" value="0.00"/>
-						<irq intr="203" value="0.00"/>
-						<irq intr="204" value="0.00"/>
-						<irq intr="205" value="0.00"/>
-						<irq intr="206" value="0.00"/>
-						<irq intr="207" value="0.00"/>
-						<irq intr="208" value="0.00"/>
-						<irq intr="209" value="0.00"/>
-						<irq intr="210" value="0.00"/>
-						<irq intr="211" value="0.00"/>
-						<irq intr="212" value="0.00"/>
-						<irq intr="213" value="0.00"/>
-						<irq intr="214" value="0.00"/>
-						<irq intr="215" value="0.00"/>
-						<irq intr="216" value="0.00"/>
-						<irq intr="217" value="0.00"/>
-						<irq intr="218" value="0.00"/>
-						<irq intr="219" value="0.00"/>
-						<irq intr="220" value="0.00"/>
-						<irq intr="221" value="0.00"/>
-						<irq intr="222" value="0.00"/>
-						<irq intr="223" value="0.00"/>
-						<irq intr="224" value="0.00"/>
-						<irq intr="225" value="0.00"/>
-						<irq intr="226" value="0.00"/>
-						<irq intr="227" value="0.00"/>
-						<irq intr="228" value="0.00"/>
-						<irq intr="229" value="0.00"/>
-						<irq intr="230" value="0.00"/>
-						<irq intr="231" value="0.00"/>
-						<irq intr="232" value="0.00"/>
-						<irq intr="233" value="0.00"/>
-						<irq intr="234" value="0.00"/>
-						<irq intr="235" value="0.00"/>
-						<irq intr="236" value="0.00"/>
-						<irq intr="237" value="0.00"/>
-						<irq intr="238" value="0.00"/>
-						<irq intr="239" value="0.00"/>
-						<irq intr="240" value="0.00"/>
-						<irq intr="241" value="0.00"/>
-						<irq intr="242" value="0.00"/>
-						<irq intr="243" value="0.00"/>
-						<irq intr="244" value="0.00"/>
-						<irq intr="245" value="0.00"/>
-						<irq intr="246" value="0.00"/>
-						<irq intr="247" value="0.00"/>
-						<irq intr="248" value="0.00"/>
-						<irq intr="249" value="0.00"/>
-						<irq intr="250" value="0.00"/>
-						<irq intr="251" value="0.00"/>
-						<irq intr="252" value="0.00"/>
-						<irq intr="253" value="0.00"/>
-						<irq intr="254" value="0.00"/>
-						<irq intr="255" value="0.00"/>
-						<irq intr="256" value="0.00"/>
-						<irq intr="257" value="0.00"/>
-						<irq intr="258" value="0.00"/>
-						<irq intr="259" value="0.00"/>
-						<irq intr="260" value="0.00"/>
-						<irq intr="261" value="0.00"/>
-						<irq intr="262" value="0.00"/>
-						<irq intr="263" value="0.00"/>
-						<irq intr="264" value="0.00"/>
-						<irq intr="265" value="0.00"/>
-						<irq intr="266" value="0.00"/>
-						<irq intr="267" value="0.00"/>
-						<irq intr="268" value="0.00"/>
-						<irq intr="269" value="0.00"/>
-						<irq intr="270" value="0.00"/>
-						<irq intr="271" value="0.00"/>
-						<irq intr="272" value="0.00"/>
-						<irq intr="273" value="0.00"/>
-						<irq intr="274" value="0.00"/>
-						<irq intr="275" value="0.00"/>
-						<irq intr="276" value="0.00"/>
-						<irq intr="277" value="0.00"/>
-						<irq intr="278" value="0.00"/>
-						<irq intr="279" value="0.00"/>
-						<irq intr="280" value="0.00"/>
-						<irq intr="281" value="0.00"/>
-						<irq intr="282" value="0.00"/>
-						<irq intr="283" value="0.00"/>
-						<irq intr="284" value="0.00"/>
-						<irq intr="285" value="0.00"/>
-						<irq intr="286" value="0.00"/>
-						<irq intr="287" value="0.00"/>
-						<irq intr="288" value="0.00"/>
-						<irq intr="289" value="0.00"/>
-						<irq intr="290" value="0.00"/>
-						<irq intr="291" value="0.00"/>
-						<irq intr="292" value="0.00"/>
-						<irq intr="293" value="0.00"/>
-						<irq intr="294" value="0.00"/>
-						<irq intr="295" value="0.00"/>
-						<irq intr="296" value="0.00"/>
-						<irq intr="297" value="0.00"/>
-						<irq intr="298" value="0.00"/>
-						<irq intr="299" value="0.00"/>
-						<irq intr="300" value="0.00"/>
-						<irq intr="301" value="0.00"/>
-						<irq intr="302" value="0.00"/>
-						<irq intr="303" value="0.00"/>
-						<irq intr="304" value="0.00"/>
-						<irq intr="305" value="0.00"/>
-						<irq intr="306" value="0.00"/>
-						<irq intr="307" value="0.00"/>
-						<irq intr="308" value="0.00"/>
-						<irq intr="309" value="0.00"/>
-						<irq intr="310" value="0.00"/>
-						<irq intr="311" value="0.00"/>
-						<irq intr="312" value="0.00"/>
-						<irq intr="313" value="0.00"/>
-						<irq intr="314" value="0.00"/>
-						<irq intr="315" value="0.00"/>
-						<irq intr="316" value="0.00"/>
-						<irq intr="317" value="0.00"/>
-						<irq intr="318" value="0.00"/>
-						<irq intr="319" value="0.00"/>
-						<irq intr="320" value="0.00"/>
-						<irq intr="321" value="0.00"/>
-						<irq intr="322" value="0.00"/>
-						<irq intr="323" value="0.00"/>
-						<irq intr="324" value="0.00"/>
-						<irq intr="325" value="0.00"/>
-						<irq intr="326" value="0.00"/>
-						<irq intr="327" value="0.00"/>
-						<irq intr="328" value="0.00"/>
-						<irq intr="329" value="0.00"/>
-						<irq intr="330" value="0.00"/>
-						<irq intr="331" value="0.00"/>
-						<irq intr="332" value="0.00"/>
-						<irq intr="333" value="0.00"/>
-						<irq intr="334" value="0.00"/>
-						<irq intr="335" value="0.00"/>
-						<irq intr="336" value="0.00"/>
-						<irq intr="337" value="0.00"/>
-						<irq intr="338" value="0.00"/>
-						<irq intr="339" value="0.00"/>
-						<irq intr="340" value="0.00"/>
-						<irq intr="341" value="0.00"/>
-						<irq intr="342" value="0.00"/>
-						<irq intr="343" value="0.00"/>
-						<irq intr="344" value="0.00"/>
-						<irq intr="345" value="0.00"/>
-						<irq intr="346" value="0.00"/>
-						<irq intr="347" value="0.00"/>
-						<irq intr="348" value="0.00"/>
-						<irq intr="349" value="0.00"/>
-						<irq intr="350" value="0.00"/>
-						<irq intr="351" value="0.00"/>
-						<irq intr="352" value="0.00"/>
-						<irq intr="353" value="0.00"/>
-						<irq intr="354" value="0.00"/>
-						<irq intr="355" value="0.00"/>
-						<irq intr="356" value="0.00"/>
-						<irq intr="357" value="0.00"/>
-						<irq intr="358" value="0.00"/>
-						<irq intr="359" value="0.00"/>
-						<irq intr="360" value="0.00"/>
-						<irq intr="361" value="0.00"/>
-						<irq intr="362" value="0.00"/>
-						<irq intr="363" value="0.00"/>
-						<irq intr="364" value="0.00"/>
-						<irq intr="365" value="0.00"/>
-						<irq intr="366" value="0.00"/>
-						<irq intr="367" value="0.00"/>
-						<irq intr="368" value="0.00"/>
-						<irq intr="369" value="0.00"/>
-						<irq intr="370" value="0.00"/>
-						<irq intr="371" value="0.00"/>
-						<irq intr="372" value="0.00"/>
-						<irq intr="373" value="0.00"/>
-						<irq intr="374" value="0.00"/>
-						<irq intr="375" value="0.00"/>
-						<irq intr="376" value="0.00"/>
-						<irq intr="377" value="0.00"/>
-						<irq intr="378" value="0.00"/>
-						<irq intr="379" value="0.00"/>
-						<irq intr="380" value="0.00"/>
-						<irq intr="381" value="0.00"/>
-						<irq intr="382" value="0.00"/>
-						<irq intr="383" value="0.00"/>
-						<irq intr="384" value="0.00"/>
-						<irq intr="385" value="0.00"/>
-						<irq intr="386" value="0.00"/>
-						<irq intr="387" value="0.00"/>
-						<irq intr="388" value="0.00"/>
-						<irq intr="389" value="0.00"/>
-						<irq intr="390" value="0.00"/>
-						<irq intr="391" value="0.00"/>
-						<irq intr="392" value="0.00"/>
-						<irq intr="393" value="0.00"/>
-						<irq intr="394" value="0.00"/>
-						<irq intr="395" value="0.00"/>
-						<irq intr="396" value="0.00"/>
-						<irq intr="397" value="0.00"/>
-						<irq intr="398" value="0.00"/>
-						<irq intr="399" value="0.00"/>
-						<irq intr="400" value="0.00"/>
-						<irq intr="401" value="0.00"/>
-						<irq intr="402" value="0.00"/>
-						<irq intr="403" value="0.00"/>
-						<irq intr="404" value="0.00"/>
-						<irq intr="405" value="0.00"/>
-						<irq intr="406" value="0.00"/>
-						<irq intr="407" value="0.00"/>
-						<irq intr="408" value="0.00"/>
-						<irq intr="409" value="0.00"/>
-						<irq intr="410" value="0.00"/>
-						<irq intr="411" value="0.00"/>
-						<irq intr="412" value="0.00"/>
-						<irq intr="413" value="0.00"/>
-						<irq intr="414" value="0.00"/>
-						<irq intr="415" value="0.00"/>
-						<irq intr="416" value="0.00"/>
-						<irq intr="417" value="0.00"/>
-						<irq intr="418" value="0.00"/>
-						<irq intr="419" value="0.00"/>
-						<irq intr="420" value="0.00"/>
-						<irq intr="421" value="0.00"/>
-						<irq intr="422" value="0.00"/>
-						<irq intr="423" value="0.00"/>
-						<irq intr="424" value="0.00"/>
-						<irq intr="425" value="0.00"/>
-						<irq intr="426" value="0.00"/>
-						<irq intr="427" value="0.00"/>
-						<irq intr="428" value="0.00"/>
-						<irq intr="429" value="0.00"/>
-						<irq intr="430" value="0.00"/>
-						<irq intr="431" value="0.00"/>
-						<irq intr="432" value="0.00"/>
-						<irq intr="433" value="0.00"/>
-						<irq intr="434" value="0.00"/>
-						<irq intr="435" value="0.00"/>
-						<irq intr="436" value="0.00"/>
-						<irq intr="437" value="0.00"/>
-						<irq intr="438" value="0.00"/>
-						<irq intr="439" value="0.00"/>
-						<irq intr="440" value="0.00"/>
-						<irq intr="441" value="0.00"/>
-						<irq intr="442" value="0.00"/>
-						<irq intr="443" value="0.00"/>
-						<irq intr="444" value="0.00"/>
-						<irq intr="445" value="0.00"/>
-						<irq intr="446" value="0.00"/>
-						<irq intr="447" value="0.00"/>
-						<irq intr="448" value="0.00"/>
-						<irq intr="449" value="0.00"/>
-						<irq intr="450" value="0.00"/>
-						<irq intr="451" value="0.00"/>
-						<irq intr="452" value="0.00"/>
-						<irq intr="453" value="0.00"/>
-						<irq intr="454" value="0.00"/>
-						<irq intr="455" value="0.00"/>
-						<irq intr="456" value="0.00"/>
-						<irq intr="457" value="0.00"/>
-						<irq intr="458" value="0.00"/>
-						<irq intr="459" value="0.00"/>
-						<irq intr="460" value="0.00"/>
-						<irq intr="461" value="0.00"/>
-						<irq intr="462" value="0.00"/>
-						<irq intr="463" value="0.00"/>
-						<irq intr="464" value="0.00"/>
-						<irq intr="465" value="0.00"/>
-						<irq intr="466" value="0.00"/>
-						<irq intr="467" value="0.00"/>
-						<irq intr="468" value="0.00"/>
-						<irq intr="469" value="0.00"/>
-						<irq intr="470" value="0.00"/>
-						<irq intr="471" value="0.00"/>
-						<irq intr="472" value="0.00"/>
-						<irq intr="473" value="0.00"/>
-						<irq intr="474" value="0.00"/>
-						<irq intr="475" value="0.00"/>
-						<irq intr="476" value="0.00"/>
-						<irq intr="477" value="0.00"/>
-						<irq intr="478" value="0.00"/>
-						<irq intr="479" value="0.00"/>
-						<irq intr="480" value="0.00"/>
-						<irq intr="481" value="0.00"/>
-						<irq intr="482" value="0.00"/>
-						<irq intr="483" value="0.00"/>
-						<irq intr="484" value="0.00"/>
-						<irq intr="485" value="0.00"/>
-						<irq intr="486" value="0.00"/>
-						<irq intr="487" value="0.00"/>
+						<irq intr="sum" cpu="all" value="31915.30"/>
+						<irq intr="sum" cpu="0" value="5759.67"/>
+						<irq intr="sum" cpu="1" value="11829.29"/>
+						<irq intr="sum" cpu="2" value="2990.76"/>
+						<irq intr="sum" cpu="3" value="1027.05"/>
+						<irq intr="sum" cpu="4" value="2952.81"/>
+						<irq intr="sum" cpu="5" value="5880.88"/>
+						<irq intr="sum" cpu="6" value="4898.65"/>
+						<irq intr="sum" cpu="7" value="587.30"/>
+						<irq intr="0" cpu="all" value="0.00"/>
+						<irq intr="0" cpu="0" value="0.00"/>
+						<irq intr="0" cpu="1" value="0.00"/>
+						<irq intr="0" cpu="2" value="0.00"/>
+						<irq intr="0" cpu="3" value="0.00"/>
+						<irq intr="0" cpu="4" value="0.00"/>
+						<irq intr="0" cpu="5" value="0.00"/>
+						<irq intr="0" cpu="6" value="0.00"/>
+						<irq intr="0" cpu="7" value="0.00"/>
+						<irq intr="8" cpu="all" value="0.00"/>
+						<irq intr="8" cpu="0" value="0.00"/>
+						<irq intr="8" cpu="1" value="0.00"/>
+						<irq intr="8" cpu="2" value="0.00"/>
+						<irq intr="8" cpu="3" value="0.00"/>
+						<irq intr="8" cpu="4" value="0.00"/>
+						<irq intr="8" cpu="5" value="0.00"/>
+						<irq intr="8" cpu="6" value="0.00"/>
+						<irq intr="8" cpu="7" value="0.00"/>
+						<irq intr="9" cpu="all" value="0.00"/>
+						<irq intr="9" cpu="0" value="0.00"/>
+						<irq intr="9" cpu="1" value="0.00"/>
+						<irq intr="9" cpu="2" value="0.00"/>
+						<irq intr="9" cpu="3" value="0.00"/>
+						<irq intr="9" cpu="4" value="0.00"/>
+						<irq intr="9" cpu="5" value="0.00"/>
+						<irq intr="9" cpu="6" value="0.00"/>
+						<irq intr="9" cpu="7" value="0.00"/>
+						<irq intr="16" cpu="all" value="0.00"/>
+						<irq intr="16" cpu="0" value="0.00"/>
+						<irq intr="16" cpu="1" value="0.00"/>
+						<irq intr="16" cpu="2" value="0.00"/>
+						<irq intr="16" cpu="3" value="0.00"/>
+						<irq intr="16" cpu="4" value="0.00"/>
+						<irq intr="16" cpu="5" value="0.00"/>
+						<irq intr="16" cpu="6" value="0.00"/>
+						<irq intr="16" cpu="7" value="0.00"/>
+						<irq intr="17" cpu="all" value="0.00"/>
+						<irq intr="17" cpu="0" value="0.00"/>
+						<irq intr="17" cpu="1" value="0.00"/>
+						<irq intr="17" cpu="2" value="0.00"/>
+						<irq intr="17" cpu="3" value="0.00"/>
+						<irq intr="17" cpu="4" value="0.00"/>
+						<irq intr="17" cpu="5" value="0.00"/>
+						<irq intr="17" cpu="6" value="0.00"/>
+						<irq intr="17" cpu="7" value="0.00"/>
+						<irq intr="18" cpu="all" value="0.00"/>
+						<irq intr="18" cpu="0" value="0.00"/>
+						<irq intr="18" cpu="1" value="0.00"/>
+						<irq intr="18" cpu="2" value="0.00"/>
+						<irq intr="18" cpu="3" value="0.00"/>
+						<irq intr="18" cpu="4" value="0.00"/>
+						<irq intr="18" cpu="5" value="0.00"/>
+						<irq intr="18" cpu="6" value="0.00"/>
+						<irq intr="18" cpu="7" value="0.00"/>
+						<irq intr="19" cpu="all" value="25.92"/>
+						<irq intr="19" cpu="0" value="0.00"/>
+						<irq intr="19" cpu="1" value="0.00"/>
+						<irq intr="19" cpu="2" value="0.00"/>
+						<irq intr="19" cpu="3" value="0.00"/>
+						<irq intr="19" cpu="4" value="25.92"/>
+						<irq intr="19" cpu="5" value="0.00"/>
+						<irq intr="19" cpu="6" value="0.00"/>
+						<irq intr="19" cpu="7" value="0.00"/>
+						<irq intr="23" cpu="all" value="35.03"/>
+						<irq intr="23" cpu="0" value="0.00"/>
+						<irq intr="23" cpu="1" value="0.00"/>
+						<irq intr="23" cpu="2" value="0.00"/>
+						<irq intr="23" cpu="3" value="0.00"/>
+						<irq intr="23" cpu="4" value="35.03"/>
+						<irq intr="23" cpu="5" value="0.00"/>
+						<irq intr="23" cpu="6" value="0.00"/>
+						<irq intr="23" cpu="7" value="0.00"/>
+						<irq intr="24" cpu="all" value="10.39"/>
+						<irq intr="24" cpu="0" value="0.00"/>
+						<irq intr="24" cpu="1" value="0.00"/>
+						<irq intr="24" cpu="2" value="10.39"/>
+						<irq intr="24" cpu="3" value="0.00"/>
+						<irq intr="24" cpu="4" value="0.00"/>
+						<irq intr="24" cpu="5" value="0.00"/>
+						<irq intr="24" cpu="6" value="0.00"/>
+						<irq intr="24" cpu="7" value="0.00"/>
+						<irq intr="25" cpu="all" value="0.00"/>
+						<irq intr="25" cpu="0" value="0.00"/>
+						<irq intr="25" cpu="1" value="0.00"/>
+						<irq intr="25" cpu="2" value="0.00"/>
+						<irq intr="25" cpu="3" value="0.00"/>
+						<irq intr="25" cpu="4" value="0.00"/>
+						<irq intr="25" cpu="5" value="0.00"/>
+						<irq intr="25" cpu="6" value="0.00"/>
+						<irq intr="25" cpu="7" value="0.00"/>
+						<irq intr="26" cpu="all" value="0.00"/>
+						<irq intr="26" cpu="0" value="0.00"/>
+						<irq intr="26" cpu="1" value="0.00"/>
+						<irq intr="26" cpu="2" value="0.00"/>
+						<irq intr="26" cpu="3" value="0.00"/>
+						<irq intr="26" cpu="4" value="0.00"/>
+						<irq intr="26" cpu="5" value="0.00"/>
+						<irq intr="26" cpu="6" value="0.00"/>
+						<irq intr="26" cpu="7" value="0.00"/>
+						<irq intr="27" cpu="all" value="0.00"/>
+						<irq intr="27" cpu="0" value="0.00"/>
+						<irq intr="27" cpu="1" value="0.00"/>
+						<irq intr="27" cpu="2" value="0.00"/>
+						<irq intr="27" cpu="3" value="0.00"/>
+						<irq intr="27" cpu="4" value="0.00"/>
+						<irq intr="27" cpu="5" value="0.00"/>
+						<irq intr="27" cpu="6" value="0.00"/>
+						<irq intr="27" cpu="7" value="0.00"/>
+						<irq intr="28" cpu="all" value="0.00"/>
+						<irq intr="28" cpu="0" value="0.00"/>
+						<irq intr="28" cpu="1" value="0.00"/>
+						<irq intr="28" cpu="2" value="0.00"/>
+						<irq intr="28" cpu="3" value="0.00"/>
+						<irq intr="28" cpu="4" value="0.00"/>
+						<irq intr="28" cpu="5" value="0.00"/>
+						<irq intr="28" cpu="6" value="0.00"/>
+						<irq intr="28" cpu="7" value="0.00"/>
+						<irq intr="29" cpu="all" value="0.00"/>
+						<irq intr="29" cpu="0" value="0.00"/>
+						<irq intr="29" cpu="1" value="0.00"/>
+						<irq intr="29" cpu="2" value="0.00"/>
+						<irq intr="29" cpu="3" value="0.00"/>
+						<irq intr="29" cpu="4" value="0.00"/>
+						<irq intr="29" cpu="5" value="0.00"/>
+						<irq intr="29" cpu="6" value="0.00"/>
+						<irq intr="29" cpu="7" value="0.00"/>
+						<irq intr="30" cpu="all" value="0.00"/>
+						<irq intr="30" cpu="0" value="0.00"/>
+						<irq intr="30" cpu="1" value="0.00"/>
+						<irq intr="30" cpu="2" value="0.00"/>
+						<irq intr="30" cpu="3" value="0.00"/>
+						<irq intr="30" cpu="4" value="0.00"/>
+						<irq intr="30" cpu="5" value="0.00"/>
+						<irq intr="30" cpu="6" value="0.00"/>
+						<irq intr="30" cpu="7" value="0.00"/>
+						<irq intr="31" cpu="all" value="0.00"/>
+						<irq intr="31" cpu="0" value="0.00"/>
+						<irq intr="31" cpu="1" value="0.00"/>
+						<irq intr="31" cpu="2" value="0.00"/>
+						<irq intr="31" cpu="3" value="0.00"/>
+						<irq intr="31" cpu="4" value="0.00"/>
+						<irq intr="31" cpu="5" value="0.00"/>
+						<irq intr="31" cpu="6" value="0.00"/>
+						<irq intr="31" cpu="7" value="0.00"/>
+						<irq intr="32" cpu="all" value="0.00"/>
+						<irq intr="32" cpu="0" value="0.00"/>
+						<irq intr="32" cpu="1" value="0.00"/>
+						<irq intr="32" cpu="2" value="0.00"/>
+						<irq intr="32" cpu="3" value="0.00"/>
+						<irq intr="32" cpu="4" value="0.00"/>
+						<irq intr="32" cpu="5" value="0.00"/>
+						<irq intr="32" cpu="6" value="0.00"/>
+						<irq intr="32" cpu="7" value="0.00"/>
+						<irq intr="33" cpu="all" value="15.11"/>
+						<irq intr="33" cpu="0" value="0.00"/>
+						<irq intr="33" cpu="1" value="0.00"/>
+						<irq intr="33" cpu="2" value="0.00"/>
+						<irq intr="33" cpu="3" value="15.11"/>
+						<irq intr="33" cpu="4" value="0.00"/>
+						<irq intr="33" cpu="5" value="0.00"/>
+						<irq intr="33" cpu="6" value="0.00"/>
+						<irq intr="33" cpu="7" value="0.00"/>
+						<irq intr="34" cpu="all" value="149.98"/>
+						<irq intr="34" cpu="0" value="0.00"/>
+						<irq intr="34" cpu="1" value="0.00"/>
+						<irq intr="34" cpu="2" value="0.00"/>
+						<irq intr="34" cpu="3" value="0.00"/>
+						<irq intr="34" cpu="4" value="0.00"/>
+						<irq intr="34" cpu="5" value="0.00"/>
+						<irq intr="34" cpu="6" value="149.98"/>
+						<irq intr="34" cpu="7" value="0.00"/>
+						<irq intr="35" cpu="all" value="0.00"/>
+						<irq intr="35" cpu="0" value="0.00"/>
+						<irq intr="35" cpu="1" value="0.00"/>
+						<irq intr="35" cpu="2" value="0.00"/>
+						<irq intr="35" cpu="3" value="0.00"/>
+						<irq intr="35" cpu="4" value="0.00"/>
+						<irq intr="35" cpu="5" value="0.00"/>
+						<irq intr="35" cpu="6" value="0.00"/>
+						<irq intr="35" cpu="7" value="0.00"/>
+						<irq intr="36" cpu="all" value="0.00"/>
+						<irq intr="36" cpu="0" value="0.00"/>
+						<irq intr="36" cpu="1" value="0.00"/>
+						<irq intr="36" cpu="2" value="0.00"/>
+						<irq intr="36" cpu="3" value="0.00"/>
+						<irq intr="36" cpu="4" value="0.00"/>
+						<irq intr="36" cpu="5" value="0.00"/>
+						<irq intr="36" cpu="6" value="0.00"/>
+						<irq intr="36" cpu="7" value="0.00"/>
+						<irq intr="NMI" cpu="all" value="0.00"/>
+						<irq intr="NMI" cpu="0" value="0.03"/>
+						<irq intr="NMI" cpu="1" value="0.00"/>
+						<irq intr="NMI" cpu="2" value="0.00"/>
+						<irq intr="NMI" cpu="3" value="0.13"/>
+						<irq intr="NMI" cpu="4" value="0.00"/>
+						<irq intr="NMI" cpu="5" value="0.00"/>
+						<irq intr="NMI" cpu="6" value="0.03"/>
+						<irq intr="NMI" cpu="7" value="0.00"/>
+						<irq intr="LOC" cpu="all" value="34485.34"/>
+						<irq intr="LOC" cpu="0" value="5434.36"/>
+						<irq intr="LOC" cpu="1" value="11720.31"/>
+						<irq intr="LOC" cpu="2" value="2903.79"/>
+						<irq intr="LOC" cpu="3" value="1009.79"/>
+						<irq intr="LOC" cpu="4" value="2825.25"/>
+						<irq intr="LOC" cpu="5" value="5828.49"/>
+						<irq intr="LOC" cpu="6" value="4691.08"/>
+						<irq intr="LOC" cpu="7" value="468.33"/>
+						<irq intr="SPU" cpu="all" value="0.00"/>
+						<irq intr="SPU" cpu="0" value="0.00"/>
+						<irq intr="SPU" cpu="1" value="0.00"/>
+						<irq intr="SPU" cpu="2" value="0.00"/>
+						<irq intr="SPU" cpu="3" value="0.00"/>
+						<irq intr="SPU" cpu="4" value="0.00"/>
+						<irq intr="SPU" cpu="5" value="0.00"/>
+						<irq intr="SPU" cpu="6" value="0.00"/>
+						<irq intr="SPU" cpu="7" value="0.00"/>
+						<irq intr="PMI" cpu="all" value="0.00"/>
+						<irq intr="PMI" cpu="0" value="0.03"/>
+						<irq intr="PMI" cpu="1" value="0.00"/>
+						<irq intr="PMI" cpu="2" value="0.00"/>
+						<irq intr="PMI" cpu="3" value="0.13"/>
+						<irq intr="PMI" cpu="4" value="0.00"/>
+						<irq intr="PMI" cpu="5" value="0.00"/>
+						<irq intr="PMI" cpu="6" value="0.03"/>
+						<irq intr="PMI" cpu="7" value="0.00"/>
+						<irq intr="IWI" cpu="all" value="0.00"/>
+						<irq intr="IWI" cpu="0" value="0.00"/>
+						<irq intr="IWI" cpu="1" value="0.00"/>
+						<irq intr="IWI" cpu="2" value="0.00"/>
+						<irq intr="IWI" cpu="3" value="0.00"/>
+						<irq intr="IWI" cpu="4" value="0.00"/>
+						<irq intr="IWI" cpu="5" value="0.00"/>
+						<irq intr="IWI" cpu="6" value="0.00"/>
+						<irq intr="IWI" cpu="7" value="0.00"/>
+						<irq intr="RTR" cpu="all" value="0.00"/>
+						<irq intr="RTR" cpu="0" value="0.00"/>
+						<irq intr="RTR" cpu="1" value="0.00"/>
+						<irq intr="RTR" cpu="2" value="0.00"/>
+						<irq intr="RTR" cpu="3" value="0.00"/>
+						<irq intr="RTR" cpu="4" value="0.00"/>
+						<irq intr="RTR" cpu="5" value="0.00"/>
+						<irq intr="RTR" cpu="6" value="0.00"/>
+						<irq intr="RTR" cpu="7" value="0.00"/>
+						<irq intr="RES" cpu="all" value="0.00"/>
+						<irq intr="RES" cpu="0" value="149.37"/>
+						<irq intr="RES" cpu="1" value="32.72"/>
+						<irq intr="RES" cpu="2" value="13.19"/>
+						<irq intr="RES" cpu="3" value="0.10"/>
+						<irq intr="RES" cpu="4" value="4.62"/>
+						<irq intr="RES" cpu="5" value="2.69"/>
+						<irq intr="RES" cpu="6" value="9.11"/>
+						<irq intr="RES" cpu="7" value="3.21"/>
+						<irq intr="CAL" cpu="all" value="0.00"/>
+						<irq intr="CAL" cpu="0" value="69.87"/>
+						<irq intr="CAL" cpu="1" value="19.44"/>
+						<irq intr="CAL" cpu="2" value="20.47"/>
+						<irq intr="CAL" cpu="3" value="1.41"/>
+						<irq intr="CAL" cpu="4" value="13.35"/>
+						<irq intr="CAL" cpu="5" value="17.32"/>
+						<irq intr="CAL" cpu="6" value="18.67"/>
+						<irq intr="CAL" cpu="7" value="31.15"/>
+						<irq intr="TLB" cpu="all" value="0.00"/>
+						<irq intr="TLB" cpu="0" value="105.97"/>
+						<irq intr="TLB" cpu="1" value="56.79"/>
+						<irq intr="TLB" cpu="2" value="42.89"/>
+						<irq intr="TLB" cpu="3" value="0.35"/>
+						<irq intr="TLB" cpu="4" value="48.60"/>
+						<irq intr="TLB" cpu="5" value="32.34"/>
+						<irq intr="TLB" cpu="6" value="29.71"/>
+						<irq intr="TLB" cpu="7" value="84.57"/>
+						<irq intr="TRM" cpu="all" value="0.00"/>
+						<irq intr="TRM" cpu="0" value="0.00"/>
+						<irq intr="TRM" cpu="1" value="0.00"/>
+						<irq intr="TRM" cpu="2" value="0.00"/>
+						<irq intr="TRM" cpu="3" value="0.00"/>
+						<irq intr="TRM" cpu="4" value="0.00"/>
+						<irq intr="TRM" cpu="5" value="0.00"/>
+						<irq intr="TRM" cpu="6" value="0.00"/>
+						<irq intr="TRM" cpu="7" value="0.00"/>
+						<irq intr="THR" cpu="all" value="0.00"/>
+						<irq intr="THR" cpu="0" value="0.00"/>
+						<irq intr="THR" cpu="1" value="0.00"/>
+						<irq intr="THR" cpu="2" value="0.00"/>
+						<irq intr="THR" cpu="3" value="0.00"/>
+						<irq intr="THR" cpu="4" value="0.00"/>
+						<irq intr="THR" cpu="5" value="0.00"/>
+						<irq intr="THR" cpu="6" value="0.00"/>
+						<irq intr="THR" cpu="7" value="0.00"/>
+						<irq intr="DFR" cpu="all" value="0.00"/>
+						<irq intr="DFR" cpu="0" value="0.00"/>
+						<irq intr="DFR" cpu="1" value="0.00"/>
+						<irq intr="DFR" cpu="2" value="0.00"/>
+						<irq intr="DFR" cpu="3" value="0.00"/>
+						<irq intr="DFR" cpu="4" value="0.00"/>
+						<irq intr="DFR" cpu="5" value="0.00"/>
+						<irq intr="DFR" cpu="6" value="0.00"/>
+						<irq intr="DFR" cpu="7" value="0.00"/>
+						<irq intr="MCE" cpu="all" value="0.00"/>
+						<irq intr="MCE" cpu="0" value="0.00"/>
+						<irq intr="MCE" cpu="1" value="0.00"/>
+						<irq intr="MCE" cpu="2" value="0.00"/>
+						<irq intr="MCE" cpu="3" value="0.00"/>
+						<irq intr="MCE" cpu="4" value="0.00"/>
+						<irq intr="MCE" cpu="5" value="0.00"/>
+						<irq intr="MCE" cpu="6" value="0.00"/>
+						<irq intr="MCE" cpu="7" value="0.00"/>
+						<irq intr="MCP" cpu="all" value="0.00"/>
+						<irq intr="MCP" cpu="0" value="0.03"/>
+						<irq intr="MCP" cpu="1" value="0.03"/>
+						<irq intr="MCP" cpu="2" value="0.03"/>
+						<irq intr="MCP" cpu="3" value="0.03"/>
+						<irq intr="MCP" cpu="4" value="0.03"/>
+						<irq intr="MCP" cpu="5" value="0.03"/>
+						<irq intr="MCP" cpu="6" value="0.03"/>
+						<irq intr="MCP" cpu="7" value="0.03"/>
+						<irq intr="HYP" cpu="all" value="0.00"/>
+						<irq intr="HYP" cpu="0" value="0.00"/>
+						<irq intr="HYP" cpu="1" value="0.00"/>
+						<irq intr="HYP" cpu="2" value="0.00"/>
+						<irq intr="HYP" cpu="3" value="0.00"/>
+						<irq intr="HYP" cpu="4" value="0.00"/>
+						<irq intr="HYP" cpu="5" value="0.00"/>
+						<irq intr="HYP" cpu="6" value="0.00"/>
+						<irq intr="HYP" cpu="7" value="0.00"/>
+						<irq intr="HRE" cpu="all" value="0.00"/>
+						<irq intr="HRE" cpu="0" value="0.00"/>
+						<irq intr="HRE" cpu="1" value="0.00"/>
+						<irq intr="HRE" cpu="2" value="0.00"/>
+						<irq intr="HRE" cpu="3" value="0.00"/>
+						<irq intr="HRE" cpu="4" value="0.00"/>
+						<irq intr="HRE" cpu="5" value="0.00"/>
+						<irq intr="HRE" cpu="6" value="0.00"/>
+						<irq intr="HRE" cpu="7" value="0.00"/>
+						<irq intr="HVS" cpu="all" value="0.00"/>
+						<irq intr="HVS" cpu="0" value="0.00"/>
+						<irq intr="HVS" cpu="1" value="0.00"/>
+						<irq intr="HVS" cpu="2" value="0.00"/>
+						<irq intr="HVS" cpu="3" value="0.00"/>
+						<irq intr="HVS" cpu="4" value="0.00"/>
+						<irq intr="HVS" cpu="5" value="0.00"/>
+						<irq intr="HVS" cpu="6" value="0.00"/>
+						<irq intr="HVS" cpu="7" value="0.00"/>
+						<irq intr="ERR" cpu="all" value="0.00"/>
+						<irq intr="ERR" cpu="0" value="0.00"/>
+						<irq intr="ERR" cpu="1" value="0.00"/>
+						<irq intr="ERR" cpu="2" value="0.00"/>
+						<irq intr="ERR" cpu="3" value="0.00"/>
+						<irq intr="ERR" cpu="4" value="0.00"/>
+						<irq intr="ERR" cpu="5" value="0.00"/>
+						<irq intr="ERR" cpu="6" value="0.00"/>
+						<irq intr="ERR" cpu="7" value="0.00"/>
+						<irq intr="MIS" cpu="all" value="0.00"/>
+						<irq intr="MIS" cpu="0" value="0.00"/>
+						<irq intr="MIS" cpu="1" value="0.00"/>
+						<irq intr="MIS" cpu="2" value="0.00"/>
+						<irq intr="MIS" cpu="3" value="0.00"/>
+						<irq intr="MIS" cpu="4" value="0.00"/>
+						<irq intr="MIS" cpu="5" value="0.00"/>
+						<irq intr="MIS" cpu="6" value="0.00"/>
+						<irq intr="MIS" cpu="7" value="0.00"/>
+						<irq intr="PIN" cpu="all" value="0.00"/>
+						<irq intr="PIN" cpu="0" value="0.00"/>
+						<irq intr="PIN" cpu="1" value="0.00"/>
+						<irq intr="PIN" cpu="2" value="0.00"/>
+						<irq intr="PIN" cpu="3" value="0.00"/>
+						<irq intr="PIN" cpu="4" value="0.00"/>
+						<irq intr="PIN" cpu="5" value="0.00"/>
+						<irq intr="PIN" cpu="6" value="0.00"/>
+						<irq intr="PIN" cpu="7" value="0.00"/>
+						<irq intr="NPI" cpu="all" value="0.00"/>
+						<irq intr="NPI" cpu="0" value="0.00"/>
+						<irq intr="NPI" cpu="1" value="0.00"/>
+						<irq intr="NPI" cpu="2" value="0.00"/>
+						<irq intr="NPI" cpu="3" value="0.00"/>
+						<irq intr="NPI" cpu="4" value="0.00"/>
+						<irq intr="NPI" cpu="5" value="0.00"/>
+						<irq intr="NPI" cpu="6" value="0.00"/>
+						<irq intr="NPI" cpu="7" value="0.00"/>
+						<irq intr="PIW" cpu="all" value="0.00"/>
+						<irq intr="PIW" cpu="0" value="0.00"/>
+						<irq intr="PIW" cpu="1" value="0.00"/>
+						<irq intr="PIW" cpu="2" value="0.00"/>
+						<irq intr="PIW" cpu="3" value="0.00"/>
+						<irq intr="PIW" cpu="4" value="0.00"/>
+						<irq intr="PIW" cpu="5" value="0.00"/>
+						<irq intr="PIW" cpu="6" value="0.00"/>
+						<irq intr="PIW" cpu="7" value="0.00"/>
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
@@ -663,495 +570,358 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<process-and-context-switch per="second" proc="4.83" cswch="46287.74"/>
 				<interrupts>
 					<int-global per="second">
-						<irq intr="sum" value="24402.62"/>
-						<irq intr="0" value="0.00"/>
-						<irq intr="1" value="0.00"/>
-						<irq intr="2" value="0.00"/>
-						<irq intr="3" value="0.00"/>
-						<irq intr="4" value="0.00"/>
-						<irq intr="5" value="0.00"/>
-						<irq intr="6" value="0.00"/>
-						<irq intr="7" value="0.00"/>
-						<irq intr="8" value="0.00"/>
-						<irq intr="9" value="0.00"/>
-						<irq intr="10" value="0.00"/>
-						<irq intr="11" value="0.00"/>
-						<irq intr="12" value="0.00"/>
-						<irq intr="13" value="0.00"/>
-						<irq intr="14" value="0.00"/>
-						<irq intr="15" value="0.00"/>
-						<irq intr="16" value="0.00"/>
-						<irq intr="17" value="0.00"/>
-						<irq intr="18" value="0.00"/>
-						<irq intr="19" value="23.34"/>
-						<irq intr="20" value="0.00"/>
-						<irq intr="21" value="0.00"/>
-						<irq intr="22" value="0.00"/>
-						<irq intr="23" value="23.88"/>
-						<irq intr="24" value="12.93"/>
-						<irq intr="25" value="0.00"/>
-						<irq intr="26" value="0.00"/>
-						<irq intr="27" value="0.00"/>
-						<irq intr="28" value="0.00"/>
-						<irq intr="29" value="0.00"/>
-						<irq intr="30" value="0.00"/>
-						<irq intr="31" value="0.00"/>
-						<irq intr="32" value="0.00"/>
-						<irq intr="33" value="10.21"/>
-						<irq intr="34" value="137.10"/>
-						<irq intr="35" value="0.00"/>
-						<irq intr="36" value="0.00"/>
-						<irq intr="37" value="0.00"/>
-						<irq intr="38" value="0.00"/>
-						<irq intr="39" value="0.00"/>
-						<irq intr="40" value="0.00"/>
-						<irq intr="41" value="0.00"/>
-						<irq intr="42" value="0.00"/>
-						<irq intr="43" value="0.00"/>
-						<irq intr="44" value="0.00"/>
-						<irq intr="45" value="0.00"/>
-						<irq intr="46" value="0.00"/>
-						<irq intr="47" value="0.00"/>
-						<irq intr="48" value="0.00"/>
-						<irq intr="49" value="0.00"/>
-						<irq intr="50" value="0.00"/>
-						<irq intr="51" value="0.00"/>
-						<irq intr="52" value="0.00"/>
-						<irq intr="53" value="0.00"/>
-						<irq intr="54" value="0.00"/>
-						<irq intr="55" value="0.00"/>
-						<irq intr="56" value="0.00"/>
-						<irq intr="57" value="0.00"/>
-						<irq intr="58" value="0.00"/>
-						<irq intr="59" value="0.00"/>
-						<irq intr="60" value="0.00"/>
-						<irq intr="61" value="0.00"/>
-						<irq intr="62" value="0.00"/>
-						<irq intr="63" value="0.00"/>
-						<irq intr="64" value="0.00"/>
-						<irq intr="65" value="0.00"/>
-						<irq intr="66" value="0.00"/>
-						<irq intr="67" value="0.00"/>
-						<irq intr="68" value="0.00"/>
-						<irq intr="69" value="0.00"/>
-						<irq intr="70" value="0.00"/>
-						<irq intr="71" value="0.00"/>
-						<irq intr="72" value="0.00"/>
-						<irq intr="73" value="0.00"/>
-						<irq intr="74" value="0.00"/>
-						<irq intr="75" value="0.00"/>
-						<irq intr="76" value="0.00"/>
-						<irq intr="77" value="0.00"/>
-						<irq intr="78" value="0.00"/>
-						<irq intr="79" value="0.00"/>
-						<irq intr="80" value="0.00"/>
-						<irq intr="81" value="0.00"/>
-						<irq intr="82" value="0.00"/>
-						<irq intr="83" value="0.00"/>
-						<irq intr="84" value="0.00"/>
-						<irq intr="85" value="0.00"/>
-						<irq intr="86" value="0.00"/>
-						<irq intr="87" value="0.00"/>
-						<irq intr="88" value="0.00"/>
-						<irq intr="89" value="0.00"/>
-						<irq intr="90" value="0.00"/>
-						<irq intr="91" value="0.00"/>
-						<irq intr="92" value="0.00"/>
-						<irq intr="93" value="0.00"/>
-						<irq intr="94" value="0.00"/>
-						<irq intr="95" value="0.00"/>
-						<irq intr="96" value="0.00"/>
-						<irq intr="97" value="0.00"/>
-						<irq intr="98" value="0.00"/>
-						<irq intr="99" value="0.00"/>
-						<irq intr="100" value="0.00"/>
-						<irq intr="101" value="0.00"/>
-						<irq intr="102" value="0.00"/>
-						<irq intr="103" value="0.00"/>
-						<irq intr="104" value="0.00"/>
-						<irq intr="105" value="0.00"/>
-						<irq intr="106" value="0.00"/>
-						<irq intr="107" value="0.00"/>
-						<irq intr="108" value="0.00"/>
-						<irq intr="109" value="0.00"/>
-						<irq intr="110" value="0.00"/>
-						<irq intr="111" value="0.00"/>
-						<irq intr="112" value="0.00"/>
-						<irq intr="113" value="0.00"/>
-						<irq intr="114" value="0.00"/>
-						<irq intr="115" value="0.00"/>
-						<irq intr="116" value="0.00"/>
-						<irq intr="117" value="0.00"/>
-						<irq intr="118" value="0.00"/>
-						<irq intr="119" value="0.00"/>
-						<irq intr="120" value="0.00"/>
-						<irq intr="121" value="0.00"/>
-						<irq intr="122" value="0.00"/>
-						<irq intr="123" value="0.00"/>
-						<irq intr="124" value="0.00"/>
-						<irq intr="125" value="0.00"/>
-						<irq intr="126" value="0.00"/>
-						<irq intr="127" value="0.00"/>
-						<irq intr="128" value="0.00"/>
-						<irq intr="129" value="0.00"/>
-						<irq intr="130" value="0.00"/>
-						<irq intr="131" value="0.00"/>
-						<irq intr="132" value="0.00"/>
-						<irq intr="133" value="0.00"/>
-						<irq intr="134" value="0.00"/>
-						<irq intr="135" value="0.00"/>
-						<irq intr="136" value="0.00"/>
-						<irq intr="137" value="0.00"/>
-						<irq intr="138" value="0.00"/>
-						<irq intr="139" value="0.00"/>
-						<irq intr="140" value="0.00"/>
-						<irq intr="141" value="0.00"/>
-						<irq intr="142" value="0.00"/>
-						<irq intr="143" value="0.00"/>
-						<irq intr="144" value="0.00"/>
-						<irq intr="145" value="0.00"/>
-						<irq intr="146" value="0.00"/>
-						<irq intr="147" value="0.00"/>
-						<irq intr="148" value="0.00"/>
-						<irq intr="149" value="0.00"/>
-						<irq intr="150" value="0.00"/>
-						<irq intr="151" value="0.00"/>
-						<irq intr="152" value="0.00"/>
-						<irq intr="153" value="0.00"/>
-						<irq intr="154" value="0.00"/>
-						<irq intr="155" value="0.00"/>
-						<irq intr="156" value="0.00"/>
-						<irq intr="157" value="0.00"/>
-						<irq intr="158" value="0.00"/>
-						<irq intr="159" value="0.00"/>
-						<irq intr="160" value="0.00"/>
-						<irq intr="161" value="0.00"/>
-						<irq intr="162" value="0.00"/>
-						<irq intr="163" value="0.00"/>
-						<irq intr="164" value="0.00"/>
-						<irq intr="165" value="0.00"/>
-						<irq intr="166" value="0.00"/>
-						<irq intr="167" value="0.00"/>
-						<irq intr="168" value="0.00"/>
-						<irq intr="169" value="0.00"/>
-						<irq intr="170" value="0.00"/>
-						<irq intr="171" value="0.00"/>
-						<irq intr="172" value="0.00"/>
-						<irq intr="173" value="0.00"/>
-						<irq intr="174" value="0.00"/>
-						<irq intr="175" value="0.00"/>
-						<irq intr="176" value="0.00"/>
-						<irq intr="177" value="0.00"/>
-						<irq intr="178" value="0.00"/>
-						<irq intr="179" value="0.00"/>
-						<irq intr="180" value="0.00"/>
-						<irq intr="181" value="0.00"/>
-						<irq intr="182" value="0.00"/>
-						<irq intr="183" value="0.00"/>
-						<irq intr="184" value="0.00"/>
-						<irq intr="185" value="0.00"/>
-						<irq intr="186" value="0.00"/>
-						<irq intr="187" value="0.00"/>
-						<irq intr="188" value="0.00"/>
-						<irq intr="189" value="0.00"/>
-						<irq intr="190" value="0.00"/>
-						<irq intr="191" value="0.00"/>
-						<irq intr="192" value="0.00"/>
-						<irq intr="193" value="0.00"/>
-						<irq intr="194" value="0.00"/>
-						<irq intr="195" value="0.00"/>
-						<irq intr="196" value="0.00"/>
-						<irq intr="197" value="0.00"/>
-						<irq intr="198" value="0.00"/>
-						<irq intr="199" value="0.00"/>
-						<irq intr="200" value="0.00"/>
-						<irq intr="201" value="0.00"/>
-						<irq intr="202" value="0.00"/>
-						<irq intr="203" value="0.00"/>
-						<irq intr="204" value="0.00"/>
-						<irq intr="205" value="0.00"/>
-						<irq intr="206" value="0.00"/>
-						<irq intr="207" value="0.00"/>
-						<irq intr="208" value="0.00"/>
-						<irq intr="209" value="0.00"/>
-						<irq intr="210" value="0.00"/>
-						<irq intr="211" value="0.00"/>
-						<irq intr="212" value="0.00"/>
-						<irq intr="213" value="0.00"/>
-						<irq intr="214" value="0.00"/>
-						<irq intr="215" value="0.00"/>
-						<irq intr="216" value="0.00"/>
-						<irq intr="217" value="0.00"/>
-						<irq intr="218" value="0.00"/>
-						<irq intr="219" value="0.00"/>
-						<irq intr="220" value="0.00"/>
-						<irq intr="221" value="0.00"/>
-						<irq intr="222" value="0.00"/>
-						<irq intr="223" value="0.00"/>
-						<irq intr="224" value="0.00"/>
-						<irq intr="225" value="0.00"/>
-						<irq intr="226" value="0.00"/>
-						<irq intr="227" value="0.00"/>
-						<irq intr="228" value="0.00"/>
-						<irq intr="229" value="0.00"/>
-						<irq intr="230" value="0.00"/>
-						<irq intr="231" value="0.00"/>
-						<irq intr="232" value="0.00"/>
-						<irq intr="233" value="0.00"/>
-						<irq intr="234" value="0.00"/>
-						<irq intr="235" value="0.00"/>
-						<irq intr="236" value="0.00"/>
-						<irq intr="237" value="0.00"/>
-						<irq intr="238" value="0.00"/>
-						<irq intr="239" value="0.00"/>
-						<irq intr="240" value="0.00"/>
-						<irq intr="241" value="0.00"/>
-						<irq intr="242" value="0.00"/>
-						<irq intr="243" value="0.00"/>
-						<irq intr="244" value="0.00"/>
-						<irq intr="245" value="0.00"/>
-						<irq intr="246" value="0.00"/>
-						<irq intr="247" value="0.00"/>
-						<irq intr="248" value="0.00"/>
-						<irq intr="249" value="0.00"/>
-						<irq intr="250" value="0.00"/>
-						<irq intr="251" value="0.00"/>
-						<irq intr="252" value="0.00"/>
-						<irq intr="253" value="0.00"/>
-						<irq intr="254" value="0.00"/>
-						<irq intr="255" value="0.00"/>
-						<irq intr="256" value="0.00"/>
-						<irq intr="257" value="0.00"/>
-						<irq intr="258" value="0.00"/>
-						<irq intr="259" value="0.00"/>
-						<irq intr="260" value="0.00"/>
-						<irq intr="261" value="0.00"/>
-						<irq intr="262" value="0.00"/>
-						<irq intr="263" value="0.00"/>
-						<irq intr="264" value="0.00"/>
-						<irq intr="265" value="0.00"/>
-						<irq intr="266" value="0.00"/>
-						<irq intr="267" value="0.00"/>
-						<irq intr="268" value="0.00"/>
-						<irq intr="269" value="0.00"/>
-						<irq intr="270" value="0.00"/>
-						<irq intr="271" value="0.00"/>
-						<irq intr="272" value="0.00"/>
-						<irq intr="273" value="0.00"/>
-						<irq intr="274" value="0.00"/>
-						<irq intr="275" value="0.00"/>
-						<irq intr="276" value="0.00"/>
-						<irq intr="277" value="0.00"/>
-						<irq intr="278" value="0.00"/>
-						<irq intr="279" value="0.00"/>
-						<irq intr="280" value="0.00"/>
-						<irq intr="281" value="0.00"/>
-						<irq intr="282" value="0.00"/>
-						<irq intr="283" value="0.00"/>
-						<irq intr="284" value="0.00"/>
-						<irq intr="285" value="0.00"/>
-						<irq intr="286" value="0.00"/>
-						<irq intr="287" value="0.00"/>
-						<irq intr="288" value="0.00"/>
-						<irq intr="289" value="0.00"/>
-						<irq intr="290" value="0.00"/>
-						<irq intr="291" value="0.00"/>
-						<irq intr="292" value="0.00"/>
-						<irq intr="293" value="0.00"/>
-						<irq intr="294" value="0.00"/>
-						<irq intr="295" value="0.00"/>
-						<irq intr="296" value="0.00"/>
-						<irq intr="297" value="0.00"/>
-						<irq intr="298" value="0.00"/>
-						<irq intr="299" value="0.00"/>
-						<irq intr="300" value="0.00"/>
-						<irq intr="301" value="0.00"/>
-						<irq intr="302" value="0.00"/>
-						<irq intr="303" value="0.00"/>
-						<irq intr="304" value="0.00"/>
-						<irq intr="305" value="0.00"/>
-						<irq intr="306" value="0.00"/>
-						<irq intr="307" value="0.00"/>
-						<irq intr="308" value="0.00"/>
-						<irq intr="309" value="0.00"/>
-						<irq intr="310" value="0.00"/>
-						<irq intr="311" value="0.00"/>
-						<irq intr="312" value="0.00"/>
-						<irq intr="313" value="0.00"/>
-						<irq intr="314" value="0.00"/>
-						<irq intr="315" value="0.00"/>
-						<irq intr="316" value="0.00"/>
-						<irq intr="317" value="0.00"/>
-						<irq intr="318" value="0.00"/>
-						<irq intr="319" value="0.00"/>
-						<irq intr="320" value="0.00"/>
-						<irq intr="321" value="0.00"/>
-						<irq intr="322" value="0.00"/>
-						<irq intr="323" value="0.00"/>
-						<irq intr="324" value="0.00"/>
-						<irq intr="325" value="0.00"/>
-						<irq intr="326" value="0.00"/>
-						<irq intr="327" value="0.00"/>
-						<irq intr="328" value="0.00"/>
-						<irq intr="329" value="0.00"/>
-						<irq intr="330" value="0.00"/>
-						<irq intr="331" value="0.00"/>
-						<irq intr="332" value="0.00"/>
-						<irq intr="333" value="0.00"/>
-						<irq intr="334" value="0.00"/>
-						<irq intr="335" value="0.00"/>
-						<irq intr="336" value="0.00"/>
-						<irq intr="337" value="0.00"/>
-						<irq intr="338" value="0.00"/>
-						<irq intr="339" value="0.00"/>
-						<irq intr="340" value="0.00"/>
-						<irq intr="341" value="0.00"/>
-						<irq intr="342" value="0.00"/>
-						<irq intr="343" value="0.00"/>
-						<irq intr="344" value="0.00"/>
-						<irq intr="345" value="0.00"/>
-						<irq intr="346" value="0.00"/>
-						<irq intr="347" value="0.00"/>
-						<irq intr="348" value="0.00"/>
-						<irq intr="349" value="0.00"/>
-						<irq intr="350" value="0.00"/>
-						<irq intr="351" value="0.00"/>
-						<irq intr="352" value="0.00"/>
-						<irq intr="353" value="0.00"/>
-						<irq intr="354" value="0.00"/>
-						<irq intr="355" value="0.00"/>
-						<irq intr="356" value="0.00"/>
-						<irq intr="357" value="0.00"/>
-						<irq intr="358" value="0.00"/>
-						<irq intr="359" value="0.00"/>
-						<irq intr="360" value="0.00"/>
-						<irq intr="361" value="0.00"/>
-						<irq intr="362" value="0.00"/>
-						<irq intr="363" value="0.00"/>
-						<irq intr="364" value="0.00"/>
-						<irq intr="365" value="0.00"/>
-						<irq intr="366" value="0.00"/>
-						<irq intr="367" value="0.00"/>
-						<irq intr="368" value="0.00"/>
-						<irq intr="369" value="0.00"/>
-						<irq intr="370" value="0.00"/>
-						<irq intr="371" value="0.00"/>
-						<irq intr="372" value="0.00"/>
-						<irq intr="373" value="0.00"/>
-						<irq intr="374" value="0.00"/>
-						<irq intr="375" value="0.00"/>
-						<irq intr="376" value="0.00"/>
-						<irq intr="377" value="0.00"/>
-						<irq intr="378" value="0.00"/>
-						<irq intr="379" value="0.00"/>
-						<irq intr="380" value="0.00"/>
-						<irq intr="381" value="0.00"/>
-						<irq intr="382" value="0.00"/>
-						<irq intr="383" value="0.00"/>
-						<irq intr="384" value="0.00"/>
-						<irq intr="385" value="0.00"/>
-						<irq intr="386" value="0.00"/>
-						<irq intr="387" value="0.00"/>
-						<irq intr="388" value="0.00"/>
-						<irq intr="389" value="0.00"/>
-						<irq intr="390" value="0.00"/>
-						<irq intr="391" value="0.00"/>
-						<irq intr="392" value="0.00"/>
-						<irq intr="393" value="0.00"/>
-						<irq intr="394" value="0.00"/>
-						<irq intr="395" value="0.00"/>
-						<irq intr="396" value="0.00"/>
-						<irq intr="397" value="0.00"/>
-						<irq intr="398" value="0.00"/>
-						<irq intr="399" value="0.00"/>
-						<irq intr="400" value="0.00"/>
-						<irq intr="401" value="0.00"/>
-						<irq intr="402" value="0.00"/>
-						<irq intr="403" value="0.00"/>
-						<irq intr="404" value="0.00"/>
-						<irq intr="405" value="0.00"/>
-						<irq intr="406" value="0.00"/>
-						<irq intr="407" value="0.00"/>
-						<irq intr="408" value="0.00"/>
-						<irq intr="409" value="0.00"/>
-						<irq intr="410" value="0.00"/>
-						<irq intr="411" value="0.00"/>
-						<irq intr="412" value="0.00"/>
-						<irq intr="413" value="0.00"/>
-						<irq intr="414" value="0.00"/>
-						<irq intr="415" value="0.00"/>
-						<irq intr="416" value="0.00"/>
-						<irq intr="417" value="0.00"/>
-						<irq intr="418" value="0.00"/>
-						<irq intr="419" value="0.00"/>
-						<irq intr="420" value="0.00"/>
-						<irq intr="421" value="0.00"/>
-						<irq intr="422" value="0.00"/>
-						<irq intr="423" value="0.00"/>
-						<irq intr="424" value="0.00"/>
-						<irq intr="425" value="0.00"/>
-						<irq intr="426" value="0.00"/>
-						<irq intr="427" value="0.00"/>
-						<irq intr="428" value="0.00"/>
-						<irq intr="429" value="0.00"/>
-						<irq intr="430" value="0.00"/>
-						<irq intr="431" value="0.00"/>
-						<irq intr="432" value="0.00"/>
-						<irq intr="433" value="0.00"/>
-						<irq intr="434" value="0.00"/>
-						<irq intr="435" value="0.00"/>
-						<irq intr="436" value="0.00"/>
-						<irq intr="437" value="0.00"/>
-						<irq intr="438" value="0.00"/>
-						<irq intr="439" value="0.00"/>
-						<irq intr="440" value="0.00"/>
-						<irq intr="441" value="0.00"/>
-						<irq intr="442" value="0.00"/>
-						<irq intr="443" value="0.00"/>
-						<irq intr="444" value="0.00"/>
-						<irq intr="445" value="0.00"/>
-						<irq intr="446" value="0.00"/>
-						<irq intr="447" value="0.00"/>
-						<irq intr="448" value="0.00"/>
-						<irq intr="449" value="0.00"/>
-						<irq intr="450" value="0.00"/>
-						<irq intr="451" value="0.00"/>
-						<irq intr="452" value="0.00"/>
-						<irq intr="453" value="0.00"/>
-						<irq intr="454" value="0.00"/>
-						<irq intr="455" value="0.00"/>
-						<irq intr="456" value="0.00"/>
-						<irq intr="457" value="0.00"/>
-						<irq intr="458" value="0.00"/>
-						<irq intr="459" value="0.00"/>
-						<irq intr="460" value="0.00"/>
-						<irq intr="461" value="0.00"/>
-						<irq intr="462" value="0.00"/>
-						<irq intr="463" value="0.00"/>
-						<irq intr="464" value="0.00"/>
-						<irq intr="465" value="0.00"/>
-						<irq intr="466" value="0.00"/>
-						<irq intr="467" value="0.00"/>
-						<irq intr="468" value="0.00"/>
-						<irq intr="469" value="0.00"/>
-						<irq intr="470" value="0.00"/>
-						<irq intr="471" value="0.00"/>
-						<irq intr="472" value="0.00"/>
-						<irq intr="473" value="0.00"/>
-						<irq intr="474" value="0.00"/>
-						<irq intr="475" value="0.00"/>
-						<irq intr="476" value="0.00"/>
-						<irq intr="477" value="0.00"/>
-						<irq intr="478" value="0.00"/>
-						<irq intr="479" value="0.00"/>
-						<irq intr="480" value="0.00"/>
-						<irq intr="481" value="0.00"/>
-						<irq intr="482" value="0.00"/>
-						<irq intr="483" value="0.00"/>
-						<irq intr="484" value="0.00"/>
-						<irq intr="485" value="0.00"/>
-						<irq intr="486" value="0.00"/>
-						<irq intr="487" value="0.00"/>
+						<irq intr="sum" cpu="all" value="0.00"/>
+						<irq intr="sum" cpu="0" value="3118.50"/>
+						<irq intr="sum" cpu="1" value="1017.99"/>
+						<irq intr="sum" cpu="2" value="3444.62"/>
+						<irq intr="sum" cpu="3" value="1021.51"/>
+						<irq intr="sum" cpu="4" value="4854.35"/>
+						<irq intr="sum" cpu="5" value="2893.12"/>
+						<irq intr="sum" cpu="7" value="1149.52"/>
+						<irq intr="0" cpu="all" value="0.00"/>
+						<irq intr="0" cpu="0" value="0.00"/>
+						<irq intr="0" cpu="1" value="0.00"/>
+						<irq intr="0" cpu="2" value="0.00"/>
+						<irq intr="0" cpu="3" value="0.00"/>
+						<irq intr="0" cpu="4" value="0.00"/>
+						<irq intr="0" cpu="5" value="0.00"/>
+						<irq intr="0" cpu="7" value="0.00"/>
+						<irq intr="8" cpu="all" value="0.00"/>
+						<irq intr="8" cpu="0" value="0.00"/>
+						<irq intr="8" cpu="1" value="0.00"/>
+						<irq intr="8" cpu="2" value="0.00"/>
+						<irq intr="8" cpu="3" value="0.00"/>
+						<irq intr="8" cpu="4" value="0.00"/>
+						<irq intr="8" cpu="5" value="0.00"/>
+						<irq intr="8" cpu="7" value="0.00"/>
+						<irq intr="9" cpu="all" value="0.00"/>
+						<irq intr="9" cpu="0" value="0.00"/>
+						<irq intr="9" cpu="1" value="0.00"/>
+						<irq intr="9" cpu="2" value="0.00"/>
+						<irq intr="9" cpu="3" value="0.00"/>
+						<irq intr="9" cpu="4" value="0.00"/>
+						<irq intr="9" cpu="5" value="0.00"/>
+						<irq intr="9" cpu="7" value="0.00"/>
+						<irq intr="16" cpu="all" value="0.00"/>
+						<irq intr="16" cpu="0" value="0.00"/>
+						<irq intr="16" cpu="1" value="0.00"/>
+						<irq intr="16" cpu="2" value="0.00"/>
+						<irq intr="16" cpu="3" value="0.00"/>
+						<irq intr="16" cpu="4" value="0.00"/>
+						<irq intr="16" cpu="5" value="0.00"/>
+						<irq intr="16" cpu="7" value="0.00"/>
+						<irq intr="17" cpu="all" value="0.00"/>
+						<irq intr="17" cpu="0" value="0.00"/>
+						<irq intr="17" cpu="1" value="0.00"/>
+						<irq intr="17" cpu="2" value="0.00"/>
+						<irq intr="17" cpu="3" value="0.00"/>
+						<irq intr="17" cpu="4" value="0.00"/>
+						<irq intr="17" cpu="5" value="0.00"/>
+						<irq intr="17" cpu="7" value="0.00"/>
+						<irq intr="18" cpu="all" value="0.00"/>
+						<irq intr="18" cpu="0" value="0.00"/>
+						<irq intr="18" cpu="1" value="0.00"/>
+						<irq intr="18" cpu="2" value="0.00"/>
+						<irq intr="18" cpu="3" value="0.00"/>
+						<irq intr="18" cpu="4" value="0.00"/>
+						<irq intr="18" cpu="5" value="0.00"/>
+						<irq intr="18" cpu="7" value="0.00"/>
+						<irq intr="19" cpu="all" value="23.34"/>
+						<irq intr="19" cpu="0" value="0.00"/>
+						<irq intr="19" cpu="1" value="0.00"/>
+						<irq intr="19" cpu="2" value="0.00"/>
+						<irq intr="19" cpu="3" value="0.00"/>
+						<irq intr="19" cpu="4" value="23.34"/>
+						<irq intr="19" cpu="5" value="0.00"/>
+						<irq intr="19" cpu="7" value="0.00"/>
+						<irq intr="23" cpu="all" value="23.88"/>
+						<irq intr="23" cpu="0" value="0.00"/>
+						<irq intr="23" cpu="1" value="0.00"/>
+						<irq intr="23" cpu="2" value="0.00"/>
+						<irq intr="23" cpu="3" value="0.00"/>
+						<irq intr="23" cpu="4" value="23.88"/>
+						<irq intr="23" cpu="5" value="0.00"/>
+						<irq intr="23" cpu="7" value="0.00"/>
+						<irq intr="24" cpu="all" value="12.93"/>
+						<irq intr="24" cpu="0" value="0.00"/>
+						<irq intr="24" cpu="1" value="0.00"/>
+						<irq intr="24" cpu="2" value="12.93"/>
+						<irq intr="24" cpu="3" value="0.00"/>
+						<irq intr="24" cpu="4" value="0.00"/>
+						<irq intr="24" cpu="5" value="0.00"/>
+						<irq intr="24" cpu="7" value="0.00"/>
+						<irq intr="25" cpu="all" value="0.00"/>
+						<irq intr="25" cpu="0" value="0.00"/>
+						<irq intr="25" cpu="1" value="0.00"/>
+						<irq intr="25" cpu="2" value="0.00"/>
+						<irq intr="25" cpu="3" value="0.00"/>
+						<irq intr="25" cpu="4" value="0.00"/>
+						<irq intr="25" cpu="5" value="0.00"/>
+						<irq intr="25" cpu="7" value="0.00"/>
+						<irq intr="26" cpu="all" value="0.00"/>
+						<irq intr="26" cpu="0" value="0.00"/>
+						<irq intr="26" cpu="1" value="0.00"/>
+						<irq intr="26" cpu="2" value="0.00"/>
+						<irq intr="26" cpu="3" value="0.00"/>
+						<irq intr="26" cpu="4" value="0.00"/>
+						<irq intr="26" cpu="5" value="0.00"/>
+						<irq intr="26" cpu="7" value="0.00"/>
+						<irq intr="27" cpu="all" value="0.00"/>
+						<irq intr="27" cpu="0" value="0.00"/>
+						<irq intr="27" cpu="1" value="0.00"/>
+						<irq intr="27" cpu="2" value="0.00"/>
+						<irq intr="27" cpu="3" value="0.00"/>
+						<irq intr="27" cpu="4" value="0.00"/>
+						<irq intr="27" cpu="5" value="0.00"/>
+						<irq intr="27" cpu="7" value="0.00"/>
+						<irq intr="28" cpu="all" value="0.00"/>
+						<irq intr="28" cpu="0" value="0.00"/>
+						<irq intr="28" cpu="1" value="0.00"/>
+						<irq intr="28" cpu="2" value="0.00"/>
+						<irq intr="28" cpu="3" value="0.00"/>
+						<irq intr="28" cpu="4" value="0.00"/>
+						<irq intr="28" cpu="5" value="0.00"/>
+						<irq intr="28" cpu="7" value="0.00"/>
+						<irq intr="29" cpu="all" value="0.00"/>
+						<irq intr="29" cpu="0" value="0.00"/>
+						<irq intr="29" cpu="1" value="0.00"/>
+						<irq intr="29" cpu="2" value="0.00"/>
+						<irq intr="29" cpu="3" value="0.00"/>
+						<irq intr="29" cpu="4" value="0.00"/>
+						<irq intr="29" cpu="5" value="0.00"/>
+						<irq intr="29" cpu="7" value="0.00"/>
+						<irq intr="30" cpu="all" value="0.00"/>
+						<irq intr="30" cpu="0" value="0.00"/>
+						<irq intr="30" cpu="1" value="0.00"/>
+						<irq intr="30" cpu="2" value="0.00"/>
+						<irq intr="30" cpu="3" value="0.00"/>
+						<irq intr="30" cpu="4" value="0.00"/>
+						<irq intr="30" cpu="5" value="0.00"/>
+						<irq intr="30" cpu="7" value="0.00"/>
+						<irq intr="31" cpu="all" value="0.00"/>
+						<irq intr="31" cpu="0" value="0.00"/>
+						<irq intr="31" cpu="1" value="0.00"/>
+						<irq intr="31" cpu="2" value="0.00"/>
+						<irq intr="31" cpu="3" value="0.00"/>
+						<irq intr="31" cpu="4" value="0.00"/>
+						<irq intr="31" cpu="5" value="0.00"/>
+						<irq intr="31" cpu="7" value="0.00"/>
+						<irq intr="32" cpu="all" value="0.00"/>
+						<irq intr="32" cpu="0" value="0.00"/>
+						<irq intr="32" cpu="1" value="0.00"/>
+						<irq intr="32" cpu="2" value="0.00"/>
+						<irq intr="32" cpu="3" value="0.00"/>
+						<irq intr="32" cpu="4" value="0.00"/>
+						<irq intr="32" cpu="5" value="0.00"/>
+						<irq intr="32" cpu="7" value="0.00"/>
+						<irq intr="33" cpu="all" value="10.21"/>
+						<irq intr="33" cpu="0" value="0.00"/>
+						<irq intr="33" cpu="1" value="0.00"/>
+						<irq intr="33" cpu="2" value="0.00"/>
+						<irq intr="33" cpu="3" value="10.21"/>
+						<irq intr="33" cpu="4" value="0.00"/>
+						<irq intr="33" cpu="5" value="0.00"/>
+						<irq intr="33" cpu="7" value="0.00"/>
+						<irq intr="34" cpu="all" value="0.00"/>
+						<irq intr="34" cpu="0" value="0.00"/>
+						<irq intr="34" cpu="1" value="0.00"/>
+						<irq intr="34" cpu="2" value="0.00"/>
+						<irq intr="34" cpu="3" value="0.00"/>
+						<irq intr="34" cpu="4" value="0.00"/>
+						<irq intr="34" cpu="5" value="0.00"/>
+						<irq intr="34" cpu="7" value="0.00"/>
+						<irq intr="35" cpu="all" value="0.00"/>
+						<irq intr="35" cpu="0" value="0.00"/>
+						<irq intr="35" cpu="1" value="0.00"/>
+						<irq intr="35" cpu="2" value="0.00"/>
+						<irq intr="35" cpu="3" value="0.00"/>
+						<irq intr="35" cpu="4" value="0.00"/>
+						<irq intr="35" cpu="5" value="0.00"/>
+						<irq intr="35" cpu="7" value="0.00"/>
+						<irq intr="36" cpu="all" value="0.00"/>
+						<irq intr="36" cpu="0" value="0.00"/>
+						<irq intr="36" cpu="1" value="0.00"/>
+						<irq intr="36" cpu="2" value="0.00"/>
+						<irq intr="36" cpu="3" value="0.00"/>
+						<irq intr="36" cpu="4" value="0.00"/>
+						<irq intr="36" cpu="5" value="0.00"/>
+						<irq intr="36" cpu="7" value="0.00"/>
+						<irq intr="NMI" cpu="all" value="0.00"/>
+						<irq intr="NMI" cpu="0" value="0.00"/>
+						<irq intr="NMI" cpu="1" value="0.00"/>
+						<irq intr="NMI" cpu="2" value="0.03"/>
+						<irq intr="NMI" cpu="3" value="0.10"/>
+						<irq intr="NMI" cpu="4" value="0.00"/>
+						<irq intr="NMI" cpu="5" value="0.03"/>
+						<irq intr="NMI" cpu="7" value="0.00"/>
+						<irq intr="LOC" cpu="all" value="0.00"/>
+						<irq intr="LOC" cpu="0" value="2967.32"/>
+						<irq intr="LOC" cpu="1" value="967.77"/>
+						<irq intr="LOC" cpu="2" value="3397.70"/>
+						<irq intr="LOC" cpu="3" value="1010.24"/>
+						<irq intr="LOC" cpu="4" value="4783.96"/>
+						<irq intr="LOC" cpu="5" value="2852.85"/>
+						<irq intr="LOC" cpu="7" value="1132.78"/>
+						<irq intr="SPU" cpu="all" value="0.00"/>
+						<irq intr="SPU" cpu="0" value="0.00"/>
+						<irq intr="SPU" cpu="1" value="0.00"/>
+						<irq intr="SPU" cpu="2" value="0.00"/>
+						<irq intr="SPU" cpu="3" value="0.00"/>
+						<irq intr="SPU" cpu="4" value="0.00"/>
+						<irq intr="SPU" cpu="5" value="0.00"/>
+						<irq intr="SPU" cpu="7" value="0.00"/>
+						<irq intr="PMI" cpu="all" value="0.00"/>
+						<irq intr="PMI" cpu="0" value="0.00"/>
+						<irq intr="PMI" cpu="1" value="0.00"/>
+						<irq intr="PMI" cpu="2" value="0.03"/>
+						<irq intr="PMI" cpu="3" value="0.10"/>
+						<irq intr="PMI" cpu="4" value="0.00"/>
+						<irq intr="PMI" cpu="5" value="0.03"/>
+						<irq intr="PMI" cpu="7" value="0.00"/>
+						<irq intr="IWI" cpu="all" value="0.00"/>
+						<irq intr="IWI" cpu="0" value="0.00"/>
+						<irq intr="IWI" cpu="1" value="0.00"/>
+						<irq intr="IWI" cpu="2" value="0.00"/>
+						<irq intr="IWI" cpu="3" value="0.00"/>
+						<irq intr="IWI" cpu="4" value="0.00"/>
+						<irq intr="IWI" cpu="5" value="0.00"/>
+						<irq intr="IWI" cpu="7" value="0.00"/>
+						<irq intr="RTR" cpu="all" value="0.00"/>
+						<irq intr="RTR" cpu="0" value="0.00"/>
+						<irq intr="RTR" cpu="1" value="0.00"/>
+						<irq intr="RTR" cpu="2" value="0.00"/>
+						<irq intr="RTR" cpu="3" value="0.00"/>
+						<irq intr="RTR" cpu="4" value="0.00"/>
+						<irq intr="RTR" cpu="5" value="0.00"/>
+						<irq intr="RTR" cpu="7" value="0.00"/>
+						<irq intr="RES" cpu="all" value="0.00"/>
+						<irq intr="RES" cpu="0" value="130.12"/>
+						<irq intr="RES" cpu="1" value="18.95"/>
+						<irq intr="RES" cpu="2" value="7.62"/>
+						<irq intr="RES" cpu="3" value="0.16"/>
+						<irq intr="RES" cpu="4" value="4.61"/>
+						<irq intr="RES" cpu="5" value="3.36"/>
+						<irq intr="RES" cpu="7" value="2.37"/>
+						<irq intr="CAL" cpu="all" value="0.00"/>
+						<irq intr="CAL" cpu="0" value="5.35"/>
+						<irq intr="CAL" cpu="1" value="4.96"/>
+						<irq intr="CAL" cpu="2" value="5.92"/>
+						<irq intr="CAL" cpu="3" value="0.38"/>
+						<irq intr="CAL" cpu="4" value="5.09"/>
+						<irq intr="CAL" cpu="5" value="12.64"/>
+						<irq intr="CAL" cpu="7" value="3.68"/>
+						<irq intr="TLB" cpu="all" value="0.00"/>
+						<irq intr="TLB" cpu="0" value="15.72"/>
+						<irq intr="TLB" cpu="1" value="26.31"/>
+						<irq intr="TLB" cpu="2" value="20.39"/>
+						<irq intr="TLB" cpu="3" value="0.32"/>
+						<irq intr="TLB" cpu="4" value="13.48"/>
+						<irq intr="TLB" cpu="5" value="24.20"/>
+						<irq intr="TLB" cpu="7" value="10.69"/>
+						<irq intr="TRM" cpu="all" value="0.00"/>
+						<irq intr="TRM" cpu="0" value="0.00"/>
+						<irq intr="TRM" cpu="1" value="0.00"/>
+						<irq intr="TRM" cpu="2" value="0.00"/>
+						<irq intr="TRM" cpu="3" value="0.00"/>
+						<irq intr="TRM" cpu="4" value="0.00"/>
+						<irq intr="TRM" cpu="5" value="0.00"/>
+						<irq intr="TRM" cpu="7" value="0.00"/>
+						<irq intr="THR" cpu="all" value="0.00"/>
+						<irq intr="THR" cpu="0" value="0.00"/>
+						<irq intr="THR" cpu="1" value="0.00"/>
+						<irq intr="THR" cpu="2" value="0.00"/>
+						<irq intr="THR" cpu="3" value="0.00"/>
+						<irq intr="THR" cpu="4" value="0.00"/>
+						<irq intr="THR" cpu="5" value="0.00"/>
+						<irq intr="THR" cpu="7" value="0.00"/>
+						<irq intr="DFR" cpu="all" value="0.00"/>
+						<irq intr="DFR" cpu="0" value="0.00"/>
+						<irq intr="DFR" cpu="1" value="0.00"/>
+						<irq intr="DFR" cpu="2" value="0.00"/>
+						<irq intr="DFR" cpu="3" value="0.00"/>
+						<irq intr="DFR" cpu="4" value="0.00"/>
+						<irq intr="DFR" cpu="5" value="0.00"/>
+						<irq intr="DFR" cpu="7" value="0.00"/>
+						<irq intr="MCE" cpu="all" value="0.00"/>
+						<irq intr="MCE" cpu="0" value="0.00"/>
+						<irq intr="MCE" cpu="1" value="0.00"/>
+						<irq intr="MCE" cpu="2" value="0.00"/>
+						<irq intr="MCE" cpu="3" value="0.00"/>
+						<irq intr="MCE" cpu="4" value="0.00"/>
+						<irq intr="MCE" cpu="5" value="0.00"/>
+						<irq intr="MCE" cpu="7" value="0.00"/>
+						<irq intr="MCP" cpu="all" value="0.00"/>
+						<irq intr="MCP" cpu="0" value="0.00"/>
+						<irq intr="MCP" cpu="1" value="0.00"/>
+						<irq intr="MCP" cpu="2" value="0.00"/>
+						<irq intr="MCP" cpu="3" value="0.00"/>
+						<irq intr="MCP" cpu="4" value="0.00"/>
+						<irq intr="MCP" cpu="5" value="0.00"/>
+						<irq intr="MCP" cpu="7" value="0.00"/>
+						<irq intr="HYP" cpu="all" value="0.00"/>
+						<irq intr="HYP" cpu="0" value="0.00"/>
+						<irq intr="HYP" cpu="1" value="0.00"/>
+						<irq intr="HYP" cpu="2" value="0.00"/>
+						<irq intr="HYP" cpu="3" value="0.00"/>
+						<irq intr="HYP" cpu="4" value="0.00"/>
+						<irq intr="HYP" cpu="5" value="0.00"/>
+						<irq intr="HYP" cpu="7" value="0.00"/>
+						<irq intr="HRE" cpu="all" value="0.00"/>
+						<irq intr="HRE" cpu="0" value="0.00"/>
+						<irq intr="HRE" cpu="1" value="0.00"/>
+						<irq intr="HRE" cpu="2" value="0.00"/>
+						<irq intr="HRE" cpu="3" value="0.00"/>
+						<irq intr="HRE" cpu="4" value="0.00"/>
+						<irq intr="HRE" cpu="5" value="0.00"/>
+						<irq intr="HRE" cpu="7" value="0.00"/>
+						<irq intr="HVS" cpu="all" value="0.00"/>
+						<irq intr="HVS" cpu="0" value="0.00"/>
+						<irq intr="HVS" cpu="1" value="0.00"/>
+						<irq intr="HVS" cpu="2" value="0.00"/>
+						<irq intr="HVS" cpu="3" value="0.00"/>
+						<irq intr="HVS" cpu="4" value="0.00"/>
+						<irq intr="HVS" cpu="5" value="0.00"/>
+						<irq intr="HVS" cpu="7" value="0.00"/>
+						<irq intr="ERR" cpu="all" value="0.00"/>
+						<irq intr="ERR" cpu="0" value="0.00"/>
+						<irq intr="ERR" cpu="1" value="0.00"/>
+						<irq intr="ERR" cpu="2" value="0.00"/>
+						<irq intr="ERR" cpu="3" value="0.00"/>
+						<irq intr="ERR" cpu="4" value="0.00"/>
+						<irq intr="ERR" cpu="5" value="0.00"/>
+						<irq intr="ERR" cpu="7" value="0.00"/>
+						<irq intr="MIS" cpu="all" value="0.00"/>
+						<irq intr="MIS" cpu="0" value="0.00"/>
+						<irq intr="MIS" cpu="1" value="0.00"/>
+						<irq intr="MIS" cpu="2" value="0.00"/>
+						<irq intr="MIS" cpu="3" value="0.00"/>
+						<irq intr="MIS" cpu="4" value="0.00"/>
+						<irq intr="MIS" cpu="5" value="0.00"/>
+						<irq intr="MIS" cpu="7" value="0.00"/>
+						<irq intr="PIN" cpu="all" value="0.00"/>
+						<irq intr="PIN" cpu="0" value="0.00"/>
+						<irq intr="PIN" cpu="1" value="0.00"/>
+						<irq intr="PIN" cpu="2" value="0.00"/>
+						<irq intr="PIN" cpu="3" value="0.00"/>
+						<irq intr="PIN" cpu="4" value="0.00"/>
+						<irq intr="PIN" cpu="5" value="0.00"/>
+						<irq intr="PIN" cpu="7" value="0.00"/>
+						<irq intr="NPI" cpu="all" value="0.00"/>
+						<irq intr="NPI" cpu="0" value="0.00"/>
+						<irq intr="NPI" cpu="1" value="0.00"/>
+						<irq intr="NPI" cpu="2" value="0.00"/>
+						<irq intr="NPI" cpu="3" value="0.00"/>
+						<irq intr="NPI" cpu="4" value="0.00"/>
+						<irq intr="NPI" cpu="5" value="0.00"/>
+						<irq intr="NPI" cpu="7" value="0.00"/>
+						<irq intr="PIW" cpu="all" value="0.00"/>
+						<irq intr="PIW" cpu="0" value="0.00"/>
+						<irq intr="PIW" cpu="1" value="0.00"/>
+						<irq intr="PIW" cpu="2" value="0.00"/>
+						<irq intr="PIW" cpu="3" value="0.00"/>
+						<irq intr="PIW" cpu="4" value="0.00"/>
+						<irq intr="PIW" cpu="5" value="0.00"/>
+						<irq intr="PIW" cpu="7" value="0.00"/>
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
@@ -1302,495 +1072,402 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<process-and-context-switch per="second" proc="3.66" cswch="64945.01"/>
 				<interrupts>
 					<int-global per="second">
-						<irq intr="sum" value="33602.60"/>
-						<irq intr="0" value="0.00"/>
-						<irq intr="1" value="0.00"/>
-						<irq intr="2" value="0.00"/>
-						<irq intr="3" value="0.00"/>
-						<irq intr="4" value="0.00"/>
-						<irq intr="5" value="0.00"/>
-						<irq intr="6" value="0.00"/>
-						<irq intr="7" value="0.00"/>
-						<irq intr="8" value="0.00"/>
-						<irq intr="9" value="0.00"/>
-						<irq intr="10" value="0.00"/>
-						<irq intr="11" value="0.00"/>
-						<irq intr="12" value="0.00"/>
-						<irq intr="13" value="0.00"/>
-						<irq intr="14" value="0.00"/>
-						<irq intr="15" value="0.00"/>
-						<irq intr="16" value="0.00"/>
-						<irq intr="17" value="0.00"/>
-						<irq intr="18" value="0.00"/>
-						<irq intr="19" value="22.73"/>
-						<irq intr="20" value="0.00"/>
-						<irq intr="21" value="0.00"/>
-						<irq intr="22" value="0.00"/>
-						<irq intr="23" value="31.12"/>
-						<irq intr="24" value="8.78"/>
-						<irq intr="25" value="0.00"/>
-						<irq intr="26" value="0.00"/>
-						<irq intr="27" value="0.00"/>
-						<irq intr="28" value="0.00"/>
-						<irq intr="29" value="0.00"/>
-						<irq intr="30" value="0.00"/>
-						<irq intr="31" value="0.00"/>
-						<irq intr="32" value="0.00"/>
-						<irq intr="33" value="61.71"/>
-						<irq intr="34" value="152.88"/>
-						<irq intr="35" value="0.00"/>
-						<irq intr="36" value="0.00"/>
-						<irq intr="37" value="0.00"/>
-						<irq intr="38" value="0.00"/>
-						<irq intr="39" value="0.00"/>
-						<irq intr="40" value="0.00"/>
-						<irq intr="41" value="0.00"/>
-						<irq intr="42" value="0.00"/>
-						<irq intr="43" value="0.00"/>
-						<irq intr="44" value="0.00"/>
-						<irq intr="45" value="0.00"/>
-						<irq intr="46" value="0.00"/>
-						<irq intr="47" value="0.00"/>
-						<irq intr="48" value="0.00"/>
-						<irq intr="49" value="0.00"/>
-						<irq intr="50" value="0.00"/>
-						<irq intr="51" value="0.00"/>
-						<irq intr="52" value="0.00"/>
-						<irq intr="53" value="0.00"/>
-						<irq intr="54" value="0.00"/>
-						<irq intr="55" value="0.00"/>
-						<irq intr="56" value="0.00"/>
-						<irq intr="57" value="0.00"/>
-						<irq intr="58" value="0.00"/>
-						<irq intr="59" value="0.00"/>
-						<irq intr="60" value="0.00"/>
-						<irq intr="61" value="0.00"/>
-						<irq intr="62" value="0.00"/>
-						<irq intr="63" value="0.00"/>
-						<irq intr="64" value="0.00"/>
-						<irq intr="65" value="0.00"/>
-						<irq intr="66" value="0.00"/>
-						<irq intr="67" value="0.00"/>
-						<irq intr="68" value="0.00"/>
-						<irq intr="69" value="0.00"/>
-						<irq intr="70" value="0.00"/>
-						<irq intr="71" value="0.00"/>
-						<irq intr="72" value="0.00"/>
-						<irq intr="73" value="0.00"/>
-						<irq intr="74" value="0.00"/>
-						<irq intr="75" value="0.00"/>
-						<irq intr="76" value="0.00"/>
-						<irq intr="77" value="0.00"/>
-						<irq intr="78" value="0.00"/>
-						<irq intr="79" value="0.00"/>
-						<irq intr="80" value="0.00"/>
-						<irq intr="81" value="0.00"/>
-						<irq intr="82" value="0.00"/>
-						<irq intr="83" value="0.00"/>
-						<irq intr="84" value="0.00"/>
-						<irq intr="85" value="0.00"/>
-						<irq intr="86" value="0.00"/>
-						<irq intr="87" value="0.00"/>
-						<irq intr="88" value="0.00"/>
-						<irq intr="89" value="0.00"/>
-						<irq intr="90" value="0.00"/>
-						<irq intr="91" value="0.00"/>
-						<irq intr="92" value="0.00"/>
-						<irq intr="93" value="0.00"/>
-						<irq intr="94" value="0.00"/>
-						<irq intr="95" value="0.00"/>
-						<irq intr="96" value="0.00"/>
-						<irq intr="97" value="0.00"/>
-						<irq intr="98" value="0.00"/>
-						<irq intr="99" value="0.00"/>
-						<irq intr="100" value="0.00"/>
-						<irq intr="101" value="0.00"/>
-						<irq intr="102" value="0.00"/>
-						<irq intr="103" value="0.00"/>
-						<irq intr="104" value="0.00"/>
-						<irq intr="105" value="0.00"/>
-						<irq intr="106" value="0.00"/>
-						<irq intr="107" value="0.00"/>
-						<irq intr="108" value="0.00"/>
-						<irq intr="109" value="0.00"/>
-						<irq intr="110" value="0.00"/>
-						<irq intr="111" value="0.00"/>
-						<irq intr="112" value="0.00"/>
-						<irq intr="113" value="0.00"/>
-						<irq intr="114" value="0.00"/>
-						<irq intr="115" value="0.00"/>
-						<irq intr="116" value="0.00"/>
-						<irq intr="117" value="0.00"/>
-						<irq intr="118" value="0.00"/>
-						<irq intr="119" value="0.00"/>
-						<irq intr="120" value="0.00"/>
-						<irq intr="121" value="0.00"/>
-						<irq intr="122" value="0.00"/>
-						<irq intr="123" value="0.00"/>
-						<irq intr="124" value="0.00"/>
-						<irq intr="125" value="0.00"/>
-						<irq intr="126" value="0.00"/>
-						<irq intr="127" value="0.00"/>
-						<irq intr="128" value="0.00"/>
-						<irq intr="129" value="0.00"/>
-						<irq intr="130" value="0.00"/>
-						<irq intr="131" value="0.00"/>
-						<irq intr="132" value="0.00"/>
-						<irq intr="133" value="0.00"/>
-						<irq intr="134" value="0.00"/>
-						<irq intr="135" value="0.00"/>
-						<irq intr="136" value="0.00"/>
-						<irq intr="137" value="0.00"/>
-						<irq intr="138" value="0.00"/>
-						<irq intr="139" value="0.00"/>
-						<irq intr="140" value="0.00"/>
-						<irq intr="141" value="0.00"/>
-						<irq intr="142" value="0.00"/>
-						<irq intr="143" value="0.00"/>
-						<irq intr="144" value="0.00"/>
-						<irq intr="145" value="0.00"/>
-						<irq intr="146" value="0.00"/>
-						<irq intr="147" value="0.00"/>
-						<irq intr="148" value="0.00"/>
-						<irq intr="149" value="0.00"/>
-						<irq intr="150" value="0.00"/>
-						<irq intr="151" value="0.00"/>
-						<irq intr="152" value="0.00"/>
-						<irq intr="153" value="0.00"/>
-						<irq intr="154" value="0.00"/>
-						<irq intr="155" value="0.00"/>
-						<irq intr="156" value="0.00"/>
-						<irq intr="157" value="0.00"/>
-						<irq intr="158" value="0.00"/>
-						<irq intr="159" value="0.00"/>
-						<irq intr="160" value="0.00"/>
-						<irq intr="161" value="0.00"/>
-						<irq intr="162" value="0.00"/>
-						<irq intr="163" value="0.00"/>
-						<irq intr="164" value="0.00"/>
-						<irq intr="165" value="0.00"/>
-						<irq intr="166" value="0.00"/>
-						<irq intr="167" value="0.00"/>
-						<irq intr="168" value="0.00"/>
-						<irq intr="169" value="0.00"/>
-						<irq intr="170" value="0.00"/>
-						<irq intr="171" value="0.00"/>
-						<irq intr="172" value="0.00"/>
-						<irq intr="173" value="0.00"/>
-						<irq intr="174" value="0.00"/>
-						<irq intr="175" value="0.00"/>
-						<irq intr="176" value="0.00"/>
-						<irq intr="177" value="0.00"/>
-						<irq intr="178" value="0.00"/>
-						<irq intr="179" value="0.00"/>
-						<irq intr="180" value="0.00"/>
-						<irq intr="181" value="0.00"/>
-						<irq intr="182" value="0.00"/>
-						<irq intr="183" value="0.00"/>
-						<irq intr="184" value="0.00"/>
-						<irq intr="185" value="0.00"/>
-						<irq intr="186" value="0.00"/>
-						<irq intr="187" value="0.00"/>
-						<irq intr="188" value="0.00"/>
-						<irq intr="189" value="0.00"/>
-						<irq intr="190" value="0.00"/>
-						<irq intr="191" value="0.00"/>
-						<irq intr="192" value="0.00"/>
-						<irq intr="193" value="0.00"/>
-						<irq intr="194" value="0.00"/>
-						<irq intr="195" value="0.00"/>
-						<irq intr="196" value="0.00"/>
-						<irq intr="197" value="0.00"/>
-						<irq intr="198" value="0.00"/>
-						<irq intr="199" value="0.00"/>
-						<irq intr="200" value="0.00"/>
-						<irq intr="201" value="0.00"/>
-						<irq intr="202" value="0.00"/>
-						<irq intr="203" value="0.00"/>
-						<irq intr="204" value="0.00"/>
-						<irq intr="205" value="0.00"/>
-						<irq intr="206" value="0.00"/>
-						<irq intr="207" value="0.00"/>
-						<irq intr="208" value="0.00"/>
-						<irq intr="209" value="0.00"/>
-						<irq intr="210" value="0.00"/>
-						<irq intr="211" value="0.00"/>
-						<irq intr="212" value="0.00"/>
-						<irq intr="213" value="0.00"/>
-						<irq intr="214" value="0.00"/>
-						<irq intr="215" value="0.00"/>
-						<irq intr="216" value="0.00"/>
-						<irq intr="217" value="0.00"/>
-						<irq intr="218" value="0.00"/>
-						<irq intr="219" value="0.00"/>
-						<irq intr="220" value="0.00"/>
-						<irq intr="221" value="0.00"/>
-						<irq intr="222" value="0.00"/>
-						<irq intr="223" value="0.00"/>
-						<irq intr="224" value="0.00"/>
-						<irq intr="225" value="0.00"/>
-						<irq intr="226" value="0.00"/>
-						<irq intr="227" value="0.00"/>
-						<irq intr="228" value="0.00"/>
-						<irq intr="229" value="0.00"/>
-						<irq intr="230" value="0.00"/>
-						<irq intr="231" value="0.00"/>
-						<irq intr="232" value="0.00"/>
-						<irq intr="233" value="0.00"/>
-						<irq intr="234" value="0.00"/>
-						<irq intr="235" value="0.00"/>
-						<irq intr="236" value="0.00"/>
-						<irq intr="237" value="0.00"/>
-						<irq intr="238" value="0.00"/>
-						<irq intr="239" value="0.00"/>
-						<irq intr="240" value="0.00"/>
-						<irq intr="241" value="0.00"/>
-						<irq intr="242" value="0.00"/>
-						<irq intr="243" value="0.00"/>
-						<irq intr="244" value="0.00"/>
-						<irq intr="245" value="0.00"/>
-						<irq intr="246" value="0.00"/>
-						<irq intr="247" value="0.00"/>
-						<irq intr="248" value="0.00"/>
-						<irq intr="249" value="0.00"/>
-						<irq intr="250" value="0.00"/>
-						<irq intr="251" value="0.00"/>
-						<irq intr="252" value="0.00"/>
-						<irq intr="253" value="0.00"/>
-						<irq intr="254" value="0.00"/>
-						<irq intr="255" value="0.00"/>
-						<irq intr="256" value="0.00"/>
-						<irq intr="257" value="0.00"/>
-						<irq intr="258" value="0.00"/>
-						<irq intr="259" value="0.00"/>
-						<irq intr="260" value="0.00"/>
-						<irq intr="261" value="0.00"/>
-						<irq intr="262" value="0.00"/>
-						<irq intr="263" value="0.00"/>
-						<irq intr="264" value="0.00"/>
-						<irq intr="265" value="0.00"/>
-						<irq intr="266" value="0.00"/>
-						<irq intr="267" value="0.00"/>
-						<irq intr="268" value="0.00"/>
-						<irq intr="269" value="0.00"/>
-						<irq intr="270" value="0.00"/>
-						<irq intr="271" value="0.00"/>
-						<irq intr="272" value="0.00"/>
-						<irq intr="273" value="0.00"/>
-						<irq intr="274" value="0.00"/>
-						<irq intr="275" value="0.00"/>
-						<irq intr="276" value="0.00"/>
-						<irq intr="277" value="0.00"/>
-						<irq intr="278" value="0.00"/>
-						<irq intr="279" value="0.00"/>
-						<irq intr="280" value="0.00"/>
-						<irq intr="281" value="0.00"/>
-						<irq intr="282" value="0.00"/>
-						<irq intr="283" value="0.00"/>
-						<irq intr="284" value="0.00"/>
-						<irq intr="285" value="0.00"/>
-						<irq intr="286" value="0.00"/>
-						<irq intr="287" value="0.00"/>
-						<irq intr="288" value="0.00"/>
-						<irq intr="289" value="0.00"/>
-						<irq intr="290" value="0.00"/>
-						<irq intr="291" value="0.00"/>
-						<irq intr="292" value="0.00"/>
-						<irq intr="293" value="0.00"/>
-						<irq intr="294" value="0.00"/>
-						<irq intr="295" value="0.00"/>
-						<irq intr="296" value="0.00"/>
-						<irq intr="297" value="0.00"/>
-						<irq intr="298" value="0.00"/>
-						<irq intr="299" value="0.00"/>
-						<irq intr="300" value="0.00"/>
-						<irq intr="301" value="0.00"/>
-						<irq intr="302" value="0.00"/>
-						<irq intr="303" value="0.00"/>
-						<irq intr="304" value="0.00"/>
-						<irq intr="305" value="0.00"/>
-						<irq intr="306" value="0.00"/>
-						<irq intr="307" value="0.00"/>
-						<irq intr="308" value="0.00"/>
-						<irq intr="309" value="0.00"/>
-						<irq intr="310" value="0.00"/>
-						<irq intr="311" value="0.00"/>
-						<irq intr="312" value="0.00"/>
-						<irq intr="313" value="0.00"/>
-						<irq intr="314" value="0.00"/>
-						<irq intr="315" value="0.00"/>
-						<irq intr="316" value="0.00"/>
-						<irq intr="317" value="0.00"/>
-						<irq intr="318" value="0.00"/>
-						<irq intr="319" value="0.00"/>
-						<irq intr="320" value="0.00"/>
-						<irq intr="321" value="0.00"/>
-						<irq intr="322" value="0.00"/>
-						<irq intr="323" value="0.00"/>
-						<irq intr="324" value="0.00"/>
-						<irq intr="325" value="0.00"/>
-						<irq intr="326" value="0.00"/>
-						<irq intr="327" value="0.00"/>
-						<irq intr="328" value="0.00"/>
-						<irq intr="329" value="0.00"/>
-						<irq intr="330" value="0.00"/>
-						<irq intr="331" value="0.00"/>
-						<irq intr="332" value="0.00"/>
-						<irq intr="333" value="0.00"/>
-						<irq intr="334" value="0.00"/>
-						<irq intr="335" value="0.00"/>
-						<irq intr="336" value="0.00"/>
-						<irq intr="337" value="0.00"/>
-						<irq intr="338" value="0.00"/>
-						<irq intr="339" value="0.00"/>
-						<irq intr="340" value="0.00"/>
-						<irq intr="341" value="0.00"/>
-						<irq intr="342" value="0.00"/>
-						<irq intr="343" value="0.00"/>
-						<irq intr="344" value="0.00"/>
-						<irq intr="345" value="0.00"/>
-						<irq intr="346" value="0.00"/>
-						<irq intr="347" value="0.00"/>
-						<irq intr="348" value="0.00"/>
-						<irq intr="349" value="0.00"/>
-						<irq intr="350" value="0.00"/>
-						<irq intr="351" value="0.00"/>
-						<irq intr="352" value="0.00"/>
-						<irq intr="353" value="0.00"/>
-						<irq intr="354" value="0.00"/>
-						<irq intr="355" value="0.00"/>
-						<irq intr="356" value="0.00"/>
-						<irq intr="357" value="0.00"/>
-						<irq intr="358" value="0.00"/>
-						<irq intr="359" value="0.00"/>
-						<irq intr="360" value="0.00"/>
-						<irq intr="361" value="0.00"/>
-						<irq intr="362" value="0.00"/>
-						<irq intr="363" value="0.00"/>
-						<irq intr="364" value="0.00"/>
-						<irq intr="365" value="0.00"/>
-						<irq intr="366" value="0.00"/>
-						<irq intr="367" value="0.00"/>
-						<irq intr="368" value="0.00"/>
-						<irq intr="369" value="0.00"/>
-						<irq intr="370" value="0.00"/>
-						<irq intr="371" value="0.00"/>
-						<irq intr="372" value="0.00"/>
-						<irq intr="373" value="0.00"/>
-						<irq intr="374" value="0.00"/>
-						<irq intr="375" value="0.00"/>
-						<irq intr="376" value="0.00"/>
-						<irq intr="377" value="0.00"/>
-						<irq intr="378" value="0.00"/>
-						<irq intr="379" value="0.00"/>
-						<irq intr="380" value="0.00"/>
-						<irq intr="381" value="0.00"/>
-						<irq intr="382" value="0.00"/>
-						<irq intr="383" value="0.00"/>
-						<irq intr="384" value="0.00"/>
-						<irq intr="385" value="0.00"/>
-						<irq intr="386" value="0.00"/>
-						<irq intr="387" value="0.00"/>
-						<irq intr="388" value="0.00"/>
-						<irq intr="389" value="0.00"/>
-						<irq intr="390" value="0.00"/>
-						<irq intr="391" value="0.00"/>
-						<irq intr="392" value="0.00"/>
-						<irq intr="393" value="0.00"/>
-						<irq intr="394" value="0.00"/>
-						<irq intr="395" value="0.00"/>
-						<irq intr="396" value="0.00"/>
-						<irq intr="397" value="0.00"/>
-						<irq intr="398" value="0.00"/>
-						<irq intr="399" value="0.00"/>
-						<irq intr="400" value="0.00"/>
-						<irq intr="401" value="0.00"/>
-						<irq intr="402" value="0.00"/>
-						<irq intr="403" value="0.00"/>
-						<irq intr="404" value="0.00"/>
-						<irq intr="405" value="0.00"/>
-						<irq intr="406" value="0.00"/>
-						<irq intr="407" value="0.00"/>
-						<irq intr="408" value="0.00"/>
-						<irq intr="409" value="0.00"/>
-						<irq intr="410" value="0.00"/>
-						<irq intr="411" value="0.00"/>
-						<irq intr="412" value="0.00"/>
-						<irq intr="413" value="0.00"/>
-						<irq intr="414" value="0.00"/>
-						<irq intr="415" value="0.00"/>
-						<irq intr="416" value="0.00"/>
-						<irq intr="417" value="0.00"/>
-						<irq intr="418" value="0.00"/>
-						<irq intr="419" value="0.00"/>
-						<irq intr="420" value="0.00"/>
-						<irq intr="421" value="0.00"/>
-						<irq intr="422" value="0.00"/>
-						<irq intr="423" value="0.00"/>
-						<irq intr="424" value="0.00"/>
-						<irq intr="425" value="0.00"/>
-						<irq intr="426" value="0.00"/>
-						<irq intr="427" value="0.00"/>
-						<irq intr="428" value="0.00"/>
-						<irq intr="429" value="0.00"/>
-						<irq intr="430" value="0.00"/>
-						<irq intr="431" value="0.00"/>
-						<irq intr="432" value="0.00"/>
-						<irq intr="433" value="0.00"/>
-						<irq intr="434" value="0.00"/>
-						<irq intr="435" value="0.00"/>
-						<irq intr="436" value="0.00"/>
-						<irq intr="437" value="0.00"/>
-						<irq intr="438" value="0.00"/>
-						<irq intr="439" value="0.00"/>
-						<irq intr="440" value="0.00"/>
-						<irq intr="441" value="0.00"/>
-						<irq intr="442" value="0.00"/>
-						<irq intr="443" value="0.00"/>
-						<irq intr="444" value="0.00"/>
-						<irq intr="445" value="0.00"/>
-						<irq intr="446" value="0.00"/>
-						<irq intr="447" value="0.00"/>
-						<irq intr="448" value="0.00"/>
-						<irq intr="449" value="0.00"/>
-						<irq intr="450" value="0.00"/>
-						<irq intr="451" value="0.00"/>
-						<irq intr="452" value="0.00"/>
-						<irq intr="453" value="0.00"/>
-						<irq intr="454" value="0.00"/>
-						<irq intr="455" value="0.00"/>
-						<irq intr="456" value="0.00"/>
-						<irq intr="457" value="0.00"/>
-						<irq intr="458" value="0.00"/>
-						<irq intr="459" value="0.00"/>
-						<irq intr="460" value="0.00"/>
-						<irq intr="461" value="0.00"/>
-						<irq intr="462" value="0.00"/>
-						<irq intr="463" value="0.00"/>
-						<irq intr="464" value="0.00"/>
-						<irq intr="465" value="0.00"/>
-						<irq intr="466" value="0.00"/>
-						<irq intr="467" value="0.00"/>
-						<irq intr="468" value="0.00"/>
-						<irq intr="469" value="0.00"/>
-						<irq intr="470" value="0.00"/>
-						<irq intr="471" value="0.00"/>
-						<irq intr="472" value="0.00"/>
-						<irq intr="473" value="0.00"/>
-						<irq intr="474" value="0.00"/>
-						<irq intr="475" value="0.00"/>
-						<irq intr="476" value="0.00"/>
-						<irq intr="477" value="0.00"/>
-						<irq intr="478" value="0.00"/>
-						<irq intr="479" value="0.00"/>
-						<irq intr="480" value="0.00"/>
-						<irq intr="481" value="0.00"/>
-						<irq intr="482" value="0.00"/>
-						<irq intr="483" value="0.00"/>
-						<irq intr="484" value="0.00"/>
-						<irq intr="485" value="0.00"/>
-						<irq intr="486" value="0.00"/>
-						<irq intr="487" value="0.00"/>
+						<irq intr="sum" cpu="all" value="33726.88"/>
+						<irq intr="sum" cpu="0" value="3441.25"/>
+						<irq intr="sum" cpu="1" value="5439.66"/>
+						<irq intr="sum" cpu="2" value="5063.14"/>
+						<irq intr="sum" cpu="3" value="3135.71"/>
+						<irq intr="sum" cpu="4" value="5959.14"/>
+						<irq intr="sum" cpu="5" value="5561.19"/>
+						<irq intr="sum" cpu="7" value="1867.61"/>
+						<irq intr="sum" cpu="8" value="11.74"/>
+						<irq intr="0" cpu="all" value="0.00"/>
+						<irq intr="0" cpu="0" value="0.00"/>
+						<irq intr="0" cpu="1" value="0.00"/>
+						<irq intr="0" cpu="2" value="0.00"/>
+						<irq intr="0" cpu="3" value="0.00"/>
+						<irq intr="0" cpu="4" value="0.00"/>
+						<irq intr="0" cpu="5" value="0.00"/>
+						<irq intr="0" cpu="7" value="0.00"/>
+						<irq intr="0" cpu="8" value="0.00"/>
+						<irq intr="8" cpu="all" value="0.00"/>
+						<irq intr="8" cpu="0" value="0.00"/>
+						<irq intr="8" cpu="1" value="0.00"/>
+						<irq intr="8" cpu="2" value="0.00"/>
+						<irq intr="8" cpu="3" value="0.00"/>
+						<irq intr="8" cpu="4" value="0.00"/>
+						<irq intr="8" cpu="5" value="0.00"/>
+						<irq intr="8" cpu="7" value="0.00"/>
+						<irq intr="8" cpu="8" value="0.00"/>
+						<irq intr="9" cpu="all" value="0.00"/>
+						<irq intr="9" cpu="0" value="0.00"/>
+						<irq intr="9" cpu="1" value="0.00"/>
+						<irq intr="9" cpu="2" value="0.00"/>
+						<irq intr="9" cpu="3" value="0.00"/>
+						<irq intr="9" cpu="4" value="0.00"/>
+						<irq intr="9" cpu="5" value="0.00"/>
+						<irq intr="9" cpu="7" value="0.00"/>
+						<irq intr="9" cpu="8" value="0.00"/>
+						<irq intr="16" cpu="all" value="0.00"/>
+						<irq intr="16" cpu="0" value="0.00"/>
+						<irq intr="16" cpu="1" value="0.00"/>
+						<irq intr="16" cpu="2" value="0.00"/>
+						<irq intr="16" cpu="3" value="0.00"/>
+						<irq intr="16" cpu="4" value="0.00"/>
+						<irq intr="16" cpu="5" value="0.00"/>
+						<irq intr="16" cpu="7" value="0.00"/>
+						<irq intr="16" cpu="8" value="0.00"/>
+						<irq intr="17" cpu="all" value="0.00"/>
+						<irq intr="17" cpu="0" value="0.00"/>
+						<irq intr="17" cpu="1" value="0.00"/>
+						<irq intr="17" cpu="2" value="0.00"/>
+						<irq intr="17" cpu="3" value="0.00"/>
+						<irq intr="17" cpu="4" value="0.00"/>
+						<irq intr="17" cpu="5" value="0.00"/>
+						<irq intr="17" cpu="7" value="0.00"/>
+						<irq intr="17" cpu="8" value="0.00"/>
+						<irq intr="18" cpu="all" value="0.00"/>
+						<irq intr="18" cpu="0" value="0.00"/>
+						<irq intr="18" cpu="1" value="0.00"/>
+						<irq intr="18" cpu="2" value="0.00"/>
+						<irq intr="18" cpu="3" value="0.00"/>
+						<irq intr="18" cpu="4" value="0.00"/>
+						<irq intr="18" cpu="5" value="0.00"/>
+						<irq intr="18" cpu="7" value="0.00"/>
+						<irq intr="18" cpu="8" value="0.00"/>
+						<irq intr="19" cpu="all" value="22.73"/>
+						<irq intr="19" cpu="0" value="0.00"/>
+						<irq intr="19" cpu="1" value="0.00"/>
+						<irq intr="19" cpu="2" value="0.00"/>
+						<irq intr="19" cpu="3" value="0.00"/>
+						<irq intr="19" cpu="4" value="22.73"/>
+						<irq intr="19" cpu="5" value="0.00"/>
+						<irq intr="19" cpu="7" value="0.00"/>
+						<irq intr="19" cpu="8" value="0.00"/>
+						<irq intr="23" cpu="all" value="31.12"/>
+						<irq intr="23" cpu="0" value="0.00"/>
+						<irq intr="23" cpu="1" value="0.00"/>
+						<irq intr="23" cpu="2" value="0.00"/>
+						<irq intr="23" cpu="3" value="0.00"/>
+						<irq intr="23" cpu="4" value="31.12"/>
+						<irq intr="23" cpu="5" value="0.00"/>
+						<irq intr="23" cpu="7" value="0.00"/>
+						<irq intr="23" cpu="8" value="0.00"/>
+						<irq intr="24" cpu="all" value="8.78"/>
+						<irq intr="24" cpu="0" value="0.00"/>
+						<irq intr="24" cpu="1" value="0.00"/>
+						<irq intr="24" cpu="2" value="8.78"/>
+						<irq intr="24" cpu="3" value="0.00"/>
+						<irq intr="24" cpu="4" value="0.00"/>
+						<irq intr="24" cpu="5" value="0.00"/>
+						<irq intr="24" cpu="7" value="0.00"/>
+						<irq intr="24" cpu="8" value="0.00"/>
+						<irq intr="25" cpu="all" value="0.00"/>
+						<irq intr="25" cpu="0" value="0.00"/>
+						<irq intr="25" cpu="1" value="0.00"/>
+						<irq intr="25" cpu="2" value="0.00"/>
+						<irq intr="25" cpu="3" value="0.00"/>
+						<irq intr="25" cpu="4" value="0.00"/>
+						<irq intr="25" cpu="5" value="0.00"/>
+						<irq intr="25" cpu="7" value="0.00"/>
+						<irq intr="25" cpu="8" value="0.00"/>
+						<irq intr="26" cpu="all" value="0.00"/>
+						<irq intr="26" cpu="0" value="0.00"/>
+						<irq intr="26" cpu="1" value="0.00"/>
+						<irq intr="26" cpu="2" value="0.00"/>
+						<irq intr="26" cpu="3" value="0.00"/>
+						<irq intr="26" cpu="4" value="0.00"/>
+						<irq intr="26" cpu="5" value="0.00"/>
+						<irq intr="26" cpu="7" value="0.00"/>
+						<irq intr="26" cpu="8" value="0.00"/>
+						<irq intr="27" cpu="all" value="1.30"/>
+						<irq intr="27" cpu="0" value="0.00"/>
+						<irq intr="27" cpu="1" value="0.00"/>
+						<irq intr="27" cpu="2" value="0.00"/>
+						<irq intr="27" cpu="3" value="0.00"/>
+						<irq intr="27" cpu="4" value="0.00"/>
+						<irq intr="27" cpu="5" value="0.00"/>
+						<irq intr="27" cpu="7" value="0.00"/>
+						<irq intr="27" cpu="8" value="1.04"/>
+						<irq intr="28" cpu="all" value="0.00"/>
+						<irq intr="28" cpu="0" value="0.00"/>
+						<irq intr="28" cpu="1" value="0.00"/>
+						<irq intr="28" cpu="2" value="0.00"/>
+						<irq intr="28" cpu="3" value="0.00"/>
+						<irq intr="28" cpu="4" value="0.00"/>
+						<irq intr="28" cpu="5" value="0.00"/>
+						<irq intr="28" cpu="7" value="0.00"/>
+						<irq intr="28" cpu="8" value="0.00"/>
+						<irq intr="29" cpu="all" value="0.00"/>
+						<irq intr="29" cpu="0" value="0.00"/>
+						<irq intr="29" cpu="1" value="0.00"/>
+						<irq intr="29" cpu="2" value="0.00"/>
+						<irq intr="29" cpu="3" value="0.00"/>
+						<irq intr="29" cpu="4" value="0.00"/>
+						<irq intr="29" cpu="5" value="0.00"/>
+						<irq intr="29" cpu="7" value="0.00"/>
+						<irq intr="29" cpu="8" value="0.00"/>
+						<irq intr="30" cpu="all" value="0.00"/>
+						<irq intr="30" cpu="0" value="0.00"/>
+						<irq intr="30" cpu="1" value="0.00"/>
+						<irq intr="30" cpu="2" value="0.00"/>
+						<irq intr="30" cpu="3" value="0.00"/>
+						<irq intr="30" cpu="4" value="0.00"/>
+						<irq intr="30" cpu="5" value="0.00"/>
+						<irq intr="30" cpu="7" value="0.00"/>
+						<irq intr="30" cpu="8" value="0.00"/>
+						<irq intr="31" cpu="all" value="0.00"/>
+						<irq intr="31" cpu="0" value="0.00"/>
+						<irq intr="31" cpu="1" value="0.00"/>
+						<irq intr="31" cpu="2" value="0.00"/>
+						<irq intr="31" cpu="3" value="0.00"/>
+						<irq intr="31" cpu="4" value="0.00"/>
+						<irq intr="31" cpu="5" value="0.00"/>
+						<irq intr="31" cpu="7" value="0.00"/>
+						<irq intr="31" cpu="8" value="0.00"/>
+						<irq intr="32" cpu="all" value="0.00"/>
+						<irq intr="32" cpu="0" value="0.00"/>
+						<irq intr="32" cpu="1" value="0.00"/>
+						<irq intr="32" cpu="2" value="0.00"/>
+						<irq intr="32" cpu="3" value="0.00"/>
+						<irq intr="32" cpu="4" value="0.00"/>
+						<irq intr="32" cpu="5" value="0.00"/>
+						<irq intr="32" cpu="7" value="0.00"/>
+						<irq intr="32" cpu="8" value="0.00"/>
+						<irq intr="33" cpu="all" value="61.87"/>
+						<irq intr="33" cpu="0" value="0.00"/>
+						<irq intr="33" cpu="1" value="0.00"/>
+						<irq intr="33" cpu="2" value="0.00"/>
+						<irq intr="33" cpu="3" value="61.87"/>
+						<irq intr="33" cpu="4" value="0.00"/>
+						<irq intr="33" cpu="5" value="0.00"/>
+						<irq intr="33" cpu="7" value="0.00"/>
+						<irq intr="33" cpu="8" value="0.00"/>
+						<irq intr="34" cpu="all" value="0.00"/>
+						<irq intr="34" cpu="0" value="0.00"/>
+						<irq intr="34" cpu="1" value="0.00"/>
+						<irq intr="34" cpu="2" value="0.00"/>
+						<irq intr="34" cpu="3" value="0.00"/>
+						<irq intr="34" cpu="4" value="0.00"/>
+						<irq intr="34" cpu="5" value="0.00"/>
+						<irq intr="34" cpu="7" value="0.00"/>
+						<irq intr="34" cpu="8" value="0.00"/>
+						<irq intr="35" cpu="all" value="0.00"/>
+						<irq intr="35" cpu="0" value="0.00"/>
+						<irq intr="35" cpu="1" value="0.00"/>
+						<irq intr="35" cpu="2" value="0.00"/>
+						<irq intr="35" cpu="3" value="0.00"/>
+						<irq intr="35" cpu="4" value="0.00"/>
+						<irq intr="35" cpu="5" value="0.00"/>
+						<irq intr="35" cpu="7" value="0.00"/>
+						<irq intr="35" cpu="8" value="0.00"/>
+						<irq intr="36" cpu="all" value="0.00"/>
+						<irq intr="36" cpu="0" value="0.00"/>
+						<irq intr="36" cpu="1" value="0.00"/>
+						<irq intr="36" cpu="2" value="0.00"/>
+						<irq intr="36" cpu="3" value="0.00"/>
+						<irq intr="36" cpu="4" value="0.00"/>
+						<irq intr="36" cpu="5" value="0.00"/>
+						<irq intr="36" cpu="7" value="0.00"/>
+						<irq intr="36" cpu="8" value="0.00"/>
+						<irq intr="NMI" cpu="all" value="5.87"/>
+						<irq intr="NMI" cpu="0" value="0.05"/>
+						<irq intr="NMI" cpu="1" value="0.03"/>
+						<irq intr="NMI" cpu="2" value="0.00"/>
+						<irq intr="NMI" cpu="3" value="0.03"/>
+						<irq intr="NMI" cpu="4" value="0.05"/>
+						<irq intr="NMI" cpu="5" value="0.00"/>
+						<irq intr="NMI" cpu="7" value="0.00"/>
+						<irq intr="NMI" cpu="8" value="1.90"/>
+						<irq intr="LOC" cpu="all" value="29624.05"/>
+						<irq intr="LOC" cpu="0" value="3240.78"/>
+						<irq intr="LOC" cpu="1" value="5209.14"/>
+						<irq intr="LOC" cpu="2" value="5014.44"/>
+						<irq intr="LOC" cpu="3" value="2896.70"/>
+						<irq intr="LOC" cpu="4" value="5787.40"/>
+						<irq intr="LOC" cpu="5" value="5444.23"/>
+						<irq intr="LOC" cpu="7" value="1707.82"/>
+						<irq intr="LOC" cpu="8" value="2.88"/>
+						<irq intr="SPU" cpu="all" value="0.00"/>
+						<irq intr="SPU" cpu="0" value="0.00"/>
+						<irq intr="SPU" cpu="1" value="0.00"/>
+						<irq intr="SPU" cpu="2" value="0.00"/>
+						<irq intr="SPU" cpu="3" value="0.00"/>
+						<irq intr="SPU" cpu="4" value="0.00"/>
+						<irq intr="SPU" cpu="5" value="0.00"/>
+						<irq intr="SPU" cpu="7" value="0.00"/>
+						<irq intr="SPU" cpu="8" value="0.00"/>
+						<irq intr="PMI" cpu="all" value="5.87"/>
+						<irq intr="PMI" cpu="0" value="0.05"/>
+						<irq intr="PMI" cpu="1" value="0.03"/>
+						<irq intr="PMI" cpu="2" value="0.00"/>
+						<irq intr="PMI" cpu="3" value="0.03"/>
+						<irq intr="PMI" cpu="4" value="0.05"/>
+						<irq intr="PMI" cpu="5" value="0.00"/>
+						<irq intr="PMI" cpu="7" value="0.00"/>
+						<irq intr="PMI" cpu="8" value="1.90"/>
+						<irq intr="IWI" cpu="all" value="0.00"/>
+						<irq intr="IWI" cpu="0" value="0.00"/>
+						<irq intr="IWI" cpu="1" value="0.00"/>
+						<irq intr="IWI" cpu="2" value="0.00"/>
+						<irq intr="IWI" cpu="3" value="0.00"/>
+						<irq intr="IWI" cpu="4" value="0.00"/>
+						<irq intr="IWI" cpu="5" value="0.00"/>
+						<irq intr="IWI" cpu="7" value="0.00"/>
+						<irq intr="IWI" cpu="8" value="0.00"/>
+						<irq intr="RTR" cpu="all" value="0.00"/>
+						<irq intr="RTR" cpu="0" value="0.00"/>
+						<irq intr="RTR" cpu="1" value="0.00"/>
+						<irq intr="RTR" cpu="2" value="0.00"/>
+						<irq intr="RTR" cpu="3" value="0.00"/>
+						<irq intr="RTR" cpu="4" value="0.00"/>
+						<irq intr="RTR" cpu="5" value="0.00"/>
+						<irq intr="RTR" cpu="7" value="0.00"/>
+						<irq intr="RTR" cpu="8" value="0.00"/>
+						<irq intr="RES" cpu="all" value="1628.68"/>
+						<irq intr="RES" cpu="0" value="80.21"/>
+						<irq intr="RES" cpu="1" value="81.12"/>
+						<irq intr="RES" cpu="2" value="12.08"/>
+						<irq intr="RES" cpu="3" value="13.92"/>
+						<irq intr="RES" cpu="4" value="10.75"/>
+						<irq intr="RES" cpu="5" value="9.22"/>
+						<irq intr="RES" cpu="7" value="7.84"/>
+						<irq intr="RES" cpu="8" value="2.60"/>
+						<irq intr="CAL" cpu="all" value="866.05"/>
+						<irq intr="CAL" cpu="0" value="42.18"/>
+						<irq intr="CAL" cpu="1" value="44.36"/>
+						<irq intr="CAL" cpu="2" value="4.34"/>
+						<irq intr="CAL" cpu="3" value="48.70"/>
+						<irq intr="CAL" cpu="4" value="35.64"/>
+						<irq intr="CAL" cpu="5" value="29.79"/>
+						<irq intr="CAL" cpu="7" value="51.27"/>
+						<irq intr="CAL" cpu="8" value="0.52"/>
+						<irq intr="TLB" cpu="all" value="1469.58"/>
+						<irq intr="TLB" cpu="0" value="77.97"/>
+						<irq intr="TLB" cpu="1" value="104.99"/>
+						<irq intr="TLB" cpu="2" value="23.51"/>
+						<irq intr="TLB" cpu="3" value="114.47"/>
+						<irq intr="TLB" cpu="4" value="71.40"/>
+						<irq intr="TLB" cpu="5" value="77.95"/>
+						<irq intr="TLB" cpu="7" value="100.68"/>
+						<irq intr="TLB" cpu="8" value="0.78"/>
+						<irq intr="TRM" cpu="all" value="0.00"/>
+						<irq intr="TRM" cpu="0" value="0.00"/>
+						<irq intr="TRM" cpu="1" value="0.00"/>
+						<irq intr="TRM" cpu="2" value="0.00"/>
+						<irq intr="TRM" cpu="3" value="0.00"/>
+						<irq intr="TRM" cpu="4" value="0.00"/>
+						<irq intr="TRM" cpu="5" value="0.00"/>
+						<irq intr="TRM" cpu="7" value="0.00"/>
+						<irq intr="TRM" cpu="8" value="0.00"/>
+						<irq intr="THR" cpu="all" value="0.00"/>
+						<irq intr="THR" cpu="0" value="0.00"/>
+						<irq intr="THR" cpu="1" value="0.00"/>
+						<irq intr="THR" cpu="2" value="0.00"/>
+						<irq intr="THR" cpu="3" value="0.00"/>
+						<irq intr="THR" cpu="4" value="0.00"/>
+						<irq intr="THR" cpu="5" value="0.00"/>
+						<irq intr="THR" cpu="7" value="0.00"/>
+						<irq intr="THR" cpu="8" value="0.00"/>
+						<irq intr="DFR" cpu="all" value="0.00"/>
+						<irq intr="DFR" cpu="0" value="0.00"/>
+						<irq intr="DFR" cpu="1" value="0.00"/>
+						<irq intr="DFR" cpu="2" value="0.00"/>
+						<irq intr="DFR" cpu="3" value="0.00"/>
+						<irq intr="DFR" cpu="4" value="0.00"/>
+						<irq intr="DFR" cpu="5" value="0.00"/>
+						<irq intr="DFR" cpu="7" value="0.00"/>
+						<irq intr="DFR" cpu="8" value="0.00"/>
+						<irq intr="MCE" cpu="all" value="0.00"/>
+						<irq intr="MCE" cpu="0" value="0.00"/>
+						<irq intr="MCE" cpu="1" value="0.00"/>
+						<irq intr="MCE" cpu="2" value="0.00"/>
+						<irq intr="MCE" cpu="3" value="0.00"/>
+						<irq intr="MCE" cpu="4" value="0.00"/>
+						<irq intr="MCE" cpu="5" value="0.00"/>
+						<irq intr="MCE" cpu="7" value="0.00"/>
+						<irq intr="MCE" cpu="8" value="0.00"/>
+						<irq intr="MCP" cpu="all" value="0.99"/>
+						<irq intr="MCP" cpu="0" value="0.00"/>
+						<irq intr="MCP" cpu="1" value="0.00"/>
+						<irq intr="MCP" cpu="2" value="0.00"/>
+						<irq intr="MCP" cpu="3" value="0.00"/>
+						<irq intr="MCP" cpu="4" value="0.00"/>
+						<irq intr="MCP" cpu="5" value="0.00"/>
+						<irq intr="MCP" cpu="7" value="0.00"/>
+						<irq intr="MCP" cpu="8" value="0.13"/>
+						<irq intr="HYP" cpu="all" value="0.00"/>
+						<irq intr="HYP" cpu="0" value="0.00"/>
+						<irq intr="HYP" cpu="1" value="0.00"/>
+						<irq intr="HYP" cpu="2" value="0.00"/>
+						<irq intr="HYP" cpu="3" value="0.00"/>
+						<irq intr="HYP" cpu="4" value="0.00"/>
+						<irq intr="HYP" cpu="5" value="0.00"/>
+						<irq intr="HYP" cpu="7" value="0.00"/>
+						<irq intr="HYP" cpu="8" value="0.00"/>
+						<irq intr="HRE" cpu="all" value="0.00"/>
+						<irq intr="HRE" cpu="0" value="0.00"/>
+						<irq intr="HRE" cpu="1" value="0.00"/>
+						<irq intr="HRE" cpu="2" value="0.00"/>
+						<irq intr="HRE" cpu="3" value="0.00"/>
+						<irq intr="HRE" cpu="4" value="0.00"/>
+						<irq intr="HRE" cpu="5" value="0.00"/>
+						<irq intr="HRE" cpu="7" value="0.00"/>
+						<irq intr="HRE" cpu="8" value="0.00"/>
+						<irq intr="HVS" cpu="all" value="0.00"/>
+						<irq intr="HVS" cpu="0" value="0.00"/>
+						<irq intr="HVS" cpu="1" value="0.00"/>
+						<irq intr="HVS" cpu="2" value="0.00"/>
+						<irq intr="HVS" cpu="3" value="0.00"/>
+						<irq intr="HVS" cpu="4" value="0.00"/>
+						<irq intr="HVS" cpu="5" value="0.00"/>
+						<irq intr="HVS" cpu="7" value="0.00"/>
+						<irq intr="HVS" cpu="8" value="0.00"/>
+						<irq intr="ERR" cpu="all" value="0.00"/>
+						<irq intr="ERR" cpu="0" value="0.00"/>
+						<irq intr="ERR" cpu="1" value="0.00"/>
+						<irq intr="ERR" cpu="2" value="0.00"/>
+						<irq intr="ERR" cpu="3" value="0.00"/>
+						<irq intr="ERR" cpu="4" value="0.00"/>
+						<irq intr="ERR" cpu="5" value="0.00"/>
+						<irq intr="ERR" cpu="7" value="0.00"/>
+						<irq intr="ERR" cpu="8" value="0.00"/>
+						<irq intr="MIS" cpu="all" value="0.00"/>
+						<irq intr="MIS" cpu="0" value="0.00"/>
+						<irq intr="MIS" cpu="1" value="0.00"/>
+						<irq intr="MIS" cpu="2" value="0.00"/>
+						<irq intr="MIS" cpu="3" value="0.00"/>
+						<irq intr="MIS" cpu="4" value="0.00"/>
+						<irq intr="MIS" cpu="5" value="0.00"/>
+						<irq intr="MIS" cpu="7" value="0.00"/>
+						<irq intr="MIS" cpu="8" value="0.00"/>
+						<irq intr="PIN" cpu="all" value="0.00"/>
+						<irq intr="PIN" cpu="0" value="0.00"/>
+						<irq intr="PIN" cpu="1" value="0.00"/>
+						<irq intr="PIN" cpu="2" value="0.00"/>
+						<irq intr="PIN" cpu="3" value="0.00"/>
+						<irq intr="PIN" cpu="4" value="0.00"/>
+						<irq intr="PIN" cpu="5" value="0.00"/>
+						<irq intr="PIN" cpu="7" value="0.00"/>
+						<irq intr="PIN" cpu="8" value="0.00"/>
+						<irq intr="NPI" cpu="all" value="0.00"/>
+						<irq intr="NPI" cpu="0" value="0.00"/>
+						<irq intr="NPI" cpu="1" value="0.00"/>
+						<irq intr="NPI" cpu="2" value="0.00"/>
+						<irq intr="NPI" cpu="3" value="0.00"/>
+						<irq intr="NPI" cpu="4" value="0.00"/>
+						<irq intr="NPI" cpu="5" value="0.00"/>
+						<irq intr="NPI" cpu="7" value="0.00"/>
+						<irq intr="NPI" cpu="8" value="0.00"/>
+						<irq intr="PIW" cpu="all" value="0.00"/>
+						<irq intr="PIW" cpu="0" value="0.00"/>
+						<irq intr="PIW" cpu="1" value="0.00"/>
+						<irq intr="PIW" cpu="2" value="0.00"/>
+						<irq intr="PIW" cpu="3" value="0.00"/>
+						<irq intr="PIW" cpu="4" value="0.00"/>
+						<irq intr="PIW" cpu="5" value="0.00"/>
+						<irq intr="PIW" cpu="7" value="0.00"/>
+						<irq intr="PIW" cpu="8" value="0.00"/>
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
@@ -1940,495 +1617,446 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<process-and-context-switch per="second" proc="5.27" cswch="108286.78"/>
 				<interrupts>
 					<int-global per="second">
-						<irq intr="sum" value="56126.26"/>
-						<irq intr="0" value="0.00"/>
-						<irq intr="1" value="0.00"/>
-						<irq intr="2" value="0.00"/>
-						<irq intr="3" value="0.00"/>
-						<irq intr="4" value="0.00"/>
-						<irq intr="5" value="0.00"/>
-						<irq intr="6" value="0.00"/>
-						<irq intr="7" value="0.00"/>
-						<irq intr="8" value="0.00"/>
-						<irq intr="9" value="0.00"/>
-						<irq intr="10" value="0.00"/>
-						<irq intr="11" value="0.00"/>
-						<irq intr="12" value="0.00"/>
-						<irq intr="13" value="0.00"/>
-						<irq intr="14" value="0.00"/>
-						<irq intr="15" value="0.00"/>
-						<irq intr="16" value="0.00"/>
-						<irq intr="17" value="0.00"/>
-						<irq intr="18" value="0.00"/>
-						<irq intr="19" value="26.75"/>
-						<irq intr="20" value="0.00"/>
-						<irq intr="21" value="0.00"/>
-						<irq intr="22" value="0.00"/>
-						<irq intr="23" value="17.55"/>
-						<irq intr="24" value="15.14"/>
-						<irq intr="25" value="0.00"/>
-						<irq intr="26" value="0.00"/>
-						<irq intr="27" value="0.00"/>
-						<irq intr="28" value="0.00"/>
-						<irq intr="29" value="0.00"/>
-						<irq intr="30" value="0.00"/>
-						<irq intr="31" value="0.00"/>
-						<irq intr="32" value="0.00"/>
-						<irq intr="33" value="22.20"/>
-						<irq intr="34" value="195.13"/>
-						<irq intr="35" value="0.00"/>
-						<irq intr="36" value="0.00"/>
-						<irq intr="37" value="0.00"/>
-						<irq intr="38" value="0.00"/>
-						<irq intr="39" value="0.00"/>
-						<irq intr="40" value="0.00"/>
-						<irq intr="41" value="0.00"/>
-						<irq intr="42" value="0.00"/>
-						<irq intr="43" value="0.00"/>
-						<irq intr="44" value="0.00"/>
-						<irq intr="45" value="0.00"/>
-						<irq intr="46" value="0.00"/>
-						<irq intr="47" value="0.00"/>
-						<irq intr="48" value="0.00"/>
-						<irq intr="49" value="0.00"/>
-						<irq intr="50" value="0.00"/>
-						<irq intr="51" value="0.00"/>
-						<irq intr="52" value="0.00"/>
-						<irq intr="53" value="0.00"/>
-						<irq intr="54" value="0.00"/>
-						<irq intr="55" value="0.00"/>
-						<irq intr="56" value="0.00"/>
-						<irq intr="57" value="0.00"/>
-						<irq intr="58" value="0.00"/>
-						<irq intr="59" value="0.00"/>
-						<irq intr="60" value="0.00"/>
-						<irq intr="61" value="0.00"/>
-						<irq intr="62" value="0.00"/>
-						<irq intr="63" value="0.00"/>
-						<irq intr="64" value="0.00"/>
-						<irq intr="65" value="0.00"/>
-						<irq intr="66" value="0.00"/>
-						<irq intr="67" value="0.00"/>
-						<irq intr="68" value="0.00"/>
-						<irq intr="69" value="0.00"/>
-						<irq intr="70" value="0.00"/>
-						<irq intr="71" value="0.00"/>
-						<irq intr="72" value="0.00"/>
-						<irq intr="73" value="0.00"/>
-						<irq intr="74" value="0.00"/>
-						<irq intr="75" value="0.00"/>
-						<irq intr="76" value="0.00"/>
-						<irq intr="77" value="0.00"/>
-						<irq intr="78" value="0.00"/>
-						<irq intr="79" value="0.00"/>
-						<irq intr="80" value="0.00"/>
-						<irq intr="81" value="0.00"/>
-						<irq intr="82" value="0.00"/>
-						<irq intr="83" value="0.00"/>
-						<irq intr="84" value="0.00"/>
-						<irq intr="85" value="0.00"/>
-						<irq intr="86" value="0.00"/>
-						<irq intr="87" value="0.00"/>
-						<irq intr="88" value="0.00"/>
-						<irq intr="89" value="0.00"/>
-						<irq intr="90" value="0.00"/>
-						<irq intr="91" value="0.00"/>
-						<irq intr="92" value="0.00"/>
-						<irq intr="93" value="0.00"/>
-						<irq intr="94" value="0.00"/>
-						<irq intr="95" value="0.00"/>
-						<irq intr="96" value="0.00"/>
-						<irq intr="97" value="0.00"/>
-						<irq intr="98" value="0.00"/>
-						<irq intr="99" value="0.00"/>
-						<irq intr="100" value="0.00"/>
-						<irq intr="101" value="0.00"/>
-						<irq intr="102" value="0.00"/>
-						<irq intr="103" value="0.00"/>
-						<irq intr="104" value="0.00"/>
-						<irq intr="105" value="0.00"/>
-						<irq intr="106" value="0.00"/>
-						<irq intr="107" value="0.00"/>
-						<irq intr="108" value="0.00"/>
-						<irq intr="109" value="0.00"/>
-						<irq intr="110" value="0.00"/>
-						<irq intr="111" value="0.00"/>
-						<irq intr="112" value="0.00"/>
-						<irq intr="113" value="0.00"/>
-						<irq intr="114" value="0.00"/>
-						<irq intr="115" value="0.00"/>
-						<irq intr="116" value="0.00"/>
-						<irq intr="117" value="0.00"/>
-						<irq intr="118" value="0.00"/>
-						<irq intr="119" value="0.00"/>
-						<irq intr="120" value="0.00"/>
-						<irq intr="121" value="0.00"/>
-						<irq intr="122" value="0.00"/>
-						<irq intr="123" value="0.00"/>
-						<irq intr="124" value="0.00"/>
-						<irq intr="125" value="0.00"/>
-						<irq intr="126" value="0.00"/>
-						<irq intr="127" value="0.00"/>
-						<irq intr="128" value="0.00"/>
-						<irq intr="129" value="0.00"/>
-						<irq intr="130" value="0.00"/>
-						<irq intr="131" value="0.00"/>
-						<irq intr="132" value="0.00"/>
-						<irq intr="133" value="0.00"/>
-						<irq intr="134" value="0.00"/>
-						<irq intr="135" value="0.00"/>
-						<irq intr="136" value="0.00"/>
-						<irq intr="137" value="0.00"/>
-						<irq intr="138" value="0.00"/>
-						<irq intr="139" value="0.00"/>
-						<irq intr="140" value="0.00"/>
-						<irq intr="141" value="0.00"/>
-						<irq intr="142" value="0.00"/>
-						<irq intr="143" value="0.00"/>
-						<irq intr="144" value="0.00"/>
-						<irq intr="145" value="0.00"/>
-						<irq intr="146" value="0.00"/>
-						<irq intr="147" value="0.00"/>
-						<irq intr="148" value="0.00"/>
-						<irq intr="149" value="0.00"/>
-						<irq intr="150" value="0.00"/>
-						<irq intr="151" value="0.00"/>
-						<irq intr="152" value="0.00"/>
-						<irq intr="153" value="0.00"/>
-						<irq intr="154" value="0.00"/>
-						<irq intr="155" value="0.00"/>
-						<irq intr="156" value="0.00"/>
-						<irq intr="157" value="0.00"/>
-						<irq intr="158" value="0.00"/>
-						<irq intr="159" value="0.00"/>
-						<irq intr="160" value="0.00"/>
-						<irq intr="161" value="0.00"/>
-						<irq intr="162" value="0.00"/>
-						<irq intr="163" value="0.00"/>
-						<irq intr="164" value="0.00"/>
-						<irq intr="165" value="0.00"/>
-						<irq intr="166" value="0.00"/>
-						<irq intr="167" value="0.00"/>
-						<irq intr="168" value="0.00"/>
-						<irq intr="169" value="0.00"/>
-						<irq intr="170" value="0.00"/>
-						<irq intr="171" value="0.00"/>
-						<irq intr="172" value="0.00"/>
-						<irq intr="173" value="0.00"/>
-						<irq intr="174" value="0.00"/>
-						<irq intr="175" value="0.00"/>
-						<irq intr="176" value="0.00"/>
-						<irq intr="177" value="0.00"/>
-						<irq intr="178" value="0.00"/>
-						<irq intr="179" value="0.00"/>
-						<irq intr="180" value="0.00"/>
-						<irq intr="181" value="0.00"/>
-						<irq intr="182" value="0.00"/>
-						<irq intr="183" value="0.00"/>
-						<irq intr="184" value="0.00"/>
-						<irq intr="185" value="0.00"/>
-						<irq intr="186" value="0.00"/>
-						<irq intr="187" value="0.00"/>
-						<irq intr="188" value="0.00"/>
-						<irq intr="189" value="0.00"/>
-						<irq intr="190" value="0.00"/>
-						<irq intr="191" value="0.00"/>
-						<irq intr="192" value="0.00"/>
-						<irq intr="193" value="0.00"/>
-						<irq intr="194" value="0.00"/>
-						<irq intr="195" value="0.00"/>
-						<irq intr="196" value="0.00"/>
-						<irq intr="197" value="0.00"/>
-						<irq intr="198" value="0.00"/>
-						<irq intr="199" value="0.00"/>
-						<irq intr="200" value="0.00"/>
-						<irq intr="201" value="0.00"/>
-						<irq intr="202" value="0.00"/>
-						<irq intr="203" value="0.00"/>
-						<irq intr="204" value="0.00"/>
-						<irq intr="205" value="0.00"/>
-						<irq intr="206" value="0.00"/>
-						<irq intr="207" value="0.00"/>
-						<irq intr="208" value="0.00"/>
-						<irq intr="209" value="0.00"/>
-						<irq intr="210" value="0.00"/>
-						<irq intr="211" value="0.00"/>
-						<irq intr="212" value="0.00"/>
-						<irq intr="213" value="0.00"/>
-						<irq intr="214" value="0.00"/>
-						<irq intr="215" value="0.00"/>
-						<irq intr="216" value="0.00"/>
-						<irq intr="217" value="0.00"/>
-						<irq intr="218" value="0.00"/>
-						<irq intr="219" value="0.00"/>
-						<irq intr="220" value="0.00"/>
-						<irq intr="221" value="0.00"/>
-						<irq intr="222" value="0.00"/>
-						<irq intr="223" value="0.00"/>
-						<irq intr="224" value="0.00"/>
-						<irq intr="225" value="0.00"/>
-						<irq intr="226" value="0.00"/>
-						<irq intr="227" value="0.00"/>
-						<irq intr="228" value="0.00"/>
-						<irq intr="229" value="0.00"/>
-						<irq intr="230" value="0.00"/>
-						<irq intr="231" value="0.00"/>
-						<irq intr="232" value="0.00"/>
-						<irq intr="233" value="0.00"/>
-						<irq intr="234" value="0.00"/>
-						<irq intr="235" value="0.00"/>
-						<irq intr="236" value="0.00"/>
-						<irq intr="237" value="0.00"/>
-						<irq intr="238" value="0.00"/>
-						<irq intr="239" value="0.00"/>
-						<irq intr="240" value="0.00"/>
-						<irq intr="241" value="0.00"/>
-						<irq intr="242" value="0.00"/>
-						<irq intr="243" value="0.00"/>
-						<irq intr="244" value="0.00"/>
-						<irq intr="245" value="0.00"/>
-						<irq intr="246" value="0.00"/>
-						<irq intr="247" value="0.00"/>
-						<irq intr="248" value="0.00"/>
-						<irq intr="249" value="0.00"/>
-						<irq intr="250" value="0.00"/>
-						<irq intr="251" value="0.00"/>
-						<irq intr="252" value="0.00"/>
-						<irq intr="253" value="0.00"/>
-						<irq intr="254" value="0.00"/>
-						<irq intr="255" value="0.00"/>
-						<irq intr="256" value="0.00"/>
-						<irq intr="257" value="0.00"/>
-						<irq intr="258" value="0.00"/>
-						<irq intr="259" value="0.00"/>
-						<irq intr="260" value="0.00"/>
-						<irq intr="261" value="0.00"/>
-						<irq intr="262" value="0.00"/>
-						<irq intr="263" value="0.00"/>
-						<irq intr="264" value="0.00"/>
-						<irq intr="265" value="0.00"/>
-						<irq intr="266" value="0.00"/>
-						<irq intr="267" value="0.00"/>
-						<irq intr="268" value="0.00"/>
-						<irq intr="269" value="0.00"/>
-						<irq intr="270" value="0.00"/>
-						<irq intr="271" value="0.00"/>
-						<irq intr="272" value="0.00"/>
-						<irq intr="273" value="0.00"/>
-						<irq intr="274" value="0.00"/>
-						<irq intr="275" value="0.00"/>
-						<irq intr="276" value="0.00"/>
-						<irq intr="277" value="0.00"/>
-						<irq intr="278" value="0.00"/>
-						<irq intr="279" value="0.00"/>
-						<irq intr="280" value="0.00"/>
-						<irq intr="281" value="0.00"/>
-						<irq intr="282" value="0.00"/>
-						<irq intr="283" value="0.00"/>
-						<irq intr="284" value="0.00"/>
-						<irq intr="285" value="0.00"/>
-						<irq intr="286" value="0.00"/>
-						<irq intr="287" value="0.00"/>
-						<irq intr="288" value="0.00"/>
-						<irq intr="289" value="0.00"/>
-						<irq intr="290" value="0.00"/>
-						<irq intr="291" value="0.00"/>
-						<irq intr="292" value="0.00"/>
-						<irq intr="293" value="0.00"/>
-						<irq intr="294" value="0.00"/>
-						<irq intr="295" value="0.00"/>
-						<irq intr="296" value="0.00"/>
-						<irq intr="297" value="0.00"/>
-						<irq intr="298" value="0.00"/>
-						<irq intr="299" value="0.00"/>
-						<irq intr="300" value="0.00"/>
-						<irq intr="301" value="0.00"/>
-						<irq intr="302" value="0.00"/>
-						<irq intr="303" value="0.00"/>
-						<irq intr="304" value="0.00"/>
-						<irq intr="305" value="0.00"/>
-						<irq intr="306" value="0.00"/>
-						<irq intr="307" value="0.00"/>
-						<irq intr="308" value="0.00"/>
-						<irq intr="309" value="0.00"/>
-						<irq intr="310" value="0.00"/>
-						<irq intr="311" value="0.00"/>
-						<irq intr="312" value="0.00"/>
-						<irq intr="313" value="0.00"/>
-						<irq intr="314" value="0.00"/>
-						<irq intr="315" value="0.00"/>
-						<irq intr="316" value="0.00"/>
-						<irq intr="317" value="0.00"/>
-						<irq intr="318" value="0.00"/>
-						<irq intr="319" value="0.00"/>
-						<irq intr="320" value="0.00"/>
-						<irq intr="321" value="0.00"/>
-						<irq intr="322" value="0.00"/>
-						<irq intr="323" value="0.00"/>
-						<irq intr="324" value="0.00"/>
-						<irq intr="325" value="0.00"/>
-						<irq intr="326" value="0.00"/>
-						<irq intr="327" value="0.00"/>
-						<irq intr="328" value="0.00"/>
-						<irq intr="329" value="0.00"/>
-						<irq intr="330" value="0.00"/>
-						<irq intr="331" value="0.00"/>
-						<irq intr="332" value="0.00"/>
-						<irq intr="333" value="0.00"/>
-						<irq intr="334" value="0.00"/>
-						<irq intr="335" value="0.00"/>
-						<irq intr="336" value="0.00"/>
-						<irq intr="337" value="0.00"/>
-						<irq intr="338" value="0.00"/>
-						<irq intr="339" value="0.00"/>
-						<irq intr="340" value="0.00"/>
-						<irq intr="341" value="0.00"/>
-						<irq intr="342" value="0.00"/>
-						<irq intr="343" value="0.00"/>
-						<irq intr="344" value="0.00"/>
-						<irq intr="345" value="0.00"/>
-						<irq intr="346" value="0.00"/>
-						<irq intr="347" value="0.00"/>
-						<irq intr="348" value="0.00"/>
-						<irq intr="349" value="0.00"/>
-						<irq intr="350" value="0.00"/>
-						<irq intr="351" value="0.00"/>
-						<irq intr="352" value="0.00"/>
-						<irq intr="353" value="0.00"/>
-						<irq intr="354" value="0.00"/>
-						<irq intr="355" value="0.00"/>
-						<irq intr="356" value="0.00"/>
-						<irq intr="357" value="0.00"/>
-						<irq intr="358" value="0.00"/>
-						<irq intr="359" value="0.00"/>
-						<irq intr="360" value="0.00"/>
-						<irq intr="361" value="0.00"/>
-						<irq intr="362" value="0.00"/>
-						<irq intr="363" value="0.00"/>
-						<irq intr="364" value="0.00"/>
-						<irq intr="365" value="0.00"/>
-						<irq intr="366" value="0.00"/>
-						<irq intr="367" value="0.00"/>
-						<irq intr="368" value="0.00"/>
-						<irq intr="369" value="0.00"/>
-						<irq intr="370" value="0.00"/>
-						<irq intr="371" value="0.00"/>
-						<irq intr="372" value="0.00"/>
-						<irq intr="373" value="0.00"/>
-						<irq intr="374" value="0.00"/>
-						<irq intr="375" value="0.00"/>
-						<irq intr="376" value="0.00"/>
-						<irq intr="377" value="0.00"/>
-						<irq intr="378" value="0.00"/>
-						<irq intr="379" value="0.00"/>
-						<irq intr="380" value="0.00"/>
-						<irq intr="381" value="0.00"/>
-						<irq intr="382" value="0.00"/>
-						<irq intr="383" value="0.00"/>
-						<irq intr="384" value="0.00"/>
-						<irq intr="385" value="0.00"/>
-						<irq intr="386" value="0.00"/>
-						<irq intr="387" value="0.00"/>
-						<irq intr="388" value="0.00"/>
-						<irq intr="389" value="0.00"/>
-						<irq intr="390" value="0.00"/>
-						<irq intr="391" value="0.00"/>
-						<irq intr="392" value="0.00"/>
-						<irq intr="393" value="0.00"/>
-						<irq intr="394" value="0.00"/>
-						<irq intr="395" value="0.00"/>
-						<irq intr="396" value="0.00"/>
-						<irq intr="397" value="0.00"/>
-						<irq intr="398" value="0.00"/>
-						<irq intr="399" value="0.00"/>
-						<irq intr="400" value="0.00"/>
-						<irq intr="401" value="0.00"/>
-						<irq intr="402" value="0.00"/>
-						<irq intr="403" value="0.00"/>
-						<irq intr="404" value="0.00"/>
-						<irq intr="405" value="0.00"/>
-						<irq intr="406" value="0.00"/>
-						<irq intr="407" value="0.00"/>
-						<irq intr="408" value="0.00"/>
-						<irq intr="409" value="0.00"/>
-						<irq intr="410" value="0.00"/>
-						<irq intr="411" value="0.00"/>
-						<irq intr="412" value="0.00"/>
-						<irq intr="413" value="0.00"/>
-						<irq intr="414" value="0.00"/>
-						<irq intr="415" value="0.00"/>
-						<irq intr="416" value="0.00"/>
-						<irq intr="417" value="0.00"/>
-						<irq intr="418" value="0.00"/>
-						<irq intr="419" value="0.00"/>
-						<irq intr="420" value="0.00"/>
-						<irq intr="421" value="0.00"/>
-						<irq intr="422" value="0.00"/>
-						<irq intr="423" value="0.00"/>
-						<irq intr="424" value="0.00"/>
-						<irq intr="425" value="0.00"/>
-						<irq intr="426" value="0.00"/>
-						<irq intr="427" value="0.00"/>
-						<irq intr="428" value="0.00"/>
-						<irq intr="429" value="0.00"/>
-						<irq intr="430" value="0.00"/>
-						<irq intr="431" value="0.00"/>
-						<irq intr="432" value="0.00"/>
-						<irq intr="433" value="0.00"/>
-						<irq intr="434" value="0.00"/>
-						<irq intr="435" value="0.00"/>
-						<irq intr="436" value="0.00"/>
-						<irq intr="437" value="0.00"/>
-						<irq intr="438" value="0.00"/>
-						<irq intr="439" value="0.00"/>
-						<irq intr="440" value="0.00"/>
-						<irq intr="441" value="0.00"/>
-						<irq intr="442" value="0.00"/>
-						<irq intr="443" value="0.00"/>
-						<irq intr="444" value="0.00"/>
-						<irq intr="445" value="0.00"/>
-						<irq intr="446" value="0.00"/>
-						<irq intr="447" value="0.00"/>
-						<irq intr="448" value="0.00"/>
-						<irq intr="449" value="0.00"/>
-						<irq intr="450" value="0.00"/>
-						<irq intr="451" value="0.00"/>
-						<irq intr="452" value="0.00"/>
-						<irq intr="453" value="0.00"/>
-						<irq intr="454" value="0.00"/>
-						<irq intr="455" value="0.00"/>
-						<irq intr="456" value="0.00"/>
-						<irq intr="457" value="0.00"/>
-						<irq intr="458" value="0.00"/>
-						<irq intr="459" value="0.00"/>
-						<irq intr="460" value="0.00"/>
-						<irq intr="461" value="0.00"/>
-						<irq intr="462" value="0.00"/>
-						<irq intr="463" value="0.00"/>
-						<irq intr="464" value="0.00"/>
-						<irq intr="465" value="0.00"/>
-						<irq intr="466" value="0.00"/>
-						<irq intr="467" value="0.00"/>
-						<irq intr="468" value="0.00"/>
-						<irq intr="469" value="0.00"/>
-						<irq intr="470" value="0.00"/>
-						<irq intr="471" value="0.00"/>
-						<irq intr="472" value="0.00"/>
-						<irq intr="473" value="0.00"/>
-						<irq intr="474" value="0.00"/>
-						<irq intr="475" value="0.00"/>
-						<irq intr="476" value="0.00"/>
-						<irq intr="477" value="0.00"/>
-						<irq intr="478" value="0.00"/>
-						<irq intr="479" value="0.00"/>
-						<irq intr="480" value="0.00"/>
-						<irq intr="481" value="0.00"/>
-						<irq intr="482" value="0.00"/>
-						<irq intr="483" value="0.00"/>
-						<irq intr="484" value="0.00"/>
-						<irq intr="485" value="0.00"/>
-						<irq intr="486" value="0.00"/>
-						<irq intr="487" value="0.00"/>
+						<irq intr="sum" cpu="all" value="727313.35"/>
+						<irq intr="sum" cpu="0" value="2690.00"/>
+						<irq intr="sum" cpu="1" value="8881.64"/>
+						<irq intr="sum" cpu="2" value="6461.72"/>
+						<irq intr="sum" cpu="3" value="10946.76"/>
+						<irq intr="sum" cpu="4" value="3736.27"/>
+						<irq intr="sum" cpu="5" value="8143.19"/>
+						<irq intr="sum" cpu="6" value="22726.84"/>
+						<irq intr="sum" cpu="7" value="9211.48"/>
+						<irq intr="sum" cpu="8" value="52.30"/>
+						<irq intr="0" cpu="all" value="0.00"/>
+						<irq intr="0" cpu="0" value="0.00"/>
+						<irq intr="0" cpu="1" value="0.00"/>
+						<irq intr="0" cpu="2" value="0.00"/>
+						<irq intr="0" cpu="3" value="0.00"/>
+						<irq intr="0" cpu="4" value="0.00"/>
+						<irq intr="0" cpu="5" value="0.00"/>
+						<irq intr="0" cpu="6" value="0.00"/>
+						<irq intr="0" cpu="7" value="0.00"/>
+						<irq intr="0" cpu="8" value="0.00"/>
+						<irq intr="8" cpu="all" value="0.00"/>
+						<irq intr="8" cpu="0" value="0.00"/>
+						<irq intr="8" cpu="1" value="0.00"/>
+						<irq intr="8" cpu="2" value="0.00"/>
+						<irq intr="8" cpu="3" value="0.00"/>
+						<irq intr="8" cpu="4" value="0.00"/>
+						<irq intr="8" cpu="5" value="0.00"/>
+						<irq intr="8" cpu="6" value="0.00"/>
+						<irq intr="8" cpu="7" value="0.00"/>
+						<irq intr="8" cpu="8" value="0.00"/>
+						<irq intr="9" cpu="all" value="0.00"/>
+						<irq intr="9" cpu="0" value="0.00"/>
+						<irq intr="9" cpu="1" value="0.00"/>
+						<irq intr="9" cpu="2" value="0.00"/>
+						<irq intr="9" cpu="3" value="0.00"/>
+						<irq intr="9" cpu="4" value="0.00"/>
+						<irq intr="9" cpu="5" value="0.00"/>
+						<irq intr="9" cpu="6" value="0.00"/>
+						<irq intr="9" cpu="7" value="0.00"/>
+						<irq intr="9" cpu="8" value="0.00"/>
+						<irq intr="16" cpu="all" value="0.00"/>
+						<irq intr="16" cpu="0" value="0.00"/>
+						<irq intr="16" cpu="1" value="0.00"/>
+						<irq intr="16" cpu="2" value="0.00"/>
+						<irq intr="16" cpu="3" value="0.00"/>
+						<irq intr="16" cpu="4" value="0.00"/>
+						<irq intr="16" cpu="5" value="0.00"/>
+						<irq intr="16" cpu="6" value="0.00"/>
+						<irq intr="16" cpu="7" value="0.00"/>
+						<irq intr="16" cpu="8" value="0.00"/>
+						<irq intr="17" cpu="all" value="0.00"/>
+						<irq intr="17" cpu="0" value="0.00"/>
+						<irq intr="17" cpu="1" value="0.00"/>
+						<irq intr="17" cpu="2" value="0.00"/>
+						<irq intr="17" cpu="3" value="0.00"/>
+						<irq intr="17" cpu="4" value="0.00"/>
+						<irq intr="17" cpu="5" value="0.00"/>
+						<irq intr="17" cpu="6" value="0.00"/>
+						<irq intr="17" cpu="7" value="0.00"/>
+						<irq intr="17" cpu="8" value="0.00"/>
+						<irq intr="18" cpu="all" value="0.00"/>
+						<irq intr="18" cpu="0" value="0.00"/>
+						<irq intr="18" cpu="1" value="0.00"/>
+						<irq intr="18" cpu="2" value="0.00"/>
+						<irq intr="18" cpu="3" value="0.00"/>
+						<irq intr="18" cpu="4" value="0.00"/>
+						<irq intr="18" cpu="5" value="0.00"/>
+						<irq intr="18" cpu="6" value="0.00"/>
+						<irq intr="18" cpu="7" value="0.00"/>
+						<irq intr="18" cpu="8" value="0.00"/>
+						<irq intr="19" cpu="all" value="26.75"/>
+						<irq intr="19" cpu="0" value="0.00"/>
+						<irq intr="19" cpu="1" value="0.00"/>
+						<irq intr="19" cpu="2" value="0.00"/>
+						<irq intr="19" cpu="3" value="0.00"/>
+						<irq intr="19" cpu="4" value="26.75"/>
+						<irq intr="19" cpu="5" value="0.00"/>
+						<irq intr="19" cpu="6" value="0.00"/>
+						<irq intr="19" cpu="7" value="0.00"/>
+						<irq intr="19" cpu="8" value="0.00"/>
+						<irq intr="23" cpu="all" value="17.55"/>
+						<irq intr="23" cpu="0" value="0.00"/>
+						<irq intr="23" cpu="1" value="0.00"/>
+						<irq intr="23" cpu="2" value="0.00"/>
+						<irq intr="23" cpu="3" value="0.00"/>
+						<irq intr="23" cpu="4" value="17.55"/>
+						<irq intr="23" cpu="5" value="0.00"/>
+						<irq intr="23" cpu="6" value="0.00"/>
+						<irq intr="23" cpu="7" value="0.00"/>
+						<irq intr="23" cpu="8" value="0.00"/>
+						<irq intr="24" cpu="all" value="15.14"/>
+						<irq intr="24" cpu="0" value="0.00"/>
+						<irq intr="24" cpu="1" value="0.00"/>
+						<irq intr="24" cpu="2" value="15.14"/>
+						<irq intr="24" cpu="3" value="0.00"/>
+						<irq intr="24" cpu="4" value="0.00"/>
+						<irq intr="24" cpu="5" value="0.00"/>
+						<irq intr="24" cpu="6" value="0.00"/>
+						<irq intr="24" cpu="7" value="0.00"/>
+						<irq intr="24" cpu="8" value="0.00"/>
+						<irq intr="25" cpu="all" value="0.00"/>
+						<irq intr="25" cpu="0" value="0.00"/>
+						<irq intr="25" cpu="1" value="0.00"/>
+						<irq intr="25" cpu="2" value="0.00"/>
+						<irq intr="25" cpu="3" value="0.00"/>
+						<irq intr="25" cpu="4" value="0.00"/>
+						<irq intr="25" cpu="5" value="0.00"/>
+						<irq intr="25" cpu="6" value="0.00"/>
+						<irq intr="25" cpu="7" value="0.00"/>
+						<irq intr="25" cpu="8" value="0.00"/>
+						<irq intr="26" cpu="all" value="0.00"/>
+						<irq intr="26" cpu="0" value="0.00"/>
+						<irq intr="26" cpu="1" value="0.00"/>
+						<irq intr="26" cpu="2" value="0.00"/>
+						<irq intr="26" cpu="3" value="0.00"/>
+						<irq intr="26" cpu="4" value="0.00"/>
+						<irq intr="26" cpu="5" value="0.00"/>
+						<irq intr="26" cpu="6" value="0.00"/>
+						<irq intr="26" cpu="7" value="0.00"/>
+						<irq intr="26" cpu="8" value="0.00"/>
+						<irq intr="27" cpu="all" value="0.13"/>
+						<irq intr="27" cpu="0" value="0.00"/>
+						<irq intr="27" cpu="1" value="0.00"/>
+						<irq intr="27" cpu="2" value="0.00"/>
+						<irq intr="27" cpu="3" value="0.00"/>
+						<irq intr="27" cpu="4" value="0.00"/>
+						<irq intr="27" cpu="5" value="0.00"/>
+						<irq intr="27" cpu="6" value="0.00"/>
+						<irq intr="27" cpu="7" value="0.00"/>
+						<irq intr="27" cpu="8" value="0.13"/>
+						<irq intr="28" cpu="all" value="0.00"/>
+						<irq intr="28" cpu="0" value="0.00"/>
+						<irq intr="28" cpu="1" value="0.00"/>
+						<irq intr="28" cpu="2" value="0.00"/>
+						<irq intr="28" cpu="3" value="0.00"/>
+						<irq intr="28" cpu="4" value="0.00"/>
+						<irq intr="28" cpu="5" value="0.00"/>
+						<irq intr="28" cpu="6" value="0.00"/>
+						<irq intr="28" cpu="7" value="0.00"/>
+						<irq intr="28" cpu="8" value="0.00"/>
+						<irq intr="29" cpu="all" value="0.00"/>
+						<irq intr="29" cpu="0" value="0.00"/>
+						<irq intr="29" cpu="1" value="0.00"/>
+						<irq intr="29" cpu="2" value="0.00"/>
+						<irq intr="29" cpu="3" value="0.00"/>
+						<irq intr="29" cpu="4" value="0.00"/>
+						<irq intr="29" cpu="5" value="0.00"/>
+						<irq intr="29" cpu="6" value="0.00"/>
+						<irq intr="29" cpu="7" value="0.00"/>
+						<irq intr="29" cpu="8" value="0.00"/>
+						<irq intr="30" cpu="all" value="0.00"/>
+						<irq intr="30" cpu="0" value="0.00"/>
+						<irq intr="30" cpu="1" value="0.00"/>
+						<irq intr="30" cpu="2" value="0.00"/>
+						<irq intr="30" cpu="3" value="0.00"/>
+						<irq intr="30" cpu="4" value="0.00"/>
+						<irq intr="30" cpu="5" value="0.00"/>
+						<irq intr="30" cpu="6" value="0.00"/>
+						<irq intr="30" cpu="7" value="0.00"/>
+						<irq intr="30" cpu="8" value="0.00"/>
+						<irq intr="31" cpu="all" value="0.00"/>
+						<irq intr="31" cpu="0" value="0.00"/>
+						<irq intr="31" cpu="1" value="0.00"/>
+						<irq intr="31" cpu="2" value="0.00"/>
+						<irq intr="31" cpu="3" value="0.00"/>
+						<irq intr="31" cpu="4" value="0.00"/>
+						<irq intr="31" cpu="5" value="0.00"/>
+						<irq intr="31" cpu="6" value="0.00"/>
+						<irq intr="31" cpu="7" value="0.00"/>
+						<irq intr="31" cpu="8" value="0.00"/>
+						<irq intr="32" cpu="all" value="0.00"/>
+						<irq intr="32" cpu="0" value="0.00"/>
+						<irq intr="32" cpu="1" value="0.00"/>
+						<irq intr="32" cpu="2" value="0.00"/>
+						<irq intr="32" cpu="3" value="0.00"/>
+						<irq intr="32" cpu="4" value="0.00"/>
+						<irq intr="32" cpu="5" value="0.00"/>
+						<irq intr="32" cpu="6" value="0.00"/>
+						<irq intr="32" cpu="7" value="0.00"/>
+						<irq intr="32" cpu="8" value="0.00"/>
+						<irq intr="33" cpu="all" value="21.93"/>
+						<irq intr="33" cpu="0" value="0.00"/>
+						<irq intr="33" cpu="1" value="0.00"/>
+						<irq intr="33" cpu="2" value="0.00"/>
+						<irq intr="33" cpu="3" value="21.93"/>
+						<irq intr="33" cpu="4" value="0.00"/>
+						<irq intr="33" cpu="5" value="0.00"/>
+						<irq intr="33" cpu="6" value="0.00"/>
+						<irq intr="33" cpu="7" value="0.00"/>
+						<irq intr="33" cpu="8" value="0.00"/>
+						<irq intr="34" cpu="all" value="34629.52"/>
+						<irq intr="34" cpu="0" value="0.00"/>
+						<irq intr="34" cpu="1" value="0.00"/>
+						<irq intr="34" cpu="2" value="0.00"/>
+						<irq intr="34" cpu="3" value="0.00"/>
+						<irq intr="34" cpu="4" value="0.00"/>
+						<irq intr="34" cpu="5" value="0.00"/>
+						<irq intr="34" cpu="6" value="649.40"/>
+						<irq intr="34" cpu="7" value="0.00"/>
+						<irq intr="34" cpu="8" value="0.00"/>
+						<irq intr="35" cpu="all" value="0.00"/>
+						<irq intr="35" cpu="0" value="0.00"/>
+						<irq intr="35" cpu="1" value="0.00"/>
+						<irq intr="35" cpu="2" value="0.00"/>
+						<irq intr="35" cpu="3" value="0.00"/>
+						<irq intr="35" cpu="4" value="0.00"/>
+						<irq intr="35" cpu="5" value="0.00"/>
+						<irq intr="35" cpu="6" value="0.00"/>
+						<irq intr="35" cpu="7" value="0.00"/>
+						<irq intr="35" cpu="8" value="0.00"/>
+						<irq intr="36" cpu="all" value="0.00"/>
+						<irq intr="36" cpu="0" value="0.00"/>
+						<irq intr="36" cpu="1" value="0.00"/>
+						<irq intr="36" cpu="2" value="0.00"/>
+						<irq intr="36" cpu="3" value="0.00"/>
+						<irq intr="36" cpu="4" value="0.00"/>
+						<irq intr="36" cpu="5" value="0.00"/>
+						<irq intr="36" cpu="6" value="0.00"/>
+						<irq intr="36" cpu="7" value="0.00"/>
+						<irq intr="36" cpu="8" value="0.00"/>
+						<irq intr="NMI" cpu="all" value="4.91"/>
+						<irq intr="NMI" cpu="0" value="0.04"/>
+						<irq intr="NMI" cpu="1" value="0.00"/>
+						<irq intr="NMI" cpu="2" value="0.04"/>
+						<irq intr="NMI" cpu="3" value="0.00"/>
+						<irq intr="NMI" cpu="4" value="0.04"/>
+						<irq intr="NMI" cpu="5" value="0.00"/>
+						<irq intr="NMI" cpu="6" value="0.00"/>
+						<irq intr="NMI" cpu="7" value="0.04"/>
+						<irq intr="NMI" cpu="8" value="0.22"/>
+						<irq intr="LOC" cpu="all" value="682157.17"/>
+						<irq intr="LOC" cpu="0" value="2503.97"/>
+						<irq intr="LOC" cpu="1" value="8620.90"/>
+						<irq intr="LOC" cpu="2" value="6325.23"/>
+						<irq intr="LOC" cpu="3" value="10853.19"/>
+						<irq intr="LOC" cpu="4" value="3667.75"/>
+						<irq intr="LOC" cpu="5" value="8082.49"/>
+						<irq intr="LOC" cpu="6" value="21751.54"/>
+						<irq intr="LOC" cpu="7" value="9112.64"/>
+						<irq intr="LOC" cpu="8" value="0.45"/>
+						<irq intr="SPU" cpu="all" value="0.00"/>
+						<irq intr="SPU" cpu="0" value="0.00"/>
+						<irq intr="SPU" cpu="1" value="0.00"/>
+						<irq intr="SPU" cpu="2" value="0.00"/>
+						<irq intr="SPU" cpu="3" value="0.00"/>
+						<irq intr="SPU" cpu="4" value="0.00"/>
+						<irq intr="SPU" cpu="5" value="0.00"/>
+						<irq intr="SPU" cpu="6" value="0.00"/>
+						<irq intr="SPU" cpu="7" value="0.00"/>
+						<irq intr="SPU" cpu="8" value="0.00"/>
+						<irq intr="PMI" cpu="all" value="4.91"/>
+						<irq intr="PMI" cpu="0" value="0.04"/>
+						<irq intr="PMI" cpu="1" value="0.00"/>
+						<irq intr="PMI" cpu="2" value="0.04"/>
+						<irq intr="PMI" cpu="3" value="0.00"/>
+						<irq intr="PMI" cpu="4" value="0.04"/>
+						<irq intr="PMI" cpu="5" value="0.00"/>
+						<irq intr="PMI" cpu="6" value="0.00"/>
+						<irq intr="PMI" cpu="7" value="0.04"/>
+						<irq intr="PMI" cpu="8" value="0.22"/>
+						<irq intr="IWI" cpu="all" value="0.00"/>
+						<irq intr="IWI" cpu="0" value="0.00"/>
+						<irq intr="IWI" cpu="1" value="0.00"/>
+						<irq intr="IWI" cpu="2" value="0.00"/>
+						<irq intr="IWI" cpu="3" value="0.00"/>
+						<irq intr="IWI" cpu="4" value="0.00"/>
+						<irq intr="IWI" cpu="5" value="0.00"/>
+						<irq intr="IWI" cpu="6" value="0.00"/>
+						<irq intr="IWI" cpu="7" value="0.00"/>
+						<irq intr="IWI" cpu="8" value="0.00"/>
+						<irq intr="RTR" cpu="all" value="0.00"/>
+						<irq intr="RTR" cpu="0" value="0.00"/>
+						<irq intr="RTR" cpu="1" value="0.00"/>
+						<irq intr="RTR" cpu="2" value="0.00"/>
+						<irq intr="RTR" cpu="3" value="0.00"/>
+						<irq intr="RTR" cpu="4" value="0.00"/>
+						<irq intr="RTR" cpu="5" value="0.00"/>
+						<irq intr="RTR" cpu="6" value="0.00"/>
+						<irq intr="RTR" cpu="7" value="0.00"/>
+						<irq intr="RTR" cpu="8" value="0.00"/>
+						<irq intr="RES" cpu="all" value="4564.85"/>
+						<irq intr="RES" cpu="0" value="130.33"/>
+						<irq intr="RES" cpu="1" value="154.09"/>
+						<irq intr="RES" cpu="2" value="57.03"/>
+						<irq intr="RES" cpu="3" value="23.63"/>
+						<irq intr="RES" cpu="4" value="9.87"/>
+						<irq intr="RES" cpu="5" value="7.86"/>
+						<irq intr="RES" cpu="6" value="34.93"/>
+						<irq intr="RES" cpu="7" value="5.18"/>
+						<irq intr="RES" cpu="8" value="0.36"/>
+						<irq intr="CAL" cpu="all" value="2123.05"/>
+						<irq intr="CAL" cpu="0" value="12.86"/>
+						<irq intr="CAL" cpu="1" value="36.36"/>
+						<irq intr="CAL" cpu="2" value="20.37"/>
+						<irq intr="CAL" cpu="3" value="14.56"/>
+						<irq intr="CAL" cpu="4" value="5.63"/>
+						<irq intr="CAL" cpu="5" value="14.83"/>
+						<irq intr="CAL" cpu="6" value="97.05"/>
+						<irq intr="CAL" cpu="7" value="22.60"/>
+						<irq intr="CAL" cpu="8" value="4.47"/>
+						<irq intr="TLB" cpu="all" value="3744.57"/>
+						<irq intr="TLB" cpu="0" value="42.74"/>
+						<irq intr="TLB" cpu="1" value="70.30"/>
+						<irq intr="TLB" cpu="2" value="43.86"/>
+						<irq intr="TLB" cpu="3" value="33.45"/>
+						<irq intr="TLB" cpu="4" value="8.62"/>
+						<irq intr="TLB" cpu="5" value="38.01"/>
+						<irq intr="TLB" cpu="6" value="193.93"/>
+						<irq intr="TLB" cpu="7" value="70.97"/>
+						<irq intr="TLB" cpu="8" value="44.66"/>
+						<irq intr="TRM" cpu="all" value="0.00"/>
+						<irq intr="TRM" cpu="0" value="0.00"/>
+						<irq intr="TRM" cpu="1" value="0.00"/>
+						<irq intr="TRM" cpu="2" value="0.00"/>
+						<irq intr="TRM" cpu="3" value="0.00"/>
+						<irq intr="TRM" cpu="4" value="0.00"/>
+						<irq intr="TRM" cpu="5" value="0.00"/>
+						<irq intr="TRM" cpu="6" value="0.00"/>
+						<irq intr="TRM" cpu="7" value="0.00"/>
+						<irq intr="TRM" cpu="8" value="0.00"/>
+						<irq intr="THR" cpu="all" value="0.00"/>
+						<irq intr="THR" cpu="0" value="0.00"/>
+						<irq intr="THR" cpu="1" value="0.00"/>
+						<irq intr="THR" cpu="2" value="0.00"/>
+						<irq intr="THR" cpu="3" value="0.00"/>
+						<irq intr="THR" cpu="4" value="0.00"/>
+						<irq intr="THR" cpu="5" value="0.00"/>
+						<irq intr="THR" cpu="6" value="0.00"/>
+						<irq intr="THR" cpu="7" value="0.00"/>
+						<irq intr="THR" cpu="8" value="0.00"/>
+						<irq intr="DFR" cpu="all" value="0.00"/>
+						<irq intr="DFR" cpu="0" value="0.00"/>
+						<irq intr="DFR" cpu="1" value="0.00"/>
+						<irq intr="DFR" cpu="2" value="0.00"/>
+						<irq intr="DFR" cpu="3" value="0.00"/>
+						<irq intr="DFR" cpu="4" value="0.00"/>
+						<irq intr="DFR" cpu="5" value="0.00"/>
+						<irq intr="DFR" cpu="6" value="0.00"/>
+						<irq intr="DFR" cpu="7" value="0.00"/>
+						<irq intr="DFR" cpu="8" value="0.00"/>
+						<irq intr="MCE" cpu="all" value="0.00"/>
+						<irq intr="MCE" cpu="0" value="0.00"/>
+						<irq intr="MCE" cpu="1" value="0.00"/>
+						<irq intr="MCE" cpu="2" value="0.00"/>
+						<irq intr="MCE" cpu="3" value="0.00"/>
+						<irq intr="MCE" cpu="4" value="0.00"/>
+						<irq intr="MCE" cpu="5" value="0.00"/>
+						<irq intr="MCE" cpu="6" value="0.00"/>
+						<irq intr="MCE" cpu="7" value="0.00"/>
+						<irq intr="MCE" cpu="8" value="0.00"/>
+						<irq intr="MCP" cpu="all" value="2.86"/>
+						<irq intr="MCP" cpu="0" value="0.00"/>
+						<irq intr="MCP" cpu="1" value="0.00"/>
+						<irq intr="MCP" cpu="2" value="0.00"/>
+						<irq intr="MCP" cpu="3" value="0.00"/>
+						<irq intr="MCP" cpu="4" value="0.00"/>
+						<irq intr="MCP" cpu="5" value="0.00"/>
+						<irq intr="MCP" cpu="6" value="0.00"/>
+						<irq intr="MCP" cpu="7" value="0.00"/>
+						<irq intr="MCP" cpu="8" value="1.79"/>
+						<irq intr="HYP" cpu="all" value="0.00"/>
+						<irq intr="HYP" cpu="0" value="0.00"/>
+						<irq intr="HYP" cpu="1" value="0.00"/>
+						<irq intr="HYP" cpu="2" value="0.00"/>
+						<irq intr="HYP" cpu="3" value="0.00"/>
+						<irq intr="HYP" cpu="4" value="0.00"/>
+						<irq intr="HYP" cpu="5" value="0.00"/>
+						<irq intr="HYP" cpu="6" value="0.00"/>
+						<irq intr="HYP" cpu="7" value="0.00"/>
+						<irq intr="HYP" cpu="8" value="0.00"/>
+						<irq intr="HRE" cpu="all" value="0.00"/>
+						<irq intr="HRE" cpu="0" value="0.00"/>
+						<irq intr="HRE" cpu="1" value="0.00"/>
+						<irq intr="HRE" cpu="2" value="0.00"/>
+						<irq intr="HRE" cpu="3" value="0.00"/>
+						<irq intr="HRE" cpu="4" value="0.00"/>
+						<irq intr="HRE" cpu="5" value="0.00"/>
+						<irq intr="HRE" cpu="6" value="0.00"/>
+						<irq intr="HRE" cpu="7" value="0.00"/>
+						<irq intr="HRE" cpu="8" value="0.00"/>
+						<irq intr="HVS" cpu="all" value="0.00"/>
+						<irq intr="HVS" cpu="0" value="0.00"/>
+						<irq intr="HVS" cpu="1" value="0.00"/>
+						<irq intr="HVS" cpu="2" value="0.00"/>
+						<irq intr="HVS" cpu="3" value="0.00"/>
+						<irq intr="HVS" cpu="4" value="0.00"/>
+						<irq intr="HVS" cpu="5" value="0.00"/>
+						<irq intr="HVS" cpu="6" value="0.00"/>
+						<irq intr="HVS" cpu="7" value="0.00"/>
+						<irq intr="HVS" cpu="8" value="0.00"/>
+						<irq intr="ERR" cpu="all" value="0.00"/>
+						<irq intr="ERR" cpu="0" value="0.00"/>
+						<irq intr="ERR" cpu="1" value="0.00"/>
+						<irq intr="ERR" cpu="2" value="0.00"/>
+						<irq intr="ERR" cpu="3" value="0.00"/>
+						<irq intr="ERR" cpu="4" value="0.00"/>
+						<irq intr="ERR" cpu="5" value="0.00"/>
+						<irq intr="ERR" cpu="6" value="0.00"/>
+						<irq intr="ERR" cpu="7" value="0.00"/>
+						<irq intr="ERR" cpu="8" value="0.00"/>
+						<irq intr="MIS" cpu="all" value="0.00"/>
+						<irq intr="MIS" cpu="0" value="0.00"/>
+						<irq intr="MIS" cpu="1" value="0.00"/>
+						<irq intr="MIS" cpu="2" value="0.00"/>
+						<irq intr="MIS" cpu="3" value="0.00"/>
+						<irq intr="MIS" cpu="4" value="0.00"/>
+						<irq intr="MIS" cpu="5" value="0.00"/>
+						<irq intr="MIS" cpu="6" value="0.00"/>
+						<irq intr="MIS" cpu="7" value="0.00"/>
+						<irq intr="MIS" cpu="8" value="0.00"/>
+						<irq intr="PIN" cpu="all" value="0.00"/>
+						<irq intr="PIN" cpu="0" value="0.00"/>
+						<irq intr="PIN" cpu="1" value="0.00"/>
+						<irq intr="PIN" cpu="2" value="0.00"/>
+						<irq intr="PIN" cpu="3" value="0.00"/>
+						<irq intr="PIN" cpu="4" value="0.00"/>
+						<irq intr="PIN" cpu="5" value="0.00"/>
+						<irq intr="PIN" cpu="6" value="0.00"/>
+						<irq intr="PIN" cpu="7" value="0.00"/>
+						<irq intr="PIN" cpu="8" value="0.00"/>
+						<irq intr="NPI" cpu="all" value="0.00"/>
+						<irq intr="NPI" cpu="0" value="0.00"/>
+						<irq intr="NPI" cpu="1" value="0.00"/>
+						<irq intr="NPI" cpu="2" value="0.00"/>
+						<irq intr="NPI" cpu="3" value="0.00"/>
+						<irq intr="NPI" cpu="4" value="0.00"/>
+						<irq intr="NPI" cpu="5" value="0.00"/>
+						<irq intr="NPI" cpu="6" value="0.00"/>
+						<irq intr="NPI" cpu="7" value="0.00"/>
+						<irq intr="NPI" cpu="8" value="0.00"/>
+						<irq intr="PIW" cpu="all" value="0.00"/>
+						<irq intr="PIW" cpu="0" value="0.00"/>
+						<irq intr="PIW" cpu="1" value="0.00"/>
+						<irq intr="PIW" cpu="2" value="0.00"/>
+						<irq intr="PIW" cpu="3" value="0.00"/>
+						<irq intr="PIW" cpu="4" value="0.00"/>
+						<irq intr="PIW" cpu="5" value="0.00"/>
+						<irq intr="PIW" cpu="6" value="0.00"/>
+						<irq intr="PIW" cpu="7" value="0.00"/>
+						<irq intr="PIW" cpu="8" value="0.00"/>
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
@@ -2589,495 +2217,402 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 				<interrupts>
 					<int-global per="second">
-						<irq intr="sum" value="35525.06"/>
-						<irq intr="0" value="0.00"/>
-						<irq intr="1" value="0.00"/>
-						<irq intr="2" value="0.00"/>
-						<irq intr="3" value="0.00"/>
-						<irq intr="4" value="0.00"/>
-						<irq intr="5" value="0.00"/>
-						<irq intr="6" value="0.00"/>
-						<irq intr="7" value="0.00"/>
-						<irq intr="8" value="0.00"/>
-						<irq intr="9" value="0.00"/>
-						<irq intr="10" value="0.00"/>
-						<irq intr="11" value="0.00"/>
-						<irq intr="12" value="0.00"/>
-						<irq intr="13" value="0.00"/>
-						<irq intr="14" value="0.00"/>
-						<irq intr="15" value="0.00"/>
-						<irq intr="16" value="0.00"/>
-						<irq intr="17" value="0.00"/>
-						<irq intr="18" value="0.00"/>
-						<irq intr="19" value="25.92"/>
-						<irq intr="20" value="0.00"/>
-						<irq intr="21" value="0.00"/>
-						<irq intr="22" value="0.00"/>
-						<irq intr="23" value="35.03"/>
-						<irq intr="24" value="10.39"/>
-						<irq intr="25" value="0.00"/>
-						<irq intr="26" value="0.00"/>
-						<irq intr="27" value="0.00"/>
-						<irq intr="28" value="0.00"/>
-						<irq intr="29" value="0.00"/>
-						<irq intr="30" value="0.00"/>
-						<irq intr="31" value="0.00"/>
-						<irq intr="32" value="0.00"/>
-						<irq intr="33" value="15.11"/>
-						<irq intr="34" value="149.98"/>
-						<irq intr="35" value="0.00"/>
-						<irq intr="36" value="0.00"/>
-						<irq intr="37" value="0.00"/>
-						<irq intr="38" value="0.00"/>
-						<irq intr="39" value="0.00"/>
-						<irq intr="40" value="0.00"/>
-						<irq intr="41" value="0.00"/>
-						<irq intr="42" value="0.00"/>
-						<irq intr="43" value="0.00"/>
-						<irq intr="44" value="0.00"/>
-						<irq intr="45" value="0.00"/>
-						<irq intr="46" value="0.00"/>
-						<irq intr="47" value="0.00"/>
-						<irq intr="48" value="0.00"/>
-						<irq intr="49" value="0.00"/>
-						<irq intr="50" value="0.00"/>
-						<irq intr="51" value="0.00"/>
-						<irq intr="52" value="0.00"/>
-						<irq intr="53" value="0.00"/>
-						<irq intr="54" value="0.00"/>
-						<irq intr="55" value="0.00"/>
-						<irq intr="56" value="0.00"/>
-						<irq intr="57" value="0.00"/>
-						<irq intr="58" value="0.00"/>
-						<irq intr="59" value="0.00"/>
-						<irq intr="60" value="0.00"/>
-						<irq intr="61" value="0.00"/>
-						<irq intr="62" value="0.00"/>
-						<irq intr="63" value="0.00"/>
-						<irq intr="64" value="0.00"/>
-						<irq intr="65" value="0.00"/>
-						<irq intr="66" value="0.00"/>
-						<irq intr="67" value="0.00"/>
-						<irq intr="68" value="0.00"/>
-						<irq intr="69" value="0.00"/>
-						<irq intr="70" value="0.00"/>
-						<irq intr="71" value="0.00"/>
-						<irq intr="72" value="0.00"/>
-						<irq intr="73" value="0.00"/>
-						<irq intr="74" value="0.00"/>
-						<irq intr="75" value="0.00"/>
-						<irq intr="76" value="0.00"/>
-						<irq intr="77" value="0.00"/>
-						<irq intr="78" value="0.00"/>
-						<irq intr="79" value="0.00"/>
-						<irq intr="80" value="0.00"/>
-						<irq intr="81" value="0.00"/>
-						<irq intr="82" value="0.00"/>
-						<irq intr="83" value="0.00"/>
-						<irq intr="84" value="0.00"/>
-						<irq intr="85" value="0.00"/>
-						<irq intr="86" value="0.00"/>
-						<irq intr="87" value="0.00"/>
-						<irq intr="88" value="0.00"/>
-						<irq intr="89" value="0.00"/>
-						<irq intr="90" value="0.00"/>
-						<irq intr="91" value="0.00"/>
-						<irq intr="92" value="0.00"/>
-						<irq intr="93" value="0.00"/>
-						<irq intr="94" value="0.00"/>
-						<irq intr="95" value="0.00"/>
-						<irq intr="96" value="0.00"/>
-						<irq intr="97" value="0.00"/>
-						<irq intr="98" value="0.00"/>
-						<irq intr="99" value="0.00"/>
-						<irq intr="100" value="0.00"/>
-						<irq intr="101" value="0.00"/>
-						<irq intr="102" value="0.00"/>
-						<irq intr="103" value="0.00"/>
-						<irq intr="104" value="0.00"/>
-						<irq intr="105" value="0.00"/>
-						<irq intr="106" value="0.00"/>
-						<irq intr="107" value="0.00"/>
-						<irq intr="108" value="0.00"/>
-						<irq intr="109" value="0.00"/>
-						<irq intr="110" value="0.00"/>
-						<irq intr="111" value="0.00"/>
-						<irq intr="112" value="0.00"/>
-						<irq intr="113" value="0.00"/>
-						<irq intr="114" value="0.00"/>
-						<irq intr="115" value="0.00"/>
-						<irq intr="116" value="0.00"/>
-						<irq intr="117" value="0.00"/>
-						<irq intr="118" value="0.00"/>
-						<irq intr="119" value="0.00"/>
-						<irq intr="120" value="0.00"/>
-						<irq intr="121" value="0.00"/>
-						<irq intr="122" value="0.00"/>
-						<irq intr="123" value="0.00"/>
-						<irq intr="124" value="0.00"/>
-						<irq intr="125" value="0.00"/>
-						<irq intr="126" value="0.00"/>
-						<irq intr="127" value="0.00"/>
-						<irq intr="128" value="0.00"/>
-						<irq intr="129" value="0.00"/>
-						<irq intr="130" value="0.00"/>
-						<irq intr="131" value="0.00"/>
-						<irq intr="132" value="0.00"/>
-						<irq intr="133" value="0.00"/>
-						<irq intr="134" value="0.00"/>
-						<irq intr="135" value="0.00"/>
-						<irq intr="136" value="0.00"/>
-						<irq intr="137" value="0.00"/>
-						<irq intr="138" value="0.00"/>
-						<irq intr="139" value="0.00"/>
-						<irq intr="140" value="0.00"/>
-						<irq intr="141" value="0.00"/>
-						<irq intr="142" value="0.00"/>
-						<irq intr="143" value="0.00"/>
-						<irq intr="144" value="0.00"/>
-						<irq intr="145" value="0.00"/>
-						<irq intr="146" value="0.00"/>
-						<irq intr="147" value="0.00"/>
-						<irq intr="148" value="0.00"/>
-						<irq intr="149" value="0.00"/>
-						<irq intr="150" value="0.00"/>
-						<irq intr="151" value="0.00"/>
-						<irq intr="152" value="0.00"/>
-						<irq intr="153" value="0.00"/>
-						<irq intr="154" value="0.00"/>
-						<irq intr="155" value="0.00"/>
-						<irq intr="156" value="0.00"/>
-						<irq intr="157" value="0.00"/>
-						<irq intr="158" value="0.00"/>
-						<irq intr="159" value="0.00"/>
-						<irq intr="160" value="0.00"/>
-						<irq intr="161" value="0.00"/>
-						<irq intr="162" value="0.00"/>
-						<irq intr="163" value="0.00"/>
-						<irq intr="164" value="0.00"/>
-						<irq intr="165" value="0.00"/>
-						<irq intr="166" value="0.00"/>
-						<irq intr="167" value="0.00"/>
-						<irq intr="168" value="0.00"/>
-						<irq intr="169" value="0.00"/>
-						<irq intr="170" value="0.00"/>
-						<irq intr="171" value="0.00"/>
-						<irq intr="172" value="0.00"/>
-						<irq intr="173" value="0.00"/>
-						<irq intr="174" value="0.00"/>
-						<irq intr="175" value="0.00"/>
-						<irq intr="176" value="0.00"/>
-						<irq intr="177" value="0.00"/>
-						<irq intr="178" value="0.00"/>
-						<irq intr="179" value="0.00"/>
-						<irq intr="180" value="0.00"/>
-						<irq intr="181" value="0.00"/>
-						<irq intr="182" value="0.00"/>
-						<irq intr="183" value="0.00"/>
-						<irq intr="184" value="0.00"/>
-						<irq intr="185" value="0.00"/>
-						<irq intr="186" value="0.00"/>
-						<irq intr="187" value="0.00"/>
-						<irq intr="188" value="0.00"/>
-						<irq intr="189" value="0.00"/>
-						<irq intr="190" value="0.00"/>
-						<irq intr="191" value="0.00"/>
-						<irq intr="192" value="0.00"/>
-						<irq intr="193" value="0.00"/>
-						<irq intr="194" value="0.00"/>
-						<irq intr="195" value="0.00"/>
-						<irq intr="196" value="0.00"/>
-						<irq intr="197" value="0.00"/>
-						<irq intr="198" value="0.00"/>
-						<irq intr="199" value="0.00"/>
-						<irq intr="200" value="0.00"/>
-						<irq intr="201" value="0.00"/>
-						<irq intr="202" value="0.00"/>
-						<irq intr="203" value="0.00"/>
-						<irq intr="204" value="0.00"/>
-						<irq intr="205" value="0.00"/>
-						<irq intr="206" value="0.00"/>
-						<irq intr="207" value="0.00"/>
-						<irq intr="208" value="0.00"/>
-						<irq intr="209" value="0.00"/>
-						<irq intr="210" value="0.00"/>
-						<irq intr="211" value="0.00"/>
-						<irq intr="212" value="0.00"/>
-						<irq intr="213" value="0.00"/>
-						<irq intr="214" value="0.00"/>
-						<irq intr="215" value="0.00"/>
-						<irq intr="216" value="0.00"/>
-						<irq intr="217" value="0.00"/>
-						<irq intr="218" value="0.00"/>
-						<irq intr="219" value="0.00"/>
-						<irq intr="220" value="0.00"/>
-						<irq intr="221" value="0.00"/>
-						<irq intr="222" value="0.00"/>
-						<irq intr="223" value="0.00"/>
-						<irq intr="224" value="0.00"/>
-						<irq intr="225" value="0.00"/>
-						<irq intr="226" value="0.00"/>
-						<irq intr="227" value="0.00"/>
-						<irq intr="228" value="0.00"/>
-						<irq intr="229" value="0.00"/>
-						<irq intr="230" value="0.00"/>
-						<irq intr="231" value="0.00"/>
-						<irq intr="232" value="0.00"/>
-						<irq intr="233" value="0.00"/>
-						<irq intr="234" value="0.00"/>
-						<irq intr="235" value="0.00"/>
-						<irq intr="236" value="0.00"/>
-						<irq intr="237" value="0.00"/>
-						<irq intr="238" value="0.00"/>
-						<irq intr="239" value="0.00"/>
-						<irq intr="240" value="0.00"/>
-						<irq intr="241" value="0.00"/>
-						<irq intr="242" value="0.00"/>
-						<irq intr="243" value="0.00"/>
-						<irq intr="244" value="0.00"/>
-						<irq intr="245" value="0.00"/>
-						<irq intr="246" value="0.00"/>
-						<irq intr="247" value="0.00"/>
-						<irq intr="248" value="0.00"/>
-						<irq intr="249" value="0.00"/>
-						<irq intr="250" value="0.00"/>
-						<irq intr="251" value="0.00"/>
-						<irq intr="252" value="0.00"/>
-						<irq intr="253" value="0.00"/>
-						<irq intr="254" value="0.00"/>
-						<irq intr="255" value="0.00"/>
-						<irq intr="256" value="0.00"/>
-						<irq intr="257" value="0.00"/>
-						<irq intr="258" value="0.00"/>
-						<irq intr="259" value="0.00"/>
-						<irq intr="260" value="0.00"/>
-						<irq intr="261" value="0.00"/>
-						<irq intr="262" value="0.00"/>
-						<irq intr="263" value="0.00"/>
-						<irq intr="264" value="0.00"/>
-						<irq intr="265" value="0.00"/>
-						<irq intr="266" value="0.00"/>
-						<irq intr="267" value="0.00"/>
-						<irq intr="268" value="0.00"/>
-						<irq intr="269" value="0.00"/>
-						<irq intr="270" value="0.00"/>
-						<irq intr="271" value="0.00"/>
-						<irq intr="272" value="0.00"/>
-						<irq intr="273" value="0.00"/>
-						<irq intr="274" value="0.00"/>
-						<irq intr="275" value="0.00"/>
-						<irq intr="276" value="0.00"/>
-						<irq intr="277" value="0.00"/>
-						<irq intr="278" value="0.00"/>
-						<irq intr="279" value="0.00"/>
-						<irq intr="280" value="0.00"/>
-						<irq intr="281" value="0.00"/>
-						<irq intr="282" value="0.00"/>
-						<irq intr="283" value="0.00"/>
-						<irq intr="284" value="0.00"/>
-						<irq intr="285" value="0.00"/>
-						<irq intr="286" value="0.00"/>
-						<irq intr="287" value="0.00"/>
-						<irq intr="288" value="0.00"/>
-						<irq intr="289" value="0.00"/>
-						<irq intr="290" value="0.00"/>
-						<irq intr="291" value="0.00"/>
-						<irq intr="292" value="0.00"/>
-						<irq intr="293" value="0.00"/>
-						<irq intr="294" value="0.00"/>
-						<irq intr="295" value="0.00"/>
-						<irq intr="296" value="0.00"/>
-						<irq intr="297" value="0.00"/>
-						<irq intr="298" value="0.00"/>
-						<irq intr="299" value="0.00"/>
-						<irq intr="300" value="0.00"/>
-						<irq intr="301" value="0.00"/>
-						<irq intr="302" value="0.00"/>
-						<irq intr="303" value="0.00"/>
-						<irq intr="304" value="0.00"/>
-						<irq intr="305" value="0.00"/>
-						<irq intr="306" value="0.00"/>
-						<irq intr="307" value="0.00"/>
-						<irq intr="308" value="0.00"/>
-						<irq intr="309" value="0.00"/>
-						<irq intr="310" value="0.00"/>
-						<irq intr="311" value="0.00"/>
-						<irq intr="312" value="0.00"/>
-						<irq intr="313" value="0.00"/>
-						<irq intr="314" value="0.00"/>
-						<irq intr="315" value="0.00"/>
-						<irq intr="316" value="0.00"/>
-						<irq intr="317" value="0.00"/>
-						<irq intr="318" value="0.00"/>
-						<irq intr="319" value="0.00"/>
-						<irq intr="320" value="0.00"/>
-						<irq intr="321" value="0.00"/>
-						<irq intr="322" value="0.00"/>
-						<irq intr="323" value="0.00"/>
-						<irq intr="324" value="0.00"/>
-						<irq intr="325" value="0.00"/>
-						<irq intr="326" value="0.00"/>
-						<irq intr="327" value="0.00"/>
-						<irq intr="328" value="0.00"/>
-						<irq intr="329" value="0.00"/>
-						<irq intr="330" value="0.00"/>
-						<irq intr="331" value="0.00"/>
-						<irq intr="332" value="0.00"/>
-						<irq intr="333" value="0.00"/>
-						<irq intr="334" value="0.00"/>
-						<irq intr="335" value="0.00"/>
-						<irq intr="336" value="0.00"/>
-						<irq intr="337" value="0.00"/>
-						<irq intr="338" value="0.00"/>
-						<irq intr="339" value="0.00"/>
-						<irq intr="340" value="0.00"/>
-						<irq intr="341" value="0.00"/>
-						<irq intr="342" value="0.00"/>
-						<irq intr="343" value="0.00"/>
-						<irq intr="344" value="0.00"/>
-						<irq intr="345" value="0.00"/>
-						<irq intr="346" value="0.00"/>
-						<irq intr="347" value="0.00"/>
-						<irq intr="348" value="0.00"/>
-						<irq intr="349" value="0.00"/>
-						<irq intr="350" value="0.00"/>
-						<irq intr="351" value="0.00"/>
-						<irq intr="352" value="0.00"/>
-						<irq intr="353" value="0.00"/>
-						<irq intr="354" value="0.00"/>
-						<irq intr="355" value="0.00"/>
-						<irq intr="356" value="0.00"/>
-						<irq intr="357" value="0.00"/>
-						<irq intr="358" value="0.00"/>
-						<irq intr="359" value="0.00"/>
-						<irq intr="360" value="0.00"/>
-						<irq intr="361" value="0.00"/>
-						<irq intr="362" value="0.00"/>
-						<irq intr="363" value="0.00"/>
-						<irq intr="364" value="0.00"/>
-						<irq intr="365" value="0.00"/>
-						<irq intr="366" value="0.00"/>
-						<irq intr="367" value="0.00"/>
-						<irq intr="368" value="0.00"/>
-						<irq intr="369" value="0.00"/>
-						<irq intr="370" value="0.00"/>
-						<irq intr="371" value="0.00"/>
-						<irq intr="372" value="0.00"/>
-						<irq intr="373" value="0.00"/>
-						<irq intr="374" value="0.00"/>
-						<irq intr="375" value="0.00"/>
-						<irq intr="376" value="0.00"/>
-						<irq intr="377" value="0.00"/>
-						<irq intr="378" value="0.00"/>
-						<irq intr="379" value="0.00"/>
-						<irq intr="380" value="0.00"/>
-						<irq intr="381" value="0.00"/>
-						<irq intr="382" value="0.00"/>
-						<irq intr="383" value="0.00"/>
-						<irq intr="384" value="0.00"/>
-						<irq intr="385" value="0.00"/>
-						<irq intr="386" value="0.00"/>
-						<irq intr="387" value="0.00"/>
-						<irq intr="388" value="0.00"/>
-						<irq intr="389" value="0.00"/>
-						<irq intr="390" value="0.00"/>
-						<irq intr="391" value="0.00"/>
-						<irq intr="392" value="0.00"/>
-						<irq intr="393" value="0.00"/>
-						<irq intr="394" value="0.00"/>
-						<irq intr="395" value="0.00"/>
-						<irq intr="396" value="0.00"/>
-						<irq intr="397" value="0.00"/>
-						<irq intr="398" value="0.00"/>
-						<irq intr="399" value="0.00"/>
-						<irq intr="400" value="0.00"/>
-						<irq intr="401" value="0.00"/>
-						<irq intr="402" value="0.00"/>
-						<irq intr="403" value="0.00"/>
-						<irq intr="404" value="0.00"/>
-						<irq intr="405" value="0.00"/>
-						<irq intr="406" value="0.00"/>
-						<irq intr="407" value="0.00"/>
-						<irq intr="408" value="0.00"/>
-						<irq intr="409" value="0.00"/>
-						<irq intr="410" value="0.00"/>
-						<irq intr="411" value="0.00"/>
-						<irq intr="412" value="0.00"/>
-						<irq intr="413" value="0.00"/>
-						<irq intr="414" value="0.00"/>
-						<irq intr="415" value="0.00"/>
-						<irq intr="416" value="0.00"/>
-						<irq intr="417" value="0.00"/>
-						<irq intr="418" value="0.00"/>
-						<irq intr="419" value="0.00"/>
-						<irq intr="420" value="0.00"/>
-						<irq intr="421" value="0.00"/>
-						<irq intr="422" value="0.00"/>
-						<irq intr="423" value="0.00"/>
-						<irq intr="424" value="0.00"/>
-						<irq intr="425" value="0.00"/>
-						<irq intr="426" value="0.00"/>
-						<irq intr="427" value="0.00"/>
-						<irq intr="428" value="0.00"/>
-						<irq intr="429" value="0.00"/>
-						<irq intr="430" value="0.00"/>
-						<irq intr="431" value="0.00"/>
-						<irq intr="432" value="0.00"/>
-						<irq intr="433" value="0.00"/>
-						<irq intr="434" value="0.00"/>
-						<irq intr="435" value="0.00"/>
-						<irq intr="436" value="0.00"/>
-						<irq intr="437" value="0.00"/>
-						<irq intr="438" value="0.00"/>
-						<irq intr="439" value="0.00"/>
-						<irq intr="440" value="0.00"/>
-						<irq intr="441" value="0.00"/>
-						<irq intr="442" value="0.00"/>
-						<irq intr="443" value="0.00"/>
-						<irq intr="444" value="0.00"/>
-						<irq intr="445" value="0.00"/>
-						<irq intr="446" value="0.00"/>
-						<irq intr="447" value="0.00"/>
-						<irq intr="448" value="0.00"/>
-						<irq intr="449" value="0.00"/>
-						<irq intr="450" value="0.00"/>
-						<irq intr="451" value="0.00"/>
-						<irq intr="452" value="0.00"/>
-						<irq intr="453" value="0.00"/>
-						<irq intr="454" value="0.00"/>
-						<irq intr="455" value="0.00"/>
-						<irq intr="456" value="0.00"/>
-						<irq intr="457" value="0.00"/>
-						<irq intr="458" value="0.00"/>
-						<irq intr="459" value="0.00"/>
-						<irq intr="460" value="0.00"/>
-						<irq intr="461" value="0.00"/>
-						<irq intr="462" value="0.00"/>
-						<irq intr="463" value="0.00"/>
-						<irq intr="464" value="0.00"/>
-						<irq intr="465" value="0.00"/>
-						<irq intr="466" value="0.00"/>
-						<irq intr="467" value="0.00"/>
-						<irq intr="468" value="0.00"/>
-						<irq intr="469" value="0.00"/>
-						<irq intr="470" value="0.00"/>
-						<irq intr="471" value="0.00"/>
-						<irq intr="472" value="0.00"/>
-						<irq intr="473" value="0.00"/>
-						<irq intr="474" value="0.00"/>
-						<irq intr="475" value="0.00"/>
-						<irq intr="476" value="0.00"/>
-						<irq intr="477" value="0.00"/>
-						<irq intr="478" value="0.00"/>
-						<irq intr="479" value="0.00"/>
-						<irq intr="480" value="0.00"/>
-						<irq intr="481" value="0.00"/>
-						<irq intr="482" value="0.00"/>
-						<irq intr="483" value="0.00"/>
-						<irq intr="484" value="0.00"/>
-						<irq intr="485" value="0.00"/>
-						<irq intr="486" value="0.00"/>
-						<irq intr="487" value="0.00"/>
+						<irq intr="sum" cpu="all" value="35926.40"/>
+						<irq intr="sum" cpu="0" value="5759.67"/>
+						<irq intr="sum" cpu="1" value="11829.29"/>
+						<irq intr="sum" cpu="2" value="2990.76"/>
+						<irq intr="sum" cpu="3" value="1027.05"/>
+						<irq intr="sum" cpu="4" value="2952.81"/>
+						<irq intr="sum" cpu="5" value="5880.88"/>
+						<irq intr="sum" cpu="6" value="4898.65"/>
+						<irq intr="sum" cpu="7" value="587.30"/>
+						<irq intr="0" cpu="all" value="0.00"/>
+						<irq intr="0" cpu="0" value="0.00"/>
+						<irq intr="0" cpu="1" value="0.00"/>
+						<irq intr="0" cpu="2" value="0.00"/>
+						<irq intr="0" cpu="3" value="0.00"/>
+						<irq intr="0" cpu="4" value="0.00"/>
+						<irq intr="0" cpu="5" value="0.00"/>
+						<irq intr="0" cpu="6" value="0.00"/>
+						<irq intr="0" cpu="7" value="0.00"/>
+						<irq intr="8" cpu="all" value="0.00"/>
+						<irq intr="8" cpu="0" value="0.00"/>
+						<irq intr="8" cpu="1" value="0.00"/>
+						<irq intr="8" cpu="2" value="0.00"/>
+						<irq intr="8" cpu="3" value="0.00"/>
+						<irq intr="8" cpu="4" value="0.00"/>
+						<irq intr="8" cpu="5" value="0.00"/>
+						<irq intr="8" cpu="6" value="0.00"/>
+						<irq intr="8" cpu="7" value="0.00"/>
+						<irq intr="9" cpu="all" value="0.00"/>
+						<irq intr="9" cpu="0" value="0.00"/>
+						<irq intr="9" cpu="1" value="0.00"/>
+						<irq intr="9" cpu="2" value="0.00"/>
+						<irq intr="9" cpu="3" value="0.00"/>
+						<irq intr="9" cpu="4" value="0.00"/>
+						<irq intr="9" cpu="5" value="0.00"/>
+						<irq intr="9" cpu="6" value="0.00"/>
+						<irq intr="9" cpu="7" value="0.00"/>
+						<irq intr="16" cpu="all" value="0.00"/>
+						<irq intr="16" cpu="0" value="0.00"/>
+						<irq intr="16" cpu="1" value="0.00"/>
+						<irq intr="16" cpu="2" value="0.00"/>
+						<irq intr="16" cpu="3" value="0.00"/>
+						<irq intr="16" cpu="4" value="0.00"/>
+						<irq intr="16" cpu="5" value="0.00"/>
+						<irq intr="16" cpu="6" value="0.00"/>
+						<irq intr="16" cpu="7" value="0.00"/>
+						<irq intr="17" cpu="all" value="0.00"/>
+						<irq intr="17" cpu="0" value="0.00"/>
+						<irq intr="17" cpu="1" value="0.00"/>
+						<irq intr="17" cpu="2" value="0.00"/>
+						<irq intr="17" cpu="3" value="0.00"/>
+						<irq intr="17" cpu="4" value="0.00"/>
+						<irq intr="17" cpu="5" value="0.00"/>
+						<irq intr="17" cpu="6" value="0.00"/>
+						<irq intr="17" cpu="7" value="0.00"/>
+						<irq intr="18" cpu="all" value="0.00"/>
+						<irq intr="18" cpu="0" value="0.00"/>
+						<irq intr="18" cpu="1" value="0.00"/>
+						<irq intr="18" cpu="2" value="0.00"/>
+						<irq intr="18" cpu="3" value="0.00"/>
+						<irq intr="18" cpu="4" value="0.00"/>
+						<irq intr="18" cpu="5" value="0.00"/>
+						<irq intr="18" cpu="6" value="0.00"/>
+						<irq intr="18" cpu="7" value="0.00"/>
+						<irq intr="19" cpu="all" value="25.92"/>
+						<irq intr="19" cpu="0" value="0.00"/>
+						<irq intr="19" cpu="1" value="0.00"/>
+						<irq intr="19" cpu="2" value="0.00"/>
+						<irq intr="19" cpu="3" value="0.00"/>
+						<irq intr="19" cpu="4" value="25.92"/>
+						<irq intr="19" cpu="5" value="0.00"/>
+						<irq intr="19" cpu="6" value="0.00"/>
+						<irq intr="19" cpu="7" value="0.00"/>
+						<irq intr="23" cpu="all" value="35.03"/>
+						<irq intr="23" cpu="0" value="0.00"/>
+						<irq intr="23" cpu="1" value="0.00"/>
+						<irq intr="23" cpu="2" value="0.00"/>
+						<irq intr="23" cpu="3" value="0.00"/>
+						<irq intr="23" cpu="4" value="35.03"/>
+						<irq intr="23" cpu="5" value="0.00"/>
+						<irq intr="23" cpu="6" value="0.00"/>
+						<irq intr="23" cpu="7" value="0.00"/>
+						<irq intr="24" cpu="all" value="10.39"/>
+						<irq intr="24" cpu="0" value="0.00"/>
+						<irq intr="24" cpu="1" value="0.00"/>
+						<irq intr="24" cpu="2" value="10.39"/>
+						<irq intr="24" cpu="3" value="0.00"/>
+						<irq intr="24" cpu="4" value="0.00"/>
+						<irq intr="24" cpu="5" value="0.00"/>
+						<irq intr="24" cpu="6" value="0.00"/>
+						<irq intr="24" cpu="7" value="0.00"/>
+						<irq intr="25" cpu="all" value="0.00"/>
+						<irq intr="25" cpu="0" value="0.00"/>
+						<irq intr="25" cpu="1" value="0.00"/>
+						<irq intr="25" cpu="2" value="0.00"/>
+						<irq intr="25" cpu="3" value="0.00"/>
+						<irq intr="25" cpu="4" value="0.00"/>
+						<irq intr="25" cpu="5" value="0.00"/>
+						<irq intr="25" cpu="6" value="0.00"/>
+						<irq intr="25" cpu="7" value="0.00"/>
+						<irq intr="26" cpu="all" value="0.00"/>
+						<irq intr="26" cpu="0" value="0.00"/>
+						<irq intr="26" cpu="1" value="0.00"/>
+						<irq intr="26" cpu="2" value="0.00"/>
+						<irq intr="26" cpu="3" value="0.00"/>
+						<irq intr="26" cpu="4" value="0.00"/>
+						<irq intr="26" cpu="5" value="0.00"/>
+						<irq intr="26" cpu="6" value="0.00"/>
+						<irq intr="26" cpu="7" value="0.00"/>
+						<irq intr="27" cpu="all" value="0.00"/>
+						<irq intr="27" cpu="0" value="0.00"/>
+						<irq intr="27" cpu="1" value="0.00"/>
+						<irq intr="27" cpu="2" value="0.00"/>
+						<irq intr="27" cpu="3" value="0.00"/>
+						<irq intr="27" cpu="4" value="0.00"/>
+						<irq intr="27" cpu="5" value="0.00"/>
+						<irq intr="27" cpu="6" value="0.00"/>
+						<irq intr="27" cpu="7" value="0.00"/>
+						<irq intr="28" cpu="all" value="0.00"/>
+						<irq intr="28" cpu="0" value="0.00"/>
+						<irq intr="28" cpu="1" value="0.00"/>
+						<irq intr="28" cpu="2" value="0.00"/>
+						<irq intr="28" cpu="3" value="0.00"/>
+						<irq intr="28" cpu="4" value="0.00"/>
+						<irq intr="28" cpu="5" value="0.00"/>
+						<irq intr="28" cpu="6" value="0.00"/>
+						<irq intr="28" cpu="7" value="0.00"/>
+						<irq intr="29" cpu="all" value="0.00"/>
+						<irq intr="29" cpu="0" value="0.00"/>
+						<irq intr="29" cpu="1" value="0.00"/>
+						<irq intr="29" cpu="2" value="0.00"/>
+						<irq intr="29" cpu="3" value="0.00"/>
+						<irq intr="29" cpu="4" value="0.00"/>
+						<irq intr="29" cpu="5" value="0.00"/>
+						<irq intr="29" cpu="6" value="0.00"/>
+						<irq intr="29" cpu="7" value="0.00"/>
+						<irq intr="30" cpu="all" value="0.00"/>
+						<irq intr="30" cpu="0" value="0.00"/>
+						<irq intr="30" cpu="1" value="0.00"/>
+						<irq intr="30" cpu="2" value="0.00"/>
+						<irq intr="30" cpu="3" value="0.00"/>
+						<irq intr="30" cpu="4" value="0.00"/>
+						<irq intr="30" cpu="5" value="0.00"/>
+						<irq intr="30" cpu="6" value="0.00"/>
+						<irq intr="30" cpu="7" value="0.00"/>
+						<irq intr="31" cpu="all" value="0.00"/>
+						<irq intr="31" cpu="0" value="0.00"/>
+						<irq intr="31" cpu="1" value="0.00"/>
+						<irq intr="31" cpu="2" value="0.00"/>
+						<irq intr="31" cpu="3" value="0.00"/>
+						<irq intr="31" cpu="4" value="0.00"/>
+						<irq intr="31" cpu="5" value="0.00"/>
+						<irq intr="31" cpu="6" value="0.00"/>
+						<irq intr="31" cpu="7" value="0.00"/>
+						<irq intr="32" cpu="all" value="0.00"/>
+						<irq intr="32" cpu="0" value="0.00"/>
+						<irq intr="32" cpu="1" value="0.00"/>
+						<irq intr="32" cpu="2" value="0.00"/>
+						<irq intr="32" cpu="3" value="0.00"/>
+						<irq intr="32" cpu="4" value="0.00"/>
+						<irq intr="32" cpu="5" value="0.00"/>
+						<irq intr="32" cpu="6" value="0.00"/>
+						<irq intr="32" cpu="7" value="0.00"/>
+						<irq intr="33" cpu="all" value="15.11"/>
+						<irq intr="33" cpu="0" value="0.00"/>
+						<irq intr="33" cpu="1" value="0.00"/>
+						<irq intr="33" cpu="2" value="0.00"/>
+						<irq intr="33" cpu="3" value="15.11"/>
+						<irq intr="33" cpu="4" value="0.00"/>
+						<irq intr="33" cpu="5" value="0.00"/>
+						<irq intr="33" cpu="6" value="0.00"/>
+						<irq intr="33" cpu="7" value="0.00"/>
+						<irq intr="34" cpu="all" value="149.98"/>
+						<irq intr="34" cpu="0" value="0.00"/>
+						<irq intr="34" cpu="1" value="0.00"/>
+						<irq intr="34" cpu="2" value="0.00"/>
+						<irq intr="34" cpu="3" value="0.00"/>
+						<irq intr="34" cpu="4" value="0.00"/>
+						<irq intr="34" cpu="5" value="0.00"/>
+						<irq intr="34" cpu="6" value="149.98"/>
+						<irq intr="34" cpu="7" value="0.00"/>
+						<irq intr="35" cpu="all" value="0.00"/>
+						<irq intr="35" cpu="0" value="0.00"/>
+						<irq intr="35" cpu="1" value="0.00"/>
+						<irq intr="35" cpu="2" value="0.00"/>
+						<irq intr="35" cpu="3" value="0.00"/>
+						<irq intr="35" cpu="4" value="0.00"/>
+						<irq intr="35" cpu="5" value="0.00"/>
+						<irq intr="35" cpu="6" value="0.00"/>
+						<irq intr="35" cpu="7" value="0.00"/>
+						<irq intr="36" cpu="all" value="0.00"/>
+						<irq intr="36" cpu="0" value="0.00"/>
+						<irq intr="36" cpu="1" value="0.00"/>
+						<irq intr="36" cpu="2" value="0.00"/>
+						<irq intr="36" cpu="3" value="0.00"/>
+						<irq intr="36" cpu="4" value="0.00"/>
+						<irq intr="36" cpu="5" value="0.00"/>
+						<irq intr="36" cpu="6" value="0.00"/>
+						<irq intr="36" cpu="7" value="0.00"/>
+						<irq intr="NMI" cpu="all" value="0.19"/>
+						<irq intr="NMI" cpu="0" value="0.03"/>
+						<irq intr="NMI" cpu="1" value="0.00"/>
+						<irq intr="NMI" cpu="2" value="0.00"/>
+						<irq intr="NMI" cpu="3" value="0.13"/>
+						<irq intr="NMI" cpu="4" value="0.00"/>
+						<irq intr="NMI" cpu="5" value="0.00"/>
+						<irq intr="NMI" cpu="6" value="0.03"/>
+						<irq intr="NMI" cpu="7" value="0.00"/>
+						<irq intr="LOC" cpu="all" value="34881.39"/>
+						<irq intr="LOC" cpu="0" value="5434.36"/>
+						<irq intr="LOC" cpu="1" value="11720.31"/>
+						<irq intr="LOC" cpu="2" value="2903.79"/>
+						<irq intr="LOC" cpu="3" value="1009.79"/>
+						<irq intr="LOC" cpu="4" value="2825.25"/>
+						<irq intr="LOC" cpu="5" value="5828.49"/>
+						<irq intr="LOC" cpu="6" value="4691.08"/>
+						<irq intr="LOC" cpu="7" value="468.33"/>
+						<irq intr="SPU" cpu="all" value="0.00"/>
+						<irq intr="SPU" cpu="0" value="0.00"/>
+						<irq intr="SPU" cpu="1" value="0.00"/>
+						<irq intr="SPU" cpu="2" value="0.00"/>
+						<irq intr="SPU" cpu="3" value="0.00"/>
+						<irq intr="SPU" cpu="4" value="0.00"/>
+						<irq intr="SPU" cpu="5" value="0.00"/>
+						<irq intr="SPU" cpu="6" value="0.00"/>
+						<irq intr="SPU" cpu="7" value="0.00"/>
+						<irq intr="PMI" cpu="all" value="0.19"/>
+						<irq intr="PMI" cpu="0" value="0.03"/>
+						<irq intr="PMI" cpu="1" value="0.00"/>
+						<irq intr="PMI" cpu="2" value="0.00"/>
+						<irq intr="PMI" cpu="3" value="0.13"/>
+						<irq intr="PMI" cpu="4" value="0.00"/>
+						<irq intr="PMI" cpu="5" value="0.00"/>
+						<irq intr="PMI" cpu="6" value="0.03"/>
+						<irq intr="PMI" cpu="7" value="0.00"/>
+						<irq intr="IWI" cpu="all" value="0.00"/>
+						<irq intr="IWI" cpu="0" value="0.00"/>
+						<irq intr="IWI" cpu="1" value="0.00"/>
+						<irq intr="IWI" cpu="2" value="0.00"/>
+						<irq intr="IWI" cpu="3" value="0.00"/>
+						<irq intr="IWI" cpu="4" value="0.00"/>
+						<irq intr="IWI" cpu="5" value="0.00"/>
+						<irq intr="IWI" cpu="6" value="0.00"/>
+						<irq intr="IWI" cpu="7" value="0.00"/>
+						<irq intr="RTR" cpu="all" value="0.00"/>
+						<irq intr="RTR" cpu="0" value="0.00"/>
+						<irq intr="RTR" cpu="1" value="0.00"/>
+						<irq intr="RTR" cpu="2" value="0.00"/>
+						<irq intr="RTR" cpu="3" value="0.00"/>
+						<irq intr="RTR" cpu="4" value="0.00"/>
+						<irq intr="RTR" cpu="5" value="0.00"/>
+						<irq intr="RTR" cpu="6" value="0.00"/>
+						<irq intr="RTR" cpu="7" value="0.00"/>
+						<irq intr="RES" cpu="all" value="215.01"/>
+						<irq intr="RES" cpu="0" value="149.37"/>
+						<irq intr="RES" cpu="1" value="32.72"/>
+						<irq intr="RES" cpu="2" value="13.19"/>
+						<irq intr="RES" cpu="3" value="0.10"/>
+						<irq intr="RES" cpu="4" value="4.62"/>
+						<irq intr="RES" cpu="5" value="2.69"/>
+						<irq intr="RES" cpu="6" value="9.11"/>
+						<irq intr="RES" cpu="7" value="3.21"/>
+						<irq intr="CAL" cpu="all" value="191.69"/>
+						<irq intr="CAL" cpu="0" value="69.87"/>
+						<irq intr="CAL" cpu="1" value="19.44"/>
+						<irq intr="CAL" cpu="2" value="20.47"/>
+						<irq intr="CAL" cpu="3" value="1.41"/>
+						<irq intr="CAL" cpu="4" value="13.35"/>
+						<irq intr="CAL" cpu="5" value="17.32"/>
+						<irq intr="CAL" cpu="6" value="18.67"/>
+						<irq intr="CAL" cpu="7" value="31.15"/>
+						<irq intr="TLB" cpu="all" value="401.22"/>
+						<irq intr="TLB" cpu="0" value="105.97"/>
+						<irq intr="TLB" cpu="1" value="56.79"/>
+						<irq intr="TLB" cpu="2" value="42.89"/>
+						<irq intr="TLB" cpu="3" value="0.35"/>
+						<irq intr="TLB" cpu="4" value="48.60"/>
+						<irq intr="TLB" cpu="5" value="32.34"/>
+						<irq intr="TLB" cpu="6" value="29.71"/>
+						<irq intr="TLB" cpu="7" value="84.57"/>
+						<irq intr="TRM" cpu="all" value="0.00"/>
+						<irq intr="TRM" cpu="0" value="0.00"/>
+						<irq intr="TRM" cpu="1" value="0.00"/>
+						<irq intr="TRM" cpu="2" value="0.00"/>
+						<irq intr="TRM" cpu="3" value="0.00"/>
+						<irq intr="TRM" cpu="4" value="0.00"/>
+						<irq intr="TRM" cpu="5" value="0.00"/>
+						<irq intr="TRM" cpu="6" value="0.00"/>
+						<irq intr="TRM" cpu="7" value="0.00"/>
+						<irq intr="THR" cpu="all" value="0.00"/>
+						<irq intr="THR" cpu="0" value="0.00"/>
+						<irq intr="THR" cpu="1" value="0.00"/>
+						<irq intr="THR" cpu="2" value="0.00"/>
+						<irq intr="THR" cpu="3" value="0.00"/>
+						<irq intr="THR" cpu="4" value="0.00"/>
+						<irq intr="THR" cpu="5" value="0.00"/>
+						<irq intr="THR" cpu="6" value="0.00"/>
+						<irq intr="THR" cpu="7" value="0.00"/>
+						<irq intr="DFR" cpu="all" value="0.00"/>
+						<irq intr="DFR" cpu="0" value="0.00"/>
+						<irq intr="DFR" cpu="1" value="0.00"/>
+						<irq intr="DFR" cpu="2" value="0.00"/>
+						<irq intr="DFR" cpu="3" value="0.00"/>
+						<irq intr="DFR" cpu="4" value="0.00"/>
+						<irq intr="DFR" cpu="5" value="0.00"/>
+						<irq intr="DFR" cpu="6" value="0.00"/>
+						<irq intr="DFR" cpu="7" value="0.00"/>
+						<irq intr="MCE" cpu="all" value="0.00"/>
+						<irq intr="MCE" cpu="0" value="0.00"/>
+						<irq intr="MCE" cpu="1" value="0.00"/>
+						<irq intr="MCE" cpu="2" value="0.00"/>
+						<irq intr="MCE" cpu="3" value="0.00"/>
+						<irq intr="MCE" cpu="4" value="0.00"/>
+						<irq intr="MCE" cpu="5" value="0.00"/>
+						<irq intr="MCE" cpu="6" value="0.00"/>
+						<irq intr="MCE" cpu="7" value="0.00"/>
+						<irq intr="MCP" cpu="all" value="0.26"/>
+						<irq intr="MCP" cpu="0" value="0.03"/>
+						<irq intr="MCP" cpu="1" value="0.03"/>
+						<irq intr="MCP" cpu="2" value="0.03"/>
+						<irq intr="MCP" cpu="3" value="0.03"/>
+						<irq intr="MCP" cpu="4" value="0.03"/>
+						<irq intr="MCP" cpu="5" value="0.03"/>
+						<irq intr="MCP" cpu="6" value="0.03"/>
+						<irq intr="MCP" cpu="7" value="0.03"/>
+						<irq intr="HYP" cpu="all" value="0.00"/>
+						<irq intr="HYP" cpu="0" value="0.00"/>
+						<irq intr="HYP" cpu="1" value="0.00"/>
+						<irq intr="HYP" cpu="2" value="0.00"/>
+						<irq intr="HYP" cpu="3" value="0.00"/>
+						<irq intr="HYP" cpu="4" value="0.00"/>
+						<irq intr="HYP" cpu="5" value="0.00"/>
+						<irq intr="HYP" cpu="6" value="0.00"/>
+						<irq intr="HYP" cpu="7" value="0.00"/>
+						<irq intr="HRE" cpu="all" value="0.00"/>
+						<irq intr="HRE" cpu="0" value="0.00"/>
+						<irq intr="HRE" cpu="1" value="0.00"/>
+						<irq intr="HRE" cpu="2" value="0.00"/>
+						<irq intr="HRE" cpu="3" value="0.00"/>
+						<irq intr="HRE" cpu="4" value="0.00"/>
+						<irq intr="HRE" cpu="5" value="0.00"/>
+						<irq intr="HRE" cpu="6" value="0.00"/>
+						<irq intr="HRE" cpu="7" value="0.00"/>
+						<irq intr="HVS" cpu="all" value="0.00"/>
+						<irq intr="HVS" cpu="0" value="0.00"/>
+						<irq intr="HVS" cpu="1" value="0.00"/>
+						<irq intr="HVS" cpu="2" value="0.00"/>
+						<irq intr="HVS" cpu="3" value="0.00"/>
+						<irq intr="HVS" cpu="4" value="0.00"/>
+						<irq intr="HVS" cpu="5" value="0.00"/>
+						<irq intr="HVS" cpu="6" value="0.00"/>
+						<irq intr="HVS" cpu="7" value="0.00"/>
+						<irq intr="ERR" cpu="all" value="0.00"/>
+						<irq intr="ERR" cpu="0" value="0.00"/>
+						<irq intr="ERR" cpu="1" value="0.00"/>
+						<irq intr="ERR" cpu="2" value="0.00"/>
+						<irq intr="ERR" cpu="3" value="0.00"/>
+						<irq intr="ERR" cpu="4" value="0.00"/>
+						<irq intr="ERR" cpu="5" value="0.00"/>
+						<irq intr="ERR" cpu="6" value="0.00"/>
+						<irq intr="ERR" cpu="7" value="0.00"/>
+						<irq intr="MIS" cpu="all" value="0.00"/>
+						<irq intr="MIS" cpu="0" value="0.00"/>
+						<irq intr="MIS" cpu="1" value="0.00"/>
+						<irq intr="MIS" cpu="2" value="0.00"/>
+						<irq intr="MIS" cpu="3" value="0.00"/>
+						<irq intr="MIS" cpu="4" value="0.00"/>
+						<irq intr="MIS" cpu="5" value="0.00"/>
+						<irq intr="MIS" cpu="6" value="0.00"/>
+						<irq intr="MIS" cpu="7" value="0.00"/>
+						<irq intr="PIN" cpu="all" value="0.00"/>
+						<irq intr="PIN" cpu="0" value="0.00"/>
+						<irq intr="PIN" cpu="1" value="0.00"/>
+						<irq intr="PIN" cpu="2" value="0.00"/>
+						<irq intr="PIN" cpu="3" value="0.00"/>
+						<irq intr="PIN" cpu="4" value="0.00"/>
+						<irq intr="PIN" cpu="5" value="0.00"/>
+						<irq intr="PIN" cpu="6" value="0.00"/>
+						<irq intr="PIN" cpu="7" value="0.00"/>
+						<irq intr="NPI" cpu="all" value="0.00"/>
+						<irq intr="NPI" cpu="0" value="0.00"/>
+						<irq intr="NPI" cpu="1" value="0.00"/>
+						<irq intr="NPI" cpu="2" value="0.00"/>
+						<irq intr="NPI" cpu="3" value="0.00"/>
+						<irq intr="NPI" cpu="4" value="0.00"/>
+						<irq intr="NPI" cpu="5" value="0.00"/>
+						<irq intr="NPI" cpu="6" value="0.00"/>
+						<irq intr="NPI" cpu="7" value="0.00"/>
+						<irq intr="PIW" cpu="all" value="0.00"/>
+						<irq intr="PIW" cpu="0" value="0.00"/>
+						<irq intr="PIW" cpu="1" value="0.00"/>
+						<irq intr="PIW" cpu="2" value="0.00"/>
+						<irq intr="PIW" cpu="3" value="0.00"/>
+						<irq intr="PIW" cpu="4" value="0.00"/>
+						<irq intr="PIW" cpu="5" value="0.00"/>
+						<irq intr="PIW" cpu="6" value="0.00"/>
+						<irq intr="PIW" cpu="7" value="0.00"/>
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>

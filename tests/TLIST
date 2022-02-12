@@ -1,5 +1,9 @@
 NOTES:
 	* The interval of time is calculated using ./proc/uptime files, not the value given on the command line.
+	* Contents of a datafile:
+		. = common sample	1 = root1
+		R = Linux Restart	2 = root2
+		C = Comment		...
 
 =====
 00010	./sar -V >/dev/null
@@ -12,12 +16,12 @@ NOTES:
 00017	./cifsiostat -V >/dev/null
 
 =====	Files creation
------	Create data-new.tmp [.....RC / 12345]
+-----	Create data-new.tmp [.....RC / 1234511]
 00050	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data-new.tmp 1 1 >/dev/null
 00052	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data-new.tmp
 00054	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data-new.tmp
 
------	Create data.tmp by appending data to data-new.tmp [.....RCR.. / 12345667]
+-----	Create data.tmp by appending data to data-new.tmp [.....RCR.. / 1234511667]
 00055	TZ=GMT ./sadc --unix_time=1555595649 [-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ] tests/data.tmp
 00057	2 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL tests/data.tmp 1 1 >/dev/null
 
@@ -53,9 +57,9 @@ NOTES:
 
 =====	sar: Reading data-new.tmp
 00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data-new.tmp > tests/out.sar-u.tmp
-00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I SUM -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp
+00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp
 	[Don't take into account sensors statistics which are not read from test root directory]
-00132	LC_ALL=C TZ=GMT ./sar -A -I 2-5 -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp
+00132	LC_ALL=C TZ=GMT ./sar -A --int=30-35,RES -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp
 	[Check that -A doesn't necessarily imply -I ALL -P ALL]
 
 =====	sar: Reading data.tmp
@@ -296,7 +300,7 @@ NOTES:
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
 	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
 01760	LC_ALL=C TZ=GMT ./sar -BbdFHSvWwy -I ALL -m CPU,FREQ,USB -n ALL -q ALL -r ALL -u ALL 1 2 > tests/out.sar-A.tmp
-01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I 2,3 -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
+01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I --int=19,NMI -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 01820	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -- -d --dev=sds -n DEV,EDEV --iface=wlp5s0 > tests/out.sadf-disc.tmp
 01825	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -O debug -- -d --dev=sdq,sdr -n DEV,EDEV --iface=virbr0,virbr0-1 > tests/out2.sadf-disc.tmp
 
