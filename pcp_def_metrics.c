@@ -163,7 +163,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 
 				pmiAddMetric("network.softnet.flow_limit_count",
 					     pmiID(60, 57, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, -1, 1, 0, PM_TIME_SEC, PM_COUNT_ONE));
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 			}
 		}
 		else {
