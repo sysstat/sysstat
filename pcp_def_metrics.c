@@ -833,7 +833,7 @@ void pcp_def_net_nfs_metrics(void)
 	pmiAddInstance(indom, "read", 6);
 	pmiAddInstance(indom, "write", 8);
 	pmiAddInstance(indom, "access", 18);
-	pmiAddInstance(indom, "lookup", 4);
+	pmiAddInstance(indom, "getattr", 4);
 
 	pmiAddMetric("nfs.client.reqs",
 		     pmiID(60, 7, 4), PM_TYPE_U32, indom, PM_SEM_COUNTER,
@@ -883,7 +883,7 @@ void pcp_def_net_nfsd_metrics(void)
 	pmiAddInstance(indom, "read", 6);
 	pmiAddInstance(indom, "write", 8);
 	pmiAddInstance(indom, "access", 18);
-	pmiAddInstance(indom, "lookup", 4);
+	pmiAddInstance(indom, "getattr", 4);
 
 	pmiAddMetric("nfs.server.reqs",
 		     pmiID(60, 7, 12), PM_TYPE_U32, indom, PM_SEM_COUNTER,
