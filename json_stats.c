@@ -332,7 +332,7 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 	int i, c;
 	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq;
 	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
-	int sep = FALSE;
+	int sep = FALSE, first;
 
 	xprintf(tab++, "\"interrupts\": [");
 
@@ -355,11 +355,10 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 				continue;
 		}
 
+		first = TRUE;
 		if (sep) {
 			printf(",\n");
 		}
-		xprintf0(tab, "{\"intr\": \"%s\"", stc_cpuall_irq->irq_name);
-		sep = TRUE;
 
 		for (c = 0; (c < a->nr[curr]) && (c < a->bitmap->b_size + 1); c++) {
 
@@ -374,6 +373,11 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 				continue;
 
 			/* Yes: Display it */
+			if (first) {
+				xprintf0(tab, "{\"intr\": \"%s\"", stc_cpuall_irq->irq_name);
+				first = FALSE;
+			}
+
 			if (!c) {
 				printf(", \"all\": %.2f",
 				       (stc_cpu_irq->irq_nr < stp_cpu_irq->irq_nr) ? 0.0 :
@@ -384,7 +388,10 @@ __print_funct_t json_print_irq_stats(struct activity *a, int curr, int tab,
 				       S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 			}
 		}
-		printf("}");
+		if (!first) {
+			printf("}");
+			sep = TRUE;
+		}
 	}
 
 	printf("\n");
