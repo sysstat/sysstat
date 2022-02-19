@@ -1,0 +1,11 @@
+# Create a datafile with CPU 8 offline
+rm -f tests/data-CPUoff.tmp
+
+rm -f tests/root
+ln -s root1 tests/root
+TZ=GMT ./sadc --unix_time=1555593609 tests/data-CPUoff.tmp -S XALL 1 1 >/dev/null
+
+rm -f tests/root
+ln -s root2 tests/root
+TZ=GMT ./sadc --unix_time=1555593619 tests/data-CPUoff.tmp -S XALL 1 1 >/dev/null
+

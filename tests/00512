@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -dh tests/data.tmp -- -Iu ALL -P all,3 > tests/out.sadf-dh.tmp && diff -u tests/expected.sadf-dh tests/out.sadf-dh.tmp

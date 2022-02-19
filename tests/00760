@@ -1,0 +1,4 @@
+# Trying to read a datafile in which one activity (A_QUEUE here) has a structure where the
+# number of unsigned long long int has decreased whereas the number of unsigned int has increased.
+# Activity's format should be identified as UNKNOWN but the other activities should still be readable.
+LC_ALL=C TZ=GMT ./sar -A -f tests/data-12.5.6-A_QUEUE_modified > tests/out.data-12.5.6-A_QUEUE_modified.tmp && diff -u tests/expected.data-12.5.6-A_QUEUE_modified tests/out.data-12.5.6-A_QUEUE_modified.tmp

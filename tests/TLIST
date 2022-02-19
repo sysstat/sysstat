@@ -37,6 +37,9 @@ NOTES:
 -----	Create data2.tmp [..R.. / 12267] starting at root1
 00068	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data2.tmp 1 1 >/dev/null
 
+-----	Create data-CPUoff.tmp [.. / 12] starting at root1
+00069	2 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data-CPUoff.tmp -S XALL 1 1 >/dev/null
+
 -----	Create datafile data-ssr.tmp [.. / 12] containing all statistics, including sensors ones
 00070	2 x TZ=GMT ./sadc --unix_time=1555593609 -S XALL tests/data-ssr.tmp 1 1 >/dev/null
 
@@ -61,6 +64,7 @@ NOTES:
 	[Don't take into account sensors statistics which are not read from test root directory]
 00132	LC_ALL=C TZ=GMT ./sar -A --int=30-35,RES -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp
 	[Check that -A doesn't necessarily imply -I ALL -P ALL]
+00134	LC_ALL=C TZ=GMT ./sar -I --int=0,3,30-50,4000-,LOC,PWD,MCE-XXX,TLB,sum -P all,3 -f tests/data.tmp > tests/out.sar-I.tmp
 
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
@@ -87,6 +91,7 @@ NOTES:
 =====	Checking JSON output validity
 00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
 00305	./sadf -Hj tests/data.tmp -C | $VER_JSON >/dev/null
+00307	./sadf -j tests/data-CPUoff.tmp -- -A -P 8 | $VER_JSON >/dev/null
 00310	./mpstat -A -o JSON | $VER_JSON >/dev/null
 00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null
 00330	./mpstat -o JSON 1 10 | $VER_JSON >/dev/null
@@ -104,7 +109,9 @@ NOTES:
 =====	Checking XML output validity
 00400	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
 00405	export LC_ALL=C ; ./sadf -Hx tests/data.tmp -C | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+00407	export LC_ALL=C ; ./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --schema xml/sysstat.xsd - >/dev/null
 00410	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+00412	export LC_ALL=C ; ./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 00415	export LC_ALL=C ; ./sadf -Hx tests/data.tmp -C | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 00420	export LC_ALL=C ; cat tests/data-12.0.1.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
 00430	export LC_ALL=C ; cat tests/data-12.0.1.xml | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
@@ -112,6 +119,7 @@ NOTES:
 =====	Checking sadf output
 00500	LC_ALL=C ./sadf -p tests/data.tmp -C -- -A > tests/out.sadf-p.tmp
 00510	LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
+00512	LC_ALL=C ./sadf -dh tests/data.tmp -- -Iu ALL -P all,3 > tests/out.sadf-dh.tmp
 00515	LC_ALL=C ./sadf -d tests/data.tmp -- -qu > tests/out.sadf-d-qu.tmp
 00520	LC_ALL=C ./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
 00525	LC_ALL=C ./sadf -x tests/datax.tmp -C 1 2 -- -uw -P 0-2 > tests/out1.sadf-x.tmp
@@ -161,6 +169,9 @@ NOTES:
 00750	LC_ALL=C TZ=GMT ./tests/ini/inisar -C -A -f tests/data.tmp > tests/out.data-ini.tmp
 	[There may be some small differences in ext disks stats between initial and current version
 	outputs, because initial version doesn't take into account discard fields]
+
+=====	Reading data-12.5.6-A_QUEUE_modified (see comment in test case)
+00760	LC_ALL=C TZ=GMT ./sar -A -f tests/data-12.5.6-A_QUEUE_modified > tests/out.data-12.5.6-A_QUEUE_modified.tmp
 
 =====	Reading datafile with extra structures
 00770	LC_ALL=C TZ=GMT ./sar -A -f tests/data-extra-12.1.7 > tests/out.data-extra-12.1.7.tmp

@@ -1,0 +1,7 @@
+# Select only an offline CPU
+. tests/variables
+if [ ! -z "$VER_JSON" ]; then
+	./sadf -j tests/data-CPUoff.tmp -- -A -P 8 | $VER_JSON >/dev/null
+else
+	echo Skipped
+fi
