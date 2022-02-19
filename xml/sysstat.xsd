@@ -136,7 +136,7 @@
 <xs:element name="cpu-load" type="cpu-load-type"></xs:element>
 <xs:complexType name="cpu-load-type">
 	<xs:sequence>
-		<xs:element name="cpu" type="cpu-type" minOccurs="1" maxOccurs="unbounded"></xs:element>
+		<xs:element name="cpu" type="cpu-type" minOccurs="0" maxOccurs="unbounded"></xs:element>
 	</xs:sequence>
 </xs:complexType>
 
@@ -192,7 +192,7 @@
 <xs:element name="int-global" type="int-global-type"></xs:element>
 <xs:complexType name="int-global-type">
 	<xs:sequence>
-		<xs:element name="irq" type="irq-type" minOccurs="1" maxOccurs="unbounded"></xs:element>
+		<xs:element name="irq" type="irq-type" minOccurs="0" maxOccurs="unbounded"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="per" type="per-type" use="required"></xs:attribute>
 </xs:complexType>
@@ -660,7 +660,7 @@
 <xs:element name="cpu-frequency" type="cpu-frequency-type"></xs:element>
 <xs:complexType name="cpu-frequency-type">
 	<xs:sequence>
-		<xs:element name="cpufreq" type="cpufreq-type" minOccurs="1" maxOccurs="unbounded"></xs:element>
+		<xs:element name="cpufreq" type="cpufreq-type" minOccurs="0" maxOccurs="unbounded"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="unit" type="frequnit-type"></xs:attribute>
 </xs:complexType>

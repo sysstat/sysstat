@@ -62,7 +62,7 @@
 	com CDATA #REQUIRED
 >
 
-<!ELEMENT cpu-load (cpu+)>
+<!ELEMENT cpu-load (cpu*)>
 
 <!ELEMENT cpu EMPTY>
 <!ATTLIST cpu
@@ -90,7 +90,7 @@
 
 <!ELEMENT interrupts (int-global)>
 
-<!ELEMENT int-global (irq+)>
+<!ELEMENT int-global (irq*)>
 <!ATTLIST int-global
 	per CDATA #REQUIRED
 >
@@ -527,7 +527,7 @@
 
 <!ELEMENT power-management (cpu-frequency?, fan-speed?, temperature?, voltage-input?, cpu-weighted-frequency?, usb-devices?)>
 
-<!ELEMENT cpu-frequency (cpufreq+)>
+<!ELEMENT cpu-frequency (cpufreq*)>
 <!ATTLIST cpu-frequency
 	unit CDATA #REQUIRED
 >
