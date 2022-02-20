@@ -3237,18 +3237,23 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
                 ssnc = (struct stats_softnet *) ((char *) a->buf[curr] + i * a->msize);
                 ssnp = (struct stats_softnet *) ((char *) a->buf[prev] + i * a->msize);
 
+		if ((ssnp->processed + ssnp->dropped + ssnp->time_squeeze +
+		    ssnp->received_rps + ssnp->flow_limit == 0) && !WANT_SINCE_BOOT(flags)) {
+			/*
+			 * No previous sample for current CPU: Don't display it unless
+			 * we want stats since last boot time.
+			 * (CPU may be online but we don't display it because all
+			 * its counters would appear to jump from zero...)
+			 */
+			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			continue;
+		}
+
 		if (ssnc->processed + ssnc->dropped + ssnc->time_squeeze +
 		    ssnc->received_rps + ssnc->flow_limit == 0) {
 			/* Assume current CPU is offline */
 			*ssnc = *ssnp;
 			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
-		}
-
-		if ((ssnp->processed + ssnp->dropped + ssnp->time_squeeze +
-		    ssnp->received_rps + ssnp->flow_limit == 0) && !WANT_SINCE_BOOT(flags)) {
-			/* Current CPU back online but no previous sample for it */
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
-			continue;
 		}
 
 		ssnc_all->processed += ssnc->processed;
