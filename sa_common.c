@@ -1548,7 +1548,7 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
 		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
 
 		memcpy(act[p]->buf[dest], act[p]->buf[src],
-		       (size_t) act[p]->msize * (size_t) act[p]->nr[src] * (size_t) act[p]->nr2);
+		       (size_t) act[p]->msize * (size_t) act[p]->nr_allocated * (size_t) act[p]->nr2);
 		act[p]->nr[dest] = act[p]->nr[src];
 	}
 }
