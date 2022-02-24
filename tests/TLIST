@@ -34,6 +34,9 @@ NOTES:
 -----	Create data1.tmp [..R.. / 67112] starting at root6
 00065	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data1.tmp 1 1 >/dev/null
 
+-----	Create data-CPUoffon.tmp [.... / 2345] starting at root2
+00067	4 x TZ=GMT ./sadc --unix_time=1555593619 -S XALL tests/data-CPUoffon.tmp 1 1 >/dev/null
+
 -----	Create data2.tmp [..R.. / 12267] starting at root1
 00068	4 x TZ=GMT ./sadc --unix_time=xxxxxxx tests/data2.tmp 1 1 >/dev/null
 
@@ -64,7 +67,10 @@ NOTES:
 	[Don't take into account sensors statistics which are not read from test root directory]
 00132	LC_ALL=C TZ=GMT ./sar -A --int=30-35,RES -P 3 -f tests/data-new.tmp > tests/out3.sar-all.tmp
 	[Check that -A doesn't necessarily imply -I ALL -P ALL]
-00134	LC_ALL=C TZ=GMT ./sar -I --int=0,3,30-50,4000-,LOC,PWD,MCE-XXX,TLB,sum -P all,3 -f tests/data.tmp > tests/out.sar-I.tmp
+00134	LC_ALL=C TZ=GMT ./sar -I --int=0,3,30-50,4000-,LOC,PWD,MCE-XXX,TLB,sum -P all,3 --pretty -f tests/data.tmp > tests/out.sar-I.tmp
+
+=====	sar: Reading data-CPUoffon.tmp
+00150	LC_ALL=C TZ=GMT ./sar -u ALL -I -n SOFT -P all,8 -f tests/data-CPUoffon.tmp > tests/out.sar-CPUoffon.tmp
 
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
