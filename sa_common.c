@@ -3309,13 +3309,6 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 		stc_cpu_sum = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize * a->nr2);
 		stp_cpu_sum = (struct stats_irq *) ((char *) a->buf[prev] + i * a->msize * a->nr2);
 
-		if (stc_cpu_sum->irq_nr == 0) {
-			/* Assume current CPU is offline */
-			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
-			memcpy(stc_cpu_sum, stp_cpu_sum, a->msize * a->nr2);
-			continue;
-		}
-
 		/*
 		 * Check if current CPU is back online but with no previous sample for it,
 		 * or if it has not been selected.
@@ -3324,7 +3317,15 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 		    (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))) {
 			/* CPU should not be displayed */
 			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			continue;
 		}
+
+		if (stc_cpu_sum->irq_nr == 0) {
+			/* Assume current CPU is offline */
+			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			memcpy(stc_cpu_sum, stp_cpu_sum, a->msize * a->nr2);
+		}
+
 	}
 }
 
