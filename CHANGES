@@ -1,5 +1,13 @@
 Changes:
 
+2022/02/28: Version 12.4.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadf: Make sure that datafiles with unknown activities can
+	  be read by sar and sadf.
+	* sar/sadf: Don't reallocate buffers for activities not present
+	  in file.
+	* sar: Make sure that all buffers are copied in copy_structures()
+	  function.
+
 2021/12/05: Version 12.4.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* iostat: Always display persistent names with option -j.
 	* iostat: Fix how device mapper names are taken into account when

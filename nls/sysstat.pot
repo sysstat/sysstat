@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2021-12-05 08:55+0100\n"
+"POT-Creation-Date: 2022-02-28 08:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,7 +78,7 @@ msgid ""
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: iostat.c:2171 sa_common.c:2263
+#: iostat.c:2171 sa_common.c:2244
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2135
+#: sa_common.c:2116
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
