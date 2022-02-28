@@ -1,6 +1,6 @@
 /*
  * rndr_stats.c: Functions used by sadf to display statistics in selected format.
- * (C) 1999-2021 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2022 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
