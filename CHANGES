@@ -1,5 +1,37 @@
 Changes:
 
+2022/02/28: Version 12.5.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadc: Rewrite code used to collect and display interrupts
+	  statistics. Statistics are now collected from /proc/interrupts
+	  (instead of /proc/stat) and are displayed for each installed CPU.
+	* sar/sadf: Add new "--int=" option to enter a list of interrupts on
+	  the command line.
+	* sadf: Update the various output formats to deal with the new
+	  per-CPU interrupts statistics.
+	* Update DTD and XSD documents. CPU elements may be non-existent when
+	  all selected CPU are offline.
+	* Update sar and sadf manual pages.
+	* mpstat: Create its own function to read the total number of
+	  interrupts from /proc/stat file.
+	* mpstat: Remove unneeded "aligned" attribute from struct stats_irqcpu
+	  definition.
+	* sar: Fix index value used in online_cpu_bitmap array.
+	* sar/sadf: Make sure that datafiles with unknown activities can
+	  be read by sar and sadf [12.4.5].
+	* sar/sadf: Don't reallocate buffers for activities not present
+	  in file [12.4.5].
+	* sar: Make sure that all buffers are copied in copy_structures()
+	  function [12.4.5].
+	* PCP: Fix flow_limit_count metric's unit (A_NET_SOFT activity).
+	* PCP: Fix instance names for getattr call (A_NET_NFS(D) activities).
+	* Use sizeof() macro instead of hard-coded values with snprintf()
+	  functions.
+	* rndr_stats.c: Use NOVAL instead of NULL as last argument for cons()
+	  function.
+	* Use strings definitions whenever possible.
+	* Add new non regression tests. Update some existing ones.
+	* Various cosmetic fixes.
+
 2021/12/05: Version 12.5.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* iostat: Add --compact option.
 	* iostat: Always display persistent names with option -j [12.4.4].
