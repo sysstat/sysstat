@@ -114,7 +114,7 @@ void pval(unsigned long long valp, unsigned long long valc)
 	if (DISPLAY_DEBUG_MODE(flags)) {
 		if (valc < valp) {
 			/* Field's value has decreased */
-			printf(" [DEC]");
+			cprintf_s(IS_DEBUG, "%s", " [DEC]");
 		}
 	}
 	printf("; %llu; %llu;", valp, valc);
@@ -168,12 +168,12 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 			     scc->cpu_iowait + scc->cpu_idle + scc->cpu_steal +
 			     scc->cpu_hardirq + scc->cpu_softirq) == 0) {
 				/* CPU is offline */
-				printf(" [OFF]");
+				cprintf_s(IS_DEBUG, "%s", " [OFF]");
 			}
 			else {
 				if (!get_per_cpu_interval(scc, scp)) {
 					/* CPU is tickless */
-					printf(" [TLS]");
+					cprintf_s(IS_DEBUG, "%s", " [TLS]");
 				}
 			}
 		}
@@ -530,7 +530,7 @@ __print_funct_t raw_print_serial_stats(struct activity *a, char *timestr, int cu
 
 		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 		if (!found && DISPLAY_DEBUG_MODE(flags)) {
-			printf(" [NEW]");
+			cprintf_s(IS_DEBUG, "%s", " [NEW]");
 		}
 		printf("; %u;", ssc->line);
 		if (!found) {
@@ -596,7 +596,7 @@ __print_funct_t raw_print_disk_stats(struct activity *a, char *timestr, int curr
 			/* This is a newly registered interface. Previous stats are zero */
 			sdp = &sdpzero;
 			if (DISPLAY_DEBUG_MODE(flags)) {
-				printf(" [%s]", j == -1 ? "NEW" : "BCK");
+				cprintf_s(IS_DEBUG, "%s",  j == -1 ? " [NEW]" : " [BCK]");
 			}
 		}
 		else {
@@ -661,7 +661,7 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 			/* This is a newly registered interface. Previous stats are zero */
 			sndp = &sndzero;
 			if (DISPLAY_DEBUG_MODE(flags)) {
-				printf(" [%s]", j == -1 ? "NEW" : "BCK");
+				cprintf_s(IS_DEBUG, "%s",  j == -1 ? " [NEW]" : " [BCK]");
 			}
 		}
 		else {
@@ -721,7 +721,7 @@ __print_funct_t raw_print_net_edev_stats(struct activity *a, char *timestr, int 
 			/* This is a newly registered interface. Previous stats are zero */
 			snedp = &snedzero;
 			if (DISPLAY_DEBUG_MODE(flags)) {
-				printf(" [%s]", j == -1 ? "NEW" : "BCK");
+				cprintf_s(IS_DEBUG, "%s",  j == -1 ? " [NEW]" : " [BCK]");
 			}
 		}
 		else {
@@ -1622,7 +1622,7 @@ __print_funct_t raw_print_fchost_stats(struct activity *a, char *timestr, int cu
 			/* This is a newly registered host. Previous stats are zero */
 			sfcp = &sfczero;
 			if (DISPLAY_DEBUG_MODE(flags)) {
-				printf(" [NEW]");
+				cprintf_s(IS_DEBUG, "%s", " [NEW]");
 			}
 		}
 
@@ -1690,7 +1690,7 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 			if (ssnc->processed + ssnc->dropped + ssnc->time_squeeze +
 			    ssnc->received_rps + ssnc->flow_limit == 0) {
 				/* CPU is considered offline */
-				printf(" [OFF]");
+				cprintf_s(IS_DEBUG, "%s", " [OFF]");
 			}
 		}
 		printf("; %d;", i - 1);

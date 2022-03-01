@@ -335,8 +335,9 @@ void list_fields(unsigned int act_id)
 	unsigned int msk;
 	char *hl;
 	char hline[HEADER_LINE_LEN] = "";
+	char out[256];
 
-	printf("# hostname;interval;timestamp");
+	cprintf_s(IS_COMMENT, "%s", "# hostname;interval;timestamp");
 
 	for (i = 0; i < NR_ACT; i++) {
 
@@ -345,9 +346,10 @@ void list_fields(unsigned int act_id)
 
 		if (IS_SELECTED(act[i]->options) && (act[i]->nr_ini > 0)) {
 			if (!HAS_MULTIPLE_OUTPUTS(act[i]->options)) {
-				printf(";%s", act[i]->hdr_line);
+				sprintf(out, ";%s", act[i]->hdr_line);
+				cprintf_s(IS_COMMENT, "%s", out);
 				if ((act[i]->nr_ini > 1) && DISPLAY_HORIZONTALLY(flags)) {
-					printf("[...]");
+					cprintf_s(IS_COMMENT, "%s", "[...]");
 				}
 			}
 			else {
@@ -361,20 +363,23 @@ void list_fields(unsigned int act_id)
 							if ((act[i]->opt_flags & 0xff00) & (msk << 8)) {
 								/* Display whole header line */
 								*(hl + j) = ';';
-								printf(";%s", hl);
+								sprintf(out, ";%s", hl);
+								cprintf_s(IS_COMMENT, "%s", out);
 							}
 							else {
 								/* Display only the first part of the header line */
 								*(hl + j) = '\0';
-								printf(";%s", hl);
+								sprintf(out, ";%s", hl);
+								cprintf_s(IS_COMMENT, "%s", out);
 							}
 							*(hl + j) = '&';
 						}
 						else {
-							printf(";%s", hl);
+							sprintf(out, ";%s", hl);
+							cprintf_s(IS_COMMENT, "%s", out);
 						}
 						if ((act[i]->nr_ini > 1) && DISPLAY_HORIZONTALLY(flags)) {
-							printf("[...]");
+							cprintf_s(IS_COMMENT, "%s", "[...]");
 						}
 					}
 				}
@@ -752,8 +757,12 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 			else if (format == F_RAW_OUTPUT) {
 				/* Raw output */
 				if (DISPLAY_DEBUG_MODE(flags)) {
-					printf("# name; %s; nr_curr; %d; nr_alloc; %d; nr_ini; %d\n", act[i]->name,
-					       act[i]->nr[curr], act[i]->nr_allocated, act[i]->nr_ini);
+					char out[128];
+
+					sprintf(out, "# name; %s; nr_curr; %d; nr_alloc; %d; nr_ini; %d\n",
+						act[i]->name, act[i]->nr[curr], act[i]->nr_allocated,
+						act[i]->nr_ini);
+					cprintf_s(IS_COMMENT, "%s", out);
 				}
 
 				if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
@@ -1844,6 +1853,9 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
+	/* Init color strings */
+	init_colors();
 
 	if (USE_OPTION_A(flags)) {
 		/* Set -P ALL -I ALL if needed */

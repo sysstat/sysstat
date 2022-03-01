@@ -1498,10 +1498,13 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 
 		/* Raw output in debug mode */
 		if (DISPLAY_DEBUG_MODE(flags) && (ofmt->id == F_RAW_OUTPUT)) {
-			printf("# uptime_cs; %llu; ust_time; %llu; extra_next; %u; record_type; %d; HH:MM:SS; %02d:%02d:%02d\n",
+			char out[128];
+
+			sprintf(out, "# uptime_cs; %llu; ust_time; %llu; extra_next; %u; record_type; %d; HH:MM:SS; %02d:%02d:%02d\n",
 			       record_hdr->uptime_cs, record_hdr->ust_time,
 			       record_hdr->extra_next, record_hdr->record_type,
 			       record_hdr->hour, record_hdr->minute, record_hdr->second);
+			cprintf_s(IS_COMMENT, "%s", out);
 		}
 
 		/* Sanity checks */

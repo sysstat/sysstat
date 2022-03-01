@@ -1510,6 +1510,7 @@ void cprintf_s(int type, char *format, char *string)
 	else if (type == IS_ZERO) {
 		printf("%s", sc_zero_int_stat);
 	}
+	/* IS_RESTART and IS_DEBUG are the same value */
 	else if (type == IS_RESTART) {
 		printf("%s", sc_sa_restart);
 	}
