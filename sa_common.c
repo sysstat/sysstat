@@ -54,7 +54,6 @@ unsigned int hdr_types_nr[] = {FILE_HEADER_ULL_NR, FILE_HEADER_UL_NR, FILE_HEADE
 unsigned int act_types_nr[] = {FILE_ACTIVITY_ULL_NR, FILE_ACTIVITY_UL_NR, FILE_ACTIVITY_U_NR};
 unsigned int rec_types_nr[] = {RECORD_HEADER_ULL_NR, RECORD_HEADER_UL_NR, RECORD_HEADER_U_NR};
 unsigned int extra_desc_types_nr[] = {EXTRA_DESC_ULL_NR, EXTRA_DESC_UL_NR, EXTRA_DESC_U_NR};
-unsigned int nr_types_nr[]  = {0, 0, 1};
 
 /*
  ***************************************************************************
@@ -1588,12 +1587,12 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 		     int endian_mismatch, int arch_64, int non_zero)
 {
 	__nr_t value;
+	unsigned int nr_types_nr[]  = {0, 0, 1};
 
 	sa_fread(ifd, &value, sizeof(__nr_t), HARD_SIZE, UEOF_STOP);
 
 	/* Normalize endianness for file_activity structures */
 	if (endian_mismatch) {
-		nr_types_nr[2] = 1;
 		swap_struct(nr_types_nr, &value, arch_64);
 	}
 
