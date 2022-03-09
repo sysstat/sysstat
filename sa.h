@@ -288,7 +288,7 @@
 
 /* NR_MAX is the upper limit used for unknown activities */
 #define NR_MAX		(65536 * 4096)
-#define NR2_MAX		1024
+#define NR2_MAX		4096
 
 /* Maximum number of args that can be passed to sadc */
 #define MAX_ARGV_NR	32
