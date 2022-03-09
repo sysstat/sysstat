@@ -318,7 +318,8 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 			swap_struct(oact_types_nr, ofal, *arch_64);
 		}
 
-		if ((ofal->nr < 1) || (ofal->nr2 < 1))
+		if ((ofal->nr < 1) || (ofal->nr2 < 1) ||
+		    (ofal->nr > NR_MAX) || (ofal->nr2 > NR2_MAX))
 			/*
 			 * Every activity, known or unknown,
 			 * should have at least one item and sub-item.
@@ -373,6 +374,7 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 				act[p]->nr2    = ofal->nr2;
 			}
 		}
+		/* else: Unknown activity. Maybe an old one which has been made obsolete? */
 	}
 
 	if (!a_cpu) {
