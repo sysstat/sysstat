@@ -3325,7 +3325,7 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 		if (stc_cpu_sum->irq_nr == 0) {
 			/* Assume current CPU is offline */
 			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
-			memcpy(stc_cpu_sum, stp_cpu_sum, a->msize * a->nr2);
+			memcpy(stc_cpu_sum, stp_cpu_sum, (size_t) a->msize * a->nr2);
 		}
 
 	}
