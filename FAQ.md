@@ -7,6 +7,7 @@
 [1.1.](#1_1) When I compile sysstat, it fails with the following message: `make: msgfmt: Command not found`  
 [1.2.](#1_2) When I try to compile sysstat, it fails and says it cannot find some include files.  
 [1.3.](#1_3) I don't understand why sysstat displays the time sometimes as `HH:MM:SS` and sometimes as `HH:MM:SS AM/PM`...  
+[1.4.](#1_4) What are the units actually used by sysstat commands?  
 
 **[2. Questions related to sar, sadc and sadf](#sar)**
 
@@ -127,6 +128,19 @@ Moyenne:          all      0,24      0,00     89,64      0,00     10,12
 ```
 As you can notice, the time format but also the date, the decimal point, and
 even some words (like "Average") have changed according to the specified locale.
+
+---
+
+1.4.<a name="1_4"></a> What are the units actually used by sysstat commands?
+
+
+A: Although sysstat commands use the following abbreviations: kB, MB, etc.
+as part of the metrics names (e.g. kB_read/s, wkB/s, or even sometimes with a
+lower 'b': kbmemfree, kbavail...), and the manual pages speak of kilobytes,
+megabytes, etc., we always actually refer to kibibytes (kiB), mebibytes (MiB),...  
+A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.  
+Metrics names have been defined many years ago. We don't modify them to avoid
+breaking third-party programs parsing sysstat commands' output.
 
 ---
 ### 2. Questions related to sar, sadc and sadf<a name="sar"></a>
