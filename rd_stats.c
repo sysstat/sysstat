@@ -2803,9 +2803,9 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 		 unsigned char online_cpu_bitmap[])
 {
 	FILE *fp;
-	struct stats_softnet *st_softnet_i;
+	struct stats_softnet *st_softnet_i, st_softnet_read;
 	char line[1024];
-	int cpu = 1, rc = 1;
+	int cpu = 1, rc = 1, i, cpu_id;
 
 	/* Open /proc/net/softnet_stat file */
 	if ((fp = fopen(NET_SOFTNET, "r")) == NULL)
@@ -2813,8 +2813,23 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		while ((!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07)))) && (cpu < nr_alloc)) {
-			cpu++;
+		i = sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x %*x %x",
+			   &(st_softnet_read.processed),
+			   &(st_softnet_read.dropped),
+			   &(st_softnet_read.time_squeeze),
+			   &(st_softnet_read.received_rps),
+			   &(st_softnet_read.flow_limit),
+			   &cpu_id);
+
+		if (i == 6) {
+			/* Corresponding CPU read in file */
+			cpu = cpu_id + 1;
+		}
+		else {
+			/* cpu_id not present in file */
+			while ((!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07)))) && (cpu < nr_alloc)) {
+				cpu++;
+			}
 		}
 
 		if (cpu >= nr_alloc) {
@@ -2823,12 +2838,7 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 		}
 
 		st_softnet_i = st_softnet + cpu++;
-		sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x",
-		       &st_softnet_i->processed,
-		       &st_softnet_i->dropped,
-		       &st_softnet_i->time_squeeze,
-		       &st_softnet_i->received_rps,
-		       &st_softnet_i->flow_limit);
+		*st_softnet_i = st_softnet_read;
 	}
 
 	fclose(fp);
