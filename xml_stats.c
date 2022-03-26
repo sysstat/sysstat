@@ -2316,13 +2316,15 @@ __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 			"dropd=\"%.2f\" "
 			"squeezd=\"%.2f\" "
 			"rx_rps=\"%.2f\" "
-			"flw_lim=\"%.2f\"/>",
+			"flw_lim=\"%.2f\" ",
+			"blg_len=\"%u\"/>",
 			 cpuno,
 			 S_VALUE(ssnp->processed,    ssnc->processed,    itv),
 			 S_VALUE(ssnp->dropped,      ssnc->dropped,      itv),
 			 S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
 			 S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
-			 S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
+			 S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv),
+			 ssnc->backlog_len);
 	}
 	tab--;
 

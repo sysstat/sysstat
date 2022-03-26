@@ -1688,7 +1688,7 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 		printf("%s; %s", timestr, pfield(a->hdr_line, FIRST));
 		if (DISPLAY_DEBUG_MODE(flags) && i) {
 			if (ssnc->processed + ssnc->dropped + ssnc->time_squeeze +
-			    ssnc->received_rps + ssnc->flow_limit == 0) {
+			    ssnc->received_rps + ssnc->flow_limit + ssnc->backlog_len == 0) {
 				/* CPU is considered offline */
 				cprintf_s(IS_DEBUG, "%s", " [OFF]");
 			}
@@ -1705,6 +1705,7 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 		pval((unsigned long long) ssnp->received_rps, (unsigned long long) ssnc->received_rps);
 		printf(" %s", pfield(NULL, 0));
 		pval((unsigned long long) ssnp->flow_limit, (unsigned long long) ssnc->flow_limit);
+		printf(" %s; %u;", pfield(NULL, 0), ssnc->backlog_len);
 		printf("\n");
 	}
 }

@@ -5155,18 +5155,21 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
  * @record_hdr	Pointer on record header of current stats sample.
  ***************************************************************************
  */
-#define SOFT_ARRAY_SZ	5
+#define SOFT_ARRAY_SZ	6
 __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
 					unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_softnet *ssnc, *ssnp, ssnczero;
-	int group[] = {2, 3};
-	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	int group[] = {2, 3, 1};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"Software-based network processing statistics (1)",
-			 "Software-based network processing statistics (2)"};
+			 "Software-based network processing statistics (2)",
+			 "Software-based network processing statistics (3)"};
 	char *g_title[] = {"total/s", "dropd/s",
-			   "squeezd/s", "rx_rps/s", "flw_lim/s"};
+			   "squeezd/s", "rx_rps/s", "flw_lim/s",
+			   "~blg_len"};
 	int g_fields[] = {0, 1, 2, 3, 4};
+	unsigned int local_types_nr[] = {0, 0, 5};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
@@ -5225,8 +5228,14 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			pos = i * SOFT_ARRAY_SZ;
 
 			/* Check for min/max values */
-			save_extrema(a->gtypes_nr, (void *) ssnc, (void *) ssnp,
+			save_extrema(local_types_nr, (void *) ssnc, (void *) ssnp,
 				     itv, spmin + pos, spmax + pos, g_fields);
+			if (ssnc->backlog_len < *(spmin + pos + 5)) {
+				*(spmin + pos + 5) = ssnc->backlog_len;
+			}
+			if (ssnc->backlog_len > *(spmax + pos + 5)) {
+				*(spmax + pos + 5) = ssnc->backlog_len;
+			}
 
 			/* total/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5248,6 +5257,10 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				 S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
 				 out + pos + 4, outsize + pos + 4, restart);
+			/* blg_len */
+			lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				  (unsigned long long) ssnc->backlog_len,
+				  out + pos + 5, outsize + pos + 5, restart);
 		}
 	}
 

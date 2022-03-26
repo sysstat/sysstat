@@ -164,6 +164,10 @@ void pcp_def_cpu_metrics(struct activity *a)
 				pmiAddMetric("network.softnet.flow_limit",
 					     pmiID(60, 57, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+				pmiAddMetric("network.softnet.backlog_length",
+					     pmiID(60, 57, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 			}
 		}
 		else {
@@ -255,6 +259,10 @@ void pcp_def_cpu_metrics(struct activity *a)
 
 					pmiAddMetric("network.softnet.percpu.flow_limit",
 						     pmiID(60, 57, 11), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+					pmiAddMetric("network.softnet.percpu.backlog_length",
+						     pmiID(60, 57, 13), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 				}
 

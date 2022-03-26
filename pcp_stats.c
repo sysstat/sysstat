@@ -1788,6 +1788,9 @@ __print_funct_t pcp_print_softnet_stats(struct activity *a, int curr)
 
 		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->flow_limit);
 		pmiPutValue("network.softnet.percpu.flow_limit", cpuno, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", (unsigned long long) ssnc->backlog_len);
+		pmiPutValue("network.softnet.percpu.backlog_length", cpuno, buf);
 	}
 #endif	/* HAVE_PCP */
 }

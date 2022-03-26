@@ -3204,11 +3204,18 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 			       S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
 			       NULL);
 
-			render(isdb, pre, pt_newlin,
+			render(isdb, pre, PT_NOFLAG,
 			       "all\tflw_lim/s",
 			       NULL, NULL,
 			       NOVAL,
 			       S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
+			       NULL);
+
+			render(isdb, pre, PT_USEINT | pt_newlin,
+			       "all\tblg_len",
+			       NULL, NULL,
+			       ssnc->backlog_len,
+			       DNOVAL,
 			       NULL);
 		}
 		else {
@@ -3240,11 +3247,18 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 			       S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
 			       NULL);
 
-			render(isdb, pre, pt_newlin,
+			render(isdb, pre, PT_NOFLAG,
 			       "cpu%d\tflw_lim/s",
 			       NULL, cons(iv, i - 1, NOVAL),
 			       NOVAL,
 			       S_VALUE(ssnp->flow_limit, ssnc->flow_limit, itv),
+			       NULL);
+
+			render(isdb, pre, PT_USEINT | pt_newlin,
+			       "cpu%d\tblg_len",
+			       NULL, cons(iv, i - 1, NOVAL),
+			       ssnc->backlog_len,
+			       DNOVAL,
 			       NULL);
 		}
 	}
