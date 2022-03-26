@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.10 for sysstat. See sadf.h -->
+<!--DTD v3.11 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -523,6 +523,7 @@
 	squeezd CDATA #REQUIRED
 	rx_rps CDATA #REQUIRED
 	flw_lim CDATA #REQUIRED
+	blg_len CDATA #IMPLIED
 >
 
 <!ELEMENT power-management (cpu-frequency?, fan-speed?, temperature?, voltage-input?, cpu-weighted-frequency?, usb-devices?)>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.9 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.11 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -643,6 +643,7 @@
 	<xs:attribute name="squeezd" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="rx_rps" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="flw_lim" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="blg_len" type="xs:nonNegativeInteger"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="power-management" type="power-management-type"></xs:element>
