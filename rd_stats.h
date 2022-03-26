@@ -711,12 +711,13 @@ struct stats_softnet {
 	unsigned int time_squeeze;
 	unsigned int received_rps;
 	unsigned int flow_limit;
+	unsigned int backlog_len;
 };
 
 #define STATS_SOFTNET_SIZE	(sizeof(struct stats_softnet))
 #define STATS_SOFTNET_ULL	0
 #define STATS_SOFTNET_UL	0
-#define STATS_SOFTNET_U		5
+#define STATS_SOFTNET_U		6
 
 /* Structure for pressure-stall CPU statistics */
 struct stats_psi_cpu {

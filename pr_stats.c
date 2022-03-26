@@ -3078,6 +3078,8 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
 			  S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
 			  S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
+		cprintf_u64(NO_UNIT, 1, 9,
+			    (unsigned long long) ssnc->backlog_len);
 		printf("\n");
 	}
 }

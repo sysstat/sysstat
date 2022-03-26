@@ -1837,7 +1837,7 @@ struct activity softnet_act = {
 	.f_print_avg	= print_softnet_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "CPU;total/s;dropd/s;squeezd/s;rx_rps/s;flw_lim/s",
+	.hdr_line	= "CPU;total/s;dropd/s;squeezd/s;rx_rps/s;flw_lim/s;blg_len",
 #endif
 	.gtypes_nr	= {STATS_SOFTNET_ULL, STATS_SOFTNET_UL, STATS_SOFTNET_U},
 	.ftypes_nr	= {0, 0, 0},
@@ -1854,7 +1854,7 @@ struct activity softnet_act = {
 #endif
 	.name		= "A_NET_SOFT",
 	.item_list_sz	= 0,
-	.g_nr		= 2,
+	.g_nr		= 3,
 	.nr_ini		= -1,
 	.nr2		= 1,
 	.nr_max		= NR_CPUS + 1,

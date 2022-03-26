@@ -2813,15 +2813,16 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		i = sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x %*x %x",
+		i = sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x %x %x",
 			   &(st_softnet_read.processed),
 			   &(st_softnet_read.dropped),
 			   &(st_softnet_read.time_squeeze),
 			   &(st_softnet_read.received_rps),
 			   &(st_softnet_read.flow_limit),
+			   &(st_softnet_read.backlog_len),
 			   &cpu_id);
 
-		if (i == 6) {
+		if (i == 7) {
 			/* Corresponding CPU read in file */
 			cpu = cpu_id + 1;
 		}

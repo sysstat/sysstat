@@ -3240,7 +3240,8 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
                 ssnp = (struct stats_softnet *) ((char *) a->buf[prev] + i * a->msize);
 
 		if ((ssnp->processed + ssnp->dropped + ssnp->time_squeeze +
-		    ssnp->received_rps + ssnp->flow_limit == 0) && !WANT_SINCE_BOOT(flags)) {
+		    ssnp->received_rps + ssnp->flow_limit + ssnp->backlog_len == 0) &&
+		    !WANT_SINCE_BOOT(flags)) {
 			/*
 			 * No previous sample for current CPU: Don't display it unless
 			 * we want stats since last boot time.
@@ -3252,7 +3253,7 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 		}
 
 		if (ssnc->processed + ssnc->dropped + ssnc->time_squeeze +
-		    ssnc->received_rps + ssnc->flow_limit == 0) {
+		    ssnc->received_rps + ssnc->flow_limit + ssnc->backlog_len == 0) {
 			/* Assume current CPU is offline */
 			*ssnc = *ssnp;
 			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
@@ -3263,12 +3264,14 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 		ssnc_all->time_squeeze += ssnc->time_squeeze;
 		ssnc_all->received_rps += ssnc->received_rps;
 		ssnc_all->flow_limit += ssnc->flow_limit;
+		ssnc_all->backlog_len += ssnc->backlog_len;
 
 		ssnp_all->processed += ssnp->processed;
 		ssnp_all->dropped += ssnp->dropped;
 		ssnp_all->time_squeeze += ssnp->time_squeeze;
 		ssnp_all->received_rps += ssnp->received_rps;
 		ssnp_all->flow_limit += ssnp->flow_limit;
+		ssnp_all->backlog_len += ssnp->backlog_len;
 	}
 }
 
