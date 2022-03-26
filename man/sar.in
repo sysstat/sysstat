@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "JANUARY 2022" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MARCH 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1118,6 +1118,8 @@ Flow limiting is an optional RPS feature that can be used to limit the number of
 packets queued to the backlog for each flow to a certain amount.
 This can help ensure that smaller flows are processed even though
 much larger flows are pushing packets in.
+.IP blg_len
+The length of the network backlog.
 .RE
 
 .IP
