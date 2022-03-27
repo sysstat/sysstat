@@ -740,48 +740,48 @@
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_NET_SOFT; nr_curr; 9; nr_alloc; 10; nr_ini; 10
-13:20:19 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:19 UTC; CPU [OFF]; 8; total/s [DEC]; 34; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:19 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:19 UTC; CPU [OFF]; 8; total/s [DEC]; 34; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_NET_SOFT; nr_curr; 9; nr_alloc; 10; nr_ini; 10
-13:20:29 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU [OFF]; 6; total/s [DEC]; 21614; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:29 UTC; CPU [OFF]; 8; total/s; 0; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:29 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU [OFF]; 6; total/s [DEC]; 21614; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:29 UTC; CPU [OFF]; 8; total/s; 0; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_NET_SOFT; nr_curr; 10; nr_alloc; 10; nr_ini; 10
-13:20:39 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU [OFF]; 6; total/s; 0; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:39 UTC; CPU; 8; total/s; 0; 34; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:39 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 10;
+13:20:39 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU [OFF]; 6; total/s; 0; 0; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:39 UTC; CPU; 8; total/s; 0; 34; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_NET_SOFT; nr_curr; 10; nr_alloc; 10; nr_ini; 10
-13:20:49 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 6; total/s; 0; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:20:49 UTC; CPU; 8; total/s; 34; 130; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:20:49 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:49 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 223;
+13:20:49 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:49 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:49 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:49 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:49 UTC; CPU; 6; total/s; 0; 21614; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 234;
+13:20:49 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:20:49 UTC; CPU; 8; total/s; 34; 130; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PWR_CPU; nr_curr; 9; nr_alloc; 10; nr_ini; 10
@@ -1099,16 +1099,16 @@
 13:54:35 UTC; FCHOST; host0; fch_rxf/s; 16; 16; fch_txf/s; 5; 5; fch_rxw/s; 4; 4; fch_txw/s; 2; 2;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_NET_SOFT; nr_curr; 11; nr_alloc; 20; nr_ini; 11
-13:54:35 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 273; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 546; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 819; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 1092; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 1365; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 1638; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 1911; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 8; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 2184; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
-13:54:35 UTC; CPU; 9; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 2457; rx_rps/s; 0; 0; flw_lim/s; 0; 0;
+13:54:35 UTC; CPU; 0; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 0; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 1; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 273; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 2; total/s; 3849; 3849; dropd/s; 0; 0; squeezd/s; 0; 546; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 3; total/s; 66787; 66787; dropd/s; 0; 0; squeezd/s; 0; 819; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 4; total/s; 11753; 11753; dropd/s; 0; 0; squeezd/s; 0; 1092; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 5; total/s; 13176; 13176; dropd/s; 0; 0; squeezd/s; 0; 1365; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 6; total/s; 21614; 21614; dropd/s; 0; 0; squeezd/s; 0; 1638; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 7; total/s; 18776; 18776; dropd/s; 0; 0; squeezd/s; 0; 1911; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 8; total/s; 11976; 11976; dropd/s; 0; 0; squeezd/s; 0; 2184; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
+13:54:35 UTC; CPU; 9; total/s; 10608; 10608; dropd/s; 0; 0; squeezd/s; 0; 2457; rx_rps/s; 0; 0; flw_lim/s; 0; 0; blg_len; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PWR_CPU; nr_curr; 11; nr_alloc; 20; nr_ini; 10
 13:54:35 UTC; CPU; -1; MHz; 351754;

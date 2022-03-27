@@ -42,7 +42,7 @@ List of activities:
 28: [8a] A_NET_EICMP6         N:   1	(0,11,0)
 29: [8a] A_NET_UDP6           N:   1	(0,4,0)
 38: [8a] A_NET_FC             Y:   1	(0,4,0)
-39: [8a] A_NET_SOFT           Y:  10	(0,0,5)
+39: [8a] A_NET_SOFT           Y:  10	(0,0,6)
 30: [8a] A_PWR_CPU            Y:  10	(0,1,0)
 36: [8a] A_PWR_USB            Y:   2	(0,0,4)
 37: [8b] A_FS                 Y:   4	(5,0,0)

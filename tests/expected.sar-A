@@ -154,8 +154,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 00:00:00    fch_rxf/s fch_txf/s fch_rxw/s fch_txw/s FCHOST
 00:00:01         0.00      0.00      0.00      0.00 host0
 
-00:00:00        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s
-00:00:01        all      0.00      0.00      0.00      0.00      0.00
+00:00:00        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s   blg_len
+00:00:01        all      0.00      0.00      0.00      0.00      0.00         0
 
 00:00:00        CPU       MHz
 00:00:01        all   3522.54
@@ -332,8 +332,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
 00:00:01    fch_rxf/s fch_txf/s fch_rxw/s fch_txw/s FCHOST
 00:00:02         0.00      0.00      0.00      0.00 host0
 
-00:00:01        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s
-00:00:02        all      0.00      0.00      0.00      0.00      0.00
+00:00:01        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s   blg_len
+00:00:02        all      0.00      0.00      0.00      0.00      0.00         0
 
 00:00:01        CPU       MHz
 00:00:02        all   3522.54
@@ -516,8 +516,8 @@ Average:         0.00      0.00      0.00      0.00
 Average:    fch_rxf/s fch_txf/s fch_rxw/s fch_txw/s FCHOST
 Average:         0.00      0.00      0.00      0.00 host0
 
-Average:        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s
-Average:        all      0.00      0.00      0.00      0.00      0.00
+Average:        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s   blg_len
+Average:        all      0.00      0.00      0.00      0.00      0.00         0
 
 Average:        CPU       MHz
 Average:        all   3522.54

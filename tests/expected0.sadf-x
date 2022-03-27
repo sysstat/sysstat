@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.10 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.10.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.11 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.11.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.10</sysdata-version>
+	<sysdata-version>3.11</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>

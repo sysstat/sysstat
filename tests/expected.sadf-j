@@ -137,15 +137,15 @@
 							{"fchost": "host0", "fch_rxf": 0.00, "fch_txf": 0.00, "fch_rxw": 0.00, "fch_txw": 0.00}
 						],
 						"softnet": [
-							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "6", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00}
+							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "6", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0}
 						]
 					},
 					"power-management": {
@@ -299,14 +299,14 @@
 							{"fchost": "host0", "fch_rxf": 0.00, "fch_txf": 0.00, "fch_rxw": 0.00, "fch_txw": 0.00}
 						],
 						"softnet": [
-							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00}
+							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0}
 						]
 					},
 					"power-management": {
@@ -468,15 +468,15 @@
 							{"fchost": "host1", "fch_rxf": 0.42, "fch_txf": 0.13, "fch_rxw": 0.10, "fch_txw": 0.05}
 						],
 						"softnet": [
-							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "8", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00}
+							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 10},
+							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 10},
+							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "8", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0}
 						]
 					},
 					"power-management": {
@@ -640,16 +640,16 @@
 							{"fchost": "host1", "fch_rxf": 0.00, "fch_txf": 0.00, "fch_rxw": 0.00, "fch_txw": 0.00}
 						],
 						"softnet": [
-							{"cpu": "all", "total": 4.29, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "6", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "8", "total": 4.29, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00}
+							{"cpu": "all", "total": 4.29, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 457},
+							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 223},
+							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "6", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 234},
+							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "8", "total": 4.29, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0}
 						]
 					},
 					"power-management": {
@@ -816,17 +816,17 @@
 							{"fchost": "host0", "fch_rxf": 0.00, "fch_txf": 0.00, "fch_rxw": 0.00, "fch_txw": 0.00}
 						],
 						"softnet": [
-							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 394.13, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 8.76, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 17.52, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 26.28, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 35.03, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 43.79, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "6", "total": 0.00, "dropd": 0.00, "squeezd": 52.55, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 61.31, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "8", "total": 0.00, "dropd": 0.00, "squeezd": 70.07, "rx_rps": 0.00, "flw_lim": 0.00},
-							{"cpu": "9", "total": 0.00, "dropd": 0.00, "squeezd": 78.83, "rx_rps": 0.00, "flw_lim": 0.00}
+							{"cpu": "all", "total": 0.00, "dropd": 0.00, "squeezd": 394.13, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "0", "total": 0.00, "dropd": 0.00, "squeezd": 0.00, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "1", "total": 0.00, "dropd": 0.00, "squeezd": 8.76, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "2", "total": 0.00, "dropd": 0.00, "squeezd": 17.52, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "3", "total": 0.00, "dropd": 0.00, "squeezd": 26.28, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "4", "total": 0.00, "dropd": 0.00, "squeezd": 35.03, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "5", "total": 0.00, "dropd": 0.00, "squeezd": 43.79, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "6", "total": 0.00, "dropd": 0.00, "squeezd": 52.55, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "7", "total": 0.00, "dropd": 0.00, "squeezd": 61.31, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "8", "total": 0.00, "dropd": 0.00, "squeezd": 70.07, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0},
+							{"cpu": "9", "total": 0.00, "dropd": 0.00, "squeezd": 78.83, "rx_rps": 0.00, "flw_lim": 0.00, "blg_len": 0}
 						]
 					},
 					"power-management": {

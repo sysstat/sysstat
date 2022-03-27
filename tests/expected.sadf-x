@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.10 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.10.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.11 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.11.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.10</sysdata-version>
+	<sysdata-version>3.11</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -521,15 +521,15 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
-					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -1017,14 +1017,14 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
-					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -1564,15 +1564,15 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
 					<fchost name="host1" fch_rxf="0.42" fch_txf="0.13" fch_rxw="0.10" fch_txw="0.05"/>
-					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="10"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="10"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -2158,16 +2158,16 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
 					<fchost name="host1" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
-					<softnet cpu="all" total="4.29" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="8" total="4.29" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="4.29" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="457"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="223"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="234"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="8" total="4.29" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
@@ -2712,17 +2712,17 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<net-eicmp6 ierr6="0.00" idtunr6="0.00" odtunr6="0.00" itmex6="0.00" otmex6="0.00" iprmpb6="0.00" oprmpb6="0.00" iredir6="0.00" oredir6="0.00" ipck2b6="0.00" opck2b6="0.00"/>
 					<net-udp6 idgm6="0.00" odgm6="0.00" noport6="0.00" idgmer6="0.00"/>
 					<fchost name="host0" fch_rxf="0.00" fch_txf="0.00" fch_rxw="0.00" fch_txw="0.00"/>
-					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="394.13" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="8.76" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="17.52" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="26.28" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="35.03" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="43.79" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="52.55" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="61.31" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="70.07" rx_rps="0.00" flw_lim="0.00"/>
-					<softnet cpu="9" total="0.00" dropd="0.00" squeezd="78.83" rx_rps="0.00" flw_lim="0.00"/>
+					<softnet cpu="all" total="0.00" dropd="0.00" squeezd="394.13" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="0" total="0.00" dropd="0.00" squeezd="0.00" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="1" total="0.00" dropd="0.00" squeezd="8.76" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="2" total="0.00" dropd="0.00" squeezd="17.52" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="3" total="0.00" dropd="0.00" squeezd="26.28" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="4" total="0.00" dropd="0.00" squeezd="35.03" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="5" total="0.00" dropd="0.00" squeezd="43.79" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="6" total="0.00" dropd="0.00" squeezd="52.55" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="7" total="0.00" dropd="0.00" squeezd="61.31" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="8" total="0.00" dropd="0.00" squeezd="70.07" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
+					<softnet cpu="9" total="0.00" dropd="0.00" squeezd="78.83" rx_rps="0.00" flw_lim="0.00" blg_len="0"/>
 				</network>
 				<power-management>
 					<cpu-frequency unit="MHz">
