@@ -2450,7 +2450,7 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
 			 "\"dropd\": %.2f, "
 			 "\"squeezd\": %.2f, "
 			 "\"rx_rps\": %.2f, "
-			 "\"flw_lim\": %.2f, ",
+			 "\"flw_lim\": %.2f, "
 			 "\"blg_len\": %u}",
 			 cpuno,
 			 S_VALUE(ssnp->processed,    ssnc->processed,    itv),
