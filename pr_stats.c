@@ -621,8 +621,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 					    (unsigned long long) smc->vmusedkb);
 			}
 
-			printf("\n");
-
 			/*
 			 * Will be used to compute the average.
 			 * We assume that the total amount of memory installed can not vary
@@ -675,14 +673,14 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 					  (double) avg_vmusedkb / avg_count);
 			}
 
-			printf("\n");
-
 			/* Reset average counters */
 			avg_frmkb = avg_bufkb = avg_camkb = avg_comkb = 0;
 			avg_activekb = avg_inactkb = avg_dirtykb = 0;
 			avg_anonpgkb = avg_slabkb = avg_kstackkb = 0;
 			avg_pgtblkb = avg_vmusedkb = avg_availablekb = 0;
 		}
+
+		printf("\n");
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
@@ -706,8 +704,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				   (smc->tlskb - smc->frskb) ?
 				   SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
 				   : 0.0);
-
-			printf("\n");
 
 			/*
 			 * Will be used to compute the average.
@@ -737,11 +733,12 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 					    ((double) avg_tlskb / avg_count) -
 					    ((double) avg_frskb / avg_count))
 				   : 0.0);
-			printf("\n");
 
 			/* Reset average counters */
 			avg_frskb = avg_tlskb = avg_caskb = 0;
 		}
+
+		printf("\n");
 	}
 }
 
@@ -813,7 +810,6 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 			    (unsigned long long) skc->file_used,
 			    (unsigned long long) skc->inode_used,
 			    (unsigned long long) skc->pty_nr);
-		printf("\n");
 
 		/*
 		 * Will be used to compute the average.
@@ -831,11 +827,12 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 			  (double) avg_file_used   / avg_count,
 			  (double) avg_inode_used  / avg_count,
 			  (double) avg_pty_nr      / avg_count);
-		printf("\n");
 
 		/* Reset average counters */
 		avg_dentry_stat = avg_file_used = avg_inode_used = avg_pty_nr = 0;
 	}
+
+	printf("\n");
 }
 
 /*
@@ -911,7 +908,6 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 			  (double) sqc->load_avg_15 / 100);
 		cprintf_u64(NO_UNIT, 1, 9,
 			    (unsigned long long) sqc->procs_blocked);
-		printf("\n");
 
 		/* Will be used to compute the average */
 		avg_nr_running    += sqc->nr_running;
@@ -932,13 +928,14 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 			  (double) avg_load_avg_15 / (avg_count * 100));
 		cprintf_f(NO_UNIT, 1, 9, 0,
 			  (double) avg_procs_blocked / avg_count);
-		printf("\n");
 
 		/* Reset average counters */
 		avg_nr_running = avg_nr_threads = 0;
 		avg_load_avg_1 = avg_load_avg_5 = avg_load_avg_15 = 0;
 		avg_procs_blocked = 0;
 	}
+
+	printf("\n");
 }
 
 /*
@@ -1423,7 +1420,6 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 			    (unsigned long long) snsc->raw_inuse,
 			    (unsigned long long) snsc->frag_inuse,
 			    (unsigned long long) snsc->tcp_tw);
-		printf("\n");
 
 		/* Will be used to compute the average */
 		avg_sock_inuse += snsc->sock_inuse;
@@ -1442,12 +1438,13 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 			  (double) avg_raw_inuse  / avg_count,
 			  (double) avg_frag_inuse / avg_count,
 			  (double) avg_tcp_tw     / avg_count);
-		printf("\n");
 
 		/* Reset average counters */
 		avg_sock_inuse = avg_tcp_inuse = avg_udp_inuse = 0;
 		avg_raw_inuse = avg_frag_inuse = avg_tcp_tw = 0;
 	}
+
+	printf("\n");
 }
 
 /*
@@ -1761,7 +1758,6 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 			    (unsigned long long) snsc->udp6_inuse,
 			    (unsigned long long) snsc->raw6_inuse,
 			    (unsigned long long) snsc->frag6_inuse);
-		printf("\n");
 
 		/* Will be used to compute the average */
 		avg_tcp6_inuse  += snsc->tcp6_inuse;
@@ -1776,11 +1772,12 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 			  (double) avg_udp6_inuse  / avg_count,
 			  (double) avg_raw6_inuse  / avg_count,
 			  (double) avg_frag6_inuse / avg_count);
-		printf("\n");
 
 		/* Reset average counters */
 		avg_tcp6_inuse = avg_udp6_inuse = avg_raw6_inuse = avg_frag6_inuse = 0;
 	}
+
+	printf("\n");
 }
 
 /*
@@ -2080,7 +2077,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 			/* Display instantaneous values */
 			cprintf_f(NO_UNIT, 1, 9, 2,
 				  ((double) spc->cpufreq) / 100);
-			printf("\n");
+
 			/*
 			 * Will be used to compute the average.
 			 * Note: Overflow unlikely to happen but not impossible...
@@ -2091,8 +2088,9 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 			/* Display average values */
 			cprintf_f(NO_UNIT, 1, 9, 2,
 				  (double) avg_cpufreq[i] / (100 * avg_count));
-			printf("\n");
 		}
+
+		printf("\n");
 	}
 
 	if (dispavg && avg_cpufreq) {
@@ -2517,7 +2515,6 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		cprintf_u64(unit, 2, 9,
 			    (unsigned long long) smc->rsvdhkb,
 			    (unsigned long long) (smc->surphkb));
-		printf("\n");
 
 		/* Will be used to compute the average */
 		avg_frhkb += smc->frhkb;
@@ -2539,11 +2536,12 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		cprintf_f(unit, 2, 9, 0,
 			  (double) avg_rsvdhkb / avg_count,
 			  (double) avg_surphkb / avg_count);
-		printf("\n");
 
 		/* Reset average counters */
 		avg_frhkb = avg_tlhkb = avg_rsvdhkb = avg_surphkb = 0;
 	}
+
+	printf("\n");
 }
 
 /*
@@ -3093,6 +3091,7 @@ __print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
 			  S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
 			  S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
+
 		if (!dispavg) {
 			/* Display instantaneous value */
 			cprintf_u64(NO_UNIT, 1, 9,
