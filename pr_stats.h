@@ -126,6 +126,8 @@ __print_funct_t print_avg_pwr_usb_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t print_avg_filesystem_stats
 	(struct activity *, int, int, unsigned long long);
+__print_funct_t print_avg_softnet_stats
+	(struct activity *, int, int, unsigned long long);
 __print_funct_t print_avg_psicpu_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t print_avg_psiio_stats

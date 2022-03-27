@@ -1834,7 +1834,7 @@ struct activity softnet_act = {
 #endif
 #ifdef SOURCE_SAR
 	.f_print	= print_softnet_stats,
-	.f_print_avg	= print_softnet_stats,
+	.f_print_avg	= print_avg_softnet_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
 	.hdr_line	= "CPU;total/s;dropd/s;squeezd/s;rx_rps/s;flw_lim/s;blg_len",

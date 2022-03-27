@@ -3007,16 +3007,19 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
  * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @itv		Interval of time in 1/100th of a second.
+ * @dispavg	True if displaying average statistics.
  ***************************************************************************
  */
-__print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
-				    unsigned long long itv)
+__print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
+					 unsigned long long itv, int dispavg)
 {
 	int i;
 	struct stats_softnet
 		*ssnc = (struct stats_softnet *) a->buf[curr],
 		*ssnp = (struct stats_softnet *) a->buf[prev];
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
+	static __nr_t nr_alloc = 0;
+	static unsigned long long *avg_blg_len = NULL;
 
 	if (dish || DISPLAY_ZERO_OMIT(flags)) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
@@ -3031,6 +3034,18 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 	 */
 	if (a->nr[curr] > a->nr_ini) {
 		a->nr_ini = a->nr[curr];
+	}
+
+	/* Allocate array for CPU backlog lengths */
+	if (!avg_blg_len || (a->nr_ini > nr_alloc)) {
+		SREALLOC(avg_blg_len, unsigned long long, sizeof(unsigned long long) * a->nr_ini);
+
+		if (a->nr_ini > nr_alloc) {
+			/* Init additional space allocated */
+			memset(avg_blg_len + nr_alloc, 0,
+			       sizeof(unsigned long long) * (a->nr_ini - nr_alloc));
+		}
+		nr_alloc = a->nr_ini;
 	}
 
 	/* Compute statistics for CPU "all" */
@@ -3078,10 +3093,62 @@ __print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(ssnp->time_squeeze, ssnc->time_squeeze, itv),
 			  S_VALUE(ssnp->received_rps, ssnc->received_rps, itv),
 			  S_VALUE(ssnp->flow_limit,   ssnc->flow_limit,   itv));
-		cprintf_u64(NO_UNIT, 1, 9,
-			    (unsigned long long) ssnc->backlog_len);
+		if (!dispavg) {
+			/* Display instantaneous value */
+			cprintf_u64(NO_UNIT, 1, 9,
+				    (unsigned long long) ssnc->backlog_len);
+
+			/* Used to compute average value */
+			avg_blg_len[i] += (unsigned long long ) ssnc->backlog_len;
+		}
+		else {
+			/* Display average value */
+			cprintf_f(NO_UNIT, 1, 9, 0,
+				  (double) avg_blg_len[i] / avg_count);
+		}
+
 		printf("\n");
 	}
+
+	if (dispavg && avg_blg_len) {
+		free(avg_blg_len);
+		avg_blg_len = NULL;
+		nr_alloc = 0;
+	}
+}
+
+/*
+ ***************************************************************************
+ * Display softnet statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_softnet_stats(struct activity *a, int prev, int curr,
+				    unsigned long long itv)
+{
+	stub_print_softnet_stats(a, prev, curr, itv, FALSE);
+}
+
+/*
+ ***************************************************************************
+ * Display average softnet statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_softnet_stats(struct activity *a, int prev, int curr,
+					unsigned long long itv)
+{
+	stub_print_softnet_stats(a, prev, curr, itv, TRUE);
 }
 
 /*
