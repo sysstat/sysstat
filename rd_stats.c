@@ -2813,6 +2813,9 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
+		/* Softnet backlog length may be not available */
+		st_softnet_read.backlog_len = 0;
+
 		i = sscanf(line, "%x %x %x %*x %*x %*x %*x %*x %*x %x %x %x %x",
 			   &(st_softnet_read.processed),
 			   &(st_softnet_read.dropped),
