@@ -7052,4 +7052,5 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS
+   Linker flags:		$LDFLAGS
 "
