@@ -4783,7 +4783,8 @@ HAVE_SENSORS32="n"
 if test $SENSORS_SUPPORT = "y"; then
 	CFLAGS_SAVE=$CFLAGS
 	CFLAGS+=" -m32"
-	LDFLAGS=" -lsensors"
+	LDFLAGS_SAVE=$LDFLAGS
+	LDFLAGS+=" -lsensors"
 	SENSORS=no
 #	Check for another function to avoid using cached result
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sensors_cleanup in -lsensors" >&5
@@ -4852,6 +4853,7 @@ rm -f core conftest.err conftest.$ac_objext \
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SENSORS" >&5
 $as_echo "$SENSORS" >&6; }
 	CFLAGS=$CFLAGS_SAVE
+	LDFLAGS=$LDFLAGS_SAVE
 fi
 
 
