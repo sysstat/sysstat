@@ -114,12 +114,8 @@ void pcp_def_cpu_metrics(struct activity *a)
 					     pmiID(60, 0, 23), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-				pmiAddMetric("kernel.all.cpu.wait.total",
+				pmiAddMetric("kernel.all.cpu.iowait",
 					     pmiID(60, 0, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.intr",
-					     pmiID(60, 0, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.steal",
@@ -132,6 +128,10 @@ void pcp_def_cpu_metrics(struct activity *a)
 
 				pmiAddMetric("kernel.all.cpu.irq.soft",
 					     pmiID(60, 0, 53), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+				pmiAddMetric("kernel.all.cpu.irq.total",
+					     pmiID(60, 0, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 				pmiAddMetric("kernel.all.cpu.guest",
@@ -207,7 +207,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 						     pmiID(60, 0, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
-					pmiAddMetric("kernel.percpu.cpu.wait.total",
+					pmiAddMetric("kernel.percpu.cpu.iowait",
 						     pmiID(60, 0, 30), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
@@ -221,6 +221,10 @@ void pcp_def_cpu_metrics(struct activity *a)
 
 					pmiAddMetric("kernel.percpu.cpu.irq.soft",
 						     pmiID(60, 0, 56), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+					pmiAddMetric("kernel.percpu.cpu.irq.total",
+						     pmiID(60, 0, 35), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
 
 					pmiAddMetric("kernel.percpu.cpu.guest",
@@ -633,6 +637,10 @@ void pcp_def_disk_metrics(struct activity *a)
 		     pmiID(60, 0, 28), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
+	pmiAddMetric("disk.dev.total_bytes",
+		     pmiID(60, 0, 37), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
 	pmiAddMetric("disk.dev.read_bytes",
 		     pmiID(60, 0, 38), PM_TYPE_U64, indom, PM_SEM_COUNTER,
 		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
@@ -953,15 +961,15 @@ void pcp_def_net_ip_metrics(void)
 		     pmiID(60, 14, 8), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.ip.ipoutrequests",
+	pmiAddMetric("network.ip.outrequests",
 		     pmiID(60, 14, 9), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.ip.ipreasmreqds",
+	pmiAddMetric("network.ip.reasmreqds",
 		     pmiID(60, 14, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 
-	pmiAddMetric("network.ip.ipreasmoks",
+	pmiAddMetric("network.ip.reasmoks",
 		     pmiID(60, 14, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 

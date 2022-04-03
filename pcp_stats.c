@@ -139,13 +139,13 @@ __print_funct_t pcp_print_cpu_stats(struct activity *a, int curr)
 		pmiPutValue(i ? "kernel.percpu.cpu.sys" : "kernel.all.cpu.sys", str, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", scc->cpu_iowait);
-		pmiPutValue(i ? "kernel.percpu.cpu.iowait" : "kernel.all.cpu.wait.total", str, buf);
+		pmiPutValue(i ? "kernel.percpu.cpu.iowait" : "kernel.all.cpu.iowait", str, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", scc->cpu_steal);
 		pmiPutValue(i ? "kernel.percpu.cpu.steal" : "kernel.all.cpu.steal", str, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", scc->cpu_hardirq + scc->cpu_softirq);
-		pmiPutValue(i ? "kernel.percpu.cpu.intr" : "kernel.all.cpu.intr", str, buf);
+		pmiPutValue(i ? "kernel.percpu.cpu.irq.total" : "kernel.all.cpu.irq.total", str, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", scc->cpu_hardirq);
 		pmiPutValue(i ? "kernel.percpu.cpu.irq.hard" : "kernel.all.cpu.irq.hard", str, buf);
@@ -402,7 +402,7 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr)
 		pmiPutValue("mem.util.used", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->bufkb);
-		pmiPutValue("mem.util.buffers", NULL, buf);
+		pmiPutValue("mem.util.bufmem", NULL, buf);
 
 		snprintf(buf, sizeof(buf), "%llu", smc->camkb);
 		pmiPutValue("mem.util.cached", NULL, buf);
@@ -428,13 +428,13 @@ __print_funct_t pcp_print_memory_stats(struct activity *a, int curr)
 			pmiPutValue("mem.util.slab", NULL, buf);
 
 			snprintf(buf, sizeof(buf), "%llu", smc->kstackkb);
-			pmiPutValue("mem.util.stack", NULL, buf);
+			pmiPutValue("mem.util.kernelStack", NULL, buf);
 
 			snprintf(buf, sizeof(buf), "%llu", smc->pgtblkb);
 			pmiPutValue("mem.util.pageTables", NULL, buf);
 
 			snprintf(buf, sizeof(buf), "%llu", smc->vmusedkb);
-			pmiPutValue("mem.util.vmused", NULL, buf);
+			pmiPutValue("mem.util.vmallocUsed", NULL, buf);
 		}
 	}
 
@@ -1121,10 +1121,10 @@ __print_funct_t pcp_print_net_etcp_stats(struct activity *a, int curr)
 	pmiPutValue("network.tcp.attemptfails", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->EstabResets);
-	pmiPutValue("network.tcp.tcpestabresets", NULL, buf);
+	pmiPutValue("network.tcp.estabresets", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->RetransSegs);
-	pmiPutValue("network.tcp.tcpretranssegs", NULL, buf);
+	pmiPutValue("network.tcp.retranssegs", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) snetc->InErrs);
 	pmiPutValue("network.tcp.inerrs", NULL, buf);
