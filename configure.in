@@ -191,7 +191,8 @@ HAVE_SENSORS32="n"
 if test $SENSORS_SUPPORT = "y"; then
 	CFLAGS_SAVE=$CFLAGS
 	CFLAGS+=" -m32"
-	LDFLAGS=" -lsensors"
+	LDFLAGS_SAVE=$LDFLAGS
+	LDFLAGS+=" -lsensors"
 	SENSORS=no
 #	Check for another function to avoid using cached result
 	AC_CHECK_LIB(sensors, sensors_cleanup, LFSENSORS32="-lsensors", HAVE_SENSORS32="n")
@@ -201,6 +202,7 @@ if test $SENSORS_SUPPORT = "y"; then
 					[[sensors_cleanup();]])], SENSORS=yes; HAVE_SENSORS32="y"; DFSENSORS32="-DHAVE_SENSORS32", HAVE_SENSORS32="n"; SENSORS=no)
 	AC_MSG_RESULT($SENSORS)
 	CFLAGS=$CFLAGS_SAVE
+	LDFLAGS=$LDFLAGS_SAVE
 fi
 AC_SUBST(HAVE_SENSORS32)
 AC_SUBST(LFSENSORS32)
@@ -801,4 +803,5 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Man pages directory:		$mandir
    Compiler:			$CC
    Compiler flags:		$CFLAGS
+   Linker flags:		$LDFLAGS
 "

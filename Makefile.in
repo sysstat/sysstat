@@ -110,7 +110,7 @@ DFLAGS += $(TFLAGS)
 endif
 
 ifndef LFLAGS
-LFLAGS = @STRIP@
+LFLAGS = @STRIP@ @LDFLAGS@
 endif
 
 # Commands
