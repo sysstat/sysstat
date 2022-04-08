@@ -1,0 +1,6 @@
+for file in `ls -1 tests/data-*-err`; do
+	echo -n "Testing ${file}... ";
+	LC_ALL=C ./sadf -H $file 2>&1 | grep "Invalid system" >/dev/null && echo "OK" || exit 1;
+done
+
+
