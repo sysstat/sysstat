@@ -755,6 +755,8 @@ void get_itv_value(struct record_header *record_hdr_curr,
 void get_file_timestamp_struct(uint64_t flags, struct tm *rectime,
 			       struct file_header *file_hdr)
 {
+	time_t t = file_hdr->sa_ust_time;
+
 	if (PRINT_TRUE_TIME(flags)) {
 		/* Get local time. This is just to fill fields with a default value. */
 		get_time(rectime, 0);
@@ -770,7 +772,7 @@ void get_file_timestamp_struct(uint64_t flags, struct tm *rectime,
 		mktime(rectime);
 	}
 	else {
-		localtime_r((const time_t *) &file_hdr->sa_ust_time, rectime);
+		localtime_r(&t, rectime);
 	}
 }
 
@@ -2841,20 +2843,21 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 				   struct tm *rectime)
 {
 	struct tm *ltm;
+	time_t t = record_hdr->ust_time;
 	int rc = 0;
 
 	/*
 	 * Fill generic rectime structure in local time.
 	 * Done so that we have some default values.
 	 */
-	ltm = localtime_r((const time_t *) &(record_hdr->ust_time), rectime);
+	ltm = localtime_r(&t, rectime);
 
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
 		/*
 		 * Get time in UTC
 		 * (the user doesn't want local time nor time of file's creator).
 		 */
-		ltm = gmtime_r((const time_t *) &(record_hdr->ust_time), rectime);
+		ltm = gmtime_r(&t, rectime);
 	}
 
 	if (!ltm) {

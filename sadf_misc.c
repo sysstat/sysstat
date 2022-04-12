@@ -61,13 +61,14 @@ void pcp_write_data(struct record_header *record_hdr, unsigned int flags)
 #ifdef HAVE_PCP
 	int rc;
 	struct tm lrectime;
+	time_t t = record_hdr->ust_time;
 	unsigned long long utc_sec = record_hdr->ust_time;
 	static long long delta_utc = LONG_MAX;
 
 	if (!PRINT_LOCAL_TIME(flags)) {
 		if (delta_utc == LONG_MAX) {
 			/* Convert a time_t value from local time to UTC */
-			if (gmtime_r((const time_t *) &(record_hdr->ust_time), &lrectime)) {
+			if (gmtime_r(&t, &lrectime)) {
 				utc_sec = mktime(&lrectime);
 				delta_utc = utc_sec - record_hdr->ust_time;
 			}
@@ -1080,6 +1081,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 				  struct file_activity *file_actlst)
 {
 	struct tm rectime, loc_t;
+	time_t t = file_hdr->sa_ust_time;
 	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
@@ -1111,7 +1113,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile,
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf(*tab, "<file-date>%s</file-date>", cur_time);
 
-		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
+		if (gmtime_r(&t, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			xprintf(*tab, "<file-utc-time>%s</file-utc-time>", cur_time);
 		}
@@ -1149,6 +1151,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 				   struct file_activity *file_actlst)
 {
 	struct tm rectime, loc_t;
+	time_t t = file_hdr->sa_ust_time;
 	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
@@ -1170,7 +1173,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile,
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf(*tab, "\"file-date\": \"%s\",", cur_time);
 
-		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
+		if (gmtime_r(&t, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			xprintf(*tab, "\"file-utc-time\": \"%s\",", cur_time);
 		}
@@ -1208,6 +1211,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 {
 	int i, p;
 	struct tm rectime, loc_t;
+	time_t t = file_hdr->sa_ust_time;
 	struct file_activity *fal;
 	char cur_time[TIMESTAMP_LEN];
 
@@ -1227,7 +1231,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		       file_magic->upgraded);
 
 		printf(_("Host: "));
-		print_gal_header(localtime_r((const time_t *) &(file_hdr->sa_ust_time), &rectime),
+		print_gal_header(localtime_r(&t, &rectime),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
@@ -1238,7 +1242,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile,
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		printf(_("File date: %s\n"), cur_time);
 
-		if (gmtime_r((const time_t *) &file_hdr->sa_ust_time, &loc_t) != NULL) {
+		if (gmtime_r(&t, &loc_t) != NULL) {
 			printf(_("File time: "));
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
 			printf("%s UTC (%lld)\n", cur_time, file_hdr->sa_ust_time);
@@ -1310,6 +1314,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 {
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
 	struct tm rectime;
+	time_t t = file_hdr->sa_ust_time;
 	unsigned int height = 0, ht = 0;
 	int i, p;
 
@@ -1349,7 +1354,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile,
 		       svg_colors[palette][SVG_COL_DEFAULT_IDX]);
 		printf("<text x=\"0\" y=\"30\" text-anchor=\"start\" stroke=\"#%06x\">",
 		       svg_colors[palette][SVG_COL_HEADER_IDX]);
-		print_gal_header(localtime_r((const time_t *) &(file_hdr->sa_ust_time), &rectime),
+		print_gal_header(localtime_r(&t, &rectime),
 				 file_hdr->sa_sysname, file_hdr->sa_release,
 				 file_hdr->sa_nodename, file_hdr->sa_machine,
 				 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
@@ -1417,6 +1422,7 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 #ifdef HAVE_PCP
 	char buf[64];
 	struct tm lrectime;
+	time_t t = file_hdr->sa_ust_time;
 	unsigned long long utc_sec = file_hdr->sa_ust_time;
 
 	if (action & F_BEGIN) {
@@ -1465,7 +1471,7 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile,
 			/* Only the header data will be written to PCP archive */
 			if (!PRINT_LOCAL_TIME(flags)) {
 				/* Convert a time_t value from local time to UTC */
-				if (gmtime_r((const time_t *) &(file_hdr->sa_ust_time), &lrectime)) {
+				if (gmtime_r(&t, &lrectime)) {
 					utc_sec = mktime(&lrectime);
 				}
 			}
