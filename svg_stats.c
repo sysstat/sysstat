@@ -876,6 +876,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 	double lmax, xfactor, yfactor, ypos, gmin, gmax;
 	char val[32], cur_date[TIMESTAMP_LEN];
 	struct tm rectime;
+	time_t t = svg_p->file_hdr->sa_ust_time;
 
 	/* Print activity name in debug mode */
 	if (DISPLAY_DEBUG_MODE(flags)) {
@@ -996,7 +997,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			       svg_p->file_hdr->sa_nodename);
 
 			/* Get report date */
-			set_report_date(localtime_r((const time_t *) &(svg_p->file_hdr->sa_ust_time), &rectime),
+			set_report_date(localtime_r(&t, &rectime),
 					cur_date, sizeof(cur_date));
 			printf("<tspan x=\"%d\" y=\"%d\" "
 			       "style=\"fill: #%06x; text-anchor: end; stroke: none; font-size: 14px\">"

@@ -403,10 +403,10 @@ void list_fields(unsigned int act_id)
 time_t get_time_ref(void)
 {
 	struct tm ltm;
-	time_t t;
+	time_t t = record_hdr[2].ust_time;
 
 	if (DISPLAY_ONE_DAY(flags)) {
-		localtime_r((time_t *) &(record_hdr[2].ust_time), &ltm);
+		localtime_r(&t, &ltm);
 
 		/* Move back to midnight */
 		ltm.tm_sec = ltm.tm_min = ltm.tm_hour = 0;
