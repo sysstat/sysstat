@@ -1,5 +1,24 @@
 Changes:
 
+2022/05/29: Version 12.6.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix maximum value for A_IRQ activity.
+	* sar/sadf: A_NET_SOFT: Add new metric softnet network backlog.
+	* sadc: A_NET_SOFT: Use CPU id from /proc/net/softnet_stat.
+	* Update DTD and XSD documents (softnet backlog).
+	* [Chris Bagwell]: sar/sadf: Convert 64-bit time value to time_t
+	  as needed.
+	* sadf: Add basic colorization to sadf's output.
+	* sadf: Add sanity checks on values read from file.
+	* sadf: PCP: Fix multiple metrics name problems.
+	* sa_common.c: Remove unneeded variable assignment.
+	* [Lukáš Zaoral]: Take into account LDFLAGS passer to configure
+	  script.
+	* Various janitorial fixes and updated.
+	* Update FAQ.
+	* Update sar manual page.
+	* Update NLS translations.
+	* Update non regression tests.
+
 2022/02/28: Version 12.5.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadc: Rewrite code used to collect and display interrupts
 	  statistics. Statistics are now collected from /proc/interrupts
