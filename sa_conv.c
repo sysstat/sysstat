@@ -552,7 +552,7 @@ void upgrade_stats_irq(struct activity *act[], int p, unsigned int magic)
 				strcpy(sic->irq_name, K_LOWERSUM);
 			}
 			else {
-				sprintf(sic->irq_name, "%d", i - 1);
+				sprintf(sic->irq_name, "%d", ( i & 0x7fffff ) - 1);
 			}
 		}
 	}
@@ -570,7 +570,8 @@ void upgrade_stats_irq(struct activity *act[], int p, unsigned int magic)
 				strcpy(sic->irq_name, K_LOWERSUM);
 			}
 			else {
-				sprintf(sic->irq_name, "%d", i - 1);
+				/* irq name is 8 bytes, but a %d could be up to 10, so limit it */
+				sprintf(sic->irq_name, "%d", ( i & 0x7fffff ) - 1);
 			}
 		}
 	}
