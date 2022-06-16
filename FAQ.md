@@ -319,8 +319,8 @@ You can also find: kSar (a Java application capable of visualizing a sar file
 with static graphs), sarjitsu (a more sophisticated application producing
 dynamic visualizations based on Grafana), sarvant, sar2gp, loadgraph,
 SysStat Charts, sarplot...
-[rrd.cgi](http://haroon.sis.utoronto.ca/rrd/scripts/) is a perl front-end for
-rrdtool and can be used to make some graphs (see a demo [here](http://haroon.sis.utoronto.ca/perl/rrd.cgi/sar_stats/)).  
+[rrd.cgi](http://haroon.easi.utoronto.ca/rrd/scripts/) is a perl front-end for
+rrdtool and can be used to make some graphs (see a demo [here](http://haroon.easi.utoronto.ca/perl/rrd.cgi/sar_stats/)).
 [sysstat_mail_report](https://github.com/desbma/sysstat_mail_report) is a script
 that automatically generates and sends an email report every day/week/month
 with graphs generated from sysstat data.  
