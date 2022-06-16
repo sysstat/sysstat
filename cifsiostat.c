@@ -141,6 +141,7 @@ struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name)
 		return NULL;
 
 	while (*clist != NULL) {
+
 		c = *clist;
 		if ((i = strcmp(c->name, name)) == 0) {
 			/* cifs found in list */

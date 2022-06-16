@@ -210,9 +210,11 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc, __nr_t nr_int)
 		 * Parse header line to see which CPUs are online
 		 */
 		while (fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) {
+
 			next = line;
 			while (((cp = strstr(next, "CPU")) != NULL) && (index < cpu_nr)) {
 				cpu = strtol(cp + 3, &next, 10);
+
 				if (cpu + 2 > nr_alloc) {
 					rc = -1;
 					goto out;
@@ -570,6 +572,7 @@ void oct2chr(char *str)
 	len = strlen(str);
 
 	while (i < len - 3) {
+
 		if ((str[i] == '\\') &&
 		    (str[i + 1] >= '0') && (str[i + 1] <= '3') &&
 		    (str[i + 2] >= '0') && (str[i + 2] <= '7') &&
@@ -2625,7 +2628,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 				continue;
 
 			sscanf(pos2 + 1, "%127s", type);
-			if(strcmp(type, "autofs") == 0)
+			if (strcmp(type, "autofs") == 0)
 				continue;
 
 			/* Read current filesystem name */

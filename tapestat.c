@@ -178,6 +178,7 @@ int get_max_tape_drives(void)
 		return 0;
 
 	while ((entry = readdir(dir)) != NULL) {
+
 		if (regexec(&tape_reg, &entry->d_name[0], 1, &match, 0) == 0) {
 			/* d_name[2] to skip the st at the front */
 			tmp = atoi(&entry->d_name[2]) + 1;

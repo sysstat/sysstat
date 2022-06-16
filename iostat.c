@@ -300,6 +300,7 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 		return NULL;
 
 	while (*dlist != NULL) {
+
 		d = *dlist;
 		if ((i = strcmp(d->name, name)) == 0) {
 			/* Device found in list */
