@@ -2625,7 +2625,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 				continue;
 
 			sscanf(pos2 + 1, "%127s", type);
-			if(strcmp(type, "autofs") == 0)
+			if (strcmp(type, "autofs") == 0)
 				continue;
 
 			/* Read current filesystem name */
