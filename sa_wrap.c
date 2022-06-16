@@ -952,7 +952,7 @@ __read_funct_t wrap_read_cpu_wghfreq(struct activity *a)
 			st_pwr_wghfreq = (struct stats_pwr_wghfreq *) a->_buf0;
 		}
 	}
-	while(nr_read < 0);
+	while (nr_read < 0);
 
 	a->_nr0 = nr_read;
 
