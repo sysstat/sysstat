@@ -473,7 +473,7 @@ __nr_t get_filesystem_nr(void)
 				continue;
 
 			sscanf(pos2 + 1, "%127s", type);
-			if(strcmp(type, "autofs") == 0)
+			if (strcmp(type, "autofs") == 0)
 				continue;
 
 			/* Read filesystem name and mount point */
