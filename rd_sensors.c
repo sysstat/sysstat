@@ -68,8 +68,10 @@ __nr_t read_fan(struct stats_pwr_fan *st_pwr_fan, __nr_t nr_alloc)
 	memset(st_pwr_fan, 0, STATS_PWR_FAN_SIZE);
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+
 		i = 0;
 		while ((feature = sensors_get_features(chip, &i))) {
+
 			if (feature->type == SENSORS_FEATURE_FAN) {
 				j = 0;
 				if (fan_read + 1 > nr_alloc)
@@ -78,6 +80,7 @@ __nr_t read_fan(struct stats_pwr_fan *st_pwr_fan, __nr_t nr_alloc)
 				sensors_snprintf_chip_name(st_pwr_fan_i->device, MAX_SENSORS_DEV_LEN, chip);
 
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
+
 					if ((sub->type == SENSORS_SUBFEATURE_FAN_INPUT) &&
 					    (sub->flags & SENSORS_MODE_R)) {
 						if (sensors_get_value(chip, sub->number, &st_pwr_fan_i->rpm)) {
@@ -130,8 +133,10 @@ __nr_t read_temp(struct stats_pwr_temp *st_pwr_temp, __nr_t nr_alloc)
 	memset(st_pwr_temp, 0, STATS_PWR_TEMP_SIZE);
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+
 		i = 0;
 		while ((feature = sensors_get_features(chip, &i))) {
+
 			if (feature->type == SENSORS_FEATURE_TEMP) {
 				j = 0;
 				if (temp_read + 1 > nr_alloc)
@@ -140,6 +145,7 @@ __nr_t read_temp(struct stats_pwr_temp *st_pwr_temp, __nr_t nr_alloc)
 				sensors_snprintf_chip_name(st_pwr_temp_i->device, MAX_SENSORS_DEV_LEN, chip);
 
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
+
 					if ((sub->type == SENSORS_SUBFEATURE_TEMP_INPUT) &&
 						(sub->flags & SENSORS_MODE_R)) {
 						if (sensors_get_value(chip, sub->number, &st_pwr_temp_i->temp)) {
@@ -197,8 +203,10 @@ __nr_t read_in(struct stats_pwr_in *st_pwr_in, __nr_t nr_alloc)
 	memset(st_pwr_in, 0, STATS_PWR_IN_SIZE);
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+
 		i = 0;
 		while ((feature = sensors_get_features(chip, &i))) {
+
 			if (feature->type == SENSORS_FEATURE_IN) {
 				j = 0;
 				if (in_read + 1 > nr_alloc)
@@ -207,6 +215,7 @@ __nr_t read_in(struct stats_pwr_in *st_pwr_in, __nr_t nr_alloc)
 				sensors_snprintf_chip_name(st_pwr_in_i->device, MAX_SENSORS_DEV_LEN, chip);
 
 				while ((sub = sensors_get_all_subfeatures(chip, feature, &j))) {
+
 					if ((sub->type == SENSORS_SUBFEATURE_IN_INPUT) &&
 						(sub->flags & SENSORS_MODE_R)) {
 						if (sensors_get_value(chip, sub->number, &st_pwr_in_i->in)) {
@@ -254,8 +263,10 @@ __nr_t get_sensors_nr(sensors_feature_type type) {
 	int i;
 
 	while ((chip = sensors_get_detected_chips(NULL, &chip_nr))) {
+
 		i = 0;
 		while ((feature = sensors_get_features(chip, &i))) {
+
 			if (feature->type == type) {
 				count++;
 			}

@@ -427,6 +427,7 @@ int write_all(int fd, const void *buf, int nr_bytes)
 	char *buffer = (char *) buf;
 
 	while (nr_bytes > 0) {
+
 		block = write(fd, &buffer[offset], nr_bytes);
 
 		if (block < 0) {

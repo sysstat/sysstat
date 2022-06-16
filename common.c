@@ -948,6 +948,7 @@ char *get_persistent_name_from_pretty(char *pretty)
 		return (NULL);
 
 	while (persist_names[++i]) {
+
 		/* Get absolute path for current persistent name */
 		link = get_persistent_name_path(persist_names[i]);
 		if (!link)
