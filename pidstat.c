@@ -138,6 +138,7 @@ void sfree_pid(struct st_pid **plist, int force)
 	struct st_pid *p;
 
 	while (*plist != NULL) {
+
 		p = *plist;
 		if (!p->exist || force) {
 			*plist = p->next;
@@ -247,6 +248,7 @@ struct st_pid *add_list_pid(struct st_pid **plist, pid_t pid, pid_t tgid)
 		 * other TIDs.
 		 */
 		while (*plist != NULL) {
+
 			p = *plist;
 			if (!p->tgid && (p->pid == pid))
 				/* PID found in list */
@@ -266,6 +268,7 @@ struct st_pid *add_list_pid(struct st_pid **plist, pid_t pid, pid_t tgid)
 		 * following its TGID.
 		 */
 		while (*plist != NULL) {
+
 			p = *plist;
 			if (p->pid == tgid) {
 				/* TGID found in list */
@@ -282,6 +285,7 @@ struct st_pid *add_list_pid(struct st_pid **plist, pid_t pid, pid_t tgid)
 
 		plist = &(p->next);
 		while (*plist != NULL) {
+
 			p = *plist;
 			if ((p->tgid == tgid_p) && (p->pid == pid))
 				/* TID found in list */
@@ -605,6 +609,7 @@ int read_proc_pid_smap(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 		return 1;
 
 	while ((state < 3) && (fgets(line, sizeof(line), fp) != NULL)) {
+
 		switch (state) {
 			case 0:
 				if (strstr(line, "[stack]")) {
@@ -882,6 +887,7 @@ void read_task_stats(pid_t pid, struct st_pid *plist, int curr)
 		return;
 
 	while ((drp = __readdir(dir)) != NULL) {
+
 		if (!isdigit(drp->d_name[0])) {
 			continue;
 		}
@@ -951,6 +957,7 @@ void read_stats(int curr)
 
 		/* Get directory entries */
 		while ((drp = __readdir(dir)) != NULL) {
+
 			if (!isdigit(drp->d_name[0])) {
 				continue;
 			}

@@ -208,6 +208,7 @@ __nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 
 	while ((fgets(line, INTERRUPTS_LINE + 11 * cpu_nr , fp) != NULL) &&
 	       (irq < max_nr_irqcpu)) {
+
 		p = strcspn(line, ":");
 		if ((p > 0) && (p < 16)) {
 			irq++;
@@ -256,6 +257,7 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 	 * the number of lines...
 	 */
 	while (fgets(line, sizeof(line), fp) != NULL) {
+
 		if (!count_part) {
 			i = sscanf(line, "%*d %*d %s %lu %*u %*u %*u %lu",
 				   dev_name, &rd_ios, &wr_ios);
