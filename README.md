@@ -146,7 +146,7 @@ can enter the following option to activate data collecting (either using cron or
 $ ./configure --enable-install-cron
 ```
 
-Enter `./configure --help` to display all possible options.  
+Enter `./configure --help` to display all possible options.
 Note: There is another way to configure sysstat instead of entering `./configure`:
 This is the **Interactive Configuration script** (_iconfig_) which will ask you
 for the value of the main sysstat variables and parameters.

@@ -379,7 +379,7 @@ else
 fi
 AC_MSG_RESULT($SA_DIR)
 if test ! -d $SA_DIR; then
-   echo "INFO: Directory ${SA_DIR} will be created during installation stage." 
+   echo "INFO: Directory ${SA_DIR} will be created during installation stage."
 fi
 AC_SUBST(SA_DIR)
 
@@ -404,7 +404,7 @@ else
 fi
 AC_MSG_RESULT($SYSCONFIG_DIR)
 if test ! -d $SYSCONFIG_DIR; then
-   echo "INFO: Directory ${SYSCONFIG_DIR} will be created during installation stage." 
+   echo "INFO: Directory ${SYSCONFIG_DIR} will be created during installation stage."
 fi
 AC_SUBST(SYSCONFIG_DIR)
 
@@ -436,15 +436,15 @@ AC_MSG_RESULT($AUX_NLS)
 AC_CHECK_LIB(intl, gettext, LFINTL="-lintl")
 AC_SUBST(LFINTL)
 LACKING_GETTEXT="n"
-if test $AUX_NLS = "yes" &&  test x$MSGFMT != x"msgfmt"; then 
+if test $AUX_NLS = "yes" &&  test x$MSGFMT != x"msgfmt"; then
    echo "WARNING: msgfmt command not found!"
    LACKING_GETTEXT="y"
 fi
-if test $AUX_NLS = "yes" &&  test x$XGETTEXT != x"xgettext"; then 
+if test $AUX_NLS = "yes" &&  test x$XGETTEXT != x"xgettext"; then
    echo "WARNING: xgettext command not found!"
    LACKING_GETTEXT="y"
 fi
-if test $AUX_NLS = "yes" &&  test x$MSGMERGE != x"msgmerge"; then 
+if test $AUX_NLS = "yes" &&  test x$MSGMERGE != x"msgmerge"; then
    echo "WARNING: msgmerge command not found!"
    LACKING_GETTEXT="y"
 fi
@@ -475,7 +475,7 @@ AC_SUBST(LTO)
 
 # Data history to keep by sa2
 AC_MSG_CHECKING(number of daily data files to keep)
-AC_ARG_VAR([history],[number of daily data files to keep (default value is 7)]) 
+AC_ARG_VAR([history],[number of daily data files to keep (default value is 7)])
 if test x$history = x""; then
    HISTORY=7
 else
@@ -521,9 +521,9 @@ if test x$man_group = x""; then
    AC_MSG_RESULT($MAN_GROUP)
 else
    grep ^$man_group: /etc/group >/dev/null 2>&1
-   if test $? = 1; then 
+   if test $? = 1; then
       MAN_GROUP=$GRP
-      AC_MSG_RESULT($MAN_GROUP) 
+      AC_MSG_RESULT($MAN_GROUP)
       echo "WARNING: Group ${man_group} not found: Using ${GRP} instead"
    else
       MAN_GROUP=$man_group
@@ -579,14 +579,14 @@ AC_SUBST(CLEAN_SA_DIR)
 
 # Start crontab
 AC_MSG_CHECKING(whether cron should start sar automatically)
-AC_ARG_ENABLE(install-cron, 
+AC_ARG_ENABLE(install-cron,
 	      AC_HELP_STRING([--enable-install-cron],
 			     [install a crontab to start sar]),
 			     INSTALL_CRON=$enableval,INSTALL_CRON=n)
 if test $INSTALL_CRON != "yes"; then
    INSTALL_CRON=n
    AUX_CRON=no
-else 
+else
    INSTALL_CRON=y
    AUX_CRON=yes
 fi
@@ -595,7 +595,7 @@ AC_SUBST(INSTALL_CRON)
 
 # Crontab owner
 CUSR="root"
-if test $INSTALL_CRON = "y"; then 
+if test $INSTALL_CRON = "y"; then
    AC_MSG_CHECKING(crontab owner)
    AC_ARG_VAR([cron_owner],[crontab owner])
    if test x$cron_owner = x""; then
@@ -607,17 +607,17 @@ if test $INSTALL_CRON = "y"; then
          CRON_OWNER=$CUSR;
          AC_MSG_RESULT($CRON_OWNER)
          echo "WARNING: User ${cron_owner} not found: Using ${CUSR} instead."
-      else 
+      else
          CRON_OWNER=$cron_owner
          AC_MSG_RESULT($CRON_OWNER)
       fi
    fi
    echo "INFO: Crontab for ${CRON_OWNER} will be saved in current directory if necessary"
-   if test $CRON_OWNER = "root"; then 
+   if test $CRON_OWNER = "root"; then
       SU_C_OWNER=""
       QUOTE=""
       REM_CHOWN="# REM_CHOWN"
-   else 
+   else
       SU_C_OWNER="su $CRON_OWNER -c "
       QUOTE=\"
       # " (ignore this line)
@@ -653,14 +653,14 @@ if test $INSTALL_CRON = "y"; then
 
 #  Check whether sadc should collect all possible activities
    AC_MSG_CHECKING(whether sadc should collect all possible activities)
-   AC_ARG_ENABLE(collect-all, 
+   AC_ARG_ENABLE(collect-all,
 	         AC_HELP_STRING([--enable-collect-all],
 			        [collect all possible activities]),
 			        COLLECT_ALL=$enableval,COLLECT_ALL=n)
    if test $COLLECT_ALL != "yes"; then
       COLLECT_ALL=""
       AUX_COLL=no
-   else 
+   else
       COLLECT_ALL="-S XALL"
       AUX_COLL=yes
    fi
@@ -731,7 +731,7 @@ AC_SUBST(mandir)
 
 # Check whether debug mode should be activated
 AC_MSG_CHECKING(whether debug mode should be activated)
-AC_ARG_ENABLE(debuginfo, 
+AC_ARG_ENABLE(debuginfo,
 	      AC_HELP_STRING([--enable-debuginfo],
 			     [enable debug output (--debuginfo option)]),
 			     WITH_DEBUG=yes ; DFLAGS="$DFLAGS -DDEBUG" , WITH_DEBUG=no)

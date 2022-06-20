@@ -398,7 +398,7 @@ set sag_latest_file ""
 # sar switches as names for object-instances (final and current)
 set  prog_swtch [list b B q r R S u v w W]
 
-# maximal and current values for each graph indexed by sar switch i.e. for cpu 
+# maximal and current values for each graph indexed by sar switch i.e. for cpu
 # is index u not -u
 
 foreach l $prog_swtch {
