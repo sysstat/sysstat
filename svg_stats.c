@@ -174,7 +174,7 @@ void save_extrema(unsigned int types_nr[], void *cs, void *ps, unsigned long lon
  ***************************************************************************
  * Find the min and max values of all the graphs that will be drawn in the
  * same view. The graphs have their own min and max values in
- * spmin[pos...pos+n-1] and spmax[pos...pos+n-1]. 
+ * spmin[pos...pos+n-1] and spmax[pos...pos+n-1].
  *
  * IN:
  * @pos		Position in array for the first graph extrema value.

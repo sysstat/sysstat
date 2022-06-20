@@ -34,7 +34,7 @@ The
 .B tapestat
 report provides statistics for each tape drive connected to the system.
 The following data are displayed:
-.IP r/s 
+.IP r/s
 The number of reads issued expressed as the number per second averaged over the interval.
 .IP w/s
 The number of writes issued expressed as the number per second averaged over the interval.
@@ -107,7 +107,7 @@ It is possible for a percentage value (read, write, or other) to be greater than
 command will never show a percentage value more than 999).
 If rewinding a tape takes 40 seconds where the interval time is 5 seconds the %Oa value
 would show as 0 in the intervals before the rewind completed and then show as approximately
-800 percent when the rewind completes. 
+800 percent when the rewind completes.
 
 Similar values will be observed for %Rd and %Wr if a tape drive stops reading or writing
 and then restarts (that is it stopped streaming). In such a case you may see the r/s or w/s drop to zero and the %Rd/%Wr value could be higher than 100 when reading or writing continues

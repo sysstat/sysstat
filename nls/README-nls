@@ -36,7 +36,7 @@ If you use the (Tab) C shell, you would have entered:
 Here is a complete example with iostat:
 
 $ export LANG=en_US
-$ iostat -V 
+$ iostat -V
 sysstat version 5.1.4
 (C) Sebastien Godard
 Usage: iostat [ options... ] [ <interval> [ <count> ] ]
