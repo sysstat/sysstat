@@ -34,7 +34,7 @@ file. This file must have been created by a version of
 uses the standard system activity daily data file.
 It is also possible to enter
 .BR "-1" ", " "-2 " "etc. as an argument to " "sadf"
-to display data of that days ago. For example, 
+to display data of that days ago. For example,
 .B -1
 will point at the standard system activity file of yesterday.
 .PP

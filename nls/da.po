@@ -267,7 +267,7 @@ msgstr ""
 "\t\tStatistik for afbrydelser [A_IRQ]\n"
 
 # clock ? tog fra KDE ksysguard (klok)
-# øjeblikkelig klokfrekvens / "CPU-klokfrevens lige nu:"/"CPUens 
+# øjeblikkelig klokfrekvens / "CPU-klokfrevens lige nu:"/"CPUens
 # klokfrekvens lige nu
 # spændingsinddata eller spændingsindgange.
 #: sar.c:155
