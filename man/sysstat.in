@@ -68,7 +68,7 @@ removed. And for a
 .RB "To figure out how a " "HISTORY"
 of 28 is applied in practice, we need to consider that the
 .BR "sa2 " "script that issues the " "find " "command to remove the"
-old files typically runs just before mid-night on a given system, and since
+old files typically runs just before midnight on a given system, and since
 the first record from
 .B sadc
 can also be written to the previous day's data file

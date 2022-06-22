@@ -107,6 +107,7 @@ static char *ioc_conv(int radix, int nozero, const char *syms,
 	}
 
 	while (val > 0) {
+
 		*--p = syms[j = val % radix];
 		val /= radix;
 		if (nozero && (j == 0)) {

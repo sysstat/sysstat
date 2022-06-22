@@ -66,7 +66,7 @@
 #4:0:0:NODEV
 #5:0:0:NODEV
 #6:0:0:NODEV
-7:loop:*:0:d:256:*:1:Loop Devices 
+7:loop:*:0:d:256:*:1:Loop Devices
 
 8:sd:*:0:a:16:*:16:SCSI - Controller %d
 65:8:1:

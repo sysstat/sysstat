@@ -290,6 +290,7 @@ void fwd_irq_values(struct stats_irqcpu *st_ic[], unsigned int c,
 	int j;
 
 	while (c < last) {
+
 		st_irq_i = st_irq[curr] + c + 1;
 		st_irq_j = st_irq[!curr] + c + 1;
 		st_irq_i->irq_nr = st_irq_j->irq_nr;
@@ -1856,8 +1857,10 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 		 * Parse header line to see which CPUs are online
 		 */
 		while (fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) {
+
 			next = line;
 			while (((cp = strstr(next, "CPU")) != NULL) && (index < cpu_nr)) {
+
 				cpu = strtol(cp + 3, &next, 10);
 				if (cpu >= cpu_nr)
 					break;

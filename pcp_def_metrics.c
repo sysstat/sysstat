@@ -60,6 +60,7 @@ void pcp_def_percpu_int_metrics(struct activity *a, int cpu)
 
 	/* Create instance for each interrupt for the current CPU */
 	while (list != NULL) {
+
 		snprintf(buf, sizeof(buf), "%s::cpu%d", list->item_name, cpu);
 		buf[sizeof(buf) - 1] = '\0';
 
@@ -319,6 +320,7 @@ void pcp_def_irq_metrics(struct activity *a)
 
 	/* Create instances and metrics for each interrupts for CPU "all" */
 	while (list != NULL) {
+
 		if (!strcmp(list->item_name, K_LOWERSUM)) {
 			/*
 			 * Create metric for interrupt "sum" for CPU "all".

@@ -1,7 +1,7 @@
 /*
  * tapestat: report tape statistics
  * (C) 2015 Hewlett-Packard Development Company, L.P.
- * 
+ *
  * Initial revision by Shane M. SEYMOUR (shane.seymour <at> hpe.com)
  * Modified for sysstat by Sebastien GODARD (sysstat <at> orange.fr)
  */
