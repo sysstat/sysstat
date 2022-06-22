@@ -6,7 +6,7 @@ sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.BI "] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -S { " "keyword" "[,...] | ALL | XALL } ] ["
+.BI "] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -O ] [ -S { " "keyword" "[,...] | ALL | XALL } ] ["
 .IB "interval " "[ " "count " "] ] [ " "outfile " "]"
 
 .SH DESCRIPTION
@@ -149,6 +149,10 @@ being ignored.
 .TP
 .B -V
 Print version number then exit.
+.TP
+.B -O [PCP | PCP_ONLY]
+Write data to different formats.
+PCP: Write to both PCP and native formats. PCP_ONLY: Write to PCP format only.
 
 .SH ENVIRONMENT
 .RB "The " "sadc"
