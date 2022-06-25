@@ -6,7 +6,7 @@ sadc \- System activity data collector.
 .SH SYNOPSIS
 .B @SA_LIB_DIR@/sadc [ -C
 .I comment
-.BI "] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -O ] [ -S { " "keyword" "[,...] | ALL | XALL } ] ["
+.BI "] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -O PCP | PCP_ONLY ] [ -S { " "keyword" "[,...] | ALL | XALL } ] ["
 .IB "interval " "[ " "count " "] ] [ " "outfile " "]"
 
 .SH DESCRIPTION
@@ -113,6 +113,20 @@ might still be running when
 starts a new one. Without locking, this situation can result in a corrupted system
 activity file.
 .TP
+.B -O [ PCP | PCP_ONLY ]
+Specify the format of the binary output file used by
+.BR "sadc "
+to save its data.
+The 
+.BR "PCP "
+keyword indicates that 
+.BR "sadc "
+will write to both PCP (from the Performance Co-Pilot project) and sysstat native formats. The
+.BR "PCP_ONLY "
+indicates that
+.BR "sadc"
+will write to PCP format only.
+.TP
 .BI "-S { " "keyword" "[,...] | ALL | XALL }"
 Possible keywords are
 .BR "DISK" ", " "INT" ", " "IPV6" ", " "POWER" ", " "SNMP" ", " "XDISK" ", " "ALL " "and " "XALL" "."
@@ -150,9 +164,6 @@ being ignored.
 .B -V
 Print version number then exit.
 .TP
-.B -O [PCP | PCP_ONLY]
-Write data to different formats.
-PCP: Write to both PCP and native formats. PCP_ONLY: Write to PCP format only.
 
 .SH ENVIRONMENT
 .RB "The " "sadc"
