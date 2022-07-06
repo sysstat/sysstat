@@ -338,7 +338,7 @@ sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
 sadc: LFLAGS += $(LFSENSORS)
 
-sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o librdstats.a librdsensors.a
+sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o librdstats.a librdsensors.a libsyscom.a
 
 sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
