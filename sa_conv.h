@@ -11,6 +11,8 @@
  * 2171: v9.1.6 -> 10.2.1
  * 2173: 10.3.1 -> 11.6.x
  */
+#define UTSNAME_LEN_2171	65
+
 struct file_header_2171 {
 	unsigned long sa_ust_time	__attribute__ ((aligned (8)));
 	unsigned int sa_act_nr		__attribute__ ((aligned (8)));
@@ -18,16 +20,18 @@ struct file_header_2171 {
 	unsigned char sa_month;
 	unsigned char sa_year;
 	char sa_sizeof_long;
-	char sa_sysname[UTSNAME_LEN];
-	char sa_nodename[UTSNAME_LEN];
-	char sa_release[UTSNAME_LEN];
-	char sa_machine[UTSNAME_LEN];
+	char sa_sysname[UTSNAME_LEN_2171];
+	char sa_nodename[UTSNAME_LEN_2171];
+	char sa_release[UTSNAME_LEN_2171];
+	char sa_machine[UTSNAME_LEN_2171];
 };
 
 #define FILE_HEADER_SIZE_2171	(sizeof(struct file_header_2171))
 #define FILE_HEADER_2171_ULL_NR	0
 #define FILE_HEADER_2171_UL_NR	1
 #define FILE_HEADER_2171_U_NR	1
+
+#define UTSNAME_LEN_2173	65
 
 struct file_header_2173 {
 	unsigned long sa_ust_time	__attribute__ ((aligned (8)));
@@ -38,10 +42,10 @@ struct file_header_2173 {
 	unsigned char sa_month;
 	unsigned char sa_year;
 	char sa_sizeof_long;
-	char sa_sysname[UTSNAME_LEN];
-	char sa_nodename[UTSNAME_LEN];
-	char sa_release[UTSNAME_LEN];
-	char sa_machine[UTSNAME_LEN];
+	char sa_sysname[UTSNAME_LEN_2173];
+	char sa_nodename[UTSNAME_LEN_2173];
+	char sa_release[UTSNAME_LEN_2173];
+	char sa_machine[UTSNAME_LEN_2173];
 };
 
 #define FILE_HEADER_2173_ULL_NR	0
@@ -199,69 +203,79 @@ struct stats_disk_8b {
 };
 
 /* Structure stats_net_dev for ACTIVITY_MAGIC_BASE format */
+#define MAX_IFACE_LEN_8A	16
+
 struct stats_net_dev_8a {
-	unsigned long rx_packets		__attribute__ ((aligned (8)));
-	unsigned long tx_packets		__attribute__ ((aligned (8)));
-	unsigned long rx_bytes			__attribute__ ((aligned (8)));
-	unsigned long tx_bytes			__attribute__ ((aligned (8)));
-	unsigned long rx_compressed		__attribute__ ((aligned (8)));
-	unsigned long tx_compressed		__attribute__ ((aligned (8)));
-	unsigned long multicast			__attribute__ ((aligned (8)));
-	char          interface[MAX_IFACE_LEN]	__attribute__ ((aligned (8)));
+	unsigned long rx_packets			__attribute__ ((aligned (8)));
+	unsigned long tx_packets			__attribute__ ((aligned (8)));
+	unsigned long rx_bytes				__attribute__ ((aligned (8)));
+	unsigned long tx_bytes				__attribute__ ((aligned (8)));
+	unsigned long rx_compressed			__attribute__ ((aligned (8)));
+	unsigned long tx_compressed			__attribute__ ((aligned (8)));
+	unsigned long multicast				__attribute__ ((aligned (8)));
+	char	      interface[MAX_IFACE_LEN_8A]	__attribute__ ((aligned (8)));
 };
 
 /* Structure stats_net_dev for ACTIVITY_MAGIC_BASE + 1 format */
+#define MAX_IFACE_LEN_8B	16
+
 struct stats_net_dev_8b {
-	unsigned long long rx_packets		__attribute__ ((aligned (16)));
-	unsigned long long tx_packets		__attribute__ ((aligned (16)));
-	unsigned long long rx_bytes		__attribute__ ((aligned (16)));
-	unsigned long long tx_bytes		__attribute__ ((aligned (16)));
-	unsigned long long rx_compressed	__attribute__ ((aligned (16)));
-	unsigned long long tx_compressed	__attribute__ ((aligned (16)));
-	unsigned long long multicast		__attribute__ ((aligned (16)));
-	char          interface[MAX_IFACE_LEN]	__attribute__ ((aligned (16)));
+	unsigned long long rx_packets			__attribute__ ((aligned (16)));
+	unsigned long long tx_packets			__attribute__ ((aligned (16)));
+	unsigned long long rx_bytes			__attribute__ ((aligned (16)));
+	unsigned long long tx_bytes			__attribute__ ((aligned (16)));
+	unsigned long long rx_compressed		__attribute__ ((aligned (16)));
+	unsigned long long tx_compressed		__attribute__ ((aligned (16)));
+	unsigned long long multicast			__attribute__ ((aligned (16)));
+	char		   interface[MAX_IFACE_LEN_8B]	__attribute__ ((aligned (16)));
 };
 
 /* Structure stats_net_dev for ACTIVITY_MAGIC_BASE + 2 format */
+#define MAX_IFACE_LEN_8C	16
+
 struct stats_net_dev_8c {
-	unsigned long long rx_packets		__attribute__ ((aligned (16)));
-	unsigned long long tx_packets		__attribute__ ((aligned (16)));
-	unsigned long long rx_bytes		__attribute__ ((aligned (16)));
-	unsigned long long tx_bytes		__attribute__ ((aligned (16)));
-	unsigned long long rx_compressed	__attribute__ ((aligned (16)));
-	unsigned long long tx_compressed	__attribute__ ((aligned (16)));
-	unsigned long long multicast		__attribute__ ((aligned (16)));
-	unsigned int       speed		__attribute__ ((aligned (16)));
-	char 	 interface[MAX_IFACE_LEN]	__attribute__ ((aligned (4)));
-	char	 duplex;
+	unsigned long long rx_packets			__attribute__ ((aligned (16)));
+	unsigned long long tx_packets			__attribute__ ((aligned (16)));
+	unsigned long long rx_bytes			__attribute__ ((aligned (16)));
+	unsigned long long tx_bytes			__attribute__ ((aligned (16)));
+	unsigned long long rx_compressed		__attribute__ ((aligned (16)));
+	unsigned long long tx_compressed		__attribute__ ((aligned (16)));
+	unsigned long long multicast			__attribute__ ((aligned (16)));
+	unsigned int	   speed			__attribute__ ((aligned (16)));
+	char		   interface[MAX_IFACE_LEN_8C]	__attribute__ ((aligned (4)));
+	char		   duplex;
 };
 
 /* Structure stats_net_edev for ACTIVITY_MAGIC_BASE format */
+#define MAX_IFACE_LEN_8A	16
+
 struct stats_net_edev_8a {
-	unsigned long collisions		__attribute__ ((aligned (8)));
-	unsigned long rx_errors			__attribute__ ((aligned (8)));
-	unsigned long tx_errors			__attribute__ ((aligned (8)));
-	unsigned long rx_dropped		__attribute__ ((aligned (8)));
-	unsigned long tx_dropped		__attribute__ ((aligned (8)));
-	unsigned long rx_fifo_errors		__attribute__ ((aligned (8)));
-	unsigned long tx_fifo_errors		__attribute__ ((aligned (8)));
-	unsigned long rx_frame_errors		__attribute__ ((aligned (8)));
-	unsigned long tx_carrier_errors		__attribute__ ((aligned (8)));
-	char          interface[MAX_IFACE_LEN]	__attribute__ ((aligned (8)));
+	unsigned long collisions			__attribute__ ((aligned (8)));
+	unsigned long rx_errors				__attribute__ ((aligned (8)));
+	unsigned long tx_errors				__attribute__ ((aligned (8)));
+	unsigned long rx_dropped			__attribute__ ((aligned (8)));
+	unsigned long tx_dropped			__attribute__ ((aligned (8)));
+	unsigned long rx_fifo_errors			__attribute__ ((aligned (8)));
+	unsigned long tx_fifo_errors			__attribute__ ((aligned (8)));
+	unsigned long rx_frame_errors			__attribute__ ((aligned (8)));
+	unsigned long tx_carrier_errors			__attribute__ ((aligned (8)));
+	char	      interface[MAX_IFACE_LEN_8A]	__attribute__ ((aligned (8)));
 };
 
 /* Structure stats_net_edev for ACTIVITY_MAGIC_BASE + 1 format */
+#define MAX_IFACE_LEN_8B	16
+
 struct stats_net_edev_8b {
-	unsigned long long collisions		__attribute__ ((aligned (16)));
-	unsigned long long rx_errors		__attribute__ ((aligned (16)));
-	unsigned long long tx_errors		__attribute__ ((aligned (16)));
-	unsigned long long rx_dropped		__attribute__ ((aligned (16)));
-	unsigned long long tx_dropped		__attribute__ ((aligned (16)));
-	unsigned long long rx_fifo_errors	__attribute__ ((aligned (16)));
-	unsigned long long tx_fifo_errors	__attribute__ ((aligned (16)));
-	unsigned long long rx_frame_errors	__attribute__ ((aligned (16)));
-	unsigned long long tx_carrier_errors	__attribute__ ((aligned (16)));
-	char	      interface[MAX_IFACE_LEN]	__attribute__ ((aligned (16)));
+	unsigned long long collisions			__attribute__ ((aligned (16)));
+	unsigned long long rx_errors			__attribute__ ((aligned (16)));
+	unsigned long long tx_errors			__attribute__ ((aligned (16)));
+	unsigned long long rx_dropped			__attribute__ ((aligned (16)));
+	unsigned long long tx_dropped			__attribute__ ((aligned (16)));
+	unsigned long long rx_fifo_errors		__attribute__ ((aligned (16)));
+	unsigned long long tx_fifo_errors		__attribute__ ((aligned (16)));
+	unsigned long long rx_frame_errors		__attribute__ ((aligned (16)));
+	unsigned long long tx_carrier_errors		__attribute__ ((aligned (16)));
+	char		   interface[MAX_IFACE_LEN_8B]	__attribute__ ((aligned (16)));
 };
 
 /* Structure stats_net_ip for ACTIVITY_MAGIC_BASE format */
@@ -383,15 +397,17 @@ struct stats_pwr_wghfreq_8a {
 };
 
 /* Structure stats_filesystem for ACTIVITY_MAGIC_BASE */
+#define MAX_FS_LEN_8A	128
+
 struct stats_filesystem_8a {
-	unsigned long long f_blocks		__attribute__ ((aligned (16)));
-	unsigned long long f_bfree		__attribute__ ((aligned (16)));
-	unsigned long long f_bavail		__attribute__ ((aligned (16)));
-	unsigned long long f_files		__attribute__ ((aligned (16)));
-	unsigned long long f_ffree		__attribute__ ((aligned (16)));
-	char 		   fs_name[MAX_FS_LEN]	__attribute__ ((aligned (16)));
+	unsigned long long f_blocks			__attribute__ ((aligned (16)));
+	unsigned long long f_bfree			__attribute__ ((aligned (16)));
+	unsigned long long f_bavail			__attribute__ ((aligned (16)));
+	unsigned long long f_files			__attribute__ ((aligned (16)));
+	unsigned long long f_ffree			__attribute__ ((aligned (16)));
+	char 		   fs_name[MAX_FS_LEN_8A]	__attribute__ ((aligned (16)));
 #define STATS_FILESYSTEM_8A_1_SIZE	160
-	char 		   mountp[MAX_FS_LEN];
+	char 		   mountp[MAX_FS_LEN_8A];
 };
 
 #endif  /* _SA_CONV_H */
