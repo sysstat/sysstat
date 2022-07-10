@@ -221,14 +221,14 @@ void upgrade_file_header(void *buffer, struct file_header *file_hdr, int previou
 		file_hdr->sa_day = f_hdr_2173->sa_day;
 		file_hdr->sa_month = f_hdr_2173->sa_month;
 		file_hdr->sa_sizeof_long = f_hdr_2173->sa_sizeof_long;
-		strncpy(file_hdr->sa_sysname, f_hdr_2173->sa_sysname, UTSNAME_LEN);
-		file_hdr->sa_sysname[UTSNAME_LEN - 1] = '\0';
-		strncpy(file_hdr->sa_nodename, f_hdr_2173->sa_nodename, UTSNAME_LEN);
-		file_hdr->sa_nodename[UTSNAME_LEN - 1] = '\0';
-		strncpy(file_hdr->sa_release, f_hdr_2173->sa_release, UTSNAME_LEN);
-		file_hdr->sa_release[UTSNAME_LEN - 1] = '\0';
-		strncpy(file_hdr->sa_machine, f_hdr_2173->sa_machine, UTSNAME_LEN);
-		file_hdr->sa_machine[UTSNAME_LEN - 1] = '\0';
+		strncpy(file_hdr->sa_sysname, f_hdr_2173->sa_sysname, sizeof(file_hdr->sa_sysname));
+		file_hdr->sa_sysname[sizeof(file_hdr->sa_sysname) - 1] = '\0';
+		strncpy(file_hdr->sa_nodename, f_hdr_2173->sa_nodename, sizeof(file_hdr->sa_nodename));
+		file_hdr->sa_nodename[sizeof(file_hdr->sa_nodename) - 1] = '\0';
+		strncpy(file_hdr->sa_release, f_hdr_2173->sa_release, sizeof(file_hdr->sa_release));
+		file_hdr->sa_release[sizeof(file_hdr->sa_release) - 1] = '\0';
+		strncpy(file_hdr->sa_machine, f_hdr_2173->sa_machine, sizeof(file_hdr->sa_machine));
+		file_hdr->sa_machine[sizeof(file_hdr->sa_machine) - 1] = '\0';
 
 		*vol_act_nr = f_hdr_2173->sa_vol_act_nr;
 	}
