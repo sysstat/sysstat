@@ -637,6 +637,8 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 /*
  ***************************************************************************
  * Get number of rows for current window.
+ * If stdout is not a terminal then use the value given by environment
+ * variable S_REPEAT_HEADER if existent.
  *
  * RETURNS:
  * Number of rows.
@@ -645,15 +647,26 @@ int print_gal_header(struct tm *rectime, char *sysname, char *release,
 int get_win_height(void)
 {
 	struct winsize win;
+	char *e;
 	/*
 	 * This default value will be used whenever STDOUT
-	 * is redirected to a pipe or a file
+	 * is redirected to a pipe or a file and S_REPEAT_HEADER variable is not set
 	 */
 	int rows = 3600 * 24;
 
+	/* Get number of lines of current terminal */
 	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &win) != -1) {
 		if (win.ws_row > 2) {
 			rows = win.ws_row - 2;
+		}
+	}
+	/* STDOUT is not a terminal. Look for S_REPEAT_HEADER variable's value instead */
+	else if ((e = __getenv(ENV_REPEAT_HEADER)) != NULL) {
+		if (strspn(e, DIGITS) == strlen(e)) {
+			int v = atol(e);
+			if (v > 0) {
+				rows = v;
+			}
 		}
 	}
 	return rows;
