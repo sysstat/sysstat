@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "MARCH 2022" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "AUGUST 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1619,6 +1619,12 @@ SGR substring for restart messages.
 .B Z=
 SGR substring for zero values.
 .RE
+.TP
+.B S_REPEAT_HEADER
+This variable contains the maximum number of lines after which a header has to be
+displayed by
+.B sar
+when the output is not a terminal.
 .TP
 .B S_TIME_DEF_TIME
 If this variable exists and its value is
