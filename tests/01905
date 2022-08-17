@@ -1,0 +1,1 @@
+LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -T -- -uw | grep ":20:" > tests/out.sadf-T-tz.tmp && diff -u tests/expected.sadf-T-tz tests/out.sadf-T-tz.tmp

@@ -61,6 +61,9 @@ NOTES:
 -----	Creating 32-bit datafile data32-ssr.tmp [.. / 12] containing all statistics, including sensors ones
 00090	2 x TZ=GMT tests/32bits/sadc32 --unix_time=1555593609 -S XALL tests/data32-ssr.tmp 1 1 >/dev/null
 
+-----	Creating file in Europe/Paris timezone data-tz.tmp [... / 123]
+00100	3 x TZ="Europe/Paris" ./sadc --unix_time=xxxxxxxxx tests/data-tz.tmp 1 1 >/dev/null
+
 =====	sar: Reading data-new.tmp
 00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data-new.tmp > tests/out.sar-u.tmp
 00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp
@@ -324,6 +327,11 @@ NOTES:
 01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I --int=19,NMI -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 01820	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -- -d --dev=sds -n DEV,EDEV --iface=wlp5s0 > tests/out.sadf-disc.tmp
 01825	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -O debug -- -d --dev=sdq,sdr -n DEV,EDEV --iface=virbr0,virbr0-1 > tests/out2.sadf-disc.tmp
+
+=====	Read file in different timezones
+01900	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -- -uw | grep ":20:" > tests/out.sadf-tz.tmp
+01905	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -T -- -uw | grep ":20:" > tests/out.sadf-T-tz.tmp
+01908	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -t -- -uw > tests/out.sadf-t-tz.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
