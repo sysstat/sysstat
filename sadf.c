@@ -927,6 +927,9 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	parm.restart = TRUE;
 	parm.file_hdr = &file_hdr;
 	parm.nr_act_dispd = nr_act_dispd;
+	parm.hour = record_hdr[2].hour;
+	parm.minute = record_hdr[2].minute;
+	parm.second = record_hdr[2].second;
 
 	*cnt  = count;
 	reset_cd = 1;

@@ -365,6 +365,9 @@ struct svg_parm {
 	int graph_no;				/* Total number of views already displayed */
 	int restart;				/* TRUE if we have just met a RESTART record */
 	int nr_act_dispd;			/* Number of activities that will be displayed */
+	char hour;				/* Hour, minute and second (expressed in the */
+	char minute;				/* locale of the datafile creator) for first */
+	char second;				/* sample */
 	struct file_header *file_hdr;		/* Pointer on file header structure */
 };
 

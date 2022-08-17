@@ -550,6 +550,34 @@ unsigned int pwr10(int n)
 
 /*
  ***************************************************************************
+ * Compute timestamp for next graduation on the X axis.
+ *
+ * IN:
+ * @stamp	Record header with timestamp for current graduation.
+ * @xpos	Number of seconds between two consecutive graduations.
+ *
+ * OUT:
+ * @stamp	Record header with timestamp for next graduation that will
+ *		be displayed on the X axis of the graph.
+ ***************************************************************************
+ */
+void compute_next_graduation_timestamp(struct record_header *stamp, long int xpos)
+{
+	stamp->ust_time += xpos;
+
+	if (PRINT_TRUE_TIME(flags)) {
+		/* Lines below useful only when option -t used */
+		stamp->second += xpos;
+		stamp->minute += stamp->second / 60;
+		stamp->second %= 60;
+		stamp->hour += stamp->minute / 60;
+		stamp->minute %= 60;
+		stamp->hour %= 24;
+	}
+}
+
+/*
+ ***************************************************************************
  * Autoscale graphs of a given view.
  *
  * IN:
@@ -655,7 +683,11 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 	char cur_time[TIMESTAMP_LEN];
 	int j;
 
-	stamp.ust_time = svg_p->ust_time_ref; /* Only ust_time field needs to be set. TRUE_TIME not allowed */
+	stamp.ust_time = svg_p->ust_time_ref;
+	/* Also set hour, minute and second in case TRUE_TIME (option -t) requested by user */
+	stamp.hour = svg_p->hour;
+	stamp.minute = svg_p->minute;
+	stamp.second = svg_p->second;
 
 	/* Print marker in debug mode */
 	if (DISPLAY_DEBUG_MODE(flags)) {
@@ -701,7 +733,9 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 			       svg_colors[palette][SVG_COL_AXIS_IDX],
 			       (long) (xpos * j * xfactor), cur_time);
 		}
-		stamp.ust_time += xpos;
+
+		/* Compute timestamp for next graduation */
+		compute_next_graduation_timestamp(&stamp, xpos);
 	}
 
 	if (!PRINT_LOCAL_TIME(flags)) {
