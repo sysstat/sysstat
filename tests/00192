@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT S_REPEAT_HEADER=2 ./sar --getenv -f tests/data-new.tmp > tests/out.sar-rep_hdr.tmp && diff -u tests/expected.sar-rep_hdr tests/out.sar-rep_hdr.tmp
