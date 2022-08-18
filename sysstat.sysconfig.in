@@ -39,3 +39,8 @@ DELAY_RANGE=@DELAY_RANGE@
 # the permissions on the files (e.g. use 0027 to adhere to more strict
 # security standards).
 UMASK=0022
+
+# The sa2 script uses the value below to set environment variable S_REPEAT_HEADER
+# which is used by sar as the maximum number of lines after which a header has to
+# be displayed (see sar(1) manual page).
+#REPEAT_HEADER=25

@@ -61,7 +61,7 @@ fi
 cd ${ENDIR}
 if [ x${REPORTS} != xfalse ]
 then
-	${ENDIR}/sar $* -f ${DFILE} > ${RPT}
+	S_REPEAT_HEADER=${REPEAT_HEADER} ${ENDIR}/sar $* -f ${DFILE} > ${RPT}
 fi
 
 SAFILES_REGEX='/sar?[0-9]{2,8}(\.(Z|gz|bz2|xz|lz|lzo))?$'
