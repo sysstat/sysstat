@@ -2,6 +2,23 @@
 #@(#) Configuration script for sysstat
 # (C) 2000-2022 Sebastien GODARD (sysstat <at> orange.fr)
 
+if [ "$1" = "xlocal" ]
+then
+	echo
+	echo -n "./configure sa_lib_dir=. sa_dir=. conf_dir=. conf_file=sysstat.sysconfig"
+	echo
+	./configure sa_lib_dir=. sa_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig
+	exit
+elif [ "$1" = "local" ]
+then
+	# This mode is just to make sure that sar will call sadc located in current directory
+	echo
+	echo -n "./configure sa_lib_dir=."
+	echo
+	./configure sa_lib_dir=.
+	exit
+fi
+
 ASK="sh build/Ask.sh"
 
 echo ; echo
