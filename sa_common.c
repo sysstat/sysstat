@@ -677,6 +677,12 @@ int decode_epoch(char timestamp[], struct tstamp *tse)
  */
 int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
 {
+
+	if (tse->use_epoch){
+		time_t rectime_epoch = mktime(rectime);
+		return rectime_epoch - tse->epoch;
+	}
+
 	int tm_hour = rectime->tm_hour;
 
 	if (cross_day) {
