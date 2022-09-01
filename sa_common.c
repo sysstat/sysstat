@@ -645,6 +645,35 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
 
 /*
  ***************************************************************************
+ * Use time stamp to fill tstamp structure.
+ *
+ * IN:
+ * @timestamp	Timestamp to decode (format: seconds since Januray 1st 1970 00:00:00 UTC).
+ *
+ * OUT:
+ * @tse		Structure containing the decoded timestamp.
+ *
+ * RETURNS:
+ * 0
+ ***************************************************************************
+ */
+int decode_epoch(char timestamp[], struct tstamp *tse)
+{
+	time_t epoch_time = atol(timestamp);
+	tse->epoch = epoch_time;
+	tse->use_epoch = TRUE;
+
+	struct tm *given_time = localtime(&epoch_time);
+	tse->tm_sec  = given_time->tm_sec;
+	tse->tm_min  = given_time->tm_min;
+	tse->tm_hour = given_time->tm_hour;
+	tse->use = TRUE;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Compare two timestamps.
  *
  * IN:
@@ -699,7 +728,7 @@ int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
 int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 		    const char *def_timestamp)
 {
-	char timestamp[9];
+	char timestamp[11];
 
 	if (argv[++(*opt)]) {
 		switch (strlen(argv[*opt])) {
@@ -712,6 +741,12 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 
 			case 8:
 				strncpy(timestamp, argv[(*opt)++], 8);
+				break;
+
+			case 10:
+				strncpy(timestamp, argv[(*opt)++], 10);
+				timestamp[10] = '\0';
+				return decode_epoch(timestamp, tse);
 				break;
 
 			default:

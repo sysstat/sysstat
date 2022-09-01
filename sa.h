@@ -1358,6 +1358,8 @@ struct tstamp {
 	int tm_min;
 	int tm_hour;
 	int use;
+	int use_epoch;
+	time_t epoch;
 };
 
 /* Structure for items in list */
