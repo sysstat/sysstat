@@ -628,6 +628,7 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
 		return 1;
 
 	tse->use = TRUE;
+	tse->use_epoch = FALSE;
 
 	return 0;
 }
@@ -637,18 +638,23 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
  * Use time stamp to fill tstamp structure.
  *
  * IN:
- * @timestamp	Timestamp to decode (format: seconds since Januray 1st 1970 00:00:00 UTC).
+ * @epoch	Epoch time to decode (format: seconds since Januray 1st 1970 00:00:00 UTC).
  *
  * OUT:
- * @tse		Structure containing the decoded timestamp.
+ * @tse		Structure containing the decoded epoch time.
  *
  * RETURNS:
- * 0
+ * 0 if the epoch time has been successfully decoded, 1 otherwise.
  ***************************************************************************
  */
-int decode_epoch(char timestamp[], struct tstamp *tse)
+int decode_epoch(char epoch[], struct tstamp *tse)
 {
-	time_t epoch_time = atol(timestamp);
+	time_t epoch_time = atol(epoch);
+
+	if (epoch_time <= 0){
+		return 1;
+	}
+
 	tse->epoch = epoch_time;
 	tse->use_epoch = TRUE;
 
@@ -2893,7 +2899,6 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 	time_t t = record_hdr->ust_time;
 	int rc = 0;
 
-	
 
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
 		/*
