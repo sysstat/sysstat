@@ -679,7 +679,12 @@ int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
 {
 
 	if (tse->use_epoch){
-		time_t rectime_epoch = mktime(rectime);
+		time_t rectime_epoch;
+		if (rectime->tm_gmtoff > 0){
+			rectime_epoch = mktime(rectime);
+		} else {
+			rectime_epoch = timegm(rectime);
+		}
 		return rectime_epoch - tse->epoch;
 	}
 
@@ -2888,11 +2893,7 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 	time_t t = record_hdr->ust_time;
 	int rc = 0;
 
-	/*
-	 * Fill generic rectime structure in local time.
-	 * Done so that we have some default values.
-	 */
-	ltm = localtime_r(&t, rectime);
+	
 
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
 		/*
@@ -2900,6 +2901,13 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 		 * (the user doesn't want local time nor time of file's creator).
 		 */
 		ltm = gmtime_r(&t, rectime);
+	} else {
+		/*
+		* Fill generic rectime structure in local time.
+		* Done so that we have some default values.
+		*/
+		ltm = localtime_r(&t, rectime);
+		rectime->tm_gmtoff = TRUE;
 	}
 
 	if (!ltm) {
