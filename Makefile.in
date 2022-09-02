@@ -97,7 +97,7 @@ endif
 ifndef CFLAGS
 CFLAGS = @CFLAGS@
 endif
-CFLAGS += -Wall -Wstrict-prototypes -pipe -O2
+CFLAGS += -Wall -Wstrict-prototypes -pipe -O2 -fno-tree-slp-vectorize
 
 ifndef DFLAGS
 DFLAGS = @DFLAGS@

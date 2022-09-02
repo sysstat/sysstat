@@ -17,6 +17,13 @@ then
 	echo
 	./configure sa_lib_dir=.
 	exit
+elif [ "$1" = "debug" ]
+then
+	echo
+	echo -n "./configure sa_lib_dir=. --enable-debuginfo --disable-stripping"
+	echo
+	./configure sa_lib_dir=. --enable-debuginfo --disable-stripping
+	exit
 fi
 
 ASK="sh build/Ask.sh"

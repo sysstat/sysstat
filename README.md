@@ -98,8 +98,7 @@ CentOS and Fedora systems call the collector process using a cron job in /etc/cr
 On recent versions, systemd is used instead of cron. You may need to enable and start the sysstat service:
 
 ```
-$ sudo systemctl enable sysstat
-$ sudo systemctl start sysstat
+$ sudo systemctl enable --now sysstat
 ```
 
 #### Install from Ubuntu
