@@ -740,8 +740,9 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 
 	if (!PRINT_LOCAL_TIME(flags)) {
 		printf("<text x=\"-10\" y=\"30\" style=\"fill: #%06x; stroke: none; font-size: 12px; "
-		       "text-anchor: end\">UTC</text>\n",
-		       svg_colors[palette][SVG_COL_INFO_IDX]);
+		       "text-anchor: end\">%s</text>\n",
+		       svg_colors[palette][SVG_COL_INFO_IDX],
+		       PRINT_TRUE_TIME(flags) ? svg_p->file_hdr->sa_tzname : "UTC");
 	}
 }
 
