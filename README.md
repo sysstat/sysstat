@@ -101,6 +101,15 @@ On recent versions, systemd is used instead of cron. You may need to enable and 
 $ sudo systemctl enable --now sysstat
 ```
 
+(or enter:
+
+```
+$ sudo systemctl enable sysstat
+$ sudo systemctl start sysstat
+```
+
+if option `--now` is not supported by your systemd version.)
+
 #### Install from Ubuntu
 
 Enter:
