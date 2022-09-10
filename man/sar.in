@@ -1650,10 +1650,10 @@ The timestamp will also be compliant with ISO 8601 format.
 .B sar -u 2 5
 Report CPU utilization for each 2 seconds. 5 lines are displayed.
 .TP
-.B sar -I 14 -o int14.file 2 10
+.B sar -I ALL -o int_all.file 2 10
 Report statistics on IRQ 14 for each 2 seconds. 10 lines are displayed.
 Data are stored in a file called
-.IR "int14.file" "."
+.IR "int_all.file" "."
 .TP
 .B sar -r -n DEV -f @SA_DIR@/sa16
 .RI "Display memory and network statistics saved in daily data file " "sa16" "."
