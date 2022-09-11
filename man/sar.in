@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "AUGUST 2022" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "SEPTEMBER 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1650,7 +1650,7 @@ The timestamp will also be compliant with ISO 8601 format.
 .B sar -u 2 5
 Report CPU utilization for each 2 seconds. 5 lines are displayed.
 .TP
-.B sar -I 14 -o int14.file 2 10
+.B sar -I --int=14 -o int14.file 2 10
 Report statistics on IRQ 14 for each 2 seconds. 10 lines are displayed.
 Data are stored in a file called
 .IR "int14.file" "."
