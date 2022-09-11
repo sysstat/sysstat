@@ -123,7 +123,7 @@ void usage(char *progname)
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
-			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
+			  "[ -I [ SUM | ALL ] ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -q [ <keyword> [,...] | ALL ] ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] "
@@ -153,7 +153,7 @@ void display_help(char *progname)
 	printf(_("\t-F [ MOUNT ]\n"));
 	printf(_("\t\tFilesystems statistics [A_FS]\n"));
 	printf(_("\t-H\tHugepages utilization statistics [A_HUGE]\n"));
-	printf(_("\t-I { <int_list> | SUM | ALL }\n"
+	printf(_("\t-I [ SUM | ALL ]\n"
 		 "\t\tInterrupts statistics [A_IRQ]\n"));
 	printf(_("\t-m { <keyword> [,...] | ALL }\n"
 		 "\t\tPower management statistics [A_PWR_...]\n"
