@@ -566,13 +566,17 @@ void compute_next_graduation_timestamp(struct record_header *stamp, long int xpo
 	stamp->ust_time += xpos;
 
 	if (PRINT_TRUE_TIME(flags)) {
+		unsigned int h = stamp->hour,
+			     m = stamp->minute,
+			     s = stamp->second;
+
 		/* Lines below useful only when option -t used */
-		stamp->second += xpos;
-		stamp->minute += stamp->second / 60;
-		stamp->second %= 60;
-		stamp->hour += stamp->minute / 60;
-		stamp->minute %= 60;
-		stamp->hour %= 24;
+		s += xpos;
+		m += s / 60;
+		stamp->second = s % 60;
+		h += m / 60;
+		stamp->minute = m % 60;
+		stamp->hour = h % 24;
 	}
 }
 
