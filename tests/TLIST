@@ -333,6 +333,12 @@ NOTES:
 01900	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -- -uw | grep ":20:" > tests/out.sadf-tz.tmp
 01905	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -T -- -uw | grep ":20:" > tests/out.sadf-T-tz.tmp
 01908	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -t -- -uw > tests/out.sadf-t-tz.tmp
+01910	LC_ALL=C TZ="America/New_York" ./sadf -d tests/data-tz.tmp -- -uw > tests/out.sadf-d-tz.tmp
+01915	LC_ALL=C TZ="America/New_York" ./sadf -d tests/data-tz.tmp -T -- -uw > tests/out.sadf-d-T-tz.tmp
+01918	LC_ALL=C TZ="America/New_York" ./sadf -d tests/data-tz.tmp -t -- -uw > tests/out.sadf-d-t-tz.tmp
+01920	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -- -uw > tests/out.sadf-r-tz.tmp
+01925	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -T -- -uw > tests/out.sadf-r-T-tz.tmp
+01928	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -t -- -uw > tests/out.sadf-r-t-tz.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
