@@ -114,35 +114,33 @@ void convert_file
  * Prototypes used to display restart messages
  */
 __printf_funct_t print_db_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_ppc_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_xml_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_json_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_raw_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_pcp_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, struct file_header *, struct record_header *);
 
 /*
  * Prototypes used to display comments
  */
 __printf_funct_t print_db_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_ppc_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_xml_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_json_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
-__printf_funct_t print_sar_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_raw_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_pcp_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 
 /*
  * Prototypes used to display the statistics part of the report

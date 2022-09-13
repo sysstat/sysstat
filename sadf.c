@@ -1049,11 +1049,10 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 		/* RESTART and COMMENTS records will be immediately processed */
 		if (*fmt[f_position]->f_restart) {
-			(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
-						      &file_hdr, NULL);
+			(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, &file_hdr, NULL);
 		}
 		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
-			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 	}
@@ -1135,11 +1134,10 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		 * Display possible trailing data then terminate.
 		 */
 		if (*fmt[f_position]->f_restart) {
-			(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL,
-						      FALSE, &file_hdr, NULL);
+			(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, &file_hdr, NULL);
 		}
 		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
-			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 		goto terminate;
@@ -1150,8 +1148,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
-					      &file_hdr, NULL);
+		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, &file_hdr, NULL);
 	}
 
 	do {
@@ -1162,7 +1159,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr, NULL);
+		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, &file_hdr, NULL);
 	}
 
 	/* Rewind file */
@@ -1171,7 +1168,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	/* Last, process COMMENT entries to display comments */
 	if (DISPLAY_COMMENT(flags)) {
 		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 		do {
@@ -1182,7 +1179,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		while (!eosaf);
 
 		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 	}

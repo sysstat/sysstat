@@ -605,13 +605,12 @@ size_t sa_read(void *buffer, size_t size)
  * @action	Action expected from current function (unused here).
  * @cur_date	Date string of current restart message (unused here).
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC (unused here).
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *cur_time,
-				  int utc, struct file_header *file_hdr,
+				  struct file_header *file_hdr,
 				  struct record_header *record_hdr)
 {
 	char restart[64];
@@ -632,13 +631,12 @@ __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *c
  * @action	Action expected from current function (unused here).
  * @cur_date	Date string of current comment (unused here).
  * @cur_time	Time string of current comment.
- * @utc		True if @cur_time is expressed in UTC (unused here).
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
-__print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cur_time, int utc,
+__print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cur_time,
 				  char *comment, struct file_header *file_hdr,
 				  struct record_header *record_hdr)
 {

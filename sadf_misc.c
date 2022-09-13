@@ -102,12 +102,11 @@ void pcp_write_data(struct record_header *record_hdr, unsigned int flags)
  * IN:
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @sep		Character used as separator.
  * @file_hdr	System activity file standard header.
  ***************************************************************************
  */
-void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
+void print_dbppc_restart(char *cur_date, char *cur_time, char sep,
 			 struct file_header *file_hdr)
 {
 	printf("%s%c-1%c", file_hdr->sa_nodename, sep, sep);
@@ -115,8 +114,8 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
 		printf("%s ", cur_date);
 	}
 	printf("%s", cur_time);
-	if (strlen(cur_date) && utc) {
-		printf(" UTC");
+	if (strlen(cur_date) && !PRINT_LOCAL_TIME(flags)) {
+		printf(" %s", PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname : "UTC");
 	}
 	printf("%cLINUX-RESTART\t(%d CPU)\n",
 	       sep, file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
@@ -131,18 +130,17 @@ void print_dbppc_restart(char *cur_date, char *cur_time, int utc, char sep,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
-				  char *cur_time, int utc, struct file_header *file_hdr,
+				  char *cur_time, struct file_header *file_hdr,
 				  struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
-		print_dbppc_restart(cur_date, cur_time, utc, ';', file_hdr);
+		print_dbppc_restart(cur_date, cur_time, ';', file_hdr);
 	}
 }
 
@@ -155,18 +153,17 @@ __printf_funct_t print_db_restart(int *tab, int action, char *cur_date,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr,
+				   char *cur_time, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
-		print_dbppc_restart(cur_date, cur_time, utc, '\t', file_hdr);
+		print_dbppc_restart(cur_date, cur_time, '\t', file_hdr);
 	}
 }
 
@@ -179,7 +176,6 @@ __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  *
@@ -188,7 +184,7 @@ __printf_funct_t print_ppc_restart(int *tab, int action, char *cur_date,
  ***************************************************************************
  */
 __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr,
+				   char *cur_time, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
@@ -196,7 +192,8 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
 	}
 	if (action & F_MAIN) {
 		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" utc=\"%d\" cpu_count=\"%d\"/>",
-			cur_date, cur_time, utc ? 1 : 0,
+			cur_date, cur_time,
+			!PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags) ? 1 : 0,
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 	if (action & F_END) {
@@ -213,7 +210,6 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  *
@@ -222,7 +218,7 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date,
  ***************************************************************************
  */
 __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
-				    char *cur_time, int utc, struct file_header *file_hdr,
+				    char *cur_time, struct file_header *file_hdr,
 				    struct record_header *record_hdr)
 {
 	static int sep = FALSE;
@@ -237,7 +233,8 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
 		}
 		xprintf((*tab)++, "{");
 		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"utc\": %d, \"cpu_count\": %d}",
-			cur_date, cur_time, utc ? 1 : 0,
+			cur_date, cur_time,
+			!PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags) ? 1 : 0,
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 		xprintf0(--(*tab), "}");
 		sep = TRUE;
@@ -260,20 +257,19 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
-				   char *cur_time, int utc, struct file_header *file_hdr,
+				   char *cur_time, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action == F_MAIN) {
 		printf("%s", cur_time);
-		if (strlen(cur_date) && utc) {
-			printf(" UTC");
+		if (strlen(cur_date) && !PRINT_LOCAL_TIME(flags)) {
+			printf(" %s", PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname : "UTC");
 		}
 		printf("; LINUX-RESTART (%d CPU)\n",
 		       file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
@@ -289,13 +285,12 @@ __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message (unused here).
  * @cur_time	Time string of current restart message (unused here).
- * @utc		True if @cur_time is expressed in UTC (unused here).
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header.
  ***************************************************************************
  */
 __printf_funct_t print_pcp_restart(int *tab, int action, char *cur_date, char *cur_time,
-				   int utc, struct file_header *file_hdr,
+				   struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
@@ -335,22 +330,21 @@ __printf_funct_t print_pcp_restart(int *tab, int action, char *cur_date, char *c
  * IN:
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @sep		Character used as separator.
  * @file_hdr	System activity file standard header.
  ***************************************************************************
  */
-void print_dbppc_comment(char *cur_date, char *cur_time, int utc,
-			 char *comment, char sep, struct file_header *file_hdr)
+void print_dbppc_comment(char *cur_date, char *cur_time, char *comment,
+			 char sep, struct file_header *file_hdr)
 {
 	printf("%s%c-1%c", file_hdr->sa_nodename, sep, sep);
 	if (strlen(cur_date)) {
 		printf("%s ", cur_date);
 	}
 	printf("%s", cur_time);
-	if (strlen(cur_date) && utc) {
-		printf(" UTC");
+	if (strlen(cur_date) && !PRINT_LOCAL_TIME(flags)) {
+		printf(" %s", PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname : "UTC");
 	}
 	printf("%cCOM %s\n", sep, comment);
 }
@@ -364,20 +358,18 @@ void print_dbppc_comment(char *cur_date, char *cur_time, int utc,
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_db_comment(int *tab, int action, char *cur_date, char *cur_time,
-				  int utc, char *comment, struct file_header *file_hdr,
+				  char *comment, struct file_header *file_hdr,
 				  struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action & F_MAIN) {
-		print_dbppc_comment(cur_date, cur_time, utc, comment,
-				    ';', file_hdr);
+		print_dbppc_comment(cur_date, cur_time, comment, ';', file_hdr);
 	}
 }
 
@@ -390,20 +382,18 @@ __printf_funct_t print_db_comment(int *tab, int action, char *cur_date, char *cu
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_ppc_comment(int *tab, int action, char *cur_date, char *cur_time,
-				   int utc, char *comment, struct file_header *file_hdr,
+				   char *comment, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action & F_MAIN) {
-		print_dbppc_comment(cur_date, cur_time, utc, comment,
-				    '\t', file_hdr);
+		print_dbppc_comment(cur_date, cur_time, comment, '\t', file_hdr);
 	}
 }
 
@@ -416,7 +406,6 @@ __printf_funct_t print_ppc_comment(int *tab, int action, char *cur_date, char *c
  * @action	Action expected from current function.
  * @cur_date	Date string of current comment.
  * @cur_time	Time string of current comment.
- * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
  * @record_hdr	Current record header (unused here).
@@ -426,7 +415,7 @@ __printf_funct_t print_ppc_comment(int *tab, int action, char *cur_date, char *c
  ***************************************************************************
  */
 __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *cur_time,
-				   int utc, char *comment, struct file_header *file_hdr,
+				   char *comment, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
@@ -434,7 +423,9 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
 	}
 	if (action & F_MAIN) {
 		xprintf(*tab, "<comment date=\"%s\" time=\"%s\" utc=\"%d\" com=\"%s\"/>",
-			cur_date, cur_time, utc ? 1 : 0, comment);
+			cur_date, cur_time,
+			!PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags) ? 1 : 0,
+			comment);
 	}
 	if (action & F_END) {
 		xprintf(--(*tab), "</comments>");
@@ -450,7 +441,6 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
  * @action	Action expected from current function.
  * @cur_date	Date string of current comment.
  * @cur_time	Time string of current comment.
- * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
  * @record_hdr	Current record header (unused here).
@@ -460,7 +450,7 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
  ***************************************************************************
  */
 __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *cur_time,
-				    int utc, char *comment, struct file_header *file_hdr,
+				    char *comment, struct file_header *file_hdr,
 				    struct record_header *record_hdr)
 {
 	static int sep = FALSE;
@@ -477,7 +467,9 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
 		xprintf(*tab,
 			"\"comment\": {\"date\": \"%s\", \"time\": \"%s\", "
 			"\"utc\": %d, \"com\": \"%s\"}",
-			cur_date, cur_time, utc ? 1 : 0, comment);
+			cur_date, cur_time,
+			!PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags) ? 1 : 0,
+			comment);
 		xprintf0(--(*tab), "}");
 		sep = TRUE;
 	}
@@ -499,21 +491,20 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
  * @action	Action expected from current function.
  * @cur_date	Date string of current restart message.
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC.
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_raw_comment(int *tab, int action, char *cur_date, char *cur_time,
-				   int utc, char *comment, struct file_header *file_hdr,
+				   char *comment, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 	/* Actions F_BEGIN and F_END ignored */
 	if (action & F_MAIN) {
 		printf("%s", cur_time);
-		if (strlen(cur_date) && utc) {
-			printf(" UTC");
+		if (strlen(cur_date) && !PRINT_LOCAL_TIME(flags)) {
+			printf(" %s", PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname : "UTC");
 		}
 		printf("; COM %s\n", comment);
 	}
@@ -535,7 +526,7 @@ __printf_funct_t print_raw_comment(int *tab, int action, char *cur_date, char *c
  ***************************************************************************
  */
 __printf_funct_t print_pcp_comment(int *tab, int action, char *cur_date, char *cur_time,
-				   int utc, char *comment, struct file_header *file_hdr,
+				   char *comment, struct file_header *file_hdr,
 				   struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
@@ -815,7 +806,6 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
  * @file_hdr	System activity file standard header.
  * @cur_date	Date string of current record.
  * @cur_time	Time string of current record.
- * @utc		True if @cur_time is expressed in UTC.
  * @itv		Interval of time with preceding record.
  *
  * RETURNS:
@@ -823,11 +813,12 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
  ***************************************************************************
  */
 char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_date,
-			    char *cur_time, int utc, unsigned long long itv)
+			    char *cur_time, unsigned long long itv)
 {
 	int isdb = (fmt == F_DB_OUTPUT);
 	static char pre[512];
 	char temp1[128], temp2[256];
+	int sep = !PRINT_LOCAL_TIME(flags);
 
 	/* This substring appears on every output line, preformat it here */
 	snprintf(temp1, sizeof(temp1), "%s%s%lld%s",
@@ -838,8 +829,9 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 	else {
 		strcpy(temp2, temp1);
 	}
-	snprintf(pre, sizeof(pre), "%s%s%s", temp2, cur_time,
-		 strlen(cur_date) && utc ? " UTC" : "");
+	snprintf(pre, sizeof(pre), "%s%s%s%s", temp2, cur_time, sep ? " " : "",
+		 strlen(cur_date) && !PRINT_LOCAL_TIME(flags) ?
+		 (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname : "UTC") : "");
 	pre[sizeof(pre) - 1] = '\0';
 
 	if (DISPLAY_HORIZONTALLY(flags)) {
@@ -872,10 +864,8 @@ __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {
-	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
-
 	if (action & F_BEGIN) {
-		return print_dbppc_timestamp(F_PPC_OUTPUT, file_hdr, cur_date, cur_time, utc, itv);
+		return print_dbppc_timestamp(F_PPC_OUTPUT, file_hdr, cur_date, cur_time, itv);
 	}
 
 	return NULL;
@@ -904,10 +894,8 @@ __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
 				struct record_header *record_hdr,
 				struct file_header *file_hdr, unsigned int flags)
 {
-	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
-
 	if (action & F_BEGIN) {
-		return print_dbppc_timestamp(F_DB_OUTPUT, file_hdr, cur_date, cur_time, utc, itv);
+		return print_dbppc_timestamp(F_DB_OUTPUT, file_hdr, cur_date, cur_time, itv);
 	}
 	if (action & F_END) {
 		if (DISPLAY_HORIZONTALLY(flags)) {
@@ -1014,11 +1002,13 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {
-	int utc = !PRINT_LOCAL_TIME(flags) && !PRINT_TRUE_TIME(flags);
+	int sep = !PRINT_LOCAL_TIME(flags);
 	static char pre[80];
 
 	if (action & F_BEGIN) {
-		snprintf(pre, sizeof(pre), "%s%s", cur_time, strlen(cur_date) && utc ? " UTC" : "");
+		snprintf(pre, sizeof(pre), "%s%s%s", cur_time, sep ? " " : "",
+			 strlen(cur_date) && !PRINT_LOCAL_TIME(flags) ?
+			 (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname : "UTC") : "");
 		pre[sizeof(pre) - 1] = '\0';
 		return pre;
 	}

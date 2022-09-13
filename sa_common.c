@@ -3016,9 +3016,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			return 0;
 
 		if (*ofmt->f_restart) {
-			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time,
-					   !PRINT_LOCAL_TIME(l_flags) &&
-					   !PRINT_TRUE_TIME(l_flags), file_hdr, record_hdr);
+			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time, file_hdr, record_hdr);
 		}
 	}
 	else if (rtype == R_COMMENT) {
@@ -3036,9 +3034,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 
 		if (*ofmt->f_comment) {
 			(*ofmt->f_comment)(&tab, F_MAIN, cur_date, cur_time,
-					   !PRINT_LOCAL_TIME(l_flags) &&
-					   !PRINT_TRUE_TIME(l_flags), file_comment,
-					   file_hdr, record_hdr);
+					   file_comment, file_hdr, record_hdr);
 		}
 	}
 
