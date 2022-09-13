@@ -39,8 +39,6 @@
 #include <pcp/import.h>
 #endif
 
-extern char *tzname[2];
-
 extern uint64_t flags;
 extern char *seps[];
 
