@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.11 for sysstat. See sadf.h -->
+<!--DTD v3.12 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -38,7 +38,8 @@
 <!ATTLIST timestamp
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
-	utc CDATA #REQUIRED
+	utc CDATA #IMPLIED
+	tz CDATA #IMPLIED
 	interval CDATA #REQUIRED
 >
 
@@ -48,7 +49,8 @@
 <!ATTLIST boot
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
-	utc CDATA #REQUIRED
+	utc CDATA #IMPLIED
+	tz CDATA #IMPLIED
 	cpu_count CDATA #REQUIRED
 >
 
@@ -58,7 +60,8 @@
 <!ATTLIST comment
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
-	utc CDATA #REQUIRED
+	utc CDATA #IMPLIED
+	tz CDATA #IMPLIED
 	com CDATA #REQUIRED
 >
 

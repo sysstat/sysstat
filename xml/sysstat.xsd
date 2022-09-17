@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.11 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.12 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -113,7 +113,8 @@
 	</xs:sequence>
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
-	<xs:attribute name="utc" type="xs:nonNegativeInteger" use="required"></xs:attribute>
+	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="tz" type="xs:string"></xs:attribute>
 	<xs:attribute name="interval" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -121,7 +122,8 @@
 <xs:complexType name="boot-type">
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
-	<xs:attribute name="utc" type="xs:nonNegativeInteger" use="required"></xs:attribute>
+	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="tz" type="xs:string"></xs:attribute>
 	<xs:attribute name="cpu_count" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -129,7 +131,8 @@
 <xs:complexType name="comment-type">
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
-	<xs:attribute name="utc" type="xs:nonNegativeInteger" use="required"></xs:attribute>
+	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="tz" type="xs:string"></xs:attribute>
 	<xs:attribute name="com" type="xs:string" use="required"></xs:attribute>
 </xs:complexType>
 
