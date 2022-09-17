@@ -2943,6 +2943,7 @@ void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_
  *		be saved for current record.
  * @file	Name of file being read.
  * @tab		Number of tabulations to print.
+ * @my_tz	Current timezone.
  * @file_magic	file_magic structure filled with file magic header data.
  * @file_hdr	System activity file standard header.
  * @act		Array of activities.
@@ -2961,7 +2962,7 @@ void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_
  */
 int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
-			 struct tm *rectime, char *file, int tab,
+			 struct tm *rectime, char *file, int tab, char *my_tz,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
 			 struct activity *act[], struct report_format *ofmt,
 			 int endian_mismatch, int arch_64)
@@ -3016,7 +3017,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			return 0;
 
 		if (*ofmt->f_restart) {
-			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time, file_hdr, record_hdr);
+			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time, my_tz, file_hdr, record_hdr);
 		}
 	}
 	else if (rtype == R_COMMENT) {
@@ -3033,7 +3034,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			return 0;
 
 		if (*ofmt->f_comment) {
-			(*ofmt->f_comment)(&tab, F_MAIN, cur_date, cur_time,
+			(*ofmt->f_comment)(&tab, F_MAIN, cur_date, cur_time, my_tz,
 					   file_comment, file_hdr, record_hdr);
 		}
 	}

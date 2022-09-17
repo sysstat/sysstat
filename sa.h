@@ -369,6 +369,7 @@ struct svg_parm {
 	char minute;				/* locale of the datafile creator) for first */
 	char second;				/* sample */
 	struct file_header *file_hdr;		/* Pointer on file header structure */
+	char my_tzname[TZNAME_LEN];		/* Current timezone */
 };
 
 /* Structure used when displaying SVG header */
@@ -1171,8 +1172,9 @@ struct report_format {
 	 * This function displays the report header
 	 * (data displayed once at the beginning of the report).
 	 */
-	__printf_funct_t (*f_header) (void *, int, char *, struct file_magic *, struct file_header *,
-				      struct activity * [], unsigned int [], struct file_activity *);
+	__printf_funct_t (*f_header) (void *, int, char *, char *, struct file_magic *,
+				      struct file_header *, struct activity * [], unsigned int [],
+				      struct file_activity *);
 	/*
 	 * This function defines the statistics part of the report.
 	 * Used only with textual (XML-like) reports and PCP archives.
@@ -1182,17 +1184,17 @@ struct report_format {
 	 * This function defines the timestamp part of the report.
 	 * Used only with textual (XML-like) reports, PCP archives and RAW output format.
 	 */
-	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, unsigned long long,
+	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, char *, unsigned long long,
 				     struct record_header *, struct file_header *, unsigned int);
 	/*
 	 * This function displays the restart messages.
 	 */
-	__printf_funct_t (*f_restart) (int *, int, char *, char *,
+	__printf_funct_t (*f_restart) (int *, int, char *, char *, char *,
 				       struct file_header *, struct record_header *);
 	/*
 	 * This function displays the comments.
 	 */
-	__printf_funct_t (*f_comment) (int *, int, char *, char *, char *,
+	__printf_funct_t (*f_comment) (int *, int, char *, char *, char *, char *,
 				       struct file_header *, struct record_header *);
 	/*
 	 * This is the main function used to display all the statistics for current format.
@@ -1561,13 +1563,13 @@ int parse_timestamp
 void print_report_hdr
 	(uint64_t, struct tm *, struct file_header *);
 void print_sar_comment
-	(int *, int, char *, char *, char *, struct file_header *,
+	(int *, int, char *, char *, char *, char *, struct file_header *,
 	 struct record_header *);
 __printf_funct_t print_sar_restart
-	(int *, int, char *, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 int print_special_record
 	(struct record_header *, uint64_t, struct tstamp *, struct tstamp *,
-	 int, int, struct tm *, char *, int, struct file_magic *,
+	 int, int, struct tm *, char *, int, char *, struct file_magic *,
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
