@@ -1470,7 +1470,7 @@ When reading data from a daily data file, indicate that
 should display the timestamps in the original local time of
 the data file creator. Without this option, the
 .B sar
-command displays the timestamps in the user's locale time.
+command displays the timestamps in the user's local time.
 .TP
 .B -u [ ALL ]
 Report CPU utilization. The
