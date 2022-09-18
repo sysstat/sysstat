@@ -58,32 +58,7 @@ void pcp_write_data(struct record_header *record_hdr, unsigned int flags)
 {
 #ifdef HAVE_PCP
 	int rc;
-	struct tm lrectime;
-	time_t t = record_hdr->ust_time;
 	unsigned long long utc_sec = record_hdr->ust_time;
-	static long long delta_utc = LONG_MAX;
-
-	if (!PRINT_LOCAL_TIME(flags)) {
-		if (delta_utc == LONG_MAX) {
-			/* Convert a time_t value from local time to UTC */
-			if (gmtime_r(&t, &lrectime)) {
-				utc_sec = mktime(&lrectime);
-				delta_utc = utc_sec - record_hdr->ust_time;
-			}
-		}
-		else {
-			/*
-			 * Once pmiWrite() has been called (after the first stats sample),
-			 * subsequent mktime() calls will not give the same result with
-			 * the same input data. So compute a time shift that will be used
-			 * for the next samples.
-			 * We should (really) be careful if pmiWrite() was to be used sooner
-			 * than for the first stats sample (e.g. if we want to save a
-			 * LINUX RESTART record heading the file).
-			 */
-			utc_sec += delta_utc;
-		}
-	}
 
 	/* Write data to PCP archive */
 	if ((rc = pmiWrite(utc_sec, 0)) < 0) {
@@ -1445,7 +1420,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
  * @parm	Specific parameter (unused here).
  * @action	Action expected from current function.
  * @dfile	Name of PCP archive file.
- * @my_tz	Current timezone.
+ * @my_tz	Current timezone (unused here).
  * @file_magic	System activity file magic header (unused here).
  * @file_hdr	System activity file standard header (unused here).
  * @act		Array of activities (unused here).
@@ -1461,20 +1436,15 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile, char *my_
 {
 #ifdef HAVE_PCP
 	char buf[64];
-	struct tm lrectime;
-	time_t t = file_hdr->sa_ust_time;
+	int rc;
 	unsigned long long utc_sec = file_hdr->sa_ust_time;
 
 	if (action & F_BEGIN) {
 		/* Create new PCP context */
 		pmiStart(dfile, FALSE);
 
-		if (PRINT_LOCAL_TIME(flags)) {
-			pmiSetTimezone(my_tz);
-		}
-		else {
-			pmiSetTimezone("UTC");
-		}
+		/* Set timezone */
+		pmiSetTimezone(file_hdr->sa_tzname);
 
 		/* Save hostname */
 		pmiSetHostname(file_hdr->sa_nodename);
@@ -1508,14 +1478,10 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile, char *my_
 
 	if (action & F_END) {
 		if (action & F_BEGIN) {
-			/* Only the header data will be written to PCP archive (option -H) */
-			if (!PRINT_LOCAL_TIME(flags)) {
-				/* Convert a time_t value from local time to UTC */
-				if (gmtime_r(&t, &lrectime)) {
-					utc_sec = mktime(&lrectime);
-				}
+			if ((rc = pmiWrite(utc_sec, 0)) < 0) {
+				fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
+				exit(4);
 			}
-			pmiWrite(utc_sec, 0);
 		}
 		pmiEnd();
 	}
