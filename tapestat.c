@@ -569,7 +569,7 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		}
 
 		/* Get time */
-		get_localtime(rectime, 0);
+		get_xtime(rectime, 0, LOCAL_TIME);
 
 		/* Check whether we should skip first report */
 		if (!skip) {
@@ -699,7 +699,7 @@ int main(int argc, char **argv)
 
 	tape_initialise();
 
-	get_localtime(&rectime, 0);
+	get_xtime(&rectime, 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.

@@ -102,6 +102,7 @@
 
 #define IGNORE_VIRTUAL_DEVICES	FALSE
 #define ACCEPT_VIRTUAL_DEVICES	TRUE
+#define LOCAL_TIME		FALSE
 
 /* Environment variables */
 #define ENV_TIME_FMT		"S_TIME_FORMAT"
@@ -241,8 +242,8 @@ void get_HZ
 	(void);
 void get_kb_shift
 	(void);
-time_t get_localtime
-	(struct tm *, int);
+time_t get_xtime
+	(struct tm *, int, int);
 time_t get_time
 	(struct tm *, int);
 void init_nls

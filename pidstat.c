@@ -2414,7 +2414,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		set_pid_nonexistent(pid_list);
 
 		/* Get time */
-		get_localtime(&ps_tstamp[curr], 0);
+		get_xtime(&ps_tstamp[curr], 0, LOCAL_TIME);
 
 		/* Read system uptime (in 1/100th of a second) */
 		read_uptime(&(uptime_cs[curr]));
@@ -2809,7 +2809,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Get time */
-	get_localtime(&(ps_tstamp[0]), 0);
+	get_xtime(&(ps_tstamp[0]), 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.

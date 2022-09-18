@@ -2013,7 +2013,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		}
 
 		/* Get time */
-		get_localtime(rectime, 0);
+		get_xtime(rectime, 0, LOCAL_TIME);
 
 		/* Print results */
 		write_stats(curr, rectime, skip);
@@ -2379,7 +2379,7 @@ int main(int argc, char **argv)
 	/* How many processors on this machine? */
 	cpu_nr = get_cpu_nr(~0, FALSE);
 
-	get_localtime(&rectime, 0);
+	get_xtime(&rectime, 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.

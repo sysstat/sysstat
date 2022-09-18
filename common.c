@@ -87,50 +87,34 @@ void print_version(void)
 
 /*
  ***************************************************************************
- * Get local date and time.
+ * Get date and time, expressed in UTC or in local time.
  *
  * IN:
  * @d_off	Day offset (number of days to go back in the past).
+ * @utc		TRUE if date and time shall be expressed in UTC.
  *
  * OUT:
  * @rectime	Current local date and time.
  *
  * RETURNS:
- * Value of time in seconds since the Epoch.
+ * Value of time in seconds since the Epoch (always in UTC)
  ***************************************************************************
  */
-time_t get_localtime(struct tm *rectime, int d_off)
+time_t get_xtime(struct tm *rectime, int d_off, int utc)
 {
 	time_t timer;
 
 	timer = __time(NULL);
 	timer -= SEC_PER_DAY * d_off;
-	localtime_r(&timer, rectime);
 
-	return timer;
-}
-
-/*
- ***************************************************************************
- * Get date and time expressed in UTC.
- *
- * IN:
- * @d_off	Day offset (number of days to go back in the past).
- *
- * OUT:
- * @rectime	Current date and time expressed in UTC.
- *
- * RETURNS:
- * Value of time in seconds since the Epoch.
- ***************************************************************************
- */
-time_t get_gmtime(struct tm *rectime, int d_off)
-{
-	time_t timer;
-
-	timer = __time(NULL);
-	timer -= SEC_PER_DAY * d_off;
-	gmtime_r(&timer, rectime);
+	if (utc) {
+		/* Get date and time in UTC */
+		gmtime_r(&timer, rectime);
+	}
+	else {
+		/* Get date and time in local time */
+		localtime_r(&timer, rectime);
+	}
 
 	return timer;
 }
@@ -162,10 +146,7 @@ time_t get_time(struct tm *rectime, int d_off)
 		utc++;
 	}
 
-	if (utc == 2)
-		return get_gmtime(rectime, d_off);
-	else
-		return get_localtime(rectime, d_off);
+	return get_xtime(rectime, d_off, utc == 2);
 }
 
 #ifdef USE_NLS

@@ -2069,7 +2069,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		memset(st_cpu[curr], 0, STATS_CPU_SIZE * (cpu_nr + 1));
 
 		/* Get time */
-		get_localtime(&(mp_tstamp[curr]), 0);
+		get_xtime(&(mp_tstamp[curr]), 0, LOCAL_TIME);
 
 		/* Read uptime and CPU stats */
 		read_uptime(&(uptime_cs[curr]));
@@ -2379,7 +2379,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Get time */
-	get_localtime(&(mp_tstamp[0]), 0);
+	get_xtime(&(mp_tstamp[0]), 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.
