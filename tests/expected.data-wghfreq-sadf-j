@@ -11,7 +11,7 @@
 			"timezone": "GMT",
 			"statistics": [
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:10", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:10", "tz": "UTC", "interval": 31},
 					"power-management": {
 						"cpu-weighted-frequency": [
 							{"number": "all", "weighted-frequency": 1123.35},
@@ -28,7 +28,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:11", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:11", "tz": "UTC", "interval": 31},
 					"power-management": {
 						"cpu-weighted-frequency": [
 							{"number": "all", "weighted-frequency": 2001.00},

@@ -11,7 +11,7 @@
 			"timezone": "GMT",
 			"statistics": [
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:19", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:19", "tz": "UTC", "interval": 31},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.15, "nice": 12.50, "sys": 1.84, "iowait": 0.12, "steal": 0.00, "irq": 0.34, "soft": 0.19, "guest": 0.00, "gnice": 0.00, "idle": 82.88},
 						{"cpu": "0", "usr": 2.71, "nice": 0.03, "sys": 2.16, "iowait": 0.00, "steal": 0.00, "irq": 0.32, "soft": 0.64, "guest": 0.00, "gnice": 0.00, "idle": 94.14},
@@ -174,7 +174,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:29", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:29", "tz": "UTC", "interval": 31},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.28, "nice": 0.00, "sys": 1.55, "iowait": 0.48, "steal": 0.00, "irq": 0.19, "soft": 0.19, "guest": 0.00, "gnice": 0.00, "idle": 95.31},
 						{"cpu": "0", "usr": 1.25, "nice": 0.00, "sys": 1.51, "iowait": 0.35, "steal": 0.00, "irq": 0.19, "soft": 0.58, "guest": 0.00, "gnice": 0.00, "idle": 96.12},
@@ -341,7 +341,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:39", "utc": 1, "interval": 39},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:39", "tz": "UTC", "interval": 39},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.67, "nice": 23.08, "sys": 1.79, "iowait": 0.17, "steal": 0.00, "irq": 0.33, "soft": 0.28, "guest": 0.00, "gnice": 0.00, "idle": 71.68},
 						{"cpu": "0", "usr": 2.19, "nice": 52.01, "sys": 1.46, "iowait": 0.00, "steal": 0.00, "irq": 0.36, "soft": 0.39, "guest": 0.00, "gnice": 0.00, "idle": 43.59},
@@ -507,7 +507,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:49", "utc": 1, "interval": 22},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:49", "tz": "UTC", "interval": 22},
 					"cpu-load": [
 						{"cpu": "all", "usr": 6.21, "nice": 8.70, "sys": 6.64, "iowait": 0.49, "steal": 0.39, "irq": 0.54, "soft": 0.34, "guest": 0.59, "gnice": 0.10, "idle": 75.90},
 						{"cpu": "0", "usr": 2.69, "nice": 47.44, "sys": 1.26, "iowait": 0.18, "steal": 0.00, "irq": 0.36, "soft": 0.85, "guest": 0.00, "gnice": 0.00, "idle": 47.22},
@@ -684,7 +684,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:54:35", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:54:35", "tz": "UTC", "interval": 31},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.47, "nice": 17.21, "sys": 2.21, "iowait": 0.77, "steal": 0.00, "irq": 0.96, "soft": 0.22, "guest": 0.00, "gnice": 0.00, "idle": 76.16},
 						{"cpu": "0", "usr": 2.71, "nice": 0.03, "sys": 2.16, "iowait": 0.00, "steal": 0.00, "irq": 0.32, "soft": 0.64, "guest": 0.00, "gnice": 0.00, "idle": 94.14},
@@ -859,15 +859,15 @@
 			],
 			"restarts": [
 				{
-					"boot": {"date": "2019-04-18", "time": "13:37:29", "utc": 1, "cpu_count": 9}
+					"boot": {"date": "2019-04-18", "time": "13:37:29", "tz": "UTC", "cpu_count": 9}
 				},
 				{
-					"boot": {"date": "2019-04-18", "time": "13:54:09", "utc": 1, "cpu_count": 10}
+					"boot": {"date": "2019-04-18", "time": "13:54:09", "tz": "UTC", "cpu_count": 10}
 				}
 			],
 			"comments": [
 				{
-					"comment": {"date": "2019-04-18", "time": "13:39:09", "utc": 1, "com": "Testing sysstat!"}
+					"comment": {"date": "2019-04-18", "time": "13:39:09", "tz": "UTC", "com": "Testing sysstat!"}
 				}
 			]
 		}

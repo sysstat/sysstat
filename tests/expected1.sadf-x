@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.11 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.11.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.12 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.12.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.11</sysdata-version>
+	<sysdata-version>3.12</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -15,7 +15,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 		<file-utc-time>13:20:09</file-utc-time>
 		<timezone>GMT</timezone>
 		<statistics>
-			<timestamp date="2019-04-18" time="13:20:19" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:20:19" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="0" user="2.71" nice="0.03" system="3.12" iowait="0.00" steal="0.00" idle="94.14"/>
 					<cpu number="1" user="2.85" nice="0.00" system="5.16" iowait="0.00" steal="0.00" idle="91.99"/>
@@ -23,7 +23,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				</cpu-load>
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:20:23" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:20:23" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="0" user="1.25" nice="0.00" system="2.28" iowait="0.35" steal="0.00" idle="96.12"/>
 					<cpu number="1" user="2.15" nice="0.00" system="1.22" iowait="0.77" steal="0.00" idle="95.87"/>
@@ -31,7 +31,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				</cpu-load>
 				<process-and-context-switch per="second" proc="4.83" cswch="46287.74"/>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:22:31" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:22:31" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="0" user="2.71" nice="0.03" system="3.12" iowait="0.00" steal="0.00" idle="94.14"/>
 					<cpu number="1" user="2.85" nice="0.00" system="5.16" iowait="0.00" steal="0.00" idle="91.99"/>
@@ -39,7 +39,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				</cpu-load>
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:24:25" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:24:25" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="0" user="2.71" nice="0.03" system="3.12" iowait="0.00" steal="0.00" idle="94.14"/>
 					<cpu number="1" user="2.85" nice="0.00" system="5.16" iowait="0.00" steal="0.00" idle="91.99"/>
@@ -47,7 +47,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 				</cpu-load>
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:24:30" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:24:30" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="0" user="1.25" nice="0.00" system="2.28" iowait="0.35" steal="0.00" idle="96.12"/>
 					<cpu number="1" user="2.15" nice="0.00" system="1.22" iowait="0.77" steal="0.00" idle="95.87"/>
@@ -57,17 +57,17 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			</timestamp>
 		</statistics>
 		<restarts>
-			<boot date="2019-04-18" time="13:20:09" utc="1" cpu_count="9"/>
-			<boot date="2019-04-18" time="13:22:11" utc="1" cpu_count="9"/>
-			<boot date="2019-04-18" time="13:23:20" utc="1" cpu_count="9"/>
-			<boot date="2019-04-18" time="13:24:10" utc="1" cpu_count="9"/>
-			<boot date="2019-04-18" time="13:24:12" utc="1" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:20:09" tz="UTC" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:22:11" tz="UTC" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:23:20" tz="UTC" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:24:10" tz="UTC" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:24:12" tz="UTC" cpu_count="9"/>
 		</restarts>
 		<comments>
-			<comment date="2019-04-18" time="13:20:13" utc="1" com="First comment!"/>
-			<comment date="2019-04-18" time="13:22:35" utc="1" com="Second comment!"/>
-			<comment date="2019-04-18" time="13:22:46" utc="1" com="Third..."/>
-			<comment date="2019-04-18" time="13:22:47" utc="1" com="and fourth comment!"/>
+			<comment date="2019-04-18" time="13:20:13" tz="UTC" com="First comment!"/>
+			<comment date="2019-04-18" time="13:22:35" tz="UTC" com="Second comment!"/>
+			<comment date="2019-04-18" time="13:22:46" tz="UTC" com="Third..."/>
+			<comment date="2019-04-18" time="13:22:47" tz="UTC" com="and fourth comment!"/>
 		</comments>
 	</host>
 </sysstat>
