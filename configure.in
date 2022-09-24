@@ -97,6 +97,7 @@ AC_CHECK_HEADERS(sys/param.h, HAVE_SYS_PARAM_H=1)
 AC_CHECK_HEADERS(sys/stat.h)
 AC_CHECK_HEADERS(sys/sysmacros.h, HAVE_SYS_SYSMACROS_H=1)
 AC_CHECK_HEADERS(sys/utsname.h)
+AC_CHECK_HEADERS(sys/wait.h)
 
 echo .
 echo Check typedefs, structures and compiler characteristics:
