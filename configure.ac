@@ -4,10 +4,10 @@
 # Modified by Sebastien Godard (sysstat <at> orange.fr)
 
 # Initialization of $PACKAGE_VERSION and $PACKAGE_NAME variables
-AC_INIT(sysstat, 12.7.1)
+AC_INIT([sysstat],[12.7.1])
 
 # Ensure that a recent enough version of Autoconf is being used
-AC_PREREQ(2.53)
+AC_PREREQ([2.71])
 
 # Check whether the configure script is in the right dir
 AC_CONFIG_SRCDIR(ioconf.h)
@@ -18,7 +18,7 @@ echo Check programs:
 echo .
 
 AC_PROG_CC
-AC_GNU_SOURCE
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_LN_S
 
 DFLAGS=""
@@ -102,7 +102,9 @@ AC_CHECK_HEADERS(sys/wait.h)
 echo .
 echo Check typedefs, structures and compiler characteristics:
 echo .
-AC_TYPE_SIGNAL
+AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type of signal handlers
+		    (`int' or `void').])
+
 AC_TYPE_SIZE_T
 AC_TYPE_OFF_T
 
@@ -117,8 +119,7 @@ AC_CHECK_FUNCS(strstr)
 # Should we check for PCP support?
 AC_MSG_CHECKING(for PCP support)
 AC_ARG_ENABLE(pcp,
-	      AC_HELP_STRING([--disable-pcp],
-			     [disable PCP support]),
+	      AS_HELP_STRING([--disable-pcp],[disable PCP support]),
 			     PCP=$enableval,PCP=yes)
 if test $PCP != "yes"; then
 	HAVE_PCP="n"
@@ -158,8 +159,7 @@ AC_SUBST(PCP_IMPL)
 # Should we check for lm_sensors?
 AC_MSG_CHECKING(for sensors support)
 AC_ARG_ENABLE(sensors,
-	      AC_HELP_STRING([--disable-sensors],
-			     [disable sensors support]),
+	      AS_HELP_STRING([--disable-sensors],[disable sensors support]),
 			     SENSORS=$enableval,SENSORS=yes)
 if test $SENSORS != "yes"; then
 	SENSORS_SUPPORT="n"
@@ -423,8 +423,7 @@ AC_SUBST(SYSCONFIG_FILE)
 # National Language Support
 AC_MSG_CHECKING(National Language Support)
 AC_ARG_ENABLE(nls,
-	      AC_HELP_STRING([--disable-nls],
-			     [disable National Language Support]),
+	      AS_HELP_STRING([--disable-nls],[disable National Language Support]),
 			     AUX_NLS=$enableval,AUX_NLS=yes)
 if test $AUX_NLS != "no" && test $HAVE_LIBINTL_H && test $HAVE_LOCALE_H; then
    AUX_NLS="yes"
@@ -458,8 +457,7 @@ AC_SUBST(NLS)
 # Link Time Optimization
 AC_MSG_CHECKING(Link Time Optimization support)
 AC_ARG_ENABLE(lto,
-	      AC_HELP_STRING([--enable-lto],
-			     [enable Link Time Optimization]),
+	      AS_HELP_STRING([--enable-lto],[enable Link Time Optimization]),
 			     AUX_LTO=$enableval,AUX_LTO=no)
 AC_MSG_RESULT($AUX_LTO)
 LTO="n"
@@ -536,8 +534,7 @@ AC_SUBST(MAN_GROUP)
 # Don't set attributes on files being installed?
 AC_MSG_CHECKING(whether attributes should not be set on files being installed)
 AC_ARG_ENABLE(file-attr,
-	      AC_HELP_STRING([--disable-file-attr],
-			     [do not set attributes on files being installed]),
+	      AS_HELP_STRING([--disable-file-attr],[do not set attributes on files being installed]),
 			     AUX_IMG=$enableval,AUX_IMG=yes)
 if test $AUX_IMG != "no"; then
    IGNORE_FILE_ATTRIBUTES=n
@@ -552,8 +549,7 @@ AC_SUBST(IGNORE_FILE_ATTRIBUTES)
 # Compress manual pages?
 AC_MSG_CHECKING(whether manual pages should be compressed)
 AC_ARG_ENABLE(compress-manpg,
-	      AC_HELP_STRING([--disable-compress-manpg],
-			     [do not compress sysstat manual pages]),
+	      AS_HELP_STRING([--disable-compress-manpg],[do not compress sysstat manual pages]),
 			     AUX_MPG=$enableval,AUX_MPG=yes)
 if test $AUX_MPG != "yes"; then
    COMPRESS_MANPG=n
@@ -566,8 +562,7 @@ AC_SUBST(COMPRESS_MANPG)
 # Check whether sa directory should be cleaned
 AC_MSG_CHECKING(whether system activity directory should be cleaned)
 AC_ARG_ENABLE(clean-sa-dir,
-	      AC_HELP_STRING([--enable-clean-sa-dir],
-			     [clean system activity directory]),
+	      AS_HELP_STRING([--enable-clean-sa-dir],[clean system activity directory]),
 			    AUX_CSD=$enableval,AUX_CSD=no)
 if test $AUX_CSD != "yes"; then
    CLEAN_SA_DIR=n
@@ -581,8 +576,7 @@ AC_SUBST(CLEAN_SA_DIR)
 # Start crontab
 AC_MSG_CHECKING(whether cron should start sar automatically)
 AC_ARG_ENABLE(install-cron,
-	      AC_HELP_STRING([--enable-install-cron],
-			     [install a crontab to start sar]),
+	      AS_HELP_STRING([--enable-install-cron],[install a crontab to start sar]),
 			     INSTALL_CRON=$enableval,INSTALL_CRON=n)
 if test $INSTALL_CRON != "yes"; then
    INSTALL_CRON=n
@@ -628,8 +622,7 @@ if test $INSTALL_CRON = "y"; then
 #  Check whether we should use the standard cron daemon
    AC_MSG_CHECKING(whether we should use the standard cron daemon)
    AC_ARG_ENABLE(use-crond,
-	         AC_HELP_STRING([--enable-use-crond],
-			        [use standard cron daemon]),
+	         AS_HELP_STRING([--enable-use-crond],[use standard cron daemon]),
 			        UCROND=$enableval,UCROND=no)
    if test $UCROND != "yes"; then
       USE_CROND=n
@@ -655,8 +648,7 @@ if test $INSTALL_CRON = "y"; then
 #  Check whether sadc should collect all possible activities
    AC_MSG_CHECKING(whether sadc should collect all possible activities)
    AC_ARG_ENABLE(collect-all,
-	         AC_HELP_STRING([--enable-collect-all],
-			        [collect all possible activities]),
+	         AS_HELP_STRING([--enable-collect-all],[collect all possible activities]),
 			        COLLECT_ALL=$enableval,COLLECT_ALL=n)
    if test $COLLECT_ALL != "yes"; then
       COLLECT_ALL=""
@@ -680,8 +672,7 @@ if test $INSTALL_CRON = "y"; then
 #  Check whether files should only be copied
    AC_MSG_CHECKING(whether files should only be copied)
    AC_ARG_ENABLE(copy-only,
-	         AC_HELP_STRING([--enable-copy-only],
-			        [only copy files when installing]),
+	         AS_HELP_STRING([--enable-copy-only],[only copy files when installing]),
 			        OCOPY=$enableval,OCOPY=no)
    if test $OCOPY != "yes"; then
       COPY_ONLY=n
@@ -714,8 +705,7 @@ AC_SUBST(COLLECT_ALL)
 # Check whether documentation should be installed
 AC_MSG_CHECKING(whether documentation should be installed)
 AC_ARG_ENABLE(documentation,
-	      AC_HELP_STRING([--disable-documentation],
-			     [do not install documentation]),
+	      AS_HELP_STRING([--disable-documentation],[do not install documentation]),
 			     AUX_DOC=$enableval,AUX_DOC=yes)
 if test $AUX_DOC != "no"; then
    AUX_DOC="yes"
@@ -733,8 +723,7 @@ AC_SUBST(mandir)
 # Check whether debug mode should be activated
 AC_MSG_CHECKING(whether debug mode should be activated)
 AC_ARG_ENABLE(debuginfo,
-	      AC_HELP_STRING([--enable-debuginfo],
-			     [enable debug output (--debuginfo option)]),
+	      AS_HELP_STRING([--enable-debuginfo],[enable debug output (--debuginfo option)]),
 			     WITH_DEBUG=yes ; DFLAGS="$DFLAGS -DDEBUG" , WITH_DEBUG=no)
 AC_MSG_RESULT($WITH_DEBUG)
 AC_SUBST(DFLAGS)
@@ -743,8 +732,7 @@ AC_SUBST(WITH_DEBUG)
 # Check whether object files should be stripped
 AC_MSG_CHECKING(whether object files should be stripped)
 AC_ARG_ENABLE(stripping,
-	      AC_HELP_STRING([--disable-stripping],
-			     [do not strip object files]),
+	      AS_HELP_STRING([--disable-stripping],[do not strip object files]),
 			     AUX_STRIP=$enableval,AUX_STRIP=yes)
 if test $AUX_STRIP != "no"; then
    AUX_STRIP="yes"
@@ -787,7 +775,8 @@ AC_CONFIG_FILES([man/iostat.1:man/iostat.in])	# File must be renamed
 AC_CONFIG_FILES([man/cifsiostat.1:man/cifsiostat.in])	# File must be renamed
 AC_CONFIG_FILES([tests/variables])
 
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
 
 echo "
    Sysstat version:		$PACKAGE_VERSION
