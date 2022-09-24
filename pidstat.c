@@ -30,6 +30,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <sys/utsname.h>
+#include <sys/wait.h>
 #include <regex.h>
 
 #ifdef HAVE_LINUX_SCHED_H
@@ -73,6 +74,7 @@ unsigned int actflag = 0;	/* Activity flag */
 
 struct sigaction alrm_act, int_act, chld_act;
 int signal_caught = 0;
+int status = 0;
 
 int dplaces_nr = -1;		/* Number of decimal places */
 
@@ -120,7 +122,18 @@ void alarm_handler(int sig)
  */
 void int_handler(int sig)
 {
-	signal_caught = 1;
+	int status_code;
+
+	signal_caught = TRUE;
+
+	if (sig == SIGCHLD) {
+		/*
+		 * SIGCHLD tells the parent process that it can now
+		 * get the exit status of the child via wait().
+		 */
+		wait(&status_code);
+		status = WEXITSTATUS(status_code);
+	}
 }
 
 /*
@@ -2830,5 +2843,9 @@ int main(int argc, char **argv)
 	/* Free structures */
 	sfree_pid(&pid_list, TRUE);
 
-	return 0;
+	/*
+	 * @status contains the exit code of the child process monitored with option -e,
+	 * or 0 otherwise.
+	 */
+	return status;
 }
