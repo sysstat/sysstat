@@ -1,6 +1,7 @@
 /*
  * mpstat: per-processor statistics
  * (C) 2000-2022 by Sebastien GODARD (sysstat <at> orange.fr)
+ * Copyright (c) 2022, Oracle and/or its affiliates.
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -134,7 +135,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+			  "[ -A ] [ -n ] [ -T ] [ -u ] [ -V ] [ -H ]\n"
 			  "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"));
 	exit(1);
@@ -1957,13 +1958,18 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
  * IN:
  * @dis_hdr	Set to TRUE if the header line must always be printed.
  * @rows	Number of rows of screen.
+ *
+ * OUT:
+ * @new_cpu_nr	Return 0 as default.
+ * 		Return new_cpu_nr (!=0) if physical vCPU hotplug occured.
  ***************************************************************************
  */
-void rw_mpstat_loop(int dis_hdr, int rows)
+int rw_mpstat_loop(int dis_hdr, int rows)
 {
 	struct stats_cpu *scc;
 	int i;
 	int curr = 1, dis = 1;
+	int new_cpu_nr = 0;
 	unsigned long lines = rows;
 
 	/* Read system uptime and CPU stats */
@@ -2063,7 +2069,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 	if (sigint_caught)
 		/* SIGINT signal caught during first interval: Exit immediately */
-		return;
+		return 0;
 
 	do {
 		/*
@@ -2131,6 +2137,14 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 				curr ^= 1;
 			}
 		}
+
+		/* -H option is given and vCPU physical hotplug occured */
+		if (USE_OPTION_H(flags)) {
+			new_cpu_nr = get_cpu_nr(~0, TRUE);
+			if (new_cpu_nr > cpu_nr) {
+				return new_cpu_nr;
+			}
+		}
 	}
 	while (count);
 
@@ -2140,6 +2154,52 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	}
 	else {
 		write_stats_avg(curr, dis_hdr);
+	}
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Detect physical vCPU hotplug and call rw_mpstat_loop to display stats
+ *
+ * IN:
+ * @dis_hdr	Set to TRUE if the header line must always be printed.
+ * @rows	Number of rows of screen.
+ ***************************************************************************
+ */
+void mpstat_loop(int dis_hdr, int rows)
+{
+	int new_cpu_nr = 0;
+
+	while (1) {
+		/* Main loop for reading-writing stats */
+		new_cpu_nr = rw_mpstat_loop(dis_hdr, rows);
+
+		/* Handle vCPU physical hotplug */
+		if (new_cpu_nr == 0) {
+			return;
+		}
+		else {
+			/* Update the highest processor number */
+			cpu_nr = new_cpu_nr;
+
+		        /* Recalculate number of interrupts per processor */
+		        irqcpu_nr = get_irqcpu_nr(INTERRUPTS, NR_IRQS, cpu_nr) +
+					NR_IRQCPU_PREALLOC;
+		        /* Recalculate number of soft interrupts per processor */
+			softirqcpu_nr = get_irqcpu_nr(SOFTIRQS, NR_IRQS, cpu_nr) +
+					NR_IRQCPU_PREALLOC;
+
+			/*
+			 * Reallocate cpu stats structs :
+			 * global, proc0, proc1, ..., proc$(prev_cpu_nr-1).
+			 * global, proc0, proc1, ..., proc$(prev_cpu_nr-1), ..., proc$(cpu_nr-1).
+			 */
+			salloc_mp_struct(cpu_nr + 1, FALSE);
+
+			/* Get NUMA node placement */
+			node_nr = get_node_placement(cpu_nr, cpu_per_node, cpu2node);
+		}
 	}
 }
 
@@ -2299,6 +2359,11 @@ int main(int argc, char **argv)
 					print_version();
 					break;
 
+				case 'H':
+					/* Display physically hotplugged vCPU also */
+					flags |= F_OPTION_H;
+					break;
+
 				default:
 					usage(argv[0]);
 				}
@@ -2401,7 +2466,7 @@ int main(int argc, char **argv)
 			 DISPLAY_JSON_OUTPUT(flags));
 
 	/* Main loop */
-	rw_mpstat_loop(dis_hdr, rows);
+	mpstat_loop(dis_hdr, rows);
 
 	/* Free structures */
 	sfree_mp_struct();
