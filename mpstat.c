@@ -175,75 +175,81 @@ void int_handler(int sig)
  * IN:
  * @nr_cpus	Number of CPUs. This is the real number of available CPUs + 1
  * 		because we also have to allocate a structure for CPU 'all'.
+ * @reset	reset the memory only when set to TRUE
  ***************************************************************************
  */
-void salloc_mp_struct(int nr_cpus)
+void salloc_mp_struct(int nr_cpus, int reset)
 {
 	int i;
 
 	for (i = 0; i < 3; i++) {
 
-		if ((st_cpu[i] = (struct stats_cpu *) malloc(STATS_CPU_SIZE * nr_cpus))
+		if ((st_cpu[i] = (struct stats_cpu *) realloc(st_cpu[i], STATS_CPU_SIZE * nr_cpus))
 		    == NULL) {
-			perror("malloc");
+			perror("realloc");
 			exit(4);
 		}
-		memset(st_cpu[i], 0, STATS_CPU_SIZE * nr_cpus);
 
-		if ((st_node[i] = (struct stats_cpu *) malloc(STATS_CPU_SIZE * nr_cpus))
+		if ((st_node[i] = (struct stats_cpu *) realloc(st_node[i], STATS_CPU_SIZE * nr_cpus))
 		    == NULL) {
-			perror("malloc");
+			perror("realloc");
 			exit(4);
 		}
-		memset(st_node[i], 0, STATS_CPU_SIZE * nr_cpus);
 
-		if ((st_irq[i] = (struct stats_global_irq *) malloc(STATS_GLOBAL_IRQ_SIZE * nr_cpus))
+		if ((st_irq[i] = (struct stats_global_irq *) realloc(st_irq[i], STATS_GLOBAL_IRQ_SIZE * nr_cpus))
 		    == NULL) {
-			perror("malloc");
+			perror("realloc");
 			exit(4);
 		}
-		memset(st_irq[i], 0, STATS_GLOBAL_IRQ_SIZE * nr_cpus);
 
-		if ((st_irqcpu[i] = (struct stats_irqcpu *) malloc(STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr))
+		if ((st_irqcpu[i] = (struct stats_irqcpu *) realloc(st_irqcpu[i], STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr))
 		    == NULL) {
-			perror("malloc");
+			perror("realloc");
 			exit(4);
 		}
-		memset(st_irqcpu[i], 0, STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr);
 
-		if ((st_softirqcpu[i] = (struct stats_irqcpu *) malloc(STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr))
+		if ((st_softirqcpu[i] = (struct stats_irqcpu *) realloc(st_softirqcpu[i], STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr))
 		     == NULL) {
-			perror("malloc");
+			perror("realloc");
 			exit(4);
 		}
-		memset(st_softirqcpu[i], 0, STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr);
 	}
 
-	if ((cpu_bitmap = (unsigned char *) malloc((nr_cpus >> 3) + 1)) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
-	memset(cpu_bitmap, 0, (nr_cpus >> 3) + 1);
-
-	if ((node_bitmap = (unsigned char *) malloc((nr_cpus >> 3) + 1)) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
-	memset(node_bitmap, 0, (nr_cpus >> 3) + 1);
-
-	if ((cpu_per_node = (int *) malloc(sizeof(int) * nr_cpus)) == NULL) {
-		perror("malloc");
+	if ((cpu_bitmap = (unsigned char *) realloc(cpu_bitmap, (nr_cpus >> 3) + 1)) == NULL) {
+		perror("realloc");
 		exit(4);
 	}
 
-	if ((cpu2node = (int *) malloc(sizeof(int) * nr_cpus)) == NULL) {
-		perror("malloc");
+	if ((node_bitmap = (unsigned char *) realloc(node_bitmap, (nr_cpus >> 3) + 1)) == NULL) {
+		perror("realloc");
 		exit(4);
 	}
 
-	if ((st_cpu_topology = (struct cpu_topology *) malloc(sizeof(struct cpu_topology) * nr_cpus)) == NULL) {
-		perror("malloc");
+	if ((cpu_per_node = (int *) realloc(cpu_per_node, sizeof(int) * nr_cpus)) == NULL) {
+		perror("realloc");
 		exit(4);
+	}
+
+	if ((cpu2node = (int *) realloc(cpu2node, sizeof(int) * nr_cpus)) == NULL) {
+		perror("realloc");
+		exit(4);
+	}
+
+	if ((st_cpu_topology = (struct cpu_topology *) realloc(st_cpu_topology, sizeof(struct cpu_topology) * nr_cpus)) == NULL) {
+		perror("realloc");
+		exit(4);
+	}
+
+	if (reset == TRUE) {
+		for (i = 0; i < 3; i++) {
+			memset(st_cpu[i], 0, STATS_CPU_SIZE * nr_cpus);
+			memset(st_node[i], 0, STATS_CPU_SIZE * nr_cpus);
+			memset(st_irq[i], 0, STATS_GLOBAL_IRQ_SIZE * nr_cpus);
+			memset(st_irqcpu[i], 0, STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr);
+			memset(st_softirqcpu[i], 0, STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr);
+		}
+		memset(cpu_bitmap, 0, (nr_cpus >> 3) + 1);
+		memset(node_bitmap, 0, (nr_cpus >> 3) + 1);
 	}
 }
 
@@ -2175,7 +2181,7 @@ int main(int argc, char **argv)
 	 * cpu_nr: a value of 2 means there are 2 processors (0 and 1).
 	 * In this case, we have to allocate 3 structures: global, proc0 and proc1.
 	 */
-	salloc_mp_struct(cpu_nr + 1);
+	salloc_mp_struct(cpu_nr + 1, TRUE);
 
 	/* Get NUMA node placement */
 	node_nr = get_node_placement(cpu_nr, cpu_per_node, cpu2node);
