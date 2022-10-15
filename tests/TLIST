@@ -449,6 +449,7 @@ NOTES:
 03050	LC_ALL=C TZ=GMT ./mpstat -T -P ALL 1 2 > tests/out.mpstat-T.tmp
 03060	LC_ALL=C TZ=GMT ./mpstat -o JSON -A 1 1 > tests/out.mpstat-A-JSON.tmp
 03070	LC_ALL=C TZ=GMT ./mpstat -o JSON -T -P ALL > tests/out.mpstat-T-JSON.tmp
+03080	LC_ALL=C TZ=GMT ./mpstat -H -P ALL 1 > tests/out.mpstat-H.tmp
 
 =====	Tests mpstat error cases
 03100	LC_ALL=C ./mpstat -1 2>&1 | grep "Usage:" >/dev/null

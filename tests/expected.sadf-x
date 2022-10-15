@@ -2202,7 +2202,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			</timestamp>
 			<timestamp date="2019-04-18" time="13:54:35" tz="UTC" interval="31">
 				<cpu-load>
-					<cpu number="all" usr="2.47" nice="17.21" sys="2.21" iowait="0.77" steal="0.00" irq="0.96" soft="0.22" guest="0.00" gnice="0.00" idle="76.16"/>
+					<cpu number="all" usr="2.67" nice="19.49" sys="2.13" iowait="0.97" steal="0.00" irq="1.18" soft="0.21" guest="0.00" gnice="0.00" idle="73.34"/>
 					<cpu number="0" usr="2.71" nice="0.03" sys="2.16" iowait="0.00" steal="0.00" irq="0.32" soft="0.64" guest="0.00" gnice="0.00" idle="94.14"/>
 					<cpu number="1" usr="2.85" nice="0.00" sys="4.28" iowait="0.00" steal="0.00" irq="0.68" soft="0.19" guest="0.00" gnice="0.00" idle="91.99"/>
 					<cpu number="2" usr="2.25" nice="0.03" sys="1.51" iowait="0.68" steal="0.00" irq="0.23" soft="0.13" guest="0.00" gnice="0.00" idle="95.18"/>
@@ -2212,7 +2212,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<cpu number="6" usr="2.41" nice="0.00" sys="2.03" iowait="0.16" steal="0.00" irq="0.48" soft="0.10" guest="0.00" gnice="0.00" idle="94.82"/>
 					<cpu number="7" usr="2.89" nice="0.00" sys="0.74" iowait="0.06" steal="0.00" irq="0.06" soft="0.06" guest="0.00" gnice="0.00" idle="96.18"/>
 					<cpu number="8" usr="4.15" nice="41.49" sys="4.15" iowait="4.15" steal="0.00" irq="4.15" soft="0.41" guest="0.00" gnice="0.00" idle="41.49"/>
-					<cpu number="9" usr="4.15" nice="41.49" sys="4.15" iowait="4.15" steal="0.00" irq="4.15" soft="0.41" guest="0.00" gnice="0.00" idle="41.49"/>
+					<cpu number="9" usr="5.35" nice="53.52" sys="2.82" iowait="4.79" steal="0.00" irq="5.07" soft="0.28" guest="0.00" gnice="0.00" idle="28.17"/>
 				</cpu-load>
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 				<interrupts>

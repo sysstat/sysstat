@@ -929,7 +929,7 @@
 13:54:35 UTC; CPU; 6; %usr; 17865; 17940; %nice; 60354; 60354; %sys; 10138; 10201; %iowait; 10825; 10830; %steal; 0; 0; %irq; 3499; 3514; %soft; 1107; 1110; %guest; 0; 0; %gnice; 0; 0; %idle; 613356; 616306;
 13:54:35 UTC; CPU; 7; %usr; 16279; 16369; %nice; 100925; 100925; %sys; 9075; 9098; %iowait; 7292; 7294; %steal; 0; 0; %irq; 2102; 2104; %soft; 977; 979; %guest; 0; 0; %gnice; 0; 0; %idle; 580654; 583650;
 13:54:35 UTC; CPU; 8; %usr; 100; 200; %nice; 1000; 2000; %sys; 100; 200; %iowait; 100; 200; %steal; 0; 0; %irq; 100; 200; %soft; 10; 20; %guest; 0; 0; %gnice; 0; 0; %idle; 1000; 2000;
-13:54:35 UTC; CPU; 9; %usr; 200; 300; %nice; 2000; 3000; %sys; 200; 300; %iowait; 200; 300; %steal; 0; 0; %irq; 200; 300; %soft; 20; 30; %guest; 0; 0; %gnice; 0; 0; %idle; 2000; 3000;
+13:54:35 UTC; CPU; 9; %usr; 200; 390; %nice; 2000; 3900; %sys; 200; 300; %iowait; 200; 370; %steal; 0; 0; %irq; 200; 380; %soft; 20; 30; %guest; 0; 0; %gnice; 0; 0; %idle; 2000; 3000;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PCSW; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; proc/s; 46972; 47083; cswch/s; 130465866; 132598184;

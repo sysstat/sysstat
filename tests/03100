@@ -1,1 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
 LC_ALL=C ./mpstat -1 2>&1 | grep "Usage:" >/dev/null
