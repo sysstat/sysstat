@@ -258,6 +258,8 @@ int check_dir
 	(char *);
 
 #ifndef SOURCE_SADC
+void check_overflow
+	(size_t, size_t, size_t);
 int count_bits
 	(void *, int);
 int count_csvalues
