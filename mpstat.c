@@ -176,10 +176,12 @@ void int_handler(int sig)
  * IN:
  * @nr_cpus	Number of CPUs. This is the real number of available CPUs + 1
  * 		because we also have to allocate a structure for CPU 'all'.
- * @reset	Reset the memory only when set to TRUE.
+ * @pos		Indicate which structures should be initialized. When @pos is
+ *		non zero, it means that only the additional, newly allocated
+ *		structures should be initialized.
  ***************************************************************************
  */
-void salloc_mp_struct(int nr_cpus, int reset)
+void salloc_mp_struct(int nr_cpus, int pos)
 {
 	int i;
 
@@ -245,14 +247,14 @@ void salloc_mp_struct(int nr_cpus, int reset)
 		exit(4);
 	}
 
-	if (reset == TRUE) {
-		for (i = 0; i < 3; i++) {
-			memset(st_cpu[i], 0, STATS_CPU_SIZE * nr_cpus);
-			memset(st_node[i], 0, STATS_CPU_SIZE * nr_cpus);
-			memset(st_irq[i], 0, STATS_GLOBAL_IRQ_SIZE * nr_cpus);
-			memset(st_irqcpu[i], 0, STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr);
-			memset(st_softirqcpu[i], 0, STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr);
-		}
+	for (i = 0; i < 3; i++) {
+		memset(st_cpu[i] + pos, 0, STATS_CPU_SIZE * (nr_cpus - pos));
+		memset(st_node[i] + pos, 0, STATS_CPU_SIZE * (nr_cpus - pos));
+		memset(st_irq[i] + pos, 0, STATS_GLOBAL_IRQ_SIZE * (nr_cpus - pos));
+		memset(st_irqcpu[i] + pos, 0, STATS_IRQCPU_SIZE * (nr_cpus - pos) * irqcpu_nr);
+		memset(st_softirqcpu[i] + pos, 0, STATS_IRQCPU_SIZE * (nr_cpus - pos) * softirqcpu_nr);
+	}
+	if (!pos) {
 		memset(cpu_bitmap, 0, (nr_cpus >> 3) + 1);
 		memset(node_bitmap, 0, (nr_cpus >> 3) + 1);
 	}
@@ -2144,8 +2146,24 @@ int rw_mpstat_loop(int dis_hdr, int rows)
 		if (count && USE_OPTION_H(flags)) {
 			/* Check if a vCPU has been physically hotplugged */
 			new_cpu_nr = get_cpu_nr(~0, TRUE);
-			if (new_cpu_nr > cpu_nr)
-				return new_cpu_nr;
+			if (new_cpu_nr > cpu_nr) {
+
+				/* Recalculate number of interrupts per processor */
+				irqcpu_nr = get_irqcpu_nr(INTERRUPTS, NR_IRQS, new_cpu_nr) +
+				NR_IRQCPU_PREALLOC;
+				/* Recalculate number of soft interrupts per processor */
+				softirqcpu_nr = get_irqcpu_nr(SOFTIRQS, NR_IRQS, new_cpu_nr) +
+				NR_IRQCPU_PREALLOC;
+
+				/* Reallocate cpu stats structures */
+				salloc_mp_struct(new_cpu_nr + 1, cpu_nr + 1);
+
+				/* Get NUMA node placement */
+				node_nr = get_node_placement(new_cpu_nr, cpu_per_node, cpu2node);
+
+				/* Update the highest processor number */
+				cpu_nr = new_cpu_nr;
+			}
 		}
 	}
 	while (count);
@@ -2158,49 +2176,6 @@ int rw_mpstat_loop(int dis_hdr, int rows)
 		write_stats_avg(curr, dis_hdr);
 	}
 	return 0;
-}
-
-/*
- ***************************************************************************
- * Start mpstat loop until end of count or when a vCPU has been physically
- * hotplugged.
- *
- * IN:
- * @dis_hdr	Set to TRUE if the header line must always be printed.
- * @rows	Number of rows of screen.
- ***************************************************************************
- */
-void mpstat_loop(int dis_hdr, int rows)
-{
-	int new_cpu_nr = 1;
-
-	while (new_cpu_nr) {
-		/* Main loop for reading-writing stats */
-		new_cpu_nr = rw_mpstat_loop(dis_hdr, rows);
-
-		/* Handle vCPU physical hotplug */
-		if (new_cpu_nr) {
-			/* Update the highest processor number */
-			cpu_nr = new_cpu_nr;
-
-		        /* Recalculate number of interrupts per processor */
-		        irqcpu_nr = get_irqcpu_nr(INTERRUPTS, NR_IRQS, cpu_nr) +
-				    NR_IRQCPU_PREALLOC;
-		        /* Recalculate number of soft interrupts per processor */
-			softirqcpu_nr = get_irqcpu_nr(SOFTIRQS, NR_IRQS, cpu_nr) +
-					NR_IRQCPU_PREALLOC;
-
-			/*
-			 * Reallocate cpu stats structs :
-			 * global, proc0, proc1, ..., proc$(prev_cpu_nr-1).
-			 * global, proc0, proc1, ..., proc$(prev_cpu_nr-1), ..., proc$(cpu_nr-1).
-			 */
-			salloc_mp_struct(cpu_nr + 1, FALSE);
-
-			/* Get NUMA node placement */
-			node_nr = get_node_placement(cpu_nr, cpu_per_node, cpu2node);
-		}
-	}
 }
 
 /*
@@ -2241,7 +2216,7 @@ int main(int argc, char **argv)
 	 * cpu_nr: a value of 2 means there are 2 processors (0 and 1).
 	 * In this case, we have to allocate 3 structures: global, proc0 and proc1.
 	 */
-	salloc_mp_struct(cpu_nr + 1, TRUE);
+	salloc_mp_struct(cpu_nr + 1, 0);
 
 	/* Get NUMA node placement */
 	node_nr = get_node_placement(cpu_nr, cpu_per_node, cpu2node);
@@ -2466,7 +2441,7 @@ int main(int argc, char **argv)
 			 DISPLAY_JSON_OUTPUT(flags));
 
 	/* Main loop */
-	mpstat_loop(dis_hdr, rows);
+	rw_mpstat_loop(dis_hdr, rows);
 
 	/* Free structures */
 	sfree_mp_struct();
