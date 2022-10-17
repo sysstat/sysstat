@@ -1964,13 +1964,9 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
  * IN:
  * @dis_hdr	Set to TRUE if the header line must always be printed.
  * @rows	Number of rows of screen.
- *
- * RETURNS:
- * Total number of physical CPUs if a least one new (virtual) CPU has been
- * hotplugged, and 0 otherwise.
  ***************************************************************************
  */
-int rw_mpstat_loop(int dis_hdr, int rows)
+void rw_mpstat_loop(int dis_hdr, int rows)
 {
 	struct stats_cpu *scc;
 	int i, new_cpu_nr;
@@ -2074,7 +2070,7 @@ int rw_mpstat_loop(int dis_hdr, int rows)
 
 	if (sigint_caught)
 		/* SIGINT signal caught during first interval: Exit immediately */
-		return 0;
+		return;
 
 	do {
 		/*
@@ -2175,7 +2171,6 @@ int rw_mpstat_loop(int dis_hdr, int rows)
 	else {
 		write_stats_avg(curr, dis_hdr);
 	}
-	return 0;
 }
 
 /*
