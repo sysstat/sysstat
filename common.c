@@ -1655,4 +1655,29 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 
 	return 0;
 }
+
+/*
+ ***************************************************************************
+ * Check if the multiplication of the 3 values may be greater than UINT_MAX.
+ *
+ * IN:
+ * @val1	First value.
+ * @val2	Second value.
+ * @val3	Third value.
+ ***************************************************************************
+ */
+void check_overflow(size_t val1, size_t val2, size_t val3)
+{
+	if ((unsigned long long) val1 *
+	    (unsigned long long) val2 *
+	    (unsigned long long) val3 > UINT_MAX) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Overflow detected (%llu). Aborting...\n",
+			__FUNCTION__,
+			(unsigned long long) val1 * (unsigned long long) val2 *	(unsigned long long) val3);
+#endif
+	exit(4);
+	}
+}
+
 #endif /* SOURCE_SADC undefined */
