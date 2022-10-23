@@ -258,10 +258,10 @@ int get_wwnid_from_pretty
 	(char *, unsigned long long *, unsigned int *);
 int check_dir
 	(char *);
+void check_overflow
+	(unsigned long long, unsigned long long, unsigned long long);
 
 #ifndef SOURCE_SADC
-void check_overflow
-	(size_t, size_t, size_t);
 int count_bits
 	(void *, int);
 int count_csvalues
