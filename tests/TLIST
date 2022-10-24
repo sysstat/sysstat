@@ -175,6 +175,7 @@ NOTES:
 =====	Testing ill-formed datafiles
 00730	LC_ALL=C ./sadf -H $file 2>&1 | grep "Invalid system" >/dev/null && echo "OK" || exit 1;
 00732	LC_ALL=C ./sadf -H tests/data-12.6.0-file_act-types_nr-SARerr >/dev/null && ./sar -f tests/data-12.6.0-file_act-types_nr-SARerr 2>&1 | grep "Invalid system" >/dev/null
+00734	LC_ALL=C ./sadf -H tests/data-12.7.1-A_IRQ_overflow >/dev/null && ./sar -f tests/data-12.7.1-A_IRQ_overflow -A 2>&1 | grep "Aborting" >/dev/null
 
 =====	Reading datafile with non printable chrs in comment (created using hexedit)
 00740	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
