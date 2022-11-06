@@ -1,0 +1,637 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the sysstat package.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sysstat 12.5.6\n"
+"Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
+"POT-Creation-Date: 2022-02-27 08:05+0100\n"
+"PO-Revision-Date: 2022-06-18 08:43+0200\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1\n"
+
+#: cifsiostat.c:75 iostat.c:89 mpstat.c:133 sar.c:107 tapestat.c:104
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
+msgstr "გამოყენება: %s [ პარამეტრები ] [ <ინტერვალი> [ <რაოდენობა> ] ]\n"
+
+#: cifsiostat.c:79
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+
+#: cifsiostat.c:83
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+
+#: common.c:83
+#, c-format
+msgid "sysstat version %s\n"
+msgstr "sysstat-ის ვერსია %s\n"
+
+#: count.c:118 ioconf.c:479 rd_stats.c:86 sa_common.c:1786 sadc.c:741
+#: sadc.c:804
+#, c-format
+msgid "Cannot open %s: %s\n"
+msgstr "გახსნის შეცდომა: %s: %s\n"
+
+#: count.c:172
+#, c-format
+msgid "Cannot handle so many processors!\n"
+msgstr "ვერ უმკლავდება ამდენ პროცესორს!\n"
+
+#: iostat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ] [ --debuginfo ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <საქაღალდე> ] [ -j { ID | ჭდე | ბილიკი | UUID | ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <ჯგუფის_სახელი> ] [ -p [ <მოწყობილობა> [,...] | ყველა ] ]\n"
+"[ <მოწყობილობა> [...] | ყველა ] [ --debuginfo ]\n"
+
+#: iostat.c:99
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+"[ <device> [...] | ALL ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+"[ { -f | +f } <directory> ] [ -j { ID | ჭდე | ბილიკი | UUID | ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ [ -H ] -g <ჯგუფის_სახელი> ] [ -p [ <მოწყობილობა> [,...] | ყველა ] ]\n"
+"[ <მოწყობილობა> [...] | ყველა]\n"
+
+#: iostat.c:2177 sa_common.c:2334
+#, c-format
+msgid "Invalid type of persistent device name\n"
+msgstr "მუდმივი მოწყობილობის სახელის არასწორი ტიპი\n"
+
+#: mpstat.c:136
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+"[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -A ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+"[ -I { ჯამი | CPU | SCPU | ALL } ] [ -N { <კვანძების_სია> | ყველა } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_სია> | ყველა } ]\n"
+
+#: mpstat.c:1757 pidstat.c:2292 sar.c:383
+msgid "Average:"
+msgstr "საშუალო:"
+
+#: pidstat.c:89
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
+msgstr "გამოყენება: %s [ პარამეტრები ] [ <ინტერვალი> [ <რაოდენობა> ] ] [ -e <პროგრამა> <არგუმენტები> ]\n"
+
+#: pidstat.c:92
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <მომხმრებელი> ] ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <ბრძანება> ] [ -G <პროცესის_სახელი> ]\n"
+"[ -p { <pid> [,...] | თვითონ | ყველა } ] [ -T { ამოცანა | შვილი | ყველა } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+
+#: pidstat.c:211 sa_common.c:369
+#, c-format
+msgid "Requested activities not available\n"
+msgstr "მოთხოვნილი სტატისტიკა მიუწვდომელია\n"
+
+#: pr_stats.c:2682 pr_stats.c:2689 pr_stats.c:2795 pr_stats.c:2842
+msgid "Summary:"
+msgstr "შეჯამება:"
+
+#: rd_stats.c:425
+#, c-format
+msgid "Cannot read %s\n"
+msgstr "%s-ის წაკითხვის სეცდომა\n"
+
+#: sa_common.c:302
+#, c-format
+msgid "File created by sar/sadc from sysstat version %d.%d.%d"
+msgstr "ფაილი შექმნილია sar/sadc-ის ვერსიის %d.%d.%d მიერ"
+
+#: sa_common.c:335
+#, c-format
+msgid "Invalid system activity file: %s\n"
+msgstr "სისტემის აქტივობის არასწორი ფაილი: %s\n"
+
+#: sa_common.c:345
+#, c-format
+msgid "Current sysstat version cannot read the format of this file (%#x)\n"
+msgstr "Sysstat-ის მიმდინარე ფაილს ამ ფაილის ფორმატის წაკითხვა არ შეუძლია(%#x)\n"
+
+#: sa_common.c:349
+#, c-format
+msgid ""
+"Try to convert it to current format. Enter:\n"
+"\n"
+msgstr ""
+"მიმდინარე ფორმატში გადაყვანის მცდელობა. შეიყვანეთ:\n"
+"\n"
+
+#: sa_common.c:352
+#, c-format
+msgid "You should then be able to read the new file created (%s.new)\n"
+msgstr "გადაყვანის შემდეგ შეგეძლებათ ახალი ფაილის წაკითხვა (%s.new)\n"
+
+#: sa_common.c:1368
+#, c-format
+msgid "Error while reading system activity file: %s\n"
+msgstr "სისტემური აქტივობის ფაილიდან კითხვის შეცდომა: %s\n"
+
+#: sa_common.c:1378
+#, c-format
+msgid "End of system activity file unexpected\n"
+msgstr "სისტემური აქტივობის ფაილის მოულოდნელი დასასრული\n"
+
+#: sa_common.c:1789
+#, c-format
+msgid "Please check if data collecting is enabled\n"
+msgstr "შეამოწმეთ, მონაცემების შეგროვება ჩართულია, თუ არა\n"
+
+#: sa_common.c:2124
+#, c-format
+msgid "Requested activities not available in file %s\n"
+msgstr "მოთხოვნილი სტატისტიკა მიუწვდომელია ფაილისთვის %s\n"
+
+#: sa_conv.c:99
+#, c-format
+msgid "Cannot convert the format of this file\n"
+msgstr "ფაილის ფორმატის გადაყვანის შეცდომა\n"
+
+#: sa_conv.c:383
+#, c-format
+msgid ""
+"\n"
+"CPU activity not found in file. Aborting...\n"
+msgstr ""
+"\n"
+"ფაილში CPU-ის აქტივობები ნაპოვნი არაა. სამუშაოდ დასრულება...\n"
+
+#: sa_conv.c:406
+#, c-format
+msgid ""
+"\n"
+"Invalid data found. Aborting...\n"
+msgstr ""
+"\n"
+"ნაპოვნი მონაცემები არასწორია. მუშაობის დასრულება...\n"
+
+#: sa_conv.c:1927
+#, c-format
+msgid "Statistics:\n"
+msgstr "სტატისტიკა:\n"
+
+#: sa_conv.c:2028
+#, c-format
+msgid ""
+"\n"
+"File format already up-to-date\n"
+msgstr ""
+"\n"
+"ფაილის ფორმატი უკვე უახლესია\n"
+
+#: sa_conv.c:2040
+#, c-format
+msgid "HZ: Using current value: %lu\n"
+msgstr "HZ: მიმდინარე მნიშვნელობა: %lu\n"
+
+#: sa_conv.c:2071
+#, c-format
+msgid "File successfully converted to sysstat format version %s\n"
+msgstr "ფაილი წარმატებით იქნება გადაყვანილი sysstat-ის ვერსიაში %s\n"
+
+#: sadc.c:98
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
+msgstr "გამოყენება: %s [ პარამეტრები ] [ <ინტერვალი> [ <რაოდენობა> ] ] [ <გამოსატანიფაილი> ]\n"
+
+#: sadc.c:101
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
+"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -C <კომენტარი> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
+"[ -S { INT | დისკი | IPV6 | კვება | SNMP | XDISK | ყველა | XALL } ]\n"
+
+#: sadc.c:272
+#, c-format
+msgid "Cannot write data to system activity file: %s\n"
+msgstr "მონაცემების სისტემური აქტივობის ფაილში ჩაწერის შეცდომა: %s\n"
+
+#: sadc.c:1028
+#, c-format
+msgid "Cannot append data to that file (%s)\n"
+msgstr "ფაილისთვის (%s) მონაცემების ბოლოში მიწერის შეცდომა\n"
+
+#: sadf.c:105
+#, c-format
+msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
+msgstr "გამოყენება: %s [ პარამეტრები ] [ <ინტერვალი> [ <რაოდენობა> ] ] [ <მონაცემებისფაილი> | -[0-9]+ ]\n"
+
+#: sadf.c:108
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
+"[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+"[ -- <sar_options> ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+"[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ყველა } ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
+"[ -s [ <სს:წწ:წწ]> ] ] [ -e [ <სს:წწ[:წწ]> ] ]\n"
+"[ -- <sar_options> ]\n"
+
+#: sadf.c:1865
+#, c-format
+msgid "PCP support not compiled in\n"
+msgstr "PCP-ის მხარდაჭერა გამორთულია აგების დროს\n"
+
+#: sadf_misc.c:1216
+#, c-format
+msgid "System activity data file: %s (%#x)\n"
+msgstr "სისტემის აქტივობის მნაცემების ფაილები: %s (%#x)\n"
+
+#: sadf_misc.c:1225
+#, c-format
+msgid "Genuine sa datafile: %s (%x)\n"
+msgstr "მონაცემების SA ფაილი: %s (%x)\n"
+
+#: sadf_misc.c:1226
+msgid "no"
+msgstr "არა"
+
+#: sadf_misc.c:1226
+msgid "yes"
+msgstr "დიახ"
+
+#: sadf_misc.c:1229
+#, c-format
+msgid "Host: "
+msgstr "ჰოსტი: "
+
+#: sadf_misc.c:1239
+#, c-format
+msgid "File date: %s\n"
+msgstr "ფაილის თარიღი: %s\n"
+
+#: sadf_misc.c:1242
+#, c-format
+msgid "File time: "
+msgstr "ფაილის დრო: "
+
+#: sadf_misc.c:1247
+#, c-format
+msgid "Timezone: %s\n"
+msgstr "დროის სარტყელი: %s\n"
+
+#: sadf_misc.c:1250
+#, c-format
+msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgstr "ფაილის შემადგენლობა: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+
+#: sadf_misc.c:1255
+#, c-format
+msgid "Size of a long int: %d\n"
+msgstr "Long int-ის ზომა: %d\n"
+
+#: sadf_misc.c:1257
+#, c-format
+msgid "Number of activities in file: %u\n"
+msgstr "აქტივობების რიცხვი ფაილში: %u\n"
+
+#: sadf_misc.c:1259
+#, c-format
+msgid "Extra structures available: %c\n"
+msgstr "ხელმისაწვდომია დამატებითი სტრუქტურები: %c\n"
+
+#: sadf_misc.c:1262
+#, c-format
+msgid "List of activities:\n"
+msgstr "ქმედებების სია:\n"
+
+#: sadf_misc.c:1273
+msgid "Unknown activity"
+msgstr "უცნობი აქტივობა"
+
+#: sadf_misc.c:1281
+#, c-format
+msgid " \t[Unknown format]"
+msgstr "\t[უცნობი ფორმატი]"
+
+#: sar.c:122
+#, c-format
+msgid ""
+"Options are:\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
+"[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
+"[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
+"[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
+"[ -q [ <keyword> [,...] | ALL ] ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
+"[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
+"[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ მიმაგრება ] ] [ -H ] [ -h ]\n"
+"[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ყველა ] ] [ -V ]\n"
+"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
+"[ -I { <int_list> | ჯამი | ყველა } ] [ -P { <cpu_list> | ყველა } ]\n"
+"[ -m { <keyword> [,...] | ყველა } ] [ -n { <keyword> [,...] | ყველა } ]\n"
+"[ -q [ <keyword> [,...] | ყველა ] ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
+"[ -j { SID | ID | ჭდე | ბილიკი | UUID | ... } ]\n"
+"[ -f [ <ფაილის სახელი> ] | -o [ <ფაილის სახელი> ] | -[0-9]+ ]\n"
+"[ -i <ინტერვალი> ] [ -s [ <სს:წწ[:წწ]> ] ] [ -e [ <სს:წწ[:წწ]> ] ]\n"
+
+#: sar.c:149
+#, c-format
+msgid "Main options and reports (report name between square brackets):\n"
+msgstr "ძირითადი ვარიანტები და ანგარიშები (მოხსენების სახელი კვადრატულ ფრჩხილებს შორის):\n"
+
+#: sar.c:150
+#, c-format
+msgid "\t-B\tPaging statistics [A_PAGE]\n"
+msgstr "\t-B\\სვაპის სტატისტიკა [A_PAGE]\n"
+
+#: sar.c:151
+#, c-format
+msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
+msgstr "\t-b\tI/O და გადაწერის სიჩქარის სტატისტიკა [A_IO]\n"
+
+#: sar.c:152
+#, c-format
+msgid "\t-d\tBlock devices statistics [A_DISK]\n"
+msgstr "\t-d\tბლოკური მოწყობილობების სტატისტიკა [A_DISK]\n"
+
+#: sar.c:153
+#, c-format
+msgid "\t-F [ MOUNT ]\n"
+msgstr "\t-F [ მიმაგრებისწერტილი ]\n"
+
+#: sar.c:154
+#, c-format
+msgid "\t\tFilesystems statistics [A_FS]\n"
+msgstr "\t\tფაილური სისტემების სტატისტიკა [A_FS]\n"
+
+#: sar.c:155
+#, c-format
+msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
+msgstr "\t-H\tHugepage-ების გამოყენების სტატისტიკა [A_HUGE]\n"
+
+#: sar.c:156
+#, c-format
+msgid ""
+"\t-I { <int_list> | SUM | ALL }\n"
+"\t\tInterrupts statistics [A_IRQ]\n"
+msgstr ""
+"\t-I { <int_list> | SUM | ყველა }\n"
+"\t\\წყვეტების სტატისტიკა [A_IRQ]\n"
+
+#: sar.c:158
+#, c-format
+msgid ""
+"\t-m { <keyword> [,...] | ALL }\n"
+"\t\tPower management statistics [A_PWR_...]\n"
+"\t\tKeywords are:\n"
+"\t\tCPU\tCPU instantaneous clock frequency\n"
+"\t\tFAN\tFans speed\n"
+"\t\tFREQ\tCPU average clock frequency\n"
+"\t\tIN\tVoltage inputs\n"
+"\t\tTEMP\tDevices temperature\n"
+"\t\tUSB\tUSB devices plugged into the system\n"
+msgstr ""
+"\t-m { <keyword> [,...] | ყველა }\n"
+"\t\tკვების მართვის სტატისტიკა [A_PWR_...]\n"
+"\t\tსაკვანძო სიტყვებია:\n"
+"\t\tCPU\tCPU-ის მომენტალური სიხშირე\n"
+"\t\tFAN\tვენტილატორის სიჩქარე\n"
+"\t\tFREQ\tCPU-ის საშუალო სიხშირე\n"
+"\t\tIN\tშემავალი ძაბვა ვოლტებში\n"
+"\t\tTEMP\tმოწყობილობის ტემპერატურა\n"
+"\t\tUSB\tსისტემაში შეერთებული USB მოწყობილობები\n"
+
+#: sar.c:167
+#, c-format
+msgid ""
+"\t-n { <keyword> [,...] | ALL }\n"
+"\t\tNetwork statistics [A_NET_...]\n"
+"\t\tKeywords are:\n"
+"\t\tDEV\tNetwork interfaces\n"
+"\t\tEDEV\tNetwork interfaces (errors)\n"
+"\t\tNFS\tNFS client\n"
+"\t\tNFSD\tNFS server\n"
+"\t\tSOCK\tSockets\t(v4)\n"
+"\t\tIP\tIP traffic\t(v4)\n"
+"\t\tEIP\tIP traffic\t(v4) (errors)\n"
+"\t\tICMP\tICMP traffic\t(v4)\n"
+"\t\tEICMP\tICMP traffic\t(v4) (errors)\n"
+"\t\tTCP\tTCP traffic\t(v4)\n"
+"\t\tETCP\tTCP traffic\t(v4) (errors)\n"
+"\t\tUDP\tUDP traffic\t(v4)\n"
+"\t\tSOCK6\tSockets\t(v6)\n"
+"\t\tIP6\tIP traffic\t(v6)\n"
+"\t\tEIP6\tIP traffic\t(v6) (errors)\n"
+"\t\tICMP6\tICMP traffic\t(v6)\n"
+"\t\tEICMP6\tICMP traffic\t(v6) (errors)\n"
+"\t\tUDP6\tUDP traffic\t(v6)\n"
+"\t\tFC\tFibre channel HBAs\n"
+"\t\tSOFT\tSoftware-based network processing\n"
+msgstr ""
+"-n { <საკვანძო სიტყვა> [,...] | ყველა }\n"
+"ქსელის სტატისტიკა [A_NET_...]\n"
+"საკვანძო სიტყვებია:\n"
+"DEV ქსელის ინტერფეისები\n"
+"EDEV ქსელის ინტერფეისები (შეცდომები)\n"
+"NFS NFS კლიენტი\n"
+"NFSD NFS სერვერი\n"
+"SOCK სოკეტები (v4)\n"
+"IP IP ტრაფიკი (v4)\n"
+"EIP IP ტრაფიკი (v4) (შეცდომები)\n"
+"ICMP ICMP ტრაფიკი (v4)\n"
+"EICMP ICMP ტრაფიკი (v4) (შეცდომები)\n"
+"TCP TCP ტრაფიკი (v4)\n"
+"ETCP TCP ტრაფიკი (v4) (შეცდომები)\n"
+"UDP UDP ტრაფიკი (v4)\n"
+"SOCK6 სოკეტები (v6)\n"
+"IP6 IP ტრაფიკი (v6)\n"
+"EIP6 IP ტრაფიკი (v6) (შეცდომები)\n"
+"ICMP6 ICMP ტრაფიკი (v6)\n"
+"EICMP6 ICMP ტრაფიკი (v6) (შეცდომები)\n"
+"UDP6 UDP ტრაფიკი (v6)\n"
+"FC ბოჭკოვანი არხის HBAs\n"
+"SOFT პროგრამულ უზრუნველყოფაზე დაფუძნებული ქსელის დამუშავება\n"
+
+#: sar.c:190
+#, c-format
+msgid ""
+"\t-q [ <keyword> [,...] | PSI | ALL ]\n"
+"\t\tSystem load and pressure-stall statistics\n"
+"\t\tKeywords are:\n"
+"\t\tLOAD\tQueue length and load average statistics [A_QUEUE]\n"
+"\t\tCPU\tPressure-stall CPU statistics [A_PSI_CPU]\n"
+"\t\tIO\tPressure-stall I/O statistics [A_PSI_IO]\n"
+"\t\tMEM\tPressure-stall memory statistics [A_PSI_MEM]\n"
+msgstr ""
+"-q [ <საკვანძო სიტყვა> [,...] | PSI | ყველა ]\n"
+"სისტემის დატვირთვის სტატისტიკა\n"
+"საკვანძო სიტყვებია:\n"
+"LOAD რიგის სიგრძე და ჩატვირთვის საშუალო სტატისტიკა [A_QUEUE]\n"
+"პროცესორის წნევის შეჩერების CPU სტატისტიკა [A_PSI_CPU]\n"
+"IO წნევის შეჩერების I/O სტატისტიკა [A_PSI_IO]\n"
+"MEM მეხსიერების წნევის გაჩერების სტატისტიკა [A_PSI_MEM]\n"
+
+#: sar.c:197
+#, c-format
+msgid ""
+"\t-r [ ALL ]\n"
+"\t\tMemory utilization statistics [A_MEMORY]\n"
+msgstr ""
+"\t-r [ ყველა ]\n"
+"\t\tმეხსიერების გამოყენების სტატისტიკა [A_MEMORY]\n"
+
+#: sar.c:199
+#, c-format
+msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
+msgstr "\t-S\tსვაპის გამოყენების სტატისტიკა [A_MEMORY]\n"
+
+#: sar.c:200
+#, c-format
+msgid ""
+"\t-u [ ALL ]\n"
+"\t\tCPU utilization statistics [A_CPU]\n"
+msgstr ""
+"\t-u [ ყველა ]\n"
+"\t\tCPU-ის გამოყენების სტატისტიკა [A_CPU]\n"
+
+#: sar.c:202
+#, c-format
+msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
+msgstr "\t-v\tბირთვის ცხრილების სტატისტიკა [A_KTABLES]\n"
+
+#: sar.c:203
+#, c-format
+msgid "\t-W\tSwapping statistics [A_SWAP]\n"
+msgstr "\t-W\tსვაპის სტატისტიკა [A_SWAP]\n"
+
+#: sar.c:204
+#, c-format
+msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
+msgstr "\t-w\tამოცანების შექმნისა და სისტემური გადართვის სტატისტიკა [A_PCSW]\n"
+
+#: sar.c:205
+#, c-format
+msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
+msgstr "\t-y\tTTY მოწყობილობების სტატისტიკა [A_SERIAL]\n"
+
+#: sar.c:219
+#, c-format
+msgid "Data collector will be sought in PATH\n"
+msgstr "მონაცემების მომგროვებელი მოძებნილი იქნება PATH-ში\n"
+
+#: sar.c:222
+#, c-format
+msgid "Data collector found: %s\n"
+msgstr "ნაპოვნია მონაცემების შემგროვებელი: %s\n"
+
+#: sar.c:287
+#, c-format
+msgid "End of data collecting unexpected\n"
+msgstr "მონაცემების მოგროვების მოულოდნელი დასასრული\n"
+
+#: sar.c:292
+#, c-format
+msgid "Inconsistent input data\n"
+msgstr "არასაიმედო შეყვანილი მონაცემები\n"
+
+#: sar.c:895
+#, c-format
+msgid "Using a wrong data collector from a different sysstat version\n"
+msgstr "იყენებთ მონაცემების არასწორ შემგროვებელს sysstat-ის არასწორი ვერსიიდან\n"
+
+#: sar.c:1553
+#, c-format
+msgid "-f and -o options are mutually exclusive\n"
+msgstr "პარამეტრები-f და -o ურთიერთგამომრიცხავია\n"
+
+#: sar.c:1563
+#, c-format
+msgid "Not reading from a system activity file (use -f option)\n"
+msgstr "არ წაიკითხო სისტემური აქტივობის ფაილიდან(გამოიყენეთ პარამეტრი -f)\n"
+
+#: sar.c:1712
+#, c-format
+msgid "Cannot find the data collector (%s)\n"
+msgstr "მონაცემების მომგროვებლის (%s) პოვნა შეუძლებელია\n"
+
+#: tapestat.c:106
+#, c-format
+msgid ""
+"Options are:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+msgstr ""
+"პარამეტრები:\n"
+"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+
+#: tapestat.c:272
+#, c-format
+msgid "No tape drives with statistics found\n"
+msgstr "სტატისტიკის შემცველი ლენტური ამძრავი ნაპოვნი არაა\n"
