@@ -1,5 +1,17 @@
 Changes:
 
+2022/11/06: Version 12.6.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* Fix possible overflow in sa_common.c (GHSL-2022-074).
+	* sa_conv.c: Make size of statistics structures from older sysstat
+	  versions immutable.
+	* [Bernhard M. Wiedemann]: Declare sadc dependency on libsyscom.a.
+	* [Steve Kay]: Fix gcc v11.2 warnings.
+	* [Steve Kay]: Various cosmetic fixes.
+	* [Jan Christoph Uhde]: sar: Remove `-I int_list` from man-page and
+	  help.
+	* [Frank Dana]: Consolidate systemctl commands in README file.
+	* [Rong Tao]: Remove whitespace characters at the end of lines.
+
 2022/05/29: Version 12.6.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix maximum value for A_IRQ activity.
 	* sar/sadf: A_NET_SOFT: Add new metric softnet network backlog.
