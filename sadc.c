@@ -362,9 +362,9 @@ void sa_sys_init(void)
 		if (IS_COLLECTED(act[i]->options) && (act[i]->nr_ini > 0)) {
 
 			/* Look for a possible overflow */
-			check_overflow((unsigned long long) act[i]->msize,
-				       (unsigned long long) act[i]->nr_ini,
-				       (unsigned long long) act[i]->nr2);
+			check_overflow((unsigned int) act[i]->msize,
+				       (unsigned int) act[i]->nr_ini,
+				       (unsigned int) act[i]->nr2);
 
 			/* Allocate structures for current activity (using nr_ini and nr2 results) */
 			SREALLOC(act[i]->_buf0, void,
