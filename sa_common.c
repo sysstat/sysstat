@@ -463,9 +463,9 @@ void allocate_structures(struct activity *act[])
 		if (act[i]->nr_ini > 0) {
 
 			/* Look for a possible overflow */
-			check_overflow((unsigned long long) act[i]->msize,
-				       (unsigned long long) act[i]->nr_ini,
-				       (unsigned long long) act[i]->nr2);
+			check_overflow((unsigned int) act[i]->msize,
+				       (unsigned int) act[i]->nr_ini,
+				       (unsigned int) act[i]->nr2);
 
 			for (j = 0; j < 3; j++) {
 				SREALLOC(act[i]->buf[j], void,
@@ -531,8 +531,8 @@ void reallocate_all_buffers(struct activity *a, __nr_t nr_min)
 	}
 
 	/* Look for a possible overflow */
-	check_overflow((unsigned long long) a->msize, nr_realloc,
-		       (unsigned long long) a->nr2);
+	check_overflow((unsigned int) a->msize, (unsigned int) nr_realloc,
+		       (unsigned int) a->nr2);
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(a->buf[j], void,

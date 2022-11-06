@@ -444,13 +444,15 @@ int check_dir(char *dirname)
  * @val3	Third value.
  ***************************************************************************
  */
-void check_overflow(unsigned long long val1, unsigned long long val2,
-		    unsigned long long val3)
+void check_overflow(unsigned int val1, unsigned int val2,
+		    unsigned int val3)
 {
-	if (val1 * val2 * val3 > UINT_MAX) {
+	if ((unsigned long long) val1 * (unsigned long long) val2 *
+	    (unsigned long long) val3 > UINT_MAX) {
 #ifdef DEBUG
 		fprintf(stderr, "%s: Overflow detected (%llu). Aborting...\n",
-			__FUNCTION__, val1 * val2 * val3);
+			__FUNCTION__, (unsigned long long) val1 * (unsigned long long) val2 *
+			(unsigned long long) val3);
 #endif
 	exit(4);
 		}
