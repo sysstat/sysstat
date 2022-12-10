@@ -832,11 +832,18 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 	else {
 		strcpy(temp2, temp1);
 	}
-	snprintf(pre, sizeof(pre), "%s%s %s", temp2, cur_time,
-		 strlen(cur_date) ? (PRINT_LOCAL_TIME(flags) ? my_tz
-							     : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
-										       : "UTC"))
-				  : "");
+
+	if (strlen(cur_date) && (!PRINT_TRUE_TIME(flags) || (PRINT_TRUE_TIME(flags) && strlen(file_hdr->sa_tzname)))) {
+		snprintf(pre, sizeof(pre), "%s%s %s", temp2, cur_time,
+		 PRINT_LOCAL_TIME(flags) ? my_tz 
+		 	: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname 
+				: "UTC"));
+	} else {
+		snprintf(pre, sizeof(pre), "%s%s", temp2, cur_time);
+	}
+
+
+	
 	pre[sizeof(pre) - 1] = '\0';
 
 	if (DISPLAY_HORIZONTALLY(flags)) {
