@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "SEPTEMBER 2022" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "DECEMBER 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1593,7 +1593,7 @@ ranges of values.
 .B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR "C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=34;22" "."
+.BR "C=33;22:I=32;22:N=34;1:R=31;22:W=35;1:X=31;1:Z=34;22" "."
 Supported capabilities are:
 .RS
 .TP
@@ -1602,19 +1602,29 @@ SGR (Select Graphic Rendition) substring for comments inserted in the binary dai
 data files.
 .TP
 .B H=
-SGR substring for percentage values greater than or equal to 75%.
+This is equivalent to SGR substring
+.BR "X=" " (see below)."
 .TP
 .B I=
 SGR substring for item names or values (eg. network interfaces, CPU number...)
 .TP
 .B M=
-SGR substring for percentage values in the range from 50% to 75%.
+This is equivalent to SGR substring
+.BR "W=" " (see below)."
 .TP
 .B N=
 SGR substring for non-zero statistics values.
 .TP
 .B R=
 SGR substring for restart messages.
+.TP
+.B W=
+SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25% depending on the
+metric's meaning).
+.TP
+.B X=
+SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10% depending on the
+metric's meaning).
 .TP
 .B Z=
 SGR substring for zero values.

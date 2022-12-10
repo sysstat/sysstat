@@ -1,5 +1,5 @@
 .\" iostat manual page - (C) 1998-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH IOSTAT 1 "SEPTEMBER 2021" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "DECEMBER 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -392,21 +392,31 @@ ranges of values.
 .B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR "H=31;1:I=32;22:M=35;1:N=34;1:Z=34;22" "."
+.BR "I=32;22:N=34;1:W=35;1:X=31;1:Z=34;22" "."
 Supported capabilities are:
 .RS
 .TP
 .B H=
-SGR (Select Graphic Rendition) substring for percentage values greater than or equal to 75%.
+This is equivalent to SGR substring
+.BR "X=" " (see below)."
 .TP
 .B I=
-SGR substring for device names.
+SGR (Select Graphic Rendition) substring for device names.
 .TP
 .B M=
-SGR substring for percentage values in the range from 50% to 75%.
+This is equivalent to SGR substring
+.BR "W=" " (see below)."
 .TP
 .B N=
 SGR substring for non-zero statistics values.
+.TP
+.B W=
+SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25% depending on the
+metric's meaning).
+.TP
+.B X=
+SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10% depending on the
+metric's meaning).
 .TP
 .B Z=
 SGR substring for zero values.
