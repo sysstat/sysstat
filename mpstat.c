@@ -720,7 +720,7 @@ void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev,
 				 * If the CPU is tickless then there is no change in CPU values
 				 * but the sum of values is not zero.
 				 */
-				cprintf_pc(NO_UNIT, 10, 7, 2,
+				cprintf_xpc(NO_UNIT, FALSE, 10, 7, 2,
 					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 				printf("\n");
 
@@ -728,7 +728,7 @@ void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev,
 			}
 		}
 
-		cprintf_pc(NO_UNIT, 10, 7, 2,
+		cprintf_xpc(NO_UNIT, XHIGH, 9, 7, 2,
 			   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
 			   0.0 :
 			   ll_sp_value(scp->cpu_user - scp->cpu_guest,
@@ -750,11 +750,12 @@ void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev,
 			   ll_sp_value(scp->cpu_guest,
 				       scc->cpu_guest, deltot_jiffies),
 			   ll_sp_value(scp->cpu_guest_nice,
-				       scc->cpu_guest_nice, deltot_jiffies),
-			   (scc->cpu_idle < scp->cpu_idle) ?
-			   0.0 :
-			   ll_sp_value(scp->cpu_idle,
-				       scc->cpu_idle, deltot_jiffies));
+				       scc->cpu_guest_nice, deltot_jiffies));
+		cprintf_xpc(NO_UNIT, XLOW, 1, 7, 2,
+			    (scc->cpu_idle < scp->cpu_idle) ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_idle,
+					scc->cpu_idle, deltot_jiffies));
 		printf("\n");
 	}
 }
@@ -998,7 +999,7 @@ void write_plain_node_stats(int dis, unsigned long long deltot_jiffies,
 
 			if (!deltot_jiffies) {
 				/* All CPU in node are tickless and/or offline */
-				cprintf_pc(NO_UNIT, 10, 7, 2,
+				cprintf_xpc(NO_UNIT, FALSE, 10, 7, 2,
 					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 				printf("\n");
 
@@ -1006,7 +1007,7 @@ void write_plain_node_stats(int dis, unsigned long long deltot_jiffies,
 			}
 		}
 
-		cprintf_pc(NO_UNIT, 10, 7, 2,
+		cprintf_xpc(NO_UNIT, XHIGH, 9, 7, 2,
 			   (snc->cpu_user - snc->cpu_guest) < (snp->cpu_user - snp->cpu_guest) ?
 			   0.0 :
 			   ll_sp_value(snp->cpu_user - snp->cpu_guest,
@@ -1028,11 +1029,12 @@ void write_plain_node_stats(int dis, unsigned long long deltot_jiffies,
 			   ll_sp_value(snp->cpu_guest,
 				       snc->cpu_guest, deltot_jiffies),
 			   ll_sp_value(snp->cpu_guest_nice,
-				       snc->cpu_guest_nice, deltot_jiffies),
-			   (snc->cpu_idle < snp->cpu_idle) ?
-			   0.0 :
-			   ll_sp_value(snp->cpu_idle,
-				       snc->cpu_idle, deltot_jiffies));
+				       snc->cpu_guest_nice, deltot_jiffies));
+		cprintf_xpc(NO_UNIT, XLOW, 1, 7, 2,
+			    (snc->cpu_idle < snp->cpu_idle) ?
+			    0.0 :
+			    ll_sp_value(snp->cpu_idle,
+					snc->cpu_idle, deltot_jiffies));
 		printf("\n");
 	}
 }

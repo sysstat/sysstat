@@ -1343,7 +1343,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
 				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 				   0.0 :
 				   SP_VALUE(pstp->utime - pstp->gtime,
@@ -1368,7 +1368,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
-			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
 				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 
@@ -1559,7 +1559,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
+		cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
 			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			   0.0 :
 			   SP_VALUE(pstp->utime - pstp->gtime,
@@ -1741,7 +1741,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				  (double) plist->total_vsz / plist->rt_asum_count,
 				  (double) plist->total_rss / plist->rt_asum_count);
 
-			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
 				   tlmkb ?
 				   SP_VALUE(0, plist->total_rss / plist->rt_asum_count, tlmkb)
 				   : 0.0);
@@ -1751,7 +1751,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
 
-			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
 				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 

@@ -977,7 +977,7 @@ void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies)
 	printf("avg-cpu:  %%user   %%nice %%system %%iowait  %%steal   %%idle\n");
 
 	printf("       ");
-	cprintf_pc(DISPLAY_UNIT(flags), 6, 7, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 5, 7, 2,
 		   ll_sp_value(st_cpu[!curr]->cpu_user, st_cpu[curr]->cpu_user, deltot_jiffies),
 		   ll_sp_value(st_cpu[!curr]->cpu_nice, st_cpu[curr]->cpu_nice, deltot_jiffies),
 		   /*
@@ -989,7 +989,8 @@ void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies)
 			       st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
 			       st_cpu[curr]->cpu_hardirq, deltot_jiffies),
 		   ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, deltot_jiffies),
-		   ll_sp_value(st_cpu[!curr]->cpu_steal, st_cpu[curr]->cpu_steal, deltot_jiffies),
+		   ll_sp_value(st_cpu[!curr]->cpu_steal, st_cpu[curr]->cpu_steal, deltot_jiffies));
+	cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 7, 2,
 		   (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
 		   0.0 :
 		   ll_sp_value(st_cpu[!curr]->cpu_idle, st_cpu[curr]->cpu_idle, deltot_jiffies));
@@ -1229,7 +1230,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		 * %util
 		 * Again: Ticks in milliseconds.
 		 */
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2, xds->util / 10.0 / (double) n);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) n);
 	}
 	else {
 		if ((hpart == 1) || !hpart) {
@@ -1246,7 +1247,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			cprintf_f(NO_UNIT, 1, 8, 2,
 				  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv));
 			/* %rrqm */
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
 				   xios->rrqm_pc);
 			/* r_await */
 			cprintf_f(NO_UNIT, 1, 7, 2,
@@ -1269,7 +1270,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			cprintf_f(NO_UNIT, 1, 8, 2,
 				  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
 			/* %wrqm */
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
 				   xios->wrqm_pc);
 			/* w_await */
 			cprintf_f(NO_UNIT, 1, 7, 2,
@@ -1292,7 +1293,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			cprintf_f(NO_UNIT, 1, 8, 2,
 				  S_VALUE(ioj->dc_merges, ioi->dc_merges, itv));
 			/* %drqm */
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
 				   xios->drqm_pc);
 			/* d_await */
 			cprintf_f(NO_UNIT, 1, 7, 2,
@@ -1321,7 +1322,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			else {
 				n = 1;
 			}
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 6, 2, xds->util / 10.0 / (double) n);
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) n);
 		}
 	}
 

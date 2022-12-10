@@ -58,8 +58,8 @@ unsigned long hz;
 unsigned int kb_shift;
 
 /* Colors strings */
-char sc_percent_high[MAX_SGR_LEN] = C_BOLD_RED;
-char sc_percent_low[MAX_SGR_LEN] = C_BOLD_MAGENTA;
+char sc_percent_warn[MAX_SGR_LEN] = C_BOLD_MAGENTA;
+char sc_percent_xtreme[MAX_SGR_LEN] = C_BOLD_RED;
 char sc_zero_int_stat[MAX_SGR_LEN] = C_LIGHT_BLUE;
 char sc_int_stat[MAX_SGR_LEN] = C_BOLD_BLUE;
 char sc_item_name[MAX_SGR_LEN] = C_LIGHT_GREEN;
@@ -1207,8 +1207,8 @@ void init_colors(void)
 		 * or set to "auto" and stdout is not a terminal:
 		 * Unset color strings.
 		 */
-		strcpy(sc_percent_high, "");
-		strcpy(sc_percent_low, "");
+		strcpy(sc_percent_warn, "");
+		strcpy(sc_percent_xtreme, "");
 		strcpy(sc_zero_int_stat, "");
 		strcpy(sc_int_stat, "");
 		strcpy(sc_item_name, "");
@@ -1233,11 +1233,13 @@ void init_colors(void)
 			continue;
 
 		switch (*p) {
-			case 'H':
-				snprintf(sc_percent_high, MAX_SGR_LEN, "\e[%sm", p + 2);
-				break;
 			case 'M':
-				snprintf(sc_percent_low, MAX_SGR_LEN, "\e[%sm", p + 2);
+			case 'W':
+				snprintf(sc_percent_warn, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'X':
+			case 'H':
+				snprintf(sc_percent_xtreme, MAX_SGR_LEN, "\e[%sm", p + 2);
 				break;
 			case 'Z':
 				snprintf(sc_zero_int_stat, MAX_SGR_LEN, "\e[%sm", p + 2);
@@ -1303,7 +1305,7 @@ void cprintf_unit(int unit, int wi, double dval)
  * @num		Number of values to print.
  * @wi		Output width.
  ***************************************************************************
-*/
+ */
 void cprintf_u64(int unit, int num, int wi, ...)
 {
 	int i;
@@ -1421,12 +1423,15 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
  * IN:
  * @human	Set to > 0 if a percent sign (%) shall be displayed after
  *		the value.
+ * @xtrem	Set to non 0 to indicate that extreme (low or high) values
+ *		should be displayed in specific color if beyond predefined
+ *		limits.
  * @num		Number of values to print.
  * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
-void cprintf_pc(int human, int num, int wi, int wd, ...)
+void cprintf_xpc(int human, int xtrem, int num, int wi, int wd, ...)
 {
 	int i;
 	double val, lim = 0.005;
@@ -1465,11 +1470,23 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, double);
-		if (val >= PERCENT_LIMIT_HIGH) {
-			printf("%s", sc_percent_high);
+		if ((xtrem == XHIGH) && (val >= PERCENT_LIMIT_XHIGH)) {
+			printf("%s", sc_percent_xtreme);
 		}
-		else if (val >= PERCENT_LIMIT_LOW) {
-			printf("%s", sc_percent_low);
+		else if ((xtrem == XHIGH) && (val >= PERCENT_LIMIT_HIGH)) {
+			printf("%s", sc_percent_warn);
+		}
+		else if ((xtrem == XLOW) && (val <= PERCENT_LIMIT_XLOW)) {
+			printf("%s", sc_percent_xtreme);
+		}
+		else if ((xtrem == XLOW0) && (val <= PERCENT_LIMIT_XLOW) && (val >= lim)) {
+			printf("%s", sc_percent_xtreme);
+		}
+		else if ((xtrem == XLOW) && (val <= PERCENT_LIMIT_LOW)) {
+			printf("%s", sc_percent_warn);
+		}
+		else if ((xtrem == XLOW0) && (val <= PERCENT_LIMIT_LOW) && (val >= lim)) {
+			printf("%s", sc_percent_warn);
 		}
 		else if (((wd > 0) && (val < lim)) ||
 			 ((wd == 0) && (val <= 0.5))) {	/* "Round half to even" law */

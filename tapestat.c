@@ -464,7 +464,7 @@ void tape_write_stats(struct calc_stats *tape, int i)
 					: tape->kbytes_read_per_second / divisor,
 		    DISPLAY_UNIT(flags) ? tape->kbytes_written_per_second
 					: tape->kbytes_written_per_second / divisor);
-	cprintf_pc(DISPLAY_UNIT(flags), 3, 4, 0,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 4, 0,
 		   (double) tape->read_pct_wait,
 		   (double) tape->write_pct_wait,
 		   (double) tape->all_pct_wait);

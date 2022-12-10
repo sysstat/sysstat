@@ -206,8 +206,14 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define C_LIGHT_BLUE	"\e[34;22m"
 #define C_NORMAL	"\e[0m"
 
+#define PERCENT_LIMIT_XHIGH	90.0
 #define PERCENT_LIMIT_HIGH	75.0
-#define PERCENT_LIMIT_LOW	50.0
+#define PERCENT_LIMIT_LOW	25.0
+#define PERCENT_LIMIT_XLOW	10.0
+
+#define XHIGH 	1
+#define XLOW	2
+#define XLOW0	3
 
 #define MAX_SGR_LEN	16
 
@@ -270,8 +276,8 @@ void cprintf_f
 	(int, int, int, int, ...);
 void cprintf_in
 	(int, char *, char *, int);
-void cprintf_pc
-	(int, int, int, int, ...);
+void cprintf_xpc
+	(int, int, int, int, int, ...);
 void cprintf_s
 	(int, char *, char *);
 void cprintf_u64

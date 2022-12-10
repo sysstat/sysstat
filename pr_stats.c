@@ -236,11 +236,11 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 				 * but the sum of values is not zero.
 				 * %user, %nice, %system, %iowait, %steal, ..., %idle
 				 */
-				cprintf_pc(DISPLAY_UNIT(flags), 5, 9, 2,
-					   0.0, 0.0, 0.0, 0.0, 0.0);
+				cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 5, 9, 2,
+					    0.0, 0.0, 0.0, 0.0, 0.0);
 
 				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2, 100.0);
+					cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2, 100.0);
 					printf("\n");
 				}
 				/*
@@ -248,8 +248,8 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 				 * %irq, %soft, %guest, %gnice.
 				 */
 				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					cprintf_pc(DISPLAY_UNIT(flags), 5, 9, 2,
-						   0.0, 0.0, 0.0, 0.0, 100.0);
+					cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 5, 9, 2,
+						    0.0, 0.0, 0.0, 0.0, 100.0);
 					printf("\n");
 				}
 				continue;
@@ -257,39 +257,41 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		}
 
 		if (DISPLAY_CPU_DEF(a->opt_flags)) {
-			cprintf_pc(DISPLAY_UNIT(flags), 6, 9, 2,
-				   ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
-				   ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
-				   ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-					       scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-					       deltot_jiffies),
-				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
-				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
-				   scc->cpu_idle < scp->cpu_idle ?
-				   0.0 :
-				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 5, 9, 2,
+				    ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
+				    ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
+				    ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+					        scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+					        deltot_jiffies),
+				    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
+				    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies));
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
+				    scc->cpu_idle < scp->cpu_idle ?
+				    0.0 :
+				    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
 			printf("\n");
 		}
 		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-			cprintf_pc(DISPLAY_UNIT(flags), 10, 9, 2,
-				   (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-				   0.0 :
-				   ll_sp_value(scp->cpu_user - scp->cpu_guest,
-					       scc->cpu_user - scc->cpu_guest, deltot_jiffies),
-					       (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-				   0.0 :
-				   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-					       scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
-				   ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
-				   ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
-				   ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
-				   ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
-				   ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
-				   ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
-				   ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies),
-				   scc->cpu_idle < scp->cpu_idle ?
-				   0.0 :
-				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 9, 9, 2,
+				    (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+				    0.0 :
+				    ll_sp_value(scp->cpu_user - scp->cpu_guest,
+					        scc->cpu_user - scc->cpu_guest, deltot_jiffies),
+					        (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+				    0.0 :
+				    ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+					        scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
+				    ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
+				    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
+				    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
+				    ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
+				    ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
+				    ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
+				    ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies));
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
+				    scc->cpu_idle < scp->cpu_idle ?
+				    0.0 :
+				    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
 			printf("\n");
 		}
 	}
@@ -479,7 +481,7 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 		  S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
 		  S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
 		  S_VALUE(spp->pgsteal,       spc->pgsteal,       itv));
-	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 9, 2,
 		   (spc->pgscan_kswapd + spc->pgscan_direct -
 		   spp->pgscan_kswapd - spp->pgscan_direct) ?
 		   SP_VALUE(spp->pgsteal, spc->pgsteal,
@@ -594,7 +596,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				    (unsigned long long) smc->frmkb,
 				    (unsigned long long) smc->availablekb,
 				    (unsigned long long) (smc->tlmkb - nousedmem));
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   smc->tlmkb ?
 				   SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
 				   : 0.0);
@@ -602,7 +604,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				    (unsigned long long) smc->bufkb,
 				    (unsigned long long) smc->camkb,
 				    (unsigned long long) smc->comkb);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   (smc->tlmkb + smc->tlskb) ?
 				   SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 				   : 0.0);
@@ -647,7 +649,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				  (double) avg_frmkb / avg_count,
 				  (double) avg_availablekb / avg_count,
 				  (double) smc->tlmkb - ((double) nousedmem / avg_count));
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   smc->tlmkb ?
 				   SP_VALUE((double) (nousedmem / avg_count), smc->tlmkb, smc->tlmkb)
 				   : 0.0);
@@ -655,7 +657,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				  (double) avg_bufkb / avg_count,
 				  (double) avg_camkb / avg_count,
 				  (double) avg_comkb / avg_count);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   (smc->tlmkb + smc->tlskb) ?
 				   SP_VALUE(0.0, (double) (avg_comkb / avg_count), smc->tlmkb + smc->tlskb)
 				   : 0.0);
@@ -694,13 +696,13 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 			cprintf_u64(unit, 2, 9,
 				    (unsigned long long) smc->frskb,
 				    (unsigned long long) (smc->tlskb - smc->frskb));
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   smc->tlskb ?
 				   SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
 				   : 0.0);
 			cprintf_u64(unit, 1, 9,
 				    (unsigned long long) smc->caskb);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2,
 				   (smc->tlskb - smc->frskb) ?
 				   SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
 				   : 0.0);
@@ -719,7 +721,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				  (double) avg_frskb / avg_count,
 				  ((double) avg_tlskb / avg_count) -
 				  ((double) avg_frskb / avg_count));
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   avg_tlskb ?
 				   SP_VALUE((double) avg_frskb / avg_count,
 					    (double) avg_tlskb / avg_count,
@@ -727,7 +729,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 				   : 0.0);
 			cprintf_f(unit, 1, 9, 0,
 				  (double) avg_caskb / avg_count);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2,
 				   (avg_tlskb != avg_frskb) ?
 				   SP_VALUE(0.0, (double) avg_caskb / avg_count,
 					    ((double) avg_tlskb / avg_count) -
@@ -1141,7 +1143,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		cprintf_f(NO_UNIT, 2, 9, 2,
 			  S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0,
 			  xds.await);
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 			   xds.util / 10.0);
 		if (DISPLAY_PRETTY(flags)) {
 			cprintf_in(IS_STR, " %s", dev_name, 0);
@@ -1229,7 +1231,7 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 			  S_VALUE(sndp->multicast,     sndc->multicast,     itv));
 		ifutil = compute_ifutil(sndc, rxkb, txkb);
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2, ifutil);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, ifutil);
 		if (DISPLAY_PRETTY(flags)) {
 			cprintf_in(IS_STR, " %s", sndc->interface, 0);
 		}
@@ -2290,7 +2292,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		if (dispavg) {
 			/* Display average values */
 			cprintf_f(NO_UNIT, 1, 9, 2, (double) avg_temp[i] / avg_count);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   (avg_temp_max[i] - avg_temp_min[i]) ?
 				   ((double) (avg_temp[i] / avg_count) - avg_temp_min[i]) / (avg_temp_max[i] - avg_temp_min[i]) * 100
 				   : 0.0);
@@ -2298,7 +2300,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		else {
 			/* Display instantaneous values */
 			cprintf_f(NO_UNIT, 1, 9, 2, spc->temp);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   (spc->temp_max - spc->temp_min) ?
 				   (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100
 				   : 0.0);
@@ -2406,7 +2408,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		if (dispavg) {
 			/* Display average values */
 			cprintf_f(NO_UNIT, 1, 9, 2, (double) avg_in[i] / avg_count);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   (avg_in_max[i] - avg_in_min[i]) ?
 				   ((double) (avg_in[i] / avg_count) - avg_in_min[i]) / (avg_in_max[i] - avg_in_min[i]) * 100
 				   : 0.0);
@@ -2414,7 +2416,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		else {
 			/* Display instantaneous values */
 			cprintf_f(NO_UNIT, 1, 9, 2, spc->in);
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   (spc->in_max - spc->in_min) ?
 				   (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100
 				   : 0.0);
@@ -2509,7 +2511,7 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		cprintf_u64(unit, 2, 9,
 			    (unsigned long long) smc->frhkb,
 			    (unsigned long long) (smc->tlhkb - smc->frhkb));
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 			   smc->tlhkb ?
 			   SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0);
 		cprintf_u64(unit, 2, 9,
@@ -2528,7 +2530,7 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 			  (double) avg_frhkb / avg_count,
 			  ((double) avg_tlhkb / avg_count) -
 			  ((double) avg_frhkb / avg_count));
-		cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 			   avg_tlhkb ?
 			   SP_VALUE((double) avg_frhkb / avg_count,
 				    (double) avg_tlhkb / avg_count,
@@ -2842,7 +2844,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 				  unit < 0 ? (double) sfc->f_bfree / 1024 / 1024 : (double) sfc->f_bfree,
 				  unit < 0 ? (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024 :
 					     (double) (sfc->f_blocks - sfc->f_bfree));
-			cprintf_pc(DISPLAY_UNIT(flags), 2, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 2, 9, 2,
 				   /* f_blocks is not zero. But test it anyway ;-) */
 				   sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
 				   : 0.0,
@@ -2851,7 +2853,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			cprintf_u64(NO_UNIT, 2, 9,
 				    (unsigned long long) sfc->f_ffree,
 				    (unsigned long long) (sfc->f_files - sfc->f_ffree));
-			cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 				   sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
 				   : 0.0);
 			cprintf_in(IS_STR, " %s\n", dev_name, 0);
@@ -3181,7 +3183,7 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) psic->some_acpu_10  / 100,
 			   (double) psic->some_acpu_60  / 100,
 			   (double) psic->some_acpu_300 / 100);
@@ -3193,7 +3195,7 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 	else {
 		/* Display average values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) s_avg10  / (avg_count * 100),
 			   (double) s_avg60  / (avg_count * 100),
 			   (double) s_avg300 / (avg_count * 100));
@@ -3202,7 +3204,7 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 		  ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv));
 	printf("\n");
 }
@@ -3275,7 +3277,7 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 
 	if (!dispavg) {
 		/* Display instantaneous "some" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) psic->some_aio_10  / 100,
 			   (double) psic->some_aio_60  / 100,
 			   (double) psic->some_aio_300 / 100);
@@ -3287,7 +3289,7 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	}
 	else {
 		/* Display average "some" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) s_avg10  / (avg_count * 100),
 			   (double) s_avg60  / (avg_count * 100),
 			   (double) s_avg300 / (avg_count * 100));
@@ -3296,12 +3298,12 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 		  ((double) psic->some_io_total - psip->some_io_total) / (100 * itv));
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) psic->full_aio_10  / 100,
 			   (double) psic->full_aio_60  / 100,
 			   (double) psic->full_aio_300 / 100);
@@ -3313,7 +3315,7 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 	}
 	else {
 		/* Display average "full" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) f_avg10  / (avg_count * 100),
 			   (double) f_avg60  / (avg_count * 100),
 			   (double) f_avg300 / (avg_count * 100));
@@ -3322,7 +3324,7 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		f_avg10 = f_avg60 = f_avg300 = 0;
 	}
 
-	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 		  ((double) psic->full_io_total - psip->full_io_total) / (100 * itv));
 	printf("\n");
 }
@@ -3395,7 +3397,7 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 
 	if (!dispavg) {
 		/* Display instantaneous "some" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) psic->some_amem_10  / 100,
 			   (double) psic->some_amem_60  / 100,
 			   (double) psic->some_amem_300 / 100);
@@ -3407,7 +3409,7 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 	else {
 		/* Display average "some" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) s_avg10  / (avg_count * 100),
 			   (double) s_avg60  / (avg_count * 100),
 			   (double) s_avg300 / (avg_count * 100));
@@ -3416,12 +3418,12 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 		  ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv));
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) psic->full_amem_10  / 100,
 			   (double) psic->full_amem_60  / 100,
 			   (double) psic->full_amem_300 / 100);
@@ -3433,7 +3435,7 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 	else {
 		/* Display average "full" values */
-		cprintf_pc(DISPLAY_UNIT(flags), 3, 9, 2,
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 9, 2,
 			   (double) f_avg10  / (avg_count * 100),
 			   (double) f_avg60  / (avg_count * 100),
 			   (double) f_avg300 / (avg_count * 100));
@@ -3442,7 +3444,7 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		f_avg10 = f_avg60 = f_avg300 = 0;
 	}
 
-	cprintf_pc(DISPLAY_UNIT(flags), 1, 9, 2,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 		  ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv));
 	printf("\n");
 }
