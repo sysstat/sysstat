@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:X=31;1:I=32;22:W=35;1:N=34;1:R=31;22:Z=36;22" ./sar -q MEM -Bu -P 0,3 -d --dev=sda --getenv -f tests/data-new.tmp > tests/out1.sar-always.tmp && diff -u tests/expected1.sar-always tests/out1.sar-always.tmp
