@@ -833,12 +833,14 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 		strcpy(temp2, temp1);
 	}
 
-	if (strlen(cur_date) && (!PRINT_TRUE_TIME(flags) || (PRINT_TRUE_TIME(flags) && strlen(file_hdr->sa_tzname)))) {
+	if (strlen(cur_date) && (!PRINT_TRUE_TIME(flags) ||
+				 (PRINT_TRUE_TIME(flags) && strlen(file_hdr->sa_tzname)))) {
 		snprintf(pre, sizeof(pre), "%s%s %s", temp2, cur_time,
-		 PRINT_LOCAL_TIME(flags) ? my_tz 
-		 	: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname 
-				: "UTC"));
-	} else {
+			 PRINT_LOCAL_TIME(flags) ? my_tz
+						 : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
+									   : "UTC"));
+	}
+	else {
 		snprintf(pre, sizeof(pre), "%s%s", temp2, cur_time);
 	}
 
@@ -1030,12 +1032,18 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 	static char pre[80];
 
 	if (action & F_BEGIN) {
-		snprintf(pre, sizeof(pre), "%s %s", cur_time,
-			 strlen(cur_date) ? (PRINT_LOCAL_TIME(flags) ? my_tz
-								     : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
-											       : "UTC"))
-					  : "");
+		if (strlen(cur_date) && (!PRINT_TRUE_TIME(flags) ||
+					 (PRINT_TRUE_TIME(flags) && strlen(file_hdr->sa_tzname)))) {
+			snprintf(pre, sizeof(pre), "%s %s", cur_time,
+				 PRINT_LOCAL_TIME(flags) ? my_tz
+							 : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
+										   : "UTC"));
+			}
+			else {
+				snprintf(pre, sizeof(pre), "%s", cur_time);
+			}
 		pre[sizeof(pre) - 1] = '\0';
+
 		return pre;
 	}
 
