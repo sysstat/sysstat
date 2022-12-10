@@ -1013,6 +1013,12 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 		if (act[p]->nr_ini > act[p]->nr_allocated) {
 			act[p]->nr_allocated = act[p]->nr_ini;
 		}
+
+		/* Look for a possible overflow */
+		check_overflow((unsigned int) act[p]->msize,
+			       (unsigned int) act[p]->nr_allocated,
+			       (unsigned int) act[p]->nr2);
+
 		SREALLOC(act[p]->_buf0, void,
 			 (size_t) act[p]->msize * (size_t) act[p]->nr_allocated * (size_t) act[p]->nr2);
 
