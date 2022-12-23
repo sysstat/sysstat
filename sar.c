@@ -278,7 +278,7 @@ void salloc(int i, char *ltemp)
  * @error_code	Code of error message to display.
  ***************************************************************************
  */
-void print_read_error(int error_code)
+void print_read_error(enum sa_err_codes error_code)
 {
 	switch (error_code) {
 

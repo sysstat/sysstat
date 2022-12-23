@@ -91,17 +91,17 @@ int get_activity_position(struct activity *act[], unsigned int act_flag, int sto
  * Count number of activities with given option.
  *
  * IN:
- * @act			Array of activities.
- * @option		Option that activities should have to be counted
- *			(eg. AO_COLLECTED...)
- * @count_outputs	TRUE if each output should be counted for activities with
- * 			multiple outputs.
+ * @act		Array of activities.
+ * @option	Option that activities should have to be counted
+ *		(eg. AO_COLLECTED...)
+ * @count	Set to COUNT_OUTPUTS if each output should be counted for
+ *		activities with	multiple outputs.
  *
  * RETURNS:
  * Number of selected activities
  ***************************************************************************
  */
-int get_activity_nr(struct activity *act[], unsigned int option, int count_outputs)
+int get_activity_nr(struct activity *act[], unsigned int option, enum count_mode count)
 {
 	int i, n = 0;
 	unsigned int msk;
@@ -109,7 +109,7 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
 	for (i = 0; i < NR_ACT; i++) {
 		if ((act[i]->options & option) == option) {
 
-			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && count_outputs) {
+			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && (count == COUNT_OUTPUTS)) {
 				for (msk = 1; msk < 0x100; msk <<= 1) {
 					if ((act[i]->opt_flags & 0xff) & msk) {
 						n++;
@@ -1373,7 +1373,7 @@ int remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
  * 0 otherwise.
  ***************************************************************************
  */
-int sa_fread(int ifd, void *buffer, size_t size, int mode, int oneof)
+int sa_fread(int ifd, void *buffer, size_t size, enum size_mode mode, enum on_eof oneof)
 {
 	ssize_t n;
 
@@ -1649,7 +1649,7 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 struct file_activity *file_actlst, int endian_mismatch,
 			 int arch_64, char *dfile, struct file_magic *file_magic,
-			 int oneof)
+			 enum on_eof oneof)
 {
 	int i, j, p;
 	struct file_activity *fal = file_actlst;

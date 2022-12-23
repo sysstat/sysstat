@@ -6,7 +6,6 @@
 #ifndef _SVG_STATS_H
 #define _SVG_STATS_H
 
-
 /*
  ***************************************************************************
  * Prototypes for functions used to display system statistics in SVG.

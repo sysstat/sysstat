@@ -241,7 +241,7 @@ void check_format_options(void)
  */
 int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int tab,
 		     struct file_magic *file_magic, struct file_activity *file_actlst,
-		     struct tm *rectime, int oneof)
+		     struct tm *rectime, enum on_eof oneof)
 {
 	int rc;
 	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];

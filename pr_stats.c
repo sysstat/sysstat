@@ -48,7 +48,7 @@ extern unsigned long avg_count;
  * IN:
  * @p_timestamp		Timestamp for previous stat sample.
  * @a			Activity structure.
- * @pos			Header to display, 0 being the first header (headers
+ * @pos			Header to display, FIRST being the first header (headers
  *			are delimited by the '|' character).
  * @iwidth		First column width (generally this is the item name).
  *			A negative value means that the corresponding field

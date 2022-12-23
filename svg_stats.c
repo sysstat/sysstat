@@ -596,8 +596,8 @@ void compute_next_graduation_timestamp(struct record_header *stamp, long int xpo
  * @asfactor	Autoscale factors (one for each graph).
  ***************************************************************************
  */
-void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, int g_type, int pos,
-		    double gmax, double *spmax)
+void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, enum svg_graph_type g_type,
+		    int pos, double gmax, double *spmax)
 {
 	int j;
 	char val[32];

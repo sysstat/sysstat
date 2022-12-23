@@ -28,49 +28,50 @@
 #define NR_F_COUNT	13
 
 /* Activities */
-#define A_CPU		1
-#define A_PCSW		2
-#define A_IRQ		3
-#define A_SWAP		4
-#define A_PAGE		5
-#define A_IO		6
-#define A_MEMORY	7
-#define A_KTABLES	8
-#define A_QUEUE		9
-#define A_SERIAL	10
-#define A_DISK		11
-#define A_NET_DEV	12
-#define A_NET_EDEV	13
-#define A_NET_NFS	14
-#define A_NET_NFSD	15
-#define A_NET_SOCK	16
-#define A_NET_IP	17
-#define A_NET_EIP	18
-#define A_NET_ICMP	19
-#define A_NET_EICMP	20
-#define A_NET_TCP	21
-#define A_NET_ETCP	22
-#define A_NET_UDP	23
-#define A_NET_SOCK6	24
-#define A_NET_IP6	25
-#define A_NET_EIP6	26
-#define A_NET_ICMP6	27
-#define A_NET_EICMP6	28
-#define A_NET_UDP6	29
-#define A_PWR_CPU	30
-#define A_PWR_FAN	31
-#define A_PWR_TEMP	32
-#define A_PWR_IN	33
-#define A_HUGE		34
-#define A_PWR_FREQ	35
-#define A_PWR_USB	36
-#define A_FS		37
-#define A_NET_FC	38
-#define A_NET_SOFT	39
-#define A_PSI_CPU	40
-#define A_PSI_IO	41
-#define A_PSI_MEM	42
-
+enum {
+	A_CPU 		= 1,
+	A_PCSW		= 2,
+	A_IRQ		= 3,
+	A_SWAP		= 4,
+	A_PAGE		= 5,
+	A_IO		= 6,
+	A_MEMORY	= 7,
+	A_KTABLES	= 8,
+	A_QUEUE		= 9,
+	A_SERIAL	= 10,
+	A_DISK		= 11,
+	A_NET_DEV	= 12,
+	A_NET_EDEV	= 13,
+	A_NET_NFS	= 14,
+	A_NET_NFSD	= 15,
+	A_NET_SOCK	= 16,
+	A_NET_IP	= 17,
+	A_NET_EIP	= 18,
+	A_NET_ICMP	= 19,
+	A_NET_EICMP	= 20,
+	A_NET_TCP	= 21,
+	A_NET_ETCP	= 22,
+	A_NET_UDP	= 23,
+	A_NET_SOCK6	= 24,
+	A_NET_IP6	= 25,
+	A_NET_EIP6	= 26,
+	A_NET_ICMP6	= 27,
+	A_NET_EICMP6	= 28,
+	A_NET_UDP6	= 29,
+	A_PWR_CPU	= 30,
+	A_PWR_FAN	= 31,
+	A_PWR_TEMP	= 32,
+	A_PWR_IN	= 33,
+	A_HUGE		= 34,
+	A_PWR_FREQ	= 35,
+	A_PWR_USB	= 36,
+	A_FS		= 37,
+	A_NET_FC	= 38,
+	A_NET_SOFT	= 39,
+	A_PSI_CPU	= 40,
+	A_PSI_IO	= 41,
+	A_PSI_MEM	= 42
+};
 
 /* Macro used to flag an activity that should be collected */
 #define COLLECT_ACTIVITY(m)	act[get_activity_position(act, m, EXIT_IF_NOT_FOUND)]->options |= AO_COLLECTED
@@ -308,26 +309,40 @@
 #define EXIT_IF_NOT_FOUND	1
 #define RESUME_IF_NOT_FOUND	0
 
-#define SOFT_SIZE	0
-#define HARD_SIZE	1
+enum size_mode {
+	SOFT_SIZE = 0,
+	HARD_SIZE = 1
+};
 
-#define FIRST	0
-#define SECOND	1
+enum {
+	FIRST	= 0,
+	SECOND	= 1
+};
 
-#define END_OF_DATA_UNEXPECTED	1
-#define INCONSISTENT_INPUT_DATA	2
+enum sa_err_codes {
+	END_OF_DATA_UNEXPECTED	= 1,
+	INCONSISTENT_INPUT_DATA	= 2
+};
 
-#define UEOF_STOP	0
-#define UEOF_CONT	1
+enum on_eof {
+	UEOF_STOP = 0,
+	UEOF_CONT = 1
+};
 
-#define CLOSE_XML_MARKUP	0
-#define OPEN_XML_MARKUP		1
+enum xml_action {
+	CLOSE_XML_MARKUP = 0,
+	OPEN_XML_MARKUP  = 1
+};
 
-#define CLOSE_JSON_MARKUP	0
-#define OPEN_JSON_MARKUP	1
+enum json_action {
+	CLOSE_JSON_MARKUP = 0,
+	OPEN_JSON_MARKUP  = 1
+};
 
-#define COUNT_ACTIVITIES	0
-#define COUNT_OUTPUTS		1
+enum count_mode {
+	COUNT_ACTIVITIES = 0,
+	COUNT_OUTPUTS    = 1
+};
 
 /* Type for all functions reading statistics */
 #define __read_funct_t	void
@@ -336,7 +351,7 @@
 
 /*
  ***************************************************************************
- * Output formats for sadf
+ * Output formats for sadfsize_mode
  ***************************************************************************
  */
 
@@ -344,17 +359,18 @@
 #define NR_FMT	9
 
 /* Output formats */
-#define F_SAR_OUTPUT	0
-#define F_DB_OUTPUT	1
-#define F_HEADER_OUTPUT	2
-#define F_PPC_OUTPUT	3
-#define F_XML_OUTPUT	4
-#define F_JSON_OUTPUT	5
-#define F_CONV_OUTPUT	6
-#define F_SVG_OUTPUT	7
-#define F_RAW_OUTPUT	8
-#define F_PCP_OUTPUT	9
-
+enum {
+	F_SAR_OUTPUT	= 0,
+	F_DB_OUTPUT	= 1,
+	F_HEADER_OUTPUT	= 2,
+	F_PPC_OUTPUT	= 3,
+	F_XML_OUTPUT	= 4,
+	F_JSON_OUTPUT	= 5,
+	F_CONV_OUTPUT	= 6,
+	F_SVG_OUTPUT	= 7,
+	F_RAW_OUTPUT	= 8,
+	F_PCP_OUTPUT	= 9
+};
 
 /* Structure for SVG specific parameters */
 struct svg_parm {
@@ -716,33 +732,35 @@ struct extra_desc {
 #define MAX_EXTRA_SIZE		1024
 
 /* Record type */
-/*
- * R_STATS means that this is a record of statistics.
- */
-#define R_STATS		1
-/*
- * R_RESTART means that this is a special record containing
- * a LINUX RESTART message.
- */
-#define R_RESTART	2
-/*
- * R_LAST_STATS warns sar that this is the last record to be written
- * to file before a file rotation, and that the next data to come will
- * be a header file.
- * Such a record is tagged R_STATS anyway before being written to file.
- */
-#define R_LAST_STATS	3
-/*
- * R_COMMENT means that this is a special record containing
- * a comment.
- */
-#define R_COMMENT	4
-/*
- * R_EXTRA* records means that extra structures are following current
- * record_header structure, but no statistics structures.
- */
-#define R_EXTRA_MIN	5
-#define R_EXTRA_MAX	15
+enum {
+	/*
+	 * R_STATS means that this is a record of statistics.
+	*/
+	R_STATS		= 1,
+	/*
+	 * R_RESTART means that this is a special record containing
+	 * a LINUX RESTART message.
+	*/
+	R_RESTART	= 2,
+	/*
+	 * R_LAST_STATS warns sar that this is the last record to be written
+	 * to file before a file rotation, and that the next data to come will
+	 * be a header file.
+	 * Such a record is tagged R_STATS anyway before being written to file.
+	 */
+	R_LAST_STATS	= 3,
+	/*
+	 * R_COMMENT means that this is a special record containing
+	 * a comment.
+	 */
+	R_COMMENT	= 4,
+	/*
+	 * R_EXTRA* records means that extra structures are following current
+	 * record_header structure, but no statistics structures.
+	*/
+	R_EXTRA_MIN	= 5,
+	R_EXTRA_MAX	= 15
+};
 
 /* Maximum length of a comment */
 #define MAX_COMMENT_LEN	64
@@ -1277,8 +1295,10 @@ struct report_format {
 /* Maximum number of views on a single row */
 #define MAX_VIEWS_ON_A_ROW	6
 
-#define SVG_LINE_GRAPH	1
-#define SVG_BAR_GRAPH	2
+enum svg_graph_type {
+	SVG_LINE_GRAPH 	= 1,
+	SVG_BAR_GRAPH	= 2
+};
 
 /* Maximum number of horizontal lines for the background grid */
 #define MAX_HLINES_NR	10
@@ -1296,9 +1316,11 @@ struct report_format {
 #define SVG_COL_HEADER_IDX	22
 #define SVG_COL_ERROR_IDX	23
 
-#define SVG_DEFAULT_COL_PALETTE	0
-#define SVG_CUSTOM_COL_PALETTE	1
-#define SVG_BW_COL_PALETTE	2
+enum {
+	SVG_DEFAULT_COL_PALETTE	= 0,
+	SVG_CUSTOM_COL_PALETTE	= 1,
+	SVG_BW_COL_PALETTE	= 2
+};
 
 #define MAYBE	0x80
 
@@ -1484,7 +1506,7 @@ int check_alt_sa_dir
 void enum_version_nr
 	(struct file_magic *);
 int get_activity_nr
-	(struct activity * [], unsigned int, int);
+	(struct activity * [], unsigned int, enum count_mode);
 int get_activity_position
 	(struct activity * [], unsigned int, int);
 void handle_invalid_sa_file
@@ -1573,7 +1595,7 @@ int print_special_record
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
-	 char *, struct file_magic *, int);
+	 char *, struct file_magic *, enum on_eof);
 __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
@@ -1584,7 +1606,7 @@ void reallocate_all_buffers
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
-	(int, void *, size_t, int, int);
+	(int, void *, size_t, enum size_mode, enum on_eof);
 int sa_get_record_timestamp_struct
 	(uint64_t, struct record_header *, struct tm *);
 int sa_open_read_magic

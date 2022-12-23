@@ -35,9 +35,12 @@
 
 /* Index in units array (see common.c) */
 #define NO_UNIT		-1
-#define UNIT_SECTOR	0
-#define UNIT_BYTE	1
-#define UNIT_KILOBYTE	2
+
+enum {
+	UNIT_SECTOR	= 0,
+	UNIT_BYTE	= 1,
+	UNIT_KILOBYTE	= 2
+};
 
 #define NR_UNITS	8
 
@@ -211,18 +214,22 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define PERCENT_LIMIT_LOW	25.0
 #define PERCENT_LIMIT_XLOW	10.0
 
-#define XHIGH 	1
-#define XLOW	2
-#define XLOW0	3
+enum {
+	XHIGH	= 1,
+	XLOW	= 2,
+	XLOW0	= 3
+};
 
 #define MAX_SGR_LEN	16
 
-#define IS_INT		0
-#define IS_STR		1
-#define IS_RESTART	2
-#define IS_DEBUG	IS_RESTART
-#define IS_COMMENT	3
-#define IS_ZERO		4
+enum {
+	IS_INT		= 0,
+	IS_STR		= 1,
+	IS_RESTART	= 2,
+	IS_COMMENT	= 3,
+	IS_ZERO		= 4,
+	IS_DEBUG	= IS_RESTART
+};
 
 /*
  ***************************************************************************

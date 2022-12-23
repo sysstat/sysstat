@@ -868,14 +868,14 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
  * @itv		Interval of time with preceding record.
  * @record_hdr	Record header for current sample (unused here).
  * @file_hdr	System activity file standard header.
- * @flags	Flags for common options.
+ * @flags	Flags for common options (unused here).
  *
  * RETURNS:
  * Pointer on the "timestamp" string.
  ***************************************************************************
  */
 __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
-				 char *cur_time, char * my_tz, unsigned long long itv,
+				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
 				 struct file_header *file_hdr, unsigned int flags)
 {

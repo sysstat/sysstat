@@ -46,7 +46,7 @@ extern uint64_t flags;
  * @action	Open or close action.
  ***************************************************************************
  */
-void json_markup_network(int tab, int action)
+void json_markup_network(int tab, enum json_action action)
 {
 	static int markup_state = CLOSE_JSON_MARKUP;
 
@@ -74,7 +74,7 @@ void json_markup_network(int tab, int action)
  * @action	Open or close action.
  ***************************************************************************
  */
-void json_markup_power_management(int tab, int action)
+void json_markup_power_management(int tab, enum json_action action)
 {
 	static int markup_state = CLOSE_JSON_MARKUP;
 
@@ -102,7 +102,7 @@ void json_markup_power_management(int tab, int action)
  * @action	Open or close action.
  ***************************************************************************
  */
-void json_markup_psi(int tab, int action)
+void json_markup_psi(int tab, enum json_action action)
 {
 	static int markup_state = CLOSE_JSON_MARKUP;
 

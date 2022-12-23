@@ -46,7 +46,7 @@ extern uint64_t flags;
  * @action	Open or close action.
  ***************************************************************************
  */
-void xml_markup_network(int tab, int action)
+void xml_markup_network(int tab, enum xml_action action)
 {
 	static int markup_state = CLOSE_XML_MARKUP;
 
@@ -73,7 +73,7 @@ void xml_markup_network(int tab, int action)
  * @action	Open or close action.
  ***************************************************************************
  */
-void xml_markup_power_management(int tab, int action)
+void xml_markup_power_management(int tab, enum xml_action action)
 {
 	static int markup_state = CLOSE_XML_MARKUP;
 
@@ -100,7 +100,7 @@ void xml_markup_power_management(int tab, int action)
  * @action	Open or close action.
  ***************************************************************************
  */
-void xml_markup_psi(int tab, int action)
+void xml_markup_psi(int tab, enum xml_action action)
 {
 	static int markup_state = CLOSE_XML_MARKUP;
 
