@@ -301,7 +301,7 @@ svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfi
 
 raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h raw_stats.h
 
-pcp_stats.o: pcp_stats.c sa.h pcp_stats.h
+pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h pcp_stats.h
 
 sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
@@ -312,7 +312,7 @@ format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h
 format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-pcp_def_metrics.o: pcp_def_metrics.c
+pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h pcp_def_metrics.h
 
 sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h
 
