@@ -36,6 +36,7 @@
 #endif
 
 extern uint64_t flags;
+extern char bat_status[][16];
 
 /*
  ***************************************************************************
@@ -2470,5 +2471,58 @@ __print_funct_t xml_print_psimem_stats(struct activity *a, int curr, int tab,
 close_xml_markup:
 	if (CLOSE_MARKUP(a->options)) {
 		xml_markup_psi(tab, CLOSE_XML_MARKUP);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display battery statistics in XML.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in XML output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t xml_print_pwr_bat_stats(struct activity *a, int curr, int tab,
+					unsigned long long itv)
+{
+	int i;
+	struct stats_pwr_bat *spbc, *spbp;
+
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
+		goto close_xml_markup;
+
+	xml_markup_power_management(tab, OPEN_XML_MARKUP);
+	tab++;
+
+	xprintf(tab++, "<battery unit=\"minute\">");
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+		spbp = (struct stats_pwr_bat *) ((char *) a->buf[!curr] + i * a->msize);
+
+		/* Battery status code should not be greater than or equal to BAT_STS_NR */
+		if (spbc->status >= BAT_STS_NR) {
+			spbc->status = 0;
+		}
+		xprintf(tab, "<bat number=\"%d\" "
+			     "percent-capacity=\"%u\" "
+			     "variation=\"%.2f\" "
+			     "status=\"%s\"/>",
+			spbc->bat_id,
+			(unsigned int) spbc->capacity,
+			(double) (spbc->capacity - spbp->capacity) * 6000 / itv,
+			bat_status[(unsigned int) spbc->status]);
+	}
+
+	xprintf(--tab, "</battery>");
+	tab--;
+
+close_xml_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		xml_markup_power_management(tab, CLOSE_XML_MARKUP);
 	}
 }

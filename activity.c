@@ -2027,7 +2027,7 @@ struct activity pwr_bat_act = {
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
 	.f_render	= render_pwr_bat_stats,
-	.f_xml_print	= NULL, // FIXME
+	.f_xml_print	= xml_print_pwr_bat_stats,
 	.f_json_print	= NULL, // FIXME
 	.f_svg_print	= NULL, // FIXME
 	.f_raw_print	= NULL, // FIXME
