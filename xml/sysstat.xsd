@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat" targetNamespace="http://pagesperso-orange.fr/sebastien.godard/sysstat" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.12 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.13 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -657,6 +657,7 @@
 		<xs:element name="temperature" type="temperature-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="voltage-input" type="voltage-input-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="cpu-weighted-frequency" type="cpu-weighted-frequency-type" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="battery" type="battery-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="usb-devices" type="usb-devices-type" minOccurs="0" maxOccurs="1"></xs:element>
 	</xs:sequence>
 </xs:complexType>
@@ -760,6 +761,28 @@
 	<xs:attribute name="number" type="xs:string" use="required"></xs:attribute>
 	<xs:attribute name="weighted-frequency" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
+
+<xs:element name="battery" type="battery-type"></xs:element>
+<xs:complexType name="battery-type">
+	<xs:sequence>
+		<xs:element name="bat" type="bat-type" minOccurs="1" maxOccurs="unbounded"></xs:element>
+	</xs:sequence>
+	<xs:attribute name="unit" type="batunit-type" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:element name="bat" type="bat-type"></xs:element>
+<xs:complexType name="bat-type">
+	<xs:attribute name="number" type="xs:nonNegativeInteger" use="required"></xs:attribute>
+	<xs:attribute name="percent-capacity" type="xs:nonNegativeInteger" use="required"></xs:attribute>
+	<xs:attribute name="variation" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="status" type="xs:string" use="required"></xs:attribute>
+</xs:complexType>
+
+<xs:simpleType name="batunit-type">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="minute"></xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
 
 <xs:element name="usb-devices" type="usb-devices-type"></xs:element>
 <xs:complexType name="usb-devices-type">
