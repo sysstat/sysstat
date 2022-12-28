@@ -85,19 +85,11 @@ enum {
 #define SYSFS_BLOCK		SLASH_SYS "/" __BLOCK
 #define SYSFS_DEV_BLOCK		SLASH_SYS "/" __DEV_BLOCK
 #define SYSFS_DEVCPU		PRE "/sys/devices/system/cpu"
-#define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
 #define S_STAT			"stat"
 #define DEVMAP_DIR		PRE "/dev/mapper"
 #define DEVICES			PRE "/proc/devices"
-#define SYSFS_USBDEV		PRE "/sys/bus/usb/devices"
 #define DEV_DISK_BY		PRE "/dev/disk/by"
 #define DEV_DISK_BY_ID		PRE "/dev/disk/by-id"
-#define SYSFS_IDVENDOR		"idVendor"
-#define SYSFS_IDPRODUCT		"idProduct"
-#define SYSFS_BMAXPOWER		"bMaxPower"
-#define SYSFS_MANUFACTURER	"manufacturer"
-#define SYSFS_PRODUCT		"product"
-#define SYSFS_FCHOST		PRE "/sys/class/fc_host"
 
 #define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024
