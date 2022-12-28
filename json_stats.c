@@ -2647,6 +2647,11 @@ __print_funct_t json_print_pwr_bat_stats(struct activity *a, int curr, int tab,
 		}
 		sep = TRUE;
 
+		/* Battery status code should not be greater than or equal to BAT_STS_NR */
+		if (spbc->status >= BAT_STS_NR) {
+			spbc->status = 0;
+		}
+
 		xprintf0(tab, "{\"number\": %d, "
 			      "\"percent-capacity\": %u, "
 			      "\"variation\": %.2f, "
