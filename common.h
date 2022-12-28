@@ -290,7 +290,7 @@ int count_bits
 int count_csvalues
 	(int, char **);
 void cprintf_f
-	(int, int, int, int, ...);
+	(int, int, int, int, int, ...);
 void cprintf_in
 	(int, char *, char *, int);
 void cprintf_xpc

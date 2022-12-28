@@ -1378,12 +1378,13 @@ void cprintf_x(int num, int wi, ...)
  *
  * IN:
  * @unit	Default values unit. -1 if no unit should be displayed.
+ * @sign	TRUE if sign (+/-) should be explicitly displayed.
  * @num		Number of values to print.
  * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
-void cprintf_f(int unit, int num, int wi, int wd, ...)
+void cprintf_f(int unit, int sign, int num, int wi, int wd, ...)
 {
 	int i;
 	double val, lim = 0.005;;
@@ -1415,7 +1416,12 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
 		}
 
 		if (unit < 0) {
-			printf(" %*.*f", wi, wd, val);
+			if (sign) {
+				printf(" %+*.*f", wi, wd, val);
+			}
+			else {
+				printf(" %*.*f", wi, wd, val);
+			}
 			printf("%s", sc_normal);
 		}
 		else {

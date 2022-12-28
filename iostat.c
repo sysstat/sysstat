@@ -1204,27 +1204,27 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		/* tps */
 		/* Origin (unmerged) flush operations are counted as writes */
-		cprintf_f(NO_UNIT, 1, 8, 2,
+		cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
 			  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 				  ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 		/* kB/s */
 		if (!DISPLAY_UNIT(flags)) {
 			xios->sectors /= fctr;
 		}
-		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 1, 9, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, FALSE, 1, 9, 2,
 			  xios->sectors);
 		/* rqm/s */
-		cprintf_f(NO_UNIT, 1, 8, 2,
+		cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
 			  S_VALUE(ioj->rd_merges + ioj->wr_merges + ioj->dc_merges,
 				  ioi->rd_merges + ioi->wr_merges + ioi->dc_merges, itv));
 		/* await */
-		cprintf_f(NO_UNIT, 1, 7, 2,
+		cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 			  xds->await);
 		/* areq-sz (in kB, not sectors) */
-		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 1, 8, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 1, 8, 2,
 			  xds->arqsz / 2);
 		/* aqu-sz */
-		cprintf_f(NO_UNIT, 1, 7, 2,
+		cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 		/*
 		 * %util
@@ -1235,82 +1235,82 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 	else {
 		if ((hpart == 1) || !hpart) {
 			/* r/s */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv));
 			/* rkB/s */
 			if (!DISPLAY_UNIT(flags)) {
 				xios->rsectors /= fctr;
 			}
-			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 1, 9, 2,
+			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, FALSE, 1, 9, 2,
 				  xios->rsectors);
 			/* rrqm/s */
-			cprintf_f(NO_UNIT, 1, 8, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
 				  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv));
 			/* %rrqm */
 			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
 				   xios->rrqm_pc);
 			/* r_await */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  xios->r_await);
 			/* rareq-sz  (in kB, not sectors) */
-			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 1, 8, 2,
+			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 1, 8, 2,
 				  xios->rarqsz / 2);
 		}
 		if ((hpart == 2) || !hpart) {
 			/* w/s */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
 			/* wkB/s */
 			if (!DISPLAY_UNIT(flags)) {
 				xios->wsectors /= fctr;
 			}
-			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 1, 9, 2,
+			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, FALSE, 1, 9, 2,
 				  xios->wsectors);
 			/* wrqm/s */
-			cprintf_f(NO_UNIT, 1, 8, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
 				  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
 			/* %wrqm */
 			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
 				   xios->wrqm_pc);
 			/* w_await */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  xios->w_await);
 			/* wareq-sz (in kB, not sectors) */
-			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 1, 8, 2,
+			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 1, 8, 2,
 				  xios->warqsz / 2);
 		}
 		if ((hpart == 3) || !hpart) {
 			/* d/s */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  S_VALUE(ioj->dc_ios, ioi->dc_ios, itv));
 			/* dkB/s */
 			if (!DISPLAY_UNIT(flags)) {
 				xios->dsectors /= fctr;
 			}
-			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 1, 9, 2,
+			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, FALSE, 1, 9, 2,
 				  xios->dsectors);
 			/* drqm/s */
-			cprintf_f(NO_UNIT, 1, 8, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
 				  S_VALUE(ioj->dc_merges, ioi->dc_merges, itv));
 			/* %drqm */
 			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
 				   xios->drqm_pc);
 			/* d_await */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  xios->d_await);
 			/* dareq-sz (in kB, not sectors) */
-			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, 1, 8, 2,
+			cprintf_f(DISPLAY_UNIT(flags) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 1, 8, 2,
 				  xios->darqsz / 2);
 		}
 		if ((hpart == 4) || !hpart) {
 			/* f/s */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
 			/* f_await */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  xios->f_await);
 			/* aqu-sz */
-			cprintf_f(NO_UNIT, 1, 7, 2,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
 				  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 			/*
 			 * %util
@@ -1608,14 +1608,14 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 	}
 
 	/* tps */
-	cprintf_f(NO_UNIT, 1, 8, 2,
+	cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
 		  /* Origin (unmerged) flush operations are counted as writes */
 		  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 			  ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		/* kB_read/s kB_w+d/s */
-		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 2, 12, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, FALSE, 2, 12, 2,
 			  rsectors, wsectors + dsectors);
 		/* kB_read kB_w+d */
 		cprintf_u64(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 2, 10,
@@ -1626,7 +1626,7 @@ void write_plain_basic_stat(unsigned long long itv, int fctr,
 	}
 	else {
 		/* kB_read/s kB_wrtn/s kB_dscd/s */
-		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 3, 12, 2,
+		cprintf_f(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, FALSE, 3, 12, 2,
 			  rsectors, wsectors, dsectors);
 		/* kB_read kB_wrtn kB_dscd */
 		cprintf_u64(DISPLAY_UNIT(flags) ? UNIT_SECTOR : NO_UNIT, 3, 10,
