@@ -2476,6 +2476,9 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 		else if (!strcmp(t, K_USB)) {
 			SELECT_ACTIVITY(A_PWR_USB);
 		}
+		else if (!strcmp(t, K_BAT)) {
+			SELECT_ACTIVITY(A_PWR_BAT);
+		}
 		else if (!strcmp(t, K_ALL)) {
 			SELECT_ACTIVITY(A_PWR_CPU);
 			SELECT_ACTIVITY(A_PWR_FAN);
@@ -2483,6 +2486,7 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 			SELECT_ACTIVITY(A_PWR_TEMP);
 			SELECT_ACTIVITY(A_PWR_FREQ);
 			SELECT_ACTIVITY(A_PWR_USB);
+			SELECT_ACTIVITY(A_PWR_BAT);
 		}
 		else
 			return 1;

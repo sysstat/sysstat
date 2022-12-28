@@ -20,12 +20,12 @@
  */
 
 /* Number of activities */
-#define NR_ACT		42
+#define NR_ACT		43
 /* The value below is used for sanity check */
 #define MAX_NR_ACT	256
 
 /* Number of functions used to count items */
-#define NR_F_COUNT	13
+#define NR_F_COUNT	14
 
 /* Activities */
 enum {
@@ -70,7 +70,8 @@ enum {
 	A_NET_SOFT	= 39,
 	A_PSI_CPU	= 40,
 	A_PSI_IO	= 41,
-	A_PSI_MEM	= 42
+	A_PSI_MEM	= 42,
+	A_PWR_BAT	= 43
 };
 
 /* Macro used to flag an activity that should be collected */
@@ -233,6 +234,7 @@ enum {
 #define K_IPV6		"IPV6"
 #define K_POWER		"POWER"
 #define K_USB		"USB"
+#define K_BAT		"BAT"
 
 #define K_SKIP_EMPTY	"skipempty"
 #define K_AUTOSCALE	"autoscale"
@@ -286,6 +288,7 @@ enum {
 #define MAX_NR_USB		65536
 #define MAX_NR_FS		(65536 * 4096)
 #define MAX_NR_FCHOSTS		65536
+#define MAX_NR_BATS		4096
 
 /* NR_MAX is the upper limit used for unknown activities */
 #define NR_MAX		(65536 * 4096)
@@ -1413,6 +1416,8 @@ __nr_t wrap_get_fchost_nr
 	(struct activity *);
 __nr_t wrap_detect_psi
 	(struct activity *);
+__nr_t wrap_get_bat_nr
+	(struct activity *);
 
 /* Functions used to read activities statistics */
 __read_funct_t wrap_read_stat_cpu
@@ -1498,6 +1503,8 @@ __read_funct_t wrap_read_psicpu
 __read_funct_t wrap_read_psiio
 	(struct activity *);
 __read_funct_t wrap_read_psimem
+	(struct activity *);
+__read_funct_t wrap_read_bat
 	(struct activity *);
 
 /* Other functions */

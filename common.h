@@ -120,6 +120,15 @@ enum {
 #define DIGITS			"0123456789"
 #define XDIGITS			"0123456789-"
 
+/* Batteries status */
+enum {
+	BAT_STS_UNKNOWN		= 0,
+	BAT_STS_CHARGING	= 1,
+	BAT_STS_DISCHARGING	= 2,
+	BAT_STS_NOTCHARGING	= 3,
+	BAT_STS_FULL		= 4
+};
+
 /*
  ***************************************************************************
  * Macro functions definitions.
@@ -203,6 +212,7 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define C_LIGHT_RED	"\e[31;22m"
 #define C_BOLD_RED	"\e[31;1m"
 #define C_LIGHT_GREEN	"\e[32;22m"
+#define C_BOLD_GREEN	"\e[32;1m"
 #define C_LIGHT_YELLOW	"\e[33;22m"
 #define C_BOLD_MAGENTA	"\e[35;1m"
 #define C_BOLD_BLUE	"\e[34;1m"
@@ -291,6 +301,8 @@ void cprintf_u64
 	(int, int, int, ...);
 void cprintf_x
 	(int, int, ...);
+void cprintf_tr
+	(int, char *, char *);
 char *device_name
 	(char *);
 char *get_device_name

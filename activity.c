@@ -2004,7 +2004,53 @@ struct activity psi_mem_act = {
 	.buf		= {NULL, NULL, NULL},
 	.bitmap		= NULL
 };
-/* wrap_detect_psi */
+
+/* Battery capacity */
+struct activity pwr_bat_act = {
+	.id		= A_PWR_BAT,
+	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
+	.magic		= ACTIVITY_MAGIC_BASE,
+	.group		= G_POWER,
+#ifdef SOURCE_SADC
+	.f_count_index	= 13,	/* wrap_get_bat_nr() */
+	.f_count2_index	= -1,
+	.f_read		= wrap_read_bat,
+#endif
+#ifdef SOURCE_SAR
+	.f_print	= print_pwr_bat_stats,
+	.f_print_avg	= print_avg_pwr_bat_stats,
+#endif
+#if defined(SOURCE_SAR) || defined(SOURCE_SADF)
+	.hdr_line	= "BAT;%cap;%cap/min;sts",
+#endif
+	.gtypes_nr	= {STATS_PWR_BAT_ULL, STATS_PWR_BAT_UL, STATS_PWR_BAT_U},
+	.ftypes_nr	= {0, 0, 0},
+#ifdef SOURCE_SADF
+	.f_render	= NULL, // FIXME
+	.f_xml_print	= NULL, // FIXME
+	.f_json_print	= NULL, // FIXME
+	.f_svg_print	= NULL, // FIXME
+	.f_raw_print	= NULL, // FIXME
+	.f_pcp_print	= NULL, // FIXME
+	.f_count_new	= NULL,
+	.item_list	= NULL,
+	.desc		= "Batteries capacity",
+#endif
+	.name		= "A_PWR_BAT",
+	.item_list_sz	= 0,
+	.g_nr		= 1,
+	.nr_ini		= -1,
+	.nr2		= 1,
+	.nr_max		= MAX_NR_BATS,
+	.nr		= {-1, -1, -1},
+	.nr_allocated	= 0,
+	.fsize		= STATS_PWR_BAT_SIZE,
+	.msize		= STATS_PWR_BAT_SIZE,
+	.opt_flags	= 0,
+	.buf		= {NULL, NULL, NULL},
+	.bitmap		= NULL
+};
+
 #ifdef SOURCE_SADC
 /*
  * Array of functions used to count number of items.
@@ -2022,7 +2068,8 @@ __nr_t (*f_count[NR_F_COUNT]) (struct activity *) = {
 	wrap_get_filesystem_nr,	/* 9 */
 	wrap_get_fchost_nr,	/* 10 */
 	wrap_detect_psi,	/* 11 */
-	wrap_get_freq_nr	/* 12 */
+	wrap_get_freq_nr,	/* 12 */
+	wrap_get_bat_nr		/* 13 */
 };
 #endif
 
@@ -2071,6 +2118,7 @@ struct activity *act[NR_ACT] = {
 	&pwr_temp_act,
 	&pwr_in_act,
 	&pwr_wghfreq_act,
+	&pwr_bat_act,
 	&pwr_usb_act,	/* AO_CLOSE_MARKUP */
 	/* </power-management> */
 	&filesystem_act,

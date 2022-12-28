@@ -65,6 +65,8 @@ char sc_int_stat[MAX_SGR_LEN] = C_BOLD_BLUE;
 char sc_item_name[MAX_SGR_LEN] = C_LIGHT_GREEN;
 char sc_sa_restart[MAX_SGR_LEN] = C_LIGHT_RED;
 char sc_sa_comment[MAX_SGR_LEN] = C_LIGHT_YELLOW;
+char sc_trend_pos[MAX_SGR_LEN] = C_BOLD_GREEN;
+char sc_trend_neg[MAX_SGR_LEN] = C_BOLD_RED;
 char sc_normal[MAX_SGR_LEN] = C_NORMAL;
 
 /*
@@ -1214,6 +1216,8 @@ void init_colors(void)
 		strcpy(sc_item_name, "");
 		strcpy(sc_sa_comment, "");
 		strcpy(sc_sa_restart, "");
+		strcpy(sc_trend_pos, "");
+		strcpy(sc_trend_neg, "");
 		strcpy(sc_normal, "");
 
 		return;
@@ -1255,6 +1259,12 @@ void init_colors(void)
 				break;
 			case 'R':
 				snprintf(sc_sa_restart, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case '+':
+				snprintf(sc_trend_pos, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case '-':
+				snprintf(sc_trend_neg, MAX_SGR_LEN, "\e[%sm", p + 2);
 				break;
 		}
 	}
@@ -1554,6 +1564,30 @@ void cprintf_s(int type, char *format, char *string)
 		printf("%s", sc_sa_comment);
 	}
 	printf(format, string);
+	printf("%s", sc_normal);
+}
+
+/*
+ * **************************************************************************
+ * Print trend string using selected color.
+ *
+ * IN:
+ * @trend	Trend (TRUE: positive; FALSE: negative).
+ * @format	Output format.
+ * @tstring	String to display.
+ ***************************************************************************
+ */
+void cprintf_tr(int trend, char *format, char *tstring)
+{
+	if (trend) {
+		printf("%s", sc_trend_pos);
+	}
+	else {
+		printf("%s", sc_trend_neg);
+	}
+
+	printf(format, tstring);
+
 	printf("%s", sc_normal);
 }
 

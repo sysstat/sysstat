@@ -158,6 +158,7 @@ void display_help(char *progname)
 	printf(_("\t-m { <keyword> [,...] | ALL }\n"
 		 "\t\tPower management statistics [A_PWR_...]\n"
 		 "\t\tKeywords are:\n"
+		 "\t\tBatteries capacity\n"
 		 "\t\tCPU\tCPU instantaneous clock frequency\n"
 		 "\t\tFAN\tFans speed\n"
 		 "\t\tFREQ\tCPU average clock frequency\n"
