@@ -127,5 +127,8 @@ __print_funct_t svg_print_psiio_stats
 __print_funct_t svg_print_psimem_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
+__print_funct_t svg_print_pwr_bat_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
 
 #endif /* _SVG_STATS_H */
