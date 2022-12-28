@@ -129,6 +129,9 @@ enum {
 	BAT_STS_FULL		= 4
 };
 
+/* Number of different statuses */
+#define BAT_STS_NR	5
+
 /*
  ***************************************************************************
  * Macro functions definitions.

@@ -2026,7 +2026,7 @@ struct activity pwr_bat_act = {
 	.gtypes_nr	= {STATS_PWR_BAT_ULL, STATS_PWR_BAT_UL, STATS_PWR_BAT_U},
 	.ftypes_nr	= {0, 0, 0},
 #ifdef SOURCE_SADF
-	.f_render	= NULL, // FIXME
+	.f_render	= render_pwr_bat_stats,
 	.f_xml_print	= NULL, // FIXME
 	.f_json_print	= NULL, // FIXME
 	.f_svg_print	= NULL, // FIXME

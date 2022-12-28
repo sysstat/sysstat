@@ -96,6 +96,15 @@ char my_tzname[TZNAME_LEN];
 extern struct activity *act[];
 extern struct report_format *fmt[];
 
+/* Battery status */
+char bat_status[][16] = {
+	"Unknown",
+	"Charging",
+	"Discharging",
+	"NotCharging",
+	"Full"
+};
+
 /*
  ***************************************************************************
  * Print usage and exit.
