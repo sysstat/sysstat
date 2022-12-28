@@ -36,6 +36,7 @@
 #endif
 
 extern uint64_t flags;
+extern char bat_status[][16];
 
 /*
  ***************************************************************************
@@ -2608,5 +2609,60 @@ __print_funct_t json_print_psimem_stats(struct activity *a, int curr, int tab,
 close_json_markup:
 	if (CLOSE_MARKUP(a->options)) {
 		json_markup_psi(tab, CLOSE_JSON_MARKUP);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display battery statistics in JSON.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @tab		Indentation in output.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t json_print_pwr_bat_stats(struct activity *a, int curr, int tab,
+					 unsigned long long itv)
+{
+	int i;
+	struct stats_pwr_bat *spbc, *spbp;
+	int sep = FALSE;
+
+	if (!IS_SELECTED(a->options) || (a->nr[curr] <= 0))
+		goto close_json_markup;
+
+	json_markup_power_management(tab, OPEN_JSON_MARKUP);
+	tab++;
+
+	xprintf(tab++, "\"battery\": [");
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+		spbp = (struct stats_pwr_bat *) ((char *) a->buf[!curr] + i * a->msize);
+
+		if (sep) {
+			printf(",\n");
+		}
+		sep = TRUE;
+
+		xprintf0(tab, "{\"number\": %d, "
+			      "\"percent-capacity\": %u, "
+			      "\"variation\": %.2f, "
+			      "\"status\": \"%s\"}",
+		spbc->bat_id,
+		(unsigned int) spbc->capacity,
+		(double) (spbc->capacity - spbp->capacity) * 6000 / itv,
+		bat_status[(unsigned int) spbc->status]);
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	tab--;
+
+	close_json_markup:
+	if (CLOSE_MARKUP(a->options)) {
+		json_markup_power_management(tab, CLOSE_JSON_MARKUP);
 	}
 }
