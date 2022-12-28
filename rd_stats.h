@@ -76,6 +76,9 @@
 #define FC_TX_FRAMES	"%s/%s/statistics/tx_frames"
 #define FC_RX_WORDS	"%s/%s/statistics/rx_words"
 #define FC_TX_WORDS	"%s/%s/statistics/tx_words"
+#define SYSFS_PWR_SUPPLY PRE "/sys/class/power_supply"
+#define BAT_CAPACITY	"%s/%s/capacity"
+#define BAT_STATUS	"%s/%s/status"
 
 /*
  ***************************************************************************
@@ -766,6 +769,18 @@ struct stats_psi_mem {
 #define STATS_PSI_MEM_UL	6
 #define STATS_PSI_MEM_U		0
 
+/* Structure for batteries statistics */
+struct stats_pwr_bat {
+	char	bat_id;
+	char	capacity;
+	char	status;
+};
+
+#define STATS_PWR_BAT_SIZE	(sizeof(struct stats_pwr_bat))
+#define STATS_PWR_BAT_ULL	0
+#define STATS_PWR_BAT_UL	0
+#define STATS_PWR_BAT_U		0
+
 /*
  ***************************************************************************
  * Prototypes for functions used to read system statistics
@@ -862,6 +877,8 @@ __nr_t read_psiio
 	(struct stats_psi_io *);
 __nr_t read_psimem
 	(struct stats_psi_mem *);
+__nr_t read_bat
+	(struct stats_pwr_bat *, __nr_t);
 
 #endif /* SOURCE_SADC */
 

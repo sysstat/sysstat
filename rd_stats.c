@@ -3012,5 +3012,98 @@ __nr_t read_psimem(struct stats_psi_mem *st_psi_mem)
 	return 1;
 }
 
+/*
+ * **************************************************************************
+ * Read batteries statistics.
+ *
+ * IN:
+ * @st_bat	Structure where stats will be saved.
+ * @nr_alloc	Total number of structures allocated. Value is >= 0.
+ *
+ * OUT:
+ * @st_bat	Structure with statistics.
+ *
+ * RETURNS:
+ * Number of batteries read, or -1 if the buffer was too small and needs to
+ * be reallocated.
+ ***************************************************************************
+ */
+__nr_t read_bat(struct stats_pwr_bat *st_bat, __nr_t nr_alloc)
+{
+	DIR *dir;
+	FILE *fp;
+	struct dirent *drd;
+	struct stats_pwr_bat *st_bat_i;
+	__nr_t bat_read = 0;
+	unsigned int capacity, bat_id;
+	char bat_filename[MAX_PF_NAME];
+	char line[256], status[64];
+
+	/* Each battery, if present, will have its own BATx entry within SYSFS_PWR_SUPPLY */
+	if ((dir = __opendir(SYSFS_PWR_SUPPLY)) == NULL)
+		return 0; /* No batteries */
+
+	/*
+	 * Read each of the counters via sysfs, where they are
+	 * returned as hex values (e.g. 0x72400).
+	 */
+	while ((drd = __readdir(dir)) != NULL) {
+		capacity = 0;
+		status[0] = '\0';
+
+		if (!strncmp(drd->d_name, "BAT", 3) && isdigit(drd->d_name[3])) {
+
+			if (bat_read + 1 > nr_alloc) {
+				bat_read = -1;
+				break;
+			}
+
+			/* Get battery id number */
+			sscanf(drd->d_name + 3, "%u", &bat_id);
+
+			/* Read battery capcity */
+			snprintf(bat_filename, MAX_PF_NAME, BAT_CAPACITY,
+				 SYSFS_PWR_SUPPLY, drd->d_name);
+			if ((fp = fopen(bat_filename, "r"))) {
+				if (fgets(line, sizeof(line), fp)) {
+					sscanf(line, "%u", &capacity);
+				}
+				fclose(fp);
+			}
+
+			/* Read battery status */
+			snprintf(bat_filename, MAX_PF_NAME, BAT_STATUS,
+				 SYSFS_PWR_SUPPLY, drd->d_name);
+			if ((fp = fopen(bat_filename, "r"))) {
+				fgets(status, sizeof(status), fp);
+				fclose(fp);
+			}
+
+			st_bat_i = st_bat + bat_read++;
+			st_bat_i->bat_id = (char) bat_id;
+			st_bat_i->capacity = (char) capacity;
+
+			if (!strncmp(status, "Charging", 8)) {
+				st_bat_i->status = BAT_STS_CHARGING;
+			}
+			else if (!strncmp(status, "Discharging", 11)) {
+				st_bat_i->status = BAT_STS_DISCHARGING;
+			}
+			else if (!strncmp(status, "Not charging", 12)) {
+				st_bat_i->status = BAT_STS_NOTCHARGING;
+			}
+			else if (!strncmp(status, "Full", 4)) {
+				st_bat_i->status = BAT_STS_FULL;
+			}
+			else {
+				st_bat_i->status = BAT_STS_UNKNOWN;
+			}
+		}
+	}
+
+	__closedir(dir);
+	return bat_read;
+}
+
 /*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/
 #endif /* SOURCE_SADC */
