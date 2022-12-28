@@ -3482,3 +3482,133 @@ __print_funct_t print_avg_psimem_stats(struct activity *a, int prev, int curr,
 {
 	stub_print_psimem_stats(a, prev, curr, TRUE, itv);
 }
+
+/*
+ * **************************************************************************
+ * Display battery statistics. This function is used to display
+ * instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	True if displaying average statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispavg,
+			      unsigned long long itv)
+{
+	int i;
+	struct stats_pwr_bat *spbc, *spbp;
+	static __nr_t nr_alloc = 0;
+	static unsigned long *avg_bat_cap = NULL;
+
+	/* Allocate arrays of battery capacities */
+	if (!avg_bat_cap || (a->nr[curr] > nr_alloc)) {
+		SREALLOC(avg_bat_cap, unsigned long, sizeof(unsigned long) * a->nr[curr]);
+
+		if (a->nr[curr] > nr_alloc) {
+			/* Init additional space allocated */
+			memset(avg_bat_cap + nr_alloc, 0,
+			       sizeof(double) * (a->nr[curr] - nr_alloc));
+		}
+		nr_alloc = a->nr[curr];
+	}
+
+	if (dish) {
+		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+		spbp = (struct stats_pwr_bat *) ((char *) a->buf[prev] + i * a->msize);
+
+		printf("%-11s", timestamp[curr]);
+		cprintf_in(IS_INT, "     %5d", "", (int) spbc->bat_id);
+
+		if (dispavg) {
+			/* Display average values */
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
+				    (double) avg_bat_cap[i] / avg_count);
+		}
+		else {
+			/* Display instantaneous values */
+			cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 0,
+				    (double) spbc->capacity);
+			avg_bat_cap[i] += (unsigned int) spbc->capacity;
+		}
+		cprintf_f(NO_UNIT, 1, 9, 2,
+			  (double) (spbc->capacity - spbp->capacity) * 6000 / itv);
+
+		if (!dispavg) {
+			/* Print battery status */
+			switch (spbc->status) {
+
+				case BAT_STS_CHARGING:
+					/* Unicode for North East Arrow */
+					cprintf_tr(TRUE, " %11s", "\U00002197");
+					break;
+
+				case BAT_STS_DISCHARGING:
+					/* Unicode for South East Arrow */
+					cprintf_tr(FALSE, " %11s", "\U00002198");
+					break;
+
+				case BAT_STS_NOTCHARGING:
+					/* Unicode for South Arrow */
+					cprintf_tr(FALSE, " %11s", "\U00002193");
+					break;
+
+				case BAT_STS_FULL:
+					/* Unicode for North Arrow */
+					cprintf_tr(TRUE, " %11s", "\U00002191");
+					break;
+
+				default:
+					printf(" %9s", "?");
+			}
+		}
+		printf("\n");
+	}
+
+	if (dispavg && avg_bat_cap) {
+		free(avg_bat_cap);
+		avg_bat_cap = NULL;
+		nr_alloc = 0;
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display battery statistics.fan
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_pwr_bat_stats(struct activity *a, int prev, int curr,
+				    unsigned long long itv)
+{
+	stub_print_pwr_bat_stats(a, prev, curr, FALSE, itv);
+}
+
+/*
+ * **************************************************************************
+ * Display average baterry statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t print_avg_pwr_bat_stats(struct activity *a, int prev, int curr,
+					unsigned long long itv)
+{
+	stub_print_pwr_bat_stats(a, prev, curr, TRUE, itv);
+}
