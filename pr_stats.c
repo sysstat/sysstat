@@ -3556,8 +3556,8 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 					break;
 
 				case BAT_STS_NOTCHARGING:
-					/* Unicode for South Arrow */
-					cprintf_tr(FALSE, " %11s", "\U00002193");
+					/* Unicode for East Arrow */
+					cprintf_tr(FALSE, " %11s", "\U00002192");
 					break;
 
 				case BAT_STS_FULL:
