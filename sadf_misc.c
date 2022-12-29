@@ -1692,6 +1692,39 @@ __nr_t count_new_int(struct activity *a, int curr)
 }
 
 /*
+ * **************************************************************************
+ * Count the number of new batteries in current sample. If a new
+ * battery is found then add it to the linked list starting at
+ * @a->item_list.
+ * Mainly useful to create a list of battery names (BATx) that will be used
+ * as instance names for sadf PCP output format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * Number of new batteries identified in current sample that were not
+ * previously in the list.
+ ***************************************************************************
+ */
+__nr_t count_new_bat(struct activity *a, int curr)
+{
+	int i, nr = 0;
+	struct stats_pwr_bat *spbc;
+	char bat_name[16];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+
+		snprintf(bat_name, sizeof(bat_name), "BAT%d", (int) spbc->bat_id);
+		nr += add_list_item(&(a->item_list), bat_name, sizeof(bat_name));
+	}
+
+	return nr;
+}
+
+/*
  ***************************************************************************
  * Init custom color palette used to draw graphs (sadf -g).
  ***************************************************************************

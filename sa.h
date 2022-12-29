@@ -1388,6 +1388,8 @@ __nr_t count_new_fchost
 	(struct activity *, int);
 __nr_t count_new_disk
 	(struct activity *, int);
+__nr_t count_new_bat
+	(struct activity *, int);
 
 /* Functions used to count number of items */
 __nr_t wrap_get_cpu_nr

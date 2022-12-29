@@ -2032,7 +2032,7 @@ struct activity pwr_bat_act = {
 	.f_svg_print	= svg_print_pwr_bat_stats,
 	.f_raw_print	= raw_print_pwr_bat_stats,
 	.f_pcp_print	= NULL, // FIXME
-	.f_count_new	= NULL,
+	.f_count_new	= count_new_bat,
 	.item_list	= NULL,
 	.desc		= "Batteries capacity",
 #endif
