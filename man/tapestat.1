@@ -173,25 +173,17 @@ Its value is a colon-separated list of capabilities that defaults to
 Supported capabilities are:
 .RS
 .TP
-.B H=
-This is equivalent to SGR substring
-.BR "X=" " (see below)."
-.TP
 .B I=
 SGR (Select Graphic Rendition) substring for tape names.
-.TP
-.B M=
-This is equivalent to SGR substring
-.BR "W=" " (see below)."
 .TP
 .B N=
 SGR substring for non-zero statistics values.
 .TP
-.B W=
+.BR "W=" " (or " "M=" ")"
 SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25% depending on the
 metric's meaning).
 .TP
-.B X=
+.BR "X=" " (or " "H=" ")"
 SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10% depending on the
 metric's meaning).
 .TP

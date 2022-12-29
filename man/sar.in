@@ -391,8 +391,21 @@ Note that these statistics depend on
 .BR "sadc" "'s option " "-S POWER " "to be collected."
 
 Possible keywords are
-.BR "CPU" ", " "FAN" ", " "FREQ" ", " "IN" ", " "TEMP " "and " "USB" "."
+.BR "BAT" ", " "CPU" ", " "FAN" ", " "FREQ" ", " "IN" ", " "TEMP " "and " "USB" "."
 
+.RB "With the " "BAT"
+keyword, statistics about batteries capacity are reported.
+The following values are displayed:
+.RS
+.IP %cap
+Battery capacity.
+.IP cap/min
+Capacity lost or gained per minute by the battery.
+.IP status
+Charging status of the battery: ↑ (full), ↗ (charging), → (not charging), ↘ (discharging), ? (unknown).
+.RE
+
+.IP
 .RB "With the " "CPU"
 keyword, statistics about CPU are reported.
 The following value is displayed:
@@ -1601,16 +1614,8 @@ Supported capabilities are:
 SGR (Select Graphic Rendition) substring for comments inserted in the binary daily
 data files.
 .TP
-.B H=
-This is equivalent to SGR substring
-.BR "X=" " (see below)."
-.TP
 .B I=
 SGR substring for item names or values (eg. network interfaces, CPU number...)
-.TP
-.B M=
-This is equivalent to SGR substring
-.BR "W=" " (see below)."
 .TP
 .B N=
 SGR substring for non-zero statistics values.
@@ -1618,13 +1623,15 @@ SGR substring for non-zero statistics values.
 .B R=
 SGR substring for restart messages.
 .TP
-.B W=
-SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25% depending on the
-metric's meaning).
+.BR "W=" " (or " "M=" ")"
+SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25%
+depending on the metric's meaning).
+It is also used for negative values in the range from -10 to -5.
 .TP
-.B X=
-SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10% depending on the
-metric's meaning).
+.BR "X=" " (or " "H=" ")"
+SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10%
+depending on the metric's meaning).
+It is also used for negative values lower than or equal to -10.
 .TP
 .B Z=
 SGR substring for zero values.
