@@ -1411,6 +1411,12 @@ void cprintf_f(int unit, int sign, int num, int wi, int wd, ...)
 		    ((wd == 0) && (val <= 0.5) && (val >= -0.5))) {	/* "Round half to even" law */
 			printf("%s", sc_zero_int_stat);
 		}
+		else if (sign && (val <= -10.0)) {
+			printf("%s", sc_percent_xtreme);
+		}
+		else if (sign && (val <= -5.0)) {
+			printf("%s", sc_percent_warn);
+		}
 		else {
 			printf("%s", sc_int_stat);
 		}
