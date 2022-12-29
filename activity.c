@@ -2021,7 +2021,7 @@ struct activity pwr_bat_act = {
 	.f_print_avg	= print_avg_pwr_bat_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "BAT;%cap;%cap/min;status",
+	.hdr_line	= "BAT;%cap;cap/min;status",
 #endif
 	.gtypes_nr	= {STATS_PWR_BAT_ULL, STATS_PWR_BAT_UL, STATS_PWR_BAT_U},
 	.ftypes_nr	= {0, 0, 0},

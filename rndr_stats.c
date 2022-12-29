@@ -3483,7 +3483,7 @@ __print_funct_t render_pwr_bat_stats(struct activity *a, int isdb, char *pre,
 		       NOVAL, NULL);
 
 		render(isdb, pre, PT_NOFLAG,
-		       "BAT%d\t%%cap/min", NULL,
+		       "BAT%d\tcap/min", NULL,
 		       cons(iv, spbc->bat_id, NOVAL),
 		       NOVAL,
 		       (double) (spbc->capacity - spbp->capacity) * 6000 / itv,
