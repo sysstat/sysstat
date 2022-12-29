@@ -1665,6 +1665,42 @@ void pcp_def_pwr_in_metrics(struct activity *a)
 }
 
 /*
+ * **************************************************************************
+ * Define PCP metrics for battery statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_pwr_bat_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	int inst = 0;
+	static pmInDom indom = PM_INDOM_NULL;
+	struct sa_item *list = a->item_list;
+
+	if (indom == PM_INDOM_NULL) {
+		/* Create domain */
+		indom = pmInDom_build(34, 4);
+
+		/* Create instances */
+		while (list != NULL) {
+			pmiAddInstance(indom, list->item_name, inst++);
+			list = list->next;
+		}
+	}
+
+	pmiAddMetric("power.bat.capacity",
+		     pmiID(34, 4, 0), PM_TYPE_U32, indom, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("power.bat.status",
+		     pmiID(34, 4, 2), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+#endif /* HAVE_PCP */
+}
+
+/*
  ***************************************************************************
  * Define PCP metrics for USB devices statistics.
  *
