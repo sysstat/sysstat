@@ -1706,11 +1706,11 @@ void pcp_def_pwr_usb_metrics(struct activity *a)
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.manufacturer",
-		     pmiID(34, 3, 3), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 4), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("power.usb.productName",
-		     pmiID(34, 3, 3), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
+		     pmiID(34, 3, 5), PM_TYPE_STRING, indom, PM_SEM_DISCRETE,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 #endif /* HAVE_PCP */
 }
