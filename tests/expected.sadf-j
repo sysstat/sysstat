@@ -159,6 +159,10 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"battery": [
+							{"number": 0, "percent-capacity": 100, "variation": 0.00, "status": "Full"},
+							{"number": 1, "percent-capacity": 83, "variation": -3.85, "status": "Unknown"}
 						]
 					},
 					"filesystems": [
@@ -320,6 +324,10 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"battery": [
+							{"number": 0, "percent-capacity": 70, "variation": -57.62, "status": "Unknown"},
+							{"number": 1, "percent-capacity": 80, "variation": -5.76, "status": "Discharging"}
 						],
 						"usb-devices": [
 							{"bus_number": 1, "idvendor": "3f0", "idprod": "862", "maxpower": 196, "manufact": "HP", "product": "HP Wireless Keyboard Mouse Kit"},
@@ -490,6 +498,9 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"battery": [
+							{"number": 0, "percent-capacity": 75, "variation": 7.79, "status": "Charging"}
 						]
 					},
 					"filesystems": [
@@ -663,6 +674,9 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"battery": [
+							{"number": 0, "percent-capacity": 77, "variation": 5.36, "status": "NotCharging"}
 						],
 						"usb-devices": [
 							{"bus_number": 1, "idvendor": "3f0", "idprod": "862", "maxpower": 196, "manufact": "HP", "product": "HP Wireless Keyboard Mouse Kit"},

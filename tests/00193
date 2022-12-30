@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="+=33;22:-=35;1" ./sar -m BAT --getenv -f tests/data-new.tmp > tests/out2.sar-always.tmp && diff -u tests/expected2.sar-always tests/out2.sar-always.tmp

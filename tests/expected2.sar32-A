@@ -456,6 +456,14 @@ Average:          5   3493.55
 Average:          6   3492.22
 Average:          7   3497.56
 
+13:20:09          BAT      %cap   cap/min    status
+13:20:19            0       100     +0.00         ↑
+13:20:19            1        83     -3.85         ?
+13:20:29            0        70    -57.62         ?
+13:20:29            1        80     -5.76         ↘
+Average:            0     85.00    -28.84
+Average:            1     81.50     -4.81
+
 13:20:09        BUS  idvendor    idprod  maxpower manufact                product
 13:20:29          1       3f0       862       196 HP                      HP Wireless Keyboard Mouse Kit
 13:20:29          3      174c      55aa         0 ASMT                    ASM1153

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="6360" height="35790" fill="black" stroke="#000000" stroke-width="1">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="6360" height="36430" fill="black" stroke="#000000" stroke-width="1">
 <text x="0" y="30" text-anchor="start" stroke="#000000">Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 </text>
 <a xlink:href="#g1-0" xlink:title="A_CPU">
@@ -65,15 +65,17 @@
 <text x="10" y="640">Software-based network processing statistics</text></a>
 <a xlink:href="#g30-0" xlink:title="A_PWR_CPU">
 <text x="10" y="660">CPU clock frequency</text></a>
+<a xlink:href="#g43-0" xlink:title="A_PWR_BAT">
+<text x="10" y="680">Batteries capacity</text></a>
 <a xlink:href="#g37-0" xlink:title="A_FS">
-<text x="10" y="680">Filesystems statistics</text></a>
+<text x="10" y="700">Filesystems statistics</text></a>
 <a xlink:href="#g40-0" xlink:title="A_PSI_CPU">
-<text x="10" y="700">Pressure-stall CPU statistics</text></a>
+<text x="10" y="720">Pressure-stall CPU statistics</text></a>
 <a xlink:href="#g41-0" xlink:title="A_PSI_IO">
-<text x="10" y="720">Pressure-stall I/O statistics</text></a>
+<text x="10" y="740">Pressure-stall I/O statistics</text></a>
 <a xlink:href="#g42-0" xlink:title="A_PSI_MEM">
-<text x="10" y="740">Pressure-stall memory statistics</text></a>
-<g id="g1-0" transform="translate(0,760)">
+<text x="10" y="760">Pressure-stall memory statistics</text></a>
+<g id="g1-0" transform="translate(0,780)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [all]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -161,7 +163,7 @@
 </g>
 </g>
 </g>
-<g id="g1-1" transform="translate(0,1070)">
+<g id="g1-1" transform="translate(0,1090)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -240,7 +242,7 @@
 </g>
 </g>
 </g>
-<g id="g1-2" transform="translate(0,1380)">
+<g id="g1-2" transform="translate(0,1400)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -316,7 +318,7 @@
 </g>
 </g>
 </g>
-<g id="g1-3" transform="translate(0,1690)">
+<g id="g1-3" transform="translate(0,1710)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -395,7 +397,7 @@
 </g>
 </g>
 </g>
-<g id="g1-4" transform="translate(0,2000)">
+<g id="g1-4" transform="translate(0,2020)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [3]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -474,7 +476,7 @@
 </g>
 </g>
 </g>
-<g id="g1-5" transform="translate(0,2310)">
+<g id="g1-5" transform="translate(0,2330)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [4]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -553,7 +555,7 @@
 </g>
 </g>
 </g>
-<g id="g1-6" transform="translate(0,2620)">
+<g id="g1-6" transform="translate(0,2640)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [5]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -629,7 +631,7 @@
 </g>
 </g>
 </g>
-<g id="g1-7" transform="translate(0,2930)">
+<g id="g1-7" transform="translate(0,2950)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -708,7 +710,7 @@
 </g>
 </g>
 </g>
-<g id="g1-8" transform="translate(0,3240)">
+<g id="g1-8" transform="translate(0,3260)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -784,7 +786,7 @@
 </g>
 </g>
 </g>
-<g id="g1-9" transform="translate(0,3550)">
+<g id="g1-9" transform="translate(0,3570)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [8]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -872,7 +874,7 @@
 </g>
 </g>
 </g>
-<g id="g1-10" transform="translate(0,3860)">
+<g id="g1-10" transform="translate(0,3880)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -951,7 +953,7 @@
 </g>
 </g>
 </g>
-<g id="g2-0" transform="translate(0,4170)">
+<g id="g2-0" transform="translate(0,4190)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Task creation
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1049,7 +1051,7 @@
 <path d=" M48019,68409.30 L48029,46287.74 L48039,64945.01 L48049,108286.78 M50075,68409.30" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.001847)"/>
 </g>
 </g>
-<g id="g5-0" transform="translate(0,4480)">
+<g id="g5-0" transform="translate(0,4500)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Paging activity (3)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1105,7 +1107,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.23 L48049,0.09 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-497.555556)"/>
 </g>
 </g>
-<g id="g6-0" transform="translate(0,4790)">
+<g id="g6-0" transform="translate(0,4810)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">I/O and transfer rate statistics (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1211,7 +1213,7 @@
 <path d=" M48019,32.08 L48029,32.01 L48039,0.00 L48049,214.83 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.444696)"/>
 </g>
 </g>
-<g id="g7-0" transform="translate(0,5100)">
+<g id="g7-0" transform="translate(0,5120)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Memory utilization (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1519,7 +1521,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #708090; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.074931)"/>
 </g>
 </g>
-<g id="g7-1" transform="translate(0,5410)">
+<g id="g7-1" transform="translate(0,5430)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Swap utilization (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1571,7 +1573,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.012207)"/>
 </g>
 </g>
-<g id="g8-0" transform="translate(0,5720)">
+<g id="g8-0" transform="translate(0,5740)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Kernel tables statistics (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1671,7 +1673,7 @@
 <path d=" M48019,4 L48029,4 L48039,4 L48049,4 M50075,4" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-50.000000)"/>
 </g>
 </g>
-<g id="g9-0" transform="translate(0,6030)">
+<g id="g9-0" transform="translate(0,6050)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Queue length
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1817,7 +1819,7 @@
 <path d=" M48019,3.43 L48029,3.43 L48039,3.43 L48049,3.43 M50075,3.43" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-58.309038)"/>
 </g>
 </g>
-<g id="g11-0" transform="translate(0,6340)">
+<g id="g11-0" transform="translate(0,6360)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sda]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2061,7 +2063,7 @@
 </g>
 </g>
 </g>
-<g id="g11-1" transform="translate(0,6650)">
+<g id="g11-1" transform="translate(0,6670)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sda1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2309,7 +2311,7 @@
 </g>
 </g>
 </g>
-<g id="g11-2" transform="translate(0,6960)">
+<g id="g11-2" transform="translate(0,6980)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdb]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2553,7 +2555,7 @@
 </g>
 </g>
 </g>
-<g id="g11-3" transform="translate(0,7270)">
+<g id="g11-3" transform="translate(0,7290)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdq]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2795,7 +2797,7 @@
 </g>
 </g>
 </g>
-<g id="g11-4" transform="translate(0,7580)">
+<g id="g11-4" transform="translate(0,7600)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdr]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3041,7 +3043,7 @@
 </g>
 </g>
 </g>
-<g id="g11-5" transform="translate(0,7890)">
+<g id="g11-5" transform="translate(0,7910)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sds]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3285,7 +3287,7 @@
 </g>
 </g>
 </g>
-<g id="g11-6" transform="translate(0,8200)">
+<g id="g11-6" transform="translate(0,8220)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdf]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3533,7 +3535,7 @@
 </g>
 </g>
 </g>
-<g id="g11-7" transform="translate(0,8510)">
+<g id="g11-7" transform="translate(0,8530)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdg]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3775,7 +3777,7 @@
 </g>
 </g>
 </g>
-<g id="g11-8" transform="translate(0,8820)">
+<g id="g11-8" transform="translate(0,8840)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [cciss/c0d0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3869,7 +3871,7 @@
 <path d=" M50075,0.10" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2020.000000)"/>
 </g>
 </g>
-<g id="g11-9" transform="translate(0,9130)">
+<g id="g11-9" transform="translate(0,9150)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [cciss/c0d0p2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3963,7 +3965,7 @@
 <path d=" M50075,0.10" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2020.000000)"/>
 </g>
 </g>
-<g id="g11-10" transform="translate(0,9440)">
+<g id="g11-10" transform="translate(0,9460)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [xvdp]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4209,7 +4211,7 @@
 </g>
 </g>
 </g>
-<g id="g11-11" transform="translate(0,9750)">
+<g id="g11-11" transform="translate(0,9770)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [xvdiw]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4455,7 +4457,7 @@
 </g>
 </g>
 </g>
-<g id="g12-0" transform="translate(0,10060)">
+<g id="g12-0" transform="translate(0,10080)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [enp6s0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4655,7 +4657,7 @@
 </g>
 </g>
 </g>
-<g id="g12-1" transform="translate(0,10370)">
+<g id="g12-1" transform="translate(0,10390)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [virbr0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4803,7 +4805,7 @@
 <path d=" M48019,19.25 L48029,19.21 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-10.390000)"/>
 </g>
 </g>
-<g id="g12-2" transform="translate(0,10680)">
+<g id="g12-2" transform="translate(0,10700)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [virbr0-1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4951,7 +4953,7 @@
 <path d=" M48019,320.82 L48029,32.01 L48039,2.60 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.623400)"/>
 </g>
 </g>
-<g id="g12-3" transform="translate(0,10990)">
+<g id="g12-3" transform="translate(0,11010)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [wlp5s0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5099,7 +5101,7 @@
 <path d=" M48019,32.08 L48029,9.60 M48039,1.51 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.234000)"/>
 </g>
 </g>
-<g id="g12-4" transform="translate(0,11300)">
+<g id="g12-4" transform="translate(0,11320)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [enp6s1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5253,7 +5255,7 @@
 <path d=" M48039,2.31 L48049,0.00 M50075,89.89" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 </g>
 </g>
-<g id="g12-5" transform="translate(0,11610)">
+<g id="g12-5" transform="translate(0,11630)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [wlp5s1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5351,7 +5353,7 @@
 <path d=" M48039,0.01 L48049,0.00 M50075,25.95" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.706666)"/>
 </g>
 </g>
-<g id="g12-6" transform="translate(0,11920)">
+<g id="g12-6" transform="translate(0,11940)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [enp6s2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5501,7 +5503,7 @@
 <path d=" M50075,89.89" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 </g>
 </g>
-<g id="g12-7" transform="translate(0,12230)">
+<g id="g12-7" transform="translate(0,12250)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [wlp5s2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5599,7 +5601,7 @@
 <path d=" M50075,25.95" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.707596)"/>
 </g>
 </g>
-<g id="g13-0" transform="translate(0,12540)">
+<g id="g13-0" transform="translate(0,12560)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (4) [virbr0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5651,7 +5653,7 @@
 <path d=" M48019,2.57 L48029,2.56 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.925000)"/>
 </g>
 </g>
-<g id="g13-1" transform="translate(0,12850)">
+<g id="g13-1" transform="translate(0,12870)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (4) [virbr0-1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5703,7 +5705,7 @@
 <path d=" M48019,0.96 L48029,0.00 L48039,0.23 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.340000)"/>
 </g>
 </g>
-<g id="g13-2" transform="translate(0,13160)">
+<g id="g13-2" transform="translate(0,13180)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (2) [wlp5s0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5753,7 +5755,7 @@
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-20.826667)"/>
 </g>
 </g>
-<g id="g13-3" transform="translate(0,13470)">
+<g id="g13-3" transform="translate(0,13490)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (4) [wlp5s1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5805,7 +5807,7 @@
 <path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
 </g>
 </g>
-<g id="g16-0" transform="translate(0,13780)">
+<g id="g16-0" transform="translate(0,13800)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">IPv4 sockets statistics (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5907,7 +5909,7 @@
 <path d=" M48019,1 L48029,1 L48039,1 L48049,1 M50075,1" style="vector-effect: non-scaling-stroke; stroke: #708090; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-200.000000)"/>
 </g>
 </g>
-<g id="g24-0" transform="translate(0,14090)">
+<g id="g24-0" transform="translate(0,14110)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">IPv6 sockets statistics
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5961,7 +5963,7 @@
 <path d=" M48019,0 L48029,0 L48039,0 L48049,0 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 </g>
 </g>
-<g id="g38-1" transform="translate(0,14400)">
+<g id="g38-1" transform="translate(0,14420)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Fibre Channel HBA statistics (1) [host1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6059,7 +6061,7 @@
 <path d=" M48039,0.05 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1925.000000)"/>
 </g>
 </g>
-<g id="g39-0" transform="translate(0,14710)">
+<g id="g39-0" transform="translate(0,14730)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (1) [all]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6209,7 +6211,7 @@
 <path d=" M48019,0 L48029,0 L48039,10 L48049,457 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.437637)"/>
 </g>
 </g>
-<g id="g39-2" transform="translate(0,15020)">
+<g id="g39-2" transform="translate(0,15040)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6309,7 +6311,7 @@
 <path d=" M48019,0 L48029,0 L48039,10 L48049,223 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.896861)"/>
 </g>
 </g>
-<g id="g39-3" transform="translate(0,15330)">
+<g id="g39-3" transform="translate(0,15350)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6361,7 +6363,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-11.417582)"/>
 </g>
 </g>
-<g id="g39-4" transform="translate(0,15640)">
+<g id="g39-4" transform="translate(0,15660)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [3]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6413,7 +6415,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.611722)"/>
 </g>
 </g>
-<g id="g39-5" transform="translate(0,15950)">
+<g id="g39-5" transform="translate(0,15970)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [4]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6465,7 +6467,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.708791)"/>
 </g>
 </g>
-<g id="g39-6" transform="translate(0,16260)">
+<g id="g39-6" transform="translate(0,16280)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [5]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6519,7 +6521,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.567033)"/>
 </g>
 </g>
-<g id="g39-7" transform="translate(0,16570)">
+<g id="g39-7" transform="translate(0,16590)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6621,7 +6623,7 @@
 <path d=" M48019,0 M48029,0 M48039,0 L48049,234 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.854701)"/>
 </g>
 </g>
-<g id="g39-8" transform="translate(0,16880)">
+<g id="g39-8" transform="translate(0,16900)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6673,7 +6675,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.262166)"/>
 </g>
 </g>
-<g id="g39-9" transform="translate(0,17190)">
+<g id="g39-9" transform="translate(0,17210)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (1) [8]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6775,7 +6777,7 @@
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.854396)"/>
 </g>
 </g>
-<g id="g39-10" transform="translate(0,17500)">
+<g id="g39-10" transform="translate(0,17520)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6827,7 +6829,7 @@
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.537241)"/>
 </g>
 </g>
-<g id="g30-0" transform="translate(0,17810)">
+<g id="g30-0" transform="translate(0,17830)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [all]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6875,7 +6877,7 @@
 <path d=" M47988,3522.54 L48019,3522.54 L48029,3522.54 L48039,3522.54 L48049,3522.54 M50044,3517.54 L50075,3517.54" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056777)"/>
 </g>
 </g>
-<g id="g30-1" transform="translate(0,18120)">
+<g id="g30-1" transform="translate(0,18140)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6923,7 +6925,7 @@
 <path d=" M47988,3566.48 L48019,3566.48 L48029,3566.48 L48039,3566.48 L48049,3566.48 M50044,3566.48 L50075,3566.48" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056078)"/>
 </g>
 </g>
-<g id="g30-2" transform="translate(0,18430)">
+<g id="g30-2" transform="translate(0,18450)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6971,7 +6973,7 @@
 <path d=" M47988,3566.39 L48019,3566.39 L48029,3566.39 L48039,3566.39 L48049,3566.39 M50044,3566.39 L50075,3566.39" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056079)"/>
 </g>
 </g>
-<g id="g30-3" transform="translate(0,18740)">
+<g id="g30-3" transform="translate(0,18760)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7019,7 +7021,7 @@
 <path d=" M47988,3492.11 L48019,3492.11 L48029,3492.11 L48039,3492.11 L48049,3492.11 M50044,3492.11 L50075,3492.11" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057272)"/>
 </g>
 </g>
-<g id="g30-4" transform="translate(0,19050)">
+<g id="g30-4" transform="translate(0,19070)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [3]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7067,7 +7069,7 @@
 <path d=" M47988,3566.22 L48019,3566.22 L48029,3566.22 L48039,3566.22 L48049,3566.22 M50044,3566.22 L50075,3566.22" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056082)"/>
 </g>
 </g>
-<g id="g30-5" transform="translate(0,19360)">
+<g id="g30-5" transform="translate(0,19380)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [4]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7115,7 +7117,7 @@
 <path d=" M47988,3505.84 L48019,3505.84 L48029,3505.84 L48039,3505.84 L48049,3505.84 M50044,3505.84 L50075,3505.84" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057048)"/>
 </g>
 </g>
-<g id="g30-6" transform="translate(0,19670)">
+<g id="g30-6" transform="translate(0,19690)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [5]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7163,7 +7165,7 @@
 <path d=" M47988,3493.55 L48019,3493.55 L48029,3493.55 L48039,3493.55 L48049,3493.55 M50044,3493.55 L50075,3493.55" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057248)"/>
 </g>
 </g>
-<g id="g30-7" transform="translate(0,19980)">
+<g id="g30-7" transform="translate(0,20000)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7211,7 +7213,7 @@
 <path d=" M47988,3492.22 L48019,3492.22 L48029,3492.22 L48039,3492.22 L48049,3492.22 M50044,3492.22 L50075,3492.22" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057270)"/>
 </g>
 </g>
-<g id="g30-8" transform="translate(0,20290)">
+<g id="g30-8" transform="translate(0,20310)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7259,7 +7261,7 @@
 <path d=" M47988,3497.56 L48019,3497.56 L48029,3497.56 L48039,3497.56 L48049,3497.56 M50044,3497.56 L50075,3497.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057183)"/>
 </g>
 </g>
-<g id="g30-9" transform="translate(0,20600)">
+<g id="g30-9" transform="translate(0,20620)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [8]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7307,7 +7309,7 @@
 <path d=" M50044,3497.56 L50075,3497.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057183)"/>
 </g>
 </g>
-<g id="g30-10" transform="translate(0,20910)">
+<g id="g30-10" transform="translate(0,20930)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7355,7 +7357,111 @@
 <path d=" M50044,3497.56 L50075,3497.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057183)"/>
 </g>
 </g>
-<g id="g37-0" transform="translate(0,21220)">
+<g id="g43-0" transform="translate(0,21240)">
+<rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="0" y="20" style="fill: #000000; stroke: none">Batteries capacity [BAT0]
+<tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%cap (70, 100)</text>
+<text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
+<tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
+</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="-15" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<polyline points="7200,0 7200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="45" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 2:00</text>
+<polyline points="14400,0 14400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="105" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 4:00</text>
+<polyline points="21600,0 21600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="165" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 6:00</text>
+<polyline points="28800,0 28800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="225" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 8:00</text>
+<polyline points="36000,0 36000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="285" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">10:00</text>
+<polyline points="43200,0 43200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="345" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">12:00</text>
+<polyline points="50400,0 50400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="405" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">14:00</text>
+<polyline points="57600,0 57600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="465" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">16:00</text>
+<polyline points="64800,0 64800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="525" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">18:00</text>
+<polyline points="72000,0 72000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="585" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">20:00</text>
+<polyline points="79200,0 79200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
+<polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
+<g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
+<rect x="47988" y="0.00" height="100.00" width="31"/><rect x="47998" y="0.00" height="70.00" width="31"/><rect x="48000" y="0.00" height="75.00" width="39"/><rect x="48027" y="0.00" height="77.00" width="22"/>
+</g>
+</g>
+</g>
+<g id="g43-1" transform="translate(0,21550)">
+<rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="0" y="20" style="fill: #000000; stroke: none">Batteries capacity [BAT1]
+<tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%cap (80, 83)</text>
+<text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
+<tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
+</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="-15" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<polyline points="7200,0 7200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="45" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 2:00</text>
+<polyline points="14400,0 14400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="105" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 4:00</text>
+<polyline points="21600,0 21600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="165" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 6:00</text>
+<polyline points="28800,0 28800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="225" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 8:00</text>
+<polyline points="36000,0 36000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="285" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">10:00</text>
+<polyline points="43200,0 43200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="345" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">12:00</text>
+<polyline points="50400,0 50400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="405" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">14:00</text>
+<polyline points="57600,0 57600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="465" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">16:00</text>
+<polyline points="64800,0 64800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="525" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">18:00</text>
+<polyline points="72000,0 72000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="585" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">20:00</text>
+<polyline points="79200,0 79200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
+<polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
+<g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
+<rect x="47988" y="0.00" height="83.00" width="31"/><rect x="47998" y="0.00" height="80.00" width="31"/>
+</g>
+</g>
+</g>
+<g id="g37-0" transform="translate(0,21860)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7557,7 +7663,7 @@
 </g>
 </g>
 </g>
-<g id="g37-1" transform="translate(0,21530)">
+<g id="g37-1" transform="translate(0,22170)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7759,7 +7865,7 @@
 </g>
 </g>
 </g>
-<g id="g37-2" transform="translate(0,21840)">
+<g id="g37-2" transform="translate(0,22480)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda12]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7961,7 +8067,7 @@
 </g>
 </g>
 </g>
-<g id="g37-3" transform="translate(0,22150)">
+<g id="g37-3" transform="translate(0,22790)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8163,7 +8269,7 @@
 </g>
 </g>
 </g>
-<g id="g37-4" transform="translate(0,22460)">
+<g id="g37-4" transform="translate(0,23100)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sdf]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8365,7 +8471,7 @@
 </g>
 </g>
 </g>
-<g id="g37-5" transform="translate(0,22770)">
+<g id="g37-5" transform="translate(0,23410)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sdg]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8567,7 +8673,7 @@
 </g>
 </g>
 </g>
-<g id="g40-0" transform="translate(0,23080)">
+<g id="g40-0" transform="translate(0,23720)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU stall time (some tasks)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8619,7 +8725,7 @@
 </g>
 </g>
 </g>
-<g id="g41-0" transform="translate(0,23390)">
+<g id="g41-0" transform="translate(0,24030)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">I/O pressure trends (some tasks)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8821,7 +8927,7 @@
 </g>
 </g>
 </g>
-<g id="g42-0" transform="translate(0,23700)">
+<g id="g42-0" transform="translate(0,24340)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Memory pressure trends (some tasks)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8973,5 +9079,5 @@
 </g>
 </g>
 </g>
-<!-- Actual canvas height: 24010 -->
+<!-- Actual canvas height: 24650 -->
 </svg>

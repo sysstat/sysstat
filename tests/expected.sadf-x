@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.12 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.12.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.13 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.13.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.12</sysdata-version>
+	<sysdata-version>3.13</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -543,6 +543,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="100" variation="0.00" status="Full"/>
+						<bat number="1" percent-capacity="83" variation="-3.85" status="Unknown"/>
+					</battery>
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
@@ -1038,6 +1042,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="70" variation="-57.62" status="Unknown"/>
+						<bat number="1" percent-capacity="80" variation="-5.76" status="Discharging"/>
+					</battery>
 					<usb-devices>
 						<usb bus_number="1" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
 						<usb bus_number="3" idvendor="174c" idprod="55aa" maxpower="0" manufact="ASMT" product="ASM1153"/>
@@ -1586,6 +1594,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="75" variation="7.79" status="Charging"/>
+					</battery>
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
@@ -2181,6 +2192,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="77" variation="5.36" status="NotCharging"/>
+					</battery>
 					<usb-devices>
 						<usb bus_number="1" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
 						<usb bus_number="3" idvendor="174c" idprod="55aa" maxpower="0" manufact="ASMT" product="ASM1153"/>

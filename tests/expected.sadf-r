@@ -829,6 +829,21 @@
 13:20:49 UTC; CPU; 7; MHz; 349756;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
+# name; A_PWR_BAT; nr_curr; 2; nr_alloc; 2; nr_ini; 2
+13:20:19 UTC; BAT; 0; %cap; 100; 100; status; 4 [Full];
+13:20:19 UTC; BAT; 1; %cap; 85; 83; status; 0 [Unknown];
+# uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
+# name; A_PWR_BAT; nr_curr; 2; nr_alloc; 2; nr_ini; 2
+13:20:29 UTC; BAT; 0; %cap; 100; 70; status; 0 [Unknown];
+13:20:29 UTC; BAT; 1; %cap; 83; 80; status; 2 [Discharging];
+# uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
+# name; A_PWR_BAT; nr_curr; 1; nr_alloc; 2; nr_ini; 2
+13:20:39 UTC; BAT; 0; %cap; 70; 75; status; 1 [Charging];
+# uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
+# name; A_PWR_BAT; nr_curr; 1; nr_alloc; 2; nr_ini; 2
+13:20:49 UTC; BAT; 0; %cap; 75; 77; status; 3 [NotCharging];
+# uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
+# uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_PWR_USB; nr_curr; 2; nr_alloc; 4; nr_ini; 2
@@ -1122,6 +1137,8 @@
 13:54:35 UTC; CPU; 7; MHz; 349756;
 13:54:35 UTC; CPU; 8; MHz; 349756;
 13:54:35 UTC; CPU; 9; MHz; 349756;
+# uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
+# name; A_PWR_BAT; nr_curr; 0; nr_alloc; 2; nr_ini; 2
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
