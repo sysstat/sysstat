@@ -774,7 +774,7 @@
 <xs:complexType name="bat-type">
 	<xs:attribute name="number" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 	<xs:attribute name="percent-capacity" type="xs:nonNegativeInteger" use="required"></xs:attribute>
-	<xs:attribute name="variation" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="variation" type="negative-hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="status" type="xs:string" use="required"></xs:attribute>
 </xs:complexType>
 
