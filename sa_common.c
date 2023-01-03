@@ -663,10 +663,11 @@ int decode_epoch(char timestamp[], struct tstamp *tse)
 	tse->epoch = epoch_time;
 	tse->use_epoch = TRUE;
 
-	struct tm *given_time = localtime(&epoch_time);
-	tse->tm_sec  = given_time->tm_sec;
-	tse->tm_min  = given_time->tm_min;
-	tse->tm_hour = given_time->tm_hour;
+	struct tm given_time;
+	localtime_r(&epoch_time, &given_time);
+	tse->tm_sec  = given_time.tm_sec;
+	tse->tm_min  = given_time.tm_min;
+	tse->tm_hour = given_time.tm_hour;
 	tse->use = TRUE;
 
 	return 0;
