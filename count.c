@@ -533,5 +533,40 @@ __nr_t get_fchost_nr(void)
 	return fc;
 }
 
+/*
+ * **************************************************************************
+ * Find number of batteries in /sys/class/power_supply/.
+ * Assume that batteries keep their id number (0, 1...) as long as the
+ * computer is not restarted.
+ *
+ * RETURNS:
+ * Number of batteries.
+ * Return -1 if directory doesn't exist in sysfs.
+ ***************************************************************************
+ */
+__nr_t get_bat_nr(void)
+{
+	DIR *dir;
+	struct dirent *drd;
+	__nr_t bat = 0;
+
+	if ((dir = opendir(SYSFS_PWR_SUPPLY)) == NULL) {
+		/* Directory non-existent */
+		return -1;
+	}
+
+	while ((drd = readdir(dir)) != NULL) {
+
+		if (!strncmp(drd->d_name, "BAT", 3) && isdigit(drd->d_name[3])) {
+			bat++;
+		}
+	}
+
+	/* Close directory */
+	closedir(dir);
+
+	return bat;
+}
+
 /*------------------ END: FUNCTIONS USED BY SADC ONLY ---------------------*/
 #endif /* SOURCE_SADC */

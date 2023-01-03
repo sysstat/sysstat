@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "AUGUST 2022" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "DECEMBER 2022" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -391,8 +391,21 @@ Note that these statistics depend on
 .BR "sadc" "'s option " "-S POWER " "to be collected."
 
 Possible keywords are
-.BR "CPU" ", " "FAN" ", " "FREQ" ", " "IN" ", " "TEMP " "and " "USB" "."
+.BR "BAT" ", " "CPU" ", " "FAN" ", " "FREQ" ", " "IN" ", " "TEMP " "and " "USB" "."
 
+.RB "With the " "BAT"
+keyword, statistics about batteries capacity are reported.
+The following values are displayed:
+.RS
+.IP %cap
+Battery capacity.
+.IP cap/min
+Capacity lost or gained per minute by the battery.
+.IP status
+Charging status of the battery: ↑ (full), ↗ (charging), → (not charging), ↘ (discharging), ? (unknown).
+.RE
+
+.IP
 .RB "With the " "CPU"
 keyword, statistics about CPU are reported.
 The following value is displayed:
@@ -1470,7 +1483,7 @@ When reading data from a daily data file, indicate that
 should display the timestamps in the original local time of
 the data file creator. Without this option, the
 .B sar
-command displays the timestamps in the user's locale time.
+command displays the timestamps in the user's local time.
 .TP
 .B -u [ ALL ]
 Report CPU utilization. The
@@ -1593,7 +1606,7 @@ ranges of values.
 .B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR "C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=34;22" "."
+.BR "C=33;22:I=32;22:N=34;1:R=31;22:W=35;1:X=31;1:Z=34;22" "."
 Supported capabilities are:
 .RS
 .TP
@@ -1601,20 +1614,24 @@ Supported capabilities are:
 SGR (Select Graphic Rendition) substring for comments inserted in the binary daily
 data files.
 .TP
-.B H=
-SGR substring for percentage values greater than or equal to 75%.
-.TP
 .B I=
 SGR substring for item names or values (eg. network interfaces, CPU number...)
-.TP
-.B M=
-SGR substring for percentage values in the range from 50% to 75%.
 .TP
 .B N=
 SGR substring for non-zero statistics values.
 .TP
 .B R=
 SGR substring for restart messages.
+.TP
+.BR "W=" " (or " "M=" ")"
+SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25%
+depending on the metric's meaning).
+It is also used for negative values in the range from -10 to -5.
+.TP
+.BR "X=" " (or " "H=" ")"
+SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10%
+depending on the metric's meaning).
+It is also used for negative values lower than or equal to -10.
 .TP
 .B Z=
 SGR substring for zero values.
@@ -1650,7 +1667,7 @@ The timestamp will also be compliant with ISO 8601 format.
 .B sar -u 2 5
 Report CPU utilization for each 2 seconds. 5 lines are displayed.
 .TP
-.B sar -I 14 -o int14.file 2 10
+.B sar -I --int=14 -o int14.file 2 10
 Report statistics on IRQ 14 for each 2 seconds. 10 lines are displayed.
 Data are stored in a file called
 .IR "int14.file" "."

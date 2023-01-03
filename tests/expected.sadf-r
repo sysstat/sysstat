@@ -267,10 +267,10 @@
 13:20:29 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_PAGE; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0;
+13:20:39 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 10; pgscand/s; 0; 0; pgsteal/s; 0; 9;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_PAGE; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0;
+13:20:49 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 10; 100; pgscand/s; 0; 0; pgsteal/s; 9; 11;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
@@ -829,6 +829,21 @@
 13:20:49 UTC; CPU; 7; MHz; 349756;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
+# name; A_PWR_BAT; nr_curr; 2; nr_alloc; 2; nr_ini; 2
+13:20:19 UTC; BAT; 0; %cap; 100; 100; status; 4 [Full];
+13:20:19 UTC; BAT; 1; %cap; 85; 83; status; 0 [Unknown];
+# uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
+# name; A_PWR_BAT; nr_curr; 2; nr_alloc; 2; nr_ini; 2
+13:20:29 UTC; BAT; 0; %cap; 100; 70; status; 0 [Unknown];
+13:20:29 UTC; BAT; 1; %cap; 83; 80; status; 2 [Discharging];
+# uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
+# name; A_PWR_BAT; nr_curr; 1; nr_alloc; 2; nr_ini; 2
+13:20:39 UTC; BAT; 0; %cap; 70; 75; status; 1 [Charging];
+# uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
+# name; A_PWR_BAT; nr_curr; 1; nr_alloc; 2; nr_ini; 2
+13:20:49 UTC; BAT; 0; %cap; 75; 77; status; 3 [NotCharging];
+# uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
+# uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_PWR_USB; nr_curr; 2; nr_alloc; 4; nr_ini; 2
@@ -929,56 +944,56 @@
 13:54:35 UTC; CPU; 6; %usr; 17865; 17940; %nice; 60354; 60354; %sys; 10138; 10201; %iowait; 10825; 10830; %steal; 0; 0; %irq; 3499; 3514; %soft; 1107; 1110; %guest; 0; 0; %gnice; 0; 0; %idle; 613356; 616306;
 13:54:35 UTC; CPU; 7; %usr; 16279; 16369; %nice; 100925; 100925; %sys; 9075; 9098; %iowait; 7292; 7294; %steal; 0; 0; %irq; 2102; 2104; %soft; 977; 979; %guest; 0; 0; %gnice; 0; 0; %idle; 580654; 583650;
 13:54:35 UTC; CPU; 8; %usr; 100; 200; %nice; 1000; 2000; %sys; 100; 200; %iowait; 100; 200; %steal; 0; 0; %irq; 100; 200; %soft; 10; 20; %guest; 0; 0; %gnice; 0; 0; %idle; 1000; 2000;
-13:54:35 UTC; CPU; 9; %usr; 200; 300; %nice; 2000; 3000; %sys; 200; 300; %iowait; 200; 300; %steal; 0; 0; %irq; 200; 300; %soft; 20; 30; %guest; 0; 0; %gnice; 0; 0; %idle; 2000; 3000;
+13:54:35 UTC; CPU; 9; %usr; 200; 390; %nice; 2000; 3900; %sys; 200; 300; %iowait; 200; 370; %steal; 0; 0; %irq; 200; 380; %soft; 20; 30; %guest; 0; 0; %gnice; 0; 0; %idle; 2000; 3000;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PCSW; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; proc/s; 46972; 47083; cswch/s; 130465866; 132598184;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
-# name; A_IRQ; nr_curr; 9; nr_alloc; 20; nr_ini; 11
-13:54:35 UTC; INTR; sum; all; 95447970; 96567796; CPU0; 12542750; 12722279; CPU1; 12814532; 13183251; CPU2; 8528642; 8621864; CPU3; 9426796; 9458809; CPU4; 13901753; 13993792; CPU5; 11098806; 11282113; CPU6; 14500739; 14653430; CPU7; 12633952; 12652258;
-13:54:35 UTC; INTR; 0; all; 8; 8; CPU0; 8; 8; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 8; all; 1; 1; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 1; 1; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 9; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 16; all; 10536; 10536; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 10536; 10536; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 17; all; 807; 807; CPU0; 0; 0; CPU1; 0; 0; CPU2; 807; 807; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 18; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 19; all; 180401; 181209; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 180401; 181209; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 23; all; 146110; 147202; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 146110; 147202; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 24; all; 220950; 221274; CPU0; 0; 0; CPU1; 0; 0; CPU2; 220950; 221274; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 25; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 26; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 27; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 28; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 29; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 30; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 31; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 32; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 33; all; 53442; 53913; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 53442; 53913; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 34; all; 756140; 760815; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 756140; 760815; CPU7; 0; 0;
-13:54:35 UTC; INTR; 35; all; 15; 15; CPU0; 15; 15; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; 36; all; 15162; 15162; CPU0; 0; 0; CPU1; 15162; 15162; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; NMI; all; 2891; 2897; CPU0; 375; 376; CPU1; 405; 405; CPU2; 600; 600; CPU3; 591; 595; CPU4; 338; 338; CPU5; 345; 345; CPU6; 100; 101; CPU7; 137; 137;
-13:54:35 UTC; INTR; LOC; all; 90448884; 91536137; CPU0; 11058684; 11228073; CPU1; 12156804; 12522126; CPU2; 8152650; 8243161; CPU3; 9149572; 9181047; CPU4; 12959122; 13047185; CPU5; 10942492; 11124166; CPU6; 13539420; 13685641; CPU7; 12490140; 12504738;
-13:54:35 UTC; INTR; SPU; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; PMI; all; 2891; 2897; CPU0; 375; 376; CPU1; 405; 405; CPU2; 600; 600; CPU3; 591; 595; CPU4; 338; 338; CPU5; 345; 345; CPU6; 100; 101; CPU7; 137; 137;
-13:54:35 UTC; INTR; IWI; all; 7; 7; CPU0; 0; 0; CPU1; 0; 0; CPU2; 6; 6; CPU3; 1; 1; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; RTR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; RES; all; 3001998; 3008700; CPU0; 1416697; 1421353; CPU1; 556655; 557675; CPU2; 104465; 104876; CPU3; 149062; 149065; CPU4; 547294; 547438; CPU5; 85492; 85576; CPU6; 92446; 92730; CPU7; 49887; 49987;
-13:54:35 UTC; INTR; CAL; all; 264665; 270640; CPU0; 31994; 34172; CPU1; 38300; 38906; CPU2; 27087; 27725; CPU3; 30208; 30252; CPU4; 27173; 27589; CPU5; 31454; 31994; CPU6; 41832; 42414; CPU7; 36617; 37588;
-13:54:35 UTC; INTR; TLB; all; 342879; 355385; CPU0; 34580; 37883; CPU1; 46778; 48548; CPU2; 21454; 22791; CPU3; 32770; 32781; CPU4; 40954; 42469; CPU5; 38654; 39662; CPU6; 70678; 71604; CPU7; 57011; 59647;
-13:54:35 UTC; INTR; TRM; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; THR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; DFR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; MCE; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; MCP; all; 183; 191; CPU0; 22; 23; CPU1; 23; 24; CPU2; 23; 24; CPU3; 23; 24; CPU4; 23; 24; CPU5; 23; 24; CPU6; 23; 24; CPU7; 23; 24;
-13:54:35 UTC; INTR; HYP; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; HRE; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; HVS; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; ERR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; MIS; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; PIN; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; NPI; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
-13:54:35 UTC; INTR; PIW; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0;
+# name; A_IRQ; nr_curr; 11; nr_alloc; 20; nr_ini; 11
+13:54:35 UTC; INTR; sum; all; 95525443; 96646515; CPU0; 12542750; 12722279; CPU1; 12814532; 13183251; CPU2; 8528642; 8621864; CPU3; 9426796; 9458809; CPU4; 13901753; 13993792; CPU5; 11098806; 11282113; CPU6; 14500739; 14653430; CPU7; 12633952; 12652258; CPU8; 15018; 15280; CPU9; 62455; 63439;
+13:54:35 UTC; INTR; 0; all; 20; 22; CPU0; 8; 8; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 12; 14; CPU9; 0; 0;
+13:54:35 UTC; INTR; 8; all; 1; 1; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 1; 1; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 9; all; 87; 87; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 87; 87;
+13:54:35 UTC; INTR; 16; all; 10536; 10536; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 10536; 10536; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 17; all; 807; 807; CPU0; 0; 0; CPU1; 0; 0; CPU2; 807; 807; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 18; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 19; all; 180401; 181209; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 180401; 181209; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 23; all; 146110; 147202; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 146110; 147202; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 24; all; 220950; 221274; CPU0; 0; 0; CPU1; 0; 0; CPU2; 220950; 221274; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 25; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 26; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 27; all; 2345; 2356; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 2345; 2356;
+13:54:35 UTC; INTR; 28; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 29; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 30; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 31; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 32; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 33; all; 53442; 53913; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 53442; 53913; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 34; all; 756140; 760815; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 756140; 760815; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 35; all; 15; 15; CPU0; 15; 15; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; 36; all; 15162; 15162; CPU0; 0; 0; CPU1; 15162; 15162; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; NMI; all; 3108; 3153; CPU0; 375; 376; CPU1; 405; 405; CPU2; 600; 600; CPU3; 591; 595; CPU4; 338; 338; CPU5; 345; 345; CPU6; 100; 101; CPU7; 137; 137; CPU8; 98; 131; CPU9; 119; 125;
+13:54:35 UTC; INTR; LOC; all; 90513574; 91601623; CPU0; 11058684; 11228073; CPU1; 12156804; 12522126; CPU2; 8152650; 8243161; CPU3; 9149572; 9181047; CPU4; 12959122; 13047185; CPU5; 10942492; 11124166; CPU6; 13539420; 13685641; CPU7; 12490140; 12504738; CPU8; 12345; 12359; CPU9; 52345; 53127;
+13:54:35 UTC; INTR; SPU; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; PMI; all; 3079; 3128; CPU0; 375; 376; CPU1; 405; 405; CPU2; 600; 600; CPU3; 591; 595; CPU4; 338; 338; CPU5; 345; 345; CPU6; 100; 101; CPU7; 137; 137; CPU8; 156; 190; CPU9; 32; 41;
+13:54:35 UTC; INTR; IWI; all; 7; 7; CPU0; 0; 0; CPU1; 0; 0; CPU2; 6; 6; CPU3; 1; 1; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; RTR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; RES; all; 3003630; 3010507; CPU0; 1416697; 1421353; CPU1; 556655; 557675; CPU2; 104465; 104876; CPU3; 149062; 149065; CPU4; 547294; 547438; CPU5; 85492; 85576; CPU6; 92446; 92730; CPU7; 49887; 49987; CPU8; 1234; 1345; CPU9; 398; 462;
+13:54:35 UTC; INTR; CAL; all; 271395; 277466; CPU0; 31994; 34172; CPU1; 38300; 38906; CPU2; 27087; 27725; CPU3; 30208; 30252; CPU4; 27173; 27589; CPU5; 31454; 31994; CPU6; 41832; 42414; CPU7; 36617; 37588; CPU8; 378; 414; CPU9; 6352; 6412;
+13:54:35 UTC; INTR; TLB; all; 344430; 356997; CPU0; 34580; 37883; CPU1; 46778; 48548; CPU2; 21454; 22791; CPU3; 32770; 32781; CPU4; 40954; 42469; CPU5; 38654; 39662; CPU6; 70678; 71604; CPU7; 57011; 59647; CPU8; 786; 812; CPU9; 765; 800;
+13:54:35 UTC; INTR; TRM; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; THR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; DFR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; MCE; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; MCP; all; 204; 235; CPU0; 22; 23; CPU1; 23; 24; CPU2; 23; 24; CPU3; 23; 24; CPU4; 23; 24; CPU5; 23; 24; CPU6; 23; 24; CPU7; 23; 24; CPU8; 9; 15; CPU9; 12; 29;
+13:54:35 UTC; INTR; HYP; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; HRE; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; HVS; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; ERR; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; MIS; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; PIN; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; NPI; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
+13:54:35 UTC; INTR; PIW; all; 0; 0; CPU0; 0; 0; CPU1; 0; 0; CPU2; 0; 0; CPU3; 0; 0; CPU4; 0; 0; CPU5; 0; 0; CPU6; 0; 0; CPU7; 0; 0; CPU8; 0; 0; CPU9; 0; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_SWAP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; pswpin/s; 0; 0; pswpout/s; 0; 0;
@@ -1122,6 +1137,8 @@
 13:54:35 UTC; CPU; 7; MHz; 349756;
 13:54:35 UTC; CPU; 8; MHz; 349756;
 13:54:35 UTC; CPU; 9; MHz; 349756;
+# uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
+# name; A_PWR_BAT; nr_curr; 0; nr_alloc; 2; nr_ini; 2
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_PWR_USB; nr_curr; 0; nr_alloc; 4; nr_ini; 2
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35

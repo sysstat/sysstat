@@ -11,7 +11,7 @@
 			"timezone": "GMT",
 			"statistics": [
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:19", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:19", "tz": "UTC", "interval": 31},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.15, "nice": 12.50, "sys": 1.84, "iowait": 0.12, "steal": 0.00, "irq": 0.34, "soft": 0.19, "guest": 0.00, "gnice": 0.00, "idle": 82.88},
 						{"cpu": "0", "usr": 2.71, "nice": 0.03, "sys": 2.16, "iowait": 0.00, "steal": 0.00, "irq": 0.32, "soft": 0.64, "guest": 0.00, "gnice": 0.00, "idle": 94.14},
@@ -159,6 +159,10 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"battery": [
+							{"number": 0, "percent-capacity": 100, "variation": 0.00, "status": "Full"},
+							{"number": 1, "percent-capacity": 83, "variation": -3.85, "status": "Unknown"}
 						]
 					},
 					"filesystems": [
@@ -174,7 +178,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:29", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:29", "tz": "UTC", "interval": 31},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.28, "nice": 0.00, "sys": 1.55, "iowait": 0.48, "steal": 0.00, "irq": 0.19, "soft": 0.19, "guest": 0.00, "gnice": 0.00, "idle": 95.31},
 						{"cpu": "0", "usr": 1.25, "nice": 0.00, "sys": 1.51, "iowait": 0.35, "steal": 0.00, "irq": 0.19, "soft": 0.58, "guest": 0.00, "gnice": 0.00, "idle": 96.12},
@@ -321,6 +325,10 @@
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
 						],
+						"battery": [
+							{"number": 0, "percent-capacity": 70, "variation": -57.62, "status": "Unknown"},
+							{"number": 1, "percent-capacity": 80, "variation": -5.76, "status": "Discharging"}
+						],
 						"usb-devices": [
 							{"bus_number": 1, "idvendor": "3f0", "idprod": "862", "maxpower": 196, "manufact": "HP", "product": "HP Wireless Keyboard Mouse Kit"},
 							{"bus_number": 3, "idvendor": "174c", "idprod": "55aa", "maxpower": 0, "manufact": "ASMT", "product": "ASM1153"}
@@ -341,7 +349,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:39", "utc": 1, "interval": 39},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:39", "tz": "UTC", "interval": 39},
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.67, "nice": 23.08, "sys": 1.79, "iowait": 0.17, "steal": 0.00, "irq": 0.33, "soft": 0.28, "guest": 0.00, "gnice": 0.00, "idle": 71.68},
 						{"cpu": "0", "usr": 2.19, "nice": 52.01, "sys": 1.46, "iowait": 0.00, "steal": 0.00, "irq": 0.36, "soft": 0.39, "guest": 0.00, "gnice": 0.00, "idle": 43.59},
@@ -401,7 +409,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU7": 0.00, "CPU8": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.26, "pgscand": 0.00, "pgsteal": 0.23, "vmeff-percent": 90.00},
 					"io": {"tps": 0.00, "io-reads": {"rtps": 0.00, "bread": 0.00}, "io-writes": {"wtps": 0.00, "bwrtn": 0.00}, "io-discard": {"dtps": 0.00, "bdscd": 0.00}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
@@ -490,6 +498,9 @@
 							{"number": "5", "frequency": 3493.55},
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
+						],
+						"battery": [
+							{"number": 0, "percent-capacity": 75, "variation": 7.79, "status": "Charging"}
 						]
 					},
 					"filesystems": [
@@ -507,7 +518,7 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:20:49", "utc": 1, "interval": 22},
+					"timestamp": {"date": "2019-04-18", "time": "13:20:49", "tz": "UTC", "interval": 22},
 					"cpu-load": [
 						{"cpu": "all", "usr": 6.21, "nice": 8.70, "sys": 6.64, "iowait": 0.49, "steal": 0.39, "irq": 0.54, "soft": 0.34, "guest": 0.59, "gnice": 0.10, "idle": 75.90},
 						{"cpu": "0", "usr": 2.69, "nice": 47.44, "sys": 1.26, "iowait": 0.18, "steal": 0.00, "irq": 0.36, "soft": 0.85, "guest": 0.00, "gnice": 0.00, "idle": 47.22},
@@ -568,7 +579,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 4.02, "pgscand": 0.00, "pgsteal": 0.09, "vmeff-percent": 2.22},
 					"io": {"tps": 136.22, "io-reads": {"rtps": 85.80, "bread": 4497.45}, "io-writes": {"wtps": 5.85, "bwrtn": 48.24}, "io-discard": {"dtps": 44.57, "bdscd": 214.83}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
@@ -664,6 +675,9 @@
 							{"number": "6", "frequency": 3492.22},
 							{"number": "7", "frequency": 3497.56}
 						],
+						"battery": [
+							{"number": 0, "percent-capacity": 77, "variation": 5.36, "status": "NotCharging"}
+						],
 						"usb-devices": [
 							{"bus_number": 1, "idvendor": "3f0", "idprod": "862", "maxpower": 196, "manufact": "HP", "product": "HP Wireless Keyboard Mouse Kit"},
 							{"bus_number": 3, "idvendor": "174c", "idprod": "55aa", "maxpower": 0, "manufact": "ASMT", "product": "ASM1153"},
@@ -684,9 +698,9 @@
 					}
 				},
 				{
-					"timestamp": {"date": "2019-04-18", "time": "13:54:35", "utc": 1, "interval": 31},
+					"timestamp": {"date": "2019-04-18", "time": "13:54:35", "tz": "UTC", "interval": 31},
 					"cpu-load": [
-						{"cpu": "all", "usr": 2.47, "nice": 17.21, "sys": 2.21, "iowait": 0.77, "steal": 0.00, "irq": 0.96, "soft": 0.22, "guest": 0.00, "gnice": 0.00, "idle": 76.16},
+						{"cpu": "all", "usr": 2.67, "nice": 19.49, "sys": 2.13, "iowait": 0.97, "steal": 0.00, "irq": 1.18, "soft": 0.21, "guest": 0.00, "gnice": 0.00, "idle": 73.34},
 						{"cpu": "0", "usr": 2.71, "nice": 0.03, "sys": 2.16, "iowait": 0.00, "steal": 0.00, "irq": 0.32, "soft": 0.64, "guest": 0.00, "gnice": 0.00, "idle": 94.14},
 						{"cpu": "1", "usr": 2.85, "nice": 0.00, "sys": 4.28, "iowait": 0.00, "steal": 0.00, "irq": 0.68, "soft": 0.19, "guest": 0.00, "gnice": 0.00, "idle": 91.99},
 						{"cpu": "2", "usr": 2.25, "nice": 0.03, "sys": 1.51, "iowait": 0.68, "steal": 0.00, "irq": 0.23, "soft": 0.13, "guest": 0.00, "gnice": 0.00, "idle": 95.18},
@@ -696,54 +710,54 @@
 						{"cpu": "6", "usr": 2.41, "nice": 0.00, "sys": 2.03, "iowait": 0.16, "steal": 0.00, "irq": 0.48, "soft": 0.10, "guest": 0.00, "gnice": 0.00, "idle": 94.82},
 						{"cpu": "7", "usr": 2.89, "nice": 0.00, "sys": 0.74, "iowait": 0.06, "steal": 0.00, "irq": 0.06, "soft": 0.06, "guest": 0.00, "gnice": 0.00, "idle": 96.18},
 						{"cpu": "8", "usr": 4.15, "nice": 41.49, "sys": 4.15, "iowait": 4.15, "steal": 0.00, "irq": 4.15, "soft": 0.41, "guest": 0.00, "gnice": 0.00, "idle": 41.49},
-						{"cpu": "9", "usr": 4.15, "nice": 41.49, "sys": 4.15, "iowait": 4.15, "steal": 0.00, "irq": 4.15, "soft": 0.41, "guest": 0.00, "gnice": 0.00, "idle": 41.49}
+						{"cpu": "9", "usr": 5.35, "nice": 53.52, "sys": 2.82, "iowait": 4.79, "steal": 0.00, "irq": 5.07, "soft": 0.28, "guest": 0.00, "gnice": 0.00, "idle": 28.17}
 					],
 					"process-and-context-switch": {"proc": 3.56, "cswch": 68409.30},
 					"interrupts": [
-						{"intr": "sum", "all": 35926.40, "CPU0": 5759.67, "CPU1": 11829.29, "CPU2": 2990.76, "CPU3": 1027.05, "CPU4": 2952.81, "CPU5": 5880.88, "CPU6": 4898.65, "CPU7": 587.30},
-						{"intr": "0", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "8", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "9", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "16", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "17", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "18", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "19", "all": 25.92, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 25.92, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "23", "all": 35.03, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 35.03, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "24", "all": 10.39, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 10.39, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "25", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "26", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "27", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "28", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "29", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "30", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "31", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "32", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "33", "all": 15.11, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 15.11, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "34", "all": 149.98, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 149.98, "CPU7": 0.00},
-						{"intr": "35", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "36", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "NMI", "all": 0.19, "CPU0": 0.03, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.13, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.03, "CPU7": 0.00},
-						{"intr": "LOC", "all": 34881.39, "CPU0": 5434.36, "CPU1": 11720.31, "CPU2": 2903.79, "CPU3": 1009.79, "CPU4": 2825.25, "CPU5": 5828.49, "CPU6": 4691.08, "CPU7": 468.33},
-						{"intr": "SPU", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "PMI", "all": 0.19, "CPU0": 0.03, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.13, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.03, "CPU7": 0.00},
-						{"intr": "IWI", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "RTR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "RES", "all": 215.01, "CPU0": 149.37, "CPU1": 32.72, "CPU2": 13.19, "CPU3": 0.10, "CPU4": 4.62, "CPU5": 2.69, "CPU6": 9.11, "CPU7": 3.21},
-						{"intr": "CAL", "all": 191.69, "CPU0": 69.87, "CPU1": 19.44, "CPU2": 20.47, "CPU3": 1.41, "CPU4": 13.35, "CPU5": 17.32, "CPU6": 18.67, "CPU7": 31.15},
-						{"intr": "TLB", "all": 401.22, "CPU0": 105.97, "CPU1": 56.79, "CPU2": 42.89, "CPU3": 0.35, "CPU4": 48.60, "CPU5": 32.34, "CPU6": 29.71, "CPU7": 84.57},
-						{"intr": "TRM", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "THR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "DFR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "MCE", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "MCP", "all": 0.26, "CPU0": 0.03, "CPU1": 0.03, "CPU2": 0.03, "CPU3": 0.03, "CPU4": 0.03, "CPU5": 0.03, "CPU6": 0.03, "CPU7": 0.03},
-						{"intr": "HYP", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "HRE", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "HVS", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "ERR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "MIS", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "PIN", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "NPI", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00},
-						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00}
+						{"intr": "sum", "all": 35966.38, "CPU0": 5759.67, "CPU1": 11829.29, "CPU2": 2990.76, "CPU3": 1027.05, "CPU4": 2952.81, "CPU5": 5880.88, "CPU6": 4898.65, "CPU7": 587.30, "CPU8": 8.41, "CPU9": 31.57},
+						{"intr": "0", "all": 0.06, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.06, "CPU9": 0.00},
+						{"intr": "8", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "9", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "16", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "17", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "18", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "19", "all": 25.92, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 25.92, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "23", "all": 35.03, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 35.03, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "24", "all": 10.39, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 10.39, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "25", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "26", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "27", "all": 0.35, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.35},
+						{"intr": "28", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "29", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "30", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "31", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "32", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "33", "all": 15.11, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 15.11, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "34", "all": 149.98, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 149.98, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "35", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "36", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "NMI", "all": 1.44, "CPU0": 0.03, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.13, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.03, "CPU7": 0.00, "CPU8": 1.06, "CPU9": 0.19},
+						{"intr": "LOC", "all": 34906.93, "CPU0": 5434.36, "CPU1": 11720.31, "CPU2": 2903.79, "CPU3": 1009.79, "CPU4": 2825.25, "CPU5": 5828.49, "CPU6": 4691.08, "CPU7": 468.33, "CPU8": 0.45, "CPU9": 25.09},
+						{"intr": "SPU", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "PMI", "all": 1.57, "CPU0": 0.03, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.13, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.03, "CPU7": 0.00, "CPU8": 1.09, "CPU9": 0.29},
+						{"intr": "IWI", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "RTR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "RES", "all": 220.63, "CPU0": 149.37, "CPU1": 32.72, "CPU2": 13.19, "CPU3": 0.10, "CPU4": 4.62, "CPU5": 2.69, "CPU6": 9.11, "CPU7": 3.21, "CPU8": 3.56, "CPU9": 2.05},
+						{"intr": "CAL", "all": 194.77, "CPU0": 69.87, "CPU1": 19.44, "CPU2": 20.47, "CPU3": 1.41, "CPU4": 13.35, "CPU5": 17.32, "CPU6": 18.67, "CPU7": 31.15, "CPU8": 1.15, "CPU9": 1.92},
+						{"intr": "TLB", "all": 403.18, "CPU0": 105.97, "CPU1": 56.79, "CPU2": 42.89, "CPU3": 0.35, "CPU4": 48.60, "CPU5": 32.34, "CPU6": 29.71, "CPU7": 84.57, "CPU8": 0.83, "CPU9": 1.12},
+						{"intr": "TRM", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "THR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "DFR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "MCE", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "MCP", "all": 0.99, "CPU0": 0.03, "CPU1": 0.03, "CPU2": 0.03, "CPU3": 0.03, "CPU4": 0.03, "CPU5": 0.03, "CPU6": 0.03, "CPU7": 0.03, "CPU8": 0.19, "CPU9": 0.55},
+						{"intr": "HYP", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "HRE", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "HVS", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "ERR", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "MIS", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "PIN", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "NPI", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00},
+						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
 					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
@@ -859,15 +873,15 @@
 			],
 			"restarts": [
 				{
-					"boot": {"date": "2019-04-18", "time": "13:37:29", "utc": 1, "cpu_count": 9}
+					"boot": {"date": "2019-04-18", "time": "13:37:29", "tz": "UTC", "cpu_count": 9}
 				},
 				{
-					"boot": {"date": "2019-04-18", "time": "13:54:09", "utc": 1, "cpu_count": 10}
+					"boot": {"date": "2019-04-18", "time": "13:54:09", "tz": "UTC", "cpu_count": 10}
 				}
 			],
 			"comments": [
 				{
-					"comment": {"date": "2019-04-18", "time": "13:39:09", "utc": 1, "com": "Testing sysstat!"}
+					"comment": {"date": "2019-04-18", "time": "13:39:09", "tz": "UTC", "com": "Testing sysstat!"}
 				}
 			]
 		}

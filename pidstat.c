@@ -30,6 +30,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <sys/utsname.h>
+#include <sys/wait.h>
 #include <regex.h>
 
 #ifdef HAVE_LINUX_SCHED_H
@@ -73,6 +74,7 @@ unsigned int actflag = 0;	/* Activity flag */
 
 struct sigaction alrm_act, int_act, chld_act;
 int signal_caught = 0;
+int status = 0;
 
 int dplaces_nr = -1;		/* Number of decimal places */
 
@@ -120,7 +122,18 @@ void alarm_handler(int sig)
  */
 void int_handler(int sig)
 {
-	signal_caught = 1;
+	int status_code;
+
+	signal_caught = TRUE;
+
+	if (sig == SIGCHLD) {
+		/*
+		 * SIGCHLD tells the parent process that it can now
+		 * get the exit status of the child via wait().
+		 */
+		wait(&status_code);
+		status = WEXITSTATUS(status_code);
+	}
 }
 
 /*
@@ -1330,7 +1343,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
 				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 				   0.0 :
 				   SP_VALUE(pstp->utime - pstp->gtime,
@@ -1349,13 +1362,13 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			cprintf_f(NO_UNIT, 2, 9, 2,
+			cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
 				  S_VALUE(pstp->minflt, pstc->minflt, itv),
 				  S_VALUE(pstp->majflt, pstc->majflt, itv));
 			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
-			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
 				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 
@@ -1379,7 +1392,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 					wbytes /= 1024;
 					cbytes /= 1024;
 				}
-				cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, 3, 9, 2,
+				cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, FALSE, 3, 9, 2,
 					  rbytes, wbytes, cbytes);
 			}
 			else {
@@ -1396,7 +1409,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
-			cprintf_f(NO_UNIT, 2, 9, 2,
+			cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
 				  S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
 				  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 		}
@@ -1472,7 +1485,7 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_f(NO_UNIT, 3, 9, 0,
+			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
 				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 				  0.0 :
@@ -1546,7 +1559,7 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		cprintf_pc(DISPLAY_UNIT(pidflag), 5, 7, 2,
+		cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
 			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
 			   0.0 :
 			   SP_VALUE(pstp->utime - pstp->gtime,
@@ -1628,7 +1641,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		pstp = plist->pstats[prev];
 
 		if (disp_avg) {
-			cprintf_f(NO_UNIT, 3, 9, 0,
+			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
 				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 				  0.0 :
@@ -1643,7 +1656,7 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 					    (HZ * plist->uc_asum_count) * 1000);
 		}
 		else {
-			cprintf_f(NO_UNIT, 3, 9, 0,
+			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
 				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
 				  0.0 :
@@ -1719,16 +1732,16 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, plist);
 
-		cprintf_f(NO_UNIT, 2, 9, 2,
+		cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
 			  S_VALUE(pstp->minflt, pstc->minflt, itv),
 			  S_VALUE(pstp->majflt, pstc->majflt, itv));
 
 		if (disp_avg) {
-			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7, 0,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 2, 7, 0,
 				  (double) plist->total_vsz / plist->rt_asum_count,
 				  (double) plist->total_rss / plist->rt_asum_count);
 
-			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
 				   tlmkb ?
 				   SP_VALUE(0, plist->total_rss / plist->rt_asum_count, tlmkb)
 				   : 0.0);
@@ -1738,7 +1751,7 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 				    (unsigned long long) pstc->vsz,
 				    (unsigned long long) pstc->rss);
 
-			cprintf_pc(DISPLAY_UNIT(pidflag), 1, 6, 2,
+			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
 				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 		}
 
@@ -1803,7 +1816,7 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 		pstp = plist->pstats[prev];
 
 		if (disp_avg) {
-			cprintf_f(NO_UNIT, 2, 9, 0,
+			cprintf_f(NO_UNIT, FALSE, 2, 9, 0,
 				  (double) ((pstc->minflt + pstc->cminflt) -
 					    (pstp->minflt + pstp->cminflt)) / plist->rc_asum_count,
 				  (double) ((pstc->majflt + pstc->cmajflt) -
@@ -1876,7 +1889,7 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 		print_line_id(curr_string, plist);
 
 		if (disp_avg) {
-			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7, 0,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 2, 7, 0,
 				  (double) plist->total_stack_size / plist->sk_asum_count,
 				  (double) plist->total_stack_ref  / plist->sk_asum_count);
 		}
@@ -1960,7 +1973,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 				wbytes /= 1024;
 				cbytes /= 1024;
 			}
-			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, 3, 9, 2,
+			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, FALSE, 3, 9, 2,
 				  rbytes, wbytes, cbytes);
 		}
 		else {
@@ -1970,7 +1983,7 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		}
 		/* I/O delays come from another file (/proc/#/stat) */
 		if (disp_avg) {
-			cprintf_f(NO_UNIT, 1, 7, 0,
+			cprintf_f(NO_UNIT, FALSE, 1, 7, 0,
 				  (double) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays) /
 					    plist->delay_asum_count);
 		}
@@ -2030,7 +2043,7 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		cprintf_f(NO_UNIT, 2, 9, 2,
+		cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
 			  S_VALUE(pstp->nvcsw,  pstc->nvcsw,  itv),
 			  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 
@@ -2149,7 +2162,7 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 		print_line_id(curr_string, plist);
 
 		if (disp_avg) {
-			cprintf_f(NO_UNIT, 2, 7, 0,
+			cprintf_f(NO_UNIT, FALSE, 2, 7, 0,
 				  (double) plist->total_threads / plist->tf_asum_count,
 				  NO_PID_FD(plist->flags) ?
 				  -1.0 :
@@ -2414,7 +2427,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		set_pid_nonexistent(pid_list);
 
 		/* Get time */
-		get_localtime(&ps_tstamp[curr], 0);
+		get_xtime(&ps_tstamp[curr], 0, LOCAL_TIME);
 
 		/* Read system uptime (in 1/100th of a second) */
 		read_uptime(&(uptime_cs[curr]));
@@ -2809,7 +2822,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Get time */
-	get_localtime(&(ps_tstamp[0]), 0);
+	get_xtime(&(ps_tstamp[0]), 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.
@@ -2830,5 +2843,9 @@ int main(int argc, char **argv)
 	/* Free structures */
 	sfree_pid(&pid_list, TRUE);
 
-	return 0;
+	/*
+	 * @status contains the exit code of the child process monitored with option -e,
+	 * or 0 otherwise.
+	 */
+	return status;
 }

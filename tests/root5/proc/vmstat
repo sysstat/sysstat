@@ -73,9 +73,9 @@ pgfault 60863302
 pgmajfault 10715
 pglazyfreed 0
 pgrefill 0
-pgsteal_kswapd 0
+pgsteal_kswapd 11
 pgsteal_direct 0
-pgscan_kswapd 0
+pgscan_kswapd 100
 pgscan_direct 0
 pgscan_direct_throttle 0
 zone_reclaim_failed 0

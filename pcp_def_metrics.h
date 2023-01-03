@@ -44,6 +44,7 @@ void pcp_def_huge_metrics(void);
 void pcp_def_pwr_fan_metrics(struct activity *);
 void pcp_def_pwr_temp_metrics(struct activity *);
 void pcp_def_pwr_in_metrics(struct activity *);
+void pcp_def_pwr_bat_metrics(struct activity *);
 void pcp_def_pwr_usb_metrics(struct activity *);
 void pcp_def_filesystem_metrics(struct activity *);
 void pcp_def_fchost_metrics(struct activity *);

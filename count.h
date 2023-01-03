@@ -35,5 +35,7 @@ __nr_t get_filesystem_nr
 	(void);
 __nr_t get_fchost_nr
 	(void);
+__nr_t get_bat_nr
+	(void);
 
 #endif /* _COUNT_H */

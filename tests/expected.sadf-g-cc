@@ -12,7 +12,7 @@
 <text x="795" y="50" style="fill: #000000; stroke: none; font-size: 12px">%user (2.15, 6.80)</text>
 <text x="795" y="65" style="fill: #1a1aff; stroke: none; font-size: 12px">%nice (0.00, 23.08)</text>
 <text x="795" y="80" style="fill: #1affb2; stroke: none; font-size: 12px">%system (1.93, 7.53)</text>
-<text x="795" y="95" style="fill: #b21aff; stroke: none; font-size: 12px">%iowait (0.12, 0.77)</text>
+<text x="795" y="95" style="fill: #b21aff; stroke: none; font-size: 12px">%iowait (0.12, 0.97)</text>
 <text x="795" y="110" style="fill: #1ab2ff; stroke: none; font-size: 12px">%steal (0.00, 0.39)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
@@ -48,16 +48,16 @@
 <text x="717" y="10" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #000000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="2.15" width="31"/><rect x="0" y="0.00" height="2.28" width="31"/><rect x="0" y="0.00" height="2.67" width="39"/><rect x="18" y="0.00" height="6.80" width="22"/><rect x="2035" y="0.00" height="2.47" width="31"/>
+<rect x="0" y="0.00" height="2.15" width="31"/><rect x="0" y="0.00" height="2.28" width="31"/><rect x="0" y="0.00" height="2.67" width="39"/><rect x="18" y="0.00" height="6.80" width="22"/><rect x="2035" y="0.00" height="2.67" width="31"/>
 </g>
 <g style="fill: #1a1aff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="2.15" height="12.50" width="31"/><rect x="0" y="2.67" height="23.08" width="39"/><rect x="18" y="6.80" height="8.80" width="22"/><rect x="2035" y="2.47" height="17.21" width="31"/>
+<rect x="0" y="2.15" height="12.50" width="31"/><rect x="0" y="2.67" height="23.08" width="39"/><rect x="18" y="6.80" height="8.80" width="22"/><rect x="2035" y="2.67" height="19.49" width="31"/>
 </g>
 <g style="fill: #1affb2; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="14.64" height="2.36" width="31"/><rect x="0" y="2.28" height="1.93" width="31"/><rect x="0" y="25.75" height="2.40" width="39"/><rect x="18" y="15.60" height="7.53" width="22"/><rect x="2035" y="19.68" height="3.39" width="31"/>
+<rect x="0" y="14.64" height="2.36" width="31"/><rect x="0" y="2.28" height="1.93" width="31"/><rect x="0" y="25.75" height="2.40" width="39"/><rect x="18" y="15.60" height="7.53" width="22"/><rect x="2035" y="22.17" height="3.53" width="31"/>
 </g>
 <g style="fill: #b21aff; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="17.00" height="0.12" width="31"/><rect x="0" y="4.21" height="0.48" width="31"/><rect x="0" y="28.15" height="0.17" width="39"/><rect x="18" y="23.14" height="0.49" width="22"/><rect x="2035" y="23.07" height="0.77" width="31"/>
+<rect x="0" y="17.00" height="0.12" width="31"/><rect x="0" y="4.21" height="0.48" width="31"/><rect x="0" y="28.15" height="0.17" width="39"/><rect x="18" y="23.14" height="0.49" width="22"/><rect x="2035" y="25.69" height="0.97" width="31"/>
 </g>
 <g style="fill: #1ab2ff; stroke: none" transform="scale(0.348500,-2.000000)">
 <rect x="18" y="23.63" height="0.39" width="22"/>

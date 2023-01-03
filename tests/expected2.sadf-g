@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="6360" height="35790" fill="black" stroke="#000000" stroke-width="1">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="6360" height="36430" fill="black" stroke="#000000" stroke-width="1">
 <text x="0" y="30" text-anchor="start" stroke="#000000">Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 </text>
 <a xlink:href="#g1-0" xlink:title="A_CPU">
@@ -65,15 +65,17 @@
 <text x="10" y="640">Software-based network processing statistics</text></a>
 <a xlink:href="#g30-0" xlink:title="A_PWR_CPU">
 <text x="10" y="660">CPU clock frequency</text></a>
+<a xlink:href="#g43-0" xlink:title="A_PWR_BAT">
+<text x="10" y="680">Batteries capacity</text></a>
 <a xlink:href="#g37-0" xlink:title="A_FS">
-<text x="10" y="680">Filesystems statistics</text></a>
+<text x="10" y="700">Filesystems statistics</text></a>
 <a xlink:href="#g40-0" xlink:title="A_PSI_CPU">
-<text x="10" y="700">Pressure-stall CPU statistics</text></a>
+<text x="10" y="720">Pressure-stall CPU statistics</text></a>
 <a xlink:href="#g41-0" xlink:title="A_PSI_IO">
-<text x="10" y="720">Pressure-stall I/O statistics</text></a>
+<text x="10" y="740">Pressure-stall I/O statistics</text></a>
 <a xlink:href="#g42-0" xlink:title="A_PSI_MEM">
-<text x="10" y="740">Pressure-stall memory statistics</text></a>
-<g id="g1-0" transform="translate(0,760)">
+<text x="10" y="760">Pressure-stall memory statistics</text></a>
+<g id="g1-0" transform="translate(0,780)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [all]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -82,9 +84,9 @@
 <text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%usr (2.15, 6.21)</text>
 <text x="795" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">%nice (0.00, 23.08)</text>
 <text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">%sys (1.55, 6.64)</text>
-<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">%iowait (0.12, 0.77)</text>
+<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">%iowait (0.12, 0.97)</text>
 <text x="795" y="110" style="fill: #708090; stroke: none; font-size: 12px">%steal (0.00, 0.39)</text>
-<text x="795" y="125" style="fill: #c0c0c0; stroke: none; font-size: 12px">%irq (0.19, 0.96)</text>
+<text x="795" y="125" style="fill: #c0c0c0; stroke: none; font-size: 12px">%irq (0.19, 1.18)</text>
 <text x="795" y="140" style="fill: #808080; stroke: none; font-size: 12px">%soft (0.19, 0.34)</text>
 <text x="795" y="155" style="fill: #d3d3d3; stroke: none; font-size: 12px">%guest (0.00, 0.59)</text>
 <text x="795" y="170" style="fill: #909090; stroke: none; font-size: 12px">%gnice (0.00, 0.10)</text>
@@ -128,26 +130,27 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="0.00" height="2.15" width="31"/><rect x="47998" y="0.00" height="2.28" width="31"/><rect x="48000" y="0.00" height="2.67" width="39"/><rect x="48027" y="0.00" height="6.21" width="22"/><rect x="50044" y="0.00" height="2.47" width="31"/>
+<rect x="47988" y="0.00" height="2.15" width="31"/><rect x="47998" y="0.00" height="2.28" width="31"/><rect x="48000" y="0.00" height="2.67" width="39"/><rect x="48027" y="0.00" height="6.21" width="22"/><rect x="50044" y="0.00" height="2.67" width="31"/>
 </g>
 <g style="fill: #bebebe; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="2.15" height="12.50" width="31"/><rect x="48000" y="2.67" height="23.08" width="39"/><rect x="48027" y="6.21" height="8.70" width="22"/><rect x="50044" y="2.47" height="17.21" width="31"/>
+<rect x="47988" y="2.15" height="12.50" width="31"/><rect x="48000" y="2.67" height="23.08" width="39"/><rect x="48027" y="6.21" height="8.70" width="22"/><rect x="50044" y="2.67" height="19.49" width="31"/>
 </g>
 <g style="fill: #000000; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="14.64" height="1.84" width="31"/><rect x="47998" y="2.28" height="1.55" width="31"/><rect x="48000" y="25.75" height="1.79" width="39"/><rect x="48027" y="14.91" height="6.64" width="22"/><rect x="50044" y="19.68" height="2.21" width="31"/>
+<rect x="47988" y="14.64" height="1.84" width="31"/><rect x="47998" y="2.28" height="1.55" width="31"/><rect x="48000" y="25.75" height="1.79" width="39"/><rect x="48027" y="14.91" height="6.64" width="22"/><rect x="50044" y="22.17" height="2.13" width="31"/>
 </g>
 <g style="fill: #a9a9a9; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="16.48" height="0.12" width="31"/><rect x="47998" y="3.83" height="0.48" width="31"/><rect x="48000" y="27.54" height="0.17" width="39"/><rect x="48027" y="21.56" height="0.49" width="22"/><rect x="50044" y="21.89" height="0.77" width="31"/>
+<rect x="47988" y="16.48" height="0.12" width="31"/><rect x="47998" y="3.83" height="0.48" width="31"/><rect x="48000" y="27.54" height="0.17" width="39"/><rect x="48027" y="21.56" height="0.49" width="22"/><rect x="50044" y="24.30" height="0.97" width="31"/>
 </g>
 <g style="fill: #708090; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="48027" y="22.05" height="0.39" width="22"/>
 </g>
 <g style="fill: #c0c0c0; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="16.60" height="0.34" width="31"/><rect x="47998" y="4.31" height="0.19" width="31"/><rect x="48000" y="27.71" height="0.33" width="39"/><rect x="48027" y="22.44" height="0.54" width="22"/><rect x="50044" y="22.66" height="0.96" width="31"/>
+<rect x="47988" y="16.60" height="0.34" width="31"/><rect x="47998" y="4.31" height="0.19" width="31"/><rect x="48000" y="27.71" height="0.33" width="39"/><rect x="48027" y="22.44" height="0.54" width="22"/><rect x="50044" y="25.27" height="1.18" width="31"/>
 </g>
 <g style="fill: #808080; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="16.93" height="0.19" width="31"/><rect x="47998" y="4.50" height="0.19" width="31"/><rect x="48000" y="28.04" height="0.28" width="39"/><rect x="48027" y="22.99" height="0.34" width="22"/><rect x="50044" y="23.62" height="0.22" width="31"/>
+<rect x="47988" y="16.93" height="0.19" width="31"/><rect x="47998" y="4.50" height="0.19" width="31"/><rect x="48000" y="28.04" height="0.28" width="39"/><rect x="48027" y="22.99" height="0.34" width="22"/><rect x="50044" y="26.45" height="0.21" width="31"/>
 </g>
 <g style="fill: #d3d3d3; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="48027" y="23.33" height="0.59" width="22"/>
@@ -156,11 +159,11 @@
 <rect x="48027" y="23.92" height="0.10" width="22"/>
 </g>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="17.12" height="82.88" width="31"/><rect x="47998" y="4.69" height="95.31" width="31"/><rect x="48000" y="28.32" height="71.68" width="39"/><rect x="48027" y="24.02" height="75.90" width="22"/><rect x="50044" y="23.84" height="76.16" width="31"/>
+<rect x="47988" y="17.12" height="82.88" width="31"/><rect x="47998" y="4.69" height="95.31" width="31"/><rect x="48000" y="28.32" height="71.68" width="39"/><rect x="48027" y="24.02" height="75.90" width="22"/><rect x="50044" y="26.66" height="73.34" width="31"/>
 </g>
 </g>
 </g>
-<g id="g1-1" transform="translate(0,1070)">
+<g id="g1-1" transform="translate(0,1090)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -215,6 +218,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.71" width="31"/><rect x="47998" y="0.00" height="1.25" width="31"/><rect x="48000" y="0.00" height="2.19" width="39"/><rect x="48027" y="0.00" height="2.69" width="22"/><rect x="50044" y="0.00" height="2.71" width="31"/>
 </g>
@@ -238,7 +242,7 @@
 </g>
 </g>
 </g>
-<g id="g1-2" transform="translate(0,1380)">
+<g id="g1-2" transform="translate(0,1400)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -293,6 +297,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.85" width="31"/><rect x="47998" y="0.00" height="2.15" width="31"/><rect x="48000" y="0.00" height="3.45" width="39"/><rect x="48027" y="0.00" height="9.25" width="22"/><rect x="50044" y="0.00" height="2.85" width="31"/>
 </g>
@@ -313,7 +318,7 @@
 </g>
 </g>
 </g>
-<g id="g1-3" transform="translate(0,1690)">
+<g id="g1-3" transform="translate(0,1710)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -368,6 +373,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.25" width="31"/><rect x="47998" y="0.00" height="3.27" width="31"/><rect x="48000" y="0.00" height="0.68" width="39"/><rect x="48027" y="0.00" height="9.90" width="22"/><rect x="50044" y="0.00" height="2.25" width="31"/>
 </g>
@@ -391,7 +397,7 @@
 </g>
 </g>
 </g>
-<g id="g1-4" transform="translate(0,2000)">
+<g id="g1-4" transform="translate(0,2020)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [3]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -446,6 +452,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="48000" y="0.00" height="2.33" width="39"/><rect x="48027" y="0.00" height="31.64" width="22"/>
 </g>
@@ -469,7 +476,7 @@
 </g>
 </g>
 </g>
-<g id="g1-5" transform="translate(0,2310)">
+<g id="g1-5" transform="translate(0,2330)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [4]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -524,6 +531,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.41" width="31"/><rect x="47998" y="0.00" height="3.44" width="31"/><rect x="48000" y="0.00" height="3.11" width="39"/><rect x="48027" y="0.00" height="4.54" width="22"/><rect x="50044" y="0.00" height="2.41" width="31"/>
 </g>
@@ -547,7 +555,7 @@
 </g>
 </g>
 </g>
-<g id="g1-6" transform="translate(0,2620)">
+<g id="g1-6" transform="translate(0,2640)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [5]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -602,6 +610,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="1.65" width="31"/><rect x="47998" y="0.00" height="2.76" width="31"/><rect x="48000" y="0.00" height="3.92" width="39"/><rect x="48027" y="0.00" height="7.62" width="22"/><rect x="50044" y="0.00" height="1.65" width="31"/>
 </g>
@@ -622,7 +631,7 @@
 </g>
 </g>
 </g>
-<g id="g1-7" transform="translate(0,2930)">
+<g id="g1-7" transform="translate(0,2950)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -677,6 +686,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.41" width="31"/><rect x="48027" y="0.00" height="4.13" width="22"/><rect x="50044" y="0.00" height="2.41" width="31"/>
 </g>
@@ -700,7 +710,7 @@
 </g>
 </g>
 </g>
-<g id="g1-8" transform="translate(0,3240)">
+<g id="g1-8" transform="translate(0,3260)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -755,6 +765,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.89" width="31"/><rect x="47998" y="0.00" height="0.83" width="31"/><rect x="48000" y="0.00" height="3.23" width="39"/><rect x="48027" y="0.00" height="7.81" width="22"/><rect x="50044" y="0.00" height="2.89" width="31"/>
 </g>
@@ -775,7 +786,7 @@
 </g>
 </g>
 </g>
-<g id="g1-9" transform="translate(0,3550)">
+<g id="g1-9" transform="translate(0,3570)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [8]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -830,6 +841,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="48000" y="0.00" height="5.26" width="39"/><rect x="48027" y="0.00" height="2.84" width="22"/><rect x="50044" y="0.00" height="4.15" width="31"/>
 </g>
@@ -862,22 +874,22 @@
 </g>
 </g>
 </g>
-<g id="g1-10" transform="translate(0,3860)">
+<g id="g1-10" transform="translate(0,3880)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU utilization [9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
-<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%usr (4.15, 4.15)</text>
-<text x="795" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">%nice (41.49, 41.49)</text>
-<text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">%sys (4.15, 4.15)</text>
-<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">%iowait (4.15, 4.15)</text>
+<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%usr (5.35, 5.35)</text>
+<text x="795" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">%nice (53.52, 53.52)</text>
+<text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">%sys (2.82, 2.82)</text>
+<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">%iowait (4.79, 4.79)</text>
 <text x="795" y="110" style="fill: #708090; stroke: none; font-size: 12px">%steal (0.00, 0.00)</text>
-<text x="795" y="125" style="fill: #c0c0c0; stroke: none; font-size: 12px">%irq (4.15, 4.15)</text>
-<text x="795" y="140" style="fill: #808080; stroke: none; font-size: 12px">%soft (0.41, 0.41)</text>
+<text x="795" y="125" style="fill: #c0c0c0; stroke: none; font-size: 12px">%irq (5.07, 5.07)</text>
+<text x="795" y="140" style="fill: #808080; stroke: none; font-size: 12px">%soft (0.28, 0.28)</text>
 <text x="795" y="155" style="fill: #d3d3d3; stroke: none; font-size: 12px">%guest (0.00, 0.00)</text>
 <text x="795" y="170" style="fill: #909090; stroke: none; font-size: 12px">%gnice (0.00, 0.00)</text>
-<text x="795" y="185" style="fill: #696969; stroke: none; font-size: 12px">%idle (41.49, 41.49)</text>
+<text x="795" y="185" style="fill: #696969; stroke: none; font-size: 12px">%idle (28.17, 28.17)</text>
 <text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
 <tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
 </text>
@@ -917,30 +929,31 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="0.00" height="4.15" width="31"/>
+<rect x="50044" y="0.00" height="5.35" width="31"/>
 </g>
 <g style="fill: #bebebe; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="4.15" height="41.49" width="31"/>
+<rect x="50044" y="5.35" height="53.52" width="31"/>
 </g>
 <g style="fill: #000000; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="45.64" height="4.15" width="31"/>
+<rect x="50044" y="58.87" height="2.82" width="31"/>
 </g>
 <g style="fill: #a9a9a9; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="49.79" height="4.15" width="31"/>
+<rect x="50044" y="61.69" height="4.79" width="31"/>
 </g>
 <g style="fill: #c0c0c0; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="53.94" height="4.15" width="31"/>
+<rect x="50044" y="66.48" height="5.07" width="31"/>
 </g>
 <g style="fill: #808080; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="58.09" height="0.41" width="31"/>
+<rect x="50044" y="71.55" height="0.28" width="31"/>
 </g>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="50044" y="58.51" height="41.49" width="31"/>
+<rect x="50044" y="71.83" height="28.17" width="31"/>
 </g>
 </g>
 </g>
-<g id="g2-0" transform="translate(0,4170)">
+<g id="g2-0" transform="translate(0,4190)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Task creation
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -988,6 +1001,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.56 L48029,4.83 L48039,3.66 L48049,5.27 M50075,3.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-37.949153)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -1033,10 +1047,67 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,68409.30 L48029,46287.74 L48039,64945.01 L48049,108286.78 M50075,68409.30" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.001847)"/>
 </g>
 </g>
-<g id="g6-0" transform="translate(0,4480)">
+<g id="g5-0" transform="translate(0,4500)">
+<rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="0" y="20" style="fill: #000000; stroke: none">Paging activity (3)
+<tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">pgfree/s (0.00, 0.00)</text>
+<text x="795" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">pgscank/s (0.00, 4.02)</text>
+<text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">pgscand/s (0.00, 0.00)</text>
+<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">pgsteal/s x10 (0.00, 2.34)</text>
+<text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
+<tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
+</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-49.755556)"/>
+<text x="0" y="-49" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">1.</text>
+<polyline points="0,2.00 720,2.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-49.755556)"/>
+<text x="0" y="-99" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">2.</text>
+<polyline points="0,3.00 720,3.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-49.755556)"/>
+<text x="0" y="-149" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">3.</text>
+<polyline points="0,4.00 720,4.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-49.755556)"/>
+<text x="0" y="-199" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">4.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="-15" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<polyline points="7200,0 7200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="45" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 2:00</text>
+<polyline points="14400,0 14400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="105" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 4:00</text>
+<polyline points="21600,0 21600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="165" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 6:00</text>
+<polyline points="28800,0 28800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="225" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 8:00</text>
+<polyline points="36000,0 36000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="285" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">10:00</text>
+<polyline points="43200,0 43200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="345" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">12:00</text>
+<polyline points="50400,0 50400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="405" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">14:00</text>
+<polyline points="57600,0 57600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="465" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">16:00</text>
+<polyline points="64800,0 64800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="525" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">18:00</text>
+<polyline points="72000,0 72000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="585" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">20:00</text>
+<polyline points="79200,0 79200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
+<polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
+<path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
+<path d=" M48019,0.00 L48029,0.00 L48039,0.26 L48049,4.02 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
+<path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
+<path d=" M48019,0.00 L48029,0.00 L48039,0.23 L48049,0.09 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-497.555556)"/>
+</g>
+</g>
+<g id="g6-0" transform="translate(0,4810)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">I/O and transfer rate statistics (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1083,6 +1154,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,20.85 L48029,56.63 L48039,0.00 L48049,136.22 M50075,32405.20" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
 <path d=" M48019,12.83 L48029,41.26 L48039,0.00 L48049,85.80 M50075,321.46" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.617185)"/>
 <path d=" M48019,4.81 L48029,8.96 L48039,0.00 L48049,5.85 M50075,32082.13" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
@@ -1135,12 +1207,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,57.43 L48029,17.16 L48039,0.00 L48049,4497.45 M50075,64.16" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.044470)"/>
 <path d=" M48019,38.50 L48029,20.81 L48039,0.00 L48049,48.24 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.444696)"/>
 <path d=" M48019,32.08 L48029,32.01 L48039,0.00 L48049,214.83 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.444696)"/>
 </g>
 </g>
-<g id="g7-0" transform="translate(0,4790)">
+<g id="g7-0" transform="translate(0,5120)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Memory utilization (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1188,6 +1261,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,1404.04 L48029,1404.04 L48039,1404.04 L48049,1404.04 M50075,1404.04" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
 <path d=" M48019,4286.64 L48029,4286.64 L48039,4286.64 L48049,4286.64 M50075,4286.64" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
 <path d=" M48019,3105.19 L48029,3105.19 L48039,3105.19 L48049,3105.19 M50075,3105.19" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
@@ -1237,6 +1311,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="39.04" width="31"/><rect x="47998" y="0.00" height="39.04" width="31"/><rect x="48000" y="0.00" height="39.04" width="39"/><rect x="48027" y="0.00" height="39.04" width="22"/><rect x="50044" y="0.00" height="39.04" width="31"/>
 </g>
@@ -1286,6 +1361,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,254.07 L48029,254.07 L48039,254.07 L48049,254.07 M50075,254.07" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.169286)"/>
 <path d=" M48019,2755.46 L48029,2755.46 L48039,2755.46 L48049,2755.46 M50075,2755.46" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.016929)"/>
 <path d=" M48019,11814.31 L48029,11814.31 L48039,11814.31 L48049,11814.31 M50075,11814.31" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.016929)"/>
@@ -1335,6 +1411,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="48.54" width="31"/><rect x="47998" y="0.00" height="48.54" width="31"/><rect x="48000" y="0.00" height="48.54" width="39"/><rect x="48027" y="0.00" height="48.54" width="22"/><rect x="50044" y="0.00" height="48.54" width="31"/>
 </g>
@@ -1384,6 +1461,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3947.64 L48029,3947.64 L48039,3947.64 L48049,3947.64 M50075,3947.64" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.050663)"/>
 <path d=" M48019,1730.86 L48029,1730.86 L48039,1730.86 L48049,1730.86 M50075,1730.86" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.050663)"/>
 <path d=" M48019,0.39 L48029,0.39 L48039,0.39 L48049,0.39 M50075,0.39" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-506.631730)"/>
@@ -1435,6 +1513,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,2669.11 L48029,2669.11 L48039,2669.11 L48049,2669.11 M50075,2669.11" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.074931)"/>
 <path d=" M48019,435.29 L48029,435.29 L48039,435.29 L48049,435.29 M50075,435.29" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.074931)"/>
 <path d=" M48019,14.97 L48029,14.97 L48039,14.97 L48049,14.97 M50075,14.97" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.493147)"/>
@@ -1442,7 +1521,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #708090; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.074931)"/>
 </g>
 </g>
-<g id="g7-1" transform="translate(0,5100)">
+<g id="g7-1" transform="translate(0,5430)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Swap utilization (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1488,12 +1567,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,16384.00 L48029,16384.00 L48039,16384.00 L48049,16384.00 M50075,16384.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.012207)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.012207)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.012207)"/>
 </g>
 </g>
-<g id="g8-0" transform="translate(0,5410)">
+<g id="g8-0" transform="translate(0,5740)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Kernel tables statistics (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1539,6 +1619,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,156063 L48029,156063 L48039,156063 L48049,156063 M50075,156063" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.001268)"/>
 <path d=" M48019,16704 L48029,16704 L48039,16704 L48049,16704 M50075,16704" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.001268)"/>
 <path d=" M48019,157735 L48029,157735 L48039,157735 L48049,157735 M50075,157735" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.001268)"/>
@@ -1588,10 +1669,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,4 L48029,4 L48039,4 L48049,4 M50075,4" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-50.000000)"/>
 </g>
 </g>
-<g id="g9-0" transform="translate(0,5720)">
+<g id="g9-0" transform="translate(0,6050)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Queue length
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1636,6 +1718,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3 L48029,3 L48039,3 L48049,3 M50075,3" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 <path d=" M48019,0 L48029,0 L48039,0 L48049,0 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 </g>
@@ -1682,6 +1765,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,956 L48029,956 L48039,956 L48049,956 M50075,956" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.209205)"/>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -1729,12 +1813,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.16 L48029,3.16 L48039,3.16 L48049,3.16 M50075,3.16" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-58.309038)"/>
 <path d=" M48019,3.24 L48029,3.24 L48039,3.24 L48049,3.24 M50075,3.24" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-58.309038)"/>
 <path d=" M48019,3.43 L48029,3.43 L48039,3.43 L48049,3.43 M50075,3.43" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-58.309038)"/>
 </g>
 </g>
-<g id="g11-0" transform="translate(0,6030)">
+<g id="g11-0" transform="translate(0,6360)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sda]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -1778,6 +1863,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,6.40 M48039,1604.70 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.124634)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -1827,6 +1913,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,1.60 M48039,41499.97 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.004819)"/>
 <path d=" M48019,0.00 L48029,1.60 M48039,10663.48 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.004819)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.80" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-48.192801)"/>
@@ -1875,6 +1962,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.50 M48039,32.51 L48049,0.00 M50075,0.50" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.152588)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,18.56 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.152588)"/>
 </g>
@@ -1921,6 +2009,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,1.00 M48039,12.00 L48049,0.00 M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-16.673256)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -1968,12 +2057,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="0.32" width="31"/><rect x="48000" y="0.00" height="85.36" width="39"/>
 </g>
 </g>
 </g>
-<g id="g11-1" transform="translate(0,6340)">
+<g id="g11-1" transform="translate(0,6670)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sda1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2017,6 +2107,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,6.40 M48039,1.32 L48049,0.00 M50075,1.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-31.240000)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2068,6 +2159,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,1.60 M48039,54.75 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.652751)"/>
 <path d=" M48019,0.00 L48029,1.60 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-36.527514)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.80" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-36.527514)"/>
@@ -2118,6 +2210,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.50 M48039,41.33 L48049,0.00 M50075,0.50" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.838710)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.08 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-483.870968)"/>
 </g>
@@ -2164,6 +2257,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,1.00 M48039,60.92 L48049,0.00 M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.282910)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2211,12 +2305,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="0.32" width="31"/><rect x="48000" y="0.00" height="0.11" width="39"/>
 </g>
 </g>
 </g>
-<g id="g11-2" transform="translate(0,6650)">
+<g id="g11-2" transform="translate(0,6980)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdb]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2260,6 +2355,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,0.67" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-297.523810)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2307,6 +2403,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,22.60" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
 <path d=" M48019,0.00 M48029,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
 <path d=" M48019,0.00 M48029,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.849858)"/>
@@ -2355,6 +2452,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,33.62" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.949008)"/>
 <path d=" M48019,0.00 M48029,0.10" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-594.900850)"/>
 </g>
@@ -2403,6 +2501,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,47.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.255319)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2450,12 +2549,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="0.05" width="31"/>
 </g>
 </g>
 </g>
-<g id="g11-3" transform="translate(0,6960)">
+<g id="g11-3" transform="translate(0,7290)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdq]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2499,6 +2599,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,9.62 L48029,38.41 M48049,116.08" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.722970)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2546,6 +2647,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,7.86 L48029,48.02 M48049,2221.93" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.090012)"/>
 <path d=" M48019,0.00 L48029,0.00 M48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.090012)"/>
 <path d=" M48019,16.04 L48029,16.01 M48049,107.41" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.900119)"/>
@@ -2594,6 +2696,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,2.48 L48029,1.67 M48049,20.07" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-9.966637)"/>
 <path d=" M48019,0.01 L48029,0.00 M48049,0.21" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-99.666373)"/>
 </g>
@@ -2640,6 +2743,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,13.00 L48029,1.67 M48049,4.87" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-15.384615)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2687,12 +2791,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.96" width="31"/><rect x="48027" y="0.00" height="13.23" width="22"/>
 </g>
 </g>
 </g>
-<g id="g11-4" transform="translate(0,7270)">
+<g id="g11-4" transform="translate(0,7600)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdr]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2738,6 +2843,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,4.81 L48029,8.32 L48039,3.90 L48049,8.93" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-22.390000)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2785,6 +2891,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,4.81 L48029,3.20 L48039,0.13 L48049,2.23" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.956000)"/>
 <path d=" M48019,16.04 L48029,6.40 L48039,0.52 L48049,22.33" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.956000)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.956000)"/>
@@ -2835,6 +2942,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,4.33 L48029,1.15 L48039,0.17 L48049,2.75" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-46.153846)"/>
 <path d=" M48019,0.06 L48029,0.03 L48039,0.02 L48049,0.04" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-461.538462)"/>
 </g>
@@ -2881,6 +2989,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,15.33 L48029,2.69 L48039,0.73 L48049,10.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-13.043478)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -2928,12 +3037,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="6.42" width="31"/><rect x="47998" y="0.00" height="2.94" width="31"/><rect x="48000" y="0.00" height="0.23" width="39"/><rect x="48027" y="0.00" height="4.47" width="22"/>
 </g>
 </g>
 </g>
-<g id="g11-5" transform="translate(0,7580)">
+<g id="g11-5" transform="translate(0,7910)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sds]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -2977,6 +3087,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,6.42 L48029,4.45 M48039,3.32 L48049,10.27" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-19.469565)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3026,6 +3137,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,16.04 L48029,0.64 M48039,83.56 L48049,2.23" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.393534)"/>
 <path d=" M48019,3.21 L48029,2.40 M48039,0.23 L48049,1.56" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-23.935343)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.393534)"/>
@@ -3074,6 +3186,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.00 L48029,0.68 M48039,25.20 L48049,0.37" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.935524)"/>
 <path d=" M48019,0.04 L48029,0.03 M48039,0.04 L48049,0.01" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-793.552387)"/>
 </g>
@@ -3120,6 +3233,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,8.50 L48029,1.37 M48039,11.25 L48049,1.74" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-17.777778)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3167,12 +3281,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.32" width="31"/><rect x="47998" y="0.00" height="0.32" width="31"/><rect x="48000" y="0.00" height="3.14" width="39"/><rect x="48027" y="0.00" height="0.89" width="22"/>
 </g>
 </g>
 </g>
-<g id="g11-6" transform="translate(0,7890)">
+<g id="g11-6" transform="translate(0,8220)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdf]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3216,6 +3331,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,1.22 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-163.829787)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3267,6 +3383,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,54.34 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.680688)"/>
 <path d=" M48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.680688)"/>
 <path d=" M48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.680688)"/>
@@ -3317,6 +3434,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,44.51 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.493308)"/>
 <path d=" M48039,0.08 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-449.330784)"/>
 </g>
@@ -3363,6 +3481,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,62.51 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.199455)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3410,12 +3529,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="48000" y="0.00" height="0.09" width="39"/>
 </g>
 </g>
 </g>
-<g id="g11-7" transform="translate(0,8200)">
+<g id="g11-7" transform="translate(0,8530)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [sdg]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3459,6 +3579,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,2.91 L48049,0.94" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-68.750000)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3506,6 +3627,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,114.91 L48049,22.33" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.740506)"/>
 <path d=" M48039,0.31 L48049,0.22" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-174.050633)"/>
 <path d=" M48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.740506)"/>
@@ -3554,6 +3676,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,39.61 L48049,24.05" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.049594)"/>
 <path d=" M48039,0.07 L48049,0.04" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-504.959423)"/>
 </g>
@@ -3600,6 +3723,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,24.75 L48049,6.19" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.080808)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3647,12 +3771,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="48000" y="0.00" height="0.19" width="39"/><rect x="48027" y="0.00" height="0.09" width="22"/>
 </g>
 </g>
 </g>
-<g id="g11-8" transform="translate(0,8510)">
+<g id="g11-8" transform="translate(0,8840)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [cciss/c0d0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3696,6 +3821,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,32402.95" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3741,10 +3867,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,0.10" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2020.000000)"/>
 </g>
 </g>
-<g id="g11-9" transform="translate(0,8820)">
+<g id="g11-9" transform="translate(0,9150)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [cciss/c0d0p2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3788,6 +3915,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,32402.95" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006172)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3833,10 +3961,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,0.10" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2020.000000)"/>
 </g>
 </g>
-<g id="g11-10" transform="translate(0,9130)">
+<g id="g11-10" transform="translate(0,9460)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [xvdp]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -3880,6 +4009,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,0.32" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-623.400000)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -3927,6 +4057,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,16.04" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.468000)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.468000)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.468000)"/>
@@ -3979,6 +4110,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,50.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.000000)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-400000.000000)"/>
 </g>
@@ -4025,6 +4157,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-200.000000)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -4072,12 +4205,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="50044" y="0.00" height="0.03" width="31"/>
 </g>
 </g>
 </g>
-<g id="g11-11" transform="translate(0,9440)">
+<g id="g11-11" transform="translate(0,9770)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Block devices statistics (1) [xvdiw]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4121,6 +4255,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,0.32" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-623.400000)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -4168,6 +4303,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,16.04" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.468000)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.468000)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.468000)"/>
@@ -4220,6 +4356,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,50.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.000000)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-400000.000000)"/>
 </g>
@@ -4266,6 +4403,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,1.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-200.000000)"/>
 </g>
 <rect x="4240" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -4313,12 +4451,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="50044" y="0.00" height="0.03" width="31"/>
 </g>
 </g>
 </g>
-<g id="g12-0" transform="translate(0,9750)">
+<g id="g12-0" transform="translate(0,10080)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [enp6s0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4363,6 +4502,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,53.55 L48039,0.00 L48049,7397.68 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.027036)"/>
 <path d=" M48019,0.00 M48029,17.45 L48039,0.00 L48049,2412.77 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.027036)"/>
 </g>
@@ -4412,6 +4552,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,64.37 L48039,0.00 L48049,8891.46 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.022493)"/>
 <path d=" M48019,0.00 M48029,3.38 L48039,0.00 L48049,466.82 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.224935)"/>
 </g>
@@ -4460,6 +4601,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
 <path d=" M48019,0.00 M48029,9.25 L48039,0.00 L48049,116.21 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.720984)"/>
@@ -4509,12 +4651,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="0.05" width="31"/><rect x="48027" y="0.00" height="7.28" width="22"/>
 </g>
 </g>
 </g>
-<g id="g12-1" transform="translate(0,10060)">
+<g id="g12-1" transform="translate(0,10390)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [virbr0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4559,6 +4702,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.21 L48029,16.01 M48049,12.59 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.496000)"/>
 <path d=" M48019,0.00 L48029,0.00 M48049,12.59 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-12.496000)"/>
 </g>
@@ -4606,6 +4750,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.03 L48029,0.01 M48049,1.20 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-167.145586)"/>
 <path d=" M48019,0.00 L48029,0.00 M48049,1.20 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-167.145586)"/>
 </g>
@@ -4654,12 +4799,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-10.390000)"/>
 <path d=" M48019,0.00 L48029,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-10.390000)"/>
 <path d=" M48019,19.25 L48029,19.21 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-10.390000)"/>
 </g>
 </g>
-<g id="g12-2" transform="translate(0,10370)">
+<g id="g12-2" transform="translate(0,10700)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [virbr0-1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4704,6 +4850,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,22.46 L48029,5.76 L48039,7.79 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.905714)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.905714)"/>
 </g>
@@ -4751,6 +4898,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.09 L48029,0.03 L48039,0.02 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1595.904000)"/>
 <path d=" M48019,0.13 L48029,0.02 L48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1595.904000)"/>
 </g>
@@ -4799,12 +4947,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.623400)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.623400)"/>
 <path d=" M48019,320.82 L48029,32.01 L48039,2.60 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.623400)"/>
 </g>
 </g>
-<g id="g12-3" transform="translate(0,10680)">
+<g id="g12-3" transform="translate(0,11010)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [wlp5s0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4849,6 +4998,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,16.04 L48029,6.40 M48039,25.48 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.234000)"/>
 <path d=" M48019,32.08 L48029,32.01 M48039,10.91 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.234000)"/>
 </g>
@@ -4896,6 +5046,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.31 L48029,0.13 M48039,0.24 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-638.361600)"/>
 <path d=" M48019,0.09 L48029,0.06 M48039,0.04 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-638.361600)"/>
 </g>
@@ -4944,12 +5095,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.234000)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.234000)"/>
 <path d=" M48019,32.08 L48029,9.60 M48039,1.51 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-6.234000)"/>
 </g>
 </g>
-<g id="g12-4" transform="translate(0,10990)">
+<g id="g12-4" transform="translate(0,11320)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [enp6s1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -4998,6 +5150,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,1.90 L48049,0.00 M50075,51.33" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.896250)"/>
 <path d=" M48039,1.17 L48049,0.00 M50075,16.04" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.896250)"/>
 </g>
@@ -5045,6 +5198,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.23 L48049,0.00 M50075,64.23" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.113959)"/>
 <path d=" M48039,0.21 L48049,0.00 M50075,25.16" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.113959)"/>
 </g>
@@ -5095,12 +5249,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 <path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 <path d=" M48039,2.31 L48049,0.00 M50075,89.89" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 </g>
 </g>
-<g id="g12-5" transform="translate(0,11300)">
+<g id="g12-5" transform="translate(0,11630)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [wlp5s1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5145,6 +5300,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.39 L48049,0.00 M50075,186.59" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
 <path d=" M48039,0.13 L48049,0.00 M50075,186.91" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
 </g>
@@ -5192,11 +5348,12 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.03 L48049,0.00 M50075,0.86" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.066655)"/>
 <path d=" M48039,0.01 L48049,0.00 M50075,25.95" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.706666)"/>
 </g>
 </g>
-<g id="g12-6" transform="translate(0,11610)">
+<g id="g12-6" transform="translate(0,11940)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [enp6s2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5241,6 +5398,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,232.08" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.861764)"/>
 <path d=" M50075,16.75" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-8.617639)"/>
 </g>
@@ -5288,6 +5446,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,185.16" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.080173)"/>
 <path d=" M50075,3.10" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-10.801733)"/>
 </g>
@@ -5338,12 +5497,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 <path d=" M50075,89.89" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.224839)"/>
 </g>
 </g>
-<g id="g12-7" transform="translate(0,11920)">
+<g id="g12-7" transform="translate(0,12250)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces statistics (1) [wlp5s2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5388,6 +5548,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,186.59" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
 <path d=" M50075,186.91" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.070031)"/>
 </g>
@@ -5435,11 +5596,12 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,0.52" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.075960)"/>
 <path d=" M50075,25.95" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.707596)"/>
 </g>
 </g>
-<g id="g13-0" transform="translate(0,12230)">
+<g id="g13-0" transform="translate(0,12560)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (4) [virbr0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5485,12 +5647,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.64 L48029,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.925000)"/>
 <path d=" M48019,0.00 L48029,0.00 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.925000)"/>
 <path d=" M48019,2.57 L48029,2.56 M48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-77.925000)"/>
 </g>
 </g>
-<g id="g13-1" transform="translate(0,12540)">
+<g id="g13-1" transform="translate(0,12870)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (4) [virbr0-1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5536,12 +5699,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.21 L48029,0.16 L48039,0.31 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.340000)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.340000)"/>
 <path d=" M48019,0.96 L48029,0.00 L48039,0.23 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.340000)"/>
 </g>
 </g>
-<g id="g13-2" transform="translate(0,12850)">
+<g id="g13-2" transform="translate(0,13180)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (2) [wlp5s0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5586,11 +5750,12 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.21 L48029,9.60 M48039,6.44 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-20.826667)"/>
 <path d=" M48019,0.00 L48029,0.00 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-20.826667)"/>
 </g>
 </g>
-<g id="g13-3" transform="translate(0,13160)">
+<g id="g13-3" transform="translate(0,13490)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Network interfaces errors statistics (4) [wlp5s1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5636,12 +5801,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.26 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
 <path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
 <path d=" M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-770.000000)"/>
 </g>
 </g>
-<g id="g16-0" transform="translate(0,13470)">
+<g id="g16-0" transform="translate(0,13800)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">IPv4 sockets statistics (1)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5685,6 +5851,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,1316 L48029,1316 L48039,1316 L48049,1316 M50075,1316" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.151976)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
@@ -5734,6 +5901,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,10 L48029,10 L48039,10 L48049,10 M50075,10" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-20.000000)"/>
 <path d=" M48019,6 L48029,6 L48039,6 L48049,6 M50075,6" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-20.000000)"/>
 <path d=" M48019,0 L48029,0 L48039,0 L48049,0 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-20.000000)"/>
@@ -5741,7 +5909,7 @@
 <path d=" M48019,1 L48029,1 L48039,1 L48049,1 M50075,1" style="vector-effect: non-scaling-stroke; stroke: #708090; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-200.000000)"/>
 </g>
 </g>
-<g id="g24-0" transform="translate(0,13780)">
+<g id="g24-0" transform="translate(0,14110)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">IPv6 sockets statistics
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5788,13 +5956,14 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3 L48029,3 L48039,3 L48049,3 M50075,3" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 <path d=" M48019,3 L48029,3 L48039,3 L48049,3 M50075,3" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 <path d=" M48019,1 L48029,1 L48039,1 L48049,1 M50075,1" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 <path d=" M48019,0 L48029,0 L48039,0 L48049,0 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-66.666667)"/>
 </g>
 </g>
-<g id="g38-1" transform="translate(0,14090)">
+<g id="g38-1" transform="translate(0,14420)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Fibre Channel HBA statistics (1) [host1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5839,6 +6008,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.42 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-481.250000)"/>
 <path d=" M48039,0.13 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-481.250000)"/>
 </g>
@@ -5886,11 +6056,12 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48039,0.10 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1925.000000)"/>
 <path d=" M48039,0.05 L48049,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1925.000000)"/>
 </g>
 </g>
-<g id="g39-0" transform="translate(0,14400)">
+<g id="g39-0" transform="translate(0,14730)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (1) [all]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -5937,6 +6108,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,4.29 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-46.645833)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-46.645833)"/>
 </g>
@@ -5985,6 +6157,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,394.13" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.507448)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.507448)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.507448)"/>
@@ -6034,10 +6207,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0 L48029,0 L48039,10 L48049,457 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.437637)"/>
 </g>
 </g>
-<g id="g39-2" transform="translate(0,14710)">
+<g id="g39-2" transform="translate(0,15040)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6085,6 +6259,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,8.76" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-22.835165)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-22.835165)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-22.835165)"/>
@@ -6132,10 +6307,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0 L48029,0 L48039,10 L48049,223 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.896861)"/>
 </g>
 </g>
-<g id="g39-3" transform="translate(0,15020)">
+<g id="g39-3" transform="translate(0,15350)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6181,12 +6357,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,17.52" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-11.417582)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-11.417582)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-11.417582)"/>
 </g>
 </g>
-<g id="g39-4" transform="translate(0,15330)">
+<g id="g39-4" transform="translate(0,15660)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [3]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6232,12 +6409,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,26.28" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.611722)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.611722)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-7.611722)"/>
 </g>
 </g>
-<g id="g39-5" transform="translate(0,15640)">
+<g id="g39-5" transform="translate(0,15970)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [4]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6283,12 +6461,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,35.03" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.708791)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.708791)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-5.708791)"/>
 </g>
 </g>
-<g id="g39-6" transform="translate(0,15950)">
+<g id="g39-6" transform="translate(0,16280)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [5]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6336,12 +6515,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,43.79" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.567033)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.567033)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-4.567033)"/>
 </g>
 </g>
-<g id="g39-7" transform="translate(0,16260)">
+<g id="g39-7" transform="translate(0,16590)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6391,6 +6571,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,0.00 M48039,0.00 L48049,0.00 M50075,52.55" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.805861)"/>
 <path d=" M48019,0.00 M48029,0.00 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.805861)"/>
 <path d=" M48019,0.00 M48029,0.00 M48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.805861)"/>
@@ -6438,10 +6619,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0 M48029,0 M48039,0 L48049,234 M50075,0" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.854701)"/>
 </g>
 </g>
-<g id="g39-8" transform="translate(0,16570)">
+<g id="g39-8" transform="translate(0,16900)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6487,12 +6669,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,61.31" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.262166)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.262166)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-3.262166)"/>
 </g>
 </g>
-<g id="g39-9" transform="translate(0,16880)">
+<g id="g39-9" transform="translate(0,17210)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (1) [8]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6539,6 +6722,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,137791699.13 M48029,0.00 L48039,0.00 L48049,4.29 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-46.645833)"/>
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-46.645833)"/>
 </g>
@@ -6587,12 +6771,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,70.07" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.854396)"/>
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.854396)"/>
 <path d=" M48019,0.00 M48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.854396)"/>
 </g>
 </g>
-<g id="g39-10" transform="translate(0,17190)">
+<g id="g39-10" transform="translate(0,17520)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Software-based network processing statistics (2) [9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6638,12 +6823,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50075,78.83" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.537241)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.537241)"/>
 <path d=" M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.537241)"/>
 </g>
 </g>
-<g id="g30-0" transform="translate(0,17500)">
+<g id="g30-0" transform="translate(0,17830)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [all]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6687,10 +6873,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3522.54 L48019,3522.54 L48029,3522.54 L48039,3522.54 L48049,3522.54 M50044,3517.54 L50075,3517.54" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056777)"/>
 </g>
 </g>
-<g id="g30-1" transform="translate(0,17810)">
+<g id="g30-1" transform="translate(0,18140)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [0]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6734,10 +6921,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3566.48 L48019,3566.48 L48029,3566.48 L48039,3566.48 L48049,3566.48 M50044,3566.48 L50075,3566.48" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056078)"/>
 </g>
 </g>
-<g id="g30-2" transform="translate(0,18120)">
+<g id="g30-2" transform="translate(0,18450)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [1]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6781,10 +6969,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3566.39 L48019,3566.39 L48029,3566.39 L48039,3566.39 L48049,3566.39 M50044,3566.39 L50075,3566.39" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056079)"/>
 </g>
 </g>
-<g id="g30-3" transform="translate(0,18430)">
+<g id="g30-3" transform="translate(0,18760)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [2]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6828,10 +7017,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3492.11 L48019,3492.11 L48029,3492.11 L48039,3492.11 L48049,3492.11 M50044,3492.11 L50075,3492.11" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057272)"/>
 </g>
 </g>
-<g id="g30-4" transform="translate(0,18740)">
+<g id="g30-4" transform="translate(0,19070)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [3]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6875,10 +7065,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3566.22 L48019,3566.22 L48029,3566.22 L48039,3566.22 L48049,3566.22 M50044,3566.22 L50075,3566.22" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.056082)"/>
 </g>
 </g>
-<g id="g30-5" transform="translate(0,19050)">
+<g id="g30-5" transform="translate(0,19380)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [4]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6922,10 +7113,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3505.84 L48019,3505.84 L48029,3505.84 L48039,3505.84 L48049,3505.84 M50044,3505.84 L50075,3505.84" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057048)"/>
 </g>
 </g>
-<g id="g30-6" transform="translate(0,19360)">
+<g id="g30-6" transform="translate(0,19690)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [5]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -6969,10 +7161,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3493.55 L48019,3493.55 L48029,3493.55 L48039,3493.55 L48049,3493.55 M50044,3493.55 L50075,3493.55" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057248)"/>
 </g>
 </g>
-<g id="g30-7" transform="translate(0,19670)">
+<g id="g30-7" transform="translate(0,20000)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7016,10 +7209,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3492.22 L48019,3492.22 L48029,3492.22 L48039,3492.22 L48049,3492.22 M50044,3492.22 L50075,3492.22" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057270)"/>
 </g>
 </g>
-<g id="g30-8" transform="translate(0,19980)">
+<g id="g30-8" transform="translate(0,20310)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7063,10 +7257,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M47988,3497.56 L48019,3497.56 L48029,3497.56 L48039,3497.56 L48049,3497.56 M50044,3497.56 L50075,3497.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057183)"/>
 </g>
 </g>
-<g id="g30-9" transform="translate(0,20290)">
+<g id="g30-9" transform="translate(0,20620)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [8]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7110,10 +7305,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50044,3497.56 L50075,3497.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057183)"/>
 </g>
 </g>
-<g id="g30-10" transform="translate(0,20600)">
+<g id="g30-10" transform="translate(0,20930)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU clock frequency [9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7157,10 +7353,115 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M50044,3497.56 L50075,3497.56" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.057183)"/>
 </g>
 </g>
-<g id="g37-0" transform="translate(0,20910)">
+<g id="g43-0" transform="translate(0,21240)">
+<rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="0" y="20" style="fill: #000000; stroke: none">Batteries capacity [BAT0]
+<tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%cap (70, 100)</text>
+<text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
+<tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
+</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="-15" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<polyline points="7200,0 7200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="45" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 2:00</text>
+<polyline points="14400,0 14400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="105" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 4:00</text>
+<polyline points="21600,0 21600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="165" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 6:00</text>
+<polyline points="28800,0 28800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="225" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 8:00</text>
+<polyline points="36000,0 36000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="285" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">10:00</text>
+<polyline points="43200,0 43200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="345" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">12:00</text>
+<polyline points="50400,0 50400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="405" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">14:00</text>
+<polyline points="57600,0 57600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="465" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">16:00</text>
+<polyline points="64800,0 64800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="525" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">18:00</text>
+<polyline points="72000,0 72000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="585" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">20:00</text>
+<polyline points="79200,0 79200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
+<polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
+<g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
+<rect x="47988" y="0.00" height="100.00" width="31"/><rect x="47998" y="0.00" height="70.00" width="31"/><rect x="48000" y="0.00" height="75.00" width="39"/><rect x="48027" y="0.00" height="77.00" width="22"/>
+</g>
+</g>
+</g>
+<g id="g43-1" transform="translate(0,21550)">
+<rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="0" y="20" style="fill: #000000; stroke: none">Batteries capacity [BAT1]
+<tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">%cap (80, 83)</text>
+<text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
+<tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
+</text>
+<g transform="translate(70,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-50" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">25.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-100" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,75.00 720,75.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-150" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">75.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-2.000000)"/>
+<text x="0" y="-200" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="-15" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<polyline points="7200,0 7200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="45" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 2:00</text>
+<polyline points="14400,0 14400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="105" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 4:00</text>
+<polyline points="21600,0 21600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="165" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 6:00</text>
+<polyline points="28800,0 28800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="225" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 8:00</text>
+<polyline points="36000,0 36000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="285" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">10:00</text>
+<polyline points="43200,0 43200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="345" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">12:00</text>
+<polyline points="50400,0 50400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="405" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">14:00</text>
+<polyline points="57600,0 57600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="465" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">16:00</text>
+<polyline points="64800,0 64800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="525" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">18:00</text>
+<polyline points="72000,0 72000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="585" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">20:00</text>
+<polyline points="79200,0 79200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
+<polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
+<g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
+<rect x="47988" y="0.00" height="83.00" width="31"/><rect x="47998" y="0.00" height="80.00" width="31"/>
+</g>
+</g>
+</g>
+<g id="g37-0" transform="translate(0,21860)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda9]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7205,6 +7506,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,705.17 L48029,1617.58 L48039,1617.58 L48049,705.17 M50075,705.17" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.123641)"/>
 <path d=" M48019,144.83 L48029,126.73 L48039,126.73 L48049,144.83 M50075,144.83" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.236414)"/>
 </g>
@@ -7254,6 +7556,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="18.92" width="31"/><rect x="47998" y="0.00" height="39.50" width="31"/><rect x="48000" y="0.00" height="39.50" width="39"/><rect x="48027" y="0.00" height="18.92" width="22"/><rect x="50044" y="0.00" height="18.92" width="31"/>
 </g>
@@ -7305,6 +7608,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,6008.41 L48029,1621.55 L48039,1621.55 L48049,6008.41 M50075,6008.41" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.033287)"/>
 <path d=" M48019,102.82 L48029,299.81 L48039,299.81 L48049,102.82 M50075,102.82" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.332867)"/>
 </g>
@@ -7353,12 +7657,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="1.68" width="31"/><rect x="47998" y="0.00" height="15.60" width="31"/><rect x="48000" y="0.00" height="15.60" width="39"/><rect x="48027" y="0.00" height="1.68" width="22"/><rect x="50044" y="0.00" height="1.68" width="31"/>
 </g>
 </g>
 </g>
-<g id="g37-1" transform="translate(0,21220)">
+<g id="g37-1" transform="translate(0,22170)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda7]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7403,6 +7708,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,2495.51 L48029,2495.51 L48039,2495.51 L48049,273.39 M50075,273.39" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.080144)"/>
 <path d=" M48019,844.59 L48029,844.59 L48039,844.59 L48049,205.68 M50075,205.68" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.080144)"/>
 </g>
@@ -7452,6 +7758,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="46.57" width="31"/><rect x="47998" y="0.00" height="46.57" width="31"/><rect x="48000" y="0.00" height="46.57" width="39"/><rect x="48027" y="0.00" height="51.97" width="22"/><rect x="50044" y="0.00" height="51.97" width="31"/>
 </g>
@@ -7503,6 +7810,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,19051.71 L48029,19051.71 L48039,19051.71 L48049,19201.59 M50075,19201.59" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.010416)"/>
 <path d=" M48019,150.34 L48029,150.34 L48039,150.34 L48049,0.46 M50075,0.46" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.041580)"/>
 </g>
@@ -7551,12 +7859,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.78" width="31"/><rect x="47998" y="0.00" height="0.78" width="31"/><rect x="48000" y="0.00" height="0.78" width="39"/><rect x="48027" y="0.00" height="0.00" width="22"/><rect x="50044" y="0.00" height="0.00" width="31"/>
 </g>
 </g>
 </g>
-<g id="g37-2" transform="translate(0,21530)">
+<g id="g37-2" transform="translate(0,22480)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda12]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7601,6 +7910,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,705.17 L48029,705.17 L48039,705.17 L48049,1617.58 M50075,1617.58" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.123641)"/>
 <path d=" M48019,144.83 L48029,144.83 L48039,144.83 L48049,126.73 M50075,126.73" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.236414)"/>
 </g>
@@ -7650,6 +7960,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="18.92" width="31"/><rect x="47998" y="0.00" height="18.92" width="31"/><rect x="48000" y="0.00" height="18.92" width="39"/><rect x="48027" y="0.00" height="39.50" width="22"/><rect x="50044" y="0.00" height="39.50" width="31"/>
 </g>
@@ -7701,6 +8012,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,6008.41 L48029,6008.41 L48039,6008.41 L48049,1621.55 M50075,1621.55" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.033287)"/>
 <path d=" M48019,102.82 L48029,102.82 L48039,102.82 L48049,299.81 M50075,299.81" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.332867)"/>
 </g>
@@ -7749,12 +8061,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="1.68" width="31"/><rect x="47998" y="0.00" height="1.68" width="31"/><rect x="48000" y="0.00" height="1.68" width="39"/><rect x="48027" y="0.00" height="15.60" width="22"/><rect x="50044" y="0.00" height="15.60" width="31"/>
 </g>
 </g>
 </g>
-<g id="g37-3" transform="translate(0,21840)">
+<g id="g37-3" transform="translate(0,22790)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sda6]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7799,6 +8112,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,273.39 L48029,273.39 L48039,273.39 L48049,2495.51 M50075,2495.51" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.080144)"/>
 <path d=" M48019,205.68 L48029,205.68 L48039,205.68 L48049,844.59 M50075,844.59" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.080144)"/>
 </g>
@@ -7848,6 +8162,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="51.97" width="31"/><rect x="47998" y="0.00" height="51.97" width="31"/><rect x="48000" y="0.00" height="51.97" width="39"/><rect x="48027" y="0.00" height="46.57" width="22"/><rect x="50044" y="0.00" height="46.57" width="31"/>
 </g>
@@ -7899,6 +8214,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,19201.59 L48029,19201.59 L48039,19201.59 L48049,19051.71 M50075,19051.71" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.010416)"/>
 <path d=" M48019,0.46 L48029,0.46 L48039,0.46 L48049,150.34 M50075,150.34" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.041580)"/>
 </g>
@@ -7947,12 +8263,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.00" width="31"/><rect x="47998" y="0.00" height="0.00" width="31"/><rect x="48000" y="0.00" height="0.00" width="39"/><rect x="48027" y="0.00" height="0.78" width="22"/><rect x="50044" y="0.00" height="0.78" width="31"/>
 </g>
 </g>
 </g>
-<g id="g37-4" transform="translate(0,22150)">
+<g id="g37-4" transform="translate(0,23100)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sdf]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -7997,6 +8314,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48029,1617.58 L48039,1617.58" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.123641)"/>
 <path d=" M48029,126.73 L48039,126.73" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.236414)"/>
 </g>
@@ -8046,6 +8364,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="39.50" width="31"/><rect x="48000" y="0.00" height="39.50" width="39"/>
 </g>
@@ -8097,6 +8416,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48029,1621.55 L48039,1621.55" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.123339)"/>
 <path d=" M48029,299.81 L48039,299.81" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.123339)"/>
 </g>
@@ -8145,12 +8465,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="15.60" width="31"/><rect x="48000" y="0.00" height="15.60" width="39"/>
 </g>
 </g>
 </g>
-<g id="g37-5" transform="translate(0,22460)">
+<g id="g37-5" transform="translate(0,23410)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Filesystems statistics (1) [/dev/sdg]
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8195,6 +8516,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48029,2495.51 L48039,2495.51" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.080144)"/>
 <path d=" M48029,844.59 L48039,844.59" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.080144)"/>
 </g>
@@ -8244,6 +8566,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="46.57" width="31"/><rect x="48000" y="0.00" height="46.57" width="39"/>
 </g>
@@ -8295,6 +8618,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48029,19051.71 L48039,19051.71" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.010498)"/>
 <path d=" M48029,150.34 L48039,150.34" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.049775)"/>
 </g>
@@ -8343,12 +8667,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47998" y="0.00" height="0.78" width="31"/><rect x="48000" y="0.00" height="0.78" width="39"/>
 </g>
 </g>
 </g>
-<g id="g40-0" transform="translate(0,22770)">
+<g id="g40-0" transform="translate(0,23720)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">CPU stall time (some tasks)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8394,12 +8719,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.03" width="31"/><rect x="47998" y="0.00" height="0.23" width="31"/><rect x="48000" y="0.00" height="0.01" width="39"/><rect x="48027" y="0.00" height="0.23" width="22"/>
 </g>
 </g>
 </g>
-<g id="g41-0" transform="translate(0,23080)">
+<g id="g41-0" transform="translate(0,24030)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">I/O pressure trends (some tasks)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8445,6 +8771,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.19 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.695925)"/>
 <path d=" M48019,1.14 L48029,0.16 L48039,0.07 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.695925)"/>
 <path d=" M48019,0.43 L48029,0.29 L48039,0.25 L48049,0.03 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.695925)"/>
@@ -8494,6 +8821,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.33" width="31"/><rect x="47998" y="0.00" height="1.39" width="31"/><rect x="48000" y="0.00" height="0.01" width="39"/><rect x="48027" y="0.00" height="0.93" width="22"/>
 </g>
@@ -8543,6 +8871,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.19 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.695925)"/>
 <path d=" M48019,1.14 L48029,0.15 L48039,0.07 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.695925)"/>
 <path d=" M48019,0.42 L48029,0.28 L48039,0.24 L48049,0.03 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-62.695925)"/>
@@ -8592,12 +8921,13 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="2.25" width="31"/><rect x="47998" y="0.00" height="1.24" width="31"/><rect x="48000" y="0.00" height="0.01" width="39"/><rect x="48027" y="0.00" height="0.77" width="22"/>
 </g>
 </g>
 </g>
-<g id="g42-0" transform="translate(0,23390)">
+<g id="g42-0" transform="translate(0,24340)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="0" y="20" style="fill: #000000; stroke: none">Memory pressure trends (some tasks)
 <tspan x="795" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
@@ -8643,6 +8973,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,3.12 L48029,21.06 L48039,99.80 L48049,23.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.004008)"/>
 <path d=" M48019,1.40 L48029,14.31 L48039,70.16 L48049,3.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.004008)"/>
 <path d=" M48019,0.03 L48029,3.80 L48039,38.70 L48049,0.36 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-2.004008)"/>
@@ -8692,6 +9023,7 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.05" width="31"/><rect x="47998" y="0.00" height="0.03" width="31"/><rect x="48000" y="0.00" height="0.09" width="39"/><rect x="48027" y="0.00" height="0.21" width="22"/>
 </g>
@@ -8741,10 +9073,11 @@
 <text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
 <polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
 <rect x="47988" y="0.00" height="0.02" width="31"/><rect x="47998" y="0.00" height="0.01" width="31"/><rect x="48000" y="0.00" height="0.01" width="39"/><rect x="48027" y="0.00" height="0.15" width="22"/>
 </g>
 </g>
 </g>
-<!-- Actual canvas height: 23700 -->
+<!-- Actual canvas height: 24650 -->
 </svg>

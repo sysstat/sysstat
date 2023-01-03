@@ -49,33 +49,44 @@
  */
 
 /* Files */
-#define SERIAL		PRE "/proc/tty/driver/serial"
-#define FDENTRY_STATE	PRE "/proc/sys/fs/dentry-state"
-#define FFILE_NR	PRE "/proc/sys/fs/file-nr"
-#define FINODE_STATE	PRE "/proc/sys/fs/inode-state"
-#define PTY_NR		PRE "/proc/sys/kernel/pty/nr"
-#define NET_DEV		PRE "/proc/net/dev"
-#define NET_SOCKSTAT	PRE "/proc/net/sockstat"
-#define NET_SOCKSTAT6	PRE "/proc/net/sockstat6"
-#define NET_RPC_NFS	PRE "/proc/net/rpc/nfs"
-#define NET_RPC_NFSD	PRE "/proc/net/rpc/nfsd"
-#define NET_SOFTNET	PRE "/proc/net/softnet_stat"
-#define LOADAVG		PRE "/proc/loadavg"
-#define PRESSURE	PRE "/proc/pressure"
-#define PSI_CPU		PRESSURE "/cpu"
-#define PSI_IO		PRESSURE "/io"
-#define PSI_MEM		PRESSURE "/memory"
-#define VMSTAT		PRE "/proc/vmstat"
-#define NET_SNMP	PRE "/proc/net/snmp"
-#define NET_SNMP6	PRE "/proc/net/snmp6"
-#define CPUINFO		PRE "/proc/cpuinfo"
-#define MTAB		PRE "/etc/mtab"
-#define IF_DUPLEX	PRE "/sys/class/net/%s/duplex"
-#define IF_SPEED	PRE "/sys/class/net/%s/speed"
-#define FC_RX_FRAMES	"%s/%s/statistics/rx_frames"
-#define FC_TX_FRAMES	"%s/%s/statistics/tx_frames"
-#define FC_RX_WORDS	"%s/%s/statistics/rx_words"
-#define FC_TX_WORDS	"%s/%s/statistics/tx_words"
+#define SERIAL			PRE "/proc/tty/driver/serial"
+#define FDENTRY_STATE		PRE "/proc/sys/fs/dentry-state"
+#define FFILE_NR		PRE "/proc/sys/fs/file-nr"
+#define FINODE_STATE		PRE "/proc/sys/fs/inode-state"
+#define PTY_NR			PRE "/proc/sys/kernel/pty/nr"
+#define NET_DEV			PRE "/proc/net/dev"
+#define NET_SOCKSTAT		PRE "/proc/net/sockstat"
+#define NET_SOCKSTAT6		PRE "/proc/net/sockstat6"
+#define NET_RPC_NFS		PRE "/proc/net/rpc/nfs"
+#define NET_RPC_NFSD		PRE "/proc/net/rpc/nfsd"
+#define NET_SOFTNET		PRE "/proc/net/softnet_stat"
+#define LOADAVG			PRE "/proc/loadavg"
+#define PRESSURE		PRE "/proc/pressure"
+#define PSI_CPU			PRESSURE "/cpu"
+#define PSI_IO			PRESSURE "/io"
+#define PSI_MEM			PRESSURE "/memory"
+#define VMSTAT			PRE "/proc/vmstat"
+#define NET_SNMP		PRE "/proc/net/snmp"
+#define NET_SNMP6		PRE "/proc/net/snmp6"
+#define CPUINFO			PRE "/proc/cpuinfo"
+#define MTAB			PRE "/etc/mtab"
+#define IF_DUPLEX		PRE "/sys/class/net/%s/duplex"
+#define IF_SPEED		PRE "/sys/class/net/%s/speed"
+#define FC_RX_FRAMES		"%s/%s/statistics/rx_frames"
+#define FC_TX_FRAMES		"%s/%s/statistics/tx_frames"
+#define FC_RX_WORDS		"%s/%s/statistics/rx_words"
+#define FC_TX_WORDS		"%s/%s/statistics/tx_words"
+#define SYSFS_USBDEV		PRE "/sys/bus/usb/devices"
+#define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
+#define SYSFS_IDVENDOR		"idVendor"
+#define SYSFS_IDPRODUCT		"idProduct"
+#define SYSFS_BMAXPOWER		"bMaxPower"
+#define SYSFS_MANUFACTURER	"manufacturer"
+#define SYSFS_PRODUCT		"product"
+#define SYSFS_FCHOST		PRE "/sys/class/fc_host"
+#define SYSFS_PWR_SUPPLY	PRE "/sys/class/power_supply"
+#define BAT_CAPACITY		"%s/%s/capacity"
+#define BAT_STATUS		"%s/%s/status"
 
 /*
  ***************************************************************************
@@ -766,6 +777,18 @@ struct stats_psi_mem {
 #define STATS_PSI_MEM_UL	6
 #define STATS_PSI_MEM_U		0
 
+/* Structure for batteries statistics */
+struct stats_pwr_bat {
+	char	bat_id;
+	char	capacity;
+	char	status;
+};
+
+#define STATS_PWR_BAT_SIZE	(sizeof(struct stats_pwr_bat))
+#define STATS_PWR_BAT_ULL	0
+#define STATS_PWR_BAT_UL	0
+#define STATS_PWR_BAT_U		0
+
 /*
  ***************************************************************************
  * Prototypes for functions used to read system statistics
@@ -862,6 +885,8 @@ __nr_t read_psiio
 	(struct stats_psi_io *);
 __nr_t read_psimem
 	(struct stats_psi_mem *);
+__nr_t read_bat
+	(struct stats_pwr_bat *, __nr_t);
 
 #endif /* SOURCE_SADC */
 

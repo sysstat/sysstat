@@ -566,13 +566,17 @@ void compute_next_graduation_timestamp(struct record_header *stamp, long int xpo
 	stamp->ust_time += xpos;
 
 	if (PRINT_TRUE_TIME(flags)) {
+		unsigned int h = stamp->hour,
+			     m = stamp->minute,
+			     s = stamp->second;
+
 		/* Lines below useful only when option -t used */
-		stamp->second += xpos;
-		stamp->minute += stamp->second / 60;
-		stamp->second %= 60;
-		stamp->hour += stamp->minute / 60;
-		stamp->minute %= 60;
-		stamp->hour %= 24;
+		s += xpos;
+		m += s / 60;
+		stamp->second = s % 60;
+		h += m / 60;
+		stamp->minute = m % 60;
+		stamp->hour = h % 24;
 	}
 }
 
@@ -592,8 +596,8 @@ void compute_next_graduation_timestamp(struct record_header *stamp, long int xpo
  * @asfactor	Autoscale factors (one for each graph).
  ***************************************************************************
  */
-void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, int g_type, int pos,
-		    double gmax, double *spmax)
+void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, enum svg_graph_type g_type,
+		    int pos, double gmax, double *spmax)
 {
 	int j;
 	char val[32];
@@ -738,11 +742,12 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 		compute_next_graduation_timestamp(&stamp, xpos);
 	}
 
-	if (!PRINT_LOCAL_TIME(flags)) {
-		printf("<text x=\"-10\" y=\"30\" style=\"fill: #%06x; stroke: none; font-size: 12px; "
-		       "text-anchor: end\">UTC</text>\n",
-		       svg_colors[palette][SVG_COL_INFO_IDX]);
-	}
+	printf("<text x=\"-10\" y=\"30\" style=\"fill: #%06x; stroke: none; font-size: 12px; "
+	       "text-anchor: end\">%s</text>\n",
+	       svg_colors[palette][SVG_COL_INFO_IDX],
+	       PRINT_LOCAL_TIME(flags) ? svg_p->my_tzname
+				       : (PRINT_TRUE_TIME(flags) ? svg_p->file_hdr->sa_tzname
+								 : "UTC"));
 }
 
 /*
@@ -4645,6 +4650,91 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 						 title, g_title, item_name, group,
 						 spmin + IN_ARRAY_SZ * i, spmax + IN_ARRAY_SZ * i,
 						 out + IN_ARRAY_SZ * i, outsize + IN_ARRAY_SZ * i,
+						 svg_p, record_hdr, FALSE, a, xid)) {
+				xid++;
+			}
+		}
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display batteries statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in 1/100th of a second.
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+				        unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_pwr_bat *spbc;
+	int group[] = {1};
+	int g_type[] = {SVG_BAR_GRAPH};
+	char *title[] = {"Batteries capacity"};
+	char *g_title[] = {"~%cap"};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+	char item_name[16];
+	int i;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(a->item_list_sz, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		/* For each battery */
+		for (i = 0; i < a->nr[curr]; i++) {
+
+			spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+
+			/* Look for min/max values */
+			if (spbc->capacity < *(spmin + i)) {
+				*(spmin + i) = spbc->capacity;
+			}
+			if (spbc->capacity > *(spmax + i)) {
+				*(spmax + i) = spbc->capacity;
+			}
+
+			/* %cap */
+			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+				 0.0,
+				 (unsigned int) spbc->capacity,
+				 out + i, outsize + i,
+				 svg_p->dt);
+		}
+	}
+
+	if (action & F_END) {
+		int xid = 0;
+
+		for (i = 0; i < a->item_list_sz; i++) {
+
+			spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+
+			snprintf(item_name, sizeof(item_name), "BAT%d", (int) spbc->bat_id);
+			item_name[sizeof(item_name) - 1] = '\0';
+
+			if (draw_activity_graphs(a->g_nr, g_type,
+						 title, g_title, item_name, group,
+						 spmin + i, spmax + i,
+						 out + i, outsize + i,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}

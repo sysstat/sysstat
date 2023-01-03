@@ -85,7 +85,9 @@ NOTES:
 00184	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-never.tmp
 00188	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp
 00190	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=36;22" ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-always.tmp
+00191	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:X=31;1:I=32;22:W=35;1:N=34;1:R=31;22:Z=36;22" ./sar -q MEM -Bu -P 0,3 -d --dev=sda --getenv -f tests/data-new.tmp > tests/out1.sar-always.tmp
 00192	LC_ALL=C TZ=GMT S_REPEAT_HEADER=2 ./sar --getenv -f tests/data-new.tmp > tests/out.sar-rep_hdr.tmp
+00193	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="+=33;22:-=35;1" ./sar -m BAT --getenv -f tests/data-new.tmp > tests/out2.sar-always.tmp
 
 =====	sar: Playing with sa1 and sa2 shell scripts
 00200	TZ=GMT ./sa1 --boot; TZ=GMT ./sa1 --unix_time=1555593629 1 1; TZ=GMT ./sa1 --unix_time=1555593649 1 1
@@ -175,6 +177,7 @@ NOTES:
 =====	Testing ill-formed datafiles
 00730	LC_ALL=C ./sadf -H $file 2>&1 | grep "Invalid system" >/dev/null && echo "OK" || exit 1;
 00732	LC_ALL=C ./sadf -H tests/data-12.6.0-file_act-types_nr-SARerr >/dev/null && ./sar -f tests/data-12.6.0-file_act-types_nr-SARerr 2>&1 | grep "Invalid system" >/dev/null
+00734	LC_ALL=C ./sadf -H tests/data-12.7.1-A_IRQ_overflow >/dev/null && ./sar -f tests/data-12.7.1-A_IRQ_overflow -A 2>&1 | grep "Aborting" >/dev/null
 
 =====	Reading datafile with non printable chrs in comment (created using hexedit)
 00740	LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp
@@ -333,6 +336,12 @@ NOTES:
 01900	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -- -uw | grep ":20:" > tests/out.sadf-tz.tmp
 01905	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -T -- -uw | grep ":20:" > tests/out.sadf-T-tz.tmp
 01908	LC_ALL=C TZ="America/New_York" ./sadf -g tests/data-tz.tmp -t -- -uw > tests/out.sadf-t-tz.tmp
+01910	LC_ALL=C TZ="America/New_York" ./sadf -d tests/data-tz.tmp -- -uw > tests/out.sadf-d-tz.tmp
+01915	LC_ALL=C TZ="America/New_York" ./sadf -d tests/data-tz.tmp -T -- -uw > tests/out.sadf-d-T-tz.tmp
+01918	LC_ALL=C TZ="America/New_York" ./sadf -d tests/data-tz.tmp -t -- -uw > tests/out.sadf-d-t-tz.tmp
+01920	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -- -uw > tests/out.sadf-r-tz.tmp
+01925	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -T -- -uw > tests/out.sadf-r-T-tz.tmp
+01928	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -t -- -uw > tests/out.sadf-r-t-tz.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
@@ -443,6 +452,7 @@ NOTES:
 03050	LC_ALL=C TZ=GMT ./mpstat -T -P ALL 1 2 > tests/out.mpstat-T.tmp
 03060	LC_ALL=C TZ=GMT ./mpstat -o JSON -A 1 1 > tests/out.mpstat-A-JSON.tmp
 03070	LC_ALL=C TZ=GMT ./mpstat -o JSON -T -P ALL > tests/out.mpstat-T-JSON.tmp
+03080	LC_ALL=C TZ=GMT ./mpstat -H -P ALL 1 > tests/out.mpstat-H.tmp
 
 =====	Tests mpstat error cases
 03100	LC_ALL=C ./mpstat -1 2>&1 | grep "Usage:" >/dev/null

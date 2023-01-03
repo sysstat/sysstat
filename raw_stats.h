@@ -98,5 +98,7 @@ __print_funct_t raw_print_psiio_stats
 	(struct activity *, char *, int);
 __print_funct_t raw_print_psimem_stats
 	(struct activity *, char *, int);
+__print_funct_t raw_print_pwr_bat_stats
+	(struct activity *, char *, int);
 
 #endif /* _RAW_STATS_H */

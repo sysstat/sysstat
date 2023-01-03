@@ -11,7 +11,7 @@
 			"timezone": "",
 			"statistics": [
 				{
-					"timestamp": {"date": "2018-08-29", "time": "09:34:34", "utc": 1, "interval": 46},
+					"timestamp": {"date": "2018-08-29", "time": "09:34:34", "tz": "UTC", "interval": 46},
 					"power-management": {
 						"fan-speed": [
 							{"number": 1, "rpm": 1283, "drpm": 1283, "device": "f71858fg-isa-0200"},
@@ -41,7 +41,7 @@
 			],
 			"restarts": [
 				{
-					"boot": {"date": "2018-08-29", "time": "09:33:38", "utc": 1, "cpu_count": 8}
+					"boot": {"date": "2018-08-29", "time": "09:33:38", "tz": "UTC", "cpu_count": 8}
 				}
 			]
 		}

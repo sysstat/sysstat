@@ -58,13 +58,15 @@ unsigned long hz;
 unsigned int kb_shift;
 
 /* Colors strings */
-char sc_percent_high[MAX_SGR_LEN] = C_BOLD_RED;
-char sc_percent_low[MAX_SGR_LEN] = C_BOLD_MAGENTA;
+char sc_percent_warn[MAX_SGR_LEN] = C_BOLD_MAGENTA;
+char sc_percent_xtreme[MAX_SGR_LEN] = C_BOLD_RED;
 char sc_zero_int_stat[MAX_SGR_LEN] = C_LIGHT_BLUE;
 char sc_int_stat[MAX_SGR_LEN] = C_BOLD_BLUE;
 char sc_item_name[MAX_SGR_LEN] = C_LIGHT_GREEN;
 char sc_sa_restart[MAX_SGR_LEN] = C_LIGHT_RED;
 char sc_sa_comment[MAX_SGR_LEN] = C_LIGHT_YELLOW;
+char sc_trend_pos[MAX_SGR_LEN] = C_BOLD_GREEN;
+char sc_trend_neg[MAX_SGR_LEN] = C_BOLD_RED;
 char sc_normal[MAX_SGR_LEN] = C_NORMAL;
 
 /*
@@ -87,50 +89,34 @@ void print_version(void)
 
 /*
  ***************************************************************************
- * Get local date and time.
+ * Get date and time, expressed in UTC or in local time.
  *
  * IN:
  * @d_off	Day offset (number of days to go back in the past).
+ * @utc		TRUE if date and time shall be expressed in UTC.
  *
  * OUT:
  * @rectime	Current local date and time.
  *
  * RETURNS:
- * Value of time in seconds since the Epoch.
+ * Value of time in seconds since the Epoch (always in UTC)
  ***************************************************************************
  */
-time_t get_localtime(struct tm *rectime, int d_off)
+time_t get_xtime(struct tm *rectime, int d_off, int utc)
 {
 	time_t timer;
 
 	timer = __time(NULL);
 	timer -= SEC_PER_DAY * d_off;
-	localtime_r(&timer, rectime);
 
-	return timer;
-}
-
-/*
- ***************************************************************************
- * Get date and time expressed in UTC.
- *
- * IN:
- * @d_off	Day offset (number of days to go back in the past).
- *
- * OUT:
- * @rectime	Current date and time expressed in UTC.
- *
- * RETURNS:
- * Value of time in seconds since the Epoch.
- ***************************************************************************
- */
-time_t get_gmtime(struct tm *rectime, int d_off)
-{
-	time_t timer;
-
-	timer = __time(NULL);
-	timer -= SEC_PER_DAY * d_off;
-	gmtime_r(&timer, rectime);
+	if (utc) {
+		/* Get date and time in UTC */
+		gmtime_r(&timer, rectime);
+	}
+	else {
+		/* Get date and time in local time */
+		localtime_r(&timer, rectime);
+	}
 
 	return timer;
 }
@@ -162,10 +148,7 @@ time_t get_time(struct tm *rectime, int d_off)
 		utc++;
 	}
 
-	if (utc == 2)
-		return get_gmtime(rectime, d_off);
-	else
-		return get_localtime(rectime, d_off);
+	return get_xtime(rectime, d_off, utc == 2);
 }
 
 #ifdef USE_NLS
@@ -434,6 +417,29 @@ int check_dir(char *dirname)
 	return 0;
 }
 
+/*
+ * **************************************************************************
+ * Check if the multiplication of the 3 values may be greater than UINT_MAX.
+ *
+ * IN:
+ * @val1	First value.
+ * @val2	Second value.
+ * @val3	Third value.
+ ***************************************************************************
+ */
+void check_overflow(unsigned int val1, unsigned int val2,
+		    unsigned int val3)
+{
+	if ((unsigned long long) val1 * (unsigned long long) val2 *
+	    (unsigned long long) val3 > UINT_MAX) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Overflow detected (%llu). Aborting...\n",
+			__FUNCTION__, (unsigned long long) val1 * (unsigned long long) val2 *
+			(unsigned long long) val3);
+#endif
+	exit(4);
+		}
+}
 
 #ifndef SOURCE_SADC
 /*
@@ -1203,13 +1209,15 @@ void init_colors(void)
 		 * or set to "auto" and stdout is not a terminal:
 		 * Unset color strings.
 		 */
-		strcpy(sc_percent_high, "");
-		strcpy(sc_percent_low, "");
+		strcpy(sc_percent_warn, "");
+		strcpy(sc_percent_xtreme, "");
 		strcpy(sc_zero_int_stat, "");
 		strcpy(sc_int_stat, "");
 		strcpy(sc_item_name, "");
 		strcpy(sc_sa_comment, "");
 		strcpy(sc_sa_restart, "");
+		strcpy(sc_trend_pos, "");
+		strcpy(sc_trend_neg, "");
 		strcpy(sc_normal, "");
 
 		return;
@@ -1229,11 +1237,13 @@ void init_colors(void)
 			continue;
 
 		switch (*p) {
-			case 'H':
-				snprintf(sc_percent_high, MAX_SGR_LEN, "\e[%sm", p + 2);
-				break;
 			case 'M':
-				snprintf(sc_percent_low, MAX_SGR_LEN, "\e[%sm", p + 2);
+			case 'W':
+				snprintf(sc_percent_warn, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case 'X':
+			case 'H':
+				snprintf(sc_percent_xtreme, MAX_SGR_LEN, "\e[%sm", p + 2);
 				break;
 			case 'Z':
 				snprintf(sc_zero_int_stat, MAX_SGR_LEN, "\e[%sm", p + 2);
@@ -1249,6 +1259,12 @@ void init_colors(void)
 				break;
 			case 'R':
 				snprintf(sc_sa_restart, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case '+':
+				snprintf(sc_trend_pos, MAX_SGR_LEN, "\e[%sm", p + 2);
+				break;
+			case '-':
+				snprintf(sc_trend_neg, MAX_SGR_LEN, "\e[%sm", p + 2);
 				break;
 		}
 	}
@@ -1299,7 +1315,7 @@ void cprintf_unit(int unit, int wi, double dval)
  * @num		Number of values to print.
  * @wi		Output width.
  ***************************************************************************
-*/
+ */
 void cprintf_u64(int unit, int num, int wi, ...)
 {
 	int i;
@@ -1362,12 +1378,13 @@ void cprintf_x(int num, int wi, ...)
  *
  * IN:
  * @unit	Default values unit. -1 if no unit should be displayed.
+ * @sign	TRUE if sign (+/-) should be explicitly displayed.
  * @num		Number of values to print.
  * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
-void cprintf_f(int unit, int num, int wi, int wd, ...)
+void cprintf_f(int unit, int sign, int num, int wi, int wd, ...)
 {
 	int i;
 	double val, lim = 0.005;;
@@ -1394,12 +1411,23 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
 		    ((wd == 0) && (val <= 0.5) && (val >= -0.5))) {	/* "Round half to even" law */
 			printf("%s", sc_zero_int_stat);
 		}
+		else if (sign && (val <= -10.0)) {
+			printf("%s", sc_percent_xtreme);
+		}
+		else if (sign && (val <= -5.0)) {
+			printf("%s", sc_percent_warn);
+		}
 		else {
 			printf("%s", sc_int_stat);
 		}
 
 		if (unit < 0) {
-			printf(" %*.*f", wi, wd, val);
+			if (sign) {
+				printf(" %+*.*f", wi, wd, val);
+			}
+			else {
+				printf(" %*.*f", wi, wd, val);
+			}
 			printf("%s", sc_normal);
 		}
 		else {
@@ -1417,12 +1445,15 @@ void cprintf_f(int unit, int num, int wi, int wd, ...)
  * IN:
  * @human	Set to > 0 if a percent sign (%) shall be displayed after
  *		the value.
+ * @xtrem	Set to non 0 to indicate that extreme (low or high) values
+ *		should be displayed in specific color if beyond predefined
+ *		limits.
  * @num		Number of values to print.
  * @wi		Output width.
  * @wd		Number of decimal places.
  ***************************************************************************
 */
-void cprintf_pc(int human, int num, int wi, int wd, ...)
+void cprintf_xpc(int human, int xtrem, int num, int wi, int wd, ...)
 {
 	int i;
 	double val, lim = 0.005;
@@ -1461,11 +1492,23 @@ void cprintf_pc(int human, int num, int wi, int wd, ...)
 
 	for (i = 0; i < num; i++) {
 		val = va_arg(args, double);
-		if (val >= PERCENT_LIMIT_HIGH) {
-			printf("%s", sc_percent_high);
+		if ((xtrem == XHIGH) && (val >= PERCENT_LIMIT_XHIGH)) {
+			printf("%s", sc_percent_xtreme);
 		}
-		else if (val >= PERCENT_LIMIT_LOW) {
-			printf("%s", sc_percent_low);
+		else if ((xtrem == XHIGH) && (val >= PERCENT_LIMIT_HIGH)) {
+			printf("%s", sc_percent_warn);
+		}
+		else if ((xtrem == XLOW) && (val <= PERCENT_LIMIT_XLOW)) {
+			printf("%s", sc_percent_xtreme);
+		}
+		else if ((xtrem == XLOW0) && (val <= PERCENT_LIMIT_XLOW) && (val >= lim)) {
+			printf("%s", sc_percent_xtreme);
+		}
+		else if ((xtrem == XLOW) && (val <= PERCENT_LIMIT_LOW)) {
+			printf("%s", sc_percent_warn);
+		}
+		else if ((xtrem == XLOW0) && (val <= PERCENT_LIMIT_LOW) && (val >= lim)) {
+			printf("%s", sc_percent_warn);
 		}
 		else if (((wd > 0) && (val < lim)) ||
 			 ((wd == 0) && (val <= 0.5))) {	/* "Round half to even" law */
@@ -1533,6 +1576,30 @@ void cprintf_s(int type, char *format, char *string)
 		printf("%s", sc_sa_comment);
 	}
 	printf(format, string);
+	printf("%s", sc_normal);
+}
+
+/*
+ * **************************************************************************
+ * Print trend string using selected color.
+ *
+ * IN:
+ * @trend	Trend (TRUE: positive; FALSE: negative).
+ * @format	Output format.
+ * @tstring	String to display.
+ ***************************************************************************
+ */
+void cprintf_tr(int trend, char *format, char *tstring)
+{
+	if (trend) {
+		printf("%s", sc_trend_pos);
+	}
+	else {
+		printf("%s", sc_trend_neg);
+	}
+
+	printf(format, tstring);
+
 	printf("%s", sc_normal);
 }
 
@@ -1674,4 +1741,5 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 
 	return 0;
 }
+
 #endif /* SOURCE_SADC undefined */

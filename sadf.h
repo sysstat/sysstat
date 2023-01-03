@@ -9,11 +9,13 @@
 #include "sa.h"
 
 /* DTD version for XML output */
-#define XML_DTD_VERSION	"3.11"
+#define XML_DTD_VERSION	"3.13"
 
 /* Various constants */
-#define DO_SAVE		0
-#define DO_RESTORE	1
+enum {
+	DO_SAVE		= 0,
+	DO_RESTORE	= 1
+};
 
 #define IGNORE_NOTHING		0
 #define IGNORE_RESTART		1
@@ -114,35 +116,33 @@ void convert_file
  * Prototypes used to display restart messages
  */
 __printf_funct_t print_db_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_ppc_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_xml_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_json_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_raw_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_pcp_restart
-	(int *, int, char *, char *, int, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 
 /*
  * Prototypes used to display comments
  */
 __printf_funct_t print_db_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_ppc_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_xml_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_json_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
-__printf_funct_t print_sar_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_raw_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, char *, struct file_header *, struct record_header *);
 __printf_funct_t print_pcp_comment
-	(int *, int, char *, char *, int, char *, struct file_header *, struct record_header *);
+	(int *, int, char *, char *, char *, char *, struct file_header *, struct record_header *);
 
 /*
  * Prototypes used to display the statistics part of the report
@@ -158,41 +158,41 @@ __printf_funct_t print_pcp_statistics
  * Prototypes used to display the timestamp part of the report
  */
 __tm_funct_t print_db_timestamp
-	(void *, int, char *, char *, unsigned long long,
+	(void *, int, char *, char *, char *, unsigned long long,
 	 struct record_header *, struct file_header *, unsigned int);
 __tm_funct_t print_ppc_timestamp
-	(void *, int, char *, char *, unsigned long long,
+	(void *, int, char *, char *, char *, unsigned long long,
 	 struct record_header *, struct file_header *, unsigned int);
 __tm_funct_t print_xml_timestamp
-	(void *, int, char *, char *, unsigned long long,
+	(void *, int, char *, char *, char *, unsigned long long,
 	 struct record_header *, struct file_header *, unsigned int);
 __tm_funct_t print_json_timestamp
-	(void *, int, char *, char *, unsigned long long,
+	(void *, int, char *, char *, char *, unsigned long long,
 	 struct record_header *, struct file_header *, unsigned int);
 __tm_funct_t print_raw_timestamp
-	(void *, int, char *, char *, unsigned long long,
+	(void *, int, char *, char *, char *, unsigned long long,
 	 struct record_header *, struct file_header *, unsigned int);
 __tm_funct_t print_pcp_timestamp
-	(void *, int, char *, char *, unsigned long long,
+	(void *, int, char *, char *, char *, unsigned long long,
 	 struct record_header *, struct file_header *, unsigned int);
 
 /*
  * Prototypes used to display the report header
  */
 __printf_funct_t print_xml_header
-	(void *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_json_header
-	(void *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_hdr_header
-	(void *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_svg_header
-	(void *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 __printf_funct_t print_pcp_header
-	(void *, int, char *, struct file_magic *, struct file_header *,
+	(void *, int, char *, char *, struct file_magic *, struct file_header *,
 	 struct activity * [], unsigned int [], struct file_activity *);
 
 /*

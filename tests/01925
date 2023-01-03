@@ -1,0 +1,1 @@
+LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -T -- -uw > tests/out.sadf-r-T-tz.tmp && diff -u tests/expected.sadf-r-T-tz tests/out.sadf-r-T-tz.tmp

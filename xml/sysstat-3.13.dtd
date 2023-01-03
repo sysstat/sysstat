@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.11 for sysstat. See sadf.h -->
+<!--DTD v3.12 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -38,7 +38,8 @@
 <!ATTLIST timestamp
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
-	utc CDATA #REQUIRED
+	utc CDATA #IMPLIED
+	tz CDATA #IMPLIED
 	interval CDATA #REQUIRED
 >
 
@@ -48,7 +49,8 @@
 <!ATTLIST boot
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
-	utc CDATA #REQUIRED
+	utc CDATA #IMPLIED
+	tz CDATA #IMPLIED
 	cpu_count CDATA #REQUIRED
 >
 
@@ -58,7 +60,8 @@
 <!ATTLIST comment
 	date CDATA #REQUIRED
 	time CDATA #REQUIRED
-	utc CDATA #REQUIRED
+	utc CDATA #IMPLIED
+	tz CDATA #IMPLIED
 	com CDATA #REQUIRED
 >
 
@@ -526,7 +529,7 @@
 	blg_len CDATA #IMPLIED
 >
 
-<!ELEMENT power-management (cpu-frequency?, fan-speed?, temperature?, voltage-input?, cpu-weighted-frequency?, usb-devices?)>
+<!ELEMENT power-management (cpu-frequency?, fan-speed?, temperature?, voltage-input?, cpu-weighted-frequency?, battery?, usb-devices?)>
 
 <!ELEMENT cpu-frequency (cpufreq*)>
 <!ATTLIST cpu-frequency
@@ -587,6 +590,19 @@
 <!ATTLIST cpuwfreq
 	number CDATA #REQUIRED
 	weighted-frequency CDATA #REQUIRED
+>
+
+<!ELEMENT battery (bat+)>
+<!ATTLIST battery
+	unit CDATA #REQUIRED
+>
+
+<!ELEMENT bat EMPTY>
+<!ATTLIST bat
+	number CDATA #REQUIRED
+	percent-capacity CDATA #REQUIRED
+	variation CDATA #REQUIRED
+	status CDATA #REQUIRED
 >
 
 <!ELEMENT usb-devices (usb+)>

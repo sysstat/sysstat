@@ -29,6 +29,7 @@
 #include "raw_stats.h"
 
 extern uint64_t flags;
+extern char bat_status[][16];
 
 /*
  ***************************************************************************
@@ -1792,4 +1793,42 @@ __print_funct_t raw_print_psimem_stats(struct activity *a, char *timestr, int cu
 	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) psip->full_mem_total, (unsigned long long) psic->full_mem_total);
 	printf("\n");
+}
+
+/*
+ * **************************************************************************
+ * Display batteries statistics in raw format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @timestr	Time for current statistics sample.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t raw_print_pwr_bat_stats(struct activity *a, char *timestr, int curr)
+{
+	int i;
+	struct stats_pwr_bat *spbc, *spbp;
+
+	for (i = 0; i < a->nr[curr]; i++) {
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+		spbp = (struct stats_pwr_bat *) ((char *) a->buf[!curr] + i * a->msize);
+
+		printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), (int) spbc->bat_id);
+		printf(" %s; %u; %u;", pfield(NULL, 0),
+		       (unsigned int) spbp->capacity, (unsigned int) spbc->capacity);
+		printf(" status; %d", (int) spbc->status);
+
+		if (DISPLAY_DEBUG_MODE(flags)) {
+			if (spbc->status >= BAT_STS_NR) {
+				cprintf_s(IS_DEBUG, " [%s]", "UNDEFINED");
+			}
+			else {
+				cprintf_s(IS_COMMENT, " [%s]",
+					  bat_status[(unsigned int) spbc->status]);
+			}
+		}
+
+		printf(";\n");
+	}
 }

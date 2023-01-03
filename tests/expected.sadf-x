@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.11 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.11.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.13 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.13.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.11</sysdata-version>
+	<sysdata-version>3.13</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -15,7 +15,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 		<file-utc-time>13:20:09</file-utc-time>
 		<timezone>GMT</timezone>
 		<statistics>
-			<timestamp date="2019-04-18" time="13:20:19" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:20:19" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="all" usr="2.15" nice="12.50" sys="1.84" iowait="0.12" steal="0.00" irq="0.34" soft="0.19" guest="0.00" gnice="0.00" idle="82.88"/>
 					<cpu number="0" usr="2.71" nice="0.03" sys="2.16" iowait="0.00" steal="0.00" irq="0.32" soft="0.64" guest="0.00" gnice="0.00" idle="94.14"/>
@@ -543,6 +543,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="100" variation="0.00" status="Full"/>
+						<bat number="1" percent-capacity="83" variation="-3.85" status="Unknown"/>
+					</battery>
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
@@ -556,7 +560,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<psi-mem some_avg10="3.12" some_avg60="1.40" some_avg300="0.03" some_avg="0.05" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.02"/>
 				</psi>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:20:29" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:20:29" tz="UTC" interval="31">
 				<cpu-load>
 					<cpu number="all" usr="2.28" nice="0.00" sys="1.55" iowait="0.48" steal="0.00" irq="0.19" soft="0.19" guest="0.00" gnice="0.00" idle="95.31"/>
 					<cpu number="0" usr="1.25" nice="0.00" sys="1.51" iowait="0.35" steal="0.00" irq="0.19" soft="0.58" guest="0.00" gnice="0.00" idle="96.12"/>
@@ -1038,6 +1042,10 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="70" variation="-57.62" status="Unknown"/>
+						<bat number="1" percent-capacity="80" variation="-5.76" status="Discharging"/>
+					</battery>
 					<usb-devices>
 						<usb bus_number="1" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
 						<usb bus_number="3" idvendor="174c" idprod="55aa" maxpower="0" manufact="ASMT" product="ASM1153"/>
@@ -1057,7 +1065,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<psi-mem some_avg10="21.06" some_avg60="14.31" some_avg300="3.80" some_avg="0.03" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.01"/>
 				</psi>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:20:39" utc="1" interval="39">
+			<timestamp date="2019-04-18" time="13:20:39" tz="UTC" interval="39">
 				<cpu-load>
 					<cpu number="all" usr="2.67" nice="23.08" sys="1.79" iowait="0.17" steal="0.00" irq="0.33" soft="0.28" guest="0.00" gnice="0.00" idle="71.68"/>
 					<cpu number="0" usr="2.19" nice="52.01" sys="1.46" iowait="0.00" steal="0.00" irq="0.36" soft="0.39" guest="0.00" gnice="0.00" idle="43.59"/>
@@ -1471,7 +1479,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" vmeff-percent="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.26" pgscand="0.00" pgsteal="0.23" vmeff-percent="90.00"/>
 				<io per="second">
 					<tps>0.00</tps>
 					<io-reads rtps="0.00" bread="0.00"/>
@@ -1586,6 +1594,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="75" variation="7.79" status="Charging"/>
+					</battery>
 				</power-management>
 				<filesystems>
 					<filesystem fsname="/dev/sda9" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
@@ -1601,7 +1612,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<psi-mem some_avg10="99.80" some_avg60="70.16" some_avg300="38.70" some_avg="0.09" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.01"/>
 				</psi>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:20:49" utc="1" interval="22">
+			<timestamp date="2019-04-18" time="13:20:49" tz="UTC" interval="22">
 				<cpu-load>
 					<cpu number="all" usr="6.21" nice="8.70" sys="6.64" iowait="0.49" steal="0.39" irq="0.54" soft="0.34" guest="0.59" gnice="0.10" idle="75.90"/>
 					<cpu number="0" usr="2.69" nice="47.44" sys="1.26" iowait="0.18" steal="0.00" irq="0.36" soft="0.85" guest="0.00" gnice="0.00" idle="47.22"/>
@@ -2060,7 +2071,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" vmeff-percent="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="4.02" pgscand="0.00" pgsteal="0.09" vmeff-percent="2.22"/>
 				<io per="second">
 					<tps>136.22</tps>
 					<io-reads rtps="85.80" bread="4497.45"/>
@@ -2181,6 +2192,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<cpufreq number="6" frequency="3492.22"/>
 						<cpufreq number="7" frequency="3497.56"/>
 					</cpu-frequency>
+					<battery unit="minute">
+						<bat number="0" percent-capacity="77" variation="5.36" status="NotCharging"/>
+					</battery>
 					<usb-devices>
 						<usb bus_number="1" idvendor="3f0" idprod="862" maxpower="196" manufact="HP" product="HP Wireless Keyboard Mouse Kit"/>
 						<usb bus_number="3" idvendor="174c" idprod="55aa" maxpower="0" manufact="ASMT" product="ASM1153"/>
@@ -2200,9 +2214,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<psi-mem some_avg10="23.00" some_avg60="3.00" some_avg300="0.36" some_avg="0.21" full_avg10="0.00" full_avg60="0.00" full_avg300="0.00" full_avg="0.15"/>
 				</psi>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:54:35" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:54:35" tz="UTC" interval="31">
 				<cpu-load>
-					<cpu number="all" usr="2.47" nice="17.21" sys="2.21" iowait="0.77" steal="0.00" irq="0.96" soft="0.22" guest="0.00" gnice="0.00" idle="76.16"/>
+					<cpu number="all" usr="2.67" nice="19.49" sys="2.13" iowait="0.97" steal="0.00" irq="1.18" soft="0.21" guest="0.00" gnice="0.00" idle="73.34"/>
 					<cpu number="0" usr="2.71" nice="0.03" sys="2.16" iowait="0.00" steal="0.00" irq="0.32" soft="0.64" guest="0.00" gnice="0.00" idle="94.14"/>
 					<cpu number="1" usr="2.85" nice="0.00" sys="4.28" iowait="0.00" steal="0.00" irq="0.68" soft="0.19" guest="0.00" gnice="0.00" idle="91.99"/>
 					<cpu number="2" usr="2.25" nice="0.03" sys="1.51" iowait="0.68" steal="0.00" irq="0.23" soft="0.13" guest="0.00" gnice="0.00" idle="95.18"/>
@@ -2212,12 +2226,12 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					<cpu number="6" usr="2.41" nice="0.00" sys="2.03" iowait="0.16" steal="0.00" irq="0.48" soft="0.10" guest="0.00" gnice="0.00" idle="94.82"/>
 					<cpu number="7" usr="2.89" nice="0.00" sys="0.74" iowait="0.06" steal="0.00" irq="0.06" soft="0.06" guest="0.00" gnice="0.00" idle="96.18"/>
 					<cpu number="8" usr="4.15" nice="41.49" sys="4.15" iowait="4.15" steal="0.00" irq="4.15" soft="0.41" guest="0.00" gnice="0.00" idle="41.49"/>
-					<cpu number="9" usr="4.15" nice="41.49" sys="4.15" iowait="4.15" steal="0.00" irq="4.15" soft="0.41" guest="0.00" gnice="0.00" idle="41.49"/>
+					<cpu number="9" usr="5.35" nice="53.52" sys="2.82" iowait="4.79" steal="0.00" irq="5.07" soft="0.28" guest="0.00" gnice="0.00" idle="28.17"/>
 				</cpu-load>
 				<process-and-context-switch per="second" proc="3.56" cswch="68409.30"/>
 				<interrupts>
 					<int-global per="second">
-						<irq intr="sum" cpu="all" value="35926.40"/>
+						<irq intr="sum" cpu="all" value="35966.38"/>
 						<irq intr="sum" cpu="0" value="5759.67"/>
 						<irq intr="sum" cpu="1" value="11829.29"/>
 						<irq intr="sum" cpu="2" value="2990.76"/>
@@ -2226,7 +2240,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="sum" cpu="5" value="5880.88"/>
 						<irq intr="sum" cpu="6" value="4898.65"/>
 						<irq intr="sum" cpu="7" value="587.30"/>
-						<irq intr="0" cpu="all" value="0.00"/>
+						<irq intr="sum" cpu="8" value="8.41"/>
+						<irq intr="sum" cpu="9" value="31.57"/>
+						<irq intr="0" cpu="all" value="0.06"/>
 						<irq intr="0" cpu="0" value="0.00"/>
 						<irq intr="0" cpu="1" value="0.00"/>
 						<irq intr="0" cpu="2" value="0.00"/>
@@ -2235,6 +2251,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="0" cpu="5" value="0.00"/>
 						<irq intr="0" cpu="6" value="0.00"/>
 						<irq intr="0" cpu="7" value="0.00"/>
+						<irq intr="0" cpu="8" value="0.06"/>
+						<irq intr="0" cpu="9" value="0.00"/>
 						<irq intr="8" cpu="all" value="0.00"/>
 						<irq intr="8" cpu="0" value="0.00"/>
 						<irq intr="8" cpu="1" value="0.00"/>
@@ -2244,6 +2262,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="8" cpu="5" value="0.00"/>
 						<irq intr="8" cpu="6" value="0.00"/>
 						<irq intr="8" cpu="7" value="0.00"/>
+						<irq intr="8" cpu="8" value="0.00"/>
+						<irq intr="8" cpu="9" value="0.00"/>
 						<irq intr="9" cpu="all" value="0.00"/>
 						<irq intr="9" cpu="0" value="0.00"/>
 						<irq intr="9" cpu="1" value="0.00"/>
@@ -2253,6 +2273,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="9" cpu="5" value="0.00"/>
 						<irq intr="9" cpu="6" value="0.00"/>
 						<irq intr="9" cpu="7" value="0.00"/>
+						<irq intr="9" cpu="8" value="0.00"/>
+						<irq intr="9" cpu="9" value="0.00"/>
 						<irq intr="16" cpu="all" value="0.00"/>
 						<irq intr="16" cpu="0" value="0.00"/>
 						<irq intr="16" cpu="1" value="0.00"/>
@@ -2262,6 +2284,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="16" cpu="5" value="0.00"/>
 						<irq intr="16" cpu="6" value="0.00"/>
 						<irq intr="16" cpu="7" value="0.00"/>
+						<irq intr="16" cpu="8" value="0.00"/>
+						<irq intr="16" cpu="9" value="0.00"/>
 						<irq intr="17" cpu="all" value="0.00"/>
 						<irq intr="17" cpu="0" value="0.00"/>
 						<irq intr="17" cpu="1" value="0.00"/>
@@ -2271,6 +2295,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="17" cpu="5" value="0.00"/>
 						<irq intr="17" cpu="6" value="0.00"/>
 						<irq intr="17" cpu="7" value="0.00"/>
+						<irq intr="17" cpu="8" value="0.00"/>
+						<irq intr="17" cpu="9" value="0.00"/>
 						<irq intr="18" cpu="all" value="0.00"/>
 						<irq intr="18" cpu="0" value="0.00"/>
 						<irq intr="18" cpu="1" value="0.00"/>
@@ -2280,6 +2306,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="18" cpu="5" value="0.00"/>
 						<irq intr="18" cpu="6" value="0.00"/>
 						<irq intr="18" cpu="7" value="0.00"/>
+						<irq intr="18" cpu="8" value="0.00"/>
+						<irq intr="18" cpu="9" value="0.00"/>
 						<irq intr="19" cpu="all" value="25.92"/>
 						<irq intr="19" cpu="0" value="0.00"/>
 						<irq intr="19" cpu="1" value="0.00"/>
@@ -2289,6 +2317,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="19" cpu="5" value="0.00"/>
 						<irq intr="19" cpu="6" value="0.00"/>
 						<irq intr="19" cpu="7" value="0.00"/>
+						<irq intr="19" cpu="8" value="0.00"/>
+						<irq intr="19" cpu="9" value="0.00"/>
 						<irq intr="23" cpu="all" value="35.03"/>
 						<irq intr="23" cpu="0" value="0.00"/>
 						<irq intr="23" cpu="1" value="0.00"/>
@@ -2298,6 +2328,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="23" cpu="5" value="0.00"/>
 						<irq intr="23" cpu="6" value="0.00"/>
 						<irq intr="23" cpu="7" value="0.00"/>
+						<irq intr="23" cpu="8" value="0.00"/>
+						<irq intr="23" cpu="9" value="0.00"/>
 						<irq intr="24" cpu="all" value="10.39"/>
 						<irq intr="24" cpu="0" value="0.00"/>
 						<irq intr="24" cpu="1" value="0.00"/>
@@ -2307,6 +2339,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="24" cpu="5" value="0.00"/>
 						<irq intr="24" cpu="6" value="0.00"/>
 						<irq intr="24" cpu="7" value="0.00"/>
+						<irq intr="24" cpu="8" value="0.00"/>
+						<irq intr="24" cpu="9" value="0.00"/>
 						<irq intr="25" cpu="all" value="0.00"/>
 						<irq intr="25" cpu="0" value="0.00"/>
 						<irq intr="25" cpu="1" value="0.00"/>
@@ -2316,6 +2350,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="25" cpu="5" value="0.00"/>
 						<irq intr="25" cpu="6" value="0.00"/>
 						<irq intr="25" cpu="7" value="0.00"/>
+						<irq intr="25" cpu="8" value="0.00"/>
+						<irq intr="25" cpu="9" value="0.00"/>
 						<irq intr="26" cpu="all" value="0.00"/>
 						<irq intr="26" cpu="0" value="0.00"/>
 						<irq intr="26" cpu="1" value="0.00"/>
@@ -2325,7 +2361,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="26" cpu="5" value="0.00"/>
 						<irq intr="26" cpu="6" value="0.00"/>
 						<irq intr="26" cpu="7" value="0.00"/>
-						<irq intr="27" cpu="all" value="0.00"/>
+						<irq intr="26" cpu="8" value="0.00"/>
+						<irq intr="26" cpu="9" value="0.00"/>
+						<irq intr="27" cpu="all" value="0.35"/>
 						<irq intr="27" cpu="0" value="0.00"/>
 						<irq intr="27" cpu="1" value="0.00"/>
 						<irq intr="27" cpu="2" value="0.00"/>
@@ -2334,6 +2372,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="27" cpu="5" value="0.00"/>
 						<irq intr="27" cpu="6" value="0.00"/>
 						<irq intr="27" cpu="7" value="0.00"/>
+						<irq intr="27" cpu="8" value="0.00"/>
+						<irq intr="27" cpu="9" value="0.35"/>
 						<irq intr="28" cpu="all" value="0.00"/>
 						<irq intr="28" cpu="0" value="0.00"/>
 						<irq intr="28" cpu="1" value="0.00"/>
@@ -2343,6 +2383,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="28" cpu="5" value="0.00"/>
 						<irq intr="28" cpu="6" value="0.00"/>
 						<irq intr="28" cpu="7" value="0.00"/>
+						<irq intr="28" cpu="8" value="0.00"/>
+						<irq intr="28" cpu="9" value="0.00"/>
 						<irq intr="29" cpu="all" value="0.00"/>
 						<irq intr="29" cpu="0" value="0.00"/>
 						<irq intr="29" cpu="1" value="0.00"/>
@@ -2352,6 +2394,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="29" cpu="5" value="0.00"/>
 						<irq intr="29" cpu="6" value="0.00"/>
 						<irq intr="29" cpu="7" value="0.00"/>
+						<irq intr="29" cpu="8" value="0.00"/>
+						<irq intr="29" cpu="9" value="0.00"/>
 						<irq intr="30" cpu="all" value="0.00"/>
 						<irq intr="30" cpu="0" value="0.00"/>
 						<irq intr="30" cpu="1" value="0.00"/>
@@ -2361,6 +2405,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="30" cpu="5" value="0.00"/>
 						<irq intr="30" cpu="6" value="0.00"/>
 						<irq intr="30" cpu="7" value="0.00"/>
+						<irq intr="30" cpu="8" value="0.00"/>
+						<irq intr="30" cpu="9" value="0.00"/>
 						<irq intr="31" cpu="all" value="0.00"/>
 						<irq intr="31" cpu="0" value="0.00"/>
 						<irq intr="31" cpu="1" value="0.00"/>
@@ -2370,6 +2416,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="31" cpu="5" value="0.00"/>
 						<irq intr="31" cpu="6" value="0.00"/>
 						<irq intr="31" cpu="7" value="0.00"/>
+						<irq intr="31" cpu="8" value="0.00"/>
+						<irq intr="31" cpu="9" value="0.00"/>
 						<irq intr="32" cpu="all" value="0.00"/>
 						<irq intr="32" cpu="0" value="0.00"/>
 						<irq intr="32" cpu="1" value="0.00"/>
@@ -2379,6 +2427,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="32" cpu="5" value="0.00"/>
 						<irq intr="32" cpu="6" value="0.00"/>
 						<irq intr="32" cpu="7" value="0.00"/>
+						<irq intr="32" cpu="8" value="0.00"/>
+						<irq intr="32" cpu="9" value="0.00"/>
 						<irq intr="33" cpu="all" value="15.11"/>
 						<irq intr="33" cpu="0" value="0.00"/>
 						<irq intr="33" cpu="1" value="0.00"/>
@@ -2388,6 +2438,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="33" cpu="5" value="0.00"/>
 						<irq intr="33" cpu="6" value="0.00"/>
 						<irq intr="33" cpu="7" value="0.00"/>
+						<irq intr="33" cpu="8" value="0.00"/>
+						<irq intr="33" cpu="9" value="0.00"/>
 						<irq intr="34" cpu="all" value="149.98"/>
 						<irq intr="34" cpu="0" value="0.00"/>
 						<irq intr="34" cpu="1" value="0.00"/>
@@ -2397,6 +2449,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="34" cpu="5" value="0.00"/>
 						<irq intr="34" cpu="6" value="149.98"/>
 						<irq intr="34" cpu="7" value="0.00"/>
+						<irq intr="34" cpu="8" value="0.00"/>
+						<irq intr="34" cpu="9" value="0.00"/>
 						<irq intr="35" cpu="all" value="0.00"/>
 						<irq intr="35" cpu="0" value="0.00"/>
 						<irq intr="35" cpu="1" value="0.00"/>
@@ -2406,6 +2460,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="35" cpu="5" value="0.00"/>
 						<irq intr="35" cpu="6" value="0.00"/>
 						<irq intr="35" cpu="7" value="0.00"/>
+						<irq intr="35" cpu="8" value="0.00"/>
+						<irq intr="35" cpu="9" value="0.00"/>
 						<irq intr="36" cpu="all" value="0.00"/>
 						<irq intr="36" cpu="0" value="0.00"/>
 						<irq intr="36" cpu="1" value="0.00"/>
@@ -2415,7 +2471,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="36" cpu="5" value="0.00"/>
 						<irq intr="36" cpu="6" value="0.00"/>
 						<irq intr="36" cpu="7" value="0.00"/>
-						<irq intr="NMI" cpu="all" value="0.19"/>
+						<irq intr="36" cpu="8" value="0.00"/>
+						<irq intr="36" cpu="9" value="0.00"/>
+						<irq intr="NMI" cpu="all" value="1.44"/>
 						<irq intr="NMI" cpu="0" value="0.03"/>
 						<irq intr="NMI" cpu="1" value="0.00"/>
 						<irq intr="NMI" cpu="2" value="0.00"/>
@@ -2424,7 +2482,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="NMI" cpu="5" value="0.00"/>
 						<irq intr="NMI" cpu="6" value="0.03"/>
 						<irq intr="NMI" cpu="7" value="0.00"/>
-						<irq intr="LOC" cpu="all" value="34881.39"/>
+						<irq intr="NMI" cpu="8" value="1.06"/>
+						<irq intr="NMI" cpu="9" value="0.19"/>
+						<irq intr="LOC" cpu="all" value="34906.93"/>
 						<irq intr="LOC" cpu="0" value="5434.36"/>
 						<irq intr="LOC" cpu="1" value="11720.31"/>
 						<irq intr="LOC" cpu="2" value="2903.79"/>
@@ -2433,6 +2493,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="LOC" cpu="5" value="5828.49"/>
 						<irq intr="LOC" cpu="6" value="4691.08"/>
 						<irq intr="LOC" cpu="7" value="468.33"/>
+						<irq intr="LOC" cpu="8" value="0.45"/>
+						<irq intr="LOC" cpu="9" value="25.09"/>
 						<irq intr="SPU" cpu="all" value="0.00"/>
 						<irq intr="SPU" cpu="0" value="0.00"/>
 						<irq intr="SPU" cpu="1" value="0.00"/>
@@ -2442,7 +2504,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="SPU" cpu="5" value="0.00"/>
 						<irq intr="SPU" cpu="6" value="0.00"/>
 						<irq intr="SPU" cpu="7" value="0.00"/>
-						<irq intr="PMI" cpu="all" value="0.19"/>
+						<irq intr="SPU" cpu="8" value="0.00"/>
+						<irq intr="SPU" cpu="9" value="0.00"/>
+						<irq intr="PMI" cpu="all" value="1.57"/>
 						<irq intr="PMI" cpu="0" value="0.03"/>
 						<irq intr="PMI" cpu="1" value="0.00"/>
 						<irq intr="PMI" cpu="2" value="0.00"/>
@@ -2451,6 +2515,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="PMI" cpu="5" value="0.00"/>
 						<irq intr="PMI" cpu="6" value="0.03"/>
 						<irq intr="PMI" cpu="7" value="0.00"/>
+						<irq intr="PMI" cpu="8" value="1.09"/>
+						<irq intr="PMI" cpu="9" value="0.29"/>
 						<irq intr="IWI" cpu="all" value="0.00"/>
 						<irq intr="IWI" cpu="0" value="0.00"/>
 						<irq intr="IWI" cpu="1" value="0.00"/>
@@ -2460,6 +2526,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="IWI" cpu="5" value="0.00"/>
 						<irq intr="IWI" cpu="6" value="0.00"/>
 						<irq intr="IWI" cpu="7" value="0.00"/>
+						<irq intr="IWI" cpu="8" value="0.00"/>
+						<irq intr="IWI" cpu="9" value="0.00"/>
 						<irq intr="RTR" cpu="all" value="0.00"/>
 						<irq intr="RTR" cpu="0" value="0.00"/>
 						<irq intr="RTR" cpu="1" value="0.00"/>
@@ -2469,7 +2537,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="RTR" cpu="5" value="0.00"/>
 						<irq intr="RTR" cpu="6" value="0.00"/>
 						<irq intr="RTR" cpu="7" value="0.00"/>
-						<irq intr="RES" cpu="all" value="215.01"/>
+						<irq intr="RTR" cpu="8" value="0.00"/>
+						<irq intr="RTR" cpu="9" value="0.00"/>
+						<irq intr="RES" cpu="all" value="220.63"/>
 						<irq intr="RES" cpu="0" value="149.37"/>
 						<irq intr="RES" cpu="1" value="32.72"/>
 						<irq intr="RES" cpu="2" value="13.19"/>
@@ -2478,7 +2548,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="RES" cpu="5" value="2.69"/>
 						<irq intr="RES" cpu="6" value="9.11"/>
 						<irq intr="RES" cpu="7" value="3.21"/>
-						<irq intr="CAL" cpu="all" value="191.69"/>
+						<irq intr="RES" cpu="8" value="3.56"/>
+						<irq intr="RES" cpu="9" value="2.05"/>
+						<irq intr="CAL" cpu="all" value="194.77"/>
 						<irq intr="CAL" cpu="0" value="69.87"/>
 						<irq intr="CAL" cpu="1" value="19.44"/>
 						<irq intr="CAL" cpu="2" value="20.47"/>
@@ -2487,7 +2559,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="CAL" cpu="5" value="17.32"/>
 						<irq intr="CAL" cpu="6" value="18.67"/>
 						<irq intr="CAL" cpu="7" value="31.15"/>
-						<irq intr="TLB" cpu="all" value="401.22"/>
+						<irq intr="CAL" cpu="8" value="1.15"/>
+						<irq intr="CAL" cpu="9" value="1.92"/>
+						<irq intr="TLB" cpu="all" value="403.18"/>
 						<irq intr="TLB" cpu="0" value="105.97"/>
 						<irq intr="TLB" cpu="1" value="56.79"/>
 						<irq intr="TLB" cpu="2" value="42.89"/>
@@ -2496,6 +2570,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="TLB" cpu="5" value="32.34"/>
 						<irq intr="TLB" cpu="6" value="29.71"/>
 						<irq intr="TLB" cpu="7" value="84.57"/>
+						<irq intr="TLB" cpu="8" value="0.83"/>
+						<irq intr="TLB" cpu="9" value="1.12"/>
 						<irq intr="TRM" cpu="all" value="0.00"/>
 						<irq intr="TRM" cpu="0" value="0.00"/>
 						<irq intr="TRM" cpu="1" value="0.00"/>
@@ -2505,6 +2581,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="TRM" cpu="5" value="0.00"/>
 						<irq intr="TRM" cpu="6" value="0.00"/>
 						<irq intr="TRM" cpu="7" value="0.00"/>
+						<irq intr="TRM" cpu="8" value="0.00"/>
+						<irq intr="TRM" cpu="9" value="0.00"/>
 						<irq intr="THR" cpu="all" value="0.00"/>
 						<irq intr="THR" cpu="0" value="0.00"/>
 						<irq intr="THR" cpu="1" value="0.00"/>
@@ -2514,6 +2592,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="THR" cpu="5" value="0.00"/>
 						<irq intr="THR" cpu="6" value="0.00"/>
 						<irq intr="THR" cpu="7" value="0.00"/>
+						<irq intr="THR" cpu="8" value="0.00"/>
+						<irq intr="THR" cpu="9" value="0.00"/>
 						<irq intr="DFR" cpu="all" value="0.00"/>
 						<irq intr="DFR" cpu="0" value="0.00"/>
 						<irq intr="DFR" cpu="1" value="0.00"/>
@@ -2523,6 +2603,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="DFR" cpu="5" value="0.00"/>
 						<irq intr="DFR" cpu="6" value="0.00"/>
 						<irq intr="DFR" cpu="7" value="0.00"/>
+						<irq intr="DFR" cpu="8" value="0.00"/>
+						<irq intr="DFR" cpu="9" value="0.00"/>
 						<irq intr="MCE" cpu="all" value="0.00"/>
 						<irq intr="MCE" cpu="0" value="0.00"/>
 						<irq intr="MCE" cpu="1" value="0.00"/>
@@ -2532,7 +2614,9 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="MCE" cpu="5" value="0.00"/>
 						<irq intr="MCE" cpu="6" value="0.00"/>
 						<irq intr="MCE" cpu="7" value="0.00"/>
-						<irq intr="MCP" cpu="all" value="0.26"/>
+						<irq intr="MCE" cpu="8" value="0.00"/>
+						<irq intr="MCE" cpu="9" value="0.00"/>
+						<irq intr="MCP" cpu="all" value="0.99"/>
 						<irq intr="MCP" cpu="0" value="0.03"/>
 						<irq intr="MCP" cpu="1" value="0.03"/>
 						<irq intr="MCP" cpu="2" value="0.03"/>
@@ -2541,6 +2625,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="MCP" cpu="5" value="0.03"/>
 						<irq intr="MCP" cpu="6" value="0.03"/>
 						<irq intr="MCP" cpu="7" value="0.03"/>
+						<irq intr="MCP" cpu="8" value="0.19"/>
+						<irq intr="MCP" cpu="9" value="0.55"/>
 						<irq intr="HYP" cpu="all" value="0.00"/>
 						<irq intr="HYP" cpu="0" value="0.00"/>
 						<irq intr="HYP" cpu="1" value="0.00"/>
@@ -2550,6 +2636,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="HYP" cpu="5" value="0.00"/>
 						<irq intr="HYP" cpu="6" value="0.00"/>
 						<irq intr="HYP" cpu="7" value="0.00"/>
+						<irq intr="HYP" cpu="8" value="0.00"/>
+						<irq intr="HYP" cpu="9" value="0.00"/>
 						<irq intr="HRE" cpu="all" value="0.00"/>
 						<irq intr="HRE" cpu="0" value="0.00"/>
 						<irq intr="HRE" cpu="1" value="0.00"/>
@@ -2559,6 +2647,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="HRE" cpu="5" value="0.00"/>
 						<irq intr="HRE" cpu="6" value="0.00"/>
 						<irq intr="HRE" cpu="7" value="0.00"/>
+						<irq intr="HRE" cpu="8" value="0.00"/>
+						<irq intr="HRE" cpu="9" value="0.00"/>
 						<irq intr="HVS" cpu="all" value="0.00"/>
 						<irq intr="HVS" cpu="0" value="0.00"/>
 						<irq intr="HVS" cpu="1" value="0.00"/>
@@ -2568,6 +2658,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="HVS" cpu="5" value="0.00"/>
 						<irq intr="HVS" cpu="6" value="0.00"/>
 						<irq intr="HVS" cpu="7" value="0.00"/>
+						<irq intr="HVS" cpu="8" value="0.00"/>
+						<irq intr="HVS" cpu="9" value="0.00"/>
 						<irq intr="ERR" cpu="all" value="0.00"/>
 						<irq intr="ERR" cpu="0" value="0.00"/>
 						<irq intr="ERR" cpu="1" value="0.00"/>
@@ -2577,6 +2669,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="ERR" cpu="5" value="0.00"/>
 						<irq intr="ERR" cpu="6" value="0.00"/>
 						<irq intr="ERR" cpu="7" value="0.00"/>
+						<irq intr="ERR" cpu="8" value="0.00"/>
+						<irq intr="ERR" cpu="9" value="0.00"/>
 						<irq intr="MIS" cpu="all" value="0.00"/>
 						<irq intr="MIS" cpu="0" value="0.00"/>
 						<irq intr="MIS" cpu="1" value="0.00"/>
@@ -2586,6 +2680,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="MIS" cpu="5" value="0.00"/>
 						<irq intr="MIS" cpu="6" value="0.00"/>
 						<irq intr="MIS" cpu="7" value="0.00"/>
+						<irq intr="MIS" cpu="8" value="0.00"/>
+						<irq intr="MIS" cpu="9" value="0.00"/>
 						<irq intr="PIN" cpu="all" value="0.00"/>
 						<irq intr="PIN" cpu="0" value="0.00"/>
 						<irq intr="PIN" cpu="1" value="0.00"/>
@@ -2595,6 +2691,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="PIN" cpu="5" value="0.00"/>
 						<irq intr="PIN" cpu="6" value="0.00"/>
 						<irq intr="PIN" cpu="7" value="0.00"/>
+						<irq intr="PIN" cpu="8" value="0.00"/>
+						<irq intr="PIN" cpu="9" value="0.00"/>
 						<irq intr="NPI" cpu="all" value="0.00"/>
 						<irq intr="NPI" cpu="0" value="0.00"/>
 						<irq intr="NPI" cpu="1" value="0.00"/>
@@ -2604,6 +2702,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="NPI" cpu="5" value="0.00"/>
 						<irq intr="NPI" cpu="6" value="0.00"/>
 						<irq intr="NPI" cpu="7" value="0.00"/>
+						<irq intr="NPI" cpu="8" value="0.00"/>
+						<irq intr="NPI" cpu="9" value="0.00"/>
 						<irq intr="PIW" cpu="all" value="0.00"/>
 						<irq intr="PIW" cpu="0" value="0.00"/>
 						<irq intr="PIW" cpu="1" value="0.00"/>
@@ -2613,6 +2713,8 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 						<irq intr="PIW" cpu="5" value="0.00"/>
 						<irq intr="PIW" cpu="6" value="0.00"/>
 						<irq intr="PIW" cpu="7" value="0.00"/>
+						<irq intr="PIW" cpu="8" value="0.00"/>
+						<irq intr="PIW" cpu="9" value="0.00"/>
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
@@ -2753,11 +2855,11 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 			</timestamp>
 		</statistics>
 		<restarts>
-			<boot date="2019-04-18" time="13:37:29" utc="1" cpu_count="9"/>
-			<boot date="2019-04-18" time="13:54:09" utc="1" cpu_count="10"/>
+			<boot date="2019-04-18" time="13:37:29" tz="UTC" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:54:09" tz="UTC" cpu_count="10"/>
 		</restarts>
 		<comments>
-			<comment date="2019-04-18" time="13:39:09" utc="1" com="Testing sysstat!"/>
+			<comment date="2019-04-18" time="13:39:09" tz="UTC" com="Testing sysstat!"/>
 		</comments>
 	</host>
 </sysstat>

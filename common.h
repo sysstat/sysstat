@@ -35,9 +35,12 @@
 
 /* Index in units array (see common.c) */
 #define NO_UNIT		-1
-#define UNIT_SECTOR	0
-#define UNIT_BYTE	1
-#define UNIT_KILOBYTE	2
+
+enum {
+	UNIT_SECTOR	= 0,
+	UNIT_BYTE	= 1,
+	UNIT_KILOBYTE	= 2
+};
 
 #define NR_UNITS	8
 
@@ -82,19 +85,11 @@
 #define SYSFS_BLOCK		SLASH_SYS "/" __BLOCK
 #define SYSFS_DEV_BLOCK		SLASH_SYS "/" __DEV_BLOCK
 #define SYSFS_DEVCPU		PRE "/sys/devices/system/cpu"
-#define SYSFS_TIME_IN_STATE	"cpufreq/stats/time_in_state"
 #define S_STAT			"stat"
 #define DEVMAP_DIR		PRE "/dev/mapper"
 #define DEVICES			PRE "/proc/devices"
-#define SYSFS_USBDEV		PRE "/sys/bus/usb/devices"
 #define DEV_DISK_BY		PRE "/dev/disk/by"
 #define DEV_DISK_BY_ID		PRE "/dev/disk/by-id"
-#define SYSFS_IDVENDOR		"idVendor"
-#define SYSFS_IDPRODUCT		"idProduct"
-#define SYSFS_BMAXPOWER		"bMaxPower"
-#define SYSFS_MANUFACTURER	"manufacturer"
-#define SYSFS_PRODUCT		"product"
-#define SYSFS_FCHOST		PRE "/sys/class/fc_host"
 
 #define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024
@@ -102,6 +97,7 @@
 
 #define IGNORE_VIRTUAL_DEVICES	FALSE
 #define ACCEPT_VIRTUAL_DEVICES	TRUE
+#define LOCAL_TIME		FALSE
 
 /* Environment variables */
 #define ENV_TIME_FMT		"S_TIME_FORMAT"
@@ -115,6 +111,18 @@
 
 #define DIGITS			"0123456789"
 #define XDIGITS			"0123456789-"
+
+/* Batteries status */
+enum {
+	BAT_STS_UNKNOWN		= 0,
+	BAT_STS_CHARGING	= 1,
+	BAT_STS_DISCHARGING	= 2,
+	BAT_STS_NOTCHARGING	= 3,
+	BAT_STS_FULL		= 4
+};
+
+/* Number of different statuses */
+#define BAT_STS_NR	5
 
 /*
  ***************************************************************************
@@ -199,23 +207,34 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define C_LIGHT_RED	"\e[31;22m"
 #define C_BOLD_RED	"\e[31;1m"
 #define C_LIGHT_GREEN	"\e[32;22m"
+#define C_BOLD_GREEN	"\e[32;1m"
 #define C_LIGHT_YELLOW	"\e[33;22m"
 #define C_BOLD_MAGENTA	"\e[35;1m"
 #define C_BOLD_BLUE	"\e[34;1m"
 #define C_LIGHT_BLUE	"\e[34;22m"
 #define C_NORMAL	"\e[0m"
 
+#define PERCENT_LIMIT_XHIGH	90.0
 #define PERCENT_LIMIT_HIGH	75.0
-#define PERCENT_LIMIT_LOW	50.0
+#define PERCENT_LIMIT_LOW	25.0
+#define PERCENT_LIMIT_XLOW	10.0
+
+enum {
+	XHIGH	= 1,
+	XLOW	= 2,
+	XLOW0	= 3
+};
 
 #define MAX_SGR_LEN	16
 
-#define IS_INT		0
-#define IS_STR		1
-#define IS_RESTART	2
-#define IS_DEBUG	IS_RESTART
-#define IS_COMMENT	3
-#define IS_ZERO		4
+enum {
+	IS_INT		= 0,
+	IS_STR		= 1,
+	IS_RESTART	= 2,
+	IS_COMMENT	= 3,
+	IS_ZERO		= 4,
+	IS_DEBUG	= IS_RESTART
+};
 
 /*
  ***************************************************************************
@@ -241,8 +260,8 @@ void get_HZ
 	(void);
 void get_kb_shift
 	(void);
-time_t get_localtime
-	(struct tm *, int);
+time_t get_xtime
+	(struct tm *, int, int);
 time_t get_time
 	(struct tm *, int);
 void init_nls
@@ -257,6 +276,8 @@ int get_wwnid_from_pretty
 	(char *, unsigned long long *, unsigned int *);
 int check_dir
 	(char *);
+void check_overflow
+	(unsigned int, unsigned int, unsigned int);
 
 #ifndef SOURCE_SADC
 int count_bits
@@ -264,17 +285,19 @@ int count_bits
 int count_csvalues
 	(int, char **);
 void cprintf_f
-	(int, int, int, int, ...);
+	(int, int, int, int, int, ...);
 void cprintf_in
 	(int, char *, char *, int);
-void cprintf_pc
-	(int, int, int, int, ...);
+void cprintf_xpc
+	(int, int, int, int, int, ...);
 void cprintf_s
 	(int, char *, char *);
 void cprintf_u64
 	(int, int, int, ...);
 void cprintf_x
 	(int, int, ...);
+void cprintf_tr
+	(int, char *, char *);
 char *device_name
 	(char *);
 char *get_device_name

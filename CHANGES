@@ -1,5 +1,37 @@
 Changes:
 
+2022/11/06: Version 12.7.1 - Sebastien Godard (sysstat <at> orange.fr)
+	* Fix possible overflow in sa_common.c (GHSL-2022-074) [12.6.1].
+	* sadf: Add support for option -t with SVG output to make it possible
+	  to display timestamps in the same locale as that of the file creator.
+	* sadf: Print timezone instead of UTC in true time mode. Timezone is
+	  also displayed in local time.
+	* sadf: PCP: Fix timestamps written to PCP archive file.
+	* sar: Add new environment variable S_REPEAT_HEADER.
+	* pidstat: Return exit code of the process that was monitored with option
+	  -e.
+	* mpstat: Add option -H to handle vCPU physical hotplug.
+	* Add local, xlocal and debug targets to iconfig script.
+	* Turn off gcc's tree-slp-vectorize option which was making sadf crash
+	  in some situations.
+	* sa_conv.c: Make size of statistics structures from older sysstat
+	  versions immutable [12.6.1].
+	* [Bernhard M. Wiedemann]: Declare sadc dependency on libsyscom.a
+	  [12.6.1].
+	* [Steve Kay]: Fix gcc v11.2 warnings [12.6.1].
+	* [Steve Kay]: Various cosmetic fixes [12.6.1].
+	* [Jan Christoph Uhde]: sar: Remove `-I int_list` from man-page and
+	  help [12.6.1].
+	* [Frank Dana]: Consolidate systemctl commands in README file [12.6.1].
+	* [Rong Tao]: Remove whitespace characters at the end of lines
+	  [12.6.1].
+	* Update configure file to deal with newer autoconf version. configure.in
+	  file is renamed to configure.ac.
+	* Update DTD and XSD documents.
+	* sar and sysstat manual pages updated.
+	* NLS updated. Add new Georgian translation.
+	* Non regression tests updated.
+
 2022/05/29: Version 12.6.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix maximum value for A_IRQ activity.
 	* sar/sadf: A_NET_SOFT: Add new metric softnet network backlog.

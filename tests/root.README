@@ -1,4 +1,5 @@
 ==========root1: uptime=7192.55
+CPU avail:0-8	on:0-8	off:
 /proc/diskstats
 dm-2 virtual device present
 
@@ -13,7 +14,8 @@ PID:
 8407[8407]
 
 ==========root2: uptime=7223.72
-/proc/stat:
+CPU avail:0-8	on:0-7	off:8
+/proc/stat
 CPU#8: offline
 
 No USB devices
@@ -30,6 +32,7 @@ PID:
 8407[8407]
 
 ==========root3: uptime=7254.96
+CPU avail:0-8	on:0-5,7	off:6,8
 /proc/stat
 CPU#3: tickless
 CPU#6: offline
@@ -58,6 +61,7 @@ PID:
 8407[8407]
 
 ==========root4: uptime=7293.46
+CPU avail:0-8	on:0-5,7-8	off:6
 /proc/stat
 CPU#6: offline
 CPU#8: online
@@ -85,6 +89,7 @@ PID:
 8407[8407]
 
 ==========root5: uptime=7315.85
+CPU avail:0-8	on:0-8	off:
 /proc/stat
 CPU#6: online
 
@@ -101,6 +106,7 @@ PID:
 8407[8407]
 
 ==========root6: uptime=7192.55
+CPU avail:0-9	on:0-9	off:
 /proc/stat
 #CPU: 9 > 10
 Old kernel format, with no steal/guest/guest_nice fields.
@@ -127,6 +133,7 @@ PID:
 Some more statistics, especially for disks and network interfaces.
 
 ==========root7: uptime=7223.72
+CPU avail:0-9	on:0-9	off:
 /proc/diskstats
 sda, sda1: discard I/Os
 

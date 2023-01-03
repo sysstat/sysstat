@@ -100,6 +100,8 @@ __print_funct_t print_psiio_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t print_psimem_stats
 	(struct activity *, int, int, unsigned long long);
+__print_funct_t print_pwr_bat_stats
+	(struct activity *, int, int, unsigned long long);
 
 /* Functions used to display average statistics */
 __print_funct_t print_avg_memory_stats
@@ -133,6 +135,8 @@ __print_funct_t print_avg_psicpu_stats
 __print_funct_t print_avg_psiio_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t print_avg_psimem_stats
+	(struct activity *, int, int, unsigned long long);
+__print_funct_t print_avg_pwr_bat_stats
 	(struct activity *, int, int, unsigned long long);
 
 #endif /* _PR_STATS_H */

@@ -31,6 +31,7 @@
 #endif
 
 extern uint64_t flags;
+extern char bat_status[][16];
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
@@ -1590,6 +1591,42 @@ __print_funct_t pcp_print_pwr_in_stats(struct activity *a, int curr)
 		snprintf(buf, sizeof(buf), "%s",
 			spc->device);
 		pmiPutValue("power.in.device", instance, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ * **************************************************************************
+ * Display batteries statistics in PCP format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ ***************************************************************************
+ */
+__print_funct_t pcp_print_pwr_bat_stats(struct activity *a, int curr)
+{
+#ifdef HAVE_PCP
+	int i;
+	struct stats_pwr_bat *spbc;
+	char buf[64], bat_name[16];
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+
+		snprintf(bat_name, sizeof(bat_name), "BAT%d", (int) spbc->bat_id);
+
+		snprintf(buf, sizeof(buf), "%u", (unsigned int) spbc->capacity);
+		pmiPutValue("power.bat.capacity", bat_name, buf);
+
+		/* Battery status code should not be greater than or equal to BAT_STS_NR */
+		if (spbc->status >= BAT_STS_NR) {
+			spbc->status = 0;
+		}
+
+		snprintf(buf, sizeof(buf), "%s", bat_status[(unsigned int) spbc->status]);
+		pmiPutValue("power.bat.status", bat_name, buf);
 	}
 #endif	/* HAVE_PCP */
 }

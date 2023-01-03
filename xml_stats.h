@@ -99,5 +99,7 @@ __print_funct_t xml_print_psiio_stats
 	(struct activity *, int, int, unsigned long long);
 __print_funct_t xml_print_psimem_stats
 	(struct activity *, int, int, unsigned long long);
+__print_funct_t xml_print_pwr_bat_stats
+	(struct activity *, int, int, unsigned long long);
 
 #endif /* _XML_STATS_H */

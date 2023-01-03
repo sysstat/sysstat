@@ -123,7 +123,7 @@ void usage(char *progname)
 			  "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 			  "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 			  "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
-			  "[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
+			  "[ -I [ SUM | ALL ] ] [ -P { <cpu_list> | ALL } ]\n"
 			  "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 			  "[ -q [ <keyword> [,...] | ALL ] ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] "
@@ -153,11 +153,12 @@ void display_help(char *progname)
 	printf(_("\t-F [ MOUNT ]\n"));
 	printf(_("\t\tFilesystems statistics [A_FS]\n"));
 	printf(_("\t-H\tHugepages utilization statistics [A_HUGE]\n"));
-	printf(_("\t-I { <int_list> | SUM | ALL }\n"
+	printf(_("\t-I [ SUM | ALL ]\n"
 		 "\t\tInterrupts statistics [A_IRQ]\n"));
 	printf(_("\t-m { <keyword> [,...] | ALL }\n"
 		 "\t\tPower management statistics [A_PWR_...]\n"
 		 "\t\tKeywords are:\n"
+		 "\t\tBAT\tBatteries capacity\n"
 		 "\t\tCPU\tCPU instantaneous clock frequency\n"
 		 "\t\tFAN\tFans speed\n"
 		 "\t\tFREQ\tCPU average clock frequency\n"
@@ -278,7 +279,7 @@ void salloc(int i, char *ltemp)
  * @error_code	Code of error message to display.
  ***************************************************************************
  */
-void print_read_error(int error_code)
+void print_read_error(enum sa_err_codes error_code)
 {
 	switch (error_code) {
 
@@ -605,14 +606,14 @@ size_t sa_read(void *buffer, size_t size)
  * @action	Action expected from current function (unused here).
  * @cur_date	Date string of current restart message (unused here).
  * @cur_time	Time string of current restart message.
- * @utc		True if @cur_time is expressed in UTC (unused here).
+ * @my_tz	Current timezone (unused here).
  * @file_hdr	System activity file standard header.
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
 __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *cur_time,
-				  int utc, struct file_header *file_hdr,
-				  struct record_header *record_hdr)
+				   char *my_tz, struct file_header *file_hdr,
+				   struct record_header *record_hdr)
 {
 	char restart[64];
 
@@ -632,14 +633,14 @@ __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *c
  * @action	Action expected from current function (unused here).
  * @cur_date	Date string of current comment (unused here).
  * @cur_time	Time string of current comment.
- * @utc		True if @cur_time is expressed in UTC (unused here).
+ * @my_tz	Current timezone (unused here).
  * @comment	Comment to display.
  * @file_hdr	System activity file standard header (unused here).
  * @record_hdr	Current record header (unused here).
  ***************************************************************************
  */
-__print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cur_time, int utc,
-				  char *comment, struct file_header *file_hdr,
+__print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cur_time,
+				  char *my_tz, char *comment, struct file_header *file_hdr,
 				  struct record_header *record_hdr)
 {
 	printf("%-11s", cur_time);
@@ -810,7 +811,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 			/* Display comment */
 			next = print_special_record(&record_hdr[*curr], flags + S_F_LOCAL_TIME,
 						    &tm_start, &tm_end, R_COMMENT, ifd,
-						    &rectime, file, 0,
+						    &rectime, file, 0, NULL,
 						    file_magic, &file_hdr, act, &sar_fmt,
 						    endian_mismatch, arch_64);
 			if (next && lines) {
@@ -1040,7 +1041,7 @@ void read_stats_from_file(char from_file[])
 			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
 				print_special_record(&record_hdr[0], flags + S_F_LOCAL_TIME,
 						     &tm_start, &tm_end, rtype, ifd,
-						     &rectime, from_file, 0, &file_magic,
+						     &rectime, from_file, 0, NULL, &file_magic,
 						     &file_hdr, act, &sar_fmt, endian_mismatch, arch_64);
 			}
 			else {
@@ -1149,7 +1150,7 @@ void read_stats_from_file(char from_file[])
 					/* This was a COMMENT record: Print it */
 					print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 							     &tm_start, &tm_end, R_COMMENT, ifd,
-							     &rectime, from_file, 0,
+							     &rectime, from_file, 0, NULL,
 							     &file_magic, &file_hdr, act, &sar_fmt,
 							     endian_mismatch, arch_64);
 				}
@@ -1161,7 +1162,7 @@ void read_stats_from_file(char from_file[])
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
 					     &tm_start, &tm_end, R_RESTART, ifd,
-					     &rectime, from_file, 0,
+					     &rectime, from_file, 0, NULL,
 					     &file_magic, &file_hdr, act, &sar_fmt,
 					     endian_mismatch, arch_64);
 		}

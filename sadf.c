@@ -54,6 +54,8 @@ extern int __env;
 void int_handler(int n) { return; }
 #endif
 
+extern char *tzname[2];
+
 long interval = -1, count = 0;
 
 /* TRUE if data read from file don't match current machine's endianness */
@@ -88,8 +90,20 @@ struct record_header record_hdr[3];
 struct tstamp tm_start, tm_end;
 char *args[MAX_ARGV_NR];
 
+/* Current timezone */
+char my_tzname[TZNAME_LEN];
+
 extern struct activity *act[];
 extern struct report_format *fmt[];
+
+/* Battery status */
+char bat_status[][16] = {
+	"Unknown",
+	"Charging",
+	"Discharging",
+	"NotCharging",
+	"Full"
+};
 
 /*
  ***************************************************************************
@@ -236,7 +250,7 @@ void check_format_options(void)
  */
 int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int tab,
 		     struct file_magic *file_magic, struct file_activity *file_actlst,
-		     struct tm *rectime, int oneof)
+		     struct tm *rectime, enum on_eof oneof)
 {
 	int rc;
 	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];
@@ -273,7 +287,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		else {
 			/* Display COMMENT record */
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
-					     *rtype, ifd, rectime, file, tab,
+					     *rtype, ifd, rectime, file, tab, my_tzname,
 					     file_magic, &file_hdr, act, fmt[f_position],
 					     endian_mismatch, arch_64);
 		}
@@ -301,7 +315,7 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		else {
 			/* Display RESTART record */
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
-					     *rtype, ifd, rectime, file, tab,
+					     *rtype, ifd, rectime, file, tab, my_tzname,
 					     file_magic, &file_hdr, act, fmt[f_position],
 					     endian_mismatch, arch_64);
 		}
@@ -710,8 +724,9 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				    cur_date, cur_time, TIMESTAMP_LEN, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
-		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time, dt,
-							       &record_hdr[curr], &file_hdr, flags);
+		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time,
+							       my_tzname, dt, &record_hdr[curr],
+							       &file_hdr, flags);
 	}
 
 	/* Display statistics */
@@ -731,7 +746,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 				if (IS_SELECTED(act[i]->options) && (act[i]->nr[curr] > 0)) {
 
 					if (*fmt[f_position]->f_timestamp) {
-						(*fmt[f_position]->f_timestamp)(tab, F_MAIN, cur_date, cur_time,
+						(*fmt[f_position]->f_timestamp)(tab, F_MAIN, cur_date, cur_time, NULL,
 										dt, &record_hdr[curr],
 										&file_hdr, flags);
 					}
@@ -785,7 +800,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	}
 
 	if (*fmt[f_position]->f_timestamp) {
-		(*fmt[f_position]->f_timestamp)(parm, F_END, cur_date, cur_time, dt,
+		(*fmt[f_position]->f_timestamp)(parm, F_END, cur_date, cur_time, NULL, dt,
 						&record_hdr[curr], &file_hdr, flags);
 	}
 
@@ -930,6 +945,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	parm.hour = record_hdr[2].hour;
 	parm.minute = record_hdr[2].minute;
 	parm.second = record_hdr[2].second;
+	strcpy(parm.my_tzname, my_tzname);
 
 	*cnt  = count;
 	reset_cd = 1;
@@ -1040,7 +1056,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 	/* Print header (eg. XML file header) */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_BEGIN, pcparchive, file_magic,
+		(*fmt[f_position]->f_header)(&tab, F_BEGIN, pcparchive, my_tzname, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 
@@ -1049,11 +1065,11 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 		/* RESTART and COMMENTS records will be immediately processed */
 		if (*fmt[f_position]->f_restart) {
-			(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
+			(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
-			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 	}
@@ -1135,11 +1151,11 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		 * Display possible trailing data then terminate.
 		 */
 		if (*fmt[f_position]->f_restart) {
-			(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL,
-						      FALSE, &file_hdr, NULL);
+			(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, NULL,
+						      &file_hdr, NULL);
 		}
 		if (DISPLAY_COMMENT(flags) && (*fmt[f_position]->f_comment)) {
-			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 		goto terminate;
@@ -1150,8 +1166,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 	/* Process now RESTART entries to display restart messages */
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, FALSE,
-					      &file_hdr, NULL);
+		(*fmt[f_position]->f_restart)(&tab, F_BEGIN, NULL, NULL, NULL, &file_hdr, NULL);
 	}
 
 	do {
@@ -1162,7 +1177,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	while (!eosaf);
 
 	if (*fmt[f_position]->f_restart) {
-		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, FALSE, &file_hdr, NULL);
+		(*fmt[f_position]->f_restart)(&tab, F_END, NULL, NULL, NULL, &file_hdr, NULL);
 	}
 
 	/* Rewind file */
@@ -1171,7 +1186,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	/* Last, process COMMENT entries to display comments */
 	if (DISPLAY_COMMENT(flags)) {
 		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_BEGIN, NULL, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 		do {
@@ -1182,7 +1197,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		while (!eosaf);
 
 		if (*fmt[f_position]->f_comment) {
-			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, 0, NULL,
+			(*fmt[f_position]->f_comment)(&tab, F_END, NULL, NULL, NULL, NULL,
 						      &file_hdr, NULL);
 		}
 	}
@@ -1190,7 +1205,7 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 terminate:
 	/* Print header trailer */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&tab, F_END, pcparchive, file_magic,
+		(*fmt[f_position]->f_header)(&tab, F_END, pcparchive, my_tzname, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 }
@@ -1320,7 +1335,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		 */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
 			print_special_record(&record_hdr[curr], flags, &tm_start, &tm_end,
-					     R_RESTART, ifd, rectime, file, 0,
+					     R_RESTART, ifd, rectime, file, 0, my_tzname,
 					     file_magic, &file_hdr, act, fmt[f_position],
 					     endian_mismatch, arch_64);
 		}
@@ -1378,7 +1393,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 
 	/* Print SVG header */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&parm, F_BEGIN + F_MAIN, file, file_magic,
+		(*fmt[f_position]->f_header)(&parm, F_BEGIN + F_MAIN, file, NULL, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 
@@ -1446,7 +1461,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 close_svg:
 	/* Print SVG trailer */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&parm, F_END, file, file_magic,
+		(*fmt[f_position]->f_header)(&parm, F_END, file, NULL, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 }
@@ -1479,8 +1494,9 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 				dfile = pcparchive;
 			}
 			/* Display only data file header then exit */
-			(*fmt[f_position]->f_header)(&tab, F_BEGIN + F_END, dfile, &file_magic,
-						     &file_hdr, act, id_seq, file_actlst);
+			(*fmt[f_position]->f_header)(&tab, F_BEGIN + F_END, dfile, my_tzname,
+						     &file_magic, &file_hdr, act, id_seq,
+						     file_actlst);
 		}
 		exit(0);
 	}
@@ -1894,6 +1910,13 @@ int main(int argc, char **argv)
 	if ((PRINT_LOCAL_TIME(flags) + PRINT_TRUE_TIME(flags) +
 	    PRINT_SEC_EPOCH(flags)) > 1) {
 		usage(argv[0]);
+	}
+
+	/* Get timezone */
+	if (PRINT_LOCAL_TIME(flags)) {
+		tzset();
+		strncpy(my_tzname, tzname[0], TZNAME_LEN);
+		my_tzname[TZNAME_LEN - 1] = '\0';
 	}
 
 	/*

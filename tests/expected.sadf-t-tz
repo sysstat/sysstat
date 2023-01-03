@@ -46,7 +46,7 @@
 <text x="648" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,648,0)">15:20:27</text>
 <polyline points="20,0 20,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(36.000000,1)"/>
 <text x="720" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,720,0)">15:20:29</text>
-<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">CET</text>
 <g style="fill: #00cc00; stroke: none" transform="scale(36.000000,-2.000000)">
 <rect x="0" y="0.00" height="2.15" width="31"/><rect x="0" y="0.00" height="2.28" width="31"/>
 </g>
@@ -100,7 +100,7 @@
 <text x="648" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,648,0)">15:20:27</text>
 <polyline points="20,0 20,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(36.000000,1)"/>
 <text x="720" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,720,0)">15:20:29</text>
-<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">CET</text>
 <path d=" M10,3.56 L20,4.83" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(36.000000,-41.377483)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
@@ -139,7 +139,7 @@
 <text x="648" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,648,0)">15:20:27</text>
 <polyline points="20,0 20,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(36.000000,1)"/>
 <text x="720" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,720,0)">15:20:29</text>
-<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
+<text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">CET</text>
 <path d=" M10,68409.30 L20,46287.74" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(36.000000,-0.002924)"/>
 </g>
 </g>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.11 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.11.dtd">
+<!DOCTYPE sysstat PUBLIC "DTD v3.13 sysstat //EN"
+"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.13.dtd">
 <sysstat
 xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
-	<sysdata-version>3.11</sysdata-version>
+	<sysdata-version>3.13</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -15,7 +15,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 		<file-utc-time>13:20:09</file-utc-time>
 		<timezone>GMT</timezone>
 		<statistics>
-			<timestamp date="2019-04-18" time="13:20:10" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:20:10" tz="UTC" interval="31">
 				<power-management>
 					<cpu-weighted-frequency unit="MHz">
 						<cpuwfreq number="all" weighted-frequency="1123.35"/>
@@ -31,7 +31,7 @@ xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
 					</cpu-weighted-frequency>
 				</power-management>
 			</timestamp>
-			<timestamp date="2019-04-18" time="13:20:11" utc="1" interval="31">
+			<timestamp date="2019-04-18" time="13:20:11" tz="UTC" interval="31">
 				<power-management>
 					<cpu-weighted-frequency unit="MHz">
 						<cpuwfreq number="all" weighted-frequency="2001.00"/>

@@ -464,7 +464,7 @@ void tape_write_stats(struct calc_stats *tape, int i)
 					: tape->kbytes_read_per_second / divisor,
 		    DISPLAY_UNIT(flags) ? tape->kbytes_written_per_second
 					: tape->kbytes_written_per_second / divisor);
-	cprintf_pc(DISPLAY_UNIT(flags), 3, 4, 0,
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 3, 4, 0,
 		   (double) tape->read_pct_wait,
 		   (double) tape->write_pct_wait,
 		   (double) tape->all_pct_wait);
@@ -569,7 +569,7 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		}
 
 		/* Get time */
-		get_localtime(rectime, 0);
+		get_xtime(rectime, 0, LOCAL_TIME);
 
 		/* Check whether we should skip first report */
 		if (!skip) {
@@ -699,7 +699,7 @@ int main(int argc, char **argv)
 
 	tape_initialise();
 
-	get_localtime(&rectime, 0);
+	get_xtime(&rectime, 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.

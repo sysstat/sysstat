@@ -91,17 +91,17 @@ int get_activity_position(struct activity *act[], unsigned int act_flag, int sto
  * Count number of activities with given option.
  *
  * IN:
- * @act			Array of activities.
- * @option		Option that activities should have to be counted
- *			(eg. AO_COLLECTED...)
- * @count_outputs	TRUE if each output should be counted for activities with
- * 			multiple outputs.
+ * @act		Array of activities.
+ * @option	Option that activities should have to be counted
+ *		(eg. AO_COLLECTED...)
+ * @count	Set to COUNT_OUTPUTS if each output should be counted for
+ *		activities with	multiple outputs.
  *
  * RETURNS:
  * Number of selected activities
  ***************************************************************************
  */
-int get_activity_nr(struct activity *act[], unsigned int option, int count_outputs)
+int get_activity_nr(struct activity *act[], unsigned int option, enum count_mode count)
 {
 	int i, n = 0;
 	unsigned int msk;
@@ -109,7 +109,7 @@ int get_activity_nr(struct activity *act[], unsigned int option, int count_outpu
 	for (i = 0; i < NR_ACT; i++) {
 		if ((act[i]->options & option) == option) {
 
-			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && count_outputs) {
+			if (HAS_MULTIPLE_OUTPUTS(act[i]->options) && (count == COUNT_OUTPUTS)) {
 				for (msk = 1; msk < 0x100; msk <<= 1) {
 					if ((act[i]->opt_flags & 0xff) & msk) {
 						n++;
@@ -459,7 +459,14 @@ void allocate_structures(struct activity *act[])
 	int i, j;
 
 	for (i = 0; i < NR_ACT; i++) {
+
 		if (act[i]->nr_ini > 0) {
+
+			/* Look for a possible overflow */
+			check_overflow((unsigned int) act[i]->msize,
+				       (unsigned int) act[i]->nr_ini,
+				       (unsigned int) act[i]->nr2);
+
 			for (j = 0; j < 3; j++) {
 				SREALLOC(act[i]->buf[j], void,
 						(size_t) act[i]->msize * (size_t) act[i]->nr_ini * (size_t) act[i]->nr2);
@@ -522,6 +529,10 @@ void reallocate_all_buffers(struct activity *a, __nr_t nr_min)
 		}
 		while (nr_realloc < nr_min);
 	}
+
+	/* Look for a possible overflow */
+	check_overflow((unsigned int) a->msize, (unsigned int) nr_realloc,
+		       (unsigned int) a->nr2);
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(a->buf[j], void,
@@ -1414,7 +1425,7 @@ int remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
  * 0 otherwise.
  ***************************************************************************
  */
-int sa_fread(int ifd, void *buffer, size_t size, int mode, int oneof)
+int sa_fread(int ifd, void *buffer, size_t size, enum size_mode mode, enum on_eof oneof)
 {
 	ssize_t n;
 
@@ -1690,7 +1701,7 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 struct file_activity *file_actlst, int endian_mismatch,
 			 int arch_64, char *dfile, struct file_magic *file_magic,
-			 int oneof)
+			 enum on_eof oneof)
 {
 	int i, j, p;
 	struct file_activity *fal = file_actlst;
@@ -2517,6 +2528,9 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 		else if (!strcmp(t, K_USB)) {
 			SELECT_ACTIVITY(A_PWR_USB);
 		}
+		else if (!strcmp(t, K_BAT)) {
+			SELECT_ACTIVITY(A_PWR_BAT);
+		}
 		else if (!strcmp(t, K_ALL)) {
 			SELECT_ACTIVITY(A_PWR_CPU);
 			SELECT_ACTIVITY(A_PWR_FAN);
@@ -2524,6 +2538,7 @@ int parse_sar_m_opt(char *argv[], int *opt, struct activity *act[])
 			SELECT_ACTIVITY(A_PWR_TEMP);
 			SELECT_ACTIVITY(A_PWR_FREQ);
 			SELECT_ACTIVITY(A_PWR_USB);
+			SELECT_ACTIVITY(A_PWR_BAT);
 		}
 		else
 			return 1;
@@ -2997,6 +3012,7 @@ void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_
  *		be saved for current record.
  * @file	Name of file being read.
  * @tab		Number of tabulations to print.
+ * @my_tz	Current timezone.
  * @file_magic	file_magic structure filled with file magic header data.
  * @file_hdr	System activity file standard header.
  * @act		Array of activities.
@@ -3015,7 +3031,7 @@ void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_
  */
 int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
-			 struct tm *rectime, char *file, int tab,
+			 struct tm *rectime, char *file, int tab, char *my_tz,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
 			 struct activity *act[], struct report_format *ofmt,
 			 int endian_mismatch, int arch_64)
@@ -3070,9 +3086,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			return 0;
 
 		if (*ofmt->f_restart) {
-			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time,
-					   !PRINT_LOCAL_TIME(l_flags) &&
-					   !PRINT_TRUE_TIME(l_flags), file_hdr, record_hdr);
+			(*ofmt->f_restart)(&tab, F_MAIN, cur_date, cur_time, my_tz, file_hdr, record_hdr);
 		}
 	}
 	else if (rtype == R_COMMENT) {
@@ -3089,10 +3103,8 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			return 0;
 
 		if (*ofmt->f_comment) {
-			(*ofmt->f_comment)(&tab, F_MAIN, cur_date, cur_time,
-					   !PRINT_LOCAL_TIME(l_flags) &&
-					   !PRINT_TRUE_TIME(l_flags), file_comment,
-					   file_hdr, record_hdr);
+			(*ofmt->f_comment)(&tab, F_MAIN, cur_date, cur_time, my_tz,
+					   file_comment, file_hdr, record_hdr);
 		}
 	}
 

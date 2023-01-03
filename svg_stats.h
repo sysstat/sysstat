@@ -6,7 +6,6 @@
 #ifndef _SVG_STATS_H
 #define _SVG_STATS_H
 
-
 /*
  ***************************************************************************
  * Prototypes for functions used to display system statistics in SVG.
@@ -126,6 +125,9 @@ __print_funct_t svg_print_psiio_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
 __print_funct_t svg_print_psimem_stats
+	(struct activity *, int, int, struct svg_parm *, unsigned long long,
+	 struct record_header *);
+__print_funct_t svg_print_pwr_bat_stats
 	(struct activity *, int, int, struct svg_parm *, unsigned long long,
 	 struct record_header *);
 

@@ -348,12 +348,12 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 		rbytes /= fctr;
 		wbytes /= fctr;
 	}
-	cprintf_f(DISPLAY_UNIT(flags) ? UNIT_BYTE : NO_UNIT, 2, 12, 2,
+	cprintf_f(DISPLAY_UNIT(flags) ? UNIT_BYTE : NO_UNIT, FALSE, 2, 12, 2,
 		  rbytes, wbytes);
-	cprintf_f(NO_UNIT, 2, 9, 2,
+	cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
 		  S_VALUE(ionj->rd_ops, ioni->rd_ops, itv),
 		  S_VALUE(ionj->wr_ops, ioni->wr_ops, itv));
-	cprintf_f(NO_UNIT, 3, 12, 2,
+	cprintf_f(NO_UNIT, FALSE, 3, 12, 2,
 		  S_VALUE(ionj->fopens, ioni->fopens, itv),
 		  S_VALUE(ionj->fcloses, ioni->fcloses, itv),
 		  S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
@@ -461,7 +461,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		read_cifs_stat(curr);
 
 		/* Get time */
-		get_localtime(rectime, 0);
+		get_xtime(rectime, 0, LOCAL_TIME);
 
 		/* Print results */
 		write_stats(curr, rectime);
@@ -601,7 +601,7 @@ int main(int argc, char **argv)
 	/* How many processors on this machine? */
 	cpu_nr = get_cpu_nr(~0, FALSE);
 
-	get_localtime(&rectime, 0);
+	get_xtime(&rectime, 0, LOCAL_TIME);
 
 	/*
 	 * Don't buffer data if redirected to a pipe.

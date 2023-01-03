@@ -38,6 +38,7 @@
 char *seps[] =  {"\t", ";"};
 
 extern uint64_t flags;
+extern char bat_status[][16];
 
 /*
  ***************************************************************************
@@ -3448,4 +3449,54 @@ __print_funct_t render_psimem_stats(struct activity *a, int isdb, char *pre,
 	       NOVAL,
 	       ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv),
 	       NULL);
+}
+
+/*
+ * **************************************************************************
+ * Display battery statistics in selected format.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @isdb	Flag, true if db printing, false if ppc printing.
+ * @pre		Prefix string for output entries
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+__print_funct_t render_pwr_bat_stats(struct activity *a, int isdb, char *pre,
+				     int curr, unsigned long long itv)
+{
+	int i;
+	struct stats_pwr_bat *spbc, *spbp;
+	int pt_newlin
+	= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
+
+	for (i = 0; i < a->nr[curr]; i++) {
+
+		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
+		spbp = (struct stats_pwr_bat *) ((char *) a->buf[!curr] + i * a->msize);
+
+		render(isdb, pre, PT_USEINT,
+		       "BAT%d\t%%cap", "%d",
+		       cons(iv, spbc->bat_id, NOVAL),
+		       (unsigned int) spbc->capacity,
+		       NOVAL, NULL);
+
+		render(isdb, pre, PT_NOFLAG,
+		       "BAT%d\tcap/min", NULL,
+		       cons(iv, spbc->bat_id, NOVAL),
+		       NOVAL,
+		       (double) (spbc->capacity - spbp->capacity) * 6000 / itv,
+		       NULL);
+
+		/* Battery status code should not be greater than or equal to BAT_STS_NR */
+		if (spbc->status >= BAT_STS_NR) {
+			spbc->status = 0;
+		}
+		render(isdb, pre, PT_USESTR | pt_newlin,
+		       "BAT%d\tstatus", NULL,
+		       cons(iv, spbc->bat_id, NOVAL),
+		       NOVAL, NOVAL,
+		       bat_status[(unsigned int) spbc->status]);
+	}
 }
