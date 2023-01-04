@@ -748,7 +748,6 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 				strncpy(timestamp, argv[(*opt)++], 10);
 				timestamp[10] = '\0';
 				return decode_epoch(timestamp, tse);
-				break;
 
 			default:
 				strncpy(timestamp, def_timestamp, 8);
