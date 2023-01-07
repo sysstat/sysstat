@@ -62,7 +62,8 @@ int arch_64 = FALSE;
 /* Number of decimal places */
 int dplaces_nr = -1;
 
-uint64_t flags = 0;
+/* sar always displays timestamps in local time */
+uint64_t flags = S_F_LOCAL_TIME;
 
 char timestamp[2][TIMESTAMP_LEN];
 extern unsigned int rec_types_nr[];
@@ -462,16 +463,14 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 		return 0;
 
 	/* Get then set previous timestamp */
-	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[!curr],
-					   &rectime))
+	if (sa_get_record_timestamp_struct(flags, &record_hdr[!curr], &rectime))
 		return 0;
 	prev_hour = rectime.tm_hour;
 	set_record_timestamp_string(flags, &record_hdr[!curr],
 				    NULL, timestamp[!curr], TIMESTAMP_LEN, &rectime);
 
 	/* Get then set current timestamp */
-	if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME, &record_hdr[curr],
-					   &rectime))
+	if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], &rectime))
 		return 0;
 	set_record_timestamp_string(flags, &record_hdr[curr],
 				    NULL, timestamp[curr], TIMESTAMP_LEN, &rectime);
@@ -809,7 +808,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		}
 		else {
 			/* Display comment */
-			next = print_special_record(&record_hdr[*curr], flags + S_F_LOCAL_TIME,
+			next = print_special_record(&record_hdr[*curr], flags,
 						    &tm_start, &tm_end, R_COMMENT, ifd,
 						    &rectime, file, 0, NULL,
 						    file_magic, &file_hdr, act, &sar_fmt,
@@ -1039,7 +1038,7 @@ void read_stats_from_file(char from_file[])
 
 			rtype = record_hdr[0].record_type;
 			if ((rtype == R_RESTART) || (rtype == R_COMMENT)) {
-				print_special_record(&record_hdr[0], flags + S_F_LOCAL_TIME,
+				print_special_record(&record_hdr[0], flags,
 						     &tm_start, &tm_end, rtype, ifd,
 						     &rectime, from_file, 0, NULL, &file_magic,
 						     &file_hdr, act, &sar_fmt, endian_mismatch, arch_64);
@@ -1055,7 +1054,7 @@ void read_stats_from_file(char from_file[])
 					/* Possible unexpected EOF */
 					return;
 
-				if (sa_get_record_timestamp_struct(flags + S_F_LOCAL_TIME,
+				if (sa_get_record_timestamp_struct(flags,
 								   &record_hdr[0], &rectime))
 					/*
 					 * An error was detected.
@@ -1148,7 +1147,7 @@ void read_stats_from_file(char from_file[])
 				}
 				else {
 					/* This was a COMMENT record: Print it */
-					print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
+					print_special_record(&record_hdr[curr], flags,
 							     &tm_start, &tm_end, R_COMMENT, ifd,
 							     &rectime, from_file, 0, NULL,
 							     &file_magic, &file_hdr, act, &sar_fmt,
@@ -1160,7 +1159,7 @@ void read_stats_from_file(char from_file[])
 
 		/* The last record we read was a RESTART one: Print it */
 		if (!eosaf && (record_hdr[curr].record_type == R_RESTART)) {
-			print_special_record(&record_hdr[curr], flags + S_F_LOCAL_TIME,
+			print_special_record(&record_hdr[curr], flags,
 					     &tm_start, &tm_end, R_RESTART, ifd,
 					     &rectime, from_file, 0, NULL,
 					     &file_magic, &file_hdr, act, &sar_fmt,
