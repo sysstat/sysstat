@@ -635,8 +635,53 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
 
 	if ((tse->tm_sec < 0) || (tse->tm_sec > 59) ||
 	    (tse->tm_min < 0) || (tse->tm_min > 59) ||
-	    (tse->tm_hour < 0) || (tse->tm_hour > 23))
+	    (tse->tm_hour < 0) || (tse->tm_hour > 23)) {
+		tse->use = FALSE;
 		return 1;
+	}
+
+	tse->use = TRUE;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
+ * Use time stamp to fill tstamp structure.
+ *
+ * IN:
+ * @timestamp	Epoch time to decode (format: number of seconds since
+ *		Januray 1st 1970 00:00:00 UTC).
+ * @flags	Flags for common options and system state.
+ *
+ * OUT:
+ * @tse		Structure containing the decoded epoch time.
+ *
+ * RETURNS:
+ * 0 if the epoch time has been successfully decoded, 1 otherwise.
+ ***************************************************************************
+ */
+int decode_epoch(char timestamp[], struct tstamp *tse, uint64_t flags)
+{
+	time_t epoch = atol(timestamp);
+	struct tm given_time;
+
+	if (epoch <= 0) {
+		tse->use = FALSE;
+		return 1;
+	}
+
+	if (PRINT_LOCAL_TIME(flags)) {
+		/* This is for sar or sadf -T */
+		localtime_r(&epoch, &given_time);
+	}
+	else {
+		/* This is for sadf */
+		gmtime_r(&epoch, &given_time);
+	}
+	tse->tm_sec  = given_time.tm_sec;
+	tse->tm_min  = given_time.tm_min;
+	tse->tm_hour = given_time.tm_hour;
 
 	tse->use = TRUE;
 
@@ -682,12 +727,14 @@ int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
 
 /*
  ***************************************************************************
- * Parse a timestamp entered on the command line (hh:mm[:ss]) and decode it.
+ * Parse a timestamp entered on the command line (hh:mm[:ss] or number of
+ * seconds since the Epoch) and decode it.
  *
  * IN:
  * @argv		Arguments list.
  * @opt			Index in the arguments list.
  * @def_timestamp	Default timestamp to use.
+ * @flags		Flags for common options and system state.
  *
  * OUT:
  * @tse			Structure containing the decoded timestamp.
@@ -697,9 +744,9 @@ int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
  ***************************************************************************
  */
 int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
-		    const char *def_timestamp)
+		    const char *def_timestamp, uint64_t flags)
 {
-	char timestamp[9];
+	char timestamp[11];
 
 	if (argv[++(*opt)]) {
 		switch (strlen(argv[*opt])) {
@@ -714,11 +761,18 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 				strncpy(timestamp, argv[(*opt)++], 8);
 				break;
 
+			case 10:
+				strncpy(timestamp, argv[(*opt)++], 10);
+				timestamp[10] = '\0';
+
+				return decode_epoch(timestamp, tse, flags);
+
 			default:
 				strncpy(timestamp, def_timestamp, 8);
 				break;
 		}
-	} else {
+	}
+	else {
 		strncpy(timestamp, def_timestamp, 8);
 	}
 	timestamp[8] = '\0';
@@ -2862,18 +2916,20 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 	time_t t = record_hdr->ust_time;
 	int rc = 0;
 
-	/*
-	 * Fill generic rectime structure in local time.
-	 * Done so that we have some default values.
-	 */
-	ltm = localtime_r(&t, rectime);
-
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
 		/*
 		 * Get time in UTC
 		 * (the user doesn't want local time nor time of file's creator).
 		 */
 		ltm = gmtime_r(&t, rectime);
+	}
+	else {
+		/*
+		* Fill generic rectime structure in local time.
+		* Done so that we have some default values.
+		*/
+		ltm = localtime_r(&t, rectime);
+		rectime->tm_gmtoff = TRUE;
 	}
 
 	if (!ltm) {

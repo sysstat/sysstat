@@ -1591,14 +1591,14 @@ int main(int argc, char **argv)
 
 		else if (!strcmp(argv[opt], "-s")) {
 			/* Get time start */
-			if (parse_timestamp(argv, &opt, &tm_start, DEF_TMSTART)) {
+			if (parse_timestamp(argv, &opt, &tm_start, DEF_TMSTART, flags)) {
 				usage(argv[0]);
 			}
 		}
 
 		else if (!strcmp(argv[opt], "-e")) {
 			/* Get time end */
-			if (parse_timestamp(argv, &opt, &tm_end, DEF_TMEND)) {
+			if (parse_timestamp(argv, &opt, &tm_end, DEF_TMEND, flags)) {
 				usage(argv[0]);
 			}
 		}

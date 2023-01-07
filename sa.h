@@ -1590,7 +1590,7 @@ int parse_sar_n_opt
 int parse_sar_q_opt
 	(char * [], int *, struct activity * []);
 int parse_timestamp
-	(char * [], int *, struct tstamp *, const char *);
+	(char * [], int *, struct tstamp *, const char *, uint64_t);
 void print_report_hdr
 	(uint64_t, struct tm *, struct file_header *);
 void print_sar_comment
