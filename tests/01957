@@ -1,0 +1,1 @@
+LC_ALL=C TZ="Europe/Paris" ./sadf -d tests/data.tmp -T -s 1590933000 > tests/out.sadf-T-s-epoch.tmp && diff -u tests/expected.sadf-T-s-epoch tests/out.sadf-T-s-epoch.tmp

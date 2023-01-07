@@ -1,0 +1,4 @@
+# hostname;interval;timestamp;CPU;%user;%nice;%system;%iowait;%steal;%idle
+SYSSTAT.TEST;39;1555593639;-1;2.66;23.20;2.27;0.17;0.00;71.70
+SYSSTAT.TEST;22;1555593649;-1;8.32;13.77;9.85;0.41;0.62;66.92
+SYSSTAT.TEST;-1;1555594649;LINUX-RESTART	(9 CPU)

@@ -1,0 +1,3 @@
+SYSSTAT.TEST;-1;2019-04-18 15:54:09 CET;LINUX-RESTART	(10 CPU)
+# hostname;interval;timestamp;CPU;%user;%nice;%system;%iowait;%steal;%idle
+SYSSTAT.TEST;31;2019-04-18 15:54:35 CET;-1;2.67;19.49;3.53;0.97;0.00;73.34

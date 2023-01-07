@@ -342,6 +342,10 @@ NOTES:
 01920	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -- -uw > tests/out.sadf-r-tz.tmp
 01925	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -T -- -uw > tests/out.sadf-r-T-tz.tmp
 01928	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -t -- -uw > tests/out.sadf-r-t-tz.tmp
+01950	LC_ALL=C TZ="America/New_York" ./sar -f tests/data.tmp -e 1590933000 > tests/out.sar-e-epoch.tmp
+01955	LC_ALL=C ./sadf -d tests/data.tmp -s 1590939000 > tests/out.sadf-s-epoch.tmp
+01957	LC_ALL=C TZ="Europe/Paris" ./sadf -d tests/data.tmp -T -s 1590933000 > tests/out.sadf-T-s-epoch.tmp
+01960	LC_ALL=C ./sadf -d tests/data.tmp -U -s 1555593629 -e 1555594649 > tests/out.sadf-U-se-epoch.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp

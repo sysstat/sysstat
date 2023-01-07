@@ -1,0 +1,1 @@
+LC_ALL=C TZ="America/New_York" ./sar -f tests/data.tmp -e 1590933000 > tests/out.sar-e-epoch.tmp && diff -u tests/expected.sar-e-epoch tests/out.sar-e-epoch.tmp

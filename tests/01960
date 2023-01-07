@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -d tests/data.tmp -U -s 1555593629 -e 1555594649 > tests/out.sadf-U-se-epoch.tmp && diff -u tests/expected.sadf-U-se-epoch tests/out.sadf-U-se-epoch.tmp
