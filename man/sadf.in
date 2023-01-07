@@ -1,12 +1,12 @@
-.\" sadf manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SADF 1 "JANUARY 2022" Linux "Linux User's Manual" -*- nroff -*-
+.\" sadf manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
+.TH SADF 1 "JANUARY 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 
 .SH SYNOPSIS
 .B sadf [ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
-.IB "opts " "[,...] ] [ -P { " "cpu_list " "| ALL } ] [ -s ["
-.IB "hh" ":" "mm" "[:" "ss" "] ] ] [ -e [" "hh" ":" "mm" "[:" "ss" "] ] ]"
+.IB "opts " "[,...] ] [ -P { " "cpu_list " "| ALL } ] [ -s [ "
+.IB "time_start " "] ] ] [ -e [ " "time_end " "] ] ]"
 .BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --iface=" "iface_list" "] [ --int=" "int_list " "] [ --"
 .IB "sar_options " "] [ " "interval " "[ " "count " "] ] [ " "datafile " "| " "-[0-9]+ " "]"
 
@@ -97,10 +97,16 @@ Specify the block devices for which statistics are to be displayed by
 .I dev_list
 is a list of comma-separated device names. Useful with option
 .BR "-d " "from " "sar" "."
-.TP
+.RE
+.PP
 .BI "-e [ " "hh" ":" "mm" "[:" "ss" "] ]"
+.br
+.BI "-e [ " "seconds_since_the_epoch " "]"
+.RS
 Set the ending time of the report. The default ending
-time is 18:00:00. Hours must be given in 24-hour format.
+time is 18:00:00. Hours must be given in 24-hour format, or as the number of seconds
+since the epoch.
+.RE
 .TP
 .BI "--fs=" "fs_list"
 Specify the filesystems for which statistics are to be displayed by
@@ -247,13 +253,18 @@ all the counters are displayed as read from the kernel, which means e.g., that
 no average values are calculated over the elapsed time interval.
 Output can be controlled using option
 .BR "-O " "(see above)."
-.TP
+.PP
 .BI "-s [ " "hh" ":" "mm" "[:" "ss" "] ]"
+.br
+.BI "-s [ " "seconds_since_the_epoch " "]"
+.RS
 Set the starting time of the data, causing the
 .B sadf
 command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
-Hours must be given in 24-hour format.
+Hours must be given in 24-hour format, or as the number of seconds
+since the epoch.
+.RE
 .TP
 .B -T
 Display timestamp in local time instead of UTC (Coordinated Universal Time).

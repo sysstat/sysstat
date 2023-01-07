@@ -1,5 +1,5 @@
-.\" sar manual page - (C) 1999-2022 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "DECEMBER 2022" Linux "Linux User's Manual" -*- nroff -*-
+.\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
+.TH SAR 1 "JANUARY 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -13,8 +13,8 @@ sar \- Collect, report, or save system activity information.
 .IB "keyword" "[,...] | ALL } ] [ -n { " "keyword" "[,...] | ALL } ] [ -q [ " "keyword" "[,...] | ALL ] ]"
 .B [ -j { SID | ID | LABEL | PATH | UUID | ... } ]
 .BI "[ -f [ " "filename " "] | -o [ " "filename " "] | -[0-9]+ ]"
-.BI "[ -i " "interval " "] [ -s [ " "hh" ":" "mm" "[:" "ss" "]"
-.BI "] ] [ -e [ " "hh" ":" "mm" "[:" "ss" "] ] ] [ " "interval " "[ " "count " "] ]"
+.BI "[ -i " "interval " "] [ -s [ " "time_start "
+.BI "] ] [ -e [ " "time_end " "] ] ] [ " "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
 .RB "The " "sar"
@@ -253,13 +253,19 @@ Specify the number of decimal places to use (0 to 2, default value is 2).
 Specify the block devices for which statistics are to be displayed by
 .BR "sar" "."
 .IR "dev_list " "is a list of comma-separated device names."
-.TP
+.RE
+.PP
 .BI "-e [ " "hh" ":" "mm" "[:" "ss" "] ]"
+.br
+.BI "-e [ " "seconds_since_the_epoch " "]"
+.RS
 Set the ending time of the report. The default ending time is
-18:00:00. Hours must be given in 24-hour format.
+18:00:00. Hours must be given in 24-hour format, or as the number of seconds
+since the epoch.
 This option can be used when data are read from
 or written to a file (options
 .BR "-f " "or " "-o" ")."
+.RE
 .TP
 .B -F [ MOUNT ]
 Display statistics for currently mounted filesystems. Pseudo-filesystems are
@@ -1460,15 +1466,20 @@ again because it is already in the swap area. This saves I/O).
 .IP %swpcad
 Percentage of cached swap memory in relation to the amount of used swap space.
 .RE
-.TP
+.PP
 .BI "-s [ " "hh" ":" "mm" "[:" "ss" "] ]"
+.br
+.BI "-s [ " "seconds_since_the_epoch " "]"
+.RS
 Set the starting time of the data, causing the
 .B sar
 command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
-Hours must be given in 24-hour format. This option can be
+Hours must be given in 24-hour format, or as the number of seconds
+since the epoch. This option can be
 used only when data are read from a file (option
 .BR "-f" ")."
+.RE
 .TP
 .B --sadc
 Indicate which data collector is called by
