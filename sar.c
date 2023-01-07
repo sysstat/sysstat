@@ -132,7 +132,7 @@ void usage(char *progname)
 			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 			  "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
-			  "[ -i <interval> ] [ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"));
+			  "[ -i <interval> ] [ -s [ <time_start> ] ] [ -e [ <time_end> ] ]\n"));
 	exit(1);
 }
 

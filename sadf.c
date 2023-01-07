@@ -123,7 +123,7 @@ void usage(char *progname)
 			  "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
-			  "[ -s [ <hh:mm[:ss]> ] ] [ -e [ <hh:mm[:ss]> ] ]\n"
+			  "[ -s [ <time_start> ] ] [ -e [ <time_end> ] ]\n"
 			  "[ -- <sar_options> ]\n"));
 	exit(1);
 }
