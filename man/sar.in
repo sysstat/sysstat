@@ -13,8 +13,8 @@ sar \- Collect, report, or save system activity information.
 .IB "keyword" "[,...] | ALL } ] [ -n { " "keyword" "[,...] | ALL } ] [ -q [ " "keyword" "[,...] | ALL ] ]"
 .B [ -j { SID | ID | LABEL | PATH | UUID | ... } ]
 .BI "[ -f [ " "filename " "] | -o [ " "filename " "] | -[0-9]+ ]"
-.BI "[ -i " "interval " "] [ -s [ " "time_start "
-.BI "] ] [ -e [ " "time_end " "] ] ] [ " "interval " "[ " "count " "] ]"
+.BI "[ -i " "interval " "] [ -s [ " "start_time "
+.BI "] ] [ -e [ " "end_time " "] ] ] [ " "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
 .RB "The " "sar"
