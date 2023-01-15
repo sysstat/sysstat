@@ -6,7 +6,7 @@ sadf \- Display data collected by sar in multiple formats.
 .SH SYNOPSIS
 .B sadf [ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
 .IB "opts " "[,...] ] [ -P { " "cpu_list " "| ALL } ] [ -s [ "
-.IB "time_start " "] ] ] [ -e [ " "time_end " "] ] ]"
+.IB "start_time " "] ] ] [ -e [ " "end_time " "] ] ]"
 .BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --iface=" "iface_list" "] [ --int=" "int_list " "] [ --"
 .IB "sar_options " "] [ " "interval " "[ " "count " "] ] [ " "datafile " "| " "-[0-9]+ " "]"
 
