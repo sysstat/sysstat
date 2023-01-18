@@ -629,6 +629,12 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
 int decode_timestamp(char timestamp[], struct tstamp *tse)
 {
 	timestamp[2] = timestamp[5] = '\0';
+
+	if ((strspn(timestamp, DIGITS) != 2) ||
+	    (strspn(&timestamp[3], DIGITS) != 2) ||
+	    (strspn(&timestamp[6], DIGITS) != 2))
+		return 1;
+
 	tse->tm_sec  = atoi(&timestamp[6]);
 	tse->tm_min  = atoi(&timestamp[3]);
 	tse->tm_hour = atoi(timestamp);
@@ -747,32 +753,40 @@ int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
 		    const char *def_timestamp, uint64_t flags)
 {
 	char timestamp[11];
+	int ok = FALSE;
 
-	if (argv[++(*opt)]) {
+	if (argv[++(*opt)] && strncmp(argv[*opt], "-", 1)) {
 		switch (strlen(argv[*opt])) {
 
 			case 5:
+				if (argv[*opt][2] != ':')
+					break;
 				strncpy(timestamp, argv[(*opt)++], 5);
 				timestamp[5] = '\0';
 				strcat(timestamp, ":00");
+				ok = TRUE;
 				break;
 
 			case 8:
+				if ((argv[*opt][2] != ':') || (argv[*opt][5] != ':'))
+					break;
 				strncpy(timestamp, argv[(*opt)++], 8);
+				ok = TRUE;
 				break;
 
 			case 10:
-				strncpy(timestamp, argv[(*opt)++], 10);
-				timestamp[10] = '\0';
+				if (strspn(argv[*opt], DIGITS) == 10) {
+					/* This is actually a timestamp */
+					strncpy(timestamp, argv[(*opt)++], 10);
+					timestamp[10] = '\0';
 
-				return decode_epoch(timestamp, tse, flags);
-
-			default:
-				strncpy(timestamp, def_timestamp, 8);
+					return decode_epoch(timestamp, tse, flags);
+				}
 				break;
 		}
 	}
-	else {
+
+	if (!ok) {
 		strncpy(timestamp, def_timestamp, 8);
 	}
 	timestamp[8] = '\0';
