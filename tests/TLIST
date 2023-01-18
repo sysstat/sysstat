@@ -346,6 +346,10 @@ NOTES:
 01955	LC_ALL=C ./sadf -d tests/data.tmp -s 1590939000 > tests/out.sadf-s-epoch.tmp
 01957	LC_ALL=C TZ="Europe/Paris" ./sadf -d tests/data.tmp -T -s 1590933000 > tests/out.sadf-T-s-epoch.tmp
 01960	LC_ALL=C ./sadf -d tests/data.tmp -U -s 1555593629 -e 1555594649 > tests/out.sadf-U-se-epoch.tmp
+01965	LC_ALL=C ./sadf -d tests/data.tmp -s fo:ob:ar 2>&1 |grep "Usage:" >/dev/null
+01970	LC_ALL=C ./sadf -d -e foXobXar 2>&1 |grep "No such file" >/dev/null
+01972	LC_ALL=C ./sadf -d tests/data.tmp -s fo:ob 2>&1 |grep "Usage:" >/dev/null
+01973	LC_ALL=C ./sadf -d -e fooba 2>&1 |grep "No such file" >/dev/null
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
