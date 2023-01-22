@@ -614,7 +614,7 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
 
 /*
  ***************************************************************************
- * Use time stamp to fill tstamp structure.
+ * Use time stamp to fill tstamp_ext structure.
  *
  * IN:
  * @timestamp	Timestamp to decode (format: HH:MM:SS).
@@ -626,7 +626,7 @@ int next_slice(unsigned long long uptime_ref, unsigned long long uptime,
  * 0 if the timestamp has been successfully decoded, 1 otherwise.
  ***************************************************************************
  */
-int decode_timestamp(char timestamp[], struct tstamp *tse)
+int decode_timestamp(char timestamp[], struct tstamp_ext *tse)
 {
 	timestamp[2] = timestamp[5] = '\0';
 
@@ -635,25 +635,25 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
 	    (strspn(&timestamp[6], DIGITS) != 2))
 		return 1;
 
-	tse->tm_sec  = atoi(&timestamp[6]);
-	tse->tm_min  = atoi(&timestamp[3]);
-	tse->tm_hour = atoi(timestamp);
+	tse->tm_time.tm_sec  = atoi(&timestamp[6]);
+	tse->tm_time.tm_min  = atoi(&timestamp[3]);
+	tse->tm_time.tm_hour = atoi(timestamp);
 
-	if ((tse->tm_sec < 0) || (tse->tm_sec > 59) ||
-	    (tse->tm_min < 0) || (tse->tm_min > 59) ||
-	    (tse->tm_hour < 0) || (tse->tm_hour > 23)) {
-		tse->use = FALSE;
+	if ((tse->tm_time.tm_sec < 0) || (tse->tm_time.tm_sec > 59) ||
+	    (tse->tm_time.tm_min < 0) || (tse->tm_time.tm_min > 59) ||
+	    (tse->tm_time.tm_hour < 0) || (tse->tm_time.tm_hour > 23)) {
+		tse->use = NO_TIME;
 		return 1;
 	}
 
-	tse->use = TRUE;
+	tse->use = USE_HHMMSS_T;
 
 	return 0;
 }
 
 /*
  ***************************************************************************
- * Use time stamp to fill tstamp structure.
+ * Use time stamp to fill tstamp_ext structure.
  *
  * IN:
  * @timestamp	Epoch time to decode (format: number of seconds since
@@ -667,29 +667,16 @@ int decode_timestamp(char timestamp[], struct tstamp *tse)
  * 0 if the epoch time has been successfully decoded, 1 otherwise.
  ***************************************************************************
  */
-int decode_epoch(char timestamp[], struct tstamp *tse, uint64_t flags)
+int decode_epoch(char timestamp[], struct tstamp_ext *tse, uint64_t flags)
 {
-	time_t epoch = atol(timestamp);
-	struct tm given_time;
+	tse->epoch_time = atol(timestamp);
 
-	if (epoch <= 0) {
-		tse->use = FALSE;
+	if (tse->epoch_time <= 0) {
+		tse->use = NO_TIME;
 		return 1;
 	}
 
-	if (PRINT_LOCAL_TIME(flags)) {
-		/* This is for sar or sadf -T */
-		localtime_r(&epoch, &given_time);
-	}
-	else {
-		/* This is for sadf */
-		gmtime_r(&epoch, &given_time);
-	}
-	tse->tm_sec  = given_time.tm_sec;
-	tse->tm_min  = given_time.tm_min;
-	tse->tm_hour = given_time.tm_hour;
-
-	tse->use = TRUE;
+	tse->use = USE_EPOCH_T;
 
 	return 0;
 }
@@ -706,29 +693,38 @@ int decode_epoch(char timestamp[], struct tstamp *tse, uint64_t flags)
  * RETURNS:
  * A positive value if @rectime is greater than @tse,
  * a negative one otherwise.
+ * Also returns 0 if no valid time is saved in @tse.
  ***************************************************************************
  */
-int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
+int datecmp(struct tstamp_ext *rectime, struct tstamp_ext *tse, int cross_day)
 {
-	int tm_hour = rectime->tm_hour;
+	int tm_hour;
 
-	if (cross_day) {
-		/*
-		 * This is necessary if we want to properly handle something like:
-		 * sar -s time_start -e time_end with
-		 * time_start(day D) > time_end(day D+1)
-		 */
-		tm_hour += 24;
-	}
+	switch (tse->use) {
 
-	if (tm_hour == tse->tm_hour) {
-		if (rectime->tm_min == tse->tm_min)
-			return (rectime->tm_sec - tse->tm_sec);
-		else
-			return (rectime->tm_min - tse->tm_min);
+		case USE_HHMMSS_T:
+			/*
+			 * This is necessary if we want to properly handle something like:
+			 * sar -s time_start -e time_end with
+			 * time_start(day D) > time_end(day D+1)
+			*/
+			tm_hour = rectime->tm_time.tm_hour + (24 * (cross_day != 0));
+
+			if (tm_hour == tse->tm_time.tm_hour) {
+				if (rectime->tm_time.tm_min == tse->tm_time.tm_min)
+				return (rectime->tm_time.tm_sec - tse->tm_time.tm_sec);
+				else
+					return (rectime->tm_time.tm_min - tse->tm_time.tm_min);
+			}
+			else
+				return (tm_hour - tse->tm_time.tm_hour);
+
+		case USE_EPOCH_T:
+			return (rectime->epoch_time - tse->epoch_time);
+
+		default:	/* NO_TIME */
+			return 0;
 	}
-	else
-		return (tm_hour - tse->tm_hour);
 }
 
 /*
@@ -749,7 +745,7 @@ int datecmp(struct tm *rectime, struct tstamp *tse, int cross_day)
  * 0 if the timestamp has been successfully decoded, 1 otherwise.
  ***************************************************************************
  */
-int parse_timestamp(char *argv[], int *opt, struct tstamp *tse,
+int parse_timestamp(char *argv[], int *opt, struct tstamp_ext *tse,
 		    const char *def_timestamp, uint64_t flags)
 {
 	char timestamp[11];
@@ -817,7 +813,7 @@ void get_itv_value(struct record_header *record_hdr_curr,
 
 /*
  ***************************************************************************
- * Fill the rectime structure with the file's creation date, based on file's
+ * Fill the tm_time structure with the file's creation date, based on file's
  * time data saved in file header.
  * The resulting timestamp is expressed in the locale of the file creator or
  * in the user's own locale, depending on whether option -t has been used
@@ -828,31 +824,31 @@ void get_itv_value(struct record_header *record_hdr_curr,
  * @file_hdr	System activity file standard header.
  *
  * OUT:
- * @rectime	Date (and possibly time) from file header. Only the date,
+ * @tm_time	Date (and possibly time) from file header. Only the date,
  * 		not the time, should be used by the caller.
  ***************************************************************************
  */
-void get_file_timestamp_struct(uint64_t flags, struct tm *rectime,
+void get_file_timestamp_struct(uint64_t flags, struct tm *tm_time,
 			       struct file_header *file_hdr)
 {
 	time_t t = file_hdr->sa_ust_time;
 
 	if (PRINT_TRUE_TIME(flags)) {
 		/* Get local time. This is just to fill fields with a default value. */
-		get_time(rectime, 0);
+		get_time(tm_time, 0);
 
-		rectime->tm_mday = file_hdr->sa_day;
-		rectime->tm_mon  = file_hdr->sa_month;
-		rectime->tm_year = file_hdr->sa_year;
+		tm_time->tm_mday = file_hdr->sa_day;
+		tm_time->tm_mon  = file_hdr->sa_month;
+		tm_time->tm_year = file_hdr->sa_year;
 		/*
 		 * Call mktime() to set DST (Daylight Saving Time) flag.
 		 * Has anyone a better way to do it?
 		 */
-		rectime->tm_hour = rectime->tm_min = rectime->tm_sec = 0;
-		mktime(rectime);
+		tm_time->tm_hour = tm_time->tm_min = tm_time->tm_sec = 0;
+		mktime(tm_time);
 	}
 	else {
-		localtime_r(&t, rectime);
+		localtime_r(&t, tm_time);
 	}
 }
 
@@ -865,15 +861,15 @@ void get_file_timestamp_struct(uint64_t flags, struct tm *rectime,
  * @file_hdr	System activity file standard header.
  *
  * OUT:
- * @rectime	Date and time from file header.
+ * @tm_time	Date and time from file header.
  ***************************************************************************
  */
-void print_report_hdr(uint64_t flags, struct tm *rectime,
+void print_report_hdr(uint64_t flags, struct tm *tm_time,
 		      struct file_header *file_hdr)
 {
 
 	/* Get date of file creation */
-	get_file_timestamp_struct(flags, rectime, file_hdr);
+	get_file_timestamp_struct(flags, tm_time, file_hdr);
 
 	/*
 	 * Display the header.
@@ -881,7 +877,7 @@ void print_report_hdr(uint64_t flags, struct tm *rectime,
 	 * 	1 means that there is only one proc and non SMP kernel.
 	 *	2 means one proc and SMP kernel. Etc.
 	 */
-	print_gal_header(rectime, file_hdr->sa_sysname, file_hdr->sa_release,
+	print_gal_header(tm_time, file_hdr->sa_sysname, file_hdr->sa_release,
 			 file_hdr->sa_nodename, file_hdr->sa_machine,
 			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1,
 			 PLAIN_OUTPUT);
@@ -2924,26 +2920,28 @@ void replace_nonprintable_char(int ifd, char *comment)
  ***************************************************************************
 */
 int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *record_hdr,
-				   struct tm *rectime)
+				   struct tstamp_ext *rectime)
 {
 	struct tm *ltm;
-	time_t t = record_hdr->ust_time;
+	time_t t = (time_t) record_hdr->ust_time;
 	int rc = 0;
+
+	rectime->epoch_time = record_hdr->ust_time;
 
 	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
 		/*
 		 * Get time in UTC
 		 * (the user doesn't want local time nor time of file's creator).
 		 */
-		ltm = gmtime_r(&t, rectime);
+		ltm = gmtime_r(&t, &(rectime->tm_time));
 	}
 	else {
 		/*
 		* Fill generic rectime structure in local time.
 		* Done so that we have some default values.
 		*/
-		ltm = localtime_r(&t, rectime);
-		rectime->tm_gmtoff = TRUE;
+		ltm = localtime_r(&t, &(rectime->tm_time));
+		rectime->tm_time.tm_gmtoff = TRUE;
 	}
 
 	if (!ltm) {
@@ -2952,9 +2950,9 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 
 	if (PRINT_TRUE_TIME(l_flags)) {
 		/* Time of file's creator */
-		rectime->tm_hour = record_hdr->hour;
-		rectime->tm_min  = record_hdr->minute;
-		rectime->tm_sec  = record_hdr->second;
+		rectime->tm_time.tm_hour = record_hdr->hour;
+		rectime->tm_time.tm_min  = record_hdr->minute;
+		rectime->tm_time.tm_sec  = record_hdr->second;
 	}
 
 	return rc;
@@ -2970,8 +2968,6 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
  * @l_flags	Flags indicating the type of time expected by the user.
  * 		S_F_SEC_EPOCH means the time should be expressed in seconds
  * 		since the epoch (01/01/1970).
- * @record_hdr	Record header containing the number of seconds since the
- * 		epoch.
  * @cur_date	String where timestamp's date will be saved. May be NULL.
  * @cur_time	String where timestamp's time will be saved.
  * @len		Maximum length of timestamp strings.
@@ -2986,12 +2982,12 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
  * 		been used.
  ***************************************************************************
 */
-void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_hdr,
-				 char *cur_date, char *cur_time, int len, struct tm *rectime)
+void set_record_timestamp_string(uint64_t l_flags, char *cur_date, char *cur_time, int len,
+				 struct tstamp_ext *rectime)
 {
 	/* Set cur_time date value */
 	if (PRINT_SEC_EPOCH(l_flags) && cur_date) {
-		sprintf(cur_time, "%llu", record_hdr->ust_time);
+		sprintf(cur_time, "%llu", rectime->epoch_time);
 		strcpy(cur_date, "");
 	}
 	else {
@@ -3000,13 +2996,13 @@ void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_
 		 * expressed in local time. Else it is expressed in UTC.
 		 */
 		if (cur_date) {
-			strftime(cur_date, len, "%Y-%m-%d", rectime);
+			strftime(cur_date, len, "%Y-%m-%d", &(rectime->tm_time));
 		}
 		if (USE_PREFD_TIME_OUTPUT(l_flags)) {
-			strftime(cur_time, len, "%X", rectime);
+			strftime(cur_time, len, "%X", &(rectime->tm_time));
 		}
 		else {
-			strftime(cur_time, len, "%H:%M:%S", rectime);
+			strftime(cur_time, len, "%H:%M:%S", &(rectime->tm_time));
 		}
 	}
 }
@@ -3046,8 +3042,8 @@ void set_record_timestamp_string(uint64_t l_flags, struct record_header *record_
  ***************************************************************************
  */
 int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
-			 struct tstamp *tm_start, struct tstamp *tm_end, int rtype, int ifd,
-			 struct tm *rectime, char *file, int tab, char *my_tz,
+			 struct tstamp_ext *tm_start, struct tstamp_ext *tm_end, int rtype,
+			 int ifd, struct tstamp_ext *rectime, char *file, int tab, char *my_tz,
 			 struct file_magic *file_magic, struct file_header *file_hdr,
 			 struct activity *act[], struct report_format *ofmt,
 			 int endian_mismatch, int arch_64)
@@ -3061,15 +3057,15 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 		return 0;
 
 	/* The record must be in the interval specified by -s/-e options */
-	if ((tm_start->use && (datecmp(rectime, tm_start, FALSE) < 0)) ||
-	    (tm_end->use && (datecmp(rectime, tm_end, FALSE) > 0))) {
+	if ((datecmp(rectime, tm_start, FALSE) < 0) ||
+	    (datecmp(rectime, tm_end, FALSE) > 0)) {
 		/* Will not display the special record */
 		dp = 0;
 	}
 	else {
 		/* Set date and time strings to be displayed for current record */
-		set_record_timestamp_string(l_flags, record_hdr,
-					    cur_date, cur_time, TIMESTAMP_LEN, rectime);
+		set_record_timestamp_string(l_flags, cur_date, cur_time, TIMESTAMP_LEN,
+					    rectime);
 	}
 
 	if (rtype == R_RESTART) {
@@ -3453,4 +3449,31 @@ char *get_fs_name_to_display(struct activity *a, uint64_t flags, struct stats_fi
 	}
 	return pname;
 }
+
+/*
+ * **************************************************************************
+ * Make a few checks on timestamps entered with options -s/-e.
+ *
+ * IN:
+ * @tm_start	Timestamp entered with option -s.
+ * @tm_end	Timestamp entered with option -e.
+ *
+ * RETURNS:
+ * 1 if an error has been detected.
+ ***************************************************************************
+ */
+int check_time_limits(struct tstamp_ext *tm_start, struct tstamp_ext *tm_end)
+{
+	if ((tm_start->use == USE_HHMMSS_T) && (tm_end->use == USE_HHMMSS_T) &&
+	    (tm_end->tm_time.tm_hour < tm_start->tm_time.tm_hour)) {
+		tm_end->tm_time.tm_hour += 24;
+	}
+
+	if ((tm_start->use == USE_EPOCH_T) && (tm_end->use == USE_EPOCH_T) &&
+	    (tm_end->epoch_time < tm_start->epoch_time))
+		return 1;
+
+	return 0;
+}
+
 #endif /* SOURCE_SADC undefined */

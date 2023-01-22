@@ -87,7 +87,7 @@ unsigned int id_seq[NR_ACT];
 struct record_header record_hdr[3];
 
 /* Contain the date specified by -s and -e options */
-struct tstamp tm_start, tm_end;
+struct tstamp_ext tm_start, tm_end;
 char *args[MAX_ARGV_NR];
 
 /* Current timezone */
@@ -250,7 +250,7 @@ void check_format_options(void)
  */
 int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int tab,
 		     struct file_magic *file_magic, struct file_activity *file_actlst,
-		     struct tm *rectime, enum on_eof oneof)
+		     struct tstamp_ext *rectime, enum on_eof oneof)
 {
 	int rc;
 	char rec_hdr_tmp[MAX_RECORD_HEADER_SIZE];
@@ -485,7 +485,7 @@ void seek_file_position(int ifd, int action)
  ***************************************************************************
  */
 int count_file_items(int ifd, char *file, struct file_magic *file_magic,
-		      struct file_activity *file_actlst, struct tm *rectime)
+		      struct file_activity *file_actlst, struct tstamp_ext *rectime)
 {
 	int i, eosaf, rtype;
 
@@ -508,8 +508,8 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 			/* No record to display */
 			return 0;
 	}
-	while ((tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
-	       (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
+	while ((datecmp(rectime, &tm_start, FALSE) < 0) ||
+	       (datecmp(rectime, &tm_end, FALSE) > 0));
 
 	/*
 	 * Read all the file and determine the maximum number
@@ -531,14 +531,13 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 			eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
 						 0, file, &rtype, 0, file_magic, file_actlst,
 						 rectime, UEOF_CONT);
-			if (eosaf ||
-			    (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)))
+			if (eosaf || (datecmp(rectime, &tm_end, FALSE) > 0))
 				/* End of data file or end time exceeded */
 				break;
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT));
 	}
-	while (!eosaf && !(tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
+	while (!eosaf && !(datecmp(rectime, &tm_end, FALSE) > 0));
 
 	/* Rewind file */
 	seek_file_position(ifd, DO_RESTORE);
@@ -578,7 +577,7 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
  ***************************************************************************
  */
 int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
-		     struct file_activity *file_actlst, struct tm *rectime,
+		     struct file_activity *file_actlst, struct tstamp_ext *rectime,
 		     int *views_per_row, int *nr_act_dispd)
 {
 	int i, n, p, tot_g_nr = 0;
@@ -644,8 +643,8 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
  *
  * IN:
  * @curr		Index in array for current sample statistics.
- * @use_tm_start	Set to TRUE if option -s has been used.
- * @use_tm_end		Set to TRUE if option -e has been used.
+ * @use_tm_start	Set to non-zero if option -s has been used.
+ * @use_tm_end		Set to non-zero if option -e has been used.
  * @reset		Set to TRUE if last_uptime should be reinitialized
  *			(used in next_slice() function).
  * @parm		Pointer on parameters depending on output format
@@ -666,8 +665,8 @@ int get_svg_graph_nr(int ifd, char *file, struct file_magic *file_magic,
  * 1 if stats have been successfully displayed.
  ***************************************************************************
  */
-int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
-			long *cnt, void *parm, struct tm *rectime,
+int generic_write_stats(int curr, enum time_mode use_tm_start, enum time_mode use_tm_end,
+			int reset, long *cnt, void *parm, struct tstamp_ext *rectime,
 			int reset_cd, unsigned int act_id)
 {
 	int i;
@@ -720,8 +719,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
 	}
 
 	/* Set date and time strings for current record */
-	set_record_timestamp_string(flags, &record_hdr[curr],
-				    cur_date, cur_time, TIMESTAMP_LEN, rectime);
+	set_record_timestamp_string(flags, cur_date, cur_time, TIMESTAMP_LEN, rectime);
 
 	if (*fmt[f_position]->f_timestamp) {
 		pre = (char *) (*fmt[f_position]->f_timestamp)(parm, F_BEGIN, cur_date, cur_time,
@@ -834,7 +832,7 @@ int generic_write_stats(int curr, int use_tm_start, int use_tm_end, int reset,
  */
 void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 		       unsigned int act_id, int *reset, struct file_activity *file_actlst,
-		       struct tm *rectime, char *file,
+		       struct tstamp_ext *rectime, char *file,
 		       struct file_magic *file_magic)
 {
 	int rtype;
@@ -919,8 +917,8 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  */
 void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			     int p, int *reset, struct file_activity *file_actlst,
-			     struct tm *rectime, char *file, struct file_magic *file_magic,
-			     int *g_nr, int nr_act_dispd)
+			     struct tstamp_ext *rectime, char *file,
+			     struct file_magic *file_magic, int *g_nr, int nr_act_dispd)
 {
 	struct svg_parm parm;
 	int rtype;
@@ -1037,7 +1035,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  ***************************************************************************
  */
 void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
-			 struct file_magic *file_magic, struct tm *rectime, void *dparm)
+			 struct file_magic *file_magic, struct tstamp_ext *rectime, void *dparm)
 {
 	int curr, rtype, tab = 0;
 	int eosaf, next, reset = FALSE;
@@ -1090,8 +1088,8 @@ void logic1_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 						 rectime, UEOF_STOP);
 		}
 		while (!eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-			(tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
-			(tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0))));
+			(datecmp(rectime, &tm_start, FALSE) < 0) ||
+			(datecmp(rectime, &tm_end, FALSE) > 0)));
 
 		curr = 1;
 		cnt = count;
@@ -1238,7 +1236,7 @@ terminate:
  ***************************************************************************
  */
 void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
-			 struct file_magic *file_magic, struct tm *rectime, void *dparm)
+			 struct file_magic *file_magic, struct tstamp_ext *rectime, void *dparm)
 {
 	int i, p;
 	int curr = 1, rtype;
@@ -1259,8 +1257,8 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 				return;
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-		       (tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
-		       (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
+		       (datecmp(rectime, &tm_start, FALSE) < 0) ||
+		       (datecmp(rectime, &tm_end, FALSE) > 0));
 
 		/* Save the first stats collected. Used for example in next_slice() function */
 		copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1359,7 +1357,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
  ***************************************************************************
  */
 void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
-		      struct file_magic *file_magic, struct tm *rectime, void *dparm)
+		      struct file_magic *file_magic, struct tstamp_ext *rectime, void *dparm)
 {
 	struct svg_hdr_parm parm;
 	int i, p;
@@ -1412,8 +1410,8 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		}
 	}
 	while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-	       (tm_start.use && (datecmp(rectime, &tm_start, FALSE) < 0)) ||
-	       (tm_end.use && (datecmp(rectime, &tm_end, FALSE) >= 0)));
+	       (datecmp(rectime, &tm_start, FALSE) < 0) ||
+	       (datecmp(rectime, &tm_end, FALSE) > 0));
 
 	/* Save the first stats collected. Used for example in next_slice() function */
 	copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1481,7 +1479,7 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 {
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
-	struct tm rectime;
+	struct tstamp_ext rectime;
 	int ifd, tab = 0;
 
 	/* Prepare file for reading and read its headers */
@@ -1544,7 +1542,7 @@ int main(int argc, char **argv)
 	init_nls();
 #endif
 
-	tm_start.use = tm_end.use = FALSE;
+	tm_start.use = tm_end.use = NO_TIME;
 
 	/* Allocate and init activity bitmaps */
 	allocate_bitmaps(act);
@@ -1898,8 +1896,8 @@ int main(int argc, char **argv)
 	}
 #endif
 
-	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
-		tm_end.tm_hour += 24;
+	if (check_time_limits(&tm_start, &tm_end)) {
+		usage(argv[0]);
 	}
 
 	if (DISPLAY_PRETTY(flags)) {

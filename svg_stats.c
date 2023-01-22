@@ -683,7 +683,7 @@ void display_hgrid(double ypos, double yfactor, double lmax, int dp)
 void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm *svg_p)
 {
 	struct record_header stamp;
-	struct tm rectime;
+	struct tstamp_ext rectime;
 	char cur_time[TIMESTAMP_LEN];
 	int j;
 
@@ -712,7 +712,7 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 #endif
 			exit(1);
 		}
-		set_record_timestamp_string(flags, &stamp, NULL, cur_time, TIMESTAMP_LEN, &rectime);
+		set_record_timestamp_string(flags, NULL, cur_time, TIMESTAMP_LEN, &rectime);
 		printf("<polyline points=\"%ld,0 %ld,%d\" style=\"vector-effect: non-scaling-stroke; "
 		       "stroke: #%06x\" transform=\"scale(%f,1)\"/>\n",
 		       xpos * j, xpos * j, -SVG_G_YSIZE,
@@ -723,12 +723,12 @@ void display_vgrid(long int xpos, double xfactor, int v_gridnr, struct svg_parm 
 		 * NB: We may have tm_min != 0 if we have more than 24H worth of data in one datafile.
 		 * In this case, we should rather display the exact time instead of only the hour.
 		 */
-		if (DISPLAY_ONE_DAY(flags) && (rectime.tm_min == 0)) {
+		if (DISPLAY_ONE_DAY(flags) && (rectime.tm_time.tm_min == 0)) {
 			printf("<text x=\"%ld\" y=\"15\" style=\"fill: #%06x; stroke: none; font-size: 14px; "
 			       "text-anchor: start\">%2d:00</text>\n",
 			       (long) (xpos * j * xfactor) - 15,
 			       svg_colors[palette][SVG_COL_AXIS_IDX],
-			       rectime.tm_hour);
+			       rectime.tm_time.tm_hour);
 		}
 		else {
 			printf("<text x=\"%ld\" y=\"10\" style=\"fill: #%06x; stroke: none; font-size: 12px; "

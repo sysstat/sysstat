@@ -300,8 +300,6 @@ enum {
 /* Miscellaneous constants */
 #define USE_SADC		0
 #define USE_SA_FILE		1
-#define NO_TM_START		0
-#define NO_TM_END		0
 #define NO_RESET		0
 #define NO_RANGE		0
 #define NON_FATAL		0
@@ -353,8 +351,39 @@ enum count_mode {
 #define __print_funct_t void
 
 /*
+ * **************************************************************************
+ * Various structure definitions.
  ***************************************************************************
- * Output formats for sadfsize_mode
+ */
+
+enum time_mode {
+	NO_TIME = 0,
+	USE_HHMMSS_T = 1,
+	USE_EPOCH_T = 2
+};
+
+/*
+ * Structure for timestamps.
+ * @tm_time has the GMT or local broken time representation of @epoch_time.
+ * Exception is when the structure is used to save the timestamp given by the
+ * user on the command line with options -s/-e. In this case, it includes either
+ * the number of seconds since the epoch *or* the broken time entered by the user.
+ */
+struct tstamp_ext {
+	unsigned long long epoch_time;
+	struct tm tm_time;
+	enum time_mode use;
+};
+
+/* Structure for items in list */
+struct sa_item {
+	char *item_name;
+	struct sa_item *next;
+};
+
+/*
+ ***************************************************************************
+ * Output formats for sadf
  ***************************************************************************
  */
 
@@ -1221,7 +1250,7 @@ struct report_format {
 	 * This is the main function used to display all the statistics for current format.
 	 */
 	void (*f_display) (int, char *, struct file_activity *, struct file_magic *,
-			   struct tm *, void *);
+			   struct tstamp_ext *, void *);
 };
 
 
@@ -1344,28 +1373,6 @@ enum {
 
 #define CLOSE(_fd_)		if (_fd_ >= 0)		\
 					close(_fd_)
-
-
-/*
- ***************************************************************************
- * Various structure definitions.
- ***************************************************************************
- */
-
-/* Structure for timestamps */
-struct tstamp {
-	int tm_sec;
-	int tm_min;
-	int tm_hour;
-	int use;
-};
-
-/* Structure for items in list */
-struct sa_item {
-	char *item_name;
-	struct sa_item *next;
-};
-
 
 /*
  ***************************************************************************
@@ -1545,12 +1552,14 @@ int check_net_dev_reg
 	(struct activity *, int, int, int);
 int check_net_edev_reg
 	(struct activity *, int, int, int);
+int check_time_limits
+	(struct tstamp_ext *, struct tstamp_ext *);
 double compute_ifutil
 	(struct stats_net_dev *, double, double);
 void copy_structures
 	(struct activity * [], unsigned int [],	struct record_header [], int, int);
 int datecmp
-	(struct tm *, struct tstamp *, int);
+	(struct tstamp_ext *, struct tstamp_ext *, int);
 void display_sa_file_version
 	(FILE *, struct file_magic *);
 void free_bitmaps
@@ -1590,7 +1599,7 @@ int parse_sar_n_opt
 int parse_sar_q_opt
 	(char * [], int *, struct activity * []);
 int parse_timestamp
-	(char * [], int *, struct tstamp *, const char *, uint64_t);
+	(char * [], int *, struct tstamp_ext *, const char *, uint64_t);
 void print_report_hdr
 	(uint64_t, struct tm *, struct file_header *);
 void print_sar_comment
@@ -1599,8 +1608,8 @@ void print_sar_comment
 __printf_funct_t print_sar_restart
 	(int *, int, char *, char *, char *, struct file_header *, struct record_header *);
 int print_special_record
-	(struct record_header *, uint64_t, struct tstamp *, struct tstamp *,
-	 int, int, struct tm *, char *, int, char *, struct file_magic *,
+	(struct record_header *, uint64_t, struct tstamp_ext *, struct tstamp_ext *,
+	 int, int, struct tstamp_ext *, char *, int, char *, struct file_magic *,
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
@@ -1617,7 +1626,7 @@ void replace_nonprintable_char
 int sa_fread
 	(int, void *, size_t, enum size_mode, enum on_eof);
 int sa_get_record_timestamp_struct
-	(uint64_t, struct record_header *, struct tm *);
+	(uint64_t, struct record_header *, struct tstamp_ext *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
 int search_list_item
@@ -1631,7 +1640,7 @@ void set_bitmaps
 void set_hdr_rectime
 	(unsigned int, struct tm *, struct file_header *);
 void set_record_timestamp_string
-	(uint64_t, struct record_header *, char *, char *, int, struct tm *);
+	(uint64_t, char *, char *, int, struct tstamp_ext *);
 void swap_struct
 	(unsigned int [], void *, int);
 #endif /* SOURCE_SADC undefined */

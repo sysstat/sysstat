@@ -82,10 +82,10 @@ struct record_header record_hdr[3];
  */
 unsigned int id_seq[NR_ACT];
 
-struct tm rectime;
+struct tstamp_ext rectime;
 
 /* Contain the date specified by -s and -e options */
-struct tstamp tm_start, tm_end;
+struct tstamp_ext tm_start, tm_end;
 
 char *args[MAX_ARGV_NR];
 
@@ -418,8 +418,10 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
  * @curr		Index in array for current sample statistics.
  * @read_from_file	Set to TRUE if stats are read from a system activity
  * 			data file.
- * @use_tm_start	Set to TRUE if option -s has been used.
- * @use_tm_end		Set to TRUE if option -e has been used.
+ * @use_tm_start	Set to non-zero (USE_HHMMSS_T or USE_EPOCH_T) if
+ *			option -s has been used.
+ * @use_tm_end		Set to non-zero (USE_HHMMSS_T or USE_EPOCH_T) if
+ *			option -e has been used.
  * @reset		Set to TRUE if last_uptime variable should be
  * 			reinitialized (used in next_slice() function).
  * @act_id		Activity that can be displayed or ~0 for all.
@@ -435,8 +437,8 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
  * 1 if stats have been successfully displayed, and 0 otherwise.
  ***************************************************************************
  */
-int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
-		int use_tm_end, int reset, unsigned int act_id, int reset_cd)
+int write_stats(int curr, int read_from_file, long *cnt, enum time_mode use_tm_start,
+		enum time_mode use_tm_end, int reset, unsigned int act_id, int reset_cd)
 {
 	int i, prev_hour, rc = 0;
 	unsigned long long itv;
@@ -465,15 +467,13 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	/* Get then set previous timestamp */
 	if (sa_get_record_timestamp_struct(flags, &record_hdr[!curr], &rectime))
 		return 0;
-	prev_hour = rectime.tm_hour;
-	set_record_timestamp_string(flags, &record_hdr[!curr],
-				    NULL, timestamp[!curr], TIMESTAMP_LEN, &rectime);
+	prev_hour = rectime.tm_time.tm_hour;
+	set_record_timestamp_string(flags, NULL, timestamp[!curr], TIMESTAMP_LEN, &rectime);
 
 	/* Get then set current timestamp */
 	if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], &rectime))
 		return 0;
-	set_record_timestamp_string(flags, &record_hdr[curr],
-				    NULL, timestamp[curr], TIMESTAMP_LEN, &rectime);
+	set_record_timestamp_string(flags, NULL, timestamp[curr], TIMESTAMP_LEN, &rectime);
 
 	/*
 	 * Check if we are beginning a new day.
@@ -481,14 +481,14 @@ int write_stats(int curr, int read_from_file, long *cnt, int use_tm_start,
 	 * to take into account the current timezone (hours displayed will depend on the
 	 * TZ variable value).
 	 */
-	if (use_tm_start && record_hdr[!curr].ust_time &&
+	if ((use_tm_start == USE_HHMMSS_T) && record_hdr[!curr].ust_time &&
 	    (record_hdr[curr].ust_time > record_hdr[!curr].ust_time) &&
-	    (rectime.tm_hour < prev_hour)) {
+	    (rectime.tm_time.tm_hour < prev_hour)) {
 		cross_day = TRUE;
 	}
 
 	/* Check time (2) */
-	if (use_tm_end && (datecmp(&rectime, &tm_end, cross_day) > 0)) {
+	if ((use_tm_end != NO_TIME) && datecmp(&rectime, &tm_end, cross_day) > 0) {
 		/* End time exceeded */
 		*cnt = 0;
 		return 0;
@@ -554,7 +554,7 @@ void write_stats_startup(int curr)
 	flags |= S_F_SINCE_BOOT;
 	dish = TRUE;
 
-	write_stats(curr, USE_SADC, &count, NO_TM_START, NO_TM_END, NO_RESET,
+	write_stats(curr, USE_SADC, &count, NO_TIME, NO_TIME, NO_RESET,
 		    ALL_ACTIVITIES, TRUE);
 
 	exit(0);
@@ -1021,7 +1021,7 @@ void read_stats_from_file(char from_file[])
 	allocate_structures(act);
 
 	/* Print report header */
-	print_report_hdr(flags, &rectime, &file_hdr);
+	print_report_hdr(flags, &(rectime.tm_time), &file_hdr);
 
 	/* Read system statistics from file */
 	do {
@@ -1064,8 +1064,8 @@ void read_stats_from_file(char from_file[])
 			}
 		}
 		while ((rtype == R_RESTART) || (rtype == R_COMMENT) ||
-		       (tm_start.use && (datecmp(&rectime, &tm_start, FALSE) < 0)) ||
-		       (tm_end.use && (datecmp(&rectime, &tm_end, FALSE) >= 0)));
+		       (datecmp(&rectime, &tm_start, FALSE) < 0) ||
+		       (datecmp(&rectime, &tm_end, FALSE) > 0));
 
 		/* Save the first stats collected. Will be used to compute the average */
 		copy_structures(act, id_seq, record_hdr, 2, 0);
@@ -1205,7 +1205,7 @@ void read_stats(void)
 	allocate_structures(act);
 
 	/* Print report header */
-	print_report_hdr(flags, &rectime, &file_hdr);
+	print_report_hdr(flags, &(rectime.tm_time), &file_hdr);
 
 	/* Read system statistics sent by the data collector */
 	read_sadc_stat_bunch(0);
@@ -1246,8 +1246,21 @@ void read_stats(void)
 			}
 			lines++;
 		}
-		write_stats(curr, USE_SADC, &count, NO_TM_START, tm_end.use,
+		write_stats(curr, USE_SADC, &count, NO_TIME, tm_end.use,
 			    NO_RESET, ALL_ACTIVITIES, TRUE);
+
+		if ((tm_end.use != NO_TIME) && (datecmp(&rectime, &tm_end, FALSE) == 0)) {
+			/*
+			 * The last record displayed has reached ending time.
+			 * Set @count to 0 to keep sadc from saving an additional
+			 * record on next loop and stop now.
+			 * This is not perfect anyway: If the last displayed record hasn't
+			 * reached ending time, but the next one exceeds it, it will not be
+			 * displayed but will still have been saved in datafile by sadc since
+			 * the test is made later at display time.
+			 */
+			count = 0;
+		}
 
 		if (record_hdr[curr].record_type == R_LAST_STATS) {
 			/* File rotation is happening: Re-read header data sent by sadc */
@@ -1298,7 +1311,7 @@ int main(int argc, char **argv)
 	init_nls();
 #endif
 
-	tm_start.use = tm_end.use = FALSE;
+	tm_start.use = tm_end.use = NO_TIME;
 
 	/* Allocate and init activity bitmaps */
 	allocate_bitmaps(act);
@@ -1541,8 +1554,8 @@ int main(int argc, char **argv)
 		set_default_file(from_file, day_offset, -1);
 	}
 
-	if (tm_start.use && tm_end.use && (tm_end.tm_hour < tm_start.tm_hour)) {
-		tm_end.tm_hour += 24;
+	if (check_time_limits(&tm_start, &tm_end)) {
+		usage(argv[0]);
 	}
 
 	/*
@@ -1558,7 +1571,7 @@ int main(int argc, char **argv)
 		set_bitmaps(act, &flags);
 	}
 	/* Use time start or option -i only when reading stats from a file */
-	if ((tm_start.use || INTERVAL_SET(flags)) && !from_file[0]) {
+	if (((tm_start.use != NO_TIME) || INTERVAL_SET(flags)) && !from_file[0]) {
 		fprintf(stderr,
 			_("Not reading from a system activity file (use -f option)\n"));
 		exit(1);
