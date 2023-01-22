@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -s 13:20:19 -e 13:54:09 > tests/out2.sar-se.tmp && diff -u tests/expected2.sar-se tests/out2.sar-se.tmp

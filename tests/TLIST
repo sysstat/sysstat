@@ -273,6 +273,12 @@ NOTES:
 01380	LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -o tests/sa-sigint.tmp 1 10 > /dev/null
 	[Create binary datafile sa-sigint.tmp. Stop with a simulated Ctrl/C]
 01382	LC_ALL=C TZ=GMT ./sar -f tests/sa-sigint.tmp -m CPU > tests/out.sar-sigint.tmp
+01390	LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -o tests/sa-oe.tmp -e 00:00:06 1 10 > /dev/null
+	[Create binary datafile sa-oe.tmp. Ending time takes precedence over count parameter]
+01392	LC_ALL=C TZ=GMT ./sar -f tests/sa-oe.tmp > tests/out.sar-oe.tmp
+01394	LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -o tests/sa-oe2.tmp -e 1556755206 2 > /dev/null
+	[Create binary datafile sa-oe2.tmp. Ending time tells sar when to stop collecting]
+01396	LC_ALL=C TZ=GMT ./sar -f tests/sa-oe2.tmp > tests/out.sar-oe2.tmp
 
 =====	Testing error cases
 01400	LC_ALL=C TZ=GMT ./sar -f tests/data-trunc 2>&1 | grep "End of system activity file unexpected" >/dev/null
@@ -342,14 +348,19 @@ NOTES:
 01920	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -- -uw > tests/out.sadf-r-tz.tmp
 01925	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -T -- -uw > tests/out.sadf-r-T-tz.tmp
 01928	LC_ALL=C TZ="America/New_York" ./sadf -r tests/data-tz.tmp -t -- -uw > tests/out.sadf-r-t-tz.tmp
-01950	LC_ALL=C TZ="America/New_York" ./sar -f tests/data.tmp -e 1590933000 > tests/out.sar-e-epoch.tmp
+01950	LC_ALL=C TZ="America/New_York" ./sar -f tests/data.tmp -e 1555595349 > tests/out.sar-e-epoch.tmp
+01952	LC_ALL=C ./sar -f tests/data.tmp -s 1555594649 -e 1555593629 2>&1 | grep "Usage:" >/dev/null
+01953	LC_ALL=C ./sadf tests/data.tmp -s 1555594649 -e 1555593629 2>&1 | grep "Usage:" >/dev/null
 01955	LC_ALL=C ./sadf -d tests/data.tmp -s 1590939000 > tests/out.sadf-s-epoch.tmp
-01957	LC_ALL=C TZ="Europe/Paris" ./sadf -d tests/data.tmp -T -s 1590933000 > tests/out.sadf-T-s-epoch.tmp
+01957	LC_ALL=C TZ="Europe/Paris" ./sadf -d tests/data.tmp -T -s 1555595349 > tests/out.sadf-T-s-epoch.tmp
 01960	LC_ALL=C ./sadf -d tests/data.tmp -U -s 1555593629 -e 1555594649 > tests/out.sadf-U-se-epoch.tmp
-01965	LC_ALL=C ./sadf -d tests/data.tmp -s fo:ob:ar 2>&1 |grep "Usage:" >/dev/null
-01970	LC_ALL=C ./sadf -d -e foXobXar 2>&1 |grep "No such file" >/dev/null
-01972	LC_ALL=C ./sadf -d tests/data.tmp -s fo:ob 2>&1 |grep "Usage:" >/dev/null
-01973	LC_ALL=C ./sadf -d -e fooba 2>&1 |grep "No such file" >/dev/null
+01965	LC_ALL=C ./sadf -d tests/data.tmp -s fo:ob:ar 2>&1 | grep "Usage:" >/dev/null
+01970	LC_ALL=C ./sadf -d -e foXobXar 2>&1 | grep "No such file" >/dev/null
+01972	LC_ALL=C ./sadf -d tests/data.tmp -s fo:ob 2>&1 | grep "Usage:" >/dev/null
+01973	LC_ALL=C ./sadf -d -e fooba 2>&1 | grep "No such file" >/dev/null
+01975	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -s 13:20:19 -e 13:54:09 > tests/out2.sar-se.tmp
+01976	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -s 13:20:19 -e 13:20:39 > tests/out3.sar-se.tmp
+01977	LC_ALL=C TZ=GMT ./sadf -d tests/data.tmp -s 13:20:19 -e 1555595649 > tests/out2.sadf-se.tmp
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
