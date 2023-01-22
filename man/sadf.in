@@ -105,7 +105,7 @@ is a list of comma-separated device names. Useful with option
 .RS
 Set the ending time of the report. The default ending
 time is 18:00:00. Hours must be given in 24-hour format, or as the number of seconds
-since the epoch.
+since the epoch (given as a 10 digit number).
 .RE
 .TP
 .BI "--fs=" "fs_list"
@@ -263,7 +263,7 @@ Set the starting time of the data, causing the
 command to extract records time-tagged at, or following, the time
 specified. The default starting time is 08:00:00.
 Hours must be given in 24-hour format, or as the number of seconds
-since the epoch.
+since the epoch (given as a 10 digit number).
 .RE
 .TP
 .B -T
