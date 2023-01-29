@@ -539,7 +539,7 @@ copyyear:
 	catalogs="$(SOURCE_CODE) iconfig README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
 	for c in $$catalogs; do \
 		echo "Updating file: $$c"; \
-		sed 's/-2021/-2022/g' $$c > copyyear.tmp; \
+		sed 's/-2022/-2023/g' $$c > copyyear.tmp; \
 		mv copyyear.tmp $$c; \
 	done
 
