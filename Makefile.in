@@ -542,6 +542,7 @@ copyyear:
 		sed 's/-2022/-2023/g' $$c > copyyear.tmp; \
 		mv copyyear.tmp $$c; \
 	done
+	chmod 755 iconfig
 
 install_nls: locales
 ifdef REQUIRE_NLS
