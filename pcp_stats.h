@@ -1,6 +1,6 @@
 /*
  * pcp_stats.h: Include file used to display system statistics in PCP format.
- * (C) 2019-2022 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 2019-2023 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _PCP_STATS_H

@@ -1,5 +1,9 @@
 Changes:
 
+2023/01/29: Version 12.6.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* sadf: PCP: Fix pmiID used for two USB metrics.
+	* sadc: Add another overflow check.
+
 2022/11/06: Version 12.6.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Fix possible overflow in sa_common.c (GHSL-2022-074).
 	* sa_conv.c: Make size of statistics structures from older sysstat

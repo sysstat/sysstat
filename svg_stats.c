@@ -1,6 +1,6 @@
 /*
  * svg_stats.c: Functions used by sadf to display statistics in SVG format.
- * (C) 2016-2022 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2016-2023 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *

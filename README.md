@@ -5,7 +5,7 @@
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/sysstat/sysstat.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sysstat/sysstat/alerts)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=45U6F9R73ESFQ)
 
-(C) 1999-2022 Sebastien GODARD (sysstat (at) orange (dot) fr)
+(C) 1999-2023 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
 ### Introduction
 

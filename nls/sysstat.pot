@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2022-02-28 08:35+0100\n"
+"POT-Creation-Date: 2023-01-29 09:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,8 +43,8 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: count.c:118 ioconf.c:479 rd_stats.c:86 sa_common.c:1786 sadc.c:741
-#: sadc.c:804
+#: count.c:118 ioconf.c:480 rd_stats.c:86 sa_common.c:1802 sadc.c:747
+#: sadc.c:810
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -78,7 +78,7 @@ msgid ""
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: iostat.c:2177 sa_common.c:2334
+#: iostat.c:2178 sa_common.c:2350
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -92,7 +92,7 @@ msgid ""
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:1757 pidstat.c:2292 sar.c:383
+#: mpstat.c:1758 pidstat.c:2299 sar.c:383
 msgid "Average:"
 msgstr ""
 
@@ -113,63 +113,63 @@ msgid ""
 "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
 msgstr ""
 
-#: pidstat.c:211 sa_common.c:369
+#: pidstat.c:212 sa_common.c:368
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: pr_stats.c:2682 pr_stats.c:2689 pr_stats.c:2795 pr_stats.c:2842
+#: pr_stats.c:2680 pr_stats.c:2687 pr_stats.c:2793 pr_stats.c:2840
 msgid "Summary:"
 msgstr ""
 
-#: rd_stats.c:425
+#: rd_stats.c:427
 #, c-format
 msgid "Cannot read %s\n"
 msgstr ""
 
-#: sa_common.c:302
+#: sa_common.c:301
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:335
+#: sa_common.c:334
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:345
+#: sa_common.c:344
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:349
+#: sa_common.c:348
 #, c-format
 msgid ""
 "Try to convert it to current format. Enter:\n"
 "\n"
 msgstr ""
 
-#: sa_common.c:352
+#: sa_common.c:351
 #, c-format
 msgid "You should then be able to read the new file created (%s.new)\n"
 msgstr ""
 
-#: sa_common.c:1368
+#: sa_common.c:1381
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1378
+#: sa_common.c:1391
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1789
+#: sa_common.c:1805
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2124
+#: sa_common.c:2140
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
@@ -179,38 +179,38 @@ msgstr ""
 msgid "Cannot convert the format of this file\n"
 msgstr ""
 
-#: sa_conv.c:383
+#: sa_conv.c:385
 #, c-format
 msgid ""
 "\n"
 "CPU activity not found in file. Aborting...\n"
 msgstr ""
 
-#: sa_conv.c:406
+#: sa_conv.c:408
 #, c-format
 msgid ""
 "\n"
 "Invalid data found. Aborting...\n"
 msgstr ""
 
-#: sa_conv.c:1927
+#: sa_conv.c:1931
 #, c-format
 msgid "Statistics:\n"
 msgstr ""
 
-#: sa_conv.c:2028
+#: sa_conv.c:2032
 #, c-format
 msgid ""
 "\n"
 "File format already up-to-date\n"
 msgstr ""
 
-#: sa_conv.c:2040
+#: sa_conv.c:2044
 #, c-format
 msgid "HZ: Using current value: %lu\n"
 msgstr ""
 
-#: sa_conv.c:2071
+#: sa_conv.c:2075
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr ""
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
-#: sadc.c:1028
+#: sadc.c:1040
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
@@ -257,79 +257,79 @@ msgid ""
 "[ -- <sar_options> ]\n"
 msgstr ""
 
-#: sadf.c:1865
+#: sadf.c:1877
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr ""
 
-#: sadf_misc.c:1216
+#: sadf_misc.c:1220
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf_misc.c:1225
+#: sadf_misc.c:1229
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr ""
 
-#: sadf_misc.c:1226
+#: sadf_misc.c:1230
 msgid "no"
 msgstr ""
 
-#: sadf_misc.c:1226
+#: sadf_misc.c:1230
 msgid "yes"
 msgstr ""
 
-#: sadf_misc.c:1229
+#: sadf_misc.c:1233
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf_misc.c:1239
+#: sadf_misc.c:1243
 #, c-format
 msgid "File date: %s\n"
 msgstr ""
 
-#: sadf_misc.c:1242
+#: sadf_misc.c:1246
 #, c-format
 msgid "File time: "
 msgstr ""
 
-#: sadf_misc.c:1247
+#: sadf_misc.c:1251
 #, c-format
 msgid "Timezone: %s\n"
 msgstr ""
 
-#: sadf_misc.c:1250
+#: sadf_misc.c:1254
 #, c-format
 msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
 msgstr ""
 
-#: sadf_misc.c:1255
+#: sadf_misc.c:1259
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1261
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr ""
 
-#: sadf_misc.c:1259
+#: sadf_misc.c:1263
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr ""
 
-#: sadf_misc.c:1262
+#: sadf_misc.c:1266
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf_misc.c:1273
+#: sadf_misc.c:1277
 msgid "Unknown activity"
 msgstr ""
 
-#: sadf_misc.c:1281
+#: sadf_misc.c:1285
 #, c-format
 msgid " \t[Unknown format]"
 msgstr ""
@@ -341,7 +341,7 @@ msgid ""
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
 "[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
-"[ -I { <int_list> | SUM | ALL } ] [ -P { <cpu_list> | ALL } ]\n"
+"[ -I [ SUM | ALL ] ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -q [ <keyword> [,...] | ALL ] ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --"
@@ -390,7 +390,7 @@ msgstr ""
 #: sar.c:156
 #, c-format
 msgid ""
-"\t-I { <int_list> | SUM | ALL }\n"
+"\t-I [ SUM | ALL ]\n"
 "\t\tInterrupts statistics [A_IRQ]\n"
 msgstr ""
 
@@ -534,7 +534,7 @@ msgid ""
 "[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
 
-#: tapestat.c:272
+#: tapestat.c:273
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr ""
