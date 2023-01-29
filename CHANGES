@@ -1,5 +1,22 @@
 Changes:
 
+2023/01/29: Version 12.7.2 - Sebastien Godard (sysstat <at> orange.fr)
+	* All commands: Avoid displaying healthy metrics values in "red".
+*	* sar/sadf: Add new activity: Battery statistics (A_PWR_BAT).
+	* [Kevin Stubbings]: Add CodeQL workflow.
+	* sar: Make sure timestamps are always displayed in local time.
+	* sar/sadf: Starting and ending times used with options -s/-e can now
+	  be entered as a number of seconds since the epoch.
+	* sar/sadf: Strengthen tests made on arguments given to options -s/-e.
+	* sadf: PCP: Fix pmiID used for two USB metrics [12.6.2].
+	* [Nathanael P Wilson]: sadf: Fix extra space when no TZ printed.
+	* sadc: Add another overflow check [12.6.2].
+	* DTD and XSD documents updated.
+	* Makefile: Fix dependencies.
+	* Remove LGTM links from README file.
+	* Manual pages updated.
+	* Non regression tests updated.
+
 2022/11/06: Version 12.7.1 - Sebastien Godard (sysstat <at> orange.fr)
 	* Fix possible overflow in sa_common.c (GHSL-2022-074) [12.6.1].
 	* sadf: Add support for option -t with SVG output to make it possible
