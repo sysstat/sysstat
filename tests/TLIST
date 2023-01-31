@@ -14,6 +14,7 @@ NOTES:
 00015	./pidstat -V >/dev/null
 00016	./tapestat -V >/dev/null
 00017	./cifsiostat -V >/dev/null
+00030	[ -x ./iconfig ] || exit 1
 
 =====	Files creation
 -----	Create data-new.tmp [.....RC / 1234511]
@@ -565,4 +566,6 @@ NOTES:
 05452	LC_ALL=C TZ=GMT ./pidstat -e sleep 2 > tests/out2.pidstat-e.tmp
 
 =====	Tests to be done at the very end
+08900	cat tests/TLIST | grep ^0 | awk '{print $1}' > tests/out.list1.tmp
+	(cd tests && ls -1 0* > out.list2.tmp)
 09900	grep -i FIXME *.c *.h *.in && exit 1 || exit 0

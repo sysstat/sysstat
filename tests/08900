@@ -1,0 +1,4 @@
+cat tests/TLIST | grep ^0 | awk '{print $1}' > tests/out.list1.tmp
+(cd tests && ls -1 0* > out.list2.tmp)
+diff -u tests/out.list2.tmp tests/out.list1.tmp
+
