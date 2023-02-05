@@ -65,6 +65,10 @@ NOTES:
 -----	Creating file in Europe/Paris timezone data-tz.tmp [... / 123]
 00100	3 x TZ="Europe/Paris" ./sadc --unix_time=xxxxxxxxx tests/data-tz.tmp 1 1 >/dev/null
 
+-----	Creating file data-small_ust.tmp [.. / 12] with a small timestamp value (number of seconds since the Epoch
+	lower than a 10-digit value)
+00105	2 x TZ=GMT ./sadc --unix_time=555593609 -S A_NULL,A_PCSW tests/data-small_ust.tmp 1 1 >/dev/null
+
 =====	sar: Reading data-new.tmp
 00130	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data-new.tmp > tests/out.sar-u.tmp
 00131	LC_ALL=C TZ=GMT ./sar -bBdFHqSvwWy -I ALL -m CPU -n ALL -r ALL -u ALL -P ALL -f tests/data-new.tmp > tests/out.sar-all.tmp
@@ -295,6 +299,7 @@ NOTES:
 01452	LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.5 2>&1 | grep "cannot read the format of this file" >/dev/null
 01460	LC_ALL=C ./sar -q FOO 2>&1 | grep "Usage:" >/dev/null
 01470	LC_ALL=C ./sadf -x -j tests/data.tmp 2>&1 | grep "Usage:" >/dev/null
+01480	LC_ALL=C ./sar -A -f tests/data-small_ust.tmp 2>&1 | grep "Invalid data" >/dev/null
 
 =====	Specific tests for sensors statistics (basic sensor output already tested using data-11.6.5 conversion)
 01500	LC_ALL=C TZ=GMT ./sadf -d tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-d.tmp

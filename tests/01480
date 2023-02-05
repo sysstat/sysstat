@@ -1,0 +1,1 @@
+LC_ALL=C ./sar -A -f tests/data-small_ust.tmp 2>&1 | grep "Invalid data" >/dev/null
