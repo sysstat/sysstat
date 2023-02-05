@@ -1586,11 +1586,12 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 
 		/* Sanity checks */
 		if ((record_hdr->record_type <= 0) || (record_hdr->record_type > R_EXTRA_MAX) ||
-		    (record_hdr->hour > 23) || (record_hdr->minute > 59) || (record_hdr->second > 60)) {
+		    (record_hdr->hour > 23) || (record_hdr->minute > 59) || (record_hdr->second > 60) || (record_hdr->ust_time < 1000000000)) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: record_type=%d HH:MM:SS=%02d:%02d:%02d\n",
+			fprintf(stderr, "%s: record_type=%d HH:MM:SS=%02d:%02d:%02d (%lld)\n",
 				__FUNCTION__, record_hdr->record_type,
-				record_hdr->hour, record_hdr->minute, record_hdr->second);
+				record_hdr->hour, record_hdr->minute, record_hdr->second,
+				record_hdr->ust_time);
 #endif
 			return 2;
 		}
