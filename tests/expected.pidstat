@@ -1,7 +1,7 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-00:00:00        0      8407    0.12    0.01    0.00    0.00    0.13     1  gnome-terminal-
-00:00:00     1000      8741    0.97    0.28    0.00    0.01    1.25     2  firefox
-00:00:00     1000      9009    0.06    0.03    0.00    0.01    0.09     3  WebExtensions
-00:00:00     1000     21342    0.12    0.01    0.00    0.00    0.13     5  soffice.bin
+12:53:20      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:20        0      8407    0.12    0.01    0.00    0.00    0.13     1  gnome-terminal-
+12:53:20     1000      8741    0.97    0.28    0.00    0.01    1.25     2  firefox
+12:53:20     1000      9009    0.06    0.03    0.00    0.01    0.09     3  WebExtensions
+12:53:20     1000     21342    0.12    0.01    0.00    0.00    0.13     5  soffice.bin

@@ -1,18 +1,18 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:20      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:02      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
-00:00:04     1000      8741         -    0.13    0.03    0.00    0.03    0.16     5  firefox
-00:00:04     1000         -      8741    0.06    0.00    0.00    0.03    0.06     5  |__firefox
+12:53:22      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:24     1000      8741         -    0.13    0.03    0.00    0.03    0.16     5  firefox
+12:53:24     1000         -      8741    0.06    0.00    0.00    0.03    0.06     5  |__firefox
 
-00:00:04      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:24      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:06      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:26      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:08      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:28      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:10      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:30      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
 Average:      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 Average:     1000      8741         -    0.13    0.03    0.00    0.03    0.16     -  firefox

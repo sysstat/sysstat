@@ -1,15 +1,15 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:20      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:02      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:22      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:04      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:24      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:06      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:26      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:08      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:28      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:10      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:30      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
 Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command

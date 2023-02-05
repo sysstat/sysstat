@@ -6,10 +6,10 @@
 			"release": "1.2.3-TEST",
 			"machine": "x86_64",
 			"number-of-cpus": 9,
-			"date": "01/01/70",
+			"date": "06/01/20",
 			"statistics": [
 				{
-					"timestamp": "00:00:01",
+					"timestamp": "12:53:21",
 					"cpu-load": [
 						{"cpu": "all", "usr": 2.15, "nice": 12.50, "sys": 1.84, "iowait": 0.12, "irq": 0.34, "soft": 0.19, "steal": 0.00, "guest": 0.00, "gnice": 0.00, "idle": 82.88},
 						{"cpu": "0", "usr": 2.71, "nice": 0.03, "sys": 2.16, "iowait": 0.00, "irq": 0.32, "soft": 0.64, "steal": 0.00, "guest": 0.00, "gnice": 0.00, "idle": 94.14},

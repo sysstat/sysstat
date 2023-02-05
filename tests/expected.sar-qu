@@ -1,7 +1,7 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00        CPU     %user     %nice   %system   %iowait    %steal     %idle
-00:00:00        all      1.49     39.91      1.67      0.94      0.00     56.00
+12:53:20        CPU     %user     %nice   %system   %iowait    %steal     %idle
+12:53:20        all      1.49     39.91      1.67      0.94      0.00     56.00
 
-00:00:00      runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked
-00:00:00            3       956      3.16      3.24      3.43         0
+12:53:20      runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked
+12:53:20            3       956      3.16      3.24      3.43         0

@@ -1,12 +1,12 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-01/01/70 00:00:00
+06/01/20 12:53:20
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            1.49   39.91    1.67    0.94    0.00   56.00
 
 
 
-01/01/70 00:00:01
+06/01/20 12:53:21
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            2.15   12.50    2.35    0.12    0.00   82.89
 

@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
 Device             tps      kB/s    rqm/s   await  areq-sz  aqu-sz  %util
 sdb               0.01      0.29     0.00   60.92    41.33    0.00   0.00

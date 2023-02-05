@@ -1,52 +1,52 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00      UID       PID    usr-ms system-ms  guest-ms  Command
-00:00:02     1000      7900    112090     16710         0  gnome-shell
-00:00:02        0      8407       110        10         0  gnome-terminal-
+12:53:20      UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:22     1000      7900    112090     16710         0  gnome-shell
+12:53:22        0      8407       110        10         0  gnome-terminal-
 
-00:00:00      UID       PID minflt-nr majflt-nr  Command
-00:00:02     1000      7900    785212        49  gnome-shell
-00:00:02        0      8407         5         0  gnome-terminal-
-00:00:02     1000      9009         1         0  WebExtensions
+12:53:20      UID       PID minflt-nr majflt-nr  Command
+12:53:22     1000      7900    785212        49  gnome-shell
+12:53:22        0      8407         5         0  gnome-terminal-
+12:53:22     1000      9009         1         0  WebExtensions
 
-00:00:02      UID       PID    usr-ms system-ms  guest-ms  Command
-00:00:04     1000      7900       210        50         0  gnome-shell
-00:00:04        0      8407        60         0         0  gnome-terminal-
-00:00:04     1000      8741        40        10         0  firefox
+12:53:22      UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:24     1000      7900       210        50         0  gnome-shell
+12:53:24        0      8407        60         0         0  gnome-terminal-
+12:53:24     1000      8741        40        10         0  firefox
 
-00:00:02      UID       PID minflt-nr majflt-nr  Command
-00:00:04     1000      7900      5281         0  gnome-shell
-00:00:04        0      8407         4         0  gnome-terminal-
-00:00:04     1000      8741         5         0  firefox
+12:53:22      UID       PID minflt-nr majflt-nr  Command
+12:53:24     1000      7900      5281         0  gnome-shell
+12:53:24        0      8407         4         0  gnome-terminal-
+12:53:24     1000      8741         5         0  firefox
 
-00:00:04      UID       PID    usr-ms system-ms  guest-ms  Command
-00:00:06     1000      7900       340        90         0  gnome-shell
-00:00:06        0      8407        20        10         0  gnome-terminal-
-00:00:06     1000      9009      4520      2220         0  WebExtensions
+12:53:24      UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:26     1000      7900       340        90         0  gnome-shell
+12:53:26        0      8407        20        10         0  gnome-terminal-
+12:53:26     1000      9009      4520      2220         0  WebExtensions
 
-00:00:04      UID       PID minflt-nr majflt-nr  Command
-00:00:06     1000      7900     12274         0  gnome-shell
-00:00:06     1000      9009     24780        14  WebExtensions
+12:53:24      UID       PID minflt-nr majflt-nr  Command
+12:53:26     1000      7900     12274         0  gnome-shell
+12:53:26     1000      9009     24780        14  WebExtensions
 
-00:00:06      UID       PID    usr-ms system-ms  guest-ms  Command
-00:00:08     1000      7900       740       160         0  gnome-shell
-00:00:08        0      8407        10         0         0  gnome-terminal-
-00:00:08     1000      9009        10        10         0  WebExtensions
+12:53:26      UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:28     1000      7900       740       160         0  gnome-shell
+12:53:28        0      8407        10         0         0  gnome-terminal-
+12:53:28     1000      9009        10        10         0  WebExtensions
 
-00:00:06      UID       PID minflt-nr majflt-nr  Command
-00:00:08     1000      7900     16498         0  gnome-shell
-00:00:08     1000      9009       114         0  WebExtensions
+12:53:26      UID       PID minflt-nr majflt-nr  Command
+12:53:28     1000      7900     16498         0  gnome-shell
+12:53:28     1000      9009       114         0  WebExtensions
 
-00:00:08      UID       PID    usr-ms system-ms  guest-ms  Command
-00:00:10        0      8407        20         0         0  gnome-terminal-
+12:53:28      UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:30        0      8407        20         0         0  gnome-terminal-
 
-00:00:08      UID       PID minflt-nr majflt-nr  Command
+12:53:28      UID       PID minflt-nr majflt-nr  Command
 
-00:00:10      UID       PID    usr-ms system-ms  guest-ms  Command
-00:00:12        0      8407        20         0         0  gnome-terminal-
+12:53:30      UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:32        0      8407        20         0         0  gnome-terminal-
 
-00:00:10      UID       PID minflt-nr majflt-nr  Command
-00:00:12        0      8407         1         0  gnome-terminal-
+12:53:30      UID       PID minflt-nr majflt-nr  Command
+12:53:32        0      8407         1         0  gnome-terminal-
 
 Average:      UID       PID    usr-ms system-ms  guest-ms  Command
 Average:        0      8407        40         3         0  gnome-terminal-

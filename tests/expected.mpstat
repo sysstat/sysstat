@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
-00:00:00     all    1.49   39.91    0.83    0.94    0.43    0.40    0.00    0.00    0.00   56.00
+12:53:20     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+12:53:20     all    1.49   39.91    0.83    0.94    0.43    0.40    0.00    0.00    0.00   56.00

@@ -1,4 +1,4 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
          rB/s         wB/s    rops/s    wops/s         fo/s         fc/s         fd/s Filesystem
          0.0B         0.0B      0.00      0.00         0.00         0.00         0.00 \\addr\SHARED

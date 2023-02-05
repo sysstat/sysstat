@@ -1,20 +1,20 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
-00:00:02     1000      9009      9009    0.03    0.00    0.00    0.00    0.03     3  (WebExtensions)__WebExtensions
+12:53:20      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:22     1000      9009      9009    0.03    0.00    0.00    0.00    0.03     3  (WebExtensions)__WebExtensions
 
-00:00:02      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:22      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:04      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
-00:00:06     1000      9009         -   11.74    5.77    0.00    1.56   17.51     3  WebExtensions
-00:00:06     1000         -      9009    8.91    2.62    0.00    1.56   11.53     3  |__WebExtensions
+12:53:24      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:26     1000      9009         -   11.74    5.77    0.00    1.56   17.51     3  WebExtensions
+12:53:26     1000         -      9009    8.91    2.62    0.00    1.56   11.53     3  |__WebExtensions
 
-00:00:06      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
-00:00:08     1000      9009         -    0.04    0.04    0.00    0.00    0.09     1  WebExtensions
-00:00:08     1000         -      9009    0.04    0.04    0.00    0.00    0.09     1  |__WebExtensions
+12:53:26      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:28     1000      9009         -    0.04    0.04    0.00    0.00    0.09     1  WebExtensions
+12:53:28     1000         -      9009    0.04    0.04    0.00    0.00    0.09     1  |__WebExtensions
 
-00:00:08      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:28      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
-00:00:10      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:30      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command
 
 Average:      UID      TGID       TID    %usr %system  %guest   %wait    %CPU   CPU  Command

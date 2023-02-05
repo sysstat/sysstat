@@ -1,15 +1,15 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-01/01/70 00:00:00
+06/01/20 12:53:20
 Filesystem                     rB/s         wB/s    rops/s    wops/s         fo/s         fc/s         fd/s
 \\addr\SHARED                  0.0B         0.0B      0.00      0.00         0.00         0.00         0.00
 
-01/01/70 00:00:01
+06/01/20 12:53:21
 Filesystem                     rB/s         wB/s    rops/s    wops/s         fo/s         fc/s         fd/s
 \\addr\SHARED                 23.1B         3.9B      0.19      0.10         0.00         0.00         0.00
 \\server\share1                2.9B         3.3B      0.16      0.06         0.16         0.06         0.03
 
-01/01/70 00:00:02
+06/01/20 12:53:22
 Filesystem                     rB/s         wB/s    rops/s    wops/s         fo/s         fc/s         fd/s
 \\addr\SHARED                  0.0B         0.0B      0.00      0.00         0.10         0.19         0.16
 \\server\share1               25.9B        22.4B      0.29      0.38         0.32         0.32         0.32

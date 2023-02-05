@@ -1,12 +1,12 @@
-Linux 1.2.3-TEST (SYSSTAT.TEST) 	01/01/70 	_x86_64_	(9 CPU)
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-00:00:00      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
-00:00:01     1000      7900    411.81      2.82      0.00     253  gnome-shell
+12:53:20      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
+12:53:21     1000      7900    411.81      2.82      0.00     253  gnome-shell
 
-00:00:01      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
+12:53:21      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
 
-00:00:02      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
-00:00:03     1000      9009     30.65      0.00      0.00      69  WebExtensions
+12:53:22      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
+12:53:23     1000      9009     30.65      0.00      0.00      69  WebExtensions
 
 Average:      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command
 Average:     1000      7900    127.20      0.87      0.00      84  gnome-shell
