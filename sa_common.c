@@ -1546,9 +1546,7 @@ int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
  * @record_hdr	Record header for current sample.
  *
  * RETURNS:
- * 1 if EOF has been reached,
- * 2 if an error has been encountered (e.g. unexpected EOF),
- * 0 otherwise.
+ * 1 if EOF has been reached, 0 otherwise.
  ***************************************************************************
  */
 int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
@@ -1565,7 +1563,7 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		/* Remap record header structure to that expected by current version */
 		if (remap_struct(rec_types_nr, file_hdr->rec_types_nr, buffer,
 				 file_hdr->rec_size, RECORD_HEADER_SIZE, b_size) < 0)
-			return 2;
+			goto invalid_data;
 		memcpy(record_hdr, buffer, RECORD_HEADER_SIZE);
 
 		/* Normalize endianness */
@@ -1593,7 +1591,7 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 				record_hdr->hour, record_hdr->minute, record_hdr->second,
 				record_hdr->ust_time);
 #endif
-			return 2;
+			goto invalid_data;
 		}
 
 		/*
@@ -1603,11 +1601,15 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		 */
 		if ((record_hdr->record_type != R_COMMENT) && (record_hdr->record_type != R_RESTART) &&
 		    record_hdr->extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
-			return 2;
+			goto invalid_data;
 	}
 	while ((record_hdr->record_type >= R_EXTRA_MIN) && (record_hdr->record_type <= R_EXTRA_MAX)) ;
 
 	return 0;
+
+invalid_data:
+	fprintf(stderr, _("Invalid data read\n"));
+	exit(2);
 }
 
 /*
