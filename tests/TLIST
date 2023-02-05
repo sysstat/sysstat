@@ -259,7 +259,7 @@ NOTES:
 01314	LC_ALL=C TZ=GMT ./sar > tests/out31.sar-u.tmp
 01318	LC_ALL=C TZ=GMT ./sar -f tests > tests/out34.sar-u.tmp
 01320	LC_ALL=C TZ=GMT ./sadc -D -
-01330	LC_ALL=C TZ=GMT ./sar -f tests/sa19700101 > tests/out32.sar-u.tmp
+01330	LC_ALL=C TZ=GMT ./sar -f tests/sa20200601 > tests/out32.sar-u.tmp
 01335	LC_ALL=C TZ=GMT ./sar > tests/out33.sar-u.tmp
 01340	./sadf > tests/out3.sadf.tmp
 01350	TZ=GMT ./sadc --unix_time=1556755199 - 1 3

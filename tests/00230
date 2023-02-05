@@ -1,4 +1,4 @@
-# By default __unix_time value is 0, which corresponds to sa01
+# By default __unix_time value is 1591016000, which corresponds to sa01
 rm -f tests/sa01
 
 rm -f tests/root

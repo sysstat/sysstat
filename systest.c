@@ -37,7 +37,7 @@
 
 #include "systest.h"
 
-time_t __unix_time = 0;
+time_t __unix_time = 1591016000;	/* Mon Jun  1 12:53:20 2020 UTC */
 int __env = 0;
 
 extern long interval;

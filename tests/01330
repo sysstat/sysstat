@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -f tests/sa19700101 > tests/out32.sar-u.tmp && diff -u tests/expected32.sar-u tests/out32.sar-u.tmp
+LC_ALL=C TZ=GMT ./sar -f tests/sa20200601 > tests/out32.sar-u.tmp && diff -u tests/expected32.sar-u tests/out32.sar-u.tmp
