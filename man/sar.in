@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "JANUARY 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "FEBRUARY 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1282,7 +1282,7 @@ or block devices statistics.
 Report system load and pressure-stall statistics.
 
 Possible keywords are
-.BR "CPU" ", " "IO" ", " "LOAD" ", " "MEM " "and "PSI" "."
+.BR "CPU" ", " "IO" ", " "LOAD" ", " "MEM " "and " "PSI" "."
 
 .RB "With the " "CPU"
 keyword, CPU pressure statistics are reported.
