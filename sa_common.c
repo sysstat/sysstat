@@ -671,7 +671,7 @@ int decode_epoch(char timestamp[], struct tstamp_ext *tse, uint64_t flags)
 {
 	tse->epoch_time = atol(timestamp);
 
-	if (tse->epoch_time <= 0) {
+	if (!tse->epoch_time) {
 		tse->use = NO_TIME;
 		return 1;
 	}
@@ -1583,7 +1583,7 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		}
 
 		/* Sanity checks */
-		if ((record_hdr->record_type <= 0) || (record_hdr->record_type > R_EXTRA_MAX) ||
+		if (!record_hdr->record_type || (record_hdr->record_type > R_EXTRA_MAX) ||
 		    (record_hdr->hour > 23) || (record_hdr->minute > 59) || (record_hdr->second > 60) || (record_hdr->ust_time < 1000000000)) {
 #ifdef DEBUG
 			fprintf(stderr, "%s: record_type=%d HH:MM:SS=%02d:%02d:%02d (%llu)\n",

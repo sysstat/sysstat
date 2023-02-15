@@ -999,7 +999,7 @@ char *get_persistent_name_from_pretty(char *pretty)
 	}
 	free (persist_names);
 
-	if (strlen(persist_name) <= 0)
+	if (!strlen(persist_name))
 		return (NULL);
 
 	return persist_name;
