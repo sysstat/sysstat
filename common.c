@@ -1149,7 +1149,7 @@ char *get_device_name(unsigned int major, unsigned int minor, unsigned long long
 				sprintf(xsid, "%016llx", wwn[1]);
 			}
 			if (part_nr) {
-				sprintf(pn, "-%d", part_nr);
+				sprintf(pn, "-%u", part_nr);
 			}
 			snprintf(sid, sizeof(sid), "%#016llx%s%s", wwn[0], xsid, pn);
 			dev_name = sid;

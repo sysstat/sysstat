@@ -947,7 +947,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 
 		if (!displayed) {
 			/* Translate to proper position for current activity */
-			printf("<g id=\"g%d-%d\" transform=\"translate(0,%d)\">\n",
+			printf("<g id=\"g%u-%u\" transform=\"translate(0,%d)\">\n",
 			       a->id, xid,
 			       SVG_H_YSIZE +
 			       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? svg_p->nr_act_dispd : 0) +
@@ -2225,7 +2225,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 				if (k == a->item_list_sz) {
 					/* No free graph entry: Ignore it (should never happen) */
 #ifdef DEBUG
-					fprintf(stderr, "%s: Name=%s major=%d minor=%d\n",
+					fprintf(stderr, "%s: Name=%s major=%u minor=%u\n",
 						__FUNCTION__, dev_name, sdc->major, sdc->minor);
 #endif
 					continue;

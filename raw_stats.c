@@ -684,7 +684,7 @@ __print_funct_t raw_print_net_dev_stats(struct activity *a, char *timestr, int c
 		pval(sndp->tx_compressed, sndc->tx_compressed);
 		printf(" %s", pfield(NULL, 0));
 		pval(sndp->multicast, sndc->multicast);
-		printf(" speed; %u; duplex; %u;\n", sndc->speed, sndc->duplex);
+		printf(" speed; %u; duplex; %u;\n", sndc->speed, (unsigned int) sndc->duplex);
 	}
 }
 
@@ -1521,7 +1521,7 @@ __print_funct_t raw_print_pwr_usb_stats(struct activity *a, char *timestr, int c
 
 		printf("%s; %s; \"%s\";", timestr, pfield(a->hdr_line, FIRST), suc->manufacturer);
 		printf(" %s; \"%s\";", pfield(NULL, 0), suc->product);
-		printf(" %s; %d;", pfield(NULL, 0), suc->bus_nr);
+		printf(" %s; %u;", pfield(NULL, 0), suc->bus_nr);
 		printf(" %s; %x;", pfield(NULL, 0), suc->vendor_id);
 		printf(" %s; %x;", pfield(NULL, 0), suc->product_id);
 		printf(" %s; %u;\n", pfield(NULL, 0), suc->bmaxpower);

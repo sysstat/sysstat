@@ -93,7 +93,7 @@ void print_dbppc_restart(char *cur_date, char *cur_time, char *my_tz, char sep,
 						      : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 										: "UTC"));
 	}
-	printf("%cLINUX-RESTART\t(%d CPU)\n",
+	printf("%cLINUX-RESTART\t(%u CPU)\n",
 	       sep, file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 }
 
@@ -258,7 +258,7 @@ __printf_funct_t print_raw_restart(int *tab, int action, char *cur_date, char *c
 							      : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 											: "UTC"));
 		}
-		printf("; LINUX-RESTART (%d CPU)\n",
+		printf("; LINUX-RESTART (%u CPU)\n",
 		       file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 }
@@ -828,7 +828,7 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 	char temp1[128], temp2[256];
 
 	/* This substring appears on every output line, preformat it here */
-	snprintf(temp1, sizeof(temp1), "%s%s%lld%s",
+	snprintf(temp1, sizeof(temp1), "%s%s%llu%s",
 		 file_hdr->sa_nodename, seps[isdb], itv, seps[isdb]);
 	if (strlen(cur_date)) {
 		snprintf(temp2, sizeof(temp2), "%s%s ", temp1, cur_date);
@@ -1277,13 +1277,13 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile, char *my_
 		if (gmtime_r(&t, &loc_t) != NULL) {
 			printf(_("File time: "));
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			printf("%s UTC (%lld)\n", cur_time, file_hdr->sa_ust_time);
+			printf("%s UTC (%llu)\n", cur_time, file_hdr->sa_ust_time);
 		}
 
 		printf(_("Timezone: %s\n"), file_hdr->sa_tzname);
 
 		/* File composition: file_header, file_activity, record_header */
-		printf(_("File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"),
+		printf(_("File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"),
 		       file_magic->hdr_types_nr[0], file_magic->hdr_types_nr[1], file_magic->hdr_types_nr[2],
 		       file_hdr->act_types_nr[0], file_hdr->act_types_nr[1], file_hdr->act_types_nr[2],
 		       file_hdr->rec_types_nr[0], file_hdr->rec_types_nr[1], file_hdr->rec_types_nr[2]);
@@ -1301,7 +1301,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile, char *my_
 
 			p = get_activity_position(act, fal->id, RESUME_IF_NOT_FOUND);
 
-			printf("%02d: [%02x] ", fal->id, fal->magic);
+			printf("%02u: [%02x] ", fal->id, fal->magic);
 			if (p >= 0) {
 				printf("%-20s", act[p]->name);
 			}
@@ -1312,7 +1312,7 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile, char *my_
 			if (fal->nr2 > 1) {
 				printf("x%d", fal->nr2);
 			}
-			printf("\t(%d,%d,%d)", fal->types_nr[0], fal->types_nr[1], fal->types_nr[2]);
+			printf("\t(%u,%u,%u)", fal->types_nr[0], fal->types_nr[1], fal->types_nr[2]);
 			if ((p >= 0) && (act[p]->magic != fal->magic)) {
 				printf(_(" \t[Unknown format]"));
 			}
@@ -1381,7 +1381,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 			/* Min canvas height is 100 (at least to display "No data") */
 			height = 100;
 		}
-		printf(" width=\"%d\" height=\"%d\""
+		printf(" width=\"%d\" height=\"%u\""
 		       " fill=\"black\" stroke=\"#%06x\" stroke-width=\"1\">\n",
 		       SVG_T_XSIZE * (hdr_parm->views_per_row), height,
 		       svg_colors[palette][SVG_COL_DEFAULT_IDX]);
@@ -1402,9 +1402,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 				if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
 					continue;	/* Activity not selected or no graph available */
 
-				printf("<a xlink:href=\"#g%d-0\" xlink:title=\"%s\">\n",
+				printf("<a xlink:href=\"#g%u-0\" xlink:title=\"%s\">\n",
 				       act[p]->id, act[p]->name);
-				printf("<text x=\"10\" y=\"%d\">%s</text></a>\n",
+				printf("<text x=\"10\" y=\"%u\">%s</text></a>\n",
 				       SVG_H_YSIZE + ht, act[p]->desc);
 				ht += SVG_C_YSIZE;
 			}

@@ -2808,7 +2808,8 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 	FILE *fp;
 	struct stats_softnet *st_softnet_i, st_softnet_read;
 	char line[1024];
-	int cpu = 1, rc = 1, i, cpu_id;
+	int rc = 1, i;
+	unsigned int cpu = 1, cpu_id;
 
 	/* Open /proc/net/softnet_stat file */
 	if ((fp = fopen(NET_SOFTNET, "r")) == NULL)

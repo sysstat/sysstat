@@ -1684,7 +1684,7 @@ __print_funct_t pcp_print_pwr_usb_stats(struct activity *a, int curr)
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 		sprintf(instance, "usb%d", i);
 
-		snprintf(buf, sizeof(buf), "%d", suc->bus_nr);
+		snprintf(buf, sizeof(buf), "%u", suc->bus_nr);
 		pmiPutValue("power.usb.bus", instance, buf);
 
 		snprintf(buf, sizeof(buf), "%x", suc->vendor_id);

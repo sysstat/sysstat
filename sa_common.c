@@ -1496,7 +1496,7 @@ int skip_extra_struct(int ifd, int endian_mismatch, int arch_64)
 		/* Check values consistency */
 		if (MAP_SIZE(xtra_d.extra_types_nr) > xtra_d.extra_size) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: extra_size=%u types=%d,%d,%d\n",
+			fprintf(stderr, "%s: extra_size=%u types=%u,%u,%u\n",
 				__FUNCTION__, xtra_d.extra_size,
 				xtra_d.extra_types_nr[0], xtra_d.extra_types_nr[1], xtra_d.extra_types_nr[2]);
 #endif
@@ -1586,7 +1586,7 @@ int read_record_hdr(int ifd, void *buffer, struct record_header *record_hdr,
 		if ((record_hdr->record_type <= 0) || (record_hdr->record_type > R_EXTRA_MAX) ||
 		    (record_hdr->hour > 23) || (record_hdr->minute > 59) || (record_hdr->second > 60) || (record_hdr->ust_time < 1000000000)) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: record_type=%d HH:MM:SS=%02d:%02d:%02d (%lld)\n",
+			fprintf(stderr, "%s: record_type=%d HH:MM:SS=%02d:%02d:%02d (%llu)\n",
 				__FUNCTION__, record_hdr->record_type,
 				record_hdr->hour, record_hdr->minute, record_hdr->second,
 				record_hdr->ust_time);
@@ -2039,7 +2039,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 	    (MAP_SIZE(file_hdr->act_types_nr) > file_hdr->act_size) ||
 	    (MAP_SIZE(file_hdr->rec_types_nr) > file_hdr->rec_size)) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: sa_act_nr=%d act_size=%u rec_size=%u map_size(act)=%u map_size(rec)=%u\n",
+		fprintf(stderr, "%s: sa_act_nr=%u act_size=%u rec_size=%u map_size(act)=%u map_size(rec)=%u\n",
 			__FUNCTION__, file_hdr->sa_act_nr, file_hdr->act_size, file_hdr->rec_size,
 			MAP_SIZE(file_hdr->act_types_nr), MAP_SIZE(file_hdr->rec_types_nr));
 #endif
@@ -2093,7 +2093,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		    (fal->nr > NR_MAX) || (fal->nr2 > NR2_MAX) ||
 		    (fal->size <= 0) || (fal->size > MAX_ITEM_STRUCT_SIZE)) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: id=%d nr=%d nr2=%d size=%d\n",
+			fprintf(stderr, "%s: id=%u nr=%d nr2=%d size=%d\n",
 				__FUNCTION__, fal->id, fal->nr, fal->nr2, fal->size);
 #endif
 			goto format_error;
@@ -2113,7 +2113,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		/* Check max value for known activities */
 		if (fal->nr > act[p]->nr_max) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: id=%d nr=%d nr_max=%d\n",
+			fprintf(stderr, "%s: id=%u nr=%d nr_max=%d\n",
 				__FUNCTION__, fal->id, fal->nr, act[p]->nr_max);
 #endif
 			goto format_error;
@@ -2136,7 +2136,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		     (fal->types_nr[2] <= act[p]->gtypes_nr[2]))) &&
 		     (fal->magic == act[p]->magic) && !DISPLAY_HDR_ONLY(flags)) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: id=%d file=%d,%d,%d activity=%d,%d,%d\n",
+			fprintf(stderr, "%s: id=%u file=%u,%u,%u activity=%u,%u,%u\n",
 				__FUNCTION__, fal->id, fal->types_nr[0], fal->types_nr[1], fal->types_nr[2],
 				act[p]->gtypes_nr[0], act[p]->gtypes_nr[1], act[p]->gtypes_nr[2]);
 #endif
@@ -2145,7 +2145,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 
 		if (MAP_SIZE(fal->types_nr) > fal->size) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: id=%d size=%u map_size=%u\n",
+		fprintf(stderr, "%s: id=%u size=%d map_size=%u\n",
 			__FUNCTION__, fal->id, fal->size, MAP_SIZE(fal->types_nr));
 #endif
 			goto format_error;

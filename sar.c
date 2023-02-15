@@ -617,7 +617,7 @@ __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *c
 	char restart[64];
 
 	printf("\n%-11s", cur_time);
-	sprintf(restart, "  LINUX RESTART\t(%d CPU)\n",
+	sprintf(restart, "  LINUX RESTART\t(%u CPU)\n",
 		file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	cprintf_s(IS_RESTART, "%s", restart);
 
@@ -927,7 +927,7 @@ void read_header_data(void)
 	/* All activities are not necessarily selected, but NR_ACT is a max */
 	if (file_hdr.sa_act_nr > NR_ACT) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: sa_act_nr=%d\n", __FUNCTION__, file_hdr.sa_act_nr);
+		fprintf(stderr, "%s: sa_act_nr=%u\n", __FUNCTION__, file_hdr.sa_act_nr);
 #endif
 		print_read_error(INCONSISTENT_INPUT_DATA);
 	}
@@ -965,7 +965,7 @@ void read_header_data(void)
 				fprintf(stderr, "%s: p=%d\n", __FUNCTION__, p);
 			}
 			else {
-				fprintf(stderr, "%s: %s: size=%d/%d magic=%x/%x nr=%d nr2=%d types=%d,%d,%d/%d,%d,%d\n",
+				fprintf(stderr, "%s: %s: size=%d/%d magic=%x/%x nr=%d nr2=%d types=%u,%u,%u/%u,%u,%u\n",
 					__FUNCTION__, act[p]->name, act[p]->fsize, file_act.size,
 					act[p]->magic, file_act.magic, file_act.nr, file_act.nr2,
 					act[p]->gtypes_nr[0], act[p]->gtypes_nr[1], act[p]->gtypes_nr[2],
