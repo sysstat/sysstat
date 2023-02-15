@@ -1042,10 +1042,10 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 				 PRINT_LOCAL_TIME(flags) ? my_tz
 							 : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 										   : "UTC"));
-			}
-			else {
-				snprintf(pre, sizeof(pre), "%s", cur_time);
-			}
+		}
+		else {
+			snprintf(pre, sizeof(pre), "%s", cur_time);
+		}
 		pre[sizeof(pre) - 1] = '\0';
 
 		return pre;
