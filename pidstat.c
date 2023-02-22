@@ -2633,6 +2633,11 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
+			/* Check that the argument is a digit */
+			if (!isdigit(argv[opt][6])) {
+				usage(argv[0]);
+			}
+
 			/* Get number of decimal places */
 			dplaces_nr = atoi(argv[opt] + 6);
 			if ((dplaces_nr < 0) || (dplaces_nr > 2)) {
