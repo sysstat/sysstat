@@ -1,19 +1,77 @@
 #!/bin/sh
+# Script for sysstat simulation test environment
+# (C) 2020-2023 Sebastien GODARD (sysstat <at> orange.fr)
+
 if [ "$1" = "conf" ]
 then
+	# Configure sysstat in test mode
 	make distclean
 	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo
 elif [ "$1" = "conflto" ]
 then
+	# Configure sysstat in test mode with LTO support
 	make distclean
 	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --enable-lto
 elif [ "$1" = "comp" ]
 then
+	# Compile sysstat in test mode
 	make TFLAGS="-DTEST"
 else
-	make distclean
-	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make simtest
+	if [ "$1" != "sim" ]
+	then
+		# Configure then compile sysstat in test mode
+		make distclean
+#		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make simtest
+		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make testcomp TFLAGS="-DTEST"
+	fi
+	rm -f tests/results.tmp
+	COUNT=0
+	TOTAL=`ls -1 tests/0* | wc -l`
+
+	LIST=`ls tests | grep -E '^[0-9]+$' | sort -n`
+
+	for f in ${LIST}; do
+
+		if [ "$2" = cont -a -f tests/LAST ]
+		then
+			L=`cat tests/LAST`
+			if [ $f -lt $L ]
+			then
+				continue
+			else
+				rm -f tests/LAST
+			fi
+		fi
+
+		let "COUNT+=1"
+		echo $f
+		echo -n "$f: " >> tests/results.tmp
+		cat tests/$f | /bin/sh
+
+		if [ $? -eq 0 ]
+		then
+			if [ -f tests/SKIPPED ]
+			then
+				echo Skipped. >> tests/results.tmp
+				rm tests/SKIPPED;
+			else
+				echo Success! >> tests/results.tmp;
+			fi
+		else
+			echo Failed... >> tests/results.tmp;
+			echo $f > tests/LAST;
+			if [ "$1" != "ignore" -a "$2" != "ignore" ]
+			then
+				exit
+			fi
+		fi
+	done
+	rm -f tests/root
+	ln -s root1 tests/root
+	echo Run ${COUNT}/${TOTAL} test\(s\)
+	echo Simulation tests: Success!
 fi
+
 if [ "$?" = "0" -a "$1" = "all" ]
 then
 	make extratest && make distclean && ./configure --disable-nls --disable-sensors --disable-pcp sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && echo "EXTRA TESTS: Success!"
