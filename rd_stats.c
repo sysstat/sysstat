@@ -2803,7 +2803,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
  ***************************************************************************
  */
 int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
-		 unsigned char online_cpu_bitmap[])
+		 const unsigned char online_cpu_bitmap[])
 {
 	FILE *fp;
 	struct stats_softnet *st_softnet_i, st_softnet_read;

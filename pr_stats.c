@@ -59,7 +59,7 @@ extern unsigned long avg_count;
  ***************************************************************************
  */
 void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, int vwidth,
-		    unsigned char *offline_bitmap)
+		    const unsigned char *offline_bitmap)
 {
 	char hline[HEADER_LINE_LEN] = "";
 	char cfld[16], dfld[16];

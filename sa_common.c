@@ -1255,7 +1255,7 @@ void select_default_activity(struct activity *act[])
  * @is64bit	TRUE if data come from a 64-bit machine.
  ***************************************************************************
  */
-void swap_struct(unsigned int types_nr[], void *ps, int is64bit)
+void swap_struct(const unsigned int types_nr[], void *ps, int is64bit)
 {
 	int i;
 	uint64_t *x;
@@ -1315,7 +1315,7 @@ void swap_struct(unsigned int types_nr[], void *ps, int is64bit)
  * -1 if an error has been encountered, or 0 otherwise.
  ***************************************************************************
  */
-int remap_struct(unsigned int gtypes_nr[], unsigned int ftypes_nr[],
+int remap_struct(const unsigned int gtypes_nr[], const unsigned int ftypes_nr[],
 		 void *ps, unsigned int f_size, unsigned int g_size, size_t b_size)
 {
 	int d;

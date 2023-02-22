@@ -90,7 +90,7 @@ unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =
  * @spmax	Array containing the possible new max values for current activity.
  ***************************************************************************
  */
-void save_extrema(unsigned int types_nr[], void *cs, void *ps, unsigned long long itv,
+void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned long long itv,
 		  double *spmin, double *spmax, int g_fields[])
 {
 	unsigned long long *lluc, *llup;

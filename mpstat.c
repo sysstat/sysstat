@@ -663,7 +663,8 @@ unsigned long long get_global_cpu_mpstats(int prev, int curr,
  ***************************************************************************
  */
 void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int curr,
-			   char *prev_string, char *curr_string, unsigned char offline_cpu_bitmap[])
+			   char *prev_string, char *curr_string,
+			   const unsigned char offline_cpu_bitmap[])
 {
 	int i;
 	struct stats_cpu *scc, *scp;
@@ -777,7 +778,7 @@ void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev,
  ***************************************************************************
  */
 void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, int curr,
-			  unsigned char offline_cpu_bitmap[])
+			  const unsigned char offline_cpu_bitmap[])
 {
 	int i, next = FALSE;
 	char cpu_name[16], topology[1024] = "";
@@ -1214,7 +1215,8 @@ void write_node_stats(int dis, unsigned long long deltot_jiffies, int prev, int 
  ***************************************************************************
  */
 void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
-			       char *prev_string, char *curr_string, unsigned char offline_cpu_bitmap[])
+			       char *prev_string, char *curr_string,
+			       const unsigned char offline_cpu_bitmap[])
 {
 	struct stats_cpu *scc, *scp;
 	struct stats_global_irq *sic, *sip;
@@ -1283,7 +1285,7 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
  ***************************************************************************
  */
 void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int curr,
-			      unsigned char offline_cpu_bitmap[])
+			      const unsigned char offline_cpu_bitmap[])
 {
 	struct stats_cpu *scc, *scp;
 	struct stats_global_irq *sic, *sip;
@@ -1403,7 +1405,8 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
  */
 void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			      unsigned long long itv, int prev, int curr,
-			      char *prev_string, char *curr_string, unsigned char offline_cpu_bitmap[])
+			      char *prev_string, char *curr_string,
+			      const unsigned char offline_cpu_bitmap[])
 {
 	int j = ic_nr, offset, cpu, colwidth[NR_IRQS];
 	struct stats_irqcpu *p, *q, *p0, *q0;
@@ -1542,7 +1545,7 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
  */
 void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 			     unsigned long long itv, int prev, int curr, int type,
-			     unsigned char offline_cpu_bitmap[])
+			     const unsigned char offline_cpu_bitmap[])
 {
 	int j = ic_nr, offset, cpu;
 	struct stats_irqcpu *p, *q, *p0, *q0;

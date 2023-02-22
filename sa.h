@@ -1642,6 +1642,6 @@ void set_hdr_rectime
 void set_record_timestamp_string
 	(uint64_t, char *, char *, int, struct tstamp_ext *);
 void swap_struct
-	(unsigned int [], void *, int);
+	(const unsigned int [], void *, int);
 #endif /* SOURCE_SADC undefined */
 #endif  /* _SA_H */

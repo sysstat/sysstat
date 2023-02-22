@@ -878,7 +878,7 @@ __nr_t read_filesystem
 __nr_t read_fchost
 	(struct stats_fchost *, __nr_t);
 int read_softnet
-	(struct stats_softnet *, __nr_t, unsigned char []);
+	(struct stats_softnet *, __nr_t, const unsigned char []);
 __nr_t read_psicpu
 	(struct stats_psi_cpu *);
 __nr_t read_psiio
