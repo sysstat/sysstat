@@ -300,6 +300,7 @@ NOTES:
 01460	LC_ALL=C ./sar -q FOO 2>&1 | grep "Usage:" >/dev/null
 01470	LC_ALL=C ./sadf -x -j tests/data.tmp 2>&1 | grep "Usage:" >/dev/null
 01480	LC_ALL=C ./sar -A -f tests/data-small_ust.tmp 2>&1 | grep "Invalid data" >/dev/null
+01485	LC_ALL=C ./sar --dec=A 2>&1 | grep "Usage:" >/dev/null
 
 =====	Specific tests for sensors statistics (basic sensor output already tested using data-11.6.5 conversion)
 01500	LC_ALL=C TZ=GMT ./sadf -d tests/data-11.6.5.tmp -- -m FAN,IN,TEMP > tests/out.data-11.6.5-sadf-d.tmp
@@ -424,6 +425,7 @@ NOTES:
 02515	LC_ALL=C ./iostat -H 2>&1 | grep "Usage:" >/dev/null
 02520	LC_ALL=C ./iostat -j FOObar 2>&1 | grep "Invalid" >/dev/null
 02525	LC_ALL=C ./iostat -p ALL +f tests/root/foo  2>&1 | grep "Usage:" >/dev/null
+02530	LC_ALL=C ./iostat --dec=A 2>&1 | grep "Usage:" >/dev/null
 
 =====	Playing again with iostat
 02600	LC_ALL=C TZ=GMT ./iostat -ym 1 2 > tests/out.iostat-ym.tmp
@@ -488,6 +490,7 @@ NOTES:
 03125	LC_ALL=C ./mpstat --dec=3 2>&1 | grep "Usage:" >/dev/null
 03130	LC_ALL=C ./mpstat -N -1 2>&1 | grep "Usage:" >/dev/null
 03135	LC_ALL=C ./mpstat -P 16 2>&1 | grep "Usage:" >/dev/null
+03140	LC_ALL=C ./mpstat --dec=A 2>&1 | grep "Usage:" >/dev/null
 
 =====	tapestat: Basic tests
 04000	LC_ALL=C TZ=GMT ./tapestat > tests/out.tapestat.tmp
@@ -519,6 +522,7 @@ NOTES:
 04610	LC_ALL=C ./cifsiostat 0 2 2>&1 | grep "Usage:" >/dev/null
 04615	LC_ALL=C ./cifsiostat 2 0 2>&1 | grep "Usage:" >/dev/null
 04620	LC_ALL=C ./cifsiostat 2 2 2 2>&1 | grep "Usage:" >/dev/null
+04625	LC_ALL=C ./cifsiostat --dec=A 2>&1 | grep "Usage:" >/dev/null
 
 =====	pidstat: Basic tests
 05000	LC_ALL=C TZ=GMT ./pidstat > tests/out.pidstat.tmp
@@ -569,6 +573,9 @@ NOTES:
 05440	LC_ALL=C TZ=GMT ./pidstat -t -svwu -p 21342,1234,7900,9009 2 6 > tests/out.pidstat-plist.tmp
 05450	LC_ALL=C TZ=GMT ./pidstat 2 6 -t -e sleep 3 > tests/out.pidstat-e.tmp
 05452	LC_ALL=C TZ=GMT ./pidstat -e sleep 2 > tests/out2.pidstat-e.tmp
+
+=====	Test pidstat error cases
+05600	LC_ALL=C ./pidstat --dec=A 2>&1 | grep "Usage:" >/dev/null
 
 =====	Tests to be done at the very end
 08900	cat tests/TLIST | grep ^0 | awk '{print $1}' > tests/out.list1.tmp
