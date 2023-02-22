@@ -1512,7 +1512,7 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 	else {
 		if ((hpart == 1) || !hpart) {
 			/* %rrqm */
-			xios.rrqm_pc = (ioi->rd_merges - ioj->rd_merges) + (ioi->rd_ios - ioj->rd_ios) ?
+			xios.rrqm_pc = ((ioi->rd_merges - ioj->rd_merges) + (ioi->rd_ios - ioj->rd_ios)) ?
 				       (double) ((ioi->rd_merges - ioj->rd_merges)) /
 				       ((ioi->rd_merges - ioj->rd_merges) + (ioi->rd_ios - ioj->rd_ios)) * 100 :
 				       0.0;
@@ -1527,7 +1527,7 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		}
 		if ((hpart == 2) || !hpart) {
 			/* %wrqm */
-			xios.wrqm_pc = (ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios) ?
+			xios.wrqm_pc = ((ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios)) ?
 				       (double) ((ioi->wr_merges - ioj->wr_merges)) /
 				       ((ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios)) * 100 :
 				       0.0;
@@ -1542,7 +1542,7 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		}
 		if ((hpart == 3) || !hpart) {
 			/* %drqm */
-			xios.drqm_pc = (ioi->dc_merges - ioj->dc_merges) + (ioi->dc_ios - ioj->dc_ios) ?
+			xios.drqm_pc = ((ioi->dc_merges - ioj->dc_merges) + (ioi->dc_ios - ioj->dc_ios)) ?
 				       (double) ((ioi->dc_merges - ioj->dc_merges)) /
 				       ((ioi->dc_merges - ioj->dc_merges) + (ioi->dc_ios - ioj->dc_ios)) * 100 :
 				       0.0;
