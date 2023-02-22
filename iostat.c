@@ -2033,7 +2033,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 				/* SIGINT signal caught => Terminate JSON output properly */
 				count = 0;
 			}
-			else if (DISPLAY_JSON_OUTPUT(flags) && count && !skip) {
+			else if (DISPLAY_JSON_OUTPUT(flags) && !skip) {	/* count != 0 */
 				printf(",");
 			}
 			skip = 0;

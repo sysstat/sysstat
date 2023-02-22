@@ -2836,8 +2836,11 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			}
 		}
 
-		if (!DISPLAY_ZERO_OMIT(flags) || dispavg || WANT_SINCE_BOOT(flags) || !found ||
-		    (found && memcmp(sfp, sfc, STATS_FILESYSTEM_SIZE2CMP))) {
+		if (!DISPLAY_ZERO_OMIT(flags) || dispavg
+					      || WANT_SINCE_BOOT(flags)
+					      || !found
+					      /* found is true */
+					      || memcmp(sfp, sfc, STATS_FILESYSTEM_SIZE2CMP)) {
 
 			printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
 			cprintf_f(unit, FALSE, 2, 9, 0,
