@@ -3,4 +3,5 @@ if [ ! -z "$VER_JSON" ]; then
 	cat tests/out.data-11.6.5-sadf-j.tmp | $VER_JSON >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

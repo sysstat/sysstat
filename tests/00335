@@ -5,4 +5,5 @@ if [ ! -z "$VER_JSON" ]; then
 	./mpstat 2 3 -o JSON | $VER_JSON >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

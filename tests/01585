@@ -4,4 +4,5 @@ if [ "${TGLIB32}" = "yes" ]; then
 	LC_ALL=C TZ=GMT tests/32bits/sar32 -A -f tests/data-ssr.tmp > tests/out22.sar-ssr.tmp
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

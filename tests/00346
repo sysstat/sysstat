@@ -5,4 +5,5 @@ if [ ! -z "$VER_JSON" ]; then
 	./iostat 1 3 -o JSON | $VER_JSON >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

@@ -14,4 +14,5 @@ if [ "${TGLIB32}" = "yes" ]; then
 	TZ=GMT tests/32bits/sadc32 --unix_time=1555593639 -S XALL tests/data32.tmp 1 1 >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

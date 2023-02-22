@@ -5,4 +5,5 @@ if [ ! -z "$VER_XML" ]; then
 	./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

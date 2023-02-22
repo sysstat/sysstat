@@ -3,4 +3,5 @@ if [ ! -z "$VER_JSON" ]; then
 	./sadf -j tests/data0-1.tmp -- -A | $VER_JSON >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

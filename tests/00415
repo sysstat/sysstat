@@ -4,4 +4,5 @@ if [ ! -z "$VER_XML" ]; then
 	./sadf -Hx tests/data.tmp -C | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

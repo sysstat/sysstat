@@ -4,4 +4,5 @@ if [ "$HAVE_PCP" = "y" ]; then
 	LC_ALL=C ./sadf -l -O pcparchive=tests/pcpar tests/data.tmp -C -- -A
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi

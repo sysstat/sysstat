@@ -4,4 +4,5 @@ if [ ! -z "$VER_XML" ]; then
 	./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
 else
 	echo Skipped
+	touch tests/SKIPPED
 fi
