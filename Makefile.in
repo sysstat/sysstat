@@ -536,13 +536,13 @@ squeeze:
 
 # Update Makefile.in by hand - Restore mode for iconfig.
 copyyear:
-	catalogs="$(SOURCE_CODE) iconfig README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
+	catalogs="$(SOURCE_CODE) iconfig do_test README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
 	for c in $$catalogs; do \
 		echo "Updating file: $$c"; \
 		sed 's/-2022/-2023/g' $$c > copyyear.tmp; \
 		mv copyyear.tmp $$c; \
 	done
-	chmod 755 iconfig
+	chmod 755 iconfig do_test
 
 install_nls: locales
 ifdef REQUIRE_NLS
