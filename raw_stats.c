@@ -49,14 +49,15 @@ extern char bat_status[][16];
  */
 char *pfield(char *hdr_line, int pos)
 {
-	char hline[HEADER_LINE_LEN] = "";
 	static char field[HEADER_LINE_LEN] = "";
 	static char gen_name[HEADER_LINE_LEN] = "";
 	static int idx = 0;
-	char *hl;
 	int i, j = 0;
 
 	if (hdr_line) {
+		char hline[HEADER_LINE_LEN] = "";
+		char *hl;
+
 		strncpy(hline, hdr_line, sizeof(hline) - 1);
 		hline[sizeof(hline) - 1] = '\0';
 		idx = 0;

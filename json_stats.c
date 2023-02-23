@@ -535,11 +535,11 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
 	int sep = FALSE;
-	unsigned long long nousedmem;
 
 	xprintf0(tab, "\"memory\": {");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+		unsigned long long nousedmem;
 
 		sep = TRUE;
 

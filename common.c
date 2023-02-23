@@ -138,9 +138,10 @@ time_t get_xtime(struct tm *rectime, int d_off, int utc)
 time_t get_time(struct tm *rectime, int d_off)
 {
 	static int utc = 0;
-	char *e;
 
 	if (!utc) {
+		char *e;
+
 		/* Read environment variable value once */
 		if ((e = __getenv(ENV_TIME_DEFTM)) != NULL) {
 			utc = !strcmp(e, K_UTC);
@@ -488,9 +489,10 @@ unsigned int get_devmap_major(void)
 int is_iso_time_fmt(void)
 {
 	static int is_iso = -1;
-	char *e;
 
 	if (is_iso < 0) {
+		char *e;
+
 		is_iso = (((e = __getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO));
 	}
 	return is_iso;
@@ -1134,7 +1136,6 @@ char *get_device_name(unsigned int major, unsigned int minor, unsigned long long
 	static unsigned int dm_major = 0;
 	char *dev_name = NULL, *persist_dev_name = NULL, *bang;
 	static char sid[64], dname[MAX_NAME_LEN];
-	char xsid[32] = "", pn[16] = "";
 
 	if (disp_persist_name) {
 		persist_dev_name = get_persistent_name_from_pretty(get_devname(major, minor));
@@ -1145,6 +1146,8 @@ char *get_device_name(unsigned int major, unsigned int minor, unsigned long long
 	}
 	else {
 		if (use_stable_id && (wwn[0] != 0)) {
+			char xsid[32] = "", pn[16] = "";
+
 			if (wwn[1] != 0) {
 				sprintf(xsid, "%016llx", wwn[1]);
 			}

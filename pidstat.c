@@ -249,7 +249,6 @@ struct st_pid *add_list_pid(struct st_pid **plist, pid_t pid, pid_t tgid)
 {
 	struct st_pid *p, *ps, *tgid_p = NULL;
 	int i;
-	int tgid_found = FALSE;
 
 	if (!pid)
 		return NULL;
@@ -275,6 +274,8 @@ struct st_pid *add_list_pid(struct st_pid **plist, pid_t pid, pid_t tgid)
 		}
 	}
 	else {
+		int tgid_found = FALSE;
+
 		/*
 		 * PID is a TID.
 		 * It will be inserted in ascending order immediately
@@ -505,7 +506,7 @@ int read_proc_pid_stat(pid_t pid, struct st_pid *plist,
  */
 int read_proc_pid_sched(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 {
-	int fd, sz, rc = 0;
+	int fd, rc = 0;
 	char filename[128];
 	static char buffer[1024 + 1];
 	unsigned long long wtime = 0;
@@ -519,6 +520,8 @@ int read_proc_pid_sched(pid_t pid, struct st_pid *plist, pid_t tgid, int curr)
 	}
 
 	if ((fd = open(filename, O_RDONLY)) >= 0) {
+		int sz;
+
 		/* schedstat file found for process */
 		sz = read(fd, buffer, 1024);
 		close(fd);
@@ -671,7 +674,7 @@ int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 	FILE *fp;
 	char filename[128], line[MAX_CMDLINE_LEN];
 	size_t len;
-	int i, found = FALSE;
+	int found = FALSE;
 
 	if (tgid) {
 		sprintf(filename, TASK_CMDLINE, tgid, pid);
@@ -690,6 +693,8 @@ int read_proc_pid_cmdline(pid_t pid, struct st_pid *plist, pid_t tgid)
 	fclose(fp);
 
 	if (len) {
+		int i;
+
 		for (i = len - 2; i >= 0; i--) {
 			if (line[i]) {
 				found = TRUE;
@@ -931,8 +936,6 @@ void read_task_stats(pid_t pid, struct st_pid *plist, int curr)
  */
 void read_stats(int curr)
 {
-	DIR *dir;
-	struct dirent *drp;
 	unsigned int thr_nr;
 	pid_t pid;
 	struct st_pid *plist;
@@ -961,6 +964,8 @@ void read_stats(int curr)
 	free(st_cpu);
 
 	if (DISPLAY_ALL_PID(pidflag)) {
+		DIR *dir;
+		struct dirent *drp;
 
 		/* Open /proc directory */
 		if ((dir = __opendir(PROC)) == NULL) {
@@ -1059,7 +1064,6 @@ int get_pid_to_display(int prev, int curr, unsigned int activity, unsigned int p
 	int rc;
 	char *pc;
 	regex_t regex;
-	struct passwd *pwdent;
 	struct pid_stats *pstc = plist->pstats[curr], *pstp = plist->pstats[prev];
 
 	if (!plist->exist)
@@ -1204,6 +1208,8 @@ int get_pid_to_display(int prev, int curr, unsigned int activity, unsigned int p
 	}
 
 	if (USER_STRING(pidflag)) {
+		struct passwd *pwdent;
+
 		if ((pwdent = __getpwuid(plist->uid)) != NULL) {
 			if (strcmp(pwdent->pw_name, userstr))
 				/* This PID doesn't belong to user */

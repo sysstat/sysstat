@@ -329,12 +329,12 @@ void display_sa_file_version(FILE *st, struct file_magic *file_magic)
 void handle_invalid_sa_file(int fd, struct file_magic *file_magic, char *file,
 			    int n)
 {
-	unsigned short fmt_magic;
-
 	fprintf(stderr, _("Invalid system activity file: %s\n"), file);
 
 	if (n == FILE_MAGIC_SIZE) {
 		if ((file_magic->sysstat_magic == SYSSTAT_MAGIC) || (file_magic->sysstat_magic == SYSSTAT_MAGIC_SWAPPED)) {
+			unsigned short fmt_magic;
+
 			/* This is a sysstat file, but this file has an old format */
 			display_sa_file_version(stderr, file_magic);
 
@@ -2773,11 +2773,9 @@ int parse_sa_P_opt(char *argv[], int *opt, uint64_t *flags, struct activity *act
  */
 void set_bitmaps(struct activity *act[], uint64_t *flags)
 {
-	int p;
-
 	if (!USE_OPTION_P(*flags)) {
 		/* Force -P ALL */
-		p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
+		int p = get_activity_position(act, A_CPU, EXIT_IF_NOT_FOUND);
 		memset(act[p]->bitmap->b_array, ~0,
 		       BITMAP_SIZE(act[p]->bitmap->b_size));
 	}
@@ -2845,11 +2843,8 @@ void parse_sa_devices(char *argv, struct activity *a, int max_len, int *opt, int
  */
 double compute_ifutil(struct stats_net_dev *st_net_dev, double rx, double tx)
 {
-	unsigned long long speed;
-
 	if (st_net_dev->speed) {
-
-		speed = (unsigned long long) st_net_dev->speed * 1000000;
+		unsigned long long speed = (unsigned long long) st_net_dev->speed * 1000000;
 
 		if (st_net_dev->duplex == C_DUPLEX_FULL) {
 			/* Full duplex */
@@ -3053,7 +3048,6 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 {
 	char cur_date[TIMESTAMP_LEN], cur_time[TIMESTAMP_LEN];
 	int dp = 1;
-	int p;
 
 	/* Fill timestamp structure (rectime) for current record */
 	if (sa_get_record_timestamp_struct(l_flags, record_hdr, rectime))
@@ -3072,6 +3066,8 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 	}
 
 	if (rtype == R_RESTART) {
+		int p;
+
 		/* Read new cpu number following RESTART record */
 		file_hdr->sa_cpu_nr = read_nr_value(ifd, file, file_magic,
 						    endian_mismatch, arch_64, TRUE);
@@ -3438,9 +3434,10 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 char *get_fs_name_to_display(struct activity *a, uint64_t flags, struct stats_filesystem *st_fs)
 {
 	char *pname = NULL, *persist_dev_name;
-	char fname[MAX_FS_LEN];
 
 	if (DISPLAY_PERSIST_NAME_S(flags) && !DISPLAY_MOUNT(a->opt_flags)) {
+		char fname[MAX_FS_LEN];
+
 		strncpy(fname, st_fs->fs_name, sizeof(fname));
 		fname[sizeof(fname) - 1] = '\0';
 		if ((persist_dev_name = get_persistent_name_from_pretty(basename(fname))) != NULL) {

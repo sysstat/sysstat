@@ -632,9 +632,9 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 				      unsigned int id_seq[])
 {
 #ifdef HAVE_PCP
-	int i, p;
-
 	if (action & F_BEGIN) {
+		int i, p;
+
 		for (i = 0; i < NR_ACT; i++) {
 			if (!id_seq[i])
 				continue;	/* Activity not in file */
@@ -1112,10 +1112,11 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile, char *my_
 {
 	struct tm rectime, loc_t;
 	time_t t = file_hdr->sa_ust_time;
-	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
+		char cur_time[TIMESTAMP_LEN];
+
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		printf("<!DOCTYPE sysstat PUBLIC \"DTD v%s sysstat //EN\"\n",
 		       XML_DTD_VERSION);
@@ -1183,10 +1184,11 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile, char *my
 {
 	struct tm rectime, loc_t;
 	time_t t = file_hdr->sa_ust_time;
-	char cur_time[TIMESTAMP_LEN];
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
+		char cur_time[TIMESTAMP_LEN];
+
 		xprintf(*tab, "{\"sysstat\": {");
 
 		xprintf(++(*tab), "\"hosts\": [");
@@ -1241,14 +1243,14 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile, char *my_
 				  struct activity *act[], unsigned int id_seq[],
 				  struct file_activity *file_actlst)
 {
-	int i, p;
-	struct tm rectime, loc_t;
-	time_t t = file_hdr->sa_ust_time;
-	struct file_activity *fal;
-	char cur_time[TIMESTAMP_LEN];
-
 	/* Actions F_MAIN and F_END ignored */
 	if (action & F_BEGIN) {
+		struct tm rectime, loc_t;
+		time_t t = file_hdr->sa_ust_time;
+		int i, p;
+		char cur_time[TIMESTAMP_LEN];
+		struct file_activity *fal;
+
 		printf(_("System activity data file: %s (%#x)\n"),
 		       dfile, file_magic->format_magic);
 
@@ -1348,8 +1350,6 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
 	struct tm rectime;
 	time_t t = file_hdr->sa_ust_time;
-	unsigned int height, ht = 0;
-	int i, p;
 
 	if (action & F_BEGIN) {
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -1365,6 +1365,8 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 	}
 
 	if (action & F_MAIN) {
+		unsigned int height;
+
 		if (SET_CANVAS_HEIGHT(flags)) {
 			/*
 			 * Option "-O height=..." used: @graph_nr is
@@ -1394,6 +1396,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 				 PLAIN_OUTPUT);
 		printf("</text>\n");
 		if (DISPLAY_TOC(flags)) {
+			unsigned int ht = 0;
+			int i, p;
+
 			for (i = 0; i < NR_ACT; i++) {
 				if (!id_seq[i])
 					continue;	/* Activity not in file */
@@ -1455,7 +1460,6 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile, char *my_
 {
 #ifdef HAVE_PCP
 	char buf[64];
-	int rc;
 	unsigned long long utc_sec = file_hdr->sa_ust_time;
 
 	if (action & F_BEGIN) {
@@ -1497,6 +1501,8 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile, char *my_
 
 	if (action & F_END) {
 		if (action & F_BEGIN) {
+			int rc;
+
 			if ((rc = pmiWrite(utc_sec, 0)) < 0) {
 				fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
 				exit(4);

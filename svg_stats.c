@@ -600,7 +600,6 @@ void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, enum svg_gra
 		    int pos, double gmax, double *spmax)
 {
 	int j;
-	char val[32];
 
 	for (j = 0; j < asf_nr; j++) {
 		/* Init autoscale factors */
@@ -608,6 +607,8 @@ void gr_autoscaling(unsigned int asfactor[], int asf_nr, int group, enum svg_gra
 	}
 
 	if (AUTOSCALE_ON(flags) && (group > 1) && gmax && (g_type == SVG_LINE_GRAPH)) {
+		char val[32];
+
 		/* Autoscaling... */
 		for (j = 0; (j < group) && (j < asf_nr); j++) {
 			if (!*(spmax + pos + j) || (*(spmax + pos + j) == gmax))
@@ -1156,7 +1157,6 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				    unsigned long long itv, struct record_header *record_hdr)
 {
 	struct stats_cpu *scc, *scp;
-	unsigned long long deltot_jiffies = 1;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	int group1[] = {5};
 	int group2[] = {9};
@@ -1167,9 +1167,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[16];
-	double offset, val;
-	int i, j, k, pos;
+	double offset;
+	int i, pos;
 
 	if (action & F_BEGIN) {
 		/*
@@ -1180,6 +1179,8 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	}
 
 	if (action & F_MAIN) {
+		unsigned long long deltot_jiffies = 1;
+		int j, k;
 
 		/* @nr[curr] cannot normally be greater than @nr_ini */
 		if (a->nr[curr] > a->nr_ini) {
@@ -1233,7 +1234,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 				if (!deltot_jiffies) {	/* Current CPU is tickless */
 
-					val = 100.0;	/* Tickless CPU: %idle = 100% */
+					double val = 100.0;	/* Tickless CPU: %idle = 100% */
 
 					if (DISPLAY_CPU_DEF(a->opt_flags)) {
 						j  = 5;	/* -u */
@@ -1368,6 +1369,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 	if (action & F_END) {
 		int xid = 0, displayed;
+		char item_name[16];
 
 		if (DISPLAY_IDLE(flags)) {
 			/* Include additional %idle field */
@@ -1776,9 +1778,6 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	static char **out;
 	static int *outsize;
 	static int xid = 0;
-	double tval;
-	int i;
-	unsigned long long nousedmem;
 
 	if (action & F_BEGIN) {
 		/*
@@ -1789,6 +1788,9 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
+		unsigned long long nousedmem;
+		double tval;
+
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax, g_fields);
@@ -1943,6 +1945,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_END) {
+		int i;
 
 		/* Conversion kB -> MB */
 		for (i = 0; i < 17; i++) {
@@ -4307,7 +4310,6 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[16];
 	int i;
 
 	if (action & F_BEGIN) {
@@ -4346,6 +4348,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 
 	if (action & F_END) {
 		int xid = 0;
+		char item_name[16];
 
 		for (i = 0; (i < a->item_list_sz) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -4410,7 +4413,6 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[MAX_SENSORS_DEV_LEN + 16];
 	int i;
 
 	if (action & F_BEGIN) {
@@ -4438,6 +4440,7 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_END) {
+		char item_name[MAX_SENSORS_DEV_LEN + 16];
 		int xid = 0;
 
 		for (i = 0; i < a->item_list_sz; i++) {
@@ -4490,9 +4493,7 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[MAX_SENSORS_DEV_LEN + 16];
 	int i;
-	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -4503,6 +4504,8 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 	}
 
 	if (action & F_MAIN) {
+		double tval;
+
 		/* For each temperature sensor */
 		for (i = 0; i < a->nr[curr]; i++) {
 
@@ -4537,6 +4540,7 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 	}
 
 	if (action & F_END) {
+		char item_name[MAX_SENSORS_DEV_LEN + 16];
 		int xid = 0;
 
 		for (i = 0; i < a->item_list_sz; i++) {
@@ -4590,9 +4594,7 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[MAX_SENSORS_DEV_LEN + 16];
 	int i;
-	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -4603,6 +4605,8 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
+		double tval;
+
 		/* For each voltage input sensor */
 		for (i = 0; i < a->nr[curr]; i++) {
 
@@ -4637,6 +4641,7 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_END) {
+		char item_name[MAX_SENSORS_DEV_LEN + 16];
 		int xid = 0;
 
 		for (i = 0; i < a->item_list_sz; i++) {
@@ -4687,7 +4692,6 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[16];
 	int i;
 
 	if (action & F_BEGIN) {
@@ -4722,6 +4726,7 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_END) {
+		char item_name[16];
 		int xid = 0;
 
 		for (i = 0; i < a->item_list_sz; i++) {
@@ -4776,7 +4781,6 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -4789,6 +4793,8 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 	}
 
 	if (action & F_MAIN) {
+		double tval;
+
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
 			     itv, spmin, spmax, g_fields);
@@ -5298,9 +5304,8 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	char item_name[16];
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
-	int i, pos, restart;
+	int i, pos;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5311,6 +5316,8 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_MAIN) {
+		int restart;
+
 		memset(&ssnczero, 0, STATS_SOFTNET_SIZE);
 
 		/* @nr[curr] cannot normally be greater than @nr_ini */
@@ -5390,6 +5397,8 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_END) {
+		char item_name[16];
+
 		for (i = 0; (i < a->item_list_sz) && (i < a->bitmap->b_size + 1); i++) {
 
 			/* Should current CPU (including CPU "all") be displayed? */
@@ -5448,7 +5457,6 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5459,6 +5467,8 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
+		double tval;
+
 		/* Check for min/max values */
 		if (psic->some_acpu_10 > *spmax) {
 			*spmax = psic->some_acpu_10;
@@ -5552,7 +5562,6 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5563,6 +5572,8 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 	}
 
 	if (action & F_MAIN) {
+		double tval;
+
 		/* Check for min/max values */
 		if (psic->some_aio_10 > *spmax) {
 			*spmax = psic->some_aio_10;
@@ -5704,7 +5715,6 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	double tval;
 
 	if (action & F_BEGIN) {
 		/*
@@ -5715,6 +5725,8 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
+		double tval;
+
 		/* Check for min/max values */
 		if (psic->some_amem_10 > *spmax) {
 			*spmax = psic->some_amem_10;

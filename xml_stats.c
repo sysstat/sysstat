@@ -513,11 +513,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 {
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
-	unsigned long long nousedmem;
 
 	xprintf(tab, "<memory unit=\"kB\">");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+		unsigned long long nousedmem;
 
 		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
 		if (nousedmem > smc->tlmkb) {

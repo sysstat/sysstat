@@ -810,10 +810,10 @@ __print_funct_t render_memory_stats(struct activity *a, int isdb, char *pre,
 		*smc = (struct stats_memory *) a->buf[curr];
 	int pt_newlin
 		= PT_NOFLAG + (DISPLAY_HORIZONTALLY(flags) ? 0 : PT_NEWLIN);
-	int ptn;
-	unsigned long long nousedmem;
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+		unsigned long long nousedmem;
+		int ptn;
 
 		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
 		if (nousedmem > smc->tlmkb) {

@@ -612,11 +612,12 @@ void pcp_def_queue_metrics(void)
 void pcp_def_disk_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
 	static pmInDom indom = PM_INDOM_NULL;
-	struct sa_item *list = a->item_list;
 
 	if (indom == PM_INDOM_NULL) {
+		int inst = 0;
+		struct sa_item *list = a->item_list;
+
 		/* Create domain */
 		indom = pmInDom_build(60, 1);
 
@@ -692,11 +693,12 @@ void pcp_def_disk_metrics(struct activity *a)
 void pcp_def_net_dev_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
 	static pmInDom indom = PM_INDOM_NULL;
-	struct sa_item *list = a->item_list;
 
 	if (indom == PM_INDOM_NULL) {
+		int inst = 0;
+		struct sa_item *list = a->item_list;
+
 		/* Create domain */
 		indom = pmInDom_build(60, 3);
 
@@ -1558,11 +1560,12 @@ void pcp_def_huge_metrics()
 void pcp_def_pwr_fan_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
-	char buf[16];
 
 	if (indom == PM_INDOM_NULL) {
+		int inst;
+		char buf[16];
+
 		/* Create domain */
 		indom = pmInDom_build(34, 0);
 
@@ -1597,11 +1600,12 @@ void pcp_def_pwr_fan_metrics(struct activity *a)
 void pcp_def_pwr_temp_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
-	char buf[16];
 
 	if (indom == PM_INDOM_NULL) {
+		int inst;
+		char buf[16];
+
 		/* Create domain */
 		indom = pmInDom_build(34, 1);
 
@@ -1636,11 +1640,12 @@ void pcp_def_pwr_temp_metrics(struct activity *a)
 void pcp_def_pwr_in_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
-	char buf[16];
 
 	if (indom == PM_INDOM_NULL) {
+		int inst;
+		char buf[16];
+
 		/* Create domain */
 		indom = pmInDom_build(34, 2);
 
@@ -1675,11 +1680,12 @@ void pcp_def_pwr_in_metrics(struct activity *a)
 void pcp_def_pwr_bat_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
 	static pmInDom indom = PM_INDOM_NULL;
-	struct sa_item *list = a->item_list;
 
 	if (indom == PM_INDOM_NULL) {
+		int inst = 0;
+		struct sa_item *list = a->item_list;
+
 		/* Create domain */
 		indom = pmInDom_build(34, 4);
 
@@ -1711,11 +1717,12 @@ void pcp_def_pwr_bat_metrics(struct activity *a)
 void pcp_def_pwr_usb_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
-	char buf[16];
 
 	if (indom == PM_INDOM_NULL) {
+		int inst;
+		char buf[16];
+
 		/* Create domain */
 		indom = pmInDom_build(34, 3);
 
@@ -1762,11 +1769,12 @@ void pcp_def_pwr_usb_metrics(struct activity *a)
 void pcp_def_filesystem_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
 	static pmInDom indom = PM_INDOM_NULL;
-	struct sa_item *list = a->item_list;
 
 	if (indom == PM_INDOM_NULL) {
+		int inst = 0;
+		struct sa_item *list = a->item_list;
+
 		/* Create domain */
 		indom = pmInDom_build(60, 5);
 
@@ -1822,11 +1830,12 @@ void pcp_def_filesystem_metrics(struct activity *a)
 void pcp_def_fchost_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
 	static pmInDom indom = PM_INDOM_NULL;
-	struct sa_item *list = a->item_list;
 
 	if (indom == PM_INDOM_NULL) {
+		int inst = 0;
+		struct sa_item *list = a->item_list;
+
 		/* Create domain */
 		indom = pmInDom_build(60, 39);
 

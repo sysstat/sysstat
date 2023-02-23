@@ -573,7 +573,6 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		avg_tlskb = 0,
 		avg_caskb = 0;
 	int unit = NO_UNIT;
-	unsigned long long nousedmem;
 
 	if (DISPLAY_UNIT(flags)) {
 		/* Default values unit is kB */
@@ -581,6 +580,8 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
+		unsigned long long nousedmem;
+
 		if (dish) {
 			print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 		}

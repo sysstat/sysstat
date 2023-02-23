@@ -1932,7 +1932,7 @@ void read_interrupts_stat(char *file, struct stats_irqcpu *st_ic[], int ic_nr, i
 void rw_mpstat_loop(int dis_hdr, int rows)
 {
 	struct stats_cpu *scc;
-	int i, new_cpu_nr;
+	int new_cpu_nr;
 	int curr = 1, dis = 1;
 	unsigned long lines = rows;
 
@@ -1946,6 +1946,8 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	 * read from /proc/stat for global CPU stats.
 	 */
 	if (cpu_nr > 1) {
+		int i;
+
 		memset(st_cpu[0], 0, STATS_CPU_SIZE);
 
 		for (i = 1; i <= cpu_nr; i++) {

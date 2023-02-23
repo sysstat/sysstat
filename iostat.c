@@ -292,8 +292,7 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 				  int major, int minor)
 {
 	struct io_device *d, *ds;
-	int i, rc = 0, maj_nr, min_nr;
-	char *dm_name;
+	int i, maj_nr, min_nr;
 
 	if (strnlen(name, MAX_NAME_LEN) == MAX_NAME_LEN)
 		/* Device name is too long */
@@ -341,6 +340,8 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 		memset(d->dev_stats[i], 0, sizeof(struct io_stats));
 	}
 	if (DISPLAY_DEVMAP_NAME(flags)) {
+		char *dm_name;
+
 		/*
 		 * Save device mapper name (e.g. "dm-0") instead of
 		 * its registered name (e.g. "virtualhd-home")
@@ -365,6 +366,8 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 		d->dev_tp = dtype;
 	}
 	else  {
+		int rc = 0;
+
 		if (!alt_dir[0] || USE_ALL_DIR(flags)) {
 			rc = is_device(SLASH_SYS, name, ACCEPT_VIRTUAL_DEVICES);
 		}
@@ -667,7 +670,6 @@ int read_sysfs_all_devices_stat_work(int curr, char *sysblock)
 int read_sysfs_all_devices_stat(int curr)
 {
 	int rc = 0;
-	char sysblock[MAX_PF_NAME];
 
 	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
 		/* Read all whole devices from /sys */
@@ -675,6 +677,8 @@ int read_sysfs_all_devices_stat(int curr)
 	}
 
 	if (alt_dir[0]) {
+		char sysblock[MAX_PF_NAME];
+
 		snprintf(sysblock, sizeof(sysblock), "%s/%s", alt_dir, __BLOCK);
 		sysblock[sizeof(sysblock) - 1] = '\0';
 		/* Read stats from an alternate sys location */
@@ -884,14 +888,14 @@ void read_diskstats_stat_work(int curr, char *diskstats)
  */
 void read_diskstats_stat(int curr)
 {
-	char diskstats[MAX_PF_NAME];
-
 	if (!alt_dir[0] || USE_ALL_DIR(flags)) {
 		/* Read stats from /proc/diskstats */
 		read_diskstats_stat_work(curr, DISKSTATS);
 	}
 
 	if (alt_dir[0]) {
+		char diskstats[MAX_PF_NAME];
+
 		snprintf(diskstats, sizeof(diskstats), "%s/%s", alt_dir, __DISKSTATS);
 		diskstats[sizeof(diskstats) - 1] = '\0';
 		/* Read stats from an alternate diskstats file */
@@ -1355,7 +1359,6 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 			 struct ext_io_stats *xios)
 {
 	int n;
-	char line[256];
 
 	/* If this is a group with no devices, skip it */
 	if (d->dev_tp == T_GROUP)
@@ -1389,6 +1392,8 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 	else {
+		char line[256];
+
 		printf("\"r/s\": %.2f, \"w/s\": %.2f, \"d/s\": %.2f, \"f/s\": %.2f, ",
 		       S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
 		       S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),

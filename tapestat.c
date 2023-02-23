@@ -211,12 +211,14 @@ int get_max_tape_drives(void)
  */
 void tape_check_tapes_and_realloc(void)
 {
-	int new_max_tape_drives, i;
+	int new_max_tape_drives;
 
 	/* Count again number of tapes */
 	new_max_tape_drives = get_max_tape_drives();
 
 	if (new_max_tape_drives > max_tape_drives && new_max_tape_drives > 0) {
+		int i;
+
 		/* New tapes found: Realloc structures */
 		struct tape_stats *tape_old_stats_t = (struct tape_stats *)
 			realloc(tape_old_stats,	sizeof(struct tape_stats) * new_max_tape_drives);
@@ -484,7 +486,6 @@ void tape_write_stats(struct calc_stats *tape, int i)
  */
 void write_stats(struct tm *rectime)
 {
-	int i;
 	struct calc_stats tape;
 	struct tape_stats *tmp;
 
@@ -510,6 +511,7 @@ void write_stats(struct tm *rectime)
 	 * zero omit is true then we print nothing.
 	 */
 	if (max_tape_drives > 0) {
+		int i;
 
 		for (i = 0; i < max_tape_drives; i++) {
 			if ((tape_new_stats[i].valid == TAPE_STATS_VALID) &&

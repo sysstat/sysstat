@@ -436,16 +436,15 @@ invalid_header:
 unsigned long long moveto_long_long(void *buffer, int endian_mismatch, int arch_64)
 {
 	unsigned int *u_int;
-	unsigned long long *ull_int, ull_i;
 
 	if (arch_64) {
-		ull_int = (unsigned long long *) buffer;
+		unsigned long long *ull_int = (unsigned long long *) buffer;
 		return *ull_int;
 	}
 
 	u_int = (unsigned int *) buffer;
 	if (endian_mismatch) {
-		ull_i = (unsigned long long) *u_int;
+		unsigned long long ull_i = (unsigned long long) *u_int;
 		return (ull_i >> 32) | (ull_i << 32);
 	}
 	else {
@@ -1600,12 +1599,14 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 			   int endian_mismatch, int arch_64, unsigned int vol_act_nr)
 {
 
-	int i, p;
+	int p;
 	struct old_file_activity ofile_act;
 	/* Number of cpu read in the activity list. See upgrade_header_section() */
 	__nr_t cpu_nr = file_hdr->sa_cpu_nr;
 
 	if (previous_format == FORMAT_MAGIC_2173) {
+		int i;
+
 		/*
 		 * For versions from 10.3.1 to 11.6.x,
 		 * the restart record is followed by a list
