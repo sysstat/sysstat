@@ -138,23 +138,22 @@ enum {
 #define BITMAP_SIZE(m)	((((m) + 1) >> 3) + 1)
 
 /* Allocate and init structure */
-#define SREALLOC(S, TYPE, SIZE)	do {								 \
-					TYPE *_p_ = S;						 \
-					if ((SIZE) != 0) {					 \
-						if ((S = (TYPE *) realloc(S, (SIZE))) == NULL) { \
-				         		perror("realloc");			 \
-				         		exit(4);				 \
-				      		}						 \
-				      		/* If the ptr was null, then it's a malloc() */	 \
-						if (!_p_) {					 \
-							memset(S, 0, (SIZE));			 \
-						}						 \
-				   	}							 \
-					if (!S) {						 \
-						/* Should never happen */			 \
-						fprintf(stderr, "srealloc\n");		 	 \
-						exit(4);					 \
-					}							 \
+#define SREALLOC(S, TYPE, SIZE)	do {								   \
+					TYPE *_p_;						   \
+					if ((SIZE) != 0) {					   \
+						if ((_p_ = (TYPE *) realloc(S, (SIZE))) == NULL) { \
+							perror("realloc");			   \
+							if (S) {				   \
+								free(S);			   \
+							}					   \
+							exit(4);				   \
+						}						   \
+						/* If the ptr was null, then it's a malloc() */	   \
+						if (!S) {					   \
+							memset(_p_, 0, (SIZE));			   \
+						}						   \
+						S = _p_;					   \
+					}							   \
 				} while (0)
 
 /*

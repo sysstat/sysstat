@@ -1161,11 +1161,16 @@ __read_funct_t wrap_read_softnet(struct activity *a)
 	do {
 		/* Allocate bitmap for online CPU */
 		if (bitmap_size < a->nr_allocated) {
-			if ((online_cpu_bitmap = (unsigned char *) realloc(online_cpu_bitmap,
-									   BITMAP_SIZE(a->nr_allocated))) == NULL) {
+			unsigned char *p = (unsigned char *) realloc(online_cpu_bitmap,
+								     BITMAP_SIZE(a->nr_allocated));
+			if (p == NULL) {
 				nr_read = 0;
+				if (online_cpu_bitmap) {
+					free(online_cpu_bitmap);
+				}
 				break;
 			}
+			online_cpu_bitmap = p;
 			bitmap_size = a->nr_allocated;
 		}
 		memset(online_cpu_bitmap, 0, BITMAP_SIZE(a->nr_allocated));

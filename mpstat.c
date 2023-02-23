@@ -186,75 +186,33 @@ void salloc_mp_struct(int nr_cpus, int pos)
 	int i;
 
 	for (i = 0; i < 3; i++) {
+		SREALLOC(st_cpu[i], struct stats_cpu, STATS_CPU_SIZE * nr_cpus);
+		SREALLOC(st_node[i], struct stats_cpu, STATS_CPU_SIZE * nr_cpus);
+		SREALLOC(st_irq[i], struct stats_global_irq, STATS_GLOBAL_IRQ_SIZE * nr_cpus);
+		SREALLOC(st_irqcpu[i], struct stats_irqcpu,
+			 STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr);
+		SREALLOC(st_softirqcpu[i], struct stats_irqcpu,
+			 STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr);
+	}
 
-		if ((st_cpu[i] = (struct stats_cpu *) realloc(st_cpu[i], STATS_CPU_SIZE * nr_cpus))
-		    == NULL) {
-			perror("realloc");
-			exit(4);
-		}
+	SREALLOC(cpu_bitmap, unsigned char, (nr_cpus >> 3) + 1);
+	SREALLOC(node_bitmap, unsigned char, (nr_cpus >> 3) + 1);
 
-		if ((st_node[i] = (struct stats_cpu *) realloc(st_node[i], STATS_CPU_SIZE * nr_cpus))
-		    == NULL) {
-			perror("realloc");
-			exit(4);
-		}
+	SREALLOC(cpu_per_node, int, sizeof(int) * nr_cpus);
+	SREALLOC(cpu2node, int, sizeof(int) * nr_cpus);
+	SREALLOC(st_cpu_topology, struct cpu_topology, sizeof(struct cpu_topology) * nr_cpus);
 
-		if ((st_irq[i] = (struct stats_global_irq *) realloc(st_irq[i],
-								     STATS_GLOBAL_IRQ_SIZE * nr_cpus))
-		    == NULL) {
-			perror("realloc");
-			exit(4);
-		}
-
-		if ((st_irqcpu[i] = (struct stats_irqcpu *) realloc(st_irqcpu[i],
-								    STATS_IRQCPU_SIZE * nr_cpus * irqcpu_nr))
-		    == NULL) {
-			perror("realloc");
-			exit(4);
-		}
-
-		if ((st_softirqcpu[i] = (struct stats_irqcpu *) realloc(st_softirqcpu[i],
-									STATS_IRQCPU_SIZE * nr_cpus * softirqcpu_nr))
-		     == NULL) {
-			perror("realloc");
-			exit(4);
+	if (pos) {
+		/* Init already done in SREALLOC macro if @pos == 0 */
+		for (i = 0; i < 3; i++) {
+			memset(st_cpu[i] + pos, 0, STATS_CPU_SIZE * (nr_cpus - pos));
+			memset(st_node[i] + pos, 0, STATS_CPU_SIZE * (nr_cpus - pos));
+			memset(st_irq[i] + pos, 0, STATS_GLOBAL_IRQ_SIZE * (nr_cpus - pos));
+			memset(st_irqcpu[i] + pos, 0, STATS_IRQCPU_SIZE * (nr_cpus - pos) * irqcpu_nr);
+			memset(st_softirqcpu[i] + pos, 0, STATS_IRQCPU_SIZE * (nr_cpus - pos) * softirqcpu_nr);
 		}
 	}
-
-	if ((cpu_bitmap = (unsigned char *) realloc(cpu_bitmap, (nr_cpus >> 3) + 1)) == NULL) {
-		perror("realloc");
-		exit(4);
-	}
-
-	if ((node_bitmap = (unsigned char *) realloc(node_bitmap, (nr_cpus >> 3) + 1)) == NULL) {
-		perror("realloc");
-		exit(4);
-	}
-
-	if ((cpu_per_node = (int *) realloc(cpu_per_node, sizeof(int) * nr_cpus)) == NULL) {
-		perror("realloc");
-		exit(4);
-	}
-
-	if ((cpu2node = (int *) realloc(cpu2node, sizeof(int) * nr_cpus)) == NULL) {
-		perror("realloc");
-		exit(4);
-	}
-
-	if ((st_cpu_topology = (struct cpu_topology *) realloc(st_cpu_topology,
-							       sizeof(struct cpu_topology) * nr_cpus)) == NULL) {
-		perror("realloc");
-		exit(4);
-	}
-
-	for (i = 0; i < 3; i++) {
-		memset(st_cpu[i] + pos, 0, STATS_CPU_SIZE * (nr_cpus - pos));
-		memset(st_node[i] + pos, 0, STATS_CPU_SIZE * (nr_cpus - pos));
-		memset(st_irq[i] + pos, 0, STATS_GLOBAL_IRQ_SIZE * (nr_cpus - pos));
-		memset(st_irqcpu[i] + pos, 0, STATS_IRQCPU_SIZE * (nr_cpus - pos) * irqcpu_nr);
-		memset(st_softirqcpu[i] + pos, 0, STATS_IRQCPU_SIZE * (nr_cpus - pos) * softirqcpu_nr);
-	}
-	if (!pos) {
+	else {
 		memset(cpu_bitmap, 0, (nr_cpus >> 3) + 1);
 		memset(node_bitmap, 0, (nr_cpus >> 3) + 1);
 	}
