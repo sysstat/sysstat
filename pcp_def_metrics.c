@@ -1558,7 +1558,7 @@ void pcp_def_huge_metrics()
 void pcp_def_pwr_fan_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
+	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
 	char buf[16];
 
@@ -1597,7 +1597,7 @@ void pcp_def_pwr_fan_metrics(struct activity *a)
 void pcp_def_pwr_temp_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
+	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
 	char buf[16];
 
@@ -1636,7 +1636,7 @@ void pcp_def_pwr_temp_metrics(struct activity *a)
 void pcp_def_pwr_in_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
+	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
 	char buf[16];
 
@@ -1711,7 +1711,7 @@ void pcp_def_pwr_bat_metrics(struct activity *a)
 void pcp_def_pwr_usb_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
-	int inst = 0;
+	int inst;
 	static pmInDom indom = PM_INDOM_NULL;
 	char buf[16];
 

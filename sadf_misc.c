@@ -1348,7 +1348,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 	struct svg_hdr_parm *hdr_parm = (struct svg_hdr_parm *) parm;
 	struct tm rectime;
 	time_t t = file_hdr->sa_ust_time;
-	unsigned int height = 0, ht = 0;
+	unsigned int height, ht = 0;
 	int i, p;
 
 	if (action & F_BEGIN) {

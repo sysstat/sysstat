@@ -1039,7 +1039,7 @@ __nr_t read_kernel_tables(struct stats_ktables *st_ktables)
 {
 	FILE *fp;
 	unsigned long long parm;
-	int rc = 0;
+	int rc;
 
 	/* Open /proc/sys/fs/dentry-state file */
 	if ((fp = fopen(FDENTRY_STATE, "r")) != NULL) {
@@ -2592,7 +2592,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 {
 	FILE *fp;
 	char line[512], fs_name[MAX_FS_LEN], mountp[256], type[128];
-	int skip = 0, skip_next = 0, fs;
+	int skip, skip_next = 0, fs;
 	char *pos = 0, *pos2 = 0;
 	__nr_t fs_read = 0;
 	struct stats_filesystem *st_filesystem_i;

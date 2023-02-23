@@ -1240,7 +1240,7 @@ void logic2_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 {
 	int i, p;
 	int curr = 1, rtype;
-	int eosaf = TRUE, reset = FALSE;
+	int eosaf = TRUE, reset;
 	long cnt = 1;
 
 	/* Read system statistics from file */

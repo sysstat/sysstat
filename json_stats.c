@@ -595,7 +595,6 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 		if (sep) {
 			printf(", ");
 		}
-		sep = TRUE;
 
 		printf("\"swpfree\": %llu, "
 		       "\"swpused\": %llu, "

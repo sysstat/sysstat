@@ -440,7 +440,7 @@ __nr_t get_filesystem_nr(void)
 	char line[512], fs_name[MAX_FS_LEN], mountp[256], type[128];
 	char *pos = 0, *pos2 = 0;
 	__nr_t fs = 0;
-	int skip = 0, skip_next = 0;
+	int skip, skip_next = 0;
 	struct statvfs buf;
 
 	if ((fp = fopen(MTAB, "r")) == NULL)
