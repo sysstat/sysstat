@@ -104,11 +104,11 @@ int get_fs_stat(char *c, struct statvfs *buf)
 	 * So don't use values greater then UINT_MAX to make sure that values
 	 * won't overflow on 32-bit systems.
 	 */
-	unsigned long long bfree[4]  = {739427840, 286670336, 1696156672, 2616732672};
-	unsigned long long blocks[4] = {891291136, 502345216, 1829043712, 3502345216};
-	unsigned long long bavail[4] = {722675712, 241253120, 1106515456, 1871315456};
-	unsigned long long files[4]  = {6111232, 19202048, 1921360, 19202048};
-	unsigned long long ffree[4]  = {6008414, 19201593, 1621550, 19051710};
+	const unsigned long long bfree[4]  = {739427840, 286670336, 1696156672, 2616732672};
+	const unsigned long long blocks[4] = {891291136, 502345216, 1829043712, 3502345216};
+	const unsigned long long bavail[4] = {722675712, 241253120, 1106515456, 1871315456};
+	const unsigned long long files[4]  = {6111232, 19202048, 1921360, 19202048};
+	const unsigned long long ffree[4]  = {6008414, 19201593, 1621550, 19051710};
 
 	buf->f_bfree = bfree[p];
 	buf->f_blocks = blocks[p];
