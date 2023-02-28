@@ -178,7 +178,7 @@ int ioc_init(void)
 		memset(blkp, 0, BLK_CONFIG_SIZE);
 		memset(iocp, 0, IOC_ENTRY_SIZE);
 
-		i = sscanf(buf, "%u:%u:%u:%s",
+		i = sscanf(buf, "%u:%u:%u:%63s",
 			   &major, &indirect, &iocp->ctrlno, desc);
 
 		if (i != 4) {
@@ -235,7 +235,7 @@ int ioc_init(void)
 
 		/* maybe it's a full record? */
 
-		i = sscanf(buf, "%u:%[^:]:%[^:]:%u:%[^:]:%u:%[^:]:%u:%s",
+		i = sscanf(buf, "%u:%[^:]:%[^:]:%u:%[^:]:%u:%[^:]:%u:%63s",
 			   &major, blkp->name,
 			   cfmt, &iocp->ctrlno,
 			   dfmt, &blkp->dcount,

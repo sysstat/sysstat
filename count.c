@@ -259,7 +259,7 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!count_part) {
-			i = sscanf(line, "%*d %*d %s %lu %*u %*u %*u %lu",
+			i = sscanf(line, "%*d %*d %127s %lu %*u %*u %*u %lu",
 				   dev_name, &rd_ios, &wr_ios);
 			if ((i == 2) || !is_device(SLASH_SYS, dev_name, ACCEPT_VIRTUAL_DEVICES))
 				/* It was a partition and not a device */

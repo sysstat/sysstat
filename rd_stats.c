@@ -832,7 +832,7 @@ __nr_t read_diskstats_io(struct stats_io *st_io)
 		dc_ios = dc_sec = 0;
 
 		if (sscanf(line,
-			   "%u %u %s "
+			   "%u %u %127s "
 			   "%lu %*u %lu %*u "
 			   "%lu %*u %lu %*u "
 			   "%*u %*u %*u "
@@ -903,7 +903,7 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 		dc_ios = dc_sec = dc_ticks = 0;
 
 		if (sscanf(line,
-			   "%u %u %s "
+			   "%u %u %127s "
 			   "%lu %*u %lu %u "
 			   "%lu %*u %lu %u "
 			   "%*u %u %u "
@@ -1139,7 +1139,7 @@ __nr_t read_net_dev(struct stats_net_dev *st_net_dev, __nr_t nr_alloc)
 			st_net_dev_i = st_net_dev + dev_read++;
 			strncpy(iface, line, MINIMUM(pos, sizeof(iface) - 1));
 			iface[MINIMUM(pos, sizeof(iface) - 1)] = '\0';
-			sscanf(iface, "%s", st_net_dev_i->interface); /* Skip heading spaces */
+			sscanf(iface, "%15s", st_net_dev_i->interface); /* Skip heading spaces */
 			sscanf(line + pos + 1, "%llu %llu %*u %*u %*u %*u %llu %llu %llu %llu "
 			       "%*u %*u %*u %*u %*u %llu",
 			       &st_net_dev_i->rx_bytes,
@@ -1262,7 +1262,7 @@ __nr_t read_net_edev(struct stats_net_edev *st_net_edev, __nr_t nr_alloc)
 			st_net_edev_i = st_net_edev + dev_read++;
 			strncpy(iface, line, MINIMUM(pos, sizeof(iface) - 1));
 			iface[MINIMUM(pos, sizeof(iface) - 1)] = '\0';
-			sscanf(iface, "%s", st_net_edev_i->interface); /* Skip heading spaces */
+			sscanf(iface, "%15s", st_net_edev_i->interface); /* Skip heading spaces */
 			sscanf(line + pos + 1, "%*u %*u %llu %llu %llu %llu %*u %*u %*u %*u "
 			       "%llu %llu %llu %llu %llu",
 			       &st_net_edev_i->rx_errors,
