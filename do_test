@@ -15,14 +15,14 @@ then
 elif [ "$1" = "comp" ]
 then
 	# Compile sysstat in test mode
-	make TFLAGS="-DTEST"
+	make simtest TFLAGS="-DTEST"
 else
 	if [ "$1" != "sim" ]
 	then
 		# Configure then compile sysstat in test mode
 		make distclean
 #		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make simtest
-		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make testcomp TFLAGS="-DTEST"
+		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make simtest TFLAGS="-DTEST"
 	fi
 	rm -f tests/results.tmp
 	COUNT=0
