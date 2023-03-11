@@ -188,6 +188,9 @@ PMID: 60.58.38 (network.icmp6.inpkttoobigs)
 PMID: 60.58.39 (network.icmp6.intimeexcds)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 34.4.0 (power.bat.capacity)
+    Data Type: 32-bit unsigned int  InDom: 34.4 0x8800004
+    Semantics: instant  Units: none
 PMID: 60.0.32 (hinv.ncpu)
     Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: discrete  Units: none
@@ -197,6 +200,9 @@ PMID: 60.58.40 (network.icmp6.inparmproblems)
 PMID: 60.58.41 (network.icmp6.inechos)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 34.4.2 (power.bat.status)
+    Data Type: string  InDom: 34.4 0x8800004
+    Semantics: discrete  Units: none
 PMID: 60.0.34 (kernel.all.cpu.irq.total)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
@@ -653,6 +659,9 @@ PMID: 60.1.27 (mem.util.pageTables)
 PMID: 60.14.35 (network.icmp.outdestunreachs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 34.3.4 (power.usb.manufacturer)
+    Data Type: string  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
 PMID: 60.7.4 (nfs.client.reqs)
     Data Type: 32-bit unsigned int  InDom: 60.7 0xf000007
     Semantics: counter  Units: count
@@ -662,6 +671,9 @@ PMID: 60.0.92 (disk.dev.discard_rawactive)
 PMID: 60.14.36 (network.icmp.outtimeexcds)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 34.3.5 (power.usb.productName)
+    Data Type: string  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
 PMID: 60.14.37 (network.icmp.outparmprobs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -854,6 +866,10 @@ InDom: 60.1
    21 or "cciss/c0d0p2"
    22 or "xvdp"
    23 or "xvdiw"
+InDom: 34.4
+15:20:19.000000 2 instances
+   0 or "BAT0"
+   1 or "BAT1"
 InDom: 60.2
 15:20:19.000000 3 instances
    1 or "1 minute"
@@ -1334,13 +1350,13 @@ InDom: 60.35
 Temporal Index
 		Log Vol    end(meta)     end(log)
 15:20:19.000000	      0          132          132
-15:20:29.000000	      0        24829        18632
-15:37:29.000000	      0        25137        75584
-15:39:09.000000	      0        25256        75644
-15:54:35.000000	      0        25316        95128
+15:20:29.000000	      0        24997        18712
+15:37:29.000000	      0        25428        76208
+15:39:09.000000	      0        25547        76268
+15:54:35.000000	      0        25607        96104
 
-[18500 bytes]
-15:20:19.000000 259 metrics
+[18580 bytes]
+15:20:19.000000 261 metrics
     60.0.32 (hinv.ncpu): value 9
     60.12.0 (kernel.uname.release): value "1.2.3-TEST"
     60.12.2 (kernel.uname.sysname): value "Linux"
@@ -2437,6 +2453,12 @@ Temporal Index
         inst [5 or "cpu5"] value 3493.55
         inst [6 or "cpu6"] value 3492.22
         inst [7 or "cpu7"] value 3497.5601
+    34.4.0 (power.bat.capacity):
+        inst [0 or "BAT0"] value 100
+        inst [1 or "BAT1"] value 83
+    34.4.2 (power.bat.status):
+        inst [0 or "BAT0"] value "Full"
+        inst [1 or "BAT1"] value "Unknown"
     60.5.1 (filesys.capacity):
         inst [0 or "/dev/sda9"] value 870401
         inst [1 or "/dev/sda7"] value 3420259
@@ -2478,8 +2500,8 @@ Temporal Index
         inst [2 or "/dev/sda12"] value 705738
         inst [3 or "/dev/sda6"] value 235598
 
-[18060 bytes]
-15:20:29.000000 258 metrics
+[18268 bytes]
+15:20:29.000000 262 metrics
     60.0.20 (kernel.all.cpu.user): value 96963
     60.0.21 (kernel.all.cpu.nice): value 2581802
     60.0.22 (kernel.all.cpu.sys): value 54588
@@ -3507,6 +3529,12 @@ Temporal Index
         inst [5 or "cpu5"] value 3493.55
         inst [6 or "cpu6"] value 3492.22
         inst [7 or "cpu7"] value 3497.5601
+    34.4.0 (power.bat.capacity):
+        inst [0 or "BAT0"] value 70
+        inst [1 or "BAT1"] value 80
+    34.4.2 (power.bat.status):
+        inst [0 or "BAT0"] value "Unknown"
+        inst [1 or "BAT1"] value "Discharging"
     34.3.0 (power.usb.bus):
         inst [0 or "usb0"] value 1
         inst [1 or "usb1"] value 3
@@ -3519,6 +3547,12 @@ Temporal Index
     34.3.3 (power.usb.maxpower):
         inst [0 or "usb0"] value 196
         inst [1 or "usb1"] value 0
+    34.3.4 (power.usb.manufacturer):
+        inst [0 or "usb0"] value "HP"
+        inst [1 or "usb1"] value "ASMT"
+    34.3.5 (power.usb.productName):
+        inst [0 or "usb0"] value "HP Wireless Keyboard Mouse Kit"
+        inst [1 or "usb1"] value "ASM1153"
     60.5.1 (filesys.capacity):
         inst [0 or "/dev/sda9"] value 1786175
         inst [1 or "/dev/sda7"] value 3420259
@@ -3576,8 +3610,8 @@ Temporal Index
         inst [4 or "/dev/sdf"] value 1080581
         inst [5 or "/dev/sdg"] value 1827456
 
-[18740 bytes]
-15:20:39.000000 254 metrics
+[18796 bytes]
+15:20:39.000000 256 metrics
     60.0.20 (kernel.all.cpu.user): value 97768
     60.0.21 (kernel.all.cpu.nice): value 2588749
     60.0.22 (kernel.all.cpu.sys): value 55126
@@ -4095,9 +4129,9 @@ Temporal Index
     60.28.16 (mem.vmstat.pgfault): value 60863302
     60.28.17 (mem.vmstat.pgmajfault): value 10715
     60.28.13 (mem.vmstat.pgfree): value 63486798
-    60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
+    60.28.177 (mem.vmstat.pgscan_kswapd_total): value 10
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
-    60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.178 (mem.vmstat.pgsteal_total): value 9
     60.0.29 (disk.all.total): value 82563
     60.0.24 (disk.all.read): value 66581
     60.0.96 (disk.all.discard): value 0
@@ -4677,6 +4711,8 @@ Temporal Index
         inst [5 or "cpu5"] value 3493.55
         inst [6 or "cpu6"] value 3492.22
         inst [7 or "cpu7"] value 3497.5601
+    34.4.0 (power.bat.capacity): inst [0 or "BAT0"] value 75
+    34.4.2 (power.bat.status): inst [0 or "BAT0"] value "Charging"
     60.5.1 (filesys.capacity):
         inst [0 or "/dev/sda9"] value 1786175
         inst [1 or "/dev/sda7"] value 3420259
@@ -4734,8 +4770,8 @@ Temporal Index
         inst [4 or "/dev/sdf"] value 1080581
         inst [5 or "/dev/sdg"] value 1827456
 
-[20152 bytes]
-15:20:49.000000 258 metrics
+[20432 bytes]
+15:20:49.000000 262 metrics
     60.0.20 (kernel.all.cpu.user): value 99343
     60.0.21 (kernel.all.cpu.nice): value 2590956
     60.0.22 (kernel.all.cpu.sys): value 56811
@@ -5308,9 +5344,9 @@ Temporal Index
     60.28.16 (mem.vmstat.pgfault): value 60863302
     60.28.17 (mem.vmstat.pgmajfault): value 10715
     60.28.13 (mem.vmstat.pgfree): value 63486798
-    60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
+    60.28.177 (mem.vmstat.pgscan_kswapd_total): value 100
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
-    60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.178 (mem.vmstat.pgsteal_total): value 11
     60.0.29 (disk.all.total): value 85613
     60.0.24 (disk.all.read): value 68502
     60.0.96 (disk.all.discard): value 998
@@ -5939,6 +5975,8 @@ Temporal Index
         inst [5 or "cpu5"] value 3493.55
         inst [6 or "cpu6"] value 3492.22
         inst [7 or "cpu7"] value 3497.5601
+    34.4.0 (power.bat.capacity): inst [0 or "BAT0"] value 77
+    34.4.2 (power.bat.status): inst [0 or "BAT0"] value "NotCharging"
     34.3.0 (power.usb.bus):
         inst [0 or "usb0"] value 1
         inst [1 or "usb1"] value 3
@@ -5959,6 +5997,16 @@ Temporal Index
         inst [1 or "usb1"] value 0
         inst [2 or "usb2"] value 200
         inst [3 or "usb3"] value 1000
+    34.3.4 (power.usb.manufacturer):
+        inst [0 or "usb0"] value "HP"
+        inst [1 or "usb1"] value "ASMT"
+        inst [2 or "usb2"] value ""
+        inst [3 or "usb3"] value "Chicony Electronics C"
+    34.3.5 (power.usb.productName):
+        inst [0 or "usb0"] value "HP Wireless Keyboard Mouse Kit"
+        inst [1 or "usb1"] value "ASM1153"
+        inst [2 or "usb2"] value "USB2.0 Hub"
+        inst [3 or "usb3"] value "HP Webcam"
     60.5.1 (filesys.capacity):
         inst [0 or "/dev/sda9"] value 870401
         inst [1 or "/dev/sda7"] value 490571
@@ -6014,7 +6062,7 @@ Temporal Index
     245.0.6 (system.restart.count): value 1
     245.0.7 (system.restart.ncpu): value 10
 
-[19360 bytes]
+[19712 bytes]
 15:54:35.000000 254 metrics
     60.0.20 (kernel.all.cpu.user): value 95712
     60.0.21 (kernel.all.cpu.nice): value 2587674
@@ -6139,7 +6187,7 @@ Temporal Index
         inst [8 or "cpu8"] value 2000
     60.0.13 (kernel.all.pswitch): value 132598184
     60.0.14 (kernel.all.sysfork): value 47083
-    60.0.12 (kernel.all.intr): value 96567796
+    60.0.12 (kernel.all.intr): value 96646515
     60.4.1 (kernel.percpu.interrupts):
         inst [0 or "sum::cpu0"] value 12722279
         inst [1 or "0::cpu0"] value 8
@@ -6493,10 +6541,54 @@ Temporal Index
         inst [349 or "PIN::cpu7"] value 0
         inst [350 or "NPI::cpu7"] value 0
         inst [351 or "PIW::cpu7"] value 0
+        inst [352 or "sum::cpu8"] value 15280
+        inst [353 or "0::cpu8"] value 14
+        inst [354 or "8::cpu8"] value 0
+        inst [355 or "9::cpu8"] value 0
+        inst [356 or "16::cpu8"] value 0
+        inst [357 or "17::cpu8"] value 0
+        inst [358 or "18::cpu8"] value 0
+        inst [359 or "19::cpu8"] value 0
+        inst [360 or "23::cpu8"] value 0
+        inst [361 or "24::cpu8"] value 0
+        inst [362 or "25::cpu8"] value 0
+        inst [363 or "26::cpu8"] value 0
+        inst [364 or "27::cpu8"] value 0
+        inst [365 or "28::cpu8"] value 0
+        inst [366 or "29::cpu8"] value 0
+        inst [367 or "30::cpu8"] value 0
+        inst [368 or "31::cpu8"] value 0
+        inst [369 or "32::cpu8"] value 0
+        inst [370 or "33::cpu8"] value 0
+        inst [371 or "34::cpu8"] value 0
+        inst [372 or "35::cpu8"] value 0
+        inst [373 or "36::cpu8"] value 0
+        inst [374 or "NMI::cpu8"] value 131
+        inst [375 or "LOC::cpu8"] value 12359
+        inst [376 or "SPU::cpu8"] value 0
+        inst [377 or "PMI::cpu8"] value 190
+        inst [378 or "IWI::cpu8"] value 0
+        inst [379 or "RTR::cpu8"] value 0
+        inst [380 or "RES::cpu8"] value 1345
+        inst [381 or "CAL::cpu8"] value 414
+        inst [382 or "TLB::cpu8"] value 812
+        inst [383 or "TRM::cpu8"] value 0
+        inst [384 or "THR::cpu8"] value 0
+        inst [385 or "DFR::cpu8"] value 0
+        inst [386 or "MCE::cpu8"] value 0
+        inst [387 or "MCP::cpu8"] value 15
+        inst [388 or "HYP::cpu8"] value 0
+        inst [389 or "HRE::cpu8"] value 0
+        inst [390 or "HVS::cpu8"] value 0
+        inst [391 or "ERR::cpu8"] value 0
+        inst [392 or "MIS::cpu8"] value 0
+        inst [393 or "PIN::cpu8"] value 0
+        inst [394 or "NPI::cpu8"] value 0
+        inst [395 or "PIW::cpu8"] value 0
     60.4.0 (kernel.all.interrupts.total):
-        inst [0 or "0"] value 8
+        inst [0 or "0"] value 22
         inst [1 or "8"] value 1
-        inst [2 or "9"] value 0
+        inst [2 or "9"] value 87
         inst [3 or "16"] value 10536
         inst [4 or "17"] value 807
         inst [5 or "18"] value 0
@@ -6505,7 +6597,7 @@ Temporal Index
         inst [8 or "24"] value 221274
         inst [9 or "25"] value 0
         inst [10 or "26"] value 0
-        inst [11 or "27"] value 0
+        inst [11 or "27"] value 2356
         inst [12 or "28"] value 0
         inst [13 or "29"] value 0
         inst [14 or "30"] value 0
@@ -6515,20 +6607,20 @@ Temporal Index
         inst [18 or "34"] value 760815
         inst [19 or "35"] value 15
         inst [20 or "36"] value 15162
-        inst [21 or "NMI"] value 2897
-        inst [22 or "LOC"] value 91536137
+        inst [21 or "NMI"] value 3153
+        inst [22 or "LOC"] value 91601623
         inst [23 or "SPU"] value 0
-        inst [24 or "PMI"] value 2897
+        inst [24 or "PMI"] value 3128
         inst [25 or "IWI"] value 7
         inst [26 or "RTR"] value 0
-        inst [27 or "RES"] value 3008700
-        inst [28 or "CAL"] value 270640
-        inst [29 or "TLB"] value 355385
+        inst [27 or "RES"] value 3010507
+        inst [28 or "CAL"] value 277466
+        inst [29 or "TLB"] value 356997
         inst [30 or "TRM"] value 0
         inst [31 or "THR"] value 0
         inst [32 or "DFR"] value 0
         inst [33 or "MCE"] value 0
-        inst [34 or "MCP"] value 191
+        inst [34 or "MCP"] value 235
         inst [35 or "HYP"] value 0
         inst [36 or "HRE"] value 0
         inst [37 or "HVS"] value 0
