@@ -103,21 +103,23 @@ void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned lo
 	lluc = (unsigned long long *) cs;
 	llup = (unsigned long long *) ps;
 	for (i = 0; i < types_nr[0]; i++, m++) {
-		if (ps) {
-			val = *lluc < *llup ? 0.0 : S_VALUE(*llup, *lluc, itv);
-		}
-		else {
-			/*
-			 * If no pointer on previous sample has been given
-			 * then the value is not a per-second one.
-			 */
-			val = (double) *lluc;
-		}
-		if (val < *(spmin + g_fields[m])) {
-			*(spmin + g_fields[m]) = val;
-		}
-		if (val > *(spmax + g_fields[m])) {
-			*(spmax + g_fields[m]) = val;
+		if (g_fields[m] >= 0) {
+			if (ps) {
+				val = *lluc < *llup ? 0.0 : S_VALUE(*llup, *lluc, itv);
+			}
+			else {
+				/*
+				 * If no pointer on previous sample has been given
+				 * then the value is not a per-second one.
+				*/
+				val = (double) *lluc;
+			}
+			if (val < *(spmin + g_fields[m])) {
+				*(spmin + g_fields[m]) = val;
+			}
+			if (val > *(spmax + g_fields[m])) {
+				*(spmax + g_fields[m]) = val;
+			}
 		}
 		lluc = (unsigned long long *) ((char *) lluc + ULL_ALIGNMENT_WIDTH);
 		if (ps) {
@@ -129,17 +131,19 @@ void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned lo
 	luc = (unsigned long *) lluc;
 	lup = (unsigned long *) llup;
 	for (i = 0; i < types_nr[1]; i++, m++) {
-		if (ps) {
-			val = *luc < *lup ? 0.0 : S_VALUE(*lup, *luc, itv);
-		}
-		else {
-			val = (double) *luc;
-		}
-		if (val < *(spmin + g_fields[m])) {
-			*(spmin + g_fields[m]) = val;
-		}
-		if (val > *(spmax + g_fields[m])) {
-			*(spmax + g_fields[m]) = val;
+		if (g_fields[m] >= 0) {
+			if (ps) {
+				val = *luc < *lup ? 0.0 : S_VALUE(*lup, *luc, itv);
+			}
+			else {
+				val = (double) *luc;
+			}
+			if (val < *(spmin + g_fields[m])) {
+				*(spmin + g_fields[m]) = val;
+			}
+			if (val > *(spmax + g_fields[m])) {
+				*(spmax + g_fields[m]) = val;
+			}
 		}
 		luc = (unsigned long *) ((char *) luc + UL_ALIGNMENT_WIDTH);
 		if (ps) {
@@ -151,17 +155,19 @@ void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned lo
 	uc = (unsigned int *) luc;
 	up = (unsigned int *) lup;
 	for (i = 0; i < types_nr[2]; i++, m++) {
-		if (ps) {
-			val = *uc < *up ? 0.0 : S_VALUE(*up, *uc, itv);
-		}
-		else {
-			val = (double) *uc;
-		}
-		if (val < *(spmin + g_fields[m])) {
-			*(spmin + g_fields[m]) = val;
-		}
-		if (val > *(spmax + g_fields[m])) {
-			*(spmax + g_fields[m]) = val;
+		if (g_fields[m] >= 0) {
+			if (ps) {
+				val = *uc < *up ? 0.0 : S_VALUE(*up, *uc, itv);
+			}
+			else {
+				val = (double) *uc;
+			}
+			if (val < *(spmin + g_fields[m])) {
+				*(spmin + g_fields[m]) = val;
+			}
+			if (val > *(spmax + g_fields[m])) {
+				*(spmax + g_fields[m]) = val;
+			}
 		}
 		uc = (unsigned int *) ((char *) uc + U_ALIGNMENT_WIDTH);
 		if (ps) {
