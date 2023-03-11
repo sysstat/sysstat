@@ -392,6 +392,56 @@ __print_funct_t raw_print_io_stats(struct activity *a, char *timestr, int curr)
 }
 
 /*
+ * **************************************************************************
+ * Display RAM memory utilization in raw format.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ * @dispall	TRUE if all memory fields should be displayed.
+ ***************************************************************************
+ */
+void raw_print_ram_memory_stats(struct stats_memory *smc, int dispall)
+{
+	printf(" %s; %llu;", pfield(NULL, 0), smc->availablekb);
+	printf(" kbttlmem; %llu;", smc->tlmkb);
+	pfield(NULL, 0); /* Skip kbmemused */
+	pfield(NULL, 0); /* Skip %memused */
+	printf(" %s; %llu;", pfield(NULL, 0), smc->bufkb);
+	printf(" %s; %llu;", pfield(NULL, 0), smc->camkb);
+	printf(" %s; %llu;", pfield(NULL, 0), smc->comkb);
+	pfield(NULL, 0); /* Skip %commit */
+	printf(" %s; %llu;", pfield(NULL, 0), smc->activekb);
+	printf(" %s; %llu;", pfield(NULL, 0), smc->inactkb);
+	printf(" %s; %llu;", pfield(NULL, 0), smc->dirtykb);
+
+	if (dispall) {
+		printf(" %s; %llu;", pfield(NULL, 0), smc->anonpgkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->slabkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->kstackkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->pgtblkb);
+		printf(" %s; %llu;", pfield(NULL, 0), smc->vmusedkb);
+	}
+	printf("\n");
+}
+
+/*
+ * **************************************************************************
+ * Display swap memory utilization in raw format.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ ***************************************************************************
+ */
+void raw_print_swap_memory_stats(struct stats_memory *smc)
+{
+	printf(" kbttlswp; %llu;", smc->tlskb);
+	pfield(NULL, 0); /* Skip kbswpused */
+	pfield(NULL, 0); /* Skip %swpused */
+	printf(" %s; %llu;", pfield(NULL, 0), smc->caskb);
+	printf("\n");
+}
+
+/*
  ***************************************************************************
  * Display memory statistics in raw format.
  *
@@ -408,35 +458,12 @@ __print_funct_t raw_print_memory_stats(struct activity *a, char *timestr, int cu
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 		printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, FIRST), smc->frmkb);
-		printf(" %s; %llu;", pfield(NULL, 0), smc->availablekb);
-		printf(" kbttlmem; %llu;", smc->tlmkb);
-		pfield(NULL, 0); /* Skip kbmemused */
-		pfield(NULL, 0); /* Skip %memused */
-		printf(" %s; %llu;", pfield(NULL, 0), smc->bufkb);
-		printf(" %s; %llu;", pfield(NULL, 0), smc->camkb);
-		printf(" %s; %llu;", pfield(NULL, 0), smc->comkb);
-		pfield(NULL, 0); /* Skip %commit */
-		printf(" %s; %llu;", pfield(NULL, 0), smc->activekb);
-		printf(" %s; %llu;", pfield(NULL, 0), smc->inactkb);
-		printf(" %s; %llu;", pfield(NULL, 0), smc->dirtykb);
-
-		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-			printf(" %s; %llu;", pfield(NULL, 0), smc->anonpgkb);
-			printf(" %s; %llu;", pfield(NULL, 0), smc->slabkb);
-			printf(" %s; %llu;", pfield(NULL, 0), smc->kstackkb);
-			printf(" %s; %llu;", pfield(NULL, 0), smc->pgtblkb);
-			printf(" %s; %llu;", pfield(NULL, 0), smc->vmusedkb);
-		}
-		printf("\n");
+		raw_print_ram_memory_stats(smc, DISPLAY_MEM_ALL(a->opt_flags));
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
 		printf("%s; %s; %llu;", timestr, pfield(a->hdr_line, SECOND), smc->frskb);
-		printf(" kbttlswp; %llu;", smc->tlskb);
-		pfield(NULL, 0); /* Skip kbswpused */
-		pfield(NULL, 0); /* Skip %swpused */
-		printf(" %s; %llu;", pfield(NULL, 0), smc->caskb);
-		printf("\n");
+		raw_print_swap_memory_stats(smc);
 	}
 }
 

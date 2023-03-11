@@ -71,7 +71,206 @@ void pcp_def_percpu_int_metrics(struct activity *a, int cpu)
 }
 
 /*
+ * **************************************************************************
+ * Define PCP metrics for global CPU statistics.
  ***************************************************************************
+ */
+void pcp_def_global_cpu_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("kernel.all.cpu.user",
+		     pmiID(60, 0, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.nice",
+		     pmiID(60, 0, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.sys",
+		     pmiID(60, 0, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.idle",
+		     pmiID(60, 0, 23), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.iowait",
+		     pmiID(60, 0, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.steal",
+		     pmiID(60, 0, 55), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.irq.hard",
+		     pmiID(60, 0, 54), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.irq.soft",
+		     pmiID(60, 0, 53), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.irq.total",
+		     pmiID(60, 0, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.guest",
+		     pmiID(60, 0, 60), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.all.cpu.guest_nice",
+		     pmiID(60, 0, 81), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+#endif /* HAVE_PCP */
+}
+
+#ifdef HAVE_PCP
+/*
+ * **************************************************************************
+ * Define PCP metrics for per-CPU statistics.
+ *
+ * IN
+ * @indom	Instance domain.
+ ***************************************************************************
+ */
+void pcp_def_percpu_metrics(pmInDom indom)
+{
+	pmiAddMetric("kernel.percpu.cpu.user",
+		     pmiID(60, 0, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.nice",
+		     pmiID(60, 0, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.sys",
+		     pmiID(60, 0, 2), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.idle",
+		     pmiID(60, 0, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.iowait",
+		     pmiID(60, 0, 30), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.steal",
+		     pmiID(60, 0, 58), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.irq.hard",
+		     pmiID(60, 0, 57), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.irq.soft",
+		     pmiID(60, 0, 56), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.irq.total",
+		     pmiID(60, 0, 35), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.guest",
+		     pmiID(60, 0, 61), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+
+	pmiAddMetric("kernel.percpu.cpu.guest_nice",
+		     pmiID(60, 0, 83), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+}
+#endif /* HAVE_PCP */
+
+/*
+ * **************************************************************************
+ * Define PCP metrics for global CPU softnet statistics.
+ ***************************************************************************
+ */
+void pcp_def_global_softnet_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("network.softnet.processed",
+		     pmiID(60, 57, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.dropped",
+		     pmiID(60, 57, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.time_squeeze",
+		     pmiID(60, 57, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.received_rps",
+		     pmiID(60, 57, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.flow_limit",
+		     pmiID(60, 57, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.backlog_length",
+		     pmiID(60, 57, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+#endif /* HAVE_PCP */
+}
+
+#ifdef HAVE_PCP
+/*
+ * **************************************************************************
+ * Define PCP metrics for per-CPU softnet statistics.
+ *
+ * IN
+ * @indom	Instance domain.
+ ***************************************************************************
+ */
+void pcp_def_percpu_softnet_metrics(pmInDom indom)
+{
+	pmiAddMetric("network.softnet.percpu.processed",
+		     pmiID(60, 57, 6), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.percpu.dropped",
+		     pmiID(60, 57, 7), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.percpu.time_squeeze",
+		     pmiID(60, 57, 8), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.percpu.received_rps",
+		     pmiID(60, 57, 10), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.percpu.flow_limit",
+		     pmiID(60, 57, 11), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("network.softnet.percpu.backlog_length",
+		     pmiID(60, 57, 13), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+}
+#endif /* HAVE_PCP */
+
+#ifdef HAVE_PCP
+/*
+ * **************************************************************************
+ * Define PCP metrics for CPU frequency statistics.
+ *
+ * IN
+ * @indom	Instance domain.
+ ***************************************************************************
+ */
+void pcp_def_pwr_cpufreq_metrics(pmInDom indom)
+{
+	pmiAddMetric("hinv.cpu.clock",
+		     pmiID(60, 18, 0), PM_TYPE_FLOAT, indom, PM_SEM_DISCRETE,
+		     pmiUnits(0, -1, 0, 0, PM_TIME_USEC, 0));
+}
+#endif /* HAVE_PCP */
+
+/*
+ ***********************************************global****************************
  * Define PCP metrics for CPU related statistics.
  *
  * IN:
@@ -99,76 +298,12 @@ void pcp_def_cpu_metrics(struct activity *a)
 		if (!i) {
 			if (a->id == A_CPU) {
 				/* This is CPU "all" */
-				pmiAddMetric("kernel.all.cpu.user",
-					     pmiID(60, 0, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.nice",
-					     pmiID(60, 0, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.sys",
-					     pmiID(60, 0, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.idle",
-					     pmiID(60, 0, 23), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.iowait",
-					     pmiID(60, 0, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.steal",
-					     pmiID(60, 0, 55), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.irq.hard",
-					     pmiID(60, 0, 54), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.irq.soft",
-					     pmiID(60, 0, 53), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.irq.total",
-					     pmiID(60, 0, 34), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.guest",
-					     pmiID(60, 0, 60), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-				pmiAddMetric("kernel.all.cpu.guest_nice",
-					     pmiID(60, 0, 81), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+				pcp_def_global_cpu_metrics();
 			}
 
 			else if (a->id == A_NET_SOFT) {
 				/* Create metrics for A_NET_SOFT */
-				pmiAddMetric("network.softnet.processed",
-					     pmiID(60, 57, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-				pmiAddMetric("network.softnet.dropped",
-					     pmiID(60, 57, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-				pmiAddMetric("network.softnet.time_squeeze",
-					     pmiID(60, 57, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-				pmiAddMetric("network.softnet.received_rps",
-					     pmiID(60, 57, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-				pmiAddMetric("network.softnet.flow_limit",
-					     pmiID(60, 57, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-				pmiAddMetric("network.softnet.backlog_length",
-					     pmiID(60, 57, 12), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
-					     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+				pcp_def_global_softnet_metrics();
 			}
 		}
 		else {
@@ -192,83 +327,17 @@ void pcp_def_cpu_metrics(struct activity *a)
 			else if (first) {
 				if (a->id == A_CPU) {
 					/* Create metrics for A_CPU */
-					pmiAddMetric("kernel.percpu.cpu.user",
-						     pmiID(60, 0, 0), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.nice",
-						     pmiID(60, 0, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.sys",
-						     pmiID(60, 0, 2), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.idle",
-						     pmiID(60, 0, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.iowait",
-						     pmiID(60, 0, 30), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.steal",
-						     pmiID(60, 0, 58), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.irq.hard",
-						     pmiID(60, 0, 57), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.irq.soft",
-						     pmiID(60, 0, 56), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.irq.total",
-						     pmiID(60, 0, 35), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.guest",
-						     pmiID(60, 0, 61), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
-
-					pmiAddMetric("kernel.percpu.cpu.guest_nice",
-						     pmiID(60, 0, 83), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 1, 0, 0, PM_TIME_MSEC, 0));
+					pcp_def_percpu_metrics(indom);
 				}
 
 				else if (a->id == A_PWR_CPU) {
 					/* Create metric for A_PWR_CPU */
-					pmiAddMetric("hinv.cpu.clock",
-						     pmiID(60, 18, 0), PM_TYPE_FLOAT, indom, PM_SEM_DISCRETE,
-						     pmiUnits(0, -1, 0, 0, PM_TIME_USEC, 0));
+					pcp_def_pwr_cpufreq_metrics(indom);
 				}
 
 				else if (a->id == A_NET_SOFT) {
-					/* Create metrics for a_NET_SOFT */
-					pmiAddMetric("network.softnet.percpu.processed",
-						     pmiID(60, 57, 6), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-					pmiAddMetric("network.softnet.percpu.dropped",
-						     pmiID(60, 57, 7), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-					pmiAddMetric("network.softnet.percpu.time_squeeze",
-						     pmiID(60, 57, 8), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-					pmiAddMetric("network.softnet.percpu.received_rps",
-						     pmiID(60, 57, 10), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-					pmiAddMetric("network.softnet.percpu.flow_limit",
-						     pmiID(60, 57, 11), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-					pmiAddMetric("network.softnet.percpu.backlog_length",
-						     pmiID(60, 57, 13), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-						     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+					/* Create metrics for A_NET_SOFT */
+					pcp_def_percpu_softnet_metrics(indom);
 				}
 
 				first = FALSE;
@@ -446,6 +515,108 @@ void pcp_def_io_metrics(void)
 }
 
 /*
+ * **************************************************************************
+ * Define PCP metrics for RAM memory utilization.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ ***************************************************************************
+ */
+void pcp_def_ram_memory_metrics(struct activity *a)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("hinv.physmem",
+		     pmiID(60, 1, 9), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
+		     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
+
+	pmiAddMetric("mem.physmem",
+		     pmiID(60, 1, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_DISCRETE,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.free",
+		     pmiID(60, 1, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.available",
+		     pmiID(60, 1, 58), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.used",
+		     pmiID(60, 1, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.bufmem",
+		     pmiID(60, 1, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.cached",
+		     pmiID(60, 1, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.committed_AS",
+		     pmiID(60, 1, 26), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.active",
+		     pmiID(60, 1, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.inactive",
+		     pmiID(60, 1, 15), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.dirty",
+		     pmiID(60, 1, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	if (DISPLAY_MEM_ALL(a->opt_flags)) {
+
+		pmiAddMetric("mem.util.anonpages",
+			     pmiID(60, 1, 30), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+		pmiAddMetric("mem.util.slab",
+			     pmiID(60, 1, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+		pmiAddMetric("mem.util.kernelStack",
+			     pmiID(60, 1, 43), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+		pmiAddMetric("mem.util.pageTables",
+			     pmiID(60, 1, 27), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+		pmiAddMetric("mem.util.vmallocUsed",
+			     pmiID(60, 1, 51), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+	}
+#endif /* HAVE_PCP */
+}
+
+/*
+ * **************************************************************************
+ * Define PCP metrics for swap memory utilization.
+ ***************************************************************************
+ */
+void pcp_def_swap_memory_metrics(void)
+{
+#ifdef HAVE_PCP
+	pmiAddMetric("mem.util.swapFree",
+		     pmiID(60, 1, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.swapTotal",
+		     pmiID(60, 1, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
+	pmiAddMetric("mem.util.swapCached",
+		     pmiID(60, 1, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+#endif /* HAVE_PCP */
+}
+
+/*
  ***************************************************************************
  * Define PCP metrics for memory statistics.
  *
@@ -457,88 +628,11 @@ void pcp_def_memory_metrics(struct activity *a)
 {
 #ifdef HAVE_PCP
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-
-		pmiAddMetric("hinv.physmem",
-			     pmiID(60, 1, 9), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
-			     pmiUnits(1, 0, 0, PM_SPACE_MBYTE, 0, 0));
-
-		pmiAddMetric("mem.physmem",
-			     pmiID(60, 1, 0), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_DISCRETE,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.free",
-			     pmiID(60, 1, 2), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.available",
-			     pmiID(60, 1, 58), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.used",
-			     pmiID(60, 1, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.bufmem",
-			     pmiID(60, 1, 4), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.cached",
-			     pmiID(60, 1, 5), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.committed_AS",
-			     pmiID(60, 1, 26), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.active",
-			     pmiID(60, 1, 14), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.inactive",
-			     pmiID(60, 1, 15), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.dirty",
-			     pmiID(60, 1, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-
-			pmiAddMetric("mem.util.anonpages",
-				     pmiID(60, 1, 30), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-			pmiAddMetric("mem.util.slab",
-				     pmiID(60, 1, 25), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-			pmiAddMetric("mem.util.kernelStack",
-				     pmiID(60, 1, 43), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-			pmiAddMetric("mem.util.pageTables",
-				     pmiID(60, 1, 27), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-			pmiAddMetric("mem.util.vmallocUsed",
-				     pmiID(60, 1, 51), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-				     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-		}
+		pcp_def_ram_memory_metrics(a);
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-
-		pmiAddMetric("mem.util.swapFree",
-			     pmiID(60, 1, 21), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.swapTotal",
-			     pmiID(60, 1, 20), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
-
-		pmiAddMetric("mem.util.swapCached",
-			     pmiID(60, 1, 13), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+		pcp_def_swap_memory_metrics();
 	}
 #endif /* HAVE_PCP */
 }
@@ -1864,6 +1958,85 @@ void pcp_def_fchost_metrics(struct activity *a)
 #endif /* HAVE_PCP */
 }
 
+#ifdef HAVE_PCP
+/*
+ * **************************************************************************
+ * Define PCP metrics for pressure-stall CPU statistics.
+ *
+ * IN
+ * @indom	Instance domain.
+ ***************************************************************************
+ */
+void pcp_def_psicpu_metrics(pmInDom indom)
+{
+	pmiAddMetric("kernel.all.pressure.cpu.some.total",
+		     pmiID(60, 83, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+	pmiAddMetric("kernel.all.pressure.cpu.some.avg",
+		     pmiID(60, 83, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+}
+#endif /* HAVE_PCP */
+
+#ifdef HAVE_PCP
+/*
+ * **************************************************************************
+ * Define PCP metrics for pressure-stall I/O statistics.
+ *
+ * IN
+ * @indom	Instance domain.
+ ***************************************************************************
+ */
+void pcp_def_psiio_metrics(pmInDom indom)
+{
+	pmiAddMetric("kernel.all.pressure.io.some.total",
+		     pmiID(60, 85, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+	pmiAddMetric("kernel.all.pressure.io.some.avg",
+		     pmiID(60, 85, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("kernel.all.pressure.io.full.total",
+		     pmiID(60, 85, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+	pmiAddMetric("kernel.all.pressure.io.full.avg",
+		     pmiID(60, 85, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+}
+#endif /* HAVE_PCP */
+
+#ifdef HAVE_PCP
+/*
+ * **************************************************************************
+ * Define PCP metrics for pressure-stall memory statistics.
+ *
+ * IN
+ * @indom	Instance domain.
+ ***************************************************************************
+ */
+void pcp_def_psimem_metrics(pmInDom indom)
+{
+	pmiAddMetric("kernel.all.pressure.memory.some.total",
+		     pmiID(60, 84, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+	pmiAddMetric("kernel.all.pressure.memory.some.avg",
+		     pmiID(60, 84, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+
+	pmiAddMetric("kernel.all.pressure.memory.full.total",
+		     pmiID(60, 84, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
+
+	pmiAddMetric("kernel.all.pressure.memory.full.avg",
+		     pmiID(60, 84, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(0, 0, 0, 0, 0, 0));
+}
+#endif /* HAVE_PCP */
+
 /*
  ***************************************************************************
  * Define PCP metrics for pressure-stall statistics.
@@ -1888,49 +2061,15 @@ void pcp_def_psi_metrics(struct activity *a)
 
 	if (a->id == A_PSI_CPU) {
 		/* Create metrics for A_PSI_CPU */
-		pmiAddMetric("kernel.all.pressure.cpu.some.total",
-			     pmiID(60, 83, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
-
-		pmiAddMetric("kernel.all.pressure.cpu.some.avg",
-			     pmiID(60, 83, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pcp_def_psicpu_metrics(indom);
 	}
 	else if (a->id == A_PSI_IO) {
 		/* Create metrics for A_PSI_IO */
-		pmiAddMetric("kernel.all.pressure.io.some.total",
-			     pmiID(60, 85, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
-
-		pmiAddMetric("kernel.all.pressure.io.some.avg",
-			     pmiID(60, 85, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
-
-		pmiAddMetric("kernel.all.pressure.io.full.total",
-			     pmiID(60, 85, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
-
-		pmiAddMetric("kernel.all.pressure.io.full.avg",
-			     pmiID(60, 85, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pcp_def_psiio_metrics(indom);
 	}
 	else {
 		/* Create metrics for A_PSI_MEM */
-		pmiAddMetric("kernel.all.pressure.memory.some.total",
-			     pmiID(60, 84, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
-
-		pmiAddMetric("kernel.all.pressure.memory.some.avg",
-			     pmiID(60, 84, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
-
-		pmiAddMetric("kernel.all.pressure.memory.full.total",
-			     pmiID(60, 84, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
-			     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
-
-		pmiAddMetric("kernel.all.pressure.memory.full.avg",
-			     pmiID(60, 84, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
-			     pmiUnits(0, 0, 0, 0, 0, 0));
+		pcp_def_psimem_metrics(indom);
 	}
 #endif /* HAVE_PCP */
 }

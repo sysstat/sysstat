@@ -498,6 +498,90 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
 }
 
 /*
+ * **************************************************************************
+ * Display RAM memory utilization in XML.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ * @dispall	TRUE if all memory fields should be displayed.
+ * @tab		Indentation in XML output.
+ ***************************************************************************
+ */
+void xml_print_ram_memory_stats(struct stats_memory *smc, int dispall, int *tab)
+{
+	unsigned long long nousedmem;
+
+	nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+	if (nousedmem > smc->tlmkb) {
+		nousedmem = smc->tlmkb;
+	}
+
+	xprintf(++(*tab), "<memfree>%llu</memfree>", smc->frmkb);
+
+	xprintf(*tab, "<avail>%llu</avail>", smc->availablekb);
+
+	xprintf(*tab, "<memused>%llu</memused>", smc->tlmkb - nousedmem);
+
+	xprintf(*tab, "<memused-percent>%.2f</memused-percent>",
+		smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+			   : 0.0);
+
+	xprintf(*tab, "<buffers>%llu</buffers>", smc->bufkb);
+
+	xprintf(*tab, "<cached>%llu</cached>", smc->camkb);
+
+	xprintf(*tab, "<commit>%llu</commit>", smc->comkb);
+
+	xprintf(*tab, "<commit-percent>%.2f</commit-percent>",
+		(smc->tlmkb + smc->tlskb) ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
+					  : 0.0);
+
+	xprintf(*tab, "<active>%llu</active>", smc->activekb);
+
+	xprintf(*tab, "<inactive>%llu</inactive>", smc->inactkb);
+
+	xprintf((*tab)--, "<dirty>%llu</dirty>", smc->dirtykb);
+
+	if (dispall) {
+		xprintf(++(*tab), "<anonpg>%llu</anonpg>", smc->anonpgkb);
+
+		xprintf(*tab, "<slab>%llu</slab>", smc->slabkb);
+
+		xprintf(*tab, "<kstack>%llu</kstack>", smc->kstackkb);
+
+		xprintf(*tab, "<pgtbl>%llu</pgtbl>", smc->pgtblkb);
+
+		xprintf((*tab)--, "<vmused>%llu</vmused>", smc->vmusedkb);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display swap memory utilization in XML.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ * @tab		Indentation in XML output.
+ ***************************************************************************
+ */
+void xml_print_swap_memory_stats(struct stats_memory *smc, int *tab)
+{
+	xprintf(++(*tab), "<swpfree>%llu</swpfree>", smc->frskb);
+
+	xprintf(*tab, "<swpused>%llu</swpused>", smc->tlskb - smc->frskb);
+
+	xprintf(*tab, "<swpused-percent>%.2f</swpused-percent>",
+		smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
+			   : 0.0);
+
+	xprintf(*tab, "<swpcad>%llu</swpcad>", smc->caskb);
+
+	xprintf((*tab)--, "<swpcad-percent>%.2f</swpcad-percent>",
+		(smc->tlskb - smc->frskb) ? SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
+					  : 0.0);
+}
+
+/*
  ***************************************************************************
  * Display memory statistics in XML.
  *
@@ -517,88 +601,11 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 	xprintf(tab, "<memory unit=\"kB\">");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-		unsigned long long nousedmem;
-
-		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-		if (nousedmem > smc->tlmkb) {
-			nousedmem = smc->tlmkb;
-		}
-
-		xprintf(++tab, "<memfree>%llu</memfree>",
-			smc->frmkb);
-
-		xprintf(tab, "<avail>%llu</avail>",
-			smc->availablekb);
-
-		xprintf(tab, "<memused>%llu</memused>",
-			smc->tlmkb - nousedmem);
-
-		xprintf(tab, "<memused-percent>%.2f</memused-percent>",
-			smc->tlmkb ?
-			SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) :
-			0.0);
-
-		xprintf(tab, "<buffers>%llu</buffers>",
-			smc->bufkb);
-
-		xprintf(tab, "<cached>%llu</cached>",
-			smc->camkb);
-
-		xprintf(tab, "<commit>%llu</commit>",
-			smc->comkb);
-
-		xprintf(tab, "<commit-percent>%.2f</commit-percent>",
-			(smc->tlmkb + smc->tlskb) ?
-			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
-			0.0);
-
-		xprintf(tab, "<active>%llu</active>",
-			smc->activekb);
-
-		xprintf(tab, "<inactive>%llu</inactive>",
-			smc->inactkb);
-
-		xprintf(tab--, "<dirty>%llu</dirty>",
-			smc->dirtykb);
-
-		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-			xprintf(++tab, "<anonpg>%llu</anonpg>",
-				smc->anonpgkb);
-
-			xprintf(tab, "<slab>%llu</slab>",
-				smc->slabkb);
-
-			xprintf(tab, "<kstack>%llu</kstack>",
-				smc->kstackkb);
-
-			xprintf(tab, "<pgtbl>%llu</pgtbl>",
-				smc->pgtblkb);
-
-			xprintf(tab--, "<vmused>%llu</vmused>",
-				smc->vmusedkb);
-		}
+		xml_print_ram_memory_stats(smc, DISPLAY_MEM_ALL(a->opt_flags), &tab);
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-
-		xprintf(++tab, "<swpfree>%llu</swpfree>",
-			smc->frskb);
-
-		xprintf(tab, "<swpused>%llu</swpused>",
-			smc->tlskb - smc->frskb);
-
-		xprintf(tab, "<swpused-percent>%.2f</swpused-percent>",
-			smc->tlskb ?
-			SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) :
-			0.0);
-
-		xprintf(tab, "<swpcad>%llu</swpcad>",
-			smc->caskb);
-
-		xprintf(tab--, "<swpcad-percent>%.2f</swpcad-percent>",
-			(smc->tlskb - smc->frskb) ?
-			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
-			0.0);
+		xml_print_swap_memory_stats(smc, &tab);
 	}
 
 	xprintf(tab, "</memory>");

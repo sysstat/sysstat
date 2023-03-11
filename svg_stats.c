@@ -1743,54 +1743,49 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 }
 
 /*
- ***************************************************************************
- * Display memory statistics in SVG.
+ * **************************************************************************
+ * Display RAM memory utilization in SVG.
  *
  * IN:
  * @a		Activity structure with statistics.
- * @curr	Index in array for current sample statistics.
+ * @smc		Structure with statistics.
  * @action	Action expected from current function.
+ * @dispall	TRUE if all memory fields should be displayed.
  * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
  * 		flag indicating that a restart record has been previously
  * 		found (.@restart) and time used for the X axis origin
  * 		(@ust_time_ref).
- * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
  * @record_hdr	Pointer on record header of current stats sample.
+ * @xid		Current SVG graph number.
+ *
+ * OUT:
+ * @xid		Next SVG graph number.
  ***************************************************************************
  */
-__print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
-				       unsigned long long itv, struct record_header *record_hdr)
+void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, int action, int dispall,
+				struct svg_parm *svg_p, struct record_header *record_hdr, int *xid)
 {
-	struct stats_memory
-		*smc = (struct stats_memory *) a->buf[curr];
-	int group1[] = {3, 1, 3, 1, 3, 5};
-	int g_type1[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH,
-			 SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	int group2[] = {3, 1, 1};
-	int g_type2[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_BAR_GRAPH};
-	char *title1[] = {"Memory utilization (1)", "Memory utilization (2)",
-			  "Memory utilization (3)", "Memory utilization (4)",
-			  "Memory utilization (5)", "Memory utilization (6)"};
-	char *title2[] = {"Swap utilization (1)", "Swap utilization (2)",
-			  "Swap utilization (3)"};
-	char *g_title1[] = {"MBmemfree", "MBavail", "MBmemused", "%memused", "MBbuffers",
-			    "MBcached", "MBcommit", "%commit", "MBactive", "MBinact",
-			    "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
-			    "MBvmused"};
-	char *g_title2[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
-			    "%swpcad"};
-	int g_fields[] = {0, 4, 5, 21, 16, 22, 18, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
+	int group[] = {3, 1, 3, 1, 3, 5};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH,
+			SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	char *title[] = {"Memory utilization (1)", "Memory utilization (2)",
+			 "Memory utilization (3)", "Memory utilization (4)",
+			 "Memory utilization (5)", "Memory utilization (6)"};
+	char *g_title[] = {"MBmemfree", "MBavail", "MBmemused", "%memused", "MBbuffers",
+			   "MBcached", "MBcommit", "%commit", "MBactive", "MBinact",
+			   "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
+			   "MBvmused"};
+	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
 	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
-	static int xid = 0;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays that will contain the graphs data
 		 * and the min/max values.
 		 */
-		out = allocate_graph_lines(23, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(16, &outsize, &spmin, &spmax);
 	}
 
 	if (action & F_MAIN) {
@@ -1798,8 +1793,8 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		double tval;
 
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
-			     itv, spmin, spmax, g_fields);
+		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0, spmin, spmax, g_fields);
+
 		/* Compute %memused min/max values */
 		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
 		if (nousedmem > smc->tlmkb) {
@@ -1821,24 +1816,6 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		if (tval < *(spmin + 7)) {
 			*(spmin + 7) = tval;
 		}
-		/* Compute %swpused min/max values */
-		tval = smc->tlskb ?
-		       SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
-		if (tval > *(spmax + 19)) {
-			*(spmax + 19) = tval;
-		}
-		if (tval < *(spmin + 19)) {
-			*(spmin + 19) = tval;
-		}
-		/* Compute %swpcad min/max values */
-		tval = (smc->tlskb - smc->frskb) ?
-		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
-		if (tval > *(spmax + 20)) {
-			*(spmax + 20) = tval;
-		}
-		if (tval < *(spmin + 20)) {
-			*(spmin + 20) = tval;
-		}
 		/* Compute memused min/max values in MB */
 		tval = ((double) (smc->tlmkb - nousedmem)) / 1024;
 		if (tval > *(spmax + 2)) {
@@ -1846,14 +1823,6 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		}
 		if (tval < *(spmin + 2)) {
 			*(spmin + 2) = tval;
-		}
-		/* Compute swpused min/max values in MB */
-		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
-		if (tval > *(spmax + 17)) {
-			*(spmax + 17) = tval;
-		}
-		if (tval < *(spmin + 17)) {
-			*(spmin + 17) = tval;
 		}
 
 		/* MBmemfree */
@@ -1875,19 +1844,7 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		/* MBcached */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->camkb) / 1024,
-			  out + 5, outsize + 5, svg_p->restart);
-		/* MBswpfree */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) smc->frskb) / 1024,
-			 out + 16, outsize + 16, svg_p->restart);
-		/* MBswpused */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) (smc->tlskb - smc->frskb)) / 1024,
-			 out + 17, outsize + 17, svg_p->restart);
-		/* MBswpcad */
-		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) smc->caskb) / 1024,
-			 out + 18, outsize + 18, svg_p->restart);
+			 out + 5, outsize + 5, svg_p->restart);
 		/* MBcommit */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->comkb) / 1024,
@@ -1927,27 +1884,15 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 		/* %memused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
-			 smc->tlmkb ?
-			 SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0,
-			 out + 3, outsize + 3, svg_p->dt);
+			 smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+				    : 0.0,
+			out + 3, outsize + 3, svg_p->dt);
 		/* %commit */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0,
-			 (smc->tlmkb + smc->tlskb) ?
-			 SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0,
+			 (smc->tlmkb + smc->tlskb) ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
+						   : 0.0,
 			 out + 7, outsize + 7, svg_p->dt);
-		/* %swpused */
-		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 smc->tlskb ?
-			 SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0,
-			 out + 19, outsize + 19, svg_p->dt);
-		/* %swpcad */
-		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 (smc->tlskb - smc->frskb) ?
-			 SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0,
-			 out + 20, outsize + 20, svg_p->dt);
 	}
 
 	if (action & F_END) {
@@ -1955,27 +1900,171 @@ __print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action,
 
 		/* Conversion kB -> MB */
 		for (i = 0; i < 17; i++) {
-			*(spmin + g_fields[i]) /= 1024;
-			*(spmax + g_fields[i]) /= 1024;
-		}
-
-		if (DISPLAY_MEMORY(a->opt_flags)) {
-			if (draw_activity_graphs(DISPLAY_MEM_ALL(a->opt_flags) ? 6 : 5,
-						 g_type1, title1, g_title1, NULL, group1,
-						 spmin, spmax, out, outsize, svg_p, record_hdr,
-						 FALSE, a, xid)) {
-				xid++;
+			if (g_fields[i] >= 0) {
+				*(spmin + g_fields[i]) /= 1024;
+				*(spmax + g_fields[i]) /= 1024;
 			}
 		}
 
-		if (DISPLAY_SWAP(a->opt_flags)) {
-			draw_activity_graphs(3, g_type2, title2, g_title2, NULL, group2,
-					     spmin + 16, spmax + 16, out + 16, outsize + 16,
-					     svg_p, record_hdr, FALSE, a, xid);
+		if (draw_activity_graphs(dispall ? 6 : 5,
+					 g_type, title, g_title, NULL, group,
+					 spmin, spmax, out, outsize, svg_p, record_hdr,
+					 FALSE, a, *xid)) {
+			(*xid)++;
 		}
 
 		/* Free remaining structures */
 		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display swap memory utilization in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @smc		Structure with statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @record_hdr	Pointer on record header of current stats sample.
+ * @xid		SVG graph number.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_memory *smc,
+					    int action, struct svg_parm *svg_p,
+					    struct record_header *record_hdr, int xid)
+{
+	int group[] = {3, 1, 1};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_BAR_GRAPH};
+	char *title[] = {"Swap utilization (1)", "Swap utilization (2)",
+			  "Swap utilization (3)"};
+	char *g_title[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
+			    "%swpcad"};
+	int g_fields[] = {-1, -1, -1, 5, 0, 6, 2,
+			  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	static double *spmin, *spmax;
+	static char **out;
+	static int *outsize;
+
+	if (action & F_BEGIN) {
+		/*
+		 * Allocate arrays that will contain the graphs data
+		 * and the min/max values.
+		 */
+		out = allocate_graph_lines(7, &outsize, &spmin, &spmax);
+	}
+
+	if (action & F_MAIN) {
+		double tval;
+
+		/* Check for min/max values */
+		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0, spmin, spmax, g_fields);
+
+		/* Compute %swpused min/max values */
+		tval = smc->tlskb ?
+		SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
+		if (tval > *(spmax + 3)) {
+			*(spmax + 3) = tval;
+		}
+		if (tval < *(spmin + 3)) {
+			*(spmin + 3) = tval;
+		}
+		/* Compute %swpcad min/max values */
+		tval = (smc->tlskb - smc->frskb) ?
+		SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
+		if (tval > *(spmax + 4)) {
+			*(spmax + 4) = tval;
+		}
+		if (tval < *(spmin + 4)) {
+			*(spmin + 4) = tval;
+		}
+		/* Compute swpused min/max values in MB */
+		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
+		if (tval > *(spmax + 1)) {
+			*(spmax + 1) = tval;
+		}
+		if (tval < *(spmin + 1)) {
+			*(spmin + 1) = tval;
+		}
+
+		/* MBswpfree */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 ((double) smc->frskb) / 1024,
+			 out, outsize, svg_p->restart);
+		/* MBswpused */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 ((double) (smc->tlskb - smc->frskb)) / 1024,
+			 out + 1, outsize + 1, svg_p->restart);
+		/* MBswpcad */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 ((double) smc->caskb) / 1024,
+			 out + 2, outsize + 2, svg_p->restart);
+		/* %swpused */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
+				    : 0.0,
+			 out + 3, outsize + 3, svg_p->dt);
+		/* %swpcad */
+		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 0.0,
+			 (smc->tlskb - smc->frskb) ? SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
+						   : 0.0,
+			 out + 4, outsize + 4, svg_p->dt);
+	}
+
+	if (action & F_END) {
+		int i;
+
+		/* Conversion kB -> MB */
+		for (i = 3; i < 7; i++) {
+			*(spmin + g_fields[i]) /= 1024;
+			*(spmax + g_fields[i]) /= 1024;
+		}
+
+		draw_activity_graphs(3, g_type, title, g_title, NULL, group,
+				     spmin, spmax, out, outsize,
+				     svg_p, record_hdr, FALSE, a, xid);
+
+		/* Free remaining structures */
+		free_graphs(out, outsize, spmin, spmax);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display memory statistics in SVG.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @action	Action expected from current function.
+ * @svg_p	SVG specific parameters: Current graph number (.@graph_no),
+ * 		flag indicating that a restart record has been previously
+ * 		found (.@restart) and time used for the X axis origin
+ * 		(@ust_time_ref).
+ * @itv		Interval of time in 1/100th of a second (only with F_MAIN action).
+ * @record_hdr	Pointer on record header of current stats sample.
+ ***************************************************************************
+ */
+__print_funct_t svg_print_memory_stats(struct activity *a, int curr, int action, struct svg_parm *svg_p,
+				       unsigned long long itv, struct record_header *record_hdr)
+{
+	struct stats_memory
+		*smc = (struct stats_memory *) a->buf[curr];
+	static int xid = 0;
+
+	if (DISPLAY_MEMORY(a->opt_flags)) {
+		svg_print_ram_memory_stats(a, smc, action, DISPLAY_MEM_ALL(a->opt_flags),
+					   svg_p, record_hdr, &xid);
+	}
+
+	if (DISPLAY_SWAP(a->opt_flags)) {
+		svg_print_swap_memory_stats(a, smc, action, svg_p, record_hdr, xid);
 	}
 }
 

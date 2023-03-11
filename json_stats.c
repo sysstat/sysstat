@@ -519,6 +519,88 @@ __print_funct_t json_print_io_stats(struct activity *a, int curr, int tab,
 }
 
 /*
+ * **************************************************************************
+ * Display RAM memory utilization in JSON.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ * @dispall	TRUE if all memory fields should be displayed.
+ ***************************************************************************
+ */
+void json_print_ram_memory_stats(struct stats_memory *smc, int dispall)
+{
+	unsigned long long nousedmem;
+
+	nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+	if (nousedmem > smc->tlmkb) {
+		nousedmem = smc->tlmkb;
+	}
+
+	printf("\"memfree\": %llu, "
+	       "\"avail\": %llu, "
+	       "\"memused\": %llu, "
+	       "\"memused-percent\": %.2f, "
+	       "\"buffers\": %llu, "
+	       "\"cached\": %llu, "
+	       "\"commit\": %llu, "
+	       "\"commit-percent\": %.2f, "
+	       "\"active\": %llu, "
+	       "\"inactive\": %llu, "
+	       "\"dirty\": %llu",
+	       smc->frmkb,
+	       smc->availablekb,
+	       smc->tlmkb - nousedmem,
+	       smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+			  : 0.0,
+	       smc->bufkb,
+	       smc->camkb,
+	       smc->comkb,
+	       (smc->tlmkb + smc->tlskb) ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
+					 : 0.0,
+	       smc->activekb,
+	       smc->inactkb,
+	       smc->dirtykb);
+
+	if (dispall) {
+		/* Display extended memory stats */
+		printf(", \"anonpg\": %llu, "
+		       "\"slab\": %llu, "
+		       "\"kstack\": %llu, "
+		       "\"pgtbl\": %llu, "
+		       "\"vmused\": %llu",
+		       smc->anonpgkb,
+		       smc->slabkb,
+		       smc->kstackkb,
+		       smc->pgtblkb,
+		       smc->vmusedkb);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display swap memory utilization in JSON.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ ***************************************************************************
+ */
+void json_print_swap_memory_stats(struct stats_memory *smc)
+{
+	printf("\"swpfree\": %llu, "
+	       "\"swpused\": %llu, "
+	       "\"swpused-percent\": %.2f, "
+	       "\"swpcad\": %llu, "
+	       "\"swpcad-percent\": %.2f",
+	       smc->frskb,
+	       smc->tlskb - smc->frskb,
+	       smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
+			  : 0.0,
+	       smc->caskb,
+	       (smc->tlskb - smc->frskb) ? SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
+					 : 0.0);
+}
+
+/*
  ***************************************************************************
  * Display memory statistics in JSON.
  *
@@ -539,77 +621,15 @@ __print_funct_t json_print_memory_stats(struct activity *a, int curr, int tab,
 	xprintf0(tab, "\"memory\": {");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-		unsigned long long nousedmem;
-
 		sep = TRUE;
-
-		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-		if (nousedmem > smc->tlmkb) {
-			nousedmem = smc->tlmkb;
-		}
-
-		printf("\"memfree\": %llu, "
-		       "\"avail\": %llu, "
-		       "\"memused\": %llu, "
-		       "\"memused-percent\": %.2f, "
-		       "\"buffers\": %llu, "
-		       "\"cached\": %llu, "
-		       "\"commit\": %llu, "
-		       "\"commit-percent\": %.2f, "
-		       "\"active\": %llu, "
-		       "\"inactive\": %llu, "
-		       "\"dirty\": %llu",
-		       smc->frmkb,
-		       smc->availablekb,
-		       smc->tlmkb - nousedmem,
-		       smc->tlmkb ?
-		       SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) :
-		       0.0,
-		       smc->bufkb,
-		       smc->camkb,
-		       smc->comkb,
-		       (smc->tlmkb + smc->tlskb) ?
-		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) :
-		       0.0,
-		       smc->activekb,
-		       smc->inactkb,
-		       smc->dirtykb);
-
-		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-			/* Display extended memory stats */
-			printf(", \"anonpg\": %llu, "
-			       "\"slab\": %llu, "
-			       "\"kstack\": %llu, "
-			       "\"pgtbl\": %llu, "
-			       "\"vmused\": %llu",
-			       smc->anonpgkb,
-			       smc->slabkb,
-			       smc->kstackkb,
-			       smc->pgtblkb,
-			       smc->vmusedkb);
-		}
+		json_print_ram_memory_stats(smc, DISPLAY_MEM_ALL(a->opt_flags));
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-
 		if (sep) {
 			printf(", ");
 		}
-
-		printf("\"swpfree\": %llu, "
-		       "\"swpused\": %llu, "
-		       "\"swpused-percent\": %.2f, "
-		       "\"swpcad\": %llu, "
-		       "\"swpcad-percent\": %.2f",
-		       smc->frskb,
-		       smc->tlskb - smc->frskb,
-		       smc->tlskb ?
-		       SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) :
-		       0.0,
-		       smc->caskb,
-		       (smc->tlskb - smc->frskb) ?
-		       SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
-		       0.0);
+		json_print_swap_memory_stats(smc);
 	}
 
 	printf("}");

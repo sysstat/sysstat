@@ -370,6 +370,96 @@ __print_funct_t pcp_print_io_stats(struct activity *a, int curr)
 }
 
 /*
+ * **************************************************************************
+ * Display RAM memory utilization in PCP format.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ * @dispall	TRUE if all memory fields should be displayed.
+ ***************************************************************************
+ */
+void pcp_print_ram_memory_stats(struct stats_memory *smc, int dispall)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+
+	snprintf(buf, sizeof(buf), "%lu", (unsigned long) (smc->tlmkb >> 10));
+	pmiPutValue("hinv.physmem", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->tlmkb);
+	pmiPutValue("mem.physmem", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->frmkb);
+	pmiPutValue("mem.util.free", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->availablekb);
+	pmiPutValue("mem.util.available", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->tlmkb - smc->frmkb);
+	pmiPutValue("mem.util.used", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->bufkb);
+	pmiPutValue("mem.util.bufmem", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->camkb);
+	pmiPutValue("mem.util.cached", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->comkb);
+	pmiPutValue("mem.util.committed_AS", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->activekb);
+	pmiPutValue("mem.util.active", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->inactkb);
+	pmiPutValue("mem.util.inactive", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->dirtykb);
+	pmiPutValue("mem.util.dirty", NULL, buf);
+
+	if (dispall) {
+		snprintf(buf, sizeof(buf), "%llu", smc->anonpgkb);
+		pmiPutValue("mem.util.anonpages", NULL, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", smc->slabkb);
+		pmiPutValue("mem.util.slab", NULL, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", smc->kstackkb);
+		pmiPutValue("mem.util.kernelStack", NULL, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", smc->pgtblkb);
+		pmiPutValue("mem.util.pageTables", NULL, buf);
+
+		snprintf(buf, sizeof(buf), "%llu", smc->vmusedkb);
+		pmiPutValue("mem.util.vmallocUsed", NULL, buf);
+	}
+#endif	/* HAVE_PCP */
+}
+
+/*
+ * **************************************************************************
+ * Display swap memory utilization in PCP format.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ ***************************************************************************
+ */
+void pcp_print_swap_memory_stats(struct stats_memory *smc)
+{
+#ifdef HAVE_PCP
+	char buf[64];
+
+	snprintf(buf, sizeof(buf), "%llu", smc->frskb);
+	pmiPutValue("mem.util.swapFree", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->tlskb);
+	pmiPutValue("mem.util.swapTotal", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", smc->caskb);
+	pmiPutValue("mem.util.swapCached", NULL, buf);
+#endif	/* HAVE_PCP */
+}
+
+/*
  ***************************************************************************
  * Display memory statistics in PCP format.
  *
@@ -381,74 +471,15 @@ __print_funct_t pcp_print_io_stats(struct activity *a, int curr)
 __print_funct_t pcp_print_memory_stats(struct activity *a, int curr)
 {
 #ifdef HAVE_PCP
-	char buf[64];
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-
-		snprintf(buf, sizeof(buf), "%lu", (unsigned long) (smc->tlmkb >> 10));
-		pmiPutValue("hinv.physmem", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb);
-		pmiPutValue("mem.physmem", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->frmkb);
-		pmiPutValue("mem.util.free", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->availablekb);
-		pmiPutValue("mem.util.available", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->tlmkb - smc->frmkb);
-		pmiPutValue("mem.util.used", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->bufkb);
-		pmiPutValue("mem.util.bufmem", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->camkb);
-		pmiPutValue("mem.util.cached", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->comkb);
-		pmiPutValue("mem.util.committed_AS", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->activekb);
-		pmiPutValue("mem.util.active", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->inactkb);
-		pmiPutValue("mem.util.inactive", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->dirtykb);
-		pmiPutValue("mem.util.dirty", NULL, buf);
-
-		if (DISPLAY_MEM_ALL(a->opt_flags)) {
-
-			snprintf(buf, sizeof(buf), "%llu", smc->anonpgkb);
-			pmiPutValue("mem.util.anonpages", NULL, buf);
-
-			snprintf(buf, sizeof(buf), "%llu", smc->slabkb);
-			pmiPutValue("mem.util.slab", NULL, buf);
-
-			snprintf(buf, sizeof(buf), "%llu", smc->kstackkb);
-			pmiPutValue("mem.util.kernelStack", NULL, buf);
-
-			snprintf(buf, sizeof(buf), "%llu", smc->pgtblkb);
-			pmiPutValue("mem.util.pageTables", NULL, buf);
-
-			snprintf(buf, sizeof(buf), "%llu", smc->vmusedkb);
-			pmiPutValue("mem.util.vmallocUsed", NULL, buf);
-		}
+		pcp_print_ram_memory_stats(smc, DISPLAY_MEM_ALL(a->opt_flags));
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-
-		snprintf(buf, sizeof(buf), "%llu", smc->frskb);
-		pmiPutValue("mem.util.swapFree", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->tlskb);
-		pmiPutValue("mem.util.swapTotal", NULL, buf);
-
-		snprintf(buf, sizeof(buf), "%llu", smc->caskb);
-		pmiPutValue("mem.util.swapCached", NULL, buf);
+		pcp_print_swap_memory_stats(smc);
 	}
 #endif	/* HAVE_PCP */
 }

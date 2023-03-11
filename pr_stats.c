@@ -539,21 +539,19 @@ __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
 }
 
 /*
- ***************************************************************************
- * Display memory and swap statistics. This function is used to
+ * **************************************************************************
+ * Display RAM memory utilization. This function is used to
  * display instantaneous and average statistics.
  *
  * IN:
- * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
- * @curr	Index in array for current sample statistics.
+ * @smc		Structure with statistics.
  * @dispavg	TRUE if displaying average statistics.
+ * @unit	Default values unit.
+ * @dispall	TRUE if all memory fields should be displayed.
  ***************************************************************************
  */
-void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg)
+void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int dispall)
 {
-	struct stats_memory
-		*smc = (struct stats_memory *) a->buf[curr];
 	static unsigned long long
 		avg_frmkb       = 0,
 		avg_bufkb       = 0,
@@ -568,10 +566,193 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		avg_pgtblkb     = 0,
 		avg_vmusedkb    = 0,
 		avg_availablekb = 0;
+	unsigned long long nousedmem;
+
+	if (!dispavg) {
+		/* Display instantaneous values */
+		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+		if (nousedmem > smc->tlmkb) {
+			nousedmem = smc->tlmkb;
+		}
+		cprintf_u64(unit, 3, 9,
+			    (unsigned long long) smc->frmkb,
+			    (unsigned long long) smc->availablekb,
+			    (unsigned long long) (smc->tlmkb - nousedmem));
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
+			    smc->tlmkb ?
+			    SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+			    : 0.0);
+		cprintf_u64(unit, 3, 9,
+			    (unsigned long long) smc->bufkb,
+			    (unsigned long long) smc->camkb,
+			    (unsigned long long) smc->comkb);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
+			    (smc->tlmkb + smc->tlskb) ?
+			    SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
+			    : 0.0);
+		cprintf_u64(unit, 3, 9,
+			    (unsigned long long) smc->activekb,
+			    (unsigned long long) smc->inactkb,
+			    (unsigned long long) smc->dirtykb);
+
+		if (dispall) {
+			/* Display extended memory statistics */
+			cprintf_u64(unit, 5, 9,
+				    (unsigned long long) smc->anonpgkb,
+				    (unsigned long long) smc->slabkb,
+				    (unsigned long long) smc->kstackkb,
+				    (unsigned long long) smc->pgtblkb,
+				    (unsigned long long) smc->vmusedkb);
+		}
+
+		/*
+		 * Will be used to compute the average.
+		 * We assume that the total amount of memory installed can not vary
+		 * during the interval given on the command line.
+		 */
+		avg_frmkb       += smc->frmkb;
+		avg_bufkb       += smc->bufkb;
+		avg_camkb       += smc->camkb;
+		avg_comkb       += smc->comkb;
+		avg_activekb    += smc->activekb;
+		avg_inactkb     += smc->inactkb;
+		avg_dirtykb     += smc->dirtykb;
+		avg_anonpgkb    += smc->anonpgkb;
+		avg_slabkb      += smc->slabkb;
+		avg_kstackkb    += smc->kstackkb;
+		avg_pgtblkb     += smc->pgtblkb;
+		avg_vmusedkb    += smc->vmusedkb;
+		avg_availablekb += smc->availablekb;
+	}
+	else {
+		/* Display average values */
+		nousedmem = avg_frmkb + avg_bufkb + avg_camkb + avg_slabkb;
+		cprintf_f(unit, FALSE, 3, 9, 0,
+			  (double) avg_frmkb / avg_count,
+			  (double) avg_availablekb / avg_count,
+			  (double) smc->tlmkb - ((double) nousedmem / avg_count));
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
+			    smc->tlmkb ?
+			    SP_VALUE((double) (nousedmem / avg_count), smc->tlmkb, smc->tlmkb)
+			    : 0.0);
+		cprintf_f(unit, FALSE, 3, 9, 0,
+			  (double) avg_bufkb / avg_count,
+			  (double) avg_camkb / avg_count,
+			  (double) avg_comkb / avg_count);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
+			    (smc->tlmkb + smc->tlskb) ?
+			    SP_VALUE(0.0, (double) (avg_comkb / avg_count), smc->tlmkb + smc->tlskb)
+			    : 0.0);
+		cprintf_f(unit, FALSE, 3, 9, 0,
+			  (double) avg_activekb / avg_count,
+			  (double) avg_inactkb / avg_count,
+			  (double) avg_dirtykb / avg_count);
+
+		if (dispall) {
+			cprintf_f(unit, FALSE, 5, 9, 0,
+				  (double) avg_anonpgkb / avg_count,
+				  (double) avg_slabkb / avg_count,
+				  (double) avg_kstackkb / avg_count,
+				  (double) avg_pgtblkb / avg_count,
+				  (double) avg_vmusedkb / avg_count);
+		}
+
+		/* Reset average counters */
+		avg_frmkb = avg_bufkb = avg_camkb = avg_comkb = 0;
+		avg_activekb = avg_inactkb = avg_dirtykb = 0;
+		avg_anonpgkb = avg_slabkb = avg_kstackkb = 0;
+		avg_pgtblkb = avg_vmusedkb = avg_availablekb = 0;
+	}
+
+	printf("\n");
+}
+
+/*
+ * **************************************************************************
+ * Display swap memory utilization. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @smc		Structure with statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ * @unit	Default values unit.
+ ***************************************************************************
+ */
+void print_swap_memory_stats(struct stats_memory *smc, int dispavg, int unit)
+{
 	static unsigned long long
 		avg_frskb = 0,
 		avg_tlskb = 0,
 		avg_caskb = 0;
+
+	if (!dispavg) {
+		/* Display instantaneous values */
+		cprintf_u64(unit, 2, 9,
+			    (unsigned long long) smc->frskb,
+			    (unsigned long long) (smc->tlskb - smc->frskb));
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
+			    smc->tlskb ?
+			    SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
+			    : 0.0);
+		cprintf_u64(unit, 1, 9,
+			    (unsigned long long) smc->caskb);
+		cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2,
+			    (smc->tlskb - smc->frskb) ?
+			    SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
+			    : 0.0);
+
+		/*
+		 * Will be used to compute the average.
+		 * We assume that the total amount of swap space may vary.
+		 */
+		avg_frskb += smc->frskb;
+		avg_tlskb += smc->tlskb;
+		avg_caskb += smc->caskb;
+	}
+	else {
+		/* Display average values */
+		cprintf_f(unit, FALSE, 2, 9, 0,
+			  (double) avg_frskb / avg_count,
+			  ((double) avg_tlskb / avg_count) -
+			  ((double) avg_frskb / avg_count));
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
+			    avg_tlskb ?
+			    SP_VALUE((double) avg_frskb / avg_count,
+				     (double) avg_tlskb / avg_count,
+				     (double) avg_tlskb / avg_count)
+			    : 0.0);
+		cprintf_f(unit, FALSE, 1, 9, 0,
+			  (double) avg_caskb / avg_count);
+		cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2,
+			    (avg_tlskb != avg_frskb) ?
+			    SP_VALUE(0.0, (double) avg_caskb / avg_count,
+				     ((double) avg_tlskb / avg_count) -
+				     ((double) avg_frskb / avg_count))
+			    : 0.0);
+
+		/* Reset average counters */
+		avg_frskb = avg_tlskb = avg_caskb = 0;
+	}
+
+	printf("\n");
+}
+
+/*
+ ***************************************************************************
+ * Display memory and swap utilization. This function is used to
+ * display instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ ***************************************************************************
+ */
+void stub_print_memory_stats(struct activity *a, int curr, int dispavg)
+{
+	struct stats_memory
+		*smc = (struct stats_memory *) a->buf[curr];
 	int unit = NO_UNIT;
 
 	if (DISPLAY_UNIT(flags)) {
@@ -580,110 +761,12 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 	}
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-		unsigned long long nousedmem;
-
 		if (dish) {
 			print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 		}
 		printf("%-11s", timestamp[curr]);
 
-		if (!dispavg) {
-			/* Display instantaneous values */
-			nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-			if (nousedmem > smc->tlmkb) {
-				nousedmem = smc->tlmkb;
-			}
-			cprintf_u64(unit, 3, 9,
-				    (unsigned long long) smc->frmkb,
-				    (unsigned long long) smc->availablekb,
-				    (unsigned long long) (smc->tlmkb - nousedmem));
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   smc->tlmkb ?
-				   SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
-				   : 0.0);
-			cprintf_u64(unit, 3, 9,
-				    (unsigned long long) smc->bufkb,
-				    (unsigned long long) smc->camkb,
-				    (unsigned long long) smc->comkb);
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   (smc->tlmkb + smc->tlskb) ?
-				   SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
-				   : 0.0);
-			cprintf_u64(unit, 3, 9,
-				    (unsigned long long) smc->activekb,
-				    (unsigned long long) smc->inactkb,
-				    (unsigned long long) smc->dirtykb);
-
-			if (DISPLAY_MEM_ALL(a->opt_flags)) {
-				/* Display extended memory statistics */
-				cprintf_u64(unit, 5, 9,
-					    (unsigned long long) smc->anonpgkb,
-					    (unsigned long long) smc->slabkb,
-					    (unsigned long long) smc->kstackkb,
-					    (unsigned long long) smc->pgtblkb,
-					    (unsigned long long) smc->vmusedkb);
-			}
-
-			/*
-			 * Will be used to compute the average.
-			 * We assume that the total amount of memory installed can not vary
-			 * during the interval given on the command line.
-			 */
-			avg_frmkb       += smc->frmkb;
-			avg_bufkb       += smc->bufkb;
-			avg_camkb       += smc->camkb;
-			avg_comkb       += smc->comkb;
-			avg_activekb    += smc->activekb;
-			avg_inactkb     += smc->inactkb;
-			avg_dirtykb     += smc->dirtykb;
-			avg_anonpgkb    += smc->anonpgkb;
-			avg_slabkb      += smc->slabkb;
-			avg_kstackkb    += smc->kstackkb;
-			avg_pgtblkb     += smc->pgtblkb;
-			avg_vmusedkb    += smc->vmusedkb;
-			avg_availablekb += smc->availablekb;
-		}
-		else {
-			/* Display average values */
-			nousedmem = avg_frmkb + avg_bufkb + avg_camkb + avg_slabkb;
-			cprintf_f(unit, FALSE, 3, 9, 0,
-				  (double) avg_frmkb / avg_count,
-				  (double) avg_availablekb / avg_count,
-				  (double) smc->tlmkb - ((double) nousedmem / avg_count));
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   smc->tlmkb ?
-				   SP_VALUE((double) (nousedmem / avg_count), smc->tlmkb, smc->tlmkb)
-				   : 0.0);
-			cprintf_f(unit, FALSE, 3, 9, 0,
-				  (double) avg_bufkb / avg_count,
-				  (double) avg_camkb / avg_count,
-				  (double) avg_comkb / avg_count);
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   (smc->tlmkb + smc->tlskb) ?
-				   SP_VALUE(0.0, (double) (avg_comkb / avg_count), smc->tlmkb + smc->tlskb)
-				   : 0.0);
-			cprintf_f(unit, FALSE, 3, 9, 0,
-				  (double) avg_activekb / avg_count,
-				  (double) avg_inactkb / avg_count,
-				  (double) avg_dirtykb / avg_count);
-
-			if (DISPLAY_MEM_ALL(a->opt_flags)) {
-				cprintf_f(unit, FALSE, 5, 9, 0,
-					  (double) avg_anonpgkb / avg_count,
-					  (double) avg_slabkb / avg_count,
-					  (double) avg_kstackkb / avg_count,
-					  (double) avg_pgtblkb / avg_count,
-					  (double) avg_vmusedkb / avg_count);
-			}
-
-			/* Reset average counters */
-			avg_frmkb = avg_bufkb = avg_camkb = avg_comkb = 0;
-			avg_activekb = avg_inactkb = avg_dirtykb = 0;
-			avg_anonpgkb = avg_slabkb = avg_kstackkb = 0;
-			avg_pgtblkb = avg_vmusedkb = avg_availablekb = 0;
-		}
-
-		printf("\n");
+		print_ram_memory_stats(smc, dispavg, unit, DISPLAY_MEM_ALL(a->opt_flags));
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
@@ -692,56 +775,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 		}
 		printf("%-11s", timestamp[curr]);
 
-		if (!dispavg) {
-			/* Display instantaneous values */
-			cprintf_u64(unit, 2, 9,
-				    (unsigned long long) smc->frskb,
-				    (unsigned long long) (smc->tlskb - smc->frskb));
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   smc->tlskb ?
-				   SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
-				   : 0.0);
-			cprintf_u64(unit, 1, 9,
-				    (unsigned long long) smc->caskb);
-			cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2,
-				   (smc->tlskb - smc->frskb) ?
-				   SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
-				   : 0.0);
-
-			/*
-			 * Will be used to compute the average.
-			 * We assume that the total amount of swap space may vary.
-			 */
-			avg_frskb += smc->frskb;
-			avg_tlskb += smc->tlskb;
-			avg_caskb += smc->caskb;
-		}
-		else {
-			/* Display average values */
-			cprintf_f(unit, FALSE, 2, 9, 0,
-				  (double) avg_frskb / avg_count,
-				  ((double) avg_tlskb / avg_count) -
-				  ((double) avg_frskb / avg_count));
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   avg_tlskb ?
-				   SP_VALUE((double) avg_frskb / avg_count,
-					    (double) avg_tlskb / avg_count,
-					    (double) avg_tlskb / avg_count)
-				   : 0.0);
-			cprintf_f(unit, FALSE, 1, 9, 0,
-				  (double) avg_caskb / avg_count);
-			cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2,
-				   (avg_tlskb != avg_frskb) ?
-				   SP_VALUE(0.0, (double) avg_caskb / avg_count,
-					    ((double) avg_tlskb / avg_count) -
-					    ((double) avg_frskb / avg_count))
-				   : 0.0);
-
-			/* Reset average counters */
-			avg_frskb = avg_tlskb = avg_caskb = 0;
-		}
-
-		printf("\n");
+		print_swap_memory_stats(smc, dispavg, unit);
 	}
 }
 
@@ -759,7 +793,7 @@ void stub_print_memory_stats(struct activity *a, int prev, int curr, int dispavg
 __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
 				   unsigned long long itv)
 {
-	stub_print_memory_stats(a, prev, curr, FALSE);
+	stub_print_memory_stats(a, curr, FALSE);
 }
 
 /*
@@ -776,7 +810,7 @@ __print_funct_t print_memory_stats(struct activity *a, int prev, int curr,
 __print_funct_t print_avg_memory_stats(struct activity *a, int prev, int curr,
 				       unsigned long long itv)
 {
-	stub_print_memory_stats(a, prev, curr, TRUE);
+	stub_print_memory_stats(a, curr, TRUE);
 }
 
 /*
