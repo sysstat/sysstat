@@ -2235,19 +2235,19 @@ format_error:
  * @item_name	Item name to look for.
  *
  * RETURNS:
- * 1 if item found in list, 0 otherwise.
+ * Pointer on item in list if found, or NULL otherwise.
  ***************************************************************************
  */
-int search_list_item(struct sa_item *list, char *item_name)
+struct sa_item *search_list_item(struct sa_item *list, char *item_name)
 {
 	while (list != NULL) {
 		if (!strcmp(list->item_name, item_name))
-			return 1;	/* Item found in list */
+			return list;	/* Item found in list */
 		list = list->next;
 	}
 
 	/* Item not found */
-	return 0;
+	return NULL;
 }
 
 /*

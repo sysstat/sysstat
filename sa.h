@@ -1629,7 +1629,7 @@ int sa_get_record_timestamp_struct
 	(uint64_t, struct record_header *, struct tstamp_ext *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
-int search_list_item
+struct sa_item *search_list_item
 	(struct sa_item *, char *);
 void select_all_activities
 	(struct activity * []);
