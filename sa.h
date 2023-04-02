@@ -112,7 +112,7 @@ enum {
 #define S_F_SVG_HEIGHT		0x00200000
 #define S_F_SVG_PACKED		0x00400000
 #define S_F_SVG_SHOW_INFO	0x00800000
-/* Unused 			0x01000000 */
+#define S_F_MINMAX		0x01000000
 #define S_F_ZERO_OMIT		0x02000000
 #define S_F_SVG_SHOW_TOC	0x04000000
 #define S_F_FDATASYNC		0x08000000
@@ -153,6 +153,7 @@ enum {
 #define USE_OPTION_A(m)			(((m) & S_F_OPTION_A)     == S_F_OPTION_A)
 #define USE_OPTION_P(m)			(((m) & S_F_OPTION_P)     == S_F_OPTION_P)
 #define USE_OPTION_I(m)			(((m) & S_F_OPTION_I)     == S_F_OPTION_I)
+#define DISPLAY_MINMAX(m)		(((m) & S_F_MINMAX)       == S_F_MINMAX)
 
 #define AO_F_NULL		0x00000000
 

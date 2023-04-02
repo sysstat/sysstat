@@ -2486,6 +2486,17 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			SELECT_ACTIVITY(A_SWAP);
 			break;
 
+		case 'x':
+			/*
+			 * Check sar option -x here (as it can be combined
+			 * with other ones. This options is not used by sadf.
+			 * Display min and max values.
+			 */
+			if (caller == C_SAR) {
+				*flags |= S_F_MINMAX;
+			}
+			break;
+
 		case 'y':
 			SELECT_ACTIVITY(A_SERIAL);
 			break;
