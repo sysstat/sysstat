@@ -447,31 +447,63 @@ int write_all(int fd, const void *buf, int nr_bytes)
 
 #ifndef SOURCE_SADC
 /*
+ * **************************************************************************
+ * Allocate buffers for one activity.
+ *
+ * IN:
+ * @act		Activity for which buffers are to be initialized.
+ * @nr_alloc	Number of structures to allocate.
+ * @flags	Flags for common options and system state.
  ***************************************************************************
- * Allocate structures.
+ */
+void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
+{
+	int j;
+
+	/* nr_alloc should always be greater than a->nr_allocated */
+	if (nr_alloc <= a->nr_allocated) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: %s: alloc=%zu allocated=%d\n",
+			__FUNCTION__, a->name, nr_alloc, a->nr_allocated);
+#endif
+		return;
+	}
+
+	/* Look for a possible overflow */
+	check_overflow((unsigned int) a->msize,
+		       (unsigned int) nr_alloc,
+		       (unsigned int) a->nr2);
+
+	for (j = 0; j < 3; j++) {
+		SREALLOC(a->buf[j], void,
+			 (size_t) a->msize * nr_alloc * (size_t) a->nr2);
+
+		/* If its a reallocation then init additional space which has been allocated */
+		if (a->nr_allocated) {
+			memset((char *) a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
+			       (size_t) a->msize * (size_t) (nr_alloc - a->nr_allocated) * (size_t) a->nr2);
+		}
+	}
+	a->nr_allocated = nr_alloc;
+}
+
+/*
+ * **************************************************************************
+ * Allocate structures for all activities.
  *
  * IN:
  * @act	Array of activities.
+ * @flags	Flags for common options and system state.
  ***************************************************************************
  */
-void allocate_structures(struct activity *act[])
+void allocate_structures(struct activity *act[], uint64_t flags)
 {
-	int i, j;
+	int i;
 
 	for (i = 0; i < NR_ACT; i++) {
 
 		if (act[i]->nr_ini > 0) {
-
-			/* Look for a possible overflow */
-			check_overflow((unsigned int) act[i]->msize,
-				       (unsigned int) act[i]->nr_ini,
-				       (unsigned int) act[i]->nr2);
-
-			for (j = 0; j < 3; j++) {
-				SREALLOC(act[i]->buf[j], void,
-						(size_t) act[i]->msize * (size_t) act[i]->nr_ini * (size_t) act[i]->nr2);
-			}
-			act[i]->nr_allocated = act[i]->nr_ini;
+			allocate_buffers(act[i], (size_t) act[i]->nr_ini, flags);
 		}
 	}
 }
@@ -502,18 +534,18 @@ void free_structures(struct activity *act[])
 }
 
 /*
- ***************************************************************************
+ * **************************************************************************
  * Reallocate all the buffers for a given activity.
  *
  * IN:
  * @a		Activity whose buffers need to be reallocated.
  * @nr_min	Minimum number of items that the new buffers should be able
  *		to receive.
+ * @flags	Flags for common options and system state.
  ***************************************************************************
  */
-void reallocate_all_buffers(struct activity *a, __nr_t nr_min)
+void reallocate_all_buffers(struct activity *a, __nr_t nr_min, uint64_t flags)
 {
-	int j;
 	size_t nr_realloc;
 
 	if (nr_min <= 0) {
@@ -530,21 +562,8 @@ void reallocate_all_buffers(struct activity *a, __nr_t nr_min)
 		while (nr_realloc < nr_min);
 	}
 
-	/* Look for a possible overflow */
-	check_overflow((unsigned int) a->msize, (unsigned int) nr_realloc,
-		       (unsigned int) a->nr2);
-
-	for (j = 0; j < 3; j++) {
-		SREALLOC(a->buf[j], void,
-			(size_t) a->msize * nr_realloc * (size_t) a->nr2);
-		/* Init additional space which has been allocated */
-		if (a->nr_allocated) {
-			memset((char *) a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
-			       (size_t) a->msize * (size_t) (nr_realloc - a->nr_allocated) * (size_t) a->nr2);
-		}
-	}
-
-	a->nr_allocated = nr_realloc;
+	/* Reallocate buffers for current activity */
+	allocate_buffers(a, nr_realloc, flags);
 }
 
 /*
@@ -1707,6 +1726,7 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
  *		header.
  * @oneof	Set to UEOF_CONT if an unexpected end of file should not make
  *		sadf stop. Default behavior is to stop on unexpected EOF.
+ * @flags	Flags for common options and system state.
  *
  * RETURNS:
  * 2 if an error has been encountered (e.g. unexpected EOF),
@@ -1716,7 +1736,7 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 struct file_activity *file_actlst, int endian_mismatch,
 			 int arch_64, char *dfile, struct file_magic *file_magic,
-			 enum on_eof oneof)
+			 enum on_eof oneof, uint64_t flags)
 {
 	int i, j, p;
 	struct file_activity *fal = file_actlst;
@@ -1771,7 +1791,7 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 		/* Reallocate buffers if needed */
 		if (nr_value > act[p]->nr_allocated) {
-			reallocate_all_buffers(act[p], nr_value);
+			reallocate_all_buffers(act[p], nr_value, flags);
 		}
 
 		/*
@@ -3106,7 +3126,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			if (HAS_PERSISTENT_VALUES(act[p]->options) && (act[p]->nr_ini > 0)) {
 				act[p]->nr_ini = file_hdr->sa_cpu_nr;
 				if (act[p]->nr_ini > act[p]->nr_allocated) {
-					reallocate_all_buffers(act[p], act[p]->nr_ini);
+					reallocate_all_buffers(act[p], act[p]->nr_ini, l_flags);
 				}
 			}
 		}

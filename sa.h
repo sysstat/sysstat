@@ -1543,7 +1543,7 @@ int add_list_item
 void allocate_bitmaps
 	(struct activity * []);
 void allocate_structures
-	(struct activity * []);
+	(struct activity * [], uint64_t);
 int check_disk_reg
 	(struct activity *, int, int, int);
 void check_file_actlst
@@ -1614,14 +1614,14 @@ int print_special_record
 	 struct file_header *, struct activity * [], struct report_format *, int, int);
 int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
-	 char *, struct file_magic *, enum on_eof);
+	 char *, struct file_magic *, enum on_eof, uint64_t);
 __nr_t read_nr_value
 	(int, char *, struct file_magic *, int, int, int);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int,
 	 int, size_t, uint64_t, struct report_format *);
 void reallocate_all_buffers
-	(struct activity *, __nr_t);
+	(struct activity *, __nr_t, uint64_t);
 void replace_nonprintable_char
 	(int, char *);
 int sa_fread
