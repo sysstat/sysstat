@@ -1539,7 +1539,7 @@ int write_all
 
 #ifndef SOURCE_SADC
 int add_list_item
-	(struct sa_item **, char *, int);
+	(struct sa_item **, char *, int, int *);
 void allocate_bitmaps
 	(struct activity * []);
 void allocate_structures

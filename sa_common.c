@@ -2259,12 +2259,16 @@ struct sa_item *search_list_item(struct sa_item *list, char *item_name)
  * @item_name	Name of the item.
  * @max_len	Max length of an item.
  *
+ * OUT:
+ * @pos		If not NULL, contains the position of the item in list.
+ *		Not modified if item name was too long.
+ *
  * RETURNS:
  * 1 if item has been added to the list (since it was not previously there),
  * and 0 otherwise (item already in list or item name too long).
  ***************************************************************************
  */
-int add_list_item(struct sa_item **list, char *item_name, int max_len)
+int add_list_item(struct sa_item **list, char *item_name, int max_len, int *pos)
 {
 	struct sa_item *e;
 	int len;
@@ -2273,11 +2277,18 @@ int add_list_item(struct sa_item **list, char *item_name, int max_len)
 		/* Item too long */
 		return 0;
 
+	if (pos) {
+		*pos = 0;
+	}
+
 	while (*list != NULL) {
 		e = *list;
 		if (!strcmp(e->item_name, item_name))
 			return 0;	/* Item found in list */
-		list = &(e->next);
+			list = &(e->next);
+		if (pos) {
+			(*pos)++;
+		}
 	}
 
 	/* Item not found: Add it to the list */
@@ -2390,7 +2401,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 				(*opt)++;
 				/* Select int "sum". Keyword ALL is ignored */
 				if (!strcmp(argv[*opt], K_SUM)) {
-					act[p]->item_list_sz += add_list_item(&(act[p]->item_list), K_LOWERSUM, MAX_SA_IRQ_LEN);
+					act[p]->item_list_sz += add_list_item(&(act[p]->item_list), K_LOWERSUM, MAX_SA_IRQ_LEN, NULL);
 					act[p]->options |= AO_LIST_ON_CMDLINE;
 				}
 				return 0;
@@ -2826,12 +2837,12 @@ void parse_sa_devices(char *argv, struct activity *a, int max_len, int *opt, int
 				for (i = val_low; i <= val; i++) {
 					snprintf(svalue, sizeof(svalue), "%d", i);
 					svalue[sizeof(svalue) - 1] = '\0';
-					a->item_list_sz += add_list_item(&(a->item_list), svalue, max_len);
+					a->item_list_sz += add_list_item(&(a->item_list), svalue, max_len, NULL);
 				}
 				continue;
 			}
 		}
-		a->item_list_sz += add_list_item(&(a->item_list), t, max_len);
+		a->item_list_sz += add_list_item(&(a->item_list), t, max_len, NULL);
 	}
 	if (a->item_list_sz) {
 		a->options |= AO_LIST_ON_CMDLINE;

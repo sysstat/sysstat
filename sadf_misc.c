@@ -1536,7 +1536,7 @@ __nr_t count_new_net_dev(struct activity *a, int curr)
 	for (i = 0; i < a->nr[curr]; i++) {
 		sndc = (struct stats_net_dev *) ((char *) a->buf[curr] + i * a->msize);
 
-		nr += add_list_item(&(a->item_list), sndc->interface, MAX_IFACE_LEN);
+		nr += add_list_item(&(a->item_list), sndc->interface, MAX_IFACE_LEN, NULL);
 	}
 
 	return nr;
@@ -1565,7 +1565,7 @@ __nr_t count_new_net_edev(struct activity *a, int curr)
 	for (i = 0; i < a->nr[curr]; i++) {
 		snedc = (struct stats_net_edev *) ((char *) a->buf[curr] + i * a->msize);
 
-		nr += add_list_item(&(a->item_list), snedc->interface, MAX_IFACE_LEN);
+		nr += add_list_item(&(a->item_list), snedc->interface, MAX_IFACE_LEN, NULL);
 	}
 
 	return nr;
@@ -1596,7 +1596,7 @@ __nr_t count_new_filesystem(struct activity *a, int curr)
 
 		nr += add_list_item(&(a->item_list),
 				    get_fs_name_to_display(a, flags, sfc),
-				    MAX_FS_LEN);
+				    MAX_FS_LEN, NULL);
 	}
 
 	return nr;
@@ -1625,7 +1625,7 @@ __nr_t count_new_fchost(struct activity *a, int curr)
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfcc = (struct stats_fchost *) ((char *) a->buf[curr] + i * a->msize);
 
-		nr += add_list_item(&(a->item_list), sfcc->fchost_name, MAX_FCH_LEN);
+		nr += add_list_item(&(a->item_list), sfcc->fchost_name, MAX_FCH_LEN, NULL);
 	}
 
 	return nr;
@@ -1658,7 +1658,7 @@ __nr_t count_new_disk(struct activity *a, int curr)
 				    get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
 						    DISPLAY_PRETTY(flags), DISPLAY_PERSIST_NAME_S(flags),
 						    USE_STABLE_ID(flags), NULL),
-				    MAX_DEV_LEN);
+				    MAX_DEV_LEN, NULL);
 	}
 
 	return nr;
@@ -1695,7 +1695,8 @@ __nr_t count_new_int(struct activity *a, int curr)
 	for (i = 0; i < a->nr2; i++) {
 		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
 
-		nr += add_list_item(&(a->item_list), stc_cpuall_irq->irq_name, MAX_SA_IRQ_LEN);
+		nr += add_list_item(&(a->item_list), stc_cpuall_irq->irq_name,
+				    MAX_SA_IRQ_LEN, NULL);
 	}
 
 	return nr;
@@ -1728,7 +1729,7 @@ __nr_t count_new_bat(struct activity *a, int curr)
 		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
 
 		snprintf(bat_name, sizeof(bat_name), "BAT%d", (int) spbc->bat_id);
-		nr += add_list_item(&(a->item_list), bat_name, sizeof(bat_name));
+		nr += add_list_item(&(a->item_list), bat_name, sizeof(bat_name), NULL);
 	}
 
 	return nr;
