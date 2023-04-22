@@ -25,6 +25,7 @@ struct stats_pwr_fan {
 #define STATS_PWR_FAN_ULL	2
 #define STATS_PWR_FAN_UL	0
 #define STATS_PWR_FAN_U		0
+#define STATS_PWR_FAN_XNR	2
 
 /*
  * Structure for device temperature statistics.
@@ -40,6 +41,7 @@ struct stats_pwr_temp {
 #define STATS_PWR_TEMP_ULL	3
 #define STATS_PWR_TEMP_UL	0
 #define STATS_PWR_TEMP_U	0
+#define STATS_PWR_TEMP_XNR	2
 
 /*
  * Structure for voltage inputs statistics.
@@ -55,6 +57,7 @@ struct stats_pwr_in {
 #define STATS_PWR_IN_ULL	3
 #define STATS_PWR_IN_UL		0
 #define STATS_PWR_IN_U		0
+#define STATS_PWR_IN_XNR	2
 
 /*
  ***************************************************************************

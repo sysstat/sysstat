@@ -100,10 +100,14 @@ struct activity cpu_act = {
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_CPU_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_CPU_SIZE,
 	.msize		= STATS_CPU_SIZE,
 	.opt_flags	= AO_F_CPU_DEF,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -146,10 +150,14 @@ struct activity pcsw_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PCSW_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PCSW_SIZE,
 	.msize		= STATS_PCSW_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -192,10 +200,14 @@ struct activity irq_act = {
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_IRQ_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_IRQ_SIZE,
 	.msize		= STATS_IRQ_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -238,10 +250,14 @@ struct activity swap_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_SWAP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_SWAP_SIZE,
 	.msize		= STATS_SWAP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -285,10 +301,14 @@ struct activity paging_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PAGING_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PAGING_SIZE,
 	.msize		= STATS_PAGING_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -331,10 +351,14 @@ struct activity io_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_IO_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_IO_SIZE,
 	.msize		= STATS_IO_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -378,10 +402,14 @@ struct activity memory_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_MEMORY_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_MEMORY_SIZE,
 	.msize		= STATS_MEMORY_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -424,10 +452,14 @@ struct activity ktables_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_KTABLES_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_KTABLES_SIZE,
 	.msize		= STATS_KTABLES_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -470,10 +502,14 @@ struct activity queue_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_QUEUE_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_QUEUE_SIZE,
 	.msize		= STATS_QUEUE_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -516,10 +552,14 @@ struct activity serial_act = {
 	.nr_max		= MAX_NR_SERIAL_LINES,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_SERIAL_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_SERIAL_SIZE,
 	.msize		= STATS_SERIAL_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -562,10 +602,14 @@ struct activity disk_act = {
 	.nr_max		= MAX_NR_DISKS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_DISK_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_DISK_SIZE,
 	.msize		= STATS_DISK_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -608,10 +652,14 @@ struct activity net_dev_act = {
 	.nr_max		= MAX_NR_IFACES,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_DEV_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_DEV_SIZE,
 	.msize		= STATS_NET_DEV_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -655,10 +703,14 @@ struct activity net_edev_act = {
 	.nr_max		= MAX_NR_IFACES,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_EDEV_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EDEV_SIZE,
 	.msize		= STATS_NET_EDEV_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -701,10 +753,14 @@ struct activity net_nfs_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_NFS_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_NFS_SIZE,
 	.msize		= STATS_NET_NFS_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -748,10 +804,14 @@ struct activity net_nfsd_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_NFSD_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_NFSD_SIZE,
 	.msize		= STATS_NET_NFSD_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -794,10 +854,14 @@ struct activity net_sock_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_SOCK_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_SOCK_SIZE,
 	.msize		= STATS_NET_SOCK_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -840,10 +904,14 @@ struct activity net_ip_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_IP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_IP_SIZE,
 	.msize		= STATS_NET_IP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -886,10 +954,14 @@ struct activity net_eip_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_EIP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EIP_SIZE,
 	.msize		= STATS_NET_EIP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -933,10 +1005,14 @@ struct activity net_icmp_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_ICMP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_ICMP_SIZE,
 	.msize		= STATS_NET_ICMP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -980,10 +1056,14 @@ struct activity net_eicmp_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_EICMP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EICMP_SIZE,
 	.msize		= STATS_NET_EICMP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1026,10 +1106,14 @@ struct activity net_tcp_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_TCP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_TCP_SIZE,
 	.msize		= STATS_NET_TCP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1072,10 +1156,14 @@ struct activity net_etcp_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_ETCP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_ETCP_SIZE,
 	.msize		= STATS_NET_ETCP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1118,10 +1206,14 @@ struct activity net_udp_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_UDP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_UDP_SIZE,
 	.msize		= STATS_NET_UDP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1164,10 +1256,14 @@ struct activity net_sock6_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_SOCK6_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_SOCK6_SIZE,
 	.msize		= STATS_NET_SOCK6_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1211,10 +1307,14 @@ struct activity net_ip6_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_IP6_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_IP6_SIZE,
 	.msize		= STATS_NET_IP6_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1258,10 +1358,14 @@ struct activity net_eip6_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_EIP6_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EIP6_SIZE,
 	.msize		= STATS_NET_EIP6_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1306,10 +1410,14 @@ struct activity net_icmp6_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_ICMP6_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_ICMP6_SIZE,
 	.msize		= STATS_NET_ICMP6_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1353,10 +1461,14 @@ struct activity net_eicmp6_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_EICMP6_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EICMP6_SIZE,
 	.msize		= STATS_NET_EICMP6_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1399,10 +1511,14 @@ struct activity net_udp6_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_NET_UDP6_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_NET_UDP6_SIZE,
 	.msize		= STATS_NET_UDP6_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1445,10 +1561,14 @@ struct activity pwr_cpufreq_act = {
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_CPUFREQ_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_CPUFREQ_SIZE,
 	.msize		= STATS_PWR_CPUFREQ_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -1491,10 +1611,14 @@ struct activity pwr_fan_act = {
 	.nr_max		= MAX_NR_FANS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_FAN_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_FAN_SIZE,
 	.msize		= STATS_PWR_FAN_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1537,10 +1661,14 @@ struct activity pwr_temp_act = {
 	.nr_max		= MAX_NR_TEMP_SENSORS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_TEMP_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_TEMP_SIZE,
 	.msize		= STATS_PWR_TEMP_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1583,10 +1711,14 @@ struct activity pwr_in_act = {
 	.nr_max		= MAX_NR_IN_SENSORS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_IN_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_IN_SIZE,
 	.msize		= STATS_PWR_IN_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1629,10 +1761,14 @@ struct activity huge_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_HUGE_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_HUGE_SIZE,
 	.msize		= STATS_HUGE_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1674,10 +1810,14 @@ struct activity pwr_wghfreq_act = {
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_WGHFREQ_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_WGHFREQ_SIZE,
 	.msize		= STATS_PWR_WGHFREQ_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -1720,10 +1860,14 @@ struct activity pwr_usb_act = {
 	.nr_max		= MAX_NR_USB,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_USB_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_USB_SIZE,
 	.msize		= STATS_PWR_USB_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1767,10 +1911,14 @@ struct activity filesystem_act = {
 	.nr_max		= MAX_NR_FS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_FILESYSTEM_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_FILESYSTEM_SIZE,
 	.msize		= STATS_FILESYSTEM_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1813,10 +1961,14 @@ struct activity fchost_act = {
 	.nr_max		= MAX_NR_FCHOSTS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_FCHOST_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_FCHOST_SIZE,
 	.msize		= STATS_FCHOST_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1860,10 +2012,14 @@ struct activity softnet_act = {
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_SOFTNET_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_SOFTNET_SIZE,
 	.msize		= STATS_SOFTNET_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -1906,10 +2062,14 @@ struct activity psi_cpu_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PSI_CPU_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PSI_CPU_SIZE,
 	.msize		= STATS_PSI_CPU_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1952,10 +2112,14 @@ struct activity psi_io_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PSI_IO_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PSI_IO_SIZE,
 	.msize		= STATS_PSI_IO_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -1998,10 +2162,14 @@ struct activity psi_mem_act = {
 	.nr_max		= 1,
 	.nr		= {1, 1, 1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PSI_MEM_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PSI_MEM_SIZE,
 	.msize		= STATS_PSI_MEM_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
@@ -2044,10 +2212,14 @@ struct activity pwr_bat_act = {
 	.nr_max		= MAX_NR_BATS,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
+	.xnr		= STATS_PWR_BAT_XNR,
+	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_BAT_SIZE,
 	.msize		= STATS_PWR_BAT_SIZE,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
+	.spmin		= NULL,
+	.spmax		= NULL,
 	.bitmap		= NULL
 };
 
