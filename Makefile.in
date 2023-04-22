@@ -269,7 +269,7 @@ ioconf.o: ioconf.c ioconf.h common.h sysconfig.h
 act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h
+act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
 act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h
@@ -289,7 +289,9 @@ count_light.o: count.c common.h rd_stats.h
 
 rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
 
-pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h
+pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h pr_xstats.h
+
+pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
 
 rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h rndr_stats.h
 
@@ -342,7 +344,7 @@ sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o lib
 
 sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
 
-sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o librdstats_light.a libsyscom.a
+sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o pr_xstats.o librdstats_light.a libsyscom.a
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h
 
@@ -408,7 +410,7 @@ tests/32bits/sar32.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
 tests/32bits/act_sadc32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-tests/32bits/act_sar32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h
+tests/32bits/act_sar32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
 tests/32bits/sa_wrap32.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
@@ -453,7 +455,10 @@ tests/32bits/count_light32.o: count.c common.h rd_stats.h
 tests/32bits/format_sar32.o: format.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-tests/32bits/pr_stats32.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h
+tests/32bits/pr_stats32.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h pr_xstats.h
+	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
+
+tests/32bits/pr_xstats32.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/common32.o: common.c version.h common.h
@@ -469,7 +474,7 @@ tests/32bits/sadc32: LFLAGS += $(LFSENSORS32)
 
 tests/32bits/sadc32: tests/32bits/sadc32.o tests/32bits/act_sadc32.o tests/32bits/sa_wrap32.o tests/32bits/sa_common_light32.o tests/32bits/common_light32.o tests/32bits/systest32.o tests/32bits/librdstats32.a tests/32bits/librdsensors32.a
 
-tests/32bits/sar32: tests/32bits/sar32.o tests/32bits/act_sar32.o tests/32bits/format_sar32.o tests/32bits/sa_common32.o tests/32bits/pr_stats32.o tests/32bits/librdstats_light32.a tests/32bits/libsyscom32.a
+tests/32bits/sar32: tests/32bits/sar32.o tests/32bits/act_sar32.o tests/32bits/format_sar32.o tests/32bits/sa_common32.o tests/32bits/pr_stats32.o tests/32bits/pr_xstats32.o tests/32bits/librdstats_light32.a tests/32bits/libsyscom32.a
 
 ifdef REQUIRE_NLS
 locales: $(NLSGMO)
