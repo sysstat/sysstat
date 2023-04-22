@@ -326,7 +326,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 		 * So read now the extra fields.
 		 */
 		if (read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr, file_actlst,
-					 endian_mismatch, arch_64, file, file_magic, oneof) > 0)
+					 endian_mismatch, arch_64, file, file_magic, oneof,
+					 flags) > 0)
 			return 2;
 		if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], rectime))
 			return 2;
@@ -1500,7 +1501,7 @@ void read_stats_from_file(char dfile[], char pcparchive[])
 	}
 
 	/* Perform required allocations */
-	allocate_structures(act);
+	allocate_structures(act, flags);
 
 	if (SET_LC_NUMERIC_C(fmt[f_position]->options)) {
 		/* Use a decimal point */

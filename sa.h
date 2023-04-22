@@ -305,6 +305,8 @@ enum {
 #define NO_RANGE		0
 #define NON_FATAL		0
 #define FATAL			1
+#define H_MIN			0
+#define H_MAX			1
 #define C_SAR			0
 #define C_SADF			1
 #define ALL_ACTIVITIES		~0U
@@ -1128,8 +1130,15 @@ struct activity {
 	/*
 	 * Number of structures allocated in @buf[*]. This number should be greater
 	 * than or equal to @nr[*].
+	 * This also is the number of entries allocated for @spmin and @spmax. An entry
+	 * can contain several min or max values.
 	 */
 	__nr_t nr_allocated;
+	/*
+	 * Number of min and max values that will be saved for each item.
+	 * This will be used to size @spmin / @spmax areas (see below).
+	 */
+	int xnr;
 	/*
 	 * Size of an item.
 	 * This is the size of the corresponding structure, as read from or written
@@ -1160,6 +1169,17 @@ struct activity {
 	 * compute average).
 	 */
 	void *buf[3];
+	/*
+	 * Pointer on area where minimum and maximum values will be saved.
+	 * The size of each area is @nr * @nr2 * @xnr * sizeof(double).
+	 */
+	double *spmin;
+	double *spmax;
+	/*
+	 * Linked list containing the name of the devices in the order in which their
+	 * min and max values have been saved in @spmin and @spmax.
+	 */
+	struct sa_item *xdev_list;
 	/*
 	 * Bitmap for activities that need one. Such a bitmap is needed by activity
 	 * if @bitmap is not NULL.
@@ -1585,6 +1605,8 @@ void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
 void init_custom_color_palette
 	(void);
+void init_extrema_values
+	(struct activity *, int);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices
@@ -1601,6 +1623,8 @@ int parse_sar_q_opt
 	(char * [], int *, struct activity * []);
 int parse_timestamp
 	(char * [], int *, struct tstamp_ext *, const char *, uint64_t);
+void print_minmax
+	(int);
 void print_report_hdr
 	(uint64_t, struct tm *, struct file_header *);
 void print_sar_comment
@@ -1630,6 +1654,11 @@ int sa_get_record_timestamp_struct
 	(uint64_t, struct record_header *, struct tstamp_ext *);
 int sa_open_read_magic
 	(int *, char *, struct file_magic *, int, int *, int);
+void save_extrema
+	(const unsigned int [], void *, void *, unsigned long long,
+	 double *, double *, int []);
+void save_minmax
+	(struct activity *, int, double);
 struct sa_item *search_list_item
 	(struct sa_item *, char *);
 void select_all_activities

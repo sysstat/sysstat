@@ -56,6 +56,11 @@ long interval = -1, count = 0;
 
 /* TRUE if a header line must be printed */
 int dish = TRUE;
+/*
+ * TRUE if min/max values should be initialized.
+ * Note: Never set to TRUE if option -x has not been used with sar.
+ */
+int xinit = FALSE;
 /* TRUE if data read from file don't match current machine's endianness */
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
@@ -385,7 +390,13 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 
 	strncpy(timestamp[curr], _("Average:"), sizeof(timestamp[curr]));
 	timestamp[curr][sizeof(timestamp[curr]) - 1] = '\0';
-	memcpy(timestamp[!curr], timestamp[curr], sizeof(timestamp[!curr]));
+	if (DISPLAY_MINMAX(flags)) {
+		strncpy(timestamp[!curr], _("Summary:"), sizeof(timestamp[curr]));
+		timestamp[curr][sizeof(timestamp[curr]) - 1] = '\0';
+	}
+	else {
+		memcpy(timestamp[!curr], timestamp[curr], sizeof(timestamp[!curr]));
+	}
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -696,7 +707,7 @@ void read_sadc_stat_bunch(int curr)
 				print_read_error(INCONSISTENT_INPUT_DATA);
 			}
 			if (act[p]->nr[curr] > act[p]->nr_allocated) {
-				reallocate_all_buffers(act[p], act[p]->nr[curr]);
+				reallocate_all_buffers(act[p], act[p]->nr[curr], flags);
 			}
 
 			/*
@@ -779,6 +790,11 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 	}
 	reset_cd = 1;
 
+	/* Min/max values should be initialized the first time */
+	if (DISPLAY_MINMAX(flags)) {
+		xinit = TRUE;
+	}
+
 	do {
 		/*
 		 * Display <count> lines of stats.
@@ -803,7 +819,7 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		if (rtype != R_COMMENT) {
 			/* Read the extra fields since it's not a special record */
 			if (read_file_stat_bunch(act, *curr, ifd, file_hdr.sa_act_nr, file_actlst,
-						 endian_mismatch, arch_64, file, file_magic, UEOF_STOP))
+						 endian_mismatch, arch_64, file, file_magic, UEOF_STOP, flags))
 				/* Error or unexpected EOF */
 				break;
 		}
@@ -830,8 +846,11 @@ void handle_curr_act_stats(int ifd, off_t fpos, int *curr, long *cnt, int *eosaf
 		next = write_stats(*curr, USE_SA_FILE, cnt, tm_start.use, tm_end.use,
 				   *reset, act_id, reset_cd);
 		reset_cd = 0;
-		if (next && (*cnt > 0)) {
-			(*cnt)--;
+		if (next) {
+			if (*cnt > 0) {
+				(*cnt)--;
+			}
+			xinit = FALSE;
 		}
 
 		if (next) {
@@ -1019,7 +1038,7 @@ void read_stats_from_file(char from_file[])
 			  &file_actlst, id_seq, &endian_mismatch, &arch_64);
 
 	/* Perform required allocations */
-	allocate_structures(act);
+	allocate_structures(act, flags);
 
 	/* Print report header */
 	print_report_hdr(flags, &(rectime.tm_time), &file_hdr);
@@ -1051,7 +1070,7 @@ void read_stats_from_file(char from_file[])
 				 */
 				if (read_file_stat_bunch(act, 0, ifd, file_hdr.sa_act_nr,
 							 file_actlst, endian_mismatch, arch_64,
-							 from_file, &file_magic, UEOF_STOP))
+							 from_file, &file_magic, UEOF_STOP, flags))
 					/* Possible unexpected EOF */
 					return;
 
@@ -1142,7 +1161,7 @@ void read_stats_from_file(char from_file[])
 				if (rtype != R_COMMENT) {
 					if (read_file_stat_bunch(act, curr, ifd, file_hdr.sa_act_nr,
 								 file_actlst, endian_mismatch, arch_64,
-								 from_file, &file_magic, UEOF_STOP))
+								 from_file, &file_magic, UEOF_STOP, flags))
 						/* Possible unexpected EOF */
 						break;
 				}
@@ -1203,7 +1222,10 @@ void read_stats(void)
 	lines = rows = get_win_height();
 
 	/* Perform required allocations */
-	allocate_structures(act);
+	allocate_structures(act, flags);
+
+	/* No need to init min/max values. Already done in allocate_structures() */
+	xinit = FALSE;
 
 	/* Print report header */
 	print_report_hdr(flags, &(rectime.tm_time), &file_hdr);
@@ -1266,7 +1288,7 @@ void read_stats(void)
 		if (record_hdr[curr].record_type == R_LAST_STATS) {
 			/* File rotation is happening: Re-read header data sent by sadc */
 			read_header_data();
-			allocate_structures(act);
+			allocate_structures(act, flags);
 		}
 
 		if (count > 0) {

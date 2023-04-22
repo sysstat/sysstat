@@ -33,6 +33,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <ctype.h>
+#include <float.h>
 
 #include "version.h"
 #include "sa.h"
@@ -447,7 +448,7 @@ int write_all(int fd, const void *buf, int nr_bytes)
 
 #ifndef SOURCE_SADC
 /*
- * **************************************************************************
+ ***************************************************************************
  * Allocate buffers for one activity.
  *
  * IN:
@@ -459,6 +460,7 @@ int write_all(int fd, const void *buf, int nr_bytes)
 void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 {
 	int j;
+	double *val;
 
 	/* nr_alloc should always be greater than a->nr_allocated */
 	if (nr_alloc <= a->nr_allocated) {
@@ -484,6 +486,27 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 			       (size_t) a->msize * (size_t) (nr_alloc - a->nr_allocated) * (size_t) a->nr2);
 		}
 	}
+
+	if (DISPLAY_MINMAX(flags) && a->xnr) {
+		/*
+		 * Allocate arrays for min and max values...
+		 * No need to check_overflow() as @xnr will always be smaller than @msize.
+		 */
+		SREALLOC(a->spmin, void,
+			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
+		SREALLOC(a->spmax, void,
+			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
+
+		/* ... and init them */
+		for (j = a->nr_allocated * a->nr2 * a->xnr;
+		     j < nr_alloc * a->nr2 * a->xnr; j++) {
+			val = (double *) (a->spmin + j);
+			*val = DBL_MAX;
+			val = (double *) (a->spmax + j);
+			*val = -DBL_MAX;
+		     }
+	}
+
 	a->nr_allocated = nr_alloc;
 }
 
@@ -528,13 +551,21 @@ void free_structures(struct activity *act[])
 					act[i]->buf[j] = NULL;
 				}
 			}
+			if (act[i]->spmin) {
+				free(act[i]->spmin);
+				act[i]->spmin = NULL;
+			}
+			if (act[i]->spmax) {
+				free(act[i]->spmax);
+				act[i]->spmax = NULL;
+			}
 			act[i]->nr_allocated = 0;
 		}
 	}
 }
 
 /*
- * **************************************************************************
+ ***************************************************************************
  * Reallocate all the buffers for a given activity.
  *
  * IN:
@@ -2305,7 +2336,7 @@ int add_list_item(struct sa_item **list, char *item_name, int max_len, int *pos)
 		e = *list;
 		if (!strcmp(e->item_name, item_name))
 			return 0;	/* Item found in list */
-			list = &(e->next);
+		list = &(e->next);
 		if (pos) {
 			(*pos)++;
 		}
@@ -2321,6 +2352,29 @@ int add_list_item(struct sa_item **list, char *item_name, int max_len, int *pos)
 	strcpy(e->item_name, item_name);
 
 	return 1;
+}
+
+/*
+ * **************************************************************************
+ * Free a linked list.
+ *
+ * IN:
+ * @list	Address of the pointer on the start of the linked list.
+ ***************************************************************************
+ */
+void free_item_list(struct sa_item **item_list)
+{
+	struct sa_item *l, *list = *item_list;
+
+	while (list) {
+		l = list->next;
+		if (list->item_name) {
+			free(list->item_name);
+		}
+		free(list);
+		list = l;
+	}
+	*item_list = NULL;
 }
 
 /*
@@ -3516,6 +3570,178 @@ int check_time_limits(struct tstamp_ext *tm_start, struct tstamp_ext *tm_end)
 		return 1;
 
 	return 0;
+}
+
+/*
+ * **************************************************************************
+ * Check for min and max values.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @idx		Index in min/max buffers.
+ * @val		Value to check.
+ ***************************************************************************
+ */
+void save_minmax(struct activity *a, int idx, double val)
+{
+	if (val < *(a->spmin + idx)) {
+		*(a->spmin + idx) = val;
+	}
+	if (val > *(a->spmax + idx)) {
+		*(a->spmax + idx) = val;
+	}
+}
+
+/*
+ * **************************************************************************
+ * Compare the values of a statistics sample with the max and min values
+ * already found in previous samples for this same activity. If some new
+ * min or max values are found, then save them.
+ * Assume values cannot be negative.
+ * The structure containing the statistics sample is composed of @llu_nr
+ * unsigned long long fields, followed by @lu_nr unsigned long fields, then
+ * followed by @u_nr unsigned int fields.
+ *
+ * IN:
+ * @types_nr	Number of fields whose type is "long long", "long" and "int"
+ * 		composing the structure.
+ * @cs		Pointer on current sample statistics structure.
+ * @ps		Pointer on previous sample statistics structure (may be NULL).
+ * @itv		Interval of time in 1/100th of a second.
+ * @spmin	Array containing min values already found for this activity.
+ * @spmax	Array containing max values already found for this activity.
+ * @g_fields	Index in spmin/spmax arrays where extrema values for each
+ *		activity metric will be saved. As a consequence spmin/spmax
+ *		arrays may contain values in a different order than that of
+ *		the fields in the statistics structure.
+ *
+ * OUT:
+ * @spmin	Array containing the possible new min values for current activity.
+ * @spmax	Array containing the possible new max values for current activity.
+ ***************************************************************************
+ */
+void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned long long itv,
+		  double *spmin, double *spmax, int g_fields[])
+{
+	unsigned long long *lluc, *llup;
+	unsigned long *luc, *lup;
+	unsigned int *uc, *up;
+	double val;
+	int i, m = 0;
+
+	/* Compare unsigned long long fields */
+	lluc = (unsigned long long *) cs;
+	llup = (unsigned long long *) ps;
+	for (i = 0; i < types_nr[0]; i++, m++) {
+		if (g_fields[m] >= 0) {
+			if (ps) {
+				val = *lluc < *llup ? 0.0 : S_VALUE(*llup, *lluc, itv);
+			}
+			else {
+				/*
+				 * If no pointer on previous sample has been given
+				 * then the value is not a per-second one.
+				 */
+				val = (double) *lluc;
+			}
+			if (val < *(spmin + g_fields[m])) {
+				*(spmin + g_fields[m]) = val;
+			}
+			if (val > *(spmax + g_fields[m])) {
+				*(spmax + g_fields[m]) = val;
+			}
+		}
+		lluc = (unsigned long long *) ((char *) lluc + ULL_ALIGNMENT_WIDTH);
+		if (ps) {
+			llup = (unsigned long long *) ((char *) llup + ULL_ALIGNMENT_WIDTH);
+		}
+	}
+
+	/* Compare unsigned long fields */
+	luc = (unsigned long *) lluc;
+	lup = (unsigned long *) llup;
+	for (i = 0; i < types_nr[1]; i++, m++) {
+		if (g_fields[m] >= 0) {
+			if (ps) {
+				val = *luc < *lup ? 0.0 : S_VALUE(*lup, *luc, itv);
+			}
+			else {
+				val = (double) *luc;
+			}
+			if (val < *(spmin + g_fields[m])) {
+				*(spmin + g_fields[m]) = val;
+			}
+			if (val > *(spmax + g_fields[m])) {
+				*(spmax + g_fields[m]) = val;
+			}
+		}
+		luc = (unsigned long *) ((char *) luc + UL_ALIGNMENT_WIDTH);
+		if (ps) {
+			lup = (unsigned long *) ((char *) lup + UL_ALIGNMENT_WIDTH);
+		}
+	}
+
+	/* Compare unsigned int fields */
+	uc = (unsigned int *) luc;
+	up = (unsigned int *) lup;
+	for (i = 0; i < types_nr[2]; i++, m++) {
+		if (g_fields[m] >= 0) {
+			if (ps) {
+				val = *uc < *up ? 0.0 : S_VALUE(*up, *uc, itv);
+			}
+			else {
+				val = (double) *uc;
+			}
+			if (val < *(spmin + g_fields[m])) {
+				*(spmin + g_fields[m]) = val;
+			}
+			if (val > *(spmax + g_fields[m])) {
+				*(spmax + g_fields[m]) = val;
+			}
+		}
+		uc = (unsigned int *) ((char *) uc + U_ALIGNMENT_WIDTH);
+		if (ps) {
+			up = (unsigned int *) ((char *) up + U_ALIGNMENT_WIDTH);
+		}
+	}
+}
+
+/*
+ * **************************************************************************
+ * Init min and max values. Also free linked list with device names.
+ *
+ * IN:
+ * @a	Activity structure.
+ * @nr	Number of slots for min and max values that shall be initialized.
+ *
+ * OUT:
+ * @a	Activity structure with min/max values initialized.
+ ***************************************************************************
+ */
+void init_extrema_values(struct activity *a, int nr)
+{
+	int i;
+
+	for (i = 0; i < nr; i++) {
+		*(a->spmin + i) = DBL_MAX;
+		*(a->spmax + i) = -DBL_MAX;
+	}
+
+	free_item_list(&(a->xdev_list));
+}
+
+/*
+ * **************************************************************************
+ * Print min and max header.
+ *
+ * IN:
+ * @ismax	TRUE: Display max header - FALSE: Display min header.
+ ***************************************************************************
+ */
+void print_minmax(int ismax)
+{
+	printf("%-11s", ismax ? _("Maximum:")
+			      : _("Minimum:"));
 }
 
 #endif /* SOURCE_SADC undefined */

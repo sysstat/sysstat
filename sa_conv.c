@@ -1630,7 +1630,7 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 			}
 		}
 		/* Reallocate structures */
-		allocate_structures(act);
+		allocate_structures(act, 0);
 	}
 
 	/* Restore endianness before writing */
@@ -2059,7 +2059,7 @@ void convert_file(char dfile[], struct activity *act[])
 	}
 
 	/* Perform required allocations */
-	allocate_structures(act);
+	allocate_structures(act, 0);
 
 	/* Upgrade statistics records */
 	if (upgrade_stat_records(fd, stdfd, act, &file_hdr, ofile_actlst, file_actlst,
