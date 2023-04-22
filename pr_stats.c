@@ -27,6 +27,7 @@
 #include "sa.h"
 #include "ioconf.h"
 #include "pr_stats.h"
+#include "pr_xstats.h"
 
 #ifdef USE_NLS
 #include <locale.h>
@@ -38,6 +39,7 @@
 
 extern uint64_t flags;
 extern int  dish;
+extern int xinit;
 extern char timestamp[][TIMESTAMP_LEN];
 extern unsigned long avg_count;
 
@@ -135,6 +137,184 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 }
 
 /*
+ * **************************************************************************
+ * Save CPU min and max values.
+ *
+ * IN:
+ * @a			Activity structure with statistics.
+ * @cpu			CPU number (0 for CPU "all").
+ * @deltot_jiffies	Interval in jiffies.
+ * @scc			Current statistics sample.
+ * @scp			Previous statistics sample.
+ ***************************************************************************
+ */
+void save_cpu_xstats(struct activity *a, int cpu, unsigned long long deltot_jiffies,
+		     struct stats_cpu *scc, struct stats_cpu *scp)
+{
+	if (!cpu && !deltot_jiffies) {
+		int j, k;
+
+		/* Current CPU (which is not CPU "all") is tickless */
+		if (DISPLAY_CPU_DEF(a->opt_flags)) {
+			j  = 5;	/* -u */
+		}
+		else {	/* DISPLAY_CPU_ALL(a->opt_flags) */
+			j = 9;	/* -u ALL */
+		}
+		for (k = 0; k < j; k++) {
+			save_minmax(a, cpu * a->xnr + k, 0.0);
+		}
+		/* %idle = 100% */
+		save_minmax(a, cpu * a->xnr + 9, 100.0);
+
+		return;
+	}
+
+	if (DISPLAY_CPU_DEF(a->opt_flags)) {
+		/* %user */
+		save_minmax(a, cpu * a->xnr,
+			    ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies));
+		/* %nice */
+		save_minmax(a, cpu * a->xnr + 1,
+			    ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies));
+		/* %system */
+		save_minmax(a, cpu * a->xnr + 2,
+			    ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+					scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+		   deltot_jiffies));
+	}
+	else {  /* DISPLAY_CPU_ALL(a->opt_flags) */
+		/* %usr */
+		save_minmax(a, cpu * a->xnr,
+			    (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_user - scp->cpu_guest,
+					scc->cpu_user - scc->cpu_guest, deltot_jiffies));
+		/* %nice */
+		save_minmax(a, cpu * a->xnr + 1,
+			    (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+					scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies));
+		/* %sys */
+		save_minmax(a, cpu * a->xnr + 2,
+			    ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies));
+		/* %irq */
+		save_minmax(a, cpu * a->xnr + 5,
+			    ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies));
+		/* %soft */
+		save_minmax(a, cpu * a->xnr + 6,
+			    ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies));
+		/* %guest */
+		save_minmax(a, cpu * a->xnr + 7,
+			    ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies));
+		/* %gnice */
+		save_minmax(a, cpu * a->xnr + 8,
+			    ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies));
+	}
+
+	/* %iowait */
+	save_minmax(a, cpu * a->xnr + 3,
+		    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies));
+	/* %steal */
+	save_minmax(a, cpu * a->xnr + 4,
+		    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies));
+	/* %idle */
+	save_minmax(a, cpu * a->xnr + 9,
+		    (scc->cpu_idle < scp->cpu_idle ? 0.0 :
+		    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies)));
+}
+
+/*
+ * **************************************************************************
+ * Print a line of CPU statistics.
+ *
+ * IN:
+ * @a			Activity structure with statistics.
+ * @cpu			CPU number (0 for CPU "all").
+ * @deltot_jiffies	Interval in jiffies.
+ * @scc			Current statistics sample.
+ * @scp			Previous statistics sample.
+ ***************************************************************************
+ */
+void print_oneline_cpu_stats(struct activity *a, int cpu, unsigned long long deltot_jiffies,
+			     struct stats_cpu *scc, struct stats_cpu *scp)
+{
+	if (cpu == 0) {
+		/* This is CPU "all" */
+		cprintf_in(IS_STR, " %s", "    all", 0);
+	}
+	else {
+		cprintf_in(IS_INT, " %7d", "", cpu - 1);
+
+		if (!deltot_jiffies) {
+			/*
+			 * If the CPU is tickless then there is no change in CPU values
+			 * but the sum of values is not zero.
+			 * %user, %nice, %system, %iowait, %steal, ..., %idle
+			 */
+			cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 5, 9, 2,
+				    0.0, 0.0, 0.0, 0.0, 0.0);
+
+			if (DISPLAY_CPU_DEF(a->opt_flags)) {
+				cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2, 100.0);
+			}
+			/*
+			 * Four additional fields to display:
+			 * %irq, %soft, %guest, %gnice.
+			 */
+			else if (DISPLAY_CPU_ALL(a->opt_flags)) {
+				cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 5, 9, 2,
+					    0.0, 0.0, 0.0, 0.0, 100.0);
+			}
+			printf("\n");
+
+			return;
+		}
+	}
+
+	if (DISPLAY_CPU_DEF(a->opt_flags)) {
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 5, 9, 2,
+			    ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
+			    ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
+			    ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+					scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+					deltot_jiffies),
+			    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
+			    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies));
+
+		cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
+			    scc->cpu_idle < scp->cpu_idle ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
+	}
+	else { /* DISPLAY_CPU_ALL(a->opt_flags) */
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 9, 9, 2,
+			    (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_user - scp->cpu_guest,
+					scc->cpu_user - scc->cpu_guest, deltot_jiffies),
+			    (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+					scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
+			    ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
+			    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
+			    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
+			    ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
+			    ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
+			    ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
+			    ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies));
+
+		cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
+			    scc->cpu_idle < scp->cpu_idle ?
+			    0.0 :
+			    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
+	}
+	printf("\n");
+}
+
+/*
  ***************************************************************************
  * Display CPU statistics.
  * NB: The stats are only calculated over the part of the time interval when
@@ -158,8 +338,19 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 	struct stats_cpu *scc, *scp;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
-	if (dish) {
-		print_hdr_line(timestamp[!curr], a, FIRST + DISPLAY_CPU_ALL(a->opt_flags), 7, 9, NULL);
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->nr2 * a->xnr);
+	}
+
+	if (dish && !((prev == 2) && DISPLAY_MINMAX(flags))) {
+		print_hdr_line(timestamp[!curr], a, FIRST + DISPLAY_CPU_ALL(a->opt_flags), 7, 9,
+			       NULL);
 	}
 
 	/*
@@ -206,12 +397,8 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		scc = (struct stats_cpu *) ((char *) a->buf[curr] + i * a->msize);
 		scp = (struct stats_cpu *) ((char *) a->buf[prev] + i * a->msize);
 
-		printf("%-11s", timestamp[curr]);
-
 		if (i == 0) {
 			/* This is CPU "all" */
-			cprintf_in(IS_STR, " %s", "    all", 0);
-
 			if (a->nr_ini == 1) {
 				/*
 				 * This is a UP machine. In this case
@@ -225,75 +412,31 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 			}
 		}
 		else {
-			cprintf_in(IS_INT, " %7d", "", i - 1);
-
 			/* Recalculate interval for current proc */
 			deltot_jiffies = get_per_cpu_interval(scc, scp);
+		}
 
-			if (!deltot_jiffies) {
-				/*
-				 * If the CPU is tickless then there is no change in CPU values
-				 * but the sum of values is not zero.
-				 * %user, %nice, %system, %iowait, %steal, ..., %idle
-				 */
-				cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 5, 9, 2,
-					    0.0, 0.0, 0.0, 0.0, 0.0);
-
-				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2, 100.0);
-					printf("\n");
-				}
-				/*
-				 * Four additional fields to display:
-				 * %irq, %soft, %guest, %gnice.
-				 */
-				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 5, 9, 2,
-						    0.0, 0.0, 0.0, 0.0, 100.0);
-					printf("\n");
-				}
-				continue;
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (prev != 2) {
+				/* Save min and max values */
+				save_cpu_xstats(a, i, deltot_jiffies, scc, scp);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST + DISPLAY_CPU_ALL(a->opt_flags), 7, 9,
+					       NULL);
+				print_cpu_xstats(DISPLAY_CPU_DEF(a->opt_flags), i,
+						 H_MIN, a->spmin + i * a->xnr);
+				print_cpu_xstats(DISPLAY_CPU_DEF(a->opt_flags), i,
+						 H_MAX, a->spmax + i * a->xnr);
 			}
 		}
 
-		if (DISPLAY_CPU_DEF(a->opt_flags)) {
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 5, 9, 2,
-				    ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
-				    ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
-				    ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-					        scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-					        deltot_jiffies),
-				    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
-				    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies));
-			cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
-				    scc->cpu_idle < scp->cpu_idle ?
-				    0.0 :
-				    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
-			printf("\n");
-		}
-		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 9, 9, 2,
-				    (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-				    0.0 :
-				    ll_sp_value(scp->cpu_user - scp->cpu_guest,
-					        scc->cpu_user - scc->cpu_guest, deltot_jiffies),
-					        (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-				    0.0 :
-				    ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-					        scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
-				    ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
-				    ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
-				    ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
-				    ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
-				    ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
-				    ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
-				    ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies));
-			cprintf_xpc(DISPLAY_UNIT(flags), XLOW, 1, 9, 2,
-				    scc->cpu_idle < scp->cpu_idle ?
-				    0.0 :
-				    ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
-			printf("\n");
-		}
+		printf("%-11s", timestamp[curr]);
+
+		/* Print CPU stats */
+		print_oneline_cpu_stats(a, i, deltot_jiffies, scc, scp);
 	}
 }
 
@@ -314,9 +457,27 @@ __print_funct_t print_pcsw_stats(struct activity *a, int prev, int curr,
 	struct stats_pcsw
 		*spc = (struct stats_pcsw *) a->buf[curr],
 		*spp = (struct stats_pcsw *) a->buf[prev];
+	int g_fields[] = {1, 0};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) spc, (void *) spp,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -343,6 +504,17 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 	int c, i;
 	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq, *stp_cpuall_irq;
 	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
+	double val;
+
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->nr2 * a->xnr);
+	}
 
 	/*
 	 * @nr[curr] cannot normally be greater than @nr_ini
@@ -362,11 +534,12 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 	 * Always display header line. The columns may vary if e.g. a CPU goes offline
 	 * and/or comes back online.
 	 */
-	print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9,
+	if (!((prev == 2) && DISPLAY_MINMAX(flags))) {
+		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9,
 		       masked_cpu_bitmap);
+	}
 
 	for (i = 0; i < a->nr2; i++) {
-
 		stc_cpuall_irq = (struct stats_irq *) ((char *) a->buf[curr] + i * a->msize);
 
 		if (a->item_list != NULL) {
@@ -380,6 +553,18 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 
 		if (DISPLAY_ZERO_OMIT(flags) && (stc_cpuall_irq->irq_nr == stp_cpuall_irq->irq_nr))
 			continue;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags) && (prev == 2)) {
+			/* Display min and max values */
+			print_hdr_line(timestamp[!curr], a, FIRST,
+				       DISPLAY_PRETTY(flags) ? -1 : 0, 9,
+				       masked_cpu_bitmap);
+			print_irq_xstats(H_MIN, a, curr, i, stc_cpuall_irq->irq_name,
+					 masked_cpu_bitmap, a->spmin);
+			print_irq_xstats(H_MAX, a, curr, i, stc_cpuall_irq->irq_name,
+					 masked_cpu_bitmap, a->spmax);
+		}
 
 		printf("%-11s", timestamp[curr]);
 
@@ -405,14 +590,17 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 				 * a CPU has gone offline. In this case we display "0.00" instead of
 				 * the huge number that would appear otherwise.
 				 */
-				cprintf_f(NO_UNIT, FALSE, 1, 9, 2, 0.0);
+				val = 0.0;
 			}
 			else {
-				cprintf_f(NO_UNIT, FALSE, 1, 9, 2,
-					  S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
+				val = S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv);
+			}
+			cprintf_f(NO_UNIT, FALSE, 1, 9, 2, val);
+			if (DISPLAY_MINMAX(flags)) {
+				/* Save min and max values */
+				save_minmax(a, (c * a->nr2 + i) * a->xnr, val);
 			}
 		}
-
 		if (DISPLAY_PRETTY(flags)) {
 			cprintf_in(IS_STR, " %s", stc_cpuall_irq->irq_name, 0);
 		}
@@ -437,9 +625,27 @@ __print_funct_t print_swap_stats(struct activity *a, int prev, int curr,
 	struct stats_swap
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[prev];
+	int g_fields[] = {0, 1};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) ssc, (void *) ssp,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -466,9 +672,35 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 	struct stats_paging
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) spc, (void *) spp,
+				     itv, a->spmin, a->spmax, g_fields);
+			/* Save min and max values for %vmeff */
+			save_minmax(a, 8,
+				    (spc->pgscan_kswapd + spc->pgscan_direct -
+				    spp->pgscan_kswapd - spp->pgscan_direct) ?
+				    SP_VALUE(spp->pgsteal, spc->pgsteal,
+					     spc->pgscan_kswapd + spc->pgscan_direct -
+					     spp->pgscan_kswapd - spp->pgscan_direct)
+				    : 0.0);
+		}
+		else {
+			/* Print min and max values */
+			print_paging_xstats(H_MIN, a->spmin);
+			print_paging_xstats(H_MAX, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -508,9 +740,27 @@ __print_funct_t print_io_stats(struct activity *a, int prev, int curr,
 	struct stats_io
 		*sic = (struct stats_io *) a->buf[curr],
 		*sip = (struct stats_io *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 4, 5, 3, 6};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sic, (void *) sip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -669,6 +919,64 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 
 /*
  * **************************************************************************
+ * Display RAM memory utilization. This function is used to display
+ * instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @smc		Structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ * @unit	Default values unit.
+ ***************************************************************************
+ */
+void stub_print_ram_memory_stats(struct activity *a, struct stats_memory *smc,
+				 int curr, int dispavg, int unit)
+{
+	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
+
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
+		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			unsigned long long nousedmem;
+
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) smc, NULL,
+				     0, a->spmin, a->spmax, g_fields);
+
+			/* Save min and max values for %memused */
+			nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
+			if (nousedmem > smc->tlmkb) {
+				nousedmem = smc->tlmkb;
+			}
+			save_minmax(a, 3,
+				    smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0);
+			/* Save min and max values for %commit */
+			save_minmax(a, 7, (smc->tlmkb + smc->tlskb)
+					  ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
+					  : 0.0);
+			/* Save min and max values for memued */
+			save_minmax(a, 2, (double) (smc->tlmkb - nousedmem));
+		}
+		else {
+			/* Print min and max values */
+			print_ram_memory_xstats(H_MIN, a->spmin,
+						unit, DISPLAY_MEM_ALL(a->opt_flags));
+			print_ram_memory_xstats(H_MAX, a->spmax,
+						unit, DISPLAY_MEM_ALL(a->opt_flags));
+		}
+	}
+
+	printf("%-11s", timestamp[curr]);
+
+	print_ram_memory_stats(smc, dispavg, unit, DISPLAY_MEM_ALL(a->opt_flags));
+}
+
+/*
+ * **************************************************************************
  * Display swap memory utilization. This function is used to
  * display instantaneous and average statistics.
  *
@@ -681,9 +989,9 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 void print_swap_memory_stats(struct stats_memory *smc, int dispavg, int unit)
 {
 	static unsigned long long
-		avg_frskb = 0,
-		avg_tlskb = 0,
-		avg_caskb = 0;
+	avg_frskb = 0,
+	avg_tlskb = 0,
+	avg_caskb = 0;
 
 	if (!dispavg) {
 		/* Display instantaneous values */
@@ -738,13 +1046,66 @@ void print_swap_memory_stats(struct stats_memory *smc, int dispavg, int unit)
 }
 
 /*
+ * **************************************************************************
+ * Display swap memory utilization. This function is used to display
+ * instantaneous and average statistics.
+ *
+ * IN:
+ * @a		Activity structure with statistics.
+ * @smc		Structure with statistics.
+ * @curr	Index in array for current sample statistics.
+ * @dispavg	TRUE if displaying average statistics.
+ * @unit	Default values unit.
+ ***************************************************************************
+ */
+void stub_print_swap_memory_stats(struct activity *a, struct stats_memory *smc,
+				  int curr, int dispavg, int unit)
+{
+	int g_fields[] = {-1, -1, -1, -1, 16, -1, 19, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
+		print_hdr_line(timestamp[!curr], a, SECOND, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) smc, NULL,
+				     0, a->spmin, a->spmax, g_fields);
+
+			/* Save min and max values for %swpused */
+			save_minmax(a, 18,
+				    smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
+					       : 0.0);
+			/* Save min and max values for %swpcad */
+			save_minmax(a, 20,
+				    (smc->tlskb - smc->frskb) ?
+				    SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
+				    0.0);
+			/* Save min and max values for swpused */
+			save_minmax(a, 17, (double) (smc->tlskb - smc->frskb));
+		}
+		else {
+			/* Print min and max values */
+			print_swap_memory_xstats(H_MIN, a->spmin,
+						 unit, DISPLAY_MEM_ALL(a->opt_flags));
+			print_swap_memory_xstats(H_MAX, a->spmax,
+						 unit, DISPLAY_MEM_ALL(a->opt_flags));
+		}
+	}
+
+	printf("%-11s", timestamp[curr]);
+
+	print_swap_memory_stats(smc, dispavg, unit);
+}
+
+/*
  ***************************************************************************
  * Display memory and swap utilization. This function is used to
  * display instantaneous and average statistics.
  *
  * IN:
  * @a		Activity structure with statistics.
- * @prev	Index in array where stats used as reference are.
  * @curr	Index in array for current sample statistics.
  * @dispavg	TRUE if displaying average statistics.
  ***************************************************************************
@@ -755,27 +1116,22 @@ void stub_print_memory_stats(struct activity *a, int curr, int dispavg)
 		*smc = (struct stats_memory *) a->buf[curr];
 	int unit = NO_UNIT;
 
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+
 	if (DISPLAY_UNIT(flags)) {
 		/* Default values unit is kB */
 		unit = UNIT_KILOBYTE;
 	}
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
-		if (dish) {
-			print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
-		}
-		printf("%-11s", timestamp[curr]);
-
-		print_ram_memory_stats(smc, dispavg, unit, DISPLAY_MEM_ALL(a->opt_flags));
+		stub_print_ram_memory_stats(a, smc, curr, dispavg, unit);
 	}
 
 	if (DISPLAY_SWAP(a->opt_flags)) {
-		if (dish) {
-			print_hdr_line(timestamp[!curr], a, SECOND, 0, 9, NULL);
-		}
-		printf("%-11s", timestamp[curr]);
-
-		print_swap_memory_stats(smc, dispavg, unit);
+		stub_print_swap_memory_stats(a, smc, curr, dispavg, unit);
 	}
 }
 
@@ -828,16 +1184,35 @@ void stub_print_ktables_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
+	int g_fields[] = {1, 2, 0, 3};
 	static unsigned long long
 		avg_dentry_stat = 0,
 		avg_file_used   = 0,
 		avg_inode_used  = 0,
 		avg_pty_nr      = 0;
 
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
 
-	if (dish) {
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) skc, NULL,
+				     0, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genu64_xstats(H_MIN, a->xnr, a->spmin);
+			print_genu64_xstats(H_MAX, a->xnr, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -921,6 +1296,7 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 {
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
+	int g_fields[] = {0, 5, 1, 2, 3, 4};
 	static unsigned long long
 		avg_nr_running    = 0,
 		avg_nr_threads    = 0,
@@ -929,9 +1305,27 @@ void stub_print_queue_stats(struct activity *a, int curr, int dispavg)
 		avg_load_avg_15   = 0,
 		avg_procs_blocked = 0;
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sqc, NULL,
+				     0, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_queue_xstats(H_MIN, a->spmin);
+			print_queue_xstats(H_MAX, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -1025,8 +1419,20 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 {
 	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
+	int g_fields[] = {0, 1, 2, 3, 4, 5};
+	unsigned int local_types_nr[] = {0, 6, 0};
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
+		!((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
 
@@ -1078,6 +1484,31 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(ssp, ssc, STATS_SERIAL_SIZE))
 			continue;
 
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			char name[16];
+			int k, pos;
+
+			snprintf(name, sizeof(name), "%d", ssc->line);
+			name[sizeof(name) - 1] = '\0';
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), name, sizeof(name), &k);
+			pos = k * a->xnr;
+
+			if (prev != 2) {
+				/* Save min and max values */
+				save_extrema(local_types_nr, (void *) ssc, (void *) ssp,
+					     itv, a->spmin + pos, a->spmax + pos, g_fields);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+				print_serial_xstats(H_MIN, name, a->spmin + pos);
+				print_serial_xstats(H_MAX, name, a->spmax + pos);
+			}
+		}
+
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "       %3d", "", ssc->line);
 
@@ -1111,7 +1542,19 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 	struct ext_disk_stats xds;
 	char *dev_name;
 	int unit = NO_UNIT;
+	double rkB, wkB, dkB;
+	int g_fields[] = {0};
+	unsigned int local_types_nr[] = {1, 0, 0};
 
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
 	if (DISPLAY_UNIT(flags)) {
@@ -1119,12 +1562,25 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		unit = UNIT_KILOBYTE;
 	}
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
+	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
+		!((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9, NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sdc = (struct stats_disk *) ((char *) a->buf[curr] + i * a->msize);
+
+		/* Get device name */
+		dev_name = get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
+					   DISPLAY_PRETTY(flags), DISPLAY_PERSIST_NAME_S(flags),
+					   USE_STABLE_ID(flags), NULL);
+
+		if (a->item_list != NULL) {
+			/* A list of devices has been entered on the command line */
+			if (!search_list_item(a->item_list, dev_name))
+				/* Device not found */
+				continue;
+		}
 
 		if (!WANT_SINCE_BOOT(flags)) {
 			j = check_disk_reg(a, curr, prev, i);
@@ -1146,20 +1602,44 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sdp, sdc, STATS_DISK_SIZE))
 			continue;
 
-		/* Get device name */
-		dev_name = get_device_name(sdc->major, sdc->minor, sdc->wwn, sdc->part_nr,
-					   DISPLAY_PRETTY(flags), DISPLAY_PERSIST_NAME_S(flags),
-					   USE_STABLE_ID(flags), NULL);
-
-		if (a->item_list != NULL) {
-			/* A list of devices has been entered on the command line */
-			if (!search_list_item(a->item_list, dev_name))
-				/* Device not found */
-				continue;
-		}
-
 		/* Compute service time, etc. */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
+		rkB = S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2;
+		wkB = S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2;
+		dkB = S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			int k, pos;
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), dev_name, MAX_NAME_LEN, &k);
+			pos = k * a->xnr;
+
+			if (prev != 2) {
+				/* Save min and max values */
+				save_extrema(local_types_nr, (void *) sdc, (void *) sdp,
+					     itv, a->spmin + pos, a->spmax + pos, g_fields);
+
+				save_minmax(a, pos + 1, rkB);
+				save_minmax(a, pos + 2, wkB);
+				save_minmax(a, pos + 3, dkB);
+				save_minmax(a, pos + 4, xds.arqsz / 2);
+				save_minmax(a, pos + 5,
+					    S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0);
+				save_minmax(a, pos + 6, xds.await);
+				save_minmax(a, pos + 7, xds.util / 10.0);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST,
+					       DISPLAY_PRETTY(flags) ? -1 : 0, 9, NULL);
+				print_disk_xstats(H_MIN, unit, dev_name,
+						  a->spmin + pos);
+				print_disk_xstats(H_MAX, unit, dev_name,
+						  a->spmax + pos);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 
@@ -1168,10 +1648,7 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 		}
 		cprintf_f(NO_UNIT, FALSE, 1, 9, 2,
 			  S_VALUE(sdp->nr_ios, sdc->nr_ios,  itv));
-		cprintf_f(unit, FALSE, 3, 9, 2,
-			  S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
-			  S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
-			  S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2);
+		cprintf_f(unit, FALSE, 3, 9, 2, rkB, wkB, dkB);
 		/* See iostat for explanations */
 		cprintf_f(unit, FALSE, 1, 9, 2,
 			  xds.arqsz / 2);
@@ -1205,7 +1682,18 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 	struct stats_net_dev *sndc, *sndp, sndzero;
 	double rxkb, txkb, ifutil;
 	int unit = NO_UNIT;
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6};
+	unsigned int local_types_nr[] = {7, 0, 0};
 
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
 	if (DISPLAY_UNIT(flags)) {
@@ -1213,8 +1701,10 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		unit = UNIT_BYTE;
 	}
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
-		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9, NULL);
+	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
+	    !((prev == 2) && DISPLAY_MINMAX(flags))) {
+		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9,
+			       NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
@@ -1247,13 +1737,42 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(sndp, sndc, STATS_NET_DEV_SIZE2CMP))
 			continue;
 
+		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
+		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
+		ifutil = compute_ifutil(sndc, rxkb, txkb);
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			int k, pos;
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), sndc->interface, MAX_IFACE_LEN, &k);
+			pos = k * a->xnr;
+
+			if (prev != 2) {
+				/* Save min and max values */
+				save_extrema(local_types_nr, (void *) sndc, (void *) sndp,
+					     itv, a->spmin + pos, a->spmax + pos, g_fields);
+
+				/* Save min and max values for %ifutil */
+				save_minmax(a, pos + 7, ifutil);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST,
+					       DISPLAY_PRETTY(flags) ? -1 : 0, 9, NULL);
+				print_net_dev_xstats(H_MIN, unit, sndc->interface,
+						     a->spmin + pos);
+				print_net_dev_xstats(H_MAX, unit, sndc->interface,
+						     a->spmax + pos);
+			}
+		}
+
 		printf("%-11s", timestamp[curr]);
 
 		if (!DISPLAY_PRETTY(flags)) {
 			cprintf_in(IS_STR, " %9s", sndc->interface, 0);
 		}
-		rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
-		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 
 		cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
 			  S_VALUE(sndp->rx_packets, sndc->rx_packets, itv),
@@ -1265,7 +1784,6 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(sndp->rx_compressed, sndc->rx_compressed, itv),
 			  S_VALUE(sndp->tx_compressed, sndc->tx_compressed, itv),
 			  S_VALUE(sndp->multicast,     sndc->multicast,     itv));
-		ifutil = compute_ifutil(sndc, rxkb, txkb);
 		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, ifutil);
 		if (DISPLAY_PRETTY(flags)) {
 			cprintf_in(IS_STR, " %s", sndc->interface, 0);
@@ -1290,10 +1808,21 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 {
 	int i, j;
 	struct stats_net_edev *snedc, *snedp, snedzero;
+	int g_fields[] = {2, 0, 1, 3, 4, 7, 8, 6, 5};
 
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
+	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
+		!((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, DISPLAY_PRETTY(flags) ? -1 : 0, 9, NULL);
 	}
 
@@ -1326,6 +1855,30 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(snedp, snedc, STATS_NET_EDEV_SIZE2CMP))
 			continue;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			int k, pos;
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), snedc->interface, MAX_IFACE_LEN, &k);
+			pos = k * a->xnr;
+
+			if (prev != 2) {
+				/* Save min and max values */
+				save_extrema(a->gtypes_nr, (void *) snedc, (void *) snedp,
+					     itv, a->spmin + pos, a->spmax + pos, g_fields);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST,
+					       DISPLAY_PRETTY(flags) ? -1 : 0, 9, NULL);
+				print_net_edev_xstats(H_MIN, snedc->interface,
+						      a->spmin + pos);
+				print_net_edev_xstats(H_MAX, snedc->interface,
+						      a->spmax + pos);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 
@@ -1366,9 +1919,27 @@ __print_funct_t print_net_nfs_stats(struct activity *a, int prev, int curr,
 	struct stats_net_nfs
 		*snnc = (struct stats_net_nfs *) a->buf[curr],
 		*snnp = (struct stats_net_nfs *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snnc, (void *) snnp,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1399,9 +1970,27 @@ __print_funct_t print_net_nfsd_stats(struct activity *a, int prev, int curr,
 	struct stats_net_nfsd
 		*snndc = (struct stats_net_nfsd *) a->buf[curr],
 		*snndp = (struct stats_net_nfsd *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snndc, (void *) snndp,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1442,10 +2031,29 @@ void stub_print_net_sock_stats(struct activity *a, int curr, int dispavg)
 		avg_raw_inuse  = 0,
 		avg_frag_inuse = 0,
 		avg_tcp_tw     = 0;
+	int g_fields[] = {0, 1, 5, 2, 3, 4};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snsc, NULL,
+				     0, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genu64_xstats(H_MIN, a->xnr, a->spmin);
+			print_genu64_xstats(H_MAX, a->xnr, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -1535,9 +2143,27 @@ __print_funct_t print_net_ip_stats(struct activity *a, int prev, int curr,
 	struct stats_net_ip
 		*snic = (struct stats_net_ip *) a->buf[curr],
 		*snip = (struct stats_net_ip *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1570,9 +2196,27 @@ __print_funct_t print_net_eip_stats(struct activity *a, int prev, int curr,
 	struct stats_net_eip
 		*sneic = (struct stats_net_eip *) a->buf[curr],
 		*sneip = (struct stats_net_eip *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1605,9 +2249,27 @@ __print_funct_t print_net_icmp_stats(struct activity *a, int prev, int curr,
 	struct stats_net_icmp
 		*snic = (struct stats_net_icmp *) a->buf[curr],
 		*snip = (struct stats_net_icmp *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1646,9 +2308,27 @@ __print_funct_t print_net_eicmp_stats(struct activity *a, int prev, int curr,
 	struct stats_net_eicmp
 		*sneic = (struct stats_net_eicmp *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1685,9 +2365,27 @@ __print_funct_t print_net_tcp_stats(struct activity *a, int prev, int curr,
 	struct stats_net_tcp
 		*sntc = (struct stats_net_tcp *) a->buf[curr],
 		*sntp = (struct stats_net_tcp *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sntc, (void *) sntp,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1716,9 +2414,27 @@ __print_funct_t print_net_etcp_stats(struct activity *a, int prev, int curr,
 	struct stats_net_etcp
 		*snetc = (struct stats_net_etcp *) a->buf[curr],
 		*snetp = (struct stats_net_etcp *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snetc, (void *) snetp,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1748,9 +2464,27 @@ __print_funct_t print_net_udp_stats(struct activity *a, int prev, int curr,
 	struct stats_net_udp
 		*snuc = (struct stats_net_udp *) a->buf[curr],
 		*snup = (struct stats_net_udp *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snuc, (void *) snup,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1782,10 +2516,29 @@ void stub_print_net_sock6_stats(struct activity *a, int curr, int dispavg)
 		avg_udp6_inuse  = 0,
 		avg_raw6_inuse  = 0,
 		avg_frag6_inuse = 0;
+	int g_fields[] = {0, 1, 2, 3};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snsc, NULL,
+				     0, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genu64_xstats(H_MIN, a->xnr, a->spmin);
+			print_genu64_xstats(H_MAX, a->xnr, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -1868,9 +2621,27 @@ __print_funct_t print_net_ip6_stats(struct activity *a, int prev, int curr,
 	struct stats_net_ip6
 		*snic = (struct stats_net_ip6 *) a->buf[curr],
 		*snip = (struct stats_net_ip6 *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1905,9 +2676,27 @@ __print_funct_t print_net_eip6_stats(struct activity *a, int prev, int curr,
 	struct stats_net_eip6
 		*sneic = (struct stats_net_eip6 *) a->buf[curr],
 		*sneip = (struct stats_net_eip6 *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1943,9 +2732,27 @@ __print_funct_t print_net_icmp6_stats(struct activity *a, int prev, int curr,
 	struct stats_net_icmp6
 		*snic = (struct stats_net_icmp6 *) a->buf[curr],
 		*snip = (struct stats_net_icmp6 *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -1987,9 +2794,27 @@ __print_funct_t print_net_eicmp6_stats(struct activity *a, int prev, int curr,
 	struct stats_net_eicmp6
 		*sneic = (struct stats_net_eicmp6 *) a->buf[curr],
 		*sneip = (struct stats_net_eicmp6 *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -2025,9 +2850,27 @@ __print_funct_t print_net_udp6_stats(struct activity *a, int prev, int curr,
 	struct stats_net_udp6
 		*snuc = (struct stats_net_udp6 *) a->buf[curr],
 		*snup = (struct stats_net_udp6 *) a->buf[prev];
+	int g_fields[] = {0, 1, 2, 3};
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+	}
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) snuc, (void *) snup,
+				     itv, a->spmin, a->spmax, g_fields);
+		}
+		else {
+			/* Print min and max values */
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
+		}
 	}
 
 	printf("%-11s", timestamp[curr]);
@@ -2057,6 +2900,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 	static __nr_t nr_alloc = 0;
 	static unsigned long long
 		*avg_cpufreq = NULL;
+	char name[16];
 
 	if (!avg_cpufreq || (a->nr[curr] > nr_alloc)) {
 		/* Allocate array of CPU frequency */
@@ -2069,7 +2913,17 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (dish) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+
+	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
 	}
 
@@ -2100,15 +2954,31 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 			/* No */
 			continue;
 
-		printf("%-11s", timestamp[curr]);
-
 		if (!i) {
 			/* This is CPU "all" */
-			cprintf_in(IS_STR, "%s", "     all", 0);
+			strcpy(name, "     all");
 		}
 		else {
-			cprintf_in(IS_INT, "     %3d", "", i - 1);
+			snprintf(name, sizeof(name), "     %3d", i - 1);
+			name[sizeof(name) - 1] = '\0';
 		}
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (!dispavg) {
+				/* Save min and max values */
+				save_minmax(a, i * a->xnr, ((double) spc->cpufreq) / 100);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
+				print_pwr_cpufreq_xstats(H_MIN, name, a->spmin + i * a->xnr);
+				print_pwr_cpufreq_xstats(H_MAX, name, a->spmax + i * a->xnr);
+			}
+		}
+
+		printf("%-11s", timestamp[curr]);
+		cprintf_in(IS_STR, "%s", name, 0);
 
 		if (!dispavg) {
 			/* Display instantaneous values */
@@ -2206,12 +3076,39 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (dish) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+
+	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -2, 9, NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (!dispavg) {
+				/* Save min and max values */
+				save_minmax(a, i * a->xnr, spc->rpm);
+				save_minmax(a, i * a->xnr + 1, spc->rpm - spc->rpm_min);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, -2, 9, NULL);
+				print_pwr_fan_xstats(H_MIN, i, spc->device,
+						     a->spmin + i * a->xnr);
+				print_pwr_fan_xstats(H_MAX, i, spc->device,
+						     a->spmax + i * a->xnr);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "     %5d", "", i + 1);
@@ -2292,6 +3189,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_temp *spc;
+	double temppct;
 	static __nr_t nr_alloc = 0;
 	static double *avg_temp = NULL;
 	static double *avg_temp_min = NULL, *avg_temp_max = NULL;
@@ -2314,12 +3212,43 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (dish) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+
+	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -2, 9, NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
+
+		temppct = (spc->temp_max - spc->temp_min)
+			  ? (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100
+			  : 0.0;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (!dispavg) {
+				/* Save min and max values */
+				save_minmax(a, i * a->xnr, spc->temp);
+				save_minmax(a, i * a->xnr + 1, temppct);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, -2, 9, NULL);
+				print_pwr_sensor_xstats(H_MIN, i + 1, spc->device,
+							a->spmin + i * a->xnr);
+				print_pwr_sensor_xstats(H_MAX, i + 1, spc->device,
+							a->spmax + i * a->xnr);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "     %5d", "", i + 1);
@@ -2335,10 +3264,7 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		else {
 			/* Display instantaneous values */
 			cprintf_f(NO_UNIT, FALSE, 1, 9, 2, spc->temp);
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   (spc->temp_max - spc->temp_min) ?
-				   (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100
-				   : 0.0);
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, temppct);
 			avg_temp[i] += spc->temp;
 			/* Assume that min and max temperatures cannot vary */
 			avg_temp_min[i] = spc->temp_min;
@@ -2408,6 +3334,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 {
 	int i;
 	struct stats_pwr_in *spc;
+	double inpct;
 	static __nr_t nr_alloc = 0;
 	static double *avg_in = NULL;
 	static double *avg_in_min = NULL, *avg_in_max = NULL;
@@ -2430,12 +3357,43 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (dish) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+
+	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -2, 9, NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
+
+		inpct = (spc->in_max - spc->in_min)
+			? (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100
+			: 0.0;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (!dispavg) {
+				/* Save min and max values */
+				save_minmax(a, i * a->xnr, spc->in);
+				save_minmax(a, i * a->xnr + 1, inpct);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, -2, 9, NULL);
+				print_pwr_sensor_xstats(H_MIN, i, spc->device,
+							a->spmin + i * a->xnr);
+				print_pwr_sensor_xstats(H_MAX, i, spc->device,
+							a->spmax + i * a->xnr);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "     %5d", "", i);
@@ -2451,10 +3409,7 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		else {
 			/* Display instantaneous values */
 			cprintf_f(NO_UNIT, FALSE, 1, 9, 2, spc->in);
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   (spc->in_max - spc->in_min) ?
-				   (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100
-				   : 0.0);
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, inpct);
 			avg_in[i] += spc->in;
 			/* Assume that min and max voltage inputs cannot vary */
 			avg_in_min[i] = spc->in_min;
@@ -2530,15 +3485,43 @@ void stub_print_huge_stats(struct activity *a, int curr, int dispavg)
 		avg_rsvdhkb = 0,
 		avg_surphkb = 0;
 	int unit = NO_UNIT;
+	double hugpct;
+	int g_fields[] = {0, -1, 3, 4};
 
 	if (DISPLAY_UNIT(flags)) {
 		/* Default values unit is kB */
 		unit = UNIT_KILOBYTE;
 	}
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	/* Compute %hugused value */
+	hugpct = smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0;
+
+	/* Check if min and max values should be displayed */
+	if (DISPLAY_MINMAX(flags)) {
+		if (!dispavg) {
+			/* Save min and max values */
+			save_extrema(a->gtypes_nr, (void *) smc, NULL, 0,
+				     a->spmin, a->spmax, g_fields);
+
+			/* Save min and max values for kbhugused and %hugused */
+			save_minmax(a, 1, (double) (smc->tlhkb - smc->frhkb));
+			save_minmax(a, 2, hugpct);
+		}
+		else {
+			/* Display min and max values */
+			print_huge_xstats(H_MIN, unit, a->spmin);
+			print_huge_xstats(H_MAX, unit, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -2633,12 +3616,27 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 	int i, k;
 	struct stats_pwr_wghfreq *spc, *spp, *spc_k, *spp_k;
 	unsigned long long tis, tisfreq;
+	double wghmhz;
 
-	if (dish) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+	if (dish && !((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
 	}
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
+
+		/* Should current CPU (including CPU "all") be displayed? */
+		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+			/* No */
+			continue;
 
 		/*
 		 * The size of a->buf[...] CPU structure may be different from the default
@@ -2657,10 +3655,15 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 		 * used by sar to read it...
 		 */
 
-		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
-			/* No */
-			continue;
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (prev == 2) {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
+				print_pwr_wghfreq_xstats(H_MIN, i, a->spmin + i * a->xnr);
+				print_pwr_wghfreq_xstats(H_MAX, i, a->spmax + i * a->xnr);
+			}
+		}
 
 		/* Yes: Display it */
 		printf("%-11s", timestamp[curr]);
@@ -2688,9 +3691,16 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 			tis     += (spc_k->time_in_state - spp_k->time_in_state);
 		}
 
+		/* Compute wghMHz value for current CPU */
+		wghmhz = tis ? ((double) tisfreq) / tis : 0.0;
+
+		if (DISPLAY_MINMAX(flags) && (prev != 2)) {
+			/* Save min and max values */
+			save_minmax(a, i * a->xnr, wghmhz);
+		}
+
 		/* Display weighted frequency for current CPU */
-		cprintf_f(NO_UNIT, FALSE, 1, 9, 2,
-			  tis ? ((double) tisfreq) / tis : 0.0);
+		cprintf_f(NO_UNIT, FALSE, 1, 9, 2, wghmhz);
 		printf("\n");
 	}
 }
@@ -2820,15 +3830,27 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 	struct stats_filesystem *sfc, *sfp, *sfm;
 	int unit = NO_UNIT;
 	char *dev_name;
+	double mbfsfree, mbfsused, fsusedpct, ufsusedpct, iusedpct;
+
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
 
 	if (DISPLAY_UNIT(flags)) {
 		/* Default values unit is B */
 		unit = UNIT_BYTE;
 	}
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
+	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
+		!(dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line((dispavg ? _("Summary:") : timestamp[!curr]),
-			       a, FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9, NULL);
+				a, FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9, NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
@@ -2871,31 +3893,68 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			}
 		}
 
-		if (!DISPLAY_ZERO_OMIT(flags) || dispavg
-					      || WANT_SINCE_BOOT(flags)
-					      || !found
-					      /* found is true */
-					      || memcmp(sfp, sfc, STATS_FILESYSTEM_SIZE2CMP)) {
+		if (DISPLAY_ZERO_OMIT(flags) &&
+		    found &&
+		    !memcmp(sfp, sfc, STATS_FILESYSTEM_SIZE2CMP))
+			continue;
 
-			printf("%-11s", (dispavg ? _("Summary:") : timestamp[curr]));
-			cprintf_f(unit, FALSE, 2, 9, 0,
-				  unit < 0 ? (double) sfc->f_bfree / 1024 / 1024 : (double) sfc->f_bfree,
-				  unit < 0 ? (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024 :
-					     (double) (sfc->f_blocks - sfc->f_bfree));
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 2, 9, 2,
-				   /* f_blocks is not zero. But test it anyway ;-) */
-				   sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
-				   : 0.0,
-				   sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
-				   : 0.0);
-			cprintf_u64(NO_UNIT, 2, 9,
-				    (unsigned long long) sfc->f_ffree,
-				    (unsigned long long) (sfc->f_files - sfc->f_ffree));
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-				   sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
-				   : 0.0);
-			cprintf_in(IS_STR, " %s\n", dev_name, 0);
+		/* Compute metrics */
+		mbfsfree = (unit < 0 ? (double) sfc->f_bfree / 1024 / 1024
+				     : (double) sfc->f_bfree);
+		mbfsused = (unit < 0 ? (double) (sfc->f_blocks - sfc->f_bfree) / 1024 / 1024
+				     : (double) (sfc->f_blocks - sfc->f_bfree));
+		/* f_blocks is not zero. But test it anyway ;-) */
+		fsusedpct = (sfc->f_blocks ? SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks)
+					   : 0.0);
+		ufsusedpct = (sfc->f_blocks ? SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks)
+					    : 0.0);
+		iusedpct = (sfc->f_files ? SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files)
+					 : 0.0);
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			int k, pos;
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), dev_name, MAX_FS_LEN, &k);
+			pos = k * a->xnr;
+
+			if (!dispavg) {
+				/* Save min and max values */
+				save_minmax(a, pos, mbfsfree);
+				save_minmax(a, pos + 1, mbfsused);
+				save_minmax(a, pos + 2, fsusedpct);
+				save_minmax(a, pos + 3, ufsusedpct);
+				save_minmax(a, pos + 4, (double) sfc->f_ffree);
+				save_minmax(a, pos + 5, (double) (sfc->f_files - sfc->f_ffree));
+				save_minmax(a, pos + 6, iusedpct);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line((dispavg ? _("Summary:") : timestamp[!curr]),
+					       a, FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9, NULL);
+				print_filesystem_xstats(H_MIN, unit, dev_name,
+							a->spmin + pos);
+				print_filesystem_xstats(H_MAX, unit, dev_name,
+							a->spmax + pos);
+			}
 		}
+
+		/*
+		 * "Last:": This corresponds to the last values displayed (collected)
+		 * for this filesystem (displayed as "Summary" when option -x not used).
+		 */
+		printf("%-11s", (dispavg ? (DISPLAY_MINMAX(flags) ? _("Last:")
+								  : _("Summary:"))
+					 : timestamp[curr]));
+		cprintf_f(unit, FALSE, 2, 9, 0, mbfsfree, mbfsused);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 2, 9, 2,
+			    fsusedpct, ufsusedpct);
+		cprintf_u64(NO_UNIT, 2, 9,
+			    (unsigned long long) sfc->f_ffree,
+			    (unsigned long long) (sfc->f_files - sfc->f_ffree));
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, iusedpct);
+		cprintf_in(IS_STR, " %s\n", dev_name, 0);
 
 		if (!dispavg) {
 			/* Save current filesystem in summary list */
@@ -2979,10 +4038,20 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 {
 	int i, j, j0, found;
 	struct stats_fchost *sfcc, *sfcp, sfczero;
+	int g_fields[] = {0, 1, 2, 3};
 
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
 	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
-	if (dish) {
+	if (dish && !((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, -1, 9, NULL);
 	}
 
@@ -3026,7 +4095,29 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 			sfcp = &sfczero;
 		}
 
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			int k, pos;
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), sfcc->fchost_name, MAX_FCH_LEN, &k);
+			pos = k * a->xnr;
+
+			if (prev != 2) {
+				/* Save min and max values */
+				save_extrema(a->gtypes_nr, (void *) sfcc, (void *) sfcp,
+					     itv, a->spmin + pos, a->spmax + pos, g_fields);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, -1, 9, NULL);
+				print_fchost_xstats(H_MIN, sfcc->fchost_name, a->spmin + pos);
+				print_fchost_xstats(H_MAX, sfcc->fchost_name, a->spmax + pos);
+			}
+		}
+
 		printf("%-11s", timestamp[curr]);
+
 		cprintf_f(NO_UNIT, FALSE, 4, 9, 2,
 			  S_VALUE(sfcp->f_rxframes, sfcc->f_rxframes, itv),
 			  S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
@@ -3058,8 +4149,21 @@ __print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	static __nr_t nr_alloc = 0;
 	static unsigned long long *avg_blg_len = NULL;
+	unsigned int local_types_nr[] = {0, 0, 5};
+	int g_fields[] = {0, 1, 2, 3, 4};
 
-	if (dish || DISPLAY_ZERO_OMIT(flags)) {
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
+
+	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
+	    !((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
 	}
 
@@ -3114,6 +4218,25 @@ __print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
 
 		if (DISPLAY_ZERO_OMIT(flags) && !memcmp(ssnp, ssnc, STATS_SOFTNET_SIZE))
 			continue;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			if (!dispavg) {
+				/* Save min and max values */
+				save_extrema(local_types_nr, (void *) ssnc, (void *) ssnp,
+					     itv, a->spmin + i * a->xnr, a->spmax + i * a->xnr,
+					     g_fields);
+
+				/* Save min and max values for blg_len */
+				save_minmax(a, i * a->xnr + 5, (double) ssnc->backlog_len);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
+				print_softnet_xstats(H_MIN, i, a->spmin + i * a->xnr);
+				print_softnet_xstats(H_MAX, i, a->spmax + i * a->xnr);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 
@@ -3213,10 +4336,34 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10  = 0,
 		s_avg60  = 0,
 		s_avg300 = 0;
+	double scpupct;
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	/* Compute %scpu value */
+	scpupct = ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv);
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_minmax(a, 0, (double) psic->some_acpu_10  / 100);
+			save_minmax(a, 1, (double) psic->some_acpu_60  / 100);
+			save_minmax(a, 2, (double) psic->some_acpu_300 / 100);
+			save_minmax(a, 3, scpupct);
+		}
+		else {
+			/* Print min and max values */
+			print_psi_xstats(H_MIN, a->xnr, a->spmin);
+			print_psi_xstats(H_MAX, a->xnr, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -3242,8 +4389,7 @@ void stub_print_psicpu_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-		  ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, scpupct);
 	printf("\n");
 }
 
@@ -3307,10 +4453,39 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		f_avg10  = 0,
 		f_avg60  = 0,
 		f_avg300 = 0;
+	double siopct, fiopct;
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	/* Compute %sio and %fio values */
+	siopct = ((double) psic->some_io_total - psip->some_io_total) / (100 * itv);
+	fiopct = ((double) psic->full_io_total - psip->full_io_total) / (100 * itv);
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_minmax(a, 0, (double) psic->some_aio_10  / 100);
+			save_minmax(a, 1, (double) psic->some_aio_60  / 100);
+			save_minmax(a, 2, (double) psic->some_aio_300 / 100);
+			save_minmax(a, 3, siopct);
+			save_minmax(a, 4, (double) psic->full_aio_10  / 100);
+			save_minmax(a, 5, (double) psic->full_aio_60  / 100);
+			save_minmax(a, 6, (double) psic->full_aio_300 / 100);
+			save_minmax(a, 7, fiopct);
+		}
+		else {
+			/* Print min and max values */
+			print_psi_xstats(H_MIN, a->xnr, a->spmin);
+			print_psi_xstats(H_MAX, a->xnr, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -3336,8 +4511,7 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-		  ((double) psic->some_io_total - psip->some_io_total) / (100 * itv));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, siopct);
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
@@ -3362,8 +4536,7 @@ void stub_print_psiio_stats(struct activity *a, int prev, int curr, int dispavg,
 		f_avg10 = f_avg60 = f_avg300 = 0;
 	}
 
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-		  ((double) psic->full_io_total - psip->full_io_total) / (100 * itv));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, fiopct);
 	printf("\n");
 }
 
@@ -3427,10 +4600,39 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		f_avg10  = 0,
 		f_avg60  = 0,
 		f_avg300 = 0;
+	double smempct, fmempct;
 
-	if (dish) {
+	if (xinit) {
+		/* Init min and max values */
+		init_extrema_values(a, a->xnr);
+	}
+	if (dish || ((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
+
+	/* Compute %smem and %fmem values */
+	smempct = ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv);
+	fmempct = ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv);
+
+	if (DISPLAY_MINMAX(flags)) {
+		if (prev != 2) {
+			/* Save min and max values */
+			save_minmax(a, 0, (double) psic->some_amem_10  / 100);
+			save_minmax(a, 1, (double) psic->some_amem_60  / 100);
+			save_minmax(a, 2, (double) psic->some_amem_300 / 100);
+			save_minmax(a, 3, smempct);
+			save_minmax(a, 4, (double) psic->full_amem_10  / 100);
+			save_minmax(a, 5, (double) psic->full_amem_60  / 100);
+			save_minmax(a, 6, (double) psic->full_amem_300 / 100);
+			save_minmax(a, 7, fmempct);
+		}
+		else {
+			/* Print min and max values */
+			print_psi_xstats(H_MIN, a->xnr, a->spmin);
+			print_psi_xstats(H_MAX, a->xnr, a->spmax);
+		}
+	}
+
 	printf("%-11s", timestamp[curr]);
 
 	if (!dispavg) {
@@ -3456,8 +4658,7 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		s_avg10 = s_avg60 = s_avg300 = 0;
 	}
 
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-		  ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, smempct);
 
 	if (!dispavg) {
 		/* Display instantaneous "full" values */
@@ -3482,8 +4683,7 @@ void stub_print_psimem_stats(struct activity *a, int prev, int curr, int dispavg
 		f_avg10 = f_avg60 = f_avg300 = 0;
 	}
 
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
-		  ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, fmempct);
 	printf("\n");
 }
 
@@ -3541,6 +4741,17 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 	struct stats_pwr_bat *spbc, *spbp;
 	static __nr_t nr_alloc = 0;
 	static unsigned long *avg_bat_cap = NULL;
+	double capmin;
+
+	if (xinit && a->nr_allocated) {
+		/*
+		 * Init min and max values.
+		 * Used only when reading from a file: Init happens when there is a
+		 * LINUX RESTART message in file. The min and max values are those for
+		 * the statistics located between two LINUX RESTART messages.
+		 */
+		init_extrema_values(a, a->nr_allocated * a->xnr);
+	}
 
 	/* Allocate arrays of battery capacities */
 	if (!avg_bat_cap || (a->nr[curr] > nr_alloc)) {
@@ -3554,13 +4765,41 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 		nr_alloc = a->nr[curr];
 	}
 
-	if (dish) {
+	if (dish && !((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
 	}
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
 		spbp = (struct stats_pwr_bat *) ((char *) a->buf[prev] + i * a->msize);
+
+		/* Compute cap/min value */
+		capmin = (double) (spbc->capacity - spbp->capacity) * 6000 / itv;
+
+		/* Check if min and max values should be displayed */
+		if (DISPLAY_MINMAX(flags)) {
+			char name[16];
+			int k, pos;
+
+			snprintf(name, sizeof(name), "%d", spbc->bat_id);
+			name[sizeof(name) - 1] = '\0';
+
+			/* Look for item in list or add it to the list if non existent */
+			add_list_item(&(a->xdev_list), name, sizeof(name), &k);
+			pos = k * a->xnr;
+
+			if (prev != 2) {
+				/* Save min and max values for %ifutil */
+				save_minmax(a, pos, (double) spbc->capacity);
+				save_minmax(a, pos + 1, capmin);
+			}
+			else {
+				/* Display min and max values */
+				print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
+				print_pwr_bat_xstats(H_MIN, name, a->spmin + pos);
+				print_pwr_bat_xstats(H_MAX, name, a->spmax + pos);
+			}
+		}
 
 		printf("%-11s", timestamp[curr]);
 		cprintf_in(IS_INT, "     %5d", "", (int) spbc->bat_id);
@@ -3576,8 +4815,7 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 				    (double) spbc->capacity);
 			avg_bat_cap[i] += (unsigned int) spbc->capacity;
 		}
-		cprintf_f(NO_UNIT, TRUE, 1, 9, 2,
-			  (double) (spbc->capacity - spbp->capacity) * 6000 / itv);
+		cprintf_f(NO_UNIT, TRUE, 1, 9, 2, capmin);
 
 		if (!dispavg) {
 			/* Print battery status */
