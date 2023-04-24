@@ -6,12 +6,12 @@ if [ "$1" = "conf" ]
 then
 	# Configure sysstat in test mode
 	make distclean
-	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo
+	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping
 elif [ "$1" = "conflto" ]
 then
 	# Configure sysstat in test mode with LTO support
 	make distclean
-	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --enable-lto
+	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --enable-lto --disable-stripping
 elif [ "$1" = "comp" ]
 then
 	# Compile sysstat in test mode
@@ -22,7 +22,7 @@ else
 		# Configure then compile sysstat in test mode
 		make distclean
 #		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make simtest
-		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make simtest TFLAGS="-DTEST"
+		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make simtest TFLAGS="-DTEST"
 	fi
 	rm -f tests/results.tmp
 	COUNT=0
@@ -74,5 +74,5 @@ fi
 
 if [ "$?" = "0" -a "$1" = "all" ]
 then
-	make extratest && make distclean && ./configure --disable-nls --disable-sensors --disable-pcp sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && echo "EXTRA TESTS: Success!"
+	make extratest && make distclean && ./configure --disable-nls --disable-sensors --disable-pcp sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make TFLAGS="-DTEST" && echo "EXTRA TESTS: Success!"
 fi
