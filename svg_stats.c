@@ -1116,12 +1116,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 					/* Check min/max values for %user, etc. */
 					for (k = 0; k < j; k++) {
-						if (0.0 < *(a->spmin + pos + k)) {
-							*(a->spmin + pos + k) = 0.0;
-						}
-						if (0.0 > *(a->spmax + pos + k)) {
-							*(a->spmax + pos + k) = 0.0;
-						}
+						save_minmax(a, pos + k, 0.0);
 					}
 
 					/* %idle */
@@ -1653,29 +1648,16 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 			nousedmem = smc->tlmkb;
 		}
 		mupct = smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0;
-		if (mupct > *(a->spmax + 3)) {
-			*(a->spmax + 3) = mupct;
-		}
-		if (mupct < *(a->spmin + 3)) {
-			*(a->spmin + 3) = mupct;
-		}
+		save_minmax(a, 3, mupct);
+
 		/* Compute %commit min/max values */
 		copct = (smc->tlmkb + smc->tlskb) ?
 			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
-		if (copct > *(a->spmax + 7)) {
-			*(a->spmax + 7) = copct;
-		}
-		if (copct < *(a->spmin + 7)) {
-			*(a->spmin + 7) = copct;
-		}
+		save_minmax(a, 7, copct);
+
 		/* Compute memused min/max values in MB */
 		mu = ((double) (smc->tlmkb - nousedmem)) / 1024;
-		if (mu > *(a->spmax + 2)) {
-			*(a->spmax + 2) = mu;
-		}
-		if (mu < *(a->spmin + 2)) {
-			*(a->spmin + 2) = mu;
-		}
+		save_minmax(a, 2, mu);
 
 		/* MBmemfree */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1812,29 +1794,16 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 		/* Compute %swpused min/max values */
 		supct = smc->tlskb ?
 			SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
-		if (supct > *(a->spmax + 19)) {
-			*(a->spmax + 19) = supct;
-		}
-		if (supct < *(a->spmin + 19)) {
-			*(a->spmin + 19) = supct;
-		}
+		save_minmax(a, 19, supct);
+
 		/* Compute %swpcad min/max values */
 		scpct = (smc->tlskb - smc->frskb) ?
 			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
-		if (scpct > *(a->spmax + 20)) {
-			*(a->spmax + 20) = scpct;
-		}
-		if (scpct < *(a->spmin + 20)) {
-			*(a->spmin + 20) = scpct;
-		}
+		save_minmax(a, 20, scpct);
+
 		/* Compute swpused min/max values in MB */
 		su = ((double) (smc->tlskb - smc->frskb)) / 1024;
-		if (su > *(a->spmax + 17)) {
-			*(a->spmax + 17) = su;
-		}
-		if (su < *(a->spmin + 17)) {
-			*(a->spmin + 17) = su;
-		}
+		save_minmax(a, 17, su);
 
 		/* MBswpfree */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2197,50 +2166,17 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			wkB = S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2;
 			dkB = S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2;
 
-			if (rkB < *(a->spmin + posp + 1)) {
-				*(a->spmin + posp + 1) = rkB;
-			}
-			if (rkB > *(a->spmax + posp + 1)) {
-				*(a->spmax + posp + 1) = rkB;
-			}
-			if (wkB < *(a->spmin + posp + 2)) {
-				*(a->spmin + posp + 2) = wkB;
-			}
-			if (wkB > *(a->spmax + posp + 2)) {
-				*(a->spmax + posp + 2) = wkB;
-			}
-			if (dkB < *(a->spmin + posp + 3)) {
-				*(a->spmin + posp + 3) = dkB;
-			}
-			if (dkB > *(a->spmax + posp + 3)) {
-				*(a->spmax + posp + 3) = dkB;
-			}
+			save_minmax(a, posp + 1, rkB);
+			save_minmax(a, posp + 2, wkB);
+			save_minmax(a, posp + 3, dkB);
+
 			compute_ext_disk_stats(sdc, sdp, itv, &xds);
-			if ((xds.arqsz / 2) < *(a->spmin + posp + 4)) {
-				*(a->spmin + posp + 4) = xds.arqsz / 2;
-			}
-			if ((xds.arqsz / 2) > *(a->spmax + posp + 4)) {
-				*(a->spmax + posp + 4) = xds.arqsz / 2;
-			}
+			save_minmax(a, posp + 4, xds.arqsz / 2);
+
 			aqusz = S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0;
-			if (aqusz < *(a->spmin + posp + 5)) {
-				*(a->spmin + posp + 5) = aqusz;
-			}
-			if (aqusz > *(a->spmax + posp + 5)) {
-				*(a->spmax + posp + 5) = aqusz;
-			}
-			if (xds.await < *(a->spmin + posp + 6)) {
-				*(a->spmin + posp + 6) = xds.await;
-			}
-			if (xds.await > *(a->spmax + posp + 6)) {
-				*(a->spmax + posp + 6) = xds.await;
-			}
-			if ((xds.util / 10.0) < *(a->spmin + posp + 7)) {
-				*(a->spmin + posp + 7) = xds.util / 10.0;
-			}
-			if ((xds.util / 10.0) > *(a->spmax + posp + 7)) {
-				*(a->spmax + posp + 7) = xds.util / 10.0;
-			}
+			save_minmax(a, posp + 5, aqusz);
+			save_minmax(a, posp + 6, xds.await);
+			save_minmax(a, posp + 7, xds.util / 10.0);
 
 			/* tps */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2445,13 +2381,9 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 			rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 			txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
+
 			ifutil = compute_ifutil(sndc, rxkb, txkb);
-			if (ifutil < *(a->spmin + posp + 7)) {
-				*(a->spmin + posp + 7) = ifutil;
-			}
-			if (ifutil > *(a->spmax + posp + 7)) {
-				*(a->spmax + posp + 7) = ifutil;
-			}
+			save_minmax(a, posp + 7, ifutil);
 
 			/* rxpck/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4384,21 +4316,11 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 			/* Look for min/max values */
-			if (spc->temp < *(a->spmin + TEMP_ARRAY_SZ * i)) {
-				*(a->spmin + TEMP_ARRAY_SZ * i) = spc->temp;
-			}
-			if (spc->temp > *(a->spmax + TEMP_ARRAY_SZ * i)) {
-				*(a->spmax + TEMP_ARRAY_SZ * i) = spc->temp;
-			}
+			save_minmax(a, TEMP_ARRAY_SZ * i, spc->temp);
 			tval = (spc->temp_max - spc->temp_min) ?
 			       (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100 :
 			       0.0;
-			if (tval < *(a->spmin + TEMP_ARRAY_SZ * i + 1)) {
-				*(a->spmin + TEMP_ARRAY_SZ * i + 1) = tval;
-			}
-			if (tval > *(a->spmax + TEMP_ARRAY_SZ * i + 1)) {
-				*(a->spmax + TEMP_ARRAY_SZ * i + 1) = tval;
-			}
+			save_minmax(a, TEMP_ARRAY_SZ * i + 1, tval);
 
 			/* degC */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4483,21 +4405,11 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 			spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
 			/* Look for min/max values */
-			if (spc->in < *(a->spmin + IN_ARRAY_SZ * i)) {
-				*(a->spmin + IN_ARRAY_SZ * i) = spc->in;
-			}
-			if (spc->in > *(a->spmax + IN_ARRAY_SZ * i)) {
-				*(a->spmax + IN_ARRAY_SZ * i) = spc->in;
-			}
+			save_minmax(a, IN_ARRAY_SZ * i, spc->in);
 			tval = (spc->in_max - spc->in_min) ?
 			       (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100 :
 			       0.0;
-			if (tval < *(a->spmin + IN_ARRAY_SZ * i + 1)) {
-				*(a->spmin + IN_ARRAY_SZ * i + 1) = tval;
-			}
-			if (tval > *(a->spmax + IN_ARRAY_SZ * i + 1)) {
-				*(a->spmax + IN_ARRAY_SZ * i + 1) = tval;
-			}
+			save_minmax(a, IN_ARRAY_SZ * i + 1, tval);
 
 			/* inV */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4577,12 +4489,7 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 			spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
 
 			/* Look for min/max values */
-			if (spbc->capacity < *(a->spmin + i)) {
-				*(a->spmin + i) = spbc->capacity;
-			}
-			if (spbc->capacity > *(a->spmax + i)) {
-				*(a->spmax + i) = spbc->capacity;
-			}
+			save_minmax(a, i, spbc->capacity);
 
 			/* %cap */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4664,20 +4571,9 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) smc, NULL,
 			     itv, a->spmin, a->spmax, g_fields);
-
-		if (smc->tlhkb - smc->frhkb < *(a->spmin + 1)) {
-			*(a->spmin + 1) = smc->tlhkb - smc->frhkb;
-		}
-		if (smc->tlhkb - smc->frhkb > *(a->spmax + 1)) {
-			*(a->spmax + 1) = smc->tlhkb - smc->frhkb;
-		}
+		save_minmax(a, 1, smc->tlhkb - smc->frhkb);
 		tval = smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0;
-		if (tval < *(a->spmin + 4)) {
-			*(a->spmin + 4) = tval;
-		}
-		if (tval > *(a->spmax + 4)) {
-			*(a->spmax + 4) = tval;
-		}
+		save_minmax(a, 4, tval);
 
 		/* kbhugfree */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4821,63 +4717,34 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 
 			/* Compute fsfree min/max values */
 			tval = (double) sfc->f_bfree;
-			if (tval > *(a->spmax + posp)) {
-				*(a->spmax + posp) = tval;
-			}
-			if (tval < *(a->spmin + posp)) {
-				*(a->spmin + posp) = tval;
-			}
+			save_minmax(a, posp, tval);
+
 			/* Compute fsused min/max values */
 			tval = (double) (sfc->f_blocks - sfc->f_bfree);
-			if (tval > *(a->spmax + posp + 1)) {
-				*(a->spmax + posp + 1) = tval;
-			}
-			if (tval < *(a->spmin + posp + 1)) {
-				*(a->spmin + posp + 1) = tval;
-			}
+			save_minmax(a, posp + 1, tval);
+
 			/* Compute %ufsused min/max values */
 			uupct = sfc->f_blocks ?
 				SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0;
-			if (uupct > *(a->spmax + posp + 2)) {
-				*(a->spmax + posp + 2) = uupct;
-			}
-			if (uupct < *(a->spmin + posp + 2)) {
-				*(a->spmin + posp + 2) = uupct;
-			}
+			save_minmax(a, posp + 2, uupct);
+
 			/* Compute %fsused min/max values */
 			fupct = sfc->f_blocks ?
 				SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0;
-			if (fupct > *(a->spmax + posp + 3)) {
-				*(a->spmax + posp + 3) = fupct;
-			}
-			if (fupct < *(a->spmin + posp + 3)) {
-				*(a->spmin + posp + 3) = fupct;
-			}
+			save_minmax(a, posp + 3, fupct);
+
 			/* Compute Ifree min/max values */
 			tval = (double) sfc->f_ffree;
-			if (tval > *(a->spmax + posp + 4)) {
-				*(a->spmax + posp + 4) = tval;
-			}
-			if (tval < *(a->spmin + posp + 4)) {
-				*(a->spmin + posp + 4) = tval;
-			}
+			save_minmax(a, posp + 4, tval);
+
 			/* Compute Iused min/max values */
 			tval = (double) (sfc->f_files - sfc->f_ffree);
-			if (tval > *(a->spmax + posp + 5)) {
-				*(a->spmax + posp + 5) = tval;
-			}
-			if (tval < *(a->spmin + posp + 5)) {
-				*(a->spmin + posp + 5) = tval;
-			}
+			save_minmax(a, posp + 5, tval);
+
 			/* Compute %Iused min/max values */
 			iupct = sfc->f_files ?
 				SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0;
-			if (iupct > *(a->spmax + posp + 6)) {
-				*(a->spmax + posp + 6) = iupct;
-			}
-			if (iupct < *(a->spmin + posp + 6)) {
-				*(a->spmin + posp + 6) = iupct;
-			}
+			save_minmax(a, posp + 6, iupct);
 
 			/* MBfsfree */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5223,12 +5090,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			/* Check for min/max values */
 			save_extrema(local_types_nr, (void *) ssnc, (void *) ssnp,
 				     itv, a->spmin + posp, a->spmax + posp, g_fields);
-			if (ssnc->backlog_len < *(a->spmin + posp + 5)) {
-				*(a->spmin + posp + 5) = ssnc->backlog_len;
-			}
-			if (ssnc->backlog_len > *(a->spmax + posp + 5)) {
-				*(a->spmax + posp + 5) = ssnc->backlog_len;
-			}
+			save_minmax(a, posp + 5, ssnc->backlog_len);
 
 			/* total/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5329,31 +5191,11 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 		double tval;
 
 		/* Check for min/max values */
-		if (psic->some_acpu_10 > *(a->spmax)) {
-			*(a->spmax) = psic->some_acpu_10;
-		}
-		if (psic->some_acpu_10 < *(a->spmin)) {
-			*(a->spmin) = psic->some_acpu_10;
-		}
-		if (psic->some_acpu_60 > *(a->spmax + 1)) {
-			*(a->spmax + 1) = psic->some_acpu_60;
-		}
-		if (psic->some_acpu_60 < *(a->spmin + 1)) {
-			*(a->spmin + 1) = psic->some_acpu_60;
-		}
-		if (psic->some_acpu_300 > *(a->spmax + 2)) {
-			*(a->spmax + 2) = psic->some_acpu_300;
-		}
-		if (psic->some_acpu_300 < *(a->spmin + 2)) {
-			*(a->spmin + 2) = psic->some_acpu_300;
-		}
+		save_minmax(a, 0, psic->some_acpu_10);
+		save_minmax(a, 1, psic->some_acpu_60);
+		save_minmax(a, 2, psic->some_acpu_300);
 		tval = ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv);
-		if (tval > *(a->spmax + 3)) {
-			*(a->spmax + 3) = tval;
-		}
-		if (tval < *(a->spmin + 3)) {
-			*(a->spmin + 3) = tval;
-		}
+		save_minmax(a, 3, tval);
 
 		/* %scpu-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5430,57 +5272,17 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 		double tvals, tvalf;
 
 		/* Check for min/max values */
-		if (psic->some_aio_10 > *(a->spmax)) {
-			*(a->spmax) = psic->some_aio_10;
-		}
-		if (psic->some_aio_10 < *(a->spmin)) {
-			*(a->spmin) = psic->some_aio_10;
-		}
-		if (psic->some_aio_60 > *(a->spmax + 1)) {
-			*(a->spmax + 1) = psic->some_aio_60;
-		}
-		if (psic->some_aio_60 < *(a->spmin + 1)) {
-			*(a->spmin + 1) = psic->some_aio_60;
-		}
-		if (psic->some_aio_300 > *(a->spmax + 2)) {
-			*(a->spmax + 2) = psic->some_aio_300;
-		}
-		if (psic->some_aio_300 < *(a->spmin + 2)) {
-			*(a->spmin + 2) = psic->some_aio_300;
-		}
+		save_minmax(a, 0, psic->some_aio_10);
+		save_minmax(a, 1, psic->some_aio_60);
+		save_minmax(a, 2, psic->some_aio_300);
 		tvals = ((double) psic->some_io_total - psip->some_io_total) / (100 * itv);
-		if (tvals > *(a->spmax + 3)) {
-			*(a->spmax + 3) = tvals;
-		}
-		if (tvals < *(a->spmin + 3)) {
-			*(a->spmin + 3) = tvals;
-		}
+		save_minmax(a, 3, tvals);
 
-		if (psic->full_aio_10 > *(a->spmax + 4)) {
-			*(a->spmax + 4) = psic->full_aio_10;
-		}
-		if (psic->full_aio_10 < *(a->spmin + 4)) {
-			*(a->spmin + 4) = psic->full_aio_10;
-		}
-		if (psic->full_aio_60 > *(a->spmax + 5)) {
-			*(a->spmax + 5) = psic->full_aio_60;
-		}
-		if (psic->full_aio_60 < *(a->spmin + 5)) {
-			*(a->spmin + 5) = psic->full_aio_60;
-		}
-		if (psic->full_aio_300 > *(a->spmax + 6)) {
-			*(a->spmax + 6) = psic->full_aio_300;
-		}
-		if (psic->full_aio_300 < *(a->spmin + 6)) {
-			*(a->spmin + 6) = psic->full_aio_300;
-		}
+		save_minmax(a, 4, psic->full_aio_10);
+		save_minmax(a, 5, psic->full_aio_60);
+		save_minmax(a, 6, psic->full_aio_300);
 		tvalf = ((double) psic->full_io_total - psip->full_io_total) / (100 * itv);
-		if (tvalf > *(a->spmax + 7)) {
-			*(a->spmax + 7) = tvalf;
-		}
-		if (tvalf < *(a->spmin + 7)) {
-			*(a->spmin + 7) = tvalf;
-		}
+		save_minmax(a, 7, tvalf);
 
 		/* %sio-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5578,57 +5380,17 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 		double tvals, tvalf;
 
 		/* Check for min/max values */
-		if (psic->some_amem_10 > *(a->spmax)) {
-			*(a->spmax) = psic->some_amem_10;
-		}
-		if (psic->some_amem_10 < *(a->spmin)) {
-			*(a->spmin) = psic->some_amem_10;
-		}
-		if (psic->some_amem_60 > *(a->spmax + 1)) {
-			*(a->spmax + 1) = psic->some_amem_60;
-		}
-		if (psic->some_amem_60 < *(a->spmin + 1)) {
-			*(a->spmin + 1) = psic->some_amem_60;
-		}
-		if (psic->some_amem_300 > *(a->spmax + 2)) {
-			*(a->spmax + 2) = psic->some_amem_300;
-		}
-		if (psic->some_amem_300 < *(a->spmin + 2)) {
-			*(a->spmin + 2) = psic->some_amem_300;
-		}
+		save_minmax(a, 0, psic->some_amem_10);
+		save_minmax(a, 1, psic->some_amem_60);
+		save_minmax(a, 2, psic->some_amem_300);
 		tvals = ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv);
-		if (tvals > *(a->spmax + 3)) {
-			*(a->spmax + 3) = tvals;
-		}
-		if (tvals < *(a->spmin + 3)) {
-			*(a->spmin + 3) = tvals;
-		}
+		save_minmax(a, 3, tvals);
 
-		if (psic->full_amem_10 > *(a->spmax + 4)) {
-			*(a->spmax + 4) = psic->full_amem_10;
-		}
-		if (psic->full_amem_10 < *(a->spmin + 4)) {
-			*(a->spmin + 4) = psic->full_amem_10;
-		}
-		if (psic->full_amem_60 > *(a->spmax + 5)) {
-			*(a->spmax + 5) = psic->full_amem_60;
-		}
-		if (psic->full_amem_60 < *(a->spmin + 5)) {
-			*(a->spmin + 5) = psic->full_amem_60;
-		}
-		if (psic->full_amem_300 > *(a->spmax + 6)) {
-			*(a->spmax + 6) = psic->full_amem_300;
-		}
-		if (psic->full_amem_300 < *(a->spmin + 6)) {
-			*(a->spmin + 6) = psic->full_amem_300;
-		}
+		save_minmax(a, 4, psic->full_amem_10);
+		save_minmax(a, 5, psic->full_amem_60);
+		save_minmax(a, 6, psic->full_amem_300);
 		tvalf = ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv);
-		if (tvalf > *(a->spmax + 7)) {
-			*(a->spmax + 7) = tvalf;
-		}
-		if (tvalf < *(a->spmin + 7)) {
-			*(a->spmin + 7) = tvalf;
-		}
+		save_minmax(a, 7, tvalf);
 
 		/* %smem-10 */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
