@@ -1326,7 +1326,7 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) spc, (void *) spp,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* proc/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1385,7 +1385,7 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) ssc, (void *) ssp,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* pswpin/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1446,7 +1446,7 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) spc, (void *) spp,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* pgpgin/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1541,7 +1541,7 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) sic, (void *) sip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/*
@@ -1952,7 +1952,7 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
+		save_extrema(a->gtypes_nr, (void *) skc, NULL,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* dentunusd */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2020,7 +2020,7 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
+		save_extrema(a->gtypes_nr, (void *) sqc, NULL,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* runq-sz */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2785,7 +2785,7 @@ __print_funct_t svg_print_net_nfs_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snnc, (void *) snnp,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* call/s */
@@ -2868,7 +2868,7 @@ __print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snndc, (void *) snndp,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* scall/s */
@@ -2964,7 +2964,7 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
+		save_extrema(a->gtypes_nr, (void *) snsc, NULL,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* totsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3041,7 +3041,7 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* irec/s */
@@ -3128,7 +3128,7 @@ __print_funct_t svg_print_net_eip_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ihdrerr/s */
@@ -3217,7 +3217,7 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* imsg/s */
@@ -3333,7 +3333,7 @@ __print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int acti
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ierr/s */
@@ -3434,7 +3434,7 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) sntc, (void *) sntp,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* active/s */
@@ -3503,7 +3503,7 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snetc, (void *) snetp,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* atmptf/s */
@@ -3576,7 +3576,7 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snuc, (void *) snup,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* idgm/s */
@@ -3643,7 +3643,7 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
+		save_extrema(a->gtypes_nr, (void *) snsc, NULL,
 			     itv, a->spmin, a->spmax, g_fields);
 		/* tcp6sck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3715,7 +3715,7 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* irec6/s */
@@ -3813,7 +3813,7 @@ __print_funct_t svg_print_net_eip6_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ihdrer6/s */
@@ -3916,7 +3916,7 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snic, (void *) snip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* imsg6/s */
@@ -4044,7 +4044,7 @@ __print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int act
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) sneic, (void *) sneip,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ierr6/s */
@@ -4141,7 +4141,7 @@ __print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int actio
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
+		save_extrema(a->gtypes_nr, (void *) snuc, (void *) snup,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		/* idgm6/s */
@@ -4669,7 +4669,7 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 		double tval;
 
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
+		save_extrema(a->gtypes_nr, (void *) smc, NULL,
 			     itv, a->spmin, a->spmax, g_fields);
 
 		if (smc->tlhkb - smc->frhkb < *(a->spmin + 1)) {
