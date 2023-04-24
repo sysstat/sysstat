@@ -1562,6 +1562,8 @@ int add_list_item
 	(struct sa_item **, char *, int, int *);
 void allocate_bitmaps
 	(struct activity * []);
+void allocate_minmax_buf
+	(struct activity *, size_t, uint64_t);
 void allocate_structures
 	(struct activity * [], uint64_t);
 int check_disk_reg

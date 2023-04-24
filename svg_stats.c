@@ -64,120 +64,6 @@ unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =
 
 /*
  ***************************************************************************
- * Compare the values of a statistics sample with the max and min values
- * already found in previous samples for this same activity. If some new
- * min or max values are found, then save them.
- * Assume values cannot be negative.
- * The structure containing the statistics sample is composed of @llu_nr
- * unsigned long long fields, followed by @lu_nr unsigned long fields, then
- * followed by @u_nr unsigned int fields.
- *
- * IN:
- * @types_nr	Number of fields whose type is "long long", "long" and "int"
- * 		composing the structure.
- * @cs		Pointer on current sample statistics structure.
- * @ps		Pointer on previous sample statistics structure (may be NULL).
- * @itv		Interval of time in 1/100th of a second.
- * @spmin	Array containing min values already found for this activity.
- * @spmax	Array containing max values already found for this activity.
- * @g_fields	Index in spmin/spmax arrays where extrema values for each
- *		activity metric will be saved. As a consequence spmin/spmax
- *		arrays may contain values in a different order than that of
- *		the fields in the statistics structure.
- *
- * OUT:
- * @spmin	Array containing the possible new min values for current activity.
- * @spmax	Array containing the possible new max values for current activity.
- ***************************************************************************
- */
-void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned long long itv,
-		  double *spmin, double *spmax, int g_fields[])
-{
-	unsigned long long *lluc, *llup;
-	unsigned long *luc, *lup;
-	unsigned int *uc, *up;
-	double val;
-	int i, m = 0;
-
-	/* Compare unsigned long long fields */
-	lluc = (unsigned long long *) cs;
-	llup = (unsigned long long *) ps;
-	for (i = 0; i < types_nr[0]; i++, m++) {
-		if (g_fields[m] >= 0) {
-			if (ps) {
-				val = *lluc < *llup ? 0.0 : S_VALUE(*llup, *lluc, itv);
-			}
-			else {
-				/*
-				 * If no pointer on previous sample has been given
-				 * then the value is not a per-second one.
-				*/
-				val = (double) *lluc;
-			}
-			if (val < *(spmin + g_fields[m])) {
-				*(spmin + g_fields[m]) = val;
-			}
-			if (val > *(spmax + g_fields[m])) {
-				*(spmax + g_fields[m]) = val;
-			}
-		}
-		lluc = (unsigned long long *) ((char *) lluc + ULL_ALIGNMENT_WIDTH);
-		if (ps) {
-			llup = (unsigned long long *) ((char *) llup + ULL_ALIGNMENT_WIDTH);
-		}
-	}
-
-	/* Compare unsigned long fields */
-	luc = (unsigned long *) lluc;
-	lup = (unsigned long *) llup;
-	for (i = 0; i < types_nr[1]; i++, m++) {
-		if (g_fields[m] >= 0) {
-			if (ps) {
-				val = *luc < *lup ? 0.0 : S_VALUE(*lup, *luc, itv);
-			}
-			else {
-				val = (double) *luc;
-			}
-			if (val < *(spmin + g_fields[m])) {
-				*(spmin + g_fields[m]) = val;
-			}
-			if (val > *(spmax + g_fields[m])) {
-				*(spmax + g_fields[m]) = val;
-			}
-		}
-		luc = (unsigned long *) ((char *) luc + UL_ALIGNMENT_WIDTH);
-		if (ps) {
-			lup = (unsigned long *) ((char *) lup + UL_ALIGNMENT_WIDTH);
-		}
-	}
-
-	/* Compare unsigned int fields */
-	uc = (unsigned int *) luc;
-	up = (unsigned int *) lup;
-	for (i = 0; i < types_nr[2]; i++, m++) {
-		if (g_fields[m] >= 0) {
-			if (ps) {
-				val = *uc < *up ? 0.0 : S_VALUE(*up, *uc, itv);
-			}
-			else {
-				val = (double) *uc;
-			}
-			if (val < *(spmin + g_fields[m])) {
-				*(spmin + g_fields[m]) = val;
-			}
-			if (val > *(spmax + g_fields[m])) {
-				*(spmax + g_fields[m]) = val;
-			}
-		}
-		uc = (unsigned int *) ((char *) uc + U_ALIGNMENT_WIDTH);
-		if (ps) {
-			up = (unsigned int *) ((char *) up + U_ALIGNMENT_WIDTH);
-		}
-	}
-}
-
-/*
- ***************************************************************************
  * Find the min and max values of all the graphs that will be drawn in the
  * same view. The graphs have their own min and max values in
  * spmin[pos...pos+n-1] and spmax[pos...pos+n-1].
@@ -185,8 +71,8 @@ void save_extrema(const unsigned int types_nr[], void *cs, void *ps, unsigned lo
  * IN:
  * @pos		Position in array for the first graph extrema value.
  * @n		Number of graphs to scan.
- * @spmin	Array containing min values for graphs.
- * @spmax	Array containing max values for graphs.
+ * @spmin	Buffer with min values.
+ * @spmax	Buffer with max values.
  *
  * OUT:
  * @gmin	Global min value found.
@@ -211,26 +97,25 @@ void get_global_extrema(int pos, int n, double *spmin, double *spmax,
 	}
 }
 
+
 /*
  ***************************************************************************
- * Allocate arrays used to save graphs data, min and max values.
+ * Allocate arrays used to save graphs data.
+ * Buffers for min and max values may also be reallocated.
  * @n arrays of chars are allocated for @n graphs to draw. A pointer on this
  * array is returned. This is equivalent to "char data[][n]" where each
  * element is of indeterminate size and will contain the graph data (eg.
  * << path d="M12,14 L13,16..." ... >>.
  * The size of element data[i] is given by outsize[i].
- * Also allocate an array to save min values (equivalent to "double spmin[n]")
- * and an array for max values (equivalent to "double spmax[n]").
  *
  * IN:
+ * @a		Activity structure.
  * @n		Number of graphs to draw for current activity.
  *
  * OUT:
  * @outsize	Array that will contain the sizes of each element in array
  *		of chars. Equivalent to "int outsize[n]" with
  * 		outsize[n] = sizeof(data[][n]).
- * @spmin	Array that will contain min values for current activity.
- * @spmax	Array that will contain max values for current activity.
  *
  * RETURNS:
  * Pointer on array of arrays of chars that will contain the graphs data.
@@ -239,7 +124,7 @@ void get_global_extrema(int pos, int n, double *spmin, double *spmax,
  * in the statistics structure.
  ***************************************************************************
  */
-char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax)
+char **allocate_graph_lines(struct activity *a, int n, int **outsize)
 {
 	char **out;
 	char *out_p;
@@ -258,16 +143,6 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
 		perror("malloc");
 		exit(4);
 	}
-	/* Allocate array that will contain the min value of each graph */
-	if ((*spmin = (double *) malloc(n * sizeof(double))) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
-	/* Allocate array that will contain the max value of each graph */
-	if ((*spmax = (double *) malloc(n * sizeof(double))) == NULL) {
-		perror("malloc");
-		exit(4);
-	}
 	/* Allocate arrays of chars that will contain graphs data */
 	for (i = 0; i < n; i++) {
 		if ((out_p = (char *) malloc(CHUNKSIZE * sizeof(char))) == NULL) {
@@ -277,8 +152,11 @@ char **allocate_graph_lines(int n, int **outsize, double **spmin, double **spmax
 		*(out + i) = out_p;
 		*out_p = '\0';			/* Reset string so that it can be safely strncat()'d later */
 		*(*outsize + i) = CHUNKSIZE;	/* Each array of chars has a default size of CHUNKSIZE */
-		*(*spmin + i) = DBL_MAX;	/* Init min and max values */
-		*(*spmax + i) = -DBL_MAX;
+	}
+
+	/* Reallocate buffers for min and max values if necessary */
+	if (a->item_list_sz > a->nr_allocated) {
+		allocate_minmax_buf(a, a->item_list_sz, flags);
 	}
 
 	return out;
@@ -829,23 +707,15 @@ long int xgrid(unsigned long timestart, unsigned long timeend, int v_gridnr)
  * IN:
  * @out		Pointer on array of chars for each graph definition.
  * @outsize	Size of array of chars for each graph definition.
- * @spmin	Array containing min values for graphs.
- * @spmax	Array containing max values for graphs.
  ***************************************************************************
  */
-void free_graphs(char **out, int *outsize, double *spmin, double *spmax)
+void free_graphs(char **out, int *outsize)
 {
 	if (out) {
 		free(out);
 	}
 	if (outsize) {
 		free(outsize);
-	}
-	if (spmin) {
-		free(spmin);
-	}
-	if (spmax) {
-		free(spmax);
 	}
 }
 
@@ -880,7 +750,7 @@ void skip_current_view(char **out, int *pos, int group)
 }
 
 /*
- ***************************************************************************
+ * **************************************************************************
  * Display all graphs for current activity.
  *
  * IN:
@@ -956,9 +826,8 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			/* Translate to proper position for current activity */
 			printf("<g id=\"g%u-%u\" transform=\"translate(0,%d)\">\n",
 			       a->id, xid,
-			       SVG_H_YSIZE +
-			       SVG_C_YSIZE * (DISPLAY_TOC(flags) ? svg_p->nr_act_dispd : 0) +
-			       SVG_T_YSIZE * svg_p->graph_no);
+			       SVG_H_YSIZE + SVG_C_YSIZE * (DISPLAY_TOC(flags)
+			       ? svg_p->nr_act_dispd : 0) + SVG_T_YSIZE * svg_p->graph_no);
 			displayed = TRUE;
 		}
 
@@ -999,7 +868,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		 * And a min and max value should have been found.
 		 */
 		if ((record_hdr->ust_time == svg_p->ust_time_first) ||
-		    (*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
+			(*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
 			/* No data found */
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none\">No data</text>\n",
 			       xv, yv + SVG_M_YSIZE,
@@ -1170,18 +1039,14 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 	char *title[] = {"CPU utilization"};
 	char *g_title1[] = {"%user", "%nice", "%system", "%iowait", "%steal", "%idle"};
 	char *g_title2[] = {"%usr", "%nice", "%sys", "%iowait", "%steal", "%irq", "%soft", "%guest", "%gnice", "%idle"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	double offset;
 	int i, pos;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(CPU_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, CPU_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -1251,11 +1116,11 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 					/* Check min/max values for %user, etc. */
 					for (k = 0; k < j; k++) {
-						if (0.0 < *(spmin + pos + k)) {
-							*(spmin + pos + k) = 0.0;
+						if (0.0 < *(a->spmin + pos + k)) {
+							*(a->spmin + pos + k) = 0.0;
 						}
-						if (0.0 > *(spmax + pos + k)) {
-							*(spmax + pos + k) = 0.0;
+						if (0.0 > *(a->spmax + pos + k)) {
+							*(a->spmax + pos + k) = 0.0;
 						}
 					}
 
@@ -1263,7 +1128,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 						  &offset, val,
 						  out + pos + j, outsize + pos + j, svg_p->dt,
-						  spmin + pos + j, spmax + pos + j);
+						  a->spmin + pos + j, a->spmax + pos + j);
 					continue;
 				}
 			}
@@ -1273,7 +1138,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
 					  out + pos, outsize + pos, svg_p->dt,
-					  spmin + pos, spmax + pos);
+					  a->spmin + pos, a->spmax + pos);
 			}
 			else {
 				/* %usr */
@@ -1284,7 +1149,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					   ll_sp_value(scp->cpu_user - scp->cpu_guest,
 						       scc->cpu_user - scc->cpu_guest, deltot_jiffies),
 					  out + pos, outsize + pos, svg_p->dt,
-					  spmin + pos, spmax + pos);
+					  a->spmin + pos, a->spmax + pos);
 			}
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
@@ -1292,7 +1157,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
 					  out + pos + 1, outsize + pos + 1, svg_p->dt,
-					  spmin + pos + 1, spmax + pos + 1);
+					  a->spmin + pos + 1, a->spmax + pos + 1);
 			}
 			else {
 				/* %nice */
@@ -1303,7 +1168,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
 						       scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
 					  out + pos + 1, outsize + pos + 1, svg_p->dt,
-					  spmin + pos + 1, spmax + pos + 1);
+					  a->spmin + pos + 1, a->spmax + pos + 1);
 			}
 
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
@@ -1314,48 +1179,48 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 						      scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
 						      deltot_jiffies),
 					  out + pos + 2, outsize + pos + 2, svg_p->dt,
-					  spmin + pos + 2, spmax + pos + 2);
+					  a->spmin + pos + 2, a->spmax + pos + 2);
 			}
 			else {
 				/* %sys */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
 					  out + pos + 2, outsize + pos + 2, svg_p->dt,
-					  spmin + pos + 2, spmax + pos + 2);
+					  a->spmin + pos + 2, a->spmax + pos + 2);
 			}
 
 			/* %iowait */
 			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset, ll_sp_value(scp->cpu_iowait, scc->cpu_iowait, deltot_jiffies),
 				  out + pos + 3, outsize + pos + 3, svg_p->dt,
-				  spmin + pos + 3, spmax + pos + 3);
+				  a->spmin + pos + 3, a->spmax + pos + 3);
 			/* %steal */
 			cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 				  &offset, ll_sp_value(scp->cpu_steal, scc->cpu_steal, deltot_jiffies),
 				  out + pos + 4, outsize + pos + 4, svg_p->dt,
-				  spmin + pos + 4, spmax + pos + 4);
+				  a->spmin + pos + 4, a->spmax + pos + 4);
 
 			if (DISPLAY_CPU_ALL(a->opt_flags)) {
 				/* %irq */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_hardirq, scc->cpu_hardirq, deltot_jiffies),
 					  out + pos + 5, outsize + pos + 5, svg_p->dt,
-					  spmin + pos + 5, spmax + pos + 5);
+					  a->spmin + pos + 5, a->spmax + pos + 5);
 				/* %soft */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_softirq, scc->cpu_softirq, deltot_jiffies),
 					  out + pos + 6, outsize + pos + 6, svg_p->dt,
-					  spmin + pos + 6, spmax + pos + 6);
+					  a->spmin + pos + 6, a->spmax + pos + 6);
 				/* %guest */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_guest, scc->cpu_guest, deltot_jiffies),
 					  out + pos + 7, outsize + pos + 7, svg_p->dt,
-					  spmin + pos + 7, spmax + pos + 7);
+					  a->spmin + pos + 7, a->spmax + pos + 7);
 				/* %gnice */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset, ll_sp_value(scp->cpu_guest_nice, scc->cpu_guest_nice, deltot_jiffies),
 					  out + pos + 8, outsize + pos + 8, svg_p->dt,
-					  spmin + pos + 8, spmax + pos + 8);
+					  a->spmin + pos + 8, a->spmax + pos + 8);
 
 				j = 9;
 			}
@@ -1369,7 +1234,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 				  (scc->cpu_idle < scp->cpu_idle ? 0.0 :
 				   ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies)),
 				  out + pos + j, outsize + pos + j, svg_p->dt,
-				  spmin + pos + j, spmax + pos + j);
+				  a->spmin + pos + j, a->spmax + pos + j);
 		}
 	}
 
@@ -1402,13 +1267,15 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 			if (DISPLAY_CPU_DEF(a->opt_flags)) {
 				displayed = draw_activity_graphs(a->g_nr, g_type,
 								 title, g_title1, item_name, group1,
-								 spmin + pos, spmax + pos, out + pos, outsize + pos,
+								 a->spmin + pos, a->spmax + pos,
+								 out + pos, outsize + pos,
 								 svg_p, record_hdr, i, a, xid);
 			}
 			else {
 				displayed = draw_activity_graphs(a->g_nr, g_type,
 								 title, g_title2, item_name, group2,
-								 spmin + pos, spmax + pos, out + pos, outsize + pos,
+								 a->spmin + pos, a->spmax + pos,
+								 out + pos, outsize + pos,
 								 svg_p, record_hdr, i, a, xid);
 			}
 			if (displayed) {
@@ -1417,7 +1284,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -1449,22 +1316,18 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 	char *title[] = {"Task creation", "Switching activity"};
 	char *g_title[] = {"proc/s",
 			   "cswch/s"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(2, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 2, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* proc/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->processes, spc->processes, itv),
@@ -1477,10 +1340,11 @@ __print_funct_t svg_print_pcsw_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -1511,22 +1375,18 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 	char *title[] = {"Swap activity"};
 	char *g_title[] = {"pswpin/s", "pswpout/s" };
 	int g_fields[] = {0, 1};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(2, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 2, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* pswpin/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(ssp->pswpin, ssc->pswpin, itv),
@@ -1539,10 +1399,11 @@ __print_funct_t svg_print_swap_stats(struct activity *a, int curr, int action, s
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -1575,22 +1436,18 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 			   "fault/s", "majflt/s",
 			   "pgfree/s", "pgscank/s", "pgscand/s", "pgsteal/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(8, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 8, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* pgpgin/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgpgin, spc->pgpgin, itv),
@@ -1627,10 +1484,11 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -1673,22 +1531,18 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 	 *	dk_drive_dblk:6
 	 */
 	int g_fields[] = {0, 1, 2, 4, 5, 3, 6};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(7, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 7, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/*
 		 * If we get negative values, this is probably because
@@ -1735,10 +1589,11 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -1776,16 +1631,12 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 			   "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
 			   "MBvmused"};
 	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(16, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 16, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -1793,7 +1644,8 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		double tval;
 
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0, spmin, spmax, g_fields);
+		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0,
+			     a->spmin, a->spmax, g_fields);
 
 		/* Compute %memused min/max values */
 		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
@@ -1801,28 +1653,28 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 			nousedmem = smc->tlmkb;
 		}
 		tval = smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0;
-		if (tval > *(spmax + 3)) {
-			*(spmax + 3) = tval;
+		if (tval > *(a->spmax + 3)) {
+			*(a->spmax + 3) = tval;
 		}
-		if (tval < *(spmin + 3)) {
-			*(spmin + 3) = tval;
+		if (tval < *(a->spmin + 3)) {
+			*(a->spmin + 3) = tval;
 		}
 		/* Compute %commit min/max values */
 		tval = (smc->tlmkb + smc->tlskb) ?
 		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
-		if (tval > *(spmax + 7)) {
-			*(spmax + 7) = tval;
+		if (tval > *(a->spmax + 7)) {
+			*(a->spmax + 7) = tval;
 		}
-		if (tval < *(spmin + 7)) {
-			*(spmin + 7) = tval;
+		if (tval < *(a->spmin + 7)) {
+			*(a->spmin + 7) = tval;
 		}
 		/* Compute memused min/max values in MB */
 		tval = ((double) (smc->tlmkb - nousedmem)) / 1024;
-		if (tval > *(spmax + 2)) {
-			*(spmax + 2) = tval;
+		if (tval > *(a->spmax + 2)) {
+			*(a->spmax + 2) = tval;
 		}
-		if (tval < *(spmin + 2)) {
-			*(spmin + 2) = tval;
+		if (tval < *(a->spmin + 2)) {
+			*(a->spmin + 2) = tval;
 		}
 
 		/* MBmemfree */
@@ -1901,20 +1753,20 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		/* Conversion kB -> MB */
 		for (i = 0; i < 17; i++) {
 			if (g_fields[i] >= 0) {
-				*(spmin + g_fields[i]) /= 1024;
-				*(spmax + g_fields[i]) /= 1024;
+				*(a->spmin + g_fields[i]) /= 1024;
+				*(a->spmax + g_fields[i]) /= 1024;
 			}
 		}
 
 		if (draw_activity_graphs(dispall ? 6 : 5,
 					 g_type, title, g_title, NULL, group,
-					 spmin, spmax, out, outsize, svg_p, record_hdr,
+					 a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
 					 FALSE, a, *xid)) {
 			(*xid)++;
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -1944,51 +1796,48 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 			  "Swap utilization (3)"};
 	char *g_title[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
 			    "%swpcad"};
-	int g_fields[] = {-1, -1, -1, 5, 0, 6, 2,
+	int g_fields[] = {-1, -1, -1, -1, 16, -1, 18,
 			  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(7, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 5, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		double tval;
 
 		/* Check for min/max values */
-		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0, spmin, spmax, g_fields);
+		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0,
+			     a->spmin, a->spmax, g_fields);
 
 		/* Compute %swpused min/max values */
 		tval = smc->tlskb ?
 		SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
-		if (tval > *(spmax + 3)) {
-			*(spmax + 3) = tval;
+		if (tval > *(a->spmax + 19)) {
+			*(a->spmax + 19) = tval;
 		}
-		if (tval < *(spmin + 3)) {
-			*(spmin + 3) = tval;
+		if (tval < *(a->spmin + 19)) {
+			*(a->spmin + 19) = tval;
 		}
 		/* Compute %swpcad min/max values */
 		tval = (smc->tlskb - smc->frskb) ?
 		SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
-		if (tval > *(spmax + 4)) {
-			*(spmax + 4) = tval;
+		if (tval > *(a->spmax + 20)) {
+			*(a->spmax + 20) = tval;
 		}
-		if (tval < *(spmin + 4)) {
-			*(spmin + 4) = tval;
+		if (tval < *(a->spmin + 20)) {
+			*(a->spmin + 20) = tval;
 		}
 		/* Compute swpused min/max values in MB */
 		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
-		if (tval > *(spmax + 1)) {
-			*(spmax + 1) = tval;
+		if (tval > *(a->spmax + 17)) {
+			*(a->spmax + 17) = tval;
 		}
-		if (tval < *(spmin + 1)) {
-			*(spmin + 1) = tval;
+		if (tval < *(a->spmin + 17)) {
+			*(a->spmin + 17) = tval;
 		}
 
 		/* MBswpfree */
@@ -2018,20 +1867,18 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 	}
 
 	if (action & F_END) {
-		int i;
-
 		/* Conversion kB -> MB */
-		for (i = 3; i < 7; i++) {
-			*(spmin + g_fields[i]) /= 1024;
-			*(spmax + g_fields[i]) /= 1024;
-		}
+		*(a->spmin + 16) /= 1024;
+		*(a->spmax + 16) /= 1024;
+		*(a->spmin + 18) /= 1024;
+		*(a->spmax + 18) /= 1024;
 
 		draw_activity_graphs(3, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize,
+				     a->spmin + 16, a->spmax + 16, out, outsize,
 				     svg_p, record_hdr, FALSE, a, xid);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -2095,22 +1942,18 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 	char *g_title[] = {"~dentunusd", "~file-nr", "~inode-nr",
 			   "~pty-nr"};
 	int g_fields[] = {1, 2, 0, 3};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 4, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* dentunusd */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long long) skc->dentry_stat,
@@ -2131,10 +1974,11 @@ __print_funct_t svg_print_ktables_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -2166,22 +2010,18 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 			   "~plist-sz",
 			   "ldavg-1", "ldavg-5", "ldavg-15"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(6, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 6, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* runq-sz */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long long) sqc->nr_running,
@@ -2210,15 +2050,16 @@ __print_funct_t svg_print_queue_stats(struct activity *a, int curr, int action, 
 
 	if (action & F_END) {
 		/* Fix min/max values for load average */
-		*(spmin + 3) /= 100; *(spmax + 3) /= 100;
-		*(spmin + 4) /= 100; *(spmax + 4) /= 100;
-		*(spmin + 5) /= 100; *(spmax + 5) /= 100;
+		*(a->spmin + 3) /= 100; *(a->spmax + 3) /= 100;
+		*(a->spmin + 4) /= 100; *(a->spmax + 4) /= 100;
+		*(a->spmin + 5) /= 100; *(a->spmax + 5) /= 100;
 
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -2255,25 +2096,21 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			   "areq-sz", "aqu-sz",
 			   "await",
 			   "%util"};
-	int g_fields[] = {0, 1, 2};
-	unsigned int local_types_nr[] = {1, 0, 0};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	char *dev_name, *item_name;
 	double rkB, wkB, dkB, aqusz;
-	int i, j, k, pos, restart, *unregistered;
+	int i, j, k, pos, posp, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays (#0..7) that will contain the graphs data
-		 * and the min/max values.
 		 * Also allocate one additional array (#8) for each disk device:
 		 * out + 8 will contain the device name (WWN id, pretty name or devm-n),
 		 * outsize + 8 will contain a positive value (TRUE) if the device
 		 * has either still not been registered, or has been unregistered.
 		 */
-		out = allocate_graph_lines(DISK_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(a, DISK_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -2331,6 +2168,7 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			}
 			pos = k * DISK_ARRAY_SZ;
 			unregistered = outsize + pos + 8;
+			posp = k * a->xnr;
 
 			/*
 			 * If current device was marked as previously unregistered,
@@ -2360,56 +2198,56 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			}
 
 			/* Check for min/max values */
-			save_extrema(local_types_nr, (void *) sdc, (void *) sdp,
-				     itv, spmin + pos, spmax + pos, g_fields);
+			save_minmax(a, posp, sdc->nr_ios < sdp->nr_ios ? 0.0
+				             : S_VALUE(sdp->nr_ios, sdc->nr_ios, itv));
 
 			rkB = S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2;
 			wkB = S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2;
 			dkB = S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2;
-			if (rkB < *(spmin + pos + 1)) {
-				*(spmin + pos + 1) = rkB;
-			}
-			if (rkB > *(spmax + pos + 1)) {
-				*(spmax + pos + 1) = rkB;
-			}
-			if (wkB < *(spmin + pos + 2)) {
-				*(spmin + pos + 2) = wkB;
-			}
-			if (wkB > *(spmax + pos + 2)) {
-				*(spmax + pos + 2) = wkB;
-			}
-			if (dkB < *(spmin + pos + 3)) {
-				*(spmin + pos + 3) = dkB;
-			}
-			if (dkB > *(spmax + pos + 3)) {
-				*(spmax + pos + 3) = dkB;
-			}
 
-			compute_ext_disk_stats(sdc, sdp, itv, &xds);
-			if ((xds.arqsz / 2) < *(spmin + pos + 4)) {
-				*(spmin + pos + 4) = xds.arqsz / 2;
+			if (rkB < *(a->spmin + posp + 1)) {
+				*(a->spmin + posp + 1) = rkB;
 			}
-			if ((xds.arqsz / 2) > *(spmax + pos + 4)) {
-				*(spmax + pos + 4) = xds.arqsz / 2;
+			if (rkB > *(a->spmax + posp + 1)) {
+				*(a->spmax + posp + 1) = rkB;
+			}
+			if (wkB < *(a->spmin + posp + 2)) {
+				*(a->spmin + posp + 2) = wkB;
+			}
+			if (wkB > *(a->spmax + posp + 2)) {
+				*(a->spmax + posp + 2) = wkB;
+			}
+			if (dkB < *(a->spmin + posp + 3)) {
+				*(a->spmin + posp + 3) = dkB;
+			}
+			if (dkB > *(a->spmax + posp + 3)) {
+				*(a->spmax + posp + 3) = dkB;
+			}
+			compute_ext_disk_stats(sdc, sdp, itv, &xds);
+			if ((xds.arqsz / 2) < *(a->spmin + posp + 4)) {
+				*(a->spmin + posp + 4) = xds.arqsz / 2;
+			}
+			if ((xds.arqsz / 2) > *(a->spmax + posp + 4)) {
+				*(a->spmax + posp + 4) = xds.arqsz / 2;
 			}
 			aqusz = S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0;
-			if (aqusz < *(spmin + pos + 5)) {
-				*(spmin + pos + 5) = aqusz;
+			if (aqusz < *(a->spmin + posp + 5)) {
+				*(a->spmin + posp + 5) = aqusz;
 			}
-			if (aqusz > *(spmax + pos + 5)) {
-				*(spmax + pos + 5) = aqusz;
+			if (aqusz > *(a->spmax + posp + 5)) {
+				*(a->spmax + posp + 5) = aqusz;
 			}
-			if (xds.await < *(spmin + pos + 6)) {
-				*(spmin + pos + 6) = xds.await;
+			if (xds.await < *(a->spmin + posp + 6)) {
+				*(a->spmin + posp + 6) = xds.await;
 			}
-			if (xds.await > *(spmax + pos + 6)) {
-				*(spmax + pos + 6) = xds.await;
+			if (xds.await > *(a->spmax + posp + 6)) {
+				*(a->spmax + posp + 6) = xds.await;
 			}
-			if ((xds.util / 10.0) < *(spmin + pos + 7)) {
-				*(spmin + pos + 7) = xds.util / 10.0;
+			if ((xds.util / 10.0) < *(a->spmin + posp + 7)) {
+				*(a->spmin + posp + 7) = xds.util / 10.0;
 			}
-			if ((xds.util / 10.0) > *(spmax + pos + 7)) {
-				*(spmax + pos + 7) = xds.util / 10.0;
+			if ((xds.util / 10.0) > *(a->spmax + posp + 7)) {
+				*(a->spmax + posp + 7) = xds.util / 10.0;
 			}
 
 			/* tps */
@@ -2463,18 +2301,20 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 			pos = i * DISK_ARRAY_SZ;
 			if (!**(out + pos))
 				continue;
+			posp = i * a->xnr;
 
 			item_name = *(out + pos + 8);
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 a->spmin + posp, a->spmax + posp,
+						 out + pos, outsize + pos,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -2510,23 +2350,21 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			   "%ifutil"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6};
 	unsigned int local_types_nr[] = {7, 0, 0};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	char *item_name;
 	double rxkb, txkb, ifutil;
-	int i, j, k, pos, restart, *unregistered;
+	int i, j, k, pos, posp, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays (#0..7) that will contain the graphs data
-		 * and the min/max values.
 		 * Also allocate one additional array (#8) for each interface:
 		 * out + 8 will contain the interface name,
 		 * outsize + 8 will contain a positive value (TRUE) if the interface
 		 * has either still not been registered, or has been unregistered.
 		 */
-		out = allocate_graph_lines(NET_DEV_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(a, NET_DEV_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -2578,6 +2416,7 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 				}
 			}
 			pos = k * NET_DEV_ARRAY_SZ;
+			posp = k * a->xnr;
 			unregistered = outsize + pos + 8;
 
 			j = check_net_dev_reg(a, curr, !curr, i);
@@ -2609,16 +2448,16 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 
 			/* Check for min/max values */
 			save_extrema(local_types_nr, (void *) sndc, (void *) sndp,
-				     itv, spmin + pos, spmax + pos, g_fields);
+				     itv, a->spmin + posp, a->spmax + posp, g_fields);
 
 			rxkb = S_VALUE(sndp->rx_bytes, sndc->rx_bytes, itv);
 			txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 			ifutil = compute_ifutil(sndc, rxkb, txkb);
-			if (ifutil < *(spmin + pos + 7)) {
-				*(spmin + pos + 7) = ifutil;
+			if (ifutil < *(a->spmin + posp + 7)) {
+				*(a->spmin + posp + 7) = ifutil;
 			}
-			if (ifutil > *(spmax + pos + 7)) {
-				*(spmax + pos + 7) = ifutil;
+			if (ifutil > *(a->spmax + posp + 7)) {
+				*(a->spmax + posp + 7) = ifutil;
 			}
 
 			/* rxpck/s */
@@ -2676,24 +2515,26 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 			pos = i * NET_DEV_ARRAY_SZ;
 			if (!**(out + pos))
 				continue;
+			posp = i * a->xnr;
 
 			/* Recalculate min and max values in kB, not in B */
-			*(spmin + pos + 2) /= 1024;
-			*(spmax + pos + 2) /= 1024;
-			*(spmin + pos + 3) /= 1024;
-			*(spmax + pos + 3) /= 1024;
+			*(a->spmin + posp + 2) /= 1024;
+			*(a->spmax + posp + 2) /= 1024;
+			*(a->spmin + posp + 3) /= 1024;
+			*(a->spmax + posp + 3) /= 1024;
 
 			item_name = *(out + pos + 8);
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 a->spmin + posp, a->spmax + posp,
+						 out + pos, outsize + pos,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -2728,22 +2569,20 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			    "rxfifo/s", "txfifo/s",
 			    "coll/s", "txcarr/s", "rxfram/s"};
 	int g_fields[] = {6, 0, 1, 2, 3, 4, 5, 8, 7};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	char *item_name;
-	int i, j, k, pos, restart, *unregistered;
+	int i, j, k, pos, posp, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays (#0..8) that will contain the graphs data
-		 * and the min/max values.
 		 * Also allocate one additional array (#9) for each interface:
 		 * out + 9 will contain the interface name,
 		 * outsize + 9 will contain a positive value (TRUE) if the interface
 		 * has either still not been registered, or has been unregistered.
 		 */
-		out = allocate_graph_lines(NET_EDEV_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(a, NET_EDEV_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -2796,6 +2635,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			}
 
 			pos = k * NET_EDEV_ARRAY_SZ;
+			posp = k * a->xnr;
 			unregistered = outsize + pos + 9;
 
 			j = check_net_edev_reg(a, curr, !curr, i);
@@ -2827,7 +2667,7 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 
 			/* Check for min/max values */
 			save_extrema(a->gtypes_nr, (void *) snedc, (void *) snedp,
-				     itv, spmin + pos, spmax + pos, g_fields);
+				     itv, a->spmin + posp, a->spmax + posp, g_fields);
 
 			/* rxerr/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2888,18 +2728,20 @@ __print_funct_t svg_print_net_edev_stats(struct activity *a, int curr, int actio
 			pos = i * NET_EDEV_ARRAY_SZ;
 			if (!**(out + pos))
 				continue;
+			posp = i * a->xnr;
 
 			item_name = *(out + pos + 9);
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 a->spmin + posp, a->spmax + posp,
+						 out + pos, outsize + pos,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -2933,22 +2775,18 @@ __print_funct_t svg_print_net_nfs_stats(struct activity *a, int curr, int action
 			   "read/s", "write/s",
 			   "access/s", "getatt/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(6, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 6, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* call/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2978,10 +2816,11 @@ __print_funct_t svg_print_net_nfs_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3019,22 +2858,18 @@ __print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int actio
 			   "sread/s", "swrite/s",
 			   "saccess/s", "sgetatt/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(11, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 11, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* scall/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3084,10 +2919,11 @@ __print_funct_t svg_print_net_nfsd_stats(struct activity *a, int curr, int actio
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3118,22 +2954,18 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 	char *g_title[] = {"~totsck",
 			   "~tcpsck", "~udpsck", "~rawsck", "~ip-frag", "~tcp-tw"};
 	int g_fields[] = {0, 1, 5, 2, 3, 4};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(6, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 6, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* totsck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long long) snsc->sock_inuse,
@@ -3162,10 +2994,11 @@ __print_funct_t svg_print_net_sock_stats(struct activity *a, int curr, int actio
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3198,22 +3031,18 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 			   "asmrq/s", "asmok/s",
 			   "fragok/s", "fragcrt/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(8, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 8, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* irec/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3251,10 +3080,11 @@ __print_funct_t svg_print_net_ip_stats(struct activity *a, int curr, int action,
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3288,22 +3118,18 @@ __print_funct_t svg_print_net_eip_stats(struct activity *a, int curr, int action
 			   "idisc/s", "odisc/s",
 			   "onort/s", "asmf/s", "fragf/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(8, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 8, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ihdrerr/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3341,10 +3167,11 @@ __print_funct_t svg_print_net_eip_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3380,22 +3207,18 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
 			   "itm/s", "itmr/s", "otm/s", "otmr/s",
 			   "iadrmk/s", "iadrmkr/s", "oadrmk/s", "oadrmkr/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(14, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 14, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* imsg/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3457,10 +3280,11 @@ __print_funct_t svg_print_net_icmp_stats(struct activity *a, int curr, int actio
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3499,22 +3323,18 @@ __print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int acti
 			   "isrcq/s", "osrcq/s",
 			   "iredir/s", "oredir/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(12, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 12, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ierr/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3568,10 +3388,11 @@ __print_funct_t svg_print_net_eicmp_stats(struct activity *a, int curr, int acti
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3603,22 +3424,18 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 	char *g_title[] = {"active/s", "passive/s",
 			   "iseg/s", "oseg/s"};
 	int g_fields[] = {0, 1, 2, 3};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 4, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* active/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3640,10 +3457,11 @@ __print_funct_t svg_print_net_tcp_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3675,22 +3493,18 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 	char *g_title[] = {"atmptf/s", "estres/s",
 			   "retrans/s", "isegerr/s", "orsts/s"};
 	int g_fields[] = {0, 1, 2, 3, 4};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(5, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 5, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* atmptf/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3716,10 +3530,11 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3751,22 +3566,18 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
 	char *g_title[] = {"idgm/s", "odgm/s",
 			   "noport/s", "idgmerr/s"};
 	int g_fields[] = {0, 1, 2, 3};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 4, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* idgm/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3788,10 +3599,11 @@ __print_funct_t svg_print_net_udp_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3821,22 +3633,18 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 	char *title[] = {"IPv6 sockets statistics"};
 	char *g_title[] = {"~tcp6sck", "~udp6sck", "~raw6sck", "~ip6-frag"};
 	int g_fields[] = {0, 1, 2, 3};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 4, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 		/* tcp6sck */
 		lniappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			  (unsigned long long) snsc->tcp6_inuse,
@@ -3857,10 +3665,11 @@ __print_funct_t svg_print_net_sock6_stats(struct activity *a, int curr, int acti
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3896,22 +3705,18 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
 			   "imcpck6/s", "omcpck6/s",
 			   "fragok6/s", "fragcr6/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(10, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 10, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* irec6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -3957,10 +3762,11 @@ __print_funct_t svg_print_net_ip6_stats(struct activity *a, int curr, int action
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -3997,22 +3803,18 @@ __print_funct_t svg_print_net_eip6_stats(struct activity *a, int curr, int actio
 			   "inort6/s", "onort6/s",
 			   "asmf6/s", "fragf6/s", "itrpck6/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(11, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 11, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ihdrer6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4062,10 +3864,11 @@ __print_funct_t svg_print_net_eip6_stats(struct activity *a, int curr, int actio
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4103,22 +3906,18 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 			   "irtsol6/s", "ortsol6/s", "irtad6/s",
 			   "inbsol6/s", "onbsol6/s", "inbad6/s", "onbad6/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(17, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 17, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* imsg6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4192,10 +3991,11 @@ __print_funct_t svg_print_net_icmp6_stats(struct activity *a, int curr, int acti
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4234,22 +4034,18 @@ __print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int act
 			   "iredir6/s", "oredir6/s",
 			   "ipck2b6/s", "opck2b6/s"};
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(11, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 11, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* ierr6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4299,10 +4095,11 @@ __print_funct_t svg_print_net_eicmp6_stats(struct activity *a, int curr, int act
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4334,22 +4131,18 @@ __print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int actio
 	char *g_title[] = {"idgm6/s", "odgm6/s",
 			   "noport6/s", "idgmer6/s"};
 	int g_fields[] = {0, 1, 2, 3};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 4, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], (void *) a->buf[!curr],
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
 		/* idgm6/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4371,10 +4164,11 @@ __print_funct_t svg_print_net_udp6_stats(struct activity *a, int curr, int actio
 
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4402,17 +4196,13 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 	int g_type[] = {SVG_LINE_GRAPH};
 	char *title[] = {"CPU clock frequency"};
 	char *g_title[] = {"MHz"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	int i;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -4437,7 +4227,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 				  ((double) spp->cpufreq) / 100,
 				  ((double) spc->cpufreq) / 100,
 				  out + i, outsize + i, svg_p->restart, svg_p->dt,
-				  spmin + i, spmax + i);
+				  a->spmin + i, a->spmax + i);
 		}
 	}
 
@@ -4462,7 +4252,7 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 				 * the CPU has been offline on the whole period.
 				 * => Don't display it.
 				 */
-				if (*(spmax + i) == 0)
+				if (*(a->spmax + i) == 0)
 					continue;
 
 				sprintf(item_name, "%d", i - 1);
@@ -4470,14 +4260,15 @@ __print_funct_t svg_print_pwr_cpufreq_stats(struct activity *a, int curr, int ac
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + i, spmax + i, out + i, outsize + i,
+						 a->spmin + i, a->spmax + i,
+						 out + i, outsize + i,
 						 svg_p, record_hdr, i, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4505,17 +4296,13 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 	int g_type[] = {SVG_LINE_GRAPH};
 	char *title[] = {"Fans speed"};
 	char *g_title[] = {"~rpm"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	int i;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -4530,7 +4317,7 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 				  (double) spp->rpm,
 				  (double) spc->rpm,
 				  out + i, outsize + i, svg_p->restart, svg_p->dt,
-				  spmin + i, spmax + i);
+				  a->spmin + i, a->spmax + i);
 		}
 	}
 
@@ -4547,14 +4334,15 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + i, spmax + i, out + i, outsize + i,
+						 a->spmin + i, a->spmax + i,
+						 out + i, outsize + i,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4585,17 +4373,13 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			 "Devices temperature (2)"};
 	char *g_title[] = {"~degC",
 			   "%temp"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	int i;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(TEMP_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, TEMP_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -4607,20 +4391,20 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 			/* Look for min/max values */
-			if (spc->temp < *(spmin + TEMP_ARRAY_SZ * i)) {
-				*(spmin + TEMP_ARRAY_SZ * i) = spc->temp;
+			if (spc->temp < *(a->spmin + TEMP_ARRAY_SZ * i)) {
+				*(a->spmin + TEMP_ARRAY_SZ * i) = spc->temp;
 			}
-			if (spc->temp > *(spmax + TEMP_ARRAY_SZ * i)) {
-				*(spmax + TEMP_ARRAY_SZ * i) = spc->temp;
+			if (spc->temp > *(a->spmax + TEMP_ARRAY_SZ * i)) {
+				*(a->spmax + TEMP_ARRAY_SZ * i) = spc->temp;
 			}
 			tval = (spc->temp_max - spc->temp_min) ?
 			       (spc->temp - spc->temp_min) / (spc->temp_max - spc->temp_min) * 100 :
 			       0.0;
-			if (tval < *(spmin + TEMP_ARRAY_SZ * i + 1)) {
-				*(spmin + TEMP_ARRAY_SZ * i + 1) = tval;
+			if (tval < *(a->spmin + TEMP_ARRAY_SZ * i + 1)) {
+				*(a->spmin + TEMP_ARRAY_SZ * i + 1) = tval;
 			}
-			if (tval > *(spmax + TEMP_ARRAY_SZ * i + 1)) {
-				*(spmax + TEMP_ARRAY_SZ * i + 1) = tval;
+			if (tval > *(a->spmax + TEMP_ARRAY_SZ * i + 1)) {
+				*(a->spmax + TEMP_ARRAY_SZ * i + 1) = tval;
 			}
 
 			/* degC */
@@ -4647,15 +4431,17 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + TEMP_ARRAY_SZ * i, spmax + TEMP_ARRAY_SZ * i,
-						 out + TEMP_ARRAY_SZ * i, outsize + TEMP_ARRAY_SZ * i,
+						 a->spmin + TEMP_ARRAY_SZ * i,
+						 a->spmax + TEMP_ARRAY_SZ * i,
+						 out + TEMP_ARRAY_SZ * i,
+						 outsize + TEMP_ARRAY_SZ * i,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4686,17 +4472,13 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 			 "Voltage inputs statistics (2)"};
 	char *g_title[] = {"inV",
 			   "%in"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	int i;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(IN_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, IN_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -4708,20 +4490,20 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 			spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
 			/* Look for min/max values */
-			if (spc->in < *(spmin + IN_ARRAY_SZ * i)) {
-				*(spmin + IN_ARRAY_SZ * i) = spc->in;
+			if (spc->in < *(a->spmin + IN_ARRAY_SZ * i)) {
+				*(a->spmin + IN_ARRAY_SZ * i) = spc->in;
 			}
-			if (spc->in > *(spmax + IN_ARRAY_SZ * i)) {
-				*(spmax + IN_ARRAY_SZ * i) = spc->in;
+			if (spc->in > *(a->spmax + IN_ARRAY_SZ * i)) {
+				*(a->spmax + IN_ARRAY_SZ * i) = spc->in;
 			}
 			tval = (spc->in_max - spc->in_min) ?
 			       (spc->in - spc->in_min) / (spc->in_max - spc->in_min) * 100 :
 			       0.0;
-			if (tval < *(spmin + IN_ARRAY_SZ * i + 1)) {
-				*(spmin + IN_ARRAY_SZ * i + 1) = tval;
+			if (tval < *(a->spmin + IN_ARRAY_SZ * i + 1)) {
+				*(a->spmin + IN_ARRAY_SZ * i + 1) = tval;
 			}
-			if (tval > *(spmax + IN_ARRAY_SZ * i + 1)) {
-				*(spmax + IN_ARRAY_SZ * i + 1) = tval;
+			if (tval > *(a->spmax + IN_ARRAY_SZ * i + 1)) {
+				*(a->spmax + IN_ARRAY_SZ * i + 1) = tval;
 			}
 
 			/* inV */
@@ -4748,15 +4530,17 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + IN_ARRAY_SZ * i, spmax + IN_ARRAY_SZ * i,
-						 out + IN_ARRAY_SZ * i, outsize + IN_ARRAY_SZ * i,
+						 a->spmin + IN_ARRAY_SZ * i,
+						 a->spmax + IN_ARRAY_SZ * i,
+						 out + IN_ARRAY_SZ * i,
+						 outsize + IN_ARRAY_SZ * i,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4784,17 +4568,13 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 	int g_type[] = {SVG_BAR_GRAPH};
 	char *title[] = {"Batteries capacity"};
 	char *g_title[] = {"~%cap"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	int i;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -4804,11 +4584,11 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 			spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
 
 			/* Look for min/max values */
-			if (spbc->capacity < *(spmin + i)) {
-				*(spmin + i) = spbc->capacity;
+			if (spbc->capacity < *(a->spmin + i)) {
+				*(a->spmin + i) = spbc->capacity;
 			}
-			if (spbc->capacity > *(spmax + i)) {
-				*(spmax + i) = spbc->capacity;
+			if (spbc->capacity > *(a->spmax + i)) {
+				*(a->spmax + i) = spbc->capacity;
 			}
 
 			/* %cap */
@@ -4833,7 +4613,7 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
-						 spmin + i, spmax + i,
+						 a->spmin + i, a->spmax + i,
 						 out + i, outsize + i,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
@@ -4841,7 +4621,7 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4872,19 +4652,17 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 			 "Huge pages utilization (2)"};
 	char *g_title[] = {"~kbhugfree", "~kbhugused", "~kbhugrsvd", "~kbhugsurp",
 			   "%hugused"};
-	int g_fields[] = {0, 5, 2, 3};
-	static double *spmin, *spmax;
+	int g_fields[] = {0, -1, 2, 3};
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
 		 * Allocate one additional array (#5) to save min/max
 		 * values for tlhkb (unused).
 		 */
-		out = allocate_graph_lines(6, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(a, 5, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -4892,20 +4670,20 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) a->buf[curr], NULL,
-			     itv, spmin, spmax, g_fields);
+			     itv, a->spmin, a->spmax, g_fields);
 
-		if (smc->tlhkb - smc->frhkb < *(spmin + 1)) {
-			*(spmin + 1) = smc->tlhkb - smc->frhkb;
+		if (smc->tlhkb - smc->frhkb < *(a->spmin + 1)) {
+			*(a->spmin + 1) = smc->tlhkb - smc->frhkb;
 		}
-		if (smc->tlhkb - smc->frhkb > *(spmax + 1)) {
-			*(spmax + 1) = smc->tlhkb - smc->frhkb;
+		if (smc->tlhkb - smc->frhkb > *(a->spmax + 1)) {
+			*(a->spmax + 1) = smc->tlhkb - smc->frhkb;
 		}
 		tval = smc->tlhkb ? SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) : 0.0;
-		if (tval < *(spmin + 4)) {
-			*(spmin + 4) = tval;
+		if (tval < *(a->spmin + 4)) {
+			*(a->spmin + 4) = tval;
 		}
-		if (tval > *(spmax + 4)) {
-			*(spmax + 4) = tval;
+		if (tval > *(a->spmax + 4)) {
+			*(a->spmax + 4) = tval;
 		}
 
 		/* kbhugfree */
@@ -4933,10 +4711,11 @@ __print_funct_t svg_print_huge_stats(struct activity *a, int curr, int action, s
 	if (action & F_END) {
 		draw_activity_graphs(a->g_nr, g_type,
 				     title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -4970,21 +4749,19 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			   "%ufsused", "%fsused",
 			   "Ifree/1000", "Iused/1000",
 			   "%Iused"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	char *dev_name, *item_name;
 	double tval;
-	int i, k, pos, restart;
+	int i, k, pos, posp, restart;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays (#0..6) that will contain the graphs data
-		 * and the min/max values.
 		 * Also allocate an additional arrays (#7) for each filesystem:
                  * out + 7 will contain the persistent or standard fs name, or mount point.
 		 */
-		out = allocate_graph_lines(FS_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(a, FS_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -5028,6 +4805,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			}
 
 			pos = k * FS_ARRAY_SZ;
+			posp = k * a->xnr;
 
 			item_name = *(out + pos + 7);
 			if (!item_name[0]) {
@@ -5049,62 +4827,62 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 
 			/* Compute fsfree min/max values */
 			tval = (double) sfc->f_bfree;
-			if (tval > *(spmax + pos)) {
-				*(spmax + pos) = tval;
+			if (tval > *(a->spmax + posp)) {
+				*(a->spmax + posp) = tval;
 			}
-			if (tval < *(spmin + pos)) {
-				*(spmin + pos) = tval;
+			if (tval < *(a->spmin + posp)) {
+				*(a->spmin + posp) = tval;
 			}
 			/* Compute fsused min/max values */
 			tval = (double) (sfc->f_blocks - sfc->f_bfree);
-			if (tval > *(spmax + pos + 1)) {
-				*(spmax + pos + 1) = tval;
+			if (tval > *(a->spmax + posp + 1)) {
+				*(a->spmax + posp + 1) = tval;
 			}
-			if (tval < *(spmin + pos + 1)) {
-				*(spmin + pos + 1) = tval;
+			if (tval < *(a->spmin + posp + 1)) {
+				*(a->spmin + posp + 1) = tval;
 			}
 			/* Compute %ufsused min/max values */
 			tval = sfc->f_blocks ?
 			       SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0;
-			if (tval > *(spmax + pos + 2)) {
-				*(spmax + pos + 2) = tval;
+			if (tval > *(a->spmax + posp + 2)) {
+				*(a->spmax + posp + 2) = tval;
 			}
-			if (tval < *(spmin + pos + 2)) {
-				*(spmin + pos + 2) = tval;
+			if (tval < *(a->spmin + posp + 2)) {
+				*(a->spmin + posp + 2) = tval;
 			}
 			/* Compute %fsused min/max values */
 			tval = sfc->f_blocks ?
 			       SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0;
-			if (tval > *(spmax + pos + 3)) {
-				*(spmax + pos + 3) = tval;
+			if (tval > *(a->spmax + posp + 3)) {
+				*(a->spmax + posp + 3) = tval;
 			}
-			if (tval < *(spmin + pos + 3)) {
-				*(spmin + pos + 3) = tval;
+			if (tval < *(a->spmin + posp + 3)) {
+				*(a->spmin + posp + 3) = tval;
 			}
 			/* Compute Ifree min/max values */
 			tval = (double) sfc->f_ffree;
-			if (tval > *(spmax + pos + 4)) {
-				*(spmax + pos + 4) = tval;
+			if (tval > *(a->spmax + posp + 4)) {
+				*(a->spmax + posp + 4) = tval;
 			}
-			if (tval < *(spmin + pos + 4)) {
-				*(spmin + pos + 4) = tval;
+			if (tval < *(a->spmin + posp + 4)) {
+				*(a->spmin + posp + 4) = tval;
 			}
 			/* Compute Iused min/max values */
 			tval = (double) (sfc->f_files - sfc->f_ffree);
-			if (tval > *(spmax + pos + 5)) {
-				*(spmax + pos + 5) = tval;
+			if (tval > *(a->spmax + posp + 5)) {
+				*(a->spmax + posp + 5) = tval;
 			}
-			if (tval < *(spmin + pos + 5)) {
-				*(spmin + pos + 5) = tval;
+			if (tval < *(a->spmin + posp + 5)) {
+				*(a->spmin + posp + 5) = tval;
 			}
 			/* Compute %Iused min/max values */
 			tval = sfc->f_files ?
 			       SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0;
-			if (tval > *(spmax + pos + 6)) {
-				*(spmax + pos + 6) = tval;
+			if (tval > *(a->spmax + posp + 6)) {
+				*(a->spmax + posp + 6) = tval;
 			}
-			if (tval < *(spmin + pos + 6)) {
-				*(spmin + pos + 6) = tval;
+			if (tval < *(a->spmin + posp + 6)) {
+				*(a->spmin + posp + 6) = tval;
 			}
 
 			/* MBfsfree */
@@ -5153,26 +4931,28 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			pos = i * FS_ARRAY_SZ;
 			if (!**(out + pos))
 				continue;
+			posp = i * a->xnr;
 
 			/* Conversion B -> MiB and inodes/1000 */
 			for (k = 0; k < 2; k++) {
-				*(spmin + pos + k) /= (1024 * 1024);
-				*(spmax + pos + k) /= (1024 * 1024);
-				*(spmin + pos + 4 + k) /= 1000;
-				*(spmax + pos + 4 + k) /= 1000;
+				*(a->spmin + posp + k) /= (1024 * 1024);
+				*(a->spmax + posp + k) /= (1024 * 1024);
+				*(a->spmin + posp + 4 + k) /= 1000;
+				*(a->spmax + posp + 4 + k) /= 1000;
 			}
 
 			item_name = *(out + pos + 7);
 
 			if (draw_activity_graphs(a->g_nr, g_type, title, g_title, item_name, group,
-						 spmin + pos, spmax + pos, out + pos, outsize + pos,
+						 a->spmin + posp, a->spmax + posp,
+						 out + pos, outsize + pos,
 						 svg_p, record_hdr, FALSE, a, xid)) {
 				xid++;
 			}
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -5203,22 +4983,20 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 	char *g_title[] = {"fch_rxf/s", "fch_txf/s",
 			   "fch_rxw/s", "fch_txw/s"};
 	int g_fields[] = {0, 1, 2, 3};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	char *item_name;
-	int i, j, j0, k, found, pos, restart, *unregistered;
+	int i, j, j0, k, found, pos, posp, restart, *unregistered;
 
 	if (action & F_BEGIN) {
 		/*
 		 * Allocate arrays (#0..3) that will contain the graphs data
-		 * and the min/max values.
 		 * Also allocate one additional array (#4) that will contain
 		 * FC HBA name (out + 4) and a positive value (TRUE) if the interface
 		 * has either still not been registered, or has been unregistered
 		 * (outsize + 4).
 		 */
-		out = allocate_graph_lines(FC_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		out = allocate_graph_lines(a, FC_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -5266,6 +5044,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 			}
 
 			pos = k * FC_ARRAY_SZ;
+			posp = k * a->xnr;
 			unregistered = outsize + pos + 4;
 
 			if (a->nr[!curr] > 0) {
@@ -5316,7 +5095,7 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 
 			/* Look for min/max values */
 			save_extrema(a->gtypes_nr, (void *) sfcc, (void *) sfcp,
-				itv, spmin + pos, spmax + pos, g_fields);
+				itv, a->spmin + posp, a->spmax + posp, g_fields);
 
 			/* fch_rxf/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5352,16 +5131,18 @@ __print_funct_t svg_print_fchost_stats(struct activity *a, int curr, int action,
 			pos = i * FC_ARRAY_SZ;
 			if (!**(out + pos))
 				continue;
+			posp = i * a->xnr;
 
 			item_name = *(out + pos + 4);
 			draw_activity_graphs(a->g_nr, g_type,
 					     title, g_title, item_name, group,
-					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     a->spmin + posp, a->spmax + posp,
+					     out + pos, outsize + pos,
 					     svg_p, record_hdr, FALSE, a, i);
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -5396,18 +5177,14 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			   "~blg_len"};
 	int g_fields[] = {0, 1, 2, 3, 4};
 	unsigned int local_types_nr[] = {0, 0, 5};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
-	int i, pos;
+	int i, pos, posp;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(SOFT_ARRAY_SZ * a->item_list_sz, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, SOFT_ARRAY_SZ * a->item_list_sz, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -5453,15 +5230,16 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 				}
 			}
 			pos = i * SOFT_ARRAY_SZ;
+			posp = i * a->xnr;
 
 			/* Check for min/max values */
 			save_extrema(local_types_nr, (void *) ssnc, (void *) ssnp,
-				     itv, spmin + pos, spmax + pos, g_fields);
-			if (ssnc->backlog_len < *(spmin + pos + 5)) {
-				*(spmin + pos + 5) = ssnc->backlog_len;
+				     itv, a->spmin + posp, a->spmax + posp, g_fields);
+			if (ssnc->backlog_len < *(a->spmin + posp + 5)) {
+				*(a->spmin + posp + 5) = ssnc->backlog_len;
 			}
-			if (ssnc->backlog_len > *(spmax + pos + 5)) {
-				*(spmax + pos + 5) = ssnc->backlog_len;
+			if (ssnc->backlog_len > *(a->spmax + posp + 5)) {
+				*(a->spmax + posp + 5) = ssnc->backlog_len;
 			}
 
 			/* total/s */
@@ -5502,6 +5280,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 				continue;
 
 			pos = i * SOFT_ARRAY_SZ;
+			posp = i * a->xnr;
 
 			if (!i) {
 				/* This is CPU "all" */
@@ -5513,12 +5292,13 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 
 			draw_activity_graphs(a->g_nr, g_type,
 					     title, g_title, item_name, group,
-					     spmin + pos, spmax + pos, out + pos, outsize + pos,
+					     a->spmin + posp, a->spmax + posp,
+					     out + pos, outsize + pos,
 					     svg_p, record_hdr, FALSE, a, i);
 		}
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -5549,46 +5329,42 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 	char *title[] = {"CPU pressure trends (some tasks)", "CPU stall time (some tasks)"};
 	char *g_title[] = {"%scpu-10", "%scpu-60", "%scpu-300",
 			   "%scpu"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(4, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 4, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		double tval;
 
 		/* Check for min/max values */
-		if (psic->some_acpu_10 > *spmax) {
-			*spmax = psic->some_acpu_10;
+		if (psic->some_acpu_10 > *(a->spmax)) {
+			*(a->spmax) = psic->some_acpu_10;
 		}
-		if (psic->some_acpu_10 < *spmin) {
-			*spmin = psic->some_acpu_10;
+		if (psic->some_acpu_10 < *(a->spmin)) {
+			*(a->spmin) = psic->some_acpu_10;
 		}
-		if (psic->some_acpu_60 > *(spmax + 1)) {
-			*(spmax + 1) = psic->some_acpu_60;
+		if (psic->some_acpu_60 > *(a->spmax + 1)) {
+			*(a->spmax + 1) = psic->some_acpu_60;
 		}
-		if (psic->some_acpu_60 < *(spmin + 1)) {
-			*(spmin + 1) = psic->some_acpu_60;
+		if (psic->some_acpu_60 < *(a->spmin + 1)) {
+			*(a->spmin + 1) = psic->some_acpu_60;
 		}
-		if (psic->some_acpu_300 > *(spmax + 2)) {
-			*(spmax + 2) = psic->some_acpu_300;
+		if (psic->some_acpu_300 > *(a->spmax + 2)) {
+			*(a->spmax + 2) = psic->some_acpu_300;
 		}
-		if (psic->some_acpu_300 < *(spmin + 2)) {
-			*(spmin + 2) = psic->some_acpu_300;
+		if (psic->some_acpu_300 < *(a->spmin + 2)) {
+			*(a->spmin + 2) = psic->some_acpu_300;
 		}
 		tval = ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv);
-		if (tval > *(spmax + 3)) {
-			*(spmax + 3) = tval;
+		if (tval > *(a->spmax + 3)) {
+			*(a->spmax + 3) = tval;
 		}
-		if (tval < *(spmin + 3)) {
-			*(spmin + 3) = tval;
+		if (tval < *(a->spmin + 3)) {
+			*(a->spmin + 3) = tval;
 		}
 
 		/* %scpu-10 */
@@ -5612,15 +5388,16 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 
 	if (action & F_END) {
 		/* Fix min/max values for pressure ratios */
-		*spmin /= 100; *spmax /= 100;
-		*(spmin + 1) /= 100; *(spmax + 1) /= 100;
-		*(spmin + 2) /= 100; *(spmax + 2) /= 100;
+		*(a->spmin) /= 100; *(a->spmax) /= 100;
+		*(a->spmin + 1) /= 100; *(a->spmax + 1) /= 100;
+		*(a->spmin + 2) /= 100; *(a->spmax + 2) /= 100;
 
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -5654,72 +5431,68 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 			   "%sio",
 			   "%fio-10", "%fio-60", "%fio-300",
 			   "%fio"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(8, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 8, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		double tval;
 
 		/* Check for min/max values */
-		if (psic->some_aio_10 > *spmax) {
-			*spmax = psic->some_aio_10;
+		if (psic->some_aio_10 > *(a->spmax)) {
+			*(a->spmax) = psic->some_aio_10;
 		}
-		if (psic->some_aio_10 < *spmin) {
-			*spmin = psic->some_aio_10;
+		if (psic->some_aio_10 < *(a->spmin)) {
+			*(a->spmin) = psic->some_aio_10;
 		}
-		if (psic->some_aio_60 > *(spmax + 1)) {
-			*(spmax + 1) = psic->some_aio_60;
+		if (psic->some_aio_60 > *(a->spmax + 1)) {
+			*(a->spmax + 1) = psic->some_aio_60;
 		}
-		if (psic->some_aio_60 < *(spmin + 1)) {
-			*(spmin + 1) = psic->some_aio_60;
+		if (psic->some_aio_60 < *(a->spmin + 1)) {
+			*(a->spmin + 1) = psic->some_aio_60;
 		}
-		if (psic->some_aio_300 > *(spmax + 2)) {
-			*(spmax + 2) = psic->some_aio_300;
+		if (psic->some_aio_300 > *(a->spmax + 2)) {
+			*(a->spmax + 2) = psic->some_aio_300;
 		}
-		if (psic->some_aio_300 < *(spmin + 2)) {
-			*(spmin + 2) = psic->some_aio_300;
+		if (psic->some_aio_300 < *(a->spmin + 2)) {
+			*(a->spmin + 2) = psic->some_aio_300;
 		}
 		tval = ((double) psic->some_io_total - psip->some_io_total) / (100 * itv);
-		if (tval > *(spmax + 3)) {
-			*(spmax + 3) = tval;
+		if (tval > *(a->spmax + 3)) {
+			*(a->spmax + 3) = tval;
 		}
-		if (tval < *(spmin + 3)) {
-			*(spmin + 3) = tval;
+		if (tval < *(a->spmin + 3)) {
+			*(a->spmin + 3) = tval;
 		}
 
-		if (psic->full_aio_10 > *(spmax + 4)) {
-			*(spmax + 4) = psic->full_aio_10;
+		if (psic->full_aio_10 > *(a->spmax + 4)) {
+			*(a->spmax + 4) = psic->full_aio_10;
 		}
-		if (psic->full_aio_10 < *(spmin + 4)) {
-			*(spmin + 4) = psic->full_aio_10;
+		if (psic->full_aio_10 < *(a->spmin + 4)) {
+			*(a->spmin + 4) = psic->full_aio_10;
 		}
-		if (psic->full_aio_60 > *(spmax + 5)) {
-			*(spmax + 5) = psic->full_aio_60;
+		if (psic->full_aio_60 > *(a->spmax + 5)) {
+			*(a->spmax + 5) = psic->full_aio_60;
 		}
-		if (psic->full_aio_60 < *(spmin + 5)) {
-			*(spmin + 5) = psic->full_aio_60;
+		if (psic->full_aio_60 < *(a->spmin + 5)) {
+			*(a->spmin + 5) = psic->full_aio_60;
 		}
-		if (psic->full_aio_300 > *(spmax + 6)) {
-			*(spmax + 6) = psic->full_aio_300;
+		if (psic->full_aio_300 > *(a->spmax + 6)) {
+			*(a->spmax + 6) = psic->full_aio_300;
 		}
-		if (psic->full_aio_300 < *(spmin + 6)) {
-			*(spmin + 6) = psic->full_aio_300;
+		if (psic->full_aio_300 < *(a->spmin + 6)) {
+			*(a->spmin + 6) = psic->full_aio_300;
 		}
 		tval = ((double) psic->full_io_total - psip->full_io_total) / (100 * itv);
-		if (tval > *(spmax + 7)) {
-			*(spmax + 7) = tval;
+		if (tval > *(a->spmax + 7)) {
+			*(a->spmax + 7) = tval;
 		}
-		if (tval < *(spmin + 7)) {
-			*(spmin + 7) = tval;
+		if (tval < *(a->spmin + 7)) {
+			*(a->spmin + 7) = tval;
 		}
 
 		/* %sio-10 */
@@ -5761,19 +5534,20 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 
 	if (action & F_END) {
 		/* Fix min/max values for pressure ratios */
-		*spmin /= 100; *spmax /= 100;
-		*(spmin + 1) /= 100; *(spmax + 1) /= 100;
-		*(spmin + 2) /= 100; *(spmax + 2) /= 100;
+		*(a->spmin) /= 100; *(a->spmax) /= 100;
+		*(a->spmin + 1) /= 100; *(a->spmax + 1) /= 100;
+		*(a->spmin + 2) /= 100; *(a->spmax + 2) /= 100;
 
-		*(spmin + 4) /= 100; *(spmax + 4) /= 100;
-		*(spmin + 5) /= 100; *(spmax + 5) /= 100;
-		*(spmin + 6) /= 100; *(spmax + 6) /= 100;
+		*(a->spmin + 4) /= 100; *(a->spmax + 4) /= 100;
+		*(a->spmin + 5) /= 100; *(a->spmax + 5) /= 100;
+		*(a->spmin + 6) /= 100; *(a->spmax + 6) /= 100;
 
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }
 
@@ -5807,72 +5581,68 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 			   "%smem",
 			   "%fmem-10", "%fmem-60", "%fmem-300",
 			   "%fmem"};
-	static double *spmin, *spmax;
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
-		/*
-		 * Allocate arrays that will contain the graphs data
-		 * and the min/max values.
-		 */
-		out = allocate_graph_lines(8, &outsize, &spmin, &spmax);
+		/* Allocate arrays that will contain the graphs data */
+		out = allocate_graph_lines(a, 8, &outsize);
 	}
 
 	if (action & F_MAIN) {
 		double tval;
 
 		/* Check for min/max values */
-		if (psic->some_amem_10 > *spmax) {
-			*spmax = psic->some_amem_10;
+		if (psic->some_amem_10 > *(a->spmax)) {
+			*(a->spmax) = psic->some_amem_10;
 		}
-		if (psic->some_amem_10 < *spmin) {
-			*spmin = psic->some_amem_10;
+		if (psic->some_amem_10 < *(a->spmin)) {
+			*(a->spmin) = psic->some_amem_10;
 		}
-		if (psic->some_amem_60 > *(spmax + 1)) {
-			*(spmax + 1) = psic->some_amem_60;
+		if (psic->some_amem_60 > *(a->spmax + 1)) {
+			*(a->spmax + 1) = psic->some_amem_60;
 		}
-		if (psic->some_amem_60 < *(spmin + 1)) {
-			*(spmin + 1) = psic->some_amem_60;
+		if (psic->some_amem_60 < *(a->spmin + 1)) {
+			*(a->spmin + 1) = psic->some_amem_60;
 		}
-		if (psic->some_amem_300 > *(spmax + 2)) {
-			*(spmax + 2) = psic->some_amem_300;
+		if (psic->some_amem_300 > *(a->spmax + 2)) {
+			*(a->spmax + 2) = psic->some_amem_300;
 		}
-		if (psic->some_amem_300 < *(spmin + 2)) {
-			*(spmin + 2) = psic->some_amem_300;
+		if (psic->some_amem_300 < *(a->spmin + 2)) {
+			*(a->spmin + 2) = psic->some_amem_300;
 		}
 		tval = ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv);
-		if (tval > *(spmax + 3)) {
-			*(spmax + 3) = tval;
+		if (tval > *(a->spmax + 3)) {
+			*(a->spmax + 3) = tval;
 		}
-		if (tval < *(spmin + 3)) {
-			*(spmin + 3) = tval;
+		if (tval < *(a->spmin + 3)) {
+			*(a->spmin + 3) = tval;
 		}
 
-		if (psic->full_amem_10 > *(spmax + 4)) {
-			*(spmax + 4) = psic->full_amem_10;
+		if (psic->full_amem_10 > *(a->spmax + 4)) {
+			*(a->spmax + 4) = psic->full_amem_10;
 		}
-		if (psic->full_amem_10 < *(spmin + 4)) {
-			*(spmin + 4) = psic->full_amem_10;
+		if (psic->full_amem_10 < *(a->spmin + 4)) {
+			*(a->spmin + 4) = psic->full_amem_10;
 		}
-		if (psic->full_amem_60 > *(spmax + 5)) {
-			*(spmax + 5) = psic->full_amem_60;
+		if (psic->full_amem_60 > *(a->spmax + 5)) {
+			*(a->spmax + 5) = psic->full_amem_60;
 		}
-		if (psic->full_amem_60 < *(spmin + 5)) {
-			*(spmin + 5) = psic->full_amem_60;
+		if (psic->full_amem_60 < *(a->spmin + 5)) {
+			*(a->spmin + 5) = psic->full_amem_60;
 		}
-		if (psic->full_amem_300 > *(spmax + 6)) {
-			*(spmax + 6) = psic->full_amem_300;
+		if (psic->full_amem_300 > *(a->spmax + 6)) {
+			*(a->spmax + 6) = psic->full_amem_300;
 		}
-		if (psic->full_amem_300 < *(spmin + 6)) {
-			*(spmin + 6) = psic->full_amem_300;
+		if (psic->full_amem_300 < *(a->spmin + 6)) {
+			*(a->spmin + 6) = psic->full_amem_300;
 		}
 		tval = ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv);
-		if (tval > *(spmax + 7)) {
-			*(spmax + 7) = tval;
+		if (tval > *(a->spmax + 7)) {
+			*(a->spmax + 7) = tval;
 		}
-		if (tval < *(spmin + 7)) {
-			*(spmin + 7) = tval;
+		if (tval < *(a->spmin + 7)) {
+			*(a->spmin + 7) = tval;
 		}
 
 		/* %smem-10 */
@@ -5914,18 +5684,19 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 
 	if (action & F_END) {
 		/* Fix min/max values for pressure ratios */
-		*spmin /= 100; *spmax /= 100;
-		*(spmin + 1) /= 100; *(spmax + 1) /= 100;
-		*(spmin + 2) /= 100; *(spmax + 2) /= 100;
+		*(a->spmin) /= 100; *(a->spmax) /= 100;
+		*(a->spmin + 1) /= 100; *(a->spmax + 1) /= 100;
+		*(a->spmin + 2) /= 100; *(a->spmax + 2) /= 100;
 
-		*(spmin + 4) /= 100; *(spmax + 4) /= 100;
-		*(spmin + 5) /= 100; *(spmax + 5) /= 100;
-		*(spmin + 6) /= 100; *(spmax + 6) /= 100;
+		*(a->spmin + 4) /= 100; *(a->spmax + 4) /= 100;
+		*(a->spmin + 5) /= 100; *(a->spmax + 5) /= 100;
+		*(a->spmin + 6) /= 100; *(a->spmax + 6) /= 100;
 
 		draw_activity_graphs(a->g_nr, g_type, title, g_title, NULL, group,
-				     spmin, spmax, out, outsize, svg_p, record_hdr, FALSE, a, 0);
+				     a->spmin, a->spmax, out, outsize, svg_p, record_hdr,
+				     FALSE, a, 0);
 
 		/* Free remaining structures */
-		free_graphs(out, outsize, spmin, spmax);
+		free_graphs(out, outsize);
 	}
 }

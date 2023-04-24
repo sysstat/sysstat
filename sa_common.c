@@ -448,6 +448,53 @@ int write_all(int fd, const void *buf, int nr_bytes)
 
 #ifndef SOURCE_SADC
 /*
+ * **************************************************************************
+ * Allocate buffers for min and max values.
+ *
+ * IN:
+ * @act		Activity for which buffers are to be initialized.
+ * @nr_alloc	Number of slots to allocate.
+ * @flags	Flags for common options and system state.
+ ***************************************************************************
+ */
+void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
+{
+	int j;
+	double *val;
+
+	/* nr_alloc should always be greater than a->nr_allocated */
+	if (nr_alloc <= a->nr_allocated) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: %s: alloc=%zu allocated=%d\n",
+			__FUNCTION__, a->name, nr_alloc, a->nr_allocated);
+#endif
+		return;
+	}
+
+	/* Look for a possible overflow */
+	check_overflow((unsigned int) a->xnr,
+		       (unsigned int) nr_alloc,
+		       (unsigned int) a->nr2);
+
+	if (DISPLAY_MINMAX(flags) && a->xnr) {
+		/* Allocate arrays for min and max values... */
+		SREALLOC(a->spmin, void,
+			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
+		SREALLOC(a->spmax, void,
+			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
+
+		/* ... and init them */
+		for (j = a->nr_allocated * a->nr2 * a->xnr;
+		     j < nr_alloc * a->nr2 * a->xnr; j++) {
+			val = (double *) (a->spmin + j);
+			*val = DBL_MAX;
+			val = (double *) (a->spmax + j);
+			*val = -DBL_MAX;
+		     }
+	}
+}
+
+/*
  ***************************************************************************
  * Allocate buffers for one activity.
  *
@@ -460,7 +507,6 @@ int write_all(int fd, const void *buf, int nr_bytes)
 void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 {
 	int j;
-	double *val;
 
 	/* nr_alloc should always be greater than a->nr_allocated */
 	if (nr_alloc <= a->nr_allocated) {
@@ -487,25 +533,8 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 		}
 	}
 
-	if (DISPLAY_MINMAX(flags) && a->xnr) {
-		/*
-		 * Allocate arrays for min and max values...
-		 * No need to check_overflow() as @xnr will always be smaller than @msize.
-		 */
-		SREALLOC(a->spmin, void,
-			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
-		SREALLOC(a->spmax, void,
-			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
-
-		/* ... and init them */
-		for (j = a->nr_allocated * a->nr2 * a->xnr;
-		     j < nr_alloc * a->nr2 * a->xnr; j++) {
-			val = (double *) (a->spmin + j);
-			*val = DBL_MAX;
-			val = (double *) (a->spmax + j);
-			*val = -DBL_MAX;
-		     }
-	}
+	/* Allocate buffers for min and max values if necessary */
+	allocate_minmax_buf(a, nr_alloc, flags);
 
 	a->nr_allocated = nr_alloc;
 }

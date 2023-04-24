@@ -1760,6 +1760,7 @@ int main(int argc, char **argv)
 							usage(argv[0]);
 						}
 						format = F_SVG_OUTPUT;
+						flags |= S_F_MINMAX;
 						break;
 
 					case 'h':
