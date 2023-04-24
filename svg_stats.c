@@ -1641,7 +1641,7 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 
 	if (action & F_MAIN) {
 		unsigned long long nousedmem;
-		double tval;
+		double mupct, copct, mu;
 
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0,
@@ -1652,29 +1652,29 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		if (nousedmem > smc->tlmkb) {
 			nousedmem = smc->tlmkb;
 		}
-		tval = smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0;
-		if (tval > *(a->spmax + 3)) {
-			*(a->spmax + 3) = tval;
+		mupct = smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0;
+		if (mupct > *(a->spmax + 3)) {
+			*(a->spmax + 3) = mupct;
 		}
-		if (tval < *(a->spmin + 3)) {
-			*(a->spmin + 3) = tval;
+		if (mupct < *(a->spmin + 3)) {
+			*(a->spmin + 3) = mupct;
 		}
 		/* Compute %commit min/max values */
-		tval = (smc->tlmkb + smc->tlskb) ?
-		       SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
-		if (tval > *(a->spmax + 7)) {
-			*(a->spmax + 7) = tval;
+		copct = (smc->tlmkb + smc->tlskb) ?
+			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
+		if (copct > *(a->spmax + 7)) {
+			*(a->spmax + 7) = copct;
 		}
-		if (tval < *(a->spmin + 7)) {
-			*(a->spmin + 7) = tval;
+		if (copct < *(a->spmin + 7)) {
+			*(a->spmin + 7) = copct;
 		}
 		/* Compute memused min/max values in MB */
-		tval = ((double) (smc->tlmkb - nousedmem)) / 1024;
-		if (tval > *(a->spmax + 2)) {
-			*(a->spmax + 2) = tval;
+		mu = ((double) (smc->tlmkb - nousedmem)) / 1024;
+		if (mu > *(a->spmax + 2)) {
+			*(a->spmax + 2) = mu;
 		}
-		if (tval < *(a->spmin + 2)) {
-			*(a->spmin + 2) = tval;
+		if (mu < *(a->spmin + 2)) {
+			*(a->spmin + 2) = mu;
 		}
 
 		/* MBmemfree */
@@ -1683,7 +1683,7 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 			 out, outsize, svg_p->restart);
 		/* MBmemused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) (smc->tlmkb - nousedmem)) / 1024,
+			 mu,
 			 out + 2, outsize + 2, svg_p->restart);
 		/* MBavail */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1735,15 +1735,11 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 			 out + 15, outsize + 15, svg_p->restart);
 		/* %memused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
-				    : 0.0,
-			out + 3, outsize + 3, svg_p->dt);
+			 0.0, mupct,
+			 out + 3, outsize + 3, svg_p->dt);
 		/* %commit */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 (smc->tlmkb + smc->tlskb) ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
-						   : 0.0,
+			 0.0, copct,
 			 out + 7, outsize + 7, svg_p->dt);
 	}
 
@@ -1807,37 +1803,37 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 	}
 
 	if (action & F_MAIN) {
-		double tval;
+		double supct, scpct, su;
 
 		/* Check for min/max values */
 		save_extrema(a->gtypes_nr, (void *) smc, NULL, 0,
 			     a->spmin, a->spmax, g_fields);
 
 		/* Compute %swpused min/max values */
-		tval = smc->tlskb ?
-		SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
-		if (tval > *(a->spmax + 19)) {
-			*(a->spmax + 19) = tval;
+		supct = smc->tlskb ?
+			SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
+		if (supct > *(a->spmax + 19)) {
+			*(a->spmax + 19) = supct;
 		}
-		if (tval < *(a->spmin + 19)) {
-			*(a->spmin + 19) = tval;
+		if (supct < *(a->spmin + 19)) {
+			*(a->spmin + 19) = supct;
 		}
 		/* Compute %swpcad min/max values */
-		tval = (smc->tlskb - smc->frskb) ?
-		SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
-		if (tval > *(a->spmax + 20)) {
-			*(a->spmax + 20) = tval;
+		scpct = (smc->tlskb - smc->frskb) ?
+			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
+		if (scpct > *(a->spmax + 20)) {
+			*(a->spmax + 20) = scpct;
 		}
-		if (tval < *(a->spmin + 20)) {
-			*(a->spmin + 20) = tval;
+		if (scpct < *(a->spmin + 20)) {
+			*(a->spmin + 20) = scpct;
 		}
 		/* Compute swpused min/max values in MB */
-		tval = ((double) (smc->tlskb - smc->frskb)) / 1024;
-		if (tval > *(a->spmax + 17)) {
-			*(a->spmax + 17) = tval;
+		su = ((double) (smc->tlskb - smc->frskb)) / 1024;
+		if (su > *(a->spmax + 17)) {
+			*(a->spmax + 17) = su;
 		}
-		if (tval < *(a->spmin + 17)) {
-			*(a->spmin + 17) = tval;
+		if (su < *(a->spmin + 17)) {
+			*(a->spmin + 17) = su;
 		}
 
 		/* MBswpfree */
@@ -1846,7 +1842,7 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 			 out, outsize, svg_p->restart);
 		/* MBswpused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 ((double) (smc->tlskb - smc->frskb)) / 1024,
+			 su,
 			 out + 1, outsize + 1, svg_p->restart);
 		/* MBswpcad */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1854,15 +1850,11 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 			 out + 2, outsize + 2, svg_p->restart);
 		/* %swpused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
-				    : 0.0,
+			 0.0, supct,
 			 out + 3, outsize + 3, svg_p->dt);
 		/* %swpcad */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 (smc->tlskb - smc->frskb) ? SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
-						   : 0.0,
+			 0.0, scpct,
 			 out + 4, outsize + 4, svg_p->dt);
 	}
 
@@ -2256,15 +2248,15 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 				 out + pos, outsize + pos, restart);
 			/* rkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(sdp->rd_sect, sdc->rd_sect, itv) / 2,
+				 rkB,
 				 out + pos + 1, outsize + pos + 1, restart);
 			/* wkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(sdp->wr_sect, sdc->wr_sect, itv) / 2,
+				 wkB,
 				 out + pos + 2, outsize + pos + 2, restart);
 			/* dkB/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 S_VALUE(sdp->dc_sect, sdc->dc_sect, itv) / 2,
+				 dkB,
 				 out + pos + 3, outsize + pos + 3, restart);
 			/* areq-sz */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -2353,7 +2345,6 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	static char **out;
 	static int *outsize;
 	char *item_name;
-	double rxkb, txkb, ifutil;
 	int i, j, k, pos, posp, restart, *unregistered;
 
 	if (action & F_BEGIN) {
@@ -2368,6 +2359,8 @@ __print_funct_t svg_print_net_dev_stats(struct activity *a, int curr, int action
 	}
 
 	if (action & F_MAIN) {
+		double rxkb, txkb, ifutil;
+
 		memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 		/*
 		 * Mark previously registered interfaces as now
@@ -4752,7 +4745,6 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	static char **out;
 	static int *outsize;
 	char *dev_name, *item_name;
-	double tval;
 	int i, k, pos, posp, restart;
 
 	if (action & F_BEGIN) {
@@ -4765,6 +4757,8 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 	}
 
 	if (action & F_MAIN) {
+		double tval, uupct, fupct, iupct;
+
 		/* For each filesystem structure */
 		for (i = 0; i < a->nr[curr]; i++) {
 			sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
@@ -4842,22 +4836,22 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				*(a->spmin + posp + 1) = tval;
 			}
 			/* Compute %ufsused min/max values */
-			tval = sfc->f_blocks ?
-			       SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0;
-			if (tval > *(a->spmax + posp + 2)) {
-				*(a->spmax + posp + 2) = tval;
+			uupct = sfc->f_blocks ?
+				SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0;
+			if (uupct > *(a->spmax + posp + 2)) {
+				*(a->spmax + posp + 2) = uupct;
 			}
-			if (tval < *(a->spmin + posp + 2)) {
-				*(a->spmin + posp + 2) = tval;
+			if (uupct < *(a->spmin + posp + 2)) {
+				*(a->spmin + posp + 2) = uupct;
 			}
 			/* Compute %fsused min/max values */
-			tval = sfc->f_blocks ?
-			       SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0;
-			if (tval > *(a->spmax + posp + 3)) {
-				*(a->spmax + posp + 3) = tval;
+			fupct = sfc->f_blocks ?
+				SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0;
+			if (fupct > *(a->spmax + posp + 3)) {
+				*(a->spmax + posp + 3) = fupct;
 			}
-			if (tval < *(a->spmin + posp + 3)) {
-				*(a->spmin + posp + 3) = tval;
+			if (fupct < *(a->spmin + posp + 3)) {
+				*(a->spmin + posp + 3) = fupct;
 			}
 			/* Compute Ifree min/max values */
 			tval = (double) sfc->f_ffree;
@@ -4876,13 +4870,13 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				*(a->spmin + posp + 5) = tval;
 			}
 			/* Compute %Iused min/max values */
-			tval = sfc->f_files ?
-			       SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0;
-			if (tval > *(a->spmax + posp + 6)) {
-				*(a->spmax + posp + 6) = tval;
+			iupct = sfc->f_files ?
+				SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0;
+			if (iupct > *(a->spmax + posp + 6)) {
+				*(a->spmax + posp + 6) = iupct;
 			}
-			if (tval < *(a->spmin + posp + 6)) {
-				*(a->spmin + posp + 6) = tval;
+			if (iupct < *(a->spmin + posp + 6)) {
+				*(a->spmin + posp + 6) = iupct;
 			}
 
 			/* MBfsfree */
@@ -4895,15 +4889,11 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				 out + pos + 1, outsize + pos + 1, restart);
 			/* %ufsused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 0.0,
-				 sfc->f_blocks ?
-				 SP_VALUE(sfc->f_bavail, sfc->f_blocks, sfc->f_blocks) : 0.0,
+				 0.0, uupct,
 				 out + pos + 2, outsize + pos + 2, svg_p->dt);
 			/* %fsused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 0.0,
-				 sfc->f_blocks ?
-				 SP_VALUE(sfc->f_bfree, sfc->f_blocks, sfc->f_blocks) : 0.0,
+				 0.0, fupct,
 				 out + pos + 3, outsize + pos + 3, svg_p->dt);
 			/* Ifree */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -4915,9 +4905,7 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 				 out + pos + 5, outsize + pos + 5, restart);
 			/* %Iused */
 			brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-				 0.0,
-				 sfc->f_files ?
-				 SP_VALUE(sfc->f_ffree, sfc->f_files, sfc->f_files) : 0.0,
+				 0.0, iupct,
 				 out + pos + 6, outsize + pos + 6, svg_p->dt);
 		}
 	}
@@ -5381,8 +5369,7 @@ __print_funct_t svg_print_psicpu_stats(struct activity *a, int curr, int action,
 			 out + 2, outsize + 2, svg_p->restart);
 		/* %scpu */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 ((double) psic->some_cpu_total - psip->some_cpu_total) / (100 * itv),
+			 0.0, tval,
 			 out + 3, outsize + 3, svg_p->dt);
 	}
 
@@ -5440,7 +5427,7 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 	}
 
 	if (action & F_MAIN) {
-		double tval;
+		double tvals, tvalf;
 
 		/* Check for min/max values */
 		if (psic->some_aio_10 > *(a->spmax)) {
@@ -5461,12 +5448,12 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 		if (psic->some_aio_300 < *(a->spmin + 2)) {
 			*(a->spmin + 2) = psic->some_aio_300;
 		}
-		tval = ((double) psic->some_io_total - psip->some_io_total) / (100 * itv);
-		if (tval > *(a->spmax + 3)) {
-			*(a->spmax + 3) = tval;
+		tvals = ((double) psic->some_io_total - psip->some_io_total) / (100 * itv);
+		if (tvals > *(a->spmax + 3)) {
+			*(a->spmax + 3) = tvals;
 		}
-		if (tval < *(a->spmin + 3)) {
-			*(a->spmin + 3) = tval;
+		if (tvals < *(a->spmin + 3)) {
+			*(a->spmin + 3) = tvals;
 		}
 
 		if (psic->full_aio_10 > *(a->spmax + 4)) {
@@ -5487,12 +5474,12 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 		if (psic->full_aio_300 < *(a->spmin + 6)) {
 			*(a->spmin + 6) = psic->full_aio_300;
 		}
-		tval = ((double) psic->full_io_total - psip->full_io_total) / (100 * itv);
-		if (tval > *(a->spmax + 7)) {
-			*(a->spmax + 7) = tval;
+		tvalf = ((double) psic->full_io_total - psip->full_io_total) / (100 * itv);
+		if (tvalf > *(a->spmax + 7)) {
+			*(a->spmax + 7) = tvalf;
 		}
-		if (tval < *(a->spmin + 7)) {
-			*(a->spmin + 7) = tval;
+		if (tvalf < *(a->spmin + 7)) {
+			*(a->spmin + 7) = tvalf;
 		}
 
 		/* %sio-10 */
@@ -5509,8 +5496,7 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 			 out + 2, outsize + 2, svg_p->restart);
 		/* %sio */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 ((double) psic->some_io_total - psip->some_io_total) / (100 * itv),
+			 0.0, tvals,
 			 out + 3, outsize + 3, svg_p->dt);
 
 		/* %fio-10 */
@@ -5527,8 +5513,7 @@ __print_funct_t svg_print_psiio_stats(struct activity *a, int curr, int action, 
 			 out + 6, outsize + 6, svg_p->restart);
 		/* %fio */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 ((double) psic->full_io_total - psip->full_io_total) / (100 * itv),
+			 0.0, tvalf,
 			 out + 7, outsize + 7, svg_p->dt);
 	}
 
@@ -5590,7 +5575,7 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 	}
 
 	if (action & F_MAIN) {
-		double tval;
+		double tvals, tvalf;
 
 		/* Check for min/max values */
 		if (psic->some_amem_10 > *(a->spmax)) {
@@ -5611,12 +5596,12 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 		if (psic->some_amem_300 < *(a->spmin + 2)) {
 			*(a->spmin + 2) = psic->some_amem_300;
 		}
-		tval = ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv);
-		if (tval > *(a->spmax + 3)) {
-			*(a->spmax + 3) = tval;
+		tvals = ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv);
+		if (tvals > *(a->spmax + 3)) {
+			*(a->spmax + 3) = tvals;
 		}
-		if (tval < *(a->spmin + 3)) {
-			*(a->spmin + 3) = tval;
+		if (tvals < *(a->spmin + 3)) {
+			*(a->spmin + 3) = tvals;
 		}
 
 		if (psic->full_amem_10 > *(a->spmax + 4)) {
@@ -5637,12 +5622,12 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 		if (psic->full_amem_300 < *(a->spmin + 6)) {
 			*(a->spmin + 6) = psic->full_amem_300;
 		}
-		tval = ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv);
-		if (tval > *(a->spmax + 7)) {
-			*(a->spmax + 7) = tval;
+		tvalf = ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv);
+		if (tvalf > *(a->spmax + 7)) {
+			*(a->spmax + 7) = tvalf;
 		}
-		if (tval < *(a->spmin + 7)) {
-			*(a->spmin + 7) = tval;
+		if (tvalf < *(a->spmin + 7)) {
+			*(a->spmin + 7) = tvalf;
 		}
 
 		/* %smem-10 */
@@ -5659,8 +5644,7 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 			 out + 2, outsize + 2, svg_p->restart);
 		/* %smem */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 ((double) psic->some_mem_total - psip->some_mem_total) / (100 * itv),
+			 0.0, tvals,
 			 out + 3, outsize + 3, svg_p->dt);
 
 		/* %fmem-10 */
@@ -5677,8 +5661,7 @@ __print_funct_t svg_print_psimem_stats(struct activity *a, int curr, int action,
 			 out + 6, outsize + 6, svg_p->restart);
 		/* %fmem */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
-			 0.0,
-			 ((double) psic->full_mem_total - psip->full_mem_total) / (100 * itv),
+			 0.0, tvalf,
 			 out + 7, outsize + 7, svg_p->dt);
 	}
 
