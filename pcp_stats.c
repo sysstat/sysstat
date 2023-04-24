@@ -20,7 +20,6 @@
  */
 
 #include "sa.h"
-#include "pcp_stats.h"
 
 #ifdef USE_NLS
 #include <locale.h>

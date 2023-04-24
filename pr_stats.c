@@ -26,7 +26,6 @@
 
 #include "sa.h"
 #include "ioconf.h"
-#include "pr_stats.h"
 #include "pr_xstats.h"
 
 #ifdef USE_NLS

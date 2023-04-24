@@ -1,5 +1,5 @@
 # Makefile to build sysstat commands
-# (C) 1999-2021 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 1999-2023 Sebastien GODARD (sysstat <at> orange.fr)
 
 # Version and package name
 VERSION = @PACKAGE_VERSION@
@@ -289,21 +289,21 @@ count_light.o: count.c common.h rd_stats.h
 
 rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
 
-pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h pr_xstats.h
+pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_xstats.h
 
 pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
 
 rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h rndr_stats.h
 
-xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h xml_stats.h
+xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 
-json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h json_stats.h
+json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 
-svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h svg_stats.h
+svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 
-raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h raw_stats.h
+raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 
-pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h pcp_stats.h
+pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h
 
 sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
@@ -314,7 +314,7 @@ format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h
 format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h pcp_def_metrics.h
+pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h
 
 sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h
 

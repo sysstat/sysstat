@@ -21,7 +21,6 @@
 
 #include "common.h"
 #include "sa.h"
-#include "pcp_def_metrics.h"
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
@@ -1622,7 +1621,7 @@ void pcp_def_net_udp6_metrics(void)
  * Define PCP metrics for huge pages statistics.
  ***************************************************************************
  */
-void pcp_def_huge_metrics()
+void pcp_def_huge_metrics(void)
 {
 #ifdef HAVE_PCP
 	pmiAddMetric("mem.util.hugepagesTotalBytes",
