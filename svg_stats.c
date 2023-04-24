@@ -1134,6 +1134,21 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 					  &offset, ll_sp_value(scp->cpu_user, scc->cpu_user, deltot_jiffies),
 					  out + pos, outsize + pos, svg_p->dt,
 					  a->spmin + pos, a->spmax + pos);
+
+				/* %nice */
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
+					  &offset, ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
+					  out + pos + 1, outsize + pos + 1, svg_p->dt,
+					  a->spmin + pos + 1, a->spmax + pos + 1);
+
+				/* %system */
+				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
+					  &offset,
+					  ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
+						      scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
+						      deltot_jiffies),
+					 out + pos + 2, outsize + pos + 2, svg_p->dt,
+					 a->spmin + pos + 2, a->spmax + pos + 2);
 			}
 			else {
 				/* %usr */
@@ -1145,41 +1160,21 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 						       scc->cpu_user - scc->cpu_guest, deltot_jiffies),
 					  out + pos, outsize + pos, svg_p->dt,
 					  a->spmin + pos, a->spmax + pos);
-			}
 
-			if (DISPLAY_CPU_DEF(a->opt_flags)) {
-				/* %nice */
-				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_nice, scc->cpu_nice, deltot_jiffies),
-					  out + pos + 1, outsize + pos + 1, svg_p->dt,
-					  a->spmin + pos + 1, a->spmax + pos + 1);
-			}
-			else {
 				/* %nice */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
 					  &offset,
 					  (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-					   0.0 :
-					   ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-						       scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
+					  0.0 :
+					  ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+						      scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
 					  out + pos + 1, outsize + pos + 1, svg_p->dt,
 					  a->spmin + pos + 1, a->spmax + pos + 1);
-			}
 
-			if (DISPLAY_CPU_DEF(a->opt_flags)) {
-				/* %system */
-				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset,
-					  ll_sp_value(scp->cpu_sys + scp->cpu_hardirq + scp->cpu_softirq,
-						      scc->cpu_sys + scc->cpu_hardirq + scc->cpu_softirq,
-						      deltot_jiffies),
-					  out + pos + 2, outsize + pos + 2, svg_p->dt,
-					  a->spmin + pos + 2, a->spmax + pos + 2);
-			}
-			else {
 				/* %sys */
 				cpuappend(record_hdr->ust_time - svg_p->ust_time_ref,
-					  &offset, ll_sp_value(scp->cpu_sys, scc->cpu_sys, deltot_jiffies),
+					  &offset, ll_sp_value(scp->cpu_sys,
+							       scc->cpu_sys, deltot_jiffies),
 					  out + pos + 2, outsize + pos + 2, svg_p->dt,
 					  a->spmin + pos + 2, a->spmax + pos + 2);
 			}
