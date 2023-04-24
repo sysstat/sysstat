@@ -596,7 +596,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 				val = S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv);
 			}
 			cprintf_f(NO_UNIT, FALSE, 1, 9, 2, val);
-			if (DISPLAY_MINMAX(flags)) {
+			if (DISPLAY_MINMAX(flags) && (prev != 2)) {
 				/* Save min and max values */
 				save_minmax(a, (c * a->nr2 + i) * a->xnr, val);
 			}
