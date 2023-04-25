@@ -1,11 +1,11 @@
 .\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "FEBRUARY 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "APRIL 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
 .SH SYNOPSIS
 .B sar [ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ] [ -p ]
-.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -y ] [ -z ]
+.B [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ] [ -v ] [ -W ] [ -w ] [ -x ] [ -y ] [ -z ]
 .B [ --dec={ 0 | 1 | 2 } ]
 .BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --help ] [ --human ] [ --iface=" "iface_list"
 .BI "] [ --int=" "int_list " "] [ --pretty ] [ --sadc ] [ -I [ SUM | ALL ] ] [ -P { " "cpu_list"
@@ -1575,6 +1575,10 @@ Total number of tasks created per second.
 .IP cswch/s
 Total number of context switches per second.
 .RE
+.TP
+.B -x
+Extended reports: Display minimum and maximum values in addition to
+average ones at the end of the report.
 .TP
 .B -y
 Report TTY devices activity. The following values are displayed:
