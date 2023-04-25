@@ -471,12 +471,13 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 		return;
 	}
 
-	/* Look for a possible overflow */
-	check_overflow((unsigned int) a->xnr,
-		       (unsigned int) nr_alloc,
-		       (unsigned int) a->nr2);
-
 	if (DISPLAY_MINMAX(flags) && a->xnr) {
+
+		/* Look for a possible overflow */
+		check_overflow((unsigned int) a->xnr,
+			       (unsigned int) nr_alloc,
+			       (unsigned int) a->nr2);
+
 		/* Allocate arrays for min and max values... */
 		SREALLOC(a->spmin, void,
 			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
