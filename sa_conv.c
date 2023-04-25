@@ -1624,13 +1624,15 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 				p = get_activity_position(act, ofile_act.id, EXIT_IF_NOT_FOUND);
 				act[p]->nr_ini = ofile_act.nr;
 
+				/* Reallocate structures if needed */
+				if (act[p]->nr_ini > act[p]->nr_allocated) {
+					allocate_buffers(act[p], (size_t) act[p]->nr_ini, 0);
+				}
 				if (ofile_act.id == A_CPU) {
 					cpu_nr = ofile_act.nr;
 				}
 			}
 		}
-		/* Reallocate structures */
-		allocate_structures(act, 0);
 	}
 
 	/* Restore endianness before writing */
