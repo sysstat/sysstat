@@ -1969,11 +1969,11 @@ void pcp_def_fchost_metrics(struct activity *a)
 void pcp_def_psicpu_metrics(pmInDom indom)
 {
 	pmiAddMetric("kernel.all.pressure.cpu.some.total",
-		     pmiID(60, 83, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiID(60, 83, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
 	pmiAddMetric("kernel.all.pressure.cpu.some.avg",
-		     pmiID(60, 83, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiID(60, 83, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 }
 #endif /* HAVE_PCP */
@@ -1990,19 +1990,19 @@ void pcp_def_psicpu_metrics(pmInDom indom)
 void pcp_def_psiio_metrics(pmInDom indom)
 {
 	pmiAddMetric("kernel.all.pressure.io.some.total",
-		     pmiID(60, 85, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiID(60, 85, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
 	pmiAddMetric("kernel.all.pressure.io.some.avg",
-		     pmiID(60, 85, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiID(60, 85, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("kernel.all.pressure.io.full.total",
-		     pmiID(60, 85, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiID(60, 85, 3), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
 	pmiAddMetric("kernel.all.pressure.io.full.avg",
-		     pmiID(60, 85, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiID(60, 85, 2), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 }
 #endif /* HAVE_PCP */
@@ -2019,19 +2019,19 @@ void pcp_def_psiio_metrics(pmInDom indom)
 void pcp_def_psimem_metrics(pmInDom indom)
 {
 	pmiAddMetric("kernel.all.pressure.memory.some.total",
-		     pmiID(60, 84, 1), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiID(60, 84, 1), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
 	pmiAddMetric("kernel.all.pressure.memory.some.avg",
-		     pmiID(60, 84, 0), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiID(60, 84, 0), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 
 	pmiAddMetric("kernel.all.pressure.memory.full.total",
-		     pmiID(60, 84, 3), PM_TYPE_U64, indom, PM_SEM_COUNTER,
+		     pmiID(60, 84, 3), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 1, 0, 0, PM_TIME_USEC, 0));
 
 	pmiAddMetric("kernel.all.pressure.memory.full.avg",
-		     pmiID(60, 84, 2), PM_TYPE_FLOAT, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiID(60, 84, 2), PM_TYPE_FLOAT, indom, PM_SEM_INSTANT,
 		     pmiUnits(0, 0, 0, 0, 0, 0));
 }
 #endif /* HAVE_PCP */

@@ -1964,7 +1964,7 @@ __print_funct_t pcp_print_psiio_stats(struct activity *a, int curr)
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_aio_300 / 100);
 	pmiPutValue("kernel.all.pressure.io.full.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f", (double) psic->full_io_total);
+	snprintf(buf, sizeof(buf), "%llu", psic->full_io_total);
 	pmiPutValue("kernel.all.pressure.io.full.total", NULL, buf);
 #endif	/* HAVE_PCP */
 }
@@ -2006,7 +2006,7 @@ __print_funct_t pcp_print_psimem_stats(struct activity *a, int curr)
 	snprintf(buf, sizeof(buf), "%f", (double) psic->full_amem_300 / 100);
 	pmiPutValue("kernel.all.pressure.memory.full.avg", "5 minute", buf);
 
-	snprintf(buf, sizeof(buf), "%f", (double) psic->full_mem_total);
+	snprintf(buf, sizeof(buf), "%llu", psic->full_mem_total);
 	pmiPutValue("kernel.all.pressure.memory.full.total", NULL, buf);
 #endif	/* HAVE_PCP */
 }
