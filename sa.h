@@ -1176,6 +1176,12 @@ struct activity {
 	double *spmin;
 	double *spmax;
 	/*
+	 * Number of slots allocated in @spmin and @spmax buffers.
+	 * A slot can contain several values.
+	 * This number of slots is always greater than or equal to @nr_allocated.
+	 */
+	__nr_t nr_spalloc;
+	/*
 	 * Linked list containing the name of the devices in the order in which their
 	 * min and max values have been saved in @spmin and @spmax.
 	 */
@@ -1648,7 +1654,9 @@ __nr_t read_nr_value
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int,
 	 int, size_t, uint64_t, struct report_format *);
-void reallocate_all_buffers
+void reallocate_buffers
+	(struct activity *, __nr_t, uint64_t);
+void reallocate_minmax_buf
 	(struct activity *, __nr_t, uint64_t);
 void replace_nonprintable_char
 	(int, char *);

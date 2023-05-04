@@ -462,14 +462,23 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 	int j;
 	double *val;
 
-	/* nr_alloc should always be greater than a->nr_allocated */
-	if (nr_alloc <= a->nr_allocated) {
+	/* nr_alloc should be greater than a->nr_spalloc */
+	if (nr_alloc <= a->nr_spalloc) {
 #ifdef DEBUG
 		fprintf(stderr, "%s: %s: alloc=%zu allocated=%d\n",
-			__FUNCTION__, a->name, nr_alloc, a->nr_allocated);
+			__FUNCTION__, a->name, nr_alloc, a->nr_spalloc);
 #endif
 		return;
 	}
+
+#ifdef DEBUG
+	if (nr_alloc < a->nr_allocated) {
+		/* Should never happen */
+		fprintf(stderr, "%s: %s: spalloc=%zu allocated=%d\n",
+			__FUNCTION__, a->name, nr_alloc, a->nr_allocated);
+		exit(4);
+	}
+#endif
 
 	if (DISPLAY_MINMAX(flags) && a->xnr) {
 
@@ -485,13 +494,14 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
 
 		/* ... and init them */
-		for (j = a->nr_allocated * a->nr2 * a->xnr;
+		for (j = a->nr_spalloc * a->nr2 * a->xnr;
 		     j < nr_alloc * a->nr2 * a->xnr; j++) {
 			val = (double *) (a->spmin + j);
 			*val = DBL_MAX;
 			val = (double *) (a->spmax + j);
 			*val = -DBL_MAX;
-		     }
+		}
+		a->nr_spalloc = nr_alloc;
 	}
 }
 
@@ -533,11 +543,10 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 			       (size_t) a->msize * (size_t) (nr_alloc - a->nr_allocated) * (size_t) a->nr2);
 		}
 	}
+	a->nr_allocated = nr_alloc;
 
 	/* Allocate buffers for min and max values if necessary */
 	allocate_minmax_buf(a, nr_alloc, flags);
-
-	a->nr_allocated = nr_alloc;
 }
 
 /*
@@ -574,6 +583,7 @@ void free_structures(struct activity *act[])
 	int i, j;
 
 	for (i = 0; i < NR_ACT; i++) {
+
 		if (act[i]->nr_allocated > 0) {
 			for (j = 0; j < 3; j++) {
 				if (act[i]->buf[j]) {
@@ -581,6 +591,10 @@ void free_structures(struct activity *act[])
 					act[i]->buf[j] = NULL;
 				}
 			}
+			act[i]->nr_allocated = 0;
+		}
+
+		if (act[i]->nr_spalloc > 0) {
 			if (act[i]->spmin) {
 				free(act[i]->spmin);
 				act[i]->spmin = NULL;
@@ -589,14 +603,14 @@ void free_structures(struct activity *act[])
 				free(act[i]->spmax);
 				act[i]->spmax = NULL;
 			}
-			act[i]->nr_allocated = 0;
+			act[i]->nr_spalloc = 0;
 		}
 	}
 }
 
 /*
- ***************************************************************************
- * Reallocate all the buffers for a given activity.
+ * **************************************************************************
+ * Reallocate buffers for min/max values.
  *
  * IN:
  * @a		Activity whose buffers need to be reallocated.
@@ -605,7 +619,41 @@ void free_structures(struct activity *act[])
  * @flags	Flags for common options and system state.
  ***************************************************************************
  */
-void reallocate_all_buffers(struct activity *a, __nr_t nr_min, uint64_t flags)
+void reallocate_minmax_buf(struct activity *a, __nr_t nr_min, uint64_t flags)
+{
+	size_t nr_realloc;
+
+	if (nr_min <= 0) {
+		nr_min = 1;
+	}
+	if (!a->nr_spalloc) {
+		nr_realloc = nr_min;
+	}
+	else {
+		nr_realloc = a->nr_spalloc;
+		do {
+			nr_realloc = nr_realloc * 2;
+		}
+		while (nr_realloc < nr_min);
+	}
+
+	/* Reallocate buffers for current activity */
+	allocate_minmax_buf(a, nr_realloc, flags);
+}
+
+/*
+ ***************************************************************************
+ * Reallocate all the buffers for a given activity (main buffers and
+ * spmin/spmax buffers).
+ *
+ * IN:
+ * @a		Activity whose buffers need to be reallocated.
+ * @nr_min	Minimum number of items that the new buffers should be able
+ *		to receive.
+ * @flags	Flags for common options and system state.
+ ***************************************************************************
+ */
+void reallocate_buffers(struct activity *a, __nr_t nr_min, uint64_t flags)
 {
 	size_t nr_realloc;
 
@@ -1852,7 +1900,7 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 		/* Reallocate buffers if needed */
 		if (nr_value > act[p]->nr_allocated) {
-			reallocate_all_buffers(act[p], nr_value, flags);
+			reallocate_buffers(act[p], nr_value, flags);
 		}
 
 		/*
@@ -3210,7 +3258,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 			if (HAS_PERSISTENT_VALUES(act[p]->options) && (act[p]->nr_ini > 0)) {
 				act[p]->nr_ini = file_hdr->sa_cpu_nr;
 				if (act[p]->nr_ini > act[p]->nr_allocated) {
-					reallocate_all_buffers(act[p], act[p]->nr_ini, l_flags);
+					reallocate_buffers(act[p], act[p]->nr_ini, l_flags);
 				}
 			}
 		}

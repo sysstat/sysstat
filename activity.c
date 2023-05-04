@@ -108,6 +108,7 @@ struct activity cpu_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -158,6 +159,7 @@ struct activity pcsw_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -208,6 +210,7 @@ struct activity irq_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -258,6 +261,7 @@ struct activity swap_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -309,6 +313,7 @@ struct activity paging_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -359,6 +364,7 @@ struct activity io_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -410,6 +416,7 @@ struct activity memory_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -460,6 +467,7 @@ struct activity ktables_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -510,6 +518,7 @@ struct activity queue_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -560,6 +569,7 @@ struct activity serial_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -610,6 +620,7 @@ struct activity disk_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -660,6 +671,7 @@ struct activity net_dev_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -711,6 +723,7 @@ struct activity net_edev_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -761,6 +774,7 @@ struct activity net_nfs_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -812,6 +826,7 @@ struct activity net_nfsd_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -862,6 +877,7 @@ struct activity net_sock_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -912,6 +928,7 @@ struct activity net_ip_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -962,6 +979,7 @@ struct activity net_eip_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1013,6 +1031,7 @@ struct activity net_icmp_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1064,6 +1083,7 @@ struct activity net_eicmp_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1114,6 +1134,7 @@ struct activity net_tcp_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1164,6 +1185,7 @@ struct activity net_etcp_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1214,6 +1236,7 @@ struct activity net_udp_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1264,6 +1287,7 @@ struct activity net_sock6_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1315,6 +1339,7 @@ struct activity net_ip6_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1366,6 +1391,7 @@ struct activity net_eip6_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1418,6 +1444,7 @@ struct activity net_icmp6_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1469,6 +1496,7 @@ struct activity net_eicmp6_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1519,6 +1547,7 @@ struct activity net_udp6_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1569,6 +1598,7 @@ struct activity pwr_cpufreq_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -1619,6 +1649,7 @@ struct activity pwr_fan_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1669,6 +1700,7 @@ struct activity pwr_temp_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1719,6 +1751,7 @@ struct activity pwr_in_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1769,6 +1802,7 @@ struct activity huge_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1818,6 +1852,7 @@ struct activity pwr_wghfreq_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -1868,6 +1903,7 @@ struct activity pwr_usb_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1919,6 +1955,7 @@ struct activity filesystem_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -1969,6 +2006,7 @@ struct activity fchost_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -2020,6 +2058,7 @@ struct activity softnet_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= &cpu_bitmap
 };
 
@@ -2070,6 +2109,7 @@ struct activity psi_cpu_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -2120,6 +2160,7 @@ struct activity psi_io_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -2170,6 +2211,7 @@ struct activity psi_mem_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 
@@ -2220,6 +2262,7 @@ struct activity pwr_bat_act = {
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
 	.spmax		= NULL,
+	.nr_spalloc	= 0,
 	.bitmap		= NULL
 };
 

@@ -707,7 +707,7 @@ void read_sadc_stat_bunch(int curr)
 				print_read_error(INCONSISTENT_INPUT_DATA);
 			}
 			if (act[p]->nr[curr] > act[p]->nr_allocated) {
-				reallocate_all_buffers(act[p], act[p]->nr[curr], flags);
+				reallocate_buffers(act[p], act[p]->nr[curr], flags);
 			}
 
 			/*
