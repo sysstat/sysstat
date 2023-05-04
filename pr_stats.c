@@ -337,14 +337,14 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 	struct stats_cpu *scc, *scp;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->nr2 * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->nr2 * a->xnr);
 	}
 
 	if (dish && !((prev == 2) && DISPLAY_MINMAX(flags))) {
@@ -505,14 +505,14 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	double val;
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->nr2 * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->nr2 * a->xnr);
 	}
 
 	/*
@@ -1421,14 +1421,14 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 	int g_fields[] = {0, 1, 2, 3, 4, 5};
 	unsigned int local_types_nr[] = {0, 6, 0};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
 		!((prev == 2) && DISPLAY_MINMAX(flags))) {
@@ -1494,6 +1494,10 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), name, sizeof(name), &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (prev != 2) {
 				/* Save min and max values */
@@ -1545,14 +1549,14 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 	int g_fields[] = {0};
 	unsigned int local_types_nr[] = {1, 0, 0};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
@@ -1614,6 +1618,10 @@ __print_funct_t print_disk_stats(struct activity *a, int prev, int curr,
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), dev_name, MAX_NAME_LEN, &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (prev != 2) {
 				/* Save min and max values */
@@ -1684,14 +1692,14 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 	int g_fields[] = {0, 1, 2, 3, 4, 5, 6};
 	unsigned int local_types_nr[] = {7, 0, 0};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 	memset(&sndzero, 0, STATS_NET_DEV_SIZE);
 
@@ -1747,6 +1755,10 @@ __print_funct_t print_net_dev_stats(struct activity *a, int prev, int curr,
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), sndc->interface, MAX_IFACE_LEN, &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (prev != 2) {
 				/* Save min and max values */
@@ -1809,14 +1821,14 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 	struct stats_net_edev *snedc, *snedp, snedzero;
 	int g_fields[] = {2, 0, 1, 3, 4, 7, 8, 6, 5};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 	memset(&snedzero, 0, STATS_NET_EDEV_SIZE);
 
@@ -1862,6 +1874,10 @@ __print_funct_t print_net_edev_stats(struct activity *a, int prev, int curr,
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), snedc->interface, MAX_IFACE_LEN, &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (prev != 2) {
 				/* Save min and max values */
@@ -2912,14 +2928,14 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
@@ -3075,14 +3091,14 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
@@ -3211,14 +3227,14 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
@@ -3356,14 +3372,14 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 		nr_alloc = a->nr[curr];
 	}
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	if (dish && !(dispavg && DISPLAY_MINMAX(flags))) {
@@ -3617,14 +3633,14 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 	unsigned long long tis, tisfreq;
 	double wghmhz;
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 	if (dish && !((prev == 2) && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
@@ -3768,7 +3784,7 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 				 * No free slot has been found for current device.
 				 * So enlarge buffers then save device in list.
 				 */
-				reallocate_all_buffers(a, j, flags);
+				reallocate_buffers(a, j, flags);
 				sum = (struct stats_pwr_usb *) ((char *) a->buf[2] + j * a->msize);
 				*sum = *suc;
 				a->nr[2] = j + 1;
@@ -3831,14 +3847,14 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 	char *dev_name;
 	double mbfsfree, mbfsused, fsusedpct, ufsusedpct, iusedpct;
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	if (DISPLAY_UNIT(flags)) {
@@ -3917,6 +3933,10 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), dev_name, MAX_FS_LEN, &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (!dispavg) {
 				/* Save min and max values */
@@ -3978,7 +3998,7 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 				 * No free slot has been found for current filesystem.
 				 * So enlarge buffers then save filesystem in list.
 				 */
-				reallocate_all_buffers(a, j, flags);
+				reallocate_buffers(a, j, flags);
 				sfm = (struct stats_filesystem *) ((char *) a->buf[2] + j * a->msize);
 				*sfm = *sfc;
 				a->nr[2] = j + 1;
@@ -4039,14 +4059,14 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 	struct stats_fchost *sfcc, *sfcp, sfczero;
 	int g_fields[] = {0, 1, 2, 3};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 	memset(&sfczero, 0, sizeof(struct stats_fchost));
 
@@ -4101,6 +4121,10 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), sfcc->fchost_name, MAX_FCH_LEN, &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (prev != 2) {
 				/* Save min and max values */
@@ -4151,14 +4175,14 @@ __print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
 	unsigned int local_types_nr[] = {0, 0, 5};
 	int g_fields[] = {0, 1, 2, 3, 4};
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	if ((dish || DISPLAY_ZERO_OMIT(flags)) &&
@@ -4742,14 +4766,14 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 	static unsigned long *avg_bat_cap = NULL;
 	double capmin;
 
-	if (xinit && a->nr_allocated) {
+	if (xinit && a->nr_spalloc) {
 		/*
 		 * Init min and max values.
 		 * Used only when reading from a file: Init happens when there is a
 		 * LINUX RESTART message in file. The min and max values are those for
 		 * the statistics located between two LINUX RESTART messages.
 		 */
-		init_extrema_values(a, a->nr_allocated * a->xnr);
+		init_extrema_values(a, a->nr_spalloc * a->xnr);
 	}
 
 	/* Allocate arrays of battery capacities */
@@ -4786,6 +4810,10 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), name, sizeof(name), &k);
 			pos = k * a->xnr;
+			if (k >= a->nr_spalloc) {
+				/* Reallocate buffers for min/max values if necessary */
+				reallocate_minmax_buf(a, k, flags);
+			}
 
 			if (prev != 2) {
 				/* Save min and max values for %ifutil */
