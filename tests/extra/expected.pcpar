@@ -188,6 +188,9 @@ PMID: 60.58.38 (network.icmp6.inpkttoobigs)
 PMID: 60.58.39 (network.icmp6.intimeexcds)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.83.0 (kernel.all.pressure.cpu.some.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
 PMID: 34.4.0 (power.bat.capacity)
     Data Type: 32-bit unsigned int  InDom: 34.4 0x8800004
     Semantics: instant  Units: none
@@ -197,6 +200,9 @@ PMID: 60.0.32 (hinv.ncpu)
 PMID: 60.58.40 (network.icmp6.inparmproblems)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.83.1 (kernel.all.pressure.cpu.some.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
 PMID: 60.58.41 (network.icmp6.inechos)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -236,21 +242,33 @@ PMID: 60.0.39 (disk.dev.write_bytes)
 PMID: 60.58.47 (network.icmp6.inrouteradvertisements)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.85.0 (kernel.all.pressure.io.some.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
 PMID: 60.58.48 (network.icmp6.inneighborsolicits)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.85.1 (kernel.all.pressure.io.some.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
 PMID: 60.0.41 (disk.all.read_bytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: Kbyte
 PMID: 60.58.49 (network.icmp6.inneighboradvertisements)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.85.2 (kernel.all.pressure.io.full.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
 PMID: 60.0.42 (disk.all.write_bytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: Kbyte
 PMID: 60.58.50 (network.icmp6.inredirects)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.85.3 (kernel.all.pressure.io.full.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
 PMID: 60.58.52 (network.icmp6.outdestunreachs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -686,21 +704,33 @@ PMID: 60.14.38 (network.icmp.outsrcquenchs)
 PMID: 60.14.39 (network.icmp.outredirects)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.84.0 (kernel.all.pressure.memory.some.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
 PMID: 60.0.96 (disk.all.discard)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.14.40 (network.icmp.outechos)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.84.1 (kernel.all.pressure.memory.some.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
 PMID: 60.14.41 (network.icmp.outechoreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.84.2 (kernel.all.pressure.memory.full.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
 PMID: 60.0.98 (disk.all.discard_bytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: Kbyte
 PMID: 60.14.42 (network.icmp.outtimestamps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.84.3 (kernel.all.pressure.memory.full.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
 PMID: 60.14.43 (network.icmp.outtimestampreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -834,6 +864,11 @@ InDom: 34.3
    1 or "usb1"
    2 or "usb2"
    3 or "usb3"
+InDom: 60.37
+15:20:19.000000 3 instances
+   10 or "10 second"
+   60 or "1 minute"
+   300 or "5 minute"
 InDom: 60.7
 15:20:19.000000 4 instances
    4 or "getattr"
@@ -1350,13 +1385,13 @@ InDom: 60.35
 Temporal Index
 		Log Vol    end(meta)     end(log)
 15:20:19.000000	      0          132          132
-15:20:29.000000	      0        24997        18712
-15:37:29.000000	      0        25428        76208
-15:39:09.000000	      0        25547        76268
-15:54:35.000000	      0        25607        96104
+15:20:29.000000	      0        25815        19172
+15:37:29.000000	      0        26246        78048
+15:39:09.000000	      0        26365        78108
+15:54:35.000000	      0        26425        98404
 
-[18580 bytes]
-15:20:19.000000 261 metrics
+[19040 bytes]
+15:20:19.000000 271 metrics
     60.0.32 (hinv.ncpu): value 9
     60.12.0 (kernel.uname.release): value "1.2.3-TEST"
     60.12.2 (kernel.uname.sysname): value "Linux"
@@ -2499,9 +2534,34 @@ Temporal Index
         inst [1 or "/dev/sda7"] value 1827456
         inst [2 or "/dev/sda12"] value 705738
         inst [3 or "/dev/sda6"] value 235598
+    60.83.0 (kernel.all.pressure.cpu.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.83.1 (kernel.all.pressure.cpu.some.total): value 1481906
+    60.85.0 (kernel.all.pressure.io.some.avg):
+        inst [10 or "10 second"] value 3.1900001
+        inst [60 or "1 minute"] value 1.14
+        inst [300 or "5 minute"] value 0.43000001
+    60.85.1 (kernel.all.pressure.io.some.total): value 96968324
+    60.85.2 (kernel.all.pressure.io.full.avg):
+        inst [10 or "10 second"] value 3.1900001
+        inst [60 or "1 minute"] value 1.14
+        inst [300 or "5 minute"] value 0.41999999
+    60.85.3 (kernel.all.pressure.io.full.total): value 93434041
+    60.84.0 (kernel.all.pressure.memory.some.avg):
+        inst [10 or "10 second"] value 3.1199999
+        inst [60 or "1 minute"] value 1.4
+        inst [300 or "5 minute"] value 0.029999999
+    60.84.1 (kernel.all.pressure.memory.some.total): value 16030
+    60.84.2 (kernel.all.pressure.memory.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.84.3 (kernel.all.pressure.memory.full.total): value 7200
 
-[18268 bytes]
-15:20:29.000000 262 metrics
+[18728 bytes]
+15:20:29.000000 272 metrics
     60.0.20 (kernel.all.cpu.user): value 96963
     60.0.21 (kernel.all.cpu.nice): value 2581802
     60.0.22 (kernel.all.cpu.sys): value 54588
@@ -3609,9 +3669,34 @@ Temporal Index
         inst [3 or "/dev/sda6"] value 235598
         inst [4 or "/dev/sdf"] value 1080581
         inst [5 or "/dev/sdg"] value 1827456
+    60.83.0 (kernel.all.pressure.cpu.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.83.1 (kernel.all.pressure.cpu.some.total): value 1553911
+    60.85.0 (kernel.all.pressure.io.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0.16
+        inst [300 or "5 minute"] value 0.28999999
+    60.85.1 (kernel.all.pressure.io.some.total): value 97403226
+    60.85.2 (kernel.all.pressure.io.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0.15000001
+        inst [300 or "5 minute"] value 0.28
+    60.85.3 (kernel.all.pressure.io.full.total): value 93822846
+    60.84.0 (kernel.all.pressure.memory.some.avg):
+        inst [10 or "10 second"] value 21.059999
+        inst [60 or "1 minute"] value 14.31
+        inst [300 or "5 minute"] value 3.8
+    60.84.1 (kernel.all.pressure.memory.some.total): value 24037
+    60.84.2 (kernel.all.pressure.memory.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.84.3 (kernel.all.pressure.memory.full.total): value 9803
 
-[18796 bytes]
-15:20:39.000000 256 metrics
+[19256 bytes]
+15:20:39.000000 266 metrics
     60.0.20 (kernel.all.cpu.user): value 97768
     60.0.21 (kernel.all.cpu.nice): value 2588749
     60.0.22 (kernel.all.cpu.sys): value 55126
@@ -4769,9 +4854,34 @@ Temporal Index
         inst [3 or "/dev/sda6"] value 235598
         inst [4 or "/dev/sdf"] value 1080581
         inst [5 or "/dev/sdg"] value 1827456
+    60.83.0 (kernel.all.pressure.cpu.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.83.1 (kernel.all.pressure.cpu.some.total): value 1556997
+    60.85.0 (kernel.all.pressure.io.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0.07
+        inst [300 or "5 minute"] value 0.25
+    60.85.1 (kernel.all.pressure.io.some.total): value 97408223
+    60.85.2 (kernel.all.pressure.io.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0.07
+        inst [300 or "5 minute"] value 0.23999999
+    60.85.3 (kernel.all.pressure.io.full.total): value 93827811
+    60.84.0 (kernel.all.pressure.memory.some.avg):
+        inst [10 or "10 second"] value 99.800003
+        inst [60 or "1 minute"] value 70.160004
+        inst [300 or "5 minute"] value 38.700001
+    60.84.1 (kernel.all.pressure.memory.some.total): value 56879
+    60.84.2 (kernel.all.pressure.memory.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.84.3 (kernel.all.pressure.memory.full.total): value 12037
 
-[20432 bytes]
-15:20:49.000000 262 metrics
+[20892 bytes]
+15:20:49.000000 272 metrics
     60.0.20 (kernel.all.cpu.user): value 99343
     60.0.21 (kernel.all.cpu.nice): value 2590956
     60.0.22 (kernel.all.cpu.sys): value 56811
@@ -6047,6 +6157,31 @@ Temporal Index
         inst [1 or "/dev/sda7"] value 235598
         inst [2 or "/dev/sda12"] value 1080581
         inst [3 or "/dev/sda6"] value 1827456
+    60.83.0 (kernel.all.pressure.cpu.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.83.1 (kernel.all.pressure.cpu.some.total): value 1608139
+    60.85.0 (kernel.all.pressure.io.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0.029999999
+    60.85.1 (kernel.all.pressure.io.some.total): value 97617263
+    60.85.2 (kernel.all.pressure.io.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0.029999999
+    60.85.3 (kernel.all.pressure.io.full.total): value 94001210
+    60.84.0 (kernel.all.pressure.memory.some.avg):
+        inst [10 or "10 second"] value 23
+        inst [60 or "1 minute"] value 3
+        inst [300 or "5 minute"] value 0.36000001
+    60.84.1 (kernel.all.pressure.memory.some.total): value 103290
+    60.84.2 (kernel.all.pressure.memory.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.84.3 (kernel.all.pressure.memory.full.total): value 45780
 
 [60 bytes]
 15:37:29.000000 2 metrics
@@ -6062,8 +6197,8 @@ Temporal Index
     245.0.6 (system.restart.count): value 1
     245.0.7 (system.restart.ncpu): value 10
 
-[19712 bytes]
-15:54:35.000000 254 metrics
+[20172 bytes]
+15:54:35.000000 264 metrics
     60.0.20 (kernel.all.cpu.user): value 95712
     60.0.21 (kernel.all.cpu.nice): value 2587674
     60.0.22 (kernel.all.cpu.sys): value 53358
@@ -7283,3 +7418,28 @@ Temporal Index
         inst [1 or "/dev/sda7"] value 235598
         inst [2 or "/dev/sda12"] value 1080581
         inst [3 or "/dev/sda6"] value 1827456
+    60.83.0 (kernel.all.pressure.cpu.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.83.1 (kernel.all.pressure.cpu.some.total): value 0
+    60.85.0 (kernel.all.pressure.io.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.85.1 (kernel.all.pressure.io.some.total): value 0
+    60.85.2 (kernel.all.pressure.io.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.85.3 (kernel.all.pressure.io.full.total): value 0
+    60.84.0 (kernel.all.pressure.memory.some.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.84.1 (kernel.all.pressure.memory.some.total): value 0
+    60.84.2 (kernel.all.pressure.memory.full.avg):
+        inst [10 or "10 second"] value 0
+        inst [60 or "1 minute"] value 0
+        inst [300 or "5 minute"] value 0
+    60.84.3 (kernel.all.pressure.memory.full.total): value 0
