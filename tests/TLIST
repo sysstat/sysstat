@@ -83,6 +83,8 @@ NOTES:
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp
 00161	LC_ALL=C TZ=GMT ./sar -A -f tests/data.tmp > tests/out2.sar-all.tmp
+00162	LC_ALL=C TZ=GMT ./sar -A -x -f tests/data.tmp > tests/out2.sar-xall.tmp
+00163	LC_ALL=C TZ=GMT ./sar -xzh -n DEV -d -u -P ALL -q ALL -f tests/data.tmp > tests/out2.sar-x2.tmp
 00170	LC_ALL=C TZ=GMT ./sar --pretty -d -f tests/data.tmp > tests/out.sar-pretty.tmp
 
 =====	sar: Playing with environment variables
@@ -216,6 +218,8 @@ NOTES:
 00850	LC_ALL=C TZ=GMT ./sar -s 13:20:20 -e 13:20:40 -f tests/data.tmp > tests/out.sar-se.tmp
 00860	LC_ALL=C TZ=GMT ./sar -i 60 -uw -P ALL -f tests/data.tmp > tests/out.sar-i.tmp
 	[WARNING: /proc/uptime files are not consistent with unix_time values used. Don't trust timestamps!]
+00861	LC_ALL=C TZ=GMT ./sar -i 60 -x -uw -P ALL -f tests/data.tmp > tests/out.sar-ix.tmp
+	[Id.]
 00870	LC_ALL=C TZ=GMT ./sar 60 -uw -P ALL -f tests/data.tmp > tests/out2.sar-i.tmp
 00880	LC_ALL=C TZ=GMT ./sar 60 2 -f tests/data.tmp > tests/out3.sar-i.tmp
 00900	LC_ALL=C TZ=GMT ./sar -dh -j UUID -f tests/data.tmp > tests/out.sar-jUUID.tmp
@@ -236,6 +240,7 @@ NOTES:
 00970	LC_ALL=C TZ=GMT ./sar -q ALL 1 1 > tests/out1.sar-qALL.tmp
 00974	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Requested activities not available" >/dev/null
 00976	LC_ALL=C TZ=GMT ./sar -q PSI 1 1 2>&1 | grep "Inconsistent input data" >/dev/null && exit 1 || exit 0
+00977	LC_ALL=C TZ=GMT ./sar -q ALL -u -d -P ALL -x 0 > tests/out.sar-x0.tmp
 00980	LC_ALL=C TZ=GMT ./sar -f tests/data2.tmp -q ALL > tests/out2.sar-q.tmp
 01010	LC_ALL=C TZ=GMT ./sar -f tests/data1.tmp -q ALL > tests/out2.sar-qALL.tmp
 01020	LC_ALL=C TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
@@ -341,6 +346,7 @@ NOTES:
 	[Work only with very simple file contents (no LINUX RESTART or COMMENT records)]
 	[Note: "11:00:00 PM" is "23:00:00" - "12:00:00 AM" is "00:00:00"]
 01760	LC_ALL=C TZ=GMT ./sar -BbdFHSvWwy -I ALL -m CPU,FREQ,USB -n ALL -q ALL -r ALL -u ALL 1 2 > tests/out.sar-A.tmp
+01770	LC_ALL=C TZ=GMT ./sar -x -BbdFHSvWwy -I ALL -m CPU,FREQ,USB -n ALL -q ALL -r ALL -u ALL 1 3 > tests/out.sar-Ax.tmp
 01810	LC_ALL=C TZ=GMT ./sar -C -P ALL -uw -n DEV -F -I --int=19,NMI -f tests/datax.tmp > tests/out.sar-ext-hl.tmp
 01820	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -- -d --dev=sds -n DEV,EDEV --iface=wlp5s0 > tests/out.sadf-disc.tmp
 01825	LC_ALL=C TZ=GMT ./sadf -g tests/data-long.tmp -O debug -- -d --dev=sdq,sdr -n DEV,EDEV --iface=virbr0,virbr0-1 > tests/out2.sadf-disc.tmp

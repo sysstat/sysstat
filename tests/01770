@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./sar -x -BbdFHSvWwy -I ALL -m CPU,FREQ,USB -n ALL -q ALL -r ALL -u ALL 1 3 > tests/out.sar-Ax.tmp && diff -u tests/expected.sar-Ax tests/out.sar-Ax.tmp
