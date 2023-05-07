@@ -1240,6 +1240,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		if ((hpart == 1) || !hpart) {
 			/* r/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
+				  ioi->rd_ios < ioj->rd_ios ? 0.0 :
 				  S_VALUE(ioj->rd_ios, ioi->rd_ios, itv));
 			/* rkB/s */
 			if (!DISPLAY_UNIT(flags)) {
@@ -1263,6 +1264,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		if ((hpart == 2) || !hpart) {
 			/* w/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
+				  ioi->wr_ios < ioj->wr_ios ? 0.0 :
 				  S_VALUE(ioj->wr_ios, ioi->wr_ios, itv));
 			/* wkB/s */
 			if (!DISPLAY_UNIT(flags)) {
@@ -1286,6 +1288,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		if ((hpart == 3) || !hpart) {
 			/* d/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
+				  ioi->dc_ios < ioj->dc_ios ? 0.0 :
 				  S_VALUE(ioj->dc_ios, ioi->dc_ios, itv));
 			/* dkB/s */
 			if (!DISPLAY_UNIT(flags)) {
@@ -1309,6 +1312,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		if ((hpart == 4) || !hpart) {
 			/* f/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
+				  ioi->fl_ios < ioj->fl_ios ? 0.0 :
 				  S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
 			/* f_await */
 			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
@@ -1395,10 +1399,14 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		char line[256];
 
 		printf("\"r/s\": %.2f, \"w/s\": %.2f, \"d/s\": %.2f, \"f/s\": %.2f, ",
-		       S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
-		       S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
-		       S_VALUE(ioj->dc_ios, ioi->dc_ios, itv),
-		       S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
+		       ioi->rd_ios < ioj->rd_ios ? 0.0
+						 : S_VALUE(ioj->rd_ios, ioi->rd_ios, itv),
+		       ioi->wr_ios < ioj->wr_ios ? 0.0
+						 : S_VALUE(ioj->wr_ios, ioi->wr_ios, itv),
+		       ioi->dc_ios < ioj->dc_ios ? 0.0
+						 : S_VALUE(ioj->dc_ios, ioi->dc_ios, itv),
+		       ioi->fl_ios < ioj->fl_ios ? 0.0
+						 : S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
 		if (DISPLAY_MEGABYTES(flags)) {
 			sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, \"dMB/s\": %%.2f, ");
 		}
@@ -1506,10 +1514,18 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		compute_ext_disk_stats(&sdc, &sdp, itv, &xds);
 	}
 
-	/* rkB/s  wkB/s dkB/s */
-	xios.rsectors = S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
-	xios.wsectors = S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
-	xios.dsectors = S_VALUE(ioj->dc_sectors, ioi->dc_sectors, itv);
+	/*
+	 * rkB/s  wkB/s dkB/s
+	 * Note: We've already tried to determine if a device had been
+	 * removed then added again (see write_stats() function).
+	 * Anyway we need to check again for possible negative values.
+	 */
+	xios.rsectors = ioi->rd_sectors < ioj->rd_sectors ? 0.0 :
+			S_VALUE(ioj->rd_sectors, ioi->rd_sectors, itv);
+	xios.wsectors = ioi->wr_sectors < ioj->wr_sectors ? 0.0 :
+			S_VALUE(ioj->wr_sectors, ioi->wr_sectors, itv);
+	xios.dsectors = ioi->dc_sectors < ioj->dc_sectors ? 0.0 :
+			S_VALUE(ioj->dc_sectors, ioi->dc_sectors, itv);
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		xios.sectors  = xios.rsectors + xios.wsectors + xios.dsectors;
