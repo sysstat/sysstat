@@ -431,15 +431,17 @@ int check_dir(char *dirname)
 void check_overflow(unsigned int val1, unsigned int val2,
 		    unsigned int val3)
 {
-	if ((unsigned long long) val1 * (unsigned long long) val2 *
-	    (unsigned long long) val3 > UINT_MAX) {
+	if ((val1 != 0) && (val2 != 0) && (val3 != 0) &&
+	    (((unsigned long long) UINT_MAX / (unsigned long long) val1 <
+	      (unsigned long long) val2) ||
+	     ((unsigned long long) UINT_MAX / ((unsigned long long) val1 * (unsigned long long) val2) <
+	      (unsigned long long) val3))) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Overflow detected (%llu). Aborting...\n",
-			__FUNCTION__, (unsigned long long) val1 * (unsigned long long) val2 *
-			(unsigned long long) val3);
+		fprintf(stderr, "%s: Overflow detected (%u,%u,%u). Aborting...\n",
+			__FUNCTION__, val1, val2, val3);
 #endif
-	exit(4);
-		}
+		exit(4);
+	}
 }
 
 #ifndef SOURCE_SADC
