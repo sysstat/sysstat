@@ -1209,6 +1209,8 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		/* tps */
 		/* Origin (unmerged) flush operations are counted as writes */
 		cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
+			  ioi->rd_ios + ioi->wr_ios + ioi->dc_ios < ioj->rd_ios + ioj->wr_ios + ioj->dc_ios ?
+			  0.0 :
 			  S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 				  ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 		/* kB/s */
@@ -1219,6 +1221,8 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			  xios->sectors);
 		/* rqm/s */
 		cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
+			  ioi->rd_merges + ioi->wr_merges + ioi->dc_merges < ioj->rd_merges + ioj->wr_merges + ioj->dc_merges ?
+			  0.0 :
 			  S_VALUE(ioj->rd_merges + ioj->wr_merges + ioj->dc_merges,
 				  ioi->rd_merges + ioi->wr_merges + ioi->dc_merges, itv));
 		/* await */
@@ -1229,6 +1233,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			  xds->arqsz / 2);
 		/* aqu-sz */
 		cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
+			  ioi->rq_ticks < ioj->rq_ticks ? 0.0 :
 			  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 		/*
 		 * %util
@@ -1250,6 +1255,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 				  xios->rsectors);
 			/* rrqm/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
+				  ioi->rd_merges < ioj->rd_merges ? 0.0 :
 				  S_VALUE(ioj->rd_merges, ioi->rd_merges, itv));
 			/* %rrqm */
 			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
@@ -1274,6 +1280,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 				  xios->wsectors);
 			/* wrqm/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
+				  ioi->wr_merges < ioj->wr_merges ? 0.0 :
 				  S_VALUE(ioj->wr_merges, ioi->wr_merges, itv));
 			/* %wrqm */
 			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
@@ -1298,6 +1305,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 				  xios->dsectors);
 			/* drqm/s */
 			cprintf_f(NO_UNIT, FALSE, 1, 8, 2,
+				  ioi->dc_merges < ioj->dc_merges ? 0.0 :
 				  S_VALUE(ioj->dc_merges, ioi->dc_merges, itv));
 			/* %drqm */
 			cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 6, 2,
@@ -1319,6 +1327,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 				  xios->f_await);
 			/* aqu-sz */
 			cprintf_f(NO_UNIT, FALSE, 1, 7, 2,
+				  ioi->rq_ticks < ioj->rq_ticks ? 0.0 :
 				  S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 			/*
 			 * %util
@@ -1375,6 +1384,8 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		printf("\"tps\": %.2f, \"",
 		       /* Origin (unmerged) flush operations are counted as writes */
+		       ioi->rd_ios + ioi->wr_ios + ioi->dc_ios < ioj->rd_ios + ioj->wr_ios + ioj->dc_ios ?
+		       0.0 :
 		       S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 			       ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 		if (DISPLAY_MEGABYTES(flags)) {
@@ -1389,11 +1400,14 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		printf("\": %.2f, \"rqm/s\": %.2f, \"await\": %.2f, "
 		       "\"areq-sz\": %.2f, \"aqu-sz\": %.2f, ",
 		       xios->sectors /= fctr,
+		       ioi->rd_merges + ioi->wr_merges + ioi->dc_merges < ioj->rd_merges + ioj->wr_merges + ioj->dc_merges ?
+		       0.0 :
 		       S_VALUE(ioj->rd_merges + ioj->wr_merges + ioj->dc_merges,
 			       ioi->rd_merges + ioi->wr_merges + ioi->dc_merges, itv),
 		       xds->await,
 		       xds->arqsz / 2,
-		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+		       ioi->rq_ticks < ioj->rq_ticks ? 0.0
+						     : S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 	else {
 		char line[256];
@@ -1425,9 +1439,12 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       "\"r_await\": %.2f, \"w_await\": %.2f, \"d_await\": %.2f, \"f_await\": %.2f, "
 		       "\"rareq-sz\": %.2f, \"wareq-sz\": %.2f, \"dareq-sz\": %.2f, "
 		       "\"aqu-sz\": %.2f, ",
-		       S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
-		       S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
-		       S_VALUE(ioj->dc_merges, ioi->dc_merges, itv),
+		       ioi->rd_merges < ioj->rd_merges ? 0.0
+						       : S_VALUE(ioj->rd_merges, ioi->rd_merges, itv),
+		       ioi->wr_merges < ioj->wr_merges ? 0.0
+						       : S_VALUE(ioj->wr_merges, ioi->wr_merges, itv),
+		       ioi->dc_merges < ioj->dc_merges ? 0.0
+						       : S_VALUE(ioj->dc_merges, ioi->dc_merges, itv),
 		       xios->rrqm_pc,
 		       xios->wrqm_pc,
 		       xios->drqm_pc,
@@ -1438,7 +1455,8 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       xios->rarqsz / 2,
 		       xios->warqsz / 2,
 		       xios->darqsz / 2,
-		       S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
+		       ioi->rq_ticks < ioj->rq_ticks ? 0.0
+						     : S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 
 	if (d->dev_tp > T_GROUP) {
@@ -1538,11 +1556,11 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 				       ((ioi->rd_merges - ioj->rd_merges) + (ioi->rd_ios - ioj->rd_ios)) * 100 :
 				       0.0;
 			/* r_await */
-			xios.r_await = (ioi->rd_ios - ioj->rd_ios) ?
+			xios.r_await = (ioi->rd_ios > ioj->rd_ios) ?
 				       (ioi->rd_ticks - ioj->rd_ticks) /
 				       ((double) (ioi->rd_ios - ioj->rd_ios)) : 0.0;
 			/* rareq-sz (still in sectors, not kB) */
-			xios.rarqsz = (ioi->rd_ios - ioj->rd_ios) ?
+			xios.rarqsz = (ioi->rd_ios > ioj->rd_ios) ?
 				      (ioi->rd_sectors - ioj->rd_sectors) / ((double) (ioi->rd_ios - ioj->rd_ios)) :
 				      0.0;
 		}
@@ -1553,11 +1571,11 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 				       ((ioi->wr_merges - ioj->wr_merges) + (ioi->wr_ios - ioj->wr_ios)) * 100 :
 				       0.0;
 			/* w_await */
-			xios.w_await = (ioi->wr_ios - ioj->wr_ios) ?
+			xios.w_await = (ioi->wr_ios > ioj->wr_ios) ?
 				       (ioi->wr_ticks - ioj->wr_ticks) /
 				       ((double) (ioi->wr_ios - ioj->wr_ios)) : 0.0;
 			/* wareq-sz (still in sectors, not kB) */
-			xios.warqsz = (ioi->wr_ios - ioj->wr_ios) ?
+			xios.warqsz = (ioi->wr_ios > ioj->wr_ios) ?
 				      (ioi->wr_sectors - ioj->wr_sectors) / ((double) (ioi->wr_ios - ioj->wr_ios)) :
 				      0.0;
 		}
@@ -1568,17 +1586,17 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 				       ((ioi->dc_merges - ioj->dc_merges) + (ioi->dc_ios - ioj->dc_ios)) * 100 :
 				       0.0;
 			/* d_await */
-			xios.d_await = (ioi->dc_ios - ioj->dc_ios) ?
+			xios.d_await = (ioi->dc_ios > ioj->dc_ios) ?
 				       (ioi->dc_ticks - ioj->dc_ticks) /
 				       ((double) (ioi->dc_ios - ioj->dc_ios)) : 0.0;
 			/* dareq-sz (still in sectors, not kB) */
-			xios.darqsz = (ioi->dc_ios - ioj->dc_ios) ?
+			xios.darqsz = (ioi->dc_ios > ioj->dc_ios) ?
 				      (ioi->dc_sectors - ioj->dc_sectors) / ((double) (ioi->dc_ios - ioj->dc_ios)) :
 				      0.0;
 		}
 		if ((hpart == 4) || !hpart) {
 			/* f_await */
-			xios.f_await = (ioi->fl_ios - ioj->fl_ios) ?
+			xios.f_await = (ioi->fl_ios > ioj->fl_ios) ?
 				       (ioi->fl_ticks - ioj->fl_ticks) /
 				       ((double) (ioi->fl_ios - ioj->fl_ios)) : 0.0;
 		}
