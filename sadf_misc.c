@@ -1118,15 +1118,10 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile, char *my_
 		char cur_time[TIMESTAMP_LEN];
 
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		printf("<!DOCTYPE sysstat PUBLIC \"DTD v%s sysstat //EN\"\n",
-		       XML_DTD_VERSION);
-		printf("\"http://pagesperso-orange.fr/sebastien.godard/sysstat-%s.dtd\">\n",
-		       XML_DTD_VERSION);
-
 		xprintf(*tab, "<sysstat\n"
-			      "xmlns=\"http://pagesperso-orange.fr/sebastien.godard/sysstat\"\n"
+			      "xmlns=\"https://sysstat.github.io\"\n"
 			      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-			      "xsi:schemaLocation=\"http://pagesperso-orange.fr/sebastien.godard sysstat.xsd\">");
+			      "xsi:schemaLocation=\"https://sysstat.github.io https://sysstat.github.io/sysstat.xsd\">");
 
 		xprintf(++(*tab), "<sysdata-version>%s</sysdata-version>",
 			XML_DTD_VERSION);
