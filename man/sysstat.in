@@ -1,5 +1,5 @@
 .\" sysstat manual page - (C) 2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SYSSTAT 5 "AUGUST 2022" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 
@@ -163,5 +163,3 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR "sadc" "(8), " "sa1" "(8), " "sa2" "(8)"
 .PP
 .I https://github.com/sysstat/sysstat
-.br
-.I http://pagesperso-orange.fr/sebastien.godard/

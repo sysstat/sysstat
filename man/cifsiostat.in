@@ -1,5 +1,5 @@
 .\" cifsiostat manual page - (C) 2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH CIFSIOSTAT 1 "JULY 2020" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 
@@ -150,5 +150,3 @@ Maintained by Sebastien Godard (sysstat <at> orange.fr)
 .BR "tapestat" "(1), " "nfsiostat" "(1)"
 
 .I https://github.com/sysstat/sysstat
-.br
-.I http://pagesperso-orange.fr/sebastien.godard/

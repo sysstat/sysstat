@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "APRIL 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1725,5 +1725,3 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR "mpstat" "(1), " "iostat" "(1), " "vmstat" "(8)"
 .PP
 .I https://github.com/sysstat/sysstat
-.br
-.I http://pagesperso-orange.fr/sebastien.godard/
