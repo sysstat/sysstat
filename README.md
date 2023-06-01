@@ -1,6 +1,5 @@
 ## sysstat - System performance tools for the Linux operating system
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
-[![Build Status](https://travis-ci.org/sysstat/sysstat.svg?branch=master)](https://travis-ci.org/sysstat/sysstat)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=45U6F9R73ESFQ)
 
 (C) 1999-2023 Sebastien GODARD (sysstat (at) orange (dot) fr)
@@ -74,12 +73,9 @@ Default sampling interval is 10 minutes but this can be changed of course (it ca
 
 
 Sysstat is Open Source / Free Software, and is freely available under the GNU General Public License, version 2.
-The latest version of sysstat can always be found on my web site at:
-
-[http://pagesperso-orange.fr/sebastien.godard/](http://pagesperso-orange.fr/sebastien.godard/)
-
 See the CHANGES file to know the new features/improvements/bug fixes added
 in this release of sysstat.
+
 Sysstat development can be tracked on [GitHub](https://github.com/sysstat/sysstat).
 
 ### Installation
@@ -186,11 +182,9 @@ Sysstat is made for you. Moreover sysstat is free software and always will be.
 
 Yet have you ever considered making a donation to sysstat, regardless of how much your
 contribution is? This in turn would encourage me to keep up the work as good as it can be...
-Oh, and it would certainly also help me explain to my wife why I spend so much time in front
-of my computer instead of taking care of the household ;-)
 
 Click on the "Donate PayPal" button above at the beginning of this file.
-You can also make a donation [from my web page](http://pagesperso-orange.fr/sebastien.godard/).
+You can also make a donation as a sponsor [from the GitHub page](https://github.com/sysstat/sysstat).
 
 Enjoy!
 
