@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sysstat PUBLIC "DTD v3.4 sysstat //EN"
-"http://pagesperso-orange.fr/sebastien.godard/sysstat-3.4.dtd">
 <sysstat
-xmlns="http://pagesperso-orange.fr/sebastien.godard/sysstat"
+xmlns="https://sysstat.github.io"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://pagesperso-orange.fr/sebastien.godard sysstat.xsd">
+	xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
 	<sysdata-version>3.4</sysdata-version>
 	<host nodename="linux.home">
 		<sysname>Linux</sysname>
