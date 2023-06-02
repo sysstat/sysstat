@@ -1650,7 +1650,7 @@ int read_file_stat_bunch
 	(struct activity * [], int, int, int, struct file_activity *, int, int,
 	 char *, struct file_magic *, enum on_eof, uint64_t);
 __nr_t read_nr_value
-	(int, char *, struct file_magic *, int, int, int);
+	(int, char *, struct file_magic *, int, int, int, __nr_t);
 int read_record_hdr
 	(int, void *, struct record_header *, struct file_header *, int, int,
 	 int, size_t, uint64_t, struct report_format *);

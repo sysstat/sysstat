@@ -1787,13 +1787,14 @@ void copy_structures(struct activity *act[], unsigned int id_seq[],
  *		TRUE if file's data don't match current machine's endianness.
  * @arch_64	TRUE if file's data come from a 64 bit machine.
  * @non_zero	TRUE if value should not be zero.
+ * @maxv	Maximum value allowed.
  *
  * RETURNS:
  * __nr_t value, as read from file.
  ***************************************************************************
  */
 __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
-		     int endian_mismatch, int arch_64, int non_zero)
+		     int endian_mismatch, int arch_64, int non_zero, __nr_t maxv)
 {
 	__nr_t value;
 	unsigned int nr_types_nr[]  = {0, 0, 1};
@@ -1805,10 +1806,10 @@ __nr_t read_nr_value(int ifd, char *file, struct file_magic *file_magic,
 		swap_struct(nr_types_nr, &value, arch_64);
 	}
 
-	if ((non_zero && !value) || (value < 0)) {
+	if ((non_zero && !value) || (value < 0) || (value > maxv)) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Value=%d\n",
-			__FUNCTION__, value);
+		fprintf(stderr, "%s: Value=%d Max=%d\n",
+			__FUNCTION__, value, maxv);
 #endif
 		/* Value number cannot be zero or negative */
 		handle_invalid_sa_file(ifd, file_magic, file, 0);
@@ -1857,7 +1858,7 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		/* Read __nr_t value preceding statistics structures if it exists */
 		if (fal->has_nr) {
 			nr_value = read_nr_value(ifd, dfile, file_magic,
-						 endian_mismatch, arch_64, FALSE);
+						 endian_mismatch, arch_64, FALSE, NR_MAX);
 		}
 		else {
 			nr_value = fal->nr;
@@ -3244,7 +3245,7 @@ int print_special_record(struct record_header *record_hdr, uint64_t l_flags,
 
 		/* Read new cpu number following RESTART record */
 		file_hdr->sa_cpu_nr = read_nr_value(ifd, file, file_magic,
-						    endian_mismatch, arch_64, TRUE);
+						    endian_mismatch, arch_64, TRUE, NR_CPUS + 1);
 
 		/*
 		 * We don't know if CPU related activities will be displayed or not.

@@ -301,7 +301,8 @@ int read_next_sample(int ifd, int action, int curr, char *file, int *rtype, int 
 			 */
 			if (!(action & DONT_READ_CPU_NR)) {
 				file_hdr.sa_cpu_nr = read_nr_value(ifd, file, file_magic,
-								   endian_mismatch, arch_64, TRUE);
+								   endian_mismatch, arch_64, TRUE,
+								   NR_CPUS + 1);
 
 				/* Ignore unknown extra structures if present */
 				if (record_hdr[curr].extra_next && (skip_extra_struct(ifd, endian_mismatch, arch_64) < 0))
