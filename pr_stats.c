@@ -3950,8 +3950,8 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			}
 			else {
 				/* Display min and max values */
-				print_hdr_line((dispavg ? _("Summary:") : timestamp[!curr]),
-					       a, FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9, NULL);
+				print_hdr_line(_("Summary:"), a,
+					       FIRST + DISPLAY_MOUNT(a->opt_flags), -1, 9, NULL);
 				print_filesystem_xstats(H_MIN, unit, dev_name,
 							a->spmin + pos);
 				print_filesystem_xstats(H_MAX, unit, dev_name,
