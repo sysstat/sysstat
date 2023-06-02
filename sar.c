@@ -391,8 +391,8 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 	strncpy(timestamp[curr], _("Average:"), sizeof(timestamp[curr]));
 	timestamp[curr][sizeof(timestamp[curr]) - 1] = '\0';
 	if (DISPLAY_MINMAX(flags)) {
-		strncpy(timestamp[!curr], _("Summary:"), sizeof(timestamp[curr]));
-		timestamp[curr][sizeof(timestamp[curr]) - 1] = '\0';
+		strncpy(timestamp[!curr], _("Summary:"), sizeof(timestamp[!curr]));
+		timestamp[!curr][sizeof(timestamp[!curr]) - 1] = '\0';
 	}
 	else {
 		memcpy(timestamp[!curr], timestamp[curr], sizeof(timestamp[!curr]));
