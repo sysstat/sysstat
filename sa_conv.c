@@ -405,7 +405,8 @@ int upgrade_header_section(char dfile[], int fd, int stdfd, struct activity *act
 
 invalid_header:
 
-	fprintf(stderr, _("\nInvalid data found. Aborting...\n"));
+	fprintf(stderr, _("\n%s: Invalid data found. Aborting...\n"),
+		__FUNCTION__);
 
 	return -1;
 
@@ -1622,6 +1623,12 @@ int upgrade_restart_record(int fd, int stdfd, struct activity *act[],
 
 			if (ofile_act.id && (ofile_act.nr > 0)) {
 				p = get_activity_position(act, ofile_act.id, EXIT_IF_NOT_FOUND);
+				/* Check upper bounds */
+				if (ofile_act.nr > act[p]->nr_max) {
+					fprintf(stderr, _("\n%s: Invalid data found. Aborting...\n"),
+						__FUNCTION__);
+					return -1;
+				}
 				act[p]->nr_ini = ofile_act.nr;
 
 				/* Reallocate structures if needed */
