@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: sysstat 12.7.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2023-01-13 17:54+0100\n"
-"PO-Revision-Date: 2023-01-15 23:49+0300\n"
+"PO-Revision-Date: 2023-03-20 00:44+0300\n"
 "Last-Translator: Viachaslau Khalikin <viachaslau.vinegret@outlook.com>\n"
 "Language-Team: Belarusian <debian-l10n-belarusian@lists.debian.org>\n"
 "Language: be\n"
@@ -588,12 +588,12 @@ msgstr "\t-y\tСтатыстыка прылад TTY [A_SERIAL]\n"
 #: sar.c:221
 #, c-format
 msgid "Data collector will be sought in PATH\n"
-msgstr "Пошук зборшчыка даных будзе выконвацца ў PATH\n"
+msgstr "Пошук зьбіральніка даных будзе выконвацца ў PATH\n"
 
 #: sar.c:224
 #, c-format
 msgid "Data collector found: %s\n"
-msgstr "Знойдзены зборшчык даных: %s\n"
+msgstr "Знойдзены зьбіральнік даных: %s\n"
 
 #: sar.c:289
 #, c-format
@@ -608,7 +608,7 @@ msgstr "Няўзгодненыя ўваходныя даныя\n"
 #: sar.c:895
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
-msgstr "Выкарыстоўваецца няправільны зборшчык даных з іншай вэрсіі sysstat\n"
+msgstr "Выкарыстоўваецца няправільны зьбіральнік даных з іншай вэрсіі sysstat\n"
 
 #: sar.c:1553
 #, c-format
@@ -623,7 +623,7 @@ msgstr "Не выконваецца чытаньне з файла дзейна�
 #: sar.c:1712
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
-msgstr "Немагчыма знайсьці зборшчык даных (%s)\n"
+msgstr "Немагчыма знайсьці зьбіральнік даных (%s)\n"
 
 #: tapestat.c:106
 #, c-format
