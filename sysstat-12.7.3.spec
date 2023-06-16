@@ -1,6 +1,6 @@
 Summary: 	SAR, SADF, MPSTAT, IOSTAT, TAPESTAT, PIDSTAT and CIFSIOSTAT for Linux
 Name: 		sysstat
-Version: 	12.7.2
+Version: 	12.7.3
 Release: 	1
 License: 	GPL
 Group: 		Applications/System
@@ -20,7 +20,7 @@ I/O transfer rates, paging activity, process-related activities,
 interrupts, network activity, memory and swap space utilization, CPU
 utilization, kernel activities and TTY statistics, among others. Both
 UP and SMP machines are fully supported.
-The sadf command may  be used to display data collected by sar in
+The sadf command may be used to display data collected by sar in
 various formats (CSV, XML, etc.) and to draw graphs (SVG).
 The iostat command reports CPU utilization and I/O statistics for disks.
 The tapestat command reports statistics for tapes connected to the system.

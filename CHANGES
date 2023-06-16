@@ -1,5 +1,53 @@
 Changes:
 
+2023/06/16: Version 12.7.3 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Add new option '-x' used to display extended reports.
+	* [Pavel Kopylov]: Fix an overflow which is still possible for
+	  some values.
+	* [Jan Kurik]: Fix export of PSI metrics to a PCP archive.
+	* [Lukáš Zaoral]: Tools that take `--dec=X` option should only accept
+	  digits.
+	* common.c: Fix an overflow which was still possible for some values.
+	* iostat: Try to avoid displaying negative values.
+	* Free pointer if realloc() fails.
+	* Don't check if unsigned expressions are less than zero.
+	* Declare parameters with "const" when possible.
+	* Remove conditions which are always true.
+	* Reduce variables scope when relevant.
+	* Don't assign values that are never used.
+	* Fix types used in format strings.
+	* Split large functions into smaller ones.
+	* Specify field width when using sscanf() function.
+	* search_list_item(): Return position in list instead of a boolean.
+	* add_list_item(): Also return item position in liste
+	* svg_stats.c: Ignore negative values for fields position.
+	* svg_stats.c: Reuse buffers pointers definition.
+	* svg_stats.c: Reuse intermediate calculations.
+	* svg_stats.c: Don't repeat test on DISPLAY_CPU_DEF().
+	* sa_common.c: Don't use (void *) pointer in calculation.
+	* iostat.c: Clarify calculation precedence for '+' and '?'.
+	* sar/sadf: Refactor buffer allocation functions.
+	* sar/sadf: Add a check on file's records header data.
+	* sar/sadf: Stop when invalid data are read in records header.
+	* sar/sadf: Check upper bounds of value read from file.
+	* sadf_misc.c: Fix indentation in code.
+	* activity.c: Init item_list even for other commands than sadf.
+	* sa_conv.c: Reallocate buffers only when needed.
+	* sa_conv.c: Fix untrusted allocation size.
+	* pr_stats.c: Remove some dead code.
+	* sar.c: Make sure buffer is null terminated.
+	* do_test: Add several new options.
+	* do_test: Don't strip binaries when in TEST mode.
+	* Update non regression tests.
+	* simtest: Change default _unix_time value.
+	* Makefile.in: Simplify dependencies.
+	* Makefile_in: Small update made to copyyear target.
+	* sadf: XML: Update DTD and XSD documents.
+	* sadf: XML: Remove references to my personal web site.
+	* Restore mode for iconfig file.
+	* Fix typo in sar's manual page. Sar manual page updated.
+	* Other manual pages updated.
+
 2023/01/29: Version 12.7.2 - Sebastien Godard (sysstat <at> orange.fr)
 	* All commands: Avoid displaying healthy metrics values in "red".
 *	* sar/sadf: Add new activity: Battery statistics (A_PWR_BAT).
@@ -13,6 +61,7 @@ Changes:
 	* sadc: Add another overflow check [12.6.2].
 	* DTD and XSD documents updated.
 	* Makefile: Fix dependencies.
+	* NLS translations updated. New Belarusian translation added.
 	* Remove LGTM links from README file.
 	* Manual pages updated.
 	* Non regression tests updated.
