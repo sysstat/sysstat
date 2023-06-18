@@ -1,5 +1,9 @@
 Changes:
 
+2023/06/18: Version 12.7.4 - Sebastien Godard (sysstat <at> orange.fr)
+	* Makefile.in: Fix installation error.
+	* Makefile.in: Remove gcc warning displayed in LTO mode.
+
 2023/06/16: Version 12.7.3 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Add new option '-x' used to display extended reports.
 	* [Pavel Kopylov]: Fix an overflow which is still possible for
