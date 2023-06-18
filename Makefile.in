@@ -168,7 +168,7 @@ GCC_AR = @GCC_AR@
 endif
 ifeq ($(LTO),y)
 AR = $(GCC_AR)
-CFLAGS += -flto
+CFLAGS += -flto=auto
 LD = gcc
 LDFLAGS += $(CFLAGS)
 endif
