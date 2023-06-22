@@ -1,5 +1,5 @@
 .\" sysstat manual page - (C) 2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SYSSTAT 5 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SYSSTAT 5 "JUNE 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sysstat \- sysstat configuration file.
 
@@ -139,6 +139,15 @@ manual page), you can select some additional data which are going to be saved in
 daily data files.
 These options are used only when a new data file is created. They will be
 ignored with an already existing one.
+.TP
+.B UMASK
+.RB "The " "sa1" " and " "sa2"
+scripts generate system activity data and report files in the
+.IR /var/log/sa
+directory. By default the files are created with umask 0022
+and are therefore readable for all users. Change this variable to restrict
+the permissions on the files (e.g. use 0027 to adhere to more strict
+security standards).
 .TP
 .B YESTERDAY
 .RB "By default " "sa2"
