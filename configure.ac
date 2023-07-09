@@ -764,6 +764,8 @@ AC_CONFIG_FILES([cron/sysstat-collect.service])
 AC_CONFIG_FILES([cron/sysstat-collect.timer])
 AC_CONFIG_FILES([cron/sysstat-summary.service])
 AC_CONFIG_FILES([cron/sysstat-summary.timer])
+AC_CONFIG_FILES([cron/sysstat-rotate.service])
+AC_CONFIG_FILES([cron/sysstat-rotate.timer])
 AC_CONFIG_FILES([cron/sysstat.sleep], [chmod +x cron/sysstat.sleep])	# Permissions must be changed
 AC_CONFIG_FILES([man/sa1.8:man/sa1.in])		# File must be renamed
 AC_CONFIG_FILES([man/sa2.8:man/sa2.in])		# File must be renamed

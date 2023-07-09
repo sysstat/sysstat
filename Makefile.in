@@ -593,7 +593,8 @@ endif
 
 ifdef SYSTEMD_UNIT_DIR
 install_all: install_base cron/sysstat-collect.service cron/sysstat-collect.timer \
-	cron/sysstat.sleep cron/sysstat-summary.service cron/sysstat-summary.timer
+	cron/sysstat.sleep cron/sysstat-summary.service cron/sysstat-summary.timer \
+	cron/sysstat-rotate.service cron/sysstat-rotate.timer
 else
 install_all: install_base cron/crontab sysstat \
 	cron/sysstat.crond cron/sysstat.cron.daily cron/sysstat.cron.hourly
@@ -645,6 +646,8 @@ endif
 		$(INSTALL_DATA) cron/sysstat-collect.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 		$(INSTALL_DATA) cron/sysstat-summary.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 		$(INSTALL_DATA) cron/sysstat-summary.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) cron/sysstat-rotate.service $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
+		$(INSTALL_DATA) cron/sysstat-rotate.timer $(DESTDIR)$(SYSTEMD_UNIT_DIR); \
 	elif [ -d $(DESTDIR)$(INIT_DIR) ]; then \
 		$(INSTALL_BIN) sysstat $(DESTDIR)$(INIT_DIR)/sysstat; \
 		if [ "$(COPY_ONLY)" = "n" ]; then \
@@ -775,6 +778,8 @@ endif
 		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-collect.timer; \
 		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.service; \
 		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-summary.timer; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-rotate.service; \
+		rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/sysstat-rotate.timer; \
 	fi
 	if [ -n "$(SYSTEMD_UNIT_DIR)" -a -n "$(SYSTEMD_SLEEP_DIR)" -a -d "$(DESTDIR)$(SYSTEMD_SLEEP_DIR)" ]; then \
 		rm -f $(DESTDIR)$(SYSTEMD_SLEEP_DIR)/sysstat.sleep; \
@@ -857,6 +862,7 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f sa1 sa2 sysstat cron/crontab version.h sysconfig.h
 	rm -f sysstat.sysconfig cron/sysstat.crond cron/sysstat.cron.daily sysstat.service
 	rm -f cron/sysstat-collect.service cron/sysstat-collect.timer
+	rm -f cron/sysstat-rotate.service cron/sysstat-rotate.timer
 	rm -f cron/sysstat-summary.service cron/sysstat-summary.timer cron/sysstat.sleep
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
 	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5

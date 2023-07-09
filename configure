@@ -5884,6 +5884,10 @@ ac_config_files="$ac_config_files cron/sysstat-summary.service"
 
 ac_config_files="$ac_config_files cron/sysstat-summary.timer"
 
+ac_config_files="$ac_config_files cron/sysstat-rotate.service"
+
+ac_config_files="$ac_config_files cron/sysstat-rotate.timer"
+
 ac_config_files="$ac_config_files cron/sysstat.sleep"
 	# Permissions must be changed
 ac_config_files="$ac_config_files man/sa1.8:man/sa1.in"
@@ -6623,6 +6627,8 @@ do
     "cron/sysstat-collect.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-collect.timer" ;;
     "cron/sysstat-summary.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.service" ;;
     "cron/sysstat-summary.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-summary.timer" ;;
+    "cron/sysstat-rotate.service") CONFIG_FILES="$CONFIG_FILES cron/sysstat-rotate.service" ;;
+    "cron/sysstat-rotate.timer") CONFIG_FILES="$CONFIG_FILES cron/sysstat-rotate.timer" ;;
     "cron/sysstat.sleep") CONFIG_FILES="$CONFIG_FILES cron/sysstat.sleep" ;;
     "man/sa1.8") CONFIG_FILES="$CONFIG_FILES man/sa1.8:man/sa1.in" ;;
     "man/sa2.8") CONFIG_FILES="$CONFIG_FILES man/sa2.8:man/sa2.in" ;;
