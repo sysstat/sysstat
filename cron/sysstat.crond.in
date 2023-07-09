@@ -1,3 +1,5 @@
+# Rotate file at midnight
+0 0 * * * @CRON_OWNER@ @SA_LIB_DIR@/sa1 --rotate
 # Run system activity accounting tool every @CRON_INTERVAL@ minutes
 */@CRON_INTERVAL@ * * * * @CRON_OWNER@ @SA_LIB_DIR@/sa1 1 1
 # 0 * * * * @CRON_OWNER@ @SA_LIB_DIR@/sa1 @CRON_INTERVAL_SEC@ @CRON_COUNT@
