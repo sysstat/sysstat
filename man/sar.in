@@ -154,13 +154,6 @@ Number of pages scanned directly per second.
 .IP pgsteal/s
 Number of pages the system has reclaimed from cache (pagecache and
 swapcache) per second to satisfy its memory demands.
-.IP %vmeff
-Calculated as pgsteal / pgscan, this is a metric of the efficiency of
-page reclaim. If it is near 100% then almost every page coming off the
-tail of the inactive list is being reaped. If it gets too low (e.g. less
-than 30%) then the virtual memory is having some difficulty.
-This field is displayed as zero if no pages have been scanned during the
-interval of time.
 .RE
 .TP
 .B -b
