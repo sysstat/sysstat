@@ -124,9 +124,9 @@ Average:          PIW      0.00      0.00      0.00      0.00      0.00      0.0
 13:20:39         0.00      0.00
 Average:         0.00      0.00
 
-13:20:29     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s    %vmeff
-13:20:39         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+13:20:29     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
+13:20:39         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
 13:20:29          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 13:20:39        20.85     12.83      4.81      3.21     57.43     38.50     32.08

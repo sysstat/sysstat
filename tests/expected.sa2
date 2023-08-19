@@ -29,9 +29,9 @@ Average:         4.83  46287.74
 13:20:49         0.00      0.00
 Average:         0.00      0.00
 
-13:20:29     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s    %vmeff
-13:20:49         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+13:20:29     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
+13:20:49         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
 13:20:29          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 13:20:49        56.63     41.26      8.96      6.40     17.16     20.81     32.01

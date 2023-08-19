@@ -71,7 +71,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00},
 					"io": {"tps": 20.85, "io-reads": {"rtps": 12.83, "bread": 57.43}, "io-writes": {"wtps": 4.81, "bwrtn": 38.50}, "io-discard": {"dtps": 3.21, "bdscd": 32.08}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
@@ -237,7 +237,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU7": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00},
 					"io": {"tps": 56.63, "io-reads": {"rtps": 41.26, "bread": 17.16}, "io-writes": {"wtps": 8.96, "bwrtn": 20.81}, "io-discard": {"dtps": 6.40, "bdscd": 32.01}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
@@ -409,7 +409,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU7": 0.00, "CPU8": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.26, "pgscand": 0.00, "pgsteal": 0.23, "vmeff-percent": 90.00},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.26, "pgscand": 0.00, "pgsteal": 0.23},
 					"io": {"tps": 0.00, "io-reads": {"rtps": 0.00, "bread": 0.00}, "io-writes": {"wtps": 0.00, "bwrtn": 0.00}, "io-discard": {"dtps": 0.00, "bdscd": 0.00}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
@@ -579,7 +579,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 4.02, "pgscand": 0.00, "pgsteal": 0.09, "vmeff-percent": 2.22},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 4.02, "pgscand": 0.00, "pgsteal": 0.09},
 					"io": {"tps": 136.22, "io-reads": {"rtps": 85.80, "bread": 4497.45}, "io-writes": {"wtps": 5.85, "bwrtn": 48.24}, "io-discard": {"dtps": 44.57, "bdscd": 214.83}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
@@ -760,7 +760,7 @@
 						{"intr": "PIW", "all": 0.00, "CPU0": 0.00, "CPU1": 0.00, "CPU2": 0.00, "CPU3": 0.00, "CPU4": 0.00, "CPU5": 0.00, "CPU6": 0.00, "CPU7": 0.00, "CPU8": 0.00, "CPU9": 0.00}
 					],
 					"swap-pages": {"pswpin": 0.00, "pswpout": 0.00},
-					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00, "vmeff-percent": 0.00},
+					"paging": {"pgpgin": 0.00, "pgpgout": 0.00, "fault": 0.00, "majflt": 0.00, "pgfree": 0.00, "pgscank": 0.00, "pgscand": 0.00, "pgsteal": 0.00},
 					"io": {"tps": 32405.20, "io-reads": {"rtps": 321.46, "bread": 64.16}, "io-writes": {"wtps": 32082.13, "bwrtn": 0.00}, "io-discard": {"dtps": 1.60, "bdscd": 1.60}},
 					"memory": {"memfree": 1437740, "avail": 4389516, "memused": 3179712, "memused-percent": 39.04, "buffers": 260172, "cached": 2821596, "commit": 12097852, "commit-percent": 48.54, "active": 4042384, "inactive": 1772396, "dirty": 396, "anonpg": 2733164, "slab": 445740, "kstack": 15328, "pgtbl": 73760, "vmused": 0, "swpfree": 16777212, "swpused": 0, "swpused-percent": 0.00, "swpcad": 0, "swpcad-percent": 0.00},
 					"hugepages": {"hugfree": 0, "hugused": 0, "hugused-percent": 0.00, "hugrsvd": 0, "hugsurp": 0},
