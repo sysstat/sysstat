@@ -163,28 +163,6 @@ void print_irq_xstats(int ismax, struct activity *a, int curr, int irq, char *na
 
 /*
  * **************************************************************************
- * Display min or max values for paging statistics.
- *
- * IN:
- * @ismax	TRUE: Display max header - FALSE: Display min header.
- * @spextr	Pointer on array with min or max values.
- ***************************************************************************
- */
-void print_paging_xstats(int ismax, double *spextr)
-{
-	/* Print min / max header */
-	print_minmax(ismax);
-
-	cprintf_f(NO_UNIT, FALSE, 8, 9, 2,
-		  *spextr, *(spextr + 1), *(spextr + 2), *(spextr + 3),
-		  *(spextr + 4), *(spextr + 5), *(spextr + 6), *(spextr + 7));
-	cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 9, 2, *(spextr + 8));
-
-	printf("\n");
-}
-
-/*
- * **************************************************************************
  * Display min or max values for RAM memory utilization.
  *
  * IN:

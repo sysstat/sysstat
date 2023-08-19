@@ -686,19 +686,11 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 			/* Save min and max values */
 			save_extrema(a->gtypes_nr, (void *) spc, (void *) spp,
 				     itv, a->spmin, a->spmax, g_fields);
-			/* Save min and max values for %vmeff */
-			save_minmax(a, 8,
-				    (spc->pgscan_kswapd + spc->pgscan_direct -
-				    spp->pgscan_kswapd - spp->pgscan_direct) ?
-				    SP_VALUE(spp->pgsteal, spc->pgsteal,
-					     spc->pgscan_kswapd + spc->pgscan_direct -
-					     spp->pgscan_kswapd - spp->pgscan_direct)
-				    : 0.0);
 		}
 		else {
 			/* Print min and max values */
-			print_paging_xstats(H_MIN, a->spmin);
-			print_paging_xstats(H_MAX, a->spmax);
+			print_genf_xstats(H_MIN, a->xnr, a->spmin);
+			print_genf_xstats(H_MAX, a->xnr, a->spmax);
 		}
 	}
 
@@ -712,13 +704,6 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 		  S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
 		  S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
 		  S_VALUE(spp->pgsteal,       spc->pgsteal,       itv));
-	cprintf_xpc(DISPLAY_UNIT(flags), XLOW0, 1, 9, 2,
-		   (spc->pgscan_kswapd + spc->pgscan_direct -
-		   spp->pgscan_kswapd - spp->pgscan_direct) ?
-		   SP_VALUE(spp->pgsteal, spc->pgsteal,
-			    spc->pgscan_kswapd + spc->pgscan_direct -
-			    spp->pgscan_kswapd - spp->pgscan_direct)
-		   : 0.0);
 	printf("\n");
 }
 

@@ -193,7 +193,7 @@ struct stats_paging {
 #define STATS_PAGING_ULL	0
 #define STATS_PAGING_UL		8
 #define STATS_PAGING_U		0
-#define STATS_PAGING_XNR	9
+#define STATS_PAGING_XNR	8
 
 /* Structure for I/O and transfer rate statistics */
 struct stats_io {

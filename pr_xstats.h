@@ -22,8 +22,6 @@ void print_genu64_xstats
 	(int, int, double *);
 void print_irq_xstats
 	(int, struct activity *, int, int, char *, unsigned char [], double *);
-void print_paging_xstats
-	(int, double *);
 void print_ram_memory_xstats
 	(int, double *, int, int);
 void print_swap_memory_xstats

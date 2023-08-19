@@ -449,8 +449,7 @@ __print_funct_t json_print_paging_stats(struct activity *a, int curr, int tab,
 		 "\"pgfree\": %.2f, "
 		 "\"pgscank\": %.2f, "
 		 "\"pgscand\": %.2f, "
-		 "\"pgsteal\": %.2f, "
-		 "\"vmeff-percent\": %.2f}",
+		 "\"pgsteal\": %.2f}",
 		 S_VALUE(spp->pgpgin,        spc->pgpgin,        itv),
 		 S_VALUE(spp->pgpgout,       spc->pgpgout,       itv),
 		 S_VALUE(spp->pgfault,       spc->pgfault,       itv),
@@ -458,12 +457,7 @@ __print_funct_t json_print_paging_stats(struct activity *a, int curr, int tab,
 		 S_VALUE(spp->pgfree,        spc->pgfree,        itv),
 		 S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
 		 S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
-		 S_VALUE(spp->pgsteal,       spc->pgsteal,       itv),
-		 (spc->pgscan_kswapd + spc->pgscan_direct -
-		  spp->pgscan_kswapd - spp->pgscan_direct) ?
-		 SP_VALUE(spp->pgsteal, spc->pgsteal,
-			  spc->pgscan_kswapd + spc->pgscan_direct -
-			  spp->pgscan_kswapd - spp->pgscan_direct) : 0.0);
+		 S_VALUE(spp->pgsteal,       spc->pgsteal,       itv));
 }
 
 /*
