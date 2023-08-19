@@ -73,6 +73,10 @@ Default sampling interval is 10 minutes but this can be changed of course (it ca
 
 
 Sysstat is Open Source / Free Software, and is freely available under the GNU General Public License, version 2.
+The latest version of sysstat can always be found on my web site at:
+
+[https://sysstat.github.io/](https://sysstat.github.io/)
+
 See the CHANGES file to know the new features/improvements/bug fixes added
 in this release of sysstat.
 
@@ -184,7 +188,7 @@ Yet have you ever considered making a donation to sysstat, regardless of how muc
 contribution is? This in turn would encourage me to keep up the work as good as it can be...
 
 Click on the "Donate PayPal" button above at the beginning of this file.
-You can also make a donation as a sponsor [from the GitHub page](https://github.com/sysstat/sysstat).
+You can also make a donation as a sponsor from [the GitHub page](https://github.com/sysstat/sysstat) or from [my personal web page](https://sysstat.github.io/).
 
 Enjoy!
 
