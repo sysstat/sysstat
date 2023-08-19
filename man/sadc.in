@@ -1,5 +1,5 @@
 .\" sadc manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SADC 8 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SADC 8 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadc \- System activity data collector.
 
@@ -201,3 +201,5 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR "sar" "(1), " "sa1" "(8), " "sa2" "(8), " "sadf" "(1), " "sysstat" "(5)"
 .PP
 .I https://github.com/sysstat/sysstat
+.br
+.I https://sysstat.github.io/

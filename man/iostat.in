@@ -1,5 +1,5 @@
 .\" iostat manual page - (C) 1998-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH IOSTAT 1 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH IOSTAT 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -475,3 +475,5 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR "cifsiostat" "(1)"
 .PP
 .I https://github.com/sysstat/sysstat
+.br
+.I https://sysstat.github.io/

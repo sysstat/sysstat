@@ -1,5 +1,5 @@
 .\" sa2 manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SA2 8 "MAY 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA2 8 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa2 \- Create a report from the current standard system activity daily data file.
 
@@ -52,3 +52,5 @@ Sebastien Godard (sysstat <at> orange.fr)
 .BR "sar" "(1), " "sadc" "(8), " "sa1" "(8), " "sadf" "(1), " "sysstat" "(5)"
 .PP
 .I https://github.com/sysstat/sysstat
+.br
+.I https://sysstat.github.io/
