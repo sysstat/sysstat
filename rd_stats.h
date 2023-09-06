@@ -187,6 +187,8 @@ struct stats_paging {
 	unsigned long pgscan_kswapd	__attribute__ ((aligned (8)));
 	unsigned long pgscan_direct	__attribute__ ((aligned (8)));
 	unsigned long pgsteal		__attribute__ ((aligned (8)));
+	unsigned long pgpromote		__attribute__ ((aligned (8)));
+	unsigned long pgdemote 		__attribute__ ((aligned (8)));
 };
 
 #define STATS_PAGING_SIZE	(sizeof(struct stats_paging))

@@ -796,6 +796,14 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgscan_direct += pgtmp;
 		}
+		else if (!strncmp(line, "pgpromote_success ", 18)) {
+			/* Read number of successful page promotions */
+			sscanf(line + 18, "%lu", &st_paging->pgpromote);
+		}
+		else if (!strncmp(line, "pgdemote_", 9)) {
+			sscanf(strchr(line, ' '), "%lu", &pgtmp);
+			st_paging->pgdemote += pgtmp;
+		}	
 	}
 
 	fclose(fp);

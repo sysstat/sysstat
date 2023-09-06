@@ -282,7 +282,8 @@ struct activity paging_act = {
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
 	.hdr_line	= "pgpgin/s;pgpgout/s;fault/s;majflt/s;"
-		          "pgfree/s;pgscank/s;pgscand/s;pgsteal/s",
+			  "pgfree/s;pgscank/s;pgscand/s;pgsteal/s;"
+			  "pgprom/s;pgdem/s",
 #endif
 	.gtypes_nr	= {STATS_PAGING_ULL, STATS_PAGING_UL, STATS_PAGING_U},
 	.ftypes_nr	= {0, 0, 0},
