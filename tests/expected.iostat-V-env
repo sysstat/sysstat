@@ -1,0 +1,6 @@
+POSIXLY_CORRECT=
+S_COLORS=auto
+S_COLORS_SGR=C=33;22:I=32;22
+S_TIME_FORMAT=ISO
+sysstat version 99.9.9
+(C) Sebastien Godard (sysstat <at> orange.fr)

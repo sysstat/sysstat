@@ -1,0 +1,1 @@
+S_COLORS_PALETTE="0=000000:1=1a1aff" S_TIME_DEF_TIME=UTC ./sadf --getenv -V > tests/out.sadf-V-env.tmp && diff -u tests/expected.sadf-V-env tests/out.sadf-V-env.tmp

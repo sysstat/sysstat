@@ -1,0 +1,1 @@
+S_TIME_DEF_TIME=UTC ./sadc --getenv -V > tests/out.sadc-V-env.tmp && diff -u tests/expected.sadc-V-env tests/out.sadc-V-env.tmp

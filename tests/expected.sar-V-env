@@ -1,0 +1,7 @@
+S_COLORS=auto
+S_COLORS_SGR=C=33;22:I=32;22
+S_REPEAT_HEADER=15
+S_TIME_DEF_TIME=UTC
+S_TIME_FORMAT=
+sysstat version 99.9.9
+(C) Sebastien Godard (sysstat <at> orange.fr)

@@ -1,0 +1,1 @@
+S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./tapestat --getenv -V > tests/out.tapestat-V-env.tmp && diff -u tests/expected.tapestat-V-env tests/out.tapestat-V-env.tmp

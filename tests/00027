@@ -1,0 +1,1 @@
+S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./cifsiostat --getenv -V > tests/out.cifsiostat-V-env.tmp && diff -u tests/expected.cifsiostat-V-env tests/out.cifsiostat-V-env.tmp
