@@ -55,6 +55,8 @@ tests/*.tmp
 tests/sa[0123]*
 tests/variables
 tests/pcpar.*
+tests/LAST
+tests/SKIPPED
 inisar
 sar32
 sadc32
