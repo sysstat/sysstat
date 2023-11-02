@@ -1820,11 +1820,13 @@ int main(int argc, char **argv)
 						break;
 
 					case 'V':
-						char *sadf_env[] = {ENV_COLORS_PALETTE,
-								    ENV_TIME_DEFTM};
+						{
+							char *sadf_env[] = {ENV_COLORS_PALETTE,
+									    ENV_TIME_DEFTM};
 #define SADF_ENV_NR	2
-							print_version(sadf_env, SADF_ENV_NR);
-						break;
+								print_version(sadf_env, SADF_ENV_NR);
+							break;
+						}
 
 					default:
 						usage(argv[0]);

@@ -2767,13 +2767,15 @@ int main(int argc, char **argv)
 					break;
 
 				case 'V':
-					char *pidstat_env[] = {ENV_COLORS,
-							       ENV_COLORS_SGR,
-							       ENV_TIME_FMT};
+					{
+						char *pidstat_env[] = {ENV_COLORS,
+								       ENV_COLORS_SGR,
+								       ENV_TIME_FMT};
 #define PIDSTAT_ENV_NR	3
-					/* Print environment contents, version number and exit */
-					print_version(pidstat_env, PIDSTAT_ENV_NR);
-					break;
+						/* Print environment contents, version number and exit */
+						print_version(pidstat_env, PIDSTAT_ENV_NR);
+						break;
+					}
 
 				case 'v':
 					/* Display some kernel tables values */
