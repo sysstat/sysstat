@@ -47,6 +47,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+extern int __env;
+#endif
+
 unsigned long long uptime_cs[3] = {0, 0, 0};
 
 /* NOTE: Use array of _char_ for bitmaps to avoid endianness problems...*/
@@ -2261,6 +2265,12 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+		}
+#endif
 
 		else if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {

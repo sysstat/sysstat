@@ -55,6 +55,10 @@
 char *sccsid(void) { return (SCCSID); }
 #endif
 
+#ifdef TEST
+extern int __env;
+#endif
+
 unsigned long long tot_jiffies[3] = {0, 0, 0};
 unsigned long long uptime_cs[3] = {0, 0, 0};
 struct st_pid *pid_list = NULL;
@@ -2637,6 +2641,13 @@ int main(int argc, char **argv)
 			pidflag |= P_D_UNIT;
 			opt++;
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+			opt++;
+		}
+#endif
 
 		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
 			/* Check that the argument is a digit */

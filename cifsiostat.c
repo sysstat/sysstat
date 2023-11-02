@@ -48,6 +48,7 @@ char *sccsid(void) { return (SCCSID); }
 
 #ifdef TEST
 void int_handler(int n) { return; }
+extern int __env;
 #endif
 
 unsigned long long uptime_cs[2] = {0, 0};
@@ -514,6 +515,13 @@ int main(int argc, char **argv)
 			flags |= I_D_UNIT;
 			opt++;
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+			opt++;
+		}
+#endif
 
 		else if (!strcmp(argv[opt], "--pretty")) {
 			/* Display an easy-to-read CIFS report */

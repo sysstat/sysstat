@@ -65,6 +65,7 @@ char *sccsid(void) { return (SCCSID); }
 
 #ifdef TEST
 void int_handler(int n) { return; }
+extern int __env;
 #endif
 
 int cpu_nr = 0;		/* Nb of processors on the machine */
@@ -625,6 +626,13 @@ int main(int argc, char **argv)
 			flags |= T_D_UNIT;
 			opt++;
 		}
+
+#ifdef TEST
+		else if (!strncmp(argv[opt], "--getenv", 8)) {
+			__env = TRUE;
+			opt++;
+		}
+#endif
 
 		else if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {
