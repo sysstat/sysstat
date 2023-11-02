@@ -254,7 +254,7 @@ struct ext_disk_stats {
  ***************************************************************************
  */
 void print_version
-	(void);
+	(char *[], int);
 void get_HZ
 	(void);
 void get_kb_shift

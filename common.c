@@ -77,13 +77,29 @@ char persistent_name_type[MAX_FILE_LEN];
 
 /*
  ***************************************************************************
- * Print sysstat version number and exit.
+ * Print sysstat version number, environment variables and exit.
+ *
+ * IN:
+ * @env		Array with environment variable names.
+ * @n		Number of environment variables.
  ***************************************************************************
  */
-void print_version(void)
+void print_version(char *env[], int n)
 {
+	char *e;
+	int i;
+
+	/* Display contents of environment variables */
+	for (i = 0; i < n; i++) {
+		if ((e = __getenv(env[i])) != NULL) {
+			printf("%s=%s\n", env[i], e);
+		}
+	}
+
+	/* Print sysstat version number */
 	printf(_("sysstat version %s\n"), VERSION);
 	printf("(C) Sebastien Godard (sysstat <at> orange.fr)\n");
+
 	exit(0);
 }
 

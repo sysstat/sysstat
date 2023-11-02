@@ -663,8 +663,12 @@ int main(int argc, char **argv)
 					break;
 
 				case 'V':
-					/* Print version number and exit */
-					print_version();
+					char *tapestat_env[] = {ENV_COLORS,
+							        ENV_COLORS_SGR,
+								ENV_TIME_FMT};
+#define TAPESTAT_ENV_NR	3
+					/* Print environment contents, version number and exit */
+					print_version(tapestat_env, TAPESTAT_ENV_NR);
 					break;
 
 				default:

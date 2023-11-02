@@ -2669,10 +2669,6 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			*flags |= S_F_ZERO_OMIT;
 			break;
 
-		case 'V':
-			print_version();
-			break;
-
 		default:
 			return 1;
 		}

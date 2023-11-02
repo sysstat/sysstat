@@ -567,8 +567,12 @@ int main(int argc, char **argv)
 					break;
 
 				case 'V':
-					/* Print version number and exit */
-					print_version();
+					char *cifsiostat_env[] = {ENV_COLORS,
+								  ENV_COLORS_SGR,
+								  ENV_TIME_FMT};
+#define CIFSIOSTAT_ENV_NR	3
+					/* Print environment contents, version number and exit */
+					print_version(cifsiostat_env, CIFSIOSTAT_ENV_NR);
 					break;
 
 				default:
