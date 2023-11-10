@@ -134,3 +134,7 @@ balloon_deflate 0
 balloon_migrate 0
 swap_ra 0
 swap_ra_hit 0
+pgpromote_success 174594
+pgdemote_kswapd 14723
+pgdemote_direct 13845
+pgdemote_khugepaged 17493

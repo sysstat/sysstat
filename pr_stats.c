@@ -695,7 +695,7 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 	}
 
 	printf("%-11s", timestamp[curr]);
-	cprintf_f(NO_UNIT, FALSE, 8, 9, 2,
+	cprintf_f(NO_UNIT, FALSE, 10, 9, 2,
 		  S_VALUE(spp->pgpgin,        spc->pgpgin,        itv),
 		  S_VALUE(spp->pgpgout,       spc->pgpgout,       itv),
 		  S_VALUE(spp->pgfault,       spc->pgfault,       itv),
@@ -703,7 +703,9 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 		  S_VALUE(spp->pgfree,        spc->pgfree,        itv),
 		  S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
 		  S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
-		  S_VALUE(spp->pgsteal,       spc->pgsteal,       itv));
+		  S_VALUE(spp->pgsteal,       spc->pgsteal,       itv),
+		  S_VALUE(spp->pgpromote,     spc->pgpromote,     itv),
+		  S_VALUE(spp->pgdemote,      spc->pgdemote,      itv));
 	printf("\n");
 }
 

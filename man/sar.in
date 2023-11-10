@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "NOVEMBER 2023" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -154,6 +154,12 @@ Number of pages scanned directly per second.
 .IP pgsteal/s
 Number of pages the system has reclaimed from cache (pagecache and
 swapcache) per second to satisfy its memory demands.
+.IP pgprom/s
+Number of pages promoted (i.e. migrated from slow to fast memory types)
+by the system per second.
+.IP pgdem/s
+Number of pages demoted (i.e. migrated from fast to slow memory types)
+by the system per second.
 .RE
 .TP
 .B -b

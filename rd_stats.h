@@ -187,13 +187,15 @@ struct stats_paging {
 	unsigned long pgscan_kswapd	__attribute__ ((aligned (8)));
 	unsigned long pgscan_direct	__attribute__ ((aligned (8)));
 	unsigned long pgsteal		__attribute__ ((aligned (8)));
+	unsigned long pgpromote		__attribute__ ((aligned (8)));
+	unsigned long pgdemote 		__attribute__ ((aligned (8)));
 };
 
 #define STATS_PAGING_SIZE	(sizeof(struct stats_paging))
 #define STATS_PAGING_ULL	0
-#define STATS_PAGING_UL		8
+#define STATS_PAGING_UL		10
 #define STATS_PAGING_U		0
-#define STATS_PAGING_XNR	8
+#define STATS_PAGING_XNR	10
 
 /* Structure for I/O and transfer rate statistics */
 struct stats_io {
