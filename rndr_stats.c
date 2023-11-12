@@ -697,10 +697,22 @@ __print_funct_t render_paging_stats(struct activity *a, int isdb, char *pre,
 	       S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
 	       NULL);
 
-	render(isdb, pre, pt_newlin,
+	render(isdb, pre, PT_NOFLAG,
 	       "-\tpgsteal/s", NULL, NULL,
 	       NOVAL,
 	       S_VALUE(spp->pgsteal, spc->pgsteal, itv),
+	       NULL);
+
+	render(isdb, pre, PT_NOFLAG,
+	       "-\tpgprom/s", NULL, NULL,
+	       NOVAL,
+	       S_VALUE(spp->pgpromote, spc->pgpromote, itv),
+	       NULL);
+
+	render(isdb, pre, pt_newlin,
+	       "-\tpgdem/s", NULL, NULL,
+	       NOVAL,
+	       S_VALUE(spp->pgdemote, spc->pgdemote, itv),
 	       NULL);
 }
 

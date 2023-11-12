@@ -428,7 +428,9 @@ __print_funct_t xml_print_paging_stats(struct activity *a, int curr, int tab,
 		"pgfree=\"%.2f\" "
 		"pgscank=\"%.2f\" "
 		"pgscand=\"%.2f\" "
-		"pgsteal=\"%.2f\"/>",
+		"pgsteal=\"%.2f\" "
+		"pgprom=\"%.2f\" "
+		"pgdem=\"%.2f\"/>",
 		S_VALUE(spp->pgpgin,        spc->pgpgin,        itv),
 		S_VALUE(spp->pgpgout,       spc->pgpgout,       itv),
 		S_VALUE(spp->pgfault,       spc->pgfault,       itv),
@@ -436,7 +438,9 @@ __print_funct_t xml_print_paging_stats(struct activity *a, int curr, int tab,
 		S_VALUE(spp->pgfree,        spc->pgfree,        itv),
 		S_VALUE(spp->pgscan_kswapd, spc->pgscan_kswapd, itv),
 		S_VALUE(spp->pgscan_direct, spc->pgscan_direct, itv),
-		S_VALUE(spp->pgsteal,       spc->pgsteal,       itv));
+		S_VALUE(spp->pgsteal,       spc->pgsteal,       itv),
+		S_VALUE(spp->pgpromote,     spc->pgpromote,     itv),
+		S_VALUE(spp->pgdemote,      spc->pgdemote,      itv));
 }
 
 /*

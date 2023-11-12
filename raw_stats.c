@@ -354,6 +354,10 @@ __print_funct_t raw_print_paging_stats(struct activity *a, char *timestr, int cu
 	pval((unsigned long long) spp->pgscan_direct, (unsigned long long) spc->pgscan_direct);
 	printf(" %s", pfield(NULL, 0));
 	pval((unsigned long long) spp->pgsteal, (unsigned long long) spc->pgsteal);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spp->pgpromote, (unsigned long long) spc->pgpromote);
+	printf(" %s", pfield(NULL, 0));
+	pval((unsigned long long) spp->pgdemote, (unsigned long long) spc->pgdemote);
 	printf("\n");
 }
 
