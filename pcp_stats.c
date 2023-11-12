@@ -326,6 +326,12 @@ __print_funct_t pcp_print_paging_stats(struct activity *a, int curr)
 
 	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgsteal);
 	pmiPutValue("mem.vmstat.pgsteal_total", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgpromote);
+	pmiPutValue("mem.vmstat.pgpromote_success", NULL, buf);
+
+	snprintf(buf, sizeof(buf), "%llu", (unsigned long long) spc->pgdemote);
+	pmiPutValue("mem.vmstat.pgdemote_total", NULL, buf);
 #endif	/* HAVE_PCP */
 }
 

@@ -472,6 +472,14 @@ void pcp_def_paging_metrics(void)
 	pmiAddMetric("mem.vmstat.pgsteal_total",
 		     pmiID(60, 28, 178), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
 		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("mem.vmstat.pgpromote_success",
+		     pmiID(60, 28, 192), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
+
+	pmiAddMetric("mem.vmstat.pgdemote_total",
+		     pmiID(60, 28, 193), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_COUNTER,
+		     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
 #endif /* HAVE_PCP */
 }
 
