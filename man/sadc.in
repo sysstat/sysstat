@@ -4,9 +4,9 @@
 sadc \- System activity data collector.
 
 .SH SYNOPSIS
-.B @SA_LIB_DIR@/sadc [ -C
+.B @SA_LIB_DIR@/sadc [ \-C
 .I comment
-.BI "] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ] [ -S { " "keyword" "[,...] | ALL | XALL } ] ["
+.BI "] [ \-D ] [ \-F ] [ \-f ] [ \-L ] [ \-V ] [ \-S { " "keyword" "[,...] | ALL | XALL } ] ["
 .IB "interval " "[ " "count " "] ] [ " "outfile " "]"
 
 .SH DESCRIPTION
@@ -15,7 +15,7 @@ command samples system data a specified number of times
 .RI "(" "count" ") at a specified interval measured in seconds (" "interval" ")."
 It writes in binary format to the specified
 .IR "outfile " "or to standard output. If " "outfile"
-.RB "is set to " "-" ", then " "sadc"
+.RB "is set to " "\-" ", then " "sadc"
 uses the standard system activity daily data file (see below).
 In this case, if the file already exists,
 .B sadc
@@ -24,11 +24,11 @@ will overwrite it if it is from a previous month. By default
 collects most of the data available from the kernel.
 But there are also optional metrics, for which the
 relevant options must be explicitly passed to
-.BR "sadc " "to be collected (see option " "-S " "below)."
+.BR "sadc " "to be collected (see option " "\-S " "below)."
 .PP
 The standard system activity daily data file is named
 .IR "saDD " "unless option"
-.B -D
+.B \-D
 is used, in which case its name is
 .IR "saYYYYMMDD" ", where " "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
 for the current day. By default it is located in the
@@ -46,13 +46,13 @@ parameter is not specified,
 writes its data endlessly. When both
 .IR "interval " "and " "count"
 are not specified, and option
-.B -C
+.B \-C
 is not used, a dummy record, which is used at system startup to mark
 the time when the counter restarts from 0, will be written.
 For example, one of the system startup script may write the restart mark to
 the daily data file by the command entry:
 
-.B @SA_LIB_DIR@/sadc -
+.B @SA_LIB_DIR@/sadc \-
 
 .RB "The " "sadc " "command is intended to be used as a backend to the " "sar " "command."
 .PP
@@ -61,7 +61,7 @@ command only reports on local activities.
 
 .SH OPTIONS
 .TP
-.BI "-C " "comment"
+.BI "\-C " "comment"
 When neither the
 .IR "interval " "nor the " "count"
 parameters are specified, this option tells
@@ -69,13 +69,13 @@ parameters are specified, this option tells
 to write a dummy record containing the specified
 .I comment
 string. This comment can then be displayed with option
-.BR "-C " "of " "sar" "."
+.BR "\-C " "of " "sar" "."
 .TP
-.B -D
+.B \-D
 .RI "Use " "saYYYYMMDD " "instead of " "saDD"
 as the standard system activity daily data file name.
 .TP
-.B -F
+.B \-F
 .RI "The creation of " "outfile"
 will be forced. If the file already exists and has a format unknown to
 .B sadc
@@ -84,7 +84,7 @@ created by an older version of
 .B sadc
 and whose format is no longer compatible with current one.
 .TP
-.B -f
+.B \-f
 fdatasync() will be used to ensure data is written to disk. This differs
 from the normal operation in that a sudden system reset is less likely to
 result in the
@@ -95,7 +95,7 @@ expense of performance within the
 process as forward progress will be
 blocked while data is written to underlying disk instead of just to cache.
 .TP
-.B -L
+.B \-L
 .B sadc
 will try to get an exclusive lock on the
 .I outfile
@@ -113,7 +113,7 @@ might still be running when
 starts a new one. Without locking, this situation can result in a corrupted system
 activity file.
 .TP
-.BI "-S { " "keyword" "[,...] | ALL | XALL }"
+.BI "\-S { " "keyword" "[,...] | ALL | XALL }"
 Possible keywords are
 .BR "DISK" ", " "INT" ", " "IPV6" ", " "POWER" ", " "SNMP" ", " "XDISK" ", " "ALL " "and " "XALL" "."
 .br
@@ -142,12 +142,12 @@ keyword extensions) and therefore all possible activities are collected.
 .IP
 Important note: The activities (including optional ones) saved in an existing
 data file prevail over those selected with option
-.BR "-S" "."
+.BR "\-S" "."
 As a consequence, appending data to an existing data file will result in option
-.B -S
+.B \-S
 being ignored.
 .TP
-.B -V
+.B \-V
 Print version number then exit.
 
 .SH ENVIRONMENT
@@ -170,7 +170,7 @@ directory.
 Write 10 records of one second intervals to the
 .IR "/tmp/datafile " "binary file."
 .TP
-.B @SA_LIB_DIR@/sadc -C """Backup Start"" /tmp/datafile
+.B @SA_LIB_DIR@/sadc \-C """Backup Start"" /tmp/datafile
 Insert the comment "Backup Start" into the file
 .IR "/tmp/datafile" "."
 

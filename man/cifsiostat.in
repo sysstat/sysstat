@@ -5,11 +5,11 @@ cifsiostat \- Report CIFS statistics.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 .el \{
-.B cifsiostat [ -h ] [ -k | -m ] [ -t ] [ -V ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 
@@ -58,37 +58,37 @@ Indicate the number of deleted files per second.
 .SH OPTIONS
 .if 'yes'@WITH_DEBUG@' \{
 .TP
-.B --debuginfo
+.B \-\-debuginfo
 Print debug output to stderr.
 .\}
 .TP
-.B --dec={ 0 | 1 | 2 }
+.B \-\-dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .TP
-.B -h
+.B \-h
 This option is equivalent to specifying
-.BR "--human --pretty" "."
+.BR "\-\-human \-\-pretty" "."
 .TP
-.B --human
+.B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
 .TP
-.B -k
+.B \-k
 Display statistics in kilobytes per second.
 .TP
-.B -m
+.B \-m
 Display statistics in megabytes per second.
 .TP
-.B --pretty
+.B \-\-pretty
 Make the CIFS report easier to read by a human.
 .TP
-.B -t
+.B \-t
 Print the time for each report displayed. The timestamp format may depend
 on the value of the
 .BR "S_TIME_FORMAT " "environment variable (see below)."
 .TP
-.B -V
+.B \-V
 Print version number then exit.
 
 .SH ENVIRONMENT
@@ -127,7 +127,7 @@ then the current locale will be ignored when printing the date in the report
 header. The
 .B cifsiostat
 command will use the ISO 8601 format (YYYY-MM-DD) instead.
-.RB "The timestamp displayed with option " "-t " "will also be compliant with ISO 8601 format."
+.RB "The timestamp displayed with option " "\-t " "will also be compliant with ISO 8601 format."
 
 .SH BUG
 .IR "/proc " "filesystem must be mounted for"

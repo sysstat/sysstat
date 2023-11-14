@@ -41,7 +41,7 @@ script figures out which files are to be removed (see below "How the
 value"). Using a value of 28 keeps a whole month's worth of data. If you set
 .B HISTORY
 to a value greater than 28 then you should consider using
-.BR "sadc" "'s option " "-D"
+.BR "sadc" "'s option " "\-D"
 to prevent older data files from being overwritten (see
 .BR "sadc" "(8)"
 manual page). In this latter case data files are named
@@ -54,7 +54,7 @@ How the
 
 .RB "The " "sa2"
 script uses the
-.BR "find " "command with the " "-mtime " "option to figure"
+.BR "find " "command with the " "\-mtime " "option to figure"
 out which files are to be removed. The
 .BR "find " "command interprets this value"
 as "N 24 hour periods", ignoring any fractional part. This means that the

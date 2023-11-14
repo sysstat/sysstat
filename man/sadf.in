@@ -4,11 +4,11 @@
 sadf \- Display data collected by sar in multiple formats.
 
 .SH SYNOPSIS
-.B sadf [ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ] [ -O
-.IB "opts " "[,...] ] [ -P { " "cpu_list " "| ALL } ] [ -s [ "
-.IB "start_time " "] ] ] [ -e [ " "end_time " "] ] ]"
-.BI "[ --dev=" "dev_list " "] [ --fs=" "fs_list " "] [ --iface=" "iface_list" "] [ --int=" "int_list " "] [ --"
-.IB "sar_options " "] [ " "interval " "[ " "count " "] ] [ " "datafile " "| " "-[0-9]+ " "]"
+.B sadf [ \-C ] [ \-c | \-d | \-g | \-j | \-l | \-p | \-r | \-x ] [ \-H ] [ \-h ] [ \-T | \-t | \-U ] [ \-V ] [ \-O
+.IB "opts " "[,...] ] [ \-P { " "cpu_list " "| ALL } ] [ \-s [ "
+.IB "start_time " "] ] ] [ \-e [ " "end_time " "] ] ]"
+.BI "[ \-\-dev=" "dev_list " "] [ \-\-fs=" "fs_list " "] [ \-\-iface=" "iface_list" "] [ \-\-int=" "int_list " "] [ \-\-"
+.IB "sar_options " "] [ " "interval " "[ " "count " "] ] [ " "datafile " "| " "\-[0\-9]+ " "]"
 
 .SH DESCRIPTION
 .RB "The " "sadf"
@@ -17,12 +17,12 @@ command is used for displaying the contents of data files created by the
 can write its data in many different formats (CSV, XML, etc.)
 The default format is one that can
 easily be handled by pattern processing commands like
-.BR "awk " "(see option " "-p" "). The " "sadf"
+.BR "awk " "(see option " "\-p" "). The " "sadf"
 command can also be used to draw graphs for the various activities collected by
 .B sar
 and display them as SVG (Scalable Vector Graphics) graphics in your web browser
 (see option
-.BR "-g" ")."
+.BR "\-g" ")."
 .PP
 .RB "The " "sadf"
 command extracts and writes to standard output records saved in the
@@ -33,9 +33,9 @@ file. This file must have been created by a version of
 .RB "is omitted, " "sadf"
 uses the standard system activity daily data file.
 It is also possible to enter
-.BR "-1" ", " "-2 " "etc. as an argument to " "sadf"
+.BR "\-1" ", " "\-2 " "etc. as an argument to " "sadf"
 to display data of that days ago. For example,
-.B -1
+.B \-1
 will point at the standard system activity file of yesterday.
 .PP
 The standard system activity daily data file is named
@@ -61,108 +61,108 @@ All the activity flags of
 .B sar
 may be entered on the command line to indicate which
 activities are to be reported. Before specifying them, put a pair of dashes
-.RB "(" "--" ")"
+.RB "(" "\-\-" ")"
 on the command line in order not to confuse the flags with those of
 .B sadf.
 Not specifying any flags selects only CPU activity.
 
 .SH OPTIONS
 .TP
-.B -C
+.B \-C
 .RB "Tell " "sadf " "to display comments present in file."
 .TP
-.B -c
+.B \-c
 Convert an old system activity binary datafile (version 9.1.6 and later)
 to current up-to-date format. Use the following syntax:
 
-.BI "sadf -c " "old_datafile " "> " "new_datafile"
+.BI "sadf \-c " "old_datafile " "> " "new_datafile"
 
 Conversion can be controlled using option
-.BR "-O " "(see below)."
+.BR "\-O " "(see below)."
 .TP
-.B -d
+.B \-d
 Print the contents of the data file in a format that can easily
 be ingested by a relational database system. The output consists
 of fields separated by a semicolon. Each record contains
 the hostname of the host where the file was created, the interval value
-(or -1 if not applicable), the timestamp in a form easily acceptable by
+(or \-1 if not applicable), the timestamp in a form easily acceptable by
 most databases, and additional semicolon separated data fields as specified by
 .IR "sar_options " "command line options."
 Note that timestamp output can be controlled by options
-.BR "-T" ", " "-t " "and " "-U" "."
+.BR "\-T" ", " "\-t " "and " "\-U" "."
 .TP
-.BI "--dev=" "dev_list"
+.BI "\-\-dev=" "dev_list"
 Specify the block devices for which statistics are to be displayed by
 .BR "sadf" "."
 .I dev_list
 is a list of comma-separated device names. Useful with option
-.BR "-d " "from " "sar" "."
+.BR "\-d " "from " "sar" "."
 .RE
 .PP
-.BI "-e [ " "hh" ":" "mm" "[:" "ss" "] ]"
+.BI "\-e [ " "hh" ":" "mm" "[:" "ss" "] ]"
 .br
-.BI "-e [ " "seconds_since_the_epoch " "]"
+.BI "\-e [ " "seconds_since_the_epoch " "]"
 .RS
 Set the ending time of the report. The default ending
 time is 18:00:00. Hours must be given in 24-hour format, or as the number of seconds
 since the epoch (given as a 10 digit number).
 .RE
 .TP
-.BI "--fs=" "fs_list"
+.BI "\-\-fs=" "fs_list"
 Specify the filesystems for which statistics are to be displayed by
 .BR "sadf" "."
 .I fs_list
 is a list of comma-separated filesystem names or mountpoints. Useful with option
-.BR "-F " "from " "sar" "."
+.BR "\-F " "from " "sar" "."
 .TP
-.B -g
+.B \-g
 Print the contents of the data file in SVG (Scalable Vector Graphics) format.
 This option enables you to display some fancy graphs in your web browser.
 Use the following syntax:
 
-.BI "sadf -g " "your_datafile " "[ -- " "sar_options " "] > " "output.svg"
+.BI "sadf \-g " "your_datafile " "[ \-\- " "sar_options " "] > " "output.svg"
 
 and open the resulting SVG file in your favorite web browser.
 Output can be controlled using option
-.BR "-O " "(see below)."
+.BR "\-O " "(see below)."
 .TP
-.B -H
+.B \-H
 Display only the header of the report (when applicable). If no format has
 been specified, then the header data (metadata) of the data file are displayed.
 .TP
-.B -h
+.B \-h
 When used in conjunction with option
-.BR "-d" ", all activities will be displayed horizontally on a single line."
+.BR "\-d" ", all activities will be displayed horizontally on a single line."
 .TP
-.BI "--iface=" "iface_list"
+.BI "\-\-iface=" "iface_list"
 Specify the network interfaces for which statistics are to be displayed by
 .BR "sadf" "."
 .I iface_list
 is a list of comma-separated interface names. Useful with options
-.BR "-n DEV " "and " "-n EDEV " "from " "sar" "."
+.BR "\-n DEV " "and " "\-n EDEV " "from " "sar" "."
 .TP
-.BI "--int=" "int_list"
+.BI "\-\-int=" "int_list"
 Specify the interrupts names for which statistics are to be displayed by
 .BR "sadf" "."
 .I int_list
 is a list of comma-separated values or range of values (e.g.,
-.BR "0-16,35,40-" "). Useful with option " "-I " "from " "sar" "."
+.BR "0\-16,35,40\-" "). Useful with option " "\-I " "from " "sar" "."
 .TP
-.B -j
+.B \-j
 Print the contents of the data file in JSON (JavaScript Object Notation)
 format. Timestamps can be controlled by options
-.BR "-T " "and " "-t" "."
+.BR "\-T " "and " "\-t" "."
 .TP
-.B -l
+.B \-l
 Export the contents of the data file to a PCP (Performance Co-Pilot) archive.
 The name of the archive can be specified using the keyword
-.BR "pcparchive= " "with option " "-O" "."
+.BR "pcparchive= " "with option " "\-O" "."
 .TP
-.BI "-O " "opts" "[,...]"
+.BI "\-O " "opts" "[,...]"
 Use the specified options to control the output of
 .BR "sadf" "."
 The following options are used to control SVG output displayed by
-.BR "sadf -g" ":"
+.BR "sadf \-g" ":"
 .RS
 .IP autoscale
 Draw all the graphs of a given view as large as possible based on current
@@ -187,7 +187,7 @@ Set SVG canvas height to
 .IP oneday
 Display graphs data over a period of 24 hours. Note that hours are still
 printed in UTC by default: You should use option
-.BR "-T " "to print them in local time"
+.BR "\-T " "to print them in local time"
 and get a time window starting from midnight.
 .IP packed
 Group all views from the same activity (and for the same device) on the same row.
@@ -218,45 +218,45 @@ Specify the name of the PCP archive to create.
 .RE
 .IP
 The following option is used to control raw output displayed by
-.BR "sadf -r" ":"
+.BR "sadf \-r" ":"
 .RS
 .IP debug
 Display additional information, mainly useful for debugging purpose.
 .RE
 .TP
-.BI "-P { " "cpu_list " "| ALL }"
+.BI "\-P { " "cpu_list " "| ALL }"
 .RB "Tell " "sadf"
 that processor dependent statistics are to be reported only for the
 specified processor or processors.
 .I cpu_list
 is a list of comma-separated values or range of values (e.g.,
-.BR "0,2,4-7,12-" ")."
+.BR "0,2,4\-7,12\-" ")."
 Note that processor 0 is the first processor, and processor
 .BR "all " "is the global average among all processors. Specifying the " "ALL"
 keyword reports statistics for each individual processor, and globally for
 all processors.
 .TP
-.B -p
+.B \-p
 Print the contents of the data file in a format that can
 easily be handled by pattern processing commands like
 .BR "awk" "."
 The output consists of fields separated by a tab. Each record contains the
 hostname of the host where the file was created, the interval value
-(or -1 if not applicable), the timestamp, the device name (or - if not applicable),
+(or \-1 if not applicable), the timestamp, the device name (or \- if not applicable),
 the field name and its value.
 Note that timestamp output can be controlled by options
-.BR "-T" ", " "-t " "and " "-U" "."
+.BR "\-T" ", " "\-t " "and " "\-U" "."
 .TP
-.B -r
+.B \-r
 Print the raw contents of the data file. With this format, the values for
 all the counters are displayed as read from the kernel, which means e.g., that
 no average values are calculated over the elapsed time interval.
 Output can be controlled using option
-.BR "-O " "(see above)."
+.BR "\-O " "(see above)."
 .PP
-.BI "-s [ " "hh" ":" "mm" "[:" "ss" "] ]"
+.BI "\-s [ " "hh" ":" "mm" "[:" "ss" "] ]"
 .br
-.BI "-s [ " "seconds_since_the_epoch " "]"
+.BI "\-s [ " "seconds_since_the_epoch " "]"
 .RS
 Set the starting time of the data, causing the
 .B sadf
@@ -266,23 +266,23 @@ Hours must be given in 24-hour format, or as the number of seconds
 since the epoch (given as a 10 digit number).
 .RE
 .TP
-.B -T
+.B \-T
 Display timestamp in local time instead of UTC (Coordinated Universal Time).
 .TP
-.B -t
+.B \-t
 Display timestamp in the original local time of the data file creator
 instead of UTC (Coordinated Universal Time).
 .TP
-.B -U
+.B \-U
 Display timestamp (UTC - Coordinated Universal Time) in seconds from the epoch.
 .TP
-.B -V
+.B \-V
 Print version number then exit.
 .TP
-.B -x
+.B \-x
 Print the contents of the data file in XML format.
 Timestamps can be controlled by options
-.BR "-T " "and " "-t" "."
+.BR "\-T " "and " "\-t" "."
 The corresponding DTD (Document Type Definition) and XML Schema are included
 in the sysstat source package. They are also available at
 .IR "https://sysstat.github.io/" "."
@@ -293,10 +293,10 @@ command takes into account the following environment variables:
 .TP
 .B S_COLORS_PALETTE
 Specify the colors used by
-.B sadf -g
+.B sadf \-g
 to render the SVG output. This environment variable is taken into account
 only when the custom color palette has been selected with the option
-.BR "customcol " "(see option " "-O" ")."
+.BR "customcol " "(see option " "\-O" ")."
 Its value is a colon-separated list of capabilities associated
 with six-digit, three-byte
 hexadecimal numbers (hex triplets) representing colors that defaults to
@@ -356,19 +356,19 @@ directory.
 
 .SH EXAMPLES
 .TP
-.B sadf -d @SA_DIR@/sa21 -- -r -n DEV
+.B sadf \-d @SA_DIR@/sa21 \-\- \-r \-n DEV
 Extract memory and network statistics from system activity file
 .IR "sa21" ","
 and display them in a format that can be ingested by a database.
 .TP
-.B sadf -p -P 1
+.B sadf \-p \-P 1
 Extract CPU statistics for processor 1 (the second processor) from current
 daily data file, and display them in a format that can easily be handled
 by a pattern processing command.
 
 .SH BUGS
 SVG output (as created by option
-.BR "-g" ")"
+.BR "\-g" ")"
 is fully compliant with SVG 1.1 standard.
 Graphics have been successfully displayed in various web browsers, including
 Firefox, Chrome and Opera. Yet SVG rendering is broken on Microsoft browsers

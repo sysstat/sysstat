@@ -4,11 +4,11 @@
 pidstat \- Report statistics for Linux tasks.
 
 .SH SYNOPSIS
-.B pidstat [ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [
-.IB "username " "] ] [ -u ] [ -V ] [ -v ] [ -w ] [ -C " "comm " "] [ -G " "process_name"
-.BI "] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ -p { " "pid" "[,...]"
-.B | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ] [
-.IB "interval " "[ " "count " "] ] [ -e " "program"
+.B pidstat [ \-d ] [ \-H ] [ \-h ] [ \-I ] [ \-l ] [ \-R ] [ \-r ] [ \-s ] [ \-t ] [ \-U [
+.IB "username " "] ] [ \-u ] [ \-V ] [ \-v ] [ \-w ] [ \-C " "comm " "] [ \-G " "process_name"
+.BI "] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-p { " "pid" "[,...]"
+.B | SELF | ALL } ] [ \-T { TASK | CHILD | ALL } ] [
+.IB "interval " "[ " "count " "] ] [ \-e " "program"
 .IB "args " "]"
 
 .SH DESCRIPTION
@@ -16,18 +16,18 @@ pidstat \- Report statistics for Linux tasks.
 command is used for monitoring individual tasks currently being managed
 by the Linux kernel.
 It writes to standard output activities for every task selected with option
-.B -p
+.B \-p
 or for every task managed by the Linux kernel if option
-.B -p ALL
+.B \-p ALL
 has been used. Not selecting any tasks is equivalent to specifying
-.B -p ALL
+.B \-p ALL
 but only active tasks (tasks with non-zero statistics values)
 will appear in the report.
 .PP
 .RB "The " "pidstat"
 command can also be used for monitoring the child processes of selected tasks.
 Read about option
-.BR "-T " "below."
+.BR "\-T " "below."
 .PP
 .RI "The " "interval"
 parameter specifies the amount of time in seconds between each report.
@@ -46,11 +46,11 @@ Not specifying any flags selects only CPU activity.
 
 .SH OPTIONS
 .TP
-.BI "-C " "comm"
+.BI "\-C " "comm"
 Display only tasks whose command name includes the string
 .IR "comm" ". This string can be a regular expression."
 .TP
-.B -d
+.B \-d
 Report I/O statistics (kernels 2.6.20 and later only).
 The following values may be displayed:
 .RS
@@ -79,10 +79,10 @@ completion.
 The command name of the task.
 .RE
 .TP
-.B --dec={ 0 | 1 | 2 }
+.B \-\-dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .TP
-.BI "-e " "program args"
+.BI "\-e " "program args"
 Execute
 .I program
 with given arguments
@@ -92,37 +92,37 @@ and monitor it with
 .BR "pidstat " "stops when"
 .IR "program " "terminates."
 .TP
-.BI "-G " "process_name"
+.BI "\-G " "process_name"
 Display only processes whose command name includes the string
 .IR "process_name" "."
 This string can be a regular expression. If option
-.BR "-t " "is used together with option " "-G"
+.BR "\-t " "is used together with option " "\-G"
 then the threads belonging to that process are also displayed
 (even if their command name doesn't include the string
 .IR "process_name" ")."
 .TP
-.B -H
+.B \-H
 Display timestamp in seconds since the epoch.
 .TP
-.B -h
+.B \-h
 Display all activities horizontally on a single line, with no
 average statistics at the end of the report. This is
 intended to make it easier to be parsed by other programs.
 .TP
-.B --human
+.B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kilobytes, sectors...) associated with the metrics.
 .TP
-.B -I
+.B \-I
 In an SMP environment, indicate that tasks CPU usage
-.RB "(as displayed by option " "-u" ")"
+.RB "(as displayed by option " "\-u" ")"
 should be divided by the total number of processors.
 .TP
-.B -l
+.B \-l
 Display the process command name and all its arguments.
 .TP
-.BI "-p { " "pid" "[,...] | SELF | ALL }"
+.BI "\-p { " "pid" "[,...] | SELF | ALL }"
 Select tasks (processes) for which statistics are to be reported.
 .I pid
 is the process identification number. The
@@ -132,7 +132,7 @@ keyword indicates that statistics are to be reported for the
 keyword indicates that statistics are to be reported for all the
 tasks managed by the system.
 .TP
-.B -R
+.B \-R
 Report realtime priority and scheduling policy information.
 The following values may be displayed:
 .RS
@@ -150,7 +150,7 @@ The scheduling policy of the task being monitored.
 The command name of the task.
 .RE
 .TP
-.B -r
+.B \-r
 Report page faults and memory utilization.
 
 When reporting statistics for individual tasks,
@@ -191,10 +191,10 @@ together with its children.
 .IP PID
 The identification number of the task which is being monitored
 together with its children.
-.IP minflt-nr
+.IP minflt\-nr
 Total number of minor faults made by the task and all its children,
 and collected during the interval of time.
-.IP majflt-nr
+.IP majflt\-nr
 Total number of major faults made by the task and all its children,
 and collected during the interval of time.
 .IP Command
@@ -202,7 +202,7 @@ The command name of the task which is being monitored
 together with its children.
 .RE
 .TP
-.B -s
+.B \-s
 Report stack utilization.
 The following values may be displayed:
 .RS
@@ -221,7 +221,7 @@ The amount of memory in kilobytes used as stack, referenced by the task.
 The command name of the task.
 .RE
 .TP
-.B -T { TASK | CHILD | ALL }
+.B \-T { TASK | CHILD | ALL }
 This option specifies what has to be monitored by the
 .BR "pidstat " "command. The " "TASK"
 keyword indicates that statistics are to be reported for individual tasks
@@ -241,7 +241,7 @@ Also these statistics are not necessarily relevant to current time interval:
 The statistics of a child process are collected only when it finishes or
 it is killed.
 .TP
-.B -t
+.B \-t
 Also display statistics for threads associated with selected tasks.
 
 This option adds the following values to the reports:
@@ -252,12 +252,12 @@ The identification number of the thread group leader.
 The identification number of the thread being monitored.
 .RE
 .TP
-.BI "-U [ " "username " "]"
+.BI "\-U [ " "username " "]"
 Display the real user name of the tasks being monitored instead of the UID.
 .RI "If " "username"
 is specified, then only tasks belonging to the specified user are displayed.
 .TP
-.B -u
+.B \-u
 Report CPU utilization.
 
 When reporting statistics for individual tasks,
@@ -282,7 +282,7 @@ Percentage of CPU spent by the task while waiting to run.
 .IP %CPU
 Total percentage of CPU time used by the task. In an SMP environment,
 the task's CPU usage will be divided by the total number of CPU's if option
-.B -I
+.B \-I
 has been entered on the command line.
 .IP CPU
 Processor number to which the task is attached.
@@ -302,17 +302,17 @@ together with its children.
 .IP PID
 The identification number of the task which is being monitored
 together with its children.
-.IP usr-ms
+.IP usr\-ms
 Total number of milliseconds spent
 by the task and all its children while executing at the
 user level (application), with or without nice priority, and
 collected during the interval of time. Note that this field does
 NOT include time spent running a virtual processor.
-.IP system-ms
+.IP system\-ms
 Total number of milliseconds spent
 by the task and all its children while executing at the
 system level (kernel), and collected during the interval of time.
-.IP guest-ms
+.IP guest\-ms
 Total number of milliseconds spent
 by the task and all its children in virtual machine (running a virtual processor).
 .IP Command
@@ -320,10 +320,10 @@ The command name of the task which is being monitored
 together with its children.
 .RE
 .TP
-.B -V
+.B \-V
 Print version number then exit.
 .TP
-.B -v
+.B \-v
 Report values of some kernel tables. The following values may be displayed:
 .RS
 .IP UID
@@ -334,13 +334,13 @@ The name of the real user owning the task being monitored.
 The identification number of the task being monitored.
 .IP threads
 Number of threads associated with current task.
-.IP fd-nr
+.IP fd\-nr
 Number of file descriptors associated with current task.
 .IP Command
 The command name of the task.
 .RE
 .TP
-.B -w
+.B \-w
 Report task switching activity (kernels 2.6.23 and later only).
 The following values may be displayed:
 .RS
@@ -417,15 +417,15 @@ The timestamp will also be compliant with ISO 8601 format.
 Display five reports of CPU statistics for every active task in the system
 at two second intervals.
 .TP
-.B pidstat -r -p 1643 2 5
+.B pidstat \-r \-p 1643 2 5
 Display five reports of page faults and memory statistics for
 PID 1643 at two second intervals.
 .TP
-.B pidstat -C """fox|bird"" -r -p ALL
+.B pidstat \-C """fox|bird"" \-r \-p ALL
 Display global page faults and memory statistics for all the
 processes whose command name includes the string "fox" or "bird".
 .TP
-.B pidstat -T CHILD -r 2 5
+.B pidstat \-T CHILD \-r 2 5
 Display five reports of page faults statistics at two second intervals
 for the child processes of all tasks in the system. Only child processes
 with non-zero statistics values are displayed.
