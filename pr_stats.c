@@ -671,7 +671,7 @@ __print_funct_t print_paging_stats(struct activity *a, int prev, int curr,
 	struct stats_paging
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[prev];
-	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 	if (xinit) {
 		/* Init min and max values */
