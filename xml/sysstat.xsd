@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://sysstat.github.io" targetNamespace="https://sysstat.github.io" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.15 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.16 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -226,6 +226,8 @@
 	<xs:attribute name="pgscand" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="pgsteal" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="vmeff-percent" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="pgprom" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="pgdem" type="hundredth-type"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="io" type="io-type"></xs:element>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.15 for sysstat. See sadf.h -->
+<!--DTD v3.16 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -124,6 +124,8 @@
 	pgscand CDATA #REQUIRED
 	pgsteal CDATA #REQUIRED
 	vmeff-percent CDATA #IMPLIED
+	pgprom CDATA #IMPLIED
+	pgdem CDATA #IMPLIED
 >
 
 <!ELEMENT io (tps, io-reads, io-writes, io-discard?)>
