@@ -177,10 +177,10 @@ Average:          PIW      0.00      0.00      0.00      0.00      0.00      0.0
 13:20:29         0.00      0.00
 Average:         0.00      0.00
 
-13:20:09     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-13:20:19         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-13:20:29         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+13:20:09     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+13:20:19         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    179.85     31.70
+13:20:29         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.29     35.08
+Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     89.97     33.39
 
 13:20:09          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 13:20:19        20.85     12.83      4.81      3.21     57.43     38.50     32.08
@@ -638,9 +638,9 @@ Average:          PIW      0.00      0.00      0.00      0.00      0.00      0.0
 13:54:35         0.00      0.00
 Average:         0.00      0.00
 
-13:54:15     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-13:54:35         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+13:54:15     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+13:54:35         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
 13:54:15          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 13:54:35     32405.20    321.46  32082.13      1.60     64.16      0.00      1.60

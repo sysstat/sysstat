@@ -3,7 +3,7 @@
 xmlns="https://sysstat.github.io"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
-	<sysdata-version>3.15</sysdata-version>
+	<sysdata-version>3.16</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>

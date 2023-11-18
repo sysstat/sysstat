@@ -55,8 +55,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20     pswpin/s pswpout/s
 12:53:21         0.00      0.00
 
-12:53:20     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-12:53:21         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+12:53:20     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+12:53:21         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    179.85     31.70
 
 12:53:20          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 12:53:21        20.85     12.83      4.81      3.21     57.43     38.50     32.08
@@ -233,8 +233,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:21     pswpin/s pswpout/s
 12:53:22         0.00      0.00
 
-12:53:21     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-12:53:22         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+12:53:21     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+12:53:22         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.29     35.08
 
 12:53:21          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 12:53:22        56.63     41.26      8.96      6.40     17.16     20.81     32.01
@@ -417,8 +417,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:22     pswpin/s pswpout/s
 12:53:23         0.00      0.00
 
-12:53:22     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-12:53:23         0.00      0.00      0.00      0.00      0.00      0.26      0.00      0.23
+12:53:22     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+12:53:23         0.00      0.00      0.00      0.00      0.00      0.26      0.00      0.23      0.00     24.39
 
 12:53:22          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 12:53:23         0.00      0.00      0.00      0.00      0.00      0.00      0.00
@@ -775,10 +775,10 @@ Minimum:         0.00      0.00
 Maximum:         0.00      0.00
 Average:         0.00      0.00
 
-Summary:     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-Minimum:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
-Maximum:         0.00      0.00      0.00      0.00      0.00      0.26      0.00      0.23
-Average:         0.00      0.00      0.00      0.00      0.00      0.10      0.00      0.09
+Summary:     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+Minimum:         0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00     24.39
+Maximum:         0.00      0.00      0.00      0.00      0.00      0.26      0.00      0.23    179.85     35.08
+Average:         0.00      0.00      0.00      0.00      0.00      0.10      0.00      0.09     55.64     29.96
 
 Summary:          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 Minimum:         0.00      0.00      0.00      0.00      0.00      0.00      0.00

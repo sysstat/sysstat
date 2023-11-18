@@ -3,7 +3,7 @@
 xmlns="https://sysstat.github.io"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
-	<sysdata-version>3.15</sysdata-version>
+	<sysdata-version>3.16</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -427,7 +427,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" pgprom="179.85" pgdem="31.70"/>
 				<io per="second">
 					<tps>20.85</tps>
 					<io-reads rtps="12.83" bread="57.43"/>
@@ -927,7 +927,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" pgprom="0.29" pgdem="35.08"/>
 				<io per="second">
 					<tps>56.63</tps>
 					<io-reads rtps="41.26" bread="17.16"/>
@@ -1477,7 +1477,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.26" pgscand="0.00" pgsteal="0.23"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.26" pgscand="0.00" pgsteal="0.23" pgprom="0.00" pgdem="24.39"/>
 				<io per="second">
 					<tps>0.00</tps>
 					<io-reads rtps="0.00" bread="0.00"/>
@@ -2069,7 +2069,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="4.02" pgscand="0.00" pgsteal="0.09"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="4.02" pgscand="0.00" pgsteal="0.09" pgprom="0.00" pgdem="93.75"/>
 				<io per="second">
 					<tps>136.22</tps>
 					<io-reads rtps="85.80" bread="4497.45"/>
@@ -2716,7 +2716,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					</int-global>
 				</interrupts>
 				<swap-pages per="second" pswpin="0.00" pswpout="0.00"/>
-				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00"/>
+				<paging per="second" pgpgin="0.00" pgpgout="0.00" fault="0.00" majflt="0.00" pgfree="0.00" pgscank="0.00" pgscand="0.00" pgsteal="0.00" pgprom="0.00" pgdem="0.00"/>
 				<io per="second">
 					<tps>32405.20</tps>
 					<io-reads rtps="321.46" bread="64.16"/>

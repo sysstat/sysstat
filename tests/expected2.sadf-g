@@ -1106,6 +1106,54 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.23 L48049,0.09 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-497.555556)"/>
 </g>
+<rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
+<text x="1060" y="20" style="fill: #000000; stroke: none">Paging activity (4)
+<tspan x="1855" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
+</text>
+<polyline points="1130,50 1130,250 1850,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
+<text x="1855" y="50" style="fill: #696969; stroke: none; font-size: 12px">pgprom/s (0.00, 179.85)</text>
+<text x="1855" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">pgdem/s (0.00, 93.75)</text>
+<text x="2105" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
+<tspan x="2105" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
+</text>
+<g transform="translate(1130,250)">
+<text x="0" y="0" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">0.</text>
+<polyline points="0,50.00 720,50.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-1.112023)"/>
+<text x="0" y="-55" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">50.</text>
+<polyline points="0,100.00 720,100.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-1.112023)"/>
+<text x="0" y="-111" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">100.</text>
+<polyline points="0,150.00 720,150.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(1,-1.112023)"/>
+<text x="0" y="-166" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">150.</text>
+<polyline points="0,0 0,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="-15" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<polyline points="7200,0 7200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="45" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 2:00</text>
+<polyline points="14400,0 14400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="105" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 4:00</text>
+<polyline points="21600,0 21600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="165" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 6:00</text>
+<polyline points="28800,0 28800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="225" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 8:00</text>
+<polyline points="36000,0 36000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="285" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">10:00</text>
+<polyline points="43200,0 43200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="345" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">12:00</text>
+<polyline points="50400,0 50400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="405" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">14:00</text>
+<polyline points="57600,0 57600,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="465" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">16:00</text>
+<polyline points="64800,0 64800,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="525" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">18:00</text>
+<polyline points="72000,0 72000,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="585" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">20:00</text>
+<polyline points="79200,0 79200,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="645" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start">22:00</text>
+<polyline points="86400,0 86400,-200" style="vector-effect: non-scaling-stroke; stroke: #bebebe" transform="scale(0.008333,1)"/>
+<text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
+<text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
+<path d=" M48019,179.85 L48029,0.29 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.112023)"/>
+<path d=" M48019,31.70 L48029,35.08 L48039,24.39 L48049,93.75 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-1.112023)"/>
+</g>
 </g>
 <g id="g6-0" transform="translate(0,4810)">
 <rect x="0" y="0" height="300" width="1050" fill="#ffffff"/>

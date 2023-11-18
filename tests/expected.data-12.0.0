@@ -33,10 +33,10 @@ Average:         0.00  11727.00
 05:40:26     COM Hello world!
 Average:         0.00      0.00
 
-05:39:33     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-05:39:34         0.00      0.00    189.00      0.00    401.00      0.00      0.00      0.00
+05:39:33     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+05:39:34         0.00      0.00    189.00      0.00    401.00      0.00      0.00      0.00      0.00      0.00
 05:40:26     COM Hello world!
-Average:         0.00      0.00    189.00      0.00    401.00      0.00      0.00      0.00
+Average:         0.00      0.00    189.00      0.00    401.00      0.00      0.00      0.00      0.00      0.00
 
 05:39:33          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 05:39:34         0.00      0.00      0.00      0.00      0.00      0.00      0.00

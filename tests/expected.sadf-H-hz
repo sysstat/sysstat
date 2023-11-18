@@ -15,7 +15,7 @@ List of activities:
 02: [8b] A_PCSW               N:   1	(1,1,0)
 03: [8c] A_IRQ                Y:   1x257	(0,0,1)
 04: [8a] A_SWAP               N:   1	(0,2,0)
-05: [8a] A_PAGE               N:   1	(0,8,0)
+05: [8a] A_PAGE               N:   1	(0,10,0)
 06: [8b] A_IO                 N:   1	(7,0,0)
 07: [8b] A_MEMORY             N:   1	(17,0,0)
 08: [8b] A_KTABLES            N:   1	(4,0,0)

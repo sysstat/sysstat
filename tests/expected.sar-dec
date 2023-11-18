@@ -292,12 +292,12 @@ Average:          PIW         0         0         0         0         0         
 13:20:49            0         0
 Average:            0         0
 
-13:20:09     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-13:20:19            0         0         0         0         0         0         0         0
-13:20:29            0         0         0         0         0         0         0         0
-13:20:39            0         0         0         0         0         0         0         0
-13:20:49            0         0         0         0         0         4         0         0
-Average:            0         0         0         0         0         1         0         0
+13:20:09     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+13:20:19            0         0         0         0         0         0         0         0       180        32
+13:20:29            0         0         0         0         0         0         0         0         0        35
+13:20:39            0         0         0         0         0         0         0         0         0        24
+13:20:49            0         0         0         0         0         4         0         0         0        94
+Average:            0         0         0         0         0         1         0         0        46        42
 
 13:20:09          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 13:20:19           21        13         5         3        57        38        32
@@ -929,9 +929,9 @@ Average:          PIW         0         0         0         0         0         
 13:54:35            0         0
 Average:            0         0
 
-13:54:15     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s
-13:54:35            0         0         0         0         0         0         0         0
-Average:            0         0         0         0         0         0         0         0
+13:54:15     pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s  pgprom/s   pgdem/s
+13:54:35            0         0         0         0         0         0         0         0         0         0
+Average:            0         0         0         0         0         0         0         0         0         0
 
 13:54:15          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 13:54:35        32405       321     32082         2        64         0         2

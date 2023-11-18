@@ -38,12 +38,12 @@ PMID: 60.0.3 (kernel.percpu.cpu.idle)
 PMID: 60.58.11 (network.ip6.outdiscards)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.7.36 (rpc.server.rcmisses)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.1.60 (mem.util.hugepagesTotalBytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: byte
+PMID: 60.7.36 (rpc.server.rcmisses)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.58.12 (network.ip6.outnoroutes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -431,6 +431,9 @@ PMID: 60.58.70 (network.udp6.outdatagrams)
 PMID: 60.14.7 (network.ip.indiscards)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.28.192 (mem.vmstat.pgpromote_success)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.1.0 (mem.physmem)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: discrete  Units: Kbyte
@@ -440,24 +443,27 @@ PMID: 60.14.8 (network.ip.indelivers)
 PMID: 60.91.0 (fchost.in.frames)
     Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
     Semantics: counter  Units: count
+PMID: 60.91.1 (fchost.out.frames)
+    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
+    Semantics: counter  Units: count
+PMID: 60.28.193 (mem.vmstat.pgdemote_total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.1.1 (mem.util.used)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: Kbyte
 PMID: 60.14.9 (network.ip.outrequests)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.91.1 (fchost.out.frames)
+PMID: 60.91.2 (fchost.in.bytes)
     Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
-    Semantics: counter  Units: count
+    Semantics: counter  Units: byte
 PMID: 60.1.2 (mem.util.free)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: Kbyte
 PMID: 60.14.10 (network.ip.outdiscards)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.91.2 (fchost.in.bytes)
-    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
-    Semantics: counter  Units: byte
 PMID: 60.91.3 (fchost.out.bytes)
     Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
     Semantics: counter  Units: byte
@@ -1385,13 +1391,13 @@ InDom: 60.35
 Temporal Index
 		Log Vol    end(meta)     end(log)
 15:20:19.000000	      0          132          132
-15:20:29.000000	      0        25815        19172
-15:37:29.000000	      0        26246        78048
-15:39:09.000000	      0        26365        78108
-15:54:35.000000	      0        26425        98404
+15:20:29.000000	      0        25948        19236
+15:37:29.000000	      0        26379        78304
+15:39:09.000000	      0        26498        78364
+15:54:35.000000	      0        26558        98724
 
-[19040 bytes]
-15:20:19.000000 271 metrics
+[19104 bytes]
+15:20:19.000000 273 metrics
     60.0.32 (hinv.ncpu): value 9
     60.12.0 (kernel.uname.release): value "1.2.3-TEST"
     60.12.2 (kernel.uname.sysname): value "Linux"
@@ -1917,6 +1923,8 @@ Temporal Index
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
     60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.192 (mem.vmstat.pgpromote_success): value 174585
+    60.28.193 (mem.vmstat.pgdemote_total): value 44965
     60.0.29 (disk.all.total): value 141569
     60.0.24 (disk.all.read): value 116228
     60.0.96 (disk.all.discard): value 8738
@@ -2560,8 +2568,8 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 7200
 
-[18728 bytes]
-15:20:29.000000 272 metrics
+[18792 bytes]
+15:20:29.000000 274 metrics
     60.0.20 (kernel.all.cpu.user): value 96963
     60.0.21 (kernel.all.cpu.nice): value 2581802
     60.0.22 (kernel.all.cpu.sys): value 54588
@@ -3024,6 +3032,8 @@ Temporal Index
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
     60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.192 (mem.vmstat.pgpromote_success): value 174594
+    60.28.193 (mem.vmstat.pgdemote_total): value 46061
     60.0.29 (disk.all.total): value 143338
     60.0.24 (disk.all.read): value 117517
     60.0.96 (disk.all.discard): value 8938
@@ -3695,8 +3705,8 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 9803
 
-[19256 bytes]
-15:20:39.000000 266 metrics
+[19320 bytes]
+15:20:39.000000 268 metrics
     60.0.20 (kernel.all.cpu.user): value 97768
     60.0.21 (kernel.all.cpu.nice): value 2588749
     60.0.22 (kernel.all.cpu.sys): value 55126
@@ -4217,6 +4227,8 @@ Temporal Index
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 10
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
     60.28.178 (mem.vmstat.pgsteal_total): value 9
+    60.28.192 (mem.vmstat.pgpromote_success): value 174594
+    60.28.193 (mem.vmstat.pgdemote_total): value 47000
     60.0.29 (disk.all.total): value 82563
     60.0.24 (disk.all.read): value 66581
     60.0.96 (disk.all.discard): value 0
@@ -4880,8 +4892,8 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 12037
 
-[20892 bytes]
-15:20:49.000000 272 metrics
+[20956 bytes]
+15:20:49.000000 274 metrics
     60.0.20 (kernel.all.cpu.user): value 99343
     60.0.21 (kernel.all.cpu.nice): value 2590956
     60.0.22 (kernel.all.cpu.sys): value 56811
@@ -5457,6 +5469,8 @@ Temporal Index
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 100
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
     60.28.178 (mem.vmstat.pgsteal_total): value 11
+    60.28.192 (mem.vmstat.pgpromote_success): value 174594
+    60.28.193 (mem.vmstat.pgdemote_total): value 49099
     60.0.29 (disk.all.total): value 85613
     60.0.24 (disk.all.read): value 68502
     60.0.96 (disk.all.discard): value 998
@@ -6197,8 +6211,8 @@ Temporal Index
     245.0.6 (system.restart.count): value 1
     245.0.7 (system.restart.ncpu): value 10
 
-[20172 bytes]
-15:54:35.000000 264 metrics
+[20236 bytes]
+15:54:35.000000 266 metrics
     60.0.20 (kernel.all.cpu.user): value 95712
     60.0.21 (kernel.all.cpu.nice): value 2587674
     60.0.22 (kernel.all.cpu.sys): value 53358
@@ -6774,6 +6788,8 @@ Temporal Index
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
     60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.192 (mem.vmstat.pgpromote_success): value 174594
+    60.28.193 (mem.vmstat.pgdemote_total): value 49099
     60.0.29 (disk.all.total): value 6163613
     60.0.24 (disk.all.read): value 95572
     60.0.96 (disk.all.discard): value 150
