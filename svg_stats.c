@@ -1418,19 +1418,21 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 	struct stats_paging
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[!curr];
-	int group[] = {2, 2, 4};
-	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
-	char *title[] = {"Paging activity (1)", "Paging activity (2)", "Paging activity (3)"};
+	int group[] = {2, 2, 4, 2};
+	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
+	char *title[] = {"Paging activity (1)", "Paging activity (2)", "Paging activity (3)",
+			 "Paging activity (4)"};
 	char *g_title[] = {"pgpgin/s", "pgpgout/s",
 			   "fault/s", "majflt/s",
-			   "pgfree/s", "pgscank/s", "pgscand/s", "pgsteal/s"};
-	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7};
+			   "pgfree/s", "pgscank/s", "pgscand/s", "pgsteal/s",
+			   "pgprom/s", "pgdem/s"};
+	int g_fields[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
 		/* Allocate arrays that will contain the graphs data */
-		out = allocate_graph_lines(a, 8, &outsize);
+		out = allocate_graph_lines(a, 10, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -1469,6 +1471,14 @@ __print_funct_t svg_print_paging_stats(struct activity *a, int curr, int action,
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(spp->pgsteal, spc->pgsteal, itv),
 			 out + 7, outsize + 7, svg_p->restart);
+		/* pgprom/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(spp->pgpromote, spc->pgpromote, itv),
+			 out + 8, outsize + 8, svg_p->restart);
+		/* pgdem/s */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 S_VALUE(spp->pgdemote, spc->pgdemote, itv),
+			 out + 9, outsize + 9, svg_p->restart);
 	}
 
 	if (action & F_END) {
