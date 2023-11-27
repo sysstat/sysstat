@@ -1410,8 +1410,8 @@ function well, and that not all reclaimable slab will be reclaimable,
 due to items being in use. The impact of those factors will vary from
 system to system.
 .IP kbmemused
-Amount of used memory in kilobytes (calculated as total installed memory \[mi]
-kbmemfree \[mi] kbbuffers \[mi] kbcached \[mi] kbslab).
+Amount of used memory in kilobytes (calculated as total installed memory \-
+kbmemfree \- kbbuffers \- kbcached \- kbslab).
 .IP %memused
 Percentage of used memory.
 .IP kbbuffers
