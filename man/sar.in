@@ -1640,12 +1640,12 @@ SGR substring for restart messages.
 .BR "W=" " (or " "M=" ")"
 SGR substring for percentage values in the range from 75% to 90% (or in the range 10% to 25%
 depending on the metric's meaning).
-It is also used for negative values in the range from \[mi]10 to \[mi]5.
+It is also used for negative values in the range from \-10 to \-5.
 .TP
 .BR "X=" " (or " "H=" ")"
 SGR substring for percentage values greater than or equal to 90% (or lower than or equal to 10%
 depending on the metric's meaning).
-It is also used for negative values lower than or equal to \[mi]10.
+It is also used for negative values lower than or equal to \-10.
 .TP
 .B Z=
 SGR substring for zero values.
