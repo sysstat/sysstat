@@ -4,8 +4,8 @@
 mpstat \- Report processors related statistics.
 
 .SH SYNOPSIS
-.B mpstat [ -A ] [ --dec={ 0 | 1 | 2 } ] [ -H ] [ -n ] [ -u ] [ -T ] [ -V ] [ -I {
-.IB "keyword" "[,...] | ALL } ] [ -N { " "node_list " "| ALL } ] [ -o JSON ] [ -P {"
+.B mpstat [ \-A ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-H ] [ \-n ] [ \-u ] [ \-T ] [ \-V ] [ \-I {
+.IB "keyword" "[,...] | ALL } ] [ \-N { " "node_list " "| ALL } ] [ \-o JSON ] [ \-P {"
 .IB "cpu_list " "| ALL } ] [ " "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
@@ -34,20 +34,20 @@ command generates reports continuously.
 
 .SH OPTIONS
 .TP
-.B -A
+.B \-A
 This option is equivalent to specifying
-.BR "-n -u -I ALL" "."
+.BR "\-n \-u \-I ALL" "."
 This option also implies specifying
-.B "-N ALL -P ALL"
+.B "\-N ALL \-P ALL"
 unless these options are explicitly set on the command line.
 .TP
-.B --dec={ 0 | 1 | 2 }
+.B \-\-dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .TP
-.B -H
+.B \-H
 Also detect and display statistics for physically hotplugged vCPUs.
 .TP
-.BI "-I { " "keyword" "[,...] | ALL }"
+.BI "\-I { " "keyword" "[,...] | ALL }"
 Report interrupts statistics.
 .RI "Possible " "keywords " "are"
 .BR "CPU" ", " "SCPU" ", and " "SUM" "."
@@ -82,16 +82,16 @@ the CPU or CPUs.
 keyword is equivalent to specifying all the keywords above and
 therefore all the interrupts statistics are displayed.
 .TP
-.BI "-N { " "node_list " "| ALL }"
+.BI "\-N { " "node_list " "| ALL }"
 Indicate the NUMA nodes for which statistics are to be reported.
 .I node_list
 is a list of comma-separated values or range of values (e.g.,
-.BR "0,2,4-7,12-" "). Note that node " "all"
+.BR "0,2,4\-7,12\-" "). Note that node " "all"
 is the global average among all nodes. The
 .B ALL
 keyword indicates that statistics are to be reported for all nodes.
 .TP
-.B -n
+.B \-n
 Report summary CPU statistics based on NUMA node placement. The following
 values are displayed:
 .RS
@@ -102,18 +102,18 @@ indicates that statistics are calculated as averages among all nodes.
 .RE
 .IP
 All the other fields are the same as those displayed with option
-.BR "-u " "(see below)."
+.BR "\-u " "(see below)."
 .TP
-.B -o JSON
+.B \-o JSON
 Display the statistics in JSON (JavaScript Object Notation) format.
 JSON output field order is undefined, and new fields may be added
 in the future.
 .TP
-.BI "-P { " "cpu_list " "| ALL }"
+.BI "\-P { " "cpu_list " "| ALL }"
 Indicate the processors for which statistics are to be reported.
 .I cpu_list
 is a list of comma-separated values or range of values (e.g.,
-.BR "0,2,4-7,12-" ")."
+.BR "0,2,4\-7,12\-" ")."
 Note that processor 0 is the first processor, and processor
 .B all
 is the global average among all processors.
@@ -121,9 +121,9 @@ is the global average among all processors.
 keyword indicates that statistics are to be reported for all processors.
 Offline processors are not displayed.
 .TP
-.B -T
+.B \-T
 Display topology elements in the CPU report (see option
-.B -u
+.B \-u
 below). The following elements are displayed:
 .RS
 .IP CORE
@@ -134,7 +134,7 @@ Logical socket number.
 Logical NUMA node number.
 .RE
 .TP
-.B -u
+.B \-u
 Report CPU utilization. The following values are displayed:
 .RS
 .IP CPU
@@ -170,7 +170,7 @@ Show the percentage of time that the CPU or CPUs were idle and the system
 did not have an outstanding disk I/O request.
 .RE
 .TP
-.B -V
+.B \-V
 Print version number then exit.
 
 .SH ENVIRONMENT
@@ -225,7 +225,7 @@ The timestamp will also be compliant with ISO 8601 format.
 .B mpstat 2 5
 Display five reports of global statistics among all processors at two second intervals.
 .TP
-.B mpstat -P ALL 2 5
+.B mpstat \-P ALL 2 5
 Display five reports of statistics for all processors at two second intervals.
 
 .SH BUGS

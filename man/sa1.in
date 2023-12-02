@@ -4,7 +4,7 @@
 sa1 \- Collect and store binary data in the system activity daily data file.
 
 .SH SYNOPSIS
-.B @SA_LIB_DIR@/sa1 [ --boot | --rotate [ iso ] | --sleep |
+.B @SA_LIB_DIR@/sa1 [ \-\-boot | \-\-rotate [ iso ] | \-\-sleep |
 .I interval count
 .B ]
 
@@ -18,7 +18,7 @@ system activity daily data file.
 .PP
 The standard system activity daily data file is named
 .IR "saDD " "unless"
-.BR "sadc" "'s option " "-D " "is used, in which case its name is"
+.BR "sadc" "'s option " "\-D " "is used, in which case its name is"
 .IR "saYYYYMMDD" ","
 .RI "where " "YYYY " "stands for the current year, " "MM " "for the current month and " "DD"
 for the current day. By default it is located in the
@@ -39,7 +39,7 @@ command is designed to be started automatically by the
 
 .SH OPTIONS
 .TP
-.B --boot
+.B \-\-boot
 This option tells
 .BR "sa1 " "that the " "sadc"
 command should be called without specifying the
@@ -47,7 +47,7 @@ command should be called without specifying the
 parameters in order to insert a dummy record, marking the time when the counters
 restart from 0.
 .TP
-.B --rotate [ iso ]
+.B \-\-rotate [ iso ]
 .RB "Use this option to tell " "sa1 " "to insert a record of statistics to the standard"
 .IR "saDD" " system activity daily data file of the previous day."
 This should be done shortly after midnight (on day DD+1) in order to make sure that the
@@ -55,7 +55,7 @@ data file covers the whole day, including the last interval of time just before 
 .RB "Adding the " "iso" " keyword tells " "sa1" " to use
 .IR "saYYYYMMDD" " instead of " "saDD" " as the standard system activity daily data file name."
 .TP
-.B --sleep
+.B \-\-sleep
 .RB "This option tells " "sa1 " "that the " "sadc"
 command should insert a comment indicating that the system is entering or leaving
 sleep mode (i.e. system suspend or hibernation).
@@ -64,12 +64,12 @@ sleep mode (i.e. system suspend or hibernation).
 To collect data (including those from disks) every 10 minutes,
 place the following entry in your root crontab file:
 
-.B 0,10,20,30,40,50 * * * * @SA_LIB_DIR@/sa1 1 1 -S DISK
+.B 0,10,20,30,40,50 * * * * @SA_LIB_DIR@/sa1 1 1 \-S DISK
 
 To rotate current system activity daily data file, ensuring it is complete,
 place the following entry in your root crontab file:
 
-.B 0 0 * * * @SA_LIB_DIR@/sa1 --rotate
+.B 0 0 * * * @SA_LIB_DIR@/sa1 \-\-rotate
 
 .SH FILES
 .I @SA_DIR@/saDD
