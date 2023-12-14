@@ -119,15 +119,8 @@ $ sudo apt-get install sysstat
 Then enable data collecting:
 
 ```
-$ sudo vi /etc/default/sysstat
-change ENABLED="false" to ENABLED="true"
-save the file
-```
-
-Last, restart the sysstat service:
-
-```
-$ sudo service sysstat restart
+$ sudo dpkg-reconfigure sysstat
+Select "Yes"
 ```
 
 #### Install from sources
