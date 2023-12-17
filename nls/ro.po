@@ -14,8 +14,9 @@
 # NU și a mesajelor traduse (acestea au rămas neschimbate).
 # Eliminare a mesajelor ce-au dispărut în ultima versiune.
 # Actualizări realizate de Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 15.01.2022.
-# Actualizare a traducerii pentru versiunea 12.5.6, făcută de R-G, feb-2022.
-# Actualizare a traducerii pentru versiunea 12.7.2, făcută de R-G, ian-2023.
+# Actualizare a traducerii pentru versiunea 12.5.6, făcută de R-GC, feb-2022.
+# Actualizare a traducerii pentru versiunea 12.7.2, făcută de R-GC, ian-2023.
+# Corecturi pentru versiunea 12.7.2, făcute de R-GC, sep-2023.
 # Actualizare a traducerii pentru versiunea Y, făcută de X, Z(anul).
 #
 msgid ""
@@ -23,7 +24,7 @@ msgstr ""
 "Project-Id-Version: sysstat 12.7.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2023-01-13 17:54+0100\n"
-"PO-Revision-Date: 2023-01-15 17:07+0100\n"
+"PO-Revision-Date: 2023-09-16 01:13+0200\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -89,7 +90,7 @@ msgid ""
 msgstr ""
 "Opțiunile sunt:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <director> ] [ -j { ID | ETICHETĂ | CALE | UUID | ... } ]\n"
+"[ { -f | +f } <director> ] [ -j { ID | ETICHETĂ | RUTĂ | UUID | ... } ]\n"
 "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 "[ [ -H ] -g <nume_grup> ] [ -p [ <dispozitiv> [,...] | ALL ] ]\n"
 "[ <dispozitiv> [...] | ALL ] [ --debuginfo ]\n"
@@ -106,7 +107,7 @@ msgid ""
 msgstr ""
 "Opțiunile sunt:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <director> ] [ -j { ID | ETICHETĂ | CALE | UUID | ... } ]\n"
+"[ { -f | +f } <director> ] [ -j { ID | ETICHETĂ | RUTĂ | UUID | ... } ]\n"
 "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 "[ [ -H ] -g <nume_grup> ] [ -p [ <dispozitiv> [,...] | ALL ] ]\n"
 "[ <dispozitiv> [...] | ALL ]\n"
@@ -199,12 +200,12 @@ msgstr "Ar trebui apoi să puteți citi noul fișier creat (%s.new)\n"
 #: sa_common.c:1435
 #, c-format
 msgid "Error while reading system activity file: %s\n"
-msgstr "A apărut o eroare la citirea fișierului de activitate al sistemului: %s\n"
+msgstr "A apărut o eroare la citirea fișierului de activitate a sistemului: %s\n"
 
 #: sa_common.c:1445
 #, c-format
 msgid "End of system activity file unexpected\n"
-msgstr "Sfârșit neașteptat al fișierului de activitate al sistemului\n"
+msgstr "Sfârșit neașteptat al fișierului de activitate a sistemului\n"
 
 # DȘ, îmi reamintește de
 # „Ghidul_traducătorului_de_software”, asupra
@@ -248,7 +249,7 @@ msgid ""
 "CPU activity not found in file. Aborting...\n"
 msgstr ""
 "\n"
-"Activitatea procesorului nu a fost găsită în fișier. Se întrerupe...\\n\n"
+"Activitatea procesorului nu a fost găsită în fișier. Se întrerupe...\n"
 
 #: sa_conv.c:408
 #, c-format
@@ -433,7 +434,7 @@ msgstr ""
 "[ -q [ <cuvânt_cheie> [,...] | ALL ] ]\n"
 "[ --dev=<listă_dispozitive> ] [ --fs=<listă_sistem_fișiere> ] [ --iface=<listă_interfețe> ] [ --int=<listă_întreruperi> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
-"[ -j { SID | ID | ETICHETĂ | CALE | UUID | ... } ]\n"
+"[ -j { SID | ID | ETICHETĂ | RUTĂ | UUID | ... } ]\n"
 "[ -f [ <nume_fișier> ] | -o [ <nume_fișier> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ ora_de_începere (format: hh:mm[:ss] ] ] [ -e [ ora_de_sfârșit (format: hh:mm[:ss] ] ]\n"
 
@@ -622,7 +623,7 @@ msgstr "\t-y\tStatisticile dispozitivelor TTY [A_SERIAL]\n"
 #: sar.c:221
 #, c-format
 msgid "Data collector will be sought in PATH\n"
-msgstr "Colectorul de date va fi căutat în CALEA\n"
+msgstr "Colectorul de date va fi căutat în PATH\n"
 
 #: sar.c:224
 #, c-format
@@ -647,12 +648,12 @@ msgstr "Se utilizează un colector de date greșit dintr-o versiune diferită de
 #: sar.c:1553
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
-msgstr "Optiunile -f si -o se exclud reciproc\n"
+msgstr "Opțiunile „-f” și „-o” se exclud reciproc\n"
 
 #: sar.c:1563
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "Nu se citește dintr-un fișier de activitate a sistemului (utilizați opțiunea -f)\n"
+msgstr "Nu se citește dintr-un fișier de activitate a sistemului (utilizați opțiunea „-f”)\n"
 
 #: sar.c:1712
 #, c-format

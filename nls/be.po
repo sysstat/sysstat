@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: sysstat 12.7.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2023-01-13 17:54+0100\n"
-"PO-Revision-Date: 2023-03-20 00:44+0300\n"
+"PO-Revision-Date: 2023-12-06 16:35+0300\n"
 "Last-Translator: Viachaslau Khalikin <viachaslau.vinegret@outlook.com>\n"
 "Language-Team: Belarusian <debian-l10n-belarusian@lists.debian.org>\n"
 "Language: be\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Emacs 28.2, po mode 2.27\n"
+"X-Generator: Emacs 29.1, po mode 2.28\n"
 
 #: cifsiostat.c:75 iostat.c:89 mpstat.c:134 sar.c:108 tapestat.c:104
 #, c-format
@@ -213,7 +213,7 @@ msgid ""
 "CPU activity not found in file. Aborting...\n"
 msgstr ""
 "\n"
-"У файле ня знойдзены даныя аб дзейнасьці ЦП. Перапыненьне...\n"
+"У файле ня знойдзена зьвестак пра дзейнасьць ЦП. Перапыненьне...\n"
 
 #: sa_conv.c:408
 #, c-format

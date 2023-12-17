@@ -152,7 +152,7 @@ msgstr ""
 #: pidstat.c:225 sa_common.c:368
 #, c-format
 msgid "Requested activities not available\n"
-msgstr "Zahtjevane aktivnosti nisu dostupne\n"
+msgstr "zahtijevane aktivnosti nisu dostupne\n"
 
 #: pr_stats.c:2682 pr_stats.c:2689 pr_stats.c:2795 pr_stats.c:2842
 msgid "Summary:"
@@ -210,7 +210,7 @@ msgstr "Provjerite je li je omogućeno prikupljanje podataka\n"
 #: sa_common.c:2194
 #, c-format
 msgid "Requested activities not available in file %s\n"
-msgstr "Zahtjevane aktivnosti nisu dostupne u datoteci %s\n"
+msgstr "zahtijevane aktivnosti nisu dostupne u datoteci %s\n"
 
 #: sa_conv.c:99
 #, c-format
