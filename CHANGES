@@ -1,5 +1,24 @@
 Changes:
 
+2023/12/17: Version 12.7.5 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Quan quan Cao]: sar/sadc: Add new metrics pgprom/s and pgdem/s.
+	* sar: Remove %vmeff metric.
+	* sadf: Update various output formats to take into account metrics
+	  that have been added or removed.
+	* Update DTD and XSD documents.
+	* Update sar manual page.
+	* sar: Add a cron entry and a new systemd service and timer to rotate
+	  daily data file at midnight.
+	* Option -V with sysstat commands also displays environment contents.
+	* [Sam Morris]: Use correct encoding to produce hyphen-minus when
+	  rendering man pages.
+	* Add UMASK variable definition to sysstat(5) manual page.
+	* Update non regression tests.
+	* Add --getenv option to commands that didn't have it.
+	* Update README file for Debian-based distros.
+	* Update link to my personal web page in README and manual pages.
+	* NLS: Translations updated.
+
 2023/06/18: Version 12.7.4 - Sebastien Godard (sysstat <at> orange.fr)
 	* Makefile.in: Fix installation error.
 	* Makefile.in: Remove gcc warning displayed in LTO mode.
@@ -23,7 +42,7 @@ Changes:
 	* Split large functions into smaller ones.
 	* Specify field width when using sscanf() function.
 	* search_list_item(): Return position in list instead of a boolean.
-	* add_list_item(): Also return item position in liste
+	* add_list_item(): Also return item position in list.
 	* svg_stats.c: Ignore negative values for fields position.
 	* svg_stats.c: Reuse buffers pointers definition.
 	* svg_stats.c: Reuse intermediate calculations.
