@@ -4103,7 +4103,7 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 
 		/* Check if min and max values should be displayed */
 		if (DISPLAY_MINMAX(flags)) {
-			int k, pos;
+			int k = 0, pos;
 
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), sfcc->fchost_name, MAX_FCH_LEN, &k);
