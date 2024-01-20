@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "NOVEMBER 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "JANUARY 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1184,7 +1184,7 @@ state from the SYN\-RCVD state [tcpAttemptFails].
 The number of times per second TCP connections have made a direct
 transition to the CLOSED state from either the ESTABLISHED
 state or the CLOSE\-WAIT state [tcpEstabResets].
-.IP retrans/s
+.IP retrseg/s
 The total number of segments retransmitted per second - that is, the
 number of TCP segments transmitted containing one or more
 previously transmitted octets [tcpRetransSegs].
