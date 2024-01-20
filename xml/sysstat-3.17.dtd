@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DTD v3.16 for sysstat. See sadf.h -->
+<!--DTD v3.17 for sysstat. See sadf.h -->
 
 <!ELEMENT sysstat (sysdata-version, host)>
 <!ATTLIST sysstat
@@ -417,7 +417,7 @@
 <!ATTLIST net-etcp
 	atmptf CDATA #REQUIRED
 	estres CDATA #REQUIRED
-	retrans CDATA #REQUIRED
+	retrseg CDATA #REQUIRED
 	isegerr CDATA #REQUIRED
 	orsts CDATA #REQUIRED
 >

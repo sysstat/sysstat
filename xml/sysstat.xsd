@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://sysstat.github.io" targetNamespace="https://sysstat.github.io" elementFormDefault="qualified">
 <xs:annotation>
-	<xs:appinfo>-- XML Schema v3.16 for sysstat. See sadf.h --</xs:appinfo>
+	<xs:appinfo>-- XML Schema v3.17 for sysstat. See sadf.h --</xs:appinfo>
 </xs:annotation>
 
 <xs:element name="sysstat" type="sysstat-type"></xs:element>
@@ -537,7 +537,7 @@
 <xs:complexType name="net-etcp-type">
 	<xs:attribute name="atmptf" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="estres" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="retrans" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="retrseg" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="isegerr" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="orsts" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
