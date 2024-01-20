@@ -1403,7 +1403,7 @@ __print_funct_t xml_print_net_etcp_stats(struct activity *a, int curr, int tab,
 	xprintf(tab, "<net-etcp "
 		"atmptf=\"%.2f\" "
 		"estres=\"%.2f\" "
-		"retrans=\"%.2f\" "
+		"retrseg=\"%.2f\" "
 		"isegerr=\"%.2f\" "
 		"orsts=\"%.2f\"/>",
 		S_VALUE(snetp->AttemptFails, snetc->AttemptFails,  itv),
