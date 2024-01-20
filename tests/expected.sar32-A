@@ -254,7 +254,7 @@ Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.0
 13:20:39         0.00      0.00      0.00      0.00
 Average:         0.00      0.00      0.00      0.00
 
-13:20:29     atmptf/s  estres/s retrans/s isegerr/s   orsts/s
+13:20:29     atmptf/s  estres/s retrseg/s isegerr/s   orsts/s
 13:20:39         0.00      0.00      0.00      0.00      0.00
 Average:         0.00      0.00      0.00      0.00      0.00
 

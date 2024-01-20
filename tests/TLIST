@@ -140,8 +140,8 @@ NOTES:
 00410	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null && ./sadf -t -x tests/data.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 00412	export LC_ALL=C ; ./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 00415	export LC_ALL=C ; ./sadf -Hx tests/data.tmp -C | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
-00420	export LC_ALL=C ; cat tests/data-12.0.1.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
-00430	export LC_ALL=C ; cat tests/data-12.0.1.xml | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+00420	export LC_ALL=C ; cat tests/data-12.7.6.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+00430	export LC_ALL=C ; cat tests/data-12.7.6.xml | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
 
 =====	Checking sadf output
 00500	LC_ALL=C ./sadf -p tests/data.tmp -C -- -A > tests/out.sadf-p.tmp

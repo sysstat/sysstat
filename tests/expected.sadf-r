@@ -621,16 +621,16 @@
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_NET_ETCP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrans/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
+13:20:19 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrseg/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_NET_ETCP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrans/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
+13:20:29 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrseg/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_NET_ETCP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrans/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
+13:20:39 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrseg/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_NET_ETCP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrans/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
+13:20:49 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrseg/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_NET_UDP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
@@ -1087,7 +1087,7 @@
 13:54:35 UTC; active/s; 1516; 1516; passive/s; 1; 1; iseg/s; 148044; 148044; oseg/s; 145504; 145504;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_NET_ETCP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:54:35 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrans/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
+13:54:35 UTC; atmptf/s; 11; 11; estres/s; 62; 62; retrseg/s; 304; 304; isegerr/s; 35; 35; orsts/s; 943; 943;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_NET_UDP; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; idgm/s; 4198; 4198; odgm/s; 3581; 3581; noport/s; 0; 0; idgmerr/s; 0; 0;

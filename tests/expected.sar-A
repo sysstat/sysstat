@@ -127,7 +127,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20     active/s passive/s    iseg/s    oseg/s
 12:53:21         0.00      0.00      0.00      0.00
 
-12:53:20     atmptf/s  estres/s retrans/s isegerr/s   orsts/s
+12:53:20     atmptf/s  estres/s retrseg/s isegerr/s   orsts/s
 12:53:21         0.00      0.00      0.00      0.00      0.00
 
 12:53:20       idgm/s    odgm/s  noport/s idgmerr/s
@@ -305,7 +305,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:21     active/s passive/s    iseg/s    oseg/s
 12:53:22         0.00      0.00      0.00      0.00
 
-12:53:21     atmptf/s  estres/s retrans/s isegerr/s   orsts/s
+12:53:21     atmptf/s  estres/s retrseg/s isegerr/s   orsts/s
 12:53:22         0.00      0.00      0.00      0.00      0.00
 
 12:53:21       idgm/s    odgm/s  noport/s idgmerr/s
@@ -489,7 +489,7 @@ Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.0
 Average:     active/s passive/s    iseg/s    oseg/s
 Average:         0.00      0.00      0.00      0.00
 
-Average:     atmptf/s  estres/s retrans/s isegerr/s   orsts/s
+Average:     atmptf/s  estres/s retrseg/s isegerr/s   orsts/s
 Average:         0.00      0.00      0.00      0.00      0.00
 
 Average:       idgm/s    odgm/s  noport/s idgmerr/s

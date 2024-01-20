@@ -3,7 +3,7 @@
 xmlns="https://sysstat.github.io"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
-	<sysdata-version>3.16</sysdata-version>
+	<sysdata-version>3.17</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -510,7 +510,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
 					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
 					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
-					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrseg="0.00" isegerr="0.00" orsts="0.00"/>
 					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
 					<net-sock6 tcp6sck="3" udp6sck="3" raw6sck="1" ip6-frag="0"/>
 					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>
@@ -1010,7 +1010,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
 					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
 					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
-					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrseg="0.00" isegerr="0.00" orsts="0.00"/>
 					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
 					<net-sock6 tcp6sck="3" udp6sck="3" raw6sck="1" ip6-frag="0"/>
 					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>
@@ -1560,7 +1560,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
 					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
 					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
-					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrseg="0.00" isegerr="0.00" orsts="0.00"/>
 					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
 					<net-sock6 tcp6sck="3" udp6sck="3" raw6sck="1" ip6-frag="0"/>
 					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>
@@ -2157,7 +2157,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
 					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
 					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
-					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrseg="0.00" isegerr="0.00" orsts="0.00"/>
 					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
 					<net-sock6 tcp6sck="3" udp6sck="3" raw6sck="1" ip6-frag="0"/>
 					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>
@@ -2803,7 +2803,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<net-icmp imsg="0.00" omsg="0.00" iech="0.00" iechr="0.00" oech="0.00" oechr="0.00" itm="0.00" itmr="0.00" otm="0.00" otmr="0.00" iadrmk="0.00" iadrmkr="0.00" oadrmk="0.00" oadrmkr="0.00"/>
 					<net-eicmp ierr="0.00" oerr="0.00" idstunr="0.00" odstunr="0.00" itmex="0.00" otmex="0.00" iparmpb="0.00" oparmpb="0.00" isrcq="0.00" osrcq="0.00" iredir="0.00" oredir="0.00"/>
 					<net-tcp active="0.00" passive="0.00" iseg="0.00" oseg="0.00"/>
-					<net-etcp atmptf="0.00" estres="0.00" retrans="0.00" isegerr="0.00" orsts="0.00"/>
+					<net-etcp atmptf="0.00" estres="0.00" retrseg="0.00" isegerr="0.00" orsts="0.00"/>
 					<net-udp idgm="0.00" odgm="0.00" noport="0.00" idgmerr="0.00"/>
 					<net-sock6 tcp6sck="3" udp6sck="3" raw6sck="1" ip6-frag="0"/>
 					<net-ip6 irec6="0.00" fwddgm6="0.00" idel6="0.00" orq6="0.00" asmrq6="0.00" asmok6="0.00" imcpck6="0.00" omcpck6="0.00" fragok6="0.00" fragcr6="0.00"/>

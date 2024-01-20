@@ -11399,7 +11399,7 @@
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">retrans/s (0.00, 0.00)</text>
+<text x="795" y="360" style="fill: #00ffff; stroke: none; font-size: 12px">retrseg/s (0.00, 0.00)</text>
 <text x="795" y="375" style="fill: #ff0000; stroke: none; font-size: 12px">isegerr/s (0.00, 0.00)</text>
 <text x="795" y="390" style="fill: #e85f00; stroke: none; font-size: 12px">orsts/s (0.00, 0.00)</text>
 <g transform="translate(70,560)">

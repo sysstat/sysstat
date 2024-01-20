@@ -163,7 +163,7 @@ Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.0
 05:40:26     COM Hello world!
 Average:         0.00      0.00      0.00      0.00
 
-05:39:33     atmptf/s  estres/s retrans/s isegerr/s   orsts/s
+05:39:33     atmptf/s  estres/s retrseg/s isegerr/s   orsts/s
 05:39:34         0.00      0.00      0.00      0.00      0.00
 05:40:26     COM Hello world!
 Average:         0.00      0.00      0.00      0.00      0.00
