@@ -2055,7 +2055,7 @@ __print_funct_t render_net_etcp_stats(struct activity *a, int isdb, char *pre,
 	       NULL);
 
 	render(isdb, pre, PT_NOFLAG,
-	       "-\tretrans/s", NULL, NULL,
+	       "-\tretrseg/s", NULL, NULL,
 	       NOVAL,
 	       S_VALUE(snetp->RetransSegs, snetc->RetransSegs, itv),
 	       NULL);

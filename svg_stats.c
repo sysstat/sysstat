@@ -3420,7 +3420,7 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 	int g_type[] = {SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"TCPv4 traffic errors statistics (1)", "TCPv4 traffic errors statistics (2)"};
 	char *g_title[] = {"atmptf/s", "estres/s",
-			   "retrans/s", "isegerr/s", "orsts/s"};
+			   "retrseg/s", "isegerr/s", "orsts/s"};
 	int g_fields[] = {0, 1, 2, 3, 4};
 	static char **out;
 	static int *outsize;
@@ -3443,7 +3443,7 @@ __print_funct_t svg_print_net_etcp_stats(struct activity *a, int curr, int actio
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snetp->EstabResets, snetc->EstabResets, itv),
 			 out + 1, outsize + 1, svg_p->restart);
-		/* retrans/s */
+		/* retrseg/s */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 S_VALUE(snetp->RetransSegs, snetc->RetransSegs, itv),
 			 out + 2, outsize + 2, svg_p->restart);

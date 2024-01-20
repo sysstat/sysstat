@@ -1155,7 +1155,7 @@ struct activity net_etcp_act = {
 	.f_print_avg	= print_net_etcp_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "atmptf/s;estres/s;retrans/s;isegerr/s;orsts/s",
+	.hdr_line	= "atmptf/s;estres/s;retrseg/s;isegerr/s;orsts/s",
 #endif
 	.gtypes_nr	= {STATS_NET_ETCP_ULL, STATS_NET_ETCP_UL, STATS_NET_ETCP_U},
 	.ftypes_nr	= {0, 0, 0},
