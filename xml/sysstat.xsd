@@ -113,8 +113,7 @@
 	</xs:sequence>
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
-	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
-	<xs:attribute name="tz" type="xs:string"></xs:attribute>
+	<xs:attribute name="tz" type="xs:string" use="required"></xs:attribute>
 	<xs:attribute name="interval" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -122,8 +121,7 @@
 <xs:complexType name="boot-type">
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
-	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
-	<xs:attribute name="tz" type="xs:string"></xs:attribute>
+	<xs:attribute name="tz" type="xs:string" use="required"></xs:attribute>
 	<xs:attribute name="cpu_count" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -131,8 +129,7 @@
 <xs:complexType name="comment-type">
 	<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
 	<xs:attribute name="time" type="xs:time" use="required"></xs:attribute>
-	<xs:attribute name="utc" type="xs:nonNegativeInteger"></xs:attribute>
-	<xs:attribute name="tz" type="xs:string"></xs:attribute>
+	<xs:attribute name="tz" type="xs:string" use="required"></xs:attribute>
 	<xs:attribute name="com" type="xs:string" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -203,7 +200,7 @@
 <xs:element name="irq" type="irq-type"></xs:element>
 <xs:complexType name="irq-type">
 	<xs:attribute name="intr" type="xs:string" use="required"></xs:attribute>
-	<xs:attribute name="cpu" type="xs:string"></xs:attribute>
+	<xs:attribute name="cpu" type="xs:string" use="required"></xs:attribute>
 	<xs:attribute name="value" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -225,9 +222,8 @@
 	<xs:attribute name="pgscank" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="pgscand" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="pgsteal" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="vmeff-percent" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="pgprom" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="pgdem" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="pgprom" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="pgdem" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="io" type="io-type"></xs:element>
@@ -255,8 +251,8 @@
 
 <xs:element name="io-discard" type="io-discard-type"></xs:element>
 <xs:complexType name="io-discard-type">
-	<xs:attribute name="dtps" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="bdscd" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="dtps" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="bdscd" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="tps" type="tps-type"></xs:element>
@@ -292,7 +288,6 @@
 		<xs:element name="bufpg" type="negative-hundredth-type" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="campg" type="negative-hundredth-type" minOccurs="0" maxOccurs="1"></xs:element>
 	</xs:sequence>
-	<xs:attribute name="per" type="per-type"></xs:attribute>
 	<xs:attribute name="unit" type="unit-type" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -308,8 +303,8 @@
 		<xs:element name="hugfree" type="xs:nonNegativeInteger"></xs:element>
 		<xs:element name="hugused" type="xs:nonNegativeInteger"></xs:element>
 		<xs:element name="hugused-percent" type="hundredth-type"></xs:element>
-		<xs:element name="hugrsvd" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
-		<xs:element name="hugsurp" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="hugrsvd" type="xs:nonNegativeInteger"></xs:element>
+		<xs:element name="hugsurp" type="xs:nonNegativeInteger"></xs:element>
 	</xs:sequence>
 	<xs:attribute name="unit" type="unit-type" use="required"></xs:attribute>
 </xs:complexType>
@@ -363,18 +358,17 @@
 <xs:complexType name="disk-device-type">
 	<xs:attribute name="dev" type="xs:string" use="required"></xs:attribute>
 	<xs:attribute name="tps" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="rd_sec" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="wr_sec" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="dc_sec" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="rd_sec" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="wr_sec" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="dc_sec" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="rkB" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="wkB" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="dkB" type="hundredth-type"></xs:attribute>
-	<xs:attribute name="avgrq-sz" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="dkB" type="hundredth-type" use="required"></xs:attribute>
+	<xs:attribute name="avgrq-sz" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="areq-sz" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="avgqu-sz" type="hundredth-type"></xs:attribute>
+	<xs:attribute name="avgqu-sz" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="aqu-sz" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="await" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="svctm" type="hundredth-type"></xs:attribute>
 	<xs:attribute name="util-percent" type="hundredth-type" use="required"></xs:attribute>
 </xs:complexType>
 
@@ -648,7 +642,7 @@
 	<xs:attribute name="squeezd" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="rx_rps" type="hundredth-type" use="required"></xs:attribute>
 	<xs:attribute name="flw_lim" type="hundredth-type" use="required"></xs:attribute>
-	<xs:attribute name="blg_len" type="xs:nonNegativeInteger"></xs:attribute>
+	<xs:attribute name="blg_len" type="xs:nonNegativeInteger" use="required"></xs:attribute>
 </xs:complexType>
 
 <xs:element name="power-management" type="power-management-type"></xs:element>
