@@ -1,6 +1,6 @@
 /*
  * sadf_misc.c: Functions used by sadf to display special records
- * (C) 2011-2023 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2011-2024 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *

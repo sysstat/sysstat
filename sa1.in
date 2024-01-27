@@ -1,6 +1,6 @@
 #!/bin/sh
 # @SA_LIB_DIR@/sa1
-# (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
+# (C) 1999-2024 Sebastien Godard (sysstat <at> orange.fr)
 #
 #@(#) @PACKAGE_NAME@-@PACKAGE_VERSION@
 #@(#) sa1: Collect and store binary data in system activity data file.

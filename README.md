@@ -2,7 +2,7 @@
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4040/badge.svg)](https://scan.coverity.com/projects/sysstat-sysstat)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=45U6F9R73ESFQ)
 
-(C) 1999-2023 Sebastien GODARD (sysstat (at) orange (dot) fr)
+(C) 1999-2024 Sebastien GODARD (sysstat (at) orange (dot) fr)
 
 ### Introduction
 

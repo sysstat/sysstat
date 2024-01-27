@@ -1,6 +1,6 @@
 #!/bin/sh
 # Script for sysstat simulation test environment
-# (C) 2020-2023 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 2020-2024 Sebastien GODARD (sysstat <at> orange.fr)
 
 if [ "$1" = "conf" ]
 then

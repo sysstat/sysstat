@@ -1,6 +1,6 @@
 /*
  * pcp_def_metrics.c: Functions used by sadf to define PCP metrics
- * (C) 2019-2023 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2019-2024 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *

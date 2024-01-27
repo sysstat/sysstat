@@ -1,6 +1,6 @@
 /*
  * mpstat: per-processor statistics
- * (C) 2000-2023 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2000-2024 by Sebastien GODARD (sysstat <at> orange.fr)
  * Copyright (C) 2022 Oracle and/or its affiliates.
  *
  ***************************************************************************
