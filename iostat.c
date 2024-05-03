@@ -90,7 +90,7 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -g] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
@@ -1103,6 +1103,11 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 	else if (DISPLAY_MEGABYTES(flags)) {
 		*fctr = 2048;
 		units = "MB";
+		spc = " ";
+	}
+	else if (DISPLAY_GIGABYTES(flags)) {
+		*fctr = 2097152;
+		units = "GB";
 		spc = " ";
 	}
 	else if (DISPLAY_EXTENDED(flags)) {
