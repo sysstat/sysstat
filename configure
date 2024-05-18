@@ -4820,9 +4820,9 @@ DFSENSORS32=""
 HAVE_SENSORS32="n"
 if test $SENSORS_SUPPORT = "y"; then
 	CFLAGS_SAVE=$CFLAGS
-	CFLAGS+=" -m32"
+	CFLAGS="$CFLAGS -m32"
 	LDFLAGS_SAVE=$LDFLAGS
-	LDFLAGS+=" -lsensors"
+	LDFLAGS="$LDFLAGS -lsensors"
 	SENSORS=no
 #	Check for another function to avoid using cached result
 	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sensors_cleanup in -lsensors" >&5
@@ -4901,7 +4901,7 @@ fi
 # Check for 32-bit system libraries
 TGLIB32=no
 CFLAGS_SAVE=$CFLAGS
-CFLAGS+=" -m32"
+CFLAGS="$CFLAGS -m32"
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for 32-bit system libraries" >&5
 printf %s "checking for 32-bit system libraries... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
