@@ -1,4 +1,4 @@
-# configure.in
+# configure.ac
 #
 # (C) 2007 - Ivana Varekova <varekova@redhat.com>
 # Modified by Sebastien Godard (sysstat <at> orange.fr)
@@ -191,9 +191,10 @@ DFSENSORS32=""
 HAVE_SENSORS32="n"
 if test $SENSORS_SUPPORT = "y"; then
 	CFLAGS_SAVE=$CFLAGS
-	CFLAGS+=" -m32"
+        # Was: CFLAGS+=" -m32" which is specific to bash and not sh
+	CFLAGS="$CFLAGS -m32"
 	LDFLAGS_SAVE=$LDFLAGS
-	LDFLAGS+=" -lsensors"
+	LDFLAGS="$LDFLAGS -lsensors"
 	SENSORS=no
 #	Check for another function to avoid using cached result
 	AC_CHECK_LIB(sensors, sensors_cleanup, LFSENSORS32="-lsensors", HAVE_SENSORS32="n")
@@ -212,7 +213,7 @@ AC_SUBST(DFSENSORS32)
 # Check for 32-bit system libraries
 TGLIB32=no
 CFLAGS_SAVE=$CFLAGS
-CFLAGS+=" -m32"
+CFLAGS="$CFLAGS -m32"
 AC_MSG_CHECKING(for 32-bit system libraries)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
 				   [[printf("%d\n", sizeof(long));]])],TGLIB32=yes, TGLIB32=no)
