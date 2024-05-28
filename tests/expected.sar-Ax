@@ -240,7 +240,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:22        56.63     41.26      8.96      6.40     17.16     20.81     32.01
 
 12:53:21    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-12:53:22      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
+12:53:22      1437740   4389516   3179712     39.04    260172   2821596  30097852    120.77   4042384   1772396       396   2733164    445740     15328     73760         0
 
 12:53:21    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 12:53:22     16777212         0      0.00         0      0.00
@@ -787,8 +787,8 @@ Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.0
 
 Summary:    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
 Minimum:      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
-Maximum:      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
-Average:      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
+Maximum:      1437740   4389516   3179712     39.04    260172   2821596  30097852    120.77   4042384   1772396       396   2733164    445740     15328     73760         0
+Average:      1437740   4389516   3179712     39.04    260172   2821596  18097852     72.62   4042384   1772396       396   2733164    445740     15328     73760         0
 
 Summary:    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 Minimum:     16777212         0      0.00         0      0.00

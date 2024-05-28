@@ -941,8 +941,8 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<memused-percent>39.04</memused-percent>
 					<buffers>260172</buffers>
 					<cached>2821596</cached>
-					<commit>12097852</commit>
-					<commit-percent>48.54</commit-percent>
+					<commit>30097852</commit>
+					<commit-percent>120.77</commit-percent>
 					<active>4042384</active>
 					<inactive>1772396</inactive>
 					<dirty>396</dirty>
