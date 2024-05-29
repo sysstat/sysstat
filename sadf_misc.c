@@ -1374,9 +1374,9 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
 				 SVG_C_YSIZE * (DISPLAY_TOC(flags) ? hdr_parm->nr_act_dispd : 0) +
 				 SVG_T_YSIZE * hdr_parm->graph_nr;
 		}
-		if (height < 100) {
-			/* Min canvas height is 100 (at least to display "No data") */
-			height = 100;
+		if (height < MIN_CANVAS_HEIGHT) {
+			/* There is a min canvas height (at least to display "No data") */
+			height = MIN_CANVAS_HEIGHT;
 		}
 		printf(" width=\"%d\" height=\"%u\""
 		       " fill=\"black\" stroke=\"#%06x\" stroke-width=\"1\">\n",

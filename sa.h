@@ -1362,6 +1362,9 @@ enum svg_graph_type {
 /* Maximum number of horizontal lines for the background grid */
 #define MAX_HLINES_NR	10
 
+/* Minimum SVG canvas height (in pixels) */
+#define MIN_CANVAS_HEIGHT	100
+
 /* Color palette constants */
 #define SVG_COLORS_IDX_MASK	0x0f
 #define SVG_COL_PALETTE_SIZE	24
