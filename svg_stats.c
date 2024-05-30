@@ -797,7 +797,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 	time_t t = svg_p->file_hdr->sa_ust_time;
 
 	/* Print activity name in debug mode */
-	if (DISPLAY_DEBUG_MODE(flags)) {
+	if (DISPLAY_DEBUG_MODE(flags) && !svg_p->mock) {
 		printf("<!-- Name: %s -->\n", a->name);
 	}
 
@@ -805,12 +805,9 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 	for (i = 0; i < g_nr; i++) {
 
 		/* Print view number in debug mode */
-		if (DISPLAY_DEBUG_MODE(flags)) {
+		if (DISPLAY_DEBUG_MODE(flags) && !svg_p->mock) {
 			printf("<!-- View %d -->\n", i + 1);
 		}
-
-		/* Used as index in color palette */
-		palpos = (palette == SVG_BW_COL_PALETTE ? 0 : pos);
 
 		/* Get global min and max value for current view */
 		get_global_extrema(pos, group[i], spmin, spmax, &gmin, &gmax);
@@ -824,17 +821,30 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)))
 			continue;
 
-		if (!displayed) {
+		if (!displayed && !svg_p->mock) {
 			/* Translate to proper position for current activity */
 			printf("<g id=\"g%u-%u\" transform=\"translate(0,%d)\">\n",
 			       a->id, xid,
 			       SVG_H_YSIZE + SVG_C_YSIZE * (DISPLAY_TOC(flags)
 			       ? svg_p->nr_act_dispd : 0) + SVG_T_YSIZE * svg_p->graph_no);
-			displayed = TRUE;
 		}
+
+		/*
+		 * Set @displayed to TRUE even in MOCK mode.
+		 * Means that a view would have actually been displayed.
+		 * @displayed will be set to 0 before leaving current function in
+		 * MOCK mode.
+		 */
+		displayed = TRUE;
 
 		/* Increment number of views actually displayed */
 		views_nr++;
+
+		if (svg_p->mock) {
+			/* Stop now in MOCK mode: Don't print anything onto the screen */
+			pos += group[i];
+			continue;
+		}
 
 		/* Compute top left position of view */
 		if (PACK_VIEWS(flags)) {
@@ -845,6 +855,9 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			xv = 0;
 			yv = (views_nr - 1) * SVG_T_YSIZE;
 		}
+
+		/* Used as index in color palette */
+		palpos = (palette == SVG_BW_COL_PALETTE ? 0 : pos);
 
 		/* Graph background */
 		printf("<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" fill=\"#%06x\"/>\n",
@@ -1003,7 +1016,12 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		pos += group[i];
 	}
 	if (displayed) {
-		printf("</g>\n");
+		if (!svg_p->mock) {
+			printf("</g>\n");
+		}
+		else {
+			displayed = FALSE;
+		}
 
 		/* For next row of views */
 		(svg_p->graph_no) += PACK_VIEWS(flags) ? 1 : views_nr;

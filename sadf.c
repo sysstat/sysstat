@@ -908,6 +908,10 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  * @g_nr	Number of graphs already displayed (for all activities).
  * @nr_act_dispd
  *		Total number of activities that will be displayed.
+ * @mock_m	Set to TRUE (MOCK_MODE) to prevent data from being printed
+ *		onto the screen. Used to compute the *real SVG canvas height.
+ *		Set to FALSE (REAL_MODE) to indicate that SVG data can be
+ *		printed (canvas height is now known).
  *
  * OUT:
  * @cnt		Number of lines of stats remaining to write.
@@ -920,7 +924,8 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 			     int p, int *reset, struct file_activity *file_actlst,
 			     struct tstamp_ext *rectime, char *file,
-			     struct file_magic *file_magic, int *g_nr, int nr_act_dispd)
+			     struct file_magic *file_magic, int *g_nr, int nr_act_dispd,
+			     int mock_m)
 {
 	struct svg_parm parm;
 	int rtype;
@@ -946,6 +951,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	parm.minute = record_hdr[2].minute;
 	parm.second = record_hdr[2].second;
 	strcpy(parm.my_tzname, my_tzname);
+	parm.mock = mock_m;
 
 	*cnt  = count;
 	reset_cd = 1;
@@ -1435,7 +1441,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 			display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
 						p, &reset, file_actlst,
 						rectime, file,
-						file_magic, &g_nr, nr_act_dispd);
+						file_magic, &g_nr, nr_act_dispd, REAL_MODE);
 		}
 		else {
 			unsigned int optf, msk;
@@ -1448,7 +1454,8 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 					display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
 								p, &reset, file_actlst,
 								rectime, file,
-								file_magic, &g_nr, nr_act_dispd);
+								file_magic, &g_nr, nr_act_dispd,
+								REAL_MODE);
 					act[p]->opt_flags = optf;
 				}
 			}

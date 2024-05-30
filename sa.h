@@ -416,6 +416,7 @@ struct svg_parm {
 	int graph_no;				/* Total number of views already displayed */
 	int restart;				/* TRUE if we have just met a RESTART record */
 	int nr_act_dispd;			/* Number of activities that will be displayed */
+	int mock;				/* TRUE if no data shall be actually printed */
 	char hour;				/* Hour, minute and second (expressed in the */
 	char minute;				/* locale of the datafile creator) for first */
 	char second;				/* sample */
@@ -1358,6 +1359,9 @@ enum svg_graph_type {
 	SVG_LINE_GRAPH 	= 1,
 	SVG_BAR_GRAPH	= 2
 };
+
+#define MOCK_MODE	TRUE
+#define REAL_MODE	FALSE
 
 /* Maximum number of horizontal lines for the background grid */
 #define MAX_HLINES_NR	10
