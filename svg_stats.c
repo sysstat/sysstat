@@ -83,9 +83,14 @@ void get_global_extrema(int pos, int n, double *spmin, double *spmax,
 {
 	int i;
 
+	/*
+	 * Init global min and max values for current view with
+	 * min and max values for first metric in view.
+	 */
 	*gmin = *(spmin + pos);
 	*gmax = *(spmax + pos);
 
+	/* Now check min and max values of other metrics in current view */
 	for (i = 1; i < n; i++) {
 		if (*(spmin + pos + i) < *gmin) {
 			*gmin = *(spmin + pos + i);
@@ -814,6 +819,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 
 		/* Don't display empty views if requested */
 		if (SKIP_EMPTY_VIEWS(flags) && (gmax < 0.005)) {
+			/* Free graph data and update @pos to go to next view */
 			skip_current_view(out, &pos, group[i]);
 			continue;
 		}
@@ -5105,6 +5111,10 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 					 * CPU is offline and it follows a real
 					 * RESTART record. Ignore its current value
 					 * (no previous sample).
+					 * Don't reset ssnc structure (we need the values for
+					 * next iteration). Only make it point at a zero
+					 * structrure: With @restart set to TRUE, it will go
+					 * unnoticed on the graph.
 					 */
 					ssnc = &ssnczero;
 				}
