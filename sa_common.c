@@ -449,19 +449,40 @@ int write_all(int fd, const void *buf, int nr_bytes)
 #ifndef SOURCE_SADC
 /*
  * **************************************************************************
+ * Init buffers for min and max values.
+ *
+ * IN:
+ * @a		Activity for which buffers are to be initialized.
+ * @start_slot	First slot to init.
+ * @nr_alloc	Number of slots to init.
+ ***************************************************************************
+ */
+void init_minmax_buf(struct activity *a, size_t start_slot, size_t nr_alloc)
+{
+	int j;
+	double *val;
+
+	for (j = start_slot * a->nr2 * a->xnr;
+	     j < nr_alloc * a->nr2 * a->xnr; j++) {
+		val = (double *) (a->spmin + j);
+		*val = DBL_MAX;
+		val = (double *) (a->spmax + j);
+		*val = -DBL_MAX;
+	     }
+}
+
+/*
+ * **************************************************************************
  * Allocate buffers for min and max values.
  *
  * IN:
- * @act		Activity for which buffers are to be initialized.
+ * @a		Activity for which buffers are to be initialized.
  * @nr_alloc	Number of slots to allocate.
  * @flags	Flags for common options and system state.
  ***************************************************************************
  */
 void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 {
-	int j;
-	double *val;
-
 	/* nr_alloc should be greater than a->nr_spalloc */
 	if (nr_alloc <= a->nr_spalloc) {
 #ifdef DEBUG
@@ -494,13 +515,7 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
 
 		/* ... and init them */
-		for (j = a->nr_spalloc * a->nr2 * a->xnr;
-		     j < nr_alloc * a->nr2 * a->xnr; j++) {
-			val = (double *) (a->spmin + j);
-			*val = DBL_MAX;
-			val = (double *) (a->spmax + j);
-			*val = -DBL_MAX;
-		}
+		init_minmax_buf(a, a->nr_spalloc, nr_alloc);
 		a->nr_spalloc = nr_alloc;
 	}
 }
@@ -510,7 +525,7 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
  * Allocate buffers for one activity.
  *
  * IN:
- * @act		Activity for which buffers are to be initialized.
+ * @a		Activity for which buffers are to be initialized.
  * @nr_alloc	Number of structures to allocate.
  * @flags	Flags for common options and system state.
  ***************************************************************************
@@ -554,7 +569,7 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
  * Allocate structures for all activities.
  *
  * IN:
- * @act	Array of activities.
+ * @act		Array of activities.
  * @flags	Flags for common options and system state.
  ***************************************************************************
  */

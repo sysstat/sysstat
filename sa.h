@@ -1624,6 +1624,8 @@ void init_custom_color_palette
 	(void);
 void init_extrema_values
 	(struct activity *, int);
+void init_minmax_buf
+	(struct activity *, size_t, size_t);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices
