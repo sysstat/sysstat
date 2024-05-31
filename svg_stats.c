@@ -823,9 +823,16 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 			skip_current_view(out, &pos, group[i]);
 			continue;
 		}
-		/* Skip void graphs */
-		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)))
+		/*
+		 * Skip void graphs.
+		 * At present time, this is only used by A_CPU activity to not display offline CPU
+		 * on the whole period. We assume that the first metric in view is enough to
+		 * determine if the whole view has to be skipped.
+		 */
+		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN))) {
+			pos += group[i];	/* Maybe one day, A_CPU will have several views */
 			continue;
+		}
 
 		if (!displayed && !svg_p->mock) {
 			/* Translate to proper position for current activity */
