@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="3780" fill="black" stroke="#808080" stroke-width="1">
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="990" fill="black" stroke="#808080" stroke-width="1">
 <text x="0" y="30" text-anchor="start" stroke="#a52a2a">Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 </text>
 <g id="g1-0" transform="translate(0,60)">
