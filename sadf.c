@@ -891,14 +891,97 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
 }
 
 /*
- ***************************************************************************
- * Read stats for current activity from file and display its SVG graphs.
+ * **************************************************************************
+ * Read stats for current activity from file and fill the buffers with SVG
+ * code that will be output later.
  * At most <count> lines of stats are taken into account.
  *
  * IN:
  * @ifd		File descriptor of input file.
  * @curr	Index in array for current sample statistics.
- * @p		Current activity position.
+ * @a		Current activity.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) can
+ *		be saved for current record.
+ * @file	Name of file being read.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @parm	SVG specific parameters.
+ *
+ * OUT:
+ * @cnt		Number of lines of stats remaining to write.
+ * @eosaf	Set to TRUE if EOF (end of file) has been reached.
+ * @reset	Set to TRUE if last_uptime variable should be
+ *		reinitialized (used in next_slice() function).
+ * @parm	Some members are updated.
+ ***************************************************************************
+ */
+void gen_curr_act_svg_code(int ifd, int *curr, long *cnt, int *eosaf, struct activity *a,
+			   int *reset, struct file_activity *file_actlst,
+			   struct tstamp_ext *rectime, char *file,
+			   struct file_magic *file_magic, struct svg_parm *parm)
+{
+	int rtype;
+	int next, reset_cd;
+
+	*cnt  = count;
+	reset_cd = 1;
+
+	do {
+		*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+					  *curr, file, &rtype, 0, file_magic,
+					  file_actlst, rectime, UEOF_CONT);
+		if (*eosaf)
+			break;
+
+		if (rtype == R_RESTART) {
+			parm->restart = TRUE;
+			*reset = TRUE;
+			/* Go to next statistics record, if possible */
+			do {
+				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
+							  *curr, file, &rtype, 0, file_magic,
+							  file_actlst, rectime, UEOF_CONT);
+			}
+			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
+
+			*curr ^= 1;
+		}
+		else if (rtype != R_COMMENT) {
+
+			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
+						   parm, rectime, reset_cd, a->id);
+			reset_cd = 0;
+			if (next) {
+				/*
+				 * next is set to 1 when we were close enough to desired interval.
+				 * In this case, the call to generic_write_stats() has actually
+				 * displayed a line of stats.
+				 */
+				parm->restart = FALSE;
+				parm->ust_time_end = record_hdr[*curr].ust_time;
+				*curr ^= 1;
+				if (*cnt > 0) {
+					(*cnt)--;
+				}
+			}
+			*reset = FALSE;
+		}
+	}
+	while (!*eosaf && *cnt);
+
+	*reset = TRUE;
+}
+
+/*
+ ***************************************************************************
+ * Read stats for current activity from file and output its SVG code.
+ * At most <count> lines of stats are taken into account.
+ *
+ * IN:
+ * @ifd		File descriptor of input file.
+ * @curr	Index in array for current sample statistics.
+ * @a		Current activity.
  * @file_actlst	List of (known or unknown) activities in file.
  * @rectime	Structure where timestamp (expressed in local time or in UTC
  *		depending on whether options -T/-t have been used or not) can
@@ -909,7 +992,7 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  * @nr_act_dispd
  *		Total number of activities that will be displayed.
  * @mock_m	Set to TRUE (MOCK_MODE) to prevent data from being printed
- *		onto the screen. Used to compute the *real SVG canvas height.
+ *		onto the screen. Used to compute the real SVG canvas height.
  *		Set to FALSE (REAL_MODE) to indicate that SVG data can be
  *		printed (canvas height is now known).
  *
@@ -922,14 +1005,12 @@ void rw_curr_act_stats(int ifd, int *curr, long *cnt, int *eosaf,
  ***************************************************************************
  */
 void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
-			     int p, int *reset, struct file_activity *file_actlst,
+			     struct activity *a, int *reset, struct file_activity *file_actlst,
 			     struct tstamp_ext *rectime, char *file,
 			     struct file_magic *file_magic, int *g_nr, int nr_act_dispd,
 			     int mock_m)
 {
 	struct svg_parm parm;
-	int rtype;
-	int next, reset_cd;
 
 	/* Rewind file */
 	seek_file_position(ifd, DO_RESTORE);
@@ -953,56 +1034,12 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	strcpy(parm.my_tzname, my_tzname);
 	parm.mock = mock_m;
 
-	*cnt  = count;
-	reset_cd = 1;
-
 	/* Allocate graphs arrays */
-	(*act[p]->f_svg_print)(act[p], !*curr, F_BEGIN, &parm, 0, &record_hdr[!*curr]);
+	(*a->f_svg_print)(a, !*curr, F_BEGIN, &parm, 0, &record_hdr[!*curr]);
 
-	do {
-		*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
-					  *curr, file, &rtype, 0, file_magic,
-					  file_actlst, rectime, UEOF_CONT);
-		if (*eosaf)
-			break;
-
-		if (rtype == R_RESTART) {
-			parm.restart = TRUE;
-			*reset = TRUE;
-			/* Go to next statistics record, if possible */
-			do {
-				*eosaf = read_next_sample(ifd, IGNORE_RESTART | IGNORE_COMMENT | SET_TIMESTAMPS,
-							  *curr, file, &rtype, 0, file_magic,
-							  file_actlst, rectime, UEOF_CONT);
-			}
-			while (!*eosaf && ((rtype == R_RESTART) || (rtype == R_COMMENT)));
-
-			*curr ^= 1;
-		}
-		else if (rtype != R_COMMENT) {
-
-			next = generic_write_stats(*curr, tm_start.use, tm_end.use, *reset, cnt,
-						   &parm, rectime, reset_cd, act[p]->id);
-			reset_cd = 0;
-			if (next) {
-				/*
-				 * next is set to 1 when we were close enough to desired interval.
-				 * In this case, the call to generic_write_stats() has actually
-				 * displayed a line of stats.
-				 */
-				parm.restart = FALSE;
-				parm.ust_time_end = record_hdr[*curr].ust_time;
-				*curr ^= 1;
-				if (*cnt > 0) {
-					(*cnt)--;
-				}
-			}
-			*reset = FALSE;
-		}
-	}
-	while (!*eosaf && *cnt);
-
-	*reset = TRUE;
+	/* Generate SVG code for current activity */
+	gen_curr_act_svg_code(ifd, curr, cnt, eosaf, a, reset, file_actlst,
+			      rectime, file, file_magic, &parm);
 
 	/* Determine X axis end value */
 	if (DISPLAY_ONE_DAY(flags) &&
@@ -1010,11 +1047,91 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 		parm.ust_time_end = parm.ust_time_ref + (3600 * 24);
 	}
 
-	/* Actually display graphs for current activity */
-	(*act[p]->f_svg_print)(act[p], *curr, F_END, &parm, 0, &record_hdr[!*curr]);
+	/*
+	 * Actually display graphs for current activity unless we are in MOCK_MODE,
+	 * in which case no data are printed but canvas height is calculated.
+	 */
+	(*a->f_svg_print)(a, *curr, F_END, &parm, 0, &record_hdr[!*curr]);
 
 	/* Update total number of graphs already displayed */
 	*g_nr = parm.graph_no;
+}
+
+/*
+ * **************************************************************************
+ * Generate SVG code for current file contents.
+ *
+ * IN:
+ * @ifd		File descriptor of input file.
+ * @file	Name of file being read.
+ * @curr	Index in array for current sample statistics.
+ * @g_nr	Number of graphs already displayed (for all activities).
+ * @nr_act_dispd
+ *		Total number of activities that will be displayed.
+ * @file_actlst	List of (known or unknown) activities in file.
+ * @file_magic	file_magic structure filled with file magic header data.
+ * @rectime	Structure where timestamp (expressed in local time or in UTC
+ *		depending on whether options -T/-t have been used or not) can
+ *		be saved for current record.
+ * @mock_m	Set to TRUE (MOCK_MODE) to prevent data from being printed
+ *		onto the screen. Used to compute the real SVG canvas height.
+ *		Set to FALSE (REAL_MODE) to indicate that SVG data can be
+ *		printed (canvas height is now known).
+ *
+ * OUT:
+ * @cnt		Number of lines of stats remaining to write.
+ * @eosaf	Set to TRUE if EOF (end of file) has been reached.
+ * @reset	Set to TRUE if last_uptime variable should be
+ *		reinitialized (used in next_slice() function).
+ * @g_nr	Total number of views displayed (including current activity).
+ ***************************************************************************
+ */
+void gen_curr_file_svg_code(int ifd, char *file, int *curr, long *cnt, int *eosaf, int *reset,
+			    int *g_nr, int nr_act_dispd, struct file_activity *file_actlst,
+			    struct file_magic *file_magic, struct tstamp_ext *rectime, int mock_m)
+{
+	int i, p;
+
+	/* For each requested activity, generate SVG code */
+	for (i = 0; i < NR_ACT; i++) {
+
+		if (!id_seq[i])
+			continue;
+
+		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
+		if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
+			continue;
+
+		/*
+		 * Reinitialize spmin/spmax buffers in REAL_MODE.
+		 * NB: In MOCK_MODE, this has already been done in allocate_structures().
+		 */
+		if (mock_m == REAL_MODE) {
+			init_minmax_buf(act[p], 0, act[p]->nr_spalloc);
+		}
+
+		if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
+			display_curr_act_graphs(ifd, curr, cnt, eosaf, act[p], reset, file_actlst,
+						rectime, file, file_magic, g_nr, nr_act_dispd,
+						mock_m);
+		}
+		else {
+			unsigned int optf, msk;
+
+			optf = act[p]->opt_flags;
+
+			for (msk = 1; msk < 0x100; msk <<= 1) {
+				if ((act[p]->opt_flags & 0xff) & msk) {
+					act[p]->opt_flags &= (0xffffff00 + msk);
+					display_curr_act_graphs(ifd, curr, cnt, eosaf, act[p],
+								reset, file_actlst, rectime, file,
+								file_magic, g_nr, nr_act_dispd,
+								mock_m);
+					act[p]->opt_flags = optf;
+				}
+			}
+		}
+	}
 }
 
 /*
@@ -1368,40 +1485,30 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		      struct file_magic *file_magic, struct tstamp_ext *rectime, void *dparm)
 {
 	struct svg_hdr_parm parm;
-	int i, p;
-	int curr = 1, rtype, g_nr = 0, views_per_row = 1, nr_act_dispd;
+	int i, curr = 1, rtype, g_nr = 0, views_per_row = 1, nr_act_dispd;
 	int eosaf = TRUE, reset = TRUE;
 	long cnt = 1;
-	int graph_nr = 0;
+	int action = F_END;
+	int save_cpu_nr = file_hdr.sa_cpu_nr;
 
 	/* Init custom colors palette */
 	init_custom_color_palette();
+
+	/* Print SVG header */
+	if (*fmt[f_position]->f_header) {
+		(*fmt[f_position]->f_header)(&parm, F_BEGIN, file, NULL, file_magic,
+					     &file_hdr, act, id_seq, file_actlst);
+	}
 
 	/*
 	 * Calculate the number of rows and the max number of views per row to display.
 	 * Result may be 0. In this case, "No data" will be displayed instead of the graphs.
 	 */
-	graph_nr = get_svg_graph_nr(ifd, file, file_magic,
-				    file_actlst, rectime, &views_per_row, &nr_act_dispd);
+	get_svg_graph_nr(ifd, file, file_magic,
+		         file_actlst, rectime, &views_per_row, &nr_act_dispd);
 
-	if (SET_CANVAS_HEIGHT(flags)) {
-		/*
-		 * Option "-O height=..." used: @graph_nr is NO LONGER a number
-		 * of graphs but the SVG canvas height set on the command line.
-		 */
-		graph_nr = canvas_height;
-	}
-
-
-	parm.graph_nr = graph_nr;
 	parm.views_per_row = PACK_VIEWS(flags) ? views_per_row : 1;
 	parm.nr_act_dispd = nr_act_dispd;
-
-	/* Print SVG header */
-	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&parm, F_BEGIN + F_MAIN, file, NULL, file_magic,
-					     &file_hdr, act, id_seq, file_actlst);
-	}
 
 	/*
 	* If this record is a special (RESTART or COMMENT) one, ignore it and
@@ -1414,6 +1521,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 		{
 			/* End of sa data file: No views displayed */
 			parm.graph_nr = 0;
+			action += F_MAIN;
 			goto close_svg;
 		}
 	}
@@ -1427,40 +1535,52 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	/* Save current file position */
 	seek_file_position(ifd, DO_SAVE);
 
-	/* For each requested activity, display graphs */
+	/* Generate mock SVG file. Used to determine real canvas height */
+	gen_curr_file_svg_code(ifd, file, &curr, &cnt, &eosaf, &reset, &g_nr, nr_act_dispd,
+			       file_actlst, file_magic, rectime, MOCK_MODE);
+
+	/*
+	 * If option "-O height=..." has been used then @graph_nr is NO LONGER a number
+	 * of rows but the SVG canvas height set on the command line.
+	 * Else use @g_nr, the real number of graphs that have been displayed.
+	 */
+	parm.graph_nr = SET_CANVAS_HEIGHT(flags) ? canvas_height : g_nr;
+
+	/*
+	 * Restore nr of CPU that will be displayed in SVG title.
+	 * Indeed, during the first file reading in MOCK_MODE,
+	 * a RESTART record with a different nr of CPU may exist.
+	 * When we read it, we will overwrite previous value saved in file_hdr.
+	 */
+	file_hdr.sa_cpu_nr = save_cpu_nr;
+
+	/*
+	 * We don't know if CPU related activities will be displayed or not.
+	 * But if it is the case, @nr_ini will be used in the loop
+	 * to process all CPUs. So reset their value to their original one.
+	 * Buffers should already be allocated.
+	 */
 	for (i = 0; i < NR_ACT; i++) {
-
-		if (!id_seq[i])
-			continue;
-
-		p = get_activity_position(act, id_seq[i], EXIT_IF_NOT_FOUND);
-		if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr)
-			continue;
-
-		if (!HAS_MULTIPLE_OUTPUTS(act[p]->options)) {
-			display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
-						p, &reset, file_actlst,
-						rectime, file,
-						file_magic, &g_nr, nr_act_dispd, REAL_MODE);
-		}
-		else {
-			unsigned int optf, msk;
-
-			optf = act[p]->opt_flags;
-
-			for (msk = 1; msk < 0x100; msk <<= 1) {
-				if ((act[p]->opt_flags & 0xff) & msk) {
-					act[p]->opt_flags &= (0xffffff00 + msk);
-					display_curr_act_graphs(ifd, &curr, &cnt, &eosaf,
-								p, &reset, file_actlst,
-								rectime, file,
-								file_magic, &g_nr, nr_act_dispd,
-								REAL_MODE);
-					act[p]->opt_flags = optf;
-				}
-			}
+		if (HAS_PERSISTENT_VALUES(act[i]->options) && (act[i]->nr_ini > 0)
+		    && (act[i]->nr_ini > file_hdr.sa_cpu_nr)) {
+			act[i]->nr_ini = file_hdr.sa_cpu_nr;
 		}
 	}
+
+	/* Complete SVG header with real canvas height */
+	if (*fmt[f_position]->f_header) {
+		(*fmt[f_position]->f_header)(&parm, F_MAIN, file, NULL, file_magic,
+					     &file_hdr, act, id_seq, file_actlst);
+	}
+
+	/* Reset variables to their original value */
+	curr = 1; g_nr = 0;
+	eosaf = TRUE, reset = TRUE;
+	cnt = 1;
+
+	/* Now really generate SVG code */
+	gen_curr_file_svg_code(ifd, file, &curr, &cnt, &eosaf, &reset, &g_nr, nr_act_dispd,
+			       file_actlst, file_magic, rectime, REAL_MODE);
 
 	/* Real number of graphs that have been displayed */
 	parm.graph_nr = g_nr;
@@ -1468,7 +1588,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 close_svg:
 	/* Print SVG trailer */
 	if (*fmt[f_position]->f_header) {
-		(*fmt[f_position]->f_header)(&parm, F_END, file, NULL, file_magic,
+		(*fmt[f_position]->f_header)(&parm, action, file, NULL, file_magic,
 					     &file_hdr, act, id_seq, file_actlst);
 	}
 }

@@ -69,7 +69,7 @@ unsigned int svg_colors[SVG_COL_PALETTE_NR][SVG_COL_PALETTE_SIZE] =
  *
  * IN:
  * @pos		Position in array for the first graph extrema value.
- * @n		Number of graphs to scan.
+ * @n		Number of graphs to scan (number of metrics in current view).
  * @spmin	Buffer with min values.
  * @spmax	Buffer with max values.
  *
