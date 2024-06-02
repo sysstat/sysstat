@@ -526,6 +526,16 @@ int count_file_items(int ifd, char *file, struct file_magic *file_magic,
 				else if (act[i]->nr[0] > act[i]->item_list_sz) {
 					act[i]->item_list_sz = act[i]->nr[0];
 				}
+				if (HAS_PERSISTENT_VALUES(act[i]->options) &&
+					(act[i]->item_list_sz < act[i]->nr_ini)) {
+					/*
+					 * For persistent (i.e. CPU related) activities,
+					 * structures must be allocated for every installed CPU,
+					 * even for offline CPU.
+					 * So item_list_sz cannot be smaller than nr_ini.
+					 */
+					act[i]->item_list_sz = act[i]->nr_ini;
+					}
 			}
 		}
 
