@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sadf -g tests/data-CPUoffon.tmp -- -n SOFT -P 8 -s 13:20:19 -e 13:20:29 > tests/out0.sadf-g-CPUoff.tmp && diff -u tests/expected0.sadf-g-CPUoff tests/out0.sadf-g-CPUoff.tmp
