@@ -55,7 +55,7 @@ struct act_bitmap cpu_bitmap = {
 
 
 /*
- * CPU statistics.
+ * CPU statistics. Switch: -u
  * This is the only activity which *must* be collected by sadc
  * so that uptime can be filled.
  */
@@ -112,7 +112,7 @@ struct activity cpu_act = {
 	.bitmap		= &cpu_bitmap
 };
 
-/* Process (task) creation and context switch activity */
+/* Process (task) creation and context switch activity. Switch: -w */
 struct activity pcsw_act = {
 	.id		= A_PCSW,
 	.options	= AO_COLLECTED,
@@ -163,7 +163,7 @@ struct activity pcsw_act = {
 	.bitmap		= NULL
 };
 
-/* Interrupts statistics */
+/* Interrupts statistics. Switch: -I */
 struct activity irq_act = {
 	.id		= A_IRQ,
 	.options	= AO_COUNTED + AO_MATRIX + AO_PERSISTENT,
@@ -197,8 +197,8 @@ struct activity irq_act = {
 	.item_list	= NULL,
 	.item_list_sz	= 0,
 	.g_nr		= 0,
-	.nr_ini		= -1,
-	.nr2		= -1,
+	.nr_ini		= -1,	/* Nr of CPU */
+	.nr2		= -1,	/* Nr of int */
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
@@ -214,7 +214,7 @@ struct activity irq_act = {
 	.bitmap		= &cpu_bitmap
 };
 
-/* Swapping activity */
+/* Swapping activity. Switch: -W */
 struct activity swap_act = {
 	.id		= A_SWAP,
 	.options	= AO_COLLECTED,
@@ -265,7 +265,7 @@ struct activity swap_act = {
 	.bitmap		= NULL
 };
 
-/* Paging activity */
+/* Paging activity. Switch: -B */
 struct activity paging_act = {
 	.id		= A_PAGE,
 	.options	= AO_COLLECTED,
@@ -318,7 +318,7 @@ struct activity paging_act = {
 	.bitmap		= NULL
 };
 
-/* I/O and transfer rate activity */
+/* I/O and transfer rate activity. Switch: -b */
 struct activity io_act = {
 	.id		= A_IO,
 	.options	= AO_COLLECTED,
@@ -369,7 +369,7 @@ struct activity io_act = {
 	.bitmap		= NULL
 };
 
-/* Memory and swap space utilization activity */
+/* Memory and swap space utilization activity. Switch: -r */
 struct activity memory_act = {
 	.id		= A_MEMORY,
 	.options	= AO_COLLECTED + AO_MULTIPLE_OUTPUTS,
@@ -421,7 +421,7 @@ struct activity memory_act = {
 	.bitmap		= NULL
 };
 
-/* Kernel tables activity */
+/* Kernel tables activity. Switch: -v */
 struct activity ktables_act = {
 	.id		= A_KTABLES,
 	.options	= AO_COLLECTED,
@@ -472,7 +472,7 @@ struct activity ktables_act = {
 	.bitmap		= NULL
 };
 
-/* Queue and load activity */
+/* Queue and load activity. Switch: -q LOAD */
 struct activity queue_act = {
 	.id		= A_QUEUE,
 	.options	= AO_COLLECTED,
@@ -523,7 +523,7 @@ struct activity queue_act = {
 	.bitmap		= NULL
 };
 
-/* Serial lines activity */
+/* Serial lines activity. Switch: -y */
 struct activity serial_act = {
 	.id		= A_SERIAL,
 	.options	= AO_COLLECTED + AO_COUNTED,
@@ -574,7 +574,7 @@ struct activity serial_act = {
 	.bitmap		= NULL
 };
 
-/* Block devices activity */
+/* Block devices activity. Switch: -d */
 struct activity disk_act = {
 	.id		= A_DISK,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -625,7 +625,7 @@ struct activity disk_act = {
 	.bitmap		= NULL
 };
 
-/* Network interfaces activity */
+/* Network interfaces activity. Switch: -n DEV */
 struct activity net_dev_act = {
 	.id		= A_NET_DEV,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -676,7 +676,7 @@ struct activity net_dev_act = {
 	.bitmap		= NULL
 };
 
-/* Network interfaces (errors) activity */
+/* Network interfaces (errors) activity. Switch: -n EDEV */
 struct activity net_edev_act = {
 	.id		= A_NET_EDEV,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -728,7 +728,7 @@ struct activity net_edev_act = {
 	.bitmap		= NULL
 };
 
-/* NFS client activity */
+/* NFS client activity. Switch: -n NFS */
 struct activity net_nfs_act = {
 	.id		= A_NET_NFS,
 	.options	= AO_COLLECTED,
@@ -779,7 +779,7 @@ struct activity net_nfs_act = {
 	.bitmap		= NULL
 };
 
-/* NFS server activity */
+/* NFS server activity. Switch: -n NFSD */
 struct activity net_nfsd_act = {
 	.id		= A_NET_NFSD,
 	.options	= AO_COLLECTED,
@@ -831,7 +831,7 @@ struct activity net_nfsd_act = {
 	.bitmap		= NULL
 };
 
-/* Network sockets activity */
+/* Network sockets activity. Switch: -n SOCK */
 struct activity net_sock_act = {
 	.id		= A_NET_SOCK,
 	.options	= AO_COLLECTED,
@@ -882,7 +882,7 @@ struct activity net_sock_act = {
 	.bitmap		= NULL
 };
 
-/* IP network traffic activity */
+/* IP network traffic activity. Switch: -n IP */
 struct activity net_ip_act = {
 	.id		= A_NET_IP,
 	.options	= AO_NULL,
@@ -933,7 +933,7 @@ struct activity net_ip_act = {
 	.bitmap		= NULL
 };
 
-/* IP network traffic (errors) activity */
+/* IP network traffic (errors) activity. Switch: -n EIP */
 struct activity net_eip_act = {
 	.id		= A_NET_EIP,
 	.options	= AO_NULL,
@@ -984,7 +984,7 @@ struct activity net_eip_act = {
 	.bitmap		= NULL
 };
 
-/* ICMP network traffic activity */
+/* ICMP network traffic activity. Switch: -n ICMP */
 struct activity net_icmp_act = {
 	.id		= A_NET_ICMP,
 	.options	= AO_NULL,
@@ -1036,7 +1036,7 @@ struct activity net_icmp_act = {
 	.bitmap		= NULL
 };
 
-/* ICMP network traffic (errors) activity */
+/* ICMP network traffic (errors) activity. Switch: -n EICMP */
 struct activity net_eicmp_act = {
 	.id		= A_NET_EICMP,
 	.options	= AO_NULL,
@@ -1088,7 +1088,7 @@ struct activity net_eicmp_act = {
 	.bitmap		= NULL
 };
 
-/* TCP network traffic activity */
+/* TCP network traffic activity. Switch: -n TCP */
 struct activity net_tcp_act = {
 	.id		= A_NET_TCP,
 	.options	= AO_NULL,
@@ -1139,7 +1139,7 @@ struct activity net_tcp_act = {
 	.bitmap		= NULL
 };
 
-/* TCP network traffic (errors) activity */
+/* TCP network traffic (errors) activity. Switch: -n ETCP */
 struct activity net_etcp_act = {
 	.id		= A_NET_ETCP,
 	.options	= AO_NULL,
@@ -1190,7 +1190,7 @@ struct activity net_etcp_act = {
 	.bitmap		= NULL
 };
 
-/* UDP network traffic activity */
+/* UDP network traffic activity. Switch: -n UDP */
 struct activity net_udp_act = {
 	.id		= A_NET_UDP,
 	.options	= AO_NULL,
@@ -1241,7 +1241,7 @@ struct activity net_udp_act = {
 	.bitmap		= NULL
 };
 
-/* IPv6 sockets activity */
+/* IPv6 sockets activity. Switch: -n SOCK6 */
 struct activity net_sock6_act = {
 	.id		= A_NET_SOCK6,
 	.options	= AO_NULL,
@@ -1292,7 +1292,7 @@ struct activity net_sock6_act = {
 	.bitmap		= NULL
 };
 
-/* IPv6 network traffic activity */
+/* IPv6 network traffic activity. Switch: -n IP6 */
 struct activity net_ip6_act = {
 	.id		= A_NET_IP6,
 	.options	= AO_NULL,
@@ -1344,7 +1344,7 @@ struct activity net_ip6_act = {
 	.bitmap		= NULL
 };
 
-/* IPv6 network traffic (errors) activity */
+/* IPv6 network traffic (errors) activity. Switch: -n EIP6 */
 struct activity net_eip6_act = {
 	.id		= A_NET_EIP6,
 	.options	= AO_NULL,
@@ -1396,7 +1396,7 @@ struct activity net_eip6_act = {
 	.bitmap		= NULL
 };
 
-/* ICMPv6 network traffic activity */
+/* ICMPv6 network traffic activity. Switch: -n ICMP6 */
 struct activity net_icmp6_act = {
 	.id		= A_NET_ICMP6,
 	.options	= AO_NULL,
@@ -1449,7 +1449,7 @@ struct activity net_icmp6_act = {
 	.bitmap		= NULL
 };
 
-/* ICMPv6 network traffic (errors) activity */
+/* ICMPv6 network traffic (errors) activity. Switch: -n EICMP6 */
 struct activity net_eicmp6_act = {
 	.id		= A_NET_EICMP6,
 	.options	= AO_NULL,
@@ -1501,7 +1501,7 @@ struct activity net_eicmp6_act = {
 	.bitmap		= NULL
 };
 
-/* UDPv6 network traffic activity */
+/* UDPv6 network traffic activity. Switch: -n UDP6 */
 struct activity net_udp6_act = {
 	.id		= A_NET_UDP6,
 	.options	= AO_NULL,
@@ -1552,7 +1552,7 @@ struct activity net_udp6_act = {
 	.bitmap		= NULL
 };
 
-/* CPU frequency */
+/* CPU frequency. Switch: -m CPU */
 struct activity pwr_cpufreq_act = {
 	.id		= A_PWR_CPU,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -1603,7 +1603,7 @@ struct activity pwr_cpufreq_act = {
 	.bitmap		= &cpu_bitmap
 };
 
-/* Fan */
+/* Fan. Switch: -m FAN */
 struct activity pwr_fan_act = {
 	.id		= A_PWR_FAN,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -1654,7 +1654,7 @@ struct activity pwr_fan_act = {
 	.bitmap		= NULL
 };
 
-/* Temperature */
+/* Temperature. Switch: -m TEMP */
 struct activity pwr_temp_act = {
 	.id		= A_PWR_TEMP,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -1705,7 +1705,7 @@ struct activity pwr_temp_act = {
 	.bitmap		= NULL
 };
 
-/* Voltage inputs */
+/* Voltage inputs. Switch: -m IN */
 struct activity pwr_in_act = {
 	.id		= A_PWR_IN,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -1756,7 +1756,7 @@ struct activity pwr_in_act = {
 	.bitmap		= NULL
 };
 
-/* Hugepages activity */
+/* Hugepages activity. Switch: -H */
 struct activity huge_act = {
 	.id		= A_HUGE,
 	.options	= AO_COLLECTED,
@@ -1807,7 +1807,7 @@ struct activity huge_act = {
 	.bitmap		= NULL
 };
 
-/* CPU weighted frequency */
+/* CPU weighted frequency. Switch: -m FREQ */
 struct activity pwr_wghfreq_act = {
 	.id		= A_PWR_FREQ,
 	.options	= AO_COUNTED + AO_MATRIX,
@@ -1840,8 +1840,8 @@ struct activity pwr_wghfreq_act = {
 	.item_list	= NULL,
 	.item_list_sz	= 0,
 	.g_nr		= 0,
-	.nr_ini		= -1,
-	.nr2		= -1,
+	.nr_ini		= -1,	/* Nr of CPU */
+	.nr2		= -1,	/* Nr of frequencies */
 	.nr_max		= NR_CPUS + 1,
 	.nr		= {-1, -1, -1},
 	.nr_allocated	= 0,
@@ -1857,7 +1857,7 @@ struct activity pwr_wghfreq_act = {
 	.bitmap		= &cpu_bitmap
 };
 
-/* USB devices plugged into the system */
+/* USB devices plugged into the system. Switch: -m USB */
 struct activity pwr_usb_act = {
 	.id		= A_PWR_USB,
 	.options	= AO_COUNTED + AO_CLOSE_MARKUP,
@@ -1908,7 +1908,7 @@ struct activity pwr_usb_act = {
 	.bitmap		= NULL
 };
 
-/* Filesystem usage activity */
+/* Filesystem usage activity. Switch: -F */
 struct activity filesystem_act = {
 	.id		= A_FS,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM + AO_MULTIPLE_OUTPUTS,
@@ -1960,7 +1960,7 @@ struct activity filesystem_act = {
 	.bitmap		= NULL
 };
 
-/* Fibre Channel HBA usage activity */
+/* Fibre Channel HBA usage activity. Switch: -n FC */
 struct activity fchost_act = {
 	.id		= A_NET_FC,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,
@@ -2011,7 +2011,7 @@ struct activity fchost_act = {
 	.bitmap		= NULL
 };
 
-/* Softnet activity */
+/* Softnet activity. Switch: -n SOFT */
 struct activity softnet_act = {
 	.id		= A_NET_SOFT,
 	.options	= AO_COLLECTED + AO_COUNTED + AO_CLOSE_MARKUP +
@@ -2063,7 +2063,7 @@ struct activity softnet_act = {
 	.bitmap		= &cpu_bitmap
 };
 
-/* Pressure-stall CPU activity */
+/* Pressure-stall CPU activity. Switch: -q CPU */
 struct activity psi_cpu_act = {
 	.id		= A_PSI_CPU,
 	.options	= AO_COLLECTED + AO_DETECTED,
@@ -2114,7 +2114,7 @@ struct activity psi_cpu_act = {
 	.bitmap		= NULL
 };
 
-/* Pressure-stall I/O activity */
+/* Pressure-stall I/O activity. Switch: -q IO */
 struct activity psi_io_act = {
 	.id		= A_PSI_IO,
 	.options	= AO_COLLECTED + AO_DETECTED,
@@ -2165,7 +2165,7 @@ struct activity psi_io_act = {
 	.bitmap		= NULL
 };
 
-/* Pressure-stall memory activity */
+/* Pressure-stall memory activity. Switch: -q MEM */
 struct activity psi_mem_act = {
 	.id		= A_PSI_MEM,
 	.options	= AO_COLLECTED + AO_DETECTED + AO_CLOSE_MARKUP,
@@ -2216,7 +2216,7 @@ struct activity psi_mem_act = {
 	.bitmap		= NULL
 };
 
-/* Battery capacity */
+/* Battery capacity. Switch: -m BAT */
 struct activity pwr_bat_act = {
 	.id		= A_PWR_BAT,
 	.options	= AO_COUNTED + AO_GRAPH_PER_ITEM,

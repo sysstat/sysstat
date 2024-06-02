@@ -1001,7 +1001,9 @@ void gen_curr_act_svg_code(int ifd, int *curr, long *cnt, int *eosaf, struct act
  * @eosaf	Set to TRUE if EOF (end of file) has been reached.
  * @reset	Set to TRUE if last_uptime variable should be
  *		reinitialized (used in next_slice() function).
- * @g_nr	Total number of views displayed (including current activity).
+ * @g_nr	Total number of rows displayed (including current activity).
+ *		This is the same as the number of views unless "-O packed"
+ *		option has been used.
  ***************************************************************************
  */
 void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
@@ -1053,7 +1055,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
 	 */
 	(*a->f_svg_print)(a, *curr, F_END, &parm, 0, &record_hdr[!*curr]);
 
-	/* Update total number of graphs already displayed */
+	/* Update total number of rows already displayed */
 	*g_nr = parm.graph_no;
 }
 
@@ -1065,7 +1067,7 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  * @ifd		File descriptor of input file.
  * @file	Name of file being read.
  * @curr	Index in array for current sample statistics.
- * @g_nr	Number of graphs already displayed (for all activities).
+ * @g_nr	Number of rows already displayed (for all activities).
  * @nr_act_dispd
  *		Total number of activities that will be displayed.
  * @file_actlst	List of (known or unknown) activities in file.
@@ -1083,7 +1085,9 @@ void display_curr_act_graphs(int ifd, int *curr, long *cnt, int *eosaf,
  * @eosaf	Set to TRUE if EOF (end of file) has been reached.
  * @reset	Set to TRUE if last_uptime variable should be
  *		reinitialized (used in next_slice() function).
- * @g_nr	Total number of views displayed (including current activity).
+ * @g_nr	Total number of rows displayed (including current activity).
+ *		This is the same as the number of views unless "-O packed"
+ *		option has been used.
  ***************************************************************************
  */
 void gen_curr_file_svg_code(int ifd, char *file, int *curr, long *cnt, int *eosaf, int *reset,
@@ -1542,7 +1546,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	/*
 	 * If option "-O height=..." has been used then @graph_nr is NO LONGER a number
 	 * of rows but the SVG canvas height set on the command line.
-	 * Else use @g_nr, the real number of graphs that have been displayed.
+	 * Else use @g_nr, the real number of rows that have been displayed.
 	 */
 	parm.graph_nr = SET_CANVAS_HEIGHT(flags) ? canvas_height : g_nr;
 
@@ -1582,7 +1586,7 @@ void svg_display_loop(int ifd, char *file, struct file_activity *file_actlst,
 	gen_curr_file_svg_code(ifd, file, &curr, &cnt, &eosaf, &reset, &g_nr, nr_act_dispd,
 			       file_actlst, file_magic, rectime, REAL_MODE);
 
-	/* Real number of graphs that have been displayed */
+	/* Real number of rows that have been displayed */
 	parm.graph_nr = g_nr;
 
 close_svg:
