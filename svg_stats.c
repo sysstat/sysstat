@@ -825,9 +825,9 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		}
 		/*
 		 * Skip void graphs.
-		 * At present time, this is only used by A_CPU activity to not display offline CPU
-		 * on the whole period. We assume that the first metric in view is enough to
-		 * determine if the whole view has to be skipped.
+		 * At present time, this is only used by A_CPU and A_NET_SOFT activities to not
+		 * display CPU which are offline on the whole period. We assume that the first
+		 * metric in view is enough to determine if the whole view has to be skipped.
 		 */
 		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN))) {
 			pos += group[i];	/* Maybe one day, A_CPU will have several views */
@@ -5105,6 +5105,9 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			ssnc = (struct stats_softnet *) ((char *) a->buf[curr]  + i * a->msize);
 			ssnp = (struct stats_softnet *) ((char *) a->buf[!curr] + i * a->msize);
 
+			pos = i * SOFT_ARRAY_SZ;
+			posp = i * a->xnr;
+
 			/* Is current CPU marked offline? */
 			if (offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07))) {
 				/*
@@ -5126,13 +5129,12 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 					ssnc = &ssnczero;
 				}
 			}
-			pos = i * SOFT_ARRAY_SZ;
-			posp = i * a->xnr;
-
-			/* Check for min/max values */
-			save_extrema(local_types_nr, (void *) ssnc, (void *) ssnp,
-				     itv, a->spmin + posp, a->spmax + posp, g_fields);
-			save_minmax(a, posp + 5, ssnc->backlog_len);
+			else {
+				/* Check for min/max values for online CPU only */
+				save_extrema(local_types_nr, (void *) ssnc, (void *) ssnp,
+					     itv, a->spmin + posp, a->spmax + posp, g_fields);
+				save_minmax(a, posp + 5, ssnc->backlog_len);
+			}
 
 			/* total/s */
 			lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -5186,7 +5188,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 					     title, g_title, item_name, group,
 					     a->spmin + posp, a->spmax + posp,
 					     out + pos, outsize + pos,
-					     svg_p, record_hdr, FALSE, a, i);
+					     svg_p, record_hdr, i, a, i);
 		}
 
 		/* Free remaining structures */
