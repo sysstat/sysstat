@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <float.h>
 
 #include "sa.h"
 #include "ioconf.h"
@@ -421,8 +422,13 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 				/* Save min and max values */
 				save_cpu_xstats(a, i, deltot_jiffies, scc, scp);
 			}
-			else {
-				/* Display min and max values */
+			else if ((*(a->spmin + i * a->xnr) != DBL_MAX) &&
+				 (*(a->spmax + i * a->xnr) != -DBL_MAX)) {
+				/*
+				 * Display min and max values if available.
+				 * Those values may be unavailable if CPU has always been offline
+				 * except for one sample only.
+				 */
 				print_hdr_line(timestamp[!curr], a, FIRST + DISPLAY_CPU_ALL(a->opt_flags), 7, 9,
 					       NULL);
 				print_cpu_xstats(DISPLAY_CPU_DEF(a->opt_flags), i,
@@ -4240,7 +4246,8 @@ __print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
 				/* Save min and max values for blg_len */
 				save_minmax(a, i * a->xnr + 5, (double) ssnc->backlog_len);
 			}
-			else {
+			else if ((*(a->spmin + i * a->xnr) != DBL_MAX) &&
+				(*(a->spmax + i * a->xnr) != -DBL_MAX)) {
 				/* Display min and max values */
 				print_hdr_line(timestamp[!curr], a, FIRST, 7, 9, NULL);
 				print_softnet_xstats(H_MIN, i, a->spmin + i * a->xnr);

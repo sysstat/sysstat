@@ -21,6 +21,7 @@
  */
 
 #include <stdio.h>
+#include <float.h>
 
 #include "sa.h"
 
@@ -151,7 +152,12 @@ void print_irq_xstats(int ismax, struct activity *a, int curr, int irq, char *na
 			/* No */
 			continue;
 
-		cprintf_f(NO_UNIT, FALSE, 1, 9, 2, *(spextr + (cpu * a->nr2 + irq) * a->xnr));
+		/* Print min/max values if available */
+		if ((*(spextr + (cpu * a->nr2 + irq) * a->xnr) != -DBL_MAX) &&
+		    (*(spextr + (cpu * a->nr2 + irq) * a->xnr) !=  DBL_MAX)) {
+			cprintf_f(NO_UNIT, FALSE, 1, 9, 2,
+				  *(spextr + (cpu * a->nr2 + irq) * a->xnr));
+		}
 	}
 
 	if (DISPLAY_PRETTY(flags)) {
