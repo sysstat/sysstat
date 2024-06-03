@@ -829,7 +829,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		 * display CPU which are offline on the whole period. We assume that the first
 		 * metric in view is enough to determine if the whole view has to be skipped.
 		 */
-		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN))) {
+		if (skip_void && ((*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MAX))) {
 			pos += group[i];	/* Maybe one day, A_CPU will have several views */
 			continue;
 		}
@@ -896,7 +896,7 @@ int draw_activity_graphs(int g_nr, int g_type[], char *title[], char *g_title[],
 		 * And a min and max value should have been found.
 		 */
 		if ((record_hdr->ust_time == svg_p->ust_time_first) ||
-			(*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MIN)) {
+			(*(spmin + pos) == DBL_MAX) || (*(spmax + pos) == -DBL_MAX)) {
 			/* No data found */
 			printf("<text x=\"%d\" y=\"%d\" style=\"fill: #%06x; stroke: none\">No data</text>\n",
 			       xv, yv + SVG_M_YSIZE,
