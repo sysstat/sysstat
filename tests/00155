@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar -x -u ALL -I -n SOFT -P 0,6 -f tests/data-CPUoffon.tmp -e 13:20:39 > tests/out1.sar-CPUoffon.tmp && diff -u tests/expected1.sar-CPUoffon tests/out1.sar-CPUoffon.tmp

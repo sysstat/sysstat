@@ -96,6 +96,9 @@ CPU#6: online
 /proc/diskstats
 sdc: flush I/Os stats
 
+/proc/net/dev
+virbr0-nic: registered again
+
 CIFS SMB1 and SMB2 statistics available
 
 PID:

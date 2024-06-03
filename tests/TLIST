@@ -85,8 +85,9 @@ NOTES:
 	[Check that -A doesn't necessarily imply -I ALL -P ALL]
 00134	LC_ALL=C TZ=GMT ./sar -I --int=0,3,30-50,4000-,LOC,PWD,MCE-XXX,TLB,sum -P all,3 --pretty -f tests/data.tmp > tests/out.sar-I.tmp
 
-=====	sar: Reading data-CPUoffon.tmp
+=====	sar: Reading data-CPUoffon.tmp (for persistent activities)
 00150	LC_ALL=C TZ=GMT ./sar -u ALL -I -n SOFT -P all,8 -f tests/data-CPUoffon.tmp > tests/out.sar-CPUoffon.tmp
+00155	LC_ALL=C TZ=GMT ./sar -x -u ALL -I -n SOFT -P 0,6 -f tests/data-CPUoffon.tmp -e 13:20:39 > tests/out1.sar-CPUoffon.tmp
 
 =====	sar: Reading data.tmp
 00160	LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp

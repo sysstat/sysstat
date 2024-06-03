@@ -1,0 +1,333 @@
+Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
+
+13:20:19        CPU      %usr     %nice      %sys   %iowait    %steal      %irq     %soft    %guest    %gnice     %idle
+13:20:29          0      1.25      0.00      1.51      0.35      0.00      0.19      0.58      0.00      0.00     96.12
+13:20:39          0      2.19     52.01      1.46      0.00      0.00      0.36      0.39      0.00      0.00     43.59
+
+Summary:        CPU      %usr     %nice      %sys   %iowait    %steal      %irq     %soft    %guest    %gnice     %idle
+Minimum:          0      1.25      0.00      1.46      0.00      0.00      0.19      0.39      0.00      0.00     43.59
+Maximum:          0      2.19     52.01      1.51      0.35      0.00      0.36      0.58      0.00      0.00     96.12
+Average:          0      1.77     28.70      1.48      0.16      0.00      0.29      0.47      0.00      0.00     67.13
+Average:          6      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00    100.00
+
+13:20:19         INTR      CPU0
+13:20:29          sum   3118.50
+13:20:29            0      0.00
+13:20:29            8      0.00
+13:20:29            9      0.00
+13:20:29           16      0.00
+13:20:29           17      0.00
+13:20:29           18      0.00
+13:20:29           19      0.00
+13:20:29           23      0.00
+13:20:29           24      0.00
+13:20:29           25      0.00
+13:20:29           26      0.00
+13:20:29           27      0.00
+13:20:29           28      0.00
+13:20:29           29      0.00
+13:20:29           30      0.00
+13:20:29           31      0.00
+13:20:29           32      0.00
+13:20:29           33      0.00
+13:20:29           34      0.00
+13:20:29           35      0.00
+13:20:29           36      0.00
+13:20:29          NMI      0.00
+13:20:29          LOC   2967.32
+13:20:29          SPU      0.00
+13:20:29          PMI      0.00
+13:20:29          IWI      0.00
+13:20:29          RTR      0.00
+13:20:29          RES    130.12
+13:20:29          CAL      5.35
+13:20:29          TLB     15.72
+13:20:29          TRM      0.00
+13:20:29          THR      0.00
+13:20:29          DFR      0.00
+13:20:29          MCE      0.00
+13:20:29          MCP      0.00
+13:20:29          HYP      0.00
+13:20:29          HRE      0.00
+13:20:29          HVS      0.00
+13:20:29          ERR      0.00
+13:20:29          MIS      0.00
+13:20:29          PIN      0.00
+13:20:29          NPI      0.00
+13:20:29          PIW      0.00
+
+13:20:29         INTR      CPU0
+13:20:39          sum   3441.25
+13:20:39            0      0.00
+13:20:39            8      0.00
+13:20:39            9      0.00
+13:20:39           16      0.00
+13:20:39           17      0.00
+13:20:39           18      0.00
+13:20:39           19      0.00
+13:20:39           23      0.00
+13:20:39           24      0.00
+13:20:39           25      0.00
+13:20:39           26      0.00
+13:20:39           27      0.00
+13:20:39           28      0.00
+13:20:39           29      0.00
+13:20:39           30      0.00
+13:20:39           31      0.00
+13:20:39           32      0.00
+13:20:39           33      0.00
+13:20:39           34      0.00
+13:20:39           35      0.00
+13:20:39           36      0.00
+13:20:39          NMI      0.05
+13:20:39          LOC   3240.78
+13:20:39          SPU      0.00
+13:20:39          PMI      0.05
+13:20:39          IWI      0.00
+13:20:39          RTR      0.00
+13:20:39          RES     80.21
+13:20:39          CAL     42.18
+13:20:39          TLB     77.97
+13:20:39          TRM      0.00
+13:20:39          THR      0.00
+13:20:39          DFR      0.00
+13:20:39          MCE      0.00
+13:20:39          MCP      0.00
+13:20:39          HYP      0.00
+13:20:39          HRE      0.00
+13:20:39          HVS      0.00
+13:20:39          ERR      0.00
+13:20:39          MIS      0.00
+13:20:39          PIN      0.00
+13:20:39          NPI      0.00
+13:20:39          PIW      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          sum   3118.50
+Maximum:          sum   3441.25
+Average:          sum   3296.67      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:            0      0.00
+Maximum:            0      0.00
+Average:            0      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:            8      0.00
+Maximum:            8      0.00
+Average:            8      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:            9      0.00
+Maximum:            9      0.00
+Average:            9      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           16      0.00
+Maximum:           16      0.00
+Average:           16      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           17      0.00
+Maximum:           17      0.00
+Average:           17      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           18      0.00
+Maximum:           18      0.00
+Average:           18      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           19      0.00
+Maximum:           19      0.00
+Average:           19      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           23      0.00
+Maximum:           23      0.00
+Average:           23      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           24      0.00
+Maximum:           24      0.00
+Average:           24      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           25      0.00
+Maximum:           25      0.00
+Average:           25      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           26      0.00
+Maximum:           26      0.00
+Average:           26      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           27      0.00
+Maximum:           27      0.00
+Average:           27      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           28      0.00
+Maximum:           28      0.00
+Average:           28      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           29      0.00
+Maximum:           29      0.00
+Average:           29      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           30      0.00
+Maximum:           30      0.00
+Average:           30      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           31      0.00
+Maximum:           31      0.00
+Average:           31      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           32      0.00
+Maximum:           32      0.00
+Average:           32      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           33      0.00
+Maximum:           33      0.00
+Average:           33      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           34      0.00
+Maximum:           34      0.00
+Average:           34      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           35      0.00
+Maximum:           35      0.00
+Average:           35      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:           36      0.00
+Maximum:           36      0.00
+Average:           36      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          NMI      0.00
+Maximum:          NMI      0.05
+Average:          NMI      0.03      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          LOC   2967.32
+Maximum:          LOC   3240.78
+Average:          LOC   3118.28      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          SPU      0.00
+Maximum:          SPU      0.00
+Average:          SPU      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          PMI      0.00
+Maximum:          PMI      0.05
+Average:          PMI      0.03      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          IWI      0.00
+Maximum:          IWI      0.00
+Average:          IWI      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          RTR      0.00
+Maximum:          RTR      0.00
+Average:          RTR      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          RES     80.21
+Maximum:          RES    130.12
+Average:          RES    102.57      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          CAL      5.35
+Maximum:          CAL     42.18
+Average:          CAL     25.68      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          TLB     15.72
+Maximum:          TLB     77.97
+Average:          TLB     50.09      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          TRM      0.00
+Maximum:          TRM      0.00
+Average:          TRM      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          THR      0.00
+Maximum:          THR      0.00
+Average:          THR      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          DFR      0.00
+Maximum:          DFR      0.00
+Average:          DFR      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          MCE      0.00
+Maximum:          MCE      0.00
+Average:          MCE      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          MCP      0.00
+Maximum:          MCP      0.00
+Average:          MCP      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          HYP      0.00
+Maximum:          HYP      0.00
+Average:          HYP      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          HRE      0.00
+Maximum:          HRE      0.00
+Average:          HRE      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          HVS      0.00
+Maximum:          HVS      0.00
+Average:          HVS      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          ERR      0.00
+Maximum:          ERR      0.00
+Average:          ERR      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          MIS      0.00
+Maximum:          MIS      0.00
+Average:          MIS      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          PIN      0.00
+Maximum:          PIN      0.00
+Average:          PIN      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          NPI      0.00
+Maximum:          NPI      0.00
+Average:          NPI      0.00      0.00
+
+Summary:         INTR      CPU0      CPU6
+Minimum:          PIW      0.00
+Maximum:          PIW      0.00
+Average:          PIW      0.00      0.00
+
+13:20:19        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s   blg_len
+13:20:29          0      0.00      0.00      0.00      0.00      0.00         0
+13:20:39          0      0.00      0.00      0.00      0.00      0.00         0
+
+Summary:        CPU   total/s   dropd/s squeezd/s  rx_rps/s flw_lim/s   blg_len
+Minimum:          0      0.00      0.00      0.00      0.00      0.00         0
+Maximum:          0      0.00      0.00      0.00      0.00      0.00         0
+Average:          0      0.00      0.00      0.00      0.00      0.00         0
+Average:          6      0.00      0.00      0.00      0.00      0.00         0
