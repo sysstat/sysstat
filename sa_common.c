@@ -3402,7 +3402,7 @@ unsigned long long get_global_cpu_statistics(struct activity *a, int prev, int c
 			 * Mark CPU as offline to not display it
 			 * (and thus it will not be confused with a tickless CPU).
 			 */
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			MARK_CPU_OFFLINE(offline_cpu_bitmap, i);
 		}
 
 		if ((tot_jiffies_p == 0) && !WANT_SINCE_BOOT(flags)) {
@@ -3414,7 +3414,7 @@ unsigned long long get_global_cpu_statistics(struct activity *a, int prev, int c
 			 * So don't display that CPU to prevent "jump-from-zero"
 			 * output syndrome, and don't take it into account for CPU "all".
 			 */
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			MARK_CPU_OFFLINE(offline_cpu_bitmap, i);
 			continue;
 		}
 
@@ -3515,7 +3515,7 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 			 * (CPU may be online but we don't display it because all
 			 * its counters would appear to jump from zero...)
 			 */
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			MARK_CPU_OFFLINE(offline_cpu_bitmap, i);
 			continue;
 		}
 
@@ -3523,7 +3523,7 @@ void get_global_soft_statistics(struct activity *a, int prev, int curr,
 		    ssnc->received_rps + ssnc->flow_limit + ssnc->backlog_len == 0) {
 			/* Assume current CPU is offline */
 			*ssnc = *ssnp;
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			MARK_CPU_OFFLINE(offline_cpu_bitmap, i);
 		}
 
 		ssnc_all->processed += ssnc->processed;

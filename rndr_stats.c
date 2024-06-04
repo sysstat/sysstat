@@ -195,7 +195,7 @@ __print_funct_t render_cpu_stats(struct activity *a, int isdb, char *pre,
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
-		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* Don't display CPU */
 			continue;
 
@@ -3181,7 +3181,7 @@ __print_funct_t render_softnet_stats(struct activity *a, int isdb, char *pre,
 		 * used by sar to read it...
 		 */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
-		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* No */
 			continue;
 

@@ -1105,7 +1105,7 @@ __print_funct_t svg_print_cpu_stats(struct activity *a, int curr, int action, st
 
 			/* Should current CPU (including CPU "all") be displayed? */
 			if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
-			    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+			    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 				/* Don't display CPU */
 				continue;
 
@@ -5109,7 +5109,7 @@ __print_funct_t svg_print_softnet_stats(struct activity *a, int curr, int action
 			posp = i * a->xnr;
 
 			/* Is current CPU marked offline? */
-			if (offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07))) {
+			if (IS_CPU_OFFLINE(offline_cpu_bitmap, i)) {
 				/*
 				 * Yes and it doesn't follow a RESTART record.
 				 * To add a discontinuity in graph, we simulate

@@ -571,7 +571,7 @@ unsigned long long get_global_cpu_mpstats(int prev, int curr,
 			 * Mark CPU as offline to not display it
 			 * (and thus it will not be confused with a tickless CPU).
 			 */
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			MARK_CPU_OFFLINE(offline_cpu_bitmap, i);
 		}
 
 		if ((tot_jiffies_p == 0) && (interval != 0)) {
@@ -585,7 +585,7 @@ unsigned long long get_global_cpu_mpstats(int prev, int curr,
 			 * NB: Test for interval != 0 to make sure we don't want stats
 			 * since boot time.
 			 */
-			offline_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			MARK_CPU_OFFLINE(offline_cpu_bitmap, i);
 			continue;
 		}
 
@@ -649,7 +649,7 @@ void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev,
 
 		/* Check if we want stats about this proc */
 		if (!(*(cpu_bitmap + (i >> 3)) & (1 << (i & 0x07))) ||
-		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			continue;
 
 		scc = st_cpu[curr] + i;
@@ -757,7 +757,7 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 
 		/* Check if we want stats about this proc */
 		if (!(*(cpu_bitmap + (i >> 3)) & (1 << (i & 0x07))) ||
-		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			continue;
 
 		scc = st_cpu[curr] + i;
@@ -1208,7 +1208,7 @@ void write_plain_isumcpu_stats(int dis, unsigned long long itv, int prev, int cu
 
 		/* Check if we want stats about this CPU */
 		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) ||
-		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, cpu))
 			continue;
 
 		printf("%-11s", curr_string);
@@ -1274,7 +1274,7 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 
 		/* Check if we want stats about this CPU */
 		if (!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) ||
-		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, cpu))
 			continue;
 
 		if (next) {
@@ -1433,7 +1433,7 @@ void write_plain_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 		 * else we display every CPU (unless it's offline).
 		 */
 		if ((!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags)) ||
-		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, cpu))
 			continue;
 
 		printf("%-11s", curr_string);
@@ -1528,7 +1528,7 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 		 * else we display every CPU (unless it's offline).
 		 */
 		if ((!(*(cpu_bitmap + (cpu >> 3)) & (1 << (cpu & 0x07))) && USE_OPTION_P(flags)) ||
-		    offline_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, cpu))
 			continue;
 
 		if (nextcpu) {

@@ -156,6 +156,11 @@ enum {
 					}							   \
 				} while (0)
 
+/* Mark CPU as offline in dedicated CPU bitmap */
+#define MARK_CPU_OFFLINE(bitmap, cpu)	bitmap[(cpu) >> 3] |= 1 << ((cpu) & 0x07)
+/* Check if given CPU is offline */
+#define IS_CPU_OFFLINE(bitmap, cpu)	(bitmap[(cpu) >> 3] & (1 << ((cpu) & 0x07)))
+
 /*
  * Macros used to display statistics values.
  *

@@ -159,7 +159,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
-		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* Don't display CPU */
 			continue;
 
@@ -2300,7 +2300,7 @@ __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 
 		/* Should current CPU (including CPU "all") be displayed? */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
-		    offline_cpu_bitmap[i >> 3] & (1 << (i & 0x07)))
+		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* No */
 			continue;
 
