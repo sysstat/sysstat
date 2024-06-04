@@ -269,7 +269,7 @@ void pcp_def_pwr_cpufreq_metrics(pmInDom indom)
 #endif /* HAVE_PCP */
 
 /*
- ***********************************************global****************************
+ ***************************************************************************
  * Define PCP metrics for CPU related statistics.
  *
  * IN:
@@ -288,7 +288,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 		/*
 		 * Should current CPU (including CPU "all") be displayed?
 		 * NB: Offline not tested (they may be turned off and on within
-		 * the same file.
+		 * the same file).
 		 */
 		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
 			/* CPU not selected */
