@@ -1130,7 +1130,7 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 				/* Return -1 or 0 */
 				return ((proc_nr >= 0) * -1);
 			}
-			online_cpu_bitmap[proc_nr >> 3] |= 1 << (proc_nr & 0x07);
+			SET_CPU_BITMAP(online_cpu_bitmap, proc_nr);
 		}
 	}
 

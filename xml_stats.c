@@ -353,7 +353,7 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 										  + i * a->msize);
 
 			/* Should current CPU (including CPU "all") be displayed? */
-			if (masked_cpu_bitmap[c >> 3] & (1 << (c & 0x07)))
+			if (IS_CPU_SET(masked_cpu_bitmap, c))
 				/* No */
 				continue;
 

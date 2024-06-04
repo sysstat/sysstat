@@ -1755,7 +1755,7 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 				return 1;
 
 			for (i = val_low; i <= val; i++) {
-				bitmap[(i + 1) >> 3] |= 1 << ((i + 1) & 0x07);
+				SET_CPU_BITMAP(bitmap, i + 1);
 			}
 		}
 	}

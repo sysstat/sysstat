@@ -148,7 +148,7 @@ void print_irq_xstats(int ismax, struct activity *a, int curr, int irq, char *na
 	for (cpu = 0; (cpu < a->nr[curr]) && (cpu < a->bitmap->b_size + 1); cpu++) {
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (masked_cpu_bitmap[cpu >> 3] & (1 << (cpu & 0x07)))
+		if (IS_CPU_SET(masked_cpu_bitmap, cpu))
 			/* No */
 			continue;
 

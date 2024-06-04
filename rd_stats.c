@@ -2846,7 +2846,7 @@ int read_softnet(struct stats_softnet *st_softnet, __nr_t nr_alloc,
 		}
 		else {
 			/* cpu_id not present in file */
-			while ((!(online_cpu_bitmap[(cpu - 1) >> 3] & (1 << ((cpu - 1) & 0x07)))) && (cpu < nr_alloc)) {
+			while (!IS_CPU_SET(online_cpu_bitmap, cpu - 1) && (cpu < nr_alloc)) {
 				cpu++;
 			}
 		}

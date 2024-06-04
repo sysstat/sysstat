@@ -3588,13 +3588,13 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 		if (((stp_cpu_sum->irq_nr == 0) && !WANT_SINCE_BOOT(flags)) ||
 		    (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))) {
 			/* CPU should not be displayed */
-			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			SET_CPU_BITMAP(masked_cpu_bitmap, i);
 			continue;
 		}
 
 		if (stc_cpu_sum->irq_nr == 0) {
 			/* Assume current CPU is offline */
-			masked_cpu_bitmap[i >> 3] |= 1 << (i & 0x07);
+			SET_CPU_BITMAP(masked_cpu_bitmap, i);
 			memcpy(stc_cpu_sum, stp_cpu_sum, (size_t) a->msize * a->nr2);
 		}
 

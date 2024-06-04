@@ -102,7 +102,7 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 				if (!(a->bitmap->b_array[j >> 3] & (1 << (j & 0x07))))
 					/* Don't display current item if not selected */
 					continue;
-				if (offline_bitmap && (offline_bitmap[j >> 3] & (1 << (j & 0x07))))
+				if (offline_bitmap && IS_CPU_OFFLINE(offline_bitmap, j))
 					/* Don't display current item if offline */
 					continue;
 				if (j == 0) {
@@ -585,7 +585,7 @@ __print_funct_t print_irq_stats(struct activity *a, int prev, int curr,
 										  + i * a->msize);
 
 			/* Should current CPU (including CPU "all") be displayed? */
-			if (masked_cpu_bitmap[c >> 3] & (1 << (c & 0x07)))
+			if (IS_CPU_SET(masked_cpu_bitmap, c))
 				/* No */
 				continue;
 
