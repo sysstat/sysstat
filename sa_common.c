@@ -3586,7 +3586,7 @@ void get_global_int_statistics(struct activity *a, int prev, int curr,
 		 * or if it has not been selected.
 		 */
 		if (((stp_cpu_sum->irq_nr == 0) && !WANT_SINCE_BOOT(flags)) ||
-		    (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))) {
+		    !IS_CPU_SELECTED(a->bitmap->b_array, i)) {
 			/* CPU should not be displayed */
 			SET_CPU_BITMAP(masked_cpu_bitmap, i);
 			continue;

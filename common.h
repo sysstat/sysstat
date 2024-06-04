@@ -164,6 +164,8 @@ enum {
 #define MARK_CPU_OFFLINE(bitmap, cpu) 	SET_CPU_BITMAP(bitmap, cpu)
 /* Check if given CPU is offline */
 #define IS_CPU_OFFLINE(bitmap, cpu)	IS_CPU_SET(bitmap, cpu)
+/* Check if given CPU has been selected */
+#define IS_CPU_SELECTED(bitmap, cpu)	IS_CPU_SET(bitmap, cpu)
 
 /*
  * Macros used to display statistics values.

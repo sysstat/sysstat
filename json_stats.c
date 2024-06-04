@@ -162,7 +162,7 @@ __print_funct_t json_print_cpu_stats(struct activity *a, int curr, int tab,
 	for (i = 0; (i < a->nr_ini) && (i < a->bitmap->b_size + 1); i++) {
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i) ||
 		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* Don't display CPU */
 			continue;
@@ -1865,7 +1865,7 @@ __print_funct_t json_print_pwr_cpufreq_stats(struct activity *a, int curr, int t
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
@@ -2129,7 +2129,7 @@ __print_funct_t json_print_pwr_wghfreq_stats(struct activity *a, int curr, int t
 		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
@@ -2435,7 +2435,7 @@ __print_funct_t json_print_softnet_stats(struct activity *a, int curr, int tab,
 		 * used by sadc to create a file, and the version of sysstat
 		 * used by sar to read it...
 		 */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i) ||
 		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* No */
 			continue;

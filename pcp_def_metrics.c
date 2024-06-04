@@ -290,7 +290,7 @@ void pcp_def_cpu_metrics(struct activity *a)
 		 * NB: Offline not tested (they may be turned off and on within
 		 * the same file).
 		 */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* CPU not selected */
 			continue;
 

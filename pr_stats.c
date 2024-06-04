@@ -99,7 +99,7 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 				continue;	/* Should not happen */
 			cfld[k] = '\0';
 			for (j = 0; (j < a->nr_ini) && (j < a->bitmap->b_size + 1); j++) {
-				if (!(a->bitmap->b_array[j >> 3] & (1 << (j & 0x07))))
+				if (!IS_CPU_SELECTED(a->bitmap->b_array, j))
 					/* Don't display current item if not selected */
 					continue;
 				if (offline_bitmap && IS_CPU_OFFLINE(offline_bitmap, j))
@@ -389,7 +389,7 @@ __print_funct_t print_cpu_stats(struct activity *a, int prev, int curr,
 		 * used by sadc to create a file, and the version of sysstat
 		 * used by sar to read it...
 		 */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i) ||
 		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* Don't display CPU */
 			continue;
@@ -2958,7 +2958,7 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
@@ -3642,7 +3642,7 @@ void print_pwr_wghfreq_stats(struct activity *a, int prev, int curr,
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
@@ -4219,7 +4219,7 @@ __print_funct_t stub_print_softnet_stats(struct activity *a, int prev, int curr,
 		 * used by sadc to create a file, and the version of sysstat
 		 * used by sar to read it...
 		 */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) ||
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i) ||
 		    IS_CPU_OFFLINE(offline_cpu_bitmap, i))
 			/* No */
 			continue;

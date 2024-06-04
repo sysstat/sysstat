@@ -158,7 +158,7 @@ __print_funct_t raw_print_cpu_stats(struct activity *a, char *timestr, int curr)
 		scp = (struct stats_cpu *) ((char *) a->buf[!curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
@@ -287,7 +287,7 @@ __print_funct_t raw_print_irq_stats(struct activity *a, char *timestr, int curr)
 										  + i * a->msize);
 
 			/* Should current interrupt (including int "sum") be displayed? */
-			if (!(a->bitmap->b_array[c >> 3] & (1 << (c & 0x07))))
+			if (!IS_CPU_SELECTED(a->bitmap->b_array, c))
 				/* No */
 				continue;
 
@@ -1382,7 +1382,7 @@ __print_funct_t raw_print_pwr_cpufreq_stats(struct activity *a, char *timestr, i
 		spc = (struct stats_pwr_cpufreq *) ((char *) a->buf[curr] + i * a->msize);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))) {
+		if (IS_CPU_SELECTED(a->bitmap->b_array, i)) {
 			/* Yes: Display it */
 			printf("%s; %s; %d;", timestr, pfield(a->hdr_line, FIRST), i - 1);
 			printf(" %s; %lu;\n", pfield(NULL, 0), spc->cpufreq);
@@ -1511,7 +1511,7 @@ __print_funct_t raw_print_pwr_wghfreq_stats(struct activity *a, char *timestr, i
 		spp = (struct stats_pwr_wghfreq *) ((char *) a->buf[!curr] + i * a->msize * a->nr2);
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
@@ -1712,7 +1712,7 @@ __print_funct_t raw_print_softnet_stats(struct activity *a, char *timestr, int c
 		 */
 
 		/* Should current CPU (including CPU "all") be displayed? */
-		if (!(a->bitmap->b_array[i >> 3] & (1 << (i & 0x07))))
+		if (!IS_CPU_SELECTED(a->bitmap->b_array, i))
 			/* No */
 			continue;
 
