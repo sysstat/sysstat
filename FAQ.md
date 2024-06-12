@@ -8,6 +8,7 @@
 [1.2.](#1_2) When I try to compile sysstat, it fails and says it cannot find some include files.  
 [1.3.](#1_3) I don't understand why sysstat displays the time sometimes as `HH:MM:SS` and sometimes as `HH:MM:SS AM/PM`...  
 [1.4.](#1_4) What are the units actually used by sysstat commands?  
+[1.5.](#1_5) Does sysstat still use odd/even numbers for development/stable versions?
 
 **[2. Questions related to sar, sadc and sadf](#sar)**
 
@@ -141,6 +142,16 @@ megabytes, etc., we always actually refer to kibibytes (kiB), mebibytes (MiB),..
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.  
 Metrics names have been defined many years ago. We don't modify them to avoid
 breaking third-party programs parsing sysstat commands' output.
+
+---
+
+1.5.<a name="1_5"></a> Does sysstat still use odd/even numbers for development/stable
+versions?
+
+
+No, starting with sysstat versions 12.7.x, sysstat no longer uses odd and even version
+numbers to identify development and stable series. The latest sysstat release should
+always be considered as a stable version that can be used for distribution packaging.
 
 ---
 ### 2. Questions related to sar, sadc and sadf<a name="sar"></a>
@@ -511,7 +522,7 @@ your machine uptime is high and/or there are many processors.
 Sysstat up to version 5.0.6 uses 32-bit integer variables to store CPU usage.
 Then, beginning with version 5.1.1, sysstat has shifted to 64-bit variables,
 which has fixed the problem. So try to upgrade your version of sysstat to
-the latest stable release and check that the problem has gone.  
+the latest release and check that the problem has gone.
 Also see question 2.6 above.
 
 ---

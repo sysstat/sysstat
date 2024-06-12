@@ -80,6 +80,10 @@ The latest version of sysstat can always be found on my web site at:
 See the CHANGES file to know the new features/improvements/bug fixes added
 in this release of sysstat.
 
+Note that sysstat no longer uses odd and even version numbers to identify development and stable
+versions. The latest sysstat release should always be considered as a stable version that can be
+used for distribution packaging.
+
 Sysstat development can be tracked on [GitHub](https://github.com/sysstat/sysstat).
 
 ### Installation
