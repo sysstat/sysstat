@@ -154,6 +154,14 @@ enum {
 						}						   \
 						S = _p_;					   \
 					}							   \
+					else {							   \
+						/*						   \
+						 * SIZE may be zero when an overflow happens when  \
+						 * two non-zero values are multiplied together.	   \
+						 */						   \
+						fprintf(stderr, "%s: SREALLOC: SIZE is zero!\n", __FUNCTION__); \
+						exit(4); 					   \
+					} 							   \
 				} while (0)
 
 /* Set CPU in given bitmap   */
