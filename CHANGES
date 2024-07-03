@@ -1,5 +1,27 @@
 Changes:
 
+2024/07/03: Version 12.7.6 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadf: [A_NET_ETCP]: Rename retrans/s field to retrseg/s
+	  because it was already used in A_NET_NFS report.
+	* sadf: SVG: Fix oversized SVG canvas height.
+	* sadf: Don't cap SVG graph output at 100%.
+	* sadf: A_NET_SOFT: Don't display graphs for offline CPU.
+	* sadf: SVG: Don't ignore other views when one has to be skipped.
+	* sadf: Make sure structures will be alloacated for every installed
+	  CPU.
+	* sadf: Define MIN_CANVAS_HEIGHT constant.
+	* sar: Display min/max values only when available.
+	* Define macros for CPU manipulation.
+	* SREALLOC() macro: Make sure size is not zero.
+	* Fix a warning given by gcc v13 with -fanalyzer option.
+	* [Eli Schwartz]: configure.ac: fix erroneous bashisms.
+	* sar manual page updated.
+	* DTD and XSD documents updated.
+	* Year updated in copyright messages.
+	* Other cosmetic changes in code.
+	* FAQ and README files updated.
+	* Non regression tests updated. New tests added.
+
 2023/12/17: Version 12.7.5 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Quan quan Cao]: sar/sadc: Add new metrics pgprom/s and pgdem/s.
 	* sar: Remove %vmeff metric.
