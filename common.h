@@ -138,9 +138,28 @@ enum {
 #define BITMAP_SIZE(m)	((((m) + 1) >> 3) + 1)
 
 /* Allocate and init structure */
+#ifdef DEBUG
 #define SREALLOC(S, TYPE, SIZE)	do {								   \
-					TYPE *_p_;						   \
-					if ((SIZE) != 0) {					   \
+					if ((SIZE) == 0) {					   \
+						 /* SIZE may be zero when an overflow happens */   \
+						 /* when two non-zero values are multiplied   */   \
+						 /* together.				      */   \
+						 fprintf(stderr, "%s: SREALLOC: SIZE is zero!\n", __FUNCTION__); \
+						 exit(4); 					   \
+					}							   \
+					__SREALLOC(S, TYPE, SIZE);				   \
+				} while (0)
+#else
+#define SREALLOC(S, TYPE, SIZE)	do {								   \
+					if ((SIZE) == 0) {					   \
+						exit(4); 					   \
+					}							   \
+					__SREALLOC(S, TYPE, SIZE);				   \
+				} while (0)
+#endif
+
+#define __SREALLOC(S, TYPE, SIZE)	do {							   \
+						TYPE *_p_;					   \
 						if ((_p_ = (TYPE *) realloc(S, (SIZE))) == NULL) { \
 							perror("realloc");			   \
 							if (S) {				   \
@@ -153,16 +172,7 @@ enum {
 							memset(_p_, 0, (SIZE));			   \
 						}						   \
 						S = _p_;					   \
-					}							   \
-					else {							   \
-						/*						   \
-						 * SIZE may be zero when an overflow happens when  \
-						 * two non-zero values are multiplied together.	   \
-						 */						   \
-						fprintf(stderr, "%s: SREALLOC: SIZE is zero!\n", __FUNCTION__); \
-						exit(4); 					   \
-					} 							   \
-				} while (0)
+					} while (0)
 
 /* Set CPU in given bitmap   */
 #define SET_CPU_BITMAP(bitmap, cpu)	bitmap[(cpu) >> 3] |= 1 << ((cpu) & 0x07)
