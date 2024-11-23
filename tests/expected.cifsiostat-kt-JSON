@@ -1,0 +1,34 @@
+{"sysstat": {
+	"hosts": [
+		{
+			"nodename": "SYSSTAT.TEST",
+			"sysname": "Linux",
+			"release": "1.2.3-TEST",
+			"machine": "x86_64",
+			"number-of-cpus": 9,
+			"date": "06/01/20",
+			"statistics": [
+				{
+					"timestamp": "06/01/20 12:53:20",
+					"filesystem": [
+						{"fs_name": "\\\\addr\\SHARED", "rkB/s": 0.00, "wkB/s": 0.00, "rops/s": 0.00, "wops/s": 0.00, "fo/s": 0.00, "fc/s": 0.00, "fd/s": 0.00}
+					]
+				},
+				{
+					"timestamp": "06/01/20 12:53:21",
+					"filesystem": [
+						{"fs_name": "\\\\addr\\SHARED", "rkB/s": 0.02, "wkB/s": 0.00, "rops/s": 0.19, "wops/s": 0.10, "fo/s": 0.00, "fc/s": 0.00, "fd/s": 0.00},
+						{"fs_name": "\\\\server\\share1", "rkB/s": 0.00, "wkB/s": 0.00, "rops/s": 0.16, "wops/s": 0.06, "fo/s": 0.16, "fc/s": 0.06, "fd/s": 0.03}
+					]
+				},
+				{
+					"timestamp": "06/01/20 12:53:22",
+					"filesystem": [
+						{"fs_name": "\\\\addr\\SHARED", "rkB/s": 0.00, "wkB/s": 0.00, "rops/s": 0.00, "wops/s": 0.00, "fo/s": 0.10, "fc/s": 0.19, "fd/s": 0.16},
+						{"fs_name": "\\\\server\\share1", "rkB/s": 0.03, "wkB/s": 0.02, "rops/s": 0.29, "wops/s": 0.38, "fo/s": 0.32, "fc/s": 0.32, "fd/s": 0.32}
+					]
+				}
+			]
+		}
+	]
+}}
