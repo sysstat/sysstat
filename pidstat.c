@@ -1570,7 +1570,8 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		pstp = plist->pstats[prev];
 
 		cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
-			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
+			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ||
+			   (pstc->utime < pstc->gtime) || (pstp->utime < pstp->gtime) ?
 			   0.0 :
 			   SP_VALUE(pstp->utime - pstp->gtime,
 				    pstc->utime - pstc->gtime, itv * HZ / 100),
