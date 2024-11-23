@@ -1,15 +1,15 @@
 .\" cifsiostat manual page - (C) 2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH CIFSIOSTAT 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "NOVEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 .el \{
-.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 
@@ -79,6 +79,11 @@ Display statistics in kilobytes per second.
 .TP
 .B \-m
 Display statistics in megabytes per second.
+.TP
+.B \-o JSON
+Display the statistics in JSON (JavaScript Object Notation) format.
+JSON output field order is undefined, and new fields may be added
+in the future.
 .TP
 .B \-\-pretty
 Make the CIFS report easier to read by a human.
