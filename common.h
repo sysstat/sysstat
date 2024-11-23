@@ -371,6 +371,8 @@ int set_report_date
 	(struct tm *, char[], int);
 char *strtolower
 	(char *);
+void write_sample_timestamp
+	(int, struct tm *, uint64_t);
 void xprintf
 	(int, const char *, ...);
 void xprintf0

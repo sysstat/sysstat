@@ -386,18 +386,7 @@ void write_stats(int curr, struct tm *rectime)
 
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags)) {
-		if (DISPLAY_ISO(flags)) {
-			strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
-		}
-		else {
-			strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
-		}
-		printf("%s\n", timestamp);
-#ifdef DEBUG
-		if (DISPLAY_DEBUG(xflags)) {
-			fprintf(stderr, "%s\n", timestamp);
-		}
-#endif
+		write_sample_timestamp(tab, rectime, xflags);
 	}
 
 	/* Interval of time, reduced to one processor */

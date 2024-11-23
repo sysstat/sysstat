@@ -1763,4 +1763,38 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 	return 0;
 }
 
+/*
+ * **************************************************************************
+ * Write current sample's timestamp, either in plain or JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @rectime	Current date and time.
+ * @xflags	Flag for common options and system state.
+ ***************************************************************************
+ */
+void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
+{
+	char timestamp[TIMESTAMP_LEN];
+
+	if (DISPLAY_ISO(xflags)) {
+		strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
+	}
+	else {
+		strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
+	}
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		xprintf(tab, "\"timestamp\": \"%s\",", timestamp);
+	}
+	else {
+		printf("%s\n", timestamp);
+	}
+
+#ifdef DEBUG
+	if (DISPLAY_DEBUG(xflags)) {
+		fprintf(stderr, "%s\n", timestamp);
+	}
+#endif
+}
+
 #endif /* SOURCE_SADC undefined */

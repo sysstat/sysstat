@@ -71,7 +71,6 @@ uint64_t flags = 0;	/* Flag for common options and system state */
 uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 
 long interval = 0;
-char timestamp[TIMESTAMP_LEN];
 char alt_dir[MAX_FILE_LEN];
 
 struct sigaction alrm_act, int_act;
@@ -944,31 +943,6 @@ void compute_device_groups_stats(int curr, struct io_device *d, struct io_device
 
 /*
  ***************************************************************************
- * Write current sample's timestamp, either in plain or JSON format.
- *
- * IN:
- * @tab		Number of tabs to print.
- * @rectime	Current date and time.
- ***************************************************************************
- */
-void write_sample_timestamp(int tab, struct tm *rectime)
-{
-	if (DISPLAY_ISO(flags)) {
-		strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
-	}
-	else {
-		strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
-	}
-	if (DISPLAY_JSON_OUTPUT(flags)) {
-		xprintf(tab, "\"timestamp\": \"%s\",", timestamp);
-	}
-	else {
-		printf("%s\n", timestamp);
-	}
-}
-
-/*
- ***************************************************************************
  * Display CPU utilization in plain format.
  *
  * IN:
@@ -1806,12 +1780,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags) && !skip) {
-		write_sample_timestamp(tab, rectime);
-#ifdef DEBUG
-		if (DISPLAY_DEBUG(flags)) {
-			fprintf(stderr, "%s\n", timestamp);
-		}
-#endif
+		write_sample_timestamp(tab, rectime, xflags);
 	}
 
 	if (DISPLAY_CPU(flags) && !skip) {
