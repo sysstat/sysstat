@@ -563,6 +563,12 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 		skip = 1;
 	}
 
+	/* Set a handler for SIGALRM */
+	memset(&alrm_act, 0, sizeof(alrm_act));
+	alrm_act.sa_handler = alarm_handler;
+	sigaction(SIGALRM, &alrm_act, NULL);
+	alarm(interval);
+
 	do {
 
 		if (tape_new_stats == NULL) {
@@ -743,12 +749,6 @@ int main(int argc, char **argv)
 		xflags |= X_D_ISO;
 	}
 	printf("\n");
-
-	/* Set a handler for SIGALRM */
-	memset(&alrm_act, 0, sizeof(alrm_act));
-	alrm_act.sa_handler = alarm_handler;
-	sigaction(SIGALRM, &alrm_act, NULL);
-	alarm(interval);
 
 	/* Main loop */
 	rw_tape_stat_loop(count, &rectime);
