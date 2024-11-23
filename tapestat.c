@@ -487,6 +487,7 @@ void tape_write_stats(struct calc_stats *tape, int i)
  */
 void write_stats(struct tm *rectime)
 {
+	int tab = 4;
 	struct calc_stats tape;
 	struct tape_stats *tmp;
 
@@ -495,13 +496,7 @@ void write_stats(struct tm *rectime)
 
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags)) {
-		if (DISPLAY_ISO(xflags)) {
-			strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
-		}
-		else {
-			strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
-		}
-		printf("%s\n", timestamp);
+		write_sample_timestamp(tab, rectime, xflags);
 	}
 
 	/* Print the headings */
