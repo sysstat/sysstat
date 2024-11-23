@@ -2,6 +2,7 @@
  * cifsiostat: Report I/O statistics for CIFS filesystems.
  * Copyright (C) 2010 Red Hat, Inc. All Rights Reserved
  * Written by Ivana Varekova <varekova@redhat.com>
+ * Maintained / multiple enhancements by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -47,7 +48,6 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 #ifdef TEST
-void int_handler(int n) { return; }
 extern int __env;
 #endif
 
@@ -62,7 +62,8 @@ int dplaces_nr = -1;	/* Number of decimal places */
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
 
-struct sigaction alrm_act;
+struct sigaction alrm_act, int_act;
+int sigint_caught = 0;
 
 /*
  ***************************************************************************
@@ -79,11 +80,11 @@ void usage(char *progname)
 
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
 #endif
 	exit(1);
@@ -100,6 +101,19 @@ void usage(char *progname)
 void alarm_handler(int sig)
 {
 	alarm(interval);
+}
+
+/*
+ * **************************************************************************
+ * SIGINT signal handler.
+ *
+ * IN:
+ * @sig	Signal number.
+ **************************************************************************
+ */
+void int_handler(int sig)
+{
+	sigint_caught = 1;
 }
 
 /*
@@ -294,26 +308,42 @@ void read_cifs_stat(int curr)
  *
  * OUT:
  * @fctr	Conversion factor.
+ * @tab		Number of tabs to print (JSON format only).
  ***************************************************************************
  */
-void write_cifs_stat_header(int *fctr)
+void write_cifs_stat_header(int *fctr, int *tab)
 {
+	char *units, *spc;
+
+	if (DISPLAY_KILOBYTES(flags)) {
+		*fctr = 1024;
+		units = "kB";
+		spc = "";
+	}
+	else if (DISPLAY_MEGABYTES(flags)) {
+		*fctr = 1024 * 1024;
+		units = "MB";
+		spc = "";
+	}
+	else {
+		*fctr = 1;
+		units = "B";
+		spc = " ";
+	}
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		xprintf((*tab)++, "\"filesystem\": [");
+		return;
+	}
+
 	if (!DISPLAY_PRETTY(flags)) {
 		printf("Filesystem            ");
 	}
-	if (DISPLAY_KILOBYTES(flags)) {
-		printf("        rkB/s        wkB/s");
-		*fctr = 1024;
-	}
-	else if (DISPLAY_MEGABYTES(flags)) {
-		printf("        rMB/s        wMB/s");
-		*fctr = 1024 * 1024;
-	}
-	else {
-		printf("         rB/s         wB/s");
-		*fctr = 1;
-	}
-	printf("    rops/s    wops/s         fo/s         fc/s         fd/s");
+
+	printf("        %sr%s/s        %sw%s/s"
+	       "    rops/s    wops/s         fo/s         fc/s         fd/s",
+	       spc, units, spc, units);
+
 	if (DISPLAY_PRETTY(flags)) {
 		printf(" Filesystem");
 	}
@@ -321,8 +351,8 @@ void write_cifs_stat_header(int *fctr)
 }
 
 /*
- ***************************************************************************
- * Write CIFS stats read from /proc/fs/cifs/Stats.
+ * **************************************************************************
+ * Write CIFS stats read from /proc/fs/cifs/Stats in plain format.
  *
  * IN:
  * @curr	Index in array for current sample statistics.
@@ -333,9 +363,9 @@ void write_cifs_stat_header(int *fctr)
  * @ioj		Previous sample statistics.
  ***************************************************************************
  */
-void write_cifs_stat(int curr, unsigned long long itv, int fctr,
-		     struct io_cifs *clist, struct cifs_st *ioni,
-		     struct cifs_st *ionj)
+void write_plain_cifs_stat(int curr, unsigned long long itv, int fctr,
+			   struct io_cifs *clist, struct cifs_st *ioni,
+			   struct cifs_st *ionj)
 {
 	double rbytes, wbytes;
 
@@ -366,6 +396,91 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
 }
 
 /*
+ * **************************************************************************
+ * Write CIFS stats read from /proc/fs/cifs/Stats in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time (in 1/100th of a second).
+ * @fctr	Conversion factor.
+ * @clist	Pointer on the linked list where the cifs is saved.
+ * @ioi		Current sample statistics.
+ * @ioj		Previous sample statistics.
+ ***************************************************************************
+ */
+void write_json_cifs_stat(int tab, int curr, unsigned long long itv, int fctr,
+			  struct io_cifs *clist, struct cifs_st *ioni,
+			  struct cifs_st *ionj)
+{
+	char line[256];
+
+	xprintf0(tab,
+		 "{\"fs_name\": \"%s\", ", clist->name);
+
+	if (DISPLAY_KILOBYTES(flags)) {
+		sprintf(line, "\"rkB/s\": %%.2f, \"wkB/s\": %%.2f, ");
+	}
+	else if (DISPLAY_MEGABYTES(flags)) {
+		sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, ");
+	}
+	else {
+		sprintf(line, "\"rB/s\": %%.2f, \"wB/s\": %%.2f, ");
+	}
+	printf(line,
+	       S_VALUE(ionj->rd_bytes, ioni->rd_bytes, itv) / fctr,
+	       S_VALUE(ionj->wr_bytes, ioni->wr_bytes, itv) / fctr);
+
+	printf("\"rops/s\": %.2f, \"wops/s\": %.2f, "
+	       "\"fo/s\": %.2f, \"fc/s\": %.2f, \"fd/s\": %.2f}",
+	       S_VALUE(ionj->rd_ops, ioni->rd_ops, itv),
+	       S_VALUE(ionj->wr_ops, ioni->wr_ops, itv),
+	       S_VALUE(ionj->fopens, ioni->fopens, itv),
+	       S_VALUE(ionj->fcloses, ioni->fcloses, itv),
+	       S_VALUE(ionj->fdeletes, ioni->fdeletes, itv));
+}
+
+/*
+ ***************************************************************************
+ * Write CIFS stats read from /proc/fs/cifs/Stats in plain or JSON format.
+ *
+ * IN:
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time (in 1/100th of a second).
+ * @fctr	Conversion factor.
+ * @clist	Pointer on the linked list where the cifs is saved.
+ * @ioi		Current sample statistics.
+ * @ioj		Previous sample statistics.
+ * @tab		Number of tabs to print (JSON format only).
+ ***************************************************************************
+ */
+void write_cifs_stat(int curr, unsigned long long itv, int fctr,
+		     struct io_cifs *clist, struct cifs_st *ioni,
+		     struct cifs_st *ionj, int tab)
+{
+#ifdef DEBUG
+	if (DISPLAY_DEBUG(xflags)) {
+		/* Debug output */
+		fprintf(stderr, "name=%s itv=%llu fctr=%d ioni{ rd_bytes=%llu "
+		"wr_bytes=%llu rd_ops=%llu wr_ops=%llu fopens=%llu "
+		"fcloses=%llu fdeletes=%llu}\n",
+	  clist->name, itv, fctr,
+	  ioni->rd_bytes, ioni->wr_bytes,
+	  ioni->rd_ops,   ioni->wr_ops,
+	  ioni->fopens,   ioni->fcloses,
+	  ioni->fdeletes);
+	}
+#endif
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		write_json_cifs_stat(tab, curr, itv, fctr, clist, ioni, ionj);
+	}
+	else {
+		write_plain_cifs_stat(curr, itv, fctr, clist, ioni, ionj);
+	}
+}
+
+/*
  ***************************************************************************
  * Print everything now (stats and uptime).
  *
@@ -376,13 +491,17 @@ void write_cifs_stat(int curr, unsigned long long itv, int fctr,
  */
 void write_stats(int curr, struct tm *rectime)
 {
-	int fctr = 1;
+	int fctr = 1, tab = 4, next = FALSE;
 	unsigned long long itv;
 	struct io_cifs *clist;
 	struct cifs_st *ioni, *ionj;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		xprintf(tab++, "{");
+	}
 
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags)) {
@@ -393,7 +512,7 @@ void write_stats(int curr, struct tm *rectime)
 	itv = get_interval(uptime_cs[!curr], uptime_cs[curr]);
 
 	/* Display CIFS stats header */
-	write_cifs_stat_header(&fctr);
+	write_cifs_stat_header(&fctr, &tab);
 
 	for (clist = cifs_list; clist != NULL; clist = clist->next) {
 
@@ -404,22 +523,19 @@ void write_stats(int curr, struct tm *rectime)
 		ioni = clist->cifs_stats[curr];
 		ionj = clist->cifs_stats[!curr];
 
-#ifdef DEBUG
-		if (DISPLAY_DEBUG(xflags)) {
-			/* Debug output */
-			fprintf(stderr, "name=%s itv=%llu fctr=%d ioni{ rd_bytes=%llu "
-					"wr_bytes=%llu rd_ops=%llu wr_ops=%llu fopens=%llu "
-					"fcloses=%llu fdeletes=%llu}\n",
-				clist->name, itv, fctr,
-				ioni->rd_bytes, ioni->wr_bytes,
-				ioni->rd_ops,   ioni->wr_ops,
-				ioni->fopens,   ioni->fcloses,
-				ioni->fdeletes);
+		if (DISPLAY_JSON_OUTPUT(xflags) && next) {
+			printf(",\n");
 		}
-#endif
-		write_cifs_stat(curr, itv, fctr, clist, ioni, ionj);
+		next = TRUE;
+
+		write_cifs_stat(curr, itv, fctr, clist, ioni, ionj, tab);
 	}
-	printf("\n");
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\n");
+		xprintf(--tab, "]");
+		xprintf0(--tab, "}");
+	}
 }
 
 /*
@@ -440,6 +556,11 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
+
+	/* Set a handler for SIGINT */
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = int_handler;
+	sigaction(SIGINT, &int_act, NULL);
 
 	do {
 		/* Every device is potentially nonexistent */
@@ -464,9 +585,22 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		if (count) {
 			curr ^= 1;
 			__pause();
+
+			if (sigint_caught) {
+				/* SIGINT signal caught => Terminate JSON output properly */
+				count = 0;
+			}
+			else if (DISPLAY_JSON_OUTPUT(xflags)) {	/* count != 0 */
+				printf(",");
+			}
 		}
+		printf("\n");
 	}
 	while (count);
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+	}
 }
 
 /*
@@ -512,6 +646,17 @@ int main(int argc, char **argv)
 			opt++;
 		}
 #endif
+
+		else if (!strcmp(argv[opt], "-o")) {
+			/* Select output format */
+			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
+				xflags |= X_D_JSON_OUTPUT;
+				opt++;
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
 
 		else if (!strcmp(argv[opt], "--pretty")) {
 			/* Display an easy-to-read CIFS report */
@@ -619,14 +764,21 @@ int main(int argc, char **argv)
 	 */
 	setbuf(stdout, NULL);
 
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
+
 	/* Get system name, release number and hostname */
 	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
-			     PLAIN_OUTPUT)) {
+			     DISPLAY_JSON_OUTPUT(xflags))) {
 		xflags |= X_D_ISO;
 	}
-	printf("\n");
+	if (!DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
 
 	/* Main loop */
 	rw_io_stat_loop(count, &rectime);
