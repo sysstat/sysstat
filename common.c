@@ -748,6 +748,41 @@ char *device_name(char *name)
 
 /*
  ***************************************************************************
+ * Escape a '\' character in a JSON string (replace '\' with "\\").
+ *
+ * IN:
+ * @str		String which may contain '\' characters.
+ *
+ * RETURNS:
+ * String where '\' characters have been escaped.
+ ***************************************************************************
+ */
+char *escape_bs_char(char *str)
+{
+	static char buffer[MAX_NAME_LEN];
+	int i = 0, j = 0;
+
+	while (str[i] != '\0' && j < MAX_NAME_LEN - 1) {
+		if (str[i] == '\\') {
+			if (j < MAX_NAME_LEN - 2) {
+				buffer[j++] = '\\';
+				buffer[j++] = '\\';
+			} else {
+				break;
+			}
+		} else {
+			buffer[j++] = str[i];
+		}
+		i++;
+	}
+
+	buffer[j] = '\0';
+
+	return buffer;
+}
+
+/*
+ ***************************************************************************
  * Workaround for CPU counters read from /proc/stat: Dyn-tick kernels
  * have a race issue that can make those counters go backward.
  ***************************************************************************

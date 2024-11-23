@@ -338,6 +338,8 @@ void cprintf_tr
 	(int, char *, char *);
 char *device_name
 	(char *);
+char *escape_bs_char
+	(char *);
 char *get_device_name
 	(unsigned int, unsigned int, unsigned long long [],
 	 unsigned int, unsigned int, unsigned int, unsigned int, char *);

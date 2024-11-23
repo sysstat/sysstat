@@ -416,7 +416,7 @@ void write_json_cifs_stat(int tab, int curr, unsigned long long itv, int fctr,
 	char line[256];
 
 	xprintf0(tab,
-		 "{\"fs_name\": \"%s\", ", clist->name);
+		 "{\"fs_name\": \"%s\", ", escape_bs_char(clist->name));
 
 	if (DISPLAY_KILOBYTES(flags)) {
 		sprintf(line, "\"rkB/s\": %%.2f, \"wkB/s\": %%.2f, ");
