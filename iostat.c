@@ -67,7 +67,8 @@ int dplaces_nr = -1;
 
 int group_nr = 0;	/* Nb of device groups */
 int cpu_nr = 0;		/* Nb of processors on the machine */
-int flags = 0;		/* Flag for common options and system state */
+uint64_t flags = 0;	/* Flag for common options and system state */
+uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
@@ -1051,7 +1052,7 @@ void write_cpu_stat(int curr, int tab)
 	deltot_jiffies = get_interval(tot_jiffies[!curr], tot_jiffies[curr]);
 
 #ifdef DEBUG
-		if (DISPLAY_DEBUG(flags)) {
+		if (DISPLAY_DEBUG(xflags)) {
 			/* Debug output */
 			fprintf(stderr, "deltot_jiffies=%llu st_cpu[curr]{ cpu_user=%llu cpu_nice=%llu "
 					"cpu_sys=%llu cpu_idle=%llu cpu_iowait=%llu cpu_steal=%llu "
@@ -1071,7 +1072,7 @@ void write_cpu_stat(int curr, int tab)
 		}
 #endif
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		write_json_cpu_stat(tab, curr, deltot_jiffies);
 	}
 	else {
@@ -1114,7 +1115,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 		spc = "";
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		xprintf((*tab)++, "\"disk\": [");
 		return;
 	}
@@ -1602,7 +1603,7 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		}
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		write_json_ext_stat(tab, itv, fctr, d, ioi, ioj, dname, &xds, &xios);
 	}
 	else {
@@ -1768,7 +1769,7 @@ void write_basic_stat(unsigned long long itv, int fctr,
 		dc_sec &= 0xffffffff;
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		write_json_basic_stat(tab, itv, fctr, ioi, ioj, dname,
 				      rd_sec, wr_sec, dc_sec);
 	}
@@ -1799,7 +1800,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
-	if (DISPLAY_JSON_OUTPUT(flags) && !skip) {
+	if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {
 		xprintf(tab++, "{");
 	}
 
@@ -1817,7 +1818,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 		/* Display CPU utilization */
 		write_cpu_stat(curr, tab);
 
-		if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (DISPLAY_JSON_OUTPUT(xflags)) {
 			if (DISPLAY_DISK(flags)) {
 				printf(",");
 			}
@@ -1836,7 +1837,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 		if (DISPLAY_PRETTY(flags) &&
 		    DISPLAY_EXTENDED(flags) &&
 		    !DISPLAY_SHORT_OUTPUT(flags) &&
-		    !DISPLAY_JSON_OUTPUT(flags) &&
+		    !DISPLAY_JSON_OUTPUT(xflags) &&
 		    !DISPLAY_COMPACT(flags)) {
 			hl = 1; hh = 4;
 		}
@@ -1926,7 +1927,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 							   DISPLAY_PERSIST_NAME_I(flags),
 							   FALSE, d->name);
 #ifdef DEBUG
-				if (DISPLAY_DEBUG(flags)) {
+				if (DISPLAY_DEBUG(xflags)) {
 					/* Debug output */
 					fprintf(stderr,
 						"name=%s itv=%llu fctr=%d ioi{ rd_sectors=%lu "
@@ -1961,7 +1962,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 #endif
 
 				if (!skip) {
-					if (DISPLAY_JSON_OUTPUT(flags) && next) {
+					if (DISPLAY_JSON_OUTPUT(xflags) && next) {
 						printf(",\n");
 					}
 					next = TRUE;
@@ -1979,14 +1980,14 @@ void write_stats(int curr, struct tm *rectime, int skip)
 				printf("\n");
 			}
 		}
-		if (DISPLAY_JSON_OUTPUT(flags) && !skip) {
+		if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {
 			printf("\n");
 			xprintf(--tab, "]");
 		}
 	}
 
 	if (!skip) {
-		if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (DISPLAY_JSON_OUTPUT(xflags)) {
 			xprintf0(--tab, "}");
 		}
 		else {
@@ -2072,7 +2073,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 				/* SIGINT signal caught => Terminate JSON output properly */
 				count = 0;
 			}
-			else if (DISPLAY_JSON_OUTPUT(flags) && !skip) {	/* count != 0 */
+			else if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
 				printf(",");
 			}
 			skip = 0;
@@ -2081,7 +2082,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	}
 	while (count);
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
 	}
 }
@@ -2231,7 +2232,7 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[opt], "-o")) {
 			/* Select output format */
 			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
-				flags |= I_D_JSON_OUTPUT;
+				xflags |= X_D_JSON_OUTPUT;
 				opt++;
 			}
 			else {
@@ -2241,7 +2242,7 @@ int main(int argc, char **argv)
 
 #ifdef DEBUG
 		else if (!strcmp(argv[opt], "--debuginfo")) {
-			flags |= I_D_DEBUG;
+			xflags |= X_D_DEBUG;
 			opt++;
 		}
 #endif
@@ -2420,7 +2421,7 @@ int main(int argc, char **argv)
 	/* Select disk output unit (kB/s or blocks/s) */
 	set_disk_output_unit();
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		/* Use a decimal point to make JSON code compliant with RFC7159 */
 		setlocale(LC_NUMERIC, "C");
 	}
@@ -2444,10 +2445,10 @@ int main(int argc, char **argv)
 	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
-			     DISPLAY_JSON_OUTPUT(flags))) {
-		flags |= I_D_ISO;
+			     DISPLAY_JSON_OUTPUT(xflags))) {
+		xflags |= X_D_ISO;
 	}
-	if (!DISPLAY_JSON_OUTPUT(flags)) {
+	if (!DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
 	}
 

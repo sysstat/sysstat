@@ -31,7 +31,6 @@
 #define __DO_NOT_DEFINE_COMPILE
 #include <regex.h>
 #include <inttypes.h>
-#include <stdint.h>
 #include <signal.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -69,7 +68,8 @@ extern int __env;
 #endif
 
 int cpu_nr = 0;		/* Nb of processors on the machine */
-int flags = 0;		/* Flag for common options and system state */
+uint64_t flags = 0;	/* Flag for common options and system state */
+uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
@@ -495,7 +495,7 @@ void write_stats(struct tm *rectime)
 
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags)) {
-		if (DISPLAY_ISO(flags)) {
+		if (DISPLAY_ISO(xflags)) {
 			strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
 		}
 		else {
@@ -729,7 +729,7 @@ int main(int argc, char **argv)
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
 			     PLAIN_OUTPUT)) {
-		flags |= T_D_ISO;
+		xflags |= X_D_ISO;
 	}
 	printf("\n");
 

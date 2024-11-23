@@ -7,7 +7,6 @@
 #define _SA_H
 
 #include <stdio.h>
-#include <stdint.h>
 
 #include "common.h"
 #include "rd_stats.h"

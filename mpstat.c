@@ -94,9 +94,10 @@ struct cpu_topology *st_cpu_topology = NULL;
 struct tm mp_tstamp[3];
 
 /* Activity flag */
-unsigned int actflags = 0;
+uint64_t actflags = 0;
 
-unsigned int flags = 0;
+uint64_t flags = 0;
+uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 
 /* Interval and count parameters */
 long interval = -1, count = 0;
@@ -877,7 +878,7 @@ void write_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int c
 		deltot_jiffies = 1;
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
 			printf(",\n");
 		}
@@ -1142,7 +1143,7 @@ void write_node_stats(int dis, unsigned long long deltot_jiffies, int prev, int 
 		deltot_jiffies = 1;
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
 			printf(",\n");
 		}
@@ -1329,7 +1330,7 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
 			 char *prev_string, char *curr_string, int tab, int *next,
 			 unsigned char offline_cpu_bitmap[])
 {
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
 			printf(",\n");
 		}
@@ -1629,7 +1630,7 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 			char *prev_string, char *curr_string, int tab,
 			int *next, int type, unsigned char offline_cpu_bitmap[])
 {
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
 			printf(",\n");
 		}
@@ -1677,7 +1678,7 @@ void write_stats_core(int prev, int curr, int dis,
 	 */
 	deltot_jiffies = get_global_cpu_mpstats(prev, curr, offline_cpu_bitmap);
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		xprintf(tab++, "{");
 		xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
 	}
@@ -1716,7 +1717,7 @@ void write_stats_core(int prev, int curr, int dis,
 				   offline_cpu_bitmap);
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
 		xprintf0(--tab, "}");
 	}
@@ -2006,7 +2007,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 			memset(st_softirqcpu[1], 0, STATS_IRQCPU_SIZE * (cpu_nr + 1) * softirqcpu_nr);
 		}
 		write_stats(0, DISP_HDR);
-		if (DISPLAY_JSON_OUTPUT(flags)) {
+		if (DISPLAY_JSON_OUTPUT(xflags)) {
 			printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
 		}
 		exit(0);
@@ -2101,7 +2102,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 				count = 0;
 			}
 			else {
-				if (DISPLAY_JSON_OUTPUT(flags)) {
+				if (DISPLAY_JSON_OUTPUT(xflags)) {
 					printf(",\n");
 				}
 				curr ^= 1;
@@ -2134,7 +2135,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	while (count);
 
 	/* Write stats average */
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
 	}
 	else {
@@ -2231,7 +2232,7 @@ int main(int argc, char **argv)
 		else if (!strcmp(argv[opt], "-o")) {
 			/* Select output format */
 			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
-				flags |= F_JSON_OUTPUT;
+				xflags |= X_D_JSON_OUTPUT;
 			}
 			else {
 				usage(argv[0]);
@@ -2361,7 +2362,7 @@ int main(int argc, char **argv)
 		actflags |= M_D_CPU;
 	}
 
-	if (count_bits(&actflags, sizeof(unsigned int)) > 1) {
+	if (count_bits(&actflags, sizeof(actflags)) > 1) {
 		dis_hdr = 9;
 	}
 
@@ -2400,7 +2401,7 @@ int main(int argc, char **argv)
 		interval = 0;
 	}
 
-	if (DISPLAY_JSON_OUTPUT(flags)) {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		/* Use a decimal point to make JSON code compliant with RFC7159 */
 		setlocale(LC_NUMERIC, "C");
 	}
@@ -2419,7 +2420,7 @@ int main(int argc, char **argv)
 	__uname(&header);
 	print_gal_header(&(mp_tstamp[0]), header.sysname, header.release,
 			 header.nodename, header.machine, get_cpu_nr(~0, FALSE),
-			 DISPLAY_JSON_OUTPUT(flags));
+			 DISPLAY_JSON_OUTPUT(xflags));
 
 	/* Main loop */
 	rw_mpstat_loop(dis_hdr, rows);

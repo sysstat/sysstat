@@ -55,7 +55,8 @@ unsigned long long uptime_cs[2] = {0, 0};
 struct io_cifs *cifs_list = NULL;
 
 int cpu_nr = 0;		/* Nb of processors on the machine */
-int flags = 0;		/* Flag for common options and system state */
+uint64_t flags = 0;	/* Flag for common options and system state */
+uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 int dplaces_nr = -1;	/* Number of decimal places */
 
 long interval = 0;
@@ -393,7 +394,7 @@ void write_stats(int curr, struct tm *rectime)
 		}
 		printf("%s\n", timestamp);
 #ifdef DEBUG
-		if (DISPLAY_DEBUG(flags)) {
+		if (DISPLAY_DEBUG(xflags)) {
 			fprintf(stderr, "%s\n", timestamp);
 		}
 #endif
@@ -415,7 +416,7 @@ void write_stats(int curr, struct tm *rectime)
 		ionj = clist->cifs_stats[!curr];
 
 #ifdef DEBUG
-		if (DISPLAY_DEBUG(flags)) {
+		if (DISPLAY_DEBUG(xflags)) {
 			/* Debug output */
 			fprintf(stderr, "name=%s itv=%llu fctr=%d ioni{ rd_bytes=%llu "
 					"wr_bytes=%llu rd_ops=%llu wr_ops=%llu fopens=%llu "
@@ -506,7 +507,7 @@ int main(int argc, char **argv)
 
 #ifdef DEBUG
 		if (!strcmp(argv[opt], "--debuginfo")) {
-			flags |= I_D_DEBUG;
+			xflags |= X_D_DEBUG;
 			opt++;
 		} else
 #endif
@@ -634,7 +635,7 @@ int main(int argc, char **argv)
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
 			     PLAIN_OUTPUT)) {
-		flags |= I_D_ISO;
+		xflags |= X_D_ISO;
 	}
 	printf("\n");
 

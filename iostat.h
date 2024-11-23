@@ -16,7 +16,7 @@
 #define I_D_EVERYTHING		0x000010
 #define I_D_KILOBYTES		0x000020
 #define I_D_ALL_DIR		0x000040
-#define I_D_DEBUG		0x000080
+/* Unused			0x000080 */
 #define I_D_UNFILTERED		0x000100
 #define I_D_MEGABYTES		0x000200
 #define I_D_ALL_DEVICES		0x000400
@@ -24,9 +24,9 @@
 #define I_D_PRETTY		0x001000
 #define I_D_PERSIST_NAME	0x002000
 #define I_D_OMIT_SINCE_BOOT	0x004000
-#define I_D_JSON_OUTPUT		0x008000
+/* Unused			0x008000 */
 #define I_D_DEVMAP_NAME		0x010000
-#define I_D_ISO			0x020000
+/* Unused			0x020000 */
 #define I_D_GROUP_TOTAL_ONLY	0x040000
 #define I_D_ZERO_OMIT		0x080000
 #define I_D_UNIT		0x100000
@@ -40,7 +40,6 @@
 #define DISPLAY_EVERYTHING(m)		(((m) & I_D_EVERYTHING)       == I_D_EVERYTHING)
 #define DISPLAY_KILOBYTES(m)		(((m) & I_D_KILOBYTES)        == I_D_KILOBYTES)
 #define DISPLAY_MEGABYTES(m)		(((m) & I_D_MEGABYTES)        == I_D_MEGABYTES)
-#define DISPLAY_DEBUG(m)		(((m) & I_D_DEBUG)            == I_D_DEBUG)
 #define DISPLAY_UNFILTERED(m)		(((m) & I_D_UNFILTERED)       == I_D_UNFILTERED)
 #define DISPLAY_ALL_DEVICES(m)		(((m) & I_D_ALL_DEVICES)      == I_D_ALL_DEVICES)
 #define GROUP_DEFINED(m)		(((m) & I_F_GROUP_DEFINED)    == I_F_GROUP_DEFINED)
@@ -48,10 +47,8 @@
 #define DISPLAY_PERSIST_NAME_I(m)	(((m) & I_D_PERSIST_NAME)     == I_D_PERSIST_NAME)
 #define DISPLAY_OMIT_SINCE_BOOT(m)	(((m) & I_D_OMIT_SINCE_BOOT)  == I_D_OMIT_SINCE_BOOT)
 #define DISPLAY_DEVMAP_NAME(m)		(((m) & I_D_DEVMAP_NAME)      == I_D_DEVMAP_NAME)
-#define DISPLAY_ISO(m)			(((m) & I_D_ISO)              == I_D_ISO)
 #define DISPLAY_GROUP_TOTAL_ONLY(m)	(((m) & I_D_GROUP_TOTAL_ONLY) == I_D_GROUP_TOTAL_ONLY)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & I_D_ZERO_OMIT)        == I_D_ZERO_OMIT)
-#define DISPLAY_JSON_OUTPUT(m)		(((m) & I_D_JSON_OUTPUT)      == I_D_JSON_OUTPUT)
 #define DISPLAY_UNIT(m)			(((m) & I_D_UNIT)	      == I_D_UNIT)
 #define DISPLAY_SHORT_OUTPUT(m)		(((m) & I_D_SHORT_OUTPUT)     == I_D_SHORT_OUTPUT)
 #define USE_ALL_DIR(m)			(((m) & I_D_ALL_DIR)          == I_D_ALL_DIR)
