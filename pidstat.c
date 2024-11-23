@@ -1354,7 +1354,8 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 
 		if (DISPLAY_CPU(actflag)) {
 			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
-				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ?
+				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ||
+				   (pstc->utime < pstc->gtime) || (pstp->utime < pstp->gtime) ?
 				   0.0 :
 				   SP_VALUE(pstp->utime - pstp->gtime,
 					    pstc->utime - pstc->gtime, itv * HZ / 100),
@@ -1497,7 +1498,9 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		if (DISPLAY_CPU(actflag)) {
 			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
-				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
+				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
+				  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
+				  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
 				  0.0 :
 				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
 					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
@@ -1654,7 +1657,9 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		if (disp_avg) {
 			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
-				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
+				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
+				  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
+				  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
 				  0.0 :
 				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
 					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
@@ -1669,7 +1674,9 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		else {
 			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
 				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
-				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ?
+				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
+				  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
+				  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
 				  0.0 :
 				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
 					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
