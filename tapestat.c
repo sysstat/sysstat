@@ -105,7 +105,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"));
+			  "[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"));
 	exit(1);
 }
 
@@ -633,6 +633,17 @@ int main(int argc, char **argv)
 			opt++;
 		}
 #endif
+
+		else if (!strcmp(argv[opt], "-o")) {
+			/* Select output format */
+			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
+				xflags |= X_D_JSON_OUTPUT;
+				opt++;
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
 
 		else if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {
