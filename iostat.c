@@ -2417,7 +2417,8 @@ int main(int argc, char **argv)
 			     DISPLAY_JSON_OUTPUT(xflags))) {
 		xflags |= X_D_ISO;
 	}
-	if (!DISPLAY_JSON_OUTPUT(xflags)) {
+	if (!DISPLAY_JSON_OUTPUT(xflags) &&
+	    (!DISPLAY_OMIT_SINCE_BOOT(flags) || (interval == 0))) {
 		printf("\n");
 	}
 
