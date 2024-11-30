@@ -286,8 +286,14 @@ void tape_gather_initial_stats(void)
 
 	if (new_max_tape_drives == 0) {
 		/* No tapes found */
-		fprintf(stderr, _("No tape drives with statistics found\n"));
-		exit(1);
+		if (!DISPLAY_JSON_OUTPUT(xflags)) {
+			fprintf(stderr, _("No tape drives with statistics found\n"));
+			exit(1);
+		}
+		/*
+		 * Don't exit now if displaying stats in JSON format so that
+		 * JSON file can be properly terminated.
+		 */
 	}
 	else {
 		/* Allocate structures */
@@ -300,11 +306,12 @@ void tape_gather_initial_stats(void)
 				tape_old_stats[i].valid = TAPE_STATS_INVALID;
 				tape_new_stats[i].valid = TAPE_STATS_INVALID;
 			}
-			max_tape_drives = new_max_tape_drives;
 		} else
 			/* This should only be called once */
 			return;
 	}
+
+	max_tape_drives = new_max_tape_drives;
 
 	/* Read stats for each tape */
 	for (i = 0; i < max_tape_drives; i++) {
@@ -664,7 +671,11 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 
 		if (tape_new_stats == NULL) {
 			tape_gather_initial_stats();
-		} else {
+			if (!max_tape_drives) {
+				count = 0;
+			}
+		}
+		else {
 			tape_get_updated_stats();
 		}
 
