@@ -537,7 +537,7 @@ void write_json_tape_stats(int tab, struct calc_stats *tape, int i)
 	       tape->kbytes_read_per_second / divisor,
 	       tape->kbytes_written_per_second / divisor);
 	printf("\"Rd\": %" PRIu64 ", \"Wr\": %" PRIu64 ", \"Oa\": %" PRIu64 ", "
-	       "Rs/s\": %" PRIu64 ", \"Ot/s\": %" PRIu64 "}",
+	       "\"Rs/s\": %" PRIu64 ", \"Ot/s\": %" PRIu64 "}",
 	       tape->read_pct_wait,
 	       tape->write_pct_wait,
 	       tape->all_pct_wait,
@@ -575,7 +575,7 @@ void write_tape_stats(struct calc_stats *tape, int i, int tab)
  */
 void write_stats(struct tm *rectime)
 {
-	int tab = 4;
+	int tab = 4, next = FALSE;
 	struct calc_stats tape;
 	struct tape_stats *tmp;
 
@@ -616,6 +616,12 @@ void write_stats(struct tm *rectime)
 					&& (tape.write_pct_wait == 0)
 					&& (tape.all_pct_wait == 0)
 					&& (tape.resids_per_second == 0))) {
+
+					if (DISPLAY_JSON_OUTPUT(xflags) && next) {
+						printf(",\n");
+					}
+					next = TRUE;
+
 					write_tape_stats(&tape, i, tab);
 				}
 			}
