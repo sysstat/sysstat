@@ -1,3 +1,5 @@
+rm -f tests/root
+ln -s root1 tests/root
 rm -f tests/data-11.6.5-ow.tmp
 cp -f tests/data-11.6.5 tests/data-11.6.5-ow.tmp
 

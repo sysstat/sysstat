@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./tapestat -o JSON 1 2 > tests/out.tapestat-JSON.tmp && diff -u tests/expected.tapestat-JSON tests/out.tapestat-JSON.tmp

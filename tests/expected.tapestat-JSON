@@ -1,0 +1,26 @@
+{"sysstat": {
+	"hosts": [
+		{
+			"nodename": "SYSSTAT.TEST",
+			"sysname": "Linux",
+			"release": "1.2.3-TEST",
+			"machine": "x86_64",
+			"number-of-cpus": 9,
+			"date": "06/01/20",
+			"statistics": [
+				{
+					"tape": [
+						{"tape_device": "st0", "r/s": 1, "w/s": 139, "kB_read/s": 24, "kB_wrtn/s": 2673, "Rd": 0, "Wr": 4, "Oa": 6, "Rs/s": 1, "Ot/s": 0},
+						{"tape_device": "st1", "r/s": 1, "w/s": 139, "kB_read/s": 24, "kB_wrtn/s": 2673, "Rd": 0, "Wr": 4, "Oa": 6, "Rs/s": 1, "Ot/s": 0}
+					]
+				},
+				{
+					"tape": [
+						{"tape_device": "st0", "r/s": 3, "w/s": 26, "kB_read/s": 0, "kB_wrtn/s": 0, "Rd": 0, "Wr": 0, "Oa": 0, "Rs/s": 6, "Ot/s": 0},
+						{"tape_device": "st1", "r/s": 0, "w/s": 0, "kB_read/s": 0, "kB_wrtn/s": 0, "Rd": 0, "Wr": 0, "Oa": 0, "Rs/s": 0, "Ot/s": 0}
+					]
+				}
+			]
+		}
+	]
+}}

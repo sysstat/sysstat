@@ -1,0 +1,9 @@
+. tests/variables
+if [ ! -z "$VER_JSON" ]; then
+	rm -f tests/root
+	ln -s root1 tests/root
+	./tapestat -k -o JSON 1 10 | $VER_JSON >/dev/null
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

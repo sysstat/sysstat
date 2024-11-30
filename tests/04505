@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root6 tests/root
+LC_ALL=C TZ=GMT ./cifsiostat 1 2 2>&1 | grep "No CIFS filesystems" >/dev/null
