@@ -1,6 +1,5 @@
 Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
-
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            2.15   12.50    2.35    0.12    0.00   82.89
 
