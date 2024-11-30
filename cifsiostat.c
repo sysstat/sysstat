@@ -208,9 +208,12 @@ struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name)
  *
  * IN:
  * @curr	Index in array for current sample statistics.
+ *
+ * RETURNS:
+ * 1 if no CIFS filesystems found, and 0 otherwise.
  ***************************************************************************
  */
-void read_cifs_stat(int curr)
+int read_cifs_stat(int curr)
 {
 	FILE *fp;
 	char line[256];
@@ -224,7 +227,7 @@ void read_cifs_stat(int curr)
 	struct io_cifs *ci;
 
 	if ((fp = fopen(CIFSSTATS, "r")) == NULL)
-		return;
+		return 1;
 
 	sprintf(aux, "%%*d) %%%ds",
 		MAX_NAME_LEN < 200 ? MAX_NAME_LEN - 1 : 200);
@@ -300,6 +303,7 @@ void read_cifs_stat(int curr)
 	}
 
 	fclose(fp);
+	return 0;
 }
 
 /*
@@ -570,7 +574,18 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		read_uptime(&(uptime_cs[curr]));
 
 		/* Read CIFS stats */
-		read_cifs_stat(curr);
+		if (read_cifs_stat(curr)) {
+			/* No CIFS fs found */
+			if (!DISPLAY_JSON_OUTPUT(xflags)) {
+				fprintf(stderr, _("No CIFS filesystems with statistics found\n"));
+				exit(1);
+			}
+			/*
+			 * Don't exit now if displaying stats in JSON format so that
+			 * JSON file can be properly terminated.
+			 */
+			count = 0;
+		}
 
 		/* Get time */
 		get_xtime(rectime, 0, LOCAL_TIME);
