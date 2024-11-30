@@ -117,14 +117,4 @@ struct calc_stats {
         uint64_t resids_per_second;
 };
 
-void tape_get_updated_stats(void);
-void tape_gather_initial_stats(void);
-void tape_check_tapes_and_realloc(void);
-int get_max_tape_drives(void);
-void tape_uninitialise(void);
-void tape_initialise(void);
-void tape_calc_one_stats(struct calc_stats *, int);
-void tape_write_headings(void);
-void tape_write_stats(struct calc_stats *, int);
-
 #endif  /* _TAPESTAT_H */

@@ -49,8 +49,8 @@
 #include "rd_stats.h"
 #include "count.h"
 
+#include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS
-#include <locale.h>
 #include <libintl.h>
 #define _(string) gettext(string)
 #else
@@ -63,7 +63,6 @@ char *sccsid(void) { return (SCCSID); }
 #endif
 
 #ifdef TEST
-void int_handler(int n) { return; }
 extern int __env;
 #endif
 
@@ -74,7 +73,8 @@ uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 long interval = 0;
 char timestamp[TIMESTAMP_LEN];
 
-struct sigaction alrm_act;
+struct sigaction alrm_act, int_act;
+int sigint_caught = 0;
 
 /* Number of decimal places */
 int dplaces_nr = -1;
@@ -120,6 +120,19 @@ void usage(char *progname)
 void alarm_handler(int sig)
 {
 	alarm(interval);
+}
+
+/*
+ * **************************************************************************
+ * SIGINT signal handler.
+ *
+ * IN:
+ * @sig	Signal number.
+ **************************************************************************
+ */
+void int_handler(int sig)
+{
+	sigint_caught = 1;
 }
 
 /*
@@ -374,8 +387,13 @@ void tape_get_updated_stats(void)
  * Display tapes statistics headings.
  ***************************************************************************
  */
-void tape_write_headings(void)
+void write_tape_headings(int *tab)
 {
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		xprintf((*tab)++, "\"tape\": [");
+		return;
+	}
+
 	printf("Tape:     r/s     w/s   ");
 	if (DISPLAY_MEGABYTES(flags)) {
 		printf("MB_read/s   MB_wrtn/s");
@@ -441,14 +459,14 @@ void tape_calc_one_stats(struct calc_stats *stats, int i)
 
 /*
  ***************************************************************************
- * Display statistics for current tape.
+ * Display statistics for current tape in plain format.
  *
  * IN:
  * @tape	Statistics for current tape.
  * @i		Index in array for current tape.
  ***************************************************************************
  */
-void tape_write_stats(struct calc_stats *tape, int i)
+void write_plain_tape_stats(struct calc_stats *tape, int i)
 {
 	char buffer[32];
 	uint64_t divisor = 1;
@@ -478,6 +496,69 @@ void tape_write_stats(struct calc_stats *tape, int i)
 }
 
 /*
+ * **************************************************************************
+ * Display statistics for current tape in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @tape	Statistics for current tape.
+ * @i		Index in array for current tape.
+ ***************************************************************************
+ */
+void write_json_tape_stats(int tab, struct calc_stats *tape, int i)
+{
+
+	char line[256];
+	uint64_t divisor = 1;
+
+	xprintf0(tab,
+		 "{\"tape_device\": \"st%i\", "
+		 "\"r/s\": %" PRIu64 ", \"w/s\": %" PRIu64 ", ",
+		 i, tape->reads_per_second, tape->writes_per_second);
+
+	if (DISPLAY_MEGABYTES(flags)) {
+		divisor = 1024;
+		sprintf(line, "\"MB_read/s\": %%%s, \"MB_wrtn/s\": %%%s, ",
+			PRIu64, PRIu64);
+	}
+	else {
+		sprintf(line, "\"kB_read/s\": %%%s, \"kB_wrtn/s\": %%%s, ",
+			PRIu64, PRIu64);
+	}
+
+	printf(line,
+	       tape->kbytes_read_per_second / divisor,
+	       tape->kbytes_written_per_second / divisor);
+	printf("\"Rd\": %" PRIu64 ", \"Wr\": %" PRIu64 ", \"Oa\": %" PRIu64 ", "
+	       "Rs/s\": %" PRIu64 ", \"Ot/s\": %" PRIu64 "}",
+	       tape->read_pct_wait,
+	       tape->write_pct_wait,
+	       tape->all_pct_wait,
+	       tape->resids_per_second,
+	       tape->other_per_second);
+}
+
+/*
+ * **************************************************************************
+ * Display statistics for current tape in plain or JSON format.
+ *
+ * IN:
+ * @tape	Statistics for current tape.
+ * @i		Index in array for current tape.
+ * @tab		Number of tabs to print (JSON format only).
+ ***************************************************************************
+ */
+void write_tape_stats(struct calc_stats *tape, int i, int tab)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		write_json_tape_stats(tab, tape, i);
+	}
+	else {
+		write_plain_tape_stats(tape, i);
+	}
+}
+
+/*
  ***************************************************************************
  * Print everything now (stats and uptime).
  *
@@ -494,13 +575,17 @@ void write_stats(struct tm *rectime)
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		xprintf(tab++, "{");
+	}
+
 	/* Print time stamp */
 	if (DISPLAY_TIMESTAMP(flags)) {
 		write_sample_timestamp(tab, rectime, xflags);
 	}
 
 	/* Print the headings */
-	tape_write_headings();
+	write_tape_headings(&tab);
 
 	/*
 	 * If either new or old is invalid or the I/Os per second is 0 and
@@ -513,6 +598,7 @@ void write_stats(struct tm *rectime)
 			if ((tape_new_stats[i].valid == TAPE_STATS_VALID) &&
 				(tape_old_stats[i].valid == TAPE_STATS_VALID)) {
 				tape_calc_one_stats(&tape, i);
+
 				if (!(DISPLAY_ZERO_OMIT(flags)
 					&& (tape.other_per_second == 0)
 					&& (tape.reads_per_second == 0)
@@ -523,7 +609,7 @@ void write_stats(struct tm *rectime)
 					&& (tape.write_pct_wait == 0)
 					&& (tape.all_pct_wait == 0)
 					&& (tape.resids_per_second == 0))) {
-					tape_write_stats(&tape, i);
+					write_tape_stats(&tape, i, tab);
 				}
 			}
 		}
@@ -536,7 +622,12 @@ void write_stats(struct tm *rectime)
 		tape_old_stats = tape_new_stats;
 		tape_new_stats = tmp;
 	}
-	printf("\n");
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\n");
+		xprintf(--tab, "]");
+		xprintf0(--tab, "}");
+	}
 }
 
 /*
@@ -563,6 +654,11 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 	alrm_act.sa_handler = alarm_handler;
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
+
+	/* Set a handler for SIGINT */
+	memset(&int_act, 0, sizeof(int_act));
+	int_act.sa_handler = int_handler;
+	sigaction(SIGINT, &int_act, NULL);
 
 	do {
 
@@ -593,9 +689,22 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 
 		if (count) {
 			__pause();
+
+			if (sigint_caught) {
+				/* SIGINT signal caught => Terminate JSON output properly */
+				count = 0;
+			}
+			else if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
+				printf(",");
+			}
 		}
+		printf("\n");
 	}
 	while (count);
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+	}
 }
 
 /*
@@ -736,14 +845,22 @@ int main(int argc, char **argv)
 	 */
 	setbuf(stdout, NULL);
 
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
+
 	/* Get system name, release number and hostname */
 	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
-			     PLAIN_OUTPUT)) {
+			     DISPLAY_JSON_OUTPUT(xflags))) {
 		xflags |= X_D_ISO;
 	}
-	printf("\n");
+	if (!DISPLAY_JSON_OUTPUT(xflags) &&
+		(!DISPLAY_OMIT_SINCE_BOOT(flags) || (interval == 0))) {
+		printf("\n");
+	}
 
 	/* Main loop */
 	rw_tape_stat_loop(count, &rectime);
