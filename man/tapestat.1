@@ -1,6 +1,6 @@
 .\" tapestat manual page - (C) 2015 Hewlett-Packard Development Company, L.P.
 .\" Maintained by Sebastien Godard (sysstat <at> orange.fr)
-.TH TAPESTAT 1 "NOVEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.TH TAPESTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 tapestat \- Report tape statistics.
 
@@ -39,12 +39,12 @@ The number of reads issued expressed as the number per second averaged over the 
 .IP w/s
 The number of writes issued expressed as the number per second averaged over the interval.
 .IP "kB_read/s | MB_read/s"
-The amount of data read expressed in kilobytes (by default or if option
-.BR "\-k " "used) or megabytes (if option " "\-m"
+The amount of data read expressed in kibibytes (by default or if option
+.BR "\-k " "used) or mebibytes (if option " "\-m"
 used) per second averaged over the interval.
 .IP "kB_wrtn/s | MB_wrtn/s"
-The amount of data written expressed in kilobytes (by default or if option
-.BR "\-k " "used) or megabytes (if option " "\-m"
+The amount of data written expressed in kibibytes (by default or if option
+.BR "\-k " "used) or mebibytes (if option " "\-m"
 used) per second averaged over the interval.
 .IP %Rd
 Read percentage wait - The percentage of time over the interval spent waiting for read requests
@@ -73,15 +73,15 @@ using methods outside of the tape driver (e.g. via sg ioctls).
 .B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
-kilobytes, sectors...) associated with the metrics.
+kibibytes, sectors...) associated with the metrics.
 .TP
 .B \-k
-Show the amount of data written or read in kilobytes per second instead of megabytes.
+Show the amount of data written or read in kibibytes per second instead of mebibytes.
 This option is mutually exclusive with
 .BR "\-m" "."
 .TP
 .B \-m
-Show the amount of data written or read in megabytes per second instead of kilobytes.
+Show the amount of data written or read in mebibytes per second instead of kibibytes.
 This option is mutually exclusive with
 .BR "\-k" "."
 .TP
@@ -151,7 +151,7 @@ between the current and previous time is converted to milliseconds for use in ca
 We can look at how this can impact the statistics reported if we use an example of a tar
 archive being copied between two tape drives using
 .BR "dd" "."
-If both devices reported 28900 kilobytes
+If both devices reported 28900 kibibytes
 transferred and the reading tape drive had an interval of 5001 milliseconds and the writing
 tape drive 5000 milliseconds that would calculate out as 5778 kB_read/s and 5780 kB_wrtn/s.
 
@@ -216,7 +216,7 @@ This command requires kernel version 4.2 or later
 (or tape statistics support backported for an earlier kernel version).
 .PP
 .RB "Although " "tapestat"
-speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILES

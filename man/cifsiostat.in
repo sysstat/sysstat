@@ -1,5 +1,5 @@
-.\" cifsiostat manual page - (C) 2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH CIFSIOSTAT 1 "NOVEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.\" cifsiostat manual page - (C) 2020-2024 Sebastien Godard (sysstat <at> orange.fr)
+.TH CIFSIOSTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 
@@ -39,9 +39,9 @@ The report shows the following fields:
 .IP Filesystem:
 This columns shows the mount point of the CIFS filesystem.
 .IP "rB/s (rkB/s, rMB/s)"
-Indicate the average number of bytes (kilobytes, megabytes) read per second.
+Indicate the average number of bytes (kibibytes, mebibytes) read per second.
 .IP "wB/s (wkB/s, wMB/s)"
-Indicate the average number of bytes (kilobytes, megabytes) written per second.
+Indicate the average number of bytes (kibibytes, mebibytes) written per second.
 .IP rop/s
 Indicate the number of 'read' operations that were issued to the filesystem
 per second.
@@ -72,13 +72,13 @@ This option is equivalent to specifying
 .B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
-kilobytes, sectors...) associated with the metrics.
+kibibytes, sectors...) associated with the metrics.
 .TP
 .B \-k
-Display statistics in kilobytes per second.
+Display statistics in kibibytes per second.
 .TP
 .B \-m
-Display statistics in megabytes per second.
+Display statistics in mebibytes per second.
 .TP
 .B \-o JSON
 Display the statistics in JSON (JavaScript Object Notation) format.
@@ -139,7 +139,7 @@ command will use the ISO 8601 format (YYYY-MM-DD) instead.
 .BR "cifsiostat " "to work."
 .PP
 .RB "Although " "cifsiostat"
-speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILE

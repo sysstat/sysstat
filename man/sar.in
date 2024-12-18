@@ -1,5 +1,5 @@
-.\" sar manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "JANUARY 2024" Linux "Linux User's Manual" -*- nroff -*-
+.\" sar manual page - (C) 1999-2024 Sebastien Godard (sysstat <at> orange.fr)
+.TH SAR 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -135,9 +135,9 @@ Report paging statistics.
 The following values are displayed:
 .RS
 .IP pgpgin/s
-Total number of kilobytes the system paged in from disk per second.
+Total number of kibibytes the system paged in from disk per second.
 .IP pgpgout/s
-Total number of kilobytes the system paged out to disk per second.
+Total number of kibibytes the system paged out to disk per second.
 .IP fault/s
 Number of page faults (major + minor) made by the system per second.
 This is not a count of page faults that generate I/O, because some page
@@ -220,13 +220,13 @@ A transfer is an I/O request to a physical device. Multiple logical
 requests can be combined into a single I/O request to the device.
 A transfer is of indeterminate size.
 .IP rkB/s
-Number of kilobytes read from the device per second.
+Number of kibibytes read from the device per second.
 .IP wkB/s
-Number of kilobytes written to the device per second.
+Number of kibibytes written to the device per second.
 .IP dkB/s
-Number of kilobytes discarded for the device per second.
+Number of kibibytes discarded for the device per second.
 .IP areq\-sz
-The average size (in kilobytes) of the I/O requests that were issued to the device.
+The average size (in kibibytes) of the I/O requests that were issued to the device.
 .br
 Note: In previous versions, this field was known as avgrq\-sz and was expressed in sectors.
 .IP aqu\-sz
@@ -284,9 +284,9 @@ to be collected.
 The following values are displayed:
 .RS
 .IP MBfsfree
-Total amount of free space in megabytes (including space available only to privileged user).
+Total amount of free space in mebibytes (including space available only to privileged user).
 .IP MBfsused
-Total amount of space used in megabytes.
+Total amount of space used in mebibytes.
 .IP %fsused
 Percentage of filesystem space used, as seen by a privileged user.
 .IP %ufsused
@@ -322,15 +322,15 @@ Report hugepages utilization statistics.
 The following values are displayed:
 .RS
 .IP kbhugfree
-Amount of hugepages memory in kilobytes that is not yet allocated.
+Amount of hugepages memory in kibibytes that is not yet allocated.
 .IP kbhugused
-Amount of hugepages memory in kilobytes that has been allocated.
+Amount of hugepages memory in kibibytes that has been allocated.
 .IP %hugused
 Percentage of total hugepages memory that has been allocated.
 .IP kbhugrsvd
-Amount of reserved hugepages memory in kilobytes.
+Amount of reserved hugepages memory in kibibytes.
 .IP kbhugsurp
-Amount of surplus hugepages memory in kilobytes.
+Amount of surplus hugepages memory in kibibytes.
 .RE
 .TP
 .B \-h
@@ -343,7 +343,7 @@ Display a short help message then exit.
 .B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
-kilobytes, sectors...) associated with the metrics.
+kibibytes, sectors...) associated with the metrics.
 .TP
 .BI "\-I [ SUM | ALL ]"
 Report statistics for interrupts. The values displayed are the number of interrupts
@@ -523,9 +523,9 @@ Total number of packets received per second.
 .IP txpck/s
 Total number of packets transmitted per second.
 .IP rxkB/s
-Total number of kilobytes received per second.
+Total number of kibibytes received per second.
 .IP txkB/s
-Total number of kilobytes transmitted per second.
+Total number of kibibytes transmitted per second.
 .IP rxcmp/s
 Number of compressed packets received per second (for cslip etc.).
 .IP txcmp/s
@@ -1401,25 +1401,25 @@ keyword indicates that all the memory fields should be displayed.
 The following values may be displayed:
 .RS
 .IP kbmemfree
-Amount of free memory available in kilobytes.
+Amount of free memory available in kibibytes.
 .IP kbavail
-Estimate of how much memory in kilobytes is available for starting new
+Estimate of how much memory in kibibytes is available for starting new
 applications, without swapping.
 The estimate takes into account that the system needs some page cache to
 function well, and that not all reclaimable slab will be reclaimable,
 due to items being in use. The impact of those factors will vary from
 system to system.
 .IP kbmemused
-Amount of used memory in kilobytes (calculated as total installed memory \-
+Amount of used memory in kibibytes (calculated as total installed memory \-
 kbmemfree \- kbbuffers \- kbcached \- kbslab).
 .IP %memused
 Percentage of used memory.
 .IP kbbuffers
-Amount of memory used as buffers by the kernel in kilobytes.
+Amount of memory used as buffers by the kernel in kibibytes.
 .IP kbcached
-Amount of memory used to cache data by the kernel in kilobytes.
+Amount of memory used to cache data by the kernel in kibibytes.
 .IP kbcommit
-Amount of memory in kilobytes needed for current workload.
+Amount of memory in kibibytes needed for current workload.
 This is an estimate of how much
 RAM/swap is needed to guarantee that there never is out of memory.
 .IP %commit
@@ -1427,24 +1427,24 @@ Percentage of memory needed for current workload in relation to the
 total amount of memory (RAM+swap). This number may be greater
 than 100% because the kernel usually overcommits memory.
 .IP kbactive
-Amount of active memory in kilobytes (memory that has been used more recently
+Amount of active memory in kibibytes (memory that has been used more recently
 and usually not reclaimed unless absolutely necessary).
 .IP kbinact
-Amount of inactive memory in kilobytes (memory which has been less recently
+Amount of inactive memory in kibibytes (memory which has been less recently
 used. It is more eligible to be reclaimed for other purposes).
 .IP kbdirty
-Amount of memory in kilobytes waiting to get written back to the disk.
+Amount of memory in kibibytes waiting to get written back to the disk.
 .IP kbanonpg
-Amount of non-file backed pages in kilobytes mapped into userspace page tables.
+Amount of non-file backed pages in kibibytes mapped into userspace page tables.
 .IP kbslab
-Amount of memory in kilobytes used by the kernel to cache data structures
+Amount of memory in kibibytes used by the kernel to cache data structures
 for its own use.
 .IP kbkstack
-Amount of memory in kilobytes used for kernel stack space.
+Amount of memory in kibibytes used for kernel stack space.
 .IP kbpgtbl
-Amount of memory in kilobytes dedicated to the lowest level of page tables.
+Amount of memory in kibibytes dedicated to the lowest level of page tables.
 .IP kbvmused
-Amount of memory in kilobytes of used virtual address space.
+Amount of memory in kibibytes of used virtual address space.
 .RE
 .TP
 .B \-S
@@ -1452,13 +1452,13 @@ Report swap space utilization statistics.
 The following values are displayed:
 .RS
 .IP kbswpfree
-Amount of free swap space in kilobytes.
+Amount of free swap space in kibibytes.
 .IP kbswpused
-Amount of used swap space in kilobytes.
+Amount of used swap space in kibibytes.
 .IP %swpused
 Percentage of used swap space.
 .IP kbswpcad
-Amount of cached swap memory in kilobytes.
+Amount of cached swap memory in kibibytes.
 This is memory that once was swapped out, is swapped back in but still also
 is in the swap area (if memory is needed it doesn't need to be swapped out
 again because it is already in the swap area. This saves I/O).
@@ -1701,7 +1701,7 @@ All the statistics are not necessarily available, depending on the kernel versio
 assumes that you are using at least a 2.6 kernel.
 .PP
 .RB "Although " "sar"
-speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+displays units correspondind to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILES

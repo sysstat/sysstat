@@ -1,5 +1,5 @@
-.\" iostat manual page - (C) 1998-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH IOSTAT 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.\" iostat manual page - (C) 1998-2024 Sebastien Godard (sysstat <at> orange.fr)
+.TH IOSTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
@@ -104,7 +104,7 @@ If the
 keyword is given on the command line, then statistics are
 displayed for every device defined by the system, including those
 that have never been used.
-Transfer rates are shown in 1K blocks by default, unless the environment
+Transfer rates are shown in 1024-byte blocks by default, unless the environment
 variable
 .B POSIXLY_CORRECT
 is set, in which case 512-byte blocks are used.
@@ -121,25 +121,25 @@ device. Multiple logical requests can be combined into a single I/O
 request to the device. A transfer is of indeterminate size.
 .IP "Blk_read/s (kB_read/s, MB_read/s)"
 Indicate the amount of data read from the device expressed in a number of
-blocks (kilobytes, megabytes) per second. Blocks are equivalent to sectors
+blocks (kibibytes, mebibytes) per second. Blocks are equivalent to sectors
 and therefore have a size of 512 bytes.
 .IP "Blk_wrtn/s (kB_wrtn/s, MB_wrtn/s)"
 Indicate the amount of data written to the device expressed in a number of
-blocks (kilobytes, megabytes) per second.
+blocks (kibibytes, mebibytes) per second.
 .IP "Blk_dscd/s (kB_dscd/s, MB_dscd/s)"
 Indicate the amount of data discarded for the device expressed in a number of
-blocks (kilobytes, megabytes) per second.
+blocks (kibibytes, mebibytes) per second.
 .IP "Blk_w+d/s (kB_w+d/s, MB_w+d/s)"
 Indicate the amount of data written to or discarded for the device expressed
-in a number of blocks (kilobytes, megabytes) per second.
+in a number of blocks (kibibytes, mebibytes) per second.
 .IP "Blk_read (kB_read, MB_read)"
-The total number of blocks (kilobytes, megabytes) read.
+The total number of blocks (kibibytes, mebibytes) read.
 .IP "Blk_wrtn (kB_wrtn, MB_wrtn)"
-The total number of blocks (kilobytes, megabytes) written.
+The total number of blocks (kibibytes, mebibytes) written.
 .IP "Blk_dscd (kB_dscd, MB_dscd)"
-The total number of blocks (kilobytes, megabytes) discarded.
+The total number of blocks (kibibytes, mebibytes) discarded.
 .IP "Blk_w+d (kB_w+d, MB_w+d)"
-The total number of blocks (kilobytes, megabytes) written or discarded.
+The total number of blocks (kibibytes, mebibytes) written or discarded.
 .IP r/s
 The number (after merges) of read requests completed per second for the device.
 .IP w/s
@@ -151,14 +151,14 @@ The number (after merges) of flush requests completed per second for the device.
 This counts flush requests executed by disks. Flush requests are not tracked for partitions.
 Before being merged, flush operations are counted as writes.
 .IP "sec/s (kB/s, MB/s)"
-The number of sectors (kilobytes, megabytes) read from, written to or
+The number of sectors (kibibytes, mebibytes) read from, written to or
 discarded for the device per second.
 .IP "rsec/s (rkB/s, rMB/s)"
-The number of sectors (kilobytes, megabytes) read from the device per second.
+The number of sectors (kibibytes, mebibytes) read from the device per second.
 .IP "wsec/s (wkB/s, wMB/s)"
-The number of sectors (kilobytes, megabytes) written to the device per second.
+The number of sectors (kibibytes, mebibytes) written to the device per second.
 .IP "dsec/s (dkB/s, dMB/s)"
-The number of sectors (kilobytes, megabytes) discarded for the device per second.
+The number of sectors (kibibytes, mebibytes) discarded for the device per second.
 .IP rqm/s
 The number of I/O requests merged per second that were queued to the device.
 .IP rrqm/s
@@ -174,15 +174,15 @@ The percentage of write requests merged together before being sent to the device
 .IP %drqm
 The percentage of discard requests merged together before being sent to the device.
 .IP areq\-sz
-The average size (in kilobytes) of the I/O requests that were issued to the device.
+The average size (in kibibytes) of the I/O requests that were issued to the device.
 .br
 Note: In previous versions, this field was known as avgrq\-sz and was expressed in sectors.
 .IP rareq\-sz
-The average size (in kilobytes) of the read requests that were issued to the device.
+The average size (in kibibytes) of the read requests that were issued to the device.
 .IP wareq\-sz
-The average size (in kilobytes) of the write requests that were issued to the device.
+The average size (in kibibytes) of the write requests that were issued to the device.
 .IP dareq\-sz
-The average size (in kilobytes) of the discard requests that were issued to the device.
+The average size (in kibibytes) of the discard requests that were issued to the device.
 .IP await
 The average time (in milliseconds) for I/O requests issued to the device
 to be served. This includes the time spent by the requests in queue and
@@ -297,7 +297,7 @@ This option is equivalent to specifying
 .B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
-kilobytes, sectors...) associated with the metrics.
+kibibytes, sectors...) associated with the metrics.
 .TP
 .BI "\-j { ID | LABEL | PATH | UUID | ... } [ " "device " "[...] | ALL ]"
 Display persistent device names. Keywords
@@ -311,10 +311,10 @@ Because persistent device names are usually long, option
 is implicitly set with this option.
 .TP
 .B \-k
-Display statistics in kilobytes per second.
+Display statistics in kibibytes per second.
 .TP
 .B \-m
-Display statistics in megabytes per second.
+Display statistics in mebibytes per second.
 .TP
 .B \-N
 Display the registered device mapper names for any device mapper devices.
@@ -377,7 +377,7 @@ command takes into account the following environment variables:
 .TP
 .B POSIXLY_CORRECT
 When this variable is set, transfer rates are shown in 512-byte blocks instead
-of the default 1K blocks.
+of the default 1024-byte blocks.
 .TP
 .B S_COLORS
 By default statistics are displayed in color when the output is connected to a terminal.
@@ -451,7 +451,7 @@ partitions (sda1, etc.)
 Kernels older than 2.6.x are no longer supported.
 .PP
 .RB "Although " "iostat"
-speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILES

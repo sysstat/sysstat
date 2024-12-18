@@ -1,5 +1,5 @@
-.\" pidstat manual page - (C) 2007-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH PIDSTAT 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.\" pidstat manual page - (C) 2007-2024 Sebastien Godard (sysstat <at> orange.fr)
+.TH PIDSTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 
@@ -61,12 +61,12 @@ The name of the real user owning the task being monitored.
 .IP PID
 The identification number of the task being monitored.
 .IP kB_rd/s
-Number of kilobytes the task has caused to be read from disk per second.
+Number of kibibytes the task has caused to be read from disk per second.
 .IP kB_wr/s
-Number of kilobytes the task has caused, or shall cause to be
+Number of kibibytes the task has caused, or shall cause to be
 written to disk per second.
 .IP kB_ccwr/s
-Number of kilobytes whose writing to disk has been cancelled by
+Number of kibibytes whose writing to disk has been cancelled by
 the task. This may occur when the task truncates some
 dirty pagecache. In this case, some IO which another task has
 been accounted for will not be happening.
@@ -112,7 +112,7 @@ intended to make it easier to be parsed by other programs.
 .B \-\-human
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
-kilobytes, sectors...) associated with the metrics.
+kibibytes, sectors...) associated with the metrics.
 .TP
 .B \-I
 In an SMP environment, indicate that tasks CPU usage
@@ -169,10 +169,10 @@ which have not required loading a memory page from disk.
 Total number of major faults the task has made per second, those
 which have required loading a memory page from disk.
 .IP VSZ
-Virtual Size: The virtual memory usage of entire task in kilobytes.
+Virtual Size: The virtual memory usage of entire task in kibibytes.
 .IP RSS
 Resident Set Size: The non-swapped physical memory
-used by the task in kilobytes.
+used by the task in kibibytes.
 .IP %MEM
 The tasks's currently used share of available physical memory.
 .IP Command
@@ -213,10 +213,10 @@ The name of the real user owning the task being monitored.
 .IP PID
 The identification number of the task being monitored.
 .IP StkSize
-The amount of memory in kilobytes reserved for the task as stack,
+The amount of memory in kibibytes reserved for the task as stack,
 but not necessarily used.
 .IP StkRef
-The amount of memory in kilobytes used as stack, referenced by the task.
+The amount of memory in kibibytes used as stack, referenced by the task.
 .IP Command
 The command name of the task.
 .RE
@@ -435,7 +435,7 @@ with non-zero statistics values are displayed.
 .BR "pidstat " "command to work."
 .PP
 .RB "Although " "pidstat"
-speaks of kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILES
