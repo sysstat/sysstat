@@ -137,8 +137,8 @@ even some words (like "Average") have changed according to the specified locale.
 
 A: Although sysstat commands use the following abbreviations: kB, MB, etc.
 as part of the metrics names (e.g. kB_read/s, wkB/s, or even sometimes with a
-lower 'b': kbmemfree, kbavail...), and the manual pages speak of kilobytes,
-megabytes, etc., we always actually refer to kibibytes (kiB), mebibytes (MiB),...  
+lower 'b': kbmemfree, kbavail...), we always actually refer to kibibytes (kiB),
+mebibytes (MiB),...  
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.  
 Metrics names have been defined many years ago. We don't modify them to avoid
 breaking third-party programs parsing sysstat commands' output.
