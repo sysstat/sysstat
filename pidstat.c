@@ -42,8 +42,8 @@
 #include "rd_stats.h"
 #include "count.h"
 
+#include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS
-#include <locale.h>
 #include <libintl.h>
 #define _(string) gettext(string)
 #else
@@ -75,6 +75,7 @@ long count = 0;
 unsigned int pidflag = 0;	/* General flags */
 unsigned int tskflag = 0;	/* TASK/CHILD stats */
 unsigned int actflag = 0;	/* Activity flag */
+uint64_t xflags = 0;		/* Extended flag for options used by multiple commands */
 
 struct sigaction alrm_act, int_act, chld_act;
 int signal_caught = 0;
@@ -99,7 +100,7 @@ void usage(char *progname)
 			  "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"));
 	exit(1);
 }
 
@@ -2709,6 +2710,17 @@ int main(int argc, char **argv)
 			}
 		}
 
+		else if (!strcmp(argv[opt], "-o")) {
+			/* Select output format */
+			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
+				xflags |= X_D_JSON_OUTPUT;
+				opt++;
+			}
+			else {
+				usage(argv[0]);
+			}
+		}
+
 		else if (!strncmp(argv[opt], "-", 1)) {
 			for (i = 1; *(argv[opt] + i); i++) {
 
@@ -2859,6 +2871,11 @@ int main(int argc, char **argv)
 
 	/* Get time */
 	get_xtime(&(ps_tstamp[0]), 0, LOCAL_TIME);
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		/* Use a decimal point to make JSON code compliant with RFC7159 */
+		setlocale(LC_NUMERIC, "C");
+	}
 
 	/*
 	 * Don't buffer data if redirected to a pipe.
