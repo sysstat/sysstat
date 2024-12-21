@@ -401,6 +401,34 @@ void print_comm(struct st_pid *plist)
 }
 
 /*
+ * **************************************************************************
+ * Display process command name or command line in JSON format.
+ *
+ * IN:
+ * @plist	Pointer address on the start of the linked list.
+ ***************************************************************************
+ */
+void print_json_comm(struct st_pid *plist)
+{
+	char *p;
+
+	/* Get pointer on task's command string */
+	p = get_tcmd(plist);
+
+	if (DISPLAY_TID(pidflag)) {
+		/* This is a TID */
+		printf("\"leader\": \"");
+		if (plist->tgid) {
+			/* Print thead group leader command then task one */
+			printf("%s", plist->tgid->comm);
+		} /* else this is a PID (TGID) */
+
+		printf("\", ");
+	}
+	printf("\"cmd\": \"%s", p);
+}
+
+/*
  ***************************************************************************
  * Read /proc/meminfo.
  ***************************************************************************
@@ -1248,13 +1276,22 @@ void __print_line_id(struct st_pid *plist, char c)
 	}
 
 	if (DISPLAY_TID(pidflag)) {
-
 		if (plist->tgid) {
 			/* This is a TID */
 			if (IS_PID_DISPLAYED(plist->tgid->flags)) {
+				/*
+				 * Its TGID has previously been displayed.
+				 * We can just display a dash for the TGID then
+				 * the TID number, i.e. "   -     <TID> "
+				 */
 				sprintf(format, "         %c %%9u", c);
 			}
 			else {
+				/*
+				 * Its TGID didn't meet the conditions to be displayed.
+				 * So we have to specify to which TGID the current TID is
+				 * linked, i.e. " <TGID>   <TID> "
+				 */
 				strcpy(format, " %9u");
 				cprintf_in(IS_INT, format, "", plist->tgid->pid);
 			}
@@ -1284,6 +1321,62 @@ void print_line_id(char *timestamp, struct st_pid *plist)
 {
 	printf("%-11s", timestamp);
 	__print_line_id(plist, '-');
+}
+
+/*
+ * **************************************************************************
+ * Display UID/username, PID and TID in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @plist	Pointer on the linked list where PID is saved.
+ ***************************************************************************
+ */
+void print_json_line_id(int tab, struct st_pid *plist)
+{
+	char format[32];
+	struct passwd *pwdent;
+
+	xprintf0(tab, "{\"");
+
+	if (DISPLAY_USERNAME(pidflag)) {
+		printf("USER");
+	}
+	else {
+		printf("UID");
+	}
+	printf("\": \"");
+
+	if (DISPLAY_USERNAME(pidflag) && ((pwdent = __getpwuid(plist->uid)) != NULL)) {
+		printf("%s", pwdent->pw_name);
+	}
+	else {
+		printf("%d", plist->uid);
+	}
+	printf("\", \"");
+
+	if (DISPLAY_TID(pidflag)) {
+		printf("TGID");
+	}
+	else {
+		printf("PID");
+	}
+	printf("\": \"");
+
+	strcpy(format, "%u");
+	if (DISPLAY_TID(pidflag)) {
+		if (plist->tgid) {
+			/* This is a TID */
+			printf("%u\", \"TID\": \"", plist->tgid->pid);
+		}
+		else {
+			/* This is a PID (TGID) */
+			strcpy(format, "%u\", \"TID\": \"");
+		}
+	}
+
+	printf(format, plist->pid);
+	printf("\", ");
 }
 
 /*
@@ -1549,10 +1642,10 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
-			     char *prev_string, char *curr_string,
-			     unsigned long long itv,
-			     unsigned long long deltot_jiffies)
+int write_plain_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
+				   char *prev_string, char *curr_string,
+				   unsigned long long itv,
+				   unsigned long long deltot_jiffies)
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
@@ -1603,6 +1696,133 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display CPU statistics for tasks.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long long itv,
+				  unsigned long long deltot_jiffies, int *follow)
+{
+	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
+	int again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"task-cpu-load\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if (get_pid_to_display(prev, curr, P_A_CPU, P_TASK, plist) <= 0)
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		printf("\"usr\": %.2f, \"system\": %.2f, \"guest\": %.2f, \"wait\": %.2f, "
+		       "\"cpu\": %.2f, \"cpu_nr\": %d, ",
+		       (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ||
+		       (pstc->utime < pstc->gtime) || (pstp->utime < pstp->gtime) ?
+		       0.0 :
+		       SP_VALUE(pstp->utime - pstp->gtime,
+				pstc->utime - pstc->gtime, itv * HZ / 100),
+		       SP_VALUE(pstp->stime, pstc->stime, itv * HZ / 100),
+		       SP_VALUE(pstp->gtime, pstc->gtime, itv * HZ / 100),
+		       SP_VALUE(pstp->wtime, pstc->wtime, itv * HZ / 100),
+		       /* User time already includes guest time */
+		       IRIX_MODE_OFF(pidflag) ?
+		       SP_VALUE(pstp->utime + pstp->stime,
+				pstc->utime + pstc->stime, deltot_jiffies) :
+		       SP_VALUE(pstp->utime + pstp->stime,
+				 pstc->utime + pstc->stime, itv * HZ / 100),
+		       pstc->processor);
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display CPU statistics for tasks.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @itv		Interval of time in 1/100th of a second.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
+			     char *prev_string, char *curr_string,
+			     unsigned long long itv,
+			     unsigned long long deltot_jiffies, int tab, int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_task_cpu_stats(tab, prev, curr, itv,
+						     deltot_jiffies, follow);
+	}
+	else {
+		return write_plain_pid_task_cpu_stats(prev, curr, dis, disp_avg,
+						      prev_string, curr_string, itv,
+						      deltot_jiffies);
+	}
+}
+
+/*
  ***************************************************************************
  * Display CPU statistics for tasks' children.
  *
@@ -1623,8 +1843,8 @@ int write_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
-			      char *prev_string, char *curr_string)
+int write_plain_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
+				    char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
@@ -1695,6 +1915,120 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display CPU statistics for tasks' children in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
+{
+	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
+	int rc, again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"child-cpu-load\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if ((rc = get_pid_to_display(prev, curr, P_A_CPU, P_CHILD, plist)) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		printf("\"usr-ms\": %.0f, \"system-ms\": %.0f, \"guest-ms\": %.0f, ",
+		       (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
+		       (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
+		       (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
+		       (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
+		       0.0 :
+		       (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
+		       (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
+		       HZ * 1000,
+		       (double) ((pstc->stime + pstc->cstime) -
+				 (pstp->stime + pstp->cstime)) / HZ * 1000,
+		       (double) ((pstc->gtime + pstc->cgtime) -
+				 (pstp->gtime + pstp->cgtime)) / HZ * 1000);
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display CPU statistics for tasks' children.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
+			      char *prev_string, char *curr_string, int tab,
+			      int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_child_cpu_stats(tab, prev, curr, follow);
+	}
+	else {
+		return write_plain_pid_child_cpu_stats(prev, curr, dis, disp_avg,
+						       prev_string, curr_string);
+	}
+}
+
+/*
  ***************************************************************************
  * Display memory statistics for tasks.
  *
@@ -1716,9 +2050,9 @@ int write_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
-				char *prev_string, char *curr_string,
-				unsigned long long itv)
+int write_plain_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
+				      char *prev_string, char *curr_string,
+				      unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
@@ -1782,6 +2116,126 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display memory statistics for tasks in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @itv		Interval of time in 1/100th of a second.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_task_memory_stats(int tab, int prev, int curr,
+				     unsigned long long itv, int *follow)
+{
+	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
+	int rc, again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"task-memory\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if ((rc = get_pid_to_display(prev, curr, P_A_MEM, P_TASK, plist)) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		printf("\"minflt/s\": %.2f, \"majflt/s\": %.2f, "
+		       "\"VSZ\": %llu, \"RSS\": %llu, \"MEM\": %.2f, ",
+		       S_VALUE(pstp->minflt, pstc->minflt, itv),
+		       S_VALUE(pstp->majflt, pstc->majflt, itv),
+		       (unsigned long long) pstc->vsz,
+		       (unsigned long long) pstc->rss,
+		       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display memory statistics for tasks.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @itv		Interval of time in 1/100th of a second.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
+				char *prev_string, char *curr_string,
+				unsigned long long itv, int tab, int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_task_memory_stats(tab, prev, curr,
+							itv, follow);
+	}
+	else {
+		return write_plain_pid_task_memory_stats(prev, curr, dis, disp_avg,
+							 prev_string, curr_string, itv);
+	}
+}
+
+/*
  ***************************************************************************
  * Display memory statistics for tasks' children.
  *
@@ -1802,8 +2256,8 @@ int write_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
-				 char *prev_string, char *curr_string)
+int write_plain_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
+				       char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
@@ -1854,6 +2308,110 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display memory statistics for tasks' children in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
+{
+	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
+	int rc, again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"child-memory\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if ((rc = get_pid_to_display(prev, curr, P_A_MEM, P_CHILD, plist)) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		printf("\"minflt-nr\": %llu, \"majflt-nr\": %llu, ",
+		       (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
+		       (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display memory statistics for tasks' children.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
+				 char *prev_string, char *curr_string, int tab,
+				 int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_child_memory_stats(tab, prev, curr, follow);
+	}
+	else {
+		return write_plain_pid_child_memory_stats(prev, curr, dis, disp_avg,
+							  prev_string, curr_string);
+	}
+}
+
+/*
  ***************************************************************************
  * Display stack size statistics for tasks.
  *
@@ -1874,8 +2432,8 @@ int write_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
-			  char *prev_string, char *curr_string)
+int write_plain_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
+				char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc;
 	struct st_pid *plist;
@@ -1926,6 +2484,108 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display stack size statistics for tasks in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
+{
+	struct pid_stats *pstc;
+	struct st_pid *plist;
+	int rc, again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"stack\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if ((rc = get_pid_to_display(prev, curr, P_A_STACK, P_NULL, plist)) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+
+		printf("\"StkSize\": %llu, \"StkRef\": %llu, ",
+		       (unsigned long long) pstc->stack_size,
+		       (unsigned long long) pstc->stack_ref);
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display stack size statistics for tasks.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
+			  char *prev_string, char *curr_string, int tab, int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_stack_stats(tab, prev, curr, follow);
+	}
+	else {
+		return write_plain_pid_stack_stats(prev, curr, dis, disp_avg,
+						   prev_string, curr_string);
+	}
+}
+
+/*
  ***************************************************************************
  * Display I/O statistics.
  *
@@ -1947,9 +2607,9 @@ int write_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
-		       char *prev_string, char *curr_string,
-		       unsigned long long itv)
+int write_plain_pid_io_stats(int prev, int curr, int dis, int disp_avg,
+			     char *prev_string, char *curr_string,
+			     unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
@@ -2019,6 +2679,128 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display I/O statistics in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
+			    int *follow)
+{
+	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
+	int rc, again = 0,  next = FALSE;
+	double rbytes, wbytes, cbytes;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"io\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if ((rc = get_pid_to_display(prev, curr, P_A_IO, P_NULL, plist)) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		if (!NO_PID_IO(plist->flags)) {
+			rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
+			wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
+			cbytes = S_VALUE(pstp->cancelled_write_bytes,
+					 pstc->cancelled_write_bytes, itv);
+			printf("\"kB_rd/s\": %.2f, \"kB_wr/s\": %.2f, \"kB_ccwr/s\": %.2f, ",
+			       rbytes / 1024,
+			       wbytes / 1024,
+			       cbytes / 1024);
+		}
+		else {
+			/* I/O file not readable (permission denied or file non existent) */
+			printf("\"kB_rd/s\": -1.00, \"kB_wr/s\": -1.00, \"kB_ccwr/s\": -1.00, ");
+		}
+		/* I/O delays come from another file (/proc/#/stat) */
+		printf("\"iodelay\": %llu, ",
+		       (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display I/O statistics.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @itv		Interval of time in 1/100th of a second.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
+		       char *prev_string, char *curr_string,
+		       unsigned long long itv, int tab, int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_io_stats(tab, prev, curr, itv, follow);
+	}
+	else {
+		return write_plain_pid_io_stats(prev, curr, dis, disp_avg,
+						prev_string, curr_string, itv);
+	}
+}
+
+/*
  ***************************************************************************
  * Display context switches statistics.
  *
@@ -2039,9 +2821,9 @@ int write_pid_io_stats(int prev, int curr, int dis, int disp_avg,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_ctxswitch_stats(int prev, int curr, int dis,
-			      char *prev_string, char *curr_string,
-			      unsigned long long itv)
+int write_plain_pid_ctxswitch_stats(int prev, int curr, int dis,
+				    char *prev_string, char *curr_string,
+				    unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
@@ -2074,8 +2856,73 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
 }
 
 /*
+ * **************************************************************************
+ * Display context switches statistics in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @itv		Interval of time in 1/100th of a second.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
  ***************************************************************************
- * Display scheduling priority and policy information.
+ */
+int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
+				   unsigned long long itv, int *follow)
+{
+	struct pid_stats *pstc, *pstp;
+	struct st_pid *plist;
+	int again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"context-switch\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if (get_pid_to_display(prev, curr, P_A_CTXSW, P_NULL, plist) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+		pstp = plist->pstats[prev];
+
+		printf("\"cswch/s\": %.2f, \"nvcswch/s\": %.2f, ",
+		       S_VALUE(pstp->nvcsw,  pstc->nvcsw,  itv),
+		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display context switches statistics.
  *
  * IN:
  * @prev	Index in array where stats used as reference are.
@@ -2087,42 +2934,31 @@ int write_pid_ctxswitch_stats(int prev, int curr, int dis,
  * @curr_string	String displayed at the beginning of current sample stats.
  * 		This is the timestamp of the current sample, or "Average"
  * 		when displaying average stats.
+ * @itv		Interval of time in 1/100th of a second.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
  *
  * RETURNS:
  * 0 if all the processes to display have terminated.
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_rt_stats(int prev, int curr, int dis,
-		       char *prev_string, char *curr_string)
+int write_pid_ctxswitch_stats(int prev, int curr, int dis,
+			      char *prev_string, char *curr_string,
+			      unsigned long long itv, int tab, int *follow)
 {
-	struct pid_stats *pstc;
-	struct st_pid *plist;
-	int again = 0;
-
-	if (dis) {
-		PRINT_ID_HDR(prev_string, pidflag);
-		printf(" prio policy  Command\n");
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_ctxswitch_stats(tab, prev, curr, itv, follow);
 	}
-
-	for (plist = pid_list; plist != NULL; plist = plist->next) {
-
-		if (get_pid_to_display(prev, curr, P_A_RT, P_NULL, plist) <= 0)
-			continue;
-
-		print_line_id(curr_string, plist);
-
-		pstc = plist->pstats[curr];
-
-		cprintf_u64(NO_UNIT, 1, 4,
-			    (unsigned long long) pstc->priority);
-		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
-
-		print_comm(plist);
-		again = 1;
+	else {
+		return write_plain_pid_ctxswitch_stats(prev, curr, dis,
+						       prev_string, curr_string, itv);
 	}
-
-	return again;
 }
 
 /*
@@ -2146,8 +2982,8 @@ int write_pid_rt_stats(int prev, int curr, int dis,
  * <> 0 if there are still some processes left to display.
  ***************************************************************************
  */
-int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
-			 char *prev_string, char *curr_string)
+int write_plain_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
+			       char *prev_string, char *curr_string)
 {
 	struct pid_stats *pstc;
 	struct st_pid *plist;
@@ -2207,6 +3043,266 @@ int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 }
 
 /*
+ * **************************************************************************
+ * Display some kernel tables values for tasks in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
+{
+	struct pid_stats *pstc;
+	struct st_pid *plist;
+	int rc, again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"kernel\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if ((rc = get_pid_to_display(prev, curr, P_A_KTAB, P_NULL, plist)) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+
+		printf("\"threads\": %llu, \"fd-nr\": ",
+		       (unsigned long long) pstc->threads);
+		if (NO_PID_FD(plist->flags)) {
+			printf("-1, ");
+		}
+		else {
+			printf("%llu, ", (unsigned long long) pstc->fd_nr);
+		}
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display some kernel tables values for tasks.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @disp_avg	TRUE if average stats are displayed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
+			 char *prev_string, char *curr_string, int tab, int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_ktab_stats(tab, prev, curr, follow);
+	}
+	else {
+		return write_plain_pid_ktab_stats(prev, curr, dis, disp_avg,
+						  prev_string, curr_string);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display scheduling priority and policy information.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_plain_pid_rt_stats(int prev, int curr, int dis,
+			     char *prev_string, char *curr_string)
+{
+	struct pid_stats *pstc;
+	struct st_pid *plist;
+	int again = 0;
+
+	if (dis) {
+		PRINT_ID_HDR(prev_string, pidflag);
+		printf(" prio policy  Command\n");
+	}
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if (get_pid_to_display(prev, curr, P_A_RT, P_NULL, plist) <= 0)
+			continue;
+
+		print_line_id(curr_string, plist);
+
+		pstc = plist->pstats[curr];
+
+		cprintf_u64(NO_UNIT, 1, 4,
+			    (unsigned long long) pstc->priority);
+		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
+
+		print_comm(plist);
+		again = 1;
+	}
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display scheduling priority and policy information in JSON format.
+ *
+ * IN:
+ * @tab		Number of tabs to print.
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma.
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any).
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
+{
+	struct pid_stats *pstc;
+	struct st_pid *plist;
+	int again = 0, next = FALSE;
+
+	if (*follow) {
+		printf(",\n");
+	}
+	xprintf(tab++, "\"realtime\": [");
+
+	for (plist = pid_list; plist != NULL; plist = plist->next) {
+
+		if (get_pid_to_display(prev, curr, P_A_RT, P_NULL, plist) <= 0)
+			/* PID no longer exists or should not be displayed */
+			continue;
+
+		if (next) {
+			printf(",\n");
+		}
+		next = TRUE;
+
+		print_json_line_id(tab, plist);
+
+		pstc = plist->pstats[curr];
+
+		printf("\"prio\": %llu, \"policy\": \"%s\", ",
+		       (unsigned long long) pstc->priority,
+		       GET_POLICY(pstc->policy));
+
+		print_json_comm(plist);
+		printf("\"}");
+		again = 1;
+	}
+
+	printf("\n");
+	xprintf0(--tab, "]");
+	*follow = TRUE;
+
+	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display scheduling priority and policy information.
+ *
+ * IN:
+ * @prev	Index in array where stats used as reference are.
+ * @curr	Index in array for current sample statistics.
+ * @dis		TRUE if a header line must be printed.
+ * @prev_string	String displayed at the beginning of a header line. This is
+ * 		the timestamp of the previous sample, or "Average" when
+ * 		displaying average stats.
+ * @curr_string	String displayed at the beginning of current sample stats.
+ * 		This is the timestamp of the current sample, or "Average"
+ * 		when displaying average stats.
+ * @tab		Number of tabs to print (JSON format only).
+ * @follow	True if a previous set of stats has been displayed and should
+ *		be followed by a coma (JSON format only).
+ *
+ * OUT:
+ * @follow	Set to TRUE to indicate that a coma should be displayed
+ *		before next set of stats (if any). JSON format only.
+ *
+ * RETURNS:
+ * 0 if all the processes to display have terminated.
+ * <> 0 if there are still some processes left to display.
+ ***************************************************************************
+ */
+int write_pid_rt_stats(int prev, int curr, int dis,
+		       char *prev_string, char *curr_string, int tab, int *follow)
+{
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		return write_json_pid_rt_stats(tab, prev, curr, follow);
+	}
+	else {
+		return write_plain_pid_rt_stats(prev, curr, dis,
+						prev_string, curr_string);
+	}
+}
+
+/*
  ***************************************************************************
  * Display statistics.
  *
@@ -2231,7 +3327,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 		     char *prev_string, char *curr_string)
 {
 	unsigned long long itv, deltot_jiffies;
-	int again = 0;
+	int again = 0, tab = 4, follow = FALSE;
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -2239,73 +3335,91 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	/* Total number of jiffies spent on the interval */
 	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		xprintf(tab++, "{");
+		xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
+	}
+
 	itv = get_interval(uptime_cs[prev], uptime_cs[curr]);
 
 	if (DISPLAY_ONELINE(pidflag)) {
 		if (DISPLAY_TASK_STATS(tskflag)) {
-			again += write_pid_task_all_stats(prev, curr, dis, prev_string, curr_string,
+			again += write_pid_task_all_stats(prev, curr, dis,
+							  prev_string, curr_string,
 							  itv, deltot_jiffies);
 		}
 		if (DISPLAY_CHILD_STATS(tskflag)) {
-			again += write_pid_child_all_stats(prev, curr, dis, prev_string, curr_string);
+			again += write_pid_child_all_stats(prev, curr, dis,
+							   prev_string, curr_string);
 		}
 	}
 	else {
 		/* Display CPU stats */
 		if (DISPLAY_CPU(actflag)) {
-
 			if (DISPLAY_TASK_STATS(tskflag)) {
 				again += write_pid_task_cpu_stats(prev, curr, dis, disp_avg,
 								  prev_string, curr_string,
-								  itv, deltot_jiffies);
+								  itv, deltot_jiffies,
+								  tab, &follow);
 			}
 			if (DISPLAY_CHILD_STATS(tskflag)) {
 				again += write_pid_child_cpu_stats(prev, curr, dis, disp_avg,
-								   prev_string, curr_string);
+								   prev_string, curr_string,
+								   tab, &follow);
 			}
 		}
 
 		/* Display memory stats */
 		if (DISPLAY_MEM(actflag)) {
-
 			if (DISPLAY_TASK_STATS(tskflag)) {
 				again += write_pid_task_memory_stats(prev, curr, dis, disp_avg,
-								     prev_string, curr_string, itv);
+								     prev_string, curr_string,
+								     itv, tab, &follow);
 			}
 			if (DISPLAY_CHILD_STATS(tskflag) && DISPLAY_MEM(actflag)) {
 				again += write_pid_child_memory_stats(prev, curr, dis, disp_avg,
-								      prev_string, curr_string);
+								      prev_string, curr_string,
+								      tab, &follow);
 			}
 		}
 
 		/* Display stack stats */
 		if (DISPLAY_STACK(actflag)) {
 			again += write_pid_stack_stats(prev, curr, dis, disp_avg,
-						       prev_string, curr_string);
+						       prev_string, curr_string,
+						       tab, &follow);
 		}
 
 		/* Display I/O stats */
 		if (DISPLAY_IO(actflag)) {
 			again += write_pid_io_stats(prev, curr, dis, disp_avg, prev_string,
-						    curr_string, itv);
+						    curr_string, itv, tab, &follow);
 		}
 
 		/* Display context switches stats */
 		if (DISPLAY_CTXSW(actflag)) {
 			again += write_pid_ctxswitch_stats(prev, curr, dis, prev_string,
-							   curr_string, itv);
+							   curr_string, itv,
+							   tab, &follow);
 		}
 
 		/* Display kernel table stats */
 		if (DISPLAY_KTAB(actflag)) {
 			again += write_pid_ktab_stats(prev, curr, dis, disp_avg,
-						      prev_string, curr_string);
+						      prev_string, curr_string,
+						      tab, &follow);
 		}
 
 		/* Display scheduling priority and policy information */
 		if (DISPLAY_RT(actflag)) {
-			again += write_pid_rt_stats(prev, curr, dis, prev_string, curr_string);
+			again += write_pid_rt_stats(prev, curr, dis, prev_string,
+						    curr_string, tab, &follow);
 		}
+	}
+
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\n");
+		xprintf0(--tab, "}");
 	}
 
 	if (DISPLAY_ALL_PID(pidflag)) {
@@ -2410,6 +3524,9 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		/* Display since boot time */
 		ps_tstamp[1] = ps_tstamp[0];
 		write_stats(0, DISP_HDR);
+		if (DISPLAY_JSON_OUTPUT(xflags)) {
+			printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
+		}
 		exit(0);
 	}
 
@@ -2439,7 +3556,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 	if (signal_caught && interval)
 		/* SIGINT/SIGCHLD signals caught during first interval: Exit immediately */
-		return;
+		goto terminate;
 
 	do {
 		/* Every PID is potentially nonexistent */
@@ -2479,11 +3596,16 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 			if (signal_caught) {
 				/* SIGINT/SIGCHLD signals caught => Display average stats */
 				count = 0;
-				printf("\n");	/* Skip "^C" displayed on screen */
 			}
 			else {
+				if (DISPLAY_JSON_OUTPUT(xflags)) {
+					printf(",");
+				}
 				curr ^= 1;
 			}
+		}
+		if (signal_caught || DISPLAY_JSON_OUTPUT(xflags)) {
+			printf("\n");
 		}
 	}
 	while (count);
@@ -2492,10 +3614,15 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	 * The one line format uses a raw time value rather than time strings
 	 * so the average doesn't really fit.
 	 */
-	if (!DISPLAY_ONELINE(pidflag))
+	if (!DISPLAY_ONELINE(pidflag) && !DISPLAY_JSON_OUTPUT(xflags))
 	{
 		/* Write stats average */
 		write_stats_avg(curr, dis_hdr);
+	}
+
+terminate:
+	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
 	}
 }
 
@@ -2888,7 +4015,7 @@ int main(int argc, char **argv)
 	__uname(&header);
 	print_gal_header(&(ps_tstamp[0]), header.sysname, header.release,
 			 header.nodename, header.machine, cpu_nr,
-			 PLAIN_OUTPUT);
+			 DISPLAY_JSON_OUTPUT(xflags));
 
 	/* Main loop */
 	rw_pidstat_loop(dis_hdr, rows);
