@@ -3376,7 +3376,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 								     prev_string, curr_string,
 								     itv, tab, &follow);
 			}
-			if (DISPLAY_CHILD_STATS(tskflag) && DISPLAY_MEM(actflag)) {
+			if (DISPLAY_CHILD_STATS(tskflag)) {
 				again += write_pid_child_memory_stats(prev, curr, dis, disp_avg,
 								      prev_string, curr_string,
 								      tab, &follow);
