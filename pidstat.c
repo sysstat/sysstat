@@ -3469,7 +3469,7 @@ int write_stats(int curr, int dis)
 		strcpy(cur_time[!curr], "# Time     ");
 	}
 	else if (PRINT_SEC_EPOCH(pidflag)) {
-		snprintf(cur_time[!curr], sizeof(cur_time[!curr]), "%-11ld", mktime(&ps_tstamp[!curr]));
+		snprintf(cur_time[!curr], sizeof(cur_time[!curr]), "%ld", mktime(&ps_tstamp[!curr]));
 		cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
 	}
 	else if (is_iso_time_fmt()) {
@@ -3481,7 +3481,7 @@ int write_stats(int curr, int dis)
 
 	/* Get current timestamp */
 	if (PRINT_SEC_EPOCH(pidflag)) {
-		snprintf(cur_time[curr], sizeof(cur_time[curr]), "%-11ld", mktime(&ps_tstamp[curr]));
+		snprintf(cur_time[curr], sizeof(cur_time[curr]), "%ld", mktime(&ps_tstamp[curr]));
 		cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
 	}
 	else if (is_iso_time_fmt()) {
