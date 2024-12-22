@@ -3516,9 +3516,9 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		ps_tstamp[1] = ps_tstamp[0];
 		write_stats(0, DISP_HDR);
 		if (DISPLAY_JSON_OUTPUT(xflags)) {
-			printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
+			printf("\n");
 		}
-		exit(0);
+		goto terminate;
 	}
 
 	/* Set a handler for SIGALRM */
