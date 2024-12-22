@@ -3965,6 +3965,10 @@ int main(int argc, char **argv)
 		interval = 0;
 	}
 
+	/* A non-zero value must be specified for interval when option -e is used */
+	if (!interval && EXEC_PGM(pidflag))
+		usage(argv[0]);
+
 	if (!DISPLAY_PID(pidflag)) {
 		dis_hdr = 1;
 	}
