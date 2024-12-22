@@ -1380,6 +1380,229 @@ void print_json_line_id(int tab, struct st_pid *plist)
 }
 
 /*
+ * **************************************************************************
+ * Display CPU statistics data for current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @pstc	Pointer on current statistics data sample for current process.
+ * @pstp	Pointer on previous statistics data sampe for current process.
+ * @itv		Interval of time in 1/100th of a second.
+ * @deltot_jiffies
+ *		Number of jiffies spent on the interval by all processors.
+ ***************************************************************************
+ */
+void write_plain_pid_task_cpu_data(int disp_avg,
+				   struct pid_stats *pstc, struct pid_stats *pstp,
+				   unsigned long long itv,
+				   unsigned long long deltot_jiffies)
+{
+	cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
+		    (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ||
+		    (pstc->utime < pstc->gtime) || (pstp->utime < pstp->gtime) ?
+		    0.0 :
+		    SP_VALUE(pstp->utime - pstp->gtime,
+			     pstc->utime - pstc->gtime, itv * HZ / 100),
+		    SP_VALUE(pstp->stime, pstc->stime, itv * HZ / 100),
+		    SP_VALUE(pstp->gtime, pstc->gtime, itv * HZ / 100),
+		    SP_VALUE(pstp->wtime, pstc->wtime, itv * HZ / 100),
+		    /* User time already includes guest time */
+		    IRIX_MODE_OFF(pidflag) ?
+		    SP_VALUE(pstp->utime + pstp->stime,
+			     pstc->utime + pstc->stime, deltot_jiffies) :
+			     SP_VALUE(pstp->utime + pstp->stime,
+				      pstc->utime + pstc->stime, itv * HZ / 100));
+
+	if (!disp_avg) {
+		cprintf_in(IS_INT, "   %3d", "", pstc->processor);
+	}
+	else {
+		cprintf_in(IS_STR, "%s", "     -", 0);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display memory statistics data for current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @plist	Pointer on current process in list.
+ * @pstc	Pointer on current statistics data sample for current process.
+ * @pstp	Pointer on previous statistics data sampe for current process.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+void write_plain_pid_task_memory_data(int disp_avg, struct st_pid *plist,
+				      struct pid_stats *pstc, struct pid_stats *pstp,
+				      unsigned long long itv)
+{
+	cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
+		  S_VALUE(pstp->minflt, pstc->minflt, itv),
+		  S_VALUE(pstp->majflt, pstc->majflt, itv));
+
+	if (disp_avg) {
+		cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 2, 7, 0,
+			  (double) plist->total_vsz / plist->rt_asum_count,
+			  (double) plist->total_rss / plist->rt_asum_count);
+
+		cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
+			    tlmkb ?
+			    SP_VALUE(0, plist->total_rss / plist->rt_asum_count, tlmkb)
+			    : 0.0);
+	}
+	else {
+		cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
+			    (unsigned long long) pstc->vsz,
+			    (unsigned long long) pstc->rss);
+
+		cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
+			    tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display stack size statistics data for current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @plist	Pointer on current process in list.
+ * @pstc	Pointer on current statistics data sample for current process.
+ ***************************************************************************
+ */
+void write_plain_pid_stack_data(int disp_avg, struct st_pid *plist,
+				struct pid_stats *pstc)
+{
+	if (disp_avg) {
+		cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 2, 7, 0,
+			  (double) plist->total_stack_size / plist->sk_asum_count,
+			  (double) plist->total_stack_ref  / plist->sk_asum_count);
+	}
+	else {
+		cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
+			    (unsigned long long) pstc->stack_size,
+			    (unsigned long long) pstc->stack_ref);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display I/O statistics data for current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @plist	Pointer on current process in list.
+ * @pstc	Pointer on current statistics data sample for current process.
+ * @pstp	Pointer on previous statistics data sampe for current process.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+void write_plain_pid_io_data(int disp_avg, struct st_pid *plist,
+			     struct pid_stats *pstc, struct pid_stats *pstp,
+			     unsigned long long itv)
+{
+	char dstr[32];
+	double rbytes, wbytes, cbytes;
+
+	if (!NO_PID_IO(plist->flags)) {
+		rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
+		wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
+		cbytes = S_VALUE(pstp->cancelled_write_bytes,
+				 pstc->cancelled_write_bytes, itv);
+		if (!DISPLAY_UNIT(pidflag)) {
+			rbytes /= 1024;
+			wbytes /= 1024;
+			cbytes /= 1024;
+		}
+		cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, FALSE, 3, 9, 2,
+			  rbytes, wbytes, cbytes);
+	}
+	else {
+		/* I/O file not readable (permission denied or file non existent) */
+		sprintf(dstr, " %9.2f %9.2f %9.2f", -1.0, -1.0, -1.0);
+		cprintf_s(IS_ZERO, "%s", dstr);
+	}
+	/* I/O delays come from another file (/proc/#/stat) */
+	if (disp_avg) {
+		cprintf_f(NO_UNIT, FALSE, 1, 7, 0,
+			  (double) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays) /
+			  plist->delay_asum_count);
+	}
+	else {
+		cprintf_u64(NO_UNIT, 1, 7,
+			    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display context switches statistics data for current task.
+ *
+ * IN:
+ * @pstc	Pointer on current statistics data sample for current process.
+ * @pstp	Pointer on previous statistics data sampe for current process.
+ * @itv		Interval of time in 1/100th of a second.
+ ***************************************************************************
+ */
+void write_plain_pid_ctxswitch_data(struct pid_stats *pstc, struct pid_stats *pstp,
+				    unsigned long long itv)
+{
+	cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
+		  S_VALUE(pstp->nvcsw,  pstc->nvcsw,  itv),
+		  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+}
+
+/*
+ * **************************************************************************
+ * Display some kernel tables values for current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @plist	Pointer on current process in list.
+ * @pstc	Pointer on current statistics data sample for current process.
+ ***************************************************************************
+ */
+void write_plain_pid_ktab_data(int disp_avg, struct st_pid *plist,
+			       struct pid_stats *pstc)
+{
+	if (disp_avg) {
+		cprintf_f(NO_UNIT, FALSE, 2, 7, 0,
+			  (double) plist->total_threads / plist->tf_asum_count,
+			  NO_PID_FD(plist->flags) ?
+			  -1.0 :
+			  (double) plist->total_fd_nr / plist->tf_asum_count);
+	}
+	else {
+		cprintf_u64(NO_UNIT, 1, 7,
+			    (unsigned long long) pstc->threads);
+		if (NO_PID_FD(plist->flags)) {
+			/* /proc/#/fd directory not readable */
+			cprintf_s(IS_ZERO, " %7s", "-1");
+		}
+		else {
+			cprintf_u64(NO_UNIT, 1, 7,
+				    (unsigned long long) pstc->fd_nr);
+		}
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display scheduling priority and policy information for current task.
+ *
+ * IN:
+ * @pstc	Pointer on current statistics data sample for current process.
+ ***************************************************************************
+ */
+void write_plain_pid_rt_data(struct pid_stats *pstc)
+{
+	cprintf_u64(NO_UNIT, 1, 4,
+		    (unsigned long long) pstc->priority);
+	cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
+}
+
+/*
  ***************************************************************************
  * Display all statistics for tasks in one line format.
  *
@@ -1407,7 +1630,6 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
-	char dstr[32];
 	int again = 0;
 
 	if (dis) {
@@ -1447,95 +1669,33 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
-				   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ||
-				   (pstc->utime < pstc->gtime) || (pstp->utime < pstp->gtime) ?
-				   0.0 :
-				   SP_VALUE(pstp->utime - pstp->gtime,
-					    pstc->utime - pstc->gtime, itv * HZ / 100),
-				   SP_VALUE(pstp->stime,  pstc->stime, itv * HZ / 100),
-				   SP_VALUE(pstp->gtime,  pstc->gtime, itv * HZ / 100),
-				   SP_VALUE(pstp->wtime,  pstc->wtime, itv * HZ / 100),
-				   /* User time already includes guest time */
-				   IRIX_MODE_OFF(pidflag) ?
-				   SP_VALUE(pstp->utime + pstp->stime,
-					    pstc->utime + pstc->stime, deltot_jiffies) :
-				   SP_VALUE(pstp->utime + pstp->stime,
-					    pstc->utime + pstc->stime, itv * HZ / 100));
-
-			cprintf_in(IS_INT, "   %3d", "", pstc->processor);
+			write_plain_pid_task_cpu_data(FALSE, pstc, pstp, itv,
+						      deltot_jiffies);
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
-				  S_VALUE(pstp->minflt, pstc->minflt, itv),
-				  S_VALUE(pstp->majflt, pstc->majflt, itv));
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
-				    (unsigned long long) pstc->vsz,
-				    (unsigned long long) pstc->rss);
-			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
-				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
+			write_plain_pid_task_memory_data(FALSE, plist,
+							 pstc, pstp, itv);
 		}
 
 		if (DISPLAY_STACK(actflag)) {
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
-				    (unsigned long long) pstc->stack_size,
-				    (unsigned long long) pstc->stack_ref);
+			write_plain_pid_stack_data(FALSE, plist, pstc);
 		}
 
 		if (DISPLAY_IO(actflag)) {
-			if (!NO_PID_IO(plist->flags))
-			{
-				double rbytes, wbytes, cbytes;
-
-				rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
-				wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
-				cbytes = S_VALUE(pstp->cancelled_write_bytes,
-						 pstc->cancelled_write_bytes, itv);
-				if (!DISPLAY_UNIT(pidflag)) {
-					rbytes /= 1024;
-					wbytes /= 1024;
-					cbytes /= 1024;
-				}
-				cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, FALSE, 3, 9, 2,
-					  rbytes, wbytes, cbytes);
-			}
-			else {
-				/*
-				 * Keep the layout even though this task has no I/O
-				 * typically threads with no I/O measurements.
-				 */
-				sprintf(dstr, " %9.2f %9.2f %9.2f", -1.0, -1.0, -1.0);
-				cprintf_s(IS_ZERO, "%s", dstr);
-			}
-			/* I/O delays come from another file (/proc/#/stat) */
-			cprintf_u64(NO_UNIT, 1, 7,
-				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
+			write_plain_pid_io_data(FALSE, plist, pstc, pstp, itv);
 		}
 
 		if (DISPLAY_CTXSW(actflag)) {
-			cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
-				  S_VALUE(pstp->nvcsw, pstc->nvcsw, itv),
-				  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+			write_plain_pid_ctxswitch_data(pstc, pstp, itv);
 		}
 
 		if (DISPLAY_KTAB(actflag)) {
-			cprintf_u64(NO_UNIT, 1, 7,
-				    (unsigned long long) pstc->threads);
-			if (NO_PID_FD(plist->flags)) {
-				/* /proc/#/fd directory not readable */
-				cprintf_s(IS_ZERO, " %7s", "-1");
-			}
-			else {
-				cprintf_u64(NO_UNIT, 1, 7, (unsigned long long) pstc->fd_nr);
-			}
+			write_plain_pid_ktab_data(FALSE, plist, pstc);
 		}
 
 		if (DISPLAY_RT(actflag)) {
-			cprintf_u64(NO_UNIT, 1, 4,
-				    (unsigned long long) pstc->priority);
-			cprintf_s(IS_STR, " %6s",
-				  GET_POLICY(pstc->policy));
+			write_plain_pid_rt_data(pstc);
 		}
 
 		print_comm(plist);
@@ -1543,6 +1703,82 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
 	}
 
 	return again;
+}
+
+/*
+ * **************************************************************************
+ * Display CPU statistics for the children of current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @plist	Pointer on current process in list.
+ * @pstc	Pointer on current statistics data sample for current process.
+ * @pstp	Pointer on previous statistics data sampe for current process.
+ ***************************************************************************
+ */
+void write_plain_pid_child_cpu_data(int disp_avg, struct st_pid *plist,
+				    struct pid_stats *pstc, struct pid_stats *pstp)
+{
+	if (disp_avg) {
+		cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
+			  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
+			  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
+			  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
+			  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
+			  0.0 :
+			  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
+				    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
+				   (HZ * plist->uc_asum_count) * 1000,
+			  (double) ((pstc->stime + pstc->cstime) -
+				    (pstp->stime + pstp->cstime)) /
+				   (HZ * plist->uc_asum_count) * 1000,
+			  (double) ((pstc->gtime + pstc->cgtime) -
+				    (pstp->gtime + pstp->cgtime)) /
+				   (HZ * plist->uc_asum_count) * 1000);
+	}
+	else {
+		cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
+			  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
+			  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
+			  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
+			  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
+			  0.0 :
+			  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
+				    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
+				   HZ * 1000,
+			  (double) ((pstc->stime + pstc->cstime) -
+				    (pstp->stime + pstp->cstime)) / HZ * 1000,
+			  (double) ((pstc->gtime + pstc->cgtime) -
+				    (pstp->gtime + pstp->cgtime)) / HZ * 1000);
+	}
+}
+
+/*
+ * **************************************************************************
+ * Display memory statistics for the children of current task.
+ *
+ * IN:
+ * @disp_avg	TRUE if average stats are displayed.
+ * @plist	Pointer on current process in list.
+ * @pstc	Pointer on current statistics data sample for current process.
+ * @pstp	Pointer on previous statistics data sampe for current process.
+ ***************************************************************************
+ */
+void write_plain_pid_child_memory_data(int disp_avg, struct st_pid *plist,
+				       struct pid_stats *pstc, struct pid_stats *pstp)
+{
+	if (disp_avg) {
+		cprintf_f(NO_UNIT, FALSE, 2, 9, 0,
+			  (double) ((pstc->minflt + pstc->cminflt) -
+				    (pstp->minflt + pstp->cminflt)) / plist->rc_asum_count,
+			  (double) ((pstc->majflt + pstc->cmajflt) -
+				    (pstp->majflt + pstp->cmajflt)) / plist->rc_asum_count);
+	}
+	else {
+		cprintf_u64(NO_UNIT, 2, 9,
+			    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
+			    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
+	}
 }
 
 /*
@@ -1590,25 +1826,11 @@ int write_pid_child_all_stats(int prev, int curr, int dis,
 		pstp = plist->pstats[prev];
 
 		if (DISPLAY_CPU(actflag)) {
-			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
-				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
-				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
-				  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
-				  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
-				  0.0 :
-				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
-					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
-					    HZ * 1000,
-				  (double) ((pstc->stime + pstc->cstime) -
-					    (pstp->stime + pstp->cstime)) / HZ * 1000,
-				  (double) ((pstc->gtime + pstc->cgtime) -
-					    (pstp->gtime + pstp->cgtime)) / HZ * 1000);
+			write_plain_pid_child_cpu_data(FALSE, plist, pstc, pstp);
 		}
 
 		if (DISPLAY_MEM(actflag)) {
-			cprintf_u64(NO_UNIT, 2, 9,
-				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
-				    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
+			write_plain_pid_child_memory_data(FALSE, plist, pstc, pstp);
 		}
 
 		print_comm(plist);
@@ -1666,28 +1888,10 @@ int write_plain_pid_task_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 5, 7, 2,
-			   (pstc->utime - pstc->gtime) < (pstp->utime - pstp->gtime) ||
-			   (pstc->utime < pstc->gtime) || (pstp->utime < pstp->gtime) ?
-			   0.0 :
-			   SP_VALUE(pstp->utime - pstp->gtime,
-				    pstc->utime - pstc->gtime, itv * HZ / 100),
-			   SP_VALUE(pstp->stime, pstc->stime, itv * HZ / 100),
-			   SP_VALUE(pstp->gtime, pstc->gtime, itv * HZ / 100),
-			   SP_VALUE(pstp->wtime, pstc->wtime, itv * HZ / 100),
-			   /* User time already includes guest time */
-			   IRIX_MODE_OFF(pidflag) ?
-			   SP_VALUE(pstp->utime + pstp->stime,
-				    pstc->utime + pstc->stime, deltot_jiffies) :
-			   SP_VALUE(pstp->utime + pstp->stime,
-				    pstc->utime + pstc->stime, itv * HZ / 100));
+		/* Write current process data */
+		write_plain_pid_task_cpu_data(disp_avg, pstc, pstp, itv,
+					      deltot_jiffies);
 
-		if (!disp_avg) {
-			cprintf_in(IS_INT, "   %3d", "", pstc->processor);
-		}
-		else {
-			cprintf_in(IS_STR, "%s", "     -", 0);
-		}
 		print_comm(plist);
 		again = 1;
 	}
@@ -1874,38 +2078,9 @@ int write_plain_pid_child_cpu_stats(int prev, int curr, int dis, int disp_avg,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		if (disp_avg) {
-			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
-				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
-				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
-				  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
-				  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
-				  0.0 :
-				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
-					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
-					    (HZ * plist->uc_asum_count) * 1000,
-				  (double) ((pstc->stime + pstc->cstime) -
-					    (pstp->stime + pstp->cstime)) /
-					    (HZ * plist->uc_asum_count) * 1000,
-				  (double) ((pstc->gtime + pstc->cgtime) -
-					    (pstp->gtime + pstp->cgtime)) /
-					    (HZ * plist->uc_asum_count) * 1000);
-		}
-		else {
-			cprintf_f(NO_UNIT, FALSE, 3, 9, 0,
-				  (pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) <
-				  (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime) ||
-				  (pstc->utime + pstc->cutime < pstc->gtime + pstc->cgtime) ||
-				  (pstp->utime + pstp->cutime < pstp->gtime + pstp->cgtime) ?
-				  0.0 :
-				  (double) ((pstc->utime + pstc->cutime - pstc->gtime - pstc->cgtime) -
-					    (pstp->utime + pstp->cutime - pstp->gtime - pstp->cgtime)) /
-					    HZ * 1000,
-				  (double) ((pstc->stime + pstc->cstime) -
-					    (pstp->stime + pstp->cstime)) / HZ * 1000,
-				  (double) ((pstc->gtime + pstc->cgtime) -
-					    (pstp->gtime + pstp->cgtime)) / HZ * 1000);
-		}
+		/* Write data for children of current task */
+		write_plain_pid_child_cpu_data(disp_avg, plist, pstc, pstp);
+
 		print_comm(plist);
 		again = 1;
 	}
@@ -2083,28 +2258,9 @@ int write_plain_pid_task_memory_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, plist);
 
-		cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
-			  S_VALUE(pstp->minflt, pstc->minflt, itv),
-			  S_VALUE(pstp->majflt, pstc->majflt, itv));
-
-		if (disp_avg) {
-			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 2, 7, 0,
-				  (double) plist->total_vsz / plist->rt_asum_count,
-				  (double) plist->total_rss / plist->rt_asum_count);
-
-			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
-				   tlmkb ?
-				   SP_VALUE(0, plist->total_rss / plist->rt_asum_count, tlmkb)
-				   : 0.0);
-		}
-		else {
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
-				    (unsigned long long) pstc->vsz,
-				    (unsigned long long) pstc->rss);
-
-			cprintf_xpc(DISPLAY_UNIT(pidflag), XHIGH, 1, 6, 2,
-				   tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
-		}
+		/* Write current process data */
+		write_plain_pid_task_memory_data(disp_avg, plist,
+						 pstc, pstp, itv);
 
 		print_comm(plist);
 		again = 1;
@@ -2285,18 +2441,9 @@ int write_plain_pid_child_memory_stats(int prev, int curr, int dis, int disp_avg
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		if (disp_avg) {
-			cprintf_f(NO_UNIT, FALSE, 2, 9, 0,
-				  (double) ((pstc->minflt + pstc->cminflt) -
-					    (pstp->minflt + pstp->cminflt)) / plist->rc_asum_count,
-				  (double) ((pstc->majflt + pstc->cmajflt) -
-					    (pstp->majflt + pstp->cmajflt)) / plist->rc_asum_count);
-		}
-		else {
-			cprintf_u64(NO_UNIT, 2, 9,
-				    (unsigned long long) ((pstc->minflt + pstc->cminflt) - (pstp->minflt + pstp->cminflt)),
-                    (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
-		}
+		/* Write data for current task */
+		write_plain_pid_child_memory_data(disp_avg, plist, pstc, pstp);
+
 		print_comm(plist);
 		again = 1;
 	}
@@ -2461,16 +2608,8 @@ int write_plain_pid_stack_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, plist);
 
-		if (disp_avg) {
-			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, FALSE, 2, 7, 0,
-				  (double) plist->total_stack_size / plist->sk_asum_count,
-				  (double) plist->total_stack_ref  / plist->sk_asum_count);
-		}
-		else {
-			cprintf_u64(DISPLAY_UNIT(pidflag) ? UNIT_KILOBYTE : NO_UNIT, 2, 7,
-				    (unsigned long long) pstc->stack_size,
-				    (unsigned long long) pstc->stack_ref);
-		}
+		/* Write current process data */
+		write_plain_pid_stack_data(disp_avg, plist, pstc);
 
 		print_comm(plist);
 		again = 1;
@@ -2608,9 +2747,7 @@ int write_plain_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 {
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
-	char dstr[32];
 	int rc, again = 0;
-	double rbytes, wbytes, cbytes;
 
 	if (dis) {
 		PRINT_ID_HDR(prev_string, pidflag);
@@ -2637,34 +2774,8 @@ int write_plain_pid_io_stats(int prev, int curr, int dis, int disp_avg,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		if (!NO_PID_IO(plist->flags)) {
-			rbytes = S_VALUE(pstp->read_bytes,  pstc->read_bytes, itv);
-			wbytes = S_VALUE(pstp->write_bytes, pstc->write_bytes, itv);
-			cbytes = S_VALUE(pstp->cancelled_write_bytes,
-					 pstc->cancelled_write_bytes, itv);
-			if (!DISPLAY_UNIT(pidflag)) {
-				rbytes /= 1024;
-				wbytes /= 1024;
-				cbytes /= 1024;
-			}
-			cprintf_f(DISPLAY_UNIT(pidflag) ? UNIT_BYTE : NO_UNIT, FALSE, 3, 9, 2,
-				  rbytes, wbytes, cbytes);
-		}
-		else {
-			/* I/O file not readable (permission denied or file non existent) */
-			sprintf(dstr, " %9.2f %9.2f %9.2f", -1.0, -1.0, -1.0);
-			cprintf_s(IS_ZERO, "%s", dstr);
-		}
-		/* I/O delays come from another file (/proc/#/stat) */
-		if (disp_avg) {
-			cprintf_f(NO_UNIT, FALSE, 1, 7, 0,
-				  (double) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays) /
-					    plist->delay_asum_count);
-		}
-		else {
-			cprintf_u64(NO_UNIT, 1, 7,
-				    (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
-		}
+		/* Write statistics for current task */
+		write_plain_pid_io_data(disp_avg, plist, pstc, pstp, itv);
 
 		print_comm(plist);
 		again = 1;
@@ -2820,6 +2931,7 @@ int write_plain_pid_ctxswitch_stats(int prev, int curr, int dis,
 				    unsigned long long itv)
 {
 	struct pid_stats *pstc, *pstp;
+
 	struct st_pid *plist;
 	int again = 0;
 
@@ -2838,9 +2950,8 @@ int write_plain_pid_ctxswitch_stats(int prev, int curr, int dis,
 		pstc = plist->pstats[curr];
 		pstp = plist->pstats[prev];
 
-		cprintf_f(NO_UNIT, FALSE, 2, 9, 2,
-			  S_VALUE(pstp->nvcsw,  pstc->nvcsw,  itv),
-			  S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
+		/* Write statistics for current task */
+		write_plain_pid_ctxswitch_data(pstc, pstp, itv);
 
 		print_comm(plist);
 		again = 1;
@@ -3009,24 +3120,8 @@ int write_plain_pid_ktab_stats(int prev, int curr, int dis, int disp_avg,
 
 		print_line_id(curr_string, plist);
 
-		if (disp_avg) {
-			cprintf_f(NO_UNIT, FALSE, 2, 7, 0,
-				  (double) plist->total_threads / plist->tf_asum_count,
-				  NO_PID_FD(plist->flags) ?
-				  -1.0 :
-				  (double) plist->total_fd_nr / plist->tf_asum_count);
-		}
-		else {
-			cprintf_u64(NO_UNIT, 1, 7,
-				    (unsigned long long) pstc->threads);
-			if (NO_PID_FD(plist->flags)) {
-				cprintf_s(IS_ZERO, " %7s", "-1");
-			}
-			else {
-				cprintf_u64(NO_UNIT, 1, 7,
-					    (unsigned long long) pstc->fd_nr);
-			}
-		}
+		/* Write data for current task */
+		write_plain_pid_ktab_data(disp_avg, plist, pstc);
 
 		print_comm(plist);
 		again = 1;
@@ -3182,9 +3277,8 @@ int write_plain_pid_rt_stats(int prev, int curr, int dis,
 
 		pstc = plist->pstats[curr];
 
-		cprintf_u64(NO_UNIT, 1, 4,
-			    (unsigned long long) pstc->priority);
-		cprintf_s(IS_STR, " %6s", GET_POLICY(pstc->policy));
+		/* Write data for current task */
+		write_plain_pid_rt_data(pstc);
 
 		print_comm(plist);
 		again = 1;
