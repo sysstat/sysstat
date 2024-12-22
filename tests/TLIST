@@ -145,6 +145,10 @@ NOTES:
 	[Starting above at root4]
 00377	./tapestat 1 3 -t -o JSON | $VER_JSON >/dev/null
 	[Starting above at root1]
+00380	./pidstat -o JSON -r -l | $VER_JSON >/dev/null
+00381	./pidstat -o JSON -dRrsuvw -T ALL -t 1 3 | $VER_JSON >/dev/null
+00382	./pidstat -o JSON -U --human -H 1 10 | $VER_JSON >/dev/null
+	[Simulate a Ctrl/C within pidstat]
 
 =====	Checking XML output validity
 00400	export LC_ALL=C ; ./sadf -x tests/data.tmp -C -- -A | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null && ./sadf -T -x tests/data.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null
@@ -566,9 +570,11 @@ NOTES:
 05020	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw > tests/out.pidstat-At.tmp
 05030	LC_ALL=C TZ=GMT ./pidstat -dRrsuvw -p ALL > tests/out.pidstat-A-ALL.tmp
 05040	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw -p ALL > tests/out.pidstat-At-ALL.tmp
+05042	LC_ALL=C TZ=GMT ./pidstat -o JSON -t -dRrsuvw -p ALL > tests/out.pidstat-At-ALL-JSON.tmp
 05050	LC_ALL=C TZ=GMT ./pidstat -T TASK -dRrsuvw > tests/out.pidstat-A-TTASK.tmp
 05060	LC_ALL=C TZ=GMT ./pidstat -T TASK -dRrsuvw 2 6 > tests/out1.pidstat-A-TTASK.tmp
 05070	LC_ALL=C TZ=GMT ./pidstat -T TASK -t -dRrsuvw 2 6 > tests/out1.pidstat-At-TTASK.tmp
+05072	LC_ALL=C TZ=GMT ./pidstat -o JSON -T TASK -t -dRrsuvw 2 6 > tests/out1.pidstat-At-TTASK-JSON.tmp
 05080	LC_ALL=C TZ=GMT ./pidstat -t -dRrsuvw 2 6 > tests/out1.pidstat-At.tmp
 05090	LC_ALL=C TZ=GMT ./pidstat -T TASK -t -dRrsuvw -p ALL 2 6 > tests/out1.pidstat-At-TTASK-ALL.tmp
 05100	LC_ALL=C TZ=GMT ./pidstat -T CHILD -dRrsuvw > tests/out.pidstat-A-TCHILD.tmp
@@ -577,6 +583,7 @@ NOTES:
 05130	LC_ALL=C TZ=GMT ./pidstat -T CHILD -t -dRrsuvw -p ALL 2 6 > tests/out1.pidstat-At-TCHILD-ALL.tmp
 05140	LC_ALL=C TZ=GMT ./pidstat -T ALL -t -dRrsuvw > tests/out.pidstat-At-TALL.tmp
 05150	LC_ALL=C TZ=GMT ./pidstat -T ALL -t -dRrsuvw -p ALL 2 6 > tests/out1.pidstat-At-TALL-ALL.tmp
+05152	LC_ALL=C TZ=GMT ./pidstat -U -o JSON -T ALL -t -dRrsuvw -p ALL 2 2 > tests/out1.pidstat-At-TALL-ALL-JSON.tmp
 05160	LC_ALL=C TZ=GMT ./pidstat -T TASK -d 1 3 > tests/out1.pidstat-d-TTASK.tmp
 05170	LC_ALL=C TZ=GMT ./pidstat -T TASK -d -p ALL > tests/out.pidstat-d-TTASK-ALL.tmp
 05180	LC_ALL=C TZ=GMT ./pidstat -uRr -p 1234 1 2 > tests/out.pidstat-p-unkwn.tmp
@@ -587,6 +594,7 @@ NOTES:
 05230	LC_ALL=C TZ=GMT ./pidstat -Rw 2 > tests/out.pidstat-sigint.tmp
 05240	LC_ALL=C TZ=GMT ./pidstat -C foofox 2 6 > tests/out.pidstat-C.tmp
 05250	LC_ALL=C TZ=GMT ./pidstat -C fox 2 6 > tests/out1.pidstat-C.tmp
+05252	LC_ALL=C TZ=GMT ./pidstat -o JSON -H -C fox 2 6 > tests/out1.pidstat-C-JSON.tmp
 05260	LC_ALL=C TZ=GMT ./pidstat -C shell -C Web 2 6 > tests/out2.pidstat-C.tmp
 05270	LC_ALL=C TZ=GMT ./pidstat -t -C Web 2 6 > tests/out3.pidstat-C.tmp
 05280	LC_ALL=C TZ=GMT ./pidstat -t -C "(fox|shell)" 2 6 > tests/out4.pidstat-C.tmp
@@ -608,10 +616,10 @@ NOTES:
 05430	LC_ALL=C TZ=GMT ./pidstat -t -rw -u -U root 2 1 > tests/out.pidstat-Uroot.tmp
 05440	LC_ALL=C TZ=GMT ./pidstat -t -svwu -p 21342,1234,7900,9009 2 6 > tests/out.pidstat-plist.tmp
 05450	LC_ALL=C TZ=GMT ./pidstat 2 6 -t -e sleep 3 > tests/out.pidstat-e.tmp
-05452	LC_ALL=C TZ=GMT ./pidstat -e sleep 2 > tests/out2.pidstat-e.tmp
 
 =====	Test pidstat error cases
 05600	LC_ALL=C ./pidstat --dec=A 2>&1 | grep "Usage:" >/dev/null
+05605	LC_ALL=C ./pidstat -e sleep 2 2>&1 | grep "Usage:" >/dev/null
 
 =====	Tests to be done at the very end
 08900	cat tests/TLIST | grep ^0 | awk '{print $1}' > tests/out.list1.tmp

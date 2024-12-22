@@ -1,0 +1,281 @@
+{"sysstat": {
+	"hosts": [
+		{
+			"nodename": "SYSSTAT.TEST",
+			"sysname": "Linux",
+			"release": "1.2.3-TEST",
+			"machine": "x86_64",
+			"number-of-cpus": 9,
+			"date": "06/01/20",
+			"statistics": [
+				{
+					"timestamp": "12:53:22",
+					"task-cpu-load": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "usr": 359.42, "system": 53.55, "guest": 0.00, "wait": 8.47, "cpu": 412.96, "cpu_nr": 2, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "usr": 349.70, "system": 51.43, "guest": 0.00, "wait": 8.47, "cpu": 401.12, "cpu_nr": 2, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "usr": 0.35, "system": 0.03, "guest": 0.00, "wait": 0.00, "cpu": 0.38, "cpu_nr": 0, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "usr": 0.35, "system": 0.03, "guest": 0.00, "wait": 0.00, "cpu": 0.38, "cpu_nr": 0, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "8741", "usr": 0.03, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.03, "cpu_nr": 0, "leader": "firefox", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "usr": 0.03, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.03, "cpu_nr": 3, "leader": "WebExtensions", "cmd": "WebExtensions"}
+					],
+					"task-memory": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "minflt/s": 25095.93, "majflt/s": 1.48, "VSZ": 4453984, "RSS": 259044, "MEM": 3.18, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "minflt/s": 23662.56, "majflt/s": 1.35, "VSZ": 4453984, "RSS": 259044, "MEM": 3.18, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "10334", "minflt/s": 0.22, "majflt/s": 0.00, "VSZ": 2512656, "RSS": 291884, "MEM": 3.58, "leader": "gnome-shell", "cmd": "dconf worker"},
+						{"UID": "0", "TGID": "8407", "TID": "", "minflt/s": 0.16, "majflt/s": 0.00, "VSZ": 723868, "RSS": 42156, "MEM": 0.52, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "minflt/s": 0.16, "majflt/s": 0.00, "VSZ": 723868, "RSS": 42156, "MEM": 0.52, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "8741", "TID": "8741", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "firefox", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "firefox", "cmd": "JS Helper"},
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "minflt/s": 0.03, "majflt/s": 0.00, "VSZ": 1744508, "RSS": 105628, "MEM": 1.30, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "minflt/s": 0.03, "majflt/s": 0.00, "VSZ": 1744508, "RSS": 105628, "MEM": 1.30, "leader": "WebExtensions", "cmd": "WebExtensions"}
+					],
+					"stack": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "StkSize": 128, "StkRef": 108, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "StkSize": 128, "StkRef": 108, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "10334", "StkSize": 128, "StkRef": 108, "leader": "gnome-shell", "cmd": "dconf worker"}
+					],
+					"io": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "kB_rd/s": 411.81, "kB_wr/s": 2.82, "kB_ccwr/s": 0.00, "iodelay": 253, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "kB_rd/s": 195.70, "kB_wr/s": 1.15, "kB_ccwr/s": 0.00, "iodelay": 253, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "10334", "kB_rd/s": 0.01, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "gnome-shell", "cmd": "dconf worker"}
+					],
+					"context-switch": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "cswch/s": 5700.42, "nvcswch/s": 700.96, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "cswch/s": 5700.45, "nvcswch/s": 700.96, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "10334", "cswch/s": 0.29, "nvcswch/s": 0.00, "leader": "gnome-shell", "cmd": "dconf worker"},
+						{"UID": "0", "TGID": "8407", "TID": "", "cswch/s": 5.00, "nvcswch/s": 0.06, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "cswch/s": 5.00, "nvcswch/s": 0.06, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "", "cswch/s": 1.60, "nvcswch/s": 0.00, "leader": "", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "8741", "TID": "8741", "cswch/s": 1.60, "nvcswch/s": 0.00, "leader": "firefox", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "cswch/s": 0.19, "nvcswch/s": 0.00, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "cswch/s": 0.19, "nvcswch/s": 0.00, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9029", "cswch/s": 0.32, "nvcswch/s": 0.00, "leader": "WebExtensions", "cmd": "Timer"}
+					],
+					"kernel": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "threads": 18, "fd-nr": 5, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "threads": 18, "fd-nr": 5, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "10334", "threads": 67, "fd-nr": 5, "leader": "gnome-shell", "cmd": "dconf worker"}
+					],
+					"realtime": [
+
+					]
+				},
+				{
+					"timestamp": "12:53:24",
+					"task-cpu-load": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "usr": 0.67, "system": 0.16, "guest": 0.00, "wait": 0.06, "cpu": 0.83, "cpu_nr": 7, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "usr": 0.64, "system": 0.13, "guest": 0.00, "wait": 0.06, "cpu": 0.77, "cpu_nr": 7, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "usr": 0.19, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.19, "cpu_nr": 3, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "usr": 0.19, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.19, "cpu_nr": 3, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "", "usr": 0.13, "system": 0.03, "guest": 0.00, "wait": 0.03, "cpu": 0.16, "cpu_nr": 5, "leader": "", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "8741", "TID": "8741", "usr": 0.06, "system": 0.00, "guest": 0.00, "wait": 0.03, "cpu": 0.06, "cpu_nr": 5, "leader": "firefox", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "21342", "TID": "8365", "usr": 0.06, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.06, "cpu_nr": 7, "leader": "soffice.bin", "cmd": "evolution-addre"}
+					],
+					"task-memory": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "minflt/s": 169.05, "majflt/s": 0.00, "VSZ": 4449368, "RSS": 259096, "MEM": 3.18, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "minflt/s": 169.01, "majflt/s": 0.00, "VSZ": 4449368, "RSS": 259096, "MEM": 3.18, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "minflt/s": 0.13, "majflt/s": 0.00, "VSZ": 723868, "RSS": 42156, "MEM": 0.52, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "minflt/s": 0.13, "majflt/s": 0.00, "VSZ": 723868, "RSS": 42156, "MEM": 0.52, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "", "minflt/s": 0.16, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "8741", "TID": "8741", "minflt/s": 0.16, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "firefox", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "minflt/s": 0.42, "majflt/s": 0.00, "VSZ": 1264684, "RSS": 46212, "MEM": 0.57, "leader": "soffice.bin", "cmd": "dconf worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "8365", "minflt/s": 8.90, "majflt/s": 0.00, "VSZ": 1264684, "RSS": 46212, "MEM": 0.57, "leader": "soffice.bin", "cmd": "evolution-addre"}
+					],
+					"stack": [
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "StkSize": 132, "StkRef": 36, "leader": "soffice.bin", "cmd": "dconf worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "8365", "StkSize": 132, "StkRef": 36, "leader": "soffice.bin", "cmd": "evolution-addre"}
+					],
+					"io": [
+						{"UID": "1000", "TGID": "7900", "TID": "10334", "kB_rd/s": 0.00, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "gnome-shell", "cmd": "dconf worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "kB_rd/s": 0.13, "kB_wr/s": 0.01, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "soffice.bin", "cmd": "dconf worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "8365", "kB_rd/s": 0.27, "kB_wr/s": 0.14, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "soffice.bin", "cmd": "evolution-addre"}
+					],
+					"context-switch": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "cswch/s": 12.32, "nvcswch/s": 5.83, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "cswch/s": 12.29, "nvcswch/s": 5.83, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "cswch/s": 2.34, "nvcswch/s": 0.00, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "cswch/s": 2.34, "nvcswch/s": 0.00, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "", "cswch/s": 7.68, "nvcswch/s": 0.00, "leader": "", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "8741", "TID": "8741", "cswch/s": 7.68, "nvcswch/s": 0.00, "leader": "firefox", "cmd": "firefox"},
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "cswch/s": 0.51, "nvcswch/s": 0.00, "leader": "soffice.bin", "cmd": "dconf worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "8365", "cswch/s": 0.45, "nvcswch/s": 0.03, "leader": "soffice.bin", "cmd": "evolution-addre"}
+					],
+					"kernel": [
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "threads": 5, "fd-nr": 5, "leader": "soffice.bin", "cmd": "dconf worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "8365", "threads": 5, "fd-nr": 5, "leader": "soffice.bin", "cmd": "evolution-addre"}
+					],
+					"realtime": [
+
+					]
+				},
+				{
+					"timestamp": "12:53:26",
+					"task-cpu-load": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "usr": 0.88, "system": 0.23, "guest": 0.00, "wait": 0.00, "cpu": 1.12, "cpu_nr": 0, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "usr": 0.83, "system": 0.23, "guest": 0.00, "wait": 0.00, "cpu": 1.06, "cpu_nr": 0, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "usr": 0.05, "system": 0.03, "guest": 0.00, "wait": 0.03, "cpu": 0.08, "cpu_nr": 4, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "usr": 0.05, "system": 0.03, "guest": 0.00, "wait": 0.03, "cpu": 0.08, "cpu_nr": 4, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "usr": 0.00, "system": 479136209706741632.00, "guest": 0.00, "wait": 0.00, "cpu": 479136209706741632.00, "cpu_nr": 5, "leader": "firefox", "cmd": "disk_cache:0"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "usr": 11.74, "system": 5.77, "guest": 0.00, "wait": 1.56, "cpu": 17.51, "cpu_nr": 3, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "usr": 8.91, "system": 2.62, "guest": 0.00, "wait": 1.56, "cpu": 11.53, "cpu_nr": 3, "leader": "WebExtensions", "cmd": "WebExtensions"}
+					],
+					"task-memory": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "minflt/s": 318.81, "majflt/s": 0.00, "VSZ": 4451936, "RSS": 259076, "MEM": 3.18, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "minflt/s": 318.81, "majflt/s": 0.00, "VSZ": 4451936, "RSS": 259076, "MEM": 3.18, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "minflt/s": 479136209706741376.00, "majflt/s": 479136209706741632.00, "VSZ": 1432632, "RSS": 51352, "MEM": 0.63, "leader": "firefox", "cmd": "disk_cache:0"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2535720, "RSS": 335804, "MEM": 4.12, "leader": "firefox", "cmd": "DOM Worker"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "minflt/s": 643.64, "majflt/s": 0.36, "VSZ": 1744508, "RSS": 105628, "MEM": 1.30, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "minflt/s": 497.95, "majflt/s": 0.26, "VSZ": 1744508, "RSS": 105628, "MEM": 1.30, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9033", "minflt/s": 0.03, "majflt/s": 0.00, "VSZ": 1744508, "RSS": 105628, "MEM": 1.30, "leader": "WebExtensions", "cmd": "ImageIO"}
+					],
+					"stack": [
+						{"UID": "1000", "TGID": "9009", "TID": "", "StkSize": 132, "StkRef": 20, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "StkSize": 132, "StkRef": 20, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9033", "StkSize": 132, "StkRef": 20, "leader": "WebExtensions", "cmd": "ImageIO"}
+					],
+					"io": [
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "kB_rd/s": 467906454791736.25, "kB_wr/s": 0.05, "kB_ccwr/s": 0.00, "iodelay": 18446744073709551611, "leader": "firefox", "cmd": "disk_cache:0"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "kB_rd/s": 30.65, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 69, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "kB_rd/s": 24.52, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 69, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "kB_rd/s": 0.05, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "soffice.bin", "cmd": "dconf worker"}
+					],
+					"context-switch": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "cswch/s": 11.71, "nvcswch/s": 6.81, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "cswch/s": 11.71, "nvcswch/s": 6.81, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "cswch/s": 1.22, "nvcswch/s": 0.00, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "cswch/s": 1.22, "nvcswch/s": 0.00, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "cswch/s": 479136209706741632.00, "nvcswch/s": 479136209706741632.00, "leader": "firefox", "cmd": "disk_cache:0"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "cswch/s": 629.38, "nvcswch/s": 11.90, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "cswch/s": 629.38, "nvcswch/s": 11.90, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9033", "cswch/s": 0.03, "nvcswch/s": 0.00, "leader": "WebExtensions", "cmd": "ImageIO"}
+					],
+					"kernel": [
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "threads": 5, "fd-nr": 5, "leader": "firefox", "cmd": "disk_cache:0"},
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "threads": 66, "fd-nr": 5, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "threads": 66, "fd-nr": 5, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "threads": 66, "fd-nr": 5, "leader": "firefox", "cmd": "DOM Worker"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "threads": 32, "fd-nr": 5, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "threads": 32, "fd-nr": 5, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9033", "threads": 32, "fd-nr": 5, "leader": "WebExtensions", "cmd": "ImageIO"}
+					],
+					"realtime": [
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "prio": 0, "policy": "IDLE", "leader": "firefox", "cmd": "disk_cache:0"}
+					]
+				},
+				{
+					"timestamp": "12:53:28",
+					"task-cpu-load": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "usr": 3.31, "system": 0.71, "guest": 0.00, "wait": 0.09, "cpu": 4.02, "cpu_nr": 5, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "usr": 3.08, "system": 0.67, "guest": 0.00, "wait": 0.09, "cpu": 3.75, "cpu_nr": 5, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "usr": 0.04, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.04, "cpu_nr": 3, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "usr": 0.04, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.04, "cpu_nr": 3, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "usr": 0.04, "system": 0.04, "guest": 0.00, "wait": 0.00, "cpu": 0.09, "cpu_nr": 1, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "usr": 0.04, "system": 0.04, "guest": 0.00, "wait": 0.00, "cpu": 0.09, "cpu_nr": 1, "leader": "WebExtensions", "cmd": "WebExtensions"}
+					],
+					"task-memory": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "minflt/s": 736.85, "majflt/s": 0.00, "VSZ": 4448816, "RSS": 259144, "MEM": 3.18, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "minflt/s": 743.28, "majflt/s": 0.00, "VSZ": 4450840, "RSS": 259144, "MEM": 3.18, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2524288, "RSS": 330644, "MEM": 4.06, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2524288, "RSS": 330644, "MEM": 4.06, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2524288, "RSS": 330644, "MEM": 4.06, "leader": "firefox", "cmd": "DOM Worker"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "minflt/s": 5.09, "majflt/s": 0.00, "VSZ": 1744508, "RSS": 106108, "MEM": 1.30, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "minflt/s": 5.09, "majflt/s": 0.00, "VSZ": 1744508, "RSS": 106108, "MEM": 1.30, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9033", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 1744508, "RSS": 106108, "MEM": 1.30, "leader": "WebExtensions", "cmd": "ImageIO"},
+						{"UID": "1000", "TGID": "21342", "TID": "21344", "minflt/s": 0.40, "majflt/s": 0.00, "VSZ": 1790688, "RSS": 439484, "MEM": 5.40, "leader": "soffice.bin", "cmd": "rtl_cache_wsupd"}
+					],
+					"stack": [
+						{"UID": "1000", "TGID": "21342", "TID": "21344", "StkSize": 132, "StkRef": 36, "leader": "soffice.bin", "cmd": "rtl_cache_wsupd"}
+					],
+					"io": [
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "kB_rd/s": 0.00, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "firefox", "cmd": "disk_cache:0"},
+						{"UID": "1000", "TGID": "21342", "TID": "8364", "kB_rd/s": 0.00, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "soffice.bin", "cmd": "dconf worker"}
+					],
+					"context-switch": [
+						{"UID": "1000", "TGID": "7900", "TID": "", "cswch/s": 43.77, "nvcswch/s": 17.87, "leader": "", "cmd": "gnome-shell"},
+						{"UID": "1000", "TGID": "7900", "TID": "7900", "cswch/s": 43.77, "nvcswch/s": 17.87, "leader": "gnome-shell", "cmd": "gnome-shell"},
+						{"UID": "0", "TGID": "8407", "TID": "", "cswch/s": 2.28, "nvcswch/s": 0.00, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "cswch/s": 2.28, "nvcswch/s": 0.00, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "9009", "TID": "", "cswch/s": 2.81, "nvcswch/s": 0.04, "leader": "", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "9009", "TID": "9009", "cswch/s": 2.81, "nvcswch/s": 0.04, "leader": "WebExtensions", "cmd": "WebExtensions"},
+						{"UID": "1000", "TGID": "21342", "TID": "21344", "cswch/s": 9.65, "nvcswch/s": 0.00, "leader": "soffice.bin", "cmd": "rtl_cache_wsupd"}
+					],
+					"kernel": [
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "threads": 69, "fd-nr": 5, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "threads": 69, "fd-nr": 5, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "threads": 69, "fd-nr": 5, "leader": "firefox", "cmd": "DOM Worker"},
+						{"UID": "1000", "TGID": "21342", "TID": "21344", "threads": 6, "fd-nr": 5, "leader": "soffice.bin", "cmd": "rtl_cache_wsupd"}
+					],
+					"realtime": [
+
+					]
+				},
+				{
+					"timestamp": "12:53:30",
+					"task-cpu-load": [
+						{"UID": "0", "TGID": "8407", "TID": "", "usr": 0.00, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.00, "cpu_nr": 2, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "usr": 0.00, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.00, "cpu_nr": 2, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"}
+					],
+					"task-memory": [
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2524532, "RSS": 339528, "MEM": 4.17, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2524532, "RSS": 339528, "MEM": 4.17, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2524532, "RSS": 339528, "MEM": 4.17, "leader": "firefox", "cmd": "DOM Worker"}
+					],
+					"stack": [
+
+					],
+					"io": [
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "kB_rd/s": 0.00, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "firefox", "cmd": "disk_cache:0"}
+					],
+					"context-switch": [
+						{"UID": "0", "TGID": "8407", "TID": "", "cswch/s": 0.00, "nvcswch/s": 0.00, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "cswch/s": 0.00, "nvcswch/s": 0.00, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "cswch/s": 0.00, "nvcswch/s": 0.00, "leader": "firefox", "cmd": "ImgDecoder #1"}
+					],
+					"kernel": [
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "threads": 70, "fd-nr": 5, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "threads": 70, "fd-nr": 5, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "threads": 70, "fd-nr": 5, "leader": "firefox", "cmd": "DOM Worker"}
+					],
+					"realtime": [
+
+					]
+				},
+				{
+					"timestamp": "12:53:32",
+					"task-cpu-load": [
+						{"UID": "0", "TGID": "8407", "TID": "", "usr": 0.06, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.06, "cpu_nr": 4, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "usr": 0.06, "system": 0.00, "guest": 0.00, "wait": 0.00, "cpu": 0.06, "cpu_nr": 4, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"}
+					],
+					"task-memory": [
+						{"UID": "0", "TGID": "8407", "TID": "", "minflt/s": 0.03, "majflt/s": 0.00, "VSZ": 723868, "RSS": 42156, "MEM": 0.52, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "minflt/s": 0.03, "majflt/s": 0.00, "VSZ": 723868, "RSS": 42156, "MEM": 0.52, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"},
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2534716, "RSS": 342460, "MEM": 4.20, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2534716, "RSS": 342460, "MEM": 4.20, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "minflt/s": 0.00, "majflt/s": 0.00, "VSZ": 2534716, "RSS": 342460, "MEM": 4.20, "leader": "firefox", "cmd": "DOM Worker"}
+					],
+					"stack": [
+
+					],
+					"io": [
+						{"UID": "1000", "TGID": "8741", "TID": "8785", "kB_rd/s": 0.00, "kB_wr/s": 0.00, "kB_ccwr/s": 0.00, "iodelay": 0, "leader": "firefox", "cmd": "disk_cache:0"}
+					],
+					"context-switch": [
+						{"UID": "0", "TGID": "8407", "TID": "", "cswch/s": 2.34, "nvcswch/s": 0.00, "leader": "", "cmd": "gnome-terminal-"},
+						{"UID": "0", "TGID": "8407", "TID": "8407", "cswch/s": 2.31, "nvcswch/s": 0.00, "leader": "gnome-terminal-", "cmd": "gnome-terminal-"}
+					],
+					"kernel": [
+						{"UID": "1000", "TGID": "8741", "TID": "8789", "threads": 71, "fd-nr": 5, "leader": "firefox", "cmd": "Link Monitor"},
+						{"UID": "1000", "TGID": "8741", "TID": "8835", "threads": 71, "fd-nr": 5, "leader": "firefox", "cmd": "ImgDecoder #1"},
+						{"UID": "1000", "TGID": "8741", "TID": "9109", "threads": 71, "fd-nr": 5, "leader": "firefox", "cmd": "DOM Worker"}
+					],
+					"realtime": [
+
+					]
+				}
+			]
+		}
+	]
+}}

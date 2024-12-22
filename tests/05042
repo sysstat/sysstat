@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s root1 tests/root
+LC_ALL=C TZ=GMT ./pidstat -o JSON -t -dRrsuvw -p ALL > tests/out.pidstat-At-ALL-JSON.tmp && diff -u tests/expected.pidstat-At-ALL-JSON tests/out.pidstat-At-ALL-JSON.tmp
