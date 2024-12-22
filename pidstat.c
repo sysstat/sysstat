@@ -425,7 +425,7 @@ void print_json_comm(struct st_pid *plist)
 
 		printf("\", ");
 	}
-	printf("\"cmd\": \"%s", p);
+	printf("\"cmd\": \"%s\"}", p);
 }
 
 /*
@@ -1764,7 +1764,6 @@ int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long lon
 		       pstc->processor);
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -1976,7 +1975,6 @@ int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
 				 (pstp->gtime + pstp->cgtime)) / HZ * 1000);
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -2181,7 +2179,6 @@ int write_json_pid_task_memory_stats(int tab, int prev, int curr,
 		       tlmkb ? SP_VALUE(0, pstc->rss, tlmkb) : 0.0);
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -2359,7 +2356,6 @@ int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
 		       (unsigned long long) ((pstc->majflt + pstc->cmajflt) - (pstp->majflt + pstp->cmajflt)));
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -2534,7 +2530,6 @@ int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
 		       (unsigned long long) pstc->stack_ref);
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -2747,7 +2742,6 @@ int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
 		       (unsigned long long) (pstc->blkio_swapin_delays - pstp->blkio_swapin_delays));
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -2909,7 +2903,6 @@ int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
 		       S_VALUE(pstp->nivcsw, pstc->nivcsw, itv));
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -3098,7 +3091,6 @@ int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
 		}
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
@@ -3252,7 +3244,6 @@ int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
 		       GET_POLICY(pstc->policy));
 
 		print_json_comm(plist);
-		printf("\"}");
 		again = 1;
 	}
 
