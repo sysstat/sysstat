@@ -81,11 +81,11 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"));
+			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"));
+			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"));
 #endif
 	exit(1);
 }
@@ -554,6 +554,12 @@ void write_stats(int curr, struct tm *rectime)
 void rw_io_stat_loop(long int count, struct tm *rectime)
 {
 	int curr = 1;
+	int skip = 0;
+
+	/* Should we skip first report? */
+	if (DISPLAY_OMIT_SINCE_BOOT(flags) && interval > 0) {
+		skip = 1;
+	}
 
 	/* Set a handler for SIGALRM */
 	memset(&alrm_act, 0, sizeof(alrm_act));
@@ -590,11 +596,14 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		/* Get time */
 		get_xtime(rectime, 0, LOCAL_TIME);
 
-		/* Print results */
-		write_stats(curr, rectime);
+		/* Check whether we should skip first report */
+		if (!skip) {
+			/* Print results */
+			write_stats(curr, rectime);
 
-		if (count > 0) {
-			count--;
+			if (count > 0) {
+				count--;
+			}
 		}
 
 		if (count) {
@@ -605,10 +614,11 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 				/* SIGINT signal caught => Terminate JSON output properly */
 				count = 0;
 			}
-			else if (DISPLAY_JSON_OUTPUT(xflags)) {	/* count != 0 */
+			else if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
 				printf(",");
 			}
 		}
+		skip = 0;
 		printf("\n");
 	}
 	while (count);
@@ -724,6 +734,11 @@ int main(int argc, char **argv)
 					flags |= I_D_TIMESTAMP;
 					break;
 
+				case 'y':
+					/* Don't display stats since system restart */
+					flags |= I_D_OMIT_SINCE_BOOT;
+					break;
+
 				case 'V':
 					{
 						char *cifsiostat_env[] = {ENV_COLORS,
@@ -791,9 +806,11 @@ int main(int argc, char **argv)
 			     DISPLAY_JSON_OUTPUT(xflags))) {
 		xflags |= X_D_ISO;
 	}
-	if (!DISPLAY_JSON_OUTPUT(xflags)) {
+
+	if (!DISPLAY_JSON_OUTPUT(xflags) &&
+		(!DISPLAY_OMIT_SINCE_BOOT(flags) || (interval == 0))) {
 		printf("\n");
-	}
+		}
 
 	/* Main loop */
 	rw_io_stat_loop(count, &rectime);

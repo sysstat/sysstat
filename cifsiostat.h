@@ -15,17 +15,18 @@
 #define I_D_TIMESTAMP		0x001
 #define I_D_KILOBYTES		0x002
 #define I_D_MEGABYTES		0x004
-/* Unused			0x008 */
+#define I_D_OMIT_SINCE_BOOT	0x008
 #define I_D_PRETTY		0x010
 /* Unused			0x020 */
 #define I_D_UNIT		0x040
 /* Unused			0x080 */
 
-#define DISPLAY_TIMESTAMP(m)	(((m) & I_D_TIMESTAMP)   == I_D_TIMESTAMP)
-#define DISPLAY_KILOBYTES(m)	(((m) & I_D_KILOBYTES)   == I_D_KILOBYTES)
-#define DISPLAY_MEGABYTES(m)	(((m) & I_D_MEGABYTES)   == I_D_MEGABYTES)
-#define DISPLAY_PRETTY(m)	(((m) & I_D_PRETTY)      == I_D_PRETTY)
-#define DISPLAY_UNIT(m)		(((m) & I_D_UNIT)        == I_D_UNIT)
+#define DISPLAY_TIMESTAMP(m)	   (((m) & I_D_TIMESTAMP)        == I_D_TIMESTAMP)
+#define DISPLAY_KILOBYTES(m)	   (((m) & I_D_KILOBYTES)        == I_D_KILOBYTES)
+#define DISPLAY_MEGABYTES(m)	   (((m) & I_D_MEGABYTES)        == I_D_MEGABYTES)
+#define DISPLAY_OMIT_SINCE_BOOT(m) (((m) & I_D_OMIT_SINCE_BOOT)  == I_D_OMIT_SINCE_BOOT)
+#define DISPLAY_PRETTY(m)	   (((m) & I_D_PRETTY)           == I_D_PRETTY)
+#define DISPLAY_UNIT(m)		   (((m) & I_D_UNIT)             == I_D_UNIT)
 
 struct cifs_st {
 	unsigned long long rd_bytes     __attribute__ ((aligned (8)));
