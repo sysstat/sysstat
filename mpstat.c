@@ -2040,7 +2040,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 	if (sigint_caught)
 		/* SIGINT signal caught during first interval: Exit immediately */
-		return;
+		goto terminate;
 
 	do {
 		/*
@@ -2135,11 +2135,13 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	while (count);
 
 	/* Write stats average */
+	if (!DISPLAY_JSON_OUTPUT(xflags)) {
+		write_stats_avg(curr, dis_hdr);
+	}
+
+terminate:
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
-	}
-	else {
-		write_stats_avg(curr, dis_hdr);
 	}
 }
 
