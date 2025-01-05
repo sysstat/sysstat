@@ -698,7 +698,6 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 			}
 		}
 		else {
-			skip = 0;
 			tmp = tape_old_stats;
 			tape_old_stats = tape_new_stats;
 			tape_new_stats = tmp;
@@ -715,6 +714,7 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 				printf(",");
 			}
 		}
+		skip = 0;
 		printf("\n");
 	}
 	while (count);
