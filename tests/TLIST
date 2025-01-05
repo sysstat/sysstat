@@ -139,12 +139,14 @@ NOTES:
 	[Starting above at root6]
 00372	./cifsiostat 1 3 -t -o JSON | $VER_JSON >/dev/null
 	[Starting above at root1]
+00373	./cifsiostat -y 1 3 -t -o JSON | $VER_JSON >/dev/null
 00375	./tapestat -k -o JSON 1 10 | $VER_JSON >/dev/null
 	[Simulate a Ctrl/C within tapestat]
 00376	./tapestat 1 3 -t -o JSON | $VER_JSON >/dev/null
 	[Starting above at root4]
 00377	./tapestat 1 3 -t -o JSON | $VER_JSON >/dev/null
 	[Starting above at root1]
+00378	./tapestat -y 1 3 -t -o JSON | $VER_JSON >/dev/null
 00380	./pidstat -o JSON -r -l | $VER_JSON >/dev/null
 00381	./pidstat -o JSON -dRrsuvw -T ALL -t 1 3 | $VER_JSON >/dev/null
 00382	./pidstat -o JSON -U --human -H 1 10 | $VER_JSON >/dev/null
@@ -548,6 +550,7 @@ NOTES:
 04500	LC_ALL=C TZ=GMT ./cifsiostat > tests/out.cifsiostat.tmp
 04505	LC_ALL=C TZ=GMT ./cifsiostat 1 2 2>&1 | grep "No CIFS filesystems" >/dev/null
 04510	LC_ALL=C TZ=GMT ./cifsiostat -k 1 3 > tests/out.cifsiostat-k.tmp
+04515	LC_ALL=C TZ=GMT ./cifsiostat -y -k 1 2 > tests/out.cifsiostat-yk.tmp
 04520	LC_ALL=C TZ=GMT ./cifsiostat -t --human 1 3 > tests/out.cifsiostat-t-human.tmp
 04530	LC_ALL=C TZ=GMT ./cifsiostat -h 2 3 > tests/out.cifsiostat-h.tmp
 04540	LC_ALL=C TZ=GMT ./cifsiostat --dec=0 1 3 > tests/out.cifsiostat-dec.tmp
