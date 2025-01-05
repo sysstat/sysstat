@@ -1,15 +1,15 @@
-.\" cifsiostat manual page - (C) 2020-2024 Sebastien Godard (sysstat <at> orange.fr)
-.TH CIFSIOSTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.\" cifsiostat manual page - (C) 2020-2025 Sebastien Godard (sysstat <at> orange.fr)
+.TH CIFSIOSTAT 1 "JANUARY 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ -y ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 .el \{
-.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-V ] [ -y ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 
@@ -22,7 +22,10 @@ on CIFS filesystems.
 .RI "The " "interval"
 parameter specifies the amount of time in seconds between
 each report. The first report contains statistics for the time since
-system startup (boot). Each subsequent report contains statistics
+system startup (boot), unless the
+.B \-y
+option is used (in this case, the first report is omitted).
+Each subsequent report contains statistics
 collected during the interval since the previous report.
 A report consists of a CIFS header row followed by
 a line of statistics for each CIFS filesystem that is mounted.
@@ -95,6 +98,10 @@ on the value of the
 .TP
 .B \-V
 Print version number then exit.
+.TP
+.B \-y
+Omit first report with statistics since system boot, if displaying
+multiple records at given interval.
 
 .SH ENVIRONMENT
 .RB "The " "cifsiostat " "command takes into account the following environment variables: "
