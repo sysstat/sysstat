@@ -1,12 +1,12 @@
-.\" pidstat manual page - (C) 2007-2024 Sebastien Godard (sysstat <at> orange.fr)
-.TH PIDSTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.\" pidstat manual page - (C) 2007-2025 Sebastien Godard (sysstat <at> orange.fr)
+.TH PIDSTAT 1 "JANUARY 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 pidstat \- Report statistics for Linux tasks.
 
 .SH SYNOPSIS
 .B pidstat [ \-d ] [ \-H ] [ \-h ] [ \-I ] [ \-l ] [ \-R ] [ \-r ] [ \-s ] [ \-t ] [ \-U [
 .IB "username " "] ] [ \-u ] [ \-V ] [ \-v ] [ \-w ] [ \-C " "comm " "] [ \-G " "process_name"
-.BI "] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-p { " "pid" "[,...]"
+.BI "] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-p { " "pid" "[,...]"
 .B | SELF | ALL } ] [ \-T { TASK | CHILD | ALL } ] [
 .IB "interval " "[ " "count " "] ] [ \-e " "program"
 .IB "args " "]"
@@ -123,6 +123,11 @@ should be divided by the total number of processors.
 .TP
 .B \-l
 Display the process command name and all its arguments.
+.TP
+.B \-o JSON
+Display the statistics in JSON (JavaScript Object Notation) format.
+JSON output field order is undefined, and new fields may be added
+in the future.
 .TP
 .BI "\-p { " "pid" "[,...] | SELF | ALL }"
 Select tasks (processes) for which statistics are to be reported.
