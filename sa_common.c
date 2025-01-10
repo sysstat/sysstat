@@ -161,7 +161,11 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 		/* Cannot find or access saYYYYMMDD, so use saDD */
 		return;
 	sa_mtime = sb.st_mtime;
+#ifndef __APPLE__
 	nsec = sb.st_mtim.tv_nsec;
+#else
+	nsec = sb.st_mtimespec.tv_nsec;
+#endif
 
 	/* Look for saDD */
 	snprintf(filename, sizeof(filename),
@@ -176,7 +180,12 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	}
 
 	if ((sa_mtime > sb.st_mtime) ||
-	    ((sa_mtime == sb.st_mtime) && (nsec > sb.st_mtim.tv_nsec))) {
+#ifndef __APPLE__
+	    ((sa_mtime == sb.st_mtime) && (nsec > sb.st_mtim.tv_nsec))
+#else
+	    ((sa_mtime == sb.st_mtime) && (nsec > sb.st_mtimespec.tv_nsec))
+#endif
+ ) {
 		/* saYYYYMMDD is more recent than saDD, so use it */
 		*sa_name = 1;
 	}
