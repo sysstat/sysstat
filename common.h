@@ -315,7 +315,7 @@ int get_wwnid_from_pretty
 int check_dir
 	(char *);
 void check_overflow
-	(unsigned int, unsigned int, unsigned int);
+	(unsigned int, unsigned int, unsigned int, unsigned int);
 
 #ifndef SOURCE_SADC
 int count_bits

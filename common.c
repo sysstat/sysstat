@@ -436,25 +436,30 @@ int check_dir(char *dirname)
 
 /*
  * **************************************************************************
- * Check if the multiplication of the 3 values may be greater than UINT_MAX.
+ * Check if the multiplication of the 4 values may be greater than UINT_MAX.
  *
  * IN:
  * @val1	First value.
  * @val2	Second value.
  * @val3	Third value.
+ * @val4	Fourth value.
  ***************************************************************************
  */
 void check_overflow(unsigned int val1, unsigned int val2,
-		    unsigned int val3)
+		    unsigned int val3, unsigned int val4)
 {
 	if ((val1 != 0) && (val2 != 0) && (val3 != 0) &&
 	    (((unsigned long long) UINT_MAX / (unsigned long long) val1 <
 	      (unsigned long long) val2) ||
 	     ((unsigned long long) UINT_MAX / ((unsigned long long) val1 * (unsigned long long) val2) <
-	      (unsigned long long) val3))) {
+	      (unsigned long long) val3) ||
+	     ((val4 != 0) &&
+	      (unsigned long long) UINT_MAX / ((unsigned long long) val1 * (unsigned long long) val2
+									 * (unsigned long long) val3) <
+	      (unsigned long long) val4))) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Overflow detected (%u,%u,%u). Aborting...\n",
-			__FUNCTION__, val1, val2, val3);
+		fprintf(stderr, "%s: Overflow detected (%u,%u,%u,%u). Aborting...\n",
+			__FUNCTION__, val1, val2, val3, val4);
 #endif
 		exit(4);
 	}

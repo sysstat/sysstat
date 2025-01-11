@@ -505,7 +505,8 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 		/* Look for a possible overflow */
 		check_overflow((unsigned int) a->xnr,
 			       (unsigned int) nr_alloc,
-			       (unsigned int) a->nr2);
+			       (unsigned int) a->nr2,
+			       (unsigned int) sizeof(double));
 
 		/* Allocate arrays for min and max values... */
 		SREALLOC(a->spmin, void,
@@ -545,7 +546,7 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 	/* Look for a possible overflow */
 	check_overflow((unsigned int) a->msize,
 		       (unsigned int) nr_alloc,
-		       (unsigned int) a->nr2);
+		       (unsigned int) a->nr2, 0);
 
 	for (j = 0; j < 3; j++) {
 		SREALLOC(a->buf[j], void,
