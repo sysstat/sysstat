@@ -2,7 +2,7 @@
 if [ ! -z "$VER_JSON" ]; then
 	rm -f tests/root
 	ln -s root1 tests/root
-	./pidstat -o JSON -r -l | $VER_JSON >/dev/null
+	./pidstat -o JSON -r -lh | $VER_JSON >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED

@@ -147,7 +147,7 @@ NOTES:
 00377	./tapestat 1 3 -t -o JSON | $VER_JSON >/dev/null
 	[Starting above at root1]
 00378	./tapestat -y 1 3 -t -o JSON | $VER_JSON >/dev/null
-00380	./pidstat -o JSON -r -l | $VER_JSON >/dev/null
+00380	./pidstat -o JSON -r -lh | $VER_JSON >/dev/null
 00381	./pidstat -o JSON -dRrsuvw -T ALL -t 1 3 | $VER_JSON >/dev/null
 00382	./pidstat -o JSON -U --human -H 1 10 | $VER_JSON >/dev/null
 	[Simulate a Ctrl/C within pidstat]
