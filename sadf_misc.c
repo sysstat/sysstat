@@ -1735,7 +1735,7 @@ __nr_t count_new_bat(struct activity *a, int curr)
  * Init custom color palette used to draw graphs (sadf -g).
  ***************************************************************************
  */
-void init_custom_color_palette()
+void init_custom_color_palette(void)
 {
 	char *e, *p;
 	int len;
