@@ -4091,6 +4091,8 @@ int main(int argc, char **argv)
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		/* Use a decimal point to make JSON code compliant with RFC7159 */
 		setlocale(LC_NUMERIC, "C");
+		/* Option "-h" cannot be used in JSON format */
+		pidflag &= ~P_D_ONELINE;
 	}
 
 	/*
