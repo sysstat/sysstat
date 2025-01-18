@@ -361,14 +361,9 @@ void sa_sys_init(void)
 
 		if (IS_COLLECTED(act[i]->options) && (act[i]->nr_ini > 0)) {
 
-			/* Look for a possible overflow */
-			check_overflow((unsigned int) act[i]->msize,
-				       (unsigned int) act[i]->nr_ini,
-				       (unsigned int) act[i]->nr2, 0);
-
 			/* Allocate structures for current activity (using nr_ini and nr2 results) */
 			SREALLOC(act[i]->_buf0, void,
-				 (size_t) act[i]->msize * (size_t) act[i]->nr_ini * (size_t) act[i]->nr2);
+				 mul_check_overflow3((size_t) act[i]->msize, (size_t) act[i]->nr_ini, (size_t) act[i]->nr2));
 			act[i]->nr_allocated = act[i]->nr_ini;
 		}
 
@@ -1014,13 +1009,8 @@ void open_ofile(int *ofd, char ofile[], int restart_mark)
 			act[p]->nr_allocated = act[p]->nr_ini;
 		}
 
-		/* Look for a possible overflow */
-		check_overflow((unsigned int) act[p]->msize,
-			       (unsigned int) act[p]->nr_allocated,
-			       (unsigned int) act[p]->nr2, 0);
-
 		SREALLOC(act[p]->_buf0, void,
-			 (size_t) act[p]->msize * (size_t) act[p]->nr_allocated * (size_t) act[p]->nr2);
+			 mul_check_overflow3((size_t) act[p]->msize, (size_t) act[p]->nr_allocated, (size_t) act[p]->nr2));
 
 		/* Save activity sequence */
 		id_seq[i] = file_act[i].id;

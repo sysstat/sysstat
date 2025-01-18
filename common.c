@@ -436,6 +436,35 @@ int check_dir(char *dirname)
 
 /*
  * **************************************************************************
+ * Check if the multiplication of the 3 values may be greater than UINT_MAX.
+ *
+ * IN:
+ * @val1	First value.
+ * @val2	Second value.
+ * @val3	Third value.
+ *
+ * RETURNS:
+ * Multiplication of the 3 values.
+ ***************************************************************************
+ */
+size_t mul_check_overflow3(size_t val1, size_t val2, size_t val3)
+{
+	if ((val1 != 0) && (val2 != 0) && (val3 != 0) &&
+	    ((UINT_MAX < val1) ||
+	     (UINT_MAX / val1 < val2) ||
+	     (UINT_MAX / (val1 * val2) < val3))) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Overflow detected (%zu,%zu,%zu). Aborting...\n",
+			__FUNCTION__, val1, val2, val3);
+#endif
+		exit(4);
+	}
+
+	return (val1 * val2 * val3);
+}
+
+/*
+ * **************************************************************************
  * Check if the multiplication of the 4 values may be greater than UINT_MAX.
  *
  * IN:
@@ -443,26 +472,26 @@ int check_dir(char *dirname)
  * @val2	Second value.
  * @val3	Third value.
  * @val4	Fourth value.
+ *
+ * RETURNS:
+ * Multiplication of the 4 values.
  ***************************************************************************
  */
-void check_overflow(unsigned int val1, unsigned int val2,
-		    unsigned int val3, unsigned int val4)
+size_t mul_check_overflow4(size_t val1, size_t val2, size_t val3, size_t val4)
 {
-	if ((val1 != 0) && (val2 != 0) && (val3 != 0) &&
-	    (((unsigned long long) UINT_MAX / (unsigned long long) val1 <
-	      (unsigned long long) val2) ||
-	     ((unsigned long long) UINT_MAX / ((unsigned long long) val1 * (unsigned long long) val2) <
-	      (unsigned long long) val3) ||
-	     ((val4 != 0) &&
-	      (unsigned long long) UINT_MAX / ((unsigned long long) val1 * (unsigned long long) val2
-									 * (unsigned long long) val3) <
-	      (unsigned long long) val4))) {
+	if ((val1 != 0) && (val2 != 0) && (val3 != 0) && (val4 != 0) &&
+	    ((UINT_MAX < val1) ||
+	     (UINT_MAX / val1 < val2) ||
+	     (UINT_MAX / (val1 * val2) < val3) ||
+	     (UINT_MAX / (val1 * val2 * val3) < val4))) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Overflow detected (%u,%u,%u,%u). Aborting...\n",
+		fprintf(stderr, "%s: Overflow detected (%zu,%zu,%zu,%zu). Aborting...\n",
 			__FUNCTION__, val1, val2, val3, val4);
 #endif
 		exit(4);
 	}
+
+	return (val1 * val2 * val3 * val4);
 }
 
 #ifndef SOURCE_SADC

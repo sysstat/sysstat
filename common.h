@@ -150,21 +150,23 @@ enum {
 /* Allocate and init structure */
 #ifdef DEBUG
 #define SREALLOC(S, TYPE, SIZE)	do {								   \
-					if ((SIZE) == 0) {					   \
+					size_t _sz_ = (SIZE);					   \
+					if ((_sz_) == 0) {					   \
 						 /* SIZE may be zero when an overflow happens */   \
 						 /* when two non-zero values are multiplied   */   \
 						 /* together.				      */   \
 						 fprintf(stderr, "%s: SREALLOC: SIZE is zero!\n", __FUNCTION__); \
 						 exit(4); 					   \
 					}							   \
-					__SREALLOC(S, TYPE, SIZE);				   \
+					__SREALLOC(S, TYPE, _sz_);				   \
 				} while (0)
 #else
 #define SREALLOC(S, TYPE, SIZE)	do {								   \
-					if ((SIZE) == 0) {					   \
+					size_t _sz_ = (SIZE);					   \
+					if ((_sz_) == 0) {					   \
 						exit(4); 					   \
 					}							   \
-					__SREALLOC(S, TYPE, SIZE);				   \
+					__SREALLOC(S, TYPE, _sz_);				   \
 				} while (0)
 #endif
 
@@ -314,8 +316,10 @@ int get_wwnid_from_pretty
 	(char *, unsigned long long *, unsigned int *);
 int check_dir
 	(char *);
-void check_overflow
-	(unsigned int, unsigned int, unsigned int, unsigned int);
+size_t mul_check_overflow3
+	(size_t, size_t, size_t);
+size_t mul_check_overflow4
+	(size_t, size_t, size_t, size_t);
 
 #ifndef SOURCE_SADC
 int count_bits

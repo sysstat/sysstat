@@ -511,17 +511,11 @@ void allocate_minmax_buf(struct activity *a, size_t nr_alloc, uint64_t flags)
 
 	if (DISPLAY_MINMAX(flags) && a->xnr) {
 
-		/* Look for a possible overflow */
-		check_overflow((unsigned int) a->xnr,
-			       (unsigned int) nr_alloc,
-			       (unsigned int) a->nr2,
-			       (unsigned int) sizeof(double));
-
 		/* Allocate arrays for min and max values... */
 		SREALLOC(a->spmin, void,
-			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
+			 mul_check_overflow4(nr_alloc, (size_t) a->nr2, (size_t) a->xnr, sizeof(double)));
 		SREALLOC(a->spmax, void,
-			 nr_alloc * (size_t) a->nr2 * (size_t) a->xnr * sizeof(double));
+			 mul_check_overflow4(nr_alloc, (size_t) a->nr2, (size_t) a->xnr, sizeof(double)));
 
 		/* ... and init them */
 		init_minmax_buf(a, a->nr_spalloc, nr_alloc);
@@ -552,14 +546,9 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 		return;
 	}
 
-	/* Look for a possible overflow */
-	check_overflow((unsigned int) a->msize,
-		       (unsigned int) nr_alloc,
-		       (unsigned int) a->nr2, 0);
-
 	for (j = 0; j < 3; j++) {
 		SREALLOC(a->buf[j], void,
-			 (size_t) a->msize * nr_alloc * (size_t) a->nr2);
+			 mul_check_overflow3((size_t) a->msize, nr_alloc, (size_t) a->nr2));
 
 		/* If its a reallocation then init additional space which has been allocated */
 		if (a->nr_allocated) {
