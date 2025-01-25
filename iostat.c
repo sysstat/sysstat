@@ -36,7 +36,6 @@
 
 #include "version.h"
 #include "iostat.h"
-#include "ioconf.h"
 #include "rd_stats.h"
 #include "count.h"
 

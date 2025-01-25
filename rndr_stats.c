@@ -24,7 +24,6 @@
 #include <stdarg.h>
 
 #include "sa.h"
-#include "ioconf.h"
 #include "rndr_stats.h"
 
 #ifdef USE_NLS

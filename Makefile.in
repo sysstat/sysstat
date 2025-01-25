@@ -259,10 +259,10 @@ common.o: common.c version.h common.h
 
 systest.o: systest.c systest.h
 
-sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h
 
 ioconf.o: ioconf.c ioconf.h common.h sysconfig.h
 
@@ -289,19 +289,19 @@ count_light.o: count.c common.h rd_stats.h
 
 rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
 
-pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_xstats.h
+pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h pr_xstats.h
 
 pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
 
-rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h rndr_stats.h
+rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h
 
 xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 
-json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h
 
 svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
 
-raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h
 
 pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h
 
@@ -352,7 +352,7 @@ sadf: LFLAGS += $(LFPCP)
 
 sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o pcp_def_metrics.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
 
-iostat.o: iostat.c iostat.h version.h common.h ioconf.h sysconfig.h rd_stats.h count.h
+iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h
 
 iostat: iostat.o librdstats_light.a libsyscom.a
 

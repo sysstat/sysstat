@@ -9,6 +9,7 @@
 /* Maximum length of sensors device name */
 #define MAX_SENSORS_DEV_LEN	20
 
+#include <stdio.h>
 #include <time.h>
 #include <sched.h>	/* For __CPU_SETSIZE */
 #include <limits.h>

@@ -25,7 +25,6 @@
 #include <stdlib.h>
 
 #include "sa.h"
-#include "ioconf.h"
 
 extern uint64_t flags;
 extern char bat_status[][16];

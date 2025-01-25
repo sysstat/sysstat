@@ -25,7 +25,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <errno.h>
 #include <dirent.h>
 #include <ctype.h>
 #include <sys/utsname.h>

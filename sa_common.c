@@ -36,7 +36,6 @@
 
 #include "version.h"
 #include "sa.h"
-#include "ioconf.h"
 
 #ifdef USE_NLS
 #include <locale.h>
