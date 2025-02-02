@@ -544,7 +544,7 @@ copyyear:
 	catalogs="$(SOURCE_CODE) iconfig do_test README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
 	for c in $$catalogs; do \
 		echo "Updating file: $$c"; \
-		sed 's/-2023/-2024/g' $$c > copyyear.tmp; \
+		sed 's/-2024/-2025/g' $$c > copyyear.tmp; \
 		mv copyyear.tmp $$c; \
 	done
 	chmod 755 iconfig do_test

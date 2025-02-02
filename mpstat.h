@@ -1,6 +1,6 @@
 /*
  * mpstat: per-processor statistics
- * (C) 2000-2024 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 2000-2025 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _MPSTAT_H

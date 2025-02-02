@@ -1,6 +1,6 @@
 /*
  * sadf: System activity data formatter
- * (C) 1999-2024 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2025 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _SADF_H

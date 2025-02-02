@@ -1,6 +1,6 @@
 /*
  * sa_conv.h: Include file for "sadf -c" command.
- * (C) 1999-2024 by Sebastien Godard (sysstat <at> orange.fr)
+ * (C) 1999-2025 by Sebastien Godard (sysstat <at> orange.fr)
  */
 
 #ifndef _SA_CONV_H

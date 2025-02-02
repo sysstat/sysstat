@@ -1,6 +1,6 @@
 /*
  * sar and sadf common routines.
- * (C) 1999-2024 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 1999-2025 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *

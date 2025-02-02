@@ -1,6 +1,6 @@
 /*
  * pcp_stats.c: Functions used by sadf to create PCP archive files.
- * (C) 2019-2024 by Sebastien GODARD (sysstat <at> orange.fr)
+ * (C) 2019-2025 by Sebastien GODARD (sysstat <at> orange.fr)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
