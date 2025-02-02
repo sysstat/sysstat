@@ -1,5 +1,35 @@
 Changes:
 
+2025/02/02: Version 12.7.7 - Sebastien Godard (sysstat <at> orange.fr)
+	* Rework overflow check function.
+	* pidstat: Add JSON output format (option "-o JSON").
+	* [Siddhi Katage]: pidstat: Fix bogus %usr values in pidstat output.
+	* pidstat: Free structures before exiting.
+	* pidstat: Make sure interval is specified when option -e is used.
+	* pidstat: Create separate functions to display data for current task.
+	* pidstat: Various cosmetic changes.
+	* cifsiostat: Add JSON output format (option "-o JSON").
+	* cifsiostat: Display error message when no CIFS fs are found.
+	* cifsiostat: Add new option -y to tell cifsiostat to omit the first
+	  report with statistics since system restart.
+	* tapestat: Add JSON output format (option "-o JSON").
+	* tapestat: Set handler for SIGALRM in rw_tape_stat_loop() function.
+	* tapestat: Call write_sample_timestamp() to display timestamp.
+	* mpstat: Properly terminate JSON output when ^C entered on first
+	  interval.
+	* iostat: Remove extra blank line when omitting first report.
+	* cifsiostat, tapestat and pidstat manual pages updated.
+	* Use the binary units (kibibytes, mebibytes...) instead of kilobytes,
+	  megabytes... in all manual pages.
+	* FAQ updated.
+	* [Peter Portante]: Slight changes to compile on Mac OS X.
+	* [Peter Portante]: Add missing "void" parameter to
+	  init_custom_color_palette() function.
+	* Use xflags variable for options used by multiple commands.
+	* Move write_sample_timestamp() function to common.c file.
+	* Update headers files included.
+	* Add new non regression tests.
+
 2024/07/03: Version 12.7.6 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadf: [A_NET_ETCP]: Rename retrans/s field to retrseg/s
 	  because it was already used in A_NET_NFS report.
