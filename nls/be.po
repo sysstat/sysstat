@@ -1,15 +1,15 @@
 # Belarusian messages for sysstat.
-# Copyright © 2022, 2023 Free Software Foundation, Inc.
+# Copyright © 2022, 2023, 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
 #
-# Viachaslau Khalikin <viachaslau.vinegret@outlook.com>, 2022, 2023.
+# Viachaslau Khalikin <viachaslau.vinegret@outlook.com>, 2022, 2023, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: sysstat 12.7.2\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
 "POT-Creation-Date: 2023-01-13 17:54+0100\n"
-"PO-Revision-Date: 2024-05-08 01:47+0300\n"
+"PO-Revision-Date: 2024-09-06 02:17+0300\n"
 "Last-Translator: Viachaslau Khalikin <viachaslau.vinegret@outlook.com>\n"
 "Language-Team: Belarusian <debian-l10n-belarusian@lists.debian.org>\n"
 "Language: be\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Emacs 29.3, po mode 2.28\n"
+"X-Generator: Emacs 29.4, po mode 2.28\n"
 
 #: cifsiostat.c:75 iostat.c:89 mpstat.c:134 sar.c:108 tapestat.c:104
 #, c-format
@@ -141,7 +141,7 @@ msgstr ""
 #: pidstat.c:225 sa_common.c:368
 #, c-format
 msgid "Requested activities not available\n"
-msgstr "Запытаныя паказчыкі дзейнасьці недаступныя\n"
+msgstr "Запытаныя паказчыкі актыўнасьці недаступныя\n"
 
 #: pr_stats.c:2682 pr_stats.c:2689 pr_stats.c:2795 pr_stats.c:2842
 msgid "Summary:"
@@ -155,12 +155,12 @@ msgstr "Немагчыма прачытаць %s\n"
 #: sa_common.c:301
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
-msgstr "Файл, створаны з дапамогай sar/sadc ад вэрсіі sysstat %d.%d.%d"
+msgstr "Файл створаны пры дапамозе sar/sadc ад вэрсіі sysstat %d.%d.%d"
 
 #: sa_common.c:334
 #, c-format
 msgid "Invalid system activity file: %s\n"
-msgstr "Няправільны файл дзейнасьці сыстэмы: %s\n"
+msgstr "Няправільны файл актыўнасьці сыстэмы: %s\n"
 
 #: sa_common.c:344
 #, c-format
@@ -184,22 +184,22 @@ msgstr "Затым вы зможаце прачытаць створаны но�
 #: sa_common.c:1435
 #, c-format
 msgid "Error while reading system activity file: %s\n"
-msgstr "Памылка пад час чытаньня файла дзейнасьці сыстэмы: %s\n"
+msgstr "Памылка падчас чытаньня файла актыўнасьці сыстэмы: %s\n"
 
 #: sa_common.c:1445
 #, c-format
 msgid "End of system activity file unexpected\n"
-msgstr "Нечаканы канец файла дзейнасьці сыстэмы\n"
+msgstr "Нечаканы канец файла актыўнасьці сыстэмы\n"
 
 #: sa_common.c:1859
 #, c-format
 msgid "Please check if data collecting is enabled\n"
-msgstr "Калі ласка, праверце, ці ўключаны збор даных\n"
+msgstr "Калі ласка, праверце, ці ўключаны збор зьвестак\n"
 
 #: sa_common.c:2194
 #, c-format
 msgid "Requested activities not available in file %s\n"
-msgstr "Запытаныя паказчыкі дзейнасьці адсутнічаюць ў файле %s\n"
+msgstr "Запытаныя паказчыкі актыўнасьці адсутнічаюць ў файле %s\n"
 
 #: sa_conv.c:99
 #, c-format
@@ -213,7 +213,7 @@ msgid ""
 "CPU activity not found in file. Aborting...\n"
 msgstr ""
 "\n"
-"У файле ня знойдзена зьвестак пра дзейнасьць ЦП. Перапыненьне...\n"
+"У файле ня знойдзена зьвестак пра актыўнасьць ЦП. Перапыненьне...\n"
 
 #: sa_conv.c:408
 #, c-format
@@ -222,7 +222,7 @@ msgid ""
 "Invalid data found. Aborting...\n"
 msgstr ""
 "\n"
-"Знойдзены несапраўдныя даныя. Перапыненьне...\n"
+"Знойдзеныя несапраўдныя зьвесткі. Перапыненьне...\n"
 
 #: sa_conv.c:1931
 #, c-format
@@ -267,12 +267,12 @@ msgstr ""
 #: sadc.c:272
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
-msgstr "Немагчыма запісаць даныя ў файл дзейнасьці сыстэмы: %s\n"
+msgstr "Немагчыма запісаць зьвесткі ў файл актыўнасьці сыстэмы: %s\n"
 
 #: sadc.c:1040
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
-msgstr "Немагчыма дадаць даныя ў гэты файл (%s)\n"
+msgstr "Немагчыма дадаць зьвесткі ў гэты файл (%s)\n"
 
 #: sadf.c:119
 #, c-format
@@ -304,12 +304,12 @@ msgstr "Скампіляваны без падтрымкі PCP\n"
 #: sadf_misc.c:1252
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
-msgstr "Файл даных дзейнасьці сыстэмы: %s (%#x)\n"
+msgstr "Файл зьвестак актыўнасьці сыстэмы: %s (%#x)\n"
 
 #: sadf_misc.c:1261
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
-msgstr "Сапраўдны файл даных sa: %s (%x)\n"
+msgstr "Сапраўдны файл зьвестак sa: %s (%x)\n"
 
 #: sadf_misc.c:1262
 msgid "no"
@@ -352,7 +352,7 @@ msgstr "Памер long int: %d\n"
 #: sadf_misc.c:1293
 #, c-format
 msgid "Number of activities in file: %u\n"
-msgstr "Колькасьць паказчыкаў дзейнасьці ў файле: %u\n"
+msgstr "Колькасьць паказчыкаў актыўнасьці ў файле: %u\n"
 
 #: sadf_misc.c:1295
 #, c-format
@@ -362,11 +362,11 @@ msgstr "Даступныя дадатковыя структуры: %c\n"
 #: sadf_misc.c:1298
 #, c-format
 msgid "List of activities:\n"
-msgstr "Сьпіс паказчыкаў дзейнасьці:\n"
+msgstr "Сьпіс паказчыкаў актыўнасьці:\n"
 
 #: sadf_misc.c:1309
 msgid "Unknown activity"
-msgstr "Невядомы паказчык дзейнасьці"
+msgstr "Невядомы паказчык актыўнасьці"
 
 #: sadf_misc.c:1317
 #, c-format
@@ -554,7 +554,7 @@ msgstr ""
 #: sar.c:201
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
-msgstr "\t-S\tСтатыстыка выкарыстаньня прасторы падмены [A_MEMORY]\n"
+msgstr "\t-S\tСтатыстыка ўжываньня прасторы падмены [A_MEMORY]\n"
 
 #: sar.c:202
 #, c-format
@@ -588,27 +588,27 @@ msgstr "\t-y\tСтатыстыка прылад TTY [A_SERIAL]\n"
 #: sar.c:221
 #, c-format
 msgid "Data collector will be sought in PATH\n"
-msgstr "Пошук зьбіральніка даных будзе выконвацца ў PATH\n"
+msgstr "Пошук зьбіральніка зьвестак будзе выконвацца ў PATH\n"
 
 #: sar.c:224
 #, c-format
 msgid "Data collector found: %s\n"
-msgstr "Знойдзены зьбіральнік даных: %s\n"
+msgstr "Знойдзены зьбіральнік зьвестак: %s\n"
 
 #: sar.c:289
 #, c-format
 msgid "End of data collecting unexpected\n"
-msgstr "Нечаканы канец збору даных\n"
+msgstr "Нечаканы канец збору зьвестак\n"
 
 #: sar.c:294
 #, c-format
 msgid "Inconsistent input data\n"
-msgstr "Няўзгодненыя ўваходныя даныя\n"
+msgstr "Няўзгодненыя ўваходныя зьвесткі\n"
 
 #: sar.c:895
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
-msgstr "Выкарыстоўваецца няспраўны зьбіральнік даных з іншай вэрсіі sysstat\n"
+msgstr "Выкарыстоўваецца няспраўны зьбіральнік зьвестак зь іншай вэрсіі sysstat\n"
 
 #: sar.c:1553
 #, c-format
@@ -618,12 +618,12 @@ msgstr "Опцыі -f ды -o узаемавыключальныя\n"
 #: sar.c:1563
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
-msgstr "Не выконваецца чытаньне з файла дзейнасьці сыстэмы (выкарыстоўвайце опцыю -f)\n"
+msgstr "Не выконваецца чытаньне з файла актыўнасьці сыстэмы (выкарыстоўвайце опцыю -f)\n"
 
 #: sar.c:1712
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
-msgstr "Немагчыма знайсьці зьбіральнік даных (%s)\n"
+msgstr "Немагчыма знайсьці зьбіральнік зьвестак (%s)\n"
 
 #: tapestat.c:106
 #, c-format
@@ -637,4 +637,4 @@ msgstr ""
 #: tapestat.c:273
 #, c-format
 msgid "No tape drives with statistics found\n"
-msgstr "Стужкавыя прылады са статыстыкай ня знойдзены\n"
+msgstr "Стужкавыя прылады са статыстыкай ня знойдзеныя\n"
