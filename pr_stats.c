@@ -4776,7 +4776,7 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 		if (a->nr[curr] > nr_alloc) {
 			/* Init additional space allocated */
 			memset(avg_bat_cap + nr_alloc, 0,
-			       sizeof(double) * (a->nr[curr] - nr_alloc));
+			       sizeof(unsigned long) * (a->nr[curr] - nr_alloc));
 		}
 		nr_alloc = a->nr[curr];
 	}
