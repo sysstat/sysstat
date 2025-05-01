@@ -1161,7 +1161,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			  struct ext_io_stats *xios)
 {
-	int n;
+	int dev_in_grp;
 
 	/* If this is a group with no devices, skip it */
 	if (d->dev_tp == T_GROUP)
@@ -1173,10 +1173,10 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 
 	/* Compute number of devices in group */
 	if (d->dev_tp > T_GROUP) {
-		n = d->dev_tp - T_GROUP;
+		dev_in_grp = d->dev_tp - T_GROUP;
 	}
 	else {
-		n = 1;
+		dev_in_grp = 1;
 	}
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
@@ -1213,7 +1213,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		 * %util
 		 * Again: Ticks in milliseconds.
 		 */
-		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) n);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) dev_in_grp);
 	}
 	else {
 		if ((hpart == 1) || !hpart) {
@@ -1307,13 +1307,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			 * %util
 			 * Again: Ticks in milliseconds.
 			 */
-			if (d->dev_tp > T_GROUP) {
-				n = d->dev_tp - T_GROUP;
-			}
-			else {
-				n = 1;
-			}
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) n);
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) dev_in_grp);
 		}
 	}
 
