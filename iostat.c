@@ -1339,7 +1339,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 			 struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			 struct ext_io_stats *xios)
 {
-	int n;
+	int dev_in_grp;
 
 	/* If this is a group with no devices, skip it */
 	if (d->dev_tp == T_GROUP)
@@ -1428,12 +1428,12 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 	}
 
 	if (d->dev_tp > T_GROUP) {
-		n = d->dev_tp - T_GROUP;
+		dev_in_grp = d->dev_tp - T_GROUP;
 	}
 	else {
-		n = 1;
+		dev_in_grp = 1;
 	}
-	printf("\"util\": %.2f}", xds->util / 10.0 / (double) n);
+	printf("\"util\": %.2f}", xds->util / 10.0 / (double) dev_in_grp);
 }
 
 /*
