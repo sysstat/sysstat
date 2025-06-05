@@ -2,38 +2,40 @@
 #@(#) Configuration script for sysstat
 # (C) 2000-2025 Sebastien GODARD (sysstat <at> orange.fr)
 
+srcdir="${0%/*}"
+
 if [ "$1" = "xlocal" ]
 then
 	echo
-	echo -n "./configure sa_lib_dir=. sa_dir=. conf_dir=. conf_file=sysstat.sysconfig"
+	echo -n "${srcdir}/configure sa_lib_dir=. sa_dir=. conf_dir=. conf_file=sysstat.sysconfig"
 	echo
-	./configure sa_lib_dir=. sa_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig
+	${srcdir}/configure sa_lib_dir=. sa_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig
 	exit
 elif [ "$1" = "local" ]
 then
 	# This mode is just to make sure that sar will call sadc located in current directory
 	echo
-	echo -n "./configure sa_lib_dir=."
+	echo -n "${srcdir}/configure sa_lib_dir=."
 	echo
-	./configure sa_lib_dir=.
+	${srcdir}/configure sa_lib_dir=.
 	exit
 elif [ "$1" = "debug" ]
 then
 	echo
-	echo -n "./configure sa_lib_dir=. --enable-debuginfo --disable-stripping"
+	echo -n "${srcdir}/configure sa_lib_dir=. --enable-debuginfo --disable-stripping"
 	echo
-	./configure sa_lib_dir=. --enable-debuginfo --disable-stripping
+	${srcdir}/configure sa_lib_dir=. --enable-debuginfo --disable-stripping
 	exit
 fi
 
-ASK="sh build/Ask.sh"
+ASK="sh ${srcdir}/build/Ask.sh"
 
 echo ; echo
 echo Welcome to sysstat\'s  Interactive Configuration script!
 echo
-echo This script enables you to set the parameters value used by ./configure.
+echo This script enables you to set the parameters value used by ${srcdir}/configure.
 echo Please enter the value for the parameters listed below.
-echo Press Return to tell ./configure to use the default value or to try to guess the proper one.
+echo Press Return to tell ${srcdir}/configure to use the default value or to try to guess the proper one.
 echo "Default value for yes/no questions is no (parameter is NOT set)."
 echo You can enter a ? to display a help message at any time...
 echo
@@ -260,7 +262,7 @@ else
 fi
 
 echo
-echo -n "./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
+echo -n "${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
 ${CRON}${USE_CROND}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
@@ -270,7 +272,7 @@ fi
 echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${PCP}${STRIP}${COPY_ONLY}"
 echo
 
-./configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
+${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO} \
 ${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
