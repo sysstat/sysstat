@@ -1,6 +1,8 @@
 # Makefile to build sysstat commands
 # (C) 1999-2023 Sebastien GODARD (sysstat <at> orange.fr)
 
+VPATH = @srcdir@
+
 # Version and package name
 VERSION = @PACKAGE_VERSION@
 PACKAGE = @PACKAGE_NAME@
@@ -8,7 +10,7 @@ PACKAGE = @PACKAGE_NAME@
 PACKAGE_TARNAME = $(PACKAGE)-$(VERSION)
 
 # Compiler to use
-CC = @CC@
+CC = @CC@ -I@builddir@
 
 # Other commands
 CHMOD = @CHMOD@
@@ -581,14 +583,14 @@ endif
 	$(INSTALL_BIN) mpstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) pidstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) cifsiostat $(DESTDIR)$(BIN_DIR)
-	$(INSTALL_DATA) sysstat.ioconf $(DESTDIR)$(SYSCONFIG_DIR)
 	$(INSTALL_DATA) sysstat.sysconfig $(DESTDIR)$(SYSCONFIG_DIR)/$(SYSCONFIG_FILE)
+	$(INSTALL_DATA) @srcdir@/sysstat.ioconf $(DESTDIR)$(SYSCONFIG_DIR)
 ifeq ($(INSTALL_DOC),y)
-	$(INSTALL_DATA) CHANGES $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) COPYING $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) CREDITS $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) README.md $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) FAQ.md $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/CHANGES $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/COPYING $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/CREDITS $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/README.md $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/FAQ.md $(DESTDIR)$(DOC_DIR)
 endif
 
 ifdef SYSTEMD_UNIT_DIR
@@ -803,11 +805,11 @@ else
 po-files:
 endif
 
-TESTDIR="tests"
+TESTDIR="@srcdir@/tests"
 TESTRUN="/bin/sh"
-TESTLIST:=$(shell ls $(TESTDIR) | grep -E '^[0-9]+$$' | sort -n)
-EXTRADIR="tests/extra"
-EXTRALIST:=$(shell ls $(EXTRADIR) | grep -E '^[0-9]+$$' | sort -n)
+TESTLIST:=$(shell cd $(TESTDIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
+EXTRADIR="@srcdir@/tests/extra"
+EXTRALIST:=$(shell cd $(EXTRADIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
 
 testcomp: tests/ini/inisar sa32bit
 
