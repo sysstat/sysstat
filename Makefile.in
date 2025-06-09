@@ -1,5 +1,5 @@
 # Makefile to build sysstat commands
-# (C) 1999-2023 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 1999-2025 Sebastien GODARD (sysstat <at> orange.fr)
 
 VPATH = @srcdir@
 
@@ -107,9 +107,6 @@ endif
 DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
 DFLAGS += $(DFSENSORS) $(DFSENSORS32)
 DFLAGS += $(DFPCP)
-ifdef TFLAGS
-DFLAGS += $(TFLAGS)
-endif
 
 ifndef LFLAGS
 LFLAGS = @STRIP@ @LDFLAGS@
