@@ -41,7 +41,7 @@
 
 #define ROOTDIR		"./tests/root"
 #define ROOTFILE	"root"
-#define TESTDIR		"./tests"
+#define TESTDIR		PRE_TESTDIR "/tests"
 #define VIRTUALHD	"./tests/root/dev/mapper/virtualhd"
 #define _LIST		"_list"
 
