@@ -1,1 +1,1 @@
-LC_ALL=C ./sadf -H tests/data-ukwn1 > tests/out.sadf-data-ukwn1.tmp && diff -u tests/expected.sadf-data-ukwn1 tests/out.sadf-data-ukwn1.tmp
+LC_ALL=C ./sadf -H ${T_SRCDIR}/tests/data-ukwn1 | grep -v 0x2175 > tests/out.sadf-data-ukwn1.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-data-ukwn1 tests/out.sadf-data-ukwn1.tmp && LC_ALL=C ./sadf -H ${T_SRCDIR}/tests/data-ukwn1 | grep 0x2175

@@ -1,3 +1,3 @@
 rm -f tests/root
-ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./cifsiostat -kt -o JSON 1 3 > tests/out.cifsiostat-kt-JSON.tmp && diff -u tests/expected.cifsiostat-kt-JSON tests/out.cifsiostat-kt-JSON.tmp
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./cifsiostat -kt -o JSON 1 3 > tests/out.cifsiostat-kt-JSON.tmp && diff -u ${T_SRCDIR}/tests/expected.cifsiostat-kt-JSON tests/out.cifsiostat-kt-JSON.tmp

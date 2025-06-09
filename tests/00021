@@ -1,1 +1,1 @@
-POSIXLY_CORRECT= S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./iostat --getenv -V > tests/out.iostat-V-env.tmp && diff -u tests/expected.iostat-V-env tests/out.iostat-V-env.tmp
+POSIXLY_CORRECT= S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./iostat --getenv -V > tests/out.iostat-V-env.tmp && diff -u ${T_SRCDIR}/tests/expected.iostat-V-env tests/out.iostat-V-env.tmp

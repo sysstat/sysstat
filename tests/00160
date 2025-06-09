@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp && diff -u tests/expected2.sar-u tests/out2.sar-u.tmp
+LC_ALL=C TZ=GMT ./sar -C -u -P ALL -f tests/data.tmp > tests/out2.sar-u.tmp && diff -u ${T_SRCDIR}/tests/expected2.sar-u tests/out2.sar-u.tmp

@@ -2,7 +2,7 @@
 if [ ! -z "$VER_JSON" ]; then
 	rm -f tests/root
 	# No CIFS fs should be found here
-	ln -s root6 tests/root
+	ln -s ${T_SRCDIR}/tests/root6 tests/root
 	./cifsiostat 1 3 -t -o JSON | $VER_JSON >/dev/null
 else
 	echo Skipped

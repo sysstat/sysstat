@@ -1,1 +1,1 @@
-[ -x ./iconfig ] || exit 1
+[ -x ${T_SRCDIR}/iconfig ] || exit 1

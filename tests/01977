@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -d tests/data.tmp -s 13:20:19 -e 1555595649 > tests/out2.sadf-se.tmp && diff -u tests/expected2.sadf-se tests/out2.sadf-se.tmp
+LC_ALL=C TZ=GMT ./sadf -d tests/data.tmp -s 13:20:19 -e 1555595649 > tests/out2.sadf-se.tmp && diff -u ${T_SRCDIR}/tests/expected2.sadf-se tests/out2.sadf-se.tmp

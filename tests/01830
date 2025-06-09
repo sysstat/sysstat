@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -g tests/data-CPUoffon.tmp -- -n SOFT -P all,8 -s 13:20:19 -e 13:20:29 > tests/out.sadf-g-CPUoff.tmp && diff -u tests/expected.sadf-g-CPUoff tests/out.sadf-g-CPUoff.tmp
+LC_ALL=C TZ=GMT ./sadf -g tests/data-CPUoffon.tmp -- -n SOFT -P all,8 -s 13:20:19 -e 13:20:29 > tests/out.sadf-g-CPUoff.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-g-CPUoff tests/out.sadf-g-CPUoff.tmp

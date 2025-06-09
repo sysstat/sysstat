@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -r -O debug tests/data-9.1.6-hz.tmp > tests/out.sadf-r-hz.tmp && diff -u tests/expected.sadf-r-hz tests/out.sadf-r-hz.tmp
+LC_ALL=C TZ=GMT ./sadf -r -O debug tests/data-9.1.6-hz.tmp > tests/out.sadf-r-hz.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-r-hz tests/out.sadf-r-hz.tmp

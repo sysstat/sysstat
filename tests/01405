@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -g tests/data-trunc -- -A > tests/out.sadf-g-trunc.tmp 2>/dev/null && diff -u tests/expected.sadf-g-trunc tests/out.sadf-g-trunc.tmp
+LC_ALL=C TZ=GMT ./sadf -g ${T_SRCDIR}/tests/data-trunc -- -A > tests/out.sadf-g-trunc.tmp 2>/dev/null && diff -u ${T_SRCDIR}/tests/expected.sadf-g-trunc tests/out.sadf-g-trunc.tmp

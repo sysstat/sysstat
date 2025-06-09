@@ -1,1 +1,1 @@
-S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./mpstat --getenv -V > tests/out.mpstat-V-env.tmp && diff -u tests/expected.mpstat-V-env tests/out.mpstat-V-env.tmp
+S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./mpstat --getenv -V > tests/out.mpstat-V-env.tmp && diff -u ${T_SRCDIR}/tests/expected.mpstat-V-env tests/out.mpstat-V-env.tmp

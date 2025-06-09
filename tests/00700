@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -C -A -f tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp && diff -u tests/expected.data-ppc-11.7.2 tests/out.data-ppc-11.7.2.tmp
+LC_ALL=C TZ=GMT ./sar -C -A -f ${T_SRCDIR}/tests/data-ppc-11.7.2 > tests/out.data-ppc-11.7.2.tmp && diff -u ${T_SRCDIR}/tests/expected.data-ppc-11.7.2 tests/out.data-ppc-11.7.2.tmp

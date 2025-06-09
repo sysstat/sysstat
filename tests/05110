@@ -1,3 +1,3 @@
 rm -f tests/root
-ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./pidstat -T CHILD -dRrsuvw 2 6 > tests/out1.pidstat-A-TCHILD.tmp && diff -u tests/expected1.pidstat-A-TCHILD tests/out1.pidstat-A-TCHILD.tmp
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./pidstat -T CHILD -dRrsuvw 2 6 > tests/out1.pidstat-A-TCHILD.tmp && diff -u ${T_SRCDIR}/tests/expected1.pidstat-A-TCHILD tests/out1.pidstat-A-TCHILD.tmp

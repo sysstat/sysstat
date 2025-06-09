@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp && diff -u tests/expected.sar-autonever tests/out.sar-auto.tmp
+LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp && diff -u ${T_SRCDIR}/tests/expected.sar-autonever tests/out.sar-auto.tmp

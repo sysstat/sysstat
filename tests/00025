@@ -1,1 +1,1 @@
-S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./pidstat --getenv -V > tests/out.pidstat-V-env.tmp && diff -u tests/expected.pidstat-V-env tests/out.pidstat-V-env.tmp
+S_COLORS=auto S_COLORS_SGR="C=33;22:I=32;22" S_TIME_FORMAT=ISO ./pidstat --getenv -V > tests/out.pidstat-V-env.tmp && diff -u ${T_SRCDIR}/tests/expected.pidstat-V-env tests/out.pidstat-V-env.tmp

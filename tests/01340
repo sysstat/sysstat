@@ -1,1 +1,1 @@
-./sadf > tests/out3.sadf.tmp && diff -u tests/expected3.sadf tests/out3.sadf.tmp
+./sadf > tests/out3.sadf.tmp && diff -u ${T_SRCDIR}/tests/expected3.sadf tests/out3.sadf.tmp

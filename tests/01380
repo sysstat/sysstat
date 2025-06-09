@@ -1,4 +1,4 @@
 rm -f tests/sa-sigint.tmp
 rm -f tests/root
-ln -s root1 tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
 LC_ALL=C TZ=GMT ./sar --unix_time=1556755203 -o tests/sa-sigint.tmp 1 10 > /dev/null

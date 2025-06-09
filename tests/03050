@@ -1,3 +1,3 @@
 rm -f tests/root
-ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./mpstat -T -P ALL 1 2 > tests/out.mpstat-T.tmp && diff -u tests/expected.mpstat-T tests/out.mpstat-T.tmp
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./mpstat -T -P ALL 1 2 > tests/out.mpstat-T.tmp && diff -u ${T_SRCDIR}/tests/expected.mpstat-T tests/out.mpstat-T.tmp

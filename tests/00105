@@ -1,9 +1,9 @@
 rm -f tests/data-small_ust.tmp
 
 rm -f tests/root
-ln -s root1 tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
 TZ=GMT ./sadc --unix_time=555593609 -S A_NULL,A_PCSW tests/data-small_ust.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root2 tests/root
+ln -s ${T_SRCDIR}/tests/root2 tests/root
 TZ=GMT ./sadc --unix_time=555593619 -S A_NULL,A_PCSW tests/data-small_ust.tmp 1 1 >/dev/null

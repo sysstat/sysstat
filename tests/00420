@@ -1,7 +1,7 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
 	export LC_ALL=C
-	cat tests/data-12.7.6.xml | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+	cat ${T_SRCDIR}/tests/data-12.7.6.xml | $VER_XML --schema ${T_SRCDIR}/xml/sysstat.xsd - >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED

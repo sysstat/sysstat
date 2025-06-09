@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -I --int=0,3,30-50,4000-,LOC,PWD,MCE-XXX,TLB,sum -P all,3 --pretty -f tests/data.tmp > tests/out.sar-I.tmp && diff -u tests/expected.sar-I tests/out.sar-I.tmp
+LC_ALL=C TZ=GMT ./sar -I --int=0,3,30-50,4000-,LOC,PWD,MCE-XXX,TLB,sum -P all,3 --pretty -f tests/data.tmp > tests/out.sar-I.tmp && diff -u ${T_SRCDIR}/tests/expected.sar-I tests/out.sar-I.tmp

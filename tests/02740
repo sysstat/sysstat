@@ -1,3 +1,3 @@
 rm -f tests/root
-ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./iostat -o JSON -x -p ALL 1 2 > tests/out.iostat-x-p-ALL-JSON.tmp && diff -u tests/expected.iostat-x-p-ALL-JSON tests/out.iostat-x-p-ALL-JSON.tmp
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./iostat -o JSON -x -p ALL 1 2 > tests/out.iostat-x-p-ALL-JSON.tmp && diff -u ${T_SRCDIR}/tests/expected.iostat-x-p-ALL-JSON tests/out.iostat-x-p-ALL-JSON.tmp
