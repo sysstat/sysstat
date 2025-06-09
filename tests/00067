@@ -3,18 +3,18 @@
 rm -f tests/data-CPUoffon.tmp
 
 rm -f tests/root
-ln -s root2 tests/root
+ln -s ${T_SRCDIR}/tests/root2 tests/root
 TZ=GMT ./sadc --unix_time=1555593619 -S XALL tests/data-CPUoffon.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root3 tests/root
+ln -s ${T_SRCDIR}/tests/root3 tests/root
 TZ=GMT ./sadc --unix_time=1555593629 -S XALL tests/data-CPUoffon.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root4 tests/root
+ln -s ${T_SRCDIR}/tests/root4 tests/root
 TZ=GMT ./sadc --unix_time=1555593639 -S XALL tests/data-CPUoffon.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root5 tests/root
+ln -s ${T_SRCDIR}/tests/root5 tests/root
 TZ=GMT ./sadc --unix_time=1555593649 -S XALL tests/data-CPUoffon.tmp 1 1 >/dev/null
 

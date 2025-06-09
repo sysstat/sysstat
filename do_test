@@ -2,33 +2,42 @@
 # Script for sysstat simulation test environment
 # (C) 2020-2025 Sebastien GODARD (sysstat <at> orange.fr)
 
+# Get directory where current script is located
+srcdir="${0%/*}"
+export T_SRCDIR=$(realpath ${srcdir})
+
+if [ ! -f ./sysstat.ioconf ]
+then
+	/bin/cp ${srcdir}/sysstat.ioconf .
+fi
+
 if [ "$1" = "conf" ]
 then
 	# Configure sysstat in test mode
 	make distclean
-	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping
+	${srcdir}/configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping
 elif [ "$1" = "conflto" ]
 then
 	# Configure sysstat in test mode with LTO support
 	make distclean
-	./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --enable-lto --disable-stripping
+	${srcdir}/configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --enable-lto --disable-stripping
 elif [ "$1" = "comp" ]
 then
 	# Compile sysstat in test mode
-	make simtest TFLAGS="-DTEST"
+	make simtest TFLAGS="-DTEST -DPRE_TESTDIR=\\\"${T_SRCDIR}\\\""
 else
 	if [ "$1" != "sim" ]
 	then
 		# Configure then compile sysstat in test mode
 		make distclean
-#		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST" && make simtest
-		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make simtest TFLAGS="-DTEST"
+#		./configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo && make TFLAGS="-DTEST -DPRE_TESTDIR=\\\"${T_SRCDIR}\\\"" && make simtest
+		${srcdir}/configure sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make simtest TFLAGS="-DTEST -DPRE_TESTDIR=\\\"${T_SRCDIR}\\\""
 	fi
 	rm -f tests/results.tmp
 	COUNT=0
-	TOTAL=`ls -1 tests/0* | wc -l`
+	TOTAL=`ls -1 ${srcdir}/tests/0* | wc -l`
 
-	LIST=`ls tests | grep -E '^[0-9]+$' | sort -n`
+	LIST=`ls ${srcdir}/tests | grep -E '^[0-9]+$' | sort -n`
 
 	for f in ${LIST}; do
 
@@ -46,7 +55,7 @@ else
 		let "COUNT+=1"
 		echo $f
 		echo -n "$f: " >> tests/results.tmp
-		cat tests/$f | /bin/sh
+		cat ${srcdir}/tests/$f | /bin/sh
 
 		if [ $? -eq 0 ]
 		then
@@ -67,12 +76,12 @@ else
 		fi
 	done
 	rm -f tests/root
-	ln -s root1 tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
 	echo Run ${COUNT}/${TOTAL} test\(s\)
 	echo Simulation tests: Success!
 fi
 
 if [ "$?" = "0" -a "$1" = "all" ]
 then
-	make extratest && make distclean && ./configure --disable-nls --disable-sensors --disable-pcp sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make TFLAGS="-DTEST" && echo "EXTRA TESTS: Success!"
+	make extratest && make distclean && ${srcdir}/configure --disable-nls --disable-sensors --disable-pcp sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make TFLAGS="-DTEST -DPRE_TESTDIR=\\\"${T_SRCDIR}\\\"" && echo "EXTRA TESTS: Success!"
 fi

@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sadf -d tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-d.tmp && diff -u tests/expected.data-wghfreq-sadf-d tests/out.data-wghfreq-sadf-d.tmp
+LC_ALL=C TZ=GMT ./sadf -d tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-d.tmp && diff -u ${T_SRCDIR}/tests/expected.data-wghfreq-sadf-d tests/out.data-wghfreq-sadf-d.tmp

@@ -1,3 +1,3 @@
 rm -f tests/root
-ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./sar -q PSI 0 > tests/out.sar-qPSI.tmp && diff -u tests/expected.sar-qPSI tests/out.sar-qPSI.tmp
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./sar -q PSI 0 > tests/out.sar-qPSI.tmp && diff -u ${T_SRCDIR}/tests/expected.sar-qPSI tests/out.sar-qPSI.tmp

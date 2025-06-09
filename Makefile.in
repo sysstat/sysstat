@@ -1,5 +1,8 @@
 # Makefile to build sysstat commands
-# (C) 1999-2023 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 1999-2025 Sebastien GODARD (sysstat <at> orange.fr)
+
+# Tell Make where files are to be found
+VPATH = @srcdir@
 
 # Version and package name
 VERSION = @PACKAGE_VERSION@
@@ -8,7 +11,7 @@ PACKAGE = @PACKAGE_NAME@
 PACKAGE_TARNAME = $(PACKAGE)-$(VERSION)
 
 # Compiler to use
-CC = @CC@
+CC = @CC@ -I@builddir@
 
 # Other commands
 CHMOD = @CHMOD@
@@ -105,9 +108,6 @@ endif
 DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
 DFLAGS += $(DFSENSORS) $(DFSENSORS32)
 DFLAGS += $(DFPCP)
-ifdef TFLAGS
-DFLAGS += $(TFLAGS)
-endif
 
 ifndef LFLAGS
 LFLAGS = @STRIP@ @LDFLAGS@
@@ -232,13 +232,16 @@ ifndef INITD_DIR
 INITD_DIR = @INITD_DIR@
 endif
 
-SOURCE_CODE= $(wildcard *.c *.h)
+SOURCE_CODE= $(wildcard @srcdir@/*.c @srcdir@/*.h)
 
-NLSPO= $(wildcard nls/*.po)
+NLSPO= $(patsubst @srcdir@/%, %, $(wildcard @srcdir@/nls/*.po))
 NLSGMO= $(NLSPO:.po=.gmo)
 NLSPOT= $(NLSPO:.po=.pot)
 
-%.gmo: %.po
+nls/%.gmo: @srcdir@/nls/%.po
+	if [ ! -d nls ]; then \
+		mkdir nls; \
+	fi
 	$(MSGFMT) -o $@ $<
 
 %.pot: %.po
@@ -482,14 +485,17 @@ else
 locales:
 endif
 
-nls/sysstat.pot: $(wildcard *.c)
+nls/sysstat.pot: $(wildcard @srcdir@/*.c)
+	if [ ! -d nls ]; then \
+		mkdir nls; \
+	fi
 	$(XGETTEXT) -o $@ -k_ --msgid-bugs-address="sysstat <at> orange.fr" $^
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall copyyear \
 	uninstall_base uninstall_all dist bdist xdist gitdist squeeze simtest extratest
 
-install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
+install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5 man/iostat.1 man/cifsiostat.1
 ifeq ($(INSTALL_DOC),y)
 	mkdir -p $(DESTDIR)$(MAN1_DIR)
 	mkdir -p $(DESTDIR)$(MAN5_DIR)
@@ -509,11 +515,11 @@ ifeq ($(INSTALL_DOC),y)
 	rm -f $(DESTDIR)$(MAN1_DIR)/iostat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/iostat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/tapestat.1*
-	$(INSTALL_DATA) $(MANGRPARG) man/tapestat.1 $(DESTDIR)$(MAN1_DIR)
+	$(INSTALL_DATA) $(MANGRPARG) @srcdir@/man/tapestat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/mpstat.1*
-	$(INSTALL_DATA) $(MANGRPARG) man/mpstat.1 $(DESTDIR)$(MAN1_DIR)
+	$(INSTALL_DATA) $(MANGRPARG) @srcdir@/man/mpstat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/pidstat.1*
-	$(INSTALL_DATA) $(MANGRPARG) man/pidstat.1 $(DESTDIR)$(MAN1_DIR)
+	$(INSTALL_DATA) $(MANGRPARG) @srcdir@/man/pidstat.1 $(DESTDIR)$(MAN1_DIR)
 	rm -f $(DESTDIR)$(MAN1_DIR)/cifsiostat.1*
 	$(INSTALL_DATA) $(MANGRPARG) man/cifsiostat.1 $(DESTDIR)$(MAN1_DIR)
 ifeq ($(COMPRESS_MANPG),y)
@@ -541,13 +547,13 @@ squeeze:
 
 # Update Makefile.in by hand - Restore mode for iconfig.
 copyyear:
-	catalogs="$(SOURCE_CODE) iconfig do_test README.md sa1.in sa2.in sysconfig.in sysstat.in version.in"; \
+	catalogs="$(SOURCE_CODE) @srcdir@/iconfig @srcdir@/do_test @srcdir@/README.md @srcdir@/sa1.in @srcdir@/sa2.in @srcdir@/sysconfig.in @srcdir@/sysstat.in @srcdir@/version.in"; \
 	for c in $$catalogs; do \
 		echo "Updating file: $$c"; \
 		sed 's/-2024/-2025/g' $$c > copyyear.tmp; \
 		mv copyyear.tmp $$c; \
 	done
-	chmod 755 iconfig do_test
+	chmod 755 @srcdir@/iconfig @srcdir@/do_test
 
 install_nls: locales
 ifdef REQUIRE_NLS
@@ -581,14 +587,14 @@ endif
 	$(INSTALL_BIN) mpstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) pidstat $(DESTDIR)$(BIN_DIR)
 	$(INSTALL_BIN) cifsiostat $(DESTDIR)$(BIN_DIR)
-	$(INSTALL_DATA) sysstat.ioconf $(DESTDIR)$(SYSCONFIG_DIR)
 	$(INSTALL_DATA) sysstat.sysconfig $(DESTDIR)$(SYSCONFIG_DIR)/$(SYSCONFIG_FILE)
+	$(INSTALL_DATA) @srcdir@/sysstat.ioconf $(DESTDIR)$(SYSCONFIG_DIR)
 ifeq ($(INSTALL_DOC),y)
-	$(INSTALL_DATA) CHANGES $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) COPYING $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) CREDITS $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) README.md $(DESTDIR)$(DOC_DIR)
-	$(INSTALL_DATA) FAQ.md $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/CHANGES $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/COPYING $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/CREDITS $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/README.md $(DESTDIR)$(DOC_DIR)
+	$(INSTALL_DATA) @srcdir@/FAQ.md $(DESTDIR)$(DOC_DIR)
 endif
 
 ifdef SYSTEMD_UNIT_DIR
@@ -803,11 +809,19 @@ else
 po-files:
 endif
 
-TESTDIR="tests"
+TESTDIR="@srcdir@/tests"
 TESTRUN="/bin/sh"
-TESTLIST:=$(shell ls $(TESTDIR) | grep -E '^[0-9]+$$' | sort -n)
-EXTRADIR="tests/extra"
-EXTRALIST:=$(shell ls $(EXTRADIR) | grep -E '^[0-9]+$$' | sort -n)
+TESTLIST:=$(shell cd $(TESTDIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
+EXTRADIR="@srcdir@/tests/extra"
+EXTRALIST:=$(shell cd $(EXTRADIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
+
+cr_dir:
+	if [ ! -d tests/ini ]; then \
+		mkdir -p tests/ini; \
+	fi
+	if [ ! -d tests/32bits ]; then \
+		mkdir -p tests/32bits; \
+	fi
 
 testcomp: tests/ini/inisar sa32bit
 
@@ -830,29 +844,25 @@ extraunit:
 	@cat $(EXTRADIR)/$(X) | $(TESTRUN)
 
 # Use "do_test" script to make the following targets
-simtest: DFLAGS += -DTEST
+simtest: DFLAGS += $(TFLAGS)
 
-simtest: all testcomp
+simtest: all cr_dir testcomp
 #	@$(foreach x, $(TESTLIST), $(MAKE) X=$x unit || exit;)
 #	rm -f tests/root
 #	ln -s root1 tests/root
 #	@echo Simulation tests: Success!
 
-extratest: DFLAGS += -DTEST
+extratest: DFLAGS += $(TFLAGS)
 
 extratest: all
 	@$(foreach x, $(EXTRALIST), $(MAKE) X=$x extraunit || exit;)
-	rm -f tests/root
-	ln -s root1 tests/root
 	@echo Extra simulation tests: Success!
 
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp tests/extra/*.tmp
 	rm -f tests/LAST tests/SKIPPED
-	rm -f nfsiostat* man/nfsiostat*
 	rm -f tests/sa[0123]*
 	rm -f tests/root
-	ln -s root1 tests/root
 	rm -f tests/ini/inisar tests/32bits/sadc32 tests/32bits/sar32
 	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar.* tests/extra/pcpar-ssr.*
 	rm -f tests/32bits/*.o tests/32bits/*.a tests/32bits/core
@@ -865,13 +875,13 @@ almost-distclean: clean nls/sysstat.pot
 	rm -f cron/sysstat-rotate.service cron/sysstat-rotate.timer
 	rm -f cron/sysstat-summary.service cron/sysstat-summary.timer cron/sysstat.sleep
 	rm -f cron/sysstat.cron.hourly cron/sysstat.crond.sample cron/sysstat.crond.sample.in
-	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1 man/iostat.1 man/sysstat.5
+	rm -f man/sa1.8 man/sa2.8 man/sadc.8 man/sadf.1 man/sar.1
+	rm -f man/iostat.1 man/sysstat.5 man/cifsiostat.1
 	rm -f tests/variables tests/data
-	rm -f man/cifsiostat.1
 	rm -f *.log config.status
 	rm -rf autom4te.cache
 	rm -f *.save *.old .*.swp data
-	find . -name "*~" -exec rm -f {} \;
+	-find . -name "*~" -exec rm -f {} \;
 
 distclean: almost-distclean
 	rm -f Makefile
@@ -880,16 +890,16 @@ maintainer-clean: distclean
 	rm -f configure
 
 dist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | gzip -v9 > sysstat-$(VERSION).tar.gz)
+	cd @srcdir@/.. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | gzip -v9 > sysstat-$(VERSION).tar.gz)
 
 bdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
+	cd @srcdir@/.. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION).tar.bz2)
 
 xdist: almost-distclean
-	cd .. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
+	cd @srcdir@/.. && (tar --exclude=Makefile --exclude=.git -cvf - sysstat-$(VERSION) | xz > sysstat-$(VERSION).tar.xz)
 
 gitdist: almost-distclean
-	cd .. && (tar --exclude=Makefile -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
+	cd @srcdir@/.. && (tar --exclude=Makefile -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
 
 tags:
 	etags ./*.[hc]

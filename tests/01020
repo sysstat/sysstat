@@ -1,4 +1,4 @@
 rm -f tests/root
-ln -s root6 tests/root
+ln -s ${T_SRCDIR}/tests/root6 tests/root
 LC_ALL=C TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PSI_CPU tests/data1.tmp 1 1 2>&1 | grep "Requested activities not available"
 

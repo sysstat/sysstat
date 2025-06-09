@@ -144,7 +144,7 @@ char *get_env_value(const char *c)
 void next_time_step(void)
 {
 	int root_nr = 1;
-	char rootf[64], testf[128];
+	char rootf[64], testf[4096];
 	char *resolved_name;
 
 	__unix_time += interval;
@@ -178,7 +178,7 @@ void next_time_step(void)
 	}
 
 	/* Create "root" symlink pointing at the new root directory */
-	if (symlink(rootf, ROOTDIR) < 0) {
+	if (symlink(testf, ROOTDIR) < 0) {
 		perror("link");
 		exit(1);
 	}

@@ -1,1 +1,1 @@
-./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp && diff -u tests/expected.sadf-r tests/out.sadf-r.tmp
+./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-r tests/out.sadf-r.tmp

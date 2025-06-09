@@ -1,1 +1,1 @@
-LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp && diff -u tests/expected.sadf-d tests/out.sadf-d.tmp
+LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-d tests/out.sadf-d.tmp

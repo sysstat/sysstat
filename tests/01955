@@ -1,1 +1,1 @@
-LC_ALL=C ./sadf -d tests/data.tmp -s 1590939000 > tests/out.sadf-s-epoch.tmp && diff -u tests/expected.sadf-s-epoch tests/out.sadf-s-epoch.tmp
+LC_ALL=C ./sadf -d tests/data.tmp -s 1590939000 > tests/out.sadf-s-epoch.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-s-epoch tests/out.sadf-s-epoch.tmp

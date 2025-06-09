@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp && diff -u tests/expected.sa1-sleep tests/out.sa1-sleep.tmp
+LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp && diff -u ${T_SRCDIR}/tests/expected.sa1-sleep tests/out.sa1-sleep.tmp

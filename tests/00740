@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -C -f tests/data-non-printable > tests/out.sar-non-printable.tmp && diff -u tests/expected.sar-non-printable tests/out.sar-non-printable.tmp
+LC_ALL=C TZ=GMT ./sar -C -f ${T_SRCDIR}/tests/data-non-printable > tests/out.sar-non-printable.tmp && diff -u ${T_SRCDIR}/tests/expected.sar-non-printable tests/out.sar-non-printable.tmp

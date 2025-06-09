@@ -1,3 +1,3 @@
 rm -f tests/root
-ln -s root1 tests/root
-LC_ALL=C TZ=GMT ./iostat --pretty -d ALL -p ALL 2 2 > tests/out.iostat-pretty.tmp && diff -u tests/expected.iostat-pretty tests/out.iostat-pretty.tmp
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./iostat --pretty -d ALL -p ALL 2 2 > tests/out.iostat-pretty.tmp && diff -u ${T_SRCDIR}/tests/expected.iostat-pretty tests/out.iostat-pretty.tmp

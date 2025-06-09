@@ -1,1 +1,1 @@
-./sadf -c tests/data-11.6.5 > tests/data-11.6.5.tmp
+./sadf -c ${T_SRCDIR}/tests/data-11.6.5 > tests/data-11.6.5.tmp

@@ -1,6 +1,6 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
-	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --dtdvalid ${T_SRCDIR}/xml/sysstat-*.dtd - >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED

@@ -1,14 +1,14 @@
 rm -f tests/data-tz.tmp
 
 rm -f tests/root
-ln -s root1 tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
 TZ="Europe/Paris" ./sadc --unix_time=1555593609 tests/data-tz.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root2 tests/root
+ln -s ${T_SRCDIR}/tests/root2 tests/root
 TZ="Europe/Paris" ./sadc --unix_time=1555593619 tests/data-tz.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root3 tests/root
+ln -s ${T_SRCDIR}/tests/root3 tests/root
 TZ="Europe/Paris" ./sadc --unix_time=1555593629 tests/data-tz.tmp 1 1 >/dev/null
 

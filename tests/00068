@@ -1,20 +1,20 @@
 rm -f tests/data2.tmp
 
 rm -f tests/root
-ln -s root1 tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
 TZ=GMT ./sadc --unix_time=1555593609 tests/data2.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root2 tests/root
+ln -s ${T_SRCDIR}/tests/root2 tests/root
 TZ=GMT ./sadc --unix_time=1555593619 tests/data2.tmp 1 1 >/dev/null
 
 # LINUX RESTART
 TZ=GMT ./sadc --unix_time=1555593623 tests/data2.tmp >/dev/null
 
 rm -f tests/root
-ln -s root6 tests/root
+ln -s ${T_SRCDIR}/tests/root6 tests/root
 TZ=GMT ./sadc --unix_time=1555593629 tests/data2.tmp 1 1 >/dev/null
 
 rm -f tests/root
-ln -s root7 tests/root
+ln -s ${T_SRCDIR}/tests/root7 tests/root
 TZ=GMT ./sadc --unix_time=1555593639 tests/data2.tmp 1 1 >/dev/null

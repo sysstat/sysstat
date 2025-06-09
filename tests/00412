@@ -2,7 +2,7 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
 	export LC_ALL=C
-	./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --dtdvalid xml/sysstat-*.dtd - >/dev/null
+	./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --dtdvalid ${T_SRCDIR}/xml/sysstat-*.dtd - >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED

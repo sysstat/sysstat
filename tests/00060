@@ -1,5 +1,5 @@
 rm -f tests/data0.tmp
 
 rm -f tests/root
-ln -s root1 tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
 TZ=GMT ./sadc --unix_time=1555593609 -S A_NULL,A_PCSW tests/data0.tmp >/dev/null

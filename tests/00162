@@ -1,5 +1,5 @@
 rm -f tests/root
 # In root7, we have a link /sys/dev/block/202:4096 -> ../../block/xvdq
 # This way, 202:4096 does not appear as xvdiw using sysstat.ioconf.
-ln -s root7 tests/root
-LC_ALL=C TZ=GMT ./sar -A -x -f tests/data.tmp > tests/out2.sar-xall.tmp && diff -u tests/expected2.sar-xall tests/out2.sar-xall.tmp
+ln -s ${T_SRCDIR}/tests/root7 tests/root
+LC_ALL=C TZ=GMT ./sar -A -x -f tests/data.tmp > tests/out2.sar-xall.tmp && diff -u ${T_SRCDIR}/tests/expected2.sar-xall tests/out2.sar-xall.tmp

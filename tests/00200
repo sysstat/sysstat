@@ -1,13 +1,13 @@
 rm -f tests/sa18
 
 rm -f tests/root
-ln -s root1 tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
 TZ=GMT ./sa1 --boot --unix_time=1555593609
 
 rm -f tests/root
-ln -s root2 tests/root
+ln -s ${T_SRCDIR}/tests/root2 tests/root
 TZ=GMT ./sa1 --unix_time=1555593629 1 1
 
 rm -f tests/root
-ln -s root3 tests/root
+ln -s ${T_SRCDIR}/tests/root3 tests/root
 TZ=GMT ./sa1 --unix_time=1555593649 1 1

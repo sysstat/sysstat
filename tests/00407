@@ -2,7 +2,7 @@
 . tests/variables
 if [ ! -z "$VER_XML" ]; then
 	export LC_ALL=C
-	./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --schema xml/sysstat.xsd - >/dev/null
+	./sadf -x tests/data-CPUoff.tmp -- -A -P 8 | $VER_XML --schema ${T_SRCDIR}/xml/sysstat.xsd - >/dev/null
 else
 	echo Skipped
 fi

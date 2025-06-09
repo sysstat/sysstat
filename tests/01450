@@ -1,1 +1,1 @@
-LC_ALL=C TZ=GMT ./sar -f tests/data-9.1.6 2>&1 | grep "Try to convert" >/dev/null
+LC_ALL=C TZ=GMT ./sar -f ${T_SRCDIR}/tests/data-9.1.6 2>&1 | grep "Try to convert" >/dev/null
