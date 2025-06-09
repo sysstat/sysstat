@@ -848,8 +848,6 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 		snprintf(pre, sizeof(pre), "%s%s", temp2, cur_time);
 	}
 
-
-	
 	pre[sizeof(pre) - 1] = '\0';
 
 	if (DISPLAY_HORIZONTALLY(flags)) {

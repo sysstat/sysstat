@@ -804,7 +804,7 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 		else if (!strncmp(line, "pgdemote_", 9)) {
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgdemote += pgtmp;
-		}	
+		}
 	}
 
 	fclose(fp);
