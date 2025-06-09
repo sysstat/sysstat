@@ -448,9 +448,12 @@ void read_uptime(unsigned long long *uptime)
 void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
 			    unsigned long long itv, struct ext_disk_stats *xds)
 {
+	double aqu_sz = S_VALUE(sdp->rq_ticks, sdc->rq_ticks, itv) / 1000.0;
 	xds->util  = sdc->tot_ticks < sdp->tot_ticks ?
 		     0.0 :
 		     S_VALUE(sdp->tot_ticks, sdc->tot_ticks, itv);
+	/* avoid util over 100 */
+	xds->util  = MINIMUM(xds->util, MINIMUM(aqu_sz, 1.0) * 1000);
 	/*
 	 * Kernel gives ticks already in milliseconds for all platforms
 	 * => no need for further scaling.
