@@ -488,7 +488,7 @@ nls/sysstat.pot: $(wildcard *.c)
 .PHONY: clean distclean install install_base install_all uninstall copyyear \
 	uninstall_base uninstall_all dist bdist xdist gitdist squeeze simtest extratest
 
-install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5
+install_man: man/sadc.8 man/sar.1 man/sadf.1 man/sa1.8 man/sa2.8 man/sysstat.5 man/iostat.1 man/cifsiostat.1
 ifeq ($(INSTALL_DOC),y)
 	mkdir -p $(DESTDIR)$(MAN1_DIR)
 	mkdir -p $(DESTDIR)$(MAN5_DIR)
