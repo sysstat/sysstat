@@ -848,7 +848,6 @@ extratest: all
 clean:
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp tests/extra/*.tmp
 	rm -f tests/LAST tests/SKIPPED
-	rm -f nfsiostat* man/nfsiostat*
 	rm -f tests/sa[0123]*
 	rm -f tests/root
 	ln -s root1 tests/root
