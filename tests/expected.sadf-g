@@ -1159,7 +1159,7 @@
 <polyline points="70,50 70,250 790,250" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
 <text x="795" y="50" style="fill: #00cc00; stroke: none; font-size: 12px">MBmemfree (1404.04, 1404.04)</text>
 <text x="795" y="65" style="fill: #ff00bf; stroke: none; font-size: 12px">MBavail (4286.64, 4286.64)</text>
-<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">MBmemused (3105.19, 3105.19)</text>
+<text x="795" y="80" style="fill: #00ffff; stroke: none; font-size: 12px">MBmemused (3667.43, 3667.43)</text>
 <g transform="translate(70,250)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,1000.00 720,1000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.046657)"/>
@@ -1195,14 +1195,14 @@
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <path d=" M10,1404.04 L20,1404.04 L30,1404.04 L40,1404.04 M2066,1404.04" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.046657)"/>
 <path d=" M10,4286.64 L20,4286.64 L30,4286.64 L40,4286.64 M2066,4286.64" style="vector-effect: non-scaling-stroke; stroke: #ff00bf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.046657)"/>
-<path d=" M10,3105.19 L20,3105.19 L30,3105.19 L40,3105.19 M2066,3105.19" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.046657)"/>
+<path d=" M10,3667.43 L20,3667.43 L30,3667.43 L40,3667.43 M2066,3667.43" style="vector-effect: non-scaling-stroke; stroke: #00ffff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.046657)"/>
 </g>
 <rect x="0" y="310" height="300" width="1050" fill="#000000"/>
 <text x="0" y="330" style="fill: #ffff00; stroke: none">Memory utilization (2)
 <tspan x="795" y="335" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,360 70,560 790,560" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="360" style="fill: #ff0000; stroke: none; font-size: 12px">%memused (39.04, 39.04)</text>
+<text x="795" y="360" style="fill: #ff0000; stroke: none; font-size: 12px">%memused (46.11, 46.11)</text>
 <g transform="translate(70,560)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-2.000000)"/>
@@ -1237,7 +1237,7 @@
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <g style="fill: #ff0000; stroke: none" transform="scale(0.348500,-2.000000)">
-<rect x="0" y="0.00" height="39.04" width="31"/><rect x="0" y="0.00" height="39.04" width="31"/><rect x="0" y="0.00" height="39.04" width="39"/><rect x="18" y="0.00" height="39.04" width="22"/><rect x="2035" y="0.00" height="39.04" width="31"/>
+<rect x="0" y="0.00" height="46.11" width="31"/><rect x="0" y="0.00" height="46.11" width="31"/><rect x="0" y="0.00" height="46.11" width="39"/><rect x="18" y="0.00" height="46.11" width="22"/><rect x="2035" y="0.00" height="46.11" width="31"/>
 </g>
 </g>
 <rect x="0" y="620" height="300" width="1050" fill="#000000"/>

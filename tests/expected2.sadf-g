@@ -1269,7 +1269,7 @@
 <polyline points="70,50 70,250 790,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
 <text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">MBmemfree (1404.04, 1404.04)</text>
 <text x="795" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">MBavail (4286.64, 4286.64)</text>
-<text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">MBmemused (3105.19, 3105.19)</text>
+<text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">MBmemused (3667.43, 3667.43)</text>
 <text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
 <tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
 </text>
@@ -1312,14 +1312,14 @@
 <text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,1404.04 L48029,1404.04 L48039,1404.04 L48049,1404.04 M50075,1404.04" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
 <path d=" M48019,4286.64 L48029,4286.64 L48039,4286.64 L48049,4286.64 M50075,4286.64" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
-<path d=" M48019,3105.19 L48029,3105.19 L48039,3105.19 L48049,3105.19 M50075,3105.19" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
+<path d=" M48019,3667.43 L48029,3667.43 L48039,3667.43 L48049,3667.43 M50075,3667.43" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.046657)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Memory utilization (2)
 <tspan x="1855" y="25" style="fill: #000000; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="1130,50 1130,250 1850,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
-<text x="1855" y="50" style="fill: #696969; stroke: none; font-size: 12px">%memused (39.04, 39.04)</text>
+<text x="1855" y="50" style="fill: #696969; stroke: none; font-size: 12px">%memused (46.11, 46.11)</text>
 <text x="2105" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
 <tspan x="2105" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
 </text>
@@ -1361,7 +1361,7 @@
 <text x="705" y="15" style="fill: #000000; stroke: none; font-size: 14px; text-anchor: start"> 0:00</text>
 <text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <g style="fill: #696969; stroke: none" transform="scale(0.008333,-2.000000)">
-<rect x="47988" y="0.00" height="39.04" width="31"/><rect x="47998" y="0.00" height="39.04" width="31"/><rect x="48000" y="0.00" height="39.04" width="39"/><rect x="48027" y="0.00" height="39.04" width="22"/><rect x="50044" y="0.00" height="39.04" width="31"/>
+<rect x="47988" y="0.00" height="46.11" width="31"/><rect x="47998" y="0.00" height="46.11" width="31"/><rect x="48000" y="0.00" height="46.11" width="39"/><rect x="48027" y="0.00" height="46.11" width="22"/><rect x="50044" y="0.00" height="46.11" width="31"/>
 </g>
 </g>
 <rect x="2120" y="0" height="300" width="1050" fill="#ffffff"/>

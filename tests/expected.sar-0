@@ -4,4 +4,4 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20        all      1.49     39.91      1.67      0.94      0.00     56.00
 
 12:53:20    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
-12:53:20      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396
+12:53:20      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396

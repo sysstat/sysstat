@@ -307,11 +307,11 @@ Average:         0.00      0.00      0.00      0.00      0.00      0.81      0.0
 Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
 13:20:09    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-13:20:19         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
-13:20:29         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     28.7G    120.8%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
-13:20:39         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
-13:20:49         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
-Average:         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     15.8G     66.6%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+13:20:19         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+13:20:29         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     28.7G    120.8%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+13:20:39         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+13:20:49         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+Average:         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     15.8G     66.6%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
 
 13:20:09    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 13:20:19        16.0G      0.0k      0.0%      0.0k      0.0%
@@ -938,8 +938,8 @@ Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.0
 Average:     32405.20    321.46  32082.13      1.60     64.16      0.00      1.60
 
 13:54:15    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-13:54:35         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
-Average:         1.4G      4.2G      3.0G     39.0%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+13:54:35         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
+Average:         1.4G      4.2G      3.6G     46.1%    254.1M      2.7G     11.5G     48.5%      3.9G      1.7G    396.0k      2.6G    435.3M     15.0M     72.0M      0.0k
 
 13:54:15    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 13:54:35        16.0G      0.0k      0.0%      0.0k      0.0%

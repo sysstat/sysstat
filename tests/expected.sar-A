@@ -62,7 +62,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:21        20.85     12.83      4.81      3.21     57.43     38.50     32.08
 
 12:53:20    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-12:53:21      1437740   4389516   3179712     39.04    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
+12:53:21      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
 
 12:53:20    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 12:53:21     16777212         0      0.00         0      0.00
@@ -240,7 +240,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:22        56.63     41.26      8.96      6.40     17.16     20.81     32.01
 
 12:53:21    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-12:53:22      1437740   4389516   3179712     39.04    260172   2821596  30097852    120.77   4042384   1772396       396   2733164    445740     15328     73760         0
+12:53:22      1437740   4389516   3755444     46.11    260172   2821596  30097852    120.77   4042384   1772396       396   2733164    445740     15328     73760         0
 
 12:53:21    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 12:53:22     16777212         0      0.00         0      0.00
@@ -424,7 +424,7 @@ Average:          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/
 Average:        38.76     27.06      6.89      4.81     37.27     29.64     32.05
 
 Average:    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-Average:      1437740   4389516   3179712     39.04    260172   2821596  21097852     84.65   4042384   1772396       396   2733164    445740     15328     73760         0
+Average:      1437740   4389516   3755444     46.11    260172   2821596  21097852     84.65   4042384   1772396       396   2733164    445740     15328     73760         0
 
 Average:    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 Average:     16777212         0      0.00         0      0.00

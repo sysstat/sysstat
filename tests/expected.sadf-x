@@ -437,8 +437,8 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
-					<memused>3179712</memused>
-					<memused-percent>39.04</memused-percent>
+					<memused>3755444</memused>
+					<memused-percent>46.11</memused-percent>
 					<buffers>260172</buffers>
 					<cached>2821596</cached>
 					<commit>12097852</commit>
@@ -937,8 +937,8 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
-					<memused>3179712</memused>
-					<memused-percent>39.04</memused-percent>
+					<memused>3755444</memused>
+					<memused-percent>46.11</memused-percent>
 					<buffers>260172</buffers>
 					<cached>2821596</cached>
 					<commit>30097852</commit>
@@ -1487,8 +1487,8 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
-					<memused>3179712</memused>
-					<memused-percent>39.04</memused-percent>
+					<memused>3755444</memused>
+					<memused-percent>46.11</memused-percent>
 					<buffers>260172</buffers>
 					<cached>2821596</cached>
 					<commit>12097852</commit>
@@ -2079,8 +2079,8 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
-					<memused>3179712</memused>
-					<memused-percent>39.04</memused-percent>
+					<memused>3755444</memused>
+					<memused-percent>46.11</memused-percent>
 					<buffers>260172</buffers>
 					<cached>2821596</cached>
 					<commit>12097852</commit>
@@ -2726,8 +2726,8 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 				<memory unit="kB">
 					<memfree>1437740</memfree>
 					<avail>4389516</avail>
-					<memused>3179712</memused>
-					<memused-percent>39.04</memused-percent>
+					<memused>3755444</memused>
+					<memused-percent>46.11</memused-percent>
 					<buffers>260172</buffers>
 					<cached>2821596</cached>
 					<commit>12097852</commit>
