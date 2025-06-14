@@ -647,7 +647,20 @@ void upgrade_stats_memory(struct activity *act[], int p, int st_size,
 		smc->vmusedkb = moveto_long_long(&smp->vmusedkb, endian_mismatch, arch_64);
 	}
 	if (st_size >= STATS_MEMORY_8A_SIZE) {
-		smc->availablekb = moveto_long_long(&(smp->availablekb), endian_mismatch, arch_64);;
+		smc->availablekb = moveto_long_long(&(smp->availablekb), endian_mismatch, arch_64);
+	}
+
+	if (!smc->availablekb) {
+		/*
+		 * If availablekb is zero then this is probably because
+		 * this field was non existent in the original file. In this case,
+		 * set it to the same value as frmkb (free memory).
+		 * Anyway, if zero was its real value then frmkb should
+		 * also be zero.
+		 * Setting availablekb to frmkb prevents %memused from being displayed
+		 * as 100%.
+		 */
+		smc->availablekb = smc->frmkb;
 	}
 }
 
