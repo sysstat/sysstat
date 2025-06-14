@@ -807,13 +807,7 @@ __print_funct_t render_io_stats(struct activity *a, int isdb, char *pre,
 void render_ram_memory_stats(struct stats_memory *smc, int isdb, char *pre,
 			     int dispall, int pt_newlin)
 {
-	unsigned long long nousedmem;
 	int ptn;
-
-	nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-	if (nousedmem > smc->tlmkb) {
-		nousedmem = smc->tlmkb;
-	}
 
 	render(isdb, pre, PT_USEINT,
 	       "-\tkbmemfree", NULL, NULL, smc->frmkb, DNOVAL, NULL);
@@ -822,11 +816,11 @@ void render_ram_memory_stats(struct stats_memory *smc, int isdb, char *pre,
 	       "-\tkbavail", NULL, NULL, smc->availablekb, DNOVAL, NULL);
 
 	render(isdb, pre, PT_USEINT,
-	       "-\tkbmemused", NULL, NULL, smc->tlmkb - nousedmem, DNOVAL, NULL);
+	       "-\tkbmemused", NULL, NULL, smc->tlmkb - smc->availablekb, DNOVAL, NULL);
 
 	render(isdb, pre, PT_NOFLAG,
 	       "-\t%memused", NULL, NULL, NOVAL,
-	       smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+	       smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb)
 			  : 0.0,
 	       NULL);
 

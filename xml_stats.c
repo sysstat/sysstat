@@ -506,21 +506,14 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
  */
 void xml_print_ram_memory_stats(struct stats_memory *smc, int dispall, int *tab)
 {
-	unsigned long long nousedmem;
-
-	nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-	if (nousedmem > smc->tlmkb) {
-		nousedmem = smc->tlmkb;
-	}
-
 	xprintf(++(*tab), "<memfree>%llu</memfree>", smc->frmkb);
 
 	xprintf(*tab, "<avail>%llu</avail>", smc->availablekb);
 
-	xprintf(*tab, "<memused>%llu</memused>", smc->tlmkb - nousedmem);
+	xprintf(*tab, "<memused>%llu</memused>", smc->tlmkb - smc->availablekb);
 
 	xprintf(*tab, "<memused-percent>%.2f</memused-percent>",
-		smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+		smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb)
 			   : 0.0);
 
 	xprintf(*tab, "<buffers>%llu</buffers>", smc->bufkb);

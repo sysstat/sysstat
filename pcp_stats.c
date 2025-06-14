@@ -400,7 +400,7 @@ void pcp_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 	snprintf(buf, sizeof(buf), "%llu", smc->availablekb);
 	pmiPutValue("mem.util.available", NULL, buf);
 
-	snprintf(buf, sizeof(buf), "%llu", smc->tlmkb - smc->frmkb);
+	snprintf(buf, sizeof(buf), "%llu", smc->tlmkb - smc->availablekb);
 	pmiPutValue("mem.util.used", NULL, buf);
 
 	snprintf(buf, sizeof(buf), "%llu", smc->bufkb);

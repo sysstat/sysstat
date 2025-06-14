@@ -1673,7 +1673,6 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 	}
 
 	if (action & F_MAIN) {
-		unsigned long long nousedmem;
 		double mupct, copct, mu;
 
 		/* Check for min/max values */
@@ -1681,11 +1680,7 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 			     a->spmin, a->spmax, g_fields);
 
 		/* Compute %memused min/max values */
-		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-		if (nousedmem > smc->tlmkb) {
-			nousedmem = smc->tlmkb;
-		}
-		mupct = smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0;
+		mupct = smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb) : 0.0;
 		save_minmax(a, 3, mupct);
 
 		/* Compute %commit min/max values */
@@ -1694,7 +1689,7 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		save_minmax(a, 7, copct);
 
 		/* Compute memused min/max values in MB */
-		mu = ((double) (smc->tlmkb - nousedmem)) / 1024;
+		mu = ((double) (smc->tlmkb - smc->availablekb)) / 1024;
 		save_minmax(a, 2, mu);
 
 		/* MBmemfree */

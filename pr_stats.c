@@ -807,21 +807,16 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 		avg_pgtblkb     = 0,
 		avg_vmusedkb    = 0,
 		avg_availablekb = 0;
-	unsigned long long nousedmem;
 
 	if (!dispavg) {
 		/* Display instantaneous values */
-		nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-		if (nousedmem > smc->tlmkb) {
-			nousedmem = smc->tlmkb;
-		}
 		cprintf_u64(unit, 3, 9,
 			    (unsigned long long) smc->frmkb,
 			    (unsigned long long) smc->availablekb,
-			    (unsigned long long) (smc->tlmkb - nousedmem));
+			    (unsigned long long) (smc->tlmkb - smc->availablekb));
 		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 			    smc->tlmkb ?
-			    SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+			    SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb)
 			    : 0.0);
 		cprintf_u64(unit, 3, 9,
 			    (unsigned long long) smc->bufkb,
@@ -867,14 +862,13 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 	}
 	else {
 		/* Display average values */
-		nousedmem = avg_frmkb + avg_bufkb + avg_camkb + avg_slabkb;
 		cprintf_f(unit, FALSE, 3, 9, 0,
 			  (double) avg_frmkb / avg_count,
 			  (double) avg_availablekb / avg_count,
-			  (double) smc->tlmkb - ((double) nousedmem / avg_count));
+			  (double) smc->tlmkb - ((double) avg_availablekb / avg_count));
 		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2,
 			    smc->tlmkb ?
-			    SP_VALUE((double) (nousedmem / avg_count), smc->tlmkb, smc->tlmkb)
+			    SP_VALUE((double) (avg_availablekb / avg_count), smc->tlmkb, smc->tlmkb)
 			    : 0.0);
 		cprintf_f(unit, FALSE, 3, 9, 0,
 			  (double) avg_bufkb / avg_count,
@@ -932,25 +926,19 @@ void stub_print_ram_memory_stats(struct activity *a, struct stats_memory *smc,
 
 	if (DISPLAY_MINMAX(flags)) {
 		if (!dispavg) {
-			unsigned long long nousedmem;
-
 			/* Save min and max values */
 			save_extrema(a->gtypes_nr, (void *) smc, NULL,
 				     0, a->spmin, a->spmax, g_fields);
 
 			/* Save min and max values for %memused */
-			nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-			if (nousedmem > smc->tlmkb) {
-				nousedmem = smc->tlmkb;
-			}
 			save_minmax(a, 3,
-				    smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb) : 0.0);
+				    smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb) : 0.0);
 			/* Save min and max values for %commit */
 			save_minmax(a, 7, (smc->tlmkb + smc->tlskb)
 					  ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 					  : 0.0);
 			/* Save min and max values for memued */
-			save_minmax(a, 2, (double) (smc->tlmkb - nousedmem));
+			save_minmax(a, 2, (double) (smc->tlmkb - smc->availablekb));
 		}
 		else {
 			/* Print min and max values */

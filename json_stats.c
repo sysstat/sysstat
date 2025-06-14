@@ -525,13 +525,6 @@ __print_funct_t json_print_io_stats(struct activity *a, int curr, int tab,
  */
 void json_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 {
-	unsigned long long nousedmem;
-
-	nousedmem = smc->frmkb + smc->bufkb + smc->camkb + smc->slabkb;
-	if (nousedmem > smc->tlmkb) {
-		nousedmem = smc->tlmkb;
-	}
-
 	printf("\"memfree\": %llu, "
 	       "\"avail\": %llu, "
 	       "\"memused\": %llu, "
@@ -545,8 +538,8 @@ void json_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 	       "\"dirty\": %llu",
 	       smc->frmkb,
 	       smc->availablekb,
-	       smc->tlmkb - nousedmem,
-	       smc->tlmkb ? SP_VALUE(nousedmem, smc->tlmkb, smc->tlmkb)
+	       smc->tlmkb - smc->availablekb,
+	       smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb)
 			  : 0.0,
 	       smc->bufkb,
 	       smc->camkb,
