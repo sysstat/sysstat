@@ -1,5 +1,5 @@
-.\" sar manual page - (C) 1999-2024 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.\" sar manual page - (C) 1999-2025 Sebastien Godard (sysstat <at> orange.fr)
+.TH SAR 1 "JUNE 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1411,7 +1411,7 @@ due to items being in use. The impact of those factors will vary from
 system to system.
 .IP kbmemused
 Amount of used memory in kibibytes (calculated as total installed memory \-
-kbmemfree \- kbbuffers \- kbcached \- kbslab).
+kbavail).
 .IP %memused
 Percentage of used memory.
 .IP kbbuffers
