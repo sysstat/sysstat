@@ -384,6 +384,11 @@ __nr_t read_meminfo(struct stats_memory *st_memory)
 		}
 	}
 
+	/* If MemAvailable is not provided by the kernel then set it to MemFree */
+	if (!st_memory->availablekb) {
+		st_memory->availablekb = st_memory->frmkb;
+	}
+
 	fclose(fp);
 	return 1;
 }
