@@ -1409,9 +1409,11 @@ The estimate takes into account that the system needs some page cache to
 function well, and that not all reclaimable slab will be reclaimable,
 due to items being in use. The impact of those factors will vary from
 system to system.
+If not provided by the kernel, this field is the same as
+.BR "kbmemfree" "."
 .IP kbmemused
-Amount of used memory in kibibytes (calculated as total installed memory \-
-kbavail).
+Amount of used memory in kibibytes (calculated as
+.BR "total installed memory" " \- " "kbavail" ")."
 .IP %memused
 Percentage of used memory.
 .IP kbbuffers
