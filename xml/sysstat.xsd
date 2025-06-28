@@ -274,6 +274,7 @@
 		<xs:element name="active" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="inactive" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="dirty" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
+		<xs:element name="shared" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="anonpg" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="slab" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
 		<xs:element name="kstack" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1"></xs:element>
