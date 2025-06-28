@@ -220,30 +220,31 @@ struct stats_io {
  * Used by: sadc, sar, sadf, pidstat
  */
 struct stats_memory {
-	unsigned long long frmkb;
-	unsigned long long bufkb;
-	unsigned long long camkb;
-	unsigned long long tlmkb;
-	unsigned long long frskb;
-	unsigned long long tlskb;
-	unsigned long long caskb;
-	unsigned long long comkb;
-	unsigned long long activekb;
-	unsigned long long inactkb;
-	unsigned long long dirtykb;
-	unsigned long long anonpgkb;
-	unsigned long long slabkb;
-	unsigned long long kstackkb;
-	unsigned long long pgtblkb;
-	unsigned long long vmusedkb;
-	unsigned long long availablekb;
+	unsigned long long frmkb;	/* MemFree */
+	unsigned long long bufkb;	/* Buffers */
+	unsigned long long camkb;	/* Cached */
+	unsigned long long tlmkb;	/* MemTotal */
+	unsigned long long frskb;	/* SwapFree */
+	unsigned long long tlskb;	/* SwapTotal */
+	unsigned long long caskb;	/* SwapCached */
+	unsigned long long comkb;	/* Committed_AS */
+	unsigned long long activekb;	/* Active */
+	unsigned long long inactkb;	/* Inactive */
+	unsigned long long dirtykb;	/* Dirty */
+	unsigned long long anonpgkb;	/* AnonPages */
+	unsigned long long slabkb;	/* Slab */
+	unsigned long long kstackkb;	/* KernelStack */
+	unsigned long long pgtblkb;	/* PageTables */
+	unsigned long long vmusedkb;	/* VmallocUsed */
+	unsigned long long availablekb;	/* MemAvailable */
+	unsigned long long shmemkb;	/* Shmem */
 };
 
 #define STATS_MEMORY_SIZE	(sizeof(struct stats_memory))
-#define STATS_MEMORY_ULL	17
+#define STATS_MEMORY_ULL	18
 #define STATS_MEMORY_UL		0
 #define STATS_MEMORY_U		0
-#define STATS_MEMORY_XNR	21
+#define STATS_MEMORY_XNR	22
 
 /* Structure for kernel tables statistics */
 struct stats_ktables {

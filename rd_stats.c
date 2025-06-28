@@ -358,6 +358,10 @@ __nr_t read_meminfo(struct stats_memory *st_memory)
 			/* Read the amount of dirty memory in kB */
 			sscanf(line + 6, "%llu", &st_memory->dirtykb);
 		}
+		else if (!strncmp(line, "Shmem:", 6)) {
+			/* Read the amount of shared memory in kB */
+			sscanf(line + 6, "%llu", &st_memory->shmemkb);
+		}
 		else if (!strncmp(line, "Committed_AS:", 13)) {
 			/* Read the amount of commited memory in kB */
 			sscanf(line + 13, "%llu", &st_memory->comkb);

@@ -806,7 +806,8 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 		avg_kstackkb    = 0,
 		avg_pgtblkb     = 0,
 		avg_vmusedkb    = 0,
-		avg_availablekb = 0;
+		avg_availablekb = 0,
+		avg_shmemkb 	= 0;
 
 	if (!dispavg) {
 		/* Display instantaneous values */
@@ -826,10 +827,11 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 			    (smc->tlmkb + smc->tlskb) ?
 			    SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 			    : 0.0);
-		cprintf_u64(unit, 3, 9,
+		cprintf_u64(unit, 4, 9,
 			    (unsigned long long) smc->activekb,
 			    (unsigned long long) smc->inactkb,
-			    (unsigned long long) smc->dirtykb);
+			    (unsigned long long) smc->dirtykb,
+			    (unsigned long long) smc->shmemkb);
 
 		if (dispall) {
 			/* Display extended memory statistics */
@@ -859,6 +861,7 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 		avg_pgtblkb     += smc->pgtblkb;
 		avg_vmusedkb    += smc->vmusedkb;
 		avg_availablekb += smc->availablekb;
+		avg_shmemkb 	+= smc->shmemkb;
 	}
 	else {
 		/* Display average values */
@@ -878,10 +881,11 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 			    (smc->tlmkb + smc->tlskb) ?
 			    SP_VALUE(0.0, (double) (avg_comkb / avg_count), smc->tlmkb + smc->tlskb)
 			    : 0.0);
-		cprintf_f(unit, FALSE, 3, 9, 0,
+		cprintf_f(unit, FALSE, 4, 9, 0,
 			  (double) avg_activekb / avg_count,
 			  (double) avg_inactkb / avg_count,
-			  (double) avg_dirtykb / avg_count);
+			  (double) avg_dirtykb / avg_count,
+			  (double) avg_shmemkb / avg_count);
 
 		if (dispall) {
 			cprintf_f(unit, FALSE, 5, 9, 0,
@@ -897,6 +901,7 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 		avg_activekb = avg_inactkb = avg_dirtykb = 0;
 		avg_anonpgkb = avg_slabkb = avg_kstackkb = 0;
 		avg_pgtblkb = avg_vmusedkb = avg_availablekb = 0;
+		avg_shmemkb = 0;
 	}
 
 	printf("\n");
@@ -918,7 +923,7 @@ void print_ram_memory_stats(struct stats_memory *smc, int dispavg, int unit, int
 void stub_print_ram_memory_stats(struct activity *a, struct stats_memory *smc,
 				 int curr, int dispavg, int unit)
 {
-	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
+	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 7, 9, 10, 11, 12, 13, 14, 15, 16, 1, 6};
 
 	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, FIRST, 0, 9, NULL);
@@ -934,7 +939,7 @@ void stub_print_ram_memory_stats(struct activity *a, struct stats_memory *smc,
 			save_minmax(a, 3,
 				    smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb) : 0.0);
 			/* Save min and max values for %commit */
-			save_minmax(a, 7, (smc->tlmkb + smc->tlskb)
+			save_minmax(a, 8, (smc->tlmkb + smc->tlskb)
 					  ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 					  : 0.0);
 			/* Save min and max values for memued */
@@ -1040,7 +1045,7 @@ void print_swap_memory_stats(struct stats_memory *smc, int dispavg, int unit)
 void stub_print_swap_memory_stats(struct activity *a, struct stats_memory *smc,
 				  int curr, int dispavg, int unit)
 {
-	int g_fields[] = {-1, -1, -1, -1, 16, -1, 19, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	int g_fields[] = {-1, -1, -1, -1, 17, -1, 20, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
 	if (dish || (dispavg && DISPLAY_MINMAX(flags))) {
 		print_hdr_line(timestamp[!curr], a, SECOND, 0, 9, NULL);
@@ -1053,16 +1058,16 @@ void stub_print_swap_memory_stats(struct activity *a, struct stats_memory *smc,
 				     0, a->spmin, a->spmax, g_fields);
 
 			/* Save min and max values for %swpused */
-			save_minmax(a, 18,
+			save_minmax(a, 19,
 				    smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
 					       : 0.0);
 			/* Save min and max values for %swpcad */
-			save_minmax(a, 20,
+			save_minmax(a, 21,
 				    (smc->tlskb - smc->frskb) ?
 				    SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) :
 				    0.0);
 			/* Save min and max values for swpused */
-			save_minmax(a, 17, (double) (smc->tlskb - smc->frskb));
+			save_minmax(a, 18, (double) (smc->tlskb - smc->frskb));
 		}
 		else {
 			/* Print min and max values */

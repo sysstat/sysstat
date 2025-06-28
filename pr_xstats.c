@@ -191,21 +191,22 @@ void print_ram_memory_xstats(int ismax, double *spextr, int unit, int dispall)
 	cprintf_u64(unit, 3, 9,
 		    (unsigned long long) *(spextr + 4),
 		    (unsigned long long) *(spextr + 5),
-		    (unsigned long long) *(spextr + 6));
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, *(spextr + 7));
-	cprintf_u64(unit, 3, 9,
-		    (unsigned long long) *(spextr + 8),
+		    (unsigned long long) *(spextr + 7));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, *(spextr + 8));
+	cprintf_u64(unit, 4, 9,
 		    (unsigned long long) *(spextr + 9),
-		    (unsigned long long) *(spextr + 10));
+		    (unsigned long long) *(spextr + 10),
+		    (unsigned long long) *(spextr + 11),
+		    (unsigned long long) *(spextr + 6));
 
 	if (dispall) {
 		/* Display extended memory statistics */
 		cprintf_u64(unit, 5, 9,
-			    (unsigned long long) *(spextr + 11),
 			    (unsigned long long) *(spextr + 12),
 			    (unsigned long long) *(spextr + 13),
 			    (unsigned long long) *(spextr + 14),
-			    (unsigned long long) *(spextr + 15));
+			    (unsigned long long) *(spextr + 15),
+			    (unsigned long long) *(spextr + 16));
 	}
 
 	printf("\n");
@@ -228,12 +229,12 @@ void print_swap_memory_xstats(int ismax, double *spextr, int unit, int dispall)
 	print_minmax(ismax);
 
 	cprintf_u64(unit, 2, 9,
-		    (unsigned long long) *(spextr + 16),
-		    (unsigned long long) *(spextr + 17));
-	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, *(spextr + 18));
+		    (unsigned long long) *(spextr + 17),
+		    (unsigned long long) *(spextr + 18));
+	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, *(spextr + 19));
 	cprintf_u64(unit, 1, 9,
-		    (unsigned long long) *(spextr + 19));
-	cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2, *(spextr + 20));
+		    (unsigned long long) *(spextr + 20));
+	cprintf_xpc(DISPLAY_UNIT(flags), FALSE, 1, 9, 2, *(spextr + 21));
 
 	printf("\n");
 }

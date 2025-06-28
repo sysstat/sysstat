@@ -385,8 +385,10 @@ struct activity memory_act = {
 	.f_print_avg	= print_avg_memory_stats,
 #endif
 #if defined(SOURCE_SAR) || defined(SOURCE_SADF)
-	.hdr_line	= "kbmemfree;kbavail;kbmemused;%memused;kbbuffers;kbcached;kbcommit;%commit;kbactive;kbinact;kbdirty&kbanonpg;kbslab;kbkstack;kbpgtbl;kbvmused|"
-		          "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
+	.hdr_line	= "kbmemfree;kbavail;kbmemused;%memused;kbbuffers;kbcached;kbcommit;"
+			  "%commit;kbactive;kbinact;kbdirty;kbshmem&kbanonpg;kbslab;"
+			  "kbkstack;kbpgtbl;kbvmused|"
+			  "kbswpfree;kbswpused;%swpused;kbswpcad;%swpcad",
 #endif
 	.gtypes_nr	= {STATS_MEMORY_ULL, STATS_MEMORY_UL, STATS_MEMORY_U},
 	.ftypes_nr	= {0, 0, 0},
