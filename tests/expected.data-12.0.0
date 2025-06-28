@@ -43,10 +43,10 @@ Average:         0.00      0.00    189.00      0.00    401.00      0.00      0.0
 05:40:26     COM Hello world!
 Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
-05:39:33    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-05:39:34      3782488   5754884   2390192     29.35    238384   1910748   6335444     25.42   2378428   1370004        24   1599324    349640     13328     60680         0
+05:39:33    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty   kbshmem  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
+05:39:34      3782488   5754884   2390192     29.35    238384   1910748   6335444     25.42   2378428   1370004        24         0   1599324    349640     13328     60680         0
 05:40:26     COM Hello world!
-Average:      3782488   5754884   2390192     29.35    238384   1910748   6335444     25.42   2378428   1370004        24   1599324    349640     13328     60680         0
+Average:      3782488   5754884   2390192     29.35    238384   1910748   6335444     25.42   2378428   1370004        24         0   1599324    349640     13328     60680         0
 
 05:39:33    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 05:39:34     16777212         0      0.00         0      0.00

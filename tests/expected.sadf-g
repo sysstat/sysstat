@@ -1247,7 +1247,8 @@
 <polyline points="70,670 70,870 790,870" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
 <text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">MBbuffers (254.07, 254.07)</text>
 <text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">MBcached (2755.46, 2755.46)</text>
-<text x="795" y="700" style="fill: #006020; stroke: none; font-size: 12px">MBcommit (11814.31, 29392.43)</text>
+<text x="795" y="700" style="fill: #006020; stroke: none; font-size: 12px">MBshared (85.92, 85.92)</text>
+<text x="795" y="715" style="fill: #7030a0; stroke: none; font-size: 12px">MBcommit (11814.31, 29392.43)</text>
 <g transform="translate(70,870)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,9000.00 720,9000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.006804)"/>
@@ -1281,14 +1282,15 @@
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
 <path d=" M10,254.07 L20,254.07 L30,254.07 L40,254.07 M2066,254.07" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006804)"/>
 <path d=" M10,2755.46 L20,2755.46 L30,2755.46 L40,2755.46 M2066,2755.46" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006804)"/>
-<path d=" M10,11814.31 L20,29392.43 L30,11814.31 L40,11814.31 M2066,11814.31" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006804)"/>
+<path d=" M10,85.92 L20,85.92 L30,85.92 L40,85.92 M2066,85.92" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006804)"/>
+<path d=" M10,11814.31 L20,29392.43 L30,11814.31 L40,11814.31 M2066,11814.31" style="vector-effect: non-scaling-stroke; stroke: #7030a0; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.006804)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
 <text x="0" y="950" style="fill: #ffff00; stroke: none">Memory utilization (4)
 <tspan x="795" y="955" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,980 70,1180 790,1180" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="980" style="fill: #7030a0; stroke: none; font-size: 12px">%commit (48.54, 120.77)</text>
+<text x="795" y="980" style="fill: #ffff00; stroke: none; font-size: 12px">%commit (48.54, 120.77)</text>
 <g transform="translate(70,1180)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,25.00 720,25.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-1.656076)"/>
@@ -1322,7 +1324,7 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<g style="fill: #7030a0; stroke: none" transform="scale(0.348500,-1.656076)">
+<g style="fill: #ffff00; stroke: none" transform="scale(0.348500,-1.656076)">
 <rect x="0" y="0.00" height="48.54" width="31"/><rect x="0" y="0.00" height="120.77" width="31"/><rect x="0" y="0.00" height="48.54" width="39"/><rect x="18" y="0.00" height="48.54" width="22"/><rect x="2035" y="0.00" height="48.54" width="31"/>
 </g>
 </g>
@@ -1331,9 +1333,9 @@
 <tspan x="795" y="1265" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1290 70,1490 790,1490" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="1290" style="fill: #ffff00; stroke: none; font-size: 12px">MBactive (3947.64, 3947.64)</text>
-<text x="795" y="1305" style="fill: #666635; stroke: none; font-size: 12px">MBinact (1730.86, 1730.86)</text>
-<text x="795" y="1320" style="fill: #d60093; stroke: none; font-size: 12px">MBdirty (0.39, 0.39)</text>
+<text x="795" y="1290" style="fill: #666635; stroke: none; font-size: 12px">MBactive (3947.64, 3947.64)</text>
+<text x="795" y="1305" style="fill: #d60093; stroke: none; font-size: 12px">MBinact (1730.86, 1730.86)</text>
+<text x="795" y="1320" style="fill: #00bfbf; stroke: none; font-size: 12px">MBdirty (0.39, 0.39)</text>
 <g transform="translate(70,1490)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,1000.00 720,1000.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.050663)"/>
@@ -1365,20 +1367,20 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,3947.64 L20,3947.64 L30,3947.64 L40,3947.64 M2066,3947.64" style="vector-effect: non-scaling-stroke; stroke: #ffff00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.050663)"/>
-<path d=" M10,1730.86 L20,1730.86 L30,1730.86 L40,1730.86 M2066,1730.86" style="vector-effect: non-scaling-stroke; stroke: #666635; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.050663)"/>
-<path d=" M10,0.39 L20,0.39 L30,0.39 L40,0.39 M2066,0.39" style="vector-effect: non-scaling-stroke; stroke: #d60093; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.050663)"/>
+<path d=" M10,3947.64 L20,3947.64 L30,3947.64 L40,3947.64 M2066,3947.64" style="vector-effect: non-scaling-stroke; stroke: #666635; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.050663)"/>
+<path d=" M10,1730.86 L20,1730.86 L30,1730.86 L40,1730.86 M2066,1730.86" style="vector-effect: non-scaling-stroke; stroke: #d60093; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.050663)"/>
+<path d=" M10,0.39 L20,0.39 L30,0.39 L40,0.39 M2066,0.39" style="vector-effect: non-scaling-stroke; stroke: #00bfbf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.050663)"/>
 </g>
 <rect x="0" y="1550" height="300" width="1050" fill="#000000"/>
 <text x="0" y="1570" style="fill: #ffff00; stroke: none">Memory utilization (6)
 <tspan x="795" y="1575" style="fill: #ffff00; stroke: none; font-size: 12px">(Min, Max values)</tspan>
 </text>
 <polyline points="70,1600 70,1800 790,1800" style="fill: #000000; stroke: #ffffff; stroke-width: 2"/>
-<text x="795" y="1600" style="fill: #00bfbf; stroke: none; font-size: 12px">MBanonpg (2669.11, 2669.11)</text>
-<text x="795" y="1615" style="fill: #cc3300; stroke: none; font-size: 12px">MBslab (435.29, 435.29)</text>
-<text x="795" y="1630" style="fill: #50040f; stroke: none; font-size: 12px">MBkstack (14.97, 14.97)</text>
-<text x="795" y="1645" style="fill: #ffffbf; stroke: none; font-size: 12px">MBpgtbl (72.03, 72.03)</text>
-<text x="795" y="1660" style="fill: #193d55; stroke: none; font-size: 12px">MBvmused (0.00, 0.00)</text>
+<text x="795" y="1600" style="fill: #cc3300; stroke: none; font-size: 12px">MBanonpg (2669.11, 2669.11)</text>
+<text x="795" y="1615" style="fill: #50040f; stroke: none; font-size: 12px">MBslab (435.29, 435.29)</text>
+<text x="795" y="1630" style="fill: #ffffbf; stroke: none; font-size: 12px">MBkstack (14.97, 14.97)</text>
+<text x="795" y="1645" style="fill: #193d55; stroke: none; font-size: 12px">MBpgtbl (72.03, 72.03)</text>
+<text x="795" y="1660" style="fill: #00cc00; stroke: none; font-size: 12px">MBvmused (0.00, 0.00)</text>
 <g transform="translate(70,1800)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,800.00 720,800.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-0.074931)"/>
@@ -1410,11 +1412,11 @@
 <polyline points="2060,0 2060,-200" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(0.348500,1)"/>
 <text x="717" y="10" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: start" transform="rotate(45,717,0)">13:54:29</text>
 <text x="-10" y="30" style="fill: #ffff00; stroke: none; font-size: 12px; text-anchor: end">UTC</text>
-<path d=" M10,2669.11 L20,2669.11 L30,2669.11 L40,2669.11 M2066,2669.11" style="vector-effect: non-scaling-stroke; stroke: #00bfbf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
-<path d=" M10,435.29 L20,435.29 L30,435.29 L40,435.29 M2066,435.29" style="vector-effect: non-scaling-stroke; stroke: #cc3300; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
-<path d=" M10,14.97 L20,14.97 L30,14.97 L40,14.97 M2066,14.97" style="vector-effect: non-scaling-stroke; stroke: #50040f; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
-<path d=" M10,72.03 L20,72.03 L30,72.03 L40,72.03 M2066,72.03" style="vector-effect: non-scaling-stroke; stroke: #ffffbf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #193d55; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
+<path d=" M10,2669.11 L20,2669.11 L30,2669.11 L40,2669.11 M2066,2669.11" style="vector-effect: non-scaling-stroke; stroke: #cc3300; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
+<path d=" M10,435.29 L20,435.29 L30,435.29 L40,435.29 M2066,435.29" style="vector-effect: non-scaling-stroke; stroke: #50040f; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
+<path d=" M10,14.97 L20,14.97 L30,14.97 L40,14.97 M2066,14.97" style="vector-effect: non-scaling-stroke; stroke: #ffffbf; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
+<path d=" M10,72.03 L20,72.03 L30,72.03 L40,72.03 M2066,72.03" style="vector-effect: non-scaling-stroke; stroke: #193d55; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
+<path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #00cc00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-0.074931)"/>
 </g>
 </g>
 <g id="g7-1" transform="translate(0,8120)">

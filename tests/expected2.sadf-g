@@ -1371,7 +1371,8 @@
 <polyline points="2190,50 2190,250 2910,250" style="fill: #ffffff; stroke: #000000; stroke-width: 2"/>
 <text x="2915" y="50" style="fill: #696969; stroke: none; font-size: 12px">MBbuffers x100 (25407.42, 25407.42)</text>
 <text x="2915" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">MBcached x10 (27554.65, 27554.65)</text>
-<text x="2915" y="80" style="fill: #000000; stroke: none; font-size: 12px">MBcommit (11814.31, 29392.43)</text>
+<text x="2915" y="80" style="fill: #000000; stroke: none; font-size: 12px">MBshared x100 (8591.80, 8591.80)</text>
+<text x="2915" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">MBcommit (11814.31, 29392.43)</text>
 <text x="3165" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
 <tspan x="3165" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
 </text>
@@ -1412,7 +1413,8 @@
 <text x="-10" y="30" style="fill: #000000; stroke: none; font-size: 12px; text-anchor: end">GMT</text>
 <path d=" M48019,254.07 L48029,254.07 L48039,254.07 L48049,254.07 M50075,254.07" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.680447)"/>
 <path d=" M48019,2755.46 L48029,2755.46 L48039,2755.46 L48049,2755.46 M50075,2755.46" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.068045)"/>
-<path d=" M48019,11814.31 L48029,29392.43 L48039,11814.31 L48049,11814.31 M50075,11814.31" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006804)"/>
+<path d=" M48019,85.92 L48029,85.92 L48039,85.92 L48049,85.92 M50075,85.92" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.680447)"/>
+<path d=" M48019,11814.31 L48029,29392.43 L48039,11814.31 L48049,11814.31 M50075,11814.31" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-0.006804)"/>
 </g>
 <rect x="3180" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="3180" y="20" style="fill: #000000; stroke: none">Memory utilization (4)

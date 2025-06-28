@@ -61,8 +61,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 12:53:21        20.85     12.83      4.81      3.21     57.43     38.50     32.08
 
-12:53:20    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-12:53:21      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
+12:53:20    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty   kbshmem  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
+12:53:21      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396     87980   2733164    445740     15328     73760         0
 
 12:53:20    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 12:53:21     16777212         0      0.00         0      0.00
@@ -239,8 +239,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:21          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 12:53:22        56.63     41.26      8.96      6.40     17.16     20.81     32.01
 
-12:53:21    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-12:53:22      1437740   4389516   3755444     46.11    260172   2821596  30097852    120.77   4042384   1772396       396   2733164    445740     15328     73760         0
+12:53:21    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty   kbshmem  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
+12:53:22      1437740   4389516   3755444     46.11    260172   2821596  30097852    120.77   4042384   1772396       396     87980   2733164    445740     15328     73760         0
 
 12:53:21    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 12:53:22     16777212         0      0.00         0      0.00
@@ -423,8 +423,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:22          tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
 12:53:23         0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
-12:53:22    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-12:53:23      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
+12:53:22    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty   kbshmem  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
+12:53:23      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396     87980   2733164    445740     15328     73760         0
 
 12:53:22    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 12:53:23     16777212         0      0.00         0      0.00
@@ -785,10 +785,10 @@ Minimum:         0.00      0.00      0.00      0.00      0.00      0.00      0.0
 Maximum:        56.63     41.26      8.96      6.40     57.43     38.50     32.08
 Average:         0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
-Summary:    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
-Minimum:      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396   2733164    445740     15328     73760         0
-Maximum:      1437740   4389516   3755444     46.11    260172   2821596  30097852    120.77   4042384   1772396       396   2733164    445740     15328     73760         0
-Average:      1437740   4389516   3755444     46.11    260172   2821596  18097852     72.62   4042384   1772396       396   2733164    445740     15328     73760         0
+Summary:    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty   kbshmem  kbanonpg    kbslab  kbkstack   kbpgtbl  kbvmused
+Minimum:      1437740   4389516   3755444     46.11    260172   2821596  12097852     48.54   4042384   1772396       396     87980   2733164    445740     15328     73760         0
+Maximum:      1437740   4389516   3755444     46.11    260172   2821596  30097852    120.77   4042384   1772396       396     87980   2733164    445740     15328     73760         0
+Average:      1437740   4389516   3755444     46.11    260172   2821596  18097852     72.62   4042384   1772396       396     87980   2733164    445740     15328     73760         0
 
 Summary:    kbswpfree kbswpused  %swpused  kbswpcad   %swpcad
 Minimum:     16777212         0      0.00         0      0.00

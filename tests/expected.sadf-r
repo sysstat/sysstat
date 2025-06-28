@@ -287,16 +287,16 @@
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
+13:20:19 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbshmem; 87980; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 30097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
+13:20:29 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 30097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbshmem; 87980; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
+13:20:39 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbshmem; 87980; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
+13:20:49 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbshmem; 87980; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
@@ -1005,7 +1005,7 @@
 13:54:35 UTC; tps; 5153543; 6163613; rtps; 85552; 95572; wtps; 5067891; 6067891; dtps; 100; 150; bread/s; 3200690; 3202690; bwrtn/s; 821088; 821088; bdscd/s; 100; 150;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:54:35 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
+13:54:35 UTC; kbmemfree; 1437740; kbavail; 4389516; kbttlmem; 8144960; kbbuffers; 260172; kbcached; 2821596; kbcommit; 12097852; kbactive; 4042384; kbinact; 1772396; kbdirty; 396; kbshmem; 87980; kbanonpg; 2733164; kbslab; 445740; kbkstack; 15328; kbpgtbl; 73760; kbvmused; 0;
 # uptime_cs; 722372; ust_time; 1555595675; extra_next; 0; record_type; 1; HH:MM:SS; 13:54:35
 # name; A_MEMORY; nr_curr; 1; nr_alloc; 1; nr_ini; 1
 13:54:35 UTC; kbswpfree; 16777212; kbttlswp; 16777212; kbswpcad; 0;

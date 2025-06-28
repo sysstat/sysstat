@@ -3,7 +3,7 @@
 xmlns="https://sysstat.github.io"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
-	<sysdata-version>3.17</sysdata-version>
+	<sysdata-version>3.18</sysdata-version>
 	<host nodename="SYSSTAT.TEST">
 		<sysname>Linux</sysname>
 		<release>1.2.3-TEST</release>
@@ -446,6 +446,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<active>4042384</active>
 					<inactive>1772396</inactive>
 					<dirty>396</dirty>
+					<shared>87980</shared>
 					<anonpg>2733164</anonpg>
 					<slab>445740</slab>
 					<kstack>15328</kstack>
@@ -946,6 +947,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<active>4042384</active>
 					<inactive>1772396</inactive>
 					<dirty>396</dirty>
+					<shared>87980</shared>
 					<anonpg>2733164</anonpg>
 					<slab>445740</slab>
 					<kstack>15328</kstack>
@@ -1496,6 +1498,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<active>4042384</active>
 					<inactive>1772396</inactive>
 					<dirty>396</dirty>
+					<shared>87980</shared>
 					<anonpg>2733164</anonpg>
 					<slab>445740</slab>
 					<kstack>15328</kstack>
@@ -2088,6 +2091,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<active>4042384</active>
 					<inactive>1772396</inactive>
 					<dirty>396</dirty>
+					<shared>87980</shared>
 					<anonpg>2733164</anonpg>
 					<slab>445740</slab>
 					<kstack>15328</kstack>
@@ -2735,6 +2739,7 @@ xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.
 					<active>4042384</active>
 					<inactive>1772396</inactive>
 					<dirty>396</dirty>
+					<shared>87980</shared>
 					<anonpg>2733164</anonpg>
 					<slab>445740</slab>
 					<kstack>15328</kstack>
