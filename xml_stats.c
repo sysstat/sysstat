@@ -530,7 +530,9 @@ void xml_print_ram_memory_stats(struct stats_memory *smc, int dispall, int *tab)
 
 	xprintf(*tab, "<inactive>%llu</inactive>", smc->inactkb);
 
-	xprintf((*tab)--, "<dirty>%llu</dirty>", smc->dirtykb);
+	xprintf(*tab, "<dirty>%llu</dirty>", smc->dirtykb);
+
+	xprintf((*tab)--, "<shared>%llu</shared>", smc->shmemkb);
 
 	if (dispall) {
 		xprintf(++(*tab), "<anonpg>%llu</anonpg>", smc->anonpgkb);

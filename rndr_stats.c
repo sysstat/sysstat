@@ -845,9 +845,12 @@ void render_ram_memory_stats(struct stats_memory *smc, int isdb, char *pre,
 	render(isdb, pre, PT_USEINT,
 	       "-\tkbinact", NULL, NULL, smc->inactkb, DNOVAL, NULL);
 
+	render(isdb, pre, PT_USEINT,
+	       "-\tkbdirty", NULL, NULL, smc->dirtykb, DNOVAL, NULL);
+
 	ptn = dispall ? 0 : pt_newlin;
 	render(isdb, pre, PT_USEINT | ptn,
-	       "-\tkbdirty", NULL, NULL, smc->dirtykb, DNOVAL, NULL);
+	       "-\tkbshared", NULL, NULL, smc->shmemkb, DNOVAL, NULL);
 
 	if (dispall) {
 		render(isdb, pre, PT_USEINT,

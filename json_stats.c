@@ -535,7 +535,8 @@ void json_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 	       "\"commit-percent\": %.2f, "
 	       "\"active\": %llu, "
 	       "\"inactive\": %llu, "
-	       "\"dirty\": %llu",
+	       "\"dirty\": %llu, "
+	       "\"shared\": %llu",
 	       smc->frmkb,
 	       smc->availablekb,
 	       smc->tlmkb - smc->availablekb,
@@ -548,7 +549,8 @@ void json_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 					 : 0.0,
 	       smc->activekb,
 	       smc->inactkb,
-	       smc->dirtykb);
+	       smc->dirtykb,
+	       smc->shmemkb);
 
 	if (dispall) {
 		/* Display extended memory stats */

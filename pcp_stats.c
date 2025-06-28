@@ -421,6 +421,9 @@ void pcp_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 	snprintf(buf, sizeof(buf), "%llu", smc->dirtykb);
 	pmiPutValue("mem.util.dirty", NULL, buf);
 
+	snprintf(buf, sizeof(buf), "%llu", smc->shmemkb);
+	pmiPutValue("mem.util.shared", NULL, buf);
+
 	if (dispall) {
 		snprintf(buf, sizeof(buf), "%llu", smc->anonpgkb);
 		pmiPutValue("mem.util.anonpages", NULL, buf);

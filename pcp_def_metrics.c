@@ -575,6 +575,10 @@ void pcp_def_ram_memory_metrics(struct activity *a)
 		     pmiID(60, 1, 22), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
 		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
 
+	pmiAddMetric("mem.util.shared",
+		     pmiID(60, 1, 23), PM_TYPE_U64, PM_INDOM_NULL, PM_SEM_INSTANT,
+		     pmiUnits(1, 0, 0, PM_SPACE_KBYTE, 0, 0));
+
 	if (DISPLAY_MEM_ALL(a->opt_flags)) {
 
 		pmiAddMetric("mem.util.anonpages",

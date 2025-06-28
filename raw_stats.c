@@ -415,6 +415,7 @@ void raw_print_ram_memory_stats(struct stats_memory *smc, int dispall)
 	printf(" %s; %llu;", pfield(NULL, 0), smc->activekb);
 	printf(" %s; %llu;", pfield(NULL, 0), smc->inactkb);
 	printf(" %s; %llu;", pfield(NULL, 0), smc->dirtykb);
+	printf(" %s; %llu;", pfield(NULL, 0), smc->shmemkb);
 
 	if (dispall) {
 		printf(" %s; %llu;", pfield(NULL, 0), smc->anonpgkb);

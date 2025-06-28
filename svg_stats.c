@@ -1653,23 +1653,25 @@ __print_funct_t svg_print_io_stats(struct activity *a, int curr, int action, str
 void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, int action, int dispall,
 				struct svg_parm *svg_p, struct record_header *record_hdr, int *xid)
 {
-	int group[] = {3, 1, 3, 1, 3, 5};
+	int group[] = {3, 1, 4, 1, 3, 5};
 	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_LINE_GRAPH,
 			SVG_BAR_GRAPH, SVG_LINE_GRAPH, SVG_LINE_GRAPH};
 	char *title[] = {"Memory utilization (1)", "Memory utilization (2)",
 			 "Memory utilization (3)", "Memory utilization (4)",
 			 "Memory utilization (5)", "Memory utilization (6)"};
-	char *g_title[] = {"MBmemfree", "MBavail", "MBmemused", "%memused", "MBbuffers",
-			   "MBcached", "MBcommit", "%commit", "MBactive", "MBinact",
-			   "MBdirty", "MBanonpg", "MBslab", "MBkstack", "MBpgtbl",
-			   "MBvmused"};
-	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 6, 8, 9, 10, 11, 12, 13, 14, 15, 1};
+	char *g_title[] = {"MBmemfree", "MBavail", "MBmemused",
+			   "%memused",
+			   "MBbuffers", "MBcached", "MBshared", "MBcommit",
+			   "%commit",
+			   "MBactive", "MBinact", "MBdirty",
+			   "MBanonpg", "MBslab", "MBkstack", "MBpgtbl", "MBvmused"};
+	int g_fields[] = {0, 4, 5, -1, -1, -1, -1, 7, 9, 10, 11, 12, 13, 14, 15, 16, 1, 6};
 	static char **out;
 	static int *outsize;
 
 	if (action & F_BEGIN) {
 		/* Allocate arrays that will contain the graphs data */
-		out = allocate_graph_lines(a, 16, &outsize);
+		out = allocate_graph_lines(a, 17, &outsize);
 	}
 
 	if (action & F_MAIN) {
@@ -1686,7 +1688,7 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		/* Compute %commit min/max values */
 		copct = (smc->tlmkb + smc->tlskb) ?
 			SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb) : 0.0;
-		save_minmax(a, 7, copct);
+		save_minmax(a, 8, copct);
 
 		/* Compute memused min/max values in MB */
 		mu = ((double) (smc->tlmkb - smc->availablekb)) / 1024;
@@ -1712,42 +1714,46 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->camkb) / 1024,
 			 out + 5, outsize + 5, svg_p->restart);
+		/* MBshared */
+		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
+			 ((double) smc->shmemkb) / 1024,
+			 out + 6, outsize + 6, svg_p->restart);
 		/* MBcommit */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->comkb) / 1024,
-			 out + 6, outsize + 6, svg_p->restart);
+			 out + 7, outsize + 7, svg_p->restart);
 		/* MBactive */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->activekb) / 1024,
-			 out + 8, outsize + 8, svg_p->restart);
+			 out + 9, outsize + 9, svg_p->restart);
 		/* MBinact */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->inactkb) / 1024,
-			 out + 9, outsize + 9, svg_p->restart);
+			 out + 10, outsize + 10, svg_p->restart);
 		/* MBdirty */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->dirtykb) / 1024,
-			 out + 10, outsize + 10, svg_p->restart);
+			 out + 11, outsize + 11, svg_p->restart);
 		/* MBanonpg */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->anonpgkb) / 1024,
-			 out + 11, outsize + 11, svg_p->restart);
+			 out + 12, outsize + 12, svg_p->restart);
 		/* MBslab */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->slabkb) / 1024,
-			 out + 12, outsize + 12, svg_p->restart);
+			 out + 13, outsize + 13, svg_p->restart);
 		/* MBkstack */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->kstackkb) / 1024,
-			 out + 13, outsize + 13, svg_p->restart);
+			 out + 14, outsize + 14, svg_p->restart);
 		/* MBpgtbl */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->pgtblkb) / 1024,
-			 out + 14, outsize + 14, svg_p->restart);
+			 out + 15, outsize + 15, svg_p->restart);
 		/* MBvmused */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 ((double) smc->vmusedkb) / 1024,
-			 out + 15, outsize + 15, svg_p->restart);
+			 out + 16, outsize + 16, svg_p->restart);
 		/* %memused */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0, mupct,
@@ -1755,14 +1761,14 @@ void svg_print_ram_memory_stats(struct activity *a, struct stats_memory *smc, in
 		/* %commit */
 		brappend(record_hdr->ust_time - svg_p->ust_time_ref,
 			 0.0, copct,
-			 out + 7, outsize + 7, svg_p->dt, TRUE);
+			 out + 8, outsize + 8, svg_p->dt, TRUE);
 	}
 
 	if (action & F_END) {
 		int i;
 
 		/* Conversion kB -> MB */
-		for (i = 0; i < 17; i++) {
+		for (i = 0; i < 18; i++) {
 			if (g_fields[i] >= 0) {
 				*(a->spmin + g_fields[i]) /= 1024;
 				*(a->spmax + g_fields[i]) /= 1024;
@@ -1805,10 +1811,11 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 	int g_type[] = {SVG_LINE_GRAPH, SVG_BAR_GRAPH, SVG_BAR_GRAPH};
 	char *title[] = {"Swap utilization (1)", "Swap utilization (2)",
 			  "Swap utilization (3)"};
-	char *g_title[] = {"MBswpfree", "MBswpused", "MBswpcad", "%swpused",
-			    "%swpcad"};
-	int g_fields[] = {-1, -1, -1, -1, 16, -1, 18,
-			  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	char *g_title[] = {"MBswpfree", "MBswpused", "MBswpcad",
+			   "%swpused",
+			   "%swpcad"};
+	int g_fields[] = {-1, -1, -1, -1, 17, -1, 19,
+			  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	static char **out;
 	static int *outsize;
 
@@ -1827,16 +1834,16 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 		/* Compute %swpused min/max values */
 		supct = smc->tlskb ?
 			SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb) : 0.0;
-		save_minmax(a, 19, supct);
+		save_minmax(a, 20, supct);
 
 		/* Compute %swpcad min/max values */
 		scpct = (smc->tlskb - smc->frskb) ?
 			SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb) : 0.0;
-		save_minmax(a, 20, scpct);
+		save_minmax(a, 21, scpct);
 
 		/* Compute swpused min/max values in MB */
 		su = ((double) (smc->tlskb - smc->frskb)) / 1024;
-		save_minmax(a, 17, su);
+		save_minmax(a, 18, su);
 
 		/* MBswpfree */
 		lnappend(record_hdr->ust_time - svg_p->ust_time_ref,
@@ -1862,13 +1869,13 @@ __print_funct_t svg_print_swap_memory_stats(struct activity *a, struct stats_mem
 
 	if (action & F_END) {
 		/* Conversion kB -> MB */
-		*(a->spmin + 16) /= 1024;
-		*(a->spmax + 16) /= 1024;
-		*(a->spmin + 18) /= 1024;
-		*(a->spmax + 18) /= 1024;
+		*(a->spmin + 17) /= 1024;
+		*(a->spmax + 17) /= 1024;
+		*(a->spmin + 19) /= 1024;
+		*(a->spmax + 19) /= 1024;
 
 		draw_activity_graphs(3, g_type, title, g_title, NULL, group,
-				     a->spmin + 16, a->spmax + 16, out, outsize,
+				     a->spmin + 17, a->spmax + 17, out, outsize,
 				     svg_p, record_hdr, FALSE, a, xid);
 
 		/* Free remaining structures */
