@@ -1436,6 +1436,8 @@ Amount of inactive memory in kibibytes (memory which has been less recently
 used. It is more eligible to be reclaimed for other purposes).
 .IP kbdirty
 Amount of memory in kibibytes waiting to get written back to the disk.
+.IP kbshmem
+Amount of shared memory in kibibytes (memory mostly used by tmpfs).
 .IP kbanonpg
 Amount of non-file backed pages in kibibytes mapped into userspace page tables.
 .IP kbslab
