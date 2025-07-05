@@ -657,6 +657,15 @@ void upgrade_stats_memory(struct activity *act[], int p, int st_size,
 		 */
 		smc->availablekb = smc->frmkb;
 	}
+	/*
+	 * If (st_size > STATS_MEMORY_8A_SIZE) then it means we have read a file
+	 * with a stats_memory structure format from sysstat 11.7.1 or newer (meaning
+	 * the fields type is "unsigned long long" and not "unsigned long" only).
+	 * Some fields may exist or not, depending on the version of the file
+	 * being converted (e.g. shmemkb exists only starting from sysstat 12.7.8).
+	 * No conversion is needed as of now because we are still on the same
+	 * FORMAT_MAGIC number (versions 12.xx.xx).
+	 */
 }
 
 /*
