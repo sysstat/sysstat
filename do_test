@@ -25,7 +25,8 @@ elif [ "$1" = "comp" ]
 then
 	# Compile sysstat in test mode
 	make simtest TFLAGS="-DTEST -DPRE_TESTDIR=\\\"${T_SRCDIR}\\\""
-else
+elif [ "$1" != "out" ]
+then
 	if [ "$1" != "sim" ]
 	then
 		# Configure then compile sysstat in test mode
@@ -84,4 +85,12 @@ fi
 if [ "$?" = "0" -a "$1" = "all" ]
 then
 	make extratest && make distclean && ${srcdir}/configure --disable-nls --disable-sensors --disable-pcp sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig sa_dir=tests --enable-debuginfo --disable-stripping && make TFLAGS="-DTEST -DPRE_TESTDIR=\\\"${T_SRCDIR}\\\"" && echo "EXTRA TESTS: Success!"
+fi
+
+if [ "$1" = "out" ]
+then
+	# Test out-of-tree build
+	make distclean
+	mkdir -p /tmp/sysstat-out
+	cd /tmp/sysstat-out && ${T_SRCDIR}/do_test
 fi
