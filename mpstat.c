@@ -160,7 +160,7 @@ void alarm_handler(int sig)
 
 /*
  ***************************************************************************
- * SIGINT signal handler.
+ * SIGINT and SIGTERM signals handler.
  *
  * IN:
  * @sig	Signal number.
@@ -2030,15 +2030,19 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		       STATS_IRQCPU_SIZE * (cpu_nr + 1) * softirqcpu_nr);
 	}
 
-	/* Set a handler for SIGINT */
+	/* Set a handler for SIGINT and SIGTERM */
 	memset(&int_act, 0, sizeof(int_act));
 	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
+	sigaction(SIGTERM, &int_act, NULL);
 
 	__pause();
 
 	if (sigint_caught)
-		/* SIGINT signal caught during first interval: Exit immediately */
+		/*
+		 * SIGINT or SIGTERM signal caught during first interval:
+		 * Exit immediately.
+		 */
 		goto terminate;
 
 	do {
@@ -2097,7 +2101,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 			__pause();
 
 			if (sigint_caught) {
-				/* SIGINT signal caught => Display average stats */
+				/*
+				 * SIGINT or SIGTERM signal caught:
+				 * Display average stats.
+				 */
 				count = 0;
 			}
 			else {

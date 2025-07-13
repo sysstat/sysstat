@@ -124,7 +124,7 @@ void alarm_handler(int sig)
 
 /*
  * **************************************************************************
- * SIGINT signal handler.
+ * SIGINT and SIGTERM signals handler.
  *
  * IN:
  * @sig	Signal number.
@@ -668,10 +668,11 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 	sigaction(SIGALRM, &alrm_act, NULL);
 	alarm(interval);
 
-	/* Set a handler for SIGINT */
+	/* Set a handler for SIGINT and SIGTERM */
 	memset(&int_act, 0, sizeof(int_act));
 	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
+	sigaction(SIGTERM, &int_act, NULL);
 
 	do {
 
@@ -707,7 +708,10 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 			__pause();
 
 			if (sigint_caught) {
-				/* SIGINT signal caught => Terminate JSON output properly */
+				/*
+				 * SIGINT or SIGTERM signal caught:
+				 * Terminate JSON output properly.
+				 */
 				count = 0;
 			}
 			else if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {	/* count != 0 */

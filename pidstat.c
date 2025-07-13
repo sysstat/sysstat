@@ -119,7 +119,7 @@ void alarm_handler(int sig)
 
 /*
  ***************************************************************************
- * SIGINT and SIGCHLD signals handler.
+ * SIGINT, SIGTERM and SIGCHLD signals handler.
  *
  * IN:
  * @sig	Signal number.
@@ -3631,16 +3631,20 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		memcpy(plist->pstats[2], plist->pstats[0], PID_STATS_SIZE);
 	}
 
-	/* Set a handler for SIGINT */
+	/* Set a handler for SIGINT and SIGTERM */
 	memset(&int_act, 0, sizeof(int_act));
 	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
+	sigaction(SIGTERM, &int_act, NULL);
 
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	__pause();
 
 	if (signal_caught && interval)
-		/* SIGINT/SIGCHLD signals caught during first interval: Exit immediately */
+		/*
+		 * SIGINT/SIGTERM/SIGCHLD signals caught during first interval:
+		 * Exit immediately.
+		 */
 		goto terminate;
 
 	do {
@@ -3679,7 +3683,10 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 			__pause();
 
 			if (signal_caught) {
-				/* SIGINT/SIGCHLD signals caught => Display average stats */
+				/*
+				 * SIGINT/SIGTERM/SIGCHLD signals caught:
+				 * Display average stats.
+				 */
 				count = 0;
 			}
 			else {

@@ -234,10 +234,10 @@ void alarm_handler(int sig)
 
 /*
  ***************************************************************************
- * SIGINT signal handler.
+ * SIGINT and SIGTERM signal handler.
  *
  * IN:
- * @sig	Signal number.
+ * @sig	Signal number (SIGINT or SIGTERM).
  ***************************************************************************
  */
 void int_handler(int sig)
@@ -255,8 +255,9 @@ void int_handler(int sig)
 	 * When starting sar then pressing ctrl/c, SIGINT is received
 	 * by sadc, not sar. So send SIGINT to sar so that average stats
 	 * can be displayed.
+	 * If SIGTERM has been received by sadc then also send it to sar.
 	 */
-	if (kill(ppid, SIGINT) < 0) {
+	if (kill(ppid, sig) < 0) {
 		exit(1);
 	}
 }
@@ -1072,10 +1073,11 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 	char new_ofile[MAX_FILE_LEN] = "";
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
 
-	/* Set a handler for SIGINT */
+	/* Set a handler for SIGINT and SIGTERM */
 	memset(&int_act, 0, sizeof(int_act));
 	int_act.sa_handler = int_handler;
 	sigaction(SIGINT, &int_act, NULL);
+	sigaction(SIGTERM, &int_act, NULL);
 
 	/* Main loop */
 	do {
@@ -1166,12 +1168,15 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		}
 
 		if (count) {
-			/* Wait for a signal (probably SIGALRM or SIGINT) */
+			/*
+			 * Wait for a signal
+			 * (probably SIGALRM or SIGINT or even SIGTERM).
+			 */
 			__pause();
 		}
 
 		if (sigint_caught)
-			/* SIGINT caught: Stop now */
+			/* SIGINT or SIGTERM caught: Stop now */
 			break;
 
 		/* Rotate activity file if necessary */

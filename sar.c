@@ -233,7 +233,7 @@ void which_sadc(void)
 
 /*
  ***************************************************************************
- * SIGINT signal handler.
+ * SIGINT and SIGTERM signals handler.
  *
  * IN:
  * @sig	Signal number.
@@ -242,7 +242,7 @@ void which_sadc(void)
 void int_handler(int sig)
 {
 	sigint_caught = 1;
-	printf("\n");	/* Skip "^C" displayed on screen */
+	printf("\n");	/* Skip "^C" displayed on screen (SIGINT) */
 
 }
 
@@ -672,7 +672,7 @@ void read_sadc_stat_bunch(int curr)
 	/* Read record header (type is always R_STATS since it is read from sadc) */
 	if (sa_read(&record_hdr[curr], RECORD_HEADER_SIZE)) {
 		/*
-		 * SIGINT (sent by sadc) is likely to be received
+		 * SIGINT or SIGTERM (sent by sadc) is likely to be received
 		 * while we are stuck in sa_read().
 		 * If this happens then no data have to be read.
 		 */
@@ -1240,11 +1240,12 @@ void read_stats(void)
 	/* Save the first stats collected. Will be used to compute the average */
 	copy_structures(act, id_seq, record_hdr, 2, 0);
 
-	/* Set a handler for SIGINT */
+	/* Set a handler for SIGINT and SIGTERM */
 	memset(&int_act, 0, sizeof(int_act));
 	int_act.sa_handler = int_handler;
 	int_act.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &int_act, NULL);
+	sigaction(SIGTERM, &int_act, NULL);
 
 	/* Main loop */
 	do {
@@ -1253,8 +1254,8 @@ void read_stats(void)
 		read_sadc_stat_bunch(curr);
 		if (sigint_caught) {
 			/*
-			 * SIGINT signal caught (it is sent by sadc).
-			 * => Display average stats.
+			 * SIGINT or SIGTERM signal caught (it is sent by sadc):
+			 * Display average stats.
 			 */
 			curr ^= 1; /* No data retrieved from last read */
 			break;
