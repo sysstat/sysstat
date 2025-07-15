@@ -2,7 +2,7 @@
 if [ ! -z "$VER_JSON" ]; then
 	rm -f tests/root
 	ln -s ${T_SRCDIR}/tests/root1 tests/root
-	./mpstat -P ALL -T 1 2 -o JSON | $VER_JSON >/dev/null
+	./mpstat -P ALL -T 1 2 -o JSON -U | $VER_JSON >/dev/null
 else
 	echo Skipped
 	touch tests/SKIPPED
