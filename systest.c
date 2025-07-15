@@ -25,6 +25,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <time.h>
 #include <unistd.h>
 #include <dirent.h>
@@ -172,7 +173,7 @@ void next_time_step(void)
 	if (access(testf, F_OK) < 0) {
 		if (errno == ENOENT) {
 			/* No more root directories: Simulate a Ctrl/C */
-			int_handler(0);
+			int_handler(SIGINT);
 			return;
 		}
 	}
