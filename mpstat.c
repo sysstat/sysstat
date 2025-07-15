@@ -1754,7 +1754,11 @@ void write_stats(int curr, int dis)
 	char cur_time[2][TIMESTAMP_LEN];
 
 	/* Get previous timestamp */
-	if (is_iso_time_fmt()) {
+	if (PRINT_SEC_EPOCH(flags)) {
+		snprintf(cur_time[!curr], sizeof(cur_time[!curr]), "%ld", mktime(&mp_tstamp[!curr]));
+		cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
+	}
+	else if (is_iso_time_fmt()) {
 		strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%H:%M:%S", &mp_tstamp[!curr]);
 	}
 	else {
@@ -1762,7 +1766,11 @@ void write_stats(int curr, int dis)
 	}
 
 	/* Get current timestamp */
-	if (is_iso_time_fmt()) {
+	if (PRINT_SEC_EPOCH(flags)) {
+		snprintf(cur_time[curr], sizeof(cur_time[curr]), "%ld", mktime(&mp_tstamp[curr]));
+		cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
+	}
+	else if (is_iso_time_fmt()) {
 		strftime(cur_time[curr], sizeof(cur_time[curr]), "%H:%M:%S", &mp_tstamp[curr]);
 	}
 	else {
@@ -2311,6 +2319,11 @@ int main(int argc, char **argv)
 				case 'T':
 					/* Display logical topology */
 					flags |= F_TOPOLOGY;
+					break;
+
+				case 'U':
+					/* Display timestamp in sec since the epoch */
+					flags |= F_SEC_EPOCH;
 					break;
 
 				case 'u':

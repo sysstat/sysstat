@@ -47,7 +47,8 @@
 #define F_OPTION_P	0x01
 /* Indicate that option -A has been used */
 #define F_OPTION_A	0x02
-/* Unused		0x04 */
+/* Indicate that option -U has been used */
+#define F_SEC_EPOCH	0x04
 /* Indicate that option -N has been used */
 #define F_OPTION_N	0x08
 /* Display topology */
@@ -57,6 +58,7 @@
 
 #define USE_OPTION_P(m)		(((m) & F_OPTION_P) == F_OPTION_P)
 #define USE_OPTION_A(m)		(((m) & F_OPTION_A) == F_OPTION_A)
+#define PRINT_SEC_EPOCH(m)	(((m) & F_SEC_EPOCH) == F_SEC_EPOCH)
 #define USE_OPTION_N(m)		(((m) & F_OPTION_N) == F_OPTION_N)
 #define DISPLAY_TOPOLOGY(m)	(((m) & F_TOPOLOGY) == F_TOPOLOGY)
 #define USE_OPTION_H(m)		(((m) & F_OPTION_H) == F_OPTION_H)
