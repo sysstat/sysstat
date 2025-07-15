@@ -1,18 +1,18 @@
-.\" iostat manual page - (C) 1998-2024 Sebastien Godard (sysstat <at> orange.fr)
-.TH IOSTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.\" iostat manual page - (C) 1998-2025 Sebastien Godard (sysstat <at> orange.fr)
+.TH IOSTAT 1 "JULY 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 iostat \- Report Central Processing Unit (CPU) statistics and input/output
 statistics for devices and partitions.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
+.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
 .BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ \-\-debuginfo ] [ " "interval " "[ " "count " "] ] "
 .\}
 .el \{
-.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
+.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
 .BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ " "interval " "[ " "count " "] ]"
@@ -352,7 +352,10 @@ characters wide screens.
 .B \-t
 Print the time for each report displayed. The timestamp format may depend
 on the value of the
-.BR "S_TIME_FORMAT " "environment variable (see below)."
+.BR "S_TIME_FORMAT " "environment variable (see below) and on whether option -U has been used."
+.TP
+.B \-U
+Display timestamp (UTC - Coordinated Universal Time) in seconds from the epoch.
 .TP
 .B \-V
 Print version number then exit.

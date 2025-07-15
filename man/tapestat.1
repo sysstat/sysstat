@@ -1,11 +1,11 @@
 .\" tapestat manual page - (C) 2015 Hewlett-Packard Development Company, L.P.
 .\" Maintained by Sebastien Godard (sysstat <at> orange.fr)
-.TH TAPESTAT 1 "DECEMBER 2024" Linux "Linux User's Manual" -*- nroff -*-
+.TH TAPESTAT 1 "JULY 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 tapestat \- Report tape statistics.
 
 .SH SYNOPSIS
-.B tapestat [ \-k | \-m ] [ \-t ] [ \-V ] [ \-y ] [ \-z ] [ \-\-human ] [ \-o JSON ] [
+.B tapestat [ \-k | \-m ] [ \-t ] [ \-U ] [ \-V ] [ \-y ] [ \-z ] [ \-\-human ] [ \-o JSON ] [
 .IB "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
@@ -93,7 +93,10 @@ in the future.
 .B \-t
 Display time stamps. The time stamp format may depend
 on the value of the
-.BR "S_TIME_FORMAT " "environment variable (see below)."
+.BR "S_TIME_FORMAT " "environment variable (see below) and on whether option -U has been used."
+.TP
+.B \-U
+Display timestamp (UTC - Coordinated Universal Time) in seconds from the epoch.
 .TP
 .B \-V
 Print version and exit.
