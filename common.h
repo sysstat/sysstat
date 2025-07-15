@@ -77,10 +77,12 @@ enum {
 #define X_D_DEBUG		0x01
 #define X_D_ISO			0x02
 #define X_D_JSON_OUTPUT		0x04
+#define X_D_SEC_EPOCH		0x08
 
 #define DISPLAY_DEBUG(m)	(((m) & X_D_DEBUG)       == X_D_DEBUG)
 #define DISPLAY_ISO(m)		(((m) & X_D_ISO)         == X_D_ISO)
 #define DISPLAY_JSON_OUTPUT(m)	(((m) & X_D_JSON_OUTPUT) == X_D_JSON_OUTPUT)
+#define DISPLAY_SEC_EPOCH(m)	(((m) & X_D_SEC_EPOCH)   == X_D_SEC_EPOCH)
 
 /* Files */
 #define __DISKSTATS		"diskstats"

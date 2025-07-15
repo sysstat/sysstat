@@ -105,7 +105,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"));
+			  "[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"));
 	exit(1);
 }
 
@@ -800,6 +800,12 @@ int main(int argc, char **argv)
 				case 't':
 					/* Display timestamp */
 					flags |= T_D_TIMESTAMP;
+					break;
+
+				case 'U':
+					/* Display timestamp in sec since the epoch */
+					flags |= T_D_TIMESTAMP;
+					xflags |= X_D_SEC_EPOCH;
 					break;
 
 				case 'y':

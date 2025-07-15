@@ -81,11 +81,11 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"));
+			  "[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"));
+			  "[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"));
 #endif
 	exit(1);
 }
@@ -736,6 +736,12 @@ int main(int argc, char **argv)
 				case 't':
 					/* Display timestamp */
 					flags |= I_D_TIMESTAMP;
+					break;
+
+				case 'U':
+					/* Display timestamp in sec since the epoch */
+					flags |= I_D_TIMESTAMP;
+					xflags |= X_D_SEC_EPOCH;
 					break;
 
 				case 'y':

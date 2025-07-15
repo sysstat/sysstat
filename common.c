@@ -1846,7 +1846,11 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 {
 	char timestamp[TIMESTAMP_LEN];
 
-	if (DISPLAY_ISO(xflags)) {
+	if (DISPLAY_SEC_EPOCH(xflags)) {
+		snprintf(timestamp, sizeof(timestamp), "%ld", mktime(rectime));
+		timestamp[sizeof(timestamp) - 1] = '\0';
+	}
+	else if (DISPLAY_ISO(xflags)) {
 		strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
 	}
 	else {
