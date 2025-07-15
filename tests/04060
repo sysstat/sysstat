@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./tapestat -U 1 2 > tests/out.tapestat-U.tmp && diff -u ${T_SRCDIR}/tests/expected.tapestat-U tests/out.tapestat-U.tmp
