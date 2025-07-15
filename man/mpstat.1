@@ -1,10 +1,10 @@
-.\" mpstat manual page - (C) 2000-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH MPSTAT 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.\" mpstat manual page - (C) 2000-2025 Sebastien Godard (sysstat <at> orange.fr)
+.TH MPSTAT 1 "JULY 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 
 .SH SYNOPSIS
-.B mpstat [ \-A ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-H ] [ \-n ] [ \-u ] [ \-T ] [ \-V ] [ \-I {
+.B mpstat [ \-A ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-H ] [ \-n ] [ \-U ] [ \-u ] [ \-T ] [ \-V ] [ \-I {
 .IB "keyword" "[,...] | ALL } ] [ \-N { " "node_list " "| ALL } ] [ \-o JSON ] [ \-P {"
 .IB "cpu_list " "| ALL } ] [ " "interval " "[ " "count " "] ]"
 
@@ -133,6 +133,9 @@ Logical socket number.
 .IP NODE
 Logical NUMA node number.
 .RE
+.TP
+.B \-U
+Display timestamp (UTC - Coordinated Universal Time) in seconds from the epoch.
 .TP
 .B \-u
 Report CPU utilization. The following values are displayed:
