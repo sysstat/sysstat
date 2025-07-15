@@ -139,7 +139,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -A ] [ -H ] [ -n ] [ -T ] [ -u ] [ -V ]\n"
+			  "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 			  "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"));
 	exit(1);
