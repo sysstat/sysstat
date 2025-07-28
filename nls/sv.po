@@ -5,15 +5,15 @@
 # Daniel Nylander <po@danielnylander.se>, 2006, 2008.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015, 2016.
 # Göran Uddeborg <goeran@uddeborg.se>, 2016, 2017, 2018, 2019, 2020.
-# Luna Jernberg <droidbittin@gmail.com>, 2022, 2023.
+# Luna Jernberg <droidbittin@gmail.com>, 2022, 2023, 2025.
 #
 # $Revision: 1.34 $
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.7.2\n"
+"Project-Id-Version: sysstat 12.7.7\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2023-01-13 17:54+0100\n"
-"PO-Revision-Date: 2023-01-15 16:32+0100\n"
+"POT-Creation-Date: 2025-02-02 09:04+0100\n"
+"PO-Revision-Date: 2025-02-24 14:51+0100\n"
 "Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -21,42 +21,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.5\n"
 
-#: cifsiostat.c:75 iostat.c:89 mpstat.c:134 sar.c:108 tapestat.c:104
+#: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ]\n"
 
-#: cifsiostat.c:79
+#: cifsiostat.c:82
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"
 msgstr ""
 "Flaggor är:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:83
+#: cifsiostat.c:86
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"
 msgstr ""
 "Flaggor är:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"
 
-#: common.c:85
+#: cifsiostat.c:586
+#, c-format
+msgid "No CIFS filesystems with statistics found\n"
+msgstr "Inga CIFS-filsystem med statistik hittades\n"
+
+#: common.c:100
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "sysstat version %s\n"
 
-#: count.c:118 ioconf.c:480 rd_stats.c:86 sa_common.c:1856 sadc.c:747
-#: sadc.c:810
+#: count.c:118 ioconf.c:480 rd_stats.c:86 sa_common.c:2011 sadc.c:741
+#: sadc.c:804
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Kan inte öppna %s: %s\n"
@@ -66,7 +71,7 @@ msgstr "Kan inte öppna %s: %s\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Kan inte hantera så många processorer!\n"
 
-#: iostat.c:92
+#: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
@@ -84,7 +89,7 @@ msgstr ""
 "[ <enhet> [...] | ALL ] [ --debuginfo ]\n"
 "\n"
 
-#: iostat.c:99
+#: iostat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
@@ -102,12 +107,12 @@ msgstr ""
 "[ <enhet> [...] | ALL ]\n"
 "\n"
 
-#: iostat.c:2179 sa_common.c:2404
+#: iostat.c:2192 sa_common.c:2593
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Ogiltig typ av persistent enhetsnamn\n"
 
-#: mpstat.c:137
+#: mpstat.c:141
 #, c-format
 msgid ""
 "Options are:\n"
@@ -121,60 +126,65 @@ msgstr ""
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu-lista> | ALL } ]\n"
 
 # sar.c:
-#: mpstat.c:1773 pidstat.c:2312 sar.c:385
+#: mpstat.c:1738 pidstat.c:3530 sar.c:390
 msgid "Average:"
 msgstr "Genomsnitt:"
 
-#: pidstat.c:91
+#: pidstat.c:96
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ] [ -e <program> <argument> ]\n"
 
-#: pidstat.c:94
+#: pidstat.c:99
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 msgstr ""
 "Flaggor är:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <användarnamn> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <kommando> ] [ -G <processnamn> ]\n"
-"[ -p { <pid> [,…] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <kommando> ] [ -G <process_namn> ]\n"
+"[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 
-#: pidstat.c:225 sa_common.c:368
+#: pidstat.c:230 sa_common.c:376
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Begärda aktiviteter är inte tillgängliga\n"
 
-#: pr_stats.c:2682 pr_stats.c:2689 pr_stats.c:2795 pr_stats.c:2842
+#: pr_stats.c:3734 pr_stats.c:3741 pr_stats.c:3859 pr_stats.c:3945
+#: pr_stats.c:3959 sar.c:393
 msgid "Summary:"
 msgstr "Sammanfattning:"
+
+#: pr_stats.c:3958
+msgid "Last:"
+msgstr "Senaste:"
 
 #: rd_stats.c:427
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "Kan inte läsa %s\n"
 
-#: sa_common.c:301
+#: sa_common.c:309
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Fil skapad av sar/sadc från sysstat version %d.%d.%d"
 
-#: sa_common.c:334
+#: sa_common.c:340
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Ogiltig systemaktivitetsfil: %s\n"
 
-#: sa_common.c:344
+#: sa_common.c:352
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Aktuell sysstat-version kan inte läsa formatet på denna fil (%#x)\n"
 
-#: sa_common.c:348
+#: sa_common.c:356
 #, c-format
 msgid ""
 "Try to convert it to current format. Enter:\n"
@@ -183,30 +193,43 @@ msgstr ""
 "Försök att konvertera den till nuvarande format. Ange:\n"
 "\n"
 
-#: sa_common.c:351
+#: sa_common.c:359
 #, c-format
 msgid "You should then be able to read the new file created (%s.new)\n"
 msgstr "Du bör då kunna läsa den nya filen som skapats (%s.new)\n"
 
-#: sa_common.c:1435
+#: sa_common.c:1585
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "Fel vid inläsning av systemaktivitetsfil: %s\n"
 
-#: sa_common.c:1445
+#: sa_common.c:1595
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Oväntat slut på systemaktivitetsfil\n"
 
-#: sa_common.c:1859
+#: sa_common.c:1751
+#, c-format
+msgid "Invalid data read\n"
+msgstr "Ogiltig data läst\n"
+
+#: sa_common.c:2014
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Kontrollera om datainsamling är aktiverad\n"
 
-#: sa_common.c:2194
+#: sa_common.c:2349
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Begärda aktiviteter inte tillgängliga i filen %s\n"
+
+#: sa_common.c:3830
+msgid "Maximum:"
+msgstr "Maximalt:"
+
+#: sa_common.c:3831
+msgid "Minimum:"
+msgstr "Minimalt:"
 
 #: sa_conv.c:99
 #, c-format
@@ -222,21 +245,21 @@ msgstr ""
 "\n"
 "Processoraktivitet hittades inte i fil. Avbryter…\n"
 
-#: sa_conv.c:408
+#: sa_conv.c:408 sa_conv.c:1628
 #, c-format
 msgid ""
 "\n"
-"Invalid data found. Aborting...\n"
+"%s: Invalid data found. Aborting...\n"
 msgstr ""
 "\n"
-"Ogiltig data hittad. Avbryter…\n"
+"%s: Ogiltig data hittad. Avbryter…\n"
 
-#: sa_conv.c:1931
+#: sa_conv.c:1941
 #, c-format
 msgid "Statistics:\n"
 msgstr "Statistik:\n"
 
-#: sa_conv.c:2032
+#: sa_conv.c:2042
 #, c-format
 msgid ""
 "\n"
@@ -245,22 +268,22 @@ msgstr ""
 "\n"
 "Filformatet är redan aktuellt\n"
 
-#: sa_conv.c:2044
+#: sa_conv.c:2054
 #, c-format
 msgid "HZ: Using current value: %lu\n"
 msgstr "HZ: Använder nuvarande värde: %lu\n"
 
-#: sa_conv.c:2075
+#: sa_conv.c:2085
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "Filen konverterades till sysstat-format version %s\n"
 
-#: sadc.c:98
+#: sadc.c:97
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ] [ <utfil> ]\n"
 
-#: sadc.c:101
+#: sadc.c:100
 #, c-format
 msgid ""
 "Options are:\n"
@@ -271,122 +294,123 @@ msgstr ""
 "[ -C <kommentar> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:272
+#: sadc.c:271
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Kan inte skriva data till systemaktivitetsfil: %s\n"
 
-#: sadc.c:1040
+#: sadc.c:1029
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Kan inte lägga till data till den filen (%s)\n"
 
-#: sadf.c:119
+#: sadf.c:118
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "Användning: %s [ flaggor ] [ <intervall> [ <antal> ] ] [ <datafil> | -[0-9]+ ]\n"
 
-#: sadf.c:122
+#: sadf.c:121
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
-"[ -s [ <time_start> ] ] [ -e [ <time_end> ] ]\n"
+"[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Flaggor är:\n"
 "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <flaggor> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
-"[ --dev=<enhets-lista> ] [ --fs=<filsystem-lista> ] [ --iface=<gränssnitts-lista> ] [ --int=<heltals-lista> ]\n"
+"[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
+"\n"
 "[ -s [ <tid-start> ] ] [ -e [ <slut-tid> ] ]\n"
 "[ -- <sar-flaggor> ]\n"
 
-#: sadf.c:1896
+#: sadf.c:2042
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "PCP-stöd är inte inkompilerat\n"
 
-#: sadf_misc.c:1252
+#: sadf_misc.c:1249
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Systemaktivitetsfil: %s (%#x)\n"
 
-#: sadf_misc.c:1261
+#: sadf_misc.c:1258
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Genuin sa-datafil: %s (%x)\n"
 
-#: sadf_misc.c:1262
+#: sadf_misc.c:1259
 msgid "no"
 msgstr "nej"
 
-#: sadf_misc.c:1262
+#: sadf_misc.c:1259
 msgid "yes"
 msgstr "ja"
 
-#: sadf_misc.c:1265
+#: sadf_misc.c:1262
 #, c-format
 msgid "Host: "
 msgstr "Värd: "
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1272
 #, c-format
 msgid "File date: %s\n"
 msgstr "Fildatum: %s\n"
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1275
 #, c-format
 msgid "File time: "
 msgstr "Filtid: "
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1280
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Tidszon: %s\n"
 
-#: sadf_misc.c:1286
+#: sadf_misc.c:1283
 #, c-format
-msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-msgstr "Filsammansättning: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
+msgstr "Filsammansättning:(%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1291
+#: sadf_misc.c:1288
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Storlek på en lång int: %d\n"
 
-#: sadf_misc.c:1293
+#: sadf_misc.c:1290
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Antal aktiviteter i filen: %u\n"
 
-#: sadf_misc.c:1295
+#: sadf_misc.c:1292
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Extra strukturer tillgängliga: %c\n"
 
-#: sadf_misc.c:1298
+#: sadf_misc.c:1295
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista över aktiviteter:\n"
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1306
 msgid "Unknown activity"
 msgstr "Okänd aktivitet"
 
-#: sadf_misc.c:1317
+#: sadf_misc.c:1314
 #, c-format
 msgid " \t[Unknown format]"
 msgstr "\t[Okänt format]"
 
-#: sar.c:123
+#: sar.c:128
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
+"[ -v ] [ -W ] [ -w ] [ -x ] [ -y ] [ -z ]\n"
 "[ -I [ SUM | ALL ] ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -q [ <keyword> [,...] | ALL ] ]\n"
@@ -399,52 +423,52 @@ msgstr ""
 "Flaggor är:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
-"[ -I [SUM | ALL } ] [ -P { <cpulista> | ALL } ]\n"
-"[ -m { <nyckelord> [,…] | ALL } ] [ -n { <nyckelord> [,…] | ALL } ]\n"
-"[ -q [ <nyckelord> [,…] | ALL ] ]\n"
+"[ -v ] [ -W ] [ -w ] [ -x ] [ -y ] [ -z ]\n"
+"[ -I [ SUM | ALL ] ] [ -P { <cpulista> | ALL } ]\n"
+"[ -m { <nyckelord> [,...] | ALL } ] [ -n { <nyckelord> [,...] | ALL } ]\n"
+"[ -q [ <nyckelord> [,...] | ALL ] ]\n"
 "[ --dev=<enhets-lista> ] [ --fs=<filsystem-lista> ] [ --iface=<gränssnitts-lista> ] [--int=<heltals-lista> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
-"[ -j { SID | ID | LABEL | PATH | UUID | … } ]\n"
+"[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
 "[ -f [ <filnamn> ] | -o [ <filnamn> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <start-tid> ] ] [ -e [ <slut-tid> ] ]\n"
 
-#: sar.c:150
+#: sar.c:155
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "Huvudflaggor och rapporter (rapportnamn mellan hakparenteser):\n"
 
-#: sar.c:151
+#: sar.c:156
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\tStatistik över sidväxling [A_PAGE]\n"
 
-#: sar.c:152
+#: sar.c:157
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr "\t-b\tStatistik över I/O och överföringshastighet [A_IO]\n"
 
-#: sar.c:153
+#: sar.c:158
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\tStatistik över blockenheter [A_DISK]\n"
 
-#: sar.c:154
+#: sar.c:159
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ MOUNT ]\n"
 
-#: sar.c:155
+#: sar.c:160
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\tStatistik över filsystem [A_FS]\n"
 
-#: sar.c:156
+#: sar.c:161
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\tStatistik över användning av stora sidor [A_HUGE]\n"
 
-#: sar.c:157
+#: sar.c:162
 #, c-format
 msgid ""
 "\t-I [ SUM | ALL ]\n"
@@ -453,7 +477,7 @@ msgstr ""
 "\t-I [ SUM | ALL ]\n"
 "\t\tStatistik över avbrott [A_IRQ]\n"
 
-#: sar.c:159
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -478,7 +502,7 @@ msgstr ""
 "\t\tTEMP\tEnhetstemperaturer\n"
 "\t\tUSB\tUSB-enheter som finns kopplade till systemet\n"
 
-#: sar.c:169
+#: sar.c:174
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -529,7 +553,7 @@ msgstr ""
 "\t\tFC\tFiberkanal HBA:er\n"
 "\t\tSOFT\tProgramvarubaserad nätverksbearbetning\n"
 
-#: sar.c:192
+#: sar.c:197
 #, c-format
 msgid ""
 "\t-q [ <keyword> [,...] | PSI | ALL ]\n"
@@ -548,7 +572,7 @@ msgstr ""
 "\t\tIO\tTryck/uppehållsstatistik för I/O [A_PSI_IO]\n"
 "\t\tMEM\tTryck/uppehållsstatistik för minne [A_PSI_MEM]\n"
 
-#: sar.c:199
+#: sar.c:204
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -557,12 +581,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tStatistik över minnesanvändning [A_MEMORY]\n"
 
-#: sar.c:201
+#: sar.c:206
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\tStatistik över användning av växlingsutrymme [A_MEMORY]\n"
 
-#: sar.c:202
+#: sar.c:207
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -571,76 +595,76 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistik över processoranvändning [A_CPU]\n"
 
-#: sar.c:204
+#: sar.c:209
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\tStatistik över kärntabeller [A_KTABLES]\n"
 
-#: sar.c:205
+#: sar.c:210
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\tStatistik över växling [A_SWAP]\n"
 
-#: sar.c:206
+#: sar.c:211
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\tStatistik över processkapande och systemväxling [A_PCSW]\n"
 
-#: sar.c:207
+#: sar.c:212
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tStatistik över TTY-enheter [A_SERIAL]\n"
 
-#: sar.c:221
+#: sar.c:226
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Datainsamlare kommer att eftersökas i SÖKVÄG\n"
 
-#: sar.c:224
+#: sar.c:229
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Datainsamlare hittade: %s\n"
 
-#: sar.c:289
+#: sar.c:294
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Oväntat slut på datainsamling\n"
 
-#: sar.c:294
+#: sar.c:299
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Inkonsekvent indata\n"
 
-#: sar.c:895
+#: sar.c:914
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Använder fel datainsamlare från en annan version av sysstat\n"
 
-#: sar.c:1553
+#: sar.c:1603
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "flaggorna -f och -o är ömsesidigt uteslutande\n"
 
-#: sar.c:1563
+#: sar.c:1613
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Läser inte från en systemaktivitetsfil (använd flaggan -f)\n"
 
-#: sar.c:1712
+#: sar.c:1762
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Kan inte hitta datainsamlaren (%s)\n"
 
-#: tapestat.c:106
+#: tapestat.c:107
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
 "Flaggor är:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:273
+#: tapestat.c:290
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Inga bandenheter med statistik hittades\n"

@@ -1,9 +1,9 @@
 # NLS support for the sysstat package.
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright © 2003, 2022, 2023, 2025 Free Software Foundation, Inc.
 # This file is distributed under the same license as the sysstat package.
 #
 # Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
-# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2022 - 2023.
+# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2022 - 2025.
 #
 # Cronologia traducerii fișierului „sysstat”:
 # Traducerea inițială, făcută de EH, pentru versiunea sysstat 4.1.2
@@ -17,14 +17,15 @@
 # Actualizare a traducerii pentru versiunea 12.5.6, făcută de R-GC, feb-2022.
 # Actualizare a traducerii pentru versiunea 12.7.2, făcută de R-GC, ian-2023.
 # Corecturi pentru versiunea 12.7.2, făcute de R-GC, sep-2023.
+# Actualizare a traducerii pentru versiunea 12.7.7, făcută de R-GC, feb-2025.
 # Actualizare a traducerii pentru versiunea Y, făcută de X, Z(anul).
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sysstat 12.7.2\n"
+"Project-Id-Version: sysstat 12.7.7\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2023-01-13 17:54+0100\n"
-"PO-Revision-Date: 2023-09-16 01:13+0200\n"
+"POT-Creation-Date: 2025-02-02 09:04+0100\n"
+"PO-Revision-Date: 2025-02-24 19:40+0100\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -33,42 +34,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.5\n"
 
-#: cifsiostat.c:75 iostat.c:89 mpstat.c:134 sar.c:108 tapestat.c:104
+#: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr "Utilizare: %s [ opțiuni ] [ <interval> [ <repetiții> ] ]\n"
 
-#: cifsiostat.c:79
+#: cifsiostat.c:82
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ --debuginfo ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ --debuginfo ]\n"
 
-#: cifsiostat.c:83
+#: cifsiostat.c:86
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\n"
-"[ -h ] [ -k | -m ] [ -t ] [ -V ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ]\\ [ -o JSON ]n\n"
+"[ -h ] [ -k | -m ] [ -t ] [ -V ] [ -y ]\n"
 
-#: common.c:85
+#: cifsiostat.c:586
+#, c-format
+msgid "No CIFS filesystems with statistics found\n"
+msgstr "Nu au fost găsite sisteme de fișiere CIFS cu statistici\n"
+
+#: common.c:100
 #, c-format
 msgid "sysstat version %s\n"
 msgstr "versiunea sysstat %s\n"
 
-#: count.c:118 ioconf.c:480 rd_stats.c:86 sa_common.c:1856 sadc.c:747
-#: sadc.c:810
+#: count.c:118 ioconf.c:480 rd_stats.c:86 sa_common.c:2011 sadc.c:741
+#: sadc.c:804
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr "Nu se poate deschide %s: %s\n"
@@ -78,7 +84,7 @@ msgstr "Nu se poate deschide %s: %s\n"
 msgid "Cannot handle so many processors!\n"
 msgstr "Nu se pot gestiona atât de multe procesoare!\n"
 
-#: iostat.c:92
+#: iostat.c:91
 #, c-format
 msgid ""
 "Options are:\n"
@@ -95,7 +101,7 @@ msgstr ""
 "[ [ -H ] -g <nume_grup> ] [ -p [ <dispozitiv> [,...] | ALL ] ]\n"
 "[ <dispozitiv> [...] | ALL ] [ --debuginfo ]\n"
 
-#: iostat.c:99
+#: iostat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
@@ -112,12 +118,12 @@ msgstr ""
 "[ [ -H ] -g <nume_grup> ] [ -p [ <dispozitiv> [,...] | ALL ] ]\n"
 "[ <dispozitiv> [...] | ALL ]\n"
 
-#: iostat.c:2179 sa_common.c:2404
+#: iostat.c:2192 sa_common.c:2593
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr "Tip nevalid de nume de dispozitiv persistent\n"
 
-#: mpstat.c:137
+#: mpstat.c:141
 #, c-format
 msgid ""
 "Options are:\n"
@@ -130,60 +136,65 @@ msgstr ""
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <listă_nod> | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <listă_cpu> | ALL } ]\n"
 
-#: mpstat.c:1773 pidstat.c:2312 sar.c:385
+#: mpstat.c:1738 pidstat.c:3530 sar.c:390
 msgid "Average:"
 msgstr "Media:"
 
-#: pidstat.c:91
+#: pidstat.c:96
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr "Utilizare: %s [ opțiuni ] [ <interval> [ <repetiții> ] ] [ -e <program> <argumente> ]\n"
 
-#: pidstat.c:94
+#: pidstat.c:99
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
 "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <nume_utilizator> ] ]\n"
 "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <comanda> ] [ -G <nume_proces> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ]\n"
+"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 
-#: pidstat.c:225 sa_common.c:368
+#: pidstat.c:230 sa_common.c:376
 #, c-format
 msgid "Requested activities not available\n"
 msgstr "Activitățile solicitate nu sunt disponibile\n"
 
-#: pr_stats.c:2682 pr_stats.c:2689 pr_stats.c:2795 pr_stats.c:2842
+#: pr_stats.c:3734 pr_stats.c:3741 pr_stats.c:3859 pr_stats.c:3945
+#: pr_stats.c:3959 sar.c:393
 msgid "Summary:"
 msgstr "Rezumat:"
+
+#: pr_stats.c:3958
+msgid "Last:"
+msgstr "Ultimul:"
 
 #: rd_stats.c:427
 #, c-format
 msgid "Cannot read %s\n"
 msgstr "Nu se poate citi %s\n"
 
-#: sa_common.c:301
+#: sa_common.c:309
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr "Fișier creat de sar/sadc din versiunea sysstat %d.%d.%d"
 
-#: sa_common.c:334
+#: sa_common.c:340
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr "Fișier de activitate a sistemului nevalid: %s\n"
 
-#: sa_common.c:344
+#: sa_common.c:352
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr "Versiunea actuală a sysstat nu poate citi formatul acestui fișier (%#x)\n"
 
-#: sa_common.c:348
+#: sa_common.c:356
 #, c-format
 msgid ""
 "Try to convert it to current format. Enter:\n"
@@ -192,20 +203,25 @@ msgstr ""
 "Încercați să îl convertiți în formatul actual. Introduceți:\n"
 "\n"
 
-#: sa_common.c:351
+#: sa_common.c:359
 #, c-format
 msgid "You should then be able to read the new file created (%s.new)\n"
 msgstr "Ar trebui apoi să puteți citi noul fișier creat (%s.new)\n"
 
-#: sa_common.c:1435
+#: sa_common.c:1585
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr "A apărut o eroare la citirea fișierului de activitate a sistemului: %s\n"
 
-#: sa_common.c:1445
+#: sa_common.c:1595
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr "Sfârșit neașteptat al fișierului de activitate a sistemului\n"
+
+#: sa_common.c:1751
+#, c-format
+msgid "Invalid data read\n"
+msgstr "Date nevalide citite\n"
 
 # DȘ, îmi reamintește de
 # „Ghidul_traducătorului_de_software”, asupra
@@ -227,15 +243,23 @@ msgstr "Sfârșit neașteptat al fișierului de activitate a sistemului\n"
 # că nu mi-au plăcut/și nu le-am acceptat ordinele,
 # cel puțin cele date fără o formă acceptabilă...
 # Așa că dacă primesc ordine de la o mașină/robot, îl trimit direct „La CĂCAT, și cu cel ce l-a fabricat!”
-#: sa_common.c:1859
+#: sa_common.c:2014
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr "Vă rugăm să verificați dacă colectarea datelor este activată\n"
 
-#: sa_common.c:2194
+#: sa_common.c:2349
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr "Activitățile solicitate nu sunt disponibile în fișierul %s\n"
+
+#: sa_common.c:3830
+msgid "Maximum:"
+msgstr "Maxim:"
+
+#: sa_common.c:3831
+msgid "Minimum:"
+msgstr "Minim:"
 
 #: sa_conv.c:99
 #, c-format
@@ -251,21 +275,21 @@ msgstr ""
 "\n"
 "Activitatea procesorului nu a fost găsită în fișier. Se întrerupe...\n"
 
-#: sa_conv.c:408
+#: sa_conv.c:408 sa_conv.c:1628
 #, c-format
 msgid ""
 "\n"
-"Invalid data found. Aborting...\n"
+"%s: Invalid data found. Aborting...\n"
 msgstr ""
 "\n"
-"S-au găsit date nevalide. Se întrerupe...\n"
+"%s: S-au găsit date nevalide. Se întrerupe...\n"
 
-#: sa_conv.c:1931
+#: sa_conv.c:1941
 #, c-format
 msgid "Statistics:\n"
 msgstr "Statistici:\n"
 
-#: sa_conv.c:2032
+#: sa_conv.c:2042
 #, c-format
 msgid ""
 "\n"
@@ -274,22 +298,22 @@ msgstr ""
 "\n"
 "Formatul fișierului este deja actualizat\n"
 
-#: sa_conv.c:2044
+#: sa_conv.c:2054
 #, c-format
 msgid "HZ: Using current value: %lu\n"
 msgstr "HZ: Se utilizează valoarea curentă: %lu\n"
 
-#: sa_conv.c:2075
+#: sa_conv.c:2085
 #, c-format
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr "Fișierul a fost convertit cu succes în formatul sysstat versiunea %s\n"
 
-#: sadc.c:98
+#: sadc.c:97
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr "Utilizare: %s [ opțiuni ] [ <interval> [ <repetiții> ] ][ <fișier_ieșire> ]\n"
 
-#: sadc.c:101
+#: sadc.c:100
 #, c-format
 msgid ""
 "Options are:\n"
@@ -300,29 +324,29 @@ msgstr ""
 "[ -C <comentariu> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
 "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
 
-#: sadc.c:272
+#: sadc.c:271
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr "Nu se pot scrie date în fișierul de activitate a sistemului: %s\n"
 
-#: sadc.c:1040
+#: sadc.c:1029
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr "Nu se pot adăuga date la acel fișier (%s)\n"
 
-#: sadf.c:119
+#: sadf.c:118
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr "Utilizare: %s [ opțiuni ] [ <interval> [ <repetiții> ] ] [ <fișier_date> | -[0-9]+ ]\n"
 
-#: sadf.c:122
+#: sadf.c:121
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
-"[ -s [ <time_start> ] ] [ -e [ <time_end> ] ]\n"
+"[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 "[ -- <sar_options> ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
@@ -332,90 +356,90 @@ msgstr ""
 "[ -s [ <ora_de_începere (format: hh:mm[:ss])> ] ] [ -e [ <ora_de_sfârșit (format: hh:mm[:ss])> ] ]\n"
 "[ -- <sar_opțiuni> ]\n"
 
-#: sadf.c:1896
+#: sadf.c:2042
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr "Suportul PCP nu a fost compilat în\n"
 
-#: sadf_misc.c:1252
+#: sadf_misc.c:1249
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr "Fișier de date despre activitatea sistemului: %s (%#x)\n"
 
-#: sadf_misc.c:1261
+#: sadf_misc.c:1258
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr "Fișier de date «sa» autentic: %s (%x)\n"
 
-#: sadf_misc.c:1262
+#: sadf_misc.c:1259
 msgid "no"
 msgstr "nu"
 
-#: sadf_misc.c:1262
+#: sadf_misc.c:1259
 msgid "yes"
 msgstr "da"
 
-#: sadf_misc.c:1265
+#: sadf_misc.c:1262
 #, c-format
 msgid "Host: "
 msgstr "Gazda: "
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1272
 #, c-format
 msgid "File date: %s\n"
 msgstr "Data fișierului: %s\n"
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1275
 #, c-format
 msgid "File time: "
 msgstr "Ora fișierului: "
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1280
 #, c-format
 msgid "Timezone: %s\n"
 msgstr "Zona orară: %s\n"
 
-#: sadf_misc.c:1286
+#: sadf_misc.c:1283
 #, c-format
-msgid "File composition: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
-msgstr "Compoziția fișierului: (%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n"
+msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
+msgstr "Compoziția fișierului: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 
-#: sadf_misc.c:1291
+#: sadf_misc.c:1288
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr "Dimensiunea unui număr întreg lung: %d\n"
 
-#: sadf_misc.c:1293
+#: sadf_misc.c:1290
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr "Numărul de activități din fișier: %u\n"
 
-#: sadf_misc.c:1295
+#: sadf_misc.c:1292
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr "Structuri suplimentare disponibile: %c\n"
 
-#: sadf_misc.c:1298
+#: sadf_misc.c:1295
 #, c-format
 msgid "List of activities:\n"
 msgstr "Lista activităților:\n"
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1306
 msgid "Unknown activity"
 msgstr "Activitate necunoscută"
 
-#: sadf_misc.c:1317
+#: sadf_misc.c:1314
 #, c-format
 msgid " \t[Unknown format]"
 msgstr " \t[Format necunoscut]"
 
-#: sar.c:123
+#: sar.c:128
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
+"[ -v ] [ -W ] [ -w ] [ -x ] [ -y ] [ -z ]\n"
 "[ -I [ SUM | ALL ] ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <keyword> [,...] | ALL } ] [ -n { <keyword> [,...] | ALL } ]\n"
 "[ -q [ <keyword> [,...] | ALL ] ]\n"
@@ -428,8 +452,8 @@ msgstr ""
 "Opțiunile sunt:\n"
 "[ -A ] [ -B ] [ -b ] [ -C ] [ -D ] [ -d ] [ -F [ MOUNT ] ] [ -H ] [ -h ]\n"
 "[ -p ] [ -r [ ALL ] ] [ -S ] [ -t ] [ -u [ ALL ] ] [ -V ]\n"
-"[ -v ] [ -W ] [ -w ] [ -y ] [ -z ]\n"
-"[ -I SUM | ALL } ] [ -P { <listă_cpu> | ALL } ]\n"
+"[ -v ] [ -W ] [ -w ] [ -x ] [ -y ] [ -z ]\n"
+"[ -I [ SUM | ALL ] ] [ -P { <cpu_list> | ALL } ]\n"
 "[ -m { <cuvânt_cheie> [,...] | ALL } ] [ -n { <cuvânt_cheie> [,...] | ALL } ]\n"
 "[ -q [ <cuvânt_cheie> [,...] | ALL ] ]\n"
 "[ --dev=<listă_dispozitive> ] [ --fs=<listă_sistem_fișiere> ] [ --iface=<listă_interfețe> ] [ --int=<listă_întreruperi> ]\n"
@@ -438,42 +462,42 @@ msgstr ""
 "[ -f [ <nume_fișier> ] | -o [ <nume_fișier> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ ora_de_începere (format: hh:mm[:ss] ] ] [ -e [ ora_de_sfârșit (format: hh:mm[:ss] ] ]\n"
 
-#: sar.c:150
+#: sar.c:155
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr "Principalele opțiuni și rapoarte (numele raportului între paranteze drepte):\n"
 
-#: sar.c:151
+#: sar.c:156
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr "\t-B\tStatistici de paginare [A_PAGE]\n"
 
-#: sar.c:152
+#: sar.c:157
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr "\t-b\tIn/Ieș(I/O) și statistici privind rata de transfer [A_IO]\n"
 
-#: sar.c:153
+#: sar.c:158
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr "\t-d\tStatistici de dispozitive bloc [A_DISK]\n"
 
-#: sar.c:154
+#: sar.c:159
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr "\t-F [ MOUNT ]\n"
 
-#: sar.c:155
+#: sar.c:160
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr "\t\tStatistici ale sistemelor de fișiere [A_FS]\n"
 
-#: sar.c:156
+#: sar.c:161
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr "\t-H\tStatistici de utilizare a paginilor uriașe [A_HUGE]\n"
 
-#: sar.c:157
+#: sar.c:162
 #, c-format
 msgid ""
 "\t-I [ SUM | ALL ]\n"
@@ -482,7 +506,7 @@ msgstr ""
 "\t-I { SUM | ALL }\n"
 "\t\tStatistici întreruperi [A_IRQ]\n"
 
-#: sar.c:159
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -507,7 +531,7 @@ msgstr ""
 "\t\tTEMP\tTemperatura dispozitivelor\n"
 "\t\tUSB\tDispozitive USB conectate la sistem\n"
 
-#: sar.c:169
+#: sar.c:174
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -558,7 +582,7 @@ msgstr ""
 "\t\tFC\tHBA-uri cu canal de fibră\n"
 "\t\tSOFT\tProcesare de rețea bazată pe software\n"
 
-#: sar.c:192
+#: sar.c:197
 #, c-format
 msgid ""
 "\t-q [ <keyword> [,...] | PSI | ALL ]\n"
@@ -577,7 +601,7 @@ msgstr ""
 "\t\tIO\tStatistici de congestionare la Intrare/Ieșire [A_PSI_IO]\n"
 "\t\tMEM\tStatistici de congestionare a memoriei [A_PSI_MEM]\n"
 
-#: sar.c:199
+#: sar.c:204
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
@@ -586,12 +610,12 @@ msgstr ""
 "\t-r [ ALL ]\n"
 "\t\tStatistici de utilizare a memoriei [A_MEMORY]\n"
 
-#: sar.c:201
+#: sar.c:206
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr "\t-S\tStatisticile de utilizare a spațiului de interschimb(swap) [A_MEMORY]\n"
 
-#: sar.c:202
+#: sar.c:207
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
@@ -600,76 +624,76 @@ msgstr ""
 "\t-u [ ALL ]\n"
 "\t\tStatistici de utilizare a procesorului [A_CPU]\n"
 
-#: sar.c:204
+#: sar.c:209
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr "\t-v\tStatistici pentru tabelele kernelului [A_KTABLES]\n"
 
-#: sar.c:205
+#: sar.c:210
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr "\t-W\tStatisticile spațiului memoriei de interschimb(swap) [A_SWAP]\n"
 
-#: sar.c:206
+#: sar.c:211
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr "\t-w\tStatistici de creare a sarcinilor și comutare de sistem [A_PCSW]\n"
 
-#: sar.c:207
+#: sar.c:212
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr "\t-y\tStatisticile dispozitivelor TTY [A_SERIAL]\n"
 
-#: sar.c:221
+#: sar.c:226
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr "Colectorul de date va fi căutat în PATH\n"
 
-#: sar.c:224
+#: sar.c:229
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr "Colector de date găsit: %s\n"
 
-#: sar.c:289
+#: sar.c:294
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr "Sfârșit de colectare a datelor neașteptat\n"
 
-#: sar.c:294
+#: sar.c:299
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr "Date de intrare inconsistente\n"
 
-#: sar.c:895
+#: sar.c:914
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr "Se utilizează un colector de date greșit dintr-o versiune diferită de sysstat\n"
 
-#: sar.c:1553
+#: sar.c:1603
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr "Opțiunile „-f” și „-o” se exclud reciproc\n"
 
-#: sar.c:1563
+#: sar.c:1613
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr "Nu se citește dintr-un fișier de activitate a sistemului (utilizați opțiunea „-f”)\n"
 
-#: sar.c:1712
+#: sar.c:1762
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr "Nu se poate găsi colectorul de date (%s)\n"
 
-#: tapestat.c:106
+#: tapestat.c:107
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 msgstr ""
 "Opțiunile sunt:\n"
-"[ --human ] [ -k | -m ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
+"[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -V ] [ -y ] [ -z ]\n"
 
-#: tapestat.c:273
+#: tapestat.c:290
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr "Nu au fost găsite unități de bandă cu statistici\n"
