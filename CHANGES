@@ -1,5 +1,27 @@
 Changes:
 
+2025/07/28: Version 12.7.8 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar/sadf: Add new metric kbshmem.
+	* sar/sadf: Now compute used memory as total memory - available memory.
+	* sadf: Set availablekb to frmkb during conversion.
+	* cifsiostat, iostat, mpstat, tapestat: Add new option -U to display
+	  timestamps in seconds since the Epoch.
+	* Trap SIGTERM with all sysstat commands.
+	* mpstat: Go to next line when Ctrl/C is pressed.
+	* Add support for out-of-tree building and testing.
+	* sar: A_PWR_BAT: Fix wrong size used in memory initialization.
+	* Makefile.in: Update dependencies for install_man target.
+	* Makefile.in: Remove unused TFLAGS variable.
+	* Makefile.in: Remove old references to nfsiostat.
+	* DTD and XSD documents updated.
+	* NLS translations updated.
+	* sar, mpstat, iostat, cifsiostat and tapestat manual pages updated.
+	* Various cosmetic changes in code and Makefile.
+	* do_test: Add test target for out-of-tree build.
+	* systest: Explicitly set signal to SIGINT.
+	* Non regression tests: Remove root symlink in tests directory.
+	* Non regression tests updated.
+
 2025/02/02: Version 12.7.7 - Sebastien Godard (sysstat <at> orange.fr)
 	* Rework overflow check function.
 	* pidstat: Add JSON output format (option "-o JSON").
