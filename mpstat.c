@@ -2181,9 +2181,6 @@ int main(int argc, char **argv)
 	/* Init color strings */
 	init_colors();
 
-	/* Get HZ */
-	get_HZ();
-
 	/* What is the highest processor number on this machine? */
 	cpu_nr = get_cpu_nr(~0, TRUE);
 
