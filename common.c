@@ -229,6 +229,7 @@ void get_kb_shift(void)
 	/* One can also use getpagesize() to get the size of a page */
 	if ((size = sysconf(_SC_PAGESIZE)) == -1) {
 		perror("sysconf");
+		exit(2);
 	}
 
 	size >>= 10;	/* Assume that a page has a minimum size of 1 kB */
@@ -252,6 +253,7 @@ void get_HZ(void)
 
 	if ((ticks = sysconf(_SC_CLK_TCK)) == -1) {
 		perror("sysconf");
+		exit(2);
 	}
 
 	hz = (unsigned long) ticks;
