@@ -84,12 +84,15 @@ enum {
 #define DISPLAY_JSON_OUTPUT(m)	(((m) & X_D_JSON_OUTPUT) == X_D_JSON_OUTPUT)
 #define DISPLAY_SEC_EPOCH(m)	(((m) & X_D_SEC_EPOCH)   == X_D_SEC_EPOCH)
 
+#define DEV_PREFIX		"/dev/"
+#define DEV_PREFIX_LEN		5
+
 /* Files */
 #define __DISKSTATS		"diskstats"
 #define __BLOCK			"block"
 #define __DEV_BLOCK		"dev/block"
 #define SLASH_SYS		PRE "/sys"
-#define SLASH_DEV		PRE "/dev/"
+#define SLASH_DEV		PRE DEV_PREFIX
 #define STAT			PRE "/proc/stat"
 #define UPTIME			PRE "/proc/uptime"
 #define DISKSTATS		PRE "/proc/" __DISKSTATS

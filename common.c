@@ -768,10 +768,11 @@ char *device_name(char *name)
 	fprintf(stderr, "Real pathname: %s (%s)\n", resolved_name, name);
 #endif
 
-	if (!strncmp(resolved_name, "/dev/", 5)) {
-		i = 5;
+
+	if (strncmp(resolved_name, DEV_PREFIX, DEV_PREFIX_LEN) == 0) {
+		i = DEV_PREFIX_LEN;
 	}
-	strncpy(out, resolved_name + i, sizeof(out));
+	snprintf(out, sizeof(out), "%s", resolved_name + i);
 	out[sizeof(out) - 1] = '\0';
 
 	/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
@@ -780,7 +781,6 @@ char *device_name(char *name)
 	}
 
 	free(resolved_name);
-
 	return out;
 }
 
