@@ -125,6 +125,10 @@ enum {
 #define DIGITS			"0123456789"
 #define XDIGITS			"0123456789-"
 
+#define DATE_FORMAT_ISO		"%Y-%m-%d"
+#define DATE_FORMAT_LOCAL	"%x"
+#define DEFAULT_ERROR_DATE	"?/?/?"
+
 /* Batteries status */
 enum {
 	BAT_STS_UNKNOWN		= 0,

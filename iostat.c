@@ -2417,7 +2417,7 @@ int main(int argc, char **argv)
 	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
-			     DISPLAY_JSON_OUTPUT(xflags))) {
+			     DISPLAY_JSON_OUTPUT(xflags)) > 0) {
 		xflags |= X_D_ISO;
 	}
 	if (!DISPLAY_JSON_OUTPUT(xflags) &&

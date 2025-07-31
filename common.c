@@ -629,23 +629,24 @@ void xprintf(int nr_tab, const char *fmtf, ...)
  *
  * RETURNS:
  * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
+ * It returns -1 on error.
  ***************************************************************************
  */
 int set_report_date(struct tm *tm_time, char cur_date[], int sz)
 {
-	if (tm_time == NULL) {
-		strncpy(cur_date, "?/?/?", sz);
-		cur_date[sz - 1] = '\0';
-	}
-	else if (is_iso_time_fmt()) {
-		strftime(cur_date, sz, "%Y-%m-%d", tm_time);
-		return 1;
-	}
-	else {
-		strftime(cur_date, sz, "%x", tm_time);
+	if (tm_time != NULL) {
+		const char *date_format = is_iso_time_fmt() ?
+		DATE_FORMAT_ISO :
+		DATE_FORMAT_LOCAL;
+
+		if (strftime(cur_date, sz, date_format, tm_time) != 0)
+			return is_iso_time_fmt();
 	}
 
-	return 0;
+	strncpy(cur_date, DEFAULT_ERROR_DATE, sz);
+	cur_date[sz - 1] = '\0';
+
+	return -1;
 }
 
 /*
@@ -664,6 +665,7 @@ int set_report_date(struct tm *tm_time, char cur_date[], int sz)
  *
  * RETURNS:
  * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
+ * It returns -1 on error.
  ***************************************************************************
  */
 int print_gal_header(struct tm *tm_time, char *sysname, char *release,
