@@ -2299,10 +2299,10 @@ int main(int argc, char **argv)
 
 				case 'V':
 					{
-						char *iostat_env[] = {ENV_POSIXLY_CORRECT,
-								      ENV_COLORS,
-								      ENV_COLORS_SGR,
-								      ENV_TIME_FMT};
+						const char *iostat_env[] = {ENV_POSIXLY_CORRECT,
+									    ENV_COLORS,
+									    ENV_COLORS_SGR,
+									    ENV_TIME_FMT};
 #define IOSTAT_ENV_NR	4
 						/* Print environment contents, version number and exit */
 						print_version(iostat_env, IOSTAT_ENV_NR);

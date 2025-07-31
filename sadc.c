@@ -1258,7 +1258,7 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-V")) {
-			char *sadc_env[] = {ENV_TIME_DEFTM};
+			const char *sadc_env[] = {ENV_TIME_DEFTM};
 #define SADC_ENV_NR	1
 			print_version(sadc_env, SADC_ENV_NR);
 		}

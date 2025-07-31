@@ -1422,11 +1422,11 @@ int main(int argc, char **argv)
 		}
 
 		else if (!strcmp(argv[opt], "-V")) {
-			char *sar_env[] = {ENV_COLORS,
-					   ENV_COLORS_SGR,
-					   ENV_REPEAT_HEADER,
-					   ENV_TIME_DEFTM,
-					   ENV_TIME_FMT};
+			const char *sar_env[] = {ENV_COLORS,
+						 ENV_COLORS_SGR,
+						 ENV_REPEAT_HEADER,
+						 ENV_TIME_DEFTM,
+						 ENV_TIME_FMT};
 #define SAR_ENV_NR	5
 			print_version(sar_env, SAR_ENV_NR);
 		}

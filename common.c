@@ -84,7 +84,7 @@ char persistent_name_type[MAX_FILE_LEN];
  * @n		Number of environment variables.
  ***************************************************************************
  */
-void print_version(char *env[], int n)
+void print_version(const char *env[], int n)
 {
 	char *e;
 	int i;

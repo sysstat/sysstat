@@ -2331,9 +2331,9 @@ int main(int argc, char **argv)
 
 				case 'V':
 					{
-						char *mpstat_env[] = {ENV_COLORS,
-								      ENV_COLORS_SGR,
-								      ENV_TIME_FMT};
+						const char *mpstat_env[] = {ENV_COLORS,
+									    ENV_COLORS_SGR,
+									    ENV_TIME_FMT};
 #define MPSTAT_ENV_NR	3
 						/* Print environment contents, version number and exit */
 						print_version(mpstat_env, MPSTAT_ENV_NR);
