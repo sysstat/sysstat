@@ -1060,7 +1060,7 @@ free_list:
 */
 char *get_persistent_name_from_pretty(char *pretty)
 {
-	int i = -1;
+	int i;
 	ssize_t r;
 	char *link, *name;
 	char **persist_names;
@@ -1074,7 +1074,7 @@ char *get_persistent_name_from_pretty(char *pretty)
 	if (!persist_names)
 		return (NULL);
 
-	while (persist_names[++i]) {
+	for (i = 0; persist_names[i]; i++) {
 
 		/* Get absolute path for current persistent name */
 		link = get_persistent_name_path(persist_names[i]);
@@ -1095,22 +1095,18 @@ char *get_persistent_name_from_pretty(char *pretty)
 
 		if (strncmp(name, pretty, FILENAME_MAX) == 0) {
 			/* We have found pretty name for current persistent one */
-			strncpy(persist_name, persist_names[i], sizeof(persist_name));
+			strncpy(persist_name, persist_names[i], sizeof(persist_name) - 1);
 			persist_name[sizeof(persist_name) - 1] = '\0';
 			break;
 		}
 	}
 
-	i = -1;
-	while (persist_names[++i]) {
-		free (persist_names[i]);
+	for (i = 0; persist_names[i]; i++) {
+		free(persist_names[i]);
 	}
-	free (persist_names);
+	free(persist_names);
 
-	if (!strlen(persist_name))
-		return (NULL);
-
-	return persist_name;
+	return persist_name[0] ? persist_name : NULL;
 }
 
 /*
