@@ -655,7 +655,7 @@ int set_report_date(struct tm *tm_time, char cur_date[], int sz)
 			return is_iso_time_fmt();
 	}
 
-	strncpy(cur_date, DEFAULT_ERROR_DATE, sz);
+	strncpy(cur_date, DEFAULT_ERROR_DATE, sz - 1);
 	cur_date[sz - 1] = '\0';
 
 	return -1;
@@ -1282,7 +1282,7 @@ char *get_device_name(unsigned int major, unsigned int minor, unsigned long long
 		}
 	}
 
-	strncpy(dname, dev_name, sizeof(dname));
+	strncpy(dname, dev_name, sizeof(dname) - 1);
 	dname[sizeof(dname) - 1] = '\0';
 
 	while ((bang = strchr(dname, '!'))) {
