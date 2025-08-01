@@ -297,7 +297,9 @@ void sysstat_panic(const char *function, int error_code)
  * @name	Filename read from /dev/disk/by-id.
  *
  * OUT:
- * @wwn		WWN identifier (8 or 16 hex characters).
+ * @wwn		WWN identifier (16 or 32 hex characters).
+ *		First part saved in *wwn (ie. wwn[0]) and second part (if
+ *		any) in	*(wwn + 1) (ie. wwn[1]).
  * @part-nr	Partition number if applicable.
  *
  * RETURNS:
@@ -306,7 +308,7 @@ void sysstat_panic(const char *function, int error_code)
 */
 int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_nr)
 {
-	char id[17];
+	char id[WWN_SHORT_LEN + 1];
 	char *s;
 	int wwnlen = strlen(name);
 
@@ -342,7 +344,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 	if (sscanf(id, "%llx", wwn) != 1)
 		return -1;
 
-	if (strlen(name) == WWN_SHORT_LEN)
+	if (wwnlen == WWN_SHORT_LEN)
 		/* This is a short (16 hex chars) WWN id */
 		return 0;
 
@@ -362,7 +364,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
  * @pretty	Pretty name (e.g. sda, sdb3...).
  *
  * OUT:
- * @wwn		WWN identifier (8 or 16 hex characters).
+ * @wwn		WWN identifier (16 or 32 hex characters).
  * @part-nr	Partition number if applicable.
  *
  * RETURNS:
