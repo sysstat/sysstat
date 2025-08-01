@@ -310,6 +310,9 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 	char *s;
 	int wwnlen;
 
+	if ((name == NULL) || (wwn == NULL) || (part_nr == NULL))
+		return -1;
+
 	*wwn = *(wwn + 1) = 0ULL;
 	*part_nr = 0;
 
@@ -804,22 +807,23 @@ char *escape_bs_char(const char *str)
 	static char buffer[MAX_NAME_LEN];
 	int i = 0, j = 0;
 
-	while (str[i] != '\0' && j < MAX_NAME_LEN - 1) {
-		if (str[i] == '\\') {
-			if (j < MAX_NAME_LEN - 2) {
-				buffer[j++] = '\\';
-				buffer[j++] = '\\';
+	if (str != NULL) {
+		while (str[i] != '\0' && j < MAX_NAME_LEN - 1) {
+			if (str[i] == '\\') {
+				if (j < MAX_NAME_LEN - 2) {
+					buffer[j++] = '\\';
+					buffer[j++] = '\\';
+				} else {
+					break;
+				}
 			} else {
-				break;
+				buffer[j++] = str[i];
 			}
-		} else {
-			buffer[j++] = str[i];
+			i++;
 		}
-		i++;
 	}
 
 	buffer[j] = '\0';
-
 	return buffer;
 }
 
@@ -1719,7 +1723,7 @@ void cprintf_tr(int trend, char *format, char *tstring)
  */
 int parse_valstr(const char *s, int max_val, int *val)
 {
-	if (!strlen(s)) {
+	if ((s == NULL) || (*s == '\0')) {
 		*val = -1;
 		return 0;
 	}
@@ -1754,6 +1758,9 @@ int parse_valstr(const char *s, int max_val, int *val)
 int parse_range_values(char *t, int max_val, int *val_low, int *val)
 {
 	char *s, *valstr, range[16];
+
+	if ((t == NULL) || (*t == '\0'))
+		return 1;
 
 	/* Parse value or range of values */
 	strncpy(range, t, 16);
@@ -1853,6 +1860,9 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 {
 	char timestamp[TIMESTAMP_LEN];
+
+	if (rectime == NULL)
+		return;
 
 	if (DISPLAY_SEC_EPOCH(xflags)) {
 		snprintf(timestamp, sizeof(timestamp), "%ld", mktime(rectime));
