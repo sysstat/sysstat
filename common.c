@@ -808,7 +808,7 @@ char *device_name(char *name)
  * String where '\' characters have been escaped.
  ***************************************************************************
  */
-char *escape_bs_char(const char *str)
+char *escape_bs_char(const char str[])
 {
 	static char buffer[MAX_NAME_LEN];
 	int i = 0, j = 0;
