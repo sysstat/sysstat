@@ -279,6 +279,9 @@ extern char persistent_name_type[MAX_FILE_LEN];
 #define C_LIGHT_BLUE	"\e[34;22m"
 #define C_NORMAL	"\e[0m"
 
+#define SGR_DIGITS	";0123456789"
+#define SGR_ESC_SEQ	"\e[%sm"
+
 #define PERCENT_LIMIT_XHIGH	90.0
 #define PERCENT_LIMIT_HIGH	75.0
 #define PERCENT_LIMIT_LOW	25.0
@@ -290,7 +293,9 @@ enum {
 	XLOW0	= 3
 };
 
-#define MAX_SGR_LEN	16
+#define MAX_SGR_LEN	32
+#define MAX_SGR_SEQ_LEN	18	/* E.g. C=38;2;100;100;100 */
+#define MIN_SGR_SEQ_LEN	3	/* E.g. C=4 */
 
 enum {
 	IS_INT		= 0,

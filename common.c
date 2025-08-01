@@ -1338,40 +1338,41 @@ void init_colors(void)
 	for (p = strtok(e, ":"); p; p =strtok(NULL, ":")) {
 
 		len = strlen(p);
-		if ((len > 7) || (len < 3) || (*(p + 1) != '=') ||
-		    (strspn(p + 2, ";0123456789") != (len - 2)))
+		if ((len > MAX_SGR_SEQ_LEN) ||
+		    (len < MIN_SGR_SEQ_LEN) ||
+		    (*(p + 1) != '=') || (strspn(p + 2, SGR_DIGITS) != (len - 2)))
 			/* Ignore malformed codes */
 			continue;
 
 		switch (*p) {
 			case 'M':
 			case 'W':
-				snprintf(sc_percent_warn, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_percent_warn, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case 'X':
 			case 'H':
-				snprintf(sc_percent_xtreme, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_percent_xtreme, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case 'Z':
-				snprintf(sc_zero_int_stat, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_zero_int_stat, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case 'N':
-				snprintf(sc_int_stat, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_int_stat, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case 'I':
-				snprintf(sc_item_name, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_item_name, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case 'C':
-				snprintf(sc_sa_comment, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_sa_comment, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case 'R':
-				snprintf(sc_sa_restart, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_sa_restart, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case '+':
-				snprintf(sc_trend_pos, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_trend_pos, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 			case '-':
-				snprintf(sc_trend_neg, MAX_SGR_LEN, "\e[%sm", p + 2);
+				snprintf(sc_trend_neg, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
 				break;
 		}
 	}
