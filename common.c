@@ -740,9 +740,10 @@ int get_win_height(void)
 	else if ((e = __getenv(ENV_REPEAT_HEADER)) != NULL) {
 		/* Check if the environment variable contains only digits */
 		if (strspn(e, DIGITS) == strlen(e)) {
-			int v = atol(e);
-			if (v > 0) {
-				rows = v;
+			char *endptr;
+			long v = strtol(e, &endptr, 10);
+			if ((v > 0) && (*endptr == '\0')) {
+				rows = (int) v;
 			}
 		}
 	}
