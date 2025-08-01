@@ -205,7 +205,7 @@ void init_nls(void)
  * TRUE if @name is a device, and FALSE if it's a partition.
  ***************************************************************************
  */
-int is_device(char *sysdev, char *name, int allow_virtual)
+int is_device(const char *sysdev, char *name, int allow_virtual)
 {
 	char syspath[PATH_MAX];
 	char *slash;
@@ -304,7 +304,7 @@ void sysstat_panic(const char *function, int error_code)
  * 0 on success, -1 otherwise.
  ***************************************************************************
 */
-int extract_wwnid(char *name, unsigned long long *wwn, unsigned int *part_nr)
+int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_nr)
 {
 	char id[17];
 	char *s;
@@ -799,7 +799,7 @@ char *device_name(char *name)
  * String where '\' characters have been escaped.
  ***************************************************************************
  */
-char *escape_bs_char(char *str)
+char *escape_bs_char(const char *str)
 {
 	static char buffer[MAX_NAME_LEN];
 	int i = 0, j = 0;
@@ -1717,7 +1717,7 @@ void cprintf_tr(int trend, char *format, char *tstring)
  * 0 if the value has been properly read, 1 otherwise.
  ***************************************************************************
  */
-int parse_valstr(char *s, int max_val, int *val)
+int parse_valstr(const char *s, int max_val, int *val)
 {
 	if (!strlen(s)) {
 		*val = -1;

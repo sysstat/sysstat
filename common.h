@@ -317,11 +317,11 @@ time_t get_time
 void init_nls
 	(void);
 int is_device
-	(char *, char *, int);
+	(const char *, char *, int);
 void sysstat_panic
 	(const char *, int);
 int extract_wwnid
-	(char *, unsigned long long *, unsigned int *);
+	(const char *, unsigned long long *, unsigned int *);
 int get_wwnid_from_pretty
 	(char *, unsigned long long *, unsigned int *);
 int check_dir
@@ -353,7 +353,7 @@ void cprintf_tr
 char *device_name
 	(char *);
 char *escape_bs_char
-	(char *);
+	(const char *);
 char *get_device_name
 	(unsigned int, unsigned int, unsigned long long [],
 	 unsigned int, unsigned int, unsigned int, unsigned int, char *);
