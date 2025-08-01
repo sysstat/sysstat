@@ -3128,7 +3128,8 @@ void stub_print_pwr_fan_stats(struct activity *a, int curr, int dispavg)
 			avg_fan_min[i] += spc->rpm_min;
 		}
 
-		cprintf_in(IS_STR, " %s\n", spc->device, 0);
+		cprintf_in(IS_STR, " %s", spc->device, 0);
+		printf("\n");
 	}
 
 	if (dispavg && avg_fan) {
@@ -3271,7 +3272,8 @@ void stub_print_pwr_temp_stats(struct activity *a, int curr, int dispavg)
 			avg_temp_max[i] = spc->temp_max;
 		}
 
-		cprintf_in(IS_STR, " %s\n", spc->device, 0);
+		cprintf_in(IS_STR, " %s", spc->device, 0);
+		printf("\n");
 	}
 
 	if (dispavg && avg_temp) {
@@ -3416,7 +3418,8 @@ void stub_print_pwr_in_stats(struct activity *a, int curr, int dispavg)
 			avg_in_max[i] = spc->in_max;
 		}
 
-		cprintf_in(IS_STR, " %s\n", spc->device, 0);
+		cprintf_in(IS_STR, " %s", spc->device, 0);
+		printf("\n");
 	}
 
 	if (dispavg && avg_in) {
@@ -3742,7 +3745,8 @@ void stub_print_pwr_usb_stats(struct activity *a, int curr, int dispavg)
 
 		snprintf(fmt, sizeof(fmt), " %%-%ds", MAX_MANUF_LEN - 1);
 		cprintf_s(IS_STR, fmt, suc->manufacturer);
-		cprintf_s(IS_STR, " %s\n", suc->product);
+		cprintf_s(IS_STR, " %s", suc->product);
+		printf("\n");
 
 		if (!dispavg) {
 			/* Save current USB device in summary list */
@@ -3958,7 +3962,8 @@ __print_funct_t stub_print_filesystem_stats(struct activity *a, int prev, int cu
 			    (unsigned long long) sfc->f_ffree,
 			    (unsigned long long) (sfc->f_files - sfc->f_ffree));
 		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, iusedpct);
-		cprintf_in(IS_STR, " %s\n", dev_name, 0);
+		cprintf_in(IS_STR, " %s", dev_name, 0);
+		printf("\n");
 
 		if (!dispavg) {
 			/* Save current filesystem in summary list */
@@ -4131,7 +4136,8 @@ __print_funct_t print_fchost_stats(struct activity *a, int prev, int curr,
 			  S_VALUE(sfcp->f_txframes, sfcc->f_txframes, itv),
 			  S_VALUE(sfcp->f_rxwords,  sfcc->f_rxwords,  itv),
 			  S_VALUE(sfcp->f_txwords,  sfcc->f_txwords,  itv));
-		cprintf_in(IS_STR, " %s\n", sfcc->fchost_name, 0);
+		cprintf_in(IS_STR, " %s", sfcc->fchost_name, 0);
+		printf("\n");
 	}
 }
 

@@ -628,9 +628,10 @@ __printf_funct_t print_sar_restart(int *tab, int action, char *cur_date, char *c
 	char restart[64];
 
 	printf("\n%-11s", cur_time);
-	sprintf(restart, "  LINUX RESTART\t(%u CPU)\n",
+	sprintf(restart, "  LINUX RESTART\t(%u CPU)",
 		file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	cprintf_s(IS_RESTART, "%s", restart);
+	printf("\n");
 
 }
 
@@ -654,7 +655,8 @@ __print_funct_t print_sar_comment(int *tab, int action, char *cur_date, char *cu
 				  struct record_header *record_hdr)
 {
 	printf("%-11s", cur_time);
-	cprintf_s(IS_COMMENT, "  COM %s\n", comment);
+	cprintf_s(IS_COMMENT, "  COM %s", comment);
+	printf("\n");
 }
 
 /*

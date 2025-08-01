@@ -428,7 +428,8 @@ void print_pwr_fan_xstats(int ismax, int fan, char *name, double *spextr)
 
 	cprintf_in(IS_INT, "     %5d", "", fan + 1);
 	cprintf_f(NO_UNIT, FALSE, 2, 9, 2, *spextr, *(spextr + 1));
-	cprintf_in(IS_STR, " %s\n", name, 0);
+	cprintf_in(IS_STR, " %s", name, 0);
+	printf("\n");
 }
 
 /*
@@ -450,7 +451,8 @@ void print_pwr_sensor_xstats(int ismax, int sensorid, char *name, double *spextr
 	cprintf_in(IS_INT, "     %5d", "", sensorid);
 	cprintf_f(NO_UNIT, FALSE, 1, 9, 2, *spextr);
 	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, *(spextr + 1));
-	cprintf_in(IS_STR, " %s\n", name, 0);
+	cprintf_in(IS_STR, " %s", name, 0);
+	printf("\n");
 }
 
 /*
@@ -530,7 +532,8 @@ void print_filesystem_xstats(int ismax, int unit, char *name, double *spextr)
 		    (unsigned long long) *(spextr + 5));
 	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 9, 2, *(spextr + 6));
 
-	cprintf_in(IS_STR, " %s\n", name, 0);
+	cprintf_in(IS_STR, " %s", name, 0);
+	printf("\n");
 }
 
 /*
@@ -550,7 +553,8 @@ void print_fchost_xstats(int ismax, char *name, double *spextr)
 
 	cprintf_f(NO_UNIT, FALSE, 4, 9, 2,
 		  *spextr, *(spextr + 1), *(spextr + 2), *(spextr + 3));
-	cprintf_in(IS_STR, " %s\n", name, 0);
+	cprintf_in(IS_STR, " %s", name, 0);
+	printf("\n");
 }
 
 /*

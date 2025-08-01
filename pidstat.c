@@ -384,20 +384,21 @@ void print_comm(struct st_pid *plist)
 
 	if (plist->tgid) {
 		if (IS_PID_DISPLAYED(plist->tgid->flags)) {
-			cprintf_s(IS_ZERO, "  |__%s\n", p);
+			cprintf_s(IS_ZERO, "  |__%s", p);
 		}
 		else {
 			/* Its TGID has not been displayed */
 			cprintf_s(IS_STR, "  (%s)", plist->tgid->comm);
-			cprintf_s(IS_ZERO, "__%s\n", p);
+			cprintf_s(IS_ZERO, "__%s", p);
 
 			/* We can now consider this has been the case */
 			plist->tgid->flags |= F_PID_DISPLAYED;
 		}
 	}
 	else {
-		cprintf_s(IS_STR, "  %s\n", p);
+		cprintf_s(IS_STR, "  %s", p);
 	}
+	printf("\n");
 }
 
 /*
