@@ -385,7 +385,7 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 	/* Get current id */
 	while ((drd = readdir(dir)) != NULL) {
 
-		if (strncmp(drd->d_name, WWN_PREFIX, WWN_PREFIX_LEN))
+		if (strncmp(drd->d_name, WWN_PREFIX, WWN_PREFIX_LEN) != 0)
 			continue;
 
 		/* Get absolute path for current persistent name */
@@ -400,10 +400,10 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 
 		/* ... and get device pretty name it points at */
 		name = basename(target);
-		if (!name || (name[0] == '\0'))
+		if (!name || (*name == '\0'))
 			continue;
 
-		if (!strncmp(name, pretty, FILENAME_MAX)) {
+		if (strncmp(name, pretty, FILENAME_MAX) == 0) {
 			/* We have found pretty name for current persistent one */
 			strncpy(wwn_name, drd->d_name, MINIMUM(sizeof(wwn_name), sizeof(drd->d_name)));
 			wwn_name[sizeof(wwn_name) - 1] = '\0';
@@ -459,15 +459,16 @@ int check_dir(char *dirname)
  */
 size_t mul_check_overflow3(size_t val1, size_t val2, size_t val3)
 {
-	if ((val1 != 0) && (val2 != 0) && (val3 != 0) &&
-	    ((UINT_MAX < val1) ||
-	     (UINT_MAX / val1 < val2) ||
-	     (UINT_MAX / (val1 * val2) < val3))) {
+	if ((val1 != 0) && (val2 != 0) && (val3 != 0)) {
+		if ((val1 > UINT_MAX) ||
+		    (val2 > UINT_MAX / val1) ||
+		    (val3 > UINT_MAX / (val1 * val2))) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Overflow detected (%zu,%zu,%zu). Aborting...\n",
-			__FUNCTION__, val1, val2, val3);
+			fprintf(stderr, "%s: Overflow detected (%zu,%zu,%zu). Aborting...\n",
+				__FUNCTION__, val1, val2, val3);
 #endif
-		exit(4);
+			exit(4);
+		}
 	}
 
 	return (val1 * val2 * val3);
@@ -489,16 +490,17 @@ size_t mul_check_overflow3(size_t val1, size_t val2, size_t val3)
  */
 size_t mul_check_overflow4(size_t val1, size_t val2, size_t val3, size_t val4)
 {
-	if ((val1 != 0) && (val2 != 0) && (val3 != 0) && (val4 != 0) &&
-	    ((UINT_MAX < val1) ||
-	     (UINT_MAX / val1 < val2) ||
-	     (UINT_MAX / (val1 * val2) < val3) ||
-	     (UINT_MAX / (val1 * val2 * val3) < val4))) {
+	if ((val1 != 0) && (val2 != 0) && (val3 != 0) && (val4 != 0)) {
+		if ((val1 > UINT_MAX) ||
+		    (val2 > UINT_MAX / val1) ||
+		    (val3 > UINT_MAX / (val1 * val2)) ||
+		    (val4 > UINT_MAX / (val1 * val2 * val3))) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: Overflow detected (%zu,%zu,%zu,%zu). Aborting...\n",
-			__FUNCTION__, val1, val2, val3, val4);
+			fprintf(stderr, "%s: Overflow detected (%zu,%zu,%zu,%zu). Aborting...\n",
+				__FUNCTION__, val1, val2, val3, val4);
 #endif
-		exit(4);
+			exit(4);
+		}
 	}
 
 	return (val1 * val2 * val3 * val4);
@@ -529,7 +531,7 @@ unsigned int get_devmap_major(void)
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		if (strstr(line, DEVICE_MAPPER)) {
+		if (strstr(line, DEVICE_MAPPER) != NULL) {
 			/* Read device-mapper major number */
 			sscanf(line, "%u", &dm_major);
 		}
@@ -555,7 +557,7 @@ int is_iso_time_fmt(void)
 	if (is_iso < 0) {
 		char *e;
 
-		is_iso = (((e = __getenv(ENV_TIME_FMT)) != NULL) && !strcmp(e, K_ISO));
+		is_iso = (((e = __getenv(ENV_TIME_FMT)) != NULL) && (strcmp(e, K_ISO) == 0));
 	}
 	return is_iso;
 }
@@ -644,8 +646,8 @@ int set_report_date(struct tm *tm_time, char cur_date[], int sz)
 {
 	if (tm_time != NULL) {
 		const char *date_format = is_iso_time_fmt() ?
-		DATE_FORMAT_ISO :
-		DATE_FORMAT_LOCAL;
+					  DATE_FORMAT_ISO :
+					  DATE_FORMAT_LOCAL;
 
 		if (strftime(cur_date, sz, date_format, tm_time) != 0)
 			return is_iso_time_fmt();
@@ -734,6 +736,7 @@ int get_win_height(void)
 	}
 	/* STDOUT is not a terminal. Look for S_REPEAT_HEADER variable's value instead */
 	else if ((e = __getenv(ENV_REPEAT_HEADER)) != NULL) {
+		/* Check if the environment variable contains only digits */
 		if (strspn(e, DIGITS) == strlen(e)) {
 			int v = atol(e);
 			if (v > 0) {
@@ -741,6 +744,7 @@ int get_win_height(void)
 			}
 		}
 	}
+
 	/* Ensure rows is at least MIN_ROWS */
 	return (rows < MIN_ROWS) ? MIN_ROWS : rows;
 }
@@ -1004,12 +1008,12 @@ char **get_persistent_names(void)
 	if (n < 0)
 		return (NULL);
 
-	/* If directory is empty, it contains 2 entries: "." and ".." */
+	/* Empty directories contain only "." and ".." */
 	if (n <= 2)
 		/* Free list and return NULL */
 		goto free_list;
 
-	/* Ignore the "." and "..", but keep place for one last NULL. */
+	/* Ignore "." and ".." but keep place for one last NULL (n-2+1 = n-1) */
 	files = (char **) calloc(n - 1, sizeof(char *));
 	if (!files)
 		goto free_list;
@@ -1020,8 +1024,8 @@ char **get_persistent_names(void)
 	 */
 	for (i = 0; i < n; i++) {
 		/* Ignore "." and ".." */
-		if (!strcmp(".", namelist[i]->d_name) ||
-		    !strcmp("..", namelist[i]->d_name))
+		if ((strcmp(namelist[i]->d_name, ".") == 0) ||
+		    (strcmp(namelist[i]->d_name, "..") == 0))
 			continue;
 
 		files[k] = (char *) calloc(strlen(namelist[i]->d_name) + 1, sizeof(char));
@@ -1088,7 +1092,7 @@ char *get_persistent_name_from_pretty(char *pretty)
 		if (!name || (name[0] == '\0'))
 			continue;
 
-		if (!strncmp(name, pretty, FILENAME_MAX)) {
+		if (strncmp(name, pretty, FILENAME_MAX) == 0) {
 			/* We have found pretty name for current persistent one */
 			strncpy(persist_name, persist_names[i], sizeof(persist_name));
 			persist_name[sizeof(persist_name) - 1] = '\0';
@@ -1204,7 +1208,7 @@ char *get_devname(unsigned int major, unsigned int minor)
 		return (name);
 
 	name = ioc_name(major, minor);
-	if ((name != NULL) && strcmp(name, K_NODEV))
+	if ((name != NULL) && (strcmp(name, K_NODEV) != 0))
 		return (name);
 
 	snprintf(buf, sizeof(buf), DEF_DEVICE_NAME, major, minor);
@@ -1729,6 +1733,7 @@ int parse_valstr(const char *s, int max_val, int *val)
 		*val = -1;
 		return 0;
 	}
+	/* Check that string contains only digits */
 	if (strspn(s, DIGITS) != strlen(s))
 		return 1;
 
@@ -1792,6 +1797,7 @@ int parse_range_values(char *t, int max_val, int *val_low, int *val)
 	if (!s) {
 		*val_low = *val;
 	}
+
 	return 0;
 }
 
@@ -1821,14 +1827,14 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 	int i, val_low, val;
 	char *t;
 
-	if (!strcmp(strargv, K_ALL)) {
+	if (strcmp(strargv, K_ALL) == 0) {
 		/* Set bit for every possible values (CPU, IRQ, etc.) */
 		memset(bitmap, ~0, BITMAP_SIZE(max_val));
 		return 0;
 	}
 
 	for (t = strtok(strargv, ","); t; t = strtok(NULL, ",")) {
-		if (!strcmp(t, __K_VALUE0)) {
+		if (strcmp(t, __K_VALUE0) == 0) {
 			/*
 			 * Set bit 0 in bitmap. This may correspond
 			 * to CPU "all" or IRQ "SUM" for example.
