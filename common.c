@@ -324,7 +324,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 	/* Is there a partition number? */
 	if ((s = strstr(name, PARTITION_SUFFIX)) != NULL) {
 		/* Yes: Get partition number */
-		if (sscanf(s + strlen(PARTITION_SUFFIX), "%u", part_nr) == 0)
+		if (sscanf(s + strlen(PARTITION_SUFFIX), "%u", part_nr) != 1)
 			return -1;
 		wwnlen = s - name - WWN_PREFIX_LEN;
 	}
@@ -339,7 +339,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 	/* Extract first 16 hex chars of WWN */
 	strncpy(id, name + WWN_PREFIX_LEN, sizeof(id) - 1);
 	id[sizeof(id) - 1] = '\0';
-	if (sscanf(id, "%llx", wwn) == 0)
+	if (sscanf(id, "%llx", wwn) != 1)
 		return -1;
 
 	if (strlen(name) == WWN_SHORT_LEN)
@@ -347,7 +347,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 		return 0;
 
 	/* Extract second part of WWN */
-	if (sscanf(name + WWN_PREFIX_LEN + WWN_SHORT_LEN, "%llx", wwn + 1) == 0)
+	if (sscanf(name + WWN_PREFIX_LEN + WWN_SHORT_LEN, "%llx", wwn + 1) != 1)
 		return -1;
 
 	return 0;
@@ -533,7 +533,9 @@ unsigned int get_devmap_major(void)
 
 		if (strstr(line, DEVICE_MAPPER) != NULL) {
 			/* Read device-mapper major number */
-			sscanf(line, "%u", &dm_major);
+			if (sscanf(line, "%u", &dm_major) == 1)
+				break;
+			dm_major = ~0U;	/* Reset to invalid value if sscanf fails */
 		}
 	}
 
@@ -781,7 +783,6 @@ char *device_name(char *name)
 	fprintf(stderr, "Real pathname: %s (%s)\n", resolved_name, name);
 #endif
 
-
 	if (strncmp(resolved_name, DEV_PREFIX, DEV_PREFIX_LEN) == 0) {
 		i = DEV_PREFIX_LEN;
 	}
@@ -950,7 +951,7 @@ char *get_persistent_type_dir(char *type)
 
 	n = snprintf(dir, sizeof(dir), "%s-%s", DEV_DISK_BY, type);
 
-	if ((n >= sizeof(dir)) || access(dir, R_OK)) {
+	if ((n >= sizeof(dir)) || (n < 0) || (access(dir, R_OK) != 0)) {
 		return (NULL);
 	}
 
@@ -977,7 +978,7 @@ char *get_persistent_name_path(char *name)
 	n = snprintf(path, sizeof(path), "%s/%s",
 		     get_persistent_type_dir(persistent_name_type), name);
 
-	if ((n >= sizeof(path)) || access(path, F_OK)) {
+	if ((n >= sizeof(path)) || (n < 0) || (access(path, F_OK) != 0)) {
 		return (NULL);
 	}
 
