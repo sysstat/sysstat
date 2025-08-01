@@ -52,6 +52,9 @@ enum {
 /* Number of seconds per day */
 #define SEC_PER_DAY	3600 * 24
 
+#define DEFAULT_ROWS	SEC_PER_DAY
+#define MIN_ROWS	1
+
 /* Maximum number of CPUs */
 #if defined(__CPU_SETSIZE) && __CPU_SETSIZE > 8192
 #define NR_CPUS		__CPU_SETSIZE
@@ -107,6 +110,10 @@ enum {
 #define DEV_DISK_BY		PRE "/dev/disk/by"
 #define DEV_DISK_BY_ID		PRE "/dev/disk/by-id"
 
+#define DEVICE_MAPPER		"device-mapper"
+
+#define DEF_DEVICE_NAME		"dev%u-%u"
+
 #define MAX_FILE_LEN		512
 #define MAX_PF_NAME		1024
 #define MAX_NAME_LEN		128
@@ -128,9 +135,17 @@ enum {
 #define DIGITS			"0123456789"
 #define XDIGITS			"0123456789-"
 
+#define WWN_PREFIX		"wwn-0x"
+#define WWN_PREFIX_LEN		6
+#define PARTITION_SUFFIX	"-part"
+#define WWN_SHORT_LEN		16
+#define WWN_LONG_LEN		32
+
 #define DATE_FORMAT_ISO		"%Y-%m-%d"
 #define DATE_FORMAT_LOCAL	"%x"
 #define DEFAULT_ERROR_DATE	"?/?/?"
+#define DATE_TIME_FORMAT_ISO	"%FT%T%z"
+#define DATE_TIME_FORMAT_LOCAL	"%x %X"
 
 /* Batteries status */
 enum {

@@ -308,7 +308,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 {
 	char id[17];
 	char *s;
-	int wwnlen;
+	int wwnlen = strlen(name);
 
 	if ((name == NULL) || (wwn == NULL) || (part_nr == NULL))
 		return -1;
@@ -317,36 +317,37 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 	*part_nr = 0;
 
 	/* Check name */
-	if (((wwnlen = strlen(name)) < 22) || (strncmp(name, "wwn-0x", 6)))
+	if ((wwnlen < WWN_PREFIX_LEN + WWN_SHORT_LEN) ||
+	    (strncmp(name, WWN_PREFIX, WWN_PREFIX_LEN) != 0))
 		return -1;
 
 	/* Is there a partition number? */
-	if ((s = strstr(name, "-part")) != NULL) {
+	if ((s = strstr(name, PARTITION_SUFFIX)) != NULL) {
 		/* Yes: Get partition number */
-		if (sscanf(s + 5, "%u", part_nr) == 0)
+		if (sscanf(s + strlen(PARTITION_SUFFIX), "%u", part_nr) == 0)
 			return -1;
-		wwnlen = s - name - 6;
+		wwnlen = s - name - WWN_PREFIX_LEN;
 	}
 	else {
-		wwnlen -= 6;	/* Don't count "wwn-0x" */
+		wwnlen -= WWN_PREFIX_LEN;	/* Don't count "wwn-0x" */
 	}
 
 	/* Check WWN length */
-	if ((wwnlen != 16) && (wwnlen != 32))
+	if ((wwnlen != WWN_SHORT_LEN) && (wwnlen != WWN_LONG_LEN))
 		return -1;
 
 	/* Extract first 16 hex chars of WWN */
-	strncpy(id, name + 6, 16);
-	id[16] = '\0';
+	strncpy(id, name + WWN_PREFIX_LEN, sizeof(id) - 1);
+	id[sizeof(id) - 1] = '\0';
 	if (sscanf(id, "%llx", wwn) == 0)
 		return -1;
 
-	if (strlen(name) < 38)
+	if (strlen(name) == WWN_SHORT_LEN)
 		/* This is a short (16 hex chars) WWN id */
 		return 0;
 
 	/* Extract second part of WWN */
-	if (sscanf(name + 22, "%llx", wwn + 1) == 0)
+	if (sscanf(name + WWN_PREFIX_LEN + WWN_SHORT_LEN, "%llx", wwn + 1) == 0)
 		return -1;
 
 	return 0;
@@ -384,15 +385,15 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 	/* Get current id */
 	while ((drd = readdir(dir)) != NULL) {
 
-		if (strncmp(drd->d_name, "wwn-0x", 6))
+		if (strncmp(drd->d_name, WWN_PREFIX, WWN_PREFIX_LEN))
 			continue;
 
 		/* Get absolute path for current persistent name */
-		snprintf(link, PATH_MAX, "%s/%s", DEV_DISK_BY_ID, drd->d_name);
+		snprintf(link, sizeof(link), "%s/%s", DEV_DISK_BY_ID, drd->d_name);
 
 		/* Persistent name is usually a symlink: Read it... */
-		r = readlink(link, target, PATH_MAX);
-		if ((r <= 0) || (r >= PATH_MAX))
+		r = readlink(link, target, sizeof(target));
+		if ((r <= 0) || (r >= (ssize_t) sizeof(target)))
 			continue;
 
 		target[r] = '\0';
@@ -528,7 +529,7 @@ unsigned int get_devmap_major(void)
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		if (strstr(line, "device-mapper")) {
+		if (strstr(line, DEVICE_MAPPER)) {
 			/* Read device-mapper major number */
 			sscanf(line, "%u", &dm_major);
 		}
@@ -723,7 +724,7 @@ int get_win_height(void)
 	 * This default value will be used whenever STDOUT
 	 * is redirected to a pipe or a file and S_REPEAT_HEADER variable is not set
 	 */
-	int rows = 3600 * 24;
+	int rows = DEFAULT_ROWS;
 
 	/* Get number of lines of current terminal */
 	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &win) != -1) {
@@ -740,7 +741,8 @@ int get_win_height(void)
 			}
 		}
 	}
-	return rows;
+	/* Ensure rows is at least MIN_ROWS */
+	return (rows < MIN_ROWS) ? MIN_ROWS : rows;
 }
 
 /*
@@ -1075,8 +1077,8 @@ char *get_persistent_name_from_pretty(char *pretty)
 			continue;
 
 		/* Persistent name is usually a symlink: Read it... */
-		r = readlink(link, target, PATH_MAX);
-		if ((r <= 0) || (r >= PATH_MAX))
+		r = readlink(link, target, sizeof(target));
+		if ((r <= 0) || (r >= sizeof(target)))
 			continue;
 
 		target[r] = '\0';
@@ -1128,8 +1130,8 @@ char *get_pretty_name_from_persistent(char *persistent)
 		return (NULL);
 
 	/* Persistent name is usually a symlink: Read it... */
-	r = readlink(link, target, PATH_MAX);
-	if ((r <= 0) || (r >= PATH_MAX))
+	r = readlink(link, target, sizeof(target));
+	if ((r <= 0) || (r >= sizeof(target)))
 		return (NULL);
 
 	target[r] = '\0';
@@ -1164,8 +1166,8 @@ char *get_devname_from_sysfs(unsigned int major, unsigned int minor)
 	snprintf(link, sizeof(link), "%s/%u:%u", SYSFS_DEV_BLOCK, major, minor);
 
 	/* Get full path to device knowing its major and minor numbers */
-	r = readlink(link, target, PATH_MAX);
-	if (r <= 0 || r >= PATH_MAX)
+	r = readlink(link, target, sizeof(target));
+	if (r <= 0 || r >= sizeof(target))
 		return (NULL);
 
 	target[r] = '\0';
@@ -1205,7 +1207,7 @@ char *get_devname(unsigned int major, unsigned int minor)
 	if ((name != NULL) && strcmp(name, K_NODEV))
 		return (name);
 
-	snprintf(buf, sizeof(buf), "dev%u-%u", major, minor);
+	snprintf(buf, sizeof(buf), DEF_DEVICE_NAME, major, minor);
 	return (buf);
 }
 
@@ -1763,8 +1765,8 @@ int parse_range_values(char *t, int max_val, int *val_low, int *val)
 		return 1;
 
 	/* Parse value or range of values */
-	strncpy(range, t, 16);
-	range[15] = '\0';
+	strncpy(range, t, sizeof(range) - 1);
+	range[sizeof(range) - 1] = '\0';
 	valstr = t;
 
 	if ((s = strchr(range, '-')) != NULL) {
@@ -1869,10 +1871,10 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 		timestamp[sizeof(timestamp) - 1] = '\0';
 	}
 	else if (DISPLAY_ISO(xflags)) {
-		strftime(timestamp, sizeof(timestamp), "%FT%T%z", rectime);
+		strftime(timestamp, sizeof(timestamp), DATE_TIME_FORMAT_ISO, rectime);
 	}
 	else {
-		strftime(timestamp, sizeof(timestamp), "%x %X", rectime);
+		strftime(timestamp, sizeof(timestamp), DATE_TIME_FORMAT_LOCAL, rectime);
 	}
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		xprintf(tab, "\"timestamp\": \"%s\",", timestamp);
