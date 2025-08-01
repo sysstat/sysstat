@@ -9,5 +9,4 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	04/18/19 	_x86_64_	(9 CPU)
 13:20:49   [32;22m         0[0m[34;1m        77[0m[34;1m     +5.36[0m[35;1m         →[0m
 Average:   [32;22m         0[0m[34;1m     80.50[0m[31;1m    -11.19[0m
 
-13:37:29   [31;22m  LINUX RESTART	(9 CPU)
-[0m
+13:37:29   [31;22m  LINUX RESTART	(9 CPU)[0m
