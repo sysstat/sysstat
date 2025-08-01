@@ -405,7 +405,7 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 
 		if (strncmp(name, pretty, FILENAME_MAX) == 0) {
 			/* We have found pretty name for current persistent one */
-			strncpy(wwn_name, drd->d_name, MINIMUM(sizeof(wwn_name), sizeof(drd->d_name)));
+			strncpy(wwn_name, drd->d_name, sizeof(wwn_name) - 1);
 			wwn_name[sizeof(wwn_name) - 1] = '\0';
 
 			/* Try to extract WWN */
