@@ -1870,8 +1870,7 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 		return;
 
 	if (DISPLAY_SEC_EPOCH(xflags)) {
-		snprintf(timestamp, sizeof(timestamp), "%ld", mktime(rectime));
-		timestamp[sizeof(timestamp) - 1] = '\0';
+		snprintf(timestamp, sizeof(timestamp), "%ld", (long) mktime(rectime));
 	}
 	else if (DISPLAY_ISO(xflags)) {
 		strftime(timestamp, sizeof(timestamp), DATE_TIME_FORMAT_ISO, rectime);
@@ -1879,6 +1878,10 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 	else {
 		strftime(timestamp, sizeof(timestamp), DATE_TIME_FORMAT_LOCAL, rectime);
 	}
+
+	/* Make sure timestamp is null-terminated */
+	timestamp[sizeof(timestamp) - 1] = '\0';
+
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		xprintf(tab, "\"timestamp\": \"%s\",", timestamp);
 	}
