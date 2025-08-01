@@ -115,23 +115,27 @@ void print_version(const char *env[], int n)
  * @rectime	Current local date and time.
  *
  * RETURNS:
- * Value of time in seconds since the Epoch (always in UTC)
+ * Value of time in seconds since the Epoch (always in UTC) on success,
+ * or (time_t) -1 on error.
  ***************************************************************************
  */
 time_t get_xtime(struct tm *rectime, int d_off, int utc)
 {
 	time_t timer;
 
-	timer = __time(NULL);
+	if ((timer = __time(NULL)) == (time_t) -1)
+		return (time_t) -1;
 	timer -= SEC_PER_DAY * d_off;
 
 	if (utc) {
 		/* Get date and time in UTC */
-		gmtime_r(&timer, rectime);
+		if (gmtime_r(&timer, rectime) == NULL)
+			return (time_t) -1;
 	}
 	else {
 		/* Get date and time in local time */
-		localtime_r(&timer, rectime);
+		if (localtime_r(&timer, rectime) == NULL)
+			return (time_t) -1;
 	}
 
 	return timer;
