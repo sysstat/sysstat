@@ -1030,11 +1030,10 @@ char **get_persistent_names(void)
 		    (strcmp(namelist[i]->d_name, "..") == 0))
 			continue;
 
-		files[k] = (char *) calloc(strlen(namelist[i]->d_name) + 1, sizeof(char));
+		files[k] = strdup(namelist[i]->d_name);
 		if (!files[k])
 			continue;
-
-		strcpy(files[k++], namelist[i]->d_name);
+		k++;
 	}
 	files[k] = NULL;
 
