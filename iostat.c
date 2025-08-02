@@ -1161,22 +1161,12 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			  struct ext_io_stats *xios)
 {
-	int dev_in_grp;
-
 	/* If this is a group with no devices, skip it */
 	if (d->dev_tp == T_GROUP)
 		return;
 
 	if (!DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
-	}
-
-	/* Compute number of devices in group */
-	if (d->dev_tp > T_GROUP) {
-		dev_in_grp = d->dev_tp - T_GROUP;
-	}
-	else {
-		dev_in_grp = 1;
 	}
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
@@ -1213,7 +1203,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 		 * %util
 		 * Again: Ticks in milliseconds.
 		 */
-		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) dev_in_grp);
+		cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0);
 	}
 	else {
 		if ((hpart == 1) || !hpart) {
@@ -1307,7 +1297,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			 * %util
 			 * Again: Ticks in milliseconds.
 			 */
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) dev_in_grp);
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0);
 		}
 	}
 
@@ -1339,8 +1329,6 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 			 struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
 			 struct ext_io_stats *xios)
 {
-	int dev_in_grp;
-
 	/* If this is a group with no devices, skip it */
 	if (d->dev_tp == T_GROUP)
 		return;
@@ -1427,13 +1415,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 						     : S_VALUE(ioj->rq_ticks, ioi->rq_ticks, itv) / 1000.0);
 	}
 
-	if (d->dev_tp > T_GROUP) {
-		dev_in_grp = d->dev_tp - T_GROUP;
-	}
-	else {
-		dev_in_grp = 1;
-	}
-	printf("\"util\": %.2f}", xds->util / 10.0 / (double) dev_in_grp);
+	printf("\"util\": %.2f}", xds->util / 10.0);
 }
 
 /*
@@ -1458,9 +1440,19 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		    struct io_device *d, struct io_stats *ioi,
 		    struct io_stats *ioj, int tab, char *dname)
 {
+	int dev_in_grp;
+
 	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
 	struct ext_io_stats xios;
+
+	/* Compute number of devices in group */
+	if (d->dev_tp > T_GROUP) {
+		dev_in_grp = d->dev_tp - T_GROUP;
+	}
+	else {
+		dev_in_grp = 1;
+	}
 
 	memset(&xds, 0, sizeof(struct ext_disk_stats));
 	memset(&xios, 0, sizeof(struct ext_io_stats));
@@ -1480,8 +1472,11 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		sdc.nr_ios    = ioi->rd_ios + ioi->wr_ios + ioi->dc_ios;
 		sdp.nr_ios    = ioj->rd_ios + ioj->wr_ios + ioj->dc_ios;
 
-		sdc.tot_ticks = ioi->tot_ticks;
-		sdp.tot_ticks = ioj->tot_ticks;
+		sdc.tot_ticks = ioi->tot_ticks / dev_in_grp;
+		sdp.tot_ticks = ioj->tot_ticks / dev_in_grp;
+
+		sdc.rq_ticks  = ioi->rq_ticks;
+		sdp.rq_ticks  = ioj->rq_ticks;
 
 		sdc.rd_ticks  = ioi->rd_ticks;
 		sdp.rd_ticks  = ioj->rd_ticks;
