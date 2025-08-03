@@ -152,7 +152,7 @@ time_t get_xtime(struct tm *rectime, int d_off, int utc)
  * @rectime	Current date and time.
  *
  * RETURNS:
- * Value of time in seconds since the Epoch.
+ * Value of time in seconds since the Epoch, or (time_t) -1 on error.
  ***************************************************************************
  */
 time_t get_time(struct tm *rectime, int d_off)
@@ -339,8 +339,7 @@ int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_
 		return -1;
 
 	/* Extract first 16 hex chars of WWN */
-	strncpy(id, name + WWN_PREFIX_LEN, sizeof(id) - 1);
-	id[sizeof(id) - 1] = '\0';
+	snprintf(id, sizeof(id), "%s", name + WWN_PREFIX_LEN);
 	if (sscanf(id, "%llx", wwn) != 1)
 		return -1;
 
@@ -407,8 +406,7 @@ int get_wwnid_from_pretty(char *pretty, unsigned long long *wwn, unsigned int *p
 
 		if (strncmp(name, pretty, FILENAME_MAX) == 0) {
 			/* We have found pretty name for current persistent one */
-			strncpy(wwn_name, drd->d_name, sizeof(wwn_name) - 1);
-			wwn_name[sizeof(wwn_name) - 1] = '\0';
+			snprintf(wwn_name, sizeof(wwn_name), "%s", drd->d_name);
 
 			/* Try to extract WWN */
 			if (!extract_wwnid(wwn_name, wwn, part_nr)) {
@@ -657,8 +655,7 @@ int set_report_date(struct tm *tm_time, char cur_date[], int sz)
 			return is_iso_time_fmt();
 	}
 
-	strncpy(cur_date, DEFAULT_ERROR_DATE, sz - 1);
-	cur_date[sz - 1] = '\0';
+	snprintf(cur_date, sz, "%s", DEFAULT_ERROR_DATE);
 
 	return -1;
 }
@@ -790,7 +787,6 @@ char *device_name(char *name)
 		i = DEV_PREFIX_LEN;
 	}
 	snprintf(out, sizeof(out), "%s", resolved_name + i);
-	out[sizeof(out) - 1] = '\0';
 
 	/* Some devices may have a slash in their name (eg. cciss/c0d0...) */
 	while ((slash = strchr(out, '/'))) {
@@ -1097,8 +1093,7 @@ char *get_persistent_name_from_pretty(char *pretty)
 
 		if (strncmp(name, pretty, FILENAME_MAX) == 0) {
 			/* We have found pretty name for current persistent one */
-			strncpy(persist_name, persist_names[i], sizeof(persist_name) - 1);
-			persist_name[sizeof(persist_name) - 1] = '\0';
+			snprintf(persist_name, sizeof(persist_name), "%s", persist_names[i]);
 			break;
 		}
 	}
@@ -1280,8 +1275,7 @@ char *get_device_name(unsigned int major, unsigned int minor, unsigned long long
 		}
 	}
 
-	strncpy(dname, dev_name, sizeof(dname) - 1);
-	dname[sizeof(dname) - 1] = '\0';
+	snprintf(dname, sizeof(dname), "%s", dev_name);
 
 	while ((bang = strchr(dname, '!'))) {
 		/*
@@ -1347,32 +1341,41 @@ void init_colors(void)
 		switch (*p) {
 			case 'M':
 			case 'W':
-				snprintf(sc_percent_warn, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_percent_warn, sizeof(sc_percent_warn),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case 'X':
 			case 'H':
-				snprintf(sc_percent_xtreme, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_percent_xtreme, sizeof(sc_percent_xtreme),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case 'Z':
-				snprintf(sc_zero_int_stat, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_zero_int_stat, sizeof(sc_zero_int_stat),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case 'N':
-				snprintf(sc_int_stat, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_int_stat, sizeof(sc_int_stat),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case 'I':
-				snprintf(sc_item_name, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_item_name, sizeof(sc_item_name),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case 'C':
-				snprintf(sc_sa_comment, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_sa_comment, sizeof(sc_sa_comment),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case 'R':
-				snprintf(sc_sa_restart, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_sa_restart, sizeof(sc_sa_restart),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case '+':
-				snprintf(sc_trend_pos, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_trend_pos, sizeof(sc_trend_pos),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 			case '-':
-				snprintf(sc_trend_neg, MAX_SGR_LEN, SGR_ESC_SEQ, p + 2);
+				snprintf(sc_trend_neg, sizeof(sc_trend_neg),
+					 SGR_ESC_SEQ, p + 2);
 				break;
 		}
 	}
@@ -1770,8 +1773,7 @@ int parse_range_values(char *t, int max_val, int *val_low, int *val)
 		return 1;
 
 	/* Parse value or range of values */
-	strncpy(range, t, sizeof(range) - 1);
-	range[sizeof(range) - 1] = '\0';
+	snprintf(range, sizeof(range), "%s", t);
 	valstr = t;
 
 	if ((s = strchr(range, '-')) != NULL) {

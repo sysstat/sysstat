@@ -154,7 +154,6 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 		 rectime->tm_year + 1900,
 		 rectime->tm_mon + 1,
 		 rectime->tm_mday);
-	filename[sizeof(filename) - 1] = '\0';
 
 	if (stat(filename, &sb) < 0)
 		/* Cannot find or access saYYYYMMDD, so use saDD */
@@ -170,7 +169,6 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	snprintf(filename, sizeof(filename),
 		 "%s/sa%02d", sa_dir,
 		 rectime->tm_mday);
-	filename[sizeof(filename) - 1] = '\0';
 
 	if (stat(filename, &sb) < 0) {
 		/* Cannot find or access saDD, so use saYYYYMMDD */
@@ -213,14 +211,20 @@ void set_default_file(char *datafile, int d_off, int sa_name)
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
 	int err = 0;
 
+	if (datafile == NULL) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: datafile is NULL\n", __FUNCTION__);
+#endif
+		return;
+	}
+
 	/* Set directory where daily data files will be saved */
-	if (datafile[0]) {
-		strncpy(sa_dir, datafile, sizeof(sa_dir));
+	if (*datafile != '\0') {
+		snprintf(sa_dir, sizeof(sa_dir), "%s", datafile);
 	}
 	else {
-		strncpy(sa_dir, SA_DIR, sizeof(sa_dir));
+		snprintf(sa_dir, sizeof(sa_dir), "%s", SA_DIR);
 	}
-	sa_dir[sizeof(sa_dir) - 1] = '\0';
 
 	get_time(&rectime, d_off);
 	if (sa_name < 0) {
@@ -245,7 +249,6 @@ void set_default_file(char *datafile, int d_off, int sa_name)
 			       "%s/sa%02d", sa_dir,
 			       rectime.tm_mday);
 	}
-	datafile[MAX_FILE_LEN - 1] = '\0';
 
 	if ((err < 0) || (err >= MAX_FILE_LEN)) {
 		fprintf(stderr, "%s: %s\n", __FUNCTION__, datafile);
@@ -2586,8 +2589,8 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			if (strnlen(argv[*opt], sizeof(persistent_name_type)) >= sizeof(persistent_name_type) - 1)
 				return 1;
 
-			strncpy(persistent_name_type, argv[*opt], sizeof(persistent_name_type) - 1);
-			persistent_name_type[sizeof(persistent_name_type) - 1] = '\0';
+			snprintf(persistent_name_type, sizeof(persistent_name_type),
+				 "%s", argv[*opt]);
 			strtolower(persistent_name_type);
 			if (!get_persistent_type_dir(persistent_name_type)) {
 				fprintf(stderr, _("Invalid type of persistent device name\n"));
@@ -2997,7 +3000,6 @@ void parse_sa_devices(char *argv, struct activity *a, int max_len, int *opt, int
 				/* This is a real range of values: Save each if its values */
 				for (i = val_low; i <= val; i++) {
 					snprintf(svalue, sizeof(svalue), "%d", i);
-					svalue[sizeof(svalue) - 1] = '\0';
 					a->item_list_sz += add_list_item(&(a->item_list), svalue, max_len, NULL);
 				}
 				continue;
@@ -3621,8 +3623,7 @@ char *get_fs_name_to_display(struct activity *a, uint64_t flags, struct stats_fi
 	if (DISPLAY_PERSIST_NAME_S(flags) && !DISPLAY_MOUNT(a->opt_flags)) {
 		char fname[MAX_FS_LEN];
 
-		strncpy(fname, st_fs->fs_name, sizeof(fname));
-		fname[sizeof(fname) - 1] = '\0';
+		snprintf(fname, sizeof(fname), "%s", st_fs->fs_name);
 		if ((persist_dev_name = get_persistent_name_from_pretty(basename(fname))) != NULL) {
 			pname = persist_dev_name;
 		}

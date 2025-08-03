@@ -534,19 +534,18 @@ void setup_file_hdr(int fd)
 
 	/* Get system name, release number, hostname and machine architecture */
 	__uname(&header);
-	strncpy(file_hdr.sa_sysname, header.sysname, sizeof(file_hdr.sa_sysname));
-	file_hdr.sa_sysname[sizeof(file_hdr.sa_sysname) - 1]  = '\0';
-	strncpy(file_hdr.sa_nodename, header.nodename, sizeof(file_hdr.sa_nodename));
-	file_hdr.sa_nodename[sizeof(file_hdr.sa_nodename) - 1] = '\0';
-	strncpy(file_hdr.sa_release, header.release, sizeof(file_hdr.sa_release));
-	file_hdr.sa_release[sizeof(file_hdr.sa_release) - 1]  = '\0';
-	strncpy(file_hdr.sa_machine, header.machine, sizeof(file_hdr.sa_machine));
-	file_hdr.sa_machine[sizeof(file_hdr.sa_machine) - 1]  = '\0';
+	snprintf(file_hdr.sa_sysname, sizeof(file_hdr.sa_sysname), "%s",
+		 header.sysname);
+	snprintf(file_hdr.sa_nodename, sizeof(file_hdr.sa_nodename), "%s",
+		 header.nodename);
+	snprintf(file_hdr.sa_release, sizeof(file_hdr.sa_release), "%s",
+		 header.release);
+	snprintf(file_hdr.sa_machine, sizeof(file_hdr.sa_machine), "%s",
+		 header.machine);
 
 	/* Get timezone value and save it */
 	tzset();
-	strncpy(file_hdr.sa_tzname, tzname[0], TZNAME_LEN);
-	file_hdr.sa_tzname[TZNAME_LEN - 1] = '\0';
+	snprintf(file_hdr.sa_tzname, sizeof(file_hdr.sa_tzname), "%s", tzname[0]);
 
 	/* Write file header */
 	if (write_all(fd, &file_hdr, FILE_HEADER_SIZE) != FILE_HEADER_SIZE) {
@@ -1182,8 +1181,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		/* Rotate activity file if necessary */
 		if (WANT_SA_ROTAT(flags)) {
 			/* The user specified '-' as the filename to use */
-			strncpy(new_ofile, sa_dir, sizeof(new_ofile) - 1);
-			new_ofile[sizeof(new_ofile) - 1] = '\0';
+			snprintf(new_ofile, sizeof(new_ofile), "%s", sa_dir);
 			set_default_file(new_ofile, 0, USE_SA_YYYYMMDD(flags));
 
 			if (strcmp(ofile, new_ofile)) {
@@ -1276,9 +1274,7 @@ int main(int argc, char **argv)
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
-			strncpy(comment, argv[opt], sizeof(comment));
-			comment[sizeof(comment) - 1] = '\0';
-			if (!strlen(comment)) {
+			if (snprintf(comment, sizeof(comment), "%s", argv[opt]) <= 0) {
 				usage(argv[0]);
 			}
 		}
@@ -1312,8 +1308,7 @@ int main(int argc, char **argv)
 			}
 			else {
 				/* Write data to file */
-				strncpy(ofile, argv[opt], sizeof(ofile));
-				ofile[sizeof(ofile) - 1] = '\0';
+				snprintf(ofile, sizeof(ofile), "%s", argv[opt]);
 			}
 		}
 

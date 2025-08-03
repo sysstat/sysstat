@@ -369,8 +369,7 @@ void list_fields(unsigned int act_id)
 			}
 			else {
 				msk = 1;
-				strncpy(hline, act[i]->hdr_line, sizeof(hline) - 1);
-				hline[sizeof(hline) - 1] = '\0';
+				snprintf(hline, sizeof(hline), "%s", act[i]->hdr_line);
 				for (hl = strtok(hline, "|"); hl; hl = strtok(NULL, "|"), msk <<= 1) {
 					if ((hl != NULL) && ((act[i]->opt_flags & 0xff) & msk)) {
 						if (strchr(hl, '&')) {
@@ -1796,8 +1795,7 @@ int main(int argc, char **argv)
 				}
 				else if (!strncmp(t, K_PCPARCHIVE, strlen(K_PCPARCHIVE))) {
 					v = t + strlen(K_PCPARCHIVE);
-					strncpy(pcparchive, v, sizeof(pcparchive));
-					pcparchive[sizeof(pcparchive) - 1] = '\0';
+					snprintf(pcparchive, sizeof(pcparchive), "%s", v);
 				}
 				else if (!strncmp(t, K_HZ, strlen(K_HZ))) {
 					v = t + strlen(K_HZ);
@@ -1983,8 +1981,7 @@ int main(int argc, char **argv)
 				usage(argv[0]);
 			}
 			/* Write data to file */
-			strncpy(dfile, argv[opt++], sizeof(dfile));
-			dfile[sizeof(dfile) - 1] = '\0';
+			snprintf(dfile, sizeof(dfile), "%s", argv[opt++]);
 			/* Check if this is an alternate directory for sa files */
 			check_alt_sa_dir(dfile, 0, -1);
 		}
@@ -2061,8 +2058,7 @@ int main(int argc, char **argv)
 	/* Get timezone */
 	if (PRINT_LOCAL_TIME(flags)) {
 		tzset();
-		strncpy(my_tzname, tzname[0], TZNAME_LEN);
-		my_tzname[TZNAME_LEN - 1] = '\0';
+		snprintf(my_tzname, sizeof(my_tzname), "%s", tzname[0]);
 	}
 
 	/*

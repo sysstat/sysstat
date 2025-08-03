@@ -230,7 +230,6 @@ void lnappend(unsigned long long timetag, double value, char **out, int *outsize
 
 	/* Prepare additional graph definition data */
 	snprintf(data, sizeof(data), " %c%llu,%.2f", restart ? 'M' : 'L', timetag, value);
-	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
@@ -263,7 +262,6 @@ void lniappend(unsigned long long timetag, unsigned long long value, char **out,
 
 	/* Prepare additional graph definition data */
 	snprintf(data, sizeof(data), " %c%llu,%llu", restart ? 'M' : 'L', timetag, value);
-	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
@@ -310,7 +308,6 @@ void brappend(unsigned long long timetag, double offset, double value, char **ou
 		 hval ? offset : MINIMUM(offset, 100.0),
 		 hval ? value : MINIMUM(value, (100.0 - offset)),
 		 dt);
-	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
@@ -403,15 +400,12 @@ void recappend(unsigned long long timetag, double p_value, double value, char **
 	/* Prepare additional graph definition data */
 	if (restart) {
 		snprintf(data1, sizeof(data1), " M%llu,%.2f", t, p_value);
-		data1[sizeof(data1) - 1] = '\0';
 	}
 	if (p_value != value) {
 		snprintf(data2, sizeof(data2), " L%llu,%.2f", timetag, value);
-		data2[sizeof(data2) - 1] = '\0';
 	}
 	snprintf(data, sizeof(data), "%s L%llu,%.2f%s", restart ? data1 : "", timetag, p_value,
 		 p_value != value ? data2 : "");
-	data[sizeof(data) - 1] = '\0';
 
 	save_svg_data(data, out, outsize);
 }
@@ -674,7 +668,6 @@ double ygrid(double lmax, int *dp)
 		return (lmax / SVG_H_GRIDNR);
 	}
 	snprintf(val, sizeof(val), "%ld", n);
-	val[sizeof(val) - 1] = '\0';
 	l = strlen(val);
 	if (l < 2)
 		return n;
@@ -4295,7 +4288,6 @@ __print_funct_t svg_print_pwr_fan_stats(struct activity *a, int curr, int action
 			spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
 			snprintf(item_name, sizeof(item_name), "%d: %s", i + 1, spc->device);
-			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
@@ -4382,7 +4374,6 @@ __print_funct_t svg_print_pwr_temp_stats(struct activity *a, int curr, int actio
 			spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
 			snprintf(item_name, sizeof(item_name), "%d: %s", i + 1, spc->device);
-			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
@@ -4471,7 +4462,6 @@ __print_funct_t svg_print_pwr_in_stats(struct activity *a, int curr, int action,
 			spc = (struct stats_pwr_in *) ((char *) a->buf[curr]  + i * a->msize);
 
 			snprintf(item_name, sizeof(item_name), "%d: %s", i + 1, spc->device);
-			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,
@@ -4549,7 +4539,6 @@ __print_funct_t svg_print_pwr_bat_stats(struct activity *a, int curr, int action
 			spbc = (struct stats_pwr_bat *) ((char *) a->buf[curr] + i * a->msize);
 
 			snprintf(item_name, sizeof(item_name), "BAT%d", (int) spbc->bat_id);
-			item_name[sizeof(item_name) - 1] = '\0';
 
 			if (draw_activity_graphs(a->g_nr, g_type,
 						 title, g_title, item_name, group,

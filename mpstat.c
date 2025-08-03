@@ -315,7 +315,6 @@ int get_node_placement(int nr_cpus, int cpu_per_node[], int cpu2node[])
 
 	for (cpu = 0; cpu < nr_cpus; cpu++) {
 		snprintf(line, sizeof(line), "%s/cpu%d", SYSFS_DEVCPU, cpu);
-		line[sizeof(line) - 1] = '\0';
 
 		/* Open relevant /sys directory */
 		if ((dir = opendir(line)) == NULL)
@@ -381,7 +380,6 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 
 		/* Read current CPU's socket number */
 		snprintf(filename, sizeof(filename), "%s/cpu%d/%s", SYSFS_DEVCPU, cpu, PHYS_PACK_ID);
-		filename[sizeof(filename) - 1] = '\0';
 
 		if ((fp = fopen(filename, "r")) != NULL) {
 			rc = fscanf(fp, "%d", &cpu_topo_i->phys_package_id);
@@ -394,7 +392,6 @@ void read_topology(int nr_cpus, struct cpu_topology *cpu_topo)
 
 		/* Read current CPU's logical core id number */
 		snprintf(filename, sizeof(filename), "%s/cpu%d/%s", SYSFS_DEVCPU, cpu, THREAD_SBL_LST);
-		filename[sizeof(filename) - 1] = '\0';
 
 		if ((fp = fopen(filename, "r")) != NULL) {
 			rc = fscanf(fp, "%d", &cpu_topo_i->logical_core_id);
@@ -781,7 +778,6 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 		}
 		else {
 			snprintf(cpu_name, sizeof(cpu_name), "%d", i - 1);
-			cpu_name[sizeof(cpu_name) - 1] = '\0';
 
 			if (DISPLAY_TOPOLOGY(flags)) {
 				cpu_topo_i = st_cpu_topology + i - 1;
@@ -1050,7 +1046,6 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 		}
 		else {
 			snprintf(node_name, sizeof(node_name), "%d", node - 1);
-			node_name[sizeof(node_name) -1] = '\0';
 
 			/* Recalculate interval for current node */
 			deltot_jiffies = 0;
@@ -1736,8 +1731,7 @@ void write_stats_avg(int curr, int dis)
 {
 	char string[16];
 
-	strncpy(string, _("Average:"), 16);
-	string[15] = '\0';
+	snprintf(string, sizeof(string), "%s", _("Average:"));
 	write_stats_core(2, curr, dis, string, string);
 }
 
@@ -1756,8 +1750,7 @@ void write_stats(int curr, int dis)
 
 	/* Get previous timestamp */
 	if (PRINT_SEC_EPOCH(flags)) {
-		snprintf(cur_time[!curr], sizeof(cur_time[!curr]), "%ld", mktime(&mp_tstamp[!curr]));
-		cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
+		snprintf(cur_time[!curr], sizeof(cur_time[!curr]), "%ld", (long) mktime(&mp_tstamp[!curr]));
 	}
 	else if (is_iso_time_fmt()) {
 		strftime(cur_time[!curr], sizeof(cur_time[!curr]), "%H:%M:%S", &mp_tstamp[!curr]);
@@ -1768,8 +1761,7 @@ void write_stats(int curr, int dis)
 
 	/* Get current timestamp */
 	if (PRINT_SEC_EPOCH(flags)) {
-		snprintf(cur_time[curr], sizeof(cur_time[curr]), "%ld", mktime(&mp_tstamp[curr]));
-		cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
+		snprintf(cur_time[curr], sizeof(cur_time[curr]), "%ld", (long) mktime(&mp_tstamp[curr]));
 	}
 	else if (is_iso_time_fmt()) {
 		strftime(cur_time[curr], sizeof(cur_time[curr]), "%H:%M:%S", &mp_tstamp[curr]);
@@ -1777,6 +1769,10 @@ void write_stats(int curr, int dis)
 	else {
 		strftime(cur_time[curr], sizeof(cur_time[curr]), "%X", &(mp_tstamp[curr]));
 	}
+
+	/* Make sure timestamp is null-terminated */
+	cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
+	cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
 
 	write_stats_core(!curr, curr, dis, cur_time[!curr], cur_time[curr]);
 }

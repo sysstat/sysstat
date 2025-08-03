@@ -2375,7 +2375,7 @@ int read_time_in_state(struct stats_pwr_wghfreq *st_pwr_wghfreq, int cpu_nr, int
 	unsigned long freq;
 	unsigned long long time_in_state;
 
-	snprintf(filename, MAX_PF_NAME, "%s/cpu%d/%s",
+	snprintf(filename, sizeof(filename), "%s/cpu%d/%s",
 		 SYSFS_DEVCPU, cpu_nr, SYSFS_TIME_IN_STATE);
 	if ((fp = fopen(filename, "r")) == NULL)
 		return 0;
@@ -2480,7 +2480,7 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	sscanf(usb_device, "%u", &st_pwr_usb->bus_nr);
 
 	/* Read USB device vendor ID */
-	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+	snprintf(filename, sizeof(filename), "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_IDVENDOR);
 	if ((fp = fopen(filename, "r")) != NULL) {
 		rc = fscanf(fp, "%x",
@@ -2492,7 +2492,7 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	}
 
 	/* Read USB device product ID */
-	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+	snprintf(filename, sizeof(filename), "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_IDPRODUCT);
 	if ((fp = fopen(filename, "r")) != NULL) {
 		rc = fscanf(fp, "%x",
@@ -2504,7 +2504,7 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	}
 
 	/* Read USB device max power consumption */
-	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+	snprintf(filename, sizeof(filename), "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_BMAXPOWER);
 	if ((fp = fopen(filename, "r")) != NULL) {
 		rc = fscanf(fp, "%u",
@@ -2516,7 +2516,7 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	}
 
 	/* Read USB device manufacturer */
-	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+	snprintf(filename, sizeof(filename), "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_MANUFACTURER);
 	if ((fp = fopen(filename, "r")) != NULL) {
 		rs = fgets(st_pwr_usb->manufacturer,
@@ -2530,7 +2530,7 @@ void read_usb_stats(struct stats_pwr_usb *st_pwr_usb, char *usb_device)
 	}
 
 	/* Read USB device product */
-	snprintf(filename, MAX_PF_NAME, "%s/%s/%s",
+	snprintf(filename, sizeof(filename), "%s/%s/%s",
 		 SYSFS_USBDEV, usb_device, SYSFS_PRODUCT);
 	if ((fp = fopen(filename, "r")) != NULL) {
 		rs = fgets(st_pwr_usb->product,
@@ -2698,8 +2698,12 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			st_filesystem_i->f_bavail = (unsigned long long) buf.f_bavail * (unsigned long long) buf.f_frsize;
 			st_filesystem_i->f_files  = (unsigned long long) buf.f_files;
 			st_filesystem_i->f_ffree  = (unsigned long long) buf.f_ffree;
-			strncpy(st_filesystem_i->fs_name, fs_name, sizeof(st_filesystem_i->fs_name));
-			st_filesystem_i->fs_name[sizeof(st_filesystem_i->fs_name) - 1] = '\0';
+			snprintf(st_filesystem_i->fs_name, sizeof(st_filesystem_i->fs_name), "%s",
+				 fs_name);
+			/*
+			 * Use strncpy() insteaf of snprintf() because
+			 * src and dest strings are of different size.
+			 */
 			strncpy(st_filesystem_i->mountp, mountp, sizeof(st_filesystem_i->mountp));
 			st_filesystem_i->mountp[sizeof(st_filesystem_i->mountp) - 1] = '\0';
 		}
@@ -2754,7 +2758,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 				break;
 			}
 
-			snprintf(fcstat_filename, MAX_PF_NAME, FC_RX_FRAMES,
+			snprintf(fcstat_filename, sizeof(fcstat_filename), FC_RX_FRAMES,
 				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
@@ -2763,7 +2767,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 				fclose(fp);
 			}
 
-			snprintf(fcstat_filename, MAX_PF_NAME, FC_TX_FRAMES,
+			snprintf(fcstat_filename, sizeof(fcstat_filename), FC_TX_FRAMES,
 				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
@@ -2772,7 +2776,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 				fclose(fp);
 			}
 
-			snprintf(fcstat_filename, MAX_PF_NAME, FC_RX_WORDS,
+			snprintf(fcstat_filename, sizeof(fcstat_filename), FC_RX_WORDS,
 				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
@@ -2781,7 +2785,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
 				fclose(fp);
 			}
 
-			snprintf(fcstat_filename, MAX_PF_NAME, FC_TX_WORDS,
+			snprintf(fcstat_filename, sizeof(fcstat_filename), FC_TX_WORDS,
 				 SYSFS_FCHOST, drd->d_name);
 			if ((fp = fopen(fcstat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
@@ -3083,7 +3087,7 @@ __nr_t read_bat(struct stats_pwr_bat *st_bat, __nr_t nr_alloc)
 			sscanf(drd->d_name + 3, "%u", &bat_id);
 
 			/* Read battery capcity */
-			snprintf(bat_filename, MAX_PF_NAME, BAT_CAPACITY,
+			snprintf(bat_filename, sizeof(bat_filename), BAT_CAPACITY,
 				 SYSFS_PWR_SUPPLY, drd->d_name);
 			if ((fp = fopen(bat_filename, "r"))) {
 				if (fgets(line, sizeof(line), fp)) {
@@ -3093,7 +3097,7 @@ __nr_t read_bat(struct stats_pwr_bat *st_bat, __nr_t nr_alloc)
 			}
 
 			/* Read battery status */
-			snprintf(bat_filename, MAX_PF_NAME, BAT_STATUS,
+			snprintf(bat_filename, sizeof(bat_filename), BAT_STATUS,
 				 SYSFS_PWR_SUPPLY, drd->d_name);
 			if ((fp = fopen(bat_filename, "r"))) {
 				fgets(status, sizeof(status), fp);

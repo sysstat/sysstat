@@ -194,8 +194,7 @@ struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name)
 		}
 		memset(c->cifs_stats[i], 0, CIFS_ST_SIZE);
 	}
-	strncpy(c->name, name, sizeof(c->name));
-	c->name[sizeof(c->name) - 1] = '\0';
+	snprintf(c->name, sizeof(c->name), "%s", name);
 	c->exist = TRUE;
 	c->next = cs;
 
@@ -249,8 +248,7 @@ int read_cifs_stat(int curr)
 			else {
 				start = 1;
 			}
-			strncpy(cifs_name, name_tmp, sizeof(cifs_name));
-			cifs_name[sizeof(cifs_name) - 1] = '\0';
+			snprintf(cifs_name, sizeof(cifs_name), "%s", name_tmp);
 			memset(&scifs, 0, CIFS_ST_SIZE);
 		}
 		else {

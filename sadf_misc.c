@@ -848,8 +848,6 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 		snprintf(pre, sizeof(pre), "%s%s", temp2, cur_time);
 	}
 
-	pre[sizeof(pre) - 1] = '\0';
-
 	if (DISPLAY_HORIZONTALLY(flags)) {
 		printf("%s", pre);
 	}
@@ -1044,7 +1042,6 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 		else {
 			snprintf(pre, sizeof(pre), "%s", cur_time);
 		}
-		pre[sizeof(pre) - 1] = '\0';
 
 		return pre;
 	}

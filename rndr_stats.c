@@ -569,10 +569,8 @@ __print_funct_t render_irq_stats(struct activity *a, int isdb, char *pre,
 			}
 			else {
 				snprintf(cpu_name, sizeof(cpu_name), "cpu%d", c - 1);
-				cpu_name[sizeof(cpu_name) - 1] = '\0';
 			}
 			snprintf(ppc_txt, sizeof(ppc_txt), "%s\t%s", stc_cpuall_irq->irq_name, cpu_name);
-			ppc_txt[sizeof(ppc_txt) - 1] = '\0';
 
 			if (first) {
 				render(isdb, pre, PT_NOFLAG,

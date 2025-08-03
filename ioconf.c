@@ -155,12 +155,11 @@ int ioc_init(void)
 	if ((fp = fopen(IOCONF, "r")) == NULL) {
 		if ((fp = fopen(LOCAL_IOCONF, "r")) == NULL)
 			return 0;
-		strncpy(ioconf_name, LOCAL_IOCONF, sizeof(ioconf_name));
+		snprintf(ioconf_name, sizeof(ioconf_name), "%s", LOCAL_IOCONF);
 	}
 	else {
-		strncpy(ioconf_name, IOCONF, sizeof(ioconf_name));
+		snprintf(ioconf_name, sizeof(ioconf_name), "%s", IOCONF);
 	}
-	ioconf_name[sizeof(ioconf_name) - 1] = '\0';
 
 	/* Init ioc_refnr array */
 	memset(ioc_refnr, 0, sizeof(ioc_refnr));
@@ -289,8 +288,7 @@ int ioc_init(void)
 			 * exception info
 			 */
 			xblkp->ext_minor = iocp->ctrlno;
-			strncpy(xblkp->ext_name, blkp->name, IOC_NAMELEN);
-			xblkp->ext_name[IOC_NAMELEN - 1] = '\0';
+			snprintf(xblkp->ext_name, sizeof(xblkp->ext_name), "%s", blkp->name);
 			xblkp->ext = 1;
 			continue;
 		}
@@ -302,11 +300,10 @@ int ioc_init(void)
 
 		/* basename of device + provided string + controller # */
 		if (*cfmt == '*') {
-			strncpy(blkp->cfmt, blkp->name, MINIMUM(sizeof(blkp->name), sizeof(blkp->cfmt) - 1));
-			blkp->cfmt[sizeof(blkp->cfmt) - 1] = '\0';
+			snprintf(blkp->cfmt, sizeof(blkp->cfmt), "%s", blkp->name);
 		}
 		else {
-			sprintf(blkp->cfmt, "%s%s%%d", blkp->name, cfmt);
+			snprintf(blkp->cfmt, sizeof(blkp->cfmt), "%s%s%%d", blkp->name, cfmt);
 			++(blkp->ctrl_explicit);
 		}
 
@@ -319,7 +316,7 @@ int ioc_init(void)
 			break;
 
 		case '%':
-			strncpy(blkp->dfmt, dfmt + 1, IOC_FMTLEN - 1);
+			strncpy(blkp->dfmt, dfmt + 1, sizeof(blkp->dfmt) - 1);
 			/* fallthrough to next case */
 		case 'd':
 			blkp->cconv = ioc_ito10;
@@ -339,7 +336,7 @@ int ioc_init(void)
 		iocp->desc = NULL;
 		iocp->basemajor = major;
 		ioconf[major] = iocp;
-		memcpy(blkp->desc, desc, IOC_DESCLEN);
+		memcpy(blkp->desc, desc, sizeof(blkp->desc));
 		blkp = NULL; iocp = NULL;
 		++count;
 	}
@@ -413,8 +410,7 @@ char *ioc_name(unsigned int major, unsigned int minor)
 
 	/* Is this an extension record? */
 	if (p->blkp->ext && (p->blkp->ext_minor == minor)) {
-		strncpy(name, p->blkp->ext_name, sizeof(name));
-		name[sizeof(name) - 1] = '\0';
+		snprintf(name, sizeof(name), "%s", p->blkp->ext_name);
 		return (name);
 	}
 
@@ -485,7 +481,6 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 		/* For each file in DEVMAP_DIR */
 
 		snprintf(filen, sizeof(filen), "%s/%s", DEVMAP_DIR, dp->d_name);
-		filen[sizeof(filen) - 1] = '\0';
 
 		if (__stat(filen, &aux) == 0) {
 			/* Get its minor and major numbers */
@@ -494,8 +489,7 @@ char *transform_devmapname(unsigned int major, unsigned int minor)
 			dm_minor = __minor(aux.st_rdev);
 
 			if ((dm_minor == minor) && (dm_major == major)) {
-				strncpy(name, dp->d_name, sizeof(name));
-				name[sizeof(name) - 1] = '\0';
+				snprintf(name, sizeof(name), "%s", dp->d_name);
 				dm_name = name;
 				break;
 			}

@@ -196,14 +196,14 @@ void upgrade_file_header(void *buffer, struct file_header *file_hdr, int previou
 		file_hdr->sa_day = f_hdr_2171->sa_day;
 		file_hdr->sa_month = f_hdr_2171->sa_month;
 		file_hdr->sa_sizeof_long = f_hdr_2171->sa_sizeof_long;
-		strncpy(file_hdr->sa_sysname, f_hdr_2171->sa_sysname, sizeof(file_hdr->sa_sysname));
-		file_hdr->sa_sysname[sizeof(file_hdr->sa_sysname) - 1] = '\0';
-		strncpy(file_hdr->sa_nodename, f_hdr_2171->sa_nodename, sizeof(file_hdr->sa_nodename));
-		file_hdr->sa_nodename[sizeof(file_hdr->sa_nodename) - 1] = '\0';
-		strncpy(file_hdr->sa_release, f_hdr_2171->sa_release, sizeof(file_hdr->sa_release));
-		file_hdr->sa_release[sizeof(file_hdr->sa_release) - 1] = '\0';
-		strncpy(file_hdr->sa_machine, f_hdr_2171->sa_machine, sizeof(file_hdr->sa_machine));
-		file_hdr->sa_machine[sizeof(file_hdr->sa_machine) - 1] = '\0';
+		snprintf(file_hdr->sa_sysname, sizeof(file_hdr->sa_sysname), "%s",
+			 f_hdr_2171->sa_sysname);
+		snprintf(file_hdr->sa_nodename, sizeof(file_hdr->sa_nodename), "%s",
+			 f_hdr_2171->sa_nodename);
+		snprintf(file_hdr->sa_release, sizeof(file_hdr->sa_release), "%s",
+			 f_hdr_2171->sa_release);
+		snprintf(file_hdr->sa_machine, sizeof(file_hdr->sa_machine), "%s",
+			 f_hdr_2171->sa_machine);
 	}
 
 	else if (previous_format == FORMAT_MAGIC_2173) {
@@ -221,14 +221,14 @@ void upgrade_file_header(void *buffer, struct file_header *file_hdr, int previou
 		file_hdr->sa_day = f_hdr_2173->sa_day;
 		file_hdr->sa_month = f_hdr_2173->sa_month;
 		file_hdr->sa_sizeof_long = f_hdr_2173->sa_sizeof_long;
-		strncpy(file_hdr->sa_sysname, f_hdr_2173->sa_sysname, sizeof(file_hdr->sa_sysname));
-		file_hdr->sa_sysname[sizeof(file_hdr->sa_sysname) - 1] = '\0';
-		strncpy(file_hdr->sa_nodename, f_hdr_2173->sa_nodename, sizeof(file_hdr->sa_nodename));
-		file_hdr->sa_nodename[sizeof(file_hdr->sa_nodename) - 1] = '\0';
-		strncpy(file_hdr->sa_release, f_hdr_2173->sa_release, sizeof(file_hdr->sa_release));
-		file_hdr->sa_release[sizeof(file_hdr->sa_release) - 1] = '\0';
-		strncpy(file_hdr->sa_machine, f_hdr_2173->sa_machine, sizeof(file_hdr->sa_machine));
-		file_hdr->sa_machine[sizeof(file_hdr->sa_machine) - 1] = '\0';
+		snprintf(file_hdr->sa_sysname, sizeof(file_hdr->sa_sysname), "%s",
+			 f_hdr_2173->sa_sysname);
+		snprintf(file_hdr->sa_nodename, sizeof(file_hdr->sa_nodename), "%s",
+			 f_hdr_2173->sa_nodename);
+		snprintf(file_hdr->sa_release, sizeof(file_hdr->sa_release), "%s",
+			 f_hdr_2173->sa_release);
+		snprintf(file_hdr->sa_machine, sizeof(file_hdr->sa_machine), "%s",
+			 f_hdr_2173->sa_machine);
 
 		*vol_act_nr = f_hdr_2173->sa_vol_act_nr;
 	}
@@ -553,7 +553,6 @@ void upgrade_stats_irq(struct activity *act[], int p, unsigned int magic)
 			}
 			else {
 				snprintf(sic->irq_name, sizeof(sic->irq_name), "%d", i - 1 > NR2_MAX ? NR2_MAX : i - 1);
-				sic->irq_name[sizeof(sic->irq_name) - 1] = '\0';
 			}
 		}
 	}
@@ -572,7 +571,6 @@ void upgrade_stats_irq(struct activity *act[], int p, unsigned int magic)
 			}
 			else {
 				snprintf(sic->irq_name, sizeof(sic->irq_name), "%d", i - 1 > NR2_MAX ? NR2_MAX : i - 1);
-				sic->irq_name[sizeof(sic->irq_name) - 1] = '\0';
 			}
 		}
 	}
@@ -870,8 +868,7 @@ void upgrade_stats_net_dev(struct activity *act[], int p, unsigned int magic,
 			sndc->tx_compressed = moveto_long_long(&sndp->tx_compressed, endian_mismatch, arch_64);
 			sndc->multicast = moveto_long_long(&sndp->multicast, endian_mismatch, arch_64);
 			sndc->speed = 0; /* New field */
-			strncpy(sndc->interface, sndp->interface, sizeof(sndc->interface));
-			sndc->interface[sizeof(sndc->interface) - 1] = '\0';
+			snprintf(sndc->interface, sizeof(sndc->interface), "%s", sndp->interface);
 			sndc->duplex = '\0'; /* New field */
 		}
 	}
@@ -890,8 +887,7 @@ void upgrade_stats_net_dev(struct activity *act[], int p, unsigned int magic,
 			sndc->tx_compressed = sndp->tx_compressed;
 			sndc->multicast = sndp->multicast;
 			sndc->speed = 0; /* New field */
-			strncpy(sndc->interface, sndp->interface, sizeof(sndc->interface));
-			sndc->interface[sizeof(sndc->interface) - 1] = '\0';
+			snprintf(sndc->interface, sizeof(sndc->interface), "%s", sndp->interface);
 			sndc->duplex = '\0'; /* New field */
 		}
 	}
@@ -910,8 +906,7 @@ void upgrade_stats_net_dev(struct activity *act[], int p, unsigned int magic,
 			sndc->tx_compressed = sndp->tx_compressed;
 			sndc->multicast = sndp->multicast;
 			sndc->speed = sndp->speed;
-			strncpy(sndc->interface, sndp->interface, sizeof(sndc->interface));
-			sndc->interface[sizeof(sndc->interface) - 1] = '\0';
+			snprintf(sndc->interface, sizeof(sndc->interface), "%s", sndp->interface);
 			sndc->duplex = sndp->duplex;
 		}
 	}
@@ -954,8 +949,7 @@ void upgrade_stats_net_edev(struct activity *act[], int p, unsigned int magic,
 			snedc->tx_fifo_errors = moveto_long_long(&snedp->tx_fifo_errors, endian_mismatch, arch_64);
 			snedc->rx_frame_errors = moveto_long_long(&snedp->rx_frame_errors, endian_mismatch, arch_64);
 			snedc->tx_carrier_errors = moveto_long_long(&snedp->tx_carrier_errors, endian_mismatch, arch_64);
-			strncpy(snedc->interface, snedp->interface, sizeof(snedc->interface));
-			snedc->interface[sizeof(snedc->interface) - 1] = '\0';
+			snprintf(snedc->interface, sizeof(snedc->interface), "%s", snedp->interface);
 		}
 	}
 	else {
@@ -974,8 +968,7 @@ void upgrade_stats_net_edev(struct activity *act[], int p, unsigned int magic,
 			snedc->tx_fifo_errors = snedp->tx_fifo_errors;
 			snedc->rx_frame_errors = snedp->rx_frame_errors;
 			snedc->tx_carrier_errors = snedp->tx_carrier_errors;
-			strncpy(snedc->interface, snedp->interface, sizeof(snedc->interface));
-			snedc->interface[sizeof(snedc->interface) - 1] = '\0';
+			snprintf(snedc->interface, sizeof(snedc->interface), "%s", snedp->interface);
 		}
 	}
 }
@@ -1257,16 +1250,14 @@ void upgrade_stats_filesystem(struct activity *act[], int p, int st_size)
 		sfc->f_bavail = sfp->f_bavail;
 		sfc->f_files = sfp->f_files;
 		sfc->f_ffree = sfp->f_ffree;
-		strncpy(sfc->fs_name, sfp->fs_name, sizeof(sfc->fs_name));
-		sfc->fs_name[sizeof(sfc->fs_name) - 1] = '\0';
+		snprintf(sfc->fs_name, sizeof(sfc->fs_name), "%s", sfp->fs_name);
 
 		if (st_size <= STATS_FILESYSTEM_8A_1_SIZE) {
 			/* mountp didn't exist with older versions */
 			sfc->mountp[0] = '\0';
 		}
 		else {
-			strncpy(sfc->mountp, sfp->mountp, sizeof(sfc->mountp));
-			sfc->mountp[sizeof(sfc->mountp) - 1] = '\0';
+			snprintf(sfc->mountp, sizeof(sfc->mountp), "%s", sfp->mountp);
 		}
 	}
 }

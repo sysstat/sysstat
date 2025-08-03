@@ -165,9 +165,7 @@ void next_time_step(void)
 
 	/* Set next root directory name (root2, root3, etc.). Directories like root1b are unreachable */
 	snprintf(rootf, sizeof(rootf), "%s%d", ROOTFILE, ++root_nr);
-	rootf[sizeof(rootf) - 1] = '\0';
 	snprintf(testf, sizeof(testf), "%s/%s", TESTDIR, rootf);
-	testf[sizeof(testf) - 1] = '\0';
 
 	/* Make sure that new root directory exists */
 	if (access(testf, F_OK) < 0) {
@@ -246,7 +244,6 @@ DIR *open_list(const char *name)
 	char filename[1024];
 
 	snprintf(filename, sizeof(filename), "%s/%s", name, _LIST);
-	filename[sizeof(filename) - 1] = '\0';
 
 	if ((fp = fopen(filename, "r")) == NULL)
 		return NULL;
@@ -317,7 +314,7 @@ char *get_realname(char *name, char *c)
 		perror("malloc");
 		exit(4);
 	}
-	strncpy(resolved_name, name, 1024);
+	strncpy(resolved_name, name, 1023);
 	resolved_name[1023] = '\0';
 
 	return resolved_name;

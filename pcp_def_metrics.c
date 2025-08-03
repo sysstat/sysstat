@@ -60,7 +60,6 @@ void pcp_def_percpu_int_metrics(struct activity *a, int cpu)
 	while (list != NULL) {
 
 		snprintf(buf, sizeof(buf), "%s::cpu%d", list->item_name, cpu);
-		buf[sizeof(buf) - 1] = '\0';
 
 		pmiAddInstance(indom, buf, inst++);
 		list = list->next;

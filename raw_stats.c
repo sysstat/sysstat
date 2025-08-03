@@ -56,8 +56,7 @@ char *pfield(char *hdr_line, int pos)
 		char hline[HEADER_LINE_LEN] = "";
 		char *hl;
 
-		strncpy(hline, hdr_line, sizeof(hline) - 1);
-		hline[sizeof(hline) - 1] = '\0';
+		snprintf(hline, sizeof(hline), "%s", hdr_line);
 		idx = 0;
 
 		for (hl = strtok(hline, "|"); hl && (pos > 0); hl = strtok(NULL, "|"), pos--);
@@ -70,8 +69,7 @@ char *pfield(char *hdr_line, int pos)
 			j = strcspn(hl, "&");
 			*(hl + j) = ';';
 		}
-		strncpy(field, hl, sizeof(field));
-		field[sizeof(field) - 1] = '\0';
+		snprintf(field, sizeof(field), "%s", hl);
 	}
 
 	if (strchr(field + idx, ';')) {
@@ -88,7 +86,6 @@ char *pfield(char *hdr_line, int pos)
 		}
 		else {
 			snprintf(gen_name, sizeof(gen_name), "%s%d", field + idx, pos - 1);
-			gen_name[sizeof(gen_name) - 1] = '\0';
 		}
 
 		return gen_name;

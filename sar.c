@@ -387,11 +387,9 @@ void write_stats_avg(int curr, int read_from_file, unsigned int act_id)
 	/* Interval value in 1/100th of a second */
 	itv = get_interval(record_hdr[2].uptime_cs, record_hdr[curr].uptime_cs);
 
-	strncpy(timestamp[curr], _("Average:"), sizeof(timestamp[curr]));
-	timestamp[curr][sizeof(timestamp[curr]) - 1] = '\0';
+	snprintf(timestamp[curr], sizeof(timestamp[curr]), "%s", _("Average:"));
 	if (DISPLAY_MINMAX(flags)) {
-		strncpy(timestamp[!curr], _("Summary:"), sizeof(timestamp[!curr]));
-		timestamp[!curr][sizeof(timestamp[!curr]) - 1] = '\0';
+		snprintf(timestamp[!curr], sizeof(timestamp[!curr]), "%s", _("Summary:"));
 	}
 	else {
 		memcpy(timestamp[!curr], timestamp[curr], sizeof(timestamp[!curr]));
@@ -1441,8 +1439,7 @@ int main(int argc, char **argv)
 			/* Save stats to a file */
 			if ((argv[++opt]) && strncmp(argv[opt], "-", 1) &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
-				strncpy(to_file, argv[opt++], sizeof(to_file));
-				to_file[sizeof(to_file) - 1] = '\0';
+				snprintf(to_file, sizeof(to_file), "%s", argv[opt++]);
 			}
 			else {
 				strcpy(to_file, "-");
@@ -1457,8 +1454,7 @@ int main(int argc, char **argv)
 			/* Read stats from a file */
 			if ((argv[++opt]) && strncmp(argv[opt], "-", 1) &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
-				strncpy(from_file, argv[opt++], sizeof(from_file));
-				from_file[sizeof(from_file) - 1] = '\0';
+				snprintf(from_file, sizeof(from_file), "%s", argv[opt++]);
 				/* Check if this is an alternate directory for sa files */
 				check_alt_sa_dir(from_file, day_offset, -1);
 			}

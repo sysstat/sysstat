@@ -68,8 +68,7 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 	int i = -1, j, k;
 	int p = pos;
 
-	strncpy(hline, a->hdr_line, sizeof(hline) - 1);
-	hline[sizeof(hline) - 1] = '\0';
+	snprintf(hline, sizeof(hline), "%s", a->hdr_line);
 	for (hl = strtok(hline, "|"); hl && (pos > 0); hl = strtok(NULL, "|"), pos--);
 	if (!hl)
 		/* Bad @pos arg given to function */
@@ -109,7 +108,6 @@ void print_hdr_line(char *p_timestamp, struct activity *a, int pos, int iwidth, 
 				}
 				else {
 					snprintf(dfld, sizeof(dfld), "%s%d%s", cfld, j - 1, cfld + k + 1);
-					dfld[sizeof(dfld) - 1] = '\0';
 					printf(" %*s", vwidth, dfld);
 				}
 			}
@@ -1474,7 +1472,6 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 			int k, pos;
 
 			snprintf(name, sizeof(name), "%d", ssc->line);
-			name[sizeof(name) - 1] = '\0';
 
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), name, sizeof(name), &k);
@@ -2960,7 +2957,6 @@ void stub_print_pwr_cpufreq_stats(struct activity *a, int curr, int dispavg)
 		}
 		else {
 			snprintf(name, sizeof(name), "     %3d", i - 1);
-			name[sizeof(name) - 1] = '\0';
 		}
 
 		/* Check if min and max values should be displayed */
@@ -4797,7 +4793,6 @@ void stub_print_pwr_bat_stats(struct activity *a, int prev, int curr, int dispav
 			int k, pos;
 
 			snprintf(name, sizeof(name), "%d", spbc->bat_id);
-			name[sizeof(name) - 1] = '\0';
 
 			/* Look for item in list or add it to the list if non existent */
 			add_list_item(&(a->xdev_list), name, sizeof(name), &k);

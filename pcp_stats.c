@@ -252,7 +252,6 @@ __print_funct_t pcp_print_irq_stats(struct activity *a, int curr)
 				/* This is a particular CPU */
 				snprintf(name, sizeof(name), "%s::cpu%d",
 					 stc_cpuall_irq->irq_name, c - 1);
-				name[sizeof(name) - 1] = '\0';
 
 				pmiPutValue("kernel.percpu.interrupts", name, buf);
 			}

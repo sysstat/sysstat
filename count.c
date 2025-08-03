@@ -74,7 +74,6 @@ int get_sys_cpu_nr(int highest)
 
 		if (!strncmp(drd->d_name, "cpu", 3) && isdigit(drd->d_name[3])) {
 			snprintf(line, sizeof(line), "%s/%s", SYSFS_DEVCPU, drd->d_name);
-			line[sizeof(line) - 1] = '\0';
 			if (stat(line, &buf) < 0)
 				continue;
 			if (S_ISDIR(buf.st_mode)) {

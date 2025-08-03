@@ -245,7 +245,6 @@ int get_major_minor_nr(char filename[], int *major, int *minor)
 	char dfile[MAX_PF_NAME];
 
 	snprintf(dfile, sizeof(dfile), "%s%s", filename[0] == '/' ? "" : SLASH_DEV, filename);
-	dfile[sizeof(dfile) - 1] = '\0';
 
 	while ((bang = strchr(dfile, '!'))) {
 		/*
@@ -352,12 +351,11 @@ struct io_device *add_list_device(struct io_device **dlist, char *name, int dtyp
 		if (!dm_name) {
 			dm_name = name;
 		}
-		strncpy(d->name, dm_name, sizeof(d->name) - 1);
+		snprintf(d->name, sizeof(d->name), "%s", dm_name);
 	}
 	else {
-		strncpy(d->name, name, sizeof(d->name));
+		snprintf(d->name, sizeof(d->name), "%s", name);
 	}
-	d->name[MAX_NAME_LEN - 1] = '\0';
 	d->exist = TRUE;
 	d->next = ds;
 
@@ -505,7 +503,6 @@ int read_sysfs_file_stat(char *devname, struct io_stats *ios)
 		/* Read stats for current whole device using /sys/block/ directory */
 		snprintf(dfile, sizeof(dfile), "%s/%s/%s/%s",
 			 SLASH_SYS, __BLOCK, devname, S_STAT);
-		dfile[sizeof(dfile) - 1] = '\0';
 
 		rc = read_sysfs_file_stat_work(dfile, ios);
 	}
@@ -514,7 +511,6 @@ int read_sysfs_file_stat(char *devname, struct io_stats *ios)
 		/* Read stats for current whole device using an alternate /sys directory */
 		snprintf(dfile, sizeof(dfile), "%s/%s/%s/%s",
 			 alt_dir, __BLOCK, devname, S_STAT);
-		dfile[sizeof(dfile) - 1] = '\0';
 
 		rc = read_sysfs_file_stat_work(dfile, ios);
 	}
@@ -545,7 +541,6 @@ int read_sysfs_device_part_stat_work(int curr, char *dname, char *sysdev)
 	char dfile[MAX_PF_NAME], filename[MAX_PF_NAME + 512];
 
 	snprintf(dfile, sizeof(dfile), "%s/%s/%s", sysdev, __BLOCK, dname);
-	dfile[sizeof(dfile) - 1] = '\0';
 
 	/* Open current device directory in /sys/block */
 	if ((dir = __opendir(dfile)) == NULL)
@@ -557,7 +552,6 @@ int read_sysfs_device_part_stat_work(int curr, char *dname, char *sysdev)
 		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 			continue;
 		snprintf(filename, sizeof(filename), "%s/%s/%s", dfile, drd->d_name, S_STAT);
-		filename[sizeof(filename) - 1] = '\0';
 
 		/* Read current partition stats */
 		if (read_sysfs_file_stat_work(filename, &sdev) < 0)
@@ -636,7 +630,6 @@ int read_sysfs_all_devices_stat_work(int curr, char *sysblock)
 		if (!strcmp(drd->d_name, ".") || !strcmp(drd->d_name, ".."))
 			continue;
 		snprintf(dfile, sizeof(dfile), "%s/%s/%s", sysblock, drd->d_name, S_STAT);
-		dfile[sizeof(dfile) - 1] = '\0';
 
 		/* Read current whole device stats */
 		if (read_sysfs_file_stat_work(dfile, &sdev) < 0)
@@ -679,7 +672,6 @@ int read_sysfs_all_devices_stat(int curr)
 		char sysblock[MAX_PF_NAME];
 
 		snprintf(sysblock, sizeof(sysblock), "%s/%s", alt_dir, __BLOCK);
-		sysblock[sizeof(sysblock) - 1] = '\0';
 		/* Read stats from an alternate sys location */
 		rc = read_sysfs_all_devices_stat_work(curr, sysblock);
 	}
@@ -707,7 +699,6 @@ int read_sysfs_part_stat_work(int curr, struct io_device *d, char *sysdev)
 	/* Read stats for device */
 	snprintf(dfile, sizeof(dfile), "%s/%s/%d:%d/%s",
 		 sysdev, __DEV_BLOCK, d->major, d->minor, S_STAT);
-	dfile[sizeof(dfile) - 1] = '\0';
 
 	return read_sysfs_file_stat_work(dfile, d->dev_stats[curr]);
 }
@@ -896,7 +887,6 @@ void read_diskstats_stat(int curr)
 		char diskstats[MAX_PF_NAME];
 
 		snprintf(diskstats, sizeof(diskstats), "%s/%s", alt_dir, __DISKSTATS);
-		diskstats[sizeof(diskstats) - 1] = '\0';
 		/* Read stats from an alternate diskstats file */
 		read_diskstats_stat_work(curr, diskstats);
 	}
@@ -2168,8 +2158,7 @@ int main(int argc, char **argv)
 			if (argv[opt++][0] == '+') {
 				flags |= I_D_ALL_DIR;
 			}
-			strncpy(alt_dir, argv[opt++], sizeof(alt_dir));
-			alt_dir[sizeof(alt_dir) - 1] = '\0';
+			snprintf(alt_dir, sizeof(alt_dir), "%s", argv[opt++]);
 			if (!check_dir(alt_dir)) {
 				usage(argv[0]);
 			}
@@ -2182,8 +2171,8 @@ int main(int argc, char **argv)
 			if (strnlen(argv[opt], sizeof(persistent_name_type)) >= sizeof(persistent_name_type) - 1) {
 				usage(argv[0]);
 			}
-			strncpy(persistent_name_type, argv[opt], sizeof(persistent_name_type) - 1);
-			persistent_name_type[sizeof(persistent_name_type) - 1] = '\0';
+			snprintf(persistent_name_type, sizeof(persistent_name_type), "%s",
+				 argv[opt]);
 			strtolower(persistent_name_type);
 			/* Check that this is a valid type of persistent device name */
 			if (!get_persistent_type_dir(persistent_name_type)) {
