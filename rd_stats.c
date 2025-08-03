@@ -852,7 +852,7 @@ __nr_t read_diskstats_io(struct stats_io *st_io)
 		dc_ios = dc_sec = 0;
 
 		if (sscanf(line,
-			   "%u %u %127s "
+			   "%u %u %255s "
 			   "%lu %*u %lu %*u "
 			   "%lu %*u %lu %*u "
 			   "%*u %*u %*u "
@@ -923,7 +923,7 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 		dc_ios = dc_sec = dc_ticks = 0;
 
 		if (sscanf(line,
-			   "%u %u %127s "
+			   "%u %u %255s "
 			   "%lu %*u %lu %u "
 			   "%lu %*u %lu %u "
 			   "%*u %u %u "

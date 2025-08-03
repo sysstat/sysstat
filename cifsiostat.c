@@ -215,7 +215,7 @@ struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name)
 int read_cifs_stat(int curr)
 {
 	FILE *fp;
-	char line[256];
+	char line[1024];
 	char aux[32];
 	int start = 0;
 	long long unsigned aux_open;
@@ -228,15 +228,14 @@ int read_cifs_stat(int curr)
 	if ((fp = fopen(CIFSSTATS, "r")) == NULL)
 		return 1;
 
-	sprintf(aux, "%%*d) %%%ds",
-		MAX_NAME_LEN < 200 ? MAX_NAME_LEN - 1 : 200);
+	sprintf(aux, "%%*d) %%%ds", MAX_NAME_LEN - 1);
 
 	memset(&scifs, 0, CIFS_ST_SIZE);
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		/* Read CIFS directory name */
-		if (isdigit((unsigned char) line[0]) && sscanf(line, aux , name_tmp) == 1) {
+		if (isdigit((unsigned char) line[0]) && sscanf(line, aux, name_tmp) == 1) {
 			if (start) {
 				scifs.fopens = all_open;
 				ci = add_list_cifs(&cifs_list, cifs_name);
