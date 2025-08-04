@@ -101,10 +101,10 @@ NOTES:
 00184	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-never.tmp
 00188	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=auto ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-auto.tmp
 00190	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:H=31;1:I=32;22:M=35;1:N=34;1:R=31;22:Z=36;22" ./sar -C -u --getenv -f tests/data.tmp > tests/out.sar-always.tmp
-00191	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:X=31;1:I=32;22:W=35;1:N=34;1:R=31;22:Z=36;22" ./sar -q MEM -Bu -P 0,3 -d --dev=sda --getenv -f tests/data-new.tmp > tests/out1.sar-always.tmp
+00191	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="C=33;22:C=34|21:X=31;1:a=:I=32;22:C=33;22;153;12;134;156;211:W=35;1:N=34;1:R=31;22:Z=36;22" ./sar -q MEM -Bu -P 0,3 -d --dev=sda --getenv -f tests/data-new.tmp > tests/out1.sar-always.tmp
 00192	LC_ALL=C TZ=GMT S_REPEAT_HEADER=2 ./sar --getenv -f tests/data-new.tmp > tests/out.sar-rep_hdr.tmp
 00193	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="+=33;22:-=35;1" ./sar -m BAT --getenv -f tests/data-new.tmp > tests/out2.sar-always.tmp
-00194	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="R=35;3;4:C=38;2;171;117;146:Z=36;7" ./sar -C -u --getenv -f tests/data.tmp > tests/out3.sar-always.tmp
+00194	LC_ALL=C TZ=GMT S_TIME_FORMAT= S_COLORS=always S_COLORS_SGR="R=35;3;4:a=12;3::C=38;2;171;117;146:Z=36;7" ./sar -C -u --getenv -f tests/data.tmp > tests/out3.sar-always.tmp
 
 =====	sar: Playing with sa1 and sa2 shell scripts
 00200	TZ=GMT ./sa1 --boot; TZ=GMT ./sa1 --unix_time=1555593629 1 1; TZ=GMT ./sa1 --unix_time=1555593649 1 1
