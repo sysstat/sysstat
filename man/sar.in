@@ -1,5 +1,5 @@
 .\" sar manual page - (C) 1999-2025 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "JUNE 2025" Linux "Linux User's Manual" -*- nroff -*-
+.TH SAR 1 "AUGUST 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -1624,7 +1624,8 @@ ranges of values.
 .B S_COLORS_SGR
 Specify the colors and other attributes used to display statistics on the terminal.
 Its value is a colon-separated list of capabilities that defaults to
-.BR "C=33;22:I=32;22:N=34;1:R=31;22:W=35;1:X=31;1:Z=34;22" "."
+.BR "C=33;22:I=32;22:N=34;1:R=31;22:W=35;1:X=31;1:Z=34;22+=32;1:-=31;1" "."
+.br
 Supported capabilities are:
 .RS
 .TP
@@ -1653,6 +1654,12 @@ It is also used for negative values lower than or equal to \-10.
 .TP
 .B Z=
 SGR substring for zero values.
+.TP
+.B +=
+SGR substring for battery status (full or charging).
+.TP
+.B -=
+SGR substring for battery status (not charging or discharging).
 .RE
 .TP
 .B S_REPEAT_HEADER
