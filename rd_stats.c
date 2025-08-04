@@ -1192,8 +1192,10 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 {
 	FILE *fp;
 	struct stats_net_dev *st_net_dev_i;
-	char filename[128], duplex[32];
+	char filename[128], duplex[32], aux[16];
 	int dev, n;
+
+	sprintf(aux, "%%%ds", (int) sizeof(duplex) - 1);
 
 	for (dev = 0; dev < nbr; dev++) {
 
@@ -1206,7 +1208,7 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 			/* Cannot read NIC duplex */
 			continue;
 
-		n = fscanf(fp, "%31s", duplex);
+		n = fscanf(fp, aux, duplex);
 
 		fclose(fp);
 
