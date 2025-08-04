@@ -793,7 +793,7 @@ void read_sysfs_dlist_stat(int curr)
 void read_diskstats_stat_work(int curr, char *diskstats)
 {
 	FILE *fp;
-	char line[1024], dev_name[MAX_NAME_LEN];
+	char line[1024], dev_name[MAX_NAME_LEN], aux[128];
 	struct io_device *d;
 	struct io_stats sdev;
 	int i;
@@ -806,12 +806,16 @@ void read_diskstats_stat_work(int curr, char *diskstats)
 	if ((fp = fopen(diskstats, "r")) == NULL)
 		return;
 
+	sprintf(aux, "%%u %%u %%%ds %%lu %%lu %%lu %%lu %%lu %%lu "
+		     "%%lu %%u %%u %%u %%u %%lu %%lu %%lu %%u %%lu %%u",
+		     MAX_NAME_LEN - 1);
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		memset(&sdev, 0, sizeof(struct io_stats));
 
 		/* major minor name rio rmerge rsect ruse wio wmerge wsect wuse running use aveq dcio dcmerge dcsect dcuse flio fltm */
-		i = sscanf(line, "%u %u %255s %lu %lu %lu %lu %lu %lu %lu %u %u %u %u %lu %lu %lu %u %lu %u",
+		i = sscanf(line, aux,
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios, &rd_ticks_or_wr_sec,
 			   &wr_ios, &wr_merges, &wr_sec, &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks,

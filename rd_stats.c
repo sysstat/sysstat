@@ -837,7 +837,7 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 __nr_t read_diskstats_io(struct stats_io *st_io)
 {
 	FILE *fp;
-	char line[1024];
+	char line[1024], aux[128];
 	char dev_name[MAX_NAME_LEN];
 	unsigned int major, minor;
 	unsigned long rd_ios, wr_ios, dc_ios;
@@ -846,17 +846,16 @@ __nr_t read_diskstats_io(struct stats_io *st_io)
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return 0;
 
+	sprintf(aux, "%%u %%u %%%ds %%lu %%*u %%lu %%*u %%lu %%*u "
+		     "%%lu %%*u %%*u %%*u %%*u %%lu %%*u %%lu",
+		     MAX_NAME_LEN - 1);
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		/* Discard I/O stats may be not available */
 		dc_ios = dc_sec = 0;
 
-		if (sscanf(line,
-			   "%u %u %255s "
-			   "%lu %*u %lu %*u "
-			   "%lu %*u %lu %*u "
-			   "%*u %*u %*u "
-			   "%lu %*u %lu",
+		if (sscanf(line, aux,
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec,
 			   &wr_ios, &wr_sec,
@@ -906,7 +905,7 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 			   int read_part)
 {
 	FILE *fp;
-	char line[1024];
+	char line[1024], aux[128];
 	char dev_name[MAX_NAME_LEN];
 	struct stats_disk *st_disk_i;
 	unsigned int major, minor, rd_ticks, wr_ticks, dc_ticks, tot_ticks, rq_ticks, part_nr;
@@ -917,17 +916,16 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 	if ((fp = fopen(DISKSTATS, "r")) == NULL)
 		return 0;
 
+	sprintf(aux, "%%u %%u %%%ds %%lu %%*u %%lu %%u %%lu %%*u %%lu %%u "
+		     "%%*u %%u %%u %%lu %%*u %%lu %%u",
+		     MAX_NAME_LEN - 1);
+
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		/* Discard I/O stats may be not available */
 		dc_ios = dc_sec = dc_ticks = 0;
 
-		if (sscanf(line,
-			   "%u %u %255s "
-			   "%lu %*u %lu %u "
-			   "%lu %*u %lu %u "
-			   "%*u %u %u "
-			   "%lu %*u %lu %u",
+		if (sscanf(line, aux,
 			   &major, &minor, dev_name,
 			   &rd_ios, &rd_sec, &rd_ticks,
 			   &wr_ios, &wr_sec, &wr_ticks,

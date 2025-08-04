@@ -241,7 +241,7 @@ __nr_t get_irqcpu_nr(char *file, int max_nr_irqcpu, int cpu_nr)
 __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 {
 	FILE *fp;
-	char line[1024];
+	char line[1024], aux[64];
 	char dev_name[MAX_NAME_LEN];
 	__nr_t dev = 0;
 	int i;
@@ -251,6 +251,8 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 		/* File non-existent */
 		return 0;
 
+	sprintf(aux, "%%*d %%*d %%%ds %%lu %%*u %%*u %%*u %%lu", MAX_NAME_LEN - 1);
+
 	/*
 	 * Counting devices and partitions is simply a matter of counting
 	 * the number of lines...
@@ -258,8 +260,7 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
 		if (!count_part) {
-			i = sscanf(line, "%*d %*d %255s %lu %*u %*u %*u %lu",
-				   dev_name, &rd_ios, &wr_ios);
+			i = sscanf(line, aux, dev_name, &rd_ios, &wr_ios);
 			if ((i == 2) || !is_device(SLASH_SYS, dev_name, ACCEPT_VIRTUAL_DEVICES))
 				/* It was a partition and not a device */
 				continue;
