@@ -437,7 +437,8 @@ __nr_t get_usb_nr(void)
 __nr_t get_filesystem_nr(void)
 {
 	FILE *fp;
-	char line[512], fs_name[MAX_FS_LEN], mountp[256], type[128];
+	char line[1024], aux[16], aux2[16];
+	char fs_name[MAX_FS_LEN], mountp[MAX_FS_LEN * 2], type[MAX_FS_LEN];
 	char *pos = 0, *pos2 = 0;
 	__nr_t fs = 0;
 	int skip, skip_next = 0;
@@ -446,6 +447,9 @@ __nr_t get_filesystem_nr(void)
 	if ((fp = fopen(MTAB, "r")) == NULL)
 		/* File non-existent */
 		return 0;
+
+	sprintf(aux, "%%%ds", MAX_FS_LEN - 1);
+	sprintf(aux2, "%%%ds", (MAX_FS_LEN * 2) - 1);
 
 	/* Get current filesystem */
 	while (fgets(line, sizeof(line), fp) != NULL) {
@@ -474,13 +478,13 @@ __nr_t get_filesystem_nr(void)
 			if (pos2 == NULL)
 				continue;
 
-			sscanf(pos2 + 1, "%127s", type);
+			sscanf(pos2 + 1, aux, type);
 			if (strcmp(type, "autofs") == 0)
 				continue;
 
 			/* Read filesystem name and mount point */
-			sscanf(line, "%127s", fs_name);
-			sscanf(pos + 1, "%255s", mountp);
+			sscanf(line, aux, fs_name);
+			sscanf(pos + 1, aux2, mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);

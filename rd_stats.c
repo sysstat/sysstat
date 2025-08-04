@@ -2613,7 +2613,8 @@ __nr_t read_bus_usb_dev(struct stats_pwr_usb *st_pwr_usb, __nr_t nr_alloc)
 __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 {
 	FILE *fp;
-	char line[512], fs_name[MAX_FS_LEN], mountp[256], type[128];
+	char line[1024], aux[16], aux2[16];
+	char fs_name[MAX_FS_LEN], mountp[MAX_FS_LEN * 2], type[MAX_FS_LEN];
 	int skip, skip_next = 0, fs;
 	char *pos = 0, *pos2 = 0;
 	__nr_t fs_read = 0;
@@ -2622,6 +2623,9 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 
 	if ((fp = fopen(MTAB, "r")) == NULL)
 		return 0;
+
+	sprintf(aux, "%%%ds", MAX_FS_LEN - 1);
+	sprintf(aux2, "%%%ds", (MAX_FS_LEN * 2) - 1);
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 		/*
@@ -2649,12 +2653,12 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			if (pos2 == NULL)
 				continue;
 
-			sscanf(pos2 + 1, "%127s", type);
+			sscanf(pos2 + 1, aux, type);
 			if (strcmp(type, "autofs") == 0)
 				continue;
 
 			/* Read current filesystem name */
-			sscanf(line, "%127s", fs_name);
+			sscanf(line, aux, fs_name);
 			/*
 			 * And now read the corresponding mount point.
 			 * Read fs name and mount point in two distinct operations,
@@ -2665,7 +2669,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			 * from the fs name. This would result in a bogus name
 			 * and following statvfs() function would always fail.
 			 */
-			sscanf(pos + 1, "%255s", mountp);
+			sscanf(pos + 1, aux2, mountp);
 
 			/* Replace octal codes */
 			oct2chr(mountp);
