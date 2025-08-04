@@ -1136,13 +1136,15 @@ __nr_t read_net_dev(struct stats_net_dev *st_net_dev, __nr_t nr_alloc)
 {
 	FILE *fp;
 	struct stats_net_dev *st_net_dev_i;
-	char line[256];
+	char line[256], aux[16];
 	char iface[MAX_IFACE_LEN];
 	__nr_t dev_read = 0;
 	int pos;
 
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return 0;
+
+	sprintf(aux, "%%%ds", MAX_IFACE_LEN - 1);
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
@@ -1157,7 +1159,7 @@ __nr_t read_net_dev(struct stats_net_dev *st_net_dev, __nr_t nr_alloc)
 			st_net_dev_i = st_net_dev + dev_read++;
 			strncpy(iface, line, MINIMUM(pos, sizeof(iface) - 1));
 			iface[MINIMUM(pos, sizeof(iface) - 1)] = '\0';
-			sscanf(iface, "%15s", st_net_dev_i->interface); /* Skip heading spaces */
+			sscanf(iface, aux, st_net_dev_i->interface); /* Skip heading spaces */
 			sscanf(line + pos + 1, "%llu %llu %*u %*u %*u %*u %llu %llu %llu %llu "
 			       "%*u %*u %*u %*u %*u %llu",
 			       &st_net_dev_i->rx_bytes,
@@ -1259,13 +1261,15 @@ __nr_t read_net_edev(struct stats_net_edev *st_net_edev, __nr_t nr_alloc)
 {
 	FILE *fp;
 	struct stats_net_edev *st_net_edev_i;
-	static char line[256];
+	static char line[256], aux[16];
 	char iface[MAX_IFACE_LEN];
 	__nr_t dev_read = 0;
 	int pos;
 
 	if ((fp = fopen(NET_DEV, "r")) == NULL)
 		return 0;
+
+	sprintf(aux, "%%%ds", MAX_IFACE_LEN - 1);
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
@@ -1280,7 +1284,7 @@ __nr_t read_net_edev(struct stats_net_edev *st_net_edev, __nr_t nr_alloc)
 			st_net_edev_i = st_net_edev + dev_read++;
 			strncpy(iface, line, MINIMUM(pos, sizeof(iface) - 1));
 			iface[MINIMUM(pos, sizeof(iface) - 1)] = '\0';
-			sscanf(iface, "%15s", st_net_edev_i->interface); /* Skip heading spaces */
+			sscanf(iface, aux, st_net_edev_i->interface); /* Skip heading spaces */
 			sscanf(line + pos + 1, "%*u %*u %llu %llu %llu %llu %*u %*u %*u %*u "
 			       "%llu %llu %llu %llu %llu",
 			       &st_net_edev_i->rx_errors,
