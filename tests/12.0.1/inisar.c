@@ -898,7 +898,7 @@ int main(int argc, char **argv)
 			/* Save stats to a file */
 			if ((argv[++opt]) && strncmp(argv[opt], "-", 1) &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt]))) {
-				strncpy(to_file, argv[opt++], MAX_FILE_LEN);
+				strncpy(to_file, argv[opt++], MAX_FILE_LEN - 1);
 				to_file[MAX_FILE_LEN - 1] = '\0';
 			}
 			else {
