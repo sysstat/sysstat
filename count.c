@@ -61,9 +61,7 @@ int get_sys_cpu_nr(int highest)
 {
 	DIR *dir;
 	struct dirent *drd;
-	struct stat buf;
-	char line[MAX_PF_NAME];
-	int num_proc, proc_nr = -1;
+	int cpu_id, count = 0;
 
 	/* Open relevant /sys directory */
 	if ((dir = opendir(SYSFS_DEVCPU)) == NULL)
@@ -72,28 +70,24 @@ int get_sys_cpu_nr(int highest)
 	/* Get current file entry */
 	while ((drd = readdir(dir)) != NULL) {
 
-		if (!strncmp(drd->d_name, "cpu", 3) && isdigit(drd->d_name[3])) {
-			snprintf(line, sizeof(line), "%s/%s", SYSFS_DEVCPU, drd->d_name);
-			if (stat(line, &buf) < 0)
+		if ((strncmp(drd->d_name, "cpu", 3) != 0) || !isdigit(drd->d_name[3]))
+			continue;
+		if (highest) {
+			if (sscanf(drd->d_name + 3, "%d", &cpu_id) != 1)
 				continue;
-			if (S_ISDIR(buf.st_mode)) {
-				if (highest) {
-					sscanf(drd->d_name + 3, "%d", &num_proc);
-					if (num_proc > proc_nr) {
-						proc_nr = num_proc;
-					}
-				}
-				else {
-					proc_nr++;
-				}
+			if (cpu_id > count) {
+				count = cpu_id;
 			}
+		}
+		else {
+			count++;
 		}
 	}
 
 	/* Close directory */
 	closedir(dir);
 
-	return (proc_nr + 1);
+	return highest ? count + 1 : count;
 }
 
 /*
@@ -110,8 +104,8 @@ int get_sys_cpu_nr(int highest)
 int get_proc_cpu_nr(void)
 {
 	FILE *fp;
-	char line[16];
-	int num_proc, proc_nr = -1;
+	char line[256];
+	int cpu_id, max_cpu = -1;
 
 	if ((fp = fopen(STAT, "r")) == NULL) {
 		fprintf(stderr, _("Cannot open %s: %s\n"), STAT, strerror(errno));
@@ -120,18 +114,18 @@ int get_proc_cpu_nr(void)
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
 
-		if (strncmp(line, "cpu ", 4) && !strncmp(line, "cpu", 3)) {
-			sscanf(line + 3, "%d", &num_proc);
-			if (num_proc > proc_nr) {
-				proc_nr = num_proc;
-			}
+		if ((strncmp(line, "cpu", 3) != 0) || !isdigit(line[3]))
+			continue;
+		if (sscanf(line + 3, "%d", &cpu_id) != 1)
+			continue;
+		if (cpu_id > max_cpu) {
+			max_cpu = cpu_id;
 		}
 	}
 
 	fclose(fp);
 
-	proc_nr++;
-	return proc_nr;
+	return max_cpu + 1;
 }
 
 /*
