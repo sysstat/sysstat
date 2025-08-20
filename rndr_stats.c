@@ -34,7 +34,7 @@
 #define _(string) (string)
 #endif
 
-char *seps[] =  {"\t", ";"};
+const char *seps[] =  {"\t", ";"};
 
 extern uint64_t flags;
 extern char bat_status[][16];
