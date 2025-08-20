@@ -577,9 +577,10 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
  */
 void oct2chr(char *str)
 {
-	int i = 0;
-	int j, len;
+	int len, i = 0;
 
+	if (!str)
+		return;
 	len = strlen(str);
 
 	while (i < len - 3) {
@@ -589,12 +590,10 @@ void oct2chr(char *str)
 		    (str[i + 2] >= '0') && (str[i + 2] <= '7') &&
 		    (str[i + 3] >= '0') && (str[i + 3] <= '7')) {
 			/* Octal code found */
-			str[i] = (str[i + 1] - 48) * 64 +
-			         (str[i + 2] - 48) * 8  +
-			         (str[i + 3] - 48);
-			for (j = i + 4; j <= len; j++) {
-				str[j - 3] = str[j];
-			}
+			str[i] = (str[i + 1] - '0') * 64 +
+			         (str[i + 2] - '0') * 8  +
+			         (str[i + 3] - '0');
+			memmove(&str[i + 1], &str[i + 4], len - (i + 3));
 			len -= 3;
 		}
 		i++;
