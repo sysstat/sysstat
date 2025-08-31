@@ -320,9 +320,7 @@ void sa_sys_init(void)
 	__nr_t f_count_results[NR_F_COUNT];
 
 	/* Init array. Means that no items have been counted yet */
-	for (i = 0; i < NR_F_COUNT; i++) {
-		f_count_results[i] = -1;
-	}
+	memset(f_count_results, -1, sizeof(__nr_t) * NR_F_COUNT);
 
 	for (i = 0; i < NR_ACT; i++) {
 
