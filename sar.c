@@ -921,7 +921,8 @@ void read_header_data(void)
 			/*
 			 * No data (0 byte) have been sent by sadc.
 			 * This is probably because no activities have been collected
-			 * ("Requested activities not available"). In this case, don't
+			 * ("Requested activities not available") or because sadc
+			 * couldn't have been properly started. In this case, don't
 			 * display an error message: Exit now.
 			 */
 			exit(3);
@@ -1664,6 +1665,7 @@ int main(int argc, char **argv)
 
 	case -1:
 		perror("fork");
+		CLOSE_ALL(fd);
 		exit(4);
 		break;
 
