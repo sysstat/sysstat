@@ -268,13 +268,12 @@ void init_structures(void)
  * @ltemp	Argument value.
  ***************************************************************************
  */
-void salloc(int i, char *ltemp)
+void salloc(int i, const char *ltemp)
 {
-	if ((args[i] = (char *) malloc(strlen(ltemp) + 1)) == NULL) {
-		perror("malloc");
+	if ((args[i] = strdup(ltemp)) == NULL) {
+		perror("strdup");
 		exit(4);
 	}
-	strcpy(args[i], ltemp);
 }
 
 /*
