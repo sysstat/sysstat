@@ -36,7 +36,10 @@
 
 #include "version.h"
 #include "common.h"
+
+#ifndef SOURCE_SADC
 #include "ioconf.h"
+#endif /* SOURCE_SADC */
 
 #ifdef USE_NLS
 #include <locale.h>
