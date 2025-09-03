@@ -255,73 +255,73 @@ nls/%.gmo: @srcdir@/nls/%.po
 
 all: sadc sar sadf iostat tapestat mpstat pidstat cifsiostat locales
 
-common_light.o: common.c version.h common.h
+common_light.o: common.c version.h common.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-common.o: common.c version.h common.h
+common.o: common.c version.h common.h systest.h ioconf.h
 
 systest.o: systest.c systest.h
 
-sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h
+sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h
+sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-ioconf.o: ioconf.c ioconf.h common.h sysconfig.h
+ioconf.o: ioconf.c ioconf.h common.h sysconfig.h systest.h
 
-act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
+act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h
+act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h
+act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
-rd_stats.o: rd_stats.c common.h rd_stats.h
+rd_stats.o: rd_stats.c common.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-rd_stats_light.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
+rd_stats_light.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-count.o: count.c common.h rd_stats.h
+count.o: count.c common.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-count_light.o: count.c common.h rd_stats.h
+count_light.o: count.c common.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
+rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h systest.h
 
-pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h pr_xstats.h
+pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h pr_xstats.h systest.h
 
-pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
+pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h
+rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h systest.h
 
-xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h systest.h
 
-json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h
+json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h systest.h
 
-raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h
+raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h
+pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h systest.h
 
-sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
+sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h
+format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
-format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h
+format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h
+pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h systest.h
 
-sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h
+sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_conv.h
+sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_conv.h systest.h
 
 # Explicit rules needed to prevent possible file corruption
 # when using parallel execution.
@@ -339,39 +339,39 @@ librdstats_light.a: rd_stats_light.o count_light.o
 librdsensors.a: rd_sensors.o
 	$(AR) rvs $@ $?
 
-sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
+sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h
 
 sadc: LFLAGS += $(LFSENSORS)
 
 sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o librdstats.a librdsensors.a libsyscom.a
 
-sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
+sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h
 
 sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o pr_xstats.o librdstats_light.a libsyscom.a
 
-sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h
+sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 
 sadf: LFLAGS += $(LFPCP)
 
 sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o pcp_def_metrics.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
 
-iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h
+iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h systest.h
 
 iostat: iostat.o librdstats_light.a libsyscom.a
 
-tapestat.o: tapestat.c tapestat.h version.h common.h count.h rd_stats.h
+tapestat.o: tapestat.c tapestat.h version.h common.h count.h rd_stats.h systest.h
 
 tapestat: tapestat.o librdstats_light.a libsyscom.a
 
-pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h
+pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h systest.h
 
 pidstat: pidstat.o librdstats_light.a libsyscom.a
 
-mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h
+mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h systest.h
 
 mpstat: mpstat.o librdstats_light.a libsyscom.a
 
-cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h
+cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h systest.h
 
 cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
 
@@ -404,28 +404,28 @@ tests/ini/inisar.o: tests/ini/inisar.c tests/ini/sa.h tests/ini/iniversion.h tes
 tests/ini/inisar: tests/ini/inisar.o tests/ini/act_sar.o tests/ini/format_sar.o tests/ini/sa_common.o tests/ini/pr_stats.o tests/ini/librdstats_light.a tests/ini/libsyscom.a
 
 # sar32/sadc32: 32-bit versions of sar/sadc
-tests/32bits/sadc32.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
+tests/32bits/sadc32.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/sar32.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
+tests/32bits/sar32.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/act_sadc32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
+tests/32bits/act_sadc32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-tests/32bits/act_sar32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h
+tests/32bits/act_sar32.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-tests/32bits/sa_wrap32.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
+tests/32bits/sa_wrap32.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-tests/32bits/sa_common_light32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+tests/32bits/sa_common_light32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-tests/32bits/sa_common32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+tests/32bits/sa_common32.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/common_light32.o: common.c version.h common.h
+tests/32bits/common_light32.o: common.c version.h common.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
 tests/32bits/systest32.o: systest.c systest.h
@@ -443,34 +443,34 @@ tests/32bits/librdstats_light32.a: tests/32bits/rd_stats_light32.o tests/32bits/
 tests/32bits/librdsensors32.a: tests/32bits/rd_sensors32.o
 	$(AR) rvs $@ $?
 
-tests/32bits/rd_stats32.o: rd_stats.c common.h rd_stats.h
+tests/32bits/rd_stats32.o: rd_stats.c common.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-tests/32bits/rd_stats_light32.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
+tests/32bits/rd_stats_light32.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/count32.o: count.c common.h rd_stats.h
+tests/32bits/count32.o: count.c common.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-tests/32bits/count_light32.o: count.c common.h rd_stats.h
+tests/32bits/count_light32.o: count.c common.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/format_sar32.o: format.c sa.h common.h rd_stats.h rd_sensors.h
+tests/32bits/format_sar32.o: format.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-tests/32bits/pr_stats32.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h pr_xstats.h
+tests/32bits/pr_stats32.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h pr_stats.h pr_xstats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/pr_xstats32.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
+tests/32bits/pr_xstats32.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/common32.o: common.c version.h common.h
+tests/32bits/common32.o: common.c version.h common.h systest.h ioconf.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/ioconf32.o: ioconf.c ioconf.h common.h sysconfig.h
+tests/32bits/ioconf32.o: ioconf.c ioconf.h common.h sysconfig.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-tests/32bits/rd_sensors32.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
+tests/32bits/rd_sensors32.o: rd_sensors.c common.h rd_sensors.h rd_stats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
 tests/32bits/sadc32: LFLAGS += $(LFSENSORS32)
