@@ -250,78 +250,78 @@ nls/%.gmo: @srcdir@/nls/%.po
 %.o: %.c
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-% : %.o
+% : %.o 
 	$(CC) -o $@ $(CFLAGS) $^ $(LFLAGS)
 
 all: sadc sar sadf iostat tapestat mpstat pidstat cifsiostat locales
 
-common_light.o: common.c version.h common.h
+common_light.o: common.c version.h common.h  systest.h ioconf.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-common.o: common.c version.h common.h
+common.o: common.c version.h common.h  systest.h ioconf.h
 
 systest.o: systest.c systest.h
 
-sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h
+sa_common_light.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h
+sa_common.o: sa_common.c version.h sa.h common.h rd_stats.h rd_sensors.h  systest.h
 
-ioconf.o: ioconf.c ioconf.h common.h sysconfig.h
+ioconf.o: ioconf.c ioconf.h common.h sysconfig.h  systest.h
 
-act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h
+act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h
+act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h
+act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
-rd_stats.o: rd_stats.c common.h rd_stats.h
+rd_stats.o: rd_stats.c common.h rd_stats.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-rd_stats_light.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h
+rd_stats_light.o: rd_stats.c common.h rd_stats.h ioconf.h sysconfig.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-count.o: count.c common.h rd_stats.h
+count.o: count.c common.h rd_stats.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-count_light.o: count.c common.h rd_stats.h
+count_light.o: count.c common.h rd_stats.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) $(DFLAGS) $<
 
-rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h
+rd_sensors.o: rd_sensors.c common.h rd_sensors.h rd_stats.h  systest.h
 
-pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h pr_xstats.h
+pr_stats.o: pr_stats.c sa.h common.h rd_stats.h rd_sensors.h pr_xstats.h  systest.h
 
-pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h
+pr_xstats.o: pr_xstats.c sa.h common.h rd_stats.h rd_sensors.h  systest.h
 
-rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h
+rndr_stats.o: rndr_stats.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h  systest.h
 
-xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+xml_stats.o: xml_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h  systest.h
 
-json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h
+json_stats.o: json_stats.c sa.h common.h rd_stats.h rd_sensors.h  systest.h
 
-svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h
+svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfig.h  systest.h
 
-raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h
+raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h  systest.h
 
-pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h
+pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h  systest.h
 
-sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h
+sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
 
-format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h
+format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
-format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h
+format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h  systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h
+pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h  systest.h
 
-sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h
+sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h  systest.h
 
-sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_conv.h
+sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_conv.h  systest.h
 
 # Explicit rules needed to prevent possible file corruption
 # when using parallel execution.
@@ -339,39 +339,39 @@ librdstats_light.a: rd_stats_light.o count_light.o
 librdsensors.a: rd_sensors.o
 	$(AR) rvs $@ $?
 
-sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h
+sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h  systest.h
 
 sadc: LFLAGS += $(LFSENSORS)
 
 sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o librdstats.a librdsensors.a libsyscom.a
 
-sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h
+sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h  systest.h
 
 sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o pr_xstats.o librdstats_light.a libsyscom.a
 
-sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h
+sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h  systest.h
 
 sadf: LFLAGS += $(LFPCP)
 
 sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o pcp_def_metrics.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
 
-iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h
+iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h  systest.h
 
 iostat: iostat.o librdstats_light.a libsyscom.a
 
-tapestat.o: tapestat.c tapestat.h version.h common.h count.h rd_stats.h
+tapestat.o: tapestat.c tapestat.h version.h common.h count.h rd_stats.h  systest.h
 
 tapestat: tapestat.o librdstats_light.a libsyscom.a
 
-pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h
+pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h  systest.h
 
 pidstat: pidstat.o librdstats_light.a libsyscom.a
 
-mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h
+mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h  systest.h
 
 mpstat: mpstat.o librdstats_light.a libsyscom.a
 
-cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h
+cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h  systest.h
 
 cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
 
@@ -482,7 +482,7 @@ tests/32bits/sar32: tests/32bits/sar32.o tests/32bits/act_sar32.o tests/32bits/f
 ifdef REQUIRE_NLS
 locales: $(NLSGMO)
 else
-locales:
+locales: 
 endif
 
 nls/sysstat.pot: $(wildcard @srcdir@/*.c)
@@ -537,7 +537,7 @@ ifeq ($(COMPRESS_MANPG),y)
 endif
 endif
 
-squeeze:
+squeeze: 
 	catalogs="$(SOURCE_CODE)"; \
 	for c in $$catalogs; do \
 		echo "Squeezing file: $$c"; \
@@ -546,7 +546,7 @@ squeeze:
 	done
 
 # Update Makefile.in by hand - Restore mode for iconfig.
-copyyear:
+copyyear: 
 	catalogs="$(SOURCE_CODE) @srcdir@/iconfig @srcdir@/do_test @srcdir@/README.md @srcdir@/sa1.in @srcdir@/sa2.in @srcdir@/sysconfig.in @srcdir@/sysstat.in @srcdir@/version.in"; \
 	for c in $$catalogs; do \
 		echo "Updating file: $$c"; \
@@ -693,7 +693,7 @@ ifeq ($(COPY_ONLY),n)
 	fi
 endif
 
-uninstall_man:
+uninstall_man: 
 ifeq ($(INSTALL_DOC),y)
 	rm -f $(DESTDIR)$(MAN8_DIR)/sadc.8*
 	rm -f $(DESTDIR)$(MAN8_DIR)/sa1.8*
@@ -708,7 +708,7 @@ ifeq ($(INSTALL_DOC),y)
 	rm -f $(DESTDIR)$(MAN1_DIR)/cifsiostat.1*
 endif
 
-uninstall_nls:
+uninstall_nls: 
 ifdef REQUIRE_NLS
 	-catalogs='$(NLSGMO)'; \
 	for c in $$catalogs; do \
@@ -806,7 +806,7 @@ endif
 ifdef REQUIRE_NLS
 po-files: nls/sysstat.pot $(NLSPOT)
 else
-po-files:
+po-files: 
 endif
 
 TESTDIR="@srcdir@/tests"
@@ -815,7 +815,7 @@ TESTLIST:=$(shell cd $(TESTDIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
 EXTRADIR="@srcdir@/tests/extra"
 EXTRALIST:=$(shell cd $(EXTRADIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
 
-cr_dir:
+cr_dir: 
 	if [ ! -d tests/ini ]; then \
 		mkdir -p tests/ini; \
 	fi
@@ -832,14 +832,14 @@ sa32bit: CFLAGS += -m32
 
 sa32bit: tests/32bits/sadc32 tests/32bits/sar32
 else
-sa32bit:
+sa32bit: 
 endif
 
-unit:
+unit: 
 	@echo $(X) 2>&1
 	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
-extraunit:
+extraunit: 
 	@echo $(X) 2>&1
 	@cat $(EXTRADIR)/$(X) | $(TESTRUN)
 
@@ -858,7 +858,7 @@ extratest: all
 	@$(foreach x, $(EXTRALIST), $(MAKE) X=$x extraunit || exit;)
 	@echo Extra simulation tests: Success!
 
-clean:
+clean: 
 	rm -f sadc sar sadf iostat tapestat mpstat pidstat cifsiostat *.o *.a core TAGS tests/*.tmp tests/extra/*.tmp
 	rm -f tests/LAST tests/SKIPPED
 	rm -f tests/sa[0123]*
@@ -901,6 +901,6 @@ xdist: almost-distclean
 gitdist: almost-distclean
 	cd @srcdir@/.. && (tar --exclude=Makefile -cvf - sysstat-$(VERSION) | bzip2 > sysstat-$(VERSION)-git.tar.bz2)
 
-tags:
+tags: 
 	etags ./*.[hc]
 
