@@ -6,13 +6,13 @@ statistics for devices and partitions.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
+.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-T ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
 .BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ \-\-debuginfo ] [ " "interval " "[ " "count " "] ] "
 .\}
 .el \{
-.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
+.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-T ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
 .BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ " "interval " "[ " "count " "] ]"
@@ -351,6 +351,11 @@ characters wide screens.
 .TP
 .B \-t
 Print the time for each report displayed. The timestamp format may depend
+on the value of the
+.BR "S_TIME_FORMAT " "environment variable (see below) and on whether option -U has been used."
+.TP
+.B \-T
+Print the time for each output line. The timestamp format may depend
 on the value of the
 .BR "S_TIME_FORMAT " "environment variable (see below) and on whether option -U has been used."
 .TP
