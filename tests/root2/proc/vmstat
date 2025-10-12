@@ -78,6 +78,8 @@ pgsteal_direct 0
 pgscan_kswapd 0
 pgscan_direct 0
 pgscan_direct_throttle 0
+pgsteal_anon 10
+pgsteal_file 7
 zone_reclaim_failed 0
 pginodesteal 0
 slabs_scanned 0
