@@ -760,6 +760,7 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 	FILE *fp;
 	char line[128];
 	unsigned long pgtmp;
+	short pg_start = FALSE, pg_end = FALSE;
 
 	if ((fp = fopen(VMSTAT, "r")) == NULL)
 		return 0;
@@ -790,7 +791,8 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 			/* Read number of pages freed by the system */
 			sscanf(line + 7, "%lu", &st_paging->pgfree);
 		}
-		else if (!strncmp(line, "pgsteal_", 8)) {
+		else if (!strncmp(line, "pgsteal_", 8) && !pg_end) {
+			pg_start = TRUE;
 			/* Read number of pages stolen by the system */
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgsteal += pgtmp;
@@ -812,6 +814,15 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 		else if (!strncmp(line, "pgdemote_", 9)) {
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgdemote += pgtmp;
+		}
+
+		/*
+		 * Read only the first pg_steal_* values in /proc/vmstat
+		 * (i.e. the "reclaimer": pgsteal_kswapd, pgsteal_direct, etc.)
+		 * but not the type of memory reclaimed (pgsteal_anon, pgsteal_file).
+		 */
+		if (strncmp(line, "pgsteal_", 8) && pg_start) {
+			pg_end = TRUE;
 		}
 	}
 
