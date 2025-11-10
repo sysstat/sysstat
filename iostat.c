@@ -89,14 +89,14 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -T ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -T ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
@@ -942,11 +942,18 @@ void compute_device_groups_stats(int curr, struct io_device *d, struct io_device
  * @curr	Index in array for current sample statistics.
  * @deltot_jiffies
  *		Number of jiffies spent on the interval by all processors.
+ * @rectime	Current date and time.
  ***************************************************************************
  */
-void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies)
+void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies, struct tm *rectime)
 {
+	/*              dd/mm/yy HH:MM:SS */
+	if (DISPLAY_TIMESTAMP_LOG(flags))
+		printf("Datetime          ");
+
 	printf("avg-cpu:  %%user   %%nice %%system %%iowait  %%steal   %%idle\n");
+	if (DISPLAY_TIMESTAMP_LOG(flags))
+		write_sample_timestamp_log(rectime, xflags);
 
 	printf("       ");
 	cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 5, 7, 2,
@@ -1009,9 +1016,10 @@ void write_json_cpu_stat(int tab, int curr, unsigned long long deltot_jiffies)
  * IN:
  * @curr	Index in array for current sample statistics.
  * @tab		Number of tabs to print (JSON format only).
+ * @rectime	Current date and time.
  ***************************************************************************
  */
-void write_cpu_stat(int curr, int tab)
+void write_cpu_stat(int curr, int tab, struct tm *rectime)
 {
 	unsigned long long deltot_jiffies;
 
@@ -1043,7 +1051,7 @@ void write_cpu_stat(int curr, int tab)
 		write_json_cpu_stat(tab, curr, deltot_jiffies);
 	}
 	else {
-		write_plain_cpu_stat(curr, deltot_jiffies);
+		write_plain_cpu_stat(curr, deltot_jiffies, rectime);
 	}
 }
 
@@ -1086,6 +1094,10 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 		xprintf((*tab)++, "\"disk\": [");
 		return;
 	}
+
+	/*              dd/mm/yy HH:MM:SS */
+	if (DISPLAY_TIMESTAMP_LOG(flags))
+		printf("Datetime          ");
 
 	if (!DISPLAY_PRETTY(flags)) {
 		printf("Device       ");
@@ -1148,18 +1160,22 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
  * @devname	Current device name.
  * @xds		Extended stats for current device.
  * @xios	Additional extended statistics for current device.
+ * @rectime	Current date and time.
  ***************************************************************************
  */
 void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			  struct io_device *d, struct io_stats *ioi,
 			  struct io_stats *ioj, char *devname, struct ext_disk_stats *xds,
-			  struct ext_io_stats *xios)
+			  struct ext_io_stats *xios, struct tm *rectime)
 {
 	int dev_in_grp;
 
 	/* If this is a group with no devices, skip it */
 	if (d->dev_tp == T_GROUP)
 		return;
+
+	if (DISPLAY_TIMESTAMP_LOG(flags))
+		write_sample_timestamp_log(rectime, xflags);
 
 	if (!DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
@@ -1446,11 +1462,13 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
  * @ioj		Previous sample statistics.
  * @tab		Number of tabs to print (JSON output only).
  * @dname	Name to be used for display for current device.
+ * @rectime	Current date and time.
  ***************************************************************************
  */
 void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		    struct io_device *d, struct io_stats *ioi,
-		    struct io_stats *ioj, int tab, char *dname)
+		    struct io_stats *ioj, int tab, char *dname,
+		    struct tm *rectime)
 {
 	struct stats_disk sdc, sdp;
 	struct ext_disk_stats xds;
@@ -1568,7 +1586,7 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
 		write_json_ext_stat(tab, itv, fctr, d, ioi, ioj, dname, &xds, &xios);
 	}
 	else {
-		write_plain_ext_stat(itv, fctr, hpart, d, ioi, ioj, dname, &xds, &xios);
+		write_plain_ext_stat(itv, fctr, hpart, d, ioi, ioj, dname, &xds, &xios, rectime);
 	}
 }
 
@@ -1586,14 +1604,19 @@ void write_ext_stat(unsigned long long itv, int fctr, int hpart,
  * @rd_sec	Number of sectors read.
  * @wr_sec	Number of sectors written.
  * @dc_sec	Number of sectors discarded.
+ * @rectime	Current date and time.
  ***************************************************************************
  */
 void write_plain_basic_stat(unsigned long long itv, int fctr,
 			    struct io_stats *ioi, struct io_stats *ioj,
 			    char *devname, unsigned long long rd_sec,
-			    unsigned long long wr_sec, unsigned long long dc_sec)
+			    unsigned long long wr_sec, unsigned long long dc_sec,
+			    struct tm *rectime)
 {
 	double rsectors, wsectors, dsectors;
+
+	if (DISPLAY_TIMESTAMP_LOG(flags))
+		write_sample_timestamp_log(rectime, xflags);
 
 	if (!DISPLAY_PRETTY(flags)) {
 		cprintf_in(IS_STR, "%-13s", devname, 0);
@@ -1708,11 +1731,13 @@ void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
  * @ioj		Previous sample statistics.
  * @tab		Number of tabs to print (JSON format only).
  * @dname	Name to be used for display for current device.
+ * @rectime	Current date and time.
  ***************************************************************************
  */
 void write_basic_stat(unsigned long long itv, int fctr,
 		      struct io_device *d, struct io_stats *ioi,
-		      struct io_stats *ioj, int tab, char *dname)
+		      struct io_stats *ioj, int tab, char *dname,
+		      struct tm *rectime)
 {
 	unsigned long long rd_sec, wr_sec, dc_sec;
 
@@ -1736,7 +1761,7 @@ void write_basic_stat(unsigned long long itv, int fctr,
 	}
 	else {
 		write_plain_basic_stat(itv, fctr, ioi, ioj, dname,
-				       rd_sec, wr_sec, dc_sec);
+				       rd_sec, wr_sec, dc_sec, rectime);
 	}
 }
 
@@ -1772,7 +1797,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 
 	if (DISPLAY_CPU(flags) && !skip) {
 		/* Display CPU utilization */
-		write_cpu_stat(curr, tab);
+		write_cpu_stat(curr, tab, rectime);
 
 		if (DISPLAY_JSON_OUTPUT(xflags)) {
 			if (DISPLAY_DISK(flags)) {
@@ -1924,10 +1949,10 @@ void write_stats(int curr, struct tm *rectime, int skip)
 					next = TRUE;
 
 					if (DISPLAY_EXTENDED(flags)) {
-						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dev_name);
+						write_ext_stat(itv, fctr, h, d, ioi, ioj, tab, dev_name, rectime);
 					}
 					else {
-						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dev_name);
+						write_basic_stat(itv, fctr, d, ioi, ioj, tab, dev_name, rectime);
 					}
 				}
 			}
@@ -2267,6 +2292,10 @@ int main(int argc, char **argv)
 				case 't':
 					/* Display timestamp */
 					flags |= I_D_TIMESTAMP;
+					break;
+				case 'T':
+					/* Display timestamp */
+					flags |= I_D_TIMESTAMP_LOG;
 					break;
 
 				case 'U':

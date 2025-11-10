@@ -32,6 +32,7 @@
 #define I_D_UNIT		0x100000
 #define I_D_SHORT_OUTPUT	0x200000
 #define I_D_COMPACT		0x400000
+#define I_D_TIMESTAMP_LOG	0x800000
 
 #define DISPLAY_CPU(m)			(((m) & I_D_CPU)              == I_D_CPU)
 #define DISPLAY_DISK(m)			(((m) & I_D_DISK)             == I_D_DISK)
@@ -53,6 +54,7 @@
 #define DISPLAY_SHORT_OUTPUT(m)		(((m) & I_D_SHORT_OUTPUT)     == I_D_SHORT_OUTPUT)
 #define USE_ALL_DIR(m)			(((m) & I_D_ALL_DIR)          == I_D_ALL_DIR)
 #define DISPLAY_COMPACT(m)		(((m) & I_D_COMPACT)          == I_D_COMPACT)
+#define DISPLAY_TIMESTAMP_LOG(m)	(((m) & I_D_TIMESTAMP_LOG)    == I_D_TIMESTAMP_LOG)
 
 enum {
 	T_PART		= 0,
