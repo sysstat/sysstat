@@ -1,5 +1,5 @@
-.\" sadf manual page - (C) 1999-2023 Sebastien Godard (sysstat <at> orange.fr)
-.TH SADF 1 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.\" sadf manual page - (C) 1999-2025 Sebastien Godard (sysstat <at> orange.fr)
+.TH SADF 1 "NOVEMBER 2025" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 
@@ -258,11 +258,8 @@ Output can be controlled using option
 .br
 .BI "\-s [ " "seconds_since_the_epoch " "]"
 .RS
-Set the starting time of the data, causing the
-.B sadf
-command to extract records time-tagged at, or following, the time
-specified. The default starting time is 08:00:00.
-Hours must be given in 24-hour format, or as the number of seconds
+Set the starting time of the report. The default starting
+time is 08:00:00. Hours must be given in 24-hour format, or as the number of seconds
 since the epoch (given as a 10 digit number).
 .RE
 .TP

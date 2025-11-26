@@ -305,7 +305,9 @@ options -s and -e didn't work properly.
 So with sysstat version 12.1.5, the time specified with options -s and -e
 is now consistent with the timestamps displayed by sadf (either in UTC by
 default or in local time with option -T), even if the output doesn't match
-that of sar.
+that of sar.  
+Also note that the intervals corresponding to the records displayed by sadf
+must fall entirely within the range specified with options -s and -e.
 
 ---
 2.9.<a name="2_9"></a> I cannot see all my disks when I use the sar -d command...
