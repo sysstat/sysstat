@@ -1,5 +1,27 @@
 Changes:
 
+2025/12/07: Version 12.7.9 - Sebastien Godard (sysstat <at> orange.fr)
+	* sar: Fix pgsteal/s double value with recent kernels.
+	* Allow Truecolor (RGB) SGR codes in sysstat commands output.
+	* Don't display newline character within SGR-formatted text.
+	* Rework several functions based on Mistral AI Le Chat's suggestions.
+	* [Jun Lyu]: Fix missing dependencies in Makefile.in.
+	* mpstat: No longer call get_HZ() function.
+	* sar: Close file descriptors on fork() error.
+	* Fix version number in sysstat.xsd document.
+	* Check passed args in some functions.
+	* common.c: Include ioconf.h header file only if SOURCE_SADC is
+	  defined.
+	* Mark various variables as constant.
+	* Improve code clarity and readability.
+	* Exit if calling sysconf() function fails.
+	* Create format strings using string's real max value.
+	* simtest: Fix gcc warning in legacy sar version.
+	* Update sar and sadf manual page.
+	* Update FAQ.
+	* NLS: Translations updated.
+	* Update non regression tests.
+
 2025/07/28: Version 12.7.8 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar/sadf: Add new metric kbshmem.
 	* sar/sadf: Now compute used memory as total memory - available memory.
