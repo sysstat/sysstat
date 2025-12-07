@@ -4,7 +4,7 @@
 # Modified by Sebastien Godard (sysstat <at> orange.fr)
 
 # Initialization of $PACKAGE_VERSION and $PACKAGE_NAME variables
-AC_INIT([sysstat],[12.7.9])
+AC_INIT([sysstat],[12.8.0])
 
 # Ensure that a recent enough version of Autoconf is being used
 AC_PREREQ([2.71])
