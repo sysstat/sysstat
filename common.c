@@ -1904,4 +1904,40 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 #endif
 }
 
+/*
+ * **************************************************************************
+ * Write current sample's timestamp, in plain and no \n
+ *
+ * IN:
+ * @rectime	Current date and time.
+ * @xflags	Flag for common options and system state.
+ ***************************************************************************
+ */
+void write_sample_timestamp_log(struct tm *rectime, uint64_t xflags)
+{
+	char timestamp[TIMESTAMP_LEN];
+
+	if (rectime == NULL)
+		return;
+
+	if (DISPLAY_SEC_EPOCH(xflags)) {
+		snprintf(timestamp, sizeof(timestamp), "%ld", (long) mktime(rectime));
+	}
+	else if (DISPLAY_ISO(xflags)) {
+		strftime(timestamp, sizeof(timestamp), DATE_TIME_FORMAT_ISO, rectime);
+	}
+	else {
+		strftime(timestamp, sizeof(timestamp), DATE_TIME_FORMAT_LOCAL, rectime);
+	}
+
+	/* Make sure timestamp is null-terminated */
+	timestamp[sizeof(timestamp) - 1] = '\0';
+
+	/*
+	 * 01234567890123456
+	 * dd/mm/yy HH:MM:SS
+	 */
+	printf("%-17s ", timestamp);
+}
+
 #endif /* SOURCE_SADC undefined */

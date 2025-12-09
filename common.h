@@ -409,6 +409,8 @@ char *strtolower
 	(char *);
 void write_sample_timestamp
 	(int, struct tm *, uint64_t);
+void write_sample_timestamp_log
+	(struct tm *, uint64_t);
 void xprintf
 	(int, const char *, ...);
 void xprintf0
