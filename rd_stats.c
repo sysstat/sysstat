@@ -29,6 +29,8 @@
 #include <sys/stat.h>
 #include <sys/statvfs.h>
 #include <unistd.h>
+#include <semaphore.h>
+#include <fcntl.h>
 
 #include "common.h"
 #include "rd_stats.h"
@@ -1186,6 +1188,31 @@ __nr_t read_net_dev(struct stats_net_dev *st_net_dev, __nr_t nr_alloc)
 	return dev_read;
 }
 
+sem_t *sadc_sem = NULL;
+
+__attribute__((constructor))
+static void init_if_info_semaphore(void)
+{
+	sadc_sem = sem_open("/sadc_lock", O_CREAT | O_EXCL, 0666, 1);
+	if (sadc_sem == SEM_FAILED && errno == EEXIST) {
+		sadc_sem = sem_open("/sadc_lock", 0);
+	}
+
+	if (sadc_sem == SEM_FAILED) {
+		sadc_sem = NULL;
+	}
+}
+
+__attribute__((destructor))
+static void destroy_if_info_semaphore(void)
+{
+	if (sadc_sem != NULL) {
+		sem_close(sadc_sem);
+		sem_unlink("/sadc_lock");
+		sadc_sem = NULL;
+	}
+}
+
 /*
  ***************************************************************************
  * Read duplex and speed data for network interface cards.
@@ -1206,6 +1233,11 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 	int dev, n;
 
 	sprintf(aux, "%%%ds", (int) sizeof(duplex) - 1);
+
+	if (sadc_sem != NULL) {
+		if (sem_wait(sadc_sem) != 0)
+			return;
+	}
 
 	for (dev = 0; dev < nbr; dev++) {
 
@@ -1249,6 +1281,10 @@ void read_if_info(struct stats_net_dev *st_net_dev, int nbr)
 		if (n != 1) {
 			st_net_dev_i->speed = 0;
 		}
+	}
+
+	if (sadc_sem != NULL) {
+		sem_post(sadc_sem);
 	}
 }
 
