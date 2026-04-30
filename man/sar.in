@@ -1712,7 +1712,7 @@ All the statistics are not necessarily available, depending on the kernel versio
 assumes that you are using at least a 2.6 kernel.
 .PP
 .RB "Although " "sar"
-displays units correspondind to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
+displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
 A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILES
