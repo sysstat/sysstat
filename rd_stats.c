@@ -802,7 +802,7 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgscan_kswapd += pgtmp;
 		}
-		else if (!strncmp(line, "pgscan_direct", 13)) {
+		else if (!strncmp(line, "pgscan_direct ", 14)) {
 			/* Read number of pages scanned directly */
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgscan_direct += pgtmp;
