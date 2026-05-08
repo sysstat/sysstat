@@ -797,15 +797,13 @@ __nr_t read_vmstat_paging(struct stats_paging *st_paging)
 			sscanf(strchr(line, ' '), "%lu", &pgtmp);
 			st_paging->pgsteal += pgtmp;
 		}
-		else if (!strncmp(line, "pgscan_kswapd", 13)) {
+		else if (!strncmp(line, "pgscan_kswapd ", 14)) {
 			/* Read number of pages scanned by the kswapd daemon */
-			sscanf(strchr(line, ' '), "%lu", &pgtmp);
-			st_paging->pgscan_kswapd += pgtmp;
+			sscanf(line + 14, "%lu", &st_paging->pgscan_kswapd);
 		}
 		else if (!strncmp(line, "pgscan_direct ", 14)) {
 			/* Read number of pages scanned directly */
-			sscanf(strchr(line, ' '), "%lu", &pgtmp);
-			st_paging->pgscan_direct += pgtmp;
+			sscanf(line + 14, "%lu", &st_paging->pgscan_direct);
 		}
 		else if (!strncmp(line, "pgpromote_success ", 18)) {
 			/* Read number of successful page promotions */
