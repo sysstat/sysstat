@@ -1,5 +1,5 @@
-.\" sar manual page - (C) 1999-2025 Sebastien Godard (sysstat <at> orange.fr)
-.TH SAR 1 "AUGUST 2025" Linux "Linux User's Manual" -*- nroff -*-
+.\" sar manual page - (C) 1999-2026 Sebastien Godard (sysstat <at> orange.fr)
+.TH SAR 1 "MAY 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sar \- Collect, report, or save system activity information.
 
@@ -148,9 +148,10 @@ have required loading a memory page from disk.
 .IP pgfree/s
 Number of pages placed on the free list by the system per second.
 .IP pgscank/s
-Number of pages scanned by the kswapd daemon per second.
+Number of pages scanned by the kswapd daemon per second
+(done in background, healthy system).
 .IP pgscand/s
-Number of pages scanned directly per second.
+Number of pages scanned directly per second (process is stalled).
 .IP pgsteal/s
 Number of pages the system has reclaimed from cache (pagecache and
 swapcache) per second to satisfy its memory demands.
