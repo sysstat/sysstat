@@ -1060,7 +1060,7 @@
 <text x="795" y="50" style="fill: #696969; stroke: none; font-size: 12px">pgfree/s (0.00, 0.00)</text>
 <text x="795" y="65" style="fill: #bebebe; stroke: none; font-size: 12px">pgscank/s (0.00, 4.02)</text>
 <text x="795" y="80" style="fill: #000000; stroke: none; font-size: 12px">pgscand/s (0.00, 0.00)</text>
-<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">pgsteal/s x10 (0.00, 2.34)</text>
+<text x="795" y="95" style="fill: #a9a9a9; stroke: none; font-size: 12px">pgsteal/s (0.00, 0.71)</text>
 <text x="1045" y="250" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">SYSSTAT.TEST
 <tspan x="1045" y="264" style="fill: #000000; text-anchor: end; stroke: none; font-size: 14px">04/18/19</tspan>
 </text>
@@ -1104,7 +1104,7 @@
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #696969; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.26 L48049,4.02 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #bebebe; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
 <path d=" M48019,0.00 L48029,0.00 L48039,0.00 L48049,0.00 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #000000; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
-<path d=" M48019,0.00 L48029,0.00 L48039,0.23 L48049,0.09 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-497.555556)"/>
+<path d=" M48019,0.55 L48029,0.64 L48039,0.00 L48049,0.71 M50075,0.00" style="vector-effect: non-scaling-stroke; stroke: #a9a9a9; stroke-width: 1; fill-opacity: 0" transform="scale(0.008333,-49.755556)"/>
 </g>
 <rect x="1060" y="0" height="300" width="1050" fill="#ffffff"/>
 <text x="1060" y="20" style="fill: #000000; stroke: none">Paging activity (4)
