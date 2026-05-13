@@ -978,7 +978,7 @@
 <text x="795" y="670" style="fill: #e85f00; stroke: none; font-size: 12px">pgfree/s (0.00, 0.00)</text>
 <text x="795" y="685" style="fill: #0000ff; stroke: none; font-size: 12px">pgscank/s (0.00, 4.02)</text>
 <text x="795" y="700" style="fill: #006020; stroke: none; font-size: 12px">pgscand/s (0.00, 0.00)</text>
-<text x="795" y="715" style="fill: #7030a0; stroke: none; font-size: 12px">pgsteal/s (0.00, 0.23)</text>
+<text x="795" y="715" style="fill: #7030a0; stroke: none; font-size: 12px">pgsteal/s (0.00, 0.71)</text>
 <g transform="translate(70,870)">
 <text x="0" y="0" style="fill: #ffffff; stroke: none; font-size: 12px; text-anchor: end">0.</text>
 <polyline points="0,1.00 720,1.00" style="vector-effect: non-scaling-stroke; stroke: #202020" transform="scale(1,-49.755556)"/>
@@ -1015,7 +1015,7 @@
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #e85f00; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-49.755556)"/>
 <path d=" M10,0.00 L20,0.00 L30,0.26 L40,4.02 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #0000ff; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-49.755556)"/>
 <path d=" M10,0.00 L20,0.00 L30,0.00 L40,0.00 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #006020; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-49.755556)"/>
-<path d=" M10,0.00 L20,0.00 L30,0.23 L40,0.09 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #7030a0; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-49.755556)"/>
+<path d=" M10,0.55 L20,0.64 L30,0.00 L40,0.71 M2066,0.00" style="vector-effect: non-scaling-stroke; stroke: #7030a0; stroke-width: 1; fill-opacity: 0" transform="scale(0.348500,-49.755556)"/>
 </g>
 <rect x="0" y="930" height="300" width="1050" fill="#000000"/>
 <text x="0" y="950" style="fill: #ffff00; stroke: none">Paging activity (4)

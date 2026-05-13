@@ -261,16 +261,16 @@
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_PAGE; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:19 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0; pgprom/s; 168979; 174585; pgdem/s; 43977; 44965;
+13:20:19 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 17; pgprom/s; 168979; 174585; pgdem/s; 43977; 44965;
 # uptime_cs; 725496; ust_time; 1555593629; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:29
 # name; A_PAGE; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:29 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 0; 0; pgprom/s; 174585; 174594; pgdem/s; 44965; 46061;
+13:20:29 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 0; pgscand/s; 0; 0; pgsteal/s; 17; 37; pgprom/s; 174585; 174594; pgdem/s; 44965; 46061;
 # uptime_cs; 729346; ust_time; 1555593639; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:39
 # name; A_PAGE; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:39 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 10; pgscand/s; 0; 0; pgsteal/s; 0; 9; pgprom/s; 174594; 174594; pgdem/s; 46061; 47000;
+13:20:39 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 0; 10; pgscand/s; 0; 0; pgsteal/s; 37; 37; pgprom/s; 174594; 174594; pgdem/s; 46061; 47000;
 # uptime_cs; 731585; ust_time; 1555593649; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:49
 # name; A_PAGE; nr_curr; 1; nr_alloc; 1; nr_ini; 1
-13:20:49 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 10; 100; pgscand/s; 0; 0; pgsteal/s; 9; 11; pgprom/s; 174594; 174594; pgdem/s; 47000; 49099;
+13:20:49 UTC; pgpgin/s; 2685938; 2685938; pgpgout/s; 1863420; 1863420; fault/s; 60863302; 60863302; majflt/s; 10715; 10715; pgfree/s; 63486798; 63486798; pgscank/s; 10; 100; pgscand/s; 0; 0; pgsteal/s; 37; 53; pgprom/s; 174594; 174594; pgdem/s; 47000; 49099;
 # uptime_cs; 0; ust_time; 1555594649; extra_next; 0; record_type; 2; HH:MM:SS; 13:37:29
 # uptime_cs; 722372; ust_time; 1555593619; extra_next; 0; record_type; 1; HH:MM:SS; 13:20:19
 # name; A_IO; nr_curr; 1; nr_alloc; 1; nr_ini; 1
