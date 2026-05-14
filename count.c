@@ -245,7 +245,7 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
 		/* File non-existent */
 		return 0;
 
-	sprintf(aux, "%%*d %%*d %%%ds %%lu %%*u %%*u %%*u %%lu", MAX_NAME_LEN - 1);
+	snprintf(aux, sizeof(aux), "%%*d %%*d %%%ds %%lu %%*u %%*u %%*u %%lu", MAX_NAME_LEN - 1);
 
 	/*
 	 * Counting devices and partitions is simply a matter of counting
@@ -442,8 +442,8 @@ __nr_t get_filesystem_nr(void)
 		/* File non-existent */
 		return 0;
 
-	sprintf(aux, "%%%ds", MAX_FS_LEN - 1);
-	sprintf(aux2, "%%%ds", (MAX_FS_LEN * 2) - 1);
+	snprintf(aux, sizeof(aux), "%%%ds", MAX_FS_LEN - 1);
+	snprintf(aux2, sizeof(aux2), "%%%ds", (MAX_FS_LEN * 2) - 1);
 
 	/* Get current filesystem */
 	while (fgets(line, sizeof(line), fp) != NULL) {
