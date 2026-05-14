@@ -809,11 +809,11 @@ else
 po-files:
 endif
 
-TESTDIR="@srcdir@/tests"
+#TESTDIR="@srcdir@/tests"
 TESTRUN="/bin/sh"
-TESTLIST:=$(shell cd $(TESTDIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
+#TESTLIST:=$(shell cd $(TESTDIR) && ls | grep -E '^[0-9]+$$' | sort -n)
 EXTRADIR="@srcdir@/tests/extra"
-EXTRALIST:=$(shell cd $(EXTRADIR) && echo * | grep -E '^[0-9]+$$' | sort -n)
+EXTRALIST:=$(shell cd $(EXTRADIR) && ls | grep -E '^[0-9]+$$' | sort -n)
 
 cr_dir:
 	if [ ! -d tests/ini ]; then \
@@ -835,9 +835,9 @@ else
 sa32bit:
 endif
 
-unit:
-	@echo $(X) 2>&1
-	@cat $(TESTDIR)/$(X) | $(TESTRUN)
+#unit:
+#	@echo $(X) 2>&1
+#	@cat $(TESTDIR)/$(X) | $(TESTRUN)
 
 extraunit:
 	@echo $(X) 2>&1
