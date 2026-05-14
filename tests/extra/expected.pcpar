@@ -1,135 +1,57 @@
-Log Label (Log Format Version 2)
+Log Label (Log Format Version 3)
 Performance metrics from host SYSSTAT.TEST
-    commencing Thu Apr 18 15:20:19.000000 2019
-    ending     Thu Apr 18 15:54:35.000000 2019
+    commencing Thu Apr 18 15:20:19.000000000 2019
+    ending     Thu Apr 18 15:54:35.000000000 2019
 Archive timezone: GMT
 
 Descriptions for Metrics in the Log ...
+PMID: 34.3.0 (power.usb.bus)
+    Data Type: 32-bit unsigned int  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
+PMID: 34.3.1 (power.usb.vendorId)
+    Data Type: string  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
+PMID: 34.3.2 (power.usb.productId)
+    Data Type: string  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
+PMID: 34.3.3 (power.usb.maxpower)
+    Data Type: 32-bit unsigned int  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
+PMID: 34.3.4 (power.usb.manufacturer)
+    Data Type: string  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
+PMID: 34.3.5 (power.usb.productName)
+    Data Type: string  InDom: 34.3 0x8800003
+    Semantics: discrete  Units: none
+PMID: 34.4.0 (power.bat.capacity)
+    Data Type: 32-bit unsigned int  InDom: 34.4 0x8800004
+    Semantics: instant  Units: none
+PMID: 34.4.2 (power.bat.status)
+    Data Type: string  InDom: 34.4 0x8800004
+    Semantics: discrete  Units: none
 PMID: 60.0.0 (kernel.percpu.cpu.user)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.8 (network.ip6.indelivers)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.1 (kernel.percpu.cpu.nice)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.9 (network.ip6.outforwdatagrams)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.34 (rpc.server.rpcbadclnt)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.2 (kernel.percpu.cpu.sys)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.1.58 (mem.util.available)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
-PMID: 60.58.10 (network.ip6.outrequests)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.35 (rpc.server.rchits)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.3 (kernel.percpu.cpu.idle)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.11 (network.ip6.outdiscards)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.1.60 (mem.util.hugepagesTotalBytes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: byte
-PMID: 60.7.36 (rpc.server.rcmisses)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.12 (network.ip6.outnoroutes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.1.61 (mem.util.hugepagesFreeBytes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: byte
-PMID: 60.28.13 (mem.vmstat.pgfree)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.1.62 (mem.util.hugepagesRsvdBytes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: byte
-PMID: 60.14.70 (network.udp.indatagrams)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.14 (network.ip6.reasmreqds)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.1.63 (mem.util.hugepagesSurpBytes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: byte
-PMID: 60.14.71 (network.udp.noports)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.15 (network.ip6.reasmoks)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.2.0 (kernel.all.load)
-    Data Type: float  InDom: 60.2 0xf000002
-    Semantics: instant  Units: none
 PMID: 60.0.8 (swap.pagesin)
     Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.28.16 (mem.vmstat.pgfault)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.14.72 (network.udp.inerrors)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.16 (network.ip6.reasmfails)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.9 (swap.pagesout)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.28.17 (mem.vmstat.pgmajfault)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.17 (network.ip6.fragoks)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.2.2 (kernel.all.runnable)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: none
-PMID: 60.14.74 (network.udp.outdatagrams)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.18 (network.ip6.fragfails)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.2.3 (kernel.all.nprocs)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
-PMID: 60.58.19 (network.ip6.fragcreates)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.44 (rpc.server.netcnt)
     Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.0.12 (kernel.all.intr)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.58.20 (network.ip6.inmcastpkts)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.45 (rpc.server.netudpcnt)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.13 (kernel.all.pswitch)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.21 (network.ip6.outmcastpkts)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.46 (rpc.server.nettcpcnt)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.0.14 (kernel.all.sysfork)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
@@ -137,12 +59,6 @@ PMID: 60.0.14 (kernel.all.sysfork)
 PMID: 60.0.16 (kernel.all.blocked)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: none
-PMID: 60.4.0 (kernel.all.interrupts.total)
-    Data Type: 64-bit unsigned int  InDom: 60.4 0xf000004
-    Semantics: counter  Units: count
-PMID: 60.4.1 (kernel.percpu.interrupts)
-    Data Type: 32-bit unsigned int  InDom: 60.40 0xf000028
-    Semantics: counter  Units: count
 PMID: 60.0.20 (kernel.all.cpu.user)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
@@ -158,324 +74,351 @@ PMID: 60.0.23 (kernel.all.cpu.idle)
 PMID: 60.0.24 (disk.all.read)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.58.32 (network.icmp6.inmsgs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.25 (kernel.all.cpu.iowait)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
-PMID: 60.58.33 (network.icmp6.inerrors)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.34 (network.icmp6.outmsgs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.28 (disk.dev.total)
     Data Type: 64-bit unsigned int  InDom: 60.1 0xf000001
     Semantics: counter  Units: count
 PMID: 60.0.29 (disk.all.total)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.58.37 (network.icmp6.indestunreachs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.30 (kernel.percpu.cpu.iowait)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.38 (network.icmp6.inpkttoobigs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.39 (network.icmp6.intimeexcds)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.83.0 (kernel.all.pressure.cpu.some.avg)
-    Data Type: float  InDom: 60.37 0xf000025
-    Semantics: instant  Units: none
-PMID: 34.4.0 (power.bat.capacity)
-    Data Type: 32-bit unsigned int  InDom: 34.4 0x8800004
-    Semantics: instant  Units: none
 PMID: 60.0.32 (hinv.ncpu)
     Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: none
-PMID: 60.58.40 (network.icmp6.inparmproblems)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.83.1 (kernel.all.pressure.cpu.some.total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: microsec
-PMID: 60.58.41 (network.icmp6.inechos)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 34.4.2 (power.bat.status)
-    Data Type: string  InDom: 34.4 0x8800004
     Semantics: discrete  Units: none
 PMID: 60.0.34 (kernel.all.cpu.irq.total)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
-PMID: 60.58.42 (network.icmp6.inechoreplies)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.35 (kernel.percpu.cpu.irq.total)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.43 (network.icmp6.ingroupmembqueries)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.44 (network.icmp6.ingroupmembresponses)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.37 (disk.dev.total_bytes)
     Data Type: 64-bit unsigned int  InDom: 60.1 0xf000001
     Semantics: counter  Units: Kbyte
-PMID: 60.58.45 (network.icmp6.ingroupmembreductions)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.38 (disk.dev.read_bytes)
     Data Type: 64-bit unsigned int  InDom: 60.1 0xf000001
     Semantics: counter  Units: Kbyte
-PMID: 60.58.46 (network.icmp6.inroutersolicits)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.39 (disk.dev.write_bytes)
     Data Type: 64-bit unsigned int  InDom: 60.1 0xf000001
     Semantics: counter  Units: Kbyte
-PMID: 60.58.47 (network.icmp6.inrouteradvertisements)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.85.0 (kernel.all.pressure.io.some.avg)
-    Data Type: float  InDom: 60.37 0xf000025
-    Semantics: instant  Units: none
-PMID: 60.58.48 (network.icmp6.inneighborsolicits)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.85.1 (kernel.all.pressure.io.some.total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: microsec
 PMID: 60.0.41 (disk.all.read_bytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: Kbyte
-PMID: 60.58.49 (network.icmp6.inneighboradvertisements)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.85.2 (kernel.all.pressure.io.full.avg)
-    Data Type: float  InDom: 60.37 0xf000025
-    Semantics: instant  Units: none
 PMID: 60.0.42 (disk.all.write_bytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: Kbyte
-PMID: 60.58.50 (network.icmp6.inredirects)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.85.3 (kernel.all.pressure.io.full.total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: microsec
-PMID: 60.58.52 (network.icmp6.outdestunreachs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.53 (network.icmp6.outpkttoobigs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.46 (disk.dev.avactive)
     Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
     Semantics: counter  Units: millisec
-PMID: 60.58.54 (network.icmp6.outtimeexcds)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.0.47 (disk.dev.aveq)
     Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
     Semantics: counter  Units: millisec
-PMID: 60.58.55 (network.icmp6.outparmproblems)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.27.0 (vfs.files.count)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: none
-PMID: 60.28.176 (mem.vmstat.pgscan_direct_total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.12.0 (kernel.uname.release)
-    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: none
-PMID: 60.28.177 (mem.vmstat.pgscan_kswapd_total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.57 (network.icmp6.outechoreplies)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.28.178 (mem.vmstat.pgsteal_total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.12.2 (kernel.uname.sysname)
-    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: none
-PMID: 60.72.3 (kernel.all.nptys)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: none
-PMID: 60.27.3 (vfs.inodes.count)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: none
-PMID: 60.12.3 (kernel.uname.machine)
-    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: none
-PMID: 60.58.59 (network.icmp6.outgroupmembresponses)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.12.4 (kernel.uname.nodename)
-    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: none
-PMID: 60.58.60 (network.icmp6.outgroupmembreductions)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.27.5 (vfs.dentry.count)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: none
 PMID: 60.0.53 (kernel.all.cpu.irq.soft)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
-PMID: 60.58.61 (network.icmp6.outroutersolicits)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.57.6 (network.softnet.percpu.processed)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: count
 PMID: 60.0.54 (kernel.all.cpu.irq.hard)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
-PMID: 60.57.7 (network.softnet.percpu.dropped)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: count
 PMID: 60.0.55 (kernel.all.cpu.steal)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
-PMID: 60.58.63 (network.icmp6.outneighborsolicits)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.57.8 (network.softnet.percpu.time_squeeze)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: count
-PMID: 60.74.0 (tty.serial.rx)
-    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
-    Semantics: counter  Units: none
 PMID: 60.0.56 (kernel.percpu.cpu.irq.soft)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.64 (network.icmp6.outneighboradvertisements)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.74.1 (tty.serial.tx)
-    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
-    Semantics: counter  Units: none
 PMID: 60.0.57 (kernel.percpu.cpu.irq.hard)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.58.65 (network.icmp6.outredirects)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.57.10 (network.softnet.percpu.received_rps)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: count
-PMID: 60.74.2 (tty.serial.frame)
-    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
-    Semantics: counter  Units: none
 PMID: 60.0.58 (kernel.percpu.cpu.steal)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.14.2 (network.ip.inreceives)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.57.11 (network.softnet.percpu.flow_limit)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: count
-PMID: 60.74.3 (tty.serial.parity)
-    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
-    Semantics: counter  Units: none
-PMID: 60.14.3 (network.ip.inhdrerrors)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.67 (network.udp6.indatagrams)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.74.4 (tty.serial.brk)
-    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
-    Semantics: counter  Units: none
 PMID: 60.0.60 (kernel.all.cpu.guest)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: millisec
-PMID: 60.14.4 (network.ip.inaddrerrors)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.68 (network.udp6.noports)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.57.13 (network.softnet.percpu.backlog_length)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: count
-PMID: 60.74.5 (tty.serial.overrun)
-    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
-    Semantics: counter  Units: none
 PMID: 60.0.61 (kernel.percpu.cpu.guest)
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec
-PMID: 60.14.5 (network.ip.forwdatagrams)
+PMID: 60.0.72 (disk.dev.read_rawactive)
+    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
+    Semantics: counter  Units: millisec
+PMID: 60.0.73 (disk.dev.write_rawactive)
+    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
+    Semantics: counter  Units: millisec
+PMID: 60.0.79 (disk.dev.total_rawactive)
+    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
+    Semantics: counter  Units: millisec
+PMID: 60.0.81 (kernel.all.cpu.guest_nice)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: millisec
+PMID: 60.0.83 (kernel.percpu.cpu.guest_nice)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: millisec
+PMID: 60.0.90 (disk.dev.discard_bytes)
+    Data Type: 64-bit unsigned int  InDom: 60.1 0xf000001
+    Semantics: counter  Units: Kbyte
+PMID: 60.0.92 (disk.dev.discard_rawactive)
+    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
+    Semantics: counter  Units: millisec
+PMID: 60.0.96 (disk.all.discard)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.58.69 (network.udp6.inerrors)
+PMID: 60.0.98 (disk.all.discard_bytes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.14.6 (network.ip.inunknownprotos)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.58.70 (network.udp6.outdatagrams)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.14.7 (network.ip.indiscards)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.28.192 (mem.vmstat.pgpromote_success)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
+    Semantics: counter  Units: Kbyte
 PMID: 60.1.0 (mem.physmem)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: discrete  Units: Kbyte
-PMID: 60.14.8 (network.ip.indelivers)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.91.0 (fchost.in.frames)
-    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
-    Semantics: counter  Units: count
-PMID: 60.91.1 (fchost.out.frames)
-    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
-    Semantics: counter  Units: count
-PMID: 60.28.193 (mem.vmstat.pgdemote_total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.1.1 (mem.util.used)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: Kbyte
-PMID: 60.14.9 (network.ip.outrequests)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.91.2 (fchost.in.bytes)
-    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
-    Semantics: counter  Units: byte
 PMID: 60.1.2 (mem.util.free)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: Kbyte
-PMID: 60.14.10 (network.ip.outdiscards)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.91.3 (fchost.out.bytes)
-    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
-    Semantics: counter  Units: byte
-PMID: 60.14.11 (network.ip.outnoroutes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.1.4 (mem.util.bufmem)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: Kbyte
 PMID: 60.1.5 (mem.util.cached)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: instant  Units: Kbyte
+PMID: 60.1.9 (hinv.physmem)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: Mbyte
+PMID: 60.1.13 (mem.util.swapCached)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.14 (mem.util.active)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.15 (mem.util.inactive)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.20 (mem.util.swapTotal)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.21 (mem.util.swapFree)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.22 (mem.util.dirty)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.23 (mem.util.shared)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.25 (mem.util.slab)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.26 (mem.util.committed_AS)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.27 (mem.util.pageTables)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.30 (mem.util.anonpages)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.43 (mem.util.kernelStack)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.51 (mem.util.vmallocUsed)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.58 (mem.util.available)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+PMID: 60.1.60 (mem.util.hugepagesTotalBytes)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: byte
+PMID: 60.1.61 (mem.util.hugepagesFreeBytes)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: byte
+PMID: 60.1.62 (mem.util.hugepagesRsvdBytes)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: byte
+PMID: 60.1.63 (mem.util.hugepagesSurpBytes)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: byte
+PMID: 60.2.0 (kernel.all.load)
+    Data Type: float  InDom: 60.2 0xf000002
+    Semantics: instant  Units: none
+PMID: 60.2.2 (kernel.all.runnable)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: none
+PMID: 60.2.3 (kernel.all.nprocs)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.3.0 (network.interface.in.bytes)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: byte
+PMID: 60.3.1 (network.interface.in.packets)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.2 (network.interface.in.errors)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.3 (network.interface.in.drops)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.4 (network.interface.in.fifo)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.5 (network.interface.in.frame)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.6 (network.interface.in.compressed)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.7 (network.interface.in.mcasts)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.8 (network.interface.out.bytes)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: byte
+PMID: 60.3.9 (network.interface.out.packets)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.10 (network.interface.out.errors)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.11 (network.interface.out.drops)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.12 (network.interface.out.fifo)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.13 (network.interface.collisions)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.14 (network.interface.out.carrier)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.3.15 (network.interface.out.compressed)
+    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+    Semantics: counter  Units: count
+PMID: 60.4.0 (kernel.all.interrupts.total)
+    Data Type: 64-bit unsigned int  InDom: 60.4 0xf000004
+    Semantics: counter  Units: count
+PMID: 60.4.1 (kernel.percpu.interrupts)
+    Data Type: 32-bit unsigned int  InDom: 60.40 0xf000028
+    Semantics: counter  Units: count
+PMID: 60.5.1 (filesys.capacity)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: Kbyte
+PMID: 60.5.2 (filesys.used)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: Kbyte
+PMID: 60.5.3 (filesys.free)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: Kbyte
+PMID: 60.5.4 (filesys.maxfiles)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: count
+PMID: 60.5.5 (filesys.usedfiles)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: count
+PMID: 60.5.6 (filesys.freefiles)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: count
+PMID: 60.5.8 (filesys.full)
+    Data Type: double  InDom: 60.5 0xf000005
+    Semantics: instant  Units: none
+PMID: 60.5.10 (filesys.avail)
+    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
+    Semantics: instant  Units: Kbyte
+PMID: 60.7.4 (nfs.client.reqs)
+    Data Type: 32-bit unsigned int  InDom: 60.7 0xf000007
+    Semantics: counter  Units: count
+PMID: 60.7.12 (nfs.server.reqs)
+    Data Type: 32-bit unsigned int  InDom: 60.7 0xf000007
+    Semantics: counter  Units: count
+PMID: 60.7.20 (rpc.client.rpccnt)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.21 (rpc.client.rpcretrans)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.30 (rpc.server.rpccnt)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.34 (rpc.server.rpcbadclnt)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.35 (rpc.server.rchits)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.36 (rpc.server.rcmisses)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.44 (rpc.server.netcnt)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.45 (rpc.server.netudpcnt)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.7.46 (rpc.server.nettcpcnt)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.11.0 (network.sockstat.tcp.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.11.3 (network.sockstat.udp.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.11.6 (network.sockstat.raw.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.11.9 (network.sockstat.total)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.11.11 (network.sockstat.tcp.tw)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.11.15 (network.sockstat.frag.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.12.0 (kernel.uname.release)
+    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: none
+PMID: 60.12.2 (kernel.uname.sysname)
+    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: none
+PMID: 60.12.3 (kernel.uname.machine)
+    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: none
+PMID: 60.12.4 (kernel.uname.nodename)
+    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: none
+PMID: 60.14.2 (network.ip.inreceives)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.3 (network.ip.inhdrerrors)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.4 (network.ip.inaddrerrors)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.5 (network.ip.forwdatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.6 (network.ip.inunknownprotos)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.7 (network.ip.indiscards)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.8 (network.ip.indelivers)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.9 (network.ip.outrequests)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.10 (network.ip.outdiscards)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.11 (network.ip.outnoroutes)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.14.13 (network.ip.reasmreqds)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -485,263 +428,83 @@ PMID: 60.14.14 (network.ip.reasmoks)
 PMID: 60.14.15 (network.ip.reasmfails)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.18.0 (hinv.cpu.clock)
-    Data Type: float  InDom: 60.0 0xf000000
-    Semantics: discrete  Units: / microsec
-PMID: 60.3.0 (network.interface.in.bytes)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: byte
-PMID: 60.0.72 (disk.dev.read_rawactive)
-    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
-    Semantics: counter  Units: millisec
 PMID: 60.14.16 (network.ip.fragoks)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.3.1 (network.interface.in.packets)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.0.73 (disk.dev.write_rawactive)
-    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
-    Semantics: counter  Units: millisec
-PMID: 60.1.9 (hinv.physmem)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: Mbyte
 PMID: 60.14.17 (network.ip.fragfails)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.3.2 (network.interface.in.errors)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
     Semantics: counter  Units: count
 PMID: 60.14.18 (network.ip.fragcreates)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.3.3 (network.interface.in.drops)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.3.4 (network.interface.in.fifo)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
 PMID: 60.14.20 (network.icmp.inmsgs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.3.5 (network.interface.in.frame)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.1.13 (mem.util.swapCached)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.21 (network.icmp.inerrors)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.3.6 (network.interface.in.compressed)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.1.14 (mem.util.active)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.22 (network.icmp.indestunreachs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.3.7 (network.interface.in.mcasts)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.0.79 (disk.dev.total_rawactive)
-    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
-    Semantics: counter  Units: millisec
-PMID: 60.1.15 (mem.util.inactive)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.23 (network.icmp.intimeexcds)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.3.8 (network.interface.out.bytes)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: byte
 PMID: 60.14.24 (network.icmp.inparmprobs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.5.1 (filesys.capacity)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: Kbyte
-PMID: 60.3.9 (network.interface.out.packets)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.0.81 (kernel.all.cpu.guest_nice)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: millisec
 PMID: 60.14.25 (network.icmp.insrcquenchs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.5.2 (filesys.used)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: Kbyte
-PMID: 60.3.10 (network.interface.out.errors)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.5.3 (filesys.free)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: Kbyte
-PMID: 60.3.11 (network.interface.out.drops)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.0.83 (kernel.percpu.cpu.guest_nice)
-    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
-    Semantics: counter  Units: millisec
 PMID: 60.14.27 (network.icmp.inechos)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.5.4 (filesys.maxfiles)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: count
-PMID: 60.3.12 (network.interface.out.fifo)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.1.20 (mem.util.swapTotal)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.28 (network.icmp.inechoreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.5.5 (filesys.usedfiles)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: count
-PMID: 60.3.13 (network.interface.collisions)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.1.21 (mem.util.swapFree)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.29 (network.icmp.intimestamps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 245.0.6 (system.restart.count)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: count
-PMID: 60.5.6 (filesys.freefiles)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: count
-PMID: 60.3.14 (network.interface.out.carrier)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
-    Semantics: counter  Units: count
-PMID: 60.1.22 (mem.util.dirty)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.30 (network.icmp.intimestampreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 245.0.7 (system.restart.ncpu)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: count
-PMID: 60.3.15 (network.interface.out.compressed)
-    Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
     Semantics: counter  Units: count
 PMID: 60.14.31 (network.icmp.inaddrmasks)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 245.0.8 (system.comment.value)
-    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: discrete  Units: none
-PMID: 34.3.0 (power.usb.bus)
-    Data Type: 32-bit unsigned int  InDom: 34.3 0x8800003
-    Semantics: discrete  Units: none
-PMID: 60.5.8 (filesys.full)
-    Data Type: double  InDom: 60.5 0xf000005
-    Semantics: instant  Units: none
 PMID: 60.14.32 (network.icmp.inaddrmaskreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 34.3.1 (power.usb.vendorId)
-    Data Type: string  InDom: 34.3 0x8800003
-    Semantics: discrete  Units: none
-PMID: 60.1.25 (mem.util.slab)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.33 (network.icmp.outmsgs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 34.3.2 (power.usb.productId)
-    Data Type: string  InDom: 34.3 0x8800003
-    Semantics: discrete  Units: none
-PMID: 60.5.10 (filesys.avail)
-    Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
-    Semantics: instant  Units: Kbyte
-PMID: 60.0.90 (disk.dev.discard_bytes)
-    Data Type: 64-bit unsigned int  InDom: 60.1 0xf000001
-    Semantics: counter  Units: Kbyte
-PMID: 60.1.26 (mem.util.committed_AS)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.34 (network.icmp.outerrors)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 34.3.3 (power.usb.maxpower)
-    Data Type: 32-bit unsigned int  InDom: 34.3 0x8800003
-    Semantics: discrete  Units: none
-PMID: 60.1.27 (mem.util.pageTables)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.35 (network.icmp.outdestunreachs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 34.3.4 (power.usb.manufacturer)
-    Data Type: string  InDom: 34.3 0x8800003
-    Semantics: discrete  Units: none
-PMID: 60.7.4 (nfs.client.reqs)
-    Data Type: 32-bit unsigned int  InDom: 60.7 0xf000007
-    Semantics: counter  Units: count
-PMID: 60.0.92 (disk.dev.discard_rawactive)
-    Data Type: 32-bit unsigned int  InDom: 60.1 0xf000001
-    Semantics: counter  Units: millisec
 PMID: 60.14.36 (network.icmp.outtimeexcds)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 34.3.5 (power.usb.productName)
-    Data Type: string  InDom: 34.3 0x8800003
-    Semantics: discrete  Units: none
 PMID: 60.14.37 (network.icmp.outparmprobs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.1.30 (mem.util.anonpages)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
 PMID: 60.14.38 (network.icmp.outsrcquenchs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.14.39 (network.icmp.outredirects)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.84.0 (kernel.all.pressure.memory.some.avg)
-    Data Type: float  InDom: 60.37 0xf000025
-    Semantics: instant  Units: none
-PMID: 60.0.96 (disk.all.discard)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.14.40 (network.icmp.outechos)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.84.1 (kernel.all.pressure.memory.some.total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: microsec
 PMID: 60.14.41 (network.icmp.outechoreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.84.2 (kernel.all.pressure.memory.full.avg)
-    Data Type: float  InDom: 60.37 0xf000025
-    Semantics: instant  Units: none
-PMID: 60.0.98 (disk.all.discard_bytes)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: Kbyte
 PMID: 60.14.42 (network.icmp.outtimestamps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.84.3 (kernel.all.pressure.memory.full.total)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: microsec
 PMID: 60.14.43 (network.icmp.outtimestampreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.12 (nfs.server.reqs)
-    Data Type: 32-bit unsigned int  InDom: 60.7 0xf000007
     Semantics: counter  Units: count
 PMID: 60.14.44 (network.icmp.outaddrmasks)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
@@ -749,24 +512,6 @@ PMID: 60.14.44 (network.icmp.outaddrmasks)
 PMID: 60.14.45 (network.icmp.outaddrmaskreps)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.11.0 (network.sockstat.tcp.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
-PMID: 60.1.43 (mem.util.kernelStack)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
-PMID: 60.11.3 (network.sockstat.udp.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
-PMID: 60.7.20 (rpc.client.rpccnt)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.7.21 (rpc.client.rpcretrans)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.11.6 (network.sockstat.raw.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
 PMID: 60.14.54 (network.tcp.activeopens)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
@@ -776,85 +521,353 @@ PMID: 60.14.55 (network.tcp.passiveopens)
 PMID: 60.14.56 (network.tcp.attemptfails)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.73.0 (network.sockstat.tcp6.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
-PMID: 60.58.0 (network.ip6.inreceives)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.11.9 (network.sockstat.total)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
 PMID: 60.14.57 (network.tcp.estabresets)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.73.1 (network.sockstat.udp6.inuse)
+PMID: 60.14.59 (network.tcp.insegs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.60 (network.tcp.outsegs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.61 (network.tcp.retranssegs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.62 (network.tcp.inerrs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.63 (network.tcp.outrsts)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.70 (network.udp.indatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.71 (network.udp.noports)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.72 (network.udp.inerrors)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.14.74 (network.udp.outdatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.18.0 (hinv.cpu.clock)
+    Data Type: float  InDom: 60.0 0xf000000
+    Semantics: discrete  Units: / microsec
+PMID: 60.27.0 (vfs.files.count)
     Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
+    Semantics: instant  Units: none
+PMID: 60.27.3 (vfs.inodes.count)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: none
+PMID: 60.27.5 (vfs.dentry.count)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: none
+PMID: 60.28.6 (mem.vmstat.pgpgin)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.7 (mem.vmstat.pgpgout)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.13 (mem.vmstat.pgfree)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.16 (mem.vmstat.pgfault)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.17 (mem.vmstat.pgmajfault)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.176 (mem.vmstat.pgscan_direct_total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.177 (mem.vmstat.pgscan_kswapd_total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.178 (mem.vmstat.pgsteal_total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.192 (mem.vmstat.pgpromote_success)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.28.193 (mem.vmstat.pgdemote_total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.57.6 (network.softnet.percpu.processed)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: count
+PMID: 60.57.7 (network.softnet.percpu.dropped)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: count
+PMID: 60.57.8 (network.softnet.percpu.time_squeeze)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: count
+PMID: 60.57.10 (network.softnet.percpu.received_rps)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: count
+PMID: 60.57.11 (network.softnet.percpu.flow_limit)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: count
+PMID: 60.57.13 (network.softnet.percpu.backlog_length)
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: count
+PMID: 60.58.0 (network.ip6.inreceives)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
 PMID: 60.58.1 (network.ip6.inhdrerrors)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.58.2 (network.ip6.intoobigerrors)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.1.51 (mem.util.vmallocUsed)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: Kbyte
-PMID: 60.11.11 (network.sockstat.tcp.tw)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
-PMID: 60.14.59 (network.tcp.insegs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.73.3 (network.sockstat.raw6.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
 PMID: 60.58.3 (network.ip6.innoroutes)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.14.60 (network.tcp.outsegs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.73.4 (network.sockstat.frag6.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
 PMID: 60.58.4 (network.ip6.inaddrerrors)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.14.61 (network.tcp.retranssegs)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.58.5 (network.ip6.inunknownprotos)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
-PMID: 60.7.30 (rpc.server.rpccnt)
-    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.28.6 (mem.vmstat.pgpgin)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.14.62 (network.tcp.inerrs)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
 PMID: 60.58.6 (network.ip6.intruncatedpkts)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.28.7 (mem.vmstat.pgpgout)
-    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: counter  Units: count
-PMID: 60.11.15 (network.sockstat.frag.inuse)
-    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
-    Semantics: instant  Units: count
-PMID: 60.14.63 (network.tcp.outrsts)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
 PMID: 60.58.7 (network.ip6.indiscards)
     Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
     Semantics: counter  Units: count
+PMID: 60.58.8 (network.ip6.indelivers)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.9 (network.ip6.outforwdatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.10 (network.ip6.outrequests)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.11 (network.ip6.outdiscards)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.12 (network.ip6.outnoroutes)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.14 (network.ip6.reasmreqds)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.15 (network.ip6.reasmoks)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.16 (network.ip6.reasmfails)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.17 (network.ip6.fragoks)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.18 (network.ip6.fragfails)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.19 (network.ip6.fragcreates)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.20 (network.ip6.inmcastpkts)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.21 (network.ip6.outmcastpkts)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.32 (network.icmp6.inmsgs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.33 (network.icmp6.inerrors)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.34 (network.icmp6.outmsgs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.37 (network.icmp6.indestunreachs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.38 (network.icmp6.inpkttoobigs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.39 (network.icmp6.intimeexcds)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.40 (network.icmp6.inparmproblems)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.41 (network.icmp6.inechos)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.42 (network.icmp6.inechoreplies)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.43 (network.icmp6.ingroupmembqueries)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.44 (network.icmp6.ingroupmembresponses)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.45 (network.icmp6.ingroupmembreductions)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.46 (network.icmp6.inroutersolicits)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.47 (network.icmp6.inrouteradvertisements)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.48 (network.icmp6.inneighborsolicits)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.49 (network.icmp6.inneighboradvertisements)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.50 (network.icmp6.inredirects)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.52 (network.icmp6.outdestunreachs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.53 (network.icmp6.outpkttoobigs)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.54 (network.icmp6.outtimeexcds)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.55 (network.icmp6.outparmproblems)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.57 (network.icmp6.outechoreplies)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.59 (network.icmp6.outgroupmembresponses)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.60 (network.icmp6.outgroupmembreductions)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.61 (network.icmp6.outroutersolicits)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.63 (network.icmp6.outneighborsolicits)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.64 (network.icmp6.outneighboradvertisements)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.65 (network.icmp6.outredirects)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.67 (network.udp6.indatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.68 (network.udp6.noports)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.69 (network.udp6.inerrors)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.58.70 (network.udp6.outdatagrams)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: count
+PMID: 60.72.3 (kernel.all.nptys)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: none
+PMID: 60.73.0 (network.sockstat.tcp6.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.73.1 (network.sockstat.udp6.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.73.3 (network.sockstat.raw6.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.73.4 (network.sockstat.frag6.inuse)
+    Data Type: 32-bit int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: count
+PMID: 60.74.0 (tty.serial.rx)
+    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
+    Semantics: counter  Units: none
+PMID: 60.74.1 (tty.serial.tx)
+    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
+    Semantics: counter  Units: none
+PMID: 60.74.2 (tty.serial.frame)
+    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
+    Semantics: counter  Units: none
+PMID: 60.74.3 (tty.serial.parity)
+    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
+    Semantics: counter  Units: none
+PMID: 60.74.4 (tty.serial.brk)
+    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
+    Semantics: counter  Units: none
+PMID: 60.74.5 (tty.serial.overrun)
+    Data Type: 32-bit unsigned int  InDom: 60.35 0xf000023
+    Semantics: counter  Units: none
+PMID: 60.83.0 (kernel.all.pressure.cpu.some.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
+PMID: 60.83.1 (kernel.all.pressure.cpu.some.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
+PMID: 60.84.0 (kernel.all.pressure.memory.some.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
+PMID: 60.84.1 (kernel.all.pressure.memory.some.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
+PMID: 60.84.2 (kernel.all.pressure.memory.full.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
+PMID: 60.84.3 (kernel.all.pressure.memory.full.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
+PMID: 60.85.0 (kernel.all.pressure.io.some.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
+PMID: 60.85.1 (kernel.all.pressure.io.some.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
+PMID: 60.85.2 (kernel.all.pressure.io.full.avg)
+    Data Type: float  InDom: 60.37 0xf000025
+    Semantics: instant  Units: none
+PMID: 60.85.3 (kernel.all.pressure.io.full.total)
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: counter  Units: microsec
+PMID: 60.91.0 (fchost.in.frames)
+    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
+    Semantics: counter  Units: count
+PMID: 60.91.1 (fchost.out.frames)
+    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
+    Semantics: counter  Units: count
+PMID: 60.91.2 (fchost.in.bytes)
+    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
+    Semantics: counter  Units: byte
+PMID: 60.91.3 (fchost.out.bytes)
+    Data Type: 64-bit unsigned int  InDom: 60.39 0xf000027
+    Semantics: counter  Units: byte
+PMID: 245.0.6 (system.restart.count)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: count
+PMID: 245.0.7 (system.restart.ncpu)
+    Data Type: 32-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: count
+PMID: 245.0.8 (system.comment.value)
+    Data Type: string  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: discrete  Units: none
 
 Instance Domains in the Log ...
+InDom: 34.3
+15:20:29.000000000 4 instances
+   0 or "usb0"
+   1 or "usb1"
+   2 or "usb2"
+   3 or "usb3"
+InDom: 34.4
+15:20:19.000000000 2 instances
+   0 or "BAT0"
+   1 or "BAT1"
 InDom: 60.0
-15:20:19.000000 9 instances
+15:20:19.000000000 9 instances
    0 or "cpu0"
    1 or "cpu1"
    2 or "cpu2"
@@ -864,25 +877,8 @@ InDom: 60.0
    6 or "cpu6"
    7 or "cpu7"
    8 or "cpu8"
-InDom: 34.3
-15:20:29.000000 4 instances
-   0 or "usb0"
-   1 or "usb1"
-   2 or "usb2"
-   3 or "usb3"
-InDom: 60.37
-15:20:19.000000 3 instances
-   10 or "10 second"
-   60 or "1 minute"
-   300 or "5 minute"
-InDom: 60.7
-15:20:19.000000 4 instances
-   4 or "getattr"
-   6 or "read"
-   8 or "write"
-   18 or "access"
 InDom: 60.1
-15:20:19.000000 24 instances
+15:20:19.000000000 24 instances
    0 or "sda"
    1 or "sda1"
    2 or "sda2"
@@ -907,21 +903,13 @@ InDom: 60.1
    21 or "cciss/c0d0p2"
    22 or "xvdp"
    23 or "xvdiw"
-InDom: 34.4
-15:20:19.000000 2 instances
-   0 or "BAT0"
-   1 or "BAT1"
 InDom: 60.2
-15:20:19.000000 3 instances
+15:20:19.000000000 3 instances
    1 or "1 minute"
    5 or "5 minute"
    15 or "15 minute"
-InDom: 60.39
-15:20:19.000000 2 instances
-   0 or "host0"
-   1 or "host1"
 InDom: 60.3
-15:20:19.000000 10 instances
+15:20:19.000000000 10 instances
    0 or "lo"
    1 or "virbr0-nic"
    2 or "enp6s0"
@@ -932,8 +920,80 @@ InDom: 60.3
    7 or "wlp5s1"
    8 or "enp6s2"
    9 or "wlp5s2"
+InDom: 60.4
+15:20:19.000000000 43 instances
+   0 or "0"
+   1 or "8"
+   2 or "9"
+   3 or "16"
+   4 or "17"
+   5 or "18"
+   6 or "19"
+   7 or "23"
+   8 or "24"
+   9 or "25"
+   10 or "26"
+   11 or "27"
+   12 or "28"
+   13 or "29"
+   14 or "30"
+   15 or "31"
+   16 or "32"
+   17 or "33"
+   18 or "34"
+   19 or "35"
+   20 or "36"
+   21 or "NMI"
+   22 or "LOC"
+   23 or "SPU"
+   24 or "PMI"
+   25 or "IWI"
+   26 or "RTR"
+   27 or "RES"
+   28 or "CAL"
+   29 or "TLB"
+   30 or "TRM"
+   31 or "THR"
+   32 or "DFR"
+   33 or "MCE"
+   34 or "MCP"
+   35 or "HYP"
+   36 or "HRE"
+   37 or "HVS"
+   38 or "ERR"
+   39 or "MIS"
+   40 or "PIN"
+   41 or "NPI"
+   42 or "PIW"
+InDom: 60.5
+15:20:19.000000000 6 instances
+   0 or "/dev/sda9"
+   1 or "/dev/sda7"
+   2 or "/dev/sda12"
+   3 or "/dev/sda6"
+   4 or "/dev/sdf"
+   5 or "/dev/sdg"
+InDom: 60.7
+15:20:19.000000000 4 instances
+   4 or "getattr"
+   6 or "read"
+   8 or "write"
+   18 or "access"
+InDom: 60.35
+15:20:19.000000000 2 instances
+   0 or "serial0"
+   1 or "serial1"
+InDom: 60.37
+15:20:19.000000000 3 instances
+   10 or "10 second"
+   60 or "1 minute"
+   300 or "5 minute"
+InDom: 60.39
+15:20:19.000000000 2 instances
+   0 or "host0"
+   1 or "host1"
 InDom: 60.40
-15:20:19.000000 396 instances
+15:20:19.000000000 396 instances
    0 or "sum::cpu0"
    1 or "0::cpu0"
    2 or "8::cpu0"
@@ -1330,74 +1390,17 @@ InDom: 60.40
    393 or "PIN::cpu8"
    394 or "NPI::cpu8"
    395 or "PIW::cpu8"
-InDom: 60.4
-15:20:19.000000 43 instances
-   0 or "0"
-   1 or "8"
-   2 or "9"
-   3 or "16"
-   4 or "17"
-   5 or "18"
-   6 or "19"
-   7 or "23"
-   8 or "24"
-   9 or "25"
-   10 or "26"
-   11 or "27"
-   12 or "28"
-   13 or "29"
-   14 or "30"
-   15 or "31"
-   16 or "32"
-   17 or "33"
-   18 or "34"
-   19 or "35"
-   20 or "36"
-   21 or "NMI"
-   22 or "LOC"
-   23 or "SPU"
-   24 or "PMI"
-   25 or "IWI"
-   26 or "RTR"
-   27 or "RES"
-   28 or "CAL"
-   29 or "TLB"
-   30 or "TRM"
-   31 or "THR"
-   32 or "DFR"
-   33 or "MCE"
-   34 or "MCP"
-   35 or "HYP"
-   36 or "HRE"
-   37 or "HVS"
-   38 or "ERR"
-   39 or "MIS"
-   40 or "PIN"
-   41 or "NPI"
-   42 or "PIW"
-InDom: 60.5
-15:20:19.000000 6 instances
-   0 or "/dev/sda9"
-   1 or "/dev/sda7"
-   2 or "/dev/sda12"
-   3 or "/dev/sda6"
-   4 or "/dev/sdf"
-   5 or "/dev/sdg"
-InDom: 60.35
-15:20:19.000000 2 instances
-   0 or "serial0"
-   1 or "serial1"
 
 Temporal Index
-		Log Vol    end(meta)     end(log)
-15:20:19.000000	      0          132          132
-15:20:29.000000	      0        25948        19236
-15:37:29.000000	      0        26379        78304
-15:39:09.000000	      0        26498        78364
-15:54:35.000000	      0        26558        98724
+			Log Vol    end(meta)     end(log)
+15:20:19.000000000	      0          808          808
+15:20:29.000000000	      0        26727        19948
+15:37:29.000000000	      0        27162        79124
+15:39:09.000000000	      0        27281        79188
+15:54:35.000000000	      0        27341        99592
 
-[19104 bytes]
-15:20:19.000000 273 metrics
+[19140 bytes]
+15:20:19.000000000 274 metrics
     60.0.32 (hinv.ncpu): value 9
     60.12.0 (kernel.uname.release): value "1.2.3-TEST"
     60.12.2 (kernel.uname.sysname): value "Linux"
@@ -1922,7 +1925,7 @@ Temporal Index
     60.28.13 (mem.vmstat.pgfree): value 63486798
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
-    60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.178 (mem.vmstat.pgsteal_total): value 17
     60.28.192 (mem.vmstat.pgpromote_success): value 174585
     60.28.193 (mem.vmstat.pgdemote_total): value 44965
     60.0.29 (disk.all.total): value 141569
@@ -1935,13 +1938,14 @@ Temporal Index
     60.1.0 (mem.physmem): value 8144960
     60.1.2 (mem.util.free): value 1437740
     60.1.58 (mem.util.available): value 4389516
-    60.1.1 (mem.util.used): value 6707220
+    60.1.1 (mem.util.used): value 3755444
     60.1.4 (mem.util.bufmem): value 260172
     60.1.5 (mem.util.cached): value 2821596
     60.1.26 (mem.util.committed_AS): value 12097852
     60.1.14 (mem.util.active): value 4042384
     60.1.15 (mem.util.inactive): value 1772396
     60.1.22 (mem.util.dirty): value 396
+    60.1.23 (mem.util.shared): value 87980
     60.1.30 (mem.util.anonpages): value 2733164
     60.1.25 (mem.util.slab): value 445740
     60.1.43 (mem.util.kernelStack): value 15328
@@ -2568,8 +2572,8 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 7200
 
-[18792 bytes]
-15:20:29.000000 274 metrics
+[18828 bytes]
+15:20:29.000000000 275 metrics
     60.0.20 (kernel.all.cpu.user): value 96963
     60.0.21 (kernel.all.cpu.nice): value 2581802
     60.0.22 (kernel.all.cpu.sys): value 54588
@@ -3031,7 +3035,7 @@ Temporal Index
     60.28.13 (mem.vmstat.pgfree): value 63486798
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 0
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
-    60.28.178 (mem.vmstat.pgsteal_total): value 0
+    60.28.178 (mem.vmstat.pgsteal_total): value 37
     60.28.192 (mem.vmstat.pgpromote_success): value 174594
     60.28.193 (mem.vmstat.pgdemote_total): value 46061
     60.0.29 (disk.all.total): value 143338
@@ -3044,13 +3048,14 @@ Temporal Index
     60.1.0 (mem.physmem): value 8144960
     60.1.2 (mem.util.free): value 1437740
     60.1.58 (mem.util.available): value 4389516
-    60.1.1 (mem.util.used): value 6707220
+    60.1.1 (mem.util.used): value 3755444
     60.1.4 (mem.util.bufmem): value 260172
     60.1.5 (mem.util.cached): value 2821596
-    60.1.26 (mem.util.committed_AS): value 12097852
+    60.1.26 (mem.util.committed_AS): value 30097852
     60.1.14 (mem.util.active): value 4042384
     60.1.15 (mem.util.inactive): value 1772396
     60.1.22 (mem.util.dirty): value 396
+    60.1.23 (mem.util.shared): value 87980
     60.1.30 (mem.util.anonpages): value 2733164
     60.1.25 (mem.util.slab): value 445740
     60.1.43 (mem.util.kernelStack): value 15328
@@ -3705,8 +3710,8 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 9803
 
-[19320 bytes]
-15:20:39.000000 268 metrics
+[19356 bytes]
+15:20:39.000000000 269 metrics
     60.0.20 (kernel.all.cpu.user): value 97768
     60.0.21 (kernel.all.cpu.nice): value 2588749
     60.0.22 (kernel.all.cpu.sys): value 55126
@@ -4226,7 +4231,7 @@ Temporal Index
     60.28.13 (mem.vmstat.pgfree): value 63486798
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 10
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
-    60.28.178 (mem.vmstat.pgsteal_total): value 9
+    60.28.178 (mem.vmstat.pgsteal_total): value 37
     60.28.192 (mem.vmstat.pgpromote_success): value 174594
     60.28.193 (mem.vmstat.pgdemote_total): value 47000
     60.0.29 (disk.all.total): value 82563
@@ -4239,13 +4244,14 @@ Temporal Index
     60.1.0 (mem.physmem): value 8144960
     60.1.2 (mem.util.free): value 1437740
     60.1.58 (mem.util.available): value 4389516
-    60.1.1 (mem.util.used): value 6707220
+    60.1.1 (mem.util.used): value 3755444
     60.1.4 (mem.util.bufmem): value 260172
     60.1.5 (mem.util.cached): value 2821596
     60.1.26 (mem.util.committed_AS): value 12097852
     60.1.14 (mem.util.active): value 4042384
     60.1.15 (mem.util.inactive): value 1772396
     60.1.22 (mem.util.dirty): value 396
+    60.1.23 (mem.util.shared): value 87980
     60.1.30 (mem.util.anonpages): value 2733164
     60.1.25 (mem.util.slab): value 445740
     60.1.43 (mem.util.kernelStack): value 15328
@@ -4892,8 +4898,8 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 12037
 
-[20956 bytes]
-15:20:49.000000 274 metrics
+[20992 bytes]
+15:20:49.000000000 275 metrics
     60.0.20 (kernel.all.cpu.user): value 99343
     60.0.21 (kernel.all.cpu.nice): value 2590956
     60.0.22 (kernel.all.cpu.sys): value 56811
@@ -5468,7 +5474,7 @@ Temporal Index
     60.28.13 (mem.vmstat.pgfree): value 63486798
     60.28.177 (mem.vmstat.pgscan_kswapd_total): value 100
     60.28.176 (mem.vmstat.pgscan_direct_total): value 0
-    60.28.178 (mem.vmstat.pgsteal_total): value 11
+    60.28.178 (mem.vmstat.pgsteal_total): value 53
     60.28.192 (mem.vmstat.pgpromote_success): value 174594
     60.28.193 (mem.vmstat.pgdemote_total): value 49099
     60.0.29 (disk.all.total): value 85613
@@ -5481,13 +5487,14 @@ Temporal Index
     60.1.0 (mem.physmem): value 8144960
     60.1.2 (mem.util.free): value 1437740
     60.1.58 (mem.util.available): value 4389516
-    60.1.1 (mem.util.used): value 6707220
+    60.1.1 (mem.util.used): value 3755444
     60.1.4 (mem.util.bufmem): value 260172
     60.1.5 (mem.util.cached): value 2821596
     60.1.26 (mem.util.committed_AS): value 12097852
     60.1.14 (mem.util.active): value 4042384
     60.1.15 (mem.util.inactive): value 1772396
     60.1.22 (mem.util.dirty): value 396
+    60.1.23 (mem.util.shared): value 87980
     60.1.30 (mem.util.anonpages): value 2733164
     60.1.25 (mem.util.slab): value 445740
     60.1.43 (mem.util.kernelStack): value 15328
@@ -6197,22 +6204,22 @@ Temporal Index
         inst [300 or "5 minute"] value 0
     60.84.3 (kernel.all.pressure.memory.full.total): value 45780
 
-[60 bytes]
-15:37:29.000000 2 metrics
+[64 bytes]
+15:37:29.000000000 2 metrics
     245.0.6 (system.restart.count): value 1
     245.0.7 (system.restart.ncpu): value 9
 
-[64 bytes]
-15:39:09.000000 1 metric
+[68 bytes]
+15:39:09.000000000 1 metric
     245.0.8 (system.comment.value): value "Testing sysstat!"
 
-[60 bytes]
-15:54:09.000000 2 metrics
+[64 bytes]
+15:54:09.000000000 2 metrics
     245.0.6 (system.restart.count): value 1
     245.0.7 (system.restart.ncpu): value 10
 
-[20236 bytes]
-15:54:35.000000 266 metrics
+[20272 bytes]
+15:54:35.000000000 267 metrics
     60.0.20 (kernel.all.cpu.user): value 95712
     60.0.21 (kernel.all.cpu.nice): value 2587674
     60.0.22 (kernel.all.cpu.sys): value 53358
@@ -6800,13 +6807,14 @@ Temporal Index
     60.1.0 (mem.physmem): value 8144960
     60.1.2 (mem.util.free): value 1437740
     60.1.58 (mem.util.available): value 4389516
-    60.1.1 (mem.util.used): value 6707220
+    60.1.1 (mem.util.used): value 3755444
     60.1.4 (mem.util.bufmem): value 260172
     60.1.5 (mem.util.cached): value 2821596
     60.1.26 (mem.util.committed_AS): value 12097852
     60.1.14 (mem.util.active): value 4042384
     60.1.15 (mem.util.inactive): value 1772396
     60.1.22 (mem.util.dirty): value 396
+    60.1.23 (mem.util.shared): value 87980
     60.1.30 (mem.util.anonpages): value 2733164
     60.1.25 (mem.util.slab): value 445740
     60.1.43 (mem.util.kernelStack): value 15328

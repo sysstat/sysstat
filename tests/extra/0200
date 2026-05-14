@@ -1,0 +1,3 @@
+cat /proc/vmstat | grep ^pgsteal_ | sort | awk '{print $1}' > tests/extra/out.vmstat-pgsteal.tmp
+diff -u tests/extra/expected.vmstat-pgsteal tests/extra/out.vmstat-pgsteal.tmp && exit 0
+echo "WARNING: pgsteal_* fields are not those expected in /proc/vmstat"

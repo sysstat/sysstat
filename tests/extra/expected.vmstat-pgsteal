@@ -1,0 +1,6 @@
+pgsteal_anon
+pgsteal_direct
+pgsteal_file
+pgsteal_khugepaged
+pgsteal_kswapd
+pgsteal_proactive
