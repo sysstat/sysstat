@@ -169,7 +169,7 @@ void alarm_handler(int sig)
 void int_handler(int sig)
 {
 	sigint_caught = 1;
-	printf("\n");	/* Skip "^C" displayed on screen (SIGINT) */
+	write(STDOUT_FILENO, "\n", 1);	/* Skip "^C" displayed on screen (SIGINT) */
 }
 
 /*
@@ -2153,6 +2153,7 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 terminate:
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
+		fflush(stdout);
 	}
 }
 

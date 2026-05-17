@@ -242,7 +242,7 @@ void which_sadc(void)
 void int_handler(int sig)
 {
 	sigint_caught = 1;
-	printf("\n");	/* Skip "^C" displayed on screen (SIGINT) */
+	write(STDOUT_FILENO, "\n", 1);	/* Skip "^C" displayed on screen (SIGINT) */
 
 }
 
