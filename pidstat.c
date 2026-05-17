@@ -3716,6 +3716,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 terminate:
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		fflush(stdout);
 	}
 }
 
