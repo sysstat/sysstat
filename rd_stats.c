@@ -255,6 +255,13 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc, __nr_t nr_int)
 			/* ...then save its name */
 			strncpy(st_cpuall_irq->irq_name, li, len);
 			st_cpuall_irq->irq_name[len] = '\0';
+			/* Skip s390x aggregate interrupt lines to avoid double-counting */
+			if (!strcmp(st_cpuall_irq->irq_name, "EXT") ||
+			    !strcmp(st_cpuall_irq->irq_name, "I/O") ||
+			    !strcmp(st_cpuall_irq->irq_name, "AIO")) {
+				irq_read--;
+				continue;
+			}
 
 			/* For each interrupt: Get number received by each CPU */
 			for (cpu = 0; cpu < index; cpu++) {
