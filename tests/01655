@@ -1,0 +1,127 @@
+set -eu
+
+tmpdir="tests/sar-cpu-zero.$$"
+shim_src="$tmpdir/fake-proc-stat.c"
+shim_so="$tmpdir/fake-proc-stat.so"
+data_file="$tmpdir/sa.data"
+sar_out="$tmpdir/sar.out"
+
+cleanup()
+{
+	rm -rf "$tmpdir"
+}
+trap cleanup EXIT HUP INT TERM
+
+mkdir -p "$tmpdir"
+
+cat > "$shim_src" <<'EOF'
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <stdio.h>
+#include <string.h>
+
+static FILE *(*real_fopen_fn)(const char *, const char *);
+static FILE *(*real_fopen64_fn)(const char *, const char *);
+static unsigned int proc_stat_open_count;
+
+static const char proc_stat_prev[] =
+"cpu  2000 0 1000 10000 0 0 0 0 0 0\n"
+"cpu0 1000 0 500 5000 0 0 0 0 0 0\n"
+"cpu1 1000 0 500 5000 0 0 0 0 0 0\n"
+"intr 1000\n"
+"ctxt 1000\n"
+"btime 1000\n"
+"processes 100\n"
+"procs_running 1\n"
+"procs_blocked 0\n";
+
+static const char proc_stat_curr[] =
+"cpu  1910 0 910 10100 0 0 0 0 0 0\n"
+"cpu0 900 0 400 5000 0 0 0 0 0 0\n"
+"cpu1 1010 0 510 5100 0 0 0 0 0 0\n"
+"intr 1010\n"
+"ctxt 1010\n"
+"btime 1000\n"
+"processes 101\n"
+"procs_running 1\n"
+"procs_blocked 0\n";
+
+static int is_read_mode(const char *mode)
+{
+	return mode && mode[0] == 'r';
+}
+
+static FILE *fake_proc_stat(void)
+{
+	const char *sample;
+
+	proc_stat_open_count++;
+	sample = proc_stat_open_count <= 2 ? proc_stat_prev : proc_stat_curr;
+
+	return fmemopen((void *) sample, strlen(sample), "r");
+}
+
+FILE *fopen(const char *path, const char *mode)
+{
+	if (!real_fopen_fn)
+		real_fopen_fn = dlsym(RTLD_NEXT, "fopen");
+
+	if (path && !strcmp(path, "/proc/stat") && is_read_mode(mode))
+		return fake_proc_stat();
+
+	return real_fopen_fn(path, mode);
+}
+
+FILE *fopen64(const char *path, const char *mode)
+{
+	if (!real_fopen64_fn)
+		real_fopen64_fn = dlsym(RTLD_NEXT, "fopen64");
+	if (!real_fopen_fn)
+		real_fopen_fn = dlsym(RTLD_NEXT, "fopen");
+
+	if (path && !strcmp(path, "/proc/stat") && is_read_mode(mode))
+		return fake_proc_stat();
+
+	return real_fopen64_fn ? real_fopen64_fn(path, mode) : real_fopen_fn(path, mode);
+}
+EOF
+
+${CC:-cc} -shared -fPIC -o "$shim_so" "$shim_src" -ldl
+
+LC_ALL=C S_TIME_FORMAT=ISO LD_PRELOAD="$shim_so" ./sadc 1 2 "$data_file" >/dev/null
+LC_ALL=C S_TIME_FORMAT=ISO ./sar -P ALL -u ALL -f "$data_file" > "$sar_out"
+
+awk '
+function is_cpu_name(value) {
+	return value == "all" || value ~ /^[0-9]+$/
+}
+
+function is_numeric(value) {
+	return value ~ /^-?[0-9]+([.][0-9]+)?$/
+}
+
+/^Linux/ || /^$/ { next }
+$1 == "Average:" { next }
+{
+	cpu_col = 2
+	if ($2 == "AM" || $2 == "PM")
+		cpu_col = 3
+	if (!is_cpu_name($cpu_col))
+		next
+
+	zero = 1
+	numeric = 0
+	for (i = cpu_col + 1; i <= NF; i++) {
+		if (!is_numeric($i))
+			continue
+		numeric++
+		if ($i != "0" && $i != "0.00")
+			zero = 0
+	}
+	if (numeric >= 6 && zero) {
+		print "unexpected all-zero CPU utilization row: " $0 > "/dev/stderr"
+		bad = 1
+	}
+}
+END { exit bad ? 1 : 0 }
+' "$sar_out"
