@@ -1802,8 +1802,8 @@ void read_stat_total_irq(struct stats_global_irq *st_irq)
 
 		if (!strncmp(line, "intr ", 5)) {
 			/* Read total number of interrupts received since system boot */
-			sscanf(line + 5, "%llu", &irq_nr);
-			st_irq->irq_nr = (unsigned int) irq_nr;
+			if (sscanf(line + 5, "%llu", &irq_nr) == 1)
+			st_irq->irq_nr = irq_nr;
 
 			break;
 		}
