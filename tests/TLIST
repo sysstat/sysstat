@@ -365,6 +365,7 @@ NOTES:
 =====	Specific tests
 01700	LC_ALL=C TZ=GMT ./sar -P ALL -u 2 3 > tests/out.sar-cpu6off.tmp
 	[Starting at root3 where CPU#6 is already offline]
+01705	LD_PRELOAD fake /proc/stat; ./sadc 1 2 tests/sar-cpu-zero[...]/sa.data; ./sar -P ALL -u ALL -f tests/sar-cpu-zero[...]/sa.data
 01710	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8onoff.tmp
 	[CPU#8 - Last in list - online then offline]
 01720	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8off.tmp
