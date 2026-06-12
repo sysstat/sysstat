@@ -492,12 +492,20 @@ void compute_ext_disk_stats(struct stats_disk *sdc, struct stats_disk *sdp,
  * sar, sadf, mpstat
  ***************************************************************************
  */
+static unsigned long long get_cpu_interval_delta(unsigned long long prev,
+						 unsigned long long curr)
+{
+	return (curr > prev) ? curr - prev : 0;
+}
+
 unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 					struct stats_cpu *scp)
 {
 	unsigned long long ishift = 0LL;
+	unsigned long long interval = 0LL;
 
-	if ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest)) {
+	if ((scc->cpu_user >= scp->cpu_user) &&
+	    ((scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest))) {
 		/*
 		 * Sometimes the nr of jiffies spent in guest mode given by the guest
 		 * counter in /proc/stat is slightly higher than that included in
@@ -506,7 +514,8 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 		ishift += (scp->cpu_user - scp->cpu_guest) -
 		          (scc->cpu_user - scc->cpu_guest);
 	}
-	if ((scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice)) {
+	if ((scc->cpu_nice >= scp->cpu_nice) &&
+	    ((scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice))) {
 		/*
 		 * Idem for nr of jiffies spent in guest_nice mode.
 		 */
@@ -549,16 +558,22 @@ unsigned long long get_per_cpu_interval(struct stats_cpu *scc,
 	/*
 	 * Don't take cpu_guest and cpu_guest_nice into account
 	 * because cpu_user and cpu_nice already include them.
+	 *
+	 * Some kernels may transiently report per-CPU counters moving
+	 * backwards. Avoid unsigned underflow here: a single regressing
+	 * field must not turn the interval into a huge value, otherwise
+	 * all percentages for the CPU are rounded down to 0.00.
 	 */
-	return ((scc->cpu_user    + scc->cpu_nice   +
-		 scc->cpu_sys     + scc->cpu_iowait +
-		 scc->cpu_idle    + scc->cpu_steal  +
-		 scc->cpu_hardirq + scc->cpu_softirq) -
-		(scp->cpu_user    + scp->cpu_nice   +
-		 scp->cpu_sys     + scp->cpu_iowait +
-		 scp->cpu_idle    + scp->cpu_steal  +
-		 scp->cpu_hardirq + scp->cpu_softirq) +
-		 ishift);
+	interval += get_cpu_interval_delta(scp->cpu_user,    scc->cpu_user);
+	interval += get_cpu_interval_delta(scp->cpu_nice,    scc->cpu_nice);
+	interval += get_cpu_interval_delta(scp->cpu_sys,     scc->cpu_sys);
+	interval += get_cpu_interval_delta(scp->cpu_iowait,  scc->cpu_iowait);
+	interval += get_cpu_interval_delta(scp->cpu_idle,    scc->cpu_idle);
+	interval += get_cpu_interval_delta(scp->cpu_steal,   scc->cpu_steal);
+	interval += get_cpu_interval_delta(scp->cpu_hardirq, scc->cpu_hardirq);
+	interval += get_cpu_interval_delta(scp->cpu_softirq, scc->cpu_softirq);
+
+	return interval + ishift;
 }
 
 #ifdef SOURCE_SADC
