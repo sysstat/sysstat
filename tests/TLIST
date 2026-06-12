@@ -357,7 +357,6 @@ NOTES:
 01630	LC_ALL=C TZ=GMT ./sadf -p tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-p.tmp
 01640	LC_ALL=C TZ=GMT ./sadf -r tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-r.tmp
 01650	LC_ALL=C TZ=GMT ./sadf -j tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-j.tmp
-01655	LD_PRELOAD fake /proc/stat; ./sadc 1 2 tests/sa.data; ./sar -P ALL -u ALL -f tests/sa.data
 01657	cat tests/out.data-wghfreq-sadf-j.tmp | $VER_JSON >/dev/null;
 01660	LC_ALL=C TZ=GMT ./sadf -x tests/data-wghfreq.tmp -- -m FREQ -P ALL > tests/out.data-wghfreq-sadf-x.tmp
 01667	cat tests/out.data-wghfreq-sadf-x.tmp | $VER_XML --schema xml/sysstat.xsd - >/dev/null;
@@ -366,6 +365,7 @@ NOTES:
 =====	Specific tests
 01700	LC_ALL=C TZ=GMT ./sar -P ALL -u 2 3 > tests/out.sar-cpu6off.tmp
 	[Starting at root3 where CPU#6 is already offline]
+01705	LD_PRELOAD fake /proc/stat; ./sadc 1 2 tests/sar-cpu-zero[...]/sa.data; ./sar -P ALL -u ALL -f tests/sar-cpu-zero[...]/sa.data
 01710	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8onoff.tmp
 	[CPU#8 - Last in list - online then offline]
 01720	LC_ALL=C TZ=GMT ./sar -P ALL -u -n SOFT 2 3 > tests/out.sar-cpu8off.tmp
