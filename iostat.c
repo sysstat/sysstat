@@ -1110,7 +1110,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 				      spc, units);
 			}
 			if ((hpart == 4) || !hpart) {
-			       printf("     f/s f_await  aqu-sz  %%util");
+			       printf("     f/s f_await  aqu-sz %%util");
 			}
 		}
 	}
@@ -1301,7 +1301,7 @@ void write_plain_ext_stat(unsigned long long itv, int fctr, int hpart,
 			 * %util
 			 * Again: Ticks in milliseconds.
 			 */
-			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 6, 2, xds->util / 10.0 / (double) dev_in_grp);
+			cprintf_xpc(DISPLAY_UNIT(flags), XHIGH, 1, 5, 2, xds->util / 10.0 / (double) dev_in_grp);
 		}
 	}
 
