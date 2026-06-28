@@ -78,15 +78,13 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 
+	fprintf(stderr, _("Options are:\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]"
 #ifdef DEBUG
-	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"));
-#else
-	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m ] [ -t ] [ -U ] [ -V ] [ -y ]\n"));
+			  " [ --debuginfo ]"
 #endif
+			  "\n"));
 	exit(1);
 }
 
@@ -324,6 +322,11 @@ void write_cifs_stat_header(int *fctr, int *tab)
 	else if (DISPLAY_MEGABYTES(flags)) {
 		*fctr = 1024 * 1024;
 		units = "MB";
+		spc = "";
+	}
+	else if (DISPLAY_GIGABYTES(flags)) {
+		*fctr = 1024 * 1024 * 1024;
+		units = "GB";
 		spc = "";
 	}
 	else {
@@ -714,8 +717,16 @@ int main(int argc, char **argv)
 					flags |= I_D_PRETTY + I_D_UNIT;
 					break;
 
+				case 'G':
+					if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags)) {
+						usage(argv[0]);
+					}
+					/* Display stats in GB/s */
+					flags |= I_D_GIGABYTES;
+					break;
+
 				case 'k':
-					if (DISPLAY_MEGABYTES(flags)) {
+					if (DISPLAY_MEGABYTES(flags) || DISPLAY_GIGABYTES(flags)) {
 						usage(argv[0]);
 					}
 					/* Display stats in kB/s */
@@ -723,7 +734,7 @@ int main(int argc, char **argv)
 					break;
 
 				case 'm':
-					if (DISPLAY_KILOBYTES(flags)) {
+					if (DISPLAY_KILOBYTES(flags) || DISPLAY_GIGABYTES(flags)) {
 						usage(argv[0]);
 					}
 					/* Display stats in MB/s */

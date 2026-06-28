@@ -5,11 +5,11 @@ cifsiostat \- Report CIFS statistics.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 .el \{
-.B cifsiostat [ \-h ] [ \-k | \-m ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 
@@ -41,10 +41,10 @@ The report shows the following fields:
 
 .IP Filesystem:
 This columns shows the mount point of the CIFS filesystem.
-.IP "rB/s (rkB/s, rMB/s)"
-Indicate the average number of bytes (kibibytes, mebibytes) read per second.
-.IP "wB/s (wkB/s, wMB/s)"
-Indicate the average number of bytes (kibibytes, mebibytes) written per second.
+.IP "rB/s (rkB/s, rMB/s, rGB/s)"
+Indicate the average number of bytes (kibibytes, mebibytes, gibibytes) read per second.
+.IP "wB/s (wkB/s, wMB/s, wGB/s)"
+Indicate the average number of bytes (kibibytes, mebibytes, gibibytes) written per second.
 .IP rop/s
 Indicate the number of 'read' operations that were issued to the filesystem
 per second.
@@ -76,6 +76,9 @@ This option is equivalent to specifying
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kibibytes, sectors...) associated with the metrics.
+.TP
+.B \-G
+Display statistics in gibibytes per second.
 .TP
 .B \-k
 Display statistics in kibibytes per second.
@@ -149,8 +152,8 @@ command will use the ISO 8601 format (YYYY-MM-DD) instead.
 .BR "cifsiostat " "to work."
 .PP
 .RB "Although " "cifsiostat"
-displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
-A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
+displays units corresponding to kilobytes (kB), megabytes (MB), gigabytes (GB)..., it actually uses kibibytes (kiB), mebibytes (MiB), gibibytes (GiB)...
+A kibibyte is equal to 1024 bytes, a mebibyte is equal to 1024 kibibytes, and a gibibyte is equal to 1024 mebibytes.
 
 .SH FILE
 .IR "/proc/fs/cifs/Stats " "contains CIFS statistics."
