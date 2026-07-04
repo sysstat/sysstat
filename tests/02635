@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./iostat -Gz -p ALL 1 2 > tests/out.iostat-Gz.tmp && diff -u ${T_SRCDIR}/tests/expected.iostat-Gz tests/out.iostat-Gz.tmp

@@ -105,7 +105,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -k | -m ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"));
+			  "[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"));
 	exit(1);
 }
 
@@ -402,7 +402,9 @@ void write_tape_headings(int *tab)
 	}
 
 	printf("Tape:     r/s     w/s   ");
-	if (DISPLAY_MEGABYTES(flags)) {
+	if (DISPLAY_GIGABYTES(flags)) {
+		printf("GB_read/s   GB_wrtn/s");
+	} else if (DISPLAY_MEGABYTES(flags)) {
 		printf("MB_read/s   MB_wrtn/s");
 	} else {
 		printf("kB_read/s   kB_wrtn/s");
@@ -478,7 +480,9 @@ void write_plain_tape_stats(struct calc_stats *tape, int i)
 	char buffer[32];
 	uint64_t divisor = 1;
 
-	if (DISPLAY_MEGABYTES(flags))
+	if (DISPLAY_GIGABYTES(flags))
+		divisor = 1024 * 1024;
+	else if (DISPLAY_MEGABYTES(flags))
 		divisor = 1024;
 
 	sprintf(buffer, "st%i        ", i);
@@ -523,7 +527,12 @@ void write_json_tape_stats(int tab, struct calc_stats *tape, int i)
 		 "\"r/s\": %" PRIu64 ", \"w/s\": %" PRIu64 ", ",
 		 i, tape->reads_per_second, tape->writes_per_second);
 
-	if (DISPLAY_MEGABYTES(flags)) {
+	if (DISPLAY_GIGABYTES(flags)) {
+		divisor = 1024 * 1024;
+		sprintf(line, "\"GB_read/s\": %%%s, \"GB_wrtn/s\": %%%s, ",
+			PRIu64, PRIu64);
+	}
+	else if (DISPLAY_MEGABYTES(flags)) {
 		divisor = 1024;
 		sprintf(line, "\"MB_read/s\": %%%s, \"MB_wrtn/s\": %%%s, ",
 			PRIu64, PRIu64);
@@ -782,7 +791,7 @@ int main(int argc, char **argv)
 				switch (*(argv[opt] + i)) {
 
 				case 'k':
-					if (DISPLAY_MEGABYTES(flags)) {
+					if (DISPLAY_MEGABYTES(flags) || DISPLAY_GIGABYTES(flags)) {
 						usage(argv[0]);
 					}
 					/* Display stats in kB/s */
@@ -790,11 +799,19 @@ int main(int argc, char **argv)
 					break;
 
 				case 'm':
-					if (DISPLAY_KILOBYTES(flags)) {
+					if (DISPLAY_KILOBYTES(flags) || DISPLAY_GIGABYTES(flags)) {
 						usage(argv[0]);
 					}
 					/* Display stats in MB/s */
 					flags |= T_D_MEGABYTES;
+					break;
+
+				case 'G':
+					if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags)) {
+						usage(argv[0]);
+					}
+					/* Display stats in GB/s */
+					flags |= T_D_GIGABYTES;
 					break;
 
 				case 't':

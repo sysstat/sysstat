@@ -5,7 +5,7 @@
 tapestat \- Report tape statistics.
 
 .SH SYNOPSIS
-.B tapestat [ \-k | \-m ] [ \-t ] [ \-U ] [ \-V ] [ \-y ] [ \-z ] [ \-\-human ] [ \-o JSON ] [
+.B tapestat [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ \-y ] [ \-z ] [ \-\-human ] [ \-o JSON ] [
 .IB "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
@@ -38,13 +38,17 @@ The following data are displayed:
 The number of reads issued expressed as the number per second averaged over the interval.
 .IP w/s
 The number of writes issued expressed as the number per second averaged over the interval.
-.IP "kB_read/s | MB_read/s"
+.IP "kB_read/s | MB_read/s | GB_read/s"
 The amount of data read expressed in kibibytes (by default or if option
-.BR "\-k " "used) or mebibytes (if option " "\-m"
+.BR "\-k " "used), mebibytes (if option " "\-m"
+used) or gibibytes (if option
+.BR "\-G"
 used) per second averaged over the interval.
-.IP "kB_wrtn/s | MB_wrtn/s"
+.IP "kB_wrtn/s | MB_wrtn/s | GB_wrtn/s"
 The amount of data written expressed in kibibytes (by default or if option
-.BR "\-k " "used) or mebibytes (if option " "\-m"
+.BR "\-k " "used), mebibytes (if option " "\-m"
+used) or gibibytes (if option
+.BR "\-G"
 used) per second averaged over the interval.
 .IP %Rd
 Read percentage wait - The percentage of time over the interval spent waiting for read requests
@@ -75,15 +79,20 @@ Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kibibytes, sectors...) associated with the metrics.
 .TP
+.B \-G
+Show the amount of data written or read in gibibytes per second.
+This option is mutually exclusive with
+.BR "\-k " "and " "\-m" "."
+.TP
 .B \-k
 Show the amount of data written or read in kibibytes per second instead of mebibytes.
 This option is mutually exclusive with
-.BR "\-m" "."
+.BR "\-G " "and " "\-m" "."
 .TP
 .B \-m
 Show the amount of data written or read in mebibytes per second instead of kibibytes.
 This option is mutually exclusive with
-.BR "\-k" "."
+.BR "\-G " "and " "\-k" "."
 .TP
 .B \-o JSON
 Display the statistics in JSON (JavaScript Object Notation) format.
@@ -219,8 +228,8 @@ This command requires kernel version 4.2 or later
 (or tape statistics support backported for an earlier kernel version).
 .PP
 .RB "Although " "tapestat"
-displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
-A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
+displays units corresponding to kilobytes (kB), megabytes (MB), gigabytes (GB)..., it actually uses kibibytes (kiB), mebibytes (MiB), gibibytes (GiB)...
+A kibibyte is equal to 1024 bytes, a mebibyte is equal to 1024 kibibytes, and a gibibyte is equal to 1024 mebibytes.
 
 .SH FILES
 .I /sys/class/scsi_tape/st<num>/stats/*

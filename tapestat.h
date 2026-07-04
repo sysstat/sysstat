@@ -16,13 +16,14 @@
 #define T_D_KILOBYTES		0x00002
 #define T_D_MEGABYTES		0x00004
 #define T_D_OMIT_SINCE_BOOT	0x00008
-/* Unused			0x00010 */
+#define T_D_GIGABYTES		0x00010
 #define T_D_ZERO_OMIT		0x00020
 #define T_D_UNIT		0x00040
 
 #define DISPLAY_TIMESTAMP(m)		(((m) & T_D_TIMESTAMP)       == T_D_TIMESTAMP)
 #define DISPLAY_KILOBYTES(m)		(((m) & T_D_KILOBYTES)       == T_D_KILOBYTES)
 #define DISPLAY_MEGABYTES(m)		(((m) & T_D_MEGABYTES)       == T_D_MEGABYTES)
+#define DISPLAY_GIGABYTES(m)		(((m) & T_D_GIGABYTES)       == T_D_GIGABYTES)
 #define DISPLAY_OMIT_SINCE_BOOT(m)	(((m) & T_D_OMIT_SINCE_BOOT) == T_D_OMIT_SINCE_BOOT)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & T_D_ZERO_OMIT)       == T_D_ZERO_OMIT)
 #define DISPLAY_UNIT(m)			(((m) & T_D_UNIT)	     == T_D_UNIT)
