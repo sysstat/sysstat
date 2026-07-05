@@ -87,16 +87,21 @@ void usage(char *progname)
 {
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
+#ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-			  "[ <device> [...] | ALL ]"
-#ifdef DEBUG
-			  " [ --debuginfo ]"
+			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
+#else
+	fprintf(stderr, _("Options are:\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
+			  "[ <device> [...] | ALL ]\n"));
 #endif
-			  "\n"));
 	exit(1);
 }
 

@@ -105,7 +105,8 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ] [ -y ] [ -z ]\n"));
+			  "[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ]\n"
+			  " [ -y ] [ -z ]\n"));
 	exit(1);
 }
 

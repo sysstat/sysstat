@@ -78,13 +78,16 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 
+#ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]"
-#ifdef DEBUG
-			  " [ --debuginfo ]"
+			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
+			  "[ --debuginfo ]\n"));
+#else
+	fprintf(stderr, _("Options are:\n"
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"));
 #endif
-			  "\n"));
 	exit(1);
 }
 
