@@ -106,7 +106,7 @@ void usage(char *progname)
 		progname);
 	fprintf(stderr, _("Options are:\n"
 			  "[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ]\n"
-			  " [ -y ] [ -z ]\n"));
+			  "[ -y ] [ -z ]\n"));
 	exit(1);
 }
 
