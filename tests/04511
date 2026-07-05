@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./cifsiostat -m 1 3 > tests/out.cifsiostat-m.tmp && diff -u ${T_SRCDIR}/tests/expected.cifsiostat-m tests/out.cifsiostat-m.tmp
