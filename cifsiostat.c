@@ -431,6 +431,9 @@ void write_json_cifs_stat(int tab, int curr, unsigned long long itv, int fctr,
 	else if (DISPLAY_MEGABYTES(flags)) {
 		sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, ");
 	}
+	else if (DISPLAY_GIGABYTES(flags)) {
+		sprintf(line, "\"rGB/s\": %%.2f, \"wGB/s\": %%.2f, ");
+	}
 	else {
 		sprintf(line, "\"rB/s\": %%.2f, \"wB/s\": %%.2f, ");
 	}
