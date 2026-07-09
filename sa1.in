@@ -25,11 +25,8 @@ umask ${UMASK}
 [ -d ${SA_DIR} ] || SA_DIR=@SA_DIR@
 [ -d @SA_DIR@ ] || mkdir @SA_DIR@
 
-if [ ${HISTORY} -gt 28 ]
-then
-	SADC_OPTIONS="${SADC_OPTIONS} -D"
-	LONG_NAME=y
-fi
+[ ${HISTORY} -gt 28 ] && SADC_OPTIONS="${SADC_OPTIONS} -D"
+case "${SADC_OPTIONS}" in *-D*) LONG_NAME=y ;; esac
 
 ENDIR=@SA_LIB_DIR@
 cd ${ENDIR}
