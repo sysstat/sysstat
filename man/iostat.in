@@ -6,13 +6,13 @@ statistics for devices and partitions.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
+.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m | \-G ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
 .BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ \-\-debuginfo ] [ " "interval " "[ " "count " "] ] "
 .\}
 .el \{
-.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
+.B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m | \-G ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
 .BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ " "interval " "[ " "count " "] ]"
@@ -109,7 +109,7 @@ variable
 .B POSIXLY_CORRECT
 is set, in which case 512-byte blocks are used.
 The report may show the following fields, depending on the flags used (e.g.
-.BR "\-x" ", " "\-s " "and " "\-k " "or " "\-m" "):"
+.BR "\-x" ", " "\-s " "and " "\-k" ", " "\-m " "or " "\-G" "):"
 .RS
 .IP Device:
 This column gives the device (or partition) name as listed in the
@@ -119,27 +119,27 @@ Indicate the number of transfers per second that were issued
 to the device. A transfer is an I/O request to the
 device. Multiple logical requests can be combined into a single I/O
 request to the device. A transfer is of indeterminate size.
-.IP "Blk_read/s (kB_read/s, MB_read/s)"
+.IP "Blk_read/s (kB_read/s, MB_read/s, GB_read/s)"
 Indicate the amount of data read from the device expressed in a number of
-blocks (kibibytes, mebibytes) per second. Blocks are equivalent to sectors
+blocks (kibibytes, mebibytes, gibibytes) per second. Blocks are equivalent to sectors
 and therefore have a size of 512 bytes.
-.IP "Blk_wrtn/s (kB_wrtn/s, MB_wrtn/s)"
+.IP "Blk_wrtn/s (kB_wrtn/s, MB_wrtn/s, GB_wrtn/s)"
 Indicate the amount of data written to the device expressed in a number of
-blocks (kibibytes, mebibytes) per second.
-.IP "Blk_dscd/s (kB_dscd/s, MB_dscd/s)"
+blocks (kibibytes, mebibytes, gibibytes) per second.
+.IP "Blk_dscd/s (kB_dscd/s, MB_dscd/s, GB_dscd/s)"
 Indicate the amount of data discarded for the device expressed in a number of
-blocks (kibibytes, mebibytes) per second.
-.IP "Blk_w+d/s (kB_w+d/s, MB_w+d/s)"
+blocks (kibibytes, mebibytes, gibibytes) per second.
+.IP "Blk_w+d/s (kB_w+d/s, MB_w+d/s, GB_w+d/s)"
 Indicate the amount of data written to or discarded for the device expressed
-in a number of blocks (kibibytes, mebibytes) per second.
-.IP "Blk_read (kB_read, MB_read)"
-The total number of blocks (kibibytes, mebibytes) read.
-.IP "Blk_wrtn (kB_wrtn, MB_wrtn)"
-The total number of blocks (kibibytes, mebibytes) written.
-.IP "Blk_dscd (kB_dscd, MB_dscd)"
-The total number of blocks (kibibytes, mebibytes) discarded.
-.IP "Blk_w+d (kB_w+d, MB_w+d)"
-The total number of blocks (kibibytes, mebibytes) written or discarded.
+in a number of blocks (kibibytes, mebibytes, gibibytes) per second.
+.IP "Blk_read (kB_read, MB_read, GB_read)"
+The total number of blocks (kibibytes, mebibytes, gibibytes) read.
+.IP "Blk_wrtn (kB_wrtn, MB_wrtn, GB_wrtn)"
+The total number of blocks (kibibytes, mebibytes, gibibytes) written.
+.IP "Blk_dscd (kB_dscd, MB_dscd, GB_dscd)"
+The total number of blocks (kibibytes, mebibytes, gibibytes) discarded.
+.IP "Blk_w+d (kB_w+d, MB_w+d, GB_w+d)"
+The total number of blocks (kibibytes, mebibytes, gibibytes) written or discarded.
 .IP r/s
 The number (after merges) of read requests completed per second for the device.
 .IP w/s
@@ -150,15 +150,15 @@ The number (after merges) of discard requests completed per second for the devic
 The number (after merges) of flush requests completed per second for the device.
 This counts flush requests executed by disks. Flush requests are not tracked for partitions.
 Before being merged, flush operations are counted as writes.
-.IP "sec/s (kB/s, MB/s)"
-The number of sectors (kibibytes, mebibytes) read from, written to or
+.IP "sec/s (kB/s, MB/s, GB/s)"
+The number of sectors (kibibytes, mebibytes, gibibytes) read from, written to or
 discarded for the device per second.
-.IP "rsec/s (rkB/s, rMB/s)"
-The number of sectors (kibibytes, mebibytes) read from the device per second.
-.IP "wsec/s (wkB/s, wMB/s)"
-The number of sectors (kibibytes, mebibytes) written to the device per second.
-.IP "dsec/s (dkB/s, dMB/s)"
-The number of sectors (kibibytes, mebibytes) discarded for the device per second.
+.IP "rsec/s (rkB/s, rMB/s, rGB/s)"
+The number of sectors (kibibytes, mebibytes, gibibytes) read from the device per second.
+.IP "wsec/s (wkB/s, wMB/s, wGB/s)"
+The number of sectors (kibibytes, mebibytes, gibibytes) written to the device per second.
+.IP "dsec/s (dkB/s, dMB/s, dGB/s)"
+The number of sectors (kibibytes, mebibytes, gibibytes) discarded for the device per second.
 .IP rqm/s
 The number of I/O requests merged per second that were queued to the device.
 .IP rrqm/s
@@ -310,6 +310,9 @@ Because persistent device names are usually long, option
 .B \-\-pretty
 is implicitly set with this option.
 .TP
+.B \-G
+Display statistics in gibibytes per second.
+.TP
 .B \-k
 Display statistics in kibibytes per second.
 .TP
@@ -454,8 +457,8 @@ partitions (sda1, etc.)
 Kernels older than 2.6.x are no longer supported.
 .PP
 .RB "Although " "iostat"
-displays units corresponding to kilobytes (kB), megabytes (MB)..., it actually uses kibibytes (kiB), mebibytes (MiB)...
-A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
+displays units corresponding to kilobytes (kB), megabytes (MB), gigabytes (GB)..., it actually uses kibibytes (kiB), mebibytes (MiB), gibibytes (GiB)...
+A kibibyte is equal to 1024 bytes, a mebibyte is equal to 1024 kibibytes, and a gibibyte is equal to 1024 mebibytes.
 
 .SH FILES
 .IR "/proc/stat " "contains system statistics."

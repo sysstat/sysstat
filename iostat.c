@@ -89,14 +89,14 @@ void usage(char *progname)
 		progname);
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
-			  "[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
+			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
@@ -114,7 +114,7 @@ void usage(char *progname)
  */
 void set_disk_output_unit(void)
 {
-	if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags))
+	if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags) || DISPLAY_GIGABYTES(flags))
 		return;
 
 	/* Check POSIXLY_CORRECT environment variable */
@@ -1069,8 +1069,13 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 		spc = " ";
 	}
 	else if (DISPLAY_MEGABYTES(flags)) {
-		*fctr = 2048;
+		*fctr = 2 * 1024;
 		units = "MB";
+		spc = " ";
+	}
+	else if (DISPLAY_GIGABYTES(flags)) {
+		*fctr = 2 * 1024 * 1024;
+		units = "GB";
 		spc = " ";
 	}
 	else if (DISPLAY_EXTENDED(flags)) {
@@ -1350,7 +1355,10 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 		       0.0 :
 		       S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
 			       ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
-		if (DISPLAY_MEGABYTES(flags)) {
+		if (DISPLAY_GIGABYTES(flags)) {
+			printf("GB/s");
+		}
+		else if (DISPLAY_MEGABYTES(flags)) {
 			printf("MB/s");
 		}
 		else if (DISPLAY_KILOBYTES(flags)) {
@@ -1383,7 +1391,10 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 						 : S_VALUE(ioj->dc_ios, ioi->dc_ios, itv),
 		       ioi->fl_ios < ioj->fl_ios ? 0.0
 						 : S_VALUE(ioj->fl_ios, ioi->fl_ios, itv));
-		if (DISPLAY_MEGABYTES(flags)) {
+		if (DISPLAY_GIGABYTES(flags)) {
+			sprintf(line, "\"rGB/s\": %%.2f, \"wGB/s\": %%.2f, \"dGB/s\": %%.2f, ");
+		}
+		else if (DISPLAY_MEGABYTES(flags)) {
 			sprintf(line, "\"rMB/s\": %%.2f, \"wMB/s\": %%.2f, \"dMB/s\": %%.2f, ");
 		}
 		else if (DISPLAY_KILOBYTES(flags)) {
@@ -1681,6 +1692,10 @@ void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
 	else if (DISPLAY_MEGABYTES(flags)) {
 		sprintf(line, "\"MB_read/s\": %%.2f, \"MB_wrtn/s\": %%.2f, \"MB_dscd/s\": %%.2f, "
 			"\"MB_read\": %%llu, \"MB_wrtn\": %%llu, \"MB_dscd\": %%llu}");
+	}
+	else if (DISPLAY_GIGABYTES(flags)) {
+		sprintf(line, "\"GB_read/s\": %%.2f, \"GB_wrtn/s\": %%.2f, \"GB_dscd/s\": %%.2f, "
+			"\"GB_read\": %%llu, \"GB_wrtn\": %%llu, \"GB_dscd\": %%llu}");
 	}
 	else {
 		sprintf(line, "\"Blk_read/s\": %%.2f, \"Blk_wrtn/s\": %%.2f, \"Blk_dscd/s\": %%.2f, "
@@ -2234,7 +2249,7 @@ int main(int argc, char **argv)
 					break;
 
 				case 'k':
-					if (DISPLAY_MEGABYTES(flags)) {
+					if (DISPLAY_MEGABYTES(flags) || DISPLAY_GIGABYTES(flags)) {
 						usage(argv[0]);
 					}
 					/* Display stats in kB/s */
@@ -2242,11 +2257,19 @@ int main(int argc, char **argv)
 					break;
 
 				case 'm':
-					if (DISPLAY_KILOBYTES(flags)) {
+					if (DISPLAY_KILOBYTES(flags) || DISPLAY_GIGABYTES(flags)) {
 						usage(argv[0]);
 					}
 					/* Display stats in MB/s */
 					flags |= I_D_MEGABYTES;
+					break;
+
+				case 'G':
+					if (DISPLAY_KILOBYTES(flags) || DISPLAY_MEGABYTES(flags)) {
+						usage(argv[0]);
+					}
+					/* Display stats in GB/s */
+					flags |= I_D_GIGABYTES;
 					break;
 
 				case 'N':

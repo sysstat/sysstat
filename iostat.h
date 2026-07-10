@@ -16,7 +16,7 @@
 #define I_D_EVERYTHING		0x000010
 #define I_D_KILOBYTES		0x000020
 #define I_D_ALL_DIR		0x000040
-/* Unused			0x000080 */
+#define I_D_GIGABYTES		0x000080
 #define I_D_UNFILTERED		0x000100
 #define I_D_MEGABYTES		0x000200
 #define I_D_ALL_DEVICES		0x000400
@@ -40,6 +40,7 @@
 #define DISPLAY_EVERYTHING(m)		(((m) & I_D_EVERYTHING)       == I_D_EVERYTHING)
 #define DISPLAY_KILOBYTES(m)		(((m) & I_D_KILOBYTES)        == I_D_KILOBYTES)
 #define DISPLAY_MEGABYTES(m)		(((m) & I_D_MEGABYTES)        == I_D_MEGABYTES)
+#define DISPLAY_GIGABYTES(m)		(((m) & I_D_GIGABYTES)        == I_D_GIGABYTES)
 #define DISPLAY_UNFILTERED(m)		(((m) & I_D_UNFILTERED)       == I_D_UNFILTERED)
 #define DISPLAY_ALL_DEVICES(m)		(((m) & I_D_ALL_DEVICES)      == I_D_ALL_DEVICES)
 #define GROUP_DEFINED(m)		(((m) & I_F_GROUP_DEFINED)    == I_F_GROUP_DEFINED)
