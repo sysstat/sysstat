@@ -1,5 +1,6 @@
 # By default __unix_time value is 1591016000, which corresponds to sa01
 rm -f tests/sa01
+cp -f tests/sysstat.sysconfig-default.tmp ./sysstat.sysconfig
 
 rm -f tests/root
 ln -s ${T_SRCDIR}/tests/root1 tests/root

@@ -41,7 +41,8 @@ else
 	DATE_OPTS="--date=yesterday"
 fi
 
-if [ ${HISTORY} -gt 28 ]
+case "${SADC_OPTIONS}" in *-D*) LONG_NAME=y ;; esac
+if [ ${HISTORY} -gt 28 ] || [ "${LONG_NAME}" = "y" ]
 then
 	DATE=`date ${DATE_OPTS} +%Y%m%d`
 else

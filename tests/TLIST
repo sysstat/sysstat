@@ -110,11 +110,14 @@ NOTES:
 00200	TZ=GMT ./sa1 --boot; TZ=GMT ./sa1 --unix_time=1555593629 1 1; TZ=GMT ./sa1 --unix_time=1555593649 1 1
 00205	LC_ALL=C TZ=GMT ./sar -f tests/sa18 > tests/out.sa1.tmp
 00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
+00225	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out2.sa2.tmp && rm -f tests/sa${DATE}
+	[ABOVE: Using sysstat.sysconfig-SADC_OPTION-D as sysstat.sysconfig file]
 00230	./cron/sysstat.sleep post hibernate
 00235	LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp
 00240	TZ=GMT ./sa1 --rotate --unix_time=${STEP} 1 1
 00245	LC_ALL=C TZ=GMT ./sar -f tests/sa${DATE} | grep -v SYSSTAT > tests/out.sa1-rot.tmp
-00250	TZ=GMT ./sa1 --rotate iso --unix_time=${STEP} 1 1
+00250	TZ=GMT ./sa1 --rotate --unix_time=${STEP} 1 1
+	[ABOVE: Using sysstat.sysconfig-SADC_OPTION-D as sysstat.sysconfig file]
 00255	LC_ALL=C TZ=GMT ./sar -f tests/sa${DATE} | grep -v SYSSTAT > tests/out1.sa1-rot.tmp
 
 =====	Checking JSON output validity

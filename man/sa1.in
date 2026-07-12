@@ -1,10 +1,10 @@
 .\" sa1 manual page - (C) 1999-2020 Sebastien Godard (sysstat <at> orange.fr)
-.TH SA1 8 "AUGUST 2023" Linux "Linux User's Manual" -*- nroff -*-
+.TH SA1 8 "JULY 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sa1 \- Collect and store binary data in the system activity daily data file.
 
 .SH SYNOPSIS
-.B @SA_LIB_DIR@/sa1 [ \-\-boot | \-\-rotate [ iso ] | \-\-sleep |
+.B @SA_LIB_DIR@/sa1 [ \-\-boot | \-\-rotate | \-\-sleep |
 .I interval count
 .B ]
 
@@ -47,13 +47,11 @@ command should be called without specifying the
 parameters in order to insert a dummy record, marking the time when the counters
 restart from 0.
 .TP
-.B \-\-rotate [ iso ]
+.B \-\-rotate
 .RB "Use this option to tell " "sa1 " "to insert a record of statistics to the standard"
 .IR "saDD" " system activity daily data file of the previous day."
 This should be done shortly after midnight (on day DD+1) in order to make sure that the
 data file covers the whole day, including the last interval of time just before midnight.
-.RB "Adding the " "iso" " keyword tells " "sa1" " to use
-.IR "saYYYYMMDD" " instead of " "saDD" " as the standard system activity daily data file name."
 .TP
 .B \-\-sleep
 .RB "This option tells " "sa1 " "that the " "sadc"
