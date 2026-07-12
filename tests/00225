@@ -1,0 +1,8 @@
+TZ=GMT
+cp -f ./sysstat.sysconfig tests/sysstat.sysconfig-default.tmp
+cp -f tests/sysstat.sysconfig-SADC_OPTION-D ./sysstat.sysconfig
+DATE=`date --date=yesterday +%Y%m%d`
+rm -f tests/sa${DATE}
+mv tests/sa18 tests/sa${DATE}
+echo sa2: File is sa${DATE}
+LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out2.sa2.tmp && rm -f tests/sa${DATE} && diff -u ${T_SRCDIR}/tests/expected.sa2 tests/out2.sa2.tmp
