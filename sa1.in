@@ -34,7 +34,7 @@ cd ${ENDIR}
 [ "$1" = "--sleep" ] && shift && SLEEP=y || SLEEP=n
 
 ROTATE=n
-[ "$1" = "--rotate" ] && shift && ROTATE=y && [ "$1" = "iso" ] && shift && LONG_NAME=y
+[ "$1" = "--rotate" ] && shift && ROTATE=y
 if [ "${ROTATE}" = "y" ]
 then
 	if [ "${LONG_NAME}" = "y" ]
