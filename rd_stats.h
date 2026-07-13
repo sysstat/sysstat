@@ -843,6 +843,8 @@ void compute_ext_disk_stats
 	 struct ext_disk_stats *);
 unsigned long long get_per_cpu_interval
 	(struct stats_cpu *, struct stats_cpu *);
+FILE *open_stat_stream
+	(void);
 __nr_t read_stat_cpu
 	(struct stats_cpu *, __nr_t);
 __nr_t read_stat_irq
@@ -851,6 +853,8 @@ __nr_t read_meminfo
 	(struct stats_memory *);
 void read_uptime
 	(unsigned long long *);
+void refresh_proc_stat
+	(void);
 #ifdef SOURCE_SADC
 void oct2chr
 	(char *);

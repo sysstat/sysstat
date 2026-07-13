@@ -1041,6 +1041,9 @@ void read_stats(void)
 	/* Read system uptime in 1/100th of a second */
 	read_uptime(&(record_hdr.uptime_cs));
 
+	/* Take a snapshot of /proc/stat, shared by all activities below */
+	refresh_proc_stat();
+
 	for (i = 0; i < NR_ACT; i++) {
 		if (IS_COLLECTED(act[i]->options)) {
 			/* Read statistics for current activity */

@@ -1114,7 +1114,7 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 	char line[8192];
 	int proc_nr = -2;
 
-	if ((fp = fopen(STAT, "r")) == NULL)
+	if ((fp = open_stat_stream()) == NULL)
 		return 0;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
