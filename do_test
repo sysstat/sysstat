@@ -89,8 +89,8 @@ fi
 
 if [ "$1" = "out" ]
 then
+	shift
 	# Test out-of-tree build
-	make distclean
 	mkdir -p /tmp/sysstat-out
-	cd /tmp/sysstat-out && ${T_SRCDIR}/do_test
+	cd /tmp/sysstat-out && ${T_SRCDIR}/do_test $*
 fi
