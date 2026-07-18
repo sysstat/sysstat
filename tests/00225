@@ -1,6 +1,6 @@
 TZ=GMT
 cp -f ./sysstat.sysconfig tests/sysstat.sysconfig-default.tmp
-cp -f tests/sysstat.sysconfig-SADC_OPTION-D ./sysstat.sysconfig
+cp -f ${T_SRCDIR}/tests/sysstat.sysconfig-SADC_OPTION-D ./sysstat.sysconfig
 DATE=`date --date=yesterday +%Y%m%d`
 rm -f tests/sa${DATE}
 mv tests/sa18 tests/sa${DATE}
