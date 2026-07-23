@@ -178,25 +178,20 @@ then
 	fi
 fi
 
-if [ "${CRON}" != "" ];
-then
-	CRON_INTERVAL=`${ASK} 'Crontab sampling interval (in minutes):' "cron_interval" "cron_interval"`
-	if [ "${CRON_INTERVAL}" != "" ]; then
-		CRON="${CRON}cron_interval=${CRON_INTERVAL} "
-	fi
+COLLECT_INTERVAL=`${ASK} 'Collection interval (in minutes):' "collect_interval" "collect_interval"`
+if [ "${COLLECT_INTERVAL}" != "" ]; then
+	COLLECT_INTERVAL="collect_interval=${COLLECT_INTERVAL} "
 fi
 
-if [ "${CRON}" != "" ];
-then
-	COLL_ALL=`${ASK} 'Should sadc collect optional activities? (y/n)' "--enable-collect-all" "collect-all"`
-	if [ "${COLL_ALL}" = "y" ]; then
-		CRON="${CRON}--enable-collect-all "
-	else
-		echo "Parameter --enable-collect-all is NOT set"
-	fi
+COLLECT_ALL=`${ASK} 'Should sadc collect optional activities? (y/n)' "--enable-collect-all" "collect-all"`
+if [ "${COLLECT_ALL}" = "y" ]; then
+	COLLECT_ALL="--enable-collect-all "
+else
+	COLLECT_ALL=""
+	echo "Parameter --enable-collect-all is NOT set"
 fi
 
-if [ "${CRON}" != "" -a "${COLL_ALL}" != "y" ];
+if [ "${COLLECT_ALL}" != "y" ];
 then
 	# Optional args for sadc
 	SADC_OPT=`${ASK} 'Options to be passed to sadc:' "sadc_options" "sadc_options"`
@@ -204,25 +199,19 @@ else
 	SADC_OPT=
 fi
 
-if [ "${CRON}" != "" ];
-then
-	# rc directory
-	RCDIR=`${ASK} 'rc directory:' "rcdir" "rcdir"`
-	if [ "${RCDIR}" != "" ]; then
-	        RCDIR="rcdir=${RCDIR} "
-	fi
+# rc directory
+RCDIR=`${ASK} 'rc directory:' "rcdir" "rcdir"`
+if [ "${RCDIR}" != "" ]; then
+        RCDIR="rcdir=${RCDIR} "
 fi
 
-if [ "${CRON}" != "" ];
-then
-	# Only copy files
-	COPY_ONLY=`${ASK} 'Only copy files when installing sysstat? (y/n)' "--enable-copy-only" "copy-only"`
-	if [ "${COPY_ONLY}" = "y" ]; then
-		COPY_ONLY="--enable-copy-only "
-	else
-		COPY_ONLY=""
-		echo "Parameter --enable-copy-only is NOT set"
-	fi
+# Only copy files
+COPY_ONLY=`${ASK} 'Only copy files when installing sysstat? (y/n)' "--enable-copy-only" "copy-only"`
+if [ "${COPY_ONLY}" = "y" ]; then
+	COPY_ONLY="--enable-copy-only "
+else
+	COPY_ONLY=""
+	echo "Parameter --enable-copy-only is NOT set"
 fi
 
 # Compress manual pages
@@ -264,7 +253,7 @@ fi
 echo
 echo -n "${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
-${CRON}${USE_CROND}${RCDIR}"
+${CRON}${USE_CROND}${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -274,6 +263,7 @@ echo
 
 ${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO} \
-${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND}${RCDIR} \
+${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND} \
+${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}

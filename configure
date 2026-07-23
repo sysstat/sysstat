@@ -645,18 +645,18 @@ STRIP
 WITH_DEBUG
 DFLAGS
 INSTALL_DOC
-COLLECT_ALL
-REM_CHOWN
-QUOTE
-CRON_COUNT
-CRON_INTERVAL_SEC
-CRON_INTERVAL
-SU_C_OWNER
-CRON_OWNER
 COPY_ONLY
 SADC_OPT
 sadc_options
-cron_interval
+COLLECT_ALL
+COLLECT_COUNT
+COLLECT_INTERVAL_SEC
+COLLECT_INTERVAL
+collect_interval
+SU_C_OWNER
+REM_CHOWN
+QUOTE
+CRON_OWNER
 USE_CROND
 cron_owner
 INSTALL_CRON
@@ -809,7 +809,7 @@ compressafter
 delay_range
 man_group
 cron_owner
-cron_interval
+collect_interval
 sadc_options'
 
 
@@ -1477,8 +1477,8 @@ Some influential environment variables:
               its reports
   man_group   group for manual pages
   cron_owner  crontab owner
-  cron_interval
-              crontab interval
+  collect_interval
+              collection interval (in minutes)
   sadc_options
               options to be passed to sadc
 
@@ -5241,19 +5241,19 @@ echo .
 #  --enable-lto	            compile with Link Time Optimizations
 #
 # Some influential environment variables:
-#  rcdir         directory where startup scripts are installed
-#  sa_lib_dir    sadc, sa1 and sa2 directory
-#  sa_dir        system activity daily datafiles directory
-#  sar_dir       sar binary location. Used only in sa2 shell script
-#  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
-#  conf_file     sysstat configuration file (default is sysstat)
-#  history       number of daily datafiles to keep (default value is 7)
-#  delay_range   maximum delay (in seconds) to wait before sa2 script generates its reports
-#  compressafter number of days after which datafiles are compressed
-#  man_group     group for man pages
-#  cron_owner    crontab owner
-#  cron_interval crontab sampling interval
-#  sadc_options  options to be passed to sadc
+#  rcdir             directory where startup scripts are installed
+#  sa_lib_dir        sadc, sa1 and sa2 directory
+#  sa_dir            system activity daily datafiles directory
+#  sar_dir           sar binary location. Used only in sa2 shell script
+#  conf_dir          sysstat configuration directory (default is /etc/sysconfig)
+#  conf_file         sysstat configuration file (default is sysstat)
+#  history           number of daily datafiles to keep (default value is 7)
+#  delay_range       maximum delay (in seconds) to wait before sa2 script generates its reports
+#  compressafter     number of days after which datafiles are compressed
+#  man_group         group for man pages
+#  cron_owner        crontab owner
+#  collect_interval  collection interval (in minutes)
+#  sadc_options      options to be passed to sadc
 #
 # Fine tuning the installation directories:
 #  --mandir=DIR           man documentation directory [PREFIX/man]
@@ -5795,24 +5795,39 @@ fi
 printf "%s\n" "$UCROND" >&6; }
 
 
-#  Crontab interval
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking crontab interval" >&5
-printf %s "checking crontab interval... " >&6; }
+else
+   CRON_OWNER="root"
+   QUOTE=""
+   REM_CHOWN="# REM_CHOWN"
+   SU_C_OWNER=""
+fi
 
-   if test x$cron_interval = x""; then
-      CRON_INTERVAL=10
-   else
-      CRON_INTERVAL=$cron_interval
-   fi
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CRON_INTERVAL" >&5
-printf "%s\n" "$CRON_INTERVAL" >&6; }
-   CRON_INTERVAL_SEC=`expr ${CRON_INTERVAL} \* 60`
-   CRON_COUNT=`expr 60 / ${CRON_INTERVAL}`
 
-#  Check whether sadc should collect all possible activities
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether sadc should collect all possible activities" >&5
+
+
+
+# Set collection interval
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking collection interval" >&5
+printf %s "checking collection interval... " >&6; }
+
+if test x$collect_interval = x""; then
+   COLLECT_INTERVAL=10
+else
+   COLLECT_INTERVAL=$collect_interval
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $COLLECT_INTERVAL" >&5
+printf "%s\n" "$COLLECT_INTERVAL" >&6; }
+
+
+COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
+COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
+
+
+
+# Check whether sadc should collect all possible activities
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether sadc should collect all possible activities" >&5
 printf %s "checking whether sadc should collect all possible activities... " >&6; }
-   # Check whether --enable-collect-all was given.
+# Check whether --enable-collect-all was given.
 if test ${enable_collect_all+y}
 then :
   enableval=$enable_collect_all; COLLECT_ALL=$enableval
@@ -5821,32 +5836,34 @@ else case e in #(
 esac
 fi
 
-   if test $COLLECT_ALL != "yes"; then
-      COLLECT_ALL=""
-      AUX_COLL=no
-   else
-      COLLECT_ALL="-S XALL"
-      AUX_COLL=yes
-   fi
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_COLL" >&5
+if test $COLLECT_ALL != "yes"; then
+   COLLECT_ALL=""
+   AUX_COLL=no
+else
+   COLLECT_ALL="-S XALL"
+   AUX_COLL=yes
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_COLL" >&5
 printf "%s\n" "$AUX_COLL" >&6; }
 
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking options to be passed to sadc" >&5
+COLLECT_ALL=""
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking options to be passed to sadc" >&5
 printf %s "checking options to be passed to sadc... " >&6; }
 
-   if test x"$sadc_options" != x""; then
-	SADC_OPT="$sadc_options"
-   else
-	SADC_OPT=
-   fi
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
+if test x"$sadc_options" != x""; then
+   SADC_OPT="$sadc_options"
+else
+   SADC_OPT=
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
 printf "%s\n" "$SADC_OPT" >&6; }
 
 
-#  Check whether files should only be copied
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
+# Check whether files should only be copied
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
 printf %s "checking whether files should only be copied... " >&6; }
-   # Check whether --enable-copy-only was given.
+# Check whether --enable-copy-only was given.
 if test ${enable_copy_only+y}
 then :
   enableval=$enable_copy_only; OCOPY=$enableval
@@ -5855,33 +5872,14 @@ else case e in #(
 esac
 fi
 
-   if test $OCOPY != "yes"; then
-      COPY_ONLY=n
-      OCOPY=no
-   else
-      COPY_ONLY=y
-   fi
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $OCOPY" >&5
-printf "%s\n" "$OCOPY" >&6; }
-
-
+if test $OCOPY != "yes"; then
+   COPY_ONLY=n
+   OCOPY=no
 else
-   CRON_OWNER="root"
-   SU_C_OWNER=""
-   QUOTE=""
-   REM_CHOWN="# REM_CHOWN"
-   CRON_INTERVAL=10
-   CRON_INTERVAL_SEC=600
-   CRON_COUNT=6
-   COLLECT_ALL=""
+   COPY_ONLY=y
 fi
-
-
-
-
-
-
-
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $OCOPY" >&5
+printf "%s\n" "$OCOPY" >&6; }
 
 
 # Check whether documentation should be installed
