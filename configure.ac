@@ -251,19 +251,19 @@ echo .
 #  --enable-lto	            compile with Link Time Optimizations
 #
 # Some influential environment variables:
-#  rcdir         directory where startup scripts are installed
-#  sa_lib_dir    sadc, sa1 and sa2 directory
-#  sa_dir        system activity daily datafiles directory
-#  sar_dir       sar binary location. Used only in sa2 shell script
-#  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
-#  conf_file     sysstat configuration file (default is sysstat)
-#  history       number of daily datafiles to keep (default value is 7)
-#  delay_range   maximum delay (in seconds) to wait before sa2 script generates its reports
-#  compressafter number of days after which datafiles are compressed
-#  man_group     group for man pages
-#  cron_owner    crontab owner
-#  cron_interval crontab sampling interval
-#  sadc_options  options to be passed to sadc
+#  rcdir             directory where startup scripts are installed
+#  sa_lib_dir        sadc, sa1 and sa2 directory
+#  sa_dir            system activity daily datafiles directory
+#  sar_dir           sar binary location. Used only in sa2 shell script
+#  conf_dir          sysstat configuration directory (default is /etc/sysconfig)
+#  conf_file         sysstat configuration file (default is sysstat)
+#  history           number of daily datafiles to keep (default value is 7)
+#  delay_range       maximum delay (in seconds) to wait before sa2 script generates its reports
+#  compressafter     number of days after which datafiles are compressed
+#  man_group         group for man pages
+#  cron_owner        crontab owner
+#  collect_interval  collection interval (in minutes)
+#  sadc_options      options to be passed to sadc
 #
 # Fine tuning the installation directories:
 #  --mandir=DIR           man documentation directory [PREFIX/man]
@@ -634,74 +634,72 @@ if test $INSTALL_CRON = "y"; then
    AC_MSG_RESULT($UCROND)
    AC_SUBST(USE_CROND)
 
-#  Crontab interval
-   AC_MSG_CHECKING(crontab interval)
-   AC_ARG_VAR([cron_interval],[crontab interval])
-   if test x$cron_interval = x""; then
-      CRON_INTERVAL=10
-   else
-      CRON_INTERVAL=$cron_interval
-   fi
-   AC_MSG_RESULT($CRON_INTERVAL)
-   CRON_INTERVAL_SEC=`expr ${CRON_INTERVAL} \* 60`
-   CRON_COUNT=`expr 60 / ${CRON_INTERVAL}`
-
-#  Check whether sadc should collect all possible activities
-   AC_MSG_CHECKING(whether sadc should collect all possible activities)
-   AC_ARG_ENABLE(collect-all,
-	         AS_HELP_STRING([--enable-collect-all],[collect all possible activities]),
-			        COLLECT_ALL=$enableval,COLLECT_ALL=n)
-   if test $COLLECT_ALL != "yes"; then
-      COLLECT_ALL=""
-      AUX_COLL=no
-   else
-      COLLECT_ALL="-S XALL"
-      AUX_COLL=yes
-   fi
-   AC_MSG_RESULT($AUX_COLL)
-
-   AC_MSG_CHECKING(options to be passed to sadc)
-   AC_ARG_VAR([sadc_options],[options to be passed to sadc])
-   if test x"$sadc_options" != x""; then
-	SADC_OPT="$sadc_options"
-   else
-	SADC_OPT=
-   fi
-   AC_MSG_RESULT($SADC_OPT)
-   AC_SUBST(SADC_OPT)
-
-#  Check whether files should only be copied
-   AC_MSG_CHECKING(whether files should only be copied)
-   AC_ARG_ENABLE(copy-only,
-	         AS_HELP_STRING([--enable-copy-only],[only copy files when installing]),
-			        OCOPY=$enableval,OCOPY=no)
-   if test $OCOPY != "yes"; then
-      COPY_ONLY=n
-      OCOPY=no
-   else
-      COPY_ONLY=y
-   fi
-   AC_MSG_RESULT($OCOPY)
-   AC_SUBST(COPY_ONLY)
-
 else
    CRON_OWNER="root"
-   SU_C_OWNER=""
    QUOTE=""
    REM_CHOWN="# REM_CHOWN"
-   CRON_INTERVAL=10
-   CRON_INTERVAL_SEC=600
-   CRON_COUNT=6
-   COLLECT_ALL=""
+   SU_C_OWNER=""
 fi
 AC_SUBST(CRON_OWNER)
-AC_SUBST(SU_C_OWNER)
-AC_SUBST(CRON_INTERVAL)
-AC_SUBST(CRON_INTERVAL_SEC)
-AC_SUBST(CRON_COUNT)
 AC_SUBST(QUOTE)
 AC_SUBST(REM_CHOWN)
+AC_SUBST(SU_C_OWNER)
+
+# Set collection interval
+AC_MSG_CHECKING(collection interval)
+AC_ARG_VAR([collect_interval],[collection interval (in minutes)])
+if test x$collect_interval = x""; then
+   COLLECT_INTERVAL=10
+else
+   COLLECT_INTERVAL=$collect_interval
+fi
+AC_MSG_RESULT($COLLECT_INTERVAL)
+AC_SUBST(COLLECT_INTERVAL)
+
+COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
+COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
+AC_SUBST(COLLECT_INTERVAL_SEC)
+AC_SUBST(COLLECT_COUNT)
+
+# Check whether sadc should collect all possible activities
+AC_MSG_CHECKING(whether sadc should collect all possible activities)
+AC_ARG_ENABLE(collect-all,
+	      AS_HELP_STRING([--enable-collect-all],[collect all possible activities]),
+			     COLLECT_ALL=$enableval,COLLECT_ALL=n)
+if test $COLLECT_ALL != "yes"; then
+   COLLECT_ALL=""
+   AUX_COLL=no
+else
+   COLLECT_ALL="-S XALL"
+   AUX_COLL=yes
+fi
+AC_MSG_RESULT($AUX_COLL)
 AC_SUBST(COLLECT_ALL)
+COLLECT_ALL=""
+
+AC_MSG_CHECKING(options to be passed to sadc)
+AC_ARG_VAR([sadc_options],[options to be passed to sadc])
+if test x"$sadc_options" != x""; then
+   SADC_OPT="$sadc_options"
+else
+   SADC_OPT=
+fi
+AC_MSG_RESULT($SADC_OPT)
+AC_SUBST(SADC_OPT)
+
+# Check whether files should only be copied
+AC_MSG_CHECKING(whether files should only be copied)
+AC_ARG_ENABLE(copy-only,
+	      AS_HELP_STRING([--enable-copy-only],[only copy files when installing]),
+			     OCOPY=$enableval,OCOPY=no)
+if test $OCOPY != "yes"; then
+   COPY_ONLY=n
+   OCOPY=no
+else
+   COPY_ONLY=y
+fi
+AC_MSG_RESULT($OCOPY)
+AC_SUBST(COPY_ONLY)
 
 # Check whether documentation should be installed
 AC_MSG_CHECKING(whether documentation should be installed)
