@@ -73,6 +73,14 @@ static size_t proc_stat_bufsize = 0;
 static size_t proc_stat_buflen = 0;
 
 /*
+ * Snapshot of  /proc/diskstats contents.
+ * Used by sadc (read_diskstats_io() and read_diskstats_disk()).
+ */
+static char *proc_diskstats_buf = NULL;
+static size_t proc_diskstats_bufsize = 0;
+static size_t proc_diskstats_buflen = 0;
+
+/*
  ***************************************************************************
  * Starting a new collection cycle. Invalidate buffers contents
  * corresponding to previous cycle.
@@ -81,6 +89,7 @@ static size_t proc_stat_buflen = 0;
 void invalidate_buffers(void)
 {
 	proc_stat_buflen = 0;
+	proc_diskstats_buflen = 0;
 }
 
 /*
@@ -182,6 +191,41 @@ FILE *open_stat_stream(int status_r)
 	}
 	if (fp == NULL) {
 		fp = fopen(STAT, "r");
+	}
+
+	return fp;
+}
+
+/*
+ * **************************************************************************
+ * Open a stream on /proc/diskstats contents: Take a snapshot if none exists.
+ * If such a snapshot already existed, just return a read-only stream on it.
+ * If snapshot doesn't exist or cannot be read then open the real file.
+ * In any case the stream is read and closed by the callers exactly as if
+ * the file itself had been opened with fopen(DISKSTATS, "r").
+ *
+ * USED BY:
+ * sadc
+ *
+ * RETURNS:
+ * A stream on /proc/diskstats contents, or NULL if it couldn't be opened.
+ ***************************************************************************
+ */
+FILE *open_diskstats_stream(void)
+{
+	FILE *fp = NULL;
+
+	if (!proc_diskstats_buflen) {
+		/* No snapshot exists yet: Read file contents */
+		refresh_proc_file(&proc_diskstats_bufsize, &proc_diskstats_buflen,
+				  &proc_diskstats_buf, DISKSTATS);
+	}
+	if (proc_diskstats_buflen > 0) {
+		/* A snapshot exists: Parse it instead of the real file */
+		fp = fmemopen(proc_diskstats_buf, proc_diskstats_buflen, "r");
+	}
+	if (fp == NULL) {
+		fp = fopen(DISKSTATS, "r");
 	}
 
 	return fp;
@@ -1013,7 +1057,7 @@ __nr_t read_diskstats_io(struct stats_io *st_io)
 	unsigned long rd_ios, wr_ios, dc_ios;
 	unsigned long rd_sec, wr_sec, dc_sec;
 
-	if ((fp = fopen(DISKSTATS, "r")) == NULL)
+	if ((fp = open_diskstats_stream()) == NULL)
 		return 0;
 
 	sprintf(aux, "%%u %%u %%%ds %%lu %%*u %%lu %%*u %%lu %%*u "
@@ -1083,7 +1127,7 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 	unsigned long long wwn[2];
 	__nr_t dsk_read = 0;
 
-	if ((fp = fopen(DISKSTATS, "r")) == NULL)
+	if ((fp = open_diskstats_stream()) == NULL)
 		return 0;
 
 	sprintf(aux, "%%u %%u %%%ds %%lu %%*u %%lu %%u %%lu %%*u %%lu %%u "
