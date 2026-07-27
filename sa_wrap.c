@@ -72,7 +72,7 @@ __read_funct_t wrap_read_stat_cpu(struct activity *a)
 
 	/* Read CPU statistics */
 	do {
-		nr_read = read_stat_cpu(st_cpu, a->nr_allocated);
+		nr_read = read_stat_cpu(st_cpu, a->nr_allocated, MULTIPLE_R);
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
@@ -1114,7 +1114,7 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 	char line[8192];
 	int proc_nr = -2;
 
-	if ((fp = open_stat_stream()) == NULL)
+	if ((fp = open_stat_stream(MULTIPLE_R)) == NULL)
 		return 0;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {

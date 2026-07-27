@@ -74,49 +74,70 @@ static size_t proc_stat_buflen = 0;
 
 /*
  ***************************************************************************
- * Take a snapshot of /proc/stat contents. Should be called once at the
- * beginning of each collection cycle. On failure (e.g. memory allocation
- * failure or unreadable file) the previous snapshot is simply dropped and
- * open_stat_stream() will fall back to opening the real file.
- *
- * USED BY:
- * sadc
+ * Starting a new collection cycle. Invalidate buffers contents
+ * corresponding to previous cycle.
  ***************************************************************************
  */
-void refresh_proc_stat(void)
+void invalidate_buffers(void)
+{
+	proc_stat_buflen = 0;
+}
+
+/*
+ ***************************************************************************
+ * Take a snapshot of a /proc file contents. Should be called once per
+ * collection cycle.
+ *
+ * IN:
+ * @proc_file_bufsize	Size of the allocated buffer that will contain file
+ *			contents.
+ * @proc_file_buflen	Length of the buffer actually used to save file
+ *			data.
+ * @proc_file_buf	Pointer on buffer that will contain file contents.
+ * @proc_file		Name of /proc file to read.
+ *
+ * OUT:
+ * @proc_file_bufsize	New size of the allocated buffer.
+ * @proc_file_buflen	New length of the buffer actually used to save file
+ *			data.
+ * @proc_file_buf	Pointer on buffer containing file contents.
+ ***************************************************************************
+ */
+void refresh_proc_file(size_t *proc_file_bufsize, size_t *proc_file_buflen,
+		       char **proc_file_buf, const char *proc_file)
 {
 	FILE *fp;
 	size_t n, len = 0;
 
-	/* Invalidate previous snapshot */
-	proc_stat_buflen = 0;
+	/* Mark buffer as unread */
+	*proc_file_buflen = -1;
 
-	if ((fp = fopen(STAT, "r")) == NULL)
+	if ((fp = fopen(proc_file, "r")) == NULL)
 		return;
 
 	do {
-		if (len + 1 >= proc_stat_bufsize) {
+		if (len + 1 >= *proc_file_bufsize) {
 			/* Allocate buffer, or make it grow */
-			size_t newsize = proc_stat_bufsize ? proc_stat_bufsize * 2 : 8192;
-			char *buf = (char *) realloc(proc_stat_buf, newsize);
+			size_t newsize = *proc_file_bufsize ? *proc_file_bufsize * 2 : 8192;
+			char *buf = (char *) realloc(*proc_file_buf, newsize);
 
 			if (buf == NULL) {
 				fclose(fp);
 				return;
 			}
-			proc_stat_buf = buf;
-			proc_stat_bufsize = newsize;
+			*proc_file_buf = buf;
+			*proc_file_bufsize = newsize;
 		}
 
-		n = fread(proc_stat_buf + len, 1, proc_stat_bufsize - len - 1, fp);
+		n = fread(*proc_file_buf + len, 1, *proc_file_bufsize - len - 1, fp);
 		len += n;
 	}
 	while (n > 0);
 
 	if (feof(fp) && !ferror(fp) && len) {
 		/* Whole file has been read: Snapshot can be used */
-		proc_stat_buf[len] = '\0';
-		proc_stat_buflen = len;
+		(*proc_file_buf)[len] = '\0';
+		*proc_file_buflen = len;
 	}
 
 	fclose(fp);
@@ -124,26 +145,40 @@ void refresh_proc_stat(void)
 
 /*
  ***************************************************************************
- * Open a stream on /proc/stat contents: Return a read-only stream on the
- * current snapshot if one has been taken (see refresh_proc_stat() above),
- * or open the real file otherwise. In both cases the stream is read and
- * closed by the callers exactly as if the file itself had been opened with
- * fopen(STAT, "r").
+ * Open a stream on /proc/stat contents: Take a snapshot if none exists (and
+ * if file may have to be read several times during a collection cycle).
+ * If such a snapshot already existed, just return a read-only stream on it.
+ * If snapshot doesn't exist or cannot be read then open the real file.
+ * In any case the stream is read and closed by the callers exactly as if
+ * the file itself had been opened with fopen(STAT, "r").
+ *
+ * IN:
+ * @status_r	Set to MULTIPLE_R value by sadc to indicate that the
+ *		/proc/stat file may be read several times during a
+ *		collection cycle (e.g. read_stat_cpu(), read_load_avg(),
+ *		read_stat_pcsw(), get_online_cpu_list()).
+ *		Set to SINGLE_R value by iostat, mpstat and pidstat to
+ *		indicate that the file will only be read once.
  *
  * RETURNS:
  * A stream on /proc/stat contents, or NULL if it couldn't be opened.
- *
- * USED BY:
- * sadc, iostat, mpstat, pidstat
  ***************************************************************************
  */
-FILE *open_stat_stream(void)
+FILE *open_stat_stream(int status_r)
 {
 	FILE *fp = NULL;
 
-	if (proc_stat_buflen) {
-		/* A snapshot exists: Parse it instead of the real file */
-		fp = fmemopen(proc_stat_buf, proc_stat_buflen, "r");
+	if (status_r == MULTIPLE_R) {
+		/* File contents will be read several times during a cycle */
+		if (!proc_stat_buflen) {
+			/* No snapshot exists yet: Read file contents */
+			refresh_proc_file(&proc_stat_bufsize, &proc_stat_buflen,
+					  &proc_stat_buf, STAT);
+		}
+		if (proc_stat_buflen > 0) {
+			/* A snapshot exists: Parse it instead of the real file */
+			fp = fmemopen(proc_stat_buf, proc_stat_buflen, "r");
+		}
 	}
 	if (fp == NULL) {
 		fp = fopen(STAT, "r");
@@ -160,6 +195,11 @@ FILE *open_stat_stream(void)
  * IN:
  * @st_cpu	Buffer where structures containing stats will be saved.
  * @nr_alloc	Total number of structures allocated. Value is >= 1.
+ * @status_r	Set to MULTIPLE_R value by sadc to indicate that the
+ *		/proc/stat file may be read several times during a
+ *		collection cycle.
+ *		Set to SINGLE_R value by iostat, mpstat and pidstat to
+ *		indicate that the file needs only to be read once.
  *
  * OUT:
  * @st_cpu	Buffer with statistics.
@@ -176,7 +216,7 @@ FILE *open_stat_stream(void)
  * sadc, iostat, mpstat, pidstat
  ***************************************************************************
  */
-__nr_t read_stat_cpu(struct stats_cpu *st_cpu, __nr_t nr_alloc)
+__nr_t read_stat_cpu(struct stats_cpu *st_cpu, __nr_t nr_alloc, int status_r)
 {
 	FILE *fp;
 	struct stats_cpu *st_cpu_i;
@@ -185,7 +225,7 @@ __nr_t read_stat_cpu(struct stats_cpu *st_cpu, __nr_t nr_alloc)
 	int proc_nr;
 	__nr_t cpu_read = 0;
 
-	if ((fp = open_stat_stream()) == NULL) {
+	if ((fp = open_stat_stream(status_r)) == NULL) {
 		fprintf(stderr, _("Cannot open %s: %s\n"), STAT, strerror(errno));
 		exit(2);
 	}
@@ -738,7 +778,7 @@ __nr_t read_stat_pcsw(struct stats_pcsw *st_pcsw)
 	FILE *fp;
 	char line[8192];
 
-	if ((fp = open_stat_stream()) == NULL)
+	if ((fp = open_stat_stream(MULTIPLE_R)) == NULL)
 		return 0;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
@@ -805,7 +845,7 @@ __nr_t read_loadavg(struct stats_queue *st_queue)
 	}
 
 	/* Read nr of tasks blocked from /proc/stat */
-	if ((fp = open_stat_stream()) == NULL)
+	if ((fp = open_stat_stream(MULTIPLE_R)) == NULL)
 		return 0;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {
