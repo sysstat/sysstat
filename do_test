@@ -72,7 +72,7 @@ then
 			echo $f > tests/LAST;
 			if [ "$1" != "ignore" -a "$2" != "ignore" ]
 			then
-				exit
+				exit 1
 			fi
 		fi
 	done
