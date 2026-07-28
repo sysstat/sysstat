@@ -53,7 +53,7 @@ then
 			fi
 		fi
 
-		let "COUNT+=1"
+		COUNT=$((COUNT + 1))
 		echo $f
 		echo -n "$f: " >> tests/results.tmp
 		cat ${srcdir}/tests/$f | /bin/sh
