@@ -173,8 +173,8 @@ LD = gcc
 LDFLAGS += $(CFLAGS)
 endif
 
-ifndef INSTALL_CRON
-INSTALL_CRON = @INSTALL_CRON@
+ifndef AUTOMATE_SAR
+AUTOMATE_SAR = @AUTOMATE_SAR@
 endif
 ifndef CRON_OWNER
 CRON_OWNER = @CRON_OWNER@
@@ -791,13 +791,13 @@ endif
 		rm -f $(DESTDIR)$(SYSTEMD_SLEEP_DIR)/sysstat.sleep; \
 	fi
 
-ifeq ($(INSTALL_CRON),y)
+ifeq ($(AUTOMATE_SAR),y)
 uninstall: uninstall_all
 else
 uninstall: uninstall_base
 endif
 
-ifeq ($(INSTALL_CRON),y)
+ifeq ($(AUTOMATE_SAR),y)
 install: install_all
 else
 install: install_base
