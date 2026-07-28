@@ -150,16 +150,18 @@ else
 	echo "Parameter --disable-file-attr is NOT set"
 fi
 
-# Automate sar reporting
-AUTOMATE=`${ASK} 'Automate sar reporting (via systemd or cron)? (y/n)' "--enable-automated-sar-reporting" "automated-sar-reporting"`
+# sar automatic reporting
+AUTOMATE=`${ASK} 'Disable sar automatic reporting (via systemd or cron)? (y/n)' "--disable-automated-sar-reporting" "automated-sar-reporting"`
 if [ "${AUTOMATE}" = "y" ]; then
-	AUTOMATE="--enable-automated-sar-reporting "
+	AUTOMATE="--disable-automated-sar-reporting "
+	AUTOMATION="n"
 else
 	AUTOMATE=""
-	echo "Parameter --enable-automated-sar-reporting is NOT set"
+	AUTOMATION="y"
+	echo "Parameter --disable-automated-sar-reporting is NOT set"
 fi
 
-if [ "${AUTOMATE}" != "" ];
+if [ "${AUTOMATION}" = "y" ];
 then
 	CRON_OWNER=`${ASK} 'Crontab owner:' "cron_owner" "cron_owner"`
 	if [ "${CRON_OWNER}" != "" ]; then
@@ -167,7 +169,7 @@ then
 	fi
 fi
 
-if [ "${AUTOMATE}" != "" ];
+if [ "${AUTOMATION}" = "y" ];
 then
 	USE_CROND=`${ASK} 'Use standard cron daemon? (y/n)' "--enable-use-crond" "use-crond"`
 	if [ "${USE_CROND}" = "y" ]; then
@@ -178,7 +180,7 @@ then
 	fi
 fi
 
-if [ "${AUTOMATE}" != "" ];
+if [ "${AUTOMATION}" = "y" ];
 then
 	COLLECT_INTERVAL=`${ASK} 'Collection interval (in minutes):' "collect_interval" "collect_interval"`
 	if [ "${COLLECT_INTERVAL}" != "" ]; then
@@ -202,7 +204,7 @@ else
 	SADC_OPT=
 fi
 
-if [ "${AUTOMATE}" != "" ];
+if [ "${AUTOMATION}" = "y" ];
 then
 	# rc directory
 	RCDIR=`${ASK} 'rc directory:' "rcdir" "rcdir"`
@@ -211,7 +213,7 @@ then
 	fi
 fi
 
-if [ "${AUTOMATE}" != "" ];
+if [ "${AUTOMATION}" = "y" ];
 then
 	# Only copy files
 	COPY_ONLY=`${ASK} 'Only copy files when installing sysstat? (y/n)' "--enable-copy-only" "copy-only"`

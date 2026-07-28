@@ -652,11 +652,11 @@ COPY_ONLY
 COLLECT_COUNT
 COLLECT_INTERVAL_SEC
 COLLECT_INTERVAL
-collect_interval
 SU_C_OWNER
 REM_CHOWN
 QUOTE
 CRON_OWNER
+collect_interval
 USE_CROND
 cron_owner
 AUTOMATE_SAR
@@ -783,8 +783,8 @@ enable_compress_manpg
 enable_clean_sa_dir
 enable_automated_sar_reporting
 enable_use_crond
-enable_collect_all
 enable_copy_only
+enable_collect_all
 enable_documentation
 enable_debuginfo
 enable_stripping
@@ -1441,8 +1441,8 @@ Optional Features:
   --disable-automated-sar-reporting
                           do not automate sar reporting via systemd or cron
   --enable-use-crond      use standard cron daemon
-  --enable-collect-all    collect all possible activities
   --enable-copy-only      only copy files when installing
+  --enable-collect-all    collect all possible activities
   --disable-documentation do not install documentation
   --enable-debuginfo      enable debug output (--debuginfo option)
   --disable-stripping     do not strip object files
@@ -5728,15 +5728,15 @@ else case e in #(
 esac
 fi
 
-if test $AUTOMATE_SAR != "yes"; then
-   AUTOMATE_SAR=n
-   AUX_CRON=no
-else
+if test $AUTOMATE_SAR != "no"; then
    AUTOMATE_SAR=y
-   AUX_CRON=yes
+   AUX_AUTO=yes
+else
+   AUTOMATE_SAR=n
+   AUX_AUTO=no
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_CRON" >&5
-printf "%s\n" "$AUX_CRON" >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_AUTO" >&5
+printf "%s\n" "$AUX_AUTO" >&6; }
 
 
 # Crontab owner
@@ -5841,6 +5841,13 @@ else
    COLLECT_COUNT=6
    COPY_ONLY=n
 fi
+
+
+
+
+
+
+
 
 
 # Check whether sadc should collect all possible activities

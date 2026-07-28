@@ -579,14 +579,14 @@ AC_MSG_CHECKING(whether to automate sar reporting)
 AC_ARG_ENABLE(automated-sar-reporting,
 	      AS_HELP_STRING([--disable-automated-sar-reporting],[do not automate sar reporting via systemd or cron]),
 			     AUTOMATE_SAR=$enableval,AUTOMATE_SAR=yes)
-if test $AUTOMATE_SAR != "yes"; then
-   AUTOMATE_SAR=n
-   AUX_CRON=no
-else
+if test $AUTOMATE_SAR != "no"; then
    AUTOMATE_SAR=y
-   AUX_CRON=yes
+   AUX_AUTO=yes
+else
+   AUTOMATE_SAR=n
+   AUX_AUTO=no
 fi
-AC_MSG_RESULT($AUX_CRON)
+AC_MSG_RESULT($AUX_AUTO)
 AC_SUBST(AUTOMATE_SAR)
 
 # Crontab owner
