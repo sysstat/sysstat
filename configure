@@ -645,21 +645,21 @@ STRIP
 WITH_DEBUG
 DFLAGS
 INSTALL_DOC
-COLLECT_ALL
-REM_CHOWN
-QUOTE
-CRON_COUNT
-CRON_INTERVAL_SEC
-CRON_INTERVAL
-SU_C_OWNER
-CRON_OWNER
 COPY_ONLY
 SADC_OPT
+COLLECT_ALL
+COLLECT_COUNT
+COLLECT_INTERVAL_SEC
+COLLECT_INTERVAL
+SU_C_OWNER
+REM_CHOWN
+QUOTE
+CRON_OWNER
 sadc_options
-cron_interval
+collect_interval
 USE_CROND
 cron_owner
-INSTALL_CRON
+AUTOMATE_SAR
 CLEAN_SA_DIR
 COMPRESS_MANPG
 IGNORE_FILE_ATTRIBUTES
@@ -781,7 +781,7 @@ enable_lto
 enable_file_attr
 enable_compress_manpg
 enable_clean_sa_dir
-enable_install_cron
+enable_automated_sar_reporting
 enable_use_crond
 enable_collect_all
 enable_copy_only
@@ -809,7 +809,7 @@ compressafter
 delay_range
 man_group
 cron_owner
-cron_interval
+collect_interval
 sadc_options'
 
 
@@ -1438,7 +1438,8 @@ Optional Features:
   --disable-compress-manpg
                           do not compress sysstat manual pages
   --enable-clean-sa-dir   clean system activity directory
-  --enable-install-cron   install a crontab to start sar
+  --disable-automated-sar-reporting
+                          do not automate sar reporting via systemd or cron
   --enable-use-crond      use standard cron daemon
   --enable-collect-all    collect all possible activities
   --enable-copy-only      only copy files when installing
@@ -1477,8 +1478,8 @@ Some influential environment variables:
               its reports
   man_group   group for manual pages
   cron_owner  crontab owner
-  cron_interval
-              crontab interval
+  collect_interval
+              collection interval (in minutes)
   sadc_options
               options to be passed to sadc
 
@@ -5227,7 +5228,7 @@ echo .
 #  --disable-largefile      omit support for large files
 #  --disable-nls            disable National Language Support
 #  --disable-file-attr      don't set attributes on files being installed
-#  --enable-install-cron    tell sysstat to install cron scripts
+#  --disable-automated-sar-reporting  do not automate sar reporting via systemd or cron
 #  --collect-all            tell sadc to collect all possible data
 #  --enable-clean-sa-dir    clean system activity directory
 #  --disable-compress-manpg do not compress manual pages when installed
@@ -5241,19 +5242,19 @@ echo .
 #  --enable-lto	            compile with Link Time Optimizations
 #
 # Some influential environment variables:
-#  rcdir         directory where startup scripts are installed
-#  sa_lib_dir    sadc, sa1 and sa2 directory
-#  sa_dir        system activity daily datafiles directory
-#  sar_dir       sar binary location. Used only in sa2 shell script
-#  conf_dir      sysstat configuration directory (default is /etc/sysconfig)
-#  conf_file     sysstat configuration file (default is sysstat)
-#  history       number of daily datafiles to keep (default value is 7)
-#  delay_range   maximum delay (in seconds) to wait before sa2 script generates its reports
-#  compressafter number of days after which datafiles are compressed
-#  man_group     group for man pages
-#  cron_owner    crontab owner
-#  cron_interval crontab sampling interval
-#  sadc_options  options to be passed to sadc
+#  rcdir             directory where startup scripts are installed
+#  sa_lib_dir        sadc, sa1 and sa2 directory
+#  sa_dir            system activity daily datafiles directory
+#  sar_dir           sar binary location. Used only in sa2 shell script
+#  conf_dir          sysstat configuration directory (default is /etc/sysconfig)
+#  conf_file         sysstat configuration file (default is sysstat)
+#  history           number of daily datafiles to keep (default value is 7)
+#  delay_range       maximum delay (in seconds) to wait before sa2 script generates its reports
+#  compressafter     number of days after which datafiles are compressed
+#  man_group         group for man pages
+#  cron_owner        crontab owner
+#  collect_interval  collection interval (in minutes)
+#  sadc_options      options to be passed to sadc
 #
 # Fine tuning the installation directories:
 #  --mandir=DIR           man documentation directory [PREFIX/man]
@@ -5715,32 +5716,32 @@ fi
 printf "%s\n" "$AUX_CSD" >&6; }
 
 
-# Start crontab
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether cron should start sar automatically" >&5
-printf %s "checking whether cron should start sar automatically... " >&6; }
-# Check whether --enable-install-cron was given.
-if test ${enable_install_cron+y}
+# Automate sar reporting
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to automate sar reporting" >&5
+printf %s "checking whether to automate sar reporting... " >&6; }
+# Check whether --enable-automated-sar-reporting was given.
+if test ${enable_automated_sar_reporting+y}
 then :
-  enableval=$enable_install_cron; INSTALL_CRON=$enableval
+  enableval=$enable_automated_sar_reporting; AUX_AUTO=$enableval
 else case e in #(
-  e) INSTALL_CRON=n ;;
+  e) AUX_AUTO=yes ;;
 esac
 fi
 
-if test $INSTALL_CRON != "yes"; then
-   INSTALL_CRON=n
-   AUX_CRON=no
+if test $AUX_AUTO != "no"; then
+   AUTOMATE_SAR=y
+   AUX_AUTO=yes
 else
-   INSTALL_CRON=y
-   AUX_CRON=yes
+   AUTOMATE_SAR=n
+   AUX_AUTO=no
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_CRON" >&5
-printf "%s\n" "$AUX_CRON" >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_AUTO" >&5
+printf "%s\n" "$AUX_AUTO" >&6; }
 
 
 # Crontab owner
 CUSR="root"
-if test $INSTALL_CRON = "y"; then
+if test $AUTOMATE_SAR = "y"; then
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking crontab owner" >&5
 printf %s "checking crontab owner... " >&6; }
 
@@ -5795,19 +5796,19 @@ fi
 printf "%s\n" "$UCROND" >&6; }
 
 
-#  Crontab interval
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking crontab interval" >&5
-printf %s "checking crontab interval... " >&6; }
+#  Set collection interval
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking collection interval" >&5
+printf %s "checking collection interval... " >&6; }
 
-   if test x$cron_interval = x""; then
-      CRON_INTERVAL=10
+   if test x$collect_interval = x""; then
+      COLLECT_INTERVAL=10
    else
-      CRON_INTERVAL=$cron_interval
+      COLLECT_INTERVAL=$collect_interval
    fi
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CRON_INTERVAL" >&5
-printf "%s\n" "$CRON_INTERVAL" >&6; }
-   CRON_INTERVAL_SEC=`expr ${CRON_INTERVAL} \* 60`
-   CRON_COUNT=`expr 60 / ${CRON_INTERVAL}`
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $COLLECT_INTERVAL" >&5
+printf "%s\n" "$COLLECT_INTERVAL" >&6; }
+   COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
+   COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
 
 #  Check whether sadc should collect all possible activities
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether sadc should collect all possible activities" >&5
@@ -5835,13 +5836,12 @@ printf "%s\n" "$AUX_COLL" >&6; }
 printf %s "checking options to be passed to sadc... " >&6; }
 
    if test x"$sadc_options" != x""; then
-	SADC_OPT="$sadc_options"
+      SADC_OPT="$sadc_options"
    else
-	SADC_OPT=
+      SADC_OPT=
    fi
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
 printf "%s\n" "$SADC_OPT" >&6; }
-
 
 #  Check whether files should only be copied
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
@@ -5864,17 +5864,20 @@ fi
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $OCOPY" >&5
 printf "%s\n" "$OCOPY" >&6; }
 
-
 else
    CRON_OWNER="root"
-   SU_C_OWNER=""
    QUOTE=""
    REM_CHOWN="# REM_CHOWN"
-   CRON_INTERVAL=10
-   CRON_INTERVAL_SEC=600
-   CRON_COUNT=6
+   SU_C_OWNER=""
+   COLLECT_INTERVAL=10
+   COLLECT_INTERVAL_SEC=600
+   COLLECT_COUNT=6
    COLLECT_ALL=""
+   SADC_OPT=""
+   COPY_ONLY=n
 fi
+
+
 
 
 
@@ -7224,5 +7227,6 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Compiler:			$CC
    Compiler flags:		$CFLAGS
    Linker flags:		$LDFLAGS
+   Automate sar reporting:	$AUX_AUTO
 "
 

@@ -1,0 +1,7 @@
+
+Answer y to disable automatic sar reporting.
+By default the sa1 data collector and sa2 report generator are run
+periodically using systemd timers if systemd is available, or via
+cron otherwise, and system activity daily data files are created
+in the /var/log/sa directory.
+If you answer y here, none of this will happen (default answer is n).
