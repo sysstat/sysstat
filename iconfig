@@ -184,19 +184,22 @@ if [ "${AUTOMATION}" = "y" ];
 then
 	COLLECT_INTERVAL=`${ASK} 'Collection interval (in minutes):' "collect_interval" "collect_interval"`
 	if [ "${COLLECT_INTERVAL}" != "" ]; then
-		COLLECT_INTERVAL="collect_interval=${COLLECT_INTERVAL} "
+		AUTOMATE="${AUTOMATE}collect_interval=${COLLECT_INTERVAL} "
 	fi
 fi
 
-COLLECT_ALL=`${ASK} 'Should sadc collect optional activities? (y/n)' "--enable-collect-all" "collect-all"`
-if [ "${COLLECT_ALL}" = "y" ]; then
-	COLLECT_ALL="--enable-collect-all "
-else
-	COLLECT_ALL=""
-	echo "Parameter --enable-collect-all is NOT set"
+if [ "${AUTOMATION}" = "y" ];
+then
+	COLLECT_ALL=`${ASK} 'Should sadc collect optional activities? (y/n)' "--enable-collect-all" "collect-all"`
+	if [ "${COLLECT_ALL}" = "y" ]; then
+		AUTOMATE="${AUTOMATE}--enable-collect-all "
+	else
+		COLLECT_ALL=""
+		echo "Parameter --enable-collect-all is NOT set"
+	fi
 fi
 
-if [ "${COLLECT_ALL}" != "y" ];
+if [ "${AUTOMATION}" = "y" -a "${COLLECT_ALL}" != "y" ];
 then
 	# Optional args for sadc
 	SADC_OPT=`${ASK} 'Options to be passed to sadc:' "sadc_options" "sadc_options"`
@@ -264,10 +267,10 @@ fi
 echo
 echo -n "${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
-${AUTOMATE}${USE_CROND}${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL}"
+${AUTOMATE}${USE_CROND}${RCDIR}"
 if [ "${SADC_OPT}" != "" ];
 then
-	echo -n "sadc_options=\"${SADC_OPT}\""
+	echo -n "sadc_options=\"${SADC_OPT}\" "
 fi
 echo "${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS}${PCP}${STRIP}${COPY_ONLY}"
 echo
@@ -275,6 +278,6 @@ echo
 ${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO} \
 ${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${AUTOMATE}${USE_CROND} \
-${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL} \
+${RCDIR} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}

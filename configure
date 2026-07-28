@@ -645,10 +645,9 @@ STRIP
 WITH_DEBUG
 DFLAGS
 INSTALL_DOC
-SADC_OPT
-sadc_options
-COLLECT_ALL
 COPY_ONLY
+SADC_OPT
+COLLECT_ALL
 COLLECT_COUNT
 COLLECT_INTERVAL_SEC
 COLLECT_INTERVAL
@@ -656,6 +655,7 @@ SU_C_OWNER
 REM_CHOWN
 QUOTE
 CRON_OWNER
+sadc_options
 collect_interval
 USE_CROND
 cron_owner
@@ -783,8 +783,8 @@ enable_compress_manpg
 enable_clean_sa_dir
 enable_automated_sar_reporting
 enable_use_crond
-enable_copy_only
 enable_collect_all
+enable_copy_only
 enable_documentation
 enable_debuginfo
 enable_stripping
@@ -1441,8 +1441,8 @@ Optional Features:
   --disable-automated-sar-reporting
                           do not automate sar reporting via systemd or cron
   --enable-use-crond      use standard cron daemon
-  --enable-copy-only      only copy files when installing
   --enable-collect-all    collect all possible activities
+  --enable-copy-only      only copy files when installing
   --disable-documentation do not install documentation
   --enable-debuginfo      enable debug output (--debuginfo option)
   --disable-stripping     do not strip object files
@@ -5722,13 +5722,13 @@ printf %s "checking whether to automate sar reporting... " >&6; }
 # Check whether --enable-automated-sar-reporting was given.
 if test ${enable_automated_sar_reporting+y}
 then :
-  enableval=$enable_automated_sar_reporting; AUTOMATE_SAR=$enableval
+  enableval=$enable_automated_sar_reporting; AUX_AUTO=$enableval
 else case e in #(
-  e) AUTOMATE_SAR=yes ;;
+  e) AUX_AUTO=yes ;;
 esac
 fi
 
-if test $AUTOMATE_SAR != "no"; then
+if test $AUX_AUTO != "no"; then
    AUTOMATE_SAR=y
    AUX_AUTO=yes
 else
@@ -5810,6 +5810,39 @@ printf "%s\n" "$COLLECT_INTERVAL" >&6; }
    COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
    COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
 
+#  Check whether sadc should collect all possible activities
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether sadc should collect all possible activities" >&5
+printf %s "checking whether sadc should collect all possible activities... " >&6; }
+   # Check whether --enable-collect-all was given.
+if test ${enable_collect_all+y}
+then :
+  enableval=$enable_collect_all; COLLECT_ALL=$enableval
+else case e in #(
+  e) COLLECT_ALL=n ;;
+esac
+fi
+
+   if test $COLLECT_ALL != "yes"; then
+      COLLECT_ALL=""
+      AUX_COLL=no
+   else
+      COLLECT_ALL="-S XALL"
+      AUX_COLL=yes
+   fi
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_COLL" >&5
+printf "%s\n" "$AUX_COLL" >&6; }
+
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking options to be passed to sadc" >&5
+printf %s "checking options to be passed to sadc... " >&6; }
+
+   if test x"$sadc_options" != x""; then
+      SADC_OPT="$sadc_options"
+   else
+      SADC_OPT=
+   fi
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
+printf "%s\n" "$SADC_OPT" >&6; }
+
 #  Check whether files should only be copied
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
 printf %s "checking whether files should only be copied... " >&6; }
@@ -5839,6 +5872,8 @@ else
    COLLECT_INTERVAL=10
    COLLECT_INTERVAL_SEC=600
    COLLECT_COUNT=6
+   COLLECT_ALL=""
+   SADC_OPT=""
    COPY_ONLY=n
 fi
 
@@ -5850,40 +5885,6 @@ fi
 
 
 
-# Check whether sadc should collect all possible activities
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether sadc should collect all possible activities" >&5
-printf %s "checking whether sadc should collect all possible activities... " >&6; }
-# Check whether --enable-collect-all was given.
-if test ${enable_collect_all+y}
-then :
-  enableval=$enable_collect_all; COLLECT_ALL=$enableval
-else case e in #(
-  e) COLLECT_ALL=n ;;
-esac
-fi
-
-if test $COLLECT_ALL != "yes"; then
-   COLLECT_ALL=""
-   AUX_COLL=no
-else
-   COLLECT_ALL="-S XALL"
-   AUX_COLL=yes
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_COLL" >&5
-printf "%s\n" "$AUX_COLL" >&6; }
-
-COLLECT_ALL=""
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking options to be passed to sadc" >&5
-printf %s "checking options to be passed to sadc... " >&6; }
-
-if test x"$sadc_options" != x""; then
-   SADC_OPT="$sadc_options"
-else
-   SADC_OPT=
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
-printf "%s\n" "$SADC_OPT" >&6; }
 
 
 # Check whether documentation should be installed
@@ -7226,5 +7227,6 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Compiler:			$CC
    Compiler flags:		$CFLAGS
    Linker flags:		$LDFLAGS
+   Automate sar reporting:	$AUX_AUTO
 "
 

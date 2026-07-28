@@ -578,8 +578,8 @@ AC_SUBST(CLEAN_SA_DIR)
 AC_MSG_CHECKING(whether to automate sar reporting)
 AC_ARG_ENABLE(automated-sar-reporting,
 	      AS_HELP_STRING([--disable-automated-sar-reporting],[do not automate sar reporting via systemd or cron]),
-			     AUTOMATE_SAR=$enableval,AUTOMATE_SAR=yes)
-if test $AUTOMATE_SAR != "no"; then
+			     AUX_AUTO=$enableval,AUX_AUTO=yes)
+if test $AUX_AUTO != "no"; then
    AUTOMATE_SAR=y
    AUX_AUTO=yes
 else
@@ -646,6 +646,29 @@ if test $AUTOMATE_SAR = "y"; then
    COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
    COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
 
+#  Check whether sadc should collect all possible activities
+   AC_MSG_CHECKING(whether sadc should collect all possible activities)
+   AC_ARG_ENABLE(collect-all,
+	         AS_HELP_STRING([--enable-collect-all],[collect all possible activities]),
+			        COLLECT_ALL=$enableval,COLLECT_ALL=n)
+   if test $COLLECT_ALL != "yes"; then
+      COLLECT_ALL=""
+      AUX_COLL=no
+   else
+      COLLECT_ALL="-S XALL"
+      AUX_COLL=yes
+   fi
+   AC_MSG_RESULT($AUX_COLL)
+
+   AC_MSG_CHECKING(options to be passed to sadc)
+   AC_ARG_VAR([sadc_options],[options to be passed to sadc])
+   if test x"$sadc_options" != x""; then
+      SADC_OPT="$sadc_options"
+   else
+      SADC_OPT=
+   fi
+   AC_MSG_RESULT($SADC_OPT)
+
 #  Check whether files should only be copied
    AC_MSG_CHECKING(whether files should only be copied)
    AC_ARG_ENABLE(copy-only,
@@ -667,6 +690,8 @@ else
    COLLECT_INTERVAL=10
    COLLECT_INTERVAL_SEC=600
    COLLECT_COUNT=6
+   COLLECT_ALL=""
+   SADC_OPT=""
    COPY_ONLY=n
 fi
 AC_SUBST(CRON_OWNER)
@@ -676,33 +701,9 @@ AC_SUBST(SU_C_OWNER)
 AC_SUBST(COLLECT_INTERVAL)
 AC_SUBST(COLLECT_INTERVAL_SEC)
 AC_SUBST(COLLECT_COUNT)
-AC_SUBST(COPY_ONLY)
-
-# Check whether sadc should collect all possible activities
-AC_MSG_CHECKING(whether sadc should collect all possible activities)
-AC_ARG_ENABLE(collect-all,
-	      AS_HELP_STRING([--enable-collect-all],[collect all possible activities]),
-			     COLLECT_ALL=$enableval,COLLECT_ALL=n)
-if test $COLLECT_ALL != "yes"; then
-   COLLECT_ALL=""
-   AUX_COLL=no
-else
-   COLLECT_ALL="-S XALL"
-   AUX_COLL=yes
-fi
-AC_MSG_RESULT($AUX_COLL)
 AC_SUBST(COLLECT_ALL)
-COLLECT_ALL=""
-
-AC_MSG_CHECKING(options to be passed to sadc)
-AC_ARG_VAR([sadc_options],[options to be passed to sadc])
-if test x"$sadc_options" != x""; then
-   SADC_OPT="$sadc_options"
-else
-   SADC_OPT=
-fi
-AC_MSG_RESULT($SADC_OPT)
 AC_SUBST(SADC_OPT)
+AC_SUBST(COPY_ONLY)
 
 # Check whether documentation should be installed
 AC_MSG_CHECKING(whether documentation should be installed)
@@ -798,4 +799,5 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Compiler:			$CC
    Compiler flags:		$CFLAGS
    Linker flags:		$LDFLAGS
+   Automate sar reporting:	$AUX_AUTO
 "
