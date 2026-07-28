@@ -260,15 +260,17 @@ is restarted (as it is the case here between `12:00:00 PM` and `03:40:01 PM`),
 the `sysstat` shell script must be called by the system, so that the
 LINUX RESTART message can be inserted into the daily data file, indicating
 that the relevant kernel counters have been reinitialized...  
-You can install the `sysstat` script by hand in the relevant startup
-directory, or you can ask sysstat to do it for you during configuration
-stage by entering:
+Starting with sysstat version 12.8.0 everything is done by default during
+the 'make install' stage.__
+With older versions you can install the `sysstat` script by hand in the
+relevant startup directory, or you can ask sysstat to do it for you during
+configuration stage by entering:
 ```
-$ ./configure --enable-automated-sar-reporting
+$ ./configure --enable-install-cron
 ```
 Or you can answer 'y' to the question:
 ```
-Automate sar reporting (via systemd or cron)? (y/n) [--enable-automated-sar-reporting]
+Set crontab to start sar automatically? (y/n) [--enable-install-cron]
 ```
 if you use the Interactive Configuration script (iconfig).  
 Then compile sysstat as usual and run 'make install' as the last stage.
