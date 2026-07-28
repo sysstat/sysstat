@@ -237,7 +237,7 @@ echo .
 #  --disable-largefile      omit support for large files
 #  --disable-nls            disable National Language Support
 #  --disable-file-attr      don't set attributes on files being installed
-#  --enable-automated-sar-reporting  automate sar reporting via systemd or cron
+#  --disable-automated-sar-reporting  do not automate sar reporting via systemd or cron
 #  --collect-all            tell sadc to collect all possible data
 #  --enable-clean-sa-dir    clean system activity directory
 #  --disable-compress-manpg do not compress manual pages when installed
@@ -577,8 +577,8 @@ AC_SUBST(CLEAN_SA_DIR)
 # Automate sar reporting
 AC_MSG_CHECKING(whether to automate sar reporting)
 AC_ARG_ENABLE(automated-sar-reporting,
-	      AS_HELP_STRING([--enable-automated-sar-reporting],[automate sar reporting via systemd or cron]),
-			     AUTOMATE_SAR=$enableval,AUTOMATE_SAR=n)
+	      AS_HELP_STRING([--disable-automated-sar-reporting],[do not automate sar reporting via systemd or cron]),
+			     AUTOMATE_SAR=$enableval,AUTOMATE_SAR=yes)
 if test $AUTOMATE_SAR != "yes"; then
    AUTOMATE_SAR=n
    AUX_CRON=no

@@ -1438,8 +1438,8 @@ Optional Features:
   --disable-compress-manpg
                           do not compress sysstat manual pages
   --enable-clean-sa-dir   clean system activity directory
-  --enable-automated-sar-reporting
-                          automate sar reporting via systemd or cron
+  --disable-automated-sar-reporting
+                          do not automate sar reporting via systemd or cron
   --enable-use-crond      use standard cron daemon
   --enable-collect-all    collect all possible activities
   --enable-copy-only      only copy files when installing
@@ -5228,7 +5228,7 @@ echo .
 #  --disable-largefile      omit support for large files
 #  --disable-nls            disable National Language Support
 #  --disable-file-attr      don't set attributes on files being installed
-#  --enable-automated-sar-reporting  automate sar reporting via systemd or cron
+#  --disable-automated-sar-reporting  do not automate sar reporting via systemd or cron
 #  --collect-all            tell sadc to collect all possible data
 #  --enable-clean-sa-dir    clean system activity directory
 #  --disable-compress-manpg do not compress manual pages when installed
@@ -5724,7 +5724,7 @@ if test ${enable_automated_sar_reporting+y}
 then :
   enableval=$enable_automated_sar_reporting; AUTOMATE_SAR=$enableval
 else case e in #(
-  e) AUTOMATE_SAR=n ;;
+  e) AUTOMATE_SAR=yes ;;
 esac
 fi
 
