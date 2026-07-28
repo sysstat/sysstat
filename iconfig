@@ -150,24 +150,24 @@ else
 	echo "Parameter --disable-file-attr is NOT set"
 fi
 
-# Crontab
-CRON=`${ASK} 'Set crontab to start sar automatically? (y/n)' "--enable-install-cron" "install-cron"`
-if [ "${CRON}" = "y" ]; then
-	CRON="--enable-install-cron "
+# Automate sar reporting
+AUTOMATE=`${ASK} 'Automate sar reporting (via systemd or cron)? (y/n)' "--enable-automated-sar-reporting" "automated-sar-reporting"`
+if [ "${AUTOMATE}" = "y" ]; then
+	AUTOMATE="--enable-automated-sar-reporting "
 else
-	CRON=""
-	echo "Parameter --enable-install-cron is NOT set"
+	AUTOMATE=""
+	echo "Parameter --enable-automated-sar-reporting is NOT set"
 fi
 
-if [ "${CRON}" != "" ];
+if [ "${AUTOMATE}" != "" ];
 then
 	CRON_OWNER=`${ASK} 'Crontab owner:' "cron_owner" "cron_owner"`
 	if [ "${CRON_OWNER}" != "" ]; then
-		CRON="${CRON}cron_owner=${CRON_OWNER} "
+		AUTOMATE="${AUTOMATE}cron_owner=${CRON_OWNER} "
 	fi
 fi
 
-if [ "${CRON}" != "" ];
+if [ "${AUTOMATE}" != "" ];
 then
 	USE_CROND=`${ASK} 'Use standard cron daemon? (y/n)' "--enable-use-crond" "use-crond"`
 	if [ "${USE_CROND}" = "y" ]; then
@@ -178,9 +178,12 @@ then
 	fi
 fi
 
-COLLECT_INTERVAL=`${ASK} 'Collection interval (in minutes):' "collect_interval" "collect_interval"`
-if [ "${COLLECT_INTERVAL}" != "" ]; then
-	COLLECT_INTERVAL="collect_interval=${COLLECT_INTERVAL} "
+if [ "${AUTOMATE}" != "" ];
+then
+	COLLECT_INTERVAL=`${ASK} 'Collection interval (in minutes):' "collect_interval" "collect_interval"`
+	if [ "${COLLECT_INTERVAL}" != "" ]; then
+		COLLECT_INTERVAL="collect_interval=${COLLECT_INTERVAL} "
+	fi
 fi
 
 COLLECT_ALL=`${ASK} 'Should sadc collect optional activities? (y/n)' "--enable-collect-all" "collect-all"`
@@ -199,19 +202,25 @@ else
 	SADC_OPT=
 fi
 
-# rc directory
-RCDIR=`${ASK} 'rc directory:' "rcdir" "rcdir"`
-if [ "${RCDIR}" != "" ]; then
-        RCDIR="rcdir=${RCDIR} "
+if [ "${AUTOMATE}" != "" ];
+then
+	# rc directory
+	RCDIR=`${ASK} 'rc directory:' "rcdir" "rcdir"`
+	if [ "${RCDIR}" != "" ]; then
+	        RCDIR="rcdir=${RCDIR} "
+	fi
 fi
 
-# Only copy files
-COPY_ONLY=`${ASK} 'Only copy files when installing sysstat? (y/n)' "--enable-copy-only" "copy-only"`
-if [ "${COPY_ONLY}" = "y" ]; then
-	COPY_ONLY="--enable-copy-only "
-else
-	COPY_ONLY=""
-	echo "Parameter --enable-copy-only is NOT set"
+if [ "${AUTOMATE}" != "" ];
+then
+	# Only copy files
+	COPY_ONLY=`${ASK} 'Only copy files when installing sysstat? (y/n)' "--enable-copy-only" "copy-only"`
+	if [ "${COPY_ONLY}" = "y" ]; then
+		COPY_ONLY="--enable-copy-only "
+	else
+		COPY_ONLY=""
+		echo "Parameter --enable-copy-only is NOT set"
+	fi
 fi
 
 # Compress manual pages
@@ -253,7 +262,7 @@ fi
 echo
 echo -n "${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO}${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR} \
-${CRON}${USE_CROND}${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL}"
+${AUTOMATE}${USE_CROND}${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL}"
 if [ "${SADC_OPT}" != "" ];
 then
 	echo -n "sadc_options=\"${SADC_OPT}\""
@@ -263,7 +272,7 @@ echo
 
 ${srcdir}/configure ${PREFIX}${SA_LIB_DIR}${SA_DIR}${SYSCONFIG_DIR}${SYSCONFIG_FILE} \
 ${CLEAN_SA_DIR}${NLS}${LTO} \
-${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${CRON}${USE_CROND} \
+${HISTORY}${DELAY_RANGE}${COMPRESSAFTER}${MAN}${IGNORE_FILE_ATTR}${AUTOMATE}${USE_CROND} \
 ${RCDIR}${COLLECT_INTERVAL}${COLLECT_ALL} \
 sadc_options="${SADC_OPT}" ${COMPRESSMANPG}${INSTALL_DOC}${DEBUGINFO}${SENSORS} \
 ${PCP}${STRIP}${COPY_ONLY}

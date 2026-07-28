@@ -237,7 +237,7 @@ echo .
 #  --disable-largefile      omit support for large files
 #  --disable-nls            disable National Language Support
 #  --disable-file-attr      don't set attributes on files being installed
-#  --enable-install-cron    tell sysstat to install cron scripts
+#  --enable-automated-sar-reporting  automate sar reporting via systemd or cron
 #  --collect-all            tell sadc to collect all possible data
 #  --enable-clean-sa-dir    clean system activity directory
 #  --disable-compress-manpg do not compress manual pages when installed
@@ -574,24 +574,24 @@ fi
 AC_MSG_RESULT($AUX_CSD)
 AC_SUBST(CLEAN_SA_DIR)
 
-# Start crontab
-AC_MSG_CHECKING(whether cron should start sar automatically)
-AC_ARG_ENABLE(install-cron,
-	      AS_HELP_STRING([--enable-install-cron],[install a crontab to start sar]),
-			     INSTALL_CRON=$enableval,INSTALL_CRON=n)
-if test $INSTALL_CRON != "yes"; then
-   INSTALL_CRON=n
+# Automate sar reporting
+AC_MSG_CHECKING(whether to automate sar reporting)
+AC_ARG_ENABLE(automated-sar-reporting,
+	      AS_HELP_STRING([--enable-automated-sar-reporting],[automate sar reporting via systemd or cron]),
+			     AUTOMATE_SAR=$enableval,AUTOMATE_SAR=n)
+if test $AUTOMATE_SAR != "yes"; then
+   AUTOMATE_SAR=n
    AUX_CRON=no
 else
-   INSTALL_CRON=y
+   AUTOMATE_SAR=y
    AUX_CRON=yes
 fi
 AC_MSG_RESULT($AUX_CRON)
-AC_SUBST(INSTALL_CRON)
+AC_SUBST(AUTOMATE_SAR)
 
 # Crontab owner
 CUSR="root"
-if test $INSTALL_CRON = "y"; then
+if test $AUTOMATE_SAR = "y"; then
    AC_MSG_CHECKING(crontab owner)
    AC_ARG_VAR([cron_owner],[crontab owner])
    if test x$cron_owner = x""; then
@@ -634,32 +634,49 @@ if test $INSTALL_CRON = "y"; then
    AC_MSG_RESULT($UCROND)
    AC_SUBST(USE_CROND)
 
+#  Set collection interval
+   AC_MSG_CHECKING(collection interval)
+   AC_ARG_VAR([collect_interval],[collection interval (in minutes)])
+   if test x$collect_interval = x""; then
+      COLLECT_INTERVAL=10
+   else
+      COLLECT_INTERVAL=$collect_interval
+   fi
+   AC_MSG_RESULT($COLLECT_INTERVAL)
+   COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
+   COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
+
+#  Check whether files should only be copied
+   AC_MSG_CHECKING(whether files should only be copied)
+   AC_ARG_ENABLE(copy-only,
+	         AS_HELP_STRING([--enable-copy-only],[only copy files when installing]),
+			        OCOPY=$enableval,OCOPY=no)
+   if test $OCOPY != "yes"; then
+      COPY_ONLY=n
+      OCOPY=no
+   else
+      COPY_ONLY=y
+   fi
+   AC_MSG_RESULT($OCOPY)
+
 else
    CRON_OWNER="root"
    QUOTE=""
    REM_CHOWN="# REM_CHOWN"
    SU_C_OWNER=""
+   COLLECT_INTERVAL=10
+   COLLECT_INTERVAL_SEC=600
+   COLLECT_COUNT=6
+   COPY_ONLY=n
 fi
 AC_SUBST(CRON_OWNER)
 AC_SUBST(QUOTE)
 AC_SUBST(REM_CHOWN)
 AC_SUBST(SU_C_OWNER)
-
-# Set collection interval
-AC_MSG_CHECKING(collection interval)
-AC_ARG_VAR([collect_interval],[collection interval (in minutes)])
-if test x$collect_interval = x""; then
-   COLLECT_INTERVAL=10
-else
-   COLLECT_INTERVAL=$collect_interval
-fi
-AC_MSG_RESULT($COLLECT_INTERVAL)
 AC_SUBST(COLLECT_INTERVAL)
-
-COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
-COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
 AC_SUBST(COLLECT_INTERVAL_SEC)
 AC_SUBST(COLLECT_COUNT)
+AC_SUBST(COPY_ONLY)
 
 # Check whether sadc should collect all possible activities
 AC_MSG_CHECKING(whether sadc should collect all possible activities)
@@ -686,20 +703,6 @@ else
 fi
 AC_MSG_RESULT($SADC_OPT)
 AC_SUBST(SADC_OPT)
-
-# Check whether files should only be copied
-AC_MSG_CHECKING(whether files should only be copied)
-AC_ARG_ENABLE(copy-only,
-	      AS_HELP_STRING([--enable-copy-only],[only copy files when installing]),
-			     OCOPY=$enableval,OCOPY=no)
-if test $OCOPY != "yes"; then
-   COPY_ONLY=n
-   OCOPY=no
-else
-   COPY_ONLY=y
-fi
-AC_MSG_RESULT($OCOPY)
-AC_SUBST(COPY_ONLY)
 
 # Check whether documentation should be installed
 AC_MSG_CHECKING(whether documentation should be installed)

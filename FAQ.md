@@ -264,11 +264,11 @@ You can install the `sysstat` script by hand in the relevant startup
 directory, or you can ask sysstat to do it for you during configuration
 stage by entering:
 ```
-$ ./configure --enable-install-cron
+$ ./configure --enable-automated-sar-reporting
 ```
 Or you can answer 'y' to the question:
 ```
-Set crontab to start sar automatically? (y/n) [--enable-install-cron]
+Automate sar reporting (via systemd or cron)? (y/n) [--enable-automated-sar-reporting]
 ```
 if you use the Interactive Configuration script (iconfig).  
 Then compile sysstat as usual and run 'make install' as the last stage.

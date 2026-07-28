@@ -1,0 +1,6 @@
+
+You may enter here the collection interval (in minutes) that the
+configuration script will use.
+Default value is 10. This means that sadc (the system activity data
+collector) will take a snapshot of the system counters every 10 minutes.
+Other reasonable values could be 5, 15 or 20 minutes.

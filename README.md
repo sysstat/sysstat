@@ -146,7 +146,7 @@ You can set several variables and parameters on the command line. For example yo
 can enter the following option to activate data collecting (either using cron or systemd):
 
 ```
-$ ./configure --enable-install-cron
+$ ./configure --enable-automated-sar-reporting
 ```
 
 Enter `./configure --help` to display all possible options.

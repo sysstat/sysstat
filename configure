@@ -645,10 +645,10 @@ STRIP
 WITH_DEBUG
 DFLAGS
 INSTALL_DOC
-COPY_ONLY
 SADC_OPT
 sadc_options
 COLLECT_ALL
+COPY_ONLY
 COLLECT_COUNT
 COLLECT_INTERVAL_SEC
 COLLECT_INTERVAL
@@ -659,7 +659,7 @@ QUOTE
 CRON_OWNER
 USE_CROND
 cron_owner
-INSTALL_CRON
+AUTOMATE_SAR
 CLEAN_SA_DIR
 COMPRESS_MANPG
 IGNORE_FILE_ATTRIBUTES
@@ -781,7 +781,7 @@ enable_lto
 enable_file_attr
 enable_compress_manpg
 enable_clean_sa_dir
-enable_install_cron
+enable_automated_sar_reporting
 enable_use_crond
 enable_collect_all
 enable_copy_only
@@ -1438,7 +1438,8 @@ Optional Features:
   --disable-compress-manpg
                           do not compress sysstat manual pages
   --enable-clean-sa-dir   clean system activity directory
-  --enable-install-cron   install a crontab to start sar
+  --enable-automated-sar-reporting
+                          automate sar reporting via systemd or cron
   --enable-use-crond      use standard cron daemon
   --enable-collect-all    collect all possible activities
   --enable-copy-only      only copy files when installing
@@ -5227,7 +5228,7 @@ echo .
 #  --disable-largefile      omit support for large files
 #  --disable-nls            disable National Language Support
 #  --disable-file-attr      don't set attributes on files being installed
-#  --enable-install-cron    tell sysstat to install cron scripts
+#  --enable-automated-sar-reporting  automate sar reporting via systemd or cron
 #  --collect-all            tell sadc to collect all possible data
 #  --enable-clean-sa-dir    clean system activity directory
 #  --disable-compress-manpg do not compress manual pages when installed
@@ -5715,23 +5716,23 @@ fi
 printf "%s\n" "$AUX_CSD" >&6; }
 
 
-# Start crontab
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether cron should start sar automatically" >&5
-printf %s "checking whether cron should start sar automatically... " >&6; }
-# Check whether --enable-install-cron was given.
-if test ${enable_install_cron+y}
+# Automate sar reporting
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to automate sar reporting" >&5
+printf %s "checking whether to automate sar reporting... " >&6; }
+# Check whether --enable-automated-sar-reporting was given.
+if test ${enable_automated_sar_reporting+y}
 then :
-  enableval=$enable_install_cron; INSTALL_CRON=$enableval
+  enableval=$enable_automated_sar_reporting; AUTOMATE_SAR=$enableval
 else case e in #(
-  e) INSTALL_CRON=n ;;
+  e) AUTOMATE_SAR=n ;;
 esac
 fi
 
-if test $INSTALL_CRON != "yes"; then
-   INSTALL_CRON=n
+if test $AUTOMATE_SAR != "yes"; then
+   AUTOMATE_SAR=n
    AUX_CRON=no
 else
-   INSTALL_CRON=y
+   AUTOMATE_SAR=y
    AUX_CRON=yes
 fi
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $AUX_CRON" >&5
@@ -5740,7 +5741,7 @@ printf "%s\n" "$AUX_CRON" >&6; }
 
 # Crontab owner
 CUSR="root"
-if test $INSTALL_CRON = "y"; then
+if test $AUTOMATE_SAR = "y"; then
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking crontab owner" >&5
 printf %s "checking crontab owner... " >&6; }
 
@@ -5795,33 +5796,51 @@ fi
 printf "%s\n" "$UCROND" >&6; }
 
 
+#  Set collection interval
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking collection interval" >&5
+printf %s "checking collection interval... " >&6; }
+
+   if test x$collect_interval = x""; then
+      COLLECT_INTERVAL=10
+   else
+      COLLECT_INTERVAL=$collect_interval
+   fi
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $COLLECT_INTERVAL" >&5
+printf "%s\n" "$COLLECT_INTERVAL" >&6; }
+   COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
+   COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
+
+#  Check whether files should only be copied
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
+printf %s "checking whether files should only be copied... " >&6; }
+   # Check whether --enable-copy-only was given.
+if test ${enable_copy_only+y}
+then :
+  enableval=$enable_copy_only; OCOPY=$enableval
+else case e in #(
+  e) OCOPY=no ;;
+esac
+fi
+
+   if test $OCOPY != "yes"; then
+      COPY_ONLY=n
+      OCOPY=no
+   else
+      COPY_ONLY=y
+   fi
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $OCOPY" >&5
+printf "%s\n" "$OCOPY" >&6; }
+
 else
    CRON_OWNER="root"
    QUOTE=""
    REM_CHOWN="# REM_CHOWN"
    SU_C_OWNER=""
-fi
-
-
-
-
-
-# Set collection interval
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking collection interval" >&5
-printf %s "checking collection interval... " >&6; }
-
-if test x$collect_interval = x""; then
    COLLECT_INTERVAL=10
-else
-   COLLECT_INTERVAL=$collect_interval
+   COLLECT_INTERVAL_SEC=600
+   COLLECT_COUNT=6
+   COPY_ONLY=n
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $COLLECT_INTERVAL" >&5
-printf "%s\n" "$COLLECT_INTERVAL" >&6; }
-
-
-COLLECT_INTERVAL_SEC=`expr ${COLLECT_INTERVAL} \* 60`
-COLLECT_COUNT=`expr 60 / ${COLLECT_INTERVAL}`
-
 
 
 # Check whether sadc should collect all possible activities
@@ -5858,28 +5877,6 @@ else
 fi
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SADC_OPT" >&5
 printf "%s\n" "$SADC_OPT" >&6; }
-
-
-# Check whether files should only be copied
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether files should only be copied" >&5
-printf %s "checking whether files should only be copied... " >&6; }
-# Check whether --enable-copy-only was given.
-if test ${enable_copy_only+y}
-then :
-  enableval=$enable_copy_only; OCOPY=$enableval
-else case e in #(
-  e) OCOPY=no ;;
-esac
-fi
-
-if test $OCOPY != "yes"; then
-   COPY_ONLY=n
-   OCOPY=no
-else
-   COPY_ONLY=y
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $OCOPY" >&5
-printf "%s\n" "$OCOPY" >&6; }
 
 
 # Check whether documentation should be installed
