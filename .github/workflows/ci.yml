@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ 'master' ]
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "Minimal build"
+            pcp: false
+            pcp_repo: "none"
+            sensors: false
+          - name: "Build with sensors"
+            pcp: false
+            pcp_repo: "none"
+            sensors: true
+          - name: "Build with PCP"
+            pcp: true
+            pcp_repo: "distro"
+            sensors: true
+          - name: "Build with latest PCP"
+            pcp: true
+            pcp_repo: "upstream"
+            sensors: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install base dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext libxml2-utils
+
+      - name: Add upstream PCP repository
+        if: matrix.pcp_repo == 'upstream'
+        run: |
+          curl -s https://packagecloud.io/install/repositories/performancecopilot/pcp/script.deb.sh | sudo bash
+
+      - name: Install sensors library
+        if: matrix.sensors && !matrix.pcp
+        run: |
+          sudo apt-get install -y libsensors-dev
+
+      - name: Install PCP development libraries
+        if: matrix.pcp
+        run: |
+          sudo apt-get install -y pcp libpcp3-dev libpcp-import1-dev libsensors-dev
+
+      - name: Configure
+        run: ./do_test conf
+
+      - name: Build
+        run: ./do_test comp
+
+      - name: Test
+        run: ./do_test sim
+
+      - name: Extra tests
+        run: make extratest
+
+      - name: Rebuild with minimal config
+        run: |
+          make distclean
+          ./configure --disable-nls --disable-sensors --disable-pcp \
+            sa_lib_dir=. sar_dir=. conf_dir=. conf_file=sysstat.sysconfig \
+            sa_dir=tests --enable-debuginfo --disable-stripping
+          make TFLAGS="-DTEST -DPRE_TESTDIR=\"${PWD}\""
+
+      - name: Upload test outputs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-outputs-${{ matrix.pcp_repo }}
+          path: |
+            tests/results.tmp
+            tests/LAST
+            tests/out*.tmp
+            tests/extra/out*.tmp
