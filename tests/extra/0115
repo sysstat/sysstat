@@ -1,5 +1,5 @@
 . tests/variables
-if [ "$HAVE_PCP" = "y" ]; then
+if [ "$HAVE_PCP" = "y" -a -f tests/extra/pcpar-ssr.meta ]; then
 #	Don't check resulting output as it depends on pmdumplog command.
 	LC_ALL=C pmdumplog -a tests/extra/pcpar-ssr > tests/extra/out.pcpar-ssr.tmp
 else
