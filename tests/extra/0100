@@ -1,6 +1,8 @@
 . tests/variables
 if [ "$HAVE_PCP" = "y" -a -f tests/pcpar.meta ]; then
-	LC_ALL=C pmdumplog -a tests/pcpar | grep -v pmlogger > tests/extra/out.pcpar.tmp && diff -u tests/extra/expected.pcpar tests/extra/out.pcpar.tmp
+	# Filter power metrics - sensors is an optional build dependency
+	METRICS=$(PCP_DERIVED_CONFIG= LC_ALL=C pminfo -a tests/pcpar 2>/dev/null | grep -v 'power\.' | LC_ALL=C sort)
+	(PCP_DERIVED_CONFIG= LC_ALL=C TZ=GMT pmdumplog -l tests/pcpar && PCP_DERIVED_CONFIG= LC_ALL=C TZ=GMT pminfo -a tests/pcpar -dfm $METRICS) 2>/dev/null > tests/extra/out.pcpar.tmp && diff -u tests/extra/expected.pcpar tests/extra/out.pcpar.tmp
 else
 	echo Skipped
 fi
