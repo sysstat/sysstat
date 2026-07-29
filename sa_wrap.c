@@ -45,8 +45,8 @@ extern struct record_header record_hdr;
 void *reallocate_buffer(struct activity *a)
 {
 	SREALLOC(a->_buf0, void,
-		 (size_t) a->msize * (size_t) a->nr_allocated * 2);	/* a->nr2 value is 1 */
-	memset(a->_buf0, 0, (size_t) a->msize * (size_t) a->nr_allocated * 2);
+		 (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2 * 2);
+	memset(a->_buf0, 0, (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2 * 2);
 
 	a->nr_allocated *= 2;	/* NB: nr_allocated > 0 */
 
