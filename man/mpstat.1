@@ -34,6 +34,20 @@ command generates reports continuously.
 
 .SH OPTIONS
 .TP
+.BI "\-a " "archive"
+Read CPU statistics from a PCP (Performance Co-Pilot) archive written by
+.BR sadc (8)
+with the
+.B \-O pcp
+or
+.B \-O sa+pcp
+option, instead of sampling the live system.
+All display options
+.RB ( \-u ", " \-I ", " \-P ", " \-A )
+apply to archive data.
+Requires PCP support
+.RB ( HAVE_PCP ).
+.TP
 .B \-A
 This option is equivalent to specifying
 .BR "\-n \-u \-I ALL" "."
@@ -242,7 +256,7 @@ Display five reports of statistics for all processors at two second intervals.
 Sebastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
-.BR "sar" "(1), " "pidstat" "(1), " "iostat" "(1), " "vmstat" "(8)"
+.BR "sar" "(1), " "pidstat" "(1), " "iostat" "(1), " "vmstat" "(8), " "sadc" "(8), " "sysstat.pcpconf" "(5)"
 .PP
 .I https://github.com/sysstat/sysstat
 .br
