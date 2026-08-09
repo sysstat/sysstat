@@ -2131,9 +2131,8 @@ __print_funct_t svg_print_disk_stats(struct activity *a, int curr, int action, s
 						   USE_STABLE_ID(flags), NULL);
 
 			if (a->item_list != NULL) {
-				/* A list of devices has been entered on the command line */
-				if (!search_list_item(a->item_list, dev_name))
-					/* Device not found */
+				/* Match --fs= against device name and/or mountpoint */
+				if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
 					continue;
 			}
 
