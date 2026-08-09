@@ -1,0 +1,10 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadf reads from PCP archive in JSON format
+	LC_ALL=C TZ=GMT ./sadf -j tests/pcpar -- -u > tests/out.sadf-pcp-j.tmp 2>/dev/null
+	grep -q '"sysname"' tests/out.sadf-pcp-j.tmp || exit 1
+	grep -q '"cpu-load"' tests/out.sadf-pcp-j.tmp || exit 1
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

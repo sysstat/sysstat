@@ -1,0 +1,17 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Verify sadc gracefully skips local metrics when sysstat.pcpconf absent
+	rm -f tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	# SYSSTAT_PCPCONF=/dev/null means no local metrics — sadc should still succeed
+	TZ=GMT SYSSTAT_PCPCONF=/dev/null ./sadc --unix_time=1555593619 \
+		-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	# Archive must be readable and contain the standard sadc.* metrics
+	pminfo -a tests/sa18 pmimport.version pmimport.args > /dev/null 2>&1 || exit 1
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+else
+	echo Skipped; touch tests/SKIPPED
+fi

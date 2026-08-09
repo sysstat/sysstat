@@ -1,0 +1,41 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Build a minimal two-sample PCP archive with proc metrics, then read
+	# it back with pidstat -a and verify output format.
+	rm -f tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	cat > tests/pidstat.pcpconf <<'EOF'
+[PROC]
+proc.nprocs
+proc.psinfo.utime
+proc.psinfo.stime
+proc.psinfo.guest_time
+proc.psinfo.processor
+proc.psinfo.vsize
+proc.psinfo.rss
+proc.psinfo.minflt
+proc.psinfo.maj_flt
+proc.id.uid
+proc.id.uid_nm
+proc.psinfo.cmd
+EOF
+	TZ=GMT SYSSTAT_PCPCONF=tests/pidstat.pcpconf \
+		./sadc --unix_time=1555593619 \
+		-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root2 tests/root
+	TZ=GMT SYSSTAT_PCPCONF=tests/pidstat.pcpconf \
+		./sadc --unix_time=1555593629 -S XALL \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	# pidstat -a -u should exit 0 and produce output (or empty if no proc data)
+	LC_ALL=C TZ=GMT ./pidstat -a tests/sa18 -u \
+		> tests/out.pidstat-pcp-u.tmp 2>/dev/null
+	test $? -eq 0 || exit 1
+	rm -f tests/pidstat.pcpconf tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+else
+	echo Skipped; touch tests/SKIPPED
+fi

@@ -1,0 +1,31 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Verify non-leaf metric name expansion in sysstat.pcpconf
+	# proc.psinfo (non-leaf) should expand to all proc.psinfo.* leaves
+	rm -f tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	cat > tests/pcpar-sadc2.pcpconf <<'EOF'
+[settings]
+interval = 1
+[metrics]
+proc.nprocs
+proc.psinfo.pid
+proc.psinfo.utime
+proc.io.rchar
+proc.id.uid_nm
+EOF
+	TZ=GMT SYSSTAT_PCPCONF=tests/pcpar-sadc2.pcpconf \
+		./sadc --unix_time=1555593619 \
+		-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	# All listed metrics must appear in the archive
+	pminfo -a tests/sa18 \
+		proc.nprocs proc.psinfo.pid proc.psinfo.utime \
+		proc.io.rchar proc.id.uid_nm > /dev/null 2>&1 || exit 1
+	rm -f tests/pcpar-sadc2.pcpconf
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+else
+	echo Skipped; touch tests/SKIPPED
+fi

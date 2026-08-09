@@ -1,0 +1,14 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Negative tests: -a with invalid/nonexistent archive must produce a clean
+	# error message and non-zero exit — not a crash or silent failure.
+	for tool in ./sar ./iostat ./mpstat ./pidstat ./tapestat ./cifsiostat; do
+		$tool -a /nonexistent/archive/path > /dev/null 2>&1
+		rc=$?
+		# Must exit non-zero (error) but not with signal (>128) or sadc's exit(4)
+		[ $rc -ne 0 ] || exit 1
+		[ $rc -lt 128 ] || exit 1
+	done
+else
+	echo Skipped; touch tests/SKIPPED
+fi

@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sar -P ALL (per-CPU stats) reading from PCP archive
+	LC_ALL=C TZ=GMT ./sar -u -P ALL -f tests/pcpar > tests/out.sar-pcp-P.tmp 2>/dev/null
+	grep -q "cpu[0-9]\|%usr\|%user" tests/out.sar-pcp-P.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

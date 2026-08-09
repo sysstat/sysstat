@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadf -x (XML) reading disk stats from PCP archive
+	LC_ALL=C TZ=GMT ./sadf -x tests/pcpar -- -d > tests/out.sadf-pcp-x-d.tmp 2>/dev/null
+	grep -q "<disk\|disk-device\|<io-reads" tests/out.sadf-pcp-x-d.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi
