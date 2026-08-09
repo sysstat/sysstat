@@ -3,6 +3,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
 12:53:21     1000      7900  359.42   53.55    0.00    8.47  412.96     2  gnome-shell
 12:53:21        0      8407    0.35    0.03    0.00    0.00    0.38     0  gnome-terminal-
+12:53:21        0      8500    0.35    0.03    0.00    0.00    0.38     0  sh
 12:53:21     1000      8741    0.00    0.00    0.00    0.00    0.00     0  firefox
 12:53:21     1000      9009    0.00    0.00    0.00    0.00    0.00     3  WebExtensions
 12:53:21     1000     21342    0.00    0.00    0.00    0.00    0.00     5  soffice.bin
@@ -10,6 +11,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20      UID       PID StkSize  StkRef  Command
 12:53:21     1000      7900     128     108  gnome-shell
 12:53:21        0      8407     132     120  gnome-terminal-
+12:53:21        0      8500     132     120  sh
 12:53:21     1000      8741     132      52  firefox
 12:53:21     1000      9009     132      20  WebExtensions
 12:53:21     1000     21342     132      36  soffice.bin
@@ -17,6 +19,7 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:20      UID       PID   cswch/s nvcswch/s  Command
 12:53:21     1000      7900   5700.42    700.96  gnome-shell
 12:53:21        0      8407      5.00      0.06  gnome-terminal-
+12:53:21        0      8500      5.00      0.06  sh
 12:53:21     1000      8741      1.60      0.00  firefox
 12:53:21     1000      9009      0.19      0.00  WebExtensions
 12:53:21     1000     21342      0.00      0.00  soffice.bin

@@ -31,4 +31,3 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
     0.00    0.00    0.05   1.35 sdr
     0.00    0.00    0.00   0.01 sds
 
-

@@ -738,8 +738,9 @@ int set_report_date(struct tm *tm_time, char cur_date[], int sz)
  * @nodename	Hostname to display.
  * @machine	Machine architecture to display.
  * @cpu_nr	Number of CPU.
- * @format	Set to FALSE for (default) plain output, and to TRUE for
- * 		JSON format output.
+ * @format	Set to PLAIN_OUTPUT (0) for (default) plain output,
+ *		Else set to 1 for JSON format output, and to
+ *		2 for NDJSON format output.
  *
  * RETURNS:
  * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
@@ -760,17 +761,26 @@ int print_gal_header(struct tm *tm_time, char *sysname, char *release,
 		       cur_date, machine, cpu_nr);
 	}
 	else {
-		/* JSON output */
-		xprintf(0, 0, "{\"sysstat\": {");
-		xprintf(0, 1, "\"hosts\": [");
-		xprintf(0, 2, "{");
-		xprintf(0, 3, "\"nodename\": \"%s\",", nodename);
-		xprintf(0, 3, "\"sysname\": \"%s\",", sysname);
-		xprintf(0, 3, "\"release\": \"%s\",", release);
-		xprintf(0, 3, "\"machine\": \"%s\",", machine);
-		xprintf(0, 3, "\"number-of-cpus\": %d,", cpu_nr);
-		xprintf(0, 3, "\"date\": \"%s\",", cur_date);
-		xprintf(0, 3, "\"statistics\": [");
+		int bh = (format == 2 ? NO_CR + NO_TABS : 0);
+
+		/* JSON/NDJSON output */
+		xprintf(bh + NO_SPC, 0, "{\"sysstat\": {");
+		xprintf(bh + NO_SPC, 1, "\"hosts\": [");
+		xprintf(bh + NO_SPC, 2, "{");
+		xprintf(bh + NO_SPC, 3, "\"nodename\": \"%s\",", nodename);
+		xprintf(bh, 3, "\"sysname\": \"%s\",", sysname);
+		xprintf(bh, 3, "\"release\": \"%s\",", release);
+		xprintf(bh, 3, "\"machine\": \"%s\",", machine);
+		xprintf(bh, 3, "\"number-of-cpus\": %d,", cpu_nr);
+		xprintf(bh, 3, "\"date\": \"%s\"%s", cur_date,
+			format == 2 ? "" : ",");
+		if (format == 2) {
+			/* NDJSON output */
+			printf("}]}}");
+		}
+		else {
+			xprintf(bh, 3, "\"statistics\": [");
+		}
 	}
 
 	return rc;
@@ -881,7 +891,7 @@ char *escape_bs_char(const char str[])
 	int i = 0, j = 0;
 
 	if (str != NULL) {
-		while (str[i] != '\0' && j < (MAX_NAME_LEN * 2) - 1) {
+		while ((str[i] != '\0') && (j < (MAX_NAME_LEN * 2) - 1)) {
 			if (str[i] == '\\') {
 				if (j < (MAX_NAME_LEN * 2) - 2) {
 					buffer[j++] = '\\';
@@ -916,7 +926,7 @@ char *escape_json_char(const char str[])
 	int i = 0, j = 0;
 
 	if (str != NULL) {
-		while (str[i] != '\0' && j < (MAX_NAME_LEN * 2) - 1) {
+		while ((str[i] != '\0') && (j < (MAX_NAME_LEN * 2) - 1)) {
 			if ((str[i] == '\\') || (str[i] == '"')) {
 				if (j < (MAX_NAME_LEN * 2) - 2) {
 					buffer[j++] = '\\';
@@ -930,6 +940,41 @@ char *escape_json_char(const char str[])
 				if (j < (MAX_NAME_LEN * 2) - 6) {
 					sprintf(buffer + j, "\\u%04x", str[i]);
 					j += 6;
+				}
+			}
+			else {
+				buffer[j++] = str[i];
+			}
+			i++;
+		}
+	}
+
+	buffer[j] = '\0';
+	return buffer;
+}
+
+/*
+ * **************************************************************************
+ * Escape double quotes character which cannot appear as is in an XML string.
+ *
+ * IN:
+ * @str		String which may contain characters to escape.
+ *
+ * RETURNS:
+ * String where characters have been escaped.
+ ***************************************************************************
+ */
+char *escape_xml_char(const char str[])
+{
+	static char buffer[MAX_NAME_LEN * 2];
+	int i = 0, j = 0;
+
+	if (str != NULL) {
+		while ((str[i] != '\0') && (j < (MAX_NAME_LEN * 2) - 1)) {
+			if (str[i] == '"') {
+				if (j < (MAX_NAME_LEN * 2) - 6) {
+					sprintf(buffer + j, "&quot;");
+					j+= 6;
 				}
 			}
 			else {
@@ -1980,6 +2025,7 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 {
 	char timestamp[TIMESTAMP_LEN];
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (rectime == NULL)
 		return;
@@ -1998,7 +2044,7 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 	timestamp[sizeof(timestamp) - 1] = '\0';
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, tab, "\"timestamp\": \"%s\",", timestamp);
+		xprintf(bh + NO_SPC, tab, "\"timestamp\": \"%s\",", timestamp);
 	}
 	else {
 		printf("%s\n", timestamp);

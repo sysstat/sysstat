@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -J tests/data.tmp -C -- -A > tests/out.sadf-J.tmp && diff -u ${T_SRCDIR}/tests/expected.sadf-J tests/out.sadf-J.tmp

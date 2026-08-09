@@ -120,9 +120,16 @@
 #define UL_ALIGNMENT_WIDTH	SIZEOF_LONG_64BIT
 #define U_ALIGNMENT_WIDTH	4
 
-#define MAP_SIZE(m)	((m[0] * ULL_ALIGNMENT_WIDTH) + \
-			 (m[1] * UL_ALIGNMENT_WIDTH) +  \
-			 (m[2] * U_ALIGNMENT_WIDTH))
+/*
+ * NB: the multiplications below are done in 64-bit arithmetic on purpose.
+ * types_nr[] is read straight from the datafile and is fully attacker
+ * controlled; computing this in 32-bit "unsigned int" lets a crafted value
+ * such as 0x20000001 wrap to a small result and sail through the callers'
+ * "MAP_SIZE(...) > size" sanity checks.
+ */
+#define MAP_SIZE(m)	(((unsigned long long) (m)[0] * ULL_ALIGNMENT_WIDTH) + \
+			 ((unsigned long long) (m)[1] * UL_ALIGNMENT_WIDTH) +  \
+			 ((unsigned long long) (m)[2] * U_ALIGNMENT_WIDTH))
 
 /*
  * Structure for CPU statistics.

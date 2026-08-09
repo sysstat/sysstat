@@ -6,6 +6,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:22     1000         -     10334       410       120         0  |__dconf worker
 12:53:22        0      8407         -       110        10         0  gnome-terminal-
 12:53:22        0         -      8407       110        10         0  |__gnome-terminal-
+12:53:22        0      8500         -       110        10         0  sh
+12:53:22        0         -      8500       110        10         0  |__sh
 12:53:22     1000      8741      8741        10         0         0  (firefox)__firefox
 12:53:22     1000      9009      9009        10         0         0  (WebExtensions)__WebExtensions
 
@@ -15,6 +17,8 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 12:53:22     1000         -     10334     16402         3  |__dconf worker
 12:53:22        0      8407         -         5         0  gnome-terminal-
 12:53:22        0         -      8407         5         0  |__gnome-terminal-
+12:53:22        0      8500         -         5         0  sh
+12:53:22        0         -      8500         5         0  |__sh
 12:53:22     1000      9009         -         1         0  WebExtensions
 12:53:22     1000         -      9009         1         0  |__WebExtensions
 

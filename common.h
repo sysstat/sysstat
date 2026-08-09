@@ -87,17 +87,20 @@ enum {
 #define K_LOWERSUM	"sum"
 #define K_UTC		"UTC"
 #define K_JSON		"JSON"
+#define K_NDJSON	"NDJSON"
 
 /* Flags used with multiple commands (iostat, cifsiostat...) */
 #define X_D_DEBUG		0x01
 #define X_D_ISO			0x02
 #define X_D_JSON_OUTPUT		0x04
 #define X_D_SEC_EPOCH		0x08
+#define X_D_NDJSON_OUTPUT	0x10
 
-#define DISPLAY_DEBUG(m)	(((m) & X_D_DEBUG)       == X_D_DEBUG)
-#define DISPLAY_ISO(m)		(((m) & X_D_ISO)         == X_D_ISO)
-#define DISPLAY_JSON_OUTPUT(m)	(((m) & X_D_JSON_OUTPUT) == X_D_JSON_OUTPUT)
-#define DISPLAY_SEC_EPOCH(m)	(((m) & X_D_SEC_EPOCH)   == X_D_SEC_EPOCH)
+#define DISPLAY_DEBUG(m)		(((m) & X_D_DEBUG)         == X_D_DEBUG)
+#define DISPLAY_ISO(m)			(((m) & X_D_ISO)           == X_D_ISO)
+#define DISPLAY_JSON_OUTPUT(m)		(((m) & X_D_JSON_OUTPUT)   == X_D_JSON_OUTPUT)
+#define DISPLAY_SEC_EPOCH(m)		(((m) & X_D_SEC_EPOCH)     == X_D_SEC_EPOCH)
+#define DISPLAY_NDJSON_OUTPUT(m)	(((m) & X_D_NDJSON_OUTPUT) == X_D_NDJSON_OUTPUT)
 
 #define DEV_PREFIX		"/dev/"
 #define DEV_PREFIX_LEN		5
@@ -395,6 +398,8 @@ char *device_name
 char *escape_bs_char
 	(const char []);
 char *escape_json_char
+	(const char []);
+char *escape_xml_char
 	(const char []);
 char *get_device_name
 	(unsigned int, unsigned int, unsigned long long [],

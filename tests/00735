@@ -1,0 +1,2 @@
+echo -n "Testing data-12.8.1-swap_struct-err-spe... "
+LC_ALL=C ./sar -w -f ${T_SRCDIR}/tests/data-12.8.1-swap_struct-err-spe 2>&1 | grep "Invalid system" >/dev/null && echo "OK" || exit 1

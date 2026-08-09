@@ -1,0 +1,9 @@
+. tests/variables
+if [ ! -z "$VER_JSON" ]; then
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	./iostat -o NDJSON -x 1 2 | tests/check_ndjson.sh >/dev/null
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

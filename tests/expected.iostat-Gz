@@ -22,7 +22,6 @@ sdq               8.07         0.00         0.00         0.00          1        
 sdr               2.77         0.00         0.00         0.00          0          0          0
 sds               0.15         0.00         0.00         0.00          0          0          0
 
-
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            2.15   12.50    2.35    0.12    0.00   82.89
 
@@ -30,5 +29,4 @@ Device             tps    GB_read/s    GB_wrtn/s    GB_dscd/s    GB_read    GB_w
 sdq               9.62         0.00         0.00         0.00          0          0          0
 sdr               4.81         0.00         0.00         0.00          0          0          0
 sds               6.42         0.00         0.00         0.00          0          0          0
-
 
