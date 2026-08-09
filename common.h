@@ -22,6 +22,10 @@
 #include <sys/sysmacros.h>
 #endif
 
+#ifdef HAVE_PCP
+#include <pcp/pmapi.h>
+#endif
+
 /*
  ***************************************************************************
  * Various keywords and constants
@@ -255,8 +259,12 @@ enum {
 #define PANIC(m)	sysstat_panic(__FUNCTION__, m)
 
 /* Number of ticks per second */
+#undef HZ /* <sys/param.h> may contain a definition */
 #define HZ		hz
 extern unsigned long hz;
+
+/* Number of decimal places */
+extern int dplaces_nr;
 
 /* Number of bit shifts to convert pages to kB */
 extern unsigned int kb_shift;
@@ -340,8 +348,12 @@ void get_kb_shift
 	(void);
 time_t get_xtime
 	(struct tm *, int, int);
+time_t get_xtime_nsec
+	(struct tm *, int, int, unsigned int *);
 time_t get_time
 	(struct tm *, int);
+time_t get_time_nsec
+	(struct tm *, int, unsigned int *);
 void init_nls
 	(void);
 int is_device
@@ -359,7 +371,7 @@ size_t mul_check_overflow3
 size_t mul_check_overflow4
 	(size_t, size_t, size_t, size_t);
 
-#ifndef SOURCE_SADC
+#if !defined(SOURCE_SADC) || defined(HAVE_PCP)
 int count_bits
 	(void *, int);
 int count_csvalues
@@ -422,5 +434,5 @@ void write_sample_timestamp
 void xprintf
 	(int, int, const char *, ...);
 
-#endif /* SOURCE_SADC undefined */
+#endif /* !SOURCE_SADC || HAVE_PCP */
 #endif  /* _COMMON_H */

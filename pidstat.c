@@ -81,8 +81,6 @@ struct sigaction alrm_act, int_act, chld_act;
 int signal_caught = 0;
 int status = 0;
 
-int dplaces_nr = -1;		/* Number of decimal places */
-
 /*
  ***************************************************************************
  * Print usage and exit.
