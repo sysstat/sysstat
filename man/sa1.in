@@ -57,6 +57,22 @@ data file covers the whole day, including the last interval of time just before 
 .RB "This option tells " "sa1 " "that the " "sadc"
 command should insert a comment indicating that the system is entering or leaving
 sleep mode (i.e. system suspend or hibernation).
+.TP
+.BI "\-O { sa+pcp | pcp }[=" "archive" "]"
+Pass the
+.B \-O
+option directly to
+.BR sadc (8)
+to enable PCP (Performance Co-Pilot) archive output.
+Requires PCP 7.2.0 or later.
+See
+.BR sadc (8)
+for a full description of this option.
+A typical
+.BR cron (8)
+entry to collect data into both native and PCP archives:
+
+.B 0,10,20,30,40,50 * * * * @SA_LIB_DIR@/sa1 \-O sa+pcp \-S DISK 1 1
 
 .SH EXAMPLE
 To collect data (including those from disks) every 10 minutes,

@@ -44,13 +44,20 @@ The standard system activity daily data file is named
 for the current day.
 .B sadf
 will look for the most recent of
-.IR "saDD " "and " "saYYYYMMDD" ","
+.IR "saDD" ", " "saYYYYMMDD" " and their PCP archive counterparts " "saDD.meta" ", " "saYYYYMMDD.meta"
 and use it. By default it is located in the
 .I @SA_DIR@
 directory. Yet it is possible to specify an alternate location for it: If
 .I datafile
 is a directory (instead of a plain file) then it will be considered as
 the directory where the standard system activity daily data file is located.
+If
+.I datafile
+is a PCP archive (or a PCP archive directory such as
+.IR "@SA_DIR@/pcp28" "),"
+.B sadf
+reads it via the PCP API and produces the same output as for a native
+sysstat file.
 .PP
 .RI "The " "interval " "and " "count " "parameters are used to tell"
 .BR "sadf " "to select"
@@ -161,8 +168,18 @@ format. Timestamps can be controlled by options
 .TP
 .B \-l
 Export the contents of the data file to a PCP (Performance Co-Pilot) archive.
+The archive is written using Y2038-safe nanosecond-resolution timestamps.
 The name of the archive can be specified using the keyword
 .BR "pcparchive= " "with option " "\-O" "."
+If no name is given the archive shares the base path of the input data file,
+with PCP suffixes (.meta, .index, .0) appended, following the same convention
+used by
+.BR "sadc \-O pcp" "."
+The resulting archive includes
+.BR "sadc.version" ", " "sadc.activities" " and " "sadc.interval"
+self-description metrics and a
+.B {"sadc":true}
+context label.
 .TP
 .BI "\-O " "opts" "[,...]"
 Use the specified options to control the output of
@@ -220,7 +237,9 @@ The following option may be used when data are exported to a PCP archive:
 .RS
 .TP
 .RI "pcparchive=" "name"
-Specify the name of the PCP archive to create.
+Specify the base name of the PCP archive to create.
+If omitted, the archive shares the base path of the input data file
+with PCP suffixes appended.
 .RE
 .IP
 The following option is used to control raw output displayed by
