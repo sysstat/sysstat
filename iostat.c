@@ -61,9 +61,6 @@ unsigned long long uptime_cs[2] = {0, 0};
 unsigned long long tot_jiffies[2] = {0, 0};
 struct io_device *dev_list = NULL;
 
-/* Number of decimal places */
-int dplaces_nr = -1;
-
 int group_nr = 0;	/* Nb of device groups */
 int cpu_nr = 0;		/* Nb of processors on the machine */
 uint64_t flags = 0;	/* Flag for common options and system state */

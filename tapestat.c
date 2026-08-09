@@ -76,9 +76,6 @@ char timestamp[TIMESTAMP_LEN];
 struct sigaction alrm_act, int_act;
 int sigint_caught = 0;
 
-/* Number of decimal places */
-int dplaces_nr = -1;
-
 /*
  * For tape stats - it would be extremely rare for there to be a very large
  * number of tape drives attached to a system. I wouldn't expect to see more

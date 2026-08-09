@@ -61,8 +61,6 @@ long interval = -1, count = 0;
 int endian_mismatch = FALSE;
 /* TRUE if file's data come from a 64 bit machine */
 int arch_64 = FALSE;
-/* Number of decimal places */
-int dplaces_nr = -1;
 /* Color palette number */
 int palette = SVG_DEFAULT_COL_PALETTE;
 
