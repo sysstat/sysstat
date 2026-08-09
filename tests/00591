@@ -1,0 +1,9 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Verify key metrics are present in the PCP archive created by test 00590
+	pminfo -a tests/pcpar kernel.all.cpu.user kernel.percpu.cpu.user \
+		kernel.all.cpu.idle mem.physmem > /dev/null
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

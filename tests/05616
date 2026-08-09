@@ -1,0 +1,20 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadc direct PCP write then sar read-back (sadc -O pcp path)
+	rm -f tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	TZ=GMT ./sadc --unix_time=1555593619 -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root2 tests/root
+	TZ=GMT ./sadc --unix_time=1555593629 -S XALL \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1
+	# Read back with sar and verify we get CPU output
+	LC_ALL=C TZ=GMT ./sar -u -f tests/sa18 > tests/out.sar-pcp-sadc.tmp 2>/dev/null
+	grep -q "SYSSTAT.TEST\|%user\|%idle" tests/out.sar-pcp-sadc.tmp || exit 1
+	# Also check that sadc.* provenance metrics are in the archive
+	pminfo -a tests/sa18 pmimport.version pmimport.args > /dev/null 2>&1 || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

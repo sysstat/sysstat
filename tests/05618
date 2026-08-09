@@ -1,0 +1,23 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Verify sadc records local PMDA metrics when sysstat.pcpconf is present
+	rm -f tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	# Write a minimal pcpconf requesting proc.nprocs (singleton, always present)
+	cat > tests/pcpar-sadc2.pcpconf <<'EOF'
+[PROC]
+proc.nprocs
+EOF
+	TZ=GMT SYSSTAT_PCPCONF=tests/pcpar-sadc2.pcpconf \
+		./sadc --unix_time=1555593619 \
+		-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	# proc.nprocs must appear in the archive
+	pminfo -a tests/sa18 proc.nprocs > /dev/null 2>&1 || exit 1
+	rm -f tests/pcpar-sadc2.pcpconf
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+else
+	echo Skipped; touch tests/SKIPPED
+fi
