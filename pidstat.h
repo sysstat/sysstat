@@ -71,6 +71,7 @@
 #define P_D_UNIT	0x0800
 #define P_D_SEC_EPOCH	0x1000
 #define P_F_EXEC_PGM	0x2000
+#define P_F_PCP_ARCHIVE	0x4000
 
 #define DISPLAY_PID(m)		(((m) & P_D_PID) == P_D_PID)
 #define DISPLAY_ALL_PID(m)	(((m) & P_D_ALL_PID) == P_D_ALL_PID)
@@ -86,6 +87,7 @@
 #define DISPLAY_UNIT(m)		(((m) & P_D_UNIT) == P_D_UNIT)
 #define PRINT_SEC_EPOCH(m)	(((m) & P_D_SEC_EPOCH) == P_D_SEC_EPOCH)
 #define EXEC_PGM(m)		(((m) & P_F_EXEC_PGM) == P_F_EXEC_PGM)
+#define PCP_ARCHIVE(m)		(((m) & P_F_PCP_ARCHIVE) == P_F_PCP_ARCHIVE)
 
 /* Per-process flags */
 #define F_NO_PID_IO	0x01
@@ -216,5 +218,9 @@ struct st_pid {
 	char		   comm[MAX_COMM_LEN];
 	char		   cmdline[MAX_CMDLINE_LEN];
 };
+
+extern unsigned int  pidflag;
+extern unsigned int  actflag;
+extern unsigned long tlmkb;
 
 #endif  /* _PIDSTAT_H */
