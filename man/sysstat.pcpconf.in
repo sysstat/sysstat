@@ -1,0 +1,119 @@
+.\" sysstat.pcpconf.5 - Manual page for the sysstat PCP local metric config file
+.TH SYSSTAT.PCPCONF 5 "JUNE 2026" "sysstat-@PACKAGE_VERSION@" "Linux User's Manual" -*- nroff -*-
+.SH NAME
+sysstat.pcpconf \- sysstat PCP local metric collection configuration file
+.SH DESCRIPTION
+The
+.B sysstat.pcpconf
+file configures which additional metrics
+.BR sadc (8)
+records from a local PMDA context when writing PCP archives
+(via
+.B \-O pcp
+or
+.BR "\-O sa+pcp" ).
+It is read once at
+.B sadc
+startup; changes take effect on the next restart.
+.PP
+The default location is
+.IR @SYSCONFIG_DIR@/sysstat.pcpconf .
+The
+.B SYSSTAT_PCPCONF
+environment variable overrides this path.
+.SH "FILE FORMAT"
+The file uses a simple INI-style format.  Lines beginning with
+.B #
+are comments.  Blank lines are ignored.
+.SS "Global settings"
+Key\-value pairs (separated by
+.BR = )
+before the first section heading are treated as global settings.
+.TP
+.BI "volume_size = " size
+Maximum PCP data volume size before automatic rotation.
+Accepts an optional
+.BR k ", " m " or " g
+suffix for kibibytes, mebibytes or gibibytes respectively.
+Set to 0 to disable in-session rotation.  Default: 0.
+.SS "Metric groups"
+Each
+.BI [ NAME ]
+section heading starts a named metric group.  One metric name per line
+within the section.  Both leaf metric names
+(e.g.\&
+.IR proc.psinfo.pid )
+and namespace node names
+(e.g.\&
+.IR proc.psinfo )
+are accepted; namespace nodes are expanded to all leaf metrics beneath them.
+.PP
+Group names are uppercased internally and can be used with
+.BR sadc 's
+.B \-S
+option to selectively enable collection (e.g.\&
+.BR "\-S PROC" ).
+By default, groups are disabled; they are enabled by
+.BR "\-S ALL" " or " "\-S XALL" .
+.PP
+Metrics whose PMID is already registered by
+.BR sadc 's
+built-in write path are silently skipped to avoid double-writes.
+Unknown metric names are skipped with a warning on stderr.
+.PP
+To list all metrics available from the local PMDA context, run:
+.PP
+.RS
+.B pminfo \-L
+.RE
+.PP
+To inspect a specific metric or subtree (e.g. for description and units), run:
+.PP
+.RS
+.B pminfo \-L \-\-desc \-\-oneline proc.psinfo
+.RE
+.SH EXAMPLE
+.nf
+# Global settings (before any [heading])
+volume_size = 100m
+
+[PROC]
+proc.nprocs
+proc.psinfo.utime
+proc.psinfo.stime
+proc.psinfo.vsize
+proc.psinfo.rss
+proc.io.read_bytes
+proc.io.write_bytes
+
+[TAPE]
+tape.dev.read_cnt
+tape.dev.write_cnt
+
+[IOSTAT]
+disk.dev.read
+disk.dev.write
+disk.dev.total_bytes
+
+[CIFS]
+cifs.fs.read
+cifs.fs.write
+.fi
+.SH "ENVIRONMENT VARIABLES"
+.TP
+.B SYSSTAT_PCPCONF
+Overrides the configuration file path.  Useful for testing or
+site-specific deployments.
+.SH FILES
+.I @SYSCONFIG_DIR@/sysstat.pcpconf
+.RS
+Default configuration file location.
+.RE
+.SH "SEE ALSO"
+.BR sadc (8),
+.BR sa1 (8),
+.BR sa2 (8),
+.BR sysstat (5),
+.BR pminfo (1)
+.SH AUTHOR
+Sebastien Godard (sysstat <at> orange.fr)

@@ -36,6 +36,7 @@
 
 #include "version.h"
 #include "iostat.h"
+#include "pcp_iostat.h"
 #include "rd_stats.h"
 #include "count.h"
 
@@ -87,14 +88,24 @@ void usage(char *progname)
 #ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+#ifdef HAVE_PCP
+			  "[ -a <archive> ] "
+#else
+			  "[ { -f | +f } <directory> ] "
+#endif
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
-			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
+#ifdef HAVE_PCP
+			  "[ -a <archive> ] "
+#else
+			  "[ { -f | +f } <directory> ] "
+#endif
+			  "[ -j { ID | LABEL | PATH | UUID | ... } ]\n"
 			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
@@ -2112,6 +2123,7 @@ int main(int argc, char **argv)
 	long count = 1;
 	struct utsname header;
 	struct tm rectime;
+	char *archive = NULL;
 	char *t, *persist_devname, *devname;
 	char group_name[MAX_NAME_LEN];
 
@@ -2125,8 +2137,17 @@ int main(int argc, char **argv)
 	/* Process args... */
 	while (opt < argc) {
 
+		if (!strcmp(argv[opt], "-a")) {
+			if (!argv[++opt] || alt_dir[0]) {
+				usage(argv[0]);
+			}
+			archive = argv[opt];
+			flags |= I_D_PCP_ARCHIVE;
+			opt++;
+		}
+
 		/* -p option used individually. See below for grouped use */
-		if (!strcmp(argv[opt], "-p")) {
+		else if (!strcmp(argv[opt], "-p")) {
 			if (argv[++opt] &&
 			    (strspn(argv[opt], DIGITS) != strlen(argv[opt])) &&
 			    (strncmp(argv[opt], "-", 1))) {
@@ -2468,6 +2489,10 @@ int main(int argc, char **argv)
 	 * when it is the first operation on the stream.
 	 */
 	setbuf(stdout, NULL);
+
+	/* Replay from recorded archive instead of live */
+	if (flags & I_D_PCP_ARCHIVE)
+		exit(pcp_iostat_run(archive));
 
 	/* Get system name, release number and hostname */
 	__uname(&header);
