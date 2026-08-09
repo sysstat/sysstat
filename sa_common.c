@@ -126,6 +126,35 @@ int get_activity_nr(struct activity *act[], unsigned int option, enum count_mode
 
 /*
  ***************************************************************************
+ * Stat a data file, checking for a native sa file (saXX) or a PCP
+ * archive (saXX.index) with the given base path.
+ *
+ * IN:
+ * @filename	Base path to check (e.g. /var/log/sa/sa01).
+ *
+ * OUT:
+ * @sb		Stat buffer, filled on success.
+ *
+ * RETURNS:
+ * 0 on success (native or PCP archive found), -1 if neither exists.
+ ***************************************************************************
+ */
+int stat_sa_file(char *filename, struct stat *sb)
+{
+#ifdef HAVE_PCP
+	char idx_filename[MAX_FILE_LEN + 8];
+
+	/* PCP archive .index is never compressed, so always present */
+	snprintf(idx_filename, sizeof(idx_filename), "%s.index", filename);
+	if (stat(idx_filename, sb) == 0)
+		return 0;
+#endif
+
+	return stat(filename, sb);
+}
+
+/*
+ ***************************************************************************
  * Look for the most recent of saDD and saYYYYMMDD to decide which one to
  * use. If neither exists then use saDD by default.
  *
@@ -148,14 +177,14 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	/* Use saDD by default */
 	*sa_name = 0;
 
-	/* Look for saYYYYMMDD */
+	/* Look for saYYYYMMDD (native or PCP archive) */
 	snprintf(filename, sizeof(filename),
 		 "%s/sa%04d%02d%02d", sa_dir,
 		 rectime->tm_year + 1900,
 		 rectime->tm_mon + 1,
 		 rectime->tm_mday);
 
-	if (stat(filename, &sb) < 0)
+	if (stat_sa_file(filename, &sb) < 0)
 		/* Cannot find or access saYYYYMMDD, so use saDD */
 		return;
 	sa_mtime = sb.st_mtime;
@@ -165,12 +194,12 @@ void guess_sa_name(char *sa_dir, struct tm *rectime, int *sa_name)
 	nsec = sb.st_mtimespec.tv_nsec;
 #endif
 
-	/* Look for saDD */
+	/* Look for saDD (native or PCP archive) */
 	snprintf(filename, sizeof(filename),
 		 "%s/sa%02d", sa_dir,
 		 rectime->tm_mday);
 
-	if (stat(filename, &sb) < 0) {
+	if (stat_sa_file(filename, &sb) < 0) {
 		/* Cannot find or access saDD, so use saYYYYMMDD */
 		*sa_name = 1;
 		return;
@@ -456,7 +485,7 @@ int write_all(int fd, const void *buf, int nr_bytes)
 	return offset;
 }
 
-#ifndef SOURCE_SADC
+#if !defined(SOURCE_SADC) || defined(HAVE_PCP)
 /*
  * **************************************************************************
  * Init buffers for min and max values.
@@ -1050,11 +1079,12 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_dev *sndc, *sndp;
 	int j0, j = pos;
+	int iters = 0;
 
 	if (!a->nr[ref])
 		/*
 		 * No items found in previous iteration:
-		 * Current interface is necessarily new.
+		 * Current item is necessarily new.
 		 */
 		return -1;
 
@@ -1130,6 +1160,8 @@ int check_net_dev_reg(struct activity *a, int curr, int ref, int pos)
 			}
 			return j;
 		}
+		if (iters++ > a->nr[ref])
+			break;
 		if (++j >= a->nr[ref]) {
 			j = 0;
 		}
@@ -1163,11 +1195,12 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_net_edev *snedc, *snedp;
 	int j0, j = pos;
+	int iters = 0;
 
 	if (!a->nr[ref])
 		/*
 		 * No items found in previous iteration:
-		 * Current interface is necessarily new.
+		 * Current item is necessarily new.
 		 */
 		return -1;
 
@@ -1203,6 +1236,8 @@ int check_net_edev_reg(struct activity *a, int curr, int ref, int pos)
 
 			return j;
 		}
+		if (iters++ > a->nr[ref])
+			break;
 		if (++j >= a->nr[ref]) {
 			j = 0;
 		}
@@ -1235,11 +1270,12 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 {
 	struct stats_disk *sdc, *sdp;
 	int j0, j = pos;
+	int iters = 0;
 
 	if (!a->nr[ref])
 		/*
 		 * No items found in previous iteration:
-		 * Current interface is necessarily new.
+		 * Current item is necessarily new.
 		 */
 		return -1;
 
@@ -1251,6 +1287,10 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 	sdc = (struct stats_disk *) ((char *) a->buf[curr] + pos * a->msize);
 
 	do {
+		if (iters++ >= a->nr[ref])
+			/* Safety: scanned all reference entries, not found */
+			break;
+
 		sdp = (struct stats_disk *) ((char *) a->buf[ref] + j * a->msize);
 
 		if ((sdc->major == sdp->major) &&
@@ -3176,6 +3216,110 @@ int sa_get_record_timestamp_struct(uint64_t l_flags, struct record_header *recor
 
 /*
  ***************************************************************************
+ * Fill the rectime and loctime structures with the given timespec date and
+ * time, based on current samples "number of seconds since the epoch" saved
+ * in the result header.
+ * With rectime - the timestamp is expressed in UTC, in local time, or in the
+ * time of the file's creator depending on options entered by the user on the
+ * command line.
+ *
+ * IN:
+ * @l_flags	Flags indicating the type of time expected by the user.
+ * 		S_F_LOCAL_TIME means time should be expressed in local time.
+ * 		S_F_TRUE_TIME means time should be expressed in time of
+ * 		file's creator.
+ * 		Default is time expressed in UTC (except for sar, where it
+ * 		is local time).
+ * @tspec      	Result timestamp containing the number of seconds since the
+ * 		epoch
+ *
+ * OUT:
+ * @rectime	Structure where timestamp for current record has been saved
+ * 		(in local time, in UTC or in time of file's creator
+ * 		depending on options used).
+ *
+ * RETURNS:
+ * 1 if an error was detected, or 0 otherwise.
+ ***************************************************************************
+*/
+int get_timestamp_struct_from_timespec(uint64_t l_flags, struct timespec *tspec,
+				   struct tstamp_ext *rectime)
+{
+	struct tm *ltm;
+	time_t t = tspec->tv_sec;
+	int rc = 0;
+
+	rectime->epoch_time = tspec->tv_sec;
+
+	if (!PRINT_LOCAL_TIME(l_flags) && !PRINT_TRUE_TIME(l_flags)) {
+		/*
+		 * Get time in UTC
+		 * (the user doesn't want local time nor time of file's creator).
+		 */
+		ltm = gmtime_r(&t, &(rectime->tm_time));
+	}
+	else {
+		/*
+		* Fill generic rectime structure in local time.
+		* Done so that we have some default values.
+		*/
+		ltm = localtime_r(&t, &(rectime->tm_time));
+		rectime->tm_time.tm_gmtoff = TRUE;
+	}
+
+	if (!ltm) {
+		rc = 1;
+	}
+
+	return rc;
+}
+
+/*
+ ***************************************************************************
+ * Fill the timespec structure with the given rectime tstamp_ext structure.
+ *
+ * IN:
+ * @log_start  	Time stamp from archive creation
+ * @tse		Structure where timestamp for current record has been saved.
+ *
+ * OUT:
+ * @tspec      	Timestamp containing the number of seconds since the epoch
+ *
+ * RETURNS:
+ * 1 if an error was detected, or 0 otherwise.
+ ***************************************************************************
+*/
+int get_timespec_from_timestamp_struct(
+				   const struct timespec *log_start,
+				   const struct tstamp_ext *tse,
+				   struct timespec *tspec)
+{
+	unsigned long long offset, origin;
+
+	if (tse->use == NO_TIME)
+		return 1;
+
+	tspec->tv_sec = tse->epoch_time;
+	tspec->tv_nsec = 0;
+
+	if (tse->use == USE_HHMMSS_T) {
+		/* calculate requested number of seconds from the start */
+		offset = tse->tm_time.tm_hour * 60 * 60;
+		offset += tse->tm_time.tm_min * 60;
+		offset += tse->tm_time.tm_sec;
+
+		/* calculate epoch time at start of day for the archive */
+		origin = log_start->tv_sec;
+		origin -= log_start->tv_sec % (24 * 60 * 60);
+
+		tspec->tv_sec = origin + offset;
+	}
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Set current record's timestamp strings (date and time) using the time
  * data saved in @rectime structure. The string may be the number of seconds
  * since the epoch if flag S_F_SEC_EPOCH has been set.
@@ -3865,4 +4009,4 @@ void print_minmax(int ismax)
 			      : _("Minimum:"));
 }
 
-#endif /* SOURCE_SADC undefined */
+#endif /* !SOURCE_SADC */

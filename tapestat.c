@@ -46,6 +46,7 @@
 
 #include "version.h"
 #include "tapestat.h"
+#include "pcp_tapestat.h"
 #include "rd_stats.h"
 #include "count.h"
 
@@ -102,6 +103,9 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
+#ifdef HAVE_PCP
+			  "[ -a <archive> ] "
+#endif
 			  "[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ]\n"
 			  "[ -y ] [ -z ]\n"));
 	exit(1);
@@ -748,6 +752,7 @@ int main(int argc, char **argv)
 	long count = 1;
 	struct utsname header;
 	struct tm rectime;
+	char *archive = NULL;
 
 #ifdef USE_NLS
 	/* Init National Language Support */
@@ -760,7 +765,16 @@ int main(int argc, char **argv)
 	/* Process args... */
 	while (opt < argc) {
 
-		if (!strcmp(argv[opt], "--human")) {
+		if (!strcmp(argv[opt], "-a")) {
+			if (!argv[++opt]) {
+				usage(argv[0]);
+			}
+			archive = argv[opt];
+			flags |= T_D_PCP_ARCHIVE;
+			opt++;
+		}
+
+		else if (!strcmp(argv[opt], "--human")) {
 			flags |= T_D_UNIT;
 			opt++;
 		}
@@ -890,6 +904,13 @@ int main(int argc, char **argv)
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		/* Use a decimal point to make JSON code compliant with RFC7159 */
 		setlocale(LC_NUMERIC, "C");
+	}
+
+	/* Replay from recorded archive instead of live */
+	if (flags & T_D_PCP_ARCHIVE) {
+		it = pcp_tapestat_run(archive);
+		tape_uninitialise();
+		exit(it);
 	}
 
 	/* Get system name, release number and hostname */

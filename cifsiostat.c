@@ -3,6 +3,7 @@
  * Copyright (C) 2010 Red Hat, Inc. All Rights Reserved
  * Written by Ivana Varekova <varekova@redhat.com>
  * Maintained / multiple enhancements by Sebastien GODARD (sysstat <at> orange.fr)
+ * PCP support (C) 2026 Red Hat, Inc.  (Nathan Scott <nathans@redhat.com)
  *
  ***************************************************************************
  * This program is free software; you can redistribute it and/or modify it *
@@ -33,6 +34,7 @@
 #include "cifsiostat.h"
 #include "rd_stats.h"
 #include "count.h"
+#include "pcp_cifsiostat.h"
 
 #include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS
@@ -77,16 +79,16 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 
-#ifdef DEBUG
 	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
-			  "[ --debuginfo ]\n"));
-#else
-	fprintf(stderr, _("Options are:\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"));
+#ifdef HAVE_PCP
+			  "[ -a <archive> ] "
 #endif
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]"
+#ifdef DEBUG
+			  " [ --debuginfo ]"
+#endif
+			  "\n"));
 	exit(1);
 }
 
@@ -648,6 +650,7 @@ int main(int argc, char **argv)
 	int opt = 1;
 	int i;
 	long count = 1;
+	char *archive = NULL;
 	struct utsname header;
 	struct tm rectime;
 
@@ -662,8 +665,17 @@ int main(int argc, char **argv)
 	/* Process args... */
 	while (opt < argc) {
 
+		if (!strcmp(argv[opt], "-a")) {
+			if (!argv[++opt]) {
+				usage(argv[0]);
+			}
+			archive = argv[opt];
+			flags |= I_D_PCP_ARCHIVE;
+			opt++;
+		}
+
 #ifdef DEBUG
-		if (!strcmp(argv[opt], "--debuginfo")) {
+		else if (!strcmp(argv[opt], "--debuginfo")) {
 			xflags |= X_D_DEBUG;
 			opt++;
 		} else
@@ -821,6 +833,10 @@ int main(int argc, char **argv)
 		/* Use a decimal point to make JSON code compliant with RFC7159 */
 		setlocale(LC_NUMERIC, "C");
 	}
+
+	/* Replay from recorded archive instead of live */
+	if (DISPLAY_PCP_ARCHIVE(flags))
+		exit(pcp_cifsiostat_run(archive));
 
 	/* Get system name, release number and hostname */
 	__uname(&header);

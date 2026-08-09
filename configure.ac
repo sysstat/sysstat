@@ -136,20 +136,41 @@ fi
 AC_MSG_RESULT($PCP)
 
 # Check for PCP libraries
-LFPCP=""
+# LFPCP_READ: standalone archive-reader tools (iostat, mpstat, pidstat, tapestat, cifsiostat)
+#             — do not link pcp_stats.o so need only libpcp
+# LFPCP_WRITE: sadc, sadf, sar — all link pcp_stats.o which contains pmi* write-path
+#             functions compiled in under HAVE_PMI_APPEND; need libpcp_import too
+LFPCP_READ=""
+LFPCP_WRITE=""
 DFPCP=""
 if test $HAVE_PCP = "y"; then
 	PCP=no
-	AC_CHECK_LIB(pcp, pmGetVersion, LFPCP="-lpcp -lpcp_import", HAVE_PCP="n")
-	AC_MSG_CHECKING(for PCP libraries)
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <pcp/pmapi.h>
-					     #include <pcp/import.h>]],
-					   [[pmiEnd();]])],PCP=yes; DFPCP="-DHAVE_PCP", HAVE_PCP="n"; PCP=no)
-	AC_MSG_RESULT($PCP)
+	AC_CHECK_LIB(pcp, pmGetVersion, LFPCP_READ="-lpcp", HAVE_PCP="n")
+	AC_CHECK_LIB(pcp_import, pmiEnd, LFPCP_WRITE="-lpcp -lpcp_import"; DFPCP="-DHAVE_PCP", HAVE_PCP="n")
 fi
 AC_SUBST(HAVE_PCP)
-AC_SUBST(LFPCP)
+AC_SUBST(LFPCP_READ)
+AC_SUBST(LFPCP_WRITE)
 AC_SUBST(DFPCP)
+
+# Check for PMI_APPEND flag introduced in PCP 7.2.0.
+# Direct PCP archive output from sadc (-O pcp / -O sa+pcp) requires this
+# flag so that each short-lived invocation appends to the existing daily
+# archive rather than creating a new one.  The same PCP release added
+# pmiExtraUnits() for physical unit dimensions (temperature, voltage),
+# so a single HAVE_PMI_APPEND macro gates all PCP 7.2.0 write features.
+HAVE_PMI_APPEND="n"
+if test $HAVE_PCP = "y"; then
+	AC_MSG_CHECKING(for PMI_APPEND and pmiExtraUnits in pcp/import.h)
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <pcp/pmapi.h>
+					  #include <pcp/import.h>]],
+					   [[int f = PMI_APPEND; (void)f;]])],
+		HAVE_PMI_APPEND="y"; DFPCP="$DFPCP -DHAVE_PMI_APPEND",
+		HAVE_PMI_APPEND="n")
+	AC_MSG_RESULT($HAVE_PMI_APPEND)
+fi
+AC_SUBST(HAVE_PMI_APPEND)
+
 
 if test $HAVE_PCP_IMPL_H; then
    PCP_IMPL="y"
@@ -802,4 +823,6 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Compiler flags:		$CFLAGS
    Linker flags:		$LDFLAGS
    Automate sar reporting:	$AUX_AUTO
+   PCP archive support:		${HAVE_PCP}
+   PCP write support:		${HAVE_PMI_APPEND}
 "

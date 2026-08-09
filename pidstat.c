@@ -41,6 +41,7 @@
 #include "pidstat.h"
 #include "rd_stats.h"
 #include "count.h"
+#include "pcp_pidstat.h"
 
 #include <locale.h>	/* For setlocale() */
 #ifdef USE_NLS
@@ -95,8 +96,12 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
-			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+#ifdef HAVE_PCP
+			  "[ -a <archive> ] "
+#endif
+			  "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ]\n"
+			  "[ -t ] [ -U [ <username> ] ] [ -u ] [ -V ] [ -v ] [ -w ]\n"
+			  "[ -C <command> ] [ -G <process_name> ]\n"
 			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"));
 	exit(1);
@@ -3785,7 +3790,7 @@ int main(int argc, char **argv)
 	unsigned int pid;
 	struct utsname header;
 	int rows = 23;
-	char *t;
+	char *t, *archive = NULL;
 
 #ifdef USE_NLS
 	/* Init National Language Support */
@@ -3804,7 +3809,17 @@ int main(int argc, char **argv)
 	/* Process args... */
 	while (opt < argc) {
 
-		if (!strcmp(argv[opt], "-e")) {
+		if (!strcmp(argv[opt], "-a")) {
+			/* Read from PCP archive instead of live /proc sampling */
+			if (!argv[++opt]) {
+				usage(argv[0]);
+			}
+			archive = argv[opt];
+			pidflag |= P_F_PCP_ARCHIVE;
+			opt++;
+		}
+
+		else if (!strcmp(argv[opt], "-e")) {
 			if (!argv[++opt]) {
 				usage(argv[0]);
 			}
@@ -4105,6 +4120,13 @@ int main(int argc, char **argv)
 	 * when it is the first operation on the stream.
 	 */
 	setbuf(stdout, NULL);
+
+	/* Replay from recorded archive instead of live */
+	if (PCP_ARCHIVE(pidflag)) {
+		opt = pcp_pidstat_run(archive);
+		sfree_pid(&pid_list, TRUE);
+		exit(opt);
+	}
 
 	/* Get system name, release number and hostname */
 	__uname(&header);

@@ -25,6 +25,7 @@
 
 #include "sadf.h"
 #include "pcp_def_metrics.h"
+#include "pcp_stats.h"
 
 #ifdef USE_NLS
 #include <locale.h>
@@ -57,14 +58,8 @@ extern unsigned int svg_colors[][SVG_COL_PALETTE_SIZE];
 void pcp_write_data(struct record_header *record_hdr, unsigned int flags)
 {
 #ifdef HAVE_PCP
-	int rc;
-	unsigned long long utc_sec = record_hdr->ust_time;
-
-	/* Write data to PCP archive */
-	if ((rc = pmiWrite(utc_sec, 0)) < 0) {
-		fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
-		exit(4);
-	}
+	pcp_write_uptime(record_hdr->uptime_cs);
+	pcp_write_sadf_sample(record_hdr->ust_time);
 #endif
 }
 
@@ -288,32 +283,8 @@ __printf_funct_t print_pcp_restart(int *tab, int action, char *cur_date, char *c
 				   struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
-	static int def_metrics = FALSE;
-	char buf[64];
-
-	if (action & F_BEGIN) {
-		if (!def_metrics) {
-			pmiAddMetric("system.restart.count",
-				     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
-				     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-			pmiAddMetric("system.restart.ncpu",
-				     PM_IN_NULL, PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_DISCRETE,
-				     pmiUnits(0, 0, 1, 0, 0, PM_COUNT_ONE));
-
-			def_metrics = TRUE;
-		}
-	}
-	if (action & F_MAIN) {
-		pmiPutValue("system.restart.count", NULL, "1");
-
-		snprintf(buf, sizeof(buf), "%u",
-			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
-		pmiPutValue("system.restart.ncpu", NULL, buf);
-
-		/* Write data to PCP archive */
-		pcp_write_data(record_hdr, flags);
-	}
+	if (action & F_MAIN)
+		pcp_write_sadf_restart(file_hdr, record_hdr->ust_time);
 #endif /* HAVE_PCP */
 }
 
@@ -545,23 +516,8 @@ __printf_funct_t print_pcp_comment(int *tab, int action, char *cur_date, char *c
 				   struct record_header *record_hdr)
 {
 #ifdef HAVE_PCP
-	static int def_metrics = FALSE;
-
-	if (action & F_BEGIN) {
-		if (!def_metrics) {
-			pmiAddMetric("system.comment.value",
-				     PM_IN_NULL, PM_TYPE_STRING, PM_INDOM_NULL, PM_SEM_DISCRETE,
-				     pmiUnits(0, 0, 0, 0, 0, 0));
-
-			def_metrics = TRUE;
-		}
-	}
-	if (action & F_MAIN) {
-		pmiPutValue("system.comment.value", NULL, comment);
-
-		/* Write data to PCP archive */
-		pcp_write_data(record_hdr, flags);
-	}
+	if (action & F_MAIN)
+		pcp_write_sadf_comment(comment, record_hdr->ust_time);
 #endif /* HAVE_PCP */
 }
 
@@ -675,7 +631,7 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					break;
 
 				case A_PCSW:
-					pcp_def_pcsw_metrics();
+					pcp_def_pcsw_metrics(act[p]);
 					break;
 
 				case A_IRQ:
@@ -684,15 +640,15 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					break;
 
 				case A_SWAP:
-					pcp_def_swap_metrics();
+					pcp_def_swap_metrics(act[p]);
 					break;
 
 				case A_PAGE:
-					pcp_def_paging_metrics();
+					pcp_def_paging_metrics(act[p]);
 					break;
 
 				case A_IO:
-					pcp_def_io_metrics();
+					pcp_def_io_metrics(act[p]);
 					break;
 
 				case A_MEMORY:
@@ -700,11 +656,11 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					break;
 
 				case A_KTABLES:
-					pcp_def_ktables_metrics();
+					pcp_def_ktables_metrics(act[p]);
 					break;
 
 				case A_QUEUE:
-					pcp_def_queue_metrics();
+					pcp_def_queue_metrics(act[p]);
 					break;
 
 				case A_SERIAL:
@@ -721,71 +677,71 @@ __printf_funct_t print_pcp_statistics(int *tab, int action, struct activity *act
 					break;
 
 				case A_NET_NFS:
-					pcp_def_net_nfs_metrics();
+					pcp_def_net_nfs_metrics(act[p]);
 					break;
 
 				case A_NET_NFSD:
-					pcp_def_net_nfsd_metrics();
+					pcp_def_net_nfsd_metrics(act[p]);
 					break;
 
 				case A_NET_SOCK:
-					pcp_def_net_sock_metrics();
+					pcp_def_net_sock_metrics(act[p]);
 					break;
 
 				case A_NET_IP:
-					pcp_def_net_ip_metrics();
+					pcp_def_net_ip_metrics(act[p]);
 					break;
 
 				case A_NET_EIP:
-					pcp_def_net_eip_metrics();
+					pcp_def_net_eip_metrics(act[p]);
 					break;
 
 				case A_NET_ICMP:
-					pcp_def_net_icmp_metrics();
+					pcp_def_net_icmp_metrics(act[p]);
 					break;
 
 				case A_NET_EICMP:
-					pcp_def_net_eicmp_metrics();
+					pcp_def_net_eicmp_metrics(act[p]);
 					break;
 
 				case A_NET_TCP:
-					pcp_def_net_tcp_metrics();
+					pcp_def_net_tcp_metrics(act[p]);
 					break;
 
 				case A_NET_ETCP:
-					pcp_def_net_etcp_metrics();
+					pcp_def_net_etcp_metrics(act[p]);
 					break;
 
 				case A_NET_UDP:
-					pcp_def_net_udp_metrics();
+					pcp_def_net_udp_metrics(act[p]);
 					break;
 
 				case A_NET_SOCK6:
-					pcp_def_net_sock6_metrics();
+					pcp_def_net_sock6_metrics(act[p]);
 					break;
 
 				case A_NET_IP6:
-					pcp_def_net_ip6_metrics();
+					pcp_def_net_ip6_metrics(act[p]);
 					break;
 
 				case A_NET_EIP6:
-					pcp_def_net_eip6_metrics();
+					pcp_def_net_eip6_metrics(act[p]);
 					break;
 
 				case A_NET_ICMP6:
-					pcp_def_net_icmp6_metrics();
+					pcp_def_net_icmp6_metrics(act[p]);
 					break;
 
 				case A_NET_EICMP6:
-					pcp_def_net_eicmp6_metrics();
+					pcp_def_net_eicmp6_metrics(act[p]);
 					break;
 
 				case A_NET_UDP6:
-					pcp_def_net_udp6_metrics();
+					pcp_def_net_udp6_metrics(act[p]);
 					break;
 
 				case A_HUGE:
-					pcp_def_huge_metrics();
+					pcp_def_huge_metrics(act[p]);
 					break;
 
 				case A_PWR_FAN:
@@ -1272,6 +1228,12 @@ __printf_funct_t print_hdr_header(void *parm, int action, char *dfile, char *my_
 		char cur_time[TIMESTAMP_LEN];
 		struct file_activity *fal;
 
+		if (!file_magic) {
+			/* Called from PCP archive read path — no native magic header */
+			printf(_("System activity data file: %s (PCP archive)\n"), dfile);
+			return;
+		}
+
 		printf(_("System activity data file: %s (%#x)\n"),
 		       dfile, file_magic->format_magic);
 
@@ -1467,7 +1429,7 @@ __printf_funct_t print_svg_header(void *parm, int action, char *dfile, char *my_
  * @dfile	Name of PCP archive file.
  * @my_tz	Current timezone (unused here).
  * @file_magic	System activity file magic header (unused here).
- * @file_hdr	System activity file standard header (unused here).
+ * @file_hdr	System activity file standard header.
  * @act		Array of activities (unused here).
  * @id_seq	Activity sequence (unused here).
  * @file_actlst	List of (known or unknown) activities in file (unused here).
@@ -1480,59 +1442,416 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile, char *my_
 				  struct file_activity *file_actlst)
 {
 #ifdef HAVE_PCP
-	char buf[64];
-	unsigned long long utc_sec = file_hdr->sa_ust_time;
+	if (action & F_BEGIN)
+		pcp_open_sadf_archive(dfile, file_hdr);
 
-	if (action & F_BEGIN) {
-		/* Create new PCP context */
-		pmiStart(dfile, FALSE);
-
-		/* Set timezone */
-		pmiSetTimezone(file_hdr->sa_tzname);
-
-		/* Save hostname */
-		pmiSetHostname(file_hdr->sa_nodename);
-
-		/* Save number of CPU in PCP archive */
-		pmiAddMetric("hinv.ncpu",
-			     pmiID(60, 0, 32), PM_TYPE_U32, PM_INDOM_NULL,
-			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
-		snprintf(buf, sizeof(buf), "%u",
-			 file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
-		pmiPutValue("hinv.ncpu", NULL, buf);
-
-		/* Save uname(2) information */
-		pmiAddMetric("kernel.uname.release",
-			     pmiID(60, 12, 0), PM_TYPE_STRING, PM_INDOM_NULL,
-			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
-		pmiPutValue("kernel.uname.release", NULL, file_hdr->sa_release);
-		pmiAddMetric("kernel.uname.sysname",
-			     pmiID(60, 12, 2), PM_TYPE_STRING, PM_INDOM_NULL,
-			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
-		pmiPutValue("kernel.uname.sysname", NULL, file_hdr->sa_sysname);
-		pmiAddMetric("kernel.uname.machine",
-			     pmiID(60, 12, 3), PM_TYPE_STRING, PM_INDOM_NULL,
-			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
-		pmiPutValue("kernel.uname.machine", NULL, file_hdr->sa_machine);
-		pmiAddMetric("kernel.uname.nodename",
-			     pmiID(60, 12, 4), PM_TYPE_STRING, PM_INDOM_NULL,
-			     PM_SEM_DISCRETE, pmiUnits(0, 0, 0, 0, 0, 0));
-		pmiPutValue("kernel.uname.nodename", NULL, file_hdr->sa_nodename);
-	}
-
-	if (action & F_END) {
-		if (action & F_BEGIN) {
-			int rc;
-
-			if ((rc = pmiWrite(utc_sec, 0)) < 0) {
-				fprintf(stderr, "PCP: pmiWrite: %s\n", pmiErrStr(rc));
-				exit(4);
-			}
-		}
-		pmiEnd();
-	}
+	if (action & F_END)
+		pcp_close_sadf_archive((action & F_BEGIN) ? file_hdr->sa_ust_time : 0);
 #endif
 }
+
+#ifdef HAVE_PCP
+/*
+ ***************************************************************************
+ * Populate file_hdr fields from a PCP archive so that format-specific
+ * header functions have valid data.
+ *
+ * IN:
+ * @ctxid	PCP archive context ID.
+ ***************************************************************************
+ */
+static void
+pcp_populate_file_hdr_sadf(int ctxid)
+{
+	pmLogLabel	label;
+	pmResult	*result;
+	struct act_metrics *metrics = &file_header_metrics;
+	int		i, sts;
+	char		*s;
+
+	if ((sts = pmGetArchiveLabel(&label)) < 0)
+		return;
+
+	file_hdr.sa_ust_time = (unsigned long long) label.start.tv_sec;
+	if (label.timezone[0])
+		pmsprintf(file_hdr.sa_tzname, sizeof(file_hdr.sa_tzname),
+			  "%s", label.timezone);
+
+	for (i = 0; i < FILE_HEADER_METRIC_COUNT; i++)
+		metrics->pmids[i] = metrics->descs[i].pmid;
+
+	pmSetMode(PM_MODE_FORW, &label.start, NULL);
+	if ((sts = pmFetch(metrics->count, metrics->pmids, &result)) < 0)
+		return;
+
+	for (i = 0; i < result->numpmid; i++) {
+		pmValueSet *vset = result->vset[i];
+
+		if (vset->numval < 1)
+			continue;
+
+		if (vset->pmid == PMID_FILE_HEADER_CPU_COUNT) {
+			file_hdr.sa_cpu_nr = (unsigned int)
+				pcp_read_u32(vset, 0, metrics->descs,
+					     FILE_HEADER_CPU_COUNT) + 1;
+		}
+		else if (vset->pmid == PMID_FILE_HEADER_KERNEL_HERTZ) {
+			file_hdr.sa_hz = (unsigned long)
+				pcp_read_u32(vset, 0, metrics->descs,
+					     FILE_HEADER_KERNEL_HERTZ);
+		}
+		else if (vset->pmid == PMID_FILE_HEADER_UNAME_NODENAME) {
+			if ((s = pcp_read_str(vset, 0, metrics->descs, FILE_HEADER_UNAME_NODENAME))) {
+				pmsprintf(file_hdr.sa_nodename, sizeof(file_hdr.sa_nodename), "%s", s); free(s);
+			}
+		}
+		else if (vset->pmid == PMID_FILE_HEADER_UNAME_SYSNAME) {
+			if ((s = pcp_read_str(vset, 0, metrics->descs, FILE_HEADER_UNAME_SYSNAME))) {
+				pmsprintf(file_hdr.sa_sysname, sizeof(file_hdr.sa_sysname), "%s", s); free(s);
+			}
+		}
+		else if (vset->pmid == PMID_FILE_HEADER_UNAME_RELEASE) {
+			if ((s = pcp_read_str(vset, 0, metrics->descs, FILE_HEADER_UNAME_RELEASE))) {
+				pmsprintf(file_hdr.sa_release, sizeof(file_hdr.sa_release), "%s", s); free(s);
+			}
+		}
+		else if (vset->pmid == PMID_FILE_HEADER_UNAME_MACHINE) {
+			if ((s = pcp_read_str(vset, 0, metrics->descs, FILE_HEADER_UNAME_MACHINE))) {
+				pmsprintf(file_hdr.sa_machine, sizeof(file_hdr.sa_machine), "%s", s); free(s);
+			}
+		}
+	}
+	pmFreeResult(result);
+}
+
+/*
+ ***************************************************************************
+ * One pmFetch loop for a single activity during SVG rendering.
+ * The caller is responsible for calling pmSetMode() before each invocation
+ * to position the archive correctly.
+ *
+ * IN:
+ * @pmids	Combined pmid array (all activities + record header).
+ * @numpmids	Length of @pmids.
+ * @a		Activity to render.
+ * @parm	SVG parameters (mock flag, graph_no, time refs, etc.).
+ * @start	Archive start timespec ({0} = beginning).
+ ***************************************************************************
+ */
+static void
+pcp_svg_one_activity_pass(pmID *pmids, int numpmids, struct activity *a,
+			  struct svg_parm *parm, struct timespec *start)
+{
+	pmResult	*result;
+	struct tstamp_ext rectime;
+	unsigned long long itv;
+	int		curr = 1, sts;
+
+	pmSetMode(PM_MODE_FORW, start, NULL);
+	copy_structures(act, id_seq, record_hdr, 2, 0);
+	parm->restart = TRUE;
+
+	while ((sts = pmFetch(numpmids, pmids, &result)) >= 0) {
+
+		if (read_stats_from_result(result, &file_hdr, curr) == R_RESTART) {
+			parm->restart = TRUE;
+			pmFreeResult(result);
+			copy_structures(act, id_seq, record_hdr, 2, 0);
+			curr ^= 1;
+			continue;
+		}
+
+		if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], &rectime)) {
+			pmFreeResult(result);
+			curr ^= 1;
+			continue;
+		}
+
+		if ((tm_start.use != NO_TIME) &&
+		    (datecmp(&rectime, &tm_start, FALSE) < 0)) {
+			pmFreeResult(result);
+			curr ^= 1;
+			continue;
+		}
+		if ((tm_end.use != NO_TIME) &&
+		    (datecmp(&rectime, &tm_end, FALSE) > 0)) {
+			pmFreeResult(result);
+			break;
+		}
+
+		get_itv_value(&record_hdr[curr], &record_hdr[!curr], &itv);
+		parm->ust_time_end = record_hdr[curr].ust_time;
+
+		(*a->f_svg_print)(a, curr, F_MAIN, parm, itv, &record_hdr[curr]);
+
+		parm->restart = FALSE;
+		pmFreeResult(result);
+		curr ^= 1;
+	}
+}
+
+/*
+ ***************************************************************************
+ * Read statistics from a PCP archive and render SVG output.
+ *
+ * Two rendering passes (mock then real) per activity, each driven by a
+ * pmFetch loop.  pmSetMode() rewinds to the archive start between passes
+ * (and between activities, since each gets its own pass so that
+ * parm.graph_no accumulates correctly).  PM_ERR_EOL from pmFetch signals
+ * end of archive, equivalent to EOF on a native file.
+ *
+ * IN:
+ * @pmids	Combined pmid array (all activities + record header).
+ * @numpmids	Length of @pmids.
+ * @from_file	Archive base path (used for SVG header strings).
+ ***************************************************************************
+ */
+static void
+read_stats_from_pcpfile_svg_sadf(pmID *pmids, int numpmids, char *from_file)
+{
+	struct svg_hdr_parm hparm;
+	struct svg_parm	parm;
+	struct timespec	start = {0};
+	pmResult	*result;
+	int		p, g_nr = 0, nr_act_dispd = 0;
+
+	init_custom_color_palette();
+
+	/* Count activities and total view rows that will be displayed */
+	for (p = 0; p < NR_ACT; p++) {
+		if (IS_SELECTED(act[p]->options) && act[p]->g_nr &&
+		    act[p]->f_svg_print) {
+			nr_act_dispd++;
+			g_nr += PACK_VIEWS(flags) ? act[p]->g_nr : 1;
+		}
+	}
+	hparm.views_per_row = PACK_VIEWS(flags) ? g_nr : 1;
+	hparm.nr_act_dispd  = nr_act_dispd;
+
+	/* Fetch first sample to get time reference values */
+	pmSetMode(PM_MODE_FORW, &start, NULL);
+	if (pmFetch(numpmids, pmids, &result) >= 0) {
+		read_stats_from_result(result, &file_hdr, 1);
+		pmFreeResult(result);
+	}
+
+	memset(&parm, 0, sizeof(parm));
+	parm.ust_time_ref   = (unsigned long long) get_time_ref();
+	parm.ust_time_first = record_hdr[1].ust_time;
+	parm.hour   = record_hdr[1].hour;
+	parm.minute = record_hdr[1].minute;
+	parm.second = record_hdr[1].second;
+	parm.file_hdr     = &file_hdr;
+	parm.nr_act_dispd = nr_act_dispd;
+	strcpy(parm.my_tzname, my_tzname);
+
+	/* Print opening SVG tag */
+	if (*fmt[f_position]->f_header)
+		(*fmt[f_position]->f_header)(&hparm, F_BEGIN, from_file, NULL,
+					     NULL, &file_hdr, act, id_seq, NULL);
+
+	/*
+	 * MOCK PASS: compute canvas height (each activity calls f_svg_print
+	 * with parm.mock = MOCK_MODE; graph_no accumulates row count).
+	 */
+	parm.graph_no = 0;
+	parm.mock = MOCK_MODE;
+
+	for (p = 0; p < NR_ACT; p++) {
+		if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr ||
+		    !act[p]->f_svg_print)
+			continue;
+
+		(*act[p]->f_svg_print)(act[p], 0, F_BEGIN, &parm, 0,
+				       &record_hdr[2]);
+		pcp_svg_one_activity_pass(pmids, numpmids, act[p], &parm, &start);
+		(*act[p]->f_svg_print)(act[p], 1, F_END, &parm, 0,
+				       &record_hdr[0]);
+
+		init_minmax_buf(act[p], 0, act[p]->nr_spalloc);
+	}
+
+	hparm.graph_nr = SET_CANVAS_HEIGHT(flags) ? canvas_height : parm.graph_no;
+
+	/* Complete SVG header now that canvas height is known */
+	if (*fmt[f_position]->f_header)
+		(*fmt[f_position]->f_header)(&hparm, F_MAIN, from_file, NULL,
+					     NULL, &file_hdr, act, id_seq, NULL);
+
+	/*
+	 * REAL PASS: render actual SVG graph data.
+	 */
+	parm.graph_no = 0;
+	parm.mock = REAL_MODE;
+
+	for (p = 0; p < NR_ACT; p++) {
+		if (!IS_SELECTED(act[p]->options) || !act[p]->g_nr ||
+		    !act[p]->f_svg_print)
+			continue;
+
+		(*act[p]->f_svg_print)(act[p], 0, F_BEGIN, &parm, 0,
+				       &record_hdr[2]);
+		pcp_svg_one_activity_pass(pmids, numpmids, act[p], &parm, &start);
+		(*act[p]->f_svg_print)(act[p], 1, F_END, &parm, 0,
+				       &record_hdr[0]);
+	}
+
+	/* Print closing SVG tag */
+	hparm.graph_nr = parm.graph_no;
+	if (*fmt[f_position]->f_header)
+		(*fmt[f_position]->f_header)(&hparm, F_END, from_file, NULL,
+					     NULL, &file_hdr, act, id_seq, NULL);
+}
+
+/*
+ ***************************************************************************
+ * Read statistics from a PCP archive and display them in the current sadf
+ * output format.  Supports all formats including SVG.
+ *
+ * IN:
+ * @ctxid	PCP archive context ID (from pmNewContext).
+ * @from_file	Archive base path (used for format header strings).
+ ***************************************************************************
+ */
+void
+read_stats_from_pcpfile_sadf(int ctxid, char *from_file)
+{
+	pmResult	*result;
+	pmID		*pmids = NULL;
+	struct tstamp_ext rectime;
+	int		tab = 0, curr = 1;
+	int		next, reset = TRUE;
+	long		cnt = count ? count : -1L;
+	int		numpmids, i, p, j, sts;
+	struct timespec	start = {0};
+	pcp_populate_file_hdr_sadf(ctxid);
+
+	/* Read optional sadc.* provenance metrics (present in sadc-written archives) */
+	{
+		char *sadc_ver = NULL;
+		long  sadc_itv = 0;
+
+		pcp_read_sadc_metrics(&sadc_ver, &sadc_itv);
+		free(sadc_ver);	/* available for future header display use */
+		(void)sadc_itv;
+	}
+
+	/*
+	 * Respect the activity selection already set by the user's options
+	 * (e.g. sadf ... -- -u selects only CPU).  For each selected activity
+	 * that has PCP metrics, fix up nr_ini / nr2 so allocate_structures()
+	 * makes a minimal initial allocation; pcp_read_* grows buffers via
+	 * reallocate_buffers() as instance counts are discovered from pmFetch.
+	 */
+	for (p = 0; p < NR_ACT; p++) {
+		if (act[p]->metrics && IS_SELECTED(act[p]->options)) {
+			act[p]->nr_ini = 1;
+			if (act[p]->nr2 <= 0)
+				act[p]->nr2 = 1;
+		}
+	}
+
+	allocate_structures(act, flags);
+
+	allocate_bitmaps(act);
+	for (p = 0; p < NR_ACT; p++) {
+		if (act[p]->bitmap && act[p]->bitmap->b_array)
+			memset(act[p]->bitmap->b_array, ~0,
+			       BITMAP_SIZE(act[p]->bitmap->b_size));
+	}
+
+	numpmids = RECORD_HEADER_METRIC_COUNT;
+	for (p = 0; p < NR_ACT; p++) {
+		if (IS_SELECTED(act[p]->options) && act[p]->metrics)
+			numpmids += act[p]->metrics->count;
+	}
+	if ((pmids = calloc(numpmids, sizeof(pmID))) == NULL) {
+		perror("calloc");
+		goto cleanup;
+	}
+
+	j = 0;
+	for (i = 0; i < RECORD_HEADER_METRIC_COUNT; i++)
+		pmids[j++] = record_header_metric_descs[i].pmid;
+	for (p = 0; p < NR_ACT; p++) {
+		if (!IS_SELECTED(act[p]->options) || !act[p]->metrics)
+			continue;
+		for (i = 0; i < (int)act[p]->metrics->count; i++)
+			pmids[j++] = act[p]->metrics->descs[i].pmid;
+	}
+
+	/* SVG uses a separate two-pass (mock + real) rendering path */
+	if (format == F_SVG_OUTPUT) {
+		read_stats_from_pcpfile_svg_sadf(pmids, j, from_file);
+		goto cleanup;
+	}
+
+	if (*fmt[f_position]->f_header) {
+		(*fmt[f_position]->f_header)(&tab, F_BEGIN, from_file, my_tzname,
+					     NULL, &file_hdr, act, id_seq, NULL);
+	}
+	if (*fmt[f_position]->f_statistics)
+		(*fmt[f_position]->f_statistics)(&tab, F_BEGIN, act, id_seq);
+
+	pmSetMode(PM_MODE_FORW, &start, NULL);
+	copy_structures(act, id_seq, record_hdr, 2, 0);
+
+	while ((sts = pmFetch(j, pmids, &result)) >= 0) {
+
+		if (read_stats_from_result(result, &file_hdr, curr) == R_RESTART) {
+			pmFreeResult(result);
+			copy_structures(act, id_seq, record_hdr, 2, 0);
+			reset = TRUE;
+			continue;
+		}
+
+		if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], &rectime)) {
+			pmFreeResult(result);
+			curr ^= 1;
+			continue;
+		}
+
+		if ((tm_start.use != NO_TIME) &&
+		    (datecmp(&rectime, &tm_start, FALSE) < 0)) {
+			pmFreeResult(result);
+			curr ^= 1;
+			continue;
+		}
+		if ((tm_end.use != NO_TIME) &&
+		    (datecmp(&rectime, &tm_end, FALSE) > 0)) {
+			pmFreeResult(result);
+			break;
+		}
+
+		if (*fmt[f_position]->f_statistics)
+			(*fmt[f_position]->f_statistics)(&tab, F_MAIN, act, id_seq);
+
+		next = generic_write_stats(curr, tm_start.use, tm_end.use,
+					   reset, &cnt, &tab, &rectime,
+					   FALSE, ALL_ACTIVITIES);
+		if (next) {
+			curr ^= 1;
+			if (cnt > 0)
+				cnt--;
+		}
+		reset = FALSE;
+		pmFreeResult(result);
+
+		if (!cnt)
+			break;
+	}
+
+	if (*fmt[f_position]->f_statistics)
+		(*fmt[f_position]->f_statistics)(&tab, F_END, act, id_seq);
+	if (*fmt[f_position]->f_header)
+		(*fmt[f_position]->f_header)(&tab, F_END, from_file, my_tzname,
+					     NULL, &file_hdr, act, id_seq, NULL);
+cleanup:
+	free(pmids);
+	free_bitmaps(act);
+	free_structures(act);
+}
+#endif /* HAVE_PCP */
 
 /*
  ***************************************************************************

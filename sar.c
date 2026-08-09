@@ -32,6 +32,9 @@
 #include "version.h"
 #include "sa.h"
 
+#include "pcp_stats.h"
+#include "pcp_sar.h"
+
 #ifdef USE_NLS
 #include <locale.h>
 #include <libintl.h>
@@ -134,6 +137,7 @@ void usage(char *progname)
 			  "[ --int=<int_list> ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 			  "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
+			  "[ -a <archive> ]\n"
 			  "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 			  "[ -i <interval> ] [ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"));
 	exit(1);
@@ -1011,13 +1015,13 @@ void read_header_data(void)
 
 /*
  ***************************************************************************
- * Read statistics from a system activity data file.
+ * Read statistics from a raw system activity data file.
  *
  * IN:
  * @from_file	Input file name.
  ***************************************************************************
  */
-void read_stats_from_file(char from_file[])
+void read_stats_from_rawfile(char from_file[])
 {
 	struct file_magic file_magic;
 	struct file_activity *file_actlst = NULL;
@@ -1189,6 +1193,22 @@ void read_stats_from_file(char from_file[])
 	close(ifd);
 
 	free(file_actlst);
+}
+
+/*
+ ***************************************************************************
+ * Read statistics from any system activity data file.
+ *
+ * IN:
+ * @from_file	Input file name.
+ ***************************************************************************
+ */
+void read_stats_from_file(char from_file[])
+{
+	if (try_read_stats_from_pcpfile(from_file, flags))
+		return;
+
+	read_stats_from_rawfile(from_file);
 }
 
 /*
@@ -1443,6 +1463,16 @@ int main(int argc, char **argv)
 			else {
 				strcpy(to_file, "-");
 			}
+		}
+
+		else if (!strcmp(argv[opt], "-a")) {
+			/* Explicitly read from a PCP archive (common PCP arg) */
+			if (from_file[0] || day_offset)
+				usage(argv[0]);
+			if (!argv[++opt] || !strncmp(argv[opt], "-", 1))
+				usage(argv[0]);
+			snprintf(from_file, sizeof(from_file), "%s", argv[opt++]);
+			flags |= S_F_PCP_INPUT;
 		}
 
 		else if (!strcmp(argv[opt], "-f")) {

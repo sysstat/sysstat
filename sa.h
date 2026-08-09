@@ -117,6 +117,10 @@ enum {
 #define S_F_OPTION_I		0x0040000000
 #define S_F_DEBUG_MODE		0x0080000000
 #define S_F_NDJSON_OUTPUT	0x0100000000
+#define S_F_PCP_OUTPUT		0x0200000000
+#define S_F_PCP_ONLY		0x0400000000
+#define S_F_PCP_INPUT		0x0800000000
+#define S_F_PCP_GROUPS		0x1000000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -138,6 +142,9 @@ enum {
 #define SKIP_EMPTY_VIEWS(m)		(((m) & S_F_SVG_SKIP)     == S_F_SVG_SKIP)
 #define DISPLAY_ZERO_OMIT(m)		(((m) & S_F_ZERO_OMIT)    == S_F_ZERO_OMIT)
 #define DISPLAY_DEBUG_MODE(m)		(((m) & S_F_DEBUG_MODE)   == S_F_DEBUG_MODE)
+#define WRITE_PCP_OUTPUT(m)		(((m) & S_F_PCP_OUTPUT)   == S_F_PCP_OUTPUT)
+#define WRITE_PCP_ONLY(m)		(((m) & S_F_PCP_ONLY)     == S_F_PCP_ONLY)
+#define PCP_GROUPS_ACTIVE(m)		(((m) & S_F_PCP_GROUPS)   == S_F_PCP_GROUPS)
 #define AUTOSCALE_ON(m)			(((m) & S_F_SVG_AUTOSCALE) == S_F_SVG_AUTOSCALE)
 #define DISPLAY_ONE_DAY(m)		(((m) & S_F_SVG_ONE_DAY)  == S_F_SVG_ONE_DAY)
 #define DISPLAY_IDLE(m)			(((m) & S_F_SVG_SHOW_IDLE) == S_F_SVG_SHOW_IDLE)
@@ -769,12 +776,12 @@ struct extra_desc {
 enum {
 	/*
 	 * R_STATS means that this is a record of statistics.
-	*/
+	 */
 	R_STATS		= 1,
 	/*
 	 * R_RESTART means that this is a special record containing
 	 * a LINUX RESTART message.
-	*/
+	 */
 	R_RESTART	= 2,
 	/*
 	 * R_LAST_STATS warns sar that this is the last record to be written
@@ -791,7 +798,7 @@ enum {
 	/*
 	 * R_EXTRA* records means that extra structures are following current
 	 * record_header structure, but no statistics structures.
-	*/
+	 */
 	R_EXTRA_MIN	= 5,
 	R_EXTRA_MAX	= 15
 };
@@ -939,6 +946,9 @@ struct act_bitmap {
 	int b_size;
 };
 
+/* Structure used to define Performance Co-Pilot metrics relating to an activity */
+struct act_metrics;
+
 /*
  * Structure used to define an activity.
  * Note: This structure can be modified without changing the format of data files.
@@ -1085,7 +1095,7 @@ struct activity {
 	/*
 	 * Number of SVG graphs for this activity. The total number of graphs for
 	 * the activity can be greater though if flag AO_GRAPH_PER_ITEM is set, in
-	 * which case the total number will  be @g_nr * @nr.
+	 * which case the total number will be @g_nr * @nr.
 	 */
 	int g_nr;
 	/*
@@ -1190,8 +1200,12 @@ struct activity {
 	 * if @bitmap is not NULL.
 	 */
 	struct act_bitmap *bitmap;
+	/*
+	 * Optional metric names, descriptors and identifiers for this activity;
+	 * @metrics field set to NULL when PCP archive support is not available.
+	 */
+	struct act_metrics *metrics;
 };
-
 
 /*
  ***************************************************************************
@@ -1568,7 +1582,7 @@ int skip_extra_struct
 int write_all
 	(int, const void *, int);
 
-#ifndef SOURCE_SADC
+#if !defined(SOURCE_SADC) || defined(HAVE_PCP)
 int add_list_item
 	(struct sa_item **, char *, int, int *);
 void allocate_bitmaps
@@ -1618,6 +1632,10 @@ void get_global_soft_statistics
 	(struct activity *, int, int, uint64_t, unsigned char []);
 void get_itv_value
 	(struct record_header *, struct record_header *, unsigned long long *);
+int get_timestamp_struct_from_timespec
+	(uint64_t, struct timespec *, struct tstamp_ext *);
+int get_timespec_from_timestamp_struct
+	(const struct timespec *, const struct tstamp_ext *, struct timespec *);
 void init_custom_color_palette
 	(void);
 void init_extrema_values
@@ -1694,5 +1712,5 @@ void set_record_timestamp_string
 	(uint64_t, char *, char *, int, struct tstamp_ext *);
 void swap_struct
 	(const unsigned int [], void *, int);
-#endif /* SOURCE_SADC undefined */
+#endif /* !SOURCE_SADC || HAVE_PCP */
 #endif  /* _SA_H */
