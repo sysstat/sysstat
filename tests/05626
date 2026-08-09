@@ -1,0 +1,31 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Regression test for multi-indom crash (commit "fix stale indom pointer"):
+	# When sysstat.pcpconf contains metrics from multiple indoms (e.g. proc.*
+	# on indom 3.9 AND tape.dev.* on indom 60.34), a realloc of cfg->indoms
+	# used to dangle m->indom pointers causing SIGSEGV on first write.
+	rm -f tests/sa18.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	cat > tests/pcpar-sadc2.pcpconf <<'EOF'
+[settings]
+interval = 1
+[metrics]
+proc.nprocs
+proc.psinfo.utime
+proc.psinfo.stime
+tape.dev.read_cnt
+tape.dev.write_cnt
+EOF
+	TZ=GMT SYSSTAT_PCPCONF=tests/pcpar-sadc2.pcpconf \
+		./sadc --unix_time=1555593619 \
+		-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	# Must exit 0 (no crash) and produce a valid archive
+	pminfo -a tests/sa18 proc.nprocs proc.psinfo.utime > /dev/null 2>&1 || exit 1
+	rm -f tests/pcpar-sadc2.pcpconf tests/pcpar-sadc2.*
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+else
+	echo Skipped; touch tests/SKIPPED
+fi
