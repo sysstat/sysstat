@@ -942,14 +942,7 @@ __read_funct_t wrap_read_cpu_wghfreq(struct activity *a)
 
 		if (nr_read < 0) {
 			/* Buffer needs to be reallocated */
-			SREALLOC(a->_buf0, void,
-				 (size_t) a->msize * (size_t) a->nr2 * (size_t) a->nr_allocated * 2);
-			memset(a->_buf0, 0,
-			       (size_t) a->msize * (size_t) a->nr2 * (size_t) a->nr_allocated * 2);
-
-			/* NB: nr_allocated > 0 */
-			a->nr_allocated *= 2;
-			st_pwr_wghfreq = (struct stats_pwr_wghfreq *) a->_buf0;
+			st_pwr_wghfreq = (struct stats_pwr_wghfreq *) reallocate_buffer(a);
 		}
 	}
 	while (nr_read < 0);
