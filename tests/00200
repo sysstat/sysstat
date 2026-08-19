@@ -1,5 +1,6 @@
 rm -f tests/sa18
 
+# Create sa18 datafile
 rm -f tests/root
 ln -s ${T_SRCDIR}/tests/root1 tests/root
 TZ=GMT ./sa1 --boot --unix_time=1555593609
