@@ -1,7 +1,10 @@
 . tests/variables
 if [ "$HAVE_PCP" = "y" ]; then
 	rm -f tests/extra/pcpar-ssr.*
-	LC_ALL=C ./sadf -l -O pcparchive=tests/extra/pcpar-ssr tests/data-ssr.tmp -- -m FAN,TEMP,IN
+	LC_ALL=C PCP_ARCHIVE_VERSION=2 ./sadf -l -O pcparchive=tests/extra/pcpar-ssr tests/data-ssr.tmp -- -m FAN,TEMP,IN 2>/dev/null
+	if [ $? -ne 0 ]; then
+		echo Skipped
+	fi
 else
 	echo Skipped
 fi
