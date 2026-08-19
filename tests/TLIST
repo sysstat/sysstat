@@ -184,6 +184,8 @@ NOTES:
 00560	LC_ALL=C ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
 00580	LC_ALL=C ./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
+00581	LC_ALL=C ./sadf -j --fs=/dev/sda6,/home tests/data.tmp -- -F > tests/out.sadf-fs.tmp
+00582	LC_ALL=C ./sadf -x --fs=/dev/sda6,/home tests/data.tmp -- -F MOUNT > tests/out2.sadf-fs.tmp
 00585	LC_ALL=C ./sadf -d --iface=enp6s0 tests/data-long.tmp -- -n DEV 65 > tests/out.sadf-i.tmp
 00590	LC_ALL=C ./sadf -l -O pcparchive=tests/pcpar tests/data.tmp -C -- -A
 
@@ -246,6 +248,8 @@ NOTES:
 00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
 00810	LC_ALL=C TZ=GMT ./sar --dev=sda -dp -f tests/data.tmp > tests/out.sar-dev.tmp
 00820	LC_ALL=C TZ=GMT ./sar --fs=/dev/sda6,/dev/foo -F -f tests/data.tmp > tests/out.sar-fs.tmp
+00825	LC_ALL=C TZ=GMT ./sar --fs=/dev/sda6,/home -F -f tests/data.tmp > tests/out2.sar-fs.tmp
+00826	LC_ALL=C TZ=GMT ./sar --fs=/dev/sda6,/home -F MOUNT -f tests/data.tmp > tests/out3.sar-fs.tmp
 00830	LC_ALL=C TZ=GMT ./sar --dec=0 -A -f tests/data.tmp > tests/out.sar-dec.tmp
 00840	LC_ALL=C TZ=GMT ./sar --human -A -f tests/data.tmp > tests/out.sar-human.tmp
 00850	LC_ALL=C TZ=GMT ./sar -s 13:20:20 -e 13:20:40 -f tests/data.tmp > tests/out.sar-se.tmp

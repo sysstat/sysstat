@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sysstat
+xmlns="https://sysstat.github.io"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="https://sysstat.github.io https://sysstat.github.io/sysstat.xsd">
+	<sysdata-version>3.18</sysdata-version>
+	<host nodename="SYSSTAT.TEST">
+		<sysname>Linux</sysname>
+		<release>1.2.3-TEST</release>
+		<machine>x86_64</machine>
+		<number-of-cpus>9</number-of-cpus>
+		<file-date>2019-04-18</file-date>
+		<file-utc-time>13:20:09</file-utc-time>
+		<timezone>GMT</timezone>
+		<statistics>
+			<timestamp date="2019-04-18" time="13:20:19" tz="UTC" interval="31">
+				<filesystems>
+					<filesystem mountp="/home" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem mountp="/data" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+				</filesystems>
+			</timestamp>
+			<timestamp date="2019-04-18" time="13:20:29" tz="UTC" interval="31">
+				<filesystems>
+					<filesystem mountp="/home" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem mountp="/data" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+				</filesystems>
+			</timestamp>
+			<timestamp date="2019-04-18" time="13:20:39" tz="UTC" interval="39">
+				<filesystems>
+					<filesystem mountp="/home" MBfsfree="705" MBfsused="145" fsused-percent="17.04" ufsused-percent="18.92" Ifree="6008414" Iused="102818" Iused-percent="1.68"/>
+					<filesystem mountp="/data" MBfsfree="273" MBfsused="206" fsused-percent="42.93" ufsused-percent="51.97" Ifree="19201593" Iused="455" Iused-percent="0.00"/>
+				</filesystems>
+			</timestamp>
+			<timestamp date="2019-04-18" time="13:20:49" tz="UTC" interval="22">
+				<filesystems>
+					<filesystem mountp="/home" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem mountp="/data" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+				</filesystems>
+			</timestamp>
+			<timestamp date="2019-04-18" time="13:54:35" tz="UTC" interval="31">
+				<filesystems>
+					<filesystem mountp="/home" MBfsfree="1618" MBfsused="127" fsused-percent="7.27" ufsused-percent="39.50" Ifree="1621550" Iused="299810" Iused-percent="15.60"/>
+					<filesystem mountp="/data" MBfsfree="2496" MBfsused="845" fsused-percent="25.29" ufsused-percent="46.57" Ifree="19051710" Iused="150338" Iused-percent="0.78"/>
+				</filesystems>
+			</timestamp>
+		</statistics>
+		<restarts>
+			<boot date="2019-04-18" time="13:37:29" tz="UTC" cpu_count="9"/>
+			<boot date="2019-04-18" time="13:54:09" tz="UTC" cpu_count="10"/>
+		</restarts>
+	</host>
+</sysstat>

@@ -1,0 +1,1 @@
+LC_ALL=C TZ=GMT ./sar --fs=/dev/sda6,/home -F MOUNT -f tests/data.tmp > tests/out3.sar-fs.tmp && diff -u ${T_SRCDIR}/tests/expected3.sar-fs tests/out3.sar-fs.tmp

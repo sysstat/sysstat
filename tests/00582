@@ -1,0 +1,1 @@
+LC_ALL=C ./sadf -x --fs=/dev/sda6,/home tests/data.tmp -- -F MOUNT > tests/out2.sadf-fs.tmp && diff -u ${T_SRCDIR}/tests/expected2.sadf-fs tests/out2.sadf-fs.tmp
