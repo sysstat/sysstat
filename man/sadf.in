@@ -1,5 +1,5 @@
-.\" sadf manual page - (C) 1999-2025 Sebastien Godard (sysstat <at> orange.fr)
-.TH SADF 1 "NOVEMBER 2025" Linux "Linux User's Manual" -*- nroff -*-
+.\" sadf manual page - (C) 1999-2026 Sebastien Godard (sysstat <at> orange.fr)
+.TH SADF 1 "AUGUST 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 sadf \- Display data collected by sar in multiple formats.
 
@@ -112,7 +112,8 @@ since the epoch (given as a 10 digit number).
 Specify the filesystems for which statistics are to be displayed by
 .BR "sadf" "."
 .I fs_list
-is a list of comma-separated filesystem names or mountpoints. Useful with option
+is a list of comma-separated filesystem device names and/or mountpoints.
+Either form is accepted for filtering. Useful with option
 .BR "\-F " "from " "sar" "."
 .TP
 .B \-g

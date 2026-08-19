@@ -1622,6 +1622,8 @@ void init_extrema_values
 	(struct activity *, int);
 void init_minmax_buf
 	(struct activity *, size_t, size_t);
+int match_sa_filesystem_item
+	(struct sa_item *, struct stats_filesystem *, char *);
 int next_slice
 	(unsigned long long, unsigned long long, int, long);
 void parse_sa_devices
