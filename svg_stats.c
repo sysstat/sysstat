@@ -4712,11 +4712,9 @@ __print_funct_t svg_print_filesystem_stats(struct activity *a, int curr, int act
 			/* Get name to display (persistent or standard fs name, or mount point) */
 			dev_name = get_fs_name_to_display(a, flags, sfc);
 
-			if (a->item_list != NULL) {
-				/* Match --fs= against device name and/or mountpoint */
-				if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
-					continue;
-			}
+			/* Match --fs= against device name and/or mountpoint */
+			if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
+				continue;
 
 			/* Look for corresponding graph */
 			for (k = 0; k < a->item_list_sz; k++) {

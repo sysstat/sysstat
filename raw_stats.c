@@ -1578,11 +1578,9 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 		/* Get name to display (persistent or standard fs name, or mount point) */
 		dev_name = get_fs_name_to_display(a, flags, sfc);
 
-		if (a->item_list != NULL) {
-			/* Match --fs= against device name and/or mountpoint */
-			if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
-				continue;
-		}
+		/* Match --fs= against device name and/or mountpoint */
+		if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
+			continue;
 
 		printf("%s; %s; \"%s\";", timestr, pfield(a->hdr_line, FIRST + DISPLAY_MOUNT(a->opt_flags)),
 		       dev_name);

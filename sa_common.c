@@ -2415,6 +2415,7 @@ int match_sa_filesystem_item(struct sa_item *list, struct stats_filesystem *st_f
 			     char *displayed)
 {
 	if (list == NULL)
+		/* No "--fs=" selection: Always match */
 		return 1;
 
 	if (displayed && *displayed && search_list_item(list, displayed))
