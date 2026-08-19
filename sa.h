@@ -1678,6 +1678,8 @@ void save_minmax
 	(struct activity *, int, double);
 struct sa_item *search_list_item
 	(struct sa_item *, char *);
+int match_sa_filesystem_item
+	(struct sa_item *, struct stats_filesystem *, char *);
 void select_all_activities
 	(struct activity * []);
 void select_default_activity

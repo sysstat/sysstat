@@ -1579,9 +1579,8 @@ __print_funct_t raw_print_filesystem_stats(struct activity *a, char *timestr, in
 		dev_name = get_fs_name_to_display(a, flags, sfc);
 
 		if (a->item_list != NULL) {
-			/* A list of devices has been entered on the command line */
-			if (!search_list_item(a->item_list, dev_name))
-				/* Device not found */
+			/* Match --fs= against device name and/or mountpoint */
+			if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
 				continue;
 		}
 

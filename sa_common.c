@@ -2397,6 +2397,38 @@ struct sa_item *search_list_item(struct sa_item *list, char *item_name)
 
 /*
  ***************************************************************************
+ * Check whether a filesystem matches an --fs= selection list.
+ * The man page documents both device names and mountpoints; match either
+ * (and the currently displayed name) so --fs=/srv works without needing
+ * -F MOUNT output mode.
+ *
+ * IN:
+ * @list		Selection list (may be NULL).
+ * @st_fs		Filesystem statistics entry.
+ * @displayed		Name currently used for display (may be NULL).
+ *
+ * RETURNS:
+ * 1 if list is empty or the filesystem matches, 0 otherwise.
+ ***************************************************************************
+ */
+int match_sa_filesystem_item(struct sa_item *list, struct stats_filesystem *st_fs,
+			     char *displayed)
+{
+	if (list == NULL)
+		return 1;
+
+	if (displayed && *displayed && search_list_item(list, displayed))
+		return 1;
+	if (st_fs->fs_name[0] && search_list_item(list, st_fs->fs_name))
+		return 1;
+	if (st_fs->mountp[0] && search_list_item(list, st_fs->mountp))
+		return 1;
+
+	return 0;
+}
+
+/*
+ ***************************************************************************
  * Add item to the list.
  *
  * IN:

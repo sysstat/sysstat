@@ -316,7 +316,13 @@ located. Option
 Specify the filesystems for which statistics are to be displayed by
 .BR "sar" "."
 .I fs_list
-is a list of comma-separated filesystem names or mountpoints.
+is a list of comma-separated filesystem device names (for example
+.IR /dev/sdb1 )
+and/or mountpoints (for example
+.IR /srv ).
+Either form is accepted for filtering, independent of whether
+.B \-F
+is showing device names or mountpoints.
 .TP
 .B \-H
 Report hugepages utilization statistics.
