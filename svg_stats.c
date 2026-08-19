@@ -133,17 +133,38 @@ char **allocate_graph_lines(struct activity *a, int n, int **outsize)
 	char **out;
 	char *out_p;
 	int i;
+	size_t alloc_sz;
+
+	/*
+	 * Sanity-check @n. Callers compute it as
+	 * <ARRAY_SZ> * a->item_list_sz using signed int multiplication,
+	 * which overflows when item_list_sz is large (item_list_sz is read
+	 * from a potentially crafted data file and bounded only by nr_max;
+	 * e.g. DISK_ARRAY_SZ(9) * MAX_NR_DISKS or FS_ARRAY_SZ(8) * MAX_NR_FS
+	 * both exceed INT_MAX). The resulting negative n would otherwise be
+	 * passed to malloc() below, yielding undefined behaviour and a
+	 * huge/under-sized allocation (DoS).
+	 */
+	if (n <= 0) {
+#ifdef DEBUG
+		fprintf(stderr, "%s: Invalid number of lines (%d)\n", __FUNCTION__, n);
+#endif
+		exit(4);
+	}
 
 	/*
 	 * Allocate an array of pointers. Each of these pointers will
-	 * be an array of chars.
+	 * be an array of chars. Use an overflow-checked size so that the
+	 * n * sizeof(...) products are validated too (relevant on 32-bit).
 	 */
-	if ((out = (char **) malloc(n * sizeof(char *))) == NULL) {
+	alloc_sz = mul_check_overflow3((size_t) n, sizeof(char *), 1);
+	if ((out = (char **) malloc(alloc_sz)) == NULL) {
 		perror("malloc");
 		exit(4);
 	}
 	/* Allocate array that will contain the size of each array of chars */
-	if ((*outsize = (int *) malloc(n * sizeof(int))) == NULL) {
+	alloc_sz = mul_check_overflow3((size_t) n, sizeof(int), 1);
+	if ((*outsize = (int *) malloc(alloc_sz)) == NULL) {
 		perror("malloc");
 		exit(4);
 	}
