@@ -45,6 +45,23 @@
 /* Type for all functions counting items. Value can be negative (-1) */
 #define __nr_t		int
 
+/* Number of different files that may be read several times per cycle */
+#define MULTI_R_NR_FILE		7
+/* File 1: /proc/stat */
+#define MULTI_R_STAT_IDX	0
+/* File 2: /proc/diskstats */
+#define MULTI_R_DISKSTATS_IDX	1
+/* File 3: /proc/net/dev */
+#define MULTI_R_NET_DEV_IDX	2
+/* File 3: /proc/meminfo */
+#define MULTI_R_MEMINFO_IDX	3
+/* File 4: /proc/vmstat */
+#define MULTI_R_VMSTAT_IDX	4
+/* File 5: /proc/net/snmp */
+#define MULTI_R_NET_SNMP_IDX	5
+/* File 6: /proc/net/snmp6 */
+#define MULTI_R_NET_SNMP6_IDX	6
+
 /*
  ***************************************************************************
  * System files containing statistics
@@ -848,14 +865,14 @@ unsigned long long get_per_cpu_interval
 	(struct stats_cpu *, struct stats_cpu *);
 void invalidate_buffers
 	(void);
-FILE *open_stat_stream
-	(int);
+FILE *open_proc_file_stream
+	(int, int, const char *);
 __nr_t read_stat_cpu
 	(struct stats_cpu *, __nr_t, int);
 __nr_t read_stat_irq
 	(struct stats_irq *, __nr_t, __nr_t);
 __nr_t read_meminfo
-	(struct stats_memory *);
+	(struct stats_memory *, int);
 void read_uptime
 	(unsigned long long *);
 #ifdef SOURCE_SADC

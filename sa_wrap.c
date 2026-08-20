@@ -180,7 +180,7 @@ __read_funct_t wrap_read_meminfo(struct activity *a)
 		= (struct stats_memory *) a->_buf0;
 
 	/* Read memory stats */
-	read_meminfo(st_memory);
+	read_meminfo(st_memory, MULTIPLE_R);
 
 	return;
 }
@@ -1107,7 +1107,7 @@ int get_online_cpu_list(unsigned char online_cpu_bitmap[], int bitmap_size)
 	char line[8192];
 	int proc_nr = -2;
 
-	if ((fp = open_stat_stream(MULTIPLE_R)) == NULL)
+	if ((fp = open_proc_file_stream(MULTIPLE_R, MULTI_R_STAT_IDX, STAT)) == NULL)
 		return 0;
 
 	while (fgets(line, sizeof(line), fp) != NULL) {

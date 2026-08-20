@@ -439,7 +439,7 @@ void read_proc_meminfo(void)
 	struct stats_memory st_mem;
 
 	memset(&st_mem, 0, STATS_MEMORY_SIZE);
-	read_meminfo(&st_mem);
+	read_meminfo(&st_mem, SINGLE_R);
 	tlmkb = st_mem.tlmkb;
 }
 
