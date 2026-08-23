@@ -1,5 +1,5 @@
 .\" cifsiostat manual page - (C) 2020-2025 Sebastien Godard (sysstat <at> orange.fr)
-.TH CIFSIOSTAT 1 "JULY 2025" Linux "Linux User's Manual" -*- nroff -*-
+.TH CIFSIOSTAT 1 "AUGUST 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 
@@ -68,6 +68,9 @@ Print debug output to stderr.
 .B \-\-dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .TP
+.B \-G
+Display statistics in gibibytes per second.
+.TP
 .B \-h
 This option is equivalent to specifying
 .BR "\-\-human \-\-pretty" "."
@@ -76,9 +79,6 @@ This option is equivalent to specifying
 Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
 The units displayed with this option supersede any other default units (e.g.
 kibibytes, sectors...) associated with the metrics.
-.TP
-.B \-G
-Display statistics in gibibytes per second.
 .TP
 .B \-k
 Display statistics in kibibytes per second.

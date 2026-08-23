@@ -1,6 +1,6 @@
 .\" tapestat manual page - (C) 2015 Hewlett-Packard Development Company, L.P.
 .\" Maintained by Sebastien Godard (sysstat <at> orange.fr)
-.TH TAPESTAT 1 "JULY 2025" Linux "Linux User's Manual" -*- nroff -*-
+.TH TAPESTAT 1 "AUGUST 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 tapestat \- Report tape statistics.
 
@@ -74,15 +74,15 @@ using methods outside of the tape driver (e.g. via sg ioctls).
 
 .SH OPTIONS
 .TP
-.B \-\-human
-Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
-The units displayed with this option supersede any other default units (e.g.
-kibibytes, sectors...) associated with the metrics.
-.TP
 .B \-G
 Show the amount of data written or read in gibibytes per second.
 This option is mutually exclusive with
 .BR "\-k " "and " "\-m" "."
+.TP
+.B \-\-human
+Print sizes in human readable format (e.g. 1.0k, 1.2M, etc.)
+The units displayed with this option supersede any other default units (e.g.
+kibibytes, sectors...) associated with the metrics.
 .TP
 .B \-k
 Show the amount of data written or read in kibibytes per second instead of mebibytes.
