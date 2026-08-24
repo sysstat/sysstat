@@ -1,5 +1,5 @@
 # Makefile to build sysstat commands
-# (C) 1999-2025 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 1999-2026 Sebastien GODARD (sysstat <at> orange.fr)
 
 # Tell Make where files are to be found
 VPATH = @srcdir@
@@ -550,7 +550,7 @@ copyyear:
 	catalogs="$(SOURCE_CODE) @srcdir@/iconfig @srcdir@/do_test @srcdir@/README.md @srcdir@/sa1.in @srcdir@/sa2.in @srcdir@/sysconfig.in @srcdir@/sysstat.in @srcdir@/version.in"; \
 	for c in $$catalogs; do \
 		echo "Updating file: $$c"; \
-		sed 's/-2024/-2025/g' $$c > copyyear.tmp; \
+		sed 's/-2025/-2026/g' $$c > copyyear.tmp; \
 		mv copyyear.tmp $$c; \
 	done
 	chmod 755 @srcdir@/iconfig @srcdir@/do_test

@@ -1,6 +1,6 @@
 #!/bin/sh
 # Script for sysstat simulation test environment
-# (C) 2020-2025 Sebastien GODARD (sysstat <at> orange.fr)
+# (C) 2020-2026 Sebastien GODARD (sysstat <at> orange.fr)
 
 # Get directory where current script is located
 srcdir="${0%/*}"
