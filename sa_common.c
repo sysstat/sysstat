@@ -554,7 +554,7 @@ void allocate_buffers(struct activity *a, size_t nr_alloc, uint64_t flags)
 
 		/* If its a reallocation then init additional space which has been allocated */
 		if (a->nr_allocated) {
-			memset((char *) a->buf[j] + a->msize * a->nr_allocated * a->nr2, 0,
+			memset((char *) a->buf[j] + (size_t) a->msize * (size_t) a->nr_allocated * (size_t) a->nr2, 0,
 			       (size_t) a->msize * (size_t) (nr_alloc - a->nr_allocated) * (size_t) a->nr2);
 		}
 	}
@@ -1863,7 +1863,8 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 int arch_64, char *dfile, struct file_magic *file_magic,
 			 enum on_eof oneof, uint64_t flags)
 {
-	int i, j, p;
+	int i, p;
+	size_t j;
 	struct file_activity *fal = file_actlst;
 	off_t offset;
 	__nr_t nr_value;
@@ -1934,8 +1935,8 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		    ((nr_value > 1) || (act[p]->nr2 > 1)) &&
 		    (act[p]->msize > act[p]->fsize)) {
 
-			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
-				if (sa_fread(ifd, (char *) act[p]->buf[curr] + j * act[p]->msize,
+			for (j = 0; j < (size_t) nr_value * (size_t) act[p]->nr2; j++) {
+				if (sa_fread(ifd, (char *) act[p]->buf[curr] + j * (size_t) act[p]->msize,
 					 (size_t) act[p]->fsize, HARD_SIZE, oneof) > 0)
 					/* Unexpected EOF */
 					return 2;
@@ -1959,16 +1960,16 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 		/* Normalize endianness for current activity's structures */
 		if (endian_mismatch) {
-			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
-				swap_struct(act[p]->ftypes_nr, (char *) act[p]->buf[curr] + j * act[p]->msize,
+			for (j = 0; j < (size_t) nr_value * (size_t) act[p]->nr2; j++) {
+				swap_struct(act[p]->ftypes_nr, (char *) act[p]->buf[curr] + j * (size_t) act[p]->msize,
 					    arch_64);
 			}
 		}
 
 		/* Remap structure's fields to those known by current sysstat version */
-		for (j = 0; j < (nr_value * act[p]->nr2); j++) {
+		for (j = 0; j < (size_t) nr_value * (size_t) act[p]->nr2; j++) {
 			if (remap_struct(act[p]->gtypes_nr, act[p]->ftypes_nr,
-					 (char *) act[p]->buf[curr] + j * act[p]->msize,
+					 (char *) act[p]->buf[curr] + j * (size_t) act[p]->msize,
 					 act[p]->fsize, act[p]->msize, act[p]->msize) < 0)
 				return 2;
 		}
@@ -2393,6 +2394,39 @@ struct sa_item *search_list_item(struct sa_item *list, char *item_name)
 
 	/* Item not found */
 	return NULL;
+}
+
+/*
+ ***************************************************************************
+ * Check whether a filesystem matches an --fs= selection list.
+ * The man page documents both device names and mountpoints; match either
+ * (and the currently displayed name) so --fs=/srv works without needing
+ * -F MOUNT output mode.
+ *
+ * IN:
+ * @list		Selection list (may be NULL).
+ * @st_fs		Filesystem statistics entry.
+ * @displayed		Name currently used for display (may be NULL).
+ *
+ * RETURNS:
+ * 1 if list is empty or the filesystem matches, 0 otherwise.
+ ***************************************************************************
+ */
+int match_sa_filesystem_item(struct sa_item *list, struct stats_filesystem *st_fs,
+			     char *displayed)
+{
+	if (list == NULL)
+		/* No "--fs=" selection: Always match */
+		return 1;
+
+	if (displayed && *displayed && search_list_item(list, displayed))
+		return 1;
+	if (st_fs->fs_name[0] && search_list_item(list, st_fs->fs_name))
+		return 1;
+	if (st_fs->mountp[0] && search_list_item(list, st_fs->mountp))
+		return 1;
+
+	return 0;
 }
 
 /*
