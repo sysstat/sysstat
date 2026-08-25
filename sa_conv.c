@@ -1691,7 +1691,8 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			  struct old_file_activity *ofile_actlst, struct file_activity *file_actlst,
 			  int endian_mismatch, int arch_64)
 {
-	int i, j, k, p;
+	int i, p;
+	size_t j, k;
 	__nr_t nr_struct, nr;
 	struct old_file_activity *ofal = ofile_actlst;
 	struct file_activity *fal = file_actlst;
