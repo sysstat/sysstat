@@ -1863,8 +1863,7 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 			 int arch_64, char *dfile, struct file_magic *file_magic,
 			 enum on_eof oneof, uint64_t flags)
 {
-	int i, p;
-	size_t j;
+	int i, j, p;
 	struct file_activity *fal = file_actlst;
 	off_t offset;
 	__nr_t nr_value;
@@ -1935,8 +1934,8 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 		    ((nr_value > 1) || (act[p]->nr2 > 1)) &&
 		    (act[p]->msize > act[p]->fsize)) {
 
-			for (j = 0; j < (size_t) nr_value * (size_t) act[p]->nr2; j++) {
-				if (sa_fread(ifd, (char *) act[p]->buf[curr] + j * (size_t) act[p]->msize,
+			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
+				if (sa_fread(ifd, (char *) act[p]->buf[curr] + (size_t) j * (size_t) act[p]->msize,
 					 (size_t) act[p]->fsize, HARD_SIZE, oneof) > 0)
 					/* Unexpected EOF */
 					return 2;
@@ -1960,16 +1959,16 @@ int read_file_stat_bunch(struct activity *act[], int curr, int ifd, int act_nr,
 
 		/* Normalize endianness for current activity's structures */
 		if (endian_mismatch) {
-			for (j = 0; j < (size_t) nr_value * (size_t) act[p]->nr2; j++) {
-				swap_struct(act[p]->ftypes_nr, (char *) act[p]->buf[curr] + j * (size_t) act[p]->msize,
+			for (j = 0; j < (nr_value * act[p]->nr2); j++) {
+				swap_struct(act[p]->ftypes_nr, (char *) act[p]->buf[curr] + (size_t) j * (size_t) act[p]->msize,
 					    arch_64);
 			}
 		}
 
 		/* Remap structure's fields to those known by current sysstat version */
-		for (j = 0; j < (size_t) nr_value * (size_t) act[p]->nr2; j++) {
+		for (j = 0; j < (nr_value * act[p]->nr2); j++) {
 			if (remap_struct(act[p]->gtypes_nr, act[p]->ftypes_nr,
-					 (char *) act[p]->buf[curr] + j * (size_t) act[p]->msize,
+					 (char *) act[p]->buf[curr] + (size_t) j * (size_t) act[p]->msize,
 					 act[p]->fsize, act[p]->msize, act[p]->msize) < 0)
 				return 2;
 		}
