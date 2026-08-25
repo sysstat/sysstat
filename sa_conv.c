@@ -1691,8 +1691,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			  struct old_file_activity *ofile_actlst, struct file_activity *file_actlst,
 			  int endian_mismatch, int arch_64)
 {
-	int i, p;
-	size_t j, k;
+	int i, j, k, p;
 	__nr_t nr_struct, nr;
 	struct old_file_activity *ofal = ofile_actlst;
 	struct file_activity *fal = file_actlst;
@@ -1714,7 +1713,7 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			for (j = 0; j < act[p]->nr_ini; j++) {
 				for (k = 0; k < act[p]->nr2; k++) {
 					sa_fread(fd,
-						 (char *) act[p]->buf[0] + (j * act[p]->nr2 + k) * act[p]->msize,
+						 (char *) act[p]->buf[0] + ((size_t) j * (size_t) act[p]->nr2 + (size_t) k) * (size_t) act[p]->msize,
 						 (size_t) ofal->size, HARD_SIZE, UEOF_STOP);
 				}
 			}
@@ -1824,8 +1823,8 @@ int upgrade_common_record(int fd, int stdfd, struct activity *act[], struct file
 			/* Known activity with current up-to-date format */
 			for (j = 0; j < act[p]->nr_ini; j++) {
 				for (k = 0; k < act[p]->nr2; k++) {
-					memcpy((char *) act[p]->buf[1] + (j * act[p]->nr2 + k) * act[p]->msize,
-					       (char *) act[p]->buf[0] + (j * act[p]->nr2 + k) * act[p]->msize,
+					memcpy((char *) act[p]->buf[1] + ((size_t) j * (size_t) act[p]->nr2 + (size_t) k) * (size_t) act[p]->msize,
+					       (char *) act[p]->buf[0] + ((size_t) j * (size_t) act[p]->nr2 + (size_t) k) * (size_t) act[p]->msize,
 					       fal->size);
 				}
 			}
