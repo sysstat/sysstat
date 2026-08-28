@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-07-11 23:30+1000\n"
+"POT-Creation-Date: 2026-08-28 17:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: count.c:111 ioconf.c:476 rd_stats.c:189 sa_common.c:2014 sadc.c:739
+#: count.c:111 ioconf.c:476 rd_stats.c:242 sa_common.c:2014 sadc.c:739
 #: sadc.c:802
 #, c-format
 msgid "Cannot open %s: %s\n"
@@ -84,7 +84,7 @@ msgid ""
 "[ <device> [...] | ALL ]\n"
 msgstr ""
 
-#: iostat.c:2198 sa_common.c:2596
+#: iostat.c:2198 sa_common.c:2629
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
@@ -124,16 +124,16 @@ msgstr ""
 msgid "Requested activities not available\n"
 msgstr ""
 
-#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3938
-#: pr_stats.c:3952 sar.c:392
+#: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
+#: pr_stats.c:3949 sar.c:392
 msgid "Summary:"
 msgstr ""
 
-#: pr_stats.c:3951
+#: pr_stats.c:3948
 msgid "Last:"
 msgstr ""
 
-#: rd_stats.c:539
+#: rd_stats.c:598
 #, c-format
 msgid "Cannot read %s\n"
 msgstr ""
@@ -190,11 +190,11 @@ msgstr ""
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:3831
+#: sa_common.c:3864
 msgid "Maximum:"
 msgstr ""
 
-#: sa_common.c:3832
+#: sa_common.c:3865
 msgid "Minimum:"
 msgstr ""
 
