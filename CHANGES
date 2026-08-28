@@ -1,5 +1,58 @@
 Changes:
 
+2026/08/28: Version 12.8.0 - Sebastien Godard (sysstat <at> orange.fr)
+	* [Agenticode]: sadc: Read /proc/stat once per collection cycle.
+	* rd_stats.c: Rework functions to read /proc files once.
+	* Read all /proc files once per collection cycle.
+	* [Sagar Sagar]: Avoid all-zero CPU rows on counter regression.
+	* [Lilu]: svg_stats.c: Fix integer overflow in allocate_graph_lines
+	  size computation.
+	* [Hang Zhao]: sadc: Fix pgscan_direct counter incorrectly including
+	  pgscan_direct_throttle.
+	* [Andy Lau]: sadc: Fix pgsteal/s double counting by only summing
+	  pgsteal_anon and pgsteal_file.
+	* [Andy Lau]: sar, mpstat: use write() instead of printf() in signal
+	  handler to ensure JSON output is properly closed on SIGTERM.
+	* [Andy Lau]: Remove unnecessary unsigned int cast that truncates
+	  irq_nr in read_stat_total_irq().
+	* [Andy Lau]: Fix typo in sar manual page.
+	* [Dean Chen]: sadf, sar: let --fs match mountpoints as well as device
+	  names.
+	* sar/sadf: Don't test for empty "--fs=" list.
+	* [Nathan Scott]: iostat/tapestat/cifsiostat: add -G flag for gibibyte
+	  display.
+	* [Nathan Scott]: sa1: derive LONG_NAME from SADC_OPTIONS, not just
+	  HISTORY.
+	* [Nathan Scott]: sa2: honour -D in SADC_OPTIONS for date format.
+	* [Nathan Scott]: Slightly reduce scope of install-cron configure script
+	  option.
+	* [Nathan Scott]: Rename --enable-install-cron to
+	  --disable-automated-sar-reporting.
+	* [Nathan Scott]: Enable automated sar reporting by default.
+	* [Nathan Scott]: sadc: Fix heap buffer overflow in reallocate_buffer().
+	* [Nathan Scott]: do_test: Replace bash-ism with POSIX arithmetic.
+	* [Nathan Scott]: do_test: Exit with error status on test failure.
+	* [Nathan Scott]: tests: Fix PCP archive test portability.
+	* [Nathan Scott]: ci: Add GitHub Actions CI workflow.
+	* sa1: Remove "iso" option.
+	* cifsiostat: Add JSON output for option -G (display in Gigabytes).
+	* pidstat: Add fflush() after JSON closing output.
+	* sadc: Now only read pgscan_kswapd counter.
+	* sa_wrap.c: Also use reallocate_buffer() function for A_PWR_FREQ
+	  activity.
+	* cifsiostat, iostat, sa1, sadf, sar and tapestat manual pages updated.
+	* Non-regression tests updated. New tests added.
+	* simtest: Fix issue related to 19th day of the month.
+	* Makefile: Fix EXTRALIST variable contents.
+	* Fix some tests for out-of-tree build.
+	* do_test: Make options available with out-of-tree target.
+	* [orbisai0security]: Fix a (theoretical) security vulnerability.
+	* [Peter Dave Hello]: Refresh sysstat gettext template file.
+	* FAQ file updated.
+	* NLS translations updated.
+	* Update year in copyright messages.
+	* tapestat: Cosmetic change.
+
 2025/12/07: Version 12.7.9 - Sebastien Godard (sysstat <at> orange.fr)
 	* sar: Fix pgsteal/s double value with recent kernels.
 	* Allow Truecolor (RGB) SGR codes in sysstat commands output.

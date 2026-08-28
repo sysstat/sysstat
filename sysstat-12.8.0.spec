@@ -1,6 +1,6 @@
 Summary: 	SAR, SADF, MPSTAT, IOSTAT, TAPESTAT, PIDSTAT and CIFSIOSTAT for Linux
 Name: 		sysstat
-Version: 	12.7.9
+Version: 	12.8.0
 Release: 	1
 License: 	GPL
 Group: 		Applications/System
@@ -37,6 +37,7 @@ The cifsiostat command reports I/O statistics for CIFS filesystems.
 # To include cron installation, add options --enable-install-cron and --enable-copy-only
 ./configure --prefix=%{_prefix} \
 	--disable-file-attr \
+	--disable-automated-sar-reporting \
 	sa_lib_dir=%{_libdir}/sa \
 	--mandir=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
