@@ -341,7 +341,7 @@ int is_device
 void sysstat_panic
 	(const char *, int);
 int extract_wwnid
-	(const char *, unsigned long long *, unsigned int *);
+	(char *, unsigned long long *, unsigned int *);
 int get_wwnid_from_pretty
 	(char *, unsigned long long *, unsigned int *);
 int check_dir

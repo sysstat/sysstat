@@ -309,7 +309,7 @@ void sysstat_panic(const char *function, int error_code)
  * 0 on success, -1 otherwise.
  ***************************************************************************
 */
-int extract_wwnid(const char *name, unsigned long long *wwn, unsigned int *part_nr)
+int extract_wwnid(char *name, unsigned long long *wwn, unsigned int *part_nr)
 {
 	char id[WWN_SHORT_LEN + 1];
 	char *s;
