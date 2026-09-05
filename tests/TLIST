@@ -416,6 +416,8 @@ NOTES:
 01975	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -s 13:20:19 -e 13:54:09 > tests/out2.sar-se.tmp
 01976	LC_ALL=C TZ=GMT ./sar -f tests/data.tmp -s 13:20:19 -e 13:20:39 > tests/out3.sar-se.tmp
 01977	LC_ALL=C TZ=GMT ./sadf -d tests/data.tmp -s 13:20:19 -e 1555595649 > tests/out2.sadf-se.tmp
+01980	LC_ALL=C ./sar -d -100 2>&1 | grep -q "Usage:" && exit 1
+01981	LC_ALL=C ./sadf -d -100 2>&1 | grep -q "Usage:" && exit 1
 
 =====	iostat tests (basic output)
 02010	LC_ALL=C TZ=GMT ./iostat 2 3 > tests/out.iostat.tmp
