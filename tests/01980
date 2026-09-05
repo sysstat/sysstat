@@ -1,0 +1,17 @@
+# Test sar accepts more than 99 days back (issue #449)
+# Validates that sar properly parses day offset arguments with >2 digits
+# The arguments should be accepted without "Usage:" error (which indicates argument parsing failure)
+
+# Test with -100 days (3 digits) - should parse without "Usage:" error
+LC_ALL=C ./sar -d -100 2>&1 | grep -q "Usage:" && exit 1
+
+# Test with -365 days (3 digits, one year) - should parse without "Usage:" error
+LC_ALL=C ./sar -d -365 2>&1 | grep -q "Usage:" && exit 1
+
+# Test with -999 days (3 digits) - should parse without "Usage:" error
+LC_ALL=C ./sar -d -999 2>&1 | grep -q "Usage:" && exit 1
+
+# Test with -10000 days (5 digits) - should parse without "Usage:" error
+LC_ALL=C ./sar -d -10000 2>&1 | grep -q "Usage:" && exit 1
+
+exit 0
