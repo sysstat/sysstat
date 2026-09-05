@@ -1533,7 +1533,7 @@ int main(int argc, char **argv)
 		}
 #endif
 		else if ((strlen(argv[opt]) > 1) &&
-			 (strlen(argv[opt]) < 4) &&
+			 (strlen(argv[opt]) < 7) &&
 			 !strncmp(argv[opt], "-", 1) &&
 			 (strspn(argv[opt] + 1, DIGITS) == (strlen(argv[opt]) - 1))) {
 			if (from_file[0] || day_offset) {
