@@ -1571,9 +1571,9 @@ Number of pseudo-terminals used by the system.
 Report swapping statistics. The following values are displayed:
 .RS
 .IP pswpin/s
-Total number of swap pages the system brought in per second.
+Total number of swap pages the system brought in per second. These pages are moved from the swap space into the ram.
 .IP pswpout/s
-Total number of swap pages the system brought out per second.
+Total number of swap pages the system brought out per second. These pages are moved from the ram into the swap space.
 .RE
 .TP
 .B \-w
