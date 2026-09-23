@@ -313,11 +313,12 @@ int extract_wwnid(char *name, unsigned long long *wwn, unsigned int *part_nr)
 {
 	char id[WWN_SHORT_LEN + 1];
 	char *s;
-	int wwnlen = strlen(name);
+	int wwnlen;
 
 	if ((name == NULL) || (wwn == NULL) || (part_nr == NULL))
 		return -1;
 
+	wwnlen = strlen(name);
 	*wwn = *(wwn + 1) = 0ULL;
 	*part_nr = 0;
 
