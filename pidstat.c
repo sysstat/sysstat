@@ -1386,7 +1386,7 @@ void print_json_line_id(int tab, struct st_pid *plist)
  * IN:
  * @disp_avg	TRUE if average stats are displayed.
  * @pstc	Pointer on current statistics data sample for current process.
- * @pstp	Pointer on previous statistics data sampe for current process.
+ * @pstp	Pointer on previous statistics data sample for current process.
  * @itv		Interval of time in 1/100th of a second.
  * @deltot_jiffies
  *		Number of jiffies spent on the interval by all processors.
@@ -1429,7 +1429,7 @@ void write_plain_pid_task_cpu_data(int disp_avg,
  * @disp_avg	TRUE if average stats are displayed.
  * @plist	Pointer on current process in list.
  * @pstc	Pointer on current statistics data sample for current process.
- * @pstp	Pointer on previous statistics data sampe for current process.
+ * @pstp	Pointer on previous statistics data sample for current process.
  * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
@@ -1494,7 +1494,7 @@ void write_plain_pid_stack_data(int disp_avg, struct st_pid *plist,
  * @disp_avg	TRUE if average stats are displayed.
  * @plist	Pointer on current process in list.
  * @pstc	Pointer on current statistics data sample for current process.
- * @pstp	Pointer on previous statistics data sampe for current process.
+ * @pstp	Pointer on previous statistics data sample for current process.
  * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
@@ -1541,7 +1541,7 @@ void write_plain_pid_io_data(int disp_avg, struct st_pid *plist,
  *
  * IN:
  * @pstc	Pointer on current statistics data sample for current process.
- * @pstp	Pointer on previous statistics data sampe for current process.
+ * @pstp	Pointer on previous statistics data sample for current process.
  * @itv		Interval of time in 1/100th of a second.
  ***************************************************************************
  */
@@ -1713,7 +1713,7 @@ int write_pid_task_all_stats(int prev, int curr, int dis,
  * @disp_avg	TRUE if average stats are displayed.
  * @plist	Pointer on current process in list.
  * @pstc	Pointer on current statistics data sample for current process.
- * @pstp	Pointer on previous statistics data sampe for current process.
+ * @pstp	Pointer on previous statistics data sample for current process.
  ***************************************************************************
  */
 void write_plain_pid_child_cpu_data(int disp_avg, struct st_pid *plist,
@@ -1761,7 +1761,7 @@ void write_plain_pid_child_cpu_data(int disp_avg, struct st_pid *plist,
  * @disp_avg	TRUE if average stats are displayed.
  * @plist	Pointer on current process in list.
  * @pstc	Pointer on current statistics data sample for current process.
- * @pstp	Pointer on previous statistics data sampe for current process.
+ * @pstp	Pointer on previous statistics data sample for current process.
  ***************************************************************************
  */
 void write_plain_pid_child_memory_data(int disp_avg, struct st_pid *plist,

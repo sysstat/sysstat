@@ -791,7 +791,7 @@ void skip_current_view(char **out, int *pos, int group)
  *		(.@ust_time_ref and .@ust_time_end).
  * @record_hdr	Pointer on record header of current stats sample.
  * @skip_void	Set to <> 0 if graphs with no data should be skipped.
- *		This is typicallly used to not display CPU offline on the
+ *		This is typically used to not display CPU offline on the
  *		whole period.
  * @a		Current activity structure.
  * @xid		Current activity extra id number.

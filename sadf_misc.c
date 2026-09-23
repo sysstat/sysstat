@@ -1129,7 +1129,7 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile, char *my_
 		xprintf(*tab, "<number-of-cpus>%d</number-of-cpus>",
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
-		/* Fill file timestmap structure (rectime) */
+		/* Fill file timestamp structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf(*tab, "<file-date>%s</file-date>", cur_time);
@@ -1191,7 +1191,7 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile, char *my
 		xprintf(*tab, "\"number-of-cpus\": %d,",
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
-		/* Fill file timestmap structure (rectime) */
+		/* Fill file timestamp structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
 		xprintf(*tab, "\"file-date\": \"%s\",", cur_time);

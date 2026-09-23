@@ -271,7 +271,7 @@ void get_HZ(void)
  * Unhandled situation: Panic and exit. Should never happen.
  *
  * IN:
- * @function	Function name where situation occured.
+ * @function	Function name where situation occurred.
  * @error_code	Error code.
  ***************************************************************************
  */

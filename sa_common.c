@@ -800,7 +800,7 @@ int decode_timestamp(char timestamp[], struct tstamp_ext *tse)
  *
  * IN:
  * @timestamp	Epoch time to decode (format: number of seconds since
- *		Januray 1st 1970 00:00:00 UTC).
+ *		January 1st 1970 00:00:00 UTC).
  * @flags	Flags for common options and system state.
  *
  * OUT:
@@ -1257,9 +1257,9 @@ int check_disk_reg(struct activity *a, int curr, int ref, int pos)
 		    (sdc->minor == sdp->minor)) {
 			/*
 			 * Disk found.
-			 * If all the counters have decreased then the likelyhood
+			 * If all the counters have decreased then the likelihood
 			 * is that the disk has been unregistered and a new disk inserted.
-			 * If only one or two have decreased then the likelyhood
+			 * If only one or two have decreased then the likelihood
 			 * is that the counter has simply wrapped.
 			 * Don't take into account a counter if its previous value was 0
 			 * (this may be a read-only device, or a kernel that doesn't
@@ -2543,7 +2543,7 @@ int parse_sar_opt(char *argv[], int *opt, struct activity *act[],
 			 * Setting -F is compulsory because corresponding activity
 			 * has AO_MULTIPLE_OUTPUTS flag set.
 			 * -P ALL will be set only if corresponding option has
-			 * not been exlicitly entered on the command line.
+			 * not been explicitly entered on the command line.
 			 */
 			p = get_activity_position(act, A_MEMORY, EXIT_IF_NOT_FOUND);
 			act[p]->opt_flags |= AO_F_MEMORY + AO_F_SWAP + AO_F_MEM_ALL;
@@ -3412,7 +3412,7 @@ unsigned long long get_global_cpu_statistics(struct activity *a, int prev, int c
 				scp->cpu_steal + scp->cpu_softirq;
 
 		/*
-		 * If the CPU is offline then it is omited from /proc/stat:
+		 * If the CPU is offline then it is omitted from /proc/stat:
 		 * All the fields couldn't have been read and the sum of them is zero.
 		 */
 		if (tot_jiffies_c == 0) {

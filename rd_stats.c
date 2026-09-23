@@ -525,7 +525,7 @@ __nr_t read_meminfo(struct stats_memory *st_memory, int status_r)
 			sscanf(line + 6, "%llu", &st_memory->shmemkb);
 		}
 		else if (!strncmp(line, "Committed_AS:", 13)) {
-			/* Read the amount of commited memory in kB */
+			/* Read the amount of committed memory in kB */
 			sscanf(line + 13, "%llu", &st_memory->comkb);
 		}
 		else if (!strncmp(line, "AnonPages:", 10)) {
@@ -2903,7 +2903,7 @@ __nr_t read_filesystem(struct stats_filesystem *st_filesystem, __nr_t nr_alloc)
 			snprintf(st_filesystem_i->fs_name, sizeof(st_filesystem_i->fs_name), "%s",
 				 fs_name);
 			/*
-			 * Use strncpy() insteaf of snprintf() because
+			 * Use strncpy() instead of snprintf() because
 			 * src and dest strings are of different size.
 			 */
 			strncpy(st_filesystem_i->mountp, mountp, sizeof(st_filesystem_i->mountp));
@@ -3024,7 +3024,7 @@ __nr_t read_fchost(struct stats_fchost *st_fc, __nr_t nr_alloc)
  * @st_softnet	Structure with statistics.
  *
  * RETURNS:
- * 1 if stats have been sucessfully read, or 0 otherwise.
+ * 1 if stats have been successfully read, or 0 otherwise.
  * Returns -1 if the buffer was too small and needs to be reallocated.
  ***************************************************************************
  */
@@ -3288,7 +3288,7 @@ __nr_t read_bat(struct stats_pwr_bat *st_bat, __nr_t nr_alloc)
 			/* Get battery id number */
 			sscanf(drd->d_name + 3, "%u", &bat_id);
 
-			/* Read battery capcity */
+			/* Read battery capacity */
 			snprintf(bat_filename, sizeof(bat_filename), BAT_CAPACITY,
 				 SYSFS_PWR_SUPPLY, drd->d_name);
 			if ((fp = fopen(bat_filename, "r"))) {
