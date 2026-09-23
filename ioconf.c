@@ -234,7 +234,8 @@ int ioc_init(void)
 
 		/* maybe it's a full record? */
 
-		i = sscanf(buf, "%u:%[^:]:%[^:]:%u:%[^:]:%u:%[^:]:%u:%63s",
+		/* Field widths must match IOC_NAMELEN, IOC_FMTLEN and IOC_DESCLEN */
+		i = sscanf(buf, "%u:%31[^:]:%15[^:]:%u:%15[^:]:%u:%15[^:]:%u:%63s",
 			   &major, blkp->name,
 			   cfmt, &iocp->ctrlno,
 			   dfmt, &blkp->dcount,
@@ -316,7 +317,8 @@ int ioc_init(void)
 			break;
 
 		case '%':
-			strncpy(blkp->dfmt, dfmt + 1, sizeof(blkp->dfmt) - 1);
+			/* Keep room for the "%s" string appended below */
+			strncpy(blkp->dfmt, dfmt + 1, sizeof(blkp->dfmt) - 3);
 			/* fallthrough to next case */
 		case 'd':
 			blkp->cconv = ioc_ito10;
