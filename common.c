@@ -586,15 +586,17 @@ void prtab(int nr_tab)
 
 /*
  ***************************************************************************
- * printf() function modified for XML-like output. Don't print a CR at the
- * end of the line.
+ * printf() function modified for XML-like output.
  *
  * IN:
+ * @bh		NO_CR if no CR has to be displayed at the end of the line.
+ *		Tabs are displayed.
+ *		NO_TABS or NO_SPC if tabs or space shall not be displayed.
  * @nr_tab	Number of tabs to print.
  * @fmtf	printf() format.
  ***************************************************************************
  */
-void xprintf0(int nr_tab, const char *fmtf, ...)
+void xprintf(int bh, int nr_tab, const char *fmtf, ...)
 {
 	static char buf[1024];
 	va_list args;
@@ -603,31 +605,16 @@ void xprintf0(int nr_tab, const char *fmtf, ...)
 	vsnprintf(buf, sizeof(buf), fmtf, args);
 	va_end(args);
 
-	prtab(nr_tab);
+	if (!DISPLAY_NOTABS(bh)) {
+		prtab(nr_tab);
+	}
+	else if (!DISPLAY_NOSPC(bh)) {
+		printf(" ");
+	}
 	printf("%s", buf);
-}
-
-/*
- ***************************************************************************
- * printf() function modified for XML-like output. Print a CR at the end of
- * the line.
- *
- * IN:
- * @nr_tab	Number of tabs to print.
- * @fmtf	printf() format.
- ***************************************************************************
- */
-void xprintf(int nr_tab, const char *fmtf, ...)
-{
-	static char buf[1024];
-	va_list args;
-
-	va_start(args, fmtf);
-	vsnprintf(buf, sizeof(buf), fmtf, args);
-	va_end(args);
-
-	prtab(nr_tab);
-	printf("%s\n", buf);
+	if (!DISPLAY_NOCR(bh)) {
+		printf("\n");
+	}
 }
 
 /*
@@ -697,16 +684,16 @@ int print_gal_header(struct tm *tm_time, char *sysname, char *release,
 	}
 	else {
 		/* JSON output */
-		xprintf(0, "{\"sysstat\": {");
-		xprintf(1, "\"hosts\": [");
-		xprintf(2, "{");
-		xprintf(3, "\"nodename\": \"%s\",", nodename);
-		xprintf(3, "\"sysname\": \"%s\",", sysname);
-		xprintf(3, "\"release\": \"%s\",", release);
-		xprintf(3, "\"machine\": \"%s\",", machine);
-		xprintf(3, "\"number-of-cpus\": %d,", cpu_nr);
-		xprintf(3, "\"date\": \"%s\",", cur_date);
-		xprintf(3, "\"statistics\": [");
+		xprintf(0, 0, "{\"sysstat\": {");
+		xprintf(0, 1, "\"hosts\": [");
+		xprintf(0, 2, "{");
+		xprintf(0, 3, "\"nodename\": \"%s\",", nodename);
+		xprintf(0, 3, "\"sysname\": \"%s\",", sysname);
+		xprintf(0, 3, "\"release\": \"%s\",", release);
+		xprintf(0, 3, "\"machine\": \"%s\",", machine);
+		xprintf(0, 3, "\"number-of-cpus\": %d,", cpu_nr);
+		xprintf(0, 3, "\"date\": \"%s\",", cur_date);
+		xprintf(0, 3, "\"statistics\": [");
 	}
 
 	return rc;
@@ -1891,7 +1878,7 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 	timestamp[sizeof(timestamp) - 1] = '\0';
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(tab, "\"timestamp\": \"%s\",", timestamp);
+		xprintf(0, tab, "\"timestamp\": \"%s\",", timestamp);
 	}
 	else {
 		printf("%s\n", timestamp);

@@ -1337,7 +1337,7 @@ void print_json_line_id(int tab, struct st_pid *plist)
 	char format[32];
 	struct passwd *pwdent;
 
-	xprintf0(tab, "{\"");
+	xprintf(NO_CR, tab, "{\"");
 
 	if (DISPLAY_USERNAME(pidflag)) {
 		printf("USER");
@@ -1932,7 +1932,7 @@ int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long lon
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"task-cpu-load\": [");
+	xprintf(0, tab++, "\"task-cpu-load\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -1972,7 +1972,7 @@ int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long lon
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2117,7 +2117,7 @@ int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"child-cpu-load\": [");
+	xprintf(0, tab++, "\"child-cpu-load\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2154,7 +2154,7 @@ int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2308,7 +2308,7 @@ int write_json_pid_task_memory_stats(int tab, int prev, int curr,
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"task-memory\": [");
+	xprintf(0, tab++, "\"task-memory\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2339,7 +2339,7 @@ int write_json_pid_task_memory_stats(int tab, int prev, int curr,
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2480,7 +2480,7 @@ int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"child-memory\": [");
+	xprintf(0, tab++, "\"child-memory\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2507,7 +2507,7 @@ int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2647,7 +2647,7 @@ int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"stack\": [");
+	xprintf(0, tab++, "\"stack\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2673,7 +2673,7 @@ int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2816,7 +2816,7 @@ int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"io\": [");
+	xprintf(0, tab++, "\"io\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2857,7 +2857,7 @@ int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2991,7 +2991,7 @@ int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"context-switch\": [");
+	xprintf(0, tab++, "\"context-switch\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -3018,7 +3018,7 @@ int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -3159,7 +3159,7 @@ int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"kernel\": [");
+	xprintf(0, tab++, "\"kernel\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -3190,7 +3190,7 @@ int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -3316,7 +3316,7 @@ int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
 	if (*follow) {
 		printf(",\n");
 	}
-	xprintf(tab++, "\"realtime\": [");
+	xprintf(0, tab++, "\"realtime\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -3342,7 +3342,7 @@ int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -3421,8 +3421,8 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(tab++, "{");
-		xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
+		xprintf(0, tab++, "{");
+		xprintf(0, tab, "\"timestamp\": \"%s\",", curr_string);
 	}
 
 	itv = get_interval(uptime_cs[prev], uptime_cs[curr]);
@@ -3504,7 +3504,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
-		xprintf0(--tab, "}");
+		xprintf(NO_CR, --tab, "}");
 	}
 
 	if (DISPLAY_ALL_PID(pidflag)) {

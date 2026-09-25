@@ -746,7 +746,7 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 	struct stats_cpu *scc, *scp;
 	struct cpu_topology *cpu_topo_i;
 
-	xprintf(tab++, "\"cpu-load\": [");
+	xprintf(0, tab++, "\"cpu-load\": [");
 
 	/*
 	 * Now display CPU statistics (including CPU "all"),
@@ -795,50 +795,50 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 				 * If the CPU is tickless then there is no change in CPU values
 				 * but the sum of values is not zero.
 				 */
-				xprintf0(tab, "{\"cpu\": \"%d\"%s, \"usr\": 0.00, \"nice\": 0.00, "
-					 "\"sys\": 0.00, \"iowait\": 0.00, \"irq\": 0.00, "
-					 "\"soft\": 0.00, \"steal\": 0.00, \"guest\": 0.00, "
-					 "\"gnice\": 0.00, \"idle\": 100.00}", i - 1, topology);
+				xprintf(NO_CR, tab, "{\"cpu\": \"%d\"%s, \"usr\": 0.00, \"nice\": 0.00, "
+					"\"sys\": 0.00, \"iowait\": 0.00, \"irq\": 0.00, "
+					"\"soft\": 0.00, \"steal\": 0.00, \"guest\": 0.00, "
+					"\"gnice\": 0.00, \"idle\": 100.00}", i - 1, topology);
 				printf("\n");
 
 				continue;
 			}
 		}
 
-		xprintf0(tab, "{\"cpu\": \"%s\"%s, \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
-			 "\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
-			 "\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}",
-			 cpu_name, topology,
-			 (scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
-			 0.0 :
-			 ll_sp_value(scp->cpu_user - scp->cpu_guest,
-				     scc->cpu_user - scc->cpu_guest, deltot_jiffies),
-			 (scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
-			 0.0 :
-			 ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
-				     scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
-			 ll_sp_value(scp->cpu_sys,
-				     scc->cpu_sys, deltot_jiffies),
-			 ll_sp_value(scp->cpu_iowait,
-				     scc->cpu_iowait, deltot_jiffies),
-			 ll_sp_value(scp->cpu_hardirq,
-				     scc->cpu_hardirq, deltot_jiffies),
-			 ll_sp_value(scp->cpu_softirq,
-				     scc->cpu_softirq, deltot_jiffies),
-			 ll_sp_value(scp->cpu_steal,
-				     scc->cpu_steal, deltot_jiffies),
-			 ll_sp_value(scp->cpu_guest,
-				     scc->cpu_guest, deltot_jiffies),
-			 ll_sp_value(scp->cpu_guest_nice,
-				     scc->cpu_guest_nice, deltot_jiffies),
-			 (scc->cpu_idle < scp->cpu_idle) ?
-			 0.0 :
-			 ll_sp_value(scp->cpu_idle,
-				     scc->cpu_idle, deltot_jiffies));
+		xprintf(NO_CR, tab, "{\"cpu\": \"%s\"%s, \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
+			"\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
+			"\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}",
+			cpu_name, topology,
+			(scc->cpu_user - scc->cpu_guest) < (scp->cpu_user - scp->cpu_guest) ?
+			0.0 :
+			ll_sp_value(scp->cpu_user - scp->cpu_guest,
+				    scc->cpu_user - scc->cpu_guest, deltot_jiffies),
+			(scc->cpu_nice - scc->cpu_guest_nice) < (scp->cpu_nice - scp->cpu_guest_nice) ?
+			0.0 :
+			ll_sp_value(scp->cpu_nice - scp->cpu_guest_nice,
+				    scc->cpu_nice - scc->cpu_guest_nice, deltot_jiffies),
+			ll_sp_value(scp->cpu_sys,
+				    scc->cpu_sys, deltot_jiffies),
+			ll_sp_value(scp->cpu_iowait,
+				    scc->cpu_iowait, deltot_jiffies),
+			ll_sp_value(scp->cpu_hardirq,
+				    scc->cpu_hardirq, deltot_jiffies),
+			ll_sp_value(scp->cpu_softirq,
+				    scc->cpu_softirq, deltot_jiffies),
+			ll_sp_value(scp->cpu_steal,
+				    scc->cpu_steal, deltot_jiffies),
+			ll_sp_value(scp->cpu_guest,
+				    scc->cpu_guest, deltot_jiffies),
+			ll_sp_value(scp->cpu_guest_nice,
+				    scc->cpu_guest_nice, deltot_jiffies),
+			(scc->cpu_idle < scp->cpu_idle) ?
+			0.0 :
+			ll_sp_value(scp->cpu_idle,
+				    scc->cpu_idle, deltot_jiffies));
 	}
 
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 }
 
 /*
@@ -1021,7 +1021,7 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 	int cpu, node, next = FALSE;
 	char node_name[16];
 
-	xprintf(tab++, "\"node-load\": [");
+	xprintf(0, tab++, "\"node-load\": [");
 
 	for (node = 0; node <= node_nr + 1; node++) {
 
@@ -1066,46 +1066,48 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 
 			if (!deltot_jiffies) {
 				/* All CPU in node are tickless and/or offline */
-				xprintf0(tab, "{\"node\": \"%d\", \"usr\": 0.00, \"nice\": 0.00, \"sys\": 0.00, "
-			      "\"iowait\": 0.00, \"irq\": 0.00, \"soft\": 0.00, \"steal\": 0.00, "
-			      "\"guest\": 0.00, \"gnice\": 0.00, \"idle\": 100.00}", node - 1);
+				xprintf(NO_CR, tab,
+					"{\"node\": \"%d\", \"usr\": 0.00, \"nice\": 0.00, \"sys\": 0.00, "
+					"\"iowait\": 0.00, \"irq\": 0.00, \"soft\": 0.00, \"steal\": 0.00, "
+					"\"guest\": 0.00, \"gnice\": 0.00, \"idle\": 100.00}", node - 1);
 
 				continue;
 			}
 		}
 
-		xprintf0(tab, "{\"node\": \"%s\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
-			      "\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
-			      "\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}", node_name,
-			 (snc->cpu_user - snc->cpu_guest) < (snp->cpu_user - snp->cpu_guest) ?
-			 0.0 :
-			 ll_sp_value(snp->cpu_user - snp->cpu_guest,
-				     snc->cpu_user - snc->cpu_guest, deltot_jiffies),
-			 (snc->cpu_nice - snc->cpu_guest_nice) < (snp->cpu_nice - snp->cpu_guest_nice) ?
-			 0.0 :
-			 ll_sp_value(snp->cpu_nice - snp->cpu_guest_nice,
-				     snc->cpu_nice - snc->cpu_guest_nice, deltot_jiffies),
-			 ll_sp_value(snp->cpu_sys,
-				     snc->cpu_sys, deltot_jiffies),
-			 ll_sp_value(snp->cpu_iowait,
-				     snc->cpu_iowait, deltot_jiffies),
-			 ll_sp_value(snp->cpu_hardirq,
-				     snc->cpu_hardirq, deltot_jiffies),
-			 ll_sp_value(snp->cpu_softirq,
-				     snc->cpu_softirq, deltot_jiffies),
-			 ll_sp_value(snp->cpu_steal,
-				     snc->cpu_steal, deltot_jiffies),
-			 ll_sp_value(snp->cpu_guest,
-				     snc->cpu_guest, deltot_jiffies),
-			 ll_sp_value(snp->cpu_guest_nice,
-				     snc->cpu_guest_nice, deltot_jiffies),
-			 (snc->cpu_idle < snp->cpu_idle) ?
-			 0.0 :
-			 ll_sp_value(snp->cpu_idle,
-				     snc->cpu_idle, deltot_jiffies));
+		xprintf(NO_CR, tab,
+			"{\"node\": \"%s\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
+			"\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
+			"\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}", node_name,
+			(snc->cpu_user - snc->cpu_guest) < (snp->cpu_user - snp->cpu_guest) ?
+			0.0 :
+			ll_sp_value(snp->cpu_user - snp->cpu_guest,
+				    snc->cpu_user - snc->cpu_guest, deltot_jiffies),
+			(snc->cpu_nice - snc->cpu_guest_nice) < (snp->cpu_nice - snp->cpu_guest_nice) ?
+			0.0 :
+			ll_sp_value(snp->cpu_nice - snp->cpu_guest_nice,
+				    snc->cpu_nice - snc->cpu_guest_nice, deltot_jiffies),
+			ll_sp_value(snp->cpu_sys,
+				    snc->cpu_sys, deltot_jiffies),
+			ll_sp_value(snp->cpu_iowait,
+				    snc->cpu_iowait, deltot_jiffies),
+			ll_sp_value(snp->cpu_hardirq,
+				    snc->cpu_hardirq, deltot_jiffies),
+			ll_sp_value(snp->cpu_softirq,
+				    snc->cpu_softirq, deltot_jiffies),
+			ll_sp_value(snp->cpu_steal,
+				    snc->cpu_steal, deltot_jiffies),
+			ll_sp_value(snp->cpu_guest,
+				    snc->cpu_guest, deltot_jiffies),
+			ll_sp_value(snp->cpu_guest_nice,
+				    snc->cpu_guest_nice, deltot_jiffies),
+			(snc->cpu_idle < snp->cpu_idle) ?
+			0.0 :
+			ll_sp_value(snp->cpu_idle,
+				    snc->cpu_idle, deltot_jiffies));
 	}
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 }
 
 /*
@@ -1251,14 +1253,14 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 	unsigned long long pc_itv;
 	int cpu, next = FALSE;
 
-	xprintf(tab++, "\"sum-interrupts\": [");
+	xprintf(0, tab++, "\"sum-interrupts\": [");
 
 	if (*cpu_bitmap & 1) {
 
 		next = TRUE;
 		/* Print total number of interrupts among all cpu */
-		xprintf0(tab, "{\"cpu\": \"all\", \"intr\": %.2f}",
-			 S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
+		xprintf(NO_CR, tab, "{\"cpu\": \"all\", \"intr\": %.2f}",
+			S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
 	}
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -1284,18 +1286,18 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 
 		if (!pc_itv) {
 			/* This is a tickless CPU: Value displayed is 0.00 */
-			xprintf0(tab, "{\"cpu\": \"%d\", \"intr\": 0.00}",
-				 cpu - 1);
+			xprintf(NO_CR, tab, "{\"cpu\": \"%d\", \"intr\": 0.00}",
+				cpu - 1);
 		}
 		else {
 			/* Display total number of interrupts for current CPU */
-			xprintf0(tab, "{\"cpu\": \"%d\", \"intr\": %.2f}",
-				 cpu - 1,
-				 S_VALUE(sip->irq_nr, sic->irq_nr, itv));
+			xprintf(NO_CR, tab, "{\"cpu\": \"%d\", \"intr\": %.2f}",
+				cpu - 1,
+				S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 		}
 	}
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 }
 
 /*
@@ -1511,10 +1513,10 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 	int nextcpu = FALSE, nextirq;
 
 	if (type == M_D_IRQ_CPU) {
-		xprintf(tab++, "\"individual-interrupts\": [");
+		xprintf(0, tab++, "\"individual-interrupts\": [");
 	}
 	else {
-		xprintf(tab++, "\"soft-interrupts\": [");
+		xprintf(0, tab++, "\"soft-interrupts\": [");
 	}
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -1533,7 +1535,7 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 		}
 		nextcpu = TRUE;
 		nextirq = FALSE;
-		xprintf(tab++, "{\"cpu\": \"%d\", \"intr\": [", cpu - 1);
+		xprintf(0, tab++, "{\"cpu\": \"%d\", \"intr\": [", cpu - 1);
 
 		for (j = 0; j < ic_nr; j++) {
 
@@ -1573,25 +1575,25 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 
 			if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
 				q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
-				xprintf0(tab, "{\"name\": \"%s\", \"value\": %.2f}",
-					 p0->irq_name,
-					 S_VALUE(q->interrupt, p->interrupt, itv));
+				xprintf(NO_CR, tab, "{\"name\": \"%s\", \"value\": %.2f}",
+					p0->irq_name,
+					S_VALUE(q->interrupt, p->interrupt, itv));
 			}
 			else {
 				/*
 				 * Instead of printing "N/A", assume that previous value
 				 * for this new interrupt was zero.
 				 */
-				xprintf0(tab, "{\"name\": \"%s\", \"value\": %.2f}",
-					 p0->irq_name,
-					 S_VALUE(0, p->interrupt, itv));
+				xprintf(NO_CR, tab, "{\"name\": \"%s\", \"value\": %.2f}",
+					p0->irq_name,
+					S_VALUE(0, p->interrupt, itv));
 			}
 		}
 		printf("\n");
-		xprintf0(--tab, "] }");
+		xprintf(NO_CR, --tab, "] }");
 	}
 	printf("\n");
-	xprintf0(--tab, "]");
+	xprintf(NO_CR, --tab, "]");
 }
 
 /*
@@ -1675,8 +1677,8 @@ void write_stats_core(int prev, int curr, int dis,
 	deltot_jiffies = get_global_cpu_mpstats(prev, curr, offline_cpu_bitmap);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(tab++, "{");
-		xprintf(tab, "\"timestamp\": \"%s\",", curr_string);
+		xprintf(0, tab++, "{");
+		xprintf(0, tab, "\"timestamp\": \"%s\",", curr_string);
 	}
 
 	/* Get time interval */
@@ -1715,7 +1717,7 @@ void write_stats_core(int prev, int curr, int dis,
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
-		xprintf0(--tab, "}");
+		xprintf(NO_CR, --tab, "}");
 	}
 }
 

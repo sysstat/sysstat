@@ -56,11 +56,11 @@ void xml_markup_network(int tab, enum xml_action action)
 
 	if (action == OPEN_XML_MARKUP) {
 		/* Open markup */
-		xprintf(tab, "<network per=\"second\">");
+		xprintf(0, tab, "<network per=\"second\">");
 	}
 	else {
 		/* Close markup */
-		xprintf(tab, "</network>");
+		xprintf(0, tab, "</network>");
 	}
 }
 
@@ -83,11 +83,11 @@ void xml_markup_power_management(int tab, enum xml_action action)
 
 	if (action == OPEN_XML_MARKUP) {
 		/* Open markup */
-		xprintf(tab, "<power-management>");
+		xprintf(0, tab, "<power-management>");
 	}
 	else {
 		/* Close markup */
-		xprintf(tab, "</power-management>");
+		xprintf(0, tab, "</power-management>");
 	}
 }
 
@@ -110,11 +110,11 @@ void xml_markup_psi(int tab, enum xml_action action)
 
 	if (action == OPEN_XML_MARKUP) {
 		/* Open markup */
-		xprintf(tab, "<psi per=\"second\">");
+		xprintf(0, tab, "<psi per=\"second\">");
 	}
 	else {
 		/* Close markup */
-		xprintf(tab, "</psi>");
+		xprintf(0, tab, "</psi>");
 	}
 }
 
@@ -139,7 +139,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 	char cpuno[16];
 
-	xprintf(tab++, "<cpu-load>");
+	xprintf(0, tab++, "<cpu-load>");
 
 	/* @nr[curr] cannot normally be greater than @nr_ini */
 	if (a->nr[curr] > a->nr_ini) {
@@ -194,7 +194,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 			if (!deltot_jiffies) {
 				/* Current CPU is tickless */
 				if (DISPLAY_CPU_DEF(a->opt_flags)) {
-					xprintf(tab, "<cpu number=\"%d\" "
+					xprintf(0, tab, "<cpu number=\"%d\" "
 						"user=\"%.2f\" "
 						"nice=\"%.2f\" "
 						"system=\"%.2f\" "
@@ -204,7 +204,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 						i - 1, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 				}
 				else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-					xprintf(tab, "<cpu number=\"%d\" "
+					xprintf(0, tab, "<cpu number=\"%d\" "
 						"usr=\"%.2f\" "
 						"nice=\"%.2f\" "
 						"sys=\"%.2f\" "
@@ -223,7 +223,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 		}
 
 		if (DISPLAY_CPU_DEF(a->opt_flags)) {
-			xprintf(tab, "<cpu number=\"%s\" "
+			xprintf(0, tab, "<cpu number=\"%s\" "
 				"user=\"%.2f\" "
 				"nice=\"%.2f\" "
 				"system=\"%.2f\" "
@@ -243,7 +243,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 				ll_sp_value(scp->cpu_idle, scc->cpu_idle, deltot_jiffies));
 		}
 		else if (DISPLAY_CPU_ALL(a->opt_flags)) {
-			xprintf(tab, "<cpu number=\"%s\" "
+			xprintf(0, tab, "<cpu number=\"%s\" "
 				"usr=\"%.2f\" "
 				"nice=\"%.2f\" "
 				"sys=\"%.2f\" "
@@ -276,7 +276,7 @@ __print_funct_t xml_print_cpu_stats(struct activity *a, int curr, int tab,
 		}
 	}
 
-	xprintf(--tab, "</cpu-load>");
+	xprintf(0, --tab, "</cpu-load>");
 }
 
 /*
@@ -298,7 +298,7 @@ __print_funct_t xml_print_pcsw_stats(struct activity *a, int curr, int tab,
 		*spp = (struct stats_pcsw *) a->buf[!curr];
 
 	/* proc/s and cswch/s */
-	xprintf(tab, "<process-and-context-switch per=\"second\" "
+	xprintf(0, tab, "<process-and-context-switch per=\"second\" "
 		"proc=\"%.2f\" "
 		"cswch=\"%.2f\"/>",
 		S_VALUE(spp->processes, spc->processes, itv),
@@ -323,8 +323,8 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 	struct stats_irq *stc_cpu_irq, *stp_cpu_irq, *stc_cpuall_irq;
 	unsigned char masked_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
 
-	xprintf(tab++, "<interrupts>");
-	xprintf(tab++, "<int-global per=\"second\">");
+	xprintf(0, tab++, "<interrupts>");
+	xprintf(0, tab++, "<int-global per=\"second\">");
 
 	/* @nr[curr] cannot normally be greater than @nr_ini */
 	if (a->nr[curr] > a->nr_ini) {
@@ -359,13 +359,15 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 
 			/* Yes: Display it */
 			if (!c) {
-				xprintf(tab, "<irq intr=\"%s\" cpu=\"all\" value=\"%.2f\"/>",
+				xprintf(0, tab,
+					"<irq intr=\"%s\" cpu=\"all\" value=\"%.2f\"/>",
 					stc_cpuall_irq->irq_name,
 					(stc_cpu_irq->irq_nr < stp_cpu_irq->irq_nr) ? 0.0 :
 					S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
 			}
 			else {
-				xprintf(tab, "<irq intr=\"%s\" cpu=\"%d\" value=\"%.2f\"/>",
+				xprintf(0, tab,
+					"<irq intr=\"%s\" cpu=\"%d\" value=\"%.2f\"/>",
 					stc_cpuall_irq->irq_name,
 					c - 1,
 					S_VALUE(stp_cpu_irq->irq_nr, stc_cpu_irq->irq_nr, itv));
@@ -373,8 +375,8 @@ __print_funct_t xml_print_irq_stats(struct activity *a, int curr, int tab,
 		}
 	}
 
-	xprintf(--tab, "</int-global>");
-	xprintf(--tab, "</interrupts>");
+	xprintf(0, --tab, "</int-global>");
+	xprintf(0, --tab, "</interrupts>");
 }
 
 /*
@@ -395,7 +397,7 @@ __print_funct_t xml_print_swap_stats(struct activity *a, int curr, int tab,
 		*ssc = (struct stats_swap *) a->buf[curr],
 		*ssp = (struct stats_swap *) a->buf[!curr];
 
-	xprintf(tab, "<swap-pages per=\"second\" "
+	xprintf(0, tab, "<swap-pages per=\"second\" "
 		"pswpin=\"%.2f\" "
 		"pswpout=\"%.2f\"/>",
 		S_VALUE(ssp->pswpin,  ssc->pswpin,  itv),
@@ -420,7 +422,7 @@ __print_funct_t xml_print_paging_stats(struct activity *a, int curr, int tab,
 		*spc = (struct stats_paging *) a->buf[curr],
 		*spp = (struct stats_paging *) a->buf[!curr];
 
-	xprintf(tab, "<paging per=\"second\" "
+	xprintf(0, tab, "<paging per=\"second\" "
 		"pgpgin=\"%.2f\" "
 		"pgpgout=\"%.2f\" "
 		"fault=\"%.2f\" "
@@ -461,7 +463,7 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
 		*sic = (struct stats_io *) a->buf[curr],
 		*sip = (struct stats_io *) a->buf[!curr];
 
-	xprintf(tab, "<io per=\"second\">");
+	xprintf(0, tab, "<io per=\"second\">");
 
 	/*
 	 * If we get negative values, this is probably because
@@ -469,29 +471,29 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
 	 * We display 0.0 in this case though we should rather tell
 	 * the user that the value cannot be calculated here.
 	 */
-	xprintf(++tab, "<tps>%.2f</tps>",
+	xprintf(0, ++tab, "<tps>%.2f</tps>",
 		sic->dk_drive < sip->dk_drive ? 0.0 :
 		S_VALUE(sip->dk_drive, sic->dk_drive, itv));
 
-	xprintf(tab, "<io-reads rtps=\"%.2f\" bread=\"%.2f\"/>",
+	xprintf(0, tab, "<io-reads rtps=\"%.2f\" bread=\"%.2f\"/>",
 		sic->dk_drive_rio < sip->dk_drive_rio ? 0.0 :
 		S_VALUE(sip->dk_drive_rio, sic->dk_drive_rio, itv),
 		sic->dk_drive_rblk < sip->dk_drive_rblk ? 0.0 :
 		S_VALUE(sip->dk_drive_rblk, sic->dk_drive_rblk, itv));
 
-	xprintf(tab, "<io-writes wtps=\"%.2f\" bwrtn=\"%.2f\"/>",
+	xprintf(0, tab, "<io-writes wtps=\"%.2f\" bwrtn=\"%.2f\"/>",
 		sic->dk_drive_wio < sip->dk_drive_wio ? 0.0 :
 		S_VALUE(sip->dk_drive_wio, sic->dk_drive_wio, itv),
 		sic->dk_drive_wblk < sip->dk_drive_wblk ? 0.0 :
 		S_VALUE(sip->dk_drive_wblk, sic->dk_drive_wblk, itv));
 
-	xprintf(tab, "<io-discard dtps=\"%.2f\" bdscd=\"%.2f\"/>",
+	xprintf(0, tab, "<io-discard dtps=\"%.2f\" bdscd=\"%.2f\"/>",
 		sic->dk_drive_dio < sip->dk_drive_dio ? 0.0 :
 		S_VALUE(sip->dk_drive_dio, sic->dk_drive_dio, itv),
 		sic->dk_drive_dblk < sip->dk_drive_dblk ? 0.0 :
 		S_VALUE(sip->dk_drive_dblk, sic->dk_drive_dblk, itv));
 
-	xprintf(--tab, "</io>");
+	xprintf(0, --tab, "</io>");
 }
 
 /*
@@ -506,44 +508,44 @@ __print_funct_t xml_print_io_stats(struct activity *a, int curr, int tab,
  */
 void xml_print_ram_memory_stats(struct stats_memory *smc, int dispall, int *tab)
 {
-	xprintf(++(*tab), "<memfree>%llu</memfree>", smc->frmkb);
+	xprintf(0, ++(*tab), "<memfree>%llu</memfree>", smc->frmkb);
 
-	xprintf(*tab, "<avail>%llu</avail>", smc->availablekb);
+	xprintf(0, *tab, "<avail>%llu</avail>", smc->availablekb);
 
-	xprintf(*tab, "<memused>%llu</memused>", smc->tlmkb - smc->availablekb);
+	xprintf(0, *tab, "<memused>%llu</memused>", smc->tlmkb - smc->availablekb);
 
-	xprintf(*tab, "<memused-percent>%.2f</memused-percent>",
+	xprintf(0, *tab, "<memused-percent>%.2f</memused-percent>",
 		smc->tlmkb ? SP_VALUE(smc->availablekb, smc->tlmkb, smc->tlmkb)
 			   : 0.0);
 
-	xprintf(*tab, "<buffers>%llu</buffers>", smc->bufkb);
+	xprintf(0, *tab, "<buffers>%llu</buffers>", smc->bufkb);
 
-	xprintf(*tab, "<cached>%llu</cached>", smc->camkb);
+	xprintf(0, *tab, "<cached>%llu</cached>", smc->camkb);
 
-	xprintf(*tab, "<commit>%llu</commit>", smc->comkb);
+	xprintf(0, *tab, "<commit>%llu</commit>", smc->comkb);
 
-	xprintf(*tab, "<commit-percent>%.2f</commit-percent>",
+	xprintf(0, *tab, "<commit-percent>%.2f</commit-percent>",
 		(smc->tlmkb + smc->tlskb) ? SP_VALUE(0, smc->comkb, smc->tlmkb + smc->tlskb)
 					  : 0.0);
 
-	xprintf(*tab, "<active>%llu</active>", smc->activekb);
+	xprintf(0, *tab, "<active>%llu</active>", smc->activekb);
 
-	xprintf(*tab, "<inactive>%llu</inactive>", smc->inactkb);
+	xprintf(0, *tab, "<inactive>%llu</inactive>", smc->inactkb);
 
-	xprintf(*tab, "<dirty>%llu</dirty>", smc->dirtykb);
+	xprintf(0, *tab, "<dirty>%llu</dirty>", smc->dirtykb);
 
-	xprintf((*tab)--, "<shared>%llu</shared>", smc->shmemkb);
+	xprintf(0, (*tab)--, "<shared>%llu</shared>", smc->shmemkb);
 
 	if (dispall) {
-		xprintf(++(*tab), "<anonpg>%llu</anonpg>", smc->anonpgkb);
+		xprintf(0, ++(*tab), "<anonpg>%llu</anonpg>", smc->anonpgkb);
 
-		xprintf(*tab, "<slab>%llu</slab>", smc->slabkb);
+		xprintf(0, *tab, "<slab>%llu</slab>", smc->slabkb);
 
-		xprintf(*tab, "<kstack>%llu</kstack>", smc->kstackkb);
+		xprintf(0, *tab, "<kstack>%llu</kstack>", smc->kstackkb);
 
-		xprintf(*tab, "<pgtbl>%llu</pgtbl>", smc->pgtblkb);
+		xprintf(0, *tab, "<pgtbl>%llu</pgtbl>", smc->pgtblkb);
 
-		xprintf((*tab)--, "<vmused>%llu</vmused>", smc->vmusedkb);
+		xprintf(0, (*tab)--, "<vmused>%llu</vmused>", smc->vmusedkb);
 	}
 }
 
@@ -558,17 +560,17 @@ void xml_print_ram_memory_stats(struct stats_memory *smc, int dispall, int *tab)
  */
 void xml_print_swap_memory_stats(struct stats_memory *smc, int *tab)
 {
-	xprintf(++(*tab), "<swpfree>%llu</swpfree>", smc->frskb);
+	xprintf(0, ++(*tab), "<swpfree>%llu</swpfree>", smc->frskb);
 
-	xprintf(*tab, "<swpused>%llu</swpused>", smc->tlskb - smc->frskb);
+	xprintf(0, *tab, "<swpused>%llu</swpused>", smc->tlskb - smc->frskb);
 
-	xprintf(*tab, "<swpused-percent>%.2f</swpused-percent>",
+	xprintf(0, *tab, "<swpused-percent>%.2f</swpused-percent>",
 		smc->tlskb ? SP_VALUE(smc->frskb, smc->tlskb, smc->tlskb)
 			   : 0.0);
 
-	xprintf(*tab, "<swpcad>%llu</swpcad>", smc->caskb);
+	xprintf(0, *tab, "<swpcad>%llu</swpcad>", smc->caskb);
 
-	xprintf((*tab)--, "<swpcad-percent>%.2f</swpcad-percent>",
+	xprintf(0, (*tab)--, "<swpcad-percent>%.2f</swpcad-percent>",
 		(smc->tlskb - smc->frskb) ? SP_VALUE(0, smc->caskb, smc->tlskb - smc->frskb)
 					  : 0.0);
 }
@@ -590,7 +592,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 	struct stats_memory
 		*smc = (struct stats_memory *) a->buf[curr];
 
-	xprintf(tab, "<memory unit=\"kB\">");
+	xprintf(0, tab, "<memory unit=\"kB\">");
 
 	if (DISPLAY_MEMORY(a->opt_flags)) {
 		xml_print_ram_memory_stats(smc, DISPLAY_MEM_ALL(a->opt_flags), &tab);
@@ -600,7 +602,7 @@ __print_funct_t xml_print_memory_stats(struct activity *a, int curr, int tab,
 		xml_print_swap_memory_stats(smc, &tab);
 	}
 
-	xprintf(tab, "</memory>");
+	xprintf(0, tab, "</memory>");
 }
 
 /*
@@ -620,7 +622,7 @@ __print_funct_t xml_print_ktables_stats(struct activity *a, int curr, int tab,
 	struct stats_ktables
 		*skc = (struct stats_ktables *) a->buf[curr];
 
-	xprintf(tab, "<kernel "
+	xprintf(0, tab, "<kernel "
 		"dentunusd=\"%llu\" "
 		"file-nr=\"%llu\" "
 		"inode-nr=\"%llu\" "
@@ -648,7 +650,7 @@ __print_funct_t xml_print_queue_stats(struct activity *a, int curr, int tab,
 	struct stats_queue
 		*sqc = (struct stats_queue *) a->buf[curr];
 
-	xprintf(tab, "<queue "
+	xprintf(0, tab, "<queue "
 		"runq-sz=\"%llu\" "
 		"plist-sz=\"%llu\" "
 		"ldavg-1=\"%.2f\" "
@@ -680,7 +682,7 @@ __print_funct_t xml_print_serial_stats(struct activity *a, int curr, int tab,
 	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 
-	xprintf(tab++, "<serial per=\"second\">");
+	xprintf(0, tab++, "<serial per=\"second\">");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -714,7 +716,7 @@ __print_funct_t xml_print_serial_stats(struct activity *a, int curr, int tab,
 		if (!found)
 			continue;
 
-		xprintf(tab, "<tty line=\"%d\" "
+		xprintf(0, tab, "<tty line=\"%d\" "
 			"rcvin=\"%.2f\" "
 			"xmtin=\"%.2f\" "
 			"framerr=\"%.2f\" "
@@ -730,7 +732,7 @@ __print_funct_t xml_print_serial_stats(struct activity *a, int curr, int tab,
 			S_VALUE(ssp->overrun, ssc->overrun, itv));
 	}
 
-	xprintf(--tab, "</serial>");
+	xprintf(0, --tab, "</serial>");
 }
 
 /*
@@ -754,7 +756,7 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 
 	memset(&sdpzero, 0, STATS_DISK_SIZE);
 
-	xprintf(tab++, "<disk per=\"second\">");
+	xprintf(0, tab++, "<disk per=\"second\">");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -784,7 +786,7 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 		/* Compute extended statistics values */
 		compute_ext_disk_stats(sdc, sdp, itv, &xds);
 
-		xprintf(tab, "<disk-device dev=\"%s\" "
+		xprintf(0, tab, "<disk-device dev=\"%s\" "
 			"tps=\"%.2f\" "
 			"rd_sec=\"%.2f\" "
 			"wr_sec=\"%.2f\" "
@@ -816,7 +818,7 @@ __print_funct_t xml_print_disk_stats(struct activity *a, int curr, int tab,
 			xds.util / 10.0);
 	}
 
-	xprintf(--tab, "</disk>");
+	xprintf(0, --tab, "</disk>");
 }
 
 /*
@@ -869,7 +871,7 @@ __print_funct_t xml_print_net_dev_stats(struct activity *a, int curr, int tab,
 		txkb = S_VALUE(sndp->tx_bytes, sndc->tx_bytes, itv);
 		ifutil = compute_ifutil(sndc, rxkb, txkb);
 
-		xprintf(tab, "<net-dev iface=\"%s\" "
+		xprintf(0, tab, "<net-dev iface=\"%s\" "
 			"rxpck=\"%.2f\" "
 			"txpck=\"%.2f\" "
 			"rxkB=\"%.2f\" "
@@ -941,7 +943,7 @@ __print_funct_t xml_print_net_edev_stats(struct activity *a, int curr, int tab,
 			snedp = (struct stats_net_edev *) ((char *) a->buf[!curr] + j * a->msize);
 		}
 
-		xprintf(tab, "<net-edev iface=\"%s\" "
+		xprintf(0, tab, "<net-edev iface=\"%s\" "
 			"rxerr=\"%.2f\" "
 			"txerr=\"%.2f\" "
 			"coll=\"%.2f\" "
@@ -994,7 +996,7 @@ __print_funct_t xml_print_net_nfs_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-nfs "
+	xprintf(0, tab, "<net-nfs "
 		"call=\"%.2f\" "
 		"retrans=\"%.2f\" "
 		"read=\"%.2f\" "
@@ -1039,7 +1041,7 @@ __print_funct_t xml_print_net_nfsd_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-nfsd "
+	xprintf(0, tab, "<net-nfsd "
 		"scall=\"%.2f\" "
 		"badcall=\"%.2f\" "
 		"packet=\"%.2f\" "
@@ -1093,7 +1095,7 @@ __print_funct_t xml_print_net_sock_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-sock "
+	xprintf(0, tab, "<net-sock "
 		"totsck=\"%u\" "
 		"tcpsck=\"%u\" "
 		"udpsck=\"%u\" "
@@ -1138,7 +1140,7 @@ __print_funct_t xml_print_net_ip_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-ip "
+	xprintf(0, tab, "<net-ip "
 		"irec=\"%.2f\" "
 		"fwddgm=\"%.2f\" "
 		"idel=\"%.2f\" "
@@ -1187,7 +1189,7 @@ __print_funct_t xml_print_net_eip_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-eip "
+	xprintf(0, tab, "<net-eip "
 		"ihdrerr=\"%.2f\" "
 		"iadrerr=\"%.2f\" "
 		"iukwnpr=\"%.2f\" "
@@ -1236,7 +1238,7 @@ __print_funct_t xml_print_net_icmp_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-icmp "
+	xprintf(0, tab, "<net-icmp "
 		"imsg=\"%.2f\" "
 		"omsg=\"%.2f\" "
 		"iech=\"%.2f\" "
@@ -1297,7 +1299,7 @@ __print_funct_t xml_print_net_eicmp_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-eicmp "
+	xprintf(0, tab, "<net-eicmp "
 		"ierr=\"%.2f\" "
 		"oerr=\"%.2f\" "
 		"idstunr=\"%.2f\" "
@@ -1354,7 +1356,7 @@ __print_funct_t xml_print_net_tcp_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-tcp "
+	xprintf(0, tab, "<net-tcp "
 		"active=\"%.2f\" "
 		"passive=\"%.2f\" "
 		"iseg=\"%.2f\" "
@@ -1395,7 +1397,7 @@ __print_funct_t xml_print_net_etcp_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-etcp "
+	xprintf(0, tab, "<net-etcp "
 		"atmptf=\"%.2f\" "
 		"estres=\"%.2f\" "
 		"retrseg=\"%.2f\" "
@@ -1438,7 +1440,7 @@ __print_funct_t xml_print_net_udp_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-udp "
+	xprintf(0, tab, "<net-udp "
 		"idgm=\"%.2f\" "
 		"odgm=\"%.2f\" "
 		"noport=\"%.2f\" "
@@ -1478,7 +1480,7 @@ __print_funct_t xml_print_net_sock6_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-sock6 "
+	xprintf(0, tab, "<net-sock6 "
 		"tcp6sck=\"%u\" "
 		"udp6sck=\"%u\" "
 		"raw6sck=\"%u\" "
@@ -1519,7 +1521,7 @@ __print_funct_t xml_print_net_ip6_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-ip6 "
+	xprintf(0, tab, "<net-ip6 "
 		"irec6=\"%.2f\" "
 		"fwddgm6=\"%.2f\" "
 		"idel6=\"%.2f\" "
@@ -1572,7 +1574,7 @@ __print_funct_t xml_print_net_eip6_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-eip6 "
+	xprintf(0, tab, "<net-eip6 "
 		"ihdrer6=\"%.2f\" "
 		"iadrer6=\"%.2f\" "
 		"iukwnp6=\"%.2f\" "
@@ -1627,7 +1629,7 @@ __print_funct_t xml_print_net_icmp6_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-icmp6 "
+	xprintf(0, tab, "<net-icmp6 "
 		"imsg6=\"%.2f\" "
 		"omsg6=\"%.2f\" "
 		"iech6=\"%.2f\" "
@@ -1694,7 +1696,7 @@ __print_funct_t xml_print_net_eicmp6_stats(struct activity *a, int curr, int tab
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-eicmp6 "
+	xprintf(0, tab, "<net-eicmp6 "
 		"ierr6=\"%.2f\" "
 		"idtunr6=\"%.2f\" "
 		"odtunr6=\"%.2f\" "
@@ -1749,7 +1751,7 @@ __print_funct_t xml_print_net_udp6_stats(struct activity *a, int curr, int tab,
 	xml_markup_network(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<net-udp6 "
+	xprintf(0, tab, "<net-udp6 "
 		"idgm6=\"%.2f\" "
 		"odgm6=\"%.2f\" "
 		"noport6=\"%.2f\" "
@@ -1790,7 +1792,7 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<cpu-frequency unit=\"MHz\">");
+	xprintf(0, tab++, "<cpu-frequency unit=\"MHz\">");
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -1810,13 +1812,13 @@ __print_funct_t xml_print_pwr_cpufreq_stats(struct activity *a, int curr, int ta
 			sprintf(cpuno, "%d", i - 1);
 		}
 
-		xprintf(tab, "<cpufreq number=\"%s\" "
+		xprintf(0, tab, "<cpufreq number=\"%s\" "
 			"frequency=\"%.2f\"/>",
 			cpuno,
 			((double) spc->cpufreq) / 100);
 	}
 
-	xprintf(--tab, "</cpu-frequency>");
+	xprintf(0, --tab, "</cpu-frequency>");
 	tab--;
 
 close_xml_markup:
@@ -1848,19 +1850,19 @@ __print_funct_t xml_print_pwr_fan_stats(struct activity *a, int curr, int tab,
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<fan-speed unit=\"rpm\">");
+	xprintf(0, tab++, "<fan-speed unit=\"rpm\">");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_fan *) ((char *) a->buf[curr] + i * a->msize);
 
-		xprintf(tab, "<fan number=\"%d\" rpm=\"%llu\" drpm=\"%llu\" device=\"%s\"/>",
+		xprintf(0, tab, "<fan number=\"%d\" rpm=\"%llu\" drpm=\"%llu\" device=\"%s\"/>",
 			i + 1,
 			(unsigned long long) spc->rpm,
 			(unsigned long long) (spc->rpm - spc->rpm_min),
 			spc->device);
 	}
 
-	xprintf(--tab, "</fan-speed>");
+	xprintf(0, --tab, "</fan-speed>");
 	tab--;
 
 close_xml_markup:
@@ -1892,12 +1894,12 @@ __print_funct_t xml_print_pwr_temp_stats(struct activity *a, int curr, int tab,
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<temperature unit=\"degree Celsius\">");
+	xprintf(0, tab++, "<temperature unit=\"degree Celsius\">");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_temp *) ((char *) a->buf[curr] + i * a->msize);
 
-		xprintf(tab, "<temp number=\"%d\" degC=\"%.2f\" percent-temp=\"%.2f\" device=\"%s\"/>",
+		xprintf(0, tab, "<temp number=\"%d\" degC=\"%.2f\" percent-temp=\"%.2f\" device=\"%s\"/>",
 			i + 1,
 			spc->temp,
 			(spc->temp_max - spc->temp_min) ?
@@ -1906,7 +1908,7 @@ __print_funct_t xml_print_pwr_temp_stats(struct activity *a, int curr, int tab,
 			spc->device);
 	}
 
-	xprintf(--tab, "</temperature>");
+	xprintf(0, --tab, "</temperature>");
 	tab--;
 
 close_xml_markup:
@@ -1938,12 +1940,12 @@ __print_funct_t xml_print_pwr_in_stats(struct activity *a, int curr, int tab,
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<voltage-input unit=\"V\">");
+	xprintf(0, tab++, "<voltage-input unit=\"V\">");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		spc = (struct stats_pwr_in *) ((char *) a->buf[curr] + i * a->msize);
 
-		xprintf(tab, "<in number=\"%d\" inV=\"%.2f\" percent-in=\"%.2f\" device=\"%s\"/>",
+		xprintf(0, tab, "<in number=\"%d\" inV=\"%.2f\" percent-in=\"%.2f\" device=\"%s\"/>",
 			i,
 			spc->in,
 			(spc->in_max - spc->in_min) ?
@@ -1952,7 +1954,7 @@ __print_funct_t xml_print_pwr_in_stats(struct activity *a, int curr, int tab,
 			spc->device);
 	}
 
-	xprintf(--tab, "</voltage-input>");
+	xprintf(0, --tab, "</voltage-input>");
 	tab--;
 
 close_xml_markup:
@@ -1978,26 +1980,26 @@ __print_funct_t xml_print_huge_stats(struct activity *a, int curr, int tab,
 	struct stats_huge
 		*smc = (struct stats_huge *) a->buf[curr];
 
-	xprintf(tab, "<hugepages unit=\"kB\">");
+	xprintf(0, tab, "<hugepages unit=\"kB\">");
 
-	xprintf(++tab, "<hugfree>%llu</hugfree>",
+	xprintf(0, ++tab, "<hugfree>%llu</hugfree>",
 		smc->frhkb);
 
-	xprintf(tab, "<hugused>%llu</hugused>",
+	xprintf(0, tab, "<hugused>%llu</hugused>",
 		smc->tlhkb - smc->frhkb);
 
-	xprintf(tab, "<hugused-percent>%.2f</hugused-percent>",
+	xprintf(0, tab, "<hugused-percent>%.2f</hugused-percent>",
 		smc->tlhkb ?
 		SP_VALUE(smc->frhkb, smc->tlhkb, smc->tlhkb) :
 		0.0);
 
-	xprintf(tab, "<hugrsvd>%llu</hugrsvd>",
+	xprintf(0, tab, "<hugrsvd>%llu</hugrsvd>",
 		smc->rsvdhkb);
 
-	xprintf(tab--, "<hugsurp>%llu</hugsurp>",
+	xprintf(0, tab--, "<hugsurp>%llu</hugsurp>",
 		smc->surphkb);
 
-	xprintf(tab, "</hugepages>");
+	xprintf(0, tab, "</hugepages>");
 }
 
 /*
@@ -2025,7 +2027,7 @@ __print_funct_t xml_print_pwr_wghfreq_stats(struct activity *a, int curr, int ta
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<cpu-weighted-frequency unit=\"MHz\">");
+	xprintf(0, tab++, "<cpu-weighted-frequency unit=\"MHz\">");
 
 	for (i = 0; (i < a->nr[curr]) && (i < a->bitmap->b_size + 1); i++) {
 
@@ -2060,13 +2062,13 @@ __print_funct_t xml_print_pwr_wghfreq_stats(struct activity *a, int curr, int ta
 			sprintf(cpuno, "%d", i - 1);
 		}
 
-		xprintf(tab, "<cpuwfreq number=\"%s\" "
+		xprintf(0, tab, "<cpuwfreq number=\"%s\" "
 			"weighted-frequency=\"%.2f\"/>",
 			cpuno,
 			tis ? ((double) tisfreq) / tis : 0.0);
 	}
 
-	xprintf(--tab, "</cpu-weighted-frequency>");
+	xprintf(0, --tab, "</cpu-weighted-frequency>");
 	tab--;
 
 close_xml_markup:
@@ -2098,12 +2100,12 @@ __print_funct_t xml_print_pwr_usb_stats(struct activity *a, int curr, int tab,
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<usb-devices>");
+	xprintf(0, tab++, "<usb-devices>");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		suc = (struct stats_pwr_usb *) ((char *) a->buf[curr] + i * a->msize);
 
-		xprintf(tab, "<usb bus_number=\"%d\" idvendor=\"%x\" idprod=\"%x\" "
+		xprintf(0, tab, "<usb bus_number=\"%d\" idvendor=\"%x\" idprod=\"%x\" "
 			     "maxpower=\"%u\" manufact=\"%s\" product=\"%s\"/>",
 			suc->bus_nr,
 			suc->vendor_id,
@@ -2113,7 +2115,7 @@ __print_funct_t xml_print_pwr_usb_stats(struct activity *a, int curr, int tab,
 			suc->product);
 	}
 
-	xprintf(--tab, "</usb-devices>");
+	xprintf(0, --tab, "</usb-devices>");
 	tab--;
 
 close_xml_markup:
@@ -2140,7 +2142,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 	struct stats_filesystem *sfc;
 	char *dev_name;
 
-	xprintf(tab++, "<filesystems>");
+	xprintf(0, tab++, "<filesystems>");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 		sfc = (struct stats_filesystem *) ((char *) a->buf[curr] + i * a->msize);
@@ -2152,7 +2154,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 		if (!match_sa_filesystem_item(a->item_list, sfc, dev_name))
 			continue;
 
-		xprintf(tab, "<filesystem %s=\"%s\" "
+		xprintf(0, tab, "<filesystem %s=\"%s\" "
 			"MBfsfree=\"%.0f\" "
 			"MBfsused=\"%.0f\" "
 			"fsused-percent=\"%.2f\" "
@@ -2175,7 +2177,7 @@ __print_funct_t xml_print_filesystem_stats(struct activity *a, int curr, int tab
 				     : 0.0);
 	}
 
-	xprintf(--tab, "</filesystems>");
+	xprintf(0, --tab, "</filesystems>");
 }
 
 /*
@@ -2236,7 +2238,7 @@ __print_funct_t xml_print_fchost_stats(struct activity *a, int curr, int tab,
 			sfcp = &sfczero;
 		}
 
-		xprintf(tab, "<fchost name=\"%s\" "
+		xprintf(0, tab, "<fchost name=\"%s\" "
 			"fch_rxf=\"%.2f\" "
 			"fch_txf=\"%.2f\" "
 			"fch_rxw=\"%.2f\" "
@@ -2308,7 +2310,7 @@ __print_funct_t xml_print_softnet_stats(struct activity *a, int curr, int tab,
 			sprintf(cpuno, "%d", i - 1);
 		}
 
-		xprintf(tab, "<softnet cpu=\"%s\" "
+		xprintf(0, tab, "<softnet cpu=\"%s\" "
 			"total=\"%.2f\" "
 			"dropd=\"%.2f\" "
 			"squeezd=\"%.2f\" "
@@ -2355,7 +2357,7 @@ __print_funct_t xml_print_psicpu_stats(struct activity *a, int curr, int tab,
 	xml_markup_psi(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<psi-cpu "
+	xprintf(0, tab, "<psi-cpu "
 		"some_avg10=\"%.2f\" "
 		"some_avg60=\"%.2f\" "
 		"some_avg300=\"%.2f\" "
@@ -2396,7 +2398,7 @@ __print_funct_t xml_print_psiio_stats(struct activity *a, int curr, int tab,
 	xml_markup_psi(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<psi-io "
+	xprintf(0, tab, "<psi-io "
 		"some_avg10=\"%.2f\" "
 		"some_avg60=\"%.2f\" "
 		"some_avg300=\"%.2f\" "
@@ -2445,7 +2447,7 @@ __print_funct_t xml_print_psimem_stats(struct activity *a, int curr, int tab,
 	xml_markup_psi(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab, "<psi-mem "
+	xprintf(0, tab, "<psi-mem "
 		"some_avg10=\"%.2f\" "
 		"some_avg60=\"%.2f\" "
 		"some_avg300=\"%.2f\" "
@@ -2493,7 +2495,7 @@ __print_funct_t xml_print_pwr_bat_stats(struct activity *a, int curr, int tab,
 	xml_markup_power_management(tab, OPEN_XML_MARKUP);
 	tab++;
 
-	xprintf(tab++, "<battery unit=\"minute\">");
+	xprintf(0, tab++, "<battery unit=\"minute\">");
 
 	for (i = 0; i < a->nr[curr]; i++) {
 
@@ -2504,7 +2506,7 @@ __print_funct_t xml_print_pwr_bat_stats(struct activity *a, int curr, int tab,
 		if (spbc->status >= BAT_STS_NR) {
 			spbc->status = 0;
 		}
-		xprintf(tab, "<bat number=\"%d\" "
+		xprintf(0, tab, "<bat number=\"%d\" "
 			     "percent-capacity=\"%u\" "
 			     "variation=\"%.2f\" "
 			     "status=\"%s\"/>",
@@ -2514,7 +2516,7 @@ __print_funct_t xml_print_pwr_bat_stats(struct activity *a, int curr, int tab,
 			bat_status[(unsigned int) spbc->status]);
 	}
 
-	xprintf(--tab, "</battery>");
+	xprintf(0, --tab, "</battery>");
 	tab--;
 
 close_xml_markup:

@@ -167,10 +167,10 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date, char *c
 				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<restarts>");
+		xprintf(0, (*tab)++, "<restarts>");
 	}
 	if (action & F_MAIN) {
-		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" tz=\"%s\" cpu_count=\"%d\"/>",
+		xprintf(0, *tab, "<boot date=\"%s\" time=\"%s\" tz=\"%s\" cpu_count=\"%d\"/>",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
@@ -178,7 +178,7 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date, char *c
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</restarts>");
+		xprintf(0, --(*tab), "</restarts>");
 	}
 }
 
@@ -207,20 +207,20 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date, char *
 
 	if (action & F_BEGIN) {
 		printf(",\n");
-		xprintf((*tab)++, "\"restarts\": [");
+		xprintf(0, (*tab)++, "\"restarts\": [");
 	}
 	if (action & F_MAIN) {
 		if (sep) {
 			printf(",\n");
 		}
-		xprintf((*tab)++, "{");
-		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"tz\": \"%s\", \"cpu_count\": %d}",
+		xprintf(0, (*tab)++, "{");
+		xprintf(0, *tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"tz\": \"%s\", \"cpu_count\": %d}",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 									  : "UTC"),
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
-		xprintf0(--(*tab), "}");
+		xprintf(NO_CR, --(*tab), "}");
 		sep = TRUE;
 	}
 	if (action & F_END) {
@@ -228,7 +228,7 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date, char *
 			printf("\n");
 			sep = FALSE;
 		}
-		xprintf0(--(*tab), "]");
+		xprintf(NO_CR, --(*tab), "]");
 	}
 }
 
@@ -413,10 +413,10 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
 				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<comments>");
+		xprintf(0, (*tab)++, "<comments>");
 	}
 	if (action & F_MAIN) {
-		xprintf(*tab, "<comment date=\"%s\" time=\"%s\" tz=\"%s\" com=\"%s\"/>",
+		xprintf(0, *tab, "<comment date=\"%s\" time=\"%s\" tz=\"%s\" com=\"%s\"/>",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
@@ -424,7 +424,7 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
 			comment);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</comments>");
+		xprintf(0, --(*tab), "</comments>");
 	}
 }
 
@@ -454,14 +454,14 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
 
 	if (action & F_BEGIN) {
 		printf(",\n");
-		xprintf((*tab)++, "\"comments\": [");
+		xprintf(0, (*tab)++, "\"comments\": [");
 	}
 	if (action & F_MAIN) {
 		if (sep) {
 			printf(",\n");
 		}
-		xprintf((*tab)++, "{");
-		xprintf(*tab,
+		xprintf(0, (*tab)++, "{");
+		xprintf(0, *tab,
 			"\"comment\": {\"date\": \"%s\", \"time\": \"%s\", "
 			"\"tz\": \"%s\", \"com\": \"%s\"}",
 			cur_date, cur_time,
@@ -469,7 +469,7 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 									  : "UTC"),
 			comment);
-		xprintf0(--(*tab), "}");
+		xprintf(NO_CR, --(*tab), "}");
 		sep = TRUE;
 	}
 	if (action & F_END) {
@@ -477,7 +477,7 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
 			printf("\n");
 			sep = FALSE;
 		}
-		xprintf0(--(*tab), "]");
+		xprintf(NO_CR, --(*tab), "]");
 	}
 }
 
@@ -571,10 +571,10 @@ __printf_funct_t print_xml_statistics(int *tab, int action, struct activity *act
 				      unsigned int id_seq[])
 {
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<statistics>");
+		xprintf(0, (*tab)++, "<statistics>");
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</statistics>");
+		xprintf(0, --(*tab), "</statistics>");
 	}
 }
 
@@ -599,21 +599,21 @@ __printf_funct_t print_json_statistics(int *tab, int action, struct activity *ac
 
 	if (action & F_BEGIN) {
 		printf(",\n");
-		xprintf((*tab)++, "\"statistics\": [");
+		xprintf(0, (*tab)++, "\"statistics\": [");
 	}
 	if (action & F_MAIN) {
 		if (sep) {
-			xprintf(--(*tab), "},");
+			xprintf(0, --(*tab), "},");
 		}
-		xprintf((*tab)++, "{");
+		xprintf(0, (*tab)++, "{");
 		sep = TRUE;
 	}
 	if (action & F_END) {
 		if (sep) {
-			xprintf(--(*tab), "}");
+			xprintf(0, --(*tab), "}");
 			sep = FALSE;
 		}
-		xprintf0(--(*tab), "]");
+		xprintf(NO_CR, --(*tab), "]");
 	}
 }
 
@@ -948,7 +948,7 @@ __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<timestamp date=\"%s\" time=\"%s\" tz=\"%s\" interval=\"%llu\">",
+		xprintf(0, (*tab)++, "<timestamp date=\"%s\" time=\"%s\" tz=\"%s\" interval=\"%llu\">",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
@@ -956,7 +956,7 @@ __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 			itv);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</timestamp>");
+		xprintf(0, --(*tab), "</timestamp>");
 	}
 
 	return NULL;
@@ -986,7 +986,7 @@ __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
-		xprintf0(*tab,
+		xprintf(NO_CR, *tab,
 			 "\"timestamp\": {\"date\": \"%s\", \"time\": \"%s\", "
 			 "\"tz\": \"%s\", \"interval\": %llu}",
 			 cur_date, cur_time,
@@ -1113,37 +1113,37 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile, char *my_
 		char cur_time[TIMESTAMP_LEN];
 
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		xprintf(*tab, "<sysstat\n"
+		xprintf(0, *tab, "<sysstat\n"
 			      "xmlns=\"https://sysstat.github.io\"\n"
 			      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
 			      "xsi:schemaLocation=\"https://sysstat.github.io https://sysstat.github.io/sysstat.xsd\">");
 
-		xprintf(++(*tab), "<sysdata-version>%s</sysdata-version>",
+		xprintf(0, ++(*tab), "<sysdata-version>%s</sysdata-version>",
 			XML_DTD_VERSION);
 
-		xprintf(*tab, "<host nodename=\"%s\">", file_hdr->sa_nodename);
-		xprintf(++(*tab), "<sysname>%s</sysname>", file_hdr->sa_sysname);
-		xprintf(*tab, "<release>%s</release>", file_hdr->sa_release);
+		xprintf(0, *tab, "<host nodename=\"%s\">", file_hdr->sa_nodename);
+		xprintf(0, ++(*tab), "<sysname>%s</sysname>", file_hdr->sa_sysname);
+		xprintf(0, *tab, "<release>%s</release>", file_hdr->sa_release);
 
-		xprintf(*tab, "<machine>%s</machine>", file_hdr->sa_machine);
-		xprintf(*tab, "<number-of-cpus>%d</number-of-cpus>",
+		xprintf(0, *tab, "<machine>%s</machine>", file_hdr->sa_machine);
+		xprintf(0, *tab, "<number-of-cpus>%d</number-of-cpus>",
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
-		xprintf(*tab, "<file-date>%s</file-date>", cur_time);
+		xprintf(0, *tab, "<file-date>%s</file-date>", cur_time);
 
 		if (gmtime_r(&t, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			xprintf(*tab, "<file-utc-time>%s</file-utc-time>", cur_time);
+			xprintf(0, *tab, "<file-utc-time>%s</file-utc-time>", cur_time);
 		}
 
-		xprintf(*tab, "<timezone>%s</timezone>", file_hdr->sa_tzname);
+		xprintf(0, *tab, "<timezone>%s</timezone>", file_hdr->sa_tzname);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</host>");
-		xprintf(--(*tab), "</sysstat>");
+		xprintf(0, --(*tab), "</host>");
+		xprintf(0, --(*tab), "</sysstat>");
 	}
 }
 
@@ -1179,35 +1179,35 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile, char *my
 	if (action & F_BEGIN) {
 		char cur_time[TIMESTAMP_LEN];
 
-		xprintf(*tab, "{\"sysstat\": {");
+		xprintf(0, *tab, "{\"sysstat\": {");
 
-		xprintf(++(*tab), "\"hosts\": [");
-		xprintf(++(*tab), "{");
-		xprintf(++(*tab), "\"nodename\": \"%s\",", file_hdr->sa_nodename);
-		xprintf(*tab, "\"sysname\": \"%s\",", file_hdr->sa_sysname);
-		xprintf(*tab, "\"release\": \"%s\",", file_hdr->sa_release);
+		xprintf(0, ++(*tab), "\"hosts\": [");
+		xprintf(0, ++(*tab), "{");
+		xprintf(0, ++(*tab), "\"nodename\": \"%s\",", file_hdr->sa_nodename);
+		xprintf(0, *tab, "\"sysname\": \"%s\",", file_hdr->sa_sysname);
+		xprintf(0, *tab, "\"release\": \"%s\",", file_hdr->sa_release);
 
-		xprintf(*tab, "\"machine\": \"%s\",", file_hdr->sa_machine);
-		xprintf(*tab, "\"number-of-cpus\": %d,",
+		xprintf(0, *tab, "\"machine\": \"%s\",", file_hdr->sa_machine);
+		xprintf(0, *tab, "\"number-of-cpus\": %d,",
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
-		xprintf(*tab, "\"file-date\": \"%s\",", cur_time);
+		xprintf(0, *tab, "\"file-date\": \"%s\",", cur_time);
 
 		if (gmtime_r(&t, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			xprintf(*tab, "\"file-utc-time\": \"%s\",", cur_time);
+			xprintf(0, *tab, "\"file-utc-time\": \"%s\",", cur_time);
 		}
 
-		xprintf0(*tab, "\"timezone\": \"%s\"", file_hdr->sa_tzname);
+		xprintf(NO_CR, *tab, "\"timezone\": \"%s\"", file_hdr->sa_tzname);
 	}
 	if (action & F_END) {
 		printf("\n");
-		xprintf(--(*tab), "}");
-		xprintf(--(*tab), "]");
-		xprintf(--(*tab), "}}");
+		xprintf(0, --(*tab), "}");
+		xprintf(0, --(*tab), "]");
+		xprintf(0, --(*tab), "}}");
 	}
 }
 

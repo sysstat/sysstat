@@ -398,7 +398,7 @@ void tape_get_updated_stats(void)
 void write_tape_headings(int *tab)
 {
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf((*tab)++, "\"tape\": [");
+		xprintf(0, (*tab)++, "\"tape\": [");
 		return;
 	}
 
@@ -523,10 +523,10 @@ void write_json_tape_stats(int tab, struct calc_stats *tape, int i)
 	char line[256];
 	uint64_t divisor = 1;
 
-	xprintf0(tab,
-		 "{\"tape_device\": \"st%i\", "
-		 "\"r/s\": %" PRIu64 ", \"w/s\": %" PRIu64 ", ",
-		 i, tape->reads_per_second, tape->writes_per_second);
+	xprintf(NO_CR, tab,
+		"{\"tape_device\": \"st%i\", "
+		"\"r/s\": %" PRIu64 ", \"w/s\": %" PRIu64 ", ",
+		i, tape->reads_per_second, tape->writes_per_second);
 
 	if (DISPLAY_GIGABYTES(flags)) {
 		divisor = 1024 * 1024;
@@ -593,7 +593,7 @@ void write_stats(struct tm *rectime)
 	TEST_STDOUT(STDOUT_FILENO);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(tab++, "{");
+		xprintf(0, tab++, "{");
 	}
 
 	/* Print time stamp */
@@ -648,8 +648,8 @@ void write_stats(struct tm *rectime)
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
-		xprintf(--tab, "]");
-		xprintf0(--tab, "}");
+		xprintf(0, --tab, "]");
+		xprintf(NO_CR, --tab, "}");
 	}
 }
 
