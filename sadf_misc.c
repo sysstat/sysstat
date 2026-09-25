@@ -877,7 +877,7 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	if (action & F_BEGIN) {
 		return print_dbppc_timestamp(F_PPC_OUTPUT, file_hdr, cur_date, cur_time,
@@ -909,7 +909,7 @@ __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
 				char *cur_time, char *my_tz, unsigned long long itv,
 				struct record_header *record_hdr,
-				struct file_header *file_hdr, unsigned int flags)
+				struct file_header *file_hdr, uint64_t flags)
 {
 	if (action & F_BEGIN) {
 		return print_dbppc_timestamp(F_DB_OUTPUT, file_hdr, cur_date, cur_time,
@@ -943,7 +943,7 @@ __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	int *tab = (int *) parm;
 
@@ -981,7 +981,7 @@ __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 				  char *cur_time, char *my_tz, unsigned long long itv,
 				  struct record_header *record_hdr,
-				  struct file_header *file_hdr, unsigned int flags)
+				  struct file_header *file_hdr, uint64_t flags)
 {
 	int *tab = (int *) parm;
 
@@ -1027,7 +1027,7 @@ __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	static char pre[80];
 
@@ -1071,7 +1071,7 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	if (action & F_END) {
 		pcp_write_data(record_hdr, flags);

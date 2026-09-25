@@ -159,22 +159,22 @@ __printf_funct_t print_pcp_statistics
  */
 __tm_funct_t print_db_timestamp
 	(void *, int, char *, char *, char *, unsigned long long,
-	 struct record_header *, struct file_header *, unsigned int);
+	 struct record_header *, struct file_header *, uint64_t);
 __tm_funct_t print_ppc_timestamp
 	(void *, int, char *, char *, char *, unsigned long long,
-	 struct record_header *, struct file_header *, unsigned int);
+	 struct record_header *, struct file_header *, uint64_t);
 __tm_funct_t print_xml_timestamp
 	(void *, int, char *, char *, char *, unsigned long long,
-	 struct record_header *, struct file_header *, unsigned int);
+	 struct record_header *, struct file_header *, uint64_t);
 __tm_funct_t print_json_timestamp
 	(void *, int, char *, char *, char *, unsigned long long,
-	 struct record_header *, struct file_header *, unsigned int);
+	 struct record_header *, struct file_header *, uint64_t);
 __tm_funct_t print_raw_timestamp
 	(void *, int, char *, char *, char *, unsigned long long,
-	 struct record_header *, struct file_header *, unsigned int);
+	 struct record_header *, struct file_header *, uint64_t);
 __tm_funct_t print_pcp_timestamp
 	(void *, int, char *, char *, char *, unsigned long long,
-	 struct record_header *, struct file_header *, unsigned int);
+	 struct record_header *, struct file_header *, uint64_t);
 
 /*
  * Prototypes used to display the report header

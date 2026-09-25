@@ -1259,7 +1259,7 @@ struct report_format {
 	 * Used only with textual (XML-like) reports, PCP archives and RAW output format.
 	 */
 	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, char *, unsigned long long,
-				     struct record_header *, struct file_header *, unsigned int);
+				     struct record_header *, struct file_header *, uint64_t);
 	/*
 	 * This function displays the restart messages.
 	 */
