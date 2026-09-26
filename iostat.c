@@ -983,23 +983,24 @@ void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies)
  */
 void write_json_cpu_stat(int tab, int curr, unsigned long long deltot_jiffies)
 {
-	xprintf0(tab, "\"avg-cpu\":  {\"user\": %.2f, \"nice\": %.2f, \"system\": %.2f,"
-		      " \"iowait\": %.2f, \"steal\": %.2f, \"idle\": %.2f}",
-		 ll_sp_value(st_cpu[!curr]->cpu_user, st_cpu[curr]->cpu_user, deltot_jiffies),
-		 ll_sp_value(st_cpu[!curr]->cpu_nice, st_cpu[curr]->cpu_nice, deltot_jiffies),
-		 /*
-		  * Time spent in system mode also includes time spent servicing
-		  * hard and soft interrupts.
-		  */
-		 ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
-			     st_cpu[!curr]->cpu_hardirq,
-			     st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
-			     st_cpu[curr]->cpu_hardirq, deltot_jiffies),
-		 ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, deltot_jiffies),
-		 ll_sp_value(st_cpu[!curr]->cpu_steal, st_cpu[curr]->cpu_steal, deltot_jiffies),
-		 (st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
-		 0.0 :
-		 ll_sp_value(st_cpu[!curr]->cpu_idle, st_cpu[curr]->cpu_idle, deltot_jiffies));
+	xprintf(NO_CR, tab,
+		"\"avg-cpu\":  {\"user\": %.2f, \"nice\": %.2f, \"system\": %.2f,"
+		" \"iowait\": %.2f, \"steal\": %.2f, \"idle\": %.2f}",
+		ll_sp_value(st_cpu[!curr]->cpu_user, st_cpu[curr]->cpu_user, deltot_jiffies),
+		ll_sp_value(st_cpu[!curr]->cpu_nice, st_cpu[curr]->cpu_nice, deltot_jiffies),
+		/*
+		 * Time spent in system mode also includes time spent servicing
+		 * hard and soft interrupts.
+		 */
+		ll_sp_value(st_cpu[!curr]->cpu_sys + st_cpu[!curr]->cpu_softirq +
+			    st_cpu[!curr]->cpu_hardirq,
+			    st_cpu[curr]->cpu_sys + st_cpu[curr]->cpu_softirq +
+			    st_cpu[curr]->cpu_hardirq, deltot_jiffies),
+		ll_sp_value(st_cpu[!curr]->cpu_iowait, st_cpu[curr]->cpu_iowait, deltot_jiffies),
+		ll_sp_value(st_cpu[!curr]->cpu_steal, st_cpu[curr]->cpu_steal, deltot_jiffies),
+		(st_cpu[curr]->cpu_idle < st_cpu[!curr]->cpu_idle) ?
+		0.0 :
+		ll_sp_value(st_cpu[!curr]->cpu_idle, st_cpu[curr]->cpu_idle, deltot_jiffies));
 }
 
 /*
@@ -1088,7 +1089,7 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 	}
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf((*tab)++, "\"disk\": [");
+		xprintf(0, (*tab)++, "\"disk\": [");
 		return;
 	}
 
@@ -1344,9 +1345,9 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 	if (d->dev_tp == T_GROUP)
 		return;
 
-	xprintf0(tab,
-		 "{\"disk_device\": \"%s\", ",
-		 devname);
+	xprintf(NO_CR, tab,
+		"{\"disk_device\": \"%s\", ",
+		devname);
 
 	if (DISPLAY_SHORT_OUTPUT(flags)) {
 		printf("\"tps\": %.2f, \"",
@@ -1679,26 +1680,30 @@ void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
 {
 	char line[256];
 
-	xprintf0(tab,
-		 "{\"disk_device\": \"%s\", \"tps\": %.2f, ",
-		 devname,
-		 /* Origin (unmerged) flush operations are counted as writes */
-		 S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
-			 ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
+	xprintf(NO_CR, tab,
+		"{\"disk_device\": \"%s\", \"tps\": %.2f, ",
+		devname,
+		/* Origin (unmerged) flush operations are counted as writes */
+		S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
+			ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
 	if (DISPLAY_KILOBYTES(flags)) {
-		sprintf(line, "\"kB_read/s\": %%.2f, \"kB_wrtn/s\": %%.2f, \"kB_dscd/s\": %%.2f, "
+		sprintf(line,
+			"\"kB_read/s\": %%.2f, \"kB_wrtn/s\": %%.2f, \"kB_dscd/s\": %%.2f, "
 			"\"kB_read\": %%llu, \"kB_wrtn\": %%llu, \"kB_dscd\": %%llu}");
 	}
 	else if (DISPLAY_MEGABYTES(flags)) {
-		sprintf(line, "\"MB_read/s\": %%.2f, \"MB_wrtn/s\": %%.2f, \"MB_dscd/s\": %%.2f, "
+		sprintf(line,
+			"\"MB_read/s\": %%.2f, \"MB_wrtn/s\": %%.2f, \"MB_dscd/s\": %%.2f, "
 			"\"MB_read\": %%llu, \"MB_wrtn\": %%llu, \"MB_dscd\": %%llu}");
 	}
 	else if (DISPLAY_GIGABYTES(flags)) {
-		sprintf(line, "\"GB_read/s\": %%.2f, \"GB_wrtn/s\": %%.2f, \"GB_dscd/s\": %%.2f, "
+		sprintf(line,
+			"\"GB_read/s\": %%.2f, \"GB_wrtn/s\": %%.2f, \"GB_dscd/s\": %%.2f, "
 			"\"GB_read\": %%llu, \"GB_wrtn\": %%llu, \"GB_dscd\": %%llu}");
 	}
 	else {
-		sprintf(line, "\"Blk_read/s\": %%.2f, \"Blk_wrtn/s\": %%.2f, \"Blk_dscd/s\": %%.2f, "
+		sprintf(line,
+			"\"Blk_read/s\": %%.2f, \"Blk_wrtn/s\": %%.2f, \"Blk_dscd/s\": %%.2f, "
 			"\"Blk_read\": %%llu, \"Blk_wrtn\": %%llu, \"Blk_dscd\": %%llu}");
 	}
 	printf(line,
@@ -1777,7 +1782,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 	TEST_STDOUT(STDOUT_FILENO);
 
 	if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {
-		xprintf(tab++, "{");
+		xprintf(0, tab++, "{");
 	}
 
 	/* Print time stamp */
@@ -1953,13 +1958,13 @@ void write_stats(int curr, struct tm *rectime, int skip)
 		}
 		if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {
 			printf("\n");
-			xprintf(--tab, "]");
+			xprintf(0, --tab, "]");
 		}
 	}
 
 	if (!skip) {
 		if (DISPLAY_JSON_OUTPUT(xflags)) {
-			xprintf0(--tab, "}");
+			xprintf(NO_CR, --tab, "}");
 		}
 		else {
 			printf("\n");

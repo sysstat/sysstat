@@ -83,39 +83,40 @@ enum {
  ***************************************************************************
  */
 
-#define S_F_SINCE_BOOT		0x00000001
-#define S_F_SA_ROTAT      	0x00000002	/* Only used by sadc */
-#define S_F_DEV_SID		0x00000002	/* Only used by sar/sadf */
-#define S_F_PRETTY		0x00000004
-#define S_F_FORCE_FILE		0x00000008
-#define S_F_INTERVAL_SET	0x00000010
-#define S_F_TRUE_TIME		0x00000020
-#define S_F_LOCK_FILE		0x00000040
-#define S_F_SEC_EPOCH		0x00000080
-#define S_F_HDR_ONLY		0x00000100
-#define S_F_FILE_LOCKED		0x00000200
-#define S_F_SA_YYYYMMDD		0x00000400
-#define S_F_HORIZONTALLY	0x00000800
-#define S_F_COMMENT		0x00001000
-#define S_F_PERSIST_NAME	0x00002000
-#define S_F_LOCAL_TIME		0x00004000
-#define S_F_PREFD_TIME_OUTPUT	0x00008000
-#define S_F_SVG_SKIP		0x00010000
-#define S_F_SVG_AUTOSCALE	0x00020000
-#define S_F_SVG_ONE_DAY		0x00040000
-#define S_F_SVG_SHOW_IDLE	0x00080000
-#define S_F_UNIT		0x00100000
-#define S_F_SVG_HEIGHT		0x00200000
-#define S_F_SVG_PACKED		0x00400000
-#define S_F_SVG_SHOW_INFO	0x00800000
-#define S_F_MINMAX		0x01000000
-#define S_F_ZERO_OMIT		0x02000000
-#define S_F_SVG_SHOW_TOC	0x04000000
-#define S_F_FDATASYNC		0x08000000
-#define S_F_OPTION_A		0x10000000
-#define S_F_OPTION_P		0x20000000
-#define S_F_OPTION_I		0x40000000
-#define S_F_DEBUG_MODE		0x80000000
+#define S_F_SINCE_BOOT		0x0000000001
+#define S_F_SA_ROTAT      	0x0000000002	/* Only used by sadc */
+#define S_F_DEV_SID		0x0000000002	/* Only used by sar/sadf */
+#define S_F_PRETTY		0x0000000004
+#define S_F_FORCE_FILE		0x0000000008
+#define S_F_INTERVAL_SET	0x0000000010
+#define S_F_TRUE_TIME		0x0000000020
+#define S_F_LOCK_FILE		0x0000000040
+#define S_F_SEC_EPOCH		0x0000000080
+#define S_F_HDR_ONLY		0x0000000100
+#define S_F_FILE_LOCKED		0x0000000200
+#define S_F_SA_YYYYMMDD		0x0000000400
+#define S_F_HORIZONTALLY	0x0000000800
+#define S_F_COMMENT		0x0000001000
+#define S_F_PERSIST_NAME	0x0000002000
+#define S_F_LOCAL_TIME		0x0000004000
+#define S_F_PREFD_TIME_OUTPUT	0x0000008000
+#define S_F_SVG_SKIP		0x0000010000
+#define S_F_SVG_AUTOSCALE	0x0000020000
+#define S_F_SVG_ONE_DAY		0x0000040000
+#define S_F_SVG_SHOW_IDLE	0x0000080000
+#define S_F_UNIT		0x0000100000
+#define S_F_SVG_HEIGHT		0x0000200000
+#define S_F_SVG_PACKED		0x0000400000
+#define S_F_SVG_SHOW_INFO	0x0000800000
+#define S_F_MINMAX		0x0001000000
+#define S_F_ZERO_OMIT		0x0002000000
+#define S_F_SVG_SHOW_TOC	0x0004000000
+#define S_F_FDATASYNC		0x0008000000
+#define S_F_OPTION_A		0x0010000000
+#define S_F_OPTION_P		0x0020000000
+#define S_F_OPTION_I		0x0040000000
+#define S_F_DEBUG_MODE		0x0080000000
+#define S_F_NDJSON_OUTPUT	0x0100000000
 
 #define WANT_SINCE_BOOT(m)		(((m) & S_F_SINCE_BOOT)   == S_F_SINCE_BOOT)
 #define WANT_SA_ROTAT(m)		(((m) & S_F_SA_ROTAT)     == S_F_SA_ROTAT)
@@ -150,6 +151,7 @@ enum {
 #define USE_OPTION_P(m)			(((m) & S_F_OPTION_P)     == S_F_OPTION_P)
 #define USE_OPTION_I(m)			(((m) & S_F_OPTION_I)     == S_F_OPTION_I)
 #define DISPLAY_MINMAX(m)		(((m) & S_F_MINMAX)       == S_F_MINMAX)
+#define DISPLAY_NDJSON(m)		(((m) & S_F_NDJSON_OUTPUT) == S_F_NDJSON_OUTPUT)
 
 #define AO_F_NULL		0x00000000
 
@@ -1259,7 +1261,7 @@ struct report_format {
 	 * Used only with textual (XML-like) reports, PCP archives and RAW output format.
 	 */
 	__tm_funct_t (*f_timestamp) (void *, int, char *, char *, char *, unsigned long long,
-				     struct record_header *, struct file_header *, unsigned int);
+				     struct record_header *, struct file_header *, uint64_t);
 	/*
 	 * This function displays the restart messages.
 	 */

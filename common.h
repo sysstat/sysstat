@@ -35,6 +35,14 @@
 
 #define DISP_HDR	1
 
+#define NO_CR		0x01
+#define NO_TABS		0x02
+#define NO_SPC		0x04
+
+#define DISPLAY_NOCR(m)		(((m) & NO_CR)   == NO_CR)
+#define DISPLAY_NOTABS(m)	(((m) & NO_TABS) == NO_TABS)
+#define DISPLAY_NOSPC(m)	(((m) & NO_SPC)  == NO_SPC)
+
 /* Index in units array (see common.c) */
 #define NO_UNIT		-1
 
@@ -410,9 +418,7 @@ char *strtolower
 void write_sample_timestamp
 	(int, struct tm *, uint64_t);
 void xprintf
-	(int, const char *, ...);
-void xprintf0
-	(int, const char *, ...);
+	(int, int, const char *, ...);
 
 #endif /* SOURCE_SADC undefined */
 #endif  /* _COMMON_H */

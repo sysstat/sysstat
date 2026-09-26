@@ -339,7 +339,7 @@ void write_cifs_stat_header(int *fctr, int *tab)
 	}
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf((*tab)++, "\"filesystem\": [");
+		xprintf(0, (*tab)++, "\"filesystem\": [");
 		return;
 	}
 
@@ -422,8 +422,8 @@ void write_json_cifs_stat(int tab, int curr, unsigned long long itv, int fctr,
 {
 	char line[256];
 
-	xprintf0(tab,
-		 "{\"fs_name\": \"%s\", ", escape_bs_char(clist->name));
+	xprintf(NO_CR, tab,
+		"{\"fs_name\": \"%s\", ", escape_bs_char(clist->name));
 
 	if (DISPLAY_KILOBYTES(flags)) {
 		sprintf(line, "\"rkB/s\": %%.2f, \"wkB/s\": %%.2f, ");
@@ -510,7 +510,7 @@ void write_stats(int curr, struct tm *rectime)
 	TEST_STDOUT(STDOUT_FILENO);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(tab++, "{");
+		xprintf(0, tab++, "{");
 	}
 
 	/* Print time stamp */
@@ -543,8 +543,8 @@ void write_stats(int curr, struct tm *rectime)
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
-		xprintf(--tab, "]");
-		xprintf0(--tab, "}");
+		xprintf(0, --tab, "]");
+		xprintf(NO_CR, --tab, "}");
 	}
 }
 

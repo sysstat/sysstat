@@ -119,7 +119,7 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
+			  "[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | -U ] [ -V ]\n"
 			  "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 			  "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --int=<int_list> ]\n"
 			  "[ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
@@ -1908,6 +1908,14 @@ int main(int argc, char **argv)
 
 					case 'H':
 						flags |= S_F_HDR_ONLY;
+						break;
+
+					case 'J':
+						if (format) {
+							usage(argv[0]);
+						}
+						flags |= S_F_NDJSON_OUTPUT;
+						format = F_JSON_OUTPUT;
 						break;
 
 					case 'j':

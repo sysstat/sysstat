@@ -31,14 +31,16 @@ AC_CHECK_PROG(MSGFMT, msgfmt, msgfmt)
 AC_CHECK_PROG(XGETTEXT, xgettext, xgettext)
 AC_CHECK_PROG(MSGMERGE, msgmerge, msgmerge)
 AC_CHECK_PROG(VER_XML, xmllint, xmllint)
-AC_CHECK_PROGS(VER_JSON, json_verify json_pp, true)
-AC_CHECK_PROGS(ZIP, xz bzip2 gzip, gzip)
+AC_CHECK_PROGS(VER_JSON, json_verify json_pp)
+AC_CHECK_PROG(VER_NDJSON, jq, jq empty)
+AC_CHECK_PROGS(ZIP, xz bzip2, gzip)
 INSTALL_DATA="\${INSTALL} -m 644"
 AC_SUBST(INSTALL_DATA)
 INSTALL_BIN="\${INSTALL} -m 755"
 AC_SUBST(INSTALL_BIN)
 
 AC_SUBST(VER_JSON)
+AC_SUBST(VER_NDJSON)
 AC_SUBST(VER_XML)
 
 AC_PATH_PROG(PATH_CP, cp)

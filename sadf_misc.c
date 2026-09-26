@@ -167,10 +167,10 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date, char *c
 				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<restarts>");
+		xprintf(0, (*tab)++, "<restarts>");
 	}
 	if (action & F_MAIN) {
-		xprintf(*tab, "<boot date=\"%s\" time=\"%s\" tz=\"%s\" cpu_count=\"%d\"/>",
+		xprintf(0, *tab, "<boot date=\"%s\" time=\"%s\" tz=\"%s\" cpu_count=\"%d\"/>",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
@@ -178,7 +178,7 @@ __printf_funct_t print_xml_restart(int *tab, int action, char *cur_date, char *c
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</restarts>");
+		xprintf(0, --(*tab), "</restarts>");
 	}
 }
 
@@ -204,31 +204,37 @@ __printf_funct_t print_json_restart(int *tab, int action, char *cur_date, char *
 				    struct record_header *record_hdr)
 {
 	static int sep = FALSE;
+	int bh = (DISPLAY_NDJSON(flags) ? NO_CR + NO_TABS : 0);
 
 	if (action & F_BEGIN) {
-		printf(",\n");
-		xprintf((*tab)++, "\"restarts\": [");
+		printf("%s", DISPLAY_NDJSON(flags) ? "{" : ",\n");
+		xprintf(bh + NO_SPC, (*tab)++, "\"restarts\": [");
 	}
 	if (action & F_MAIN) {
 		if (sep) {
-			printf(",\n");
+			printf(",%s", DISPLAY_NDJSON(flags) ? " " : "\n");
 		}
-		xprintf((*tab)++, "{");
-		xprintf(*tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"tz\": \"%s\", \"cpu_count\": %d}",
+		xprintf(bh | NO_SPC, (*tab)++, "{");
+		xprintf(bh | NO_SPC, *tab, "\"boot\": {\"date\": \"%s\", \"time\": \"%s\", \"tz\": \"%s\", \"cpu_count\": %d}",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 									  : "UTC"),
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
-		xprintf0(--(*tab), "}");
+		xprintf(DISPLAY_NDJSON(flags) ? bh | NO_SPC : NO_CR, --(*tab), "}");
 		sep = TRUE;
 	}
 	if (action & F_END) {
-		if (sep) {
+		if (sep && !DISPLAY_NDJSON(flags)) {
 			printf("\n");
 			sep = FALSE;
 		}
-		xprintf0(--(*tab), "]");
+		if (!DISPLAY_NDJSON(flags)) {
+			xprintf(NO_CR, --(*tab), "]");
+		}
+		else {
+			printf("]}\n");
+		}
 	}
 }
 
@@ -413,10 +419,10 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
 				   struct record_header *record_hdr)
 {
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<comments>");
+		xprintf(0, (*tab)++, "<comments>");
 	}
 	if (action & F_MAIN) {
-		xprintf(*tab, "<comment date=\"%s\" time=\"%s\" tz=\"%s\" com=\"%s\"/>",
+		xprintf(0, *tab, "<comment date=\"%s\" time=\"%s\" tz=\"%s\" com=\"%s\"/>",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
@@ -424,7 +430,7 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
 			comment);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</comments>");
+		xprintf(0, --(*tab), "</comments>");
 	}
 }
 
@@ -451,17 +457,18 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
 				    struct record_header *record_hdr)
 {
 	static int sep = FALSE;
+	int bh = (DISPLAY_NDJSON(flags) ? NO_CR + NO_TABS : 0);
 
 	if (action & F_BEGIN) {
-		printf(",\n");
-		xprintf((*tab)++, "\"comments\": [");
+		printf("%s", DISPLAY_NDJSON(flags) ? "{" : ",\n");
+		xprintf(bh | NO_SPC, (*tab)++, "\"comments\": [");
 	}
 	if (action & F_MAIN) {
 		if (sep) {
-			printf(",\n");
+			printf(",%s", DISPLAY_NDJSON(flags) ? " " : "\n");
 		}
-		xprintf((*tab)++, "{");
-		xprintf(*tab,
+		xprintf(bh | NO_SPC, (*tab)++, "{");
+		xprintf(bh | NO_SPC, *tab,
 			"\"comment\": {\"date\": \"%s\", \"time\": \"%s\", "
 			"\"tz\": \"%s\", \"com\": \"%s\"}",
 			cur_date, cur_time,
@@ -469,15 +476,20 @@ __printf_funct_t print_json_comment(int *tab, int action, char *cur_date, char *
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 									  : "UTC"),
 			comment);
-		xprintf0(--(*tab), "}");
+		xprintf(DISPLAY_NDJSON(flags) ? bh | NO_SPC : NO_CR, --(*tab), "}");
 		sep = TRUE;
 	}
 	if (action & F_END) {
-		if (sep) {
+		if (sep && !DISPLAY_NDJSON(flags)) {
 			printf("\n");
 			sep = FALSE;
 		}
-		xprintf0(--(*tab), "]");
+		if (!DISPLAY_NDJSON(flags)) {
+			xprintf(NO_CR, --(*tab), "]");
+		}
+		else {
+			printf("]}\n");
+		}
 	}
 }
 
@@ -571,10 +583,10 @@ __printf_funct_t print_xml_statistics(int *tab, int action, struct activity *act
 				      unsigned int id_seq[])
 {
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<statistics>");
+		xprintf(0, (*tab)++, "<statistics>");
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</statistics>");
+		xprintf(0, --(*tab), "</statistics>");
 	}
 }
 
@@ -596,24 +608,36 @@ __printf_funct_t print_json_statistics(int *tab, int action, struct activity *ac
 				       unsigned int id_seq[])
 {
 	static int sep = FALSE;
+	int bh = (DISPLAY_NDJSON(flags) ? NO_CR + NO_TABS : 0);
 
 	if (action & F_BEGIN) {
-		printf(",\n");
-		xprintf((*tab)++, "\"statistics\": [");
+		printf("%s", DISPLAY_NDJSON(flags) ? "{" : ",\n");
+		xprintf(bh | NO_SPC, (*tab)++, "\"statistics\": %s",
+			DISPLAY_NDJSON(flags) ? "" : "[");
 	}
 	if (action & F_MAIN) {
 		if (sep) {
-			xprintf(--(*tab), "},");
+			if (DISPLAY_NDJSON(flags)) {
+				printf("}}\n{\"statistics\": ");
+			}
+			else {
+				xprintf(0, --(*tab), "},");
+			}
 		}
-		xprintf((*tab)++, "{");
+		xprintf(bh | NO_SPC, (*tab)++, "{");
 		sep = TRUE;
 	}
 	if (action & F_END) {
 		if (sep) {
-			xprintf(--(*tab), "}");
+			xprintf(bh | NO_SPC, --(*tab), "}");
 			sep = FALSE;
 		}
-		xprintf0(--(*tab), "]");
+		if (DISPLAY_NDJSON(flags)) {
+			printf("}\n");
+		}
+		else {
+			xprintf(NO_CR, --(*tab), "]");
+		}
 	}
 }
 
@@ -877,7 +901,7 @@ char *print_dbppc_timestamp(int fmt, struct file_header *file_hdr, char *cur_dat
 __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	if (action & F_BEGIN) {
 		return print_dbppc_timestamp(F_PPC_OUTPUT, file_hdr, cur_date, cur_time,
@@ -909,7 +933,7 @@ __tm_funct_t print_ppc_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
 				char *cur_time, char *my_tz, unsigned long long itv,
 				struct record_header *record_hdr,
-				struct file_header *file_hdr, unsigned int flags)
+				struct file_header *file_hdr, uint64_t flags)
 {
 	if (action & F_BEGIN) {
 		return print_dbppc_timestamp(F_DB_OUTPUT, file_hdr, cur_date, cur_time,
@@ -943,12 +967,12 @@ __tm_funct_t print_db_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	int *tab = (int *) parm;
 
 	if (action & F_BEGIN) {
-		xprintf((*tab)++, "<timestamp date=\"%s\" time=\"%s\" tz=\"%s\" interval=\"%llu\">",
+		xprintf(0, (*tab)++, "<timestamp date=\"%s\" time=\"%s\" tz=\"%s\" interval=\"%llu\">",
 			cur_date, cur_time,
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
@@ -956,7 +980,7 @@ __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 			itv);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</timestamp>");
+		xprintf(0, --(*tab), "</timestamp>");
 	}
 
 	return NULL;
@@ -981,25 +1005,26 @@ __tm_funct_t print_xml_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 				  char *cur_time, char *my_tz, unsigned long long itv,
 				  struct record_header *record_hdr,
-				  struct file_header *file_hdr, unsigned int flags)
+				  struct file_header *file_hdr, uint64_t flags)
 {
 	int *tab = (int *) parm;
+	int bh = (DISPLAY_NDJSON(flags) ? NO_CR + NO_TABS : NO_CR);
 
 	if (action & F_BEGIN) {
-		xprintf0(*tab,
-			 "\"timestamp\": {\"date\": \"%s\", \"time\": \"%s\", "
-			 "\"tz\": \"%s\", \"interval\": %llu}",
-			 cur_date, cur_time,
-			 PRINT_LOCAL_TIME(flags) ? my_tz
-						 : (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
-									   : "UTC"),
+		xprintf(bh | NO_SPC, *tab,
+			"\"timestamp\": {\"date\": \"%s\", \"time\": \"%s\", "
+			"\"tz\": \"%s\", \"interval\": %llu}",
+			cur_date, cur_time,
+			PRINT_LOCAL_TIME(flags) ? my_tz
+						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
+									  : "UTC"),
 			itv);
 	}
 	if (action & F_MAIN) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON(flags) ? "" : "\n");
 	}
-	if (action & F_END) {
-		printf("\n");
+	if ((action & F_END) && !DISPLAY_NDJSON(flags)) {
+			printf("\n");
 	}
 
 	return NULL;
@@ -1027,7 +1052,7 @@ __tm_funct_t print_json_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	static char pre[80];
 
@@ -1071,7 +1096,7 @@ __tm_funct_t print_raw_timestamp(void *parm, int action, char *cur_date,
 __tm_funct_t print_pcp_timestamp(void *parm, int action, char *cur_date,
 				 char *cur_time, char *my_tz, unsigned long long itv,
 				 struct record_header *record_hdr,
-				 struct file_header *file_hdr, unsigned int flags)
+				 struct file_header *file_hdr, uint64_t flags)
 {
 	if (action & F_END) {
 		pcp_write_data(record_hdr, flags);
@@ -1113,37 +1138,37 @@ __printf_funct_t print_xml_header(void *parm, int action, char *dfile, char *my_
 		char cur_time[TIMESTAMP_LEN];
 
 		printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		xprintf(*tab, "<sysstat\n"
+		xprintf(0, *tab, "<sysstat\n"
 			      "xmlns=\"https://sysstat.github.io\"\n"
 			      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
 			      "xsi:schemaLocation=\"https://sysstat.github.io https://sysstat.github.io/sysstat.xsd\">");
 
-		xprintf(++(*tab), "<sysdata-version>%s</sysdata-version>",
+		xprintf(0, ++(*tab), "<sysdata-version>%s</sysdata-version>",
 			XML_DTD_VERSION);
 
-		xprintf(*tab, "<host nodename=\"%s\">", file_hdr->sa_nodename);
-		xprintf(++(*tab), "<sysname>%s</sysname>", file_hdr->sa_sysname);
-		xprintf(*tab, "<release>%s</release>", file_hdr->sa_release);
+		xprintf(0, *tab, "<host nodename=\"%s\">", file_hdr->sa_nodename);
+		xprintf(0, ++(*tab), "<sysname>%s</sysname>", file_hdr->sa_sysname);
+		xprintf(0, *tab, "<release>%s</release>", file_hdr->sa_release);
 
-		xprintf(*tab, "<machine>%s</machine>", file_hdr->sa_machine);
-		xprintf(*tab, "<number-of-cpus>%d</number-of-cpus>",
+		xprintf(0, *tab, "<machine>%s</machine>", file_hdr->sa_machine);
+		xprintf(0, *tab, "<number-of-cpus>%d</number-of-cpus>",
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
-		xprintf(*tab, "<file-date>%s</file-date>", cur_time);
+		xprintf(0, *tab, "<file-date>%s</file-date>", cur_time);
 
 		if (gmtime_r(&t, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			xprintf(*tab, "<file-utc-time>%s</file-utc-time>", cur_time);
+			xprintf(0, *tab, "<file-utc-time>%s</file-utc-time>", cur_time);
 		}
 
-		xprintf(*tab, "<timezone>%s</timezone>", file_hdr->sa_tzname);
+		xprintf(0, *tab, "<timezone>%s</timezone>", file_hdr->sa_tzname);
 	}
 	if (action & F_END) {
-		xprintf(--(*tab), "</host>");
-		xprintf(--(*tab), "</sysstat>");
+		xprintf(0, --(*tab), "</host>");
+		xprintf(0, --(*tab), "</sysstat>");
 	}
 }
 
@@ -1175,39 +1200,46 @@ __printf_funct_t print_json_header(void *parm, int action, char *dfile, char *my
 	struct tm rectime, loc_t;
 	time_t t = file_hdr->sa_ust_time;
 	int *tab = (int *) parm;
+	int bh = (DISPLAY_NDJSON(flags) ? NO_CR + NO_TABS : 0);
 
 	if (action & F_BEGIN) {
 		char cur_time[TIMESTAMP_LEN];
 
-		xprintf(*tab, "{\"sysstat\": {");
+		xprintf(bh | NO_SPC, *tab, "{\"sysstat\": {");
 
-		xprintf(++(*tab), "\"hosts\": [");
-		xprintf(++(*tab), "{");
-		xprintf(++(*tab), "\"nodename\": \"%s\",", file_hdr->sa_nodename);
-		xprintf(*tab, "\"sysname\": \"%s\",", file_hdr->sa_sysname);
-		xprintf(*tab, "\"release\": \"%s\",", file_hdr->sa_release);
+		xprintf(bh | NO_SPC, ++(*tab), "\"hosts\": [");
+		xprintf(bh | NO_SPC, ++(*tab), "{");
+		xprintf(bh | NO_SPC, ++(*tab), "\"nodename\": \"%s\",", file_hdr->sa_nodename);
+		xprintf(bh, *tab, "\"sysname\": \"%s\",", file_hdr->sa_sysname);
+		xprintf(bh, *tab, "\"release\": \"%s\",", file_hdr->sa_release);
 
-		xprintf(*tab, "\"machine\": \"%s\",", file_hdr->sa_machine);
-		xprintf(*tab, "\"number-of-cpus\": %d,",
+		xprintf(bh, *tab, "\"machine\": \"%s\",", file_hdr->sa_machine);
+		xprintf(bh, *tab, "\"number-of-cpus\": %d,",
 			file_hdr->sa_cpu_nr > 1 ? file_hdr->sa_cpu_nr - 1 : 1);
 
 		/* Fill file timestmap structure (rectime) */
 		get_file_timestamp_struct(flags, &rectime, file_hdr);
 		strftime(cur_time, sizeof(cur_time), "%Y-%m-%d", &rectime);
-		xprintf(*tab, "\"file-date\": \"%s\",", cur_time);
+		xprintf(bh, *tab, "\"file-date\": \"%s\",", cur_time);
 
 		if (gmtime_r(&t, &loc_t) != NULL) {
 			strftime(cur_time, sizeof(cur_time), "%T", &loc_t);
-			xprintf(*tab, "\"file-utc-time\": \"%s\",", cur_time);
+			xprintf(bh, *tab, "\"file-utc-time\": \"%s\",", cur_time);
 		}
 
-		xprintf0(*tab, "\"timezone\": \"%s\"", file_hdr->sa_tzname);
+		xprintf(DISPLAY_NDJSON(flags) ? bh : NO_CR,
+			*tab, "\"timezone\": \"%s\"", file_hdr->sa_tzname);
+
+		if (DISPLAY_NDJSON(flags)) {
+			printf("}]}}\n");
+		}
 	}
-	if (action & F_END) {
+
+	if ((action & F_END) && !DISPLAY_NDJSON(flags)) {
 		printf("\n");
-		xprintf(--(*tab), "}");
-		xprintf(--(*tab), "]");
-		xprintf(--(*tab), "}}");
+		xprintf(bh, --(*tab), "}");
+		xprintf(bh, --(*tab), "]");
+		xprintf(bh, --(*tab), "}}");
 	}
 }
 
