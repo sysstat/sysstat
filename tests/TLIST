@@ -25,7 +25,7 @@ NOTES:
 00030	[ -x ./iconfig ] || exit 1
 
 =====	Files creation
------	Create data-new.tmp [.....RC / 1234511]
+-----	Create data-new.tmp [.....RC / 1234511] and data0-new.tmp [..... / 12345]
 00050	5 x TZ=GMT ./sadc --unix_time=XXXXXXXXX -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ tests/data-new.tmp 1 1 >/dev/null
 00052	TZ=GMT ./sadc --unix_time=XXXXXXXXX tests/data-new.tmp
 00054	TZ=GMT ./sadc --unix_time=1555594749 -C "Testing sysstat!" tests/data-new.tmp
@@ -122,8 +122,13 @@ NOTES:
 
 =====	Checking JSON output validity
 00300	./sadf -j tests/data.tmp -C -- -A | $VER_JSON >/dev/null && ./sadf -j tests/data.tmp | $VER_JSON >/dev/null && ./sadf -t -j tests/data.tmp | $VER_JSON >/dev/null
+00301	./sadf -J tests/data.tmp -C -- -A | tests/check_ndjson.sh >/dev/null && ./sadf -J tests/data.tmp | tests/check_ndjson.sh >/dev/null && ./sadf -t -J tests/data.tmp | tests/check_ndjson.sh >/dev/null
+00302	./sadf -j tests/data0-new.tmp -C | $VER_JSON >/dev/null
+00303	./sadf -J tests/data0-new.tmp -C | tests/check_ndjson.sh >/dev/null
 00305	./sadf -Hj tests/data.tmp -C | $VER_JSON >/dev/null
+00306	./sadf -HJ tests/data.tmp -C | tests/check_ndjson.sh >/dev/null
 00307	./sadf -j tests/data-CPUoff.tmp -- -A -P 8 | $VER_JSON >/dev/null
+00308	./sadf -J tests/data-CPUoff.tmp -- -A -P 8 | tests/check_ndjson.sh >/dev/null
 00310	./mpstat -A -o JSON | $VER_JSON >/dev/null
 00320	./iostat -t -p ALL -o JSON | $VER_JSON >/dev/null
 00330	./mpstat -o JSON 1 10 | $VER_JSON >/dev/null

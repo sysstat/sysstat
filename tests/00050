@@ -19,3 +19,5 @@ TZ=GMT ./sadc --unix_time=1555593639 -S XALL tests/data-new.tmp 1 1 >/dev/null
 rm -f tests/root
 ln -s ${T_SRCDIR}/tests/root5 tests/root
 TZ=GMT ./sadc --unix_time=1555593649 -S XALL tests/data-new.tmp 1 1 >/dev/null
+
+cp -f tests/data-new.tmp tests/data0-new.tmp

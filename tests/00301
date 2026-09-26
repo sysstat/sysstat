@@ -1,0 +1,7 @@
+. tests/variables
+if [ ! -z "$VER_NDJSON" ]; then
+	./sadf -J tests/data.tmp -C -- -A | tests/check_ndjson.sh >/dev/null && ./sadf -J tests/data.tmp | tests/check_ndjson.sh >/dev/null && ./sadf -t -J tests/data.tmp | tests/check_ndjson.sh >/dev/null
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi
