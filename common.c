@@ -826,6 +826,36 @@ char *escape_bs_char(const char str[])
 
 /*
  ***************************************************************************
+ * Print a string that is part of a JSON string value. Characters which
+ * cannot appear as is in a JSON string ('"', '\' and control characters)
+ * are escaped.
+ *
+ * IN:
+ * @str		String to print.
+ ***************************************************************************
+ */
+void print_json_escaped_str(const char str[])
+{
+	const unsigned char *c;
+
+	if (str == NULL)
+		return;
+
+	for (c = (const unsigned char *) str; *c != '\0'; c++) {
+		if ((*c == '"') || (*c == '\\')) {
+			printf("\\%c", *c);
+		}
+		else if (*c < 0x20) {
+			printf("\\u%04x", *c);
+		}
+		else {
+			putchar(*c);
+		}
+	}
+}
+
+/*
+ ***************************************************************************
  * Workaround for CPU counters read from /proc/stat: Dyn-tick kernels
  * have a race issue that can make those counters go backward.
  ***************************************************************************

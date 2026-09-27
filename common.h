@@ -382,6 +382,8 @@ char *device_name
 	(char *);
 char *escape_bs_char
 	(const char []);
+void print_json_escaped_str
+	(const char []);
 char *get_device_name
 	(unsigned int, unsigned int, unsigned long long [],
 	 unsigned int, unsigned int, unsigned int, unsigned int, char *);
