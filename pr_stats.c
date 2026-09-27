@@ -1402,7 +1402,7 @@ __print_funct_t print_serial_stats(struct activity *a, int prev, int curr,
 	int i, j, j0, found;
 	struct stats_serial *ssc, *ssp;
 	int g_fields[] = {0, 1, 2, 3, 4, 5};
-	unsigned int local_types_nr[] = {0, 6, 0};
+	unsigned int local_types_nr[] = {0, 0, 6};
 
 	if (xinit && a->nr_spalloc) {
 		/*
