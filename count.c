@@ -276,7 +276,7 @@ __nr_t get_diskstats_dev_nr(int count_part, int only_used_dev)
  * in /proc/tty/driver/serial file.
  *
  * RETURNS:
- * Number of serial lines supporting tx/rx accouting.
+ * Number of serial lines supporting tx/rx accounting.
  ***************************************************************************
  */
 __nr_t get_serial_nr(void)

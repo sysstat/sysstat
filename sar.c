@@ -1005,7 +1005,7 @@ void read_header_data(void)
 		id_seq[i++] = 0;
 	}
 
-	/* Check that all selected activties are actually sent by sadc */
+	/* Check that all selected activities are actually sent by sadc */
 	reverse_check_act(file_hdr.sa_act_nr);
 
 	return;
