@@ -1293,7 +1293,7 @@ __nr_t wrap_get_irq_nr(struct activity *a)
  * @a	Activity structure.
  *
  * RETURNS:
- * Number of serial lines supporting tx/rx accouting.
+ * Number of serial lines supporting tx/rx accounting.
  * Number cannot exceed MAX_NR_SERIAL_LINES.
  ***************************************************************************
  */
