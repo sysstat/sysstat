@@ -1,14 +1,19 @@
-Summary: 	SAR, SADF, MPSTAT, IOSTAT, TAPESTAT, PIDSTAT and CIFSIOSTAT for Linux
-Name: 		sysstat
-Version: 	12.8.0
-Release: 	1
-License: 	GPL
-Group: 		Applications/System
-Source0: 	%{name}-%{version}.tar.gz
-URL:		http://pagesperso-orange.fr/sebastien.godard/
-Packager:	Sebastien Godard <sysstat _at_ orange.fr>
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root-%(id -u -n)
-Requires:	gettext
+Summary: 		SAR, SADF, MPSTAT, IOSTAT, TAPESTAT, PIDSTAT and CIFSIOSTAT for Linux
+Name: 			sysstat
+Version: 		12.8.0
+Release: 		1
+License: 		GPL-2.0-or-later
+Group: 			Applications/System
+Source0: 		%{name}-%{version}.tar.gz
+URL:			http://pagesperso-orange.fr/sebastien.godard/
+Packager:		Sebastien Godard <sysstat _at_ orange.fr>
+BuildRoot:		%{_tmppath}/%{name}-%{version}-root-%(id -u -n)
+
+BuildRequires:	make
+BuildRequires:	gcc
+BuildRequires:	gettext
+
+Requires:		gettext
 
 %description
 The sysstat package contains the sar, sadf, mpstat, iostat, tapestat,
