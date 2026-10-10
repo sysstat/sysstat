@@ -1,0 +1,8 @@
+. tests/variables
+if [ ! -z "$VER_XML" ]; then
+	export LC_ALL=C
+	./sadf -x tests/data4.tmp -C | $VER_XML --schema ${T_SRCDIR}/xml/sysstat.xsd - >/dev/null
+else
+	echo Skipped
+	touch tests/SKIPPED
+fi

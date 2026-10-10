@@ -1,0 +1,4 @@
+{"sysstat": {"hosts": [{"nodename": "SYSSTAT.TEST", "sysname": "Linux", "release": "1.2.3-TEST", "machine": "x86_64", "number-of-cpus": 9, "file-date": "2019-04-18", "file-utc-time": "13:20:09", "timezone": "GMT"}]}}
+{"statistics": []}
+{"restarts": []}
+{"comments": [{"comment": {"date": "2019-04-18", "time": "13:20:09", "tz": "UTC", "com": "Hello \"world\""}}, {"comment": {"date": "2019-04-18", "time": "13:20:19", "tz": "UTC", "com": "Bonjour\\"}}]}
