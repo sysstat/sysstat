@@ -805,7 +805,7 @@ char *escape_bs_char(const char str[])
 	int i = 0, j = 0;
 
 	if (str != NULL) {
-		while (str[i] != '\0' && j < (MAX_NAME_LEN * 2) - 1) {
+		while ((str[i] != '\0') && (j < (MAX_NAME_LEN * 2) - 1)) {
 			if (str[i] == '\\') {
 				if (j < (MAX_NAME_LEN * 2) - 2) {
 					buffer[j++] = '\\';
@@ -840,7 +840,7 @@ char *escape_json_char(const char str[])
 	int i = 0, j = 0;
 
 	if (str != NULL) {
-		while (str[i] != '\0' && j < (MAX_NAME_LEN * 2) - 1) {
+		while ((str[i] != '\0') && (j < (MAX_NAME_LEN * 2) - 1)) {
 			if ((str[i] == '\\') || (str[i] == '"')) {
 				if (j < (MAX_NAME_LEN * 2) - 2) {
 					buffer[j++] = '\\';
