@@ -384,6 +384,8 @@ char *escape_bs_char
 	(const char []);
 char *escape_json_char
 	(const char []);
+char *escape_xml_char
+	(const char []);
 char *get_device_name
 	(unsigned int, unsigned int, unsigned long long [],
 	 unsigned int, unsigned int, unsigned int, unsigned int, char *);

@@ -868,6 +868,41 @@ char *escape_json_char(const char str[])
 }
 
 /*
+ * **************************************************************************
+ * Escape double quotes character which cannot appear as is in an XML string.
+ *
+ * IN:
+ * @str		String which may contain characters to escape.
+ *
+ * RETURNS:
+ * String where characters have been escaped.
+ ***************************************************************************
+ */
+char *escape_xml_char(const char str[])
+{
+	static char buffer[MAX_NAME_LEN * 2];
+	int i = 0, j = 0;
+
+	if (str != NULL) {
+		while ((str[i] != '\0') && (j < (MAX_NAME_LEN * 2) - 1)) {
+			if (str[i] == '"') {
+				if (j < (MAX_NAME_LEN * 2) - 6) {
+					sprintf(buffer + j, "&quot;");
+					j+= 6;
+				}
+			}
+			else {
+				buffer[j++] = str[i];
+			}
+			i++;
+		}
+	}
+
+	buffer[j] = '\0';
+	return buffer;
+}
+
+/*
  ***************************************************************************
  * Workaround for CPU counters read from /proc/stat: Dyn-tick kernels
  * have a race issue that can make those counters go backward.

@@ -427,7 +427,7 @@ __printf_funct_t print_xml_comment(int *tab, int action, char *cur_date, char *c
 			PRINT_LOCAL_TIME(flags) ? my_tz
 						: (PRINT_TRUE_TIME(flags) ? file_hdr->sa_tzname
 									  : "UTC"),
-			comment);
+			escape_xml_char(comment));
 	}
 	if (action & F_END) {
 		xprintf(0, --(*tab), "</comments>");
