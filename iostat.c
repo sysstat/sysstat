@@ -1848,11 +1848,18 @@ void write_stats(int curr, struct tm *rectime, int skip)
 							dtmp = g;
 							g = d;
 							d = dtmp;
-							memset(g->dev_stats[curr], 0, sizeof(struct io_stats));
+							if (h == hl) {
+								memset(g->dev_stats[curr], 0, sizeof(struct io_stats));
+								/* Restart count of devices in group */
+								g->dev_tp = T_GROUP;
+							}
 						}
 						else {
 							g = d;
-							memset(g->dev_stats[curr], 0, sizeof(struct io_stats));
+							if (h == hl) {
+								memset(g->dev_stats[curr], 0, sizeof(struct io_stats));
+								g->dev_tp = T_GROUP;
+							}
 							continue;	/* No previous group to display */
 						}
 					}
@@ -1874,6 +1881,7 @@ void write_stats(int curr, struct tm *rectime, int skip)
 
 				ioi = d->dev_stats[curr];
 				ioj = d->dev_stats[!curr];
+
 				/* Origin (unmerged) flush operations are counted as writes */
 				if (!DISPLAY_UNFILTERED(flags)) {
 					if (!ioi->rd_ios && !ioi->wr_ios && !ioi->dc_ios && !ioi->fl_ios)
