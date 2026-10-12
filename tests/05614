@@ -1,0 +1,8 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sadf -j reading memory stats from PCP archive
+	LC_ALL=C TZ=GMT ./sadf -j tests/pcpar -- -r > tests/out.sadf-pcp-j-r.tmp 2>/dev/null
+	grep -q '"memory"\|"kbmemfree"\|"memfree"' tests/out.sadf-pcp-j-r.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

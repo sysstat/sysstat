@@ -300,6 +300,23 @@ Total number of file nodes used in filesystem.
 Percentage of file nodes used in filesystem.
 .RE
 .TP
+.BI "\-a " "archive"
+Read statistics from a PCP (Performance Co-Pilot) archive explicitly,
+following the PCP convention used by
+.BR pmval (1)
+and
+.BR pmie (1).
+Unlike
+.BR \-f ,
+.B \-a
+skips native sa format detection and reports an error if the path is
+not a valid PCP archive.
+The
+.I archive
+argument is a PCP archive base path (without .meta/.index/.0 suffixes).
+Requires PCP support
+.RB ( HAVE_PCP ).
+.TP
 .BI "\-f [ " "filename " "]"
 .RI "Extract records from " "filename " "(created by the"
 .BI "\-o " "filename"
@@ -307,9 +324,22 @@ flag). The default value of the
 .I filename
 parameter is the current standard system activity daily data file. If
 .I filename
-is a directory instead of a plain file then it is considered as the
-directory where the standard system activity daily data files are
-located. Option
+is a plain file its format is auto-detected: a PCP archive is tried
+first (via the PCP API), falling back to the native sysstat binary format.
+If
+.I filename
+is a directory it is searched for the most recently modified of
+.BI "saDD" ","
+.BI "saYYYYMMDD" ","
+.BI "saDD.meta" " and " "saYYYYMMDD.meta"
+entries.
+If
+.I filename
+is a PCP archive directory such as
+.I @SA_DIR@/pcp28
+the archive base path inside it is derived automatically
+.RI "(" "@SA_DIR@/pcp28/pcp28" ")."
+Option
 .BR "\-f " "is exclusive of option " "\-o" "."
 .TP
 .BI "\-\-fs=" "fs_list"
@@ -1709,6 +1739,16 @@ Data are stored in a file called
 .TP
 .B sar \-A
 Display all the statistics saved in current daily data file.
+.TP
+.B sar \-u \-f @SA_DIR@/pcp28
+Display CPU statistics from the PCP archive in
+.IR "@SA_DIR@/pcp28/" "."
+The archive base path
+.RI "(" "@SA_DIR@/pcp28/pcp28" ")"
+is derived automatically from the directory name.
+.TP
+.B sar \-u \-f @SA_DIR@/pcp28/pcp28
+Equivalent to the above, specifying the archive base path directly.
 
 .SH BUGS
 .IR "/proc " "filesystem must be mounted for the

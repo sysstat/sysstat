@@ -700,8 +700,10 @@ DFSENSORS
 LFSENSORS
 HAVE_SENSORS
 PCP_IMPL
+HAVE_PMI_APPEND
 DFPCP
-LFPCP
+LFPCP_WRITE
+LFPCP_READ
 HAVE_PCP
 SYSTEMD_SLEEP_DIR
 SYSTEMD_UNIT_DIR
@@ -4760,7 +4762,12 @@ fi
 printf "%s\n" "$PCP" >&6; }
 
 # Check for PCP libraries
-LFPCP=""
+# LFPCP_READ: standalone archive-reader tools (iostat, mpstat, pidstat, tapestat, cifsiostat)
+#             — do not link pcp_stats.o so need only libpcp
+# LFPCP_WRITE: sadc, sadf, sar — all link pcp_stats.o which contains pmi* write-path
+#             functions compiled in under HAVE_PMI_APPEND; need libpcp_import too
+LFPCP_READ=""
+LFPCP_WRITE=""
 DFPCP=""
 if test $HAVE_PCP = "y"; then
 	PCP=no
@@ -4809,38 +4816,103 @@ fi
 printf "%s\n" "$ac_cv_lib_pcp_pmGetVersion" >&6; }
 if test "x$ac_cv_lib_pcp_pmGetVersion" = xyes
 then :
-  LFPCP="-lpcp -lpcp_import"
+  LFPCP_READ="-lpcp"
 else case e in #(
   e) HAVE_PCP="n" ;;
 esac
 fi
 
-	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for PCP libraries" >&5
-printf %s "checking for PCP libraries... " >&6; }
-	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for pmiEnd in -lpcp_import" >&5
+printf %s "checking for pmiEnd in -lpcp_import... " >&6; }
+if test ${ac_cv_lib_pcp_import_pmiEnd+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpcp_import  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <pcp/pmapi.h>
-					     #include <pcp/import.h>
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.
+   The 'extern "C"' is for builds by C++ compilers;
+   although this is not generally supported in C code supporting it here
+   has little cost and some practical benefit (sr 110532).  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pmiEnd (void);
 int
 main (void)
 {
-pmiEnd();
+return pmiEnd ();
   ;
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
-  PCP=yes; DFPCP="-DHAVE_PCP"
+  ac_cv_lib_pcp_import_pmiEnd=yes
 else case e in #(
-  e) HAVE_PCP="n"; PCP=no ;;
+  e) ac_cv_lib_pcp_import_pmiEnd=no ;;
 esac
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $PCP" >&5
-printf "%s\n" "$PCP" >&6; }
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pcp_import_pmiEnd" >&5
+printf "%s\n" "$ac_cv_lib_pcp_import_pmiEnd" >&6; }
+if test "x$ac_cv_lib_pcp_import_pmiEnd" = xyes
+then :
+  LFPCP_WRITE="-lpcp -lpcp_import"; DFPCP="-DHAVE_PCP"
+else case e in #(
+  e) HAVE_PCP="n" ;;
+esac
 fi
 
+fi
+
+
+
+
+
+# Check for PMI_APPEND flag introduced in PCP 7.2.0.
+# Direct PCP archive output from sadc (-O pcp / -O sa+pcp) requires this
+# flag so that each short-lived invocation appends to the existing daily
+# archive rather than creating a new one.  The same PCP release added
+# pmiExtraUnits() for physical unit dimensions (temperature, voltage),
+# so a single HAVE_PMI_APPEND macro gates all PCP 7.2.0 write features.
+HAVE_PMI_APPEND="n"
+if test $HAVE_PCP = "y"; then
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for PMI_APPEND and pmiExtraUnits in pcp/import.h" >&5
+printf %s "checking for PMI_APPEND and pmiExtraUnits in pcp/import.h... " >&6; }
+	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <pcp/pmapi.h>
+					  #include <pcp/import.h>
+int
+main (void)
+{
+int f = PMI_APPEND; (void)f;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  HAVE_PMI_APPEND="y"; DFPCP="$DFPCP -DHAVE_PMI_APPEND"
+else case e in #(
+  e) HAVE_PMI_APPEND="n" ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $HAVE_PMI_APPEND" >&5
+printf "%s\n" "$HAVE_PMI_APPEND" >&6; }
+fi
 
 
 
@@ -7272,5 +7344,7 @@ echo "   Configuration file:		${SYSCONFIG_DIR}/${SYSCONFIG_FILE}
    Compiler flags:		$CFLAGS
    Linker flags:		$LDFLAGS
    Automate sar reporting:	$AUX_AUTO
+   PCP archive support:		${HAVE_PCP}
+   PCP write support:		${HAVE_PMI_APPEND}
 "
 

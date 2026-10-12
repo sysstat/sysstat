@@ -36,6 +36,14 @@
 #include "version.h"
 #include "sa.h"
 
+#ifdef HAVE_PMI_APPEND
+#include <pcp/pmapi.h>
+#include <pcp/import.h>
+#include "pcp_def_metrics.h"
+#endif
+#include "pcp_stats.h"
+#include "pcp_local.h"
+
 #ifdef USE_NLS
 #include <locale.h>
 #include <libintl.h>
@@ -64,6 +72,30 @@ extern char *tzname[2];
 long interval = -1;
 uint64_t flags = 0;
 
+/* Local PMDA metric collection configuration (from sysstat.pcpconf) */
+static struct pcp_local_config local_cfg;
+
+#ifdef HAVE_PMI_APPEND
+/* PCP archive base path (without extension, derived from safile or explicit) */
+char pcp_archive[MAX_FILE_LEN] = "";
+
+/*
+ * Derive the PCP archive base path from the native sa file path.
+ *
+ * The sa file is left unchanged.  The PCP directory mirrors the sa
+ * day-of-month convention (pcp<DD> matches sa<DD>), and the archive
+ * PCP archive files (.0, .meta, .index) share the same base path as the
+ * native sa file and coexist without conflict because PCP always appends
+ * its own suffixes:
+ *
+ *   sa file:         /var/log/sa/sa18        (unchanged)
+ *   PCP archive:     /var/log/sa/sa18.0
+ *                    /var/log/sa/sa18.meta
+ *                    /var/log/sa/sa18.index
+ */
+
+#endif /* HAVE_PMI_APPEND */
+
 int optz = 0;
 char timestamp[2][TIMESTAMP_LEN];
 
@@ -80,6 +112,33 @@ extern unsigned int rec_types_nr[];
 
 extern struct activity *act[];
 extern __nr_t (*f_count[]) (struct activity *);
+
+#ifdef HAVE_PMI_APPEND
+/*
+ * save/restore AO_COLLECTED across open_ofile() calls.
+ *
+ * open_ofile() constrains AO_COLLECTED to activities already in the native sa
+ * file.  The PCP archive collects independently; saving the user's full
+ * selection before each open_ofile() and restoring afterwards lets the PCP
+ * write path see all requested activities.  write_stats() is guarded by
+ * id_seq[] and will not write extra activities to the native format.
+ */
+static uint32_t pcp_saved_act_options[NR_ACT];
+
+static void pcp_save_act_options(void)
+{
+	int i;
+	for (i = 0; i < NR_ACT; i++)
+		pcp_saved_act_options[i] = act[i]->options & AO_COLLECTED;
+}
+
+static void pcp_restore_act_options(void)
+{
+	int i;
+	for (i = 0; i < NR_ACT; i++)
+		act[i]->options |= pcp_saved_act_options[i];
+}
+#endif /* HAVE_PMI_APPEND */
 
 struct sigaction alrm_act, int_act;
 int sigint_caught = 0;
@@ -98,8 +157,8 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
-			  "[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
-			  "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"));
+			  "[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -O { sa | pcp | sa+pcp } ]\n"
+			  "[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ] [ -V ]\n"));
 	exit(1);
 }
 
@@ -182,12 +241,15 @@ void parse_sadc_S_option(char *argv[], int opt)
 				/* Tell sadc to also collect partition statistics */
 				collect_group_activities(G_DISK + G_XDISK, AO_F_DISK_PART);
 			}
+			if (pcp_local_group_enable_all(&local_cfg))
+				flags |= S_F_PCP_GROUPS;
 		}
 		else if (!strcmp(p, K_A_NULL)) {
 			/* Unselect all activities */
 			for (i = 0; i < NR_ACT; i++) {
 				act[i]->options &= ~AO_COLLECTED;
 			}
+			pcp_local_group_disable_all(&local_cfg);
 		}
 		else if (!strncmp(p, "A_", 2)) {
 			/* Select activity by name */
@@ -212,6 +274,13 @@ void parse_sadc_S_option(char *argv[], int opt)
 			if (i == NR_ACT) {
 				usage(argv[0]);
 			}
+		}
+		else if (pcp_local_group_enable(p, &local_cfg) == 0) {
+			flags |= S_F_PCP_GROUPS;
+		}
+		else if (*p == '-' &&
+			 pcp_local_group_disable(p + 1, &local_cfg) == 0) {
+			/* group disabled */
 		}
 		else {
 			usage(argv[0]);
@@ -667,7 +736,7 @@ void write_special_record(int ofd, int rtype)
  */
 void write_stats(int ofd)
 {
-	int i, p;
+	int i, j, p;
 
 	/* Try to lock file */
 	if (!FILE_LOCKED(flags)) {
@@ -698,9 +767,18 @@ void write_stats(int ofd)
 					p_write_error();
 				}
 			}
-			if (write_all(ofd, act[p]->_buf0, act[p]->fsize * act[p]->_nr0 * act[p]->nr2) !=
-			    (act[p]->fsize * act[p]->_nr0 * act[p]->nr2)) {
-				p_write_error();
+			/*
+			 * Write fsize bytes per element at msize stride.
+			 * This correctly skips any trailing in-memory-only
+			 * fields when msize > fsize.  The read path in
+			 * read_file_stat_bunch() handles this symmetrically.
+			 */
+			for (j = 0; j < act[p]->_nr0 * act[p]->nr2; j++) {
+				if (write_all(ofd,
+				    (char *)act[p]->_buf0 + (size_t)j * act[p]->msize,
+				    act[p]->fsize) != act[p]->fsize) {
+					p_write_error();
+				}
 			}
 		}
 	}
@@ -1073,6 +1151,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 {
 	int do_sa_rotat = 0;
 	uint64_t save_flags;
+	unsigned int record_hdr_ust_nsec;
 	char new_ofile[MAX_FILE_LEN] = "";
 	struct tm rectime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL};
 
@@ -1088,8 +1167,7 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 		reset_stats();
 		memset(&record_hdr, 0, RECORD_HEADER_SIZE);
 
-		/* Save time */
-		record_hdr.ust_time = (unsigned long long) get_time(&rectime, 0);
+		record_hdr.ust_time = (unsigned long long) get_time_nsec(&rectime, 0, &record_hdr_ust_nsec);
 		record_hdr.hour     = rectime.tm_hour;
 		record_hdr.minute   = rectime.tm_min;
 		record_hdr.second   = rectime.tm_sec;
@@ -1112,9 +1190,41 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 			flags = save_flags;
 		}
 
-		/* If the record type was R_LAST_STATS, tag it R_STATS before writing it */
+		/* If the record type was R_LAST_STATS, tag it R_STATS before writing */
 		record_hdr.record_type = R_STATS;
-		if (ofile[0]) {
+
+		/*
+		 * Write PCP archive FIRST so the native .sa file ends up with
+		 * a more-recent mtime — sar/sadf use mtime to auto-select the
+		 * most recent file when no explicit filename is given.
+		 */
+#ifdef HAVE_PMI_APPEND
+		if (WRITE_PCP_OUTPUT(flags)) {
+			int	p;
+
+			for (p = 0; p < NR_ACT; p++) {
+				if (!IS_COLLECTED(act[p]->options) ||
+				    !act[p]->f_pcp_print)
+					continue;
+				(*act[p]->f_pcp_print)(act[p], 0);
+			}
+
+			/* Local PMDA metrics collected on every sample */
+			if (local_cfg.num_metrics > 0) {
+				pcp_local_write(&local_cfg);
+			}
+
+			pcp_write_uptime(record_hdr.uptime_cs);
+			if (pcp_write_sadc_sample(record_hdr.ust_time, record_hdr_ust_nsec, flags) < 0) {
+				if (WRITE_PCP_ONLY(flags))
+					exit(4);
+				flags &= ~S_F_PCP_OUTPUT;
+			}
+		}
+#endif /* HAVE_PMI_APPEND */
+
+		/* Then write native sysstat format (skipped in pcp mode) */
+		if (ofile[0] && !WRITE_PCP_ONLY(flags)) {
 			write_stats(ofd);
 		}
 
@@ -1137,6 +1247,12 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 			/* Recalculate number of system items and reallocate structures */
 			sa_sys_init();
 
+#ifdef HAVE_PMI_APPEND
+			/* Re-save before open_ofile() narrows AO_COLLECTED again */
+			if (WRITE_PCP_OUTPUT(flags))
+				pcp_save_act_options();
+#endif
+
 			/*
 			 * Open and init new file.
 			 * This is also used to set activity sequence to that of the file
@@ -1152,8 +1268,45 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 				setup_file_hdr(stdfd);
 			}
 
-			/* Write stats to file again */
-			write_stats(ofd);
+#ifdef HAVE_PMI_APPEND
+			/*
+			 * On rotation: end the old PCP archive and start a new
+			 * one aligned to the new day's pcpDD/ directory, then
+			 * write the first record of the new day to PCP first.
+			 */
+			if (WRITE_PCP_OUTPUT(flags)) {
+				int p;
+
+				/* Restore full activity set before writing to new archive */
+				pcp_restore_act_options();
+
+				pcp_close_sadc_archive();
+				pmstrncpy(pcp_archive, sizeof(pcp_archive), ofile);
+				if (pcp_open_sadc_archive(pcp_archive, &file_hdr) < 0) {
+					if (WRITE_PCP_ONLY(flags))
+						exit(4);
+					flags &= ~S_F_PCP_OUTPUT;
+				}
+				else {
+					pcp_sadc_set_volume_size(local_cfg.volume_size);
+					pcp_register_import_program(pcp_archive, &local_cfg);
+					pcp_write_file_header_metrics(&file_hdr);
+					pcp_write_import_metrics(pcp_archive, &file_hdr, interval, &local_cfg);
+					for (p = 0; p < NR_ACT; p++) {
+						if (!IS_COLLECTED(act[p]->options) ||
+						    !act[p]->f_pcp_print)
+							continue;
+						(*act[p]->f_pcp_print)(act[p], 0);
+					}
+					pcp_write_uptime(record_hdr.uptime_cs);
+					pcp_write_sadc_sample(record_hdr.ust_time, record_hdr_ust_nsec, flags);
+				}
+			}
+#endif /* HAVE_PMI_APPEND */
+
+			/* Write stats to native file (skipped in pcp mode) */
+			if (!WRITE_PCP_ONLY(flags))
+				write_stats(ofd);
 		}
 
 		/* Flush data */
@@ -1198,6 +1351,10 @@ void rw_sa_stat_loop(long count, int stdfd, int ofd, char ofile[],
 	/* Close file descriptors if they have actually been used */
 	CLOSE(stdfd);
 	CLOSE(ofd);
+	if (WRITE_PCP_OUTPUT(flags)) {
+		pcp_close_sadc_archive();
+		pcp_local_free(&local_cfg);
+	}
 }
 
 /*
@@ -1209,6 +1366,7 @@ int main(int argc, char **argv)
 {
 	int opt = 0;
 	char ofile[MAX_FILE_LEN], sa_dir[MAX_FILE_LEN];
+	const char *pcpconf;
 	int stdfd = 0, ofd = -1;
 	int restart_mark;
 	long count = 0;
@@ -1237,6 +1395,12 @@ int main(int argc, char **argv)
 	/* Init National Language Support */
 	init_nls();
 #endif
+
+	/* Parse pcpconf group sections before option parsing */
+	pcpconf = getenv("SYSSTAT_PCPCONF");
+	pcp_local_load_groups(&local_cfg,
+			      pcpconf ? pcpconf
+				      : SYSCONFIG_DIR "/sysstat.pcpconf");
 
 	while (++opt < argc) {
 
@@ -1272,6 +1436,43 @@ int main(int argc, char **argv)
 
 		else if (!strcmp(argv[opt], "-f")) {
 			flags |= S_F_FDATASYNC;
+		}
+
+		else if (!strncmp(argv[opt], "-O", 2)) {
+			/*
+			 * -O sa        Native format only (default, always accepted).
+			 * -O sa+pcp    Write both native and PCP archive (requires
+			 *              PCP append support compiled in).
+			 * -O pcp       Write PCP archive only (requires PCP append
+			 *              support compiled in).
+			 *
+			 * PCP archive path is derived from the output file.
+			 */
+			const char *val = argv[opt] + 2;
+			if (!*val) {
+				if (!argv[++opt])
+					usage(argv[0]);
+				val = argv[opt];
+			}
+			if (!strcmp(val, "sa")) {
+				/* explicit native format (the default, no-op) */
+			}
+			else if (!strcmp(val, "sa+pcp") || !strcmp(val, "pcp")) {
+#ifdef HAVE_PMI_APPEND
+				if (!strcmp(val, "sa+pcp"))
+					flags |= S_F_PCP_OUTPUT;
+				else
+					flags |= S_F_PCP_OUTPUT | S_F_PCP_ONLY;
+#else
+				fprintf(stderr,
+					_("sadc: -O %s: PCP archive support not compiled in\n"),
+					val);
+				exit(1);
+#endif
+			}
+			else {
+				usage(argv[0]);
+			}
 		}
 
 		else if (!strcmp(argv[opt], "-C")) {
@@ -1382,6 +1583,15 @@ int main(int argc, char **argv)
 	/* Init structures according to machine architecture */
 	sa_sys_init();
 
+#ifdef HAVE_PMI_APPEND
+	/*
+	 * Save the user's full activity selection now, before open_ofile()
+	 * below restricts AO_COLLECTED to activities already in the file.
+	 */
+	if (WRITE_PCP_OUTPUT(flags))
+		pcp_save_act_options();
+#endif
+
 	/* At least one activity must be collected */
 	if (!get_activity_nr(act, AO_COLLECTED, COUNT_ACTIVITIES)) {
 		/* Requested activities not available: Exit */
@@ -1405,9 +1615,294 @@ int main(int argc, char **argv)
 	 * the activities collected AND the activity sequence to that
 	 * of the file, and the activities collected and activity sequence
 	 * written on STDOUT must be consistent to those of the file.
+	 * Skip native file creation in PCP-only mode; ofile already holds
+	 * the resolved path (used as the PCP archive base).
 	 */
-	open_ofile(&ofd, ofile, restart_mark);
+	if (!WRITE_PCP_ONLY(flags))
+		open_ofile(&ofd, ofile, restart_mark);
 	open_stdout(&stdfd);
+
+#ifdef HAVE_PMI_APPEND
+	if (WRITE_PCP_OUTPUT(flags)) {
+		int			p, sts;
+		unsigned long long	system_uptime = 0;
+
+		/*
+		 * Restore the full user-requested activity set: open_ofile()
+		 * above cleared AO_COLLECTED for activities absent from the
+		 * existing native sa file.  The PCP archive collects
+		 * independently; write_stats() is guarded by id_seq[] and will
+		 * not write extra activities to the native format.
+		 */
+		pcp_restore_act_options();
+
+		/*
+		 * Allocate and select-all bitmaps so that pcp_print_*_stats()
+		 * — which are display functions that filter by bitmap — will
+		 * write data for all collected CPUs, IRQs, etc.
+		 */
+		allocate_bitmaps(act);
+		for (p = 0; p < NR_ACT; p++) {
+			if (act[p]->bitmap && act[p]->bitmap->b_array)
+				memset(act[p]->bitmap->b_array, ~0,
+				       BITMAP_SIZE(act[p]->bitmap->b_size));
+		}
+
+		/*
+		 * PCP archive base path: use the sa output file directly.
+		 * pmiStart appends .0/.meta/.index so the PCP archive files
+		 * coexist with the native sa file without conflict.
+		 * For stdout-only runs default to SA_DIR/sa{DD|YYYYMMDD}.
+		 */
+		if (!pcp_archive[0]) {
+			if (ofile[0]) {
+				pmstrncpy(pcp_archive, sizeof(pcp_archive), ofile);
+			} else {
+				time_t now = time(NULL);
+				struct tm lt;
+				localtime_r(&now, &lt);
+				if (USE_SA_YYYYMMDD(flags))
+					pmsprintf(pcp_archive, sizeof(pcp_archive),
+						  "%s/sa%04d%02d%02d", SA_DIR,
+						  lt.tm_year + 1900,
+						  lt.tm_mon + 1,
+						  lt.tm_mday);
+				else
+					pmsprintf(pcp_archive, sizeof(pcp_archive),
+						  "%s/sa%02d", SA_DIR,
+						  lt.tm_mday);
+			}
+		}
+
+		/* Phase 2: open local PMDA context, resolve enabled groups */
+		pcp_local_init(&local_cfg);
+
+		/*
+		 * PMI_APPEND falls back silently to creating a new archive
+		 * when the files don't yet exist, so use it unconditionally.
+		 */
+		sts = pcp_open_sadc_archive(pcp_archive, &file_hdr);
+		if (sts < 0) {
+			fprintf(stderr,
+				_("Cannot open PCP archive %s: %s\n"),
+				pcp_archive, pmiErrStr(sts));
+			if (WRITE_PCP_ONLY(flags))
+				exit(4);	/* fatal in pcp mode */
+			flags &= ~S_F_PCP_OUTPUT;
+			goto pcp_init_done;
+		}
+
+		/* Register with pmdapmimport via /var/run/pmimport */
+		pcp_register_import_program(pcp_archive, &local_cfg);
+
+		/* Register local metrics into the now-open PMI write context */
+		pcp_local_register(&local_cfg);
+
+		/* Write help text for local (proc.*) metrics from the DSO PMDA */
+		pcp_local_write_help(&local_cfg);
+
+		/* Enable automatic data volume rotation if configured */
+		pcp_sadc_set_volume_size(local_cfg.volume_size);
+
+		/*
+		 * Set S_F_SINCE_BOOT so that get_global_cpu_statistics() does
+		 * not mark per-CPU data as "offline" simply because the previous
+		 * sample buffer (buf[1]) is empty — which is always true in sadc
+		 * since it only maintains a single sample buffer.
+		 */
+		flags |= S_F_SINCE_BOOT;
+
+		/* File-header metrics and sadc self-description */
+		pcp_write_file_header_metrics(&file_hdr);
+		read_uptime(&system_uptime);
+		pcp_write_inventory_metrics(
+			act[get_activity_position(act, A_DISK,    EXIT_IF_NOT_FOUND)]->nr_ini,
+			act[get_activity_position(act, A_NET_DEV, EXIT_IF_NOT_FOUND)]->nr_ini,
+			(unsigned long long) time(NULL),
+			system_uptime);
+		pcp_write_import_metrics(pcp_archive, &file_hdr, interval, &local_cfg);
+
+		/*
+		 * pcp_print_*_stats() functions access both buf[0] (current)
+		 * and buf[1] (previous sample).  sa_sys_init() only allocates
+		 * buf[0] via _buf0.  Allocate all three buffers now so the
+		 * display functions don't crash on a NULL buf[1].
+		 * buf[1] stays zeroed (no previous sample on first write).
+		 */
+		for (p = 0; p < NR_ACT; p++) {
+			if (!IS_COLLECTED(act[p]->options) || act[p]->nr_ini <= 0)
+				continue;
+			reallocate_buffers(act[p], act[p]->nr_ini, flags);
+		}
+
+		/*
+		 * Probe read: discover live device/interface names so that
+		 * per-device PCP instances (disk.dev.*, network.interface.*)
+		 * can be registered before the metric definition loop below.
+		 * In the sadc direct-write path item_list is otherwise NULL
+		 * (no command-line device filter), so no instances would be
+		 * created and all per-device data would be silently dropped.
+		 */
+		read_stats();
+		for (p = 0; p < NR_ACT; p++) {
+			if (!IS_COLLECTED(act[p]->options))
+				continue;
+			switch (act[p]->id) {
+			case A_DISK:
+				pcp_probe_disk_instances(act[p]);
+				pcp_probe_dm_instances(act[p]);
+				pcp_probe_md_instances(act[p]);
+				pcp_probe_part_instances(act[p]);
+				pcp_probe_zram_instances(act[p]);
+				break;
+			case A_NET_DEV:
+				pcp_probe_net_dev_instances(act[p]);
+				break;
+			case A_NET_EDEV:
+				pcp_probe_net_edev_instances(act[p]);
+				break;
+			case A_FS:
+				pcp_probe_filesystem_instances(act[p]);
+				break;
+			default:
+				break;
+			}
+		}
+
+		/* Register metrics for all collected activities */
+		for (p = 0; p < NR_ACT; p++) {
+			if (!IS_COLLECTED(act[p]->options))
+				continue;
+
+			switch (act[p]->id) {
+			case A_CPU:
+			case A_PWR_CPU:
+			case A_NET_SOFT:
+				pcp_def_cpu_metrics(act[p]);
+				break;
+			case A_PCSW:
+				pcp_def_pcsw_metrics(act[p]);
+				break;
+			case A_IRQ:
+				pcp_def_irq_metrics(act[p]);
+				pcp_def_cpu_metrics(act[p]);	/* per-CPU interrupt metrics */
+				break;
+			case A_SWAP:
+				pcp_def_swap_metrics(act[p]);
+				break;
+			case A_PAGE:
+				pcp_def_paging_metrics(act[p]);
+				break;
+			case A_IO:
+				pcp_def_io_metrics(act[p]);
+				break;
+			case A_MEMORY:
+				pcp_def_memory_metrics(act[p]);
+				break;
+			case A_KTABLES:
+				pcp_def_ktables_metrics(act[p]);
+				break;
+			case A_QUEUE:
+				pcp_def_queue_metrics(act[p]);
+				break;
+			case A_SERIAL:
+				pcp_def_serial_metrics(act[p]);
+				break;
+			case A_DISK:
+				pcp_def_disk_metrics(act[p]);
+				break;
+			case A_NET_DEV:
+			case A_NET_EDEV:
+				pcp_def_net_dev_metrics(act[p]);
+				break;
+			case A_NET_NFS:
+				pcp_def_net_nfs_metrics(act[p]);
+				break;
+			case A_NET_NFSD:
+				pcp_def_net_nfsd_metrics(act[p]);
+				break;
+			case A_NET_SOCK:
+				pcp_def_net_sock_metrics(act[p]);
+				break;
+			case A_NET_IP:
+				pcp_def_net_ip_metrics(act[p]);
+				break;
+			case A_NET_EIP:
+				pcp_def_net_eip_metrics(act[p]);
+				break;
+			case A_NET_ICMP:
+				pcp_def_net_icmp_metrics(act[p]);
+				break;
+			case A_NET_EICMP:
+				pcp_def_net_eicmp_metrics(act[p]);
+				break;
+			case A_NET_TCP:
+				pcp_def_net_tcp_metrics(act[p]);
+				break;
+			case A_NET_ETCP:
+				pcp_def_net_etcp_metrics(act[p]);
+				break;
+			case A_NET_UDP:
+				pcp_def_net_udp_metrics(act[p]);
+				break;
+			case A_NET_SOCK6:
+				pcp_def_net_sock6_metrics(act[p]);
+				break;
+			case A_NET_IP6:
+				pcp_def_net_ip6_metrics(act[p]);
+				break;
+			case A_NET_EIP6:
+				pcp_def_net_eip6_metrics(act[p]);
+				break;
+			case A_NET_ICMP6:
+				pcp_def_net_icmp6_metrics(act[p]);
+				break;
+			case A_NET_EICMP6:
+				pcp_def_net_eicmp6_metrics(act[p]);
+				break;
+			case A_NET_UDP6:
+				pcp_def_net_udp6_metrics(act[p]);
+				break;
+			case A_HUGE:
+				pcp_def_huge_metrics(act[p]);
+				break;
+			case A_PWR_FAN:
+				pcp_def_pwr_fan_metrics(act[p]);
+				break;
+			case A_PWR_TEMP:
+				pcp_def_pwr_temp_metrics(act[p]);
+				break;
+			case A_PWR_IN:
+				pcp_def_pwr_in_metrics(act[p]);
+				break;
+			case A_PWR_BAT:
+				pcp_def_pwr_bat_metrics(act[p]);
+				break;
+			case A_PWR_USB:
+				pcp_def_pwr_usb_metrics(act[p]);
+				break;
+			case A_FS:
+				pcp_def_filesystem_metrics(act[p]);
+				break;
+			case A_NET_FC:
+				pcp_def_fchost_metrics(act[p]);
+				break;
+			case A_PSI_CPU:
+			case A_PSI_IO:
+			case A_PSI_MEM:
+				pcp_def_psi_metrics(act[p]);
+				break;
+			default:
+				break;
+			}
+		}
+
+		/* Write help text for all actively-collected metrics */
+		pcp_write_activity_help(act, NR_ACT);
+
+pcp_init_done:	;
+	}
+#endif /* HAVE_PMI_APPEND */
 
 	if (interval < 0) {
 		if (ofd >= 0) {
@@ -1427,6 +1922,27 @@ int main(int argc, char **argv)
 			/* Close file descriptor */
 			CLOSE(ofd);
 		}
+
+#ifdef HAVE_PMI_APPEND
+		if (WRITE_PCP_OUTPUT(flags)) {
+			struct tm pcp_rectime = {0};
+			unsigned int pcp_nsec;
+
+			/*
+			 * Get sub-second timestamp for PCP
+			 * (write_special_record only uses second precision)
+			 */
+			record_hdr.ust_time = (unsigned long long)
+				get_time_nsec(&pcp_rectime, 0, &pcp_nsec);
+			pcp_write_sadc_special_record(comment,
+						      file_hdr.sa_cpu_nr,
+						      record_hdr.ust_time,
+						      pcp_nsec,
+						      &local_cfg);
+			pcp_close_sadc_archive();
+			pcp_local_free(&local_cfg);
+		}
+#endif
 
 		/* Free structures */
 		sa_sys_free();
