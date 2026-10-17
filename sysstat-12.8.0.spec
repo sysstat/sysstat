@@ -1,14 +1,21 @@
-Summary: 	SAR, SADF, MPSTAT, IOSTAT, TAPESTAT, PIDSTAT and CIFSIOSTAT for Linux
+Summary: 	Collection of performance monitoring tools for Linux
 Name: 		sysstat
 Version: 	12.8.0
 Release: 	1
-License: 	GPL
-Group: 		Applications/System
-Source0: 	%{name}-%{version}.tar.gz
-URL:		http://pagesperso-orange.fr/sebastien.godard/
+License: 	GPL-2.0-or-later
+Group:		Applications/System
+Source0: 	https://github.com/sysstat/sysstat/archive/v%{version}.tar.gz
+URL:		https://sysstat.github.io
 Packager:	Sebastien Godard <sysstat _at_ orange.fr>
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root-%(id -u -n)
-Requires:	gettext
+
+BuildRequires:	make
+BuildRequires:	gcc
+BuildRequires:	gettext
+BuildRequires:	lm_sensors-devel
+
+Requires:	findutils
+Requires:	xz
 
 %description
 The sysstat package contains the sar, sadf, mpstat, iostat, tapestat,
@@ -81,4 +88,4 @@ rm -rf $RPM_BUILD_ROOT
 /etc/rc3.d/S01sysstat
 /etc/rc5.d/S01sysstat
 %config(noreplace) %attr(0644,root,root) /etc/cron.d/sysstat
-
+%{_unitdir}/sysstat*
