@@ -521,6 +521,7 @@ NOTES:
 02750	LC_ALL=C TZ=GMT ./iostat -o JSON -dm -g disks sda sdb -g other sdc sdd 1 2 > tests/out.iostat-g-JSON.tmp
 02755	LC_ALL=C TZ=GMT ./iostat -g total sda sdb sdc 1 3 -x > tests/out.iostat-gx.tmp
 02760	LC_ALL=C TZ=GMT ./iostat -g total sda sdb sdc 1 3 -xh > tests/out.iostat-gxh.tmp
+02765	LC_ALL=C TZ=GMT ./iostat -g home sda sdb -g extra sdc sdd 1 3 -x --pretty > tests/out.iostat-gx-p.tmp
 
 =====	iostat: Playing with environment variables
 02800	LC_ALL=C TZ=GMT S_TIME_FORMAT=ISO S_COLORS=never POSIXLY_CORRECT= ./iostat --getenv -d 2 3 > tests/out.iostat-ev.tmp
