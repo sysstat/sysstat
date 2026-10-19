@@ -2065,7 +2065,7 @@ int sa_open_read_magic(int *fd, char *dfile, struct file_magic *file_magic,
 		/* hdr_types_nr field exists only for sysstat versions 11.7.1 and later */
 		if (MAP_SIZE(file_magic->hdr_types_nr) > file_magic->header_size) {
 #ifdef DEBUG
-			fprintf(stderr, "%s: map_size=%u header_size=%u\n",
+			fprintf(stderr, "%s: map_size=%llu header_size=%u\n",
 				__FUNCTION__, MAP_SIZE(file_magic->hdr_types_nr), file_magic->header_size);
 #endif
 			handle_invalid_sa_file(*fd, file_magic, dfile, n);
@@ -2184,7 +2184,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 	    (MAP_SIZE(file_hdr->act_types_nr) > file_hdr->act_size) ||
 	    (MAP_SIZE(file_hdr->rec_types_nr) > file_hdr->rec_size)) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: sa_act_nr=%u act_size=%u rec_size=%u map_size(act)=%u map_size(rec)=%u\n",
+		fprintf(stderr, "%s: sa_act_nr=%u act_size=%u rec_size=%u map_size(act)=%llu map_size(rec)=%llu\n",
 			__FUNCTION__, file_hdr->sa_act_nr, file_hdr->act_size, file_hdr->rec_size,
 			MAP_SIZE(file_hdr->act_types_nr), MAP_SIZE(file_hdr->rec_types_nr));
 #endif
@@ -2290,7 +2290,7 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 
 		if (MAP_SIZE(fal->types_nr) > fal->size) {
 #ifdef DEBUG
-		fprintf(stderr, "%s: id=%u size=%d map_size=%u\n",
+		fprintf(stderr, "%s: id=%u size=%d map_size=%llu\n",
 			__FUNCTION__, fal->id, fal->size, MAP_SIZE(fal->types_nr));
 #endif
 			goto format_error;
