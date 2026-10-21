@@ -7,13 +7,13 @@ statistics for devices and partitions.
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
 .B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m | \-G ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
-.BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
+.BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-a " "archive" " | { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ \-\-debuginfo ] [ " "interval " "[ " "count " "] ] "
 .\}
 .el \{
 .B iostat [ \-c ] [ \-d ] [ \-h ] [ \-k | \-m | \-G ] [ \-N ] [ \-s ] [ \-t ] [ \-U ] [ \-V ] [ \-x ] [ \-y ] [ \-z ]
-.BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
+.BI "[ \-\-compact ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-a " "archive" " | { \-f | +f } " "directory" " ] [ \-j { ID | LABEL | PATH | UUID | ... } ] "
 .BI "[ \-o JSON ] [ [ \-H ] \-g " "group_name " "] [ \-\-human ] [ \-\-pretty ] [ \-p [ " "device" "[,...] | ALL ] ] ["
 .IB "device " "[...] | ALL ] [ " "interval " "[ " "count " "] ]"
 .\}
@@ -218,6 +218,23 @@ modern SSDs, this number does not reflect their performance limits.
 .RE
 
 .SH OPTIONS
+.TP
+.BI "\-a " "archive"
+Read disk and CPU statistics from a PCP (Performance Co-Pilot) archive
+written by
+.BR sadc (8)
+with the
+.B \-O pcp
+or
+.B \-O sa+pcp
+option, instead of sampling the live system.
+Extended statistics
+.RB ( \-x )
+are enabled by default in archive mode.
+This option is mutually exclusive with
+.BR \-f " and " +f .
+Requires PCP support
+.RB ( HAVE_PCP ).
 .TP
 .B \-c
 Display the CPU utilization report.
@@ -478,7 +495,7 @@ Sebastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
 .BR "sar" "(1), " "pidstat" "(1), " "mpstat" "(1), " "vmstat" "(8), " "tapestat" "(1), " "nfsiostat" "(1),"
-.BR "cifsiostat" "(1)"
+.BR "cifsiostat" "(1), " "sadc" "(8), " "sysstat.pcpconf" "(5)"
 .PP
 .I https://github.com/sysstat/sysstat
 .br

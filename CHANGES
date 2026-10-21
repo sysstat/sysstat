@@ -1,5 +1,26 @@
 Changes:
 
+	* [Nathan Scott]: Full Performance Co-Pilot archive read+write support.
+	* [Nathan Scott]: sadc: Add -O (output) options to write PCP archives
+	  directly, providing integration with pmrep(1), pmie(1), grafana-pcp
+	  and other tooling.  Requires PCP 7.2.0 or later.
+	  - -O sa+pcp: write native sysstat and PCP format.
+	  - -O pcp: write only PCP format (no native .sa file).
+	* [Nathan Scott]: sadc: new PCP archives include metrics describing the
+	  sadc invocation - including sadc.version,activities,interval,comment;
+	  and a {"sadc":true} context label for metric source identification.
+	* [Nathan Scott]: sadc: Read an optional sysstat.pcpconf configuration
+	  specifying extra groups of PCP metric groups to record (including per
+	  process metrics, CIFS, NFS, and many others).
+	* [Nathan Scott]: sadc: Restart events write a PCP mark record (signals
+	  a data gap) and admin comments are stored as timestamped sadc.comment
+	  metric annotations.
+	* [Nathan Scott]: sar: read PCP archives via -f (file).
+	* [Nathan Scott]: sadc, sadf: PCP archive generation options use latest
+	  pmiWrite(3) API for Y2038-safe and nanosecond-resolution timestamps.
+	* [Nathan Scott]: PCP archive replay support for all the extra sysstat
+	  tools - iostat, mpstat, pidstat, cifsiostat and tapestat.
+
 2026/08/28: Version 12.8.0 - Sebastien Godard (sysstat <at> orange.fr)
 	* [Agenticode]: sadc: Read /proc/stat once per collection cycle.
 	* rd_stats.c: Rework functions to read /proc files once.

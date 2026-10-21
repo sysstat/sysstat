@@ -1,0 +1,9 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# sar -r (memory) reading from PCP archive
+	LC_ALL=C TZ=GMT ./sar -r -f tests/pcpar > tests/out.sar-pcp-r.tmp 2>/dev/null
+	grep -q "kbmemfree\|kbmemused" tests/out.sar-pcp-r.tmp || exit 1
+	grep -q "SYSSTAT.TEST" tests/out.sar-pcp-r.tmp || exit 1
+else
+	echo Skipped; touch tests/SKIPPED
+fi

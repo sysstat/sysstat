@@ -1,0 +1,15 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# pidstat -a with existing pcpar-sadc archive: basic smoke test
+	# Archive must contain proc.* metrics (written by pcp_local via PCP_CONF)
+	if pminfo -a tests/pcpar-sadc proc.nprocs > /dev/null 2>&1; then
+		LC_ALL=C TZ=GMT ./pidstat -a tests/pcpar-sadc -u > tests/out.pidstat-pcp-u.tmp 2>/dev/null
+		# Should produce CPU header or be empty (no proc metrics = skip gracefully)
+		# Check pidstat exits 0 even if archive has no proc metrics
+		test $? -eq 0 || exit 1
+	else
+		echo "No proc metrics in archive - skipped pminfo check"
+	fi
+else
+	echo Skipped; touch tests/SKIPPED
+fi

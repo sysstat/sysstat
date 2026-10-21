@@ -31,6 +31,7 @@
 
 #include "version.h"
 #include "mpstat.h"
+#include "pcp_mpstat.h"
 #include "count.h"
 
 #include <locale.h>	/* For setlocale() */
@@ -100,8 +101,6 @@ uint64_t xflags = 0;	/* Extended flag for options used by multiple commands */
 
 /* Interval and count parameters */
 long interval = -1, count = 0;
-/* Number of decimal places */
-int dplaces_nr = -1;
 
 /*
  * Nb of processors on the machine.
@@ -139,6 +138,9 @@ void usage(char *progname)
 		progname);
 
 	fprintf(stderr, _("Options are:\n"
+#ifdef HAVE_PCP
+			  "[ -a <archive> ] "
+#endif
 			  "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 			  "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
 			  "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"));
@@ -2170,6 +2172,7 @@ int main(int argc, char **argv)
 {
 	int opt = 0, i, actset = FALSE;
 	struct utsname header;
+	char *archive = NULL;
 	int dis_hdr = -1;
 	int rows = 23;
 	char *t;
@@ -2203,7 +2206,15 @@ int main(int argc, char **argv)
 
 	while (++opt < argc) {
 
-		if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
+		if (!strcmp(argv[opt], "-a")) {
+			if (!argv[++opt]) {
+				usage(argv[0]);
+			}
+			archive = argv[opt];
+			flags |= F_OPTION_a;
+		}
+
+		else if (!strncmp(argv[opt], "--dec=", 6) && (strlen(argv[opt]) == 7)) {
 			/* Check that the argument is a digit */
 			if (!isdigit(argv[opt][6])) {
 				usage(argv[0]);
@@ -2435,6 +2446,11 @@ int main(int argc, char **argv)
 	 * when it is the first operation on the stream.
 	 */
 	setbuf(stdout, NULL);
+
+	/* Replay from recorded archive instead of live */
+	if (USE_OPTION_a(flags)) {
+		exit(pcp_mpstat_run(archive));
+	}
 
 	/* Get system name, release number and hostname */
 	__uname(&header);

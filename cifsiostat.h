@@ -17,7 +17,7 @@
 #define I_D_MEGABYTES		0x004
 #define I_D_OMIT_SINCE_BOOT	0x008
 #define I_D_PRETTY		0x010
-/* Unused			0x020 */
+#define I_D_PCP_ARCHIVE		0x020
 #define I_D_UNIT		0x040
 #define I_D_GIGABYTES		0x080
 
@@ -26,6 +26,7 @@
 #define DISPLAY_MEGABYTES(m)	   (((m) & I_D_MEGABYTES)        == I_D_MEGABYTES)
 #define DISPLAY_GIGABYTES(m)	   (((m) & I_D_GIGABYTES)        == I_D_GIGABYTES)
 #define DISPLAY_OMIT_SINCE_BOOT(m) (((m) & I_D_OMIT_SINCE_BOOT)  == I_D_OMIT_SINCE_BOOT)
+#define DISPLAY_PCP_ARCHIVE(m)     (((m) & I_D_PCP_ARCHIVE)      == I_D_PCP_ARCHIVE)
 #define DISPLAY_PRETTY(m)	   (((m) & I_D_PRETTY)           == I_D_PRETTY)
 #define DISPLAY_UNIT(m)		   (((m) & I_D_UNIT)             == I_D_UNIT)
 
@@ -49,5 +50,12 @@ struct io_cifs {
 };
 
 #define IO_CIFS_SIZE	(sizeof(struct io_cifs))
+
+extern struct io_cifs *cifs_list;
+extern uint64_t        xflags;
+extern uint64_t        flags;
+
+extern struct io_cifs *add_list_cifs(struct io_cifs **clist, char *name);
+extern void write_stats(int curr, struct tm *rectime);
 
 #endif  /* _CIFSIOSTAT_H */

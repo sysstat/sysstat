@@ -204,6 +204,15 @@ NOTES:
 00582	LC_ALL=C ./sadf -x --fs=/dev/sda6,/home tests/data.tmp -- -F MOUNT > tests/out2.sadf-fs.tmp
 00585	LC_ALL=C ./sadf -d --iface=enp6s0 tests/data-long.tmp -- -n DEV 65 > tests/out.sadf-i.tmp
 00590	LC_ALL=C ./sadf -l -O pcparchive=tests/pcpar tests/data.tmp -C -- -A
+00591	. tests/variables; [ "$HAVE_PCP" = "y" ] && pminfo -a tests/pcpar kernel.all.cpu.user kernel.percpu.cpu.user mem.physmem > /dev/null
+00592	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sar -u -f tests/pcpar > tests/out.sar-pcp-u.tmp 2>/dev/null && grep -q "SYSSTAT.TEST" tests/out.sar-pcp-u.tmp && grep -q "CPU.*%user" tests/out.sar-pcp-u.tmp && grep -q "all" tests/out.sar-pcp-u.tmp
+00593	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -j tests/pcpar -- -u > tests/out.sadf-pcp-j.tmp 2>/dev/null && grep -q '"sysname"' tests/out.sadf-pcp-j.tmp && grep -q '"cpu-load"' tests/out.sadf-pcp-j.tmp
+00594	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -x tests/pcpar -- -u > tests/out.sadf-pcp-x.tmp 2>/dev/null && grep -q "sysstat" tests/out.sadf-pcp-x.tmp && grep -q "cpu-load" tests/out.sadf-pcp-x.tmp
+00595	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sar -r -f tests/pcpar > tests/out.sar-pcp-r.tmp 2>/dev/null && grep -q "kbmemfree\|kbmemused" tests/out.sar-pcp-r.tmp
+00596	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sar -q -f tests/pcpar > tests/out.sar-pcp-q.tmp 2>/dev/null && grep -q "runq-sz\|ldavg-1\|plist-sz" tests/out.sar-pcp-q.tmp
+00597	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sar -n DEV -f tests/pcpar > tests/out.sar-pcp-n.tmp 2>/dev/null && grep -q "IFACE\|rxpck\|txpck" tests/out.sar-pcp-n.tmp
+00598	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sar -d -f tests/pcpar > tests/out.sar-pcp-d.tmp 2>/dev/null && grep -q "DEV\|tps\|rkB/s" tests/out.sar-pcp-d.tmp
+00599	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sar -u -P ALL -f tests/pcpar > tests/out.sar-pcp-P.tmp 2>/dev/null && grep -q "cpu[0-9]\|%usr\|%user" tests/out.sar-pcp-P.tmp
 
 =====	Checking sadf conversion
 00600	./sadf -c tests/data-9.1.6 > tests/data-9.1.6.tmp
@@ -664,6 +673,25 @@ NOTES:
 =====	Test pidstat error cases
 05600	LC_ALL=C ./pidstat --dec=A 2>&1 | grep "Usage:" >/dev/null
 05605	LC_ALL=C ./pidstat -e sleep 2 2>&1 | grep "Usage:" >/dev/null
+05610	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -d tests/pcpar -- -u > tests/out.sadf-pcp-d.tmp 2>/dev/null && grep -q "SYSSTAT.TEST\|%user\|%idle" tests/out.sadf-pcp-d.tmp
+05611	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -p tests/pcpar -- -u > tests/out.sadf-pcp-p.tmp 2>/dev/null && grep -q "%user\|%idle\|%sys\|SYSSTAT.TEST" tests/out.sadf-pcp-p.tmp
+05612	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -g tests/pcpar -- -u > tests/out.sadf-pcp-g.tmp 2>/dev/null && grep -q "<svg\|<?xml" tests/out.sadf-pcp-g.tmp
+05613	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -H tests/pcpar > tests/out.sadf-pcp-H.tmp 2>/dev/null && grep -q "SYSSTAT.TEST\|PCP archive\|x86_64" tests/out.sadf-pcp-H.tmp
+05614	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -j tests/pcpar -- -r > tests/out.sadf-pcp-j-r.tmp 2>/dev/null && grep -q '"memory"\|"kbmemfree"\|"memfree"' tests/out.sadf-pcp-j-r.tmp
+05615	. tests/variables; [ "$HAVE_PCP" = "y" ] && LC_ALL=C TZ=GMT ./sadf -x tests/pcpar -- -d > tests/out.sadf-pcp-x-d.tmp 2>/dev/null && grep -q "<disk\|disk-device\|<io-reads" tests/out.sadf-pcp-x-d.tmp
+05616	. tests/variables; [ "$HAVE_PCP" = "y" ] && rm -f tests/sa18.* && rm -f tests/root && ln -s ${T_SRCDIR}/tests/root1 tests/root && TZ=GMT ./sadc --unix_time=1555593619 -S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ -O pcp tests/sa18 1 1 >/dev/null 2>&1 && rm -f tests/root && ln -s ${T_SRCDIR}/tests/root2 tests/root && TZ=GMT ./sadc --unix_time=1555593629 -S XALL -O pcp tests/sa18 1 1 >/dev/null 2>&1 && LC_ALL=C TZ=GMT ./sar -u -f tests/sa18 > tests/out.sar-pcp-sadc.tmp 2>/dev/null && grep -q "SYSSTAT.TEST\|%user\|%idle" tests/out.sar-pcp-sadc.tmp && pminfo -a tests/sa18 sadc.version sadc.activities > /dev/null 2>&1
+05617	cat ${T_SRCDIR}/tests/05617 | /bin/sh
+05618	cat ${T_SRCDIR}/tests/05618 | /bin/sh
+05619	cat ${T_SRCDIR}/tests/05619 | /bin/sh
+05620	cat ${T_SRCDIR}/tests/05620 | /bin/sh
+05621	cat ${T_SRCDIR}/tests/05621 | /bin/sh
+05622	cat ${T_SRCDIR}/tests/05622 | /bin/sh
+05623	cat ${T_SRCDIR}/tests/05623 | /bin/sh
+05624	cat ${T_SRCDIR}/tests/05624 | /bin/sh
+05625	cat ${T_SRCDIR}/tests/05625 | /bin/sh
+05626	cat ${T_SRCDIR}/tests/05626 | /bin/sh
+05627	cat ${T_SRCDIR}/tests/05627 | /bin/sh
+05628	cat ${T_SRCDIR}/tests/05628 | /bin/sh
 
 =====	Tests to be done at the very end
 08900	cat tests/TLIST | grep ^0 | awk '{print $1}' > tests/out.list1.tmp

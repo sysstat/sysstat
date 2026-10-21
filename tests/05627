@@ -1,0 +1,23 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# Regression test: -O sa+pcp must continue writing native sa file correctly.
+	# A broken dual-output mode would either crash sadc or produce an empty/corrupt
+	# native file.
+	rm -f tests/sa18.* tests/sa-regression.tmp
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	TZ=GMT ./sadc --unix_time=1555593619 \
+		-S XALL,-A_PWR_FAN,-A_PWR_IN,-A_PWR_TEMP,-A_PWR_FREQ \
+		-O sa+pcp tests/sa18 1 1 >/dev/null 2>&1 || exit 1
+	# Native sa file must exist and be non-empty
+	[ -s tests/sa-regression.tmp ] || exit 1
+	# PCP archive must also exist
+	[ -f tests/sa18.0 ] || exit 1
+	# Native file must be readable by sar
+	LC_ALL=C TZ=GMT ./sar -u -f tests/sa-regression.tmp > /dev/null 2>&1 || exit 1
+	rm -f tests/sa18.* tests/sa-regression.tmp
+	rm -f tests/root
+	ln -s ${T_SRCDIR}/tests/root1 tests/root
+else
+	echo Skipped; touch tests/SKIPPED
+fi
