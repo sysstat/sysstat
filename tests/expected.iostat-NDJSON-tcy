@@ -1,0 +1,3 @@
+{"sysstat": {"hosts": [{"nodename": "SYSSTAT.TEST", "sysname": "Linux", "release": "1.2.3-TEST", "machine": "x86_64", "number-of-cpus": 9, "date": "06/01/20"}]}}
+{"statistics": [{"timestamp": "06/01/20 12:53:21", "avg-cpu": {"user": 2.15, "nice": 12.50, "system": 2.35, "iowait": 0.12, "steal": 0.00, "idle": 82.89}}]}
+{"statistics": [{"timestamp": "06/01/20 12:53:22", "avg-cpu": {"user": 1.96, "nice": 12.49, "system": 1.91, "iowait": 0.51, "steal": 0.00, "idle": 83.15}}]}

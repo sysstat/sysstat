@@ -27,7 +27,6 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
     0.00    0.00    0.00   0.0% sdc
     0.00    0.00    0.10   0.2%  total
 
-
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            2.1%   12.5%    2.4%    0.1%    0.0%   82.9%
 
@@ -55,7 +54,6 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
     0.00    0.00    0.00   0.0% sdc
     0.00    0.00    0.00   0.0%  total
 
-
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            2.0%   12.5%    1.9%    0.5%    0.0%   83.1%
 
@@ -82,5 +80,4 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
     0.00    0.00    0.10   0.1% sdb
     0.00    0.00    0.00   0.0% sdc
     0.00    0.00    0.00   0.1%  total
-
 
