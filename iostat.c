@@ -91,14 +91,14 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ] [ --debuginfo ]\n"));
 #else
 	fprintf(stderr, _("Options are:\n"
 			  "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] [ -x ] [ -y ] [ -z ]\n"
 			  "[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+			  "[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | NDJSON } ]\n"
 			  "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 			  "[ <device> [...] | ALL ]\n"));
 #endif
@@ -983,8 +983,9 @@ void write_plain_cpu_stat(int curr, unsigned long long deltot_jiffies)
  */
 void write_json_cpu_stat(int tab, int curr, unsigned long long deltot_jiffies)
 {
-	xprintf(NO_CR, tab,
-		"\"avg-cpu\":  {\"user\": %.2f, \"nice\": %.2f, \"system\": %.2f,"
+	xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS +
+		(DISPLAY_TIMESTAMP(flags) ? 0 : NO_SPC) : NO_CR, tab,
+		"\"avg-cpu\": {\"user\": %.2f, \"nice\": %.2f, \"system\": %.2f,"
 		" \"iowait\": %.2f, \"steal\": %.2f, \"idle\": %.2f}",
 		ll_sp_value(st_cpu[!curr]->cpu_user, st_cpu[curr]->cpu_user, deltot_jiffies),
 		ll_sp_value(st_cpu[!curr]->cpu_nice, st_cpu[curr]->cpu_nice, deltot_jiffies),
@@ -1089,7 +1090,9 @@ void write_disk_stat_header(int *fctr, int *tab, int hpart)
 	}
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, (*tab)++, "\"disk\": [");
+		xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS +
+			(DISPLAY_TIMESTAMP(flags) || DISPLAY_CPU(flags) ? 0 : NO_SPC) : 0,
+			(*tab)++, "\"disk\": [");
 		return;
 	}
 
@@ -1345,7 +1348,7 @@ void write_json_ext_stat(int tab, unsigned long long itv, int fctr,
 	if (d->dev_tp == T_GROUP)
 		return;
 
-	xprintf(NO_CR, tab,
+	xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS + NO_SPC : NO_CR, tab,
 		"{\"disk_device\": \"%s\", ",
 		devname);
 
@@ -1680,7 +1683,7 @@ void write_json_basic_stat(int tab, unsigned long long itv, int fctr,
 {
 	char line[256];
 
-	xprintf(NO_CR, tab,
+	xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS + NO_SPC : NO_CR, tab,
 		"{\"disk_device\": \"%s\", \"tps\": %.2f, ",
 		devname,
 		/* Origin (unmerged) flush operations are counted as writes */
@@ -1777,12 +1780,16 @@ void write_stats(int curr, struct tm *rectime, int skip)
 	unsigned long long itv;
 	struct io_device *d, *dtmp, *g = NULL, *dnext = NULL;
 	char *dev_name;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
 	if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {
-		xprintf(0, tab++, "{");
+		if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("{\"statistics\": [");
+		}
+		xprintf(bh + NO_SPC, tab++, "{");
 	}
 
 	/* Print time stamp */
@@ -1798,7 +1805,9 @@ void write_stats(int curr, struct tm *rectime, int skip)
 			if (DISPLAY_DISK(flags)) {
 				printf(",");
 			}
-			printf("\n");
+			if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+				printf("\n");
+			}
 		}
 	}
 
@@ -1947,7 +1956,8 @@ void write_stats(int curr, struct tm *rectime, int skip)
 
 				if (!skip) {
 					if (DISPLAY_JSON_OUTPUT(xflags) && next) {
-						printf(",\n");
+						printf(",%c",
+						       DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 					}
 					next = TRUE;
 
@@ -1965,14 +1975,21 @@ void write_stats(int curr, struct tm *rectime, int skip)
 			}
 		}
 		if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {
-			printf("\n");
-			xprintf(0, --tab, "]");
+			if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+				printf("\n");
+			}
+			xprintf(bh + NO_SPC, --tab, "]");
 		}
 	}
 
 	if (!skip) {
 		if (DISPLAY_JSON_OUTPUT(xflags)) {
-			xprintf(NO_CR, --tab, "}");
+			if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+				xprintf(NO_CR, --tab, "}");
+			}
+			else {
+				printf("}]}");
+			}
 		}
 		else {
 			printf("\n");
@@ -1997,6 +2014,12 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	/* Should we skip first report? */
 	if (DISPLAY_OMIT_SINCE_BOOT(flags) && interval > 0) {
 		skip = 1;
+		if (!DISPLAY_JSON_OUTPUT(xflags)) {
+			printf("\n");
+		}
+	}
+	if (DISPLAY_NDJSON_OUTPUT(xflags) && !skip) {
+		printf("\n");
 	}
 
 	/* Set a handler for SIGALRM */
@@ -2051,7 +2074,6 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 		}
 
 		if (count) {
-			curr ^= 1;
 			__pause();
 
 			if (sigint_caught) {
@@ -2061,17 +2083,25 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 				 */
 				count = 0;
 			}
-			else if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
-				printf(",");
+			else {
+				if (DISPLAY_JSON_OUTPUT(xflags) &&
+				    !DISPLAY_NDJSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
+					    printf(",");
+				}
+				curr ^= 1;
 			}
 			skip = 0;
 		}
-		printf("\n");
+		if (sigint_caught || DISPLAY_JSON_OUTPUT(xflags)) {
+			printf("\n");
+		}
 	}
 	while (count);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		}
 	}
 }
 
@@ -2220,11 +2250,14 @@ int main(int argc, char **argv)
 			/* Select output format */
 			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
 				xflags |= X_D_JSON_OUTPUT;
-				opt++;
+			}
+			else if (argv[opt] && !strcmp(argv[opt], K_NDJSON)) {
+				xflags |= X_D_JSON_OUTPUT + X_D_NDJSON_OUTPUT;
 			}
 			else {
 				usage(argv[0]);
 			}
+			opt++;
 		}
 
 #ifdef DEBUG
@@ -2446,7 +2479,8 @@ int main(int argc, char **argv)
 	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
-			     DISPLAY_JSON_OUTPUT(xflags)) > 0) {
+			     DISPLAY_JSON_OUTPUT(xflags) +
+			     DISPLAY_NDJSON_OUTPUT(xflags)) > 0) {
 		xflags |= X_D_ISO;
 	}
 	if (!DISPLAY_JSON_OUTPUT(xflags) &&

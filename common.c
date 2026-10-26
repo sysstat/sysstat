@@ -662,8 +662,9 @@ int set_report_date(struct tm *tm_time, char cur_date[], int sz)
  * @nodename	Hostname to display.
  * @machine	Machine architecture to display.
  * @cpu_nr	Number of CPU.
- * @format	Set to FALSE for (default) plain output, and to TRUE for
- * 		JSON format output.
+ * @format	Set to PLAIN_OUTPUT (0) for (default) plain output,
+ *		Else set to 1 for JSON format output, and to
+ *		2 for NDJSON format output.
  *
  * RETURNS:
  * TRUE if S_TIME_FORMAT is set to ISO, or FALSE otherwise.
@@ -684,17 +685,26 @@ int print_gal_header(struct tm *tm_time, char *sysname, char *release,
 		       cur_date, machine, cpu_nr);
 	}
 	else {
-		/* JSON output */
-		xprintf(0, 0, "{\"sysstat\": {");
-		xprintf(0, 1, "\"hosts\": [");
-		xprintf(0, 2, "{");
-		xprintf(0, 3, "\"nodename\": \"%s\",", nodename);
-		xprintf(0, 3, "\"sysname\": \"%s\",", sysname);
-		xprintf(0, 3, "\"release\": \"%s\",", release);
-		xprintf(0, 3, "\"machine\": \"%s\",", machine);
-		xprintf(0, 3, "\"number-of-cpus\": %d,", cpu_nr);
-		xprintf(0, 3, "\"date\": \"%s\",", cur_date);
-		xprintf(0, 3, "\"statistics\": [");
+		int bh = (format == 2 ? NO_CR + NO_TABS : 0);
+
+		/* JSON/NDJSON output */
+		xprintf(bh + NO_SPC, 0, "{\"sysstat\": {");
+		xprintf(bh + NO_SPC, 1, "\"hosts\": [");
+		xprintf(bh + NO_SPC, 2, "{");
+		xprintf(bh + NO_SPC, 3, "\"nodename\": \"%s\",", nodename);
+		xprintf(bh, 3, "\"sysname\": \"%s\",", sysname);
+		xprintf(bh, 3, "\"release\": \"%s\",", release);
+		xprintf(bh, 3, "\"machine\": \"%s\",", machine);
+		xprintf(bh, 3, "\"number-of-cpus\": %d,", cpu_nr);
+		xprintf(bh, 3, "\"date\": \"%s\"%s", cur_date,
+			format == 2 ? "" : ",");
+		if (format == 2) {
+			/* NDJSON output */
+			printf("}]}}");
+		}
+		else {
+			xprintf(bh, 3, "\"statistics\": [");
+		}
 	}
 
 	return rc;
@@ -1939,6 +1949,7 @@ int parse_values(char *strargv, unsigned char bitmap[], int max_val, const char 
 void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 {
 	char timestamp[TIMESTAMP_LEN];
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (rectime == NULL)
 		return;
@@ -1957,7 +1968,7 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 	timestamp[sizeof(timestamp) - 1] = '\0';
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, tab, "\"timestamp\": \"%s\",", timestamp);
+		xprintf(bh + NO_SPC, tab, "\"timestamp\": \"%s\",", timestamp);
 	}
 	else {
 		printf("%s\n", timestamp);
