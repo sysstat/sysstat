@@ -9,6 +9,8 @@ if [ "$HAVE_PCP" = "y" ]; then
 		[ $rc -ne 0 ] || exit 1
 		[ $rc -lt 128 ] || exit 1
 	done
+	# Remove the archive written by 05616 and used by the read-only tests
+	rm -f tests/pcpar-sadc tests/pcpar-sadc.*
 else
 	echo Skipped; touch tests/SKIPPED
 fi

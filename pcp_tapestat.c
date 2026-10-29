@@ -14,6 +14,7 @@
 #ifdef HAVE_PCP
 
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 
 #include "common.h"
 #include "tapestat.h"
@@ -73,7 +74,7 @@ tape_index_from_name(const char *name)
 }
 
 static void
-build_tape_snap(struct tape_stats *tgt, pmResult *result,
+build_tape_snap(struct tape_stats *tgt, pcp_result_t *result,
 		struct timespec *ts, pmInDom tape_indom)
 {
 	pmValueSet *vs[PCP_TAPE_NR];
@@ -127,7 +128,7 @@ int
 pcp_tapestat_run(const char *archive)
 {
 	int ctx, sts, i;
-	pmResult *result = NULL, *prev_result = NULL;
+	pcp_result_t *result = NULL, *prev_result = NULL;
 	int first = 1;
 	struct tm rectime;
 	pmDesc tape_desc;
@@ -144,9 +145,9 @@ pcp_tapestat_run(const char *archive)
 	if (pmLookupDesc(pcp_tape_pmids[PCP_TAPE_READ_CNT], &tape_desc) >= 0)
 		tape_indom = tape_desc.indom;
 
-	pmSetMode(PM_MODE_FORW, NULL, 0);
+	pcp_set_mode(PM_MODE_FORW, NULL, 0);
 
-	while ((sts = pmFetch(PCP_TAPE_NR, pcp_tape_pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(PCP_TAPE_NR, pcp_tape_pmids, &result)) >= 0) {
 		struct timespec curr_tv;
 		time_t t;
 		int nr_tapes;
@@ -166,7 +167,7 @@ pcp_tapestat_run(const char *archive)
 			if (nr_tapes <= 0) {
 				fprintf(stderr,
 					_("No tape metrics in archive %s\n"), archive);
-				pmFreeResult(result);
+				pcp_free_result(result);
 				break;
 			}
 			max_tape_drives = nr_tapes;
@@ -174,7 +175,7 @@ pcp_tapestat_run(const char *archive)
 			tape_new_stats = calloc(nr_tapes, sizeof(struct tape_stats));
 			if (!tape_old_stats || !tape_new_stats) {
 				perror("calloc");
-				pmFreeResult(result);
+				pcp_free_result(result);
 				break;
 			}
 			build_tape_snap(tape_old_stats, result, &curr_tv, tape_indom);
@@ -189,13 +190,13 @@ pcp_tapestat_run(const char *archive)
 			tape_new_stats = tmp;
 		}
 
-		if (prev_result) pmFreeResult(prev_result);
+		if (prev_result) pcp_free_result(prev_result);
 		prev_result = result;
 		result = NULL;
 	}
 
-	if (result) pmFreeResult(result);
-	if (prev_result) pmFreeResult(prev_result);
+	if (result) pcp_free_result(result);
+	if (prev_result) pcp_free_result(prev_result);
 
 	for (i = 0; i < max_tape_drives; i++)
 		tape_new_stats[i].valid = TAPE_STATS_INVALID;

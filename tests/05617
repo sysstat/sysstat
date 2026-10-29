@@ -1,5 +1,5 @@
 . tests/variables
-if [ "$HAVE_PCP" = "y" ]; then
+if [ "$HAVE_PCP" = "y" ] && [ "$HAVE_PMI_APPEND" = "y" ]; then
 	# Verify sadc gracefully skips local metrics when sysstat.pcpconf absent
 	rm -f tests/sa18.*
 	rm -f tests/root
@@ -12,6 +12,7 @@ if [ "$HAVE_PCP" = "y" ]; then
 	pminfo -a tests/sa18 pmimport.version pmimport.args > /dev/null 2>&1 || exit 1
 	rm -f tests/root
 	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	rm -f tests/sa18.*
 else
 	echo Skipped; touch tests/SKIPPED
 fi

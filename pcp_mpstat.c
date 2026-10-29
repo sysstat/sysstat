@@ -14,6 +14,7 @@
 #ifdef HAVE_PCP
 
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 
 #include "common.h"
 #include "rd_stats.h"
@@ -91,7 +92,7 @@ scalar_u64(pmValueSet *vset)
 }
 
 static void
-build_cpu_sample(int s, pmResult *result)
+build_cpu_sample(int s, pcp_result_t *result)
 {
 	pmValueSet *vs[PCP_MPSTAT_NR];
 	struct stats_cpu *scc;
@@ -146,7 +147,7 @@ int
 pcp_mpstat_run(const char *archive)
 {
 	pmValueSet *percpu_vset;
-	pmResult *result = NULL, *prev_result = NULL;
+	pcp_result_t *result = NULL, *prev_result = NULL;
 	int ctx, sts, i, m;
 	int first = 1, curr = 1;
 
@@ -157,9 +158,9 @@ pcp_mpstat_run(const char *archive)
 		return 1;
 	}
 
-	pmSetMode(PM_MODE_FORW, NULL, 0);
+	pcp_set_mode(PM_MODE_FORW, NULL, 0);
 
-	while ((sts = pmFetch(PCP_MPSTAT_NR, pcp_mpstat_pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(PCP_MPSTAT_NR, pcp_mpstat_pmids, &result)) >= 0) {
 		struct timespec curr_tv;
 		time_t t;
 		unsigned long long curr_ts_ms;
@@ -173,7 +174,7 @@ pcp_mpstat_run(const char *archive)
 			/*
 			 * First fetch: discover CPU count, allocate st_cpu
 			 * arrays, then use this result as the initial sample
-			 * — no separate probe needed (a second pmSetMode(NULL)
+			 * - no separate probe needed (a second pcp_set_mode(NULL)
 			 * does not rewind).
 			 */
 			percpu_vset = NULL;
@@ -187,7 +188,7 @@ pcp_mpstat_run(const char *archive)
 			if (!percpu_vset || percpu_vset->numval <= 0) {
 				fprintf(stderr,
 					_("No per-CPU metrics in archive %s\n"), archive);
-				pmFreeResult(result);
+				pcp_free_result(result);
 				break;
 			}
 			cpu_nr = percpu_vset->numval;
@@ -197,7 +198,7 @@ pcp_mpstat_run(const char *archive)
 				st_cpu[i] = calloc(cpu_nr + 1, sizeof(struct stats_cpu));
 				if (!st_cpu[i]) {
 					perror("calloc");
-					pmFreeResult(result);
+					pcp_free_result(result);
 					goto out;
 				}
 			}
@@ -205,7 +206,7 @@ pcp_mpstat_run(const char *archive)
 			cpu_bitmap = calloc(1, ((cpu_nr + 1) >> 3) + 1);
 			if (!cpu_bitmap) {
 				perror("calloc");
-				pmFreeResult(result);
+				pcp_free_result(result);
 				goto out;
 			}
 		}
@@ -230,7 +231,7 @@ pcp_mpstat_run(const char *archive)
 			write_stats(curr, TRUE);
 		}
 
-		if (prev_result) pmFreeResult(prev_result);
+		if (prev_result) pcp_free_result(prev_result);
 		prev_result = result;
 		result = NULL;
 
@@ -239,8 +240,8 @@ pcp_mpstat_run(const char *archive)
 	}
 out:
 
-	if (result) pmFreeResult(result);
-	if (prev_result) pmFreeResult(prev_result);
+	if (result) pcp_free_result(result);
+	if (prev_result) pcp_free_result(prev_result);
 	for (i = 0; i < 2; i++) { free(st_cpu[i]); st_cpu[i] = NULL; }
 
 	pmDestroyContext(ctx);

@@ -10,6 +10,7 @@
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
 #include <pcp/import.h>
+#include "pcp_compat.h"
 
 /*
  * Forward declaration so pcp_def_*_metrics function prototypes compile

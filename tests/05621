@@ -1,5 +1,5 @@
 . tests/variables
-if [ "$HAVE_PCP" = "y" ]; then
+if [ "$HAVE_PCP" = "y" ] && [ "$HAVE_PMI_APPEND" = "y" ]; then
 	# Build a minimal two-sample PCP archive with proc metrics, then read
 	# it back with pidstat -a and verify output format.
 	rm -f tests/sa18.*

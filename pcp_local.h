@@ -101,7 +101,17 @@ void pcp_local_append_group_names(const struct pcp_local_config *cfg,
 
 #else /* !HAVE_PMI_APPEND */
 
+#ifdef HAVE_PCP
+#include <pcp/pmapi.h>
+#include <pcp/import.h>
+#endif
+
 struct pcp_local_config { int dummy; };
+
+/* Return local context handle for help-text lookups */
+static inline int
+pcp_local_get_ctx(void)
+	{ return -1; }
 
 static inline int
 pcp_local_load_groups(struct pcp_local_config *c __attribute__((unused)),
@@ -114,6 +124,13 @@ static inline void
 pcp_local_register(struct pcp_local_config *c __attribute__((unused))) {}
 static inline void
 pcp_local_write(struct pcp_local_config *c __attribute__((unused))) {}
+#ifdef HAVE_PCP
+static inline void
+pcp_local_write_pmid_help(const pmID *p __attribute__((unused)),
+			  int n __attribute__((unused))) {}
+#endif
+static inline void
+pcp_local_write_help(const struct pcp_local_config *c __attribute__((unused))) {}
 static inline void
 pcp_local_free(struct pcp_local_config *c __attribute__((unused))) {}
 static inline int

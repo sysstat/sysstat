@@ -12,6 +12,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 
 #include "sa.h"
 #include "pcp_stats.h"
@@ -38,7 +39,7 @@ extern struct activity *act[];
 extern struct report_format sar_fmt;
 extern void write_stats_avg(int, int, unsigned int);
 
-static pmLogLabel log_label;
+static pcp_log_label_t log_label;
 static long pcp_archive_interval = 0;
 
 /*
@@ -110,7 +111,7 @@ static int write_stats_pcp(int curr, long *cnt, int reset, unsigned int act_id)
 static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 {
 	pmValueSet		*values;
-	pmResult		*result;
+	pcp_result_t		*result;
 	struct act_metrics	*metrics;
 	unsigned int		cpu_count = 0;
 	struct tm		tm_time;
@@ -118,7 +119,7 @@ static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 	char			host[MAXHOSTNAMELEN] = {0};
 	int			i, sts;
 
-	if ((sts = pmGetArchiveLabel(&log_label)) < 0) {
+	if ((sts = pcp_get_archive_label(&log_label)) < 0) {
 		fprintf(stderr, 
 			_("Cannot read archive label from file %s: %s\n"),
 			from_file, pmErrStr(sts));
@@ -126,7 +127,7 @@ static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 	}
 	pmLocaltime(&log_label.start.tv_sec, &tm_time);
 
-	if ((sts = pmSetMode(PM_MODE_FORW, &log_label.start, NULL)) < 0) {
+	if ((sts = pcp_set_mode(PM_MODE_FORW, &log_label.start, NULL)) < 0) {
 		fprintf(stderr, _("Cannot set sample mode of PCP archive %s\n"),
 			from_file);
 		return 0;
@@ -138,7 +139,7 @@ static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 	for (i = 0; i < FILE_HEADER_METRIC_COUNT; i++)
 		metrics->pmids[i] = metrics->descs[i].pmid;
 
-	if ((sts = pmFetch(metrics->count, metrics->pmids, &result)) < 0) {
+	if ((sts = pcp_fetch(metrics->count, metrics->pmids, &result)) < 0) {
 		fprintf(stderr, 
 			_("Cannot read header metrics from archive %s: %s\n"),
 			from_file, pmErrStr(sts));
@@ -146,7 +147,7 @@ static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 	}
 
 	if (result->numpmid != metrics->count) {
-		pmFreeResult(result);
+		pcp_free_result(result);
 		fprintf(stderr, 
 			_("Missing mandatory header metrics from archive %s\n"),
 			from_file);
@@ -187,7 +188,7 @@ static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 		}
 	}
 
-	pmFreeResult(result);
+	pcp_free_result(result);
 
 	if (sysname == NULL || release == NULL || machine == NULL) {
 		fprintf(stderr,
@@ -240,20 +241,20 @@ static int print_report_hdr_pcpfile(int ctxid, const char from_file[])
 	if (pcp_archive_interval == 0) {
 		/* Derive interval from two consecutive samples using kernel.all.cpu.user
 		 * (PMID known; no name lookup needed for an archive context fetch) */
-		pmResult *r1 = NULL, *r2 = NULL;
+		pcp_result_t *r1 = NULL, *r2 = NULL;
 		pmID cpu_id = PMID_CPU_ALLCPU_USER;
 
-		pmSetMode(PM_MODE_FORW, &log_label.start, NULL);
-		if (pmFetch(1, &cpu_id, &r1) >= 0) {
-			if (pmFetch(1, &cpu_id, &r2) >= 0) {
+		pcp_set_mode(PM_MODE_FORW, &log_label.start, NULL);
+		if (pcp_fetch(1, &cpu_id, &r1) >= 0) {
+			if (pcp_fetch(1, &cpu_id, &r2) >= 0) {
 				long gap = r2->timestamp.tv_sec - r1->timestamp.tv_sec;
 				if (gap > 0)
 					pcp_archive_interval = gap;
-				pmFreeResult(r2);
+				pcp_free_result(r2);
 			}
-			pmFreeResult(r1);
+			pcp_free_result(r1);
 		}
-		pmSetMode(PM_MODE_FORW, &log_label.start, NULL);
+		pcp_set_mode(PM_MODE_FORW, &log_label.start, NULL);
 	}
 
 	return 1;	/* success */
@@ -282,12 +283,12 @@ static int handle_curr_act_pcpstats(struct timespec *now, struct timespec *end,
 		int *curr, long *cnt, int rows, int p, int *reset, const char *file)
 {
 	pmID *tp, *pmids = NULL;
-	pmResult *result;
+	pcp_result_t *result;
 	/*
 	 * PM_MODE_FORW returns raw cumulative counter values as stored in the
 	 * archive, which is what sar needs to compute its own rates.
 	 * PM_MODE_INTERP would convert counters to rates, breaking sar's math.
-	 * The delta is unused in PM_MODE_FORW but kept for the pmSetMode call.
+	 * The delta is unused in PM_MODE_FORW but kept for the pcp_set_mode call.
 	 */
 	struct timespec delta = {0, 0};
 	struct act_metrics *metrics = act[p]->metrics;
@@ -299,7 +300,7 @@ static int handle_curr_act_pcpstats(struct timespec *now, struct timespec *end,
 	if (metrics == NULL)
 		return PM_ERR_EOL;
 
-	if ((sts = pmSetMode(mode, now, &delta)) < 0) {
+	if ((sts = pcp_set_mode(mode, now, &delta)) < 0) {
 		fprintf(stderr, _("Cannot set sample mode of archive %s\n"), file);
 		return 0;
 	}
@@ -332,7 +333,7 @@ static int handle_curr_act_pcpstats(struct timespec *now, struct timespec *end,
 	}
 
 	do {
-		if ((sts = pmFetch(numpmids, pmids, &result)) < 0) {
+		if ((sts = pcp_fetch(numpmids, pmids, &result)) < 0) {
 			if (sts != PM_ERR_EOL)
 				fprintf(stderr, "%s: %s\n", "sar", pmErrStr(sts));
 			break;
@@ -346,7 +347,7 @@ static int handle_curr_act_pcpstats(struct timespec *now, struct timespec *end,
 		 * Display <count> lines of stats.
 		 */
 		sts = read_stats_from_result(result, &file_hdr, *curr);
-		pmFreeResult(result);
+		pcp_free_result(result);
 
 		if ((lines >= rows) || !lines) {
 			lines = 0;
@@ -457,7 +458,7 @@ static void read_stats_from_pcpfile(int ctxid, const char from_file[])
 	 * Set nr_ini = nr2 = 1 for all PCP activities so allocate_structures
 	 * makes a minimal initial allocation; pcp_read_* functions grow
 	 * buffers via reallocate_buffers as actual instance counts are
-	 * discovered from pmFetch results.
+	 * discovered from pcp_fetch results.
 	 */
 	for (i = 0; i < NR_ACT; i++) {
 		if (act[i]->metrics) {
