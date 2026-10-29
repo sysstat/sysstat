@@ -368,9 +368,19 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc, __nr_t nr_int)
 		while (fgets(line, INTERRUPTS_LINE + 11 * cpu_nr, fp) != NULL) {
 
 			next = line;
-			while (((cp = strstr(next, "CPU")) != NULL) && (index < cpu_nr)) {
+			while ((cp = strstr(next, "CPU")) != NULL) {
 				cpu = strtol(cp + 3, &next, 10);
 
+				/*
+				 * The number of CPUs may have increased since
+				 * they were counted (CPU hotplug), so the
+				 * header may contain more CPUs than were
+				 * allocated. Return -1 so that the caller
+				 * reallocates the buffer instead of silently
+				 * dropping the extra CPUs.
+				 * This check also bounds the writes to
+				 * @cpu_index[]: it guarantees @cpu < @cpu_nr.
+				 */
 				if (cpu + 2 > nr_alloc) {
 					rc = -1;
 					goto out;
