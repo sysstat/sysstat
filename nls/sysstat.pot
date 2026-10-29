@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: sysstat <at> orange.fr\n"
-"POT-Creation-Date: 2026-08-28 17:27+0200\n"
+"POT-Creation-Date: 2026-10-30 10:07+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cifsiostat.c:78 iostat.c:88 mpstat.c:138 sar.c:113 tapestat.c:105
+#: cifsiostat.c:79 iostat.c:86 mpstat.c:137 sar.c:114 tapestat.c:103
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ]\n"
 msgstr ""
@@ -26,20 +26,12 @@ msgstr ""
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
-"[ --debuginfo ]\n"
+"[ -a <archive> ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o "
+"JSON ]\n"
+"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ] [ --debuginfo ]\n"
 msgstr ""
 
-#: cifsiostat.c:87
-#, c-format
-msgid ""
-"Options are:\n"
-"[ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ -h ] [ -k | -m | -G ] [ -t ] [ -U ] [ -V ] [ -y ]\n"
-msgstr ""
-
-#: cifsiostat.c:593
+#: cifsiostat.c:594
 #, c-format
 msgid "No CIFS filesystems with statistics found\n"
 msgstr ""
@@ -49,8 +41,8 @@ msgstr ""
 msgid "sysstat version %s\n"
 msgstr ""
 
-#: count.c:111 ioconf.c:476 rd_stats.c:242 sa_common.c:2014 sadc.c:739
-#: sadc.c:802
+#: count.c:111 ioconf.c:478 rd_stats.c:242 sa_common.c:2054 sadc.c:817
+#: sadc.c:880
 #, c-format
 msgid "Cannot open %s: %s\n"
 msgstr ""
@@ -60,72 +52,210 @@ msgstr ""
 msgid "Cannot handle so many processors!\n"
 msgstr ""
 
-#: iostat.c:91
+#: iostat.c:88
 #, c-format
 msgid ""
 "Options are:\n"
 "[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] "
 "[ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
+"[ -a <archive> ] [ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID "
+"| ... } ]\n"
+"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o { JSON | "
+"NDJSON } ]\n"
 "[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
 "[ <device> [...] | ALL ] [ --debuginfo ]\n"
 msgstr ""
 
-#: iostat.c:98
-#, c-format
-msgid ""
-"Options are:\n"
-"[ -c ] [ -d ] [ -h ] [ -k | -m | -G ] [ -N ] [ -s ] [ -t ] [ -U ] [ -V ] "
-"[ -x ] [ -y ] [ -z ]\n"
-"[ { -f | +f } <directory> ] [ -j { ID | LABEL | PATH | UUID | ... } ]\n"
-"[ --compact ] [ --dec={ 0 | 1 | 2 } ] [ --human ] [ --pretty ] [ -o JSON ]\n"
-"[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]\n"
-"[ <device> [...] | ALL ]\n"
-msgstr ""
-
-#: iostat.c:2198 sa_common.c:2629
+#: iostat.c:2249 sa_common.c:2669
 #, c-format
 msgid "Invalid type of persistent device name\n"
 msgstr ""
 
-#: mpstat.c:141
+#: mpstat.c:140
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
+"[ -a <archive> ] [ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"
 msgstr ""
 
-#: mpstat.c:1735 pidstat.c:3530 sar.c:390
+#: mpstat.c:1739 pidstat.c:3533 sar.c:392
 msgid "Average:"
 msgstr ""
 
-#: pidstat.c:96
+#: pcp_cifsiostat.c:125 pcp_iostat.c:217 pcp_mpstat.c:156 pcp_pidstat.c:558
+#: pcp_sar.c:557 pcp_tapestat.c:139 sadc.c:1687
+#, c-format
+msgid "Cannot open PCP archive %s: %s\n"
+msgstr ""
+
+#: pcp_cifsiostat.c:143
+#, c-format
+msgid "No CIFS metrics in archive %s\n"
+msgstr ""
+
+#: pcp_iostat.c:242
+#, c-format
+msgid "No disk metrics in archive %s\n"
+msgstr ""
+
+#: pcp_local.c:454 pcp_local.c:461
+#, c-format
+msgid "PCP local: skipping metric '%s': %s\n"
+msgstr ""
+
+#: pcp_local.c:517
+#, c-format
+msgid "PCP local: pmNewContext failed: %s\n"
+msgstr ""
+
+#: pcp_local.c:545
+#, c-format
+msgid "PCP local: skipping '%s': %s\n"
+msgstr ""
+
+#: pcp_local.c:590
+#, c-format
+msgid "PCP local: pmiAddMetric '%s': %s\n"
+msgstr ""
+
+#: pcp_local.c:625
+#, c-format
+msgid "PCP local: pmFetch failed: %s\n"
+msgstr ""
+
+#: pcp_mpstat.c:190
+#, c-format
+msgid "No per-CPU metrics in archive %s\n"
+msgstr ""
+
+#: pcp_pidstat.c:574
+#, c-format
+msgid ""
+"No proc.* metrics found in archive %s\n"
+"Ensure sadc was run with -O pcp and sysstat.pcpconf lists proc.* metrics.\n"
+msgstr ""
+
+#: pcp_sar.c:124
+#, c-format
+msgid "Cannot read archive label from file %s: %s\n"
+msgstr ""
+
+#: pcp_sar.c:131
+#, c-format
+msgid "Cannot set sample mode of PCP archive %s\n"
+msgstr ""
+
+#: pcp_sar.c:144
+#, c-format
+msgid "Cannot read header metrics from archive %s: %s\n"
+msgstr ""
+
+#: pcp_sar.c:152
+#, c-format
+msgid "Missing mandatory header metrics from archive %s\n"
+msgstr ""
+
+#: pcp_sar.c:195
+#, c-format
+msgid "Missing host information values in archive %s\n"
+msgstr ""
+
+#: pcp_sar.c:215
+#, c-format
+msgid "Missing processor count metric in archive %s\n"
+msgstr ""
+
+#: pcp_sar.c:226
+#, c-format
+msgid "Collected by sysstat %s"
+msgstr ""
+
+#: pcp_sar.c:228
+#, c-format
+msgid ", %ld-second interval"
+msgstr ""
+
+#: pcp_sar.c:304
+#, c-format
+msgid "Cannot set sample mode of archive %s\n"
+msgstr ""
+
+#: pcp_sar.c:311
+#, c-format
+msgid "Cannot allocate metric memory for %s\n"
+msgstr ""
+
+#: pcp_sar.c:443
+#, c-format
+msgid "Cannot decode requested start time\n"
+msgstr ""
+
+#: pcp_sar.c:452
+#, c-format
+msgid "Cannot decode requested end time\n"
+msgstr ""
+
+#: pcp_stats.c:6223
+#, c-format
+msgid "Cannot lookup %s metrics in PCP archive %s: %s\n"
+msgstr ""
+
+#: pcp_stats.c:6252
+#, c-format
+msgid "Missing %zu of %zu metrics from %s activity:\n"
+msgstr ""
+
+#: pcp_stats.c:6450
+#, c-format
+msgid "PCP: skipping out-of-order timestamp %llu: %s\n"
+msgstr ""
+
+#: pcp_stats.c:6453
+#, c-format
+msgid "PCP: pmiWrite: %s\n"
+msgstr ""
+
+#: pcp_stats.c:6687
+#, c-format
+msgid "PCP write error: %s\n"
+msgstr ""
+
+#: pcp_stats.c:6736
+#, c-format
+msgid "pmiSetVolumeSize(%zu): %s — volume rotation disabled\n"
+msgstr ""
+
+#: pcp_tapestat.c:169
+#, c-format
+msgid "No tape metrics in archive %s\n"
+msgstr ""
+
+#: pidstat.c:95
 #, c-format
 msgid ""
 "Usage: %s [ options ] [ <interval> [ <count> ] ] [ -e <program> <args> ]\n"
 msgstr ""
 
-#: pidstat.c:99
+#: pidstat.c:98
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U "
-"[ <username> ] ]\n"
-"[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
+"[ -a <archive> ] [ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ]\n"
+"[ -t ] [ -U [ <username> ] ] [ -u ] [ -V ] [ -v ] [ -w ]\n"
+"[ -C <command> ] [ -G <process_name> ]\n"
 "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"
 msgstr ""
 
-#: pidstat.c:230 sa_common.c:379
+#: pidstat.c:233 sa_common.c:408
 #, c-format
 msgid "Requested activities not available\n"
 msgstr ""
 
 #: pr_stats.c:3726 pr_stats.c:3733 pr_stats.c:3852 pr_stats.c:3935
-#: pr_stats.c:3949 sar.c:392
+#: pr_stats.c:3949 sar.c:394
 msgid "Summary:"
 msgstr ""
 
@@ -138,63 +268,63 @@ msgstr ""
 msgid "Cannot read %s\n"
 msgstr ""
 
-#: sa_common.c:312
+#: sa_common.c:341
 #, c-format
 msgid "File created by sar/sadc from sysstat version %d.%d.%d"
 msgstr ""
 
-#: sa_common.c:343
+#: sa_common.c:372
 #, c-format
 msgid "Invalid system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:355
+#: sa_common.c:384
 #, c-format
 msgid "Current sysstat version cannot read the format of this file (%#x)\n"
 msgstr ""
 
-#: sa_common.c:359
+#: sa_common.c:388
 #, c-format
 msgid ""
 "Try to convert it to current format. Enter:\n"
 "\n"
 msgstr ""
 
-#: sa_common.c:362
+#: sa_common.c:391
 #, c-format
 msgid "You should then be able to read the new file created (%s.new)\n"
 msgstr ""
 
-#: sa_common.c:1588
+#: sa_common.c:1628
 #, c-format
 msgid "Error while reading system activity file: %s\n"
 msgstr ""
 
-#: sa_common.c:1598
+#: sa_common.c:1638
 #, c-format
 msgid "End of system activity file unexpected\n"
 msgstr ""
 
-#: sa_common.c:1754
+#: sa_common.c:1794
 #, c-format
 msgid "Invalid data read\n"
 msgstr ""
 
-#: sa_common.c:2017
+#: sa_common.c:2057
 #, c-format
 msgid "Please check if data collecting is enabled\n"
 msgstr ""
 
-#: sa_common.c:2352
+#: sa_common.c:2392
 #, c-format
 msgid "Requested activities not available in file %s\n"
 msgstr ""
 
-#: sa_common.c:3864
+#: sa_common.c:4008
 msgid "Maximum:"
 msgstr ""
 
-#: sa_common.c:3865
+#: sa_common.c:4009
 msgid "Minimum:"
 msgstr ""
 
@@ -239,41 +369,46 @@ msgstr ""
 msgid "File successfully converted to sysstat format version %s\n"
 msgstr ""
 
-#: sadc.c:97
+#: sadc.c:156
 #, c-format
 msgid "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <outfile> ]\n"
 msgstr ""
 
-#: sadc.c:100
+#: sadc.c:159
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -V ]\n"
-"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ]\n"
+"[ -C <comment> ] [ -D ] [ -F ] [ -f ] [ -L ] [ -O { sa | pcp | sa+pcp } ]\n"
+"[ -S { INT | DISK | IPV6 | POWER | SNMP | XDISK | ALL | XALL } ] [ -V ]\n"
 msgstr ""
 
-#: sadc.c:272
+#: sadc.c:341
 #, c-format
 msgid "Cannot write data to system activity file: %s\n"
 msgstr ""
 
-#: sadc.c:1027
+#: sadc.c:1105
 #, c-format
 msgid "Cannot append data to that file (%s)\n"
 msgstr ""
 
-#: sadf.c:118
+#: sadc.c:1468
+#, c-format
+msgid "sadc: -O %s: PCP archive support not compiled in\n"
+msgstr ""
+
+#: sadf.c:116
 #, c-format
 msgid ""
 "Usage: %s [ options ] [ <interval> [ <count> ] ] [ <datafile> | -[0-9]+ ]\n"
 msgstr ""
 
-#: sadf.c:121
+#: sadf.c:119
 #, c-format
 msgid ""
 "Options are:\n"
-"[ -C ] [ -c | -d | -g | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | -t | "
-"-U ] [ -V ]\n"
+"[ -C ] [ -c | -d | -g | -J | -j | -l | -p | -r | -x ] [ -H ] [ -h ] [ -T | "
+"-t | -U ] [ -V ]\n"
 "[ -O <opts> [,...] ] [ -P { <cpu> [,...] | ALL } ]\n"
 "[ --dev=<dev_list> ] [ --fs=<fs_list> ] [ --iface=<iface_list> ] [ --"
 "int=<int_list> ]\n"
@@ -281,84 +416,89 @@ msgid ""
 "[ -- <sar_options> ]\n"
 msgstr ""
 
-#: sadf.c:2039
+#: sadf.c:2070
 #, c-format
 msgid "PCP support not compiled in\n"
 msgstr ""
 
-#: sadf_misc.c:1244
+#: sadf_misc.c:1234
+#, c-format
+msgid "System activity data file: %s (PCP archive)\n"
+msgstr ""
+
+#: sadf_misc.c:1238
 #, c-format
 msgid "System activity data file: %s (%#x)\n"
 msgstr ""
 
-#: sadf_misc.c:1253
+#: sadf_misc.c:1247
 #, c-format
 msgid "Genuine sa datafile: %s (%x)\n"
 msgstr ""
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1248
 msgid "no"
 msgstr ""
 
-#: sadf_misc.c:1254
+#: sadf_misc.c:1248
 msgid "yes"
 msgstr ""
 
-#: sadf_misc.c:1257
+#: sadf_misc.c:1251
 #, c-format
 msgid "Host: "
 msgstr ""
 
-#: sadf_misc.c:1267
+#: sadf_misc.c:1261
 #, c-format
 msgid "File date: %s\n"
 msgstr ""
 
-#: sadf_misc.c:1270
+#: sadf_misc.c:1264
 #, c-format
 msgid "File time: "
 msgstr ""
 
-#: sadf_misc.c:1275
+#: sadf_misc.c:1269
 #, c-format
 msgid "Timezone: %s\n"
 msgstr ""
 
-#: sadf_misc.c:1278
+#: sadf_misc.c:1272
 #, c-format
 msgid "File composition: (%u,%u,%u),(%u,%u,%u),(%u,%u,%u)\n"
 msgstr ""
 
-#: sadf_misc.c:1283
+#: sadf_misc.c:1277
 #, c-format
 msgid "Size of a long int: %d\n"
 msgstr ""
 
-#: sadf_misc.c:1285
+#: sadf_misc.c:1279
 #, c-format
 msgid "Number of activities in file: %u\n"
 msgstr ""
 
-#: sadf_misc.c:1287
+#: sadf_misc.c:1281
 #, c-format
 msgid "Extra structures available: %c\n"
 msgstr ""
 
-#: sadf_misc.c:1290
+#: sadf_misc.c:1284
 #, c-format
 msgid "List of activities:\n"
 msgstr ""
 
-#: sadf_misc.c:1301
+#: sadf_misc.c:1295
 msgid "Unknown activity"
 msgstr ""
 
-#: sadf_misc.c:1309
+#: sadf_misc.c:1303
 #, c-format
 msgid " \t[Unknown format]"
 msgstr ""
 
-#: sar.c:128
+#: sar.c:129
 #, c-format
 msgid ""
 "Options are:\n"
@@ -372,53 +512,54 @@ msgid ""
 "int=<int_list> ]\n"
 "[ --dec={ 0 | 1 | 2 } ] [ --help ] [ --human ] [ --pretty ] [ --sadc ]\n"
 "[ -j { SID | ID | LABEL | PATH | UUID | ... } ]\n"
+"[ -a <archive> ]\n"
 "[ -f [ <filename> ] | -o [ <filename> ] | -[0-9]+ ]\n"
 "[ -i <interval> ] [ -s [ <start_time> ] ] [ -e [ <end_time> ] ]\n"
 msgstr ""
 
-#: sar.c:155
+#: sar.c:157
 #, c-format
 msgid "Main options and reports (report name between square brackets):\n"
 msgstr ""
 
-#: sar.c:156
+#: sar.c:158
 #, c-format
 msgid "\t-B\tPaging statistics [A_PAGE]\n"
 msgstr ""
 
-#: sar.c:157
+#: sar.c:159
 #, c-format
 msgid "\t-b\tI/O and transfer rate statistics [A_IO]\n"
 msgstr ""
 
-#: sar.c:158
+#: sar.c:160
 #, c-format
 msgid "\t-d\tBlock devices statistics [A_DISK]\n"
 msgstr ""
 
-#: sar.c:159
+#: sar.c:161
 #, c-format
 msgid "\t-F [ MOUNT ]\n"
 msgstr ""
 
-#: sar.c:160
+#: sar.c:162
 #, c-format
 msgid "\t\tFilesystems statistics [A_FS]\n"
 msgstr ""
 
-#: sar.c:161
+#: sar.c:163
 #, c-format
 msgid "\t-H\tHugepages utilization statistics [A_HUGE]\n"
 msgstr ""
 
-#: sar.c:162
+#: sar.c:164
 #, c-format
 msgid ""
 "\t-I [ SUM | ALL ]\n"
 "\t\tInterrupts statistics [A_IRQ]\n"
 msgstr ""
 
-#: sar.c:164
+#: sar.c:166
 #, c-format
 msgid ""
 "\t-m { <keyword> [,...] | ALL }\n"
@@ -433,7 +574,7 @@ msgid ""
 "\t\tUSB\tUSB devices plugged into the system\n"
 msgstr ""
 
-#: sar.c:174
+#: sar.c:176
 #, c-format
 msgid ""
 "\t-n { <keyword> [,...] | ALL }\n"
@@ -461,7 +602,7 @@ msgid ""
 "\t\tSOFT\tSoftware-based network processing\n"
 msgstr ""
 
-#: sar.c:197
+#: sar.c:199
 #, c-format
 msgid ""
 "\t-q [ <keyword> [,...] | PSI | ALL ]\n"
@@ -473,94 +614,95 @@ msgid ""
 "\t\tMEM\tPressure-stall memory statistics [A_PSI_MEM]\n"
 msgstr ""
 
-#: sar.c:204
+#: sar.c:206
 #, c-format
 msgid ""
 "\t-r [ ALL ]\n"
 "\t\tMemory utilization statistics [A_MEMORY]\n"
 msgstr ""
 
-#: sar.c:206
+#: sar.c:208
 #, c-format
 msgid "\t-S\tSwap space utilization statistics [A_MEMORY]\n"
 msgstr ""
 
-#: sar.c:207
+#: sar.c:209
 #, c-format
 msgid ""
 "\t-u [ ALL ]\n"
 "\t\tCPU utilization statistics [A_CPU]\n"
 msgstr ""
 
-#: sar.c:209
+#: sar.c:211
 #, c-format
 msgid "\t-v\tKernel tables statistics [A_KTABLES]\n"
 msgstr ""
 
-#: sar.c:210
+#: sar.c:212
 #, c-format
 msgid "\t-W\tSwapping statistics [A_SWAP]\n"
 msgstr ""
 
-#: sar.c:211
+#: sar.c:213
 #, c-format
 msgid "\t-w\tTask creation and system switching statistics [A_PCSW]\n"
 msgstr ""
 
-#: sar.c:212
+#: sar.c:214
 #, c-format
 msgid "\t-y\tTTY devices statistics [A_SERIAL]\n"
 msgstr ""
 
-#: sar.c:226
+#: sar.c:228
 #, c-format
 msgid "Data collector will be sought in PATH\n"
 msgstr ""
 
-#: sar.c:229
+#: sar.c:231
 #, c-format
 msgid "Data collector found: %s\n"
 msgstr ""
 
-#: sar.c:294
+#: sar.c:296
 #, c-format
 msgid "End of data collecting unexpected\n"
 msgstr ""
 
-#: sar.c:299
+#: sar.c:301
 #, c-format
 msgid "Inconsistent input data\n"
 msgstr ""
 
-#: sar.c:914
+#: sar.c:916
 #, c-format
 msgid "Using a wrong data collector from a different sysstat version\n"
 msgstr ""
 
-#: sar.c:1603
+#: sar.c:1631
 #, c-format
 msgid "-f and -o options are mutually exclusive\n"
 msgstr ""
 
-#: sar.c:1613
+#: sar.c:1641
 #, c-format
 msgid "Not reading from a system activity file (use -f option)\n"
 msgstr ""
 
-#: sar.c:1763
+#: sar.c:1791
 #, c-format
 msgid "Cannot find the data collector (%s)\n"
 msgstr ""
 
-#: tapestat.c:107
+#: tapestat.c:105
 #, c-format
 msgid ""
 "Options are:\n"
-"[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ]\n"
+"[ -a <archive> ] [ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] "
+"[ -V ]\n"
 "[ -y ] [ -z ]\n"
 msgstr ""
 
-#: tapestat.c:291
+#: tapestat.c:292
 #, c-format
 msgid "No tape drives with statistics found\n"
 msgstr ""
