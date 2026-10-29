@@ -16,6 +16,7 @@
 #ifdef HAVE_PCP
 
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 
 #include "common.h"
 #include "iostat.h"
@@ -93,16 +94,16 @@ static pmID part_iostat_pmids[PCP_IOSTAT_NR] = DCLASS_PMIDS(DCLASS_CLUSTER_PART)
 static pmID zram_iostat_pmids[PCP_IOSTAT_NR] = DCLASS_PMIDS(DCLASS_CLUSTER_ZRAM);
 
 /*
- * Build dev_list from one disk device class in the pmResult.
+ * Build dev_list from one disk device class in the pcp_result_t.
  *
  * IN:
  * @curr	Sample slot (0 or 1).
- * @result	pmResult from pmFetch.
+ * @result	pcp_result_t from pcp_fetch.
  * @pmids	PMID array (PCP_IOSTAT_NR entries) for this class.
  * @indom	PCP instance domain for this class (used to look up names).
  */
 static void
-build_disk_sample(int curr, pmResult *result, const pmID *pmids, pmInDom indom)
+build_disk_sample(int curr, pcp_result_t *result, const pmID *pmids, pmInDom indom)
 {
 	pmValueSet *vs[PCP_IOSTAT_NR];
 	pmValueSet *read_vset;
@@ -205,7 +206,7 @@ pcp_iostat_run(const char *archive)
 	pmID all_pmids[MAX_FETCH_PMIDS];
 	pmDesc all_descs[MAX_FETCH_PMIDS];
 	pmID fetch_pmids[MAX_FETCH_PMIDS];
-	pmResult *result = NULL, *prev_result = NULL;
+	pcp_result_t *result = NULL, *prev_result = NULL;
 	struct tm rectime;
 	int ctx, sts, c, i, m;
 	int all_nr = 0, fetch_nr = 0;
@@ -247,9 +248,9 @@ pcp_iostat_run(const char *archive)
 	if (!DISPLAY_EXTENDED(flags))
 		flags |= I_D_EXTENDED;
 
-	pmSetMode(PM_MODE_FORW, NULL, 0);
+	pcp_set_mode(PM_MODE_FORW, NULL, 0);
 
-	while ((sts = pmFetch(fetch_nr, fetch_pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(fetch_nr, fetch_pmids, &result)) >= 0) {
 		struct timespec curr_tv;
 		time_t t;
 
@@ -270,7 +271,7 @@ pcp_iostat_run(const char *archive)
 		if (!first)
 			write_stats(curr, &rectime, FALSE);
 
-		if (prev_result) pmFreeResult(prev_result);
+		if (prev_result) pcp_free_result(prev_result);
 		prev_result = result;
 		result = NULL;
 
@@ -278,8 +279,8 @@ pcp_iostat_run(const char *archive)
 		first = 0;
 	}
 
-	if (result) pmFreeResult(result);
-	if (prev_result) pmFreeResult(prev_result);
+	if (result) pcp_free_result(result);
+	if (prev_result) pcp_free_result(prev_result);
 
 	pmDestroyContext(ctx);
 	return 0;

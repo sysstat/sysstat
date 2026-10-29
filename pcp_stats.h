@@ -112,6 +112,7 @@ __print_funct_t pcp_print_psimem_stats
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
 #include <pcp/import.h>
+#include "pcp_compat.h"
 
 /* Functions used to read from the PCP archive format */
 unsigned long long pcp_read_u64(pmValueSet *, int, pmDesc *, int);
@@ -135,11 +136,12 @@ void pcp_write_sadc_special_record(const char *comment, unsigned int cpu_nr,
 
 /* Shared PCP archive reading helpers (used by sar and sadf) */
 void check_pcpfile_actlist(const char *from_file, struct activity *act[], uint64_t flags);
-int read_stats_from_result(pmResult *result, struct file_header *header, int curr);
+int read_stats_from_result(pcp_result_t *result, struct file_header *header, int curr);
 void pcp_read_sadc_metrics(char **version, long *interval);
 
 /* sadf->PCP write-path wrappers */
 void pcp_write_activity_help(struct activity *act[], int nact);
+void pcp_write_uptime(unsigned long long uptime_cs);
 void pcp_write_file_header_metrics(const struct file_header *hdr);
 void pcp_write_inventory_metrics(__nr_t nr_disk, __nr_t nr_iface,
 				 unsigned long long ust_time,
@@ -160,7 +162,6 @@ void pcp_write_sadf_comment(const char *comment, unsigned long long ust_time);
 
 #ifdef HAVE_PMI_APPEND
 int  pcp_open_sadc_archive(const char *path, const struct file_header *hdr);
-void pcp_write_uptime(unsigned long long uptime_cs);
 int  pcp_write_sadc_sample(unsigned long long ust_time, unsigned int nsec,
 			   uint64_t flags);
 void pcp_sadc_set_volume_size(size_t volume_size);
