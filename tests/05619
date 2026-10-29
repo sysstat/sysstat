@@ -1,5 +1,5 @@
 . tests/variables
-if [ "$HAVE_PCP" = "y" ]; then
+if [ "$HAVE_PCP" = "y" ] && [ "$HAVE_PMI_APPEND" = "y" ]; then
 	# Verify non-leaf metric name expansion in sysstat.pcpconf
 	# proc.psinfo (non-leaf) should expand to all proc.psinfo.* leaves
 	rm -f tests/sa18.*
@@ -26,6 +26,7 @@ EOF
 	rm -f tests/pcpar-sadc2.pcpconf
 	rm -f tests/root
 	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	rm -f tests/sa18.*
 else
 	echo Skipped; touch tests/SKIPPED
 fi

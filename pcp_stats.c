@@ -42,7 +42,9 @@
 extern struct record_header record_hdr[];
 extern struct activity *act[];
 extern uint64_t flags;
+#ifdef HAVE_PMI_APPEND
 static pid_t compress_child;
+#endif
 static const char * const bat_status[] = {
 	"Unknown", "Charging", "Discharging", "NotCharging", "Full"
 };
@@ -5997,8 +5999,10 @@ pcp_write_import_metrics(const char *path, const struct file_header *hdr,
 {
 	char		abuf[1024];
 	pmAtomValue	atom;
-	/* Private libpcp helper — returns the Olson timezone name */
+#ifdef HAVE_PMI_APPEND
+	/* Private libpcp helper - returns the Olson timezone name */
 	extern const char *__pmZoneinfo(void);
+#endif
 
 	/* Context label: presence of "sadc":true identifies the archive */
 	pmiPutLabel(PM_LABEL_CONTEXT, 0, 0, "sadc", "true");
@@ -6028,8 +6032,17 @@ pcp_write_import_metrics(const char *path, const struct file_header *hdr,
 	atom.cp = (char *)hdr->sa_tzname;
 	pmiPutAtomValueHandle(ACT_HANDLE(&sadc_metrics, SADC_TIMEZONE, 0), &atom);
 
+#ifdef HAVE_PMI_APPEND
 	atom.cp = (char *)__pmZoneinfo();
 	pmiPutAtomValueHandle(ACT_HANDLE(&sadc_metrics, SADC_ZONEINFO, 0), &atom);
+#else
+	/*
+	 * Older libpcp does not export __pmZoneinfo(); fall back to the
+	 * (usually more generic) timezone name recorded in the sa header.
+	 */
+	atom.cp = (char *)hdr->sa_tzname;
+	pmiPutAtomValueHandle(ACT_HANDLE(&sadc_metrics, SADC_ZONEINFO, 0), &atom);
+#endif
 }
 
 /*
@@ -6045,10 +6058,15 @@ void
 pcp_register_import_program(const char *archive_path,
 			    const struct pcp_local_config *local_cfg)
 {
+#ifdef HAVE_PMI_APPEND
 	char	abuf[512];
 
 	build_sadc_activities_string(abuf, sizeof(abuf), local_cfg);
 	pmiSetImportProgram("sadc", VERSION, abuf, archive_path);
+#else
+	(void)archive_path;
+	(void)local_cfg;
+#endif
 }
 
 /*
@@ -6102,7 +6120,7 @@ pcp_write_sadc_special_record(const char *comment, unsigned int cpu_nr,
 		pmiPutAtomValueHandle(ACT_HANDLE(&sadc_metrics, SADC_ACTIVITIES, 0), &atom);
 	}
 
-	pmiWrite(timestamp, nsec);
+	pcp_pmi_write(timestamp, nsec);
 }
 
 /*
@@ -6123,7 +6141,7 @@ pcp_read_sadc_metrics(char **version, long *interval)
 {
 	pmID		pmids[2];
 	pmDesc		descs[2];
-	pmResult	*result;
+	pcp_result_t	*result;
 	const char	*names[2] = {"pmimport.version", "pmimport.sadc.interval"};
 	int		n = 0, sts;
 
@@ -6149,7 +6167,7 @@ pcp_read_sadc_metrics(char **version, long *interval)
 	if (n == 0)
 		return;
 
-	if (pmFetch(2, pmids, &result) < 0)
+	if (pcp_fetch(2, pmids, &result) < 0)
 		return;
 
 	for (int i = 0; i < result->numpmid; i++) {
@@ -6170,7 +6188,7 @@ pcp_read_sadc_metrics(char **version, long *interval)
 			*interval = (long) av.ul;
 		}
 	}
-	pmFreeResult(result);
+	pcp_free_result(result);
 }
 
 /*
@@ -6258,7 +6276,7 @@ void check_pcpfile_actlist(const char *from_file, struct activity *act[], uint64
  * R_RESTART if result carries a mark record, 0 otherwise.
  ***************************************************************************
  */
-int read_stats_from_result(pmResult *result, struct file_header *header, int curr)
+int read_stats_from_result(pcp_result_t *result, struct file_header *header, int curr)
 {
 	int i;
 
@@ -6426,7 +6444,7 @@ void pcp_write_sadf_sample(unsigned long long ust_time)
 {
 	int rc;
 
-	if ((rc = pmiWrite(ust_time, 0)) < 0) {
+	if ((rc = pcp_pmi_write(ust_time, 0)) < 0) {
 		/* Non-fatal: skip records with out-of-order timestamps (e.g. corrupt input) */
 		if (rc == PM_ERR_LOGREC)
 			fprintf(stderr, _("PCP: skipping out-of-order timestamp %llu: %s\n"),
@@ -6590,6 +6608,32 @@ void pcp_write_sadf_comment(const char *comment, unsigned long long ust_time)
 	pcp_write_sadf_sample(ust_time);
 }
 
+/*
+ ***************************************************************************
+ * Register and write kernel.all.uptime per sample.
+ * This metric is declared in record_header_metric_descs[] for the sadf
+ * read path but was never written by sadc.  It is needed by PCP derived
+ * metrics such as proc.psinfo.age and proc.hog.cpu.
+ *
+ * IN:
+ * @uptime_cs	System uptime in centiseconds (from record_hdr.uptime_cs).
+ ***************************************************************************
+ */
+void pcp_write_uptime(unsigned long long uptime_cs)
+{
+	static int handle = -1;
+	pmAtomValue atom;
+
+	if (handle < 0)
+		handle = act_register_scalar_handle(&record_header_metrics,
+						    RECORD_HEADER_KERNEL_UPTIME);
+	if (handle >= 0) {
+		/* kernel.all.uptime is a double in seconds; uptime_cs is centiseconds */
+		atom.d = (double)uptime_cs / 100.0;
+		pmiPutAtomValueHandle(handle, &atom);
+	}
+}
+
 #ifdef HAVE_PMI_APPEND
 /*
  ***************************************************************************
@@ -6638,38 +6682,10 @@ int pcp_write_sadc_sample(unsigned long long ust_time, unsigned int nsec,
 {
 	int sts;
 
-	sts = pmiWrite(ust_time, nsec);
+	sts = pcp_pmi_write(ust_time, nsec);
 	if (sts < 0)
 		fprintf(stderr, _("PCP write error: %s\n"), pmiErrStr(sts));
 	return sts;
-}
-
-/*
- ***************************************************************************
- * Register and write kernel.all.uptime per sample.
- * This metric is declared in record_header_metric_descs[] for the sadf
- * read path but was never written by sadc.  It is needed by PCP derived
- * metrics such as proc.psinfo.age and proc.hog.cpu.
- *
- * IN:
- * @uptime_cs	System uptime in centiseconds (from record_hdr.uptime_cs).
- ***************************************************************************
- */
-void pcp_write_uptime(unsigned long long uptime_cs)
-{
-#ifdef HAVE_PMI_APPEND
-	static int handle = -1;
-	pmAtomValue atom;
-
-	if (handle < 0)
-		handle = act_register_scalar_handle(&record_header_metrics,
-						    RECORD_HEADER_KERNEL_UPTIME);
-	if (handle >= 0) {
-		/* kernel.all.uptime is a double in seconds; uptime_cs is centiseconds */
-		atom.d = (double)uptime_cs / 100.0;
-		pmiPutAtomValueHandle(handle, &atom);
-	}
-#endif
 }
 
 /*

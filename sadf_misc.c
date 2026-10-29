@@ -37,6 +37,7 @@
 
 #ifdef HAVE_PCP
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 #include <pcp/import.h>
 #endif
 
@@ -1463,13 +1464,13 @@ __printf_funct_t print_pcp_header(void *parm, int action, char *dfile, char *my_
 static void
 pcp_populate_file_hdr_sadf(int ctxid)
 {
-	pmLogLabel	label;
-	pmResult	*result;
+	pcp_log_label_t	label;
+	pcp_result_t	*result;
 	struct act_metrics *metrics = &file_header_metrics;
 	int		i, sts;
 	char		*s;
 
-	if ((sts = pmGetArchiveLabel(&label)) < 0)
+	if ((sts = pcp_get_archive_label(&label)) < 0)
 		return;
 
 	file_hdr.sa_ust_time = (unsigned long long) label.start.tv_sec;
@@ -1480,8 +1481,8 @@ pcp_populate_file_hdr_sadf(int ctxid)
 	for (i = 0; i < FILE_HEADER_METRIC_COUNT; i++)
 		metrics->pmids[i] = metrics->descs[i].pmid;
 
-	pmSetMode(PM_MODE_FORW, &label.start, NULL);
-	if ((sts = pmFetch(metrics->count, metrics->pmids, &result)) < 0)
+	pcp_set_mode(PM_MODE_FORW, &label.start, NULL);
+	if ((sts = pcp_fetch(metrics->count, metrics->pmids, &result)) < 0)
 		return;
 
 	for (i = 0; i < result->numpmid; i++) {
@@ -1521,13 +1522,13 @@ pcp_populate_file_hdr_sadf(int ctxid)
 			}
 		}
 	}
-	pmFreeResult(result);
+	pcp_free_result(result);
 }
 
 /*
  ***************************************************************************
- * One pmFetch loop for a single activity during SVG rendering.
- * The caller is responsible for calling pmSetMode() before each invocation
+ * One pcp_fetch loop for a single activity during SVG rendering.
+ * The caller is responsible for calling pcp_set_mode() before each invocation
  * to position the archive correctly.
  *
  * IN:
@@ -1542,40 +1543,40 @@ static void
 pcp_svg_one_activity_pass(pmID *pmids, int numpmids, struct activity *a,
 			  struct svg_parm *parm, struct timespec *start)
 {
-	pmResult	*result;
+	pcp_result_t	*result;
 	struct tstamp_ext rectime;
 	unsigned long long itv;
 	int		curr = 1, sts;
 
-	pmSetMode(PM_MODE_FORW, start, NULL);
+	pcp_set_mode(PM_MODE_FORW, start, NULL);
 	copy_structures(act, id_seq, record_hdr, 2, 0);
 	parm->restart = TRUE;
 
-	while ((sts = pmFetch(numpmids, pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(numpmids, pmids, &result)) >= 0) {
 
 		if (read_stats_from_result(result, &file_hdr, curr) == R_RESTART) {
 			parm->restart = TRUE;
-			pmFreeResult(result);
+			pcp_free_result(result);
 			copy_structures(act, id_seq, record_hdr, 2, 0);
 			curr ^= 1;
 			continue;
 		}
 
 		if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], &rectime)) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			curr ^= 1;
 			continue;
 		}
 
 		if ((tm_start.use != NO_TIME) &&
 		    (datecmp(&rectime, &tm_start, FALSE) < 0)) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			curr ^= 1;
 			continue;
 		}
 		if ((tm_end.use != NO_TIME) &&
 		    (datecmp(&rectime, &tm_end, FALSE) > 0)) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			break;
 		}
 
@@ -1585,7 +1586,7 @@ pcp_svg_one_activity_pass(pmID *pmids, int numpmids, struct activity *a,
 		(*a->f_svg_print)(a, curr, F_MAIN, parm, itv, &record_hdr[curr]);
 
 		parm->restart = FALSE;
-		pmFreeResult(result);
+		pcp_free_result(result);
 		curr ^= 1;
 	}
 }
@@ -1595,9 +1596,9 @@ pcp_svg_one_activity_pass(pmID *pmids, int numpmids, struct activity *a,
  * Read statistics from a PCP archive and render SVG output.
  *
  * Two rendering passes (mock then real) per activity, each driven by a
- * pmFetch loop.  pmSetMode() rewinds to the archive start between passes
+ * pcp_fetch loop.  pcp_set_mode() rewinds to the archive start between passes
  * (and between activities, since each gets its own pass so that
- * parm.graph_no accumulates correctly).  PM_ERR_EOL from pmFetch signals
+ * parm.graph_no accumulates correctly).  PM_ERR_EOL from pcp_fetch signals
  * end of archive, equivalent to EOF on a native file.
  *
  * IN:
@@ -1612,7 +1613,7 @@ read_stats_from_pcpfile_svg_sadf(pmID *pmids, int numpmids, char *from_file)
 	struct svg_hdr_parm hparm;
 	struct svg_parm	parm;
 	struct timespec	start = {0};
-	pmResult	*result;
+	pcp_result_t	*result;
 	int		p, g_nr = 0, nr_act_dispd = 0;
 
 	init_custom_color_palette();
@@ -1629,10 +1630,10 @@ read_stats_from_pcpfile_svg_sadf(pmID *pmids, int numpmids, char *from_file)
 	hparm.nr_act_dispd  = nr_act_dispd;
 
 	/* Fetch first sample to get time reference values */
-	pmSetMode(PM_MODE_FORW, &start, NULL);
-	if (pmFetch(numpmids, pmids, &result) >= 0) {
+	pcp_set_mode(PM_MODE_FORW, &start, NULL);
+	if (pcp_fetch(numpmids, pmids, &result) >= 0) {
 		read_stats_from_result(result, &file_hdr, 1);
-		pmFreeResult(result);
+		pcp_free_result(result);
 	}
 
 	memset(&parm, 0, sizeof(parm));
@@ -1716,7 +1717,7 @@ read_stats_from_pcpfile_svg_sadf(pmID *pmids, int numpmids, char *from_file)
 void
 read_stats_from_pcpfile_sadf(int ctxid, char *from_file)
 {
-	pmResult	*result;
+	pcp_result_t	*result;
 	pmID		*pmids = NULL;
 	struct tstamp_ext rectime;
 	int		tab = 0, curr = 1;
@@ -1741,7 +1742,7 @@ read_stats_from_pcpfile_sadf(int ctxid, char *from_file)
 	 * (e.g. sadf ... -- -u selects only CPU).  For each selected activity
 	 * that has PCP metrics, fix up nr_ini / nr2 so allocate_structures()
 	 * makes a minimal initial allocation; pcp_read_* grows buffers via
-	 * reallocate_buffers() as instance counts are discovered from pmFetch.
+	 * reallocate_buffers() as instance counts are discovered from pcp_fetch.
 	 */
 	for (p = 0; p < NR_ACT; p++) {
 		if (act[p]->metrics && IS_SELECTED(act[p]->options)) {
@@ -1793,33 +1794,33 @@ read_stats_from_pcpfile_sadf(int ctxid, char *from_file)
 	if (*fmt[f_position]->f_statistics)
 		(*fmt[f_position]->f_statistics)(&tab, F_BEGIN, act, id_seq);
 
-	pmSetMode(PM_MODE_FORW, &start, NULL);
+	pcp_set_mode(PM_MODE_FORW, &start, NULL);
 	copy_structures(act, id_seq, record_hdr, 2, 0);
 
-	while ((sts = pmFetch(j, pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(j, pmids, &result)) >= 0) {
 
 		if (read_stats_from_result(result, &file_hdr, curr) == R_RESTART) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			copy_structures(act, id_seq, record_hdr, 2, 0);
 			reset = TRUE;
 			continue;
 		}
 
 		if (sa_get_record_timestamp_struct(flags, &record_hdr[curr], &rectime)) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			curr ^= 1;
 			continue;
 		}
 
 		if ((tm_start.use != NO_TIME) &&
 		    (datecmp(&rectime, &tm_start, FALSE) < 0)) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			curr ^= 1;
 			continue;
 		}
 		if ((tm_end.use != NO_TIME) &&
 		    (datecmp(&rectime, &tm_end, FALSE) > 0)) {
-			pmFreeResult(result);
+			pcp_free_result(result);
 			break;
 		}
 
@@ -1835,7 +1836,7 @@ read_stats_from_pcpfile_sadf(int ctxid, char *from_file)
 				cnt--;
 		}
 		reset = FALSE;
-		pmFreeResult(result);
+		pcp_free_result(result);
 
 		if (!cnt)
 			break;

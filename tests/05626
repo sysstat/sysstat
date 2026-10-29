@@ -1,5 +1,5 @@
 . tests/variables
-if [ "$HAVE_PCP" = "y" ]; then
+if [ "$HAVE_PCP" = "y" ] && [ "$HAVE_PMI_APPEND" = "y" ]; then
 	# Regression test for multi-indom crash (commit "fix stale indom pointer"):
 	# When sysstat.pcpconf contains metrics from multiple indoms (e.g. proc.*
 	# on indom 3.9 AND tape.dev.* on indom 60.34), a realloc of cfg->indoms
@@ -26,6 +26,7 @@ EOF
 	rm -f tests/pcpar-sadc2.pcpconf tests/pcpar-sadc2.*
 	rm -f tests/root
 	ln -s ${T_SRCDIR}/tests/root1 tests/root
+	rm -f tests/sa18.*
 else
 	echo Skipped; touch tests/SKIPPED
 fi

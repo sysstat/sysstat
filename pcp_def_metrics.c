@@ -39,6 +39,92 @@
 extern struct activity *act[];
 extern uint64_t flags;
 
+#ifndef HAVE_PMI_APPEND
+/*
+ ***************************************************************************
+ * Older libpcp_import has no pmiPutAtomValueHandle().  Emulate it on top
+ * of pmiPutValueHandle(), which takes the value as a string and converts
+ * it according to the metric type.  The type of every handle is therefore
+ * remembered here when the handle is created.
+ *
+ * Handles are small integers allocated by pmiGetHandle() from zero, and
+ * are always registered through act_register_scalar_handle() or
+ * pcp_alloc_handle() below, so a simple growing array indexed by handle
+ * is sufficient.
+ ***************************************************************************
+ */
+static int	*handle_types;
+static size_t	handle_types_sz;
+
+static void pcp_record_handle_type(int handle, int type)
+{
+	int	*p;
+	size_t	new_sz;
+
+	if (handle < 0)
+		return;
+
+	if ((size_t)handle >= handle_types_sz) {
+		new_sz = handle_types_sz ? handle_types_sz : 64;
+		while ((size_t)handle >= new_sz)
+			new_sz *= 2;
+		p = realloc(handle_types, new_sz * sizeof(int));
+		if (!p)
+			PANIC(ENOMEM);
+		memset(p + handle_types_sz, 0xff,
+		       (new_sz - handle_types_sz) * sizeof(int));
+		handle_types = p;
+		handle_types_sz = new_sz;
+	}
+	handle_types[handle] = type;
+}
+
+/*
+ * Convert a pmAtomValue to the string form expected by pmiPutValueHandle().
+ *
+ * RETURNS:
+ * pmiPutValueHandle() status, or a PMI error code on failure.
+ */
+int pcp_pmi_put_atom(int handle, const pmAtomValue *atom)
+{
+	char	buf[64];
+	int	type;
+
+	if (handle < 0 || (size_t)handle >= handle_types_sz)
+		return PMI_ERR_BADHANDLE;
+
+	type = handle_types[handle];
+
+	switch (type) {
+	case PM_TYPE_32:
+		snprintf(buf, sizeof(buf), "%d", atom->l);
+		break;
+	case PM_TYPE_U32:
+		snprintf(buf, sizeof(buf), "%u", atom->ul);
+		break;
+	case PM_TYPE_64:
+		snprintf(buf, sizeof(buf), "%lld", (long long)atom->ll);
+		break;
+	case PM_TYPE_U64:
+		snprintf(buf, sizeof(buf), "%llu",
+			 (unsigned long long)atom->ull);
+		break;
+	case PM_TYPE_FLOAT:
+		snprintf(buf, sizeof(buf), "%.9g", (double)atom->f);
+		break;
+	case PM_TYPE_DOUBLE:
+		snprintf(buf, sizeof(buf), "%.17g", atom->d);
+		break;
+	case PM_TYPE_STRING:
+		return pmiPutValueHandle(handle, atom->cp ? atom->cp : "");
+	default:
+		return PMI_ERR_BADTYPE;
+	}
+
+	return pmiPutValueHandle(handle, buf);
+}
+#endif /* !HAVE_PMI_APPEND */
+
 /*
  ***************************************************************************
  * Register a scalar metric from an act_metrics group and return its write
@@ -57,13 +143,18 @@ int act_register_scalar_handle(struct act_metrics *m, size_t metric)
 {
 	const char *name;
 	pmDesc *desc;
+	int h;
 
 	if (!m || metric >= m->count || !m->names || !m->descs)
 		return -1;
 	name = m->names[metric];
 	desc = &m->descs[metric];
 	pmiAddMetric(name, desc->pmid, desc->type, desc->indom, desc->sem, desc->units);
-	return pmiGetHandle(name, NULL);
+	h = pmiGetHandle(name, NULL);
+#ifndef HAVE_PMI_APPEND
+	pcp_record_handle_type(h, desc->type);
+#endif
+	return h;
 }
 
 /*
@@ -357,6 +448,9 @@ void pcp_alloc_handle(struct act_metrics *m, size_t metric,
 
 	pcp_alloc_handles(m, slot + 1);
 	h = pmiGetHandle(m->names[metric], inst_name);
+#ifndef HAVE_PMI_APPEND
+	pcp_record_handle_type(h, m->descs[metric].type);
+#endif
 	/*
 	 * pmiGetHandle returns a negative error code when there is no active
 	 * PMI write context (e.g. when pcp_def_* is called from a read path
@@ -1371,6 +1465,7 @@ struct act_metrics pcsw_metrics = {
 void pcp_def_irq_metrics(struct activity *a)
 {
 	int first = TRUE, inst = 0;
+	size_t slot;
 	struct sa_item *list;
 
 	if (a->bitmap != NULL && a->bitmap->b_array != NULL &&
@@ -1405,11 +1500,17 @@ void pcp_def_irq_metrics(struct activity *a)
 	/* Wire handles after all metrics and instances are registered */
 	pcp_alloc_handle(a->metrics, IRQ_ALLIRQ_TOTAL, 0, PM_IN_NULL, NULL);
 	inst = 0;
-	for (list = a->item_list; list != NULL; list = list->next) {
+	for (list = a->item_list, slot = 0; list != NULL;
+	     list = list->next, slot++) {
 		if (!strcmp(list->item_name, K_LOWERSUM))
 			continue;
+		/*
+		 * Slot numbers must match pcp_slot_for_item() in the write
+		 * path, which returns the item_list index (and therefore
+		 * leaves a hole where "sum" is).  Instance IDs stay dense.
+		 */
 		pcp_alloc_handle(a->metrics, IRQ_PERIRQ_TOTAL,
-				 (size_t)inst, inst, list->item_name);
+				 slot, inst, list->item_name);
 		inst++;
 	}
 }

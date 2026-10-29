@@ -1638,7 +1638,7 @@ int main(int argc, char **argv)
 
 		/*
 		 * Allocate and select-all bitmaps so that pcp_print_*_stats()
-		 * — which are display functions that filter by bitmap — will
+		 * (which are display functions that filter by bitmap) will
 		 * write data for all collected CPUs, IRQs, etc.
 		 */
 		allocate_bitmaps(act);
@@ -1707,7 +1707,7 @@ int main(int argc, char **argv)
 		/*
 		 * Set S_F_SINCE_BOOT so that get_global_cpu_statistics() does
 		 * not mark per-CPU data as "offline" simply because the previous
-		 * sample buffer (buf[1]) is empty — which is always true in sadc
+		 * sample buffer (buf[1]) is empty, which is always true in sadc
 		 * since it only maintains a single sample buffer.
 		 */
 		flags |= S_F_SINCE_BOOT;

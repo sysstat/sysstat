@@ -18,6 +18,7 @@
 #ifdef HAVE_PCP
 
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 
 #include "common.h"
 #include "pidstat.h"
@@ -246,12 +247,12 @@ vset_str(pmValueSet *vset, pmDesc *desc, int inst_id, char *buf, size_t bufsz)
 }
 
 /* -------------------------------------------------------------------------
- * Build snap[s] from a pmResult.  Iterates instance IDs from utime's vset
+ * Build snap[s] from a pcp_result_t.  Iterates instance IDs from utime's vset
  * (which has one entry per active process) and fills all fields.
  * ------------------------------------------------------------------------- */
 
 static void
-build_snap(int s, pmResult *result)
+build_snap(int s, pcp_result_t *result)
 {
 	pmValueSet *utime_vset = NULL;
 	pmValueSet *vs[PCP_PID_NR];
@@ -546,7 +547,7 @@ pcp_pidstat_run(const char *archive)
 {
 	struct pcp_pid_snap *tmp_snap;
 	pmID fetch_pmids[PCP_PID_NR];
-	pmResult *result = NULL, *prev_result = NULL;
+	pcp_result_t *result = NULL, *prev_result = NULL;
 	struct timespec prev_tv = {0, 0};
 	char timestamp[32];
 	int ctx, sts, m, fetch_nr = 0;
@@ -577,12 +578,12 @@ pcp_pidstat_run(const char *archive)
 		return 1;
 	}
 
-	pmSetMode(PM_MODE_FORW, NULL, 0);
+	pcp_set_mode(PM_MODE_FORW, NULL, 0);
 
 	/* Read total memory for %MEM calculation */
 	tlmkb = sysconf(_SC_PHYS_PAGES) * (sysconf(_SC_PAGE_SIZE) / 1024);
 
-	while ((sts = pmFetch(fetch_nr, fetch_pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(fetch_nr, fetch_pmids, &result)) >= 0) {
 		struct timespec curr_tv;
 		curr_tv = result->timestamp;
 
@@ -607,7 +608,7 @@ pcp_pidstat_run(const char *archive)
 
 			/* Roll curr -> prev */
 			if (prev_result)
-				pmFreeResult(prev_result);
+				pcp_free_result(prev_result);
 			prev_result = result;
 			result = NULL;
 
@@ -620,7 +621,7 @@ pcp_pidstat_run(const char *archive)
 			snap_sort(0);
 
 			if (prev_result)
-				pmFreeResult(prev_result);
+				pcp_free_result(prev_result);
 			prev_result = result;
 			result = NULL;
 			first = 0;
@@ -630,9 +631,9 @@ pcp_pidstat_run(const char *archive)
 	}
 
 	if (result)
-		pmFreeResult(result);
+		pcp_free_result(result);
 	if (prev_result)
-		pmFreeResult(prev_result);
+		pcp_free_result(prev_result);
 	free(snap[0]); free(snap[1]);
 
 	pmDestroyContext(ctx);

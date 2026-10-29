@@ -20,6 +20,7 @@
 #ifdef HAVE_PCP
 
 #include <pcp/pmapi.h>
+#include "pcp_compat.h"
 
 #include "common.h"
 #include "cifsiostat.h"
@@ -60,7 +61,7 @@ static pmID pcp_cifs_pmids[PCP_CIFS_NR];
 static pmDesc pcp_cifs_descs[PCP_CIFS_NR];
 
 static void
-build_cifs_sample(int curr, pmResult *result)
+build_cifs_sample(int curr, pcp_result_t *result)
 {
 	pmValueSet *vs[PCP_CIFS_NR];
 	int m, i;
@@ -114,7 +115,7 @@ int
 pcp_cifsiostat_run(const char *archive)
 {
 	int ctx, sts, m, first = 1, curr = 0;
-	pmResult *result = NULL, *prev_result = NULL;
+	pcp_result_t *result = NULL, *prev_result = NULL;
 	pmID fetch_pmids[PCP_CIFS_NR];
 	int fetch_nr = 0;
 	struct tm rectime;
@@ -144,9 +145,9 @@ pcp_cifsiostat_run(const char *archive)
 		return 1;
 	}
 
-	pmSetMode(PM_MODE_FORW, NULL, 0);
+	pcp_set_mode(PM_MODE_FORW, NULL, 0);
 
-	while ((sts = pmFetch(fetch_nr, fetch_pmids, &result)) >= 0) {
+	while ((sts = pcp_fetch(fetch_nr, fetch_pmids, &result)) >= 0) {
 		time_t t = (time_t)result->timestamp.tv_sec;
 
 		localtime_r(&t, &rectime);
@@ -155,15 +156,15 @@ pcp_cifsiostat_run(const char *archive)
 		if (!first)
 			write_stats(curr, &rectime);
 
-		if (prev_result) pmFreeResult(prev_result);
+		if (prev_result) pcp_free_result(prev_result);
 		prev_result = result;
 		result = NULL;
 		curr = !curr;
 		first = 0;
 	}
 
-	if (result) pmFreeResult(result);
-	if (prev_result) pmFreeResult(prev_result);
+	if (result) pcp_free_result(result);
+	if (prev_result) pcp_free_result(prev_result);
 
 	pmDestroyContext(ctx);
 	return 0;
