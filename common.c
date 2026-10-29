@@ -37,9 +37,9 @@
 #include "version.h"
 #include "common.h"
 
-#ifndef SOURCE_SADC
+#if !defined(SOURCE_SADC) || defined(HAVE_PCP)
 #include "ioconf.h"
-#endif /* SOURCE_SADC */
+#endif
 
 #ifdef USE_NLS
 #include <locale.h>
@@ -50,7 +50,7 @@
 #endif
 
 /* Number of decimal places */
-extern int dplaces_nr;
+int dplaces_nr = -1;
 
 /* Units (sectors, Bytes, kilobytes, etc.) */
 char units[] = {'s', 'B', 'k', 'M', 'G', 'T', 'P', '?'};
@@ -173,6 +173,82 @@ time_t get_time(struct tm *rectime, int d_off)
 	}
 
 	return get_xtime(rectime, d_off, utc == 2);
+}
+
+/*
+ ***************************************************************************
+ * Get date, time and sub-second precision via a single clock_gettime call.
+ *
+ * IN:
+ * @d_off	Day offset (number of days to go back in the past).
+ * @utc		TRUE if date and time shall be expressed in UTC.
+ *
+ * OUT:
+ * @rectime	Current date and time.
+ * @nsec	Nanosecond part of the current time.
+ *
+ * RETURNS:
+ * Value of time in seconds since the Epoch, or (time_t) -1 on error.
+ ***************************************************************************
+ */
+time_t get_xtime_nsec(struct tm *rectime, int d_off, int utc, unsigned int *nsec)
+{
+	time_t timer;
+#ifdef TEST
+	/* In test mode use the fixed __unix_time so timestamps are reproducible */
+	timer = __time(NULL) - (time_t) SEC_PER_DAY * d_off;
+	*nsec = 0;
+#else
+	struct timespec ts;
+
+	if (clock_gettime(CLOCK_REALTIME, &ts) < 0)
+		return (time_t) -1;
+	timer = ts.tv_sec - (time_t) SEC_PER_DAY * d_off;
+	*nsec = (unsigned int) ts.tv_nsec;
+#endif
+
+	if (utc) {
+		if (gmtime_r(&timer, rectime) == NULL)
+			return (time_t) -1;
+	}
+	else {
+		if (localtime_r(&timer, rectime) == NULL)
+			return (time_t) -1;
+	}
+
+	return timer;
+}
+
+/*
+ ***************************************************************************
+ * Get date, time and sub-second precision, respecting ENV_TIME_DEFTM.
+ *
+ * IN:
+ * @d_off	Day offset (number of days to go back in the past).
+ *
+ * OUT:
+ * @rectime	Current date and time.
+ * @nsec	Nanosecond part of the current time.
+ *
+ * RETURNS:
+ * Value of time in seconds since the Epoch, or (time_t) -1 on error.
+ ***************************************************************************
+ */
+time_t get_time_nsec(struct tm *rectime, int d_off, unsigned int *nsec)
+{
+	static int utc = 0;
+
+	if (!utc) {
+		char *e;
+
+		/* Read environment variable value once */
+		if ((e = __getenv(ENV_TIME_DEFTM)) != NULL) {
+			utc = !strcmp(e, K_UTC);
+		}
+		utc++;
+	}
+
+	return get_xtime_nsec(rectime, d_off, utc == 2, nsec);
 }
 
 #ifdef USE_NLS
@@ -510,7 +586,7 @@ size_t mul_check_overflow4(size_t val1, size_t val2, size_t val3, size_t val4)
 	return (val1 * val2 * val3 * val4);
 }
 
-#ifndef SOURCE_SADC
+#if !defined(SOURCE_SADC) || defined(HAVE_PCP)
 /*
  ***************************************************************************
  * Read /proc/devices file and get device-mapper major number.
@@ -1981,4 +2057,4 @@ void write_sample_timestamp(int tab, struct tm *rectime, uint64_t xflags)
 #endif
 }
 
-#endif /* SOURCE_SADC undefined */
+#endif /* SOURCE_SAR || SOURCE_SADF || HAVE_PCP */

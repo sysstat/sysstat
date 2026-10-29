@@ -31,8 +31,12 @@
 #include "json_stats.h"
 #include "svg_stats.h"
 #include "raw_stats.h"
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
 #include "pcp_stats.h"
 #endif
+
+#include "pcp_def_metrics.h"
 
 /*
  ***************************************************************************
@@ -87,9 +91,11 @@ struct activity cpu_act = {
 	.f_json_print	= json_print_cpu_stats,
 	.f_svg_print	= svg_print_cpu_stats,
 	.f_raw_print	= raw_print_cpu_stats,
-	.f_pcp_print	= pcp_print_cpu_stats,
 	.f_count_new	= NULL,
 	.desc		= "CPU utilization",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_cpu_stats,
 #endif
 	.name		= "A_CPU",
 	.item_list	= NULL,
@@ -104,6 +110,7 @@ struct activity cpu_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_CPU_SIZE,
 	.msize		= STATS_CPU_SIZE,
+	.metrics	= STATS_CPU_METRICS,
 	.opt_flags	= AO_F_CPU_DEF,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -138,9 +145,11 @@ struct activity pcsw_act = {
 	.f_json_print	= json_print_pcsw_stats,
 	.f_svg_print	= svg_print_pcsw_stats,
 	.f_raw_print	= raw_print_pcsw_stats,
-	.f_pcp_print	= pcp_print_pcsw_stats,
 	.f_count_new	= NULL,
 	.desc		= "Task creation and switching activity",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pcsw_stats,
 #endif
 	.name		= "A_PCSW",
 	.item_list	= NULL,
@@ -155,6 +164,7 @@ struct activity pcsw_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PCSW_SIZE,
 	.msize		= STATS_PCSW_SIZE,
+	.metrics	= STATS_PCSW_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -189,9 +199,11 @@ struct activity irq_act = {
 	.f_json_print	= json_print_irq_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_irq_stats,
-	.f_pcp_print	= pcp_print_irq_stats,
 	.f_count_new	= count_new_int,
 	.desc		= "Interrupts statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_irq_stats,
 #endif
 	.name		= "A_IRQ",
 	.item_list	= NULL,
@@ -206,6 +218,7 @@ struct activity irq_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_IRQ_SIZE,
 	.msize		= STATS_IRQ_SIZE,
+	.metrics	= STATS_IRQ_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -240,9 +253,11 @@ struct activity swap_act = {
 	.f_json_print	= json_print_swap_stats,
 	.f_svg_print	= svg_print_swap_stats,
 	.f_raw_print	= raw_print_swap_stats,
-	.f_pcp_print	= pcp_print_swap_stats,
 	.f_count_new	= NULL,
 	.desc		= "Swap activity",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_swap_stats,
 #endif
 	.name		= "A_SWAP",
 	.item_list	= NULL,
@@ -257,6 +272,7 @@ struct activity swap_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_SWAP_SIZE,
 	.msize		= STATS_SWAP_SIZE,
+	.metrics	= STATS_SWAP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -293,9 +309,11 @@ struct activity paging_act = {
 	.f_json_print	= json_print_paging_stats,
 	.f_svg_print	= svg_print_paging_stats,
 	.f_raw_print	= raw_print_paging_stats,
-	.f_pcp_print	= pcp_print_paging_stats,
 	.f_count_new	= NULL,
 	.desc		= "Paging activity",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_paging_stats,
 #endif
 	.name		= "A_PAGE",
 	.item_list	= NULL,
@@ -310,6 +328,7 @@ struct activity paging_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PAGING_SIZE,
 	.msize		= STATS_PAGING_SIZE,
+	.metrics	= STATS_PAGING_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -344,9 +363,11 @@ struct activity io_act = {
 	.f_json_print	= json_print_io_stats,
 	.f_svg_print	= svg_print_io_stats,
 	.f_raw_print	= raw_print_io_stats,
-	.f_pcp_print	= pcp_print_io_stats,
 	.f_count_new	= NULL,
 	.desc		= "I/O and transfer rate statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_io_stats,
 #endif
 	.name		= "A_IO",
 	.item_list	= NULL,
@@ -361,6 +382,7 @@ struct activity io_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_IO_SIZE,
 	.msize		= STATS_IO_SIZE,
+	.metrics	= STATS_IO_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -398,9 +420,11 @@ struct activity memory_act = {
 	.f_json_print	= json_print_memory_stats,
 	.f_svg_print	= svg_print_memory_stats,
 	.f_raw_print	= raw_print_memory_stats,
-	.f_pcp_print	= pcp_print_memory_stats,
 	.f_count_new	= NULL,
 	.desc		= "Memory and/or swap utilization",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_memory_stats,
 #endif
 	.name		= "A_MEMORY",
 	.item_list	= NULL,
@@ -415,6 +439,7 @@ struct activity memory_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_MEMORY_SIZE,
 	.msize		= STATS_MEMORY_SIZE,
+	.metrics	= STATS_MEMORY_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -449,9 +474,11 @@ struct activity ktables_act = {
 	.f_json_print	= json_print_ktables_stats,
 	.f_svg_print	= svg_print_ktables_stats,
 	.f_raw_print	= raw_print_ktables_stats,
-	.f_pcp_print	= pcp_print_ktables_stats,
 	.f_count_new	= NULL,
 	.desc		= "Kernel tables statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_ktables_stats,
 #endif
 	.name		= "A_KTABLES",
 	.item_list	= NULL,
@@ -466,6 +493,7 @@ struct activity ktables_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_KTABLES_SIZE,
 	.msize		= STATS_KTABLES_SIZE,
+	.metrics	= STATS_KTABLES_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -500,9 +528,11 @@ struct activity queue_act = {
 	.f_json_print	= json_print_queue_stats,
 	.f_svg_print	= svg_print_queue_stats,
 	.f_raw_print	= raw_print_queue_stats,
-	.f_pcp_print	= pcp_print_queue_stats,
 	.f_count_new	= NULL,
 	.desc		= "Queue length and load average statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_queue_stats,
 #endif
 	.name		= "A_QUEUE",
 	.item_list	= NULL,
@@ -517,6 +547,7 @@ struct activity queue_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_QUEUE_SIZE,
 	.msize		= STATS_QUEUE_SIZE,
+	.metrics	= STATS_QUEUE_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -551,9 +582,11 @@ struct activity serial_act = {
 	.f_json_print	= json_print_serial_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_serial_stats,
-	.f_pcp_print	= pcp_print_serial_stats,
 	.f_count_new	= NULL,
 	.desc		= "TTY devices statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_serial_stats,
 #endif
 	.name		= "A_SERIAL",
 	.item_list	= NULL,
@@ -568,6 +601,7 @@ struct activity serial_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_SERIAL_SIZE,
 	.msize		= STATS_SERIAL_SIZE,
+	.metrics	= STATS_SERIAL_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -602,9 +636,11 @@ struct activity disk_act = {
 	.f_json_print	= json_print_disk_stats,
 	.f_svg_print	= svg_print_disk_stats,
 	.f_raw_print	= raw_print_disk_stats,
-	.f_pcp_print	= pcp_print_disk_stats,
 	.f_count_new	= count_new_disk,
 	.desc		= "Block devices statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_disk_stats,
 #endif
 	.name		= "A_DISK",
 	.item_list	= NULL,
@@ -617,8 +653,9 @@ struct activity disk_act = {
 	.nr_allocated	= 0,
 	.xnr		= STATS_DISK_XNR,
 	.xdev_list	= NULL,
-	.fsize		= STATS_DISK_SIZE,
-	.msize		= STATS_DISK_SIZE,
+	.fsize		= STATS_DISK_FSIZE,	/* native sa format: frozen */
+	.msize		= STATS_DISK_SIZE,	/* in-memory: includes rd/wr/dc_ios */
+	.metrics	= STATS_DISK_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -653,9 +690,11 @@ struct activity net_dev_act = {
 	.f_json_print	= json_print_net_dev_stats,
 	.f_svg_print	= svg_print_net_dev_stats,
 	.f_raw_print	= raw_print_net_dev_stats,
-	.f_pcp_print	= pcp_print_net_dev_stats,
 	.f_count_new	= count_new_net_dev,
 	.desc		= "Network interfaces statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_dev_stats,
 #endif
 	.name		= "A_NET_DEV",
 	.item_list	= NULL,
@@ -670,6 +709,7 @@ struct activity net_dev_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_DEV_SIZE,
 	.msize		= STATS_NET_DEV_SIZE,
+	.metrics	= STATS_NET_DEV_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -705,9 +745,11 @@ struct activity net_edev_act = {
 	.f_json_print	= json_print_net_edev_stats,
 	.f_svg_print	= svg_print_net_edev_stats,
 	.f_raw_print	= raw_print_net_edev_stats,
-	.f_pcp_print	= pcp_print_net_edev_stats,
 	.f_count_new	= count_new_net_edev,
 	.desc		= "Network interfaces errors statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_edev_stats,
 #endif
 	.name		= "A_NET_EDEV",
 	.item_list	= NULL,
@@ -722,6 +764,7 @@ struct activity net_edev_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EDEV_SIZE,
 	.msize		= STATS_NET_EDEV_SIZE,
+	.metrics	= STATS_NET_EDEV_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -756,9 +799,11 @@ struct activity net_nfs_act = {
 	.f_json_print	= json_print_net_nfs_stats,
 	.f_svg_print	= svg_print_net_nfs_stats,
 	.f_raw_print	= raw_print_net_nfs_stats,
-	.f_pcp_print	= pcp_print_net_nfs_stats,
 	.f_count_new	= NULL,
 	.desc		= "NFS client statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_nfs_stats,
 #endif
 	.name		= "A_NET_NFS",
 	.item_list	= NULL,
@@ -773,6 +818,7 @@ struct activity net_nfs_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_NFS_SIZE,
 	.msize		= STATS_NET_NFS_SIZE,
+	.metrics	= STATS_NET_NFS_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -808,9 +854,11 @@ struct activity net_nfsd_act = {
 	.f_json_print	= json_print_net_nfsd_stats,
 	.f_svg_print	= svg_print_net_nfsd_stats,
 	.f_raw_print	= raw_print_net_nfsd_stats,
-	.f_pcp_print	= pcp_print_net_nfsd_stats,
 	.f_count_new	= NULL,
 	.desc		= "NFS server statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_nfsd_stats,
 #endif
 	.name		= "A_NET_NFSD",
 	.item_list	= NULL,
@@ -825,6 +873,7 @@ struct activity net_nfsd_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_NFSD_SIZE,
 	.msize		= STATS_NET_NFSD_SIZE,
+	.metrics	= STATS_NET_NFSD_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -859,9 +908,11 @@ struct activity net_sock_act = {
 	.f_json_print	= json_print_net_sock_stats,
 	.f_svg_print	= svg_print_net_sock_stats,
 	.f_raw_print	= raw_print_net_sock_stats,
-	.f_pcp_print	= pcp_print_net_sock_stats,
 	.f_count_new	= NULL,
 	.desc		= "IPv4 sockets statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_sock_stats,
 #endif
 	.name		= "A_NET_SOCK",
 	.item_list	= NULL,
@@ -876,6 +927,7 @@ struct activity net_sock_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_SOCK_SIZE,
 	.msize		= STATS_NET_SOCK_SIZE,
+	.metrics	= STATS_NET_SOCK_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -910,9 +962,11 @@ struct activity net_ip_act = {
 	.f_json_print	= json_print_net_ip_stats,
 	.f_svg_print	= svg_print_net_ip_stats,
 	.f_raw_print	= raw_print_net_ip_stats,
-	.f_pcp_print	= pcp_print_net_ip_stats,
 	.f_count_new	= NULL,
 	.desc		= "IPv4 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_ip_stats,
 #endif
 	.name		= "A_NET_IP",
 	.item_list	= NULL,
@@ -927,6 +981,7 @@ struct activity net_ip_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_IP_SIZE,
 	.msize		= STATS_NET_IP_SIZE,
+	.metrics	= STATS_NET_IP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -961,9 +1016,11 @@ struct activity net_eip_act = {
 	.f_json_print	= json_print_net_eip_stats,
 	.f_svg_print	= svg_print_net_eip_stats,
 	.f_raw_print	= raw_print_net_eip_stats,
-	.f_pcp_print	= pcp_print_net_eip_stats,
 	.f_count_new	= NULL,
 	.desc		= "IPv4 traffic errors statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_eip_stats,
 #endif
 	.name		= "A_NET_EIP",
 	.item_list	= NULL,
@@ -978,6 +1035,7 @@ struct activity net_eip_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EIP_SIZE,
 	.msize		= STATS_NET_EIP_SIZE,
+	.metrics	= STATS_NET_EIP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1013,9 +1071,11 @@ struct activity net_icmp_act = {
 	.f_json_print	= json_print_net_icmp_stats,
 	.f_svg_print	= svg_print_net_icmp_stats,
 	.f_raw_print	= raw_print_net_icmp_stats,
-	.f_pcp_print	= pcp_print_net_icmp_stats,
 	.f_count_new	= NULL,
 	.desc		= "ICMPv4 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_icmp_stats,
 #endif
 	.name		= "A_NET_ICMP",
 	.item_list	= NULL,
@@ -1030,6 +1090,7 @@ struct activity net_icmp_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_ICMP_SIZE,
 	.msize		= STATS_NET_ICMP_SIZE,
+	.metrics	= STATS_NET_ICMP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1065,9 +1126,11 @@ struct activity net_eicmp_act = {
 	.f_json_print	= json_print_net_eicmp_stats,
 	.f_svg_print	= svg_print_net_eicmp_stats,
 	.f_raw_print	= raw_print_net_eicmp_stats,
-	.f_pcp_print	= pcp_print_net_eicmp_stats,
 	.f_count_new	= NULL,
 	.desc		= "ICMPv4 traffic errors statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_eicmp_stats,
 #endif
 	.name		= "A_NET_EICMP",
 	.item_list	= NULL,
@@ -1082,6 +1145,7 @@ struct activity net_eicmp_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EICMP_SIZE,
 	.msize		= STATS_NET_EICMP_SIZE,
+	.metrics	= STATS_NET_EICMP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1116,9 +1180,11 @@ struct activity net_tcp_act = {
 	.f_json_print	= json_print_net_tcp_stats,
 	.f_svg_print	= svg_print_net_tcp_stats,
 	.f_raw_print	= raw_print_net_tcp_stats,
-	.f_pcp_print	= pcp_print_net_tcp_stats,
 	.f_count_new	= NULL,
 	.desc		= "TCPv4 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_tcp_stats,
 #endif
 	.name		= "A_NET_TCP",
 	.item_list	= NULL,
@@ -1133,6 +1199,7 @@ struct activity net_tcp_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_TCP_SIZE,
 	.msize		= STATS_NET_TCP_SIZE,
+	.metrics	= STATS_NET_TCP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1167,9 +1234,11 @@ struct activity net_etcp_act = {
 	.f_json_print	= json_print_net_etcp_stats,
 	.f_svg_print	= svg_print_net_etcp_stats,
 	.f_raw_print	= raw_print_net_etcp_stats,
-	.f_pcp_print	= pcp_print_net_etcp_stats,
 	.f_count_new	= NULL,
 	.desc		= "TCPv4 traffic errors statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_etcp_stats,
 #endif
 	.name		= "A_NET_ETCP",
 	.item_list	= NULL,
@@ -1184,6 +1253,7 @@ struct activity net_etcp_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_ETCP_SIZE,
 	.msize		= STATS_NET_ETCP_SIZE,
+	.metrics	= STATS_NET_ETCP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1218,9 +1288,11 @@ struct activity net_udp_act = {
 	.f_json_print	= json_print_net_udp_stats,
 	.f_svg_print	= svg_print_net_udp_stats,
 	.f_raw_print	= raw_print_net_udp_stats,
-	.f_pcp_print	= pcp_print_net_udp_stats,
 	.f_count_new	= NULL,
 	.desc		= "UDPv4 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_udp_stats,
 #endif
 	.name		= "A_NET_UDP",
 	.item_list	= NULL,
@@ -1235,6 +1307,7 @@ struct activity net_udp_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_UDP_SIZE,
 	.msize		= STATS_NET_UDP_SIZE,
+	.metrics	= STATS_NET_UDP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1269,9 +1342,11 @@ struct activity net_sock6_act = {
 	.f_json_print	= json_print_net_sock6_stats,
 	.f_svg_print	= svg_print_net_sock6_stats,
 	.f_raw_print	= raw_print_net_sock6_stats,
-	.f_pcp_print	= pcp_print_net_sock6_stats,
 	.f_count_new	= NULL,
 	.desc		= "IPv6 sockets statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_sock6_stats,
 #endif
 	.name		= "A_NET_SOCK6",
 	.item_list	= NULL,
@@ -1286,6 +1361,7 @@ struct activity net_sock6_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_SOCK6_SIZE,
 	.msize		= STATS_NET_SOCK6_SIZE,
+	.metrics	= STATS_NET_SOCK6_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1321,9 +1397,11 @@ struct activity net_ip6_act = {
 	.f_json_print	= json_print_net_ip6_stats,
 	.f_svg_print	= svg_print_net_ip6_stats,
 	.f_raw_print	= raw_print_net_ip6_stats,
-	.f_pcp_print	= pcp_print_net_ip6_stats,
 	.f_count_new	= NULL,
 	.desc		= "IPv6 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_ip6_stats,
 #endif
 	.name		= "A_NET_IP6",
 	.item_list	= NULL,
@@ -1338,6 +1416,7 @@ struct activity net_ip6_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_IP6_SIZE,
 	.msize		= STATS_NET_IP6_SIZE,
+	.metrics	= STATS_NET_IP6_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1373,9 +1452,11 @@ struct activity net_eip6_act = {
 	.f_json_print	= json_print_net_eip6_stats,
 	.f_svg_print	= svg_print_net_eip6_stats,
 	.f_raw_print	= raw_print_net_eip6_stats,
-	.f_pcp_print	= pcp_print_net_eip6_stats,
 	.f_count_new	= NULL,
 	.desc		= "IPv6 traffic errors statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_eip6_stats,
 #endif
 	.name		= "A_NET_EIP6",
 	.item_list	= NULL,
@@ -1390,6 +1471,7 @@ struct activity net_eip6_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EIP6_SIZE,
 	.msize		= STATS_NET_EIP6_SIZE,
+	.metrics	= STATS_NET_EIP6_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1426,9 +1508,11 @@ struct activity net_icmp6_act = {
 	.f_json_print	= json_print_net_icmp6_stats,
 	.f_svg_print	= svg_print_net_icmp6_stats,
 	.f_raw_print	= raw_print_net_icmp6_stats,
-	.f_pcp_print	= pcp_print_net_icmp6_stats,
 	.f_count_new	= NULL,
 	.desc		= "ICMPv6 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_icmp6_stats,
 #endif
 	.name		= "A_NET_ICMP6",
 	.item_list	= NULL,
@@ -1443,6 +1527,7 @@ struct activity net_icmp6_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_ICMP6_SIZE,
 	.msize		= STATS_NET_ICMP6_SIZE,
+	.metrics	= STATS_NET_ICMP6_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1478,9 +1563,11 @@ struct activity net_eicmp6_act = {
 	.f_json_print	= json_print_net_eicmp6_stats,
 	.f_svg_print	= svg_print_net_eicmp6_stats,
 	.f_raw_print	= raw_print_net_eicmp6_stats,
-	.f_pcp_print	= pcp_print_net_eicmp6_stats,
 	.f_count_new	= NULL,
 	.desc		= "ICMPv6 traffic errors statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_eicmp6_stats,
 #endif
 	.name		= "A_NET_EICMP6",
 	.item_list	= NULL,
@@ -1495,6 +1582,7 @@ struct activity net_eicmp6_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_EICMP6_SIZE,
 	.msize		= STATS_NET_EICMP6_SIZE,
+	.metrics	= STATS_NET_EICMP6_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1529,9 +1617,11 @@ struct activity net_udp6_act = {
 	.f_json_print	= json_print_net_udp6_stats,
 	.f_svg_print	= svg_print_net_udp6_stats,
 	.f_raw_print	= raw_print_net_udp6_stats,
-	.f_pcp_print	= pcp_print_net_udp6_stats,
 	.f_count_new	= NULL,
 	.desc		= "UDPv6 traffic statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_net_udp6_stats,
 #endif
 	.name		= "A_NET_UDP6",
 	.item_list	= NULL,
@@ -1546,6 +1636,7 @@ struct activity net_udp6_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_NET_UDP6_SIZE,
 	.msize		= STATS_NET_UDP6_SIZE,
+	.metrics	= STATS_NET_UDP6_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1580,9 +1671,11 @@ struct activity pwr_cpufreq_act = {
 	.f_json_print	= json_print_pwr_cpufreq_stats,
 	.f_svg_print	= svg_print_pwr_cpufreq_stats,
 	.f_raw_print	= raw_print_pwr_cpufreq_stats,
-	.f_pcp_print	= pcp_print_pwr_cpufreq_stats,
 	.f_count_new	= NULL,
 	.desc		= "CPU clock frequency",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pwr_cpufreq_stats,
 #endif
 	.name		= "A_PWR_CPU",
 	.item_list	= NULL,
@@ -1597,6 +1690,7 @@ struct activity pwr_cpufreq_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_CPUFREQ_SIZE,
 	.msize		= STATS_PWR_CPUFREQ_SIZE,
+	.metrics	= STATS_PWR_CPU_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1631,9 +1725,11 @@ struct activity pwr_fan_act = {
 	.f_json_print	= json_print_pwr_fan_stats,
 	.f_svg_print	= svg_print_pwr_fan_stats,
 	.f_raw_print	= raw_print_pwr_fan_stats,
-	.f_pcp_print	= pcp_print_pwr_fan_stats,
 	.f_count_new	= NULL,
 	.desc		= "Fans speed",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pwr_fan_stats,
 #endif
 	.name		= "A_PWR_FAN",
 	.item_list	= NULL,
@@ -1648,6 +1744,7 @@ struct activity pwr_fan_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_FAN_SIZE,
 	.msize		= STATS_PWR_FAN_SIZE,
+	.metrics	= STATS_PWR_FAN_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1682,9 +1779,11 @@ struct activity pwr_temp_act = {
 	.f_json_print	= json_print_pwr_temp_stats,
 	.f_svg_print	= svg_print_pwr_temp_stats,
 	.f_raw_print	= raw_print_pwr_temp_stats,
-	.f_pcp_print	= pcp_print_pwr_temp_stats,
 	.f_count_new	= NULL,
 	.desc		= "Devices temperature",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pwr_temp_stats,
 #endif
 	.name		= "A_PWR_TEMP",
 	.item_list	= NULL,
@@ -1699,6 +1798,7 @@ struct activity pwr_temp_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_TEMP_SIZE,
 	.msize		= STATS_PWR_TEMP_SIZE,
+	.metrics	= STATS_PWR_TEMP_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1733,9 +1833,11 @@ struct activity pwr_in_act = {
 	.f_json_print	= json_print_pwr_in_stats,
 	.f_svg_print	= svg_print_pwr_in_stats,
 	.f_raw_print	= raw_print_pwr_in_stats,
-	.f_pcp_print	= pcp_print_pwr_in_stats,
 	.f_count_new	= NULL,
 	.desc		= "Voltage inputs statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pwr_in_stats,
 #endif
 	.name		= "A_PWR_IN",
 	.item_list	= NULL,
@@ -1750,6 +1852,7 @@ struct activity pwr_in_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_IN_SIZE,
 	.msize		= STATS_PWR_IN_SIZE,
+	.metrics	= STATS_PWR_IN_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1784,9 +1887,11 @@ struct activity huge_act = {
 	.f_json_print	= json_print_huge_stats,
 	.f_svg_print	= svg_print_huge_stats,
 	.f_raw_print	= raw_print_huge_stats,
-	.f_pcp_print	= pcp_print_huge_stats,
 	.f_count_new	= NULL,
 	.desc		= "Huge pages utilization",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_huge_stats,
 #endif
 	.name		= "A_HUGE",
 	.item_list	= NULL,
@@ -1801,6 +1906,7 @@ struct activity huge_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_HUGE_SIZE,
 	.msize		= STATS_HUGE_SIZE,
+	.metrics	= STATS_HUGE_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1885,9 +1991,11 @@ struct activity pwr_usb_act = {
 	.f_json_print	= json_print_pwr_usb_stats,
 	.f_svg_print	= NULL,
 	.f_raw_print	= raw_print_pwr_usb_stats,
-	.f_pcp_print	= pcp_print_pwr_usb_stats,
 	.f_count_new	= NULL,
 	.desc		= "USB devices",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pwr_usb_stats,
 #endif
 	.name		= "A_PWR_USB",
 	.item_list	= NULL,
@@ -1902,6 +2010,7 @@ struct activity pwr_usb_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_USB_SIZE,
 	.msize		= STATS_PWR_USB_SIZE,
+	.metrics	= STATS_PWR_USB_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1937,9 +2046,11 @@ struct activity filesystem_act = {
 	.f_json_print	= json_print_filesystem_stats,
 	.f_svg_print	= svg_print_filesystem_stats,
 	.f_raw_print	= raw_print_filesystem_stats,
-	.f_pcp_print	= pcp_print_filesystem_stats,
 	.f_count_new	= count_new_filesystem,
 	.desc		= "Filesystems statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_filesystem_stats,
 #endif
 	.name		= "A_FS",
 	.item_list	= NULL,
@@ -1954,6 +2065,7 @@ struct activity filesystem_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_FILESYSTEM_SIZE,
 	.msize		= STATS_FILESYSTEM_SIZE,
+	.metrics	= STATS_FILESYSTEM_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -1988,9 +2100,11 @@ struct activity fchost_act = {
 	.f_json_print	= json_print_fchost_stats,
 	.f_svg_print	= svg_print_fchost_stats,
 	.f_raw_print	= raw_print_fchost_stats,
-	.f_pcp_print	= pcp_print_fchost_stats,
 	.f_count_new	= count_new_fchost,
 	.desc		= "Fibre Channel HBA statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_fchost_stats,
 #endif
 	.name		= "A_NET_FC",
 	.item_list	= NULL,
@@ -2005,6 +2119,7 @@ struct activity fchost_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_FCHOST_SIZE,
 	.msize		= STATS_FCHOST_SIZE,
+	.metrics	= STATS_FCHOST_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -2040,9 +2155,11 @@ struct activity softnet_act = {
 	.f_json_print	= json_print_softnet_stats,
 	.f_svg_print	= svg_print_softnet_stats,
 	.f_raw_print	= raw_print_softnet_stats,
-	.f_pcp_print	= pcp_print_softnet_stats,
 	.f_count_new	= NULL,
 	.desc		= "Software-based network processing statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_softnet_stats,
 #endif
 	.name		= "A_NET_SOFT",
 	.item_list	= NULL,
@@ -2057,6 +2174,7 @@ struct activity softnet_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_SOFTNET_SIZE,
 	.msize		= STATS_SOFTNET_SIZE,
+	.metrics	= STATS_SOFTNET_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -2091,9 +2209,11 @@ struct activity psi_cpu_act = {
 	.f_json_print	= json_print_psicpu_stats,
 	.f_svg_print	= svg_print_psicpu_stats,
 	.f_raw_print	= raw_print_psicpu_stats,
-	.f_pcp_print	= pcp_print_psicpu_stats,
 	.f_count_new	= NULL,
 	.desc		= "Pressure-stall CPU statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_psicpu_stats,
 #endif
 	.name		= "A_PSI_CPU",
 	.item_list	= NULL,
@@ -2108,6 +2228,7 @@ struct activity psi_cpu_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PSI_CPU_SIZE,
 	.msize		= STATS_PSI_CPU_SIZE,
+	.metrics	= STATS_PSI_CPU_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -2142,9 +2263,11 @@ struct activity psi_io_act = {
 	.f_json_print	= json_print_psiio_stats,
 	.f_svg_print	= svg_print_psiio_stats,
 	.f_raw_print	= raw_print_psiio_stats,
-	.f_pcp_print	= pcp_print_psiio_stats,
 	.f_count_new	= NULL,
 	.desc		= "Pressure-stall I/O statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_psiio_stats,
 #endif
 	.name		= "A_PSI_IO",
 	.item_list	= NULL,
@@ -2159,6 +2282,7 @@ struct activity psi_io_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PSI_IO_SIZE,
 	.msize		= STATS_PSI_IO_SIZE,
+	.metrics	= STATS_PSI_IO_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -2193,9 +2317,11 @@ struct activity psi_mem_act = {
 	.f_json_print	= json_print_psimem_stats,
 	.f_svg_print	= svg_print_psimem_stats,
 	.f_raw_print	= raw_print_psimem_stats,
-	.f_pcp_print	= pcp_print_psimem_stats,
 	.f_count_new	= NULL,
 	.desc		= "Pressure-stall memory statistics",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_psimem_stats,
 #endif
 	.name		= "A_PSI_MEM",
 	.item_list	= NULL,
@@ -2210,6 +2336,7 @@ struct activity psi_mem_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PSI_MEM_SIZE,
 	.msize		= STATS_PSI_MEM_SIZE,
+	.metrics	= STATS_PSI_MEM_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,
@@ -2244,9 +2371,11 @@ struct activity pwr_bat_act = {
 	.f_json_print	= json_print_pwr_bat_stats,
 	.f_svg_print	= svg_print_pwr_bat_stats,
 	.f_raw_print	= raw_print_pwr_bat_stats,
-	.f_pcp_print	= pcp_print_pwr_bat_stats,
 	.f_count_new	= count_new_bat,
 	.desc		= "Batteries capacity",
+#endif
+#if defined(SOURCE_SADF) || defined(HAVE_PCP)
+	.f_pcp_print	= pcp_print_pwr_bat_stats,
 #endif
 	.name		= "A_PWR_BAT",
 	.item_list	= NULL,
@@ -2261,6 +2390,7 @@ struct activity pwr_bat_act = {
 	.xdev_list	= NULL,
 	.fsize		= STATS_PWR_BAT_SIZE,
 	.msize		= STATS_PWR_BAT_SIZE,
+	.metrics	= STATS_PWR_BAT_METRICS,
 	.opt_flags	= 0,
 	.buf		= {NULL, NULL, NULL},
 	.spmin		= NULL,

@@ -82,6 +82,32 @@ The command name of the task.
 .B \-\-dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .TP
+.BI "\-a " "archive"
+Read per-process statistics from a PCP (Performance Co-Pilot) archive
+rather than from the live
+.I /proc
+filesystem.
+The
+.I archive
+argument is the base path of a PCP archive created by
+.BR sadc (8)
+with the
+.B \-O pcp
+or
+.B \-O sa+pcp
+option and a
+.I sysstat.pcpconf
+that includes
+.B proc.*
+metrics.
+All display options
+.RB ( \-u ", " \-r ", " \-d ", " \-w ", " \-v )
+apply to archive data.
+This option requires PCP support
+.RB ( HAVE_PCP ).
+See also
+.BR sysstat.pcpconf (5).
+.TP
 .BI "\-e " "program args"
 Execute
 .I program
@@ -447,12 +473,25 @@ A kibibyte is equal to 1024 bytes, and a mebibyte is equal to 1024 kibibytes.
 
 .SH FILES
 .IR "/proc " "contains various files with system statistics."
+.PP
+.I /etc/sysconfig/sysstat.pcpconf
+.RS
+Local PMDA metric configuration used by
+.BR sadc (8)
+to record per-process metrics into PCP archives.
+Must list the
+.B proc.*
+metrics required by the display options passed to
+.BR "pidstat -f" .
+See
+.BR sysstat.pcpconf (5).
+.RE
 
 .SH AUTHOR
 Sebastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
-.BR "sar" "(1), " "top" "(1), " "ps" "(1), " "mpstat" "(1), " "iostat" "(1), " "vmstat" "(8)"
+.BR "sar" "(1), " "top" "(1), " "ps" "(1), " "mpstat" "(1), " "iostat" "(1), " "vmstat" "(8), " "sadc" "(8), " "sysstat.pcpconf" "(5)"
 .PP
 .I https://github.com/sysstat/sysstat
 .br

@@ -339,8 +339,18 @@ struct stats_disk {
 	unsigned int	   minor;
 	unsigned int	   dc_ticks;
 	unsigned int	   part_nr;
+	/* PCP-only extensions: not written to native sa format (see STATS_DISK_FSIZE) */
+	unsigned long long rd_ios	__attribute__ ((aligned (8)));
+	unsigned long long wr_ios	__attribute__ ((aligned (8)));
+	unsigned long long dc_ios	__attribute__ ((aligned (8)));
 };
 
+/* On-disk size for native sa format — frozen; do not change */
+#define STATS_DISK_FSIZE	\
+	(sizeof(unsigned long long) * 3 + \
+	 sizeof(unsigned long) * 3 + \
+	 sizeof(unsigned int) * 8)
+/* In-memory size includes PCP-only rd/wr/dc_ios fields */
 #define STATS_DISK_SIZE	(sizeof(struct stats_disk))
 #define STATS_DISK_ULL	3
 #define STATS_DISK_UL	3

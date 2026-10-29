@@ -65,6 +65,19 @@ Indicate the number of deleted files per second.
 Print debug output to stderr.
 .\}
 .TP
+.BI "\-a " "archive"
+Read CIFS statistics from a PCP (Performance Co-Pilot) archive written
+by
+.BR pmlogger (1)
+with the CIFS PMDA
+.RB ( cifs.fs.* ", " cifs.ops.* )
+metrics, instead of sampling the live
+.I /proc/fs/cifs/Stats
+filesystem.
+Requires PCP support
+.RB ( HAVE_PCP )
+and the PCP CIFS PMDA installed.
+.TP
 .B \-\-dec={ 0 | 1 | 2 }
 Specify the number of decimal places to use (0 to 2, default value is 2).
 .TP
@@ -165,7 +178,7 @@ Maintained by Sebastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
 .BR "sar" "(1), " "pidstat" "(1), " "mpstat" "(1), " "vmstat" "(8), " "iostat" "(1),"
-.BR "tapestat" "(1), " "nfsiostat" "(1)"
+.BR "tapestat" "(1), " "nfsiostat" "(1), " "pmlogger" "(1)"
 
 .I https://github.com/sysstat/sysstat
 .br

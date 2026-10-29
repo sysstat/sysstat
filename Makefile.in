@@ -46,11 +46,33 @@ DFSENSORS32 = @DFSENSORS32@
 endif
 
 HAVE_PCP = @HAVE_PCP@
-LFPCP =
+LFPCP_READ =
+LFPCP_WRITE =
 DFPCP =
+# PCP object files: conditional objects are empty when HAVE_PCP=n.
+# pcp_stats.o and pcp_def_metrics.o are always linked into sadf and sar
+# because act_sadf.o/act_sar.o reference pcp_print_* functions unconditionally
+# (the functions compile to stubs when HAVE_PCP is not defined).
+PCP_SADC_OBJS =
+PCP_SAR_OBJ =
+PCP_LOCAL_OBJ =
+PCP_IOSTAT_OBJ =
+PCP_MPSTAT_OBJ =
+PCP_PIDSTAT_OBJ =
+PCP_TAPESTAT_OBJ =
+PCP_CIFSIOSTAT_OBJ =
 ifeq ($(HAVE_PCP),y)
-LFPCP = @LFPCP@
+LFPCP_READ = @LFPCP_READ@
+LFPCP_WRITE = @LFPCP_WRITE@
 DFPCP = @DFPCP@
+PCP_SADC_OBJS   = pcp_stats.o pcp_def_metrics.o pcp_local.o
+PCP_SAR_OBJ     = pcp_sar.o
+PCP_LOCAL_OBJ   = pcp_local.o
+PCP_IOSTAT_OBJ  = pcp_iostat.o
+PCP_MPSTAT_OBJ  = pcp_mpstat.o
+PCP_PIDSTAT_OBJ = pcp_pidstat.o
+PCP_TAPESTAT_OBJ    = pcp_tapestat.o
+PCP_CIFSIOSTAT_OBJ  = pcp_cifsiostat.o
 endif
 
 # Directories
@@ -105,7 +127,7 @@ CFLAGS += -Wall -Wstrict-prototypes -pipe -O2 -fno-tree-slp-vectorize
 ifndef DFLAGS
 DFLAGS = @DFLAGS@
 endif
-DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\"
+DFLAGS += -DSA_DIR=\"$(SA_DIR)\" -DSADC_PATH=\"$(SADC_PATH)\" -DSYSCONFIG_DIR=\"$(SYSCONFIG_DIR)\"
 DFLAGS += $(DFSENSORS) $(DFSENSORS32)
 DFLAGS += $(DFPCP)
 
@@ -275,7 +297,7 @@ act_sadc.o: activity.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 act_sar.o: activity.c sa.h common.h rd_stats.h rd_sensors.h pr_stats.h pr_xstats.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h systest.h
+act_sadf.o: activity.c sa.h common.h rd_stats.h rd_sensors.h rndr_stats.h xml_stats.h json_stats.h svg_stats.h raw_stats.h pcp_stats.h systest.h pcp_compat.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADF $(DFLAGS) $<
 
 rd_stats.o: rd_stats.c common.h rd_stats.h systest.h
@@ -306,7 +328,7 @@ svg_stats.o: svg_stats.c sa.h common.h rd_stats.h rd_sensors.h ioconf.h sysconfi
 
 raw_stats.o: raw_stats.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h systest.h
+pcp_stats.o: pcp_stats.c common.h rd_stats.h rd_sensors.h sa.h systest.h pcp_stats.h pcp_compat.h
 
 sa_wrap.o: sa_wrap.c sa.h common.h rd_stats.h count.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SADC $(DFLAGS) $<
@@ -317,9 +339,11 @@ format_sadf.o: format.c sadf.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 format_sar.o: format.c sa.h common.h rd_stats.h rd_sensors.h systest.h
 	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h systest.h
+pcp_def_metrics.o: pcp_def_metrics.c common.h sa.h rd_stats.h rd_sensors.h systest.h pcp_def_metrics.h pcp_compat.h
 
-sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h systest.h
+pcp_local.o: pcp_local.c common.h sa.h pcp_local.h sysconfig.h systest.h
+
+sadf_misc.o: sadf_misc.c sadf.h pcp_def_metrics.h sa.h common.h rd_stats.h rd_sensors.h systest.h pcp_compat.h
 
 sa_conv.o: sa_conv.c version.h sadf.h sa.h common.h rd_stats.h rd_sensors.h sa_conv.h systest.h
 
@@ -339,41 +363,61 @@ librdstats_light.a: rd_stats_light.o count_light.o
 librdsensors.a: rd_sensors.o
 	$(AR) rvs $@ $?
 
-sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h
+sadc.o: sadc.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h pcp_stats.h pcp_def_metrics.h pcp_compat.h
 
-sadc: LFLAGS += $(LFSENSORS)
+sadc: LFLAGS += $(LFSENSORS) $(LFPCP_WRITE)
 
-sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o systest.o librdstats.a librdsensors.a libsyscom.a
+sadc: sadc.o act_sadc.o sa_wrap.o sa_common_light.o common_light.o $(PCP_SADC_OBJS) systest.o librdstats.a librdsensors.a libsyscom.a
 
-sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h systest.h
+sar.o: sar.c sa.h version.h common.h rd_stats.h rd_sensors.h pcp_stats.h pcp_sar.h systest.h pcp_compat.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
-sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o pr_xstats.o librdstats_light.a libsyscom.a
+sar: LFLAGS += $(LFPCP_WRITE)
+sar: sar.o act_sar.o format_sar.o sa_common.o pr_stats.o pr_xstats.o pcp_stats.o pcp_def_metrics.o $(PCP_SAR_OBJ) $(PCP_LOCAL_OBJ) librdstats_light.a libsyscom.a
+
+pcp_sar.o: pcp_sar.c sa.h version.h common.h rd_stats.h rd_sensors.h pcp_stats.h pcp_def_metrics.h pcp_sar.h systest.h pcp_compat.h
+	$(CC) -o $@ -c $(CFLAGS) -DSOURCE_SAR $(DFLAGS) $<
 
 sadf.o: sadf.c sadf.h version.h sa.h common.h rd_stats.h rd_sensors.h systest.h
 
-sadf: LFLAGS += $(LFPCP)
+sadf: LFLAGS += $(LFPCP_WRITE)
 
-sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o pcp_def_metrics.o sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o pcp_stats.o sa_common.o librdstats_light.a libsyscom.a
+sadf: sadf.o act_sadf.o format_sadf.o sadf_misc.o pcp_stats.o pcp_def_metrics.o $(PCP_LOCAL_OBJ) sa_conv.o rndr_stats.o xml_stats.o json_stats.o svg_stats.o raw_stats.o sa_common.o librdstats_light.a libsyscom.a
 
-iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h systest.h
+iostat.o: iostat.c iostat.h version.h common.h rd_stats.h count.h systest.h pcp_iostat.h
 
-iostat: iostat.o librdstats_light.a libsyscom.a
+pcp_iostat.o: pcp_iostat.c iostat.h common.h pcp_def_metrics.h pcp_iostat.h systest.h pcp_compat.h
 
-tapestat.o: tapestat.c tapestat.h version.h common.h count.h rd_stats.h systest.h
+iostat: LFLAGS += $(LFPCP_READ)
+iostat: iostat.o $(PCP_IOSTAT_OBJ) librdstats_light.a libsyscom.a
 
-tapestat: tapestat.o librdstats_light.a libsyscom.a
+tapestat.o: tapestat.c tapestat.h version.h common.h count.h rd_stats.h systest.h pcp_tapestat.h
 
-pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h systest.h
+pcp_tapestat.o: pcp_tapestat.c tapestat.h common.h pcp_tapestat.h systest.h pcp_def_metrics.h pcp_compat.h
 
-pidstat: pidstat.o librdstats_light.a libsyscom.a
+tapestat: LFLAGS += $(LFPCP_READ)
+tapestat: tapestat.o $(PCP_TAPESTAT_OBJ) librdstats_light.a libsyscom.a
 
-mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h systest.h
+pidstat.o: pidstat.c pidstat.h version.h common.h rd_stats.h count.h systest.h pcp_pidstat.h
 
-mpstat: mpstat.o librdstats_light.a libsyscom.a
+pcp_pidstat.o: pcp_pidstat.c pidstat.h common.h pcp_pidstat.h systest.h pcp_compat.h
 
-cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h systest.h
+pidstat: LFLAGS += $(LFPCP_READ)
+pidstat: pidstat.o $(PCP_PIDSTAT_OBJ) librdstats_light.a libsyscom.a
 
-cifsiostat: cifsiostat.o librdstats_light.a libsyscom.a
+mpstat.o: mpstat.c mpstat.h version.h common.h rd_stats.h count.h systest.h pcp_mpstat.h
+
+pcp_mpstat.o: pcp_mpstat.c mpstat.h rd_stats.h common.h pcp_def_metrics.h pcp_mpstat.h systest.h pcp_compat.h
+
+mpstat: LFLAGS += $(LFPCP_READ)
+mpstat: mpstat.o $(PCP_MPSTAT_OBJ) librdstats_light.a libsyscom.a
+
+cifsiostat.o: cifsiostat.c cifsiostat.h count.h rd_stats.h version.h common.h systest.h pcp_cifsiostat.h
+
+pcp_cifsiostat.o: pcp_cifsiostat.c cifsiostat.h common.h pcp_cifsiostat.h systest.h pcp_def_metrics.h pcp_compat.h
+
+cifsiostat: LFLAGS += $(LFPCP_READ)
+cifsiostat: cifsiostat.o $(PCP_CIFSIOSTAT_OBJ) librdstats_light.a libsyscom.a
 
 # inisar: Old sar version
 
@@ -489,7 +533,7 @@ nls/sysstat.pot: $(wildcard @srcdir@/*.c)
 	if [ ! -d nls ]; then \
 		mkdir nls; \
 	fi
-	$(XGETTEXT) -o $@ -k_ --msgid-bugs-address="sysstat <at> orange.fr" $^
+	$(XGETTEXT) -o $@ -k_ --from-code=UTF-8 --msgid-bugs-address="sysstat <at> orange.fr" $^
 
 # Phony targets
 .PHONY: clean distclean install install_base install_all uninstall copyyear \
@@ -864,7 +908,7 @@ clean:
 	rm -f tests/sa[0123]*
 	rm -f tests/root
 	rm -f tests/ini/inisar tests/32bits/sadc32 tests/32bits/sar32
-	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar.* tests/extra/pcpar-ssr.*
+	rm -f tests/ini/*.o tests/ini/*.a tests/ini/core tests/pcpar* tests/extra/pcpar-ssr.*
 	rm -f tests/32bits/*.o tests/32bits/*.a tests/32bits/core
 	find nls -name "*.gmo" -exec rm -f {} \;
 

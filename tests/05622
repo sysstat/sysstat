@@ -1,0 +1,13 @@
+. tests/variables
+if [ "$HAVE_PCP" = "y" ]; then
+	# mpstat -a reads CPU metrics from existing PCP archive
+	# pcpar-sadc archive contains kernel.percpu.cpu.* from sadc's built-in path
+	if pminfo -a tests/pcpar-sadc kernel.percpu.cpu.user > /dev/null 2>&1; then
+		LC_ALL=C TZ=GMT ./mpstat -a tests/pcpar-sadc > tests/out.mpstat-pcp-u.tmp 2>/dev/null
+		test $? -eq 0 || exit 1
+	else
+		echo "No CPU metrics in archive - skipped"
+	fi
+else
+	echo Skipped; touch tests/SKIPPED
+fi

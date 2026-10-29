@@ -1139,6 +1139,9 @@ __nr_t read_diskstats_disk(struct stats_disk *st_disk, __nr_t nr_alloc,
 				st_disk_i->nr_ios    = (unsigned long long) rd_ios +
 						       (unsigned long long) wr_ios +
 						       (unsigned long long) dc_ios;
+				st_disk_i->rd_ios    = (unsigned long long) rd_ios;
+				st_disk_i->wr_ios    = (unsigned long long) wr_ios;
+				st_disk_i->dc_ios    = (unsigned long long) dc_ios;
 				st_disk_i->rd_sect   = rd_sec;
 				st_disk_i->wr_sect   = wr_sec;
 				st_disk_i->dc_sect   = dc_sec;
