@@ -4,5 +4,5 @@ cp -f tests/sysstat.sysconfig-default.tmp ./sysstat.sysconfig
 
 rm -f tests/root
 ln -s ${T_SRCDIR}/tests/root1 tests/root
-./cron/sysstat.sleep post hibernate
+TZ=GMT ./cron/sysstat.sleep post hibernate
 
