@@ -3672,8 +3672,12 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		/* Print results */
 		again = write_stats(curr, dis);
 
-		if (!again)
-			return;
+		if (!again) {
+			if (DISPLAY_JSON_OUTPUT(xflags)) {
+				printf("\n");
+			}
+			goto terminate;
+		}
 
 		if (count > 0) {
 			count--;
