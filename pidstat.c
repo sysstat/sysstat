@@ -78,7 +78,7 @@ unsigned int actflag = 0;	/* Activity flag */
 uint64_t xflags = 0;		/* Extended flag for options used by multiple commands */
 
 struct sigaction alrm_act, int_act, chld_act;
-int signal_caught = 0;
+int sigint_caught = 0;
 int status = 0;
 
 int dplaces_nr = -1;		/* Number of decimal places */
@@ -100,7 +100,7 @@ void usage(char *progname)
 			  "[ -d ] [ -H ] [ -h ] [ -I ] [ -l ] [ -R ] [ -r ] [ -s ] [ -t ] [ -U [ <username> ] ]\n"
 			  "[ -u ] [ -V ] [ -v ] [ -w ] [ -C <command> ] [ -G <process_name> ]\n"
 			  "[ -p { <pid> [,...] | SELF | ALL } ] [ -T { TASK | CHILD | ALL } ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o JSON ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ --human ] [ -o { JSON | NDJSON } ]\n"));
 	exit(1);
 }
 
@@ -129,7 +129,7 @@ void int_handler(int sig)
 {
 	int status_code;
 
-	signal_caught = TRUE;
+	sigint_caught = TRUE;
 
 	if (sig == SIGCHLD) {
 		/*
@@ -1337,7 +1337,8 @@ void print_json_line_id(int tab, struct st_pid *plist)
 	char format[32];
 	struct passwd *pwdent;
 
-	xprintf(NO_CR, tab, "{\"");
+	xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS + NO_SPC : NO_CR,
+		tab, "{\"");
 
 	if (DISPLAY_USERNAME(pidflag)) {
 		printf("USER");
@@ -1928,11 +1929,12 @@ int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long lon
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
 	int again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"task-cpu-load\": [");
+	xprintf(bh, tab++, "\"task-cpu-load\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -1940,7 +1942,7 @@ int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long lon
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -1971,8 +1973,10 @@ int write_json_pid_task_cpu_stats(int tab, int prev, int curr, unsigned long lon
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2113,11 +2117,12 @@ int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
 	int rc, again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"child-cpu-load\": [");
+	xprintf(bh, tab++, "\"child-cpu-load\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2126,7 +2131,7 @@ int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -2153,8 +2158,10 @@ int write_json_pid_child_cpu_stats(int tab, int prev, int curr, int *follow)
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2304,11 +2311,12 @@ int write_json_pid_task_memory_stats(int tab, int prev, int curr,
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
 	int rc, again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"task-memory\": [");
+	xprintf(bh, tab++, "\"task-memory\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2317,7 +2325,7 @@ int write_json_pid_task_memory_stats(int tab, int prev, int curr,
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -2338,8 +2346,10 @@ int write_json_pid_task_memory_stats(int tab, int prev, int curr,
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2476,11 +2486,12 @@ int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
 	int rc, again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"child-memory\": [");
+	xprintf(bh, tab++, "\"child-memory\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2489,7 +2500,7 @@ int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -2506,8 +2517,10 @@ int write_json_pid_child_memory_stats(int tab, int prev, int curr, int *follow)
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2643,11 +2656,12 @@ int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
 	struct pid_stats *pstc;
 	struct st_pid *plist;
 	int rc, again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"stack\": [");
+	xprintf(bh, tab++, "\"stack\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2656,7 +2670,7 @@ int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -2672,8 +2686,10 @@ int write_json_pid_stack_stats(int tab, int prev, int curr, int *follow)
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2812,11 +2828,12 @@ int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
 	struct st_pid *plist;
 	int rc, again = 0,  next = FALSE;
 	double rbytes, wbytes, cbytes;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"io\": [");
+	xprintf(bh, tab++, "\"io\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -2825,7 +2842,7 @@ int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -2856,8 +2873,10 @@ int write_json_pid_io_stats(int tab, int prev, int curr, unsigned long long itv,
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -2987,11 +3006,12 @@ int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
 	struct pid_stats *pstc, *pstp;
 	struct st_pid *plist;
 	int again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"context-switch\": [");
+	xprintf(bh, tab++, "\"context-switch\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -3000,7 +3020,7 @@ int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -3017,8 +3037,10 @@ int write_json_pid_ctxswitch_stats(int tab, int prev, int curr,
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -3155,11 +3177,12 @@ int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
 	struct pid_stats *pstc;
 	struct st_pid *plist;
 	int rc, again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"kernel\": [");
+	xprintf(bh, tab++, "\"kernel\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -3168,7 +3191,7 @@ int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -3189,8 +3212,10 @@ int write_json_pid_ktab_stats(int tab, int prev, int curr, int *follow)
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -3312,11 +3337,12 @@ int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
 	struct pid_stats *pstc;
 	struct st_pid *plist;
 	int again = 0, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (*follow) {
-		printf(",\n");
+		printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 	}
-	xprintf(0, tab++, "\"realtime\": [");
+	xprintf(bh, tab++, "\"realtime\": [");
 
 	for (plist = pid_list; plist != NULL; plist = plist->next) {
 
@@ -3325,7 +3351,7 @@ int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -3341,8 +3367,10 @@ int write_json_pid_rt_stats(int tab, int prev, int curr, int *follow)
 		again = 1;
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 	*follow = TRUE;
 
 	return again;
@@ -3413,6 +3441,7 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 {
 	unsigned long long itv, deltot_jiffies;
 	int again = 0, tab = 4, follow = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -3421,8 +3450,8 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	deltot_jiffies = get_interval(tot_jiffies[prev], tot_jiffies[curr]);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, tab++, "{");
-		xprintf(0, tab, "\"timestamp\": \"%s\",", curr_string);
+		xprintf(bh + NO_SPC, tab++, "{");
+		xprintf(bh + NO_SPC, tab, "\"timestamp\": \"%s\",", curr_string);
 	}
 
 	itv = get_interval(uptime_cs[prev], uptime_cs[curr]);
@@ -3503,8 +3532,13 @@ int write_stats_core(int prev, int curr, int dis, int disp_avg,
 	}
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		printf("\n");
-		xprintf(NO_CR, --tab, "}");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\n");
+			xprintf(NO_CR, --tab, "}");
+		}
+		else {
+			printf("}]}");
+		}
 	}
 
 	if (DISPLAY_ALL_PID(pidflag)) {
@@ -3577,6 +3611,10 @@ int write_stats(int curr, int dis)
 	cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
 	cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
 
+	if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("{\"statistics\": [");
+	}
+
 	return (write_stats_core(!curr, curr, dis, FALSE,
 				 cur_time[!curr], cur_time[curr]));
 }
@@ -3604,6 +3642,10 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	if (DISPLAY_MEM(actflag)) {
 		/* Get total memory */
 		read_proc_meminfo();
+	}
+
+	if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
 	}
 
 	if (!interval && !EXEC_PGM(pidflag)) {
@@ -3641,7 +3683,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 	/* Wait for SIGALRM (or possibly SIGINT) signal */
 	__pause();
 
-	if (signal_caught && interval)
+	if (sigint_caught && interval)
 		/*
 		 * SIGINT/SIGTERM/SIGCHLD signals caught during first interval:
 		 * Exit immediately.
@@ -3684,10 +3726,9 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 		}
 
 		if (count) {
-
 			__pause();
 
-			if (signal_caught) {
+			if (sigint_caught) {
 				/*
 				 * SIGINT/SIGTERM/SIGCHLD signals caught:
 				 * Display average stats.
@@ -3695,13 +3736,14 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 				count = 0;
 			}
 			else {
-				if (DISPLAY_JSON_OUTPUT(xflags)) {
+				if (DISPLAY_JSON_OUTPUT(xflags) &&
+				    !DISPLAY_NDJSON_OUTPUT(xflags)) {
 					printf(",");
 				}
 				curr ^= 1;
 			}
 		}
-		if (signal_caught || DISPLAY_JSON_OUTPUT(xflags)) {
+		if (sigint_caught || DISPLAY_JSON_OUTPUT(xflags)) {
 			printf("\n");
 		}
 	}
@@ -3719,7 +3761,9 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 
 terminate:
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		}
 		fflush(stdout);
 	}
 }
@@ -3789,6 +3833,7 @@ int main(int argc, char **argv)
 	int opt = 1, dis_hdr = -1, pid_nr = 0;
 	int i;
 	unsigned int pid;
+
 	struct utsname header;
 	int rows = 23;
 	char *t;
@@ -3936,11 +3981,14 @@ int main(int argc, char **argv)
 			/* Select output format */
 			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
 				xflags |= X_D_JSON_OUTPUT;
-				opt++;
+			}
+			else if (argv[opt] && !strcmp(argv[opt], K_NDJSON)) {
+				xflags |= X_D_JSON_OUTPUT + X_D_NDJSON_OUTPUT;
 			}
 			else {
 				usage(argv[0]);
 			}
+			opt++;
 		}
 
 		else if (!strncmp(argv[opt], "-", 1)) {
@@ -4116,7 +4164,7 @@ int main(int argc, char **argv)
 	__uname(&header);
 	print_gal_header(&(ps_tstamp[0]), header.sysname, header.release,
 			 header.nodename, header.machine, cpu_nr,
-			 DISPLAY_JSON_OUTPUT(xflags));
+			 DISPLAY_JSON_OUTPUT(xflags) + DISPLAY_NDJSON_OUTPUT(xflags));
 
 	/* Main loop */
 	rw_pidstat_loop(dis_hdr, rows);
