@@ -1,5 +1,5 @@
 TZ=GMT
-DATE=`date --date=yesterday +%d`
+DATE=`TZ=GMT date --date=yesterday +%d`
 if [ ${DATE} -ne 18 ]
 then
 	rm -f tests/sa${DATE}
