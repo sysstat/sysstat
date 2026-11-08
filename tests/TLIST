@@ -115,7 +115,7 @@ NOTES:
 00220	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out.sa2.tmp && rm -f tests/sa${DATE}
 00225	LC_ALL=C TZ=GMT ./sa2 -A && mv tests/sar${DATE} tests/out2.sa2.tmp && rm -f tests/sa${DATE}
 	[ABOVE: Using sysstat.sysconfig-SADC_OPTION-D as sysstat.sysconfig file]
-00230	./cron/sysstat.sleep post hibernate
+00230	TZ=GMT ./cron/sysstat.sleep post hibernate
 00235	LC_ALL=C TZ=GMT ./sar -f tests/sa01 -C > tests/out.sa1-sleep.tmp
 00240	TZ=GMT ./sa1 --rotate --unix_time=${STEP} 1 1
 00245	LC_ALL=C TZ=GMT ./sar -f tests/sa${DATE} | grep -v SYSSTAT > tests/out.sa1-rot.tmp
@@ -203,21 +203,21 @@ NOTES:
 00510	LC_ALL=C ./sadf -d tests/data.tmp -C -- -A > tests/out.sadf-d.tmp
 00512	LC_ALL=C ./sadf -dh tests/data.tmp -- -Iu ALL -P all,3 > tests/out.sadf-dh.tmp
 00515	LC_ALL=C ./sadf -d tests/data.tmp -- -qu > tests/out.sadf-d-qu.tmp
-00520	LC_ALL=C ./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
-00525	LC_ALL=C ./sadf -x tests/datax.tmp -C 1 2 -- -uw -P 0-2 > tests/out1.sadf-x.tmp
-00530	LC_ALL=C ./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
-00531	LC_ALL=C ./sadf -J tests/data.tmp -C -- -A > tests/out.sadf-J.tmp
-00532	LC_ALL=C ./sadf -J tests/data4.tmp -C > tests/out2.sadf-J.tmp
-00540	LC_ALL=C ./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
-00542	LC_ALL=C ./sadf -O height=370 -g tests/data.tmp > tests/out3.sadf-g.tmp
-00545	LC_ALL=C ./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
+00520	LC_ALL=C TZ=GMT ./sadf -x tests/data.tmp -C -- -A > tests/out.sadf-x.tmp
+00525	LC_ALL=C TZ=GMT ./sadf -x tests/datax.tmp -C 1 2 -- -uw -P 0-2 > tests/out1.sadf-x.tmp
+00530	LC_ALL=C TZ=GMT ./sadf -j tests/data.tmp -C -- -A > tests/out.sadf-j.tmp
+00531	LC_ALL=C TZ=GMT ./sadf -J tests/data.tmp -C -- -A > tests/out.sadf-J.tmp
+00532	LC_ALL=C TZ=GMT ./sadf -J tests/data4.tmp -C > tests/out2.sadf-J.tmp
+00540	LC_ALL=C TZ=GMT ./sadf -g tests/data.tmp -C -- -A > tests/out.sadf-g.tmp
+00542	LC_ALL=C TZ=GMT ./sadf -O height=370 -g tests/data.tmp > tests/out3.sadf-g.tmp
+00545	LC_ALL=C TZ=GMT ./sadf -g tests/data.tmp -- -F MOUNT > tests/out1.sadf-g.tmp
 00550	LC_ALL=C TZ=GMT ./sadf -g -O autoscale,packed,oneday,showidle,showtoc,skipempty,showinfo,bwcol tests/data.tmp -T -C -- -A > tests/out2.sadf-g.tmp
 00555	LC_ALL=C TZ=GMT S_COLORS_PALETTE="0=000000:1=1a1aff:2=1affb2:3=b21aff:4=1ab2ff:5=ff1a1a:6=ffb31a:7=b2ff1a:8=efefef:9=000000:A=1a1aff:B=1affb2:C=b21aff:D=1ab2ff:E=ff1a1a:F=ffb31a:G=cc3300:H=000000:I=000000:K=ffffff:L=000000:T=000000:W=000000:X=000000" ./sadf -g --getenv -O customcol tests/data.tmp -C > tests/out.sadf-g-cc.tmp
-00560	LC_ALL=C ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
+00560	LC_ALL=C TZ=GMT ./sadf -H tests/data.tmp > tests/out.sadf-H.tmp
 00570	./sadf -r -O debug tests/data.tmp -C -- -A > tests/out.sadf-r.tmp
 00580	LC_ALL=C ./sadf -d -s 13:20:20 -e 13:20:40 --iface=enp6s0 --dev=sda --fs=/dev/sda6 tests/data.tmp -- -n DEV -Fdp > tests/out.sadf-se.tmp
-00581	LC_ALL=C ./sadf -j --fs=/dev/sda6,/home tests/data.tmp -- -F > tests/out.sadf-fs.tmp
-00582	LC_ALL=C ./sadf -x --fs=/dev/sda6,/home tests/data.tmp -- -F MOUNT > tests/out2.sadf-fs.tmp
+00581	LC_ALL=C TZ=GMT ./sadf -j --fs=/dev/sda6,/home tests/data.tmp -- -F > tests/out.sadf-fs.tmp
+00582	LC_ALL=C TZ=GMT ./sadf -x --fs=/dev/sda6,/home tests/data.tmp -- -F MOUNT > tests/out2.sadf-fs.tmp
 00585	LC_ALL=C ./sadf -d --iface=enp6s0 tests/data-long.tmp -- -n DEV 65 > tests/out.sadf-i.tmp
 00590	LC_ALL=C ./sadf -l -O pcparchive=tests/pcpar tests/data.tmp -C -- -A
 
@@ -272,11 +272,11 @@ NOTES:
 =====	Reading datafiles with unknown activity type or format
 00780	LC_ALL=C TZ=GMT ./sar -P ALL -f tests/data-ukwn > tests/out.sar-data-ukwn.tmp
 00784	LC_ALL=C TZ=GMT ./sar -w -f tests/data-ukwn > tests/out2.sar-data-ukwn.tmp
-00787	LC_ALL=C ./sadf -H tests/data-ukwn > tests/out.sadf-data-ukwn.tmp
+00787	LC_ALL=C TZ=GMT ./sadf -H tests/data-ukwn > tests/out.sadf-data-ukwn.tmp
 00790	LC_ALL=C TZ=GMT ./sar -A -f tests/data-ukwn0 > tests/out.sar-data-ukwn0.tmp
-00791	LC_ALL=C ./sadf -H tests/data-ukwn0 > tests/out.sadf-data-ukwn0.tmp
+00791	LC_ALL=C TZ=GMT ./sadf -H tests/data-ukwn0 > tests/out.sadf-data-ukwn0.tmp
 00793	LC_ALL=C TZ=GMT ./sar -uq -f tests/data-ukwn1 > tests/out.sar-data-ukwn1.tmp
-00794	LC_ALL=C ./sadf -H tests/data-ukwn1 > tests/out.sadf-data-ukwn1.tmp
+00794	LC_ALL=C TZ=GMT ./sadf -H tests/data-ukwn1 > tests/out.sadf-data-ukwn1.tmp
 
 =====	Testing sar's options
 00800	LC_ALL=C TZ=GMT ./sar --iface=lo,enp6s0,eth0 -n DEV,EDEV -f tests/data.tmp > tests/out.sar-iface.tmp
@@ -320,17 +320,17 @@ NOTES:
 =====	sar/sadf: Reading data0.tmp
 01100	LC_ALL=C TZ=GMT ./sar -A -f tests/data0.tmp > tests/out0.sar-A.tmp
 01110	./sadf tests/data0.tmp -- -A > tests/out0.sadf.tmp
-01120	./sadf -x tests/data0.tmp -- -A > tests/out0.sadf-x.tmp
+01120	TZ=GMT ./sadf -x tests/data0.tmp -- -A > tests/out0.sadf-x.tmp
 01130	./sadf -j tests/data0.tmp -- -A | $VER_JSON >/dev/null
 01140	LC_ALL=C TZ=GMT ./sar -r -f tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
 01145	LC_ALL=C ./sadf tests/data0.tmp 2>&1 | grep "Requested activities not available" >/dev/null
-01150	LC_ALL=C ./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
+01150	LC_ALL=C TZ=GMT ./sadf -g tests/data0.tmp -- -A > tests/out0.sadf-g.tmp
 
 01210	LC_ALL=C TZ=GMT ./sar -A -f tests/data0-1.tmp > tests/out01.sar-A.tmp
 01220	./sadf -d tests/data0-1.tmp -- -A > tests/out01.sadf-d.tmp
 01230	./sadf -j tests/data0-1.tmp -- -A | $VER_JSON >/dev/null
-01240	LC_ALL=C ./sadf -g tests/data0-1.tmp -- -A > tests/out01.sadf-g.tmp
-01250	LC_ALL=C ./sadf -H tests/data0-1.tmp > tests/out01.sadf-H.tmp
+01240	LC_ALL=C TZ=GMT ./sadf -g tests/data0-1.tmp -- -A > tests/out01.sadf-g.tmp
+01250	LC_ALL=C TZ=GMT ./sadf -H tests/data0-1.tmp > tests/out01.sadf-H.tmp
 
 =====	Playing with standard activity datafiles
 01300	echo foo >tests/sa01 ; ./sadc 1 1 - 2>&1 | grep "Invalid system activity" >/dev/null
@@ -341,7 +341,7 @@ NOTES:
 01320	LC_ALL=C TZ=GMT ./sadc -D -
 01330	LC_ALL=C TZ=GMT ./sar -f tests/sa20200601 > tests/out32.sar-u.tmp
 01335	LC_ALL=C TZ=GMT ./sar > tests/out33.sar-u.tmp
-01340	./sadf > tests/out3.sadf.tmp
+01340	TZ=GMT ./sadf > tests/out3.sadf.tmp
 01350	TZ=GMT ./sadc --unix_time=1556755199 - 1 3
 	[Create sa01 and sa02 - Timestamp can be obtained with: date +%s --date='Wed May  1 23:59:59 CEST 2019']
 01352	LC_ALL=C TZ=GMT ./sar -f tests/sa01 > tests/out33.sar-u.tmp
