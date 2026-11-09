@@ -141,7 +141,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Options are:\n"
 			  "[ -A ] [ -H ] [ -n ] [ -T ] [ -U ] [ -u ] [ -V ]\n"
 			  "[ -I { SUM | CPU | SCPU | ALL } ] [ -N { <node_list> | ALL } ]\n"
-			  "[ --dec={ 0 | 1 | 2 } ] [ -o JSON ] [ -P { <cpu_list> | ALL } ]\n"));
+			  "[ --dec={ 0 | 1 | 2 } ] [ -o { JSON | NDJSON } ] [ -P { <cpu_list> | ALL } ]\n"));
 	exit(1);
 }
 
@@ -738,15 +738,16 @@ void write_plain_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev,
  *		CPU bitmap for offline CPU.
  ***************************************************************************
  */
-void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, int curr,
-			  const unsigned char offline_cpu_bitmap[])
+void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev,
+			  int curr, const unsigned char offline_cpu_bitmap[])
 {
 	int i, next = FALSE;
 	char cpu_name[16], topology[1024] = "";
 	struct stats_cpu *scc, *scp;
 	struct cpu_topology *cpu_topo_i;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
-	xprintf(0, tab++, "\"cpu-load\": [");
+	xprintf(bh, tab++, "\"cpu-load\": [");
 
 	/*
 	 * Now display CPU statistics (including CPU "all"),
@@ -763,7 +764,7 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 		scp = st_cpu[prev] + i;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -795,7 +796,8 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 				 * If the CPU is tickless then there is no change in CPU values
 				 * but the sum of values is not zero.
 				 */
-				xprintf(NO_CR, tab, "{\"cpu\": \"%d\"%s, \"usr\": 0.00, \"nice\": 0.00, "
+				xprintf(bh | (NO_CR + NO_SPC), tab,
+					"{\"cpu\": \"%d\"%s, \"usr\": 0.00, \"nice\": 0.00, "
 					"\"sys\": 0.00, \"iowait\": 0.00, \"irq\": 0.00, "
 					"\"soft\": 0.00, \"steal\": 0.00, \"guest\": 0.00, "
 					"\"gnice\": 0.00, \"idle\": 100.00}", i - 1, topology);
@@ -803,7 +805,8 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 			}
 		}
 
-		xprintf(NO_CR, tab, "{\"cpu\": \"%s\"%s, \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
+		xprintf(bh | (NO_CR + NO_SPC), tab,
+			"{\"cpu\": \"%s\"%s, \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
 			"\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
 			"\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}",
 			cpu_name, topology,
@@ -835,8 +838,10 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 				    scc->cpu_idle, deltot_jiffies));
 	}
 
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 }
 
 /*
@@ -875,7 +880,7 @@ void write_cpu_stats(int dis, unsigned long long deltot_jiffies, int prev, int c
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
-			printf(",\n");
+			printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 		}
 		*next = TRUE;
 		write_json_cpu_stats(tab, deltot_jiffies, prev, curr,
@@ -961,7 +966,6 @@ void write_plain_node_stats(int dis, unsigned long long deltot_jiffies,
 				cprintf_xpc(NO_UNIT, FALSE, 10, 7, 2,
 					   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0);
 				printf("\n");
-
 				continue;
 			}
 		}
@@ -1018,8 +1022,9 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 	struct stats_cpu *snc, *snp, *scc, *scp;
 	int cpu, node, next = FALSE;
 	char node_name[16];
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
-	xprintf(0, tab++, "\"node-load\": [");
+	xprintf(bh, tab++, "\"node-load\": [");
 
 	for (node = 0; node <= node_nr + 1; node++) {
 
@@ -1035,7 +1040,7 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -1064,16 +1069,15 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 
 			if (!deltot_jiffies) {
 				/* All CPU in node are tickless and/or offline */
-				xprintf(NO_CR, tab,
+				xprintf(bh | (NO_CR + NO_SPC), tab,
 					"{\"node\": \"%d\", \"usr\": 0.00, \"nice\": 0.00, \"sys\": 0.00, "
 					"\"iowait\": 0.00, \"irq\": 0.00, \"soft\": 0.00, \"steal\": 0.00, "
 					"\"guest\": 0.00, \"gnice\": 0.00, \"idle\": 100.00}", node - 1);
-
 				continue;
 			}
 		}
 
-		xprintf(NO_CR, tab,
+		xprintf(bh | (NO_CR + NO_SPC), tab,
 			"{\"node\": \"%s\", \"usr\": %.2f, \"nice\": %.2f, \"sys\": %.2f, "
 			"\"iowait\": %.2f, \"irq\": %.2f, \"soft\": %.2f, \"steal\": %.2f, "
 			"\"guest\": %.2f, \"gnice\": %.2f, \"idle\": %.2f}", node_name,
@@ -1104,8 +1108,11 @@ void write_json_node_stats(int tab, unsigned long long deltot_jiffies,
 			ll_sp_value(snp->cpu_idle,
 				    snc->cpu_idle, deltot_jiffies));
 	}
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 }
 
 /*
@@ -1141,7 +1148,7 @@ void write_node_stats(int dis, unsigned long long deltot_jiffies, int prev, int 
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
-			printf(",\n");
+			printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 		}
 		*next = TRUE;
 		write_json_node_stats(tab, deltot_jiffies, prev, curr);
@@ -1250,14 +1257,16 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 	struct stats_global_irq *sic, *sip;
 	unsigned long long pc_itv;
 	int cpu, next = FALSE;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
-	xprintf(0, tab++, "\"sum-interrupts\": [");
+	xprintf(bh, tab++, "\"sum-interrupts\": [");
 
 	if (*cpu_bitmap & 1) {
 
 		next = TRUE;
 		/* Print total number of interrupts among all cpu */
-		xprintf(NO_CR, tab, "{\"cpu\": \"all\", \"intr\": %.2f}",
+		xprintf(bh | (NO_CR + NO_SPC), tab,
+			"{\"cpu\": \"all\", \"intr\": %.2f}",
 			S_VALUE(st_irq[prev]->irq_nr, st_irq[curr]->irq_nr, itv));
 	}
 
@@ -1275,7 +1284,7 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 			continue;
 
 		if (next) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		next = TRUE;
 
@@ -1284,18 +1293,23 @@ void write_json_isumcpu_stats(int tab, unsigned long long itv, int prev, int cur
 
 		if (!pc_itv) {
 			/* This is a tickless CPU: Value displayed is 0.00 */
-			xprintf(NO_CR, tab, "{\"cpu\": \"%d\", \"intr\": 0.00}",
+			xprintf(bh | (NO_CR + NO_SPC), tab,
+				"{\"cpu\": \"%d\", \"intr\": 0.00}",
 				cpu - 1);
 		}
 		else {
 			/* Display total number of interrupts for current CPU */
-			xprintf(NO_CR, tab, "{\"cpu\": \"%d\", \"intr\": %.2f}",
+			xprintf(bh | (NO_CR + NO_SPC), tab,
+				"{\"cpu\": \"%d\", \"intr\": %.2f}",
 				cpu - 1,
 				S_VALUE(sip->irq_nr, sic->irq_nr, itv));
 		}
 	}
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 }
 
 /*
@@ -1328,7 +1342,7 @@ void write_isumcpu_stats(int dis, unsigned long long itv, int prev, int curr,
 {
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
-			printf(",\n");
+			printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 		}
 		*next = TRUE;
 		write_json_isumcpu_stats(tab, itv, prev, curr, offline_cpu_bitmap);
@@ -1509,12 +1523,13 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 	int j = ic_nr, offset, cpu;
 	struct stats_irqcpu *p, *q, *p0, *q0;
 	int nextcpu = FALSE, nextirq;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	if (type == M_D_IRQ_CPU) {
-		xprintf(0, tab++, "\"individual-interrupts\": [");
+		xprintf(bh, tab++, "\"individual-interrupts\": [");
 	}
 	else {
-		xprintf(0, tab++, "\"soft-interrupts\": [");
+		xprintf(bh, tab++, "\"soft-interrupts\": [");
 	}
 
 	for (cpu = 1; cpu <= cpu_nr; cpu++) {
@@ -1529,11 +1544,12 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 			continue;
 
 		if (nextcpu) {
-			printf(",\n");
+			printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 		}
 		nextcpu = TRUE;
 		nextirq = FALSE;
-		xprintf(0, tab++, "{\"cpu\": \"%d\", \"intr\": [", cpu - 1);
+		xprintf(bh | NO_SPC, tab++,
+			"{\"cpu\": \"%d\", \"intr\": [", cpu - 1);
 
 		for (j = 0; j < ic_nr; j++) {
 
@@ -1550,7 +1566,8 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 			offset = j;
 
 			if (nextirq) {
-				printf(",\n");
+				printf(",%c",
+				       DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 			}
 			nextirq = TRUE;
 
@@ -1573,7 +1590,8 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 
 			if (!strcmp(p0->irq_name, q0->irq_name) || !interval) {
 				q = st_ic[prev] + (cpu - 1) * ic_nr + offset;
-				xprintf(NO_CR, tab, "{\"name\": \"%s\", \"value\": %.2f}",
+				xprintf(bh | (NO_CR + NO_SPC), tab,
+					"{\"name\": \"%s\", \"value\": %.2f}",
 					p0->irq_name,
 					S_VALUE(q->interrupt, p->interrupt, itv));
 			}
@@ -1582,16 +1600,23 @@ void write_json_irqcpu_stats(int tab, struct stats_irqcpu *st_ic[], int ic_nr,
 				 * Instead of printing "N/A", assume that previous value
 				 * for this new interrupt was zero.
 				 */
-				xprintf(NO_CR, tab, "{\"name\": \"%s\", \"value\": %.2f}",
+				xprintf(bh | (NO_CR + NO_SPC), tab,
+					"{\"name\": \"%s\", \"value\": %.2f}",
 					p0->irq_name,
 					S_VALUE(0, p->interrupt, itv));
 			}
 		}
-		printf("\n");
-		xprintf(NO_CR, --tab, "] }");
+
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\n");
+		}
+		xprintf(bh | (NO_CR + NO_SPC), --tab, "]}");
 	}
-	printf("\n");
-	xprintf(NO_CR, --tab, "]");
+
+	if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+	xprintf(bh | (NO_CR + NO_SPC), --tab, "]");
 }
 
 /*
@@ -1628,7 +1653,7 @@ void write_irqcpu_stats(struct stats_irqcpu *st_ic[], int ic_nr, int dis,
 {
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
 		if (*next) {
-			printf(",\n");
+			printf(",%s", DISPLAY_NDJSON_OUTPUT(xflags) ? "" : "\n");
 		}
 		*next = TRUE;
 		write_json_irqcpu_stats(tab, st_ic, ic_nr, itv, prev, curr, type,
@@ -1664,6 +1689,7 @@ void write_stats_core(int prev, int curr, int dis,
 	unsigned long long itv, deltot_jiffies = 1;
 	int tab = 4, next = FALSE;
 	unsigned char offline_cpu_bitmap[BITMAP_SIZE(NR_CPUS)] = {0};
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
@@ -1675,8 +1701,8 @@ void write_stats_core(int prev, int curr, int dis,
 	deltot_jiffies = get_global_cpu_mpstats(prev, curr, offline_cpu_bitmap);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, tab++, "{");
-		xprintf(0, tab, "\"timestamp\": \"%s\",", curr_string);
+		xprintf(bh + NO_SPC, tab++, "{");
+		xprintf(bh + NO_SPC, tab, "\"timestamp\": \"%s\",", curr_string);
 	}
 
 	/* Get time interval */
@@ -1714,8 +1740,13 @@ void write_stats_core(int prev, int curr, int dis,
 	}
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		printf("\n");
-		xprintf(NO_CR, --tab, "}");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\n");
+			xprintf(NO_CR, --tab, "}");
+		}
+		else {
+			printf("}]}");
+		}
 	}
 }
 
@@ -1774,6 +1805,10 @@ void write_stats(int curr, int dis)
 	/* Make sure timestamp is null-terminated */
 	cur_time[!curr][sizeof(cur_time[!curr]) - 1] = '\0';
 	cur_time[curr][sizeof(cur_time[curr]) - 1] = '\0';
+
+	if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("{\"statistics\": [");
+	}
 
 	write_stats_core(!curr, curr, dis, cur_time[!curr], cur_time[curr]);
 }
@@ -1951,6 +1986,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 	read_uptime(&(uptime_cs[0]));
 	read_stat_cpu(st_cpu[0], cpu_nr + 1, SINGLE_R);
 
+	if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
+	}
+
 	/*
 	 * Calculate global CPU stats as the sum of individual ones.
 	 * Done only on SMP machines. On UP machines, we keep the values
@@ -2014,9 +2053,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 		}
 		write_stats(0, DISP_HDR);
 		if (DISPLAY_JSON_OUTPUT(xflags)) {
-			printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
+			printf("\n");
 		}
-		exit(0);
+		goto terminate;
 	}
 
 	/* Set a handler for SIGALRM */
@@ -2115,11 +2154,15 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 				count = 0;
 			}
 			else {
-				if (DISPLAY_JSON_OUTPUT(xflags)) {
-					printf(",\n");
+				if (DISPLAY_JSON_OUTPUT(xflags) &&
+				    !DISPLAY_NDJSON_OUTPUT(xflags)) {
+					printf(",");
 				}
 				curr ^= 1;
 			}
+		}
+		if (DISPLAY_JSON_OUTPUT(xflags)) {
+			printf("\n");
 		}
 
 		if (count && USE_OPTION_H(flags)) {
@@ -2129,10 +2172,10 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 				/* Recalculate number of interrupts per processor */
 				irqcpu_nr = get_irqcpu_nr(INTERRUPTS, NR_IRQS, new_cpu_nr) +
-				NR_IRQCPU_PREALLOC;
+					    NR_IRQCPU_PREALLOC;
 				/* Recalculate number of soft interrupts per processor */
 				softirqcpu_nr = get_irqcpu_nr(SOFTIRQS, NR_IRQS, new_cpu_nr) +
-				NR_IRQCPU_PREALLOC;
+						NR_IRQCPU_PREALLOC;
 
 				/* Reallocate cpu stats structures */
 				salloc_mp_struct(new_cpu_nr + 1, cpu_nr + 1);
@@ -2154,7 +2197,9 @@ void rw_mpstat_loop(int dis_hdr, int rows)
 
 terminate:
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		printf("\n\t\t\t]\n\t\t}\n\t]\n}}\n");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		}
 		fflush(stdout);
 	}
 }
@@ -2246,6 +2291,9 @@ int main(int argc, char **argv)
 			/* Select output format */
 			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
 				xflags |= X_D_JSON_OUTPUT;
+			}
+			else if (argv[opt] && !strcmp(argv[opt], K_NDJSON)) {
+				xflags |= X_D_JSON_OUTPUT + X_D_NDJSON_OUTPUT;
 			}
 			else {
 				usage(argv[0]);
@@ -2438,7 +2486,8 @@ int main(int argc, char **argv)
 	__uname(&header);
 	print_gal_header(&(mp_tstamp[0]), header.sysname, header.release,
 			 header.nodename, header.machine, get_cpu_nr(~0, FALSE),
-			 DISPLAY_JSON_OUTPUT(xflags));
+			 DISPLAY_JSON_OUTPUT(xflags) +
+			 DISPLAY_NDJSON_OUTPUT(xflags));
 
 	/* Main loop */
 	rw_mpstat_loop(dis_hdr, rows);
