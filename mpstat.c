@@ -799,8 +799,6 @@ void write_json_cpu_stats(int tab, unsigned long long deltot_jiffies, int prev, 
 					"\"sys\": 0.00, \"iowait\": 0.00, \"irq\": 0.00, "
 					"\"soft\": 0.00, \"steal\": 0.00, \"guest\": 0.00, "
 					"\"gnice\": 0.00, \"idle\": 100.00}", i - 1, topology);
-				printf("\n");
-
 				continue;
 			}
 		}
