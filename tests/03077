@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./mpstat -o NDJSON -AT > tests/out.mpstat-AT-NDJSON.tmp && diff -u ${T_SRCDIR}/tests/expected.mpstat-AT-NDJSON tests/out.mpstat-AT-NDJSON.tmp

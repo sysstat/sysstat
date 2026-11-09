@@ -135,6 +135,9 @@ NOTES:
 00308	./sadf -J tests/data-CPUoff.tmp -- -A -P 8 | tests/check_ndjson.sh >/dev/null
 00309	./sadf -J tests/data4.tmp -C | tests/check_ndjson.sh >/dev/null
 00310	./mpstat -A -o JSON | $VER_JSON >/dev/null
+00315	./mpstat -o NDJSON 1 2 -A | tests/check_ndjson.sh >/dev/null
+00316	./mpstat -o NDJSON 1 2 -T -P ALL | tests/check_ndjson.sh >/dev/null
+00317	./mpstat -o NDJSON -AT | tests/check_ndjson.sh >/dev/null
 00320	./mpstat -P ALL -T 1 2 -o JSON -U | $VER_JSON >/dev/null
 00330	./mpstat -o JSON 1 10 | $VER_JSON >/dev/null
 	[Simulate a Ctrl/C within mpstat]
@@ -577,6 +580,9 @@ NOTES:
 03050	LC_ALL=C TZ=GMT ./mpstat -T -P ALL 1 2 > tests/out.mpstat-T.tmp
 03060	LC_ALL=C TZ=GMT ./mpstat -o JSON -A 1 1 > tests/out.mpstat-A-JSON.tmp
 03070	LC_ALL=C TZ=GMT ./mpstat -o JSON -T -P ALL > tests/out.mpstat-T-JSON.tmp
+03075	LC_ALL=C TZ=GMT ./mpstat -o NDJSON -A 1 2 > tests/out.mpstat-A-NDJSON.tmp
+03076	LC_ALL=C TZ=GMT ./mpstat -o NDJSON 1 2 -T -P ALL > tests/out.mpstat-TPALL-NDJSON.tmp
+03077	LC_ALL=C TZ=GMT ./mpstat -o NDJSON -AT > tests/out.mpstat-AT-NDJSON.tmp
 03080	LC_ALL=C TZ=GMT ./mpstat -H -P ALL 1 > tests/out.mpstat-H.tmp
 03090	LC_ALL=C TZ=GMT ./mpstat -U 1 2 > tests/out.mpstat-U.tmp
 
