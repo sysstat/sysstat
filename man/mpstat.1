@@ -1,11 +1,11 @@
-.\" mpstat manual page - (C) 2000-2025 Sebastien Godard (sysstat <at> orange.fr)
-.TH MPSTAT 1 "JULY 2025" Linux "Linux User's Manual" -*- nroff -*-
+.\" mpstat manual page - (C) 2000-2026 Sébastien Godard (sysstat <at> orange.fr)
+.TH MPSTAT 1 "NOVEMBER 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 mpstat \- Report processors related statistics.
 
 .SH SYNOPSIS
 .B mpstat [ \-A ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-H ] [ \-n ] [ \-U ] [ \-u ] [ \-T ] [ \-V ] [ \-I {
-.IB "keyword" "[,...] | ALL } ] [ \-N { " "node_list " "| ALL } ] [ \-o JSON ] [ \-P {"
+.IB "keyword" "[,...] | ALL } ] [ \-N { " "node_list " "| ALL } ] [ \-o { JSON | NDJSON } ] [ \-P {"
 .IB "cpu_list " "| ALL } ] [ " "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
@@ -104,9 +104,10 @@ indicates that statistics are calculated as averages among all nodes.
 All the other fields are the same as those displayed with option
 .BR "\-u " "(see below)."
 .TP
-.B \-o JSON
-Display the statistics in JSON (JavaScript Object Notation) format.
-JSON output field order is undefined, and new fields may be added
+.B \-o { JSON | NDJSON }
+Display the statistics in JSON (JavaScript Object Notation) or
+NDJSON (Newline Delimited JavaScript Object Notation) format.
+Output fields order is undefined, and new fields may be added
 in the future.
 .TP
 .BI "\-P { " "cpu_list " "| ALL }"
@@ -239,7 +240,7 @@ Display five reports of statistics for all processors at two second intervals.
 .IR "/proc " "contains various files with system statistics."
 
 .SH AUTHOR
-Sebastien Godard (sysstat <at> orange.fr)
+Sébastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
 .BR "sar" "(1), " "pidstat" "(1), " "iostat" "(1), " "vmstat" "(8)"
