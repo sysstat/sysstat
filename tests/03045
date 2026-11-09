@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./mpstat -A 1 2 -o JSON > tests/out2.mpstat-A-JSON.tmp && diff -u ${T_SRCDIR}/tests/expected2.mpstat-A-JSON tests/out2.mpstat-A-JSON.tmp

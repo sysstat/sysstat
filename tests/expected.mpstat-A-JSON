@@ -82,7 +82,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "1", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -127,7 +127,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "2", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -172,7 +172,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "3", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -217,7 +217,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "4", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -262,7 +262,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "5", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -307,7 +307,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "6", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -352,7 +352,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] },
+						]},
 						{"cpu": "7", "intr": [
 							{"name": "0", "value": 0.00},
 							{"name": "8", "value": 0.00},
@@ -397,7 +397,7 @@
 							{"name": "PIN", "value": 0.00},
 							{"name": "NPI", "value": 0.00},
 							{"name": "PIW", "value": 0.00}
-						] }
+						]}
 					],
 					"soft-interrupts": [
 						{"cpu": "0", "intr": [
@@ -411,7 +411,7 @@
 							{"name": "SCHED", "value": 19.44},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 8.25}
-						] },
+						]},
 						{"cpu": "1", "intr": [
 							{"name": "HI", "value": 0.00},
 							{"name": "TIMER", "value": 17.36},
@@ -423,7 +423,7 @@
 							{"name": "SCHED", "value": 8.05},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 8.21}
-						] },
+						]},
 						{"cpu": "2", "intr": [
 							{"name": "HI", "value": 0.00},
 							{"name": "TIMER", "value": 25.99},
@@ -435,7 +435,7 @@
 							{"name": "SCHED", "value": 6.10},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 12.38}
-						] },
+						]},
 						{"cpu": "3", "intr": [
 							{"name": "HI", "value": 0.00},
 							{"name": "TIMER", "value": 21.98},
@@ -447,7 +447,7 @@
 							{"name": "SCHED", "value": 9.98},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 15.43}
-						] },
+						]},
 						{"cpu": "4", "intr": [
 							{"name": "HI", "value": 3.02},
 							{"name": "TIMER", "value": 21.78},
@@ -459,7 +459,7 @@
 							{"name": "SCHED", "value": 11.97},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 12.26}
-						] },
+						]},
 						{"cpu": "5", "intr": [
 							{"name": "HI", "value": 0.00},
 							{"name": "TIMER", "value": 19.19},
@@ -471,7 +471,7 @@
 							{"name": "SCHED", "value": 11.87},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 10.84}
-						] },
+						]},
 						{"cpu": "6", "intr": [
 							{"name": "HI", "value": 0.00},
 							{"name": "TIMER", "value": 31.41},
@@ -483,7 +483,7 @@
 							{"name": "SCHED", "value": 15.01},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 16.46}
-						] },
+						]},
 						{"cpu": "7", "intr": [
 							{"name": "HI", "value": 0.00},
 							{"name": "TIMER", "value": 20.08},
@@ -495,7 +495,7 @@
 							{"name": "SCHED", "value": 9.82},
 							{"name": "HRTIMER", "value": 0.00},
 							{"name": "RCU", "value": 12.32}
-						] }
+						]}
 					]
 				}
 			]

@@ -40,7 +40,6 @@ Linux 1.2.3-TEST (SYSSTAT.TEST) 	06/01/20 	_x86_64_	(9 CPU)
 
 12:53:30      UID       PID prio policy  Command
 
-
 Average:      UID       PID   cswch/s nvcswch/s  Command
 Average:        0      8407     15.01      0.06  gnome-terminal-
 Average:     1000      8741      9.30      0.00  firefox
