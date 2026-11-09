@@ -3743,7 +3743,7 @@ void rw_pidstat_loop(int dis_hdr, int rows)
 				curr ^= 1;
 			}
 		}
-		if (sigint_caught || DISPLAY_JSON_OUTPUT(xflags)) {
+		if (DISPLAY_JSON_OUTPUT(xflags)) {
 			printf("\n");
 		}
 	}
