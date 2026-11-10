@@ -2014,11 +2014,8 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 	/* Should we skip first report? */
 	if (DISPLAY_OMIT_SINCE_BOOT(flags) && interval > 0) {
 		skip = 1;
-		if (!DISPLAY_JSON_OUTPUT(xflags)) {
-			printf("\n");
-		}
 	}
-	if (DISPLAY_NDJSON_OUTPUT(xflags) && !skip) {
+	else if (DISPLAY_NDJSON_OUTPUT(xflags)) {
 		printf("\n");
 	}
 
@@ -2483,8 +2480,7 @@ int main(int argc, char **argv)
 			     DISPLAY_NDJSON_OUTPUT(xflags)) > 0) {
 		xflags |= X_D_ISO;
 	}
-	if (!DISPLAY_JSON_OUTPUT(xflags) &&
-	    (!DISPLAY_OMIT_SINCE_BOOT(flags) || (interval == 0))) {
+	if (!DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
 	}
 
