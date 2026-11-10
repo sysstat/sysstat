@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root6 tests/root
+LC_ALL=C TZ=GMT ./cifsiostat -o NDJSON 1 1 > tests/out.cifsiostat-NDJSON-nofs.tmp && diff -u ${T_SRCDIR}/tests/expected.cifsiostat-NDJSON-nofs tests/out.cifsiostat-NDJSON-nofs.tmp
