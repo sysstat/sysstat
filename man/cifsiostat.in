@@ -1,15 +1,15 @@
-.\" cifsiostat manual page - (C) 2020-2025 Sebastien Godard (sysstat <at> orange.fr)
-.TH CIFSIOSTAT 1 "AUGUST 2026" Linux "Linux User's Manual" -*- nroff -*-
+.\" cifsiostat manual page - (C) 2020-2026 Sébastien Godard (sysstat <at> orange.fr)
+.TH CIFSIOSTAT 1 "NOVEMBER 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 cifsiostat \- Report CIFS statistics.
 
 .SH SYNOPSIS
 .ie 'yes'@WITH_DEBUG@' \{
-.B cifsiostat [ \-h ] [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-debuginfo ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o { JSON | NDJSON } ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 .el \{
-.B cifsiostat [ \-h ] [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o JSON ] [ \-\-pretty ] [
+.B cifsiostat [ \-h ] [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ -y ] [ \-\-dec={ 0 | 1 | 2 } ] [ \-\-human ] [ \-o { JSON | NDJSON } ] [ \-\-pretty ] [
 .IB "interval " "[ " "count " "] ]"
 .\}
 
@@ -86,9 +86,10 @@ Display statistics in kibibytes per second.
 .B \-m
 Display statistics in mebibytes per second.
 .TP
-.B \-o JSON
-Display the statistics in JSON (JavaScript Object Notation) format.
-JSON output field order is undefined, and new fields may be added
+.B \-o { JSON | NDJSON }
+Display the statistics in JSON (JavaScript Object Notation) or
+NDJSON (Newline Delimited JavaScript Object Notation) format.
+Output fields order is undefined, and new fields may be added
 in the future.
 .TP
 .B \-\-pretty
@@ -161,7 +162,7 @@ A kibibyte is equal to 1024 bytes, a mebibyte is equal to 1024 kibibytes, and a 
 .SH AUTHORS
 Written by Ivana Varekova (varekova <at> redhat.com)
 .br
-Maintained by Sebastien Godard (sysstat <at> orange.fr)
+Maintained by Sébastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
 .BR "sar" "(1), " "pidstat" "(1), " "mpstat" "(1), " "vmstat" "(8), " "iostat" "(1),"
