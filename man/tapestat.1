@@ -1,11 +1,11 @@
 .\" tapestat manual page - (C) 2015 Hewlett-Packard Development Company, L.P.
-.\" Maintained by Sebastien Godard (sysstat <at> orange.fr)
-.TH TAPESTAT 1 "AUGUST 2026" Linux "Linux User's Manual" -*- nroff -*-
+.\" Maintained by Sébastien Godard (sysstat <at> orange.fr)
+.TH TAPESTAT 1 "NOVEMBER 2026" Linux "Linux User's Manual" -*- nroff -*-
 .SH NAME
 tapestat \- Report tape statistics.
 
 .SH SYNOPSIS
-.B tapestat [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ \-y ] [ \-z ] [ \-\-human ] [ \-o JSON ] [
+.B tapestat [ \-k | \-m | \-G ] [ \-t ] [ \-U ] [ \-V ] [ \-y ] [ \-z ] [ \-\-human ] [ \-o { JSON | NDJSON } ] [
 .IB "interval " "[ " "count " "] ]"
 
 .SH DESCRIPTION
@@ -94,9 +94,10 @@ Show the amount of data written or read in mebibytes per second instead of kibib
 This option is mutually exclusive with
 .BR "\-G " "and " "\-k" "."
 .TP
-.B \-o JSON
-Display the statistics in JSON (JavaScript Object Notation) format.
-JSON output field order is undefined, and new fields may be added
+.B \-o { JSON | NDJSON }
+Display the statistics in JSON (JavaScript Object Notation) or
+NDJSON (Newline Delimited JavaScript Object Notation) format.
+Output fields order is undefined, and new fields may be added
 in the future.
 .TP
 .B \-t
@@ -242,7 +243,7 @@ Statistics files for tape devices.
 .SH AUTHOR
 Initial revision by Shane M. SEYMOUR (shane.seymour <at> hpe.com)
 .br
-Modified for sysstat by Sebastien Godard (sysstat <at> orange.fr)
+Modified for sysstat by Sébastien Godard (sysstat <at> orange.fr)
 
 .SH SEE ALSO
 .BR "iostat" "(1), " "mpstat" "(1)"
