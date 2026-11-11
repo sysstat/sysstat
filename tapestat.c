@@ -105,7 +105,7 @@ void usage(char *progname)
 	fprintf(stderr, _("Usage: %s [ options ] [ <interval> [ <count> ] ]\n"),
 		progname);
 	fprintf(stderr, _("Options are:\n"
-			  "[ --human ] [ -k | -m | -G ] [ -o JSON ] [ -t ] [ -U ] [ -V ]\n"
+			  "[ --human ] [ -k | -m | -G ] [ -o { JSON | NDJSON } ] [ -t ] [ -U ] [ -V ]\n"
 			  "[ -y ] [ -z ]\n"));
 	exit(1);
 }
@@ -398,16 +398,20 @@ void tape_get_updated_stats(void)
 void write_tape_headings(int *tab)
 {
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, (*tab)++, "\"tape\": [");
+		xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS +
+			(DISPLAY_TIMESTAMP(flags) ? 0 : NO_SPC) : 0,
+			(*tab)++, "\"tape\": [");
 		return;
 	}
 
 	printf("Tape:     r/s     w/s   ");
 	if (DISPLAY_GIGABYTES(flags)) {
 		printf("GB_read/s   GB_wrtn/s");
-	} else if (DISPLAY_MEGABYTES(flags)) {
+	}
+	else if (DISPLAY_MEGABYTES(flags)) {
 		printf("MB_read/s   MB_wrtn/s");
-	} else {
+	}
+	else {
 		printf("kB_read/s   kB_wrtn/s");
 	}
 	printf("  %%Rd  %%Wr  %%Oa    Rs/s    Ot/s\n");
@@ -432,7 +436,7 @@ void tape_calc_one_stats(struct calc_stats *stats, int i)
 
 	/* Duration in ms done in ms to prevent rounding issues with using seconds */
 	duration = (tape_new_stats[i].tv.tv_sec -
-		tape_old_stats[i].tv.tv_sec) * 1000;
+		    tape_old_stats[i].tv.tv_sec) * 1000;
 	duration -= tape_old_stats[i].tv.tv_usec / 1000;
 	duration += tape_new_stats[i].tv.tv_usec / 1000;
 
@@ -481,10 +485,12 @@ void write_plain_tape_stats(struct calc_stats *tape, int i)
 	char buffer[32];
 	uint64_t divisor = 1;
 
-	if (DISPLAY_GIGABYTES(flags))
+	if (DISPLAY_GIGABYTES(flags)) {
 		divisor = 1024 * 1024;
-	else if (DISPLAY_MEGABYTES(flags))
+	}
+	else if (DISPLAY_MEGABYTES(flags)) {
 		divisor = 1024;
+	}
 
 	sprintf(buffer, "st%i        ", i);
 	buffer[5] = 0;
@@ -523,7 +529,7 @@ void write_json_tape_stats(int tab, struct calc_stats *tape, int i)
 	char line[256];
 	uint64_t divisor = 1;
 
-	xprintf(NO_CR, tab,
+	xprintf(DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS + NO_SPC : NO_CR, tab,
 		"{\"tape_device\": \"st%i\", "
 		"\"r/s\": %" PRIu64 ", \"w/s\": %" PRIu64 ", ",
 		i, tape->reads_per_second, tape->writes_per_second);
@@ -588,12 +594,16 @@ void write_stats(struct tm *rectime)
 	int tab = 4, next = FALSE;
 	struct calc_stats tape;
 	struct tape_stats *tmp;
+	int bh = (DISPLAY_NDJSON_OUTPUT(xflags) ? NO_CR + NO_TABS : 0);
 
 	/* Test stdout */
 	TEST_STDOUT(STDOUT_FILENO);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		xprintf(0, tab++, "{");
+		if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("{\"statistics\": [");
+		}
+		xprintf(bh + NO_SPC, tab++, "{");
 	}
 
 	/* Print time stamp */
@@ -628,7 +638,7 @@ void write_stats(struct tm *rectime)
 					&& (tape.resids_per_second == 0))) {
 
 					if (DISPLAY_JSON_OUTPUT(xflags) && next) {
-						printf(",\n");
+						printf(",%c", DISPLAY_NDJSON_OUTPUT(xflags) ? ' ' : '\n');
 					}
 					next = TRUE;
 
@@ -647,9 +657,19 @@ void write_stats(struct tm *rectime)
 	}
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\n");
+		}
+		xprintf(bh + NO_SPC, --tab, "]");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			xprintf(NO_CR, --tab, "}");
+		}
+		else {
+			printf("}]}");
+		}
+	}
+	else {
 		printf("\n");
-		xprintf(0, --tab, "]");
-		xprintf(NO_CR, --tab, "}");
 	}
 }
 
@@ -670,6 +690,9 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 	/* Should we skip first report? */
 	if (DISPLAY_OMIT_SINCE_BOOT(flags) && interval > 0) {
 		skip = 1;
+	}
+	else if (DISPLAY_NDJSON_OUTPUT(xflags)) {
+		printf("\n");
 	}
 
 	/* Set a handler for SIGALRM */
@@ -724,17 +747,22 @@ void rw_tape_stat_loop(long int count, struct tm *rectime)
 				 */
 				count = 0;
 			}
-			else if (DISPLAY_JSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
+			else if (DISPLAY_JSON_OUTPUT(xflags) &&
+				 !DISPLAY_NDJSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
 				printf(",");
 			}
+			skip = 0;
 		}
-		skip = 0;
-		printf("\n");
+		if (sigint_caught || DISPLAY_JSON_OUTPUT(xflags)) {
+			printf("\n");
+		}
 	}
 	while (count);
 
 	if (DISPLAY_JSON_OUTPUT(xflags)) {
-		printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		if (!DISPLAY_NDJSON_OUTPUT(xflags)) {
+			printf("\t\t\t]\n\t\t}\n\t]\n}}\n");
+		}
 	}
 }
 
@@ -779,11 +807,14 @@ int main(int argc, char **argv)
 			/* Select output format */
 			if (argv[++opt] && !strcmp(argv[opt], K_JSON)) {
 				xflags |= X_D_JSON_OUTPUT;
-				opt++;
+			}
+			else if (argv[opt] && !strcmp(argv[opt], K_NDJSON)) {
+				xflags |= X_D_JSON_OUTPUT + X_D_NDJSON_OUTPUT;
 			}
 			else {
 				usage(argv[0]);
 			}
+			opt++;
 		}
 
 		else if (!strncmp(argv[opt], "-", 1)) {
@@ -899,11 +930,11 @@ int main(int argc, char **argv)
 	__uname(&header);
 	if (print_gal_header(&rectime, header.sysname, header.release,
 			     header.nodename, header.machine, cpu_nr,
-			     DISPLAY_JSON_OUTPUT(xflags)) > 0) {
+			     DISPLAY_JSON_OUTPUT(xflags) +
+			     DISPLAY_NDJSON_OUTPUT(xflags)) > 0) {
 		xflags |= X_D_ISO;
 	}
-	if (!DISPLAY_JSON_OUTPUT(xflags) &&
-		(!DISPLAY_OMIT_SINCE_BOOT(flags) || (interval == 0))) {
+	if (!DISPLAY_JSON_OUTPUT(xflags)) {
 		printf("\n");
 	}
 
