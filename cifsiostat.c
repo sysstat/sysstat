@@ -644,7 +644,7 @@ void rw_io_stat_loop(long int count, struct tm *rectime)
 			}
 			else {
 				if (DISPLAY_JSON_OUTPUT(xflags) &&
-				 !DISPLAY_NDJSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
+				    !DISPLAY_NDJSON_OUTPUT(xflags) && !skip) {	/* count != 0 */
 					 printf(",");
 				}
 				curr ^= 1;
