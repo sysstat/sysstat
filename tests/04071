@@ -1,0 +1,3 @@
+rm -f tests/root
+ln -s ${T_SRCDIR}/tests/root1 tests/root
+LC_ALL=C TZ=GMT ./tapestat -o NDJSON 1 4 > tests/out2.tapestat-NDJSON.tmp && diff -u ${T_SRCDIR}/tests/expected2.tapestat-NDJSON tests/out2.tapestat-NDJSON.tmp
