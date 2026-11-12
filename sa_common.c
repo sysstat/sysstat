@@ -2312,8 +2312,11 @@ void check_file_actlst(int *ifd, char *dfile, struct activity *act[], uint64_t f
 		 * This is a known activity with a known format
 		 * (magical number). Only such activities will be displayed.
 		 * (Well, this may also be an unknown format if we have entered sadf -H.)
+		 * Note that there are only NR_ACT known activities, but a crafted file
+		 * may list the same activity id several times => Don't write
+		 * past the end of id_seq[] in that case.
 		 */
-		if (!skip) {
+		if (!skip && (j < NR_ACT)) {
 			id_seq[j++] = fal->id;
 		}
 	}
