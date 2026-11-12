@@ -378,14 +378,14 @@ __nr_t read_stat_irq(struct stats_irq *st_irq, __nr_t nr_alloc, __nr_t nr_int)
 				 * allocated. Return -1 so that the caller
 				 * reallocates the buffer instead of silently
 				 * dropping the extra CPUs.
-				 * This check also bounds the writes to
-				 * @cpu_index[]: it guarantees @cpu < @cpu_nr.
 				 */
 				if (cpu + 2 > nr_alloc) {
 					rc = -1;
 					goto out;
 				}
-				cpu_index[index++] = cpu;
+				if (index < cpu_nr) {
+					cpu_index[index++] = cpu;
+				}
 			}
 			if (index)
 				/* Header line found */
